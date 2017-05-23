@@ -371,6 +371,21 @@ function os_common_library() {
     )
   );
 
+  $info['ngTable'] = array(
+    'title' => 'Angular table',
+    'version' => '2.0.2',
+    'js' => array(
+      '//unpkg.com/ng-table@2.0.2/bundles/ng-table.min.js' => array(
+        'type' => 'external',
+        'group' => JS_LIBRARY,
+        'weight' => -13
+      ),
+    ),
+    'css' => array(
+      '//unpkg.com/ng-table@2.0.2/bundles/ng-table.min.css' => array(),
+    )
+  );
+
   return $info;
 }
 

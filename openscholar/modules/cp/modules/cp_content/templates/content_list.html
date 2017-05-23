@@ -1,0 +1,32 @@
+<table ng-table="contentTable" class="table" show-filter="true">
+  <thead>
+    <tr>
+      <th class="views-field views-field-views-bulk-operations">
+        <div class="form-item form-type-checkbox">
+          <input class="vbo-table-select-all form-checkbox" type="checkbox" value="1" style="display: inline-block;">
+        </div>
+      </th>
+      <th class="views-field views-field-title">Title</th>
+      <th class="views-field views-field-type">Type</th>
+      <th class="views-field views-field-name">Author</th>
+      <th class="views-field views-field-status">Published</th>
+      <th class="views-field views-field-changed">Updated date</th>
+      <th class="views-field views-field-delete-node">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="content in $data.data">
+      <td class="views-field views-field-views-bulk-operations">
+        <div class="form-item form-type-checkbox form-item-views-bulk-operations-0">
+          <input class="vbo-select form-checkbox" type="checkbox" id="edit-views-bulk-operations-0" name="views_bulk_operations[0]" value="67">
+        </div>
+      </td>
+      <td class="views-field views-field-title">{{content.label}}</td>
+      <td class="views-field views-field-type">Type</td>
+      <td class="views-field views-field-name">admin</td>
+      <td class="views-field views-field-status">Yes</td>
+      <td class="views-field views-field-changed">Friday, May 19, 2017, 3:59pm</td>
+      <td class="views-field views-field-delete-node"></td>
+    </tr>
+  </tbody>
+</table>

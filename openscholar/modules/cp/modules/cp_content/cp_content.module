@@ -588,3 +588,72 @@ function cp_content_views_query_alter(&$view, views_plugin_query_default &$query
   }
 
 }
+
+/**
+ * Implements hook_cp_settings().
+ */
+function cp_content_cp_settings() {
+
+  $settings = array();
+
+  $settings['cp_content'] = array(
+    'group' => array(
+      '#id' => 'cp_content',
+      '#title' => t('Contents'),
+      '#weight' => 2,
+      '#menu_parent' => 'browse'
+    ),
+    'form' => array(
+      //'#type' => 'checkbox',
+      '#custom_directive' => 'cp-content-list',
+      '#custom_directive_parameters' => array(),
+    ),
+  );
+
+  return $settings;
+}
+
+/**
+ * Implements hook_library().
+ */
+function cp_content_library() {
+  $info = array();
+  $self = drupal_get_path('module', 'cp_content');
+  $disable = array('alias' => TRUE);
+
+  $info['list-cp-content'] = array(
+    'title' => 'List cp content',
+    'version' => '1.0',
+    'description' => 'Provide list of contents.',
+    'js' => array(
+      $self . '/CpContentList.module.js' => array(),
+      array(
+        'data' => array(
+          'paths' => array(
+            'cpContent' => url($self.'/templates', $disable),
+          )
+        ),
+        'type' => 'setting',
+      )
+    ),
+    'dependencies' => array(
+      array('os_common', 'DependencyManager'),
+      array('os_common', 'angular-ui-sortable'),
+    )
+  );
+
+  return $info;
+}
+
+/**
+ * Implements hook_preprocess_page().
+ *
+ * Adds the list-cp-content angular library.
+ */
+function cp_content_preprocess_page(&$vars) {
+  if (user_is_logged_in() && variable_get('admin_panel_enabled', FALSE)) {
+    drupal_add_library('os_common', 'ngTable');
+    drupal_add_library('cp_content', 'list-cp-content');
+  }
+}
+
