@@ -604,8 +604,7 @@ function cp_content_cp_settings() {
       '#menu_parent' => 'browse'
     ),
     'form' => array(
-      //'#type' => 'checkbox',
-      '#custom_directive' => 'cp-content-list',
+      '#custom_directive' => 'cp-content',
       '#custom_directive_parameters' => array(),
     ),
   );
@@ -621,8 +620,8 @@ function cp_content_library() {
   $self = drupal_get_path('module', 'cp_content');
   $disable = array('alias' => TRUE);
 
-  $info['list-cp-content'] = array(
-    'title' => 'List cp content',
+  $info['cp-content'] = array(
+    'title' => 'Cp content',
     'version' => '1.0',
     'description' => 'Provide list of contents.',
     'js' => array(
@@ -653,7 +652,7 @@ function cp_content_library() {
 function cp_content_preprocess_page(&$vars) {
   if (user_is_logged_in() && variable_get('admin_panel_enabled', FALSE)) {
     drupal_add_library('os_common', 'ngTable');
-    drupal_add_library('cp_content', 'list-cp-content');
+    drupal_add_library('cp_content', 'cp-content');
   }
 }
 

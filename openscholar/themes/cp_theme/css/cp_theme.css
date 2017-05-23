@@ -1834,6 +1834,17 @@ body.page-node-revisions .node {
 .form-type-radio label {
   cursor: pointer
 }
+
 div.no-bold {
     font-weight: normal;
 }
+.ng-table-pagination {
+    width: 100%;
+    float: left;
+}
+.ng-table-pagination li.ng-scope {
+    float: left;
+    padding: 10px;
+    list-style: none;
+}
+

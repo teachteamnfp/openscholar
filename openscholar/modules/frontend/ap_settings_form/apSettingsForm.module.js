@@ -1,6 +1,6 @@
 (function () {
 
-  var m = angular.module('ApSettingsForm', ['angularModalService', 'redirectForm', 'MediaBrowserField', 'formElement', 'os-buttonSpinner']);
+  var m = angular.module('ApSettingsForm', ['angularModalService', 'redirectForm', 'MediaBrowserField', 'formElement', 'os-buttonSpinner', 'CpContent']);
 
   /**
    * Fetches the settings forms from the server and makes them available directives and controllers
