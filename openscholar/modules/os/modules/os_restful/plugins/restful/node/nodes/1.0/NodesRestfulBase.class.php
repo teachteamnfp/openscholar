@@ -26,12 +26,29 @@ class NodesRestfulBase extends RestfulEntityBase {
   /**
    * Overrides RestfulEntityBase::getQueryForList().
    */
-  /*public function getQueryForList() {
+  public function getQueryForList() {
     $query = parent::getQueryForList();
     $query->entityCondition('bundle', array_keys($this->getBundles()), 'NOT IN');
-    return $query;
-  }*/
+    $request = $this->getRequest();
+    if ($request['vsite']) {
+      $query->fieldCondition('og_group_ref', 'target_id', $request['vsite']);
+    }
 
+    return $query;
+  }
+
+  /**
+   * Overrides RestfulEntityBase::getQueryCount().
+   */
+  public function getQueryCount() {
+    $query = parent::getQueryCount();
+    $query->entityCondition('bundle', array_keys($this->getBundles()), 'NOT IN');
+    $request = $this->getRequest();
+    if ($request['vsite']) {
+      $query->fieldCondition('og_group_ref', 'target_id', $request['vsite']);
+    }
+    return $query;
+  }
 
 
   public function publicFieldsInfo() {
@@ -61,9 +78,12 @@ class NodesRestfulBase extends RestfulEntityBase {
       'callback' => array($this, 'getEntityLink'),
     );
 
-    /*$public_fields['vsite'] = array(
-      'callback' => array($this, 'getEntityVsiteId'),
-    );*/
+    $public_fields['vsite'] = array(
+      'property' => OG_AUDIENCE_FIELD,
+        'process_callbacks' => array(
+          array($this, 'vsiteFieldDisplay'),
+        ),
+    );
 
     return $public_fields;
   }
@@ -82,19 +102,12 @@ class NodesRestfulBase extends RestfulEntityBase {
     return l(t($values->title), "node/$values->nid");
   }
 
-  /**
-   * Get entity's vsite id.
-   *
-   * @param \EntityDrupalWrapper $wrapper
-   *   The wrapped entity.
-   *
-   * @return interger
-   *   vsite id.
+   /**
+   * Display the id and the title of the group.
    */
-  /*protected function getEntityVsiteId(\EntityDrupalWrapper $wrapper) {
-    $values = $wrapper->value();
-    return $values->og_group_ref[LANGUAGE_NONE][0]['target_id'];
-  }*/
+  public function vsiteFieldDisplay($value) {
+    return array('title' => $value[0]->title, 'id' => $value[0]->nid);
+  }
 
   /**
    * Get formatted date and time.
@@ -108,55 +121,5 @@ class NodesRestfulBase extends RestfulEntityBase {
   protected function dateFormat($timestamp) {
     return format_date($timestamp, $type = 'long');
   }
-
-  /*protected function checkEntityAccess($op, $entity_type, $entity) {
-    $request = $this->getRequest();
-
-    if ($request['vsite']) {
-      spaces_set_space(spaces_load('og', $request['vsite']));
-    }
-
-    if (empty($entity->nid)) {
-      // This is still a new node. Skip.
-      return;
-    }
-
-    if ($is_group = og_is_group($entity_type, $entity)) {
-      $group = $entity;
-    }
-    else {
-      $wrapper = entity_metadata_wrapper('node', $entity);
-      $group = $wrapper->{OG_AUDIENCE_FIELD}->get(0)->value();
-    }
-
-    if (empty($request['vsite'])) {
-      spaces_set_space(spaces_load('og', $group->nid));
-    }
-
-    $manager = og_user_access('node', $group->nid, 'administer users', $this->getAccount());
-
-    if ($is_group) {
-      // In addition to the node access check, we need to see if the user can
-      // manage groups.
-      return $manager && !vsite_access_node_access($group, 'view', $this->getAccount()) == NODE_ACCESS_DENY;
-    }
-    else {
-      $app = os_get_app_by_bundle($entity->type);
-      $space = spaces_get_space();
-      $application_settings = $space->controllers->variable->get('spaces_features');
-
-      switch ($application_settings[$app]) {
-        case OS_DISABLED_APP:
-          return FALSE;
-
-        case OS_PRIVATE_APP:
-          return og_is_member('node', $group->nid, 'user', $this->getAccount()) && parent::checkEntityAccess($op, $entity_type, $entity);
-
-        default:
-        case OS_PUBLIC_APP:
-          return parent::checkEntityAccess($op, $entity_type, $entity);
-      }
-    }
-  }*/
 
 }

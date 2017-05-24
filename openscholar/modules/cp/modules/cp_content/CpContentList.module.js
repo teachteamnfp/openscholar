@@ -17,6 +17,7 @@
       scope.$parent.$parent.$parent.showSaveButton = false;
       scope.search = function () {
         // Here we play with search operation and filled result into ngTable.
+        console.log(scope.label);
 
       };
       var queryArgs = {
@@ -48,6 +49,9 @@
             queryArgs.range = params.count();
             queryArgs.page = params.page();
             queryArgs.sort = orderBycolumn[0].replace(/\+/g, "");
+            // Todo We need to fix this
+            // filter[label]=test news'
+            //queryArgs.filter = [{label:'test'}];
             params.data = data;
             $http.get(baseUrl+'/nodes', config).then(function(responce) {
               console.log('getData');
