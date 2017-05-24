@@ -26,11 +26,11 @@ class NodesRestfulBase extends RestfulEntityBase {
   /**
    * Overrides RestfulEntityBase::getQueryForList().
    */
-  public function getQueryForList() {
+  /*public function getQueryForList() {
     $query = parent::getQueryForList();
     $query->entityCondition('bundle', array_keys($this->getBundles()), 'NOT IN');
     return $query;
-  }
+  }*/
 
 
 

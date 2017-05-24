@@ -1847,4 +1847,17 @@ div.no-bold {
     padding: 10px;
     list-style: none;
 }
+.section-search-left {
+    float: left;
+    width: 40%;
+}
+.section-search-center {
+    float: left;
+    width: 40%;
+    margin: 0 20px;
+}
+.section-search-right {
+    float: left;
+    width: 10%;
+}
 
