@@ -38,8 +38,8 @@
         scope.tableParams = new NgTableParams({
           sorting : {
             changed : 'desc'
-          } 
-        }, 
+          }
+        },
         {
           counts: [], //hide page counts control.
           total: responce.data.count,

@@ -27,13 +27,13 @@ class NodesRestfulBase extends RestfulEntityBase {
    * Overrides RestfulEntityBase::getQueryForList().
    */
   public function getQueryForList() {
+    print $request['vsite'];
     $query = parent::getQueryForList();
     $query->entityCondition('bundle', array_keys($this->getBundles()), 'NOT IN');
     $request = $this->getRequest();
     if ($request['vsite']) {
       $query->fieldCondition('og_group_ref', 'target_id', $request['vsite']);
     }
-
     return $query;
   }
 
@@ -50,6 +50,78 @@ class NodesRestfulBase extends RestfulEntityBase {
     return $query;
   }
 
+  /**
+   * Check if an operator is valid for filtering.
+   *
+   * @param array $operators
+   *   The array of operators.
+   *
+   * @throws RestfulBadRequestException
+   */
+  protected static function isValidOperatorsForFilter(array $operators) {
+    $allowed_operators = array(
+      '=',
+      '>',
+      '<',
+      '>=',
+      '<=',
+      '<>',
+      '!=',
+      'BETWEEN',
+      'CONTAINS',
+      'IN',
+      'LIKE',
+      'NOT IN',
+      'STARTS_WITH',
+    );
+    foreach ($operators as $operator) {
+      if (!in_array($operator, $allowed_operators)) {
+        throw new \RestfulBadRequestException(format_string('Operator "@operator" is not allowed for filtering on this resource. Allowed operators are: !allowed', array(
+          '@operator' => $operator,
+          '!allowed' => implode(', ', $allowed_operators),
+        )));
+      }
+    }
+  }
+
+   /**
+   * Filter the query for list.
+   *
+   * @param \EntityFieldQuery $query
+   *   The query object.
+   *
+   * @throws \RestfulBadRequestException
+   *
+   * @see \RestfulEntityBase::getQueryForList
+   */
+  protected function queryForListFilter(\EntityFieldQuery $query) {
+    $public_fields = $this->getPublicFields();
+    foreach ($this->parseRequestForListFilter() as $filter) {
+      // Determine if filtering is by field or property.
+      if (!$property_name = $public_fields[$filter['public_field']]['property']) {
+        throw new \RestfulBadRequestException('The current filter selection does not map to any entity property or Field API field.');
+      }
+      if (field_info_field($property_name)) {
+        if (in_array(strtoupper($filter['operator'][0]), array('IN', 'BETWEEN'))) {
+          $query->fieldCondition($public_fields[$filter['public_field']]['property'], $public_fields[$filter['public_field']]['column'], $filter['value'], $filter['operator'][0]);
+          continue;
+        }
+        for ($index = 0; $index < count($filter['value']); $index++) {
+          $query->fieldCondition($public_fields[$filter['public_field']]['property'], $public_fields[$filter['public_field']]['column'], $filter['value'][$index], $filter['operator'][$index]);
+        }
+      }
+      else {
+        $column = $this->getColumnFromProperty($property_name);
+        if (in_array(strtoupper($filter['operator'][0]), array('IN', 'BETWEEN'))) {
+          $query->propertyCondition($column, $filter['value'], $filter['operator'][0]);
+          continue;
+        }
+        for ($index = 0; $index < count($filter['value']); $index++) {
+          $query->propertyCondition($column, $filter['value'][$index], $filter['operator'][$index]);
+        }
+      }
+    }
+  }
 
   public function publicFieldsInfo() {
     $public_fields = parent::publicFieldsInfo();
