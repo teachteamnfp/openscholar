@@ -27,7 +27,6 @@ class NodesRestfulBase extends RestfulEntityBase {
    * Overrides RestfulEntityBase::getQueryForList().
    */
   public function getQueryForList() {
-    print $request['vsite'];
     $query = parent::getQueryForList();
     $query->entityCondition('bundle', array_keys($this->getBundles()), 'NOT IN');
     $request = $this->getRequest();
