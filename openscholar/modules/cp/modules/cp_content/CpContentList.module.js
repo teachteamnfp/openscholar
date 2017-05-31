@@ -78,6 +78,12 @@
             });
           }
         });
+        // Bulk Operation.
+        scope.checkboxes = {
+          checked: false,
+          items: {}
+        };
+
       }
       // Get default content.
       tableData();
