@@ -18,6 +18,12 @@ function cp_content_menu() {
     'access callback' => 'cp_content_add_page_access',
     'file' => 'cp_content.pages.inc',
   );
+  $items['cp/content_type'] = array(
+    'page callback' => 'cp_content_type_rest',
+    'type' => MENU_CALLBACK,
+    'file' => 'cp_content.pages.inc',
+    'delivery callback' => 'drupal_json_output',
+  );
 
   return $items;
 }

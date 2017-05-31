@@ -23,3 +23,23 @@ function cp_content_add_page() {
 
   return theme('node_add_list', array('content' => $links));
 }
+
+/**
+ * Page callback; For list all content types.
+ *
+ * @return json
+ */
+function cp_content_type_rest() {
+  $exempted_content_types = array(
+    'blog_import' => 'Blog entry import',
+    'department' => 'Department Site',
+    'feed_importer' => 'Feed importer',
+    'personal' => 'Personal Site',
+    'project' => 'Project Site',
+    'slideshow_slide' => 'Slideshow Image',
+    );
+
+  $result = array_diff(node_type_get_names(), $exempted_content_types);
+
+  return array('data' => $result);
+}
