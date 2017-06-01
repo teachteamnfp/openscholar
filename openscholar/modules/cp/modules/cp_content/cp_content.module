@@ -18,7 +18,7 @@ function cp_content_menu() {
     'access callback' => 'cp_content_add_page_access',
     'file' => 'cp_content.pages.inc',
   );
-  $items['cp/content_type'] = array(
+  $items['cp/content_types'] = array(
     'page callback' => 'cp_content_type_rest',
     'type' => MENU_CALLBACK,
     'file' => 'cp_content.pages.inc',
@@ -643,7 +643,9 @@ function cp_content_library() {
     ),
     'dependencies' => array(
       array('os_common', 'DependencyManager'),
-      array('os_common', 'angular-ui-sortable'),
+      array('os_common', 'ngTable'),
+      array('os_common', 'angularDropdownMultiselect'),
+
     )
   );
 
@@ -657,7 +659,6 @@ function cp_content_library() {
  */
 function cp_content_preprocess_page(&$vars) {
   if (user_is_logged_in() && variable_get('admin_panel_enabled', FALSE)) {
-    drupal_add_library('os_common', 'ngTable');
     drupal_add_library('cp_content', 'cp-content');
   }
 }

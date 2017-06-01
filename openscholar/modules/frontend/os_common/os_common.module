@@ -378,11 +378,21 @@ function os_common_library() {
       '//unpkg.com/ng-table@2.0.2/bundles/ng-table.min.js' => array(
         'type' => 'external',
         'group' => JS_LIBRARY,
-        'weight' => -13
       ),
     ),
     'css' => array(
       '//unpkg.com/ng-table@2.0.2/bundles/ng-table.min.css' => array(),
+    )
+  );
+
+  $info['angularDropdownMultiselect'] = array(
+    'title' => 'Angular dropdown multiselect',
+    'version' => '1.11.8',
+    'js' => array(
+      '//cdnjs.cloudflare.com/ajax/libs/angularjs-dropdown-multiselect/1.11.8/angularjs-dropdown-multiselect.min.js' => array(
+        'type' => 'external',
+        'group' => JS_LIBRARY,
+      ),
     )
   );
 

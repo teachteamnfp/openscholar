@@ -39,7 +39,11 @@ function cp_content_type_rest() {
     'slideshow_slide' => 'Slideshow Image',
     );
 
-  $result = array_diff(node_type_get_names(), $exempted_content_types);
+  $node_types = array_diff(node_type_get_names(), $exempted_content_types);
+  $data = array();
+  foreach ($node_types as $key => $node_type) {
+    $data[] = array('label' => $node_type, 'id' => $key);
+  }
 
-  return array('data' => $result);
+  return array('data' => $data);
 }

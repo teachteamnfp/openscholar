@@ -1,15 +1,32 @@
 (function () {
-  var m = angular.module('CpContent', ['ngTable', 'ui.sortable'])
-    .config(['$injector', function ($injector) {
-      try {
-        depManager = $injector.get('DependenciesProvider');
-      }
-      catch (err) {
-      }
-  }])
+  var m = angular.module('CpContent', ['ngTable', 'angularjs-dropdown-multiselect']);
 
   /**
-   * Fetches the settings forms from the server and makes them available directives and controllers
+   * Fetch content types.
+   */
+  m.service('cpFetchContentTypes', ['$http', function ($http) {
+    var service = {
+      getData: function() {
+        var baseUrl = Drupal.settings.basePath;
+        var params = {};
+        var config = {
+          params: params
+        }
+        var promise = $http.get(baseUrl+'cp/content_types', config)
+          .success(function(response) {
+          });
+        return promise.then(function(result) {
+          return result;
+        });
+      }
+    }
+
+    return service;
+
+  }]);
+
+  /**
+   * Fetch content list.
    */
   m.service('cpFetchContent', ['$http', function ($http) {
 
@@ -21,6 +38,7 @@
           filterField = filter.filterField;
           filterValue = filter.filterValue;
           filter = "filter["+filterField+"][value]="+filterValue+"&filter["+filterField+"][operator]="+filterOperator;
+        console.log(filter);
         } else {
           filter = '';
         }
@@ -46,11 +64,12 @@
 
   }]);
 
+
   /**
    * Fetching cp content and fill it in setting form modal.
    */
-  m.directive('cpContent', ['NgTableParams', 'cpFetchContent', function (NgTableParams, cpFetchContent) {
-    function link(scope, element, attrs) {
+  m.directive('cpContent', ['NgTableParams', 'cpFetchContent', 'cpFetchContentTypes', function (NgTableParams, cpFetchContent, cpFetchContentTypes) {
+    function link($scope, $element, $attrs) {
       // Fetch the vsite id.
       if (Drupal.settings.spaces != undefined) {
         if (Drupal.settings.spaces.id) {
@@ -58,9 +77,9 @@
         }
       }
       // Hide Defaut buttons from ApSettings Modal form.
-      scope.$parent.$parent.$parent.showSaveButton = false;
+      $scope.$parent.$parent.$parent.showSaveButton = false;
       var tableData = function (filter) {
-        scope.tableParams = new NgTableParams({
+        $scope.tableParams = new NgTableParams({
           page: 1,
           count: 10,
           sorting : {
@@ -79,24 +98,45 @@
           }
         });
         // Bulk Operation.
-        scope.checkboxes = {
+        $scope.checkboxes = {
           checked: false,
           items: {}
         };
 
       }
+
+      // Initialize content type dropdown.
+      $scope.contentTypeModel = [];
+      $scope.contentTypeSettings  = {
+        scrollable: true,
+        smartButtonMaxItems: 2,
+      };
+      cpFetchContentTypes.getData().then(function(responce) {
+        $scope.contentTypes = responce.data.data;
+      });
+
       // Get default content.
       tableData();
       // Search button: Filter data by title, content-type, taxonomy.
-      scope.search = function () {
+      $scope.search = function () {
+        console.log($scope.contentTypeModel);
         var filter = '';
-        if (scope.label) {
+        if ($scope.label) {
           filter = {
             filterField : 'label',
-            filterValue : scope.label,
+            filterValue : $scope.label,
             filterOperator : 'CONTAINS'
           };
         }
+        if ($scope.contentTypeModel[0]) {
+          filter = {
+            filterField : 'type',
+            filterValue : $scope.contentTypeModel[0].id,
+            filterOperator : 'IN'
+          };
+
+        }
+
         // Get filtered content.
         tableData(filter);
       };
@@ -109,5 +149,6 @@
         return Drupal.settings.paths.cpContent + '/cp_content.html'
       },
     };
-    }]);
+  }]);
+
 })();
