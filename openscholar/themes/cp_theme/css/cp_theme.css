@@ -1848,16 +1848,19 @@ div.no-bold {
     list-style: none;
 }
 .section-search-left {
-    float: left;
-    width: 40%;
+  float: left;
+  width: 40%;
 }
 .section-search-center {
-    float: left;
-    width: 40%;
-    margin: 0 20px;
+  float: left;
+  width: 40%;
+  margin: 0 20px;
 }
 .section-search-right {
-    float: left;
-    width: 10%;
+  float: left;
+  width: 10%;
+}
+.filter-taxonomy-terms {
+  margin-top: 10px;
 }
 

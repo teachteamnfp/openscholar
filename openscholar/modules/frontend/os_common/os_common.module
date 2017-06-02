@@ -385,11 +385,11 @@ function os_common_library() {
     )
   );
 
-  $info['angularDropdownMultiselect'] = array(
-    'title' => 'Angular dropdown multiselect',
-    'version' => '1.11.8',
+  $info['underscore-js'] = array(
+    'title' => 'Underscore js',
+    'version' => '1.8.3',
     'js' => array(
-      '//cdnjs.cloudflare.com/ajax/libs/angularjs-dropdown-multiselect/1.11.8/angularjs-dropdown-multiselect.min.js' => array(
+      '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js' => array(
         'type' => 'external',
         'group' => JS_LIBRARY,
       ),

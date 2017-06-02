@@ -1,25 +1,23 @@
-<div>
+<div class="cp-content">
   <div class="section-search">
     <div class="section-search-left">
-      <div class="form-item"><label for="cp-title-text">Search By Title</label> <input id="cp-title-text" class="form-text" type="text" name="label" ng-model="label"/>
+      <div class="form-item"><label for="cp-title-text">Search By Title</label> <input id="cp-title-text" class="form-text" type="text" name="label" ng-model="label" />
       </div>
     </div>
     <div class="section-search-center">
       <div class="form-item"><label for="cp-title-text">Filter By</label>
-      <div ng-if="contentTypeSettings">
-        <div ng-dropdown-multiselect="" options="contentTypes" selected-model="contentTypeModel" checkboxes="true" extra-settings="contentTypeSettings"></div>
-      </div>
-        <select>
-          <option value="">Taxonomy terms</option>
-          <option value="test1">Test1</option>
-          <option value="test2">Test2</option>
-        </select>
+        <div ng-if="contentTypeSettings" class="filter-content-type">
+          <div ng-dropdown-multiselect="" options="contentTypes" selected-model="contentTypeModel" checkboxes="true" extra-settings="contentTypeSettings" translation-texts="contentTypeTexts"></div>
+        </div>
+        <div ng-if="taxonomyTermsSettings" class="filter-taxonomy-terms">
+          <div ng-dropdown-multiselect="" options="taxonomyTerms" selected-model="taxonomyTermsModel" checkboxes="true" extra-settings="taxonomyTermsSettings" translation-texts="taxonomyTermsTexts" group-by="vocab"></div>
+        </div>
       </div>
     </div>
     <div class="section-search-right">
       <div class="form-actions">
-         <button ng-click="search(true)" class="btn btn-primary">Search</button>
-     </div>
+        <button ng-click="search(true)" class="btn btn-primary">Search</button>
+      </div>
     </div>
   </div>
   <script type="text/ng-template" id="headerCheckbox.html">
@@ -29,10 +27,10 @@
     <tr ng-repeat="node in tableParams.data" ng-class="{even: $even, odd: $odd}">
       <td header="'headerCheckbox.html'"><input type="checkbox" ng-model="checkboxes.items[node.id]" /></td>
       <td title="'Title'" sortable="'label'" ng-bind-html="node.link">{{node.link}}</td>
-      <td title="'Type'"  sortable="'type'">{{node.type}}</td>
+      <td title="'Type'" sortable="'type'">{{node.type}}</td>
       <td title="'Author'" sortable="'author'">{{node.author}}</td>
-      <td title="'Published'"  sortable="'publish_status'">{{node.publish_status}}</td>
-      <td title="'Date(Updated)'"  sortable="'changed'">{{node.changed}}</td>
+      <td title="'Published'" sortable="'publish_status'">{{node.publish_status}}</td>
+      <td title="'Date(Updated)'" sortable="'changed'">{{node.changed}}</td>
       <td>Action</td>
     </tr>
   </table>
@@ -41,5 +39,5 @@
   </div>
 </div>
 <style>
-@import url("https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css");
+  @import url("https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css");
 </style>
