@@ -63,15 +63,6 @@
     var service = {
       getData: function(page, count, sorting, filter, vsite) {
         var baseUrl = Drupal.settings.paths.api;
-        if (filter != undefined) {
-          filterOperator = filter.filterOperator;
-          filterField = filter.filterField;
-          filterValue = filter.filterValue;
-          filter = "filter[" + filterField + "][value]=" + filterValue + "&filter[" + filterField + "][operator]=" + filterOperator;
-          console.log(filter);
-        } else {
-          filter = '';
-        }
         var params = {
           page: page,
           vsite: vsite,
@@ -172,24 +163,21 @@
       tableData();
       // Search button: Filter data by title, content-type, taxonomy.
       $scope.search = function() {
-        console.log($scope.contentTypeModel);
         var filter = '';
         if ($scope.label) {
-          filter = {
-            filterField: 'label',
-            filterValue: $scope.label,
-            filterOperator: 'CONTAINS'
-          };
+          filter += "filter[label][value]=" + $scope.label + "&filter[label][operator]=CONTAINS&";
         }
-        if ($scope.contentTypeModel[0]) {
-          filter = {
-            filterField: 'type',
-            filterValue: $scope.contentTypeModel[0].id,
-            filterOperator: 'IN'
-          };
-
+        if ($scope.contentTypeModel.length > 0) {
+          angular.forEach($scope.contentTypeModel, function(value, key) {
+            filter += "filter[type][value]["+key+"]=" + $scope.contentTypeModel[key].id + "&filter[type][operator]["+key+"]=IN&";
+          });
         }
-
+        if ($scope.taxonomyTermsModel.length > 0) {
+          angular.forEach($scope.taxonomyTermsModel, function(value, key) {
+            filter += "filter[og_vocabulary][value]["+key+"]=" + $scope.taxonomyTermsModel[key].id + "&filter[og_vocabulary][operator]["+key+"]=IN";
+          });
+        }
+        console.log(filter);
         // Get filtered content.
         tableData(filter);
       };
@@ -233,8 +221,20 @@
             $scope.open = !$scope.open;
           };
 
-          $scope.groupToggleDropdown = function(index) {
-            console.log(index);
+          $scope.groupToggleDropdown = function(arr,index) {
+            var vocab = arr[index].vocab;
+            if (!$scope[vocab]) {
+              angular.forEach(arr,function(val, key){
+                var atp = arr[key].vocab;
+                $scope[atp] = false;
+              });
+            }
+            if (!angular.isDefined($scope[vocab])) {
+              $scope[vocab] = true;
+            }else {
+              $scope[vocab] = !$scope[vocab];
+
+            }
           };
 
           $scope.checkboxClick = function($event, id) {
