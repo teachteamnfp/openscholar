@@ -157,8 +157,6 @@
         $scope.taxonomyTerms = responce.data.data;
       });
 
-
-
       // Get default content.
       tableData();
       // Search button: Filter data by title, content-type, taxonomy.
@@ -174,10 +172,9 @@
         }
         if ($scope.taxonomyTermsModel.length > 0) {
           angular.forEach($scope.taxonomyTermsModel, function(value, key) {
-            filter += "filter[og_vocabulary][value]["+key+"]=" + $scope.taxonomyTermsModel[key].id + "&filter[og_vocabulary][operator]["+key+"]=IN";
+            filter += "filter[og_vocabulary][value]["+key+"]=" + $scope.taxonomyTermsModel[key].id + "&filter[og_vocabulary][operator]["+key+"]=IN&";
           });
         }
-        console.log(filter);
         // Get filtered content.
         tableData(filter);
       };

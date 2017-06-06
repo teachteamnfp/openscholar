@@ -149,6 +149,10 @@ class NodesRestfulBase extends RestfulEntityBase {
       'callback' => array($this, 'getEntityLink'),
     );
 
+    $public_fields['og_vocabulary'] = array(
+      'property' => og_vocabulary
+    );
+
     $public_fields['vsite'] = array(
       'property' => OG_AUDIENCE_FIELD,
         'process_callbacks' => array(
