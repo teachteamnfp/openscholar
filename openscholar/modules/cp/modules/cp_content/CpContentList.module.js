@@ -154,7 +154,21 @@
         buttonDefaultText: 'Taxonomy Terms'
       };
       cpFetchTaxonomyTerms.getData().then(function(responce) {
-        $scope.taxonomyTerms = responce.data.data;
+        $scope.taxonomyTermsOptions = responce.data.data;
+      });
+
+
+      // Initialize apply taxonomy term dropdown.
+      $scope.applyTermModel = [];
+      $scope.applyTermSettings = {
+        scrollable: true,
+        smartButtonMaxItems: 2,
+        showCheckAll: false,
+        showUncheckAll: false,
+        buttonClasses: ''
+      };
+      cpFetchTaxonomyTerms.getData().then(function(responce) {
+        $scope.applyTermOptions = responce.data.data;
       });
 
       // Get default content.
@@ -189,7 +203,7 @@
     };
   }]);
 
-  m.directive('ngDropdownMultiselect', ['$filter', '$document', '$compile', '$parse',
+  m.directive('cpContentDropdownMultiselect', ['$filter', '$document', '$compile', '$parse',
 
     function($filter, $document, $compile, $parse) {
 
@@ -211,8 +225,14 @@
 
           $scope.checkboxes = $attrs.checkboxes ? true : false;
           $scope.groups = $attrs.groupBy ? true : false;
+          $scope.displayType = $attrs.displayType;
+          $scope.displayText = $attrs.displayText;
 
           var $dropdownTrigger = $element.children()[0];
+
+          $scope.stopBubbling = function($event) {
+            $event.stopPropagation();
+          }
 
           $scope.toggleDropdown = function() {
             $scope.open = !$scope.open;

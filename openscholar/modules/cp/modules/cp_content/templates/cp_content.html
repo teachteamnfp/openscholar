@@ -5,12 +5,12 @@
       </div>
     </div>
     <div class="section-search-center">
-      <div class="form-item"><label for="cp-title-text">Filter By</label>
+      <div class="form-item"><label for="cp-title">Filter By</label>
         <div ng-if="contentTypeSettings" class="filter-content-type">
-          <div ng-dropdown-multiselect="" options="contentTypes" selected-model="contentTypeModel" checkboxes="true" extra-settings="contentTypeSettings" translation-texts="contentTypeTexts"></div>
+          <div cp-content-dropdown-multiselect="" options="contentTypes" selected-model="contentTypeModel" checkboxes="true" extra-settings="contentTypeSettings" translation-texts="contentTypeTexts" display-type="filter"></div>
         </div>
         <div ng-if="taxonomyTermsSettings" class="filter-taxonomy-terms">
-          <div ng-dropdown-multiselect="" options="taxonomyTerms" selected-model="taxonomyTermsModel" checkboxes="true" extra-settings="taxonomyTermsSettings" translation-texts="taxonomyTermsTexts" group-by="vocab"></div>
+          <div cp-content-dropdown-multiselect="" options="taxonomyTermsOptions" selected-model="taxonomyTermsModel" checkboxes="true" extra-settings="taxonomyTermsSettings" translation-texts="taxonomyTermsTexts" group-by="vocab" display-type="filter"></div>
         </div>
       </div>
     </div>
@@ -19,6 +19,16 @@
         <input type="button" name="search" ng-click="search(true)" class="btn btn-primary" value="Search">
       </div>
     </div>
+  </div>
+  <div class="bulk-operation">
+    <label for="cp-title-bulk">For selected items:</label>
+    <div ng-if="applyTermSettings" class="bulk-add-term">
+      <div cp-content-dropdown-multiselect="" options="applyTermOptions" selected-model="applyTermModel" checkboxes="true" extra-settings="applyTermSettings" group-by="vocab" display-type="term" display-text="Apply Term"></div>
+    </div>
+    <div ng-if="applyTermSettings" class="bulk-remove-term">
+      <div cp-content-dropdown-multiselect="" options="applyTermOptions" selected-model="applyTermModel" checkboxes="true" extra-settings="applyTermSettings" group-by="vocab" display-type="term" display-text="Remove Term"></div>
+    </div>
+    <span>Publish</span><span>Unpublish</span><span>Delete</span>
   </div>
   <script type="text/ng-template" id="headerCheckbox.html">
     <input type="checkbox" ng-model="checkboxes.checked" class="select-all" value="" />

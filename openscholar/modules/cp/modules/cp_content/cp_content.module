@@ -642,7 +642,6 @@ function cp_content_library() {
       )
     ),
     'dependencies' => array(
-      array('os_common', 'DependencyManager'),
       array('os_common', 'ngTable'),
       array('os_common', 'underscore-js'),
 

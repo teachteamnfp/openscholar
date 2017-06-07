@@ -1835,6 +1835,7 @@ body.page-node-revisions .node {
   cursor: pointer
 }
 
+
 div.no-bold {
     font-weight: normal;
 }
@@ -1847,20 +1848,32 @@ div.no-bold {
     padding: 10px;
     list-style: none;
 }
-.section-search-left {
+
+.cp-content .section-search-left {
   float: left;
   width: 40%;
 }
-.section-search-center {
+.cp-content .section-search-center {
   float: left;
   width: 40%;
   margin: 0 20px;
 }
-.section-search-right {
+.cp-content .section-search-right {
   float: left;
   width: 10%;
 }
-.filter-taxonomy-terms {
+.cp-content .filter-taxonomy-terms {
   margin-top: 10px;
 }
-
+.cp-content .bulk-operation {
+  float: left;
+}
+.bulk-operation .bulk-add-term,
+.bulk-operation .bulk-remove-term {
+  float: left;
+  border-right: 1px solid #666;
+  padding: 0 5px;
+}
+label[for=cp-title-bulk] {
+  float: left;
+}
