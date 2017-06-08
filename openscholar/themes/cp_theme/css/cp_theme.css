@@ -1877,3 +1877,6 @@ div.no-bold {
 label[for=cp-title-bulk] {
   float: left;
 }
+.bulk-operation .section-apply-term {
+  text-align: center;
+}

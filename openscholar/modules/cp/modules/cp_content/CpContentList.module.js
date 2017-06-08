@@ -2,34 +2,11 @@
   var m = angular.module('CpContent', ['ui.bootstrap', 'ngTable']);
 
   /**
-   * Fetch content types.
+   * Fetch filter options.
    */
-  m.service('cpFetchContentTypes', ['$http', function($http) {
+  m.service('cpFetchFilterOptions', ['$http', function($http) {
     var service = {
-      getData: function() {
-        var baseUrl = Drupal.settings.basePath;
-        var params = {};
-        var config = {
-          params: params
-        }
-        var promise = $http.get(baseUrl + 'cp/content_types', config)
-          .success(function(response) {});
-        return promise.then(function(result) {
-          return result;
-        });
-      }
-    }
-
-    return service;
-
-  }]);
-
-  /**
-   * Fetch taxonomy terms.
-   */
-  m.service('cpFetchTaxonomyTerms', ['$http', function($http) {
-    var service = {
-      getData: function() {
+      getData: function(endpoint) {
         var baseUrl = Drupal.settings.paths.api;
         // Fetch the vsite id.
         if (Drupal.settings.spaces != undefined) {
@@ -43,7 +20,7 @@
         var config = {
           params: params
         }
-        var promise = $http.get(baseUrl + '/taxonomy', config)
+        var promise = $http.get(baseUrl + '/' +endpoint, config)
           .success(function(response) {});
         return promise.then(function(result) {
           return result;
@@ -88,7 +65,7 @@
   /**
    * Fetching cp content and fill it in setting form modal.
    */
-  m.directive('cpContent', ['NgTableParams', 'cpFetchContent', 'cpFetchContentTypes', 'cpFetchTaxonomyTerms', function(NgTableParams, cpFetchContent, cpFetchContentTypes, cpFetchTaxonomyTerms) {
+  m.directive('cpContent', ['NgTableParams', 'cpFetchContent', 'cpFetchFilterOptions', function(NgTableParams, cpFetchContent, cpFetchFilterOptions) {
     function link($scope, $element, $attrs) {
       // Fetch the vsite id.
       if (Drupal.settings.spaces != undefined) {
@@ -125,49 +102,42 @@
 
       }
 
-      // Initialize content type dropdown.
+      // Initialize content type filter.
       $scope.contentTypeModel = [];
       $scope.contentTypeSettings = {
         scrollable: true,
         smartButtonMaxItems: 2,
-        showCheckAll: true,
-        showUncheckAll: true
+        showAllConentTypeCheckBox: true
       };
       $scope.contentTypeTexts = {
-        buttonDefaultText: 'All content type',
-        checkAll: 'Check all content type',
-        uncheckAll: 'Uncheck all content type',
+        buttonDefaultText: 'All content types',
       }
-      cpFetchContentTypes.getData().then(function(responce) {
+      cpFetchFilterOptions.getData('content_types').then(function(responce) {
         $scope.contentTypes = responce.data.data;
       });
 
-      // Initialize taxonomy term dropdown.
+      // Initialize taxonomy term filter.
       $scope.taxonomyTermsModel = [];
       $scope.taxonomyTermsSettings = {
         scrollable: true,
         smartButtonMaxItems: 2,
-        showCheckAll: false,
-        showUncheckAll: false
+        selectAllDefault: false
       };
       $scope.taxonomyTermsTexts = {
         buttonDefaultText: 'Taxonomy Terms'
       };
-      cpFetchTaxonomyTerms.getData().then(function(responce) {
+      cpFetchFilterOptions.getData('taxonomy').then(function(responce) {
         $scope.taxonomyTermsOptions = responce.data.data;
       });
-
 
       // Initialize apply taxonomy term dropdown.
       $scope.applyTermModel = [];
       $scope.applyTermSettings = {
         scrollable: true,
         smartButtonMaxItems: 2,
-        showCheckAll: false,
-        showUncheckAll: false,
         buttonClasses: ''
       };
-      cpFetchTaxonomyTerms.getData().then(function(responce) {
+      cpFetchFilterOptions.getData('taxonomy').then(function(responce) {
         $scope.applyTermOptions = responce.data.data;
       });
 
@@ -181,12 +151,12 @@
         }
         if ($scope.contentTypeModel.length > 0) {
           angular.forEach($scope.contentTypeModel, function(value, key) {
-            filter += "filter[type][value]["+key+"]=" + $scope.contentTypeModel[key].id + "&filter[type][operator]["+key+"]=IN&";
+            filter += "filter[type][value][" + key + "]=" + $scope.contentTypeModel[key].id + "&filter[type][operator][" + key + "]=IN&";
           });
         }
         if ($scope.taxonomyTermsModel.length > 0) {
           angular.forEach($scope.taxonomyTermsModel, function(value, key) {
-            filter += "filter[og_vocabulary][value]["+key+"]=" + $scope.taxonomyTermsModel[key].id + "&filter[og_vocabulary][operator]["+key+"]=IN&";
+            filter += "filter[og_vocabulary][value][" + key + "]=" + $scope.taxonomyTermsModel[key].id + "&filter[og_vocabulary][operator][" + key + "]=IN&";
           });
         }
         // Get filtered content.
@@ -214,7 +184,6 @@
           options: '=',
           extraSettings: '=',
           events: '=',
-          searchFilter: '=?',
           translationTexts: '=',
           groupBy: '@'
         },
@@ -227,6 +196,7 @@
           $scope.groups = $attrs.groupBy ? true : false;
           $scope.displayType = $attrs.displayType;
           $scope.displayText = $attrs.displayText;
+          $scope.selectAllFlag = true;
 
           var $dropdownTrigger = $element.children()[0];
 
@@ -234,21 +204,21 @@
             $event.stopPropagation();
           }
 
-          $scope.toggleDropdown = function() {
-            $scope.open = !$scope.open;
-          };
-
-          $scope.groupToggleDropdown = function(arr,index) {
+          $scope.groupToggleDropdown = function(arr, index) {
             var vocab = arr[index].vocab;
             if (!$scope[vocab]) {
-              angular.forEach(arr,function(val, key){
+              angular.forEach(arr, function(val, key) {
                 var atp = arr[key].vocab;
-                $scope[atp] = false;
+                if (key == 0) {
+                  $scope[atp] = true;
+                } else {
+                  $scope[atp] = false;
+                }
               });
             }
             if (!angular.isDefined($scope[vocab])) {
               $scope[vocab] = true;
-            }else {
+            } else {
               $scope[vocab] = !$scope[vocab];
 
             }
@@ -278,7 +248,8 @@
             externalIdProp: 'id',
             enableSearch: false,
             selectionLimit: 0,
-            showCheckAll: true,
+            showAllConentTypeCheckBox: false,
+            selectAllDefault: true,
             showUncheckAll: true,
             closeOnSelect: false,
             buttonClasses: 'btn btn-default',
@@ -299,21 +270,31 @@
             dynamicButtonTextSuffix: 'checked'
           };
 
-          $scope.searchFilter = $scope.searchFilter || '';
-
           if (angular.isDefined($scope.settings.groupBy)) {
             $scope.$watch('options', function(newValue) {
               if (angular.isDefined(newValue)) {
                 $scope.orderedItems = $filter('orderBy')(newValue, $scope.settings.groupBy);
+                $scope.groupToggleDropdown($scope.orderedItems, 0);
               }
             });
           }
-
           angular.extend($scope.settings, $scope.extraSettings || []);
           angular.extend($scope.externalEvents, $scope.events || []);
           angular.extend($scope.texts, $scope.translationTexts);
 
           $scope.singleSelection = $scope.settings.selectionLimit === 1;
+
+          $scope.toggleDropdown = function() {
+            $scope.open = !$scope.open;
+          };
+
+          if ($scope.settings.selectAllDefault) {
+            $scope.$watch('options', function(newValue) {
+              if (angular.isDefined(newValue)) {
+                $scope.selectAllToggle();
+              }
+            });
+          }
 
           function getFindObj(id) {
             var findObj = {};
@@ -370,6 +351,9 @@
           };
 
           $scope.getButtonText = function() {
+            if ($scope.selectAllFlag && $scope.settings.showAllConentTypeCheckBox) {
+              return $scope.texts.buttonDefaultText;
+            }
             if ($scope.settings.dynamicTitle && ($scope.selectedModel.length > 0 || (angular.isObject($scope.selectedModel) && _.keys($scope.selectedModel).length > 0))) {
               if ($scope.settings.smartButtonMaxItems > 0) {
                 var itemsText = [];
@@ -421,6 +405,7 @@
             $scope.deselectAll(false);
             $scope.externalEvents.onSelectAll();
 
+
             angular.forEach($scope.options, function(value) {
               $scope.setSelectedItem(value[$scope.settings.idProp], true);
             });
@@ -439,7 +424,15 @@
               $scope.selectedModel.splice(0, $scope.selectedModel.length);
             }
           };
-
+          $scope.selectAllToggle = function() {
+            if ($scope.selectAllFlag) {
+              $scope.selectAllFlag = true;
+              $scope.selectAll();
+            } else {
+              $scope.selectAllFlag = false;
+              $scope.deselectAll();
+            }
+          };
           $scope.setSelectedItem = function(id, dontRemove) {
             var findObj = getFindObj(id);
             var finalObj = null;
@@ -466,8 +459,7 @@
             if (!dontRemove && exists) {
               $scope.selectedModel.splice(_.findIndex($scope.selectedModel, findObj), 1);
               $scope.externalEvents.onItemDeselect(findObj);
-            }
-            else if (!exists && ($scope.settings.selectionLimit === 0 || $scope.selectedModel.length < $scope.settings.selectionLimit)) {
+            } else if (!exists && ($scope.settings.selectionLimit === 0 || $scope.selectedModel.length < $scope.settings.selectionLimit)) {
               $scope.selectedModel.push(finalObj);
               $scope.externalEvents.onItemSelect(finalObj);
             }

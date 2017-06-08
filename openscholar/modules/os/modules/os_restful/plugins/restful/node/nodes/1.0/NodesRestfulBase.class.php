@@ -2,15 +2,30 @@
 
 class NodesRestfulBase extends RestfulEntityBase {
 
+  public static function controllersInfo() {
+    return array(
+      '/updates\/\d*$' => array(
+        RestfulInterface::GET => 'test',
+      )
+    ) + parent::controllersInfo();
+  }
 
+  protected function test() {
+    print "ssssss";
+  }
   /**
-   * Define the bundles to exposed to the API.
+   * Define the bundles not to be exposed to the API.
    *
    * @var array
    *  Array keyed by bundle machine, and the RESTful resource as the value.
    */
   protected $bundles = array(
-    'personal' => 'personal',
+    'blog_import' => 'Blog entry import',
+    'department' => 'Department Site',
+    'feed_importer' => 'Feed importer',
+    'personal' => 'Personal Site',
+    'project' => 'Project Site',
+    'slideshow_slide' => 'Slideshow Image'
     );
 
   /**
