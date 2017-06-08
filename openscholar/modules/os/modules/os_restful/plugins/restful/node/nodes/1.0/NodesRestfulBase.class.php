@@ -4,14 +4,14 @@ class NodesRestfulBase extends RestfulEntityBase {
 
   public static function controllersInfo() {
     return array(
-      '/updates\/\d*$' => array(
-        RestfulInterface::GET => 'test',
+      'bulk/terms' => array(
+        RestfulInterface::GET => 'applyTerm',
       )
     ) + parent::controllersInfo();
   }
 
-  protected function test() {
-    print "ssssss";
+  protected function applyTerm() {
+    print "applyTerm";
   }
   /**
    * Define the bundles not to be exposed to the API.
