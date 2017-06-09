@@ -5,14 +5,32 @@ class NodesRestfulBase extends RestfulEntityBase {
   public static function controllersInfo() {
     return array(
       'bulk/terms' => array(
-        RestfulInterface::GET => 'applyTerm',
+        RestfulInterface::POST => 'applyTerm',
+      ),
+      'term/add' => array(
+        RestfulInterface::GET => 'addTerm',
       )
     ) + parent::controllersInfo();
   }
 
   protected function applyTerm() {
     print "applyTerm";
+    print_r($this->request); exit;
+
   }
+
+  /**
+  * Create a taxonomy term and return the tid.
+  */
+  protected function addTerm($name, $vid, $parent_id = 0) {
+    $term = new stdClass();
+    $term->name = $name;
+    $term->vid = $vid;
+    $term->parent = array($parent_id);
+    taxonomy_term_save($term);
+    return $term->tid;
+  }
+
   /**
    * Define the bundles not to be exposed to the API.
    *

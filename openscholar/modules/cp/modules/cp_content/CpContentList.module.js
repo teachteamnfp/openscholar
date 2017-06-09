@@ -61,12 +61,32 @@
 
   }]);
 
+  /**
+   * Post.
+   */
+  m.service('cpBulkOperation', ['$http', function($http) {
+    var service = {
+      postData: function(endpoint, data, config) {
+        var baseUrl = Drupal.settings.paths.api;
+        var promise = $http.post(baseUrl + '/' +endpoint, data, config)
+          .success(function(response) {});
+        return promise.then(function(result) {
+          return result;
+        });
+      }
+    }
+
+    return service;
+
+  }]);
+
 
   /**
    * Fetching cp content and fill it in setting form modal.
    */
-  m.directive('cpContent', ['NgTableParams', 'cpFetchContent', 'cpFetchFilterOptions', function(NgTableParams, cpFetchContent, cpFetchFilterOptions) {
+  m.directive('cpContent', ['$rootScope', 'NgTableParams', 'cpFetchContent', 'cpFetchFilterOptions', function($rootScope, NgTableParams, cpFetchContent, cpFetchFilterOptions) {
     function link($scope, $element, $attrs) {
+      var filter = '';
       // Fetch the vsite id.
       if (Drupal.settings.spaces != undefined) {
         if (Drupal.settings.spaces.id) {
@@ -94,13 +114,33 @@
             });
           }
         });
-        // Bulk Operation.
-        $scope.checkboxes = {
-          checked: false,
-          items: {}
-        };
+      };
+      // Get default content.
+      tableData();
 
+      // Bulk Operation.
+      $scope.selectedItems = {};
+
+      $scope.checkAll = function(selectAll) {
+        angular.forEach($scope.tableParams.data, function(node, key) {
+          $scope.selectedItems[node.id] = selectAll;
+         });
+      };
+      $scope.selectedModel = function() {
+        $rootScope.selectedItems = $scope.selectedItems;
       }
+
+      // Initialize apply taxonomy term dropdown.
+      $scope.applyTermModel = [];
+      $rootScope.applyTermModel = $scope.applyTermModel;
+      $scope.applyTermSettings = {
+        scrollable: true,
+        smartButtonMaxItems: 2,
+        buttonClasses: ''
+      };
+      cpFetchFilterOptions.getData('taxonomy').then(function(responce) {
+        $scope.applyTermOptions = responce.data.data;
+      });
 
       // Initialize content type filter.
       $scope.contentTypeModel = [];
@@ -130,22 +170,8 @@
         $scope.taxonomyTermsOptions = responce.data.data;
       });
 
-      // Initialize apply taxonomy term dropdown.
-      $scope.applyTermModel = [];
-      $scope.applyTermSettings = {
-        scrollable: true,
-        smartButtonMaxItems: 2,
-        buttonClasses: ''
-      };
-      cpFetchFilterOptions.getData('taxonomy').then(function(responce) {
-        $scope.applyTermOptions = responce.data.data;
-      });
-
-      // Get default content.
-      tableData();
       // Search button: Filter data by title, content-type, taxonomy.
       $scope.search = function() {
-        var filter = '';
         if ($scope.label) {
           filter += "filter[label][value]=" + $scope.label + "&filter[label][operator]=CONTAINS&";
         }
@@ -173,9 +199,9 @@
     };
   }]);
 
-  m.directive('cpContentDropdownMultiselect', ['$filter', '$document', '$compile', '$parse',
+  m.directive('cpContentDropdownMultiselect', ['$rootScope', '$filter', '$document', '$compile', '$parse', 'cpBulkOperation',
 
-    function($filter, $document, $compile, $parse) {
+    function($rootScope, $filter, $document, $compile, $parse, cpBulkOperation) {
 
       return {
         restrict: 'AE',
@@ -288,6 +314,25 @@
             $scope.open = !$scope.open;
           };
 
+          $scope.applyTerm = function() {
+            // @Todo.
+            console.log($rootScope.applyTermModel);
+            console.log($rootScope.selectedItems);
+            angular.forEach($rootScope.selectedItems,  function (value, key) {
+               if(value) {
+                var endpoint, data, config;
+                data = {
+                  name : 'name',
+                  employees : 'employees',
+                  headoffice : 'headoffice'
+                };
+                return cpBulkOperation.postData('nodes/bulk/terms', data, config).then(function(responce) {
+                  console.log(responce);
+                });
+               }
+            });
+
+          }
           if ($scope.settings.selectAllDefault) {
             $scope.$watch('options', function(newValue) {
               if (angular.isDefined(newValue)) {
