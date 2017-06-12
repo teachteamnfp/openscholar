@@ -6,29 +6,77 @@ class NodesRestfulBase extends RestfulEntityBase {
     return array(
       'bulk/terms' => array(
         RestfulInterface::POST => 'applyTerm',
+        RestfulInterface::DELETE => 'removeTerm',
       ),
       'term/add' => array(
-        RestfulInterface::GET => 'addTerm',
+        RestfulInterface::POST => 'addTerm',
       )
     ) + parent::controllersInfo();
   }
 
+  /**
+  * Apply term tid's of selected nodes.
+  */
   protected function applyTerm() {
-    print "applyTerm";
-    print_r($this->request); exit;
+    if (!empty($this->request['terms']) && !empty($this->request['nids'])) {
+      $nodes = node_load_multiple($this->request['nids']);
+      $new_terms = $this->request['terms'];
+      $current_terms = array();
+      foreach ($nodes as $key => $node) {
+        $node_wrapper = entity_metadata_wrapper('node', $node);
+        foreach ($node_wrapper->og_vocabulary->value() as $delta => $term_wrapper) {
+          // $term_wrapper may now be accessed as a taxonomy term wrapper.
+          $current_terms[] = $term_wrapper->tid;
+        }
+        $new_terms = array_unique(array_merge($current_terms, $new_terms));
+        if (!empty($new_terms)) {
+          $node_wrapper->og_vocabulary->set($new_terms);
+          $node_wrapper->save();
+          return array('saved' => true);
+        }
+      }
+    }
+    else {
+      return array('saved' => false);
+    }
+  }
 
+  /**
+  * Remove term tid's of selected nodes.
+  */
+  protected function removeTerm() {
+    // @TODO
+    print_r($this->request);
+   /* if (!empty($this->request['terms']) && !empty($this->request['nids'])) {
+      $nodes = node_load_multiple($this->request['nids']);
+      $terms = $this->request['terms'];
+      foreach ($nodes as $key => $node) {
+        $node_wrapper = entity_metadata_wrapper('node', $node);
+        $node_wrapper->og_vocabulary->set($terms);
+        $node_wrapper->save();
+        return array('TermSaved' => true);
+      }
+    }
+    else {
+      return array('TermSaved' => false);
+    }*/
   }
 
   /**
   * Create a taxonomy term and return the tid.
   */
-  protected function addTerm($name, $vid, $parent_id = 0) {
-    $term = new stdClass();
-    $term->name = $name;
-    $term->vid = $vid;
-    $term->parent = array($parent_id);
-    taxonomy_term_save($term);
-    return $term->tid;
+  protected function addTerm() {
+    if (!empty($this->request['vid']) && !empty($this->request['name'])) {
+      $parent_id = 0;
+      $term = new stdClass();
+      $term->name = $this->request['name'];
+      $term->vid = $this->request['vid'];
+      $term->parent = array($parent_id);
+      return array('saved' => taxonomy_term_save($term));
+    }
+    else {
+      return array('saved' => false);
+    }
   }
 
   /**

@@ -1,4 +1,10 @@
 <div class="cp-content">
+  <div ng-show="message" id="messages">
+    <div class="messages status">
+    <a class="dismiss">X</a>
+    {{message}}
+    </div>
+  </div>
   <div class="section-search">
     <div class="section-search-left">
       <div class="form-item"><label for="cp-title-text">Search By Title</label> <input id="cp-title-text" class="form-text" type="text" name="label" ng-model="label" />
@@ -25,8 +31,8 @@
     <div ng-if="applyTermSettings" class="bulk-add-term">
       <div cp-content-dropdown-multiselect="" options="applyTermOptions" selected-model="applyTermModel" checkboxes="true" extra-settings="applyTermSettings" group-by="vocab" display-type="term" display-text="Apply Term"></div>
     </div>
-    <div ng-if="applyTermSettings" class="bulk-remove-term">
-      <div cp-content-dropdown-multiselect="" options="applyTermOptions" selected-model="applyTermModel" checkboxes="true" extra-settings="applyTermSettings" group-by="vocab" display-type="term" display-text="Remove Term"></div>
+    <div ng-if="removeTermSettings" class="bulk-remove-term">
+      <div cp-content-dropdown-multiselect="" options="applyTermOptions" selected-model="removeTermModel" checkboxes="true" extra-settings="removeTermSettings" group-by="vocab" display-type="term" display-text="Remove Term"></div>
     </div>
     <span>Publish</span><span>Unpublish</span><span>Delete</span>
   </div>

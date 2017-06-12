@@ -1880,3 +1880,7 @@ label[for=cp-title-bulk] {
 .bulk-operation .section-apply-term {
   text-align: center;
 }
+.bulk-operation .term-action {
+  text-align: center;
+  margin-top: 20px;
+}

@@ -20,7 +20,7 @@
         var config = {
           params: params
         }
-        var promise = $http.get(baseUrl + '/' +endpoint, config)
+        var promise = $http.get(baseUrl + '/' + endpoint, config)
           .success(function(response) {});
         return promise.then(function(result) {
           return result;
@@ -68,7 +68,7 @@
     var service = {
       postData: function(endpoint, data, config) {
         var baseUrl = Drupal.settings.paths.api;
-        var promise = $http.post(baseUrl + '/' +endpoint, data, config)
+        var promise = $http.post(baseUrl + '/' + endpoint, data, config)
           .success(function(response) {});
         return promise.then(function(result) {
           return result;
@@ -124,7 +124,7 @@
       $scope.checkAll = function(selectAll) {
         angular.forEach($scope.tableParams.data, function(node, key) {
           $scope.selectedItems[node.id] = selectAll;
-         });
+        });
       };
       $scope.selectedModel = function() {
         $rootScope.selectedItems = $scope.selectedItems;
@@ -142,12 +142,25 @@
         $scope.applyTermOptions = responce.data.data;
       });
 
+      // Initialize remove taxonomy term dropdown.
+      $scope.removeTermModel = [];
+      $rootScope.removeTermModel = $scope.removeTermModel;
+      $scope.removeTermSettings = {
+        scrollable: true,
+        smartButtonMaxItems: 2,
+        buttonClasses: ''
+      };
+      cpFetchFilterOptions.getData('taxonomy').then(function(responce) {
+        $scope.removeTermOptions = responce.data.data;
+      });
+
       // Initialize content type filter.
       $scope.contentTypeModel = [];
       $scope.contentTypeSettings = {
         scrollable: true,
         smartButtonMaxItems: 2,
-        showAllConentTypeCheckBox: true
+        showAllConentTypeCheckBox: true,
+        selectAllDefault: true
       };
       $scope.contentTypeTexts = {
         buttonDefaultText: 'All content types',
@@ -160,8 +173,7 @@
       $scope.taxonomyTermsModel = [];
       $scope.taxonomyTermsSettings = {
         scrollable: true,
-        smartButtonMaxItems: 2,
-        selectAllDefault: false
+        smartButtonMaxItems: 2
       };
       $scope.taxonomyTermsTexts = {
         buttonDefaultText: 'Taxonomy Terms'
@@ -188,7 +200,7 @@
         // Get filtered content.
         tableData(filter);
       };
-
+      $scope.message = false;
     }
 
     return {
@@ -275,7 +287,7 @@
             enableSearch: false,
             selectionLimit: 0,
             showAllConentTypeCheckBox: false,
-            selectAllDefault: true,
+            selectAllDefault: false,
             showUncheckAll: true,
             closeOnSelect: false,
             buttonClasses: 'btn btn-default',
@@ -310,28 +322,58 @@
 
           $scope.singleSelection = $scope.settings.selectionLimit === 1;
 
+          var message = {
+            termSuccessMessage: 'Terms have been applied to selected content',
+            addTermSuccessMessage: '% term have been added to % vocabulary',
+            failedMessage: 'Something went wrong'
+          }
+
           $scope.toggleDropdown = function() {
             $scope.open = !$scope.open;
           };
-
-          $scope.applyTerm = function() {
-            // @Todo.
-            console.log($rootScope.applyTermModel);
-            console.log($rootScope.selectedItems);
-            angular.forEach($rootScope.selectedItems,  function (value, key) {
-               if(value) {
-                var endpoint, data, config;
-                data = {
-                  name : 'name',
-                  employees : 'employees',
-                  headoffice : 'headoffice'
-                };
-                return cpBulkOperation.postData('nodes/bulk/terms', data, config).then(function(responce) {
-                  console.log(responce);
+          // Add term to vocabulary.
+          $scope.addTerm = function(vid) {
+            angular.forEach($scope.orderedItems, function(value, key) {
+              if (angular.isDefined($scope.orderedItems[key].termName)) {
+                var data = {
+                  vid: vid,
+                  name: $scope.orderedItems[key].termName
+                }
+                return cpBulkOperation.postData('nodes/term/add', data).then(function(responce) {
+                  if (responce.data.data.saved) {
+                    $scope.$parent.$parent.message = message.addTermSuccessMessage;
+                  } else {
+                    $scope.$parent.$parent.message = message.failedMessage;
+                  }
                 });
-               }
+              }
             });
-
+          }
+          $scope.applyTerm = function() {
+            var nids = [];
+            angular.forEach($rootScope.selectedItems, function(value, key) {
+              if (value) {
+                nids.push(key);
+              }
+            });
+            var terms = [];
+            angular.forEach($rootScope.applyTermModel, function(obj, key) {
+              terms.push(obj.id);
+            });
+            var data = {
+              nids: nids,
+              terms: terms
+            };
+            return cpBulkOperation.postData('nodes/bulk/terms', data).then(function(responce) {
+              if (responce.data.data.saved) {
+                $scope.$parent.$parent.message = message.termSuccessMessage;
+                $scope.$parent.$parent.applyTermModel = [];
+                $scope.$parent.$parent.selectedItems = [];
+                $scope.open = false;
+              } else {
+                $scope.$parent.$parent.message = message.failedMessage;
+              }
+            });
           }
           if ($scope.settings.selectAllDefault) {
             $scope.$watch('options', function(newValue) {

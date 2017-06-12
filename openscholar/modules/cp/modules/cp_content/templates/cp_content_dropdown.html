@@ -13,7 +13,7 @@
     </div>
     <div ng-hide="!settings.showAllConentTypeCheckBox"><input type="checkbox" ng-checked="selectAllFlag" ng-model="selectAllFlag" ng-click="selectAllToggle()">All content type</div>
     <div ng-if="groups" ng-repeat-start="option in orderedItems" ng-show="getPropertyForObject(option, settings.groupBy) !== getPropertyForObject(orderedItems[$index - 1], settings.groupBy)" role="presentation" class="dropdown-header group-dropdown-toggle glyphicon glyphicon-triangle-right" ng-class="{'glyphicon-triangle-bottom' : {{orderedItems[$index]['vocab']}}}" ng-click="groupToggleDropdown(orderedItems, $index)">{{ getGroupTitle(getPropertyForObject(option, settings.groupBy)) }}
-      <div ng-if="displayType == 'term'" ng-show="{{orderedItems[$index]['vocab']}}" ng-click="stopBubbling($event)"><input type="text" ng-model="termName">&nbsp;<button type="button" class="btn btn-primary">Add term</button></div>
+      <div ng-if="displayType == 'term'" ng-show="{{orderedItems[$index]['vocab']}}" ng-click="stopBubbling($event)"><input ng-show="displayText == 'Apply Term'" type="text" ng-model="orderedItems[$index]['termName']" value="">&nbsp;<button type="button" ng-show="displayText == 'Apply Term'" class="btn btn-primary" ng-click="addTerm(orderedItems[$index]['vid'])">Add term</button></div>
     </div>
     <div ng-if="groups" ng-repeat-end role="presentation" ng-show="{{orderedItems[$index]['vocab']}}">
       <a role="menuitem" tabindex="-1" ng-click="setSelectedItem(getPropertyForObject(option,settings.idProp))">
@@ -25,8 +25,9 @@
           <label><input class="checkboxInput" type="checkbox" ng-click="checkboxClick($event, getPropertyForObject(option,settings.idProp))" ng-checked="isChecked(getPropertyForObject(option,settings.idProp))"> {{getPropertyForObject(option, settings.displayProp)}}</label>
         </a>
     </div>
-    <div ng-if="displayType == 'term'">
-      <button type="button" ng-click="applyTerm()" class="btn btn-primary">Apply</button>
+    <div ng-if="displayType == 'term'" class="term-action">
+      <button ng-show="displayText == 'Apply Term'" type="button" ng-click="applyTerm()" class="btn btn-primary">Apply</button>
+      <button ng-show="displayText == 'Remove Term'" type="button" ng-click="removeTerm()" class="btn btn-primary">Remove</button>
     </div>
   </div>
 </div>
