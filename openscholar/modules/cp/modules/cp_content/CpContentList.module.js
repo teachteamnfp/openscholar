@@ -62,7 +62,7 @@
   }]);
 
   /**
-   * Post.
+   * Post bulk operations such apply terms, add term.
    */
   m.service('cpBulkOperation', ['$http', function($http) {
     var service = {
@@ -80,13 +80,11 @@
 
   }]);
 
-
   /**
    * Fetching cp content and fill it in setting form modal.
    */
   m.directive('cpContent', ['$rootScope', 'NgTableParams', 'cpFetchContent', 'cpFetchFilterOptions', function($rootScope, NgTableParams, cpFetchContent, cpFetchFilterOptions) {
     function link($scope, $element, $attrs) {
-      var filter = '';
       // Fetch the vsite id.
       if (Drupal.settings.spaces != undefined) {
         if (Drupal.settings.spaces.id) {
@@ -120,14 +118,21 @@
 
       // Bulk Operation.
       $scope.selectedItems = {};
-
+      $rootScope.selectedItems =  $scope.selectedItems;
+      $rootScope.disableApply = true;
       $scope.checkAll = function(selectAll) {
         angular.forEach($scope.tableParams.data, function(node, key) {
           $scope.selectedItems[node.id] = selectAll;
         });
+        $rootScope.disableApply = !selectAll;
       };
-      $scope.selectedModel = function() {
-        $rootScope.selectedItems = $scope.selectedItems;
+      $scope.optionToggle = function(selectedItems) {
+        var v = Object.values(selectedItems);
+        if (v.indexOf(true) > -1) {
+          $rootScope.disableApply = false;
+        } else {
+          $rootScope.disableApply = true;
+        }
       }
 
       // Initialize apply taxonomy term dropdown.
@@ -136,6 +141,7 @@
       $scope.applyTermSettings = {
         scrollable: true,
         smartButtonMaxItems: 2,
+        termDropdown: true,
         buttonClasses: ''
       };
       cpFetchFilterOptions.getData('taxonomy').then(function(responce) {
@@ -148,6 +154,7 @@
       $scope.removeTermSettings = {
         scrollable: true,
         smartButtonMaxItems: 2,
+        termDropdown: true,
         buttonClasses: ''
       };
       cpFetchFilterOptions.getData('taxonomy').then(function(responce) {
@@ -173,7 +180,8 @@
       $scope.taxonomyTermsModel = [];
       $scope.taxonomyTermsSettings = {
         scrollable: true,
-        smartButtonMaxItems: 2
+        smartButtonMaxItems: 2,
+        termDropdown: true
       };
       $scope.taxonomyTermsTexts = {
         buttonDefaultText: 'Taxonomy Terms'
@@ -184,6 +192,8 @@
 
       // Search button: Filter data by title, content-type, taxonomy.
       $scope.search = function() {
+        $scope.message = false;
+        var filter = '';
         if ($scope.label) {
           filter += "filter[label][value]=" + $scope.label + "&filter[label][operator]=CONTAINS&";
         }
@@ -211,9 +221,9 @@
     };
   }]);
 
-  m.directive('cpContentDropdownMultiselect', ['$rootScope', '$filter', '$document', '$compile', '$parse', 'cpBulkOperation',
+  m.directive('cpContentDropdownMultiselect', ['$rootScope', '$filter', '$document', '$compile', '$parse', 'cpBulkOperation', 'cpFetchFilterOptions',
 
-    function($rootScope, $filter, $document, $compile, $parse, cpBulkOperation) {
+    function($rootScope, $filter, $document, $compile, $parse, cpBulkOperation, cpFetchFilterOptions) {
 
       return {
         restrict: 'AE',
@@ -238,35 +248,6 @@
 
           var $dropdownTrigger = $element.children()[0];
 
-          $scope.stopBubbling = function($event) {
-            $event.stopPropagation();
-          }
-
-          $scope.groupToggleDropdown = function(arr, index) {
-            var vocab = arr[index].vocab;
-            if (!$scope[vocab]) {
-              angular.forEach(arr, function(val, key) {
-                var atp = arr[key].vocab;
-                if (key == 0) {
-                  $scope[atp] = true;
-                } else {
-                  $scope[atp] = false;
-                }
-              });
-            }
-            if (!angular.isDefined($scope[vocab])) {
-              $scope[vocab] = true;
-            } else {
-              $scope[vocab] = !$scope[vocab];
-
-            }
-          };
-
-          $scope.checkboxClick = function($event, id) {
-            $scope.setSelectedItem(id);
-            $event.stopImmediatePropagation();
-          };
-
           $scope.externalEvents = {
             onItemSelect: angular.noop,
             onItemDeselect: angular.noop,
@@ -284,7 +265,6 @@
             displayProp: 'label',
             idProp: 'id',
             externalIdProp: 'id',
-            enableSearch: false,
             selectionLimit: 0,
             showAllConentTypeCheckBox: false,
             selectAllDefault: false,
@@ -295,6 +275,7 @@
             groupBy: $attrs.groupBy || undefined,
             groupByTextProvider: null,
             smartButtonMaxItems: 0,
+            termDropdown: false,
             smartButtonTextConverter: angular.noop
           };
 
@@ -307,12 +288,19 @@
             buttonDefaultText: 'Select',
             dynamicButtonTextSuffix: 'checked'
           };
-
+          $scope.toggleDropdown = function() {
+            $scope.open = !$scope.open;
+            $scope.disableApply = $rootScope.disableApply;
+            if ($scope.settings.termDropdown) {
+              cpFetchFilterOptions.getData('taxonomy').then(function(responce) {
+                $scope.options = responce.data.data;
+              });
+            }
+          }
           if (angular.isDefined($scope.settings.groupBy)) {
             $scope.$watch('options', function(newValue) {
               if (angular.isDefined(newValue)) {
                 $scope.orderedItems = $filter('orderBy')(newValue, $scope.settings.groupBy);
-                $scope.groupToggleDropdown($scope.orderedItems, 0);
               }
             });
           }
@@ -323,33 +311,81 @@
           $scope.singleSelection = $scope.settings.selectionLimit === 1;
 
           var message = {
-            termSuccessMessage: 'Terms have been applied to selected content',
-            addTermSuccessMessage: '% term have been added to % vocabulary',
             failedMessage: 'Something went wrong'
           }
-
-          $scope.toggleDropdown = function() {
-            $scope.open = !$scope.open;
-          };
-          // Add term to vocabulary.
-          $scope.addTerm = function(vid) {
-            angular.forEach($scope.orderedItems, function(value, key) {
-              if (angular.isDefined($scope.orderedItems[key].termName)) {
-                var data = {
-                  vid: vid,
-                  name: $scope.orderedItems[key].termName
-                }
-                return cpBulkOperation.postData('nodes/term/add', data).then(function(responce) {
-                  if (responce.data.data.saved) {
-                    $scope.$parent.$parent.message = message.addTermSuccessMessage;
+          $scope.stopBubbling = function($event) {
+            $event.stopPropagation();
+          }
+          $scope.groupToggleDropdown = function(arr, index) {
+            if (arr.length > 0) {
+              var vocab = arr[index].vocab;
+              if (!$scope[vocab]) {
+                angular.forEach(arr, function(val, key) {
+                  var atp = arr[key].vocab;
+                  if (key == 0) {
+                    $scope[atp] = true;
                   } else {
-                    $scope.$parent.$parent.message = message.failedMessage;
+                    $scope[atp] = false;
                   }
                 });
               }
+              if (!angular.isDefined($scope[vocab])) {
+                $scope[vocab] = true;
+              } else {
+                $scope[vocab] = !$scope[vocab];
+              }
+            }
+
+          }
+          $scope.checkboxClick = function($event, id) {
+            $scope.setSelectedItem(id);
+            $event.stopImmediatePropagation();
+          }
+          // Add term to vocabulary.
+          $scope.addTerm = function(key, vid, vocab) {
+            if (angular.isDefined($scope.orderedItems[key].termName)) {
+              var data = {
+                vid: vid,
+                name: $scope.orderedItems[key].termName
+              }
+              return cpBulkOperation.postData('nodes/term/add', data).then(function(responce) {
+                if (responce.data.data.term_id) {
+                  $scope.orderedItems.splice(key, 0, {id: responce.data.data.term_id, label: data.name, vid: data.vid, vocab: vocab});
+                  $scope.orderedItems[key].termName = '';
+                  $scope.$parent.$parent.message = data.name+' term have been added to '+vocab+' vocabulary';
+                } else {
+                  $scope.$parent.$parent.message = message.failedMessage;
+                }
+              });
+            }
+          }
+          $scope.removeTerms = function() {
+            var nids = [];
+            angular.forEach($rootScope.selectedItems, function(value, key) {
+              if (value) {
+                nids.push(key);
+              }
+            });
+            var terms = [];
+            angular.forEach($rootScope.removeTermModel, function(obj, key) {
+              terms.push(obj.id);
+            });
+            var data = {
+              nids: nids,
+              terms: terms
+            };
+            return cpBulkOperation.postData('nodes/bulk/term/remove', data).then(function(responce) {
+              if (responce.data.data.saved) {
+                $scope.$parent.$parent.message = 'Terms have been removed from selected content';
+                $scope.$parent.$parent.removeTermModel = [];
+                $scope.$parent.$parent.selectedItems = [];
+                $scope.open = false;
+              } else {
+                $scope.$parent.$parent.message = 'Please select a term to be removed';
+              }
             });
           }
-          $scope.applyTerm = function() {
+          $scope.applyTerms = function() {
             var nids = [];
             angular.forEach($rootScope.selectedItems, function(value, key) {
               if (value) {
@@ -364,14 +400,14 @@
               nids: nids,
               terms: terms
             };
-            return cpBulkOperation.postData('nodes/bulk/terms', data).then(function(responce) {
+            return cpBulkOperation.postData('nodes/bulk/term/apply', data).then(function(responce) {
               if (responce.data.data.saved) {
-                $scope.$parent.$parent.message = message.termSuccessMessage;
+                $scope.$parent.$parent.message = 'Terms have been applied to selected content';
                 $scope.$parent.$parent.applyTermModel = [];
                 $scope.$parent.$parent.selectedItems = [];
                 $scope.open = false;
               } else {
-                $scope.$parent.$parent.message = message.failedMessage;
+                $scope.$parent.$parent.message = 'Please select a term to be applied';
               }
             });
           }
@@ -557,7 +593,6 @@
             if ($scope.singleSelection) {
               return $scope.selectedModel !== null && angular.isDefined($scope.selectedModel[$scope.settings.idProp]) && $scope.selectedModel[$scope.settings.idProp] === getFindObj(id)[$scope.settings.idProp];
             }
-
             return _.findIndex($scope.selectedModel, getFindObj(id)) !== -1;
           };
 
