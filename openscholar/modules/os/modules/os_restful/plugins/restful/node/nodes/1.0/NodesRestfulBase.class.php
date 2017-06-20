@@ -10,6 +10,15 @@ class NodesRestfulBase extends RestfulEntityBase {
       'bulk/term/remove' => array(
         RestfulInterface::POST => 'removeTerm'
       ),
+      'bulk/node/publish' => array(
+        RestfulInterface::POST => 'nodePublish'
+      ),
+      'bulk/node/unpublish' => array(
+        RestfulInterface::POST => 'nodeUnPublish'
+      ),
+      'bulk/node/delete' => array(
+        RestfulInterface::POST => 'nodeDelete'
+      ),
       'term/add' => array(
         RestfulInterface::POST => 'addTerm'
       )
@@ -83,6 +92,46 @@ class NodesRestfulBase extends RestfulEntityBase {
     }
     else {
       return array('term_id' => false);
+    }
+  }
+
+  /**
+  * Publish selected nodes.
+  */
+  protected function nodePublish() {
+    if (!empty($this->request['nids'])) {
+      $nodes = node_load_multiple($this->request['nids']);
+      $new_terms = $this->request['terms'];
+      $current_terms = array();
+      foreach ($nodes as $key => $node) {
+        $node_wrapper = entity_metadata_wrapper('node', $node);
+        //$node_wrapper->og_vocabulary->set($result);
+        //$node_wrapper->save();
+      }
+      return array('saved' => true);
+    }
+    else {
+      return array('saved' => false);
+    }
+  }
+
+  /**
+  * Unpublish selected nodes.
+  */
+  protected function nodeUnPublish() {
+    if (!empty($this->request['nids'])) {
+      $nodes = node_load_multiple($this->request['nids']);
+      $new_terms = $this->request['terms'];
+      $current_terms = array();
+      foreach ($nodes as $key => $node) {
+        $node_wrapper = entity_metadata_wrapper('node', $node);
+        //$node_wrapper->og_vocabulary->set($result);
+        //$node_wrapper->save();
+      }
+      return array('saved' => true);
+    }
+    else {
+      return array('saved' => false);
     }
   }
 

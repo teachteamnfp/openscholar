@@ -377,7 +377,7 @@
             return cpBulkOperation.postData('nodes/bulk/term/remove', data).then(function(responce) {
               if (responce.data.data.saved) {
                 $scope.$parent.$parent.message = 'Terms have been removed from selected content';
-                $scope.$parent.$parent.removeTermModel = [];
+                //$scope.$parent.$parent.removeTermModel = [];
                 $scope.$parent.$parent.selectedItems = [];
                 $scope.open = false;
               } else {
@@ -403,7 +403,7 @@
             return cpBulkOperation.postData('nodes/bulk/term/apply', data).then(function(responce) {
               if (responce.data.data.saved) {
                 $scope.$parent.$parent.message = 'Terms have been applied to selected content';
-                $scope.$parent.$parent.applyTermModel = [];
+                //$scope.$parent.$parent.applyTermModel = [];
                 $scope.$parent.$parent.selectedItems = [];
                 $scope.open = false;
               } else {
