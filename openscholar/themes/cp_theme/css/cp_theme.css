@@ -1869,10 +1869,14 @@ div.no-bold {
   float: left;
 }
 .bulk-operation .bulk-add-term,
-.bulk-operation .bulk-remove-term {
+.bulk-operation .bulk-remove-term,
+.bulk-operation .bulk-publish,
+.bulk-operation .bulk-unpublish,
+.bulk-operation .bulk-delete {
   float: left;
   border-right: 1px solid #666;
   padding: 0 5px;
+  cursor: pointer;
 }
 label[for=cp-title-bulk] {
   float: left;

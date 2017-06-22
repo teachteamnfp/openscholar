@@ -34,7 +34,9 @@
     <div ng-if="removeTermSettings" class="bulk-remove-term">
       <div cp-content-dropdown-multiselect="" options="applyTermOptions" selected-model="removeTermModel" checkboxes="true" extra-settings="removeTermSettings" group-by="vocab" display-type="term" display-text="Remove Term"></div>
     </div>
-    <span>Publish</span><span>Unpublish</span><span>Delete</span>
+    <span class="bulk-publish">Publish</span>
+    <span class="bulk-unpublish">Unpublish</span>
+    <span class="bulk-delete">Delete</span>
   </div>
   <script type="text/ng-template" id="headerCheckbox.html">
     <input type="checkbox" ng-model="checkboxes.checked" id="select_all" value="" />

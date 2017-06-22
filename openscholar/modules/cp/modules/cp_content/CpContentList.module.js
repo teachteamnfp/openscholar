@@ -104,9 +104,9 @@
           total: 0,
           counts: [], //hide page counts control.
           getData: function(params) {
+            $rootScope.resetCheckboxes();
             var orderBycolumn = params.orderBy();
             var sortNameValue = orderBycolumn[0].replace(/\+/g, "");
-            $scope.checkboxes.checked = false;
             return cpFetchContent.getData(params.page(), params.count(), sortNameValue, filter, vsite).then(function(responce) {
               params.total(responce.data.count);
               return responce.data.data;
@@ -120,6 +120,14 @@
       // Bulk Operation.
       $scope.checkboxes = { 'checked': false, items: {} };
       $rootScope.disableApply = true;
+
+      // Reset select all checkboxes.
+      $rootScope.resetCheckboxes = function() {
+        $scope.checkboxes.checked = false;
+        angular.forEach($scope.checkboxes.items, function(value, key) {
+          $scope.checkboxes.items[key] = false;
+        });
+      }
 
       // Watch for check all checkbox.
       $scope.$watch('checkboxes.checked', function(value) {
@@ -150,6 +158,7 @@
           $rootScope.disableApply = false;
         } else {
           $rootScope.disableApply = true;
+          $scope.checkboxes.checked = false;
         }
         // Grayed checkbox.
         angular.element(document.getElementById("select_all")).prop("indeterminate", (checked != 0 && unchecked != 0));
