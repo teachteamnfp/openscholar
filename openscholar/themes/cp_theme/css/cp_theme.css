@@ -1878,6 +1878,9 @@ div.no-bold {
   padding: 0 5px;
   cursor: pointer;
 }
+.bulk-operation .bulk-delete.last {
+  border-right: none;
+}
 label[for=cp-title-bulk] {
   float: left;
 }

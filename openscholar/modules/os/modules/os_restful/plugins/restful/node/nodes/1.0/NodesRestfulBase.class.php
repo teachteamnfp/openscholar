@@ -10,129 +10,14 @@ class NodesRestfulBase extends RestfulEntityBase {
       'bulk/term/remove' => array(
         RestfulInterface::POST => 'removeTerm'
       ),
-      'bulk/node/publish' => array(
-        RestfulInterface::POST => 'nodePublish'
-      ),
-      'bulk/node/unpublish' => array(
-        RestfulInterface::POST => 'nodeUnPublish'
-      ),
-      'bulk/node/delete' => array(
-        RestfulInterface::POST => 'nodeDelete'
-      ),
       'term/add' => array(
         RestfulInterface::POST => 'addTerm'
+      ),
+      'bulk' => array(
+        RestfulInterface::POST => 'BulkOperation'
       )
+
     ) + parent::controllersInfo();
-  }
-
-  /**
-  * Apply term tid's of selected nodes.
-  */
-  protected function applyTerm() {
-    if (!empty($this->request['terms']) && !empty($this->request['nids'])) {
-      $nodes = node_load_multiple($this->request['nids']);
-      $new_terms = $this->request['terms'];
-      $current_terms = array();
-      foreach ($nodes as $key => $node) {
-        $node_wrapper = entity_metadata_wrapper('node', $node);
-        foreach ($node_wrapper->og_vocabulary->value() as $delta => $term_wrapper) {
-          // $term_wrapper may now be accessed as a taxonomy term wrapper.
-          $current_terms[] = $term_wrapper->tid;
-        }
-        $result = array_unique(array_merge($current_terms, $new_terms));
-        if (!empty($result)) {
-          $node_wrapper->og_vocabulary->set($result);
-          $node_wrapper->save();
-        }
-      }
-      return array('saved' => true);
-    }
-    else {
-      return array('saved' => false);
-    }
-  }
-
-  /**
-  * Remove term tid's of selected nodes.
-  */
-  protected function removeTerm() {
-    if (!empty($this->request['terms']) && !empty($this->request['nids'])) {
-      $nodes = node_load_multiple($this->request['nids']);
-      $new_terms = $this->request['terms'];
-      $current_terms = array();
-      foreach ($nodes as $key => $node) {
-        $node_wrapper = entity_metadata_wrapper('node', $node);
-        foreach ($node_wrapper->og_vocabulary->value() as $delta => $term_wrapper) {
-          // $term_wrapper may now be accessed as a taxonomy term wrapper.
-          $current_terms[] = $term_wrapper->tid;
-        }
-        $result = array_diff($current_terms, $new_terms);
-        $node_wrapper->og_vocabulary->set($result);
-        $node_wrapper->save();
-      }
-      return array('saved' => true);
-    }
-    else {
-      return array('saved' => false);
-    }
-  }
-
-  /**
-  * Create a taxonomy term and return the tid.
-  */
-  protected function addTerm() {
-    if (!empty($this->request['vid']) && !empty($this->request['name'])) {
-      $parent_id = 0;
-      $term = new stdClass();
-      $term->name = $this->request['name'];
-      $term->vid = $this->request['vid'];
-      $term->parent = array($parent_id);
-      taxonomy_term_save($term);
-      return array('term_id' => $term->tid);
-    }
-    else {
-      return array('term_id' => false);
-    }
-  }
-
-  /**
-  * Publish selected nodes.
-  */
-  protected function nodePublish() {
-    if (!empty($this->request['nids'])) {
-      $nodes = node_load_multiple($this->request['nids']);
-      $new_terms = $this->request['terms'];
-      $current_terms = array();
-      foreach ($nodes as $key => $node) {
-        $node_wrapper = entity_metadata_wrapper('node', $node);
-        //$node_wrapper->og_vocabulary->set($result);
-        //$node_wrapper->save();
-      }
-      return array('saved' => true);
-    }
-    else {
-      return array('saved' => false);
-    }
-  }
-
-  /**
-  * Unpublish selected nodes.
-  */
-  protected function nodeUnPublish() {
-    if (!empty($this->request['nids'])) {
-      $nodes = node_load_multiple($this->request['nids']);
-      $new_terms = $this->request['terms'];
-      $current_terms = array();
-      foreach ($nodes as $key => $node) {
-        $node_wrapper = entity_metadata_wrapper('node', $node);
-        //$node_wrapper->og_vocabulary->set($result);
-        //$node_wrapper->save();
-      }
-      return array('saved' => true);
-    }
-    else {
-      return array('saved' => false);
-    }
   }
 
   /**
@@ -339,6 +224,100 @@ class NodesRestfulBase extends RestfulEntityBase {
    */
   protected function dateFormat($timestamp) {
     return format_date($timestamp, $type = 'long');
+  }
+
+  /**
+   * Apply term tid's to selected nodes.
+   */
+  protected function applyTerm() {
+    if (!empty($this->request['terms']) && !empty($this->request['nids'])) {
+      $nodes = node_load_multiple($this->request['nids']);
+      $new_terms = $this->request['terms'];
+      $current_terms = array();
+      foreach ($nodes as $key => $node) {
+        $node_wrapper = entity_metadata_wrapper('node', $node);
+        foreach ($node_wrapper->og_vocabulary->value() as $delta => $term_wrapper) {
+          // $term_wrapper may now be accessed as a taxonomy term wrapper.
+          $current_terms[] = $term_wrapper->tid;
+        }
+        $result = array_unique(array_merge($current_terms, $new_terms));
+        if (!empty($result)) {
+          $node_wrapper->og_vocabulary->set($result);
+          $node_wrapper->save();
+        }
+      }
+      return array('saved' => true);
+    }
+    else {
+      return array('saved' => false);
+    }
+  }
+
+  /**
+   * Remove term tid's from selected nodes.
+   */
+  protected function removeTerm() {
+    if (!empty($this->request['terms']) && !empty($this->request['nids'])) {
+      $nodes = node_load_multiple($this->request['nids']);
+      $new_terms = $this->request['terms'];
+      $current_terms = array();
+      foreach ($nodes as $key => $node) {
+        $node_wrapper = entity_metadata_wrapper('node', $node);
+        foreach ($node_wrapper->og_vocabulary->value() as $delta => $term_wrapper) {
+          // $term_wrapper may now be accessed as a taxonomy term wrapper.
+          $current_terms[] = $term_wrapper->tid;
+        }
+        $result = array_diff($current_terms, $new_terms);
+        $node_wrapper->og_vocabulary->set($result);
+        $node_wrapper->save();
+      }
+      return array('saved' => true);
+    }
+    else {
+      return array('saved' => false);
+    }
+  }
+
+  /**
+   * Create a taxonomy term and return tid.
+   */
+  protected function addTerm() {
+    if (!empty($this->request['vid']) && !empty($this->request['name'])) {
+      $parent_id = 0;
+      $term = new stdClass();
+      $term->name = $this->request['name'];
+      $term->vid = $this->request['vid'];
+      $term->parent = array($parent_id);
+      taxonomy_term_save($term);
+      return array('term_id' => $term->tid);
+    }
+    else {
+      return array('term_id' => false);
+    }
+  }
+
+  /**
+   * Bulk operation on nodes.
+   */
+  protected function BulkOperation() {
+    if (!empty($this->request['nids']) && !empty($this->request['operation'])) {
+      if ($this->request['operation'] == 'deleted') {
+        node_delete_multiple($this->request['nids']);
+      }
+      else {
+        $nodes = node_load_multiple($this->request['nids']);
+        $status = $this->request['operation'] == 'published' ? 1 : 0;
+        foreach ($nodes as $key => $node) {
+          $node_wrapper = entity_metadata_wrapper('node', $node);
+          $node_wrapper->status->set($status);
+          $node_wrapper->save();
+        }
+      }
+      return array('saved' => true);
+    }
+    else {
+      return array('saved' => false);
+    }
   }
 
 }

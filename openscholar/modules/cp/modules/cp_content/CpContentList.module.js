@@ -83,8 +83,9 @@
   /**
    * Fetching cp content and fill it in setting form modal.
    */
-  m.directive('cpContent', ['$rootScope', 'NgTableParams', 'cpFetchContent', 'cpFetchFilterOptions', function($rootScope, NgTableParams, cpFetchContent, cpFetchFilterOptions) {
+  m.directive('cpContent', ['$rootScope', 'NgTableParams', 'cpFetchContent', 'cpFetchFilterOptions', 'cpBulkOperation', function($rootScope, NgTableParams, cpFetchContent, cpFetchFilterOptions, cpBulkOperation) {
     function link($scope, $element, $attrs) {
+      $scope.message = false;
       // Fetch the vsite id.
       if (Drupal.settings.spaces != undefined) {
         if (Drupal.settings.spaces.id) {
@@ -164,6 +165,29 @@
         angular.element(document.getElementById("select_all")).prop("indeterminate", (checked != 0 && unchecked != 0));
       }, true);
 
+      // Bulk node Unpublish.
+      $scope.nodeBulkOperation = function(operation) {
+        var nids = [];
+        angular.forEach($rootScope.selectedItems, function(value, key) {
+          if (value) {
+            nids.push(key);
+          }
+        });
+        var data = {
+          nids : nids,
+          operation : operation
+        }
+        return cpBulkOperation.postData('nodes/bulk', data).then(function(responce) {
+          if (responce.data.data.saved) {
+            $scope.message = 'Selected content has been ' +operation+ '.';
+            $rootScope.resetCheckboxes();
+            tableData();
+          } else {
+            $scope.message = 'Please select at least one item.';
+          }
+        });
+      }
+
       // Initialize apply taxonomy term dropdown.
       $scope.applyTermModel = [];
       $rootScope.applyTermModel = $scope.applyTermModel;
@@ -239,7 +263,6 @@
         // Get filtered content.
         tableData(filter);
       };
-      $scope.message = false;
     }
 
     return {
@@ -340,7 +363,7 @@
           $scope.singleSelection = $scope.settings.selectionLimit === 1;
 
           var message = {
-            failedMessage: 'Something went wrong'
+            failedMessage: 'Something went wrong.'
           }
           $scope.stopBubbling = function($event) {
             $event.stopPropagation();
@@ -381,7 +404,7 @@
                 if (responce.data.data.term_id) {
                   $scope.orderedItems.splice(key, 0, {id: responce.data.data.term_id, label: data.name, vid: data.vid, vocab: vocab});
                   $scope.orderedItems[key].termName = '';
-                  $scope.$parent.$parent.message = data.name+' term have been added to '+vocab+' vocabulary';
+                  $scope.$parent.$parent.message = data.name+' term have been added to '+vocab+' vocabulary.';
                 } else {
                   $scope.$parent.$parent.message = message.failedMessage;
                 }
@@ -405,10 +428,11 @@
             };
             return cpBulkOperation.postData('nodes/bulk/term/remove', data).then(function(responce) {
               if (responce.data.data.saved) {
-                $scope.$parent.$parent.message = 'Terms have been removed from selected content';
+                $scope.$parent.$parent.message = 'Terms have been removed from selected content.';
                 $scope.open = false;
+                $rootScope.resetCheckboxes();
               } else {
-                $scope.$parent.$parent.message = 'Please select a term to be removed';
+                $scope.$parent.$parent.message = 'Please select a term to be removed.';
               }
             });
           }
@@ -429,10 +453,11 @@
             };
             return cpBulkOperation.postData('nodes/bulk/term/apply', data).then(function(responce) {
               if (responce.data.data.saved) {
-                $scope.$parent.$parent.message = 'Terms have been applied to selected content';
+                $scope.$parent.$parent.message = 'Terms have been applied to selected content.';
                 $scope.open = false;
+                $rootScope.resetCheckboxes();
               } else {
-                $scope.$parent.$parent.message = 'Please select a term to be applied';
+                $scope.$parent.$parent.message = 'Please select a term to be applied.';
               }
             });
           }
