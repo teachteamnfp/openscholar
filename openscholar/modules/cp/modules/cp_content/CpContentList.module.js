@@ -98,7 +98,7 @@
           page: 1,
           count: 10,
           sorting: {
-            changed: 'desc'
+            created: 'desc'
           }
         }, {
           total: 0,
@@ -106,6 +106,7 @@
           getData: function(params) {
             var orderBycolumn = params.orderBy();
             var sortNameValue = orderBycolumn[0].replace(/\+/g, "");
+            $scope.checkboxes.checked = false;
             return cpFetchContent.getData(params.page(), params.count(), sortNameValue, filter, vsite).then(function(responce) {
               params.total(responce.data.count);
               return responce.data.data;
@@ -117,23 +118,42 @@
       tableData();
 
       // Bulk Operation.
-      $scope.selectedItems = {};
-      $rootScope.selectedItems =  $scope.selectedItems;
+      $scope.checkboxes = { 'checked': false, items: {} };
       $rootScope.disableApply = true;
-      $scope.checkAll = function(selectAll) {
-        angular.forEach($scope.tableParams.data, function(node, key) {
-          $scope.selectedItems[node.id] = selectAll;
+
+      // Watch for check all checkbox.
+      $scope.$watch('checkboxes.checked', function(value) {
+        angular.forEach($scope.tableParams.data, function(node) {
+          if (angular.isDefined(node.id)) {
+            $scope.checkboxes.items[node.id] = value;
+          }
         });
-        $rootScope.disableApply = !selectAll;
-      };
-      $scope.optionToggle = function(selectedItems) {
-        var v = Object.values(selectedItems);
-        if (v.indexOf(true) > -1) {
+        $rootScope.disableApply = !value;
+        $rootScope.selectedItems = $scope.checkboxes.items;
+      });
+
+      // Watch for data checkboxes.
+      $scope.$watch('checkboxes.items', function(values) {
+        if (!$scope.tableParams.data) {
+            return;
+        }
+        var checked = 0, unchecked = 0,
+          total = $scope.tableParams.data.length;
+        angular.forEach($scope.tableParams.data, function(node) {
+          checked   +=  ($scope.checkboxes.items[node.id]) || 0;
+          unchecked += (!$scope.checkboxes.items[node.id]) || 0;
+        });
+        if ((unchecked == 0) || (checked == 0)) {
+          $scope.checkboxes.checked = (checked == total);
+        }
+        if (checked > 0) {
           $rootScope.disableApply = false;
         } else {
           $rootScope.disableApply = true;
         }
-      }
+        // Grayed checkbox.
+        angular.element(document.getElementById("select_all")).prop("indeterminate", (checked != 0 && unchecked != 0));
+      }, true);
 
       // Initialize apply taxonomy term dropdown.
       $scope.applyTermModel = [];
@@ -377,8 +397,6 @@
             return cpBulkOperation.postData('nodes/bulk/term/remove', data).then(function(responce) {
               if (responce.data.data.saved) {
                 $scope.$parent.$parent.message = 'Terms have been removed from selected content';
-                //$scope.$parent.$parent.removeTermModel = [];
-                $scope.$parent.$parent.selectedItems = [];
                 $scope.open = false;
               } else {
                 $scope.$parent.$parent.message = 'Please select a term to be removed';
@@ -403,8 +421,6 @@
             return cpBulkOperation.postData('nodes/bulk/term/apply', data).then(function(responce) {
               if (responce.data.data.saved) {
                 $scope.$parent.$parent.message = 'Terms have been applied to selected content';
-                //$scope.$parent.$parent.applyTermModel = [];
-                $scope.$parent.$parent.selectedItems = [];
                 $scope.open = false;
               } else {
                 $scope.$parent.$parent.message = 'Please select a term to be applied';

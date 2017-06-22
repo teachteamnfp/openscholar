@@ -605,7 +605,6 @@ function cp_content_cp_settings() {
     ),
     'form' => array(
       '#custom_directive' => 'cp-content',
-      '#custom_directive_parameters' => array(),
     ),
   );
 

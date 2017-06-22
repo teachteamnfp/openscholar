@@ -275,6 +275,13 @@ class NodesRestfulBase extends RestfulEntityBase {
       'sub_property' => 'name',
     );
 
+    $public_fields['created'] = array(
+      'property' => 'created',
+      'process_callbacks' => array(
+        array($this, 'dateFormat'),
+      ),
+    );
+
     $public_fields['changed'] = array(
       'property' => 'changed',
       'process_callbacks' => array(

@@ -37,11 +37,12 @@
     <span>Publish</span><span>Unpublish</span><span>Delete</span>
   </div>
   <script type="text/ng-template" id="headerCheckbox.html">
-    <input type="checkbox" ng-model="selectAll" ng-click="checkAll(selectAll)" />
+    <input type="checkbox" ng-model="checkboxes.checked" id="select_all" value="" />
   </script>
   <table ng-table="tableParams" class="table">
     <tr ng-repeat="node in tableParams.data" ng-class="{even: $even, odd: $odd}">
-      <td header="'headerCheckbox.html'"><input type="checkbox" ng-model="selectedItems[node.id]" ng-change="optionToggle(selectedItems)"/></td>
+      <td header="'headerCheckbox.html'">
+      <input type="checkbox" ng-model="checkboxes.items[node.id]" /></td>
       <td title="'Title'" sortable="'label'" ng-bind-html="node.link"></td>
       <td title="'Type'" sortable="'type'">{{node.type}}</td>
       <td title="'Author'" sortable="'author'">{{node.author}}</td>
