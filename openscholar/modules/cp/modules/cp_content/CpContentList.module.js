@@ -110,6 +110,7 @@
             var sortNameValue = orderBycolumn[0].replace(/\+/g, "");
             return cpFetchContent.getData(params.page(), params.count(), sortNameValue, filter, vsite).then(function(responce) {
               params.total(responce.data.count);
+              $scope.noRecords = responce.data.data.length == 0 ? true : false;
               return responce.data.data;
             });
           }

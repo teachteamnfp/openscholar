@@ -52,6 +52,7 @@
       <td title="'Date(Updated)'" sortable="'changed'">{{node.changed}}</td>
       <td>Action</td>
     </tr>
+    <tr ng-if="noRecords"><td colspan="6">Oops, no record found!</td></tr>
   </table>
   <div class="form-actions">
     <button ng-click="close(true)">Close</button>
