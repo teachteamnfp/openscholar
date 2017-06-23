@@ -1,6 +1,6 @@
 <div class="multiselect-parent btn-group dropdown-multiselect">
   <div ng-if="displayType == 'term'">
-    <span class="dropdown-toggle" ng-class="settings.buttonClasses" ng-click="toggleDropdown()">{{displayText}}</span>
+    <span class="dropdown-toggle" ng-class="settings.buttonClasses" ng-click="!disableApply && toggleDropdown()">{{displayText}}</span>
   </div>
   <div ng-if="displayType == 'filter'">
     <button type="button" class="dropdown-toggle" ng-class="settings.buttonClasses" ng-click="toggleDropdown()">{{getButtonText()}}&nbsp;<span class="caret"></span></button>

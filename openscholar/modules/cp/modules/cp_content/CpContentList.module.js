@@ -158,8 +158,10 @@
         }
         if (checked > 0) {
           $rootScope.disableApply = false;
+          $scope.disableApply = $rootScope.disableApply;
         } else {
           $rootScope.disableApply = true;
+          $scope.disableApply = $rootScope.disableApply;
           $scope.checkboxes.checked = false;
         }
         // Grayed checkbox.
@@ -228,6 +230,11 @@
       }
       cpFetchFilterOptions.getData('content_types').then(function(responce) {
         $scope.contentTypes = responce.data.data;
+      });
+
+      $scope.selectAllFlag = false;
+      $rootScope.$watch('selectAllFlag', function(newValue) {
+        $scope.selectAllFlag = newValue;
       });
 
       // Initialize taxonomy term filter.
@@ -341,9 +348,11 @@
             buttonDefaultText: 'Select',
             dynamicButtonTextSuffix: 'checked'
           };
+          $rootScope.$watch('disableApply', function(newValue) {
+            $scope.disableApply = newValue;
+          });
           $scope.toggleDropdown = function() {
             $scope.open = !$scope.open;
-            $scope.disableApply = $rootScope.disableApply;
             if ($scope.settings.termDropdown) {
               cpFetchFilterOptions.getData('taxonomy').then(function(responce) {
                 $scope.options = responce.data.data;
@@ -361,13 +370,11 @@
           angular.extend($scope.externalEvents, $scope.events || []);
           angular.extend($scope.texts, $scope.translationTexts);
 
-          $scope.singleSelection = $scope.settings.selectionLimit === 1;
-
           var message = {
             failedMessage: 'Something went wrong.'
           }
           $scope.stopBubbling = function($event) {
-            $event.stopPropagation();
+            $event.stopImmediatePropagation();
           }
           $scope.groupToggleDropdown = function(arr, index) {
             if (arr.length > 0) {
@@ -488,12 +495,6 @@
             }
           }
 
-          if ($scope.singleSelection) {
-            if (angular.isArray($scope.selectedModel) && $scope.selectedModel.length === 0) {
-              clearObject($scope.selectedModel);
-            }
-          }
-
           if ($scope.settings.closeOnBlur) {
             $document.on('click', function(e) {
               var target = e.target.parentElement;
@@ -548,14 +549,7 @@
 
                 return itemsText.join(', ');
               } else {
-                var totalSelected;
-
-                if ($scope.singleSelection) {
-                  totalSelected = ($scope.selectedModel !== null && angular.isDefined($scope.selectedModel[$scope.settings.idProp])) ? 1 : 0;
-                } else {
-                  totalSelected = angular.isDefined($scope.selectedModel) ? $scope.selectedModel.length : 0;
-                }
-
+                var totalSelected = angular.isDefined($scope.selectedModel) ? $scope.selectedModel.length : 0;
                 if (totalSelected === 0) {
                   return $scope.texts.buttonDefaultText;
                 } else {
@@ -591,19 +585,14 @@
             if (sendEvent) {
               $scope.externalEvents.onDeselectAll();
             }
-
-            if ($scope.singleSelection) {
-              clearObject($scope.selectedModel);
-            } else {
-              $scope.selectedModel.splice(0, $scope.selectedModel.length);
-            }
+            $scope.selectedModel.splice(0, $scope.selectedModel.length);
           };
           $scope.selectAllToggle = function() {
             if ($scope.selectAllFlag) {
-              $scope.selectAllFlag = true;
+              $rootScope.selectAllFlag = false;
               $scope.selectAll();
             } else {
-              $scope.selectAllFlag = false;
+              $rootScope.selectAllFlag = true;
               $scope.deselectAll();
             }
           };
@@ -616,18 +605,7 @@
             } else {
               finalObj = findObj;
             }
-
-            if ($scope.singleSelection) {
-              clearObject($scope.selectedModel);
-              angular.extend($scope.selectedModel, finalObj);
-              $scope.externalEvents.onItemSelect(finalObj);
-              if ($scope.settings.closeOnSelect) $scope.open = false;
-
-              return;
-            }
-
             dontRemove = dontRemove || false;
-
             var exists = _.findIndex($scope.selectedModel, findObj) !== -1;
 
             if (!dontRemove && exists) {
@@ -637,13 +615,15 @@
               $scope.selectedModel.push(finalObj);
               $scope.externalEvents.onItemSelect(finalObj);
             }
+            if ($scope.settings.showAllConentTypeCheckBox) {
+              $rootScope.selectAllFlag = $scope.selectedModel.length > 0 ? false : true;
+              $scope.selectAllFlag = $scope.selectedModel.length == $scope.options.length ? true : false;
+            }
+
             if ($scope.settings.closeOnSelect) $scope.open = false;
           };
 
           $scope.isChecked = function(id) {
-            if ($scope.singleSelection) {
-              return $scope.selectedModel !== null && angular.isDefined($scope.selectedModel[$scope.settings.idProp]) && $scope.selectedModel[$scope.settings.idProp] === getFindObj(id)[$scope.settings.idProp];
-            }
             return _.findIndex($scope.selectedModel, getFindObj(id)) !== -1;
           };
 

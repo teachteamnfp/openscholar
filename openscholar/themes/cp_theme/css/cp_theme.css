@@ -1877,6 +1877,14 @@ div.no-bold {
   border-right: 1px solid #666;
   padding: 0 5px;
   cursor: pointer;
+  color: #286090;
+}
+.bulk-operation .bulk-add-term.disable,
+.bulk-operation .bulk-remove-term.disable,
+.bulk-operation .bulk-publish.disable,
+.bulk-operation .bulk-unpublish.disable,
+.bulk-operation .bulk-delete.disable {
+  color: #000000;
 }
 .bulk-operation .bulk-delete.last {
   border-right: none;
