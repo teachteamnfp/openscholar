@@ -8,6 +8,7 @@ class OsTaxonomyTerm extends OsRestfulEntityCacheableBase {
   public function publicFieldsInfo() {
     $fields = parent::publicFieldsInfo();
 
+
     $fields['vocab'] = array(
       'property' => 'vocabulary',
       'process_callbacks' => array(
@@ -22,6 +23,27 @@ class OsTaxonomyTerm extends OsRestfulEntityCacheableBase {
       'process_callbacks' => array(
         function($vocabulary) {
           return $vocabulary->vid;
+        }
+      ),
+    );
+
+    $fields['bundle'] = array(
+      // @todo
+      // We need fetch selected content types (In sort Bundle)
+      // vocabulary.
+      'property' => 'vocabulary',
+      'process_callbacks' => array(
+        function($vocabulary) {
+          $query = new EntityFieldQuery();
+          $results = $query
+            ->entityCondition('entity_type', 'og_vocab')
+            ->propertyCondition('vid', $vocabulary->vid)
+            ->execute();
+         // print 1; exit();
+          //print_r(reset($results['og_vocab'])->id);
+          $entities = reset(entity_load('og_vocab', array(reset($results['og_vocab'])->id)));
+          //print_r($entities);
+          return array('test', $entities->bundle);
         }
       ),
     );

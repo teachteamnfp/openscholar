@@ -35,7 +35,7 @@ class OsContentTypeList extends \RestfulBase implements \RestfulDataProviderInte
   /**
    * Get content type options.
    */
-  public function getContentTypes () {
+  public function getContentTypes() {
     $exempted_content_types = array(
       'blog_import' => 'Blog entry import',
       'department' => 'Department Site',
