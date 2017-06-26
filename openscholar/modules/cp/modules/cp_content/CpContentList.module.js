@@ -299,7 +299,6 @@
           return cpBulkOperation.postData('nodes/bulk', data).then(function(responce) {
             if (responce.data.data.saved) {
               scope.message = 'Selected content has been ' +operation+ '.';
-              $rootScope.resetCheckboxes();
               tableData();
             }
           });
@@ -314,8 +313,8 @@
         }
         return cpBulkOperation.postData('nodes/bulk', data).then(function(responce) {
           if (responce.data.data.saved) {
-            scope.message = 'Selected content has been ' +operation+ '.';
-            $rootScope.resetCheckboxes();
+            scope.message = 'Selected content has been deleted';
+            scope.deleteUndoAction = true;
             tableData();
           }
         });
