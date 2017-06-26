@@ -289,17 +289,36 @@
       scope.nodeDelete = function(nid) {
         scope.deleteUndoMessage = true;
         scope.deleteUndoAction = !scope.deleteUndoAction;
-        nodeId = nid;
+        nodeId = [nid];
         timer = $timeout(function () {
           scope.deleteUndoAction = !scope.deleteUndoAction;
-          //@todo
-          console.log(nodeId);
-        }, 3000);
+          var data = {
+            nids : nodeId,
+            operation : 'deleted'
+          }
+          return cpBulkOperation.postData('nodes/bulk', data).then(function(responce) {
+            if (responce.data.data.saved) {
+              scope.message = 'Selected content has been ' +operation+ '.';
+              $rootScope.resetCheckboxes();
+              tableData();
+            }
+          });
+        }, 8000);
       };
 
       scope.deleteNodeOnClose = function() {
-        //@todo
-        console.log(nodeId);
+        $timeout.cancel(timer);
+        var data = {
+          nids : nodeId,
+          operation : 'deleted'
+        }
+        return cpBulkOperation.postData('nodes/bulk', data).then(function(responce) {
+          if (responce.data.data.saved) {
+            scope.message = 'Selected content has been ' +operation+ '.';
+            $rootScope.resetCheckboxes();
+            tableData();
+          }
+        });
       };
 
       scope.deleteUndo = function() {
