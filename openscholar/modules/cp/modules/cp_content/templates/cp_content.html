@@ -50,10 +50,25 @@
       <td title="'Author'" sortable="'author'">{{node.author}}</td>
       <td title="'Published'" sortable="'publish_status'">{{node.publish_status}}</td>
       <td title="'Date(Updated)'" sortable="'changed'">{{node.changed}}</td>
-      <td>Action</td>
+      <td>
+        <a href="#" class="cp-popover" ng-click="popOver($event, node.id)"><span class="glyphicon glyphicon-pencil"></span>
+          <div class="cp-popover-wrapper left" ng-show="showPopover == node.id">
+           <ul>
+             <li ng-click="nodeEdit(node.id)">Edit</li>
+             <li ng-click="nodeDelete(node.id)">Delete</li>
+           </ul>
+          </div>
+        </a>
+      </td>
     </tr>
     <tr ng-if="noRecords"><td colspan="6">Oops, no record found!</td></tr>
   </table>
+  <div ng-hide="deleteUndoAction" class="undo-message-box">Deleted selected content. <span><a ng-click="deleteUndo()">UNDO</a></span><button type="button" ng-click="deleteNodeOnClose()" class="close" aria-label="Close">
+  <span aria-hidden="true">&times;</span>
+</button></div>
+  <div ng-hide="deleteUndoMessage" class="undo-message-box">Action undone. <button type="button" ng-click="deleteUndoMessageClose()" class="close" aria-label="Close">
+  <span aria-hidden="true">&times;</span>
+</button></div>
   <div class="form-actions">
     <button ng-click="close(true)">Close</button>
   </div>
