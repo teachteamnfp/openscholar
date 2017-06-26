@@ -20,7 +20,7 @@ function os_common_library() {
         'group' => JS_LIBRARY,
         'weight' => -15
       ),
-      '//ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-sanitize.js' => array(
+      '//ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-sanitize.js' => array(
         'type' => 'external',
         'group' => JS_LIBRARY,
         'weight' => -14
