@@ -25,6 +25,16 @@ function os_common_library() {
         'group' => JS_LIBRARY,
         'weight' => -14
       ),
+      '//ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-animate.js' => array(
+        'type' => 'external',
+        'group' => JS_LIBRARY,
+        'weight' => -14
+      ),
+      '//ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-aria.js' => array(
+        'type' => 'external',
+        'group' => JS_LIBRARY,
+        'weight' => -14
+      ),
       '//ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-cookies.js' => array(
         'type' => 'external',
         'group' => JS_LIBRARY,
@@ -382,6 +392,20 @@ function os_common_library() {
     ),
     'css' => array(
       '//unpkg.com/ng-table@2.0.2/bundles/ng-table.min.css' => array(),
+    )
+  );
+
+  $info['ngMaterial'] = array(
+    'title' => 'Angular material',
+    'version' => '1.1.4',
+    'js' => array(
+      '//cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.4/angular-material.min.js' => array(
+        'type' => 'external',
+        'group' => JS_LIBRARY,
+      ),
+    ),
+    'css' => array(
+      '//cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.4/angular-material.min.css' => array(),
     )
   );
 

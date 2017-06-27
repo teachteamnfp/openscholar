@@ -1,7 +1,7 @@
 <div class="cp-content">
   <div ng-show="message" id="messages">
     <div class="messages status">
-    <a class="dismiss">X</a>
+    <a class="dismiss" ng-click="closeMessage()">X</a>
     {{message}}
     </div>
   </div>
@@ -48,13 +48,13 @@
       <td title="'Title'" sortable="'label'" ng-bind-html="node.link"></td>
       <td title="'Type'" sortable="'type'">{{node.type}}</td>
       <td title="'Author'" sortable="'author'">{{node.author}}</td>
-      <td title="'Published'" sortable="'publish_status'">{{node.publish_status}}</td>
+      <td title="'Published'" sortable="'publish_status'"><md-switch ng-model="node.publish_status" aria-label="publishStatus" ng-change="changePublishStatus(node.id, node.publish_status)"></md-switch></td>
       <td title="'Date(Updated)'" sortable="'changed'">{{node.changed}}</td>
       <td>
-        <a href="#" class="cp-popover" ng-click="popOver($event, node.id)"><span class="glyphicon glyphicon-pencil"></span>
+        <a href="#" class="cp-popover" ng-click="popOver($event, node.id)"><span class="glyphicon glyphicon-pencil">Action</span>
           <div class="cp-popover-wrapper left" ng-show="showPopover == node.id">
            <ul>
-             <li ng-click="nodeEdit(node.id)">Edit</li>
+             <li ng-click="nodeEdit(node.id)"></li>
              <li ng-click="nodeDelete(node.id)">Delete</li>
            </ul>
           </div>
@@ -74,5 +74,5 @@
   </div>
 </div>
 <style>
-  @import url("https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css");
+ /* @import url("https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css");*/
 </style>

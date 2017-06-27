@@ -1945,3 +1945,76 @@ label[for=cp-title-bulk] {
     text-align: center;
     line-height: 44px;
  }
+.switchdemoBasicUsage .inset {
+    padding-left: 25px;
+    padding-top: 25px;
+}
+md-switch .md-thumb::before {
+    content: "No";
+    position: absolute;
+    right: 0;
+    font-size: 9px;
+    line-height: 18px;
+    padding-right: 3px;
+}
+md-switch.md-checked .md-thumb::before {
+    content: "Yes";
+    left: 0;
+    padding-left: 3px;
+    font-size: 11px;
+    color: #000;
+}
+md-switch.md-default-theme.md-checked .md-bar, md-switch.md-checked .md-bar {
+    background-color: #bbecbb;
+}
+md-switch.md-default-theme.md-checked .md-thumb, md-switch.md-checked .md-thumb {
+    background-color: #fff;
+}
+md-switch .md-thumb, md-switch .md-thumb:before {
+    position: absolute;
+    left: 10px;
+    top: 0;
+    border-radius: 10%;
+}
+md-switch .md-thumb {
+    margin: 0;
+    outline: none;
+    height: 17px;
+    width: 30px;
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
+}
+md-switch .md-bar {
+    left: 1px;
+    width: 58px;
+    top: 1px;
+    height: 21px;
+    border-radius: 5px;
+    position: absolute;
+}
+.cp-content .ng-table {
+    width: 100%;
+}
+.cp-content .dropdown-menu {
+    position: absolute;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 160px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    font-size: 14px;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
+.cp-content .close-term-dropdown {
+    text-align: right;
+    padding-right: 10px;
+}

@@ -1,5 +1,5 @@
 (function() {
-  var m = angular.module('CpContent', ['ui.bootstrap', 'ngTable']);
+  var m = angular.module('CpContent', ['ui.bootstrap', 'ngTable', 'ngMaterial']);
 
   /**
    * Fetch filter options.
@@ -62,9 +62,9 @@
   }]);
 
   /**
-   * Post bulk operations such apply terms, add term.
+   * Post operations such as apply terms, add term, change publish status etc.
    */
-  m.service('cpBulkOperation', ['$http', function($http) {
+  m.service('cpOperation', ['$http', function($http) {
     var service = {
       postData: function(endpoint, data, config) {
         var baseUrl = Drupal.settings.paths.api;
@@ -83,9 +83,12 @@
   /**
    * Fetching cp content and fill it in setting form modal.
    */
-  m.directive('cpContent', ['$rootScope', '$timeout', 'NgTableParams', 'cpFetchContent', 'cpFetchFilterOptions', 'cpBulkOperation', function($rootScope, $timeout, NgTableParams, cpFetchContent, cpFetchFilterOptions, cpBulkOperation) {
+  m.directive('cpContent', ['$rootScope', '$timeout', 'NgTableParams', 'cpFetchContent', 'cpFetchFilterOptions', 'cpOperation', function($rootScope, $timeout, NgTableParams, cpFetchContent, cpFetchFilterOptions, cpOperation) {
     function link(scope, element, attrs) {
       scope.message = false;
+      scope.closeMessage = function() {
+        scope.message = false;
+      }
       // Fetch the vsite id.
       if (Drupal.settings.spaces != undefined) {
         if (Drupal.settings.spaces.id) {
@@ -180,7 +183,7 @@
           nids : nids,
           operation : operation
         }
-        return cpBulkOperation.postData('nodes/bulk', data).then(function(responce) {
+        return cpOperation.postData('nodes/bulk', data).then(function(responce) {
           if (responce.data.data.saved) {
             scope.message = 'Selected content has been ' +operation+ '.';
             $rootScope.resetCheckboxes();
@@ -296,7 +299,7 @@
             nids : nodeId,
             operation : 'deleted'
           }
-          return cpBulkOperation.postData('nodes/bulk', data).then(function(responce) {
+          return cpOperation.postData('nodes/bulk', data).then(function(responce) {
             if (responce.data.data.saved) {
               scope.message = 'Selected content has been ' +operation+ '.';
               tableData();
@@ -311,9 +314,9 @@
           nids : nodeId,
           operation : 'deleted'
         }
-        return cpBulkOperation.postData('nodes/bulk', data).then(function(responce) {
+        return cpOperation.postData('nodes/bulk', data).then(function(responce) {
           if (responce.data.data.saved) {
-            scope.message = 'Selected content has been deleted';
+            scope.message = 'Selected content has been deleted.';
             scope.deleteUndoAction = true;
             tableData();
           }
@@ -330,6 +333,20 @@
         scope.deleteUndoMessage = true;
       };
 
+      scope.changePublishStatus = function(nid, publish_status) {
+        var operation = (publish_status) ? 'published' : 'unpublished';
+        var nodeId = [nid];
+        var data = {
+          nids : nodeId,
+          operation : operation
+        }
+        return cpOperation.postData('nodes/bulk', data).then(function(responce) {
+          if (responce.data.data.saved) {
+            scope.message = 'Selected content has been '+operation+'.';
+          }
+        });
+      };
+
       scope.nodeEdit = function(nid) {
         //@todo
         console.log(nid);
@@ -344,9 +361,9 @@
     };
   }]);
 
-  m.directive('cpContentDropdownMultiselect', ['$rootScope', '$filter', '$document', '$compile', '$parse', 'cpBulkOperation', 'cpFetchFilterOptions',
+  m.directive('cpContentDropdownMultiselect', ['$rootScope', '$filter', '$document', '$compile', '$parse', 'cpOperation', 'cpFetchFilterOptions',
 
-    function($rootScope, $filter, $document, $compile, $parse, cpBulkOperation, cpFetchFilterOptions) {
+    function($rootScope, $filter, $document, $compile, $parse, cpOperation, cpFetchFilterOptions) {
 
       return {
         restrict: 'AE',
@@ -423,6 +440,10 @@
             }
           };
 
+          scope.closeTermDropdown = function() {
+            scope.open = !scope.open;
+          }
+
           if (angular.isDefined(scope.settings.groupBy)) {
             scope.$watch('options', function(newValue) {
               if (angular.isDefined(newValue)) {
@@ -474,7 +495,7 @@
                 vid: vid,
                 name: scope.orderedItems[key].termName
               }
-              return cpBulkOperation.postData('nodes/term/add', data).then(function(responce) {
+              return cpOperation.postData('nodes/term/add', data).then(function(responce) {
                 if (responce.data.data.term_id) {
                   scope.orderedItems.splice(key, 0, {id: responce.data.data.term_id, label: data.name, vid: data.vid, vocab: vocab});
                   scope.orderedItems[key].termName = '';
@@ -501,7 +522,7 @@
               nids: nids,
               terms: terms
             };
-            return cpBulkOperation.postData('nodes/bulk/term/remove', data).then(function(responce) {
+            return cpOperation.postData('nodes/bulk/term/remove', data).then(function(responce) {
               if (responce.data.data.saved) {
                 scope.$parent.$parent.message = 'Terms have been removed from selected content.';
                 scope.open = false;
@@ -527,7 +548,7 @@
               nids: nids,
               terms: terms
             };
-            return cpBulkOperation.postData('nodes/bulk/term/apply', data).then(function(responce) {
+            return cpOperation.postData('nodes/bulk/term/apply', data).then(function(responce) {
               if (responce.data.data.saved) {
                 scope.$parent.$parent.message = 'Terms have been applied to selected content.';
                 scope.open = false;
@@ -656,6 +677,7 @@
             }
             scope.selectedModel.splice(0, scope.selectedModel.length);
           };
+
           scope.selectAllToggle = function() {
             if (scope.selectAllFlag) {
               $rootScope.selectAllFlag = false;
@@ -665,6 +687,7 @@
               scope.deselectAll();
             }
           };
+
           scope.setSelectedItem = function(id, dontRemove) {
             var findObj = getFindObj(id);
             var finalObj = null;

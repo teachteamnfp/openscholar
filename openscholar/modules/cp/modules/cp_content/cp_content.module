@@ -636,8 +636,8 @@ function cp_content_library() {
     ),
     'dependencies' => array(
       array('os_common', 'ngTable'),
+      array('os_common', 'ngMaterial'),
       array('os_common', 'underscore-js'),
-
     )
   );
 

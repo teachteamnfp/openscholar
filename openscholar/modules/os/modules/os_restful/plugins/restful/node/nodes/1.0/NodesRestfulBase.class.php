@@ -153,6 +153,9 @@ class NodesRestfulBase extends RestfulEntityBase {
 
     $public_fields['publish_status'] = array(
       'property' => 'status',
+      'process_callbacks' => array(
+        array($this, 'processStatus'),
+      ),
     );
 
     $public_fields['author'] = array(
@@ -224,6 +227,19 @@ class NodesRestfulBase extends RestfulEntityBase {
    */
   protected function dateFormat($timestamp) {
     return format_date($timestamp, $type = 'long');
+  }
+
+  /**
+   * Get publish status as true or false.
+   *
+   * @param status
+   *   The enity's status.
+   *
+   * @return bolean
+   *   The formatted status.
+   */
+  protected function processStatus($status) {
+    return $status = $status == 1 ? true : false;
   }
 
   /**
