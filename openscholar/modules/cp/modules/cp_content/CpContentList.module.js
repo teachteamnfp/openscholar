@@ -95,6 +95,11 @@
           var vsite = Drupal.settings.spaces.id;
         }
       }
+      // Fetch vsite home.
+      if (Drupal.settings.paths.vsite_home != undefined) {
+        scope.vsiteUrl = Drupal.settings.paths.vsite_home;
+      }
+
       // Hide Defaut buttons from ApSettings Modal form.
       scope.$parent.$parent.$parent.showSaveButton = false;
       var tableData = function(filter) {
@@ -347,10 +352,6 @@
         });
       };
 
-      scope.nodeEdit = function(nid) {
-        //@todo
-        console.log(nid);
-      };
     }
 
     return {
