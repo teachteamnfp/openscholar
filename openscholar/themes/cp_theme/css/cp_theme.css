@@ -1878,7 +1878,6 @@ div.no-bold {
     padding: 0 5px;
     cursor: pointer;
     color: #286090;
-    font-weight: bold;
 }
 .bulk-operation .bulk-add-term.disable,
 .bulk-operation .bulk-remove-term.disable,

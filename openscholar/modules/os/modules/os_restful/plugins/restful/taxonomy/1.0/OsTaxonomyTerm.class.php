@@ -18,6 +18,15 @@ class OsTaxonomyTerm extends OsRestfulEntityCacheableBase {
       ),
     );
 
+    $fields['vocabName'] = array(
+      'property' => 'vocabulary',
+      'process_callbacks' => array(
+        function($vocabulary) {
+          return $vocabulary->name;
+        }
+      ),
+    );
+
     $fields['vid'] = array(
       'property' => 'vocabulary',
       'process_callbacks' => array(
@@ -27,7 +36,7 @@ class OsTaxonomyTerm extends OsRestfulEntityCacheableBase {
       ),
     );
 
-    $fields['bundle'] = array(
+    /*$fields['bundle'] = array(
       // @todo
       // We need fetch selected content types (In sort Bundle)
       // vocabulary.
@@ -46,7 +55,7 @@ class OsTaxonomyTerm extends OsRestfulEntityCacheableBase {
           return array('test', $entities->bundle);
         }
       ),
-    );
+    );*/
 
     return $fields;
   }

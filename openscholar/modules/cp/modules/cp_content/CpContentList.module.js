@@ -15,7 +15,8 @@
           }
         }
         var params = {
-          vsite: vsite
+          vsite: vsite,
+          sort: 'label'
         };
         var config = {
           params: params
@@ -176,7 +177,7 @@
         angular.element(document.getElementById("select_all")).prop("indeterminate", (checked != 0 && unchecked != 0));
       }, true);
 
-      // Bulk node Unpublish.
+      // Bulk node operation.
       scope.nodeBulkOperation = function(operation) {
         var nids = [];
         angular.forEach($rootScope.selectedItems, function(value, key) {
@@ -463,25 +464,9 @@
             $event.stopImmediatePropagation();
           };
 
-          scope.groupToggleDropdown = function(arr, index) {
-            if (arr.length > 0) {
-              var vocab = arr[index].vocab;
-              if (!scope[vocab]) {
-                angular.forEach(arr, function(val, key) {
-                  var atp = arr[key].vocab;
-                  if (key == 0) {
-                    scope[atp] = true;
-                  } else {
-                    scope[atp] = false;
-                  }
-                });
-              }
-              if (!angular.isDefined(scope[vocab])) {
-                scope[vocab] = true;
-              } else {
-                scope[vocab] = !scope[vocab];
-              }
-            }
+          scope.termGroup = false;
+          scope.groupToggleDropdown = function(vid) {
+            scope.termGroup = vid;
           };
 
           scope.checkboxClick = function($event, id) {
@@ -490,7 +475,7 @@
           };
 
           // Add term to vocabulary.
-          scope.addTerm = function(key, vid, vocab) {
+          scope.addTerm = function(key, vid, vocabName) {
             if (angular.isDefined(scope.orderedItems[key].termName)) {
               var data = {
                 vid: vid,
@@ -498,9 +483,9 @@
               }
               return cpOperation.postData('nodes/term/add', data).then(function(responce) {
                 if (responce.data.data.term_id) {
-                  scope.orderedItems.splice(key, 0, {id: responce.data.data.term_id, label: data.name, vid: data.vid, vocab: vocab});
+                  scope.orderedItems.splice(key, 0, {id: responce.data.data.term_id, label: data.name, vid: data.vid, vocabName: vocabName});
                   scope.orderedItems[key].termName = '';
-                  scope.$parent.$parent.message = data.name+' term have been added to '+vocab+' vocabulary.';
+                  scope.$parent.$parent.message = data.name+' term have been added to '+vocabName+' vocabulary.';
                 } else {
                   scope.$parent.$parent.message = message.failedMessage;
                 }
