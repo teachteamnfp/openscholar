@@ -1879,6 +1879,9 @@ div.no-bold {
     cursor: pointer;
     color: #286090;
 }
+.group-dropdown-toggle {
+   cursor: pointer;
+}
 .bulk-operation .bulk-add-term.disable,
 .bulk-operation .bulk-remove-term.disable,
 .bulk-operation .bulk-publish.disable,

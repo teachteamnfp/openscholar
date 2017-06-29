@@ -14,7 +14,7 @@ class NodesRestfulBase extends RestfulEntityBase {
         RestfulInterface::POST => 'addTerm'
       ),
       'bulk' => array(
-        RestfulInterface::POST => 'BulkOperation'
+        RestfulInterface::POST => 'bulkOperation'
       )
 
     ) + parent::controllersInfo();
@@ -315,7 +315,7 @@ class NodesRestfulBase extends RestfulEntityBase {
   /**
    * Bulk operation on nodes.
    */
-  protected function BulkOperation() {
+  protected function bulkOperation() {
     if (!empty($this->request['nids']) && !empty($this->request['operation'])) {
       if ($this->request['operation'] == 'deleted') {
         node_delete_multiple($this->request['nids']);

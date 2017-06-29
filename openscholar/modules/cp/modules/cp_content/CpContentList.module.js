@@ -6,26 +6,36 @@
    */
   m.service('cpFetchFilterOptions', ['$http', function($http) {
     var service = {
-      getData: function(endpoint) {
+      getData: function(endpoint, nid) {
         var baseUrl = Drupal.settings.paths.api;
-        // Fetch the vsite id.
-        if (Drupal.settings.spaces != undefined) {
-          if (Drupal.settings.spaces.id) {
-            var vsite = Drupal.settings.spaces.id;
-          }
-        }
+        var nids = '';
         var params = {
-          vsite: vsite,
           sort: 'label'
         };
+        // Fetch the vsite id.
+        if (angular.isDefined(Drupal.settings.spaces)) {
+          if (Drupal.settings.spaces.id) {
+            params.vsite = Drupal.settings.spaces.id;
+          }
+        }
+        if (angular.isDefined(nid)) {
+          angular.forEach(nid, function(nid, key) {
+             nids += '&nids[' + key + ']=' + nid;
+          });
+        }
+
         var config = {
           params: params
         }
-        var promise = $http.get(baseUrl + '/' + endpoint, config)
-          .success(function(response) {});
-        return promise.then(function(result) {
-          return result;
-        });
+        var promise = $http.get(baseUrl + '/' + endpoint + '?' + nids, config).then(
+          function successCallback(response) {
+            return response.data;
+          },
+          function errorCallback(response) {
+            return response.data;
+          });
+
+        return promise;
       }
     }
 
@@ -104,6 +114,7 @@
       // Hide Defaut buttons from ApSettings Modal form.
       scope.$parent.$parent.$parent.showSaveButton = false;
       var tableData = function(filter) {
+        var filter = angular.isDefined(filter) ? filter : '';
         scope.tableParams = new NgTableParams({
           page: 1,
           count: 10,
@@ -207,6 +218,7 @@
         scrollable: true,
         smartButtonMaxItems: 2,
         termDropdown: true,
+        termOeration: true,
         buttonClasses: ''
       };
 
@@ -217,6 +229,7 @@
         scrollable: true,
         smartButtonMaxItems: 2,
         termDropdown: true,
+        termOeration: true,
         buttonClasses: ''
       };
 
@@ -232,7 +245,7 @@
         buttonDefaultText: 'All content types',
       }
       cpFetchFilterOptions.getData('content_types').then(function(responce) {
-        scope.contentTypes = responce.data.data;
+        scope.contentTypes = responce.data;
       });
 
       scope.selectAllFlag = false;
@@ -245,13 +258,14 @@
       scope.taxonomyTermsSettings = {
         scrollable: true,
         smartButtonMaxItems: 2,
-        termDropdown: true
+        termDropdown: true,
+        termOeration: false,
       };
       scope.taxonomyTermsTexts = {
         buttonDefaultText: 'Taxonomy Terms'
       };
       cpFetchFilterOptions.getData('taxonomy').then(function(responce) {
-        scope.taxonomyTermsOptions = responce.data.data;
+        scope.taxonomyTermsOptions = responce.data;
       });
 
       // Search button: Filter data by title, content-type, taxonomy.
@@ -418,6 +432,7 @@
             groupByTextProvider: null,
             smartButtonMaxItems: 0,
             termDropdown: false,
+            termOeration: false,
             smartButtonTextConverter: angular.noop
           };
 
@@ -436,8 +451,23 @@
           scope.toggleDropdown = function() {
             scope.open = !scope.open;
             if (scope.settings.termDropdown) {
-              cpFetchFilterOptions.getData('taxonomy').then(function(responce) {
-                scope.options = responce.data.data;
+              var nids = [];
+              angular.forEach($rootScope.selectedItems, function(value, key) {
+                if (value) {
+                  nids.push(key);
+                }
+              });
+              scope.showTermErrorMessage = false;
+              nids = (scope.settings.termOeration) ? nids : '';
+              cpFetchFilterOptions.getData('taxonomy', nids).then(function(responce) {
+                if (angular.isDefined(responce.status) && responce.status == 400) {
+                   scope.termErrorMessage = responce.title;
+                   scope.showTermErrorMessage = true;
+                } else {
+                  scope.showTermErrorMessage = false;
+                  scope.options = responce.data;
+                }
+
               });
             }
           };

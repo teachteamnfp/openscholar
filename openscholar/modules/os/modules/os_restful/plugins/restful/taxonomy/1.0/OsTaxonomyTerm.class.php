@@ -36,27 +36,6 @@ class OsTaxonomyTerm extends OsRestfulEntityCacheableBase {
       ),
     );
 
-    /*$fields['bundle'] = array(
-      // @todo
-      // We need fetch selected content types (In sort Bundle)
-      // vocabulary.
-      'property' => 'vocabulary',
-      'process_callbacks' => array(
-        function($vocabulary) {
-          $query = new EntityFieldQuery();
-          $results = $query
-            ->entityCondition('entity_type', 'og_vocab')
-            ->propertyCondition('vid', $vocabulary->vid)
-            ->execute();
-         // print 1; exit();
-          //print_r(reset($results['og_vocab'])->id);
-          $entities = reset(entity_load('og_vocab', array(reset($results['og_vocab'])->id)));
-          //print_r($entities);
-          return array('test', $entities->bundle);
-        }
-      ),
-    );*/
-
     return $fields;
   }
 
@@ -122,6 +101,36 @@ class OsTaxonomyTerm extends OsRestfulEntityCacheableBase {
         }
         else {
           $badVocabs[] = $vid;
+        }
+      }
+    }
+    elseif (!empty($this->request['nids'])) {
+      // Load only enabled vocabularies of seclected content type.
+      $nodes = node_load_multiple($this->request['nids']);
+      $request_bundle = array();
+      $enabled_bundle = array();
+      foreach ($nodes as $key => $node) {
+        $request_bundle[] = $node->type;
+      }
+      $query = new EntityFieldQuery();
+      $og_vocab = $query
+        ->entityCondition('entity_type', 'og_vocab')
+        ->execute();
+      $og_vocab = array_keys($og_vocab['og_vocab']);
+      $entities = entity_load('og_vocab', $og_vocab);
+      foreach ($entities as $key => $entity) {
+        $enabled_bundle[] = $entity->bundle;
+        $requested[] = $vid;
+      }
+      if (count($request_bundle) != count(array_intersect($enabled_bundle, $request_bundle))) {
+        $request_bundle = array_map('ucfirst', $request_bundle);
+        $content_types = implode(', ', $request_bundle);
+        $content_types = str_replace('_', ' ', $content_types);
+        if (count($request_bundle) == 1) {
+          throw new \RestfulBadRequestException(format_string('No vocabularies enabled for @bundles content type.', array('@bundles' => $content_types)));
+        }
+        else {
+          throw new \RestfulBadRequestException(format_string('@bundles do not share the same vocabularies.', array('@bundles' => $content_types)));
         }
       }
     }
