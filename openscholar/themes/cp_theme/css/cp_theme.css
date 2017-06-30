@@ -2022,3 +2022,10 @@ md-switch .md-bar {
     text-align: right;
     padding-right: 10px;
 }
+.cp-content .node-type {
+    text-transform: capitalize;
+}
+.cp-content .term-error-message {
+    width: 200px;
+    padding: 10px;
+}

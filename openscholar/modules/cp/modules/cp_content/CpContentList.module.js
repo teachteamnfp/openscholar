@@ -117,7 +117,7 @@
         var filter = angular.isDefined(filter) ? filter : '';
         scope.tableParams = new NgTableParams({
           page: 1,
-          count: 10,
+          count: 20,
           sorting: {
             created: 'desc'
           }
@@ -740,5 +740,14 @@
       };
     }
   ]);
+
+  m.filter('removeUnderscore', [function() {
+    return function(string) {
+      if (!angular.isString(string)) {
+        return string;
+      }
+      return string.replace(/_/g, ' ');
+    };
+  }]);
 
 })();

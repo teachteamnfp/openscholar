@@ -123,9 +123,12 @@ class OsTaxonomyTerm extends OsRestfulEntityCacheableBase {
         $requested[] = $vid;
       }
       if (count($request_bundle) != count(array_intersect($enabled_bundle, $request_bundle))) {
+        // Transform content type name from machine name to human readable
+        // format.
         $request_bundle = array_map('ucfirst', $request_bundle);
         $content_types = implode(', ', $request_bundle);
         $content_types = str_replace('_', ' ', $content_types);
+        // Provide a specific message for single selection.
         if (count($request_bundle) == 1) {
           throw new \RestfulBadRequestException(format_string('No vocabularies enabled for @bundles content type.', array('@bundles' => $content_types)));
         }

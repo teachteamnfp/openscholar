@@ -599,7 +599,7 @@ function cp_content_cp_settings() {
   $settings['cp_content'] = array(
     'group' => array(
       '#id' => 'cp_content',
-      '#title' => t('Contents'),
+      '#title' => t('Content'),
       '#weight' => 2,
       '#menu_parent' => 'browse'
     ),
