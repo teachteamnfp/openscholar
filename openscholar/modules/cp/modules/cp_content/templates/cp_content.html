@@ -1,8 +1,7 @@
 <div class="cp-content">
   <div ng-show="message" id="messages">
     <div class="messages status">
-    <a class="dismiss" ng-click="closeMessage()">X</a>
-    {{message}}
+      <a class="dismiss" ng-click="closeMessage()">X</a> {{message}}
     </div>
   </div>
   <div class="section-search">
@@ -43,8 +42,7 @@
   </script>
   <table ng-table="tableParams" class="table">
     <tr ng-repeat="node in tableParams.data" ng-class="{even: $even, odd: $odd}">
-      <td header="'headerCheckbox.html'">
-      <input type="checkbox" ng-model="checkboxes.items[node.id]" /></td>
+      <td header="'headerCheckbox.html'"><input type="checkbox" ng-model="checkboxes.items[node.id]" /></td>
       <td title="'Title'" sortable="'label'" ng-bind-html="node.link"></td>
       <td title="'Type'" sortable="'type'" class="node-type">{{node.type | removeUnderscore}}</td>
       <td title="'Author'" sortable="'author'">{{node.author}}</td>
@@ -53,22 +51,24 @@
       <td>
         <a href="#" class="cp-popover" ng-click="popOver($event, node.id)"><span class="glyphicon glyphicon-pencil">Action</span>
           <div class="cp-popover-wrapper left" ng-show="showPopover == node.id">
-           <ul>
-             <li><a href="{{vsiteUrl}}/node/{{node.id}}/edit">Edit</a></li>
-             <li><a ng-click="nodeDelete(node.id)">Delete</a></li>
-           </ul>
+            <ul>
+              <li><a href="{{vsiteUrl}}/node/{{node.id}}/edit">Edit</a></li>
+              <li><a ng-click="nodeDelete(node.id)">Delete</a></li>
+            </ul>
           </div>
-        </a>
-      </td>
+       </a>
+     </td>
     </tr>
-    <tr ng-if="noRecords"><td colspan="6">Oops, no record found!</td></tr>
+    <tr ng-if="noRecords">
+      <td colspan="6">Oops, no record found!</td>
+    </tr>
   </table>
   <div ng-hide="deleteUndoAction" class="undo-message-box">Deleted selected content. <span><a ng-click="deleteUndo()">UNDO</a></span>
     <a class="dismiss" ng-click="deleteNodeOnClose()">X</a>
   </div>
   <div ng-hide="deleteUndoMessage" class="undo-message-box">Action undone.
-  <a class="dismiss" ng-click="deleteUndoMessageClose()">X</a>
-</div>
+    <a class="dismiss" ng-click="deleteUndoMessageClose()">X</a>
+  </div>
   <div class="form-actions">
     <button ng-click="close(true)">Close</button>
   </div>

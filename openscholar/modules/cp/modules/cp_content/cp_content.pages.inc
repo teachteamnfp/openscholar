@@ -23,4 +23,3 @@ function cp_content_add_page() {
 
   return theme('node_add_list', array('content' => $links));
 }
-

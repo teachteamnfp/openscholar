@@ -4,30 +4,31 @@
   /**
    * Fetch filter options.
    */
-  m.service('cpFetchFilterOptions', ['$http', function($http) {
+  m.service('cpFetch', ['$http', function($http) {
     var service = {
-      getData: function(endpoint, nid) {
+      getData: function(endpoint, sorting, filter, page, count) {
         var baseUrl = Drupal.settings.paths.api;
-        var nids = '';
-        var params = {
-          sort: 'label'
-        };
+        var params = {};
+        if (angular.isDefined(sorting)) {
+          params.sort = sorting;
+        }
+        if (angular.isDefined(page) && angular.isDefined(count)) {
+          params.page = page;
+          params.range = count;
+        }
+        if (angular.isUndefined(filter)) {
+          filters = '';
+        }
         // Fetch the vsite id.
         if (angular.isDefined(Drupal.settings.spaces)) {
           if (Drupal.settings.spaces.id) {
             params.vsite = Drupal.settings.spaces.id;
           }
         }
-        if (angular.isDefined(nid)) {
-          angular.forEach(nid, function(nid, key) {
-             nids += '&nids[' + key + ']=' + nid;
-          });
-        }
-
         var config = {
           params: params
         }
-        var promise = $http.get(baseUrl + '/' + endpoint + '?' + nids, config).then(
+        var promise = $http.get(baseUrl + '/' + endpoint + '?' + filter, config).then(
           function successCallback(response) {
             return response.data;
           },
@@ -36,35 +37,6 @@
           });
 
         return promise;
-      }
-    }
-
-    return service;
-
-  }]);
-
-  /**
-   * Fetch content list.
-   */
-  m.service('cpFetchContent', ['$http', function($http) {
-
-    var service = {
-      getData: function(page, count, sorting, filter, vsite) {
-        var baseUrl = Drupal.settings.paths.api;
-        var params = {
-          page: page,
-          vsite: vsite,
-          range: count,
-          sort: sorting,
-        };
-        var config = {
-          params: params
-        }
-        var promise = $http.get(baseUrl + '/nodes?' + filter, config)
-          .success(function(response) {});
-        return promise.then(function(result) {
-          return result;
-        });
       }
     }
 
@@ -94,7 +66,7 @@
   /**
    * Fetching cp content and fill it in setting form modal.
    */
-  m.directive('cpContent', ['$rootScope', '$timeout', 'NgTableParams', 'cpFetchContent', 'cpFetchFilterOptions', 'cpOperation', function($rootScope, $timeout, NgTableParams, cpFetchContent, cpFetchFilterOptions, cpOperation) {
+  m.directive('cpContent', ['$rootScope', '$timeout', 'NgTableParams', 'cpFetch', 'cpOperation', function($rootScope, $timeout, NgTableParams, cpFetch, cpOperation) {
     function link(scope, element, attrs) {
       scope.message = false;
       scope.closeMessage = function() {
@@ -128,10 +100,10 @@
             $rootScope.resetCheckboxes();
             var orderBycolumn = params.orderBy();
             var sortNameValue = orderBycolumn[0].replace(/\+/g, "");
-            return cpFetchContent.getData(params.page(), params.count(), sortNameValue, filter, vsite).then(function(responce) {
-              params.total(responce.data.count);
-              scope.noRecords = responce.data.data.length == 0 ? true : false;
-              return responce.data.data;
+            return cpFetch.getData('nodes', sortNameValue, filter, params.page(), params.count()).then(function(responce) {
+              params.total(responce.count);
+              scope.noRecords = responce.data.length == 0 ? true : false;
+              return responce.data;
             });
           }
         });
@@ -140,7 +112,10 @@
       tableData();
 
       // Bulk Operation.
-      scope.checkboxes = { 'checked': false, items: {} };
+      scope.checkboxes = {
+        'checked': false,
+        items: {}
+      };
       $rootScope.disableApply = true;
 
       // Reset select all checkboxes.
@@ -165,12 +140,13 @@
       // Watch for data checkboxes.
       scope.$watch('checkboxes.items', function(values) {
         if (!scope.tableParams.data) {
-            return;
+          return;
         }
-        var checked = 0, unchecked = 0,
+        var checked = 0,
+          unchecked = 0,
           total = scope.tableParams.data.length;
         angular.forEach(scope.tableParams.data, function(node) {
-          checked   +=  (scope.checkboxes.items[node.id]) || 0;
+          checked += (scope.checkboxes.items[node.id]) || 0;
           unchecked += (!scope.checkboxes.items[node.id]) || 0;
         });
         if ((unchecked == 0) || (checked == 0)) {
@@ -197,12 +173,12 @@
           }
         });
         var data = {
-          nids : nids,
-          operation : operation
+          nids: nids,
+          operation: operation
         }
         return cpOperation.postData('nodes/bulk', data).then(function(responce) {
           if (responce.data.data.saved) {
-            scope.message = 'Selected content has been ' +operation+ '.';
+            scope.message = 'Selected content has been ' + operation + '.';
             $rootScope.resetCheckboxes();
             tableData();
           } else {
@@ -244,7 +220,7 @@
       scope.contentTypeTexts = {
         buttonDefaultText: 'All content types',
       }
-      cpFetchFilterOptions.getData('content_types').then(function(responce) {
+      cpFetch.getData('content_types', 'label').then(function(responce) {
         scope.contentTypes = responce.data;
       });
 
@@ -264,7 +240,7 @@
       scope.taxonomyTermsTexts = {
         buttonDefaultText: 'Taxonomy Terms'
       };
-      cpFetchFilterOptions.getData('taxonomy').then(function(responce) {
+      cpFetch.getData('taxonomy').then(function(responce) {
         scope.taxonomyTermsOptions = responce.data;
       });
 
@@ -313,15 +289,15 @@
         scope.deleteUndoMessage = true;
         scope.deleteUndoAction = !scope.deleteUndoAction;
         nodeId = [nid];
-        timer = $timeout(function () {
+        timer = $timeout(function() {
           scope.deleteUndoAction = !scope.deleteUndoAction;
           var data = {
-            nids : nodeId,
-            operation : 'deleted'
+            nids: nodeId,
+            operation: 'deleted'
           }
           return cpOperation.postData('nodes/bulk', data).then(function(responce) {
             if (responce.data.data.saved) {
-              scope.message = 'Selected content has been ' +operation+ '.';
+              scope.message = 'Selected content has been ' + operation + '.';
               tableData();
             }
           });
@@ -331,8 +307,8 @@
       scope.deleteNodeOnClose = function() {
         $timeout.cancel(timer);
         var data = {
-          nids : nodeId,
-          operation : 'deleted'
+          nids: nodeId,
+          operation: 'deleted'
         }
         return cpOperation.postData('nodes/bulk', data).then(function(responce) {
           if (responce.data.data.saved) {
@@ -357,12 +333,12 @@
         var operation = (publish_status) ? 'published' : 'unpublished';
         var nodeId = [nid];
         var data = {
-          nids : nodeId,
-          operation : operation
+          nids: nodeId,
+          operation: operation
         }
         return cpOperation.postData('nodes/bulk', data).then(function(responce) {
           if (responce.data.data.saved) {
-            scope.message = 'Selected content has been '+operation+'.';
+            scope.message = 'Selected content has been ' + operation + '.';
           }
         });
       };
@@ -377,9 +353,9 @@
     };
   }]);
 
-  m.directive('cpContentDropdownMultiselect', ['$rootScope', '$filter', '$document', '$compile', '$parse', 'cpOperation', 'cpFetchFilterOptions',
+  m.directive('cpContentDropdownMultiselect', ['$rootScope', '$filter', '$document', '$compile', '$parse', 'cpOperation', 'cpFetch',
 
-    function($rootScope, $filter, $document, $compile, $parse, cpOperation, cpFetchFilterOptions) {
+    function($rootScope, $filter, $document, $compile, $parse, cpOperation, cpFetch) {
 
       return {
         restrict: 'AE',
@@ -451,18 +427,22 @@
           scope.toggleDropdown = function() {
             scope.open = !scope.open;
             if (scope.settings.termDropdown) {
-              var nids = [];
-              angular.forEach($rootScope.selectedItems, function(value, key) {
-                if (value) {
-                  nids.push(key);
-                }
-              });
+              var filter = '';
+              if (scope.settings.termOeration) {
+                var i = 0;
+                angular.forEach($rootScope.selectedItems, function(nid, key) {
+                  if (nid) {
+                    filter += '&nids[' + i + ']=' + key;
+                    i++;
+                  }
+                });
+              }
+
               scope.showTermErrorMessage = false;
-              nids = (scope.settings.termOeration) ? nids : '';
-              cpFetchFilterOptions.getData('taxonomy', nids).then(function(responce) {
+              cpFetch.getData('taxonomy', 'label', filter).then(function(responce) {
                 if (angular.isDefined(responce.status) && responce.status == 400) {
-                   scope.termErrorMessage = responce.title;
-                   scope.showTermErrorMessage = true;
+                  scope.termErrorMessage = responce.title;
+                  scope.showTermErrorMessage = true;
                 } else {
                   scope.showTermErrorMessage = false;
                   scope.options = responce.data;
@@ -513,9 +493,14 @@
               }
               return cpOperation.postData('nodes/term/add', data).then(function(responce) {
                 if (responce.data.data.term_id) {
-                  scope.orderedItems.splice(key, 0, {id: responce.data.data.term_id, label: data.name, vid: data.vid, vocabName: vocabName});
+                  scope.orderedItems.splice(key, 0, {
+                    id: responce.data.data.term_id,
+                    label: data.name,
+                    vid: data.vid,
+                    vocabName: vocabName
+                  });
                   scope.orderedItems[key].termName = '';
-                  scope.$parent.$parent.message = data.name+' term have been added to '+vocabName+' vocabulary.';
+                  scope.$parent.$parent.message = data.name + ' term have been added to ' + vocabName + ' vocabulary.';
                 } else {
                   scope.$parent.$parent.message = message.failedMessage;
                 }

@@ -593,7 +593,6 @@ function cp_content_views_query_alter(&$view, views_plugin_query_default &$query
  * Implements hook_cp_settings().
  */
 function cp_content_cp_settings() {
-
   $settings = array();
 
   $settings['cp_content'] = array(
