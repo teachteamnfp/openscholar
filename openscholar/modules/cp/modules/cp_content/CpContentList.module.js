@@ -72,12 +72,6 @@
       scope.closeMessage = function() {
         scope.message = false;
       }
-      // Fetch the vsite id.
-      if (Drupal.settings.spaces != undefined) {
-        if (Drupal.settings.spaces.id) {
-          var vsite = Drupal.settings.spaces.id;
-        }
-      }
       // Fetch vsite home.
       if (Drupal.settings.paths.vsite_home != undefined) {
         scope.vsiteUrl = Drupal.settings.paths.vsite_home;
@@ -85,6 +79,7 @@
 
       // Hide Defaut buttons from ApSettings Modal form.
       scope.$parent.$parent.$parent.showSaveButton = false;
+
       var tableData = function(filter) {
         var filter = angular.isDefined(filter) ? filter : '';
         scope.tableParams = new NgTableParams({
@@ -95,7 +90,7 @@
           }
         }, {
           total: 0,
-          counts: [], //hide page counts control.
+          counts: [], // hide page counts control.
           getData: function(params) {
             $rootScope.resetCheckboxes();
             var orderBycolumn = params.orderBy();
@@ -265,7 +260,7 @@
         tableData(filter);
       };
 
-      // Edit and Delete by nid.
+      // Delete node.
       scope.showPopover = false;
       scope.popOver = function($event, nid) {
         if (angular.isDefined(nid)) {
@@ -281,7 +276,8 @@
           scope.$apply();
         }
       };
-
+      
+      // Show Undo div to user for 8 seconds on delete.
       scope.deleteUndoAction = true;
       scope.deleteUndoMessage = true;
       var nodeId, timer;
