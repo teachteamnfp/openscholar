@@ -70,6 +70,7 @@ class OsTaxonomyTerm extends OsRestfulEntityCacheableBase {
    * Display taxonomy terms from the current vsite.
    */
   protected function queryForListFilter(\EntityFieldQuery $query) {
+
     if (empty($_GET['vsite'])) {
       throw new \RestfulBadRequestException(t('You need to provide a vsite.'));
     }
@@ -112,17 +113,20 @@ class OsTaxonomyTerm extends OsRestfulEntityCacheableBase {
       foreach ($nodes as $key => $node) {
         $request_bundle[] = $node->type;
       }
-      $query = new EntityFieldQuery();
-      $og_vocab = $query
+      $query1 = new EntityFieldQuery();
+      $og_vocab = $query1
         ->entityCondition('entity_type', 'og_vocab')
+        ->propertyCondition('bundle', $request_bundle, 'IN')
         ->execute();
       $og_vocab = array_keys($og_vocab['og_vocab']);
       $entities = entity_load('og_vocab', $og_vocab);
       foreach ($entities as $key => $entity) {
-        $enabled_bundle[] = $entity->bundle;
-        $requested[] = $vid;
+        $requested[] = $entity->vid;
       }
-      if (count($request_bundle) != count(array_intersect($enabled_bundle, $request_bundle))) {
+      if (count(array_unique($request_bundle)) > 1) {
+        $requested = array_unique(array_diff_assoc($requested, array_unique($requested)));
+      }
+      if (empty($requested)) {
         // Transform content type name from machine name to human readable
         // format.
         $request_bundle = array_map('ucfirst', $request_bundle);
@@ -145,8 +149,8 @@ class OsTaxonomyTerm extends OsRestfulEntityCacheableBase {
     if (empty($requested)) {
       throw new \RestfulBadRequestException(format_string('The vocab(s) @vocab you asked for is not part of the vsite.', array('@vocab' => explode(', ', $badVocabs))));
     }
-
     $query->propertyCondition('vid', $requested, 'IN');
+
   }
 
   /**
