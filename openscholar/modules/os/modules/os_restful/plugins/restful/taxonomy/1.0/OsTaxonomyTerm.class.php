@@ -109,36 +109,45 @@ class OsTaxonomyTerm extends OsRestfulEntityCacheableBase {
       // Load only enabled vocabularies of seclected content type.
       $nodes = node_load_multiple($this->request['nids']);
       $request_bundle = array();
-      $enabled_bundle = array();
+      $enabled_bundles = array();
       foreach ($nodes as $key => $node) {
         $request_bundle[] = $node->type;
       }
-      $query1 = new EntityFieldQuery();
-      $og_vocab = $query1
-        ->entityCondition('entity_type', 'og_vocab')
-        ->propertyCondition('bundle', $request_bundle, 'IN')
-        ->execute();
-      $og_vocab = array_keys($og_vocab['og_vocab']);
-      $entities = entity_load('og_vocab', $og_vocab);
-      foreach ($entities as $key => $entity) {
-        $requested[] = $entity->vid;
-      }
-      if (count(array_unique($request_bundle)) > 1) {
-        $requested = array_unique(array_diff_assoc($requested, array_unique($requested)));
-      }
-      if (empty($requested)) {
-        // Transform content type name from machine name to human readable
-        // format.
-        $request_bundle = array_map('ucfirst', $request_bundle);
-        $content_types = implode(', ', $request_bundle);
-        $content_types = str_replace('_', ' ', $content_types);
-        // Provide a specific message for single selection.
-        if (count($request_bundle) == 1) {
-          throw new \RestfulBadRequestException(format_string('No vocabularies enabled for @bundles content type.', array('@bundles' => $content_types)));
+      $request_bundle = array_unique($request_bundle);
+      // Transform content type name from machine name to human readable
+      // format.
+      $content_types = array_map('ucfirst', $request_bundle);
+      $content_types = implode(', ', $content_types);
+      $content_types = str_replace('_', ' ', $content_types);
+
+      foreach ($request_bundle as $key => $bundle) {
+        $og_vocab = new EntityFieldQuery();
+        $og_vocab = $og_vocab
+          ->entityCondition('entity_type', 'og_vocab')
+          ->propertyCondition('bundle', $bundle)
+          ->execute();
+        $og_vocab = array_keys($og_vocab['og_vocab']);
+        $entities = entity_load('og_vocab', $og_vocab);
+        foreach ($entities as $key => $entity) {
+          if ($entity->vid) {
+            $requested[] = $entity->vid;
+            $enabled_bundles[] = $entity->bundle;
+          }
         }
-        else {
+      }
+      if (count($request_bundle) > 1) {
+        $requested = array_unique(array_diff_assoc($requested, array_unique($requested)));
+        if (empty($requested)) {
           throw new \RestfulBadRequestException(format_string('@bundles do not share the same vocabularies.', array('@bundles' => $content_types)));
         }
+        foreach ($request_bundle as $key => $bundle) {
+          if (!in_array($bundle, $enabled_bundles)) {
+            throw new \RestfulBadRequestException(format_string('@bundles do not share the same vocabularies.', array('@bundles' => $content_types)));
+          }
+        }
+      }
+      if (empty($requested)) {
+        throw new \RestfulBadRequestException(format_string('No vocabularies enabled for @bundles content type.', array('@bundles' => $content_types)));
       }
     }
     else {
