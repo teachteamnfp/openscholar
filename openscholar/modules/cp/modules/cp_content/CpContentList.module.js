@@ -82,7 +82,7 @@
         e.stopPropagation();
 
         ModalService.showModal({
-          controller: "ModalController",
+          controller: "cpModalController",
           template: '<form id="cp-content"><div cp-content></div></form>',
         })
         .then(function (modal) {
@@ -100,7 +100,7 @@
     };
   }]);
 
-  m.controller('ModalController', function($scope, close) {
+  m.controller('cpModalController', function($scope, close) {
     $scope.close = function (arg) {
       close(arg);
     }
@@ -255,9 +255,9 @@
       scope.contentTypeTexts = {
         buttonDefaultText: 'All content types',
       }
-      cpFetch.getData('content_types', 'label').then(function(responce) {
-        scope.contentTypes = responce.data;
-      });
+      if (angular.isDefined(Drupal.settings.cpContent.contentTypeOptions)) {
+        scope.contentTypes = Drupal.settings.cpContent.contentTypeOptions;
+      }
 
       scope.selectAllFlag = false;
       $rootScope.$watch('selectAllFlag', function(newValue) {
