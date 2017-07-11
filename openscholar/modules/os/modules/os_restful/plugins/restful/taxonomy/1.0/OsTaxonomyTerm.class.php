@@ -2,6 +2,14 @@
 
 class OsTaxonomyTerm extends OsRestfulEntityCacheableBase {
 
+  public static function controllersInfo() {
+    return array(
+      'term/add' => array(
+        RestfulInterface::POST => 'addTerm'
+      )
+    ) + parent::controllersInfo();
+  }
+
   /**
    * {@inheritdoc}
    */
@@ -105,13 +113,16 @@ class OsTaxonomyTerm extends OsRestfulEntityCacheableBase {
         }
       }
     }
-    elseif (!empty($this->request['nids'])) {
+    elseif (!empty($this->request['entity_id']) && !empty($this->request['entity_type'])) {
       // Load only enabled vocabularies of seclected content type.
-      $nodes = node_load_multiple($this->request['nids']);
+      //$nodes = node_load_multiple($this->request['nids']);
+      $entity_type = $this->request['entity_type'];
+      $entity_id = $this->request['entity_id'];
+      $entities = entity_load($entity_type, $entity_id);
       $request_bundle = array();
       $enabled_bundles = array();
-      foreach ($nodes as $key => $node) {
-        $request_bundle[] = $node->type;
+      foreach ($entities as $key => $entity) {
+        $request_bundle[] = $entity->type;
       }
       $request_bundle = array_unique($request_bundle);
       // Transform content type name from machine name to human readable
@@ -246,6 +257,24 @@ class OsTaxonomyTerm extends OsRestfulEntityCacheableBase {
     // Vocabularies cannot really be editted. When they were first created isn't stored either.
     // This function is only concerned with modifications, so as long as we assume it's really old, we're fine for now
     return strotime('-31 days', REQUEST_TIME);
+  }
+
+  /**
+   * Create a taxonomy term and return tid.
+   */
+  protected function addTerm() {
+    if (!empty($this->request['vid']) && !empty($this->request['name'])) {
+      $parent_id = 0;
+      $term = new stdClass();
+      $term->name = $this->request['name'];
+      $term->vid = $this->request['vid'];
+      $term->parent = array($parent_id);
+      taxonomy_term_save($term);
+      return array('term_id' => $term->tid);
+    }
+    else {
+      return array('term_id' => false);
+    }
   }
 
 }

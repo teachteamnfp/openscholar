@@ -641,7 +641,7 @@ function cp_content_library() {
 function cp_content_preprocess_page(&$vars) {
   if (user_is_logged_in() && variable_get('admin_panel_enabled', FALSE)) {
     drupal_add_library('cp_content', 'cp-content');
-    // Get content type dropdown.
+    // Get content type options.
     $content_types = array();
     $exempted_content_types = array(
       'blog_import' => 'Blog entry import',

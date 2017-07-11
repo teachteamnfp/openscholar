@@ -137,7 +137,7 @@
             var sortNameValue = orderBycolumn[0].replace(/\+/g, "");
             return cpFetch.getData('nodes', sortNameValue, filter, params.page(), params.count()).then(function(responce) {
               params.total(responce.count);
-              scope.noRecords = responce.data.length == 0 ? true : false;
+              scope.noRecords = (responce.data.length) == 0 ? true : false;
               return responce.data;
             });
           }
@@ -208,7 +208,8 @@
           }
         });
         var data = {
-          nids: nids,
+          entity_type: 'node',
+          entity_id: nids,
           operation: operation
         }
         return cpOperation.postData('nodes/bulk', data).then(function(responce) {
@@ -328,7 +329,8 @@
         timer = $timeout(function() {
           scope.deleteUndoAction = !scope.deleteUndoAction;
           var data = {
-            nids: nodeId,
+            entity_type: 'node',
+            entity_id: nodeId,
             operation: 'deleted'
           }
           return cpOperation.postData('nodes/bulk', data).then(function(responce) {
@@ -343,7 +345,8 @@
       scope.deleteNodeOnClose = function() {
         $timeout.cancel(timer);
         var data = {
-          nids: nodeId,
+          entity_type: 'node',
+          entity_id: nodeId,
           operation: 'deleted'
         }
         return cpOperation.postData('nodes/bulk', data).then(function(responce) {
@@ -468,7 +471,7 @@
                 var i = 0;
                 angular.forEach($rootScope.selectedItems, function(nid, key) {
                   if (nid) {
-                    filter += '&nids[' + i + ']=' + key;
+                    filter += '&entity_id[' + i + ']=' + key + '&entity_type=node';
                     i++;
                   }
                 });
@@ -527,7 +530,7 @@
                 vid: vid,
                 name: scope.orderedItems[key].termName
               }
-              return cpOperation.postData('nodes/term/add', data).then(function(responce) {
+              return cpOperation.postData('taxonomy/term/add', data).then(function(responce) {
                 if (responce.data.data.term_id) {
                   scope.orderedItems.splice(key, 0, {
                     id: responce.data.data.term_id,
@@ -556,8 +559,9 @@
               terms.push(obj.id);
             });
             var data = {
-              nids: nids,
-              terms: terms
+              entity_type: 'node',
+              entity_id: nids,
+              tid: terms
             };
             return cpOperation.postData('nodes/bulk/term/remove', data).then(function(responce) {
               if (responce.data.data.saved) {
@@ -582,8 +586,9 @@
               terms.push(obj.id);
             });
             var data = {
-              nids: nids,
-              terms: terms
+              entity_type: 'node',
+              entity_id: nids,
+              tid: terms
             };
             return cpOperation.postData('nodes/bulk/term/apply', data).then(function(responce) {
               if (responce.data.data.saved) {
