@@ -199,30 +199,6 @@
         angular.element(document.getElementById("select_all")).prop("indeterminate", (checked != 0 && unchecked != 0));
       }, true);
 
-      // Bulk node operation.
-      scope.nodeBulkOperation = function(operation) {
-        var nids = [];
-        angular.forEach($rootScope.selectedItems, function(value, key) {
-          if (value) {
-            nids.push(key);
-          }
-        });
-        var data = {
-          entity_type: 'node',
-          entity_id: nids,
-          operation: operation
-        }
-        return cpOperation.postData('nodes/bulk', data).then(function(responce) {
-          if (responce.data.data.saved) {
-            scope.message = 'Selected content has been ' + operation + '.';
-            $rootScope.resetCheckboxes();
-            tableData();
-          } else {
-            scope.message = 'Please select at least one item.';
-          }
-        });
-      }
-
       // Initialize apply taxonomy term dropdown.
       scope.applyTermModel = [];
       $rootScope.applyTermModel = scope.applyTermModel;
@@ -301,6 +277,34 @@
         tableData(filter);
       };
 
+      // Bulk node operation.
+      scope.nodeBulkOperation = function(operation) {
+        var nids = [];
+        angular.forEach($rootScope.selectedItems, function(selectedItem, nid) {
+          if (selectedItem) {
+            nids.push(parseInt(nid));
+          }
+        });
+        var data = {
+          entity_type: 'node',
+          entity_id: nids,
+          operation: operation
+        }
+        if (operation == 'deleted') {
+          scope.nodeDelete(nids);
+        } else {
+          return cpOperation.postData('nodes/bulk', data).then(function(responce) {
+            if (responce.data.data.saved) {
+              scope.message = 'Selected content has been ' + operation + '.';
+              $rootScope.resetCheckboxes();
+              tableData();
+            } else {
+              scope.message = 'Please select at least one item.';
+            }
+          });
+        }
+      }
+
       // Delete node.
       scope.showPopover = false;
       scope.popOver = function($event, nid) {
@@ -321,11 +325,30 @@
       // Show Undo div to user for 8 seconds on delete.
       scope.deleteUndoAction = true;
       scope.deleteUndoMessage = true;
-      var nodeId, timer;
+      var nodeId, timer, list;
+      var oldList = [];
       scope.nodeDelete = function(nid) {
+        if (angular.isArray(nid)) {
+          nodeId = nid;
+        } else {
+          nodeId = [nid];
+        }
+        var newDataList = [];
+        if (oldList.length > 0) {
+          list = oldList;
+          oldList = [];
+        } else {
+          list = scope.tableParams.data;
+        }
+        angular.forEach(list, function(node) {
+          if(nodeId.indexOf(node.id) == -1) {
+            newDataList.push(node);
+          }
+          oldList.push(node);
+        });
+        scope.tableParams.data = newDataList;
         scope.deleteUndoMessage = true;
         scope.deleteUndoAction = !scope.deleteUndoAction;
-        nodeId = [nid];
         timer = $timeout(function() {
           scope.deleteUndoAction = !scope.deleteUndoAction;
           var data = {
@@ -335,7 +358,7 @@
           }
           return cpOperation.postData('nodes/bulk', data).then(function(responce) {
             if (responce.data.data.saved) {
-              scope.message = 'Selected content has been ' + operation + '.';
+              scope.message = 'Selected content has been ' + data.operation + '.';
               tableData();
             }
           });
@@ -362,6 +385,11 @@
         $timeout.cancel(timer);
         scope.deleteUndoAction = true;
         scope.deleteUndoMessage = !scope.deleteUndoMessage;
+        $rootScope.resetCheckboxes();
+        timer = $timeout(function() {
+          scope.deleteUndoMessage = true;
+        }, 3000);
+        scope.tableParams.data = oldList;
       };
 
       scope.deleteUndoMessageClose = function() {
@@ -372,7 +400,8 @@
         var operation = (publish_status) ? 'published' : 'unpublished';
         var nodeId = [nid];
         var data = {
-          nids: nodeId,
+          entity_type: 'node',
+          entity_id: nodeId,
           operation: operation
         }
         return cpOperation.postData('nodes/bulk', data).then(function(responce) {
