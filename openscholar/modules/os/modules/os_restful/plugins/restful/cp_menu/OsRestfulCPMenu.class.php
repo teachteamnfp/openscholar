@@ -327,8 +327,8 @@ class OSRestfulCPMenu extends \RestfulBase implements \RestfulDataProviderInterf
             'children' => array(              
               'content' => array(
                 'label' => 'Content',
-                'type' => 'link',
-                'href' => 'cp/content'
+                'type' => 'directive',
+                'directive' => array('cp-content-modal')
               ),
               'files' => array(
                 'label' => 'Files',

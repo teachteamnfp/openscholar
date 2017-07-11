@@ -590,17 +590,6 @@ function cp_content_views_query_alter(&$view, views_plugin_query_default &$query
 }
 
 /**
- * Implements hook_os_restful_cp_menu_admin_panel_alter().
- */
-function cp_content_os_restful_cp_menu_admin_panel_alter(&$menu) {
-  $parent = &$menu['content']['children']['browse']['children'];
-  if (isset($parent['content'])) {
-    $parent['content']['type'] = 'directive';
-    $parent['content']['directive'] = array('cp-content-modal');
-  }
-}
-
-/**
  * Implements hook_library().
  */
 function cp_content_library() {
