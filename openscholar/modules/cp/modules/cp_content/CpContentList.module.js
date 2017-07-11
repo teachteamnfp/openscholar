@@ -64,6 +64,49 @@
   }]);
 
   /**
+   * Open modals for cp content listing.
+   */
+  m.directive('cpContentModal', ['ModalService', function (ModalService) {
+    var dialogOptions = {
+      minWidth: 850,
+      minHeight: 100,
+      modal: true,
+      position: 'center',
+      dialogClass: 'ap-settings-form'
+    };
+
+    function link(scope, elem, attrs) {
+
+      elem.bind('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        ModalService.showModal({
+          controller: "ModalController",
+          template: '<form id="cp-content"><div cp-content></div></form>',
+        })
+        .then(function (modal) {
+          dialogOptions.title = 'Content';
+          dialogOptions.close = function (event, ui) {
+            modal.element.remove();
+          }
+          modal.element.dialog(dialogOptions);
+        });
+      });
+    }
+
+    return {
+      link: link
+    };
+  }]);
+
+  m.controller('ModalController', function($scope, close) {
+    $scope.close = function (arg) {
+      close(arg);
+    }
+  });
+
+  /**
    * Fetching cp content and fill it in setting form modal.
    */
   m.directive('cpContent', ['$rootScope', '$timeout', 'NgTableParams', 'cpFetch', 'cpOperation', function($rootScope, $timeout, NgTableParams, cpFetch, cpOperation) {
@@ -76,9 +119,6 @@
       if (Drupal.settings.paths.vsite_home != undefined) {
         scope.vsiteUrl = Drupal.settings.paths.vsite_home;
       }
-
-      // Hide Defaut buttons from ApSettings Modal form.
-      scope.$parent.$parent.$parent.showSaveButton = false;
 
       var tableData = function(filter) {
         var filter = angular.isDefined(filter) ? filter : '';
@@ -276,7 +316,7 @@
           scope.$apply();
         }
       };
-      
+
       // Show Undo div to user for 8 seconds on delete.
       scope.deleteUndoAction = true;
       scope.deleteUndoMessage = true;
