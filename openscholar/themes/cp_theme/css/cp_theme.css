@@ -2038,8 +2038,13 @@ label[for=cp-title-bulk] {
     z-index: 1;
  }
  .undo-message-box {
+    position: fixed;
+    top: 50%;
+    left: 40%;
+    margin-top: -100px;
+    margin-left: -250px;
     width: 300px;
-    height: 50px;
+    height: 45px;
     background: #000;
     color: #fff;
     text-align: center;
