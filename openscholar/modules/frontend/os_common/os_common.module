@@ -390,9 +390,6 @@ function os_common_library() {
         'group' => JS_LIBRARY,
       ),
     ),
-    'css' => array(
-      '//unpkg.com/ng-table@2.0.2/bundles/ng-table.min.css' => array(),
-    )
   );
 
   $info['ngMaterial'] = array(
@@ -403,9 +400,6 @@ function os_common_library() {
         'type' => 'external',
         'group' => JS_LIBRARY,
       ),
-    ),
-    'css' => array(
-      '//cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.4/angular-material.min.css' => array(),
     )
   );
 

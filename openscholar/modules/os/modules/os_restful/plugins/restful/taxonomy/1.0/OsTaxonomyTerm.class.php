@@ -113,53 +113,69 @@ class OsTaxonomyTerm extends OsRestfulEntityCacheableBase {
         }
       }
     }
-    elseif (!empty($this->request['entity_id']) && !empty($this->request['entity_type'])) {
+    elseif (!empty($this->request['entity_id']) && !empty($this->request['entity_type']) && !empty($this->request['vsite'])) {
       // Load only enabled vocabularies of seclected content type.
-      //$nodes = node_load_multiple($this->request['nids']);
       $entity_type = $this->request['entity_type'];
       $entity_id = $this->request['entity_id'];
-      $entities = entity_load($entity_type, $entity_id);
-      $request_bundle = array();
-      $enabled_bundles = array();
-      foreach ($entities as $key => $entity) {
-        $request_bundle[] = $entity->type;
+      $vsite = $this->request['vsite'];
+      $viste_vids = array();
+      foreach ($vocabData as $v) {
+        $viste_vids[] = $v->vid;
       }
-      $request_bundle = array_unique($request_bundle);
-      // Transform content type name from machine name to human readable
-      // format.
-      $content_types = array_map('ucfirst', $request_bundle);
-      $content_types = implode(', ', $content_types);
-      $content_types = str_replace('_', ' ', $content_types);
-
-      foreach ($request_bundle as $key => $bundle) {
-        $og_vocab = new EntityFieldQuery();
-        $og_vocab = $og_vocab
-          ->entityCondition('entity_type', 'og_vocab')
-          ->propertyCondition('bundle', $bundle)
-          ->execute();
-        $og_vocab = array_keys($og_vocab['og_vocab']);
-        $entities = entity_load('og_vocab', $og_vocab);
+      $entity_query = new EntityFieldQuery();
+      $entity_query = $entity_query
+        ->entityCondition('entity_type', $entity_type)
+        ->propertyCondition('nid', $entity_id, 'IN')
+        ->fieldCondition('og_group_ref', 'target_id', $vsite);
+      $entity_result = $entity_query->execute();
+      $entity_result = array_keys($entity_result['node']);
+      if (!empty($entity_result)) {
+        $entities = entity_load($entity_type, $entity_result);
+        $request_bundle = array();
+        $enabled_bundles = array();
         foreach ($entities as $key => $entity) {
-          if ($entity->vid) {
-            $requested[] = $entity->vid;
-            $enabled_bundles[] = $entity->bundle;
+          $request_bundle[] = $entity->type;
+        }
+        $request_bundle = array_unique($request_bundle);
+        // Transform content type name from machine name to human readable
+        // format.
+        $content_types = array_map('ucfirst', $request_bundle);
+        $content_types = implode(', ', $content_types);
+        $content_types = str_replace('_', ' ', $content_types);
+
+        foreach ($request_bundle as $key => $bundle) {
+          $og_vocab = new EntityFieldQuery();
+          $og_vocab = $og_vocab
+            ->entityCondition('entity_type', 'og_vocab')
+            ->propertyCondition('bundle', $bundle)
+            ->propertyCondition('vid', $viste_vids, 'IN')
+            ->execute();
+          $og_vocab = array_keys($og_vocab['og_vocab']);
+          $entities = entity_load('og_vocab', $og_vocab);
+          foreach ($entities as $key => $entity) {
+            if ($entity->vid) {
+              $requested[] = $entity->vid;
+              $enabled_bundles[] = $entity->bundle;
+            }
           }
         }
-      }
-      if (count($request_bundle) > 1) {
-        $requested = array_unique(array_diff_assoc($requested, array_unique($requested)));
-        if (empty($requested)) {
-          throw new \RestfulBadRequestException(format_string('@bundles do not share the same vocabularies.', array('@bundles' => $content_types)));
-        }
-        foreach ($request_bundle as $key => $bundle) {
-          if (!in_array($bundle, $enabled_bundles)) {
+        if (count($request_bundle) > 1) {
+          $requested = array_unique(array_diff_assoc($requested, array_unique($requested)));
+          if (empty($requested)) {
             throw new \RestfulBadRequestException(format_string('@bundles do not share the same vocabularies.', array('@bundles' => $content_types)));
           }
+          foreach ($request_bundle as $key => $bundle) {
+            if (!in_array($bundle, $enabled_bundles)) {
+              throw new \RestfulBadRequestException(format_string('@bundles do not share the same vocabularies.', array('@bundles' => $content_types)));
+            }
+          }
         }
+        if (empty($requested)) {
+          throw new \RestfulBadRequestException(format_string('No vocabularies enabled for @bundles content type.', array('@bundles' => $content_types)));
+        }
+
       }
-      if (empty($requested)) {
-        throw new \RestfulBadRequestException(format_string('No vocabularies enabled for @bundles content type.', array('@bundles' => $content_types)));
-      }
+      
     }
     else {
       // no filtered vocabs requested, so return everything based on the vsite.
