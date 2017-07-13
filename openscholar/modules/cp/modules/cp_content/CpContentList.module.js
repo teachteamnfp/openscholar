@@ -91,13 +91,14 @@
     $scope.close = function (arg) {
       close(arg);
     }
+
   });
 
   /**
    * Fetching cp content and fill it in setting form modal.
    */
   m.directive('cpContent', ['$rootScope', '$timeout', 'NgTableParams', 'cpFetch', 'EntityService', function($rootScope, $timeout, NgTableParams, cpFetch, EntityService) {
-    function link(scope, element, attrs) {
+    function link(scope, element, attrs, cpContentCtl) {
       scope.message = false;
       scope.closeMessage = function() {
         scope.message = false;
@@ -119,7 +120,7 @@
           total: 0,
           counts: [], // hide page counts control.
           getData: function(params) {
-            $rootScope.resetCheckboxes();
+            cpContentCtl.resetCheckboxes();
             var orderBycolumn = params.orderBy();
             var sortNameValue = orderBycolumn[0].replace(/\+/g, "");
             return cpFetch.getData('nodes', sortNameValue, filter, params.page(), params.count()).then(function(responce) {
@@ -139,14 +140,6 @@
         items: {}
       };
       $rootScope.disableApply = true;
-
-      // Reset select all checkboxes.
-      $rootScope.resetCheckboxes = function() {
-        scope.checkboxes.checked = false;
-        angular.forEach(scope.checkboxes.items, function(value, key) {
-          scope.checkboxes.items[key] = false;
-        });
-      }
 
       // Watch for check all checkbox.
       scope.$watch('checkboxes.checked', function(value) {
@@ -285,7 +278,7 @@
           bulkService.add(entity).then(function(responce) {
             if (responce.data.data[0]) {
               scope.message = 'Selected content has been ' + operation + '.';
-              $rootScope.resetCheckboxes();
+              cpContentCtl.resetCheckboxes();
               scope.search();
             }
           });
@@ -373,7 +366,7 @@
         $timeout.cancel(timer);
         scope.deleteUndoAction = true;
         scope.deleteUndoMessage = !scope.deleteUndoMessage;
-        $rootScope.resetCheckboxes();
+        cpContentCtl.resetCheckboxes();
         timer = $timeout(function() {
           scope.deleteUndoMessage = true;
         }, 3000);
@@ -399,10 +392,21 @@
           }
         });
       };
+    
+    }
 
+    function cpContentCtl($scope, $element, $attrs) {
+      // Reset select all checkboxes.
+      this.resetCheckboxes = function() {
+        $scope.checkboxes.checked = false;
+        angular.forEach($scope.checkboxes.items, function(value, key) {
+          $scope.checkboxes.items[key] = false;
+        });
+      }
     }
 
     return {
+      controller: cpContentCtl,
       link: link,
       templateUrl: function() {
         return Drupal.settings.paths.cpContent + '/cp_content.html'
@@ -410,11 +414,12 @@
     };
   }]);
 
-  m.directive('cpContentDropdownMultiselect', ['$rootScope', '$filter', '$document', '$compile', '$parse', 'cpFetch', 'EntityService',
+  m.directive('cpContentDropdownMultiselect', ['$rootScope', '$filter', '$document', '$compile', '$parse', 'cpFetch', 'EntityService', 
 
     function($rootScope, $filter, $document, $compile, $parse, cpFetch, EntityService) {
 
       return {
+         require: '^cpContent',
         restrict: 'AE',
         scope: {
           selectedModel: '=',
@@ -427,7 +432,7 @@
         templateUrl: function() {
           return Drupal.settings.paths.cpContent + '/cp_content_dropdown.html'
         },
-        link: function(scope, element, attrs) {
+        link: function(scope, element, attrs, cpContentCtl) {
 
           scope.checkboxes = attrs.checkboxes ? true : false;
           scope.groups = attrs.groupBy ? true : false;
@@ -586,7 +591,9 @@
               if (responce.data.data[0]) {
                 scope.$parent.$parent.message = 'Terms have been removed from selected content.';
                 scope.open = false;
-                $rootScope.resetCheckboxes();
+                cpContentCtl.resetCheckboxes();
+              } else {
+                scope.$parent.$parent.message = 'Please select a term to be removed.';
               }
             });
           };
@@ -612,7 +619,9 @@
               if (responce.data.data[0]) {
                 scope.$parent.$parent.message = 'Terms have been applied to selected content.';
                 scope.open = false;
-                $rootScope.resetCheckboxes();
+                cpContentCtl.resetCheckboxes();
+              } else {
+                scope.$parent.$parent.message = 'Please select a term to be applied.';
               }
             });
           };
