@@ -51,24 +51,6 @@
   }]);
 
   /**
-   * Post operations such as apply terms, add term, change publish status etc.
-   */
-  m.service('cpOperation', ['$http', function($http) {
-    var service = {
-      postData: function(endpoint, data, config) {
-        var promise = $http.post(restPath + '/' + endpoint, data, config)
-          .success(function(response) {});
-        return promise.then(function(result) {
-          return result;
-        });
-      }
-    }
-
-    return service;
-
-  }]);
-
-  /**
    * Open modals for cp content listing.
    */
   m.directive('cpContentModal', ['ModalService', function (ModalService) {
@@ -114,7 +96,7 @@
   /**
    * Fetching cp content and fill it in setting form modal.
    */
-  m.directive('cpContent', ['$rootScope', '$timeout', 'NgTableParams', 'cpFetch', 'cpOperation', function($rootScope, $timeout, NgTableParams, cpFetch, cpOperation) {
+  m.directive('cpContent', ['$rootScope', '$timeout', 'NgTableParams', 'cpFetch', 'EntityService', function($rootScope, $timeout, NgTableParams, cpFetch, EntityService) {
     function link(scope, element, attrs) {
       scope.message = false;
       scope.closeMessage = function() {
@@ -290,21 +272,21 @@
             nids.push(parseInt(nid));
           }
         });
-        var data = {
+        var entity = {
           entity_type: 'node',
           entity_id: nids,
           operation: operation
         }
+        // Bulk operation DELETE should go through Undo option. 
         if (operation == 'deleted') {
           scope.nodeDelete(nids);
         } else {
-          return cpOperation.postData('nodes/bulk', data).then(function(responce) {
-            if (responce.data.data.saved) {
+          var bulkService = new EntityService('nodes/bulk', 'id');
+          bulkService.add(entity).then(function(responce) {
+            if (responce.data.data[0]) {
               scope.message = 'Selected content has been ' + operation + '.';
               $rootScope.resetCheckboxes();
               tableData();
-            } else {
-              scope.message = 'Please select at least one item.';
             }
           });
         }
@@ -356,15 +338,15 @@
         scope.deleteUndoAction = !scope.deleteUndoAction;
         timer = $timeout(function() {
           scope.deleteUndoAction = !scope.deleteUndoAction;
-          var data = {
+          var entity = {
             entity_type: 'node',
             entity_id: nodeId,
             operation: 'deleted'
           }
-          return cpOperation.postData('nodes/bulk', data).then(function(responce) {
-            if (responce.data.data.saved) {
-              scope.message = 'Selected content has been ' + data.operation + '.';
-              tableData();
+          var deleteService = new EntityService('nodes/bulk', 'id');
+          deleteService.add(entity).then(function(responce) {
+            if (responce.data.data[0]) {
+              scope.message = 'Selected content has been ' + entity.operation + '.';
             }
           });
         }, 8000);
@@ -372,13 +354,14 @@
 
       scope.deleteNodeOnClose = function() {
         $timeout.cancel(timer);
-        var data = {
+        var entity = {
           entity_type: 'node',
           entity_id: nodeId,
           operation: 'deleted'
         }
-        return cpOperation.postData('nodes/bulk', data).then(function(responce) {
-          if (responce.data.data.saved) {
+        var deleteService = new EntityService('nodes/bulk', 'id');
+        deleteService.add(entity).then(function(responce) {
+          if (responce.data.data[0]) {
             scope.message = 'Selected content has been deleted.';
             scope.deleteUndoAction = true;
             tableData();
@@ -404,13 +387,14 @@
       scope.changePublishStatus = function(nid, publish_status) {
         var operation = (publish_status) ? 'published' : 'unpublished';
         var nodeId = [nid];
-        var data = {
+        var entity = {
           entity_type: 'node',
           entity_id: nodeId,
           operation: operation
         }
-        return cpOperation.postData('nodes/bulk', data).then(function(responce) {
-          if (responce.data.data.saved) {
+        var statusChangeService = new EntityService('nodes/bulk', 'id');
+        statusChangeService.add(entity).then(function(responce) {
+          if (responce.data.data[0]) {
             scope.message = 'Selected content has been ' + operation + '.';
           }
         });
@@ -426,9 +410,9 @@
     };
   }]);
 
-  m.directive('cpContentDropdownMultiselect', ['$rootScope', '$filter', '$document', '$compile', '$parse', 'cpOperation', 'cpFetch', 'EntityService',
+  m.directive('cpContentDropdownMultiselect', ['$rootScope', '$filter', '$document', '$compile', '$parse', 'cpFetch', 'EntityService',
 
-    function($rootScope, $filter, $document, $compile, $parse, cpOperation, cpFetch, EntityService) {
+    function($rootScope, $filter, $document, $compile, $parse, cpFetch, EntityService) {
 
       return {
         restrict: 'AE',
@@ -564,8 +548,8 @@
                 vid: vid,
                 name: scope.orderedItems[key].termName
               }
-              var termService = new EntityService('taxonomy/term/add', 'id');
-              termService.add(entity).then(function(responce) {
+              var termAddService = new EntityService('taxonomy/term/add', 'id');
+              termAddService.add(entity).then(function(responce) {
                 if (responce.data.data[0]) {
                   scope.orderedItems.splice(key, 0, {
                     id: responce.data.data[0],
@@ -591,18 +575,18 @@
             angular.forEach($rootScope.removeTermModel, function(obj, key) {
               terms.push(obj.id);
             });
-            var data = {
+            var entity = {
               entity_type: 'node',
               entity_id: nids,
               tid: terms
             };
-            return cpOperation.postData('nodes/bulk/term/remove', data).then(function(responce) {
-              if (responce.data.data.saved) {
+
+            var termRemoveNodeService = new EntityService('nodes/bulk/term/remove', 'id');
+            termRemoveNodeService.add(entity).then(function(responce) {
+              if (responce.data.data[0]) {
                 scope.$parent.$parent.message = 'Terms have been removed from selected content.';
                 scope.open = false;
                 $rootScope.resetCheckboxes();
-              } else {
-                scope.$parent.$parent.message = 'Please select a term to be removed.';
               }
             });
           };
@@ -618,18 +602,17 @@
             angular.forEach($rootScope.applyTermModel, function(obj, key) {
               terms.push(obj.id);
             });
-            var data = {
+            var entity = {
               entity_type: 'node',
               entity_id: nids,
               tid: terms
             };
-            return cpOperation.postData('nodes/bulk/term/apply', data).then(function(responce) {
-              if (responce.data.data.saved) {
+            var termApplyNodeService = new EntityService('nodes/bulk/term/apply', 'id');
+            termRemoveNodeService.add(entity).then(function(responce) {
+              if (responce.data.data[0]) {
                 scope.$parent.$parent.message = 'Terms have been applied to selected content.';
                 scope.open = false;
                 $rootScope.resetCheckboxes();
-              } else {
-                scope.$parent.$parent.message = 'Please select a term to be applied.';
               }
             });
           };

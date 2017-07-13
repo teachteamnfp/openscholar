@@ -261,10 +261,10 @@ class NodesRestfulBase extends RestfulEntityBase {
           $entity_wrapper->save();
         }
       }
-      return array('saved' => true);
+      return array(true);
     }
     else {
-      return array('saved' => false);
+      return array(false);
     }
   }
 
@@ -288,10 +288,10 @@ class NodesRestfulBase extends RestfulEntityBase {
         $entity_wrapper->og_vocabulary->set($result);
         $entity_wrapper->save();
       }
-      return array('saved' => true);
+      return array(true);
     }
     else {
-      return array('saved' => false);
+      return array(false);
     }
   }
 
@@ -315,10 +315,10 @@ class NodesRestfulBase extends RestfulEntityBase {
           $entity_wrapper->save();
         }
       }
-      return array('saved' => true);
+      return array(true);
     }
     else {
-      return array('saved' => false);
+      return array(false);
     }
   }
 
