@@ -1,5 +1,12 @@
 (function() {
-  var m = angular.module('CpContent', ['ui.bootstrap', 'ngTable', 'ngMaterial']);
+  var m = angular.module('CpContent', ['ui.bootstrap', 'ngTable', 'ngMaterial', 'EntityService']);
+  
+  /**
+   * Initialize config.
+   */
+  m.config(function () {
+    restPath = Drupal.settings.paths.api;
+  });
 
   /**
    * Fetch filter options.
@@ -7,7 +14,6 @@
   m.service('cpFetch', ['$http', function($http) {
     var service = {
       getData: function(endpoint, sorting, filter, page, count) {
-        var baseUrl = Drupal.settings.paths.api;
         var params = {};
         if (angular.isDefined(sorting)) {
           params.sort = sorting;
@@ -28,7 +34,7 @@
         var config = {
           params: params
         }
-        var promise = $http.get(baseUrl + '/' + endpoint + '?' + filter, config).then(
+        var promise = $http.get(restPath + '/' + endpoint + '?' + filter, config).then(
           function successCallback(response) {
             return response.data;
           },
@@ -50,8 +56,7 @@
   m.service('cpOperation', ['$http', function($http) {
     var service = {
       postData: function(endpoint, data, config) {
-        var baseUrl = Drupal.settings.paths.api;
-        var promise = $http.post(baseUrl + '/' + endpoint, data, config)
+        var promise = $http.post(restPath + '/' + endpoint, data, config)
           .success(function(response) {});
         return promise.then(function(result) {
           return result;
@@ -421,9 +426,9 @@
     };
   }]);
 
-  m.directive('cpContentDropdownMultiselect', ['$rootScope', '$filter', '$document', '$compile', '$parse', 'cpOperation', 'cpFetch',
+  m.directive('cpContentDropdownMultiselect', ['$rootScope', '$filter', '$document', '$compile', '$parse', 'cpOperation', 'cpFetch', 'EntityService',
 
-    function($rootScope, $filter, $document, $compile, $parse, cpOperation, cpFetch) {
+    function($rootScope, $filter, $document, $compile, $parse, cpOperation, cpFetch, EntityService) {
 
       return {
         restrict: 'AE',
@@ -555,22 +560,21 @@
           // Add term to vocabulary.
           scope.addTerm = function(key, vid, vocabName) {
             if (angular.isDefined(scope.orderedItems[key].termName)) {
-              var data = {
+              var entity = {
                 vid: vid,
                 name: scope.orderedItems[key].termName
               }
-              return cpOperation.postData('taxonomy/term/add', data).then(function(responce) {
-                if (responce.data.data.term_id) {
+              var termService = new EntityService('taxonomy/term/add', 'id');
+              termService.add(entity).then(function(responce) {
+                if (responce.data.data[0]) {
                   scope.orderedItems.splice(key, 0, {
-                    id: responce.data.data.term_id,
-                    label: data.name,
-                    vid: data.vid,
+                    id: responce.data.data[0],
+                    label: entity.name,
+                    vid: entity.vid,
                     vocabName: vocabName
                   });
                   scope.orderedItems[key].termName = '';
-                  scope.$parent.$parent.message = data.name + ' term have been added to ' + vocabName + ' vocabulary.';
-                } else {
-                  scope.$parent.$parent.message = message.failedMessage;
+                  scope.$parent.$parent.message = entity.name + ' term have been added to ' + vocabName + ' vocabulary.';
                 }
               });
             }

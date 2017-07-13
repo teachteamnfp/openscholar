@@ -286,10 +286,7 @@ class OsTaxonomyTerm extends OsRestfulEntityCacheableBase {
       $term->vid = $this->request['vid'];
       $term->parent = array($parent_id);
       taxonomy_term_save($term);
-      return array('term_id' => $term->tid);
-    }
-    else {
-      return array('term_id' => false);
+      return array($term->tid);
     }
   }
 
