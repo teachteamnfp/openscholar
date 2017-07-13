@@ -286,7 +286,7 @@
             if (responce.data.data[0]) {
               scope.message = 'Selected content has been ' + operation + '.';
               $rootScope.resetCheckboxes();
-              tableData();
+              scope.search();
             }
           });
         }
@@ -364,7 +364,7 @@
           if (responce.data.data[0]) {
             scope.message = 'Selected content has been deleted.';
             scope.deleteUndoAction = true;
-            tableData();
+            scope.search();
           }
         });
       };
@@ -608,7 +608,7 @@
               tid: terms
             };
             var termApplyNodeService = new EntityService('nodes/bulk/term/apply', 'id');
-            termRemoveNodeService.add(entity).then(function(responce) {
+            termApplyNodeService.add(entity).then(function(responce) {
               if (responce.data.data[0]) {
                 scope.$parent.$parent.message = 'Terms have been applied to selected content.';
                 scope.open = false;
