@@ -617,6 +617,7 @@ function cp_content_library() {
       array('os_common', 'ngMaterial'),
       array('os_common', 'underscore-js'),
       array('os_common', 'EntityService'),
+      array('os_common', 'JSPager'),
     )
   );
 

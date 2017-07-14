@@ -1,5 +1,5 @@
 (function() {
-  var m = angular.module('CpContent', ['ui.bootstrap', 'ngTable', 'ngMaterial', 'EntityService']);
+  var m = angular.module('CpContent', ['ui.bootstrap', 'JSPager', 'ngTable', 'ngMaterial', 'EntityService']);
   
   /**
    * Initialize config.
@@ -97,22 +97,60 @@
   /**
    * Fetching cp content and fill it in setting form modal.
    */
-  m.directive('cpContent', ['$rootScope', '$timeout', 'NgTableParams', 'cpFetch', 'EntityService', function($rootScope, $timeout, NgTableParams, cpFetch, EntityService) {
-    function link(scope, element, attrs, cpContentCtl) {
-      scope.message = false;
-      scope.closeMessage = function() {
-        scope.message = false;
-      }
+  m.directive('cpContent', ['$rootScope', '$timeout', '$filter', 'NgTableParams', 'cpFetch', 'EntityService', function($rootScope, $timeout, $filter, NgTableParams, cpFetch, EntityService) {
+    
+    function cpContentCtl($scope, $element, $attrs) {
+      $scope.message = false;
       // Fetch vsite home.
       if (Drupal.settings.paths.vsite_home != undefined) {
-        scope.vsiteUrl = Drupal.settings.paths.vsite_home;
+        $scope.vsiteUrl = Drupal.settings.paths.vsite_home;
       }
 
-      var tableData = function(filter) {
-        var filter = angular.isDefined(filter) ? filter : '';
-        scope.tableParams = new NgTableParams({
+      $scope.closeMessage = function() {
+        $scope.message = false;
+      }
+
+      // Reset select all checkboxes.
+      this.resetCheckboxes = function() {
+        $scope.checkboxes.checked = false;
+        angular.forEach($scope.checkboxes.items, function(value, key) {
+          $scope.checkboxes.items[key] = false;
+        });
+      }
+
+      // Search button: Filter data by title, content-type, taxonomy.
+      $scope.search = function() {
+        $scope.message = false;
+        var filter = {};
+        if ($scope.label) {
+          filter.label = $scope.label;
+          $scope.tableParams.filter(filter);
+        }
+        if ($scope.contentTypeModel.length > 0) {
+          var selectedType = [];
+          angular.forEach($scope.contentTypeModel, function(value, key) {
+            selectedType.push($scope.contentTypeModel[key].id);
+          });
+          filter.type = selectedType;
+          $scope.tableParams.filter(filter);
+        }
+        if ($scope.taxonomyTermsModel.length > 0) {
+          var selectedTerms = [];
+          angular.forEach($scope.taxonomyTermsModel, function(value, key) {
+            selectedTerms.push($scope.taxonomyTermsModel[key].id);
+          });
+          filter.og_vocabulary = selectedTerms;
+          $scope.tableParams.filter(filter);
+        }
+      };
+
+
+      var nodeService = new EntityService('nodes', 'id');
+      // Fetch list and set it in ng-table;
+      nodeService.fetch().then(function(data) {
+        $scope.tableParams = new NgTableParams({
           page: 1,
-          count: 20,
+          count: 1,
           sorting: {
             created: 'desc'
           }
@@ -120,20 +158,45 @@
           total: 0,
           counts: [], // hide page counts control.
           getData: function(params) {
-            cpContentCtl.resetCheckboxes();
-            var orderBycolumn = params.orderBy();
-            var sortNameValue = orderBycolumn[0].replace(/\+/g, "");
-            return cpFetch.getData('nodes', sortNameValue, filter, params.page(), params.count()).then(function(responce) {
-              params.total(responce.count);
-              scope.noRecords = (responce.data.length) == 0 ? true : false;
-              return responce.data;
-            });
+            // this.resetCheckboxes();
+            var typeDataSet = [];
+            var termDataSet = [];
+            var filteredData = params.filter() ? $filter('filter')(data, params.filter()) : data;
+            if (angular.isDefined(params.filter().type)) {
+               angular.forEach(data, function(node, key) {
+                if (params.filter().type.indexOf(node.type) > -1) {
+                  typeDataSet.push(node);
+                }
+              });
+              filteredData = typeDataSet;
+            }
+            if (angular.isDefined(params.filter().og_vocabulary)) {
+              angular.forEach(data, function(node, key) {
+                if (node.og_vocabulary.length > 0) {
+                  angular.forEach(node.og_vocabulary, function(vocab, key) {
+                    if (params.filter().og_vocabulary.indexOf(parseInt(vocab.tid)) > -1) {
+                      termDataSet.push(node);
+                    }
+                  });
+                }
+                
+              });
+              
+              filteredData = termDataSet;
+            }
+            if (angular.isDefined(params.filter().label)) {
+              filteredData = $filter('filter')(filteredData, params.filter().label);
+            }
+            var orderedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
+            params.total(orderedData.length);
+            $scope.noRecords = (orderedData.length) == 0 ? true : false;
+            return orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
           }
         });
-      };
-      // Get default content.
-      tableData();
+      });
+    }
 
+    function link(scope, element, attrs, cpContentCtl) {
       // Bulk Operation.
       scope.checkboxes = {
         'checked': false,
@@ -143,40 +206,46 @@
 
       // Watch for check all checkbox.
       scope.$watch('checkboxes.checked', function(value) {
-        angular.forEach(scope.tableParams.data, function(node) {
-          if (angular.isDefined(node.id)) {
-            scope.checkboxes.items[node.id] = value;
-          }
-        });
+        if (angular.isDefined(scope.tableParams)) {
+          angular.forEach(scope.tableParams.data, function(node) {
+            if (angular.isDefined(node.id)) {
+              scope.checkboxes.items[node.id] = value;
+            }
+          });
+        }
+        
         $rootScope.disableApply = !value;
         $rootScope.selectedItems = scope.checkboxes.items;
       });
 
       // Watch for data checkboxes.
       scope.$watch('checkboxes.items', function(values) {
-        if (!scope.tableParams.data) {
-          return;
+        if (angular.isDefined(scope.tableParams)) {
+           if (!scope.tableParams.data) {
+            return;
+          }
+          var checked = 0,
+            unchecked = 0,
+            total = scope.tableParams.data.length;
+          angular.forEach(scope.tableParams.data, function(node) {
+            checked += (scope.checkboxes.items[node.id]) || 0;
+            unchecked += (!scope.checkboxes.items[node.id]) || 0;
+          });
+          if ((unchecked == 0) || (checked == 0)) {
+            scope.checkboxes.checked = (checked == total);
+          }
+          if (checked > 0) {
+            $rootScope.disableApply = false;
+            scope.disableApply = $rootScope.disableApply;
+          } else {
+            $rootScope.disableApply = true;
+            scope.disableApply = $rootScope.disableApply;
+            scope.checkboxes.checked = false;
+          }
+          // Grayed checkbox.
+          angular.element(document.getElementById("select_all")).prop("indeterminate", (checked != 0 && unchecked != 0));
         }
-        var checked = 0,
-          unchecked = 0,
-          total = scope.tableParams.data.length;
-        angular.forEach(scope.tableParams.data, function(node) {
-          checked += (scope.checkboxes.items[node.id]) || 0;
-          unchecked += (!scope.checkboxes.items[node.id]) || 0;
-        });
-        if ((unchecked == 0) || (checked == 0)) {
-          scope.checkboxes.checked = (checked == total);
-        }
-        if (checked > 0) {
-          $rootScope.disableApply = false;
-          scope.disableApply = $rootScope.disableApply;
-        } else {
-          $rootScope.disableApply = true;
-          scope.disableApply = $rootScope.disableApply;
-          scope.checkboxes.checked = false;
-        }
-        // Grayed checkbox.
-        angular.element(document.getElementById("select_all")).prop("indeterminate", (checked != 0 && unchecked != 0));
+       
       }, true);
 
       // Initialize apply taxonomy term dropdown.
@@ -235,27 +304,6 @@
       cpFetch.getData('taxonomy').then(function(responce) {
         scope.taxonomyTermsOptions = responce.data;
       });
-
-      // Search button: Filter data by title, content-type, taxonomy.
-      scope.search = function() {
-        scope.message = false;
-        var filter = '';
-        if (scope.label) {
-          filter += "filter[label][value]=" + scope.label + "&filter[label][operator]=CONTAINS&";
-        }
-        if (scope.contentTypeModel.length > 0) {
-          angular.forEach(scope.contentTypeModel, function(value, key) {
-            filter += "filter[type][value][" + key + "]=" + scope.contentTypeModel[key].id + "&filter[type][operator][" + key + "]=IN&";
-          });
-        }
-        if (scope.taxonomyTermsModel.length > 0) {
-          angular.forEach(scope.taxonomyTermsModel, function(value, key) {
-            filter += "filter[og_vocabulary][value][" + key + "]=" + scope.taxonomyTermsModel[key].id + "&filter[og_vocabulary][operator][" + key + "]=IN&";
-          });
-        }
-        // Get filtered content.
-        tableData(filter);
-      };
 
       // Bulk node operation.
       scope.nodeBulkOperation = function(operation) {
@@ -393,16 +441,6 @@
         });
       };
     
-    }
-
-    function cpContentCtl($scope, $element, $attrs) {
-      // Reset select all checkboxes.
-      this.resetCheckboxes = function() {
-        $scope.checkboxes.checked = false;
-        angular.forEach($scope.checkboxes.items, function(value, key) {
-          $scope.checkboxes.items[key] = false;
-        });
-      }
     }
 
     return {
