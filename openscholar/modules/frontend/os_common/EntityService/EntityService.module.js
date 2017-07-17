@@ -184,6 +184,7 @@
           return defers[key].promise;
         }
 
+
         this.get = function (id) {
           var keys = getCacheKeysForId(entityType, idProp, id);
           for (var k in keys) {
@@ -229,6 +230,39 @@
               ents[entity[idProp]] = entity;
             })
         };
+
+        this.bulkOperation = function (entity) {
+          if (vsite) {
+            entity.vsite = vsite;
+          }
+          return $http.post(restPath + '/' + entityType + '/bulk', entity)
+            .success(function (resp) {
+              return resp.data;
+            })
+        };
+
+        this.applyTermToNodes = function (entity) {
+          if (vsite) {
+            entity.vsite = vsite;
+          }
+          // rest API call to add entity to server
+          return $http.post(restPath + '/' + entityType + '/bulk/term/apply', entity)
+            .success(function (resp) {
+              return resp.data;
+            })
+        };
+
+        this.removeTermFromNodes = function (entity) {
+          if (vsite) {
+            entity.vsite = vsite;
+          }
+          // rest API call to add entity to server
+          return $http.post(restPath + '/' + entityType + '/bulk/term/remove', entity)
+            .success(function (resp) {
+              return resp.data;
+            })
+        };
+
 
         this.edit = function (entity, ignore) {
           if (!entity[idProp]) {

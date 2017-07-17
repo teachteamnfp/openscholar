@@ -33,8 +33,8 @@
     <div ng-if="removeTermSettings" class="bulk-remove-term" ng-class="{'disable': disableApply == 1}">
       <div cp-content-dropdown-multiselect="" options="applyTermOptions" selected-model="removeTermModel" checkboxes="true" extra-settings="removeTermSettings" group-by="vocabName" display-type="term" display-text="Remove Term"></div>
     </div>
-    <span class="bulk-publish" ng-class="{'disable': disableApply == 1}" ng-click="!disableApply && nodeBulkOperation('published')">Publish</span>
-    <span class="bulk-unpublish" ng-class="{'disable': disableApply == 1}" ng-click="!disableApply && nodeBulkOperation('unpublished')">Unpublish</span>
+    <span class="bulk-publish" ng-class="{'disable': disableApply == 1}" ng-click="!disableApply && nodeBulkOperation(1)">Publish</span>
+    <span class="bulk-unpublish" ng-class="{'disable': disableApply == 1}" ng-click="!disableApply && nodeBulkOperation(0)">Unpublish</span>
     <span class="bulk-delete last" ng-class="{'disable': disableApply == 1}" ng-click="!disableApply && nodeBulkOperation('deleted')">Delete</span>
   </div>
   <script type="text/ng-template" id="headerCheckbox.html">
@@ -46,7 +46,7 @@
       <td title="'Title'" sortable="'label'" ng-bind-html="node.link"></td>
       <td title="'Type'" sortable="'type'" class="node-type">{{node.type | removeUnderscore}}</td>
       <td title="'Author'" sortable="'author'">{{node.author}}</td>
-      <td title="'Published'" sortable="'publish_status'"><md-switch ng-model="node.publish_status" aria-label="publishStatus" ng-change="changePublishStatus(node.id, node.publish_status)"></md-switch></td>
+      <td title="'Published'" sortable="'publish_status'"><md-switch ng-model="node.publish_status" aria-label="publishStatus" ng-change="changePublishStatusToggle(node.id, node.publish_status)"></md-switch></td>
       <td title="'Date(Updated)'" sortable="'changed'">{{node.changed}}</td>
       <td>
         <a href="#" class="cp-popover" ng-click="popOver($event, node.id)"><span class="glyphicon glyphicon-pencil">Action</span>
