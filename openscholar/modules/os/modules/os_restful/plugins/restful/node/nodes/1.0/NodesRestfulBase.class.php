@@ -1,21 +1,6 @@
 <?php
 
-class NodesRestfulBase extends RestfulEntityBase {
-
-  public static function controllersInfo() {
-    return array(
-      'bulk/term/apply' => array(
-        RestfulInterface::POST => 'applyTerm'
-      ),
-      'bulk/term/remove' => array(
-        RestfulInterface::POST => 'removeTerm'
-      ),
-      'bulk' => array(
-        RestfulInterface::POST => 'bulkOperation'
-      )
-
-    ) + parent::controllersInfo();
-  }
+class NodesRestfulBase extends bulkEnitityRestfulBase {
 
   /**
    * Define the bundles not to be exposed to the API.
@@ -164,89 +149,6 @@ class NodesRestfulBase extends RestfulEntityBase {
    */
   protected function processStatus($status) {
     return $status = ($status == 1) ? true : false;
-  }
-
-  /**
-   * Apply term tid's to selected nodes.
-   */
-  protected function applyTerm() {
-    if (!empty($this->request['tid']) && !empty($this->request['entity_id']) && !empty($this->request['entity_type'])) {
-      $entity_type = $this->request['entity_type'];
-      $entity_id = $this->request['entity_id'];
-      $new_terms = $this->request['tid'];
-      $entities = entity_load($entity_type, $entity_id);
-      $current_terms = array();
-      foreach ($entities as $key => $entity) {
-        $entity_wrapper = entity_metadata_wrapper($entity_type, $entity);
-        foreach ($entity_wrapper->og_vocabulary->value() as $delta => $term_wrapper) {
-          // $term_wrapper may now be accessed as a taxonomy term wrapper.
-          $current_terms[] = $term_wrapper->tid;
-        }
-        $result = array_unique(array_merge($current_terms, $new_terms));
-        if (!empty($result)) {
-          $entity_wrapper->og_vocabulary->set($result);
-          $entity_wrapper->save();
-        }
-      }
-      return array('saved' => true);
-    }
-    else {
-      return array('saved' => false);
-    }
-  }
-
-  /**
-   * Remove term tid's from selected nodes.
-   */
-  protected function removeTerm() {
-    if (!empty($this->request['tid']) && !empty($this->request['entity_id']) && !empty($this->request['entity_type'])) {
-      $entity_type = $this->request['entity_type'];
-      $entity_id = $this->request['entity_id'];
-      $new_terms = $this->request['tid'];
-      $current_terms = array();
-      $entities = entity_load($entity_type, $entity_id);
-      foreach ($entities as $key => $entity) {
-        $entity_wrapper = entity_metadata_wrapper($entity_type, $entity);
-        foreach ($entity_wrapper->og_vocabulary->value() as $delta => $term_wrapper) {
-          // $term_wrapper may now be accessed as a taxonomy term wrapper.
-          $current_terms[] = $term_wrapper->tid;
-        }
-        $result = array_diff($current_terms, $new_terms);
-        $entity_wrapper->og_vocabulary->set($result);
-        $entity_wrapper->save();
-      }
-      return array('saved' => true);
-    }
-    else {
-      return array('saved' => false);
-    }
-  }
-
-  /**
-   * Bulk operation on nodes.
-   */
-  protected function bulkOperation() {
-    if (!empty($this->request['entity_id']) && !empty($this->request['operation']) && !empty($this->request['entity_type'])) {
-      $entity_type = $this->request['entity_type'];
-      $entity_id = $this->request['entity_id'];
-      $op = $this->request['operation'];
-      if ($op == 'deleted') {
-        entity_delete_multiple($entity_type, $entity_id);
-      }
-      else {
-        $entities = entity_load($entity_type, $entity_id);
-        $status = ($op == 'published') ? 1 : 0;
-        foreach ($entities as $key => $entity) {
-          $entity_wrapper = entity_metadata_wrapper($entity_type, $entity);
-          $entity_wrapper->status->set($status);
-          $entity_wrapper->save();
-        }
-      }
-      return array('saved' => true);
-    }
-    else {
-      return array('saved' => false);
-    }
   }
 
 }

@@ -1,50 +1,11 @@
 (function() {
-  var m = angular.module('CpContent', ['ui.bootstrap', 'JSPager', 'ngTable', 'ngMaterial', 'EntityService']);
-
-  /**
-   * Initialize config.
-   */
-  m.config(function() {
-    restPath = Drupal.settings.paths.api;
-  });
-
-  /**
-   * Fetch filter options.
-   */
-  m.service('cpFetch', ['$http', function($http) {
-    var service = {
-      getData: function(endpoint, sorting, filter) {
-        var params = {};
-        if (angular.isDefined(sorting)) {
-          params.sort = sorting;
-        }
-        if (angular.isUndefined(filter)) {
-          filters = '';
-        }
-        // Fetch the vsite id.
-        if (angular.isDefined(Drupal.settings.spaces)) {
-          if (Drupal.settings.spaces.id) {
-            params.vsite = Drupal.settings.spaces.id;
-          }
-        }
-        var config = {
-          params: params
-        }
-        var promise = $http.get(restPath + '/' + endpoint + '?' + filter, config).then(
-          function successCallback(response) {
-            return response.data;
-          },
-          function errorCallback(response) {
-            return response.data;
-          });
-
-        return promise;
-      }
-    }
-
-    return service;
-
-  }]);
+  var nodeService,
+    termService,
+    ogVocabService,
+    fetchPromiseNodes,
+    fetchPromiseTerms,
+    fetchPromiseVocab;
+  var m = angular.module('CpContent', ['ui.bootstrap', 'ngTable', 'ngMaterial', 'EntityService']);
 
   /**
    * Open modals for cp content listing.
@@ -83,14 +44,29 @@
     };
   }]);
 
-  m.controller('cpModalController', function($scope, $timeout, $filter, $rootScope, close, EntityService, cpFetch, NgTableParams) {
+  m.run(['EntityService', function (EntityService) {
+    nodeService = new EntityService('nodes', 'id');
+    termService = new EntityService('taxonomy', 'id');
+    ogVocabService = new EntityService('og_vocab', 'id');
+    fetchPromiseNodes = nodeService.fetch();
+    fetchPromiseTerms = termService.fetch();
+    fetchPromiseVocab = ogVocabService.fetch();
+  }]);
+
+  m.controller('cpModalController', function($scope, $timeout, $filter, $rootScope, close, EntityService, NgTableParams) {
     $scope.close = function(arg) {
       close(arg);
     }
 
-    $scope.message = false;
+     // Reset select all checkboxes.
+    $scope.resetCheckboxes = function() {
+      $scope.checkboxes.checked = false;
+      angular.forEach($scope.checkboxes.items, function(value, key) {
+        $scope.checkboxes.items[key] = false;
+      });
+    }
 
-    var nodeService = new EntityService('nodes', 'id');
+    $scope.message = false;
     // Fetch vsite home.
     if (Drupal.settings.paths.vsite_home != undefined) {
       $scope.vsiteUrl = Drupal.settings.paths.vsite_home;
@@ -100,26 +76,42 @@
       $scope.message = false;
     }
 
-    // Reset select all checkboxes.
-    $scope.resetCheckboxes = function() {
-      $scope.checkboxes.checked = false;
-      angular.forEach($scope.checkboxes.items, function(value, key) {
-        $scope.checkboxes.items[key] = false;
-      });
-    }
-
     $scope.getMatchedTaxonomyTerms = function(termOperation) {
-      var i = 0;
-      angular.forEach($scope.selectedItems, function(nid, key) {
-        if (nid) {
-          filter += '&entity_id[' + i + ']=' + key + '&entity_type=node';
-          i++;
-        }
+      var ogVocab = [];
+      var termsOptions = []
+      fetchPromiseTerms.then(function(options) {
+        console.log(options)
+        termsOptions = options;
       });
-      var filter = (termOperation) ? filter : '';
-      return cpFetch.getData('taxonomy', 'label', filter).then(function(responce) {
-        return responce;
-      });
+
+      if (termOperation) {
+        var selectedNids = [];
+        angular.forEach($scope.selectedItems, function(state, nid) {
+          if (state) {
+            selectedNids.push(parseInt(nid));
+          }
+        });
+        angular.forEach($scope.tableParams.data, function(node, key) {
+          if (selectedNids.indexOf(node.id) > -1) {
+            fetchPromiseVocab.then(function(ogVocab) {
+              angular.forEach(ogVocab, function(vocab, key) {
+                if (vocab.bundle == node.type) {
+                  fetchPromiseTerms.then(function(termOptions) {
+                    angular.forEach(termOptions, function(term, key) {
+                      if (term.vid == vocab.vid) {
+                        console.log(vocab.vid);
+                      }
+                    });
+                  });
+                }
+              });
+            });
+          }
+        });
+
+      } else {
+
+      }
     }
 
     $scope.nodeTermOperation = function(operation) {
@@ -128,11 +120,12 @@
       var tids = (operation == 'applyTerm') ? $scope.applyTermModel : $scope.removeTermModel;
       angular.forEach($scope.selectedItems, function(value, key) {
         if (value) {
-          nids.push(key);
+          nids.push(parseInt(key));
+
         }
       });
       angular.forEach(tids, function(obj, key) {
-        terms.push(obj.id);
+        terms.push(parseInt(obj.id));
       });
       var entity = {
         entity_type: 'node',
@@ -143,6 +136,18 @@
         nodeService.applyTermToNodes(entity).then(function(responce) {
           if (responce.data.data.saved) {
             $scope.message = 'Terms have been applied to selected content.';
+            angular.forEach($scope.tableParams.data, function(node, key) {
+              if (nids.indexOf(node.id) > -1) {
+                if ($scope.tableParams.data[key].og_vocabulary == null) {
+                  $scope.tableParams.data[key].og_vocabulary = [];
+                  var termObj = {};
+                  angular.forEach(terms, function(term, term_key) {
+                    termObj.tid = term;
+                    $scope.tableParams.data[key].og_vocabulary.push(termObj);
+                  });
+                }
+              }
+            });
 
           } else {
             $scope.message = 'Please select a term to be applied.';
@@ -153,6 +158,17 @@
         nodeService.removeTermFromNodes(entity).then(function(responce) {
           if (responce.data.data.saved) {
             $scope.message = 'Terms have been removed from selected content.';
+            angular.forEach($scope.tableParams.data, function(node, key) {
+              if (nids.indexOf(node.id) > -1) {
+                if (angular.isDefined($scope.tableParams.data[key].og_vocabulary)) {
+                  angular.forEach($scope.tableParams.data[key].og_vocabulary, function(vocab, term_key) {
+                    if (terms.indexOf(vocab.tid) > -1) {
+                      $scope.tableParams.data[key].og_vocabulary.splice(term_key, 1);
+                    }
+                  });
+                }
+              }
+            });
           } else {
             $scope.message = 'Please select a term to be removed.';
           }
@@ -202,7 +218,7 @@
         entity_id: nids,
         operation: operation
       }
-      // Bulk operation DELETE should go through Undo option. 
+      // Bulk operation DELETE should go through Undo option.
       if (operation == 'deleted') {
         $scope.nodeDelete(nids);
       } else {
@@ -223,7 +239,11 @@
           $scope.message = 'Selected content has been ' + operation + '.';
           angular.forEach($scope.tableParams.data, function(node, key) {
             if (nodeId.indexOf(node.id) > -1) {
-              $scope.tableParams.data[key].publish_status = publish_status;
+              if (publish_status) {
+                $scope.tableParams.data[key].publish_status = true;
+              } else {
+                $scope.tableParams.data[key].publish_status = false;
+              }
             }
           });
         }
@@ -303,8 +323,7 @@
     };
 
     // Fetch list and set it in ng-table;
-    cpFetch.getData('nodes').then(function(responce) {
-      var data = responce.data;
+    fetchPromiseNodes.then(function (data) {
       $scope.tableParams = new NgTableParams({
         page: 1,
         count: 20,
@@ -461,7 +480,6 @@
       scope.taxonomyTermsTexts = {
         buttonDefaultText: 'Taxonomy Terms'
       };
-      scope.taxonomyTermsOptions = [];
 
       // Delete node.
       scope.showPopover = false;
@@ -564,15 +582,17 @@
           scope.toggleDropdown = function() {
             scope.open = !scope.open;
             if (scope.settings.termDropdown) {
-              scope.$parent.$parent.getMatchedTaxonomyTerms(scope.settings.termOperation).then(function(response) {
-                if (angular.isDefined(response.status) && response.status == 400) {
-                  scope.termErrorMessage = response.title;
-                  scope.showTermErrorMessage = true;
-                } else {
+              scope.$parent.$parent.getMatchedTaxonomyTerms(scope.settings.termOperation);
+              //scope.$parent.$parent.getMatchedTaxonomyTerms(scope.settings.termOperation).then(function(response) {
+                //console.log(scope.$parent.$parent.getMatchedTaxonomyTerms(scope.settings.termOperation));
+                //if (angular.isDefined(response.status) && response.status == 400) {
+                 // scope.termErrorMessage = response.title;
+                 // scope.showTermErrorMessage = true;
+                //} else {
                   scope.showTermErrorMessage = false;
-                  scope.options = response.data;
-                }
-              });
+                  //scope.options = response;
+                //}
+              //});
             }
           };
 
