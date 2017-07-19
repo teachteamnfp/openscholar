@@ -1,0 +1,20 @@
+
+body *,.region-header-third ul.nice-menu a,#menu-bar ul.nice-menu a,#boxes-box-site_info,#boxes-box-site_info a {
+    font-family: helvetica;
+}
+.region-header-third ul.nice-menu a,
+a, a:visited {
+    color: #457141;
+}
+
+h2.block-title {
+
+    border-left:3px solid #D16103;
+    padding-left:8px;
+}
+
+
+#footer {
+    background-color: #C3D7A4;
+
+}
