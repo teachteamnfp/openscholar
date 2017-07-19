@@ -15,7 +15,7 @@
           <div cp-content-dropdown-multiselect="" options="contentTypes" selected-model="contentTypeModel" checkboxes="true" extra-settings="contentTypeSettings" translation-texts="contentTypeTexts" display-type="filter"></div>
         </div>
         <div ng-if="taxonomyTermsSettings" class="filter-taxonomy-terms">
-          <div cp-content-dropdown-multiselect="" options="taxonomyTermsOptions" selected-model="taxonomyTermsModel" checkboxes="true" extra-settings="taxonomyTermsSettings" translation-texts="taxonomyTermsTexts" group-by="vocabName" display-type="filter"></div>
+          <div cp-content-dropdown-multiselect="" options="taxonomyTermsOptions" selected-model="taxonomyTermsModel" checkboxes="true" extra-settings="taxonomyTermsSettings" translation-texts="taxonomyTermsTexts" display-type="term"></div>
         </div>
       </div>
     </div>
@@ -28,10 +28,10 @@
   <div class="bulk-operation">
     <label for="cp-title-bulk">For selected items:</label>
     <div ng-if="applyTermSettings" class="bulk-add-term" ng-class="{'disable': disableApply == 1}">
-      <div cp-content-dropdown-multiselect="" options="applyTermOptions" selected-model="applyTermModel" checkboxes="true" extra-settings="applyTermSettings" group-by="vocabName" display-type="term" display-text="Apply Term"></div>
+      <div cp-content-dropdown-multiselect="" options="applyTermOptions" selected-model="applyTermModel" checkboxes="true" extra-settings="applyTermSettings" display-type="term" display-text="Apply Term"></div>
     </div>
     <div ng-if="removeTermSettings" class="bulk-remove-term" ng-class="{'disable': disableApply == 1}">
-      <div cp-content-dropdown-multiselect="" options="applyTermOptions" selected-model="removeTermModel" checkboxes="true" extra-settings="removeTermSettings" group-by="vocabName" display-type="term" display-text="Remove Term"></div>
+      <div cp-content-dropdown-multiselect="" options="applyTermOptions" selected-model="removeTermModel" checkboxes="true" extra-settings="removeTermSettings" display-type="term" display-text="Remove Term"></div>
     </div>
     <span class="bulk-publish" ng-class="{'disable': disableApply == 1}" ng-click="!disableApply && nodeBulkOperation(1)">Publish</span>
     <span class="bulk-unpublish" ng-class="{'disable': disableApply == 1}" ng-click="!disableApply && nodeBulkOperation(0)">Unpublish</span>

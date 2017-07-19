@@ -1,6 +1,11 @@
 <div class="multiselect-parent btn-group dropdown-multiselect">
   <div ng-if="displayType == 'term'">
-    <span class="dropdown-toggle" ng-class="settings.buttonClasses" ng-click="!disableApply && toggleDropdown()">{{displayText}}</span>
+    <div ng-if="displayText">
+      <span class="dropdown-toggle" ng-class="settings.buttonClasses" ng-click="!disableApply && toggleDropdown()">{{displayText}}</span>
+    </div>
+    <div ng-hide="displayText">
+      <button type="button" class="dropdown-toggle" ng-class="settings.buttonClasses" ng-click="toggleDropdown()">{{getButtonText()}}&nbsp;<span class="caret"></span></button>
+    </div>
   </div>
   <div ng-if="displayType == 'filter'">
     <button type="button" class="dropdown-toggle" ng-class="settings.buttonClasses" ng-click="toggleDropdown()">{{getButtonText()}}&nbsp;<span class="caret"></span></button>
@@ -10,21 +15,23 @@
       <a class="dismiss" ng-click="closeTermDropdown()">X</a>
     </div>
     <div ng-hide="!settings.showAllConentTypeCheckBox"><input type="checkbox" ng-checked="selectAllFlag" ng-model="selectAllFlag" ng-click="selectAllToggle()">All content type</div>
-    <div ng-if="groups" ng-repeat-start="option in orderedItems | orderBy:['vocabName','label']" ng-show="getPropertyForObject(option, settings.groupBy) !== getPropertyForObject(orderedItems[$index - 1], settings.groupBy) && showTermErrorMessage == false" role="presentation" class="dropdown-header group-dropdown-toggle glyphicon glyphicon-triangle-right" ng-class="{'glyphicon-triangle-bottom' : termGroup == orderedItems[$index]['vid']}" ng-click="groupToggleDropdown(orderedItems[$index]['vid'])">{{ getGroupTitle(getPropertyForObject(option, settings.groupBy)) }}
-      <div ng-if="displayType == 'term'" ng-show="termGroup == orderedItems[$index]['vid'] && displayText == 'Apply Term'" ng-click="stopBubbling($event)"><input ng-show="displayText == 'Apply Term'" type="text" ng-model="orderedItems[$index]['termName']">&nbsp;<button ng-disabled="!orderedItems[$index]['termName']" type="button" ng-show="displayText == 'Apply Term'" class="btn btn-primary" ng-click="addTerm($index, orderedItems[$index]['vid'], orderedItems[$index]['vocabName'])">Add term</button></div>
-    </div>
-    <div ng-if="groups" ng-show="termGroup == orderedItems[$index]['vid'] && showTermErrorMessage == false" ng-repeat-end role="presentation">
-      <a role="menuitem" tabindex="-1" ng-click="setSelectedItem(getPropertyForObject(option,settings.idProp))">
-          <label><input class="checkboxInput" type="checkbox" ng-click="checkboxClick($event, getPropertyForObject(option,settings.idProp))" ng-checked="isChecked(getPropertyForObject(option,settings.idProp))"/> {{getPropertyForObject(option, settings.displayProp)}}</label>
-        </a>
-    </div>
-    <div ng-show="groups == false" role="presentation" ng-repeat="option in options">
+    <div ng-if="displayType == 'filter'" role="presentation" ng-repeat="option in options">
       <a role="menuitem" tabindex="-1" ng-click="setSelectedItem(getPropertyForObject(option,settings.idProp))">
           <label><input class="checkboxInput" type="checkbox" ng-click="checkboxClick($event, getPropertyForObject(option,settings.idProp))" ng-checked="isChecked(getPropertyForObject(option,settings.idProp))"> {{getPropertyForObject(option, settings.displayProp)}}</label>
         </a>
     </div>
-
     <div ng-if="displayType == 'term' && showTermErrorMessage == false" class="term-action">
+      <div ng-repeat="vocabOption in options" ng-show="showTermErrorMessage == false" role="presentation" class="dropdown-header group-dropdown-toggle glyphicon glyphicon-triangle-right" ng-class="{'glyphicon-triangle-bottom' : groupVocabId == vocabOption.id}" ng-click="groupToggleDropdown(vocabOption.id)">{{ vocabOption.label }}
+      <div ng-show="groupVocabId == vocabOption.id">
+        <div ng-if="displayText == 'Apply Term'" ng-click="stopBubbling($event)"><input type="text" ng-model="vocabOption[$index]['termName']">&nbsp;<button ng-disabled="!vocabOption[$index]['termName']" type="button" class="btn btn-primary" ng-click="addTerm($index, vocabOption[$index]['vid'], vocabOption[$index]['label'])">Add term</button>
+        </div>
+        <div ng-repeat="option in vocabOption.tree">
+          <a role="menuitem" tabindex="-1" ng-click="setSelectedItem(getPropertyForObject(option,settings.idProp))">
+            <label><input class="checkboxInput" type="checkbox" ng-click="checkboxClick($event, getPropertyForObject(option,settings.idProp))" ng-checked="isChecked(getPropertyForObject(option,settings.idProp))"/> {{getPropertyForObject(option, settings.displayProp)}}</label>
+          </a>
+        </div>
+      </div>
+     </div>
       <button ng-disabled="disableApply" ng-show="displayText == 'Apply Term'" type="button" ng-click="applyTerms()" class="btn btn-primary">Apply</button>
       <button ng-disabled="disableApply" ng-show="displayText == 'Remove Term'" type="button" ng-click="removeTerms()" class="btn btn-primary">Remove</button>
     </div>

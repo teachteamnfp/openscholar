@@ -1,10 +1,10 @@
 (function() {
   var nodeService,
-    termService,
-    ogVocabService,
+    vocabService,
+    ogVocabTerms,
     fetchPromiseNodes,
-    fetchPromiseTerms,
     fetchPromiseVocab;
+
   var m = angular.module('CpContent', ['ui.bootstrap', 'ngTable', 'ngMaterial', 'EntityService']);
 
   /**
@@ -46,11 +46,11 @@
 
   m.run(['EntityService', function (EntityService) {
     nodeService = new EntityService('nodes', 'id');
-    termService = new EntityService('taxonomy', 'id');
-    ogVocabService = new EntityService('og_vocab', 'id');
+    vocabService = new EntityService('vocabulary', 'id');
     fetchPromiseNodes = nodeService.fetch();
-    fetchPromiseTerms = termService.fetch();
-    fetchPromiseVocab = ogVocabService.fetch();
+    fetchPromiseVocab = vocabService.fetch().then(function(vovab) {
+      ogVocabTerms = vovab;
+    });
   }]);
 
   m.controller('cpModalController', function($scope, $timeout, $filter, $rootScope, close, EntityService, NgTableParams) {
@@ -76,16 +76,13 @@
       $scope.message = false;
     }
 
-    $scope.getMatchedTaxonomyTerms = function(termOperation) {
-      var ogVocab = [];
-      var termsOptions = []
-      fetchPromiseTerms.then(function(options) {
-        console.log(options)
-        termsOptions = options;
-      });
 
+    $scope.getMatchedTaxonomyTerms = function(termOperation) {
       if (termOperation) {
         var selectedNids = [];
+        var selectedTypes = [];
+        var macthedVocab = [];
+        var results;
         angular.forEach($scope.selectedItems, function(state, nid) {
           if (state) {
             selectedNids.push(parseInt(nid));
@@ -93,24 +90,36 @@
         });
         angular.forEach($scope.tableParams.data, function(node, key) {
           if (selectedNids.indexOf(node.id) > -1) {
-            fetchPromiseVocab.then(function(ogVocab) {
-              angular.forEach(ogVocab, function(vocab, key) {
-                if (vocab.bundle == node.type) {
-                  fetchPromiseTerms.then(function(termOptions) {
-                    angular.forEach(termOptions, function(term, key) {
-                      if (term.vid == vocab.vid) {
-                        console.log(vocab.vid);
-                      }
-                    });
-                  });
-                }
-              });
-            });
+            selectedTypes.push(node.type);
           }
         });
+        selectedTypes = selectedTypes.filter(function(value, index){ return selectedTypes.indexOf(value) == index });
 
-      } else {
+        angular.forEach(ogVocabTerms, function(vocab, key) {
+          vocab.bundles.node.sort()
+          var ret = [];
+          for(var i = 0; i < selectedTypes.length; i += 1) {
+            if(vocab.bundles.node.indexOf(selectedTypes[i]) > -1){
+              ret.push(selectedTypes[i]);
+            }
+          }
+          if (selectedTypes.length == ret.length) {
+            macthedVocab.push(vocab);
+          }
+        });
+        if (macthedVocab.length == 0) {
+          if (selectedTypes.length == 1) {
+            results = {error: 'No vocabularies enabled for' + selectedTypes[0] + 'content type.', vocab: macthedVocab};
+          } else {
+            results = {error: "do not share the same vocabularies.", vocab: macthedVocab};
+          }
+        } else {
+          results = {error: false, vocab: macthedVocab};
+        }
+        return results;
 
+      }else {
+        return {error: false, vocab: ogVocabTerms};
       }
     }
 
@@ -582,17 +591,14 @@
           scope.toggleDropdown = function() {
             scope.open = !scope.open;
             if (scope.settings.termDropdown) {
-              scope.$parent.$parent.getMatchedTaxonomyTerms(scope.settings.termOperation);
-              //scope.$parent.$parent.getMatchedTaxonomyTerms(scope.settings.termOperation).then(function(response) {
-                //console.log(scope.$parent.$parent.getMatchedTaxonomyTerms(scope.settings.termOperation));
-                //if (angular.isDefined(response.status) && response.status == 400) {
-                 // scope.termErrorMessage = response.title;
-                 // scope.showTermErrorMessage = true;
-                //} else {
-                  scope.showTermErrorMessage = false;
-                  //scope.options = response;
-                //}
-              //});
+              var result = scope.$parent.$parent.getMatchedTaxonomyTerms(scope.settings.termOperation);
+              if (!result.error) {
+                scope.options = result.vocab;
+                scope.showTermErrorMessage = false;
+              } else {
+                scope.termErrorMessage = result.error;
+                scope.showTermErrorMessage = true;
+              }
             }
           };
 
@@ -653,9 +659,9 @@
             $event.stopImmediatePropagation();
           };
 
-          scope.termGroup = false;
+          scope.groupVocabId = false;
           scope.groupToggleDropdown = function(vid) {
-            scope.termGroup = vid;
+            scope.groupVocabId = vid;
           };
 
           scope.checkboxClick = function($event, id) {

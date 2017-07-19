@@ -1,6 +1,6 @@
 <?php
 
-class OsOgVocab extends \OsRestfulEntityCacheableBase {
+class OsOgVocab extends \RestfulEntityBase {
 
   /**
    * {@inheritdoc}
@@ -31,19 +31,6 @@ class OsOgVocab extends \OsRestfulEntityCacheableBase {
     unset($fields['self'], $fields['label']);
 
     return $fields;
-  }
-
-  protected function getLastModified($id) {
-    $q = db_select('og_vocab', 'n')
-      ->fields('n', array('changed'))
-      ->condition('id', $id)
-      ->execute();
-
-    foreach ($q as $r) {
-      return $r->changed;
-    }
-
-    return FALSE;
   }
 
   /**

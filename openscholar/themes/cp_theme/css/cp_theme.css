@@ -1836,7 +1836,7 @@ body.page-node-revisions .node {
 }
 div.no-bold {
     font-weight: normal;
-} 
+}
 .ng-table th {
     text-align: center;
     -webkit-touch-callout: none;
@@ -1977,6 +1977,7 @@ div.no-bold {
 }
 .group-dropdown-toggle {
    cursor: pointer;
+   text-align: left;
 }
 .bulk-operation .bulk-add-term.disable,
 .bulk-operation .bulk-remove-term.disable,
@@ -1996,7 +1997,6 @@ label[for=cp-title-bulk] {
 }
 .bulk-operation .term-action {
     text-align: center;
-    margin-top: 20px;
 }
 .cp-popover {
     display: block;
