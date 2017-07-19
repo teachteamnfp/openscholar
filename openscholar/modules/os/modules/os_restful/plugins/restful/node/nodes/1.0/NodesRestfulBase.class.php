@@ -1,6 +1,6 @@
 <?php
 
-class NodesRestfulBase extends bulkEnitityRestfulBase {
+class NodesRestfulBase extends bulkOperationEnitity {
 
   /**
    * Define the bundles not to be exposed to the API.

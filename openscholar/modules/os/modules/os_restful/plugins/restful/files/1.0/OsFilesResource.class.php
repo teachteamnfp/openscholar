@@ -464,7 +464,7 @@ class OsFilesResource extends OsRestfulEntityCacheableBase {
     // Public files are put inside of a files directory within the vsite folder
     // This keeps user uploaded files seperate from other vsite resources.
     $vsite_directory = '/files';
-
+    
     // do spaces/private file stuff here
     if (isset($this->request['private'])) {
       $destination = 'private://';

@@ -1,6 +1,6 @@
 <?php
 
-class bulkEnitityRestfulBase extends OsRestfulEntityCacheableBase {
+class bulkOperationEnitity extends OsRestfulEntityCacheableBase {
 
   public static function controllersInfo() {
     return array(

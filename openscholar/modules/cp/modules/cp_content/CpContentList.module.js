@@ -54,23 +54,60 @@
   }]);
 
   m.controller('cpModalController', function($scope, $timeout, $filter, $rootScope, close, EntityService, NgTableParams) {
+    $scope.message = false;
     $scope.close = function(arg) {
       close(arg);
     }
-
-     // Reset select all checkboxes.
-    $scope.resetCheckboxes = function() {
-      $scope.checkboxes.checked = false;
-      angular.forEach($scope.checkboxes.items, function(value, key) {
-        $scope.checkboxes.items[key] = false;
-      });
-    }
-
-    $scope.message = false;
     // Fetch vsite home.
     if (Drupal.settings.paths.vsite_home != undefined) {
       $scope.vsiteUrl = Drupal.settings.paths.vsite_home;
     }
+   // Bulk Operation.
+    $scope.checkboxes = {
+      'checked': false,
+      items: {}
+    };
+    $scope.disableBulkOptions = true;
+    // Watch for check all checkbox.
+    $scope.$watch('checkboxes.checked', function(value) {
+      if (angular.isDefined($scope.tableParams)) {
+        angular.forEach($scope.tableParams.data, function(node) {
+          if (angular.isDefined(node.id)) {
+            $scope.checkboxes.items[node.id] = value;
+          }
+        });
+      }
+
+      $scope.disableBulkOptions = !value;
+      $scope.selectedItems = $scope.checkboxes.items;
+    });
+    // Watch for data checkboxes.
+    $scope.$watch('checkboxes.items', function(values) {
+      if (angular.isDefined($scope.tableParams)) {
+        if (!$scope.tableParams.data) {
+          return;
+        }
+        var checked = 0,
+          unchecked = 0,
+          total = $scope.tableParams.data.length;
+        angular.forEach($scope.tableParams.data, function(node) {
+          checked += ($scope.checkboxes.items[node.id]) || 0;
+          unchecked += (!$scope.checkboxes.items[node.id]) || 0;
+        });
+        if ((unchecked == 0) || (checked == 0)) {
+          $scope.checkboxes.checked = (checked == total);
+        }
+        if (checked > 0) {
+          $scope.disableBulkOptions = false;
+        } else {
+          $scope.disableBulkOptions = true;
+          $scope.checkboxes.checked = false;
+        }
+        // Grayed checkbox.
+        angular.element(document.getElementById("select_all")).prop("indeterminate", (checked != 0 && unchecked != 0));
+      }
+
+    }, true);
 
     $scope.closeMessage = function() {
       $scope.message = false;
@@ -387,57 +424,6 @@
   m.directive('cpContent', ['$rootScope', function($rootScope) {
 
     function link(scope, element, attrs) {
-      // Bulk Operation.
-      scope.checkboxes = {
-        'checked': false,
-        items: {}
-      };
-      $rootScope.disableApply = true;
-
-      // Watch for check all checkbox.
-      scope.$watch('checkboxes.checked', function(value) {
-        if (angular.isDefined(scope.tableParams)) {
-          angular.forEach(scope.tableParams.data, function(node) {
-            if (angular.isDefined(node.id)) {
-              scope.checkboxes.items[node.id] = value;
-            }
-          });
-        }
-
-        $rootScope.disableApply = !value;
-        scope.selectedItems = scope.checkboxes.items;
-      });
-
-      // Watch for data checkboxes.
-      scope.$watch('checkboxes.items', function(values) {
-        if (angular.isDefined(scope.tableParams)) {
-          if (!scope.tableParams.data) {
-            return;
-          }
-          var checked = 0,
-            unchecked = 0,
-            total = scope.tableParams.data.length;
-          angular.forEach(scope.tableParams.data, function(node) {
-            checked += (scope.checkboxes.items[node.id]) || 0;
-            unchecked += (!scope.checkboxes.items[node.id]) || 0;
-          });
-          if ((unchecked == 0) || (checked == 0)) {
-            scope.checkboxes.checked = (checked == total);
-          }
-          if (checked > 0) {
-            $rootScope.disableApply = false;
-            scope.disableApply = $rootScope.disableApply;
-          } else {
-            $rootScope.disableApply = true;
-            scope.disableApply = $rootScope.disableApply;
-            scope.checkboxes.checked = false;
-          }
-          // Grayed checkbox.
-          angular.element(document.getElementById("select_all")).prop("indeterminate", (checked != 0 && unchecked != 0));
-        }
-
-      }, true);
-
       // Initialize apply taxonomy term dropdown.
       scope.applyTermModel = [];
       scope.applyTermSettings = {
@@ -534,6 +520,9 @@
           return Drupal.settings.paths.cpContent + '/cp_content_dropdown.html'
         },
         link: function(scope, element, attrs) {
+          scope.$parent.$parent.$watch('disableBulkOptions', function(newValue) {
+            scope.disableBulkOptions = newValue;
+          });
 
           scope.checkboxes = attrs.checkboxes ? true : false;
           scope.groups = attrs.groupBy ? true : false;
@@ -584,9 +573,8 @@
             buttonDefaultText: 'Select',
             dynamicButtonTextSuffix: 'checked'
           };
-          $rootScope.$watch('disableApply', function(newValue) {
-            scope.disableApply = newValue;
-          });
+
+          scope.disableApply = true;
 
           scope.toggleDropdown = function() {
             scope.open = !scope.open;
@@ -652,9 +640,6 @@
           angular.extend(scope.externalEvents, scope.events || []);
           angular.extend(scope.texts, scope.translationTexts);
 
-          var message = {
-            failedMessage: 'Something went wrong.'
-          }
           scope.stopBubbling = function($event) {
             $event.stopImmediatePropagation();
           };

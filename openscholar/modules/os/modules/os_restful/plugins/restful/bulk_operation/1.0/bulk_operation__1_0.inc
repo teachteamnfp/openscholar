@@ -1,12 +1,12 @@
 <?php
 
 $plugin = array(
-  'label' => t('Bulk'),
-  'resource' => 'bulk',
-  'name' => 'bulk__1_0',
+  'label' => t('Bulk operation'),
+  'resource' => 'bulk_operation',
+  'name' => 'bulk_operation__1_0',
   'bundle' => FALSE,
   'description' => t('Bulk operation on entites'),
-  'class' => 'bulkEnitityRestfulBase',
+  'class' => 'bulkOperationEnitity',
   'authentication_types' => TRUE,
   'authentication_optional' => TRUE,
 );
