@@ -6,6 +6,10 @@ body *,.region-header-third ul.nice-menu a,#menu-bar ul.nice-menu a,#boxes-box-s
 a, a:visited {
     color: #457141;
 }
+#footer a,
+#footer { 
+    color: #FFF;
+}
 
 h2.block-title {
 
@@ -15,6 +19,9 @@ h2.block-title {
 
 
 #footer {
-    background-color: #C3D7A4;
+background-color: #414141;
 
+}
+#header {
+background-color: #c3d7a4;
 }
