@@ -186,6 +186,21 @@ class OsTaxonomyTerm extends OsRestfulEntityCacheableBase {
 
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function createEntity() {
+    if (!empty($this->request['vid']) && !empty($this->request['name'])) {
+      $parent_id = 0;
+      $term = new stdClass();
+      $term->name = $this->request['name'];
+      $term->vid = $this->request['vid'];
+      $term->parent = array($parent_id);
+      taxonomy_term_save($term);
+      return array($term->tid);
+    }
+  }
+
   protected function getLastModified($id) {
     // Vocabularies cannot really be editted. When they were first created isn't stored either.
     // This function is only concerned with modifications, so as long as we assume it's really old, we're fine for now

@@ -15,7 +15,7 @@
           <div cp-content-dropdown-multiselect="" options="contentTypes" selected-model="contentTypeModel" checkboxes="true" extra-settings="contentTypeSettings" translation-texts="contentTypeTexts" display-type="filter"></div>
         </div>
         <div ng-if="taxonomyTermsSettings" class="filter-taxonomy-terms">
-          <div cp-content-dropdown-multiselect="" options="taxonomyTermsOptions" selected-model="taxonomyTermsModel" checkboxes="true" extra-settings="taxonomyTermsSettings" translation-texts="taxonomyTermsTexts" display-type="term"></div>
+          <div cp-content-dropdown-multiselect="" options="taxonomyTermsOptions" selected-model="taxonomyTermsModel" checkboxes="true" extra-settings="taxonomyTermsSettings" group-by="true" translation-texts="taxonomyTermsTexts" display-type="term"></div>
         </div>
       </div>
     </div>
@@ -28,10 +28,10 @@
   <div class="bulk-operation">
     <label for="cp-title-bulk">For selected items:</label>
     <div ng-if="applyTermSettings" class="bulk-add-term" ng-class="{'disable': disableBulkOptions == 1}">
-      <div cp-content-dropdown-multiselect="" options="applyTermOptions" selected-model="applyTermModel" checkboxes="true" extra-settings="applyTermSettings" display-type="term" display-text="Apply Term"></div>
+      <div cp-content-dropdown-multiselect="" options="applyTermOptions" selected-model="applyTermModel" checkboxes="true" extra-settings="applyTermSettings" group-by="true" display-type="term" display-text="Apply Term"></div>
     </div>
     <div ng-if="removeTermSettings" class="bulk-remove-term" ng-class="{'disable': disableBulkOptions == 1}">
-      <div cp-content-dropdown-multiselect="" options="applyTermOptions" selected-model="removeTermModel" checkboxes="true" extra-settings="removeTermSettings" display-type="term" display-text="Remove Term"></div>
+      <div cp-content-dropdown-multiselect="" options="applyTermOptions" selected-model="removeTermModel" checkboxes="true" extra-settings="removeTermSettings" group-by="true" display-type="term" display-text="Remove Term"></div>
     </div>
     <span class="bulk-publish" ng-class="{'disable': disableBulkOptions == 1}" ng-click="!disableBulkOptions && nodeBulkOperation(1)">Publish</span>
     <span class="bulk-unpublish" ng-class="{'disable': disableBulkOptions == 1}" ng-click="!disableBulkOptions && nodeBulkOperation(0)">Unpublish</span>
@@ -46,7 +46,9 @@
       <td title="'Title'" sortable="'label'" ng-bind-html="node.link"></td>
       <td title="'Type'" sortable="'type'" class="node-type">{{node.type | removeUnderscore}}</td>
       <td title="'Author'" sortable="'author'">{{node.author}}</td>
-      <td title="'Published'" sortable="'publish_status'"><md-switch ng-model="node.publish_status" aria-label="publishStatus" ng-change="changePublishStatusToggle(node.id, node.publish_status)"></md-switch></td>
+      <td title="'Published'" sortable="'publish_status'">
+        <md-switch ng-model="node.publish_status" aria-label="publishStatus" ng-change="changeStatus(node.id, node.publish_status)"></md-switch>
+      </td>
       <td title="'Date(Updated)'" sortable="'changed'">{{node.changed}}</td>
       <td>
         <a href="#" class="cp-popover" ng-click="popOver($event, node.id)"><span class="glyphicon glyphicon-pencil">Action</span>
@@ -56,8 +58,8 @@
               <li><a ng-click="nodeDelete(node.id)">Delete</a></li>
             </ul>
           </div>
-       </a>
-     </td>
+        </a>
+      </td>
     </tr>
     <tr ng-if="noRecords">
       <td colspan="6">No record found!</td>

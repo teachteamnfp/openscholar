@@ -231,38 +231,27 @@
             })
         };
 
-        this.bulkOperation = function (entity) {
-          if (vsite) {
-            entity.vsite = vsite;
+        this.bulk = function (operationName, entity_ids, options) {
+          var data = {}
+          if ((operationName == 'applyTerm' || operationName == 'removeTerm')) {
+             data.tids = options.tids;
           }
-          return $http.post(restPath + '/' + entityType + '/bulk', entity)
+          data.entity_type = (options.type) ? options.type : entityType;
+          data.entity_id = entity_ids;
+          data.operation = operationName;
+
+          if (operationName == 'delete') {
+            return $http.delete(restPath + '/bulk_operation', data)
             .success(function (resp) {
               return resp.data;
             })
-        };
-
-        this.applyTermToNodes = function (entity) {
-          if (vsite) {
-            entity.vsite = vsite;
-          }
-          // rest API call to add entity to server
-          return $http.post(restPath + '/' + entityType + '/bulk/term/apply', entity)
+          } else {
+             return $http.patch(restPath + '/bulk_operation', data)
             .success(function (resp) {
               return resp.data;
             })
-        };
-
-        this.removeTermFromNodes = function (entity) {
-          if (vsite) {
-            entity.vsite = vsite;
           }
-          // rest API call to add entity to server
-          return $http.post(restPath + '/' + entityType + '/bulk/term/remove', entity)
-            .success(function (resp) {
-              return resp.data;
-            })
         };
-
 
         this.edit = function (entity, ignore) {
           if (!entity[idProp]) {
