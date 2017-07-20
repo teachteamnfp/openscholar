@@ -191,3 +191,19 @@ function os_search_solr_update_7004() {
   features_revert(array('os' => array('context',  'spaces_presets')));
 }
 
+/**
+ * Update apache solr field bias label.
+ */
+function os_search_solr_update_7005() {
+  // @see: drupal_load()
+  if (!function_exists('apachesolr_default_environment')) {
+    include_once dirname(__FILE__) . '/apachesolr.module';
+  }
+
+  $env_id = apachesolr_default_environment();
+  $fb = apachesolr_environment_variable_get($env_id, 'field_bias', array());
+  if ($fb['label'] < '8.0') {
+    $fb['label'] = '8.0';
+  }
+  apachesolr_environment_variable_set($env_id, 'field_bias', $fb);
+}
