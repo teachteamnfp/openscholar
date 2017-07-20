@@ -311,16 +311,14 @@ ul.nice-menu ul {
 
 #branding_footer a,
 #branding_header a {
-	color:#BAC5C6;
+	color:#FFF;
 }
 
 #branding_header a:hover {
 	color:#8996A0;
 }
 
-#branding_footer a {
-	color: #bac5c6;
-}
+
 
 /* Footer Quicklinks Nav */
 #footer ul.menu,

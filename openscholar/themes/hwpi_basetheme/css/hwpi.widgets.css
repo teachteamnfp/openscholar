@@ -29,6 +29,9 @@
 #boxes-box-site_info p {
     line-height: 1.4;
 }
+#boxes-box-site_info p a {
+    text-decoration:underline;
+}
 #boxes-box-site_info h1 {
     font-size: 30px;
 }

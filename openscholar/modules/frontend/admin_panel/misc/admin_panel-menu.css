@@ -92,7 +92,8 @@ body.overlay {
 #cssmenu ul li span {
     line-height: 1;
 }
-#cssmenu * {
+#cssmenu *,
+.user-menu * {
     font-family: helvetica;
     color: #ffffff;
     font-weight:normal;
