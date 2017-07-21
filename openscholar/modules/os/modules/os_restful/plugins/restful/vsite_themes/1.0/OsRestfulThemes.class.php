@@ -46,8 +46,10 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
         $flavor = _cp_appearance_get_flavor_options($theme_flavors, $info, $default_flavor);
         $flavor_options = array();
         if (!empty($flavor)) {
+          $flavors = os_theme_get_flavors();
           foreach ($flavor as $key => $value) {
-            $flavor_options[] = array('key' => $key, 'name' => $value);
+            $path = $flavors[$key]['path'] . '/' . $flavors[$key]['screenshot'];
+            $flavor_options[] = array('key' => $key, 'name' => $value, 'screenshot' => $path);
           }
         }
 
@@ -86,7 +88,7 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
         else {
           $name  = !empty($info['flavor_name']) ? $info['flavor_name'] : $info['name'];
           $featured[] = array('name' => $name,
-            'themeKey' => $info['theme_name'].'-os_featured_flavor-default',
+            'themeKey' => $info['theme_name'],
             'screenshot' => $info['screenshot'],
             'flavorName' => $info['flavor_name'],
             'flavorOptions' => '',

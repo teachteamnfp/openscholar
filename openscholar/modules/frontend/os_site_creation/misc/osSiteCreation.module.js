@@ -60,18 +60,22 @@
     });
     $scope.selected = false;
     $scope.selectedOption = {key: 'default'};
-    $scope.setTheme = function(themeKey) {
-      $scope.selected = themeKey;
-      // @Todo
-      //console.log(themeKey);
+    $scope.setTheme = function(themeKey, flavorKey) {
+      $scope.selected = themeKey + '-os_featured_flavor-' + flavorKey;
       console.log($scope.themes);      
     }
 
     $scope.changeSubTheme = function(item, themeKey) {      
-      var newthemeKey = themeKey;
-      console.log(newthemeKey);
-      var found = $filter('filter')($scope.themes.others, {themeKey: newthemeKey}, true);
-      console.log(found);
+      angular.forEach($scope.themes.others, function(value, key) {
+        if (value.themeKey == themeKey) {
+          $scope.themes.others[key].flavorKey = item.key;
+          angular.forEach(value.flavorOptions, function(v, k) {
+            if (v.key == item.key) {
+              $scope.themes.others[key].screenshot = v.screenshot;
+            }
+          });
+        }
+      });
     }
 
     $scope.navigateToSite = function(themeKey) {
