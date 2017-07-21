@@ -33,12 +33,9 @@
             dialogOptions.title = 'Content';
             dialogOptions.close = function(event, ui) {
               modal.element.remove();
+              window.location.reload();
             }
             modal.element.dialog(dialogOptions);
-            modal.close.then(function(result) {
-              console.log(result);
-              window.location.reload();
-            });
           });
       });
     }
@@ -60,7 +57,7 @@
   m.controller('cpModalController', function($scope) {
     $scope.message = false;
     $scope.close = function(arg) {
-      close(arg);
+      window.location.reload();
     }
     // Fetch vsite home.
     if (Drupal.settings.paths.vsite_home != undefined) {
@@ -284,7 +281,7 @@
         $timeout.cancel(timer);
         $scope.message = 'Selected content has been deleted.';
         $scope.deleteUndoAction = true;
-        /*nodeService.bulk('delete', nodeId, {
+        nodeService.bulk('delete', nodeId, {
           details: false,
           operation: false
         }).then(function(response) {
@@ -292,7 +289,7 @@
             $scope.message = 'Selected content has been deleted.';
             $scope.deleteUndoAction = true;
           }
-        });*/
+        });
       };
 
       $scope.deleteUndo = function() {
