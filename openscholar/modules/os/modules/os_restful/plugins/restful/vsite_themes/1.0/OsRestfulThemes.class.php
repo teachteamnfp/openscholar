@@ -56,6 +56,7 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
           'screenshot' => $info['screenshot'],
           'flavorName' => $info['flavor_name'],
           'flavorOptions' => $flavor_options,
+          'flavorKey' => 'default',
         );
 
       }
@@ -63,20 +64,22 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
         if (!empty($info['single'])) {
           $name  = !empty($info['flavor_name']) ? $info['flavor_name'] : $info['name'];
           $single[] = array('name' => $name,
-            'themeKey' => $info['theme_name'].'-os_featured_flavor-default',
+            'themeKey' => $info['theme_name'],
             'screenshot' => $info['screenshot'],
             'flavorName' => $info['flavor_name'],
             'flavorOptions' => '',
+            'flavorKey' => 'default',
           );
 
           $flavors = os_theme_get_flavors($info['theme_name']);
            foreach ($flavors as $flavor_name => $flav) {
             $flavor_theme->info['screenshot'] = $flav['path'].'/screenshot.png';
             $single[] = array('name' => $flav['name'],
-              'themeKey' => $info['theme_name'].'-os_featured_flavor-'.$flavor_name,
+              'themeKey' => $info['theme_name'],
               'screenshot' => $flav['path'].'/screenshot.png',
               'flavorName' => $flav['name'],
               'flavorOptions' => '',
+              'flavorKey' => strtolower($flav['name']),
             );
           }
         }
@@ -87,16 +90,18 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
             'screenshot' => $info['screenshot'],
             'flavorName' => $info['flavor_name'],
             'flavorOptions' => '',
+            'flavorKey' => 'default',
           );
 
           $flavors = os_theme_get_flavors($info['theme_name']);
            foreach ($flavors as $flavor_name => $flav) {
             $flavor_theme->info['screenshot'] = $flav['path'].'/screenshot.png';
             $featured[] = array('name' => $flav['name'],
-              'themeKey' => $info['theme_name'].'-os_featured_flavor-'.$flavor_name,
+              'themeKey' => $info['theme_name'],
               'screenshot' => $flav['path'].'/screenshot.png',
               'flavorName' => $flav['name'],
               'flavorOptions' => '',
+              'flavorKey' => strtolower($flav['name']),
             );
           }
         }

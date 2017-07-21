@@ -6,7 +6,7 @@
     paths = Drupal.settings.paths
   });
 
-  m.controller('siteCreationCtrl', ['$scope', '$http', '$q', '$rootScope', 'buttonSpinnerStatus', function($scope, $http, $q, $rootScope, bss) {
+  m.controller('siteCreationCtrl', ['$scope', '$http', '$q', '$rootScope', 'buttonSpinnerStatus', '$filter', function($scope, $http, $q, $rootScope, bss, $filter) {
 
   //Set default value for vsite
   $scope.vsite = {
@@ -63,8 +63,15 @@
     $scope.setTheme = function(themeKey) {
       $scope.selected = themeKey;
       // @Todo
-      console.log(themeKey);
-      $scope.selected = themeKey;
+      //console.log(themeKey);
+      console.log($scope.themes);      
+    }
+
+    $scope.changeSubTheme = function(item, themeKey) {      
+      var newthemeKey = themeKey;
+      console.log(newthemeKey);
+      var found = $filter('filter')($scope.themes.others, {themeKey: newthemeKey}, true);
+      console.log(found);
     }
 
     $scope.navigateToSite = function(themeKey) {
@@ -101,6 +108,7 @@
     // Send the theme key
     if (typeof $scope.selected !== 'undefined') {
       formdata['themeKey'] = $scope.selected;
+      console.log($scope.selected);
     }
 
     $scope.btnDisable = true;
