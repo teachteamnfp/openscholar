@@ -219,7 +219,7 @@ abstract class OsRestfulEntityCacheableBase extends RestfulEntityBase {
     return $isList || parent::isListRequest();
   }
 
-  
+
   public function additionalHateoas() {
     $addtl = array();
     $path = $this->getPath();

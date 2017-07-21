@@ -12,3 +12,4 @@ files[] = includes/OsRestfulDataProvider.php
 files[] = includes/OsRestfulReports.php
 files[] = includes/OsRestfulSpaces.php
 files[] = includes/OSRestfulCPMenu.php
+files[] = includes/OsbulkOperationEnitity.class.php

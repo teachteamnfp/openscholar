@@ -1,6 +1,6 @@
 <?php
 
-class NodesRestfulBase extends bulkOperationEnitity {
+class NodeRestfulBase extends OsbulkOperationEnitity {
 
   /**
    * Define the bundles not to be exposed to the API.
@@ -70,13 +70,6 @@ class NodesRestfulBase extends bulkOperationEnitity {
     $public_fields['author'] = array(
       'property' => 'author',
       'sub_property' => 'name',
-    );
-
-    $public_fields['created'] = array(
-      'property' => 'created',
-      'process_callbacks' => array(
-        array($this, 'dateFormat'),
-      ),
     );
 
     $public_fields['changed'] = array(

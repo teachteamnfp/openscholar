@@ -2,12 +2,12 @@
 
 $plugin = array(
   'label' => t('Nodes'),
-  'resource' => 'nodes',
-  'name' => 'nodes__1_0',
+  'resource' => 'node',
+  'name' => 'node__1_0',
   'entity_type' => 'node',
   'bundle' => FALSE,
-  'description' => t('Expose all bundles except personal'),
-  'class' => 'NodesRestfulBase',
+  'description' => t('Expose all bundles except couple of bundles'),
+  'class' => 'NodeRestfulBase',
   'authentication_types' => TRUE,
   'authentication_optional' => TRUE,
 );

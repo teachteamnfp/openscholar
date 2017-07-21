@@ -5,7 +5,7 @@
     fetchPromiseNodes,
     fetchPromiseVocab;
 
-  var m = angular.module('CpContent', ['ui.bootstrap', 'ngTable', 'ngMaterial', 'EntityService']);
+  var m = angular.module('CpContent', ['ui.bootstrap', 'ngTable', 'ngMaterial', 'EntityService', 'os-buttonSpinner']);
 
   /**
    * Open modals for cp content listing.
@@ -36,6 +36,7 @@
             }
             modal.element.dialog(dialogOptions);
             modal.close.then(function(result) {
+              console.log(result);
               window.location.reload();
             });
           });
@@ -48,7 +49,7 @@
   }]);
 
   m.run(['EntityService', function(EntityService) {
-    nodeService = new EntityService('nodes', 'id');
+    nodeService = new EntityService('node', 'id');
     vocabService = new EntityService('vocabulary', 'id');
     fetchPromiseNodes = nodeService.fetch();
     fetchPromiseVocab = vocabService.fetch().then(function(vovab) {
@@ -59,7 +60,7 @@
   m.controller('cpModalController', function($scope) {
     $scope.message = false;
     $scope.close = function(arg) {
-      window.location.reload();
+      close(arg);
     }
     // Fetch vsite home.
     if (Drupal.settings.paths.vsite_home != undefined) {
@@ -73,7 +74,7 @@
    */
   m.directive('cpContent', function() {
 
-    function cpContentCtl($scope, $timeout, $filter, $rootScope, EntityService, NgTableParams) {
+    function cpContentCtl($scope, $timeout, $filter, $rootScope, EntityService, NgTableParams, buttonSpinnerStatus) {
 
       this.nodeTermOperation = function(operation) {
         var nids = [];
@@ -88,9 +89,9 @@
           tids.push(parseInt(obj.id));
         });
         if (operation == 'applyTerm') {
-          nodeService.bulk('applyTerm', nids, {
+          return nodeService.bulk('applyTerm', nids, {
             tids: tids,
-            type: 'node'
+            operation: false
           }).then(function(response) {
             if (response.data.data.saved) {
               $scope.message = 'Terms have been applied to selected content.';
@@ -118,14 +119,14 @@
                   }
                 }
               });
-
+              return true;
             }
           });
 
         } else {
-          nodeService.bulk('removeTerm', nids, {
+          return nodeService.bulk('removeTerm', nids, {
             tids: tids,
-            type: 'node'
+            operation: false
           }).then(function(response) {
             if (response.data.data.saved) {
               $scope.message = 'Terms have been removed from selected content.';
@@ -140,6 +141,7 @@
                   }
                 }
               });
+              return true;
             }
           });
 
@@ -217,7 +219,7 @@
           }
         });
         // Bulk operation DELETE should go through Undo option.
-        if (operation == 'deleted') {
+        if (operation == 'delete') {
           $scope.nodeDelete(nids);
         } else {
           $scope.changeStatus(nids, operation);
@@ -227,11 +229,13 @@
       $scope.changeStatus = function(nid, publish_status) {
         var nids = angular.isArray(nid) ? nid : [nid];
         var operationName = (publish_status) ? 'published' : 'unpublished';
+        buttonSpinnerStatus.SetState(operationName, true);
         nodeService.bulk(operationName, nids, {
           details: false,
-          type: 'node'
+          operation:false
         }).then(function(response) {
           if (response.data.data.saved) {
+            buttonSpinnerStatus.SetState(operationName, false);
             $scope.message = 'Selected content has been ' + operationName + '.';
             angular.forEach($scope.tableParams.data, function(node, key) {
               if (nids.indexOf(node.id) > -1) {
@@ -251,6 +255,7 @@
       $scope.deleteUndoMessage = true;
       var nodeId, timer, list;
       var oldList = [];
+      var newDataList = [];
       $scope.nodeDelete = function(nid) {
         nodeId = angular.isArray(nid) ? nid : [nid];
         var newDataList = [];
@@ -271,29 +276,23 @@
         $scope.deleteUndoAction = !$scope.deleteUndoAction;
         timer = $timeout(function() {
           $scope.deleteUndoAction = !$scope.deleteUndoAction;
-          nodeService.bulk('delete', nodeId, {
-            details: false,
-            type: 'node'
-          }).then(function(response) {
-            if (response.data.data.saved) {
-              $scope.message = 'Selected content has been ' + entity.operation + '.';
-            }
-          });
+          $scope.deleteNodeOnClose();
         }, 8000);
       };
 
       $scope.deleteNodeOnClose = function() {
         $timeout.cancel(timer);
-        nodeService.bulk('delete', nodeId, {
+        $scope.message = 'Selected content has been deleted.';
+        $scope.deleteUndoAction = true;
+        /*nodeService.bulk('delete', nodeId, {
           details: false,
-          type: 'node'
+          operation: false
         }).then(function(response) {
-          if (response.data.data.saved) {
+          if (response.data.data.deleted) {
             $scope.message = 'Selected content has been deleted.';
             $scope.deleteUndoAction = true;
-            $scope.search();
           }
-        });
+        });*/
       };
 
       $scope.deleteUndo = function() {
@@ -456,7 +455,7 @@
           page: 1,
           count: 20,
           sorting: {
-            created: 'desc'
+            changed: 'desc'
           }
         }, {
           total: 0,
@@ -506,9 +505,9 @@
     };
   });
 
-  m.directive('cpContentDropdownMultiselect', ['$rootScope', '$filter', '$document', '$compile', '$parse', 'EntityService',
+  m.directive('cpContentDropdownMultiselect', ['$rootScope', '$filter', '$document', '$compile', '$parse', 'EntityService', 'buttonSpinnerStatus',
 
-    function($rootScope, $filter, $document, $compile, $parse, EntityService) {
+    function($rootScope, $filter, $document, $compile, $parse, EntityService, bss) {
 
       return {
         restrict: 'AE',
@@ -598,6 +597,7 @@
           var termService = new EntityService('taxonomy', 'id');
           scope.addTerm = function(key, vid, vocabName) {
             if (angular.isDefined(scope.orderedItems[key].termName)) {
+              bss.SetState('term_form', true);
               var termName = scope.orderedItems[key].termName;
               termService.add({
                 vid: vid,
@@ -611,6 +611,7 @@
                     vocabName: vocabName
                   });
                   scope.orderedItems[key].termName = '';
+                  bss.SetState('term_form', false);
                   scope.$parent.$parent.message = termName + ' term have been added to ' + vocabName + ' vocabulary.';
                 }
               });
@@ -619,14 +620,24 @@
 
           // Remove selected terms from selected nodes.
           scope.removeTerms = function() {
-            cpContentCtl.nodeTermOperation('removeTerm');
-            scope.open = false;
+            bss.SetState('term_form', true);
+            cpContentCtl.nodeTermOperation('removeTerm').then(function(state) {
+              if (state) {
+                scope.open = false;
+                bss.SetState('term_form', false);
+              }
+            });
           };
 
           // Add selected terms to selected nodes.
           scope.applyTerms = function() {
-            cpContentCtl.nodeTermOperation('applyTerm');
-            scope.open = false;
+            bss.SetState('term_form', true);
+            cpContentCtl.nodeTermOperation('applyTerm').then(function(state) {
+              if (state) {
+                scope.open = false;
+                bss.SetState('term_form', false);
+              }
+            });
           };
 
           scope.closeTermDropdown = function() {
