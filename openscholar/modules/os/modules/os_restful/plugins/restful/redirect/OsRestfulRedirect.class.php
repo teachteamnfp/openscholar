@@ -52,14 +52,6 @@ class OsRestfulRedirect extends \RestfulBase implements \RestfulDataProviderInte
       $redirect->source = ltrim($redirect->source, $remove_character);
       $redirect->msg[] = t("Leading ' %character ' is not allowed, it has been removed and saved.", array('%character' => $remove_character));
     }
-    // converting the source to url alias if a path has one
-    if(drupal_valid_path($redirect->source)) {
-      if($redirect_source = drupal_lookup_path('alias',$redirect->source, $path_language = NULL)) {
-        $request = explode('/', $redirect_source);
-        unset($request[0]);
-        $redirect->source = implode('/', $request);
-      }
-    }
     // Saving to DB
     redirect_save($redirect);
 
