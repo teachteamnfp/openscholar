@@ -184,7 +184,6 @@
           return defers[key].promise;
         }
 
-
         this.get = function (id) {
           var keys = getCacheKeysForId(entityType, idProp, id);
           for (var k in keys) {
