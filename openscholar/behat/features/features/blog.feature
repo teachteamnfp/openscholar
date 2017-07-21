@@ -63,7 +63,7 @@ Feature:
  Scenario: Edit existing blog content
     Given I am logging in as "john"
       And I visit "john/blog/day-life-potus"
-      And I click on the element with css selector "link-count-node-edit first"
+      And I click on the element with css selector "li.link-count-node-edit.first"
      When I fill in "Title" with "Another day in the life of The POTUS."
      When I fill in "Body" with "Each day the President eats lunch."
       And I press "Save"
