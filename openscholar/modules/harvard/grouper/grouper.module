@@ -200,6 +200,8 @@ function grouper_user_login(&$edit, $account) {
   else {
     $account->field_grouper_path = null;
   }
+  // debug
+  error_log(print_r($account));
 
   user_save($account);
 }
