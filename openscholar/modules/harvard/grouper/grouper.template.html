@@ -5,14 +5,11 @@
         <span ng-if="!status.loading && !ShowPanel() && selected.length">{{SelectedGroupNames()}}</span>
         </div>
     <div class="grouper-panel" ng-if="ShowPanel()">
-        
-            <label>Selected Groups</label>
+         <label>Selected Groups</label>
             <div class="grouper-selected-fieldset-panel">
                 <span class="group" ng-repeat="path in selected">{{GroupLabel(path)}}<span class="remove" ng-click="Remove(path)"></span></span>
                 <span ng-if="selected.length == 0">No groups selected.</span>
             </div>
-        
-        <br>
         <label for="grouper-search">Filter By Name:</label>
         <input type="text" class="form-text" id="grouper-search" ng-model="search">
         <div class="all-groups">
