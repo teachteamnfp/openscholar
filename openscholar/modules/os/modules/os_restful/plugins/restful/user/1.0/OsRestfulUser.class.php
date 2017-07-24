@@ -103,7 +103,7 @@ class OsRestfulUser extends \RestfulEntityBaseUser {
         'title' => $value->title,
         'id' => $value->nid,
         'purl' => $value->purl,
-        'delete_base_url' => isset($custom_domains[$value->nid]) ? 'http://' . $custom_domains[$value->nid] . '/user#overlay=' : $purl_base_domain . '/#overlay=' . $value->purl . '/',
+        'delete_base_url' => isset($custom_domains[$value->nid]) ? 'http://' . $custom_domains[$value->nid] . '/user#overlay=' : $purl_base_domain . '/' . $value->purl . '/#overlay=' . $value->purl . '/',
         'owner' => ($value->uid == $account->uid),
         'subsite_access' => vsite_subsite_access('create', $value),
         'delete_access' => node_access('delete', $value),
