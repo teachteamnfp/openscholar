@@ -51,7 +51,7 @@ class OsbulkOperationEnitity extends OsRestfulEntityCacheableBase {
   }
 
   /**
-   * Bulk: Remove terms form entity.
+   * Bulk: Remove terms from entity.
    */
   protected function removeTerms() {
     if (!empty($this->request['entity_id']) && !empty($this->request['tids'])) {
@@ -99,7 +99,8 @@ class OsbulkOperationEnitity extends OsRestfulEntityCacheableBase {
   }
 
   /**
-   * {@inheritdoc}
+   * Bulk: Delete entities.
+   * Override as base method doesn't allow multiple deletes.
    */
   public function deleteEntity($entity_ids) {
     $entity_ids = explode(',', $entity_ids);

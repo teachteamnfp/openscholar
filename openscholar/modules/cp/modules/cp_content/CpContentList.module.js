@@ -1,9 +1,9 @@
 (function() {
   var nodeService,
     vocabService,
-    ogVocabTerms,
     fetchPromiseNodes,
-    fetchPromiseVocab;
+    fetchPromiseVocab,
+    messageFailed = 'Something went wrong. Please try again later.';
 
   var m = angular.module('CpContent', ['ui.bootstrap', 'ngTable', 'ngMaterial', 'EntityService', 'os-buttonSpinner']);
 
@@ -49,9 +49,7 @@
     nodeService = new EntityService('node', 'id');
     vocabService = new EntityService('vocabulary', 'id');
     fetchPromiseNodes = nodeService.fetch();
-    fetchPromiseVocab = vocabService.fetch().then(function(vovab) {
-      ogVocabTerms = vovab;
-    });
+    fetchPromiseVocab = vocabService.fetch();
   }]);
 
   m.controller('cpModalController', function($scope) {
@@ -117,6 +115,9 @@
                 }
               });
               return true;
+            } else {
+              $scope.message = messageFailed;
+              return false;
             }
           });
 
@@ -139,6 +140,9 @@
                 }
               });
               return true;
+            } else {
+              $scope.message = messageFailed;
+              return false;
             }
           });
 
@@ -164,46 +168,49 @@
           selectedTypes = selectedTypes.filter(function(value, index) {
             return selectedTypes.indexOf(value) == index
           });
-
-          angular.forEach(ogVocabTerms, function(vocab, key) {
-            vocab.bundles.node.sort()
-            var ret = [];
-            for (var i = 0; i < selectedTypes.length; i += 1) {
-              if (vocab.bundles.node.indexOf(selectedTypes[i]) > -1) {
-                ret.push(selectedTypes[i]);
+          return fetchPromiseVocab.then(function(ogVocabTerms) {
+            angular.forEach(ogVocabTerms, function(vocab, key) {
+              vocab.bundles.node.sort()
+              var ret = [];
+              for (var i = 0; i < selectedTypes.length; i += 1) {
+                if (vocab.bundles.node.indexOf(selectedTypes[i]) > -1) {
+                  ret.push(selectedTypes[i]);
+                }
               }
-            }
-            if (selectedTypes.length == ret.length) {
-              macthedVocab.push(vocab);
-            }
-          });
-          if (macthedVocab.length == 0) {
-            var contentTypesText = (selectedTypes.length > 0) ? selectedTypes.join(', ') : selectedTypes[0];
-            contentTypesText = $filter('removeUnderscore')(contentTypesText);
-            if (selectedTypes.length == 1) {
-              results = {
-                error: 'No vocabularies enabled for' + contentTypesText + ' content type.',
-                vocab: macthedVocab
-              };
+              if (selectedTypes.length == ret.length) {
+                macthedVocab.push(vocab);
+              }
+            });
+            if (macthedVocab.length == 0) {
+              var contentTypesText = (selectedTypes.length > 0) ? selectedTypes.join(', ') : selectedTypes[0];
+              contentTypesText = $filter('removeUnderscore')(contentTypesText);
+              if (selectedTypes.length == 1) {
+                results = {
+                  error: 'No vocabularies enabled for' + contentTypesText + ' content type.',
+                  vocab: macthedVocab
+                };
+              } else {
+                results = {
+                  error: contentTypesText + " do not share the same vocabularies.",
+                  vocab: macthedVocab
+                };
+              }
             } else {
               results = {
-                error: contentTypesText + " do not share the same vocabularies.",
+                error: false,
                 vocab: macthedVocab
               };
             }
-          } else {
-            results = {
-              error: false,
-              vocab: macthedVocab
-            };
-          }
-          return results;
+            return results;
+          });
 
         } else {
-          return {
-            error: false,
-            vocab: ogVocabTerms
-          };
+          return fetchPromiseVocab.then(function(ogVocabTerms) {
+            return {
+              error: false,
+              vocab: ogVocabTerms
+            };
+          });
         }
       }
 
@@ -229,7 +236,7 @@
         buttonSpinnerStatus.SetState(operationName, true);
         nodeService.bulk(operationName, nids, {
           details: false,
-          operation:false
+          operation: false
         }).then(function(response) {
           if (response.data.data.saved) {
             buttonSpinnerStatus.SetState(operationName, false);
@@ -243,6 +250,9 @@
                 }
               }
             });
+          } else {
+            buttonSpinnerStatus.SetState(operationName, false);
+            $scope.message = messageFailed;
           }
         });
       };
@@ -288,6 +298,8 @@
           if (response.data.data.deleted) {
             $scope.message = 'Selected content has been deleted.';
             $scope.deleteUndoAction = true;
+          } else {
+            $scope.message = messageFailed;
           }
         });
       };
@@ -579,14 +591,15 @@
           scope.toggleDropdown = function() {
             scope.open = !scope.open;
             if (scope.settings.termDropdown) {
-              var result = cpContentCtl.getMatchedTaxonomyTerms(scope.settings.termOperation);
-              if (!result.error) {
-                scope.options = result.vocab;
-                scope.showTermErrorMessage = false;
-              } else {
-                scope.termErrorMessage = result.error;
-                scope.showTermErrorMessage = true;
-              }
+              cpContentCtl.getMatchedTaxonomyTerms(scope.settings.termOperation).then(function(result) {
+                if (!result.error) {
+                  scope.options = result.vocab;
+                  scope.showTermErrorMessage = false;
+                } else {
+                  scope.termErrorMessage = result.error;
+                  scope.showTermErrorMessage = true;
+                }
+              });
             }
           };
 
@@ -594,7 +607,7 @@
           var termService = new EntityService('taxonomy', 'id');
           scope.addTerm = function(key, vid, vocabName) {
             if (angular.isDefined(scope.orderedItems[key].termName)) {
-              bss.SetState('term_form', true);
+              bss.SetState('add_term_form', true);
               var termName = scope.orderedItems[key].termName;
               termService.add({
                 vid: vid,
@@ -608,8 +621,11 @@
                     vocabName: vocabName
                   });
                   scope.orderedItems[key].termName = '';
-                  bss.SetState('term_form', false);
+                  bss.SetState('add_term_form', false);
                   scope.$parent.$parent.message = termName + ' term have been added to ' + vocabName + ' vocabulary.';
+                } else {
+                  scope.$parent.$parent.message = messageFailed;
+                  bss.SetState('add_term_form', false);
                 }
               });
             }
@@ -622,6 +638,8 @@
               if (state) {
                 scope.open = false;
                 bss.SetState('term_form', false);
+              } else {
+                bss.SetState('term_form', false);
               }
             });
           };
@@ -632,6 +650,8 @@
             cpContentCtl.nodeTermOperation('applyTerm').then(function(state) {
               if (state) {
                 scope.open = false;
+                bss.SetState('term_form', false);
+              } else {
                 bss.SetState('term_form', false);
               }
             });
@@ -656,9 +676,14 @@
             $event.stopImmediatePropagation();
           };
 
-          scope.groupVocabId = false;
-          scope.groupToggleDropdown = function(vid) {
-            scope.groupVocabId = vid;
+          scope.groupVocabName = false;
+          scope.groupToggleDropdown = function(vocabName) {
+            if (scope.groupVocabName == vocabName) {
+              scope.groupVocabName = false;
+            } else {
+              scope.groupVocabName = vocabName;
+            }
+
           };
 
           scope.checkboxClick = function($event, id) {
