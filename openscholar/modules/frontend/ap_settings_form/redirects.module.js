@@ -83,7 +83,7 @@
       '</ul>' +
       '<a class="redirect-add" ng-show="showAddLink()" ng-click="toggleAddForm()">+ Add new redirect</a>' +
       '<div class="redirect-add-form" ng-show="showAddForm">' +
-        '<div class="display-inline"><label for="redirect-path">Redirect From</label> {{siteBaseUrl}}/<input type="text" id="redirect-path" class="redirect-new-element" ng-model="newRedirectPath" placeholder="Local path"><span class="description">(Example: my-path). Fragment anchors (e.g. #anchor) are not allowed.</span></div>' +
+        '<div class="display-inline"><label for="redirect-path">Redirect From</label> {{siteBaseUrl}}/<input type="text" id="redirect-path" class="redirect-new-element" ng-model="newRedirectPath" placeholder="Local path"><span class="description">(Example: my-path). Fragment anchors (e.g. #anchor) Leading slash ( / ) are not allowed.</span></div>' +
         '<div class="display-inline"><label for="redirect-target">Redirect To</label> <input type="text" id="redirect-target" class="redirect-new-element" ng-model="newRedirectTarget" placeholder="Target URL (i.e. http://www.google.com)"><span class="description">Enter any existing destination URL (like http://example.com) to redirect to.</span></div>' +
         '<button type="button" value="Add Redirect" ng-click="addRedirect()"">Add Redirect</button>' +
       '</div>',
@@ -129,10 +129,11 @@
             scope.newRedirectPath = '';
             scope.newRedirectTarget = '';
             scope.showAddForm = false;
-            if (r.data.data.msg != '') {
-              var msg = r.data.data.msg;
-              scope.errors.push($sce.trustAsHtml(msg));
-            } 
+            if (Array.isArray(r.data.data.msg)) {
+              for(var i = 0; i < r.data.data.msg.length; i++) {
+                scope.errors.push($sce.trustAsHtml(r.data.data.msg[i]));
+              }
+            }
           });
         }
 
