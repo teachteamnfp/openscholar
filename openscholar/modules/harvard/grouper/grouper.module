@@ -195,7 +195,7 @@ function grouper_user_login(&$edit, $account) {
        LANGUAGE_NONE => array()
      );
     foreach ($groups as $g) {
-      $account->field_grouper_path[LANGUAGE_NONE][] = $g->displayName;
+      $account->field_grouper_path[LANGUAGE_NONE][] = array($g->displayName, 'plain_text');
     }
   }
   else {
