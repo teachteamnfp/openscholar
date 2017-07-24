@@ -27,7 +27,8 @@
 
         ModalService.showModal({
             controller: "cpModalController",
-            template: '<form id="cp-content"><div cp-content></div></form>',
+            template: '<div><div class="file-entity-loading" ng-show="loading"><div class="node-entity-loading-message">Loading content...<br /></div></div>' +
+              '<div cp-content entityType="node"></div></div>',
           })
           .then(function(modal) {
             dialogOptions.title = 'Content';
@@ -52,8 +53,68 @@
     fetchPromiseVocab = vocabService.fetch();
   }]);
 
-  m.controller('cpModalController', function($scope) {
+  m.controller('cpModalController', function($scope, NgTableParams, $filter) {
     $scope.message = false;
+    $scope.loading = true;
+    // Fetch list and set it in ng-table;
+    fetchPromiseNodes.then(function(data) {
+      $scope.tableParams = new NgTableParams({
+        page: 1,
+        count: 20,
+        sorting: {
+          changed: 'desc'
+        }
+      }, {
+        total: 0,
+        counts: [], // hide page counts control.
+        getData: function(params) {
+          var typeDataSet = [];
+          var termDataSet = [];
+          var filteredData = data;
+          if (angular.isDefined(params.filter().type)) {
+            angular.forEach(filteredData, function(node, key) {
+              if (params.filter().type.indexOf(node.type) > -1) {
+                typeDataSet.push(node);
+              }
+            });
+            filteredData = typeDataSet;
+          }
+          if (angular.isDefined(params.filter().og_vocabulary)) {
+            angular.forEach(filteredData, function(node, key) {
+              if (node.og_vocabulary) {
+                angular.forEach(node.og_vocabulary, function(vocab, key) {
+                  if (params.filter().og_vocabulary.indexOf(parseInt(vocab.tid)) > -1) {
+                    if (termDataSet.length > 0) {
+                      angular.forEach(termDataSet, function(newNode) {
+                        if (newNode.id != node.id) {
+                          termDataSet.push(node);
+                        }
+                      });
+                    } else {
+                      termDataSet.push(node);
+                    }
+
+                  }
+                });
+              }
+            });
+
+            filteredData = termDataSet;
+          }
+          if (angular.isDefined(params.filter().label)) {
+            filteredData = $filter('filter')(filteredData, params.filter().label);
+          }
+
+          var orderedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
+          params.total(orderedData.length);
+          $scope.noRecords = (orderedData.length) == 0 ? true : false;
+          $scope.disableBulkOptions = (orderedData.length) == 0 ? true : false;
+          return orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
+        }
+      });
+      $scope.loading = false;
+    });
+
     $scope.close = function(arg) {
       window.location.reload();
     }
@@ -92,28 +153,32 @@
               $scope.message = 'Terms have been applied to selected content.';
               angular.forEach($scope.tableParams.data, function(node, key) {
                 if (nids.indexOf(node.id) > -1) {
+                  var newTerms = [];
                   if (node.og_vocabulary == null) {
                     node.og_vocabulary = [];
                   }
                   if (node.og_vocabulary.length > 0) {
                     angular.forEach(node.og_vocabulary, function(vocab) {
-                      angular.forEach(tids, function(tid) {
-                        var term = {};
-                        if (vocab.tid != tid) {
-                          term.tid = tid;
-                          node.og_vocabulary.push(term);
-                        }
-                      });
+                      if (tids.indexOf(parseInt(vocab.tid)) == -1) {
+                        angular.forEach(tids, function(tid) {
+                          newTerms.push({tid: tid});
+                        });
+                      }
                     });
                   } else {
-                    var term = {};
                     angular.forEach(tids, function(tid) {
-                      term.tid = tid
+                      newTerms.push({tid: tid});
+                    });
+                  }
+                  if (newTerms.length > 0) {
+                    angular.forEach(newTerms, function(term) {
                       node.og_vocabulary.push(term);
                     });
                   }
                 }
+
               });
+
               return true;
             } else {
               $scope.message = messageFailed;
@@ -130,11 +195,11 @@
               $scope.message = 'Terms have been removed from selected content.';
               angular.forEach($scope.tableParams.data, function(node, key) {
                 if (nids.indexOf(node.id) > -1) {
-                  if (angular.isDefined(node.og_vocabulary)) {
-                    angular.forEach(node.og_vocabulary, function(vocab, term_key) {
-                      if (tids.indexOf(parseInt(vocab.tid)) > -1) {
-                        $scope.tableParams.data[key].og_vocabulary.splice(term_key, 1);
-                      }
+                  if (angular.isDefined($scope.tableParams.data[key].og_vocabulary)) {
+                    angular.forEach($scope.tableParams.data[key].og_vocabulary, function(vocab, term_key) {
+                       if (tids.indexOf(parseInt(vocab.tid)) > -1) {
+                        $scope.tableParams.data[key].og_vocabulary[term_key].tid = null;
+                       }
                     });
                   }
                 }
@@ -145,7 +210,6 @@
               return false;
             }
           });
-
         }
       }
 
@@ -456,54 +520,9 @@
           filter.og_vocabulary = selectedTerms;
           $scope.tableParams.filter(filter);
         }
+        $scope.tableParams.reload();
       };
 
-      // Fetch list and set it in ng-table;
-      fetchPromiseNodes.then(function(data) {
-        $scope.tableParams = new NgTableParams({
-          page: 1,
-          count: 20,
-          sorting: {
-            changed: 'desc'
-          }
-        }, {
-          total: 0,
-          counts: [], // hide page counts control.
-          getData: function(params) {
-            var typeDataSet = [];
-            var termDataSet = [];
-            var filteredData = data;
-            if (angular.isDefined(params.filter().type)) {
-              angular.forEach(filteredData, function(node, key) {
-                if (params.filter().type.indexOf(node.type) > -1) {
-                  typeDataSet.push(node);
-                }
-              });
-              filteredData = typeDataSet;
-            }
-            if (angular.isDefined(params.filter().og_vocabulary)) {
-              angular.forEach(filteredData, function(node, key) {
-                if (node.og_vocabulary) {
-                  angular.forEach(node.og_vocabulary, function(vocab, key) {
-                    if (params.filter().og_vocabulary.indexOf(parseInt(vocab.tid)) > -1) {
-                      termDataSet.push(node);
-                    }
-                  });
-                }
-              });
-
-              filteredData = termDataSet;
-            }
-            if (angular.isDefined(params.filter().label)) {
-              filteredData = $filter('filter')(filteredData, params.filter().label);
-            }
-            var orderedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
-            params.total(orderedData.length);
-            $scope.noRecords = (orderedData.length) == 0 ? true : false;
-            return orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
-          }
-        });
-      });
     };
 
     return {
@@ -615,7 +634,7 @@
               }).then(function(response) {
                 if (response.data.data[0]) {
                   scope.orderedItems[key].tree.splice(key, 0, {
-                    id: response.data.data[0],
+                    value: response.data.data[0],
                     label: termName,
                     vid: vid,
                     vocabName: vocabName
