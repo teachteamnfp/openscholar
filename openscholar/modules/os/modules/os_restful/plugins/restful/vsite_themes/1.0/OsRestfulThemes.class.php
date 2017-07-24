@@ -40,6 +40,7 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
     $featured_themes = array_filter(variable_get('cp_appearance_featured_themes', array('aberdeen' => 'aberdeen', 'airstream' => 'airstream')));
     foreach ($themes as $theme) {
       $info = $theme->info;
+      $info['screenshot'] = $GLOBALS['base_url'] . '/' . $info['screenshot'];
       $info['theme_name'] = $theme->name;
       if (!in_array($theme->name, $featured_themes) && empty($theme->info['single'])) {
         $theme_flavors = os_theme_get_flavors($info['theme_name']);
@@ -48,7 +49,7 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
         if (!empty($flavor)) {
           $flavors = os_theme_get_flavors();
           foreach ($flavor as $key => $value) {
-            $path = $flavors[$key]['path'] . '/' . $flavors[$key]['screenshot'];
+            $path = $GLOBALS['base_url'] . '/' . $flavors[$key]['path'] . '/' . $flavors[$key]['screenshot'];
             $flavor_options[] = array('key' => $key, 'name' => $value, 'screenshot' => $path);
           }
         }
@@ -56,6 +57,7 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
         $others[] = array('name' => $info['name'],
           'themeKey' => $info['theme_name'],
           'screenshot' => $info['screenshot'],
+          'defaultscreenshot' => $info['screenshot'],
           'flavorName' => $info['flavor_name'],
           'flavorOptions' => $flavor_options,
           'flavorKey' => 'default',
@@ -75,10 +77,10 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
 
           $flavors = os_theme_get_flavors($info['theme_name']);
            foreach ($flavors as $flavor_name => $flav) {
-            $flavor_theme->info['screenshot'] = $flav['path'].'/screenshot.png';
+            $flavor_theme->info['screenshot'] = $GLOBALS['base_url'] . '/' . $flav['path'].'/screenshot.png';
             $single[] = array('name' => $flav['name'],
               'themeKey' => $info['theme_name'],
-              'screenshot' => $flav['path'].'/screenshot.png',
+              'screenshot' => $GLOBALS['base_url'] . '/' . $flav['path'].'/screenshot.png',
               'flavorName' => $flav['name'],
               'flavorOptions' => '',
               'flavorKey' => strtolower($flav['name']),
@@ -97,10 +99,10 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
 
           $flavors = os_theme_get_flavors($info['theme_name']);
            foreach ($flavors as $flavor_name => $flav) {
-            $flavor_theme->info['screenshot'] = $flav['path'].'/screenshot.png';
+            $flavor_theme->info['screenshot'] = $GLOBALS['base_url'] . '/' . $flav['path'].'/screenshot.png';
             $featured[] = array('name' => $flav['name'],
               'themeKey' => $info['theme_name'],
-              'screenshot' => $flav['path'].'/screenshot.png',
+              'screenshot' => $GLOBALS['base_url'] . '/' . $flav['path'].'/screenshot.png',
               'flavorName' => $flav['name'],
               'flavorOptions' => '',
               'flavorKey' => strtolower($flav['name']),

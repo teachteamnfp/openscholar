@@ -250,7 +250,9 @@
   cursor: pointer;
 }
 .os-themes .cp-themes.selected {
-  box-shadow: 0px 0px 10px 10px #888;
+  -moz-box-shadow: 0 0 30px #4a7d06;
+  -webkit-box-shadow: 0 0 30px #4a7d06;
+  box-shadow: 0 0 30px #4a7d06;
 }
 .os-themes .theme-info{
   position: absolute;

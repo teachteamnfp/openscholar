@@ -183,8 +183,8 @@
             <div ng-if="themes.single.length > 0" class="os-themes onepage-themes">
               <h2>One page / horizontal homepage layout themes</h2>
               <h3>Mobile-friendly themes with horizontal homepage regions. <a href="http://docs.openscholar.harvard.edu/one-page-themes">How to use these themes.</a>.</h3>
-              <div ng-repeat="theme in themes.single" ng-class="{even: $even, odd: $odd, selected: selected == theme.themeKey}" class="cp-themes {{theme.themeKey}}" ng-click="setTheme(theme.themeKey, theme.flavorKey)">
-                <img ng-src="{{theme.screenshot}}">
+              <div ng-repeat="theme in themes.single" ng-class="{even: $even, odd: $odd, selected: selected == theme.themeKey + '-os_featured_flavor-' + theme.flavorKey}" class="cp-themes {{theme.themeKey}}" ng-click="setTheme(theme.themeKey, theme.flavorKey)">
+                <img ng-src="{{theme.screenshot}}" class="screenshot">
                 <div class="theme-info">
                   <span>{{theme.name}}</span>
                   <div ng-if="theme.flavorOptions.length > 0" class="cp-appearance-flavor-list">Flavors
@@ -198,8 +198,8 @@
             <div ng-if="themes.featured.length > 0" class="os-themes featured-themes">
               <h2>Featured themes</h2>
               <h3>Mobile-friendly themes using Harvard color palettes.</h3>
-               <div ng-repeat="theme in themes.featured" ng-class="{even: $even, odd: $odd, selected: selected == theme.themeKey}" class="cp-themes {{theme.themeKey}}" ng-click="setTheme(theme.themeKey, theme.flavorKey)">
-                <img ng-src="{{theme.screenshot}}">
+               <div ng-repeat="theme in themes.featured" ng-class="{even: $even, odd: $odd, selected: selected == theme.themeKey + '-os_featured_flavor-' + theme.flavorKey}" class="cp-themes {{theme.themeKey}}" ng-click="setTheme(theme.themeKey, theme.flavorKey)">
+                <img ng-src="{{theme.screenshot}}" class="screenshot">
                 <div class="theme-info">
                   <span>{{theme.name}}</span>
                   <div ng-if="theme.flavorOptions.length > 0" class="cp-appearance-flavor-list">Flavors
@@ -212,8 +212,8 @@
             </div>
             <div ng-if="themes.others.length > 0" class="os-themes others-themes">
               <h2>Other themes</h2>
-               <div ng-repeat="theme in themes.others" ng-class="{even: $even, odd: $odd, selected: selected == theme.themeKey}" class="cp-themes {{theme.themeKey}}" ng-click="setTheme(theme.themeKey, theme.flavorKey)">
-                <img ng-src="{{theme.screenshot}}">
+               <div ng-repeat="theme in themes.others" ng-class="{even: $even, odd: $odd, selected: selected == theme.themeKey + '-os_featured_flavor-' + theme.flavorKey}" class="cp-themes {{theme.themeKey}}" ng-click="setTheme(theme.themeKey, theme.flavorKey)">
+                <img ng-src="{{theme.screenshot}}" class="screenshot">
                 <div class="theme-info">
                   <span>{{theme.name}}</span>
                   <div ng-if="theme.flavorOptions.length > 0" class="cp-appearance-flavor-list">Flavors
@@ -230,7 +230,7 @@
       <div class="clear"></div>
       <div id="footer-container">
         <div id="pre"><input type="button" class="preNxt" value="Back" ng-disabled="btnDisable == true"  ng-click="navigatePage('page3','page2');"></div>
-        <div id="nxt"><button type="button" class="preNxt" ng-disabled="btnDisable == true" ng-show="siteCreated == false" ng-click="saveAllValues();">Create</button><input type="button" class="preNxt" value="Take me to my site" ng-show="siteCreated == true"  ng-click="navigateToSite();"></div>
+        <div id="nxt"><button type="button" class="preNxt" ng-disabled="btnDisable == true" ng-show="siteCreated == false" ng-click="saveAllValues();" button-spinner="site_creation_form" spinning-text="Saving">Create</button><input type="button" class="preNxt" value="Take me to my site" ng-show="siteCreated == true"  ng-click="navigateToSite();"></div>
       </div>
     </div>
   <form>

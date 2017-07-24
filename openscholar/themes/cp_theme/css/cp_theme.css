@@ -1845,3 +1845,6 @@ body.page-node-revisions .node {
 div.no-bold {
     font-weight: normal;
 }
+.cp-themes .screenshot {
+    width: 245px;
+}

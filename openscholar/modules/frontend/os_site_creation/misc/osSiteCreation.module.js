@@ -62,7 +62,6 @@
     $scope.selectedOption = {key: 'default'};
     $scope.setTheme = function(themeKey, flavorKey) {
       $scope.selected = themeKey + '-os_featured_flavor-' + flavorKey;
-      console.log($scope.themes);      
     }
 
     $scope.changeSubTheme = function(item, themeKey) {      
@@ -71,7 +70,11 @@
           $scope.themes.others[key].flavorKey = item.key;
           angular.forEach(value.flavorOptions, function(v, k) {
             if (v.key == item.key) {
-              $scope.themes.others[key].screenshot = v.screenshot;
+              if (v.screenshot != '/') {
+                $scope.themes.others[key].screenshot = v.screenshot;
+              } else {
+                $scope.themes.others[key].screenshot = $scope.themes.others[key].defaultscreenshot;
+              }
             }
           });
         }
@@ -92,6 +95,8 @@
 
   //Get all values and save them in localstorage for use
   $scope.saveAllValues = function() {
+    bss.SetState('site_creation_form', true);
+    $scope.btnDisable = true;
     var formdata = {};
     formdata = {
       individualScholar: $scope.individualScholar,
@@ -112,11 +117,7 @@
     // Send the theme key
     if (typeof $scope.selected !== 'undefined') {
       formdata['themeKey'] = $scope.selected;
-      console.log($scope.selected);
     }
-
-    $scope.btnDisable = true;
-    bss.SetState('site_creation_form', true);
     //Ajax call to save formdata
     $http.post(paths.api + '/purl', formdata).then(function (response) {
       $scope.successData = response.data.data.data;
