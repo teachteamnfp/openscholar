@@ -194,16 +194,19 @@
               siteCreationCtrl.$setValidity('permission', false);
               siteCreationCtrl.$setValidity('sitename', true);
               siteCreationCtrl.$setValidity('isinvalid', true);
+              scope.btnDisable = true;
             }
             else if (responseData.msg == "Invalid"){
               siteCreationCtrl.$setValidity('permission', true);
               siteCreationCtrl.$setValidity('sitename', true);
               siteCreationCtrl.$setValidity('isinvalid', false);
+              scope.btnDisable = true;
             }
             else if (responseData.msg == "Not-Available") {
               siteCreationCtrl.$setValidity('permission', true);
               siteCreationCtrl.$setValidity('isinvalid', true);
               siteCreationCtrl.$setValidity('sitename', false);
+              scope.btnDisable = true;
             }
             else{
               siteCreationCtrl.$setValidity('permission', true);

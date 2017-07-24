@@ -9,8 +9,10 @@ Feature:
       And I click "Create Your Site Here"
       And I click on the "Individual Scholar" control
       And I fill in "individual-scholar" with "mysite"
-      And I sleep for "10"
+      And I sleep for "5"
       And I press "Next"
       And I click on the "Next" control
-      And I sleep for "10"
-     Then I should see "Success! The new site has been created."
+      And I click on the "Create" control
+      And I sleep for "5"
+      And I press "Take me to my site"
+     Then I should see "mysite" in "mysite"
