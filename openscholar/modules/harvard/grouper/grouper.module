@@ -157,6 +157,7 @@ function grouper_get_field_instance($entity_type, $bundle) {
 function grouper_user_login(&$edit, $account) {
 
   if (!array_key_exists('field_grouper_path', $account)) {
+    watchdog('grouper', print_r($account, 1));
     watchdog('grouper', "User account '{$account->uid} does not have the field_grouper_path field.'");
     return;
   }
