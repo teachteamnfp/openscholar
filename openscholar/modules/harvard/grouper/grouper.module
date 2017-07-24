@@ -174,7 +174,7 @@ function grouper_user_login(&$edit, $account) {
   );
   $grouper_url = strtr($grouper_url, $replacements);
 
-  $response = drupal_http_request($grouper_url, $options);
+  $response = drupal_http_request($grouper_url);
   if ($response->code == 200) {
     $raw_data = $response->data;
   }
