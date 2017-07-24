@@ -201,7 +201,7 @@ function grouper_user_login(&$edit, $account) {
     $account->field_grouper_path = null;
   }
   // debug
-  error_log(print_r($account));
+  watchdog(WATCHDOG_DEBUG, print_r($account));
 
   user_save($account);
 }
