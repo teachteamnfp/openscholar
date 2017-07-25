@@ -102,7 +102,7 @@ function grouper_site_groups($nid = null) {
   if ($vsite = vsite_get_vsite($nid)) {
     $node = $vsite->group;
 
-    if (is_array($node->field_grouper_path)) {
+    if (is_array($node->field_grouper_path) && is_array($node->field_grouper_path[LANGUAGE_NONE])) {
       $groups = $node->field_grouper_path[LANGUAGE_NONE];
 
       foreach ($groups as $g) {
