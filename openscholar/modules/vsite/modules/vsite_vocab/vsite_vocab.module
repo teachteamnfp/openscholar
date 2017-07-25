@@ -628,7 +628,7 @@ function vsite_vocab_revised_weight_by_hierarchy($tid, $tw) {
     $i = 1;
     foreach($parents as $ptid => $pterm) {
       // Increasing term weight for each level of hierarchy
-      $parent_weight = $parent_weight + (pow($factor, $i) * ($tw + 1));
+      $parent_weight = $parent_weight + (pow($factor, $i) * ($pterm->weight + 1));
       $i++;
     }
     $weight = $parents[0]->weight + $parent_weight;
