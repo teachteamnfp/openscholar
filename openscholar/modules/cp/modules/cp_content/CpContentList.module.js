@@ -624,17 +624,19 @@
 
           // Add term to vocabulary.
           var termService = new EntityService('taxonomy', 'id');
-          scope.addTerm = function(key, vid, vocabName) {
+          scope.addTerm = function(key, vid, vocabName, vocabMachineName) {
             if (angular.isDefined(scope.orderedItems[key].termName)) {
               bss.SetState('add_term_form', true);
               var termName = scope.orderedItems[key].termName;
               termService.add({
                 vid: vid,
-                name: termName
+                vocab: vocabMachineName,
+                label: termName
               }).then(function(response) {
+                console.log(response);
                 if (response.data.data[0]) {
                   scope.orderedItems[key].tree.splice(key, 0, {
-                    value: response.data.data[0],
+                    value: response.data.data[0].id,
                     label: termName,
                     vid: vid,
                     vocabName: vocabName

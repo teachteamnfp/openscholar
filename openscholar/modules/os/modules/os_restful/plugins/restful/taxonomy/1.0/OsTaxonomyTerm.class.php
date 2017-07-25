@@ -8,6 +8,15 @@ class OsTaxonomyTerm extends OsRestfulEntityCacheableBase {
   public function publicFieldsInfo() {
     $fields = parent::publicFieldsInfo();
 
+    $fields['vsite'] = array(
+      'property' => 'vocabulary',
+      'process_callbacks' => array(
+        function() {
+          return $this->request['vsite'];
+        }
+      ),
+    );
+
     $fields['vocab'] = array(
       'property' => 'vocabulary',
       'process_callbacks' => array(
@@ -149,6 +158,10 @@ class OsTaxonomyTerm extends OsRestfulEntityCacheableBase {
     if (!vsite_og_user_access('administer taxonomy')) {
       throw new \RestfulBadRequestException("You are not allowed to create terms.");
     }
+
+    if ($op == 'create') {
+      return entity_access($op, $entity_type, $entity, $this->getAccount());
+    }
   }
 
   /**
@@ -173,7 +186,7 @@ class OsTaxonomyTerm extends OsRestfulEntityCacheableBase {
     if ($op != 'view') {
       if (module_exists('spaces')) {
         $relation = $this->getRelation(taxonomy_term_load($this->path));
-        spaces_set_space(vsite_get_vsite($relation->vid));
+        spaces_set_space(vsite_get_vsite($relation->gid));
         return vsite_og_user_access('administer taxonomy');
       }
       return parent::checkPropertyAccess($op, $public_field_name, $property_wrapper, $wrapper);
@@ -186,21 +199,6 @@ class OsTaxonomyTerm extends OsRestfulEntityCacheableBase {
 
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function createEntity() {
-    if (!empty($this->request['vid']) && !empty($this->request['name'])) {
-      $parent_id = 0;
-      $term = new stdClass();
-      $term->name = $this->request['name'];
-      $term->vid = $this->request['vid'];
-      $term->parent = array($parent_id);
-      taxonomy_term_save($term);
-      return array($term->tid);
-    }
-  }
-
   protected function getLastModified($id) {
     // Vocabularies cannot really be editted. When they were first created isn't stored either.
     // This function is only concerned with modifications, so as long as we assume it's really old, we're fine for now
@@ -208,3 +206,5 @@ class OsTaxonomyTerm extends OsRestfulEntityCacheableBase {
   }
 
 }
+
+
