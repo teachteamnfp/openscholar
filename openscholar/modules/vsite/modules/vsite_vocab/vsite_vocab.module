@@ -577,7 +577,6 @@ function _vsite_vocab_name_fix_iterator($vocabulary) {
  *  - term name
  */
 function vsite_vocab_sort_weight_alpha($terms) {
-  dsm($terms);
   $ordered_terms = array();
 
   foreach ($terms as $tid => $term) {
@@ -602,27 +601,42 @@ function vsite_vocab_sort_weight_alpha($terms) {
     $t_name[$term['tid']] = $term['term'];
   }
   foreach ($t_weight as $tid => $tw) {
-    //$t_weight[$tid] = vsite_vocab_revised_weight_by_hierarchy($tid);
-    vsite_vocab_revised_weight_by_hierarchy($tid);
+    $t_weight[$tid] = vsite_vocab_revised_weight_by_hierarchy($tid, $tw);
   }
   array_multisort($v_weight, SORT_ASC, SORT_NUMERIC, 
                   $vid, SORT_ASC, SORT_NUMERIC, 
                   $t_weight, SORT_ASC, SORT_NUMERIC, 
                   $t_name, SORT_ASC, SORT_STRING,
                   $ordered_terms);
-  //dsm($ordered_terms);
   return $ordered_terms;
 }
 
-function vsite_vocab_sort_weight_by_hierarchy($tid) {
+/**
+ * Helper function to modify term weight  for sorting purpose in case of hierarchy structure
+ *  - term id
+ *  - term actual weight
+ */
+function vsite_vocab_revised_weight_by_hierarchy($tid, $tw) {
   $parent_terms = taxonomy_get_parents_all($tid);
   $parents = array_reverse($parent_terms);
-  dsm($parents);
-  foreach($parents as $ptid => $pterm) {
 
+  // This factor will multiply for each level of tree structure
+  $factor = 0.01;
+  if (count($parents) > 1) {
+    // In case the term belong to a parent modify its weight
+    $parent_weight = 0;
+    $i = 1;
+    foreach($parents as $ptid => $pterm) {
+      // Increasing term weight for each level of hierarchy
+      $parent_weight = $parent_weight + (pow($factor, $i) * ($tw + 1));
+      $i++;
+    }
+    $weight = $parents[0]->weight + $parent_weight;
+  } else {
+    // Assigning actual weight in case the term doesn't belog to any parent
+    $weight = $tw;
   }
-  //$factor = 0.001;
-  //$final_weight = ($parent_weight + 1) * $factor * ($self_weight + 1);
+  return $weight;
 }
 
 /**
