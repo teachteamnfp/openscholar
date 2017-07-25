@@ -100,6 +100,7 @@ class os_boxes_mailchimp extends os_boxes_default {
             if ($list_info->id == $this->options['list']) {
               // Swap host of subscribe_url_long
               $list_info->subscribe_url_long = str_replace('http://', '//', $list_info->subscribe_url_long);
+              $list_info->subscribe_url_long = str_replace('harvard.', '', $list_info->subscribe_url_long);
               $block['content'] = t('<iframe src="@url" width="@width", height="@height"></iframe>', array(
                 '@url' => $list_info->subscribe_url_long,
                 '@width' => "640px",
