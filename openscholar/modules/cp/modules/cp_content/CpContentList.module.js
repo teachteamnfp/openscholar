@@ -28,7 +28,7 @@
         ModalService.showModal({
             controller: "cpModalController",
             template: '<div><div class="file-entity-loading" ng-show="loading"><div class="node-entity-loading-message">Loading content...<br /></div></div>' +
-              '<div cp-content entityType="node"></div></div>',
+              '<div cp-content></div>',
           })
           .then(function(modal) {
             dialogOptions.title = 'Content';
@@ -633,7 +633,6 @@
                 vocab: vocabMachineName,
                 label: termName
               }).then(function(response) {
-                console.log(response);
                 if (response.data.data[0]) {
                   scope.orderedItems[key].tree.splice(key, 0, {
                     value: response.data.data[0].id,
