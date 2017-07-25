@@ -577,6 +577,7 @@ function _vsite_vocab_name_fix_iterator($vocabulary) {
  *  - term name
  */
 function vsite_vocab_sort_weight_alpha($terms) {
+  dsm($terms);
   $ordered_terms = array();
 
   foreach ($terms as $tid => $term) {
