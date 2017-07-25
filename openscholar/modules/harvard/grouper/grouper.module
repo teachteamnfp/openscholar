@@ -49,7 +49,7 @@ function grouper_library_alter(&$libraries, $module) {
  */
 function grouper_vsite_access_privacy_values_alter(&$options) {
   if (spaces_access_admin()) {
-    $options[5] = t('Groups within the Harvard Community <br><span class="description">Only select groups at harvard can view your site.</span>');
+    $options[6] = t('Groups within the Harvard Community <br><span class="description">Only select groups at harvard can view your site.</span>');
   }
 }
 
