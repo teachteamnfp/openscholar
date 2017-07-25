@@ -19,7 +19,7 @@ Feature:
   @api @vsite @javascript
   Scenario: Testing the robot txt when site is private
     Given I am logging in as "john"
-      And I change privacy of the site "lincoln" to "Invite only during site creation."
+      And I change privacy of the site "lincoln" to "Site members only."
       And I visit "lincoln/robots.txt"
       And I should get:
       """

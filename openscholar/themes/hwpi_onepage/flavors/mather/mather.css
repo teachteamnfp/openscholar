@@ -125,9 +125,7 @@ h1#page-title {
 #footer {
     border-top: 1px solid #ddd;
 }
-.cal-export {
-    background-position: 58px -956px;
-}
+
 #footer .footer-login:after {
     background-image: none;
 }

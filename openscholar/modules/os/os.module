@@ -744,6 +744,8 @@ function _os_process_node_links_comment_add_class(&$vars) {
 function os_preprocess_page(&$vars) {
   global $user;
 
+  drupal_add_js(drupal_get_path('module', 'os') . '/js/responsive_menu.js');
+
   // Session timeout checking will be only for logged in users.
   if ($user->uid) {
     // Obtaining session lifetime value from php configuration.
@@ -3703,11 +3705,11 @@ function os_field_formatter_view($entity_type, $entity, $field, $instance, $lang
         // We will use default views trim text to trim content.Because it works
         // better in case of first paragrapgh is huge.
         $alter = array(
-          'html' => FALSE,
+          'html' => TRUE,
           'max_length' => $display['settings']['trim_length'],
           'word_boundary' => TRUE,
         );
-        $text = views_trim_text($alter, $item['safe_value']);
+        $text = views_trim_text($alter, media_filter($item['value']));
 
         $read_more = function($entity_type, $entity, &$text) {
           $uri = entity_uri($entity_type, $entity);

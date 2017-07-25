@@ -283,7 +283,7 @@
                 </else>
               </choose>
             </group>
-            <text variable="page" prefix=", " form="short"/>
+            <text variable="page" prefix=", Pp. " form="short"/>
           </if>
           <else-if variable="issue">
             <group delimiter=" " prefix=", ">
@@ -293,7 +293,7 @@
                 <date-part name="month"/>
               </date>
             </group>
-            <text variable="page" prefix=", " form="short"/>
+            <text variable="page" prefix=", Pp. " form="short"/>
           </else-if>
           <else>
             <date variable="issued" prefix=", ">
@@ -320,13 +320,13 @@
           <text variable="issue" prefix=" (" suffix=")"/>
         </if>
         <if variable="page">
-          <text variable="page" prefix=", "/>
+          <text variable="page" prefix=", Pp. "/>
         </if>
       </else-if>
       <else-if type="legal_case">
         <text variable="volume" prefix=", "/>
         <text variable="container-title" prefix=" "/>
-        <text variable="page" prefix=" "/>
+        <text variable="page" prefix=" Pp. "/>
         <text variable="publisher-place" prefix=" "/>
         <text variable="publisher" prefix=", "/>
       </else-if>
@@ -341,10 +341,10 @@
             <text term="volume" form="short" prefix=" " plural="true"/>
           </group>
         </group>
-        <text variable="page" prefix=", " form="short"/>
+        <text variable="page" prefix=", Pp. " form="short"/>
       </else-if>
       <else-if type="book report" match="any">
-        <text variable="page" prefix=", " form="short"/>
+        <text variable="page" prefix=", Pp. " form="short"/>
       </else-if>
       <else-if type="chapter paper-conference" match="any">
         <choose>
@@ -365,7 +365,7 @@
           <if variable="page">
             <group prefix=", ">
               <text variable="volume" suffix=":"/>
-              <text variable="page"/>
+              <text variable="page"  prefix="Pp. "/>
             </group>
           </if>
         </choose>
@@ -376,22 +376,22 @@
     <choose>
       <if type="article-newspaper">
         <group delimiter=", ">
-          <group delimiter=" ">            
+          <group delimiter=" ">
             <text variable="volume" prefix=", "/>
             <text variable="issue" prefix=", "/>
-            <text variable="page" prefix=": "/>
+            <text variable="page" prefix=", Pp. "/>
           </group>          
         </group>
       </if>
       <else-if type="article-journal">
         <choose>
           <if variable="volume issue" match="any">
-            <text variable="issue" prefix=", "/>
             <text variable="volume" prefix=", "/>
-            <text variable="page" prefix=": "/>
+            <text variable="issue" prefix=", "/>
+            <text variable="page" prefix=", Pp. "/>
           </if>
           <else>
-            <text variable="page" prefix=", "/>
+            <text variable="page" prefix=", Pp. "/>
           </else>
         </choose>
       </else-if>

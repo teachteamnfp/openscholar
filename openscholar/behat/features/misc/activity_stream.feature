@@ -10,7 +10,7 @@ Feature:
   Scenario: Check that only public messages are displayed on /activity.json
     Given I am logging in as "john"
      When I create a new "blog" entry with the name "public unique title" in the group "john"
-      And I change privacy of the site "obama" to "Invite only during site creation."
+      And I change privacy of the site "obama" to "Site members only."
       And I create a new "blog" entry with the name "private different title" in the group "obama"
       And I logout
      When I visit "api/v1.0/activities"

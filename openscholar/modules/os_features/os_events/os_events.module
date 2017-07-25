@@ -2329,7 +2329,7 @@ function os_events_mail($key, &$message, $params) {
  */
 function os_events_mail_alter(&$message) {
   //Array for event mails
-  $eventEmailArr = array("broadcast","registration_confirmation","event_cancel_notification","event_time_updated_notification");
+  $eventEmailArr = array("broadcast","registration_confirmation","event_cancel_notification","event_time_updated_notification","user_mail","user_copy");
 
   //get user 1 email address as default from address
   $admin = user_load(1);
@@ -2343,30 +2343,49 @@ function os_events_mail_alter(&$message) {
 
     //Get the value of event creator email for all event related emails except broadcast.
     foreach($message['params'] as $param_key => $param_value){
-      if ($param_key == '@event_creator_email' || $param_key == '@event-creator-email'){
+      if ($param_key == '@event_creator_email' || $param_key == '@event-creator-email' || $param_key == '@event-creator-mail') {
        // Get event author event's author email address.
        $event_author_email = check_plain(trim($param_value));
       }
     }
 
     //Get the value of event creator email for broadcast.
-    if ($event_author_email == ""){
-      $event_author_email = $message['from'];
+    if ($event_author_email == "") {
+        $node = node_load($message['params']['context']['entity_id']);
+        $registration_settings = registration_entity_settings('node', $node->nid);
+
+      if($registration_settings['settings']['confirmation']) {
+        $event_author_email = $message['from'];
+      }
+      else {
+        $user = user_load($node->uid);
+        $event_author_email = $user->mail;
+      }
     }
 
     // Set default value of the "From" field to author of the event's e-mail
     $message['headers']['From'] = $message['from'] = $event_author_email;
 
     // Set the sender and return-path headers.
-    $message['headers']['Sender'] = $message['headers']['Return-Path'] = $message['headers']['From'];
+    $message['headers']['Sender'] = $message['headers']['Return-Path'] = $event_author_email;
   }
   else {
-
     // Set default value of the "From" field.
-    $message['headers']['From'] = $message['from'] = variable_get('site_from_email',$defaultMail);
+    if (!isset($message['headers']['From'])) {
+      $message['headers']['From'] = variable_get('site_from_email',$defaultMail);
+    }
+    if (!isset($message['from'])) {
+      $message['from'] = variable_get('site_from_email',$defaultMail);
+    }
 
-    //Set the sender and return-path headers.
-    $message['headers']['Sender'] = $message['headers']['Return-Path'] = $message['headers']['From'];
+    // Set default value of the "Sender" field.
+    if (!isset($message['headers']['Sender'])) {
+      $message['headers']['Sender'] = variable_get('site_from_email',$defaultMail);
+    }
+    // Set default value of the "Return-Path" field.
+    if (!isset($message['headers']['Return-Path'])) {
+      $message['headers']['Return-Path'] = variable_get('site_from_email',$defaultMail);
+    }
   }
 
   //Adding the footer physical address for all emails

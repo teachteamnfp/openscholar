@@ -1778,7 +1778,7 @@ body.page-node-revisions .node {
   content: 'Attached files';
 }
 
-.node-news .photo .field-type-image:before {
+.page-node-revisions .node-news .photo .field-type-image:before {
   content:'News Photo';
 }
 
@@ -1835,4 +1835,6 @@ body.page-node-revisions .node {
 .form-type-radio label {
   cursor: pointer
 }
-
+div.no-bold {
+    font-weight: normal;
+}

@@ -10,7 +10,9 @@
 .front .block.block-boxes-os_slideshow_box #layout_16_9_side,
 .front .block.block-boxes-os_slideshow_box #layout_16_9_overlay,
 .front .block.block-boxes-os_slideshow_box #layout_16_9_below,
-.front .block-boxes-os_boxes_media img {
+.front .block-boxes-os_boxes_media img,
+.front #columns .block-boxes-os_boxes_html,
+.front #columns .block-boxes-os_boxes_accordion {
     margin-left: auto;
     margin-right: auto;
 }
@@ -19,7 +21,9 @@
 .front .block.block-boxes-os_boxes_columns,
 .front .block.block-boxes-os_slideshow_box #layout_16_9_side,
 .front .block.block-boxes-os_slideshow_box #layout_16_9_overlay,
-.front .block.block-boxes-os_slideshow_box #layout_16_9_below {
+.front .block.block-boxes-os_slideshow_box #layout_16_9_below, 
+.front #columns .block-boxes-os_boxes_html,
+.front #columns .block-boxes-os_boxes_accordion {
     width: 980px;
 }
 .front #columns,
@@ -33,9 +37,10 @@
 .front .content-left.content-right.content-bottom #content-panels .region-content-second,
 .front .content-left.content-right.content-bottom #content-panels .region-content-bottom,
 .front .block.block-boxes-os_slideshow_box #layout_3_1_overlay img,
-.front .block-boxes-os_boxes_columns .block-boxes-os_boxes_html,
-.front .block-boxes-os_boxes_tabs .block-boxes-os_boxes_html,
-.front .block-boxes-os_boxes_accordion .block-boxes-os_boxes_html,
+.front #columns .block-boxes-os_boxes_columns .block-boxes-os_boxes_html,
+.front #columns .block-boxes-os_boxes_tabs .block-boxes-os_boxes_html,
+.front #columns .block-boxes-os_boxes_accordion .block-boxes-os_boxes_html,
+.front #columns .block-boxes-os_boxes_columns .block-boxes-os_boxes_accordion,
 .front #columns .block-boxes-os_boxes_media img,
 .front .block-boxes-os_boxes_columns .block.block-boxes-os_slideshow_box #layout_16_9_side, 
 .front .block-boxes-os_boxes_columns .block.block-boxes-os_slideshow_box #layout_16_9_overlay, 
@@ -46,9 +51,7 @@
 .front .block.block-boxes-os_slideshow_box #layout_3_1_overlay img {
     max-width: 1520px;
 }
-.front #columns .block-boxes-os_boxes_html {
-    width: 85%;
-}
+
 .front .block-boxes-os_boxes_accordion .block-boxes-os_boxes_html,
 .front .block-boxes-os_boxes_tabs .block-boxes-os_boxes_html,
 .front .block-boxes-os_boxes_columns .block-boxes-os_boxes_html {

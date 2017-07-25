@@ -23,6 +23,12 @@ function vsite_metatag_export_default() {
       'og:image' => array(
         'value' => '[node:field_site_logo]',
       ),
+      'twitter:image' => array(
+        'value' => '[node:field_site_logo]',
+      ),
+      'twitter:description' => array(
+        'value' => '[node:field_site_description]',
+      ),
     ),
   );
 
@@ -39,6 +45,12 @@ function vsite_metatag_export_default() {
       'og:image' => array(
         'value' => '[node:field_site_logo]',
       ),
+      'twitter:image' => array(
+        'value' => '[node:field_site_logo]',
+      ),
+      'twitter:description' => array(
+        'value' => '[node:field_site_description]',
+      ),
     ),
   );
 
@@ -54,6 +66,12 @@ function vsite_metatag_export_default() {
       ),
       'og:image' => array(
         'value' => '[node:field_site_logo]',
+      ),
+      'twitter:image' => array(
+        'value' => '[node:field_site_logo]',
+      ),
+      'twitter:description' => array(
+        'value' => '[node:field_site_description]',
       ),
     ),
   );

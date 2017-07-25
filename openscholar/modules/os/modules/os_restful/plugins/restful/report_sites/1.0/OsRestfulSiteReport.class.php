@@ -308,7 +308,7 @@ class OsRestfulSiteReport extends \OsRestfulReports {
       if (isset($new_row['site_privacy_setting'])) {
         $privacy_values = array(
           '0' => 'Public on the web.',
-          '1' => 'Invite only during site creation.',
+          '1' => 'Site members only.',
           '2' => 'Anyone with the link.',
           '4' => 'Harvard Community'
         );

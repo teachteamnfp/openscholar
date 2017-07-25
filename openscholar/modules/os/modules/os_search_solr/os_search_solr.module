@@ -1331,3 +1331,34 @@ function os_search_solr_search_box($form, $form_state) {
   unset($form['#submit'][$key]);
   return $form;
 }
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function os_search_solr_form_boxes_box_form_alter(&$form, &$form_state) {
+
+  if ($form['plugin_key']['#value'] != 'os_search_solr_search_box') {
+    return;
+  }
+
+  $form['description']['#prefix'] = '<span class="os-search-solr-widget-description">' . t('Display results based on content type and/or taxonomy.') . '</span>';
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function os_search_solr_os_layout_get_alter($context, &$blocks) {
+  // Legacy block replaced with os_search_solr-solr_search_box.
+  $blocks = array_filter($blocks, function ($item) {
+
+    if ($item['module'] == 'os_search_solr' && $item['delta'] == 'solr_search_box') {
+      return FALSE;
+    }
+
+    if ($item['delta'] != 'site-search') {
+      return TRUE;
+    }
+
+    return FALSE;
+  });
+}

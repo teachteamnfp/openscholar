@@ -131,3 +131,10 @@ function os_wysiwyg_update_7013() {
 function os_wysiwyg_update_7014() {
   os_wysiwyg_update_7012();
 }
+
+/**
+ * Revert os_wysiwyg filter component to allow rel attribute.
+ */
+function os_wysiwyg_update_7015() {
+  features_revert(array('os_wysiwyg' => array('filter')));
+}

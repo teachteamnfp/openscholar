@@ -777,8 +777,33 @@ function cp_user_og_ui_add_users_submit(&$form, &$form_state) {
     // Add user's role
     og_ui_edit_membership_submit($form, $form_state);
 
-   }
+    $vsite = vsite_get_vsite();
+     // Loading logged in user's user object for full name.
+     $account_modifier = user_load($user->uid);
+     $account_modifier_full_name = $account_modifier->field_first_name[LANGUAGE_NONE][0]['value'] . ' ' . $account_modifier->field_last_name[LANGUAGE_NONE][0]['value'];
+     global $base_url;
+     $purl_base_domain = $base_url;
 
+     // Checking if this vsite has a custom domain or not.
+     $custom_domain = db_select('purl', 'p')
+       ->fields('p', array('value'))
+       ->condition('provider', 'vsite_domain', '=')
+       ->condition('id', $vsite->group->nid, '=')
+       ->execute()
+       ->fetchField();
+
+     // Setting up email parameters.
+     $to = $account->mail;
+     $from = variable_get('site_mail', ini_get('sendmail_from'));
+     $params['!user-role'] = _cp_user_list_roles('rids-human', NULL, $form['gid']['#value'])[$form_state['input']['roles']];
+     $params['!account-modifier'] = !empty($account_modifier_full_name) ? $account_modifier_full_name : $account_modifier->name;
+     $params['!site-url'] = !empty($custom_domain) ? 'http://' . $custom_domain : $purl_base_domain . '/' . $vsite->group->purl;
+     $params['!account-modifier-email'] = $account_modifier->mail;
+     $params['!user-firstname'] = $account->field_first_name[LANGUAGE_NONE][0]['value'];
+     $params['!sitewide-name'] = variable_get('site_name', 'OpenScholar');
+     $params['headers']['Cc'] = $account_modifier->mail;
+     drupal_mail('cp_user', 'os_user_add_to_group', $to, LANGUAGE_NONE, $params, $from);
+   }
   $form_state['redirect'] = 'cp/users';
 }
 
@@ -791,7 +816,7 @@ function cp_user_mail($key, &$message, $params){
       $message['subject'] = t("You have been added as a member to the !site-url website", $params);
       $message['body'] = array();
       $message['body'][] = t("Hi !user-firstname,", $params);
-      $message['body'][] = t("!account-modifier has added you as a member to the website !site-url with the role of !user-role. You can log in at !login-url with the username !username.", $params);
+      $message['body'][] = t("!account-modifier has added you as a member with the role of !user-role to the website !site-url. If you feel this was in error or have any questions, please contact them at !account-modifier-email", $params);
       $message['body'][] = t("Don't forget to bookmark the site and save this email for future reference.");
       $message['body'][] = t("Here are some handy links for you:");
       $links = array();
@@ -816,7 +841,7 @@ function cp_user_mail($key, &$message, $params){
       $message['subject'] = t("Your role on the !site-url website has changed", $params);
       $message['body'] = array();
       $message['body'][] = t("Hi !user-firstname,", $params);
-      $message['body'][] = t("!account-modifier has changed your role to !user-role on the website !site-url. If you feel this was in error or have any questions, please contact them at !account-modifier-email", $params);
+      $message['body'][] = t("!account-modifier has changed your role to !user-role on the website!site-url. If you feel this was in error or have any questions, please contact them at !account-modifier-email", $params);
       $message['body'][] = t("Sincerely,\n!sitewide-name", $params);
       $message['headers'] += $params['headers'];
       break; 

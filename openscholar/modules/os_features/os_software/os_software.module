@@ -56,12 +56,19 @@ function os_software_os_app_info() {
  * Hides the packaging method field if only one option exists.
  */
 function os_software_form_software_project_node_form_alter(&$form, &$form_state, $form_id) {
-  $method_field_options = _os_software_packaging_method_options();
-  if (sizeof($method_field_options) > 1) {
-    return;
+  // Unsetting software_method, rbuild_short_name and software_repo during empty conditions
+  if($form['field_software_method']['und'][0]['value']['#default_value'] == 'Manual upload'){
+    unset($form['field_software_method']);
+    $form['packaging'] = array(
+      '#markup' => '<div class="form-item form-type-textfield form-item-title"><label>Packaging Method <span class="form-required" title="This field is required.">*</span></lable><div class="no-bold">Manual Uplpoad</div></div>',
+    );
   }
-
-  $form['#attached']['css'][] = drupal_get_path('module', 'os_software') . '/os_software.css';
+  if(!isset($form['field_rbuild_short_name']['und'][0]['value']['#default_value'])){
+    unset($form['field_rbuild_short_name']);
+  }
+  if(!isset($form['field_software_repo']['und'][0]['value']['#default_value'])){
+    unset($form['field_software_repo']);
+  }
   $form['actions']['submit']['#submit'][] = '_os_software_form_redirect';
 }
 

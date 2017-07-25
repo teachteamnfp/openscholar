@@ -904,7 +904,7 @@ function os_files_ctools_plugin_api_alter(&$value, $context) {
 function os_files_entity_info_alter(&$info){
   $info['file']['view modes'] += array(
     'os_files_xxlarge' => array(
-      'label' => t('Giant Image (1000px)'),
+      'label' => t('Giant Image (2000px)'),
       'custom settings' => TRUE
     ),
     'os_files_xlarge' => array(
@@ -977,8 +977,8 @@ function os_files_image_default_styles(){
         array(
           'name' => 'image_scale',
           'data' => array(
-            'width' => 1000,
-            'height' => 1000,
+            'width' => 2000,
+            'height' => 2000,
             'upscale' => 0
           )
         )
@@ -1142,7 +1142,7 @@ function os_files_file_formatter_os_files_image($file, $display, $langcode) {
     'os_files_medium' => 400,
     'os_files_large' => 600,
     'os_files_xlarge' => 800,
-    'os_files_xxlarge' => 1000
+    'os_files_xxlarge' => 2000
   );
 
   $width = isset($file->override['attributes']['width'])

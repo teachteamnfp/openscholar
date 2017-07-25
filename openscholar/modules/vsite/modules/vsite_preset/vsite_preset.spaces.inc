@@ -195,8 +195,8 @@ function vsite_preset_spaces_presets() {
             'status' => 0,
             'title' => '',
           ),
-          'boxes-solr_search_box' => array(
-            'module' => 'boxes',
+          'os_search_solr-solr_search_box' => array(
+            'module' => 'os_search_solr',
             'delta' => 'solr_search_box',
             'region' => 'header_third',
             'weight' => '-10',
@@ -429,8 +429,8 @@ function vsite_preset_spaces_presets() {
             'status' => 0,
             'title' => '',
           ),
-          'boxes-solr_search_box' => array(
-            'module' => 'boxes',
+          'os_search_solr-solr_search_box' => array(
+            'module' => 'os_search_solr',
             'delta' => 'solr_search_box',
             'region' => 'header_third',
             'weight' => '-10',
@@ -636,8 +636,8 @@ function vsite_preset_spaces_presets() {
             'status' => 0,
             'title' => '',
           ),
-          'boxes-solr_search_box' => array(
-            'module' => 'boxes',
+          'os_search_solr-solr_search_box' => array(
+            'module' => 'os_search_solr',
             'delta' => 'solr_search_box',
             'region' => 'header_third',
             'weight' => '-10',
@@ -783,8 +783,8 @@ function vsite_preset_spaces_presets() {
             'status' => 0,
             'title' => '',
           ),
-          'boxes-solr_search_box' => array(
-            'module' => 'boxes',
+          'os_search_solr-solr_search_box' => array(
+            'module' => 'os_search_solr',
             'delta' => 'solr_search_box',
             'region' => 'header_third',
             'weight' => '-10',
@@ -994,8 +994,8 @@ function vsite_preset_spaces_presets() {
             'status' => 0,
             'title' => '',
           ),
-          'boxes-solr_search_box' => array(
-            'module' => 'boxes',
+          'os_search_solr-solr_search_box' => array(
+            'module' => 'os_search_solr',
             'delta' => 'solr_search_box',
             'region' => 'header_third',
             'weight' => '-10',

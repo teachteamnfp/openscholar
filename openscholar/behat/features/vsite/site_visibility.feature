@@ -16,7 +16,7 @@ Feature:
   @api @vsite @javascript
   Scenario: Testing private vsite cannot be seen by anonymous users.
     Given I am logging in as "john"
-     When I change privacy of the site "obama" to "Invite only during site creation. "
+     When I change privacy of the site "obama" to "Site members only. "
       And I visit "obama/user/logout"
       And I wait for page actions to complete
       And I go to "obama"

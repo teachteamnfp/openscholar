@@ -43,6 +43,7 @@ class FeatureHelp {
     'Upcoming events' => 'os_sv_list_box',
     'All Posts' => 'os_sv_list_box',
     'Cache time test' => 'os_boxes_cache_test',
+    'Solr search' => 'os_search_solr_search_box',
   );
 
   /**
@@ -510,6 +511,18 @@ class FeatureHelp {
 
     // Get vsite.
     return node_load($relation->gid)->purl;
+  }
+
+  /**
+   * Get vsite PURL.
+   *
+   * @param $nid
+   *   The vsite ID.
+   * @return mixed
+   *   The PURL.
+   */
+  static public function getVsitePurl($nid) {
+    return node_load($nid)->purl;
   }
 
   /**

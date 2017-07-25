@@ -989,11 +989,24 @@ function os_update_7052() {
   remove_missing_modules_entry_from_DB();
 }
 
+/**
+ * Copy og:image metatag configs to twitter:image
+ */
+function os_update_7053() {
+  features_revert(array('os' => array('metatag')));
+}
+
+/**
+ * Set twitter:description to [node:field_site_description]
+ */
+function os_update_7054() {
+  features_revert(array('os' => array('metatag')));
+}
 
 /**
  * Enable os_orcid module.
  */
-function os_update_7053() {
+function os_update_7055() {
   module_enable(array('os_orcid'));
   // place it behind os_publications and citation_distribute modules
   db_update('system')
