@@ -605,6 +605,7 @@ function vsite_vocab_sort_weight_alpha($terms) {
                   $t_weight, SORT_ASC, SORT_NUMERIC, 
                   $t_name, SORT_ASC, SORT_STRING,
                   $ordered_terms);
+  dsm($ordered_terms);
   return $ordered_terms;
 }
 
