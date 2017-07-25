@@ -601,13 +601,28 @@ function vsite_vocab_sort_weight_alpha($terms) {
     $t_weight[$term['tid']] = $term['t_weight'];
     $t_name[$term['tid']] = $term['term'];
   }
+  foreach ($t_weight as $tid => $tw) {
+    //$t_weight[$tid] = vsite_vocab_revised_weight_by_hierarchy($tid);
+    vsite_vocab_revised_weight_by_hierarchy($tid);
+  }
   array_multisort($v_weight, SORT_ASC, SORT_NUMERIC, 
                   $vid, SORT_ASC, SORT_NUMERIC, 
                   $t_weight, SORT_ASC, SORT_NUMERIC, 
                   $t_name, SORT_ASC, SORT_STRING,
                   $ordered_terms);
-  dsm($ordered_terms);
+  //dsm($ordered_terms);
   return $ordered_terms;
+}
+
+function vsite_vocab_sort_weight_by_hierarchy($tid) {
+  $parent_terms = taxonomy_get_parents_all($tid);
+  $parents = array_reverse($parent_terms);
+  dsm($parents);
+  foreach($parents as $ptid => $pterm) {
+
+  }
+  //$factor = 0.001;
+  //$final_weight = ($parent_weight + 1) * $factor * ($self_weight + 1);
 }
 
 /**
