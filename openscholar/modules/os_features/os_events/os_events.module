@@ -2329,7 +2329,7 @@ function os_events_mail($key, &$message, $params) {
  */
 function os_events_mail_alter(&$message) {
   //Array for event mails
-  $eventEmailArr = array("broadcast","registration_confirmation","event_cancel_notification","event_time_updated_notification","user_mail","user_copy");
+  $eventEmailArr = array("broadcast","registration_confirmation","event_cancel_notification","event_time_updated_notification");
 
   //get user 1 email address as default from address
   $admin = user_load(1);
