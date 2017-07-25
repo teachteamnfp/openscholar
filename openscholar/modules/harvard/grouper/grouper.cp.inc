@@ -13,7 +13,7 @@ function grouper_cp_settings() {
       //'#access' => spaces_access_admin() && !!pinserver_authenticate_get_user_huid($user->uid),
       '#custom_directive' => 'grouper',
       '#custom_directive_parameters' => array(
-        'ng-show' => "\$parent.formData.vsite_private == 5"
+        'ng-show' => "\$parent.formData.vsite_private == 6"
       ),
       '#default_value' => grouper_site_groups(),
       '#weight' => 2
