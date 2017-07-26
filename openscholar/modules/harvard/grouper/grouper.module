@@ -264,7 +264,12 @@ function grouper_node_access($node, $op, $account) {
     return NODE_ACCESS_IGNORE;
   }
 
-  $group_id = $node->{OG_AUDIENCE_FIELD}[LANGUAGE_NONE][0]['target_id'];
+  if (og_is_group('node', $node)) {
+    $group_id = $node->nid;
+  }
+  else {
+    $group_id = $node->{OG_AUDIENCE_FIELD}[LANGUAGE_NONE][0]['target_id'];
+  }
   $group = node_load($group_id);
   if (grouper_user_can_access($group, $account)) {
     // ignore instead of allow to give other modules a chance to deny access
