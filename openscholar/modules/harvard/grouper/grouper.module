@@ -30,6 +30,9 @@ function grouper_library() {
         )
       )
     ),
+    'css' => array(
+      $path . '/grouper.css' => array(),
+    )
   );
 
   return $libs;
