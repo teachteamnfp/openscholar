@@ -99,10 +99,12 @@ class os_boxes_mailchimp extends os_boxes_default {
           foreach ($info['lists'] as $list_info) {
             if ($list_info->id == $this->options['list']) {
               // Swap host of subscribe_url_long
-              $list_info->subscribe_url_long = str_replace('http://', '//', $list_info->subscribe_url_long);
-              $list_info->subscribe_url_long = str_replace('harvard.', '', $list_info->subscribe_url_long);
+              $subscribe_url_long = parse_url($list_info->subscribe_url_long);
+              $subscribe_url_long['scheme'] = 'https';
+              $subscribe_url_long['host'] = 'us7.list-manage.com';
+              $subscribe_url = $subscribe_url_long['scheme'] . '://' . $subscribe_url_long['host'] . $subscribe_url_long['path'] . '?' . $subscribe_url_long['query'];
               $block['content'] = t('<iframe src="@url" width="@width", height="@height"></iframe>', array(
-                '@url' => $list_info->subscribe_url_long,
+                '@url' => $subscribe_url,
                 '@width' => "640px",
                 '@height' => (intval($this->options['mailchimp_iframe_height']) > 0) ? $this->options['mailchimp_iframe_height'] : $defaults['mailchimp_iframe_height'],
               ));
