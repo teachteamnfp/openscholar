@@ -76,7 +76,7 @@
             return g.displayExtension;
           });
 
-          return names.join(', ');
+          return names.join(' | ');
         }
 
         /**
