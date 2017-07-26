@@ -11,10 +11,15 @@ span[name=grouper] .all-groups {
     overflow: auto;
     margin-top: 10px;
 }
+.selected-groups,
 .grouper-selected-fieldset-panel .group {
     background-color: #efefef;
     padding: 3px 8px 6px;
     margin: 0 8px 8px 0;
+}
+.selected-groups {
+   padding: 7px 8px 7px;
+   display: inline-block;
 }
 span[name=grouper] .all-groups .group {
     padding: 5px 0 5px 5px;
