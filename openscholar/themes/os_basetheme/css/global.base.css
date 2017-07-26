@@ -1138,7 +1138,6 @@ ul.no-event-export {
 }
 .media-element-container {
     height: auto !important;
-    margin: 0 2em 0 1em;
 }
 .node-event .media-element-container {
     margin-right: 3em !important;
