@@ -188,6 +188,9 @@
               $scope.message = messageFailed;
               return false;
             }
+          }, function(error) {
+            $scope.message = error.data.title;
+            return false;
           });
 
         } else {
@@ -213,6 +216,9 @@
               $scope.message = messageFailed;
               return false;
             }
+          }, function(error){
+            $scope.message = error.data.title;
+            return false;
           });
         }
       }
@@ -647,11 +653,12 @@
                   scope.orderedItems[key].termName = '';
                   bss.SetState('add_term_form', false);
                   scope.$parent.$parent.message = termName + ' term have been added to ' + vocabName + ' vocabulary.';
-                } else {
-                  scope.$parent.$parent.message = messageFailed;
-                  bss.SetState('add_term_form', false);
                 }
+              }, function(error) {
+                scope.$parent.$parent.message = error.data.title;
+                bss.SetState('add_term_form', false);
               });
+
             }
           };
 
