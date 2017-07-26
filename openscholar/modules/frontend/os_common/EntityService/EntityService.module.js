@@ -234,31 +234,37 @@
           var data = {}
           data.entity_id = entity_ids;
           data.operation = operationName;
-          if (operationName == 'applyTerm') {
-             data.tids = options.tids;
-             return $http.patch(restPath + '/' + entityType + '/bulk/terms/apply', data)
-            .success(function (resp) {
-              return resp.data;
-            })
+          switch(operationName) {
+            case 'applyTerm':
+              data.tids = options.tids;
+              return $http.patch(restPath + '/' + entityType + '/bulk/terms/apply', data)
+              .success(function (resp) {
+                return resp.data;
+              })
+              break;
+
+            case 'removeTerm':
+              data.tids = options.tids;
+              return $http.patch(restPath + '/' + entityType + '/bulk/terms/remove', data)
+              .success(function (resp) {
+                return resp.data;
+              })
+              break;
+
+            case 'delete':
+              return $http.delete(restPath + '/' + entityType + '/' + entity_ids, data)
+              .success(function (resp) {
+                return resp.data;
+              })
+              break;
+
+            default:
+              return $http.patch(restPath + '/' + entityType + '/bulk', data)
+              .success(function (resp) {
+                return resp.data;
+              })
           }
-          if (operationName == 'removeTerm') {
-             data.tids = options.tids;
-             return $http.patch(restPath + '/' + entityType + '/bulk/terms/remove', data)
-            .success(function (resp) {
-              return resp.data;
-            })
-          }
-          if (operationName == 'delete') {
-            return $http.delete(restPath + '/' + entityType + '/' + entity_ids, data)
-            .success(function (resp) {
-              return resp.data;
-            })
-          } else {
-             return $http.patch(restPath + '/' + entityType + '/bulk', data)
-            .success(function (resp) {
-              return resp.data;
-            })
-          }
+
         };
 
         this.edit = function (entity, ignore) {
