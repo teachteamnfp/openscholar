@@ -324,11 +324,14 @@ class OSRestfulCPMenu extends \RestfulBase implements \RestfulDataProviderInterf
             'label' => 'Browse',
             'type' => 'heading',
             'default_state' => 'collapsed',
-            'children' => array(              
+            'children' => array(
               'content' => array(
                 'label' => 'Content',
                 'type' => 'directive',
-                'directive' => array('cp-content-modal')
+                'directive' => array(
+                  'cp-content-modal',
+                  'entity-type' => 'node',
+                ),
               ),
               'files' => array(
                 'label' => 'Files',

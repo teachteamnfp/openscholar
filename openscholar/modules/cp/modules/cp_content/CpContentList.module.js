@@ -28,7 +28,10 @@
         ModalService.showModal({
             controller: "cpModalController",
             template: '<div><div class="file-entity-loading" ng-show="loading"><div class="node-entity-loading-message">Loading content...<br /></div></div>' +
-              '<div cp-content></div>',
+              '<div cp-content node-edit"></div>',
+            inputs: {
+              entityType: attrs.entityType
+            }
           })
           .then(function(modal) {
             dialogOptions.title = 'Content';
@@ -48,12 +51,13 @@
 
   m.run(['EntityService', function(EntityService) {
     nodeService = new EntityService('node', 'id');
-    vocabService = new EntityService('vocabulary', 'id');
     fetchPromiseNodes = nodeService.fetch();
+    vocabService = new EntityService('vocabulary', 'id');
     fetchPromiseVocab = vocabService.fetch();
   }]);
 
-  m.controller('cpModalController', function($scope, NgTableParams, $filter) {
+  m.controller('cpModalController', ['$scope', '$filter', 'NgTableParams', 'EntityService', 'entityType', function ($scope, $filter, NgTableParams, EntityService, entityType) {
+
     $scope.message = false;
     $scope.loading = true;
     // Fetch list and set it in ng-table;
@@ -123,7 +127,7 @@
       $scope.vsiteUrl = Drupal.settings.paths.vsite_home;
     }
 
-  });
+  }]);
 
   /**
    * Fetching cp content and fill it in setting form modal.
