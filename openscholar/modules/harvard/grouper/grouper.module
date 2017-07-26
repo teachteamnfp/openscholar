@@ -260,7 +260,7 @@ function grouper_user_can_access($group = null, $user = null) {
  * Implements hook_node_access().
  */
 function grouper_node_access($node, $op, $account) {
-  if ($op != 'create') {
+  if ($op != 'view') {
     return NODE_ACCESS_IGNORE;
   }
 
