@@ -326,7 +326,6 @@ function os_importer_import_access($bundle, $feed = TRUE) {
   $info = os_importer_importable_content();
   $access = !empty($info[$bundle]);
 
-
   // When we have 'vsite' we must have specific create permission per bundle.
   if ($access && module_exists('vsite')) {
     if (!$vsite = vsite_get_vsite()) {
