@@ -2333,6 +2333,11 @@ function os_library_alter(&$libraries) {
  */
 function os_libraries_info_alter(&$libraries) {
   $libraries['autopager']['callbacks']['post-load'][] = 'os_libraries_autopager_add_js';
+
+  // Ensure the Google API library loads properly
+  $libraries['google-api-php-client']['files']['php'][0] = './src/Google/autoload.php';
+  $libraries['google-api-php-client']['version arguments']['file'] = 'src/Google/Client.php';
+  $libraries['google-api-php-client']['version arguments']['lines'] = 50;
 }
 
 /**
