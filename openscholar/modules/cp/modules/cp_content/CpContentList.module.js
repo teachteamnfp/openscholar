@@ -260,7 +260,7 @@
               contentTypesText = $filter('removeUnderscore')(contentTypesText);
               if (selectedTypes.length == 1) {
                 results = {
-                  error: 'No vocabularies enabled for' + contentTypesText + ' content type.',
+                  error: 'No vocabularies enabled for ' + contentTypesText + ' content type.',
                   vocab: macthedVocab
                 };
               } else {
@@ -634,21 +634,18 @@
 
           // Add term to vocabulary.
           var termService = new EntityService('taxonomy', 'id');
-          scope.addTerm = function(key, vid, vocabName, vocabMachineName) {
+          scope.addTerm = function(key, vocabName, vocabMachineName) {
             if (angular.isDefined(scope.orderedItems[key].termName)) {
               bss.SetState('add_term_form', true);
               var termName = scope.orderedItems[key].termName;
               termService.add({
-                vid: vid,
                 vocab: vocabMachineName,
                 label: termName
               }).then(function(response) {
                 if (response.data.data[0]) {
                   scope.orderedItems[key].tree.splice(key, 0, {
                     value: response.data.data[0].id,
-                    label: termName,
-                    vid: vid,
-                    vocabName: vocabName
+                    label: termName
                   });
                   scope.orderedItems[key].termName = '';
                   bss.SetState('add_term_form', false);

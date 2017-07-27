@@ -8,15 +8,6 @@ class OsTaxonomyTerm extends OsRestfulEntityCacheableBase {
   public function publicFieldsInfo() {
     $fields = parent::publicFieldsInfo();
 
-    $fields['vsite'] = array(
-      'property' => 'vocabulary',
-      'process_callbacks' => array(
-        function() {
-          return $this->request['vsite'];
-        }
-      ),
-    );
-
     $fields['vocab'] = array(
       'property' => 'vocabulary',
       'process_callbacks' => array(
@@ -157,10 +148,6 @@ class OsTaxonomyTerm extends OsRestfulEntityCacheableBase {
 
     if (!vsite_og_user_access('administer taxonomy')) {
       throw new \RestfulBadRequestException("You are not allowed to create terms.");
-    }
-
-    if ($op == 'create') {
-      return entity_access($op, $entity_type, $entity, $this->getAccount());
     }
   }
 

@@ -201,7 +201,7 @@
             throw new Exception('Cannot add entity of type ' + type + ' that already exists.');
           }
 
-          if (vsite) {
+          if ((vsite) && angular.isUndefined(entity.vocab)) {
             entity.vsite = vsite;
           }
 
