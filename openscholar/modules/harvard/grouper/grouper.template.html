@@ -6,7 +6,7 @@
         </div>
     <div class="grouper-panel" ng-if="ShowPanel()">
          <label>Selected Groups</label>
-        <span class="description">A limit of seven groups can be selected</span>
+        <span class="description">Up to seven groups can be selected</span>
             <div class="grouper-selected-fieldset-panel">
                 <span class="group" ng-repeat="path in selected">{{GroupLabel(path)}}<span class="remove" ng-click="Remove(path)"></span></span>
                 <span ng-if="selected.length == 0">No groups selected.</span>
