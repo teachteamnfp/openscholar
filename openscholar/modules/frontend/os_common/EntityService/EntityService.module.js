@@ -201,6 +201,8 @@
             throw new Exception('Cannot add entity of type ' + type + ' that already exists.');
           }
 
+          // Don't set vsite during create term. Property vsite is invalid for
+          // term.
           if ((vsite) && angular.isUndefined(entity.vocab)) {
             entity.vsite = vsite;
           }
