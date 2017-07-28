@@ -21,7 +21,7 @@
         </a>
     </div>
     <div ng-if="displayType == 'term' && showTermErrorMessage == false" class="term-action">
-      <div ng-repeat="vocabOption in orderedItems" ng-show="showTermErrorMessage == false" role="presentation" class="dropdown-header group-dropdown-toggle glyphicon glyphicon-triangle-right" ng-class="{'glyphicon-triangle-bottom' : groupVocabId == vocabOption.id}" ng-click="groupToggleDropdown(vocabOption.machine_name)">{{ vocabOption.label }}
+      <div ng-repeat="vocabOption in orderedItems" ng-if="vocabOption.tree.length > 0" ng-show="showTermErrorMessage == false" role="presentation" class="dropdown-header group-dropdown-toggle glyphicon glyphicon-triangle-right" ng-class="{'glyphicon-triangle-bottom' : groupVocabId == vocabOption.id}" ng-click="groupToggleDropdown(vocabOption.machine_name)">{{ vocabOption.label }}
         <div ng-show="groupVocabName == vocabOption.machine_name" ng-click="stopBubbling($event)">
           <div ng-if="displayText == 'Apply Term'"><input type="text" ng-model="orderedItems[$index]['termName']">&nbsp;<button ng-disabled="!orderedItems[$index]['termName']" type="button" button-spinner="add_term_form" class="btn btn-primary" ng-click="addTerm($index, vocabOption.label, vocabOption.machine_name)">Add term</button>
           </div>

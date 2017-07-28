@@ -82,37 +82,31 @@
               }
             });
             filteredData = typeDataSet;
+            $scope.disableBulkOptions = (filteredData.length) == 0 ? true : false;
           }
           if (angular.isDefined(params.filter().og_vocabulary)) {
-            angular.forEach(filteredData, function(node, key) {
-              if (node.og_vocabulary) {
-                angular.forEach(node.og_vocabulary, function(vocab, key) {
-                  if (params.filter().og_vocabulary.indexOf(parseInt(vocab.tid)) > -1) {
-                    if (termDataSet.length > 0) {
-                      angular.forEach(termDataSet, function(newNode) {
-                        if (newNode.id != node.id) {
-                          termDataSet.push(node);
-                        }
-                      });
-                    } else {
-                      termDataSet.push(node);
-                    }
-
+            var vocabTerms = params.filter().og_vocabulary;
+            var termDataSet = [];
+            angular.forEach(vocabTerms, function(tid) {
+              angular.forEach(filteredData, function(node, key) {
+                if (node.og_vocabulary != null) {
+                  if ($filter('filter')(node.og_vocabulary, tid).length > 0) {
+                    termDataSet.push(node);
                   }
-                });
-              }
+                }
+              });
             });
-
             filteredData = termDataSet;
+            $scope.disableBulkOptions = (filteredData.length) == 0 ? true : false;
           }
           if (angular.isDefined(params.filter().label)) {
             filteredData = $filter('filter')(filteredData, params.filter().label);
+            $scope.disableBulkOptions = (filteredData.length) == 0 ? true : false;
           }
 
           var orderedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
           params.total(orderedData.length);
           $scope.noRecords = (orderedData.length) == 0 ? true : false;
-          $scope.disableBulkOptions = (orderedData.length) == 0 ? true : false;
           return orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
         }
       });
