@@ -179,32 +179,23 @@ function grouper_user_login(&$edit, $account) {
   $response = drupal_http_request($grouper_url);
   if ($response->code == 200) {
     $raw_data = $response->data;
-  }
-  else {
-    switch ($response->code) {
-      case 403:
-        throw new RestfulForbiddenException("Cannot access Grouper restful interface.");
-        break;
-      default:
-        throw new RestfulException("Error fetching grouper response: $response->code: $response->error");
+
+    $groups = json_decode($raw_data);
+
+    if (count($groups)) {
+       $account->field_grouper_path = array(
+         LANGUAGE_NONE => array()
+       );
+      foreach ($groups as $g) {
+        $account->field_grouper_path[LANGUAGE_NONE][] = array('value' => $g->displayName);
+      }
     }
-  }
-
-  $groups = json_decode($raw_data);
-
-  if (count($groups)) {
-     $account->field_grouper_path = array(
-       LANGUAGE_NONE => array()
-     );
-    foreach ($groups as $g) {
-      $account->field_grouper_path[LANGUAGE_NONE][] = array('value' => $g->displayName);
+    else {
+      $account->field_grouper_path = null;
     }
-  }
-  else {
-    $account->field_grouper_path = null;
-  }
 
-  user_save($account);
+    user_save($account);
+  }
 }
 
 /**
