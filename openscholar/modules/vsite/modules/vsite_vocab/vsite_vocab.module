@@ -615,6 +615,21 @@ function vsite_vocab_sort_weight_alpha($terms) {
  * Helper function to modify term weight  for sorting purpose in case of hierarchy structure
  *  - term id
  *  - term actual weight
+ * Terms weights are saved into DB (taxonomy_term_data) only to differentiate terms under same parents
+ * In multilevel hierarchical order it saves like below
+ * T1 (wt-0)
+ * |__T2(wt-0)
+ * |__T3(wt-1)
+ *    |__T4(wt-0)
+ *    |__T5(wt-1)
+ *
+ * To remove the ambiguity terms weight in each level are multiplied by a constant factor and added with the parent terms while displaying
+ *
+ * T1 (wt-0)
+ * |__T2(wt-0.01)
+ * |__T3(wt-0.02)
+ *    |__T4(wt-0.0201)
+ *    |__T5(wt-0.0202)
  */
 function vsite_vocab_revised_weight_by_hierarchy($tid, $tw) {
   $parent_terms = taxonomy_get_parents_all($tid);
