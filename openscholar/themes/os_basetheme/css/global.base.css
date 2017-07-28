@@ -470,12 +470,12 @@ ol {
   list-style: none;
  }
 
- .field-name-body li {
+ .field-name-body ol li {
     display: table-row;
     counter-increment: table-ol;
 }
 
- .field-name-body:before {
+ .field-name-body ol li:before {
       content: counter(table-ol) ".";
       display: table-cell;
       padding-right: 0.4em;
