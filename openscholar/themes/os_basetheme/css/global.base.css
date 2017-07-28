@@ -459,9 +459,29 @@ ol {
     margin: 0 0 1.5em 17px;
     padding: 0;
 }
-.field-name-body ol {
+/*.field-name-body ol {
     margin: 0 0 1.5em 21px;
 }
+*/
+.field-name-body ol {
+  display: table;
+  margin-left: 0;
+  padding-left: 0;
+  list-style: none;
+ }
+
+ .field-name-body li {
+    display: table-row;
+    counter-increment: table-ol;
+}
+
+ .field-name-body:before {
+      content: counter(table-ol) ".";
+      display: table-cell;
+      padding-right: 0.4em;
+      text-align: right;
+}
+
 .item-list ul,
 .item-list ol {
     margin: 0;
