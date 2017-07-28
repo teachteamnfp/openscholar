@@ -1,12 +1,22 @@
 
+@import url('https://fonts.googleapis.com/css?family=Chivo');
 
 body *,.region-header-third ul.nice-menu a,#menu-bar ul.nice-menu a,#boxes-box-site_info,#boxes-box-site_info a {
-    font-family: helvetica;
+    font-family: 'Chivo';
 }
-.region-header-third ul.nice-menu a,
+
+
+.breadcrumb a,
 a, a:visited {
     color: #457141;
 }
+.section-nav .expanded.menu-depth-2 > a,
+.section-nav .menu-depth-1 > a {
+    color: #457141 !important;
+}
+
+#header a,
+#header,
 #footer a,
 #footer { 
     color: #FFF;
@@ -24,5 +34,15 @@ background-color: #414141;
 
 }
 #header {
-background-color: #c3d7a4;
+background-color: #52854C;
+
 }
+
+
+
+#menu-bar {
+    border-top:none;
+    border-bottom: none;
+    background-color:#c3d7a4;
+}
+
