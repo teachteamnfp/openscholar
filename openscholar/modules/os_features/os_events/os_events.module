@@ -210,8 +210,10 @@ function os_events_gcal_create_calendar() {
     $event->setSummary($e->_field_data['nid']['entity']->title);
     //    $event->setTimezone?;
 
-    $dt1 = new DateTime($e->_field_data['nid']['entity']->field_date[LANGUAGE_NONE][0]['value']);
-    $dt2 = new DateTime($e->_field_data['nid']['entity']->field_date[LANGUAGE_NONE][0]['value']);
+    $dt1 = new DateTime($e->_field_data['nid']['entity']->field_date[LANGUAGE_NONE][0]['value'] . ' ' .
+                        $e->_field_data['nid']['entity']->field_date[LANGUAGE_NONE][0]['timezone_db']);
+    $dt2 = new DateTime($e->_field_data['nid']['entity']->field_date[LANGUAGE_NONE][0]['value2'] . ' ' .
+                        $e->_field_data['nid']['entity']->field_date[LANGUAGE_NONE][0]['timezone_db']);
     $calendarDateTime = new Google_Service_Calendar_EventDateTime();
     $calendarDateTime->setDateTime($dt1->format(DateTime::RFC3339));
     $event->setStart($calendarDateTime);
