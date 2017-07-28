@@ -530,7 +530,6 @@ ol ul,
 .mceContentBody ol ol,
 #content-column ol ol {
     list-style-type: upper-alpha;
-    margin-left: 25px;
 }
 .mceContentBody ol ol ol,
 #content-column ol ol ol {
