@@ -24,11 +24,12 @@
       bss.SetState('grouper_AllGroups', false);
     });
     return {
+      require: 'ngModel',
       scope: {
         selected: '=ngModel'
       },
       templateUrl: Drupal.settings.paths.grouper + '/grouper.template.html',
-      link: function (scope, elem, attrs) {
+      link: function (scope, elem, attrs, ngModelController) {
         scope.status = status;
         scope.Groups = function () {
           return groups;
@@ -85,7 +86,6 @@
         scope.GroupLabel = function (path) {
           var g = findGroupByPath(path);
 
-          console.log(g);
           if (g) {
             return g.displayExtension;
           }
@@ -99,6 +99,7 @@
           var k = scope.selected.indexOf(path);
           if (k > -1) {
             scope.selected.splice(k, 1);
+            ngModelController.$setDirty();
           }
         }
 
@@ -109,6 +110,7 @@
           var k = scope.selected.indexOf(path);
           if (k == -1) {
             scope.selected.push(path);
+            ngModelController.$setDirty();
           }
         }
 
