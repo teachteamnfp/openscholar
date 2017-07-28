@@ -1,5 +1,5 @@
 name = Loeb
-description = A monochrome version of the Classic theme
+description = A loeb version of the Classic theme
 screenshot = screenshot.png
 
 css[] = loeb.css
