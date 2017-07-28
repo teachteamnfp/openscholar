@@ -38,10 +38,10 @@
     <span class="bulk-delete last" ng-class="{'disable': disableBulkOptions == 1}" ng-click="!disableBulkOptions && nodeBulkOperation('delete')">Delete</span>
   </div>
   <script type="text/ng-template" id="headerCheckbox.html">
-    <input type="checkbox" ng-model="checkboxes.checked" id="select_all" value="" />
+    <input type="checkbox" ng-model="checkboxes.checked" id="select_all" value="" ng-disabled="noRecords" />
   </script>
   <table ng-table="tableParams" class="table">
-    <tr ng-repeat="node in tableParams.data track by $index" ng-class="{even: $even, odd: $odd}">
+    <tr ng-repeat="node in tableParams.data" ng-class="{even: $even, odd: $odd}">
       <td header="'headerCheckbox.html'"><input type="checkbox" ng-model="checkboxes.items[node.id]" /></td>
       <td title="'Title'" sortable="'label'" ng-bind-html="node.link"></td>
       <td title="'Type'" sortable="'type'" class="node-type">{{node.type | removeUnderscore}}</td>

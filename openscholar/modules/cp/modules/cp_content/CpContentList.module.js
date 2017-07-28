@@ -58,6 +58,12 @@
 
   m.controller('cpModalController', ['$scope', '$filter', 'NgTableParams', 'EntityService', 'entityType', function ($scope, $filter, NgTableParams, EntityService, entityType) {
 
+    $scope.resetCheckboxes = function () {
+      $scope.checkboxes.checked = false;
+      angular.forEach($scope.tableParams.data, function(node){
+        $scope.checkboxes.items[node.id] = false;
+      });
+    }
     $scope.message = false;
     $scope.loading = true;
     // Fetch list and set it in ng-table;
@@ -87,16 +93,16 @@
           if (angular.isDefined(params.filter().og_vocabulary)) {
             var vocabTerms = params.filter().og_vocabulary;
             var termDataSet = [];
-            angular.forEach(vocabTerms, function(tid) {
               angular.forEach(filteredData, function(node, key) {
                 if (node.og_vocabulary != null) {
-                  if ($filter('filter')(node.og_vocabulary, tid).length > 0) {
-                    termDataSet.push(node);
-                  }
+                  angular.forEach(vocabTerms, function(tid) {
+                    if ($filter('filter')(node.og_vocabulary, tid).length > 0) {
+                      termDataSet.push(node);
+                    }
+                  });
                 }
               });
-            });
-            filteredData = termDataSet;
+            filteredData = $filter('unique')(termDataSet, 'id');
             $scope.disableBulkOptions = (filteredData.length) == 0 ? true : false;
           }
           if (angular.isDefined(params.filter().label)) {
@@ -107,6 +113,7 @@
           var orderedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
           params.total(orderedData.length);
           $scope.noRecords = (orderedData.length) == 0 ? true : false;
+          $scope.resetCheckboxes();
           return orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
         }
       });
@@ -198,9 +205,9 @@
                 if (nids.indexOf(node.id) > -1) {
                   if (angular.isDefined($scope.tableParams.data[key].og_vocabulary)) {
                     angular.forEach($scope.tableParams.data[key].og_vocabulary, function(vocab, term_key) {
-                       if (tids.indexOf(parseInt(vocab.tid)) > -1) {
+                      if (tids.indexOf(parseInt(vocab.tid)) > -1) {
                         $scope.tableParams.data[key].og_vocabulary[term_key].tid = null;
-                       }
+                      }
                     });
                   }
                 }
@@ -450,6 +457,7 @@
           $scope.$apply();
         }
       };
+
       // Bulk operation checkboxes.
       $scope.checkboxes = {
         'checked': false,
@@ -896,6 +904,21 @@
         return string;
       }
       return string.replace(/_/g, ' ');
+    };
+  }]);
+
+  m.filter('unique', [function() {
+    return function(collection, keyname) {
+      var output = [],
+        keys = [];
+      angular.forEach(collection, function(item) {
+        var key = item[keyname];
+        if(keys.indexOf(key) === -1) {
+          keys.push(key);
+          output.push(item);
+        }
+      });
+      return output;
     };
   }]);
 
