@@ -1,10 +1,49 @@
-
-@import url('https://fonts.googleapis.com/css?family=Chivo');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans|Rochester');
 
 body *,.region-header-third ul.nice-menu a,#menu-bar ul.nice-menu a,#boxes-box-site_info,#boxes-box-site_info a {
-    font-family: 'Chivo';
+    font-family: 'Open Sans';
 }
 
+
+#menu-bar
+{
+    background-color: #f1f1f1;
+}
+
+#header {
+	background-color: #fff;
+}
+
+body {
+    background-color: #f7f7f7;
+}
+
+ #menu-bar ul.nice-menu {
+
+ }
+
+#boxes-box-site_info h1 a {
+	font-family: 'Rochester';
+	    font-size: 1.4em;
+}
+
+#menu-bar {
+    border-top: none;
+    border-bottom: none;
+}
+
+
+#header,
+#header a,
+body {
+   
+    color: #222;
+}
+
+#header {
+	border-top:7px solid #457141;
+	
+}
 
 .breadcrumb a,
 a, a:visited {
@@ -15,11 +54,15 @@ a, a:visited {
     color: #457141 !important;
 }
 
-#header a,
-#header,
+
 #footer a,
 #footer { 
     color: #FFF;
+}
+
+a.rslides_nav {
+    background: url(/profiles/openscholar/themes/os_basetheme/images/scholarbase-sprite.png) repeat scroll 0 0 #457141;
+   
 }
 
 h2.block-title {
@@ -33,16 +76,6 @@ h2.block-title {
 background-color: #414141;
 
 }
-#header {
-background-color: #52854C;
-
-}
 
 
-
-#menu-bar {
-    border-top:none;
-    border-bottom: none;
-    background-color:#c3d7a4;
-}
 
