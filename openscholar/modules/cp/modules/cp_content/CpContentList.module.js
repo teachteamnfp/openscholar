@@ -557,6 +557,7 @@
           selectedModel: '=',
           options: '=',
           extraSettings: '=',
+          bulkAccess: '=',
           events: '=',
           translationTexts: '=',
           groupBy: '@'
@@ -565,7 +566,7 @@
           return Drupal.settings.paths.cpContent + '/cp_content_dropdown.html'
         },
         link: function(scope, element, attrs, cpContentCtl) {
-          scope.$parent.$parent.$watch('disableBulkOptions', function(newValue) {
+          scope.$watch('bulkAccess', function(newValue) {
             scope.disableBulkOptions = newValue;
           });
 
