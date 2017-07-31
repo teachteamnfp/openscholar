@@ -59,6 +59,7 @@
   m.controller('cpModalController', ['$scope', '$filter', 'NgTableParams', 'EntityService', 'entityType', function ($scope, $filter, NgTableParams, EntityService, entityType) {
 
     $scope.resetCheckboxes = function () {
+      $scope.disableBulkOptions = true;
       $scope.checkboxes.checked = false;
       angular.forEach($scope.tableParams.data, function(node){
         $scope.checkboxes.items[node.id] = false;
