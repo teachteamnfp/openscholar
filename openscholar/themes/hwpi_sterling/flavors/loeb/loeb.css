@@ -1,81 +1,70 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans|Rochester');
-
-body *,.region-header-third ul.nice-menu a,#menu-bar ul.nice-menu a,#boxes-box-site_info,#boxes-box-site_info a {
+body *,
+.region-header-third ul.nice-menu a,
+#menu-bar ul.nice-menu a,
+#boxes-box-site_info,
+#boxes-box-site_info a {
     font-family: 'Open Sans';
 }
-
-
-#menu-bar
-{
+.event-start .event-start,
+#menu-bar {
     background-color: #f1f1f1;
 }
-
 #header {
-	background-color: #fff;
+    background-color: #fff;
 }
-
 body {
     background-color: #f7f7f7;
 }
-
- #menu-bar ul.nice-menu {
-
- }
-
-#boxes-box-site_info h1 a {
-	font-family: 'Rochester';
-	    font-size: 1.4em;
+#menu-bar ul.nice-menu {} #boxes-box-site_info h1 a {
+    font-family: 'Rochester';
+    font-size: 1.4em;
 }
-
 #menu-bar {
     border-top: none;
     border-bottom: none;
 }
-
-
 #header,
 #header a,
 body {
-   
     color: #222;
 }
-
 #header {
-	border-top:7px solid #457141;
-	
+    border-top: 7px solid #457141;
 }
-
 .breadcrumb a,
-a, a:visited {
+a,
+a:visited {
     color: #457141;
 }
 .section-nav .expanded.menu-depth-2 > a,
 .section-nav .menu-depth-1 > a {
     color: #457141 !important;
 }
-
-
 #footer a,
-#footer { 
+#footer {
     color: #FFF;
 }
-
 a.rslides_nav {
     background: url(/profiles/openscholar/themes/os_basetheme/images/scholarbase-sprite.png) repeat scroll 0 0 #457141;
-   
 }
-
 h2.block-title {
-
-    border-left:3px solid #D16103;
-    padding-left:8px;
+    border-left: 3px solid #D16103;
+    padding-left: 8px;
+    text-transform: uppercase;
+    font-size: 1.1em;
+    font-weight: bold;
 }
-
-
 #footer {
-background-color: #414141;
-
+    background-color: #414141;
 }
-
-
-
+#menu-bar ul.nice-menu a.active,
+#menu-bar ul.nice-menu a:hover,
+#menu-bar ul.nice-menu .menuparent.over > a,
+#menu-bar ul.nice-menu .menuparent a:hover,
+#menu-bar ul.nice-menu .menuparent a.active,
+#menu-bar ul.nice-menu ul {
+    background-color: #457141;
+    color: #fff;
+    border-radius: 3px;
+}
