@@ -58,6 +58,9 @@ class NodeRestfulBase extends OsbulkOperationEnitity {
 
     $public_fields['type'] = array(
       'property' => 'type',
+      'process_callbacks' => array(
+        array($this, 'processType'),
+      ),
     );
 
     $public_fields['publish_status'] = array(
@@ -119,16 +122,16 @@ class NodeRestfulBase extends OsbulkOperationEnitity {
   }
 
   /**
-   * Get formatted date and time.
+   * Get gmdate.
    *
    * @param timestamp
    *   The enity's timestamp.
    *
    * @return string
-   *   The formatted date.
+   *   Formatted gmdate.
    */
   protected function dateFormat($timestamp) {
-    return format_date($timestamp, $type = 'long');
+    return gmdate("Y-m-d\TH:i:s\Z", $timestamp);
   }
 
   /**
@@ -142,6 +145,19 @@ class NodeRestfulBase extends OsbulkOperationEnitity {
    */
   protected function processStatus($status) {
     return $status = ($status == 1) ? true : false;
+  }
+
+  /**
+   * Return publication instead of machine name bibblo.
+   *
+   * @param type
+   *   The bundle name.
+   *
+   * @return type
+   *   Return publication instead biblio.
+   */
+  protected function processType($type) {
+    return $type = ($type == 'biblio') ? 'publication' : $type;
   }
 
 }

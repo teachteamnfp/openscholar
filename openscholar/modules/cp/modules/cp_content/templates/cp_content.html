@@ -49,7 +49,7 @@
       <td title="'Published'" sortable="'publish_status'">
         <md-switch ng-model="node.publish_status" aria-label="publishStatus" ng-change="changeStatus(node.id, node.publish_status)"></md-switch>
       </td>
-      <td title="'Date(Updated)'" sortable="'changed'">{{node.changed}}</td>
+      <td title="'Date(Updated)'" sortable="'changed'">{{node.changed | date : "EEEE, MMMM d, y, h:mm a"}}</td>
       <td>
         <a href="#" class="cp-popover" ng-click="popOver($event, node.id)"><span class="glyphicon glyphicon-pencil">Action</span>
           <div class="cp-popover-wrapper left" ng-show="showPopover == node.id">

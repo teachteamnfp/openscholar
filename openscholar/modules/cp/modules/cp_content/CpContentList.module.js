@@ -51,7 +51,7 @@
 
   m.run(['EntityService', function(EntityService) {
     nodeService = new EntityService('node', 'id');
-    fetchPromiseNodes = nodeService.fetch();
+    fetchPromiseNodes = nodeService.fetch({sort : '-changed'});
     vocabService = new EntityService('vocabulary', 'id');
     fetchPromiseVocab = vocabService.fetch();
   }]);
@@ -71,10 +71,7 @@
     fetchPromiseNodes.then(function(data) {
       $scope.tableParams = new NgTableParams({
         page: 1,
-        count: 20,
-        sorting: {
-          changed: 'desc'
-        }
+        count: 24
       }, {
         total: 0,
         counts: [], // hide page counts control.
