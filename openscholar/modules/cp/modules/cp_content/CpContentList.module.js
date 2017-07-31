@@ -71,7 +71,10 @@
     fetchPromiseNodes.then(function(data) {
       $scope.tableParams = new NgTableParams({
         page: 1,
-        count: 24
+        count: 24,
+        sorting: {
+          changed: 'desc'
+        }
       }, {
         total: 0,
         counts: [], // hide page counts control.
