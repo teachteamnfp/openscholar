@@ -202,8 +202,8 @@ function os_search_solr_update_7005() {
 
   $env_id = apachesolr_default_environment();
   $fb = apachesolr_environment_variable_get($env_id, 'field_bias', array());
-  if ($fb['label'] < '13.0') {
-    $fb['label'] = '13.0';
+  if ($fb['label'] < '21.0') {
+    $fb['label'] = '21.0';
   }
   apachesolr_environment_variable_set($env_id, 'field_bias', $fb);
 }
