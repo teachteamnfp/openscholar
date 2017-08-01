@@ -107,10 +107,12 @@
          *
          */
         scope.AddGroup = function (path) {
-          var k = scope.selected.indexOf(path);
-          if (k == -1) {
-            scope.selected.push(path);
-            ngModelController.$setDirty();
+          if (scope.selected.length < 7) {
+            var k = scope.selected.indexOf(path);
+            if (k == -1) {
+              scope.selected.push(path);
+              ngModelController.$setDirty();
+            }
           }
         }
 
