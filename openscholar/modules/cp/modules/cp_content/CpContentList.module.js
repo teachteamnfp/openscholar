@@ -49,14 +49,10 @@
     };
   }]);
 
-  m.run(['EntityService', function(EntityService) {
-    nodeService = new EntityService('node', 'id');
-    fetchPromiseNodes = nodeService.fetch({sort : '-changed'});
-    vocabService = new EntityService('vocabulary', 'id');
-    fetchPromiseVocab = vocabService.fetch();
-  }]);
-
   m.controller('cpModalController', ['$scope', '$filter', 'NgTableParams', 'EntityService', 'entityType', function ($scope, $filter, NgTableParams, EntityService, entityType) {
+
+    nodeService = new EntityService(entityType, 'id');
+    vocabService = new EntityService('vocabulary', 'id');
 
     $scope.resetCheckboxes = function () {
       $scope.disableBulkOptions = true;
@@ -68,7 +64,7 @@
     $scope.message = false;
     $scope.loading = true;
     // Fetch list and set it in ng-table;
-    fetchPromiseNodes.then(function(data) {
+    nodeService.fetch({sort : '-changed'}).then(function(data) {
       $scope.tableParams = new NgTableParams({
         page: 1,
         count: 24,
@@ -244,7 +240,7 @@
           selectedTypes = selectedTypes.filter(function(value, index) {
             return selectedTypes.indexOf(value) == index
           });
-          return fetchPromiseVocab.then(function(ogVocabTerms) {
+          return vocabService.fetch().then(function(ogVocabTerms) {
             angular.forEach(ogVocabTerms, function(vocab, key) {
               vocab.bundles.node.sort()
               var ret = [];
@@ -281,7 +277,7 @@
           });
 
         } else {
-          return fetchPromiseVocab.then(function(ogVocabTerms) {
+          return vocabService.fetch().then(function(ogVocabTerms) {
             return {
               error: false,
               vocab: ogVocabTerms
