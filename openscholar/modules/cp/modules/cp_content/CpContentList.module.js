@@ -1,9 +1,5 @@
 (function() {
-  var nodeService,
-    vocabService,
-    fetchPromiseNodes,
-    fetchPromiseVocab,
-    messageFailed = 'Something went wrong. Please try again later.';
+  var messageFailed = 'Something went wrong. Please try again later.';
 
   var m = angular.module('CpContent', ['ui.bootstrap', 'ngTable', 'ngMaterial', 'EntityService', 'os-buttonSpinner']);
 
