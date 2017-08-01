@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans|Redressed');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans|Quintessential');
 body *,
 .region-header-third ul.nice-menu a,
 #menu-bar ul.nice-menu a,
@@ -32,8 +32,8 @@ body {
     background-color: #f9f9f9;
 }
 #boxes-box-site_info h1 a {
-    font-family: 'Redressed';
-    font-size: 1.4em;
+    font-family: 'Quintessential';
+    font-size: 1.2em;
 }
 #menu-bar {
     border-top: none;
@@ -60,6 +60,7 @@ a:visited {
 .section-nav .menu-depth-1 > a {
     color: #457141 !important;
 }
+#menu-bar ul.nice-menu .menuparent ul li a.active,
 #footer .footer-login,
 #menu-bar ul.nice-menu .menuparent ul li a,
 #menu-bar ul.nice-menu .menuparent ul li a:hover,
