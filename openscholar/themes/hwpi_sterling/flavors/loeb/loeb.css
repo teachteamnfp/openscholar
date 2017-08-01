@@ -4,7 +4,8 @@ body *,
 #menu-bar ul.nice-menu a,
 #boxes-box-site_info,
 #boxes-box-site_info a,
-.date-nav h3 {
+.date-nav h3,
+.slide-copy h2 {
     font-family: 'Open Sans';
 }
 .accordion .ui-state-default,
