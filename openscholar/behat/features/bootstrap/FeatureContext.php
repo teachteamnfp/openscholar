@@ -3939,4 +3939,36 @@ JS;
     $this->nid = FeatureHelp::getNodeId($site);
   }
 
+  /**
+   * @When /^Switch to the iframe "([^"]*)"$/
+   */
+  public function switchToTheIframe($iframe_id) {
+    $this->waitFor(function (FeatureContext $context) {
+      if ($overlay = $context->getSession()->getPage()->find('css', 'iframe.media-modal-frame')) {
+        $context->getSession()->switchToIframe("mediaStyleSelector");
+        return true;
+      }
+      return false;
+    }, 20000);
+  }
+
+  /**
+   * @When /^I click on the first "([^"]*)" control in the "([^"]*)" element$/
+   */
+  public function iClickOnFirstControlInElement($text, $css) {
+    $page = $this->getSession()->getPage();
+    $parents = $page->findAll('css', $css);
+
+    foreach ($parents as $p) {
+      if ($p->isVisible()) {
+        if ($elem = $p->find('xpath', "//*[text() = '{$text}']")) {
+          $elem->click();
+          return;
+        }
+        else {
+          throw new ElementNotFoundException($this->getSession(), "No $text found in $css element.");
+        }
+      }
+    }
+  }
 }
