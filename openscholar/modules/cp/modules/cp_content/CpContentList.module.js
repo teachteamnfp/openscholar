@@ -24,7 +24,7 @@
         ModalService.showModal({
             controller: "cpModalController",
             template: '<div><div class="file-entity-loading" ng-show="loading"><div class="node-entity-loading-message">Loading content...<br /></div></div>' +
-              '<div cp-content node-edit"></div>',
+              '<div cp-content></div>',
             inputs: {
               entityType: attrs.entityType
             }
@@ -59,6 +59,7 @@
     }
     $scope.message = false;
     $scope.loading = true;
+    $scope.entityType = entityType;
     // Fetch list and set it in ng-table;
     nodeService.fetch({sort : '-changed'}).then(function(data) {
       $scope.tableParams = new NgTableParams({
@@ -280,6 +281,9 @@
             };
           });
         }
+      }
+      this.setMessage = function(message) {
+        $scope.message = message;
       }
 
       // Node bulk operation.
@@ -645,10 +649,10 @@
                   });
                   scope.orderedItems[key].termName = '';
                   bss.SetState('add_term_form', false);
-                  scope.$parent.$parent.message = termName + ' term have been added to ' + vocabName + ' vocabulary.';
+                  cpContentCtl.setMessage(termName + ' term have been added to ' + vocabName + ' vocabulary.');
                 }
               }, function(error) {
-                scope.$parent.$parent.message = error.data.title;
+                cpContentCtl.setMessage(error.data.title);
                 bss.SetState('add_term_form', false);
               });
 
