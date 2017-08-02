@@ -1,7 +1,7 @@
 (function() {
   var messageFailed = 'Something went wrong. Please try again later.';
 
-  var m = angular.module('CpContent', ['ui.bootstrap', 'ngTable', 'ngMaterial', 'EntityService', 'os-buttonSpinner']);
+  var m = angular.module('CpContent', ['ui.bootstrap', 'ngTable', 'ngMaterial', 'EntityService', 'os-buttonSpinner', 'NodeEditor']);
 
   /**
    * Open modals for cp content listing.
@@ -23,7 +23,7 @@
 
         ModalService.showModal({
             controller: "cpModalController",
-            template: '<div><div class="file-entity-loading" ng-show="loading"><div class="node-entity-loading-message">Loading content...<br /></div></div>' +
+            template: '<div><div class="node-entity-loading" ng-show="loading"><div class="node-entity-loading-message">Loading content...<br /></div></div>' +
               '<div cp-content></div>',
             inputs: {
               entityType: attrs.entityType
@@ -116,10 +116,6 @@
 
     $scope.close = function(arg) {
       window.location.reload();
-    }
-    // Fetch vsite home.
-    if (Drupal.settings.paths.vsite_home != undefined) {
-      $scope.vsiteUrl = Drupal.settings.paths.vsite_home;
     }
 
   }]);
@@ -275,10 +271,18 @@
 
         } else {
           return vocabService.fetch().then(function(ogVocabTerms) {
-            return {
-              error: false,
-              vocab: ogVocabTerms
-            };
+            if (ogVocabTerms.length == 0) {
+              results = {
+                error: "No vocabularies available.",
+                vocab: ogVocabTerms
+              };
+            } else {
+              results = {
+                error: false,
+                vocab: ogVocabTerms
+              };
+            }
+            return results;
           });
         }
       }

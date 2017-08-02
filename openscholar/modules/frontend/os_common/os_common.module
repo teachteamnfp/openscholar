@@ -414,6 +414,14 @@ function os_common_library() {
     )
   );
 
+  $info['NodeEditor'] = array(
+    'title' => 'Angular Node Editor',
+    'version' => '1.0',
+    'js' => array(
+      $path.'/NodeEditor/NodeEditor.module.js' => array(),
+    ),
+  );
+
   return $info;
 }
 

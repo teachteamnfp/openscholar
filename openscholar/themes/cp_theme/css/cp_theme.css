@@ -2005,7 +2005,7 @@ label[for=cp-title-bulk] {
 }
 .cp-popover-wrapper {
     padding: 0 20px;
-    right: 85px;
+    right: 55px;
     border: 1px solid #EAEAEA;
     position: absolute;
     border-radius: 4px;
@@ -2013,6 +2013,7 @@ label[for=cp-title-bulk] {
     min-height: 20px;
     background: #FFF;
     z-index: 10;
+    top: 0px;
 }
 .cp-popover-wrapper ul li {
     list-style: none;
@@ -2200,4 +2201,26 @@ md-switch .md-bar {
 .cp-content .term-error-message {
     width: 200px;
     padding: 10px;
+}
+.ui-dialog.ap-settings-form input[type="button"]:disabled{
+    border: 1px solid #999999;
+    background-color: #cccccc;
+    color: #666666;
+}
+.node-entity-loading-message {
+    position: absolute;
+    top: calc(50% - 259px/2);
+    left: calc(50% - 175px/2);
+    text-align: center;
+    font-size: large;
+    font-weight: bolder;
+}
+.node-entity-loading {
+    background-color: white;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    position: absolute;
+    z-index: 50;
 }
