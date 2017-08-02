@@ -1,5 +1,7 @@
 <?php
 
+define("GROUPER_PRIVACY_LEVEL", 6);
+
 /**
  * Implements hook_ctools_plugin_directory().
  */
@@ -52,7 +54,7 @@ function grouper_library_alter(&$libraries, $module) {
  */
 function grouper_vsite_access_privacy_values_alter(&$options) {
   if (spaces_access_admin()) {
-    $options[6] = t('Groups within the Harvard Community <br><span class="description">Only select groups at harvard can view your site.</span>');
+    $options[GROUPER_PRIVACY_LEVEL] = t('Groups within the Harvard Community <br><span class="description">Only select groups at harvard can view your site.</span>');
   }
 }
 
@@ -262,12 +264,38 @@ function grouper_node_access($node, $op, $account) {
     $group_id = $node->{OG_AUDIENCE_FIELD}[LANGUAGE_NONE][0]['target_id'];
   }
   $group = node_load($group_id);
-  if (grouper_user_can_access($group, $account)) {
-    // ignore instead of allow to give other modules a chance to deny access
-    return NODE_ACCESS_IGNORE;
+  $items = field_get_items('node', $group, VSITE_ACCESS_FIELD);
+  if ($items[0]['value'] == GROUPER_PRIVACY_LEVEL) {
+    if (grouper_user_can_access($group, $account)) {
+      // ignore instead of allow to give other modules a chance to deny access
+      return NODE_ACCESS_IGNORE;
+    }
+    else {
+      // user does not have a linked account
+      return NODE_ACCESS_DENY;
+    }
   }
-  else {
-    return NODE_ACCESS_DENY;
+
+  return NODE_ACCESS_IGNORE;
+}
+
+/**
+ * Implements hook_vsite_access_denied().
+ */
+function grouper_vsite_access_denied($vsite) {
+  if ($vsite->{VSITE_ACCESS_FIELD}[LANGUAGE_NONE][0]['value'] == GROUPER_PRIVACY_LEVEL && user_is_anonymous()) {
+    if (! user_access('administer group') && !pinserver_check_system_settings()) {
+      //Load custom pinserver variables
+      $vsite->controllers->variable->init_overrides();
+
+      // They are not a member, validate through pin.
+      pinserver_redirect(array(
+        'redirect' => url($_GET['q'], array(
+          'absolute' => TRUE
+        )),
+        'tk_forward' => '0'
+      ));
+    }
   }
 }
 
