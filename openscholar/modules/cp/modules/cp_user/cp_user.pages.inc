@@ -160,20 +160,6 @@ function cp_user_user_management_page($gid) {
             ),
           ),
         ),
-        'cp_user_force_harvard_key' => array(
-          '#id' => 'cp_user_force_harvard_key',
-          '#theme' => 'checkbox',
-          '#attributes' => array(
-            'label' => $force_harvard_key_link_title,
-            'value' => 1,
-          ),
-        ),
-        'cp_user_force_harvard_key_label' => array(
-          '#theme' => 'form_element_label',
-          '#title' => $force_harvard_key_link_title,
-          '#title_display' => 'after',
-          '#id' => 'cp_user_force_harvard_key',
-        ),
         '#weight' => 0,
       ),
       'cp_user_main' => array(
@@ -196,6 +182,25 @@ function cp_user_user_management_page($gid) {
       ),
     ),
   );
+
+  if (module_exists('pinserver')) {
+    $build['cp_user'][] = array(
+      'cp_user_force_harvard_key' => array(
+        '#id' => 'cp_user_force_harvard_key',
+        '#theme' => 'checkbox',
+        '#attributes' => array(
+          'label' => $force_harvard_key_link_title,
+          'value' => 1,
+        ),
+      ),
+          'cp_user_force_harvard_key_label' => array(
+        '#theme' => 'form_element_label',
+        '#title' => $force_harvard_key_link_title,
+        '#title_display' => 'after',
+        '#id' => 'cp_user_force_harvard_key',
+      ),
+    );
+  }
 
   return $build;
 }
