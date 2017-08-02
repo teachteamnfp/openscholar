@@ -2207,7 +2207,7 @@ md-switch .md-bar {
     background-color: #cccccc;
     color: #666666;
 }
-.node-entity-loading-message {
+.entity-loading-message {
     position: absolute;
     top: calc(50% - 259px/2);
     left: calc(50% - 175px/2);
@@ -2215,7 +2215,7 @@ md-switch .md-bar {
     font-size: large;
     font-weight: bolder;
 }
-.node-entity-loading {
+.entity-loading {
     background-color: white;
     top: 0;
     right: 0;

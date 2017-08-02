@@ -23,8 +23,8 @@
 
         ModalService.showModal({
             controller: "cpModalController",
-            template: '<div><div class="node-entity-loading" ng-show="loading"><div class="node-entity-loading-message">Loading content...<br /></div></div>' +
-              '<div cp-content></div>',
+            template: '<div><div class="entity-loading" ng-show="loading"><div class="entity-loading-message">Loading content...<br /></div></div>' +
+              '<div cp-content entity-type="'+attrs.entityType+'"></div>',
             inputs: {
               entityType: attrs.entityType
             }
@@ -45,7 +45,7 @@
     };
   }]);
 
-  m.controller('cpModalController', ['$scope', '$filter', 'NgTableParams', 'EntityService', 'entityType', function ($scope, $filter, NgTableParams, EntityService, entityType) {
+  m.controller('cpModalController', ['$scope', '$timeout', '$filter', '$rootScope', 'EntityService', 'NgTableParams', 'buttonSpinnerStatus', 'entityType', function ($scope, $timeout, $filter, $rootScope, EntityService, NgTableParams, buttonSpinnerStatus, entityType) {
 
     nodeService = new EntityService(entityType, 'id');
     vocabService = new EntityService('vocabulary', 'id');
@@ -113,6 +113,252 @@
       });
       $scope.loading = false;
     });
+
+     // Node bulk operation.
+    $scope.nodeBulkOperation = function(operation) {
+      var nids = [];
+      angular.forEach($scope.selectedItems, function(selectedItem, nid) {
+        if (selectedItem) {
+          nids.push(parseInt(nid));
+        }
+      });
+      // Bulk operation DELETE should go through Undo option.
+      if (operation == 'delete') {
+        $scope.nodeDelete(nids);
+      } else {
+        $scope.changeStatus(nids, operation);
+      }
+    }
+
+    $scope.changeStatus = function(nid, publish_status) {
+      var nids = angular.isArray(nid) ? nid : [nid];
+      var operationName = (publish_status) ? 'published' : 'unpublished';
+      buttonSpinnerStatus.SetState(operationName, true);
+      nodeService.bulk(operationName, nids, {
+        details: false,
+        operation: false
+      }).then(function(response) {
+        if (response.data.data.saved) {
+          buttonSpinnerStatus.SetState(operationName, false);
+          $scope.message = 'Selected content has been ' + operationName + '.';
+          angular.forEach($scope.tableParams.data, function(node, key) {
+            if (nids.indexOf(node.id) > -1) {
+              if (publish_status) {
+                $scope.tableParams.data[key].publish_status = true;
+              } else {
+                $scope.tableParams.data[key].publish_status = false;
+              }
+            }
+          });
+        } else {
+          buttonSpinnerStatus.SetState(operationName, false);
+          $scope.message = messageFailed;
+        }
+      });
+    };
+
+    // Show Undo div to user for 8 seconds on delete.
+    $scope.deleteUndoAction = true;
+    $scope.deleteUndoMessage = true;
+    var nodeId, timer, list;
+    var oldList = [];
+    var newDataList = [];
+    $scope.nodeDelete = function(nid) {
+      nodeId = angular.isArray(nid) ? nid : [nid];
+      var newDataList = [];
+      if (oldList.length > 0) {
+        list = oldList;
+        oldList = [];
+      } else {
+        list = $scope.tableParams.data;
+      }
+      angular.forEach(list, function(node) {
+        if (nodeId.indexOf(node.id) == -1) {
+          newDataList.push(node);
+        }
+        oldList.push(node);
+      });
+      $scope.tableParams.data = newDataList;
+      $scope.deleteUndoMessage = true;
+      $scope.deleteUndoAction = !$scope.deleteUndoAction;
+      timer = $timeout(function() {
+        $scope.deleteUndoAction = !$scope.deleteUndoAction;
+        $scope.deleteNodeOnClose();
+      }, 8000);
+    };
+
+    $scope.deleteNodeOnClose = function() {
+      $timeout.cancel(timer);
+      $scope.message = 'Selected content has been deleted.';
+      $scope.deleteUndoAction = true;
+      nodeService.bulk('delete', nodeId, {
+        details: false,
+        operation: false
+      }).then(function(response) {
+        if (response.data.data.deleted) {
+          $scope.message = 'Selected content has been deleted.';
+          $scope.deleteUndoAction = true;
+        } else {
+          $scope.message = messageFailed;
+        }
+      });
+    };
+
+    $scope.deleteUndo = function() {
+      $timeout.cancel(timer);
+      $scope.deleteUndoAction = true;
+      $scope.deleteUndoMessage = !$scope.deleteUndoMessage;
+      timer = $timeout(function() {
+        $scope.deleteUndoMessage = true;
+      }, 2000);
+      $scope.tableParams.data = oldList;
+    };
+
+    $scope.deleteUndoMessageClose = function() {
+      $scope.deleteUndoMessage = true;
+    };
+
+    // Initialize apply taxonomy term dropdown.
+    $scope.applyTermModel = [];
+    $scope.applyTermSettings = {
+      scrollable: true,
+      termDropdown: true,
+      termOperation: true,
+      buttonClasses: '',
+      idProp: 'value'
+    };
+    // Initialize remove taxonomy term dropdown.
+    $scope.removeTermModel = [];
+    $scope.removeTermSettings = {
+      scrollable: true,
+      termDropdown: true,
+      termOperation: true,
+      buttonClasses: '',
+      idProp: 'value'
+    };
+    // Initialize content type filter.
+    $scope.selectAllFlag = false;
+    $rootScope.$watch('selectAllFlag', function(newValue) {
+      $scope.selectAllFlag = newValue;
+    });
+    $scope.contentTypeModel = [];
+    $scope.contentTypeSettings = {
+      scrollable: true,
+      smartButtonMaxItems: 2,
+      showAllConentTypeCheckBox: true,
+      selectAllDefault: true
+    };
+    $scope.contentTypeTexts = {
+      buttonDefaultText: 'All content types',
+    }
+    if (angular.isDefined(Drupal.settings.cpContent.contentTypeOptions)) {
+      $scope.contentTypes = Drupal.settings.cpContent.contentTypeOptions;
+    }
+    // Initialize taxonomy term filter.
+    $scope.taxonomyTermsModel = [];
+    $scope.taxonomyTermsSettings = {
+      scrollable: true,
+      smartButtonMaxItems: 2,
+      termDropdown: true,
+      termOperation: false,
+      idProp: 'value'
+    };
+    $scope.taxonomyTermsTexts = {
+      buttonDefaultText: 'Taxonomy Terms'
+    };
+    // Node edit and delete popover.
+    $scope.showPopover = false;
+    $scope.popOver = function($event, nid) {
+      if (angular.isDefined(nid)) {
+        $scope.showPopover = nid;
+        $event.stopPropagation();
+        $event.preventDefault();
+      }
+    };
+    // Hide popover.
+    window.onclick = function() {
+      if ($scope.showPopover) {
+        $scope.showPopover = false;
+        $scope.$apply();
+      }
+    };
+
+    // Bulk operation checkboxes.
+    $scope.checkboxes = {
+      'checked': false,
+      items: {}
+    };
+    $scope.disableBulkOptions = true;
+    // Watch for check all checkbox.
+    $scope.$watch('checkboxes.checked', function(value) {
+      if (angular.isDefined($scope.tableParams)) {
+        angular.forEach($scope.tableParams.data, function(node) {
+          if (angular.isDefined(node.id)) {
+            $scope.checkboxes.items[node.id] = value;
+          }
+        });
+      }
+      $scope.disableBulkOptions = !value;
+      $scope.selectedItems = $scope.checkboxes.items;
+    });
+    // Watch for data checkboxes.
+    $scope.$watch('checkboxes.items', function(values) {
+      if (angular.isDefined($scope.tableParams)) {
+        if (!$scope.tableParams.data) {
+          return;
+        }
+        var checked = 0,
+          unchecked = 0,
+          total = $scope.tableParams.data.length;
+        angular.forEach($scope.tableParams.data, function(node) {
+          checked += ($scope.checkboxes.items[node.id]) || 0;
+          unchecked += (!$scope.checkboxes.items[node.id]) || 0;
+        });
+        if ((unchecked == 0) || (checked == 0)) {
+          $scope.checkboxes.checked = (checked == total);
+        }
+        if (checked > 0) {
+          $scope.disableBulkOptions = false;
+        } else {
+          $scope.disableBulkOptions = true;
+          $scope.checkboxes.checked = false;
+        }
+        // Grayed checkbox.
+        angular.element(document.getElementById("select_all")).prop("indeterminate", (checked != 0 && unchecked != 0));
+      }
+
+    }, true);
+
+    $scope.closeMessage = function() {
+      $scope.message = false;
+    }
+
+    // Search button: Filter data by title, content-type, taxonomy.
+    $scope.search = function() {
+      $scope.message = false;
+      var filter = {};
+      if ($scope.label) {
+        filter.label = $scope.label;
+        $scope.tableParams.filter(filter);
+      }
+      if ($scope.contentTypeModel.length > 0) {
+        var selectedType = [];
+        angular.forEach($scope.contentTypeModel, function(type, key) {
+          selectedType.push(type.id);
+        });
+        filter.type = selectedType;
+        $scope.tableParams.filter(filter);
+      }
+      if ($scope.taxonomyTermsModel.length > 0) {
+        var selectedTerms = [];
+        angular.forEach($scope.taxonomyTermsModel, function(term, key) {
+          selectedTerms.push(parseInt(term.id));
+        });
+        filter.og_vocabulary = selectedTerms;
+        $scope.tableParams.filter(filter);
+      }
+      $scope.tableParams.reload();
+    };
 
     $scope.close = function(arg) {
       window.location.reload();
@@ -289,253 +535,6 @@
       this.setMessage = function(message) {
         $scope.message = message;
       }
-
-      // Node bulk operation.
-      $scope.nodeBulkOperation = function(operation) {
-        var nids = [];
-        angular.forEach($scope.selectedItems, function(selectedItem, nid) {
-          if (selectedItem) {
-            nids.push(parseInt(nid));
-          }
-        });
-        // Bulk operation DELETE should go through Undo option.
-        if (operation == 'delete') {
-          $scope.nodeDelete(nids);
-        } else {
-          $scope.changeStatus(nids, operation);
-        }
-      }
-
-      $scope.changeStatus = function(nid, publish_status) {
-        var nids = angular.isArray(nid) ? nid : [nid];
-        var operationName = (publish_status) ? 'published' : 'unpublished';
-        buttonSpinnerStatus.SetState(operationName, true);
-        nodeService.bulk(operationName, nids, {
-          details: false,
-          operation: false
-        }).then(function(response) {
-          if (response.data.data.saved) {
-            buttonSpinnerStatus.SetState(operationName, false);
-            $scope.message = 'Selected content has been ' + operationName + '.';
-            angular.forEach($scope.tableParams.data, function(node, key) {
-              if (nids.indexOf(node.id) > -1) {
-                if (publish_status) {
-                  $scope.tableParams.data[key].publish_status = true;
-                } else {
-                  $scope.tableParams.data[key].publish_status = false;
-                }
-              }
-            });
-          } else {
-            buttonSpinnerStatus.SetState(operationName, false);
-            $scope.message = messageFailed;
-          }
-        });
-      };
-
-      // Show Undo div to user for 8 seconds on delete.
-      $scope.deleteUndoAction = true;
-      $scope.deleteUndoMessage = true;
-      var nodeId, timer, list;
-      var oldList = [];
-      var newDataList = [];
-      $scope.nodeDelete = function(nid) {
-        nodeId = angular.isArray(nid) ? nid : [nid];
-        var newDataList = [];
-        if (oldList.length > 0) {
-          list = oldList;
-          oldList = [];
-        } else {
-          list = $scope.tableParams.data;
-        }
-        angular.forEach(list, function(node) {
-          if (nodeId.indexOf(node.id) == -1) {
-            newDataList.push(node);
-          }
-          oldList.push(node);
-        });
-        $scope.tableParams.data = newDataList;
-        $scope.deleteUndoMessage = true;
-        $scope.deleteUndoAction = !$scope.deleteUndoAction;
-        timer = $timeout(function() {
-          $scope.deleteUndoAction = !$scope.deleteUndoAction;
-          $scope.deleteNodeOnClose();
-        }, 8000);
-      };
-
-      $scope.deleteNodeOnClose = function() {
-        $timeout.cancel(timer);
-        $scope.message = 'Selected content has been deleted.';
-        $scope.deleteUndoAction = true;
-        nodeService.bulk('delete', nodeId, {
-          details: false,
-          operation: false
-        }).then(function(response) {
-          if (response.data.data.deleted) {
-            $scope.message = 'Selected content has been deleted.';
-            $scope.deleteUndoAction = true;
-          } else {
-            $scope.message = messageFailed;
-          }
-        });
-      };
-
-      $scope.deleteUndo = function() {
-        $timeout.cancel(timer);
-        $scope.deleteUndoAction = true;
-        $scope.deleteUndoMessage = !$scope.deleteUndoMessage;
-        timer = $timeout(function() {
-          $scope.deleteUndoMessage = true;
-        }, 2000);
-        $scope.tableParams.data = oldList;
-      };
-
-      $scope.deleteUndoMessageClose = function() {
-        $scope.deleteUndoMessage = true;
-      };
-
-      // Initialize apply taxonomy term dropdown.
-      $scope.applyTermModel = [];
-      $scope.applyTermSettings = {
-        scrollable: true,
-        termDropdown: true,
-        termOperation: true,
-        buttonClasses: '',
-        idProp: 'value'
-      };
-      // Initialize remove taxonomy term dropdown.
-      $scope.removeTermModel = [];
-      $scope.removeTermSettings = {
-        scrollable: true,
-        termDropdown: true,
-        termOperation: true,
-        buttonClasses: '',
-        idProp: 'value'
-      };
-      // Initialize content type filter.
-      $scope.selectAllFlag = false;
-      $rootScope.$watch('selectAllFlag', function(newValue) {
-        $scope.selectAllFlag = newValue;
-      });
-      $scope.contentTypeModel = [];
-      $scope.contentTypeSettings = {
-        scrollable: true,
-        smartButtonMaxItems: 2,
-        showAllConentTypeCheckBox: true,
-        selectAllDefault: true
-      };
-      $scope.contentTypeTexts = {
-        buttonDefaultText: 'All content types',
-      }
-      if (angular.isDefined(Drupal.settings.cpContent.contentTypeOptions)) {
-        $scope.contentTypes = Drupal.settings.cpContent.contentTypeOptions;
-      }
-      // Initialize taxonomy term filter.
-      $scope.taxonomyTermsModel = [];
-      $scope.taxonomyTermsSettings = {
-        scrollable: true,
-        smartButtonMaxItems: 2,
-        termDropdown: true,
-        termOperation: false,
-        idProp: 'value'
-      };
-      $scope.taxonomyTermsTexts = {
-        buttonDefaultText: 'Taxonomy Terms'
-      };
-      // Node edit and delete popover.
-      $scope.showPopover = false;
-      $scope.popOver = function($event, nid) {
-        if (angular.isDefined(nid)) {
-          $scope.showPopover = nid;
-          $event.stopPropagation();
-          $event.preventDefault();
-        }
-      };
-      // Hide popover.
-      window.onclick = function() {
-        if ($scope.showPopover) {
-          $scope.showPopover = false;
-          $scope.$apply();
-        }
-      };
-
-      // Bulk operation checkboxes.
-      $scope.checkboxes = {
-        'checked': false,
-        items: {}
-      };
-      $scope.disableBulkOptions = true;
-      // Watch for check all checkbox.
-      $scope.$watch('checkboxes.checked', function(value) {
-        if (angular.isDefined($scope.tableParams)) {
-          angular.forEach($scope.tableParams.data, function(node) {
-            if (angular.isDefined(node.id)) {
-              $scope.checkboxes.items[node.id] = value;
-            }
-          });
-        }
-        $scope.disableBulkOptions = !value;
-        $scope.selectedItems = $scope.checkboxes.items;
-      });
-      // Watch for data checkboxes.
-      $scope.$watch('checkboxes.items', function(values) {
-        if (angular.isDefined($scope.tableParams)) {
-          if (!$scope.tableParams.data) {
-            return;
-          }
-          var checked = 0,
-            unchecked = 0,
-            total = $scope.tableParams.data.length;
-          angular.forEach($scope.tableParams.data, function(node) {
-            checked += ($scope.checkboxes.items[node.id]) || 0;
-            unchecked += (!$scope.checkboxes.items[node.id]) || 0;
-          });
-          if ((unchecked == 0) || (checked == 0)) {
-            $scope.checkboxes.checked = (checked == total);
-          }
-          if (checked > 0) {
-            $scope.disableBulkOptions = false;
-          } else {
-            $scope.disableBulkOptions = true;
-            $scope.checkboxes.checked = false;
-          }
-          // Grayed checkbox.
-          angular.element(document.getElementById("select_all")).prop("indeterminate", (checked != 0 && unchecked != 0));
-        }
-
-      }, true);
-
-      $scope.closeMessage = function() {
-        $scope.message = false;
-      }
-
-      // Search button: Filter data by title, content-type, taxonomy.
-      $scope.search = function() {
-        $scope.message = false;
-        var filter = {};
-        if ($scope.label) {
-          filter.label = $scope.label;
-          $scope.tableParams.filter(filter);
-        }
-        if ($scope.contentTypeModel.length > 0) {
-          var selectedType = [];
-          angular.forEach($scope.contentTypeModel, function(type, key) {
-            selectedType.push(type.id);
-          });
-          filter.type = selectedType;
-          $scope.tableParams.filter(filter);
-        }
-        if ($scope.taxonomyTermsModel.length > 0) {
-          var selectedTerms = [];
-          angular.forEach($scope.taxonomyTermsModel, function(term, key) {
-            selectedTerms.push(parseInt(term.id));
-          });
-          filter.og_vocabulary = selectedTerms;
-          $scope.tableParams.filter(filter);
-        }
-        $scope.tableParams.reload();
-      };
-
     };
 
     return {
