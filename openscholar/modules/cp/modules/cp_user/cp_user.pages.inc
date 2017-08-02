@@ -183,22 +183,24 @@ function cp_user_user_management_page($gid) {
     ),
   );
 
+  $form_id = 'cp_user_force_harvard_key_form';
+
   if (module_exists('pinserver')) {
     $build['cp_user'][] = array(
-      'cp_user_force_harvard_key' => array(
-        '#id' => 'cp_user_force_harvard_key',
-        '#theme' => 'checkbox',
-        '#attributes' => array(
-          'label' => $force_harvard_key_link_title,
-          'value' => 1,
-        ),
-      ),
-          'cp_user_force_harvard_key_label' => array(
-        '#theme' => 'form_element_label',
+      $form_id => array(
+        '#theme' => 'form',
         '#title' => $force_harvard_key_link_title,
         '#title_display' => 'after',
-        '#id' => 'cp_user_force_harvard_key',
-      ),
+        '#id' => $form_id,
+        '#action' => 'force-harvard-key-login',
+        '#method' => 'POST',
+        '#children' => "
+          <div ng-app='myApp'>
+            <form name='$form_id' action='#' ng-controller='FormCtrl'>
+              <input type='checkbox' ng-model='form.member' value='true' ng-click='Submit'/> $force_harvard_key_link_title
+            </form>
+          </div>",
+      )
     );
   }
 

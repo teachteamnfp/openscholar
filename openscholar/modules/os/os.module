@@ -765,6 +765,8 @@ function os_preprocess_page(&$vars) {
   // Add JS to initialize window.tinyMCEPreInit object before tinymce loading to work with static domain.
   drupal_add_js(drupal_get_path('module', 'os') . "/js/os_tinymce_init.js", "file");
 
+  drupal_add_js(drupal_get_path('module', 'os') . "/js/os_cp_user_force_login_option.js", "file");
+
   // Add the dismiss messages CSS.
   drupal_add_css(drupal_get_path('module', 'os') . "/theme/os_dismiss.css", array(
     'type' => 'file',

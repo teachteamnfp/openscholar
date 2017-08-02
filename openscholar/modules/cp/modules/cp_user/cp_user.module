@@ -47,6 +47,14 @@ function cp_user_menu() {
     'type' => MENU_CALLBACK,
   );
 
+ 
+  $items['cp/users/force-harvard-key-login'] = array(
+    'title' => t('Site members must login using Harvard Key.'),
+    'page callback' => array('cp_user_force_harvard_key_login'),
+    'access callback' => 'cp_user_admin_access',
+    'type' => MENU_CALLBACK,
+  );
+
   $items['cp/users/delete_membership/%user'] = array(
     'type' => MENU_CALLBACK,
     'title' => t('Remove Membership'),
@@ -1166,4 +1174,23 @@ function cp_user_form_og_ui_admin_new_role_alter(&$form, &$form_state) {
  */
 function cp_user_roles_add_redirect($form, &$form_state) {
   $form_state['redirect'] = 'cp/users/roles';
+}
+
+/**
+ * Submit handler; Add gid to list of mandatory Harvard Key logins
+ */
+function cp_user_force_harvard_key_login($form, &$form_state) {
+  $force_harvard_key_login = variable_get('force_harvard_key_login');
+
+  if (! $force_harvard_key_login) {
+    $force_harvard_key_login;
+  }
+
+  $force_harvard_key_login[] = "<FILL IN!> gid";
+
+  $force_harvard_key_login = variable_set('force_harvard_key_login', $force_harvard_key_login);
+
+  # update the database with the new value
+  # then return to Manage Members page
+  # drupal_goto("/cp/users");
 }
