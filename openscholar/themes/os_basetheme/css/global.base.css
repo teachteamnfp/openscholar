@@ -468,6 +468,7 @@ ol {
   margin-left: 0;
   padding-left: 0;
   list-style: none;
+  counter-reset: table-ol;
  }
 
  .field-name-body ol li {
@@ -480,6 +481,18 @@ ol {
       display: table-cell;
       padding-right: 0.4em;
       text-align: right;
+}
+
+
+
+ .field-name-body ol ol li:before {
+       content: counter(table-ol, upper-alpha) ".";
+     
+}
+
+ .field-name-body ol ol ol li:before {
+       content: counter(table-ol, lower-alpha) ".";
+     
 }
 
 .item-list ul,
