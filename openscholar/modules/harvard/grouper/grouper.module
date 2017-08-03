@@ -288,7 +288,7 @@ function grouper_vsite_access_denied($vsite) {
       //Load custom pinserver variables
       $vsite->controllers->variable->init_overrides();
 
-      error_log('Attempting to redirect to pinserver.');
+      watchdog('grouper', 'Attempting to redirect to pinserver.');
 
       // They are not a member, validate through pin.
       drupal_goto('user/pin', array('query' => drupal_get_destination()));
