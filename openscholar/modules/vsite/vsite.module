@@ -2561,6 +2561,11 @@ function vsite_site_contact_access(){
     //Use depricated variable.
     if ($allow_contact === null) {
       $allow_contact = $space->controllers->variable->get('vsite_users_contact_form_anonymous', 'space');
+      // Enable contact form by default
+      if ($allow_contact === null) {
+        $space->controllers->variable->set('show_email', TRUE);
+        $allow_contact = TRUE;
+      }
     }
   }
   else {
