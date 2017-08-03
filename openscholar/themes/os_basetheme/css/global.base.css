@@ -567,10 +567,7 @@ ol ul,
 .item-list ol ul {
     margin-bottom: 0;
 }
-.item-list .field-name-body ul,
-.item-list .field-name-body ol {
-    margin: 0 0 1.5em 17px;
-}
+
 /** 1 A a (1) **/
 
 .mceContentBody ol,
