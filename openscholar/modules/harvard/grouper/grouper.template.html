@@ -2,7 +2,7 @@
     <div class="grouper-header-bar" ng-click="ShowPanel(true)">
         <div><span ng-show="status.loading" button-spinner="grouper_AllGroups" spinning-text="Loading Groups"><span></span></span></div>
         <span class="add-edit-link">{{selected.length ? 'Edit Groups' : '+ Add Groups'}}</span>
-        <span ng-if="!status.loading && !ShowPanel() && selected.length"><label>Selected Groups</label><span class="description">A limit of seven groups can be selected</span><br><span class="selected-groups"><span class="group" ng-repeat="path in selected">{{GroupLabel(path)}}</span></span></span>
+        <span ng-if="!status.loading && !ShowPanel() && selected.length"><label>Selected Groups</label><span class="description">Up to seven groups can be selected</span><br><span class="selected-groups"><span class="group" ng-repeat="path in selected">{{GroupLabel(path)}}</span></span></span>
         </div>
     <div class="grouper-panel" ng-if="ShowPanel()">
          <label>Selected Groups</label>
