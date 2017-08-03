@@ -284,9 +284,11 @@ function grouper_node_access($node, $op, $account) {
  */
 function grouper_vsite_access_denied($vsite) {
   if ($vsite->{VSITE_ACCESS_FIELD}[LANGUAGE_NONE][0]['value'] == GROUPER_PRIVACY_LEVEL && user_is_anonymous()) {
-    if (! user_access('administer group') && !pinserver_check_system_settings()) {
+    if (!pinserver_check_system_settings()) {
       //Load custom pinserver variables
       $vsite->controllers->variable->init_overrides();
+
+      error_log('Attempting to redirect to pinserver.');
 
       // They are not a member, validate through pin.
       drupal_goto('user/pin', array('query' => drupal_get_destination()));
