@@ -47,10 +47,10 @@ function cp_user_menu() {
     'type' => MENU_CALLBACK,
   );
 
- 
-  $items['cp/users/force-harvard-key-login'] = array(
+  $items['cp/users/change-login-method'] = array(
     'title' => t('Site members must login using Harvard Key.'),
-    'page callback' => array('cp_user_force_harvard_key_login'),
+//    'page callback' => array('cp_user_force_harvard_key_login'),
+    'page arguments' => array('change-login-method'),
     'access callback' => 'cp_user_admin_access',
     'type' => MENU_CALLBACK,
   );
@@ -688,6 +688,11 @@ function cp_user_admin($op = 'list') {
       // Both forms should display and be controlled by jQuery to hide one or the other depending
       // on the action the user wants to take.
       $build['user_register'] = drupal_get_form('user_register_form');
+      break;
+    case 'change-login-method':
+      module_load_include('inc', 'cp', 'cp.admin');
+      // $build['change_login_method'] = drupal_get_form('og_ui_add_users', 'node', $vsite->id);
+      $build['change_login_method'] = drupal_get_form('cp_change_login_method', 'node', $vsite->id);
       break;
 
     case 'list':

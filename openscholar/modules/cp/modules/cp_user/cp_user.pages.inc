@@ -187,20 +187,29 @@ function cp_user_user_management_page($gid) {
 
   if (module_exists('pinserver')) {
     $build['cp_user'][] = array(
-      $form_id => array(
-        '#theme' => 'form',
-        '#title' => $force_harvard_key_link_title,
-        '#title_display' => 'after',
-        '#id' => $form_id,
-        '#action' => 'force-harvard-key-login',
-        '#method' => 'POST',
-        '#children' => "
-          <div ng-app='myApp'>
-            <form name='$form_id' action='#' ng-controller='FormCtrl'>
-              <input type='checkbox' ng-model='form.member' value='true' ng-click='Submit'/> $force_harvard_key_link_title
-            </form>
-          </div>",
-      )
+//      $form_id => array(
+//        '#theme' => 'container',
+//          # <!-- need to import AngularJS and the definition of FormCtrl before using it. -->
+//          # <script type='application/javascript' src='" . drupal_get_path('module', 'os') . "/js/os_cp_user_force_login_option.js?a' />" .
+//        '#children' => "
+//           <div ng-app='myApp'>
+//              <form name='$form_id' action='#' ng-controller='FormCtrl'>
+//                <input type='checkbox' ng-model='form.member' value='true' ng-click='Submit'/> $force_harvard_key_link_title
+//              </form>
+//            </div>",
+//      ),
+      'cp_user_change_login_method' => array(
+        '#theme' => 'links',
+        '#links' => array(
+          array(
+            'title' => $force_harvard_key_link_title,
+            'href' => 'cp/users/change-login-method',
+            'attributes' => array(
+              'class' => array('cp-user-float-left'),
+            ),
+          ),
+        ),
+      ),
     );
   }
 
