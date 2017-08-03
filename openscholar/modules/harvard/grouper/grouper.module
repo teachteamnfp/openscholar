@@ -289,9 +289,7 @@ function grouper_vsite_access_denied($vsite) {
       $vsite->controllers->variable->init_overrides();
 
       // They are not a member, validate through pin.
-      // drupal_goto('user/pin', array('query' => drupal_get_destination()));
-
-      drupal_set_message(l("Log in to HarvardKey to continue", "pin/user"));
+      drupal_goto('user/pin', array('query' => drupal_get_destination()));
     }
   }
 }
