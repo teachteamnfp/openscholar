@@ -899,6 +899,19 @@
     }
   ]);
 
+  m.directive('dynamicAttr', ['$compile', function ($compile) {
+    return {
+      restrict: 'A',
+      link: function(scope, element, attrs) {
+        var copy = element.clone();
+        copy.attr(attrs.dynamicAttr, '');
+        copy.removeAttr('dynamic-attr');
+        element.replaceWith(copy);
+        copy = $compile(copy)(scope);
+      }
+    };
+  }]);
+
   m.filter('removeUnderscore', [function() {
     return function(string) {
       if (!angular.isString(string)) {

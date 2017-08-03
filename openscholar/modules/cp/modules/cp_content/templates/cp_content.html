@@ -54,7 +54,7 @@
         <a href="#" class="cp-popover" ng-click="popOver($event, node.id)"><span class="glyphicon glyphicon-pencil">Action</span>
           <div class="cp-popover-wrapper left" ng-show="showPopover == node.id">
             <ul>
-              <li><span entity-type="{{entityType}}" node-edit id="{{node.id}}">Edit</span></li>
+              <li><span dynamic-attr="{{entityType}}-edit" id="{{node.id}}">Edit</span></li>
               <li><span ng-click="nodeDelete(node.id)">Delete</span></li>
             </ul>
           </div>
