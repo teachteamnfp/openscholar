@@ -1132,3 +1132,7 @@ ul.no-event-export {
 .block-boxes-os_boxes_columns .os-sv-list.sv-list-view-slide_teaser iframe {
     height: auto;
 }
+.media-element-container {
+    height: auto !important;
+    margin: 0 1em 0 1em;
+}
