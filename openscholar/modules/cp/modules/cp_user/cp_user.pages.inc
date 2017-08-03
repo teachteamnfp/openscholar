@@ -131,7 +131,7 @@ function cp_user_get_member_uids($gid) {
 function cp_user_user_management_page($gid) {
   // Prepares end user strings for the page.
   $add_new_user_link_title = t('+ Add a member');
-  $force_harvard_key_link_title = t('Site members must login using Harvard Key.');
+  $force_harvard_key_link_title = t('Change login method.');
   $header = array(t('Name'), t('Username'), t('Role'), t('Status'));
   $rows = cp_user_get_member_rows($gid);
   $attached_css = drupal_get_path('module', 'cp_user') . '/cp_user.css';

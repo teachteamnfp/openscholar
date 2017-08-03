@@ -48,7 +48,7 @@ function cp_user_menu() {
   );
 
   $items['cp/users/change-login-method'] = array(
-    'title' => t('Site members must login using Harvard Key.'),
+    'title' => t('Change login method'),
 //    'page callback' => array('cp_user_force_harvard_key_login'),
     'page arguments' => array('change-login-method'),
     'access callback' => 'cp_user_admin_access',

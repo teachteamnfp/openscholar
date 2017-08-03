@@ -33,18 +33,23 @@ function cp_change_login_method_validate($form, &$form_state) {
 function cp_change_login_method_submit($form, &$form_state) {
   $group_type = $form_state['values']['group_type'];
   $gid = $form_state['values']['gid'];
-
   $state = $form_state['values']['state'];
   $og_membership = $form_state['og_membership'];
 
-  $force_harvard_key_login = variable_get('force_harvard_key_login');
-  if ((! is_null($_POST['yes_or_no_box'])) && (! in_array($gid, variable_get('force_harvard_key_login')))) {
-    $force_harvard_key_login[] = $gid;
+  $change_login_method_set = variable_get('site_login_methods');
+  $alternative_login_method_label = variable_get('alternative_login_method_label');
+  $login_method_label = "OpenScholar default login";
+  if ((! is_null($_POST['yes_or_no_box'])) && (! variable_get('site_login_methods')[$gid])) {
+    $change_login_method_set[$gid] = $alternative_login_method_label;
+  } else {
+    unset($change_login_method_set[$gid]);
   }
-  variable_set('force_harvard_key_login', $force_harvard_key_login);
+  variable_set('site_login_methods', $change_login_method_set);
 
   $group = entity_load_single($group_type, $gid);
-  drupal_set_message(t('Users in %group-title must login through Harvard Key.', array('%group-title' => entity_label($group_type, $group))));
+  drupal_set_message(t('Users in %group-title must login through %login-method.', 
+      array('%group-title' => entity_label($group_type, $group), 
+            '%login-method' => $change_login_method_set[$gid])));
 }
 
 /**
@@ -54,20 +59,22 @@ function cp_change_login_method($form, &$form_state, $group_type, $gid) {
 
   $group = entity_load_single($group_type, $gid);
   $label = entity_label($group_type, $group);
-  // $account = user_load($og_membership->etid);
 
   $form['group_type'] = array('#type' => 'value', '#value' => $group_type);
   $form['gid'] = array('#type' => 'value', '#value' => $gid);
 
-  $form['change_login_method'] = array(
+  $form['site_login_methods'] = array(
     '#type' => 'fieldset',
     '#title' => t('Change login method for %group', array('%group' => $label)),
   );
-  $form['change_login_method']['yes_or_no_box'] = array(
+
+  $alternative_login = variable_get('alternative_login_method_label');
+  $login_method_label = (isset(variable_get('site_login_methods')[$gid]) ? $alternative_login : 'default login');
+  $form['site_login_methods']['yes_or_no_box'] = array(
     '#type' => 'checkbox',
-    '#value' => 'checked EAM',
-    '#default_value' => (in_array($gid, variable_get('force_harvard_key_login')) ? true : false),
-    '#title' => t('Site members must login using Harvard Key.'),
+    '#default_value' => (isset(variable_get('site_login_methods')[$gid]) ? 1 : 0),
+    '#return_value' => 1,
+    '#title' => t('Site members must login using ') . $alternative_login,
   );
 
   $form['actions'] = array('#type' => 'actions');

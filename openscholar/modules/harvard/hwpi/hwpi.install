@@ -136,3 +136,10 @@ function hwpi_update_7010() {
   variable_set('vsite_register_admin_mail', 'swap@lists.iq.harvard.edu, hwp@openscholar.harvard.edu');
   variable_set('site_mail', 'hwp@openscholar.harvard.edu');
 }
+
+/**
+ * Set an alternative login process
+ */
+function hwpi_update_7011() {
+  variable_set('alternative_login_method_label', 'Harvard Key');
+}
