@@ -24,7 +24,7 @@
         ModalService.showModal({
             controller: "cpModalController",
             template: '<div><div class="entity-loading" ng-show="loading"><div class="entity-loading-message">Loading content...<br /></div></div>' +
-              '<div cp-content entity-type="'+attrs.entityType+'"></div>',
+              '<div cp-content entity-type="' + attrs.entityType + '"></div>',
             inputs: {
               entityType: attrs.entityType
             }
@@ -45,15 +45,15 @@
     };
   }]);
 
-  m.controller('cpModalController', ['$scope', '$timeout', '$filter', '$rootScope', 'EntityService', 'NgTableParams', 'buttonSpinnerStatus', 'entityType', function ($scope, $timeout, $filter, $rootScope, EntityService, NgTableParams, buttonSpinnerStatus, entityType) {
+  m.controller('cpModalController', ['$scope', '$timeout', '$filter', '$rootScope', 'EntityService', 'NgTableParams', 'buttonSpinnerStatus', 'entityType', function($scope, $timeout, $filter, $rootScope, EntityService, NgTableParams, buttonSpinnerStatus, entityType) {
 
     nodeService = new EntityService(entityType, 'id');
     vocabService = new EntityService('vocabulary', 'id');
 
-    $scope.resetCheckboxes = function () {
+    $scope.resetCheckboxes = function() {
       $scope.disableBulkOptions = true;
       $scope.checkboxes.checked = false;
-      angular.forEach($scope.tableParams.data, function(node){
+      angular.forEach($scope.tableParams.data, function(node) {
         $scope.checkboxes.items[node.id] = false;
       });
     }
@@ -61,7 +61,9 @@
     $scope.loading = true;
     $scope.entityType = entityType;
     // Fetch list and set it in ng-table;
-    nodeService.fetch({sort : '-changed'}).then(function(data) {
+    nodeService.fetch({
+      sort: '-changed'
+    }).then(function(data) {
       $scope.tableParams = new NgTableParams({
         page: 1,
         count: 24,
@@ -87,15 +89,15 @@
           if (angular.isDefined(params.filter().og_vocabulary)) {
             var vocabTerms = params.filter().og_vocabulary;
             var termDataSet = [];
-              angular.forEach(filteredData, function(node, key) {
-                if (node.og_vocabulary != null) {
-                  angular.forEach(vocabTerms, function(tid) {
-                    if ($filter('filter')(node.og_vocabulary, tid).length > 0) {
-                      termDataSet.push(node);
-                    }
-                  });
-                }
-              });
+            angular.forEach(filteredData, function(node, key) {
+              if (node.og_vocabulary != null) {
+                angular.forEach(vocabTerms, function(tid) {
+                  if ($filter('filter')(node.og_vocabulary, tid).length > 0) {
+                    termDataSet.push(node);
+                  }
+                });
+              }
+            });
             filteredData = $filter('unique')(termDataSet, 'id');
             $scope.disableBulkOptions = (filteredData.length) == 0 ? true : false;
           }
@@ -114,7 +116,7 @@
       $scope.loading = false;
     });
 
-     // Node bulk operation.
+    // Node bulk operation.
     $scope.nodeBulkOperation = function(operation) {
       var nids = [];
       angular.forEach($scope.selectedItems, function(selectedItem, nid) {
@@ -360,6 +362,174 @@
       $scope.tableParams.reload();
     };
 
+    $scope.getMatchedTaxonomyTerms = function(termOperation) {
+      if (termOperation) {
+        var selectedNids = [];
+        var selectedTypes = [];
+        var macthedVocab = [];
+        var results;
+        angular.forEach($scope.selectedItems, function(state, nid) {
+          if (state) {
+            selectedNids.push(parseInt(nid));
+          }
+        });
+        angular.forEach($scope.tableParams.data, function(node, key) {
+          if (selectedNids.indexOf(node.id) > -1) {
+            selectedTypes.push(node.type);
+          }
+        });
+        selectedTypes = selectedTypes.filter(function(value, index) {
+          return selectedTypes.indexOf(value) == index
+        });
+        return vocabService.fetch().then(function(ogVocabTerms) {
+          angular.forEach(ogVocabTerms, function(vocab, key) {
+            vocab.bundles.node.sort()
+            var ret = [];
+            for (var i = 0; i < selectedTypes.length; i += 1) {
+              if (vocab.bundles.node.indexOf(selectedTypes[i]) > -1) {
+                ret.push(selectedTypes[i]);
+              }
+            }
+            if (selectedTypes.length == ret.length) {
+              macthedVocab.push(vocab);
+            }
+          });
+          if (macthedVocab.length == 0) {
+            var contentTypesText = (selectedTypes.length > 0) ? selectedTypes.join(', ') : selectedTypes[0];
+            contentTypesText = $filter('removeUnderscore')(contentTypesText);
+            if (selectedTypes.length == 1) {
+              results = {
+                error: 'No vocabularies enabled for ' + contentTypesText + ' content type.',
+                vocab: macthedVocab
+              };
+            } else {
+              results = {
+                error: contentTypesText + " do not share the same vocabularies.",
+                vocab: macthedVocab
+              };
+            }
+          } else {
+            results = {
+              error: false,
+              vocab: macthedVocab
+            };
+          }
+          return results;
+        });
+
+      } else {
+        return vocabService.fetch().then(function(ogVocabTerms) {
+          if (ogVocabTerms.length == 0) {
+            results = {
+              error: "No vocabularies available.",
+              vocab: ogVocabTerms
+            };
+          } else {
+            results = {
+              error: false,
+              vocab: ogVocabTerms
+            };
+          }
+          return results;
+        });
+      }
+    }
+
+    $scope.nodeTermOperation = function(operation) {
+      var nids = [];
+      var tids = [];
+      var termModel = (operation == 'applyTerm') ? $scope.applyTermModel : $scope.removeTermModel;
+      angular.forEach($scope.selectedItems, function(value, key) {
+        if (value) {
+          nids.push(parseInt(key));
+        }
+      });
+      angular.forEach(termModel, function(obj, key) {
+        tids.push(parseInt(obj.id));
+      });
+      if (operation == 'applyTerm') {
+        return nodeService.bulk('applyTerm', nids, {
+          tids: tids,
+          operation: false
+        }).then(function(response) {
+          if (response.data.data.saved) {
+            $scope.message = 'Terms have been applied to selected content.';
+            angular.forEach($scope.tableParams.data, function(node, key) {
+              if (nids.indexOf(node.id) > -1) {
+                var newTerms = [];
+                if (node.og_vocabulary == null) {
+                  node.og_vocabulary = [];
+                }
+                if (node.og_vocabulary.length > 0) {
+                  angular.forEach(node.og_vocabulary, function(vocab) {
+                    if (tids.indexOf(parseInt(vocab.tid)) == -1) {
+                      angular.forEach(tids, function(tid) {
+                        newTerms.push({
+                          tid: tid
+                        });
+                      });
+                    }
+                  });
+                } else {
+                  angular.forEach(tids, function(tid) {
+                    newTerms.push({
+                      tid: tid
+                    });
+                  });
+                }
+                if (newTerms.length > 0) {
+                  angular.forEach(newTerms, function(term) {
+                    node.og_vocabulary.push(term);
+                  });
+                }
+              }
+
+            });
+
+            return true;
+          } else {
+            $scope.message = messageFailed;
+            return false;
+          }
+        }, function(error) {
+          $scope.message = error.data.title;
+          return false;
+        });
+
+      } else {
+        return nodeService.bulk('removeTerm', nids, {
+          tids: tids,
+          operation: false
+        }).then(function(response) {
+          if (response.data.data.saved) {
+            $scope.message = 'Terms have been removed from selected content.';
+            angular.forEach($scope.tableParams.data, function(node, key) {
+              if (nids.indexOf(node.id) > -1) {
+                if (angular.isDefined($scope.tableParams.data[key].og_vocabulary)) {
+                  angular.forEach($scope.tableParams.data[key].og_vocabulary, function(vocab, term_key) {
+                    if (tids.indexOf(parseInt(vocab.tid)) > -1) {
+                      $scope.tableParams.data[key].og_vocabulary[term_key].tid = null;
+                    }
+                  });
+                }
+              }
+            });
+            return true;
+          } else {
+            $scope.message = messageFailed;
+            return false;
+          }
+        }, function(error) {
+          $scope.message = error.data.title;
+          return false;
+        });
+      }
+    }
+
+    $scope.setMessage = function(message) {
+      $scope.message = message;
+    }
+
     $scope.close = function(arg) {
       window.location.reload();
     }
@@ -370,175 +540,7 @@
    * Fetching cp content and fill it in setting form modal.
    */
   m.directive('cpContent', function() {
-
-    function cpContentCtl($scope, $timeout, $filter, $rootScope, EntityService, NgTableParams, buttonSpinnerStatus) {
-
-      this.nodeTermOperation = function(operation) {
-        var nids = [];
-        var tids = [];
-        var termModel = (operation == 'applyTerm') ? $scope.applyTermModel : $scope.removeTermModel;
-        angular.forEach($scope.selectedItems, function(value, key) {
-          if (value) {
-            nids.push(parseInt(key));
-          }
-        });
-        angular.forEach(termModel, function(obj, key) {
-          tids.push(parseInt(obj.id));
-        });
-        if (operation == 'applyTerm') {
-          return nodeService.bulk('applyTerm', nids, {
-            tids: tids,
-            operation: false
-          }).then(function(response) {
-            if (response.data.data.saved) {
-              $scope.message = 'Terms have been applied to selected content.';
-              angular.forEach($scope.tableParams.data, function(node, key) {
-                if (nids.indexOf(node.id) > -1) {
-                  var newTerms = [];
-                  if (node.og_vocabulary == null) {
-                    node.og_vocabulary = [];
-                  }
-                  if (node.og_vocabulary.length > 0) {
-                    angular.forEach(node.og_vocabulary, function(vocab) {
-                      if (tids.indexOf(parseInt(vocab.tid)) == -1) {
-                        angular.forEach(tids, function(tid) {
-                          newTerms.push({tid: tid});
-                        });
-                      }
-                    });
-                  } else {
-                    angular.forEach(tids, function(tid) {
-                      newTerms.push({tid: tid});
-                    });
-                  }
-                  if (newTerms.length > 0) {
-                    angular.forEach(newTerms, function(term) {
-                      node.og_vocabulary.push(term);
-                    });
-                  }
-                }
-
-              });
-
-              return true;
-            } else {
-              $scope.message = messageFailed;
-              return false;
-            }
-          }, function(error) {
-            $scope.message = error.data.title;
-            return false;
-          });
-
-        } else {
-          return nodeService.bulk('removeTerm', nids, {
-            tids: tids,
-            operation: false
-          }).then(function(response) {
-            if (response.data.data.saved) {
-              $scope.message = 'Terms have been removed from selected content.';
-              angular.forEach($scope.tableParams.data, function(node, key) {
-                if (nids.indexOf(node.id) > -1) {
-                  if (angular.isDefined($scope.tableParams.data[key].og_vocabulary)) {
-                    angular.forEach($scope.tableParams.data[key].og_vocabulary, function(vocab, term_key) {
-                      if (tids.indexOf(parseInt(vocab.tid)) > -1) {
-                        $scope.tableParams.data[key].og_vocabulary[term_key].tid = null;
-                      }
-                    });
-                  }
-                }
-              });
-              return true;
-            } else {
-              $scope.message = messageFailed;
-              return false;
-            }
-          }, function(error){
-            $scope.message = error.data.title;
-            return false;
-          });
-        }
-      }
-
-      this.getMatchedTaxonomyTerms = function(termOperation) {
-        if (termOperation) {
-          var selectedNids = [];
-          var selectedTypes = [];
-          var macthedVocab = [];
-          var results;
-          angular.forEach($scope.selectedItems, function(state, nid) {
-            if (state) {
-              selectedNids.push(parseInt(nid));
-            }
-          });
-          angular.forEach($scope.tableParams.data, function(node, key) {
-            if (selectedNids.indexOf(node.id) > -1) {
-              selectedTypes.push(node.type);
-            }
-          });
-          selectedTypes = selectedTypes.filter(function(value, index) {
-            return selectedTypes.indexOf(value) == index
-          });
-          return vocabService.fetch().then(function(ogVocabTerms) {
-            angular.forEach(ogVocabTerms, function(vocab, key) {
-              vocab.bundles.node.sort()
-              var ret = [];
-              for (var i = 0; i < selectedTypes.length; i += 1) {
-                if (vocab.bundles.node.indexOf(selectedTypes[i]) > -1) {
-                  ret.push(selectedTypes[i]);
-                }
-              }
-              if (selectedTypes.length == ret.length) {
-                macthedVocab.push(vocab);
-              }
-            });
-            if (macthedVocab.length == 0) {
-              var contentTypesText = (selectedTypes.length > 0) ? selectedTypes.join(', ') : selectedTypes[0];
-              contentTypesText = $filter('removeUnderscore')(contentTypesText);
-              if (selectedTypes.length == 1) {
-                results = {
-                  error: 'No vocabularies enabled for ' + contentTypesText + ' content type.',
-                  vocab: macthedVocab
-                };
-              } else {
-                results = {
-                  error: contentTypesText + " do not share the same vocabularies.",
-                  vocab: macthedVocab
-                };
-              }
-            } else {
-              results = {
-                error: false,
-                vocab: macthedVocab
-              };
-            }
-            return results;
-          });
-
-        } else {
-          return vocabService.fetch().then(function(ogVocabTerms) {
-            if (ogVocabTerms.length == 0) {
-              results = {
-                error: "No vocabularies available.",
-                vocab: ogVocabTerms
-              };
-            } else {
-              results = {
-                error: false,
-                vocab: ogVocabTerms
-              };
-            }
-            return results;
-          });
-        }
-      }
-      this.setMessage = function(message) {
-        $scope.message = message;
-      }
-    };
-
     return {
-      controller: cpContentCtl,
       templateUrl: function() {
         return Drupal.settings.paths.cpContent + '/cp_content.html'
       },
@@ -551,7 +553,6 @@
 
       return {
         restrict: 'AE',
-        require: '^cpContent',
         scope: {
           selectedModel: '=',
           options: '=',
@@ -559,12 +560,15 @@
           bulkAccess: '=',
           events: '=',
           translationTexts: '=',
-          groupBy: '@'
+          groupBy: '@',
+          getMatchedTaxonomyTerms: '&',
+          nodeTermOperation: '&',
+          setMessage: '&'
         },
         templateUrl: function() {
           return Drupal.settings.paths.cpContent + '/cp_content_dropdown.html'
         },
-        link: function(scope, element, attrs, cpContentCtl) {
+        link: function(scope, element, attrs) {
           scope.$watch('bulkAccess', function(newValue) {
             scope.disableBulkOptions = newValue;
           });
@@ -623,7 +627,9 @@
           scope.toggleDropdown = function() {
             scope.open = !scope.open;
             if (scope.settings.termDropdown) {
-              cpContentCtl.getMatchedTaxonomyTerms(scope.settings.termOperation).then(function(result) {
+              scope.getMatchedTaxonomyTerms({
+                state: scope.settings.termOperation
+              }).then(function(result) {
                 if (!result.error) {
                   scope.options = result.vocab;
                   scope.showTermErrorMessage = false;
@@ -652,10 +658,14 @@
                   });
                   scope.orderedItems[key].termName = '';
                   bss.SetState('add_term_form', false);
-                  cpContentCtl.setMessage(termName + ' term have been added to ' + vocabName + ' vocabulary.');
+                  scope.setMessage({
+                    message: termName + ' term have been added to ' + vocabName + ' vocabulary.'
+                  });
                 }
               }, function(error) {
-                cpContentCtl.setMessage(error.data.title);
+                scope.setMessage({
+                  message: error.data.title
+                });
                 bss.SetState('add_term_form', false);
               });
 
@@ -665,7 +675,9 @@
           // Remove selected terms from selected nodes.
           scope.removeTerms = function() {
             bss.SetState('term_form', true);
-            cpContentCtl.nodeTermOperation('removeTerm').then(function(state) {
+            scope.nodeTermOperation({
+              termOperation: 'removeTerm'
+            }).then(function(state) {
               if (state) {
                 scope.open = false;
                 bss.SetState('term_form', false);
@@ -678,7 +690,9 @@
           // Add selected terms to selected nodes.
           scope.applyTerms = function() {
             bss.SetState('term_form', true);
-            cpContentCtl.nodeTermOperation('applyTerm').then(function(state) {
+            scope.nodeTermOperation({
+              termOperation: 'applyTerm'
+            }).then(function(state) {
               if (state) {
                 scope.open = false;
                 bss.SetState('term_form', false);
@@ -899,7 +913,7 @@
     }
   ]);
 
-  m.directive('dynamicAttr', ['$compile', function ($compile) {
+  m.directive('dynamicAttr', ['$compile', function($compile) {
     return {
       restrict: 'A',
       link: function(scope, element, attrs) {
@@ -927,7 +941,7 @@
         keys = [];
       angular.forEach(collection, function(item) {
         var key = item[keyname];
-        if(keys.indexOf(key) === -1) {
+        if (keys.indexOf(key) === -1) {
           keys.push(key);
           output.push(item);
         }
