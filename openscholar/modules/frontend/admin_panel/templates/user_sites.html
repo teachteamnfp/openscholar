@@ -22,11 +22,11 @@
 		<div ng-show="!own && (site_data | filter:{owner: own}:strict).length && !(site_data | filter:{owner: own}:strict | filter: {title : searchString}).length" class="site-list no-search-result">No site found.</div>
 		<div ng-if='filtered.length > pageSize' class='pager'>
 			<button ng-disabled="currentPage[key] == 0" ng-click="currentPage[key]=currentPage[key]-1">
-				&lt;
+				«
 			</button>
 			{{currentPage[key]+1}}/{{numberOfPages(filtered)}}
 			<button ng-disabled="currentPage[key] >= filtered.length/pageSize - 1" ng-click="currentPage[key]=currentPage[key]+1">
-				&gt;
+				»
 			</button>
 		</div>
 	</div>

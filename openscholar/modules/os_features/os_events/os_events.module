@@ -3230,3 +3230,34 @@ function os_events_module_implements_alter(&$implementations, $hook) {
     }
   }
 }
+
+/**
+ * Implements hook_apachesolr_index_document_build_node().
+ * Add event date for search indexing
+ */
+function os_events_apachesolr_index_document_build_node(ApacheSolrDocument $document, $entity, $entity_type) {
+  if ($entity->type == 'event') {
+    $event_date = field_get_items('node', $entity, 'field_date');
+    if (!empty($event_date)) {
+      $document->addField('ds_field_event_date', apachesolr_date_iso(strtotime($event_date[0]['value'])));
+    }
+  }
+}
+
+/**
+ * Implements hook_apachesolr_query_prepare().
+ * Sort by event date for browse/events
+ */
+function os_events_apachesolr_query_prepare($query) {
+  // Add Event start Date sort to the search
+  if (arg(1) == 'events') {
+    // Add the new field as a sort option
+    $query->setAvailableSort('ds_field_event_date', array(
+      'title' => t('Event Date'),
+      'default' => 'desc',
+    ));
+
+    // Sort on the new field
+    $query->setSolrSort('ds_field_event_date', 'desc');
+  }
+}
