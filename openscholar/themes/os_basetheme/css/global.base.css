@@ -484,17 +484,20 @@ ol {
 }
 
 
+ .field-name-body ul li:before {
+       content: counter(table-ul, disc);
+     
+}
 
  .field-name-body ul ul li:before {
-       content: counter(table-ul, disc) ".";
+       content: counter(table-ul, circle);
      
 }
 
  .field-name-body ul ul ul li:before {
-       content: counter(table-ul, square) ".";
+       content: counter(table-ul, square);
      
 }
-
 
 
 .field-name-body ol {
