@@ -3794,3 +3794,7 @@ function remove_missing_modules_entry_from_DB() {
     }
   }
 }
+
+function os_preprocess_search_result(&$variables) {
+  dsm($variables);
+}
