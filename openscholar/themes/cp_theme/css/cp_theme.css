@@ -429,6 +429,14 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
     margin-bottom: 22px;
 }
 
+#overlay-title-wrapper h1 {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 1050px;
+    display: block;
+    overflow: hidden;
+}
+
 .ui-dialog.ap-settings-form {
     padding: 0;
     top:10% !important;
