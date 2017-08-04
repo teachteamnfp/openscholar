@@ -85,6 +85,7 @@ function os_importer_cp_settings() {
           '#options' => $import_format_option,
           '#weight' => -6,
           '#default_value' => 'csv',
+          '#access' => os_importer_import_access($node_type),
           //'#onclick_callback' => 'template_download_information',
         );
       } else {
@@ -93,6 +94,7 @@ function os_importer_cp_settings() {
           '#type' => 'markup',
           '#markup' => '<label>Format</label>' . (isset($single_option[0]) ? $single_option[0] : '') . ' only',
           '#weight' => -6,
+          '#access' => os_importer_import_access($node_type),
         );
       }
     
@@ -122,6 +124,7 @@ function os_importer_cp_settings() {
             '#markup' => $template_markup,
             '#cid' => 'edit-os-importer-download-template-' . $node_type,
             '#weight' => -5,
+            '#access' => os_importer_import_access($node_type),
             '#states' => array(
               'visible' => array(':input[name="os_importer_content_format-' . $node_type . '"]' => array('value' => 'csv')),
             ),
@@ -138,6 +141,7 @@ function os_importer_cp_settings() {
       $settings['os_importer_file_upload-' . $node_type] = array(
         'form' => array(
           '#type' => 'managed_file',
+          '#access' => os_importer_import_access($node_type),
           '#custom_directive' => 'media-browser-field',
           '#custom_directive_parameters' => array(
             'cardinality' => 1,
@@ -181,7 +185,7 @@ function os_importer_cp_settings() {
               '#options' => $biblio_import_options,
               '#default_value' => '0',
               '#weight' => 4,
-              '#access' => biblio_access('import'),
+              '#access' => os_importer_import_access($node_type),
             ),
           );
       }
@@ -203,6 +207,7 @@ function os_importer_cp_settings() {
               '#description' => t('Select the encoding of your file. For a full list of encodings you can visit <a href="@wikipedia-url">this</a> Wikipedia page.', $params),
               '#weight' => 4,
               '#class' => array('csv-import-fields'),
+              '#access' => os_importer_import_access($node_type),
             ),
           );
       }
@@ -219,14 +224,11 @@ function os_importer_cp_settings() {
           '#value' => t('Submit'),
           '#type' => 'submit',
           '#weight' => 5,
+          '#access' => os_importer_import_access($node_type),
         ),
         'rest_submit' => 'os_importer_file_submit',
         'submit_full_request' => TRUE,
       );
-      if ($node_type == 'biblio') {
-        $settings['os_importer_file_upload-biblio']['form']['#access'] = biblio_access('import');
-        $settings['os_importer_submit-biblio']['form']['#access'] = biblio_access('import');
-      }
     }
   }
   

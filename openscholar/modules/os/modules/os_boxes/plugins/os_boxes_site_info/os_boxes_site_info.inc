@@ -71,7 +71,7 @@ class os_boxes_site_info extends os_boxes_default {
       '#type' => 'checkbox',
       '#title' => t('Enable contact form.'),
       '#default_value' => variable_get('show_email', variable_get('vsite_users_contact_form_anonymous', TRUE)),
-      '#description' => t('Will print an (email) link to your contact form.'),
+      '#description' => t('Will print an Contact link to your contact form.'),
     );
 
     $form['submit'] = array(
@@ -114,7 +114,7 @@ class os_boxes_site_info extends os_boxes_default {
     '.(!empty($this->options['descrip'])?'<h2>'.filter_xss($this->options['descrip'], $tags).'</h2>':'').'
     <p>'.((!empty($this->options['address1']) || !empty($this->options['address2']))?
         filter_xss($this->options['address1']).'<br>'.filter_xss($this->options['address2']):'').'
-    '. ($contact ? l('(email)', 'contact_owner') : '' . '</p>');
+    '. ($contact ? l('Contact', 'contact_owner') : '' . '</p>');
 
     $block['content'] = $output;
     return $block;
