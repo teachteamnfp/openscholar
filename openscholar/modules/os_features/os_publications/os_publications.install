@@ -1761,3 +1761,16 @@ function os_publications_update_7055() {
     }
   }
 }
+
+/**
+ * Fix CSL style to add Pp. for page and switch position between volume and issue
+ */
+function os_publications_update_7056() {
+  $citations = array(
+    'harvard-chicago-author-date',
+  );
+
+  foreach ($citations as $citation) {
+    os_publications_revert_citeproc_style($citation);
+  }
+}

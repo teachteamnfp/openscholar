@@ -1,5 +1,5 @@
 /* Typography  */
-
+ 
 body {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 14px;
@@ -521,7 +521,6 @@ font-size: 11px;
 .node-class .field-name-field-offered-year,
 .node-class .field-name-field-class-link,
 .node-class-material .field-name-field-class {
-    background: #fff;
     padding-bottom: 1px;
     padding: 2px 0;
 }

@@ -92,11 +92,25 @@ body.overlay {
 #cssmenu ul li span {
     line-height: 1;
 }
-#cssmenu * {
+#cssmenu *,
+.user-menu * {
     font-family: helvetica;
     color: #ffffff;
     font-weight:normal;
 }
+.user-menu .pager {
+  
+    color: #333;
+   
+}
+.user-menu .pager button {
+  
+   border:none;
+   background-color:#fff;
+  font-size:1.6em;
+   
+}
+
 #cssmenu ul {
     z-index: 2;
     position: relative;
@@ -229,6 +243,7 @@ body.overlay {
     display: block;
     width: 100%;
 }
+.user-menu .pager button,
 .topRight_subMenu li a.text_link {
     color: #215990;
 }

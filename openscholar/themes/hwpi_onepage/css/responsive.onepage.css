@@ -54,7 +54,8 @@
     .front .block.block-boxes-os_slideshow_box #layout_16_9_side,
     .front .block.block-boxes-os_slideshow_box #layout_16_9_overlay,
     .front .block.block-boxes-os_slideshow_box #layout_16_9_below,
-    .front .block-boxes-os_sv_list_box .node {
+    .front .block-boxes-os_sv_list_box .node,
+    .front #columns .block-boxes-os_boxes_html {
         width: 100% !important;
     }
     .block-boxes-os_boxes_columns .at-panel {

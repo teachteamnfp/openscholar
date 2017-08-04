@@ -4,4 +4,4 @@
     <?php print render($cp_toolbar['toolbar_user']); ?>
     <?php print render($cp_toolbar['toolbar_menu']); ?>
   </div>
-</div>
+</div> 

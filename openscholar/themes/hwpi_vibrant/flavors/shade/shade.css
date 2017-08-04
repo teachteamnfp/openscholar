@@ -18,7 +18,8 @@
 .field-name-body h4 #boxes-box-site_info,
 #boxes-box-site_info a,
 #content-column p,
-.cke_editable *
+.cke_editable *,
+#content-column li
 {
     font-family: helvetica, arial, sans-serif;
 }

@@ -3709,7 +3709,7 @@ function os_field_formatter_view($entity_type, $entity, $field, $instance, $lang
           'max_length' => $display['settings']['trim_length'],
           'word_boundary' => TRUE,
         );
-        $text = views_trim_text($alter, $item['value']);
+        $text = views_trim_text($alter, media_filter($item['value']));
 
         $read_more = function($entity_type, $entity, &$text) {
           $uri = entity_uri($entity_type, $entity);
