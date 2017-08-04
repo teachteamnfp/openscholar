@@ -19,6 +19,6 @@
                 <div ng-if="Groups().length == 0" class="messages error">There are no groups you can add, or there was an error getting the list of your groups.</div>
             </div>
         </div>
-        <div class="groups-full" ng-show="selected.length >= 7">You've selected the maximum number of groups.</div>
+        <div class="groups-full messages warning" ng-show="selected.length >= 7">You've selected the maximum number of groups.</div>
     </div>
 </div>
