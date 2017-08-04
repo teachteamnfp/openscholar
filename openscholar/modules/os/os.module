@@ -3796,7 +3796,9 @@ function remove_missing_modules_entry_from_DB() {
 }
 
 /*
- * Ensure field_site_description is not blank (for twitter:description)
+ * Implements hook_metatag_pattern_alter
+ *
+ *  Ensure field_site_description is not blank (for twitter:description)
  */
 function os_metatag_pattern_alter(&$pattern, &$types, $tag_name) {
 
