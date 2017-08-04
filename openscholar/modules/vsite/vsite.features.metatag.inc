@@ -27,7 +27,7 @@ function vsite_metatag_export_default() {
         'value' => '[node:field_site_logo]',
       ),
       'twitter:description' => array(
-        'value' => '[node:title]',
+        'value' => '[node:field_site_description]',
       ),
     ),
   );
@@ -49,7 +49,7 @@ function vsite_metatag_export_default() {
         'value' => '[node:field_site_logo]',
       ),
       'twitter:description' => array(
-        'value' => '[node:title]',
+        'value' => '[node:field_site_description]',
       ),
     ),
   );
@@ -71,7 +71,7 @@ function vsite_metatag_export_default() {
         'value' => '[node:field_site_logo]',
       ),
       'twitter:description' => array(
-        'value' => '[node:title]',
+        'value' => '[node:field_site_description]',
       ),
     ),
   );

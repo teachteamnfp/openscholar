@@ -3794,3 +3794,43 @@ function remove_missing_modules_entry_from_DB() {
     }
   }
 }
+
+/*
+ * Ensure field_site_description is not blank (for twitter:description)
+ */
+function os_metatag_pattern_alter(&$pattern, &$types, $tag_name) {
+
+  // Find the best (non-empty) description string with replaced Drupal tokens
+  $field_site_description_token_str = '[node:field_site_description]';
+  $field_site_description_replacement = token_replace('[node:field_site_description]');
+  if (stristr($field_site_description_token_str, $pattern) != FALSE) {
+
+    if (($field_site_description_replacement != $field_site_description_token_str) && $field_site_description_replacement) {
+      $pattern = $field_site_description_replacement;
+      return;
+    }
+
+    if (isset($types['node'])) {
+      if ($types['node']->field_site_description[LANGUAGE_NONE][0]['safe_value']) {
+        $pattern = $types['node']->field_site_description[LANGUAGE_NONE][0]['safe_value'];
+      } else if ($types['node']->field_meta_description[LANGUAGE_NONE][0]['safe_value']) {
+        $pattern = $types['node']->field_meta_description[LANGUAGE_NONE][0]['safe_value'];
+      } else if ($types['node']->title) {
+        $pattern = $types['node']->title;
+      } else {
+        $pattern = "OpenScholar site";
+      }
+      return;
+    }
+
+    // If there is no replacement or the replacement string is blank, use the node's title
+    $title_token_str = '[node:title]';
+    $node_title_token_replacement = token_replace($title_token_str);
+    if (($node_title_token_replacement != $title_token_str) && $node_title_token_replacement) {
+      $pattern = $node_title_token_replacement;
+      return;
+    }
+
+    return;
+  }
+}
