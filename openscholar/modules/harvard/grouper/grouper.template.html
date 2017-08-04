@@ -16,7 +16,7 @@
             <input type="text" class="form-text" id="grouper-search" ng-model="search">
             <div class="all-groups" ng-show="selected.length < 7">
                 <div class="group" ng-repeat="g in Groups() | filter:{displayExtension:search} | orderBy:'displayExtension'" ng-click="AddGroup(g.name)" ng-class="{selected: IsGroupSelected(g.name)}">{{g.displayExtension}}</div>
-                <span ng-if="Groups().length == 0">There are no groups you can add, or there was an error getting the list of your groups.</span>
+                <div ng-if="Groups().length == 0" class="messages error">There are no groups you can add, or there was an error getting the list of your groups.</div>
             </div>
         </div>
         <div class="groups-full" ng-show="selected.length >= 7">You've selected the maximum number of groups.</div>
