@@ -1199,5 +1199,6 @@ ul.no-event-export {
     height: auto;
 }
 .media-element-container {
-      height: auto !important;		 
-     }
+    height: auto !important;
+    margin: 0 1em 0 1em;
+}
