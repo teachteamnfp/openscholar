@@ -18,6 +18,12 @@ span[name=grouper] .all-groups {
     margin: 0 8px 8px 0;
 }
 
+.selected-groups .group {
+    
+    padding: 7px 8px 6px;
+   
+}
+
 span[name=grouper] .all-groups .group {
     padding: 5px 0 5px 5px;
 }
