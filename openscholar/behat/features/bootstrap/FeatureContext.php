@@ -3977,4 +3977,15 @@ JS;
     $element->click();
   }
 
+
+  /**
+   * Visit the internal (unaliased) Drupal path of the current page
+   *
+   * @When /^I visit the unaliased edit path of "([^"]*)"$/
+   */
+  public function iVisitTheEditPathOfPage($url) {
+    $unaliased_path = drupal_lookup_path('source', $url);
+    $this->visit("/" . $unaliased_path . "/edit");
+  }
+
 }

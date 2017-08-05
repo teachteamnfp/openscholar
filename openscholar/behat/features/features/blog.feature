@@ -62,8 +62,7 @@ Feature:
  @api @features_first @edit_existing_blog_content @os_blog
  Scenario: Edit existing blog content
     Given I am logging in as "john"
-      And I visit "john/blog/day-life-potus"
-      And I click on the element with css selector "li.link-count-node-edit.first"
+      And I visit the unaliased edit path of "john/blog/day-life-potus"
      When I fill in "Title" with "Another day in the life of The POTUS."
      When I fill in "Body" with "Each day the President eats lunch."
       And I press "Save"
@@ -75,36 +74,41 @@ Feature:
  Scenario: Administer Blog Settings
     Given I am logging in as "john"
      When I visit "john/blog"
-     When I click on the element with css selector "span#blog_comments"
+     When I make sure admin panel is open
+     When I click "App Settings"
+     When I click "Blog Comments"
      When I sleep for "2"
      Then I should see "Choose which comment type you'd like to use"
+
 
  @api @features_first @select_private_comments @os_blog
  Scenario: Select "Private comments"
     Given I am logging in as "john"
-      And I visit "john/blog"
-     When I click on the element with css selector "span#blog_comments"
-     When I click on the element with css selector "input#edit-blog-comments-settings-comment"
-     When I press "Save"
-     When I sleep for "10"
+     When I visit "john/blog"
+      And I make sure admin panel is open
+      And I click "App Settings"
+      And I click "Blog Comments"
+      And I select the radio button named "blog_comments_settings" 
+      And I press "Save"
      Then I should see "Add new comment"
 
  @api @features_first @select_no_comments @os_blog
  Scenario: Select "No Comments"
     Given I am logging in as "john"
       And I visit "john/blog"
-     When I click on the element with css selector "span#blog_comments"
-     When I click on the element with css selector "input#edit-blog-comments-settings-nc"
-     When I press "Save"
-     When I sleep for "10"
+      And I make sure admin panel is open
+      And I click "App Settings"
+      And I click "Blog Comments"
+      And I click on the radio button named "blog_comments_settings" with value "nc"
+      And I press "Save"
+      And I sleep for "5"
      Then I should not see "Add new comment"
 
  @api @features_first @delete_any_blog_content @os_blog
  Scenario: Delete blog content
     Given I am logging in as "john"
-     When I visit "john/blog/day-life-potus"
-     When I click on the element with css selector "li.link-count-node-delete a[href*='/delete']"
-     When I sleep for "4"
-     When I press "Delete"
-     When I sleep for "2"
-     Then I should see "Blog entry A day in the life of The POTUS has been deleted."
+      And I visit the unaliased edit path of "john/blog/day-life-potus"
+     When I click "Delete this blog entry"
+     Then I should see "Are you sure you want to delete"
+      And I click "Delete"
+     Then I should see "has been deleted"
