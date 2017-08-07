@@ -101,6 +101,7 @@ else
   echo -e "\n # Run tests"
   ./bin/behat --tags=$TEST_SUITE
 
+
   if [ $? -ne 0 ]; then
     echo "Behat failed"
     exit 1
