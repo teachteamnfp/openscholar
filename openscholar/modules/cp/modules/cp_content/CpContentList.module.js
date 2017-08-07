@@ -1,7 +1,7 @@
 (function() {
   var messageFailed = 'Something went wrong. Please try again later.';
 
-  var m = angular.module('CpContent', ['ui.bootstrap', 'ngTable', 'ngMaterial', 'EntityService', 'os-buttonSpinner', 'NodeEditor']);
+  var m = angular.module('CpContent', ['ui.bootstrap', 'ngTable', 'TreeSelector', 'ngMaterial', 'EntityService', 'os-buttonSpinner', 'NodeEditor']);
 
   /**
    * Open modals for cp content listing.
@@ -624,6 +624,10 @@
 
           scope.disableApply = true;
 
+          scope.getSelectedTerms = function(option) {
+            scope.setSelectedItem(scope.getPropertyForObject(option, scope.settings.idProp));
+          }
+
           scope.toggleDropdown = function() {
             scope.open = !scope.open;
             if (scope.settings.termDropdown) {
@@ -653,14 +657,24 @@
               }).then(function(response) {
                 if (response.data.data[0]) {
                   scope.orderedItems[key].tree.splice(key, 0, {
+                    label: termName,
                     value: response.data.data[0].id,
-                    label: termName
+                    collapsed:true,
+                    depth:0,
+                    isLeaf:true,
+                    hasChildren:false
                   });
                   scope.orderedItems[key].termName = '';
                   bss.SetState('add_term_form', false);
                   scope.setMessage({
                     message: termName + ' term have been added to ' + vocabName + ' vocabulary.'
                   });
+                  scope.orderedItems[key].tree = $filter('orderBy')(scope.orderedItems[key].tree, 'label');
+                  var template = '<div tree-selector-widget selected="false" on-change="getSelectedTerms($node)" tree="orderedItems[' + key + '].tree" order-by="label"></div>';
+                  var linkFn = $compile(template);
+                  var content = linkFn(scope);
+                  $document.find('#tree-selector-' + [key]).empty();
+                  $document.find('#tree-selector-' + [key]).append(content);
                 }
               }, function(error) {
                 scope.setMessage({
@@ -668,7 +682,6 @@
                 });
                 bss.SetState('add_term_form', false);
               });
-
             }
           };
 
@@ -710,6 +723,9 @@
             scope.$watch('options', function(newValue) {
               if (angular.isDefined(newValue)) {
                 scope.orderedItems = newValue;
+                angular.forEach(scope.orderedItems, function(optionItem, key) {
+                 scope.orderedItems[key].tree = $filter('orderBy')(scope.orderedItems[key].tree, 'label');
+                });
               }
             });
           }
@@ -802,6 +818,15 @@
                 angular.forEach(scope.options, function(optionItem) {
                   if (angular.isDefined(optionItem.tree)) {
                     angular.forEach(optionItem.tree, function(optionItem) {
+                      if (angular.isArray(optionItem.children)) {
+                        angular.forEach(optionItem.children, function (optionItem) {
+                          if (scope.isChecked(scope.getPropertyForObject(optionItem, scope.settings.idProp))) {
+                            var displayText = scope.getPropertyForObject(optionItem, scope.settings.displayProp);
+                            var converterResponse = scope.settings.smartButtonTextConverter(displayText, optionItem);
+                            itemsText.push(converterResponse ? converterResponse : displayText);
+                          }
+                        });
+                      }
                       if (scope.isChecked(scope.getPropertyForObject(optionItem, scope.settings.idProp))) {
                         var displayText = scope.getPropertyForObject(optionItem, scope.settings.displayProp);
                         var converterResponse = scope.settings.smartButtonTextConverter(displayText, optionItem);

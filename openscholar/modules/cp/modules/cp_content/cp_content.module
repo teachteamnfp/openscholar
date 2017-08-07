@@ -616,6 +616,7 @@ function cp_content_library() {
       array('os_common', 'ngTable'),
       array('os_common', 'ngMaterial'),
       array('os_common', 'underscore-js'),
+      array('os_common', 'TreeSelector'),
       array('os_common', 'EntityService'),
       array('os_common', 'NodeEditor'),
     )
