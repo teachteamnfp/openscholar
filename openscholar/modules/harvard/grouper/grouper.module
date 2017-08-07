@@ -221,6 +221,10 @@ function grouper_user_can_access($group = null, $user = null) {
     $user = $GLOBALS['user'];
   }
 
+  // For some reason, we weren't gettiing fields on the user object
+  // Try to circumvent this.
+  $user = user_load($user->uid);
+
   if (user_access('bypass grouper restriction')) {
     return true;
   }
@@ -237,8 +241,6 @@ function grouper_user_can_access($group = null, $user = null) {
 
   // if the site has groups, but the user is not associated with any, deny access
   if (!isset($user->field_grouper_path)) {
-    watchdog('grouper', "User '$user->uid'' has no associated groups");
-    watchdog('grouper', print_r($user, 1));
     return false;
   }
 
