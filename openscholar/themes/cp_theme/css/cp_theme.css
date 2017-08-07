@@ -1,6 +1,10 @@
 /* update */
 body,
-.ui-dialog * {
+.ui-dialog *,
+.message-wrapper a,
+.message-wrapper,
+.message-wrapper h2,
+div.messages ul li {
     font-family: helvetica, arial, sans-serif;
 }
 
