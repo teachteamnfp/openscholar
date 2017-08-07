@@ -221,26 +221,24 @@ function grouper_user_can_access($group = null, $user = null) {
     $user = $GLOBALS['user'];
   }
 
-  watchdog('grouper', 'bypass permission check');
   if (user_access('bypass grouper restriction')) {
     return true;
   }
 
-  watchdog('grouper', 'site groups check');
   // if the site has no groups defined, don't deny access
   if (!isset($group->field_grouper_path)) {
     return true;
   }
 
   // if the site has groups, but the user is anonymous, deny access
-  watchdog('grouper', 'user anon check');
   if (user_is_anonymous()) {
     return false;
   }
 
   // if the site has groups, but the user is not associated with any, deny access
-  watchdog('grouper', 'user groups check');
   if (!isset($user->field_grouper_path)) {
+    watchdog('grouper', "User '$user->uid'' has no associated groups");
+    watchdog('grouper', print_r($user, 1));
     return false;
   }
 
