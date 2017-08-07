@@ -99,7 +99,7 @@ if [ $DOCKER_DEBUG -eq 1 ]; then
 else
   # Run tests
   echo -e "\n # Run tests"
-  ./bin/behat --verbose --tags=$TEST_SUITE
+  ./bin/behat --tags=$TEST_SUITE
 
   if [ $? -ne 0 ]; then
     echo "Behat failed"
