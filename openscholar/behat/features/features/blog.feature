@@ -62,7 +62,7 @@ Feature:
  @api @features_first @edit_existing_blog_content @os_blog
  Scenario: Edit existing blog content
     Given I am logging in as "john"
-      And I visit the unaliased edit path of "john/blog/day-life-potus"
+      And I visit the unaliased edit path of "blog/day-life-potus" on vsite "john"
      When I fill in "Title" with "Another day in the life of The POTUS."
      When I fill in "Body" with "Each day the President eats lunch."
       And I press "Save"
@@ -107,8 +107,9 @@ Feature:
  @api @features_first @delete_any_blog_content @os_blog
  Scenario: Delete blog content
     Given I am logging in as "john"
-      And I visit the unaliased edit path of "john/blog/day-life-potus"
+      And I visit the unaliased edit path of "blog/day-life-potus" on vsite "john"
+      And I sleep for "2"
      When I click "Delete this blog entry"
      Then I should see "Are you sure you want to delete"
-      And I click "Delete"
+      And I press "Delete"
      Then I should see "has been deleted"

@@ -3981,21 +3981,41 @@ JS;
   /**
    * Visit the internal (unaliased) Drupal path of the current page
    *
-   * @When /^I visit the unaliased edit path of "([^"]*)"$/
+   * @When /^I visit the unaliased edit path of "([^"]*)" on vsite "([^"]*)"$/
    */
-  public function iVisitTheEditPathOfPage($url) {
+  public function iVisitTheEditPathOfPage($url, $vsite) {
     $unaliased_path = drupal_lookup_path('source', $url);
-    $this->visit("/" . $unaliased_path . "/edit");
+
+    # Check the url with the vsite prepended
+    if (! $unaliased_path) {
+      $unaliased_path = drupal_lookup_path('source', "$vsite/$url");
+    }
+
+    if (! $unaliased_path) {
+      throw new Exception("Could not find an unaliased path for '$url' on vsite '$vsite'.");
+    }
+
+    $this->visit("/$vsite/$unaliased_path/edit");
   }
 
   /**
    * Visit the internal (unaliased) Drupal path of the current page
    *
-   * @When /^I visit the unaliased path of "([^"]*)" and append "([^"]*)"$/
+   * @When /^I visit the unaliased path of "([^"]*)" on vsite "([^"]*)" and append "([^"]*)"$/
    */
-  public function iVisitTheUnaliasedPathOfAndAppend($url, $appendage) {
+  public function iVisitTheUnaliasedPathOfAndAppend($url, $vsite, $appendage) {
     $unaliased_path = drupal_lookup_path('source', $url);
-    $this->visit("/$unaliased_path/$appendage");
+
+    # Check the url with the vsite prepended
+    if (! $unaliased_path) {
+      $unaliased_path = drupal_lookup_path('source', "$vsite/$url");
+    }
+
+    if (! $unaliased_path) {
+      throw new Exception("Could not find an unaliased path for '$url' on vsite '$vsite' with '$appendage' appended.");
+    }
+
+    $this->visit("$vsite/$unaliased_path/$appendage");
   }
 
 }
