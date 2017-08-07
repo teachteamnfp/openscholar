@@ -37,7 +37,7 @@ Feature:
       And I press "Save"
       And I sleep for "2"
      Then I should see "Please enter a valid date for 'Posted on'"
-     
+
  @api @features_first
   Scenario: Update the created date of a blog to be futher in the furture
             than allowed.
@@ -80,7 +80,6 @@ Feature:
      When I sleep for "2"
      Then I should see "Choose which comment type you'd like to use"
 
-
  @api @wip_needs_js_enabled_webdriver @select_private_comments @os_blog
  Scenario: Select "Private comments"
     Given I am logging in as "john"
@@ -88,7 +87,7 @@ Feature:
       And I make sure admin panel is open
       And I click "App Settings"
       And I click "Blog Comments"
-      And I select the radio button named "blog_comments_settings" 
+      And I select the radio button named "blog_comments_settings"
       And I press "Save"
      Then I should see "Add new comment"
 

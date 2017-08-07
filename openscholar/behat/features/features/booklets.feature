@@ -1,7 +1,7 @@
 Feature:
   Testing booklets
 
- @api @features_first_428 @create_new_booklets_content @os_booklets
+ @api @features_first @create_new_booklets_content @os_booklets
  Scenario: Create new booklets content
     Given I am logging in as "john"
       And I visit "john/node/add/book"
@@ -12,7 +12,7 @@ Feature:
      Then I should see "Profiles In Courage"
       And I should see "Pulitzer Prize-winning volume of short biographies"
 
- @api @features_first_428 @edit_existing_booklets_content @os_booklets
+ @api @features_first @edit_existing_booklets_content @os_booklets
  Scenario: Edit existing booklets content
     Given I am logging in as "john"
       And I visit the unaliased edit path of "book/profiles-courage" on vsite "john"
