@@ -8,6 +8,7 @@
   engine      = phptemplate
   screenshot  = screenshot.png
    flavor_name = "Stark"
+   plugins[os][flavor] = flavors
 
 
 ;----------// OpenScholar

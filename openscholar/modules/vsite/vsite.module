@@ -2561,6 +2561,11 @@ function vsite_site_contact_access(){
     //Use depricated variable.
     if ($allow_contact === null) {
       $allow_contact = $space->controllers->variable->get('vsite_users_contact_form_anonymous', 'space');
+      // Enable contact form by default
+      if ($allow_contact === null) {
+        $space->controllers->variable->set('show_email', TRUE);
+        $allow_contact = TRUE;
+      }
     }
   }
   else {
@@ -4064,8 +4069,18 @@ function vsite_oembed_uri_fragments($uri) {
  */
 function vsite_redirect_load_by_source_existing_url_alter(&$source) {
   if(drupal_valid_path($source)) {
+    // checking and converting the source to the form as it's save
+    // on the redirect table if needed
+    $redirect_query = db_select('redirect');
+    $redirect_query->addField('redirect', 'source');
+    $redirect_query->condition('source', db_like($source), 'LIKE');
+    $redirect_query->condition('language', array($language, LANGUAGE_NONE));
+    $redirect_result = $redirect_query->execute()->fetchCol();
+    if ($redirect_result) {
+      $source = $redirect_result[0];
+    }
     //check if vsite exist.
-    if (module_exists('vsite') && $vsite = vsite_get_vsite()) {
+    else if (module_exists('vsite') && $vsite = vsite_get_vsite()) {
       $provider = $vsite->purl_provider;
       // For vsite with custom domain name
       if ($provider == 'vsite_domain') {

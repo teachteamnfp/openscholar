@@ -56,19 +56,13 @@ function os_software_os_app_info() {
  * Hides the packaging method field if only one option exists.
  */
 function os_software_form_software_project_node_form_alter(&$form, &$form_state, $form_id) {
-  // Unsetting software_method, rbuild_short_name and software_repo during empty conditions
-  if($form['field_software_method']['und'][0]['value']['#default_value'] == 'Manual upload'){
-    unset($form['field_software_method']);
-    $form['packaging'] = array(
-      '#markup' => '<div class="form-item form-type-textfield form-item-title"><label>Packaging Method <span class="form-required" title="This field is required.">*</span></lable><div class="no-bold">Manual Uplpoad</div></div>',
-    );
-  }
-  if(!isset($form['field_rbuild_short_name']['und'][0]['value']['#default_value'])){
-    unset($form['field_rbuild_short_name']);
-  }
-  if(!isset($form['field_software_repo']['und'][0]['value']['#default_value'])){
-    unset($form['field_software_repo']);
-  }
+  $method_field_options = _os_software_packaging_method_options();
+  unset($form['field_software_method']);
+  unset($form['field_rbuild_short_name']);
+  unset($form['field_software_repo']);
+  $form['packaging'] = array(
+      '#markup' => '<div class="form-item form-type-textfield form-item-title"><label>Packaging Method <span class="form-required" title="This field is required.">*</span></lable><div class="no-bold">Manual upload</div></div>',
+  );
   $form['actions']['submit']['#submit'][] = '_os_software_form_redirect';
 }
 
