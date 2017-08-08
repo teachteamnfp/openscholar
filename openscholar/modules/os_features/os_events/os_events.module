@@ -152,21 +152,28 @@ function os_events_get_access_token_with_auth_code() {
   os_events_gcal_create_calendar();
 }
 
-function os_events_gcal_create_calendar() {
-  global $is_https, $user;
 
-  // Get the API client and construct the service object.
-  $client = getClient();
+function os_events_calendar_export_access() {
+  global $user;
 
   # Ensure the user is a member of this group
   $vsites_member = vsite_get_user_vsites($user->id);
   $has_access = false;
   foreach ($vsites_member as $vm) {
       if ($vm->group->nid == $_GET["state"]) {
-        $has_access = true;
-        break;
+        return true;
       }
   }
+  return false;
+}
+
+function os_events_gcal_create_calendar() {
+  global $is_https, $user;
+
+  // Get the API client and construct the service object.
+  $client = getClient();
+
+  $has_access = os_events_calendar_export_access();
 
   # If the user is not a member of the group, deny access
   if (! $has_access) {
@@ -449,8 +456,7 @@ function os_events_menu() {
     'title' => 'Get Access Token With Auth Code',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('os_events_get_access_token_with_auth_code'),
-    'access arguments' => true,
-    'access callback' => true,
+    'access callback' => 'os_events_calendar_export_access',
     'type' => MENU_CALLBACK,
   );
 
