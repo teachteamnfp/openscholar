@@ -4,7 +4,7 @@
  */
 /*
  * Fonts
- **
+ ***
  * By default there is no global font size reset. A common
  * method is to reset it to 62.5%, or 10px. This makes it very
  * easy to calculate the required font sizes in em, for example:
@@ -459,9 +459,79 @@ ol {
     margin: 0 0 1.5em 17px;
     padding: 0;
 }
-.field-name-body ol {
+/*.field-name-body ol {
     margin: 0 0 1.5em 21px;
 }
+*/
+.field-name-body ul {
+  display: table;
+  margin-left: 0;
+  padding-left: 0;
+  list-style: none;
+  counter-reset: table-ul;
+ }
+
+ .field-name-body ul li {
+    display: table-row;
+    counter-increment: table-ul;
+}
+
+ .field-name-body ul li:before {
+      content: counter(table-ul) ".";
+      display: table-cell;
+      padding-right: 0.4em;
+      text-align: right;
+}
+
+
+ .field-name-body ul li:before {
+       content: counter(table-ul, disc);
+     
+}
+
+ .field-name-body ul ul li:before {
+       content: counter(table-ul, circle);
+     
+}
+
+ .field-name-body ul ul ul li:before {
+       content: counter(table-ul, square);
+     
+}
+
+
+.field-name-body ol {
+  display: table;
+  margin-left: 0;
+  padding-left: 0;
+  list-style: none;
+  counter-reset: table-ol;
+ }
+
+ .field-name-body ol li {
+    display: table-row;
+    counter-increment: table-ol;
+}
+
+ .field-name-body ol li:before {
+      content: counter(table-ol) ".";
+      display: table-cell;
+      padding-right: 0.4em;
+      text-align: right;
+}
+
+
+
+ .field-name-body ol ol li:before {
+       content: counter(table-ol, upper-alpha) ".";
+     
+}
+
+ .field-name-body ol ol ol li:before {
+       content: counter(table-ol, lower-alpha) ".";
+     
+}
+
 .item-list ul,
 .item-list ol {
     margin: 0;
@@ -497,10 +567,7 @@ ol ul,
 .item-list ol ul {
     margin-bottom: 0;
 }
-.item-list .field-name-body ul,
-.item-list .field-name-body ol {
-    margin: 0 0 1.5em 17px;
-}
+
 /** 1 A a (1) **/
 
 .mceContentBody ol,
@@ -510,7 +577,6 @@ ol ul,
 .mceContentBody ol ol,
 #content-column ol ol {
     list-style-type: upper-alpha;
-    margin-left: 25px;
 }
 .mceContentBody ol ol ol,
 #content-column ol ol ol {
@@ -1131,4 +1197,8 @@ ul.no-event-export {
 .content-right.content-bottom #content-column .os-sv-list.sv-list-view-slide_teaser iframe,
 .block-boxes-os_boxes_columns .os-sv-list.sv-list-view-slide_teaser iframe {
     height: auto;
+}
+.media-element-container {
+    height: auto !important;
+    margin: 0 1em 0 1em;
 }

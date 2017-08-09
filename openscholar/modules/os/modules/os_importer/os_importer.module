@@ -335,10 +335,23 @@ function os_importer_import_access($bundle, $feed = TRUE) {
       $access = og_user_access('node', $vsite->id, "create $bundle content");
     } else {
       // Adding biblio specific condiption
-      $access = biblio_access('import');
+      $access = os_importer_access_biblio($vsite->id);
     }
   }
   return $access;
+}
+
+/**
+ * Callback function to determine access to biblio import.
+ *
+ * @param $vsite_id
+ *   Vsite Id.
+*/
+function os_importer_access_biblio($vsite_id) {
+  if (biblio_access('import') && og_user_access('node', $vsite_id, "create biblio content")) {
+    return TRUE;
+  }
+  return FALSE;
 }
 
 /**

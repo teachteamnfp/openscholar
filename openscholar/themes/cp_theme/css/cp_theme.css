@@ -1,6 +1,10 @@
 /* update */
 body,
-.ui-dialog * {
+.ui-dialog *,
+.message-wrapper a,
+.message-wrapper,
+.message-wrapper h2,
+div.messages ul li {
     font-family: helvetica, arial, sans-serif;
 }
 
@@ -427,6 +431,14 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
 
 .page-cp .ui-dialog-titlebar {
     margin-bottom: 22px;
+}
+
+#overlay-title-wrapper h1 {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 1050px;
+    display: block;
+    overflow: hidden;
 }
 
 .ui-dialog.ap-settings-form {
@@ -1836,4 +1848,7 @@ body.page-node-revisions .node {
 }
 div.no-bold {
     font-weight: normal;
+}
+#edit-og-vocabulary a.tabledrag-handle .handle{
+    display: none;
 }
