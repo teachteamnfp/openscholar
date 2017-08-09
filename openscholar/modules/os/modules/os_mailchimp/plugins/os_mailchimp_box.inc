@@ -100,7 +100,7 @@ class os_boxes_mailchimp extends os_boxes_default {
             if ($list_info->id == $this->options['list']) {
               $subscribe_url_long = $list_info->subscribe_url_long;
               // change "manage1" or "manage2" to "manage" in domain part
-              $subscribe_url_long = str_replace(array('manage1', 'manage2'), array('manage', 'manage'), $subscribe_url_long);
+              $subscribe_url_long = str_replace(array('manage1', 'manage2'), 'manage', $subscribe_url_long);
               $subscribe_url_long = str_replace('http://', '//', $subscribe_url_long);
               $block['content'] = t('<iframe src="@url" width="@width", height="@height"></iframe>', array(
                 '@url' => $subscribe_url_long,
