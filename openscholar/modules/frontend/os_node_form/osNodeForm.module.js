@@ -94,7 +94,7 @@
       console.log(response.data);
       for (var formElem in formElementsRaw) {
         $s.formData[formElem] = formElementsRaw[formElem]['#default_value'] || null;
-        console.log(formElementsRaw[formElem]['#type']);
+        //console.log(formElementsRaw[formElem]['#type']);
         var attributes = {
           name: formElem
         };

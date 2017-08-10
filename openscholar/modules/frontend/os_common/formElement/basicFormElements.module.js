@@ -27,7 +27,7 @@
         var items = [];
         angular.forEach(scope.element.options, function(value, key) {
           if (angular.isObject(value)) {
-            var data = {};        
+            var data = {};
             data.id = key;
             data.name = key;
             data.items = [];
@@ -86,22 +86,22 @@
       },
       template: '<label for="{{id}}">{{title}}</label>' +
       '<div id="{{id}}" class="form-checkboxes">' +
-        '<div ng-show="element.select_all">' +          
-          '<input ng-model="selectAll" type="checkbox" class="form-checkbox" ng-disabled="element.disabled" ng-change="masterChange()">' + 
+        '<div ng-show="element.select_all">' +
+          '<input ng-model="selectAll" type="checkbox" class="form-checkbox" ng-disabled="element.disabled" ng-change="masterChange()">' +
           '&nbsp;<label class="option bold">Select All</label>' +
         '</div>' +
         '<div ng-if="element.sorted_options" class="form-item form-type-checkbox" ng-repeat="option in options | orderBy: \'label\'">' +
-          '<input ng-model="value[option.key]" ng-checked="value[option.key]" type="checkbox" id="{{id}}-{{option.key}}" name="{{name}}" value="{{option.key}}" class="form-checkbox" ng-disabled="element.disabled">' + 
+          '<input ng-model="value[option.key]" ng-checked="value[option.key]" type="checkbox" id="{{id}}-{{option.key}}" name="{{name}}" value="{{option.key}}" class="form-checkbox" ng-disabled="element.disabled">' +
           '&nbsp;<label class="option" for="{{id}}-{{option.key}}" ng-bind-html="option.label"></label>' +
         '</div>' +
         '<div ng-if="!element.sorted_options" class="form-item form-type-checkbox" ng-repeat="option in options">' +
-          '<input ng-model="value[option.key]" ng-checked="value[option.key]" type="checkbox" id="{{id}}-{{option.key}}" name="{{name}}" value="{{option.key}}" class="form-checkbox" ng-disabled="element.disabled">' + 
+          '<input ng-model="value[option.key]" ng-checked="value[option.key]" type="checkbox" id="{{id}}-{{option.key}}" name="{{name}}" value="{{option.key}}" class="form-checkbox" ng-disabled="element.disabled">' +
           '&nbsp;<label class="option" for="{{id}}-{{option.key}}" ng-bind-html="option.label"></label>' +
         '</div>' +
       '</div> ',
       link: function (scope, elem, attr) {
         scope.id = attr['inputId'];
-        scope.options = scope.element.options;       
+        scope.options = scope.element.options;
         scope.title = scope.element.title;
 
         scope.masterChange = function () {
@@ -109,7 +109,7 @@
             angular.forEach(scope.options, function (cb) {
               scope.value[cb.key] = true;
             });
-          } else {   
+          } else {
             angular.forEach(scope.options, function (cb) {
               scope.value[cb.key] = false;
             });
@@ -338,17 +338,25 @@
         value: '=ngModel',
         element: '=',
       },
-      template: '<div class="fieldset"><div class="form-item" ng-repeat="(key, field) in formElements">'+
+      template: '<div class="fieldset-elements">'+
+                 '<div class="fieldset_title" ng-click="collapsible()"><span>{{title}}</span> </div>'+
+                '<div class="form-item" ng-repeat="(key, field) in formElements" ng-hide = "IsHidden">'+
                 '<div form-element element="field" value="formData[key]"><span>placeholder</span></div>'+
                 '</div></div>',
       link: function (scope, elem, attr) {
-        console.log(scope.element);
+        // For collapsible fieldsets
+        scope.IsHidden = true;
+        scope.collapsible = function () {
+           scope.IsHidden = scope.IsHidden ? false : true;
+        }
+        //console.log(scope.element);
         scope.formElements = {};
         scope.formData = {};
+        scope.title = scope.element['title'];
         var formElementsRaw = scope.element;
         for (var formElem in formElementsRaw) {
           if (angular.isObject(formElementsRaw[formElem])) {
-            console.log(formElementsRaw[formElem]);
+            //console.log(formElementsRaw[formElem]);
             scope.formData[formElem] = formElementsRaw[formElem]['#default_value'] || null;
             var attributes = {
               name: formElem
@@ -360,12 +368,37 @@
               }
               attributes[key] = formElementsRaw[formElem][elem];
             }
-            console.log(attributes);
+            //console.log(attributes);
             scope.formElements[formElem] = attributes;
           }
         }
       }
     }
-  }]);
+  }])
+
+  /**
+   * Media Draggable File.
+   */
+  m.directive('feMediaDraggableFile', [function () {
+    return {
+      scope: {
+        name: '@',
+        value: '=ngModel',
+        element: '=',
+      },
+      template: '<div media-browser-field="" max-filesize={{scope.max_filesize}} types={{scope.types}} extensions={{scope.extensions}} upload-text="Upload" droppable-text="Drop files here to upload" files="files" cardinality="-1" panes={{scope.panes}}</div>',
+      link: function (scope, elem, attr) {
+        //console.log(scope.element['#extra_info'].#upload_location+Drupal.settings.paths.vsite_home);
+        //console.log(scope.element['#extra_info'].#upload_validators.file_validate_extensions[0]);
+        scope.hide_helpicon = false;
+        scope.max_filesize = '128MB';
+        //scope.upload_location = scope.element['#extra_info'].#upload_location+Drupal.settings.paths.vsite_home;
+        //scope.extensions = scope.element['#extra_info'].#upload_validators.file_validate_extensions[0];
+        //scope.types = scope.element['#extra_info'].#upload_validators.file_validate_extensions[0];
+        scope.panes = 'upload,library';
+        //scope.file_validate_size = scope.element['#extra_info'].#upload_validators.file_validate_size[0];
+      }
+    }
+  }])
 
 })();
