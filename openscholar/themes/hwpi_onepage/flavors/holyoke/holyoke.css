@@ -1,0 +1,51 @@
+body * {
+font-family:'Arimo', serif !important;
+font-size:16px;
+}
+
+#menu-bar ul.nice-menu a {
+    color: #755a0f;
+   
+}
+
+h1#page-title {
+   
+    color: #C4961A;
+}
+
+#menu-bar
+ {
+    background-color: #FFDB6D;
+border-bottom: 3px solid #C4961A;
+}
+
+ul.nice-menu ul {
+    top: 3.41em !important;
+}
+
+
+.front #content-panels .region-content-first {
+    background-color: #4E84C4;
+
+}
+
+
+#footer,
+.front #content-panels .region-content-first {
+    color: #FFF;
+}
+
+#menu-bar ul.nice-menu a.active, #menu-bar ul.nice-menu a:hover, #menu-bar ul.nice-menu .menuparent.over > a, #menu-bar ul.nice-menu .menuparent a:hover, #menu-bar ul.nice-menu .menuparent a.active,#menu-bar ul.nice-menu ul {
+    background: #C4961A;
+}
+
+ .front #content-panels .region-content-bottom {
+     background-color: rgba(244, 237, 202, 0.5);
+}
+
+
+
+#footer {
+    background-color: #283645;
+ 
+}
