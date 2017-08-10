@@ -1,51 +1,72 @@
-body * {
-font-family:'Arimo', serif !important;
-font-size:16px;
+body,
+#page-title,
+.node-title,
+.page-search .title a,
+#content-column .block.block-boxes-os_boxes_manual_list .links.inline a,
+.more-link,
+.links a,
+#footer ul.menu a,
+.boxes-box-content h2,
+.section-nav a,
+#content-column h2,
+#content-column h3,
+#content-column h4,
+.block-boxes-os_taxonomy_fbt.navigation,
+.block-boxes-os_boxes_facetapi_vocabulary.navigation,
+#footer ul.menu li ul li a,
+#layout_16_9_side .slide-copy h2,
+#layout_3_1_overlay .slide-copy h2,
+#layout_16_9_below .slide-copy h2,
+#layout_16_9_overlay .slide-copy h2,
+#layout_16_9_side .slide-copy p,
+#layout_3_1_overlay .slide-copy p,
+#layout_16_9_below .slide-copy p,
+#layout_16_9_overlay .slide-copy p,
+h2.block-title,
+.region-header-third ul.nice-menu a,
+#menu-bar ul.nice-menu a,
+#boxes-box-site_info,
+#boxes-box-site_info a,
+.date-nav h3,
+.cke_editable * {
+    font-family: 'Arimo', serif !important;
 }
-
 #menu-bar ul.nice-menu a {
     color: #755a0f;
-   
 }
-
+h2.block-title,
 h1#page-title {
-   
-    color: #C4961A;
+    color: #947215;
 }
-
-#menu-bar
- {
+.section-nav .menu-depth-1 > a,
+#menu-bar {
     background-color: #FFDB6D;
-border-bottom: 3px solid #C4961A;
+    border-bottom: 3px solid #C4961A;
 }
-
+.section-nav .menu-depth-1 > a {
+    border-bottom: 2px solid #C4961A;
+}
 ul.nice-menu ul {
     top: 3.41em !important;
 }
-
-
 .front #content-panels .region-content-first {
     background-color: #4E84C4;
-
 }
-
-
 #footer,
 .front #content-panels .region-content-first {
     color: #FFF;
 }
-
-#menu-bar ul.nice-menu a.active, #menu-bar ul.nice-menu a:hover, #menu-bar ul.nice-menu .menuparent.over > a, #menu-bar ul.nice-menu .menuparent a:hover, #menu-bar ul.nice-menu .menuparent a.active,#menu-bar ul.nice-menu ul {
+#menu-bar ul.nice-menu a.active,
+#menu-bar ul.nice-menu a:hover,
+#menu-bar ul.nice-menu .menuparent.over > a,
+#menu-bar ul.nice-menu .menuparent a:hover,
+#menu-bar ul.nice-menu .menuparent a.active,
+#menu-bar ul.nice-menu ul {
     background: #C4961A;
 }
-
- .front #content-panels .region-content-bottom {
-     background-color: rgba(244, 237, 202, 0.5);
+.front #content-panels .region-content-bottom {
+    background-color: rgba(244, 237, 202, 0.5);
 }
-
-
-
 #footer {
     background-color: #283645;
- 
 }
