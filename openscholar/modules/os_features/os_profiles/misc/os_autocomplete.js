@@ -289,9 +289,11 @@ Drupal.ACDB.prototype.search = function (searchString) {
   }
 
   // See if this key has been searched for before.
-  if (this.cache[searchString]) {
-    return this.owner.found(this.cache[searchString]);
-  }
+  //
+  // FIXME: DISABLE WHILE WE FIX KOOKY CACHE HITS
+  //if (this.cache[searchString]) {
+  //  return this.owner.found(this.cache[searchString]);
+  //}
 
   // Initiate delayed search.
   if (this.timer) {
