@@ -1,6 +1,6 @@
 <?php
 
-class OsNodeRestfulBase extends RestfulEntityBaseNode {
+class OsNodeRestfulBase extends OsNodeFormRestfulBase {
 
   /**
    * Overrides \RestfulDataProviderEFQ::controllersInfo().
@@ -19,8 +19,8 @@ class OsNodeRestfulBase extends RestfulEntityBaseNode {
         \RestfulInterface::PUT => 'putEntity',
         \RestfulInterface::PATCH => 'patchEntity',
         \RestfulInterface::DELETE => 'deleteEntity',
-      ),
-    );
+      )
+    ) + parent::controllersInfo();
   }
 
   public function publicFieldsInfo() {

@@ -1,0 +1,50 @@
+<?php
+
+/**
+ * Implements hook_library.
+ */
+function content_add_form_library() {
+  $libs = array();
+  $self = drupal_get_path('module', 'content_add_form');
+  $disable = array('alias' => TRUE);
+
+  $libs['content-add-form'] = array(
+    'title' => 'Content Add Form',
+    'js' => array(
+      $self.'/contentAddForm.module.js' => array(),
+      array(
+        'data' => array(
+          'paths' => array(
+            'nodeAddForm' => url($self.'/templates', $disable),
+          ),
+        ),
+        'type' => 'setting',
+      )
+    ),
+    'css' => array(
+      drupal_get_path('theme', 'cp_theme') . '/css/cp_theme.css' => array(
+        'group' => CSS_THEME,
+        'every_page' => TRUE,
+        'media' => 'screen'),
+    ),
+    'dependencies' => array(
+      array('os_common', 'angular-modal-service'),
+      array('os_common', 'formElement'),
+      array('os_common', 'buttonSpinner'),
+    )
+  );
+
+  return $libs;
+}
+
+/**
+ * Implements hook_preprocess_page().
+ *
+ * Adds the content-add-form angular library.
+*/
+function content_add_form_preprocess_page(&$vars) {
+  if (user_is_logged_in() && variable_get('admin_panel_enabled', FALSE)) {
+    drupal_add_library('content_add_form', 'content-add-form');
+  }
+}
+

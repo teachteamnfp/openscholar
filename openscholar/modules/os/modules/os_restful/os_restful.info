@@ -6,6 +6,7 @@ dependencies[] = restful
 dependencies[] = restful_token_auth
 
 files[] = plugins/restful/OsRestfulEntityCacheableBase.php
+files[] = includes/OsNodeFormRestfulBase.php
 files[] = includes/OsNodeRestfulBase.php
 files[] = includes/OsObjectValidate.php
 files[] = includes/OsRestfulDataProvider.php

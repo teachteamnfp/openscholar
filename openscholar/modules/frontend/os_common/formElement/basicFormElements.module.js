@@ -326,6 +326,46 @@
         });
       }
     }
-  }])
+  }]);
+
+  /**
+   * Fieldset.
+   */
+  m.directive('feFieldset', [function () {
+    return {
+      scope: {
+        name: '@',
+        value: '=ngModel',
+        element: '=',
+      },
+      template: '<div class="fieldset"><div class="form-item" ng-repeat="(key, field) in formElements">'+
+                '<div form-element element="field" value="formData[key]"><span>placeholder</span></div>'+
+                '</div></div>',
+      link: function (scope, elem, attr) {
+        console.log(scope.element);
+        scope.formElements = {};
+        scope.formData = {};
+        var formElementsRaw = scope.element;
+        for (var formElem in formElementsRaw) {
+          if (angular.isObject(formElementsRaw[formElem])) {
+            console.log(formElementsRaw[formElem]);
+            scope.formData[formElem] = formElementsRaw[formElem]['#default_value'] || null;
+            var attributes = {
+              name: formElem
+            };
+            for (var key in formElementsRaw[formElem]) {
+              var elem = key;
+              if (key.indexOf('#') === 0) {
+                key = key.substr(1, key.length);
+              }
+              attributes[key] = formElementsRaw[formElem][elem];
+            }
+            console.log(attributes);
+            scope.formElements[formElem] = attributes;
+          }
+        }
+      }
+    }
+  }]);
 
 })();

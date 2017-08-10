@@ -229,8 +229,14 @@ class OSRestfulCPMenu extends \RestfulBase implements \RestfulDataProviderInterf
       $type_url_str = str_replace('_', '-', $bundle);
       $add_links["{$bundle}"] = array(
         'label' => $type_info[$bundle]->name,
-        'type' => 'link',
-        'href' => "node/add/{$type_url_str}",
+        //'type' => 'link',
+        //'href' => "node/add/{$type_url_str}",
+        'type' => 'directive',
+          'directive' => array(
+            'node-form-modal',
+            'node-type' => $type_url_str,
+          ),
+        'parent' => 'add',
         'alt' => $type_info[$bundle]->description,
       );
 
@@ -327,7 +333,7 @@ class OSRestfulCPMenu extends \RestfulBase implements \RestfulDataProviderInterf
             'label' => 'Browse',
             'type' => 'heading',
             'default_state' => 'collapsed',
-            'children' => array(              
+            'children' => array(
               'content' => array(
                 'label' => 'Content',
                 'type' => 'link',

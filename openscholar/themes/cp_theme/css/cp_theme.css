@@ -1,10 +1,6 @@
 /* update */
 body,
-.ui-dialog *,
-.message-wrapper a,
-.message-wrapper,
-.message-wrapper h2,
-div.messages ul li {
+.ui-dialog * {
     font-family: helvetica, arial, sans-serif;
 }
 
@@ -241,10 +237,13 @@ a.form-cancel {
     padding: 5px 12px;
     margin-bottom: 1em;
     margin-right: 1em;
-    color: #fff;
+    /* LTR */
+    
+    color: #5a5a5a;
     text-align: center;
     font-weight: normal;
     font-size: 1.077em;
+<<<<<<< HEAD
     border: 1px solid #888;
     border-bottom: 1px solid #888;
     border-left-color: #888;
@@ -275,6 +274,17 @@ a.form-cancel {
     padding: 0 5px;
     background: none;
     font-weight: bold;
+=======
+    font-family: "Lucida Grande", Verdana, sans-serif;
+    border: 1px solid #e4e4e4;
+    border-bottom: 1px solid #b4b4b4;
+    border-left-color: #d2d2d2;
+    border-right-color: #d2d2d2;
+    background: url('/themes/seven/images/buttons.png') 0 0 repeat-x;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+>>>>>>> 9606: Node add edit angular form.
 }
 
 /* SAVE BUTTON SPINNER */
@@ -292,8 +302,8 @@ a.form-cancel {
     font-size: 7px;
     position: relative;
     text-indent: -9999em;
-    border-top: .5em solid rgb(255, 255, 255);
-    border-right: .5em solid rgb(255, 255, 255);
+    border-top: .5em solid rgba(136, 136, 136, 1);
+    border-right: .5em solid rgba(136, 136, 136, 1);
     border-bottom: .5em solid transparent;
     border-left: .5em solid transparent;
     -webkit-transform: translateZ(0);
@@ -520,14 +530,6 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
 .page-node-add-news .field-name-field-photo,
 .page-cp .ui-dialog-titlebar {
     margin-bottom: 22px;
-}
-
-#overlay-title-wrapper h1 {
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    max-width: 1050px;
-    display: block;
-    overflow: hidden;
 }
 
 .ui-dialog.ap-settings-form {
@@ -1879,7 +1881,7 @@ body.page-node-revisions .node {
   content: 'Attached files';
 }
 
-.page-node-revisions .node-news .photo .field-type-image:before {
+.node-news .photo .field-type-image:before {
   content:'News Photo';
 }
 
@@ -1955,4 +1957,42 @@ div.no-bold {
 
 #edit-og-vocabulary a.tabledrag-handle .handle{
     display: none;
+}
+.node-add-form-angular .column-left {
+  width: 65%;
+  float: left;
+}
+.node-add-form-angular .column-right {
+  float: right;
+  width: 295px;
+  margin-right: 37px;
+}
+.node-add-form-angular .actions {
+  float: left;
+}
+.page-fieldset-header {
+  padding: 6px 15px 4px;
+  z-index: 100;
+  height: 24px;
+  border: 1px solid #CCCCCC;
+  line-height: 22px;
+  min-height: 25px;
+  text-transform: none;
+  width: 89%;
+  background-color: #f1f1f1;
+}
+.page-fieldset-header p {
+  font-size: 1.08em;
+  font-weight: normal;
+  color: #0074BD;
+  cursor: pointer;
+}
+.page-fieldset-header p:hover {
+  text-decoration: underline;
+}
+.node-add-form-angular .column-right .form-wrapper {
+  border: 1px solid #CCCCCC;
+}
+.node-add-form-angular .column-right .form-wrapper span label {
+  margin-left: 17px;
 }

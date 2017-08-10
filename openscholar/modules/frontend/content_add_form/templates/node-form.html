@@ -1,0 +1,19 @@
+<form id="{{formId}}" name="contentAddForm" ng-submit="submitForm($event)">
+  <div class="messages" ng-show="status.length || errors.length"><div class="dismiss" ng-click="status.length = 0; errors.length = 0;">X</div>
+    <div class="status" ng-show="status.length > 0"><div ng-repeat="m in status track by $index"><span ng-bind-html="m"></span></div></div>
+    <div class="error" ng-show="errors.length > 0"><div ng-repeat="m in errors track by $index"><span ng-bind-html="m"></span></div></div>
+  </div>
+  <div class="column-left">
+    <div class="form-item" ng-repeat="(key, field) in formElements" ng-if="!field.group">
+      <div form-element element="field" value="formData[key]"><span>placeholder</span></div>
+    </div>
+  </div>
+  <div class="column-right">
+    <div class="form-item" ng-repeat="(key, field) in formElements" ng-if="field.group" ng-class="field.group">
+      <div form-element element="field" value="formData[key]"><span>placeholder</span></div>
+    </div>
+  </div>
+  <div class="actions" ng-show="showSaveButton">
+  <button type="submit" button-spinner="settings_form" spinning-text="Saving">Save</button>
+  <input type="button" value="Close" ng-click="close(false)"></div>
+</form>
