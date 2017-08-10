@@ -229,8 +229,6 @@ class OSRestfulCPMenu extends \RestfulBase implements \RestfulDataProviderInterf
       $type_url_str = str_replace('_', '-', $bundle);
       $add_links["{$bundle}"] = array(
         'label' => $type_info[$bundle]->name,
-        //'type' => 'link',
-        //'href' => "node/add/{$type_url_str}",
         'type' => 'directive',
           'directive' => array(
             'node-form-modal',
