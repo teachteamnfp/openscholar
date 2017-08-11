@@ -27,7 +27,7 @@
         var items = [];
         angular.forEach(scope.element.options, function(value, key) {
           if (angular.isObject(value)) {
-            var data = {};
+            var data = {};        
             data.id = key;
             data.name = key;
             data.items = [];
@@ -86,22 +86,22 @@
       },
       template: '<label for="{{id}}">{{title}}</label>' +
       '<div id="{{id}}" class="form-checkboxes">' +
-        '<div ng-show="element.select_all">' +
-          '<input ng-model="selectAll" type="checkbox" class="form-checkbox" ng-disabled="element.disabled" ng-change="masterChange()">' +
+        '<div ng-show="element.select_all">' +          
+          '<input ng-model="selectAll" type="checkbox" class="form-checkbox" ng-disabled="element.disabled" ng-change="masterChange()">' + 
           '&nbsp;<label class="option bold">Select All</label>' +
         '</div>' +
         '<div ng-if="element.sorted_options" class="form-item form-type-checkbox" ng-repeat="option in options | orderBy: \'label\'">' +
-          '<input ng-model="value[option.key]" ng-checked="value[option.key]" type="checkbox" id="{{id}}-{{option.key}}" name="{{name}}" value="{{option.key}}" class="form-checkbox" ng-disabled="element.disabled">' +
+          '<input ng-model="value[option.key]" ng-checked="value[option.key]" type="checkbox" id="{{id}}-{{option.key}}" name="{{name}}" value="{{option.key}}" class="form-checkbox" ng-disabled="element.disabled">' + 
           '&nbsp;<label class="option" for="{{id}}-{{option.key}}" ng-bind-html="option.label"></label>' +
         '</div>' +
         '<div ng-if="!element.sorted_options" class="form-item form-type-checkbox" ng-repeat="option in options">' +
-          '<input ng-model="value[option.key]" ng-checked="value[option.key]" type="checkbox" id="{{id}}-{{option.key}}" name="{{name}}" value="{{option.key}}" class="form-checkbox" ng-disabled="element.disabled">' +
+          '<input ng-model="value[option.key]" ng-checked="value[option.key]" type="checkbox" id="{{id}}-{{option.key}}" name="{{name}}" value="{{option.key}}" class="form-checkbox" ng-disabled="element.disabled">' + 
           '&nbsp;<label class="option" for="{{id}}-{{option.key}}" ng-bind-html="option.label"></label>' +
         '</div>' +
       '</div> ',
       link: function (scope, elem, attr) {
         scope.id = attr['inputId'];
-        scope.options = scope.element.options;
+        scope.options = scope.element.options;       
         scope.title = scope.element.title;
 
         scope.masterChange = function () {
@@ -109,7 +109,7 @@
             angular.forEach(scope.options, function (cb) {
               scope.value[cb.key] = true;
             });
-          } else {
+          } else {   
             angular.forEach(scope.options, function (cb) {
               scope.value[cb.key] = false;
             });
@@ -326,7 +326,7 @@
         });
       }
     }
-  }]);
+  }])
 
   /**
    * Fieldset.
@@ -400,5 +400,4 @@
       }
     }
   }])
-
 })();

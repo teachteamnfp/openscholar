@@ -173,7 +173,7 @@ html.js input.throbbing {
     bottom: 2px;
 }
 
-
+    
 .view-os-files-private ul {
     list-style-type: none !important;
     list-style: none !important;
@@ -230,7 +230,7 @@ button.button,
 #edit-field_software_package-und-drop .media-browser-drop-box .ng-binding.ng-scope,
 .redirect-add,
 body.page-node-revisions ul.action-links a,
-input.form-submit,
+input.form-submit, 
 a.button,
 .ui-dialog.ap-settings-form button,
 .ui-dialog.ap-settings-form input[type="button"],
@@ -1337,7 +1337,7 @@ ul.term-reference-tree-level {
 .view-cp-content .form-item-vocab {
     float: left;
     /* LTR */
-
+    
     margin-right: 20px;
     /* LTR */
 }
@@ -1351,7 +1351,7 @@ ul.term-reference-tree-level {
 }
 
 /** Messages - success, error style overrides */
-
+	
 div.messages {
 margin: 0 0 10px;
     padding: 0;
@@ -1601,11 +1601,11 @@ ul.table-list li:nth-child(even) {
 }
 
 form#os-maintenance .form-item:first-child {
-    margin-bottom: 0;
+    margin-bottom: 0; 
 }
 
 form#os-maintenance .form-item .description {
-    margin-top: 0;
+    margin-top: 0; 
 }
 
 .redirect-add-form input {
@@ -1694,9 +1694,9 @@ span[name="os_publications_citation_examples"] .ng-binding {
 }
 
 .page-cp span[name="os_publications_citation_examples"] .ng-binding {
-
+   
     top: 10px;
-
+ 
 }
 
 span[name="os_publications_citation_examples"] .citebox h2 {font-size: 1.3em;margin: 0;}
@@ -1926,8 +1926,8 @@ body.page-node-revisions .node {
 .page-node-revisions #citation-wrapper,
 .page-node-revisions .publication-cover-container,
 .page-node-revisions .pubcontent-wrapper p {
-
-
+	
+	
     margin: 0 0 20px 0;
 }
 
@@ -1983,6 +1983,7 @@ div.no-bold {
 #edit-og-vocabulary a.tabledrag-handle .handle{
     display: none;
 }
+
 .node-add-form-angular .column-left {
   width: 65%;
   float: left;
