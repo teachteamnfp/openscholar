@@ -31,13 +31,16 @@ h2.block-title,
 .cke_editable * {
     font-family: 'Arimo', serif !important;
 }
+body {
+    font-size:16px;
+}
 #menu-bar ul.nice-menu a {
     color: #755a0f;
 }
 h2.block-title,
 h1#page-title {
     color: #947215;
-    font-size: 1.6em;
+    font-size: 1.5em;
 }
 
 h1#page-title {
@@ -45,15 +48,31 @@ h1#page-title {
     font-size: 2.5em;
 }
 #boxes-box-site_info h1 {
-        font-size: 2.5em;
+        font-size: 2.28em;
 }
 .section-nav .menu-depth-1 > a,
 #menu-bar {
     background-color: #FFDB6D;
     border-bottom: 3px solid #C4961A;
 }
-.ui-tabs ul.ui-tabs-nav li.ui-tabs-active {
+.section-nav .menu-depth-1 > a {
+   
+    border-bottom: 2px solid #C4961A !important;
+}
+
+
+
+.ui-tabs ul.ui-tabs-nav li.ui-tabs-active,
+.event-start .event-start {
     border-top: 3px solid #C4961A;
+}
+.event-start .event-start {
+    -webkit-border-bottom-right-radius: 0;
+    -webkit-border-bottom-left-radius: 0;
+    -moz-border-radius-bottomright: 0;
+    -moz-border-radius-bottomleft: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
 }
 .section-nav .menu-depth-1 > a {
     border-bottom: 2px solid #C4961A;
@@ -79,9 +98,14 @@ ul.nice-menu ul {
 #menu-bar ul.nice-menu .menuparent a:before {
     background-position: 31px -566px;
 }
+.section-nav .menu-depth-1 > a,
 .front #content-panels .region-content-bottom {
-    background-color: rgba(244, 237, 202, 0.5);
+    background-color: rgba(244, 237, 202, 0.5) !important;
 }
 #footer {
     background-color: #283645;
+}
+#columns a.node-readmore:after {
+    background: none;
+   
 }
