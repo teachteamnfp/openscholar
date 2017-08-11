@@ -626,5 +626,3 @@ libraries[yql-jsonp][download][url] = "https://raw.githubusercontent.com/yui/yui
 libraries[google-api-php-client][type] = "libraries"
 libraries[google-api-php-client][download][type] = "file"
 libraries[google-api-php-client][download][url] = "https://github.com/google/google-api-php-client/releases/download/v2.1.3/google-api-php-client-2.1.3.zip"
-
-; force rebuild Fri Aug 11 10:46:32 EDT 2017
