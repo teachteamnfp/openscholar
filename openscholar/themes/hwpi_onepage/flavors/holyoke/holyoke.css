@@ -37,13 +37,15 @@ body {
 #menu-bar ul.nice-menu a {
     color: #755a0f;
 }
+h1.node-title,
 h2.block-title,
 h1#page-title {
     color: #947215;
     font-size: 1.5em;
 }
+.node-type-person h1.node-title,
 h1#page-title {
-    font-size: 2.5em;
+    font-size: 2.1em;
 }
 #boxes-box-site_info h1 {
     font-size: 2.1em;
@@ -55,6 +57,7 @@ h1#page-title {
 }
 .section-nav .menu-depth-1 > a {
     border-bottom: 2px solid #C4961A !important;
+    border-top: none;
 }
 .ui-tabs ul.ui-tabs-nav li.ui-tabs-active,
 .event-start .event-start {
@@ -68,9 +71,7 @@ h1#page-title {
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
 }
-.section-nav .menu-depth-1 > a {
-    border-bottom: 2px solid #C4961A;
-}
+
 ul.nice-menu ul {
     top: 3.41em !important;
 }
