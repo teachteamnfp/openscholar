@@ -37,7 +37,7 @@ body {
 #menu-bar ul.nice-menu a {
     color: #755a0f;
 }
-h1.node-title,
+.node-type-person h1.node-title,
 h2.block-title,
 h1#page-title {
     color: #947215;
@@ -78,6 +78,7 @@ ul.nice-menu ul {
 .front #content-panels .region-content-first {
     background-color: #4E84C4;
 }
+#footer .footer-login,
 #footer *,
 .front #content-panels .region-content-first * {
     color: #FFF;
@@ -104,6 +105,12 @@ ul.nice-menu ul {
 #footer {
     background-color: #283645;
 }
+#footer .footer-login:after,
 #columns a.node-readmore:after {
     background: none;
+}
+#footer .footer-login {
+    
+    text-shadow: none;
+
 }
