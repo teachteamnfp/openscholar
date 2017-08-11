@@ -32,7 +32,7 @@ h2.block-title,
     font-family: 'Arimo', serif !important;
 }
 body {
-    font-size:16px;
+    font-size: 16px;
 }
 #menu-bar ul.nice-menu a {
     color: #755a0f;
@@ -42,13 +42,11 @@ h1#page-title {
     color: #947215;
     font-size: 1.5em;
 }
-
 h1#page-title {
-   
     font-size: 2.5em;
 }
 #boxes-box-site_info h1 {
-        font-size: 2.28em;
+    font-size: 2.1em;
 }
 .section-nav .menu-depth-1 > a,
 #menu-bar {
@@ -56,12 +54,8 @@ h1#page-title {
     border-bottom: 3px solid #C4961A;
 }
 .section-nav .menu-depth-1 > a {
-   
     border-bottom: 2px solid #C4961A !important;
 }
-
-
-
 .ui-tabs ul.ui-tabs-nav li.ui-tabs-active,
 .event-start .event-start {
     border-top: 3px solid #C4961A;
@@ -98,6 +92,10 @@ ul.nice-menu ul {
 #menu-bar ul.nice-menu .menuparent a:before {
     background-position: 31px -566px;
 }
+.region-header-third ul.nice-menu a,
+#menu-bar ul.nice-menu a {
+    text-transform: none;
+}
 .section-nav .menu-depth-1 > a,
 .front #content-panels .region-content-bottom {
     background-color: rgba(244, 237, 202, 0.5) !important;
@@ -107,5 +105,4 @@ ul.nice-menu ul {
 }
 #columns a.node-readmore:after {
     background: none;
-   
 }
