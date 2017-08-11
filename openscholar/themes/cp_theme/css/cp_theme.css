@@ -66,9 +66,12 @@ textarea,
     font-size: 13px;
     height: auto;
     padding: 6px 7px;
-    background: url('../../os_basetheme/images/form-input-bg.gif') repeat-x scroll left top #FFFFFF;
+    background: none;
     border: 1px solid #CDCDCD;
     width:98%;
+        -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
 }
 
 #og-vocabulary-add-more-wrapper select.form-select {
