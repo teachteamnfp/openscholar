@@ -30,6 +30,16 @@ ul.theme-picker li.item-theme-picker  {
   -webkit-box-shadow: 0 0 7px #888;
   box-shadow: 0 0 7px #888;
   color:#fff;
+   -webkit-transition: all .250s;
+    transition: all .250s;
+  }
+
+  ul.theme-picker li.item-theme-picker:hover  {
+cursor:pointer;
+  -moz-box-shadow: 0 0 40px #888;
+  -webkit-box-shadow: 0 0 40px #888;
+  box-shadow: 0 0 40px #888;
+
   }
 
 ul.theme-picker img.screenshot {
@@ -39,9 +49,7 @@ ul.theme-picker img.screenshot {
 
 
 ul.theme-picker li.current   {
-  -moz-box-shadow: 0 0 30px #4a7d06;
-  -webkit-box-shadow: 0 0 30px #4a7d06;
-  box-shadow: 0 0 30px #4a7d06;
+  border: 10px solid #93b16b;
 }
 
 ul.theme-picker li.checked {
