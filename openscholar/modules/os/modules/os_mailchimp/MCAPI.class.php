@@ -1,7 +1,7 @@
 <?php
 
 class MCAPI {
-    var $version = "1.3";
+    var $version = "3.0";
     var $errorMessage;
     var $errorCode;
     
@@ -440,8 +440,7 @@ class MCAPI {
             array segment_opts the segment used for the campaign - can be passed to campaignSegmentTest() or campaignCreate()
             array type_opts the type-specific options for the campaign - can be passed to campaignCreate()
      */
-    function campaigns($filters=array (
-), $start=0, $limit=25) {
+    function campaigns($filters=array (), $start=0, $limit=25) {
         $params = array();
         $params["filters"] = $filters;
         $params["start"] = $start;
@@ -1136,10 +1135,7 @@ class MCAPI {
     function lists($filters=array (
 ), $start=0, $limit=25) {
         $params = array();
-        $params["filters"] = $filters;
-        $params["start"] = $start;
-        $params["limit"] = $limit;
-        return $this->callServer("lists", $params);
+        return $this->callServer("lists", $params, "GET");
     }
 
     /**
@@ -1567,14 +1563,15 @@ class MCAPI {
     function listSubscribe($id, $email_address, $merge_vars=NULL, $email_type='html', $double_optin=true, $update_existing=false, $replace_interests=true, $send_welcome=false) {
         $params = array();
         $params["id"] = $id;
+        $params["status"] = 'subscribed';
         $params["email_address"] = $email_address;
-        $params["merge_vars"] = $merge_vars;
+        $params["merge_fields"] = $merge_vars;
         $params["email_type"] = $email_type;
         $params["double_optin"] = $double_optin;
         $params["update_existing"] = $update_existing;
         $params["replace_interests"] = $replace_interests;
         $params["send_welcome"] = $send_welcome;
-        return $this->callServer("listSubscribe", $params);
+        return $this->callServer("lists/$id/members/", $params,"POST");
     }
 
     /**
@@ -2388,14 +2385,13 @@ class MCAPI {
      * Actually connect to the server and call the requested methods, parsing the result
      * You should never have to call this function manually
      */
-    function callServer($method, $params) {
+    function callServer($method, $params, $action = "POST", $timeout = 10) {
 	    $dc = "us1";
 	    if (strstr($this->api_key,"-")){
         	list($key, $dc) = explode("-",$this->api_key,2);
             if (!$dc) $dc = "us1";
         }
-        $host = $dc.".".$this->apiUrl["host"];
-		$params["apikey"] = $this->api_key;
+        $host = 'https://'.$dc.".".$this->apiUrl["host"];
 
         $this->errorMessage = "";
         $this->errorCode = "";
@@ -2410,58 +2406,53 @@ class MCAPI {
         if ($sep_changed){
             ini_set("arg_separator.output", $orig_sep);
         }
+
+        $auth = base64_encode('apikey:'.$this->api_key);
+        $this->endpoint = $host . $this->apiUrl["path"];
+        $url = $this->endpoint.$method;
+        $headers = array(
+            'Accept: application/json',
+            'Content-Type: application/json',
+            'Authorization: Basic '.$auth
+        );
         
-        $payload = "POST " . $this->apiUrl["path"] . "?" . $this->apiUrl["query"] . "&method=" . $method . " HTTP/1.0\r\n";
-        $payload .= "Host: " . $host . "\r\n";
-        $payload .= "User-Agent: MCAPI/" . $this->version ."\r\n";
-        $payload .= "Content-type: application/x-www-form-urlencoded\r\n";
-        $payload .= "Content-length: " . strlen($post_vars) . "\r\n";
-        $payload .= "Connection: close \r\n\r\n";
-        $payload .= $post_vars;
-        
-        ob_start();
-        if ($this->secure){
-            $sock = fsockopen("ssl://".$host, 443, $errno, $errstr, 30);
-        } else {
-            $sock = fsockopen($host, 80, $errno, $errstr, 30);
+        // Converting old array request parameters to object
+        $args = (object) $params;
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
+        curl_setopt($ch, CURLOPT_URL, $url);
+
+        if ($action == "GET") {
+            if (count($args)) {
+                curl_setopt($ch, CURLOPT_URL, $url.'?'.http_build_query($args));
+            }
+        } else if ($action == "POST") {
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($args));
+        } else if ($action == "PATCH") {
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PATCH");
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($args));
+        } else if ($action == "DELETE") {
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
         }
-        if(!$sock) {
-            $this->errorMessage = "Could not connect (ERR $errno: $errstr)";
-            $this->errorCode = "-99";
-            ob_end_clean();
-            return false;
-        }
-        
-        $response = "";
-        fwrite($sock, $payload);
-        stream_set_timeout($sock, $this->timeout);
-        $info = stream_get_meta_data($sock);
-        while ((!feof($sock)) && (!$info["timed_out"])) {
-            $response .= fread($sock, $this->chunkSize);
-            $info = stream_get_meta_data($sock);
-        }
-        fclose($sock);
-        ob_end_clean();
+
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $this->ssl);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $response = curl_exec($ch);
+        curl_close($ch);
+
         if ($info["timed_out"]) {
             $this->errorMessage = "Could not read response (timed out)";
             $this->errorCode = -98;
             return false;
         }
-
-        list($headers, $response) = explode("\r\n\r\n", $response, 2);
-        $headers = explode("\r\n", $headers);
-        $errored = false;
-        foreach($headers as $h){
-            if (substr($h,0,26)==="X-MailChimp-API-Error-Code"){
-                $errored = true;
-                $error_code = trim(substr($h,27));
-                break;
-            }
-        }
         
         if(ini_get("magic_quotes_runtime")) $response = stripslashes($response);
         
-        $serial = unserialize($response);
+        $serial = json_decode($response);
         if($response && $serial === false) {
         	$response = array("error" => "Bad Response.  Got This: " . $response, "code" => "-99");
         } else {
@@ -2476,8 +2467,7 @@ class MCAPI {
             $this->errorCode = $error_code;
             return false;
         }
-        
-        return $response;
+        return (array) $response;
     }
 
 }

@@ -1,6 +1,10 @@
 /* update */
 body,
-.ui-dialog * {
+.ui-dialog *,
+.message-wrapper a,
+.message-wrapper,
+.message-wrapper h2,
+div.messages ul li {
     font-family: helvetica, arial, sans-serif;
 }
 
@@ -36,9 +40,7 @@ a {
     color: #215990;
 }
 
-strong {
-    color: #444;
-}
+
 
 fieldset {
     background: #f1f1f1;
@@ -64,9 +66,12 @@ textarea,
     font-size: 13px;
     height: auto;
     padding: 6px 7px;
-    background: url('../../os_basetheme/images/form-input-bg.gif') repeat-x scroll left top #FFFFFF;
+    background: none;
     border: 1px solid #CDCDCD;
     width:98%;
+        -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
 }
 
 #og-vocabulary-add-more-wrapper select.form-select {
@@ -427,6 +432,14 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
 
 .page-cp .ui-dialog-titlebar {
     margin-bottom: 22px;
+}
+
+#overlay-title-wrapper h1 {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 1050px;
+    display: block;
+    overflow: hidden;
 }
 
 .ui-dialog.ap-settings-form {
@@ -1836,4 +1849,7 @@ body.page-node-revisions .node {
 }
 div.no-bold {
     font-weight: normal;
+}
+#edit-og-vocabulary a.tabledrag-handle .handle{
+    display: none;
 }

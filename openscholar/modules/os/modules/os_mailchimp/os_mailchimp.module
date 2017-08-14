@@ -180,12 +180,11 @@ function os_mailchimp_subscribe($api, $listid, $email, $fn=NULL, $ln=NULL) {
   //the vsite adds it doesn't know about the user and can't add its domain to the sub.
   $form_values = &drupal_static('vsite_register_form_values');
 
-  $merge_vars = array(
-    'FNAME' => $fn,
-    'LNAME' => $ln,
-    'INSTANCES' => str_replace('http://', '', variable_get('purl_base_domain', '')),
-    'SITES' => ($form_values && isset($form_values['domain'])) ? $form_values['domain'] : '',
-  );
+  $merge_vars = new stdClass();
+    $merge_vars->FNAME = $fn;
+    $merge_vars->LNAME = $ln;
+    $merge_vars->INSTANCES = str_replace('http://', '', variable_get('purl_base_domain', ''));
+    $merge_vars->SITES = ($form_values && isset($form_values['domain'])) ? $form_values['domain'] : '';
 
   if (variable_get('os_mailchimp_use_field', FALSE)) {
     $name = variable_get('os_mailchimp_use_field_name', FALSE);
@@ -338,11 +337,10 @@ function os_mailchimp_form_submit($form, $form_state) {
  */
 function _os_mailchimp_get_lists($api) {
   $MC = _os_mailchimp_mailchimp_connect($api);
-
   $ret = array();
   if (($lists = $MC->lists()) != FALSE) {
-    foreach ($lists['data'] as $delta => $list) {
-      $ret[$list['id']] = $list['name'];
+    foreach ($lists['lists'] as $delta => $list) {
+      $ret[$list->id] = $list->name;
     }
   }
 
