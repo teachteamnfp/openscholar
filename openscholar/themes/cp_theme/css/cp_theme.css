@@ -50,6 +50,10 @@ fieldset {
     background: #FFF;
 }
 
+a.button:link, a.button:visited, a.button:hover, a.button:active {
+	color:#FFF;
+}
+
 #feature_os_publication span[name="biblio_sort"] .form-item,
 #feature_os_publication span[name="biblio_order"] .form-item,
 h3 {
@@ -195,7 +199,6 @@ a.form-cancel {
     text-align: center;
     font-weight: normal;
     font-size: 1.077em;
-    font-family: "Lucida Grande", Verdana, sans-serif;
     border: 1px solid #888;
     border-bottom: 1px solid #888;
     border-left-color: #888;
