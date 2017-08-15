@@ -40,7 +40,13 @@ a {
     color: #215990;
 }
 
+a.button:link, a.button:visited, a.button:hover, a.button:active {
+	color:#FFF;
+}
 
+.os-delete-link {
+	color:#FF0000;
+}
 
 fieldset {
     background: #f1f1f1;
@@ -50,9 +56,7 @@ fieldset {
     background: #FFF;
 }
 
-a.button:link, a.button:visited, a.button:hover, a.button:active {
-	color:#FFF;
-}
+
 
 #feature_os_publication span[name="biblio_sort"] .form-item,
 #feature_os_publication span[name="biblio_order"] .form-item,
@@ -76,6 +80,7 @@ textarea,
         -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
     border-radius: 2px;
+    background-color: #fff;
 }
 
 #og-vocabulary-add-more-wrapper select.form-select {
