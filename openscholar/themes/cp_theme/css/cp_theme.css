@@ -215,6 +215,11 @@ a.form-cancel {
     padding: 8px 15px;
 }
 
+.page-os-widget-add-os-boxes-media .button.launcher {
+    margin: 10px 0 18px;
+
+}
+
 /* SAVE BUTTON SPINNER */
 .spinner,
 .spinner:after {
@@ -270,7 +275,7 @@ a.form-cancel {
 a.form-cancel:hover {
     text-decoration: none;
 }
-
+.page-os-widget-add-os-boxes-media .button.launcher,
 .form-actions .form-submit,
 .form-actions #edit-delete,
 .form-actions #edit-delete--2 {

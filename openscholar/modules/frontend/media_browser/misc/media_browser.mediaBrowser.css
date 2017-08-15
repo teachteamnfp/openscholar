@@ -330,6 +330,8 @@ div[file-edit] .control button,
 .media-browser-pane #media-browser-file-select {
     left: 36%;
     width: 160px;
+    background-color: #3d9b13;
+    border: none;
 }
 .field-widget-media-draggable-file span.ng-binding.ng-scope {
     width: 80px;
