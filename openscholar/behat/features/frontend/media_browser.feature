@@ -227,3 +227,32 @@ Feature: Media Browser
       And I fill in "URL or HTML" with "<iframe src=\"https://trusted.domain\"></iframe>"
       And I press the "Submit" button
       And I should wait for "File Edit" directive to "appear"
+
+  @frontend @javascript
+  Scenario: Test the node save after inserting a file through WYSIWYG editor and deleting it through media browser immediately before saving
+    Given I am logging in as "john"
+      And I wait for page actions to complete
+      And I edit the entity "node" with title "About"
+      And I sleep for "10"
+     When I press "Media browser"
+      And I wait "1 second" for the media browser to open
+      And I should wait for the text "Please wait while we get information on your files." to "disappear"
+      And I drop the file "kitten-3.jpg" onto the "Drag and drop files here." area
+      And I should wait for "File Edit" directive to "appear"
+      And I fill in the field "Alt Text" with the node "Cute kitten"
+      And I click on the "Save" control
+      And I sleep for "10"
+      And Switch to the iframe "mediaStyleSelector"
+      And I wait for page actions to complete
+      And I click on link "Submit" under "media-browser-page"
+      And the overlay closes
+      And I press "Media browser"
+      And I wait "1 second" for the media browser to open
+      And I should wait for the text "Please wait while we get information on your files." to "disappear"
+      And I click on "Previously uploaded files" button in the media browser
+     Then I should see "kitten-3.jpg" in a ".media-row" element
+      And I click on the first "Delete" control in the ".media-row" element
+      And I press "Delete"
+      And I press "Cancel"
+      And I press "Save"
+     Then I should see "Page About has been updated"

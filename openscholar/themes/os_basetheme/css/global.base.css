@@ -633,7 +633,7 @@ ul ul ul ul {
     margin-bottom: 15px;
 }
 .sidebar .block-boxes-os_boxes_facetapi_vocabulary.collapsible .item-list,
-.sidebar .block-boxes-os_boxes_facetapi_vocabulary .item-list:last-chld {
+.sidebar .block-boxes-os_boxes_facetapi_vocabulary .item-list:last-child {
     margin-bottom: 0;
 }
 .boxes-box ul.featured-links {
