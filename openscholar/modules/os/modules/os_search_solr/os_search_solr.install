@@ -207,3 +207,12 @@ function os_search_solr_update_7005() {
   }
   apachesolr_environment_variable_set($env_id, 'field_bias', $fb);
 }
+
+/**
+ * Remove any trace to the old search box.
+ */
+function os_search_solr_update_7006() {
+
+  // Remove the search blocks that were added since this ran.
+  os_search_solr_update_7002();
+}
