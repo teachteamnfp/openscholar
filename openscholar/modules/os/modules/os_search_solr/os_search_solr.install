@@ -118,16 +118,18 @@ function os_search_solr_update_7002() {
     unset($blocks['blocks']['os_search_db-site-search']);
 
     $key = 'os_search_solr-site-search';
+    $new_key = 'boxes-solr_search_box';
     if (in_array($key, array_keys($blocks['blocks']))) {
 
       // Replace the old one with the new instance.
       $old_block = $blocks['blocks'][$key];
-      $blocks['blocks'][$key] = array(
+      $blocks['blocks'][$new_key] = array(
         'module' => 'boxes',
         'delta' => 'solr_search_box',
         'region' => $old_block['region'],
         'weight' => $old_block['weight'],
       );
+      unset($blocks['blocks'][$key]);
     }
 
     $override->value = serialize($blocks);
