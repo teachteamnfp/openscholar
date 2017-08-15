@@ -106,8 +106,7 @@
 
 #site-creation-container a.button{
   margin: 0;
-  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-  background: none;
+   background: none;
   text-decoration: none;
   background-color: #696969;
   border: none;
@@ -116,12 +115,11 @@
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 12px;
+
 }
 
 #site-creation-container a:hover.button{
   margin: 0;
-  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
   background: none;
   text-decoration: none;
   background-color: #3f3f3f;
@@ -131,7 +129,7 @@
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 12px;
+ 
 }
 
 #site-creation-container #footer-container {
@@ -154,7 +152,7 @@
 }
 
 #site-creation-container .popup{
-  font-size: 11px;
+ 
   border: 1px solid #CCC;
   margin: 3px 5px;
   padding: 5px;
@@ -174,7 +172,7 @@
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 12px;
+
 }
 
 #site-creation-container .stepDisable {
@@ -186,7 +184,7 @@
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 12px;
+ 
 }
 
 #site-creation-container .preNxt {
@@ -198,7 +196,7 @@
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 12px;
+
 }
 
 #site-creation-container .preNxt:disabled{
@@ -210,7 +208,7 @@
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 12px;
+ 
 }
 
 #site-creation-container p{
