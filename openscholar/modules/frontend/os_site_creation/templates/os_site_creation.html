@@ -33,9 +33,9 @@
                 <span><input type="text" name="individualScholar" ng-model="individualScholar" formcheck-Directive ng-keyup="clearRest('individualScholar');" id="individual-scholar"></span>
               </div>
               <div ng-messages="siteCreationform.individualScholar.$error">
-                <div class="error-msg" ng-message="permission">You don't have permission to create site</div>
-                <div class="error-msg" ng-message="isinvalid">Invalid URL specified</div>
-                <div class="error-msg" ng-message="sitename">Site name is already taken</div>
+                <div class="message error" ng-message="permission">You don't have permission to create site</div>
+                <div class="message error" ng-message="isinvalid">Invalid URL specified</div>
+                <div class="message error" ng-message="sitename">Site name is already taken</div>
               </div>
             </div>
           </div>
@@ -49,9 +49,9 @@
                 <span><input type="text" name="projectLabSmallGroup" ng-model="projectLabSmallGroup" formcheck-Directive ng-keyup="clearRest('projectLabSmallGroup');" id="project-lab-small-group"></span>
               </div>
               <div ng-messages="siteCreationform.projectLabSmallGroup.$error">
-                <div class="error-msg" ng-message="permission">You don't have permission to create site</div>
-                <div class="error-msg" ng-message="isinvalid">Invalid URL specified</div>
-                <div class="error-msg" ng-message="sitename">Site name is already taken</div>
+                <div class="message error" ng-message="permission">You don't have permission to create site</div>
+                <div class="message error" ng-message="isinvalid">Invalid URL specified</div>
+                <div class="message error" ng-message="sitename">Site name is already taken</div>
               </div>
             </div>
           </div>
@@ -65,9 +65,9 @@
                 <span><input type="text" name="departmentSchool" ng-model="departmentSchool" formcheck-Directive ng-keyup="clearRest('departmentSchool');" id="department-school"></span>
               </div>
               <div ng-messages="siteCreationform.departmentSchool.$error">
-                <div class="error-msg" ng-message="permission">You don't have permission to create site</div>
-                <div class="error-msg" ng-message="isinvalid">Invalid URL specified</div>
-                <div class="error-msg" ng-message="sitename">Site name is already taken</div>
+                <div class="message error" ng-message="permission">You don't have permission to create site</div>
+                <div class="message error" ng-message="isinvalid">Invalid URL specified</div>
+                <div class="message error" ng-message="sitename">Site name is already taken</div>
               </div>
             </div>
           </div>
@@ -85,18 +85,23 @@
                 <a ng-click="toggleFunc()">Change</a>
               </div>
               <div ng-show="showAll">
-                <p><input type="radio" ng-model="vsite.value" value="0"><b>Public on web</b><br>
-                  Anyone on the internet can view your site. Your site will be shown in search results. No sign-inrequired.
-                </p>
-                <p><input type="radio" ng-model="vsite.value" value="1"><b>Invite only during site creation</b><br>
-                  Only site members can view your site. Your site will not be indexed by search engines.
-                </p>
-                <p><input type="radio" ng-model="vsite.value" value="2"><b>Anyone with a link</b><br>
-                  Anyone who has the URL to your site can view your site. Your site will not be indexed by search engines.
-                </p>
-                <p><input type="radio" ng-model="vsite.value" value="3"><b>Harvard Community</b><br>
-                  Only the harvard community can access your site. Sign-in via HarvardKey required.
-                </p>
+               <input type="radio" ng-model="vsite.value" value="0">
+              <label class="option">Public on web<br>
+                  <span class="description">Anyone on the internet can view your site. Your site will be shown in search results. No sign-inrequired.</span>
+              </label>
+              
+               <input type="radio" ng-model="vsite.value" value="1">
+                <label class="option">Invite only during site creation<br>
+                  <span class="description">Only site members can view your site. Your site will not be indexed by search engines.</span>
+               </label>
+               <input type="radio" ng-model="vsite.value" value="2">
+                <label class="option">Anyone with a link<br>
+                 <span class="description"> Anyone who has the URL to your site can view your site. Your site will not be indexed by search engines.</span>
+              </label>
+               <input type="radio" ng-model="vsite.value" value="3">
+                <label class="option">Harvard Community<br>
+                  <span class="description">Only the harvard community can access your site. Sign-in via HarvardKey required.</span>
+                </label>
               </div>
             </div>
             <div class="visibility right"><span class="enlarged-text"><a href="#">Learn more about site visibility</a></span></div>
@@ -134,19 +139,19 @@
         <div id="body-container-group-page-2">
           <div class="visibility">
             <div>
-              <p><input type="radio" ng-model="contentOption.value" value="os_department_minimal">
-              <span class="enlarged-text"><b> Minimal setup, with no pre-set menu links and pages </b></span>
-              </p>
-              <p><input type="radio" ng-model="contentOption.value" value="os_department">
-              <span class="enlarged-text"><b>Academic Department with pre-set menu links and pages</b></span><br>
-              Academic, Research, and People links will be added to the main menu. Don't worry, you'll be able to change this later if you are't sure now.
-              </p>
-              <p><input type="radio" ng-model="contentOption.value" value="hwp_administrative">
-              <span class="enlarged-text"><b>Administrative Department with pre-set menu links and pages</b></span><br>
-              Academic2, Research2, and People2 links will be added to the main menu. Don't worry, you'll be able to change this later if you are't sure now.
-              </p>
+              <input type="radio" ng-model="contentOption.value" value="os_department_minimal">
+             <label class="option"> Minimal setup, with no pre-set menu links and pages</label>
+              
+              <input type="radio" ng-model="contentOption.value" value="os_department">
+              <label class="option">Academic Department with pre-set menu links and pages<br>
+              <span class="description">Academic, Research, and People links will be added to the main menu. Don't worry, you'll be able to change this later if you are't sure now.</span>
+              </label>
+             <input type="radio" ng-model="contentOption.value" value="hwp_administrative">
+              <label class="option">Administrative Department with pre-set menu links and pages<br>
+              <span class="description">Academic2, Research2, and People2 links will be added to the main menu. Don't worry, you'll be able to change this later if you are't sure now.</span>
+              </label>
             </div>
-            <div class="visibility right"><span class="enlarged-text"><a href="#">Learn more about starter content options</a></span></div>
+            <div class="visibility right"><div class="help-link"><a href="#">Learn more about starter content options</a></div></div>
           </div>
         </div>
       </div>
