@@ -66,11 +66,7 @@
   border: 2px solid #CCC;
   background-color: #EEE;
 }
-#site-creation-container #body-container-group-page-2 {
-  margin: 130px 5px;
-  overflow: hidden;
-  border: 2px solid #CCC;
-}
+
 
 #site-creation-container .visibility{
   float: left;
@@ -186,9 +182,9 @@
 }
 
 #site-creation-container .preNxt {
-  background-color: #4CAF50;
+  background-color: #FFF;
   border: none;
-  color: white;
+  color: #4CAF50;
   padding: 10px 16px;
   border-radius: 3px;
   text-align: center;
@@ -196,11 +192,21 @@
   display: inline-block;
 
 }
+#site-creation-container #nxt .preNxt::before {
+  content:'>';
+  position:absolute;
+right:45px;
+}
+#site-creation-container #pre .preNxt::before {
+  content:'<';
+  position:absolute;
+left:45px;
+}
 
 #site-creation-container .preNxt:disabled{
-  background-color: #CCC;
+  background-color: #FFF;
   border: none;
-  color: white;
+  color: #CCC;
   padding: 10px 16px;
   border-radius: 3px;
   text-align: center;
