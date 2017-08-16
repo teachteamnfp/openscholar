@@ -1272,6 +1272,8 @@ function os_events_views_pre_view(&$view, &$display_id, &$args) {
     return;
   }
 
+  $view->is_cacheable = false;
+
   if (!in_array($display_id, array('block_2', 'block_1'))) {
     $buttons = array(
       'subscribe' => 'calendar/upcoming/all/export.ics',
