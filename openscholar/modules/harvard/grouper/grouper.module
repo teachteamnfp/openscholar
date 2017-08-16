@@ -251,11 +251,7 @@ function grouper_user_can_access($group = null, $user = null) {
   $user_groups = array_map('reduce_groups', $user->field_grouper_path[LANGUAGE_NONE]);
   $site_groups = array_map('reduce_groups', $group->field_grouper_path[LANGUAGE_NONE]);
 
-  watchdog('grouper', 'groups intersection check');
-  watchdog('grouper', print_r($user_groups, 1));
-  watchdog('grouper', print_r($site_groups, 1));
   $common = array_intersect($user_groups, $site_groups);
-  watchdog('grouper', 'intersection: '.print_r($common, 1));
   // $common will contains all groups both the user and group are a part of. If there's anything at all, return true.
   return count($common) > 0;
 }
@@ -279,10 +275,12 @@ function grouper_node_access($node, $op, $account) {
   if ($items[0]['value'] == GROUPER_PRIVACY_LEVEL) {
     if (grouper_user_can_access($group, $account)) {
       // ignore instead of allow to give other modules a chance to deny access
+      watchdog('grouper', 'user allowed access');
       return NODE_ACCESS_IGNORE;
     }
     else {
       // user does not have a linked account
+      watchdog('grouper', 'user denied access');
       return NODE_ACCESS_DENY;
     }
   }
