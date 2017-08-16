@@ -636,9 +636,9 @@ function cp_content_preprocess_page(&$vars) {
     // Get content type options.
     $content_types = array();
     $exempted_content_types = array(
-      'blog_import' => 'Blog entry import',
+      'bio' => 'Bio',
+      'cv' => 'CV',
       'department' => 'Department Site',
-      'feed_importer' => 'Feed importer',
       'personal' => 'Personal Site',
       'project' => 'Project Site',
       'slideshow_slide' => 'Slideshow Image',

@@ -9,12 +9,12 @@ class NodeRestfulBase extends OsbulkOperationEnitity {
    *  Array keyed by bundle machine, and the RESTful resource as the value.
    */
   protected $bundles = array(
-    'blog_import' => 'Blog entry import',
+    'bio' => 'Bio',
+    'cv' => 'CV',
     'department' => 'Department Site',
-    'feed_importer' => 'Feed importer',
     'personal' => 'Personal Site',
     'project' => 'Project Site',
-    'slideshow_slide' => 'Slideshow Image'
+    'slideshow_slide' => 'Slideshow Image',
     );
 
   /**
