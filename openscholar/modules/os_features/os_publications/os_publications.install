@@ -1774,3 +1774,16 @@ function os_publications_update_7056() {
     os_publications_revert_citeproc_style($citation);
   }
 }
+
+/**
+ * Enable os_orcid module.
+ */
+function os_publications_update_7057() {
+  module_enable(array('os_orcid'));
+  // place it behind os_publications and citation_distribute modules
+  db_update('system')
+    ->fields(array('weight' => 100))
+    ->condition('name', 'os_orcid', '=')
+    ->condition('type', 'module', '=')
+    ->execute();
+}
