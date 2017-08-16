@@ -249,6 +249,8 @@ function grouper_user_can_access($group = null, $user = null) {
   $site_groups = $group->field_grouper_path[LANGUAGE_NONE];
 
   watchdog('grouper', 'groups intersection check');
+  watchdog('grouper', print_r($user_groups, 1));
+  watchdog('grouper', print_r($site_groups, 1));
   $common = array_intersect($user_groups, $site_groups);
   // $common will contains all groups both the user and group are a part of. If there's anything at all, return true.
   return count($common) > 0;
