@@ -32,6 +32,7 @@
   padding: 3px 10px;
   float: left;
   width: 30%;
+  font-size: 1.2em;
 }
 
 #site-creation-container .clear{
@@ -148,11 +149,10 @@
 }
 
 #site-creation-container .popup{
- 
-  border: 1px solid #CCC;
-  margin: 3px 5px;
-  padding: 5px;
-  height: 78px;
+ border: 1px solid #CCC;
+ margin: 3px 5px;
+ padding: 5px;
+ /* height: 78px; */
 }
 
 #site-creation-container .error-msg{
@@ -163,12 +163,16 @@
   background-color: #4CAF50;
   border: none;
   color: white;
-  padding: 10px 16px;
+  /* padding: 10px 16px; */
   border-radius: 50%;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-
+  font-weight: bold;
+  height: 50px;
+  width: 50px;
+  /* padding: 15px 15px; */
+  line-height: 50px;
 }
 
 #site-creation-container .step.enable {
@@ -190,6 +194,7 @@
   text-align: center;
   text-decoration: none;
   display: inline-block;
+  font-weight:bold;
 
 }
 #site-creation-container #nxt .preNxt::before {
@@ -221,7 +226,7 @@ left:45px;
 }
 
 #site-creation-container input[type=text]{
-  border: 2px solid #CCC;
+  /* border: 2px solid #CCC; */
 }
 
 #site-creation-container #body-container-page3 {
