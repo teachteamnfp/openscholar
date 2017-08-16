@@ -163,27 +163,25 @@
   color: red; padding: 5px;
 }
 
-#site-creation-container .stepEnable {
+#site-creation-container .step {
   background-color: #4CAF50;
   border: none;
   color: white;
   padding: 10px 16px;
-  border-radius: 20px;
+  border-radius: 50%;
   text-align: center;
   text-decoration: none;
   display: inline-block;
 
 }
 
-#site-creation-container .stepDisable {
+#site-creation-container .step.enable {
+  background-color: #4CAF50;
+
+}
+
+#site-creation-container .step.disable {
   background-color: #CCC;
-  border: none;
-  color: white;
-  padding: 10px 16px;
-  border-radius: 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
  
 }
 
