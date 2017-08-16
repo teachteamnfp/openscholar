@@ -29,6 +29,7 @@ function os_orcid_cp_settings() {
       '#type' => 'textfield',
       '#default_value' => variable_get('orcidId'),
       '#title' => t('ORCID ID'),
+      '#prefix' => '<label>Recurring Import From</label>',
       '#description' => t('Enter your ORCID ID, It is in the format XXXX-XXXX-XXXX-XXXX and is available at <a href="http://orcid.org">http://orcid.org</a>.  When this is set, your publication information will be imported to your site.'),
       '#column' => 'right',
       '#weight' => 1,
