@@ -102,7 +102,7 @@
             $scope.disableBulkOptions = (filteredData.length) == 0 ? true : false;
           }
           if (angular.isDefined(params.filter().label)) {
-            filteredData = $filter('filter')(filteredData, params.filter().label);
+            filteredData = $filter('filter')(filteredData, {'label': params.filter().label});
             $scope.disableBulkOptions = (filteredData.length) == 0 ? true : false;
           }
 
