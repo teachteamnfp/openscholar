@@ -245,11 +245,8 @@ function grouper_user_can_access($group = null, $user = null) {
   }
 
   // we are only here if both the user and the group have data in this field. Compare them
-  function reduce_groups($item) {
-    return $item['value'];
-  }
-  $user_groups = array_map('reduce_groups', $user->field_grouper_path[LANGUAGE_NONE]);
-  $site_groups = array_map('reduce_groups', $group->field_grouper_path[LANGUAGE_NONE]);
+  $user_groups = array_map(function ($item) { return $item['value']; }, $user->field_grouper_path[LANGUAGE_NONE]);
+  $site_groups = array_map(function ($item) { return $item['value']; }, $group->field_grouper_path[LANGUAGE_NONE]);
 
   $common = array_intersect($user_groups, $site_groups);
   // $common will contains all groups both the user and group are a part of. If there's anything at all, return true.
@@ -275,12 +272,10 @@ function grouper_node_access($node, $op, $account) {
   if ($items[0]['value'] == GROUPER_PRIVACY_LEVEL) {
     if (grouper_user_can_access($group, $account)) {
       // ignore instead of allow to give other modules a chance to deny access
-      watchdog('grouper', 'user allowed access');
       return NODE_ACCESS_IGNORE;
     }
     else {
       // user does not have a linked account
-      watchdog('grouper', 'user denied access');
       return NODE_ACCESS_DENY;
     }
   }
