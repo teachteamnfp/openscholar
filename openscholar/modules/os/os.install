@@ -1006,7 +1006,7 @@ function os_update_7054() {
 /**
  * Enable os_orcid module.
  */
-function os_update_7055() {
+function os_update_7060() {
   module_enable(array('os_orcid'));
   // place it behind os_publications and citation_distribute modules
   db_update('system')
