@@ -209,8 +209,8 @@ function os_events_gcal_create_calendar() {
 
     # Ensure we're gathering fresh event data (in case the user just came from another vsite)
     $view->is_cacheable = FALSE;
-    $view->display_handler->override_option('cache', array('type' => 'none'));
     $view->execute_display($display_id, $args);
+    $view->display_handler->override_option('cache', array('type' => 'none'));
   }
 
   foreach ($view->result as $e) {
