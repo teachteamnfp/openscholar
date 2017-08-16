@@ -233,8 +233,17 @@ function os_events_gcal_create_calendar() {
     $calendarService->events->insert($calendar->getId(), $event);
   }
 
+  // Do not cache this result
+  unset($view->result);
+
   drupal_set_message("Calendar export completed", 'Success');
   drupal_goto(url('/' . $vsite->group->purl . '/calendar'));
+}
+
+function os_events_views_post_render($view, $output, &$cache) {
+  if ($view->name == 'os_events') {
+    unset($cache);
+  }
 }
 
 /**
@@ -260,6 +269,12 @@ function os_events_event_change_notification($registration, $params, $mail_key) 
   $params['@event-new-date'] = date('l, F j, Y g:ia', strtotime($params['@event-new-date'] .' UTC'));
   $params['@user-name'] = $registration->field_full_name[LANGUAGE_NONE][0]['value'];
   drupal_mail('os_events', $mail_key, $to, $language, $params, $from);
+}
+
+function os_events_views_pre_build(&$view) {
+  if ($view->name == 'os_events') {
+    $view->display_handler->override_option('cache', array('type' => 'none'));
+  }
 }
 
 /**
