@@ -245,8 +245,11 @@ function grouper_user_can_access($group = null, $user = null) {
   }
 
   // we are only here if both the user and the group have data in this field. Compare them
-  $user_groups = $user->field_grouper_path[LANGUAGE_NONE];
-  $site_groups = $group->field_grouper_path[LANGUAGE_NONE];
+  function reduce_groups($item) {
+    return $item['value'];
+  }
+  $user_groups = array_map('reduce_groups', $user->field_grouper_path[LANGUAGE_NONE]);
+  $site_groups = array_map('reduce_groups', $group->field_grouper_path[LANGUAGE_NONE]);
 
   watchdog('grouper', 'groups intersection check');
   watchdog('grouper', print_r($user_groups, 1));
