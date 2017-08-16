@@ -4018,4 +4018,38 @@ JS;
     $this->visit("$vsite/$unaliased_path/$appendage");
   }
 
+  /**
+   * Visit the 'Add class material' path
+   *
+   * @When /^I visit the 'Add class material' path for the class at page "([^"]*)" in vsite "([^"]*)"$/
+   */
+  public function iVisitAddClassMaterialPage($url, $vsite) {
+    $unaliased_path = drupal_lookup_path('source', $url);
+
+    # Check the url with the vsite prepended
+    if (! $unaliased_path) {
+      $unaliased_path = drupal_lookup_path('source', "$vsite/$url");
+    }
+
+    error_log("EAM Entering " . __FILE__ . ":" . __LINE__ . ", \$unaliased_path = " . var_export($unaliased_path, true));
+
+    if (! $unaliased_path) {
+      throw new Exception("Could not find an unaliased path for '$url' on vsite '$vsite' with '$appendage' appended.");
+    }
+
+    $this->visit("$vsite/$unaliased_path/$appendage");
+  }
+
+
+  /**
+   * Visit the 'Add class material' path
+   *
+   * @Then /^I should see breadcrumbs "([^"]*)"$/
+   */
+  public function iShouldSeeBreadcrumbs($breadcrumb) {
+
+    error_log("EAM Entering " . __FILE__ . ":" . __LINE__ . ", \$this = " . var_export($this, true));
+
+    return false;
+  }
 }
