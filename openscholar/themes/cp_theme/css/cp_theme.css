@@ -8,6 +8,10 @@ div.messages ul li {
     font-family: helvetica, arial, sans-serif;
 }
 
+.ui-dialog * {
+    font-size: 14px;
+}
+
 #page {
     padding: 0;
 }
