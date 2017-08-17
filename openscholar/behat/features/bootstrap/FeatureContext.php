@@ -4031,8 +4031,6 @@ JS;
       $unaliased_path = drupal_lookup_path('source', "$vsite/$url");
     }
 
-    error_log("EAM Entering " . __FILE__ . ":" . __LINE__ . ", \$unaliased_path = " . var_export($unaliased_path, true));
-
     if (! $unaliased_path) {
       throw new Exception("Could not find an unaliased path for '$url' on vsite '$vsite' with '$appendage' appended.");
     }
