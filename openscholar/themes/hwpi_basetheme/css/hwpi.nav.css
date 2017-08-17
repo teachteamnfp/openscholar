@@ -312,6 +312,7 @@ ul.nice-menu ul {
 #branding_footer a,
 #branding_header a {
 	color:#FFF;
+	text-decoration: underline;
 }
 
 #branding_header a:hover {

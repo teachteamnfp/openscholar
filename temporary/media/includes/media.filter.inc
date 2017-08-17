@@ -93,8 +93,9 @@ function _media_filter_add_file_usage_from_fields($entity_type, $entity) {
   // the file_usage table will have no entries for this because of the delete
   // query above.
   foreach ($entity_files as $fid => $entity_count) {
-    $file = file_load($fid);
-    file_usage_add($file, 'media', $entity_type, $entity_id, $entity_count);
+    if ($file = file_load($fid)) {
+      file_usage_add($file, 'media', $entity_type, $entity_id, $entity_count);
+    }
   }
 
 }

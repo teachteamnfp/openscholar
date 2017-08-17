@@ -1,6 +1,10 @@
 /* update */
 body,
-.ui-dialog * {
+.ui-dialog *,
+.message-wrapper a,
+.message-wrapper,
+.message-wrapper h2,
+div.messages ul li {
     font-family: helvetica, arial, sans-serif;
 }
 
@@ -36,9 +40,7 @@ a {
     color: #215990;
 }
 
-strong {
-    color: #444;
-}
+
 
 fieldset {
     background: #f1f1f1;
@@ -64,9 +66,12 @@ textarea,
     font-size: 13px;
     height: auto;
     padding: 6px 7px;
-    background: url('../../os_basetheme/images/form-input-bg.gif') repeat-x scroll left top #FFFFFF;
+    background: none;
     border: 1px solid #CDCDCD;
     width:98%;
+        -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
 }
 
 #og-vocabulary-add-more-wrapper select.form-select {
@@ -182,25 +187,24 @@ a.button,
 .ui-dialog.ap-settings-form input[type="submit"],
 a#edit-cancel,
 a.form-cancel {
-    cursor: pointer;
+      cursor: pointer;
     padding: 5px 12px;
     margin-bottom: 1em;
     margin-right: 1em;
-    /* LTR */
-    
-    color: #5a5a5a;
+    color: #fff;
     text-align: center;
     font-weight: normal;
     font-size: 1.077em;
     font-family: "Lucida Grande", Verdana, sans-serif;
-    border: 1px solid #e4e4e4;
-    border-bottom: 1px solid #b4b4b4;
-    border-left-color: #d2d2d2;
-    border-right-color: #d2d2d2;
-    background: url('/themes/seven/images/buttons.png') 0 0 repeat-x;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    border-radius: 3px;
+    border: 1px solid #888;
+    border-bottom: 1px solid #888;
+    border-left-color: #888;
+    border-right-color: #888;
+    background: #888;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    padding: 8px 15px;
 }
 
 /* SAVE BUTTON SPINNER */
@@ -218,8 +222,8 @@ a.form-cancel {
     font-size: 7px;
     position: relative;
     text-indent: -9999em;
-    border-top: .5em solid rgba(136, 136, 136, 1);
-    border-right: .5em solid rgba(136, 136, 136, 1);
+    border-top: .5em solid rgb(255, 255, 255);
+    border-right: .5em solid rgb(255, 255, 255);
     border-bottom: .5em solid transparent;
     border-left: .5em solid transparent;
     -webkit-transform: translateZ(0);
@@ -428,6 +432,14 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
 
 .page-cp .ui-dialog-titlebar {
     margin-bottom: 22px;
+}
+
+#overlay-title-wrapper h1 {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 1050px;
+    display: block;
+    overflow: hidden;
 }
 
 .ui-dialog.ap-settings-form {
@@ -1837,4 +1849,7 @@ body.page-node-revisions .node {
 }
 div.no-bold {
     font-weight: normal;
+}
+#edit-og-vocabulary a.tabledrag-handle .handle{
+    display: none;
 }
