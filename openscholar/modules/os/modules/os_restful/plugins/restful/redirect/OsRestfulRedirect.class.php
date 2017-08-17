@@ -36,7 +36,7 @@ class OsRestfulRedirect extends \RestfulBase implements \RestfulDataProviderInte
 
     // Check for empty source and redirect
     if (empty($redirect->source) || empty($redirect->redirect)) {
-      $error->msg[] = t("Neither Local path nor Target URL can be left empty.");
+      $error->msg[] = t("The redirect from or to fields may not be submitted without a value.");
       $error->msg_type = 'error';
       return $this->renderRedirect($error);
     }
