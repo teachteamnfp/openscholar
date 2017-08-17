@@ -22,7 +22,8 @@ function grouper_cp_settings() {
       '#id' => 'privacy',
       '#title' => t('Site Visibility'),
       '#weight' => 10,
-      '#help_link' => l(t('Learn more about site visibility'), 'http://docs.openscholar.harvard.edu/global-site-settings#site-visibility', array('attributes' => array('target' => '_blank')))
+      '#help_link' => l(t('Learn more about site visibility'), 'http://docs.openscholar.harvard.edu/global-site-settings#site-visibility', array('attributes' => array('target' => '_blank'))),
+      '#group_validate' => 'grouper_group_validate',
     ),
     'rest_submit' => 'grouper_save_groups',
   );
@@ -57,4 +58,15 @@ function grouper_save_groups($vals) {
   if (($current_vsite_access + $val) != 5 && $current_vsite_access != $val) {
     cp_clear_site_cache();
   }
+}
+
+/**
+ * Validate grouper values
+ */
+function grouper_group_validate($values) {
+  if (!$values['grouper']) {
+    drupal_set_message(t('You did not select any Harvard community groups.'), 'error');
+    return FALSE;
+  }
+  return TRUE;
 }
