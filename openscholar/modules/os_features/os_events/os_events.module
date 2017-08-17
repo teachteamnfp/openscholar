@@ -220,17 +220,25 @@ function os_events_gcal_create_calendar() {
     $event->setDescription($e->_field_data['nid']['entity']->body[LANGUAGE_NONE][0]['value']);
     $event->setLocation($e->_field_data['nid']['entity']->field_event_location[LANGUAGE_NONE][0]['value']);
     $event->setSummary($e->_field_data['nid']['entity']->title);
-    //    $event->setTimezone?;
 
-    $dt1 = new DateTime($e->_field_data['nid']['entity']->field_date[LANGUAGE_NONE][0]['value'] . ' ' .
-                        $e->_field_data['nid']['entity']->field_date[LANGUAGE_NONE][0]['timezone_db']);
-    $dt2 = new DateTime($e->_field_data['nid']['entity']->field_date[LANGUAGE_NONE][0]['value2'] . ' ' .
-                        $e->_field_data['nid']['entity']->field_date[LANGUAGE_NONE][0]['timezone_db']);
-    $calendarDateTime = new Google_Service_Calendar_EventDateTime();
-    $calendarDateTime->setDateTime($dt1->format(DateTime::RFC3339));
-    $event->setStart($calendarDateTime);
-    $calendarDateTime->setDateTime($dt2->format(DateTime::RFC3339));
-    $event->setEnd($calendarDateTime);
+    $tz = ($e->_field_data['nid']['entity']->field_date[LANGUAGE_NONE][0]['timezone']) ? 
+            new DateTimeZone($e->_field_data['nid']['entity']->field_date[LANGUAGE_NONE][0]['timezone']) :
+            new DateTimeZone('America/New_York');
+
+    $dt1 = new DateTime($e->field_data_field_date_field_date_value);
+    $dt1->setTimezone($tz);
+    $dt2 = new DateTime($e->field_data_field_date_field_date_value2);
+    $dt2->setTimezone($tz);
+
+    $calendarDateTime1 = new Google_Service_Calendar_EventDateTime();
+    $calendarDateTime2 = new Google_Service_Calendar_EventDateTime();
+    $calendarDateTime1->setDateTime($dt1->format(DateTime::RFC3339));
+    $calendarDateTime1->setTimeZone($tz);
+    $event->setStart($calendarDateTime1);
+    $calendarDateTime2->setDateTime($dt2->format(DateTime::RFC3339));
+    $calendarDateTime2->setTimeZone($tz);
+    $event->setEnd($calendarDateTime2);
+
     $calendarService->events->insert($calendar->getId(), $event);
   }
 
