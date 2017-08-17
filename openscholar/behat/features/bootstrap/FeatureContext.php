@@ -4040,15 +4040,22 @@ JS;
     $this->visit("$vsite/$unaliased_path/$appendage");
   }
 
-
   /**
    * Visit the 'Add class material' path
    *
-   * @Then /^I should see breadcrumbs "([^"]*)"$/
+   * @Then /^I should see breadcrumb "([^"]*)"$/
+   *    e.g., HOME / CLASSES / POLITICAL SCIENCE 101 / CLASS MATERIAL
    */
-  public function iShouldSeeBreadcrumbs($breadcrumb) {
+  public function iShouldSeeBreadcrumb($breadcrumb) {
 
-    error_log("EAM Entering " . __FILE__ . ":" . __LINE__ . ", \$this = " . var_export($this, true));
+    $page = $this->getSession()->getPage()->getContent();
+
+    # Ignore HTML tags between breadcrumb separators
+    $breadcrumb_pattern = preg_replace("/\s+\/\s+/", ".*\/.*", $breadcrumb);
+
+    if (preg_match("/$breadcrumb_pattern/", $page)) {
+      return true;
+    }
 
     return false;
   }
