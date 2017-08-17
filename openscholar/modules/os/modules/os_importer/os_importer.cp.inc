@@ -148,7 +148,7 @@ function os_importer_cp_settings() {
             'panes' => array('upload', 'library'),
             'hide_helpicon' => true,
             'droppable_text' => t('Drag and drop file here.'),
-            'upload_text' => t('Select file to Add'),
+            'upload_text' => t('Select file to import'),
             'max-filesize' => '500kb',
             'types' => $extension_types,
           ),
