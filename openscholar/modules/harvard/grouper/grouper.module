@@ -157,6 +157,31 @@ function grouper_get_field_instance($entity_type, $bundle) {
 }
 
 /**
+ *  Fetches the groups for a given huid
+ */
+function grouper_groups_for_huid($huid, $accessLevel) {
+  $grouper_url = variable_get('grouper_url', 'https://{user}:{pass}@grouper-ws-prod-pub.gslb.harvard.edu/grouper-ws-facade/v1/user/huid:{huid}/{accessLevel}');
+  $replacements = array(
+    '{user}' => variable_get('grouper_user'),
+    '{pass}' => variable_get('grouper_pass'),
+    '{huid}' => $huid,
+    '{accessLevel}' => $accessLevel,
+  );
+  $grouper_url = strtr($grouper_url, $replacements);
+
+  $response = drupal_http_request($grouper_url);
+  if ($response->code == 200) {
+    $raw_data = $response->data;
+
+    return json_decode($raw_data);
+  }
+  else {
+    watchdog('grouper', 'Failure to connect to Grouper service: '.$response->code.': '.$response->error);
+    return FALSE;
+  }
+}
+
+/**
  * Implements hook_user_login().
  */
 function grouper_user_login(&$edit, $account) {
@@ -168,22 +193,9 @@ function grouper_user_login(&$edit, $account) {
   // get the pin of the user's account
   $huid = pinserver_authenticate_get_user_huid($account->uid);
 
-  // call grouper service for all groups this user can see
-  $grouper_url = variable_get('grouper_url', 'https://{user}:{pass}@grouper-ws-prod-pub.gslb.harvard.edu/grouper-ws-facade/v1/user/huid:{huid}/{accessLevel}');
-  $replacements = array(
-    '{user}' => variable_get('grouper_user'),
-    '{pass}' => variable_get('grouper_pass'),
-    '{huid}' => $huid,
-    '{accessLevel}' => 'groups',
-  );
-  $grouper_url = strtr($grouper_url, $replacements);
+  $groups = grouper_groups_for_huid($huid, 'groups');
 
-  $response = drupal_http_request($grouper_url);
-  if ($response->code == 200) {
-    $raw_data = $response->data;
-
-    $groups = json_decode($raw_data);
-
+  if ($groups !== FALSE) {
     if (count($groups)) {
        $account->field_grouper_path = array(
          LANGUAGE_NONE => array()
@@ -234,18 +246,37 @@ function grouper_user_can_access($group = null, $user = null) {
     return true;
   }
 
-  // if the site has groups, but the user is anonymous, deny access
+  // if the site has groups, but the user is anonymous.
+  // User could be logged in to pin at this point
+  $user_groups = array();
   if (user_is_anonymous()) {
-    return false;
+    if ($pin_user = pinserver_get_user()) {
+      if (isset($_SESSION['user_groups'])) {
+        $user_groups = $_SESSION['user_groups'];
+      }
+      else {
+        $user_groups = grouper_groups_for_huid($pin_user['raw_huid'], 'groups');
+        if ($user_groups === FALSE) {
+          return false;
+        } else {
+          $_SESSION['user_groups'] = $user_groups;
+        }
+      }
+    }
+    else {
+      return false;
+    }
   }
+  else {
+    // if the site has groups, but the user is not associated with any, deny access
+    if (!isset($user->field_grouper_path)) {
+      return false;
+    }
 
-  // if the site has groups, but the user is not associated with any, deny access
-  if (!isset($user->field_grouper_path)) {
-    return false;
+    $user_groups = array_map(function ($item) { return $item['value']; }, $user->field_grouper_path[LANGUAGE_NONE]);
   }
 
   // we are only here if both the user and the group have data in this field. Compare them
-  $user_groups = array_map(function ($item) { return $item['value']; }, $user->field_grouper_path[LANGUAGE_NONE]);
   $site_groups = array_map(function ($item) { return $item['value']; }, $group->field_grouper_path[LANGUAGE_NONE]);
 
   $common = array_intersect($user_groups, $site_groups);
