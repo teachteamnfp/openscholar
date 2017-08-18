@@ -43,7 +43,7 @@ body:not(.overlay) .node-form {
 a {
     color: #215990;
 }
-
+.redirect-add,
 a.button:link, a.button:visited, a.button:hover, a.button:active {
 	color:#FFF;
 }
@@ -191,7 +191,7 @@ html.js input.throbbing {
     color: #FFF;
     font-weight: bold;
 }
-
+.redirect-add,
 body.page-node-revisions ul.action-links a,
 input.form-submit, 
 a.button,
@@ -217,6 +217,10 @@ a.form-cancel {
     -webkit-border-radius: 2px;
     border-radius: 2px;
     padding: 8px 15px;
+}
+/* small button */
+.redirect-add {
+ padding: 4px 8px;
 }
 
 .page-os-widget-add-os-boxes-media .button.launcher {
@@ -279,6 +283,7 @@ a.form-cancel {
 a.form-cancel:hover {
     text-decoration: none;
 }
+.redirect-add,
 .page-os-widget-add-os-boxes-media .button.launcher,
 .form-actions .form-submit,
 .form-actions #edit-delete,
@@ -482,7 +487,7 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
 #person-node-form .field-name-body {
     padding-bottom: 15px;
 }
-
+.redirect-add,
 form.confirmation {
     margin-top: 20px;
 }
