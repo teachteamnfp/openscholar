@@ -3054,6 +3054,23 @@ class FeatureContext extends DrupalContext {
   }
 
   /**
+   * @Given /^I should match the regex "([^"]*)"$/
+   *
+   * This step is used to match a regular expression in the page
+   */
+  public function iShouldMatchTheRegex($pattern) {
+    $actual = $this->getSession()->getPage()->getText();
+
+    $actual = preg_replace('/\s+/u', ' ', $actual);
+    $regex = '/'.$pattern.'/u';
+
+    if (!preg_match($regex, $actual)) {
+      $message = sprintf('The regex pattern "%s" did not appear in the text of this page, but it should have.', $pattern);
+      throw new Exception($message);
+    }
+  }
+
+  /**
    * @Then /^I should wait for the text "([^"]*)" to "([^"]*)"$/
    */
   public function iShouldWaitForTheTextTo($text, $appear) {
