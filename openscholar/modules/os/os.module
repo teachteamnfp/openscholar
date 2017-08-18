@@ -1776,12 +1776,6 @@ function os_views_pre_build(&$view) {
  */
 function os_node_view_alter(&$build) {
 
-if (module_exists('vsite') && $vsite = spaces_get_space()) {
-  $file = field_get_items('node', $vsite->group, 'field_site_logo');
-  $file = $file[0];
-  dsm(file_create_url($file['uri']));
-}
-
   $node = $build['#node'];
   if (!empty($node->nid)) {
     $build['#contextual_links']['node'] = array('node', array($node->nid));
