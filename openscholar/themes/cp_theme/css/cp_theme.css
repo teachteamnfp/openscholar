@@ -43,7 +43,7 @@ body:not(.overlay) .node-form {
 a {
     color: #215990;
 }
-.redirect-add,
+a.redirect-add,
 a.button:link, a.button:visited, a.button:hover, a.button:active {
 	color:#FFF;
 }
@@ -217,6 +217,10 @@ a.form-cancel {
     -webkit-border-radius: 2px;
     border-radius: 2px;
     padding: 8px 15px;
+}
+.redirect-add {
+background-color:#3d9b13;
+	border:none;
 }
 /* small button */
 .redirect-add {
