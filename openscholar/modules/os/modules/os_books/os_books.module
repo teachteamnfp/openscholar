@@ -460,5 +460,11 @@ function _os_books_get_menu_children($path) {
     'conditions' => array('plid' => $parent['mlid']),
   );
   $children = menu_build_tree($parent['menu_name'], $parameters);
+  foreach ($children as $key => $child) {
+    if ($child['link']['hidden'] == 1) {
+      // Removing the hidden menu links
+      unset($children[$key]);
+    }
+  }
   return $children;
 }
