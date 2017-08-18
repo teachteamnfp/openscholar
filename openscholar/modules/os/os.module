@@ -1775,7 +1775,6 @@ function os_views_pre_build(&$view) {
  * Adds contextual links to the full node view
  */
 function os_node_view_alter(&$build) {
-
   $node = $build['#node'];
   if (!empty($node->nid)) {
     $build['#contextual_links']['node'] = array('node', array($node->nid));
