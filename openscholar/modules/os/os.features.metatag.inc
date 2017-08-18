@@ -75,10 +75,10 @@ function os_metatag_export_default() {
         'period' => '',
       ),
       'twitter:description' => array(
-        'value' => '[current-page:title]',
+        'value' => '[current-page:title] | [site:name]',
       ),
       'twitter:image' => array(
-        'value' => theme_get_setting('logo'),
+        'value' => '[site:site_logo]',
       ),
       'twitter:card' => array(
         'value' => 'summary',
