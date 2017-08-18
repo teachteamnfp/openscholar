@@ -3802,8 +3802,6 @@ function remove_missing_modules_entry_from_DB() {
  */
 function os_metatag_pattern_alter(&$pattern, &$types, $tag_name) {
 
-  dsm("Here");
-
   // Find the best (non-empty) description string with replaced Drupal tokens
   $field_site_description_token_str = '[node:field_site_description]';
   $field_site_description_replacement = token_replace('[node:field_site_description]');
