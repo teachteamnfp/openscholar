@@ -75,7 +75,7 @@ function os_metatag_export_default() {
         'period' => '',
       ),
       'twitter:description' => array(
-        'value' => '[current-page:title] | [site:name]',
+        'value' => '[site:site_description]',
       ),
       'twitter:image' => array(
         'value' => '[site:site_logo]',

@@ -3801,6 +3801,12 @@ function remove_missing_modules_entry_from_DB() {
  *  Ensure field_site_description is not blank (for twitter:description)
  */
 function os_metatag_pattern_alter(&$pattern, &$types, $tag_name) {
+  // Find the empty [site:site_description] and replace with [current-page:title]
+  $site_description_token = '[site:site_description]';
+  $site_description_token_replacement = '[current-page:title]';
+  if (stristr($site_description_token, $pattern) != FALSE && empty(token_replace($site_description_token))) {
+    $pattern = $site_description_token_replacement;
+  }
 
   // Find the best (non-empty) description string with replaced Drupal tokens
   $field_site_description_token_str = '[node:field_site_description]';
@@ -3839,7 +3845,7 @@ function os_metatag_pattern_alter(&$pattern, &$types, $tag_name) {
 
  /**
  * Implements hook_token_info().
- * Adding new token [site:site_logo]
+ * Adding new tokens [site:site_logo] and [site:site_description]
  */
 function os_token_info() {
 
@@ -3847,6 +3853,12 @@ function os_token_info() {
   $site['site_logo'] = array(
     'name' => t('Site Logo'),
     'description' => t('Site Cropped Logo'),
+  );
+
+  // Add tokens.
+  $site['site_description'] = array(
+    'name' => t('Site Description'),
+    'description' => t('Site Description From Site Info Widget'),
   );
 
   return array(
@@ -3870,6 +3882,12 @@ function os_tokens($type, $tokens, array $data = array(), array $options = array
             $file = field_get_items('node', $vsite->group, 'field_site_logo');
             $file = $file[0];
             $replacements[$original] = file_create_url($file['uri']);
+          }
+          break;
+        case 'site_description':
+          if (module_exists('vsite') && $vsite = spaces_get_space()) {
+            $desc = field_get_items('node', $vsite->group, 'field_site_description');
+            $replacements[$original] = $desc[0]['safe_value'];
           }
           break;
       }
