@@ -85,7 +85,7 @@
       '<div class="redirect-add-form" ng-show="showAddForm">' +
         '<div class="display-inline"><label for="redirect-path">Redirect From</label> {{siteBaseUrl}}/<input type="text" id="redirect-path" class="redirect-new-element" ng-model="newRedirectPath" placeholder="Local path"><span class="description">(Example: my-path). Fragment anchors (e.g. #anchor) Leading slash ( / ) are not allowed.</span></div>' +
         '<div class="display-inline"><label for="redirect-target">Redirect To</label> <input type="text" id="redirect-target" class="redirect-new-element" ng-model="newRedirectTarget" placeholder="Target URL (i.e. http://www.google.com)"><span class="description">Enter any existing destination URL (like http://example.com) to redirect to.</span></div>' +
-        '<button type="button" value="Add Redirect" ng-click="addRedirect()"">Add Redirect</button>' +
+        '<button type="button" value="Save" ng-click="addRedirect()"">Save</button>' +
       '</div>',
       scope: {
         value: '=',
