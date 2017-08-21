@@ -238,7 +238,7 @@ function grouper_user_can_access($group = null, $user = null) {
   $user = user_load($user->uid);
 
   watchdog('grouper', 'Checking Bypass permission');
-  if (user_access('bypass grouper restriction')) {
+  if (og_user_access('node', $group->nid, 'bypass grouper restriction', $user)) {
     watchdog('grouper', 'User has bypass permission');
     return true;
   }
