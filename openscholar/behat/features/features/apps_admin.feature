@@ -10,7 +10,7 @@ Feature:
       And I open the admin panel to "Settings"
      When I click on the "Enable / Disable Apps" control
       #And I should see "Apps"
-     Then I should see the "spaces" table with the following <contents>:
+     Then I should see the "apps-table" table with the following <contents>:
       | Blog          | Public |
       | Booklets      | Public |
       | Classes       | Public |
