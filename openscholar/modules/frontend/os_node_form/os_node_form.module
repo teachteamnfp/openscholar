@@ -11,6 +11,7 @@ function os_node_form_library() {
   $libs['os-node-form'] = array(
     'title' => 'OS node form angular',
     'js' => array(
+      libraries_get_path('ckeditor') . '/ckeditor.js' => array(),
       $self.'/osNodeForm.module.js' => array(),
       array(
         'data' => array(
@@ -32,13 +33,25 @@ function os_node_form_library() {
 }
 
 /**
- * Implements hook_preprocess_page().
- *
- * Adds the content-add-form angular library.
-*/
+  * Implements hook_preprocess_page().
+  *
+  * Adds the content-add-form angular library.
+ */
 function os_node_form_preprocess_page(&$vars) {
   if (user_is_logged_in() && variable_get('admin_panel_enabled', FALSE)) {
     drupal_add_library('os_node_form', 'os-node-form');
+    $profile = wysiwyg_get_profile('filtered_html');
+    wysiwyg_add_plugin_settings($profile);
+    //dpm(wysiwyg_add_plugin_settings($profile));
   }
+}
+
+/**
+ * Implements hook_js_alter.
+ *
+ * Support Drupal wysiwyg ckeditor along with angular ckeditor.
+ */
+function os_node_form_js_alter(&$javascript) {
+  $javascript['profiles/openscholar/libraries/ckeditor/ckeditor.js']['weight'] = -10;
 }
 
