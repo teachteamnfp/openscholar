@@ -10,7 +10,15 @@
       var promises = [];
 
       var baseUrl = Drupal.settings.paths.api;
-      var config = {};
+      var queryArgs = {};
+      if (angular.isDefined(Drupal.settings.spaces)) {
+        if (Drupal.settings.spaces.id) {
+          queryArgs.vsite = Drupal.settings.spaces.id;
+        }
+      }
+      var config = {
+        params: queryArgs
+      };
       var promise = $http.get(baseUrl+'/' + bundle +'/form', config).then(function (response) {
         return response.data;
       });

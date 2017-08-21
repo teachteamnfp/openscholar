@@ -14,34 +14,33 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
    * Get node form based on bundle.
    */
   public function getNodeForm() {
-    $form = array();
-    $form_state = array();
-    $options = array();
     if (!empty($this->request['nid'])) {
       $node = node_load($this->request['nid']);
     }
     else {
       $node = new stdClass;
       $node->type = $this->getBundle();
+      node_object_prepare($node);
     }
+    $form = array();
+    $form_state = array();
+    $options = array();
+    $form_state['node'] = $node;
+    $form['#bundle'] = $node->type;
+
     $function = node_type_get_base($node) . '_form';
     if (function_exists($function) && ($extra = $function($node, $form_state))) {
       // @Todo: Must be a better way to handle these.
       unset($extra['#validate']);
       unset($extra['#cache']);
-      //print_r($extra);
       foreach ($extra as $key => $form_field) {
         $form[$key] = $form_field;
       }
     }
     $extra_fields =  _field_invoke_default('form', 'node', $node, $form, $form_state, $options);
     foreach ($extra_fields as $key => $field) {
-      // Debug $field;
-      //print_r($field);
       $extra_info = array();
       $field_info = field_info_instance('node', $field[LANGUAGE_NONE]['#field_name'], $node->type);
-      // Debug $field_info;
-      //print_r($field_info);
       if ($field_info['widget']['type'] == 'media_draggable_file') {
         $extra_info = array(
           '#upload_location' => $field[LANGUAGE_NONE]['drop']['#upload_location'],
@@ -87,7 +86,7 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
       ),
     );
     // Node author information for administrators.
-    $form['author_information'] = array(
+    $form['author'] = array(
       '#type' => 'fieldset',
       '#access' => user_access('administer nodes'),
       '#title' => t('Authoring information'),
@@ -95,7 +94,7 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
       '#collapsed' => TRUE,
       '#group' => 'additional_settings',
       '#weight' => 90,
-      'author_name' => array(
+      'name' => array(
         '#type' => 'textfield',
         '#title' => t('Authored by'),
         '#maxlength' => 60,
@@ -114,7 +113,7 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
     );
 
     // Node options for administrators.
-    $form['publishing_options'] = array(
+    $form['options'] = array(
       '#type' => 'fieldset',
       '#access' => user_access('administer nodes'),
       '#title' => t('Publishing options'),
@@ -139,11 +138,31 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
       ),
     );
 
+    // Invoke hook_form_alter(), hook_form_BASE_FORM_ID_alter(), and
+    // hook_form_FORM_ID_alter() implementations.
+    $form_id = $node->type . '_node_form';
+    $hooks = array('form', 'form_node_form', 'form_' . $node->type . '_node_form');
+    drupal_alter($hooks, $form, $form_state, $form_id);
+
+    // Assign to a group.
+    $form['options']['#group'] = 'additional_settings';
+    $form['author']['#group'] = 'additional_settings';
+    $form['revision_information']['#group'] = 'additional_settings';
+    $form['os_menu']['#group'] = 'additional_settings';
+    $form['path']['#group'] = 'additional_settings';
+
     // @todo Must be a better way to handle these.
     unset($form['#entity']);
     unset($form['#after_build']);
     unset($form['#validate']);
     unset($form['#attached']);
+    unset($form['actions_top']);
+    unset($form['actions']);
+    unset($form['feeds']);
+    unset($form['#feed_id']);
+    unset($form['field_child_site']);
+    unset($form['#attributes']);
+    unset($form['#bundle']);
 
     return $form;
   }

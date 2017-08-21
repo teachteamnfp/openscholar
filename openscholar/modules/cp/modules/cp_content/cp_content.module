@@ -588,14 +588,3 @@ function cp_content_views_query_alter(&$view, views_plugin_query_default &$query
   }
 
 }
-
-function cp_content_views_bulk_operations_form_alter(&$form, &$form_state, $vbo) {
-  dpm($vbo->view);
-  if ($form_state['step'] == 'views_bulk_operations_config_form' && $vbo->view->name == 'cp_files') {
-    $form['header'] = array(
-      '#type' => 'item',
-      '#markup' => $vbo->view->header['area']->options['content'],
-      '#weight' => -10,
-    );
-  }
-}
