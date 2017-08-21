@@ -237,9 +237,7 @@ function grouper_user_can_access($group = null, $user = null) {
   // Try to circumvent this.
   $user = user_load($user->uid);
 
-  watchdog('grouper', 'Checking Bypass permission');
   if (og_user_access('node', $group->nid, 'bypass grouper restriction', $user)) {
-    watchdog('grouper', 'User has bypass permission');
     return true;
   }
 
@@ -271,7 +269,7 @@ function grouper_user_can_access($group = null, $user = null) {
   }
   else {
     // if the site has groups, but the user is not associated with any, deny access
-    if (!isset($user->field_grouper_path)) {
+    if (!isset($user->field_grouper_path[LANGUAGE_NONE])) {
       return false;
     }
 
@@ -293,6 +291,11 @@ function grouper_user_can_access($group = null, $user = null) {
  */
 function grouper_node_access($node, $op, $account) {
   if ($op != 'view') {
+    return NODE_ACCESS_IGNORE;
+  }
+
+  // $node can be a node type as string, which doesn't sound right, but I'm not going digging now
+  if (is_string($node)) {
     return NODE_ACCESS_IGNORE;
   }
 
