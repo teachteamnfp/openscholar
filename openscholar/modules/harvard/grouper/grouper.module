@@ -93,7 +93,11 @@ function grouper_og_permission() {
 
   $perms['manage grouper groups'] = array(
     'title' => t('Manage Grouper Groups'),
-    'roles' => array('???')
+    'default role' => array(
+      'vsite user',
+      'content editor',
+      'vsite admin',
+    )
   );
 
   return $perms;
@@ -237,7 +241,7 @@ function grouper_user_can_access($group = null, $user = null) {
   // Try to circumvent this.
   $user = user_load($user->uid);
 
-  if (og_user_access('node', $group->nid, 'bypass grouper restriction', $user)) {
+  if (user_access('bypass grouper restriction', $user) || og_is_member('node', $group->nid, 'user', $user)) {
     return true;
   }
 
