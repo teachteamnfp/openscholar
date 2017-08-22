@@ -7,7 +7,7 @@ echo "'$PR_BRANCH' set as PR branch."
 mkdir -p ~/src/acquia.com/
 git config --global user.email "openscholar@swap.lists.harvard.edu"
 git config --global user.name "OpenScholar Auto Push Bot"
-if git ls-remote --heads hwpi1@svn-1745.prod.hosting.acquia.com:hwpi1.git | grep -sw $CI_BRANCH 2>&1>/dev/null; then
+if git ls-remote --heads hwpi1@svn-1745.prod.hosting.acquia.com:hwpi1.git | grep -sw $CI_BRANCH$ 2>&1>/dev/null; then
 git clone -b $CI_BRANCH hwpi1@svn-1745.prod.hosting.acquia.com:hwpi1.git  ~/src/acquia.com/hwpi1;
 cd ~/src/acquia.com/hwpi1
 else
