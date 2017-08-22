@@ -1181,6 +1181,9 @@ ul.no-event-export {
 .morelink span {
     font-size: .8em;
 }
+.morelink:hover {
+    cursor:pointer;
+}
 .web-widgets-iframe {
     width: 100%;
 }
