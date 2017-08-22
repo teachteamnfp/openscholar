@@ -489,7 +489,7 @@ function vsite_vocab_field_formatter_view($entity_type, $entity, $field, $instan
     foreach ($terms as $term) {
       $values[] = l($term['term'], $term['uri']);
     }
-    $element[0] = array('#markup' => implode(', ', $values));
+    $element[0] = array('#markup' => implode('<span>, </span>', $values));
     return $element;
   }
 
