@@ -217,6 +217,7 @@ a.form-cancel {
     -webkit-border-radius: 2px;
     border-radius: 2px;
     padding: 8px 15px;
+    font-family:helvetica;
 }
 .redirect-add {
 background-color:#3d9b13;
