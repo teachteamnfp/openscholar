@@ -19,7 +19,6 @@
         '<div class="description" ng-bind-html="description"></div>' +
       '</div>',
       link: function (scope, elem, attr) {
-        console.log(scope.element.name);
         scope.id = $filter('idClean')(scope.element.name, 'edit');
         scope.description = $sce.trustAsHtml(scope.element.description);
         scope.label = scope.element.title;

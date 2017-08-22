@@ -30,7 +30,7 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
 
     $function = node_type_get_base($node) . '_form';
     if (function_exists($function) && ($extra = $function($node, $form_state))) {
-      // @Todo: Must be a better way to handle these.
+      // @todo: We need to look for a better solution on this.
       unset($extra['#validate']);
       unset($extra['#cache']);
       foreach ($extra as $key => $form_field) {
@@ -65,7 +65,6 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
       '#type' => 'fieldset',
       '#title' => t('Revision information'),
       '#collapsible' => TRUE,
-      // Collapsed by default when "Create new revision" is unchecked.
       '#collapsed' => !$node->revision,
       '#group' => 'additional_settings',
       '#weight' => 20,
@@ -89,30 +88,28 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
     $form['author'] = array(
       '#type' => 'fieldset',
       '#access' => user_access('administer nodes'),
-      '#title' => t('Authoring information'),
+      '#title' => t('Post Created/Edited By'),
       '#collapsible' => TRUE,
       '#collapsed' => TRUE,
       '#group' => 'additional_settings',
       '#weight' => 90,
-      'name' => array(
+      'author_name' => array(
         '#type' => 'textfield',
-        '#title' => t('Authored by'),
+        '#title' => t('Posted by'),
         '#maxlength' => 60,
         '#autocomplete_path' => 'user/autocomplete',
         '#default_value' => !empty($node->name) ? $node->name : '',
         '#weight' => -1,
-        '#description' => t('Leave blank for %anonymous.', array('%anonymous' => variable_get('anonymous', t('Anonymous')))),
+        '#description' => t('You may change this if posting on behalf of someone else.'),
       ),
       'date' => array(
         '#type' => 'textfield',
-        '#title' => t('Authored on'),
+        '#title' => t('Posted on'),
         '#maxlength' => 25,
         '#description' => t('Format: %time. The date format is YYYY-MM-DD and %timezone is the time zone offset from UTC. Leave blank to use the time of form submission.', array('%time' => !empty($node->date) ? date_format(date_create($node->date), 'Y-m-d H:i:s O') : format_date($node->created, 'custom', 'Y-m-d H:i:s O'), '%timezone' => !empty($node->date) ? date_format(date_create($node->date), 'O') : format_date($node->created, 'custom', 'O'))),
         '#default_value' => !empty($node->date) ? $node->date : '',
       ),
     );
-
-    // Node options for administrators.
     $form['options'] = array(
       '#type' => 'fieldset',
       '#access' => user_access('administer nodes'),
@@ -151,7 +148,7 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
     $form['os_menu']['#group'] = 'additional_settings';
     $form['path']['#group'] = 'additional_settings';
 
-    // @todo Must be a better way to handle these.
+    // @todo: We need to look for a better solution on this.
     unset($form['#entity']);
     unset($form['#after_build']);
     unset($form['#validate']);
@@ -163,6 +160,7 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
     unset($form['field_child_site']);
     unset($form['#attributes']);
     unset($form['#bundle']);
+    unset($form['author']['name']);  
 
     return $form;
   }

@@ -227,16 +227,32 @@ class OSRestfulCPMenu extends \RestfulBase implements \RestfulDataProviderInterf
       }
 
       $type_url_str = str_replace('_', '-', $bundle);
-      $add_links["{$bundle}"] = array(
-        'label' => $type_info[$bundle]->name,
-        'type' => 'directive',
+
+      // @todo: Since other content type angular form are not ready yet. We have
+      // to hard page temporarily to avoid failure of tests. Once all node form
+      // are angular ready then we don't need to hard content type here all will
+      // be replaced with directive instead link.
+      if ($type_url_str == 'page') {
+        $node_add_link = array(
+          'type' => 'directive',
           'directive' => array(
             'node-form-modal',
             'node-type' => $type_url_str,
           ),
+        );
+      }
+      else {
+        $node_add_link = array(
+          'type' => 'link',
+          'href' => "node/add/{$type_url_str}",
+        );
+      }
+      $add_links["{$bundle}"] = array(
+        'label' => $type_info[$bundle]->name,
         'parent' => 'add',
         'alt' => $type_info[$bundle]->description,
       );
+      $add_links["{$bundle}"] = array_merge($add_links["{$bundle}"], $node_add_link);
 
       if (os_importer_importable_content($bundle) && in_array($bundle, array('news', 'blog'))) {
         $import_links["{$bundle}"] = array(

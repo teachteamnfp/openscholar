@@ -331,27 +331,29 @@
   /**
    * Fieldset.
    */
-  m.directive('feFieldset', [function () {
+  m.directive('feFieldset', ['$filter', function ($filter) {
     return {
       scope: {
         name: '@',
         value: '=ngModel',
         element: '=',
       },
-      template: '<div class="fieldset-elements">'+
-                '<div class="fieldset_title" ng-click="collapsible()"><span>{{title}}</span> </div>'+
-                '<div class="form-item" ng-repeat="(key, field) in formElements" ng-hide = "IsHidden">'+
-                '<div form-element element="field" value="formData[key]"><span>placeholder</span></div>'+
-                '</div></div>',
+      template: '<fieldset class="node-form-options collapsible form-wrapper collapse-processed" ng-class="{collapsed: collapsed==true}" id="{{id}}">'+
+                '<legend><span class="fieldset-legend"><span class="fieldset-title" ng-click="collapsibleToggle()">{{title}}</span>'+
+                '<span class="summary"> (Selected value will go here)</span></span></legend>'+
+                '<div class="fieldset-wrapper-element" ng-hide="collapsed"><div class="form-item" ng-repeat="(key, field) in formElements">'+
+                '<div form-element element="field" value="formData[key]"><span>placeholder</span></div></div></div></fieldset>',
       link: function (scope, elem, attr) {
-        // For collapsible fieldsets
-        scope.IsHidden = true;
-        scope.collapsible = function () {
-           scope.IsHidden = scope.IsHidden ? false : true;
+        scope.collapsed = scope.element.collapsed;
+        scope.collapsibleToggle = function () {
+          scope.collapsed = !scope.collapsed;
         }
+        scope.collapsible = scope.element.collapsible;
+        console.log(scope.element);
         scope.formElements = {};
         scope.formData = {};
-        scope.title = scope.element['title'];
+        scope.title = scope.element.title;
+        scope.id = $filter('idClean')(scope.element.name, 'edit');
         var formElementsRaw = scope.element;
         for (var formElem in formElementsRaw) {
           if (angular.isObject(formElementsRaw[formElem])) {

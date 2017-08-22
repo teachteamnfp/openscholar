@@ -8,7 +8,6 @@
 
     this.getForm = function(bundle) {
       var promises = [];
-
       var baseUrl = Drupal.settings.paths.api;
       var queryArgs = {};
       if (angular.isDefined(Drupal.settings.spaces)) {
@@ -50,7 +49,8 @@
 
         ModalService.showModal({
           controller: 'nodeFormController',
-          template: '<div node-form></div>',
+          template: '<div><div class="node-form-loading" ng-show="loading"><div class="node-form-loading-message">Loading form...<br /></div></div>'+
+                    '<div node-form></div></div>',
           inputs: {
             nodeType: attrs.nodeType
           }
@@ -96,13 +96,13 @@
     $s.status = [];
     $s.errors = [];
     $s.showSaveButton = true;
+    $s.loading = true;
 
     nodeForm.getForm(nodeType).then(function(response) {
       var formElementsRaw = response.data;
-      console.log(response.data);
+      $s.loading = false;
       for (var formElem in formElementsRaw) {
         $s.formData[formElem] = formElementsRaw[formElem]['#default_value'] || null;
-        //console.log(formElementsRaw[formElem]['#type']);
         var attributes = {
           name: formElem
         };
