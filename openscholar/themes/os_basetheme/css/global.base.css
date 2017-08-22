@@ -1174,6 +1174,9 @@ ul.no-event-export {
 .morecontent span {
     display: none;
 }
+.morecontent span span {
+    display: inline;
+}
 .morelink {
     display: inline;
     text-decoration: underline;

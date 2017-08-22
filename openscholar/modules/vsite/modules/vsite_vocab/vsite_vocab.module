@@ -489,7 +489,7 @@ function vsite_vocab_field_formatter_view($entity_type, $entity, $field, $instan
     foreach ($terms as $term) {
       $values[] = l($term['term'], $term['uri']);
     }
-    $element[0] = array('#markup' => implode('<span>, </span>', $values));
+    $element[0] = array('#markup' => implode(', ', $values));
     return $element;
   }
 
@@ -737,5 +737,7 @@ function vsite_vocab_html_cut($text, $max_length)
       $result_trim = $result;
     }
     $result = $result_trim . '<span class="morecontent"><span>' . str_replace($result_trim, '', $text) .  '</span></span>';
+    // Adding <span> to term seperator
+    $result = str_replace('</a>, <a href', '</a><span>,</span> <a href', $result);
     return $result;
 }
