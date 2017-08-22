@@ -59,7 +59,7 @@
             $(this).addClass("toggleless");
             $(this).html(lesstext);
         }
-        $(this).prev(".morecontent").children("span").toggle();
+        $(this).prev(".morecontent").children(".morechildren").toggle();
         return false;
       });
     }
