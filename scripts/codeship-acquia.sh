@@ -123,7 +123,7 @@ echo -e "\033[1;36mFINISHED BUILDING $CI_BRANCH ON HWPI1\e[0m"
 
 # pull down the acquia branch
 mkdir -p /home/rof/src/acquia.com/
-if git ls-remote --heads hwpi2@svn-1745.prod.hosting.acquia.com:hwpi2.git | grep -sw $CI_BRANCH 2>&1>/dev/null; then
+if git ls-remote --heads hwpi2@svn-1745.prod.hosting.acquia.com:hwpi2.git | grep -sw $CI_BRANCH$ 2>&1>/dev/null; then
 git clone -b $CI_BRANCH hwpi2@svn-1745.prod.hosting.acquia.com:hwpi2.git  /home/rof/src/acquia.com/hwpi2;
 cd /home/rof/src/acquia.com/hwpi2
 else
