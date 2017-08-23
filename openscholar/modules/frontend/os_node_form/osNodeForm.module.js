@@ -4,7 +4,7 @@
   /**
    * Get node form.
    */
-  m.service('nodeForm', ['$http', '$q', function ($http, $q) {
+  m.service('nodeFormService', ['$http', '$q', function ($http, $q) {
 
     this.getForm = function(bundle) {
       var promises = [];
@@ -24,7 +24,7 @@
       return promise;
     }
 
-  }])
+  }]);
 
   /**
    * Open modals for node add forms.
@@ -89,7 +89,7 @@
   /**
    * The controller for the forms themselves
    */
-  m.controller('nodeFormController', ['$scope', '$sce', 'nodeForm', 'buttonSpinnerStatus', 'nodeType', 'close', function ($s, $sce, nodeForm, bss, nodeType, close) {
+  m.controller('nodeFormController', ['$scope', '$sce', 'nodeFormService', 'buttonSpinnerStatus', 'nodeType', 'close', function ($s, $sce, nodeFormService, bss, nodeType, close) {
     $s.formId = nodeType + '_node_form';
     $s.formElements = {};
     $s.formData = {};
@@ -98,7 +98,7 @@
     $s.showSaveButton = true;
     $s.loading = true;
 
-    nodeForm.getForm(nodeType).then(function(response) {
+    nodeFormService.getForm(nodeType).then(function(response) {
       var formElementsRaw = response.data;
       $s.loading = false;
       for (var formElem in formElementsRaw) {
