@@ -334,8 +334,10 @@ function grouper_vsite_access_denied($vsite) {
       //Load custom pinserver variables
       $vsite->controllers->variable->init_overrides();
 
+      pinserver_redirect(array('query' => drupal_get_destination()));
+
       // They are not a member, validate through pin.
-      drupal_goto('user/pin', array('query' => drupal_get_destination()));
+      // drupal_goto('user/pin', array('query' => drupal_get_destination()));
     }
   }
 }
@@ -364,6 +366,25 @@ function grouper_pre_features_disable_feature($component) {
     foreach ($group_types as $bundle) {
       $instance = field_info_instance('node', 'field_grouper_path', $bundle);
       field_delete_instance($instance);
+    }
+  }
+}
+
+/**
+ * Implements hook_pinserver().
+ */
+function grouper_pinserver() {
+  if (isset($_GET['redirect']) && strpos($_GET['redirect'], 'user/pin/') === FALSE) {
+    if (pinserver_get_user_huid()) {
+      // Check to make sure they can't be logged in.
+      if ($uid = pinserver_authenticate_get_uid_from_huid(pinserver_get_user_huid())) {
+        $pin_user = pinserver_get_user();
+        if (isset($pin_user['raw_huid'])) {
+          pinserver_authenticate_set_user_huid($uid, $pin_user['raw_huid']);
+        }
+        $GLOBALS['user'] = user_load($uid);
+        user_login_finalize();
+      }
     }
   }
 }
