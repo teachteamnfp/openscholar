@@ -11,10 +11,15 @@ Feature:
      When I visit "john/news"
      Then I should see "John F. Kennedy: A Biography"
 
-  @api @widgets @javascript
+  @api @widgets @javascript @eam_352
   Scenario: Verify that private bundles don't show up in the LOP.
     Given I am logging in as "john"
-      And I set feature "edit-os-publications" to "Private" on "john"
+      And I visit "john"
+      And I sleep for "2"
+      And I make sure admin panel is open
+      And I open the admin panel to "Settings"
+     When I click on the "Enable / Disable Apps" control
+      And I set feature "Publications" to "Site Members" on "john"
       And I press the "Close Menu" button
       And the widget "All Posts" is set in the "News" page with the following <settings>:
           | Content Type             | All    | select list |

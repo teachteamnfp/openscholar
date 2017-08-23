@@ -1829,6 +1829,32 @@ class FeatureContext extends DrupalContext {
     $element->press();
   }
 
+
+  /**
+   * @Given /^I click on xpath element "([^"]*)"$/
+   */
+  public function iClickOnXpathElement($xpath) {
+
+    error_log("EAM Entering " . __FILE__ . ":" . __LINE__ . ", \$xpath = " . var_export($xpath, true));
+
+    try {
+      $page = $this->getSession()->getPage();
+      $element = $page->find('xpath', $xpath);
+    } catch (Exception $e) {
+      error_log("EAM Entering " . __FILE__ . ":" . __LINE__ . ", \$e = " . var_export($e, true));
+    }
+
+    $xpath = "//tr/td[text()='Publications']/../td[3]//div/div[text()='Everyone']";
+    $e = $page->find('xpath', $xpath);
+    error_log("EAM Entering " . __FILE__ . ":" . __LINE__ . ", \$e = " . var_export($e, true));
+
+    $xpath = '//tr/td[text()="Publications"]/../td[3]//div/div[text()="Everyone"]';
+    $e = $page->find('xpath', $xpath);
+    error_log("EAM Entering " . __FILE__ . ":" . __LINE__ . ", \$e = " . var_export($e, true));
+
+    $element->press();
+  }
+
   /**
    * @Given /^I click on "([^"]*)" under facet "([^"]*)"$/
    */
@@ -2336,8 +2362,11 @@ class FeatureContext extends DrupalContext {
     $vsite_id = FeatureHelp::getNodeId($group);
 
     return array(
-      new Step\When('I select "' . $status . '" from "' . $feature . '"'),
-      new Step\When('I press "edit-submit"'),
+      // new Step\When('I click "' . $status . '" from "' . $feature . '"'),
+      new Step\When('I click on xpath element "//tr/td[text()=\'' . $feature . '\']/../td[3]//div/div[text()=\'' . $status . '\']"'),
+      ////tr/td[text()='Publications']/../td[3]//div/div[text()='Site Members']
+
+      new Step\When('I press "Save"'),
     );
   }
 
