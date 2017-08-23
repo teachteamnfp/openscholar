@@ -205,7 +205,7 @@ function grouper_user_login(&$edit, $account) {
          LANGUAGE_NONE => array()
        );
       foreach ($groups as $g) {
-        $account->field_grouper_path[LANGUAGE_NONE][] = array('value' => $g->displayName);
+        $account->field_grouper_path[LANGUAGE_NONE][] = array('value' => $g->name);
       }
     }
     else {
@@ -263,7 +263,7 @@ function grouper_user_can_access($group = null, $user = null) {
         if ($user_groups === FALSE) {
           return false;
         } else {
-          $user_groups = array_map(function ($item) { return $item->displayName; }, $user_group_raw);
+          $user_groups = array_map(function ($item) { return $item->name; }, $user_group_raw);
           $_SESSION['user_groups'] = $user_groups;
         }
       }
