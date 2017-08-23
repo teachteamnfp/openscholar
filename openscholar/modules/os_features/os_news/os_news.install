@@ -117,3 +117,10 @@ function os_news_update_7008() {
   features_revert(array('os_news' => array('field_instance')));
 }
 
+
+/**
+ * Reverts views for showing archive for since year of 1900 to 2100 (it was 3 years previously).
+ */
+function os_news_update_7009() {
+  features_revert(array('os_news' => array('views_view')));
+}

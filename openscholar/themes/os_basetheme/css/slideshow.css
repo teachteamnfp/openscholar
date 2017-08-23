@@ -157,7 +157,7 @@ a.rslides_nav.prev {
     position: static;
 }
 #layout_3_1_overlay .slide-copy {
-    background: none repeat scroll 0 0 rgba(30, 30, 30, 0.6);
+    background: none repeat scroll 0 0 rgba(30, 30, 30, 0.62);
     position: relative;
     width: 48%;
     z-index: 2;

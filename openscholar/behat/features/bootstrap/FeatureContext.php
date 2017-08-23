@@ -3944,4 +3944,115 @@ JS;
     $this->nid = FeatureHelp::getNodeId($site);
   }
 
+  /**
+   * @When /^Switch to the iframe "([^"]*)"$/
+   */
+  public function switchToTheIframe($iframe_id) {
+    $this->waitFor(function (FeatureContext $context) {
+      if ($overlay = $context->getSession()->getPage()->find('css', 'iframe.media-modal-frame')) {
+        $context->getSession()->switchToIframe("mediaStyleSelector");
+        return true;
+      }
+      return false;
+    }, 20000);
+  }
+
+  /**
+   * @When /^I click on the first "([^"]*)" control in the "([^"]*)" element$/
+   */
+  public function iClickOnFirstControlInElement($text, $css) {
+    $page = $this->getSession()->getPage();
+    $parents = $page->findAll('css', $css);
+
+    foreach ($parents as $p) {
+      if ($p->isVisible()) {
+        if ($elem = $p->find('xpath', "//*[text() = '{$text}']")) {
+          $elem->click();
+          return;
+        }
+        else {
+          throw new ElementNotFoundException($this->getSession(), "No $text found in $css element.");
+        }
+      }
+    }
+  }
+
+  /**
+   * Click on the element with the provided xpath query
+   *
+   * @When /^I click on the element with xpath "([^"]*)"$/
+   */
+  public function iClickOnTheElementWithXPath($xpath) {
+    $session = $this->getSession(); // get the mink session
+    $element = $session->getPage()->find(
+        'xpath',
+        $session->getSelectorsHandler()->selectorToXpath('xpath', $xpath)
+    ); // runs the actual query and returns the element
+
+    // errors must not pass silently
+    if (null === $element) {
+        throw new \InvalidArgumentException(sprintf('Could not evaluate XPath: "%s"', $xpath));
+    }
+
+    // ok, let's click on it
+    $element->click();
+  }
+
+  /**
+   * Click on the element with the provided CSS Selector
+   *
+   * @When /^I click on the element with css selector "([^"]*)"$/
+   */
+  public function iClickOnTheElementWithCSSSelector($cssSelector) {
+    $session = $this->getSession();
+    $element = $session->getPage()->find(
+        'xpath',
+        $session->getSelectorsHandler()->selectorToXpath('css', $cssSelector) // just changed xpath to css
+    );
+    if (null === $element) {
+        throw new \InvalidArgumentException(sprintf('Could not evaluate CSS Selector: "%s"', $cssSelector));
+    }
+    $element->click();
+  }
+
+
+  /**
+   * Visit the internal (unaliased) Drupal path of the current page
+   *
+   * @When /^I visit the unaliased edit path of "([^"]*)" on vsite "([^"]*)"$/
+   */
+  public function iVisitTheEditPathOfPage($url, $vsite) {
+    $unaliased_path = drupal_lookup_path('source', $url);
+
+    # Check the url with the vsite prepended
+    if (! $unaliased_path) {
+      $unaliased_path = drupal_lookup_path('source', "$vsite/$url");
+    }
+
+    if (! $unaliased_path) {
+      throw new Exception("Could not find an unaliased path for '$url' on vsite '$vsite'.");
+    }
+
+    $this->visit("/$vsite/$unaliased_path/edit");
+  }
+
+  /**
+   * Visit the internal (unaliased) Drupal path of the current page
+   *
+   * @When /^I visit the unaliased path of "([^"]*)" on vsite "([^"]*)" and append "([^"]*)"$/
+   */
+  public function iVisitTheUnaliasedPathOfAndAppend($url, $vsite, $appendage) {
+    $unaliased_path = drupal_lookup_path('source', $url);
+
+    # Check the url with the vsite prepended
+    if (! $unaliased_path) {
+      $unaliased_path = drupal_lookup_path('source', "$vsite/$url");
+    }
+
+    if (! $unaliased_path) {
+      throw new Exception("Could not find an unaliased path for '$url' on vsite '$vsite' with '$appendage' appended.");
+    }
+
+    $this->visit("$vsite/$unaliased_path/$appendage");
+  }
 }

@@ -4,7 +4,7 @@
 body {
     -moz-osx-font-smoothing: grayscale;
 }
-.page-node-362571  #block-os-pages-main-content,
+.page-node-362571 #block-os-pages-main-content,
 .page-node-249171 #block-os-pages-main-content,
 .page-node-107346 #block-os-pages-main-content,
 .page-node-3794 #block-os-pages-main-content,
@@ -28,10 +28,9 @@ body {
 .link-count-mobi-util {
     display: none;
 }
-
-iframe[id^="oauth2relay"] {visibility:hidden;}
-
-
+iframe[id^="oauth2relay"] {
+    visibility: hidden;
+}
 body,
 .page-search .title a,
 #content-column .block.block-boxes-os_boxes_manual_list .links.inline a,
@@ -177,6 +176,7 @@ h2.block-title {
     border-top-style: solid;
     border-width: 3px;
 }
+.os-taxonomy-term.gkplus-show-heading.depth-1,
 #menu-bar ul.nice-menu a.active,
 #menu-bar ul.nice-menu a:hover,
 #menu-bar ul.nice-menu .menuparent.over > a,
@@ -534,7 +534,6 @@ a:visited {
     z-index: 1;
     opacity: 1;
     transition: all .250s linear .250s;
-   
 }
 #menu-bar.fixed {
     border-bottom: 1px solid #32526e;
@@ -566,18 +565,12 @@ a:visited {
     font-size: 0;
     border-bottom: 3px solid #065DB2;
 }
-
-
-@media all and (-ms-high-contrast:none)
-     {
- 
-     *::-ms-backdrop, #block-os-primary-menu .nice-menu li.last a {
-    padding: 16px 22px 36px 22px;
-
+@media all and (-ms-high-contrast: none) {
+    *::-ms-backdrop,
+    #block-os-primary-menu .nice-menu li.last a {
+        padding: 16px 22px 36px 22px;
+    }
 }
-     }
-
-
 #block-os-primary-menu .nice-menu li.last a:hover {
     cursor: pointer;
 }
@@ -730,7 +723,7 @@ ul.nice-menu-down,
     background: url("../images/sprite.png?456") 145px -109px no-repeat;
 }
 .region-content-top .bio-teaser-block2 a.os-front-bio_link:hover {
-    background-position:150px -109px;
+    background-position: 150px -109px;
 }
 .bio-teaser-block2 a.os-front-bio_link {
     text-decoration: none !important;
@@ -740,10 +733,8 @@ ul.nice-menu-down,
     -webkit-transition: all .125s;
     border-bottom: 1px solid #fff;
 }
-
 .os-cvlink {
     color: #fff !important;
-  
     padding: 2px 7px;
     border-radius: 3px;
     text-decoration: none !important;
@@ -751,7 +742,6 @@ ul.nice-menu-down,
     width: 150px;
     background: url("../images/sprite.png?456") 138px -109px no-repeat #065DB2;
 }
-
 .research-by-topic ul .item-list ul li .description {
     transition: all .250s;
     -webkit-transition: all .250s;
@@ -788,15 +778,12 @@ ul.nice-menu-down,
 .contextual-controls-wrapper {
     top: 80px;
 }
-
 .page-node.node-type-biblio {
     top: 50px;
 }
-
 .front .contextual-controls-wrapper {
-	top: 300px;
+    top: 300px;
 }
-
 .twitter-followme {
     text-align: center;
 }
@@ -822,17 +809,76 @@ ul.nice-menu-down,
     padding-top: 10px;
     padding-bottom: 10px;
 }
-
 .field-name-field-biblio-image {
-  
     width: 55px;
 }
-
 .logged-in .view-content ~ .item-list ul.pager li {
-	border:none !important;
+    border: none !important;
 }
-
-
+.not-front .os-taxonomy-term.depth-2.gkplus-no-indent {
+    margin-left: 30px;
+}
+.not-front .gkplus-show-heading.depth-1 h2 {
+    font-size: 1.4em !important;
+    border-bottom: none;
+    padding-bottom: 0;
+}
+.not-front .gkplus-show-heading.depth-2 h2 {
+    font-size: 1.2em !important;
+}
+:not(form) div.messages {
+    margin: 95px 0 0;
+}
+.tweet-media_url,
+.not-front .gkplus-hidden-heading > h2,
+.gkplus-hidden-heading > .term-listing-heading h2 {
+    display: none !important;
+}
+.not-front .os-taxonomy-term.gkplus-show-heading.depth-1 {
+   
+    padding:1px 20px;
+    margin-bottom:30px;
+}
+.page-taxonomy.page-taxonomy-term .node-teaser.article,
+.view .node-teaser {
+    padding: 12px 0 30px;
+}
+.page-taxonomy .node-biblio .node-content {
+    position: relative;
+}
+.annotate-icon {
+    background: url('../images/sprite.png') 0 -326px no-repeat;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+}
+.annotate-icon:hover {
+    cursor: pointer;
+}
+.context-annotation {
+    display: none;
+    position: absolute;
+    background: #fff;
+    border: 1px solid #ccc;
+    width: 300px;
+    padding: 10px;
+    z-index: 2;
+    left: 106px;
+    top: -20px;
+    box-shadow: 0px 3px 3px 0 rgba(0, 0, 0, 0.4);
+}
+.context-annotation::after {
+    content: "";
+    position: absolute;
+    left: 0px;
+    top: 18px;
+    box-sizing: border-box;
+    border: .6em solid black;
+    border-color: transparent transparent #FFF #FFF;
+    transform-origin: 0 0;
+    transform: rotate(45deg);
+    box-shadow: -2px 2px 2px 0 rgba(0, 0, 0, 0.4);
+}
 @-moz-document url-prefix() {}
 /* RESPONSIVE CSS - UNTIL I CAN FIGURE OUT WHY GARYKING RESP CSS FILE WONT LOAD */
 
@@ -852,32 +898,26 @@ ul.nice-menu-down,
     .region-content-top .bio-teaser-block2 p {
         font-size: 1.24em;
     }
-    
     #block-boxes-solr-search-box.opened.opened {
-    	    opacity: 1;
-    width: 40% !important;
-    	
+        opacity: 1;
+        width: 40% !important;
     }
 }
 /*--------------------------------------------------------*/
 
 @media (max-width: 768px) {
-	body {
-	    overflow-y: hidden;
-	}
-	
+    body {
+        overflow-y: hidden;
+    }
     #boxes-box-site_info {
         margin-left: 0;
     }
-    
     #block-boxes-solr-search-box {
-    
-    top: 38px;
+        top: 38px;
     }
-    
     .sidebar {
-    margin-top: 0 !important;
-}
+        margin-top: 0 !important;
+    }
     .bg-one,
     .bg-two,
     .bg-three,
@@ -894,7 +934,7 @@ ul.nice-menu-down,
         padding: 0;
     }
     .front .block-boxes-os_boxes_twitterfeed {
-       padding: 10px 10px 20px 10px;
+        padding: 10px 10px 20px 10px;
     }
     #main-content-header,
     .research-by-topic li.term-applications,
@@ -966,7 +1006,7 @@ ul.nice-menu-down,
     }
 }
 @media (max-width: 736px) {
- .bg-one,
+    .bg-one,
     .bg-two,
     .bg-three,
     .bg-four,
@@ -977,12 +1017,8 @@ ul.nice-menu-down,
         background-position: center 75px;
         background-size: 100% 7%;
     }
-
 }
-
-
 @media (max-width: 600px) {
-   
     .research-by-topic li.term-applications,
     .research-by-topic li.term-methods {
         float: none;
@@ -1006,7 +1042,7 @@ img.file-icon {
     .front-top-cloumn .region-two-66-33-first {
         background-position: 70% center;
     }
-     .bg-one,
+    .bg-one,
     .bg-two,
     .bg-three,
     .bg-four,
@@ -1018,17 +1054,14 @@ img.file-icon {
         background-size: 100% 5%;
     }
     #block-boxes-solr-search-box.opened.opened {
-
-    width: 99% !important;
-}
-.front .block-boxes-os_sv_list_box {
+        width: 99% !important;
+    }
+    .front .block-boxes-os_sv_list_box {
         width: 94% !important;
     }
 }
-
 @media (max-width: 320px) {
- 
- .bg-one,
+    .bg-one,
     .bg-two,
     .bg-three,
     .bg-four,
@@ -1037,9 +1070,5 @@ img.file-icon {
     .bg-seven,
     .bg-eight {
         background-position: center 65px;
-     
     }
- 
- 
- 
 }

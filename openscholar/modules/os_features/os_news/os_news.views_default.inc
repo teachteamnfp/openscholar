@@ -139,7 +139,7 @@ function os_news_views_default_views() {
   $handler->display->display_options['arguments']['field_news_date_value']['summary_options']['base_path'] = 'news/archive';
   $handler->display->display_options['arguments']['field_news_date_value']['summary_options']['items_per_page'] = '25';
   $handler->display->display_options['arguments']['field_news_date_value']['specify_validation'] = TRUE;
-  $handler->display->display_options['arguments']['field_news_date_value']['year_range'] = '1970:2038';
+  $handler->display->display_options['arguments']['field_news_date_value']['year_range'] = '1900:2100';
   $handler->display->display_options['arguments']['field_news_date_value']['use_fromto'] = 'no';
   $handler->display->display_options['arguments']['field_news_date_value']['title_format'] = 'custom';
   $handler->display->display_options['arguments']['field_news_date_value']['title_format_custom'] = 'F Y';
@@ -191,6 +191,7 @@ function os_news_views_default_views() {
   $handler->display->display_options['arguments']['field_news_date_value']['summary']['number_of_records'] = '0';
   $handler->display->display_options['arguments']['field_news_date_value']['summary']['format'] = 'default_summary';
   $handler->display->display_options['arguments']['field_news_date_value']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['field_news_date_value']['year_range'] = '1900:2100';
   $handler->display->display_options['path'] = 'news/archive';
   $handler->display->display_options['menu']['title'] = 'News';
   $handler->display->display_options['menu']['description'] = 'List of news';
