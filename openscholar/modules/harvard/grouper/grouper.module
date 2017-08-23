@@ -282,8 +282,8 @@ function grouper_user_can_access($group = null, $user = null) {
   }
 
   // we are only here if both the user and the group have data in this field. Compare them
-  watchdog('grouper', 'Site Groups: '.print_r($group->field_grouper_path, 1));
   $site_groups = array_map(function ($item) { return $item['value']; }, $group->field_grouper_path[LANGUAGE_NONE]);
+  watchdog('grouper', 'Site Groups: '.print_r($site_groups, 1));
 
   watchdog('grouper', 'User Groups: '.print_r($user_groups,1));
   $common = array_intersect($user_groups, $site_groups);
