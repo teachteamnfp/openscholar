@@ -367,3 +367,10 @@ function grouper_pre_features_disable_feature($component) {
     }
   }
 }
+
+/**
+ * Implements hook_form_FORM_ID_alter() for user_profile_form.
+ */
+function grouper_form_user_profile_form_alter(&$form, $form_state) {
+  $form['field_grouper_path']['#access'] = FALSE;
+}
