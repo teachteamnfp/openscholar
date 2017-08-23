@@ -29,3 +29,34 @@ Feature:
       Then I should see "Kittens gallery"
        And I should not see "jfk"
 
+  @api @features_first @create_new_image_gallery_content @image_gallery_content
+  Scenario: Create new image gallery content
+     Given I am logging in as "john"
+        And I visit "john/node/add/media-gallery"
+       When I fill in "Title" with "Safari"
+       When I fill in "Description" with "Visit to world safari"
+        And I press "Save"
+        And I sleep for "2"
+       Then I should see "Safari"
+       And I should see "Visit to world safari"
+
+  @api @features_first @edit_existing_image_gallery_content @image_gallery_content
+  Scenario: Edit existing image gallery content
+     Given I am logging in as "john"
+        And I visit the unaliased edit path of "galleries/safari" on vsite "john"
+       When I fill in "Title" with "World Safari"
+       When I fill in "Description" with "Enjoying world safari"
+        And I press "Save"
+        And I sleep for "2"
+       Then I should see "World Safari"
+       And I should see "Enjoying world safari"
+
+  @api @features_first @delete_existing_image_gallery_content @image_gallery_content
+  Scenario: Delete existing image gallery content
+     Given I am logging in as "john"
+        And I visit the unaliased edit path of "galleries/safari" on vsite "john"
+       And I sleep for "2"
+      When I click "Delete this media gallery"
+      Then I should see "This action cannot be undone."
+       And I press "Delete"
+      Then I should see "has been deleted"
