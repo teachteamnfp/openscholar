@@ -38,3 +38,23 @@ Feature:
      Then I should see "Answer cannot be longer than 50 characters but is currently 56 characters long."
       And I delete the variable "os_wysiwyg_maximum_length_body"
 
+ @api @features_first @create_new_faq_content @faq_content
+  Scenario: Create new faq content
+     Given I am logging in as "john"
+        And I visit "john/node/add/faq"
+       When I fill in "Question" with "Frequently Asked"
+       When I fill in "Answer" with "Answer Cleared"
+        And I press "Save"
+        And I sleep for "2"
+       Then I should see "Frequently Asked"
+       And I should see "Answer Cleared"
+
+ @api @features_first @delete_any_faq_content @faq_content
+  Scenario: Delete faq content
+     Given I am logging in as "john"
+       And I visit the unaliased edit path of "faq/frequently-asked" on vsite "john"
+       And I sleep for "2"
+      When I click "Delete this faq"
+      Then I should see "This action cannot be undone."
+       And I press "Delete"
+      Then I should see "has been deleted"
