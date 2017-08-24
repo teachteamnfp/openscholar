@@ -16,7 +16,6 @@ Feature:
     Given I am logging in as "john"
       And I visit "john/node/add/blog"
       And I fill in "Title" with "Cuban Missle Crisis"
-      And I fill in "Body" with "The Cuban Missle Crisis was a 13-day (October 16–28, 1962) confrontation between the United States and the Soviet Union concerning American ballistic missile deployment."
       And the widget "All Posts" is set in the "News" page with the following <settings>:
           | Content Type             | All    | select list |
           | Display style            | Teaser | select list |
