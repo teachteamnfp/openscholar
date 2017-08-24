@@ -14,9 +14,9 @@ Feature:
   @api @widgets @javascript @eam_352
   Scenario: Verify that private bundles don't show up in the LOP.
     Given I am logging in as "john"
-      And I visit "john/node/add/bio"
-      And I fill in "Title" with "JFK bio"
-      And I fill in "Body" with "JFK was an American politician who served as the 35th President of the United States from January 1961 until his assassination in November 1963."
+      And I visit "john/node/add/blog"
+      And I fill in "Title" with "Cuban Missle Crisis"
+      And I fill in "Body" with "The Cuban Missle Crisis was a 13-day (October 16–28, 1962) confrontation between the United States and the Soviet Union concerning American ballistic missile deployment."
       And the widget "All Posts" is set in the "News" page with the following <settings>:
           | Content Type             | All    | select list |
           | Display style            | Teaser | select list |
@@ -30,4 +30,4 @@ Feature:
       And I press the "Close Menu" button
       And I logout
       And I visit "john/news"
-      And I should not see "JFK bio"
+      And I should not see "Cuban Missle Crisis"
