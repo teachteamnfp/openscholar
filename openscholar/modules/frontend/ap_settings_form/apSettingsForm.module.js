@@ -75,8 +75,6 @@
     }
 
     this.SaveSettings = function (settings) {
-      console.log(settings);
-
       return $http.put(baseUrl+'/settings', settings, config);
     }
 
@@ -180,6 +178,7 @@
     $s.columns = {};
     $s.columnCount = 0;
     $s.showSaveButton = true;
+    var spinnerContext = "";
 
     apSettings.SettingsReady().then(function () {
       var settingsRaw = apSettings.GetFormDefinitions(form);
@@ -223,9 +222,12 @@
       if (apSettings.IsSetting(button.getAttribute('name'))) {
         triggered = true;
       }
-
+      
       if ($s.settingsForm.$dirty || triggered) {
         bss.SetState('settings_form', true);
+        // handling button spinner for two different button on a single page
+        spinnerContext = button.getAttribute('name');
+        bss.SetState(spinnerContext, true);
         apSettings.SaveSettings($s.formData).then(function (response) {
           var body = response.data;
           sessionStorage['messages'] = JSON.stringify(body.data.messages);
@@ -234,6 +236,7 @@
           var close = true;
           var reload = true;
           bss.SetState('settings_form', false);
+          bss.SetState(spinnerContext, false);
           for (var i = 0; i < body.data.length; i++) {
             switch (body.data[i].type) {
               case 'no_close':
@@ -262,6 +265,7 @@
               });
 
               bss.SetState('settings_form', false);
+              bss.SetState(spinnerContext, false);
             }
           }
         }, function (error) {
@@ -269,6 +273,7 @@
           $s.status = [];
           $s.errors.push("Sorry, something went wrong. Please try another time.");
           bss.SetState('settings_form', false);
+          bss.SetState(spinnerContext, false);
         });
       }
       else {
