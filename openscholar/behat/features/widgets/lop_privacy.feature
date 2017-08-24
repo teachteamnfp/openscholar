@@ -19,12 +19,6 @@ Feature:
       And the widget "All Posts" is set in the "News" page with the following <settings>:
           | Content Type             | All    | select list |
           | Display style            | Teaser | select list |
-      And I visit "john"
-      And I sleep for "2"
-      And I make sure admin panel is open
-      And I open the admin panel to "Settings"
-      And I click on the "Enable / Disable Apps" control
-      And I set feature "Blog" to "Everyone" on "john"
       And I set feature "Blog" to "Site Members" on "john"
       And I press the "Close Menu" button
       And I logout

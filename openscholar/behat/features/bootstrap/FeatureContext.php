@@ -1844,13 +1844,9 @@ class FeatureContext extends DrupalContext {
       error_log("EAM Entering " . __FILE__ . ":" . __LINE__ . ", \$e = " . var_export($e, true));
     }
 
-    $xpath = "//tr/td[text()='Publications']/../td[3]//div/div[text()='Everyone']";
-    $e = $page->find('xpath', $xpath);
-    error_log("EAM Entering " . __FILE__ . ":" . __LINE__ . ", \$e = " . var_export($e, true));
-
-    $xpath = '//tr/td[text()="Publications"]/../td[3]//div/div[text()="Everyone"]';
-    $e = $page->find('xpath', $xpath);
-    error_log("EAM Entering " . __FILE__ . ":" . __LINE__ . ", \$e = " . var_export($e, true));
+    # $xpath = '//tr/td[text()="Publications"]/../td[3]//div/div[text()="Site Members"]';
+    # $e = $page->find('xpath', $xpath);
+    # error_log("EAM Entering " . __FILE__ . ":" . __LINE__ . ", \$e = " . var_export($e, true));
 
     $element->press();
   }
@@ -2362,9 +2358,8 @@ class FeatureContext extends DrupalContext {
     $vsite_id = FeatureHelp::getNodeId($group);
 
     return array(
-      // new Step\When('I click "' . $status . '" from "' . $feature . '"'),
+      new Step\When('I click on xpath element "//tr/td[text()=\'' . $feature . '\']/../td[3]/span'),
       new Step\When('I click on xpath element "//tr/td[text()=\'' . $feature . '\']/../td[3]//div/div[text()=\'' . $status . '\']"'),
-      ////tr/td[text()='Publications']/../td[3]//div/div[text()='Site Members']
 
       new Step\When('I press "Save"'),
     );
