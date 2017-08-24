@@ -2357,9 +2357,14 @@ class FeatureContext extends DrupalContext {
 
     $vsite_id = FeatureHelp::getNodeId($group);
 
+    $feature_ = "'$feature'";
+    $status_ = "'$status'";
+
     return array(
-      new Step\When('I click on xpath element "//tr/td[text()=\'' . $feature . '\']/../td[3]/span"'),
-      new Step\When('I click on xpath element "//tr/td[text()=\'' . $feature . '\']/../td[3]//div/div[text()=\'' . $status . '\']"'),
+      # new Step\When('I click on xpath element "//tr/td[text()=\'' . $feature . '\']/../td[3]/span"'),
+      # new Step\When('I click on xpath element "//tr/td[text()=\'' . $feature . '\']/../td[3]//div/div[text()=\'' . $status . '\']"'),
+      new Step\When('I click on xpath element "//tr/td[text()=' . $feature . ']/../td[3]/span"'),
+      new Step\When('I click on xpath element "//tr/td[text()=' . $feature . ']/../td[3]//div/div[text()=' . $status . ']"'),
 
       new Step\When('I press "Save"'),
     );
