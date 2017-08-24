@@ -25,8 +25,8 @@ Feature:
       And I make sure admin panel is open
       And I open the admin panel to "Settings"
       And I click on the "Enable / Disable Apps" control
-      And I set feature "Publications" to "Everyone" on "john"
-      And I set feature "Publications" to "Site Members" on "john"
+      And I set feature "Blog" to "Everyone" on "john"
+      And I set feature "Blog" to "Site Members" on "john"
       And I press the "Close Menu" button
       And I logout
       And I visit "john/news"
