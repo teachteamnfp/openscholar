@@ -31,3 +31,5 @@ Feature:
       And I logout
       And I visit "john/news"
       And I should not see "Cuban Missle Crisis"
+
+# force test - Wed Aug 23 21:12:18 EDT 2017
