@@ -59,4 +59,18 @@ Feature:
       When I click "Delete this media gallery"
       Then I should see "This action cannot be undone."
        And I press "Delete"
-      Then I should see "has been deleted"
+       Then I should see "has been deleted"
+  @api @javascript
+  Scenario: Add media to existing gallery
+     Given I am logging in as "john"
+       And I visit "john/galleries/safari"
+       And I sleep for "2"
+      When I click "Add media"
+       And I wait "1 second" for the media browser to open
+       And I should wait for the text "Please wait while we get information on your files." to "disappear"
+       And I drop the file "safari.jpg" onto the "Drag and drop files here." area
+       And I should wait for "File Edit" directive to "appear"
+       And I fill in the field "Alt Text" with the node "safari"
+       And I click on the "Save" control
+     Then I should see the images:
+      | safari.jpg |
