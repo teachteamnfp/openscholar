@@ -1,4 +1,5 @@
 (function() {
+
   var m = angular.module('OsNodeForm', ['angularModalService', 'MediaBrowserField', 'formElement', 'os-buttonSpinner']);
 
   /**

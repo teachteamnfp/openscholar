@@ -355,7 +355,7 @@
         scope.id = $filter('idClean')(scope.element.name, 'edit');
         var formElementsRaw = scope.element;
         for (var formElem in formElementsRaw) {
-          // @todo: we need write a directive for container.
+          // @todo: we need to write a directive for container.
           if (angular.isObject(formElementsRaw[formElem]) && angular.isDefined(formElementsRaw[formElem]['#type']) && formElementsRaw[formElem]['#type'] != 'container' ) {
             scope.formData[formElem] = formElementsRaw[formElem]['#default_value'] || null;
             var attributes = {
@@ -392,28 +392,28 @@
   m.directive('feOsWysiwygExpandingTextarea', ['$parse', '$q', '$document', function ($parse, $q, $document) {
     return {
       restrict: 'A',
-      require: ['ngModel'],
       scope: {
         name: '@',
         value: '=ngModel',
         element: '=',
       },
       template: '<label for="{{id}}-ckeditor">{{title}}</label>'+
-        '<textarea cols="60" rows="5" class="text-full os-wysiwyg-expandable wysiwyg form-textarea" id="edit-body" name="{{name}}"></textarea>'+
+        '<textarea cols="60" rows="5" class="text-full os-wysiwyg-expandable wysiwyg-angular form-textarea" id="edit-body-ckeditor" name="{{name}}"></textarea>'+
         '<select class="filter-list form-select" id="edit-body-format" style="display: none;">'+
         '<option value="filtered_html" selected="selected">Filtered HTML</option><option value="full_html">Full HTML</option><option value="plain_text">Plain text</option>'+
         '</select>',
-      link: function (scope, elem, attr, ngModelController) {
+      link: function (scope, elem, attr) {
         scope.id = attr['inputId'];
         scope.title = scope.element.title;
-        Drupal.settings.wysiwyg.triggers = {'edit-body': {
-            field: 'edit-body',
+        // @todo Format, Editor, Field can be dynamic but we don't know yet.
+        Drupal.settings.osNodeFormWysiwyg.triggers = {'edit-body-ckeditor': {
+            field: 'edit-body-ckeditor',
             formatfiltered_html: {editor:'ckeditor', status: 1, toggle: 0},
             resizable: 1,
             select: 'edit-body-format'
           }
         }
-        Drupal.behaviors.attachWysiwyg.attach($document.context, Drupal.settings);
+        Drupal.behaviors.attachWysiwygAngular.attach($document.context, Drupal.settings);
       }
     };
 

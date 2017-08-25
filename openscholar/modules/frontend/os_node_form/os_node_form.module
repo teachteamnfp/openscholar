@@ -11,7 +11,6 @@ function os_node_form_library() {
   $libs['os-node-form'] = array(
     'title' => 'OS node form angular',
     'js' => array(
-      libraries_get_path('ckeditor') . '/ckeditor.js' => array(),
       $self.'/osNodeForm.module.js' => array(),
       array(
         'data' => array(
@@ -40,29 +39,121 @@ function os_node_form_library() {
 function os_node_form_preprocess_page(&$vars) {
   if (user_is_logged_in() && variable_get('admin_panel_enabled', FALSE)) {
     drupal_add_library('os_node_form', 'os-node-form');
-    
     // Wysiwyg editor.
     static $formats = array();
     $profile = wysiwyg_get_profile('filtered_html');
     $theme = wysiwyg_get_editor_themes($profile, (isset($profile->settings['theme']) ? $profile->settings['theme'] : ''));
-    wysiwyg_load_editor($profile);
     if (!isset($formats[$profile->format])) {
       $config = wysiwyg_get_editor_config($profile, $theme);
       if ($config) {
-        drupal_add_js(array('wysiwyg' => array('configs' => array($profile->editor => array('format' . $profile->format => $config)))), 'setting');
+        drupal_add_js(array('osNodeFormWysiwyg' => array('configs' => array($profile->editor => array('format' . $profile->format => $config)))), 'setting');
       }
       $formats[$profile->format] = TRUE;
     }
-    wysiwyg_add_plugin_settings($profile);
+    os_node_form_wysiwyg_add_plugin_settings($profile);
   }
 }
 
 /**
- * Implements hook_js_alter.
+ * Add settings for external plugins.
  *
- * Support Drupal wysiwyg ckeditor along with angular ckeditor.
+ * @param $profile
+ *   A wysiwyg editor profile.
+ *
+ * @see wysiwyg_add_plugin_settings($profile);
+ *
  */
-function os_node_form_js_alter(&$javascript) {
-  $javascript['profiles/openscholar/libraries/ckeditor/ckeditor.js']['weight'] = -10;
-}
+function os_node_form_wysiwyg_add_plugin_settings($profile) {
+  static $plugins = array();
+  static $processed_plugins = array();
+  static $processed_formats = array();
 
+  // Each input format must only processed once.
+  // @todo ...as long as we do not have multiple profiles per format.
+  if (isset($processed_formats[$profile->format])) {
+    return;
+  }
+  $processed_formats[$profile->format] = TRUE;
+
+  $editor = wysiwyg_get_editor($profile->editor);
+
+  // Collect native plugins for this editor provided via hook_wysiwyg_plugin()
+  // and Drupal plugins provided via hook_wysiwyg_include_directory().
+  if (!array_key_exists($editor['name'], $plugins)) {
+    $plugins[$editor['name']] = wysiwyg_get_plugins($editor['name']);
+  }
+
+  // Nothing to do, if there are no plugins.
+  if (empty($plugins[$editor['name']])) {
+    return;
+  }
+
+  // Determine name of proxy plugin for Drupal plugins.
+  $proxy = (isset($editor['proxy plugin']) ? key($editor['proxy plugin']) : '');
+
+  // Process native editor plugins.
+  $profile_plugins_native = array();
+  foreach ($plugins[$editor['name']] as $plugin => $meta) {
+    // Skip Drupal plugins (handled below) and 'core' functionality.
+    if ($plugin === $proxy || $plugin === 'default') {
+      continue;
+    }
+    // Only keep native plugins that are enabled in this profile.
+    if (isset($profile->settings['buttons'][$plugin])) {
+      $profile_plugins_native[$plugin] = $meta;
+      if (!isset($processed_plugins[$editor['name']][$plugin])) {
+        if (isset($editor['plugin meta callback'])) {
+          // Invoke the editor's plugin meta callback, so it can populate the
+          // global metadata for native plugins with required values.
+          $meta['name'] = $plugin;
+          if (($native_meta = call_user_func($editor['plugin meta callback'], $editor, $meta))) {
+            drupal_add_js(array('osNodeFormWysiwyg' => array('plugins' => array('native' => array($editor['name'] => array($plugin => $native_meta))))), 'setting');
+          }
+        }
+        $processed_plugins[$editor['name']][$plugin] = $meta;
+      }
+    }
+  }
+  if (!empty($profile_plugins_native) && isset($editor['plugin settings callback'])) {
+    // Invoke the editor's plugin settings callback, so it can populate the
+    // format specific settings for native plugins with required values.
+    if (($settings_native = call_user_func($editor['plugin settings callback'], $editor, $profile, $profile_plugins_native))) {
+      drupal_add_js(array('osNodeFormWysiwyg' => array('plugins' => array('format' . $profile->format => array('native' => $settings_native)))), 'setting');
+    }
+  }
+
+  // Process Drupal plugins.
+  if ($proxy && isset($editor['proxy plugin settings callback'])) {
+    $profile_plugins_drupal = array();
+    foreach (wysiwyg_get_all_plugins() as $plugin => $meta) {
+      if (isset($profile->settings['buttons'][$proxy][$plugin])) {
+        // JavaScript and plugin-specific settings for Drupal plugins must be
+        // loaded and processed only once. Plugin information is cached
+        // statically to pass it to the editor's proxy plugin settings callback.
+        if (!isset($processed_plugins[$proxy][$plugin])) {
+          $profile_plugins_drupal[$plugin] = $processed_plugins[$proxy][$plugin] = $meta;
+          // Load the Drupal plugin's JavaScript.
+          drupal_add_js($meta['js path'] . '/' . $meta['js file']);
+          // Add plugin-specific settings.
+          $settings = (isset($meta['settings']) ? $meta['settings'] : array());
+          $settings['title'] = $meta['title'];
+          $settings['icon'] = base_path() . $meta['icon path'] . '/' . $meta['icon file'];
+          if (!empty($meta['css path']) && !empty($meta['css file'])) {
+            $settings['css'] = base_path() . $meta['css path'] . '/' . $meta['css file'];
+          }
+          drupal_add_js(array('osNodeFormWysiwyg' => array('plugins' => array('drupal' => array($plugin => $settings)))), 'setting');
+        }
+        else {
+          $profile_plugins_drupal[$plugin] = $processed_plugins[$proxy][$plugin];
+        }
+      }
+    }
+    // Invoke the editor's proxy plugin settings callback, so it can populate
+    // the settings for Drupal plugins with custom, required values.
+    $settings_drupal = call_user_func($editor['proxy plugin settings callback'], $editor, $profile, $profile_plugins_drupal);
+
+    if ($settings_drupal) {
+      drupal_add_js(array('osNodeFormWysiwyg' => array('plugins' => array('format' . $profile->format => array('drupal' => $settings_drupal)))), 'setting');
+    }
+  }
+}
