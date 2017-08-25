@@ -2361,11 +2361,11 @@ class FeatureContext extends DrupalContext {
     $feature_ = "'$feature'";
     $status_ = "'$status'";
 
-    return array(
-      new Step\When('I click on xpath element "//tr/td[text()=' . $feature_ . ']/../td[3]/span"'),
-      new Step\When('I click on xpath element "//tr/td[text()=' . $feature_ . ']/../td[3]//div/div[text()=' . $status_ . ']"'),
-
-      new Step\When('I press "Save"'),
+    return $opening +
+      array(
+        new Step\When('I click on xpath element "//tr/td[text()=' . $feature_ . ']/../td[3]/span"'),
+        new Step\When('I click on xpath element "//tr/td[text()=' . $feature_ . ']/../td[3]//div/div[text()=' . $status_ . ']"'),
+        new Step\When('I press "Save"'),
     );
   }
 

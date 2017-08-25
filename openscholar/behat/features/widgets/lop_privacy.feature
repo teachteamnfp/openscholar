@@ -16,7 +16,6 @@ Feature:
     Given I am logging in as "john"
       And I sleep for "5"
       And I set feature "Publications" to "Site Members" on "john"
-      And I press the "Close Menu" button
       And the widget "All Posts" is set in the "News" page with the following <settings>:
           | Content Type             | All    | select list |
           | Display style            | Teaser | select list |
