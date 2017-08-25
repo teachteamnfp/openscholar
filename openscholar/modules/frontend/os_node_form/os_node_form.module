@@ -40,9 +40,20 @@ function os_node_form_library() {
 function os_node_form_preprocess_page(&$vars) {
   if (user_is_logged_in() && variable_get('admin_panel_enabled', FALSE)) {
     drupal_add_library('os_node_form', 'os-node-form');
+    
+    // Wysiwyg editor.
+    static $formats = array();
     $profile = wysiwyg_get_profile('filtered_html');
+    $theme = wysiwyg_get_editor_themes($profile, (isset($profile->settings['theme']) ? $profile->settings['theme'] : ''));
+    wysiwyg_load_editor($profile);
+    if (!isset($formats[$profile->format])) {
+      $config = wysiwyg_get_editor_config($profile, $theme);
+      if ($config) {
+        drupal_add_js(array('wysiwyg' => array('configs' => array($profile->editor => array('format' . $profile->format => $config)))), 'setting');
+      }
+      $formats[$profile->format] = TRUE;
+    }
     wysiwyg_add_plugin_settings($profile);
-    //dpm(wysiwyg_add_plugin_settings($profile));
   }
 }
 

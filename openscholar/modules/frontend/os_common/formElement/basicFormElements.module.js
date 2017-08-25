@@ -389,12 +389,7 @@
     };
   }])
 
-  m.directive('feOsWysiwygExpandingTextarea', ['$parse', '$q', function ($parse, $q) {
-    // Polyfill setImmediate function.
-    var setImmediate = window && window.setImmediate ? window.setImmediate : function (fn) {
-      setTimeout(fn, 0);
-    };
-
+  m.directive('feOsWysiwygExpandingTextarea', ['$parse', '$q', '$document', function ($parse, $q, $document) {
     return {
       restrict: 'A',
       require: ['ngModel'],
@@ -403,107 +398,22 @@
         value: '=ngModel',
         element: '=',
       },
-      link: function (scope, element, attrs, ngModelController) {
-
-        /**
-         * Check if the editor if ready.
-         *
-         * @returns {Promise}
-         */
-        scope.ready = function ready() {
-          return readyDeferred.promise;
-        };
-
-        /**
-         * Listen on events of a given type.
-         * This make all event asynchronous and wrapped in $scope.$apply.
-         *
-         * @param {String} event
-         * @param {Function} listener
-         * @returns {Function} Deregistration function for this listener.
-         */
-        scope.onCKEvent = function (event, listener) {
-          instance.on(event, asyncListener);
-          function asyncListener() {
-            var args = arguments;
-            setImmediate(function () {
-              applyListener.apply(null, args);
-            });
+      template: '<label for="{{id}}-ckeditor">{{title}}</label>'+
+        '<textarea cols="60" rows="5" class="text-full os-wysiwyg-expandable wysiwyg form-textarea" id="edit-body" name="{{name}}"></textarea>'+
+        '<select class="filter-list form-select" id="edit-body-format" style="display: none;">'+
+        '<option value="filtered_html" selected="selected">Filtered HTML</option><option value="full_html">Full HTML</option><option value="plain_text">Plain text</option>'+
+        '</select>',
+      link: function (scope, elem, attr, ngModelController) {
+        scope.id = attr['inputId'];
+        scope.title = scope.element.title;
+        Drupal.settings.wysiwyg.triggers = {'edit-body': {
+            field: 'edit-body',
+            formatfiltered_html: {editor:'ckeditor', status: 1, toggle: 0},
+            resizable: 1,
+            select: 'edit-body-format'
           }
-          function applyListener() {
-            var args = arguments;
-            scope.$apply(function () {
-              listener.apply(null, args);
-            });
-          }
-          // Return the deregistration function
-          return function $off() {
-            instance.removeListener(event, applyListener);
-          };
-        };
-        var default_value = scope.value ? scope.value : '';
-        var editorElement = element[0];
-        var instance;
-        // a deferred to be resolved when the editor is ready.
-        var readyDeferred = $q.defer();
-        // @todo: Config object will be replaced with drupal wysiwyg editor
-        // settings.
-        var config = {
-          height: 150,
-          toolbarGroups: [
-            { name: 'document',    groups: [ 'mode', 'document' ] },
-            { name: 'clipboard',   groups: [ 'clipboard', 'undo' ] },
-            '/',
-            { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
-            { name: 'links' }
-          ]
-        };
-        // Create editor instance.
-        if (editorElement.hasAttribute('contenteditable') &&
-            editorElement.getAttribute('contenteditable').toLowerCase() == 'true') {
-
-          instance = this.instance = CKEDITOR.inline(editorElement, config);
         }
-        else {
-          instance = this.instance = CKEDITOR.replace(editorElement, config);
-        }
-
-        instance.setData(default_value);
-
-        scope.onCKEvent('instanceReady', function() {
-          readyDeferred.resolve(true);
-        });
-
-        // Destroy editor when the scope is destroyed.
-        scope.$on('$destroy', function onDestroy() {
-          // do not delete too fast or pending events will throw errors
-          readyDeferred.promise.then(function() {
-            instance.destroy(false);
-          });
-        });
-
-        // Initialize the editor content when it is ready.
-        scope.ready().then(function initialize() {
-          // Sync view on specific events.
-          ['dataReady', 'change', 'blur', 'saveSnapshot'].forEach(function (event) {
-            scope.onCKEvent(event, function syncView() {
-              scope.value = instance.getData() || '';
-            });
-          });
-
-        });
-
-        // Set editor data when view data change.
-        ngModelController.$render = function syncEditor() {
-          scope.ready().then(function () {
-            instance.setData(ngModelController.$viewValue || '', {
-              noSnapshot: true,
-              callback: function () {
-                instance.fire('updateSnapshot');
-              }
-            });
-          });
-        };
+        Drupal.behaviors.attachWysiwyg.attach($document.context, Drupal.settings);
       }
     };
 
