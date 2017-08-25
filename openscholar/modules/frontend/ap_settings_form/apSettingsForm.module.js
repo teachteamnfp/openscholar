@@ -179,6 +179,7 @@
     $s.columnCount = 0;
     $s.showSaveButton = true;
     var spinnerContext = "";
+    $s.callSaveSetting ={};
 
     apSettings.SettingsReady().then(function () {
       var settingsRaw = apSettings.GetFormDefinitions(form);
@@ -228,7 +229,14 @@
         // handling button spinner for two different button on a single page
         spinnerContext = button.getAttribute('name');
         bss.SetState(spinnerContext, true);
-        apSettings.SaveSettings($s.formData).then(function (response) {
+        // sending the rest_triggered value 
+        if(triggered) {
+          $s.callSaveSetting[spinnerContext] = spinnerContext;
+        }
+        else {
+          $s.callSaveSetting = $s.formData;
+        }
+        apSettings.SaveSettings($s.callSaveSetting).then(function (response) {
           var body = response.data;
           sessionStorage['messages'] = JSON.stringify(body.data.messages);
           $s.status = [];

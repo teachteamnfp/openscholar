@@ -107,9 +107,11 @@ class OsRestfulCPSettings extends \RestfulBase implements \RestfulDataProviderIn
             }
           }
           elseif (!empty($forms[$var]['rest_trigger']) && is_callable($forms[$var]['rest_trigger'])) {
-            if ($f = $forms[$var]['rest_trigger']()) {
-              $flags = array_merge($flags, $f);
-            };
+             if ($value) {
+              if ($f = $forms[$var]['rest_trigger']()) {
+                $flags = array_merge($flags, $f);
+              };
+            }
           }
           else {
             $this->saveVariable($var, $value);
@@ -141,7 +143,6 @@ class OsRestfulCPSettings extends \RestfulBase implements \RestfulDataProviderIn
           );
         }
       }
-
       return $flags;
     }
 
