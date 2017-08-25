@@ -140,15 +140,17 @@ class FeatureContext extends DrupalContext {
     }
 
     if ($this->loggedIn()) {
-      error_log('were logged in. log us out please.');
+      error_log('We are logged in. log us out please.');
       $this->logout();
       usleep(500000);
     }
 
     $element = $this->getSession()->getPage();
     $this->getSession()->visit($this->locatePath('/user'));
+
     $element->fillField('Username', $username);
     $element->fillField('Password', $password);
+
     $submit = $element->findButton('Log in');
     $submit->click();
     $this->user = user_load_by_name($username);
@@ -1835,18 +1837,12 @@ class FeatureContext extends DrupalContext {
    */
   public function iClickOnXpathElement($xpath) {
 
-    error_log("EAM Entering " . __FILE__ . ":" . __LINE__ . ", \$xpath = " . var_export($xpath, true));
-
     try {
       $page = $this->getSession()->getPage();
       $element = $page->find('xpath', $xpath);
     } catch (Exception $e) {
-      error_log("EAM Entering " . __FILE__ . ":" . __LINE__ . ", \$e = " . var_export($e, true));
+      throw new Exception(sprintf("Exception in xpath expression '%s'", $xpath));
     }
-
-    # $xpath = '//tr/td[text()="Publications"]/../td[3]//div/div[text()="Site Members"]';
-    # $e = $page->find('xpath', $xpath);
-    # error_log("EAM Entering " . __FILE__ . ":" . __LINE__ . ", \$e = " . var_export($e, true));
 
     $element->press();
   }
@@ -2361,10 +2357,8 @@ class FeatureContext extends DrupalContext {
     $status_ = "'$status'";
 
     return array(
-      # new Step\When('I click on xpath element "//tr/td[text()=\'' . $feature . '\']/../td[3]/span"'),
-      # new Step\When('I click on xpath element "//tr/td[text()=\'' . $feature . '\']/../td[3]//div/div[text()=\'' . $status . '\']"'),
-      new Step\When('I click on xpath element "//tr/td[text()=' . $feature . ']/../td[3]/span"'),
-      new Step\When('I click on xpath element "//tr/td[text()=' . $feature . ']/../td[3]//div/div[text()=' . $status . ']"'),
+      new Step\When('I click on xpath element "//tr/td[text()=' . $feature_ . ']/../td[3]/span"'),
+      new Step\When('I click on xpath element "//tr/td[text()=' . $feature_ . ']/../td[3]//div/div[text()=' . $status_ . ']"'),
 
       new Step\When('I press "Save"'),
     );

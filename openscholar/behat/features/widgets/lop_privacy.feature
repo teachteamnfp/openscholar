@@ -11,18 +11,15 @@ Feature:
      When I visit "john/news"
      Then I should see "John F. Kennedy: A Biography"
 
-  @api @widgets @javascript @eam_352
+  @api @widgets @javascript
   Scenario: Verify that private bundles don't show up in the LOP.
     Given I am logging in as "john"
-      And I visit "john/node/add/blog"
-      And I fill in "Title" with "Cuban Missle Crisis"
+      And I set feature "Publications" to "Site Members" on "john"
+      And I press the "Close Menu" button
       And the widget "All Posts" is set in the "News" page with the following <settings>:
           | Content Type             | All    | select list |
           | Display style            | Teaser | select list |
-      And I set feature "Blog" to "Site Members" on "john"
-      And I press the "Close Menu" button
-      And I logout
       And I visit "john/news"
-      And I should not see "Cuban Missle Crisis"
-
-# force test - Wed Aug 23 22:26:27 EDT 2017
+      And I should not see "John F. Kennedy: A Biography"
+          # Set the App back to "Public".
+      And I set feature "edit-os-publications" to "Public" on "john"
