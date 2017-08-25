@@ -966,6 +966,7 @@ class FeatureContext extends DrupalContext {
       }
     }
 
+    $metasteps[] = new Step\When('I make sure admin panel is closed');
     $metasteps[] = new Step\When('I press "Save"');
 
     return $metasteps;
@@ -3637,6 +3638,26 @@ class FeatureContext extends DrupalContext {
     if ($page->find('xpath', '//*[.="' . $text . '"]')) {
       throw new \Exception("The text '{$text}'' was not found in the screen");
     }
+  }
+
+  /**
+   * @Given /^I make sure admin panel is closed$/
+   */
+  public function adminPanelClosed() {
+    $page = $this->getSession()->getPage();
+    $this->waitForPageActionsToComplete();
+
+    if (! $page->find('css', '[left-menu].closed')) {
+      return array(
+        new Step\When('I press "Close Menu"'),
+        new Step\When('I sleep for "1"'),
+      );
+    }
+    elseif (!$page->find('css', '[left-menu]')) {
+      throw new \Exception("The admin panel was not found on this page. Are you sure its installed and enabled?");
+    }
+
+    return array();
   }
 
   /**
