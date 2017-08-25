@@ -45,3 +45,10 @@ function os_classes_update_7003() {
 function os_classes_update_7004() {
   features_revert(array('os_classes' => array('field_instance')));
 }
+
+/**
+ * Move Semester and year to the top in default view.
+ */
+function os_classes_update_7005() {
+  features_revert(array('os_classes' => array('field_instance')));
+}

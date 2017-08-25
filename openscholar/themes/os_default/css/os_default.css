@@ -189,13 +189,9 @@ ul.primary li {
     border-radius: 5px 5px 0 0;
     -moz-border-radius: 5px 5px 0 0;
     border-radius: 5px 5px 0 0;
-    color: #3A72AB;
     font-size: 14px;
 }
-.logged-in.no-sidebars.page-user ul.primary li a:hover,
-.not-logged-in.page-user ul.primary li a:hover {
-    text-decoration: underline;
-}
+
 .logged-in.no-sidebars.page-user ul.primary li.active a,
 .not-logged-in.page-user ul.primary li.active a {
     background-color: #f7f7f7;
@@ -221,6 +217,10 @@ background-size: 60px 60px;
 .logged-in.no-sidebars.page-user #footer {
     width: 850px;
 }
+.form-type-password a,
+.user-login-message-text a,
+.logged-in.no-sidebars.page-user ul.primary li a,
+.not-logged-in.page-user ul.primary li a,
 .logged-in.no-sidebars.page-user #content a {
     color: #3A72AB;
 }
@@ -233,6 +233,10 @@ background-size: 60px 60px;
 .logged-in.no-sidebars.page-user.page-user-edit #content-column input.form-text {
     width: 48%;
 }
+.form-type-password a,
+.user-login-message-text a,
+.logged-in.no-sidebars.page-user ul.primary li a:hover,
+.not-logged-in.page-user ul.primary li a:hover,
 .user-add-name {
     text-decoration: underline;
 }
