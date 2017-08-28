@@ -175,6 +175,7 @@ function grouper_groups_for_huid($huid, $accessLevel) {
 
   $response = drupal_http_request($grouper_url);
   if ($response->code == 200) {
+    watchdog('grouper', 'Connection to Grouper service successful [' . $grouper_url . ']');
     $raw_data = $response->data;
 
     return json_decode($raw_data);
@@ -198,8 +199,6 @@ function grouper_user_login(&$edit, $account) {
   $huid = pinserver_authenticate_get_user_huid($account->uid);
 
   $groups = grouper_groups_for_huid($huid, 'groups');
-
-  watchdog('grouper', 'Groups from Grouper' . print_r($groups,1));
 
   if ($groups !== FALSE) {
     if (count($groups)) {
@@ -290,9 +289,9 @@ function grouper_user_can_access($group = null, $user = null) {
 
   // we are only here if both the user and the group have data in this field. Compare them
   $site_groups = array_map(function ($item) { return $item['value']; }, $group->field_grouper_path[LANGUAGE_NONE]);
-//  watchdog('grouper', 'Site Groups: '.print_r($site_groups, 1));
+  watchdog('grouper', 'Site Groups: '.print_r($site_groups, 1));
 
-//  watchdog('grouper', 'User Groups: '.print_r($user_groups,1));
+  watchdog('grouper', 'User Groups: '.print_r($user_groups,1));
   $common = array_intersect($user_groups, $site_groups);
   // $common will contains all groups both the user and group are a part of. If there's anything at all, return true.
   return count($common) > 0;
