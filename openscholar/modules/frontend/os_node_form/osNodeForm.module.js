@@ -34,7 +34,7 @@
     var dialogOptions = {
       minWidth: 1187,
       minHeight: 100,
-      modal: true,
+      modal: false,
       position: 'center',
       dialogClass: 'ap-settings-form'
     };
@@ -42,6 +42,8 @@
     function link(scope, elem, attrs) {
 
       elem.bind('click', function (e) {
+       // Dirty Fix: can't edit fields of CKEditor in jQuery UI modal dialog.
+       jQuery('<div id="overlay" class="ui-widget-overlay" />').insertBefore(elem);
 
         scope.title = 'Create ' + attrs.nodeType;
 
@@ -59,6 +61,8 @@
         .then(function (modal) {
           dialogOptions.title = scope.title;
           dialogOptions.close = function (event, ui) {
+            //Remove the overlay div element.
+            jQuery("#overlay").remove();
             modal.element.remove();
           }
           modal.element.dialog(dialogOptions);
@@ -91,6 +95,7 @@
    * The controller for the forms themselves
    */
   m.controller('nodeFormController', ['$scope', '$sce', 'nodeFormService', 'buttonSpinnerStatus', 'nodeType', 'close', function ($s, $sce, nodeFormService, bss, nodeType, close) {
+
     $s.formId = nodeType + '_node_form';
     $s.formElements = {};
     $s.formData = {};
