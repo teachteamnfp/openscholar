@@ -180,7 +180,7 @@ function grouper_groups_for_huid($huid, $accessLevel) {
     return json_decode($raw_data);
   }
   else {
-    watchdog('grouper', 'Failure to connect to Grouper service: '.$response->code.': '.$response->error);
+    watchdog('grouper', 'Failure to connect to Grouper service [' . $grouper_url . ']: '.$response->code.': '.$response->error);
     return FALSE;
   }
 }
