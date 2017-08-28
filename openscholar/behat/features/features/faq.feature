@@ -37,8 +37,8 @@ Feature:
       And I press "Save"
      Then I should see "Answer cannot be longer than 50 characters but is currently 56 characters long."
       And I delete the variable "os_wysiwyg_maximum_length_body"
-
- @api @features_first @create_new_faq_content @faq_content
+  
+  @api @features_first @faq_content
   Scenario: Create new faq content
      Given I am logging in as "john"
         And I visit "john/node/add/faq"
@@ -49,7 +49,7 @@ Feature:
        Then I should see "Frequently Asked"
        And I should see "Answer Cleared"
 
- @api @features_first @delete_any_faq_content @faq_content
+  @api @features_first @faq_content
   Scenario: Delete faq content
      Given I am logging in as "john"
        And I visit the unaliased edit path of "faq/frequently-asked" on vsite "john"
@@ -58,3 +58,9 @@ Feature:
       Then I should see "This action cannot be undone."
        And I press "Delete"
       Then I should see "has been deleted"
+
+  @api @frontend_feature
+  Scenario: Permission to edit FAQ
+     Given I am logging in as "klark"
+       And I visit the unaliased edit path of "faq/what-does-jfk-stands" on vsite "john"
+      Then I should see "Access Denied"
