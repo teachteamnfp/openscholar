@@ -216,6 +216,11 @@ function grouper_user_login(&$edit, $account) {
 
     user_save($account);
   }
+  else {
+    // if we can't get grouper data, make sure the account has no grouper-related access
+    unset($account->field_grouper_path);
+    user_save($account);
+  }
 }
 
 /**
