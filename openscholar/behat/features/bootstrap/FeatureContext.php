@@ -1842,10 +1842,6 @@ class FeatureContext extends DrupalContext {
       $page = $this->getSession()->getPage();
       $element = $page->find('xpath', $xpath);
 
-      error_log("EAM trace " . __FILE__ . ":" . __LINE__ . ", \$element = " . var_export($element, true));
-      error_log("EAM trace " . __FILE__ . ":" . __LINE__ . ", \$page = " . var_export($page, true));
-      error_log("EAM trace " . __FILE__ . ":" . __LINE__ . ", \$page->getContent() = " . var_export($page->getContent(), true));
-
     } catch (Exception $e) {
       throw new Exception(sprintf("Exception in xpath expression '%s'", $xpath));
     }
