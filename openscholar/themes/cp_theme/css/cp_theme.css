@@ -1,6 +1,10 @@
 /* update */
 body,
-.ui-dialog * {
+.ui-dialog *,
+.message-wrapper a,
+.message-wrapper,
+.message-wrapper h2,
+div.messages ul li {
     font-family: helvetica, arial, sans-serif;
 }
 
@@ -213,25 +217,36 @@ html.js input.throbbing {
 }
 input.form-submit, a.button, .ui-dialog button, .ui-dialog.ap-settings-form input[type="button"], .ui-dialog.ap-settings-form input[type="submit"], a#edit-cancel, a.form-cancel {
 
+<<<<<<< HEAD
     cursor: pointer;
+=======
+body.page-node-revisions ul.action-links a,
+input.form-submit, 
+a.button,
+.ui-dialog.ap-settings-form button,
+.ui-dialog.ap-settings-form input[type="button"],
+.ui-dialog.ap-settings-form input[type="submit"],
+a#edit-cancel,
+a.form-cancel {
+      cursor: pointer;
+>>>>>>> SCHOLAR-3.x
     padding: 5px 12px;
     margin-bottom: 1em;
     margin-right: 1em;
-    /* LTR */
-    
-    color: #5a5a5a;
+    color: #fff;
     text-align: center;
     font-weight: normal;
     font-size: 1.077em;
     font-family: "Lucida Grande", Verdana, sans-serif;
-    border: 1px solid #e4e4e4;
-    border-bottom: 1px solid #b4b4b4;
-    border-left-color: #d2d2d2;
-    border-right-color: #d2d2d2;
-    background: url('/themes/seven/images/buttons.png') 0 0 repeat-x;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    border-radius: 3px;
+    border: 1px solid #888;
+    border-bottom: 1px solid #888;
+    border-left-color: #888;
+    border-right-color: #888;
+    background: #888;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    padding: 8px 15px;
 }
 
 .ui-dialog .media-browser-pane .results ~ button {
@@ -259,8 +274,8 @@ input.form-submit, a.button, .ui-dialog button, .ui-dialog.ap-settings-form inpu
     font-size: 7px;
     position: relative;
     text-indent: -9999em;
-    border-top: .5em solid rgba(136, 136, 136, 1);
-    border-right: .5em solid rgba(136, 136, 136, 1);
+    border-top: .5em solid rgb(255, 255, 255);
+    border-right: .5em solid rgb(255, 255, 255);
     border-bottom: .5em solid transparent;
     border-left: .5em solid transparent;
     -webkit-transform: translateZ(0);
@@ -478,8 +493,20 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
     margin-bottom: 22px;
 }
 
+<<<<<<< HEAD
 
 .ui-dialog {
+=======
+#overlay-title-wrapper h1 {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 1050px;
+    display: block;
+    overflow: hidden;
+}
+
+.ui-dialog.ap-settings-form {
+>>>>>>> SCHOLAR-3.x
     padding: 0;
     top:10% !important;
     font-size: 14px; 
@@ -1828,7 +1855,7 @@ body.page-node-revisions .node {
   content: 'Attached files';
 }
 
-.node-news .photo .field-type-image:before {
+.page-node-revisions .node-news .photo .field-type-image:before {
   content:'News Photo';
 }
 
@@ -1889,6 +1916,7 @@ body.page-node-revisions .node {
 div.no-bold {
     font-weight: normal;
 }
+<<<<<<< HEAD
 
  .visibility-selector {
 
@@ -1902,3 +1930,8 @@ div.no-bold {
      cursor:pointer;
  }
 
+=======
+#edit-og-vocabulary a.tabledrag-handle .handle{
+    display: none;
+}
+>>>>>>> SCHOLAR-3.x
