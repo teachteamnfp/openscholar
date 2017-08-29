@@ -20,6 +20,6 @@ Feature:
           | Content Type             | All    | select list |
           | Display style            | Teaser | select list |
       And I visit "john/news"
-      And I should not see "John F. Kennedy: A Biography"
+     Then I should not see "John F. Kennedy: A Biography"
           # Set the App back to "Public".
-      And I set feature "edit-os-publications" to "Public" on "john"
+      And I set feature "Publications" to "Everyone" on "john"
