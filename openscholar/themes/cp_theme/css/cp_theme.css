@@ -215,11 +215,7 @@ html.js input.throbbing {
     color: #FFF;
     font-weight: bold;
 }
-input.form-submit, a.button, .ui-dialog button, .ui-dialog.ap-settings-form input[type="button"], .ui-dialog.ap-settings-form input[type="submit"], a#edit-cancel, a.form-cancel {
 
-<<<<<<< HEAD
-    cursor: pointer;
-=======
 body.page-node-revisions ul.action-links a,
 input.form-submit, 
 a.button,
@@ -229,7 +225,6 @@ a.button,
 a#edit-cancel,
 a.form-cancel {
       cursor: pointer;
->>>>>>> SCHOLAR-3.x
     padding: 5px 12px;
     margin-bottom: 1em;
     margin-right: 1em;
@@ -493,10 +488,7 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
     margin-bottom: 22px;
 }
 
-<<<<<<< HEAD
 
-.ui-dialog {
-=======
 #overlay-title-wrapper h1 {
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -506,7 +498,6 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
 }
 
 .ui-dialog.ap-settings-form {
->>>>>>> SCHOLAR-3.x
     padding: 0;
     top:10% !important;
     font-size: 14px; 
@@ -1916,7 +1907,7 @@ body.page-node-revisions .node {
 div.no-bold {
     font-weight: normal;
 }
-<<<<<<< HEAD
+
 
  .visibility-selector {
 
@@ -1930,8 +1921,8 @@ div.no-bold {
      cursor:pointer;
  }
 
-=======
+
 #edit-og-vocabulary a.tabledrag-handle .handle{
     display: none;
 }
->>>>>>> SCHOLAR-3.x
+
