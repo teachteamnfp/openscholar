@@ -2355,14 +2355,18 @@ class FeatureContext extends DrupalContext {
 
     $vsite_id = FeatureHelp::getNodeId($group);
 
+    // Here's a way to insert quotes into our xpath expression, without the
+    // Gherkin parser capturing them incorrectly
     $feature_ = "'$feature'";
     $status_ = "'$status'";
+    $save_ = "'Save'";
 
-    return $opening +
+    return array_merge($opening,
       array(
         new Step\When('I click on xpath element "//tr/td[text()=' . $feature_ . ']/../td[3]/span"'),
         new Step\When('I click on xpath element "//tr/td[text()=' . $feature_ . ']/../td[3]//div/div[text()=' . $status_ . ']"'),
-        new Step\When('I press "Save"'),
+        new Step\When('I click on xpath element "//span[text()=' . $save_ . ']"'),
+      )
     );
   }
 
