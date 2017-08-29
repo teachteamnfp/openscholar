@@ -2253,6 +2253,18 @@ class FeatureContext extends DrupalContext {
   }
 
   /**
+   * @Then /^I should see the FAQ "([^"]*)" comes before "([^"]*)"$/
+   */
+  public function iShouldSeeTheFaqComesBefore($first, $second) {
+    $page = $this->getSession()->getPage()->getContent();
+
+    $pattern = '/<div class="view-content">[\s\S]*' . $first . '[\s\S]*' . $second . '[\s\S]*<\/section>/';
+    if (!preg_match($pattern, $page)) {
+      throw new Exception("The FAQ '$first' does not come before the FAQ '$second'.");
+    }
+  }
+
+  /**
    * @Given /^I define "([^"]*)" domain to "([^"]*)"$/
    */
   public function iDefineDomainTo($vsite, $domain) {

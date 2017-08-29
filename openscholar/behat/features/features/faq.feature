@@ -75,3 +75,24 @@ Feature:
        And I open the admin panel to "FAQs"
       When I sleep for "2"
       Then I should see "Choose how FAQs will display"
+
+  @api @frontend
+  Scenario: Default disable question/answer slider behavior
+    Given I am logging in as "john"
+      And I set the variable "os_faq_disable_toggle" to "TRUE" in the vsite "john"
+     When I visit "john/faq"
+     Then I should see "JFK stands for: John Fitzgerald Kennedy."
+
+  @api @frontend
+  Scenario: Orderby Alphanumeric ascending
+    Given I am logging in as "john"
+      And I set the variable "faq_sort" to "title" in the vsite "john"
+     When I visit "john/faq"
+     Then I should see the FAQ "What does JFK stands for?" comes before "Where does JFK born?"
+
+  @api @frontend
+  Scenario: Orderby Alphanumeric descending
+    Given I am logging in as "john"
+      And I set the variable "faq_sort" to "title_desc" in the vsite "john"
+     When I visit "john/faq"
+     Then I should see the FAQ "Where does JFK born?" comes before "What does JFK stands for?"
