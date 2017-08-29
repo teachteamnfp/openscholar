@@ -64,3 +64,14 @@ Feature:
      Given I am logging in as "klark"
        And I visit the unaliased edit path of "faq/what-does-jfk-stands" on vsite "john"
       Then I should see "Access Denied"
+
+  @api @javascript
+  Scenario: Administer FAQ App Setting
+     Given I am logging in as "john"
+      When I visit "john"
+       And I make sure admin panel is open
+      When I open the admin panel to "Settings"
+       And I open the admin panel to "App Settings"
+       And I open the admin panel to "FAQs"
+      When I sleep for "2"
+      Then I should see "Choose how FAQs will display"
