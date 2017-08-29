@@ -41,10 +41,6 @@ class Grouper extends \RestfulBase implements \RestfulDataProviderInterface {
       if ($response->code == 200) {
         $raw_data = $response->data;
       }
-      elseif ($response->code == -10060) {
-        // TODO: Remove when the service is actually working
-        $raw_data = file_get_contents(drupal_get_path('module', 'grouper').'/test_data.json');
-      }
       else {
         switch ($response->code) {
           case 403:
