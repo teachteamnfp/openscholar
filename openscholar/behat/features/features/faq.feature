@@ -49,6 +49,12 @@ Feature:
        Then I should see "Frequently Asked"
        And I should see "Answer Cleared"
 
+  @api @javascript
+  Scenario: Permission to edit new FAQ
+     Given I am logging in as "klark"
+       And I visit the unaliased edit path of "faq/frequently-asked" on vsite "john"
+      Then I should see "Access Denied"
+
   @api @frontend
   Scenario: Default Creation date descending
     Given I am logging in as "john"
