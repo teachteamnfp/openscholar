@@ -1,6 +1,6 @@
 (function () {
 
-  var m = angular.module('basicFormElements', ['osHelpers', 'ngSanitize']);
+  var m = angular.module('basicFormElements', ['osHelpers', 'ngSanitize', 'EntityService']);
 
   /**
    * SelectOptGroup directive.
@@ -414,6 +414,43 @@
           }
         }
         Drupal.behaviors.attachWysiwygAngular.attach($document.context, Drupal.settings);
+      }
+    };
+
+  }]);
+
+  m.directive('feMediaDraggableFile', [function () {
+    return {
+      restrict: 'A',
+      scope: {
+        name: '@',
+        value: '=ngModel',
+        element: '=',
+      },
+      template: '<div class="field-widget-media-draggable-file" media-browser-field max-filesize="128 MB"'+
+        'types="audio,default,document,executable,html,image,video"'+ 
+        'extensions="jpg jpeg gif png txt doc docx gz xls xlsx pdf ppt pptx pps odt ods odp tex tgz xml zip sas"'+
+        'upload-text="Upload" droppable-text="Drop files here to upload" files="files" cardinality="-1">',
+      link: function (scope, elem, attr) {
+        console.log(scope.element);
+      }
+    };
+
+  }]);
+
+  m.directive('feOgVocabComplex', ['EntityService', function (EntityService) {
+
+    return {
+      restrict: 'A',
+      scope: {
+        name: '@',
+        value: '=ngModel',
+        element: '=',
+      },
+      template: '<taxonomy-widget entity-type="node" terms="terms" bundle="page"></taxonomy-widget>',
+      link: function (scope, elem, attr) {
+        console.log(scope.element);
+        scope.terms = [];
       }
     };
 

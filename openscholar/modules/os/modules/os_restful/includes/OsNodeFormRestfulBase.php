@@ -39,14 +39,7 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
     }
     $extra_fields =  _field_invoke_default('form', 'node', $node, $form, $form_state, $options);
     foreach ($extra_fields as $key => $field) {
-      $extra_info = array();
       $field_info = field_info_instance('node', $field[LANGUAGE_NONE]['#field_name'], $node->type);
-      if ($field_info['widget']['type'] == 'media_draggable_file') {
-        $extra_info = array(
-          '#upload_location' => $field[LANGUAGE_NONE]['drop']['#upload_location'],
-          '#upload_validators' => $field[LANGUAGE_NONE]['drop']['#upload_validators'],
-        );
-      }
       $form[$key] = array(
         // @Todo: We Need look for better function that will give us proper
         // field type instead of 'text_textarea' or 'text_textfield'.
@@ -56,9 +49,26 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
         '#required' => $field[LANGUAGE_NONE]['#required'],
         '#description' => $field[LANGUAGE_NONE]['#description'],
         '#access' => $field['#access'],
-        '#default_value' => '',
-        '#extra_info' => $extra_info,
+        '#default_value' => $field[LANGUAGE_NONE]['#default_value'],
       );
+      $file_upload_info = array();
+      if ($field_info['widget']['type'] == 'media_draggable_file') {
+        $file_upload_info = array(
+          '#id' => 'edit-' . str_replace('_', '-', $key),
+          '#custom_directive_parameters' => array(
+            'cardinality' => $field[LANGUAGE_NONE]['drop']['#cardinality'],
+            'panes' => array('upload', 'library'),
+            'hide_helpicon' => false,
+            'droppable_text' => $field[LANGUAGE_NONE]['drop']['#droppable_area_text'],
+            'upload_text' =>  $field[LANGUAGE_NONE]['drop']['#upload_button_text'],
+            'max-filesize' => $field[LANGUAGE_NONE]['drop']['#file_upload_max_size'],
+            'types' => $field[LANGUAGE_NONE]['drop']['#upload_validators']['file_validate_extensions'],
+          ),
+          '#upload_location' => $field[LANGUAGE_NONE]['drop']['#upload_location'],
+          '#upload_validators' => $field[LANGUAGE_NONE]['drop']['#upload_validators']
+        );
+        $form[$key] = array_merge($form[$key], $file_upload_info);
+      }
     }
     // Node revision information for administrators.
     $form['revision_information'] = array(
