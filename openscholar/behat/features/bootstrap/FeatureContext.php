@@ -140,7 +140,7 @@ class FeatureContext extends DrupalContext {
     }
 
     if ($this->loggedIn()) {
-      error_log('were logged in. log us out please.');
+      error_log('We are logged in. log us out please.');
       $this->logout();
       usleep(500000);
     }
@@ -964,6 +964,7 @@ class FeatureContext extends DrupalContext {
       }
     }
 
+    $metasteps[] = new Step\When('I make sure admin panel is closed');
     $metasteps[] = new Step\When('I press "Save"');
 
     return $metasteps;
@@ -1829,6 +1830,25 @@ class FeatureContext extends DrupalContext {
     $element->press();
   }
 
+
+  /**
+   * @Given /^I click on xpath element "([^"]*)"$/
+   */
+  public function iClickOnXpathElement($xpath) {
+
+
+    try {
+      $page = $this->getSession()->getPage();
+      $element = $page->find('xpath', $xpath);
+
+
+    } catch (Exception $e) {
+      throw new Exception(sprintf("Exception in xpath expression '%s'", $xpath));
+    }
+
+    $element->press();
+  }
+
   /**
    * @Given /^I click on "([^"]*)" under facet "([^"]*)"$/
    */
@@ -2327,17 +2347,28 @@ class FeatureContext extends DrupalContext {
   public function iSetFeatureStatus ($feature, $status, $group) {
     $opening = array(
       new Step\When('I visit "' . $group . '"'),
+      new Step\When('I sleep for "2"'),
       new Step\When('I make sure admin panel is open'),
       new Step\When('I open the admin panel to "Settings"'),
       new Step\When('I sleep for "1"'),
       new Step\When('I click on the "Enable / Disable Apps" control'),
+      new Step\When('I sleep for "3"'),
     );
 
     $vsite_id = FeatureHelp::getNodeId($group);
 
-    return array(
-      new Step\When('I select "' . $status . '" from "' . $feature . '"'),
-      new Step\When('I press "edit-submit"'),
+    // Here's a way to insert quotes into our xpath expression, without the
+    // Gherkin parser capturing them incorrectly
+    $feature_ = "'$feature'";
+    $status_ = "'$status'";
+    $save_ = "'Save'";
+
+    return array_merge($opening,
+      array(
+        new Step\When('I click on xpath element "//tr/td[text()=' . $feature_ . ']/../td[3]/span"'),
+        new Step\When('I click on xpath element "//tr/td[text()=' . $feature_ . ']/../td[3]//div/div[text()=' . $status_ . ']"'),
+        new Step\When('I click on xpath element "//span[text()=' . $save_ . ']"'),
+      )
     );
   }
 
@@ -3612,6 +3643,24 @@ class FeatureContext extends DrupalContext {
   }
 
   /**
+   */
+  public function adminPanelClosed() {
+    $page = $this->getSession()->getPage();
+    $this->waitForPageActionsToComplete();
+
+    if (! $page->find('css', '[left-menu].closed')) {
+      return array(
+        new Step\When('I press "Close Menu"'),
+        new Step\When('I sleep for "1"'),
+      );
+    }
+    elseif (!$page->find('css', '[left-menu]')) {
+      throw new \Exception("The admin panel was not found on this page. Are you sure its installed and enabled?");
+    }
+
+    return array();
+  }
+
    * @Given /^I make sure admin panel is open$/
    */
   public function adminPanelOpen() {
