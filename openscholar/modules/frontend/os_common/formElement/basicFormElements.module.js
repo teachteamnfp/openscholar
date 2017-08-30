@@ -339,10 +339,10 @@
         element: '=',
       },
       template: '<fieldset class="node-form-options collapsible form-wrapper collapse-processed" ng-class="{collapsed: collapsed==true}" id="{{id}}">'+
-                '<legend><span class="fieldset-legend"><span class="fieldset-title" ng-click="collapsibleToggle()">{{title}}</span>'+
-                '<span class="summary"> (Selected value will go here)</span></span></legend>'+
-                '<div class="fieldset-wrapper-element" ng-hide="collapsed"><div class="form-item" ng-repeat="(key, field) in formElements">'+
-                '<div form-element element="field" value="formData[key]"><span>placeholder</span></div></div></div></fieldset>',
+        '<legend><span class="fieldset-legend"><span class="fieldset-title" ng-click="collapsibleToggle()">{{title}}</span>'+
+        '<span class="summary"> (Selected value will go here)</span></span></legend>'+
+        '<div class="fieldset-wrapper-element" ng-hide="collapsed"><div class="form-item" ng-repeat="(key, field) in formElements">'+
+        '<div form-element element="field" value="formData[key]"><span>placeholder</span></div></div></div></fieldset>',
       link: function (scope, elem, attr) {
         scope.collapsed = scope.element.collapsed;
         scope.collapsibleToggle = function () {
