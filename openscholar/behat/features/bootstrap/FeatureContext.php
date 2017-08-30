@@ -3642,7 +3642,8 @@ class FeatureContext extends DrupalContext {
     }
   }
 
-  /**
+  /*
+   * @Given /^I make sure admin panel is closed$/
    */
   public function adminPanelClosed() {
     $page = $this->getSession()->getPage();
@@ -3661,6 +3662,7 @@ class FeatureContext extends DrupalContext {
     return array();
   }
 
+  /*
    * @Given /^I make sure admin panel is open$/
    */
   public function adminPanelOpen() {
