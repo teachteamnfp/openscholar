@@ -58,7 +58,7 @@ font-family: helvetica, arial !important;
 
 
 .region-header-third ul.nice-menu a,
-#search-block-form .form-item label,
+.search-block-form .form-item label,
 #menu-bar,
 #header,
 #boxes-box-site_info, 
@@ -135,8 +135,8 @@ border-top: 1px solid #E4E0E0;
 }
 
 
-#search-block-form input.form-submit, 
-#search-block-form #edit-submit, 
+.search-block-form input.form-submit,
+.search-block-form #edit-submit,
 #search-form #edit-submit {
   background: url(/profiles/openscholar/themes/hwpi_basetheme/images/hwpi_basesprite.png) no-repeat 2px -441px #8996A0;
   height:34px;

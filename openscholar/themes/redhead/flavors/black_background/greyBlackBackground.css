@@ -5,8 +5,8 @@ background:#000;
 }  
    
 
-#search-block-form input.form-submit, 
-#search-block-form #edit-submit, 
+.search-block-form input.form-submit,
+.search-block-form #edit-submit,
 #search-form #edit-submit {
 	background-color: #000;
 }

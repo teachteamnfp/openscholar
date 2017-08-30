@@ -560,7 +560,7 @@ body.sitewide-front {
     -moz-border-radius: 3px !important;
     -webkit-border-radius: 3px !important;
 }
-#block-os-search-db-site-search #search-block-form #edit-submit {
+#block-os-search-db-site-search .search-block-form #edit-submit {
     width: auto;
     height: auto;
     text-indent: 0;
@@ -596,7 +596,7 @@ body.sitewide-front {
     text-decoration: none;
     cursor: pointer;
 }
-.sitewide-front #search-block-form .container-inline .form-item .form-text {
+.sitewide-front .search-block-form .container-inline .form-item .form-text {
     border-image: none;
     border-radius: 0;
     width: 236px;
@@ -608,10 +608,10 @@ body.sitewide-front {
     float: left;
     margin-right: -125px;
 }
-#block-os-search-db-site-search #search-block-form .container-inline {
+#block-os-search-db-site-search .search-block-form .container-inline {
     max-width: none;
 }
-#block-os-search-db-site-search #search-block-form .container-inline .form-item {
+#block-os-search-db-site-search .search-block-form .container-inline .form-item {
     width: auto;
 }
 #block-os-search-db-site-search .form-item.form-type-textfield.form-item-search-block-form {

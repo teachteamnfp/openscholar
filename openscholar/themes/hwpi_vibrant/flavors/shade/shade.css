@@ -28,7 +28,7 @@
     color: #8A101E;
     font: 14px helvetica, arial, sans-serif;
 }
-#search-block-form .form-item label {
+.search-block-form .form-item label {
     font-size: 12px;
 }
 #header {
@@ -301,8 +301,8 @@ ul.nice-menu-down li ul li ul {
 #menu-bar ul.nice-menu .menuparent ul li a.active {
     background: #1d1d1d !important;
 }
-#search-block-form input.form-submit,
-#search-block-form #edit-submit,
+.search-block-form input.form-submit,
+.search-block-form #edit-submit,
 #search-form #edit-submit {
     background-position: 2px -373px;
 }

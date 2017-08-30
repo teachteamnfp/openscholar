@@ -592,7 +592,7 @@ ul.nice-menu-down,
     padding: 15px 0 15px 15px;
     background-color: #c7c7c7;
 }
-#search-block-form .form-item label {
+.search-block-form .form-item label {
     font-size: 0;
     white-space: nowrap;
     overflow: hidden;

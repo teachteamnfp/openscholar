@@ -258,7 +258,7 @@ ul.grid {
   width:245px;
   }
 
-#search-block-form .container-inline .form-item .form-text {
+.search-block-form .container-inline .form-item .form-text {
   width: 233px;
   background: #abaaaa;
   height: 24px;
@@ -267,7 +267,7 @@ ul.grid {
   border: none;
   }
 
-#search-block-form input.form-submit, #search-block-form #edit-submit, #search-form #edit-submit {
+.search-block-form input.form-submit, .search-block-form #edit-submit, #search-form #edit-submit {
   width:64px;
   -moz-border-radius:0;
   -webkit-border-radius:0;

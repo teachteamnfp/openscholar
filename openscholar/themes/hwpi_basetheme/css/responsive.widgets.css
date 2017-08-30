@@ -17,10 +17,10 @@
     margin-bottom: 0;
     padding-top: 10px !important;
 }
-#search-block-form .form-item label {
+.search-block-form .form-item label {
     display: none;
 }
-#search-block-form {
+.search-block-form {
     margin-left: 12px;
     padding-bottom: 0!important;
 }
@@ -42,7 +42,7 @@
    min-height: 35px;
     
 }
-#search-block-form input.form-submit, #search-block-form #edit-submit, #search-form #edit-submit {
+.search-block-form input.form-submit, .search-block-form #edit-submit, #search-form #edit-submit {
     margin: 0 0 0 -49px !important;
 }
 
@@ -60,7 +60,7 @@
 /*--------------------------------------------------------*/
 @media (max-width: 768px) {
 
-#search-block-form .container-inline .form-item .form-text {
+.search-block-form .container-inline .form-item .form-text {
     width: 100%;
 }
 

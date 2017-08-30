@@ -88,8 +88,8 @@ a.rslides_nav {
 #powered-by a {
     background-position: -14px -522px;
 }
-#search-block-form input.form-submit,
-#search-block-form #edit-submit,
+.search-block-form input.form-submit,
+.search-block-form #edit-submit,
 #search-form #edit-submit {
     background-position: 15px -608px;
 }

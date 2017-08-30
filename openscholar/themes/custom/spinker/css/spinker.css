@@ -310,7 +310,7 @@ ul.nice-menu-down li.menuparent:hover {
   }
   
 
-#search-block-form .container-inline .form-item .form-text {
+.search-block-form .container-inline .form-item .form-text {
  background: #000000;
   color: #ccffcc;
 }

@@ -236,8 +236,8 @@ h2.block-title {
 }
 /* Search */
 
-#search-block-form input.form-submit,
-#search-block-form #edit-submit,
+.search-block-form input.form-submit,
+.search-block-form #edit-submit,
 #search-form #edit-submit {
     background: url('/profiles/openscholar/themes/hwpi_basetheme/images/hwpi_basesprite.png') no-repeat 2px -441px #c7c7c7;
     height: 34px;

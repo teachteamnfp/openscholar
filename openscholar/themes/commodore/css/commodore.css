@@ -172,7 +172,7 @@ input[type="search"] {
 }
 
 
-#search-block-form input.form-submit, #search-block-form #edit-submit, #search-form #edit-submit {
+.search-block-form input.form-submit, .search-block-form #edit-submit, #search-form #edit-submit {
      background: url("../images/searchIcon.gif") no-repeat scroll 0 0 transparent;
      width:26px;
      height:25px;

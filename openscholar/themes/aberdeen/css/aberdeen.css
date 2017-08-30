@@ -338,7 +338,7 @@ float:right;
 }
 
 .search-form input.form-submit,
-#search-block-form #edit-submit,
+.search-block-form #edit-submit,
 #search-form #edit-submit{
   -moz-border-radius: 0 4px 4px 0;
   -webkit-border-radius: 0 4px 4px 0;

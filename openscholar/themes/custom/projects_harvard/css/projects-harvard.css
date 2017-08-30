@@ -139,11 +139,11 @@ h2 {
 
 /* SEARCH FORM */
 
-#block-os-search-db-site-search #search-block-form {
+#block-os-search-db-site-search .search-block-form {
   float: right; /* LTR */
 }
 
-#block-os-search-db-site-search #search-block-form #edit-submit {
+#block-os-search-db-site-search .search-block-form #edit-submit {
   color: transparent;
   height: 24px;
 }

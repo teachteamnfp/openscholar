@@ -106,8 +106,8 @@ a.rslides_nav {
     background: #FFF;
     border-top: 6px solid #75c5bc;
 }
-#search-block-form input.form-submit,
-#search-block-form #edit-submit,
+.search-block-form input.form-submit,
+.search-block-form #edit-submit,
 #search-form #edit-submit {
     background: url('/profiles/openscholar/themes/hwpi_basetheme/images/hwpi_basesprite.png') no-repeat 2px -441px #1ebfb3;
     height: 34px;

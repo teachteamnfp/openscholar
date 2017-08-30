@@ -352,16 +352,16 @@ h1#page-title {
 
 
 /* Search */
-#search-block-form .container-inline .form-item .form-text {height: 32px;}
+.search-block-form .container-inline .form-item .form-text {height: 32px;}
 
-#search-block-form input.form-submit,
-#search-block-form #edit-submit,
+.search-block-form input.form-submit,
+.search-block-form #edit-submit,
 #search-form #edit-submit {
    background-position: 2px -373px;
 }
 
 
-#search-block-form .form-item label {
+.search-block-form .form-item label {
     color: #444;
     font-family: arial,sans-serif;
     font-size: 12px;

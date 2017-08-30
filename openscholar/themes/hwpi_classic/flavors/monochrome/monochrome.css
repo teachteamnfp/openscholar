@@ -55,7 +55,7 @@ a:visited {
 #header-container,
 #boxes-box-site_info,
 #boxes-box-site_info a,
-#search-block-form .form-item label,
+.search-block-form .form-item label,
 #footer,
 #footer a,
 #footer strong,
@@ -94,13 +94,13 @@ a:visited {
     padding: 8px 0 0;
     font-size: 11px;
 }
-#search-block-form input.form-submit,
-#search-block-form #edit-submit,
+.search-block-form input.form-submit,
+.search-block-form #edit-submit,
 #search-form #edit-submit {
     background: url('/profiles/openscholar/themes/hwpi_basetheme/images/hwpi_basesprite.png') no-repeat 2px -441px #A51C30;
     height: 34px;
 }
-#search-block-form .container-inline .form-item .form-text {
+.search-block-form .container-inline .form-item .form-text {
     background-color: #dedede;
 }
 .sidebar .block,

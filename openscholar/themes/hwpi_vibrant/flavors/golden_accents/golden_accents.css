@@ -52,8 +52,8 @@ border-radius: 0;
 box-sizing: none;
 }
 
-#search-block-form input.form-submit, 
-#search-block-form #edit-submit, 
+.search-block-form input.form-submit,
+.search-block-form #edit-submit,
 #search-form #edit-submit {
   background: url(/profiles/openscholar/themes/hwpi_basetheme/images/hwpi_basesprite.png) no-repeat 2px -441px #C4961A;
 
@@ -136,7 +136,7 @@ color: #FFF !important;
   background: #f4f4f4;
 }
 
-#header-container #search-block-form .form-item label {
+#header-container .search-block-form .form-item label {
 color: #BAC5C6;
 }
 

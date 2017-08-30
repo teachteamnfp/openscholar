@@ -1326,7 +1326,7 @@ width: 200px;
 margin-top:5px;
   }
 
-#footer #search-block-form input[type="submit"] {
+#footer .search-block-form input[type="submit"] {
   background: #79929c;
   color: #fff !important;
   min-width: 65px;

@@ -96,7 +96,7 @@ color: #FFF;
     text-decoration: none;
     }
 
-#search-block-form .form-item label,
+.search-block-form .form-item label,
 #menu-bar a,
 #menu-bar a:visited,
 #menu-bar ul.nice-menu a {
@@ -144,8 +144,8 @@ ul.nice-menu-left li.menuparent:hover, ul.nice-menu-left li li.menuparent:hover 
 
 
 
-#search-block-form input.form-submit, 
-#search-block-form #edit-submit, 
+.search-block-form input.form-submit,
+.search-block-form #edit-submit,
 #search-form #edit-submit {
 background-position: 2px -440px;
 background-color: #999;

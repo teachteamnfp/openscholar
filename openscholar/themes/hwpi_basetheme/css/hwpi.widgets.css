@@ -41,14 +41,14 @@
 }
 /* Search */
 
-#search-block-form {
+.search-block-form {
     padding-bottom: 5px;
 }
-#columns #block-os-search-db-site-search.no-title #search-block-form {
+#columns #block-os-search-db-site-search.no-title .search-block-form {
     padding-top: 15px;
 }
-#search-block-form input.form-submit,
-#search-block-form #edit-submit,
+.search-block-form input.form-submit,
+.search-block-form #edit-submit,
 #search-form #edit-submit {
     background: url("../images/hwpi_basesprite.png") no-repeat scroll 2px -59px transparent;
     height: 33px;
@@ -57,13 +57,13 @@
 .lt-ie9 .form-item-search-block-form {
     display: table;
 }
-#search-block-form .container-inline {
+.search-block-form .container-inline {
     height: auto;
     line-height: normal;
     max-width: none;
     padding-right: 0;
 }
-#search-block-form .container-inline .form-item .form-text {
+.search-block-form .container-inline .form-item .form-text {
     border-color: #D4D4D2;
     border-image: none;
     border-style: solid;
@@ -79,27 +79,27 @@
     -moz-border-top-colors: #D4D4D2;
     width: 305px;
 }
-.lt-ie9 #search-block-form .container-inline .form-item .form-text {
+.lt-ie9 .search-block-form .container-inline .form-item .form-text {
     display: table-cell;
 }
-#search-block-form input.form-submit,
-#search-block-form #edit-submit,
+.search-block-form input.form-submit,
+.search-block-form #edit-submit,
 #search-form #edit-submit {
     margin: -1px 0 0 -44px !important;
     vertical-align: top;
 }
-#search-block-form .form-item label {
+.search-block-form .form-item label {
     display: inline;
     font-weight: normal;
     color: #3d3d3d;
 }
-.lt-ie9 #search-block-form .form-item label {
+.lt-ie9 .search-block-form .form-item label {
     display: table-cell;
     vertical-align: middle;
 }
-#footer #search-block-form .form-item label,
-#content-panels #search-block-form .form-item label,
-.sidebar #search-block-form .form-item label {
+#footer .search-block-form .form-item label,
+#content-panels .search-block-form .form-item label,
+.sidebar .search-block-form .form-item label {
     position: absolute;
     clip: rect(0px 0px 0px 0px);
 }
@@ -547,7 +547,7 @@ table td.mini .mini-day-on a {
 
 #content-panels .block-content,
 #content-panels .boxes-box-content,
-#content-panels #block-os-search-db-site-search.no-title #search-block-form {
+#content-panels #block-os-search-db-site-search.no-title .search-block-form {
     margin-top: 0;
     padding-top: 0;
 }

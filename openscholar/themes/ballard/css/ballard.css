@@ -1,4 +1,4 @@
-#branding_header, #branding_footer, #search-block-form .form-item label {
+#branding_header, #branding_footer, .search-block-form .form-item label {
 	display: none;
 }
 
@@ -41,7 +41,7 @@ body {
 	padding-top: 0;
 }
 
-#search-block-form input.form-submit, #search-block-form #edit-submit, #search-form #edit-submit {
+.search-block-form input.form-submit, .search-block-form #edit-submit, #search-form #edit-submit {
 	background-position: 2px -440px;
 	background-color: #ccc;
 }

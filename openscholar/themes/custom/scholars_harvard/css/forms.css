@@ -61,7 +61,7 @@
   }
 /*
 #search-theme-form input.form-submit,
-#search-block-form #edit-submit,
+.search-block-form #edit-submit,
 #search-form #edit-submit{
   border: medium none;
   font-size: 10px;
