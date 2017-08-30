@@ -23,6 +23,8 @@
       if (angular.isFunction(func)) {
         handlers[id] = handlers[id] || [];
         handlers[id].push(func);
+
+        func(states[id]);
       }
     }
   }]);
