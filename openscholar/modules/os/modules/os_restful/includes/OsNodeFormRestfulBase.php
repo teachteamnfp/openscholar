@@ -61,8 +61,8 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
             'hide_helpicon' => false,
             'droppable_text' => $field[LANGUAGE_NONE]['drop']['#droppable_area_text'],
             'upload_text' =>  $field[LANGUAGE_NONE]['drop']['#upload_button_text'],
-            'max-filesize' => $field[LANGUAGE_NONE]['drop']['#file_upload_max_size'],
-            'types' => $field[LANGUAGE_NONE]['drop']['#upload_validators']['file_validate_extensions'],
+            'max_filesize' => $field[LANGUAGE_NONE]['drop']['#file_upload_max_size'],
+            'types' => implode(',', $field_info['widget']['settings']['allowed_types']),
           ),
           '#upload_location' => $field[LANGUAGE_NONE]['drop']['#upload_location'],
           '#upload_validators' => $field[LANGUAGE_NONE]['drop']['#upload_validators']

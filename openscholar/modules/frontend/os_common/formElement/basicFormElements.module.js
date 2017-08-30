@@ -427,12 +427,15 @@
         value: '=ngModel',
         element: '=',
       },
-      template: '<div class="field-widget-media-draggable-file" media-browser-field max-filesize="128 MB"'+
-        'types="audio,default,document,executable,html,image,video"'+ 
-        'extensions="jpg jpeg gif png txt doc docx gz xls xlsx pdf ppt pptx pps odt ods odp tex tgz xml zip sas"'+
-        'upload-text="Upload" droppable-text="Drop files here to upload" files="files" cardinality="-1">',
+      template: '<div media-browser-field max-filesize="{{MaxFileSize}}" types="{{types}}" extensions="{{validExtensiond}}" upload-text="{{uploadText}}" droppable-text="{{droppableText}}" files="files" cardinality="{{cardinality}}" class="field-widget-media-draggable-file"></div>',
       link: function (scope, elem, attr) {
-        console.log(scope.element);
+        var directive_parameters = scope.element.custom_directive_parameters;
+        scope.validExtensiond = scope.element.upload_validators.file_validate_extensions[0];
+        scope.MaxFileSize = directive_parameters.max_filesize;
+        scope.droppableText = directive_parameters.droppable_text;
+        scope.cardinality = directive_parameters.cardinality;
+        scope.uploadText = directive_parameters.upload_text;
+        scope.types = directive_parameters.types;
       }
     };
 
