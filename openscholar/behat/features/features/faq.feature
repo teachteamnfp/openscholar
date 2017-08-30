@@ -49,6 +49,20 @@ Feature:
        Then I should see "Frequently Asked"
        And I should see "Answer Cleared"
 
+  @api @frontend
+  Scenario: Default Creation date descending
+    Given I am logging in as "john"
+      And I set the variable "faq_sort" to "created" in the vsite "john"
+     When I visit "john/faq"
+     Then I should see the FAQ "Frequently Asked" comes before "What does JFK stands for?"
+
+  @api @frontend
+  Scenario: Creation date ascending
+    Given I am logging in as "john"
+      And I set the variable "faq_sort" to "created_asc" in the vsite "john"
+     When I visit "john/faq"
+     Then I should see the FAQ "Where does JFK born?" comes before "Frequently Asked"
+
   @api @features_first @faq_content
   Scenario: Delete faq content
      Given I am logging in as "john"
