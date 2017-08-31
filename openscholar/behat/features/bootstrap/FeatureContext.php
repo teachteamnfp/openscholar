@@ -3054,22 +3054,23 @@ class FeatureContext extends DrupalContext {
   }
 
   /**
-   * @Then /^I should wait for the text "([^"]*)" to "([^"]*)"$/
+   * @Given /^I should match the regex "([^"]*)"$/
+   *
+   * This step is used to match a regular expression in the page
    */
-  public function iShouldWaitForTheTextTo($text, $appear) {
-    try {
-      $this->waitForXpathNode("//*[text()[contains(.,\"$text\")]]", $appear);
-    }
-    catch (Exception $e) {
-      if ($e->getMessage() == "waitFor timed out.") {
-        throw $e;
-      }
-      throw new Exception("Text \"$text\" did not \"$appear\" after 5 seconds.");
+  public function iShouldMatchTheRegex($pattern) {
+    $actual = $this->getSession()->getPage()->getText();
+
+    $actual = preg_replace('/\s+/u', ' ', $actual);
+    $regex = '/'.$pattern.'/u';
+
+    if (!preg_match($regex, $actual)) {
+      $message = sprintf('The regex pattern "%s" did not appear in the text of this page, but it should have.', $pattern);
+      throw new Exception($message);
     }
   }
 
   /**
-   * Wait for an element by its XPath to appear or disappear.
    *
    * @param string $xpath
    *   The XPath string.
@@ -4049,5 +4050,25 @@ JS;
     }
 
     $this->visit("$vsite/$unaliased_path/$appendage");
+  }
+
+  /**
+   * Visit the 'Add class material' path
+   *
+   * @Then /^I should see breadcrumb "([^"]*)"$/
+   *    e.g., HOME / CLASSES / POLITICAL SCIENCE 101 / CLASS MATERIAL
+   */
+  public function iShouldSeeBreadcrumb($breadcrumb) {
+
+    $page = $this->getSession()->getPage()->getContent();
+
+    # Ignore HTML tags between breadcrumb separators
+    $breadcrumb_pattern = preg_replace("/\s+\/\s+/", ".*\/.*", $breadcrumb);
+
+    if (preg_match("/$breadcrumb_pattern/", $page)) {
+      return true;
+    }
+
+    return false;
   }
 }
