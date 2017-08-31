@@ -29,14 +29,14 @@ Feature:
   @api @features_first @javascript
     Scenario: Check site owner can't manage permissions of disabled app.
       Given I am logging in as "john"
-        And I set feature "edit-os-booklets" to "Disabled" on "john"
+        And I set feature "Booklets" to "disabled" on "john"
        When I visit "john/cp/users/permissions"
        Then I should not see "Create book page content"
 
   @api @features_first @javascript
     Scenario: Check enabling app brings back its permissions.
       Given I am logging in as "john"
-        And I set feature "edit-os-booklets" to "Public" on "john"
+        And I set feature "Booklets" to "Public" on "john"
        When I visit "john/cp/users/permissions"
        Then I should see "Create book page content"
 

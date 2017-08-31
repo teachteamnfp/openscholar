@@ -2341,11 +2341,8 @@ class FeatureContext extends DrupalContext {
     }
 }
 
-  /**
-   * @Given /^I set feature "([^"]*)" to "([^"]*)" on "([^"]*)"$/
-   */
-  public function iSetFeatureStatus ($feature, $status, $group) {
-    $opening = array(
+  private function _iSetFeatureStatus_getOpeningSteps () {
+    return array(
       new Step\When('I visit "' . $group . '"'),
       new Step\When('I sleep for "2"'),
       new Step\When('I make sure admin panel is open'),
@@ -2354,6 +2351,13 @@ class FeatureContext extends DrupalContext {
       new Step\When('I click on the "Enable / Disable Apps" control'),
       new Step\When('I sleep for "3"'),
     );
+  }
+
+  /**
+   * @Given /^I set feature "([^"]*)" to "([^"]*)" on "([^"]*)"$/
+   */
+  public function iSetFeatureStatus ($feature, $status, $group) {
+    $opening = _iSetFeatureStatus_getOpeningSteps();
 
     $vsite_id = FeatureHelp::getNodeId($group);
 
@@ -2371,6 +2375,26 @@ class FeatureContext extends DrupalContext {
       )
     );
   }
+
+  /**
+   * @Given /^I set feature "([^"]*)" to "disabled" on "([^"]*)"$/
+   */
+  public function iSetFeatureStatusToDisabled ($feature, $status, $group) {
+    $opening = _iSetFeatureStatus_getOpeningSteps();
+
+    $vsite_id = FeatureHelp::getNodeId($group);
+
+    $feature_ = "'$feature'";
+
+    return array_merge($opening,
+      array(
+        new Step\When('I click on xpath element "//td[text()=' . $feature . ']/..//input[@type="checkbox"]"'),
+        new Step\When('I click on xpath element "//span[text()=' . $save_ . ']"'),
+      )
+    );
+  }
+
+
 
   /**
    * @Given /^I update the node "([^"]*)" field "([^"]*)" to "([^"]*)"$/

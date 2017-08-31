@@ -6,7 +6,7 @@ Feature:
     Given I am logging in as "admin"
 
     # Define harvard courses
-     When I set feature "edit-spaces-features-harvard-courses" to "Public" on "john"
+     When I set feature "Harvard Courses" to "Everyone" on "john"
       And I set courses to import
       And I visit "john/courses"
       And I click "Refresh courses"
