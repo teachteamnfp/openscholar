@@ -2341,7 +2341,7 @@ class FeatureContext extends DrupalContext {
     }
 }
 
-  private function _iSetFeatureStatus_getOpeningSteps () {
+  private function _iSetFeatureStatus_getOpeningSteps ($group) {
     return array(
       new Step\When('I visit "' . $group . '"'),
       new Step\When('I sleep for "2"'),
@@ -2357,7 +2357,7 @@ class FeatureContext extends DrupalContext {
    * @Given /^I set feature "([^"]*)" to "([^"]*)" on "([^"]*)"$/
    */
   public function iSetFeatureStatus ($feature, $status, $group) {
-    $opening = _iSetFeatureStatus_getOpeningSteps();
+    $opening = $this->_iSetFeatureStatus_getOpeningSteps($group);
 
     $vsite_id = FeatureHelp::getNodeId($group);
 
@@ -2377,14 +2377,15 @@ class FeatureContext extends DrupalContext {
   }
 
   /**
-   * @Given /^I set feature "([^"]*)" to "disabled" on "([^"]*)"$/
+   * @Given /^I disable feature "([^"]*)" on "([^"]*)"$/
    */
-  public function iSetFeatureStatusToDisabled ($feature, $status, $group) {
-    $opening = _iSetFeatureStatus_getOpeningSteps();
+  public function iSetFeatureStatusToDisabled ($feature, $group) {
+    $opening = $this->_iSetFeatureStatus_getOpeningSteps($group);
 
     $vsite_id = FeatureHelp::getNodeId($group);
 
     $feature_ = "'$feature'";
+    $save_ = "'Save'";
 
     return array_merge($opening,
       array(

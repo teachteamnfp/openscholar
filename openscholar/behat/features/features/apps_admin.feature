@@ -29,7 +29,7 @@ Feature:
   @api @features_first @javascript
     Scenario: Check site owner can't manage permissions of disabled app.
       Given I am logging in as "john"
-        And I set feature "Booklets" to "disabled" on "john"
+        And I disable feature "Booklets" on "john"
        When I visit "john/cp/users/permissions"
        Then I should not see "Create book page content"
 
