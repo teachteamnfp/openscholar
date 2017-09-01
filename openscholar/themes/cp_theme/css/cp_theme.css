@@ -2032,4 +2032,27 @@ html.js .angular-node-form fieldset.collapsed {
   padding: 20px 0;
   height: auto;
 }
-
+.angular-node-form input[ng-model="termSearch"] {
+  display: none;
+}
+.angular-node-form div[ng-repeat="vocab in vocabs"] {
+  width: 99%;
+}
+.angular-node-form div[ng-switch-when="term_reference_tree"] {
+  border: 1px solid #ccc;
+  width: 100%;
+  margin-top: 5px;
+}
+.angular-node-form .fieldset-wrapper .item-list {
+  float: right;
+  position: relative;
+}
+.angular-node-form .fieldset-wrapper .item-list ul.toggle-wrapper {
+  float: right;
+  position: relative;
+}
+.angular-node-form .fieldset-wrapper .item-list ul.toggle-wrapper li {
+  float: left;
+  list-style: none;
+  padding-right: 5px;
+}

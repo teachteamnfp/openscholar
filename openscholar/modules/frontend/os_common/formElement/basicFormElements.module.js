@@ -1,5 +1,37 @@
 (function () {
 
+  var renderFieldsetElements = [function () {
+    return {
+      restrict: 'A',
+      scope: {
+        element: '='
+      },
+      template: '<div class="form-item" ng-repeat="(key, field) in formElements" ng-if="!field.group">'+
+        '<div form-element element="field" value="formData[key]"><span>placeholder</span></div>'+
+        '</div>',
+      link: function (scope, elem, attr) {
+        var revisionElement = scope.element;
+        scope.formElements = {};
+        scope.formData = {};
+        for (var k in revisionElement) {
+          if (angular.isObject(revisionElement[k])) {
+            scope.formData[k] = revisionElement[k]['#default_value'] || null;
+            var attributes = {
+              name: k
+            };
+            for (var j in revisionElement[k]) {
+              if (j.indexOf('#') === 0) {
+                var attrs = j.substr(1, j.length);
+                attributes[attrs] = revisionElement[k][j];
+              }
+            }
+            scope.formElements[k] = attributes;
+          }
+        }
+      }
+    };
+  }];
+
   var m = angular.module('basicFormElements', ['osHelpers', 'ngSanitize']);
 
   /**
@@ -133,10 +165,11 @@
         value: '=ngModel',
         element: '='
       },
-      template: '<input type="checkbox" id="{{id}}" name="{{name}}" value="1" class="form-checkbox" ng-model="value" ng-disabled="element.disabled" ng-true-value="1" ng-false-value="0"/><label class="option" for="{{id}}">{{title}}</label>',
+      template: '<input type="checkbox" id="{{id}}" ng-checked="{{value}}" name="{{name}}" value="1" class="form-checkbox" ng-model="value" ng-disabled="element.disabled" ng-true-value="1" ng-false-value="0"/><label class="option" for="{{id}}">{{title}}</label>',
       link: function (scope, elem, attr, ngModelController) {
         scope.id = attr['inputId'];
         scope.title = scope.element.title;
+        scope.value = angular.isDefined(scope.element.default_value) ? scope.element.default_value : false;
       }
     }
   }]);
@@ -331,7 +364,7 @@
   /**
    * Fieldset.
    */
-  m.directive('feFieldset', ['$filter', function ($filter) {
+  m.directive('feFieldset', ['$filter', '$compile', function ($filter, $compile) {
     return {
       scope: {
         name: '@',
@@ -339,41 +372,54 @@
         element: '=',
       },
       template: '<fieldset class="node-form-options collapsible form-wrapper collapse-processed" ng-class="{collapsed: collapsed==true}" id="{{id}}">'+
-        '<legend><span class="fieldset-legend"><span class="fieldset-title" ng-click="collapsibleToggle()">{{title}}</span>'+
-        '<span class="summary"> (Selected value will go here)</span></span></legend>'+
-        '<div class="fieldset-wrapper-element" ng-hide="collapsed"><div class="form-item" ng-repeat="(key, field) in formElements">'+
-        '<div form-element element="field" value="formData[key]"><span>placeholder</span></div></div></div></fieldset>',
+        '<legend><div class="fieldset-legend"><a class="fieldset-title" ng-click="collapsibleToggle()">{{title}}</a>'+
+        '<div class="summary"> (Selected value will go here)</div></div></legend>'+
+        '<div class="fieldset-wrapper-element" ng-hide="collapsed"><span>Placeholder</span></div></fieldset>',
       link: function (scope, elem, attr) {
         scope.collapsed = scope.element.collapsed;
         scope.collapsibleToggle = function () {
           scope.collapsed = !scope.collapsed;
         }
         scope.collapsible = scope.element.collapsible;
-        scope.formElements = {};
-        scope.formData = {};
         scope.title = scope.element.title;
         scope.id = $filter('idClean')(scope.element.name, 'edit');
-        var formElementsRaw = scope.element;
-        for (var formElem in formElementsRaw) {
-          // @todo: we need to write a directive for container.
-          if (angular.isObject(formElementsRaw[formElem]) && angular.isDefined(formElementsRaw[formElem]['#type']) && formElementsRaw[formElem]['#type'] != 'container' ) {
-            scope.formData[formElem] = formElementsRaw[formElem]['#default_value'] || null;
-            var attributes = {
-              name: formElem
-            };
-            for (var key in formElementsRaw[formElem]) {
-              var elem = key;
-              if (key.indexOf('#') === 0) {
-                key = key.substr(1, key.length);
-              }
-              attributes[key] = formElementsRaw[formElem][elem];
-            }
-            scope.formElements[formElem] = attributes;
-          }
-        }
+        var copy = elem.find('span').clone();
+        copy.attr('fieldset-'+$filter('idClean')(scope.element.name), '');
+        copy.attr('element', 'element');
+        copy.attr('input-id', scope.id);
+        elem.find('span').replaceWith(copy);
+        copy = $compile(copy)(scope);
       }
     }
   }]);
+
+  m.directive('fieldsetRevisionInformation', renderFieldsetElements);
+  m.directive('fieldsetOptions', renderFieldsetElements);
+  m.directive('fieldsetOsCssClassFieldset', renderFieldsetElements);
+  m.directive('fieldsetOsSeo', renderFieldsetElements);
+
+  m.directive('fieldsetPath', [function () {
+    return {
+      restrict: 'A',
+      scope: {
+        element: '='
+      },
+      template: '<div class="form-item form-type-checkbox form-item-path-pathauto">'+
+        '<input type="checkbox" id="edit-path-pathauto" name="path[pathauto]" value="1" checked="checked" class="form-checkbox">'+
+        '<label class="option" for="edit-path-pathauto">Generate automatic URL alias </label>'+
+        '<div class="description">Uncheck this to create a custom alias below.</div></div>'+
+        '<div class="form-item form-type-textfield form-item-path-alias">'+
+        '<label for="edit-path-alias">URL alias </label>'+
+        '<span class="field-prefix">http://localhost/test/</span>'+ 
+        '<input type="text" id="edit-path-alias" name="path[alias]" value="" size="60" maxlength="255" class="form-text"></div>',
+      link: function (scope, elem, attr) {
+        // @todo.
+        console.log(scope.element);
+        
+      }
+    };
+  }])
+  
 
   m.directive('feValue', [function () {
     return {
@@ -441,7 +487,7 @@
 
   }]);
 
-  m.directive('feOgVocabComplex', [function () {
+  m.directive('feOgVocabComplex', ['$rootScope', function ($rootScope) {
 
     return {
       restrict: 'A',
@@ -450,9 +496,10 @@
         value: '=ngModel',
         element: '=',
       },
-      template: '<taxonomy-widget entity-type="node" terms="terms" bundle="page"></taxonomy-widget>',
+      template: '<fieldset class="form-wrapper"><div class="fieldset-wrapper">'+
+        '<div class="item-list"><ul class="toggle-wrapper"><li class="first"><span class="expand">Expand</span></li><li class="last"><span class="collapse">Collapse</span></li></ul></div>'+
+        '<div class="form-item"><taxonomy-widget entity-type="node" terms="terms" bundle="page"></taxonomy-widget></div></div></fieldset>',
       link: function (scope, elem, attr) {
-        console.log(scope.element);
         scope.terms = [];
       }
     };

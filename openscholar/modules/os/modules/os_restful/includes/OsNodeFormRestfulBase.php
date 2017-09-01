@@ -77,7 +77,7 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
       '#collapsible' => TRUE,
       '#collapsed' => !$node->revision,
       '#group' => 'additional_settings',
-      '#weight' => 20,
+      '#weight' => -8,
       '#access' => $node->revision || user_access('administer nodes'),
       'revision' => array(
         '#type' => 'checkbox',
@@ -102,7 +102,7 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
       '#collapsible' => TRUE,
       '#collapsed' => TRUE,
       '#group' => 'additional_settings',
-      '#weight' => 90,
+      '#weight' => -9,
       'author_name' => array(
         '#type' => 'textfield',
         '#title' => t('Posted by'),
@@ -127,7 +127,7 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
       '#collapsible' => TRUE,
       '#collapsed' => TRUE,
       '#group' => 'additional_settings',
-      '#weight' => 95,
+      '#weight' => -10,
       'status' => array(
         '#type' => 'checkbox',
         '#title' => t('Published'),
