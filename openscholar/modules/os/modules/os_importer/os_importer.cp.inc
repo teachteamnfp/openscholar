@@ -52,7 +52,7 @@ function os_importer_cp_settings() {
   );
 
   foreach ($app_info as $type => $info) {
-  	// Bypassing apps which have RSS feeds as import source.
+       // Bypassing apps which have RSS feeds as import source.
     if (in_array($type, array('os_blog', 'os_news'))) {
       continue;
     }
@@ -166,6 +166,22 @@ function os_importer_cp_settings() {
           '#menu_parent' => 'import',          
         ),
       );
+      // Markup field to add help note for media-browser field
+      $settings['os_importer_file_upload_note-' . $node_type] = array(
+          'group' => array(
+            '#id' => 'os_importer_content_' . $node_type,
+            '#title' => isset($importer_menu_title[$node_type]) ? $importer_menu_title[$node_type] : ucfirst($node_type),
+            '#weight' => 4,
+            '#menu_parent' => 'import',
+          ),
+          'form' => array(
+            '#type' => 'container',
+            '#markup' => t('Note: Import files with more than %count rows are not permitted. Try creating multiple import files in %count row increments.' array('%count' => FEEDS_PROCESS_LIMIT)),
+            '#weight' => 4,
+            '#class' => array('description'),
+            '#access' => os_importer_import_access($node_type),
+          ),
+        );
       // Biblio specific select dropdown.
       if ($node_type == 'biblio') {
         $biblio_import_options = module_invoke_all('biblio_import_options');
@@ -176,7 +192,7 @@ function os_importer_cp_settings() {
             'group' => array(
               '#id' => 'os_importer_content_' . $node_type,
               '#title' => isset($importer_menu_title[$node_type]) ? $importer_menu_title[$node_type] : ucfirst($node_type),
-              '#weight' => 4,
+              '#weight' => 5,
               '#menu_parent' => 'import',
             ),
             'form' => array(
@@ -184,7 +200,7 @@ function os_importer_cp_settings() {
               '#type' => 'optgroup',
               '#options' => $biblio_import_options,
               '#default_value' => '0',
-              '#weight' => 4,
+              '#weight' => 5,
               '#access' => os_importer_import_access($node_type),
             ),
           );
@@ -196,7 +212,7 @@ function os_importer_cp_settings() {
             'group' => array(
               '#id' => 'os_importer_content_' . $node_type,
               '#title' => isset($importer_menu_title[$node_type]) ? $importer_menu_title[$node_type] : ucfirst($node_type),
-              '#weight' => 4,
+              '#weight' => 5,
               '#menu_parent' => 'import',
             ),
             'form' => array(
@@ -205,7 +221,7 @@ function os_importer_cp_settings() {
               '#options' => $encode_options,
               '#default_value' => 'utf-8',
               '#description' => t('Select the encoding of your file. For a full list of encodings you can visit <a href="@wikipedia-url">this</a> Wikipedia page.', $params),
-              '#weight' => 4,
+              '#weight' => 5,
               '#class' => array('csv-import-fields'),
               '#access' => os_importer_import_access($node_type),
             ),
@@ -216,14 +232,14 @@ function os_importer_cp_settings() {
         'group' => array(
           '#id' => 'os_importer_content_' . $node_type,
           '#title' => isset($importer_menu_title[$node_type]) ? $importer_menu_title[$node_type] : ucfirst($node_type),
-          '#weight' => 5,
+          '#weight' => 6,
           '#menu_parent' => 'import',
           '#group_validate' => 'os_importer_import_group_validate',
         ),
         'form' => array(
           '#value' => t('Submit'),
           '#type' => 'submit',
-          '#weight' => 5,
+          '#weight' => 6,
           '#access' => os_importer_import_access($node_type),
         ),
         'rest_submit' => 'os_importer_file_submit',
@@ -276,7 +292,21 @@ function os_importer_import_group_validate($values) {
       if ($extension != 'csv') {
         drupal_set_message(t('Please select a CSV file.'), 'error');
         $valid = FALSE;
-      } else {
+      }
+      else {
+
+        // check the CSV file has more than 50 rows
+        feeds_include_library('ParserCSV.inc', 'ParserCSV');
+        ini_set("auto_detect_line_endings", TRUE);
+        $parser = new ParserCSV();
+        $parser->setDelimiter(',');
+        $iterator = new ParserCSVIterator($file->uri);
+        $rows = $parser->parse($iterator);
+        $row_count = count($rows);
+        if ($row_count > FEEDS_PROCESS_LIMIT + 1) {
+          drupal_set_message(t('Only %count rows are allowed per import file. Try creating multiple import files in %count row increments', array('%count' => FEEDS_PROCESS_LIMIT)), 'error');
+          $valid = FALSE;
+        }
 
         if ($node_type == 'person') {
           feeds_include_library('ParserCSV.inc', 'ParserCSV');
