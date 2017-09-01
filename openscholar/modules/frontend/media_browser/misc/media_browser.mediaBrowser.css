@@ -568,12 +568,13 @@ div[file-edit] .control button,
 
 .ui-dialog.media-wrapper {
     position: fixed;
+    top: 10% !important;
 }
 #media-browser-file-select {
     font-size: 14px !important;
 }
-/*
+
 .ui-dialog .ui-dialog-content {
    height: auto !important;
 }
-*/
+
