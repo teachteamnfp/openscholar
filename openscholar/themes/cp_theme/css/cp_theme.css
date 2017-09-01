@@ -216,6 +216,12 @@ a.form-cancel {
     padding: 8px 15px;
     font-family:helvetica;
 }
+input[name=file_upload_button],
+.droppable-browse-button,
+.field-name-field-person-photo .media-button,
+.node-news-form .field-name-field-photo .button,
+.field-name-field-presentation-file .button,
+#edit-field_software_package-und-drop .media-browser-drop-box .ng-binding,
 .redirect-add {
 background-color:#3d9b13;
 	border:none;
@@ -453,7 +459,7 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
     font-size: 24px;
     font-weight: normal;
 }
-
+.page-node-add-news .field-name-field-photom,
 .page-cp .ui-dialog-titlebar {
     margin-bottom: 22px;
 }
