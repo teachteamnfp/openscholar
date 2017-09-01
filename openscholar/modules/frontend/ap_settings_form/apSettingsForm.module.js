@@ -74,7 +74,22 @@
       return var_name in settings;
     }
 
-    this.SaveSettings = function (settings) {
+    this.SaveSettings = function (settings, buttonName) {
+      var counts = 0;
+      angular.forEach(settings, function(val, key) {
+        if (val == 'Submit') {
+          counts++;
+        }
+      });
+      if (counts > 1 && buttonName != '') {
+        var settingsNew = {};
+          angular.forEach(settings, function(val, key) {
+          if (val != 'Submit' || key == buttonName) {
+            settingsNew[key] = val;
+          }
+        });
+        settings = settingsNew;
+      }
       console.log(settings);
 
       return $http.put(baseUrl+'/settings', settings, config);
@@ -230,7 +245,7 @@
       }
       if ($s.settingsForm.$dirty || triggered) {
         bss.SetState('settings_form_' + buttonName, true);
-        apSettings.SaveSettings($s.formData).then(function (response) {
+        apSettings.SaveSettings($s.formData, buttonName).then(function (response) {
           var body = response.data;
           sessionStorage['messages'] = JSON.stringify(body.data.messages);
           $s.status = [];
