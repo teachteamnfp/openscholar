@@ -11,7 +11,7 @@
 	  </div>
 	  <div class="form-region-right">
 	    <div class="actions" ng-show="showSaveButton">
-	      <button type="submit" button-spinner="settings_form" spinning-text="Saving">Save</button>
+	      <button type="submit" button-spinner="node_form" spinning-text="Saving">Save</button>
 	      <input type="button" value="Cancel" ng-click="close(false)">
 	    </div>
 	    <div class="form-item" ng-repeat="(key, field) in formElements | weight" ng-if="field.group" ng-class="field.group">
@@ -20,7 +20,7 @@
 	  </div>
 	  <div class="form-region-footer">
 	  	<div class="actions" ng-show="showSaveButton">
-	      <button type="submit" button-spinner="settings_form" spinning-text="Saving">Save</button>
+	      <button type="submit" button-spinner="node_form" spinning-text="Saving">Save</button>
 	      <input type="button" value="Cancel" ng-click="close(false)">
 	    </div>
 	  </div>

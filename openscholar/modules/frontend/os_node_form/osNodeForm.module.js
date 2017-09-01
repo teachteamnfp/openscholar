@@ -25,6 +25,11 @@
       return promise;
     }
 
+    this.nodeSave = function (node) {
+      console.log(node);
+
+    }
+
   }]);
 
   /**
@@ -122,6 +127,26 @@
         $s.formElements[formElem] = attributes;
       }
     });
+
+    function submitForm($event) {
+      bss.SetState('node_form', true);
+      console.log($s.formData);
+      /*nodeFormService.nodeSave($s.formData).then(function (response) {
+        console.log(response);
+        bss.SetState('node_form', false);
+      }, function (error) {
+        $s.errors = [];
+        $s.status = [];
+        $s.errors.push("Sorry, something went wrong. Please try another time.");
+        bss.SetState('node_form', false);
+      });*/
+    }
+    $s.submitForm = submitForm;
+
+    $s.close = function (arg) {
+      close(arg);
+    }
+
   }]);
 
 })()

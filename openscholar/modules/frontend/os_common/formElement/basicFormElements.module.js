@@ -438,20 +438,21 @@
   m.directive('feOsWysiwygExpandingTextarea', ['$parse', '$q', '$document', function ($parse, $q, $document) {
     return {
       restrict: 'A',
+      require: '?ngModel',
       scope: {
         name: '@',
         value: '=ngModel',
         element: '=',
       },
       template: '<label for="{{id}}-ckeditor">{{title}}</label>'+
-        '<textarea cols="60" rows="5" class="text-full os-wysiwyg-expandable wysiwyg-angular form-textarea" id="edit-body-ckeditor" name="{{name}}"></textarea>'+
+        '<textarea cols="60" rows="5" class="text-full os-wysiwyg-expandable wysiwyg-angular form-textarea" ng-model="value" id="edit-body-ckeditor" name="{{name}}"></textarea>'+
         '<select class="filter-list form-select" id="edit-body-format" style="display: none;">'+
         '<option value="filtered_html" selected="selected">Filtered HTML</option><option value="full_html">Full HTML</option><option value="plain_text">Plain text</option>'+
         '</select>',
-      link: function (scope, elem, attr) {
+      link: function (scope, elem, attr, ngModel) {
         scope.id = attr['inputId'];
         scope.title = scope.element.title;
-        // @todo Format, Editor, Field can be dynamic but we don't know yet.
+         // @todo Format, Editor, Field can be dynamic but we don't know yet.
         Drupal.settings.osNodeFormWysiwyg.triggers = {'edit-body-ckeditor': {
             field: 'edit-body-ckeditor',
             formatfiltered_html: {editor:'ckeditor', status: 1, toggle: 0},
@@ -460,6 +461,21 @@
           }
         }
         Drupal.behaviors.attachWysiwygAngular.attach($document.context, Drupal.settings);
+        var ck = CKEDITOR.instances['edit-body-ckeditor'];
+        ck.on('instanceReady', function () {
+          Drupal.wysiwyg.instances['edit-body-ckeditor'].setContent(ngModel.$viewValue);
+        });
+        function updateModel() {
+          scope.$apply(function () {
+            ngModel.$setViewValue(Drupal.wysiwyg.instances['edit-body-ckeditor'].getContent());
+          }); 
+        }
+        ck.on('change', updateModel);
+        ck.on('key', updateModel);
+        ck.on('dataReady', updateModel);
+        ngModel.$render = function (value) {
+          Drupal.wysiwyg.instances['edit-body-ckeditor'].setContent(ngModel.$viewValue);
+        };
       }
     };
 
