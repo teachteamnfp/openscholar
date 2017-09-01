@@ -4053,6 +4053,21 @@ JS;
   }
 
   /**
+   * @When /^I click the gear icon in the content region$/
+   */
+  public function iClickGearIcon() {
+    $content_region = $this->getSession()->getPage()->find('xpath', "//div[@id='content']");
+    $gear_icon = $this->getSession()->getPage()->find('xpath', "//div[@class='contextual-links-wrapper contextual-links-processed']");
+    $outline_menu_item = $this->getSession()->getPage()->find('xpath', "//div[@id='content']//div/a[text()='Configure']/..//a[text()='Outline']");
+
+    $content_region->click();
+    sleep(1);
+    $gear_icon->click();
+    sleep(1);
+    $outline_menu_item->click();
+  }
+
+  /**
    * Visit the 'Add class material' path
    *
    * @Then /^I should see breadcrumb "([^"]*)"$/
