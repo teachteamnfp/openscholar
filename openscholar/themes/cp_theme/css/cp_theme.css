@@ -217,6 +217,7 @@ a.form-cancel {
     padding: 8px 15px;
     font-family:helvetica;
 }
+.page-os-widget-add-os-boxes-media .button,
 input[name=file_upload_button],
 .droppable-browse-button,
 .field-name-field-person-photo .media-button,
