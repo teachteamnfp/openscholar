@@ -4058,12 +4058,19 @@ JS;
   public function iClickGearIcon() {
     $content_region = $this->getSession()->getPage()->find('xpath', "//div[@id='content']");
     $gear_icon = $this->getSession()->getPage()->find('xpath', "//div[@class='contextual-links-wrapper contextual-links-processed']");
+    $gear_icon_trigger_link = $this->getSession()->getPage()->find('xpath', "//div[@id='content']//div/a[text()='Configure']");
     $outline_menu_item = $this->getSession()->getPage()->find('xpath', "//div[@id='content']//div/a[text()='Configure']/..//a[text()='Outline']");
 
+    $content_region->mouseOver();
     $content_region->click();
     sleep(1);
+    $gear_icon->mouseOver();
     $gear_icon->click();
     sleep(1);
+    $gear_icon_trigger_link->mouseOver();
+    $gear_icon_trigger_link->click();
+    sleep(1);
+    $outline_menu_item->mouseOver();
     $outline_menu_item->click();
   }
 
