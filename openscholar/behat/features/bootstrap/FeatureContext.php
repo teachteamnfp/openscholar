@@ -3627,6 +3627,27 @@ class FeatureContext extends DrupalContext {
     return array();
   }
 
+  /*
+   * @Given /^I make sure admin panel is closed$/
+   */
+  public function adminPanelClosed() {
+    $page = $this->getSession()->getPage();
+    $this->waitForPageActionsToComplete();
+
+    if (! $page->find('css', '[left-menu].closed')) {
+      return array(
+        new Step\When('I press "Close Menu"'),
+        new Step\When('I sleep for "1"'),
+      );
+    }
+    elseif (!$page->find('css', '[left-menu]')) {
+      throw new \Exception("The admin panel was not found on this page. Are you sure its installed and enabled?");
+    }
+
+    return array();
+  }
+
+
   /**
    * @Given /^I open the admin panel to "([^"]*)"$/
    */
@@ -4053,9 +4074,9 @@ JS;
   }
 
   /**
-   * @When /^I click the gear icon in the content region$/
+   * @When /^I swap the order of the first two items in the outline on vsite "([^"]*)"$/
    */
-  public function iClickGearIcon() {
+  public function iSwapTheOrderOfTheBookOutline($vsite) {
     $content_region = $this->getSession()->getPage()->find('xpath', "//div[@id='content']");
     $gear_icon = $this->getSession()->getPage()->find('xpath', "//div[@class='contextual-links-wrapper contextual-links-processed']");
     $gear_icon_trigger_link = $this->getSession()->getPage()->find('xpath', "//div[@id='content']//div/a[text()='Configure']");
@@ -4063,15 +4084,41 @@ JS;
 
     $content_region->mouseOver();
     $content_region->click();
-    sleep(1);
     $gear_icon->mouseOver();
     $gear_icon->click();
-    sleep(1);
     $gear_icon_trigger_link->mouseOver();
     $gear_icon_trigger_link->click();
-    sleep(1);
     $outline_menu_item->mouseOver();
     $outline_menu_item->click();
+
+    $url = $this->getSession()->getCurrentUrl();
+    if (preg_match("/destination(?:=|%3d)(\S+)/i", $url, $matches)) {
+
+      if (isset($matches[1])) {
+        $this->getSession()->visit($this->locatePath("/$vsite/" . $matches[1] . "/outline"));
+      } else {
+        throw new Exception("Could not get a destination.\n");
+      }
+    }
+
+    $handles = $this->getSession()->getPage()->findAll('xpath', "//div[@class='handle']");
+
+    if (sizeof($handles) > 1) {
+      $handles[0]->dragTo($handles[1]);
+    } else {
+      throw new Exception("There needs to be at least two book entries to test re-ordering.\n");
+    }
+
+    $content = $this->getSession()->getPage()->getContent();
+
+    $reorder_message = 'Changes made in this table will not be saved until the form is submitted';
+    if (FALSE != stristr($content, $reorder_message)) {
+      throw new Exception("Did not see '$reorder_message after drag-and-drop reorder operation', but was supposed to.");
+    }
+
+    return array(
+      new Step\When('I press "Save Booklet Outline"'),
+    );
   }
 
   /**

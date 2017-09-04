@@ -47,15 +47,25 @@ Feature:
      Then I should see "Daniel Webster"
       And I should see "for speaking in favor of the Compromise of 1850"
 
- @api @features_first @delete_any_booklets_content @os_booklets
- Scenario: Delete booklets content
+ @api @wip @os_booklets @change_order_of_booklet_content_in_outline
+ Scenario: change order of booklet content in outline
     Given I am logging in as "john"
-      And I visit the unaliased edit path of "book/profiles-courage" on vsite "john"
-     When I click "Delete this book page"
-     Then I should see "Are you sure you want to delete"
-     When I sleep for "5"
-      And I press "Delete"
-     Then I should see "has been deleted"
+      And I visit the site "john/book/profiles-courage"
+      And I swap the order of the first two items in the outline on vsite "john"
+
+     Then I should see "Changes made in this table will not be saved until the form is submitted"
+      And I press "Save Booklet Outline"
+     Then I should match the regex "Table of Contents.*John Quincy Adams.*Kennedy"
+
+#@api @features_first @delete_any_booklets_content @os_booklets
+#Scenario: Delete booklets content
+#   Given I am logging in as "john"
+#     And I visit the unaliased edit path of "book/profiles-courage" on vsite "john"
+#    When I click "Delete this book page"
+#    Then I should see "Are you sure you want to delete"
+#    When I sleep for "5"
+#     And I press "Delete"
+#    Then I should see "has been deleted"
 
 #@api @wip @os_booklets @change_order_of_booklet_content_in_outline
 #Scenario: change order of booklet content in outline
