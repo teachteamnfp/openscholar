@@ -235,6 +235,9 @@ a.button,
 .ui-dialog.ap-settings-form button,
 .ui-dialog.ap-settings-form input[type="button"],
 .ui-dialog.ap-settings-form input[type="submit"],
+.ui-dialog.ng-node-form button,
+.ui-dialog.ng-node-form input[type="button"],
+.ui-dialog.ng-node-form input[type="submit"],
 a#edit-cancel,
 a.form-cancel {
       cursor: pointer;
@@ -481,8 +484,11 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
 
 
 /** OVERLAY MODAL OVERRIDES **/
-.ui-dialog button.ui-dialog-titlebar-close, #overlay-close:hover, #overlay-close  {
-    background: url(../images/cp-sprite.png) no-repeat 0 -547px;
+.ui-dialog.ap-settings-form button.ui-dialog-titlebar-close,
+.ui-dialog.ng-node-form button.ui-dialog-titlebar-close,
+#overlay-close,
+#overlay-close:hover {
+    background: url('../images/cp-sprite.png') no-repeat 0 -547px;
     width: 30px;
     height: 30px;
     position: relative;
@@ -490,9 +496,8 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
     border: none;
 }
 
-
-#overlay-close-wrapper,
-.ui-dialog .ui-dialog-titlebar-close {
+.ui-dialog.ap-settings-form button.ui-dialog-titlebar-close,
+.ui-dialog.ng-node-form button.ui-dialog-titlebar-close {
     float: right;
     margin: -8px 0;
     border: 0;
@@ -517,7 +522,10 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
     background-image: none;
 }
 
-.ui-dialog .ui-dialog-titlebar, #overlay-titlebar {
+
+.ui-dialog.ap-settings-form .ui-dialog-titlebar,
+.ui-dialog.ng-node-form .ui-dialog-titlebar,
+#overlay-titlebar {
     padding: 7px 10px 17px;
     position: relative;
     white-space: nowrap;
@@ -532,7 +540,9 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
     overflow: inherit
 }
 
-#overlay-title, .ui-dialog-title {
+#overlay-title,
+.ap-settings-form .ui-dialog-title,
+.ng-node-form .ui-dialog-title  {
     float: left;
     margin: 0;
     padding: 0.3em 0;
@@ -554,13 +564,15 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
     overflow: hidden;
 }
 
-.ui-dialog.ap-settings-form {
+.ui-dialog.ap-settings-form,
+.ui-dialog.ng-node-form {
     padding: 0;
     top:10% !important;
     font-size: 14px; 
 }
 
-.ui-dialog.ap-settings-form .ui-dialog-content {
+.ui-dialog.ap-settings-form .ui-dialog-content,
+.ui-dialog.ng-node-form .ui-dialog-content {
     overflow: visible;
 }
 

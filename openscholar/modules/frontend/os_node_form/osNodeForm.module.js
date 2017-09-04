@@ -41,7 +41,7 @@
       minHeight: 100,
       modal: false,
       position: 'center',
-      dialogClass: 'ap-settings-form'
+      dialogClass: 'ng-node-form'
     };
 
     function link(scope, elem, attrs) {
@@ -57,8 +57,7 @@
 
         ModalService.showModal({
           controller: 'nodeFormController',
-          template: '<div><div class="node-form-loading" ng-show="loading"><div class="node-form-loading-message">Loading form...<br /></div></div>'+
-                    '<div node-form></div></div>',
+          templateUrl: Drupal.settings.paths.osNodeForm + '/node-form.html',
           inputs: {
             nodeType: attrs.nodeType
           }
@@ -88,13 +87,6 @@
     };
 
   }]);
-
-  m.directive('nodeForm', [function () {
-    return {
-      restrict: 'AE',
-      templateUrl: Drupal.settings.paths.osNodeForm + '/node-form.html',
-    };
-  }])
 
   /**
    * The controller for the forms themselves
