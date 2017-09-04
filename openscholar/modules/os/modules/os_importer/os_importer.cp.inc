@@ -176,7 +176,7 @@ function os_importer_cp_settings() {
           ),
           'form' => array(
             '#type' => 'container',
-            '#markup' => t('Note: Import files with more than %count rows are not permitted. Try creating multiple import files in %count row increments.' array('%count' => FEEDS_PROCESS_LIMIT)),
+            '#markup' => t('Note: Import files with more than %count rows are not permitted. Try creating multiple import files in %count row increments.', array('%count' => FEEDS_PROCESS_LIMIT)),
             '#weight' => 4,
             '#class' => array('description'),
             '#access' => os_importer_import_access($node_type),
