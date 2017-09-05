@@ -38,7 +38,7 @@ Feature:
      Then I should see "Answer cannot be longer than 50 characters but is currently 56 characters long."
       And I delete the variable "os_wysiwyg_maximum_length_body"
   
-  @api @features_first @faq_content
+  @api @features_first
   Scenario: Create new faq content
      Given I am logging in as "john"
         And I visit "john/node/add/faq"
@@ -49,27 +49,27 @@ Feature:
        Then I should see "Frequently Asked"
        And I should see "Answer Cleared"
 
-  @api @javascript
+  @api @features_second
   Scenario: Permission to edit new FAQ
      Given I am logging in as "klark"
        And I visit the unaliased edit path of "faq/frequently-asked" on vsite "john"
       Then I should see "Access Denied"
 
-  @api @frontend
+  @api @features_second
   Scenario: Default Creation date descending
     Given I am logging in as "john"
       And I set the variable "faq_sort" to "created" in the vsite "john"
      When I visit "john/faq"
      Then I should see the FAQ "Frequently Asked" comes before "What does JFK stands for?"
 
-  @api @frontend
+  @api @features_second
   Scenario: Creation date ascending
     Given I am logging in as "john"
       And I set the variable "faq_sort" to "created_asc" in the vsite "john"
      When I visit "john/faq"
      Then I should see the FAQ "Where does JFK born?" comes before "Frequently Asked"
 
-  @api @features_first @faq_content
+  @api @features_first
   Scenario: Delete faq content
      Given I am logging in as "john"
        And I visit the unaliased edit path of "faq/frequently-asked" on vsite "john"
@@ -79,13 +79,13 @@ Feature:
        And I press "Delete"
       Then I should see "has been deleted"
 
-  @api @frontend_feature
+  @api @features_second
   Scenario: Permission to edit FAQ
      Given I am logging in as "klark"
        And I visit the unaliased edit path of "faq/what-does-jfk-stands" on vsite "john"
       Then I should see "Access Denied"
 
-  @api @javascript
+  @api @features_second @javascript
   Scenario: Administer FAQ App Setting
      Given I am logging in as "john"
       When I visit "john"
@@ -96,21 +96,21 @@ Feature:
       When I sleep for "2"
       Then I should see "Choose how FAQs will display"
 
-  @api @frontend
+  @api @features_second
   Scenario: Default disable question/answer slider behavior
     Given I am logging in as "john"
       And I set the variable "os_faq_disable_toggle" to "TRUE" in the vsite "john"
      When I visit "john/faq"
      Then I should see "JFK stands for: John Fitzgerald Kennedy."
 
-  @api @frontend
+  @api @features_second
   Scenario: Orderby Alphanumeric ascending
     Given I am logging in as "john"
       And I set the variable "faq_sort" to "title" in the vsite "john"
      When I visit "john/faq"
      Then I should see the FAQ "What does JFK stands for?" comes before "Where does JFK born?"
 
-  @api @frontend
+  @api @features_second
   Scenario: Orderby Alphanumeric descending
     Given I am logging in as "john"
       And I set the variable "faq_sort" to "title_desc" in the vsite "john"
