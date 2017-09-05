@@ -7,7 +7,7 @@ Feature:
      When I click "Links"
      Then I should see "JFK wikipedia page"
 
-  @api @features_first @create_new_link_content @link_content
+  @api @features_first
   Scenario: Create new link content
      Given I am logging in as "john"
         And I visit "john/node/add/link"
@@ -17,7 +17,7 @@ Feature:
         And I sleep for "2"
        Then I should see "Google"
 
-  @api @features_first @edit_link_content @link_content
+  @api @features_first
   Scenario: Edit link content
      Given I am logging in as "john"
         And I visit the unaliased edit path of "links/google" on vsite "john"
@@ -27,7 +27,7 @@ Feature:
         And I sleep for "2"
        Then I should see "Google_one"
 
-  @api @features_first @delete_link_content @link_content
+  @api @features_first
   Scenario: Delete link content
      Given I am logging in as "john"
         And I visit the unaliased edit path of "links/google" on vsite "john"
