@@ -4081,11 +4081,8 @@ JS;
     $gear_icon = $this->getSession()->getPage()->find('xpath', "//div[@class='contextual-links-wrapper contextual-links-processed']");
     $gear_icon_trigger_link = $this->getSession()->getPage()->find('xpath', "//div[@id='content']//div/a[text()='Configure']");
 
-    $content_region->mouseOver();
     $content_region->click();
-    $gear_icon->mouseOver();
     $gear_icon->click();
-    $gear_icon_trigger_link->mouseOver();
     $gear_icon_trigger_link->click();
   }
 
@@ -4111,7 +4108,6 @@ JS;
    */
   public function iClickInTheGearMenu($menu_item) {
     $gear_menu_item = $this->getSession()->getPage()->find('xpath', "//div[@id='content']//div/a[text()='Configure']/..//a[text()='$menu_item']");
-    $gear_menu_item->mouseOver();
     $gear_menu_item->click();
   }
 
