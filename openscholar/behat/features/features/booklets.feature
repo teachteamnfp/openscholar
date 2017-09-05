@@ -52,9 +52,6 @@ Feature:
     Given I am logging in as "john"
       And I visit the site "john/book/profiles-courage"
       And I swap the order of the first two items in the outline on vsite "john"
-
-#    Then I should see "Changes made in this table will not be saved until the form is submitted"
-      And I press "Save Booklet Outline"
      Then I should see "Updated book Profiles in Courage"
       And I visit the parent directory of the current URL
      Then I should match the regex "TABLE\s+OF\s+CONTENTS\s+Profiles\s+In\s+Courage\s+Daniel\s+Webster\s+John\s+Quincy\s+Adams"
@@ -69,39 +66,22 @@ Feature:
 #     And I press "Delete"
 #    Then I should see "has been deleted"
 
-#@api @wip @os_booklets @change_order_of_booklet_content_in_outline
-#Scenario: change order of booklet content in outline
-#   Given I am logging in as "john"
-#     And I visit the unaliased path of "book/profiles-courage" on vsite "john" and append "outline"
-#     And I swap the order of the first and last items in the book outline
-#         """
-#         table[book-admin-1032934][title]=John Quincy Adams
-#         table[book-admin-1032934][weight]=-15
-#         table[book-admin-1032934][plid]=170518
-#         table[book-admin-1032934][mlid]=170519
-#         table[book-admin-1032936][title]=Daniel Webster
-#         table[book-admin-1032936][weight]=-14
-#         table[book-admin-1032936][plid]=170518
-#         table[book-admin-1032936][mlid]=170521
-#         tree_hash=uZ7q3pOkNXKHkMJb0edzsAohcb6Xjypzdg8DIB-TjZU
-#         op=Save Booklet Outline
-#         form_build_id=form-AKd9R2JR3_eKlDc9Dvz3yS6yukoeDLaD3oR-K-DHR1U
-#         form_token=di3f5Bqn1KinfyGvopSjJghNLR7hR9wQ_vX9fQUUhZA
-#         form_id=book_admin_edit
-#         """
-#    Then I should see
-#         """
-#         | TITLE             |
-#         | John Quincy Adams |
-#         | Daniel Webster    |
-#         """
+ @api @features_first @os_booklets @delete_booklet_content_in_outline
+ Scenario: delete booklet content in outline
+    Given I am logging in as "john"
+      And I visit the site "john/book/profiles-courage"
+      And I click the gear icon in the content region
+      And I click "Outline" in the gear menu
+      And I visit the destination in the current query string with "outline" appended on vsite "john"
+      And I click "delete"
+     Then I should see "Are you sure you want to delete Daniel Webster?"
+      And I press "Delete"
+     Then I should see "Book page Daniel Webster has been deleted"
+      And I click "Profiles In Courage"
+     Then I should match the regex "TABLE\s+OF\s+CONTENTS\s+Profiles\s+In\s+Courage\s+John\s+Quincy\s+Adams"
 
-#@api @features_first @os_booklets @delete_booklet_content_in_outline
-#Scenario: delete booklet content in outline
-#   Given I am logging in as "john"
-#     And I visit the site "john/book/profiles-courage"
 
-#@api @features_first @os_booklets @change_order_of_booklet_content_using_"booklet_information"_field
+#@api @features_first @os_booklets @change_order_of_booklet_content_using_booklet_information_field
 #Scenario: change order of booklet content using "Booklet information" field
 #   Given I am logging in as "john"
 #     And I visit the site "john/book/profiles-courage"

@@ -4074,13 +4074,12 @@ JS;
   }
 
   /**
-   * @When /^I swap the order of the first two items in the outline on vsite "([^"]*)"$/
+   * @When /^I click the gear icon in the content region$/
    */
-  public function iSwapTheOrderOfTheBookOutline($vsite) {
+  public function iClickTheGearIconInTheContentRegion() {
     $content_region = $this->getSession()->getPage()->find('xpath', "//div[@id='content']");
     $gear_icon = $this->getSession()->getPage()->find('xpath', "//div[@class='contextual-links-wrapper contextual-links-processed']");
     $gear_icon_trigger_link = $this->getSession()->getPage()->find('xpath', "//div[@id='content']//div/a[text()='Configure']");
-    $outline_menu_item = $this->getSession()->getPage()->find('xpath', "//div[@id='content']//div/a[text()='Configure']/..//a[text()='Outline']");
 
     $content_region->mouseOver();
     $content_region->click();
@@ -4088,18 +4087,41 @@ JS;
     $gear_icon->click();
     $gear_icon_trigger_link->mouseOver();
     $gear_icon_trigger_link->click();
-    $outline_menu_item->mouseOver();
-    $outline_menu_item->click();
+  }
+
+  /**
+   * @Given /^I visit the destination in the current query string with "([^"]*)" appended on vsite "([^"]*)"$/
+   */
+  public function iVisitTheDestinationPathInTheCurrentQueryString($appendage, $vsite) {
 
     $url = $this->getSession()->getCurrentUrl();
     if (preg_match("/destination(?:=|%3d)(\S+)/i", $url, $matches)) {
 
       if (isset($matches[1])) {
-        $this->getSession()->visit($this->locatePath("/$vsite/" . $matches[1] . "/outline"));
+        $this->getSession()->visit($this->locatePath("/$vsite/" . $matches[1] . "/$appendage"));
       } else {
         throw new Exception("Could not get a destination.\n");
       }
     }
+  }
+
+
+  /**
+   * @Given /^I click "([^"]*)" in the gear menu$/
+   */
+  public function iClickInTheGearMenu($menu_item) {
+    $gear_menu_item = $this->getSession()->getPage()->find('xpath', "//div[@id='content']//div/a[text()='Configure']/..//a[text()='$menu_item']");
+    $gear_menu_item->mouseOver();
+    $gear_menu_item->click();
+  }
+
+  /**
+   * @When /^I swap the order of the first two items in the outline on vsite "([^"]*)"$/
+   */
+  public function iSwapTheOrderOfTheBookOutline($vsite) {
+    $this->iClickTheGearIconInTheContentRegion();
+    $this->iClickInTheGearMenu("Outline");
+    $this->iVisitTheDestinationPathInTheCurrentQueryString("outline", $vsite);
 
     $handles = $this->getSession()->getPage()->findAll('xpath', "//div[@class='handle']");
 
