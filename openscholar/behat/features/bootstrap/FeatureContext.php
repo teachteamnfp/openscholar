@@ -3059,12 +3059,12 @@ class FeatureContext extends DrupalContext {
    * This step is used to match a regular expression in the page
    */
   public function iShouldMatchTheRegex($pattern) {
-    $actual = $this->getSession()->getPage()->getText();
+    $page_text = $this->getSession()->getPage()->getText();
 
-    $actual = preg_replace('/\s+/u', ' ', $actual);
+    $page_text = preg_replace('/\s+/u', ' ', $page_text);
     $regex = '/'.$pattern.'/u';
 
-    if (!preg_match($regex, $actual)) {
+    if (!preg_match($regex, $page_text)) {
       $message = sprintf('The regex pattern "%s" did not appear in the text of this page, but it should have.', $pattern);
       throw new Exception($message);
     }
@@ -4109,16 +4109,17 @@ JS;
       throw new Exception("There needs to be at least two book entries to test re-ordering.\n");
     }
 
-    $content = $this->getSession()->getPage()->getContent();
-
-    $reorder_message = 'Changes made in this table will not be saved until the form is submitted';
-    if (FALSE != stristr($content, $reorder_message)) {
-      throw new Exception("Did not see '$reorder_message after drag-and-drop reorder operation', but was supposed to.");
-    }
-
     return array(
       new Step\When('I press "Save Booklet Outline"'),
     );
+  }
+
+  /**
+   * @Given /^I visit the parent directory of the current URL$/
+   */
+  public function iVisitParentDirectory() {
+    $url = $this->getSession()->getCurrentUrl();
+    $this->getSession()->visit($this->locatePath($url . '/..'));
   }
 
   /**
@@ -4140,4 +4141,5 @@ JS;
 
     return false;
   }
+
 }

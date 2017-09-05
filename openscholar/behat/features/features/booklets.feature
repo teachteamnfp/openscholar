@@ -53,9 +53,11 @@ Feature:
       And I visit the site "john/book/profiles-courage"
       And I swap the order of the first two items in the outline on vsite "john"
 
-     Then I should see "Changes made in this table will not be saved until the form is submitted"
+#    Then I should see "Changes made in this table will not be saved until the form is submitted"
       And I press "Save Booklet Outline"
-     Then I should match the regex "Table of Contents.*John Quincy Adams.*Kennedy"
+     Then I should see "Updated book Profiles in Courage"
+      And I visit the parent directory of the current URL
+     Then I should match the regex "TABLE\s+OF\s+CONTENTS\s+Profiles\s+In\s+Courage\s+Daniel\s+Webster\s+John\s+Quincy\s+Adams"
 
 #@api @features_first @delete_any_booklets_content @os_booklets
 #Scenario: Delete booklets content
