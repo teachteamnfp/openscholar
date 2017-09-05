@@ -29,7 +29,7 @@ Feature:
       Then I should see "Kittens gallery"
        And I should not see "jfk"
 
-  @api @features_first @create_new_image_gallery_content @image_gallery_content
+  @api @features_first
   Scenario: Create new image gallery content
      Given I am logging in as "john"
         And I visit "john/node/add/media-gallery"
@@ -40,7 +40,7 @@ Feature:
        Then I should see "Safari"
        And I should see "Visit to world safari"
 
-  @api @features_first @edit_existing_image_gallery_content @image_gallery_content
+  @api @features_first
   Scenario: Edit existing image gallery content
      Given I am logging in as "john"
         And I visit the unaliased edit path of "galleries/safari" on vsite "john"
@@ -51,7 +51,7 @@ Feature:
        Then I should see "World Safari"
        And I should see "Enjoying world safari"
 
-  @api @features_first @delete_existing_image_gallery_content @image_gallery_content
+  @api @features_first
   Scenario: Delete existing image gallery content
      Given I am logging in as "john"
         And I visit the unaliased edit path of "galleries/safari" on vsite "john"
@@ -60,7 +60,8 @@ Feature:
       Then I should see "This action cannot be undone."
        And I press "Delete"
        Then I should see "has been deleted"
-  @api @javascript
+
+  @api @features_first @javascript
   Scenario: Add media to existing gallery
      Given I am logging in as "john"
        And I visit "john/galleries/safari"
