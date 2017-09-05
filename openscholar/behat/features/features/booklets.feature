@@ -46,15 +46,49 @@ Feature:
       And I sleep for "5"
      Then I should see "Daniel Webster"
       And I should see "for speaking in favor of the Compromise of 1850"
+ @api @features_first @os_booklets @add_a_fourth_child_page_to_existing_booklet_content @eam_1245
+ Scenario: Add a second child page to existing booklet content
+    Given I am logging in as "john"
+      And I visit the site "john/book/profiles-courage"
+      And I click "Add child page"
+      And I fill in "Title" with "Daniel Webster"
+      And I fill in "Body" with "Daniel Webster, also from Massachusetts, for speaking in favor of the Compromise of 1850."
+      And I press "Save"
+      And I sleep for "5"
+     Then I should see "Daniel Webster"
+      And I should see "for speaking in favor of the Compromise of 1850"
+
+ @api @features_first @os_booklets @add_more_child_pages_to_existing_booklet_content
+ Scenario: Add a second child page to existing booklet content
+    Given I am logging in as "john"
+      And I visit the site "john/book/profiles-courage"
+      And I click "Add child page"
+      And I visit the "overlay" parameter in the current query string with "" appended on vsite ""
+      And I sleep for "6"
+      And I fill in "Title" with "Thomas Hart Benton"
+#     And I fill in "Body" with "Thomas Hart Benton, from Missouri, for staying in the Democratic Party despite his opposition to the extension of slavery in the territories."
+      And I press "Save"
+      And I visit the site "john/book/profiles-courage"
+      And I click "Add child page"
+      And I visit the "overlay" parameter in the current query string with "" appended on vsite ""
+      And I sleep for "6"
+      And I fill in "Title" with "Sam Houston"
+#     And I fill in "Body" with "Sam Houston, from Texas, for speaking against the Kansas–Nebraska Act of 1854, which would have allowed those two states to decide on the slavery question. Houston wanted to uphold the Missouri Compromise. His and Benton's votes against Kansas–Nebraska did just that. This was his most unpopular vote and he was defeated when running for re-election. Two years later he'd regained enough popularity to be elected Governor of Texas. However, when the state convened in special session and joined the Confederacy, Sam Houston refused to be inaugurated as governor, holding true to his ideal of preserving the Union."
+      And I press "Save"
 
  @api @wip @os_booklets @change_order_of_booklet_content_in_outline
  Scenario: change order of booklet content in outline
     Given I am logging in as "john"
       And I visit the site "john/book/profiles-courage"
-      And I swap the order of the first two items in the outline on vsite "john"
-     Then I should see "Updated book Profiles in Courage"
-      And I visit the parent directory of the current URL
-     Then I should match the regex "TABLE\s+OF\s+CONTENTS\s+Profiles\s+In\s+Courage\s+Daniel\s+Webster\s+John\s+Quincy\s+Adams"
+      And I click "John Quincy Adams"
+      And I click the gear icon in the content region
+      And I click "Edit" in the gear menu
+      And I visit the "destination" parameter in the current query string with "edit" appended on vsite "john"
+      And I click "Booklet information"
+      And I select "-- Sam Houston" from "Parent item"
+      And I press "Save"
+     Then I should match the regex "TABLE\s+OF\s+CONTENTS\s+Profiles\s+In\s+Courage\s+Sam\s+Houston\s+John\s+Quincy\s+Adams\s+Thomas\s+Hart\s+Benton"
+
 
 #@api @features_first @delete_any_booklets_content @os_booklets
 #Scenario: Delete booklets content
@@ -72,7 +106,7 @@ Feature:
       And I visit the site "john/book/profiles-courage"
       And I click the gear icon in the content region
       And I click "Outline" in the gear menu
-      And I visit the destination in the current query string with "outline" appended on vsite "john"
+      And I visit the "destination" parameter in the current query string with "outline" appended on vsite "john"
       And I click "delete"
      Then I should see "Are you sure you want to delete Daniel Webster?"
       And I press "Delete"

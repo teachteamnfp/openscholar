@@ -4090,17 +4090,17 @@ JS;
   }
 
   /**
-   * @Given /^I visit the destination in the current query string with "([^"]*)" appended on vsite "([^"]*)"$/
+   * @Given /^I visit the "([^"]*)" parameter in the current query string with "([^"]*)" appended on vsite "([^"]*)"$/
    */
-  public function iVisitTheDestinationPathInTheCurrentQueryString($appendage, $vsite) {
+  public function iVisitTheParameterInTheCurrentQueryString($parameter, $appendage, $vsite) {
 
     $url = $this->getSession()->getCurrentUrl();
-    if (preg_match("/destination(?:=|%3d)(\S+)/i", $url, $matches)) {
+    if (preg_match("/$parameter(?:=|%3d)(\S+)/i", $url, $matches)) {
 
       if (isset($matches[1])) {
-        $this->getSession()->visit($this->locatePath("/$vsite/" . $matches[1] . "/$appendage"));
+        $this->getSession()->visit($this->locatePath((($vsite) ? "/$vsite/" : "") . rawurldecode($matches[1]) . (($appendage) ? "/$appendage" : "")));
       } else {
-        throw new Exception("Could not get a destination.\n");
+        throw new Exception("Could not get a $parameter.\n");
       }
     }
   }
