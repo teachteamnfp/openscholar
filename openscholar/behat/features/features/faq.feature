@@ -50,12 +50,6 @@ Feature:
        And I should see "Answer Cleared"
 
   @api @features_second
-  Scenario: Permission to edit new FAQ
-     Given I am logging in as "klark"
-       And I visit the unaliased edit path of "faq/frequently-asked" on vsite "john"
-      Then I should see "Access Denied"
-
-  @api @features_second
   Scenario: Default Creation date descending
     Given I am logging in as "john"
       And I set the variable "faq_sort" to "created" in the vsite "john"
@@ -70,7 +64,16 @@ Feature:
      Then I should see the FAQ "Where does JFK born?" comes before "Frequently Asked"
 
   @api @features_first
-  Scenario: Delete faq content
+  Scenario: Edit faq content
+     Given I am logging in as "john"
+       And I visit the unaliased edit path of "faq/frequently-asked" on vsite "john"
+       And I sleep for "2"
+      When I fill in "Question" with "Frequently Asked Revised"
+       And I press "Save"
+      Then I should see "Frequently Asked Revised"
+
+  @api @features_first
+  Scenario: Delete existing faq content
      Given I am logging in as "john"
        And I visit the unaliased edit path of "faq/frequently-asked" on vsite "john"
        And I sleep for "2"
@@ -79,11 +82,54 @@ Feature:
        And I press "Delete"
       Then I should see "has been deleted"
 
-  @api @features_second
-  Scenario: Permission to edit FAQ
-     Given I am logging in as "klark"
-       And I visit the unaliased edit path of "faq/what-does-jfk-stands" on vsite "john"
-      Then I should see "Access Denied"
+  @api @feature_second
+  Scenario: Permission to add Content
+    Given I am logging in as "john"
+      And I visit "john/cp/users/add"
+      And I fill in "Member" with "alexander"
+      And I press "Add member"
+      And I sleep for "5"
+     Then I should see "alexander has been added to the group John."
+      And I visit "john/cp/users/add"
+      And I fill in "Member" with "michelle"
+      And I press "Add member"
+      And I sleep for "5"
+     Then I should see "michelle has been added to the group John."
+      And I visit "user/logout"
+    Given I am logging in as "michelle"
+      And I visit "john/node/add/faq"
+     When I fill in "Question" with "When was JFK born?"
+      And I press "Save"
+     Then I should see "When was JFK born?"
+
+  @api @feature_second
+  Scenario: Permission to edit own content
+    Given I am logging in as "michelle"
+      And I visit the unaliased edit path of "faq/when-was-jfk-born" on vsite "john"
+     When I fill in "Answer" with "29 May 1917"
+      And I press "Save"
+     Then I should see "29 May 1917"
+
+  @api @feature_second
+  Scenario: Permission to edit any content
+    Given I am logging in as "alexander"
+      And I visit the unaliased edit path of "faq/when-was-jfk-born" on vsite "john"
+     Then I should see "Access Denied"
+
+  @api @feature_second
+  Scenario: Permission to delete any content
+    Given I am logging in as "alexander"
+      And I visit the unaliased delete path of "faq/when-was-jfk-born" on vsite "john"
+     Then I should see "Access Denied"
+
+  @api @feature_second
+  Scenario: Permission to delete own content
+    Given I am logging in as "michelle"
+      And I visit the unaliased edit path of "faq/when-was-jfk-born" on vsite "john"
+      And I click "Delete this faq"
+     Then I should see "This action cannot be undone."
+      And I press "Delete"
+     Then I should see "has been deleted"
 
   @api @features_second @javascript
   Scenario: Administer FAQ App Setting
