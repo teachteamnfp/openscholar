@@ -74,7 +74,7 @@ Feature:
 #     And I fill in "Body" with "Sam Houston, from Texas, for speaking against the Kansas–Nebraska Act of 1854, which would have allowed those two states to decide on the slavery question. Houston wanted to uphold the Missouri Compromise. His and Benton's votes against Kansas–Nebraska did just that. This was his most unpopular vote and he was defeated when running for re-election. Two years later he'd regained enough popularity to be elected Governor of Texas. However, when the state convened in special session and joined the Confederacy, Sam Houston refused to be inaugurated as governor, holding true to his ideal of preserving the Union."
       And I press "Save"
 
- @api @features_first @os_booklets @change_order_of_booklet_content_in_booklet_information
+ @api @features_first @os_booklets @change_order_of_booklet_content_in_booklet_information @javascript
  Scenario: change order of booklet content in booklet information field
     Given I am logging in as "john"
       And I visit the site "john/book/profiles-courage"
@@ -98,7 +98,7 @@ Feature:
 #     And I press "Delete"
 #    Then I should see "has been deleted"
 
- @api @features_first @os_booklets @delete_booklet_content_in_outline
+ @api @features_first @os_booklets @delete_booklet_content_in_outline @javascript
  Scenario: delete booklet content in outline
     Given I am logging in as "john"
       And I visit the site "john/book/profiles-courage"
