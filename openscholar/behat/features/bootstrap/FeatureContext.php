@@ -2407,7 +2407,7 @@ class FeatureContext extends DrupalContext {
       $output = array_merge($opening, $enable, $closer);
     }
     else if ($current_value == 0 && $new_value == 2) {
-      $output = array_merge($opening, $enable, $closet, $opening, $private, $closer);
+      $output = array_merge($opening, $enable, $closer, $opening, $private, $closer);
     }
     else if ($current_value == 1 && $new_value == 2) {
       $output = array_merge($opening, $private, $closer);
