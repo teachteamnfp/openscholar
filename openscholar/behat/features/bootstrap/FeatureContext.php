@@ -2325,6 +2325,46 @@ class FeatureContext extends DrupalContext {
    * @Given /^I set feature "([^"]*)" to "([^"]*)" on "([^"]*)"$/
    */
   public function iSetFeatureStatus ($feature, $status, $group) {
+
+    $features = FeatureHelp::VsiteGetVariable($group, 'spaces_features');
+    $info = spaces_features('og');
+
+    $current_value = VSITE_ACCESS_PUBLIC;
+
+    foreach ($info as $k => $i) {
+      if ($i->info['name'] == $feature) {
+        $current_value = $features[$k];
+        break;
+      }
+    }
+
+    /* cases
+     * Disabled > Enabled
+     * Disabled > Private
+     * Enabled > Disabled
+     * Enabled > Private
+     * Private > Enabled
+     * Private > Disabled
+     *
+     * Private = 2
+     * Enabled = 1
+     * Disabled  = 0
+     */
+    $new_value;
+    switch ($status) {
+      case 'Disabled':
+      default:
+        $new_value = 0;
+        break;
+      case 'Enabled':
+      case 'Public':
+        $new_value = 1;
+        break;
+      case 'Private':
+        $new_value = 2;
+        break;
+    }
+
     $opening = array(
       new Step\When('I visit "' . $group . '"'),
       new Step\When('I make sure admin panel is open'),
@@ -2333,12 +2373,76 @@ class FeatureContext extends DrupalContext {
       new Step\When('I click on the "Enable / Disable Apps" control'),
     );
 
-    $vsite_id = FeatureHelp::getNodeId($group);
-
-    return array(
-      new Step\When('I select "' . $status . '" from "' . $feature . '"'),
-      new Step\When('I press "edit-submit"'),
+    $closer = array(
+      new Step\When('I press "Save"'),
+      new Step\When("I wait for page actions to complete"),
     );
+
+    $enable = array(
+      new Step\When('I check the "Enable" box in the "'.$feature.'" row'),
+    );
+
+    $disable = array(
+      new Step\When('I check the "Disable" box in the "'.$feature.'" row'),
+    );
+
+    $public = array(
+      new Step\When('I click the "Site Members" control in the "'.$feature.'" row'),
+      new Step\When('I click the "Everyone" control in the "'.$feature.'" row'),
+    );
+
+    $private = array(
+      new Step\When('I click the "Everyone" control in the "'.$feature.'" row'),
+      new Step\When('I click the "Site Members" control in the "'.$feature.'" row'),
+    );
+
+    $output = array();
+    if ($current_value == $new_value) {
+      return;
+    }
+    else if ($new_value == 0) {
+      $output = array_merge($opening, $disable, $closer);
+    }
+    elseif ($current_value == 0 && $new_value == 1) {
+      $output = array_merge($opening, $enable, $closer);
+    }
+    else if ($current_value == 0 && $new_value == 2) {
+      $output = array_merge($opening, $enable, $closet, $opening, $private, $closer);
+    }
+    else if ($current_value == 1 && $new_value == 2) {
+      $output = array_merge($opening, $private, $closer);
+    }
+    else if ($current_value == 2 && $new_value == 1) {
+      $output = array_merge($opening, $public, $closer);
+    }
+
+    return $output;
+  }
+
+  /**
+   * @Given /^I check the "([^"]*)" box in the "([^"]*)" row$/
+   */
+  public function iCheckTheBoxInTheRow($column, $row) {
+    $x = '//table/tbody/tr[contains(.,"'.$row.'")]/td[count(//table/thead/tr/th[.="'.$column.'"]/preceding-sibling::th+1]/input[type="checkbox"]';
+    $elem = $this->getSession()->getPage()->find('xpath', $x);
+    if (!$elem) {
+      throw new Exception("No checkbox in the \"$column\" column of row \"$row\"");
+    }
+
+    $elem->check();
+  }
+
+  /**
+   * @Given /^I click the "([^"]*)" control in the "([^"]*)" row$/
+   */
+  public function iClicktheControlInTheRow($control, $row) {
+    $x = '//table/tbody/tr[contains(.,"'.$row.'")]/td/*[contains(.,"'.$control.')]';
+    $elem = $this->getSession()->getPage()->find('xpath', $x);
+    if (!$elem) {
+      throw new Exception("No control \"$control\" in the row \"$row\"");
+    }
+
+    $elem->click();
   }
 
   /**
