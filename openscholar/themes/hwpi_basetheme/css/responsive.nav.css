@@ -46,6 +46,7 @@
         right: 0;
         z-index: 2000;
     }
+    .search-block-form .container-inline .form-item .form-text,
     #search-block-form .container-inline .form-item .form-text {
         width: 90% !important;
     }
@@ -205,11 +206,13 @@
         padding: 12px 15px !important;
     }
     /*Search*/
-    
+    .search-block-form .container-inline .form-item,
+    .search-block-form .form-submit,
     #search-block-form .container-inline .form-item,
     #search-block-form .form-submit {
         float: none!important;
     }
+    .region-header-third .search-block-form .form-item label,
     .region-header-third #search-block-form .form-item label {
         display: none !important;
     }
@@ -298,6 +301,7 @@
     .table-wrap {
         overflow: scroll;
     }
+    .search-block-form .container-inline .form-item .form-text,
     #search-block-form .container-inline .form-item .form-text {
         height: 32px!important;
     }
