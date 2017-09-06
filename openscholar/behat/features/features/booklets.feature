@@ -85,8 +85,7 @@ Feature:
       And I click "Booklet information"
       And I select "-- Sam Houston" from "Parent item"
       And I press "Save"
-     Then I should match the regex "TABLE\s+OF\s+CONTENTS\s+Profiles\s+In\s+Courage\s+Sam\s+Houston\s+John\s+Quincy\s+Adams\s+Thomas\s+Hart\s+Benton"
-
+     Then I should match the regex "table\s+of\s+contents\s+profiles\s+in\s+courage\s+by\s+john\s+f.\s+kennedy\s+and\s+ted\s+sorensen\s+daniel\s+webster\s+sam\s+houston\s+john\s+quincy\s+adams"
 
 #@api @features_first @delete_any_booklets_content @os_booklets
 #Scenario: Delete booklets content
@@ -110,8 +109,7 @@ Feature:
       And I press "Delete"
      Then I should see "Book page Daniel Webster has been deleted"
       And I click "Profiles In Courage"
-     Then I should match the regex "TABLE\s+OF\s+CONTENTS\s+Profiles\s+In\s+Courage\s+John\s+Quincy\s+Adams"
-
+     Then I should match the regex "table\s+of\s+contents\s+profiles\s+in\s+courage\s+by\s+john\s+f.\s+kennedy\s+and\s+ted\s+sorensen\s+sam\s+houston\s+john\s+quincy\s+adams"
 
 #@api @features_first @os_booklets @correct_re_arrangement_of_booklet_outline_when_parent_is_deleted
 #Scenario: correct re-arrangement of booklet outline when parent is deleted
