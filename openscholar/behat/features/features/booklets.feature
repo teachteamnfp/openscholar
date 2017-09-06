@@ -115,3 +115,23 @@ Feature:
 #Scenario: correct re-arrangement of booklet outline when parent is deleted
 #   Given I am logging in as "john"
 #     And I visit the site "john/book/profiles-courage"
+
+  @api @features_first @javascript
+  Scenario: Verify "Active Book's Table of Contents" widget
+    Given I am logging in as "john"
+      And I visit "john"
+
+      And I click the big gear
+      And I click "Layout"
+      And I drag the "Active Book's TOC" widget to the "sidebar-first" region
+
+      And I visit "john/os/widget/boxes/os_booktoc/edit/cp-layout"
+      And I select "Profiles In Courage" from "Which Book"
+      And I press "Save"
+
+      And I visit "john"
+
+     Then I should match the regex "table\s+of\s+contents\s+profiles\s+in\s+courage\s+by\s+john\s+f.\s+kennedy\s+and\s+ted\s+sorensen\s+sam\s+houston\s+john\s+quincy\s+adams"
+
+# os_booklets	widget	Recent Documents
+

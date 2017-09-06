@@ -889,6 +889,121 @@ class FeatureContext extends DrupalContext {
   }
 
   /**
+   * @Given /^I drag the "([^"]*)" widget to the "([^"]*)" region$/
+   */
+  public function iDragTheWidgetToTheRegion($widget_label, $region_name) {
+
+    $widget_name_label_map = array(
+      "Active book TOC"                        => "boxes-box-active-book-toc",
+      "All Posts"                              => "boxes-box-all-posts",
+      "Blog RSS Feed"                          => "boxes-blog_rss_feed",
+      "Contact"                                => "boxes-hwp_personal_contact_html",
+      "Filter by taxonomy for pages"           => "boxes-vocabulary_filter_pages",
+      "Filter by term"                         => "boxes-box-filter-by-term",
+      "Front page header text"                 => "boxes-iqss_scholars_fp_headertext",
+      "HWP Option Info text"                   => "boxes-iqss_scholars_fp_hwp_option",
+      "Latest News"                            => "boxes-os_news_latest",
+      "Latest Publications"                    => "boxes-boxes-os_boxes_feedreader",
+      "List of posts"                          => "boxes-box-list-of-posts",
+      "Recent FAQs"                            => "boxes-os_faq_sv_list",
+      "Recent Images"                          => "boxes-os_image_gallery_latest",
+      "Recent Presentations"                   => "boxes-os_presentations_recent",
+      "Recent Publications"                    => "boxes-os_publications_recent",
+      "Scholars Info text with video link"     => "boxes-iqss_scholars_fp_infoblock",
+      "Scholars Learn More Box"                => "boxes-iqss_scholars_fp_learnmore",
+      "Scholars Learn More Toggle Page"        => "boxes-iqss_scholars_learnmore_toggle",
+      "Scholars Logo"                          => "boxes-iqss_scholars_fp_logoblock",
+      "Scholars fixed-position header."        => "boxes-iqss_scholars_fixed_header",
+      "Search box"                             => "boxes-solr_search_box",
+      "Site RSS Feed"                          => "boxes-os_rss",
+      "Subscribe to MailChimp mailing list"    => "boxes-os_box_mailchimp",
+      "Upcoming Events"                        => "boxes-os_events_upcoming",
+      "Active Book's TOC"                      => "boxes-os_booktoc",
+      "AddThis"                                => "boxes-os_addthis",
+      "Blog Archive"                           => "views-os_blog-block",
+      "Blog RSS Feed"                          => "boxes-blog_rss_feed",
+      "Contact"                                => "boxes-hwp_personal_contact_html",
+      "Filter News by Month"                   => "views-os_news-news_by_month_block",
+      "Filter News by Year"                    => "views-os_news-news_by_year_block",
+      "Filter Profiles by Alphabetical Groups" => "views-os_profiles-filter_by_alphabet",
+      "Filter by taxonomy for pages"           => "boxes-vocabulary_filter_pages",
+      "Front page header text"                 => "boxes-iqss_scholars_fp_headertext",
+      "Google Translate"                       => "os_ga-google_translate",
+      "HWP Option Info text"                   => "boxes-iqss_scholars_fp_hwp_option",
+      "Latest Publications"                    => "boxes-boxes-os_boxes_feedreader",
+      "Mini Calendar"                          => "views-os_events-block_1",
+      "Primary Menu"                           => "os-primary-menu",
+      "Recent Documents"                       => "boxes-os_booklets_recent_docs",
+      "Recent FAQs"                            => "boxes-os_faq_sv_list",
+      "Recent Images"                          => "boxes-os_image_gallery_latest",
+      "Recent Presentations"                   => "boxes-os_presentations_recent",
+      "Recent Publications"                    => "boxes-os_publications_recent",
+      "Recent Software Releases"               => "views-os_software_releases-block_1",
+      "Scholars Info text with video link"     => "boxes-iqss_scholars_fp_infoblock",
+      "Scholars Learn More Box"                => "boxes-iqss_scholars_fp_learnmore",
+      "Scholars Learn More Toggle Page"        => "boxes-iqss_scholars_learnmore_toggle",
+      "Scholars Logo"                          => "boxes-iqss_scholars_fp_logoblock",
+      "Scholars"                               => "boxes-iqss_scholars_fixed_header",
+      "Search box"                             => "boxes-solr_search_box",
+      "Site RSS Feed"                          => "boxes-os_rss",
+      "Subscribe to MailChimp mailing list"    => "boxes-os_box_mailchimp",
+      "Upcoming Events"                        => "boxes-os_events_upcoming",
+    );
+
+    $region_names = array(
+      "header-first",
+      "header-second",
+      "header-third",
+      "menu-bar",
+      "sidebar-first",
+      "content",
+      "content-top",
+      "content-first",
+      "content-second",
+      "content-bottom",
+      "sidebar-second",
+      "footer-first",
+      "footer",
+      "footer-third",
+      "footer-bottom",
+    );
+
+    if (! in_array($region_name, $region_names)) {
+      throw new Exception("I do not recognize the region name: $region_name.");
+    }
+
+    $css_selector = $widget_name_label_map[$widget_label];
+    $widget_icon = $this->getSession()->getPage()->find('css', "div#$css_selector");
+    if (! $widget_icon) {
+      throw new Exception("I could not find a widget for '$widget_label'.");
+    }
+
+    $region_element = $this->getSession()->getPage()->find('css', "div#edit-layout-$region_name");
+    if (! $region_element) {
+      throw new Exception("I could not find a region for '$region_name'.");
+    }
+    $widget_icon->dragTo($region_element);
+
+    $save_button = $this->getSession()->getPage()->find('css', "input#edit-submit");
+    if (! $save_button) {
+      throw new Exception("I could not find a save button using css selector 'input#edit-submit'.");
+    }
+
+    $save_button->click();
+  }
+
+  /**
+   * @Given /^I click the big gear$/
+   */
+  public function iClickTheBigGear() {
+    $big_gear = $this->getSession()->getPage()->find('css', "a.ctools-dropdown-link.ctools-dropdown-text-link");
+    if (! $big_gear) {
+      throw new Exception("I did not locate the big gear icon.");
+    }
+    $big_gear->click();
+  }
+
+  /**
    * @Given /^the widget "([^"]*)" is placed in the "([^"]*)" layout$/
    */
   public function theWidgetIsPlacedInTheLayout($widget, $page) {
