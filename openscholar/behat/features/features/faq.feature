@@ -49,14 +49,14 @@ Feature:
        Then I should see "Frequently Asked"
        And I should see "Answer Cleared"
 
-  @api @features_second
+  @api @features_first
   Scenario: Default Creation date descending
     Given I am logging in as "john"
       And I set the variable "faq_sort" to "created" in the vsite "john"
      When I visit "john/faq"
      Then I should see the FAQ "Frequently Asked" comes before "What does JFK stands for?"
 
-  @api @features_second
+  @api @features_first
   Scenario: Creation date ascending
     Given I am logging in as "john"
       And I set the variable "faq_sort" to "created_asc" in the vsite "john"
