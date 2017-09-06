@@ -51,16 +51,6 @@ Feature:
        Then I should see "World Safari"
        And I should see "Enjoying world safari"
 
-  @api @features_first
-  Scenario: Delete existing image gallery content
-     Given I am logging in as "john"
-        And I visit the unaliased edit path of "galleries/safari" on vsite "john"
-       And I sleep for "2"
-      When I click "Delete this media gallery"
-      Then I should see "This action cannot be undone."
-       And I press "Delete"
-       Then I should see "has been deleted"
-
   @api @features_first @javascript
   Scenario: Add media to existing gallery
      Given I am logging in as "john"
@@ -74,4 +64,64 @@ Feature:
        And I fill in the field "Alt Text" with the node "safari"
        And I click on the "Save" control
      Then I should see the images:
-      | safari.jpg |
+      | safari |
+
+  @api @features_first
+  Scenario: Delete existing image gallery content
+     Given I am logging in as "john"
+        And I visit the unaliased edit path of "galleries/safari" on vsite "john"
+       And I sleep for "2"
+      When I click "Delete this media gallery"
+      Then I should see "This action cannot be undone."
+       And I press "Delete"
+       Then I should see "has been deleted"
+
+  @api @feature_second
+  Scenario: Permission to add gallery Content
+    Given I am logging in as "john"
+      And I visit "john/cp/users/add"
+      And I fill in "Member" with "alexander"
+      And I press "Add member"
+      And I sleep for "5"
+     Then I should see "alexander has been added to the group John."
+      And I visit "john/cp/users/add"
+      And I fill in "Member" with "michelle"
+      And I press "Add member"
+      And I sleep for "5"
+     Then I should see "michelle has been added to the group John."
+      And I visit "user/logout"
+    Given I am logging in as "michelle"
+      And I visit "john/node/add/media-gallery"
+     When I fill in "Title" with "Marilyn Monroe"
+      And I press "Save"
+      And I sleep for "2"
+     Then I should see "Marilyn Monroe"
+
+  @api @feature_second
+  Scenario: Permission to edit own content
+    Given I am logging in as "michelle"
+      And I visit the unaliased edit path of "galleries/marilyn-monroe" on vsite "john"
+      And I fill in "Title" with "Marilyn Monroe Gallery"
+      And I press "Save"
+     Then I should see "Marilyn Monroe Gallery"
+
+  @api @feature_second
+  Scenario: Permission to edit any content
+    Given I am logging in as "alexander"
+      And I visit the unaliased edit path of "galleries/marilyn-monroe" on vsite "john"
+     Then I should see "Access Denied"
+
+  @api @feature_second
+  Scenario: Permission to delete any content
+    Given I am logging in as "alexander"
+      And I visit the unaliased delete path of "galleries/marilyn-monroe" on vsite "john"
+     Then I should see "Access Denied"
+
+  @api @feature_second
+  Scenario: Permission to delete own content
+    Given I am logging in as "michelle"
+      And I visit the unaliased edit path of "galleries/marilyn-monroe" on vsite "john"
+      And I click "Delete this media gallery"
+     Then I should see "This action cannot be undone."
+      And I press "Delete"
+     Then I should see "has been deleted"
