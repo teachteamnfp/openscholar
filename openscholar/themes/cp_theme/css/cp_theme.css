@@ -2010,61 +2010,61 @@ div.no-bold {
   float: left;
   width: 70%;
 }
-.angular-node-form .form-region-right {
+.ng-node-form .form-region-right {
   border-left: 1px dotted #777777;
   padding-left: 15px;
   width: 27%;
   float: right;
 }
-.angular-node-form fieldset .fieldset-legend {
+.ng-node-form fieldset .fieldset-legend {
   margin-top: 0.5em;
   padding-left: 15px;
   position: absolute;
   text-transform: uppercase;
 }
-.angular-node-form .form-region-right fieldset {
+.ng-node-form .form-region-right fieldset {
   background: none repeat scroll 0% 0% transparent;
   border: medium none;
   margin: 1em 0px;
   padding: 3em 0px 0.1em;
   width: 100%;
 }
-.angular-node-form .form-region-right .fieldset-wrapper-element {
+.ng-node-form .form-region-right .fieldset-wrapper-element {
   border-bottom: 1px solid #CCCCCC;
   border-left: 1px solid #CCCCCC;
   border-right: 1px solid #CCCCCC;
   padding: 15px;
   width: 89%;
 }
-.angular-node-form span.fieldset-title {
+.ng-node-form span.fieldset-title {
   cursor: pointer;
   color: #0074BD;
 }
-html.js .angular-node-form fieldset.collapsed {
+html.js .ng-node-form fieldset.collapsed {
   padding: 20px 0;
   height: auto;
 }
-.angular-node-form input[ng-model="termSearch"] {
+.ng-node-form input[ng-model="termSearch"] {
   display: none;
 }
-.angular-node-form div[ng-repeat="vocab in vocabs"] {
+.ng-node-form div[ng-repeat="vocab in vocabs"] {
   width: 99%;
 }
-.angular-node-form div[ng-switch-when="term_reference_tree"] {
+.ng-node-form div[ng-switch-when="term_reference_tree"] {
   border: 1px solid #ccc;
   width: 100%;
   margin-top: 5px;
 }
-.angular-node-form .fieldset-wrapper .item-list {
+.ng-node-form .fieldset-wrapper .item-list ul.toggle-wrapper {
   float: right;
   position: relative;
+  bottom: 20px;
 }
-.angular-node-form .fieldset-wrapper .item-list ul.toggle-wrapper {
-  float: right;
-  position: relative;
-}
-.angular-node-form .fieldset-wrapper .item-list ul.toggle-wrapper li {
+.ng-node-form .fieldset-wrapper .item-list ul.toggle-wrapper li {
   float: left;
   list-style: none;
   padding-right: 5px;
+}
+.ng-node-form .term-applied-header {
+  font-weight: bold;
 }

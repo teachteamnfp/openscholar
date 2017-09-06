@@ -6,9 +6,13 @@
    * Get node form.
    */
   m.service('nodeFormService', ['$http', '$q', function ($http, $q) {
-
+    
+    var promises = [];
     this.getForm = function(bundle) {
-      var promises = [];
+      var deferred = $q.defer();
+      if (promises.length > 0) {
+        return promises[0];
+      }
       var baseUrl = Drupal.settings.paths.api;
       var queryArgs = {};
       if (angular.isDefined(Drupal.settings.spaces)) {
@@ -19,10 +23,12 @@
       var config = {
         params: queryArgs
       };
-      var promise = $http.get(baseUrl+'/' + bundle +'/form', config).then(function (response) {
-        return response.data;
+      $http.get(baseUrl+'/' + bundle +'/form', config).then(function (response) {
+         deferred.resolve(response.data);
       });
-      return promise;
+      promises.push(deferred.promise);
+      return deferred.promise;
+      
     }
 
     this.nodeSave = function (node) {

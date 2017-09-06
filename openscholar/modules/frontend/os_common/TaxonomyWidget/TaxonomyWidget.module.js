@@ -4,13 +4,14 @@
  */
 var taxonomy = angular.module('TaxonomyWidget', ['EntityService', 'os-auth', 'ui.select', 'ngSanitize', 'ui.bootstrap', 'ui.bootstrap.typeahead', 'TreeSelector']);
 
-taxonomy.directive('taxonomyWidget', ['EntityService', function (EntityService) {
+taxonomy.directive('taxonomyWidget', ['EntityService', '$document', '$compile', function (EntityService, $document, $compile) {
   var path = Drupal.settings.paths.TaxonomyWidget;
   return {
     restrict: 'E',
     scope: {
       terms: "=",
-      bundle: "@"
+      bundle: "@",
+      expandOption: "@"
     },
     templateUrl: path + '/TaxonomyWidget.html?vers='+Drupal.settings.version.TaxonomyWidget,
     link: function (scope, elem, attrs) {
@@ -23,6 +24,10 @@ taxonomy.directive('taxonomyWidget', ['EntityService', function (EntityService) 
       scope.termsTree = [];
       scope.selectedTerms = {};
       scope.disabled = true;
+      scope.enableExpandCollapse = false;
+      if (angular.isDefined(scope.expandOption)) {
+        scope.enableExpandCollapse = scope.expandOption;
+      }
 
       // Any change in the selected term scope will affect the file terms.
       // This can be done thanks to a "Two way binding" implements using the
@@ -171,6 +176,10 @@ taxonomy.directive('taxonomyWidget', ['EntityService', function (EntityService) 
           return $item;
         }
       }
+      scope.expand = [];
+      scope.expandCollapseToggle = function (vid, op) {
+        scope.expand[vid] = (op == 'expand') ?  true : false;
+      };
     }
   }
 }]);

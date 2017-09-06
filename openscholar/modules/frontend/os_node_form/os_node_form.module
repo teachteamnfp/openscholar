@@ -34,7 +34,7 @@ function os_node_form_library() {
 /**
   * Implements hook_preprocess_page().
   *
-  * Adds the content-add-form angular library.
+  * Adds the os-node-form angular library.
  */
 function os_node_form_preprocess_page(&$vars) {
   if (user_is_logged_in() && variable_get('admin_panel_enabled', FALSE)) {

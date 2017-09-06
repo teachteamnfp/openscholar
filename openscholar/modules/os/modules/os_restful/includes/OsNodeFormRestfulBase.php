@@ -69,6 +69,9 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
         );
         $form[$key] = array_merge($form[$key], $file_upload_info);
       }
+      if ($field_info['widget']['type'] == 'og_vocab_complex') {
+        $form[$key] = array_merge($form[$key], array('#bundle' => $this->getBundle()));
+      }
     }
     // Node revision information for administrators.
     $form['revision_information'] = array(
@@ -170,7 +173,7 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
     unset($form['field_child_site']);
     unset($form['#attributes']);
     unset($form['#bundle']);
-    unset($form['author']['name']);  
+    unset($form['author']['name']);
 
     return $form;
   }

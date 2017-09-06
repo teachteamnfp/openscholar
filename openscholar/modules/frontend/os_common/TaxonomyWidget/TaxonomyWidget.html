@@ -31,14 +31,21 @@
     </div>
     <div ng-switch-when="term_reference_tree">
 
+      <div ng-if="enableExpandCollapse" class="item-list">
+        <ul class="toggle-wrapper">
+          <li class="first"><a ng-click="expandCollapseToggle(vocab.id, 'expand')" class="expand">Expand</a></li>
+          <li class="last"><a ng-click="expandCollapseToggle(vocab.id, 'collapse')" class="collapse">Collapse</a></li>
+        </ul>
+      </div>
+
       <input type="text" ng-model="termSearch" class="form-text clearfix" placeholder="Enter text to filter term tree"/>
 
-      <div
+      <div 
         tree-selector-widget
         tree="vocab.tree"
         selected="selectedTerms[vocab.id]"
         filter="{{termSearch}}"
-        on-change="termTreeChangeCallback($node)"></div>
+        on-change="termTreeChangeCallback($node)" expand="expand[vocab.id]"></div>
     </div>
   </div>
 </div>

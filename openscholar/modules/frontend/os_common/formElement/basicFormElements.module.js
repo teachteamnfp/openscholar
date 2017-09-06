@@ -503,8 +503,7 @@
 
   }]);
 
-  m.directive('feOgVocabComplex', ['$rootScope', function ($rootScope) {
-
+  m.directive('feOgVocabComplex', [function () {
     return {
       restrict: 'A',
       scope: {
@@ -512,14 +511,23 @@
         value: '=ngModel',
         element: '=',
       },
-      template: '<fieldset class="form-wrapper"><div class="fieldset-wrapper">'+
-        '<div class="item-list"><ul class="toggle-wrapper"><li class="first"><span class="expand">Expand</span></li><li class="last"><span class="collapse">Collapse</span></li></ul></div>'+
-        '<div class="form-item"><taxonomy-widget entity-type="node" terms="terms" bundle="page"></taxonomy-widget></div></div></fieldset>',
+      template: '<div class="term-applied"><div class="term-applied-header">Taxonomy</div><span>Terms applied: {{selectedTermNames}}</span></div>'+
+        '<fieldset class="form-wrapper"><div class="fieldset-wrapper"><div class="form-item"><taxonomy-widget entity-type="node" terms="terms" bundle="{{bundle}}" expand-option="true"></taxonomy-widget></div></div></fieldset>',
       link: function (scope, elem, attr) {
-        scope.terms = [];
+        scope.bundle = scope.element.bundle;
+        scope.terms = scope.value || [];
+        scope.$watch('terms', function(newTerms, oldTerms) {
+          var selectedTermNames = '';
+          var selectedTermIds = [];
+          for (var k in newTerms) {
+            selectedTermNames +=  (k == (newTerms.length) - 1) ? newTerms[k].label :  newTerms[k].label + ',';
+            selectedTermIds.push(newTerms[k].id);
+          }
+          scope.selectedTermNames = selectedTermNames;
+          scope.value = selectedTermIds;
+        });
       }
     };
-
   }]);
 
 })();

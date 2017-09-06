@@ -105,7 +105,15 @@
       scope.toggleNode = function (node) {
         scope.onChange({$node: node})
       }
-
+      
+      scope.$watch('expand', function (state) {
+        for (var i in scope.flatTree) {
+          var node = scope.flatTree[i];
+          if (node) {
+            node.collapsed = (angular.isDefined(state) && state == true) ? false : true;
+          }
+        }
+      });
     }
 
     /**
@@ -143,7 +151,8 @@
       scope: {
         tree: '=',  // proper tree
         selected: '=', // flat array of selected ids
-        onChange: '&' // event handler to invoke when a node is changed
+        onChange: '&', // event handler to invoke when a node is changed
+        expand: '='
       },
       link: treeLinker,
       template: '<ul><li ng-repeat="node in flatTree | filter:{label:filterString}" ng-show="node.depth == 0 || !parentCollapsed(node.parent)">' +
