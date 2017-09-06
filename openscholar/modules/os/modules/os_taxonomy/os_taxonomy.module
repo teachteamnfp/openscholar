@@ -842,17 +842,6 @@ function os_taxonomy_select_list($form, $form_state, $terms_list, $path) {
     $form['terms_' . $form['#vocabulary']->vid]['#default_value'] = url($_GET['q'], array('absolute' => TRUE));
   }
 
-  $form['actions'] = array(
-    '#type' => 'actions',
-    'submit' => array(
-      '#attributes' => array(
-        'class' => array('os-taxonomy-select-submit'),
-      ),
-      '#type' => 'submit',
-      '#value' => t('Go'),
-    ),
-  );
-
   return $form;
 }
 
