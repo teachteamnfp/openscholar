@@ -47,7 +47,7 @@ Feature:
      Then I should see "Daniel Webster"
       And I should see "for speaking in favor of the Compromise of 1850"
 
-  @api @features_first @os_booklets @change_order_of_booklet_content_in_outline
+  @api @features_first @os_booklets @change_order_of_booklet_content_in_outline @javascript
   Scenario: change order of booklet content in outline
      Given I am logging in as "john"
        And I visit the site "john/book/profiles-courage"
