@@ -123,6 +123,7 @@ a.rslides_nav,
     background-color: #444;
    
 }
+.search-block-form .container-inline .form-item .form-text,
 #search-block-form .container-inline .form-item .form-text {
     border-color: #5a5a5a;
 }
@@ -210,6 +211,8 @@ a.rslides_nav,
 .rslides_tabs a:visited {
     color: #a51c30;
 }
+.search-block-form input.form-submit,
+.search-block-form #edit-submit,
 #search-block-form input.form-submit,
 #search-block-form #edit-submit,
 #search-form #edit-submit {
