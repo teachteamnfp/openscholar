@@ -3177,7 +3177,7 @@ class FeatureContext extends DrupalContext {
     $page_text = $this->getSession()->getPage()->getText();
 
     $page_text = preg_replace('/\s+/u', ' ', $page_text);
-    $regex = '/'.$pattern.'/u';
+    $regex = '/'.$pattern.'/iu';
 
     if (!preg_match($regex, $page_text)) {
       $message = sprintf('The regex pattern "%s" did not appear in the text of this page, but it should have.', $pattern);
