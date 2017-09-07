@@ -63,6 +63,7 @@ Feature:
        And I should wait for "File Edit" directive to "appear"
        And I fill in the field "Alt Text" with the node "safari"
        And I click on the "Save" control
+       And I visit "john/galleries/safari"
      Then I should see the images:
       | safari |
 
