@@ -314,6 +314,20 @@ class OSRestfulCPMenu extends \RestfulBase implements \RestfulDataProviderInterf
     uasort($add_links, $labelcmp);
     uasort($feature_settings, $labelcmp);
 
+    // Creating subtheme menu
+    if (og_user_access('node', $vsite, 'manage subtheme', NULL, FALSE, TRUE)) {
+      $submenu_link = array(
+              'label' => 'Add Subtheme',
+              'type' => 'directive',
+              'directive' => array(
+                'cp-appearance-custom-theme',
+              ),
+            );
+    } else {
+      $submenu_link = array();
+    }
+
+
     $structure = array(
       'content' => array(
         'label' => 'Site Content',
@@ -366,6 +380,7 @@ class OSRestfulCPMenu extends \RestfulBase implements \RestfulDataProviderInterf
         'type' => 'heading',
         'default_state' => 'collapsed',
         'children' => array(
+            'subtheme' => $submenu_link,
             'layout' => array(
                 'label' => 'Layout',
                 'type' => 'link',
