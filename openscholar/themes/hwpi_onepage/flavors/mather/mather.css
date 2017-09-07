@@ -59,6 +59,8 @@ h1#page-title {
     background-color: #fff;
 }
 #menu-bar ul.nice-menu ul,
+.search-block-form input.form-submit,
+.search-block-form #edit-submit,
 #search-block-form input.form-submit,
 #search-block-form #edit-submit,
 #search-form #edit-submit,
