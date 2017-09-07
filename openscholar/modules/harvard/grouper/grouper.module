@@ -343,7 +343,7 @@ function grouper_vsite_access_denied($vsite) {
 
       if ($GLOBALS['base_url'] != variable_get('purl_base_domain', $GLOBALS['base_url'])) {
         $destination = drupal_get_destination();
-        pinserver_redirect(array('destination' => variable_get('purl_base_domain')));
+        pinserver_redirect(array('destination' => $GLOBALS['base_url']));
       }
       else {
         pinserver_redirect(drupal_get_destination());
