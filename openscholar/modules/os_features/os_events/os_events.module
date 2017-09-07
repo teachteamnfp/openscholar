@@ -207,10 +207,11 @@ function os_events_gcal_create_calendar() {
   $get_fresh_view = true;
   if ($view = views_get_view($name, $get_fresh_view)) {
 
-    # Ensure we're gathering fresh event data (in case the user just came from another vsite)
-    $view->is_cacheable = FALSE;
     $view->execute_display($display_id, $args);
-    $view->display_handler->override_option('cache', array('type' => 'none'));
+    # Ensure we're gathering fresh event data (in case the user just came from another vsite)
+    db_delete('cache_views_data')
+      ->condition('cid', "og:node:" . $_GET["state"] . ":os_events:%:results:%", 'LIKE')
+      ->execute();
   }
 
   foreach ($view->result as $e) {
