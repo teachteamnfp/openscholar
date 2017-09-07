@@ -4,12 +4,17 @@
     return {
       restrict: 'A',
       scope: {
+        value: '=ngModel',
         element: '='
       },
       template: '<div class="form-item" ng-repeat="(key, field) in formElements" ng-if="!field.group">'+
         '<div form-element element="field" value="formData[key]"><span>placeholder</span></div>'+
         '</div>',
       link: function (scope, elem, attr) {
+        console.log(scope.value);
+        scope.$watch('value', function(newValue) {
+          console.log(newValue);
+        });
         var revisionElement = scope.element;
         scope.formElements = {};
         scope.formData = {};
@@ -169,7 +174,6 @@
       link: function (scope, elem, attr, ngModelController) {
         scope.id = attr['inputId'];
         scope.title = scope.element.title;
-        scope.value = angular.isDefined(scope.element.default_value) ? scope.element.default_value : false;
       }
     }
   }]);
@@ -373,7 +377,7 @@
       },
       template: '<fieldset class="node-form-options collapsible form-wrapper collapse-processed" ng-class="{collapsed: collapsed==true}" id="{{id}}">'+
         '<legend><div class="fieldset-legend"><a class="fieldset-title" ng-click="collapsibleToggle()">{{title}}</a>'+
-        '<div class="summary"> (Selected value will go here)</div></div></legend>'+
+        '<div class="summary"> ({{value}})</div></div></legend>'+
         '<div class="fieldset-wrapper-element" ng-hide="collapsed"><span>Placeholder</span></div></fieldset>',
       link: function (scope, elem, attr) {
         scope.collapsed = scope.element.collapsed;
@@ -387,6 +391,7 @@
         copy.attr('fieldset-'+$filter('idClean')(scope.element.name), '');
         copy.attr('element', 'element');
         copy.attr('input-id', scope.id);
+        copy.attr('ng-model', 'value');
         elem.find('span').replaceWith(copy);
         copy = $compile(copy)(scope);
       }
@@ -394,33 +399,49 @@
   }]);
 
   m.directive('fieldsetRevisionInformation', renderFieldsetElements);
+
   m.directive('fieldsetOptions', renderFieldsetElements);
+
   m.directive('fieldsetOsCssClassFieldset', renderFieldsetElements);
+
   m.directive('fieldsetOsSeo', renderFieldsetElements);
 
   m.directive('fieldsetPath', [function () {
     return {
       restrict: 'A',
       scope: {
+        value: '=ngModel',
         element: '='
       },
       template: '<div class="form-item form-type-checkbox form-item-path-pathauto">'+
-        '<input type="checkbox" id="edit-path-pathauto" name="path[pathauto]" value="1" checked="checked" class="form-checkbox">'+
+        '<input type="checkbox" id="edit-path-pathauto" ng-model="pathAutoDefaultvalue" name="pathauto" value="1" ng-checked="pathAutoDefaultvalue" class="form-checkbox">'+
         '<label class="option" for="edit-path-pathauto">Generate automatic URL alias </label>'+
         '<div class="description">Uncheck this to create a custom alias below.</div></div>'+
         '<div class="form-item form-type-textfield form-item-path-alias">'+
         '<label for="edit-path-alias">URL alias </label>'+
-        '<span class="field-prefix">http://localhost/test/</span>'+ 
-        '<input type="text" id="edit-path-alias" name="path[alias]" value="" size="60" maxlength="255" class="form-text"></div>',
+        '<span class="field-prefix">{{vsiteHome}}</span>'+ 
+        '<input type="text" id="edit-path-alias" ng-disabled="pathAliasTextBoxDisabled" name="alias" ng-model="pathAliasDefaultvalue" maxlength="{{pathAliasMaxLength}}" class="form-text"></div>',
       link: function (scope, elem, attr) {
-        // @todo.
-        console.log(scope.element);
-        
+        scope.vsiteHome = angular.isDefined(Drupal.settings.paths.vsite_home) ? Drupal.settings.paths.vsite_home : '';
+        scope.pathAutoDefaultvalue = scope.element.pathauto['#default_value'];
+        scope.pathAutoTitle = scope.element.pathauto['#title'];
+        scope.pathAliasDefaultvalue = scope.element.alias['#default_value'];
+        scope.pathAliasTitle = scope.element.alias['#title'];
+        scope.pathAliasMaxLength = scope.element.alias['#maxlength'];
+        scope.pathAliasTextBoxDisabled = false;
+        scope.$watchGroup(['pathAutoDefaultvalue', 'pathAliasDefaultvalue'], function(newValue) {
+          if (scope.pathAutoDefaultvalue) {
+            scope.pathAliasTextBoxDisabled = true;
+            scope.value = scope.pathAutoDefaultvalue;
+          } else {
+            scope.pathAliasTextBoxDisabled = false;
+            scope.value = scope.pathAliasDefaultvalue;
+          }
+        });
       }
     };
-  }])
+  }]);
   
-
   m.directive('feValue', [function () {
     return {
       scope: {
@@ -452,7 +473,7 @@
       link: function (scope, elem, attr, ngModel) {
         scope.id = attr['inputId'];
         scope.title = scope.element.title;
-         // @todo Format, Editor, Field can be dynamic but we don't know yet.
+         // @Todo: Format, Editor, Field can be dynamic but we don't know yet.
         Drupal.settings.osNodeFormWysiwyg.triggers = {'edit-body-ckeditor': {
             field: 'edit-body-ckeditor',
             formatfiltered_html: {editor:'ckeditor', status: 1, toggle: 0},
