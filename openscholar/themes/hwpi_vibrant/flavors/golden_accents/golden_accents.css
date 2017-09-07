@@ -136,7 +136,7 @@ color: #FFF !important;
 .front.no-sidebars .region-content-top .block-boxes-os_slideshow_box:after {
   background: #f4f4f4;
 }
-.header-container #search-block-form .form-item label,
+#header-container .search-block-form .form-item label,
 #header-container #search-block-form .form-item label {
 color: #BAC5C6;
 }
