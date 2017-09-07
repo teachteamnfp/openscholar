@@ -11,10 +11,6 @@
         '<div form-element element="field" value="formData[key]"><span>placeholder</span></div>'+
         '</div>',
       link: function (scope, elem, attr) {
-        console.log(scope.value);
-        scope.$watch('value', function(newValue) {
-          console.log(newValue);
-        });
         var revisionElement = scope.element;
         scope.formElements = {};
         scope.formData = {};
@@ -377,7 +373,7 @@
       },
       template: '<fieldset class="node-form-options collapsible form-wrapper collapse-processed" ng-class="{collapsed: collapsed==true}" id="{{id}}">'+
         '<legend><div class="fieldset-legend"><a class="fieldset-title" ng-click="collapsibleToggle()">{{title}}</a>'+
-        '<div class="summary"> ({{value}})</div></div></legend>'+
+        '<div class="summary">{{value.message}}</div></div></legend>'+
         '<div class="fieldset-wrapper-element" ng-hide="collapsed"><span>Placeholder</span></div></fieldset>',
       link: function (scope, elem, attr) {
         scope.collapsed = scope.element.collapsed;
@@ -414,29 +410,41 @@
         element: '='
       },
       template: '<div class="form-item form-type-checkbox form-item-path-pathauto">'+
-        '<input type="checkbox" id="edit-path-pathauto" ng-model="pathAutoDefaultvalue" name="pathauto" value="1" ng-checked="pathAutoDefaultvalue" class="form-checkbox">'+
-        '<label class="option" for="edit-path-pathauto">Generate automatic URL alias </label>'+
-        '<div class="description">Uncheck this to create a custom alias below.</div></div>'+
+        '<input type="checkbox" id="edit-path-pathauto" ng-model="pathauto.defaultValue" name="pathauto" value="1" ng-checked="pathauto.defaultValue" class="form-checkbox">'+
+        '<label class="option" for="edit-path-pathauto"> {{pathauto.title}}</label>'+
+        '<div class="description">{{pathauto.description}}</div></div>'+
         '<div class="form-item form-type-textfield form-item-path-alias">'+
-        '<label for="edit-path-alias">URL alias </label>'+
-        '<span class="field-prefix">{{vsiteHome}}</span>'+ 
-        '<input type="text" id="edit-path-alias" ng-disabled="pathAliasTextBoxDisabled" name="alias" ng-model="pathAliasDefaultvalue" maxlength="{{pathAliasMaxLength}}" class="form-text"></div>',
+        '<label for="edit-path-alias">{{pathalias.title}}</label>'+
+        '<span class="field-prefix">{{pathalias.vsiteHome}}</span>'+
+        '<input type="text" id="edit-path-alias" ng-disabled="pathalias.textboxDisabled" name="alias" ng-model="pathalias.defaultValue" maxlength="{{pathalias.maxlength}}" class="form-text">'+
+        '</div>',
       link: function (scope, elem, attr) {
-        scope.vsiteHome = angular.isDefined(Drupal.settings.paths.vsite_home) ? Drupal.settings.paths.vsite_home : '';
-        scope.pathAutoDefaultvalue = scope.element.pathauto['#default_value'];
-        scope.pathAutoTitle = scope.element.pathauto['#title'];
-        scope.pathAliasDefaultvalue = scope.element.alias['#default_value'];
-        scope.pathAliasTitle = scope.element.alias['#title'];
-        scope.pathAliasMaxLength = scope.element.alias['#maxlength'];
-        scope.pathAliasTextBoxDisabled = false;
-        scope.$watchGroup(['pathAutoDefaultvalue', 'pathAliasDefaultvalue'], function(newValue) {
-          if (scope.pathAutoDefaultvalue) {
-            scope.pathAliasTextBoxDisabled = true;
-            scope.value = scope.pathAutoDefaultvalue;
+        var vsiteHome = angular.isDefined(Drupal.settings.paths.vsite_home) ? Drupal.settings.paths.vsite_home : '';
+        scope.pathauto = {
+          'title': scope.element.pathauto['#title'],
+          'description': scope.element.pathauto['#description'],
+          'defaultValue': scope.element.pathauto['#default_value']
+        };
+        scope.pathalias = {
+          'title': scope.element.alias['#title'],
+          'defaultValue': scope.element.alias['#default_value'],
+          'maxlength': scope.element.alias['#maxlength'],
+          'vsiteHome': vsiteHome,
+          'textboxDisabled': false
+        };
+        var message = '(No alias)';
+        scope.$watchGroup(['pathalias.defaultValue', 'pathauto.defaultValue'], function(newValue) {
+          if (scope.pathauto.defaultValue) {
+            scope.pathalias.textboxDisabled = true;
+            message = '(Automatic alias)';
           } else {
-            scope.pathAliasTextBoxDisabled = false;
-            scope.value = scope.pathAliasDefaultvalue;
+            message = (scope.pathalias.textboxDisabled || scope.pathalias.defaultValue.length === 0) ? '(No Alias)' : '(Alias: '+scope.pathalias.defaultValue+')';
+            scope.pathalias.textboxDisabled = false;
           }
+          scope.value = {'message': message, 
+            'pathauto': scope.pathauto.defaultValue,
+            'pathalias': scope.pathalias.defaultValue
+          };
         });
       }
     };
@@ -533,7 +541,9 @@
         element: '=',
       },
       template: '<div class="term-applied"><div class="term-applied-header">Taxonomy</div><span>Terms applied: {{selectedTermNames}}</span></div>'+
-        '<fieldset class="form-wrapper"><div class="fieldset-wrapper"><div class="form-item"><taxonomy-widget entity-type="node" terms="terms" bundle="{{bundle}}" expand-option="true"></taxonomy-widget></div></div></fieldset>',
+        '<fieldset class="form-wrapper"><div class="fieldset-wrapper">'+
+        '<div class="form-item"><taxonomy-widget entity-type="node" terms="terms" bundle="{{bundle}}" expand-option="true"></taxonomy-widget></div>'+
+        '</div></fieldset>',
       link: function (scope, elem, attr) {
         scope.bundle = scope.element.bundle;
         scope.terms = scope.value || [];

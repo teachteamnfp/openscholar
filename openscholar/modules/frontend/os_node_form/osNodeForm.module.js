@@ -142,6 +142,8 @@
     $s.submitForm = submitForm;
 
     $s.close = function (arg) {
+      //Remove the overlay div element.
+      jQuery("#overlay").remove();
       close(arg);
     }
 
