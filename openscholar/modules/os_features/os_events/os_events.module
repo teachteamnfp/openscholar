@@ -209,7 +209,7 @@ function os_events_gcal_create_calendar() {
 
     $view->execute_display($display_id, $args);
     # Ensure we're gathering fresh event data (in case the user just came from another vsite)
-    cache_clear_all('og:node:' . $vsite->id . ':os_events:', 'cache_views_data', TRUE);
+    cache_clear_all('og:node:' . $vsite->id . ':os_events:*', 'cache_views_data', TRUE);
 
   }
 
