@@ -14,7 +14,7 @@
    */
   m.directive('cpAppearanceCustomTheme', ['ModalService', 'customTheme', function (ModalService, customTheme) {
     var dialogOptions = {
-      minWidth: 850,
+      minWidth: 1150,
       minHeight: 100,
       modal: true,
       position: 'center',
@@ -33,11 +33,11 @@
         ModalService.showModal({
           controller: 'customThemeController',
           template: 
-             '<h4>Download the <a target="_blank" href="https://github.com/openscholar/starterkit">Subtheme Starter Kit</a> to begin developing your customtheme.</h4> Use of the custom theme feature is at your own risk. The OpenScholar team is not responsible for maintaining, fixing or updating custom themes uploaded to the system. We will make every attempt possible to publish changes made to the markup used throughout OpenScholar from one code release to the next.' +
-             '<ul class=""><li class="clearfix"><span class="label">'+
+             '<div id="content"><span class="custom-theme-header"><b>Download the <a target="_blank" href="https://github.com/openscholar/starterkit">Subtheme Starter Kit</a> to begin developing your customtheme.</b></br> Use of the custom theme feature is at your own risk. The OpenScholar team is not responsible for maintaining, fixing or updating custom themes uploaded to the system. We will make every attempt possible to publish changes made to the markup used throughout OpenScholar from one code release to the next.</span>' +
+             '<ul class="custom-theme-admin-list"><li class="clearfix"><span class="label">'+
              '<a href="#">Zip</a></span><div class="description">Upload zip files.</div></li><li class="clearfix">'+
              '<span class="label"><a href="#">Git</a></span><div class="description">'+
-             'Clone from a repository.</div></li></ul>',
+             'Clone from a repository.</div></li></ul></div>',
           inputs: {
             form: scope.form
           }

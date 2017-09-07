@@ -1853,3 +1853,17 @@ div.no-bold {
 #edit-og-vocabulary a.tabledrag-handle .handle{
     display: none;
 }
+ul.custom-theme-admin-list li{
+  position: relative;
+  padding-left: 30px;
+  padding-top: 9px;
+  border-top: 1px solid #ccc;
+  margin-left: 0;
+  margin-bottom: 10px;
+  background: url(../images/list-item.png) no-repeat 0 11px;
+  list-style-type: none;
+  list-style-image: none
+}
+ul.custom-theme-admin-list li a:hover {
+    text-decoration: underline;
+}

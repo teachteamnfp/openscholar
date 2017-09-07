@@ -317,7 +317,7 @@ class OSRestfulCPMenu extends \RestfulBase implements \RestfulDataProviderInterf
     // Creating subtheme menu
     if (og_user_access('node', $vsite, 'manage subtheme', NULL, FALSE, TRUE)) {
       $submenu_link = array(
-              'label' => 'Add Subtheme',
+              'label' => 'Custom Themes',
               'type' => 'directive',
               'directive' => array(
                 'cp-appearance-custom-theme',
