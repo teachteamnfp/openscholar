@@ -209,9 +209,8 @@ function os_events_gcal_create_calendar() {
 
     $view->execute_display($display_id, $args);
     # Ensure we're gathering fresh event data (in case the user just came from another vsite)
-    db_delete('cache_views_data')
-      ->condition('cid', "og:node:" . $_GET["state"] . ":os_events:%:results:%", 'LIKE')
-      ->execute();
+    cache_clear_all('og:node:' . $vsite->id . ':os_events:', 'cache_views_data', TRUE);
+
   }
 
   foreach ($view->result as $e) {
