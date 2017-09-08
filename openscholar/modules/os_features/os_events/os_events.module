@@ -229,7 +229,11 @@ function os_events_gcal_create_calendar() {
     }
 
     $cache = $view->display_handler->get_plugin('cache');
+    $cache->cache_set_expire('output');
+    $cache->cache_set_expire('results');
     $cache->cache_flush();
+
+    views_og_cache_invalidate_cache($vsite);
 
     $view->execute_display($display_id, $args);
   }
