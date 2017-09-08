@@ -218,6 +218,16 @@ function os_events_gcal_create_calendar() {
       'output_lifespan_custom' => '1',
     ));
 
+    if (isset($view->display_handler->default_display->display->display_options['cache'])) {
+      $view->display_handler->default_display->display->display_options['cache'] = array(
+        'type' => 'vsite_time_per_group',
+        'results_lifespan' => '1',
+        'output_lifespan' => '1',
+        'results_lifespan_custom' => '1',
+        'output_lifespan_custom' => '1',
+      );
+    }
+
     $cache = $view->display_handler->get_plugin('cache');
     $cache->cache_flush();
 
