@@ -29,3 +29,26 @@ Feature:
           # Verify that the files are not being deleted.
      Then I should see "slideshow8.jpg"
       And I should see "slideshow9.jpg"
+
+  @api @misc_first
+  Scenario: Verify denied access as an anonymous user
+     When I visit "john"
+     When I visit "john/cp/content/files-private"
+      And I should see "Access Denied"
+
+  @api @misc_first
+  Scenario: Permission to access private files as site members
+    Given I am logging in as "john"
+      And I give the user "alexander" the role "vsite user" in the group "john"
+      And I give the user "michelle" the role "vsite admin" in the group "john"
+     When I visit "john/cp/apps"
+      And I select "Public" from "os_files_private"
+      And I press "edit-submit"
+      And I visit "user/logout"
+    Given I am logging in as "michelle"
+     When I visit "john/cp/content/files-private"
+      And I should see "Private Files"
+      And I visit "user/logout"
+    Given I am logging in as "alexander"
+     When I visit "john/cp/content/files-private"
+      And I should see "Access Denied"
