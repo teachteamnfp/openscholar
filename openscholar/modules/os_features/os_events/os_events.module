@@ -226,7 +226,7 @@ function os_events_gcal_create_calendar() {
     $event->setLocation($e->_field_data['nid']['entity']->field_event_location[LANGUAGE_NONE][0]['value']);
     $event->setSummary($e->_field_data['nid']['entity']->title);
 
-    $tz = ($e->_field_data['nid']['entity']->field_date[LANGUAGE_NONE][0]['timezone']) ? 
+    $tz = (isset($e->_field_data['nid']['entity']->field_date[LANGUAGE_NONE][0]['timezone'])) ? 
             $e->_field_data['nid']['entity']->field_date[LANGUAGE_NONE][0]['timezone'] :
             'America/New_York';
 
