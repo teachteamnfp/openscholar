@@ -208,6 +208,7 @@ function os_events_gcal_create_calendar() {
   if ($view = views_get_view($name, $get_fresh_view)) {
 
     dmemcache_delete('hwpi1dev_-cache_views_data-.wildcard-os_events:');
+    dmemcache_delete('hwpi1dev_-cache_views_data-.wildcard-os_events%3A');
 
     $view->execute_display($display_id, $args);
   }
