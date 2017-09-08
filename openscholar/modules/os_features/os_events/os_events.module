@@ -218,6 +218,9 @@ function os_events_gcal_create_calendar() {
       'output_lifespan_custom' => '1',
     ));
 
+    $cache = $view->display_handler->get_plugin('cache');
+    $cache->cache_set_expire(1);
+
     $view->execute_display($display_id, $args);
   }
 
