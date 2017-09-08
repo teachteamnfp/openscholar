@@ -207,7 +207,7 @@ function os_events_gcal_create_calendar() {
   $get_fresh_view = true;
   if ($view = views_get_view($name, $get_fresh_view)) {
 
-    $view->init_handlers();
+    $view->init_display();
 
     # Ensure we're gathering fresh event data (in case the user just came from another vsite)
     $view->display_handler->override_option('cache', array(
