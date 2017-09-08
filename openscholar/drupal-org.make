@@ -457,7 +457,7 @@ projects[wysiwyg_filter][revision] = "4848d306a2f7526f7eeaf22edb9268d3c96654fe"
 projects[wysiwyg_filter][patch][] = "https://www.drupal.org/files/issues/wysiwyg-filter-border-radius-support-2692163-1.patch"
 
 projects[cache_debug][subdir] = "contrib"
-projects[cache_debug][version] = 7.x-1.0-alpha1
+projects[cache_debug][version] = 1.0-alpha1
 
 ; Libraries.
 libraries[jquery.bgiframe][type] = "libraries"
