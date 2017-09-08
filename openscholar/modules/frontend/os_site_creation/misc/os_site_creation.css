@@ -6,7 +6,10 @@
   width: 60%;
   padding: 20px;
 }
-
+#site-creation-container a,
+#site-creation-container .preNxt {
+  color: #215990;
+}
 #site-creation-container #header-container-page-1,
 #site-creation-container #header-container-page2,
 #site-creation-container #header-container-page3{
@@ -188,7 +191,6 @@
 #site-creation-container .preNxt {
   background-color: #FFF;
   border: none;
-  color: #4CAF50;
   padding: 10px 16px;
   border-radius: 3px;
   text-align: center;
@@ -209,14 +211,8 @@ left:45px;
 }
 
 #site-creation-container .preNxt:disabled{
-  background-color: #FFF;
-  border: none;
-  color: #CCC;
-  padding: 10px 16px;
-  border-radius: 3px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
+ 
+  display: none;
  
 }
 

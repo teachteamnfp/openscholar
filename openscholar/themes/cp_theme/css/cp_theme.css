@@ -114,7 +114,7 @@ html.js input.throbbing {
 }
 
 .revision-suffix.help-link a:after,
-.help-link.ng-binding a:after {
+.help-link a:after {
     padding: 5px 25px 5px 0;
     background: url("../images/cp-sprite.png") no-repeat 4px -732px;
    content:'';
