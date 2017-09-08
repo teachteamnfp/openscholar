@@ -9,3 +9,9 @@ $databases['default']['default'] = array(
   'database' => 'drupal',
   'prefix' => '',
 );
+
+// cache_debug
+$conf['cache_backends'][] = 'sites/all/modules/cache_debug/cache_debug.inc';
+$conf['cache_default_class'] = 'DrupalDebugCache';
+$conf['cache_debug_log_set'] = TRUE;
+$conf['cache_debug_log_clear'] = TRUE;
