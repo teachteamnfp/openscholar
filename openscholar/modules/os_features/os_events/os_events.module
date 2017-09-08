@@ -230,8 +230,8 @@ function os_events_gcal_create_calendar() {
     $event->setSummary($e->_field_data['nid']['entity']->title);
 
     $tz = ($e->_field_data['nid']['entity']->field_date[LANGUAGE_NONE][0]['timezone']) ? 
-            new DateTimeZone($e->_field_data['nid']['entity']->field_date[LANGUAGE_NONE][0]['timezone']) :
-            new DateTimeZone('America/New_York');
+            $e->_field_data['nid']['entity']->field_date[LANGUAGE_NONE][0]['timezone'] :
+            'America/New_York';
 
     $dt1 = new DateTime($e->field_data_field_date_field_date_value);
     $dt1->setTimezone($tz);
