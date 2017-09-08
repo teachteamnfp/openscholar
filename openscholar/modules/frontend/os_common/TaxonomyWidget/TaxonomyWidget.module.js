@@ -4,7 +4,7 @@
  */
 var taxonomy = angular.module('TaxonomyWidget', ['EntityService', 'os-auth', 'ui.select', 'ngSanitize', 'ui.bootstrap', 'ui.bootstrap.typeahead', 'TreeSelector']);
 
-taxonomy.directive('taxonomyWidget', ['EntityService', '$document', '$compile', function (EntityService, $document, $compile) {
+taxonomy.directive('taxonomyWidget', ['EntityService', function (EntityService) {
   var path = Drupal.settings.paths.TaxonomyWidget;
   return {
     restrict: 'E',

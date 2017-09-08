@@ -382,9 +382,9 @@
         element: '=',
       },
       template: '<fieldset class="node-form-options collapsible form-wrapper collapse-processed" ng-class="{collapsed: collapsed==true}" id="{{id}}">'+
-          '<legend><div class="fieldset-legend"><a class="fieldset-title" ng-click="collapsibleToggle()">{{title}}</a><div class="summary">{{value.message}}</div></div></legend>'+
-          '<div class="fieldset-wrapper" ng-hide="collapsed"><span>Placeholder</span></div>'+
-        '</fieldset>',
+      '<legend><div class="fieldset-legend"><a class="fieldset-title" ng-click="collapsibleToggle()">{{title}}</a><div class="summary">{{value.message}}</div></div></legend>'+
+      '<div class="fieldset-wrapper" ng-hide="collapsed"><span>Placeholder</span></div>'+
+      '</fieldset>',
       link: function (scope, elem, attr) {
         scope.collapsed = scope.element.collapsed;
         scope.collapsibleToggle = function () {
@@ -420,23 +420,23 @@
         element: '='
       },
       template: '<div class="form-item form-type-checkbox form-item-os-menu-enabled">'+
-          '<input type="checkbox" id="edit-os-menu-enabled" name="enabled" value="1" class="form-checkbox">'+
-          '<label class="option" for="edit-os-menu-enabled">Provide a menu link </label>'+
+      '<input type="checkbox" id="edit-os-menu-enabled" name="enabled" value="1" class="form-checkbox">'+
+      '<label class="option" for="edit-os-menu-enabled">Provide a menu link </label>'+
+      '</div>'+
+      '<div class="form-wrapper">'+
+        '<div class="form-item form-type-textfield form-item-os-menu-link-title">'+
+          '<label for="edit-os-menu-link-title">Menu link title </label>'+
+          '<input type="text" id="edit-os-menu-link-title" name="link_title" value="" size="60" maxlength="255" class="form-text">'+
         '</div>'+
-        '<div class="form-wrapper">'+
-          '<div class="form-item form-type-textfield form-item-os-menu-link-title">'+
-            '<label for="edit-os-menu-link-title">Menu link title </label>'+
-            '<input type="text" id="edit-os-menu-link-title" name="link_title" value="" size="60" maxlength="255" class="form-text">'+
-          '</div>'+
-          '<div class="form-item form-type-select form-item-os-menu-parent">'+
-            '<label for="edit-os-menu-parent">Which Menu </label>'+
-            '<select class="menu-parent-select form-select" name="os_menu">'+
-              '<option value="primary-menu" selected="selected">Primary Menu</option>'+
-              '<option value="secondary-menu">Secondary Menu</option>'+
-            '</select>'+
-            '<div class="description">Select the menu where you would like this link to appear. Some menus may not show on your page if they are not included in your <a href="/test/cp/build/layout">Page Layout</a>.</div>'+
-          '</div>'+
-        '</div>',
+        '<div class="form-item form-type-select form-item-os-menu-parent">'+
+          '<label for="edit-os-menu-parent">Which Menu </label>'+
+          '<select class="menu-parent-select form-select" name="os_menu">'+
+            '<option value="primary-menu" selected="selected">Primary Menu</option>'+
+            '<option value="secondary-menu">Secondary Menu</option>'+
+          '</select>'+
+          '<div class="description">Select the menu where you would like this link to appear. Some menus may not show on your page if they are not included in your <a href="/test/cp/build/layout">Page Layout</a>.</div>'+
+        '</div>'+
+      '</div>',
       link: function (scope, elem, attr) {
         // @todo:
         console.log(scope.element);
@@ -452,28 +452,27 @@
         element: '='
       },
       template: '<div class="form-item form-type-checkbox form-item-path-pathauto">'+
-        '<input type="checkbox" id="edit-path-pathauto" ng-model="pathauto.defaultValue" name="pathauto" value="1" ng-checked="pathauto.defaultValue" class="form-checkbox">'+
-        '<label class="option" for="edit-path-pathauto"> {{pathauto.title}}</label>'+
-        '<div class="description">{{pathauto.description}}</div>'+
-        '</div>'+
-        '<div class="form-item form-type-textfield form-item-path-alias">'+
-          '<label for="edit-path-alias">{{pathalias.title}}</label>'+
-          '<span class="field-prefix">{{pathalias.vsiteHome}}</span>'+
-          '<input type="text" id="edit-path-alias" ng-disabled="pathalias.textboxDisabled" name="alias" ng-model="pathalias.defaultValue" maxlength="{{pathalias.maxlength}}" class="form-text">'+
-        '</div>',
+      '<input type="checkbox" id="edit-path-pathauto" ng-model="pathauto.defaultValue" name="pathauto" value="1" ng-checked="pathauto.defaultValue" class="form-checkbox">'+
+      '<label class="option" for="edit-path-pathauto"> {{pathauto.title}}</label>'+
+      '<div class="description">{{pathauto.description}}</div></div>'+
+      '<div class="form-item form-type-textfield form-item-path-alias">'+
+        '<label for="edit-path-alias">{{pathalias.title}}</label>'+
+        '<span class="field-prefix">{{pathalias.vsiteHome}}</span>'+
+        '<input type="text" id="edit-path-alias" ng-disabled="pathalias.textboxDisabled" name="alias" ng-model="pathalias.defaultValue" maxlength="{{pathalias.maxlength}}" class="form-text">'+
+      '</div>',
       link: function (scope, elem, attr) {
         var vsiteHome = angular.isDefined(Drupal.settings.paths.vsite_home) ? Drupal.settings.paths.vsite_home : '';
         scope.pathauto = {
-           title: scope.element.pathauto['#title'],
-           description: scope.element.pathauto['#description'],
-           defaultValue: scope.element.pathauto['#default_value']
+          title: scope.element.pathauto['#title'],
+          description: scope.element.pathauto['#description'],
+          defaultValue: scope.element.pathauto['#default_value']
         };
         scope.pathalias = {
-           title: scope.element.alias['#title'],
-           defaultValue: scope.element.alias['#default_value'],
-           maxlength: scope.element.alias['#maxlength'],
-           vsiteHome: vsiteHome,
-           textboxDisabled: false
+          title: scope.element.alias['#title'],
+          defaultValue: scope.element.alias['#default_value'],
+          maxlength: scope.element.alias['#maxlength'],
+          vsiteHome: vsiteHome,
+          textboxDisabled: false
         };
         var message = '(No alias)';
         scope.$watchGroup(['pathalias.defaultValue', 'pathauto.defaultValue'], function(newValue) {
@@ -575,13 +574,13 @@
         element: '=',
       },
       template: '<div class="term-applied"><div class="term-applied-header">Taxonomy</div><span>Terms applied: {{selectedTermNames}}</span></div>'+
-        '<fieldset class="form-wrapper">'+
-          '<div class="fieldset-wrapper">'+
-            '<div class="form-item">'+
-              '<taxonomy-widget entity-type="node" terms="terms" bundle="{{bundle}}" expand-option="true"></taxonomy-widget>'+
-            '</div>'+
+      '<fieldset class="form-wrapper">'+
+        '<div class="fieldset-wrapper">'+
+          '<div class="form-item">'+
+            '<taxonomy-widget entity-type="node" terms="terms" bundle="{{bundle}}" expand-option="true"></taxonomy-widget>'+
           '</div>'+
-        '</fieldset>',
+        '</div>'+
+      '</fieldset>',
       link: function (scope, elem, attr) {
         scope.bundle = scope.element.bundle;
         scope.terms = scope.value || [];
