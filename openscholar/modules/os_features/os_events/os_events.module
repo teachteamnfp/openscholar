@@ -203,39 +203,11 @@ function os_events_gcal_create_calendar() {
   $vsite->activate_user_roles();
   $vsite->init_overrides();
 
-  dmemcache_flush();
-
   // Load the view so we can iterate over it's results
   $get_fresh_view = true;
   if ($view = views_get_view($name, $get_fresh_view)) {
 
-    $view->init_display();
-
-    # Ensure we're gathering fresh event data (in case the user just came from another vsite)
-    $view->display_handler->override_option('cache', array(
-      'type' => 'time',
-      'results_lifespan' => '1',
-      'output_lifespan' => '1',
-      'results_lifespan_custom' => '1',
-      'output_lifespan_custom' => '1',
-    ));
-
-    if (isset($view->display_handler->default_display->display->display_options['cache'])) {
-      $view->display_handler->default_display->display->display_options['cache'] = array(
-        'type' => 'vsite_time_per_group',
-        'results_lifespan' => '1',
-        'output_lifespan' => '1',
-        'results_lifespan_custom' => '1',
-        'output_lifespan_custom' => '1',
-      );
-    }
-
-    $cache = $view->display_handler->get_plugin('cache');
-    $cache->cache_set_expire('output');
-    $cache->cache_set_expire('results');
-    $cache->cache_flush();
-
-    views_og_cache_invalidate_cache($vsite);
+    dmemcache_delete('hwpi1dev_-cache_views_data-.wildcard-os_events:');
 
     $view->execute_display($display_id, $args);
   }
