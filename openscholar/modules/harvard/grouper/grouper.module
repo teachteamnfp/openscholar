@@ -341,13 +341,19 @@ function grouper_vsite_access_denied($vsite) {
       // Load custom pinserver variables
       $vsite->controllers->variable->init_overrides();
 
-      // They are not a member, validate through pin.
-      pinserver_redirect(array(
+      $redirect_settings = array(
         'redirect' => url($_GET['q'], array(
           'absolute' => TRUE
         )),
-        'tk_forward' => '0'
-      ));
+        'tk_forward' => '0',
+      );
+
+      if ($GLOBALS['base_url'] != variable_get('purl_base_domain', $GLOBALS['base_url'])) {
+        $redirect_settings['tk_forward'] = '1';
+      }
+
+      // They are not a member, validate through pin.
+      pinserver_redirect($redirect_settings);
     }
   }
 }
