@@ -338,25 +338,16 @@ function grouper_node_access($node, $op, $account) {
 function grouper_vsite_access_denied($vsite) {
   if ($vsite->group->{VSITE_ACCESS_FIELD}[LANGUAGE_NONE][0]['value'] == GROUPER_PRIVACY_LEVEL && user_is_anonymous() && !pinserver_get_user()) {
     if (!pinserver_check_system_settings()) {
-      //Load custom pinserver variables
+      // Load custom pinserver variables
       $vsite->controllers->variable->init_overrides();
 
-//      if ($GLOBALS['base_url'] != variable_get('purl_base_domain', $GLOBALS['base_url'])) {
-//        $destination = drupal_get_destination();
-//        pinserver_redirect(array('destination' => $vsite->group->purl));
-//      }
-//      else {
-//        pinserver_redirect(drupal_get_destination());
-//      }
+      // They are not a member, validate through pin.
       pinserver_redirect(array(
         'redirect' => url($_GET['q'], array(
           'absolute' => TRUE
         )),
         'tk_forward' => '0'
       ));
-
-      // They are not a member, validate through pin.
-      // drupal_goto('user/pin', array('query' => drupal_get_destination()));
     }
   }
 }
