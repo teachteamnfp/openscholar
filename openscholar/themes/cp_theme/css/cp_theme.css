@@ -1853,6 +1853,7 @@ div.no-bold {
 #edit-og-vocabulary a.tabledrag-handle .handle{
     display: none;
 }
+
 ul.custom-theme-admin-list li{
   position: relative;
   padding-left: 30px;
@@ -1866,4 +1867,42 @@ ul.custom-theme-admin-list li{
 }
 ul.custom-theme-admin-list li a:hover {
     text-decoration: underline;
+}
+#edit-file-upload{
+  padding: 2px;
+  border: 1px solid #ccc;
+  border-top-color: #999;
+  background: #fff;
+  color: #333;
+}
+#custom-theme-content{
+  width: auto;
+  min-height: 36px;
+  max-height: none;
+  height: auto;
+  margin-left: 20px;
+  margin-top: 45px;
+}
+.custom-theme-help-link{
+  right: 10px;
+  font-size: .97em;
+  float: right;
+  margin-top: 15px;
+}
+
+.custom-theme-help-link a:after{
+  padding: 5px 25px 5px 0;
+  background: url(../images/cp-sprite.png) no-repeat 4px -732px;
+  content: '';
+}
+#custom-theme-edit-repository{
+  font-size: 13px;
+  height: auto;
+  padding: 6px 7px;
+  background: none;
+  border: 1px solid #CDCDCD;
+  width: 98%;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
 }
