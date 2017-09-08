@@ -384,8 +384,7 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
 }
 
 /** OVERLAY MODAL OVERRIDES **/
-.ui-dialog.ap-settings-form button.ui-dialog-titlebar-close,
-.ui-dialog.site-creation-form button.ui-dialog-titlebar-close,
+.ui-dialog .ui-dialog-titlebar button.ui-dialog-titlebar-close,
 #overlay-close,
 #overlay-close:hover {
     background: url('../images/cp-sprite.png') no-repeat 0 -547px;
@@ -395,7 +394,7 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
     margin: -28px 10px;
 }
 
-.ui-dialog.ap-settings-form button.ui-dialog-titlebar-close {
+.ui-dialog .ui-dialog-titlebar button.ui-dialog-titlebar-close {
     float: right;
     margin: -8px 0;
     border: 0;
