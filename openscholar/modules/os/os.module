@@ -3808,6 +3808,13 @@ function os_metatag_pattern_alter(&$pattern, &$types, $tag_name) {
     $pattern = $site_description_token_replacement;
   }
 
+  // Find the empty [site:site_title], and replace with [current-page:title]
+  $site_title_token = '[site:site_title]';
+  $site_title_token_replacement = '[current-page:title]';
+  if (stristr($site_title_token, $pattern) != FALSE && empty(token_replace($site_title_token))) {
+    $pattern = $site_title_token_replacement;
+  }
+
   // Find the best (non-empty) description string with replaced Drupal tokens
   $field_site_description_token_str = '[node:field_site_description]';
   $field_site_description_replacement = token_replace('[node:field_site_description]');
@@ -3861,6 +3868,11 @@ function os_token_info() {
     'description' => t('Site Description From Site Info Widget'),
   );
 
+  $site['site_title'] = array(
+    'name' => t('Site Title'),
+    'description' => t('Site Title From Site Info Widget'),
+  );
+
   return array(
     'tokens' => array(
       'site' => $site,
@@ -3888,6 +3900,12 @@ function os_tokens($type, $tokens, array $data = array(), array $options = array
           if (module_exists('vsite') && $vsite = spaces_get_space()) {
             $desc = field_get_items('node', $vsite->group, 'field_site_description');
             $replacements[$original] = $desc[0]['safe_value'];
+          }
+          break;
+        case 'site_title':
+          if (module_exists('vsite') && $vsite = spaces_get_space()) {
+            $title = $vsite->group->title;
+            $replacements[$original] = $title;
           }
           break;
       }
