@@ -99,7 +99,8 @@ h2.block-title,
 a.rslides_nav {
   background-color: #ffdb6d;
 }
-
+.search-block-form input.form-submit,
+.search-block-form #edit-submit, 
 #search-block-form input.form-submit,
 #search-block-form #edit-submit, 
 #search-form #edit-submit {
