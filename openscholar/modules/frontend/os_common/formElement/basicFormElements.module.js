@@ -11,24 +11,34 @@
         '<div form-element element="field" value="formData[key]"><span>placeholder</span></div>'+
         '</div>',
       link: function (scope, elem, attr) {
-        var revisionElement = scope.element;
+        var fieldsetElements = scope.element;
         scope.formElements = {};
         scope.formData = {};
-        for (var k in revisionElement) {
-          if (angular.isObject(revisionElement[k])) {
-            scope.formData[k] = revisionElement[k]['#default_value'] || null;
+        for (var k in fieldsetElements) {
+          if (angular.isObject(fieldsetElements[k])) {
+            scope.formData[k] = fieldsetElements[k]['#default_value'] || null;
             var attributes = {
               name: k
             };
-            for (var j in revisionElement[k]) {
+            for (var j in fieldsetElements[k]) {
               if (j.indexOf('#') === 0) {
                 var attrs = j.substr(1, j.length);
-                attributes[attrs] = revisionElement[k][j];
+                attributes[attrs] = fieldsetElements[k][j];
               }
             }
             scope.formElements[k] = attributes;
           }
         }
+        var message = '';
+        scope.$watchCollection('formData', function(newFormData) {
+          if (fieldsetElements.name == 'options') {
+            message = (newFormData.status) ? 'Published to this site' : 'Not published';
+            message += (newFormData.sticky) ? ', Sticky at top of lists' : '';
+            message += (newFormData.noindex) ? ', Noindex' : '';
+            message = '('+message+')';
+          }
+          scope.value = {message: message, fields: newFormData};
+        });
       }
     };
   }];
@@ -372,9 +382,9 @@
         element: '=',
       },
       template: '<fieldset class="node-form-options collapsible form-wrapper collapse-processed" ng-class="{collapsed: collapsed==true}" id="{{id}}">'+
-        '<legend><div class="fieldset-legend"><a class="fieldset-title" ng-click="collapsibleToggle()">{{title}}</a>'+
-        '<div class="summary">{{value.message}}</div></div></legend>'+
-        '<div class="fieldset-wrapper-element" ng-hide="collapsed"><span>Placeholder</span></div></fieldset>',
+          '<legend><div class="fieldset-legend"><a class="fieldset-title" ng-click="collapsibleToggle()">{{title}}</a><div class="summary">{{value.message}}</div></div></legend>'+
+          '<div class="fieldset-wrapper" ng-hide="collapsed"><span>Placeholder</span></div>'+
+        '</fieldset>',
       link: function (scope, elem, attr) {
         scope.collapsed = scope.element.collapsed;
         scope.collapsibleToggle = function () {
@@ -402,6 +412,38 @@
 
   m.directive('fieldsetOsSeo', renderFieldsetElements);
 
+  m.directive('fieldsetOsMenu', [function () {
+    return {
+      restrict: 'A',
+      scope: {
+        value: '=ngModel',
+        element: '='
+      },
+      template: '<div class="form-item form-type-checkbox form-item-os-menu-enabled">'+
+          '<input type="checkbox" id="edit-os-menu-enabled" name="enabled" value="1" class="form-checkbox">'+
+          '<label class="option" for="edit-os-menu-enabled">Provide a menu link </label>'+
+        '</div>'+
+        '<div class="form-wrapper">'+
+          '<div class="form-item form-type-textfield form-item-os-menu-link-title">'+
+            '<label for="edit-os-menu-link-title">Menu link title </label>'+
+            '<input type="text" id="edit-os-menu-link-title" name="link_title" value="" size="60" maxlength="255" class="form-text">'+
+          '</div>'+
+          '<div class="form-item form-type-select form-item-os-menu-parent">'+
+            '<label for="edit-os-menu-parent">Which Menu </label>'+
+            '<select class="menu-parent-select form-select" name="os_menu">'+
+              '<option value="primary-menu" selected="selected">Primary Menu</option>'+
+              '<option value="secondary-menu">Secondary Menu</option>'+
+            '</select>'+
+            '<div class="description">Select the menu where you would like this link to appear. Some menus may not show on your page if they are not included in your <a href="/test/cp/build/layout">Page Layout</a>.</div>'+
+          '</div>'+
+        '</div>',
+      link: function (scope, elem, attr) {
+        // @todo:
+        console.log(scope.element);
+      }
+    };
+  }]);
+
   m.directive('fieldsetPath', [function () {
     return {
       restrict: 'A',
@@ -412,25 +454,26 @@
       template: '<div class="form-item form-type-checkbox form-item-path-pathauto">'+
         '<input type="checkbox" id="edit-path-pathauto" ng-model="pathauto.defaultValue" name="pathauto" value="1" ng-checked="pathauto.defaultValue" class="form-checkbox">'+
         '<label class="option" for="edit-path-pathauto"> {{pathauto.title}}</label>'+
-        '<div class="description">{{pathauto.description}}</div></div>'+
+        '<div class="description">{{pathauto.description}}</div>'+
+        '</div>'+
         '<div class="form-item form-type-textfield form-item-path-alias">'+
-        '<label for="edit-path-alias">{{pathalias.title}}</label>'+
-        '<span class="field-prefix">{{pathalias.vsiteHome}}</span>'+
-        '<input type="text" id="edit-path-alias" ng-disabled="pathalias.textboxDisabled" name="alias" ng-model="pathalias.defaultValue" maxlength="{{pathalias.maxlength}}" class="form-text">'+
+          '<label for="edit-path-alias">{{pathalias.title}}</label>'+
+          '<span class="field-prefix">{{pathalias.vsiteHome}}</span>'+
+          '<input type="text" id="edit-path-alias" ng-disabled="pathalias.textboxDisabled" name="alias" ng-model="pathalias.defaultValue" maxlength="{{pathalias.maxlength}}" class="form-text">'+
         '</div>',
       link: function (scope, elem, attr) {
         var vsiteHome = angular.isDefined(Drupal.settings.paths.vsite_home) ? Drupal.settings.paths.vsite_home : '';
         scope.pathauto = {
-          'title': scope.element.pathauto['#title'],
-          'description': scope.element.pathauto['#description'],
-          'defaultValue': scope.element.pathauto['#default_value']
+           title: scope.element.pathauto['#title'],
+           description: scope.element.pathauto['#description'],
+           defaultValue: scope.element.pathauto['#default_value']
         };
         scope.pathalias = {
-          'title': scope.element.alias['#title'],
-          'defaultValue': scope.element.alias['#default_value'],
-          'maxlength': scope.element.alias['#maxlength'],
-          'vsiteHome': vsiteHome,
-          'textboxDisabled': false
+           title: scope.element.alias['#title'],
+           defaultValue: scope.element.alias['#default_value'],
+           maxlength: scope.element.alias['#maxlength'],
+           vsiteHome: vsiteHome,
+           textboxDisabled: false
         };
         var message = '(No alias)';
         scope.$watchGroup(['pathalias.defaultValue', 'pathauto.defaultValue'], function(newValue) {
@@ -441,29 +484,18 @@
             message = (scope.pathalias.textboxDisabled || scope.pathalias.defaultValue.length === 0) ? '(No Alias)' : '(Alias: '+scope.pathalias.defaultValue+')';
             scope.pathalias.textboxDisabled = false;
           }
-          scope.value = {'message': message, 
-            'pathauto': scope.pathauto.defaultValue,
-            'pathalias': scope.pathalias.defaultValue
+          scope.value = {
+            message: message, 
+            fields: {
+              pathauto: scope.pathauto.defaultValue, 
+              pathalias: scope.pathalias.defaultValue
+            }
           };
         });
       }
     };
   }]);
   
-  m.directive('feValue', [function () {
-    return {
-      scope: {
-        name: '@',
-        value: '=ngModel',
-        element: '='
-      },
-      template: '<input type="hidden" id="{{id}}" name="{{name}}" ng-model="value" class="form-text" ng-disabled="element.disabled">',
-      link: function (scope, elem, attr) {
-        scope.id = attr['inputId'];
-      }
-    };
-  }])
-
   m.directive('feOsWysiwygExpandingTextarea', ['$parse', '$q', '$document', function ($parse, $q, $document) {
     return {
       restrict: 'A',
@@ -476,7 +508,9 @@
       template: '<label for="{{id}}-ckeditor">{{title}}</label>'+
         '<textarea cols="60" rows="5" class="text-full os-wysiwyg-expandable wysiwyg-angular form-textarea" ng-model="value" id="edit-body-ckeditor" name="{{name}}"></textarea>'+
         '<select class="filter-list form-select" id="edit-body-format" style="display: none;">'+
-        '<option value="filtered_html" selected="selected">Filtered HTML</option><option value="full_html">Full HTML</option><option value="plain_text">Plain text</option>'+
+          '<option value="filtered_html" selected="selected">Filtered HTML</option>'+
+          '<option value="full_html">Full HTML</option>'+
+          '<option value="plain_text">Plain text</option>'+
         '</select>',
       link: function (scope, elem, attr, ngModel) {
         scope.id = attr['inputId'];
@@ -541,9 +575,13 @@
         element: '=',
       },
       template: '<div class="term-applied"><div class="term-applied-header">Taxonomy</div><span>Terms applied: {{selectedTermNames}}</span></div>'+
-        '<fieldset class="form-wrapper"><div class="fieldset-wrapper">'+
-        '<div class="form-item"><taxonomy-widget entity-type="node" terms="terms" bundle="{{bundle}}" expand-option="true"></taxonomy-widget></div>'+
-        '</div></fieldset>',
+        '<fieldset class="form-wrapper">'+
+          '<div class="fieldset-wrapper">'+
+            '<div class="form-item">'+
+              '<taxonomy-widget entity-type="node" terms="terms" bundle="{{bundle}}" expand-option="true"></taxonomy-widget>'+
+            '</div>'+
+          '</div>'+
+        '</fieldset>',
       link: function (scope, elem, attr) {
         scope.bundle = scope.element.bundle;
         scope.terms = scope.value || [];

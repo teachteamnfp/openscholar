@@ -11,7 +11,7 @@ function os_node_form_library() {
   $libs['os-node-form'] = array(
     'title' => 'OS node form angular',
     'js' => array(
-      $self.'/osNodeForm.module.js' => array(),
+      $self . '/osNodeForm.module.js' => array(),
       array(
         'data' => array(
           'paths' => array(
@@ -20,6 +20,9 @@ function os_node_form_library() {
         ),
         'type' => 'setting',
       )
+    ),
+    'css' => array(
+      $self . '/css/ng-node-form.css',
     ),
     'dependencies' => array(
       array('os_common', 'angular-modal-service'),

@@ -2,17 +2,17 @@
   <div class="node-form-loading" ng-show="loading">
     <div class="node-form-loading-message">Loading form...<br /></div>
   </div>
-  <div class="node-form clearfix node-form-has-region-main node-form-has-region-right node-form-has-region-footer">
-    <div class="messages" ng-show="status.length || errors.length">
-      <div class="dismiss" ng-click="status.length = 0; errors.length = 0;">X</div>
-      <div class="status" ng-show="status.length > 0">
-        <div ng-repeat="m in status track by $index"><span ng-bind-html="m"></span></div>
-      </div>
-      <div class="error" ng-show="errors.length > 0">
-        <div ng-repeat="m in errors track by $index"><span ng-bind-html="m"></span></div>
-      </div>
+  <div class="messages" ng-show="status.length || errors.length">
+    <div class="dismiss" ng-click="status.length = 0; errors.length = 0;">X</div>
+    <div class="status" ng-show="status.length > 0">
+      <div ng-repeat="m in status track by $index"><span ng-bind-html="m"></span></div>
     </div>
-    <form id="{{formId}}" name="contentAddForm" ng-submit="submitForm($event)">
+    <div class="error" ng-show="errors.length > 0">
+      <div ng-repeat="m in errors track by $index"><span ng-bind-html="m"></span></div>
+    </div>
+  </div>
+  <form id="{{formId}}" class="node-form" ng-submit="submitForm($event)">
+    <div class="node-form clearfix node-form-has-region-main node-form-has-region-right node-form-has-region-footer">
       <div class="form-region-main">
         <div class="form-item" ng-repeat="(key, field) in formElements | weight" ng-if="!field.group">
           <div form-element element="field" value="formData[key]"><span>placeholder</span></div>
@@ -33,6 +33,6 @@
           <input type="button" value="Cancel" ng-click="close(false)">
         </div>
       </div>
-    </form>
-  </div>
+    </div>
+  </form>
 </div>
