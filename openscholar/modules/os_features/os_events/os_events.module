@@ -215,7 +215,7 @@ function os_events_gcal_create_calendar() {
     // $cid = ($cache_class == 'MemCacheDrupal') ? '*-cache_views_data-*-os_events*' : NULL;
     // cache_clear_all($cid);
 
-    $view->init_handlers();
+    $view->init_display();
     $view->display_handler->override_option('cache', array( 'type' => 'none' ));
 
     $view->execute_display($display_id, $args);
