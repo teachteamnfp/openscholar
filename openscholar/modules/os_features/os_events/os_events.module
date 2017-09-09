@@ -207,19 +207,19 @@ function os_events_gcal_create_calendar() {
   $get_fresh_view = true;
   if ($view = views_get_view($name, $get_fresh_view)) {
 
-//    $cache_class = variable_get('cache_class_cache_page');
-//    if (!isset($cache_class)) {
-//      $cache_class = variable_get('cache_default_class', 'DrupalDatabaseCache');
-//    }
-//    // Get a fresh view
-//    $cid = ($cache_class == 'MemCacheDrupal') ? '*-cache_views_data-*-os_events*' : NULL;
-//    cache_clear_all($cid);
+    // $cache_class = variable_get('cache_class_cache_page');
+    // if (!isset($cache_class)) {
+    //   $cache_class = variable_get('cache_default_class', 'DrupalDatabaseCache');
+    // }
+    // // Get a fresh view
+    // $cid = ($cache_class == 'MemCacheDrupal') ? '*-cache_views_data-*-os_events*' : NULL;
+    // cache_clear_all($cid);
 
-    $view->display_handler->override_option('cache', array(
-      'type' => 'none',
-    ));
+    $view->init_handlers();
+    $view->display_handler->override_option('cache', array( 'type' => 'none' ));
 
     $view->execute_display($display_id, $args);
+
   }
 
   foreach ($view->result as $e) {
