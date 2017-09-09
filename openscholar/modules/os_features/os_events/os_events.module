@@ -3479,3 +3479,15 @@ function os_events_apachesolr_query_prepare($query) {
     $query->setSolrSort('ds_field_event_date', 'desc');
   }
 }
+
+/*
+ * Implements hook_node_insert
+ */
+function os_events_node_insert($node) {
+
+  // Ensure the user gets the newly created events on the next page load
+  if ($node->type == "event") {
+    $vsite = vsite_get_vsite();
+    cache_clear_all("og:node:" . $vsite->group->nid . ":os_events:");
+  }
+}
