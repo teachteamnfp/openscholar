@@ -884,6 +884,8 @@ class FeatureContext extends DrupalContext {
           break;
       }
     }
+
+    $metasteps[] = new Step\When('I check the box "edit-make-embeddable"');
     $metasteps[] = new Step\When('I press "Save"');
     return $metasteps;
   }

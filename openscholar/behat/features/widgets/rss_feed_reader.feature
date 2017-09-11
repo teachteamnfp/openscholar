@@ -8,7 +8,6 @@ Feature:
       And I fill in "Title" with "Gazette"
       And I fill in "edit-field-url-und-0-url" with "http://feeds.feedburner.com/HarvardGazetteOnline"
       And I fill in "Title" with "Gazette"
-      And I check the box "edit-make-embeddable"
       And I press "edit-submit"
       And I create a "Feed Reader" widget for the vsite "john" with the following <settings>:
           | edit-description  | Gazette Reader    | textfield   |
