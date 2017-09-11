@@ -155,3 +155,4 @@ dependencies[] = views_infinite_scroll
 dependencies[] = web_widgets
 
 files[] = openscholar.profile
+
