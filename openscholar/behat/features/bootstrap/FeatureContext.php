@@ -3188,6 +3188,21 @@ class FeatureContext extends DrupalContext {
   }
 
   /**
+   * @Then /^I should wait for the text "([^"]*)" to "([^"]*)"$/
+   */
+  public function iShouldWaitForTheTextTo($text, $appear) {
+    try {
+      $this->waitForXpathNode("//*[text()[contains(.,\"$text\")]]", $appear);
+    }
+    catch (Exception $e) {
+      if ($e->getMessage() == "waitFor timed out.") {
+        throw $e;
+      }
+      throw new Exception("Text \"$text\" did not \"$appear\" after 5 seconds.");
+    }
+  }
+
+  /**
    *
    * @param string $xpath
    *   The XPath string.
