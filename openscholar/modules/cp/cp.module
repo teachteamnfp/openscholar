@@ -909,7 +909,7 @@ function _cp_settings_redirect_build_element($redirects) {
 
   // Provides a link to add more redirects if the user hasn't yet hit the max.
   if (cp_create_redirect_access()) {
-    $link = l(t('+ Add new redirect'), 'cp/redirect/add');
+    $link = l(t('Add new redirect'), 'cp/redirect/add');
     $build['add_new'] = array(
       '#markup' => "<div id=\"cp-menu-add-new-redirect\">{$link}</div>",
       '#weight' => 1,

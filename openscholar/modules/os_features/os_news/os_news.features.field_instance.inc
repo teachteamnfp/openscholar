@@ -572,8 +572,13 @@ function os_news_field_default_field_instances() {
         'type' => 'hidden',
       ),
       'teaser' => array(
-        'label' => 'above',
-        'type' => 'hidden',
+        'label' => 'hidden',
+        'module' => 'vsite_vocab',
+        'settings' => array(
+          'concatenate' => 1,
+        ),
+        'type' => 'og_vocab',
+        'weight' => 3,
       ),
       'title' => array(
         'label' => 'above',
@@ -595,6 +600,7 @@ function os_news_field_default_field_instances() {
   t('Attach Files');
   t('Body');
   t('Date');
+  t('OG vocabulary');
   t('Photo');
   t('Redirect');
 

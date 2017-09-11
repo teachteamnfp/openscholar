@@ -42,9 +42,12 @@
         '<span ng-show="spinning" class="spinner">',
       link: function (scope, elem, attr) {
         var textElem = elem.find('ng-transclude').find('span')[0],
-          original = textElem.innerHTML;
+          original = '';
 
         $bss.$observe(scope.spinnerID, function (state) {
+          if (original == '') {
+            original = elem.text();
+          }
           scope.spinning = state;
           if (scope.spinningText) {
             textElem.innerHTML = state ? scope.spinningText : original;

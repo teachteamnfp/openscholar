@@ -66,7 +66,7 @@ border-top-right-radius: 3px;
 #menu-bar ul.nice-menu .menuparent a.active:before {
   background-position: 0 -566px; /* White Arrow */
 }
-
+.search-block-form input.form-submit, .search-block-form #edit-submit,
 #search-block-form input.form-submit, #search-block-form #edit-submit, #search-form #edit-submit {
     background-position:2px -406px;
 }

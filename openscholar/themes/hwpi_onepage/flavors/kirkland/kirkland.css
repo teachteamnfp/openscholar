@@ -66,6 +66,8 @@ a,
 a:visited {
     color: #065DB2;
 }
+.search-block-form input.form-submit,
+.search-block-form #edit-submit,
 #search-block-form input.form-submit,
 #search-block-form #edit-submit,
 #search-form #edit-submit {

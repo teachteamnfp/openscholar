@@ -158,6 +158,9 @@ class os_search_solr_search_box extends os_boxes_default {
     // the forms thus prevent overriding the form settings.
     $form = drupal_build_form('os_solr_search_box___' . $this->delta, $form_state);
 
+    // Adding unique class to maintain same css for all the instances
+    // because of dynamic ids
+    $form['#attributes']['class'][] = 'search-block-form';
     $return['content'] = render($form);
 
     return $return;
