@@ -24,7 +24,7 @@
         params: queryArgs
       };
       $http.get(baseUrl+'/' + bundle +'/form', config).then(function (response) {
-         deferred.resolve(response.data);
+        deferred.resolve(response.data);
       });
       promises.push(deferred.promise);
       return deferred.promise;
@@ -53,8 +53,15 @@
     function link(scope, elem, attrs) {
 
       elem.bind('click', function (e) {
-       // Dirty Fix: can't edit fields of CKEditor in jQuery UI modal dialog.
-       jQuery('<div id="overlay" class="ui-widget-overlay" />').insertBefore(elem);
+        // Dirty Fix: can't edit fields of CKEditor in jQuery UI modal dialog.
+        // Since we are using Jquery UI dialog to open modal window and on top of
+        // that we have created ckeditor instance. Now if we open CKEditor dialog
+        // forms (e.g table, mathjax etc) which also use Jquery UI dialog, In 
+        // this case Jquery UI dialog unable focus on ckeditor dialog forms. So 
+        // basically CKEditor dialog forms not accessible when in a modal dialog.
+        // It's a known issue and discussed here
+        // https://forum.jquery.com/topic/can-t-edit-fields-of-ckeditor-in-jquery-ui-modal-dialog.
+        jQuery('<div id="overlay" class="ui-widget-overlay" />').insertBefore(elem);
 
         scope.title = 'Create ' + attrs.nodeType;
 

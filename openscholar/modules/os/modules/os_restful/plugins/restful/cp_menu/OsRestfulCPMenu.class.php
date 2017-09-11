@@ -228,10 +228,10 @@ class OSRestfulCPMenu extends \RestfulBase implements \RestfulDataProviderInterf
 
       $type_url_str = str_replace('_', '-', $bundle);
 
-      // @todo: Since other content type angular form are not ready yet. We have
-      // to hard page temporarily to avoid failure of tests. Once all node form
-      // are angular ready then we don't need to hard content type here all will
-      // be replaced with directive instead link.
+      // @todo: Since all the content type are not an angular form yet. We have
+      // to hard code page temporarily to avoid failure of tests. Once all node
+      // form are angular ready then we don't need to hard code content type 
+      // here. All will be replaced with directive instead of link.
       if ($type_url_str == 'page') {
         $node_add_link = array(
           'type' => 'directive',

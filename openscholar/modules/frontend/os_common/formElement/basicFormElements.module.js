@@ -7,9 +7,9 @@
         value: '=ngModel',
         element: '='
       },
-      template: '<div class="form-item" ng-repeat="(key, field) in formElements" ng-if="!field.group">'+
-        '<div form-element element="field" value="formData[key]"><span>placeholder</span></div>'+
-        '</div>',
+      template: '<div class="form-item" ng-repeat="(key, field) in formElements">'+
+      '<div form-element element="field" value="formData[key]"><span>placeholder</span></div>'+
+      '</div>',
       link: function (scope, elem, attr) {
         var fieldsetElements = scope.element;
         scope.formElements = {};
@@ -43,7 +43,7 @@
     };
   }];
 
-  var m = angular.module('basicFormElements', ['osHelpers', 'ngSanitize']);
+  var m = angular.module('basicFormElements', ['osHelpers', 'ngSanitize', 'ui.bootstrap']);
 
   /**
    * SelectOptGroup directive.
@@ -412,6 +412,49 @@
 
   m.directive('fieldsetOsSeo', renderFieldsetElements);
 
+  m.directive('fieldsetAuthor', ['$http', '$q', function ($http, $q) {
+    return {
+      restrict: 'A',
+      scope: {
+        value: '=ngModel',
+        element: '='
+      },
+      template: '<input type="text" ng-model="asyncSelected" typeahead="username for username in getUsername($viewValue)" typeahead-loading="loadingLocations" typeahead-no-results="noResults" class="form-control">'+
+      '<i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>'+
+      '<div ng-show="noResults"><i class="glyphicon glyphicon-remove"></i> No Results Found</div>'+
+      '<div class="form-item form-type-textfield form-item-name" role="application">'+
+      '<label for="edit-name">Posted by </label>'+
+      '<input type="text" id="edit-name" name="name" value="admin" size="60" maxlength="60" class="form-text form-autocomplete" autocomplete="OFF" aria-autocomplete="list"><input type="hidden" id="edit-name-autocomplete" value="http://localhost/index.php?q=user/autocomplete" disabled="disabled" class="autocomplete autocomplete-processed">'+
+      '<div class="description">You may change this if posting on behalf of someone else.</div>'+
+      '<span class="element-invisible" aria-live="assertive" id="edit-name-autocomplete-aria-live"></span></div>'+
+      '<div class="form-item form-type-textfield form-item-date">'+
+        '<label for="edit-date">Posted on </label>'+
+        '<input type="text" id="edit-date" name="date" value="" size="60" maxlength="25" class="form-text">'+
+        '<div class="description">Format: <em class="placeholder">2017-09-11 16:13:52 +0530</em>. The date format is YYYY-MM-DD and <em class="placeholder">+0530</em> is the time zone offset from UTC. Leave blank to use the time of form submission.</div>'+
+      '</div>',
+      link: function (scope, elem, attr) {
+        console.log(scope.element);
+        var baseUrl = Drupal.settings.basePath;
+        var queryArgs = {};
+        var config = {
+          params: queryArgs
+        };
+        scope.getUsername = function(username) {
+          return $http.get(baseUrl+'user/autocomplete/'+username, config).then(function(response) {
+            var results = [];
+            for (var k in response.data) {
+              results.push(response.data[k]);
+            }
+            return results;
+          }, function(error) {
+            console.log(error);
+          });
+        };
+      }
+    };
+
+  }]);
+
   m.directive('fieldsetOsMenu', [function () {
     return {
       restrict: 'A',
@@ -419,29 +462,51 @@
         value: '=ngModel',
         element: '='
       },
-      template: '<div class="form-item form-type-checkbox form-item-os-menu-enabled">'+
-      '<input type="checkbox" id="edit-os-menu-enabled" name="enabled" value="1" class="form-checkbox">'+
-      '<label class="option" for="edit-os-menu-enabled">Provide a menu link </label>'+
+      template: '<div class="form-item form-type-checkbox">'+
+      '<input type="checkbox" ng-checked="osMenuEnabled.defaultValue" ng-model="osMenuEnabled.defaultValue" name="enabled" value="1" class="form-checkbox">'+
+      '<label class="option" for="edit-os-menu-enabled"> {{osMenuEnabled.title}}</label>'+
       '</div>'+
-      '<div class="form-wrapper">'+
-        '<div class="form-item form-type-textfield form-item-os-menu-link-title">'+
-          '<label for="edit-os-menu-link-title">Menu link title </label>'+
-          '<input type="text" id="edit-os-menu-link-title" name="link_title" value="" size="60" maxlength="255" class="form-text">'+
-        '</div>'+
-        '<div class="form-item form-type-select form-item-os-menu-parent">'+
-          '<label for="edit-os-menu-parent">Which Menu </label>'+
-          '<select class="menu-parent-select form-select" name="os_menu">'+
-            '<option value="primary-menu" selected="selected">Primary Menu</option>'+
-            '<option value="secondary-menu">Secondary Menu</option>'+
-          '</select>'+
-          '<div class="description">Select the menu where you would like this link to appear. Some menus may not show on your page if they are not included in your <a href="/test/cp/build/layout">Page Layout</a>.</div>'+
-        '</div>'+
+      '<div class="form-wrapper" ng-show="osMenuEnabled.defaultValue">'+
+        '<div class="form-item" ng-repeat="(key, field) in formElementsLink">'+
+        '<div form-element element="field" value="formDataLink[key]"><span>placeholder</span></div>'+
       '</div>',
       link: function (scope, elem, attr) {
-        // @todo:
-        console.log(scope.element);
+        scope.osMenuEnabled = {
+          defaultValue: scope.element.enabled['#default_value'],
+          title: scope.element.enabled['#title'],
+        };
+
+        var linkElements = scope.element.link;
+        scope.formElementsLink = {};
+        scope.formDataLink = {};
+        for (var k in linkElements) {
+          if (k == 'parent' || k == 'link_title') {
+            scope.formDataLink[k] = linkElements[k]['#default_value'] || null;
+            var attributes = {
+              name: k
+            };
+            for (var j in linkElements[k]) {
+              if (j.indexOf('#') === 0) {
+                var attrs = j.substr(1, j.length);
+                attributes[attrs] = linkElements[k][j];
+              }
+            }
+            scope.formElementsLink[k] = attributes;
+          }
+        }
+        scope.$watch('osMenuEnabled.defaultValue', function() {
+          message = (!scope.osMenuEnabled.defaultValue) ? '(Not in menu)' : '';
+          scope.value = {
+            message: message,
+            fields: {
+              enabled: scope.osMenuEnabled.defaultValue,
+              link: scope.formDataLink
+            }
+          };
+        });
       }
     };
+
   }]);
 
   m.directive('fieldsetPath', [function () {
@@ -458,7 +523,7 @@
       '<div class="form-item form-type-textfield form-item-path-alias">'+
         '<label for="edit-path-alias">{{pathalias.title}}</label>'+
         '<span class="field-prefix">{{pathalias.vsiteHome}}</span>'+
-        '<input type="text" id="edit-path-alias" ng-disabled="pathalias.textboxDisabled" name="alias" ng-model="pathalias.defaultValue" maxlength="{{pathalias.maxlength}}" class="form-text">'+
+        '<input type="text" id="edit-path-alias" ng-disabled="pathauto.defaultValue" name="alias" ng-model="pathalias.defaultValue" maxlength="{{pathalias.maxlength}}" class="form-text">'+
       '</div>',
       link: function (scope, elem, attr) {
         var vsiteHome = angular.isDefined(Drupal.settings.paths.vsite_home) ? Drupal.settings.paths.vsite_home : '';
@@ -471,17 +536,14 @@
           title: scope.element.alias['#title'],
           defaultValue: scope.element.alias['#default_value'],
           maxlength: scope.element.alias['#maxlength'],
-          vsiteHome: vsiteHome,
-          textboxDisabled: false
+          vsiteHome: vsiteHome
         };
         var message = '(No alias)';
         scope.$watchGroup(['pathalias.defaultValue', 'pathauto.defaultValue'], function(newValue) {
           if (scope.pathauto.defaultValue) {
-            scope.pathalias.textboxDisabled = true;
             message = '(Automatic alias)';
           } else {
-            message = (scope.pathalias.textboxDisabled || scope.pathalias.defaultValue.length === 0) ? '(No Alias)' : '(Alias: '+scope.pathalias.defaultValue+')';
-            scope.pathalias.textboxDisabled = false;
+            message = (scope.pathauto.defaultValue || scope.pathalias.defaultValue.length === 0) ? '(No Alias)' : '(Alias: '+scope.pathalias.defaultValue+')';
           }
           scope.value = {
             message: message, 
