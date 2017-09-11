@@ -4050,4 +4050,27 @@ JS;
 
     $this->visit("$vsite/$unaliased_path/$appendage");
   }
+
+  /**
+   *
+   * @Then /^I should see "([^"]*)" events named "([^"]*)" over the next "([^"]*)" pages$/
+   *
+   */
+  public function iShouldSeeNEventsNamedXyzOverTheNextNDateUnits($num_events, $event_title, $num_intervals) {
+
+    $page = $this->getSession()->getPage()->getContent();
+
+    $num_events_counted = 0;
+    while ($num_intervals--) {
+      $num_events_counted += count($this->getSession()->getPage()->findAll('xpath', "//div[@class='calendar-calendar']//a[text()='$event_title']"));
+      $page = $this->getSession()->getPage()->getContent();
+      $date_next_arrow = $this->getSession()->getPage()->find('xpath', "//li[@class='date-next']/a");
+      $date_next_arrow->click();
+    }
+
+    if ($num_events_counted == (int)$num_events) {
+      return true;
+    }
+    throw new Exception("Found $num_events_counted events, but expected $num_events.\n");
+  }
 }
