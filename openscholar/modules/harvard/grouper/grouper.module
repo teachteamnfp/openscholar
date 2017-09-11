@@ -243,10 +243,6 @@ function grouper_user_can_access($group = null, $user = null) {
     $user = $GLOBALS['user'];
   }
 
-  // For some reason, we weren't gettiing fields on the user object
-  // Try to circumvent this.
-  $user = user_load($user->uid);
-
   if (user_access('bypass grouper restriction', $user) || og_is_member('node', $group->nid, 'user', $user)) {
     return true;
   }
@@ -261,12 +257,15 @@ function grouper_user_can_access($group = null, $user = null) {
   $user_groups = array();
   if (user_is_anonymous()) {
     if ($pin_user = pinserver_get_user()) {
+
+      watchdog('grouper', 'Pin user: '.print_r($pin_user,1));
+
       if (isset($_SESSION['user_groups'])) {
         $user_groups = $_SESSION['user_groups'];
       }
       else {
         $user_group_raw = grouper_groups_for_huid($pin_user['raw_huid'], 'groups');
-        if ($user_groups === FALSE) {
+        if ($user_group_raw === FALSE) {
           return false;
         } else {
           $user_groups = array_map(function ($item) { return $item->name; }, $user_group_raw);
