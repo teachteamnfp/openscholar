@@ -4073,4 +4073,27 @@ JS;
     }
     throw new Exception("Found $num_events_counted events, but expected $num_events.\n");
   }
+
+  /**
+   *
+   * @Given /^I fill in "([^"]*)" with date interval "([^"]*)" from "([^"]*)"$/
+   *
+   */
+  public function iFillInFieldWithDateInterval($element_id, $date_interval, $start_date) {
+    $now = new DateTime($start_date);
+    $future_date = $now->add(new DateInterval($date_interval))->format("M d Y");
+    return new Step\When("I fill in \"edit-field-date-und-0-rrule-until-child-datetime-datepicker-popup-0\" with \"$future_date\"");
+  }
+
+  /**
+   *
+   * @Given /^I select the radio button On Until Date E.g., "([^"]*)" with the id "([^"]*)"$/
+   *
+   */
+  public function iSelectTheRadioButtonOnUntilDateMdyWithTheId($eg_date_format, $element_id) {
+    $now = new DateTime();
+    return new Step\When('I select the radio button "On Until Date E.g., ' . $now->format($eg_date_format) . '" with the id "' . $element_id . '"');
+  }
+
+
 }

@@ -47,8 +47,20 @@ Feature:
       And I click "CALENDAR"
      Then I should see "3" events named "Cabinet meeting" over the next "1" pages
 
-  @api @features_first @os_events	@create_repeating_event_that_stops_on_a_particular_date
+  @api @features_first @os_events	@create_repeating_event_that_stops_on_a_particular_date @javascript
   Scenario: Create repeating event that stops on a particular date
+    Given I am logging in as "john"
+      And I visit "john/calendar"
+      And I visit "john/node/add/event"
+      And I fill in "Title" with "Daily brief"
+      And I check the box "Repeat"
+      And I select "Daily" from "Repeats"
+      And I select the radio button On Until Date E.g., "M d Y" with the id "edit-field-date-und-0-rrule-range-of-repeat-until"
+      And I fill in "edit-field-date-und-0-rrule-until-child-datetime-datepicker-popup-0" with date interval "P7D" from "now"
+      And I press "Save"
+     Then I should see "Event Daily brief has been created"
+      And I click "CALENDAR"
+     Then I should see "8" events named "Daily brief" over the next "1" pages
 
   @api @features_first @os_events	@create_repeating_event_that_excludes_a_particular_date
   Scenario: Create repeating event that excludes a particular date
