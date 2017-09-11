@@ -33,7 +33,7 @@ Feature:
      Then I verify the file contains the user "Foo bar" with email of "foo@example.com"
 
   @api @features_first @os_events	@create_repeating_event_that_stops_after_a_number_of_occurences @javascript
-  Scenario: Test the simple view for the event registrants
+  Scenario: Create repeating event that stops after a number of occurences
     Given I am logging in as "john"
       And I visit "john/calendar"
       And I visit "john/node/add/event"
