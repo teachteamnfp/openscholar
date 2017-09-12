@@ -276,6 +276,9 @@ function grouper_user_can_access($group = null, $user = null) {
       }
     }
     else {
+
+      watchdog('grouper', "The function pinserver_get_user returned false" . print_r($pin_user, 1));
+
       return false;
     }
   }
