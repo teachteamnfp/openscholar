@@ -834,11 +834,14 @@ function os_events_views_default_views() {
   $handler->display->display_options['path'] = 'calendar/%/%/rss.xml';
   $handler->display->display_options['sitename_title'] = 0;
 
+  // Clone feed_2 display
   $handler_feed_2_no_cache = clone($handler);
 
   /* Display: RSS with caching turned off (for Google export) */
-  $handler = $view->new_display('feed', 'RSS', 'feed_2_no_cache');
-  $handler->display = $handler_feed_2_no_cache;  // Clone feed_2 display
+  $handler_master = $view->new_display('feed', 'RSS', 'feed_2_no_cache');
+
+  // Merge the master and feed_2 displays
+  $handler = (views_plugin_display_feed)array_merge((array)$handler_feed_2_no_cache, (array)$array_master);
   $handler->display->display_options['cache']['type'] = 'vsite_time_per_group';
   $handler->display->display_options['cache']['results_lifespan'] = '1';
   $handler->display->display_options['cache']['results_lifespan_custom'] = '1';
