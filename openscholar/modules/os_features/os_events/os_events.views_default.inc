@@ -841,7 +841,7 @@ function os_events_views_default_views() {
   $handler_master = $view->new_display('feed', 'RSS', 'feed_2_no_cache');
 
   // Merge the master and feed_2 displays
-  $handler = (views_plugin_display_feed)array_merge((array)$handler_feed_2_no_cache, (array)$array_master);
+  $handler = (views_plugin_display_feed)array_merge((array)$handler_feed_2_no_cache, (array)$handler_master);
   $handler->display->display_options['cache']['type'] = 'vsite_time_per_group';
   $handler->display->display_options['cache']['results_lifespan'] = '1';
   $handler->display->display_options['cache']['results_lifespan_custom'] = '1';
