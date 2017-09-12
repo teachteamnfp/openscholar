@@ -195,7 +195,7 @@ function os_events_gcal_create_calendar() {
   $calendar = $calendarService->calendars->insert($calendar_calendar);
 
   $name = "os_events";
-  $display_id = "feed_2";
+  $display_id = "feed_2_no_cache";
   $args = array("upcoming", "all");
 
   // Set the vsite space, since we've moved to the top-level docroot
@@ -206,20 +206,7 @@ function os_events_gcal_create_calendar() {
   // Load the view so we can iterate over it's results
   $get_fresh_view = true;
   if ($view = views_get_view($name, $get_fresh_view)) {
-
-    // $cache_class = variable_get('cache_class_cache_page');
-    // if (!isset($cache_class)) {
-    //   $cache_class = variable_get('cache_default_class', 'DrupalDatabaseCache');
-    // }
-    // // Get a fresh view
-    // $cid = ($cache_class == 'MemCacheDrupal') ? '*-cache_views_data-*-os_events*' : NULL;
-    // cache_clear_all($cid);
-
-    $view->init_display();
-    $view->display_handler->override_option('cache', array( 'type' => 'none' ));
-
     $view->execute_display($display_id, $args);
-
   }
 
   foreach ($view->result as $e) {
@@ -3477,17 +3464,5 @@ function os_events_apachesolr_query_prepare($query) {
 
     // Sort on the new field
     $query->setSolrSort('ds_field_event_date', 'desc');
-  }
-}
-
-/*
- * Implements hook_node_insert
- */
-function os_events_node_insert($node) {
-
-  // Ensure the user gets the newly created events on the next page load
-  if ($node->type == "event") {
-    $vsite = vsite_get_vsite();
-    cache_clear_all("og:node:" . $vsite->group->nid . ":os_events:");
   }
 }
