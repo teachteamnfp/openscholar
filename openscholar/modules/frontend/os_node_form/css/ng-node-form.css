@@ -1,0 +1,106 @@
+.node-form-loading-message {
+  top: calc(50% - 259px/2);
+  left: calc(50% - 175px/2);
+  text-align: center;
+  font-size: large;
+  font-weight: bolder;
+}
+.node-form-has-region-right .form-region-footer {
+  clear: both;
+}
+.node-form-has-region-right .form-region-main {
+  float: left;
+  width: 70%;
+}
+.ng-node-form .form-region-right {
+  border-left: 1px dotted #777777;
+  padding-left: 15px;
+  width: 27%;
+  float: right;
+}
+.ng-node-form fieldset .fieldset-legend {
+  margin-top: 0.5em;
+  padding-left: 15px;
+  position: absolute;
+  text-transform: uppercase;
+}
+.ng-node-form .form-region-right fieldset {
+  background: none repeat scroll 0% 0% transparent;
+  border: medium none;
+  margin: 1em 0px;
+  padding: 3em 0px 0.1em;
+  width: 100%;
+}
+.ng-node-form .node-form .form-region-right .node-form-options a.fieldset-title {
+  color: #215990;
+}
+.ng-node-form .node-form .fieldset-legend div.summary {
+  color: #777;
+  display: block;
+  font-size: 0.8em;
+  margin-left: 0px;
+}
+html.js .ng-node-form fieldset.collapsed {
+  padding: 20px 0;
+  height: auto;
+}
+.ng-node-form input[ng-model="termSearch"] {
+  display: none;
+}
+.ng-node-form div[ng-repeat="vocab in vocabs"] {
+  width: 99%;
+}
+.ng-node-form div[ng-switch-when="term_reference_tree"] {
+  border: 1px solid #ccc;
+  width: 100%;
+  margin-top: 5px;
+}
+.ng-node-form .fieldset-wrapper .item-list ul.toggle-wrapper {
+  float: right;
+  position: relative;
+  bottom: 20px;
+}
+.ng-node-form .fieldset-wrapper .item-list ul.toggle-wrapper li {
+  float: left;
+  list-style: none;
+  padding-right: 5px;
+}
+.ng-node-form .term-applied-header {
+  font-weight: bold;
+}
+.ng-node-form .form-item span label {
+  font-size: 0.923em;
+}
+.ng-node-form .form-item {
+  padding: 0;
+  margin: 0;
+}
+body:not(.overlay) .ng-node-form .node-form { 
+  margin-left: 0;
+}
+body:not(.overlay) .ng-node-form form.node-form {
+  padding: 0 20px;
+}
+.ng-node-form form.node-form .form-region-right .fieldset-wrapper {
+  padding: 15px;
+}
+.ng-node-form textarea.form-textarea {
+  padding: 2px;
+  border: 1px solid #ccc;
+  border-top-color: #999;
+  background: #fff;
+  color: #333;
+}
+.ng-node-form .form-item.fieldset.ng-scope.additional_settings {
+  padding: 0;
+}
+.ng-node-form .fieldset-wrapper .postedby-name ul {
+  margin: 0;
+  border: 1px solid #000;
+  width: 87%;
+}
+.ng-node-form .fieldset-wrapper .postedby-name ul li {
+  list-style: none;
+  padding: 0 2px;
+  margin-top: 1px;
+}

@@ -30,7 +30,7 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
 
     $function = node_type_get_base($node) . '_form';
     if (function_exists($function) && ($extra = $function($node, $form_state))) {
-      // @todo: We need to look for a better solution on this.
+      // @todo: Better way to handle these.
       unset($extra['#validate']);
       unset($extra['#cache']);
       foreach ($extra as $key => $form_field) {
@@ -153,15 +153,18 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
     $form_id = $node->type . '_node_form';
     $hooks = array('form', 'form_node_form', 'form_' . $node->type . '_node_form');
     drupal_alter($hooks, $form, $form_state, $form_id);
-
+    
+    // Folllowing properties of fields was set before drupal_alter. We need to
+    // figure out from where these properties being reset after drupal_alter.
     // Assign to a group.
     $form['options']['#group'] = 'additional_settings';
     $form['author']['#group'] = 'additional_settings';
     $form['revision_information']['#group'] = 'additional_settings';
     $form['os_menu']['#group'] = 'additional_settings';
     $form['path']['#group'] = 'additional_settings';
+    $form['title']['#required'] = TRUE;
 
-    // @todo: We need to look for a better solution on this.
+    // @todo: Better way to handle these.
     unset($form['#entity']);
     unset($form['#after_build']);
     unset($form['#validate']);
@@ -174,6 +177,7 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
     unset($form['#attributes']);
     unset($form['#bundle']);
     unset($form['author']['name']);
+    unset($form['og_group_ref']);
 
     return $form;
   }

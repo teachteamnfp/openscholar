@@ -23,7 +23,7 @@
           <button type="submit" button-spinner="node_form" spinning-text="Saving">Save</button>
           <input type="button" value="Cancel" ng-click="close(false)">
         </div>
-        <div class="form-item" ng-repeat="(key, field) in formElements | weight" ng-if="field.group" ng-class="field.group">
+        <div class="form-item fieldset" ng-repeat="(key, field) in formElements | weight" ng-if="field.group" ng-class="field.group">
           <div form-element element="field" value="formData[key]"><span>placeholder</span></div>
         </div>
       </div>

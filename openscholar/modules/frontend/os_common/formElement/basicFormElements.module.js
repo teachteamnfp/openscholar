@@ -29,10 +29,9 @@
             scope.formElements[k] = attributes;
           }
         }
-        var message = '';
         scope.$watchCollection('formData', function(newFormData) {
           if (fieldsetElements.name == 'options') {
-            message = (newFormData.status) ? 'Published to this site' : 'Not published';
+            var message = (newFormData.status) ? 'Published to this site' : 'Not published';
             message += (newFormData.sticky) ? ', Sticky at top of lists' : '';
             message += (newFormData.noindex) ? ', Noindex' : '';
             message = '('+message+')';
@@ -194,11 +193,12 @@
         value: '=ngModel',
         element: '='
       },
-      template: '<label for="{{id}}">{{title}}</label>' +
+      template: '<label for="{{id}}">{{title}} <span ng-if="required" class="form-required" title="This field is required.">*</span></label>' +
       '<input type="textfield" id="{{id}}" name="{{name}}" ng-model="value" class="form-text" ng-disabled="element.disabled">',
       link: function (scope, elem, attr) {
         scope.id = attr['inputId'];
         scope.title = scope.element.title;
+        scope.required = (angular.isDefined(scope.element.required)) ? scope.element.required : false;
       }
     }
   }]);
@@ -404,14 +404,6 @@
     }
   }]);
 
-  m.directive('fieldsetRevisionInformation', renderFieldsetElements);
-
-  m.directive('fieldsetOptions', renderFieldsetElements);
-
-  m.directive('fieldsetOsCssClassFieldset', renderFieldsetElements);
-
-  m.directive('fieldsetOsSeo', renderFieldsetElements);
-
   m.directive('fieldsetAuthor', ['$http', '$q', function ($http, $q) {
     return {
       restrict: 'A',
@@ -419,37 +411,61 @@
         value: '=ngModel',
         element: '='
       },
-      template: '<input type="text" ng-model="asyncSelected" typeahead="username for username in getUsername($viewValue)" typeahead-loading="loadingLocations" typeahead-no-results="noResults" class="form-control">'+
-      '<i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>'+
-      '<div ng-show="noResults"><i class="glyphicon glyphicon-remove"></i> No Results Found</div>'+
-      '<div class="form-item form-type-textfield form-item-name" role="application">'+
-      '<label for="edit-name">Posted by </label>'+
-      '<input type="text" id="edit-name" name="name" value="admin" size="60" maxlength="60" class="form-text form-autocomplete" autocomplete="OFF" aria-autocomplete="list"><input type="hidden" id="edit-name-autocomplete" value="http://localhost/index.php?q=user/autocomplete" disabled="disabled" class="autocomplete autocomplete-processed">'+
-      '<div class="description">You may change this if posting on behalf of someone else.</div>'+
-      '<span class="element-invisible" aria-live="assertive" id="edit-name-autocomplete-aria-live"></span></div>'+
+      template: '<div class="form-item form-type-textfield postedby-name">'+
+      '<label for="edit-name">{{author.title}}</label>'+
+      '<input type="text" ng-model="author.value" typeahead="username for username in getUsername($viewValue)" typeahead-no-results="noResults" class="form-text form-autocomplete">'+
+      '<div ng-show="noResults">No Results Found</div>'+
+      '<div class="description">{{author.description}}</div>'+
       '<div class="form-item form-type-textfield form-item-date">'+
-        '<label for="edit-date">Posted on </label>'+
-        '<input type="text" id="edit-date" name="date" value="" size="60" maxlength="25" class="form-text">'+
-        '<div class="description">Format: <em class="placeholder">2017-09-11 16:13:52 +0530</em>. The date format is YYYY-MM-DD and <em class="placeholder">+0530</em> is the time zone offset from UTC. Leave blank to use the time of form submission.</div>'+
+        '<label for="edit-date">{{date.title}}</label>'+
+        '<input type="text" ng-model="date.value" size="60" maxlength="{{date.maxlength}}" class="form-text">'+
+        '<div class="description" ng-bind-html="date.description"></div>'+
       '</div>',
       link: function (scope, elem, attr) {
-        console.log(scope.element);
         var baseUrl = Drupal.settings.basePath;
         var queryArgs = {};
         var config = {
           params: queryArgs
         };
+        scope.noResults = false;
         scope.getUsername = function(username) {
-          return $http.get(baseUrl+'user/autocomplete/'+username, config).then(function(response) {
-            var results = [];
-            for (var k in response.data) {
-              results.push(response.data[k]);
-            }
+          var results = [];
+          if (username.length > 3) {
+            return $http.get(baseUrl+'user/autocomplete/'+username, config).then(function(response) {
+              for (var k in response.data) {
+                results.push(response.data[k]);
+              }
+              scope.noResults = (results.length > 0) ? false : true;
+              return results;
+            });
+          }
+          else {
             return results;
-          }, function(error) {
-            console.log(error);
-          });
+          }
         };
+        scope.author = {
+          title: scope.element.author_name['#title'],
+          value: (scope.element.author_name['#default_value'].length == 0) ? Drupal.settings.user_panel.user.name : scope.element.author_name['#default_value'],
+          description: scope.element.author_name['#description']
+        }
+        scope.date = {
+          title: scope.element.date['#title'],
+          value: scope.element.date['#default_value'],
+          description: scope.element.date['#description'],
+          maxlength: scope.element.date['#maxlength']
+        }
+        scope.$watchGroup(['author.value', 'date.value'], function() {
+          var message = (scope.author.value.length > 0) ? 'By '+scope.author.value : 'By Anonymous';
+          message += (scope.date.value.length > 0) ? ' on '+scope.date.value : '';
+          message = '('+message+')';
+          scope.value = {
+            message: message,
+            fields: {
+              author: scope.author.value,
+              date: scope.date.value
+            }
+          };
+        });
       }
     };
 
@@ -495,7 +511,7 @@
           }
         }
         scope.$watch('osMenuEnabled.defaultValue', function() {
-          message = (!scope.osMenuEnabled.defaultValue) ? '(Not in menu)' : '';
+          var message = (!scope.osMenuEnabled.defaultValue) ? '(Not in menu)' : '';
           scope.value = {
             message: message,
             fields: {
@@ -556,6 +572,14 @@
       }
     };
   }]);
+
+  m.directive('fieldsetRevisionInformation', renderFieldsetElements);
+
+  m.directive('fieldsetOptions', renderFieldsetElements);
+
+  m.directive('fieldsetOsCssClassFieldset', renderFieldsetElements);
+
+  m.directive('fieldsetOsSeo', renderFieldsetElements);
   
   m.directive('feOsWysiwygExpandingTextarea', ['$parse', '$q', '$document', function ($parse, $q, $document) {
     return {
