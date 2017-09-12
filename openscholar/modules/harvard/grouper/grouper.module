@@ -192,7 +192,7 @@ function grouper_groups_for_huid($huid, $accessLevel) {
 function grouper_user_login(&$edit, $account) {
 
   if (!array_key_exists('field_grouper_path', $account)) {
-    watchdog('grouper', "User account '{$account->uid} does not have the field_grouper_path field.'");
+    watchdog('grouper', "User account '{$account->uid}' does not have the field_grouper_path field.");
     return;
   }
   // get the pin of the user's account
@@ -201,8 +201,6 @@ function grouper_user_login(&$edit, $account) {
   $groups = grouper_groups_for_huid($huid, 'groups');
 
   if ($groups !== FALSE) {
-    watchdog('grouper', "User account '{$account->uid}'' has access to groups:" . print_r($groups, 1));
-
     if (count($groups)) {
        $account->field_grouper_path = array(
          LANGUAGE_NONE => array()
@@ -214,12 +212,11 @@ function grouper_user_login(&$edit, $account) {
     else {
       $account->field_grouper_path = null;
     }
+    watchdog('grouper', "User account '{$account->uid}':" . print_r((array)$account, 1));
 
     user_save($account);
   }
   else {
-    watchdog('grouper', "User account '{$account->uid}' does not have access to any groups.");
-
     // if we can't get grouper data, make sure the account has no grouper-related access
     unset($account->field_grouper_path);
     user_save($account);
@@ -262,10 +259,14 @@ function grouper_user_can_access($group = null, $user = null) {
   if (user_is_anonymous()) {
     if ($pin_user = pinserver_get_user()) {
       if (isset($_SESSION['user_groups'])) {
+        watchdog('grouper', "User groups set via session:" . print_r($_SESSION, 1));
         $user_groups = $_SESSION['user_groups'];
       }
       else {
         $user_group_raw = grouper_groups_for_huid($pin_user['raw_huid'], 'groups');
+
+        watchdog('grouper', "User groups grabbed vi grouper_groups_for_huid:" . print_r($user_group_raw, 1));
+
         if ($user_group_raw === FALSE) {
           return false;
         } else {
