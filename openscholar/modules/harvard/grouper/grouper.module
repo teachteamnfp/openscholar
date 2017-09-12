@@ -258,6 +258,9 @@ function grouper_user_can_access($group = null, $user = null) {
   $user_groups = array();
   if (user_is_anonymous()) {
     if ($pin_user = pinserver_get_user()) {
+
+      watchdog('grouper', 'Pin user: '.print_r($pin_user,1));
+
       if (isset($_SESSION['user_groups'])) {
         $user_groups = $_SESSION['user_groups'];
       }
