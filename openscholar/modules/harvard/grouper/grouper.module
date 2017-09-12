@@ -201,6 +201,8 @@ function grouper_user_login(&$edit, $account) {
   $groups = grouper_groups_for_huid($huid, 'groups');
 
   if ($groups !== FALSE) {
+    watchdog('grouper', "User account '{$account->uid}'' has access to groups:" . print_r($groups, 1));
+
     if (count($groups)) {
        $account->field_grouper_path = array(
          LANGUAGE_NONE => array()
@@ -216,6 +218,8 @@ function grouper_user_login(&$edit, $account) {
     user_save($account);
   }
   else {
+    watchdog('grouper', "User account '{$account->uid}' does not have access to any groups.");
+
     // if we can't get grouper data, make sure the account has no grouper-related access
     unset($account->field_grouper_path);
     user_save($account);
