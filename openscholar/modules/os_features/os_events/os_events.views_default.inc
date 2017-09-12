@@ -840,7 +840,12 @@ function os_events_views_default_views() {
   $handler->display->display_options['title'] = 'Ical';
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['defaults']['cache'] = FALSE;
-  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['cache']['type'] = 'vsite_time_per_group';
+  $handler->display->display_options['cache']['results_lifespan'] = '1';
+  $handler->display->display_options['cache']['results_lifespan_custom'] = '1';
+  $handler->display->display_options['cache']['output_lifespan'] = '1';
+  $handler->display->display_options['cache']['output_lifespan_custom'] = '1';
+  $handler->display->display_options['cache']['og_access'] = 0;
   $handler->display->display_options['pager']['type'] = 'some';
   $handler->display->display_options['pager']['options']['items_per_page'] = '40';
   $handler->display->display_options['pager']['options']['offset'] = '0';
