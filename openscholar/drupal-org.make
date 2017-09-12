@@ -622,3 +622,7 @@ libraries[jsonp][download][url] = "https://raw.githubusercontent.com/yui/yui3/v3
 libraries[yql-jsonp][type] = "libraries"
 libraries[yql-jsonp][download][type] = "file"
 libraries[yql-jsonp][download][url] = "https://raw.githubusercontent.com/yui/yui3/v3.18.1/build/yql-jsonp/yql-jsonp-min.js"
+
+libraries[google-api-php-client][type] = "libraries"
+libraries[google-api-php-client][download][type] = "file"
+libraries[google-api-php-client][download][url] = "https://github.com/google/google-api-php-client/releases/download/v2.1.3/google-api-php-client-2.1.3.zip"
