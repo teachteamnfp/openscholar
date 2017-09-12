@@ -265,7 +265,7 @@ function grouper_user_can_access($group = null, $user = null) {
       else {
         $user_group_raw = grouper_groups_for_huid($pin_user['raw_huid'], 'groups');
 
-        watchdog('grouper', "User groups grabbed vi grouper_groups_for_huid:" . print_r($user_group_raw, 1));
+        watchdog('grouper', "User groups grabbed via grouper_groups_for_huid:" . print_r($user_group_raw, 1));
 
         if ($user_group_raw === FALSE) {
           return false;
@@ -284,6 +284,8 @@ function grouper_user_can_access($group = null, $user = null) {
     if (!isset($user->field_grouper_path[LANGUAGE_NONE])) {
       return false;
     }
+
+    watchdog('grouper', "User groups grabbed from user obj:" . print_r((array)$user, 1));
 
     $user_groups = array_map(function ($item) { return $item['value']; }, $user->field_grouper_path[LANGUAGE_NONE]);
   }
