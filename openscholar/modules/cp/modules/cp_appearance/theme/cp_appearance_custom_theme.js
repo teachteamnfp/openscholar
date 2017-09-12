@@ -5,9 +5,65 @@
     /**
    * Fetches the content settings forms from the server and makes them available to directives and controllers
    */
-  m.service('customTheme', ['$http', '$q', function ($http, $q, $httpParamSerializer) {
+  m.service('customTheme', ['$http', '$q', function ($http, $q) {
 
-  }])
+    var baseUrl = Drupal.settings.paths.api;
+    var uploadUrl = baseUrl+'/themes/';
+    var http_config = {
+      params: {}
+    };
+    if (typeof Drupal.settings.spaces != 'undefined' && Drupal.settings.spaces.id) {
+      http_config.params.vsite = Drupal.settings.spaces.id;
+    }
+    this.uploadZipTheme = function(file,name){
+      var config = [
+        {orgFileName:name},
+      ];
+      var deffered = $q.defer();
+      console.log(file);
+      $http.post(uploadUrl + 'abcd/', file, config, {
+        transformRequest: angular.identity,
+        headers: {'Content-Type': undefined}
+      })
+      .success(function (response) {
+        deffered.resolve(response);
+      })
+      .error(function (response) {
+        deffered.reject(response);
+      });
+      return deffered.promise;
+    }
+
+    this.fetchBranches = function(gitBranchName){
+      var vals = {
+        git: gitBranchName
+      };
+      console.log(gitBranchName);
+      $http.post(uploadUrl, vals, http_config).then(function (r) {
+          console.log(r.data.data);
+        });
+      }
+
+  }]);
+
+  /**
+   * To handle file upload
+   */
+  m.directive('fileModel', ['$parse', function ($parse) {
+    return {
+       restrict: 'A',
+       link: function(scope, element, attrs) {
+          var model = $parse(attrs.fileModel);
+          var modelSetter = model.assign;
+          element.bind('change', function(){
+             scope.$apply(function(){
+                modelSetter(scope, element[0].files[0]);
+             });
+          });
+       }
+    };
+  }]);
+
 
   /**
    * Open modals for the custom theme upload
@@ -42,15 +98,14 @@
              '<div class="zip-screen" ng-show = "zipScreen">'+
              '<form enctype="multipart/form-data" name="settingsForm" method="post" id="cp-appearance-manage-base" accept-charset="UTF-8" ng-submit="submitZipForm($event)">'+
              '<label>Themes <span class="form-required" title="This field is required.">*</span></label>'+
-             '<div id="edit-file-upload-wrapper" class="form-managed-file"><input type="file" id="edit-file-upload" size="22" class="form-file" file-model="zipThemeUpload"><input type="submit" id="edit-file-upload-button" name="file_upload_button" value="Upload"></div>'+
+             '<div id="edit-file-upload-wrapper" class="form-managed-file"><input type="file" id="edit-file-upload" size="22" class="form-file" file-model="zipThemeUpload"><input type="submit" id="edit-file-upload-button" name="file_upload_button" value="Upload" ng-click = "uploadFile()"></div>'+
              '<div class="description">The uploaded image will be displayed on this page using the image style choosen below.</div>'+
              '<div class="custom-theme-help-link"><a href="https://docs.openscholar.harvard.edu/subsite-themes"  target="_blank">Learn more about Subsite Themes</a></div>' +
              '<div class="actions"><button type="submit" button-spinner="settings_form" spinning-text="Saving">Save</button><input type="button" value="Close" ng-click="close(false)"></div></form></div>'+
-             '<div class="git-screen" ng-show = "gitScreen">'+
-             '<form method="post" id="cp-appearance-manage-git" accept-charset="UTF-8" name="settingsForm" ng-submit="submitGitForm($event)">'+
+             '<div class="git-screen" ng-show = "gitScreen">' +
              '<label for="edit-repository">Git repository address <span class="form-required" title="This field is required.">*</span></label>'+
-             '<input type="text" id="custom-theme-edit-repository" name="repository" value="" size="60" maxlength="128" ng-model="gitAddress">'+
-             '<div id="branches-wrapper"><div class="form-actions form-wrapper" id="edit-actions"><a href="#">Fetch branches</a></div></div>'+
+             '<input type="text" id="custom-theme-edit-repository" name="repository" ng-model="gitBranch" value="" size="60" maxlength="128" ng-model="gitAddress">'+
+             '<div id="branches-wrapper"><div class="form-actions form-wrapper" id="edit-actions"><a href="#" ng-click="fetchBranches()">Fetch branches</a></div></div>'+
              '<div class="custom-theme-help-link"><a href="https://docs.openscholar.harvard.edu/subsite-themes"  target="_blank">Learn more about Subsite Themes</a></div>'+
              '<div class="actions"><button type="submit" button-spinner="settings_form" spinning-text="Saving">Save</button><input type="button" value="Close" ng-click="close(false)"></div></form></div></form>'+
              '</div>',
@@ -89,6 +144,7 @@
       $s.gitScreen = false;
       $s.zipScreen = false;
       $s.themeScreen = true;
+      $s.file = {};
       $s.ShowZip = function () {
          $s.zipScreen = $s.zipScreen ? false : true;
          $s.themeScreen = false;
@@ -97,6 +153,23 @@
          $s.gitScreen = $s.gitScreen ? false : true;
          $s.themeScreen = false;
       }
+
+      $s.uploadFile = function(){
+        $s.file = $s.zipThemeUpload;
+        $s.name = $s.file['name'];
+        promise = customTheme.uploadZipTheme($s.file, $s.name);
+        promise.then(function (response) {
+          $s.serverResponse = response;
+        }, function () {
+            $s.serverResponse = 'An error has occurred';
+        })
+      };
+
+      $s.fetchBranches = function(){
+        if ($s.gitBranch != '') {
+          customTheme.fetchBranches($s.gitBranch);
+        }
+      };
   }]);
 
 })()
