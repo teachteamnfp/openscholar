@@ -325,7 +325,7 @@ html.js #user-login-form li.openid-link,
 #search-block-form {
     padding-bottom: 5px;
 }
-.content #search-block-form,
+#content .search-block-form,
 #content #search-block-form {
     margin-top: 2em;
 }
