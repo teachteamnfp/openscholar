@@ -184,27 +184,28 @@
 }
 
 #site-creation-container .step.disable {
-  background-color: #CCC;
+  background-color: #efefef;
+  color:#333;
  
 }
 
 #site-creation-container .preNxt {
-  background-color: #FFF;
+  background-color: #efefef;
   border: none;
   padding: 10px 16px;
   border-radius: 3px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-weight:bold;
+
 
 }
-#site-creation-container #nxt .preNxt::before {
+#site-creation-container #nxt .preNxt:after {
   content:'>';
   position:absolute;
 right:45px;
 }
-#site-creation-container #pre .preNxt::before {
+#site-creation-container #pre .preNxt:before {
   content:'<';
   position:absolute;
 left:45px;
