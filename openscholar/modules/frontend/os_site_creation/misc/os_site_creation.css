@@ -65,10 +65,9 @@
 
 #site-creation-container #body-container-group-2,
 #site-creation-container #body-container-group-3{
-  margin: 5px;
-  overflow: hidden;
-  border: 2px solid #CCC;
-  background-color: #EEE;
+margin: 5px;
+    overflow: hidden;
+    background-color: #efefef;
 }
 
 
@@ -152,10 +151,10 @@
 }
 
 #site-creation-container .popup{
- border: 1px solid #CCC;
- margin: 3px 5px;
- padding: 5px;
- /* height: 78px; */
+background-color: #efefef;
+    margin: 0px 5px;
+    padding: 8px;
+    text-align: left;
 }
 
 #site-creation-container .error-msg{
@@ -201,14 +200,16 @@
 
 }
 #site-creation-container #nxt .preNxt:after {
-  content:'>';
+  content:'→';
   position:absolute;
 right:45px;
+font-size:1.5em;
 }
 #site-creation-container #pre .preNxt:before {
-  content:'<';
+  content:'←';
   position:absolute;
 left:45px;
+font-size:1.5em;
 }
 
 #site-creation-container .preNxt:disabled{
@@ -222,9 +223,7 @@ left:45px;
   padding: 0;
 }
 
-#site-creation-container input[type=text]{
-  /* border: 2px solid #CCC; */
-}
+
 
 #site-creation-container #body-container-page3 {
   overflow: scroll;
