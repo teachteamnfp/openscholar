@@ -4053,6 +4053,34 @@ JS;
 
   /**
    *
+   * @When /^I visit the unaliased registration path of "([^"]*)" on vsite "([^"]*)" and append "([^"]*)"$/
+   */
+  public function iVisitTheUnaliasedRegistrationPathOfAndAppend($url, $vsite, $appendage) {
+    $unaliased_path = drupal_lookup_path('source', $url);
+
+    # Check the url with the vsite prepended
+    if (! $unaliased_path) {
+      $unaliased_path = drupal_lookup_path('source', "$vsite/$url");
+    }
+
+    if (! $unaliased_path) {
+      throw new Exception("Could not find an unaliased path for '$url' on vsite '$vsite' with '$appendage' appended.");
+    }
+
+    if (preg_match('/node\/(\d+)/', $unaliased_path, $matches)) {
+      if (isset($matches[1])) {
+        $nid = $matches[1];
+      }
+    }
+
+    if (! isset($nid)) {
+      throw new Exception("Could not find a node ID via drupal_lookup_path(): $unaliased_path");
+    }
+
+    $this->visit("$vsite/os_events/nojs/registration/$nid/$appendage");
+  }
+  /**
+   *
    * @Then /^I should see "([^"]*)" events named "([^"]*)" over the next "([^"]*)" pages$/
    *
    */
@@ -4139,6 +4167,38 @@ JS;
   public function iSelectTheRadioButtonOnUntilDateMdyWithTheId($eg_date_format, $element_id) {
     $now = new DateTime();
     return new Step\When('I select the radio button "On Until Date E.g., ' . $now->format($eg_date_format) . '" with the id "' . $element_id . '"');
+  }
+
+  /**
+   *
+   * @Given /^I focus on "([^"]*)" element "([^"]*)", and press key "([^"]*)"$/
+   *
+   */
+  public function iFocusOnElementAndPressKey($type, $expr, $char) {
+    $elem = $this->getSession()->getPage()->find($type, $expr);
+    $elem->focus();
+    $this->getSession()->getDriver()->keyDown($expr, $char);
+    $this->getSession()->getDriver()->keyUp($expr, $char);
+  }
+
+  /**
+   *
+   * @Given /^I focus on "([^"]*)" element "([^"]*)"$/
+   *
+   */
+  public function iFocusOnElement($type, $expr) {
+    $elem = $this->getSession()->getPage()->find($type, $expr);
+    $elem->focus();
+  }
+
+  /**
+   *
+   * @Given /^I turn off Mollom CAPTCHA verification$/
+   *
+   */
+  public function iTurnOffMollomCaptchaVerification() {
+    variable_set('mollom_testing_mode', 1);
+    variable_del('mollom_cmp_enabled');
   }
 
 

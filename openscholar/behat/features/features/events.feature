@@ -102,6 +102,23 @@ Feature:
       And I should "not see" event named "Press briefing" on date "P4D" from "now" over the next "1" pages
       And I should "see" event named "Press briefing" on date "P7D" from "now" over the next "1" pages
 
-  @api @features_first @os_events	@limit_number_of_registrants_for_an_event
+  @api @features_first @os_events	@limit_number_of_registrants_for_an_event @javascript
   Scenario: Limit number of registrants for an event
-
+    Given I am logging in as "john"
+      And I visit "john/calendar"
+      And I visit "john/node/add/event"
+      And I fill in "Title" with "State dinner"
+      And I fill in "edit-field-date-und-0-value-datepicker-popup-0" with date interval "P3D" from "now"
+      And I check the box "Signup"
+      And I press "Save"
+      And I click "Manage Registrations"
+      And I click "Settings"
+      And I fill in "Capacity" with "1"
+      And I press "Save Settings"
+      And I visit the unaliased registration path of "event/state-dinner" on vsite "john" and append "0"
+      And I turn off Mollom CAPTCHA verification
+      And I fill in "Email" with "khrushchev@kremlin.ru"
+      And I fill in "Full name" with "Nikita Khrushchev"
+      And I fill in "Verification" with "correct"
+      And I press "Signup"
+     Then I should see "Sorry, the event is full"
