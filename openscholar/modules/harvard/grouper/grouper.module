@@ -175,8 +175,8 @@ function grouper_groups_for_huid($huid, $accessLevel) {
 
   $response = drupal_http_request($grouper_url);
   if ($response->code == 200) {
-    watchdog('grouper', 'Connection to Grouper service successful [' . $grouper_url . ']');
     $raw_data = $response->data;
+    watchdog('grouper', 'Connection to Grouper service successful [' . $grouper_url . ']: ' . print_r((array)$raw_data, 1));
 
     return json_decode($raw_data);
   }
@@ -197,8 +197,12 @@ function grouper_user_login(&$edit, $account) {
   }
   // get the pin of the user's account
   $huid = pinserver_authenticate_get_user_huid($account->uid);
+  watchdog('grouper', "HUID for user account '{$account->uid}': $huid.");
 
   $groups = grouper_groups_for_huid($huid, 'groups');
+  watchdog('grouper', "Groups for user account '{$account->uid}': ". print_r((array)$groups, 1));
+
+  watchdog('grouper', "User account '{$account->uid}' group data before:" . print_r((array)$account->field_grouper_path, 1));
 
   if ($groups !== FALSE) {
     if (count($groups)) {
@@ -212,7 +216,6 @@ function grouper_user_login(&$edit, $account) {
     else {
       $account->field_grouper_path = null;
     }
-    watchdog('grouper', "User account '{$account->uid}':" . print_r((array)$account, 1));
 
     user_save($account);
   }
@@ -221,6 +224,8 @@ function grouper_user_login(&$edit, $account) {
     unset($account->field_grouper_path);
     user_save($account);
   }
+
+  watchdog('grouper', "User account '{$account->uid}' group data after:" . print_r((array)$account->field_grouper_path, 1));
 }
 
 /**
@@ -260,6 +265,7 @@ function grouper_user_can_access($group = null, $user = null) {
     if ($pin_user = pinserver_get_user()) {
 
       watchdog('grouper', 'Pin user: '.print_r($pin_user,1));
+      watchdog('grouper', '_SESSION: '.print_r($_SESSION,1));
 
       if (isset($_SESSION['user_groups'])) {
         $user_groups = $_SESSION['user_groups'];
