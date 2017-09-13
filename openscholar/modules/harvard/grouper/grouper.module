@@ -347,7 +347,7 @@ function grouper_node_access($node, $op, $account) {
  * Implements hook_vsite_access_denied().
  */
 function grouper_vsite_access_denied($vsite) {
-  if ($vsite->group->{VSITE_ACCESS_FIELD}[LANGUAGE_NONE][0]['value'] == GROUPER_PRIVACY_LEVEL && user_is_anonymous() && !pinserver_get_user()) {
+  if ($vsite->group->{VSITE_ACCESS_FIELD}[LANGUAGE_NONE][0]['value'] == GROUPER_PRIVACY_LEVEL && !pinserver_get_user() && !pinserver_user_has_associated_pin($GLOBALS['uid'])) {
     if (!pinserver_check_system_settings()) {
       // Load custom pinserver variables
       $vsite->controllers->variable->init_overrides();
