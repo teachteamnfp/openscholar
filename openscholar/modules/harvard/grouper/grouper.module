@@ -261,7 +261,7 @@ function grouper_user_can_access($group = null, $user = null) {
   // if the site has groups, but the user is anonymous.
   // User could be logged in to pin at this point
   $user_groups = array();
-  if (user_is_anonymous()) {
+  if (empty($user->uid)) {
     if ($pin_user = pinserver_get_user()) {
 
       watchdog('grouper', 'Pin user: '.print_r($pin_user,1));
