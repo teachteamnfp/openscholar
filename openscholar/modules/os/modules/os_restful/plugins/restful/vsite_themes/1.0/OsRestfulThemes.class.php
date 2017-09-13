@@ -17,6 +17,7 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
       '' => array(
         // If they don't pass a menu-id then display nothing.
         \RestfulInterface::POST => 'fetchBranches',
+        \RestfulInterface::PUT => 'createFromGitBranches',
       ),
       // We don't know what the ID looks like, assume that everything is the ID.
       '^.*$' => array(
@@ -105,4 +106,79 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
     );
   }
 
+  // Save
+  public function createFromGitBranches() {
+    // Initiate the return message
+    $subtheme->msg = array();
+    $valid = TRUE;
+    watchdog('cp_rest', print_r($this->request, true));
+    if (!empty($this->request['branch'])) {
+      $branch = $this->request['branch'];
+      $path = $this->request['path'];
+
+      $wrapper = new GitWrapper();
+      $wrapper->setPrivateKey('.');
+      $git = $wrapper->workingCopy($path);
+
+      // We pull, in case the user wants to reload a subtheme.
+      try {
+        cp_appearance_git_checkout($git, $branch);
+      }
+      catch (GitException $e) {
+      }
+
+      try {
+        $git->pull();
+      }
+      catch (GitException $e) {
+      }
+
+      $subtheme = new SubTheme();
+      $subtheme->path = $path;
+
+      if (empty($form_state['subtheme'])) {
+        $valid = FALSE;
+      }
+
+      $info = $subtheme->parseInfo();
+
+      $themes = list_themes();
+
+      // Validating
+      if (empty($info['module'])) {
+        $subtheme->msg[] = t('The theme you uploaded is not valid.  `module` directive missing.');
+        $valid = FALSE;
+      }
+      else if (!in_array($info['module'], array_keys($themes))) {
+        $subtheme->msg[] = t('The theme you uploaded is not valid.  `module` refers to a theme that does not exist.');
+        $valid = FALSE;
+      }
+
+
+      // Submitting
+      $file = $subtheme;
+
+      if (!empty($request['vsite']) && $valid) {
+        $vsite = vsite_get_vsite($request['vsite']);
+        $flavors = $vsite->controllers->variable->get('flavors');
+
+        // Parse the info.
+        $info = $file->parseInfo();
+
+        // Save the path of the extracted theme for later.
+        $flavors[$info['theme name']] = array(
+          'path' => $file->path,
+          'name' => $info['name'],
+        );
+
+        $vsite->controllers->variable->set('flavors', $flavors);
+      }
+    } else {
+      $subtheme->msg[] = t('No branch was selected');
+    }
+
+    return array(
+     'msg' => $subtheme->msg,
+    );
+  }
 }

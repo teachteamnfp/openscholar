@@ -20,7 +20,6 @@
         {orgFileName:name},
       ];
       var deffered = $q.defer();
-      console.log(file);
       $http.post(uploadUrl + 'abcd/', file, config, {
         transformRequest: angular.identity,
         headers: {'Content-Type': undefined}
@@ -38,11 +37,21 @@
       var vals = {
         git: gitBranchName
       };
-      console.log(gitBranchName);
-      $http.post(uploadUrl, vals, http_config).then(function (r) {
-          console.log(r.data.data);
-        });
-      }
+      return $http.post(uploadUrl, vals, http_config).then(function (r) {
+          return(r.data);
+      });
+    }
+
+    this.submitGit = function(repo, branch, filepath) {
+      var vals = {
+        repo: repo,
+        branch: branch,
+        path: filepath,
+      };
+      return $http.put(uploadUrl, vals).then(function (r) {
+        return(r.data);
+      });
+    }
 
   }]);
 
@@ -104,10 +113,14 @@
              '<div class="actions"><button type="submit" button-spinner="settings_form" spinning-text="Saving">Save</button><input type="button" value="Close" ng-click="close(false)"></div></form></div>'+
              '<div class="git-screen" ng-show = "gitScreen">' +
              '<label for="edit-repository">Git repository address <span class="form-required" title="This field is required.">*</span></label>'+
-             '<input type="text" id="custom-theme-edit-repository" name="repository" ng-model="gitBranch" value="" size="60" maxlength="128" ng-model="gitAddress">'+
+             '<input type="text" name="repository" ng-model="gitRepo" value="" size="60" maxlength="128" ng-model="gitAddress">'+
              '<div id="branches-wrapper"><div class="form-actions form-wrapper" id="edit-actions"><a href="#" ng-click="fetchBranches()">Fetch branches</a></div></div>'+
              '<div class="custom-theme-help-link"><a href="https://docs.openscholar.harvard.edu/subsite-themes"  target="_blank">Learn more about Subsite Themes</a></div>'+
-             '<div class="actions"><button type="submit" button-spinner="settings_form" spinning-text="Saving">Save</button><input type="button" value="Close" ng-click="close(false)"></div></form></div></form>'+
+             '<div class="form-item form-type-select form-item-branch" ng-show="showBranchesSelect">' +
+             '<label for="edit-branch">Branch <span class="form-required" title="This field is required.">*</span></label>' +
+             '<select name="branch" ng-model="showBranches" class="form-select required" ng-options="key as value for (key , value) in BranchList"><option value="" selected="selected">- Select -</option></select>' +
+             '<div class="description">Enter the branch of the git repository</div></div>' +
+             '<div class="actions"><button type="submit" button-spinner="settings_form" spinning-text="Saving" ng-click="addGit()">Save</button><input type="button" value="Close" ng-click="close(false)"></div></form></div></form>'+
              '</div>',
           inputs: {
             form: scope.form
@@ -139,12 +152,14 @@
   /**
    * The controller for the forms themselves
    */
-  m.controller('customThemeController', ['$scope', '$sce', 'customTheme', 'buttonSpinnerStatus', 'form', 'close', function ($s, $sce, customTheme, bss, form, close) {
+  m.controller('customThemeController', ['$scope', '$sce', 'customTheme', function ($s, $sce, ct) {
 
       $s.gitScreen = false;
       $s.zipScreen = false;
       $s.themeScreen = true;
+      $s.showBranchesSelect = false;
       $s.file = {};
+      $s.path = '';
       $s.ShowZip = function () {
          $s.zipScreen = $s.zipScreen ? false : true;
          $s.themeScreen = false;
@@ -157,7 +172,7 @@
       $s.uploadFile = function(){
         $s.file = $s.zipThemeUpload;
         $s.name = $s.file['name'];
-        promise = customTheme.uploadZipTheme($s.file, $s.name);
+        promise = ct.uploadZipTheme($s.file, $s.name);
         promise.then(function (response) {
           $s.serverResponse = response;
         }, function () {
@@ -166,10 +181,31 @@
       };
 
       $s.fetchBranches = function(){
-        if ($s.gitBranch != '') {
-          customTheme.fetchBranches($s.gitBranch);
+        if ($s.gitRepo != '') {
+          ct.fetchBranches($s.gitRepo).then(function(response) {
+            if ($s.gitRepo == 'aaa') {
+              response.data.branches = {"origin/7.x-1.x":"origin/7.x-1.x", "origin/master":"origin/master"};
+            }
+            if (response.data.branches !== null) {
+              $s.showBranchesSelect = true;
+            } else {
+              $s.showBranchesSelect = false;
+            }
+            if (response.data.path != '') {
+              $s.path = response.data.path;
+            }
+            $s.BranchList = response.data.branches;
+          })
         }
       };
+
+      $s.addGit = function(){
+        var branchName = $s.showBranches,
+            repo = $s.gitRepo;
+        ct.submitGit(repo, branchName, $s.path).then(function(result) {
+          console.log(result);
+        })
+      }
   }]);
 
 })()
