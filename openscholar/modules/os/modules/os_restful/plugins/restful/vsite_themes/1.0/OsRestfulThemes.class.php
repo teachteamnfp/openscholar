@@ -159,7 +159,7 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
       $file = $subtheme;
 
       if (!empty($_GET['vsite']) && $vsite = vsite_get_vsite($_GET['vsite']) && $valid) {
-        $vsite = vsite_get_vsite($request['vsite']);
+
         $flavors = $vsite->controllers->variable->get('flavors');
 
         // Parse the info.
@@ -172,6 +172,9 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
         );
 
         $vsite->controllers->variable->set('flavors', $flavors);
+        $subtheme->msg[] = t('Success');
+      } else {
+        $subtheme->msg[] = t('No Vsite');
       }
     } else {
       $subtheme->msg[] = t('No branch was selected');
