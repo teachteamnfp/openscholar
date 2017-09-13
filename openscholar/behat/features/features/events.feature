@@ -78,12 +78,29 @@ Feature:
      Then I should see "Event Daily intelligence briefing has been created"
       And I click "CALENDAR"
      Then I should see "7" events named "Daily intelligence briefing" over the next "1" pages
-      And I should "see" event named "Daily intelligence briefing" on date "P2D" from "now"
-      And I should "not see" event named "Daily intelligence briefing" on date "P3D" from "now"
-      And I should "see" event named "Daily intelligence briefing" on date "P4D" from "now"
+      And I should "see" event named "Daily intelligence briefing" on date "P2D" from "now" over the next "1" pages
+      And I should "not see" event named "Daily intelligence briefing" on date "P3D" from "now" over the next "1" pages
+      And I should "see" event named "Daily intelligence briefing" on date "P4D" from "now" over the next "1" pages
 
   @api @features_first @os_events	@create_repeating_event_that_includes_a_particular_date
   Scenario: Create repeating event that includes a particular date
+    Given I am logging in as "john"
+      And I visit "john/calendar"
+      And I visit "john/node/add/event"
+      And I fill in "Title" with "Press briefing"
+      And I check the box "Repeat"
+      And I select "Daily" from "Repeats"
+      And I select the radio button "After occurrences" with the id "edit-field-date-und-0-rrule-range-of-repeat-count"
+      And I fill in "edit-field-date-und-0-rrule-count-child" with "4"
+      And I check the box "Include dates"
+      And I fill in "edit-field-date-und-0-rrule-additions-rdate-0-datetime-datepicker-popup-0" with date interval "P7D" from "now"
+      And I press "Save"
+     Then I should see "Event Press briefing has been created"
+      And I click "CALENDAR"
+     Then I should see "5" events named "Press briefing" over the next "1" pages
+      And I should "see" event named "Press briefing" on date "P3D" from "now" over the next "1" pages
+      And I should "not see" event named "Press briefing" on date "P4D" from "now" over the next "1" pages
+      And I should "see" event named "Press briefing" on date "P7D" from "now" over the next "1" pages
 
   @api @features_first @os_events	@limit_number_of_registrants_for_an_event
   Scenario: Limit number of registrants for an event
