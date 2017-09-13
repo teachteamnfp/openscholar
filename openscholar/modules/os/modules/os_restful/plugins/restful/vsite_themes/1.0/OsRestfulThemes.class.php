@@ -133,14 +133,14 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
       catch (GitException $e) {
       }
 
-      $subtheme = new SubTheme();
-      $subtheme->path = $path;
+      $sub_theme = new SubTheme();
+      $sub_theme->path = $path;
 
-      if (empty($form_state['subtheme'])) {
+      if (empty($sub_theme)) {
         $valid = FALSE;
       }
 
-      $info = $subtheme->parseInfo();
+      $info = $sub_theme->parseInfo();
 
       $themes = list_themes();
 
@@ -156,7 +156,7 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
 
 
       // Submitting
-      $file = $subtheme;
+      $file = $sub_theme;
 
       if (!empty($_GET['vsite']) && $vsite = vsite_get_vsite($_GET['vsite']) && $valid) {
 
@@ -182,6 +182,7 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
 
     return array(
      'msg' => $subtheme->msg,
+     'sub_theme' => $sub_theme,
     );
   }
 }
