@@ -4058,17 +4058,24 @@ JS;
    */
   public function iShouldSeeNEventsNamedXyzOverTheNextNDateUnits($num_events, $event_title, $num_intervals) {
 
-    $page = $this->getSession()->getPage()->getContent();
-
     $num_events_counted = 0;
-    while ($num_intervals--) {
+
+    $counter = 0;
+    while ($counter++ <= $num_intervals) {
       $num_events_counted += count($this->getSession()->getPage()->findAll('xpath', "//div[@class='calendar-calendar']//a[text()='$event_title']"));
       $page = $this->getSession()->getPage()->getContent();
       $date_next_arrow = $this->getSession()->getPage()->find('xpath', "//li[@class='date-next']/a");
       $date_next_arrow->click();
     }
 
+    $counter = 0;
     if ($num_events_counted == (int)$num_events) {
+
+      # Return to today's calendar page
+      while ($counter++ <= $num_intervals) {
+        $date_prev_arrow = $this->getSession()->getPage()->find('xpath', "//li[@class='date-prev']/a");
+        $date_prev_arrow->click();
+      }
       return true;
     }
     throw new Exception("Found $num_events_counted events, but expected $num_events.\n");
@@ -4082,7 +4089,35 @@ JS;
   public function iFillInFieldWithDateInterval($element_id, $date_interval, $start_date) {
     $now = new DateTime($start_date);
     $future_date = $now->add(new DateInterval($date_interval))->format("M d Y");
-    return new Step\When("I fill in \"edit-field-date-und-0-rrule-until-child-datetime-datepicker-popup-0\" with \"$future_date\"");
+    return new Step\When("I fill in \"$element_id\" with \"$future_date\"");
+  }
+
+  /**
+   * @Then /^I should "([^"]*)" event named "([^"]*)" on date "([^"]*)" from "([^"]*)"$/
+   */
+  public function iShouldSeeTheEventNamedOnDateIntervalFrom($see_or_not, $event_name, $date_interval, $start_date) {
+    $page = $this->getSession()->getPage()->getContent();
+    $now = new DateTime($start_date);
+    $future_date = $now->add(new DateInterval($date_interval))->format("Y-m-d");
+    $xpath_expr =  "//td[@id='os_events-$future_date-0']//a[text()='$event_name']";
+    $event_on_date = $this->getSession()->getPage()->findAll('xpath', $xpath_expr);
+
+    switch($see_or_not) {
+      case "see":
+        if ($event_on_date) {
+          return true;
+        }
+        throw new Exception("The event '$event_name' was not seen in on $future_date.");
+        break;
+      case "not see":
+        if (! $event_on_date) {
+          return true;
+        }
+        throw new Exception("The event '$event_name' was seen in on $future_date.");
+        break;
+      default:
+        throw new Exception("Invalid parameter.  Expected 'see' or 'not see'.");
+    }
   }
 
   /**
