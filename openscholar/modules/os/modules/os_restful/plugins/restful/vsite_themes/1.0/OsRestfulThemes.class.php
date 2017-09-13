@@ -123,7 +123,12 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
 
       // We pull, in case the user wants to reload a subtheme.
       try {
-        cp_appearance_git_checkout($git, $branch);
+        if (strpos($branch, 'remotes') === 0) {
+          $git->checkout($branch, array('t' => TRUE));
+        }
+        else {
+          $git->checkout($branch);
+        }
       }
       catch (GitException $e) {
       }
