@@ -108,6 +108,7 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
 
   // Save
   public function createFromGitBranches() {
+    error_reporting(E_ALL);
     // Initiate the return message
     $subtheme->msg = array();
     $valid = TRUE;

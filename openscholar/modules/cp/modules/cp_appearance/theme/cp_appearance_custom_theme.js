@@ -183,6 +183,7 @@
       $s.fetchBranches = function(){
         if ($s.gitRepo != '') {
           ct.fetchBranches($s.gitRepo).then(function(response) {
+            console.log(response);
             /* for local
             if ($s.gitRepo == 'aaa') {
               response.data.branches = {"origin/7.x-1.x":"origin/7.x-1.x", "origin/master":"origin/master"};
