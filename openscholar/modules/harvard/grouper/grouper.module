@@ -271,8 +271,8 @@ function grouper_user_can_access($group = null, $user = null) {
       watchdog('grouper', 'Pin user: '.print_r($pin_user,1));
       watchdog('grouper', '_SESSION: '.print_r($_SESSION,1));
 
-      if (isset($_SESSION['user_groups'])) {
-        $user_groups = $_SESSION['user_groups'];
+      if (isset($_SESSION['user_groups'][$user->uid])) {
+        $user_groups = $_SESSION['user_groups'][$user->uid];
       }
       else {
         $user_group_raw = grouper_groups_for_huid($pin_user['raw_huid'], 'groups');
@@ -281,7 +281,7 @@ function grouper_user_can_access($group = null, $user = null) {
         if ($user_groups === FALSE) {
           return false;
         } else {
-          $_SESSION['user_groups'] = $user_groups;
+          $_SESSION['user_groups'][$user->uid] = $user_groups;
         }
       }
     }
