@@ -192,6 +192,7 @@ function os_events_gcal_create_calendar() {
   $calendar_calendar->setDescription(isset($vsite->group->field_site_description[LANGUAGE_NONE][0]['safe_value']) ? $vsite->group->field_site_description[LANGUAGE_NONE][0]['safe_value'] : "");
   $calendar_calendar->setSummary(isset($vsite->group->title) ? $vsite->group->title : "OpenScholar Calendar");
   $calendar_calendar->setLocation(isset($vsite->group->field_site_address[LANGUAGE_NONE][0]['value']) ? $vsite->group->field_site_address[LANGUAGE_NONE][0]['value'] : "");
+  $calendar_calendar->setTimezone('America/New_York');
   $calendar = $calendarService->calendars->insert($calendar_calendar);
 
   $name = "os_events";
@@ -217,28 +218,18 @@ function os_events_gcal_create_calendar() {
     $event->setLocation($e->_field_data['nid']['entity']->field_event_location[LANGUAGE_NONE][0]['value']);
     $event->setSummary($e->_field_data['nid']['entity']->title);
 
-    $tz = (isset($e->_field_data['nid']['entity']->field_date[LANGUAGE_NONE][0]['timezone'])) ? 
-            $e->_field_data['nid']['entity']->field_date[LANGUAGE_NONE][0]['timezone'] :
-            'America/New_York';
-
-    $dt1 = new DateTime($e->field_data_field_date_field_date_value);
-    $dt1->setTimezone($tz);
-    $dt2 = new DateTime($e->field_data_field_date_field_date_value2);
-    $dt2->setTimezone($tz);
+    $dt1 = new DateTime($e->field_data_field_date_field_date_value . "Z");
+    $dt2 = new DateTime($e->field_data_field_date_field_date_value2 . "Z");
 
     $calendarDateTime1 = new Google_Service_Calendar_EventDateTime();
     $calendarDateTime2 = new Google_Service_Calendar_EventDateTime();
     $calendarDateTime1->setDateTime($dt1->format(DateTime::RFC3339));
-    $calendarDateTime1->setTimeZone($tz);
     $event->setStart($calendarDateTime1);
     $calendarDateTime2->setDateTime($dt2->format(DateTime::RFC3339));
-    $calendarDateTime2->setTimeZone($tz);
     $event->setEnd($calendarDateTime2);
 
     $calendarService->events->insert($calendar->getId(), $event);
   }
-
-  $view->destroy();
 
   drupal_set_message("Calendar export completed", 'Success');
   drupal_goto(url('/' . $vsite->group->purl . '/calendar'));
