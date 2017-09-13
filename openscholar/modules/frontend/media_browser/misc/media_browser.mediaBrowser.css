@@ -327,15 +327,6 @@ div[file-edit] .control button,
     
     
 }
-#edit-site_favicon_fid-und-drop .media-browser-drop-box span.ng-scope,
-.os-importer-file-upload-wrapper .media-browser-drop-box span.ng-scope,
-.media-browser-pane #media-browser-file-select,
-#edit-field_upload-und-drop span.ng-binding.ng-scope {
-
-    background-color: #3d9b13;
-    border: none;
-  
-}
 
 
 .media-browser-pane #media-browser-file-select {
