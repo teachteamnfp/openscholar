@@ -249,6 +249,10 @@ function grouper_user_can_access($group = null, $user = null) {
     $user = $GLOBALS['user'];
   }
 
+  // For some reason, we weren't gettiing fields on the user object
+  // Try to circumvent this.
+  $user = user_load($user->uid);
+
   if (user_access('bypass grouper restriction', $user) || og_is_member('node', $group->nid, 'user', $user)) {
     return true;
   }
