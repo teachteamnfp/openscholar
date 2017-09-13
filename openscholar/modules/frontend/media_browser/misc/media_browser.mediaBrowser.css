@@ -565,7 +565,7 @@ div[file-edit] .control button,
     font-size: 14px !important;
 }
 
-.ui-dialog .ui-dialog-content {
+.ui-dialog .container-fluid {
    height: auto !important;
 }
 
