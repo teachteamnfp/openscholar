@@ -2329,7 +2329,7 @@ class FeatureContext extends DrupalContext {
     $features = FeatureHelp::VsiteGetVariable($group, 'spaces_features');
     $info = spaces_features('og');
 
-    $current_value = VSITE_ACCESS_PUBLIC;
+    $current_value = "current value not found";
 
     foreach ($info as $k => $i) {
       if ($i->info['name'] == $feature) {
@@ -2350,7 +2350,7 @@ class FeatureContext extends DrupalContext {
      * Enabled = 1
      * Disabled  = 0
      */
-    $new_value;
+
     switch ($status) {
       case 'Disabled':
       default:
@@ -2371,9 +2371,12 @@ class FeatureContext extends DrupalContext {
       new Step\When('I open the admin panel to "Settings"'),
       new Step\When('I sleep for "1"'),
       new Step\When('I click on the "Enable / Disable Apps" control'),
+      new Step\When('I scroll to find "'.$feature.'" in the ".app-form" element'),
+      new Step\When('I wait "1 second"')
     );
 
     $closer = array(
+      new Step\When('I wait "5 seconds"'),
       new Step\When('I press "Save"'),
       new Step\When("I wait for page actions to complete"),
     );
@@ -2387,16 +2390,19 @@ class FeatureContext extends DrupalContext {
     );
 
     $public = array(
-      new Step\When('I click the "Site Members" control in the "'.$feature.'" row'),
+      new Step\When('I click the "[app-privacy-selector]" control in the "'.$feature.'" row'),
       new Step\When('I click the "Everyone" control in the "'.$feature.'" row'),
     );
 
     $private = array(
-      new Step\When('I click the "Everyone" control in the "'.$feature.'" row'),
+      new Step\When('I click the "[app-privacy-selector]" control in the "'.$feature.'" row'),
       new Step\When('I click the "Site Members" control in the "'.$feature.'" row'),
     );
 
     $output = array();
+    if ($current_value == "current value not found") {
+      throw new Exception("No current value found for feature '$feature'");
+    }
     if ($current_value == $new_value) {
       return;
     }
@@ -2423,7 +2429,7 @@ class FeatureContext extends DrupalContext {
    * @Given /^I check the "([^"]*)" box in the "([^"]*)" row$/
    */
   public function iCheckTheBoxInTheRow($column, $row) {
-    $x = '//table/tbody/tr[contains(.,"'.$row.'")]/td[count(//table/thead/tr/th[.="'.$column.'"]/preceding-sibling::th+1]/input[type="checkbox"]';
+    $x = '//table/tbody/tr[contains(.,"'.$row.'")]/td[count(//table/thead/tr/th[.="'.$column.'"]/preceding-sibling::th)+1]/input[@type="checkbox"]';
     $elem = $this->getSession()->getPage()->find('xpath', $x);
     if (!$elem) {
       throw new Exception("No checkbox in the \"$column\" column of row \"$row\"");
@@ -2436,7 +2442,15 @@ class FeatureContext extends DrupalContext {
    * @Given /^I click the "([^"]*)" control in the "([^"]*)" row$/
    */
   public function iClicktheControlInTheRow($control, $row) {
-    $x = '//table/tbody/tr[contains(.,"'.$row.'")]/td/*[contains(.,"'.$control.')]';
+    $x = '//table/tbody/tr[contains(.,"'.$row.'")]/td//';
+    if ($control[0] == '[') {
+      // this is an angular directive we're clicking on
+      $control = trim($control, '[]');
+      $x .= "*[@$control]";
+    }
+    else {
+      $x .= '*[.="'.$control.'"]';
+    }
     $elem = $this->getSession()->getPage()->find('xpath', $x);
     if (!$elem) {
       throw new Exception("No control \"$control\" in the row \"$row\"");
@@ -3882,6 +3896,39 @@ JS;
     elseif ($attempts == 20) {
       throw new Exception("20 attempts were made and the element is still not visible.");
     }
+  }
+
+  /**
+   * @When /^I scroll to find "([^"]*)"$/
+   */
+  function iScrollToFind($text) {
+    $this->getSession()->executeScript("
+      var result = document.evaluate('//*[.=\"$text\"]', document.body, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+      var elem = result.singleNodeValue;
+      elem.scrollIntoView();
+    ");
+  }
+
+  /**
+   * @When /^I scroll to find "([^"]*)" in the "([^"]*)" element$/
+   */
+  function iScrollToFindInElement($text, $selector) {
+    $script = '';
+    switch($selector[0]) {
+      case '/':
+        // xpath
+        $script .= 'var result = document.evaluate("'.$selector.'", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);';
+        $script .= 'var elem = result.singleNodeValue;';
+        break;
+      case '.':
+      case '#':
+        // css
+        $script .= 'var elem = document.querySelector("'.$selector.'");';
+    }
+
+    $script .= "var target = document.evaluate('.//*[.=\"$text\"]', elem, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;";
+    $script .= "target.scrollIntoView()";
+    $this->getSession()->executeScript($script);
   }
 
   /**

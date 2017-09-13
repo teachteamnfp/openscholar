@@ -895,13 +895,14 @@ class FeatureHelp {
   static public function VsiteGetVariable($vsite, $name) {
     $nid = db_select('purl', 'p')
       ->fields('p', array('id'))
-      ->condition('value', $name)
+      ->condition('value', $vsite)
       ->condition('provider', 'spaces_og')
       ->execute()
       ->fetchField();
 
     $vsite = vsite_get_vsite($nid);
-    
+    $vsite->controllers->variable->init_overrides();
+    return $vsite->controllers->variable->get($name);
   }
 
   static public function SetReadOnly($value) {

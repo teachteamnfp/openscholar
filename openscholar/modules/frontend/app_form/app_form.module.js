@@ -94,7 +94,7 @@
     }
 
     return {
-      template: '{{ val == "1" ? "Site Members" : "Everyone" }} <div class="privacy-popup" ng-show="show"><div class="privacy-popup-selector private" data-value="1" ng-class="{selected: val == 1}">Site Members</div><div class="privacy-popup-selector everyone" data-value="0" ng-class="{selected: val == 0}">Everyone</div></div>',
+      template: '{{ val == "1" ? "Site Members" : "Everyone" }}<div class="privacy-popup" ng-show="show"><div class="privacy-popup-selector private" data-value="1" ng-class="{selected: val == 1}">Site Members</div><div class="privacy-popup-selector everyone" data-value="0" ng-class="{selected: val == 0}">Everyone</div></div>',
       scope: {
         val: '=ngModel',
       },
