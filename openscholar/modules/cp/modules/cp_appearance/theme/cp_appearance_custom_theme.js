@@ -8,7 +8,7 @@
   m.service('customTheme', ['$http', '$q', function ($http, $q) {
 
     var baseUrl = Drupal.settings.paths.api;
-    var uploadUrl = baseUrl+'/themes/';
+    var uploadUrl = baseUrl+'/themes';
     var http_config = {
       params: {}
     };
@@ -48,7 +48,7 @@
         branch: branch,
         path: filepath,
       };
-      return $http.put(uploadUrl, vals).then(function (r) {
+      return $http.put(uploadUrl, vals, http_config).then(function (r) {
         return(r.data);
       });
     }

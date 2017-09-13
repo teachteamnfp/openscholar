@@ -158,7 +158,7 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
       // Submitting
       $file = $subtheme;
 
-      if (!empty($request['vsite']) && $valid) {
+      if (!empty($_GET['vsite']) && $vsite = vsite_get_vsite($_GET['vsite']) && $valid) {
         $vsite = vsite_get_vsite($request['vsite']);
         $flavors = $vsite->controllers->variable->get('flavors');
 
