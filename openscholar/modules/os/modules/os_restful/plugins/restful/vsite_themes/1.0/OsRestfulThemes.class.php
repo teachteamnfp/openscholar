@@ -25,9 +25,13 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
     );
   }
 
-  public function uploadZipTheme() {
 
-  }
+  /**
+   * {@inheritdoc}
+  */
+  public function publicFieldsInfo() {}
+
+  public function uploadZipTheme() {}
 
   public function fetchBranches() {
 
