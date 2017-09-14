@@ -136,12 +136,12 @@
              '<div class="description">Enter the branch of the git repository</div></div>' +
              '<div class="actions"><button type="submit" button-spinner="settings_form" spinning-text="Saving" ng-click="addGit()">Save</button><input type="button" value="Close" ng-click="close(false)"></div></div>'+
 
-             '<div ng-show="gitEditScreen"><div class="form-item form-type-item"><h1>Update Starterkit</h1></div>'+
+             '<div ng-show="gitEditScreen"><div class="form-item form-type-item"><h1>Update {{branch}}</h1></div>'+
              '<div id="edit-info" class="form-item form-type-item"><label for="edit-info">Git repository address </label>{{repository_address}}</div>'+
              '<div class="form-item form-type-select form-item-branch"><label for="edit-branch">Branch </label>'+
-               '<select name="branch" ng-model="showEditBranches" class="form-select" ng-options="key as value for (key, value) in EditBranchList">'+
-             '<div class="description">Change the new branch or select the old one and update.</div></div>'+
-             '<div class="form-actions form-wrapper" id="edit-actions"><button type="submit" button-spinner="settings_form" spinning-text="Saving" ng-click="editGit()">Update</button><div id="edit-description" class="form-item form-type-item">This action will pull the latest version of the theme code from GitHub into OpenScholar.</div></div></div>'+
+               '<select name="branch" ng-model="showEditBranches" class="form-select" ng-options="key as value for (key, value) in EditBranchList"></select></div>'+
+             '<div class="description">Change the new branch or select the old one and update.</div>'+
+             '<div class="actions"><button type="submit" button-spinner="settings_form" spinning-text="Updating" ng-click="editGit()">Update</button><input type="button" value="Close" ng-click="close(false)"><div id="edit-description" class="form-item form-type-item">This action will pull the latest version of the theme code from GitHub into OpenScholar.</div></div></div>'+
 
             '</div>',
           inputs: {
@@ -199,6 +199,7 @@
               $s.EditBranchList = r.data.branches;
               $s.showEditBranches = r.data.current_branch;
               $s.path = r.data.path;
+              $s.branch = flavorName.charAt(0).toUpperCase() + flavorName.slice(1);
             }
           })
         }
