@@ -34,15 +34,7 @@
 #site-creation-container #header-container-group-3-page-3 {
     margin: 15px 5px 5px;
 }
-.starter-content-bg,
-#site-creation-container .preNxt,
-#site-creation-container .step.disable,
-#site-creation-container .popup,
-#site-creation-container #body-container-group-2,
-#site-creation-container #body-container-group-3,
-#site-creation-container #body-container-page2,
-#site-creation-container #body-container-page3,
-#site-creation-container #body-container-group-1 {
+.starter-content-bg, #site-creation-container .preNxt, #site-creation-container .step.disable, #site-creation-container .popup, #site-creation-container #body-container-group-2, #site-creation-container #body-container-group-3 {
     background-color: #efefef;
 }
 .os-themes,
@@ -60,6 +52,13 @@
 #site-creation-container .right {
     float: right;
 }
+
+.starter-content-bg {
+	width: 30%;
+	
+}
+
+
 #site-creation-container .step-container {
     padding: 3px 10px;
     width: 30%;
@@ -75,6 +74,7 @@
 #site-creation-container .center {
     text-align: center;
 }
+.starter-content-bg,
 #site-creation-container .preNxt,
 #site-creation-container .step,
 #site-creation-container a:hover.button,
