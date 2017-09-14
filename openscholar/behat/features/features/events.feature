@@ -119,6 +119,6 @@ Feature:
       And I turn off Mollom CAPTCHA verification
       And I fill in "Email" with "khrushchev@kremlin.ru"
       And I fill in "Full name" with "Nikita Khrushchev"
-      And I fill in "Verification" with "correct"
+#     And I fill in "Verification" with "correct"
       And I press "Signup"
      Then I should see "Sorry, the event is full"
