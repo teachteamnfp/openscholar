@@ -184,6 +184,8 @@
             }
             if (typeof r.data.branches !== 'undefined') {
               $s.EditBranchList = r.data.branches;
+              $s.EditBranchList = r.data.branches;
+              $s.showEditBranches = r.data.current_branch;
             }
           })
         }
@@ -227,8 +229,7 @@
             }
             if (typeof r.data.branches !== 'undefined') {
               $s.showBranchesSelect = true;
-              $s.BranchList = r.data.branches;
-              $s.showEditBranches = r.data.current_branch;
+              $s.BranchList = r.data.branches;              
             } else {
               $s.showBranchesSelect = false;
             }
