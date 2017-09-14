@@ -502,9 +502,10 @@ function theme_cp_appearance_theme_picker_form($variables) {
         $selected_subtheme = 'current';
       }
       $class = strpos($info['path'], 'zip') !== FALSE ? 'zip-pull-button' : 'git-pull-button';
+      $edit_type = strpos($info['path'], 'zip') !== FALSE ? 'zip' : 'git';
       $actions = array(
-        "<div class='delete-subtheme'>" . l(t('Delete'), 'cp/appearance/delete-subtheme/' . $flavor) . "</div>",
-        "<div class='" . $class . "'>" . l(t('Update'), 'cp/appearance/update-subtheme/' . $flavor) . "</div>",
+        "<div class='delete-subtheme' cp-appearance-custom-theme form='delete-subtheme-" . $flavor . "'><a>" . t('Delete') . "</a></div>",
+        "<div class='" . $class . "' cp-appearance-custom-theme form='edit-subtheme-" . $edit_type . "-" . $flavor . "'><a>" . t('Update') . "</a></div>",
       );
 
       $items[] = array(

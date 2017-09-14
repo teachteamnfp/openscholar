@@ -37,9 +37,14 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
   public function fetchBranches() {
 
     $branches = array();
+    $selected_branch = '';
     // Initiate the return message
     $subtheme->msg = array();
+    $repo_address = '';
+    $current_branch = '';
+
     $branch_name = isset($this->request['git']) ? urldecode($this->request['git']) : '';
+    $flavor = isset($this->request['flavor']) ? urldecode($this->request['flavor']) : '';
 
     if ($repository_address = !empty($branch_name) ? trim($branch_name) : FALSE) {
       $wrapper = new GitWrapper();
@@ -84,17 +89,46 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
 
       $sub_theme = new SubTheme();
       $sub_theme->path = $path;
-    }
 
-    $valid_repo = FALSE;
+      $valid_repo = FALSE;
+      if ($branches) {
+        $valid_repo = TRUE;
+      }
+      elseif (!$branches && $repository_address) {
+        $subtheme->msg[] = t('Git repository is wrong.');
+      }
+      if ($valid_repo) {
+        // return msg with $branches;
+        $subtheme->branches = $branches;
+      }
 
-    if ($branches) {
-      $valid_repo = TRUE;
-    }
-    elseif (!$branches && $repository_address) {
-      $subtheme->msg[] = t('Git repository is wrong.'); 
-    }
-    if ($valid_repo) {
+      // For return purpose only
+      $repo_address = $repository_address;
+
+    } else {
+
+      // In case of editing populate the repository and branches information
+      $repo_address = $git->remote()->config('remote.origin.url')->getOutput();
+
+      if (!empty($_GET['vsite'])) {
+        $vsite = vsite_get_vsite($_GET['vsite']);
+        $flavors = $vsite->controllers->variable->get('flavors');
+        $info = $flavors[$flavor];
+        $path = $info['path'];
+      }
+
+      // Get the current branch.
+      $current_branches = explode("\n", $git->branch()->getOutput());
+      foreach ($current_branches as $branch) {
+        if ($branch && strpos($branch, '*') === 0) {
+          $selected_branch = trim(str_replace("*", '', $branch));
+        }
+      }
+
+      // Get the available branches.
+      foreach ($git->getBranches() as $branch) {
+        $branches[$branch] = $branch;
+      }
       // return msg with $branches;
       $subtheme->branches = $branches;
     }
@@ -103,6 +137,8 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
       'branches' => $subtheme->branches,
       'msg' => $subtheme->msg,
       'path' => $sub_theme->path,
+      'repo' => $repo_address,
+      'current_branch' => $selected_branch,
     );
   }
 

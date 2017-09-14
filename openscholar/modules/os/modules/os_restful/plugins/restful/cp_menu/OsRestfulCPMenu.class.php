@@ -325,6 +325,7 @@ class OSRestfulCPMenu extends \RestfulBase implements \RestfulDataProviderInterf
               'type' => 'directive',
               'directive' => array(
                 'cp-appearance-custom-theme',
+                'form' => 'add-subtheme',
               ),
             );
 
