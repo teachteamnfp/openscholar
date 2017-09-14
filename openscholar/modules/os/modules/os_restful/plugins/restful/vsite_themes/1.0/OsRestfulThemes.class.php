@@ -22,6 +22,7 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
       // We don't know what the ID looks like, assume that everything is the ID.
       '^.*$' => array(
         \RestfulInterface::POST => 'uploadZipTheme',
+        \RestfulInterface::PUT => 'editTheme',
       ),
     );
   }
@@ -113,6 +114,7 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
         $flavors = $vsite->controllers->variable->get('flavors');
         $info = $flavors[$flavor];
         $path = $info['path'];
+        $sub_theme->path = $path;
 
         $wrapper = new GitWrapper();
         $wrapper->setPrivateKey('.');
@@ -232,4 +234,48 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
      'sub_theme' => $sub_theme,
     );
   }
+
+  // Edit theme
+  public function editTheme() {
+    $subtheme->msg = array();
+    if (!empty($this->request['branch'])) {
+      $branch = $this->request['branch'];
+      $wrapper = new GitWrapper();
+      $wrapper->setPrivateKey('.');
+      $git = $wrapper->workingCopy($branch);
+
+      $success = TRUE;
+      // We didn't just updated - we change the branch. Checking out to that branch.
+      try {
+        if (strpos($branch, 'remotes') === 0) {
+          $git->checkout($branch, array('t' => TRUE));
+        }
+        else {
+          $git->checkout($branch);
+        }
+      }
+      catch (GitException $e) {
+        $subtheme->msg[] = $e->getMessage();
+        $success = FALSE;
+      }
+
+      // Pulling hte data from the git repository.
+      try {
+        $git->pull();
+      }
+      catch (GitException $e) {
+        $subtheme->msg[] = $e->getMessage();
+        $success = FALSE;
+      }
+
+      if ($success) {
+        $subtheme->msg[] = t('The subtheme updated succesfully.');
+      }
+    }
+    return array(
+     'msg' => $subtheme->msg,
+     'sub_theme' => $sub_theme,
+    );
+  }
+
 }

@@ -54,6 +54,17 @@
       });
     }
 
+    this.editGit = function(branch, filepath) {
+      var vals = {
+        branch: branch,
+        path: filepath,
+      };
+      uploadUrl = uploadUrl + '/git';
+      return $http.put(uploadUrl, vals, http_config).then(function (r) {
+        return(r.data);
+      });
+    }
+
   }]);
 
   /**
@@ -130,7 +141,7 @@
              '<div class="form-item form-type-select form-item-branch"><label for="edit-branch">Branch </label>'+
                '<select name="branch" ng-model="showEditBranches" class="form-select" ng-options="key as value for (key, value) in EditBranchList">'+
              '<div class="description">Change the new branch or select the old one and update.</div></div>'+
-             '<div class="form-actions form-wrapper" id="edit-actions"><input type="submit" id="edit-submit" name="op" value="Update" class="form-submit"><div id="edit-description" class="form-item form-type-item">This action will pull the latest version of the theme code from GitHub into OpenScholar.</div></div></div>'+
+             '<div class="form-actions form-wrapper" id="edit-actions"><button type="submit" button-spinner="settings_form" spinning-text="Saving" ng-click="editGit()">Update</button><div id="edit-description" class="form-item form-type-item">This action will pull the latest version of the theme code from GitHub into OpenScholar.</div></div></div>'+
 
             '</div>',
           inputs: {
@@ -171,6 +182,8 @@
       $s.showBranchesSelect = false;
       $s.gitEditScreen = false;
       $s.themeDeleteScreen = false;
+      $s.file = {};
+      $s.path = '';
       var formId = form;
 
       if(formId.indexOf("edit-subtheme") > -1) {
@@ -184,8 +197,8 @@
             }
             if (typeof r.data.branches !== 'undefined') {
               $s.EditBranchList = r.data.branches;
-              $s.EditBranchList = r.data.branches;
               $s.showEditBranches = r.data.current_branch;
+              $s.path = r.data.path;
             }
           })
         }
@@ -194,8 +207,7 @@
       } else {
         $s.themeScreen = true;
       }
-      $s.file = {};
-      $s.path = '';
+
       $s.ShowZip = function () {
          $s.zipScreen = $s.zipScreen ? false : true;
          $s.themeScreen = false;
@@ -236,6 +248,12 @@
           })
         }
       };
+
+      $s.editGit = function(){
+        ct.editGit($s.showEditBranches, $s.path).then(function(result) {
+          console.log(result);
+        })
+      }
 
       $s.addGit = function(){
         var branchName = $s.showBranches,
