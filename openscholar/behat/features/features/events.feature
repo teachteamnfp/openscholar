@@ -121,4 +121,6 @@ Feature:
       And I fill in "Full name" with "Nikita Khrushchev"
 #     And I fill in "Verification" with "correct"
       And I press "Signup"
+     Then I should see "Registration has been saved"
+      And I visit "john/event/state-dinner"
      Then I should see "Sorry, the event is full"
