@@ -11,32 +11,31 @@ Feature:
      When I click on the "Enable / Disable Apps" control
       #And I should see "Apps"
      Then I should see the "apps-table" table with the following <contents>:
-      | Blog          | Public |
-      | Booklets      | Public |
-      | Classes       | Public |
-      | Dataverse     | Public |
-      | Events        | Public |
-      | Image Gallery | Public |
-      | Links         | Public |
-      | News          | Public |
-      | Basic Pages   | Public |
-      | Presentations | Public |
-      | Profiles      | Public |
-      | Publications  | Public |
-      | Reader        | Public |
-      | Software      | Public |
+      | Blog          | Everyone |
+      | Booklets      | Everyone |
+      | Classes       | Everyone |
+      | Events        | Everyone |
+      | Media Gallery | Everyone |
+      | Links         | Everyone |
+      | News          | Everyone |
+      | Basic Pages   | Everyone |
+      | Presentations | Everyone |
+      | Profiles      | Everyone |
+      | Publications  | Everyone |
+      | Reader        | Everyone |
+      | Software      | Everyone |
 
   @api @features_first @javascript
     Scenario: Check site owner can't manage permissions of disabled app.
       Given I am logging in as "john"
-        And I set feature "edit-os-booklets" to "Disabled" on "john"
+        And I set feature "Booklets" to "Disabled" on "john"
        When I visit "john/cp/users/permissions"
        Then I should not see "Create book page content"
 
   @api @features_first @javascript
     Scenario: Check enabling app brings back its permissions.
       Given I am logging in as "john"
-        And I set feature "edit-os-booklets" to "Public" on "john"
+        And I set feature "Booklets" to "Public" on "john"
        When I visit "john/cp/users/permissions"
        Then I should see "Create book page content"
 

@@ -463,16 +463,18 @@ class FeatureContext extends DrupalContext {
       throw new Exception("A table with the class $class wasn't found");
     }
 
-    $table_rows = $table->getRows();
     $hash = $table->getRows();
     // Iterate over each row, just so if there's an error we can supply
     // the row number, or empty values.
-    foreach ($table_rows as $i => $table_row) {
-      if (empty($table_row)) {
-        continue;
+    foreach ($hash as $vals) {
+      $xpath_fragments = array();
+      foreach ($vals as $v) {
+        $xpath_fragments[] = 'td//text()[contains(.,"'.$v.'") and not(ancestor::*[contains(@class, "ng-hide")])]';
       }
-      if ($diff = array_diff($hash[$i], $table_row)) {
-        throw new Exception(sprintf('The "%d" row values are wrong.', $i + 1));
+      $xpath = '//tr['.implode(' and ', $xpath_fragments).']';
+      if (!$table_element->findAll('xpath', $xpath)) {
+        error_log($xpath);
+        throw new Exception("Row with the following values not found: ".implode(', ', $vals));
       }
     }
   }
