@@ -108,29 +108,33 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
     } else {
 
       // In case of editing populate the repository and branches information
-      $repo_address = $git->remote()->config('remote.origin.url')->getOutput();
-
       if (!empty($_GET['vsite'])) {
         $vsite = vsite_get_vsite($_GET['vsite']);
         $flavors = $vsite->controllers->variable->get('flavors');
         $info = $flavors[$flavor];
         $path = $info['path'];
-      }
 
-      // Get the current branch.
-      $current_branches = explode("\n", $git->branch()->getOutput());
-      foreach ($current_branches as $branch) {
-        if ($branch && strpos($branch, '*') === 0) {
-          $selected_branch = trim(str_replace("*", '', $branch));
+        $wrapper = new GitWrapper();
+        $wrapper->setPrivateKey('.');
+        $git = $wrapper->workingCopy($path);
+
+        // Get the current branch.
+        $current_branches = explode("\n", $git->branch()->getOutput());
+        foreach ($current_branches as $branch) {
+          if ($branch && strpos($branch, '*') === 0) {
+            $selected_branch = trim(str_replace("*", '', $branch));
+          }
         }
-      }
 
-      // Get the available branches.
-      foreach ($git->getBranches() as $branch) {
-        $branches[$branch] = $branch;
+        $repo_address = $git->remote()->config('remote.origin.url')->getOutput();
+
+        // Get the available branches.
+        foreach ($git->getBranches() as $branch) {
+          $branches[$branch] = $branch;
+        }
+        // return msg with $branches;
+        $subtheme->branches = $branches;
       }
-      // return msg with $branches;
-      $subtheme->branches = $branches;
     }
 
     return array(
