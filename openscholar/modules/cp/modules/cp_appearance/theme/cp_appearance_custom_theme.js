@@ -178,6 +178,7 @@
         var flavorName = formId.split("edit-subtheme-git-");
         if (angular.isArray(flavorName) && typeof(flavorName[1]) !== 'undefined') {
           ct.fetchBranches('', flavorName[1]).then(function(r) {
+            console.log(r);
             if (typeof r.data.repo !== 'undefined') {
               $s.repository_address = r.data.repo;
             }
