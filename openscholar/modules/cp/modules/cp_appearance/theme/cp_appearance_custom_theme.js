@@ -20,7 +20,7 @@
         {orgFileName:name},
       ];
       var deffered = $q.defer();
-      $http.post(uploadUrl + 'abcd/', file, config, {
+      $http.post(uploadUrl, file, config, {
         transformRequest: angular.identity,
         headers: {'Content-Type': undefined}
       })
@@ -61,6 +61,20 @@
       };
       uploadUrl = uploadUrl + '/git';
       return $http.put(uploadUrl, vals, http_config).then(function (r) {
+        return(r.data);
+      });
+    }
+
+    this.getFlavorName = function(flavor) {
+      uploadUrl = uploadUrl + '/' + flavor;
+      return $http.get(uploadUrl, http_config).then(function (r) {
+        return(r.data);
+      });
+    }
+
+    this.deleteTheme = function(flavor) {
+      uploadUrl = uploadUrl + '/' + flavor;
+      return $http.delete(uploadUrl, http_config).then(function (r) {
         return(r.data);
       });
     }
@@ -143,6 +157,10 @@
              '<div class="description">Change the new branch or select the old one and update.</div>'+
              '<div class="actions"><button type="submit" button-spinner="settings_form" spinning-text="Updating" ng-click="editGit()">Update</button><input type="button" value="Close" ng-click="close(false)"><div id="edit-description" class="form-item form-type-item">This action will pull the latest version of the theme code from GitHub into OpenScholar.</div></div></div>'+
 
+             '<div ng-show="deleteScreen">'+
+             '<div class="description">{{flavor_name}} Deleting the sub theme will remove her files and cannot be undone.</div>'+
+             '<div class="actions"><button type="submit" button-spinner="settings_form" spinning-text="Deleting" ng-click="deleteSubtheme()">Delete</button><input type="button" value="Close" ng-click="close(false)"></div></div>'+
+
             '</div>',
           inputs: {
             form: scope.form
@@ -181,9 +199,10 @@
       $s.themeScreen = false;
       $s.showBranchesSelect = false;
       $s.gitEditScreen = false;
-      $s.themeDeleteScreen = false;
+      $s.deleteScreen = false;
       $s.file = {};
       $s.path = '';
+      $s.flavor = '';
       var formId = form;
 
       if(formId.indexOf("edit-subtheme") > -1) {
@@ -199,12 +218,22 @@
               $s.EditBranchList = r.data.branches;
               $s.showEditBranches = r.data.current_branch;
               $s.path = r.data.path;
-              $s.branch = flavorName.charAt(0).toUpperCase() + flavorName.slice(1);
+              $s.branch = r.data.flavor_name;
             }
           })
         }
       } else if(formId.indexOf("delete-subtheme") > -1) {
-        $s.themeDeleteScreen = true;
+        $s.deleteScreen = true;
+        var flavorName = formId.split("delete-subtheme-");
+        if (angular.isArray(flavorName) && typeof(flavorName[1]) !== 'undefined') {
+          ct.getFlavorName(flavorName[1]).then(function(r) {
+            console.log(r);
+            if (typeof r.data !== 'undefined') {
+              $s.flavor_name = r.data.flavor_name;
+              $s.flavor = flavorName[1];
+            }
+          })
+        }
       } else {
         $s.themeScreen = true;
       }
@@ -260,6 +289,12 @@
         var branchName = $s.showBranches,
             repo = $s.gitRepo;
         ct.submitGit(repo, branchName, $s.path).then(function(result) {
+          console.log(result);
+        })
+      }
+
+      $s.deleteSubtheme = function(){
+        ct.deleteTheme($s.flavor).then(function(result) {
           console.log(result);
         })
       }

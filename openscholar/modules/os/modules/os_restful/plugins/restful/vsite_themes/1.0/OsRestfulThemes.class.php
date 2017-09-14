@@ -23,6 +23,8 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
       '^.*$' => array(
         \RestfulInterface::POST => 'uploadZipTheme',
         \RestfulInterface::PUT => 'editTheme',
+        \RestfulInterface::GET => 'getFlavorName',
+        \RestfulInterface::DELETE => 'deleteSubTheme',
       ),
     );
   }
@@ -43,6 +45,7 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
     $subtheme->msg = array();
     $repo_address = '';
     $current_branch = '';
+    $flavor_name = '';
 
     $branch_name = isset($this->request['git']) ? urldecode($this->request['git']) : '';
     $flavor = isset($this->request['flavor']) ? urldecode($this->request['flavor']) : '';
@@ -114,6 +117,7 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
         $flavors = $vsite->controllers->variable->get('flavors');
         $info = $flavors[$flavor];
         $path = $info['path'];
+        $flavor_name = $info['name'];
         $sub_theme->path = $path;
 
         $wrapper = new GitWrapper();
@@ -145,6 +149,7 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
       'path' => $sub_theme->path,
       'repo' => $repo_address,
       'current_branch' => $selected_branch,
+      'flavor_name' => $flavor_name,
     );
   }
 
@@ -278,4 +283,57 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
     );
   }
 
+  public function getFlavorName($flavor) {
+    $flavor_name = '';
+    if (!empty($_GET['vsite']) && !empty($flavor)) {
+      $vsite = vsite_get_vsite($_GET['vsite']);
+      $flavors = $vsite->controllers->variable->get('flavors');
+      $info = $flavors[$flavor];
+      $flavor_name = $info['name'];
+    }
+    return array(
+       'flavor_name' => $flavor_name,
+    );
+  }
+
+  public function deleteSubTheme($flavor) {
+    $subtheme->msg = array();
+    if (!empty($_GET['vsite']) && !empty($flavor)) {
+      $vsite = vsite_get_vsite($_GET['vsite']);
+      $flavors = $vsite->controllers->variable->get('flavors');
+      $info = $flavors[$flavor];
+      $dir = $info['path'];
+      $params = array('%title' => $info['name']);
+      // Remove the folder and set the redirect.
+      try {
+        $it = new RecursiveDirectoryIterator($dir);
+        $files = new RecursiveIteratorIterator($it, RecursiveIteratorIterator::CHILD_FIRST);
+        foreach($files as $file) {
+          if ($file->getFilename() === '.' || $file->getFilename() === '..') {
+            continue;
+          }
+
+          if ($file->isDir()) {
+            rmdir($file->getRealPath());
+          }
+          else {
+            unlink($file->getRealPath());
+          }
+        }
+        rmdir($dir);
+      } catch (Exception $e) {
+        $params = array('@error' => $e->getMessage());
+        $subtheme->msg[] = t('An error occurred: @error', $params);
+      }
+
+      $subtheme->msg[] = t('The theme %title has been removed.', $params);
+      unset($flavors[$flavor]);
+      $vsite->controllers->variable->set('flavors', $flavors);
+    }
+
+    return array(
+     'msg' => $subtheme->msg,
+     'sub_theme' => $sub_theme,
+    );
+  }
 }
