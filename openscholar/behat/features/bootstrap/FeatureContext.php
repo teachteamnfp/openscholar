@@ -4092,6 +4092,9 @@ JS;
     while ($counter++ <= $num_intervals) {
       $num_events_counted += count($this->getSession()->getPage()->findAll('xpath', "//div[@class='calendar-calendar']//a[text()='$event_title']"));
       $page = $this->getSession()->getPage()->getContent();
+
+      error_log("EAM Entering " . __FILE__ . ":" . __LINE__ . ", \$page = " . var_export($page, true));
+
       $date_next_arrow = $this->getSession()->getPage()->find('xpath', "//li[@class='date-next']/a");
       $date_next_arrow->click();
     }
