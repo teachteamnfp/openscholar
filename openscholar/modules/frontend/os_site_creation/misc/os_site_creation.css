@@ -1,276 +1,244 @@
-#site-creation-container{
-  margin: 0;
-  padding: 0;
-  line-height: 1.4;
-  margin: auto;
-  width: 60%;
-  padding: 20px;
+#site-creation-container {
+    margin: 0;
+    padding: 0;
+    line-height: 1.4;
+    margin: auto;
+    width: 60%;
+    padding: 20px;
 }
 #site-creation-container a,
 #site-creation-container .preNxt {
-  color: #215990;
+    color: #215990;
 }
 #site-creation-container #header-container-page-1,
 #site-creation-container #header-container-page2,
-#site-creation-container #header-container-page3{
-  padding: 5px;
+#site-creation-container #header-container-page3 {
+    padding: 5px;
 }
-
+#site-creation-container #footer-container,
+#site-creation-container #body-container-group-2,
+#site-creation-container #body-container-group-3,
+#site-creation-container #body-container-group-1,
+#site-creation-container #body-container-page2,
+#site-creation-container #body-container-page3,
 #site-creation-container #header-container-group-1,
 #site-creation-container #header-container-group-2,
 #site-creation-container #header-container-group-1-page2,
 #site-creation-container #header-container-group-2-page2,
 #site-creation-container #header-container-group-1-page3,
-#site-creation-container #header-container-group-2-page3{
-  overflow: hidden;
+#site-creation-container #header-container-group-2-page3 {
+    overflow: hidden;
 }
-
 #site-creation-container #header-container-group-3,
 #site-creation-container #header-container-group-3-page-2,
-#site-creation-container #header-container-group-3-page-3{
-  margin: 15px 5px 5px;
+#site-creation-container #header-container-group-3-page-3 {
+    margin: 15px 5px 5px;
 }
-
-#site-creation-container .step-container {
-  padding: 3px 10px;
-  float: left;
-  width: 30%;
-  font-size: 1.2em;
-}
-
-#site-creation-container .clear{
-  clear: both;
-}
-
-#site-creation-container .center{
-  text-align:center;
-}
-
-#site-creation-container #body-container{
-  height: 382px;
-}
-
-#site-creation-container #body-container-group-1{
-  margin: 15px 5px 5px;
-  height: 130px;
-  overflow: hidden;
-}
-
-#site-creation-container #body-container-page2,
-#site-creation-container #body-container-page3{
-  margin: 15px 5px 5px;
-  height: 393px;
-  overflow: hidden;
-}
-
+.starter-content-bg,
+#site-creation-container .preNxt,
+#site-creation-container .step.disable,
+#site-creation-container .popup,
 #site-creation-container #body-container-group-2,
-#site-creation-container #body-container-group-3{
-margin: 5px;
-    overflow: hidden;
+#site-creation-container #body-container-group-3,
+#site-creation-container #body-container-page2,
+#site-creation-container #body-container-page3,
+#site-creation-container #body-container-group-1 {
     background-color: #efefef;
 }
-
-
-#site-creation-container .visibility{
-  float: left;
-  margin: 3px;
-  padding: 4px;
-  vertical-align: bottom;
+.os-themes,
+#site-creation-container #footer-container div#nxt,
+#site-creation-container #footer-container div#pre,
+#site-creation-container .visibility,
+#site-creation-container .step-container,
+#site-creation-container .site-type,
+#site-creation-container .left,
+.os-themes .cp-themes {
+    float: left;
 }
-
-#site-creation-container .right{
-  float: right;
+.os-themes .theme-info .form-type-select,
+.os-themes .theme-info .cp-appearance-flavor-list,
+#site-creation-container .right {
+    float: right;
 }
-
-#site-creation-container .left{
-  float: left;
+#site-creation-container .step-container {
+    padding: 3px 10px;
+    width: 30%;
+    font-size: 1.2em;
 }
-
-#site-creation-container .site-type{
-  padding: 3px 10px;
-  display:inline-block;
-  float: left;
-  width: 30%;
+#site-creation-container .clear {
+    clear: both;
 }
-
+#site-creation-container .preNxt,
+#site-creation-container .step,
+#site-creation-container a.button,
+#site-creation-container a:hover.button,
+#site-creation-container .center {
+    text-align: center;
+}
+#site-creation-container .preNxt,
+#site-creation-container .step,
+#site-creation-container a:hover.button,
+#site-creation-container a.button,
+#site-creation-container .site-type,
+.os-themes .cp-themes {
+    display: inline-block;
+}
+#site-creation-container #body-container {
+    height: 382px;
+}
+#site-creation-container #body-container-group-1 {
+    height: 130px;
+}
+#site-creation-container #body-container-page2,
+#site-creation-container #body-container-page3 {
+    height: 393px;
+}
+#site-creation-container #body-container-group-2,
+#site-creation-container #body-container-group-3 {
+    margin: 5px;
+}
+#site-creation-container .preNxt,
+#site-creation-container .step,
+#site-creation-container a:hover.button,
 #site-creation-container a,
-#site-creation-container a:visited{
-  text-decoration: none;
+#site-creation-container a:visited,
+#site-creation-container a.button {
+    text-decoration: none;
 }
-
-#site-creation-container a:hover{
-  text-decoration: underline;
-  cursor: pointer;
+#site-creation-container a:hover.button,
+#site-creation-container a.button {
+    background: none;
 }
-
-#site-creation-container a.button{
-  margin: 0;
-   background: none;
-  text-decoration: none;
-  background-color: #696969;
-  border: none;
-  color: white;
-  padding: 8px 16px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-
+#site-creation-container .visibility {
+    margin: 3px;
+    padding: 4px;
+    vertical-align: bottom;
 }
-
-#site-creation-container a:hover.button{
-  margin: 0;
-  background: none;
-  text-decoration: none;
-  background-color: #3f3f3f;
-  border: none;
-  color: white;
-  padding: 8px 16px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
- 
+#site-creation-container .site-type {
+    padding: 3px 10px;
+    width: 30%;
 }
-
-#site-creation-container #footer-container {
-  overflow: hidden;
+#site-creation-container a:hover {
+    text-decoration: underline;
+    cursor: pointer;
 }
-
+#site-creation-container a.button {
+    margin: 0;
+    background-color: #696969;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+}
+#site-creation-container a:hover.button {
+    margin: 0;
+    background-color: #3f3f3f;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+}
 #site-creation-container #footer-container div#pre {
-  float: left;
-  padding: 4px 12px;
-  padding: 4px 12px;
-  width: 400px;
+    padding: 4px 12px;
+    padding: 4px 12px;
+    width: 400px;
 }
-
 #site-creation-container #footer-container div#nxt {
-  float: left;
-  text-align: right;
-  padding: 4px 12px;
-  padding: 4px 12px;
-  width: 400px;
+    text-align: right;
+    padding: 4px 12px;
+    padding: 4px 12px;
+    width: 400px;
 }
-
-#site-creation-container .popup{
-background-color: #efefef;
+#site-creation-container .popup {
     margin: 0px 5px;
     padding: 8px;
     text-align: left;
 }
-
-#site-creation-container .error-msg{
-  color: red; padding: 5px;
+#site-creation-container .error-msg {
+    color: red;
+    padding: 5px;
 }
-
 #site-creation-container .step {
-  background-color: #4CAF50;
-  border: none;
-  color: white;
-  /* padding: 10px 16px; */
-  border-radius: 50%;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-weight: bold;
-  height: 50px;
-  width: 50px;
-  /* padding: 15px 15px; */
-  line-height: 50px;
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    /* padding: 10px 16px; */
+    
+    border-radius: 50%;
+    font-weight: bold;
+    height: 50px;
+    width: 50px;
+    /* padding: 15px 15px; */
+    
+    line-height: 50px;
 }
-
 #site-creation-container .step.enable {
-  background-color: #4CAF50;
-
+    background-color: #4CAF50;
 }
-
 #site-creation-container .step.disable {
-  background-color: #efefef;
-  color:#333;
- 
+    color: #333;
 }
-
 #site-creation-container .preNxt {
-  background-color: #efefef;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 3px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-
-
+    border: none;
+    padding: 10px 16px;
+    border-radius: 3px;
 }
 #site-creation-container #nxt .preNxt:after {
-  content:'→';
-  position:absolute;
-right:45px;
-font-size:1.5em;
+    content: '→';
+    position: absolute;
+    right: 45px;
+    font-size: 1.5em;
 }
 #site-creation-container #pre .preNxt:before {
-  content:'←';
-  position:absolute;
-left:45px;
-font-size:1.5em;
+    content: '←';
+    position: absolute;
+    left: 45px;
+    font-size: 1.5em;
 }
-
-#site-creation-container .preNxt:disabled{
- 
-  display: none;
- 
+#site-creation-container .preNxt:disabled {
+    display: none;
 }
-
-#site-creation-container p{
-  margin: 1em 0;
-  padding: 0;
+#site-creation-container p {
+    margin: 1em 0;
+    padding: 0;
 }
-
-
-
 #site-creation-container #body-container-page3 {
-  overflow: scroll;
+    overflow: scroll;
 }
-.os-themes {
-  float: left;
-}
-.os-themes .cp-themes{
-  float: left;
-  padding: 0;
-  margin: 3px 20px 30px 3px;
-  display: inline-block;
-  vertical-align: top;
-  width: 245px;
-  height: 300px;
-  position: relative;
-  -moz-box-shadow: 0 0 7px #888;
-  -webkit-box-shadow: 0 0 7px #888;
-  box-shadow: 0 0 7px #888;
-  color: #fff;
-  cursor: pointer;
+.os-themes .cp-themes {
+    padding: 0;
+    margin: 3px 20px 30px 3px;
+    vertical-align: top;
+    width: 245px;
+    height: 300px;
+    position: relative;
+    -moz-box-shadow: 0 0 7px #888;
+    -webkit-box-shadow: 0 0 7px #888;
+    box-shadow: 0 0 7px #888;
+    color: #fff;
+    cursor: pointer;
 }
 .os-themes .cp-themes.selected {
-  -moz-box-shadow: 0 0 30px #4a7d06;
-  -webkit-box-shadow: 0 0 30px #4a7d06;
-  box-shadow: 0 0 30px #4a7d06;
+    -moz-box-shadow: 0 0 30px #4a7d06;
+    -webkit-box-shadow: 0 0 30px #4a7d06;
+    box-shadow: 0 0 30px #4a7d06;
 }
-.os-themes .theme-info{
-  position: absolute;
-  background: #3f74a2;
-  border-top: 1px solid #2a6598;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 10px 12px;
-  height: 15px;
+.os-themes .theme-info {
+    position: absolute;
+    background: #3f74a2;
+    border-top: 1px solid #2a6598;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px 12px;
+    height: 15px;
 }
 .os-themes .theme-info .cp-appearance-flavor-list {
-  text-align: right;
-  float: right;
+    text-align: right;
 }
 .os-themes .theme-info .form-type-select {
-  float: right;
-  margin: -4px 0 0 10px;
-  width: 60%;
-  padding: 2px 0;
+    margin: -4px 0 0 10px;
+    width: 60%;
+    padding: 2px 0;
 }
-.os-themes .theme-info .form-type-select select{
-  max-width: 90px;
+.os-themes .theme-info .form-type-select select {
+    max-width: 90px;
 }
