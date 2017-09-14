@@ -77,7 +77,7 @@ Feature:
       And I press "Save"
      Then I should see "Event Daily intelligence briefing has been created"
       And I click "CALENDAR"
-     Then I should see "7" events named "Daily intelligence briefing" over the next "1" pages
+     Then I should see "14" events named "Daily intelligence briefing" over the next "1" pages
       And I should "see" event named "Daily intelligence briefing" on date "P2D" from "now" over the next "1" pages
       And I should "not see" event named "Daily intelligence briefing" on date "P3D" from "now" over the next "1" pages
       And I should "see" event named "Daily intelligence briefing" on date "P4D" from "now" over the next "1" pages
@@ -97,7 +97,7 @@ Feature:
       And I press "Save"
      Then I should see "Event Press briefing has been created"
       And I click "CALENDAR"
-     Then I should see "5" events named "Press briefing" over the next "1" pages
+     Then I should see "10" events named "Press briefing" over the next "1" pages
       And I should "see" event named "Press briefing" on date "P3D" from "now" over the next "1" pages
       And I should "not see" event named "Press briefing" on date "P4D" from "now" over the next "1" pages
       And I should "see" event named "Press briefing" on date "P7D" from "now" over the next "1" pages
