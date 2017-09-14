@@ -67,7 +67,42 @@ Feature:
      Then I should see the images:
       | safari |
 
-  @api @features_first
+  @api @features_first @javascript
+  Scenario: Delete media of a existing gallery
+     Given I am logging in as "john"
+       And I visit "john/galleries/safari"
+       And I click the gear icon in the content region
+       And I click "Remove" in the gear menu
+       And the overlay opens
+       And I press "Remove file"
+       And I wait for page actions to complete
+       And the overlay closes
+       And I should see "removed from the gallery"
+
+  @api @features_first @javascript
+   Scenario: Add slideshow image content
+     Given I am logging in as "john"
+       And I create a "Slideshow" widget for the vsite "john" with the following <settings>:
+           | edit-description  | Slideshow | textfield   |
+           | edit-title        | Slideshow | textfield   |
+     When the widget "Slideshow" is placed in the "About" layout
+      And I visit "john/about"
+     Then I should see "Add Slide"
+      And I click "Add Slide"
+      And the overlay opens
+      And I press "edit-field-image-und-0-selected-file"
+      And I wait "1 second" for the media browser to open
+      And I should wait for the text "Please wait while we get information on your files." to "disappear"
+      And I drop the file "desert.jpg" onto the "Drag and drop files here." area
+      And I should wait for "File Edit" directive to "appear"
+      And I fill in "fe-alt-text" with "Desert"
+      And I click on the "Save" control
+      And I wait for page actions to complete
+      And I press "Save"
+      And the overlay closes
+      And I should see "Slideshow Image desert.jpg has been created"
+
+  @api @features_first @javascript
   Scenario: Delete existing image gallery content
      Given I am logging in as "john"
         And I visit the unaliased edit path of "galleries/safari" on vsite "john"
