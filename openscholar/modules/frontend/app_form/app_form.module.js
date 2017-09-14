@@ -176,11 +176,13 @@
       }
 
       if (dirty.length == 0) {
+        console.log('not dirty');
         $t(function () {
           saveDefer.resolve('no changes');
         });
       }
       else {
+        console.log('dirty');
         $http.patch(baseUrl + '/apps', dirty, config).then(function (r) {
           // success
           saveDefer.resolve('success');

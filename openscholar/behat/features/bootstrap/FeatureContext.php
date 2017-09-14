@@ -2379,6 +2379,7 @@ class FeatureContext extends DrupalContext {
 
     $closer = array(
       new Step\When('I wait "5 seconds"'),
+      new Step\When('I scroll to find "Save"'),
       new Step\When('I press "Save"'),
       new Step\When("I wait for page actions to complete"),
     );
@@ -2437,7 +2438,9 @@ class FeatureContext extends DrupalContext {
       throw new Exception("No checkbox in the \"$column\" column of row \"$row\"");
     }
 
-    $elem->check();
+    // We cannot use check() on angular forms. Angular WILL NOT detect the changes to the model.
+    // We have to use click()
+    $elem->click();
   }
 
   /**
