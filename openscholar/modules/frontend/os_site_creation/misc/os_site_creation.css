@@ -181,6 +181,7 @@
     padding: 10px 16px;
     border-radius: 3px;
 }
+/*
 #site-creation-container #nxt .preNxt:after {
     content: '→';
     position: absolute;
@@ -192,7 +193,7 @@
     position: absolute;
     left: 45px;
     font-size: 1.5em;
-}
+}*/
 #site-creation-container .preNxt:disabled {
     display: none;
 }
