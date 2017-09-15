@@ -850,6 +850,9 @@ class FeatureContext extends DrupalContext {
       case "feed reader":
         $widgetType = "os_boxes_feedreader";
         break;
+      case "slideshow":
+        $widgetType = "os_slideshow_box";
+        break;
     }
     $metasteps[] = new Step\When('I visit "/' . $vsite . '/os/widget/add/' . $widgetType . '/cp-layout"');
     $hash = $table->getRows();
@@ -4069,5 +4072,29 @@ JS;
     }
 
     $this->visit("$vsite/$unaliased_path/$appendage");
+  }
+
+  /**
+   * @When /^I click the gear icon in the content region$/
+   */
+  public function iClickTheGearIconInTheContentRegion() {
+    $content_region = $this->getSession()->getPage()->find('xpath', "//div[@id='content']");
+    $gear_icon = $this->getSession()->getPage()->find('xpath', "//div[@class='contextual-links-wrapper contextual-links-processed']");
+    $gear_icon_trigger_link = $this->getSession()->getPage()->find('xpath', "//div[@id='content']//div/a[text()='Configure']");
+
+    $content_region->mouseOver();
+    $content_region->click();
+    $gear_icon->mouseOver();
+    $gear_icon->click();
+    $gear_icon_trigger_link->mouseOver();
+    $gear_icon_trigger_link->click();
+  }
+
+  /**
+   * @Given /^I click "([^"]*)" in the gear menu$/
+   */
+  public function iClickInTheGearMenu($menu_item) {
+    $gear_menu_item = $this->getSession()->getPage()->find('xpath', "//div[@id='content']//div/a[text()='Configure']/..//a[text()='$menu_item']");
+    $gear_menu_item->click();
   }
 }

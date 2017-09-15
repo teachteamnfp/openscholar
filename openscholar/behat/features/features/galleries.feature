@@ -79,8 +79,8 @@ Feature:
        And the overlay closes
        And I should see "removed from the gallery"
 
-  @api @features_first @javascript
-   Scenario: Add slideshow image content
+  @api @features_second @javascript
+   Scenario: Add slideshow image content permission
      Given I am logging in as "john"
        And I create a "Slideshow" widget for the vsite "john" with the following <settings>:
            | edit-description  | Slideshow | textfield   |
@@ -101,6 +101,45 @@ Feature:
       And I press "Save"
       And the overlay closes
       And I should see "Slideshow Image desert.jpg has been created"
+
+  @api @features_second @javascript
+   Scenario: Edit own slideshow image content permission
+     Given I am logging in as "john"
+       And I visit "john/cp/content"
+       And I click "desert.jpg"
+       And I click the gear icon in the content region
+       And I click "Edit" in the gear menu
+       And the overlay opens
+       And I fill in "Description" with "Desert Image"
+       And I press "Save"
+       And I wait for page actions to complete
+       And the overlay closes
+       And I should see "Desert Image"
+
+  @api @features_second
+   Scenario: Edit any slideshow image content permission
+     Given I am logging in as "alexander"
+      When I go to "john/cp/content"
+      Then I should get a "403" HTTP response
+
+  @api @features_second
+   Scenario: Delete any slideshow image content permission
+     Given I am logging in as "alexander"
+      When I go to "john/cp/content"
+      Then I should get a "403" HTTP response
+
+  @api @features_second
+   Scenario: Delete own slideshow image content permission
+     Given I am logging in as "john"
+       And I visit "john/cp/content"
+       And I click "desert.jpg"
+       And I click the gear icon in the content region
+       And I click "Delete" in the gear menu
+       And the overlay opens
+       And I press "Delete"
+       And I wait for page actions to complete
+       And the overlay closes
+       And I should see "has been deleted"
 
   @api @features_first @javascript
   Scenario: Delete existing image gallery content
