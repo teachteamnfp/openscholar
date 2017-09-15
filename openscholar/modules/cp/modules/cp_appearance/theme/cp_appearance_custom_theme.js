@@ -146,18 +146,18 @@
              '<label for="edit-branch">Branch <span class="form-required" title="This field is required.">*</span></label>' +
              '<select name="branch" ng-model="showBranches" class="form-select required" ng-options="key as value for (key, value) in BranchList"><option value="" selected="selected">- Select -</option></select>' +
              '<div class="description">Enter the branch of the git repository</div>' +
-             '<div class="actions"><button type="submit" button-spinner="settings_form" spinning-text="Saving" ng-click="addGit()">Save</button></div></div></div>'+
+             '<div class="actions"><button type="submit" button-spinner="settings_form_add" spinning-text="Saving" ng-click="addGit()">Save</button></div></div></div>'+
 
              '<div ng-show="gitEditScreen"><div class="form-item form-type-item"><h1>Update {{theme_name}}</h1></div>'+
              '<div id="edit-info" class="form-item form-type-item"><label for="edit-info">Git repository address </label>{{repository_address}}</div>'+
              '<div class="form-item form-type-select form-item-branch"><label for="edit-branch">Branch </label>'+
                '<select name="branch" ng-model="showEditBranches" class="form-select" ng-options="key as value for (key, value) in EditBranchList"></select></div>'+
              '<div class="description">Change the new branch or select the old one and update.</div>'+
-             '<div class="actions"><button type="submit" button-spinner="settings_form" spinning-text="Updating" ng-click="editGit()">Update</button><input type="button" value="Close" ng-click="close(false)"><div id="edit-description" class="form-item form-type-item">This action will pull the latest version of the theme code from GitHub into OpenScholar.</div></div></div>'+
+             '<div class="actions"><button type="submit" button-spinner="settings_form_edit" spinning-text="Updating" ng-click="editGit()">Update</button><input type="button" value="Close" ng-click="close(false)"><div id="edit-description" class="form-item form-type-item">This action will pull the latest version of the theme code from GitHub into OpenScholar.</div></div></div>'+
 
              '<div ng-show="deleteScreen">'+
              '<div class="description">Deleting the sub theme will remove her files and cannot be undone.</div>'+
-             '<div class="actions"><button type="submit" button-spinner="settings_form" spinning-text="Deleting" ng-click="deleteSubtheme()">Delete</button><input type="button" value="Close" ng-click="close(false)"></div></div>'+
+             '<div class="actions"><button type="submit" button-spinner="settings_form_delete" spinning-text="Deleting" ng-click="deleteSubtheme()">Delete</button><input type="button" value="Close" ng-click="close(false)"></div></div>'+
 
             '</div>',
           inputs: {
@@ -190,7 +190,7 @@
   /**
    * The controller for the forms themselves
    */
-  m.controller('customThemeController', ['$scope', '$sce', 'customTheme', 'form', 'close', function ($s, $sce, ct, form, close) {
+  m.controller('customThemeController', ['$scope', '$sce', 'customTheme', 'form', 'close', 'buttonSpinnerStatus', function ($s, $sce, ct, form, close, bss) {
 
       $s.gitScreen = false;
       $s.zipScreen = false;
@@ -281,15 +281,17 @@
               $s.BranchList = r.data.branches;              
             } else {
               $s.showBranchesSelect = false;
-              $s.errors.push('This is an invalid branch');
+              $s.errors.push('You have selected an invalid branch');
             }
           })
         }
       };
 
       $s.editGit = function(){
+        bss.SetState('settings_form_edit', true);
         ct.editGit($s.showEditBranches, $s.flavor).then(function(result) {
           console.log(result);
+          bss.SetState('settings_form_edit', false);
           showError(result.data.msg);
         })
       }
@@ -297,15 +299,19 @@
       $s.addGit = function(){
         var branchName = $s.showBranches,
             repo = $s.gitRepo;
+        bss.SetState('settings_form_add', true);
         ct.submitGit(repo, branchName, $s.path).then(function(result) {
           console.log(result);
+          bss.SetState('settings_form_add', false);
           showError(result.data.msg);
         })
       }
 
       $s.deleteSubtheme = function(){
+        bss.SetState('settings_form_delete', true);
         ct.deleteTheme($s.flavor).then(function(result) {
           console.log(result);
+          bss.SetState('settings_form_delete', false);
           showError(result.data.msg);
         })
       }
