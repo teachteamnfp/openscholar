@@ -299,11 +299,14 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
   public function deleteSubTheme($flavor) {
     $subtheme->msg = array();
     if (!empty($_GET['vsite']) && !empty($flavor)) {
+      watchdog('cp_theme', print_r($flavor, true));
       $vsite = vsite_get_vsite($_GET['vsite']);
       $flavors = $vsite->controllers->variable->get('flavors');
+      watchdog('cp_theme', print_r($flavors, true));
       $info = $flavors[$flavor];
       $dir = $info['path'];
-      $params = array('%title' => $info['name']);
+      watchdog('cp_theme', print_r($info, true));
+      $params = array('!title' => $info['name']);
       // Remove the folder and set the redirect.
       try {
         $it = new RecursiveDirectoryIterator($dir);
@@ -322,11 +325,11 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
         }
         rmdir($dir);
       } catch (Exception $e) {
-        $params = array('@error' => $e->getMessage());
-        $subtheme->msg[] = t('An error occurred: @error', $params);
+        $params = array('!error' => $e->getMessage());
+        $subtheme->msg[] = t('An error occurred: !error', $params);
       }
 
-      $subtheme->msg[] = t('The theme %title has been removed.', $params);
+      $subtheme->msg[] = t('The theme !title has been removed.', $params);
       unset($flavors[$flavor]);
       $vsite->controllers->variable->set('flavors', $flavors);
     }
