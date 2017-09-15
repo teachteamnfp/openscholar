@@ -17,6 +17,25 @@ Feature:
       And I sleep for "2"
      Then I should see "Semester Date Revised"
 
+  @api @features_first @javascript
+  Scenario: Photo caption
+    Given I am logging in as "john"
+      And I visit the unaliased edit path of "news/semester-date-revised" on vsite "john"
+      And I click "Choose File"
+      And I wait "1 second" for the media browser to open
+      And I should wait for the text "Please wait while we get information on your files." to "disappear"
+      And I drop the file "semester.jpg" onto the "Drag and drop files here." area
+      And I should wait for "File Edit" directive to "appear"
+      And I fill in the field "Alt Text" with the node "semester"
+      And I click on the "Advanced (change filename, replace file, add a caption, etc.)" control
+      And I fill in "Image Caption" with "Study Hard"
+      And I click on the "Save" control
+      And I wait for page actions to complete
+      And I press "Save"
+      And I visit "john/news/semester-date-revised"
+      Then I should see "Study Hard"
+
+
   @api @features_first
   Scenario: Edit existing news content
     Given I am logging in as "john"
