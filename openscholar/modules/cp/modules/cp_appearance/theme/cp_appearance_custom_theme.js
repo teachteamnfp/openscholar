@@ -126,6 +126,9 @@
           template: 
             '<div id="custom-theme-content">'+
 
+            '<div class="messages" ng-show="errors.length > 0"><div class="dismiss" ng-click="status.length = 0; errors.length = 0;">X</div>' +
+            '<div class="error" ng-show="errors.length > 0"><div ng-repeat="m in errors track by $index"><span ng-bind-html="m"></span></div></div></div>' +
+
              '<div class="theme-screen" ng-show = "themeScreen"><span class="custom-theme-header"><b>Download the <a target="_blank" href="https://github.com/openscholar/starterkit">Subtheme Starter Kit</a> to begin developing your customtheme.</b></br> Use of the custom theme feature is at your own risk. The OpenScholar team is not responsible for maintaining, fixing or updating custom themes uploaded to the system. We will make every attempt possible to publish changes made to the markup used throughout OpenScholar from one code release to the next.</span>' +
              '<ul class="custom-theme-admin-list"><li class="clearfix"><span class="label">'+
              '<a href="" ng-click="ShowZip()">Zip</a></span><div class="description">Upload zip files.</div></li><li class="clearfix">'+
@@ -203,12 +206,13 @@
       $s.file = {};
       $s.path = '';
       $s.flavor = '';
+      $s.errors = [];
       var formId = form;
 
       if(formId.indexOf("edit-subtheme") > -1) {
         $s.gitEditScreen = true;
         var flavorName = formId.split("edit-subtheme-git-");
-        if (angular.isArray(flavorName) && typeof(flavorName[1]) !== 'undefined') {
+        if (angular.isArray(flavorName) && typeof(flavorName[1]) !== 'undefined' && flavorName[1] != '') {
           ct.fetchBranches('', flavorName[1]).then(function(r) {
             console.log(r);
             if (typeof r.data.repo !== 'undefined') {
@@ -222,11 +226,13 @@
               $s.flavor = flavorName[1];
             }
           })
+        } else {
+          $s.errors.push('Please select a valid sub theme');
         }
       } else if(formId.indexOf("delete-subtheme") > -1) {
         $s.deleteScreen = true;
         var flavorName = formId.split("delete-subtheme-");
-        if (angular.isArray(flavorName) && typeof(flavorName[1]) !== 'undefined') {
+        if (angular.isArray(flavorName) && typeof(flavorName[1]) !== 'undefined' && flavorName[1] != '') {
           ct.getFlavorName(flavorName[1]).then(function(r) {
             console.log(r);
             if (typeof r.data !== 'undefined') {
@@ -234,6 +240,8 @@
               $s.flavor = flavorName[1];
             }
           })
+        } else {
+          $s.errors.push('Please select a valid sub theme');
         }
       } else {
         $s.themeScreen = true;
@@ -263,18 +271,19 @@
         if ($s.gitRepo != '') {
           ct.fetchBranches($s.gitRepo, '').then(function(r) {
             console.log(r);
-            /* for local
+            /* for local */
             if ($s.gitRepo == 'aaa') {
               r.data.branches = {"origin/7.x-1.x":"origin/7.x-1.x", "origin/master":"origin/master"};
-            }*/
+            }/**/
             if (typeof r.data.path !== 'undefined') {
               $s.path = r.data.path;
             }
-            if (typeof r.data.branches !== 'undefined') {
+            if (typeof(r.data.branches) !== 'undefined' && r.data.branches !== null) {
               $s.showBranchesSelect = true;
               $s.BranchList = r.data.branches;              
             } else {
               $s.showBranchesSelect = false;
+              $s.errors.push('This is an invalid branch');
             }
           })
         }
@@ -283,6 +292,7 @@
       $s.editGit = function(){
         ct.editGit($s.showEditBranches, $s.flavor).then(function(result) {
           console.log(result);
+          showError(result.data.msg);
         })
       }
 
@@ -291,14 +301,29 @@
             repo = $s.gitRepo;
         ct.submitGit(repo, branchName, $s.path).then(function(result) {
           console.log(result);
+          showError(result.data.msg);
         })
       }
 
       $s.deleteSubtheme = function(){
         ct.deleteTheme($s.flavor).then(function(result) {
           console.log(result);
+          showError(result.data.msg);
         })
       }
+
+      showError = function(msg) {
+        if (Array.isArray(msg)) {
+          if (msg[0] == 'Success') {
+            window.location.reload();
+          } else{
+            for(var i = 0; i < msg.length; i++) {
+              $s.errors.push($sce.trustAsHtml(msg[i]));
+            }
+          }
+        }
+      }
+
   }]);
 
 })()

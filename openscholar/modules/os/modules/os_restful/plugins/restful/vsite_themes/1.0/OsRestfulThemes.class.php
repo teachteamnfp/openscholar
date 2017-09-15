@@ -225,9 +225,9 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
         );
 
         $vsite->controllers->variable->set('flavors', $flavors);
-        $subtheme->msg[] = t('Success');
+        $subtheme->msg[0] = t('Success');
       } else {
-        $subtheme->msg[] = t('No Vsite');
+        $subtheme->msg[] = t('No Vsite was selected');
       }
     } else {
       $subtheme->msg[] = t('No branch was selected');
@@ -252,7 +252,6 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
       $info = $flavors[$flavor];
       $path = $info['path'];
 
-      watchdog('cp_theme', print_r($this->request, true));
       $wrapper = new GitWrapper();
       $wrapper->setPrivateKey('.');
       $git = $wrapper->workingCopy($path);
@@ -282,7 +281,8 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
       }
 
       if ($success) {
-        $subtheme->msg[] = t('The subtheme updated succesfully.');
+        //$subtheme->msg[] = t('The subtheme updated succesfully.');
+        $subtheme->msg[0] = t('Success');
       }
     }
     return array(
@@ -334,9 +334,10 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
         $subtheme->msg[] = t('An error occurred: !error', $params);
       }
 
-      $subtheme->msg[] = t('The theme !title has been removed.', $params);
+      //$subtheme->msg[] = t('The theme !title has been removed.', $params);
       unset($flavors[$flavor]);
       $vsite->controllers->variable->set('flavors', $flavors);
+      $subtheme->msg[0] = t('Success');
     }
 
     return array(
