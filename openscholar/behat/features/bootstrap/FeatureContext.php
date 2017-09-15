@@ -2403,7 +2403,7 @@ class FeatureContext extends DrupalContext {
     );
 
     $output = array();
-    if ($current_value == "current value not found") {
+    if ($current_value === "current value not found") {
       throw new Exception("No current value found for feature '$feature'");
     }
     if ($current_value == $new_value) {
