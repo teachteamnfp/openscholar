@@ -34,7 +34,7 @@
 #site-creation-container #header-container-group-3-page-3 {
     margin: 15px 5px 5px;
 }
-.starter-content-bg, #site-creation-container .preNxt, #site-creation-container .step.disable, #site-creation-container .popup, #site-creation-container #body-container-group-2, #site-creation-container #body-container-group-3 {
+.starter-content-bg .form-type-radio, #site-creation-container .preNxt, #site-creation-container .step.disable, #site-creation-container .popup, #site-creation-container #body-container-group-2, #site-creation-container #body-container-group-3 {
     background-color: #efefef;
 }
 .os-themes,
@@ -53,10 +53,47 @@
     float: right;
 }
 
-.starter-content-bg {
-	width: 30%;
+
+.starter-content-bg .form-type-radio {
+
+    margin-right: 25px;
+    
+    padding: 15px;
+}
+
+.starter-content-bg .form-type-radio:last-child {
+
+    margin-right: 0;
+}
+
+
+
+.starter-content-bg.three .form-type-radio {
+	width: 27%;
 	
 }
+
+
+.radiobutton-button.input[type=radio] {
+  position: absolute;
+  visibility: hidden;
+  display: none;
+}
+
+.radiobutton-button.label {
+  color: lighten(#ccc,40%);
+  display: inline-block;
+  cursor: pointer;
+  font-weight: bold;
+  padding: 5px 20px;
+}
+
+.radiobutton-button.input[type=radio]:checked + label{
+  color: lighten(#ccc,60%);
+  background: #333;
+}
+
+
 
 
 #site-creation-container .step-container {
@@ -74,7 +111,7 @@
 #site-creation-container .center {
     text-align: center;
 }
-.starter-content-bg,
+.starter-content-bg .form-type-radio,
 #site-creation-container .preNxt,
 #site-creation-container .step,
 #site-creation-container a:hover.button,
