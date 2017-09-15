@@ -126,7 +126,11 @@ function os_events_get_access_token_with_auth_code() {
   global $is_https;
 
   if (!isset($_GET['code'])) {
-    error_log("Did not receive a Google auth code in the query string with which to create an access code.");
+    error_log("Did not receive a Google auth code in the query string with which to create an access code or " .
+              "the user did not grant access to their Google Calendar.");
+    $vsite = vsite_get_vsite($_GET["state"]);
+    drupal_set_message("Calendar export cancelled", 'Status');
+    drupal_goto(url('/' . $vsite->group->purl . '/calendar'));
     return;
   } else {
     $authCode = $_GET['code'];
