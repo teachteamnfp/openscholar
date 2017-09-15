@@ -301,13 +301,10 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
   public function deleteSubTheme($flavor) {
     $subtheme->msg = array();
     if (!empty($_GET['vsite']) && !empty($flavor)) {
-      watchdog('cp_theme', print_r($flavor, true));
       $vsite = vsite_get_vsite($_GET['vsite']);
       $flavors = $vsite->controllers->variable->get('flavors');
-      watchdog('cp_theme', print_r($flavors, true));
       $info = $flavors[$flavor];
       $dir = $info['path'];
-      watchdog('cp_theme', print_r($info, true));
       $params = array('!title' => $info['name']);
       // Remove the folder and set the redirect.
       try {
