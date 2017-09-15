@@ -159,7 +159,6 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
     // Initiate the return message
     $subtheme->msg = array();
     $valid = TRUE;
-    watchdog('cp_rest', print_r($this->request, true));
     if (!empty($this->request['branch'])) {
       $branch = $this->request['branch'];
       $path = $this->request['path'];
@@ -245,10 +244,18 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
     $subtheme->msg = array();
     if (!empty($this->request['branch'])) {
       $branch = $this->request['branch'];
+
+      // Get the flavor details
+      $flavor = $this->request['flavor'];
+      $vsite = vsite_get_vsite($_GET['vsite']);
+      $flavors = $vsite->controllers->variable->get('flavors');
+      $info = $flavors[$flavor];
+      $path = $info['path'];
+
       watchdog('cp_theme', print_r($this->request, true));
       $wrapper = new GitWrapper();
       $wrapper->setPrivateKey('.');
-      $git = $wrapper->workingCopy($branch);
+      $git = $wrapper->workingCopy($path);
 
       $success = TRUE;
       // We didn't just updated - we change the branch. Checking out to that branch.
@@ -287,7 +294,6 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
   public function getFlavorName($flavor) {
     $flavor_name = '';
     if (!empty($_GET['vsite']) && !empty($flavor)) {
-      watchdog('cp_theme', print_r($flavor, true));
       $vsite = vsite_get_vsite($_GET['vsite']);
       $flavors = $vsite->controllers->variable->get('flavors');
       $info = $flavors[$flavor];
