@@ -4,14 +4,6 @@ Feature:
   @api @widgets
   Scenario: Verify the Dataverse List widget.
      Given I am logging in as "john"
-      When I enable dataverse
-       And I clear the cache
-
-  @api @widgets
-  Scenario: Verify the Dataverse List widget.
-     Given I am logging in as "john"
-      When I enable dataverse
-       And I clear the cache
        And I create a "Dataverse List" widget for the vsite "john" with the following <settings>:
           | edit-description  | Dataverse List | textfield   |
           | edit-title        | Dataverse List | textfield   |
@@ -26,7 +18,7 @@ Feature:
       And I create a "Dataverse Search Box" widget for the vsite "john" with the following <settings>:
           | edit-description  | Dataverse Search Box| textfield   |
           | edit-title        | Dataverse Search Box| textfield   |
-          | edit-user-alias   | harvard                | textfield   |
+          | edit-user-alias   | harvard             | textfield   |
     When the dataverse widget "Dataverse Search Box" is placed in the "About" layout
       And I visit "john/about"
      Then I should see "Dataverse Search Box"
