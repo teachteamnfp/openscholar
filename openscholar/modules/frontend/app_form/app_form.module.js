@@ -151,7 +151,7 @@
       }
 
       var queryArgs = {};
-      if (Drupal.settings.spaces.id) {
+      if (Drupal.settings.spaces && Drupal.settings.spaces.id) {
         queryArgs.vsite = Drupal.settings.spaces.id;
       }
 
