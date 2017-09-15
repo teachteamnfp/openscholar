@@ -286,6 +286,7 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
   public function getFlavorName($flavor) {
     $flavor_name = '';
     if (!empty($_GET['vsite']) && !empty($flavor)) {
+      watchdog('cp_theme', print_r($flavor, true));
       $vsite = vsite_get_vsite($_GET['vsite']);
       $flavors = $vsite->controllers->variable->get('flavors');
       $info = $flavors[$flavor];
