@@ -103,7 +103,7 @@
   /**
    * Open modals for the custom theme upload
    */
-  m.directive('cpAppearanceCustomTheme', ['ModalService', 'customTheme', function (ModalService, customTheme) {
+  m.directive('cpAppearanceCustomTheme', ['ModalService', 'customTheme', function (ModalService, ct) {
     var dialogOptions = {
       minWidth: 1150,
       minHeight: 100,
@@ -113,17 +113,14 @@
     };
 
     function link(scope, elem, attrs) {
-      //apSettings.SettingsReady().then(function () {
-        scope.title = 'Themes';
-      //});
-
+      scope.title = 'Themes';
       elem.bind('click', function (e) {
         e.preventDefault();
         e.stopPropagation();
 
         ModalService.showModal({
           controller: 'customThemeController',
-          template: 
+          template:
             '<div id="custom-theme-content">'+
 
             '<div class="messages" ng-show="errors.length > 0"><div class="dismiss" ng-click="status.length = 0; errors.length = 0;">X</div>' +
@@ -140,18 +137,16 @@
              '<label>Themes <span class="form-required" title="This field is required.">*</span></label>'+
              '<div id="edit-file-upload-wrapper" class="form-managed-file"><input type="file" id="edit-file-upload" size="22" class="form-file" file-model="zipThemeUpload"><input type="submit" id="edit-file-upload-button" name="file_upload_button" value="Upload" ng-click = "uploadFile()"></div>'+
              '<div class="description">The uploaded image will be displayed on this page using the image style choosen below.</div>'+
-             '<div class="custom-theme-help-link"><a href="https://docs.openscholar.harvard.edu/subsite-themes"  target="_blank">Learn more about Subsite Themes</a></div>' +
              '<div class="actions"><button type="submit" button-spinner="settings_form" spinning-text="Saving">Save</button><input type="button" value="Close" ng-click="close(false)"></div></form></div>'+
 
              '<div class="git-screen" ng-show = "gitScreen"><label for="edit-repository">Git repository address <span class="form-required" title="This field is required.">*</span></label>'+
              '<input type="text" name="repository" ng-model="gitRepo" value="" size="60" maxlength="128" ng-model="gitAddress">'+
              '<div id="branches-wrapper"><div class="form-actions form-wrapper" id="edit-actions"><a href="#" ng-click="fetchBranches()">Fetch branches</a></div></div>'+
-             '<div class="custom-theme-help-link"><a href="https://docs.openscholar.harvard.edu/subsite-themes"  target="_blank">Learn more about Subsite Themes</a></div>'+
              '<div class="form-item form-type-select form-item-branch" ng-show="showBranchesSelect">' +
              '<label for="edit-branch">Branch <span class="form-required" title="This field is required.">*</span></label>' +
              '<select name="branch" ng-model="showBranches" class="form-select required" ng-options="key as value for (key, value) in BranchList"><option value="" selected="selected">- Select -</option></select>' +
-             '<div class="description">Enter the branch of the git repository</div></div>' +
-             '<div class="actions"><button type="submit" button-spinner="settings_form" spinning-text="Saving" ng-click="addGit()">Save</button><input type="button" value="Close" ng-click="close(false)"></div></div>'+
+             '<div class="description">Enter the branch of the git repository</div>' +
+             '<div class="actions"><button type="submit" button-spinner="settings_form" spinning-text="Saving" ng-click="addGit()">Save</button></div></div></div>'+
 
              '<div ng-show="gitEditScreen"><div class="form-item form-type-item"><h1>Update {{theme_name}}</h1></div>'+
              '<div id="edit-info" class="form-item form-type-item"><label for="edit-info">Git repository address </label>{{repository_address}}</div>'+
@@ -161,7 +156,7 @@
              '<div class="actions"><button type="submit" button-spinner="settings_form" spinning-text="Updating" ng-click="editGit()">Update</button><input type="button" value="Close" ng-click="close(false)"><div id="edit-description" class="form-item form-type-item">This action will pull the latest version of the theme code from GitHub into OpenScholar.</div></div></div>'+
 
              '<div ng-show="deleteScreen">'+
-             '<div class="description">{{flavor_name}} Deleting the sub theme will remove her files and cannot be undone.</div>'+
+             '<div class="description">Deleting the sub theme will remove her files and cannot be undone.</div>'+
              '<div class="actions"><button type="submit" button-spinner="settings_form" spinning-text="Deleting" ng-click="deleteSubtheme()">Delete</button><input type="button" value="Close" ng-click="close(false)"></div></div>'+
 
             '</div>',
@@ -195,7 +190,7 @@
   /**
    * The controller for the forms themselves
    */
-  m.controller('customThemeController', ['$scope', '$sce', 'customTheme', 'form', function ($s, $sce, ct, form) {
+  m.controller('customThemeController', ['$scope', '$sce', 'customTheme', 'form', 'close', function ($s, $sce, ct, form, close) {
 
       $s.gitScreen = false;
       $s.zipScreen = false;
@@ -224,6 +219,7 @@
               $s.path = r.data.path;
               $s.theme_name = r.data.flavor_name;
               $s.flavor = flavorName[1];
+              angular.element(document.querySelector('.ui-dialog-title'))[0].innerHTML = 'Update subtheme';
             }
           })
         } else {
@@ -238,6 +234,7 @@
             if (typeof r.data !== 'undefined') {
               $s.flavor_name = r.data.flavor_name;
               $s.flavor = flavorName[1];
+              angular.element(document.querySelector('.ui-dialog-title'))[0].innerHTML = 'Are you sure you want to delete the subtheme' + $s.flavor_name;
             }
           })
         } else {
@@ -254,6 +251,7 @@
       $s.ShowGit = function () {
          $s.gitScreen = $s.gitScreen ? false : true;
          $s.themeScreen = false;
+         angular.element(document.querySelector('.ui-dialog-title'))[0].innerHTML = 'Git';
       }
 
       $s.uploadFile = function(){
@@ -322,6 +320,10 @@
             }
           }
         }
+      }
+
+      $s.close = function (arg) {
+        close(arg);
       }
 
   }]);

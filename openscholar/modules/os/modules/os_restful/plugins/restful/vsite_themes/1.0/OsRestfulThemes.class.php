@@ -199,11 +199,11 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
       // Validating
       if (empty($info['module'])) {
         $subtheme->msg[] = t('The theme you uploaded is not valid.  `module` directive missing.');
-        //$valid = FALSE;
+        $valid = FALSE;
       }
       else if (!in_array($info['module'], array_keys($themes))) {
         $subtheme->msg[] = t('The theme you uploaded is not valid.  `module` refers to a theme that does not exist.');
-        //$valid = FALSE;
+        $valid = FALSE;
       }
 
 
