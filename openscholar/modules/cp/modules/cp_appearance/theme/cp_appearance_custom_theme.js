@@ -140,7 +140,8 @@
              '<div class="actions"><button type="submit" button-spinner="settings_form" spinning-text="Saving">Save</button><input type="button" value="Close" ng-click="close(false)"></div></form></div>'+
 
              '<div class="git-screen" ng-show = "gitScreen"><label for="edit-repository">Git repository address <span class="form-required" title="This field is required.">*</span></label>'+
-             '<input type="text" name="repository" ng-model="gitRepo" value="" size="60" maxlength="128" ng-model="gitAddress">'+
+             '<input type="text" name="repository" ng-model="gitRepo" value="" size="60" maxlength="128" ng-model="gitAddress" ng-blur="fetchBranches()">'+
+             '<div class="ajax-progress" ng-show="throbber"><div class="throbber"></div> Please wait...</div>'+
              '<div id="branches-wrapper"><div class="form-actions form-wrapper" id="edit-actions"><a href="#" ng-click="fetchBranches()">Fetch branches</a></div></div>'+
              '<div class="form-item form-type-select form-item-branch" ng-show="showBranchesSelect">' +
              '<label for="edit-branch">Branch <span class="form-required" title="This field is required.">*</span></label>' +
@@ -202,6 +203,7 @@
       $s.path = '';
       $s.flavor = '';
       $s.errors = [];
+      $s.throbber = false;
       var formId = form;
 
       if(formId.indexOf("edit-subtheme") > -1) {
@@ -266,13 +268,11 @@
       };
 
       $s.fetchBranches = function(){
+        $s.throbber = true;
         if ($s.gitRepo != '') {
           ct.fetchBranches($s.gitRepo, '').then(function(r) {
+            $s.throbber = false;
             console.log(r);
-            /* for local */
-            if ($s.gitRepo == 'aaa') {
-              r.data.branches = {"origin/7.x-1.x":"origin/7.x-1.x", "origin/master":"origin/master"};
-            }/**/
             if (typeof r.data.path !== 'undefined') {
               $s.path = r.data.path;
             }
