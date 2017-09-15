@@ -74,22 +74,22 @@
 }
 
 
-.radiobutton-button.input[type=radio] {
+input.radiobutton-button[type=radio] {
   position: absolute;
   visibility: hidden;
   display: none;
 }
 
-.radiobutton-button.label {
-  color: lighten(#ccc,40%);
+label.radiobutton-button {
+  color: #f1f1f1;
   display: inline-block;
   cursor: pointer;
   font-weight: bold;
   padding: 5px 20px;
 }
 
-.radiobutton-button.input[type=radio]:checked + label{
-  color: lighten(#ccc,60%);
+input.radiobutton-button[type=radio]:checked + label {
+  color: #efefef;
   background: #333;
 }
 
