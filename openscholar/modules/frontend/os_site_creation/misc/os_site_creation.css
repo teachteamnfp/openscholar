@@ -73,7 +73,7 @@
 	
 }
 
-
+/*
 input.radiobutton-button[type=radio] {
   position: absolute;
   visibility: hidden;
@@ -93,7 +93,7 @@ input.radiobutton-button[type=radio]:checked + label {
   background: #333;
 }
 
-
+*/
 
 
 #site-creation-container .step-container {
