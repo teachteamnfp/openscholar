@@ -245,6 +245,7 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
     $subtheme->msg = array();
     if (!empty($this->request['branch'])) {
       $branch = $this->request['branch'];
+      watchdog('cp_theme', print_r($this->request, true));
       $wrapper = new GitWrapper();
       $wrapper->setPrivateKey('.');
       $git = $wrapper->workingCopy($branch);

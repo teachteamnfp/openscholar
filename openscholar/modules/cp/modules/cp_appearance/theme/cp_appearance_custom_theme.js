@@ -59,22 +59,22 @@
         branch: branch,
         path: filepath,
       };
-      uploadUrl = uploadUrl + '/git';
-      return $http.put(uploadUrl, vals, http_config).then(function (r) {
+      editUrl = uploadUrl + '/git';
+      return $http.put(editUrl, vals, http_config).then(function (r) {
         return(r.data);
       });
     }
 
     this.getFlavorName = function(flavor) {
-      uploadUrl = uploadUrl + '/' + flavor;
-      return $http.get(uploadUrl, http_config).then(function (r) {
+      getUrl = uploadUrl + '/' + flavor;
+      return $http.get(getUrl, http_config).then(function (r) {
         return(r.data);
       });
     }
 
     this.deleteTheme = function(flavor) {
-      uploadUrl = uploadUrl + '/' + flavor;
-      return $http.delete(uploadUrl, http_config).then(function (r) {
+      deleteUrl = uploadUrl + '/' + flavor;
+      return $http.delete(deleteUrl, http_config).then(function (r) {
         return(r.data);
       });
     }
