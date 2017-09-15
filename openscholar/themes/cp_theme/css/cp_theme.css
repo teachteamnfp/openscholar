@@ -8,6 +8,10 @@ div.messages ul li {
     font-family: helvetica, arial, sans-serif;
 }
 
+.ui-dialog * {
+    font-size: 14px;
+}
+
 #page {
     padding: 0;
 }
@@ -39,7 +43,10 @@ body:not(.overlay) .node-form {
 a {
     color: #215990;
 }
-
+a.redirect-add,
+a.button:link, a.button:visited, a.button:hover, a.button:active {
+	color:#FFF;
+}
 
 
 fieldset {
@@ -49,6 +56,8 @@ fieldset {
 .vertical-tabs-panes fieldset {
     background: #FFF;
 }
+
+
 
 #feature_os_publication span[name="biblio_sort"] .form-item,
 #feature_os_publication span[name="biblio_order"] .form-item,
@@ -72,6 +81,7 @@ textarea,
         -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
     border-radius: 2px;
+    background-color: #fff;
 }
 
 #og-vocabulary-add-more-wrapper select.form-select {
@@ -178,7 +188,8 @@ html.js input.throbbing {
     color: #FFF;
     font-weight: bold;
 }
-
+#edit-field_software_package-und-drop .media-browser-drop-box .ng-binding.ng-scope,
+.redirect-add,
 body.page-node-revisions ul.action-links a,
 input.form-submit, 
 a.button,
@@ -195,7 +206,6 @@ a.form-cancel {
     text-align: center;
     font-weight: normal;
     font-size: 1.077em;
-    font-family: "Lucida Grande", Verdana, sans-serif;
     border: 1px solid #888;
     border-bottom: 1px solid #888;
     border-left-color: #888;
@@ -205,6 +215,17 @@ a.form-cancel {
     -webkit-border-radius: 2px;
     border-radius: 2px;
     padding: 8px 15px;
+    font-family:helvetica;
+}
+
+/* small button */
+.redirect-add {
+ padding: 4px 8px;
+}
+
+.page-os-widget-add-os-boxes-media .button.launcher {
+    margin: 10px 0 18px;
+
 }
 
 /* SAVE BUTTON SPINNER */
@@ -262,7 +283,8 @@ a.form-cancel {
 a.form-cancel:hover {
     text-decoration: none;
 }
-
+.redirect-add,
+.page-os-widget-add-os-boxes-media .button.launcher,
 .form-actions .form-submit,
 .form-actions #edit-delete,
 .form-actions #edit-delete--2 {
@@ -429,7 +451,7 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
     font-size: 24px;
     font-weight: normal;
 }
-
+.page-node-add-news .field-name-field-photo,
 .page-cp .ui-dialog-titlebar {
     margin-bottom: 22px;
 }
@@ -465,7 +487,7 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
 #person-node-form .field-name-body {
     padding-bottom: 15px;
 }
-
+.redirect-add,
 form.confirmation {
     margin-top: 20px;
 }

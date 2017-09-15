@@ -16,11 +16,12 @@ body,
     color: #111111;
 }
 
-
+.search-block-form .form-item label,
 #search-block-form .form-item label {
     color: #3D3D3D;
 }
-
+.search-block-form input.form-submit, 
+.search-block-form #edit-submit,
 #search-block-form input.form-submit, 
 #search-block-form #edit-submit, 
 #search-form #edit-submit {
