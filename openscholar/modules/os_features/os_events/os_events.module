@@ -61,6 +61,13 @@ function os_events_theme() {
       'template' => 'os-events-export-links',
       'path' => drupal_get_path('module', 'os_events') . '/template',
     ),
+    'os_events_google_export_dialog' => array(
+      'variables' => array(
+        'overwrite_previous_google_calendar' => true,
+      ),
+      'template' => 'os-events-google-export-dialog',
+      'path' => drupal_get_path('module', 'os_events') . '/template',
+    ),
   );
 }
 
