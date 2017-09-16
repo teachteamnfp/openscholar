@@ -459,19 +459,14 @@ function os_events_menu() {
   );
 
   $items['get-google-access-token-with-auth-code'] = array(
-    # 'title' => 'Get Access Token With Auth Code',
-    # 'page callback' => 'drupal_get_form',
-    ##'page arguments' => array('os_events_get_access_token_with_auth_code'),
-    # 'page arguments' => array('os_events_update_or_create_google_calendar'),
+    'title' => 'Get Access Token With Auth Code',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('os_events_get_access_token_with_auth_code'),
+    #'page arguments' => array('os_events_update_or_create_google_calendar'),
 
-    # 'access callback' => 'os_events_calendar_export_access',
-    # 'type' => MENU_CALLBACK,
+    'access callback' => 'os_events_calendar_export_access',
+    'type' => MENU_CALLBACK,
 
-    'title' => 'The Happy Modal',
-    'page arguments' => array(1),
-    'page callback' => 'happy_modal_page',
-    'access callback' => TRUE,
-    'type' => MENU_NORMAL_ITEM,
   );
 
   $items['calendar/%ctools_js/update-or-create'] = array(
@@ -482,14 +477,6 @@ function os_events_menu() {
     'access callback' => 'os_events_calendar_export_access',
     'type' => MENU_CALLBACK,
   );
-
-  # $items['happy/%ctools_js/update-or-create'] = array(
-  #    'title' => 'The Happy Modal',
-  #    'page arguments' => array(1),
-  #    'page callback' => 'happy_modal_page',
-  #    'access callback' => TRUE,
-  #    'type' => MENU_NORMAL_ITEM,
-  # );
 
   return $items;
 }
@@ -1231,107 +1218,6 @@ function os_events_update_or_create_google_calendar($js = true, $node = 560698, 
   $output = ctools_modal_form_render($form_state, $registration_form);
   print ajax_render($output);
   drupal_exit();
-}
-
-/**
- * A modal static page callback.
- * @param $js
- *   boolean CTools determination whether the user's browser is javascript enabled. 
- * @param $nid
- *   string The node ID of passed as an argument from the hook_menu() path
- * @return
- *   string The contents of the node, that will fill the modal window.
- */
-function happy_modal_page($js = true, $nid = NULL) {
-  if (! isset($_GET['state'])) {
-    // You can customize the string below, or use a drupal_goto() to
-    // send the user to a custom error page.
-    return 'No node id was sent. Error.';
-  }
-  if ($js) {
-    // Required includes for ctools to work:
-    ctools_include('modal');
-    ctools_include('ajax');
-  }
-  // Load the node obkect
-  $node = node_load($_GET['state']);
-  // Drupal 7 requires a render of the node object in order to obtain a string.
-  // Note that I am able to customize the fields by using the "Teaser" display mode 
-  // under admin/structure/types.
-  $contents = render(node_view($node, 'teaser', NULL));
-  return ctools_modal_render($node->title, $contents) ;
-}
-
-/**
- * inside happy.module
- * Implements hook_views_pre_render()
- */
-function happy_views_pre_render(&$views) {
-  // The View name I set up prior is "Happy Titles"
-  if ($views->name == 'happy_titles') {
-      // Include the CTools tools that we need.
-      ctools_include('ajax');
-      ctools_include('modal');
-
-      // Add CTools' javascript to the page.
-      ctools_modal_add_js();
-
-      // Create our own javascript that will be used to theme a modal.
-      $happy_style = array(
-        'happy-modal-style' => array(
-          'modalSize' => array(
-            'type' => 'fixed',
-            'width' => 600,
-            'height' => 240,
-            'addWidth' => 10,
-            'addHeight' => 10,
-            'contentRight' => 0,
-            'contentBottom' => 0,
-          ),
-          'modalOptions' => array(
-            'opacity' => .6,
-            'background-color' => '#684C31',
-          ),
-          'animation' => 'fadeIn',
-          'modalTheme' => 'happy_modal',
-          // Customize the AJAX throbber like so:
-          // This function assumes the images are inside the module directory's "images"
-          // directory:
-          // ctools_image_path($image, $module = 'ctools', $dir = 'images')
-          'throbber' => theme('image', array('path' => ctools_image_path('ajax-loader.gif', 'happy'), 'alt' => t('Loading...'), 'title' => t('Loading'))),
-          'closeImage' => theme('image', array('path' => ctools_image_path('modal-close.png', 'happy'), 'alt' => t('Close window'), 'title' => t('Close window'))),
-        ),
-      );
-    // Add the settings array defined above to Drupal 7's JS settings:
-    drupal_add_js($happy_style, 'setting');
-    // The function below assumes the happy.js file resides in [module_dir]/js
-    ctools_add_js('happy', 'happy');
-    // The function below assumes the happy.css file resides in [module_dir]/css
-    ctools_add_css('happy', 'happy');
-  }
-}
-
-/*
- * Implements hook_preprocess_view()
- */
-function happy_preprocess_views_view_fields(&$vars) {
-  if ($vars['view']->name == 'happy_titles') {
-    // Include the CTools tools that we need.
-    ctools_include('ajax');
-    ctools_include('modal');
-    // The view has two fields, title (not linked and no styles added), and NID (again,
-    // no style added. They are available here as $vars['fields']->title and 
-    // $vars['fields']->nid.
-    $name = $vars['fields']['title']->content;
-    // Create a path for the url that is like our hook_menu() declaration above.
-    $href = 'happy/nojs/' . $vars['fields']['nid']->content;
-    // Here's the ctools function that generates the trigger inside the link
-    // ctools_modal_text_button($text, $dest, $alt, $class = '')
-    // http://api.drupalize.me/api/drupal/function/ctools_modal_text_button/7
-    // IMPORTANT: Include ctools-modal-[your declared style name] as a class so 
-    // Ctools knows what Javascript settings to use in generating the modal:
-    $vars['ctools_link'] = ctools_modal_text_button($name, $href, t('View node content for @name', array('@name' => $name)), 'ctools-modal-happy-modal-style');
-  }
 }
 
 /**
