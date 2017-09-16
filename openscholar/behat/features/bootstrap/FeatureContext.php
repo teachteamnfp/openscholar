@@ -886,8 +886,125 @@ class FeatureContext extends DrupalContext {
           break;
       }
     }
+
+    $metasteps[] = new Step\When('I check the box "edit-make-embeddable"');
     $metasteps[] = new Step\When('I press "Save"');
     return $metasteps;
+  }
+
+  /**
+   * @Given /^I drag the "([^"]*)" widget to the "([^"]*)" region$/
+   */
+  public function iDragTheWidgetToTheRegion($widget_label, $region_name) {
+
+    $widget_name_label_map = array(
+      "Active book TOC"                        => "boxes-box-active-book-toc",
+      "All Posts"                              => "boxes-box-all-posts",
+      "Blog RSS Feed"                          => "boxes-blog_rss_feed",
+      "Contact"                                => "boxes-hwp_personal_contact_html",
+      "Filter by taxonomy for pages"           => "boxes-vocabulary_filter_pages",
+      "Filter by term"                         => "boxes-box-filter-by-term",
+      "Front page header text"                 => "boxes-iqss_scholars_fp_headertext",
+      "HWP Option Info text"                   => "boxes-iqss_scholars_fp_hwp_option",
+      "Latest News"                            => "boxes-os_news_latest",
+      "Latest Publications"                    => "boxes-boxes-os_boxes_feedreader",
+      "List of posts"                          => "boxes-box-list-of-posts",
+      "Recent FAQs"                            => "boxes-os_faq_sv_list",
+      "Recent Images"                          => "boxes-os_image_gallery_latest",
+      "Recent Presentations"                   => "boxes-os_presentations_recent",
+      "Recent Publications"                    => "boxes-os_publications_recent",
+      "Scholars Info text with video link"     => "boxes-iqss_scholars_fp_infoblock",
+      "Scholars Learn More Box"                => "boxes-iqss_scholars_fp_learnmore",
+      "Scholars Learn More Toggle Page"        => "boxes-iqss_scholars_learnmore_toggle",
+      "Scholars Logo"                          => "boxes-iqss_scholars_fp_logoblock",
+      "Scholars fixed-position header."        => "boxes-iqss_scholars_fixed_header",
+      "Search box"                             => "boxes-solr_search_box",
+      "Site RSS Feed"                          => "boxes-os_rss",
+      "Subscribe to MailChimp mailing list"    => "boxes-os_box_mailchimp",
+      "Upcoming Events"                        => "boxes-os_events_upcoming",
+      "Active Book's TOC"                      => "boxes-os_booktoc",
+      "AddThis"                                => "boxes-os_addthis",
+      "Blog Archive"                           => "views-os_blog-block",
+      "Blog RSS Feed"                          => "boxes-blog_rss_feed",
+      "Contact"                                => "boxes-hwp_personal_contact_html",
+      "Filter News by Month"                   => "views-os_news-news_by_month_block",
+      "Filter News by Year"                    => "views-os_news-news_by_year_block",
+      "Filter Profiles by Alphabetical Groups" => "views-os_profiles-filter_by_alphabet",
+      "Filter by taxonomy for pages"           => "boxes-vocabulary_filter_pages",
+      "Front page header text"                 => "boxes-iqss_scholars_fp_headertext",
+      "Google Translate"                       => "os_ga-google_translate",
+      "HWP Option Info text"                   => "boxes-iqss_scholars_fp_hwp_option",
+      "Latest Publications"                    => "boxes-boxes-os_boxes_feedreader",
+      "Mini Calendar"                          => "views-os_events-block_1",
+      "Primary Menu"                           => "os-primary-menu",
+      "Recent Documents"                       => "boxes-os_booklets_recent_docs",
+      "Recent FAQs"                            => "boxes-os_faq_sv_list",
+      "Recent Images"                          => "boxes-os_image_gallery_latest",
+      "Recent Presentations"                   => "boxes-os_presentations_recent",
+      "Recent Publications"                    => "boxes-os_publications_recent",
+      "Recent Software Releases"               => "views-os_software_releases-block_1",
+      "Scholars Info text with video link"     => "boxes-iqss_scholars_fp_infoblock",
+      "Scholars Learn More Box"                => "boxes-iqss_scholars_fp_learnmore",
+      "Scholars Learn More Toggle Page"        => "boxes-iqss_scholars_learnmore_toggle",
+      "Scholars Logo"                          => "boxes-iqss_scholars_fp_logoblock",
+      "Scholars"                               => "boxes-iqss_scholars_fixed_header",
+      "Search box"                             => "boxes-solr_search_box",
+      "Site RSS Feed"                          => "boxes-os_rss",
+      "Subscribe to MailChimp mailing list"    => "boxes-os_box_mailchimp",
+      "Upcoming Events"                        => "boxes-os_events_upcoming",
+    );
+
+    $region_names = array(
+      "header-first",
+      "header-second",
+      "header-third",
+      "menu-bar",
+      "sidebar-first",
+      "content",
+      "content-top",
+      "content-first",
+      "content-second",
+      "content-bottom",
+      "sidebar-second",
+      "footer-first",
+      "footer",
+      "footer-third",
+      "footer-bottom",
+    );
+
+    if (! in_array($region_name, $region_names)) {
+      throw new Exception("I do not recognize the region name: $region_name.");
+    }
+
+    $css_selector = $widget_name_label_map[$widget_label];
+    $widget_icon = $this->getSession()->getPage()->find('css', "div#$css_selector");
+    if (! $widget_icon) {
+      throw new Exception("I could not find a widget for '$widget_label'.");
+    }
+
+    $region_element = $this->getSession()->getPage()->find('css', "div#edit-layout-$region_name");
+    if (! $region_element) {
+      throw new Exception("I could not find a region for '$region_name'.");
+    }
+    $widget_icon->dragTo($region_element);
+
+    $save_button = $this->getSession()->getPage()->find('css', "input#edit-submit");
+    if (! $save_button) {
+      throw new Exception("I could not find a save button using css selector 'input#edit-submit'.");
+    }
+
+    $save_button->click();
+  }
+
+  /**
+   * @Given /^I click the big gear$/
+   */
+  public function iClickTheBigGear() {
+    $big_gear = $this->getSession()->getPage()->find('css', "a.ctools-dropdown-link.ctools-dropdown-text-link");
+    if (! $big_gear) {
+      throw new Exception("I did not locate the big gear icon.");
+    }
+    $big_gear->click();
   }
 
   /**
@@ -3182,6 +3299,23 @@ class FeatureContext extends DrupalContext {
   }
 
   /**
+   * @Given /^I should match the regex "([^"]*)"$/
+   *
+   * This step is used to match a regular expression in the page
+   */
+  public function iShouldMatchTheRegex($pattern) {
+    $page_text = $this->getSession()->getPage()->getText();
+
+    $page_text = preg_replace('/\s+/u', ' ', $page_text);
+    $regex = '/'.$pattern.'/iu';
+
+    if (!preg_match($regex, $page_text)) {
+      $message = sprintf('The regex pattern "%s" did not appear in the text of this page, but it should have.', $pattern);
+      throw new Exception($message);
+    }
+  }
+
+  /**
    * @Then /^I should wait for the text "([^"]*)" to "([^"]*)"$/
    */
   public function iShouldWaitForTheTextTo($text, $appear) {
@@ -3197,7 +3331,6 @@ class FeatureContext extends DrupalContext {
   }
 
   /**
-   * Wait for an element by its XPath to appear or disappear.
    *
    * @param string $xpath
    *   The XPath string.
@@ -3754,6 +3887,27 @@ class FeatureContext extends DrupalContext {
     return array();
   }
 
+  /*
+   * @Given /^I make sure admin panel is closed$/
+   */
+  public function adminPanelClosed() {
+    $page = $this->getSession()->getPage();
+    $this->waitForPageActionsToComplete();
+
+    if (! $page->find('css', '[left-menu].closed')) {
+      return array(
+        new Step\When('I press "Close Menu"'),
+        new Step\When('I sleep for "1"'),
+      );
+    }
+    elseif (!$page->find('css', '[left-menu]')) {
+      throw new \Exception("The admin panel was not found on this page. Are you sure its installed and enabled?");
+    }
+
+    return array();
+  }
+
+
   /**
    * @Given /^I open the admin panel to "([^"]*)"$/
    */
@@ -4211,4 +4365,95 @@ JS;
 
     $this->visit("$vsite/$unaliased_path/$appendage");
   }
+
+  /**
+   * @When /^I click the gear icon in the content region$/
+   */
+  public function iClickTheGearIconInTheContentRegion() {
+    $content_region = $this->getSession()->getPage()->find('xpath', "//div[@id='content']");
+    $gear_icon = $this->getSession()->getPage()->find('xpath', "//div[@class='contextual-links-wrapper contextual-links-processed']");
+    $gear_icon_trigger_link = $this->getSession()->getPage()->find('xpath', "//div[@id='content']//div/a[text()='Configure']");
+
+    $content_region->mouseOver();
+    $content_region->click();
+    $gear_icon->mouseOver();
+    $gear_icon->click();
+    $gear_icon_trigger_link->mouseOver();
+    $gear_icon_trigger_link->click();
+  }
+
+  /**
+   * @Given /^I visit the "([^"]*)" parameter in the current query string with "([^"]*)" appended on vsite "([^"]*)"$/
+   */
+  public function iVisitTheParameterInTheCurrentQueryString($parameter, $appendage, $vsite) {
+
+    $url = $this->getSession()->getCurrentUrl();
+    if (preg_match("/$parameter(?:=|%3d)(\S+)/i", $url, $matches)) {
+
+      if (isset($matches[1])) {
+        $this->getSession()->visit($this->locatePath((($vsite) ? "/$vsite/" : "") . rawurldecode($matches[1]) . (($appendage) ? "/$appendage" : "")));
+      } else {
+        throw new Exception("Could not get a $parameter.\n");
+      }
+    }
+  }
+
+
+  /**
+   * @Given /^I click "([^"]*)" in the gear menu$/
+   */
+  public function iClickInTheGearMenu($menu_item) {
+    $gear_menu_item = $this->getSession()->getPage()->find('xpath', "//div[@id='content']//div/a[text()='Configure']/..//a[text()='$menu_item']");
+    $gear_menu_item->click();
+  }
+
+  /**
+   * @When /^I swap the order of the first two items in the outline on vsite "([^"]*)"$/
+   */
+  public function iSwapTheOrderOfTheBookOutline($vsite) {
+    $this->iClickTheGearIconInTheContentRegion();
+    $this->iClickInTheGearMenu("Outline");
+    $this->iVisitTheParameterInTheCurrentQueryString("destination", "outline", $vsite);
+
+    $handles = $this->getSession()->getPage()->findAll('xpath', "//div[@class='handle']");
+
+    if (sizeof($handles) > 1) {
+      $handles[0]->dragTo($handles[1]);
+    } else {
+      throw new Exception("There needs to be at least two book entries to test re-ordering.\n");
+    }
+
+    return array(
+      new Step\When('I press "Save Booklet Outline"'),
+    );
+  }
+
+  /**
+   * @Given /^I visit the parent directory of the current URL$/
+   */
+  public function iVisitParentDirectory() {
+    $url = $this->getSession()->getCurrentUrl();
+    $this->getSession()->visit($this->locatePath($url . '/..'));
+  }
+
+  /**
+   * Visit the 'Add class material' path
+   *
+   * @Then /^I should see breadcrumb "([^"]*)"$/
+   *    e.g., HOME / CLASSES / POLITICAL SCIENCE 101 / CLASS MATERIAL
+   */
+  public function iShouldSeeBreadcrumb($breadcrumb) {
+
+    $page = $this->getSession()->getPage()->getContent();
+
+    # Ignore HTML tags between breadcrumb separators
+    $breadcrumb_pattern = preg_replace("/\s+\/\s+/", ".*\/.*", $breadcrumb);
+
+    if (preg_match("/$breadcrumb_pattern/", $page)) {
+      return true;
+    }
+
+    return false;
+  }
+
 }

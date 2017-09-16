@@ -88,8 +88,9 @@ class os_boxes_html extends os_boxes_default {
       // the file_usage table will have no entries for this because of the delete
       // query above.
       foreach ($new_files as $fid => $entity_count) {
-        $file = file_load($fid);
-        file_usage_add($file, 'media', 'node', $vsite->group->nid, $entity_count);
+        if ($file = file_load($fid)) {
+          file_usage_add($file, 'media', 'node', $vsite->group->nid, $entity_count);
+        }
       }
     }
   }

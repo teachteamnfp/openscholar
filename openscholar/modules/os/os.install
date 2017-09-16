@@ -1002,3 +1002,10 @@ function os_update_7053() {
 function os_update_7054() {
   features_revert(array('os' => array('metatag')));
 }
+
+/**
+ * Set twitter:description to [node:title], which is more likely to be set
+ */
+function os_update_7055() {
+  features_revert(array('os' => array('metatag')));
+}

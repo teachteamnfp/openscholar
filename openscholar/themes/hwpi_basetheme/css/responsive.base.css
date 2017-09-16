@@ -12,7 +12,7 @@
 #menu-bar ul.nice-menu ul {
     background: none repeat scroll 0 0 #24527A;
 }
-
+.search-block-form .container-inline .form-item .form-text,
 #search-block-form .container-inline .form-item .form-text {
     border-radius: 0 0 0 0 !important;
 }
