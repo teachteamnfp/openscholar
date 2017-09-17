@@ -5,7 +5,7 @@
    */
   Drupal.behaviors.osPromptForOverwriteOrCreateGoogleCalendar = {
     attach: function () {
-      $( "#dialog-confirm" ).dialog({
+      $( "#export-to-google-calendar-dialog-confirm" ).dialog({
         resizable: false,
         height: "auto",
         width: 600,

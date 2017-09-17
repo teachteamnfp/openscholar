@@ -118,7 +118,6 @@ function getClient() {
   $_base_path = rtrim(ltrim(base_path(), '/'), '/');
   $base_path = ((strlen($_base_path) == 0) ? '' : '/' . $_base_path);
   $client->setRedirectUri((($is_https) ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $base_path . '/get-google-access-token-with-auth-code');
-
   return $client;
 }
 
@@ -914,7 +913,7 @@ function os_events_process_node(&$variables) {
   }
 
   $variables['content']['page'] = array(
-    '#markup' => '<div id="dialog-confirm" style="display:none;">Google Export dialog</div>',
+    '#markup' => '<div id="export-to-google-calendar-dialog-confirm" style="display:none;">Export to Google Calendar</div>',
     '#weight' => 1,
   );
 }
@@ -1339,7 +1338,6 @@ function os_events_views_pre_view(&$view, &$display_id, &$args) {
 
   // Add JS for event popup.
   drupal_add_js(drupal_get_path('module', 'os_events') . '/js/os_events_popup.js');
-
   drupal_add_library('system', 'ui.dialog');
 
   $handler = &$view->display_handler;
