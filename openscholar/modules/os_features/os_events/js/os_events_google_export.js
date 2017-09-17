@@ -8,14 +8,13 @@
       $( "#dialog-confirm" ).dialog({
         resizable: false,
         height: "auto",
-        width: 400,
+        width: 600,
         modal: true,
         buttons: {
           "Overwrite Existing Google Calendar": function() {
              $.ajax({
                 url     : document.location.pathname + '?overwrite=1',
                 type    : 'POST',
-                data    : '{overwrite:1}',
                 success : function(resp) {
                   alert("Calendar export complete");
                   $(this).dialog( "close" );
@@ -30,7 +29,6 @@
              $.ajax({
                 url     : document.location.pathname + '?overwrite=0',
                 type    : 'POST',
-                data    : '{overwrite:0}',
                 success : function(resp) {
                   alert("Calendar export complete");
                   $(this).dialog( "close" );

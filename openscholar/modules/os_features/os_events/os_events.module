@@ -914,7 +914,7 @@ function os_events_process_node(&$variables) {
   }
 
   $variables['content']['page'] = array(
-    '#markup' => '<div id="dialog-confirm">Google Export dialog</div>',
+    '#markup' => '<div id="dialog-confirm" style="display:none;">Google Export dialog</div>',
     '#weight' => 1,
   );
 }
@@ -1116,79 +1116,6 @@ function os_events_events_register($js, $node, $date_id = FALSE) {
   $form_state = array(
     'title' => os_events_register_form_title('node', $node->nid),
     'ajax' => $js,
-    'use_ctools' => TRUE,
-  );
-
-  $output = ctools_modal_form_render($form_state, $registration_form);
-  print ajax_render($output);
-  drupal_exit();
-}
-
-/**
- * Menu callback; Display the overwrite option a in modal window.
- *
- * @param $js
- *  Ctools JS settings.
- * @param $node
- *  The node object.
- */
-
-// EAM DEBUG 560698
-function os_events_update_or_create_google_calendar($js = true, $node = 560698, $date_id = FALSE) {
-  ctools_include('modal');
-  ctools_include('ajax');
-  # $repeating = $node->field_date['und'][0]['rrule'];
-  # // Repeating delta not present.
-  # if($repeating && $date_id === FALSE && !$js) {
-  #   return;
-  # }
-
-  # $registration_type = registration_get_entity_registration_type('node', $node);
-  # $registration = entity_get_controller('registration')->create(array(
-  #   'entity_type' => 'node',
-  #   'entity_id' => $node->nid,
-  #   'type' => $registration_type,
-  #   'repeat_date' => $date_id,
-  # ));
-
-  # $registration->ajax = $js;
-  # $registration_form = drupal_get_form('registration_form', $registration);
-  $registration_form = drupal_get_form('update_or_create_google_calendar');
-
-  // Hide the OG audience field.
-  # $registration_form[OG_AUDIENCE_FIELD]['#access'] = FALSE;
-
-  # $date = '';
-  # if ($date_id !== FALSE) {
-  #   $date = $registration_form['field_repeating_event_date']['und'][0]['value']['#default_value'];
-  # }
-
-  # if (!$js) {
-  #   return $registration_form;
-  # }
-
-  # if (!os_events_event_registration_reach_capacity($node, $date) || ($repeating && $date_id === FALSE)) {
-
-  #   if($repeating && $date_id == FALSE) {
-  #     drupal_set_message(t('Unable to register for this repeating event, bad link detected.'), 'error');
-  #   }
-
-  #   if (!os_events_event_registration_reach_capacity($node, $date)) {
-  #     drupal_set_message(t('The event has reached his maximum capacity of registrations. Sorry.'), 'error');
-  #   }
-  #   $commands = array();
-
-  #   // dismiss the window
-  #   $commands[] = ctools_modal_command_display(t('Error'), theme('status_messages'));
-
-  #   print ajax_render($commands);
-  #   drupal_exit();
-  #   return;
-  # }
-
-  $form_state = array(
-    'title' => os_events_register_form_title('node', 560698),
-    'ajax' => true,
     'use_ctools' => TRUE,
   );
 
