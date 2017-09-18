@@ -122,8 +122,9 @@
           controller: 'customThemeController',
           template:
             '<div id="custom-theme-content">'+
-
-            '<div class="messages" ng-show="errors.length > 0"><div class="dismiss" ng-click="status.length = 0; errors.length = 0;">X</div>' +
+            '<div class="messages" ng-show="status.length > 0"><div class="dismiss" ng-click="status.length = 0">X</div>' +
+            '<div class="status" ng-show="status.length > 0"><div ng-repeat="n in status track by $index"><span ng-bind-html="n"></span></div></div></div>' +
+            '<div class="messages" ng-show="errors.length > 0"><div class="dismiss" ng-click="errors.length = 0;">X</div>' +
             '<div class="error" ng-show="errors.length > 0"><div ng-repeat="m in errors track by $index"><span ng-bind-html="m"></span></div></div></div>' +
 
              '<div class="theme-screen" ng-show = "themeScreen"><span class="custom-theme-header"><b>Download the <a target="_blank" href="https://github.com/openscholar/starterkit">Subtheme Starter Kit</a> to begin developing your customtheme.</b></br> Use of the custom theme feature is at your own risk. The OpenScholar team is not responsible for maintaining, fixing or updating custom themes uploaded to the system. We will make every attempt possible to publish changes made to the markup used throughout OpenScholar from one code release to the next.</span>' +
@@ -203,6 +204,7 @@
       $s.path = '';
       $s.flavor = '';
       $s.errors = [];
+      $s.status = [];
       $s.throbber = false;
       var formId = form;
 
@@ -319,6 +321,7 @@
       showError = function(msg) {
         if (Array.isArray(msg)) {
           if (msg[0] == 'Success') {
+            $s.status.push($sce.trustAsHtml(msg[1]));
             window.location.reload();
           } else{
             for(var i = 0; i < msg.length; i++) {

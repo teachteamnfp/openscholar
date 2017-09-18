@@ -226,6 +226,7 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
 
         $vsite->controllers->variable->set('flavors', $flavors);
         $subtheme->msg[0] = t('Success');
+        $subtheme->msg[1] = t('The subtheme added succesfully.');
       } else {
         $subtheme->msg[] = t('No Vsite was selected');
       }
@@ -283,6 +284,7 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
       if ($success) {
         //$subtheme->msg[] = t('The subtheme updated succesfully.');
         $subtheme->msg[0] = t('Success');
+        $subtheme->msg[1] = t('The subtheme updated succesfully.');
       }
     }
     return array(
@@ -329,15 +331,14 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
           }
         }
         rmdir($dir);
+        unset($flavors[$flavor]);
+        $vsite->controllers->variable->set('flavors', $flavors);
+        $subtheme->msg[0] = t('Success');
+        $subtheme->msg[1] = t('The theme !title has been removed.', $params);
       } catch (Exception $e) {
         $params = array('!error' => $e->getMessage());
         $subtheme->msg[] = t('An error occurred: !error', $params);
       }
-
-      //$subtheme->msg[] = t('The theme !title has been removed.', $params);
-      unset($flavors[$flavor]);
-      $vsite->controllers->variable->set('flavors', $flavors);
-      $subtheme->msg[0] = t('Success');
     }
 
     return array(

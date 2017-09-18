@@ -1900,6 +1900,7 @@ ul.custom-theme-admin-list li{
 ul.custom-theme-admin-list li a:hover {
     text-decoration: underline;
 }
+
 #edit-file-upload{
   padding: 2px;
   border: 1px solid #ccc;
@@ -1938,4 +1939,3 @@ ul.custom-theme-admin-list li a:hover {
   -webkit-border-radius: 2px;
   border-radius: 2px;
 }
-

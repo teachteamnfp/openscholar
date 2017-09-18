@@ -316,18 +316,17 @@ class OSRestfulCPMenu extends \RestfulBase implements \RestfulDataProviderInterf
 
     // Creating subtheme menu
     if (og_user_access('node', $vsite, 'manage subtheme', NULL, FALSE, TRUE)) {
-      //
+      $submenu_link = array(
+          'label' => 'Custom Themes',
+          'type' => 'directive',
+          'directive' => array(
+            'cp-appearance-custom-theme',
+            'form' => 'add-subtheme',
+          ),
+        );
     } else {
       $submenu_link = array();
     }
-    $submenu_link = array(
-              'label' => 'Custom Themes',
-              'type' => 'directive',
-              'directive' => array(
-                'cp-appearance-custom-theme',
-                'form' => 'add-subtheme',
-              ),
-            );
 
     $structure = array(
       'content' => array(
