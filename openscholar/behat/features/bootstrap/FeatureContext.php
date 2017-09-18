@@ -1790,6 +1790,20 @@ class FeatureContext extends DrupalContext {
   }
 
   /**
+   * @When /^I select the "([^"]*)" button with value "([^"]*)"$/
+   */
+  public function iSelectTypedButtonWithValueXyz($button_type, $button_value) {
+    $page = $this->getSession()->getPage();
+    $radiobutton = $page->find('xpath', "//input[@type='$button_type'][@value='$button_value']");
+    if (!$radiobutton) {
+      throw new Exception("A '$button_type' button with the value {$button_value} was not found on the page.");
+    }
+    $radiobutton->selectOption($button_value, FALSE);
+  }
+
+
+
+  /**
    * @When /^I choose the radio button named "([^"]*)" with value "([^"]*)" for the vsite "([^"]*)"$/
    */
   public function iSelectRadioNamedWithValueForVsite($name, $value, $vsite) {
@@ -2638,21 +2652,8 @@ class FeatureContext extends DrupalContext {
    * @Given /^I fill in the "([^"]*)" "([^"]*)" field under "([^"]*)" with "([^"]*)"$/
    */
   public function iFillInTheFieldContainingText($nth, $field_type, $field_under_text, $value) {
-    $page = $this->getSession()->getPage();
-    $nth_index = (int)(preg_replace("/(st|nd|th)/i", "", $nth)) - 1;
-
-    if (! preg_match("/\d+/", $nth_index)) {
-      throw new Exception("Expected an ordinal number, e.g., 1st, 22nd, 1457th), but did not find one.");
-    }
-
-    $xpath_expr = "//label[contains(text(), '$field_under_text')]/..//input[@type='$field_type']";
-    $elements = $page->findAll('xpath', $xpath_expr);
-
-    if (isset($elements[$nth_index])) {
-      $elements[$nth_index]->setValue($value);
-    } else {
-      throw new Exception("XPath expression not found at the $nth index: '$xpath_expr'.");
-    }
+    $element = $this->_getNthFieldBelowXyz($nth, $field_type, $field_under_text);
+    $element->setValue($value);
   }
 
   /**
@@ -4156,6 +4157,39 @@ JS;
   }
 
   /**
+   * @Given /^I fill in the "([^"]*)" "([^"]*)" field under "([^"]*)" with date interval "([^"]*)" from "([^"]*)"$/
+   */
+  public function iFillInTheNthFieldBelowXyzWithDateInterval($nth, $field_type, $field_under_text, $date_interval, $start_date) {
+    $element = $this->_getNthFieldBelowXyz($nth, $field_type, $field_under_text);
+    $future_date = $this->_getDateInterval($start_date, $date_interval);
+
+    $element->setValue($future_date);
+  }
+
+  /**
+   * Helper function to get an input element under a div label
+   */
+  private function _getNthFieldBelowXyz($nth, $field_type, $field_under_text) {
+    $page = $this->getSession()->getPage();
+    $nth_index = (int)(preg_replace("/(st|nd|th)/i", "", $nth)) - 1;
+
+    if (! preg_match("/\d+/", $nth_index)) {
+      throw new Exception("Expected an ordinal number, e.g., 1st, 22nd, 1457th), but did not find one.");
+    }
+
+    $xpath_expr = "//label[contains(text(), '$field_under_text')]/..//input[@type='$field_type']";
+    $elements = $page->findAll('xpath', $xpath_expr);
+
+    if (isset($elements[$nth_index])) {
+      return $elements[$nth_index];
+    } else {
+      throw new Exception("XPath expression not found at the $nth index: '$xpath_expr'.");
+    }
+  }
+
+
+
+  /**
    * @Then /^I should "([^"]*)" event named "([^"]*)" on date "([^"]*)" from "([^"]*)" over the next "([^"]*)" pages$/
    */
   public function iShouldSeeTheEventNamedOnDateIntervalFrom($see_or_not, $event_name, $date_interval, $start_date, $num_intervals) {
@@ -4163,8 +4197,7 @@ JS;
     $counter = 0;
     while ($counter++ <= $num_intervals) {
       $page = $this->getSession()->getPage()->getContent();
-      $now = new DateTime($start_date);
-      $future_date = $now->add(new DateInterval($date_interval))->format("Y-m-d");
+      $future_date = $this->_getDateInterval($start_date, $date_interval);
       $xpath_expr =  "//td[@id='os_events-$future_date-0']//a[text()='$event_name']";
       $event_on_date = $this->getSession()->getPage()->findAll('xpath', $xpath_expr);
 
@@ -4192,6 +4225,15 @@ JS;
       $date_prev_arrow = $this->getSession()->getPage()->find('xpath', "//li[@class='date-prev']/a");
       $date_prev_arrow->click();
     }
+  }
+
+  /*
+   * Helper function to perform a date increment, and return a date string 
+  */
+  private function _getDateInterval($start_date = "now", $date_interval) {
+    $now = new DateTime($start_date);
+    $future_date = $now->add(new DateInterval($date_interval))->format("M d Y");
+    return $future_date;
   }
 
   /**
