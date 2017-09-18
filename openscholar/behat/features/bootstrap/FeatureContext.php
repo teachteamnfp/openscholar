@@ -888,7 +888,10 @@ class FeatureContext extends DrupalContext {
       }
     }
 
-    $metasteps[] = new Step\When('I check the box "edit-make-embeddable"');
+    if ($widget != "slideshow") {
+      // Skip Make Embeddable step for slide show widget
+      $metasteps[] = new Step\When('I check the box "edit-make-embeddable"');
+    }
     $metasteps[] = new Step\When('I press "Save"');
     return $metasteps;
   }
