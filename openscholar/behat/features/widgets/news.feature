@@ -10,6 +10,7 @@ Feature:
       And I sleep for "2"
      Then I should see "Semester Date"
       And I visit "john/os/widget/boxes/os_news_latest/edit/cp-layout"
+      And I sleep for "2"
       And I press "Save"
       And I visit "john"
       And I click the big gear
