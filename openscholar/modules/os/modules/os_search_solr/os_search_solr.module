@@ -669,6 +669,15 @@ function os_search_solr_reindex_site() {
   $vsite = vsite_get_vsite();
   os_search_solr_add_vsite_to_reindex($vsite->id);
   drupal_set_message(t('Site marked for indexing. It may take a few minutes until the site is fully indexed.'));
+  return array(
+    array('type' => 'no_close'),
+    array('type' => 'no_reload'),
+    array(
+      'type' => 'message',
+      'message_type' => 'status',
+      'message' => t('Site marked for indexing. It may take a few minutes until the site is fully indexed.'),
+    )
+  );
 }
 
 /**

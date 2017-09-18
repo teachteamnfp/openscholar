@@ -16,7 +16,7 @@ Drupal.behaviors.osBoxesFeedReader = {
           combine: false,
         }).use('yql', function (Y) {
           //Load Feed
-          var query = 'select * from rss(0,' + feed_settings.num_feeds + ') where url = "' + feed_settings.url + '"';
+          var query = 'select * from rss(0,100) where url = "' + feed_settings.url + '" limit ' + feed_settings.num_feeds + ' offset 0';
           var q = new Y.YQLRequest(query, function (r) {
             // check for results, if there are none, display a message
             if (r.query.results != null && r.query.results.item != null) {
@@ -71,7 +71,7 @@ Drupal.behaviors.osBoxesFeedReader = {
             }
           }, {}, // empty optional parameters
           {
-            base: '://query.yahooapis.com/v1/public/yql?', //Different base URL for private data
+            base: '://query.yahooapis.com/v1/public/yql?',
             proto: 'https' //Connect using SSL
           });
           q.send();

@@ -50,3 +50,7 @@ span[name=grouper] .all-groups .group,
 .grouper-selected-fieldset-panel .group .remove:hover {
     cursor: pointer;
 }
+.grouper-header-bar .spinner {
+    border-top: .5em solid rgb(96, 96, 96);
+    border-right: .5em solid rgb(96, 96, 96);
+}

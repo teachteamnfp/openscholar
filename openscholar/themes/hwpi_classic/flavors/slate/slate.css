@@ -59,6 +59,7 @@ font-family: helvetica, arial !important;
 
 .region-header-third ul.nice-menu a,
 #search-block-form .form-item label,
+.search-block-form .form-item label,
 #menu-bar,
 #header,
 #boxes-box-site_info, 
@@ -134,7 +135,8 @@ background-position: -68px -566px;
 border-top: 1px solid #E4E0E0;
 }
 
-
+.search-block-form input.form-submit, 
+.search-block-form #edit-submit, 
 #search-block-form input.form-submit, 
 #search-block-form #edit-submit, 
 #search-form #edit-submit {
