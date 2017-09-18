@@ -1928,3 +1928,23 @@ ul.custom-theme-admin-list li a:hover {
   -webkit-border-radius: 2px;
   border-radius: 2px;
 }
+#custom-theme-content .diabled {
+  cursor: default !important;
+  padding: 5px 12px;
+  margin-bottom: 1em;
+  margin-right: 1em;
+  color: #fff;
+  text-align: center;
+  font-weight: normal;
+  font-size: 1.077em;
+  font-family: "Lucida Grande", Verdana, sans-serif;
+  border: 1px solid #888;
+  border-bottom: 1px solid #888;
+  border-left-color: #888;
+  border-right-color: #888;
+  background: #c1bfbf;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  padding: 8px 15px;
+}

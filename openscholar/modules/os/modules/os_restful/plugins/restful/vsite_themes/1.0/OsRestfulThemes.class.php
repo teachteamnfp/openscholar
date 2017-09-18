@@ -35,7 +35,47 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
   */
   public function publicFieldsInfo() {}
 
-  public function uploadZipTheme() {}
+  public function uploadZipTheme() {
+ 
+    // Initiate the return message
+    $subtheme->msg = array();
+    $fid = 0;
+    $name = '';
+    $filePath = '';
+    watchdog('cp_rest', print_r($_FILES['files'], true));
+
+    if (isset($_FILES['files'])) {
+      $name = $_FILES['files']['orig_name']['upload'];
+      $destination = 'public://';
+      $target_file = $destination . microtime(). '_' .  basename($name);
+      $ext = pathinfo($_FILES['files']['orig_name']['upload'],PATHINFO_EXTENSION);
+
+      if ($ext != 'zip') {
+        $subtheme->msg[] = t('The specified file !file_name could not be uploaded. Only files with the following extensions are allowed: zip.', array('!file_name' => $_FILES['files']['name']));
+      } else {
+        $filePath = file_create_url($target_file);
+        $uri = $target_file;
+        if(drupal_move_uploaded_file($_FILES['files']['tmp_name']['upload'], $target_file)){
+          $file = file_save((object) array(
+            'filename' => basename($name),
+            'uri' => $uri,
+            'status' => 0,
+            'filemime' => file_get_mimetype($uri),
+          ));
+          $fid = $file->fid;
+          $subtheme->msg[] = t('Uploaded succesfully.');
+        }
+      }
+    } else {
+      $subtheme->msg[] = t('Invalid file.');
+    }
+    return array(
+      'fid' => $fid,
+      'file_name' => $name,
+      'file_path' => $filePath,
+      'msg' => $subtheme->msg,
+    );
+  }
 
   public function fetchBranches() {
 

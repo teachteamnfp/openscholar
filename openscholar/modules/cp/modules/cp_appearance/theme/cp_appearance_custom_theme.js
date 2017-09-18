@@ -5,7 +5,7 @@
     /**
    * Fetches the content settings forms from the server and makes them available to directives and controllers
    */
-  m.service('customTheme', ['$http', '$q', function ($http, $q) {
+  m.service('customTheme', ['$http', '$q', '$upload', function ($http, $q, $upload) {
 
     var baseUrl = Drupal.settings.paths.api;
     var uploadUrl = baseUrl+'/themes';
@@ -15,22 +15,19 @@
     if (typeof Drupal.settings.spaces != 'undefined' && Drupal.settings.spaces.id) {
       http_config.params.vsite = Drupal.settings.spaces.id;
     }
-    this.uploadZipTheme = function(file,name){
-      var config = [
-        {orgFileName:name},
-      ];
-      var deffered = $q.defer();
-      $http.post(uploadUrl, file, config, {
-        transformRequest: angular.identity,
-        headers: {'Content-Type': undefined}
-      })
-      .success(function (response) {
-        deffered.resolve(response);
-      })
-      .error(function (response) {
-        deffered.reject(response);
+    this.uploadZipTheme = function(file){
+      var zipUploadUrl = uploadUrl + '/zipupload';
+      return $upload.upload({
+        file: file,
+        data: file,
+        fileFormDataName: 'files[upload]',
+        headers: {'Content-Type': file.type},
+        method: 'POST',
+        fileName: file.name || null,
+        url: zipUploadUrl,
+      }).then(function (r) {
+          return(r.data);
       });
-      return deffered.promise;
     }
 
     this.fetchBranches = function(gitBranchName, flavor){
@@ -127,18 +124,25 @@
             '<div class="messages" ng-show="errors.length > 0"><div class="dismiss" ng-click="errors.length = 0;">X</div>' +
             '<div class="error" ng-show="errors.length > 0"><div ng-repeat="m in errors track by $index"><span ng-bind-html="m"></span></div></div></div>' +
 
-             '<div class="theme-screen" ng-show = "themeScreen"><span class="custom-theme-header"><b>Download the <a target="_blank" href="https://github.com/openscholar/starterkit">Subtheme Starter Kit</a> to begin developing your customtheme.</b></br> Use of the custom theme feature is at your own risk. The OpenScholar team is not responsible for maintaining, fixing or updating custom themes uploaded to the system. We will make every attempt possible to publish changes made to the markup used throughout OpenScholar from one code release to the next.</span>' +
+            '<div class="theme-screen" ng-show = "themeScreen"><span class="custom-theme-header"><b>Download the <a target="_blank" href="https://github.com/openscholar/starterkit">Subtheme Starter Kit</a> to begin developing your customtheme.</b></br> Use of the custom theme feature is at your own risk. The OpenScholar team is not responsible for maintaining, fixing or updating custom themes uploaded to the system. We will make every attempt possible to publish changes made to the markup used throughout OpenScholar from one code release to the next.</span>' +
              '<ul class="custom-theme-admin-list"><li class="clearfix"><span class="label">'+
              '<a href="" ng-click="ShowZip()">Zip</a></span><div class="description">Upload zip files.</div></li><li class="clearfix">'+
              '<span class="label"><a href="" ng-click="ShowGit()">Git</a></span><div class="description">'+
              'Clone from a repository.</div></li></ul></div>'+
 
-              '<div class="zip-screen" ng-show = "zipScreen">'+
-             '<form enctype="multipart/form-data" name="settingsForm" method="post" id="cp-appearance-manage-base" accept-charset="UTF-8" ng-submit="submitZipForm($event)">'+
+             '<div class="zip-screen" ng-show = "zipScreen">'+
              '<label>Themes <span class="form-required" title="This field is required.">*</span></label>'+
-             '<div id="edit-file-upload-wrapper" class="form-managed-file"><input type="file" id="edit-file-upload" size="22" class="form-file" file-model="zipThemeUpload"><input type="submit" id="edit-file-upload-button" name="file_upload_button" value="Upload" ng-click = "uploadFile()"></div>'+
+             '<div id="edit-file-upload-wrapper" class="form-managed-file">'+
+             '<span class="file-upload" ng-show = "fileUpload">'+
+             '<input type="file" id="edit-file-upload" size="22" class="form-file" accept="application/zip" file-model="zipThemeUpload" required'+
+             'ngf-model-invalid="errorFile"><input type="submit" id="edit-file-upload-button" name="file_upload_button" value="Upload" ng-click = "uploadFile()" ng-disabled="!zipThemeUpload" ng-class= "{diabled: !zipThemeUpload}">'+
+             '</span>'+
+             '<span class="file-remove" ng-show = "fileRemove">'+
+             '<img class="file-icon" alt="" src="/profiles/openscholar/modules/os/modules/os_files/icons/package-x-generic.svg">'+
+             '<a href="{{filePath}}" type="application/zip; target="_parent">{{fileNametoDisplay}}</a>'+
+             '<input type="submit" id="edit-file-remove-button" name="file_remove_button" value="Remove" ng-click = "removeFile()"></span></div>'+
              '<div class="description">The uploaded image will be displayed on this page using the image style choosen below.</div>'+
-             '<div class="actions"><button type="submit" button-spinner="settings_form" spinning-text="Saving">Save</button><input type="button" value="Close" ng-click="close(false)"></div></form></div>'+
+             '<div class="actions"><button type="submit" button-spinner="settings_form" spinning-text="Saving" ng-click = "saveTheme()" ng-disabled="!fileRemove" ng-class= "{diabled: !fileRemove}">Save</button><input type="button" value="Cancel" ng-click="close(false)"></div></form></div>'+
 
              '<div class="git-screen" ng-show = "gitScreen"><label for="edit-repository">Git repository address <span class="form-required" title="This field is required.">*</span></label>'+
              '<input type="text" name="repository" ng-model="gitRepo" value="" size="60" maxlength="128" ng-model="gitAddress" ng-blur="fetchBranches()">'+
@@ -200,12 +204,18 @@
       $s.showBranchesSelect = false;
       $s.gitEditScreen = false;
       $s.deleteScreen = false;
-      $s.file = {};
       $s.path = '';
       $s.flavor = '';
       $s.errors = [];
       $s.status = [];
       $s.throbber = false;
+
+      $s.fileUpload = true;
+      $s.fileRemove = false;
+      $s.file = {};
+      $s.fileNametoDisplay = '';
+      $s.filePath = '';
+      $s.fid = '';
       var formId = form;
 
       if(formId.indexOf("edit-subtheme") > -1) {
@@ -317,6 +327,20 @@
           showError(result.data.msg);
         })
       }
+
+      $s.uploadFile = function(){
+        $s.file = $s.zipThemeUpload;
+        ct.uploadZipTheme($s.file).then(function(result) {
+          console.log(result);
+          if(typeof result.data.file_name !== 'undefined') {
+            $s.fileUpload = false;
+            $s.fileRemove = true;
+            $s.fileNametoDisplay = result.data.file_name;
+            $s.filePath = result.data.file_path;
+            $s.fid = result.data.fid;
+          }
+        })
+      };
 
       showError = function(msg) {
         if (Array.isArray(msg)) {
