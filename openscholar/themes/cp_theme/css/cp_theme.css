@@ -217,17 +217,7 @@ a.form-cancel {
     padding: 8px 15px;
     font-family:helvetica;
 }
-.page-os-widget-add-os-boxes-media .button,
-input[name=file_upload_button],
-.droppable-browse-button,
-.field-name-field-person-photo .media-button,
-.node-news-form .field-name-field-photo .button,
-.field-name-field-presentation-file .button,
-#edit-field_software_package-und-drop .media-browser-drop-box .ng-binding.ng-scope,
-.redirect-add {
-background-color:#3d9b13;
-	border:none;
-}
+
 /* small button */
 .redirect-add {
  padding: 4px 8px;
@@ -1885,7 +1875,6 @@ div.no-bold {
 #edit-og-vocabulary a.tabledrag-handle .handle{
     display: none;
 }
-
 ul.custom-theme-admin-list li{
   position: relative;
   padding-left: 30px;
