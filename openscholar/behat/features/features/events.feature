@@ -35,13 +35,12 @@ Feature:
   @api @features_first @os_events	@create_repeating_event_that_stops_after_a_number_of_occurences @javascript
   Scenario: Create repeating event that stops after a number of occurences
     Given I am logging in as "john"
-      And I visit "john/calendar"
       And I visit "john/node/add/event"
       And I fill in "Title" with "Cabinet meeting"
       And I check the box "Repeat"
       And I select "Daily" from "Repeats"
-      And I select the radio button "After occurrences" with the id "edit-field-date-und-0-rrule-range-of-repeat-count"
-      And I fill in "edit-field-date-und-0-rrule-count-child" with "3"
+      And I select the radio button under "Stop repeating" with a label containing "After"
+      And I fill in the "1st" "text" field under "Stop repeating" with "3"
       And I press "Save"
      Then I should see "Event Cabinet meeting has been created"
       And I click "CALENDAR"

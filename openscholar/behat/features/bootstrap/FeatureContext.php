@@ -1776,6 +1776,20 @@ class FeatureContext extends DrupalContext {
   }
 
   /**
+   * @When /^I select the radio button under "([^"]*)" with a label containing "([^"]*)"$/
+   */
+  public function iSelectRadioButtonUnderWithALabelContaining($under_label, $label_containing) {
+    $page = $this->getSession()->getPage();
+
+    $radiobutton = $page->find('xpath', "//label[starts-with(text(), '$under_label')]/..//div[contains(text(), '$label_containing')]/input");
+
+    if (!$radiobutton) {
+      throw new Exception("A radio button with the name {$name} and value {$value} was not found on the page");
+    }
+    $radiobutton->selectOption(true, FALSE);
+  }
+
+  /**
    * @When /^I choose the radio button named "([^"]*)" with value "([^"]*)" for the vsite "([^"]*)"$/
    */
   public function iSelectRadioNamedWithValueForVsite($name, $value, $vsite) {
@@ -2618,6 +2632,27 @@ class FeatureContext extends DrupalContext {
     $element = $this->getSession()->getPage();
     $value = $title . ' (' . $nid . ')';
     $element->fillField($id, $value);
+  }
+
+  /**
+   * @Given /^I fill in the "([^"]*)" "([^"]*)" field under "([^"]*)" with "([^"]*)"$/
+   */
+  public function iFillInTheFieldContainingText($nth, $field_type, $field_under_text, $value) {
+    $page = $this->getSession()->getPage();
+    $nth_index = (int)(preg_replace("/(st|nd|th)/i", "", $nth)) - 1;
+
+    if (! preg_match("/\d+/", $nth_index)) {
+      throw new Exception("Expected an ordinal number, e.g., 1st, 22nd, 1457th), but did not find one.");
+    }
+
+    $xpath_expr = "//label[contains(text(), '$field_under_text')]/..//input[@type='$field_type']";
+    $elements = $page->findAll('xpath', $xpath_expr);
+
+    if (isset($elements[$nth_index])) {
+      $elements[$nth_index]->setValue($value);
+    } else {
+      throw new Exception("XPath expression not found at the $nth index: '$xpath_expr'.");
+    }
   }
 
   /**
