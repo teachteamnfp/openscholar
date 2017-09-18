@@ -64,7 +64,7 @@ function grouper_save_groups($vals) {
  * Validate grouper values
  */
 function grouper_group_validate($values) {
-  if (!$values['grouper']) {
+  if ($values['vsite_private'] == 6 && !$values['grouper']) {
     drupal_set_message(t('You did not select any Harvard community groups.'), 'error');
     return FALSE;
   }

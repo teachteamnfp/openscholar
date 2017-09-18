@@ -145,7 +145,7 @@ line-height: 18px;
 }
 
 
-
+.search-block-form .form-item label,
 #search-block-form .form-item label {
 color: #3d3d3d;
 }
@@ -169,7 +169,7 @@ font-size: 13px;
 .ui-tabs ul.ui-tabs-nav li.ui-tabs-active {
 background: #D16103 !important;
 }
-
+.search-block-form input.form-submit, .search-block-form #edit-submit,
 #search-block-form input.form-submit, #search-block-form #edit-submit, #search-form #edit-submit {
   background-position: 2px -440px;
   background-color: #D16103;
