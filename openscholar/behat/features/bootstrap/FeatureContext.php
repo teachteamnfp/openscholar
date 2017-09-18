@@ -4026,7 +4026,7 @@ JS;
   /**
    * Visit the internal (unaliased) Drupal path of the current page
    *
-   * @When /^I visit the unaliased edit path of "([^"]*)" on vsite "([^"]*)"$/
+   * @When /^I visit to edit the post "([^"]*)" on vsite "([^"]*)"$/
    */
   public function iVisitTheEditPathOfPage($url, $vsite) {
     $unaliased_path = drupal_lookup_path('source', $url);
@@ -4046,7 +4046,7 @@ JS;
   /**
    * Visit the internal (unaliased) Drupal path of the current page
    *
-   * @When /^I visit the unaliased delete path of "([^"]*)" on vsite "([^"]*)"$/
+   * @When /^I visit the post "([^"]*)" to delete on vsite "([^"]*)"$/
    */
   public function iVisitTheDeletePathOfPage($url, $vsite) {
     $unaliased_path = drupal_lookup_path('source', $url);
@@ -4083,3 +4083,14 @@ JS;
     $this->visit("$vsite/$unaliased_path/$appendage");
   }
 }
+
+  /**
+   * @Given /^I click the big gear$/
+   */
+  public function iClickTheBigGear() {
+    $big_gear = $this->getSession()->getPage()->find('css', "a.ctools-dropdown-link.ctools-dropdown-text-link");
+    if (! $big_gear) {
+      throw new Exception("I did not locate the big gear icon.");
+    }
+    $big_gear->click();
+  }
