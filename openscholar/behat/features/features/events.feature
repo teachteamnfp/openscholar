@@ -49,7 +49,6 @@ Feature:
   @api @features_first @os_events	@create_repeating_event_that_stops_on_a_particular_date @javascript
   Scenario: Create repeating event that stops on a particular date
     Given I am logging in as "john"
-      And I visit "john/calendar"
       And I visit "john/node/add/event"
       And I fill in "Title" with "Daily brief"
       And I check the box "Repeat"
@@ -64,7 +63,6 @@ Feature:
   @api @features_first @os_events	@create_repeating_event_that_excludes_a_particular_date
   Scenario: Create repeating event that excludes a particular date
     Given I am logging in as "john"
-      And I visit "john/calendar"
       And I visit "john/node/add/event"
       And I fill in "Title" with "Daily intelligence briefing"
       And I check the box "Repeat"
@@ -84,7 +82,6 @@ Feature:
   @api @features_first @os_events	@create_repeating_event_that_includes_a_particular_date
   Scenario: Create repeating event that includes a particular date
     Given I am logging in as "john"
-      And I visit "john/calendar"
       And I visit "john/node/add/event"
       And I fill in "Title" with "Press briefing"
       And I check the box "Repeat"
@@ -104,7 +101,6 @@ Feature:
   @api @features_first @os_events	@limit_number_of_registrants_for_an_event @javascript
   Scenario: Limit number of registrants for an event
     Given I am logging in as "john"
-      And I visit "john/calendar"
       And I visit "john/node/add/event"
       And I fill in "Title" with "State dinner"
       And I fill in "edit-field-date-und-0-value-datepicker-popup-0" with date interval "P3D" from "now"
