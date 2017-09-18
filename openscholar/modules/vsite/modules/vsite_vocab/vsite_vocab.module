@@ -489,7 +489,7 @@ function vsite_vocab_field_formatter_view($entity_type, $entity, $field, $instan
     foreach ($terms as $term) {
       $values[] = l($term['term'], $term['uri']);
     }
-    $element[0] = array('#markup' => implode(', ', $values));
+    $element[0] = array('#markup' => implode('<span>,</span> ', $values));
     return $element;
   }
 
@@ -731,11 +731,11 @@ function vsite_vocab_html_cut($text, $max_length)
 
     if ($tags || (substr(trim($result), -2) == '>,')) {
       // Get the last term position in case of open tag or end of a term
-      $trim_pos = strrpos($result, '>,');
-      $result_trim = substr($result, 0, ($trim_pos + 1));
+      $trim_pos = strrpos($result, '<span>,');
+      $result_trim = substr($result, 0, $trim_pos);
     } else {
       $result_trim = $result;
     }
-    $result = $result_trim . '<span class="morecontent"><span>' . str_replace($result_trim, '', $text) .  '</span></span>';
+    $result = $result_trim . '<span class="morecontent"><span class="morechildren">' . str_replace($result_trim, '', $text) .  '</span></span>';
     return $result;
 }
