@@ -70,14 +70,14 @@ Feature:
   @api @features_first @javascript
   Scenario: Edit media of a existing gallery
      Given I am logging in as "john"
-       And I visit "john/galleries/safari-0"
+       And I visit "john/galleries/safari"
        And I click the gear icon in the content region
        And I click "Edit" in the gear menu
        And I click on the "Advanced (change filename, replace file, add a caption, etc.)" control
        And I fill in "File Name" with "safari_one.jpg"
        And I click on the "Save" control
        And I wait for page actions to complete
-       And I visit "john/galleries/safari-0"
+       And I visit "john/galleries/safari"
       Then I should see the images:
       | safari_one |
 
