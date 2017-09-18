@@ -1,11 +1,6 @@
 <?php
 
 /**
- * Vsite public access field.
- */
-define('VSITE_ACCESS_FIELD', 'group_access');
-
-/**
  * Define group access
  */
 // Publicly avalible and Indexed

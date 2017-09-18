@@ -50,7 +50,8 @@ body, #page-title,
 #menu-bar ul.nice-menu .menuparent a:before {
 	background-position: 0 -566px; /* White Arrow */
 }
-
+.search-block-form input.form-submit, 
+.search-block-form #edit-submit, 
 #search-block-form input.form-submit, 
 #search-block-form #edit-submit, 
 #search-form #edit-submit {
@@ -84,7 +85,7 @@ body, #page-title,
 .event-start .event-year {
     padding: 8px 0 0;
 }
-
+.search-block-form .container-inline .form-item .form-text,
 #search-block-form .container-inline .form-item .form-text {
 	background-color: #dedede;
 	border-radius: 30px;
@@ -92,7 +93,8 @@ body, #page-title,
 	-moz-border-radius: 30px;
   	padding: 0 35px 0 8px !important;
 }
-
+.search-block-form input.form-submit, 
+.search-block-form #edit-submit, 
 #search-block-form input.form-submit, 
 #search-block-form #edit-submit, 
 #search-form #edit-submit {
