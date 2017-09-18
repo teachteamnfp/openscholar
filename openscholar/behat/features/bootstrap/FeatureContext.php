@@ -4168,7 +4168,7 @@ JS;
   /**
    * Visit the internal (unaliased) Drupal path of the current page
    *
-   * @When /^I visit the unaliased edit path of "([^"]*)" on vsite "([^"]*)"$/
+   * @When /^I visit to edit the post "([^"]*)" on vsite "([^"]*)"$/
    */
   public function iVisitTheEditPathOfPage($url, $vsite) {
     $unaliased_path = drupal_lookup_path('source', $url);
@@ -4188,7 +4188,7 @@ JS;
   /**
    * Visit the internal (unaliased) Drupal path of the current page
    *
-   * @When /^I visit the unaliased delete path of "([^"]*)" on vsite "([^"]*)"$/
+   * @When /^I visit to delete the post "([^"]*)" on vsite "([^"]*)"$/
    */
   public function iVisitTheDeletePathOfPage($url, $vsite) {
     $unaliased_path = drupal_lookup_path('source', $url);
@@ -4313,6 +4313,89 @@ JS;
     }
 
     return false;
+  }
+
+  /**
+   * @Given /^I add a existing sub page named "([^"]*)" under the page "([^"]*)"$/
+   */
+  public function iAddExistingSubPageUnderPage($child_title, $parent_title) {
+    $nid = FeatureHelp::getNodeId($parent_title);
+    return array(
+      new Step\When('I visit "john/os/pages/' . $nid . '/subpage' . '"'),
+    );
+  }
+
+  /**
+   * @Given /^I fill in the field "([^"]*)" with the page "([^"]*)"$/
+   *
+   * This step is used to fill in an autocomplete field.
+   */
+  public function iFillInTheFieldWithThePage($id, $title) {
+    $nid = FeatureHelp::getNodeId($title);
+    $element = $this->getSession()->getPage();
+    $value = $title . ' [' . $nid . ']';
+    $element->fillField($id, $value);
+  }
+
+  /**
+   * @When /^I click the gear icon in the section navigation widget$/
+   */
+  public function iClickTheGearIconInTheSectionNavigation() {
+    $content_region = $this->getSession()->getPage()->find('xpath', "//div[@id='block-boxes-os-pages-section-nav']");
+    $gear_icon = $this->getSession()->getPage()->find('xpath', "//div[@class='contextual-links-wrapper contextual-links-processed']");
+    $gear_icon_trigger_link = $this->getSession()->getPage()->find('xpath', "//div[@id='block-boxes-os-pages-section-nav']//div/a[text()='Configure']");
+
+    $content_region->mouseOver();
+    $content_region->click();
+    $gear_icon->mouseOver();
+    $gear_icon->click();
+    $gear_icon_trigger_link->mouseOver();
+    $gear_icon_trigger_link->click();
+  }
+
+  /**
+   * @Given /^I visit the "([^"]*)" parameter in the current page query string with "([^"]*)" appended on vsite "([^"]*)"$/
+   */
+  public function iVisitTheParameterInTheCurrentPageQueryString($parameter, $appendage, $vsite) {
+
+    $url = $this->getSession()->getCurrentUrl();
+    if (preg_match("/$parameter(?:=|%3d)node\/(\S+)/i", $url, $matches)) {
+
+      if (isset($matches[1])) {
+        $this->getSession()->visit($this->locatePath((($vsite) ? "/$vsite/os/pages/" : "") . rawurldecode($matches[1]) . (($appendage) ? "/$appendage" : "")));
+      } else {
+        throw new Exception("Could not get a $parameter.\n");
+      }
+    }
+  }
+
+  /**
+   * @Given /^I click "([^"]*)" in the gear menu of section navigation$/
+   */
+  public function iClickInTheGearMenuOfSectionNav($menu_item) {
+    $gear_menu_item = $this->getSession()->getPage()->find('xpath', "//div[@id='block-boxes-os-pages-section-nav']//div/a[text()='Configure']/..//a[text()='$menu_item']");
+    $gear_menu_item->click();
+  }
+
+  /**
+   * @When /^I swap the order of the first two page items in the outline on vsite "([^"]*)"$/
+   */
+  public function iSwapTheOrderOfThePageOutline($vsite) {
+    $this->iClickTheGearIconInTheSectionNavigation();
+    $this->iClickInTheGearMenuOfSectionNav("Section Outline");
+    $this->iVisitTheParameterInTheCurrentPageQueryString("destination", "outline", $vsite);
+
+    $handles = $this->getSession()->getPage()->findAll('xpath', "//div[@class='handle']");
+
+    if (sizeof($handles) > 1) {
+      $handles[0]->dragTo($handles[1]);
+    } else {
+      throw new Exception("There needs to be at least two subpagepage entries to test re-ordering.\n");
+    }
+
+    return array(
+      new Step\When('I press "Save Section Outline"'),
+    );
   }
 
 }

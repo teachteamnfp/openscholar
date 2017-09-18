@@ -14,22 +14,45 @@ Feature:
   @api @feature_first
   Scenario: Edit existing page content.
     Given I am logging in as "john"
-      And I visit the unaliased edit path of "page-one" on vsite "john"
-      And I fill in "Title" with "Page One is edited"
+      And I visit to edit the post "page-one" on vsite "john"
+      And I fill in "Title" with "Parent Page"
       And I press "Save"
-     Then I should see "Page One is edited"
+     Then I should see "Parent Page"
 
   @api @feature_first
   Scenario: Add existing subpage
     Given I am logging in as "john"
-      And I add a existing sub page named "Page One is edited" under the page "About"
+      And I add a existing sub page named "Parent Page" under the page "About"
+      And I fill in the field "edit-add-page" with the page "Parent Page"
+      And I press "Save"
       And I visit "john/page-one"
      Then I should see "HOME / ABOUT /"
+
+  @api @feature_first @javascript
+  Scenario: Change order of subpages content using "Section Outline"
+    Given I am logging in as "john"
+      And I create a sub page named "Subpage One" under the page "Parent Page"
+      And I create a sub page named "Subpage Two" under the page "Parent Page"
+      And I visit the site "john/page-one"
+      And I swap the order of the first two page items in the outline on vsite "john"
+     Then I should see "Updated book Parent Page"
+      And I visit the site "john/page-one"
+     Then I should match the regex "parent\s+page\s+subpage\s+two\s+subpage\s+one"
+
+  @api @feature_first
+  Scenario: Correct rearrangement of section outline when parent is deleted.
+    Given I am logging in as "john"
+      And I create a sub page named "Child One" under the page "Subpage One"
+      And I visit to edit the post "page-one" on vsite "john"
+      And I click "Delete this page"
+      And I press "Delete"
+      And I visit the site "john/child-one"
+     Then I should see "HOME / SUBPAGE ONE /"
 
   @api @feature_first
   Scenario: Delete existing page
     Given I am logging in as "john"
-      And I visit the unaliased edit path of "page-one" on vsite "john"
+      And I visit to edit the post "page-one" on vsite "john"
       And I click "Delete this page"
      Then I should see "This action cannot be undone."
       And I press "Delete"
@@ -58,7 +81,7 @@ Feature:
   @api @features_second
   Scenario: Permission to edit own page content
     Given I am logging in as "michelle"
-      And I visit the unaliased edit path of "about-michelle" on vsite "john"
+      And I visit to edit the post "about-michelle" on vsite "john"
       And I fill in "Title" with "About Michelle Obama"
       And I press "Save"
      Then I should see "About Michelle Obama"
@@ -66,19 +89,19 @@ Feature:
   @api @features_second
   Scenario: Permission to edit any page content
     Given I am logging in as "alexander"
-      And I visit the unaliased edit path of "about-michelle" on vsite "john"
+      And I visit to edit the post "about-michelle" on vsite "john"
      Then I should see "Access Denied"
 
   @api @features_second
   Scenario: Permission to delete any page content
     Given I am logging in as "alexander"
-      And I visit the unaliased delete path of "about-michelle" on vsite "john"
+      And I visit to delete the post "about-michelle" on vsite "john"
      Then I should see "Access Denied"
 
   @api @features_second
   Scenario: Permission to delete own page content
     Given I am logging in as "michelle"
-      And I visit the unaliased edit path of "about-michelle" on vsite "john"
+      And I visit to edit the post "about-michelle" on vsite "john"
       And I click "Delete this page"
      Then I should see "This action cannot be undone."
       And I press "Delete"
