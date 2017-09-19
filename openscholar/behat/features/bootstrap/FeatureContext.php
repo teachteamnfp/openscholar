@@ -527,7 +527,12 @@ class FeatureContext extends DrupalContext {
     $element = $this->getSession()->getPage();
     $url = $this->createGist($element->getContent());
     print_r('You asked to see the page content. Here is a gist contain the html: ' . $url . "\n");
-    $this->iShouldPrintPageTo(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'screenshots' . DIRECTORY_SEPARATOR . time() . '.txt');
+
+    // Make sure the temp directory exists and is writable before using it
+    $tmpdir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'screenshots';
+    mkdir($tmpdir, "0777", true);
+
+    $this->iShouldPrintPageTo($tmpdir . DIRECTORY_SEPARATOR . time() . '.txt');
     $driver = $this->getSession()->getDriver();
     $screenshot = $driver->getScreenshot();
     $gistUrl = $this->createGist('<img src="data:image/png;base64,'.base64_encode($screenshot).'">');
