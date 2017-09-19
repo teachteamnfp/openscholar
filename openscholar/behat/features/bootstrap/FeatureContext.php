@@ -4276,13 +4276,13 @@ JS;
             $success = true;
             break;
           }
-          $msg = "The event '$event_name' was not seen on '$future_date'.";
+          $msg = "The event '$event_name' was not seen on '$future_date', but should have been there.";
         case "not see":
           if (! $event_on_date) {
             $success = true;
             break;
           }
-          $msg = "The event '$event_name' was seen on '$future_date'.";
+          $msg = "The event '$event_name' was seen on '$future_date', but should not have been there.";
         default:
           throw new Exception("Invalid parameter.  Expected 'I should \"see\" ...' or 'I should \"not see\" ...'.");
       }
