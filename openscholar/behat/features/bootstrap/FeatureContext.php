@@ -4241,13 +4241,13 @@ JS;
           if ($event_on_date) {
             return true;
           }
-          throw new Exception("The event '$event_name' was not seen in on $future_date.");
+          throw new Exception("The event '$event_name' was not seen on $future_date.");
           break;
         case "not see":
           if (! $event_on_date) {
             return true;
           }
-          throw new Exception("The event '$event_name' was seen in on $future_date.");
+          throw new Exception("The event '$event_name' was seen on $future_date.");
           break;
         default:
           throw new Exception("Invalid parameter.  Expected 'see' or 'not see'.");
