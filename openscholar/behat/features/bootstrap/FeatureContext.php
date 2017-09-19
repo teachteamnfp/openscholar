@@ -536,6 +536,7 @@ class FeatureContext extends DrupalContext {
     $driver = $this->getSession()->getDriver();
     $screenshot = $driver->getScreenshot();
     $gistUrl = $this->createGist('<img src="data:image/png;base64,'.base64_encode($screenshot).'">');
+    $this->iPrintPageScreenShot();
     print_r("Here is a screenshot of the page: $gistUrl\n");
   }
 
