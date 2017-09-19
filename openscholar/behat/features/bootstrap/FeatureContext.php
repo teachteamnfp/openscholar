@@ -4183,17 +4183,50 @@ JS;
   }
 
   /**
-   * Helper function to get an input element under a div label
+   * @Given /^I fill in the "([^"]*)" "([^"]*)" field within the "([^"]*)" section with date interval "([^"]*)" from "([^"]*)"$/
    */
-  private function _getNthFieldBelowXyz($nth, $field_type, $field_under_text) {
-    $page = $this->getSession()->getPage();
-    $nth_index = (int)(preg_replace("/(st|nd|th)/i", "", $nth)) - 1;
+  public function iFillInTheNthFieldWithinXyzWithDateInterval($nth, $field_type1, $field_within_text, $date_interval, $start_date) {
+    $element = $this->_getNthFieldWithinXyz($nth, $field_type1, $field_within_text, $field_type2);
+    $future_date = $this->_getDateInterval($start_date, $date_interval);
+    $element->setValue($future_date);
+  }
+
+  /*
+   * Helper function to convert ordinal number (nth) to cardinal number (n)
+   */
+  private function _ordinal_to_cardinal($nth) {
+    $nth_index = preg_replace("/(st|nd|th)/i", "", $nth);
 
     if (! preg_match("/\d+/", $nth_index)) {
       throw new Exception("Expected an ordinal number, e.g., 1st, 22nd, 1457th), but did not find one.");
     }
 
+    return (int)$nth_index - 1;
+  }
+
+  /**
+   * Helper function to get an input element under a div label
+   */
+  private function _getNthFieldBelowXyz($nth, $field_type, $field_under_text) {
+    $page = $this->getSession()->getPage();
+    $nth_index = $this->_ordinal_to_cardinal($nth);
     $xpath_expr = "//label[contains(text(), '$field_under_text')]/..//input[@type='$field_type']";
+    $elements = $page->findAll('xpath', $xpath_expr);
+
+    if (isset($elements[$nth_index])) {
+      return $elements[$nth_index];
+    } else {
+      throw new Exception("XPath expression not found at the $nth index: '$xpath_expr'.");
+    }
+  }
+
+  /**
+   * Helper function to get an input element within a div label
+   */
+  private function _getNthFieldWithinXyz($nth, $field_type, $field_within_text) {
+    $page = $this->getSession()->getPage();
+    $nth_index = $this->_ordinal_to_cardinal($nth);
+    $xpath_expr = "//label[contains(text(), '$field_within_text')]/../input[@type='$field_type']";
     $elements = $page->findAll('xpath', $xpath_expr);
 
     if (isset($elements[$nth_index])) {
@@ -4208,12 +4241,7 @@ JS;
    */
   private function _getNthFieldAboveXyz($nth, $field_type1, $field_above_text, $field_type2) {
     $page = $this->getSession()->getPage();
-    $nth_index = (int)(preg_replace("/(st|nd|th)/i", "", $nth)) - 1;
-
-    if (! preg_match("/\d+/", $nth_index)) {
-      throw new Exception("Expected an ordinal number, e.g., 1st, 22nd, 1457th), but did not find one.");
-    }
-
+    $nth_index = $this->_ordinal_to_cardinal($nth);
     $xpath_expr = "//input[@type='$field_type2'][@value='$field_above_text']/..//input[@type='$field_type1']";
     $elements = $page->findAll('xpath', $xpath_expr);
 
