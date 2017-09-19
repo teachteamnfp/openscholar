@@ -111,10 +111,8 @@ Feature:
       And I fill in "Capacity" with "1"
       And I press "Save Settings"
       And I visit the unaliased registration path of "event/state-dinner" on vsite "john" and append "0"
-      And I turn off Mollom CAPTCHA verification
       And I fill in "Email" with "khrushchev@kremlin.ru"
       And I fill in "Full name" with "Nikita Khrushchev"
-#     And I fill in "Verification" with "correct"
       And I press "Signup"
      Then I should see "Registration has been saved"
       And I visit "john/event/state-dinner"
