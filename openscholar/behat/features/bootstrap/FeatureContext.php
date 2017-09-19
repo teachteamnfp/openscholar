@@ -4263,6 +4263,7 @@ JS;
   public function iShouldSeeTheEventNamedOnDateIntervalFrom($see_or_not, $event_name, $date_interval, $start_date, $num_intervals) {
 
     $counter = 0;
+    $success = false;
     while ($counter++ <= $num_intervals) {
       $page = $this->getSession()->getPage()->getContent();
       $future_date = $this->_getDateInterval($start_date, $date_interval);
@@ -4272,19 +4273,23 @@ JS;
       switch($see_or_not) {
         case "see":
           if ($event_on_date) {
-            return true;
+            $success = true;
+            break;
           }
-          throw new Exception("The event '$event_name' was not seen on $future_date.");
-          break;
+          $msg = "The event '$event_name' was not seen on '$future_date'.";
         case "not see":
           if (! $event_on_date) {
-            return true;
+            $success = true;
+            break;
           }
-          throw new Exception("The event '$event_name' was seen on $future_date.");
-          break;
+          $msg = "The event '$event_name' was seen on '$future_date'.";
         default:
-          throw new Exception("Invalid parameter.  Expected 'see' or 'not see'.");
+          throw new Exception("Invalid parameter.  Expected 'I should \"see\" ...' or 'I should \"not see\" ...'.");
       }
+    }
+
+    if (! $success) {
+      throw new Exception($msg);
     }
 
     # Return calendar to home month
