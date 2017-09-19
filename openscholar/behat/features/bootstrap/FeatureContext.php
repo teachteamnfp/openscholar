@@ -2667,9 +2667,10 @@ class FeatureContext extends DrupalContext {
   /**
    * @Given /^I fill in the "([^"]*)" "([^"]*)" field above the "([^"]*)" "([^"]*)" with date interval "([^"]*)" from "([^"]*)"
    */
-  public function iFillInTheFieldAboveTheElementWithDateInterval($nth, $field_type, $field_under_text, $value) {
-    $element = $this->_getNthFieldBelowXyz($nth, $field_type, $field_under_text);
-    $element->setValue($value);
+  public function iFillInTheFieldAboveTheElementWithDateInterval($nth, $field_type1, $field_value, $field_type2, $date_interval, $start_date) {
+    $element = $this->_getNthFieldAboveXyz($nth, $field_type1, $field_value, $field_type2);
+    $future_date = $this->_getDateInterval($start_date, $date_interval);
+    $element->setValue($future_date);
   }
 
   /**
