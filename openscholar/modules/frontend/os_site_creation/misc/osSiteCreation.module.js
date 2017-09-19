@@ -222,14 +222,17 @@
     }
   };
 }]);
-
+jQuery(document).ready(function(){
  var highestBox = 0;
-        $('.starter-content .form-item').each(function(){  
-                if($(this).height() > highestBox){  
-                highestBox = $(this).height();  
+        jQuery('.starter-content .form-item').each(function(){  
+                if(jQuery(this).height() > highestBox){  
+                highestBox = jQuery(this).height();  
         }
     });    
-    $('.starter-content .form-item').height(highestBox);
+    jQuery('.starter-content .form-item').height(highestBox);
 
+});
 
 })()
+
+
