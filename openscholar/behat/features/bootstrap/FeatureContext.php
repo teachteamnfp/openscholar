@@ -530,7 +530,9 @@ class FeatureContext extends DrupalContext {
 
     // Make sure the temp directory exists and is writable before using it
     $tmpdir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'screenshots';
-    mkdir($tmpdir, "0777", true);
+    if (! file_exists($tmpdir)) {
+      mkdir($tmpdir, "0777", true);
+    }
 
     $this->iShouldPrintPageTo($tmpdir . DIRECTORY_SEPARATOR . time() . '.txt');
     $driver = $this->getSession()->getDriver();
