@@ -223,4 +223,13 @@
   };
 }]);
 
+ var highestBox = 0;
+        $('.starter-content .form-item').each(function(){  
+                if($(this).height() > highestBox){  
+                highestBox = $(this).height();  
+        }
+    });    
+    $('.starter-content .form-item').height(highestBox);
+
+
 })()
