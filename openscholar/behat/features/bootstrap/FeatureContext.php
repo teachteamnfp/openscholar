@@ -2657,6 +2657,14 @@ class FeatureContext extends DrupalContext {
   }
 
   /**
+   * @Given /^I fill in the "([^"]*)" "([^"]*)" field above the "([^"]*)" "([^"]*)" with date interval "([^"]*)" from "([^"]*)"
+   */
+  public function iFillInTheFieldAboveTheElementWithDateInterval($nth, $field_type, $field_under_text, $value) {
+    $element = $this->_getNthFieldBelowXyz($nth, $field_type, $field_under_text);
+    $element->setValue($value);
+  }
+
+  /**
    * @Given /^I can't visit "([^"]*)"$/
    */
   public function iCanTVisit($url) {
@@ -4162,7 +4170,15 @@ JS;
   public function iFillInTheNthFieldBelowXyzWithDateInterval($nth, $field_type, $field_under_text, $date_interval, $start_date) {
     $element = $this->_getNthFieldBelowXyz($nth, $field_type, $field_under_text);
     $future_date = $this->_getDateInterval($start_date, $date_interval);
+    $element->setValue($future_date);
+  }
 
+  /**
+   * @Given /^I fill in the "([^"]*)" "([^"]*)" field above the "([^"]*)" "([^"]*)" with date interval "([^"]*)" from "([^"]*)"$/
+   */
+  public function iFillInTheNthFieldAboveXyzWithDateInterval($nth, $field_type1, $field_under_text, $field_type2, $date_interval, $start_date) {
+    $element = $this->_getNthFieldAboveXyz($nth, $field_type1, $field_under_text, $field_type2);
+    $future_date = $this->_getDateInterval($start_date, $date_interval);
     $element->setValue($future_date);
   }
 
@@ -4187,7 +4203,26 @@ JS;
     }
   }
 
+  /**
+   * Helper function to get an input element above another element
+   */
+  private function _getNthFieldAboveXyz($nth, $field_type1, $field_above_text, $field_type2) {
+    $page = $this->getSession()->getPage();
+    $nth_index = (int)(preg_replace("/(st|nd|th)/i", "", $nth)) - 1;
 
+    if (! preg_match("/\d+/", $nth_index)) {
+      throw new Exception("Expected an ordinal number, e.g., 1st, 22nd, 1457th), but did not find one.");
+    }
+
+    $xpath_expr = "//input[@type='$field_type2'][@value='$field_above_text']/..//input[@type='$field_type1']";
+    $elements = $page->findAll('xpath', $xpath_expr);
+
+    if (isset($elements[$nth_index])) {
+      return $elements[$nth_index];
+    } else {
+      throw new Exception("XPath expression not found at the $nth index: '$xpath_expr'.");
+    }
+  }
 
   /**
    * @Then /^I should "([^"]*)" event named "([^"]*)" on date "([^"]*)" from "([^"]*)" over the next "([^"]*)" pages$/
