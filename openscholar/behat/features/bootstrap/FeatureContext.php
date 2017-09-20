@@ -2640,7 +2640,7 @@ class FeatureContext extends DrupalContext {
   /**
    * @Given /^I can't visit unaliased path for "([^"]*)" with "([^"]*)" appended on vsite "([^"]*)"$/
    */
-  public function iCanTVisitUnaliasedPath($url, $appendage, $vsite) {
+  public function iCanTVisitUnaliasedPathWithAppendedPathOnVsite($url, $appendage, $vsite) {
     $path = _getUnaliasedPathFromAliasPath($url, $vsite);
     $this->visit("$path/$appendage");
     $this->assertSession()->statusCodeEquals(403);
