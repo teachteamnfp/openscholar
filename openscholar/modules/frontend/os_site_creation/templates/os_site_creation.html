@@ -217,27 +217,76 @@
 					<div class="visibility">
 						<div class="starter-content three">
 
-							<div class="form-item form-type-radio">
-								<h2>Minimal</h2>
-								<div>No pre-set menu or pages</div>
-								<label class="option">
-									<input class="radiobutton-button" type="radio" ng-model="contentOption.value" value="os_department_minimal"><br><br>
-									<span>Select</span></label>
+							<div ng-hide="!departmentSchool">
+								<div class="form-item form-type-radio">
+									<h2>Minimal</h2>
+									<div>No pre-set menu or pages</div>
+									<label class="option">
+										<input class="radiobutton-button" type="radio" ng-model="contentOption.value" value="os_department_minimal"><br><br>
+										<span>Select</span></label>
+								</div>
+								<div class="form-item form-type-radio">
+									<h2>HWP Academic</h2>
+									<div>Pre-set menu links and pages: sdf, sfd, dfd</div>
+									<label class="option">
+										<input type="radio" ng-model="contentOption.value" value="os_department"><br><br>
+										<span>Select</span></label>
+								</div>
+								<div class="form-item form-type-radio">
+									<h2>HWP Administrative</h2>
+									<div>Pre-set menu links and pages: werer, tyty, dfuiuid</div>
+									<label class="option">
+										<input type="radio" ng-model="contentOption.value" value="hwp_administrative"><br><br>
+										<span>Select</span></label>
+								</div>
 							</div>
 
-							<div class="form-item form-type-radio">
-								<h2>Academic Department</h2>
-								<div>Pre-set menu links and pages: sdf, sfd, dfd</div>
-								<label class="option">
-									<input type="radio" ng-model="contentOption.value" value="os_department"><br><br>
-									<span>Select</span></label>
+							<div ng-hide="!individualScholar">
+								<div class="form-item form-type-radio">
+									<h2>Minimal</h2>
+									<div>No pre-set menu or pages</div>
+									<label class="option">
+										<input class="radiobutton-button" type="radio" ng-model="contentOption.value" value="os_scholar"><br><br>
+										<span>Select</span></label>
+								</div>
+								<div class="form-item form-type-radio">
+									<h2>HWP Personal</h2>
+									<div>Pre-set menu links and pages: sdf, sfd, dfd</div>
+									<label class="option">
+										<input type="radio" ng-model="contentOption.value" value="hwp_personal"><br><br>
+										<span>Select</span></label>
+								</div>
 							</div>
-							<div class="form-item form-type-radio">
-								<h2>Administrative Department</h2>
-								<div>Pre-set menu links and pages: werer, tyty, dfuiuid</div>
-								<label class="option">
-									<input type="radio" ng-model="contentOption.value" value="hwp_administrative"><br><br>
-									<span>Select</span></label>
+
+							<div ng-hide="!projectLabSmallGroup">
+								<div class="form-item form-type-radio">
+									<h2>Minimal</h2>
+									<div>No pre-set menu or pages</div>
+									<label class="option">
+										<input class="radiobutton-button" type="radio" ng-model="contentOption.value" value="os_project"><br><br>
+										<span>Select</span></label>
+								</div>
+								<div class="form-item form-type-radio">
+									<h2>HWP Event/Conference</h2>
+									<div>Pre-set menu links and pages: sdf, sfd, dfd</div>
+									<label class="option">
+										<input type="radio" ng-model="contentOption.value" value="hwp_event_conference"><br><br>
+										<span>Select</span></label>
+								</div>
+								<div class="form-item form-type-radio">
+									<h2>HWP Lab/Research Group</h2>
+									<div>Pre-set menu links and pages: werer, tyty, dfuiuid</div>
+									<label class="option">
+										<input type="radio" ng-model="contentOption.value" value="hwp_lab_research_group"><br><br>
+										<span>Select</span></label>
+								</div>
+								<div class="form-item form-type-radio">
+									<h2>HWP Project</h2>
+									<div>Pre-set menu links and pages: werer, tyty, dfuiuid</div>
+									<label class="option">
+										<input type="radio" ng-model="contentOption.value" value="hwp_project"><br><br>
+										<span>Select</span></label>
+								</div>
 							</div>
 
 						</div>
