@@ -68,14 +68,14 @@ class os_boxes_media extends os_boxes_default {
 
     $old = $form['options']['fid']['#value']['fid'];
 
-    if ($old != $this->options['fid']) {
+    if ($old != $this->options['fid']['fid']) {
 
       $id = FALSE;
       if (module_exists('vsite') && $vsite = vsite_get_vsite()) {
         $id = $vsite->group->nid;
       }
 
-      if ($id && $file = file_load($this->options['fid'])){
+      if ($id && $file = file_load($this->options['fid']['fid'])){
         file_usage_add($file, 'os_boxes', 'node', $id, 1);
       }
 
@@ -91,7 +91,7 @@ class os_boxes_media extends os_boxes_default {
   public function render() {
     $block = parent::render();
     if (($block['content'] = $this->get_cache()) === FALSE) {
-      if ($file = file_load($this->options['fid'])) {
+      if ($file = file_load($this->options['fid']['fid'])) {
         if (!empty($this->options['maxwidth'])) {
           if (isset($file->image_dimensions)) {
             // This is an image, so we have the dimensions for it and need to scale it down.
