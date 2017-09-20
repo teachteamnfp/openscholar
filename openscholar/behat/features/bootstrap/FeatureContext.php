@@ -4010,6 +4010,39 @@ JS;
     $element->click();
   }
 
+  /*
+   * Helper to get unaliased edit path from Drupal URL
+   */
+  private function _getUnaliasedPathFromAliasPath($url, $vsite) {
+
+    foreach (array("$vsite/", "") as $prefix) {
+
+      $unaliased_path = drupal_lookup_path('source', "$prefix$url");
+
+      if (! $unaliased_path) {
+        $this->visit("$prefix$url");
+        $a_element = $this->getSession()->getPage()->find('xpath', "//a[contains(@href, '?destination=node/')]");
+        $href_unaliased = $a_element->getAttribute('href');
+
+        if (preg_match("/\bdestination\=node\/(\d+)/", $href_unaliased, $matches)) {
+          if (isset($matches[1])) {
+            $nid = (int)($matches[1]);
+            $unaliased_path = "$vsite/node/$nid";
+            break;
+          }
+        }
+      } else {
+        break;
+      }
+    }
+
+    if (! $unaliased_path) {
+      throw new Exception("Could not find an unaliased path for '$url' on vsite '$vsite'.");
+    }
+
+    return $unaliased_path;
+  }
+
 
   /**
    * Visit the internal (unaliased) Drupal path of the current page
@@ -4017,18 +4050,8 @@ JS;
    * @When /^I visit the unaliased edit path of "([^"]*)" on vsite "([^"]*)"$/
    */
   public function iVisitTheEditPathOfPage($url, $vsite) {
-    $unaliased_path = drupal_lookup_path('source', $url);
-
-    # Check the url with the vsite prepended
-    if (! $unaliased_path) {
-      $unaliased_path = drupal_lookup_path('source', "$vsite/$url");
-    }
-
-    if (! $unaliased_path) {
-      throw new Exception("Could not find an unaliased path for '$url' on vsite '$vsite'.");
-    }
-
-    $this->visit("/$vsite/$unaliased_path/edit");
+    $path = $this->_getUnaliasedPathFromAliasPath($url, $vsite);
+    $this->visit("$path/edit");
   }
 
   /**
@@ -4037,17 +4060,7 @@ JS;
    * @When /^I visit the unaliased path of "([^"]*)" on vsite "([^"]*)" and append "([^"]*)"$/
    */
   public function iVisitTheUnaliasedPathOfAndAppend($url, $vsite, $appendage) {
-    $unaliased_path = drupal_lookup_path('source', $url);
-
-    # Check the url with the vsite prepended
-    if (! $unaliased_path) {
-      $unaliased_path = drupal_lookup_path('source', "$vsite/$url");
-    }
-
-    if (! $unaliased_path) {
-      throw new Exception("Could not find an unaliased path for '$url' on vsite '$vsite' with '$appendage' appended.");
-    }
-
-    $this->visit("$vsite/$unaliased_path/$appendage");
+    $path = $this->_getUnaliasedPathFromAliasPath($url, $vsite);
+    $this->visit("$path/$appendage");
   }
 }
