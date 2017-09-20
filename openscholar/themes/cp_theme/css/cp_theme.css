@@ -8,6 +8,10 @@ div.messages ul li {
     font-family: helvetica, arial, sans-serif;
 }
 
+.ui-dialog * {
+    font-size: 14px;
+}
+
 #page {
     padding: 0;
 }
@@ -39,7 +43,10 @@ body:not(.overlay) .node-form {
 a {
     color: #215990;
 }
-
+a.redirect-add,
+a.button:link, a.button:visited, a.button:hover, a.button:active {
+	color:#FFF;
+}
 
 
 fieldset {
@@ -50,6 +57,8 @@ fieldset {
     background: #FFF;
 }
 
+
+
 #feature_os_publication span[name="biblio_sort"] .form-item,
 #feature_os_publication span[name="biblio_order"] .form-item,
 h3 {
@@ -59,6 +68,44 @@ h3 {
 table {
     font-size: 1em;
 }
+
+/* TABLE STYES SHOULD FOLLOW THESE RULES */
+table.apps-table  {
+  border-collapse: collapse;
+  border:none;
+}
+.apps-table th {
+    border: none;
+    border-bottom: 3px solid #ccc;
+    padding: 0 1em .5em .5em;
+    text-align: left;
+    background: #fff;
+    text-transform: none;
+    font-weight: bold;
+    font-size: 14px;
+    color: #444;
+}
+.apps-table tbody {
+  border-top: 1px solid #ccc;
+}
+.apps-table tr.even,
+.apps-table tr.odd {
+  background-color: #eee;
+  border-bottom: 1px solid #ccc;
+  border-left:none;
+  border-right:none;
+  padding: 0.1em 0.6em;
+}
+
+.apps-table td {
+ 
+  padding: 0.77em 0.6em;
+}
+
+.apps-table tr td:last-child {
+    border-right: none;
+}
+
 
 input.form-text,
 textarea,
@@ -72,6 +119,7 @@ textarea,
         -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
     border-radius: 2px;
+    background-color: #fff;
 }
 
 #og-vocabulary-add-more-wrapper select.form-select {
@@ -112,7 +160,7 @@ html.js input.throbbing {
     bottom: -7px;
     right: 15px;
 }
-
+.apps-help-link,
 .revision-suffix.help-link a:after,
 .help-link a:after {
     padding: 5px 25px 5px 0;
@@ -178,7 +226,8 @@ html.js input.throbbing {
     color: #FFF;
     font-weight: bold;
 }
-
+#edit-field_software_package-und-drop .media-browser-drop-box .ng-binding.ng-scope,
+.redirect-add,
 body.page-node-revisions ul.action-links a,
 input.form-submit, 
 a.button,
@@ -187,7 +236,7 @@ a.button,
 .ui-dialog.ap-settings-form input[type="submit"],
 a#edit-cancel,
 a.form-cancel {
-      cursor: pointer;
+    cursor: pointer;
     padding: 5px 12px;
     margin-bottom: 1em;
     margin-right: 1em;
@@ -204,6 +253,27 @@ a.form-cancel {
     -webkit-border-radius: 2px;
     border-radius: 2px;
     padding: 8px 15px;
+    font-family:helvetica;
+}
+
+/* small button */
+.redirect-add {
+ padding: 4px 8px;
+}
+
+.page-os-widget-add-os-boxes-media .button.launcher {
+    margin: 10px 0 18px;
+
+}
+
+.ui-dialog .media-browser-pane .results ~ button {
+    margin-right: 0;
+    border: none;
+    border-bottom: none;
+    color: #4E84C4;
+    padding: 0 5px;
+    background: none;
+    font-weight: bold;
 }
 
 /* SAVE BUTTON SPINNER */
@@ -261,7 +331,8 @@ a.form-cancel {
 a.form-cancel:hover {
     text-decoration: none;
 }
-
+.redirect-add,
+.page-os-widget-add-os-boxes-media .button.launcher,
 .form-actions .form-submit,
 .form-actions #edit-delete,
 .form-actions #edit-delete--2 {
@@ -349,7 +420,7 @@ div.ctools-modal-content a.close img {
     top: 1px;
     display: none;
 }
-
+.center-this,
 div.ctools-modal-content .modal-content .modal-throbber-wrapper {
     text-align: center;
 }
@@ -383,6 +454,7 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
     font-weight: bold;
 }
 
+
 /** OVERLAY MODAL OVERRIDES **/
 .ui-dialog .ui-dialog-titlebar button.ui-dialog-titlebar-close,
 #overlay-close,
@@ -391,7 +463,7 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
     width: 30px;
     height: 30px;
     position: relative;
-    margin: -28px 10px;
+    /* margin: -28px 10px; */
 }
 
 .ui-dialog .ui-dialog-titlebar button.ui-dialog-titlebar-close {
@@ -399,6 +471,12 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
     margin: -8px 0;
     border: 0;
     cursor: pointer;
+}
+
+#overlay-close-wrapper {
+   
+    margin: -30px 15px;
+   
 }
 
 .ui-state-default .ui-icon,
@@ -420,8 +498,8 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
     height: 24px;
 }
 
-#overlay-title,
-.ap-settings-form .ui-dialog-title {
+
+#overlay-title, .ui-dialog-title {
     float: left;
     margin: 0;
     padding: 0.3em 0;
@@ -430,6 +508,7 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
     font-weight: normal;
 }
 
+.page-node-add-news .field-name-field-photo,
 .page-cp .ui-dialog-titlebar {
     margin-bottom: 22px;
 }
@@ -445,6 +524,7 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
 .ui-dialog.ap-settings-form {
     padding: 0;
     top:10% !important;
+    font-size: 14px; 
 }
 
 .ui-dialog.site-creation-form {
@@ -470,7 +550,7 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
 #person-node-form .field-name-body {
     padding-bottom: 15px;
 }
-
+.redirect-add,
 form.confirmation {
     margin-top: 20px;
 }
@@ -1852,12 +1932,26 @@ body.page-node-revisions .node {
 .form-type-radio label {
   cursor: pointer
 }
+
 div.no-bold {
     font-weight: normal;
 }
 .cp-themes .screenshot {
     width: 245px;
 }
+
+ .visibility-selector {
+
+     background: url('../images/cp-sprite.png') no-repeat 100px -767px;
+     display:block;
+ }
+
+
+ .visibility-selector:hover {
+
+     cursor:pointer;
+ }
+
 #edit-og-vocabulary a.tabledrag-handle .handle{
     display: none;
 }

@@ -1004,8 +1004,15 @@ function os_update_7054() {
 }
 
 /**
- * Enable the os_site_creation module for new site creation forms.
+ * Set twitter:description to [node:title], which is more likely to be set
  */
 function os_update_7055() {
+  features_revert(array('os' => array('metatag')));
+}
+
+/**
+ * Enable the os_site_creation module for new site creation forms.
+ */
+function os_update_7056() {
   module_enable(array('os_site_creation'));
 }

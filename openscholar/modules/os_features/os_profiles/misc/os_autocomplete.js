@@ -271,7 +271,7 @@ Drupal.jsAC.prototype.setStatus = function (status) {
 Drupal.ACDB = function (uri) {
   this.uri = uri;
   this.delay = 300;
-  this.cache = {};
+  this.ACDBcache = {};
 };
 
 /**
@@ -289,8 +289,8 @@ Drupal.ACDB.prototype.search = function (searchString) {
   }
 
   // See if this key has been searched for before.
-  if (this.cache[searchString]) {
-    return this.owner.found(this.cache[searchString]);
+  if (this.ACDBcache[searchString]) {
+    return this.owner.found(this.ACDBcache[searchString]);
   }
 
   // Initiate delayed search.
@@ -309,7 +309,7 @@ Drupal.ACDB.prototype.search = function (searchString) {
       dataType: 'json',
       success: function (matches) {
         if (typeof matches.status == 'undefined' || matches.status != 0) {
-          db.cache[searchString] = matches;
+          db.ACDBcache[searchString] = matches;
           // Verify if these are still the matches the user wants to see.
           if (db.searchString == searchString) {
             db.owner.found(matches);

@@ -42,8 +42,10 @@
 
       return $http.post(restApi, vals, http_config).then(function (r) {
         var newRedirect = r.data.data;
-        redirects[newRedirect.id] = newRedirect;
-        self.Count++;
+        if (newRedirect.id != null) {
+          redirects[newRedirect.id] = newRedirect;
+          self.Count++;
+        }
         return r;
        },
        function (e) {
@@ -73,7 +75,7 @@
     return {
       template: '<div class="messages" ng-show="status.length || errors.length"><div class="dismiss" ng-click="status.length = 0; errors.length = 0;">X</div>' +
       '<div class="status" ng-show="status.length > 0"><div ng-repeat="m in status track by $index"><span ng-bind-html="m"></span></div></div>' +
-        '<div class="warning" ng-show="errors.length > 0"><div ng-repeat="m in errors track by $index"><span ng-bind-html="m"></span></div></div></div>' +
+        '<div class="{{msgType}}" ng-show="errors.length > 0"><div ng-repeat="m in errors track by $index"><span ng-bind-html="m"></span></div></div></div>' +
       '</div>' +
       '<p>URL redirects allow you to send users from a URL on your site, to any other URL. You might want to use this to create a short link, or to transition users from an old URL to the new URL. Each site may only have a maximum of 15 of URL redirects.</p>' +
       '<ul class="table-list">' +
@@ -81,11 +83,11 @@
           '<span class="redirect-path">{{r.path}}</span> &#8594; <span class="redirect-target">{{r.target}}</span> <a class="redirect-delete" ng-click="deleteRedirect(r.id)" button-spinner="redirect_delete_{{r.id}}">delete</a>' +
         '</li>' +
       '</ul>' +
-      '<a class="redirect-add" ng-show="showAddLink()" ng-click="toggleAddForm()">+ Add new redirect</a>' +
+      '<a class="redirect-add" ng-show="showAddLink()" ng-click="toggleAddForm()">Add new redirect</a>' +
       '<div class="redirect-add-form" ng-show="showAddForm">' +
-        '<div class="display-inline"><label for="redirect-path">Redirect From</label> {{siteBaseUrl}}/<input type="text" id="redirect-path" class="redirect-new-element" ng-model="newRedirectPath" placeholder="Local path"><span class="description">(Example: my-path). Fragment anchors (e.g. #anchor) Leading slash ( / ) are not allowed.</span></div>' +
+        '<div class="display-inline"><label for="redirect-path">Redirect From</label> {{siteBaseUrl}}/<input type="text" id="redirect-path" class="redirect-new-element" ng-model="newRedirectPath" placeholder="Local path"><span class="description">(Example: my-path). Fragment anchors (e.g. #anchor) Leading slash ( / ) are not allowed. To redirect from the homepage, enter the word home.</span></div>' +
         '<div class="display-inline"><label for="redirect-target">Redirect To</label> <input type="text" id="redirect-target" class="redirect-new-element" ng-model="newRedirectTarget" placeholder="Target URL (i.e. http://www.google.com)"><span class="description">Enter any existing destination URL (like http://example.com) to redirect to.</span></div>' +
-        '<button type="button" value="Add Redirect" ng-click="addRedirect()"">Add Redirect</button>' +
+        '<button type="button" value="Save" ng-click="addRedirect()"">Save</button>' +
       '</div>',
       scope: {
         value: '=',
@@ -124,14 +126,20 @@
         scope.newRedirectPath = '';
         scope.newRedirectTarget = '';
         scope.errors = [];
+        scope.msgType = 'warning';
         scope.addRedirect = function () {
           rs.Create(scope.newRedirectPath, scope.newRedirectTarget).then(function (r) {
             scope.newRedirectPath = '';
             scope.newRedirectTarget = '';
+            scope.errors.length = 0;
+            scope.msgType = 'warning';
             scope.showAddForm = false;
             if (Array.isArray(r.data.data.msg)) {
               for(var i = 0; i < r.data.data.msg.length; i++) {
                 scope.errors.push($sce.trustAsHtml(r.data.data.msg[i]));
+              }
+              if (r.data.data.msg_type != null) {
+                scope.msgType = r.data.data.msg_type;
               }
             }
           });

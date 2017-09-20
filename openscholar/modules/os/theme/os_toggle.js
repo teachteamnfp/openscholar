@@ -45,7 +45,7 @@
 
     $('.more').once(function() {
       var content = $(this).html();
-      var html = content + ',&nbsp;&nbsp;<a  class="morelink togglemore">' + moretext + '</a>';
+      var html = content + '<span>,</span>&nbsp;&nbsp;<a  class="morelink togglemore">' + moretext + '</a>';
       $(this).html(html);
     });
 
@@ -59,7 +59,7 @@
             $(this).addClass("toggleless");
             $(this).html(lesstext);
         }
-        $(this).prev(".morecontent").children("span").toggle();
+        $(this).prevAll(".morecontent").children(".morechildren").toggle();
         return false;
       });
     }

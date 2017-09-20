@@ -74,6 +74,18 @@ function os_metatag_export_default() {
         'value' => '',
         'period' => '',
       ),
+      'twitter:description' => array(
+        'value' => '[site:site_description]',
+      ),
+      'twitter:image' => array(
+        'value' => '[site:site_logo]',
+      ),
+      'twitter:card' => array(
+        'value' => 'summary',
+      ),
+      'twitter:title' => array(
+        'value' => '[site:site_title]',
+      ),
     ),
   );
 

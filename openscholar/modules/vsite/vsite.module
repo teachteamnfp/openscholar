@@ -13,6 +13,11 @@ include_once ('includes/vsite.inc');
 //module_load_include('inc', 'spaces', 'spaces.overrides');
 
 /**
+ * Vsite public access field.
+ */
+define('VSITE_ACCESS_FIELD', 'group_access');
+
+/**
  * Defines the default vsites per user.
  */
 define('VSITE_PER_USER_DEFAULT', 1);
