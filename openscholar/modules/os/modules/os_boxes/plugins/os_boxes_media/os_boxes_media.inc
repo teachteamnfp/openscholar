@@ -10,8 +10,8 @@ class os_boxes_media extends os_boxes_default {
   }
 
   public function options_form(&$form_state) {
-    $form = parent::options_form($form_state);
-
+    $form = parent::options_form($form_state);    
+    $fid = (isset($form_state['input']['fid'])) ? $form_state['input']['fid'] : $this->options['fid'];
     $form['fid'] = array(
       '#title' => t('File or HTML'),
       '#type' => 'media',
