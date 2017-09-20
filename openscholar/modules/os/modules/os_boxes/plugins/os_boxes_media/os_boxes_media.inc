@@ -4,14 +4,14 @@ class os_boxes_media extends os_boxes_default {
 
   public function options_defaults() {
     $options = parent::options_defaults();
-    $options['fid'] = 0;
+    $options['fid']['fid'] = 0;
     $options['maxwidth'] = 0;
     return $options;
   }
 
   public function options_form(&$form_state) {
     $form = parent::options_form($form_state);
-    $fid = (isset($form_state['input']['fid'])) ? $form_state['input']['fid'] : $this->options['fid'];
+    $fid = (isset($form_state['input']['fid'])) ? $form_state['input']['fid'] : $this->options['fid']['fid'];
     $form['fid'] = array(
       '#title' => t('File or HTML'),
       '#type' => 'media',
