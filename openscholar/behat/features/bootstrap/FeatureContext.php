@@ -2629,6 +2629,24 @@ class FeatureContext extends DrupalContext {
   }
 
   /**
+   * @Given /^I can't visit unaliased path for "([^"]*)" on vsite "([^"]*)"$/
+   */
+  public function iCanTVisitUnaliasedPath($url) {
+    $path = _getUnaliasedPathFromAliasPath($url, $vsite);
+    $this->visit($path);
+    $this->assertSession()->statusCodeEquals(403);
+  }
+
+  /**
+   * @Given /^I can't visit unaliased path for "([^"]*)" with "([^"]*)" appended on vsite "([^"]*)"$/
+   */
+  public function iCanTVisitUnaliasedPath($url, $appendage, $vsite) {
+    $path = _getUnaliasedPathFromAliasPath($url, $vsite);
+    $this->visit("$path/$appendage");
+    $this->assertSession()->statusCodeEquals(403);
+  }
+
+  /**
    * Create an entity of a given type and title.
    */
   private function createEntity($type, $title) {
