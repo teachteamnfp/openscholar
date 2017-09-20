@@ -15,7 +15,7 @@ class os_boxes_media extends os_boxes_default {
     $form['fid'] = array(
       '#title' => t('File or HTML'),
       '#type' => 'media',
-      '#default_value' => array('fid' => $this->options['fid']),
+      '#value' => array('fid' => $fid),
       '#description' => t('Choose, enter or link to the media you wish to embed.'),
       '#media_options' => array(
         'global' => array(
@@ -66,7 +66,7 @@ class os_boxes_media extends os_boxes_default {
   public function options_submit($form, $form_state) {
     parent::options_submit($form, $form_state);
 
-    $old = $form['options']['fid']['#default_value']['fid'];
+    $old = $form['options']['fid']['#value']['fid'];
 
     if ($old != $this->options['fid']) {
 
