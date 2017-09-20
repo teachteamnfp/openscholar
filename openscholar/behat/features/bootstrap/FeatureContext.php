@@ -4334,4 +4334,43 @@ JS;
     return false;
   }
 
+  /**
+   * @Then /^I enable dataverse$/
+   */
+  public function iEnableDataverse() {
+    return array(
+      new Step\When('I visit "admin/modules"'),
+      new Step\When('I check the box "Dataverse"'),
+      new Step\When('I press "edit-submit"'),
+      new Step\When('I sleep for "20"'),
+      new Step\When('I visit "admin/config/development/performance"'),
+      new Step\When('I press "edit-clear"'),
+      new Step\When('I sleep for "45"'),
+    );
+  }
+
+  /**
+   * @Given /^the dataverse widget "([^"]*)" is placed in the "([^"]*)" layout$/
+   */
+  public function theDataverseWidgetIsPlacedInTheLayout($widget, $page) {
+    $q = db_select('spaces_overrides', 'so')
+      ->fields('so', array('object_id', 'id'))
+      ->condition('value', '%s:5:"title";s:' . strlen($widget) . ':"' . $widget . '";%', 'LIKE')
+      ->condition('object_type', 'boxes', '=');
+    $results = $q->execute()->fetchAll();
+    $row = array_pop($results);
+    $page_id = FeatureHelp::GetNodeId($page);
+    $vsite = spaces_load('og', $row->id);
+    $blocks = $vsite->controllers->context->get('os_pages-page-' . $page_id . ":reaction:block");
+    $blocks['blocks']['boxes-' . $row->object_id] = array(
+      'module' => 'boxes',
+      'delta' => $row->object_id,
+      'title' => $widget,
+      'region' => 'content_first',
+      'status' => 0,
+      'weight' => 0
+    );
+    $vsite->controllers->context->set('os_pages-page-' . $page_id . ":reaction:block", $blocks);
+  }
+
 }

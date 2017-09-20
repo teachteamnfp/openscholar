@@ -1,6 +1,11 @@
 Feature:
   Testing the dataverse widget.
 
+  @api @widgets @javascript
+  Scenario: Enable dataverse module.
+    Given I am logging in as "admin"
+      And I enable dataverse
+
   @api @widgets
   Scenario: Verify the Dataverse List widget.
      Given I am logging in as "john"
