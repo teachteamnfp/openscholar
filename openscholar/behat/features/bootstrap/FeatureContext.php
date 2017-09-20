@@ -463,16 +463,18 @@ class FeatureContext extends DrupalContext {
       throw new Exception("A table with the class $class wasn't found");
     }
 
-    $table_rows = $table->getRows();
     $hash = $table->getRows();
     // Iterate over each row, just so if there's an error we can supply
     // the row number, or empty values.
-    foreach ($table_rows as $i => $table_row) {
-      if (empty($table_row)) {
-        continue;
+    foreach ($hash as $vals) {
+      $xpath_fragments = array();
+      foreach ($vals as $v) {
+        $xpath_fragments[] = 'td//text()[contains(.,"'.$v.'") and not(ancestor::*[contains(@class, "ng-hide")])]';
       }
-      if ($diff = array_diff($hash[$i], $table_row)) {
-        throw new Exception(sprintf('The "%d" row values are wrong.', $i + 1));
+      $xpath = '//tr['.implode(' and ', $xpath_fragments).']';
+      if (!$table_element->findAll('xpath', $xpath)) {
+        error_log($xpath);
+        throw new Exception("Row with the following values not found: ".implode(', ', $vals));
       }
     }
   }
@@ -2481,15 +2483,141 @@ class FeatureContext extends DrupalContext {
    * @Given /^I set feature "([^"]*)" to "([^"]*)" on "([^"]*)"$/
    */
   public function iSetFeatureStatus ($feature, $status, $group) {
-    return array(
+
+    $features = FeatureHelp::VsiteGetVariable($group, 'spaces_features');
+    $info = spaces_features('og');
+
+    $current_value = "current value not found";
+
+    foreach ($info as $k => $i) {
+      if ($i->info['name'] == $feature) {
+        $current_value = $features[$k];
+        break;
+      }
+    }
+
+    /* cases
+     * Disabled > Enabled
+     * Disabled > Private
+     * Enabled > Disabled
+     * Enabled > Private
+     * Private > Enabled
+     * Private > Disabled
+     *
+     * Private = 2
+     * Enabled = 1
+     * Disabled  = 0
+     */
+
+    switch ($status) {
+      case 'Disabled':
+      default:
+        $new_value = 0;
+        break;
+      case 'Enabled':
+      case 'Public':
+        $new_value = 1;
+        break;
+      case 'Private':
+        $new_value = 2;
+        break;
+    }
+
+    $opening = array(
       new Step\When('I visit "' . $group . '"'),
       new Step\When('I make sure admin panel is open'),
       new Step\When('I open the admin panel to "Settings"'),
       new Step\When('I sleep for "1"'),
-      new Step\When('I click "Enable / Disable Apps"'),
-      new Step\When('I select "' . $status . '" from "' . $feature . '"'),
-      new Step\When('I press "edit-submit"'),
+      new Step\When('I click on the "Enable / Disable Apps" control'),
+      new Step\When('I scroll to find "'.$feature.'" in the ".app-form" element'),
+      new Step\When('I wait "1 second"')
     );
+
+    $closer = array(
+      new Step\When('I wait "5 seconds"'),
+      new Step\When('I scroll to find "Save"'),
+      new Step\When('I press "Save"'),
+      new Step\When("I wait for page actions to complete"),
+    );
+
+    $enable = array(
+      new Step\When('I check the "Enable" box in the "'.$feature.'" row'),
+    );
+
+    $disable = array(
+      new Step\When('I check the "Disable" box in the "'.$feature.'" row'),
+    );
+
+    $public = array(
+      new Step\When('I click the "[app-privacy-selector]" control in the "'.$feature.'" row'),
+      new Step\When('I click the "Everyone" control in the "'.$feature.'" row'),
+    );
+
+    $private = array(
+      new Step\When('I click the "[app-privacy-selector]" control in the "'.$feature.'" row'),
+      new Step\When('I click the "Site Members" control in the "'.$feature.'" row'),
+    );
+
+    $output = array();
+    if ($current_value === "current value not found") {
+      throw new Exception("No current value found for feature '$feature'");
+    }
+    if ($current_value == $new_value) {
+      return;
+    }
+    else if ($new_value == 0) {
+      $output = array_merge($opening, $disable, $closer);
+    }
+    elseif ($current_value == 0 && $new_value == 1) {
+      $output = array_merge($opening, $enable, $closer);
+    }
+    else if ($current_value == 0 && $new_value == 2) {
+      $output = array_merge($opening, $enable, $closer, $opening, $private, $closer);
+    }
+    else if ($current_value == 1 && $new_value == 2) {
+      $output = array_merge($opening, $private, $closer);
+    }
+    else if ($current_value == 2 && $new_value == 1) {
+      $output = array_merge($opening, $public, $closer);
+    }
+
+    return $output;
+  }
+
+  /**
+   * @Given /^I check the "([^"]*)" box in the "([^"]*)" row$/
+   */
+  public function iCheckTheBoxInTheRow($column, $row) {
+    $x = '//table/tbody/tr[contains(.,"'.$row.'")]/td[count(//table/thead/tr/th[.="'.$column.'"]/preceding-sibling::th)+1]/input[@type="checkbox"]';
+    $elem = $this->getSession()->getPage()->find('xpath', $x);
+    if (!$elem) {
+      throw new Exception("No checkbox in the \"$column\" column of row \"$row\"");
+    }
+
+    // We cannot use check() on angular forms. Angular WILL NOT detect the changes to the model.
+    // We have to use click()
+    $elem->click();
+  }
+
+  /**
+   * @Given /^I click the "([^"]*)" control in the "([^"]*)" row$/
+   */
+  public function iClicktheControlInTheRow($control, $row) {
+    $x = '//table/tbody/tr[contains(.,"'.$row.'")]/td//';
+    if ($control[0] == '[') {
+      // this is an angular directive we're clicking on
+      $control = trim($control, '[]');
+      $x .= "*[@$control]";
+    }
+    else {
+      $x .= '*[.="'.$control.'"]';
+    }
+    $elem = $this->getSession()->getPage()->find('xpath', $x);
+    if (!$elem) {
+      throw new Exception("No control \"$control\" in the row \"$row\"");
+    }
+
+    $elem->click();
   }
 
   /**
@@ -3966,6 +4094,39 @@ JS;
     elseif ($attempts == 20) {
       throw new Exception("20 attempts were made and the element is still not visible.");
     }
+  }
+
+  /**
+   * @When /^I scroll to find "([^"]*)"$/
+   */
+  function iScrollToFind($text) {
+    $this->getSession()->executeScript("
+      var result = document.evaluate('//*[.=\"$text\"]', document.body, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+      var elem = result.singleNodeValue;
+      elem.scrollIntoView();
+    ");
+  }
+
+  /**
+   * @When /^I scroll to find "([^"]*)" in the "([^"]*)" element$/
+   */
+  function iScrollToFindInElement($text, $selector) {
+    $script = '';
+    switch($selector[0]) {
+      case '/':
+        // xpath
+        $script .= 'var result = document.evaluate("'.$selector.'", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);';
+        $script .= 'var elem = result.singleNodeValue;';
+        break;
+      case '.':
+      case '#':
+        // css
+        $script .= 'var elem = document.querySelector("'.$selector.'");';
+    }
+
+    $script .= "var target = document.evaluate('.//*[.=\"$text\"]', elem, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;";
+    $script .= "target.scrollIntoView()";
+    $this->getSession()->executeScript($script);
   }
 
   /**
