@@ -2666,15 +2666,6 @@ class FeatureContext extends DrupalContext {
   }
 
   /**
-   * @Given /^I fill in the "([^"]*)" "([^"]*)" field above the "([^"]*)" "([^"]*)" with date interval "([^"]*)" from "([^"]*)"
-   */
-  public function iFillInTheFieldAboveTheElementWithDateInterval($nth, $field_type1, $field_value, $field_type2, $date_interval, $start_date) {
-    $element = $this->_getNthFieldAboveXyz($nth, $field_type1, $field_value, $field_type2);
-    $future_date = $this->_getDateInterval($start_date, $date_interval);
-    $element->setValue($future_date);
-  }
-
-  /**
    * @Given /^I can't visit "([^"]*)"$/
    */
   public function iCanTVisit($url) {
