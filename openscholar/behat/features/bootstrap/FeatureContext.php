@@ -4327,8 +4327,6 @@ JS;
     return false;
   }
 
-}
-
   /**
    * @Given /^I click the big gear$/
    */
@@ -4339,3 +4337,4 @@ JS;
     }
     $big_gear->click();
   }
+}
