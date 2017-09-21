@@ -67,22 +67,22 @@ Feature:
        And I should see "Semester"
        And I should see "Offered"
 
-  @api @features_first @delete_any_class_content @eam_215
+  @api @features_first @delete_any_class_content_permissions @os_classes
   Scenario: Delete any class content (permissions)
      Given I am logging in as "michelle"
       Then I can't visit unaliased path for "classes/political-science-101" with "delete" appended on vsite "john"
 
-  @api @features_first @create_new_class_material_content @os_classes
+  @api @features_first @create_new_class_material_content_permissions @os_classes
   Scenario: Create new class material content (permissions)
      Given I am logging in as "michelle"
       Then I can't visit "john/node/add/class" 
 
-  @api @features_first @edit_any_class_material_content @os_classes
+  @api @features_first @edit_any_class_material_content_permissions @os_classes
   Scenario: Edit any class material content (permissions)
      Given I am logging in as "michelle"
       Then I can't visit unaliased path for "classes/political-science-101/materials/overview" on vsite "john"
 
-  @api @features_first @delete_any_class_material_content @os_classes
+  @api @features_first @delete_any_class_material_content_permissions @os_classes
   Scenario: Delete any class material content (permissions)
      Given I am logging in as "michelle"
       Then I can't visit unaliased path for "classes/political-science-101/materials/overview" with "delete" appended on vsite "john"
