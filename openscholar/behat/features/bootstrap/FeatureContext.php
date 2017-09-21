@@ -890,7 +890,7 @@ class FeatureContext extends DrupalContext {
       }
     }
 
-    if ($widget != "slideshow") {
+    if ($widgetType != "os_slideshow_box") {
       // Skip Make Embeddable step for slide show widget
       $metasteps[] = new Step\When('I check the box "edit-make-embeddable"');
     }
@@ -4454,7 +4454,12 @@ JS;
    */
   public function iClickInTheGearMenuNodeContent($menu_item) {
     $gear_menu_item = $this->getSession()->getPage()->find('xpath', "//div[@class='node-content']//div/a[text()='Configure']/..//a[text()='$menu_item']");
-    $gear_menu_item->click();
+    try {
+      $gear_menu_item->click();
+    }
+    catch (Exception $e) {
+      throw new Exception($menu_item . " is not clickable");
+    }
   }
 
 
