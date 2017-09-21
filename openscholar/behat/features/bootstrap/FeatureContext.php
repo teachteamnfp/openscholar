@@ -4040,13 +4040,15 @@ JS;
       if (! $unaliased_path) {
         $this->visit("$prefix$url");
         $a_element = $this->getSession()->getPage()->find('xpath', "//a[contains(@href, '?destination=node/')]");
-        $href_unaliased = $a_element->getAttribute('href');
+        if ($a_element) {
+          $href_unaliased = $a_element->getAttribute('href');
 
-        if (preg_match("/\bdestination\=node\/(\d+)/", $href_unaliased, $matches)) {
-          if (isset($matches[1])) {
-            $nid = (int)($matches[1]);
-            $unaliased_path = "$vsite/node/$nid";
-            break;
+          if (preg_match("/\bdestination\=node\/(\d+)/", $href_unaliased, $matches)) {
+            if (isset($matches[1])) {
+              $nid = (int)($matches[1]);
+              $unaliased_path = "$vsite/node/$nid";
+              break;
+            }
           }
         }
       } else {
