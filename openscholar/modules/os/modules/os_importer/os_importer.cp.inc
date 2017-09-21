@@ -303,8 +303,9 @@ function os_importer_import_group_validate($values) {
         $iterator = new ParserCSVIterator($file->uri);
         $rows = $parser->parse($iterator);
         $row_count = count($rows);
-        if ($row_count > FEEDS_PROCESS_LIMIT + 1) {
-          drupal_set_message(t('Only %count rows are allowed per import file. Try creating multiple import files in %count row increments', array('%count' => FEEDS_PROCESS_LIMIT)), 'error');
+        $feeds_process_limit = variable_get('feeds_process_limit');
+        if ($row_count > $feeds_process_limit + 1) {
+          drupal_set_message(t('Only %count rows are allowed per import file. Try creating multiple import files in %count row increments', array('%count' => $feeds_process_limit)), 'error');
           $valid = FALSE;
         }
 
