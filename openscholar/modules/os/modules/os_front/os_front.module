@@ -327,13 +327,11 @@ function os_front_redirect_alter($redirect) {
  * @see redirect_goto().
  */
 function os_front_redirect_goto($redirect) {
-  if (strpos($redirect->redirect, '#') > 0) {
-    $redirect_fragment = explode('#', $redirect->redirect);
-    $redirect->redirect = $redirect_fragment[0];
-    $redirect->redirect_options['fragment'] = $redirect_fragment[1];
-  }
+  $parse_url = drupal_parse_url($redirect->redirect);
   $redirect->redirect_options['absolute'] = TRUE;
-  $url = url($redirect->redirect, $redirect->redirect_options);
+  $redirect->redirect_options['fragment'] = $parse_url['fragment'];
+  $url = url($parse_url['path'], $redirect->redirect_options);
+  
   drupal_add_http_header('Location', $url);
   drupal_add_http_header('Status', redirect_status_code_options($redirect->status_code));
 
