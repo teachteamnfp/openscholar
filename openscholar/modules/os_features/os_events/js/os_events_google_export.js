@@ -8,16 +8,7 @@
 
       function osEventsDialogButton(overwrite, label) {
 
-        var throbber = $("#export-to-google-calendar-throbber").dialog({
-          resizable: false,
-          height: "auto",
-          width: 600,
-          modal: true,
-          show: false,
-          hide: true,
-          autoOpen: false,
-        });
-
+        
         this.button = {
           text: label,
           click: function () {
@@ -26,23 +17,24 @@
               url: document.location.pathname + '?overwrite=' + overwrite,
               type: 'POST',
               success: function (resp) {
-                alert("Calendar export complete");
-                throbber.dialog("close");
-                $this.dialog("close");
+                $this.dialog("option", "title", "Google Calendar Export complete");
+                // $this.dialog("option", "buttons", "Close");
               },
               beforeSend: function (xhr, settings) {
-                throbber.dialog("open");
-                $this.dialog("close");
+                $this.dialog("option", "title", "Exporting ...");
+                $this.html('<div class="jquery-autopager-ajax-loader" style="text-align:center;">' + 
+                    Drupal.settings.CToolsModal.throbber + 
+                '</div>');
+                console.log("Drupal.settings.CToolsModal.throbber = " + Drupal.settings.CToolsModal.throbber);
               },
               complete: function () {
-                $this.dialog("close");
-                throbber.dialog("close");
+                $this.html('');
+                $this.dialog("option", "buttons", [{ text: "Close", click: function () { $(this).dialog("close"); } }]);
               },
               error: function (resp) {
                 alert(JSON.stringify(resp));
               }
             });
-            $(this).dialog("close");
           }
         };
       }
@@ -50,13 +42,14 @@
       var button1 = new osEventsDialogButton(1, "Create New Google Calendar");
       var button2 = new osEventsDialogButton(0, "Overwrite Existing Google Calendar");
 
-      $("#export-to-google-calendar-throbber").once("export-to-google-calendar-throbber", function () {
+      $("#export-to-google-calendar-dialog-confirm").once(function () {
 
         $("#export-to-google-calendar-dialog-confirm").dialog({
           resizable: false,
           height: "auto",
           width: 600,
           modal: true,
+          title: "Export to Google Calender",
           buttons: [
             button1.button,
             button2.button,

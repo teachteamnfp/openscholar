@@ -913,9 +913,7 @@ function os_events_process_node(&$variables) {
   }
 
   $variables['content']['page'] = array(
-    '#markup' => '<div id="export-to-google-calendar-dialog-confirm" style="display:none;">Export to Google Calendar</div>' .
-                 '<div id="export-to-google-calendar-throbber" style="display:none;">Exporting ...' .
-                 theme('image', array('path' => ctools_image_path('ajax-loader.gif', 'ctools_ajax_sample'), 'alt' => t('Loading...'), 'title' => t('Loading'))),
+    '#markup' => '<div id="export-to-google-calendar-dialog-confirm"></div>',
     '#weight' => 1,
   );
 }
