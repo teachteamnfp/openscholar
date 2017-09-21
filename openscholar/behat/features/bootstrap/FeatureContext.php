@@ -4266,9 +4266,6 @@ JS;
       $xpath_expr =  "//td[@id='os_events-$future_date-0']//a[text()='$event_name']";
       $event_on_date = $this->getSession()->getPage()->findAll('xpath', $xpath_expr);
 
-      error_log("EAM Entering " . __FILE__ . ":" . __LINE__ . ", \$event_on_date = " . var_export($event_on_date, true));
-      error_log("EAM Entering " . __FILE__ . ":" . __LINE__ . ", \$xpath_expr = " . var_export($xpath_expr, true));
-
       switch($see_or_not) {
         case "see":
           if ($event_on_date) {
