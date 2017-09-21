@@ -1,7 +1,7 @@
 Feature:
   Testing the page functionality.
 
-  @api @feature_first
+  @api @features_first
   Scenario: Add a page content.
     Given I am logging in as "john"
       And I visit "john/node/add/page"
@@ -11,7 +11,7 @@ Feature:
      Then I should see "Page One"
      Then I should see "New Page for testing"
 
-  @api @feature_first
+  @api @features_first
   Scenario: Edit existing page content.
     Given I am logging in as "john"
       And I visit to edit the post "page-one" on vsite "john"
@@ -19,7 +19,7 @@ Feature:
       And I press "Save"
      Then I should see "Parent Page"
 
-  @api @feature_first
+  @api @features_first
   Scenario: Add existing subpage
     Given I am logging in as "john"
       And I add a existing sub page named "Parent Page" under the page "About"
@@ -28,7 +28,7 @@ Feature:
       And I visit "john/page-one"
      Then I should see "HOME / ABOUT /"
 
-  @api @feature_first @javascript
+  @api @features_first @javascript
   Scenario: Change order of subpages content using "Section Outline"
     Given I am logging in as "john"
       And I create a sub page named "Subpage One" under the page "Parent Page"
@@ -39,7 +39,7 @@ Feature:
       And I visit the site "john/page-one"
      Then I should match the regex "parent\s+page\s+subpage\s+two\s+subpage\s+one"
 
-  @api @feature_first
+  @api @features_first
   Scenario: Correct rearrangement of section outline when parent is deleted.
     Given I am logging in as "john"
       And I create a sub page named "Child One" under the page "Subpage One"
@@ -49,7 +49,7 @@ Feature:
       And I visit the site "john/child-one"
      Then I should see "HOME / SUBPAGE ONE /"
 
-  @api @feature_first
+  @api @features_first
   Scenario: Delete existing page
     Given I am logging in as "john"
       And I visit to edit the post "page-one" on vsite "john"
