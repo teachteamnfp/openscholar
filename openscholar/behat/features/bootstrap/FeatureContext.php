@@ -4495,10 +4495,4 @@ JS;
     return false;
   }
 
-  /**
-   * @Then /^I enable dataverse$/
-   */
-  public function iEnableDataverse() {
-    module_enable(array('Dataverse'));
-  }
 }
