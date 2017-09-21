@@ -1478,7 +1478,7 @@ class FeatureContext extends DrupalContext {
         $john_response_code = $this->responseCode($baseUrl . $row[0]);
         $lincoln_response_code = $this->responseCode('http://lincoln.local/' . $row[0]);
         if ($john_response_code != $row[1] && $lincoln_response_code != $row[1]) {
-          throw new Exception("When visiting {$row[0]} we did not get a {$row[1]} reponse code but the {$john_response_code}/{$lincoln_response_code} reponse code.");
+          throw new Exception("When visiting {$row[0]} we did not get a {$row[1]} response code but the {$john_response_code}/{$lincoln_response_code} response code.");
         }
       }
     }
@@ -1506,7 +1506,7 @@ class FeatureContext extends DrupalContext {
 
         $response_code = $this->responseCode($baseUrl . $VisitUrl);
         if ($response_code != $row[3]) {
-          throw new Exception("When visiting {$VisitUrl} we did not get a {$row[3]} reponse code but the {$response_code} reponse code.");
+          throw new Exception("When visiting {$VisitUrl} we did not get a {$row[3]} response code but the {$response_code} response code.");
         }
       }
     }
