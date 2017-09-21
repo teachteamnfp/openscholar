@@ -4092,4 +4092,24 @@ JS;
     }
     $this->visit("$path/$appendage");
   }
+
+  /*
+   * @Then /^I should see breadcrumbs "([^"]*)"$/
+   *
+   *    e.g., HOME / CLASSES / POLITICAL SCIENCE 101 / CLASS MATERIAL
+   */
+  public function iShouldSeeBreadcrumb($breadcrumb) {
+
+    $page = $this->getSession()->getPage()->getContent();
+
+    # Ignore HTML tags between breadcrumb separators
+    $breadcrumb_pattern = preg_replace("/\s+\/\s+/", ".*\/.*", $breadcrumb);
+
+    if (preg_match("/$breadcrumb_pattern/", $page)) {
+      return true;
+    } else {
+      throw new Exception("Could not find trail of breadcrumbs: '$breadcrumbs'.");
+    }
+  }
+
 }
