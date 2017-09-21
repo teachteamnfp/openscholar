@@ -123,7 +123,9 @@ class OSRestfulCPMenu extends \RestfulBase implements \RestfulDataProviderInterf
         break;
       case 'directive':
         // ?????????
-        $menuItem['access'] = true; // what do we even do here?
+        if (!isset($menuItem['access'])) {
+          $menuItem['access'] = spaces_access_admin(); // what do we even do here?
+        }
         break;
     }
 
@@ -302,7 +304,8 @@ class OSRestfulCPMenu extends \RestfulBase implements \RestfulDataProviderInterf
             'ap-settings-form',
             'form' => $f['group']['#id'],
           ),
-          'parent' => !empty($f['group']['#menu_parent']) ? $f['group']['#menu_parent'] : 'advanced'
+          'parent' => !empty($f['group']['#menu_parent']) ? $f['group']['#menu_parent'] : 'advanced',
+          'access' => true,
         );
       }
     }
@@ -395,8 +398,10 @@ class OSRestfulCPMenu extends \RestfulBase implements \RestfulDataProviderInterf
         'children' => array(
           'app' => array(
             'label' => 'Enable / Disable Apps',
-            'type' => 'link',
-            'href' => 'cp/apps',
+            'type' => 'directive',
+            'directive' => array(
+              'app-form-modal'
+            ),
           ),
           'app_settings' => array(
             'label' => 'App Settings',
