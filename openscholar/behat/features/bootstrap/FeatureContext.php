@@ -2633,8 +2633,10 @@ class FeatureContext extends DrupalContext {
    */
   public function iCanTVisitUnaliasedPath($url) {
     $path = $this->_getUnaliasedPathFromAliasPath($url, $vsite);
-    $this->visit($path);
-    $this->assertSession()->statusCodeEquals(403);
+    if ($path) {
+      $this->visit($path);
+      throw new Exception("I have access to '$url' on '$vsite', but I shouldn't.");
+    }
   }
 
   /**
@@ -2642,8 +2644,10 @@ class FeatureContext extends DrupalContext {
    */
   public function iCanTVisitUnaliasedPathWithAppendedPathOnVsite($url, $appendage, $vsite) {
     $path = $this->_getUnaliasedPathFromAliasPath($url, $vsite);
-    $this->visit("$path/$appendage");
-    $this->assertSession()->statusCodeEquals(403);
+    if ($path) {
+      $this->visit("$path/$appendage");
+      throw new Exception("I have access to '$url' on '$vsite', but I shouldn't.");
+    }
   }
 
   /**
@@ -4056,10 +4060,6 @@ JS;
       }
     }
 
-    if (! $unaliased_path) {
-      throw new Exception("Could not find an unaliased path for '$url' on vsite '$vsite'.");
-    }
-
     return $unaliased_path;
   }
 
@@ -4070,6 +4070,9 @@ JS;
    */
   public function iVisitTheEditPathOfPage($url, $vsite) {
     $path = $this->_getUnaliasedPathFromAliasPath($url, $vsite);
+    if (! $path) {
+      throw new Exception("Could not find an unaliased path for '$url' on vsite '$vsite'.");
+    }
     $this->visit("$path/edit");
   }
 
@@ -4080,6 +4083,9 @@ JS;
    */
   public function iVisitTheUnaliasedPathOfAndAppend($url, $vsite, $appendage) {
     $path = $this->_getUnaliasedPathFromAliasPath($url, $vsite);
+    if (! $path) {
+      throw new Exception("Could not find an unaliased path for '$url' on vsite '$vsite'.");
+    }
     $this->visit("$path/$appendage");
   }
 }
