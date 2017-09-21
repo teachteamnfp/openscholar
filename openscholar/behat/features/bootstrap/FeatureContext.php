@@ -4499,14 +4499,6 @@ JS;
    * @Then /^I enable dataverse$/
    */
   public function iEnableDataverse() {
-    return array(
-      new Step\When('I visit "admin/modules"'),
-      new Step\When('I check the box "Dataverse"'),
-      new Step\When('I press "edit-submit"'),
-      new Step\When('I sleep for "20"'),
-      new Step\When('I visit "admin/config/development/performance"'),
-      new Step\When('I press "edit-clear"'),
-      new Step\When('I sleep for "45"'),
-    );
+    module_enable(array('Dataverse'));
   }
 }
