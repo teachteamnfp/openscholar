@@ -2635,7 +2635,10 @@ class FeatureContext extends DrupalContext {
     $path = $this->_getUnaliasedPathFromAliasPath($url, $vsite);
     if ($path) {
       $this->visit($path);
-      throw new Exception("I have access to '$url' on '$vsite', but I shouldn't.");
+      $response_code = $this->responseCode($path);
+      if ($response_code == 200) {
+        throw new Exception("When visiting {$path} we got a {$response_code} response code, instead of a 403.");
+      }
     }
   }
 
@@ -2644,9 +2647,10 @@ class FeatureContext extends DrupalContext {
    */
   public function iCanTVisitUnaliasedPathWithAppendedPathOnVsite($url, $appendage, $vsite) {
     $path = $this->_getUnaliasedPathFromAliasPath($url, $vsite);
-    if ($path) {
-      $this->visit("$path/$appendage");
-      throw new Exception("I have access to '$url' on '$vsite', but I shouldn't.");
+    $this->visit("$path/$appendage");
+    $response_code = $this->responseCode($path);
+    if ($response_code == 200) {
+      throw new Exception("When visiting {$path}, we got a {$response_code} response code, instead of a 403.");
     }
   }
 
