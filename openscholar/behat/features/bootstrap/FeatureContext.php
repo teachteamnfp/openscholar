@@ -2631,7 +2631,7 @@ class FeatureContext extends DrupalContext {
   /**
    * @Given /^I can't visit unaliased path for "([^"]*)" on vsite "([^"]*)"$/
    */
-  public function iCanTVisitUnaliasedPath($url) {
+  public function iCanTVisitUnaliasedPath($url, $vsite) {
     $path = $this->_getUnaliasedPathFromAliasPath($url, $vsite);
     if ($path) {
       $this->visit($path);
