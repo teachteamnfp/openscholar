@@ -4409,6 +4409,22 @@ JS;
   }
 
   /**
+   * @When /^I click the gear icon in the node content region$/
+   */
+  public function iClickTheGearIconInTheNodeContentRegion() {
+    $content_region = $this->getSession()->getPage()->find('xpath', "//div[@class='node-content']");
+    $gear_icon = $this->getSession()->getPage()->find('xpath', "//div[@class='contextual-links-wrapper contextual-links-processed']");
+    $gear_icon_trigger_link = $this->getSession()->getPage()->find('xpath', "//div[@id='content']//div/a[text()='Configure']");
+
+    $content_region->mouseOver();
+    $content_region->click();
+    $gear_icon->mouseOver();
+    $gear_icon->click();
+    $gear_icon_trigger_link->mouseOver();
+    $gear_icon_trigger_link->click();
+  }
+
+  /**
    * @Given /^I visit the "([^"]*)" parameter in the current query string with "([^"]*)" appended on vsite "([^"]*)"$/
    */
   public function iVisitTheParameterInTheCurrentQueryString($parameter, $appendage, $vsite) {
@@ -4430,6 +4446,14 @@ JS;
    */
   public function iClickInTheGearMenu($menu_item) {
     $gear_menu_item = $this->getSession()->getPage()->find('xpath', "//div[@id='content']//div/a[text()='Configure']/..//a[text()='$menu_item']");
+    $gear_menu_item->click();
+  }
+
+  /**
+   * @Given /^I click "([^"]*)" in the gear menu in node content$/
+   */
+  public function iClickInTheGearMenuNodeContent($menu_item) {
+    $gear_menu_item = $this->getSession()->getPage()->find('xpath', "//div[@class='node-content']//div/a[text()='Configure']/..//a[text()='$menu_item']");
     $gear_menu_item->click();
   }
 

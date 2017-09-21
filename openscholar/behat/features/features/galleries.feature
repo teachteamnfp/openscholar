@@ -71,8 +71,8 @@ Feature:
   Scenario: Edit media of a existing gallery
      Given I am logging in as "john"
        And I visit "john/galleries/safari"
-       And I click the gear icon in the content region
-       And I click "Edit" in the gear menu
+       And I click the gear icon in the node content region
+       And I click "Edit" in the gear menu in node content
        And I click on the "Advanced (change filename, replace file, add a caption, etc.)" control
        And I fill in "File Name" with "safari_one.jpg"
        And I click on the "Save" control
@@ -85,8 +85,8 @@ Feature:
   Scenario: Delete media of a existing gallery
      Given I am logging in as "john"
        And I visit "john/galleries/safari"
-       And I click the gear icon in the content region
-       And I click "Remove" in the gear menu
+       And I click the gear icon in the node content region
+       And I click "Remove" in the gear menu in node content
        And the overlay opens
        And I press "Remove file"
        And I wait for page actions to complete
