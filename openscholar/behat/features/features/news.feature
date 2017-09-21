@@ -29,6 +29,7 @@ Feature:
       And I fill in the field "Alt Text" with the node "semester"
       And I click on the "Advanced (change filename, replace file, add a caption, etc.)" control
       And I fill in "Image Caption" with "Study Hard"
+      And I click on the "Advanced (change filename, replace file, add a caption, etc.)" control
       And I click on the "Save" control
       And I wait for page actions to complete
       And I press "Save"
