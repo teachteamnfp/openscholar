@@ -2632,7 +2632,7 @@ class FeatureContext extends DrupalContext {
    * @Given /^I can't visit unaliased path for "([^"]*)" on vsite "([^"]*)"$/
    */
   public function iCanTVisitUnaliasedPath($url) {
-    $path = _getUnaliasedPathFromAliasPath($url, $vsite);
+    $path = $this->_getUnaliasedPathFromAliasPath($url, $vsite);
     $this->visit($path);
     $this->assertSession()->statusCodeEquals(403);
   }
@@ -2641,7 +2641,7 @@ class FeatureContext extends DrupalContext {
    * @Given /^I can't visit unaliased path for "([^"]*)" with "([^"]*)" appended on vsite "([^"]*)"$/
    */
   public function iCanTVisitUnaliasedPathWithAppendedPathOnVsite($url, $appendage, $vsite) {
-    $path = _getUnaliasedPathFromAliasPath($url, $vsite);
+    $path = $this->_getUnaliasedPathFromAliasPath($url, $vsite);
     $this->visit("$path/$appendage");
     $this->assertSession()->statusCodeEquals(403);
   }
@@ -4060,7 +4060,6 @@ JS;
 
     return $unaliased_path;
   }
-
 
   /**
    * Visit the internal (unaliased) Drupal path of the current page
