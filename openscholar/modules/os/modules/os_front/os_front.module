@@ -312,3 +312,58 @@ function os_front_default_box() {
   
   return $export;
 }
+
+/**
+ * Implements hook_redirect_alter().
+ */
+function os_front_redirect_alter($redirect) {
+  $redirect->callback = 'os_front_redirect_goto';
+}
+
+/**
+ * Redirect callback; perform an URL redirect.
+ * Support fragment on url redirect.
+ * e.g - from my-content to example/my-text#fragment-name
+ * @see redirect_goto().
+ */
+function os_front_redirect_goto($redirect) {
+  if (strpos($redirect->redirect, '#') > 0) {
+    $redirect_fragment = explode('#', $redirect->redirect);
+    $redirect->redirect = $redirect_fragment[0];
+    $redirect->redirect_options['fragment'] = $redirect_fragment[1];
+  }
+  $redirect->redirect_options['absolute'] = TRUE;
+  $url = url($redirect->redirect, $redirect->redirect_options);
+  drupal_add_http_header('Location', $url);
+  drupal_add_http_header('Status', redirect_status_code_options($redirect->status_code));
+
+  if (!empty($redirect->rid)) {
+    // Add a custom header for the redirect ID so when the redirect is served
+    // from the page cache, we can track it.
+    drupal_add_http_header('X-Redirect-ID', $redirect->rid);
+  }
+
+  if (!variable_get('redirect_page_cache', 0) || !variable_get('cache', 0) || !drupal_page_is_cacheable() || empty($redirect->cache)) {
+    drupal_exit($url);
+  }
+
+  // @see drupal_exit()
+  if (drupal_get_bootstrap_phase() == DRUPAL_BOOTSTRAP_FULL) {
+    if (!defined('MAINTENANCE_MODE') || MAINTENANCE_MODE != 'update') {
+      module_invoke_all('exit', $url);
+    }
+    drupal_session_commit();
+    if (variable_get('cache', 0)) {
+      // We must output something to allow the request to be cached.
+      echo ' ';
+      if ($cache = drupal_page_set_cache()) {
+        // When caching this redirect for the first time we still need to ensure
+        // that the correct cache headers are sent.
+        // @see drupal_page_footer()
+        drupal_serve_page_from_cache($cache);
+      }
+    }
+  }
+
+  exit;
+}
