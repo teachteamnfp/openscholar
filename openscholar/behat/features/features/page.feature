@@ -19,15 +19,6 @@ Feature:
       And I press "Save"
      Then I should see "Parent Page"
 
-  @api @features_first
-  Scenario: Add existing subpage
-    Given I am logging in as "john"
-      And I add a existing sub page named "Parent Page" under the page "About"
-      And I fill in the field "edit-add-page" with the page "Parent Page"
-      And I press "Save"
-      And I visit "john/page-one"
-     Then I should see "HOME / ABOUT /"
-
   @api @features_first @javascript
   Scenario: Change order of subpages content using "Section Outline"
     Given I am logging in as "john"
@@ -40,6 +31,15 @@ Feature:
      Then I should match the regex "parent\s+page\s+subpage\s+two\s+subpage\s+one"
 
   @api @features_first
+  Scenario: Add existing subpage
+    Given I am logging in as "john"
+      And I add a existing sub page named "Parent Page" under the page "About"
+      And I fill in the field "edit-add-page" with the page "Parent Page"
+      And I press "Save"
+      And I visit "john/page-one"
+     Then I should see "HOME / ABOUT /"
+
+  @api @features_first
   Scenario: Correct rearrangement of section outline when parent is deleted.
     Given I am logging in as "john"
       And I create a sub page named "Child One" under the page "Subpage One"
@@ -47,7 +47,7 @@ Feature:
       And I click "Delete this page"
       And I press "Delete"
       And I visit the site "john/child-one"
-     Then I should see "HOME / SUBPAGE ONE /"
+     Then I should see "HOME / ABOUT / SUBPAGE ONE /"
 
   @api @features_first
   Scenario: Delete existing page
