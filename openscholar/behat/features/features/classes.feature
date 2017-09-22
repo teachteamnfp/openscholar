@@ -42,8 +42,8 @@ Feature:
   Scenario: Create new class content
      Given I am logging in as "john"
        # Note the modified title does not change the URL
-       And I visit "classes/political-science-101"
-       And I click "Add class material"
+       And I visit the Add class material URL for "/classes/political-science-101" on vsite "john"
+#      And I click "Add class material"
        And I fill in "Title" with "Overview"
        And I fill in "Body" with "Political Theory is chiefly concerned with how best to arrange our collective lives, with particular attention to the necessity for and rights and obligations of ‘rule,’ as well as the limits of that important power."
        And I press "Save"
@@ -52,7 +52,6 @@ Feature:
        And I should see "Class:"
        And I should see "Political Science"
        And I should see breadcrumbs "HOME / CLASSES / POLITICAL SCIENCE 101 / CLASS MATERIAL"
-
 
   @api @features_first @edit_existing_class_material_content @os_classes
   Scenario: Edit existing class material content

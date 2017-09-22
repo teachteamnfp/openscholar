@@ -4077,25 +4077,32 @@ JS;
       $unaliased_path = drupal_lookup_path('source', "$prefix$url");
 
       if (! $unaliased_path) {
-        $this->visit("$prefix$url");
-        $a_element = $this->getSession()->getPage()->find('xpath', "//a[contains(@href, '?destination=node/')]");
-        if ($a_element) {
-          $href_unaliased = $a_element->getAttribute('href');
-
-          if (preg_match("/\bdestination\=node\/(\d+)/", $href_unaliased, $matches)) {
-            if (isset($matches[1])) {
-              $nid = (int)($matches[1]);
-              $unaliased_path = "$vsite/node/$nid";
-              break;
-            }
-          }
-        }
-      } else {
+        $nid = $this->_getNodeIdOfUrl("$prefix$url");
+        $unaliased_path = "$vsite/node/$nid";
         break;
       }
     }
 
     return $unaliased_path;
+  }
+
+  /*
+   * Helper function to get node id from Drupal aliased URL
+   */
+  private function _getNodeIdOfUrl($url) {
+
+    $this->visit($url);
+    $a_element = $this->getSession()->getPage()->find('xpath', "//a[contains(@href, '?destination=node/')]");
+    if ($a_element) {
+      $href_unaliased = $a_element->getAttribute('href');
+
+      if (preg_match("/\bdestination\=node\/(\d+)/", $href_unaliased, $matches)) {
+        if (isset($matches[1])) {
+          $nid = (int)($matches[1]);
+          return $nid;
+        }
+      }
+    }
   }
 
   /**
@@ -4122,25 +4129,6 @@ JS;
       throw new Exception("Could not find an unaliased path for '$url' on vsite '$vsite'.");
     }
     $this->visit("$path/$appendage");
-  }
-
-  /*
-   * @Then /^I should see breadcrumbs "([^"]*)"$/
-   *
-   *    e.g., HOME / CLASSES / POLITICAL SCIENCE 101 / CLASS MATERIAL
-   */
-  public function iShouldSeeBreadcrumb($breadcrumb) {
-
-    $page = $this->getSession()->getPage()->getContent();
-
-    # Ignore HTML tags between breadcrumb separators
-    $breadcrumb_pattern = preg_replace("/\s+\/\s+/", ".*\/.*", $breadcrumb);
-
-    if (preg_match("/$breadcrumb_pattern/", $page)) {
-      return true;
-    } else {
-      throw new Exception("Could not find trail of breadcrumbs: '$breadcrumbs'.");
-    }
   }
 
 }
