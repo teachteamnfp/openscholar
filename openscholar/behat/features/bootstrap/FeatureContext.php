@@ -4095,11 +4095,15 @@ JS;
   private function _getNodeIdOfUrl($url) {
 
     $this->visit($url);
-    $a_element = $this->getSession()->getPage()->find('xpath', "//a[contains(@href, '?destination=node/')]");
+
+    $a_element = $this->getSession()->getPage()->find('xpath', "//a[contains(@href, '?destination=node/') or contains(@href, 'destination%3Dnode%2F')]");
+    $page = $this->getSession()->getPage()->getContent();
+
     if ($a_element) {
       $href_unaliased = $a_element->getAttribute('href');
 
-      if (preg_match("/\bdestination\=node\/(\d+)/", $href_unaliased, $matches)) {
+      if (preg_match("/\bnode(?:\%2f|\/)(\d+)/i", $href_unaliased, $matches)) {
+
         if (isset($matches[1])) {
           $nid = (int)($matches[1]);
           return $nid;
