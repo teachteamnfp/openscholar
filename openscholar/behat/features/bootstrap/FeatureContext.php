@@ -3715,10 +3715,9 @@ class FeatureContext extends DrupalContext {
     $session = $this->getSession();
     $nid = $this->_getNodeIdOfUrl("$vsite/$url");
 
-    $s = "/$vsite/node/add/class-material?field_class=$nid";
-    error_log("EAM Entering " . __FILE__ . ":" . __LINE__ . ", \$s = " . var_export($s, true));
+    error_log("EAM trace " . __FILE__ . ":" . __LINE__ . ", \$nid = " . var_export($nid, true));
 
-    $session->visit("/$vsite/node/add/class-material?field_class=$nid");
+    $session->visit("$vsite/node/add/class-material?field_class=$nid");
   }
 
   /**
@@ -4080,8 +4079,12 @@ JS;
         $nid = $this->_getNodeIdOfUrl("$prefix$url");
         $unaliased_path = "$vsite/node/$nid";
         break;
+      } else {
+        break;
       }
     }
+
+    error_log("EAM trace " . __FILE__ . ":" . __LINE__ . ", \$unaliased_path = " . var_export($unaliased_path, true));
 
     return $unaliased_path;
   }
