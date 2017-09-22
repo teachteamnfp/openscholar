@@ -69,9 +69,14 @@ h3 {
 .starter-content .form-type-radio:last-child {
     margin-right: 0;
 }
+.starter-content.four .form-type-radio,
+.starter-content.two .form-type-radio {
+    width: 47%;
+}
 .starter-content.three .form-type-radio {
     width: 27%;
 }
+
 .starter-content label {
     float: left;
     background-color: #EFEFEF;
@@ -87,12 +92,12 @@ h3 {
     position: absolute;
     top: -20px;
 }
-.starter-content input + span {
+.starter-content input ~ span {
     background-color: #888;
     color: #fff;
 }
-.starter-content input + span:hover,
-.starter-content input:checked + span {
+.starter-content input ~ span:hover,
+.starter-content input:checked ~ span {
     background-color: #444;
     color: #FFF;
 }
