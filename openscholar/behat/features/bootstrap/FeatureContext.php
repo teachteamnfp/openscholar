@@ -3691,6 +3691,37 @@ class FeatureContext extends DrupalContext {
   }
 
   /**
+   * @Then /^I should see breadcrumbs "([^"]*)"$/
+   */
+  public function iShouldSeeBreadcrumb($breadcrumb) {
+
+    $page = $this->getSession()->getPage()->getContent();
+
+    # Ignore HTML tags between breadcrumb separators
+    $breadcrumb_pattern = preg_replace("/\s+\/\s+/", ".*\/.*", $breadcrumb);
+
+    if (preg_match("/$breadcrumb_pattern/", $page)) {
+      return true;
+    } else {
+      throw new Exception("Could not find trail of breadcrumbs: '$breadcrumbs'.");
+    }
+  }
+
+  /**
+   * @Given /^I visit the Add class material URL for "([^"]*)" on vsite "([^"]*)"$/
+   */
+  public function iVisitTheAddClassMaterialUrl($url, $vsite) {
+
+    $session = $this->getSession();
+    $nid = $this->_getNodeIdOfUrl("$vsite/$url");
+
+    $s = "/$vsite/node/add/class-material?field_class=$nid";
+    error_log("EAM Entering " . __FILE__ . ":" . __LINE__ . ", \$s = " . var_export($s, true));
+
+    $session->visit("/$vsite/node/add/class-material?field_class=$nid");
+  }
+
+  /**
    * @When /^the overlay opens$/
    */
   public function overlayOpens() {
