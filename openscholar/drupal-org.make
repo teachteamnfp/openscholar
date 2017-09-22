@@ -30,7 +30,7 @@ projects[calendar][patch][] = "http://raw.github.com/openscholar/openscholar/72d
 projects[calendar][patch][] = "http://raw.github.com/openscholar/openscholar/b334cd4b6831a5a1869647b7cbaaec1e8058d9bc/patches/calendar.scroll_to_first_event.patch"
 
 projects[colorbox][subdir] = "contrib"
-projects[colorbox][version] = 2.5
+projects[colorbox][version] = 2.10
 
 projects[comment_sources][subdir] = "contrib"
 projects[comment_sources][version] = 2.0
@@ -39,7 +39,7 @@ projects[comment_sources][patch][] = "https://drupal.org/files/issues/change-sub
 projects[comment_sources][patch][] = "https://raw.github.com/openscholar/openscholar/bb0856af84a58881a0438cd32d9b6a21dcfd15ea/patches/comment_sources.9139.comment_settings.patch"
 
 projects[context][subdir] = "contrib"
-projects[context][version] = 3.0-beta4
+projects[context][version] = 3.6
 projects[context][patch][] = "http://drupal.org/files/os-custom-beta4.patch"
 projects[context][patch][] = "http://drupal.org/files/1855004.context.float_block_weights.patch"
 
@@ -53,9 +53,9 @@ projects[ctools][subdir] = "contrib"
 projects[ctools][download][type] = git
 projects[ctools][download][branch] = 7.x-1.8
 ;projects[ctools][download][revision] = be2607142ce97d093acce9417833640680330efe
-projects[ctools][patch][] = "http://drupal.org/files/1707810-ctools-fields-mock-field-7.patch"
-projects[ctools][patch][] = "http://drupal.org/files/ctools-plugin_extension-1623044-1.patch"
-projects[ctools][patch][] = "https://drupal.org/files/issues/2147905-allow-alter-with-more-context-1.patch"
+;projects[ctools][patch][] = "http://drupal.org/files/1707810-ctools-fields-mock-field-7.patch"
+;projects[ctools][patch][] = "http://drupal.org/files/ctools-plugin_extension-1623044-1.patch"
+;projects[ctools][patch][] = "https://drupal.org/files/issues/2147905-allow-alter-with-more-context-1.patch"
 
 projects[date][subdir] = "contrib"
 projects[date][version] = 2.8
