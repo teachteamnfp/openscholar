@@ -1,3 +1,17 @@
+/**
+ * Adds a spinner to buttons, that can be enabled and disabled with the buttonSpinnerStatus service.
+ * Does not support <input> elements. Use <button> instead.
+ *
+ * Usage:
+ *  <input type="submit" value="Save" ng-click="save()" button-spinner="uniqueId" [spinningText="Saving..."]>
+ *
+ *  function save() {
+ *    buttonSpinnerStatus.SetState('uniqueId', true);
+ *    businessLogic().then(function() {
+ *      buttonSpinnerStatus.SetState('uniqueId', false);
+ *    });
+ *  }
+ */
 (function () {
   var m = angular.module('os-buttonSpinner', []);
 

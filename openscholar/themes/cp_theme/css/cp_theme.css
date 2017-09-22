@@ -69,6 +69,44 @@ table {
     font-size: 1em;
 }
 
+/* TABLE STYES SHOULD FOLLOW THESE RULES */
+table.apps-table  {
+  border-collapse: collapse;
+  border:none;
+}
+.apps-table th {
+    border: none;
+    border-bottom: 3px solid #ccc;
+    padding: 0 1em .5em .5em;
+    text-align: left;
+    background: #fff;
+    text-transform: none;
+    font-weight: bold;
+    font-size: 14px;
+    color: #444;
+}
+.apps-table tbody {
+  border-top: 1px solid #ccc;
+}
+.apps-table tr.even,
+.apps-table tr.odd {
+  background-color: #eee;
+  border-bottom: 1px solid #ccc;
+  border-left:none;
+  border-right:none;
+  padding: 0.1em 0.6em;
+}
+
+.apps-table td {
+ 
+  padding: 0.77em 0.6em;
+}
+
+.apps-table tr td:last-child {
+    border-right: none;
+}
+
+
 input.form-text,
 textarea,
 .redirect-add-form input {
@@ -122,7 +160,7 @@ html.js input.throbbing {
     bottom: -7px;
     right: 15px;
 }
-
+.apps-help-link,
 .revision-suffix.help-link a:after,
 .help-link.ng-binding a:after {
     padding: 5px 25px 5px 0;
@@ -198,7 +236,7 @@ a.button,
 .ui-dialog.ap-settings-form input[type="submit"],
 a#edit-cancel,
 a.form-cancel {
-      cursor: pointer;
+    cursor: pointer;
     padding: 5px 12px;
     margin-bottom: 1em;
     margin-right: 1em;
@@ -226,6 +264,16 @@ a.form-cancel {
 .page-os-widget-add-os-boxes-media .button.launcher {
     margin: 10px 0 18px;
 
+}
+
+.ui-dialog .media-browser-pane .results ~ button {
+    margin-right: 0;
+    border: none;
+    border-bottom: none;
+    color: #4E84C4;
+    padding: 0 5px;
+    background: none;
+    font-weight: bold;
 }
 
 /* SAVE BUTTON SPINNER */
@@ -372,7 +420,7 @@ div.ctools-modal-content a.close img {
     top: 1px;
     display: none;
 }
-
+.center-this,
 div.ctools-modal-content .modal-content .modal-throbber-wrapper {
     text-align: center;
 }
@@ -406,22 +454,29 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
     font-weight: bold;
 }
 
+
 /** OVERLAY MODAL OVERRIDES **/
-.ui-dialog.ap-settings-form button.ui-dialog-titlebar-close,
-#overlay-close,
-#overlay-close:hover {
+.ui-dialog button.ui-dialog-titlebar-close, #overlay-close, #overlay-close:hover  {
     background: url('../images/cp-sprite.png') no-repeat 0 -547px;
     width: 30px;
     height: 30px;
     position: relative;
-    margin: -28px 10px;
+    /* margin: -28px 10px; */
 }
 
-.ui-dialog.ap-settings-form button.ui-dialog-titlebar-close {
+
+#overlay-close-wrapper,
+.ui-dialog .ui-dialog-titlebar-close {
     float: right;
     margin: -8px 0;
     border: 0;
     cursor: pointer;
+}
+
+#overlay-close-wrapper {
+   
+    margin: -30px 15px;
+   
 }
 
 .ui-state-default .ui-icon,
@@ -431,8 +486,7 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
     background-image: none;
 }
 
-.ui-dialog.ap-settings-form .ui-dialog-titlebar,
-#overlay-titlebar {
+.ui-dialog .ui-dialog-titlebar, #overlay-titlebar {
     padding: 7px 10px 17px;
     position: relative;
     white-space: nowrap;
@@ -442,8 +496,8 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
     height: 24px;
 }
 
-#overlay-title,
-.ap-settings-form .ui-dialog-title {
+
+#overlay-title, .ui-dialog-title {
     float: left;
     margin: 0;
     padding: 0.3em 0;
@@ -451,6 +505,7 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
     font-size: 24px;
     font-weight: normal;
 }
+
 .page-node-add-news .field-name-field-photo,
 .page-cp .ui-dialog-titlebar {
     margin-bottom: 22px;
@@ -467,6 +522,7 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
 .ui-dialog.ap-settings-form {
     padding: 0;
     top:10% !important;
+    font-size: 14px; 
 }
 
 .ui-dialog.ap-settings-form .ui-dialog-content {
@@ -1869,9 +1925,23 @@ body.page-node-revisions .node {
 .form-type-radio label {
   cursor: pointer
 }
+
 div.no-bold {
     font-weight: normal;
 }
+
+ .visibility-selector {
+
+     background: url('../images/cp-sprite.png') no-repeat 100px -767px;
+     display:block;
+ }
+
+
+ .visibility-selector:hover {
+
+     cursor:pointer;
+ }
+
 #edit-og-vocabulary a.tabledrag-handle .handle{
     display: none;
 }
