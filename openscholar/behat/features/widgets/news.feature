@@ -11,7 +11,7 @@ Feature:
      Then I should see "Semester Date"
       And I visit "john/os/widget/boxes/os_news_latest/edit/cp-layout"
       And I sleep for "2"
-      And I scroll to find "Save"
+      And I make sure admin panel is closed
       And I press "Save"
       And I visit "john"
       And I click the big gear
