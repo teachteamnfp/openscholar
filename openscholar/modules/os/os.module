@@ -3914,7 +3914,6 @@ function os_tokens($type, $tokens, array $data = array(), array $options = array
   return $replacements;
 }
 
-
 /**
  * Implements hook_redirect_alter().
  */
