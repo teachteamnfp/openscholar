@@ -83,14 +83,16 @@ h3 {
     float: right;
 }
 
-
+.starter-content .form-type-radio {
+    position: relative;
+}
 
 .starter-content .form-type-radio {
     margin-right: 25px;
     padding: 15px;
         
 }
-.site-type:last-child,
+#site-creation-container .site-type:last-child,
 .starter-content .form-type-radio:last-child {
     margin-right: 0;
 }
@@ -110,6 +112,8 @@ h3 {
     background-color: #EFEFEF;
     border-radius: 2px;
     overflow: auto;
+    position:absolute;
+    bottom:20px;
 }
 .starter-content label span {
     text-align: center;
@@ -118,7 +122,7 @@ h3 {
 }
 .starter-content label input {
     position: absolute;
-    top: -20px;
+    top: -1000px;
 }
 .starter-content input ~ span {
     background-color: #888;
@@ -201,7 +205,7 @@ color:#fff;
 }
 #site-creation-container .site-type {
        padding: 20px 0;
-    width: 26.3%;
+    width: 29%;
     margin: 0 20px;
 }
 #site-creation-container a:hover {
