@@ -18,14 +18,13 @@
               type: 'POST',
               success: function (resp) {
                 $this.dialog("option", "title", "Google Calendar Export complete");
-                // $this.dialog("option", "buttons", "Close");
               },
               beforeSend: function (xhr, settings) {
                 $this.dialog("option", "title", "Exporting ...");
+                $this.dialog("option", {buttons: {}});
                 $this.html('<div class="jquery-autopager-ajax-loader" style="text-align:center;">' + 
                     Drupal.settings.CToolsModal.throbber + 
                 '</div>');
-                console.log("Drupal.settings.CToolsModal.throbber = " + Drupal.settings.CToolsModal.throbber);
               },
               complete: function () {
                 $this.html('');
@@ -50,6 +49,7 @@
           width: 600,
           modal: true,
           title: "Export to Google Calender",
+          dialogClass: 'os_events_export_dialog',
           buttons: [
             button1.button,
             button2.button,

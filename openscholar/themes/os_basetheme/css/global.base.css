@@ -741,6 +741,11 @@ ul ul ul ul {
 .os_events_export_links .last a {
     display: block;
 }
+
+.os_events_export_dialog {
+    text-align: center;
+}
+
 .ical {
     padding: 3px 0 3px 25px !important;
     border-bottom: none !important;
