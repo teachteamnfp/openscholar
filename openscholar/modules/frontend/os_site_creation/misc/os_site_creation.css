@@ -1,3 +1,13 @@
+
+
+#site-creation-container .preNx {
+-webkit-transition: all .125s linear;
+    -moz-transition: all .125s linear;
+    -o-transition: all .125s linear;
+    transition: all .125s linear;
+}
+
+
 #site-creation-container {
     margin: 0;
     padding: 0;
@@ -65,11 +75,15 @@ h3 {
 .starter-content .form-type-radio {
     margin-right: 25px;
     padding: 15px;
+        border-top: 2px solid #C4C2C2;
 }
 .starter-content .form-type-radio:last-child {
     margin-right: 0;
 }
-.starter-content.four .form-type-radio,
+.starter-content.four .form-type-radio {
+    width:18.8%;
+}
+
 .starter-content.two .form-type-radio {
     width: 47%;
 }
@@ -96,10 +110,14 @@ h3 {
     background-color: #888;
     color: #fff;
 }
-.starter-content input ~ span:hover,
-.starter-content input:checked ~ span {
+.starter-content input ~ span:after:hover,
+.starter-content input:checked:after ~ span {
     background-color: #444;
     color: #FFF;
+    content:'Select';
+}
+.starter-content input:checked ~ span:after {
+    content:'Selected';
 }
 #site-creation-container .step-container {
     padding: 3px 10px;
@@ -151,6 +169,13 @@ h3 {
 #site-creation-container a.button {
     background: none;
 }
+#site-creation-container .preNxt:hover {
+
+background-color: #215990;
+color:#fff;
+}
+
+
 #site-creation-container .visibility {
     margin: 3px;
     padding: 4px;
