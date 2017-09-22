@@ -40,20 +40,7 @@ h3 {
 #site-creation-container #header-container-page3 {
     padding: 5px;
 }
-#site-creation-container #footer-container,
-#site-creation-container #body-container-group-2,
-#site-creation-container #body-container-group-3,
-#site-creation-container #body-container-group-1,
-#site-creation-container #body-container-page2,
-#site-creation-container #body-container-page3,
-#site-creation-container #header-container-group-1,
-#site-creation-container #header-container-group-2,
-#site-creation-container #header-container-group-1-page2,
-#site-creation-container #header-container-group-2-page2,
-#site-creation-container #header-container-group-1-page3,
-#site-creation-container #header-container-group-2-page3 {
-    overflow: hidden;
-}
+
 #site-creation-container #header-container-group-3,
 #site-creation-container #header-container-group-3-page-2,
 #site-creation-container #header-container-group-3-page-3 {
