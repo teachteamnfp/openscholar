@@ -16,6 +16,16 @@
     width: 60%;
     padding: 20px;
 }
+
+#site-creation-container h1 {
+    font-size: 2em;
+}
+
+#site-creation-container h2 {
+    font-size: 1.3em;
+}
+
+
 h1,
 h2,
 h3 {
@@ -72,10 +82,17 @@ h3 {
 #site-creation-container .right {
     float: right;
 }
+.starter-content .form-type-radio,
+#site-creation-container .site-type {
+
+        border-top: 2px solid #C4C2C2;
+}
+
+
 .starter-content .form-type-radio {
     margin-right: 25px;
     padding: 15px;
-        border-top: 2px solid #C4C2C2;
+        
 }
 .starter-content .form-type-radio:last-child {
     margin-right: 0;
@@ -109,11 +126,15 @@ h3 {
 .starter-content input ~ span {
     background-color: #888;
     color: #fff;
+    border-radius:2px;
 }
-.starter-content input ~ span:after:hover,
-.starter-content input:checked:after ~ span {
+.starter-content input ~ span:hover,
+.starter-content input:checked ~ span {
     background-color: #444;
     color: #FFF;
+
+}
+.starter-content input ~ span:after {
     content:'Select';
 }
 .starter-content input:checked ~ span:after {
@@ -182,8 +203,9 @@ color:#fff;
     vertical-align: bottom;
 }
 #site-creation-container .site-type {
-    padding: 3px 10px;
-    width: 30%;
+       padding: 10px;
+    width: 26.3%;
+    margin: 0 20px;
 }
 #site-creation-container a:hover {
     text-decoration: underline;
