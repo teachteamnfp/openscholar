@@ -59,7 +59,6 @@ h3 {
     background-color: #efefef;
 }
 .os-themes,
-#site-creation-container #footer-container div#nxt,
 #site-creation-container #footer-container div#pre,
 #site-creation-container .visibility,
 #site-creation-container .step-container,
@@ -99,10 +98,10 @@ h3 {
 }
 
 .starter-content label {
-    float: left;
+    
     background-color: #EFEFEF;
     border-radius: 2px;
-    overflow: auto;
+   
     position:absolute;
     bottom:20px;
 }
@@ -190,6 +189,14 @@ color:#fff;
     width: 29%;
     margin: 0 20px;
 }
+
+
+#site-creation-container .site-type input.form-text {
+   
+    width: 90%;
+   
+}
+
 #site-creation-container a:hover {
     text-decoration: underline;
     cursor: pointer;
@@ -253,19 +260,11 @@ color:#fff;
     padding: 10px 16px;
     border-radius: 3px;
 }
-/*
-#site-creation-container #nxt .preNxt:after {
-    content: '→';
-    position: absolute;
-    right: 45px;
-    font-size: 1.5em;
+
+#footer-container #nxt {
+    float:right;
 }
-#site-creation-container #pre .preNxt:before {
-    content: '←';
-    position: absolute;
-    left: 45px;
-    font-size: 1.5em;
-}*/
+
 
 #site-creation-container .preNxt:disabled {
     display: none;
