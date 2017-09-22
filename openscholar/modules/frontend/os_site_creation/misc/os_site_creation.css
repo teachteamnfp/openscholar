@@ -82,11 +82,7 @@ h3 {
 #site-creation-container .right {
     float: right;
 }
-.starter-content .form-type-radio,
-#site-creation-container .site-type {
 
-        border-top: 2px solid #C4C2C2;
-}
 
 
 .starter-content .form-type-radio {
@@ -94,6 +90,7 @@ h3 {
     padding: 15px;
         
 }
+.site-type:last-child,
 .starter-content .form-type-radio:last-child {
     margin-right: 0;
 }
@@ -203,7 +200,7 @@ color:#fff;
     vertical-align: bottom;
 }
 #site-creation-container .site-type {
-       padding: 10px;
+       padding: 20px 0;
     width: 26.3%;
     margin: 0 20px;
 }
