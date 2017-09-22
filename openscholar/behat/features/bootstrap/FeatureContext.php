@@ -4487,15 +4487,4 @@ JS;
 
     return false;
   }
-
-  /**
-   * @Given /^I click the big gear$/
-   */
-  public function iClickTheBigGear() {
-    $big_gear = $this->getSession()->getPage()->find('css', "a.ctools-dropdown-link.ctools-dropdown-text-link");
-    if (! $big_gear) {
-      throw new Exception("I did not locate the big gear icon.");
-    }
-    $big_gear->click();
-  }
 }
