@@ -52,7 +52,6 @@ projects[contextual_annotation][download][url] =  "http://git.drupal.org/project
 projects[ctools][subdir] = "contrib"
 projects[ctools][download][type] = git
 projects[ctools][download][branch] = 7.x-1.8
-;projects[ctools][download][revision] = be2607142ce97d093acce9417833640680330efe
 ;projects[ctools][patch][] = "http://drupal.org/files/1707810-ctools-fields-mock-field-7.patch"
 ;projects[ctools][patch][] = "http://drupal.org/files/ctools-plugin_extension-1623044-1.patch"
 ;projects[ctools][patch][] = "https://drupal.org/files/issues/2147905-allow-alter-with-more-context-1.patch"
@@ -90,15 +89,15 @@ projects[entitycache][version] = 1.5
 projects[entitycache][patch][] = https://www.drupal.org/files/issues/2516094-1-entitycache_fix_arry_flip.patch
 
 projects[entityreference][subdir] = "contrib"
-projects[entityreference][version] = 1.1
-projects[entityreference][patch][] = "http://drupal.org/files/1802916-er-show-identifier-14.patch"
+projects[entityreference][version] = 1.5
+;projects[entityreference][patch][] = "http://drupal.org/files/1802916-er-show-identifier-14.patch"
 
 projects[entityreference_prepopulate][subdir] = "contrib"
 projects[entityreference_prepopulate][version] = 1.5
 projects[entityreference_prepopulate][patch][] = "https://drupal.org/files/issues/1994702-er-ajax-9.patch"
 
 projects[elysia_cron][subdir] = "contrib"
-projects[elysia_cron][version] = 2.1
+projects[elysia_cron][version] = 2.4
 
 projects[eva][subdir] = "contrib"
 projects[eva][version] = 1.2
@@ -112,10 +111,10 @@ projects[facetapi][version] = 1.1
 projects[facetapi][patch][] = "http://drupal.org/files/2006704-facetapi-er-regroup-2.patch"
 
 projects[features][subdir] = "contrib"
-projects[features][version] = 2.0
+projects[features][version] = 2.9
 
 projects[feeds][subdir] = "contrib"
-projects[feeds][version] = 2.0-alpha7
+projects[feeds][version] = 2.0-alpha9
 projects[feeds][patch][] = "https://raw.githubusercontent.com/openscholar/openscholar/8e532e05ef206421f0b2e259223ee12afdcff877/patches/feeds-fid_9097_resubmitting.patch"
 
 projects[feeds_tamper][subdir] = "contrib"
@@ -184,8 +183,8 @@ projects[jcarousel][version] = 2.6
 
 projects[jquery_update][subdir] = "contrib"
 projects[jquery_update][download][type] = git
-projects[jquery_update][download][branch] = 7.x-2.x
-projects[jquery_update][download][revision] = 65eecb0
+projects[jquery_update][download][branch] = 7.x-2.7
+;projects[jquery_update][download][revision] = 65eecb0
 
 projects[js][subdir] = "contrib"
 projects[js][version] = 1.0-beta2
@@ -213,11 +212,11 @@ projects[linkchecker][version] = 1.0-beta1
 projects[media][subdir] = "contrib"
 projects[media][version] = 2.x-dev
 projects[media][download][type] = git
-projects[media][download][branch] = 7.x-2.x
-projects[media][download][revision] = "b433b278d7e0ab7420f5a874886843fb9fe7ebe2"
-; projects[media][patch][] = "http://drupal.org/files/issues/1121808-media-resuse-files-by-uri.patch"
-; projects[media][patch][] = "http://drupal.org/files/media-7.x-2.x-fix-class-array.patch"
-projects[media][patch][] = "http://drupal.org/files/media_fatal_wysiwyg_remove_1937864_11.patch"
+projects[media][download][branch] = 7.x-2.1
+;projects[media][download][revision] = "b433b278d7e0ab7420f5a874886843fb9fe7ebe2"
+;projects[media][patch][] = "http://drupal.org/files/issues/1121808-media-resuse-files-by-uri.patch"
+;projects[media][patch][] = "http://drupal.org/files/media-7.x-2.x-fix-class-array.patch"
+;projects[media][patch][] = "http://drupal.org/files/media_fatal_wysiwyg_remove_1937864_11.patch"
 
 projects[media_gallery][subdir] = "contrib"
 projects[media_gallery][version] = 2.x-dev
@@ -235,7 +234,7 @@ projects[message][subdir] = "contrib"
 projects[message][version] = 1.12
 
 projects[metatag][subdir] = "contrib"
-projects[metatag][version] = 1.0-beta9
+projects[metatag][version] = 1.2
 
 projects[module_filter][subdir] = "contrib"
 projects[module_filter][version] = 1.7
@@ -342,10 +341,10 @@ projects[purl][patch][] = "http://drupal.org/files/729862-9-purl-inbound-alter-m
 projects[purl][patch][] = "http://drupal.org/files/issues/purl-integrate_redirect_keep_options-1735266-4.patch"
 
 projects[registration][subdir] = "contrib"
-projects[registration][version] = 1.5
+projects[registration][version] = 1.6
 projects[registration][patch][] = "https://raw.githubusercontent.com/openscholar/openscholar/fff85ce1e059985dac494d6bde5e923e25a74feb/patches/registration_link_pass_entity.patch"
 projects[registration][patch][] = "https://www.drupal.org/files/issues/registration-add-context-to-headers-2564355-1.patch"
-projects[registration][patch][] = "https://www.drupal.org/files/issues/registration_fatal_error_class-2546836-6.patch"
+;projects[registration][patch][] = "https://www.drupal.org/files/issues/registration_fatal_error_class-2546836-6.patch"
 
 projects[respondjs][subdir] = "contrib"
 projects[respondjs][version] = 1.1
