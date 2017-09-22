@@ -7,6 +7,10 @@
     transition: all .125s linear;
 }
 
+.help-link {
+	clear:both;
+}
+
 
 #site-creation-container {
     margin: 0;
@@ -152,16 +156,7 @@ h3 {
 .os-themes .cp-themes {
     display: inline-block;
 }
-#site-creation-container #body-container {
-    height: 382px;
-}
-#site-creation-container #body-container-group-1 {
-    height: 130px;
-}
-#site-creation-container #body-container-page2,
-#site-creation-container #body-container-page3 {
-    height: 393px;
-}
+
 #site-creation-container #body-container-group-2,
 #site-creation-container #body-container-group-3 {
     margin: 5px;
