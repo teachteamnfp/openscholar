@@ -26,6 +26,10 @@ class FeatureContext extends DrupalContext {
       $this->getSession()->resizeWindow(1440, 1200, 'current');
     }
 
+    // turn off Mollom CAPTCHA verification
+    variable_set('mollom_testing_mode', 1);
+    variable_del('mollom_cmp_enabled');
+
     parent::beforeScenario($event);
   }
 
@@ -4339,16 +4343,5 @@ JS;
     $elem = $this->getSession()->getPage()->find($type, $expr);
     $elem->focus();
   }
-
-  /**
-   *
-   * @Given /^I turn off Mollom CAPTCHA verification$/
-   *
-   */
-  public function iTurnOffMollomCaptchaVerification() {
-    variable_set('mollom_testing_mode', 1);
-    variable_del('mollom_cmp_enabled');
-  }
-
 
 }
