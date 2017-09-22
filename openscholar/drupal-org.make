@@ -16,10 +16,10 @@ projects[apachesolr_og][subdir] = "contrib"
 projects[apachesolr_og][revision] = 5fda19fc208bd62713be99a839aed0528d9d3db7
 
 projects[boxes][subdir] = "contrib"
-projects[boxes][version] = 1.2
+projects[boxes][version] = 1.1
 ;projects[boxes][patch][] = "http://raw.github.com/openscholar/openscholar/b38919350643c8b26a3f639e935c1c6e802c6dd7/patches/boxes.load_from_spaces_and_fix_fatals.patch"
-;projects[boxes][patch][] = "https://www.drupal.org/files/1859150-1-boxes-strict_warning.patch"
-;projects[boxes][patch][] = "https://www.drupal.org/files/issues/default_object_empty_value-2042101-3.patch"
+projects[boxes][patch][] = "https://www.drupal.org/files/1859150-1-boxes-strict_warning.patch"
+projects[boxes][patch][] = "https://www.drupal.org/files/issues/default_object_empty_value-2042101-3.patch"
 
 projects[cache_consistent][subdir] = "contrib"
 projects[cache_consistent][version] = 1.2
@@ -51,8 +51,8 @@ projects[contextual_annotation][download][url] =  "http://git.drupal.org/project
 
 projects[ctools][subdir] = "contrib"
 projects[ctools][download][type] = git
-projects[ctools][download][branch] = 7.x-1.12
-projects[ctools][download][revision] = be2607142ce97d093acce9417833640680330efe
+projects[ctools][download][branch] = 7.x-1.8
+;projects[ctools][download][revision] = be2607142ce97d093acce9417833640680330efe
 projects[ctools][patch][] = "http://drupal.org/files/1707810-ctools-fields-mock-field-7.patch"
 projects[ctools][patch][] = "http://drupal.org/files/ctools-plugin_extension-1623044-1.patch"
 projects[ctools][patch][] = "https://drupal.org/files/issues/2147905-allow-alter-with-more-context-1.patch"
