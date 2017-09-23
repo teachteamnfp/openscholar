@@ -94,7 +94,7 @@ h3 {
     width: 47%;
 }
 .starter-content.three .form-type-radio {
-    width: 27%;
+    width: 27.5%;
 }
 
 .starter-content label {
@@ -186,8 +186,8 @@ color:#fff;
 }
 #site-creation-container .site-type {
        padding: 20px 0;
-    width: 29%;
-    margin: 0 20px;
+    width: 31.3%;
+    margin: 0 25px 0 0;
 }
 
 
@@ -239,14 +239,12 @@ color:#fff;
     background-color: #4CAF50;
     border: none;
     color: white;
-    /* padding: 10px 16px; */
     
     border-radius: 50%;
     font-weight: bold;
     height: 50px;
     width: 50px;
-    /* padding: 15px 15px; */
-    
+   font-size:18px;
     line-height: 50px;
 }
 #site-creation-container .step.enable {
