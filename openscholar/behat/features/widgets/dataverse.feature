@@ -1,7 +1,7 @@
 Feature:
   Testing the dataverse widget.
 
-  @api @widgets @javascript
+  @api @widgets
   Scenario: Verify the Dataverse List widget.
      Given I am logging in as "john"
      And I create a "Dataverse List" widget for the vsite "john" with the following <settings>:
