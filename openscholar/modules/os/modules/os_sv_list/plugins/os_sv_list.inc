@@ -610,7 +610,10 @@ class os_sv_list extends os_boxes_default {
     $type = $this->entity_type;
 
     $items = array_map(function($e) use ($id, $label, $type) {
-      return l($e->{$label}, $type . '/' . $e->{$id}, array('html' => TRUE));
+      $title_link = l($e->{$label}, $type . '/' . $e->{$id}, array('html' => TRUE));
+      if (isset($e->field_links_link[LANGUAGE_NONE][0]['url']) && $e->type == "link")
+        $title_link = l($e->{$label}, $e->field_links_link[LANGUAGE_NONE][0]['url'], array('html' => TRUE));
+      return $title_link;
     }, $entities);
 
     return array(
