@@ -1011,6 +1011,23 @@ class FeatureContext extends DrupalContext {
    * @Given /^the widget "([^"]*)" is placed in the "([^"]*)" layout$/
    */
   public function theWidgetIsPlacedInTheLayout($widget, $page) {
+
+    $page_mapping = array(
+      'News' => 'news_news',
+      'Blog' => 'blog_blog',
+      'Link' => 'links_links',
+      'Reader' => 'reader_reader',
+      'Calendar' => 'events_events',
+      'Classes' => 'classes_classes',
+      'People' => 'profiles_profiles',
+      'Galleries' => 'gallery_gallery',
+      'FAQ' => 'faq_faq',
+      'Software' => 'software_software',
+      'Documents' => 'booklets_booklets',
+      'Publications' => 'publications_publications',
+      'Presentations' => 'presentations_presentations',
+    );
+
     $q = db_select('spaces_overrides', 'so')
       ->fields('so', array('object_id', 'id'))
       ->condition('value', '%s:5:"title";s:' . strlen($widget) . ':"' . $widget . '";%', 'LIKE')
@@ -1020,18 +1037,33 @@ class FeatureContext extends DrupalContext {
 
     $page_id = FeatureHelp::GetNodeId($page);
 
-    $vsite = spaces_load('og', $row->id);
-    $blocks = $vsite->controllers->context->get('os_pages-page-' . $page_id . ":reaction:block");
-    $blocks['blocks']['boxes-' . $row->object_id] = array(
-      'module' => 'boxes',
-      'delta' => $row->object_id,
-      'title' => $widget,
-      'region' => 'sidebar_second',
-      'status' => 0,
-      'weight' => 0
-    );
-    $vsite->controllers->context->set('os_pages-page-' . $page_id . ":reaction:block", $blocks);
+    if (array_key_exists($page, $page_mapping)) {
 
+      $vsite = spaces_load('og', $row->id);
+      $blocks = $vsite->controllers->context->get($page_mapping[$page] . ":reaction:block");
+      $blocks['blocks']['boxes-' . $row->object_id] = array(
+        'module' => 'boxes',
+        'delta' => $row->object_id,
+        'title' => $widget,
+        'region' => 'sidebar_second',
+        'status' => 0,
+        'weight' => 0
+      );
+      $vsite->controllers->context->set($page_mapping[$page] . ":reaction:block", $blocks);
+    } else {
+
+        $vsite = spaces_load('og', $row->id);
+        $blocks = $vsite->controllers->context->get('os_pages-page-' . $page_id . ":reaction:block");
+        $blocks['blocks']['boxes-' . $row->object_id] = array(
+          'module' => 'boxes',
+          'delta' => $row->object_id,
+          'title' => $widget,
+          'region' => 'sidebar_second',
+          'status' => 0,
+          'weight' => 0
+        );
+        $vsite->controllers->context->set('os_pages-page-' . $page_id . ":reaction:block", $blocks);
+      }
   }
 
   /**
