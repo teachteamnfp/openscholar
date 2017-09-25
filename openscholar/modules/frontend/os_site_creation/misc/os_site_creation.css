@@ -45,6 +45,10 @@ h3 {
 #site-creation-container #header-container-page3 {
     padding: 5px;
 }
+.site-type-button
+{
+    padding-bottom: 20px;
+}
 
 #site-creation-container #header-container-group-3,
 #site-creation-container #header-container-group-3-page-2,
@@ -80,6 +84,7 @@ h3 {
 }
 
 .starter-content .form-type-radio {
+	margin: 0;
     margin-right: 25px;
     padding: 15px;
         min-height:150px;
@@ -191,22 +196,29 @@ color:#fff;
     padding: 4px;
     vertical-align: bottom;
 }
+#site-creation-container #body-container-group-2 .visibility {
+    margin: 0;
+    padding: 0;
+    
+}
+
+
+
 #site-creation-container .site-type {
-       padding: 20px 0;
+      padding: 20px 0 0 0;
     width: 31.3%;
     margin: 0 25px 0 0;
 }
 .site-vis-radios {
-    padding: 4px 15px 15px 15px;
-    background-color: #ccc;
+    padding: 1px 15px 15px 15px;
+   
     width: 85%;
 }
 
-.site-type_nameurl {
-    border-top: 2px solid #fff;
-    margin-top: 19px;
+#site-creation-container .popup.site-type_nameurl {
+      border-top: 2px solid #fff;
+    margin: 0;
 }
-
 
 #site-creation-container .site-type input.form-text {
    
