@@ -41,7 +41,7 @@
 						<div>
 							<a class="button" ng-click="display = 'individualScholar'" title="Individual Scholar">Individual Scholar</a>
 						</div>
-						<div id="individual-scholar" class="popup" ng-show="display == 'individualScholar'">
+						<div id="individual-scholar" class="popup site-type_nameurl" ng-show="display == 'individualScholar'">
 							<div class="left">
 								<b>URL of the Site</b>
 							</div>
@@ -69,7 +69,7 @@
 						<div>
 							<a class="button" ng-click="display = 'projectLabSmallGroup'">Project/Lab/Small Group</a>
 						</div>
-						<div id="project-lab-small-group" class="popup" ng-show="display == 'projectLabSmallGroup'">
+						<div id="project-lab-small-group" class="popup site-type_nameurl" ng-show="display == 'projectLabSmallGroup'">
 							<div class="left">
 								<b>URL of the Site</b>
 							</div>
@@ -97,7 +97,7 @@
 						<div>
 							<a class="button" ng-click="display = 'departmentSchool'">Department/School</a>
 						</div>
-						<div id="department-school" class="popup" ng-show="display == 'departmentSchool'">
+						<div id="department-school" class="popup site-type_nameurl" ng-show="display == 'departmentSchool'">
 							<div class="left">
 								<b>URL of the Site</b>
 							</div>
@@ -132,7 +132,7 @@
 							<span class="enlarged-text" ng-switch="vsite.value">Choose who can view your site: <b ng-switch-when="0">Public on the web</b> <b ng-switch-when="1">Invite only during site creation</b> <b ng-switch-when="2">Anyone with a link</b> <b ng-switch-when="3">Harvard Community</b> </span>
 							<a ng-click="toggleFunc()">Change</a>
 						</div>
-						<div ng-show="showAll">
+						<div ng-show="showAll" class="site-vis-radios">
 							<div class="form-item form-type-radio">
 								<input type="radio" ng-model="vsite.value" value="0">
 								<label class="option">Public on web
