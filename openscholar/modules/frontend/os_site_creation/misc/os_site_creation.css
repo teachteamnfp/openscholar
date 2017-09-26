@@ -10,6 +10,8 @@
 .help-link {
 	display: block;
     text-align: right;
+    clear:both;
+        padding: 17px 0 0;
 }
 
 
@@ -94,7 +96,7 @@ h3 {
     margin-right: 0;
 }
 .starter-content.four .form-type-radio {
-    width:18.8%;
+    width:18.9%;
 }
 
 .starter-content.two .form-type-radio {
@@ -143,6 +145,7 @@ h3 {
     width: 30%;
     font-size: 1.2em;
 }
+#footer-container,
 #site-creation-container .clear {
     clear: both;
 }
@@ -191,16 +194,6 @@ color:#fff;
 }
 
 
-#site-creation-container .visibility {
-    margin: 3px;
-    padding: 4px;
-    vertical-align: bottom;
-}
-#site-creation-container #body-container-group-2 .visibility {
-    margin: 0;
-    padding: 0;
-    
-}
 
 
 
@@ -245,15 +238,14 @@ color:#fff;
     padding: 8px 16px;
 }
 #site-creation-container #footer-container div#pre {
-    padding: 4px 12px;
-    padding: 4px 12px;
-    width: 400px;
+   
+    padding: 10px 0 0;
+    width: 200px;
 }
 #site-creation-container #footer-container div#nxt {
+     padding: 10px 0 0;
+    width: 200px;
     text-align: right;
-    padding: 4px 12px;
-    padding: 4px 12px;
-    width: 400px;
 }
 #site-creation-container .popup {
     margin: 0px 5px;
