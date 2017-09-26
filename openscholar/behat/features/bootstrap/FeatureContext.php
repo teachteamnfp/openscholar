@@ -1046,12 +1046,11 @@ class FeatureContext extends DrupalContext {
       ->condition('object_type', 'boxes', '=');
     $results = $q->execute()->fetchAll();
     $row = array_pop($results);
+    $vsite = spaces_load('og', $row->id);
 
     $page_id = FeatureHelp::GetNodeId($page);
 
     if (array_key_exists($page, $page_mapping)) {
-
-      $vsite = spaces_load('og', $row->id);
       $blocks = $vsite->controllers->context->get($page_mapping[$page] . ":reaction:block");
       $blocks['blocks']['boxes-' . $row->object_id] = array(
         'module' => 'boxes',
@@ -1063,19 +1062,17 @@ class FeatureContext extends DrupalContext {
       );
       $vsite->controllers->context->set($page_mapping[$page] . ":reaction:block", $blocks);
     } else {
-
-        $vsite = spaces_load('og', $row->id);
-        $blocks = $vsite->controllers->context->get('os_pages-page-' . $page_id . ":reaction:block");
-        $blocks['blocks']['boxes-' . $row->object_id] = array(
-          'module' => 'boxes',
-          'delta' => $row->object_id,
-          'title' => $widget,
-          'region' => 'sidebar_second',
-          'status' => 0,
-          'weight' => 0
-        );
-        $vsite->controllers->context->set('os_pages-page-' . $page_id . ":reaction:block", $blocks);
-      }
+      $blocks = $vsite->controllers->context->get('os_pages-page-' . $page_id . ":reaction:block");
+      $blocks['blocks']['boxes-' . $row->object_id] = array(
+        'module' => 'boxes',
+        'delta' => $row->object_id,
+        'title' => $widget,
+        'region' => 'sidebar_second',
+        'status' => 0,
+        'weight' => 0
+      );
+      $vsite->controllers->context->set('os_pages-page-' . $page_id . ":reaction:block", $blocks);
+    }
   }
 
   /**
