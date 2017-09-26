@@ -3751,9 +3751,7 @@ class FeatureContext extends DrupalContext {
     $session = $this->getSession();
     $nid = $this->_getNodeIdOfUrl("$vsite/$url");
 
-    print("\nEAM trace " . __FILE__ . ":" . __LINE__ . ", \$nid = " . var_export($nid, true));
-
-    $session->visit("$vsite/node/add/class-material?field_class=$nid");
+    return new Step\When('I visit "' . $vsite . '/node/add/class-material?field_class=' . $nid . '"');
   }
 
   /**
@@ -4140,8 +4138,6 @@ JS;
       }
     }
 
-    print("\nEAM trace " . __FILE__ . ":" . __LINE__ . ", \$unaliased_path = " . var_export($unaliased_path, true));
-
     return $unaliased_path;
   }
 
@@ -4175,9 +4171,6 @@ JS;
    */
   public function iVisitTheEditPathOfPage($url, $vsite) {
     $path = $this->_getUnaliasedPathFromAliasPath($url, $vsite);
-
-    print("\nEAM Entering " . __FILE__ . ":" . __LINE__ . ", \$path = " . var_export($path, true));
-
     $this->visit("$path/edit");
   }
 
@@ -4191,8 +4184,6 @@ JS;
     if (! $path) {
       throw new Exception("Could not find an unaliased path for '$url' on vsite '$vsite'.");
     }
-
-    print("\nEAM Entering " . __FILE__ . ":" . __LINE__ . ", \$path = " . var_export($path, true));
     $this->visit("$path/$appendage");
   }
 }

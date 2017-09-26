@@ -43,9 +43,7 @@ Feature:
      Given I am logging in as "john"
        # Note the modified title does not change the URL
        And I visit the Add class material URL for "classes/political-science-101" on vsite "john"
-#      And I click "Add class material"
        And I fill in "Title" with "Overview"
-       And I fill in "Body" with "Political Theory is chiefly concerned with how best to arrange our collective lives, with particular attention to the necessity for and rights and obligations of ‘rule,’ as well as the limits of that important power."
        And I press "Save"
        And I sleep for "2"
       Then I should see "Overview"
