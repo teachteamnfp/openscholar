@@ -14,7 +14,7 @@ For developers, see the [glossary](https://github.com/openscholar/openscholar/wi
 ## Getting Started
 
 1. [Install](https://github.com/openscholar/openscholar/wiki/Install) the Drupal profile ([Troubleshooting](https://github.com/openscholar/openscholar/wiki/Troubleshooting))
-1. [Create a OS Site (vsite)](https://github.com/openscholar/openscholar/wiki/Create-a-virtual-site-%28vsite%29)
+1. [Create an OS Site (vsite)](https://github.com/openscholar/openscholar/wiki/Create-a-virtual-site-%28vsite%29)
 1. [Customize](https://github.com/openscholar/openscholar/wiki/Customize) everything really simply
 1. Repeat steps 2-4
 
