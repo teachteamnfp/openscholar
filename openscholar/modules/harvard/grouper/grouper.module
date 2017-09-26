@@ -324,9 +324,13 @@ function grouper_node_access($node, $op, $account) {
   if (og_is_group('node', $node)) {
     $group_id = $node->nid;
   }
-  else {
+  elseif (!empty($node->{OG_AUDIENCE_FIELD})){
     $group_id = $node->{OG_AUDIENCE_FIELD}[LANGUAGE_NONE][0]['target_id'];
   }
+  else{
+    return NODE_ACCESS_IGNORE;
+  }
+
   $group = node_load($group_id);
   $items = field_get_items('node', $group, VSITE_ACCESS_FIELD);
   if ($items[0]['value'] == GROUPER_PRIVACY_LEVEL) {
