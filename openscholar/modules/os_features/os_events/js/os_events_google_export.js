@@ -38,8 +38,8 @@
         };
       }
 
-      var button1 = new osEventsDialogButton(1, "Create New Google Calendar");
-      var button2 = new osEventsDialogButton(0, "Overwrite Existing Google Calendar");
+      var button1 = new osEventsDialogButton(0, "Create New Google Calendar");
+      var button2 = new osEventsDialogButton(1, "Overwrite Existing Google Calendar");
 
       $("#export-to-google-calendar-dialog-confirm").once(function () {
 
