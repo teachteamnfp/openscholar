@@ -864,6 +864,18 @@ class FeatureContext extends DrupalContext {
       case "feed reader":
         $widgetType = "os_boxes_feedreader";
         break;
+      case "dataverse list":
+        $widgetType = "os_boxes_dataverse_list";
+        break;
+      case "dataverse search box":
+        $widgetType = "os_boxes_dataverse_search";
+        break;
+      case "dataverse dataset citation":
+        $widgetType = "os_boxes_dataverse_dataset_citation";
+        break;
+      case "dataverse dataset":
+        $widgetType = "os_boxes_dataverse_dataset";
+        break;
     }
     $metasteps[] = new Step\When('I visit "/' . $vsite . '/os/widget/add/' . $widgetType . '/cp-layout"');
     $hash = $table->getRows();
@@ -1039,6 +1051,33 @@ class FeatureContext extends DrupalContext {
       'delta' => $row->object_id,
       'title' => $widget,
       'region' => 'sidebar_second',
+      'status' => 0,
+      'weight' => 0
+    );
+    $vsite->controllers->context->set('os_pages-page-' . $page_id . ":reaction:block", $blocks);
+
+  }
+
+  /**
+   * @Given /^the dataverse widget "([^"]*)" is placed in the "([^"]*)" layout$/
+   */
+  public function theDataverseWidgetIsPlacedInTheLayout($widget, $page) {
+    $q = db_select('spaces_overrides', 'so')
+      ->fields('so', array('object_id', 'id'))
+      ->condition('value', '%s:5:"title";s:' . strlen($widget) . ':"' . $widget . '";%', 'LIKE')
+      ->condition('object_type', 'boxes', '=');
+    $results = $q->execute()->fetchAll();
+    $row = array_pop($results);
+
+    $page_id = FeatureHelp::GetNodeId($page);
+
+    $vsite = spaces_load('og', $row->id);
+    $blocks = $vsite->controllers->context->get('os_pages-page-' . $page_id . ":reaction:block");
+    $blocks['blocks']['boxes-' . $row->object_id] = array(
+      'module' => 'boxes',
+      'delta' => $row->object_id,
+      'title' => $widget,
+      'region' => 'content_first',
       'status' => 0,
       'weight' => 0
     );
