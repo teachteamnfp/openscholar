@@ -140,13 +140,35 @@ class FeatureContext extends DrupalContext {
     }
 
     if ($this->loggedIn()) {
-      error_log('were logged in. log us out please.');
+      print('were logged in. log us out please.');
       $this->logout();
       usleep(500000);
     }
 
     $element = $this->getSession()->getPage();
     $this->getSession()->visit($this->locatePath('/user'));
+
+    // Look for the login button
+    $xpaths_to_login = array(
+      "//fieldset[contains(@id, 'edit-pin-fieldset')]",
+      "//a[text()='Log in with your OpenScholar account']",
+    );
+
+    $found_login_accordion_toggle = false;
+    foreach ($xpaths_to_login as $xpath) {
+      $login_accordion_toggle = $this->getSession()->getPage()->find('xpath', $xpath);
+      if ($login_accordion_toggle) {
+        $found_login_accordion_toggle = true;
+        $login_accordion_toggle->click();
+        break;
+      }
+    }
+
+    if (!$found_login_accordion_toggle) {
+      print "I can't open the login accordion, but I will attempt to fill in the username/password fields anyway.";
+    }
+
+    // Then fill them in
     $element->fillField('Username', $username);
     $element->fillField('Password', $password);
     $submit = $element->findButton('Log in');
@@ -548,7 +570,7 @@ class FeatureContext extends DrupalContext {
     );
     $json = $request->json();
 
-    error_log($json['files']['file.html']['raw_url']);
+    print($json['files']['file.html']['raw_url']);
     return $json['files']['file.html']['raw_url'];
   }
 
@@ -2998,7 +3020,7 @@ class FeatureContext extends DrupalContext {
    */
   public function iShouldSeeInAElement($text, $selector) {
     usleep(200);
-    //error_log($this->getSession()->getPage()->getHtml());
+    //print($this->getSession()->getPage()->getHtml());
     $elems = $this->getSession()->getPage()->findAll('css', $selector);
     if (count($elems) == 0) {
       throw new Exception("No element matching selector \"$selector\" found.");
@@ -3118,13 +3140,13 @@ class FeatureContext extends DrupalContext {
         return !$appear;
       }
       catch (WebDriver\Exception $e) {
-        error_log('exception');
+        print('exception');
         if ($e->getCode() == WebDriver\Exception::NO_SUCH_ELEMENT) {
-          error_log('exception. returning ' . (!$appear ? "true":"false"));
+          print('exception. returning ' . (!$appear ? "true":"false"));
           return !$appear;
         }
-        error_log($e->getCode());
-        error_log($e->getMessage());
+        print($e->getCode());
+        print($e->getMessage());
         if ($appear) {
           throw $e;
         }
@@ -3633,6 +3655,20 @@ class FeatureContext extends DrupalContext {
   }
 
   /**
+   * @Given /^I make sure admin panel is closed$/
+   */
+  public function adminPanelClosed() {
+    $page = $this->getSession()->getPage();
+    $this->waitForPageActionsToComplete();
+    if (! $page->find('css', '[left-menu].closed')) {
+
+      // Make sure the menu is not hiding
+      $driver = $this->getSession()->getDriver();
+      $driver->executeScript("window.jQuery('[left-menu]').css('display', 'none');");
+    }
+  }
+
+  /**
    * @Given /^I make sure admin panel is open$/
    */
   public function adminPanelOpen() {
@@ -3715,7 +3751,7 @@ class FeatureContext extends DrupalContext {
     $session = $this->getSession();
     $nid = $this->_getNodeIdOfUrl("$vsite/$url");
 
-    error_log("EAM trace " . __FILE__ . ":" . __LINE__ . ", \$nid = " . var_export($nid, true));
+    print("\nEAM trace " . __FILE__ . ":" . __LINE__ . ", \$nid = " . var_export($nid, true));
 
     $session->visit("$vsite/node/add/class-material?field_class=$nid");
   }
@@ -3998,15 +4034,35 @@ JS;
   /**
    * @When /^Switch to the iframe "([^"]*)"$/
    */
-  public function switchToTheIframe($iframe_id) {
-    $this->waitFor(function (FeatureContext $context) {
-      if ($overlay = $context->getSession()->getPage()->find('css', 'iframe.media-modal-frame')) {
+  public function switchToTheIframe($iframe_selector = "iframe.media-modal-frame") {
+
+    # TODO: Q: Why do we need a waitFor here?
+    $this->waitFor(function (FeatureContext $context, $iframe_selector) {
+      if ($overlay = $context->getSession()->getPage()->find('css', $iframe_selector)) {
         $context->getSession()->switchToIframe("mediaStyleSelector");
         return true;
       }
       return false;
     }, 20000);
   }
+
+  private function switchToNamedIFrame($iframeSelector) {
+
+      $function = <<<JS
+          (function() {
+             var iframe = document.querySelector("$iframeSelector");
+             iframe.name = "iframeToSwitchTo";
+          })()
+JS;
+      try {
+        $this->getSession()->executeScript($function);
+      } catch (Exception $e) {
+        print_r($e->getMessage());
+        throw new \Exception("Element $iframeSelector was NOT found.".PHP_EOL . $e->getMessage());
+      }
+
+      $this->getSession()->getDriver()->switchToIFrame("iframeToSwitchTo");
+    }
 
   /**
    * @When /^I click on the first "([^"]*)" control in the "([^"]*)" element$/
@@ -4084,7 +4140,7 @@ JS;
       }
     }
 
-    error_log("EAM trace " . __FILE__ . ":" . __LINE__ . ", \$unaliased_path = " . var_export($unaliased_path, true));
+    print("\nEAM trace " . __FILE__ . ":" . __LINE__ . ", \$unaliased_path = " . var_export($unaliased_path, true));
 
     return $unaliased_path;
   }
@@ -4095,11 +4151,15 @@ JS;
   private function _getNodeIdOfUrl($url) {
 
     $this->visit($url);
-    $a_element = $this->getSession()->getPage()->find('xpath', "//a[contains(@href, '?destination=node/')]");
+
+    $a_element = $this->getSession()->getPage()->find('xpath', "//a[contains(@href, '?destination=node/') or contains(@href, 'destination%3Dnode%2F')]");
+    $page = $this->getSession()->getPage()->getContent();
+
     if ($a_element) {
       $href_unaliased = $a_element->getAttribute('href');
 
-      if (preg_match("/\bdestination\=node\/(\d+)/", $href_unaliased, $matches)) {
+      if (preg_match("/\bnode(?:\%2f|\/)(\d+)/i", $href_unaliased, $matches)) {
+
         if (isset($matches[1])) {
           $nid = (int)($matches[1]);
           return $nid;
@@ -4115,9 +4175,9 @@ JS;
    */
   public function iVisitTheEditPathOfPage($url, $vsite) {
     $path = $this->_getUnaliasedPathFromAliasPath($url, $vsite);
-    if (! $path) {
-      throw new Exception("Could not find an unaliased path for '$url' on vsite '$vsite'.");
-    }
+
+    print("\nEAM Entering " . __FILE__ . ":" . __LINE__ . ", \$path = " . var_export($path, true));
+
     $this->visit("$path/edit");
   }
 
@@ -4131,7 +4191,8 @@ JS;
     if (! $path) {
       throw new Exception("Could not find an unaliased path for '$url' on vsite '$vsite'.");
     }
+
+    print("\nEAM Entering " . __FILE__ . ":" . __LINE__ . ", \$path = " . var_export($path, true));
     $this->visit("$path/$appendage");
   }
-
 }
