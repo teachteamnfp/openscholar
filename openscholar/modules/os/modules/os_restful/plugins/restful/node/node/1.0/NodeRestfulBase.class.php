@@ -58,9 +58,6 @@ class NodeRestfulBase extends OsbulkOperationEnitity {
 
     $public_fields['type'] = array(
       'property' => 'type',
-      'process_callbacks' => array(
-        array($this, 'processType'),
-      ),
     );
 
     $public_fields['publish_status'] = array(
@@ -145,19 +142,6 @@ class NodeRestfulBase extends OsbulkOperationEnitity {
    */
   protected function processStatus($status) {
     return $status = ($status == 1) ? true : false;
-  }
-
-  /**
-   * Return publication instead of machine name bibblo.
-   *
-   * @param type
-   *   The bundle name.
-   *
-   * @return type
-   *   Return publication instead biblio.
-   */
-  protected function processType($type) {
-    return $type = ($type == 'biblio') ? 'publication' : $type;
   }
 
 }

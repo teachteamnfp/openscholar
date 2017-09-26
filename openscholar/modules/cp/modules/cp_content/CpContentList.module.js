@@ -162,25 +162,19 @@
     // Show Undo div to user for 8 seconds on delete.
     $scope.deleteUndoAction = true;
     $scope.deleteUndoMessage = true;
-    var nodeId, timer, list;
-    var oldList = [];
-    var newDataList = [];
+    var nodeId; 
+    var timer;
+    var previousDataSet;
     $scope.nodeDelete = function(nid) {
+      var newDataSet = [];
       nodeId = angular.isArray(nid) ? nid : [nid];
-      var newDataList = [];
-      if (oldList.length > 0) {
-        list = oldList;
-        oldList = [];
-      } else {
-        list = $scope.tableParams.data;
-      }
-      angular.forEach(list, function(node) {
+      previousDataSet = $scope.tableParams.data;
+      angular.forEach(previousDataSet, function(node, key) {
         if (nodeId.indexOf(node.id) == -1) {
-          newDataList.push(node);
+          newDataSet.push(node);
         }
-        oldList.push(node);
       });
-      $scope.tableParams.data = newDataList;
+      $scope.tableParams.data = newDataSet;
       $scope.deleteUndoMessage = true;
       $scope.deleteUndoAction = !$scope.deleteUndoAction;
       timer = $timeout(function() {
@@ -199,6 +193,12 @@
       }).then(function(response) {
         if (response.data.data.deleted) {
           $scope.message = 'Selected content has been deleted.';
+          angular.forEach(previousDataSet, function(node, key) {
+            if (nodeId.indexOf(node.id) > -1) {
+              var index = previousDataSet.indexOf(node);
+              previousDataSet.splice(index, 1);
+            }
+          });
           $scope.deleteUndoAction = true;
         } else {
           $scope.message = messageFailed;
@@ -213,7 +213,7 @@
       timer = $timeout(function() {
         $scope.deleteUndoMessage = true;
       }, 2000);
-      $scope.tableParams.data = oldList;
+      $scope.tableParams.data = previousDataSet;
     };
 
     $scope.deleteUndoMessageClose = function() {
@@ -359,7 +359,6 @@
         filter.og_vocabulary = selectedTerms;
         $scope.tableParams.filter(filter);
       }
-      $scope.tableParams.reload();
     };
 
     $scope.getMatchedTaxonomyTerms = function(termOperation) {
@@ -957,6 +956,12 @@
         return string;
       }
       return string.replace(/_/g, ' ');
+    };
+  }]);
+
+  m.filter('convertBiblioToPublication', [function() {
+    return function(type) {
+      return type = (type == 'biblio') ? 'publication' : type;
     };
   }]);
 

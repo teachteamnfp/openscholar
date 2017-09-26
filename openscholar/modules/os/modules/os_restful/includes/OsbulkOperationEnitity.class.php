@@ -104,13 +104,9 @@ class OsbulkOperationEnitity extends OsRestfulEntityCacheableBase {
    */
   public function deleteEntity($entity_ids) {
     $entity_ids = explode(',', $entity_ids);
-    if (is_array($entity_ids)) {
-      foreach ($entity_ids as $key => $entity_id) {
-        $this->isValidEntity('delete', $entity_id);
-        $wrapper = entity_metadata_wrapper($this->entityType, $entity_id);
-        $wrapper->delete();
-        return array('deleted' => true);
-      }
+    if (is_array($entity_ids) && !empty($entity_ids)) {
+      entity_delete_multiple($this->entityType, $entity_ids);
+      return array('deleted' => true);
     }
     else {
       return array('deleted' => false);

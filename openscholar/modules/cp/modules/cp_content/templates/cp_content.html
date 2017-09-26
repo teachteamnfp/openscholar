@@ -44,7 +44,7 @@
     <tr ng-repeat="node in tableParams.data" ng-class="{even: $even, odd: $odd}">
       <td header="'headerCheckbox.html'"><input type="checkbox" ng-model="checkboxes.items[node.id]" /></td>
       <td title="'Title'" sortable="'label'" ng-bind-html="node.link"></td>
-      <td title="'Type'" sortable="'type'" class="node-type">{{node.type | removeUnderscore}}</td>
+      <td title="'Type'" sortable="'type'" class="node-type">{{node.type | convertBiblioToPublication | removeUnderscore}}</td>
       <td title="'Author'" sortable="'author'">{{node.author}}</td>
       <td title="'Published'" sortable="'publish_status'">
         <md-switch ng-model="node.publish_status" aria-label="publishStatus" ng-change="changeStatus(node.id, node.publish_status)"></md-switch>
