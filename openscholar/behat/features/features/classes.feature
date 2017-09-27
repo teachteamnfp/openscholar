@@ -49,7 +49,7 @@ Feature:
       Then I should see "Overview"
        And I should see "Class:"
        And I should see "Political Science"
-       And I should see breadcrumbs "HOME / CLASSES / POLITICAL SCIENCE 101 / CLASS MATERIAL"
+       And I should see breadcrumbs "HOME / CLASSES / POLITICAL SCIENCE 102 / CLASS MATERIAL"
 
   @api @features_first @edit_existing_class_material_content @os_classes
   Scenario: Edit existing class material content
@@ -85,7 +85,7 @@ Feature:
       Then I can't visit unaliased path for "classes/political-science-101/materials/overview" with "delete" appended on vsite "john"
 
   # Deletion scenarios must be last so we have classes and materials to test!
-  @api @features_first @delete_class_material_content @os_classes
+  @api @features_first @delete_class_material_content @os_classes @javascript
   Scenario: Delete class material content
      Given I am logging in as "john"
        And I visit the unaliased path of "classes/political-science-101/materials/overview" on vsite "john" and append "delete"

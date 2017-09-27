@@ -3717,7 +3717,7 @@ class FeatureContext extends DrupalContext {
     if (preg_match("/$breadcrumb_pattern/", $page)) {
       return true;
     } else {
-      throw new Exception("Could not find trail of breadcrumbs: '$breadcrumbs'.");
+      throw new Exception("Could not find trail of breadcrumbs: '$breadcrumb'.");
     }
   }
 
