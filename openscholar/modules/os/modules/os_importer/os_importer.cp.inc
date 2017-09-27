@@ -166,6 +166,9 @@ function os_importer_cp_settings() {
           '#menu_parent' => 'import',          
         ),
       );
+
+      $feeds_process_limit = variable_get('feeds_process_limit', FEEDS_PROCESS_LIMIT);
+
       // Markup field to add help note for media-browser field
       $settings['os_importer_file_upload_note-' . $node_type] = array(
           'group' => array(
@@ -176,7 +179,7 @@ function os_importer_cp_settings() {
           ),
           'form' => array(
             '#type' => 'container',
-            '#markup' => t('Note: Import files with more than %count rows are not permitted. Try creating multiple import files in %count row increments.', array('%count' => FEEDS_PROCESS_LIMIT)),
+            '#markup' => t('Note: Import files with more than %count rows are not permitted. Try creating multiple import files in %count row increments.', array('%count' => $feeds_process_limit)),
             '#weight' => 4,
             '#class' => array('description'),
             '#access' => os_importer_import_access($node_type),
@@ -303,8 +306,9 @@ function os_importer_import_group_validate($values) {
         $iterator = new ParserCSVIterator($file->uri);
         $rows = $parser->parse($iterator);
         $row_count = count($rows);
-        if ($row_count > FEEDS_PROCESS_LIMIT + 1) {
-          drupal_set_message(t('Only %count rows are allowed per import file. Try creating multiple import files in %count row increments', array('%count' => FEEDS_PROCESS_LIMIT)), 'error');
+        $feeds_process_limit = variable_get('feeds_process_limit', FEEDS_PROCESS_LIMIT);
+        if ($row_count > $feeds_process_limit + 1) {
+          drupal_set_message(t('Only %count rows are allowed per import file. Try creating multiple import files in %count row increments', array('%count' => $feeds_process_limit)), 'error');
           $valid = FALSE;
         }
 
