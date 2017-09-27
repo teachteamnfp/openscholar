@@ -21,6 +21,31 @@ a:visited {
 #columns .block-boxes-os_slideshow_box a:hover {
     text-decoration: none;
 }
+/* BUTTON HOVER EFFECT WHEN OS-SWIPE CLASSES ARE APPLIED */
+a.os-swipe-small,
+a.os-swipe-large {
+    font-weight: normal;
+    background-color: #215990;
+    color: #FFF !important;
+    text-decoration: none !important;
+    display: inline-block;
+    text-align: center;
+    border: 1px solid #FFF;
+    -webkit-transition: all .5s;
+     transition: all .5s;
+}
+a.os-swipe-small {
+    padding: 5px 10px;
+}
+a.os-swipe-large {
+    padding: 10px 20px;
+}
+a.os-swipe-large:hover,
+a.os-swipe-small:hover {
+    border: 1px solid #215990;
+    color: #222 !important;
+    background-color: #FFF;
+}
 #columns .block ul {
     list-style: disc;
 }
