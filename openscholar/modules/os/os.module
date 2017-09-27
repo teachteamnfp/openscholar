@@ -2946,6 +2946,16 @@ function os_preprocess_block(&$vars) {
   // Adding the name of the module and the delta.
   $vars['attributes_array']['module'] = $vars['block']->module;
   $vars['attributes_array']['delta'] = $vars['block']->delta;
+
+  // Add 'slider' CSS class if the display style is set to 'Slide down'
+  if (isset($vars['elements']['#block']->delta) &&
+      isset($vars['elements']['#block']->module) && $vars['elements']['#block']->module == "boxes") {
+    $box = boxes_box_load($vars['elements']['#block']->delta);
+    if (isset($box->options['as_nav']) && $box->options['as_nav'] == "slider") {
+      $vars['classes_array'][] = 'slider';
+    }
+  }
+
 }
 
 /**
