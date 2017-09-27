@@ -3653,6 +3653,20 @@ class FeatureContext extends DrupalContext {
   }
 
   /**
+   * @Given /^I make sure admin panel is closed$/
+   */
+  public function adminPanelClosed() {
+    $page = $this->getSession()->getPage();
+    $this->waitForPageActionsToComplete();
+    if (! $page->find('css', '[left-menu].closed')) {
+
+      // Make sure the menu is not hiding
+      $driver = $this->getSession()->getDriver();
+      $driver->executeScript("window.jQuery('[left-menu]').css('display', 'none');");
+    }
+  }
+
+  /**
    * @Given /^I open the admin panel to "([^"]*)"$/
    */
   public function iOpenAdminPanelTo($text) {
@@ -4091,11 +4105,14 @@ JS;
   private function _getNodeIdOfUrl($url) {
 
     $this->visit($url);
-    $a_element = $this->getSession()->getPage()->find('xpath', "//a[contains(@href, '?destination=node/')]");
+
+    $a_element = $this->getSession()->getPage()->find('xpath', "//a[contains(@href, '?destination=node/') or contains(@href, 'destination%3Dnode%2F')]");
+    $page = $this->getSession()->getPage()->getContent();
+
     if ($a_element) {
       $href_unaliased = $a_element->getAttribute('href');
 
-      if (preg_match("/\bdestination\=node\/(\d+)/", $href_unaliased, $matches)) {
+      if (preg_match("/\bnode(?:\%2f|\/)(\d+)/i", $href_unaliased, $matches)) {
         if (isset($matches[1])) {
           $nid = (int)($matches[1]);
           return $nid;

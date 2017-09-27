@@ -89,10 +89,8 @@ Feature:
   Scenario: Delete class material content
      Given I am logging in as "john"
        And I visit the unaliased path of "classes/political-science-101/materials/overview" on vsite "john" and append "delete"
-       And I sleep for "2"
-      When I click "Delete this class"
-      Then I should see "Are you sure you want to delete"
-       And I press "Delete"
+       And I make sure admin panel is closed
+      When I press "Delete"
       Then I should see "has been deleted"
 
   @api @features_first @delete_class_content @os_classes
