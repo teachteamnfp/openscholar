@@ -31,8 +31,8 @@ a.os-swipe-large {
     display: inline-block;
     text-align: center;
     border: 1px solid #FFF;
-    -webkit-transition: all .5s;
-     transition: all .5s;
+    -webkit-transition: all .75s;
+     transition: all .75s;
 }
 a.os-swipe-small {
     padding: 5px 10px;
@@ -42,9 +42,7 @@ a.os-swipe-large {
 }
 a.os-swipe-large:hover,
 a.os-swipe-small:hover {
-    border: 1px solid #215990;
-    color: #222 !important;
-    background-color: #FFF;
+    opacity: .7;
 }
 #columns .block ul {
     list-style: disc;
