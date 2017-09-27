@@ -57,15 +57,16 @@ class os_taxonomy_fbt extends os_boxes_default {
     }
 
     $form['advanced']['as_nav'] = array(
-      '#type' => 'checkbox',
+      '#type' => 'radios',
       '#default_value' => $this->options['as_nav'],
-      '#title' => t('Display as a menu'),
+      '#title' => t('Display type'),
       '#return_value' => TRUE,
       '#states' => array(
        'invisible' => array(
         ':input[name="widget_type"]' => array('value' => 'select'),
         ),             
        ),
+      '#options' => array('menu' => t('Menu'), 'slider' => t('Slide Down')),
     );
 
     if (module_exists('vsite') && $vsite = vsite_get_vsite()) {
@@ -73,7 +74,7 @@ class os_taxonomy_fbt extends os_boxes_default {
         '#type' => 'textfield',
         '#title' => t('Apply css class name to this widget\'s container'),
         '#description' => t('Warning: this is to be used for custom themeing purposes only.'),
-        '#default_value' => (isset($this->options['additional_class'])) ? $this->options['additional_class'] : '',
+        '#default_value' => (isset($this->options['additional_class'])) ? str_replace("slider", "", $this->options['additional_class']) : '',
         '#access' => og_user_access('node', $vsite->group->nid, 'add widget custom class', NULL, FALSE, TRUE),
         '#weight' => 9002,
       );
@@ -246,6 +247,10 @@ class os_taxonomy_fbt extends os_boxes_default {
   public function options_submit($form, $form_state) {
     if (module_exists('vsite') && !$vsite = vsite_get_vsite()) {
       return;
+    }
+
+    if (isset($form_state['values']['as_nav']) && $form_state['values']['as_nav'] == 'slider') {
+      $this->options['additional_classes'] .= ' slider';
     }
 
     if (isset($this->options['vocabulary'])) {
