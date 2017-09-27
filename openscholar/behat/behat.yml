@@ -3,11 +3,8 @@ default:
     features: 'features'
   extensions:
     Behat\MinkExtension\Extension:
-      default_session: selenium2
       goutte: ~
-      selenium2:
-        #wd_host: "http://127.0.0.1:4452"
-        wd_host: "https://emallove2:15214896-40f2-44ac-b564-deaea1985566@ondemand.saucelabs.com:443/wd/hub"
+      selenium2: ~
     Drupal\DrupalExtension\Extension:
       blackbox: ~
 
@@ -17,9 +14,7 @@ phantomjs:
   extensions:
     Behat\MinkExtension\Extension:
       goutte: ~
-      selenium2:
-        #wd_host: "http://127.0.0.1:4452"
-        wd_host: "https://emallove2:15214896-40f2-44ac-b564-deaea1985566@ondemand.saucelabs.com:443/wd/hub"
+      selenium2: ~
 
 imports:
   - behat.local.yml
