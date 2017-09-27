@@ -131,6 +131,18 @@ input {
     margin: 0;
     max-width: 100%;
 }
+#registration-form input.form-text {
+    font-size: 13px;
+    height: auto;
+    padding: 6px 7px;
+    background: none;
+    border: 1px solid #CDCDCD;
+     width: 90%; 
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    background-color: #fff;
+}
 input.text,
 input.title,
 textarea,
