@@ -30,6 +30,7 @@
 
 #site-creation-container h2 {
     font-size: 1.3em;
+    line-height: 1.1em;
 }
 
 .visibility {
@@ -205,7 +206,7 @@ color:#fff;
 .site-vis-radios {
     padding: 1px 15px 15px 15px;
    
-    width: 85%;
+    width: 62%;
 }
 
 #site-creation-container .popup.site-type_nameurl {
