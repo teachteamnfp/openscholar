@@ -22,7 +22,7 @@
     font-size: 2em;
 }
 #site-creation-container h2 {
-    font-size: 1.3em;
+    font-size: 1.4em;
     line-height: 1.1em;
 }
 .visibility {
@@ -61,7 +61,6 @@ h3 {
 }
 .os-themes,
 #site-creation-container #footer-container div#pre,
-#site-creation-container .visibility,
 #site-creation-container .step-container,
 #site-creation-container .site-type,
 #site-creation-container .left,
@@ -145,7 +144,7 @@ h3 {
 #site-creation-container .center {
     text-align: center;
 }
-.starter-content .form-type-radio,
+
 #site-creation-container .preNxt,
 #site-creation-container .step,
 #site-creation-container a:hover.button,
@@ -153,6 +152,10 @@ h3 {
 #site-creation-container .site-type,
 .os-themes .cp-themes {
     display: inline-block;
+}
+.starter-content .form-type-radio {
+	display: -webkit-flex;
+    display: flex;
 }
 #site-creation-container #body-container-group-3 {
     margin: 5px;
