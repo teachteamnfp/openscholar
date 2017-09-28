@@ -17,6 +17,12 @@ h1#page-title {
     color: #222;
     text-decoration: underline !important;
 }
+a.os-swipe-large,
+a.os-swipe-small {
+    background-color: #222;
+    text-decoration: none !important;
+}
+
 #columns .slide-copy a,
 #columns .block-boxes-os_taxonomy_fbt a,
 #columns .section-nav a:link,

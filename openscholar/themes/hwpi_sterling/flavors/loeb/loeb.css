@@ -59,6 +59,11 @@ a,
 a:visited {
     color: #457141;
 }
+
+a.os-swipe-large,
+a.os-swipe-small {
+    background-color: #457141;
+}
 .section-nav .expanded.menu-depth-2 > a,
 .section-nav .menu-depth-1 > a {
     color: #457141 !important;
