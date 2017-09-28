@@ -39,6 +39,29 @@ a:visited {
 #columns .block-boxes-os_boxes_manual_list .field-name-body ul ul ul {
     list-style: square;
 }
+.cke_editable ol {
+    display: table;
+    margin-left: 0;
+    padding-left: 0;
+    list-style: none;
+    counter-reset: table-ol;
+}
+.cke_editable ol li {
+    display: table-row;
+    counter-increment: table-ol;
+}
+.cke_editable ol li:before {
+    content: counter(table-ol) ".";
+    display: table-cell;
+    padding-right: 0.4em;
+    text-align: right;
+}
+.cke_editable ol ol li:before {
+    content: counter(table-ol, upper-alpha) ".";
+}
+.cke_editable ol ol ol li:before {
+    content: counter(table-ol, lower-alpha) ".";
+}
 
 p:empty {
     display: none;
