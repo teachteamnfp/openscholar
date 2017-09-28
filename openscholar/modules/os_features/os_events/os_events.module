@@ -2240,7 +2240,7 @@ function os_events_preprocess_page(&$variables) {
       return;
 
     } else {
-      ctools_include('modal');
+      ctools_modal_add_js();
       drupal_add_js(drupal_get_path('module', 'os_events') . '/js/os_events_google_export.js');
     }
   }
