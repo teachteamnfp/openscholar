@@ -90,8 +90,8 @@ projects[entitycache][version] = 1.5
 projects[entitycache][patch][] = https://www.drupal.org/files/issues/2516094-1-entitycache_fix_arry_flip.patch
 
 projects[entityreference][subdir] = "contrib"
-projects[entityreference][version] = 1.5
-; projects[entityreference][patch][] = "http://drupal.org/files/1802916-er-show-identifier-14.patch"
+projects[entityreference][version] = 1.1
+projects[entityreference][patch][] = "http://drupal.org/files/1802916-er-show-identifier-14.patch"
 
 projects[entityreference_prepopulate][subdir] = "contrib"
 projects[entityreference_prepopulate][version] = 1.5
@@ -244,7 +244,7 @@ projects[memcache][subdir] = "contrib"
 projects[memcache][version] = 1.5
 
 projects[migrate][subdir] = "contrib"
-projects[migrate][version] = 2.8
+projects[migrate][version] = 2.5
 
 projects[migrate_extras][patch][] = "http://drupal.org/files/migrate_extras-duplicate_MigrateDestinationOgMembership-1788440-5.patch"
 projects[migrate_extras][subdir] = "contrib"
@@ -342,10 +342,10 @@ projects[purl][patch][] = "http://drupal.org/files/729862-9-purl-inbound-alter-m
 projects[purl][patch][] = "http://drupal.org/files/issues/purl-integrate_redirect_keep_options-1735266-4.patch"
 
 projects[registration][subdir] = "contrib"
-projects[registration][version] = 1.6
+projects[registration][version] = 1.5
 projects[registration][patch][] = "https://raw.githubusercontent.com/openscholar/openscholar/fff85ce1e059985dac494d6bde5e923e25a74feb/patches/registration_link_pass_entity.patch"
 projects[registration][patch][] = "https://www.drupal.org/files/issues/registration-add-context-to-headers-2564355-1.patch"
-; projects[registration][patch][] = "https://www.drupal.org/files/issues/registration_fatal_error_class-2546836-6.patch"
+projects[registration][patch][] = "https://www.drupal.org/files/issues/registration_fatal_error_class-2546836-6.patch"
 
 projects[respondjs][subdir] = "contrib"
 projects[respondjs][version] = 1.1
