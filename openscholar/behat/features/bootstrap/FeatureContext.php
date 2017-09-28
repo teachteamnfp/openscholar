@@ -132,11 +132,6 @@ class FeatureContext extends DrupalContext {
    */
   public function iAmLoggingInAs($username) {
 
-    error_log("EAM trace " . __FILE__ . ":" . __LINE__ . ", \$r = ");
-    $r = db_select("users", "a")->fields("a")->execute()->fetchAll()              ; var_dump($r);
-    error_log("EAM trace " . __FILE__ . ":" . __LINE__ . ", \$r = ");
-    $r = db_select("users_roles", "a")->fields("a")->execute()->fetchAll()        ; var_dump($r);
-
     try {
       $password = $this->users[$username];
     }

@@ -85,10 +85,9 @@ Feature:
       Then I can't visit unaliased path for "classes/political-science-101/materials/overview" with "delete" appended on vsite "john"
 
   # Deletion scenarios must be last so we have classes and materials to test!
-  @api @features_first @delete_class_material_content @os_classes @javascript
+  @api @wip @delete_class_material_content @os_classes @javascript
   Scenario: Delete class material content
      Given I am logging in as "john"
-       And I visit "john/classes/political-science-101/materials/overview"
        And I visit the unaliased path of "classes/political-science-101/materials/overview" on vsite "john" and append "delete"
        And I make sure admin panel is closed
       When I press "Delete"
