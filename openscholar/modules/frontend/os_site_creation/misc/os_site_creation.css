@@ -1,20 +1,15 @@
-
-
 #site-creation-container .preNx {
--webkit-transition: all .125s linear;
+    -webkit-transition: all .125s linear;
     -moz-transition: all .125s linear;
     -o-transition: all .125s linear;
     transition: all .125s linear;
 }
-
 .help-link {
-	display: block;
+    display: block;
     text-align: right;
-    clear:both;
-        padding: 17px 0 5px 0;
+    clear: both;
+    padding: 17px 0 5px 0;
 }
-
-
 #site-creation-container {
     margin: 0;
     padding: 0;
@@ -23,20 +18,16 @@
     width: 60%;
     padding: 20px;
 }
-
 #site-creation-container h1 {
     font-size: 2em;
 }
-
 #site-creation-container h2 {
     font-size: 1.3em;
     line-height: 1.1em;
 }
-
 .visibility {
-	width:100%;
+    width: 100%;
 }
-
 h1,
 h2,
 h3 {
@@ -51,11 +42,9 @@ h3 {
 #site-creation-container #header-container-page3 {
     padding: 5px;
 }
-.site-type-button
-{
+.site-type-button {
     padding-bottom: 20px;
 }
-
 #site-creation-container #header-container-group-3,
 #site-creation-container #header-container-group-3-page-2,
 #site-creation-container #header-container-group-3-page-3 {
@@ -84,39 +73,36 @@ h3 {
 #site-creation-container .right {
     float: right;
 }
-
 .starter-content .form-type-radio {
     position: relative;
 }
-
 .starter-content .form-type-radio {
-	margin: 0;
+    margin: 0;
     margin-right: 25px;
     padding: 15px;
-        min-height:150px;
+    height: 150px;
+}
+.starter-content.four .form-type-radio {
+    height: 190px;
 }
 #site-creation-container .site-type:last-child,
 .starter-content .form-type-radio:last-child {
     margin-right: 0;
 }
 .starter-content.four .form-type-radio {
-    width:18.9%;
+    width: 18.9%;
 }
-
 .starter-content.two .form-type-radio {
     width: 44.8%;
 }
 .starter-content.three .form-type-radio {
     width: 27.5%;
 }
-
 .starter-content label {
-    
     background-color: #EFEFEF;
     border-radius: 2px;
-   
-    position:absolute;
-    bottom:20px;
+    position: absolute;
+    bottom: 20px;
 }
 .starter-content label span {
     text-align: center;
@@ -130,19 +116,18 @@ h3 {
 .starter-content input ~ span {
     background-color: #888;
     color: #fff;
-    border-radius:2px;
+    border-radius: 2px;
 }
 .starter-content input ~ span:hover,
 .starter-content input:checked ~ span {
     background-color: #444;
     color: #FFF;
-
 }
 .starter-content input ~ span:after {
-    content:'Select';
+    content: 'Select';
 }
 .starter-content input:checked ~ span:after {
-    content:'Selected';
+    content: 'Selected';
 }
 #site-creation-container .step-container {
     padding: 3px 10px;
@@ -169,13 +154,9 @@ h3 {
 .os-themes .cp-themes {
     display: inline-block;
 }
-
-
 #site-creation-container #body-container-group-3 {
     margin: 5px;
 }
-
-
 #site-creation-container .preNxt,
 #site-creation-container .step,
 #site-creation-container a:hover.button,
@@ -189,37 +170,25 @@ h3 {
     background: none;
 }
 #site-creation-container .preNxt:hover {
-
-background-color: #215990;
-color:#fff;
+    background-color: #215990;
+    color: #fff;
 }
-
-
-
-
-
 #site-creation-container .site-type {
-      padding: 20px 0 0 0;
+    padding: 20px 0 0 0;
     width: 31.3%;
     margin: 0 25px 0 0;
 }
 .site-vis-radios {
     padding: 1px 15px 15px 15px;
-   
     width: 62%;
 }
-
 #site-creation-container .popup.site-type_nameurl {
-      border-top: 2px solid #fff;
+    border-top: 2px solid #fff;
     margin: 0;
 }
-
 #site-creation-container .site-type input.form-text {
-   
     width: 90%;
-   
 }
-
 #site-creation-container a:hover {
     text-decoration: underline;
     cursor: pointer;
@@ -239,12 +208,11 @@ color:#fff;
     padding: 8px 16px;
 }
 #site-creation-container #footer-container div#pre {
-   
     padding: 10px 0 0;
     width: 200px;
 }
 #site-creation-container #footer-container div#nxt {
-     padding: 10px 0 0;
+    padding: 10px 0 0;
     width: 200px;
     text-align: right;
 }
@@ -261,12 +229,11 @@ color:#fff;
     background-color: #4CAF50;
     border: none;
     color: white;
-    
     border-radius: 50%;
     font-weight: bold;
     height: 50px;
     width: 50px;
-   font-size:18px;
+    font-size: 18px;
     line-height: 50px;
 }
 #site-creation-container .step.enable {
@@ -280,12 +247,9 @@ color:#fff;
     padding: 10px 16px;
     border-radius: 3px;
 }
-
 #footer-container #nxt {
-    float:right;
+    float: right;
 }
-
-
 #site-creation-container .preNxt:disabled {
     display: none;
 }
@@ -295,7 +259,7 @@ color:#fff;
 }
 #site-creation-container #body-container-page3 {
     overflow: scroll;
-    height:500px;
+    height: 500px;
 }
 .os-themes .cp-themes {
     padding: 0;
