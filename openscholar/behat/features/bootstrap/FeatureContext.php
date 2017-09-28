@@ -133,25 +133,9 @@ class FeatureContext extends DrupalContext {
   public function iAmLoggingInAs($username) {
 
     error_log("EAM trace " . __FILE__ . ":" . __LINE__ . ", \$r = ");
-    $r = db_select("og_role", "a")->fields("a")->execute()->fetchAll()            ; var_dump($r);
-    error_log("EAM trace " . __FILE__ . ":" . __LINE__ . ", \$r = ");
-    $r = db_select("og_role_permission", "a")->fields("a")->execute()->fetchAll() ; var_dump($r);
-    error_log("EAM trace " . __FILE__ . ":" . __LINE__ . ", \$r = ");
-    $r = db_select("og_users_roles", "a")->fields("a")->execute()->fetchAll()     ; var_dump($r);
-    error_log("EAM trace " . __FILE__ . ":" . __LINE__ . ", \$r = ");
-    $r = db_select("pinserver_users", "a")->fields("a")->execute()->fetchAll()    ; var_dump($r);
-    error_log("EAM trace " . __FILE__ . ":" . __LINE__ . ", \$r = ");
-    $r = db_select("role", "a")->fields("a")->execute()->fetchAll()               ; var_dump($r);
-    error_log("EAM trace " . __FILE__ . ":" . __LINE__ . ", \$r = ");
-    $r = db_select("role_permission", "a")->fields("a")->execute()->fetchAll()    ; var_dump($r);
-    error_log("EAM trace " . __FILE__ . ":" . __LINE__ . ", \$r = ");
-    $r = db_select("shortcut_set_users", "a")->fields("a")->execute()->fetchAll() ; var_dump($r);
-    error_log("EAM trace " . __FILE__ . ":" . __LINE__ . ", \$r = ");
     $r = db_select("users", "a")->fields("a")->execute()->fetchAll()              ; var_dump($r);
     error_log("EAM trace " . __FILE__ . ":" . __LINE__ . ", \$r = ");
     $r = db_select("users_roles", "a")->fields("a")->execute()->fetchAll()        ; var_dump($r);
-    error_log("EAM trace " . __FILE__ . ":" . __LINE__ . ", \$r = ");
-    $r = db_select("wysiwyg_user", "a")->fields("a")->execute()->fetchAll()       ; var_dump($r);
 
     try {
       $password = $this->users[$username];
