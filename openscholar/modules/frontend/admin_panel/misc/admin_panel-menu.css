@@ -98,6 +98,10 @@ body.overlay {
     color: #ffffff;
     font-weight:normal;
 }
+.user-menu .clearable,
+.user-menu .no-search-result {
+    color:#444;
+}
 .user-menu .pager {
   
     color: #333;
