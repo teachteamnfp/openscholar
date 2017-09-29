@@ -37,6 +37,9 @@ h3 {
 #site-creation-container .preNxt {
     color: #215990;
 }
+#body-container-group-2 {
+    margin-top: -25px;
+}
 #site-creation-container #header-container-page-1,
 #site-creation-container #header-container-page2,
 #site-creation-container #header-container-page3 {
@@ -45,10 +48,13 @@ h3 {
 .site-type-button {
     padding-bottom: 20px;
 }
-#site-creation-container #header-container-group-3,
+
 #site-creation-container #header-container-group-3-page-2,
 #site-creation-container #header-container-group-3-page-3 {
     margin: 15px 5px 5px;
+}
+#site-creation-container #header-container-group-3 {
+    margin: 100px 5px 20px;
 }
 .site-vis-radios,
 .starter-content .form-type-radio,
