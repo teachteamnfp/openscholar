@@ -46,7 +46,7 @@ h3 {
     padding: 5px;
 }
 .site-type-button {
-    padding-bottom: 20px;
+    padding-bottom: 12px;
 }
 
 #site-creation-container #header-container-group-3-page-2,
@@ -196,7 +196,9 @@ h3 {
     background-image:url('images/group.svg');
 }
 #site-creation-container .site-type.department {
-    background-image:url('images/building.svg');
+        background-image: url(images/building.svg);
+    background-size: 28%;
+    background-position: 95px -6px;
 }
 #site-creation-container .popup.site-type_nameurl {
     border-top: 2px solid #fff;
