@@ -182,13 +182,18 @@ h3 {
     color: #fff;
 }
 #site-creation-container .site-type {
-    padding: 20px 0 0 0;
+    padding: 65px 0 0 0;
     width: 31.3%;
     margin: 0 25px 0 0;
 }
-.site-vis-radios {
-    padding: 1px 15px 15px 15px;
-    width: 62%;
+#site-creation-container .site-type.individual {
+    background-image:url('images/individual.svg');
+}
+#site-creation-container .site-type.group {
+    background-image:url('images/group.svg');
+}
+#site-creation-container .site-type.department {
+    background-image:url('images/building.svg');
 }
 #site-creation-container .popup.site-type_nameurl {
     border-top: 2px solid #fff;
