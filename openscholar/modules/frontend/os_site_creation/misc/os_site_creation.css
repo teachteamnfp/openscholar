@@ -28,6 +28,7 @@
 .visibility {
     width: 100%;
 }
+#site-creation-container h2,
 #site-creation-container,
 #site-creation-container a:hover.button,
 #site-creation-container a.button,
@@ -55,7 +56,7 @@ h3 {
     padding: 5px;
 }
 .site-type-button {
-    padding-bottom: 12px;
+    padding-bottom: 20px;
 }
 
 
@@ -194,11 +195,11 @@ h3 {
     color: #fff;
 }
 #site-creation-container .site-type {
-    padding: 65px 0 0 0;
+    padding: 75px 0 0 0;
     width: 31.3%;
     margin: 0 25px 0 0;
-        background-repeat: no-repeat;
-    background-position: 95px -11px;
+    background-repeat: no-repeat;
+    background-position: 95px -3px;
     background-size: 32%;
 }
 #site-creation-container .site-type.individual {
@@ -210,7 +211,7 @@ h3 {
 #site-creation-container .site-type.department {
         background-image: url(images/building.svg);
     background-size: 28%;
-    background-position: 95px -6px;
+    background-position: 95px 1px;
 }
 #site-creation-container .popup.site-type_nameurl {
     border-top: 2px solid #fff;
@@ -306,6 +307,7 @@ h3 {
 }
 .os-themes .cp-themes.selected {
      border: 10px solid #93b16b;
+         margin: 3px 12px 10px 3px;
 }
 .os-themes .theme-info {
     position: absolute;
