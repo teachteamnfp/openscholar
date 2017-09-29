@@ -338,7 +338,7 @@ div.sidebar {
 .ui-tabs .ui-tabs-nav li a {
     min-height: 35px!important;
 }
-.header-left.header-main.header-right .region-header-second td.region-inner {
+.header-left.header-main.header-right .region-header-second .region-inner {
     margin-left: 0;
 }
 
@@ -392,7 +392,7 @@ padding:0!important;
 .region-header-second td{
 	padding:0!important;
 }
-.region-header-second .media-element[style]{
+.region-header-second td .media-element[style]{
 	display:table;
 	max-width:30%!important;
 }
