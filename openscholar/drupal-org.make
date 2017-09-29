@@ -30,7 +30,7 @@ projects[calendar][patch][] = "http://raw.github.com/openscholar/openscholar/72d
 projects[calendar][patch][] = "http://raw.github.com/openscholar/openscholar/b334cd4b6831a5a1869647b7cbaaec1e8058d9bc/patches/calendar.scroll_to_first_event.patch"
 
 projects[colorbox][subdir] = "contrib"
-projects[colorbox][version] = 2.13
+projects[colorbox][version] = 2.5
 
 projects[comment_sources][subdir] = "contrib"
 projects[comment_sources][version] = 2.0
@@ -39,7 +39,7 @@ projects[comment_sources][patch][] = "https://drupal.org/files/issues/change-sub
 projects[comment_sources][patch][] = "https://raw.github.com/openscholar/openscholar/bb0856af84a58881a0438cd32d9b6a21dcfd15ea/patches/comment_sources.9139.comment_settings.patch"
 
 projects[context][subdir] = "contrib"
-projects[context][version] = 3.1
+projects[context][version] = 3.0-beta4
 projects[context][patch][] = "http://drupal.org/files/os-custom-beta4.patch"
 projects[context][patch][] = "http://drupal.org/files/1855004.context.float_block_weights.patch"
 
@@ -51,11 +51,11 @@ projects[contextual_annotation][download][url] =  "http://git.drupal.org/project
 
 projects[ctools][subdir] = "contrib"
 projects[ctools][download][type] = git
-projects[ctools][download][branch] = 7.x-1.12
-; projects[ctools][download][revision] = be2607142ce97d093acce9417833640680330efe
-; projects[ctools][patch][] = "http://drupal.org/files/1707810-ctools-fields-mock-field-7.patch"
-; projects[ctools][patch][] = "http://drupal.org/files/ctools-plugin_extension-1623044-1.patch"
-; projects[ctools][patch][] = "https://drupal.org/files/issues/2147905-allow-alter-with-more-context-1.patch"
+projects[ctools][download][branch] = 7.x-1.x
+projects[ctools][download][revision] = be2607142ce97d093acce9417833640680330efe
+projects[ctools][patch][] = "http://drupal.org/files/1707810-ctools-fields-mock-field-7.patch"
+projects[ctools][patch][] = "http://drupal.org/files/ctools-plugin_extension-1623044-1.patch"
+projects[ctools][patch][] = "https://drupal.org/files/issues/2147905-allow-alter-with-more-context-1.patch"
 
 projects[date][subdir] = "contrib"
 projects[date][version] = 2.8
@@ -98,7 +98,7 @@ projects[entityreference_prepopulate][version] = 1.5
 projects[entityreference_prepopulate][patch][] = "https://drupal.org/files/issues/1994702-er-ajax-9.patch"
 
 projects[elysia_cron][subdir] = "contrib"
-projects[elysia_cron][version] = 2.4
+projects[elysia_cron][version] = 2.1
 
 projects[eva][subdir] = "contrib"
 projects[eva][version] = 1.2
@@ -112,10 +112,10 @@ projects[facetapi][version] = 1.1
 projects[facetapi][patch][] = "http://drupal.org/files/2006704-facetapi-er-regroup-2.patch"
 
 projects[features][subdir] = "contrib"
-projects[features][version] = 2.6
+projects[features][version] = 2.0
 
 projects[feeds][subdir] = "contrib"
-projects[feeds][version] = 2.0-beta4
+projects[feeds][version] = 2.0-alpha7
 projects[feeds][patch][] = "https://raw.githubusercontent.com/openscholar/openscholar/8e532e05ef206421f0b2e259223ee12afdcff877/patches/feeds-fid_9097_resubmitting.patch"
 
 projects[feeds_tamper][subdir] = "contrib"
@@ -149,7 +149,7 @@ projects[filefield_paths][download][branch] = 7.x-5.x
 projects[filefield_paths][download][revision] = 84fb637
 
 projects[flag][subdir] = "contrib"
-projects[flag][version] = 3.9
+projects[flag][version] = 2.0
 
 projects[hierarchical_taxonomy][subdir] = "contrib"
 projects[hierarchical_taxonomy][download][type] = git
@@ -184,8 +184,8 @@ projects[jcarousel][version] = 2.6
 
 projects[jquery_update][subdir] = "contrib"
 projects[jquery_update][download][type] = git
-projects[jquery_update][download][branch] = 7.x-2.7
-; projects[jquery_update][download][revision] = 65eecb0
+projects[jquery_update][download][branch] = 7.x-2.x
+projects[jquery_update][download][revision] = 65eecb0
 
 projects[js][subdir] = "contrib"
 projects[js][version] = 1.0-beta2
@@ -213,11 +213,11 @@ projects[linkchecker][version] = 1.0-beta1
 projects[media][subdir] = "contrib"
 projects[media][version] = 2.x-dev
 projects[media][download][type] = git
-projects[media][download][branch] = 7.x-2.11
-; projects[media][download][revision] = "b433b278d7e0ab7420f5a874886843fb9fe7ebe2"
+projects[media][download][branch] = 7.x-2.x
+projects[media][download][revision] = "b433b278d7e0ab7420f5a874886843fb9fe7ebe2"
 ; projects[media][patch][] = "http://drupal.org/files/issues/1121808-media-resuse-files-by-uri.patch"
 ; projects[media][patch][] = "http://drupal.org/files/media-7.x-2.x-fix-class-array.patch"
-; projects[media][patch][] = "http://drupal.org/files/media_fatal_wysiwyg_remove_1937864_11.patch"
+projects[media][patch][] = "http://drupal.org/files/media_fatal_wysiwyg_remove_1937864_11.patch"
 
 projects[media_gallery][subdir] = "contrib"
 projects[media_gallery][version] = 2.x-dev
@@ -235,7 +235,7 @@ projects[message][subdir] = "contrib"
 projects[message][version] = 1.12
 
 projects[metatag][subdir] = "contrib"
-projects[metatag][version] = 1.22
+projects[metatag][version] = 1.0-beta9
 
 projects[module_filter][subdir] = "contrib"
 projects[module_filter][version] = 1.7
@@ -287,8 +287,8 @@ projects[oembed][patch][] = "https://raw.githubusercontent.com/openscholar/opens
 projects[oembed][patch][] = "https://raw.githubusercontent.com/openscholar/openscholar/56c5f68a45a6ce8d49be722bf7dfdb10da5cf60f/patches/oembed.9433.youtube_https_schema.patch"
 
 projects[og][subdir] = "contrib"
-projects[og][version] = 2.9
-; projects[og][patch][] = "https://drupal.org/files/issues/2231217-og-save-no-entity-load-1.patch"
+projects[og][version] = 2.6
+projects[og][patch][] = "https://drupal.org/files/issues/2231217-og-save-no-entity-load-1.patch"
 projects[og][patch][] = "https://drupal.org/files/issues/add_entity_type_parameter-2308279-3.patch"
 
 projects[og_moderation][subdir] = "contrib"
@@ -317,10 +317,10 @@ projects[olark][patch][] = "http://drupal.org/files/olark-suppress_roles-1984210
 projects[olark][patch][] = "http://drupal.org/files/olark-js-to-d7-update-1785322-5.patch"
 
 projects[password_policy][subdir] = "contrib"
-projects[password_policy][version] = 2.0-alpha7
-; projects[password_policy][patch][] = "http://drupal.org/files/password-policy-anonymous-users.patch"
-; projects[password_policy][patch][] = "http://drupal.org/files/password_policy-remove_focus-1998862-7455062.patch"
-; projects[password_policy][patch][] = "https://gist.github.com/sagotsky/7321750/raw/b26f07c902f7cd5ef8650a3a6891941054a4a8db/password_policy-consecutive_regex-2127421-1.patch"
+projects[password_policy][version] = 2.0-alpha1
+projects[password_policy][patch][] = "http://drupal.org/files/password-policy-anonymous-users.patch"
+projects[password_policy][patch][] = "http://drupal.org/files/password_policy-remove_focus-1998862-7455062.patch"
+projects[password_policy][patch][] = "https://gist.github.com/sagotsky/7321750/raw/b26f07c902f7cd5ef8650a3a6891941054a4a8db/password_policy-consecutive_regex-2127421-1.patch"
 
 projects[pathauto][subdir] = "contrib"
 projects[pathauto][version] = 1.2
@@ -404,7 +404,7 @@ projects[term_reference_tree][version] = 1.x-dev
 projects[term_reference_tree][patch][] = "https://drupal.org/files/issues/2235057-term-er-3.patch"
 
 projects[title][subdir] = "contrib"
-projects[title][version] = 1.0-alpha9
+projects[title][version] = 1.0-alpha7
 
 projects[token][subdir] = "contrib"
 projects[token][version] = 1.4
@@ -420,11 +420,11 @@ projects[twitter_pull][patch][] = "https://raw.githubusercontent.com/openscholar
 projects[twitter_pull][patch][] = "https://raw.githubusercontent.com/openscholar/openscholar/1811fd556f5ef60be92a5b5249a81f652a73681c/patches/twitter_pull.class.inc-tweet-mode-extended.patch"
 
 projects[views][subdir] = "contrib"
-projects[views][version] = 3.18
-; projects[views][patch][] = "https://drupal.org/files/issues/views-jquery_dialog-2125261-1.patch"
+projects[views][version] = 3.8
+projects[views][patch][] = "https://drupal.org/files/issues/views-jquery_dialog-2125261-1.patch"
 
 projects[views_bulk_operations][subdir] = "contrib"
-projects[views_bulk_operations][version] = 3.4
+projects[views_bulk_operations][version] = 3.0
 
 projects[views_og_cache][subdir] = "contrib"
 projects[views_og_cache][version] = 1.1
