@@ -4517,8 +4517,6 @@ JS;
 
       $page = $this->getSession()->getPage()->getContent();
 
-      error_log("EAM trace " . __FILE__ . ":" . __LINE__ . ", \$page = " . var_export($page, true));
-
       $date_next_arrow = $this->getSession()->getPage()->find('xpath', "//li[@class='date-next']/a");
       $date_next_arrow->click();
     }
