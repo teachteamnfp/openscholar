@@ -49,10 +49,9 @@ h3 {
     padding-bottom: 12px;
 }
 
+
+#site-creation-container #header-container-group-3-page-3,
 #site-creation-container #header-container-group-3-page-2,
-#site-creation-container #header-container-group-3-page-3 {
-    margin: 15px 5px 5px;
-}
 #site-creation-container #header-container-group-3 {
     margin: 100px 5px 20px;
 }
@@ -88,6 +87,10 @@ h3 {
 }
 .starter-content.four .form-type-radio {
     height: 190px;
+}
+.site-vis-radios {
+    width: 63%;
+    padding: 1px 10px 7px;
 }
 #site-creation-container .site-type:last-child,
 .starter-content .form-type-radio:last-child {
