@@ -185,6 +185,9 @@ h3 {
     padding: 65px 0 0 0;
     width: 31.3%;
     margin: 0 25px 0 0;
+        background-repeat: no-repeat;
+    background-position: 95px -11px;
+    background-size: 32%;
 }
 #site-creation-container .site-type.individual {
     background-image:url('images/individual.svg');
