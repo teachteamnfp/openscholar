@@ -153,7 +153,7 @@ h3 {
 .os-themes .cp-themes {
     display: inline-block;
 }
-.starter-content .form-type-radio {
+.starter-content {
 	display: -webkit-flex;
     display: flex;
 }
