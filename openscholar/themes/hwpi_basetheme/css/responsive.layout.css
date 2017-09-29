@@ -338,7 +338,7 @@ div.sidebar {
 .ui-tabs .ui-tabs-nav li a {
     min-height: 35px!important;
 }
-.header-left.header-main.header-right .region-header-second .region-inner {
+.header-left.header-main.header-right .region-header-second td.region-inner {
     margin-left: 0;
 }
 
