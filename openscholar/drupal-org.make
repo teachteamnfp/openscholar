@@ -30,7 +30,7 @@ projects[calendar][patch][] = "http://raw.github.com/openscholar/openscholar/72d
 projects[calendar][patch][] = "http://raw.github.com/openscholar/openscholar/b334cd4b6831a5a1869647b7cbaaec1e8058d9bc/patches/calendar.scroll_to_first_event.patch"
 
 projects[colorbox][subdir] = "contrib"
-projects[colorbox][version] = 2.5
+projects[colorbox][version] = 2.13
 
 projects[comment_sources][subdir] = "contrib"
 projects[comment_sources][version] = 2.0
