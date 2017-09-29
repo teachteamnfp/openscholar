@@ -55,7 +55,6 @@ h3 {
 #site-creation-container .preNxt,
 #site-creation-container .step.disable,
 #site-creation-container .site-type,
-#site-creation-container #body-container-group-2,
 #site-creation-container #body-container-group-3 {
     background-color: #efefef;
 }
@@ -89,13 +88,13 @@ h3 {
     margin-right: 0;
 }
 .starter-content.four .form-type-radio {
-    width: 18.9%;
+    width: 25%;
 }
 .starter-content.two .form-type-radio {
-    width: 44.8%;
+    width: 50%;
 }
 .starter-content.three .form-type-radio {
-    width: 27.5%;
+    width: 30%;
 }
 .starter-content label {
     background-color: #EFEFEF;
@@ -126,7 +125,7 @@ h3 {
     content: 'Select';
 }
 .starter-content input:checked ~ span:after {
-    content: 'Selected';
+    content: '✓ Selected';
 }
 #site-creation-container .step-container {
     padding: 3px 10px;
