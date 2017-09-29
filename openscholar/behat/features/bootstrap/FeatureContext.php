@@ -4096,8 +4096,6 @@ JS;
       }
     }
 
-    error_log("EAM trace " . __FILE__ . ":" . __LINE__ . ", \$unaliased_path = " . var_export($unaliased_path, true));
-
     return $unaliased_path;
   }
 
