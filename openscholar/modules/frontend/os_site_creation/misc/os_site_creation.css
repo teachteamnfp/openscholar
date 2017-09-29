@@ -11,7 +11,7 @@
     padding: 17px 0 5px 0;
 }
 #site-creation-container {
-    margin: 0;
+  
     padding: 0;
     line-height: 1.4;
     margin: auto;
@@ -27,6 +27,15 @@
 }
 .visibility {
     width: 100%;
+}
+#site-creation-container,
+#site-creation-container a:hover.button,
+#site-creation-container a.button,
+#site-creation-container .popup.site-type_nameurl,
+.starter-content .form-type-radio,
+.os-themes ul{
+	margin: 0;
+	
 }
 h1,
 h2,
@@ -80,7 +89,7 @@ h3 {
     position: relative;
 }
 .starter-content .form-type-radio {
-    margin: 0;
+   
     margin-right: 25px;
     padding: 15px;
     height: 150px;
@@ -205,7 +214,7 @@ h3 {
 }
 #site-creation-container .popup.site-type_nameurl {
     border-top: 2px solid #fff;
-    margin: 0;
+  
 }
 #site-creation-container .site-type input.form-text {
     width: 90%;
@@ -215,14 +224,14 @@ h3 {
     cursor: pointer;
 }
 #site-creation-container a.button {
-    margin: 0;
+
     background-color: #888;
     border: none;
     color: white;
     padding: 8px 16px;
 }
 #site-creation-container a:hover.button {
-    margin: 0;
+
     background-color: #444;
     border: none;
     color: white;
@@ -284,7 +293,7 @@ h3 {
 }
 .os-themes .cp-themes {
     padding: 0;
-    margin: 3px 20px 30px 3px;
+    margin: 3px 32px 30px 3px;
     vertical-align: top;
     width: 245px;
     height: 300px;
@@ -296,9 +305,7 @@ h3 {
     cursor: pointer;
 }
 .os-themes .cp-themes.selected {
-    -moz-box-shadow: 0 0 30px #4a7d06;
-    -webkit-box-shadow: 0 0 30px #4a7d06;
-    box-shadow: 0 0 30px #4a7d06;
+     border: 10px solid #93b16b;
 }
 .os-themes .theme-info {
     position: absolute;
