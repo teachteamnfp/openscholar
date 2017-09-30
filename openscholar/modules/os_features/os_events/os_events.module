@@ -779,6 +779,11 @@ function os_events_process_node(&$variables) {
     return;
   }
 
+  $variables['content']['page'] = array(
+    '#markup' => '<div id="export-to-google-calendar-dialog-confirm"></div>',
+    '#weight' => 0,
+  );
+
   // Move the event date above the event description.
   if(isset($variables['content']['field_date'])) {
     $variables['content']['field_date']['#weight'] = 0;
@@ -911,11 +916,6 @@ function os_events_process_node(&$variables) {
     ));
     $variables['content']['field_date'][0]['#markup'] = str_replace($rule, '', $variables['content']['field_date'][0]['#markup'] );
   }
-
-  $variables['content']['page'] = array(
-    '#markup' => '<div id="export-to-google-calendar-dialog-confirm"></div>',
-    '#weight' => 1,
-  );
 }
 
 /**
