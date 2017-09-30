@@ -6,9 +6,8 @@
   Drupal.behaviors.osPromptForOverwriteOrCreateGoogleCalendar = {
     attach: function () {
 
-      function osEventsDialogButton(overwrite, label) {
+      function osEventsDialogButton(overwrite, label, cancelButton) {
 
-        
         this.button = {
           text: label,
           click: function () {
@@ -17,10 +16,13 @@
               url: document.location.pathname + '?overwrite=' + overwrite,
               type: 'POST',
               success: function (resp) {
+                if (cancelButton) {
+                  $this.dialog("close");
+                }
                 $this.dialog("option", "title", "Google Calendar Export complete");
               },
               beforeSend: function (xhr, settings) {
-                $this.dialog("option", "title", "Exporting ...");
+                $this.dialog("option", "title", ((cancelButton) ? "Cancelling ..." : "Exporting ..."));
                 $this.dialog("option", {buttons: {}});
                 $this.html('<div class="jquery-autopager-ajax-loader" style="text-align:center;">' + 
                     Drupal.settings.CToolsModal.throbber + 
@@ -28,6 +30,9 @@
               },
               complete: function () {
                 $this.html('');
+                if (cancelButton) {
+                  $this.dialog("close");
+                }
                 $this.dialog("option", "buttons", [{ text: "Close", click: function () { $(this).dialog("close"); } }]);
               },
               error: function (resp) {
@@ -38,8 +43,10 @@
         };
       }
 
+      var cancelButton = true;
       var button1 = new osEventsDialogButton(0, "Create New Google Calendar");
       var button2 = new osEventsDialogButton(1, "Overwrite Existing Google Calendar");
+      var button3 = new osEventsDialogButton(-1, "Cancel", cancelButton);
 
       $("#export-to-google-calendar-dialog-confirm").once(function () {
 
@@ -53,12 +60,7 @@
           buttons: [
             button1.button,
             button2.button,
-            {
-              text: "Cancel",
-              click: function () {
-                $(this).dialog("close");
-              }
-            }
+            button3.button,
           ]
         });
       });

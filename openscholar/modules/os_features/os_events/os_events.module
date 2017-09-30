@@ -2228,16 +2228,30 @@ function os_events_entity_query_alter($query) {
 function os_events_preprocess_page(&$variables) {
   $menu = menu_get_item();
 
+  // Hidden export dialog div (only shown when exporting to Google Calendar)
+  $variables['page']['content']['system_main']['main']['#markup'] .= '\n<div id="export-to-google-calendar-dialog-confirm"></div>\n';
+
   // If we're exporting events, prompt user to either overwrite an old or create new calendar
   if (isset($_SESSION['exported_events'])) {
     if (isset($_GET['overwrite'])) {
-      $events = unserialize($_SESSION['exported_events']);
-      $listCalendarList = unserialize($_SESSION['listCalendarList']);
-      _os_events_export_events_to_google($events, $listCalendarList, $_GET['overwrite']);
-      unset($_SESSION['exported_events']);
-      unset($_SESSION['listCalendarList']);
-      drupal_save_session();
-      return;
+
+      // 1 : Overwrite
+      if ($_GET['overwrite'] == 1) {
+        $events = unserialize($_SESSION['exported_events']);
+        $listCalendarList = unserialize($_SESSION['listCalendarList']);
+        _os_events_export_events_to_google($events, $listCalendarList, $_GET['overwrite']);
+        unset($_SESSION['exported_events']);
+        unset($_SESSION['listCalendarList']);
+        drupal_save_session();
+        return;
+
+      // -1 : Cancel
+      } else if ($_GET['overwrite'] == -1) {
+        unset($_SESSION['exported_events']);
+        unset($_SESSION['listCalendarList']);
+        drupal_save_session();
+        return;
+      } 
 
     } else {
       ctools_include('modal');
