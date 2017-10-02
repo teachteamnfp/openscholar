@@ -4122,19 +4122,6 @@ JS;
   }
 
   /**
-   * Visit the internal (unaliased) Drupal path of the current page
-   *
-   * @When /^I visit the unaliased edit path of "([^"]*)" on vsite "([^"]*)"$/
-   */
-  public function iVisitTheEditPathOfPage($url, $vsite) {
-    $path = $this->_getUnaliasedPathFromAliasPath($url, $vsite);
-    if (! $path) {
-      throw new Exception("Could not find an unaliased path for '$url' on vsite '$vsite'.");
-    }
-    $this->visit("$path/edit");
-  }
-
-  /**
    *
    * @When /^I visit the "([^"]*)" form for node "([^"]*)" in site "([^"]*)"
    */

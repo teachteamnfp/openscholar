@@ -28,7 +28,7 @@ Feature:
   @api @features_first @edit_existing_class_content @os_classes
   Scenario: Edit existing class content
      Given I am logging in as "john"
-       And I visit the unaliased edit path of "classes/political-science-101" on vsite "john"
+       And I edit the node "classes/political-science-101" in the group "john"
       When I fill in "Title" with "Political Science 102"
       When I fill in "Body" with "As an introductory course, POLSC102 will focus on the basic principles of political science by combining historical study of the discipline's greatest thinkers with analysis of contemporary issues."
        And I press "Save"
@@ -54,7 +54,7 @@ Feature:
   @api @features_first @edit_existing_class_material_content @os_classes
   Scenario: Edit existing class material content
      Given I am logging in as "john"
-       And I visit the unaliased edit path of "classes/political-science-101" on vsite "john"
+       And I edit the node "classes/political-science-101" in the group "john"
       When I fill in "Title" with "Political Science 102"
       When I fill in "Body" with "As an introductory course, POLSC102 will focus on the basic principles of political science by combining historical study of the discipline's greatest thinkers with analysis of contemporary issues."
        And I press "Save"
@@ -96,7 +96,7 @@ Feature:
   @api @features_first @delete_class_content @os_classes
   Scenario: Delete class content
      Given I am logging in as "john"
-       And I visit the unaliased edit path of "classes/political-science-101" on vsite "john"
+       And I edit the node "classes/political-science-101" in the group "john"
        And I sleep for "2"
       When I click "Delete this class"
       Then I should see "Are you sure you want to delete"
