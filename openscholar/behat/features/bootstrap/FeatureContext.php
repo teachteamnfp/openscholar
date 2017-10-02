@@ -4513,7 +4513,7 @@ JS;
     while ($counter++ <= $num_intervals) {
       $num_events_counted += count($this->getSession()->getPage()->findAll('xpath', "//div[@class='calendar-calendar']//a[text()='$event_title']"));
       $page = $this->getSession()->getPage()->getContent();
-      $date_next_arrow = $this->getSession()->getPage()->find('xpath', "//div[@class='calendar-calendar']//li[@class='date-next']/a");
+      $date_next_arrow = $this->getSession()->getPage()->find('xpath', "//section[@id='main-content']//li[@class='date-next']/a");
       $date_next_arrow->click();
     }
 
