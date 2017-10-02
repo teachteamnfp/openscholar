@@ -4522,7 +4522,7 @@ JS;
 
       # Return to today's calendar page
       while ($counter++ <= $num_intervals) {
-        $date_prev_arrow = $this->getSession()->getPage()->find('xpath', "//div[@class='calendar-calendar']//li[@class='date-prev']/a");
+        $date_prev_arrow = $this->getSession()->getPage()->find('xpath', "//section[@id='main-content']///li[@class='date-prev']/a");
         $date_prev_arrow->click();
       }
       return true;
