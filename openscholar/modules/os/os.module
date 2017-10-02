@@ -880,6 +880,17 @@ function os_preprocess_page(&$vars) {
     );
   }
 
+  // Ensure "Import" is always the last item in the menu
+  function _os_cmp_contextual_links($a, $b) {
+    if (isset($a["title"]) && (($a["title"] == 'Import') || ($a["title"] == 'Sync'))) {
+      return 1;
+    } else if (isset($b["title"]) &&  (($a["title"] == 'Import') || ($a["title"] == 'Sync'))) {
+      return -1;
+    } else {
+      return 0;
+    }
+  }
+  usort($links, "_os_cmp_contextual_links");
 
   if (count($links) > 1) {
     $vars['title_suffix']['controls']['add_new'] = array(
