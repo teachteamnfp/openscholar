@@ -177,6 +177,12 @@ h3 a,
 h4 a {
     text-decoration: none;
 }
+#content-column .field-name-body h2,
+#content-column .field-name-body h3,
+#content-column .field-name-body h4 {
+    line-height: 1.2em;
+}
+
 .profile h3 {
     border-bottom: none;
 }
