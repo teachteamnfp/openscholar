@@ -4135,16 +4135,15 @@ JS;
   }
 
   /**
-   * Visit the internal (unaliased) Drupal path of the current page
    *
-   * @When /^I visit the unaliased path of "([^"]*)" on vsite "([^"]*)" and append "([^"]*)"$/
+   * @When /^I visit the "([^"]*)" form for node "([^"]*)" in site "([^"]*)"
    */
-  public function iVisitTheUnaliasedPathOfAndAppend($url, $vsite, $appendage) {
+  public function iVisitTheXFormForNodeYinSiteZ($form, $url, $vsite) {
     $path = $this->_getUnaliasedPathFromAliasPath($url, $vsite);
     if (! $path) {
       throw new Exception("Could not find an unaliased path for '$url' on vsite '$vsite'.");
     }
-    $this->visit("$path/$appendage");
+    $this->visit("$path/$form");
   }
 
 }

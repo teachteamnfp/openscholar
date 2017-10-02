@@ -88,7 +88,7 @@ Feature:
   @api @wip @delete_class_material_content @os_classes @javascript
   Scenario: Delete class material content
      Given I am logging in as "john"
-       And I visit the unaliased path of "classes/political-science-101/materials/overview" on vsite "john" and append "delete"
+       And I visit the "delete" form for node "classes/political-science-101/materials/overview" in site "john"
        And I make sure admin panel is closed
       When I press "Delete"
       Then I should see "has been deleted"

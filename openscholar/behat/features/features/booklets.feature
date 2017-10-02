@@ -60,7 +60,7 @@ Feature:
 #@api @wip @os_booklets @change_order_of_booklet_content_in_outline
 #Scenario: change order of booklet content in outline
 #   Given I am logging in as "john"
-#     And I visit the unaliased path of "book/profiles-courage" on vsite "john" and append "outline"
+#     And I visit the "outline" form for node "book/profiles-courage" in site "john"
 #     And I swap the order of the first and last items in the book outline
 #         """
 #         table[book-admin-1032934][title]=John Quincy Adams
