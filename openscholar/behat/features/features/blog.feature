@@ -62,7 +62,7 @@ Feature:
  @api @features_first @edit_existing_blog_content @os_blog
  Scenario: Edit existing blog content
     Given I am logging in as "john"
-      And I visit to edit the post "blog/day-life-potus" on vsite "john"
+      And I open the edit form for the post "blog/day-life-potus" on vsite "john"
      When I fill in "Title" with "Another day in the life of The POTUS."
      When I fill in "Body" with "Each day the President eats lunch."
       And I press "Save"
@@ -106,7 +106,7 @@ Feature:
  @api @features_first @delete_any_blog_content @os_blog
  Scenario: Delete blog content
     Given I am logging in as "john"
-      And I visit to edit the post "blog/day-life-potus" on vsite "john"
+      And I open the edit form for the post "blog/day-life-potus" on vsite "john"
       And I sleep for "2"
      When I click "Delete this blog entry"
      Then I should see "Are you sure you want to delete"
