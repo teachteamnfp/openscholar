@@ -209,7 +209,7 @@ h3 {
     background-image:url('images/group.svg');
 }
 #site-creation-container .site-type.department {
-        background-image: url(images/building.svg);
+        background-image: url('images/building.svg');
     background-size: 28%;
     background-position: 95px 1px;
 }
@@ -294,7 +294,7 @@ h3 {
 }
 .os-themes .cp-themes {
     padding: 0;
-    margin: 3px 32px 30px 3px;
+    margin: 3px 20px 10px 3px;
     vertical-align: top;
     width: 245px;
     height: 300px;
@@ -306,19 +306,33 @@ h3 {
     cursor: pointer;
 }
 .os-themes .cp-themes.selected {
-     border: 10px solid #93b16b;
-         margin: 3px 12px 10px 3px;
+     border: 3px solid #93b16b;
+         
 }
 .os-themes .theme-info {
     position: absolute;
-    background: #3f74a2;
-    border-top: 1px solid #2a6598;
+    background: #888;
+
     bottom: 0;
     left: 0;
     right: 0;
     padding: 10px 12px;
     height: 15px;
 }
+
+.os-themes .cp-themes.selected  .theme-info {
+    position: absolute;
+    background: #93b16b;
+
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px 12px;
+    height: 15px;
+}
+
+
+
 .os-themes .theme-info .cp-appearance-flavor-list {
     text-align: right;
 }
