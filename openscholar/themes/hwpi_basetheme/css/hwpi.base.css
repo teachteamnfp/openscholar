@@ -82,7 +82,7 @@ a.os-swipe-small:active:after
 #columns .block.block-boxes-twitter ul {
     list-style: none;
 }
-.cke_editable ol ul,
+
 .cke_editable ul {
   display: table;
   margin-left: 0;
@@ -122,7 +122,7 @@ a.os-swipe-small:active:after
 
 
 
-
+.cke_editable ol ul,
 .cke_editable ol {
     display: table;
     margin-left: 0;
