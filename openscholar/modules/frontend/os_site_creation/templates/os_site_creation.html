@@ -369,7 +369,7 @@
 						</ul>
 						</div>
 						<div ng-if="themes.featured.length > 0" class="os-themes featured-themes">
-							<h2>Featured themes</h2>
+							<h2 class="featured-scrolltop">Featured themes</h2>
 							<h3>Mobile-friendly themes using Harvard color palettes.</h3>
 							<ul>
 							<li ng-repeat="theme in themes.featured" ng-class="{even: $even, odd: $odd, selected: selected == theme.themeKey + '-os_featured_flavor-' + theme.flavorKey}" class="cp-themes {{theme.themeKey}}" ng-click="setTheme(theme.themeKey, theme.flavorKey)">

@@ -43,6 +43,25 @@
   $scope.navigatePage = function(pagefrom, pageto) {
     $scope[pagefrom] = false;
     $scope[pageto] = true;
+    if (pagefrom == 'page1' && pageto == 'page2') {
+      if ($scope.individualScholar != null) {
+        $scope.contentOption = {
+          value: 'os_scholar',
+        };
+      } else if ($scope.projectLabSmallGroup != null) {
+         $scope.contentOption = {
+          value: 'os_project',
+        };
+      } else {
+        $scope.contentOption = {
+          value: 'os_department_minimal',
+        };
+      }
+    } else if (pagefrom == 'page2' && pageto == 'page3') {
+      var featuredThemeTop = angular.element(document.querySelectorAll('.featured-scrolltop')).position().top;
+      featuredThemeTop = featuredThemeTop > 0 ? featuredThemeTop : 500;
+      angular.element(document.querySelectorAll('#body-container-page3')).animate({ scrollTop: featuredThemeTop + 200}, 200);
+    }
   }
 
   var queryArgs = {};
@@ -89,7 +108,7 @@
   $scope.contentOption = {
     value: 'os_department_minimal',
   };
-
+  $scope.selected = 'hwpi_classic-os_featured_flavor-default';
   //Site URL
   $scope.baseURL = Drupal.settings.admin_panel.purl_base_domain + '/';
 
@@ -118,7 +137,6 @@
     if (typeof $scope.selected !== 'undefined') {
       formdata['themeKey'] = $scope.selected;
     }
-    //Ajax call to save formdata
     $http.post(paths.api + '/purl', formdata).then(function (response) {
       $scope.successData = response.data.data.data;
       $scope.vsiteUrl = response.data.data.data;
