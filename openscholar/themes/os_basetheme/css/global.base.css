@@ -469,6 +469,7 @@ ol {
     margin: 0 0 1.5em 21px;
 }
 */
+.field-name-body ol ul,
 .field-name-body ul {
   display: table;
   margin-left: 0;
