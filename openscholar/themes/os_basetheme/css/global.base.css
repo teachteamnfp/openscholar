@@ -504,7 +504,7 @@ ol {
     content: counter(table-ul,square);
 }
 
-
+.field-name-body ol ul,
 .field-name-body ol {
   display: table;
   margin-left: 0;
