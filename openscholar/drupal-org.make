@@ -50,12 +50,11 @@ projects[contextual_annotation][download][url] =  "http://git.drupal.org/project
 ;needs patches to contrib
 
 projects[ctools][subdir] = "contrib"
-projects[ctools][download][type] = git
-projects[ctools][download][branch] = 7.x-1.x
-projects[ctools][download][revision] = be2607142ce97d093acce9417833640680330efe
-projects[ctools][patch][] = "http://drupal.org/files/1707810-ctools-fields-mock-field-7.patch"
-projects[ctools][patch][] = "http://drupal.org/files/ctools-plugin_extension-1623044-1.patch"
-projects[ctools][patch][] = "https://drupal.org/files/issues/2147905-allow-alter-with-more-context-1.patch"
+projects[ctools][version] = 1.12
+; projects[ctools][download][revision] = be2607142ce97d093acce9417833640680330efe
+; projects[ctools][patch][] = "http://drupal.org/files/1707810-ctools-fields-mock-field-7.patch"
+; projects[ctools][patch][] = "http://drupal.org/files/ctools-plugin_extension-1623044-1.patch"
+; projects[ctools][patch][] = "https://drupal.org/files/issues/2147905-allow-alter-with-more-context-1.patch"
 
 projects[date][subdir] = "contrib"
 projects[date][version] = 2.8
@@ -452,8 +451,7 @@ projects[wysiwyg][revision] = "9490393"
 projects[wysiwyg][patch][] = "http://drupal.org/files/wysiwyg-table-format.patch"
 
 projects[wysiwyg_filter][subdir] = "contrib"
-projects[wysiwyg_filter][version] = 1.x-dev
-projects[wysiwyg_filter][revision] = "4848d306a2f7526f7eeaf22edb9268d3c96654fe"
+projects[wysiwyg_filter][version] = 1.6-rc3
 projects[wysiwyg_filter][patch][] = "https://www.drupal.org/files/issues/wysiwyg-filter-border-radius-support-2692163-1.patch"
 
 ; Libraries.
