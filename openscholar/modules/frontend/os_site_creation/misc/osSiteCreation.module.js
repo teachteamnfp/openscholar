@@ -57,9 +57,9 @@
           value: 'os_department_minimal',
         };
       }
-    } else if (pageto == 'page3') {
+    } else if (pagefrom == 'page2' && pageto == 'page3') {
       var featuredThemeTop = angular.element(document.querySelectorAll('.featured-scrolltop')).position().top;
-      featuredThemeTop = featuredThemeTop > 0 ? featuredThemeTop : 500;
+      featuredThemeTop = featuredThemeTop > 0 ? featuredThemeTop : 600;
       angular.element(document.querySelectorAll('#body-container-page3')).animate({ scrollTop: featuredThemeTop + 200}, 200);
     }
   }
