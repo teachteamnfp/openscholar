@@ -61,9 +61,12 @@
     $scope.loading = true;
     $scope.entityType = entityType;
     // Fetch list and set it in ng-table;
+    var tableData;
+    var filteredData;
     nodeService.fetch({
       sort: '-changed'
-    }).then(function(data) {
+    }).then(function(response) {
+      tableData = response;
       $scope.tableParams = new NgTableParams({
         page: 1,
         count: 24,
@@ -76,7 +79,7 @@
         getData: function(params) {
           var typeDataSet = [];
           var termDataSet = [];
-          var filteredData = data;
+          filteredData = tableData;
           if (angular.isDefined(params.filter().type)) {
             angular.forEach(filteredData, function(node, key) {
               if (params.filter().type.indexOf(node.type) > -1) {
@@ -185,24 +188,33 @@
 
     $scope.deleteNodeOnClose = function() {
       $timeout.cancel(timer);
-      $scope.message = 'Selected content has been deleted.';
       $scope.deleteUndoAction = true;
       nodeService.bulk('delete', nodeId, {
         details: false,
         operation: false
       }).then(function(response) {
         if (response.data.data.deleted) {
+          var prepareSet = [];
           $scope.message = 'Selected content has been deleted.';
-          angular.forEach(previousDataSet, function(node, key) {
-            if (nodeId.indexOf(node.id) > -1) {
-              var index = previousDataSet.indexOf(node);
-              previousDataSet.splice(index, 1);
+          angular.forEach(tableData, function(node, key) {
+            if (nodeId.indexOf(node.id) === -1) {
+              prepareSet.push(node);
             }
           });
+          $scope.resetCheckboxes();
+          if ((prepareSet.length === 0) || (nodeId.length === filteredData.length)) {
+            $scope.noRecords = true;
+          }
+          tableData = prepareSet;
           $scope.deleteUndoAction = true;
+          // Reset previous selections.
+          nodeId = [];
+          $scope.checkboxes.items = {};
         } else {
           $scope.message = messageFailed;
         }
+      }, function(error) {
+        $scope.message = 'Something went wrong. Please try again later.'
       });
     };
 
@@ -359,6 +371,7 @@
         filter.og_vocabulary = selectedTerms;
         $scope.tableParams.filter(filter);
       }
+      $scope.tableParams.reload();
     };
 
     $scope.getMatchedTaxonomyTerms = function(termOperation) {
