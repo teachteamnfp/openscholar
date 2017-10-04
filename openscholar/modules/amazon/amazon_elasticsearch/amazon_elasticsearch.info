@@ -1,0 +1,4 @@
+name = Amazon Elasticsearch
+core = 7.x
+dependencies[] = apachesolr
+descrption = "Registers Amazon Elasticsearch instance as an Apachesolr provider."

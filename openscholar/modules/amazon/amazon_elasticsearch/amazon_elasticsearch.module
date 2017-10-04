@@ -1,0 +1,46 @@
+<?php
+
+define('AMAZON_ELASTICSEARCH_ENVIRONMENT_ID', 'amazon_elasticsearch_server_1');
+
+function amazon_elasticsearch_create_environment() {
+  // Creates the new environment
+  $environment = apachesolr_environment_load(AMAZON_ELASTICSEARCH_ENVIRONMENT_ID);
+  if (!$environment) {
+    $environment['conf'] = array();
+
+    // Copy the bundles from the previous default environment
+    $orig_env_id = apachesolr_default_environment();
+    $orig_env = apachesolr_environment_load($orig_env_id);
+    $environment['index_bundles'] = $orig_env['index_bundles'];
+
+    // Also make sure that the default search page has Acquia Search as its
+    // default environment
+    $default_search_page_id = apachesolr_search_default_search_page();
+    $default_search_page = apachesolr_search_page_load($default_search_page_id);
+    if (!empty($default_search_page) && ($default_search_page['env_id'] != AMAZON_ELASTICSEARCH_ENVIRONMENT_ID)) {
+      $default_search_page['env_id'] = AMAZON_ELASTICSEARCH_ENVIRONMENT_ID;
+      apachesolr_search_page_save($default_search_page);
+    }
+
+    // Only set the default if we just created the environment.
+    // This will almost always happen, unless the module was disabled via SQL.
+    variable_set('apachesolr_default_environment', AMAZON_ELASTICSEARCH_ENVIRONMENT_ID);
+    // Make sure apachesolr search is the default search module.
+    variable_set('search_default_module', 'apachesolr_search');
+  }
+
+  $amazon_environment = array(
+    'url' => variable_get('amazon_elasticsearch_endpoint_url'),
+    'service_class' => 'AmazonElasticsearchService'
+  );
+
+  // Override default values
+  foreach($amazon_environment as $key => $value) {
+    $environment[$key] = $value;
+  }
+  $environment['env_id'] = AMAZON_ELASTICSEARCH_ENVIRONMENT_ID;
+  $environment['name'] = t('Amazon Elasticsearch');
+
+  // allow other modules to override this
+  apachesolr_environment_save($environment);
+}
