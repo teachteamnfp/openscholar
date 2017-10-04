@@ -489,7 +489,7 @@ function vsite_vocab_field_formatter_view($entity_type, $entity, $field, $instan
     foreach ($terms as $term) {
       $values[] = l($term['term'], $term['uri']);
     }
-    $element[0] = array('#markup' => implode(', ', $values));
+    $element[0] = array('#markup' => implode('<span>,</span> ', $values));
     return $element;
   }
 
@@ -600,12 +600,58 @@ function vsite_vocab_sort_weight_alpha($terms) {
     $t_weight[$term['tid']] = $term['t_weight'];
     $t_name[$term['tid']] = $term['term'];
   }
+  foreach ($t_weight as $tid => $tw) {
+    $t_weight[$tid] = vsite_vocab_revised_weight_by_hierarchy($tid, $tw);
+  }
   array_multisort($v_weight, SORT_ASC, SORT_NUMERIC, 
                   $vid, SORT_ASC, SORT_NUMERIC, 
                   $t_weight, SORT_ASC, SORT_NUMERIC, 
                   $t_name, SORT_ASC, SORT_STRING,
                   $ordered_terms);
   return $ordered_terms;
+}
+
+/**
+ * Helper function to modify term weight  for sorting purpose in case of hierarchy structure
+ *  - term id
+ *  - term actual weight
+ * Terms weights are saved into DB (taxonomy_term_data) only to differentiate terms under same parents
+ * In multilevel hierarchical order it saves like below
+ * T1 (wt-0)
+ * |__T2(wt-0)
+ * |__T3(wt-1)
+ *    |__T4(wt-0)
+ *    |__T5(wt-1)
+ *
+ * To remove the ambiguity terms weight in each level are multiplied by a constant factor and added with the parent terms while displaying
+ *
+ * T1 (wt-0)
+ * |__T2(wt-0.01)
+ * |__T3(wt-0.02)
+ *    |__T4(wt-0.0201)
+ *    |__T5(wt-0.0202)
+ */
+function vsite_vocab_revised_weight_by_hierarchy($tid, $tw) {
+  $parent_terms = taxonomy_get_parents_all($tid);
+  $parents = array_reverse($parent_terms);
+
+  // This factor will multiply for each level of tree structure
+  $factor = 0.01;
+  if (count($parents) > 1) {
+    // In case the term belong to a parent modify its weight
+    $parent_weight = 0;
+    $i = 1;
+    foreach($parents as $ptid => $pterm) {
+      // Increasing term weight for each level of hierarchy
+      $parent_weight = $parent_weight + (pow($factor, $i) * ($pterm->weight + 1));
+      $i++;
+    }
+    $weight = $parents[0]->weight + $parent_weight;
+  } else {
+    // Assigning actual weight in case the term doesn't belog to any parent
+    $weight = $tw;
+  }
+  return $weight;
 }
 
 /**
@@ -685,11 +731,11 @@ function vsite_vocab_html_cut($text, $max_length)
 
     if ($tags || (substr(trim($result), -2) == '>,')) {
       // Get the last term position in case of open tag or end of a term
-      $trim_pos = strrpos($result, '>,');
-      $result_trim = substr($result, 0, ($trim_pos + 1));
+      $trim_pos = strrpos($result, '<span>,');
+      $result_trim = substr($result, 0, $trim_pos);
     } else {
       $result_trim = $result;
     }
-    $result = $result_trim . '<span class="morecontent"><span>' . str_replace($result_trim, '', $text) .  '</span></span>';
+    $result = $result_trim . '<span class="morecontent"><span class="morechildren">' . str_replace($result_trim, '', $text) .  '</span></span>';
     return $result;
 }

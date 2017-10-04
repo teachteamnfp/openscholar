@@ -17,6 +17,12 @@ h1#page-title {
     color: #222;
     text-decoration: underline !important;
 }
+a.os-swipe-large,
+a.os-swipe-small {
+    background-color: #222;
+    text-decoration: none !important;
+}
+
 #columns .slide-copy a,
 #columns .block-boxes-os_taxonomy_fbt a,
 #columns .section-nav a:link,
@@ -106,6 +112,8 @@ a.rslides_nav {
     background: #FFF;
     border-top: 6px solid #75c5bc;
 }
+.search-block-form input.form-submit,
+.search-block-form #edit-submit,
 #search-block-form input.form-submit,
 #search-block-form #edit-submit,
 #search-form #edit-submit {

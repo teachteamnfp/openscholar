@@ -56,14 +56,7 @@ a.os-swipe-large,
 a.os-swipe-small {
     background-color: #52854C;
 }
-a.os-swipe-large {
-    border: none;
-}
-a.os-swipe-large:hover,
-a.os-swipe-small:hover {
-    border: none;
-    background-color: #ccc;
-}
+
 #footer {
     background-color: #D16103;
 }
@@ -195,6 +188,8 @@ h1#page-title,
     background: none;
     background-image: none;
 }
+.search-block-form input.form-submit,
+.search-block-form #edit-submit,
 #search-block-form input.form-submit,
 #search-block-form #edit-submit,
 #search-form #edit-submit {

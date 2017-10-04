@@ -5,7 +5,7 @@
   var uid;
   var morphButton;
 
-    angular.module('AdminPanel', [ 'os-auth', 'ngCookies','ngStorage', 'RecursionHelper', 'ApSettingsForm', 'CpContent'])
+    angular.module('AdminPanel', [ 'os-auth', 'ngCookies','ngStorage', 'RecursionHelper', 'ApSettingsForm', 'AppForm', 'CpContent'])
     .config(function (){
        paths = Drupal.settings.paths
        vsite = typeof Drupal.settings.spaces != 'undefined' ? Drupal.settings.spaces.id : 0;

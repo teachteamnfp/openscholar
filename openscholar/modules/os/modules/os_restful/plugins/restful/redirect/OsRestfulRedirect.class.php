@@ -34,6 +34,13 @@ class OsRestfulRedirect extends \RestfulBase implements \RestfulDataProviderInte
       );
     }
 
+    // Check for empty source and redirect
+    if (empty($redirect->source) || empty($redirect->redirect)) {
+      $error->msg[] = t("The redirect from or to fields may not be submitted without a value.");
+      $error->msg_type = 'error';
+      return $this->renderRedirect($error);
+    }
+
     // check that there there are no redirect loops
     if (url($redirect->source) == url($redirect->redirect)) {
       throw new RestfulBadRequestException(t('You are attempting to redirect the page to itself. This will result in an infinite loop.'));
@@ -51,6 +58,7 @@ class OsRestfulRedirect extends \RestfulBase implements \RestfulDataProviderInte
       $remove_character = substr($redirect->source, 0, 1);
       $redirect->source = ltrim($redirect->source, $remove_character);
       $redirect->msg[] = t("Leading ' %character ' is not allowed, it has been removed and saved.", array('%character' => $remove_character));
+      $error->msg_type = 'warning';
     }
     // Saving to DB
     redirect_save($redirect);
@@ -65,6 +73,7 @@ class OsRestfulRedirect extends \RestfulBase implements \RestfulDataProviderInte
     // Check for exiting url and then add a message
     if (drupal_valid_path(drupal_get_normal_path($full_redirect_url))) {
       $redirect->msg[] = 'The url already exists. If this is unintended, the redirected can be deleted below.';
+      $error->msg_type = 'warning';
     }
 
     return $this->renderRedirect($redirect);
@@ -95,7 +104,8 @@ class OsRestfulRedirect extends \RestfulBase implements \RestfulDataProviderInte
       'id' => $redirect->rid,
       'path' => $redirect->source,
       'target' => $redirect->redirect,
-      'msg' => $redirect->msg
+      'msg' => $redirect->msg,
+      'msg_type' => $redirect->msg_type,
     );
   }
 }

@@ -23,8 +23,8 @@ function os_search_solr_cp_settings() {
     ),
     'form' => array(
       '#type' => 'submit',
-      '#title' => t('Search Index'),
-      '#value' => t('Re-Index Search'),
+      '#title' => t('Re-index this site'),
+      '#value' => t('Submit'),
       '#suffix' => "<div class=\"description\">".t('(Re)Index the sites searchable content.')."</div>",
       '#submit' => array('os_search_solr_reindex_site'),
       '#weight' => 10
