@@ -115,7 +115,7 @@
       if (!fetchDefered) {
         fetchDefered = $q.defer();
         var queryArgs = {};
-        if (Drupal.settings.spaces.id) {
+        if (Drupal.settings.spaces && Drupal.settings.spaces.id) {
           queryArgs.vsite = Drupal.settings.spaces.id;
         }
 
@@ -176,13 +176,11 @@
       }
 
       if (dirty.length == 0) {
-        console.log('not dirty');
         $t(function () {
           saveDefer.resolve('no changes');
         });
       }
       else {
-        console.log('dirty');
         $http.patch(baseUrl + '/apps', dirty, config).then(function (r) {
           // success
           saveDefer.resolve('success');
