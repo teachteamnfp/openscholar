@@ -4,18 +4,21 @@ class os_boxes_media extends os_boxes_default {
 
   public function options_defaults() {
     $options = parent::options_defaults();
-    $options['fid'] = 0;
+    $options['fid'] = array(
+      'fid' => 0
+    );
     $options['maxwidth'] = 0;
     return $options;
   }
 
   public function options_form(&$form_state) {
     $form = parent::options_form($form_state);
-
+    $saved = is_array($this->options['fid']) ? $this->options['fid']['fid'] : $this->options['fid'];
+    $fid = (isset($form_state['input']['fid'])) ? $form_state['input']['fid'] : $saved;
     $form['fid'] = array(
       '#title' => t('File or HTML'),
       '#type' => 'media',
-      '#default_value' => array('fid' => $this->options['fid']),
+      '#value' => array('fid' => $fid),
       '#description' => t('Choose, enter or link to the media you wish to embed.'),
       '#media_options' => array(
         'global' => array(
@@ -66,16 +69,17 @@ class os_boxes_media extends os_boxes_default {
   public function options_submit($form, $form_state) {
     parent::options_submit($form, $form_state);
 
-    $old = $form['options']['fid']['#default_value']['fid'];
+    $old = $form['options']['fid']['#value']['fid'];
+    $saved = is_array($this->options['fid']) ? $this->options['fid']['fid'] : $this->options['fid'];
 
-    if ($old != $this->options['fid']) {
+    if ($old != $saved) {
 
       $id = FALSE;
       if (module_exists('vsite') && $vsite = vsite_get_vsite()) {
         $id = $vsite->group->nid;
       }
 
-      if ($id && $file = file_load($this->options['fid'])){
+      if ($id && $file = file_load($saved)){
         file_usage_add($file, 'os_boxes', 'node', $id, 1);
       }
 
@@ -91,7 +95,8 @@ class os_boxes_media extends os_boxes_default {
   public function render() {
     $block = parent::render();
     if (($block['content'] = $this->get_cache()) === FALSE) {
-      if ($file = file_load($this->options['fid'])) {
+      $fid = is_array($this->options['fid']) ? $this->options['fid']['fid'] : $this->options['fid'];
+      if ($file = file_load($fid)) {
         if (!empty($this->options['maxwidth'])) {
           if (isset($file->image_dimensions)) {
             // This is an image, so we have the dimensions for it and need to scale it down.
