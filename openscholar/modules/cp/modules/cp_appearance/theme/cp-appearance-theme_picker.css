@@ -54,7 +54,6 @@ ul.theme-picker li.current .theme-info {
     background: #93b16b;
 }
 ul.theme-picker li.item-theme-picker:hover .theme-info {
-    background: #3f74a2;
     padding: 22px 12px 8px;
 }
 ul.theme-picker li.item-theme-picker:hover .theme-info {
