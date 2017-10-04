@@ -407,7 +407,10 @@
             }
           });
           if (macthedVocab.length == 0) {
-            var contentTypesText = (selectedTypes.length > 0) ? selectedTypes.join(', ') : selectedTypes[0];
+            var contentTypesText = selectedTypes.map(function(type) {
+              return $filter('convertBiblioToPublication')(type);
+            });
+            contentTypesText = (contentTypesText.length > 0) ? contentTypesText.join(', ') : contentTypesText[0];
             contentTypesText = $filter('removeUnderscore')(contentTypesText);
             if (selectedTypes.length == 1) {
               results = {
