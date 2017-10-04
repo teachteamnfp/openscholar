@@ -29,3 +29,9 @@ function os_importer_update_7001(&$sandbox) {
     features_revert($feature, array('feeds_tamper'));
   }
 }
+/**
+ * Increase the feeds processing limit to 100
+ */
+function os_importer_update_7002() {
+  variable_set('feeds_process_limit', 100);
+}
