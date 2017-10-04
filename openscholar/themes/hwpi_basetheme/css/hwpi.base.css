@@ -82,15 +82,47 @@ a.os-swipe-small:active:after
 #columns .block.block-boxes-twitter ul {
     list-style: none;
 }
-#columns .block-boxes-os_boxes_manual_list .field-name-body ul {
-    list-style: disc;
+.cke_editable ol ul,
+.cke_editable ul {
+  display: table;
+  margin-left: 0;
+  padding-left: 0;
+  list-style: none;
+  counter-reset: table-ul;
+ }
+
+ .cke_editable ul li {
+    display: table-row;
+    counter-increment: table-ul;
 }
-#columns .block-boxes-os_boxes_manual_list .field-name-body ul ul {
-    list-style: circle;
+
+ .cke_editable ul li:before {
+      content: counter(table-ul) ".";
+      display: table-cell;
+      padding-right: 0.4em;
+      text-align: right;
 }
-#columns .block-boxes-os_boxes_manual_list .field-name-body ul ul ul {
-    list-style: square;
+
+
+.cke_editable ol ul li:before,
+.cke_editable ul li:before {
+    content: counter(table-ul,disc);
 }
+.cke_editable ol ul ul li:before,
+.cke_editable ul ul li:before {
+    content: counter(table-ul,circle);
+}
+.cke_editable ol ul ul ul li:before,
+.cke_editable ul ul ul li:before {
+    content: counter(table-ul,square);
+}
+
+
+
+
+
+
+
 .cke_editable ol {
     display: table;
     margin-left: 0;
