@@ -302,7 +302,7 @@ h3 {
 }
 .os-themes .cp-themes.selected {
      border: 3px solid #93b16b;
-         padding: 0;
+     margin: 0px 17px 17px 0px;
 }
 .os-themes .theme-info {
     position: absolute;
@@ -318,18 +318,16 @@ h3 {
 .os-themes .cp-themes.selected  .theme-info {
     position: absolute;
     background: #93b16b;
-
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 10px 12px;
-    
+    padding: 17px 12px 0px;
 }
 
 .os-themes .cp-themes.selected .theme-info:before {
     position: absolute;
     content: 'Selected Theme';
-    top: 5px;
+    top: 3px;
     font-weight: bold;
 }
 

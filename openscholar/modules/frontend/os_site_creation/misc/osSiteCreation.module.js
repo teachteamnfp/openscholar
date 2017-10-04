@@ -59,7 +59,7 @@
       }
     } else if (pagefrom == 'page2' && pageto == 'page3') {
       var featuredThemeTop = angular.element(document.querySelectorAll('.featured-scrolltop')).position().top;
-      featuredThemeTop = featuredThemeTop > 0 ? featuredThemeTop : 600;
+      featuredThemeTop = featuredThemeTop > 0 ? featuredThemeTop : 650;
       angular.element(document.querySelectorAll('#body-container-page3')).animate({ scrollTop: featuredThemeTop + 200}, 200);
     }
   }
