@@ -163,12 +163,7 @@ h3 {
     text-align: center;
 }
 
-#site-creation-container .preNxt,
-#site-creation-container .step,
-#site-creation-container a:hover.button,
-#site-creation-container a.button,
-#site-creation-container .site-type,
-.os-themes .cp-themes {
+#site-creation-container .preNxt, #site-creation-container .step, #site-creation-container a:hover.button, #site-creation-container a.button, #site-creation-container .site-type {
     display: inline-block;
 }
 .starter-content {
@@ -294,20 +289,20 @@ h3 {
 }
 .os-themes .cp-themes {
     padding: 0;
-    margin: 3px 20px 10px 3px;
+    margin: 3px 20px 20px 3px;
+    display: inline-block;
     vertical-align: top;
-    width: 245px;
-    height: 300px;
+    width: 250px;
+    height: 250px;
     position: relative;
     -moz-box-shadow: 0 0 7px #888;
     -webkit-box-shadow: 0 0 7px #888;
     box-shadow: 0 0 7px #888;
     color: #fff;
-    cursor: pointer;
 }
 .os-themes .cp-themes.selected {
      border: 3px solid #93b16b;
-         
+         padding: 0;
 }
 .os-themes .theme-info {
     position: absolute;
@@ -317,7 +312,7 @@ h3 {
     left: 0;
     right: 0;
     padding: 10px 12px;
-    height: 15px;
+ 
 }
 
 .os-themes .cp-themes.selected  .theme-info {
@@ -328,14 +323,19 @@ h3 {
     left: 0;
     right: 0;
     padding: 10px 12px;
-    height: 15px;
+    
 }
 
-ul.theme-picker li.current .theme-info:before {
+.os-themes .cp-themes.selected .theme-info:before {
     position: absolute;
-    content: 'Current Theme';
+    content: 'Selected Theme';
     top: 5px;
     font-weight: bold;
+}
+
+.cp-themes .screenshot {
+    width: 250px;
+    width: 250px;
 }
 
 .os-themes .theme-info .cp-appearance-flavor-list {
