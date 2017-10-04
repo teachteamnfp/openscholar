@@ -331,7 +331,12 @@ h3 {
     height: 15px;
 }
 
-
+ul.theme-picker li.current .theme-info:before {
+    position: absolute;
+    content: 'Current Theme';
+    top: 5px;
+    font-weight: bold;
+}
 
 .os-themes .theme-info .cp-appearance-flavor-list {
     text-align: right;
