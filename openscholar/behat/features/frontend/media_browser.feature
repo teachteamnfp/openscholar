@@ -237,7 +237,7 @@ Feature: Media Browser
      When I press "Media browser"
       And I wait "1 second" for the media browser to open
       And I should wait for the text "Please wait while we get information on your files." to "disappear"
-      And I drop the file "kitten-3.jpg" onto the "Drag and drop files here." area
+      And I drop the file "kitten-3.jpg" onto the "Drop files here to upload" area
       And I should wait for "File Edit" directive to "appear"
       And I fill in the field "Alt Text" with the node "Cute kitten"
       And I click on the "Save" control
