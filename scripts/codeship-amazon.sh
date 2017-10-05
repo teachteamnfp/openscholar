@@ -45,10 +45,12 @@ cp -f openscholar/drupal-org.make /tmp/
 cp -f openscholar/bower.json /tmp/
 git subtree pull -m "subtree merge in codeship" --prefix=openscholar git://github.com/openscholar/openscholar.git $CI_BRANCH
 #Only build if no build has ever happened, or if the make files have changed
+pwd
 if [ ! -d openscholar/modules/contrib ] || [ $FORCE_REBUILD == "1" ] || [ "$(cmp -b 'openscholar/drupal-org-core.make' '/tmp/drupal-org-core.make')" != "" ] || [ "$(cmp -b 'openscholar/drupal-org.make' '/tmp/drupal-org.make')" != "" ] || [ "$(cmp -b 'openscholar/bower.json' '/tmp/bower.json')" != "" ]; then
 # Chores.
+echo "Rebuilding..."
 for DIR in $BUILD_ROOT/www-build $BUILD_ROOT/www-backup openscholar/1 openscholar/modules/contrib openscholar/themes/contrib openscholar/libraries; do
-	rm -Rf $DIR
+	rm -Rf $DIR &> /dev/null
 done
 cd openscholar
 
@@ -67,7 +69,7 @@ $DRUSH make --no-core --contrib-destination drupal-org.make .
 	bower -q install
 )
 
-cd ../../
+cd ../
 $DRUSH make openscholar/drupal-org-core.make $BUILD_ROOT/www-build
 
 # Backup files from existing installation.
