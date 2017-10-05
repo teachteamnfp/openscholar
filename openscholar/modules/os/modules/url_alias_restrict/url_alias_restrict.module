@@ -1,0 +1,121 @@
+<?php
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function url_alias_restrict_form_node_form_alter(&$form, &$form_state, $form_id) {
+  $form['#validate'][] = 'url_alias_restrict_url_alias_validate';
+}
+
+/**
+ * Implements hook_pathauto_alias_alter().
+ */
+function url_alias_restrict_pathauto_alias_alter(&$alias, array &$context) {
+  $vsite = vsite_get_vsite();
+  $purl = $vsite->group->purl;
+  watchdog('node_create', print_r($alias, true));
+  $path_alias = substr($alias, strlen($purl) + 1);
+  if (url_alias_restrict_is_reserved($path_alias)) {
+    $alias = $alias . '-' . 0;
+  }
+  return $alias;
+}
+
+/**
+ * Node form validation handler for URL alias form element.
+ */
+function url_alias_restrict_url_alias_validate($element, &$form_state, $complete_form) {
+  if (!empty($form_state['values']['path']['alias'])) {
+    $alias = trim($form_state['values']['path']['alias']);
+    if (url_alias_restrict_is_reserved($alias)) {
+      form_set_error('alias', t("This alias can't be used, please use others."));
+      return false;
+    }
+  }
+}
+/**
+ * Determine whether a path is reserved.
+ *
+ * Users cannot create a URL alias which is reserved.
+ *
+ * By default, paths are considered to be non-reserved. If a path does not
+ * match any of the patterns in path_get_reserved_paths(), or if it matches
+ * both reserved and non-reserved patterns, it is considered non-reserved.
+ *
+ * @param $path
+ *   A Drupal path.
+ *
+ * @return
+ *   TRUE if the path is reserved, FALSE otherwise.
+ *
+ * @see path_get_reserved_paths()
+ * @see hook_reserved_paths()
+ * @see hook_reserved_paths_alter()
+ */
+function url_alias_restrict_is_reserved($path) {
+  $path_map = &drupal_static(__FUNCTION__);
+  if (!isset($path_map['reserved'][$path])) {
+    $patterns = url_alias_restrict_get_reserved_paths();
+    $path_map['reserved'][$path] = drupal_match_path($path, $patterns['reserved']);
+    $path_map['non_reserved'][$path] = drupal_match_path($path, $patterns['non_reserved']);
+  }
+  return $path_map['reserved'][$path] && !$path_map['non_reserved'][$path];
+}
+
+/**
+ * Get a list of reserved and non-reserved paths.
+ *
+ * @return array
+ *   An associative array containing the following keys:
+ *   - 'reserved': An array of reserved paths and regular expressions in a
+ *      format suitable for drupal_match_path().
+ *   - 'non_reserved': An array of non-reserved paths and regular expressions.
+ *
+ * @see hook_reserved_paths()
+ * @see hook_reserved_paths_alter()
+ */
+function url_alias_restrict_get_reserved_paths() {
+  $patterns = &drupal_static(__FUNCTION__);
+  if (!isset($patterns)) {
+    $paths = module_invoke_all('reserved_paths');
+    drupal_alter('reserved_paths', $paths);
+    // Combine all reserved paths into one array, and likewise for
+    // non-reserved paths, for easier handling.
+    $patterns = array();
+    $patterns['reserved'] = array();
+    $patterns['non_reserved'] = array();
+    foreach ($paths as $path => $enabled) {
+      if ($enabled) {
+        $patterns['reserved'][] = $path;
+      }
+      else {
+        $patterns['non_reserved'][] = $path;
+      }
+    }
+    $patterns['reserved'] = implode("\n", $patterns['reserved']);
+    $patterns['non_reserved'] = implode("\n", $patterns['non_reserved']);
+  }
+  return $patterns;
+}
+
+/**
+ * Implements hook_reserved_paths().
+ *
+ * Provide core reserved paths.
+ */
+function url_alias_restrict_reserved_paths() {
+  $paths = array(
+    'node' => TRUE,
+    'node/*' => TRUE,
+    'user' => TRUE,
+    'user/*' => TRUE,
+    'admin' => TRUE,
+    'admin/*' => TRUE,
+    'themes' => TRUE,
+    'modules' => TRUE,
+    'tag' => TRUE,
+    'root' => TRUE,
+    'repository' => TRUE,
+  );
+  return $paths;
+}
