@@ -1,0 +1,49 @@
+diff --git a/ctools.api.php b/ctools.api.php
+index a7ab783..86d7a45 100644
+--- a/ctools.api.php
++++ b/ctools.api.php
+@@ -149,6 +149,26 @@ function hook_ctools_api_hook_alter(&$list) {
+ }
+ 
+ /**
++ * Allows altering the values returned from hook_ctools_plugin_api().
++ *
++ * Note that implementing modules may declare another hook name for the plugin
++ * api, in that case the name of this alter hook will change.
++ * For example, if the hook is declared as hook_my_plugin_api() then the alter
++ * hook would be hook_my_plugin_api_alter().
++ *
++ * @param $values
++ *   The values returned by the implementing modules.
++ * @param $context
++ *   Array with the values of $owner, $api, $minimum_version, $current_version
++ *   as passed to ctools_plugin_api_info().
++ *
++ * @see ctools_plugin_api_info()
++ */
++function hook_ctools_plugin_api_alter(&$values, $context) {
++
++}
++
++/**
+  * Alter the available functions to be used in ctools math expression api.
+  *
+  * One usecase would be to create your own function in your module and
+diff --git a/includes/plugins.inc b/includes/plugins.inc
+--- a/includes/plugins.inc
++++ b/includes/plugins.inc
+@@ -112,7 +112,13 @@
+     }
+ 
+     // Allow other modules to hook in.
+-    drupal_alter($hook, $cache[$owner][$api], $owner, $api);
++    $context = array(
++      'owner' => $owner,
++      'api' => $api,
++      'minimum_version' => $minimum_version,
++      'current_version' => $current_version,
++    );
++    drupal_alter($hook, $cache[$owner][$api], $owner, $api, $context);
+   }
+ 
+   return $cache[$owner][$api];
