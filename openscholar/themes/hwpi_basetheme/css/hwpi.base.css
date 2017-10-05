@@ -82,6 +82,7 @@ a.os-swipe-small:active:after
 #columns .block.block-boxes-twitter ul {
     list-style: none;
 }
+
 .cke_editable ol ul,
 .cke_editable ul {
   display: table;
@@ -104,14 +105,19 @@ a.os-swipe-small:active:after
 }
 
 
+.cke_editable ol ol ul li:before,
 .cke_editable ol ul li:before,
 .cke_editable ul li:before {
     content: counter(table-ul,disc);
 }
+
+.cke_editable ol ol ul ul li:before,
 .cke_editable ol ul ul li:before,
 .cke_editable ul ul li:before {
     content: counter(table-ul,circle);
 }
+
+.cke_editable ol ol ul ul ul li:before,
 .cke_editable ol ul ul ul li:before,
 .cke_editable ul ul ul li:before {
     content: counter(table-ul,square);
@@ -123,6 +129,7 @@ a.os-swipe-small:active:after
 
 
 
+.cke_editable ol ul,
 .cke_editable ol {
     display: table;
     margin-left: 0;
