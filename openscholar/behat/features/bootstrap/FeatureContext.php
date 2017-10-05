@@ -43,20 +43,28 @@ class FeatureContext extends DrupalContext {
    */
   public function urlChangeHandler(StepEvent $e) {
     if ($this->currentUrl != $this->getSession()->getCurrentUrl()) {
-      $script = "
-      (function () {
-        if (!window.BehatScriptRun) {
-          window.BehatScriptRun = true;
-          window.BehatConsoleErrors = [];
-
-          window.onerror = function (error, url, line) {
-            BehatConsoleErrors.push({error: error, url: url, line: line});
-          }
-        }
-      })();
-      ";
-      $this->getSession()->executeScript($script);
+      $this->_captureJavaScriptConsoleErrors();
     }
+    $this->_printJavaScriptConsoleErrors();
+  }
+
+  private function _captureJavaScriptConsoleErrors() {
+    $script = "
+    (function () {
+      if (!window.BehatScriptRun) {
+        window.BehatScriptRun = true;
+        window.BehatConsoleErrors = [];
+
+        window.onerror = function (error, url, line) {
+          BehatConsoleErrors.push({error: error, url: url, line: line});
+        }
+      }
+    })();
+    ";
+    $this->getSession()->executeScript($script);
+  }
+
+  private function _printJavaScriptConsoleErrors() {
     if ($jserrors = $this->getSession()->evaluateScript("return window.BehatConsoleErrors")) {
       print_r($jserrors);
     }
@@ -3633,9 +3641,12 @@ class FeatureContext extends DrupalContext {
     $output = $this->adminPanelOpen();
     $page = $this->getSession()->getPage();
 
+    $this->_captureJavaScriptConsoleErrors();
+
     //$elem = $page->find('xpath', "//*[text() = '{$text}']/ancestor::li[@admin-panel-menu-row]");
     $elem = $page->find('xpath', "//li[@admin-panel-menu-row]/descendant::span[text()='$text']/ancestor::li[@admin-panel-menu-row][1]");
     if (!$elem) {
+      $this->_printJavaScriptConsoleErrors();
       throw new \Exception("The link $text cannot be found in the admin panel.");
     }
     if (!$elem->hasClass('open')) {
@@ -4049,5 +4060,36 @@ JS;
     }
 
     $this->visit("$vsite/$unaliased_path/$appendage");
+  }
+
+  /**
+   * @When /^I intentionally throw some javascript errors$/
+   */
+  public function iIntentionallyThrowSomeJsErrors() {
+    $BehatConsoleErrorsScript = "
+    (function () {
+      if (!window.BehatScriptRun) {
+        window.BehatScriptRun = true;
+        window.BehatConsoleErrors = [];
+
+        window.onerror = function (error, url, line) {
+          BehatConsoleErrors.push({error: error, url: url, line: line});
+        }
+      }
+    })();
+    ";
+
+    $errorCausingScripts = array(
+      "var abc = xyz.ThisPropertyDoesNotExist.NorDoesThisOne;",
+      "throw new Error('Something bad happened.');",
+    );
+
+    foreach ($errorCausingScripts as $s) {
+      $this->getSession()->executeScript($s);
+      $this->getSession()->executeScript($BehatConsoleErrors);
+      if ($jserrors = $this->getSession()->evaluateScript("return window.BehatConsoleErrors")) {
+        print_r($jserrors);
+      }
+    }
   }
 }
