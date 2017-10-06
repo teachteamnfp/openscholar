@@ -81,15 +81,23 @@ for BACKUP_FILE in "${preserve_files[@]}"; do
 done
 # Move the profile in place.
 ln -s ../../openscholar $BUILD_ROOT/www-build/profiles/openscholar
+
 # link up phpmyadmin
 # ln -s ../phpMyAdmin-3.5.2.2-english $BUILD_ROOT/www-build/phpmyadmin
+
 #link up js.php
 ln -s ../openscholar/modules/contrib/js/js.php $BUILD_ROOT/www-build/js.php
+
 # Fix permissions before deleting.
 # chmod -R +w $BUILD_ROOT/$DOCROOT/sites/* || true
 rm -Rf $BUILD_ROOT/$DOCROOT || true
+
 #remove install.php
 rm -Rf $BUILD_ROOT/www-build/install.php || true
+
+#remove automatic testing files and tools
+rm -rf ../openscholar/behat &> /dev/null
+
 # Restore updated site.
 mv $BUILD_ROOT/www-build $BUILD_ROOT/$DOCROOT
 # Add New Files to repo and commit changes
