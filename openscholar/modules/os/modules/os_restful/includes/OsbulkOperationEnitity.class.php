@@ -42,8 +42,8 @@ class OsbulkOperationEnitity extends OsRestfulEntityCacheableBase {
           $entity_wrapper->og_vocabulary->set($result);
           $entity_wrapper->save();
         }
-        return array('saved' => true);
       }
+      return array('saved' => true);
     }
     else {
       return array('saved' => false);
