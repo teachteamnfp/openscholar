@@ -90,7 +90,7 @@ projects[entitycache][version] = 1.5
 projects[entitycache][patch][] = https://www.drupal.org/files/issues/2516094-1-entitycache_fix_arry_flip.patch
 
 projects[entityreference][subdir] = "contrib"
-projects[entityreference][version] = 1.1
+projects[entityreference][version] = 1.2
 projects[entityreference][patch][] = "http://drupal.org/files/1802916-er-show-identifier-14.patch"
 
 projects[entityreference_prepopulate][subdir] = "contrib"
