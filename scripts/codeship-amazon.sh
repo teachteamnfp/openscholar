@@ -43,7 +43,7 @@ preserve_files=( .htaccess robots_disallow.txt sites 404_fast.html favicon.ico )
 cp -f openscholar/drupal-org-core.make /tmp/
 cp -f openscholar/drupal-org.make /tmp/
 cp -f openscholar/bower.json /tmp/
-git subtree pull -m "subtree merge in codeship" --prefix=openscholar git://github.com/openscholar/openscholar.git $CI_BRANCH
+git subtree pull -q -m "subtree merge in codeship" --prefix=openscholar git://github.com/openscholar/openscholar.git $CI_BRANCH
 #Only build if no build has ever happened, or if the make files have changed
 pwd
 if [ ! -d openscholar/modules/contrib ] || [ $FORCE_REBUILD == "1" ] || [ "$(cmp -b 'openscholar/drupal-org-core.make' '/tmp/drupal-org-core.make')" != "" ] || [ "$(cmp -b 'openscholar/drupal-org.make' '/tmp/drupal-org.make')" != "" ] || [ "$(cmp -b 'openscholar/bower.json' '/tmp/bower.json')" != "" ]; then
@@ -75,6 +75,7 @@ $DRUSH make openscholar/drupal-org-core.make $BUILD_ROOT/www-build
 # Backup files from existing installation.
 cd $BUILD_ROOT
 DOCROOT='web';
+ls
 for BACKUP_FILE in "${preserve_files[@]}"; do
 	rm -Rf www-build/$BACKUP_FILE
 	mv $DOCROOT/$BACKUP_FILE www-build/
