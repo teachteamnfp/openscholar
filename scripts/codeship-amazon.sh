@@ -121,6 +121,8 @@ git commit -a -m "Update Temporary Modules." || echo 'Nothing to commit.'
 fi
 
 #remove automatic testing files and tools
+pwd
+ls
 rm -rf $BUILD_ROOT/openscholar/behat &> /dev/null
 
 git push origin $CI_BRANCH
