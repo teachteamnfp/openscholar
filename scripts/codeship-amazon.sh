@@ -95,9 +95,6 @@ rm -Rf $BUILD_ROOT/$DOCROOT || true
 #remove install.php
 rm -Rf $BUILD_ROOT/www-build/install.php || true
 
-#remove automatic testing files and tools
-rm -rf $BUILD_ROOT/openscholar/behat &> /dev/null
-
 # Restore updated site.
 mv $BUILD_ROOT/www-build $BUILD_ROOT/$DOCROOT
 # Add New Files to repo and commit changes
@@ -122,6 +119,10 @@ else
 cp -R temporary/* openscholar/modules/contrib/
 git commit -a -m "Update Temporary Modules." || echo 'Nothing to commit.'
 fi
+
+#remove automatic testing files and tools
+rm -rf $BUILD_ROOT/openscholar/behat &> /dev/null
+
 git push origin $CI_BRANCH
 echo -e "\033[1;36mFINISHED BUILDING $CI_BRANCH ON BITBUCKET\e[0m"
 
