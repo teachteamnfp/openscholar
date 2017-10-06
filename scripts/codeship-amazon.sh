@@ -74,7 +74,7 @@ $DRUSH make openscholar/drupal-org-core.make $BUILD_ROOT/www-build
 
 # Backup files from existing installation.
 cd $BUILD_ROOT
-DOCROOT='www';
+DOCROOT='web';
 for BACKUP_FILE in "${preserve_files[@]}"; do
 	rm -Rf www-build/$BACKUP_FILE
 	mv $DOCROOT/$BACKUP_FILE www-build/
@@ -116,3 +116,4 @@ git commit -a -m "Update Temporary Modules." || echo 'Nothing to commit.'
 fi
 git push origin $CI_BRANCH
 echo -e "\033[1;36mFINISHED BUILDING $CI_BRANCH ON BITBUCKET\e[0m"
+
