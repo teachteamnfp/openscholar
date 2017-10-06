@@ -268,10 +268,8 @@ function cp_appearance_theme_picker_form($form, &$form_state) {
 
   // Sorts featured themes to the front.
   $current_theme = os_theme_get();
-  dsm($current_theme);
 
   $current_flavor = variable_get('os_appearance_'.$current_theme.'_flavor','defualt');
-  dsm($current_flavor);
 
   if (count($featured_themes)) {
     $first_themes = array();
