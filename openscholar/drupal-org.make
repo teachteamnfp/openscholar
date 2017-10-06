@@ -98,7 +98,7 @@ projects[entityreference_prepopulate][version] = 1.5
 projects[entityreference_prepopulate][patch][] = "https://drupal.org/files/issues/1994702-er-ajax-9.patch"
 
 projects[elysia_cron][subdir] = "contrib"
-projects[elysia_cron][version] = 2.1
+projects[elysia_cron][version] = 2.4
 
 projects[eva][subdir] = "contrib"
 projects[eva][version] = 1.2
