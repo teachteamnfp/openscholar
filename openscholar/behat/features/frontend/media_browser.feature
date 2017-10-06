@@ -234,7 +234,7 @@ Feature: Media Browser
       And I wait for page actions to complete
       And I edit the entity "node" with title "About"
       And I sleep for "10"
-     When I click "Media browser"
+     When I press "Media browser"
       And I wait "1 second" for the media browser to open
       And I should wait for the text "Please wait while we get information on your files." to "disappear"
       And I drop the file "kitten-3.jpg" onto the "Drag and drop files here." area
