@@ -96,7 +96,7 @@ rm -Rf $BUILD_ROOT/$DOCROOT || true
 rm -Rf $BUILD_ROOT/www-build/install.php || true
 
 #remove automatic testing files and tools
-rm -rf ../openscholar/behat &> /dev/null
+rm -rf $BUILD_ROOT/openscholar/behat &> /dev/null
 
 # Restore updated site.
 mv $BUILD_ROOT/www-build $BUILD_ROOT/$DOCROOT
