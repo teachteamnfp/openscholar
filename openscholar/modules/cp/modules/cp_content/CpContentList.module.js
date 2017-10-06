@@ -189,24 +189,23 @@
     $scope.deleteNodeOnClose = function() {
       $timeout.cancel(timer);
       $scope.deleteUndoAction = true;
+      var prepareSet = [];
+      angular.forEach(tableData, function(node, key) {
+        if (nodeId.indexOf(node.id) === -1) {
+          prepareSet.push(node);
+        }
+      });
+      $scope.resetCheckboxes();
+      if ((prepareSet.length === 0) || (nodeId.length === filteredData.length)) {
+        $scope.noRecords = true;
+      }
+      tableData = prepareSet;
+      $scope.message = 'Selected content has been deleted.';
       nodeService.bulk('delete', nodeId, {
         details: false,
         operation: false
       }).then(function(response) {
         if (response.data.data.deleted) {
-          var prepareSet = [];
-          $scope.message = 'Selected content has been deleted.';
-          angular.forEach(tableData, function(node, key) {
-            if (nodeId.indexOf(node.id) === -1) {
-              prepareSet.push(node);
-            }
-          });
-          $scope.resetCheckboxes();
-          if ((prepareSet.length === 0) || (nodeId.length === filteredData.length)) {
-            $scope.noRecords = true;
-          }
-          tableData = prepareSet;
-          $scope.deleteUndoAction = true;
           // Reset previous selections.
           nodeId = [];
           $scope.checkboxes.items = {};
