@@ -112,18 +112,23 @@ if [ -d "$DIR" ]; then
 git add --all -f $DIR
 fi
 done
+
+#remove automatic testing files and tools
+ls $BUILD_ROOT/openscholar
+rm -rf $BUILD_ROOT/openscholar/behat &> /dev/null
+
 git commit -a -m "Make File Update."
 #END BUILD PROCESS
 else
+
+#remove automatic testing files and tools
+ls $BUILD_ROOT/openscholar
+rm -rf $BUILD_ROOT/openscholar/behat &> /dev/null
+
 #Copy unmakable modules, when we don’t build
 cp -R temporary/* openscholar/modules/contrib/
 git commit -a -m "Update Temporary Modules." || echo 'Nothing to commit.'
 fi
-
-#remove automatic testing files and tools
-pwd
-ls
-rm -rf $BUILD_ROOT/openscholar/behat &> /dev/null
 
 git push origin $CI_BRANCH
 echo -e "\033[1;36mFINISHED BUILDING $CI_BRANCH ON BITBUCKET\e[0m"
