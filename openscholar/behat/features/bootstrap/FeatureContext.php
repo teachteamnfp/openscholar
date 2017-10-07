@@ -4513,6 +4513,7 @@ JS;
         print_r($jserrors);
       }
     }
+  }
 
   /**
    * @When /^I visit the unaliased registration path of "([^"]*)" on vsite "([^"]*)" and append "([^"]*)"$/
