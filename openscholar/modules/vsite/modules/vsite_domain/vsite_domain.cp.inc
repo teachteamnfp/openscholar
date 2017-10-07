@@ -72,7 +72,7 @@ function vsite_domain_cp_settings() {
   );
 
   //subsite domains - non-admins can only add domains provided by parent site
-  if (!user_access('change vsite domain')) {
+  if (spaces_access_admin() && !user_access('change vsite domain')) {
     $parent_domains = array_map(function($a) {return $a['value'];}, $parent->group->field_subsite_domains[LANGUAGE_NONE]);
     $form['value'] = array_merge($form['value'], array(
       '#type' => 'select',

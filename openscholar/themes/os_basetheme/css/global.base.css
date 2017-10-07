@@ -177,6 +177,12 @@ h3 a,
 h4 a {
     text-decoration: none;
 }
+#content-column .field-name-body h2,
+#content-column .field-name-body h3,
+#content-column .field-name-body h4 {
+    line-height: 1.2em;
+}
+
 .profile h3 {
     border-bottom: none;
 }
@@ -463,6 +469,7 @@ ol {
     margin: 0 0 1.5em 21px;
 }
 */
+.field-name-body ol ul,
 .field-name-body ul {
   display: table;
   margin-left: 0;
@@ -483,23 +490,25 @@ ol {
       text-align: right;
 }
 
-
- .field-name-body ul li:before {
-       content: counter(table-ul, disc);
-     
+.field-name-body ol ol ul li:before,
+.field-name-body ol ul li:before,
+.field-name-body ul li:before {
+    content: counter(table-ul,disc);
 }
 
- .field-name-body ul ul li:before {
-       content: counter(table-ul, circle);
-     
+.field-name-body ol ol ul ul li:before,
+.field-name-body ol ul ul li:before,
+.field-name-body ul ul li:before {
+    content: counter(table-ul,circle);
 }
 
- .field-name-body ul ul ul li:before {
-       content: counter(table-ul, square);
-     
+.field-name-body ol ol ul ul ul li:before,
+.field-name-body ol ul ul ul li:before,
+.field-name-body ul ul ul li:before {
+    content: counter(table-ul,square);
 }
 
-
+.field-name-body ol ul,
 .field-name-body ol {
   display: table;
   margin-left: 0;

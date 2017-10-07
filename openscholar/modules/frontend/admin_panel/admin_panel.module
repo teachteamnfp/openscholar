@@ -3,7 +3,7 @@
 /**
  * Force the localStorage cache to be cleared whenever we want.
  */
-const AdminPanelMenuVersion = '1.3';
+const AdminPanelMenuVersion = '1.4';
 
 /**
  * Returns true if the admin panel should default to being closed
