@@ -103,7 +103,7 @@ Feature:
       And I sleep for "5"
      Then I should not see "Add new comment"
 
- @api @features_first @delete_any_blog_content @os_blog
+ @api @features_first @delete_any_blog_content @os_blog @javascript
  Scenario: Delete blog content
     Given I am logging in as "john"
       And I edit the node "A day in the life of The POTUS." in the group "john"
