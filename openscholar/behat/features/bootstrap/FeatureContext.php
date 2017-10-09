@@ -4429,7 +4429,7 @@ JS;
    * Visit the internal (unaliased) Drupal path of the current page
    *
    * @When /^I open the edit form for the post "([^"]*)" on vsite "([^"]*)"$/
-   */
+   *//*
   public function iVisitTheEditPathOfPage($url, $vsite) {
     $unaliased_path = drupal_lookup_path('source', $url);
 
@@ -4443,7 +4443,7 @@ JS;
     }
 
     $this->visit("/$vsite/$unaliased_path/edit");
-  }
+  }*/
 
   /**
    * Visit the internal (unaliased) Drupal path of the current page

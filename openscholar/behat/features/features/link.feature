@@ -20,7 +20,7 @@ Feature:
   @api @features_first
   Scenario: Edit link content
      Given I am logging in as "john"
-        And I visit the unaliased edit path of "links/google" on vsite "john"
+       And I edit the node "Google" in the group "john"
        When I fill in "Title" with "Google_one"
        When I fill in "edit-field-links-link-und-0-url" with "https://www.google.com"
         And I press "Save"
@@ -30,7 +30,7 @@ Feature:
   @api @features_first
   Scenario: Delete link content
      Given I am logging in as "john"
-        And I visit the unaliased edit path of "links/google" on vsite "john"
+      And I edit the node "Google" in the group "john"
       When I click "Delete this link"
       Then I should see "This action cannot be undone."
        And I press "Delete"

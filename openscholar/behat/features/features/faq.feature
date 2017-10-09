@@ -66,7 +66,7 @@ Feature:
   @api @features_first
   Scenario: Edit faq content
      Given I am logging in as "john"
-       And I open the edit form for the post "faq/frequently-asked" on vsite "john"
+       And I edit the node "Frequently Asked" in the group "john"
        And I sleep for "2"
       When I fill in "Question" with "Frequently Asked Revised"
        And I press "Save"
@@ -75,7 +75,7 @@ Feature:
   @api @features_first
   Scenario: Delete existing faq content
      Given I am logging in as "john"
-       And I open the edit form for the post "faq/frequently-asked" on vsite "john"
+       And I edit the node "Frequently Asked" in the group "john"
        And I sleep for "2"
       When I click "Delete this faq"
       Then I should see "This action cannot be undone."
@@ -105,7 +105,7 @@ Feature:
   @api @feature_second
   Scenario: Permission to edit own content
     Given I am logging in as "michelle"
-      And I open the edit form for the post "faq/when-was-jfk-born" on vsite "john"
+     And I edit the node "When was JFK born?" in the group "john"
      When I fill in "Answer" with "29 May 1917"
       And I press "Save"
      Then I should see "29 May 1917"
@@ -113,19 +113,19 @@ Feature:
   @api @feature_second
   Scenario: Permission to edit any content
     Given I am logging in as "alexander"
-      And I open the edit form for the post "faq/when-was-jfk-born" on vsite "john"
+     And I edit the node "When was JFK born?" in the group "john"
      Then I should see "Access Denied"
 
   @api @feature_second
   Scenario: Permission to delete any content
     Given I am logging in as "alexander"
-      And I visit to delete the post "faq/when-was-jfk-born" on vsite "john"
+     And I edit the node "When was JFK born?" in the group "john"
      Then I should see "Access Denied"
 
   @api @feature_second
   Scenario: Permission to delete own content
     Given I am logging in as "michelle"
-      And I open the edit form for the post "faq/when-was-jfk-born" on vsite "john"
+      And I edit the node "When was JFK born?" in the group "john"
       And I click "Delete this faq"
      Then I should see "This action cannot be undone."
       And I press "Delete"
