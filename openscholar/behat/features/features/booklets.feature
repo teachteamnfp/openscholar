@@ -15,7 +15,7 @@ Feature:
  @api @features_first @edit_existing_booklets_content @os_booklets
  Scenario: Edit existing booklets content
     Given I am logging in as "john"
-      And I edit the node "Profiles In Courage." in the group "john"
+      And I edit the node "Profiles In Courage" in the group "john"
       And I fill in "Title" with "Profiles In Courage by John F. Kennedy and Ted Sorensen"
       And I fill in "Body" with " Profiles In Courage profiles senators who defied the opinions of their party and constituents to do what they felt was right and suffered severe criticism and losses in popularity because of their actions."
       And I press "Save"

@@ -30,7 +30,7 @@ Feature:
   @api @features_first
   Scenario: Delete link content
      Given I am logging in as "john"
-      And I edit the node "Google" in the group "john"
+      And I edit the node "Google_one" in the group "john"
       When I click "Delete this link"
       Then I should see "This action cannot be undone."
        And I press "Delete"

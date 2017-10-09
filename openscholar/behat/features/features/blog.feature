@@ -103,10 +103,10 @@ Feature:
       And I sleep for "5"
      Then I should not see "Add new comment"
 
- @api @features_first @delete_any_blog_content @os_blog @javascript
+ @api @features_first @delete_any_blog_content @os_blog
  Scenario: Delete blog content
     Given I am logging in as "john"
-      And I edit the node "A day in the life of The POTUS." in the group "john"
+      And I edit the node "Another day in the life of The POTUS." in the group "john"
       And I sleep for "2"
      When I click "Delete this blog entry"
      Then I should see "Are you sure you want to delete"

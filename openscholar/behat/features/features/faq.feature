@@ -75,7 +75,7 @@ Feature:
   @api @features_first
   Scenario: Delete existing faq content
      Given I am logging in as "john"
-       And I edit the node "Frequently Asked" in the group "john"
+       And I edit the node "Frequently Asked Revised" in the group "john"
        And I sleep for "2"
       When I click "Delete this faq"
       Then I should see "This action cannot be undone."
