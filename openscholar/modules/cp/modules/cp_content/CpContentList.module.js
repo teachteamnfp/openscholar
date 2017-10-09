@@ -33,7 +33,7 @@
             dialogOptions.title = 'Content';
             dialogOptions.close = function(event, ui) {
               modal.element.remove();
-              window.location.reload();
+              modal.scope.close();
             }
             modal.element.dialog(dialogOptions);
           });
@@ -220,6 +220,9 @@
     $scope.deleteUndo = function() {
       $timeout.cancel(timer);
       $scope.deleteUndoAction = true;
+      // Reset previous selections.
+      nodeId = [];
+      $scope.checkboxes.items = {};
       $scope.deleteUndoMessage = !$scope.deleteUndoMessage;
       timer = $timeout(function() {
         $scope.deleteUndoMessage = true;
@@ -545,6 +548,9 @@
     }
 
     $scope.close = function(arg) {
+      if (angular.isDefined(nodeId) && nodeId.length > 0) {
+        $scope.deleteNodeOnClose();
+      }
       window.location.reload();
     }
 
