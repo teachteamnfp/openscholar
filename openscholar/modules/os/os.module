@@ -3931,6 +3931,7 @@ function os_redirect_goto($redirect) {
   $parse_url = drupal_parse_url($redirect->redirect);
   $redirect->redirect_options['absolute'] = TRUE;
   $redirect->redirect_options['fragment'] = $parse_url['fragment'];
+  $redirect->redirect_options['query'] = $parse_url['query'];
   $url = url($parse_url['path'], $redirect->redirect_options);
   
   drupal_add_http_header('Location', $url);
