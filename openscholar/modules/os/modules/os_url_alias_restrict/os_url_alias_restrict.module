@@ -3,28 +3,28 @@
 /**
  * Implements hook_form_BASE_FORM_ID_alter() for node form.
  */
-function url_alias_restrict_form_node_form_alter(&$form, &$form_state, $form_id) {
-  $form['#validate'][] = 'url_alias_restrict_url_alias_validate';
+function os_url_alias_restrict_form_node_form_alter(&$form, &$form_state, $form_id) {
+  $form['#validate'][] = 'os_url_alias_restrict_url_alias_validate';
 }
 
 /**
  * Implements hook_form_BASE_FORM_ID_alter() for term form.
  */
-function url_alias_restrict_form_taxonomy_form_term_alter(&$form, &$form_state, $form_id) {
-  $form['#validate'][] = 'url_alias_restrict_url_alias_taxonomy_validate';
+function os_url_alias_restrict_form_taxonomy_form_term_alter(&$form, &$form_state, $form_id) {
+  $form['#validate'][] = 'os_url_alias_restrict_url_alias_taxonomy_validate';
 }
 
 /**
  * Implements hook_form_BASE_FORM_ID_alter() for vocabulary form.
  */
-function url_alias_restrict_form_taxonomy_form_vocabulary_alter(&$form, &$form_state, $form_id) {
-  $form['#validate'][] = 'url_alias_restrict_url_alias_taxonomy_validate';
+function os_url_alias_restrict_form_taxonomy_form_vocabulary_alter(&$form, &$form_state, $form_id) {
+  $form['#validate'][] = 'os_url_alias_restrict_url_alias_taxonomy_validate';
 }
 
 /**
  * Implements hook_pathauto_alias_alter().
  */
-function url_alias_restrict_pathauto_alias_alter(&$alias, array &$context) {
+function os_url_alias_restrict_pathauto_alias_alter(&$alias, array &$context) {
   $vsite = vsite_get_vsite();
   $purl = $vsite->group->purl;
   // For vocabulary form
@@ -42,7 +42,7 @@ function url_alias_restrict_pathauto_alias_alter(&$alias, array &$context) {
   else {
     $path_alias = substr($alias, strlen($purl) + 1);
   }
-  if (url_alias_restrict_is_reserved($path_alias)) {
+  if (os_url_alias_restrict_is_reserved($path_alias)) {
     $alias = $alias . '-' . 0;
   }
   return $alias;
@@ -51,11 +51,12 @@ function url_alias_restrict_pathauto_alias_alter(&$alias, array &$context) {
 /**
  * Node form validation handler for URL alias form element.
  */
-function url_alias_restrict_url_alias_validate($form, &$form_state) {
+function os_url_alias_restrict_url_alias_validate($form, &$form_state) {
   if (!empty($form_state['values']['path']['alias'])) {
     $alias = trim($form_state['values']['path']['alias']);
-    if (url_alias_restrict_is_reserved($alias)) {
-      $form_state['values']['path']['alias'] = $alias . '-' . 0;
+    if (os_url_alias_restrict_is_reserved($alias)) {
+      form_set_error('path][alias', t("This alias can't be used, please use others."));
+      return false;
     }
   }
 }
@@ -63,7 +64,7 @@ function url_alias_restrict_url_alias_validate($form, &$form_state) {
 /**
  * Taxonomy & Term form validation handler for URL alias form element.
  */
-function url_alias_restrict_url_alias_taxonomy_validate($form, &$form_state) {
+function os_url_alias_restrict_url_alias_taxonomy_validate($form, &$form_state) {
   if (!empty($form_state['values']['path']['alias'])) {
     $alias = trim($form_state['values']['path']['alias']);
     // getting the path for the vocabulary form
@@ -85,8 +86,9 @@ function url_alias_restrict_url_alias_taxonomy_validate($form, &$form_state) {
     else {
       $path = $alias;
     }
-    if (url_alias_restrict_is_reserved($path)) {
-      $form_state['values']['path']['alias'] = $alias . '-' . 0;
+    if (os_url_alias_restrict_is_reserved($path)) {
+      form_set_error('path][alias', t("This alias can't be used, please use others."));
+      return false;
     }
   }
 }
@@ -109,10 +111,10 @@ function url_alias_restrict_url_alias_taxonomy_validate($form, &$form_state) {
  * @see hook_reserved_paths()
  * @see hook_reserved_paths_alter()
  */
-function url_alias_restrict_is_reserved($path) {
+function os_url_alias_restrict_is_reserved($path) {
   $path_map = &drupal_static(__FUNCTION__);
   if (!isset($path_map['reserved'][$path])) {
-    $patterns = url_alias_restrict_get_reserved_paths();
+    $patterns = os_url_alias_restrict_get_reserved_paths();
     $path_map['reserved'][$path] = drupal_match_path($path, $patterns['reserved']);
     $path_map['non_reserved'][$path] = drupal_match_path($path, $patterns['non_reserved']);
   }
@@ -131,7 +133,7 @@ function url_alias_restrict_is_reserved($path) {
  * @see hook_reserved_paths()
  * @see hook_reserved_paths_alter()
  */
-function url_alias_restrict_get_reserved_paths() {
+function os_url_alias_restrict_get_reserved_paths() {
   $patterns = &drupal_static(__FUNCTION__);
   if (!isset($patterns)) {
     $paths = module_invoke_all('reserved_paths');
@@ -160,7 +162,7 @@ function url_alias_restrict_get_reserved_paths() {
  *
  * Provide core reserved paths.
  */
-function url_alias_restrict_reserved_paths() {
+function os_url_alias_restrict_reserved_paths() {
   $paths = array(
     'node' => TRUE,
     'node/*' => TRUE,
