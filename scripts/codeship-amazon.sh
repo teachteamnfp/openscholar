@@ -37,6 +37,7 @@ echo $CI_COMMIT_ID
 [[ $DRUSH && ${DRUSH-x} ]] || DRUSH=drush
 BUILD_ROOT='/home/rof/src/amazon/hwpi1'
 cd $BUILD_ROOT
+rm .gitmodules
 #List of files from docroot that should be preserved
 preserve_files=( .htaccess robots_disallow.txt sites 404_fast.html favicon.ico )
 #Backup the make files
