@@ -1,3 +1,3 @@
-name = URL alias restrict
+name = OS URL alias restrict
 description = Restrict Url aliases to prevent collisions with reserved paths & physical diorectories.
 core = 7.x

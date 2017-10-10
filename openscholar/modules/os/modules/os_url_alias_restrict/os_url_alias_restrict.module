@@ -1,10 +1,24 @@
 <?php
 
 /**
- * Implements hook_form_BASE_FORM_ID_alter().
+ * Implements hook_form_BASE_FORM_ID_alter() for node form.
  */
 function url_alias_restrict_form_node_form_alter(&$form, &$form_state, $form_id) {
   $form['#validate'][] = 'url_alias_restrict_url_alias_validate';
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter() for term form.
+ */
+function url_alias_restrict_form_taxonomy_form_term_alter(&$form, &$form_state, $form_id) {
+  $form['#validate'][] = 'url_alias_restrict_url_alias_taxonomy_validate';
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter() for vocabulary form.
+ */
+function url_alias_restrict_form_taxonomy_form_vocabulary_alter(&$form, &$form_state, $form_id) {
+  $form['#validate'][] = 'url_alias_restrict_url_alias_taxonomy_validate';
 }
 
 /**
@@ -13,8 +27,21 @@ function url_alias_restrict_form_node_form_alter(&$form, &$form_state, $form_id)
 function url_alias_restrict_pathauto_alias_alter(&$alias, array &$context) {
   $vsite = vsite_get_vsite();
   $purl = $vsite->group->purl;
-  watchdog('node_create', print_r($alias, true));
-  $path_alias = substr($alias, strlen($purl) + 1);
+  // For vocabulary form
+  if ($context['module'] == 'taxonomy_vocabulary') {
+    $purl_vocab = $purl . '/' .'vocab';
+    $path_alias = substr($alias, strlen($purl_vocab) + 1);
+  }
+  //For term form
+  else if ($context['module'] == 'taxonomy_term') {
+    $vocab = $context['data']['term']->vocabulary_machine_name;
+    $purl_vocab = $purl . '/' . $vocab;
+    $path_alias = substr($alias, strlen($purl_vocab) + 1);
+  }
+  // For node form
+  else {
+    $path_alias = substr($alias, strlen($purl) + 1);
+  }
   if (url_alias_restrict_is_reserved($path_alias)) {
     $alias = $alias . '-' . 0;
   }
@@ -24,12 +51,42 @@ function url_alias_restrict_pathauto_alias_alter(&$alias, array &$context) {
 /**
  * Node form validation handler for URL alias form element.
  */
-function url_alias_restrict_url_alias_validate($element, &$form_state, $complete_form) {
+function url_alias_restrict_url_alias_validate($form, &$form_state) {
   if (!empty($form_state['values']['path']['alias'])) {
     $alias = trim($form_state['values']['path']['alias']);
     if (url_alias_restrict_is_reserved($alias)) {
-      form_set_error('alias', t("This alias can't be used, please use others."));
-      return false;
+      $form_state['values']['path']['alias'] = $alias . '-' . 0;
+    }
+  }
+}
+
+/**
+ * Taxonomy & Term form validation handler for URL alias form element.
+ */
+function url_alias_restrict_url_alias_taxonomy_validate($form, &$form_state) {
+  if (!empty($form_state['values']['path']['alias'])) {
+    $alias = trim($form_state['values']['path']['alias']);
+    // getting the path for the vocabulary form
+    if(strpos($alias, "vocab") === 0) {
+      $path = substr($alias, strlen('vocab') + 1);
+    }
+    // getting the path for the term form
+    else if ($form_state['values']['form_id'] == 'taxonomy_form_term') {
+      $vocab = $form_state['values']['vocabulary_machine_name'];
+      if (strpos($alias, $vocab) === 0) {
+        $path = substr($alias, strlen($vocab) + 1);
+      }
+      else {
+        $split_path = explode('/', $alias);
+        $path = end($split_path);
+      }
+    }
+    // getting the path for the node form
+    else {
+      $path = $alias;
+    }
+    if (url_alias_restrict_is_reserved($path)) {
+      $form_state['values']['path']['alias'] = $alias . '-' . 0;
     }
   }
 }

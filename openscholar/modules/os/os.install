@@ -1009,3 +1009,10 @@ function os_update_7054() {
 function os_update_7055() {
   features_revert(array('os' => array('metatag')));
 }
+
+/**
+ * Enable os_url_alias_restrict to restrict URLs to be generated / saved as reserved paths
+ */
+function os_update_7056() {
+  module_enable(array('os_url_alias_restrict'));
+}
