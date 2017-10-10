@@ -2451,6 +2451,18 @@ class FeatureContext extends DrupalContext {
   }
 
   /**
+   * @Then /^I should see the FAQ "([^"]*)" comes before "([^"]*)"$/
+   */
+  public function iShouldSeeTheFaqComesBefore($first, $second) {
+    $page = $this->getSession()->getPage()->getContent();
+
+    $pattern = '/<div class="view-content">[\s\S]*' . $first . '[\s\S]*' . $second . '[\s\S]*<\/section>/';
+    if (!preg_match($pattern, $page)) {
+      throw new Exception("The FAQ '$first' does not come before the FAQ '$second'.");
+    }
+  }
+
+  /**
    * @Given /^I define "([^"]*)" domain to "([^"]*)"$/
    */
   public function iDefineDomainTo($vsite, $domain) {
@@ -4416,8 +4428,8 @@ JS;
   /**
    * Visit the internal (unaliased) Drupal path of the current page
    *
-   * @When /^I visit the unaliased edit path of "([^"]*)" on vsite "([^"]*)"$/
-   */
+   * @When /^I open the edit form for the post "([^"]*)" on vsite "([^"]*)"$/
+   *//*
   public function iVisitTheEditPathOfPage($url, $vsite) {
     $unaliased_path = drupal_lookup_path('source', $url);
 
@@ -4431,12 +4443,12 @@ JS;
     }
 
     $this->visit("/$vsite/$unaliased_path/edit");
-  }
+  }*/
 
   /**
    * Visit the internal (unaliased) Drupal path of the current page
    *
-   * @When /^I visit the unaliased delete path of "([^"]*)" on vsite "([^"]*)"$/
+   * @When /^I open the delete form for the post "([^"]*)" on vsite "([^"]*)"$/
    */
   public function iVisitTheDeletePathOfPage($url, $vsite) {
     $unaliased_path = drupal_lookup_path('source', $url);

@@ -69,6 +69,7 @@ projects[devel][version] = 1.3
 projects[disqus][subdir] = "contrib"
 projects[disqus][version] = 1.9
 projects[disqus][patch][] = "http://drupal.org/files/comment_sources-disqus-2120703-1.patch"
+projects[disqus][patch][] = "https://raw.githubusercontent.com/openscholar/openscholar/60d08936644e3243258d8702d1d0dea111e91a44/patches/disqus-9804_cross_domain_fix.patch"
 
 projects[dragndrop_upload][subdir] = "contrib"
 projects[dragndrop_upload][version] = 1.x-dev
