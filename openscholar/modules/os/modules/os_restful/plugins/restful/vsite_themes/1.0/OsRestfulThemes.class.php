@@ -83,7 +83,7 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
               'screenshot' => $GLOBALS['base_url'] . '/' . $flav['path'].'/screenshot.png',
               'flavorName' => $flav['name'],
               'flavorOptions' => '',
-              'flavorKey' => strtolower($flav['name']),
+              'flavorKey' => strtolower($flavor_name),
             );
           }
         }
@@ -105,7 +105,7 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
               'screenshot' => $GLOBALS['base_url'] . '/' . $flav['path'].'/screenshot.png',
               'flavorName' => $flav['name'],
               'flavorOptions' => '',
-              'flavorKey' => strtolower($flav['name']),
+              'flavorKey' => strtolower($flavor_name),
             );
           }
         }

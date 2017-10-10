@@ -372,7 +372,7 @@
 							<h2 class="featured-scrolltop">Featured themes</h2>
 							<h3>Mobile-friendly themes using Harvard color palettes.</h3>
 							<ul>
-							<li ng-repeat="theme in themes.featured" ng-class="{even: $even, odd: $odd, selected: selected == theme.themeKey + '-os_featured_flavor-' + theme.themeKey + '_' + theme.flavorKey}" class="cp-themes {{theme.themeKey}}" ng-click="setTheme(theme.themeKey, theme.themeKey + '_' + theme.flavorKey)">
+							<li ng-repeat="theme in themes.featured" ng-class="{even: $even, odd: $odd, selected: selected == theme.themeKey + '-os_featured_flavor-' + theme.flavorKey}" class="cp-themes {{theme.themeKey}}" ng-click="setTheme(theme.themeKey, theme.flavorKey)">
 								<img ng-src="{{theme.screenshot}}" class="screenshot">
 								<div class="theme-info">
 									<span>{{theme.name}}</span>
