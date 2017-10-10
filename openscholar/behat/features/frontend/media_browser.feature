@@ -235,6 +235,8 @@ Feature: Media Browser
       And I edit the entity "node" with title "About"
       And I sleep for "10"
       And I click on "cke_button__media" button in the wysiwyg editor
+      And I sleep for "3"
+     Then I should see "Editor opened"
       And I wait "1 second" for the media browser to open
       And I should wait for the text "Please wait while we get information on your files." to "disappear"
       And I drop the file "kitten-3.jpg" onto the "Drag and drop files here." area
