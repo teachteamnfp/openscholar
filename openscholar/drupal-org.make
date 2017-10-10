@@ -39,7 +39,7 @@ projects[comment_sources][patch][] = "https://drupal.org/files/issues/change-sub
 projects[comment_sources][patch][] = "https://raw.github.com/openscholar/openscholar/bb0856af84a58881a0438cd32d9b6a21dcfd15ea/patches/comment_sources.9139.comment_settings.patch"
 
 projects[context][subdir] = "contrib"
-projects[context][version] = 3.7
+projects[context][version] = 3.6
 projects[context][patch][] = "http://drupal.org/files/os-custom-beta4.patch"
 projects[context][patch][] = "http://drupal.org/files/1855004.context.float_block_weights.patch"
 
@@ -333,7 +333,7 @@ projects[pinserver][download][url] = "git://github.com/openscholar/pinserver.git
 projects[pinserver][download][tag] = 7.x-3.4.22
 
 projects[purl][subdir] = "contrib"
-;: projects[purl][version] = 1.0-beta1+11-dev
+; projects[purl][version] = 1.0-beta1+11-dev
 projects[purl][download][type] = git
 projects[purl][download][branch] = 7.x-1.x
 projects[purl][download][revision] = 469e8668
