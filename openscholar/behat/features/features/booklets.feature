@@ -47,7 +47,7 @@ Feature:
      Then I should see "Daniel Webster"
       And I should see "for speaking in favor of the Compromise of 1850"
 
- @api @features_first @delete_any_booklets_content @os_booklets
+ @api @wip @delete_any_booklets_content @os_booklets
  Scenario: Delete booklets content
     Given I am logging in as "john"
       And I edit the node "Profiles In Courage" in the group "john"
