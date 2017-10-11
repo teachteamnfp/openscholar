@@ -2529,7 +2529,7 @@ class FeatureContext extends DrupalContext {
     if ($element) {
       throw new Exception("A button with id|name|value equal to '$button' was found.");
     }
-}
+  }
 
   /**
    * @Given /^I set feature "([^"]*)" to "([^"]*)" on "([^"]*)"$/
@@ -4897,5 +4897,12 @@ JS;
     return array(
       new Step\When('I press "Save Section Outline"'),
     );
+  }
+    /*
+   * @When /^I click on "([^"]*)" button in the wysiwyg editor$/
+   */
+  public function iClickOnEditor($class) {
+    $element = $this->getSession()->getPage()->find('xpath', "//*[contains(@class, '{$class}')]");
+    $element->click();
   }
 }
