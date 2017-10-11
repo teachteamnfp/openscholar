@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # Quick codeship script to push builds to a pair of acquia repos as new branches are made.
 
 # Get PR branch, default to empty string
