@@ -116,7 +116,7 @@ Feature:
 #   Given I am logging in as "john"
 #     And I visit the site "john/book/profiles-courage"
 
-  @api @features_first @javascript
+  @api @wip @javascript
   Scenario: Verify "Active Book's Table of Contents" widget
     Given I am logging in as "john"
       And I visit "john"
