@@ -234,9 +234,7 @@ Feature: Media Browser
       And I wait for page actions to complete
       And I edit the entity "node" with title "About"
       And I sleep for "10"
-      And I click on "cke_button__media" button in the wysiwyg editor
-      And I sleep for "3"
-     Then I should see "Editor opened"
+     When I press "Media browser"
       And I wait "1 second" for the media browser to open
       And I should wait for the text "Please wait while we get information on your files." to "disappear"
       And I drop the file "kitten-3.jpg" onto the "Drag and drop files here." area
@@ -248,7 +246,7 @@ Feature: Media Browser
       And I wait for page actions to complete
       And I click on link "Submit" under "media-browser-page"
       And the overlay closes
-      And I click on "cke_button__media" button in the wysiwyg editor
+      And I press "Media browser"
       And I wait "1 second" for the media browser to open
       And I should wait for the text "Please wait while we get information on your files." to "disappear"
       And I click on "Previously uploaded files" button in the media browser
