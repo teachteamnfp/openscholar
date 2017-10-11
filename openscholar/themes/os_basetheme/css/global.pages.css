@@ -92,8 +92,7 @@ html {} body {} #page
 .branding-elements,
 .breadcrumb-wrapper,
 .attribution,
-.at-panel .rounded-corner,
-div.messages {
+.at-panel .rounded-corner {
     margin-left: 8px;
     margin-right: 8px;
 }
@@ -329,25 +328,12 @@ body#widget {
 {
     margin-bottom: 1em;
 }
-div.messages
-/* Important messages (status, warning, and error) for the user. See also the declarations in messages.css. */
 
-{
-    margin: 1.5em 10px;
-    /* Drupal core uses "6px 0" margin */
-}
-div.messages ul {
-    margin-top: 0;
-    margin-bottom: 0;
-}
+
 div.status
 /* Normal priority messages */
 
-{} div#success-message.status {
-    padding: 3px 0 0 25px;
-    border-color: #be7;
-    background-repeat: no-repeat;
-}
+{} 
 div.warning,
 tr.warning
 /* Medium priority messages */
@@ -668,10 +654,13 @@ div.ctools-modal-content .modal-title {
     color: #666;
     font-size: 20px;
     font-weight: normal;
+     white-space: nowrap;
+    text-overflow: ellipsis;
+
+    display: block;
+    overflow: hidden;
 }
-#modal-content {
-    padding: 20px 0 20px 25px;
-}
+
 div.ctools-modal-content {
     height: 100% !important;
     border: none;
@@ -685,7 +674,7 @@ div.ctools-modal-content .modal-header {
 div.ctools-modal-content .modal-header a {
     float: right;
     color: transparent;
-    background: url('../images/scholarbase-sprite.png') no-repeat 0 -772px;
+    background: url('../images/scholarbase-sprite.png') no-repeat 0 -770px;
     width: 30px;
     height: 30px;
 }
@@ -696,6 +685,14 @@ div.ctools-modal-content .modal-content {
     height: 400px;
     overflow-x: hidden;
 }
+
+
+.modal-content {
+ 
+    height: auto !important;
+   
+}
+
 div.ctools-modal-content .modal-content .messages {
     width: 95%;
     padding: 0;
@@ -1220,3 +1217,62 @@ LIST OF POSTS - PERSON TEASER IN SIDEBAR
 .os-trim-text p {
     display: inline;
 }
+div.messages {
+    margin: 0 0 10px;
+    padding: 0;
+    border: none;
+    font-size: 15px;
+    line-height: 20px;
+}
+
+div.messages .message-wrapper {
+    padding: 10px;
+ 
+}
+
+
+div.messages .message-wrapper h2 {
+    margin-top: 0;
+}
+
+
+div.error {
+    border: none;
+    background-image: none;
+    background-color: #f2dede;
+    color: #a94442;
+    padding: 10px 30px 10px 20px;
+    border-left: 5px solid #a94442;
+}
+div.status {
+background-image: none;
+color: #008000;
+background-color:#dff0d8;
+padding:10px 30px 10px 20px;
+    border-left:5px solid #008000;
+}
+.error .dismiss, .messages .dismiss, div.status .dismiss {
+    border: none;
+    display: block;
+    position: absolute;
+    top: 5px;
+    right: 4px;
+    font-size: 0;
+    background: transparent;
+    text-shadow: none;
+    text-decoration: none;
+    border-radius: none;
+    box-shadow: none;
+    opacity: none;
+    cursor: pointer;
+    -webkit-transition: none;
+    -moz-transition: none;
+    -ms-transition: none;
+    -o-transition: none;
+    transition: none;
+    background: url(/profiles/openscholar/themes/os_basetheme/images/scholarbase-sprite.png) 0 -926px no-repeat transparent;
+    width: 20px;
+    height: 20px;
+    background-color: transparent;
+}
+
