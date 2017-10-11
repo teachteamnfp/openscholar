@@ -59,32 +59,7 @@ h1, h2, h3 {
     padding-right: 11px;
     content: '';
 }
-a.os-swipe-small {
-  color: #FFF !important;
-    text-decoration: none !important;
-    display: inline-block;
-    text-align: center;
-    border: 1px solid #FFF;
-  padding: 5px 10px;
-    font-weight: normal;
-    background-color: #293352;
-}
-a.os-swipe-large {
-    color: #FFF !important;
-    text-decoration: none !important;
-    display: inline-block;
-    text-align: center;
-    border: 1px solid #FFF;
-    padding: 10px 20px;
-    font-weight: normal;
-    background-color: #293352;
-}
-a.os-swipe-large:hover,
-a.os-swipe-small:hover {
-    border: 1px solid #293352;
-    color: #222 !important;
- background-color: #FFF;
-}
+
 
 /* Header */
 

@@ -864,6 +864,18 @@ class FeatureContext extends DrupalContext {
       case "feed reader":
         $widgetType = "os_boxes_feedreader";
         break;
+      case "dataverse list":
+        $widgetType = "os_boxes_dataverse_list";
+        break;
+      case "dataverse search box":
+        $widgetType = "os_boxes_dataverse_search";
+        break;
+      case "dataverse dataset citation":
+        $widgetType = "os_boxes_dataverse_dataset_citation";
+        break;
+      case "dataverse dataset":
+        $widgetType = "os_boxes_dataverse_dataset";
+        break;
     }
     $metasteps[] = new Step\When('I visit "/' . $vsite . '/os/widget/add/' . $widgetType . '/cp-layout"');
     $hash = $table->getRows();
@@ -1073,6 +1085,33 @@ class FeatureContext extends DrupalContext {
       );
       $vsite->controllers->context->set('os_pages-page-' . $page_id . ":reaction:block", $blocks);
     }
+  }
+
+  /**
+   * @Given /^the dataverse widget "([^"]*)" is placed in the "([^"]*)" layout$/
+   */
+  public function theDataverseWidgetIsPlacedInTheLayout($widget, $page) {
+    $q = db_select('spaces_overrides', 'so')
+      ->fields('so', array('object_id', 'id'))
+      ->condition('value', '%s:5:"title";s:' . strlen($widget) . ':"' . $widget . '";%', 'LIKE')
+      ->condition('object_type', 'boxes', '=');
+    $results = $q->execute()->fetchAll();
+    $row = array_pop($results);
+
+    $page_id = FeatureHelp::GetNodeId($page);
+
+    $vsite = spaces_load('og', $row->id);
+    $blocks = $vsite->controllers->context->get('os_pages-page-' . $page_id . ":reaction:block");
+    $blocks['blocks']['boxes-' . $row->object_id] = array(
+      'module' => 'boxes',
+      'delta' => $row->object_id,
+      'title' => $widget,
+      'region' => 'content_first',
+      'status' => 0,
+      'weight' => 0
+    );
+    $vsite->controllers->context->set('os_pages-page-' . $page_id . ":reaction:block", $blocks);
+
   }
 
   /**
@@ -2437,6 +2476,18 @@ class FeatureContext extends DrupalContext {
     $pattern = "/<div id='boxes-box-box-list-of-publications' class='boxes-box'>[\s\S]*" . $first . "[\s\S]*" . $second . "[\s\S]*<\/div>/";
     if (!preg_match($pattern, $page)) {
       throw new Exception("The publication '$first' does not come before the publication '$second'.");
+    }
+  }
+
+  /**
+   * @Then /^I should see the FAQ "([^"]*)" comes before "([^"]*)"$/
+   */
+  public function iShouldSeeTheFaqComesBefore($first, $second) {
+    $page = $this->getSession()->getPage()->getContent();
+
+    $pattern = '/<div class="view-content">[\s\S]*' . $first . '[\s\S]*' . $second . '[\s\S]*<\/section>/';
+    if (!preg_match($pattern, $page)) {
+      throw new Exception("The FAQ '$first' does not come before the FAQ '$second'.");
     }
   }
 
@@ -4406,8 +4457,8 @@ JS;
   /**
    * Visit the internal (unaliased) Drupal path of the current page
    *
-   * @When /^I visit the unaliased edit path of "([^"]*)" on vsite "([^"]*)"$/
-   */
+   * @When /^I open the edit form for the post "([^"]*)" on vsite "([^"]*)"$/
+   *//*
   public function iVisitTheEditPathOfPage($url, $vsite) {
     $unaliased_path = drupal_lookup_path('source', $url);
 
@@ -4421,6 +4472,26 @@ JS;
     }
 
     $this->visit("/$vsite/$unaliased_path/edit");
+  }*/
+
+  /**
+   * Visit the internal (unaliased) Drupal path of the current page
+   *
+   * @When /^I open the delete form for the post "([^"]*)" on vsite "([^"]*)"$/
+   */
+  public function iVisitTheDeletePathOfPage($url, $vsite) {
+    $unaliased_path = drupal_lookup_path('source', $url);
+
+    # Check the url with the vsite prepended
+    if (! $unaliased_path) {
+      $unaliased_path = drupal_lookup_path('source', "$vsite/$url");
+    }
+
+    if (! $unaliased_path) {
+      throw new Exception("Could not find an unaliased path for '$url' on vsite '$vsite'.");
+    }
+
+    $this->visit("/$vsite/$unaliased_path/delete");
   }
 
   /**
@@ -4501,8 +4572,12 @@ JS;
 
     $counter = 0;
     while ($counter++ <= $num_intervals) {
-      $num_events_counted += count($this->getSession()->getPage()->findAll('xpath', "//div[@class='calendar-calendar']//a[text()='$event_title']"));
+      $num_events_counted +=
+        count($this->getSession()->getPage()->findAll('xpath',
+          "//div[@class='calendar-calendar']//td[starts-with(@id, 'os_events-')]//span[@class='field-content']/a[text()='$event_title']"));
+
       $page = $this->getSession()->getPage()->getContent();
+
       $date_next_arrow = $this->getSession()->getPage()->find('xpath', "//li[@class='date-next']/a");
       $date_next_arrow->click();
     }

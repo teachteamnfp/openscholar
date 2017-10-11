@@ -4,14 +4,17 @@ class os_boxes_media extends os_boxes_default {
 
   public function options_defaults() {
     $options = parent::options_defaults();
-    $options['fid']['fid'] = 0;
+    $options['fid'] = array(
+      'fid' => 0
+    );
     $options['maxwidth'] = 0;
     return $options;
   }
 
   public function options_form(&$form_state) {
     $form = parent::options_form($form_state);
-    $fid = (isset($form_state['input']['fid'])) ? $form_state['input']['fid'] : $this->options['fid']['fid'];
+    $saved = is_array($this->options['fid']) ? $this->options['fid']['fid'] : $this->options['fid'];
+    $fid = (isset($form_state['input']['fid'])) ? $form_state['input']['fid'] : $saved;
     $form['fid'] = array(
       '#title' => t('File or HTML'),
       '#type' => 'media',
@@ -67,15 +70,16 @@ class os_boxes_media extends os_boxes_default {
     parent::options_submit($form, $form_state);
 
     $old = $form['options']['fid']['#value']['fid'];
+    $saved = is_array($this->options['fid']) ? $this->options['fid']['fid'] : $this->options['fid'];
 
-    if ($old != $this->options['fid']['fid']) {
+    if ($old != $saved) {
 
       $id = FALSE;
       if (module_exists('vsite') && $vsite = vsite_get_vsite()) {
         $id = $vsite->group->nid;
       }
 
-      if ($id && $file = file_load($this->options['fid']['fid'])){
+      if ($id && $file = file_load($saved)){
         file_usage_add($file, 'os_boxes', 'node', $id, 1);
       }
 
@@ -91,7 +95,8 @@ class os_boxes_media extends os_boxes_default {
   public function render() {
     $block = parent::render();
     if (($block['content'] = $this->get_cache()) === FALSE) {
-      if ($file = file_load($this->options['fid']['fid'])) {
+      $fid = is_array($this->options['fid']) ? $this->options['fid']['fid'] : $this->options['fid'];
+      if ($file = file_load($fid)) {
         if (!empty($this->options['maxwidth'])) {
           if (isset($file->image_dimensions)) {
             // This is an image, so we have the dimensions for it and need to scale it down.
