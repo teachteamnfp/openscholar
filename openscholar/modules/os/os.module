@@ -2498,6 +2498,7 @@ function os_field_default_fields_alter(&$fields) {
  * Make all select fields use Select2.
  */
 function os_field_widget_options_select_form_alter(&$element, &$form_state, $context) {
+  $element['#title'] = html_entity_decode($element['#title'], ENT_QUOTES | ENT_HTML5);
   $element += array(
     '#after_build' => array('os_select2_widget_after_build'),
     '#cardinality' => $context['field']['cardinality'],

@@ -384,6 +384,7 @@ function vsite_vocab_preprocess_taxonomy_overview_vocabularies(&$variables) {
     }
 
     $element = &$variables['form'][$element_key];
+    $element['#title'] = html_entity_decode($element['#title'], ENT_QUOTES | ENT_HTML5);
     $element['list']['#href'] = 'cp/build/taxonomy/' . $element['#vocabulary']->machine_name;
     $element['add']['#href'] = 'cp/build/taxonomy/' . $element['#vocabulary']->machine_name . '/add';
     $element['edit']['#href'] = 'cp/build/taxonomy/' . $element['#vocabulary']->machine_name . '/edit';
