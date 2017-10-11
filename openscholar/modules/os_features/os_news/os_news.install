@@ -131,3 +131,10 @@ function os_news_update_7009() {
 function os_news_update_7010() {
   features_revert(array('os_news' => array('field_instance')));
 }
+
+/**
+ * Revert views to back field_news_date sorting field.
+ */
+function os_news_update_7011() {
+  features_revert(array('os_news' => array('views_view')));
+}
