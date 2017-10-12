@@ -139,6 +139,7 @@
     }
     console.log(formdata);
     $http.post(paths.api + '/purl', formdata).then(function (response) {
+      console.log(response);
       $scope.successData = response.data.data.data;
       $scope.vsiteUrl = response.data.data.data;
       $scope.siteCreated = true;

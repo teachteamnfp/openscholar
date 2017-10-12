@@ -156,6 +156,7 @@ function vsite_create_vsite($name, $domain, $uid, $bundle = 'personal', $preset 
   // Sets the site visibility value if the module is available and specified.
   if (module_exists('vsite_access')) {
     if (isset($visibility)) {
+      watchdog('purl', print_r(VSITE_ACCESS_FIELD, true));
       $node->{VSITE_ACCESS_FIELD} = array(
         LANGUAGE_NONE => array(
           array(
