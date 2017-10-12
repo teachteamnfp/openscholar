@@ -20,7 +20,7 @@ Feature:
   @api @features_first @javascript
   Scenario: Photo caption
     Given I am logging in as "john"
-      And I visit the unaliased edit path of "news/semester-date-revised" on vsite "john"
+      And I edit the node "Semester Date Revised" in the group "john"
       And I click "Choose File"
       And I wait "1 second" for the media browser to open
       And I should wait for the text "Please wait while we get information on your files." to "disappear"
@@ -40,7 +40,7 @@ Feature:
   @api @features_first
   Scenario: Edit existing news content
     Given I am logging in as "john"
-      And I visit the unaliased edit path of "news/semester-date-revised" on vsite "john"
+      And I edit the node "Semester Date Revised" in the group "john"
      When I fill in "Title" with "Semester Date postponed"
       And I press "Save"
       And I sleep for "2"
@@ -49,7 +49,7 @@ Feature:
   @api @features_first
   Scenario: Delete existing news content
     Given I am logging in as "john"
-      And I visit the unaliased edit path of "news/semester-date-revised" on vsite "john"
+      And I edit the node "Semester Date postponed" in the group "john"
      When I click "Delete this news"
      Then I should see "This action cannot be undone."
       And I press "Delete"
@@ -79,7 +79,7 @@ Feature:
   @api @features_second
   Scenario: Permission to edit own news content
     Given I am logging in as "michelle"
-      And I visit the unaliased edit path of "news/semester-notification" on vsite "john"
+      And I edit the node "Semester Date postponed" in the group "john"
       And I fill in "Title" with "Semester dates published"
       And I press "Save"
      Then I should see "Semester dates published"
@@ -87,19 +87,19 @@ Feature:
   @api @features_second
   Scenario: Permission to edit any news content
     Given I am logging in as "alexander"
-      And I visit the unaliased edit path of "news/semester-notification" on vsite "john"
+      And I edit the node "Semester dates published" in the group "john"
      Then I should see "Access Denied"
 
   @api @features_second
   Scenario: Permission to delete any news content
     Given I am logging in as "alexander"
-      And I visit the unaliased delete path of "news/semester-notification" on vsite "john"
+      And I open the delete form for the post "news/semester-notification" on vsite "john"
      Then I should see "Access Denied"
 
   @api @features_second
   Scenario: Permission to delete own news content
     Given I am logging in as "michelle"
-      And I visit the unaliased edit path of "news/semester-notification" on vsite "john"
+      And I edit the node "Semester dates published" in the group "john"
       And I click "Delete this news"
      Then I should see "This action cannot be undone."
       And I press "Delete"

@@ -4453,51 +4453,10 @@ JS;
     $element->click();
   }
 
-
-  /**
-   * Visit the internal (unaliased) Drupal path of the current page
-   *
-   * @When /^I open the edit form for the post "([^"]*)" on vsite "([^"]*)"$/
-   *//*
-  public function iVisitTheEditPathOfPage($url, $vsite) {
-    $unaliased_path = drupal_lookup_path('source', $url);
-
-    # Check the url with the vsite prepended
-    if (! $unaliased_path) {
-      $unaliased_path = drupal_lookup_path('source', "$vsite/$url");
-    }
-
-    if (! $unaliased_path) {
-      throw new Exception("Could not find an unaliased path for '$url' on vsite '$vsite'.");
-    }
-
-    $this->visit("/$vsite/$unaliased_path/edit");
-  }*/
-
   /**
    * Visit the internal (unaliased) Drupal path of the current page
    *
    * @When /^I open the delete form for the post "([^"]*)" on vsite "([^"]*)"$/
-   */
-  public function iVisitTheDeletePathOfPage($url, $vsite) {
-    $unaliased_path = drupal_lookup_path('source', $url);
-
-    # Check the url with the vsite prepended
-    if (! $unaliased_path) {
-      $unaliased_path = drupal_lookup_path('source', "$vsite/$url");
-    }
-
-    if (! $unaliased_path) {
-      throw new Exception("Could not find an unaliased path for '$url' on vsite '$vsite'.");
-    }
-
-    $this->visit("/$vsite/$unaliased_path/delete");
-  }
-
-  /**
-   * Visit the internal (unaliased) Drupal path of the current page
-   *
-   * @When /^I visit the unaliased delete path of "([^"]*)" on vsite "([^"]*)"$/
    */
   public function iVisitTheDeletePathOfPage($url, $vsite) {
     $unaliased_path = drupal_lookup_path('source', $url);
