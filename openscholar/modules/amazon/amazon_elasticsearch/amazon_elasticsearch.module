@@ -2,6 +2,8 @@
 
 define('AMAZON_ELASTICSEARCH_ENVIRONMENT_ID', 'amazon_elasticsearch_server_1');
 
+$conf['amazon_elasticsearch_endpoint_url'] = 'https://search-production-sorxciwu3xiuovki4goozns6pm.us-east-1.es.amazonaws.com';
+
 function amazon_elasticsearch_create_environment() {
   // Creates the new environment
   $environment = apachesolr_environment_load(AMAZON_ELASTICSEARCH_ENVIRONMENT_ID);
