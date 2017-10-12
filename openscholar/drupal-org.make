@@ -113,7 +113,7 @@ projects[facetapi][version] = 1.1
 projects[facetapi][patch][] = "http://drupal.org/files/2006704-facetapi-er-regroup-2.patch"
 
 projects[features][subdir] = "contrib"
-projects[features][version] = 2.0
+projects[features][version] = 2.6
 
 projects[feeds][subdir] = "contrib"
 projects[feeds][version] = 2.0-alpha7
