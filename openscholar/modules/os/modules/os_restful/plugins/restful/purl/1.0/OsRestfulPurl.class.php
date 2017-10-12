@@ -76,7 +76,7 @@ class OsRestfulPurl extends \RestfulBase implements \RestfulDataProviderInterfac
       $values['domain'] = $this->request['departmentSchool'];
     }
     $values['preset'] = $this->request['contentOption'];
-    $values['vsite_private'] = $this->request['vsite'];
+    $values['vsite_private'] = $this->request['vsite_private'];
 
     $parent = FALSE;
     if($this->request['parent']){

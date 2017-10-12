@@ -121,7 +121,7 @@
       individualScholar: $scope.individualScholar,
       projectLabSmallGroup: $scope.projectLabSmallGroup,
       departmentSchool: $scope.departmentSchool,
-      vsite: $scope.vsite.value,
+      vsite_private: $scope.vsite_private.value,
       contentOption: $scope.contentOption.value,
      };
 

@@ -129,30 +129,30 @@
 				<div id="body-container-group-2">
 					<div class="visibility">
 						<div>
-							<span class="enlarged-text" ng-switch="vsite.value">Choose who can view your site: <b ng-switch-when="0">Public on the web</b> <b ng-switch-when="1">Invite only during site creation</b> <b ng-switch-when="2">Anyone with a link</b> <b ng-switch-when="3">Harvard Community</b> </span>
+							<span class="enlarged-text" ng-switch="vsite_private.value">Choose who can view your site: <b ng-switch-when="0">Public on the web</b> <b ng-switch-when="1">Invite only during site creation</b> <b ng-switch-when="2">Anyone with a link</b> <b ng-switch-when="3">Harvard Community</b> </span>
 							<a ng-click="toggleFunc()">Change</a>
 						</div>
 						<div ng-show="showAll" class="site-vis-radios">
 							<div class="form-item form-type-radio">
-								<input type="radio" ng-model="vsite.value" value="0">
+								<input type="radio" ng-model="vsite_private.value" value="0">
 								<label class="option">Public on web
 									<br>
 									<span class="description">Anyone on the internet can view your site. Your site will be shown in search results. No sign-inrequired.</span> </label>
 							</div>
 							<div class="form-item form-type-radio">
-								<input type="radio" ng-model="vsite.value" value="1">
+								<input type="radio" ng-model="vsite_private.value" value="1">
 								<label class="option">Invite only during site creation
 									<br>
 									<span class="description">Only site members can view your site. Your site will not be indexed by search engines.</span> </label>
 							</div>
 							<div class="form-item form-type-radio">
-								<input type="radio" ng-model="vsite.value" value="2">
+								<input type="radio" ng-model="vsite_private.value" value="2">
 								<label class="option">Anyone with a link
 									<br>
 									<span class="description"> Anyone who has the URL to your site can view your site. Your site will not be indexed by search engines.</span> </label>
 							</div>
 							<div class="form-item form-type-radio">
-								<input type="radio" ng-model="vsite.value" value="3">
+								<input type="radio" ng-model="vsite_private.value" value="3">
 								<label class="option">Harvard Community
 									<br>
 									<span class="description">Only the harvard community can access your site. Sign-in via HarvardKey required.</span> </label>
