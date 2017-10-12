@@ -226,6 +226,7 @@ html.js input.throbbing {
     color: #FFF;
     font-weight: bold;
 }
+button.button,
 #edit-field_software_package-und-drop .media-browser-drop-box .ng-binding.ng-scope,
 .redirect-add,
 body.page-node-revisions ul.action-links a,
@@ -457,11 +458,12 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
 
 /** OVERLAY MODAL OVERRIDES **/
 .ui-dialog button.ui-dialog-titlebar-close, #overlay-close, #overlay-close:hover  {
-    background: url('../images/cp-sprite.png') no-repeat 0 -547px;
+    background: url(../images/cp-sprite.png) no-repeat 0 -547px;
     width: 30px;
     height: 30px;
     position: relative;
-    /* margin: -28px 10px; */
+    margin: -8px 0px;
+    border: none;
 }
 
 
@@ -1679,7 +1681,7 @@ form#documentation img {
 span[name="faq_sort"] .form-radios {
     margin: 0 15px 15px 0;
 }
-
+.margin_bottom-15,
 .margin-bottom{
     margin-bottom: 15px;
 }
