@@ -3708,6 +3708,7 @@ function os_field_formatter_view($entity_type, $entity, $field, $instance, $lang
           'html' => TRUE,
           'max_length' => $display['settings']['trim_length'],
           'word_boundary' => TRUE,
+          'ellipsis' => TRUE,
         );
         $text = views_trim_text($alter, media_filter($item['value']));
 
