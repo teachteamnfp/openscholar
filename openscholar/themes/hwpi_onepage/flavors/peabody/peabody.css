@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css?family=Droid+Sans|Volkhov');
+@import url('https://fonts.googleapis.com/css?family=Droid+Sans:400,700|Volkhov:400,400i,700');
+
 body,
 #page-title,
 .node-title,
@@ -31,4 +32,10 @@ h2.block-title,
 .date-nav h3,
 .cke_editable * {
     font-family: 'Montserrat', sans-serif !important;
+}
+
+
+#menu-bar {
+    background: orange;
+
 }
