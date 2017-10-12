@@ -457,7 +457,7 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
 
 
 /** OVERLAY MODAL OVERRIDES **/
-.ui-dialog button.ui-dialog-titlebar-close, #overlay-close, #overlay-close:hover  {
+.ui-dialog button.ui-dialog-titlebar-close, #overlay-close:hover  {
     background: url(../images/cp-sprite.png) no-repeat 0 -547px;
     width: 30px;
     height: 30px;
@@ -1326,7 +1326,7 @@ margin: 0 0 10px;
     font-size: 15px;
     line-height:20px;
 }
-
+#overlay-close,
 :not(form) div.messages {
 margin: 0;
 }
