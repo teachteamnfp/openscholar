@@ -39,7 +39,7 @@ projects[comment_sources][patch][] = "https://drupal.org/files/issues/change-sub
 projects[comment_sources][patch][] = "https://raw.github.com/openscholar/openscholar/bb0856af84a58881a0438cd32d9b6a21dcfd15ea/patches/comment_sources.9139.comment_settings.patch"
 
 projects[context][subdir] = "contrib"
-projects[context][version] = 3.7
+projects[context][version] = 3.6
 projects[context][patch][] = "http://drupal.org/files/os-custom-beta4.patch"
 projects[context][patch][] = "http://drupal.org/files/1855004.context.float_block_weights.patch"
 
