@@ -33,25 +33,64 @@ body,
 #content-column h2,
 #content-column h3,
 #content-column h4,
-h2.block-title {
+h2.block-title,
+.node-type-person #content-column .node-person h1.node-title {
 	 font-family: 'Lora', sans-serif !important;
 }
 
 
-
-
-
+h1#page-title {
+    font-size: 2em;
+    
+}
+#menu-bar ul.nice-menu ul,
+#menu-bar ul.nice-menu a.active,
+#menu-bar ul.nice-menu a:hover,
+#menu-bar ul.nice-menu .menuparent.over > a,
+#menu-bar ul.nice-menu .menuparent a:hover,
+#menu-bar ul.nice-menu .menuparent a.active,
 #header {
     background-color: #4d5d71;
 }
 
 #menu-bar {
     background-color: #3c4858;
+    border-bottom: 9px solid #f5f5f5
 
 }
+.region-header-third ul.nice-menu a,
+#header,
+#header a,
+#boxes-box-site_info a {
+    color: #FFF;
+}
+
+ul.nice-menu ul {
+    top: 3.8em !important;
+}
+
 
 #columns a.node-readmore:after {
     background: none;
     padding-right: 0;
 
+}
+
+#footer {
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+#powered-by a {
+    background-position: -14px -520px;
+}
+h2.block-title {
+    padding: 15px 0 10px;
+  
+   
+}
+h2.block-title,
+.node-type-person #content-column .node-person .pic-bio {
+    border-top: 1px solid orange;
+   
 }
