@@ -150,7 +150,7 @@ projects[filefield_paths][download][branch] = 7.x-5.x
 projects[filefield_paths][download][revision] = 84fb637
 
 projects[flag][subdir] = "contrib"
-projects[flag][version] = 3.1
+projects[flag][version] = 3.9
 
 projects[hierarchical_taxonomy][subdir] = "contrib"
 projects[hierarchical_taxonomy][download][type] = git
