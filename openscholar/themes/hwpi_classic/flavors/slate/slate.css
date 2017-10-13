@@ -18,6 +18,10 @@ color: #C2230E;
 a:hover {
 color: #8996A0;
 }
+a.os-swipe-large,
+a.os-swipe-small {
+    background-color: #C2230E;
+}
 
 body,
 .date-nav h3,

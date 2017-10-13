@@ -83,6 +83,9 @@ function os_metatag_export_default() {
       'twitter:card' => array(
         'value' => 'summary',
       ),
+      'twitter:title' => array(
+        'value' => '[site:site_title]',
+      ),
     ),
   );
 

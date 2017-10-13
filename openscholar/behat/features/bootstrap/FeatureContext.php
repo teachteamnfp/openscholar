@@ -26,6 +26,10 @@ class FeatureContext extends DrupalContext {
       $this->getSession()->resizeWindow(1440, 1200, 'current');
     }
 
+    // turn off Mollom CAPTCHA verification
+    variable_set('mollom_testing_mode', 1);
+    variable_del('mollom_cmp_enabled');
+
     parent::beforeScenario($event);
   }
 
@@ -463,16 +467,18 @@ class FeatureContext extends DrupalContext {
       throw new Exception("A table with the class $class wasn't found");
     }
 
-    $table_rows = $table->getRows();
     $hash = $table->getRows();
     // Iterate over each row, just so if there's an error we can supply
     // the row number, or empty values.
-    foreach ($table_rows as $i => $table_row) {
-      if (empty($table_row)) {
-        continue;
+    foreach ($hash as $vals) {
+      $xpath_fragments = array();
+      foreach ($vals as $v) {
+        $xpath_fragments[] = 'td//text()[contains(.,"'.$v.'") and not(ancestor::*[contains(@class, "ng-hide")])]';
       }
-      if ($diff = array_diff($hash[$i], $table_row)) {
-        throw new Exception(sprintf('The "%d" row values are wrong.', $i + 1));
+      $xpath = '//tr['.implode(' and ', $xpath_fragments).']';
+      if (!$table_element->findAll('xpath', $xpath)) {
+        error_log($xpath);
+        throw new Exception("Row with the following values not found: ".implode(', ', $vals));
       }
     }
   }
@@ -527,10 +533,18 @@ class FeatureContext extends DrupalContext {
     $element = $this->getSession()->getPage();
     $url = $this->createGist($element->getContent());
     print_r('You asked to see the page content. Here is a gist contain the html: ' . $url . "\n");
-    $this->iShouldPrintPageTo(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'screenshots' . DIRECTORY_SEPARATOR . time() . '.txt');
+
+    // Make sure the temp directory exists and is writable before using it
+    $tmpdir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'screenshots';
+    if (! file_exists($tmpdir)) {
+      mkdir($tmpdir, "0777", true);
+    }
+
+    $this->iShouldPrintPageTo($tmpdir . DIRECTORY_SEPARATOR . time() . '.txt');
     $driver = $this->getSession()->getDriver();
     $screenshot = $driver->getScreenshot();
     $gistUrl = $this->createGist('<img src="data:image/png;base64,'.base64_encode($screenshot).'">');
+    $this->iPrintPageScreenShot();
     print_r("Here is a screenshot of the page: $gistUrl\n");
   }
 
@@ -850,6 +864,18 @@ class FeatureContext extends DrupalContext {
       case "feed reader":
         $widgetType = "os_boxes_feedreader";
         break;
+      case "dataverse list":
+        $widgetType = "os_boxes_dataverse_list";
+        break;
+      case "dataverse search box":
+        $widgetType = "os_boxes_dataverse_search";
+        break;
+      case "dataverse dataset citation":
+        $widgetType = "os_boxes_dataverse_dataset_citation";
+        break;
+      case "dataverse dataset":
+        $widgetType = "os_boxes_dataverse_dataset";
+        break;
     }
     $metasteps[] = new Step\When('I visit "/' . $vsite . '/os/widget/add/' . $widgetType . '/cp-layout"');
     $hash = $table->getRows();
@@ -884,8 +910,125 @@ class FeatureContext extends DrupalContext {
           break;
       }
     }
+
+    $metasteps[] = new Step\When('I check the box "edit-make-embeddable"');
     $metasteps[] = new Step\When('I press "Save"');
     return $metasteps;
+  }
+
+  /**
+   * @Given /^I drag the "([^"]*)" widget to the "([^"]*)" region$/
+   */
+  public function iDragTheWidgetToTheRegion($widget_label, $region_name) {
+
+    $widget_name_label_map = array(
+      "Active book TOC"                        => "boxes-box-active-book-toc",
+      "All Posts"                              => "boxes-box-all-posts",
+      "Blog RSS Feed"                          => "boxes-blog_rss_feed",
+      "Contact"                                => "boxes-hwp_personal_contact_html",
+      "Filter by taxonomy for pages"           => "boxes-vocabulary_filter_pages",
+      "Filter by term"                         => "boxes-box-filter-by-term",
+      "Front page header text"                 => "boxes-iqss_scholars_fp_headertext",
+      "HWP Option Info text"                   => "boxes-iqss_scholars_fp_hwp_option",
+      "Latest News"                            => "boxes-os_news_latest",
+      "Latest Publications"                    => "boxes-boxes-os_boxes_feedreader",
+      "List of posts"                          => "boxes-box-list-of-posts",
+      "Recent FAQs"                            => "boxes-os_faq_sv_list",
+      "Recent Images"                          => "boxes-os_image_gallery_latest",
+      "Recent Presentations"                   => "boxes-os_presentations_recent",
+      "Recent Publications"                    => "boxes-os_publications_recent",
+      "Scholars Info text with video link"     => "boxes-iqss_scholars_fp_infoblock",
+      "Scholars Learn More Box"                => "boxes-iqss_scholars_fp_learnmore",
+      "Scholars Learn More Toggle Page"        => "boxes-iqss_scholars_learnmore_toggle",
+      "Scholars Logo"                          => "boxes-iqss_scholars_fp_logoblock",
+      "Scholars fixed-position header."        => "boxes-iqss_scholars_fixed_header",
+      "Search box"                             => "boxes-solr_search_box",
+      "Site RSS Feed"                          => "boxes-os_rss",
+      "Subscribe to MailChimp mailing list"    => "boxes-os_box_mailchimp",
+      "Upcoming Events"                        => "boxes-os_events_upcoming",
+      "Active Book's TOC"                      => "boxes-os_booktoc",
+      "AddThis"                                => "boxes-os_addthis",
+      "Blog Archive"                           => "views-os_blog-block",
+      "Blog RSS Feed"                          => "boxes-blog_rss_feed",
+      "Contact"                                => "boxes-hwp_personal_contact_html",
+      "Filter News by Month"                   => "views-os_news-news_by_month_block",
+      "Filter News by Year"                    => "views-os_news-news_by_year_block",
+      "Filter Profiles by Alphabetical Groups" => "views-os_profiles-filter_by_alphabet",
+      "Filter by taxonomy for pages"           => "boxes-vocabulary_filter_pages",
+      "Front page header text"                 => "boxes-iqss_scholars_fp_headertext",
+      "Google Translate"                       => "os_ga-google_translate",
+      "HWP Option Info text"                   => "boxes-iqss_scholars_fp_hwp_option",
+      "Latest Publications"                    => "boxes-boxes-os_boxes_feedreader",
+      "Mini Calendar"                          => "views-os_events-block_1",
+      "Primary Menu"                           => "os-primary-menu",
+      "Recent Documents"                       => "boxes-os_booklets_recent_docs",
+      "Recent FAQs"                            => "boxes-os_faq_sv_list",
+      "Recent Images"                          => "boxes-os_image_gallery_latest",
+      "Recent Presentations"                   => "boxes-os_presentations_recent",
+      "Recent Publications"                    => "boxes-os_publications_recent",
+      "Recent Software Releases"               => "views-os_software_releases-block_1",
+      "Scholars Info text with video link"     => "boxes-iqss_scholars_fp_infoblock",
+      "Scholars Learn More Box"                => "boxes-iqss_scholars_fp_learnmore",
+      "Scholars Learn More Toggle Page"        => "boxes-iqss_scholars_learnmore_toggle",
+      "Scholars Logo"                          => "boxes-iqss_scholars_fp_logoblock",
+      "Scholars"                               => "boxes-iqss_scholars_fixed_header",
+      "Search box"                             => "boxes-solr_search_box",
+      "Site RSS Feed"                          => "boxes-os_rss",
+      "Subscribe to MailChimp mailing list"    => "boxes-os_box_mailchimp",
+      "Upcoming Events"                        => "boxes-os_events_upcoming",
+    );
+
+    $region_names = array(
+      "header-first",
+      "header-second",
+      "header-third",
+      "menu-bar",
+      "sidebar-first",
+      "content",
+      "content-top",
+      "content-first",
+      "content-second",
+      "content-bottom",
+      "sidebar-second",
+      "footer-first",
+      "footer",
+      "footer-third",
+      "footer-bottom",
+    );
+
+    if (! in_array($region_name, $region_names)) {
+      throw new Exception("I do not recognize the region name: $region_name.");
+    }
+
+    $css_selector = $widget_name_label_map[$widget_label];
+    $widget_icon = $this->getSession()->getPage()->find('css', "div#$css_selector");
+    if (! $widget_icon) {
+      throw new Exception("I could not find a widget for '$widget_label'.");
+    }
+
+    $region_element = $this->getSession()->getPage()->find('css', "div#edit-layout-$region_name");
+    if (! $region_element) {
+      throw new Exception("I could not find a region for '$region_name'.");
+    }
+    $widget_icon->dragTo($region_element);
+
+    $save_button = $this->getSession()->getPage()->find('css', "input#edit-submit");
+    if (! $save_button) {
+      throw new Exception("I could not find a save button using css selector 'input#edit-submit'.");
+    }
+
+    $save_button->click();
+  }
+
+  /**
+   * @Given /^I click the big gear$/
+   */
+  public function iClickTheBigGear() {
+    $big_gear = $this->getSession()->getPage()->find('css', "a.ctools-dropdown-link.ctools-dropdown-text-link");
+    if (! $big_gear) {
+      throw new Exception("I did not locate the big gear icon.");
+    }
+    $big_gear->click();
   }
 
   /**
@@ -908,6 +1051,33 @@ class FeatureContext extends DrupalContext {
       'delta' => $row->object_id,
       'title' => $widget,
       'region' => 'sidebar_second',
+      'status' => 0,
+      'weight' => 0
+    );
+    $vsite->controllers->context->set('os_pages-page-' . $page_id . ":reaction:block", $blocks);
+
+  }
+
+  /**
+   * @Given /^the dataverse widget "([^"]*)" is placed in the "([^"]*)" layout$/
+   */
+  public function theDataverseWidgetIsPlacedInTheLayout($widget, $page) {
+    $q = db_select('spaces_overrides', 'so')
+      ->fields('so', array('object_id', 'id'))
+      ->condition('value', '%s:5:"title";s:' . strlen($widget) . ':"' . $widget . '";%', 'LIKE')
+      ->condition('object_type', 'boxes', '=');
+    $results = $q->execute()->fetchAll();
+    $row = array_pop($results);
+
+    $page_id = FeatureHelp::GetNodeId($page);
+
+    $vsite = spaces_load('og', $row->id);
+    $blocks = $vsite->controllers->context->get('os_pages-page-' . $page_id . ":reaction:block");
+    $blocks['blocks']['boxes-' . $row->object_id] = array(
+      'module' => 'boxes',
+      'delta' => $row->object_id,
+      'title' => $widget,
+      'region' => 'content_first',
       'status' => 0,
       'weight' => 0
     );
@@ -1776,6 +1946,34 @@ class FeatureContext extends DrupalContext {
   }
 
   /**
+   * @When /^I select the radio button under "([^"]*)" with a label containing "([^"]*)"$/
+   */
+  public function iSelectRadioButtonUnderWithALabelContaining($under_label, $label_containing) {
+    $page = $this->getSession()->getPage();
+
+    $radiobutton = $page->find('xpath', "//label[starts-with(text(), '$under_label')]/..//div[contains(text(), '$label_containing')]/input");
+
+    if (!$radiobutton) {
+      throw new Exception("A radio button with the name {$name} and value {$value} was not found on the page");
+    }
+    $radiobutton->selectOption(true, FALSE);
+  }
+
+  /**
+   * @When /^I select the "([^"]*)" button with value "([^"]*)"$/
+   */
+  public function iSelectTypedButtonWithValueXyz($button_type, $button_value) {
+    $page = $this->getSession()->getPage();
+    $radiobutton = $page->find('xpath', "//input[@type='$button_type'][@value='$button_value']");
+    if (!$radiobutton) {
+      throw new Exception("A '$button_type' button with the value {$button_value} was not found on the page.");
+    }
+    $radiobutton->selectOption($button_value, FALSE);
+  }
+
+
+
+  /**
    * @When /^I choose the radio button named "([^"]*)" with value "([^"]*)" for the vsite "([^"]*)"$/
    */
   public function iSelectRadioNamedWithValueForVsite($name, $value, $vsite) {
@@ -2253,6 +2451,18 @@ class FeatureContext extends DrupalContext {
   }
 
   /**
+   * @Then /^I should see the FAQ "([^"]*)" comes before "([^"]*)"$/
+   */
+  public function iShouldSeeTheFaqComesBefore($first, $second) {
+    $page = $this->getSession()->getPage()->getContent();
+
+    $pattern = '/<div class="view-content">[\s\S]*' . $first . '[\s\S]*' . $second . '[\s\S]*<\/section>/';
+    if (!preg_match($pattern, $page)) {
+      throw new Exception("The FAQ '$first' does not come before the FAQ '$second'.");
+    }
+  }
+
+  /**
    * @Given /^I define "([^"]*)" domain to "([^"]*)"$/
    */
   public function iDefineDomainTo($vsite, $domain) {
@@ -2325,15 +2535,141 @@ class FeatureContext extends DrupalContext {
    * @Given /^I set feature "([^"]*)" to "([^"]*)" on "([^"]*)"$/
    */
   public function iSetFeatureStatus ($feature, $status, $group) {
-    return array(
+
+    $features = FeatureHelp::VsiteGetVariable($group, 'spaces_features');
+    $info = spaces_features('og');
+
+    $current_value = "current value not found";
+
+    foreach ($info as $k => $i) {
+      if ($i->info['name'] == $feature) {
+        $current_value = $features[$k];
+        break;
+      }
+    }
+
+    /* cases
+     * Disabled > Enabled
+     * Disabled > Private
+     * Enabled > Disabled
+     * Enabled > Private
+     * Private > Enabled
+     * Private > Disabled
+     *
+     * Private = 2
+     * Enabled = 1
+     * Disabled  = 0
+     */
+
+    switch ($status) {
+      case 'Disabled':
+      default:
+        $new_value = 0;
+        break;
+      case 'Enabled':
+      case 'Public':
+        $new_value = 1;
+        break;
+      case 'Private':
+        $new_value = 2;
+        break;
+    }
+
+    $opening = array(
       new Step\When('I visit "' . $group . '"'),
       new Step\When('I make sure admin panel is open'),
       new Step\When('I open the admin panel to "Settings"'),
       new Step\When('I sleep for "1"'),
-      new Step\When('I click "Enable / Disable Apps"'),
-      new Step\When('I select "' . $status . '" from "' . $feature . '"'),
-      new Step\When('I press "edit-submit"'),
+      new Step\When('I click on the "Enable / Disable Apps" control'),
+      new Step\When('I scroll to find "'.$feature.'" in the ".app-form" element'),
+      new Step\When('I wait "1 second"')
     );
+
+    $closer = array(
+      new Step\When('I wait "5 seconds"'),
+      new Step\When('I scroll to find "Save"'),
+      new Step\When('I press "Save"'),
+      new Step\When("I wait for page actions to complete"),
+    );
+
+    $enable = array(
+      new Step\When('I check the "Enable" box in the "'.$feature.'" row'),
+    );
+
+    $disable = array(
+      new Step\When('I check the "Disable" box in the "'.$feature.'" row'),
+    );
+
+    $public = array(
+      new Step\When('I click the "[app-privacy-selector]" control in the "'.$feature.'" row'),
+      new Step\When('I click the "Everyone" control in the "'.$feature.'" row'),
+    );
+
+    $private = array(
+      new Step\When('I click the "[app-privacy-selector]" control in the "'.$feature.'" row'),
+      new Step\When('I click the "Site Members" control in the "'.$feature.'" row'),
+    );
+
+    $output = array();
+    if ($current_value === "current value not found") {
+      throw new Exception("No current value found for feature '$feature'");
+    }
+    if ($current_value == $new_value) {
+      return;
+    }
+    else if ($new_value == 0) {
+      $output = array_merge($opening, $disable, $closer);
+    }
+    elseif ($current_value == 0 && $new_value == 1) {
+      $output = array_merge($opening, $enable, $closer);
+    }
+    else if ($current_value == 0 && $new_value == 2) {
+      $output = array_merge($opening, $enable, $closer, $opening, $private, $closer);
+    }
+    else if ($current_value == 1 && $new_value == 2) {
+      $output = array_merge($opening, $private, $closer);
+    }
+    else if ($current_value == 2 && $new_value == 1) {
+      $output = array_merge($opening, $public, $closer);
+    }
+
+    return $output;
+  }
+
+  /**
+   * @Given /^I check the "([^"]*)" box in the "([^"]*)" row$/
+   */
+  public function iCheckTheBoxInTheRow($column, $row) {
+    $x = '//table/tbody/tr[contains(.,"'.$row.'")]/td[count(//table/thead/tr/th[.="'.$column.'"]/preceding-sibling::th)+1]/input[@type="checkbox"]';
+    $elem = $this->getSession()->getPage()->find('xpath', $x);
+    if (!$elem) {
+      throw new Exception("No checkbox in the \"$column\" column of row \"$row\"");
+    }
+
+    // We cannot use check() on angular forms. Angular WILL NOT detect the changes to the model.
+    // We have to use click()
+    $elem->click();
+  }
+
+  /**
+   * @Given /^I click the "([^"]*)" control in the "([^"]*)" row$/
+   */
+  public function iClicktheControlInTheRow($control, $row) {
+    $x = '//table/tbody/tr[contains(.,"'.$row.'")]/td//';
+    if ($control[0] == '[') {
+      // this is an angular directive we're clicking on
+      $control = trim($control, '[]');
+      $x .= "*[@$control]";
+    }
+    else {
+      $x .= '*[.="'.$control.'"]';
+    }
+    $elem = $this->getSession()->getPage()->find('xpath', $x);
+    if (!$elem) {
+      throw new Exception("No control \"$control\" in the row \"$row\"");
+    }
+
+    $elem->click();
   }
 
   /**
@@ -2618,6 +2954,14 @@ class FeatureContext extends DrupalContext {
     $element = $this->getSession()->getPage();
     $value = $title . ' (' . $nid . ')';
     $element->fillField($id, $value);
+  }
+
+  /**
+   * @Given /^I fill in the "([^"]*)" "([^"]*)" field under "([^"]*)" with "([^"]*)"$/
+   */
+  public function iFillInTheFieldContainingText($nth, $field_type, $field_under_text, $value) {
+    $element = $this->_getNthFieldBelowXyz($nth, $field_type, $field_under_text);
+    $element->setValue($value);
   }
 
   /**
@@ -3080,6 +3424,23 @@ class FeatureContext extends DrupalContext {
   }
 
   /**
+   * @Given /^I should match the regex "([^"]*)"$/
+   *
+   * This step is used to match a regular expression in the page
+   */
+  public function iShouldMatchTheRegex($pattern) {
+    $page_text = $this->getSession()->getPage()->getText();
+
+    $page_text = preg_replace('/\s+/u', ' ', $page_text);
+    $regex = '/'.$pattern.'/iu';
+
+    if (!preg_match($regex, $page_text)) {
+      $message = sprintf('The regex pattern "%s" did not appear in the text of this page, but it should have.', $pattern);
+      throw new Exception($message);
+    }
+  }
+
+  /**
    * @Then /^I should wait for the text "([^"]*)" to "([^"]*)"$/
    */
   public function iShouldWaitForTheTextTo($text, $appear) {
@@ -3095,7 +3456,6 @@ class FeatureContext extends DrupalContext {
   }
 
   /**
-   * Wait for an element by its XPath to appear or disappear.
    *
    * @param string $xpath
    *   The XPath string.
@@ -3652,6 +4012,27 @@ class FeatureContext extends DrupalContext {
     return array();
   }
 
+  /*
+   * @Given /^I make sure admin panel is closed$/
+   */
+  public function adminPanelClosed() {
+    $page = $this->getSession()->getPage();
+    $this->waitForPageActionsToComplete();
+
+    if (! $page->find('css', '[left-menu].closed')) {
+      return array(
+        new Step\When('I press "Close Menu"'),
+        new Step\When('I sleep for "1"'),
+      );
+    }
+    elseif (!$page->find('css', '[left-menu]')) {
+      throw new \Exception("The admin panel was not found on this page. Are you sure its installed and enabled?");
+    }
+
+    return array();
+  }
+
+
   /**
    * @Given /^I make sure admin panel is closed$/
    */
@@ -3841,6 +4222,39 @@ JS;
     elseif ($attempts == 20) {
       throw new Exception("20 attempts were made and the element is still not visible.");
     }
+  }
+
+  /**
+   * @When /^I scroll to find "([^"]*)"$/
+   */
+  function iScrollToFind($text) {
+    $this->getSession()->executeScript("
+      var result = document.evaluate('//*[.=\"$text\"]', document.body, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+      var elem = result.singleNodeValue;
+      elem.scrollIntoView();
+    ");
+  }
+
+  /**
+   * @When /^I scroll to find "([^"]*)" in the "([^"]*)" element$/
+   */
+  function iScrollToFindInElement($text, $selector) {
+    $script = '';
+    switch($selector[0]) {
+      case '/':
+        // xpath
+        $script .= 'var result = document.evaluate("'.$selector.'", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);';
+        $script .= 'var elem = result.singleNodeValue;';
+        break;
+      case '.':
+      case '#':
+        // css
+        $script .= 'var elem = document.querySelector("'.$selector.'");';
+    }
+
+    $script .= "var target = document.evaluate('.//*[.=\"$text\"]', elem, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;";
+    $script .= "target.scrollIntoView()";
+    $this->getSession()->executeScript($script);
   }
 
   /**
@@ -4099,6 +4513,26 @@ JS;
     return $unaliased_path;
   }
 
+  /**
+   * Visit the internal (unaliased) Drupal path of the current page
+   *
+   * @When /^I open the delete form for the post "([^"]*)" on vsite "([^"]*)"$/
+   */
+  public function iVisitTheDeletePathOfPage($url, $vsite) {
+    $unaliased_path = drupal_lookup_path('source', $url);
+
+    # Check the url with the vsite prepended
+    if (! $unaliased_path) {
+      $unaliased_path = drupal_lookup_path('source', "$vsite/$url");
+    }
+
+    if (! $unaliased_path) {
+      throw new Exception("Could not find an unaliased path for '$url' on vsite '$vsite'.");
+    }
+
+    $this->visit("/$vsite/$unaliased_path/delete");
+  }
+
   /*
    * Helper function to get node id from Drupal aliased URL
    */
@@ -4133,4 +4567,335 @@ JS;
     $this->visit("$path/$form");
   }
 
+  /**
+   * @When /^I visit the unaliased registration path of "([^"]*)" on vsite "([^"]*)" and append "([^"]*)"$/
+   */
+  public function iVisitTheUnaliasedRegistrationPathOfAndAppend($url, $vsite, $appendage) {
+    $unaliased_path = drupal_lookup_path('source', $url);
+
+    # Check the url with the vsite prepended
+    if (! $unaliased_path) {
+      $unaliased_path = drupal_lookup_path('source', "$vsite/$url");
+    }
+
+    if (! $unaliased_path) {
+      throw new Exception("Could not find an unaliased path for '$url' on vsite '$vsite' with '$appendage' appended.");
+    }
+
+    if (preg_match('/node\/(\d+)/', $unaliased_path, $matches)) {
+      if (isset($matches[1])) {
+        $nid = $matches[1];
+      }
+    }
+
+    if (! isset($nid)) {
+      throw new Exception("Could not find a node ID via drupal_lookup_path(): $unaliased_path");
+    }
+
+    $this->visit("$vsite/os_events/nojs/registration/$nid/$appendage");
+  }
+  /**
+   *
+   * @Then /^I should see "([^"]*)" events named "([^"]*)" over the next "([^"]*)" pages$/
+   *
+   */
+  public function iShouldSeeNEventsNamedXyzOverTheNextNDateUnits($num_events, $event_title, $num_intervals) {
+
+    $num_events_counted = 0;
+
+    $counter = 0;
+    while ($counter++ <= $num_intervals) {
+      $num_events_counted +=
+        count($this->getSession()->getPage()->findAll('xpath',
+          "//div[@class='calendar-calendar']//td[starts-with(@id, 'os_events-')]//span[@class='field-content']/a[text()='$event_title']"));
+
+      $page = $this->getSession()->getPage()->getContent();
+
+      $date_next_arrow = $this->getSession()->getPage()->find('xpath', "//li[@class='date-next']/a");
+      $date_next_arrow->click();
+    }
+
+    $counter = 0;
+    if ($num_events_counted == (int)$num_events) {
+
+      # Return to today's calendar page
+      while ($counter++ <= $num_intervals) {
+        $date_prev_arrow = $this->getSession()->getPage()->find('xpath', "//li[@class='date-prev']/a");
+        $date_prev_arrow->click();
+      }
+      return true;
+    }
+    throw new Exception("Found $num_events_counted events, but expected $num_events.\n");
+  }
+
+  /**
+   *
+   * @Given /^I fill in "([^"]*)" with date interval "([^"]*)" from "([^"]*)"$/
+   *
+   */
+  public function iFillInFieldWithDateInterval($element_id, $date_interval, $start_date) {
+    $now = new DateTime($start_date);
+    $future_date = $now->add(new DateInterval($date_interval))->format("M d Y");
+    return new Step\When("I fill in \"$element_id\" with \"$future_date\"");
+  }
+
+  /**
+   * @Given /^I fill in the "([^"]*)" "([^"]*)" field under "([^"]*)" with date interval "([^"]*)" from "([^"]*)"$/
+   */
+  public function iFillInTheNthFieldBelowXyzWithDateInterval($nth, $field_type, $field_under_text, $date_interval, $start_date) {
+    $element = $this->_getNthFieldBelowXyz($nth, $field_type, $field_under_text);
+    $future_date = $this->_getDateInterval($start_date, $date_interval);
+    $element->setValue($future_date);
+  }
+
+  /**
+   * @Given /^I fill in the "([^"]*)" "([^"]*)" field above the "([^"]*)" "([^"]*)" with date interval "([^"]*)" from "([^"]*)"$/
+   */
+  public function iFillInTheNthFieldAboveXyzWithDateInterval($nth, $field_type1, $field_under_text, $field_type2, $date_interval, $start_date) {
+    $element = $this->_getNthFieldAboveXyz($nth, $field_type1, $field_under_text, $field_type2);
+    $future_date = $this->_getDateInterval($start_date, $date_interval);
+    $element->setValue($future_date);
+  }
+
+  /**
+   * @Given /^I fill in the "([^"]*)" "([^"]*)" field within the "([^"]*)" section with date interval "([^"]*)" from "([^"]*)"$/
+   */
+  public function iFillInTheNthFieldWithinXyzWithDateInterval($nth, $field_type1, $field_within_text, $date_interval, $start_date) {
+    $element = $this->_getNthFieldWithinXyz($nth, $field_type1, $field_within_text, $field_type2);
+    $future_date = $this->_getDateInterval($start_date, $date_interval);
+    $element->setValue($future_date);
+  }
+
+  /*
+   * Helper function to convert ordinal number (nth) to cardinal number (n)
+   */
+  private function _ordinal_to_cardinal($nth) {
+    $nth_index = preg_replace("/(st|nd|th)/i", "", $nth);
+
+    if (! preg_match("/\d+/", $nth_index)) {
+      throw new Exception("Expected an ordinal number, e.g., 1st, 22nd, 1457th), but did not find one.");
+    }
+
+    return (int)$nth_index - 1;
+  }
+
+  /**
+   * Helper function to get an input element under a div label
+   */
+  private function _getNthFieldBelowXyz($nth, $field_type, $field_under_text) {
+    $page = $this->getSession()->getPage();
+    $nth_index = $this->_ordinal_to_cardinal($nth);
+    $xpath_expr = "//label[contains(text(), '$field_under_text')]/..//input[@type='$field_type']";
+    $elements = $page->findAll('xpath', $xpath_expr);
+
+    if (isset($elements[$nth_index])) {
+      return $elements[$nth_index];
+    } else {
+      throw new Exception("XPath expression not found at the $nth index: '$xpath_expr'.");
+    }
+  }
+
+  /**
+   * Helper function to get an input element within a div label
+   */
+  private function _getNthFieldWithinXyz($nth, $field_type, $field_within_text) {
+    $page = $this->getSession()->getPage();
+    $nth_index = $this->_ordinal_to_cardinal($nth);
+    $xpath_expr = "//label[contains(text(), '$field_within_text')]/../input[@type='$field_type']";
+    $elements = $page->findAll('xpath', $xpath_expr);
+
+    if (isset($elements[$nth_index])) {
+      return $elements[$nth_index];
+    } else {
+      throw new Exception("XPath expression not found at the $nth index: '$xpath_expr'.");
+    }
+  }
+
+  /**
+   * Helper function to get an input element above another element
+   */
+  private function _getNthFieldAboveXyz($nth, $field_type1, $field_above_text, $field_type2) {
+    $page = $this->getSession()->getPage();
+    $nth_index = $this->_ordinal_to_cardinal($nth);
+    $xpath_expr = "//input[@type='$field_type2'][@value='$field_above_text']/..//input[@type='$field_type1']";
+    $elements = $page->findAll('xpath', $xpath_expr);
+
+    if (isset($elements[$nth_index])) {
+      return $elements[$nth_index];
+    } else {
+      throw new Exception("XPath expression not found at the $nth index: '$xpath_expr'.");
+    }
+  }
+
+  /**
+   * @Then /^I should "([^"]*)" event named "([^"]*)" on date "([^"]*)" from "([^"]*)" over the next "([^"]*)" pages$/
+   */
+  public function iShouldSeeTheEventNamedOnDateIntervalFrom($see_or_not, $event_name, $date_interval, $start_date, $num_intervals) {
+
+    $counter = 0;
+    $success = false;
+    while ($counter++ <= $num_intervals) {
+      $page = $this->getSession()->getPage()->getContent();
+      $future_date = $this->_getDateInterval($start_date, $date_interval);
+      $xpath_expr =  "//td[@id='os_events-$future_date-0']//a[text()='$event_name']";
+      $event_on_date = $this->getSession()->getPage()->findAll('xpath', $xpath_expr);
+
+      switch($see_or_not) {
+        case "see":
+          if ($event_on_date) {
+            $success = true;
+            break;
+          }
+          $msg = "The event '$event_name' was not seen on '$future_date', but should have been there.";
+        case "not see":
+          if (! $event_on_date) {
+            $success = true;
+            break;
+          }
+          $msg = "The event '$event_name' was seen on '$future_date', but should not have been there.";
+        default:
+          throw new Exception("Invalid parameter.  Expected 'I should \"see\" ...' or 'I should \"not see\" ...'.");
+      }
+    }
+
+    if (! $success) {
+      throw new Exception($msg);
+    }
+
+    # Return calendar to home month
+    $counter = 0;
+    while ($counter++ <= $num_intervals) {
+      $date_prev_arrow = $this->getSession()->getPage()->find('xpath', "//li[@class='date-prev']/a");
+      $date_prev_arrow->click();
+    }
+  }
+
+  /*
+   * Helper function to perform a date increment, and return a date string 
+  */
+  private function _getDateInterval($start_date = "now", $date_interval) {
+    $now = new DateTime($start_date);
+    $future_date = $now->add(new DateInterval($date_interval))->format("M d Y");
+    return $future_date;
+  }
+
+  /**
+   *
+   * @Given /^I select the radio button On Until Date E.g., "([^"]*)" with the id "([^"]*)"$/
+   *
+   */
+  public function iSelectTheRadioButtonOnUntilDateMdyWithTheId($eg_date_format, $element_id) {
+    $now = new DateTime();
+    return new Step\When('I select the radio button "On Until Date E.g., ' . $now->format($eg_date_format) . '" with the id "' . $element_id . '"');
+  }
+
+  /**
+   *
+   * @Given /^I focus on "([^"]*)" element "([^"]*)", and press key "([^"]*)"$/
+   *
+   */
+  public function iFocusOnElementAndPressKey($type, $expr, $char) {
+    $elem = $this->getSession()->getPage()->find($type, $expr);
+    $elem->focus();
+    $this->getSession()->getDriver()->keyDown($expr, $char);
+    $this->getSession()->getDriver()->keyUp($expr, $char);
+  }
+
+  /**
+   *
+   * @Given /^I focus on "([^"]*)" element "([^"]*)"$/
+   *
+   */
+  public function iFocusOnElement($type, $expr) {
+    $elem = $this->getSession()->getPage()->find($type, $expr);
+    $elem->focus();
+  }
+
+  /**
+   * @When /^I click the gear icon in the content region$/
+   */
+  public function iClickTheGearIconInTheContentRegion() {
+    $content_region = $this->getSession()->getPage()->find('xpath', "//div[@id='content']");
+    $gear_icon = $this->getSession()->getPage()->find('xpath', "//div[@class='contextual-links-wrapper contextual-links-processed']");
+    $gear_icon_trigger_link = $this->getSession()->getPage()->find('xpath', "//div[@id='content']//div/a[text()='Configure']");
+
+    $content_region->mouseOver();
+    $content_region->click();
+    $gear_icon->mouseOver();
+    $gear_icon->click();
+    $gear_icon_trigger_link->mouseOver();
+    $gear_icon_trigger_link->click();
+  }
+
+  /**
+   * @Given /^I visit the "([^"]*)" parameter in the current query string with "([^"]*)" appended on vsite "([^"]*)"$/
+   */
+  public function iVisitTheParameterInTheCurrentQueryString($parameter, $appendage, $vsite) {
+
+    $url = $this->getSession()->getCurrentUrl();
+    if (preg_match("/$parameter(?:=|%3d)(\S+)/i", $url, $matches)) {
+
+      if (isset($matches[1])) {
+        $this->getSession()->visit($this->locatePath((($vsite) ? "/$vsite/" : "") . rawurldecode($matches[1]) . (($appendage) ? "/$appendage" : "")));
+      } else {
+        throw new Exception("Could not get a $parameter.\n");
+      }
+    }
+  }
+
+
+  /**
+   * @Given /^I click "([^"]*)" in the gear menu$/
+   */
+  public function iClickInTheGearMenu($menu_item) {
+    $gear_menu_item = $this->getSession()->getPage()->find('xpath', "//div[@id='content']//div/a[text()='Configure']/..//a[text()='$menu_item']");
+    $gear_menu_item->click();
+  }
+
+  /**
+   * @When /^I swap the order of the first two items in the outline on vsite "([^"]*)"$/
+   */
+  public function iSwapTheOrderOfTheBookOutline($vsite) {
+    $this->iClickTheGearIconInTheContentRegion();
+    $this->iClickInTheGearMenu("Outline");
+    $this->iVisitTheParameterInTheCurrentQueryString("destination", "outline", $vsite);
+
+    $handles = $this->getSession()->getPage()->findAll('xpath', "//div[@class='handle']");
+
+    if (sizeof($handles) > 1) {
+      $handles[0]->dragTo($handles[1]);
+    } else {
+      throw new Exception("There needs to be at least two book entries to test re-ordering.\n");
+    }
+
+    return array(
+      new Step\When('I press "Save Booklet Outline"'),
+    );
+  }
+
+  /**
+   * @Given /^I visit the parent directory of the current URL$/
+   */
+  public function iVisitParentDirectory() {
+    $url = $this->getSession()->getCurrentUrl();
+    $this->getSession()->visit($this->locatePath($url . '/..'));
+  }
+
+  /**
+   * @Then /^I should see breadcrumb "([^"]*)"$/
+   *
+   */
+  public function iShouldSeeBreadcrumb($breadcrumb) {
+
+    $page = $this->getSession()->getPage()->getContent();
+
+    # Ignore HTML tags between breadcrumb separators
+    $breadcrumb_pattern = preg_replace("/\s+\/\s+/", ".*\/.*", $breadcrumb);
+
+    if (preg_match("/$breadcrumb_pattern/", $page)) {
+      return true;
+    }
+
+    return false;
+  }
 }

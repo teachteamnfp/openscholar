@@ -131,6 +131,18 @@ input {
     margin: 0;
     max-width: 100%;
 }
+#registration-form input.form-text {
+    font-size: 13px;
+    height: auto;
+    padding: 6px 7px;
+    background: none;
+    border: 1px solid #CDCDCD;
+     width: 90%; 
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    background-color: #fff;
+}
 input.text,
 input.title,
 textarea,
@@ -155,6 +167,25 @@ button[disabled],
 input[disabled] {
     cursor: default;
 }
+#registration-form input[type="submit"]
+{cursor: pointer;
+    padding: 5px 12px;
+    margin-bottom: 1em;
+    margin-right: 1em;
+    color: #fff;
+    text-align: center;
+    font-weight: normal;
+    font-size: 1.077em;
+    border: 1px solid #888;
+    border-bottom: 1px solid #888;
+    border-left-color: #888;
+    border-right-color: #888;
+    background: #888;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    padding: 8px 15px;
+    font-family: helvetica;}
 /** OS LOGIN BUTTON **/
 
 #block-os-login {
@@ -325,7 +356,7 @@ html.js #user-login-form li.openid-link,
 #search-block-form {
     padding-bottom: 5px;
 }
-.content #search-block-form,
+#content .search-block-form,
 #content #search-block-form {
     margin-top: 2em;
 }

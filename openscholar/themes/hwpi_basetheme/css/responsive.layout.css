@@ -392,7 +392,7 @@ padding:0!important;
 .region-header-second td{
 	padding:0!important;
 }
-.region-header-second .media-element[style]{
+.region-header-second td .media-element[style]{
 	display:table;
 	max-width:30%!important;
 }

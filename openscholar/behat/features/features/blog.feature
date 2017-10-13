@@ -62,7 +62,7 @@ Feature:
  @api @features_first @edit_existing_blog_content @os_blog
  Scenario: Edit existing blog content
     Given I am logging in as "john"
-      And I edit the node "A day in the life of The POTUS." in the group "john"
+     And I edit the node "A day in the life of The POTUS." in the group "john"
      When I fill in "Title" with "Another day in the life of The POTUS."
      When I fill in "Body" with "Each day the President eats lunch."
       And I press "Save"

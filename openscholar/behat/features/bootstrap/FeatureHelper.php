@@ -889,6 +889,22 @@ class FeatureHelp {
     $vsite->controllers->variable->set($name, $value);
   }
 
+  /**
+   * Get the variable $name for the site $vsite
+   */
+  static public function VsiteGetVariable($vsite, $name) {
+    $nid = db_select('purl', 'p')
+      ->fields('p', array('id'))
+      ->condition('value', $vsite)
+      ->condition('provider', 'spaces_og')
+      ->execute()
+      ->fetchField();
+
+    $vsite = vsite_get_vsite($nid);
+    $vsite->controllers->variable->init_overrides();
+    return $vsite->controllers->variable->get($name);
+  }
+
   static public function SetReadOnly($value) {
     variable_set('os_readonly_mode', $value);
   }

@@ -83,7 +83,7 @@
           '<span class="redirect-path">{{r.path}}</span> &#8594; <span class="redirect-target">{{r.target}}</span> <a class="redirect-delete" ng-click="deleteRedirect(r.id)" button-spinner="redirect_delete_{{r.id}}">delete</a>' +
         '</li>' +
       '</ul>' +
-      '<a class="redirect-add" ng-show="showAddLink()" ng-click="toggleAddForm()">+ Add new redirect</a>' +
+      '<a class="redirect-add" ng-show="showAddLink()" ng-click="toggleAddForm()">Add new redirect</a>' +
       '<div class="redirect-add-form" ng-show="showAddForm">' +
         '<div class="display-inline"><label for="redirect-path">Redirect From</label> {{siteBaseUrl}}/<input type="text" id="redirect-path" class="redirect-new-element" ng-model="newRedirectPath" placeholder="Local path"><span class="description">(Example: my-path). Fragment anchors (e.g. #anchor) Leading slash ( / ) are not allowed. To redirect from the homepage, enter the word home.</span></div>' +
         '<div class="display-inline"><label for="redirect-target">Redirect To</label> <input type="text" id="redirect-target" class="redirect-new-element" ng-model="newRedirectTarget" placeholder="Target URL (i.e. http://www.google.com)"><span class="description">Enter any existing destination URL (like http://example.com) to redirect to.</span></div>' +
