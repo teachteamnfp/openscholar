@@ -55,7 +55,8 @@ h1#page-title {
 }
 
 .front #content-panels .region-content-first, .front #content-panels .region-content-bottom {
-background:url('images/fp-panel-bg.png?1234') repeat-y #f5f5f5;
+background:url('images/fp-panel-bg.png?m=15079274erererererr') repeat-x #f5f5f5;
+background-position:50%;
 }
 
 .region-header-third ul.nice-menu a,
