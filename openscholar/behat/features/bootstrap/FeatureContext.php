@@ -4012,27 +4012,6 @@ class FeatureContext extends DrupalContext {
     return array();
   }
 
-  /*
-   * @Given /^I make sure admin panel is closed$/
-   */
-  public function adminPanelClosed() {
-    $page = $this->getSession()->getPage();
-    $this->waitForPageActionsToComplete();
-
-    if (! $page->find('css', '[left-menu].closed')) {
-      return array(
-        new Step\When('I press "Close Menu"'),
-        new Step\When('I sleep for "1"'),
-      );
-    }
-    elseif (!$page->find('css', '[left-menu]')) {
-      throw new \Exception("The admin panel was not found on this page. Are you sure its installed and enabled?");
-    }
-
-    return array();
-  }
-
-
   /**
    * @Given /^I make sure admin panel is closed$/
    */
@@ -4879,23 +4858,5 @@ JS;
   public function iVisitParentDirectory() {
     $url = $this->getSession()->getCurrentUrl();
     $this->getSession()->visit($this->locatePath($url . '/..'));
-  }
-
-  /**
-   * @Then /^I should see breadcrumb "([^"]*)"$/
-   *
-   */
-  public function iShouldSeeBreadcrumb($breadcrumb) {
-
-    $page = $this->getSession()->getPage()->getContent();
-
-    # Ignore HTML tags between breadcrumb separators
-    $breadcrumb_pattern = preg_replace("/\s+\/\s+/", ".*\/.*", $breadcrumb);
-
-    if (preg_match("/$breadcrumb_pattern/", $page)) {
-      return true;
-    }
-
-    return false;
   }
 }
