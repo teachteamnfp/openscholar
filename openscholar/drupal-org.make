@@ -184,9 +184,8 @@ projects[jcarousel][subdir] = "contrib"
 projects[jcarousel][version] = 2.6
 
 projects[jquery_update][subdir] = "contrib"
-projects[jquery_update][download][type] = git
-projects[jquery_update][download][branch] = 7.x-2.x
-projects[jquery_update][download][revision] = 65eecb0
+projects[jquery_update][version] = 2.7
+; projects[jquery_update][download][revision] = 65eecb0
 
 projects[js][subdir] = "contrib"
 projects[js][version] = 1.0-beta2
