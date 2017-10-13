@@ -3732,7 +3732,7 @@ function os_field_formatter_view($entity_type, $entity, $field, $instance, $lang
             $text_after_break = strip_tags(trim($split_break_tag[1]), '<img><iframe><embed><object><param>');
           }
           $text = text_summary($item['safe_value'], $item['format'], $display['settings']['trim_length']);
-          // Remove white space from end of senttence and reach to word boundry.
+          // Remove white space from end of sentence and reach to word boundary.
           $regex = "(.*)\\b.+";
           if (function_exists('mb_ereg')) {
             mb_regex_encoding('UTF-8');
