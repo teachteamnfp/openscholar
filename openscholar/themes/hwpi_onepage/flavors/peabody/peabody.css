@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Lora:400,400i,700|Open+Sans:400,400i,600,600i,700');
+@import url('https://fonts.googleapis.com/css?family=Droid+Sans:300,400,700|Volkhov:300,400,400i,700');
 
 body,
 .node-title,
@@ -25,9 +25,9 @@ body,
 #boxes-box-site_info a,
 .date-nav h3,
 .cke_editable * {
-    font-family: 'Open Sans', sans-serif !important;
+    font-family: 'Droid Sans', sans-serif !important;
 }
-
+#boxes-box-site_info h1 a,
 #page-title,
 .boxes-box-content h2,
 #content-column h2,
@@ -35,13 +35,10 @@ body,
 #content-column h4,
 h2.block-title,
 .node-type-person #content-column .node-person h1.node-title {
-	 font-family: 'Lora', sans-serif !important;
+    font-family: 'Volkhov', sans-serif !important;
 }
-
-
 h1#page-title {
     font-size: 2em;
-    
 }
 #menu-bar ul.nice-menu ul,
 #menu-bar ul.nice-menu a.active,
@@ -52,11 +49,9 @@ h1#page-title {
 #header {
     background-color: #4d5d71;
 }
-
 #menu-bar {
     background-color: #3c4858;
     border-bottom: 9px solid #f5f5f5
-
 }
 .region-header-third ul.nice-menu a,
 #header,
@@ -64,33 +59,36 @@ h1#page-title {
 #boxes-box-site_info a {
     color: #FFF;
 }
-
 ul.nice-menu ul {
     top: 3.8em !important;
 }
-
-
 #columns a.node-readmore:after {
     background: none;
     padding-right: 0;
-
 }
-
 #footer {
     background-color: #f5f5f5;
     color: #333;
 }
-
 #powered-by a {
     background-position: -14px -520px;
 }
-h2.block-title {
+.not-front h2.block-title {
     padding: 15px 0 10px;
-  
-   
 }
-h2.block-title,
-.node-type-person #content-column .node-person .pic-bio {
+a.rslides_nav,
+.search-block-form input.form-submit,
+.search-block-form #edit-submit,
+#search-block-form input.form-submit,
+#search-block-form #edit-submit,
+#search-form #edit-submit {
+    background-color: orange;
+}
+.not-front .sidebar .block-title,
+.node-type-person #content-column .node-person .pic-bio,
+.node-type-person #content-column .node-person .block-title {
     border-top: 1px solid orange;
-   
+}
+.event-start .event-start {
+    border-top: 3px solid orange;
 }
