@@ -54,12 +54,10 @@ h1#page-title {
     border-bottom: 9px solid #f5f5f5
 }
 
-.front #content-panels .region-content-second {
-background:url('images/fp-panel-bg.png?123') repeat-y #f5f5f5;
-}
 .front #content-panels .region-content-first, .front #content-panels .region-content-bottom {
-background-color: #FFF;
+background:url('images/fp-panel-bg.png?1234') repeat-y #f5f5f5;
 }
+
 .region-header-third ul.nice-menu a,
 #header,
 #header a,
@@ -76,6 +74,7 @@ ul.nice-menu ul {
 #footer {
     background-color: #f5f5f5;
     color: #333;
+    border-top:3px solid #e2e2e2;
 }
 #powered-by a {
     background-position: -14px -520px;
