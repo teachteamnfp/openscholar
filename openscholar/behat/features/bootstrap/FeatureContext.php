@@ -4859,4 +4859,12 @@ JS;
     $url = $this->getSession()->getCurrentUrl();
     $this->getSession()->visit($this->locatePath($url . '/..'));
   }
+
+  /**
+   * @When /^I click on "([^"]*)" button in the wysiwyg editor$/
+   */
+  public function iClickOnEditor($class) {
+    $element = $this->getSession()->getPage()->find('xpath', "//*[contains(@class, '{$class}')]");
+    $element->click();
+  }
 }
