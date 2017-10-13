@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Lora:400,400i,700|Open+Sans:400,400i,600,600i,700');
+@import url('https://fonts.googleapis.com/css?family=Droid+Sans:400,700|Volkhov:400,400i,700');
 
 body,
 .node-title,
@@ -6,8 +6,6 @@ body,
 #content-column .block.block-boxes-os_boxes_manual_list .links.inline a,
 .more-link,
 .links a,
-#footer ul.menu a,
-.section-nav a,
 .block-boxes-os_taxonomy_fbt.navigation,
 .block-boxes-os_boxes_facetapi_vocabulary.navigation,
 #footer ul.menu li ul li a,
@@ -19,27 +17,24 @@ body,
 #layout_3_1_overlay .slide-copy p,
 #layout_16_9_below .slide-copy p,
 #layout_16_9_overlay .slide-copy p,
-.region-header-third ul.nice-menu a,
-#menu-bar ul.nice-menu a,
 #boxes-box-site_info,
 #boxes-box-site_info a,
 .date-nav h3,
 .cke_editable * {
-    font-family: 'Open Sans', sans-serif !important;
+    font-family: 'Volkhov', sans-serif !important;
 }
-
+h2.block-title,
 #page-title,
+.region-header-third ul.nice-menu a,
+#menu-bar ul.nice-menu a,
+#footer ul.menu a,
 .boxes-box-content h2,
+.section-nav a,
 #content-column h2,
 #content-column h3,
-#content-column h4,
-h2.block-title {
-	 font-family: 'Lora', sans-serif !important;
+#content-column h4 {
+	font-family: 'Droid Sans', sans-serif !important;
 }
-
-
-
-
 
 #header {
     background-color: #4d5d71;
