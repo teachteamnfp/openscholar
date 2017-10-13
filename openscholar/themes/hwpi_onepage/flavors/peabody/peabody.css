@@ -53,6 +53,13 @@ h1#page-title {
     background-color: #3c4858;
     border-bottom: 9px solid #f5f5f5
 }
+
+.front #content-panels .region-content-second {
+background:url('images/fp-panel-bg.png?123') repeat-y #f5f5f5;
+}
+.front #content-panels .region-content-first, .front #content-panels .region-content-bottom {
+background-color: #FFF;
+}
 .region-header-third ul.nice-menu a,
 #header,
 #header a,
