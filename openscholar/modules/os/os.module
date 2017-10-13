@@ -3732,6 +3732,18 @@ function os_field_formatter_view($entity_type, $entity, $field, $instance, $lang
             $text_after_break = strip_tags(trim($split_break_tag[1]), '<img><iframe><embed><object><param>');
           }
           $text = text_summary($item['safe_value'], $item['format'], $display['settings']['trim_length']);
+          // Remove white space from end of senttence and reach to word boundry.
+          $regex = "(.*)\\b.+";
+          if (function_exists('mb_ereg')) {
+            mb_regex_encoding('UTF-8');
+            $found = mb_ereg($regex, $text, $matches);
+          }
+          else {
+            $found = preg_match('/{<span class="php-variable">$regex</span>}/us', $text, $matches);
+          }
+          if ($found) {
+            $text = $matches[1];
+          }
           // Remove scraps of HTML entities from the end of a strings.
           $text = rtrim(preg_replace('/(?:<(?!.+>)|&(?!.+;)).*$/us', '', $text)).t('...');
 
