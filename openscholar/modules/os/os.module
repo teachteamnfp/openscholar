@@ -3732,6 +3732,9 @@ function os_field_formatter_view($entity_type, $entity, $field, $instance, $lang
             $text_after_break = strip_tags(trim($split_break_tag[1]), '<img><iframe><embed><object><param>');
           }
           $text = text_summary($item['safe_value'], $item['format'], $display['settings']['trim_length']);
+          // Remove scraps of HTML entities from the end of a strings.
+          $text = rtrim(preg_replace('/(?:<(?!.+>)|&(?!.+;)).*$/us', '', $text)).t('...');
+
           // Only display read more link if there is a content after break tag.
           if (!empty(drupal_strlen($text_after_break))) {
             $read_more($entity_type, $entity, $text);
