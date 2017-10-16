@@ -286,10 +286,10 @@
         }, function (error) {
           $s.errors = [];
           $s.status = [];
-          if (buttonId == 'edit-os-importer-submit-page') {
-            $s.errors.push("The import failed. Please review the <a href='#' target='_blank'>common reasons</a> for import failure and how to resolve them.");
-          } else {
+          if (buttonId.indexOf('edit-os-importer-submit') < 0) {
             $s.errors.push("Sorry, something went wrong. Please try another time.");
+          } else {
+            $s.errors.push("The import failed. Please review the <a href='#' target='_blank'>common reasons</a> for import failure and how to resolve them.");
           }
           bss.SetState('settings_form_' + buttonName, false);
         });
