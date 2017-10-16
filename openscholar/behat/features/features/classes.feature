@@ -67,7 +67,8 @@ Feature:
   @api @features_first @delete_any_class_content_permissions @os_classes
   Scenario: Delete any class content (permissions)
      Given I am logging in as "michelle"
-      Then I can't visit unaliased path for "classes/political-science-101" with "delete" appended on vsite "john"
+       And I visit "john/classes/political-science-101"
+      Then I should "not" see the "Delete" menu item in the gear menu
 
   @api @features_first @create_new_class_material_content_permissions @os_classes
   Scenario: Create new class material content (permissions)
@@ -77,12 +78,14 @@ Feature:
   @api @features_first @edit_any_class_material_content_permissions @os_classes
   Scenario: Edit any class material content (permissions)
      Given I am logging in as "michelle"
-      Then I can't visit unaliased path for "classes/political-science-101/materials/overview" on vsite "john"
+       And I visit "john/classes/political-science-101/materials/overview"
+      Then I should "not" see the "Edit" menu item in the gear menu
 
   @api @features_first @delete_any_class_material_content_permissions @os_classes
   Scenario: Delete any class material content (permissions)
      Given I am logging in as "michelle"
-      Then I can't visit unaliased path for "classes/political-science-101/materials/overview" with "delete" appended on vsite "john"
+       And I visit "john/classes/political-science-101/materials/overview"
+      Then I should "not" see the "Delete" menu item in the gear menu
 
   # Deletion scenarios must be last so we have classes and materials to test!
   @api @wip @delete_class_material_content @os_classes @javascript

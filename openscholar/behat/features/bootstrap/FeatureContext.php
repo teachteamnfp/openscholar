@@ -4794,9 +4794,7 @@ JS;
    * @When /^I click the gear icon in the content region$/
    */
   public function iClickTheGearIconInTheContentRegion() {
-    $content_region = $this->getSession()->getPage()->find('xpath', "//div[@id='content']");
-    $gear_icon = $this->getSession()->getPage()->find('xpath', "//div[@class='contextual-links-wrapper contextual-links-processed']");
-    $gear_icon_trigger_link = $this->getSession()->getPage()->find('xpath', "//div[@id='content']//div/a[text()='Configure']");
+    list ($content_region, $gear_icon, $gear_icon_trigger_link) = $this->_getGearIconInContentRegion();
 
     $content_region->mouseOver();
     $content_region->click();
@@ -4804,6 +4802,35 @@ JS;
     $gear_icon->click();
     $gear_icon_trigger_link->mouseOver();
     $gear_icon_trigger_link->click();
+  }
+
+  /**
+   * @When /^I should "([^"]*)" see the "([^"]*)" menu item in the gear menu$/
+   */
+  public function iDoNotSeeTheMenuItemUnderTheGearMenu($negation, $menu_label) {
+    list ($content_region, $gear_icon, $gear_icon_trigger_link) = $this->_getGearIconInContentRegion();
+
+    if (! $gear_icon) {
+      return;
+    }
+
+    $gear_menu_item = $this->getSession()->getPage()->find('xpath', "//div[@class='contextual-links-wrapper contextual-links-processed']/ul/li/a[text()='$menu_label']");
+
+    if ($negation) {
+      if (! $gear_menu_item) {
+        return;
+      } else {
+        throw new Exception("Found menu item '$menu_label', but should not have.");
+      }
+    }
+  }
+
+  private function _getGearIconInContentRegion() {
+    $content_region = $this->getSession()->getPage()->find('xpath', "//div[@id='content']");
+    $gear_icon = $this->getSession()->getPage()->find('xpath', "//div[@class='contextual-links-wrapper contextual-links-processed']");
+    $gear_icon_trigger_link = $this->getSession()->getPage()->find('xpath', "//div[@id='content']//div/a[text()='Configure']");
+
+    return array($content_region, $gear_icon, $gear_icon_trigger_link);
   }
 
   /**
