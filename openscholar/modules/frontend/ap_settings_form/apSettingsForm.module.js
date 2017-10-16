@@ -235,6 +235,7 @@
     function submitForm($event) {
       var button = document.activeElement,
         triggered = false;
+      var buttonId = document.activeElement.id;
       if (apSettings.IsSetting(button.getAttribute('name'))) {
         triggered = true;
       }
@@ -285,7 +286,11 @@
         }, function (error) {
           $s.errors = [];
           $s.status = [];
-          $s.errors.push("Sorry, something went wrong. Please try another time.");
+          if (buttonId == 'edit-os-importer-submit-page') {
+            $s.errors.push("The import failed. Please review the <a href='#' target='_blank'>common reasons</a> for import failure and how to resolve them.");
+          } else {
+            $s.errors.push("Sorry, something went wrong. Please try another time.");
+          }
           bss.SetState('settings_form_' + buttonName, false);
         });
       }
