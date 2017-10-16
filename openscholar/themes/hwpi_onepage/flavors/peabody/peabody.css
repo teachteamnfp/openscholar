@@ -37,6 +37,25 @@ h2.block-title,
 .node-type-person #content-column .node-person h1.node-title {
     font-family: 'Volkhov', sans-serif !important;
 }
+
+
+#footer a {
+    color: #215990;
+}
+
+.section-nav .menu-depth-1 > a {
+    background-color: #F3F3F1 !important;
+    color: #333 !important;
+    border-bottom: 1px solid #D7D7D7 !important;
+}
+
+
+#boxes-box-os_pages_section_nav, .section-nav ul.menu li a {
+    border-color: #D7D7D7;
+   
+}
+
+
 h1#page-title {
     font-size: 2em;
 }
