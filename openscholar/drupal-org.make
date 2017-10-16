@@ -211,13 +211,13 @@ projects[linkchecker][subdir] = "contrib"
 projects[linkchecker][version] = 1.0-beta1
 
 projects[media][subdir] = "contrib"
-projects[media][version] = 2.x-dev
-projects[media][download][type] = git
-projects[media][download][branch] = 7.x-2.x
-projects[media][download][revision] = "b433b278d7e0ab7420f5a874886843fb9fe7ebe2"
+projects[media][version] = 2.1
+; projects[media][download][type] = git
+; projects[media][download][branch] = 7.x-2.x
+; projects[media][download][revision] = "b433b278d7e0ab7420f5a874886843fb9fe7ebe2"
 ; projects[media][patch][] = "http://drupal.org/files/issues/1121808-media-resuse-files-by-uri.patch"
 ; projects[media][patch][] = "http://drupal.org/files/media-7.x-2.x-fix-class-array.patch"
-projects[media][patch][] = "http://drupal.org/files/media_fatal_wysiwyg_remove_1937864_11.patch"
+; projects[media][patch][] = "http://drupal.org/files/media_fatal_wysiwyg_remove_1937864_11.patch"
 
 projects[media_gallery][subdir] = "contrib"
 projects[media_gallery][version] = 2.x-dev
