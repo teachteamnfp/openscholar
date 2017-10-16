@@ -149,7 +149,7 @@ class OSRestfulCPMenu extends \RestfulBase implements \RestfulDataProviderInterf
    *  the name of the menu you would like to retrieve.
    */
   public function getMenu($name_string) {
-
+ 
     $output = array();
     $this->activateRoles();
 
@@ -335,6 +335,7 @@ class OSRestfulCPMenu extends \RestfulBase implements \RestfulDataProviderInterf
                   'cp-content-modal',
                   'entity-type' => 'node',
                 ),
+                'access' => og_user_access('node', $vsite, 'access content overview'),
               ),
               'files' => array(
                 'label' => 'Files',

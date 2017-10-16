@@ -94,7 +94,25 @@ class NodeRestfulBase extends OsbulkOperationEnitity {
         ),
     );
 
+    $public_fields['delete_access'] = array(
+      'callback' => array($this, 'checkDeleteAccess'),
+    );
+
     return $public_fields;
+  }
+
+  /**
+   * Check entity access.
+   *
+   * @param \EntityDrupalWrapper $wrapper
+   *   The wrapped entity.
+   *
+   * @return Boolean
+   *   Delete status.
+   */
+  protected function checkDeleteAccess(\EntityDrupalWrapper $wrapper) {
+    $entity = $wrapper->value();
+    return $this->checkEntityAccess('delete', $this->entityType, $entity);
   }
 
   /**

@@ -55,7 +55,7 @@
           <div class="cp-popover-wrapper left" ng-show="showPopover == node.id">
             <ul>
               <li><span dynamic-attr="{{entityType}}-edit" id="{{node.id}}">Edit</span></li>
-              <li><span ng-click="nodeDelete(node.id)">Delete</span></li>
+              <li><span ng-show="{{node.delete_access}}" ng-click="nodeDelete(node.id)">Delete</span></li>
             </ul>
           </div>
         </a>
