@@ -918,6 +918,7 @@ class FeatureContext extends DrupalContext {
       // Skip Make Embeddable step for slide show widget
       $metasteps[] = new Step\When('I check the box "edit-make-embeddable"');
     }
+    $metasteps[] = new Step\When('I make sure admin panel is closed');
     $metasteps[] = new Step\When('I press "Save"');
     return $metasteps;
   }
@@ -3980,7 +3981,7 @@ class FeatureContext extends DrupalContext {
     return array();
   }
 
-  /*
+  /**
    * @Given /^I make sure admin panel is closed$/
    */
   public function adminPanelClosed() {
