@@ -51,9 +51,12 @@ h1#page-title {
 }
 #menu-bar {
     background-color: #3c4858;
+   
+}
+.not-front #menu-bar {
+  
     border-bottom: 9px solid #f5f5f5
 }
-
 .front #content-panels .region-content-first, .front #content-panels .region-content-bottom {
 background:url('images/fp-panel-bg.png?m=15079274erererererr') repeat-x #f5f5f5;
 background-position:50%;
@@ -73,9 +76,9 @@ ul.nice-menu ul {
     padding-right: 0;
 }
 #footer {
-    background-color: #f5f5f5;
+    background-color: #e8e8e8;
     color: #333;
-    border-top:3px solid #e2e2e2;
+
 }
 #powered-by a {
     background-position: -14px -520px;
