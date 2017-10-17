@@ -4785,7 +4785,7 @@ JS;
    * @Given /^I click "([^"]*)" in the gear menu in node content$/
    */
   public function iClickInTheGearMenuNodeContent($menu_item) {
-    $gear_menu_item = $this->getSession()->getPage()->find('xpath', "//div[@class='node-content']//div/a[text()='Configure']/..//a[text()='$menu_item']");
+    $gear_menu_item = $this->getSession()->getPage()->find('xpath', "//div[@class='node-content']//div[@class='contextual-links-wrapper contextual-links-processed contextual-links-active']/..//a[text()='$menu_item']");
     try {
       $gear_menu_item->click();
     }
