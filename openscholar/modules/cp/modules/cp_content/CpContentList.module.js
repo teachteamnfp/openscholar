@@ -200,20 +200,22 @@
         $scope.noRecords = true;
       }
       tableData = prepareSet;
-      $scope.message = 'Selected content has been deleted.';
       nodeService.bulk('delete', nodeId, {
         details: false,
         operation: false
       }).then(function(response) {
+        $scope.message = false;
+        $scope.multipleMessage = [];
         if (response.data.data.deleted) {
-          // Reset previous selections.
-          nodeId = [];
-          $scope.checkboxes.items = {};
+          $scope.message = 'Selected content has been deleted.';
         } else {
-          $scope.message = messageFailed;
+          $scope.multipleMessage = response.data.data;
         }
+        // Reset previous selections.
+        nodeId = [];
+        $scope.checkboxes.items = {};
       }, function(error) {
-        $scope.message = 'Something went wrong. Please try again later.'
+        $scope.message = messageFailed;
       });
     };
 

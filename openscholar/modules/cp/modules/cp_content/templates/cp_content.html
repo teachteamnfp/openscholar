@@ -1,8 +1,15 @@
 <div class="cp-content">
-  <div ng-show="message" id="messages">
-    <div class="messages status">
-      <a class="dismiss" ng-click="closeMessage()">X</a> {{message}}
+  <div ng-show="multipleMessage.length > 0" class="messages status">
+    <a class="dismiss" ng-click="closeMessage()">X</a>
+    <div ng-show="multipleMessage.length > 0">
+      <ul>
+        <li ng-repeat="m in multipleMessage track by $index"><span ng-bind-html="m"></span></li>
+      </ul>
     </div>
+  </div>
+  <div ng-show="message" class="messages status">
+    <a class="dismiss" ng-click="closeMessage()">X</a>
+    {{message}}
   </div>
   <div class="section-search">
     <div class="section-search-left">

@@ -105,8 +105,25 @@ class OsbulkOperationEnitity extends OsRestfulEntityCacheableBase {
   public function deleteEntity($entity_ids) {
     $entity_ids = explode(',', $entity_ids);
     if (is_array($entity_ids) && !empty($entity_ids)) {
-      entity_delete_multiple($this->entityType, $entity_ids);
-      return array('deleted' => true);
+      $entities = entity_load($this->entityType, $entity_ids);
+      $results = array();
+      $count = 0;
+      foreach ($entities as $key => $entity) {
+        if ($this->checkEntityAccess('delete', $this->entityType, $entity)) {
+          entity_delete($this->entityType, $entity_ids);
+          $count++;
+        }
+        else {
+          $results[] = t('Skipped Delete item on Node ' . $entity->title . ' due to insufficient permissions.');
+        }
+      }
+      if (count($entity_ids) > 0) {
+        array_push($results, t('Performed Delete item on ' . $count. ' item'));
+        return $results;
+      }
+      else {
+        return array('deleted' => true);
+      }
     }
     else {
       return array('deleted' => false);
