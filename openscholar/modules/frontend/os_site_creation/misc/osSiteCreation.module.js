@@ -9,7 +9,7 @@
   m.controller('siteCreationCtrl', ['$scope', '$http', '$q', '$rootScope', 'buttonSpinnerStatus', '$filter', function($scope, $http, $q, $rootScope, bss, $filter) {
 
   //Set default value for vsite
-  $scope.vsite = {
+  $scope.vsite_private = {
     value: '0'
   };
 
