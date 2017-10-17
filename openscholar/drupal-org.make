@@ -330,7 +330,7 @@ projects[pinserver][type] = module
 projects[pinserver][download][type] = git
 projects[pinserver][download][url] = "git://github.com/openscholar/pinserver.git"
 ;projects[pinserver][download][tag] = 7.x-3.4.22
-projects[pinserver][download][branch] = 9889-remove_goto
+projects[pinserver][download][branch] = 9885-custom_domains
 ; force rebuild
 
 projects[purl][subdir] = "contrib"
