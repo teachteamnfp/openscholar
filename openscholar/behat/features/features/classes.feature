@@ -67,7 +67,7 @@ Feature:
   @api @features_first @delete_any_class_content_permissions @os_classes
   Scenario: Delete any class content (permissions)
      Given I am logging in as "michelle"
-       And I visit "john/classes/political-science-101"
+       And I am on "john/classes/political-science-101"
       Then I should "not" see the "Delete" menu item in the gear menu
 
   @api @features_first @create_new_class_material_content_permissions @os_classes
@@ -78,13 +78,13 @@ Feature:
   @api @features_first @edit_any_class_material_content_permissions @os_classes
   Scenario: Edit any class material content (permissions)
      Given I am logging in as "michelle"
-       And I visit "john/classes/political-science-101/materials/overview"
+       And I am on "john/classes/political-science-101/materials/overview"
       Then I should "not" see the "Edit" menu item in the gear menu
 
   @api @features_first @delete_any_class_material_content_permissions @os_classes
   Scenario: Delete any class material content (permissions)
      Given I am logging in as "michelle"
-       And I visit "john/classes/political-science-101/materials/overview"
+       And I am on "john/classes/political-science-101/materials/overview"
       Then I should "not" see the "Delete" menu item in the gear menu
 
   # Deletion scenarios must be last so we have classes and materials to test!
