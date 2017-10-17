@@ -26,6 +26,8 @@ env:
 #    - TEST_SUITE=vsite
 #    - TEST_SUITE=widgets
 
+# force travis build - Tue Oct 17 15:25:39 UTC 2017
+
 script:
 
   - cd /home/travis/build/openscholar/openscholar
