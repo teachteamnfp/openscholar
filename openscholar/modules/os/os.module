@@ -3721,6 +3721,7 @@ function os_field_formatter_view($entity_type, $entity, $field, $instance, $lang
           'html' => TRUE,
           'max_length' => $display['settings']['trim_length'],
           'word_boundary' => TRUE,
+          'ellipsis' => TRUE,
         );
         $text = views_trim_text($alter, media_filter($item['value']));
 
@@ -3744,12 +3745,12 @@ function os_field_formatter_view($entity_type, $entity, $field, $instance, $lang
             $text_after_break = strip_tags(trim($split_break_tag[1]), '<img><iframe><embed><object><param>');
           }
           $text = text_summary($item['safe_value'], $item['format'], $display['settings']['trim_length']);
-          // Remove the ellipsis we got from the text summary.
-          if (strpos($text, '…') !== 0) {
-            $text = str_replace('…', ' ', $text);
-          }
-          // Only display read more link if there is a content after break tag.
           if (!empty(drupal_strlen($text_after_break))) {
+            $text = htmlentities($text);
+            // Remove non breaking spaces (e.g &nbsp;) from the start and end
+            // of a string.
+            $text = rtrim(preg_replace('#(^(&nbsp;|\s)+|(&nbsp;|\s)+$)#', '', $text)).t('...');
+            $text = decode_entities($text);
             $read_more($entity_type, $entity, $text);
           }
         }
