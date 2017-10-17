@@ -70,7 +70,7 @@ Feature:
      Then I should see "Another day in the life of The POTUS."
       And I should see "Each day the President eats lunch."
 
- @api @wip_needs_js_enabled_webdriver @administer_blog_settings @os_blog
+ @api @javascript @administer_blog_settings @os_blog
  Scenario: Administer Blog Settings
     Given I am logging in as "john"
      When I visit "john/blog"
@@ -80,27 +80,25 @@ Feature:
      When I sleep for "2"
      Then I should see "Choose which comment type you'd like to use"
 
- @api @wip_needs_js_enabled_webdriver @select_private_comments @os_blog
+ @api @javascript @select_private_comments @os_blog
  Scenario: Select "Private comments"
     Given I am logging in as "john"
-     When I visit "john/blog"
-      And I make sure admin panel is open
-      And I click "App Settings"
-      And I click "Blog Comments"
-      And I select the radio button named "blog_comments_settings"
+      And I navigate to "Blog Comments" cp settings of the site "john"
+      And I choose the radio button named "blog_comments_settings" with value "comment" for the vsite "john"
       And I press "Save"
+     When I visit "john/blog"
      Then I should see "Add new comment"
 
- @api @wip_needs_js_enabled_webdriver @select_no_comments @os_blog @wip
+ @api @javascript @select_no_comments @os_blog
  Scenario: Select "No Comments"
     Given I am logging in as "john"
       And I visit "john/blog"
       And I make sure admin panel is open
-      And I click "App Settings"
-      And I click "Blog Comments"
-      And I click on the radio button named "blog_comments_settings" with value "nc"
+      And I navigate to "Blog Comments" cp settings of the site "john"
+      And I choose the radio button named "blog_comments_settings" with value "nc" for the vsite "john"
       And I press "Save"
-      And I sleep for "5"
+      And I sleep for "3"
+      And I visit "john/blog"
      Then I should not see "Add new comment"
 
  @api @features_first @delete_any_blog_content @os_blog
