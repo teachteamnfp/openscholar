@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css?family=Droid+Sans:300,400,700|Volkhov:300,400,400i,700');
-
 body,
 .node-title,
 .page-search .title a,
@@ -37,25 +36,18 @@ h2.block-title,
 .node-type-person #content-column .node-person h1.node-title {
     font-family: 'Volkhov', sans-serif !important;
 }
-
-
 #footer a {
     color: #215990;
 }
-
 .section-nav .menu-depth-1 > a {
     background-color: #F3F3F1 !important;
     color: #333 !important;
     border-bottom: 1px solid #D7D7D7 !important;
 }
-
-
-#boxes-box-os_pages_section_nav, .section-nav ul.menu li a {
+#boxes-box-os_pages_section_nav,
+.section-nav ul.menu li a {
     border-color: #D7D7D7;
-   
 }
-
-
 h1#page-title {
     font-size: 2em;
 }
@@ -70,17 +62,15 @@ h1#page-title {
 }
 #menu-bar {
     background-color: #3c4858;
-   
 }
 .not-front #menu-bar {
-  
     border-bottom: 9px solid #f5f5f5
 }
-.front #content-panels .region-content-first, .front #content-panels .region-content-bottom {
-background:url('images/fp-panel-bg.png?m=15079274erererererr') repeat-x #f5f5f5;
-background-position:50%;
+.front #content-panels .region-content-first,
+.front #content-panels .region-content-bottom {
+    background: url('images/fp-panel-bg.png?m=15079274erererererr') repeat-x #f5f5f5;
+    background-position: 50%;
 }
-
 .region-header-third ul.nice-menu a,
 #header,
 #header a,
@@ -97,7 +87,6 @@ ul.nice-menu ul {
 #footer {
     background-color: #e8e8e8;
     color: #333;
-
 }
 #powered-by a {
     background-position: -14px -520px;
