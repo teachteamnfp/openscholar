@@ -3681,6 +3681,7 @@ class FeatureContext extends DrupalContext {
       }
 
     }
+    $this->iPrintPageScreenShot();
   }
 
   /**

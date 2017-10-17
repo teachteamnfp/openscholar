@@ -13,17 +13,18 @@ env:
     - secure: "J+GWGGesskpTxCNq/YJJaL+DRnNeFbF3vslBPd47OKQI5kaH5SHfVH70iBaB3taBadf9XuJOj/NdHTSwjSpcY17TROw7ajG0KAOySsgDdpeAQ6lNmPdTc3TPicB6dfv6weGPzJB/pGVZW/ZirOodJsInbUnY7y9KsxfePGUKn4A="
     - secure: "HvsIfxg/7BaZepgsKc7s9LK/TEf75drUm+LlyE1BiO3HTq5wwOuyWYiJ5/40JhAGnGsU7dEoUqTR5JePjyQxlV6uyIc6suOsZJz4fOuukEPs/dG9B5W4eMP4cS2UoIb/QU2YEd6Uk0OZWCdZCsHlT1j1MFUiuRHWYSIcvrDFKkY="
   matrix:
-    - TEST_SUITE=restful
-    - TEST_SUITE=features_first
-    - TEST_SUITE=features_second
-#    - TEST_SUITE=harvard
-    - TEST_SUITE=frontend
-    - TEST_SUITE=misc_first
-    - TEST_SUITE=misc_second
-    - TEST_SUITE=solr
-    - TEST_SUITE=taxonomy
-    - TEST_SUITE=vsite
-    - TEST_SUITE=widgets
+    - TEST_SUITE=correct_re_arrangement_of_booklet_outline_when_parent_is_deleted
+#    - TEST_SUITE=restful
+#    - TEST_SUITE=features_first
+#    - TEST_SUITE=features_second
+##    - TEST_SUITE=harvard
+#    - TEST_SUITE=frontend
+#    - TEST_SUITE=misc_first
+#    - TEST_SUITE=misc_second
+#    - TEST_SUITE=solr
+#    - TEST_SUITE=taxonomy
+#    - TEST_SUITE=vsite
+#    - TEST_SUITE=widgets
 
 script:
 
