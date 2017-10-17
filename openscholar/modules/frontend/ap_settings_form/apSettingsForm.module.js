@@ -289,7 +289,7 @@
           if (buttonId.indexOf('edit-os-importer-submit') < 0) {
             $s.errors.push("Sorry, something went wrong. Please try another time.");
           } else {
-            $s.errors.push("The import failed. Please review the <a href='#' target='_blank'>common reasons</a> for import failure and how to resolve them.");
+            $s.errors.push("The import failed. Please review import <a href='https://docs.openscholar.harvard.edu/importing-content' target='_blank'>best practices</a> for optimal results.");
           }
           bss.SetState('settings_form_' + buttonName, false);
         });
