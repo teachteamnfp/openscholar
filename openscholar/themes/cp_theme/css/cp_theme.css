@@ -498,6 +498,10 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
     height: 24px;
 }
 
+.app-form.ui-dialog .ui-dialog-content {
+
+    overflow: inherit
+}
 
 #overlay-title, .ui-dialog-title {
     float: left;
