@@ -79,7 +79,7 @@ Feature:
   @api @features_second
   Scenario: Permission to edit own news content
     Given I am logging in as "michelle"
-      And I edit the node "Semester Date postponed" in the group "john"
+      And I edit the node "Semester Notification" in the group "john"
       And I fill in "Title" with "Semester dates published"
       And I press "Save"
      Then I should see "Semester dates published"

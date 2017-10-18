@@ -1,12 +1,18 @@
 Feature:
   Testing news widget.
 
-  @api @widgets
+  @api @widgets @javascript
+  Scenario: Saving "Latest News" widget
+    Given I am logging in as "john"
+      And I visit "john/os/widget/boxes/os_news_latest/edit/cp-layout"
+      And I press "Save"
+
+  @api @widgets @javascript
   Scenario: Verify "Latest News" widget
     Given I am logging in as "john"
-      And the widget "Latest News" is set in the "News" page with the following <settings>:
-          | Content Type               | News                 | select list |
-          | Display style              | Title                | select list |
-          | Sorted By                  | Newest post          | select list |
-      And I visit "john/news"
-     Then I should see "LATEST NEWS"
+      And I visit "john"
+      And I click the big gear
+      And I click "Layout"
+      And I drag the "Latest News" widget to the "sidebar-first" region
+      And I visit "john"
+      And I should see "LATEST NEWS"
