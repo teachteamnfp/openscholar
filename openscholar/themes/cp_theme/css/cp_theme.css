@@ -473,9 +473,13 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
     margin: -8px 0;
     border: 0;
     cursor: pointer;
-    right:-10px;
+   
 }
 
+.ui-dialog .ui-dialog-titlebar-close {
+
+    right:-10px;
+}
 #overlay-close-wrapper {
    
     margin: -30px 15px;
