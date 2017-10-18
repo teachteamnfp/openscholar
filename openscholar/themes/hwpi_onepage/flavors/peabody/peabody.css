@@ -50,6 +50,10 @@ h2.block-title,
 }
 h1#page-title {
     font-size: 2em;
+    line-height: 1.2;
+}
+h2.block-title {
+    font-size: 1.4em;
 }
 #menu-bar ul.nice-menu ul,
 #menu-bar ul.nice-menu a.active,
