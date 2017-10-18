@@ -3986,7 +3986,7 @@ class FeatureContext extends DrupalContext {
     return array();
   }
 
-  /*
+  /**
    * @Given /^I make sure admin panel is closed$/
    */
   public function adminPanelClosed() {
