@@ -101,7 +101,6 @@ div.file-filters {
     display: flex;
 }
 .file-filters .file-search {
-    display: inline-block;
     margin-right: 30px;
 }
 .file-filters .file-type {
@@ -113,7 +112,7 @@ div.file-filters {
     border: 1px solid #CCC;
 }
 .file-filters .file-clear {
-    display: inline-block;
+    margin-top: 20px;
 }
 #file-search-input {
     margin: 9px 0;
