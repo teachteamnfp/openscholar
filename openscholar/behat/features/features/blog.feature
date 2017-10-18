@@ -89,6 +89,20 @@ Feature:
      When I visit "john/blog"
      Then I should see "Add new comment"
 
+ @api @javascript @select_disqus_comments @os_blog
+ Scenario: Select "Disqus comments"
+    Given I am logging in as "john"
+      And I navigate to "Blog Comments" cp settings of the site "john"
+      And I choose the radio button named "blog_comments_settings" with value "disqus" for the vsite "john"
+      And I fill in "Disqus Shortname" with "openscholar"
+      And I press "Save"
+     When I visit "john/blog"
+     Then I should see "Add new comment"
+     When I make sure admin panel is closed
+     When I click "Add new comment"
+     When I sleep for "7"
+     Then I should see disqus
+
  @api @javascript @select_no_comments @os_blog
  Scenario: Select "No Comments"
     Given I am logging in as "john"

@@ -4818,6 +4818,23 @@ JS;
   }
 
   /**
+   * @Then /^I should see disqus$/
+   *
+   */
+  public function iShouldSeeDisqus() {
+
+    $page = $this->getSession()->getPage()->getContent();
+    $element = $this->getSession()->getPage()->find('css', "div#disqus_thread");
+
+    if ($element) {
+      return;
+    }
+
+    throw new Exception("Did not find disqus panel.\n");
+  }
+
+
+  /**
    * @When /^I click on "([^"]*)" button in the wysiwyg editor$/
    */
   public function iClickOnEditor($class) {
