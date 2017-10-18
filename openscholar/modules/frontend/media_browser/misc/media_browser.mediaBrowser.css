@@ -98,14 +98,15 @@ div.file-filters {
     border-bottom: 1px solid lightgray;
     margin-bottom: .75em;
     margin-right: 5px;
+    display: flex;
 }
 .file-filters .file-search {
     display: inline-block;
     margin-right: 30px;
 }
 .file-filters .file-type {
-    display: inline-block;
-    margin-right: 30px;
+   
+    margin-right: 20px;
 }
 .file-filters select {
     width: 100px;
@@ -222,7 +223,6 @@ div.file-filters {
 
 .pager {
     margin: 1em 0;
-    border-top: 1px solid lightgray;
     padding-top: 0.5em;
     text-align: center;
 }
