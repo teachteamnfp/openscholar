@@ -58,7 +58,7 @@ class os_taxonomy_fbt extends os_boxes_default {
 
     $form['advanced']['as_nav'] = array(
       '#type' => 'radios',
-      '#default_value' => $this->options['as_nav'],
+      '#default_value' => ($this->options['as_nav'] ? $this->options['as_nav'] : 'classic'),
       '#title' => t('Display type'),
       '#return_value' => TRUE,
       '#states' => array(
@@ -66,7 +66,11 @@ class os_taxonomy_fbt extends os_boxes_default {
         ':input[name="widget_type"]' => array('value' => 'select'),
         ),             
        ),
-      '#options' => array('menu' => t('Menu'), 'slider' => t('Slide Down')),
+      '#options' => array(
+          'classic' => t('Classic/List'),
+          'menu' => t('Menu'),
+          'slider' => t('Slide Down') . '<br><div class="description">' . t('Placeholder description for now ...lorem ipsum')
+      ),
     );
 
     if (module_exists('vsite') && $vsite = vsite_get_vsite()) {
