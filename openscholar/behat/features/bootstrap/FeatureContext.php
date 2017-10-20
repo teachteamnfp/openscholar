@@ -3986,7 +3986,7 @@ class FeatureContext extends DrupalContext {
     return array();
   }
 
-  /*
+  /**
    * @Given /^I make sure admin panel is closed$/
    */
   public function adminPanelClosed() {
@@ -4859,26 +4859,27 @@ JS;
   }
 
   /**
-   * @When /^I swap the order of the first two page items in the outline on vsite "([^"]*)"$/
+   * @When /^I swap the order of the subpages under the page "([^"]*)"$/
    */
-  public function iSwapTheOrderOfThePageOutline($vsite) {
-    $this->iClickTheGearIconInTheSectionNavigation();
-    $this->iClickInTheGearMenuOfSectionNav("Section Outline");
-    $this->iVisitTheParameterInTheCurrentPageQueryString("destination", "outline", $vsite);
+  public function iSwapTheOrderOfTheSubpage($page_title) {
+    $nid = FeatureHelp::getNodeId($page_title);
+    $this->Visit('john/os/pages/' . $nid . '/outline');
+    $this->adminPanelClosed();
 
     $handles = $this->getSession()->getPage()->findAll('xpath', "//div[@class='handle']");
 
     if (sizeof($handles) > 1) {
       $handles[0]->dragTo($handles[1]);
     } else {
-      throw new Exception("There needs to be at least two subpagepage entries to test re-ordering.\n");
+      throw new Exception("There needs to be at least two subpage entries to test re-ordering.\n");
     }
 
     return array(
       new Step\When('I press "Save Section Outline"'),
     );
   }
-    /*
+
+  /**
    * @When /^I click on "([^"]*)" button in the wysiwyg editor$/
    */
   public function iClickOnEditor($class) {

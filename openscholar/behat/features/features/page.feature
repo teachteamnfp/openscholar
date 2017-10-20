@@ -25,7 +25,7 @@ Feature:
       And I create a sub page named "Subpage One" under the page "Parent Page"
       And I create a sub page named "Subpage Two" under the page "Parent Page"
       And I visit the site "john/page-one"
-      And I swap the order of the first two page items in the outline on vsite "john"
+      And I swap the order of the subpages under the page "Parent Page"
      Then I should see "Updated book Parent Page"
       And I visit the site "john/page-one"
      Then I should match the regex "parent\s+page\s+subpage\s+two\s+subpage\s+one"
