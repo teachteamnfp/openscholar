@@ -373,7 +373,7 @@ class os_taxonomy_fbt extends os_boxes_default {
       $id = 'vocabulary:' . $this->options['vocabulary'];
     }
 
-    if ($this->options['as_nav']) {
+    if ($this->options['as_nav'] == 'menu') {
       $this->options['additional_classes'] = 'navigation';
     }
 
