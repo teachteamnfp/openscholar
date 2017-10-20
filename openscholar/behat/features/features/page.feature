@@ -14,7 +14,7 @@ Feature:
   @api @features_first
   Scenario: Edit existing page content.
     Given I am logging in as "john"
-      And I visit to edit the post "page-one" on vsite "john"
+      And I edit the node "Page One" in the group "john"
       And I fill in "Title" with "Parent Page"
       And I press "Save"
      Then I should see "Parent Page"
@@ -43,7 +43,7 @@ Feature:
   Scenario: Correct rearrangement of section outline when parent is deleted.
     Given I am logging in as "john"
       And I create a sub page named "Child One" under the page "Subpage One"
-      And I visit to edit the post "page-one" on vsite "john"
+      And I edit the node "Parent Page" in the group "john"
       And I click "Delete this page"
       And I press "Delete"
       And I visit the site "john/child-one"
@@ -52,7 +52,7 @@ Feature:
   @api @features_first
   Scenario: Delete existing page
     Given I am logging in as "john"
-      And I visit to edit the post "page-one" on vsite "john"
+      And I edit the node "Child One" in the group "john"
       And I click "Delete this page"
      Then I should see "This action cannot be undone."
       And I press "Delete"
@@ -81,7 +81,7 @@ Feature:
   @api @features_second
   Scenario: Permission to edit own page content
     Given I am logging in as "michelle"
-      And I visit to edit the post "about-michelle" on vsite "john"
+      And I edit the node "About Michelle" in the group "john"
       And I fill in "Title" with "About Michelle Obama"
       And I press "Save"
      Then I should see "About Michelle Obama"
