@@ -233,8 +233,8 @@ Feature: Media Browser
     Given I am logging in as "john"
       And I wait for page actions to complete
       And I edit the entity "node" with title "About"
-      And I sleep for "2"
-     When I press "Media browser"
+      And I sleep for "10"
+      And I click on "cke_button__media" button in the wysiwyg editor
       And I wait "1 second" for the media browser to open
       And I drop the file "kitten-3.jpg" onto the "Drag and drop files here." area
       And I should wait for "File Edit" directive to "appear"

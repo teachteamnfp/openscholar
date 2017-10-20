@@ -4816,4 +4816,15 @@ JS;
 
     return false;
   }
+
+  /**
+   * @When /^I click on "([^"]*)" button in the wysiwyg editor$/
+   */
+  public function iClickOnEditor($class) {
+    $element = $this->getSession()->getPage()->find('xpath', "//*[contains(@class, '{$class}')]");
+    try {
+      $element->click();
+    } catch (\Exception $e) {
+      print_r('Cant click on ' . $page . ' : ' . $e->getMessage());
+  }
 }
