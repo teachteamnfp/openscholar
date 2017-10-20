@@ -244,7 +244,7 @@ projects[memcache][subdir] = "contrib"
 projects[memcache][version] = 1.5
 
 projects[migrate][subdir] = "contrib"
-projects[migrate][version] = 2.8
+projects[migrate][version] = 2.5
 
 projects[migrate_extras][patch][] = "http://drupal.org/files/migrate_extras-duplicate_MigrateDestinationOgMembership-1788440-5.patch"
 projects[migrate_extras][subdir] = "contrib"
@@ -287,8 +287,8 @@ projects[oembed][patch][] = "https://raw.githubusercontent.com/openscholar/opens
 projects[oembed][patch][] = "https://raw.githubusercontent.com/openscholar/openscholar/56c5f68a45a6ce8d49be722bf7dfdb10da5cf60f/patches/oembed.9433.youtube_https_schema.patch"
 
 projects[og][subdir] = "contrib"
-projects[og][version] = 2.6
-projects[og][patch][] = "https://drupal.org/files/issues/2231217-og-save-no-entity-load-1.patch"
+projects[og][version] = 2.9
+; projects[og][patch][] = "https://drupal.org/files/issues/2231217-og-save-no-entity-load-1.patch"
 projects[og][patch][] = "https://drupal.org/files/issues/add_entity_type_parameter-2308279-3.patch"
 
 projects[og_moderation][subdir] = "contrib"
