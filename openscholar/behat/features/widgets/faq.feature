@@ -11,4 +11,4 @@ Feature:
       And I click "Layout"
       And I drag the "Recent FAQs" widget to the "sidebar-first" region
       And I visit "john"
-     Then I should match the regex "recent\s+faqs\s+where\s+does\s+jfk\s+born\?\s+what\s+does\s+jfk\s+stands\s+for\?"
+     Then I should see "RECENT FAQS"
