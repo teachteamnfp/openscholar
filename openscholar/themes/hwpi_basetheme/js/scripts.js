@@ -52,10 +52,10 @@ if (jQuery('.region-header-second .region-inner').has('.block-boxes-os_boxes_sit
 //jQuery(this).toggleClass('open');
     });
 // ADDS A SPAN TAG AFTER THE DESCRIPTION DIV IN THE AREAS OF RESEARCH WIDGET
-	jQuery(".block-boxes-os_taxonomy_fbt.term-slider ul .item-list ul li .description").after("<span></span>");
+	jQuery(".block-boxes-os_taxonomy_fbt.term-slider .item-list ul li .description").after("<span></span>");
 
 	// TOGGLECLASS OPEN ON LIS IN AREAS OF RESEARCH WIDGET
-	jQuery('.block-boxes-os_taxonomy_fbt.term-slider ul .item-list ul li span').click(function() {
-		jQuery(this).parent('.block-boxes-os_taxonomy_fbt.term-slider ul .item-list ul li').toggleClass('open');
+	jQuery('.block-boxes-os_taxonomy_fbt.term-slider .item-list ul li span').click(function() {
+		jQuery(this).parent('.block-boxes-os_taxonomy_fbt.term-slider .item-list ul li').toggleClass('open');
 	});
 });
