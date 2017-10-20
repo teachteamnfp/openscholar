@@ -4826,5 +4826,6 @@ JS;
       $element->click();
     } catch (\Exception $e) {
       print_r('Cant click on ' . $page . ' : ' . $e->getMessage());
+    }
   }
 }
