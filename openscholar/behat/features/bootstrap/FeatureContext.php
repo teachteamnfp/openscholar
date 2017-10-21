@@ -1035,27 +1035,56 @@ class FeatureContext extends DrupalContext {
    * @Given /^the widget "([^"]*)" is placed in the "([^"]*)" layout$/
    */
   public function theWidgetIsPlacedInTheLayout($widget, $page) {
+
+    $page_mapping = array(
+      'News' => 'news_news',
+      'Blog' => 'blog_blog',
+      'Link' => 'links_links',
+      'Reader' => 'reader_reader',
+      'Calendar' => 'events_events',
+      'Classes' => 'classes_classes',
+      'People' => 'profiles_profiles',
+      'Galleries' => 'gallery_gallery',
+      'FAQ' => 'faq_faq',
+      'Software' => 'software_software',
+      'Documents' => 'booklets_booklets',
+      'Publications' => 'publications_publications',
+      'Presentations' => 'presentations_presentations',
+    );
+
     $q = db_select('spaces_overrides', 'so')
       ->fields('so', array('object_id', 'id'))
       ->condition('value', '%s:5:"title";s:' . strlen($widget) . ':"' . $widget . '";%', 'LIKE')
       ->condition('object_type', 'boxes', '=');
     $results = $q->execute()->fetchAll();
     $row = array_pop($results);
+    $vsite = spaces_load('og', $row->id);
 
     $page_id = FeatureHelp::GetNodeId($page);
 
-    $vsite = spaces_load('og', $row->id);
-    $blocks = $vsite->controllers->context->get('os_pages-page-' . $page_id . ":reaction:block");
-    $blocks['blocks']['boxes-' . $row->object_id] = array(
-      'module' => 'boxes',
-      'delta' => $row->object_id,
-      'title' => $widget,
-      'region' => 'sidebar_second',
-      'status' => 0,
-      'weight' => 0
-    );
-    $vsite->controllers->context->set('os_pages-page-' . $page_id . ":reaction:block", $blocks);
-
+    if (array_key_exists($page, $page_mapping)) {
+      $blocks = $vsite->controllers->context->get($page_mapping[$page] . ":reaction:block");
+      $blocks['blocks']['boxes-' . $row->object_id] = array(
+        'module' => 'boxes',
+        'delta' => $row->object_id,
+        'title' => $widget,
+        'region' => 'sidebar_second',
+        'status' => 0,
+        'weight' => 0
+      );
+      $vsite->controllers->context->set($page_mapping[$page] . ":reaction:block", $blocks);
+    } else {
+      $blocks = $vsite->controllers->context->get('os_pages-page-' . $page_id . ":reaction:block");
+      $blocks['blocks']['boxes-' . $row->object_id] = array(
+        'module' => 'boxes',
+        'delta' => $row->object_id,
+        'title' => $widget,
+        'region' => 'sidebar_second',
+        'status' => 0,
+        'weight' => 0
+      );
+      $vsite->controllers->context->set('os_pages-page-' . $page_id . ":reaction:block", $blocks);
+    }
   }
 
   /**
@@ -4423,27 +4452,6 @@ JS;
     }
     $element->click();
   }
-
-
-  /**
-   * Visit the internal (unaliased) Drupal path of the current page
-   *
-   * @When /^I open the edit form for the post "([^"]*)" on vsite "([^"]*)"$/
-   *//*
-  public function iVisitTheEditPathOfPage($url, $vsite) {
-    $unaliased_path = drupal_lookup_path('source', $url);
-
-    # Check the url with the vsite prepended
-    if (! $unaliased_path) {
-      $unaliased_path = drupal_lookup_path('source', "$vsite/$url");
-    }
-
-    if (! $unaliased_path) {
-      throw new Exception("Could not find an unaliased path for '$url' on vsite '$vsite'.");
-    }
-
-    $this->visit("/$vsite/$unaliased_path/edit");
-  }*/
 
   /**
    * Visit the internal (unaliased) Drupal path of the current page
