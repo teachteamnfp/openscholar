@@ -351,7 +351,7 @@ projects[respondjs][subdir] = "contrib"
 projects[respondjs][version] = 1.1
 
 projects[restful][subdir] = "contrib"
-projects[restful][version] = "1.8"
+projects[restful][version] = "1.7"
 # Patch to be able to update a taxonomy term.
 projects[restful][patch][] = "https://patch-diff.githubusercontent.com/raw/RESTful-Drupal/restful/pull/445.diff"
 projects[restful][patch][] = "https://raw.githubusercontent.com/openscholar/openscholar/839d0cc214f2422e924e35d33133d1268b8cc1cd/patches/restful.put_file.patch"
