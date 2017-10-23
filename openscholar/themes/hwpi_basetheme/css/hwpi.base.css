@@ -80,11 +80,12 @@ a:visited {
 .block-boxes-os_taxonomy_fbt.term-slider .item-list ul li.open a:hover {
     margin-left: 0;
 }
-.block-boxes-os_taxonomy_fbt.term-slide .item-list ul li.open a {
+
+.block-boxes-os_taxonomy_fbt.term-slider .item-list ul li.open a {
     margin-left: 0;
     background-color: #F3F3F1;
     height: 20px;
-    padding: 9px 22px 3px 12px;
+         padding: 9px 28px 3px 12px;
     color: #fff;
     background: url('../images/link-icon.png') right 12px no-repeat;
 }
