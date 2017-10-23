@@ -41,6 +41,7 @@ function theme_os_publications_tabular(&$vars) {
     'biblio_secondary_title',
     'biblio_coins',
     'biblio_lang',
+    'biblio_date',
   );
 
   if (variable_get('biblio_citeproc_style') == 'harvard-chicago-author-date.csl') {
@@ -50,7 +51,6 @@ function theme_os_publications_tabular(&$vars) {
       'biblio_number',
       'biblio_number_of_volumes',
       'biblio_type_of_work',
-      'biblio_date',
     ));
   }
 

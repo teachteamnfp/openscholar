@@ -801,12 +801,14 @@ function os_publications_alter_year_field(&$form, &$form_state) {
   // Adding submit handler to flip between the year and the date field.
   $form['#submit'][] = 'os_publications_year_date_flip';
 
+  $default_biblio_year_coded = $node->biblio_date;
+
   $form['biblio_year_group']['biblio_year_coded'] = array(
     '#type' => 'radios',
     '#options' => $years,
     '#multiple' => FALSE,
     '#weight' => 20,
-    '#default_value' => isset($years[$node->biblio_year]) ? $node->biblio_year : 0,
+    '#default_value' => $default_biblio_year_coded ? $default_biblio_year_coded : 0,
     '#after_build' => array('os_publications_date_of_publication_alter'),
   );
 }
@@ -875,9 +877,10 @@ function os_publications_year_date_flip($form, &$form_state) {
   $years = variable_get('biblio_years_text', array(9999 => t('Submitted'), 9998 => t('In Press')));
   if ($values['biblio_year_coded'] && isset($years[$values['biblio_year_coded']])) {
     $values['biblio_year'] = $values['biblio_year_coded'];
+    $values['biblio_date'] = $values['biblio_year'];
   }
-  if (!isset($years[$values['biblio_year']])) {
-
+  else {
+    $values['biblio_date'] = $values['biblio_year_coded'];
   }
   // wtf were we doing here? Why? What was the point? Someone explain or this will stay commented out.
   //$values['biblio_date'] = $values['biblio_year'];
@@ -2068,4 +2071,4 @@ function os_publications_biblio_pm_node_alter($node, $article) {
   if (substr($node->title, -1) == '.') {
     $node->title = substr($node->title, 0, -1);
   }
-} 
+}

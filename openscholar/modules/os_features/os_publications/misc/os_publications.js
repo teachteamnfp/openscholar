@@ -138,7 +138,6 @@ Drupal.behaviors.osPublications = {
         // tranglation.
         if (selectedOption == 'Forthcoming' || selectedOption == 'Submitted') {
           target_extrayear.hide();
-          target_date_published.show();
         } else {
           target_extrayear.css({position:'relative', left: $('input[name="biblio_year_coded"]:checked').position().left + 'px', top:'-20px'});
           target_extrayear.show();
@@ -152,7 +151,6 @@ Drupal.behaviors.osPublications = {
         var selectedOption = $.trim($(this).next().html());
         if (selectedOption == 'Forthcoming' || selectedOption == 'Submitted') {
           target_extrayear.hide();
-          target_date_published.show();
         } else {
           target_extrayear.css({position:'relative', left:$(this).position().left + 'px', top:'-20px'});
           target_extrayear.show();
@@ -169,19 +167,17 @@ Drupal.behaviors.osPublications = {
     attach: function () {
 
       var changeMonthAndDay = function(hide) {
-        var year = $('.form-item-biblio-year');
+
         var month = $("#edit-field-biblio-pub-month");
         var day = $("#edit-field-biblio-pub-day");
         var help_text = $("#biblio-month-group-validate");
 
         if (hide) {
-          year.hide();
           month.hide();
           day.hide();
           help_text.hide();
         }
         else {
-          year.show();
           month.show();
           day.show();
           help_text.show();
