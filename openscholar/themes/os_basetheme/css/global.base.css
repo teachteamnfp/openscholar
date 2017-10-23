@@ -755,6 +755,11 @@ ul ul ul ul {
     text-align: center;
 }
 
+/* Hide the top-right close button, since we handle it with the "Cancel" button */
+.os_events_export_dialog .ui-dialog-titlebar-close {
+    display: none;
+}
+
 .ical {
     padding: 3px 0 3px 25px !important;
     border-bottom: none !important;
