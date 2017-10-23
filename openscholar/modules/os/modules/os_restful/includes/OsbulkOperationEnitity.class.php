@@ -106,23 +106,23 @@ class OsbulkOperationEnitity extends OsRestfulEntityCacheableBase {
     $entity_ids = explode(',', $entity_ids);
     if (is_array($entity_ids) && !empty($entity_ids)) {
       $entities = entity_load($this->entityType, $entity_ids);
-      $results = array();
+      $messages = array();
+      $deleted_items = array();
       $count = 0;
-      foreach ($entities as $key => $entity) {
+      foreach ($entities as $entity_id => $entity) {
         if ($this->checkEntityAccess('delete', $this->entityType, $entity)) {
-          entity_delete($this->entityType, $entity_ids);
+          entity_delete($this->entityType, $entity_id);
+          $deleted_items[] = $entity_id;
           $count++;
         }
         else {
-          $results[] = t('Skipped Delete item on Node ' . $entity->title . ' due to insufficient permissions.');
+          $messages[] = t('Skipped Delete item on Node ' . $entity->title . ' due to insufficient permissions.');
         }
       }
       if (count($entity_ids) > 0) {
-        array_push($results, t('Performed Delete item on ' . $count. ' item'));
-        return $results;
-      }
-      else {
-        return array('deleted' => true);
+        $plural_texts = ($count > 1) ? $count . ' items' : $count . ' item';
+        array_push($messages, t('Performed Delete item on ' . $plural_texts));
+        return array('messages' => $messages, 'deleted_items' => $deleted_items);
       }
     }
     else {

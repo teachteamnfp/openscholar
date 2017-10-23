@@ -189,31 +189,27 @@
     $scope.deleteNodeOnClose = function() {
       $timeout.cancel(timer);
       $scope.deleteUndoAction = true;
-      var prepareSet = [];
-      angular.forEach(tableData, function(node, key) {
-        if (nodeId.indexOf(node.id) === -1) {
-          prepareSet.push(node);
-        }
-      });
-      $scope.resetCheckboxes();
-      if ((prepareSet.length === 0) || (nodeId.length === filteredData.length)) {
-        $scope.noRecords = true;
-      }
-      tableData = prepareSet;
       nodeService.bulk('delete', nodeId, {
         details: false,
         operation: false
       }).then(function(response) {
         $scope.message = false;
         $scope.multipleMessage = [];
-        if (response.data.data.deleted) {
-          $scope.message = 'Selected content has been deleted.';
-        } else {
-          $scope.multipleMessage = response.data.data;
+        var dt = response.data.data;
+        $scope.multipleMessage = dt.messages;
+        var deletedItems = dt.deleted_items;
+        if (deletedItems.length > 0) {
+          var prepareSet = [];
+          angular.forEach(tableData, function(node, key) { 
+            if (deletedItems.indexOf(node.id) === -1) {
+              prepareSet.push(node);
+            }
+          });
+          tableData = prepareSet;
         }
-        // Reset previous selections.
         nodeId = [];
         $scope.checkboxes.items = {};
+        $scope.search();
       }, function(error) {
         $scope.message = messageFailed;
       });
@@ -349,6 +345,7 @@
 
     $scope.closeMessage = function() {
       $scope.message = false;
+      $scope.multipleMessage = false;
     }
 
     // Search button: Filter data by title, content-type, taxonomy.
