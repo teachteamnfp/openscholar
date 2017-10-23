@@ -404,7 +404,7 @@ projects[term_reference_tree][version] = 1.x-dev
 projects[term_reference_tree][patch][] = "https://drupal.org/files/issues/2235057-term-er-3.patch"
 
 projects[title][subdir] = "contrib"
-projects[title][version] = 1.0-alpha7
+projects[title][version] = 1.0-alpha9
 
 projects[token][subdir] = "contrib"
 projects[token][version] = 1.4
