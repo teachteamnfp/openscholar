@@ -2986,19 +2986,32 @@ class FeatureContext extends DrupalContext {
   }
 
   /**
+   * @Given /^I can't visit "([^"]*)"$/
+   */
+  public function iCanTVisit($url) {
+    $access_denied_string = "denied";
+
+    $this->visit($url);
+    try {
+      $this->assertSession()->statusCodeEquals(403);
+    } catch (Exception $e) {
+      print "No status code found.\n";
+      print "Checking for '$access_denied_string' in page content.\n";
+    }
+    $content = $this->getSession()->getPage()->getContent();
+    if (preg_match("/$access_denied_string/i", $content)) {
+      return;
+    }
+ 
+    throw new Exception("Did not get 403 status code or '$access_denied_string'.");
+  }
+
+  /**
    * @Given /^I fill in the "([^"]*)" "([^"]*)" field under "([^"]*)" with "([^"]*)"$/
    */
   public function iFillInTheFieldContainingText($nth, $field_type, $field_under_text, $value) {
     $element = $this->_getNthFieldBelowXyz($nth, $field_type, $field_under_text);
     $element->setValue($value);
-  }
-
-  /**
-   * @Given /^I can't visit "([^"]*)"$/
-   */
-  public function iCanTVisit($url) {
-    $this->visit($url);
-    $this->assertSession()->statusCodeEquals(403);
   }
 
   /**
