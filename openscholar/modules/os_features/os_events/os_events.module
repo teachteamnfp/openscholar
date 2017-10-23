@@ -2229,7 +2229,7 @@ function os_events_preprocess_page(&$variables) {
   $menu = menu_get_item();
 
   // Hidden export dialog div (only shown when exporting to Google Calendar)
-  $variables['page']['content']['system_main']['main']['#markup'] .= '\n<div id="export-to-google-calendar-dialog-confirm"></div>\n';
+  $variables['page']['content']['system_main']['main']['#markup'] .= '<div id="export-to-google-calendar-dialog-confirm"></div>';
 
   // If we're exporting events, prompt user to either overwrite an old or create new calendar
   if (isset($_SESSION['exported_events'])) {
