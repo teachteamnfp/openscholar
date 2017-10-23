@@ -1,7 +1,7 @@
 Feature:
   Testing booklets
 
- @api @features_first @create_new_booklets_content @os_booklets
+ @api @features_first @create_new_booklets_content @os_booklets @javascript
  Scenario: Create new booklets content
     Given I am logging in as "john"
       And I visit "john/node/add/book"
@@ -12,7 +12,7 @@ Feature:
      Then I should see "Profiles In Courage"
       And I should see "Pulitzer Prize-winning volume of short biographies"
 
- @api @features_first @edit_existing_booklets_content @os_booklets
+ @api @features_first @edit_existing_booklets_content @os_booklets @javascript
  Scenario: Edit existing booklets content
     Given I am logging in as "john"
       And I visit the unaliased edit path of "book/profiles-courage" on vsite "john"
@@ -87,7 +87,7 @@ Feature:
       And I press "Save"
      Then I should match the regex "table\s+of\s+contents\s+profiles\s+in\s+courage\s+by\s+john\s+f.\s+kennedy\s+and\s+ted\s+sorensen\s+daniel\s+webster\s+sam\s+houston\s+john\s+quincy\s+adams"
 
-#@api @features_first @delete_any_booklets_content @os_booklets
+#@api @features_first @delete_any_booklets_content @os_booklets @javascript
 #Scenario: Delete booklets content
 #   Given I am logging in as "john"
 #     And I visit the unaliased edit path of "book/profiles-courage" on vsite "john"
@@ -116,7 +116,7 @@ Feature:
 #   Given I am logging in as "john"
 #     And I visit the site "john/book/profiles-courage"
 
-  @api @wip @javascript
+  @api @features_first @javascript
   Scenario: Verify "Active Book's Table of Contents" widget
     Given I am logging in as "john"
       And I visit "john"
