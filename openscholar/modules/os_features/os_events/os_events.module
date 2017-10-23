@@ -2235,23 +2235,21 @@ function os_events_preprocess_page(&$variables) {
   if (isset($_SESSION['exported_events'])) {
     if (isset($_GET['overwrite'])) {
 
-      // 1 : Overwrite
-      if ($_GET['overwrite'] == 1) {
-        $events = unserialize($_SESSION['exported_events']);
-        $listCalendarList = unserialize($_SESSION['listCalendarList']);
-        _os_events_export_events_to_google($events, $listCalendarList, $_GET['overwrite']);
+      if ($_GET['overwrite'] == -1) {
         unset($_SESSION['exported_events']);
         unset($_SESSION['listCalendarList']);
         drupal_save_session();
         return;
+      }
 
-      // -1 : Cancel
-      } else if ($_GET['overwrite'] == -1) {
-        unset($_SESSION['exported_events']);
-        unset($_SESSION['listCalendarList']);
-        drupal_save_session();
-        return;
-      } 
+      // 0: Create, 1 : Overwrite
+      $events = unserialize($_SESSION['exported_events']);
+      $listCalendarList = unserialize($_SESSION['listCalendarList']);
+      _os_events_export_events_to_google($events, $listCalendarList, $_GET['overwrite']);
+      unset($_SESSION['exported_events']);
+      unset($_SESSION['listCalendarList']);
+      drupal_save_session();
+      return;
 
     } else {
       ctools_include('modal');
