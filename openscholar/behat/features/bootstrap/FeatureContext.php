@@ -66,7 +66,6 @@ class FeatureContext extends DrupalContext {
     })();
     ";
     $this->getSession()->executeScript($script);
-    $this->iPrintPageScreenShot();
   }
 
   private function _printJavaScriptConsoleErrors() {
