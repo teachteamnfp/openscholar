@@ -345,3 +345,21 @@ function os_sv_list_form_spaces_features_form_submit($form, &$form_state) {
   // Flush assets.
   cache_clear_all('assets:' . $cid, 'cache_os_boxes', TRUE);
 }
+
+/**
+ * Helper function to alter destination url in contextual node-edit menu
+ * after ajax callback in os_sv_list pager
+ */
+function os_sv_list_contextual_links_view_alter(&$element, $items) {
+  if (isset($element['#links']['node-edit']['query']['destination'])) {
+    // Determine whether its after ajax callback,
+    // Ajax pager callback sets the contextual menu edit node destination URL as 'os_sv_list/page'
+    if (strpos($element['#links']['node-edit']['query']['destination'], 'os_sv_list') !== FALSE) {
+      // use the stored session after ajax callback
+      $element['#links']['node-edit']['query']['destination'] = $_SESSION['destination_path'];
+    } else {
+      // store the current page in session
+      $_SESSION['destination_path'] = $element['#links']['node-edit']['query']['destination'];
+    }
+  }
+}

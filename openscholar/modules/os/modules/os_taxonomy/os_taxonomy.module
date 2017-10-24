@@ -1934,7 +1934,7 @@ function _os_taxonomy_custom_form_cancel(&$form, &$form_state) {
  */
 function _os_taxonomy_validate_unicode_charset(&$form, &$form_state) {
   $termName = $form_state['values']['name'];
-  $exp = '/^[\x{0000}-\x{04FF}]+$/u';
+  $exp = '/^[\x{0000}-\x{FFFF}]+$/u';
 
   if (!preg_match($exp,$termName)) {
     form_set_error('name', t("Sorry, the character you entered is not supported."));

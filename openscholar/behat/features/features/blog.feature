@@ -62,7 +62,7 @@ Feature:
  @api @features_first @edit_existing_blog_content @os_blog
  Scenario: Edit existing blog content
     Given I am logging in as "john"
-      And I visit the unaliased edit path of "blog/day-life-potus" on vsite "john"
+     And I edit the node "A day in the life of The POTUS." in the group "john"
      When I fill in "Title" with "Another day in the life of The POTUS."
 #    When I fill in "Body" with "Each day the President eats lunch."
       And I press "Save"
@@ -106,9 +106,34 @@ Feature:
  @api @features_first @delete_any_blog_content @os_blog
  Scenario: Delete blog content
     Given I am logging in as "john"
-      And I visit the unaliased edit path of "blog/day-life-potus" on vsite "john"
+      And I edit the node "Another day in the life of The POTUS." in the group "john"
       And I sleep for "2"
      When I click "Delete this blog entry"
      Then I should see "Are you sure you want to delete"
       And I press "Delete"
      Then I should see "has been deleted"
+
+ @api @features_first @create_new_blog_content_permissions @os_blog
+ Scenario: Create new blog content (permissions)
+    Given I am logging in as "michelle"
+     Then I can't visit "john/node/add/blog"
+
+ @api @features_first @delete_any_blog_content_permissions @os_blog
+ Scenario: Delete any blog content (permissions)
+    Given I am logging in as "michelle"
+     Then I can't visit "delete" form for node "blog/profiles-courage" in group "john"
+
+ @api @features_first @create_new_blog_content_permissions @os_blog
+ Scenario: Create new blog content (permissions)
+    Given I am logging in as "michelle"
+     Then I can't visit "john/node/add/blog"
+
+ @api @features_first @edit_any_blog_content_permissions @os_blog
+ Scenario: Edit any blog content (permissions)
+    Given I am logging in as "michelle"
+     Then I can't edit node "blog/profiles-courage" in group "john"
+
+ @api @features_first @delete_any_blog_content_permissions @os_blog
+ Scenario: Delete any blog content (permissions)
+    Given I am logging in as "michelle"
+     Then I can't visit "delete" form for node "blog/profiles-courage" in group "john"
