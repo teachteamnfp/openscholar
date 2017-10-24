@@ -1,4 +1,4 @@
-;Drupal.org Makefile for OpenScholar
+; Drupal.org Makefile for OpenScholar
 
 core = 7.x
 api = 2
@@ -47,7 +47,7 @@ projects[contextual_annotation][subdir] = "contrib"
 projects[contextual_annotation][type] = module
 projects[contextual_annotation][download][type] = git
 projects[contextual_annotation][download][url] =  "http://git.drupal.org/project/contextual_annotation.git"
-;needs patches to contrib
+; needs patches to contrib
 
 projects[ctools][subdir] = "contrib"
 projects[ctools][download][type] = git
@@ -144,7 +144,7 @@ projects[file_entity][patch][] = "http://drupal.org/files/file_entity.1834902-3.
 projects[file_entity][patch][] = "http://drupal.org/files/filter-by-file-schema-type-1881356-12.patch"
 
 projects[filefield_paths][subdir] = "contrib"
-;projects[filefield_paths][version] = 1.0-beta3+2-dev
+; projects[filefield_paths][version] = 1.0-beta3+2-dev
 projects[filefield_paths][download][type] = git
 projects[filefield_paths][download][branch] = 7.x-5.x
 projects[filefield_paths][download][revision] = 84fb637
@@ -173,7 +173,7 @@ projects[imagemagick][version] = 1.0
 projects[imagemagick][patch][] = "https://raw.githubusercontent.com/openscholar/openscholar/53169db65764686c511972619fdeb902704731d6/patches/imagemagick.no-resize-for-animated-gifs.patch"
 
 projects[imagefield_crop][subdir] = "contrib"
-;projects[imagefield_crop][version] = 2.0
+; projects[imagefield_crop][version] = 2.0
 projects[imagefield_crop][download][type] = git
 projects[imagefield_crop][download][branch] = 7.x-2.x
 projects[imagefield_crop][download][revision] = 4a5302
@@ -204,7 +204,7 @@ projects[link][patch][] = "https://raw.githubusercontent.com/openscholar/opensch
 projects[link][subdir] = "contrib"
 projects[link][download][branch] = 7.x-1.x
 projects[link][download][type] = git
-;projects[link][revision] = "799bca2"
+; projects[link][revision] = "799bca2"
 projects[link][download][revision] = "ff518b60113f29885a8f358e8b0fa4499b0c608d"
 
 projects[linkchecker][subdir] = "contrib"
@@ -376,7 +376,7 @@ projects[securepages][subdir] = "contrib"
 projects[securepages][version] = 1.0-beta1
 
 projects[services][subdir] = "contrib"
-;projects[services][version] = 3.3+42-dev
+; projects[services][version] = 3.3+42-dev
 projects[services][download][branch] = 7.x-3.x
 projects[services][download][revision] = 761e620
 
@@ -384,7 +384,7 @@ projects[services_basic_auth][subdir] = "contrib"
 projects[services_basic_auth][version] = "1.3"
 
 projects[spaces][subdir] = "contrib"
-;projects[spaces][version] = 3.0-alpha1+9-dev
+; projects[spaces][version] = 3.0-alpha1+9-dev
 projects[spaces][revision] = "eac3a7e"
 projects[spaces][patch][] = "http://drupal.org/files/1470434-spaces-og-28.patch"
 projects[spaces][patch][] = "http://drupal.org/files/spaces_ui-show_disabled-1662918-1.patch"
@@ -420,7 +420,7 @@ projects[twitter_pull][patch][] = "https://raw.githubusercontent.com/openscholar
 projects[twitter_pull][patch][] = "https://raw.githubusercontent.com/openscholar/openscholar/1811fd556f5ef60be92a5b5249a81f652a73681c/patches/twitter_pull.class.inc-tweet-mode-extended.patch"
 
 projects[views][subdir] = "contrib"
-projects[views][version] = 3.11
+projects[views][version] = 3.18
 ; projects[views][patch][] = "https://drupal.org/files/issues/views-jquery_dialog-2125261-1.patch"
 
 projects[views_bulk_operations][subdir] = "contrib"
@@ -440,8 +440,8 @@ projects[views_litepager][patch][] = "http://drupal.org/files/views_litepager-of
 
 projects[views_infinite_scroll][subdir] = "contrib"
 projects[views_infinite_scroll][version] = 1.1
-;projects[views_infinite_scroll][patch][] = "http://drupal.org/files/views_infinite_scroll-vbo-1965288-2.patch"
-;projects[views_infinite_scroll][patch][] = "http://localhost/patch/views_infinite_scroll-no_auto_scroll-2012910-1.patch"
+; projects[views_infinite_scroll][patch][] = "http://drupal.org/files/views_infinite_scroll-vbo-1965288-2.patch"
+; projects[views_infinite_scroll][patch][] = "http://localhost/patch/views_infinite_scroll-no_auto_scroll-2012910-1.patch"
 
 projects[web_widgets][subdir] = "contrib"
 projects[web_widgets][version] = 1.0-alpha2
