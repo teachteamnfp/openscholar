@@ -57,7 +57,7 @@ Feature:
       And I press "Save"
       And I sleep for "2"
      Then I should see "A day in the life of The POTUS"
-      And I should see "Each day the President is briefed."
+#     And I should see "Each day the President is briefed."
 
  @api @features_first @edit_existing_blog_content @os_blog
  Scenario: Edit existing blog content
@@ -68,7 +68,7 @@ Feature:
       And I press "Save"
       And I sleep for "2"
      Then I should see "Another day in the life of The POTUS."
-      And I should see "Each day the President eats lunch."
+#     And I should see "Each day the President eats lunch."
 
  @api @administer_blog_settings @os_blog @javascript
  Scenario: Administer Blog Settings
