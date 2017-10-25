@@ -18,12 +18,13 @@ git clone -b SCHOLAR-3.x git@bitbucket.org:openscholar/deploysource.git  ~/src/a
 cd ~/src/amazon/hwpi1
 git checkout -b $CI_BRANCH;
 fi
-if ! test "$PR_BRANCH" = ""; then
+#if ! test "$PR_BRANCH" = ""; then
 # do things
 # This branch is probably deleted, or will be soon, so we don't need to build
-git push origin :$PR_BRANCH || echo "$PR_BRANCH not found on hwpi1"
-fi
-# Build this branch and push it to Acquia
+#git push origin :$PR_BRANCH || echo "$PR_BRANCH not found on hwpi1"
+#fi
+
+# Build this branch and push it to Amazon
 
 # Set up global configuration and install tools needed to build
 composer global require drush/drush
@@ -38,6 +39,7 @@ echo $CI_COMMIT_ID
 [[ $DRUSH && ${DRUSH-x} ]] || DRUSH=drush
 BUILD_ROOT='/home/rof/src/amazon/hwpi1'
 cd $BUILD_ROOT
+ls
 rm .gitmodules
 #List of files from docroot that should be preserved
 preserve_files=( .htaccess robots_disallow.txt sites 404_fast.html favicon.ico )
