@@ -4970,4 +4970,13 @@ JS;
     $element = $this->getSession()->getPage()->find('xpath', "//*[contains(@class, '{$class}')]");
     $element->click();
   }
+ 
+  /**
+   * @When /^I visit the absolute path "([^"]*)"$/
+   */
+  public function iVisitTheAbsolutePath($path) {
+    $this->getSession()->visit($path);
+    $content = $this->getSession()->getPage()->getContent();
+    var_dump($content);
+  }
 }

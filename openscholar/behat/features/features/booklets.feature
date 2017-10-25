@@ -1,9 +1,10 @@
 Feature:
   Testing booklets
 
- @api @features_first @create_new_booklets_content @os_booklets @javascript @eam_235
+ @api @features_first @create_new_booklets_content @os_booklets @javascript
  Scenario: Create new booklets content
     Given I am logging in as "john"
+      And I visit the absolute path "about:"
       And I visit "john/node/add/book"
      When I fill in "Title" with "Profiles In Courage"
       And I press "Save"
@@ -17,7 +18,7 @@ Feature:
       And I fill in "Title" with "Profiles In Courage by John F. Kennedy and Ted Sorensen"
       And I press "Save"
       And I sleep for "5"
-     Then I should see "profiles senators who defied the opinions"
+     Then I should see "Ted Sorensen"
 
  @api @features_first @os_booklets @add_child_page_to_existing_booklet_content
  Scenario: Add child page to existing booklet content
