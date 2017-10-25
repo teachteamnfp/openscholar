@@ -11,17 +11,17 @@ mkdir -p ~/src/amazon/
 git config --global user.email "openscholar@swap.lists.harvard.edu"
 git config --global user.name "OpenScholar Auto Push Bot"
 if git ls-remote --heads git@bitbucket.org:openscholar/deploysource.git | grep -sw $CI_BRANCH 2>&1>/dev/null; then
-git clone -b $CI_BRANCH git@bitbucket.org:openscholar/deploysource.git  ~/src/amazon/hwpi1;
-cd ~/src/amazon/hwpi1
+git clone -b $CI_BRANCH git@bitbucket.org:openscholar/deploysource.git  ~/src/amazon;
+cd ~/src/amazon
 else
-git clone -b amazon-base git@bitbucket.org:openscholar/deploysource.git  ~/src/amazon/hwpi1;
-cd ~/src/amazon/hwpi1
+git clone -b amazon-base git@bitbucket.org:openscholar/deploysource.git  ~/src/amazon;
+cd ~/src/amazon
 git checkout -b $CI_BRANCH;
 fi
 #if ! test "$PR_BRANCH" = ""; then
 # do things
 # This branch is probably deleted, or will be soon, so we don't need to build
-#git push origin :$PR_BRANCH || echo "$PR_BRANCH not found on hwpi1"
+#git push origin :$PR_BRANCH || echo "$PR_BRANCH not found"
 #fi
 
 # Build this branch and push it to Amazon
@@ -37,7 +37,7 @@ echo $CI_BRANCH
 echo $CI_COMMIT_ID
 # Drush executable.
 [[ $DRUSH && ${DRUSH-x} ]] || DRUSH=drush
-BUILD_ROOT='/home/rof/src/amazon/hwpi1'
+BUILD_ROOT='/home/rof/src/amazon'
 cd $BUILD_ROOT
 ls
 rm .gitmodules
