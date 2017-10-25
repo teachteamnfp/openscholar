@@ -4841,4 +4841,25 @@ JS;
 
     return false;
   }
+
+  /**
+   * @When /^I edit the media element "([^"]*)"$/
+   */
+  public function iClickToEditTheMedia($filename) {
+    $fid = FeatureHelp::getEntityID('file', $filename);
+    $file = file_load($fid);
+    return array(
+      new Step\When('I visit "john/file/' . $fid . '/edit"'),
+    );
+  }
+
+  /**
+   * @When /^I visit the file "([^"]*)"$/
+   */
+  public function iVisitTheFile($filename) {
+    $fid = FeatureHelp::getEntityID('file', $filename);
+    return array(
+      new Step\When('I visit "john/file/' . $fid . '"'),
+    );
+  }
 }
