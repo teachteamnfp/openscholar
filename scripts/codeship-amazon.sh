@@ -14,7 +14,7 @@ if git ls-remote --heads git@bitbucket.org:openscholar/deploysource.git | grep -
 git clone -b $CI_BRANCH git@bitbucket.org:openscholar/deploysource.git  ~/src/amazon/hwpi1;
 cd ~/src/amazon/hwpi1
 else
-git clone -b SCHOLAR-3.x git@bitbucket.org:openscholar/deploysource.git  ~/src/amazon/hwpi1;
+git clone -b amazon-base git@bitbucket.org:openscholar/deploysource.git  ~/src/amazon/hwpi1;
 cd ~/src/amazon/hwpi1
 git checkout -b $CI_BRANCH;
 fi
