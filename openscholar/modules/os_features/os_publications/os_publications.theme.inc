@@ -220,7 +220,7 @@ function _os_publications_plain_citation($node) {
   if (variable_get('biblio_citeproc_style') == 'harvard-chicago-author-date.csl') {
 
     // Pushing day and month in those both are present in Publication for Harvard - Chicago Author cititation
-    if (!empty($node->biblio_year) && strpos($citation, $node->biblio_date . '.') !== FALSE && !empty($node->field_biblio_pub_month['und'][0]['value'])) {
+    if (!empty($node->biblio_year) && !empty($node->field_biblio_pub_day['und'][0]['value'] . '.') && !empty($node->field_biblio_pub_month['und'][0]['value'])) {
       // In case day value is present
       if (!empty($node->field_biblio_pub_day['und'][0]['value'])) {
         $day = $node->field_biblio_pub_day['und'][0]['value'] . '/';
