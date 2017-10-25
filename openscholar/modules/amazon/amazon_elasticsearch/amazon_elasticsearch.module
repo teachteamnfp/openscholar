@@ -46,3 +46,4 @@ function amazon_elasticsearch_create_environment() {
   // allow other modules to override this
   apachesolr_environment_save($environment);
 }
+
