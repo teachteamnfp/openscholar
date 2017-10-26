@@ -114,7 +114,7 @@ Feature:
 
       And I click the big gear
       And I click "Layout"
-      And I drag the "Active Book's TOC" widget to the "sidebar-first" region
+      And I drag the "Active Book's TOC" widget to the "header-first" region
 
       And I visit "john/os/widget/boxes/os_booktoc/edit/cp-layout"
       And I select "Profiles In Courage" from "Which Book"
