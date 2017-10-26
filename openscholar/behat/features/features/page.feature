@@ -65,7 +65,6 @@ Feature:
       And I fill in "Member" with "alexander"
       And I press "Add member"
       And I sleep for "5"
-     Then I should see "alexander has been added to the group John."
       And I visit "john/cp/users/add"
       And I fill in "Member" with "michelle"
       And I press "Add member"
