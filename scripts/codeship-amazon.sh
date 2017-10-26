@@ -44,19 +44,18 @@ rm .gitmodules
 #List of files from docroot that should be preserved
 preserve_files=( .htaccess robots_disallow.txt sites 404_fast.html favicon.ico )
 #Backup the make files
-cp -f openscholar/drupal-org-core.make /tmp/
-cp -f openscholar/drupal-org.make /tmp/
-cp -f openscholar/bower.json /tmp/
+cp -f openscholar/openscholar/drupal-org-core.make /tmp/
+cp -f openscholar/openscholar/drupal-org.make /tmp/
+cp -f openscholar/openscholar/bower.json /tmp/
 git subtree pull -q -m "subtree merge in codeship" --prefix=openscholar git://github.com/openscholar/openscholar.git $CI_BRANCH
 #Only build if no build has ever happened, or if the make files have changed
-pwd
-if [ ! -d openscholar/modules/contrib ] || [ $FORCE_REBUILD == "1" ] || [ "$(cmp -b 'openscholar/drupal-org-core.make' '/tmp/drupal-org-core.make')" != "" ] || [ "$(cmp -b 'openscholar/drupal-org.make' '/tmp/drupal-org.make')" != "" ] || [ "$(cmp -b 'openscholar/bower.json' '/tmp/bower.json')" != "" ]; then
+if [ ! -d openscholar/openscholar/modules/contrib ] || [ $FORCE_REBUILD == "1" ] || [ "$(cmp -b 'openscholar/openscholar/drupal-org-core.make' '/tmp/drupal-org-core.make')" != "" ] || [ "$(cmp -b 'openscholar/openscholar/drupal-org.make' '/tmp/drupal-org.make')" != "" ] || [ "$(cmp -b 'openscholar/openscholar/bower.json' '/tmp/bower.json')" != "" ]; then
 # Chores.
 echo "Rebuilding..."
-for DIR in $BUILD_ROOT/www-build $BUILD_ROOT/www-backup openscholar/1 openscholar/modules/contrib openscholar/themes/contrib openscholar/libraries; do
+for DIR in $BUILD_ROOT/www-build $BUILD_ROOT/www-backup openscholar/openscholar/1 openscholar/openscholar/modules/contrib openscholar/openscholar/themes/contrib openscholar/openscholar/libraries; do
 	rm -Rf $DIR &> /dev/null
 done
-cd openscholar
+cd openscholar/openscholar
 
 $DRUSH make --no-core --contrib-destination drupal-org.make .
 (
@@ -73,8 +72,8 @@ $DRUSH make --no-core --contrib-destination drupal-org.make .
 	bower -q install
 )
 
-cd ../
-$DRUSH make openscholar/drupal-org-core.make $BUILD_ROOT/www-build
+cd ../../
+$DRUSH make openscholar/openscholar/drupal-org-core.make $BUILD_ROOT/www-build
 
 # Backup files from existing installation.
 cd $BUILD_ROOT
@@ -85,13 +84,13 @@ for BACKUP_FILE in "${preserve_files[@]}"; do
 	mv $DOCROOT/$BACKUP_FILE www-build/
 done
 # Move the profile in place.
-ln -s ../../openscholar $BUILD_ROOT/www-build/profiles/openscholar
+ln -s ../../openscholar/openscholar $BUILD_ROOT/www-build/profiles/openscholar
 
 # link up phpmyadmin
 # ln -s ../phpMyAdmin-3.5.2.2-english $BUILD_ROOT/www-build/phpmyadmin
 
 #link up js.php
-ln -s ../openscholar/modules/contrib/js/js.php $BUILD_ROOT/www-build/js.php
+ln -s ../openscholar/openscholar/modules/contrib/js/js.php $BUILD_ROOT/www-build/js.php
 
 # Fix permissions before deleting.
 # chmod -R +w $BUILD_ROOT/$DOCROOT/sites/* || true
@@ -108,10 +107,10 @@ git add --all $BUILD_ROOT/$DOCROOT
 cp -R openscholar/temporary/* openscholar/openscholar/modules/contrib/
 # iCalcreator cannot be downloaded via make because a temporary token is needed,
 # so we have the library inside os_events directory and we copy it to libraries.
-cp -R openscholar/modules/os_features/os_events/iCalcreator openscholar/libraries/
+cp -R openscholar/openscholar/modules/os_features/os_events/iCalcreator openscholar/openscholar/libraries/
 # Download the git wrapper library using the composer.
 
-for DIR in openscholar/libraries openscholar/themes/contrib openscholar/modules/contrib
+for DIR in openscholar/openscholar/libraries openscholar/openscholar/themes/contrib openscholar/openscholar/modules/contrib
 do
 if [ -d "$DIR" ]; then
 git add --all -f $DIR
@@ -131,7 +130,7 @@ ls $BUILD_ROOT/openscholar
 rm -rf $BUILD_ROOT/openscholar/behat &> /dev/null
 
 #Copy unmakable modules, when we don’t build
-cp -R temporary/* openscholar/modules/contrib/
+cp -R openscholar/temporary/* openscholar/openscholar/modules/contrib/
 git commit -a -m "Update Temporary Modules." || echo 'Nothing to commit.'
 fi
 
