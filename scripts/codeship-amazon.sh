@@ -42,7 +42,7 @@ cd $BUILD_ROOT
 ls
 rm .gitmodules
 #List of files from docroot that should be preserved
-preserve_files=( .htaccess robots_disallow.txt sites 404_fast.html favicon.ico )
+preserve_files=( .htaccess robots_disallow.txt sites 404_fast.html favicon.ico files )
 #Backup the make files
 cp -f openscholar/openscholar/drupal-org-core.make /tmp/
 cp -f openscholar/openscholar/drupal-org.make /tmp/
