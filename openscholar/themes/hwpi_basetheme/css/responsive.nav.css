@@ -158,9 +158,12 @@
     right: 0;
 }
      .open-submenu:after {
-    content: url('../images/resp-menu-dwnarrw.png?123');
-   
-  
+    content: '▼';
+   font-size:20px;
+  left:12px;
+  position:absolute;
+  top:10px;
+  color:#777;
 }
 
 
