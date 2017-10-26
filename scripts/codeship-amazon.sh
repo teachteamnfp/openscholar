@@ -84,7 +84,7 @@ for BACKUP_FILE in "${preserve_files[@]}"; do
 	mv $DOCROOT/$BACKUP_FILE www-build/
 done
 # Move the profile in place.
-ln -s openscholar www-build/profiles/openscholar
+ln -s openscholar/openscholar www-build/profiles/openscholar
 
 # link up phpmyadmin
 # ln -s ../phpMyAdmin-3.5.2.2-english $BUILD_ROOT/www-build/phpmyadmin
