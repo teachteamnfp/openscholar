@@ -80,7 +80,7 @@ Feature:
   @api @features_second
   Scenario: Permission to edit own page content
     Given I am logging in as "michelle"
-      And I edit the node "About Michelle" in the group "john"
+      And I visit to edit the post "about-michelle" on vsite "john"
       And I fill in "Title" with "About Michelle Obama"
       And I press "Save"
      Then I should see "About Michelle Obama"
