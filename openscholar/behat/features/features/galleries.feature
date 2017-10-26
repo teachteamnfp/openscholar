@@ -41,7 +41,7 @@ Feature:
        And I should see "Visit to world safari"
 
   @api @features_first
-  Scenario: Edit existing image gallery content
+  Scenario: Edit the existing image gallery content
      Given I am logging in as "john"
         And I visit the unaliased edit path of "galleries/safari" on vsite "john"
        When I fill in "Title" with "World Safari"
