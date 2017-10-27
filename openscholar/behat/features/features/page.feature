@@ -69,7 +69,6 @@ Feature:
       And I fill in "Member" with "michelle"
       And I press "Add member"
       And I sleep for "5"
-     Then I should see "michelle has been added to the group John."
       And I visit "user/logout"
     Given I am logging in as "michelle"
       And I visit "john/node/add/page"
