@@ -47,20 +47,28 @@ class FeatureContext extends DrupalContext {
    */
   public function urlChangeHandler(StepEvent $e) {
     if ($this->currentUrl != $this->getSession()->getCurrentUrl()) {
-      $script = "
-      (function () {
-        if (!window.BehatScriptRun) {
-          window.BehatScriptRun = true;
-          window.BehatConsoleErrors = [];
-
-          window.onerror = function (error, url, line) {
-            BehatConsoleErrors.push({error: error, url: url, line: line});
-          }
-        }
-      })();
-      ";
-      $this->getSession()->executeScript($script);
+      $this->_captureJavaScriptConsoleErrors();
     }
+    $this->_printJavaScriptConsoleErrors();
+  }
+
+  private function _captureJavaScriptConsoleErrors() {
+    $script = "
+    (function () {
+      if (!window.BehatScriptRun) {
+        window.BehatScriptRun = true;
+        window.BehatConsoleErrors = [];
+
+        window.onerror = function (error, url, line) {
+          BehatConsoleErrors.push({error: error, url: url, line: line});
+        }
+      }
+    })();
+    ";
+    $this->getSession()->executeScript($script);
+  }
+
+  private function _printJavaScriptConsoleErrors() {
     if ($jserrors = $this->getSession()->evaluateScript("return window.BehatConsoleErrors")) {
       print_r($jserrors);
     }
@@ -2558,7 +2566,7 @@ class FeatureContext extends DrupalContext {
     if ($element) {
       throw new Exception("A button with id|name|value equal to '$button' was found.");
     }
-}
+  }
 
   /**
    * @Given /^I set feature "([^"]*)" to "([^"]*)" on "([^"]*)"$/
@@ -2986,19 +2994,32 @@ class FeatureContext extends DrupalContext {
   }
 
   /**
+   * @Given /^I can't visit "([^"]*)"$/
+   */
+  public function iCanTVisit($url) {
+    $access_denied_string = "denied";
+
+    $this->visit($url);
+    try {
+      $this->assertSession()->statusCodeEquals(403);
+    } catch (Exception $e) {
+      print "No status code found.\n";
+      print "Checking for '$access_denied_string' in page content.\n";
+    }
+    $content = $this->getSession()->getPage()->getContent();
+    if (preg_match("/$access_denied_string/i", $content)) {
+      return;
+    }
+ 
+    throw new Exception("Did not get 403 status code or '$access_denied_string'.");
+  }
+
+  /**
    * @Given /^I fill in the "([^"]*)" "([^"]*)" field under "([^"]*)" with "([^"]*)"$/
    */
   public function iFillInTheFieldContainingText($nth, $field_type, $field_under_text, $value) {
     $element = $this->_getNthFieldBelowXyz($nth, $field_type, $field_under_text);
     $element->setValue($value);
-  }
-
-  /**
-   * @Given /^I can't visit "([^"]*)"$/
-   */
-  public function iCanTVisit($url) {
-    $this->visit($url);
-    $this->assertSession()->statusCodeEquals(403);
   }
 
   /**
@@ -4015,7 +4036,7 @@ class FeatureContext extends DrupalContext {
     return array();
   }
 
-  /*
+  /**
    * @Given /^I make sure admin panel is closed$/
    */
   public function adminPanelClosed() {
@@ -4043,9 +4064,12 @@ class FeatureContext extends DrupalContext {
     $output = $this->adminPanelOpen();
     $page = $this->getSession()->getPage();
 
+    $this->_captureJavaScriptConsoleErrors();
+
     //$elem = $page->find('xpath', "//*[text() = '{$text}']/ancestor::li[@admin-panel-menu-row]");
     $elem = $page->find('xpath', "//li[@admin-panel-menu-row]/descendant::span[text()='$text']/ancestor::li[@admin-panel-menu-row][1]");
     if (!$elem) {
+      $this->_printJavaScriptConsoleErrors();
       throw new \Exception("The link $text cannot be found in the admin panel.");
     }
     if (!$elem->hasClass('open')) {
@@ -4456,7 +4480,7 @@ JS;
   /**
    * Visit the internal (unaliased) Drupal path of the current page
    *
-   * @When /^I open the delete form for the post "([^"]*)" on vsite "([^"]*)"$/
+   * @When /^I visit to delete the post "([^"]*)" on vsite "([^"]*)"$/
    */
   public function iVisitTheDeletePathOfPage($url, $vsite) {
     $unaliased_path = drupal_lookup_path('source', $url);
@@ -4491,6 +4515,37 @@ JS;
     }
 
     $this->visit("$vsite/$unaliased_path/$appendage");
+  }
+
+  /**
+   * @When /^I intentionally throw some javascript errors$/
+   */
+  public function iIntentionallyThrowSomeJsErrors() {
+    $BehatConsoleErrorsScript = "
+    (function () {
+      if (!window.BehatScriptRun) {
+        window.BehatScriptRun = true;
+        window.BehatConsoleErrors = [];
+
+        window.onerror = function (error, url, line) {
+          BehatConsoleErrors.push({error: error, url: url, line: line});
+        }
+      }
+    })();
+    ";
+
+    $errorCausingScripts = array(
+      "var abc = xyz.ThisPropertyDoesNotExist.NorDoesThisOne;",
+      "throw new Error('Something bad happened.');",
+    );
+
+    foreach ($errorCausingScripts as $s) {
+      $this->getSession()->executeScript($s);
+      $this->getSession()->executeScript($BehatConsoleErrors);
+      if ($jserrors = $this->getSession()->evaluateScript("return window.BehatConsoleErrors")) {
+        print_r($jserrors);
+      }
+    }
   }
 
   /**
@@ -4826,10 +4881,102 @@ JS;
   }
 
   /**
+   * @Given /^I add a existing sub page named "([^"]*)" under the page "([^"]*)"$/
+   */
+  public function iAddExistingSubPageUnderPage($child_title, $parent_title) {
+    $nid = FeatureHelp::getNodeId($parent_title);
+    return array(
+      new Step\When('I visit "john/os/pages/' . $nid . '/subpage' . '"'),
+    );
+  }
+
+  /**
+   * @Given /^I fill in the field "([^"]*)" with the page "([^"]*)"$/
+   *
+   * This step is used to fill in an autocomplete field.
+   */
+  public function iFillInTheFieldWithThePage($id, $title) {
+    $nid = FeatureHelp::getNodeId($title);
+    $element = $this->getSession()->getPage();
+    $value = $title . ' [' . $nid . ']';
+    $element->fillField($id, $value);
+  }
+
+  /**
+   * @When /^I click the gear icon in the section navigation widget$/
+   */
+  public function iClickTheGearIconInTheSectionNavigation() {
+    $content_region = $this->getSession()->getPage()->find('xpath', "//div[@id='block-boxes-os-pages-section-nav']");
+    $gear_icon = $this->getSession()->getPage()->find('xpath', "//div[@class='contextual-links-wrapper contextual-links-processed']");
+    $gear_icon_trigger_link = $this->getSession()->getPage()->find('xpath', "//div[@id='block-boxes-os-pages-section-nav']//div/a[text()='Configure']");
+
+    $content_region->mouseOver();
+    $content_region->click();
+    $gear_icon->mouseOver();
+    $gear_icon->click();
+    $gear_icon_trigger_link->mouseOver();
+    $gear_icon_trigger_link->click();
+  }
+
+  /**
+   * @Given /^I visit the "([^"]*)" parameter in the current page query string with "([^"]*)" appended on vsite "([^"]*)"$/
+   */
+  public function iVisitTheParameterInTheCurrentPageQueryString($parameter, $appendage, $vsite) {
+
+    $url = $this->getSession()->getCurrentUrl();
+    if (preg_match("/$parameter(?:=|%3d)node\/(\S+)/i", $url, $matches)) {
+
+      if (isset($matches[1])) {
+        $this->getSession()->visit($this->locatePath((($vsite) ? "/$vsite/os/pages/" : "") . rawurldecode($matches[1]) . (($appendage) ? "/$appendage" : "")));
+      } else {
+        throw new Exception("Could not get a $parameter.\n");
+      }
+    }
+  }
+
+  /**
+   * @Given /^I click "([^"]*)" in the gear menu of section navigation$/
+   */
+  public function iClickInTheGearMenuOfSectionNav($menu_item) {
+    $gear_menu_item = $this->getSession()->getPage()->find('xpath', "//div[@id='block-boxes-os-pages-section-nav']//div/a[text()='Configure']/..//a[text()='$menu_item']");
+    $gear_menu_item->click();
+  }
+
+  /**
+   * @When /^I swap the order of the subpages under the page "([^"]*)"$/
+   */
+  public function iSwapTheOrderOfTheSubpage($page_title) {
+    $nid = FeatureHelp::getNodeId($page_title);
+    $this->Visit('john/os/pages/' . $nid . '/outline');
+    $this->adminPanelClosed();
+
+    $handles = $this->getSession()->getPage()->findAll('xpath', "//div[@class='handle']");
+
+    if (sizeof($handles) > 1) {
+      $handles[0]->dragTo($handles[1]);
+    } else {
+      throw new Exception("There needs to be at least two subpage entries to test re-ordering.\n");
+    }
+
+    return array(
+      new Step\When('I press "Save Section Outline"'),
+    );
+  }
+
+  /**
    * @When /^I click on "([^"]*)" button in the wysiwyg editor$/
    */
   public function iClickOnEditor($class) {
     $element = $this->getSession()->getPage()->find('xpath', "//*[contains(@class, '{$class}')]");
     $element->click();
+  }
+ 
+  /**
+   * @When /^I visit the absolute path "([^"]*)"$/
+   */
+  public function iVisitTheAbsolutePath($path) {
+    $this->getSession()->visit($path);
+    $content = $this->getSession()->getPage()->getContent();
+    var_dump($content);
   }
 }

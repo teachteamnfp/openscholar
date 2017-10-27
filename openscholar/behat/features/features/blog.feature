@@ -53,24 +53,24 @@ Feature:
     Given I am logging in as "john"
       And I visit "john/node/add/blog"
      When I fill in "Title" with "A day in the life of The POTUS."
-     When I fill in "Body" with "Each day the President is briefed."
+#    When I fill in "Body" with "Each day the President is briefed."
       And I press "Save"
       And I sleep for "2"
      Then I should see "A day in the life of The POTUS"
-      And I should see "Each day the President is briefed."
+#     And I should see "Each day the President is briefed."
 
  @api @features_first @edit_existing_blog_content @os_blog
  Scenario: Edit existing blog content
     Given I am logging in as "john"
      And I edit the node "A day in the life of The POTUS." in the group "john"
      When I fill in "Title" with "Another day in the life of The POTUS."
-     When I fill in "Body" with "Each day the President eats lunch."
+#    When I fill in "Body" with "Each day the President eats lunch."
       And I press "Save"
       And I sleep for "2"
      Then I should see "Another day in the life of The POTUS."
-      And I should see "Each day the President eats lunch."
+#     And I should see "Each day the President eats lunch."
 
- @api @wip_needs_js_enabled_webdriver @administer_blog_settings @os_blog
+ @api @administer_blog_settings @os_blog @javascript
  Scenario: Administer Blog Settings
     Given I am logging in as "john"
      When I visit "john/blog"
@@ -80,7 +80,7 @@ Feature:
      When I sleep for "2"
      Then I should see "Choose which comment type you'd like to use"
 
- @api @wip_needs_js_enabled_webdriver @select_private_comments @os_blog
+ @api @select_private_comments @os_blog @javascript
  Scenario: Select "Private comments"
     Given I am logging in as "john"
      When I visit "john/blog"
@@ -91,7 +91,7 @@ Feature:
       And I press "Save"
      Then I should see "Add new comment"
 
- @api @wip_needs_js_enabled_webdriver @select_no_comments @os_blog @wip
+ @api @select_no_comments @os_blog @javascript
  Scenario: Select "No Comments"
     Given I am logging in as "john"
       And I visit "john/blog"
@@ -112,3 +112,28 @@ Feature:
      Then I should see "Are you sure you want to delete"
       And I press "Delete"
      Then I should see "has been deleted"
+
+ @api @features_first @create_new_blog_content_permissions @os_blog
+ Scenario: Create new blog content (permissions)
+    Given I am logging in as "michelle"
+     Then I can't visit "john/node/add/blog"
+
+ @api @features_first @delete_any_blog_content_permissions @os_blog
+ Scenario: Delete any blog content (permissions)
+    Given I am logging in as "michelle"
+     Then I can't visit "delete" form for node "blog/profiles-courage" in group "john"
+
+ @api @features_first @create_new_blog_content_permissions @os_blog
+ Scenario: Create new blog content (permissions)
+    Given I am logging in as "michelle"
+     Then I can't visit "john/node/add/blog"
+
+ @api @features_first @edit_any_blog_content_permissions @os_blog
+ Scenario: Edit any blog content (permissions)
+    Given I am logging in as "michelle"
+     Then I can't edit node "blog/profiles-courage" in group "john"
+
+ @api @features_first @delete_any_blog_content_permissions @os_blog
+ Scenario: Delete any blog content (permissions)
+    Given I am logging in as "michelle"
+     Then I can't visit "delete" form for node "blog/profiles-courage" in group "john"

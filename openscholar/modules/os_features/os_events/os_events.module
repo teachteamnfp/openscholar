@@ -78,6 +78,157 @@ function os_events_settings() {
   return system_settings_form($form);
 }
 
+
+/**
+ * Returns an authorized API client.
+ * @return Google_Client the authorized client object
+ */
+function getClient() {
+  global $is_https;
+  
+  $path = libraries_get_path('google-api-php-client');
+  include_once "$path/vendor/autoload.php";
+
+  define('APPLICATION_NAME', "OpenScholar Calendar Exporter");
+  define('CLIENT_SECRET_PATH', tempnam(sys_get_temp_dir(), "google_client_secret"));
+  define('CREDENTIALS_PATH', tempnam(sys_get_temp_dir(), "google_credentials"));
+  define('SCOPES', implode(' ', array(Google_Service_Calendar::CALENDAR)));
+
+  $google_client_secret = variable_get('google_client_secret');
+  $google_credentials = variable_get('google_credentials');
+  file_put_contents(CLIENT_SECRET_PATH, $google_client_secret);
+  file_put_contents(CREDENTIALS_PATH, $google_credentials);
+
+  $client = new Google_Client();
+  $client->setApplicationName(APPLICATION_NAME);
+  $client->setScopes(SCOPES);
+  $client->setAuthConfig(CLIENT_SECRET_PATH);
+  $client->setAccessType('online');
+  $client->setApprovalPrompt('force');
+
+  // Load previously authorized credentials from a file.
+  $credentialsPath = CREDENTIALS_PATH;
+
+  // If the credentials exist, and are valid
+  if (file_exists($credentialsPath)) {
+    $accessToken = json_decode(file_get_contents($credentialsPath), true);
+  }
+
+  $client->setAccessToken($accessToken);
+  $_base_path = rtrim(ltrim(base_path(), '/'), '/');
+  $base_path = ((strlen($_base_path) == 0) ? '' : '/' . $_base_path);
+  $client->setRedirectUri((($is_https) ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $base_path . '/get-google-access-token-with-auth-code');
+  return $client;
+}
+
+function os_events_get_access_token_with_auth_code() {
+  global $is_https;
+
+  if (!isset($_GET['code'])) {
+    error_log("Did not receive a Google auth code in the query string with which to create an access code or " .
+              "the user did not grant access to their Google Calendar.");
+    $vsite = vsite_get_vsite($_GET["state"]);
+    drupal_set_message("Calendar export cancelled", 'Status');
+    drupal_goto(url('/' . $vsite->group->purl . '/calendar'));
+    return;
+  } else {
+    $authCode = $_GET['code'];
+  }
+
+  $client = getClient();
+  $client->setState('1');
+  $_base_path = rtrim(ltrim(base_path(), '/'), '/');
+  $base_path = ((strlen($_base_path) == 0) ? '' : '/' . $_base_path);
+  $client->setRedirectUri((($is_https) ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $base_path . '/get-google-access-token-with-auth-code');
+
+  // Exchange authorization code for an access token.
+  $accessToken = $client->fetchAccessTokenWithAuthCode($authCode);
+
+  if (! isset($accessToken['error']) && isset($accessToken['access_token'])) {
+    $client->setAccessToken($accessToken['access_token']);
+    variable_set('google_credentials', json_encode($accessToken));
+    error_log("Credentials saved to database.");
+  } else {
+    error_log("Error getting access token via auth code.");
+  }
+
+  os_events_gcal_create_calendar();
+}
+
+
+function os_events_calendar_export_access() {
+  global $user;
+
+  # Ensure the user is a member of this group
+  $vsites_member = vsite_get_user_vsites($user->id);
+  $has_access = false;
+  foreach ($vsites_member as $vm) {
+      if ($vm->group->nid == $_GET["state"]) {
+        return true;
+      }
+  }
+  return false;
+}
+
+function os_events_gcal_create_calendar() {
+  global $is_https, $user;
+
+  $has_access = os_events_calendar_export_access();
+
+  # If the user is not a member of the group, deny access
+  if (! $has_access) {
+    drupal_access_denied();
+  }
+
+  $name = "os_events";
+  $display_id = "feed_2_no_cache";
+  $args = array("upcoming", "all");
+
+  // The vsite group ID is stored in the state parameter
+  $vsite = vsite_get_vsite($_GET["state"]);
+
+  // Set the vsite space, since we've moved to the top-level docroot
+  spaces_set_space($vsite);
+  $vsite->activate_user_roles();
+  $vsite->init_overrides();
+
+  // Load the view so we can iterate over it's results
+  $get_fresh_view = true;
+  if ($view = views_get_view($name, $get_fresh_view)) {
+    $view->execute_display($display_id, $args);
+  }
+
+  $events = array();
+  foreach ($view->result as $e) {
+
+    # Create test event and add it to the calendar
+    $event = new Google_Service_Calendar_Event();
+    $event->setDescription($e->_field_data['nid']['entity']->body[LANGUAGE_NONE][0]['value']);
+    $event->setLocation($e->_field_data['nid']['entity']->field_event_location[LANGUAGE_NONE][0]['value']);
+    $event->setSummary($e->_field_data['nid']['entity']->title);
+
+    $dt1 = new DateTime($e->field_data_field_date_field_date_value . "Z");
+    $dt2 = new DateTime($e->field_data_field_date_field_date_value2 . "Z");
+
+    $calendarDateTime1 = new Google_Service_Calendar_EventDateTime();
+    $calendarDateTime2 = new Google_Service_Calendar_EventDateTime();
+    $calendarDateTime1->setDateTime($dt1->format(DateTime::RFC3339));
+    $event->setStart($calendarDateTime1);
+    $calendarDateTime2->setDateTime($dt2->format(DateTime::RFC3339));
+    $event->setEnd($calendarDateTime2);
+
+    $events[] = $event;
+  }
+
+  $client = getClient();
+  $calendarService = new Google_Service_Calendar($client);
+
+  $_SESSION['listCalendarList'] = serialize($calendarService->calendarList->listCalendarList());
+  $_SESSION['exported_events'] = serialize($events);
+  drupal_save_session();
+  drupal_goto(url('/' . $vsite->group->purl . '/calendar'));
+}
+
 /**
  * Helper function to send notification emails to event registrants if there is any cancellations or change in event timings.
  *
@@ -286,6 +437,22 @@ function os_events_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('os_events_settings'),
     'access arguments' => array('administer site configuration'),
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['calendar/gcal-create-calendar'] = array(
+    'title' => 'Create Calendar on Google',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('os_events_gcal_create_calendar'),
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['get-google-access-token-with-auth-code'] = array(
+    'title' => 'Get Access Token With Auth Code',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('os_events_get_access_token_with_auth_code'),
+    'access callback' => 'os_events_calendar_export_access',
     'type' => MENU_CALLBACK,
   );
 
@@ -611,6 +778,11 @@ function os_events_process_node(&$variables) {
   if ($variables['type'] != 'event') {
     return;
   }
+
+  $variables['content']['page'] = array(
+    '#markup' => '<div id="export-to-google-calendar-dialog-confirm"></div>',
+    '#weight' => 0,
+  );
 
   // Move the event date above the event description.
   if(isset($variables['content']['field_date'])) {
@@ -1091,6 +1263,8 @@ function os_events_preprocess_calendar_datebox(&$vars) {
  * Implements hook_views_pre_view().
  */
 function os_events_views_pre_view(&$view, &$display_id, &$args) {
+  global $is_https;
+
   if ($view->name != 'os_events') {
     return;
   }
@@ -1101,6 +1275,22 @@ function os_events_views_pre_view(&$view, &$display_id, &$args) {
       'iCal' => 'calendar/upcoming/all/export.ics',
       'rss' => 'calendar/upcoming/all/rss.xml'
     );
+
+    # Show the Google export button, if we have a Google API account
+    $google_client_secret = variable_get('google_client_secret', false);
+    $google_credentials = variable_get('google_credentials', false);
+    if ($google_credentials && $google_client_secret) {
+
+      $client = getClient();
+      $_base_path = rtrim(ltrim(base_path(), '/'), '/');
+      $base_path = ((strlen($_base_path) == 0) ? '' : '/' . $_base_path);
+      $vsite = vsite_get_vsite();
+      $client->setState($vsite->group->nid);
+      $client->setRedirectUri((($is_https) ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $base_path . '/get-google-access-token-with-auth-code');
+
+      $authUrl = $client->createAuthUrl($client->getScopes());
+      $buttons['Google'] = $authUrl;
+    }
 
     foreach ($buttons as $label => $path) {
       // When the user is filtering events by taxonomy term we need to add the
@@ -2037,6 +2227,37 @@ function os_events_entity_query_alter($query) {
  */
 function os_events_preprocess_page(&$variables) {
   $menu = menu_get_item();
+
+  // Hidden export dialog div (only shown when exporting to Google Calendar)
+  $variables['page']['content']['system_main']['main']['#markup'] .= '<div id="export-to-google-calendar-dialog-confirm"></div>';
+
+  // If we're exporting events, prompt user to either overwrite an old or create new calendar
+  if (isset($_SESSION['exported_events'])) {
+    if (isset($_GET['overwrite'])) {
+
+      if ($_GET['overwrite'] == -1) {
+        unset($_SESSION['exported_events']);
+        unset($_SESSION['listCalendarList']);
+        drupal_save_session();
+        return;
+      }
+
+      // 0: Create, 1 : Overwrite
+      $events = unserialize($_SESSION['exported_events']);
+      $listCalendarList = unserialize($_SESSION['listCalendarList']);
+      _os_events_export_events_to_google($events, $listCalendarList, $_GET['overwrite']);
+      unset($_SESSION['exported_events']);
+      unset($_SESSION['listCalendarList']);
+      drupal_save_session();
+      return;
+
+    } else {
+      ctools_include('modal');
+      ctools_modal_add_js();
+      drupal_add_js(drupal_get_path('module', 'os_events') . '/js/os_events_google_export.js');
+    }
+  }
+
   if (strpos($menu['path'], 'node/%/registrations') !== 0) {
     return;
   }
@@ -2102,6 +2323,50 @@ function os_events_preprocess_page(&$variables) {
     '#class' => 'section_links registration_links',
     '#access' => registration_administer_registrations_access('node', $event),
   );
+}
+
+function _os_events_export_events_to_google($events, $listCalendarList, $overwrite = true) {
+
+  // Get the API client and construct the service object.
+  $client = getClient();
+
+  // The vsite group ID is stored in the state parameter
+  $vsite = vsite_get_vsite($_GET["state"]);
+  $redirectUri = url('/' . $vsite->group->purl . '/calendar');
+  $client->setRedirectUri($redirectUri);
+
+  $calendarService = new Google_Service_Calendar($client);
+
+  # Create a new calendar to import events into
+  $calendar_calendar = new Google_Service_Calendar_Calendar();
+
+  $calendar = null;
+  if ($overwrite) {
+    foreach ($listCalendarList->getItems() as $item) {
+      if ($item->getSummary() == $vsite->group->title) {
+        $calendar = $calendarService->calendars->delete($item->getId());
+        break;
+      }
+    }
+  }
+
+  _os_events_set_calendar_parameters($vsite, $calendar_calendar, $calendarService);
+  $calendar = $calendarService->calendars->insert($calendar_calendar);
+
+  foreach ($events as $event) {
+    $calendarService->events->insert($calendar->getId(), $event);
+  }
+
+}
+
+/*
+ * Helper function to set calendar metadata (title, location, timezone, etc.)
+ */
+function _os_events_set_calendar_parameters($vsite, $calendar_calendar, $calendarService) {
+  $calendar_calendar->setDescription(isset($vsite->group->field_site_description[LANGUAGE_NONE][0]['safe_value']) ? $vsite->group->field_site_description[LANGUAGE_NONE][0]['safe_value'] : "");
+  $calendar_calendar->setSummary(isset($vsite->group->title) ? $vsite->group->title : "OpenScholar Calendar");
+  $calendar_calendar->setLocation(isset($vsite->group->field_site_address[LANGUAGE_NONE][0]['value']) ? $vsite->group->field_site_address[LANGUAGE_NONE][0]['value'] : "");
+  $calendar_calendar->setTimezone('America/New_York');
 }
 
 /**
