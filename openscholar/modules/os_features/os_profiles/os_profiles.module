@@ -1955,3 +1955,11 @@ function os_profiles_apachesolr_query_prepare($query) {
     $query->setSolrSort('ts_field_last_name', 'asc');
   }
 }
+
+/**
+ * Implements hook_apachesolr_query_alter().
+ * Sort by last name for faceted search
+ */
+function os_profiles_apachesolr_query_alter($query) {
+  $query->addParam('sort', 'ts_field_last_name asc');
+}
