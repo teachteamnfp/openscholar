@@ -1,4 +1,5 @@
 name = Amazon Elasticsearch
 core = 7.x
 dependencies[] = apachesolr
+files[] = Amazon_Elasticsearch_Service.php
 descrption = "Registers Amazon Elasticsearch instance as an Apachesolr provider."
