@@ -78,3 +78,10 @@ function cp_content_update_7010() {
   features_revert(array('cp_content' => array('views_view')));
   return t('CP Comments Views has been deleted.');
 }
+
+/**
+ * Expose filename field in cp_files view.
+ */
+function cp_content_update_7011() {
+  features_revert(array('cp_content' => array('views_view')));
+}
