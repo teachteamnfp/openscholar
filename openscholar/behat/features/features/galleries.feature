@@ -70,6 +70,7 @@ Feature:
   @api @features_first @javascript
   Scenario: Edit media of a existing gallery
      Given I am logging in as "john"
+       And I visit "john/galleries/safari"
        And I edit the media element "safari.jpg"
        And I fill in "Title" with "safari_edited.jpg"
        And I press "Save"
@@ -80,13 +81,9 @@ Feature:
   Scenario: Delete media of a existing gallery
      Given I am logging in as "john"
        And I visit "john/galleries/safari"
-       And I click the gear icon in the node content region
-       And I click "Remove" in the gear menu in node content
-       And the overlay opens
-       And I press "Remove file"
-       And I wait for page actions to complete
-       And the overlay closes
-       And I should see "removed from the gallery"
+       And I delete the media element "safari_edited.jpg"
+       And I sleep for "5"
+       And I should see "The file(s) have been removed."
 
   @api @features_second @javascript
    Scenario: Add slideshow image content permission

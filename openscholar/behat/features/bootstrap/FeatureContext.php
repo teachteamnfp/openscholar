@@ -4862,4 +4862,15 @@ JS;
       new Step\When('I visit "john/file/' . $fid . '"'),
     );
   }
+    /**
+   * @When /^I delete the media element "([^"]*)"$/
+   */
+  public function iClickToDeleteTheMedia($filename) {
+    $fid = FeatureHelp::getEntityID('file', $filename);
+    $file = file_load($fid);
+    return array(
+      new Step\When('I visit "john/file/' . $fid . '/delete"'),
+      new Step\When('I press "Delete"'),
+    );
+  }
 }
