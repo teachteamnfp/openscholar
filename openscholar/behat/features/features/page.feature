@@ -93,8 +93,8 @@ Feature:
   @api @features_second
   Scenario: Permission to delete any page content
     Given I am logging in as "alexander"
-      And I visit to delete the post "john/about-michelle" on vsite "john"
-     Then I should see "Access Denied"
+      And I visit to delete the post "about-michelle" on vsite "john"
+     Then I should not see "About Michelle"
 
   @api @features_second
   Scenario: Permission to delete own page content
