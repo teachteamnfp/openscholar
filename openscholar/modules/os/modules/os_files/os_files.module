@@ -1890,7 +1890,9 @@ function os_files_field_formatter_view($entity_type, $entity, $field, $instance,
         // If file type is image or have extension of $allowed_extensions_in_carousal array, then rendering them in jcarousal.
         if ($i['type'] == 'image' || (in_array($file_extension, $allowed_extensions_in_carousal) && $entity->type == 'media_gallery')) {
           // For jpeg, jpg, gif and png type files.
+          $gallery_id = $entity->nid;
           if ($i['type'] == 'image') {
+            $fid = $i['fid'];
             $title = field_get_items('file', ( object ) $i, 'field_file_image_title_text');
             $title = isset($title[0]) ? $title[0]['value'] : $i['filename'];
             $alt = field_get_items('file', ( object ) $i, 'field_file_image_alt_text');
@@ -1920,7 +1922,7 @@ function os_files_field_formatter_view($entity_type, $entity, $field, $instance,
             ));
           }
           $images[] = array(
-            'href' => file_create_url($i['uri']),
+            'href' => '/media-gallery/lightbox/' . $gallery_id . '/' . $fid,
             'title' => $jcarousal_thumbnail,
             'html' => TRUE,
             'attributes' => array(
