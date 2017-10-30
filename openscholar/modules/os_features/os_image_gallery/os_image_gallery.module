@@ -385,6 +385,8 @@ function os_image_gallery_preprocess_media_gallery_meta(&$vars) {
  */
 function os_image_gallery_preprocess_views_view_list(&$vars) {
   if ($vars['view']->name == 'os_image_gallery') {
+    // To resize colorbox images after loading
+    drupal_add_js(drupal_get_path('module', 'media_gallery') . '/colorbox-display.js');
     // at this point, the rows are already rendered, we need to build, render and prepend the contextual links to the
     // html
     foreach ($vars['rows'] as $k => $str) {
@@ -401,7 +403,7 @@ function os_image_gallery_preprocess_views_view_list(&$vars) {
       $vars['rows'][$k] = drupal_render($psuedo).$str;
       // add the class or none of the css will work.
       // Despite the name, classes_array is just a string at this point.
-      $vars['classes_array'][$k] .= ' contextual-links-region';
+      $vars['classes_array'][$k] .= ' contextual-links-region field-name-media-gallery-file';
     }
   }
 }
