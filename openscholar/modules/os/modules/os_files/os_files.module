@@ -1898,7 +1898,7 @@ function os_files_field_formatter_view($entity_type, $entity, $field, $instance,
             $alt = field_get_items('file', ( object ) $i, 'field_file_image_alt_text');
             $alt = isset($alt[0]) ? $alt[0]['value'] : $i['filename'];
             $image_info = image_get_info($i['uri']);
-            $colorbox_class = 'colorbox cbEnabled';
+            $colorbox_class = 'colorbox cbEnabled media-gallery-thumb';
             $target_type = '_self';
             $jcarousal_thumbnail = theme('image_style', array(
               'path' => $i['uri'],
