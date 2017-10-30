@@ -387,6 +387,7 @@ function os_image_gallery_preprocess_views_view_list(&$vars) {
   if ($vars['view']->name == 'os_image_gallery') {
     // To resize colorbox images after loading
     drupal_add_js(drupal_get_path('module', 'media_gallery') . '/colorbox-display.js');
+    drupal_add_css(drupal_get_path('module', 'media_gallery') . '/media_gallery.css');
     // at this point, the rows are already rendered, we need to build, render and prepend the contextual links to the
     // html
     foreach ($vars['rows'] as $k => $str) {
