@@ -160,7 +160,7 @@ function os_presentations_field_default_field_instances() {
   $field_instances['node-presentation-field_presentation_file'] = array(
     'bundle' => 'presentation',
     'deleted' => 0,
-    'description' => '.ppt, .pptx, and .pdf',
+    'description' => '.ppt, .pptx, .pps, .ppsx, and .pdf',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -202,7 +202,7 @@ function os_presentations_field_default_field_instances() {
     'settings' => array(
       'description_field' => 1,
       'file_directory' => '',
-      'file_extensions' => 'pdf doc docx odt xls ppt pptx key txt',
+      'file_extensions' => 'pdf doc docx odt xls pps ppsx ppt pptx key txt',
       'filefield_paths' => array(
         'active_updating' => 0,
         'file_name' => array(
