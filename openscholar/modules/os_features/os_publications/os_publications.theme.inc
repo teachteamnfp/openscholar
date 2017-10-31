@@ -344,7 +344,7 @@ function theme_os_publications_export_links($variables) {
     $export_links = module_invoke_all('biblio_export_link', $nid, $filter);
     $links        = array_merge($lookup_links, $export_links);
   }
-  $title = isset($node->nid) ? t('Download Citation') : t('Download Citations');
+  $title = isset($node->nid) ? t('Download Citation') : (!isset($_REQUEST['page']) ? t('Download Citations') : '');
 
   return theme('ctools_dropdown', array('links' => $links, 'title' => $title, 'attributes' => array('class' => array('biblio-export-buttons'))));
 }
