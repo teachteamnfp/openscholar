@@ -167,7 +167,7 @@ function os_presentations_field_default_field_instances() {
         'module' => 'file',
         'settings' => array(),
         'type' => 'file_default',
-        'weight' => 1000,
+        'weight' => 5,
       ),
       'links' => array(
         'label' => 'above',
@@ -326,7 +326,7 @@ function os_presentations_field_default_field_instances() {
         'module' => 'os_files',
         'settings' => array(),
         'type' => 'os_files_image_list',
-        'weight' => 6,
+        'weight' => 1000,
       ),
       'links' => array(
         'label' => 'above',
