@@ -2,7 +2,8 @@
 
 define('AMAZON_ELASTICSEARCH_ENVIRONMENT_ID', 'amazon_elasticsearch_server_1');
 
-$conf['amazon_elasticsearch_endpoint_url'] = 'https://search-production-sorxciwu3xiuovki4goozns6pm.us-east-1.es.amazonaws.com';
+$conf['amazon_elasticsearch_endpoint_url'] = 'openscholar-test-uxufoj6fowjivdlqf2telx4sue.us-east-1.cloudsearch.amazonaws.com';
+$conf['amazon_elasticsearch_domain'] = 'production';
 
 function amazon_elasticsearch_create_environment() {
   // Creates the new environment
@@ -15,7 +16,7 @@ function amazon_elasticsearch_create_environment() {
     $orig_env = apachesolr_environment_load($orig_env_id);
     $environment['index_bundles'] = $orig_env['index_bundles'];
 
-    // Also make sure that the default search page has Acquia Search as its
+    // Also make sure that the default search page has Amazon Search as its
     // default environment
     $default_search_page_id = apachesolr_search_default_search_page();
     $default_search_page = apachesolr_search_page_load($default_search_page_id);
