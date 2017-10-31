@@ -76,8 +76,7 @@ function os_presentations_os_entity_view_modes_alter(&$info) {
  *
  * Enforce white list for file extensions
  **/
-function os_presentations_node_validate($node, $form, &$form_state)
-{
+function os_presentations_node_validate($node, $form, &$form_state) {
   if ($node->type == 'presentation') {
     $i = 0;
     $extensions = isset($form_state['field']['field_presentation_file'][LANGUAGE_NONE]['instance']['settings']['file_extensions']) ?
