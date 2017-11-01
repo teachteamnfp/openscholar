@@ -20,6 +20,69 @@ define('OS_READONLY_MODE_MESSAGE', 'Site is under maintenance, login and registr
 define('OS_SESSION_TIMEOUT_WARNING_INTERVAL', 300);
 
 /**
+ * Implements hook_init
+ */
+function os_init() {
+  global $conf, $is_https;
+
+  // Is securepages enabled?
+  // If we are not on a harvard domain turn it off.
+  if (variable_get('securepages_enable', 0)) {
+
+    //Turn SSL off for pages that don't match the wildcard certificate
+    $conf['securepages_enable'] = 0;
+
+    // Loop through the domains that are configured to work with our SSL certificate
+    foreach (variable_get('hwpi_ssl_domains',array()) as $domain) {
+      $offset = (strlen($domain) * -1);
+      // Check to see if the current domain matches one of our wildcard domains in the SSL cert.
+      // IF the cert has ".harvard.edu" then "foo.harvard.edu" is valid and we should enable, whild "bar.foo.harvard.edu" is not.
+      if(substr($_SERVER['HTTP_HOST'],$offset) == $domain && !strrpos($_SERVER['HTTP_HOST'],".",($offset-1))){
+        //We found a Match
+        $conf['securepages_enable'] = 1;
+        break;
+      }
+    }
+
+    // We were unable to find a domain that matches our SSL cert.
+    if (!$conf['securepages_enable'] && $is_https) {
+      // Redirect to insecure.
+      securepages_goto(FALSE);
+    }
+  }
+}
+
+/**
+ * Implements hook_cp_settings().
+ */
+function os_cp_settings() {
+  // For non-user-1, only adds the responsive setting for HWPI-themed sites.
+  $theme = variable_get('theme_default');
+
+  if (!_is_hwpi_theme($theme)) {
+    return;
+  }
+
+  $settings = array(
+    'privacy_policy' => array(
+      'group' => array(
+        '#title' => t('Privacy Policy'),
+        '#id' => 'privacy-policy',
+        '#help_link' => l(t('Learn more about creating a privacy policy for your site'), 'http://docs.openscholar.harvard.edu/global-site-settings#privacy-policy', array('attributes' => array('target' => '_blank'))),
+      ),
+      'form' => array(
+        '#type' => 'textfield',
+        '#default_value' => variable_get('privacy_policy', ''),
+        '#title' => t('Privacy Policy URL'),
+        '#description' => t('Enter the URL to the privacy policy you wish to use for your site. Can be a link to a post on your own site.'),
+      ),
+    ),
+  );
+
+  return $settings;
+}
+
+/**
  * Implements hook_menu().
  */
 function os_menu() {
@@ -880,18 +943,6 @@ function os_preprocess_page(&$vars) {
     );
   }
 
-  // Ensure "Import" is always the last item in the menu
-  usort($links, 
-    function ($a, $b) {
-      if (isset($a["title"]) && (($a["title"] == 'Import') || ($a["title"] == 'Sync'))) {
-        return 1;
-      } else if (isset($b["title"]) &&  (($a["title"] == 'Import') || ($a["title"] == 'Sync'))) {
-        return -1;
-      } else {
-        return 0;
-      }
-    }
-  );
 
   if (count($links) > 1) {
     $vars['title_suffix']['controls']['add_new'] = array(
@@ -2510,7 +2561,6 @@ function os_field_default_fields_alter(&$fields) {
  * Make all select fields use Select2.
  */
 function os_field_widget_options_select_form_alter(&$element, &$form_state, $context) {
-  $element['#title'] = html_entity_decode($element['#title'], ENT_QUOTES | ENT_HTML5);
   $element += array(
     '#after_build' => array('os_select2_widget_after_build'),
     '#cardinality' => $context['field']['cardinality'],
@@ -3721,7 +3771,6 @@ function os_field_formatter_view($entity_type, $entity, $field, $instance, $lang
           'html' => TRUE,
           'max_length' => $display['settings']['trim_length'],
           'word_boundary' => TRUE,
-          'ellipsis' => TRUE,
         );
         $text = views_trim_text($alter, media_filter($item['value']));
 
@@ -3745,12 +3794,12 @@ function os_field_formatter_view($entity_type, $entity, $field, $instance, $lang
             $text_after_break = strip_tags(trim($split_break_tag[1]), '<img><iframe><embed><object><param>');
           }
           $text = text_summary($item['safe_value'], $item['format'], $display['settings']['trim_length']);
+          // Remove the ellipsis we got from the text summary.
+          if (strpos($text, '…') !== 0) {
+            $text = str_replace('…', ' ', $text);
+          }
+          // Only display read more link if there is a content after break tag.
           if (!empty(drupal_strlen($text_after_break))) {
-            $text = htmlentities($text);
-            // Remove non breaking spaces (e.g &nbsp;) from the start and end
-            // of a string.
-            $text = rtrim(preg_replace('#(^(&nbsp;|\s)+|(&nbsp;|\s)+$)#', '', $text)).t('...');
-            $text = decode_entities($text);
             $read_more($entity_type, $entity, $text);
           }
         }
@@ -3929,55 +3978,26 @@ function os_tokens($type, $tokens, array $data = array(), array $options = array
 }
 
 /**
- * Implements hook_redirect_alter().
+ * Implements hook_vsite_register_notify_author_body_text_alter().
+ *
+ * The string must be UTF-8 compliant. Which is why the wierd A's are in there.
  */
-function os_redirect_alter($redirect) {
-  $redirect->callback = 'os_redirect_goto';
-}
+function os_vsite_register_notify_author_body_text_alter(&$body_text) {
 
-/**
- * Redirect callback; perform an URL redirect.
- * Support fragment on url redirect.
- * e.g - from my-content to example/my-text#fragment-name
- * @see redirect_goto().
- */
-function os_redirect_goto($redirect) {
-  $parse_url = drupal_parse_url($redirect->redirect);
-  $redirect->redirect_options['absolute'] = TRUE;
-  $redirect->redirect_options['fragment'] = $parse_url['fragment'];
-  $redirect->redirect_options['query'] = $parse_url['query'];
-  $url = url($parse_url['path'], $redirect->redirect_options);
-  
-  drupal_add_http_header('Location', $url);
-  drupal_add_http_header('Status', redirect_status_code_options($redirect->status_code));
+  global $base_url;
 
-  if (!empty($redirect->rid)) {
-    // Add a custom header for the redirect ID so when the redirect is served
-    // from the page cache, we can track it.
-    drupal_add_http_header('X-Redirect-ID', $redirect->rid);
-  }
-
-  if (!variable_get('redirect_page_cache', 0) || !variable_get('cache', 0) || !drupal_page_is_cacheable() || empty($redirect->cache)) {
-    drupal_exit($url);
-  }
-
-  // @see drupal_exit()
-  if (drupal_get_bootstrap_phase() == DRUPAL_BOOTSTRAP_FULL) {
-    if (!defined('MAINTENANCE_MODE') || MAINTENANCE_MODE != 'update') {
-      module_invoke_all('exit', $url);
-    }
-    drupal_session_commit();
-    if (variable_get('cache', 0)) {
-      // We must output something to allow the request to be cached.
-      echo ' ';
-      if ($cache = drupal_page_set_cache()) {
-        // When caching this redirect for the first time we still need to ensure
-        // that the correct cache headers are sent.
-        // @see drupal_page_footer()
-        drupal_serve_page_from_cache($cache);
-      }
-    }
-  }
-
-  exit;
+  $body_text = "Hi !username,\n\n"
+    . "Congratulations! Your new website !site_url has been activated, and you can log "
+    . "into your site at !site_uri with the username !username. "
+    . "Don't forget to bookmark your new site and save this email for future reference.\n"
+    . "\n"
+    . "Here are some handy links for you:\n"
+    . "\n"
+    . " * Logging in to your site: http://docs.openscholar.harvard.edu/logging-your-site\n"
+    . " * Sign up for training: http://hwp.harvard.edu/calendar/upcoming \n"
+    . " * OpenScholar documentation: http://docs.openscholar.harvard.edu \n"
+    . " * Need help with your project? http://hwp.harvard.edu \n"
+    . "\n"
+    . "Sincerely,\n"
+    . "Harvard Web Publishing\n";
 }
