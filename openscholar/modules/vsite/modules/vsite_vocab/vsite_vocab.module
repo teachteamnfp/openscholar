@@ -211,7 +211,7 @@ function vsite_vocab_form_taxonomy_form_vocabulary_alter(&$form, $form_state) {
   $form['widget_type_autocomplete'] = array(
     '#type' => 'radios',
     '#title' => t('Type'),
-    '#description' => t('Should terms be created on advanced or may be created on the fly, when adding / editing a post.'),
+    '#description' => t('Should terms be created in advanced or may be created on the fly, when adding / editing a post.'),
     '#options' => array(
       'entityreference_autocomplete' => t('Managed'),
       'entityreference_autocomplete_tags' => t('Tags style'),
@@ -384,6 +384,7 @@ function vsite_vocab_preprocess_taxonomy_overview_vocabularies(&$variables) {
     }
 
     $element = &$variables['form'][$element_key];
+    $element['name']['#title'] = html_entity_decode($element['name']['#title'], ENT_QUOTES | ENT_HTML5);
     $element['list']['#href'] = 'cp/build/taxonomy/' . $element['#vocabulary']->machine_name;
     $element['add']['#href'] = 'cp/build/taxonomy/' . $element['#vocabulary']->machine_name . '/add';
     $element['edit']['#href'] = 'cp/build/taxonomy/' . $element['#vocabulary']->machine_name . '/edit';

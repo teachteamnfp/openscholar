@@ -235,6 +235,7 @@
     function submitForm($event) {
       var button = document.activeElement,
         triggered = false;
+      var buttonId = document.activeElement.id;
       if (apSettings.IsSetting(button.getAttribute('name'))) {
         triggered = true;
       }
@@ -285,7 +286,11 @@
         }, function (error) {
           $s.errors = [];
           $s.status = [];
-          $s.errors.push("Sorry, something went wrong. Please try another time.");
+          if (buttonId.indexOf('edit-os-importer-submit') < 0) {
+            $s.errors.push("Sorry, something went wrong. Please try another time.");
+          } else {
+            $s.errors.push("The import failed. Please review import <a href='https://docs.openscholar.harvard.edu/importing-content' target='_blank'>best practices</a> for optimal results.");
+          }
           bss.SetState('settings_form_' + buttonName, false);
         });
       }
