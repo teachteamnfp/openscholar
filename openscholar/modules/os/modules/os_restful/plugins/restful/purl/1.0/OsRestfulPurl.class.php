@@ -15,10 +15,53 @@ class OsRestfulPurl extends \RestfulBase implements \RestfulDataProviderInterfac
       '' => array(
         \RestfulInterface::POST => 'save_site',
       ),
+      'name' => array(
+        \RestfulInterface::POST => 'check_user_name',
+      ),
+      'email' => array(
+        \RestfulInterface::POST => 'check_email',
+      ),
       '^.*$' => array(
         \RestfulInterface::GET => 'check_exiting_sites',
       )
     );
+  }
+
+  /**
+   * Checking for user name
+   */
+  public function check_user_name() {
+    if ($this->request['name'] != "") {
+      $name = $this->request['name'];
+      if ($user_error = user_validate_name($name)) {
+        $msg[] = $user_error;
+      }
+      if ($user = user_load_by_name($name)) {
+        $msg[] = t('Username %name is taken.  Please choose another.', array('%name' => $name));
+      }
+    } else {
+      $msg[] = t('Please provide the desired username.');
+    }
+    return $msg;
+  }
+
+  /**
+   * Checking for Email address
+   */
+  public function check_email() {
+    if ($this->request['email'] != "") {
+      $email = $this->request['email'];
+      if ($mail_error = user_validate_mail($email)) {
+        $msg[] = $mail_error;
+      }
+      module_load_include('inc', 'vsite_register', 'vsite_register.form');
+      if (_vsite_register_mail_in_use($email)) {
+        $msg[] = t('Email address already in use.  Please try another.');
+      }
+    } else {
+      $msg[] = t('You must enter an e-mail address.');
+    }
+    return $msg;
   }
 
   /**
@@ -38,7 +81,8 @@ class OsRestfulPurl extends \RestfulBase implements \RestfulDataProviderInterfac
     }
     //Validate new vsite URL
     $return['msg'] = '';
-    if (strlen($siteValue) < 3 || !valid_url($siteValue)) {
+    module_load_include('inc', 'vsite_register', 'vsite_register.form');
+    if (strlen($siteValue) < 3 || !valid_url($siteValue) || !_vsite_register_valid_url($siteValue)) {
       $return['msg'] = 'Invalid';
     }
     else if (($purl = purl_load(array('value' => $siteValue, 'provider' => 'spaces_og'), TRUE)) || menu_get_item($siteValue)) {

@@ -6,7 +6,7 @@
     paths = Drupal.settings.paths
   });
 
-  m.controller('siteCreationCtrl', ['$scope', '$http', '$q', '$rootScope', 'buttonSpinnerStatus', '$filter', function($scope, $http, $q, $rootScope, bss, $filter) {
+  m.controller('siteCreationCtrl', ['$scope', '$http', '$q', '$rootScope', 'buttonSpinnerStatus', '$filter', '$sce', function($scope, $http, $q, $rootScope, bss, $filter, $sce) {
 
   //Set default value for vsite
   $scope.vsite_private = {
@@ -35,8 +35,15 @@
     }
   }
 
+  $scope.checkNewUserValid = function() {
+    // Check for existing username
+    // Check for email id
+    // Check for password
+  }
+
   //Set status of next button to disabled initially
   $scope.btnDisable = true;
+  $scope.vicariousUser = true;
 
   //Navigate between screens
   $scope.page1 = true;
@@ -145,6 +152,65 @@
       $scope.siteCreated = true;
     });
   }
+
+  $scope.checkUserName = function() {
+    if (typeof $scope.userName !== 'undefined' && $scope.userName != '') {
+      var formdata = {};
+      formdata = {
+        name: $scope.userName,
+      };
+      $http.post(paths.api + '/purl/name', formdata).then(function (response) {
+        console.log(response);
+        if (response.data == "") {
+          $scope.showUserError = false;
+          $scope.userErrorMsg = '';
+          return true;
+        } else {
+          $scope.showUserError = true;
+          $scope.userErrorMsg = $sce.trustAsHtml(response.data.data[0]);
+        }
+      });
+    }
+    return false;
+  }
+
+  $scope.checkEmail = function() {
+    if (typeof $scope.email !== 'undefined' && $scope.email != '') {
+      var formdata = {};
+      formdata = {
+        email: $scope.email,
+      };
+      $http.post(paths.api + '/purl/email', formdata).then(function (response) {
+        console.log(response);
+        if (response.data == "") {
+          $scope.showEmailError = false;
+          $scope.emailErrorMsg = '';
+          return true;
+        } else {
+          $scope.showEmailError = true;
+          $scope.emailErrorMsg = $sce.trustAsHtml(response.data.data[0]);
+        }
+      });
+    }
+    return false;
+  }
+
+  $scope.checkPwd = function() {
+    if (typeof $scope.password !== 'undefined' && $scope.password != '' && typeof $scope.confirmPwd !== 'undefined' && $scope.confirmPwd != '' ) {
+      if ($scope.password == $scope.confirmPwd) {
+        $scope.showPwdError = false;
+        $scope.pwdErrorMsg = '';
+        return true;
+      } else {
+        $scope.showPwdError = true;
+        $scope.pwdErrorMsg = $sce.trustAsHtml('Password should match');
+      }
+    }
+    $scope.showPwdError = true;
+    $scope.pwdErrorMsg = $sce.trustAsHtml('Please type password');
+    return false;
+  }
+
 }]);
   /**
    * Open modals for the site creation forms
@@ -232,7 +298,13 @@
               siteCreationCtrl.$setValidity('permission', true);
               siteCreationCtrl.$setValidity('isinvalid', true);
               siteCreationCtrl.$setValidity('sitename', true);
-              scope.btnDisable = false;
+              if (scope.vicariousUser) {
+                if (scope.checkNewUserValid()) {
+                  scope.btnDisable = false;
+                }
+              } else {
+                scope.btnDisable = false;
+              }
             }
           });
         }
