@@ -94,6 +94,7 @@
     var allTypes = [
       {label: 'Image', value: 'image'},
       {label: 'Document', value: 'document'},
+      {label: 'Presentation', value: 'presentation'},
       {label: 'Video', value: 'video'},
       {label: 'HTML', value: 'html'},
       {label: 'Executable', value: 'executable'},
@@ -781,6 +782,7 @@
             audio: 'audio',
             executable: 'executable',
             document: 'document',
+            presentation: 'presentation',
             html: 'html'
           },
           replace: false

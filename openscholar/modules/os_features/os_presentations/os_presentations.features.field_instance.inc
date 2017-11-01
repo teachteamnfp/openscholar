@@ -236,10 +236,11 @@ function os_presentations_field_default_field_instances() {
         'allowed_types' => array(
           'audio' => 0,
           'default' => 0,
-          'document' => 'document',
-          'executable' => 'executable',
+          'document' => 0,
+          'presentation' => 'presentation',
+          'executable' => 0,
           'html' => 0,
-          'image' => 'image',
+          'image' => 0,
           'video' => 0,
         ),
         'browser_plugins' => array(

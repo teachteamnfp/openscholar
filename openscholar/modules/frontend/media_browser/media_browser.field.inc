@@ -14,7 +14,7 @@ function media_browser_field_widget_info() {
         'upload_button_text' => t('Upload'),
         'droppable_area_text' => t('Drag your files here'),
         // This settings allows to drop multiple files at once.
-        'allowed_types' => array('document', 'image', 'audio', 'video', 'executable', 'html'),
+        'allowed_types' => array('document', 'presentation', 'image', 'audio', 'video', 'executable', 'html'),
         'browser_plugins' => array(),
         'allowed_schemes' => array('public', 'private'),
       ),
