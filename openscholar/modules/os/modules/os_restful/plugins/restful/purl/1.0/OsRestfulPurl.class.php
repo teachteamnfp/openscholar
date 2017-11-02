@@ -137,11 +137,11 @@ class OsRestfulPurl extends \RestfulBase implements \RestfulDataProviderInterfac
     //}
     if (($this->request['vicarious_user'] && $this->request['name'])) {
       // Create user who has harvard pin but not OS uid.
-      $name = $values['name'];
-      $first_name = $values['first_name'];
-      $last_name = $values['last_name'];
-      $mail = $values['mail'];
-      $password = $values['password'];
+      $name = $this->request['name'];
+      $first_name = $this->request['first_name'];
+      $last_name = $this->request['last_name'];
+      $mail = $this->request['mail'];
+      $password = $this->request['password'];
       $user_options = array(
         'name' => $name,
         'pass' => $password,
@@ -150,6 +150,7 @@ class OsRestfulPurl extends \RestfulBase implements \RestfulDataProviderInterfac
         'field_first_name' => $first_name,
         'field_last_name' => $last_name,
       );
+      module_load_include('inc', 'os', 'includes/user');
       $site_owner = os_user_create($user_options);
 
       // We created a new user. After creating the vsite we'll grant him the vsite
@@ -164,10 +165,10 @@ class OsRestfulPurl extends \RestfulBase implements \RestfulDataProviderInterfac
 
       // Logs in as the new user, if we're not already logged in.
       global $user;
-      if ($user->uid == 0) {
-        $user = $site_owner;
-        user_login_finalize($state);
-      }
+      //if ($user->uid == 0) {
+      $user = $site_owner;
+      user_login_finalize();
+      //}
     }
     else {
       // Creates site for current logged in user. No need to create a new user.
