@@ -1898,7 +1898,11 @@ function os_files_field_formatter_view($entity_type, $entity, $field, $instance,
             $alt = field_get_items('file', ( object ) $i, 'field_file_image_alt_text');
             $alt = isset($alt[0]) ? $alt[0]['value'] : $i['filename'];
             $image_info = image_get_info($i['uri']);
-            $colorbox_class = 'media-gallery-thumb cbEnabled cboxElement';
+            if ($entity->type == 'media_gallery') {
+              $colorbox_class = 'media-gallery-thumb cbEnabled cboxElement';
+            } else {
+              $colorbox_class = 'colorbox';
+            }
             $target_type = '_self';
             $jcarousal_thumbnail = theme('image_style', array(
               'path' => $i['uri'],
@@ -1921,8 +1925,13 @@ function os_files_field_formatter_view($entity_type, $entity, $field, $instance,
               'file' => $file,
             ));
           }
+          if ($entity->type == 'media_gallery') {
+            $href = '/media-gallery/detail/' . $gallery_id . '/' . $fid;
+          } else {
+            $href = file_create_url($i['uri']);
+          }
           $images[] = array(
-            'href' => '/media-gallery/detail/' . $gallery_id . '/' . $fid,
+            'href' => $href,
             'title' => $jcarousal_thumbnail,
             'html' => TRUE,
             'attributes' => array(
