@@ -69,7 +69,7 @@ class os_taxonomy_fbt extends os_boxes_default {
       '#options' => array(
           'classic' => t('Classic/List'),
           'menu' => t('Menu'),
-          'slider' => t('Slide Down') . '<br><div class="description">' . t('Placeholder description for now ...lorem ipsum')
+          'slider' => t('Slide Down') . '<br><div class="description">' . t('Requires that each taxonomy term have its own description (see the term creation/edit form).')
       ),
     );
 
