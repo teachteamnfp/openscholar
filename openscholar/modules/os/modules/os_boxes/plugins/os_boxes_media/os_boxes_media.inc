@@ -150,6 +150,12 @@ class os_boxes_media extends os_boxes_default {
             )
           );
         }
+        if (!empty($render['#file']->field_file_image_alt_text)) {
+          $render['file']['#alt'] = $render['#file']->field_file_image_alt_text[LANGUAGE_NONE][0]['safe_value'];
+        }
+        if (!empty($render['#file']->field_file_image_title_text)) {
+          $render['file']['#title'] = $render['#file']->field_file_image_title_text[LANGUAGE_NONE][0]['safe_value'];
+        }
         // Removing embedded media title from render element.
         unset($render['file']['file-info']['title']);
         $block['content'] = drupal_render($render);
