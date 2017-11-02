@@ -36,9 +36,22 @@
   }
 
   $scope.checkNewUserValid = function() {
-    // Check for existing username
-    // Check for email id
-    // Check for password
+    promise = $scope.checkUserName();
+    promise.then(function (response) {
+      if(response) {
+        pro = $scope.checkEmail();
+        pro.then(function (res) {
+          if(res) {
+            p = $scope.checkPwd();
+            p.then(function (r) {
+              if(r) {
+                return true;
+              }
+            });          
+          }
+        });
+      }
+    });
   }
 
   //Set status of next button to disabled initially
@@ -206,8 +219,6 @@
         $scope.pwdErrorMsg = $sce.trustAsHtml('Password should match');
       }
     }
-    $scope.showPwdError = true;
-    $scope.pwdErrorMsg = $sce.trustAsHtml('Please type password');
     return false;
   }
 
