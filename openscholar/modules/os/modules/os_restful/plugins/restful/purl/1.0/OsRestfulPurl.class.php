@@ -131,19 +131,24 @@ class OsRestfulPurl extends \RestfulBase implements \RestfulDataProviderInterfac
     $new_user = FALSE;
 
     // If the specified user account already exists...
-    if ($values['vicarious_user'] && $values['existing_username']) {
+    //if ($values['vicarious_user'] && $values['existing_username']) {
       // Loads that user account as site owner.
-      $site_owner = user_load_by_name($values['existing_username']);
-    }
-    elseif (($values['vicarious_user'] && !$values['existing_username']) || (!$values['vicarious_user'] && $values['name'])) {
-      // Create user for current logged in user or on someone else's behalf.
+      //$site_owner = user_load_by_name($values['existing_username']);
+    //}
+    if (($this->request['vicarious_user'] && $this->request['name'])) {
+      // Create user who has harvard pin but not OS uid.
+      $name = $values['name'];
+      $first_name = $values['first_name'];
+      $last_name = $values['last_name'];
+      $mail = $values['mail'];
+      $password = $values['password'];
       $user_options = array(
-        'name' => $values['name'],
-        'pass' => $values['password'],
-        'mail' => $values['mail'],
+        'name' => $name,
+        'pass' => $password,
+        'mail' => $mail,
         'status' => 1,
-        'field_first_name' => $values['first_name'],
-        'field_last_name' => $values['last_name'],
+        'field_first_name' => $first_name,
+        'field_last_name' => $last_name,
       );
       $site_owner = os_user_create($user_options);
 

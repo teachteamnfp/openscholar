@@ -166,7 +166,7 @@
 				<div id="body-container-group-3">
 					<div>
 						<span>Desired user name</span>
-						<span><input type="text" ng-model="userName" class="form-text" ng-blur="checkNewUserValid()"></span>
+						<span><input type="text" ng-model="userName" class="form-text" ng-blur="checkUserName()"></span>
 						<div class="message error" ng-show="showUserError" ng-bind-html="userErrorMsg"></div>
 					</div>
 					<div>
@@ -179,7 +179,7 @@
 					</div>
 					<div>
 						<span>Email address</span>
-						<span><input type="text" ng-model="email" class="form-text" ng-blur="checkNewUserValid()"></span>
+						<span><input type="text" ng-model="email" class="form-text" ng-blur="checkEmail()"></span>
 						<div class="message error" ng-show="showEmailError" ng-bind-html="emailErrorMsg"></div>
 					</div>
 					<div>
@@ -188,7 +188,7 @@
 					</div>
 					<div>
 						<span>Confirm password</span>
-						<span><input type="password" ng-model="confirmPwd" class="form-text" ng-blur="checkNewUserValid()"></span>
+						<span><input type="password" ng-model="confirmPwd" class="form-text" ng-blur="checkPwd()"></span>
 						<div class="message error" ng-show="showPwdError" ng-bind-html="pwdErrorMsg"></div>
 					</div>
 				</div>

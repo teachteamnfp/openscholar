@@ -6,7 +6,7 @@
     paths = Drupal.settings.paths
   });
 
-  m.controller('siteCreationCtrl', ['$scope', '$http', '$q', '$rootScope', 'buttonSpinnerStatus', '$filter', '$sce', function($scope, $http, $q, $rootScope, bss, $filter, $sce) {
+  m.controller('siteCreationCtrl', ['$scope', '$http', '$q', '$rootScope', 'buttonSpinnerStatus', '$filter', '$sce', '$timeout', function($scope, $http, $q, $rootScope, bss, $filter, $sce, $timeout) {
 
   //Set default value for vsite
   $scope.vsite_private = {
@@ -35,28 +35,13 @@
     }
   }
 
-  $scope.checkNewUserValid = function() {
-    promise = $scope.checkUserName();
-    promise.then(function (response) {
-      if(response) {
-        pro = $scope.checkEmail();
-        pro.then(function (res) {
-          if(res) {
-            p = $scope.checkPwd();
-            p.then(function (r) {
-              if(r) {
-                return true;
-              }
-            });          
-          }
-        });
-      }
-    });
-  }
-
   //Set status of next button to disabled initially
   $scope.btnDisable = true;
   $scope.vicariousUser = true;
+  $scope.siteNameValid = false;
+  $scope.newUserResistrationEmail = false;
+  $scope.newUserResistrationName = false;
+  $scope.newUserResistrationPwd = false;
 
   //Navigate between screens
   $scope.page1 = true;
@@ -143,6 +128,12 @@
       departmentSchool: $scope.departmentSchool,
       vsite_private: $scope.vsite_private.value,
       contentOption: $scope.contentOption.value,
+      vicarious_user: $scope.vicariousUser,
+      name: $scope.userName,
+      first_name: $scope.fname,
+      last_name: $scope.lname,
+      mail: $scope.email,
+      password: $scope.confirmPwd,
      };
 
     // Get sub site parent id
@@ -167,6 +158,7 @@
   }
 
   $scope.checkUserName = function() {
+    $scope.newUserResistrationName = false;
     if (typeof $scope.userName !== 'undefined' && $scope.userName != '') {
       var formdata = {};
       formdata = {
@@ -177,17 +169,18 @@
         if (response.data == "") {
           $scope.showUserError = false;
           $scope.userErrorMsg = '';
-          return true;
+          $scope.newUserResistrationName = true;
         } else {
           $scope.showUserError = true;
           $scope.userErrorMsg = $sce.trustAsHtml(response.data.data[0]);
         }
       });
     }
-    return false;
+    $scope.isCompletedRes();
   }
 
   $scope.checkEmail = function() {
+    $scope.newUserResistrationEmail = false;
     if (typeof $scope.email !== 'undefined' && $scope.email != '') {
       var formdata = {};
       formdata = {
@@ -198,30 +191,40 @@
         if (response.data == "") {
           $scope.showEmailError = false;
           $scope.emailErrorMsg = '';
-          return true;
+          $scope.newUserResistrationEmail = true;
         } else {
           $scope.showEmailError = true;
           $scope.emailErrorMsg = $sce.trustAsHtml(response.data.data[0]);
         }
       });
     }
-    return false;
+    $scope.isCompletedRes();
   }
 
   $scope.checkPwd = function() {
+    $scope.newUserResistrationPwd = false;
     if (typeof $scope.password !== 'undefined' && $scope.password != '' && typeof $scope.confirmPwd !== 'undefined' && $scope.confirmPwd != '' ) {
       if ($scope.password == $scope.confirmPwd) {
         $scope.showPwdError = false;
         $scope.pwdErrorMsg = '';
-        return true;
+        $scope.newUserResistrationPwd = true;
       } else {
         $scope.showPwdError = true;
         $scope.pwdErrorMsg = $sce.trustAsHtml('Password should match');
       }
     }
-    return false;
+    $scope.isCompletedRes();
   }
 
+  $scope.isCompletedRes = function() {
+    $timeout(function () {
+      if ($scope.newUserResistrationEmail && $scope.newUserResistrationName && $scope.newUserResistrationPwd && $scope.siteNameValid) {
+        $scope.btnDisable = false;
+      } else {
+        $scope.btnDisable = true;
+      }
+    }, 2000);
+  }
 }]);
   /**
    * Open modals for the site creation forms
@@ -292,27 +295,29 @@
               siteCreationCtrl.$setValidity('sitename', true);
               siteCreationCtrl.$setValidity('isinvalid', true);
               scope.btnDisable = true;
+              scope.siteNameValid = false;
             }
             else if (responseData.msg == "Invalid"){
               siteCreationCtrl.$setValidity('permission', true);
               siteCreationCtrl.$setValidity('sitename', true);
               siteCreationCtrl.$setValidity('isinvalid', false);
               scope.btnDisable = true;
+              scope.siteNameValid = false;
             }
             else if (responseData.msg == "Not-Available") {
               siteCreationCtrl.$setValidity('permission', true);
               siteCreationCtrl.$setValidity('isinvalid', true);
               siteCreationCtrl.$setValidity('sitename', false);
               scope.btnDisable = true;
+              scope.siteNameValid = false;
             }
             else{
               siteCreationCtrl.$setValidity('permission', true);
               siteCreationCtrl.$setValidity('isinvalid', true);
               siteCreationCtrl.$setValidity('sitename', true);
+              scope.siteNameValid = true;
               if (scope.vicariousUser) {
-                if (scope.checkNewUserValid()) {
-                  scope.btnDisable = false;
-                }
+                scope.isCompletedRes();
               } else {
                 scope.btnDisable = false;
               }
