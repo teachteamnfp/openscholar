@@ -49,7 +49,7 @@ class AmazonElasticsearchService extends DrupalApacheSolrService {
     $content = array(
       'Action' => 'DescribeDomains',
       'Version' => '2013-01-01',
-      'DomainNames.member.N' => variable_get('amazon_cloudsearch_domain'),
+      'DomainNames.member.1' => variable_get('amazon_cloudsearch_domain'),
     );
     $query_string = $this->httpBuildQuery($content);
     $headers = $this->sign("GET", "/", $query_string);
