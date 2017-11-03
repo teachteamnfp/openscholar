@@ -112,7 +112,7 @@ class AmazonElasticsearchService extends DrupalApacheSolrService {
 
     // authorization header
     $access_key = variable_get('amazon_access_key');
-    $authorization_header = "AWS4-HMAC-SHA256 Credential=$access_key/$credential_scope, SignedHeaders=host,x-amz-date, Signature=$signature";
+    $authorization_header = "AWS4-HMAC-SHA256 Credential=$access_key/$credential_scope, SignedHeaders=host;x-amz-date, Signature=$signature";
 
     $headers = array(
       'x-amz-date' => $datetime,
