@@ -96,7 +96,7 @@ class AmazonElasticsearchService extends DrupalApacheSolrService {
       "host,x-amz-date",
       hash("sha256", $body));
 
-    $credential_scope = "$date/us-east-11/cloudsearch/aws4_request";
+    $credential_scope = "$date/us-east-1/cloudsearch/aws4_request";
     $string_to_sign = "AWS4-HMAC-SHA256\n$datetime\n$credential_scope\n"+hash("sha256", $canonical_request);
 
     $secret_key = variable_get('amazon_secret_key');
