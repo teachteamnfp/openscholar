@@ -68,6 +68,7 @@ class AmazonElasticsearchService extends DrupalApacheSolrService {
       return microtime(TRUE) - $start + 0.0001;
     }
     else {
+      error_log(print_r($response, 1));
       return FALSE;
     }
   }
