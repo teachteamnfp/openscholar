@@ -85,7 +85,7 @@ class AmazonElasticsearchService extends DrupalApacheSolrService {
   protected function sign($verb, $uri, $query_string, $body = "") {
     $host = 'cloudsearch';
     $datetime = date("c", REQUEST_TIME);
-    $date = date("Y-m-d", REQUEST_TIME);
+    $date = date("Ymd", REQUEST_TIME);
     $headers = "host:$host\nx-amz-date:$datetime\n";
 
     $canonical_request = sprintf("%s\n%s\n%s\n%s\n%s\n%s",
