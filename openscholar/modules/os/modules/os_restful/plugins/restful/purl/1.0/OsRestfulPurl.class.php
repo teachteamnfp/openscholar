@@ -167,7 +167,7 @@ class OsRestfulPurl extends \RestfulBase implements \RestfulDataProviderInterfac
       global $user;
       //if ($user->uid == 0) {
       $user = $site_owner;
-      user_login_finalize();
+      //user_login_finalize(array());
       //}
     }
     else {
