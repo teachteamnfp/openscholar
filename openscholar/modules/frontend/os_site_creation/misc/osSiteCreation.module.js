@@ -6,7 +6,26 @@
     paths = Drupal.settings.paths
   });
 
-  m.controller('siteCreationCtrl', ['$scope', '$http', '$q', '$rootScope', 'buttonSpinnerStatus', '$filter', '$sce', '$timeout', function($scope, $http, $q, $rootScope, bss, $filter, $sce, $timeout) {
+  m.service('passwordStrength', [function () {
+    var tests = [/[0-9]/, /[a-z]/, /[A-Z]/, /[^A-Z-0-9]/i];
+    this.checkStrength = function(pass) {
+      if (pass == null) {
+        return -1;
+      }
+      var s = 0;
+      if (pass.length < 6) {
+        return 0;
+      }
+      for (var i in tests) {
+        if (tests[i].test(pass)) {
+          s++;
+        }
+      }
+      return s;
+    }
+  }]);
+
+  m.controller('siteCreationCtrl', ['$scope', '$http', '$q', '$rootScope', 'buttonSpinnerStatus', '$filter', '$sce', '$timeout', 'passwordStrength', function($scope, $http, $q, $rootScope, bss, $filter, $sce, $timeout, ps) {
 
   //Set default value for vsite
   $scope.vsite_private = {
@@ -42,6 +61,7 @@
   $scope.newUserResistrationEmail = false;
   $scope.newUserResistrationName = false;
   $scope.newUserResistrationPwd = false;
+  $scope.newUserValidPwd = false;
 
   //Navigate between screens
   $scope.page1 = true;
@@ -218,13 +238,48 @@
 
   $scope.isCompletedRes = function() {
     $timeout(function () {
-      if ($scope.newUserResistrationEmail && $scope.newUserResistrationName && $scope.newUserResistrationPwd && $scope.siteNameValid) {
+      if ($scope.newUserResistrationEmail && $scope.newUserResistrationName && $scope.newUserValidPwd && $scope.newUserResistrationPwd && $scope.siteNameValid) {
         $scope.btnDisable = false;
       } else {
         $scope.btnDisable = true;
       }
     }, 2000);
   }
+
+  $scope.score = function() {
+    $scope.newUserValidPwd = false;
+    var pwdScore = ps.checkStrength($scope.password);
+    if (pwdScore < 1 ) {
+      $scope.strength = "Atleast 6 characters";
+    } else if (pwdScore == 1) {
+      $scope.strength = "Weak";
+    } else if (pwdScore == 2) {
+      $scope.strength = "Good";
+    } else if (pwdScore == 3) {
+      $scope.strength = "Fair";
+    } else if (pwdScore > 3) {
+      $scope.strength = "Strong";
+    }
+    if (pwdScore > 0) {
+      $scope.newUserValidPwd = true;
+    }
+    return pwdScore;
+  }
+
+ $scope.pwdMatch = function() {
+  $scope.newUserResistrationPwd = false;
+  if (typeof $scope.password !== 'undefined' && $scope.password != '') {
+    if (angular.equals($scope.password, $scope.confirmPwd)) {
+      $scope.newUserResistrationPwd = true;
+      $scope.isCompletedRes();
+      return 'yes';
+    } else {
+      return 'no';
+    }
+  } else {
+    return '';
+  }
+ }
 }]);
   /**
    * Open modals for the site creation forms

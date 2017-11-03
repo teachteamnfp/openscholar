@@ -164,32 +164,38 @@
 					</div>
 				</div>
 				<div id="body-container-group-3">
-					<div>
-						<span>Desired user name</span>
-						<span><input type="text" ng-model="userName" class="form-text" ng-blur="checkUserName()"></span>
-						<div class="message error" ng-show="showUserError" ng-bind-html="userErrorMsg"></div>
-					</div>
-					<div>
-						<span>First name</span>
-						<span><input type="text" ng-model="fname" class="form-text"></span>
-					</div>
-					<div>
-						<span>Last name</span>
-						<span><input type="text" ng-model="lname" class="form-text"></span>
-					</div>
-					<div>
-						<span>Email address</span>
-						<span><input type="text" ng-model="email" class="form-text" ng-blur="checkEmail()"></span>
-						<div class="message error" ng-show="showEmailError" ng-bind-html="emailErrorMsg"></div>
-					</div>
-					<div>
-						<span>Password</span>
-						<span><input type="password" ng-model="password" class="form-text"></span>
-					</div>
-					<div>
-						<span>Confirm password</span>
-						<span><input type="password" ng-model="confirmPwd" class="form-text" ng-blur="checkPwd()"></span>
-						<div class="message error" ng-show="showPwdError" ng-bind-html="pwdErrorMsg"></div>
+					<div class = "popup">
+						<div class = "popup">
+							<span>Desired user name</span>
+							<span><input type="text" ng-model="userName" class="form-text" ng-blur="checkUserName()"></span>
+							<div class="message error" ng-show="showUserError" ng-bind-html="userErrorMsg"></div>
+						</div>
+						<div class = "popup">
+							<span>First name</span>
+							<span><input type="text" ng-model="fname" class="form-text"></span>
+						</div>
+						<div class = "popup">
+							<span>Last name</span>
+							<span><input type="text" ng-model="lname" class="form-text"></span>
+						</div>
+						<div class = "popup">
+							<span>Email address</span>
+							<span><input type="text" ng-model="email" class="form-text" ng-blur="checkEmail()"></span>
+							<div class="message error" ng-show="showEmailError" ng-bind-html="emailErrorMsg"></div>
+						</div>
+						<div class = "popup">
+							<span>Password</span>
+							<span><input type="password" ng-model="password" class="form-text" autocomplete="off"></span>
+							<span><meter value="{{score()}}" min="0" max="4"></meter></span>
+							<span>{{strength}}</span>
+						</div>
+						<div class = "popup">
+							<span>Confirm password</span>
+							<span><input type="password" ng-model="confirmPwd" class="form-text" autocomplete="off"></span>
+							<div class="message error" ng-show="showPwdError" ng-bind-html="pwdErrorMsg"></div>
+							<span>Password match : </span>
+							<span>{{pwdMatch()}}</span>
+						</div>
 					</div>
 				</div>
 
