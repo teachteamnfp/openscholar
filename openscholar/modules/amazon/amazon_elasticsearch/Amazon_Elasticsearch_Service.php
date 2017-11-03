@@ -36,6 +36,9 @@ class AmazonElasticsearchService extends DrupalApacheSolrService {
     return $url['scheme'] . $servlet . '-' . $url['host'] . $url['port'] . $url['path'] . $path . $query_string;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public function ping($timeout = 2) {
     $start = microtime(TRUE);
 
@@ -46,6 +49,7 @@ class AmazonElasticsearchService extends DrupalApacheSolrService {
     $content = array(
       'Action' => 'DescribeDomains',
       'Version' => '2013-01-01',
+      'DomainNames.member.N' => variable_get('amazon_cloudsearch_domain'),
     );
     $query_string = $this->httpBuildQuery($content);
     $headers = $this->sign("GET", "/", $query_string);
@@ -60,7 +64,7 @@ class AmazonElasticsearchService extends DrupalApacheSolrService {
 
     if ($response->code == 200) {
       // Add 0.1 ms to the ping time so we never return 0.0.
-      watchdog('amazon_cloudsearch', print_r($response->data, 1));
+      error_log(print_r($response->data, 1));
       return microtime(TRUE) - $start + 0.0001;
     }
     else {
