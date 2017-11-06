@@ -68,7 +68,11 @@ class AmazonElasticsearchService extends DrupalApacheSolrService {
       return microtime(TRUE) - $start + 0.0001;
     }
     else {
-      error_log(print_r($response, 1));
+      $data = $response->data;
+      $matches = array();
+      if (preg_match('|<Message>([^<]*)</Message>', $data, $matches)) {
+        drupal_set_message(print_r($matches, 1));
+      }
       return FALSE;
     }
   }
@@ -90,14 +94,16 @@ class AmazonElasticsearchService extends DrupalApacheSolrService {
 
     $canonical_request = sprintf("%s\n%s\n%s\n%s\n%s\n%s",
       $verb,
-      $uri,
-      $query_string,
+      $uri ? $uri : '/',
+      urlencode($query_string),
       $headers,
       "host,x-amz-date",
       hash("sha256", $body));
+    drupal_set_message("Canonical string: \n$canonical_request");
 
     $credential_scope = "$date/us-east-1/cloudsearch/aws4_request";
     $string_to_sign = "AWS4-HMAC-SHA256\n$datetime\n$credential_scope\n"+hash("sha256", $canonical_request);
+    drupal_set_message("String to sign\n$string_to_sign");
 
     $secret_key = variable_get('amazon_secret_key');
 
