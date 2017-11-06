@@ -71,7 +71,7 @@ class AmazonElasticsearchService extends DrupalApacheSolrService {
       $data = $response->data;
       $matches = array();
       if (preg_match('|<Message>([^<]*)</Message>|', $data, $matches)) {
-        drupal_set_message(print_r($matches, 1));
+        drupal_set_message($matches[0], 'error');
       }
       return FALSE;
     }
@@ -88,8 +88,8 @@ class AmazonElasticsearchService extends DrupalApacheSolrService {
    */
   protected function sign($verb, $uri, $query_string, $body = "") {
     $host = 'cloudsearch';
-    $datetime = date("Ymd\THis\Z", REQUEST_TIME);
-    $date = date("Ymd", REQUEST_TIME);
+    $datetime = gmdate("Ymd\THis\Z", REQUEST_TIME);
+    $date = gmdate("Ymd", REQUEST_TIME);
     $headers = "host:$host\nx-amz-date:$datetime\n";
 
     $canonical_request = sprintf("%s\n%s\n%s\n%s\n%s\n%s",
