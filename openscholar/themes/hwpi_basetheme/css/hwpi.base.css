@@ -92,11 +92,11 @@ a:visited {
 
     background: url('../images/link-icon.png') right 12px no-repeat;
 }
-.block-boxes-os_taxonomy_fbt.term-slider .item-list ul li span {
+.block-boxes-os_taxonomy_fbt.term-slider .item-list ul li span.description {
     font-family: arial;
     font-size: 1.4em;
 }
-.block-boxes-os_taxonomy_fbt.term-slider .item-list ul li span:after {
+.block-boxes-os_taxonomy_fbt.term-slider .item-list ul li span.description:after {
     content: '';
     color: #fff;
     position: absolute;
@@ -113,10 +113,10 @@ a:visited {
     -o-transform: rotate(225deg);
     transform: rotate(225deg);
 }
-.block-boxes-os_taxonomy_fbt.term-slider .item-list ul li span:hover:after {
+.block-boxes-os_taxonomy_fbt.term-slider .item-list ul li span.description:hover:after {
     cursor: pointer;
 }
-.block-boxes-os_taxonomy_fbt.term-slider .item-list ul li.open span:after {
+.block-boxes-os_taxonomy_fbt.term-slider .item-list ul li.open span.description:after {
     -webkit-transform: rotate(0deg);
     -moz-transform: rotate(0deg);
     -ms-transform: rotate(0deg);
