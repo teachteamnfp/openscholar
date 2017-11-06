@@ -48,8 +48,8 @@ class AmazonElasticsearchService extends DrupalApacheSolrService {
     $pingUrl = 'https://cloudsearch.us-east-1.amazonaws.com';
     $content = array(
       'Action' => 'DescribeDomains',
-      'Version' => '2013-01-01',
       'DomainNames.member.1' => variable_get('amazon_cloudsearch_domain'),
+      'Version' => '2013-01-01',
     );
     $query_string = $this->httpBuildQuery($content);
     $headers = $this->sign("GET", "/", $query_string);
@@ -71,7 +71,7 @@ class AmazonElasticsearchService extends DrupalApacheSolrService {
       $data = $response->data;
       $matches = array();
       if (preg_match('|<Message>([^<]*)</Message>|', $data, $matches)) {
-        drupal_set_message($matches[0], 'error');
+        drupal_set_message(nl2br($matches[0]), 'error');
       }
       return FALSE;
     }
