@@ -55,7 +55,7 @@ if (jQuery('.region-header-second .region-inner').has('.block-boxes-os_boxes_sit
 	jQuery(".block-boxes-os_taxonomy_fbt.term-slider .item-list ul li .description").after("<span></span>");
 
 	// TOGGLECLASS OPEN ON LIS IN AREAS OF RESEARCH WIDGET
-	jQuery('.block-boxes-os_taxonomy_fbt.term-slider .item-list ul li span').click(function() {
+	jQuery('.block-boxes-os_taxonomy_fbt.term-slider .item-list ul li .description ~ span').click(function() {
 		jQuery(this).parent('.block-boxes-os_taxonomy_fbt.term-slider .item-list ul li').toggleClass('open');
 	});
 });
