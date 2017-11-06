@@ -97,7 +97,7 @@ class AmazonElasticsearchService extends DrupalApacheSolrService {
       $uri ? $uri : '/',
       htmlentities($query_string),
       $headers,
-      "host,x-amz-date",
+      "host;x-amz-date",
       hash("sha256", $body));
     drupal_set_message(nl2br("Canonical string: \n$canonical_request"));
 
