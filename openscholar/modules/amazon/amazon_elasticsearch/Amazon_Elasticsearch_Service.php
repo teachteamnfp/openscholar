@@ -87,7 +87,7 @@ class AmazonElasticsearchService extends DrupalApacheSolrService {
    * @see http://docs.aws.amazon.com/general/latest/gr/sigv4-signed-request-examples.html
    */
   protected function sign($verb, $uri, $query_string, $body = "") {
-    $host = 'cloudsearch';
+    $host = 'cloudsearch.us-east-1.amazonaws.com';
     $datetime = gmdate("Ymd\THis\Z", REQUEST_TIME);
     $date = gmdate("Ymd", REQUEST_TIME);
     $headers = "host:$host\nx-amz-date:$datetime\n";
