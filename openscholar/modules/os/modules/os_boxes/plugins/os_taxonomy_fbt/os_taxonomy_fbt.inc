@@ -61,11 +61,6 @@ class os_taxonomy_fbt extends os_boxes_default {
       '#default_value' => ($this->options['as_nav'] ? $this->options['as_nav'] : 'classic'),
       '#title' => t('Display type'),
       '#return_value' => TRUE,
-      '#states' => array(
-       'invisible' => array(
-        ':input[name="widget_type"]' => array('value' => 'select'),
-        ),             
-       ),
       '#options' => array(
           'classic' => t('Classic/List'),
           'menu' => t('Menu'),
@@ -93,6 +88,9 @@ class os_taxonomy_fbt extends os_boxes_default {
    */
   public function form_elements(&$form_state) {
     $form = array();
+
+    drupal_add_js(drupal_get_path('module', 'os_boxes') . '/plugins/os_taxonomy_fbt/os_taxonomy_fbt.js');
+
     $selected_vid = isset($form_state['values']['vocabulary']) ? $form_state['values']['vocabulary'] : $this->options['vocabulary'];
     $form['vocabulary'] = array(
       '#type' => 'select',
