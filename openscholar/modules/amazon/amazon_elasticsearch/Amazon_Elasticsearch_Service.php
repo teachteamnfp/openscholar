@@ -62,6 +62,7 @@ class AmazonElasticsearchService extends DrupalApacheSolrService {
     );
     $pingUrl .= '?' . $query_string;
     $response = $this->_makeHttpRequest($pingUrl, $options);
+    drupal_set_message(print_r($response, 1));
 
     if ($response->code == 200) {
       // Add 0.1 ms to the ping time so we never return 0.0.
@@ -143,7 +144,6 @@ class AmazonElasticsearchService extends DrupalApacheSolrService {
    * Pass through so I can log something
    */
   protected function _makeHttpRequest($url, array $options = array()) {
-    error_log($url);
     parent::_makeHttpRequest($url, $options);
   }
 }
