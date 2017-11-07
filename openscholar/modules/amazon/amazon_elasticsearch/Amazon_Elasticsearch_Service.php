@@ -71,18 +71,18 @@ class AmazonElasticsearchService extends DrupalApacheSolrService {
       $data = $response->data;
       $matches = array();
       if (preg_match('|<Message>([^<]*)</Message>|', $data, $matches)) {
-        drupal_set_message("<pre>".nl2br($matches[0])."</pre>", 'error');
+        drupal_set_message("<pre>".($matches[0])."</pre>", 'error');
       }
       return FALSE;
     }
   }
 
   /**
-   * @param $verb
-   * @param $uri
-   * @param $query_string
-   * @param string $body
-   * @return mixed
+   * @param $verb         - HTTP Verb (GET, POST, etc)
+   * @param $uri          - If you don't know, then its "/"
+   * @param $query_string - A normal http query string, arguments in alphabetical order
+   * @param string $body  - The body of the http request you're sending. Not needed for GET requests
+   * @return mixed        - The http headers to be added to the request
    *
    * @see http://docs.aws.amazon.com/general/latest/gr/sigv4-signed-request-examples.html
    */
@@ -95,11 +95,11 @@ class AmazonElasticsearchService extends DrupalApacheSolrService {
     $canonical_request = sprintf("%s\n%s\n%s\n%s\n%s\n%s",
       $verb,
       $uri ? $uri : '/',
-      htmlentities($query_string),
+      $query_string,
       $headers,
       "host;x-amz-date",
       hash("sha256", $body));
-    drupal_set_message(nl2br("<pre>Canonical string: \n$canonical_request</pre>"));
+    drupal_set_message("<pre>Canonical string: \n$canonical_request</pre>");
 
     $credential_scope = "$date/us-east-1/cloudsearch/aws4_request";
     $string_to_sign = "AWS4-HMAC-SHA256\n$datetime\n$credential_scope\n".hash("sha256", $canonical_request);
@@ -126,5 +126,16 @@ class AmazonElasticsearchService extends DrupalApacheSolrService {
     );
 
     return $headers;
+  }
+
+  /**
+   * Amazon demands that the query arguments be in alphabetical order.
+   * It does not mention this anywhere, you just have to infer it from error messages
+   *
+   * {@inheritDoc}
+   */
+  protected function httpBuildQuery($query) {
+    ksort($query);
+    return parent::httpBuildQuery($query);
   }
 }
