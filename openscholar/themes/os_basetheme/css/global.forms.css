@@ -104,6 +104,7 @@ fieldset {
     margin: 10px 0;
     padding: 10px;
 }
+form[id^="os-mailchimp-form--"] fieldset,
 .vertical-tabs-panes fieldset {
     background: none;
 }
@@ -167,8 +168,12 @@ button[disabled],
 input[disabled] {
     cursor: default;
 }
-#registration-form input[type="submit"]
-{cursor: pointer;
+
+form[id^="os-mailchimp-form--"] input[type="submit"],
+.block-boxes-os_boxes_mailchimp input.form-submit,
+#os-mailchimp-form input.form-submit,
+#registration-form input[type="submit"]{
+	cursor: pointer;
     padding: 5px 12px;
     margin-bottom: 1em;
     margin-right: 1em;
@@ -535,6 +540,10 @@ form table .item-list ul {
     display: none;
 }
 /** MAILING LIST SIGNUP FORM - STYLES **/
+	
+form[id^="os-mailchimp-form--"] fieldset {
+	 border: none;
+}
 
 .block-boxes-os_boxes_mailchimp fieldset,
 #os-mailchimp-form fieldset {
@@ -543,28 +552,7 @@ form table .item-list ul {
     margin: 0 2px;
     padding: 0.35em 0.625em 0.75em;
 }
-.block-boxes-os_boxes_mailchimp input.form-submit,
-#os-mailchimp-form input.form-submit {
-    cursor: pointer;
-    padding: 4px 17px;
-    margin-bottom: 1em;
-    margin-right: 1em;
-    /* LTR */
-    
-    color: #5a5a5a;
-    text-align: center;
-    font-weight: normal;
-    font-size: 1.077em;
-    font-family: "Lucida Grande", Verdana, sans-serif;
-    border: 1px solid #e4e4e4;
-    border-bottom: 1px solid #b4b4b4;
-    border-left-color: #d2d2d2;
-    border-right-color: #d2d2d2;
-    background: url(/themes/seven/images/buttons.png) 0 0 repeat-x;
-    -moz-border-radius: 20px;
-    -webkit-border-radius: 20px;
-    border-radius: 20px;
-}
+
 div.ctools-modal-content .block-boxes-os_boxes_mailchimp fieldset-legend,
 div.ctools-modal-content #os-mailchimp-form .fieldset-legend {
     margin: 0;
@@ -573,6 +561,7 @@ div.ctools-modal-content #os-mailchimp-form .fieldset-legend {
     font-size: 24px;
     font-weight: normal;
 }
+form[id^="os-mailchimp-form--"] .form-item label,
 div.ctools-modal-content #os-mailchimp-form .form-item label {
     float: none;
 }

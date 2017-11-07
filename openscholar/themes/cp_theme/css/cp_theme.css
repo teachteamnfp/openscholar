@@ -234,6 +234,7 @@ html.js input.throbbing {
     color: #FFF;
     font-weight: bold;
 }
+button.button,
 #edit-field_software_package-und-drop .media-browser-drop-box .ng-binding.ng-scope,
 .redirect-add,
 body.page-node-revisions ul.action-links a,
@@ -471,7 +472,8 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
     width: 30px;
     height: 30px;
     position: relative;
-    /* margin: -28px 10px; */
+
+    border: none;
 }
 
 .ui-dialog .ui-dialog-titlebar button.ui-dialog-titlebar-close {
@@ -479,8 +481,13 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
     margin: -8px 0;
     border: 0;
     cursor: pointer;
+   
 }
 
+.ui-dialog .ui-dialog-titlebar-close {
+
+    right:-10px;
+}
 #overlay-close-wrapper {
    
     margin: -30px 15px;
@@ -506,6 +513,10 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
     height: 24px;
 }
 
+.app-form.ui-dialog .ui-dialog-content {
+
+    overflow: inherit
+}
 
 #overlay-title, .ui-dialog-title {
     float: left;
@@ -1339,7 +1350,7 @@ margin: 0 0 10px;
     font-size: 15px;
     line-height:20px;
 }
-
+#overlay-close,
 :not(form) div.messages {
 margin: 0;
 }
@@ -1694,7 +1705,7 @@ form#documentation img {
 span[name="faq_sort"] .form-radios {
     margin: 0 15px 15px 0;
 }
-
+.margin_bottom-15,
 .margin-bottom{
     margin-bottom: 15px;
 }
