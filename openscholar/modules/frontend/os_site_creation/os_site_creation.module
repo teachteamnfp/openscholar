@@ -11,9 +11,11 @@ function os_site_creation_library() {
   $disable = array('alias' => TRUE);
   // Determining whether user has got huid and Drupal id
   $vicariousUser = false;
-  if ($huid = pinserver_get_user_huid()) {
-    if (!$uid = pinserver_authenticate_get_uid_from_huid($huid)) {
-      $vicariousUser = true;
+  if (module_exists('pinserver')) {
+    if ($huid = pinserver_get_user_huid()) {
+      if (!$uid = pinserver_authenticate_get_uid_from_huid($huid)) {
+        $vicariousUser = true;
+      }
     }
   }
 

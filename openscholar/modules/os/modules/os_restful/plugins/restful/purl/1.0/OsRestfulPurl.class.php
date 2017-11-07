@@ -162,8 +162,10 @@ class OsRestfulPurl extends \RestfulBase implements \RestfulDataProviderInterfac
       $user = $site_owner;
 
       // Link huid and uid
-      if ($huid = pinserver_get_user_huid()) {
-        pinserver_authenticate_set_user_huid($user->uid, $huid);
+      if (module_exists('pinserver')) {
+        if ($huid = pinserver_get_user_huid()) {
+          pinserver_authenticate_set_user_huid($user->uid, $huid);
+        }
       }
     }
     else {

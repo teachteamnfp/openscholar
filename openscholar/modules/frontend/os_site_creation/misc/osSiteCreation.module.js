@@ -221,21 +221,6 @@
     $scope.isCompletedRes();
   }
 
-  $scope.checkPwd = function() {
-    $scope.newUserResistrationPwd = false;
-    if (typeof $scope.password !== 'undefined' && $scope.password != '' && typeof $scope.confirmPwd !== 'undefined' && $scope.confirmPwd != '' ) {
-      if ($scope.password == $scope.confirmPwd) {
-        $scope.showPwdError = false;
-        $scope.pwdErrorMsg = '';
-        $scope.newUserResistrationPwd = true;
-      } else {
-        $scope.showPwdError = true;
-        $scope.pwdErrorMsg = $sce.trustAsHtml('Password should match');
-      }
-    }
-    $scope.isCompletedRes();
-  }
-
   $scope.isCompletedRes = function() {
     $timeout(function () {
       if ($scope.newUserResistrationEmail && $scope.newUserResistrationName && $scope.newUserValidPwd && $scope.newUserResistrationPwd && $scope.siteNameValid) {

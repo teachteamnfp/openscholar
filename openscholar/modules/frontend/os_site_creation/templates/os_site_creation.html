@@ -166,35 +166,39 @@
 				<div id="body-container-group-3" ng-show="vicariousUser">
 					<div class = "popup">
 						<div class = "popup">
-							<span>Desired user name</span>
-							<span><input type="text" ng-model="userName" class="form-text" ng-blur="checkUserName()"></span>
+							<div><b>Desired user name</b></div>
+							<div><input type="text" ng-model="userName" class="form-text form-text-mini" ng-blur="checkUserName()"></div>
 							<div class="message error" ng-show="showUserError" ng-bind-html="userErrorMsg"></div>
+							<div>Spaces are allowed; punctuation is not allowed except for periods, hyphens, and underscores.</div>
 						</div>
 						<div class = "popup">
-							<span>First name</span>
-							<span><input type="text" ng-model="fname" class="form-text"></span>
+							<div><b>First name</b></div>
+							<div><input type="text" ng-model="fname" class="form-text form-text-mini"></div>
 						</div>
 						<div class = "popup">
-							<span>Last name</span>
-							<span><input type="text" ng-model="lname" class="form-text"></span>
+							<div><b>Last name</b></div>
+							<div><input type="text" ng-model="lname" class="form-text form-text-mini"></div>
 						</div>
 						<div class = "popup">
-							<span>Email address</span>
-							<span><input type="text" ng-model="email" class="form-text" ng-blur="checkEmail()"></span>
+							<div><b>Email address</b></div>
+							<span><input type="text" ng-model="email" class="form-text form-text-mini" ng-blur="checkEmail()"></span>
 							<div class="message error" ng-show="showEmailError" ng-bind-html="emailErrorMsg"></div>
+							<div>A valid e-mail address is required. All e-mails from OpenScholar will be sent to this address.</div>
 						</div>
 						<div class = "popup">
-							<span>Password</span>
-							<span><input type="password" ng-model="password" class="form-text" autocomplete="off"></span>
-							<span><meter value="{{score()}}" min="0" max="4"></meter></span>
-							<span>{{strength}}</span>
+							<div><b>Password</b></div>
+							<div class="form-text-mini">
+								<input type="password" ng-model="password" class="form-text form-text-micro" autocomplete="off">
+								<div class="password-strength-text">
+									<div>Password compliance: {{strength}}</div>
+									<div><meter value="{{score()}}" min="0" max="4" class="password-indicator"></meter></div>
+								</div>
+							</div>
 						</div>
 						<div class = "popup">
-							<span>Confirm password</span>
-							<span><input type="password" ng-model="confirmPwd" class="form-text" autocomplete="off"></span>
-							<div class="message error" ng-show="showPwdError" ng-bind-html="pwdErrorMsg"></div>
-							<span>Password match : </span>
-							<span>{{pwdMatch()}}</span>
+							<div><b>Confirm password</b></div>
+							<div class="form-text-mini"><input type="password" ng-model="confirmPwd" class="form-text form-text-micro" autocomplete="off"><div class="password-strength-text">Password match : {{pwdMatch()}}</div>
+							</div>
 						</div>
 					</div>
 				</div>

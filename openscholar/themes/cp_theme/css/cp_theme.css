@@ -122,6 +122,14 @@ textarea,
     background-color: #fff;
 }
 
+.form-text-mini {
+    width: 60% !important;
+}
+
+.form-text-micro {
+    width: 30% !important;
+}
+
 #og-vocabulary-add-more-wrapper select.form-select {
     height: 120px;
 }
