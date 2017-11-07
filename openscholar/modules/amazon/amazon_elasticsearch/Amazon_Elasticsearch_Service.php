@@ -106,10 +106,10 @@ class AmazonElasticsearchService extends DrupalApacheSolrService {
     $secret_key = variable_get('amazon_secret_key');
 
     // signing key
-    $keyDate = hash_hmac("SHA256", $date, "AWS4$secret_key");
-    $keyRegion = hash_hmac("SHA256", 'us-east-1', $keyDate);
-    $keyService = hash_hmac("SHA256", 'cloudsearch', $keyRegion);
-    $keySigning = hash_hmac("SHA256", 'aws4_request', $keyService);
+    $keyDate = hash_hmac("SHA256", $date, "AWS4$secret_key", true);
+    $keyRegion = hash_hmac("SHA256", 'us-east-1', $keyDate, true);
+    $keyService = hash_hmac("SHA256", 'cloudsearch', $keyRegion, true);
+    $keySigning = hash_hmac("SHA256", 'aws4_request', $keyService, true);
 
     // signature
     $signature = hash_hmac("SHA256", $string_to_sign, $keySigning);
