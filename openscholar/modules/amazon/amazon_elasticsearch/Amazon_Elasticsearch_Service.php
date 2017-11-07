@@ -64,6 +64,7 @@ class AmazonElasticsearchService extends DrupalApacheSolrService {
 
     if ($response->code == 200) {
       // Add 0.1 ms to the ping time so we never return 0.0.
+      drupal_set_message('200 response. timeout check');
       return microtime(TRUE) - $start + 0.0001;
     }
     else {
