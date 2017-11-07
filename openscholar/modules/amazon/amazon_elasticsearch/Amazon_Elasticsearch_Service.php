@@ -70,6 +70,7 @@ class AmazonElasticsearchService extends DrupalApacheSolrService {
     else {
       $data = $response->data;
       $matches = array();
+      drupal_set_message($response->data);
       if (preg_match('|<Message>([^<]*)</Message>|', $data, $matches)) {
         drupal_set_message("<pre>".($matches[0])."</pre>", 'error');
       }
