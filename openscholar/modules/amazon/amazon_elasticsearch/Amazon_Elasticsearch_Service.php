@@ -40,6 +40,7 @@ class AmazonElasticsearchService extends DrupalApacheSolrService {
    * {@inheritDoc}
    */
   public function ping($timeout = 2) {
+    drupal_set_message('beginning ping');
     $start = microtime(TRUE);
 
     if ($timeout <= 0.0) {
