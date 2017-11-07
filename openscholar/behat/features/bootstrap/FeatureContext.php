@@ -4043,11 +4043,16 @@ class FeatureContext extends DrupalContext {
     $page = $this->getSession()->getPage();
     $this->waitForPageActionsToComplete();
     if (! $page->find('css', '[left-menu].closed')) {
-
-      // Make sure the menu is not hiding
-      $driver = $this->getSession()->getDriver();
-      $driver->executeScript("window.jQuery('[left-menu]').css('display', 'none');");
+      return array(
+        new Step\When('I press "Close Menu"'),
+        new Step\When('I sleep for "1"'),
+      );
     }
+    elseif (!$page->find('css', '[left-menu]')) {
+      throw new \Exception("The admin panel was not found on this page. Are you sure its installed and enabled?");
+    }
+
+    return array();
   }
 
   /**
