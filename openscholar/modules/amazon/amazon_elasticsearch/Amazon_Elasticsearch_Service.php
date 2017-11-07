@@ -135,4 +135,12 @@ class AmazonElasticsearchService extends DrupalApacheSolrService {
     ksort($query);
     return parent::httpBuildQuery($query);
   }
+
+  /**
+   * Pass through so I can log something
+   */
+  protected function _makeHttpRequest($url, array $options = array()) {
+    error_log($url);
+    parent::_makeHttpRequest($url, $options);
+  }
 }
