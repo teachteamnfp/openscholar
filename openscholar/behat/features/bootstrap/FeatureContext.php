@@ -4352,7 +4352,7 @@ JS;
   }
 
   /**
-   * @When /^I navigate to "([^"]*)" cp settings of the site "([^"]*)"$/
+   * @When /^I open the "([^"]*)" settings form for the site "([^"]*)"$/
    */
   public function iNavigateCpSettings($type, $vsite) {
 

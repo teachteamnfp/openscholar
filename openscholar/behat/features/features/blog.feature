@@ -83,7 +83,7 @@ Feature:
  @api @select_private_comments @os_blog @javascript
  Scenario: Select "Private comments"
     Given I am logging in as "john"
-      And I navigate to "Blog Comments" cp settings of the site "john"
+      And I open the "Blog Comments" settings form for the site "john"
       And I choose the radio button named "blog_comments_settings" with value "comment" for the vsite "john"
       And I press "Save"
      When I visit "john/blog"
@@ -92,7 +92,7 @@ Feature:
  @api @javascript @select_disqus_comments @os_blog
  Scenario: Select "Disqus comments"
     Given I am logging in as "john"
-      And I navigate to "Blog Comments" cp settings of the site "john"
+      And I open the "Blog Comments" settings form for the site "john"
       And I choose the radio button named "blog_comments_settings" with value "disqus" for the vsite "john"
       And I fill in "Disqus Shortname" with "openscholar"
       And I press "Save"
@@ -108,7 +108,7 @@ Feature:
     Given I am logging in as "john"
       And I visit "john/blog"
       And I make sure admin panel is open
-      And I navigate to "Blog Comments" cp settings of the site "john"
+      And I open the "Blog Comments" settings form for the site "john"
       And I choose the radio button named "blog_comments_settings" with value "nc" for the vsite "john"
       And I press "Save"
       And I sleep for "3"
