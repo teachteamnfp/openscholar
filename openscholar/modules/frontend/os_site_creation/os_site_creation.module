@@ -9,6 +9,14 @@ function os_site_creation_library() {
   $libs = array();
   $self = drupal_get_path('module', 'os_site_creation');
   $disable = array('alias' => TRUE);
+  // Determining whether user has got huid and Drupal id
+  $vicariousUser = false;
+  if ($huid = pinserver_get_user_huid()) {
+    if (!$uid = pinserver_authenticate_get_uid_from_huid($huid)) {
+      $vicariousUser = true;
+    }
+  }
+
   $libs['site_creation'] = array(
     'title' => 'Site Creation Form',
     'version' => OS_SITE_CREATION_FORM,
@@ -20,6 +28,7 @@ function os_site_creation_library() {
           'paths' => array(
             'siteCreationForm' => url($self.'/templates', $disable),
             'siteCreationModuleRoot' => url(drupal_get_path('module', 'os_site_creation'), $disable),
+            'hasOsId' => $vicariousUser,
           ),
           'version' => array(
             'siteCreationForm' => OS_SITE_CREATION_FORM,

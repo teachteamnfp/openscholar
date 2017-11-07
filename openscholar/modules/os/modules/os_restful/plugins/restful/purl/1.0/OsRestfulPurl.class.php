@@ -157,18 +157,14 @@ class OsRestfulPurl extends \RestfulBase implements \RestfulDataProviderInterfac
       // admin role.
       $new_user = TRUE;
 
-      // Send out an email to notify the user of the newly created account.
-      // Email only sent if user requested to be notified of new account.
-      // if ($values['notify']) {
-      //  _user_mail_notify('register_no_approval_required', $site_owner);
-      // }
-
       // Logs in as the new user, if we're not already logged in.
       global $user;
-      //if ($user->uid == 0) {
       $user = $site_owner;
-      //user_login_finalize(array());
-      //}
+
+      // Link huid and uid
+      if ($huid = pinserver_get_user_huid()) {
+        pinserver_authenticate_set_user_huid($user->uid, $huid);
+      }
     }
     else {
       // Creates site for current logged in user. No need to create a new user.

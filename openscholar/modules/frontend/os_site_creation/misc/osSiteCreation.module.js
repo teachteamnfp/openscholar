@@ -56,7 +56,7 @@
 
   //Set status of next button to disabled initially
   $scope.btnDisable = true;
-  $scope.vicariousUser = true;
+  $scope.vicariousUser = Drupal.settings.paths.hasOsId;
   $scope.siteNameValid = false;
   $scope.newUserResistrationEmail = false;
   $scope.newUserResistrationName = false;
