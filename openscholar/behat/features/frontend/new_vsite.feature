@@ -11,8 +11,10 @@ Feature:
       And I fill in "individual-scholar" with "mysite"
       And I sleep for "5"
       And I press "Next"
-      And I click on the "Next" control
-      And I click on the "Create" control
+      And I sleep for "1"
+      And I press "Next"
+      And I sleep for "1"
+      And I press "Create"
       And I sleep for "5"
       And I press "Take me to my site"
      Then I should see "mysite" in "mysite"
