@@ -1009,3 +1009,20 @@ function os_update_7054() {
 function os_update_7055() {
   features_revert(array('os' => array('metatag')));
 }
+
+
+function os_update_7056() {
+  $default = og_get_default_roles();
+  $q = db_select('og_role', 'ogr')
+      ->fields('ogr', array('rid'))
+      ->condition('name', $default, 'IN')
+      ->execute();
+
+  $count = 0;
+  foreach ($q as $r) {
+    $count++;
+    og_role_grant_permissions($r->rid, array('insert link into wysiwyg'));
+  }
+
+  return t('Added \'insert link into wysiwyg\' permission to '.$count.' roles.');
+}
