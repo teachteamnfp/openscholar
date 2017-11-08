@@ -1,6 +1,24 @@
 <?php
 
 /**
+ * List of Harvard documentation help link
+ */
+define('HELP_SITE_VISIBILITY_URL', 'http://docs.openscholar.harvard.edu/global-site-settings#site-visibility');
+define('HELP_CUSTOM_DOMAIN_URL', 'http://docs.openscholar.harvard.edu/apply-a-custom-domain');
+define('HELP_SUBSITE_THEME_URL', 'http://docs.openscholar.harvard.edu/subsite-themes');
+define('HELP_SEARCH_ENGINE_OPTIMIZATION_URL', 'http://docs.openscholar.harvard.edu/global-site-settings#search-engine-optimization');
+define('HELP_FAVICON_URL', 'http://docs.openscholar.harvard.edu/adding-site-favicon');
+
+/**
+ * Various types of vsite
+ */
+define('DEPARTMENTAL_SITE', 'The Harvard Web Publishing standard Adminstrative Department site.');
+define('LAB_AND_RESEARCH_SITE', 'The Harvard Web Publishing standard Lab and Research Group site.');
+define('PROJECT_SITE', 'The Harvard Web Publishing standard Project site.');
+define('PERSONAL_SITE', 'The Harvard Web Publishing standard Project site.');
+define('EVENT_CONFERENCE_SITE', 'The Harvard Web Publishing standard Project site.');
+
+/**
  * Implements hook_init
  */
 function hwpi_init() {

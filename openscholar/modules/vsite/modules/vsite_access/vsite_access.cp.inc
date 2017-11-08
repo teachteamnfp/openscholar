@@ -20,7 +20,7 @@ function vsite_access_cp_settings() {
       '#id' => 'privacy',
       '#title' => t('Site Visibility'),
       '#weight' => 10,
-      '#help_link' => l(t('Learn more about site visibility'), 'http://docs.openscholar.harvard.edu/global-site-settings#site-visibility', array('attributes' => array('target' => '_blank')))
+      '#help_link' => l(t('Learn more about site visibility'), HELP_SITE_VISIBILITY_URL, array('attributes' => array('target' => '_blank')))
     ),
     'form' => array(
       '#type' => 'radios',
