@@ -1010,7 +1010,9 @@ function os_update_7055() {
   features_revert(array('os' => array('metatag')));
 }
 
-
+/**
+ * Set insert link into wysiwyg permission for default roles
+ */
 function os_update_7056() {
   $default = og_get_default_roles();
   $q = db_select('og_role', 'ogr')
