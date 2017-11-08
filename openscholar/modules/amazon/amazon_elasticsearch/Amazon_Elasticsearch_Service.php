@@ -144,6 +144,12 @@ class AmazonElasticsearchService extends DrupalApacheSolrService {
    * Pass through so I can log something
    */
   protected function _makeHttpRequest($url, array $options = array()) {
-    parent::_makeHttpRequest($url, $options);
+    try {
+      parent::_makeHttpRequest($url, $options);
+    }
+    catch (Exception $e) {
+      drupal_set_message($e->getMessage());
+      throw $e;
+    }
   }
 }
