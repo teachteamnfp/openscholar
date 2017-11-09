@@ -374,6 +374,9 @@ class os_taxonomy_fbt extends os_boxes_default {
       $id = 'vocabulary:' . $this->options['vocabulary'];
     }
 
+    // Two cases bring about the navigation CSS class:
+    //    * Menu display checkbox is checked (in old form)
+    //    * New 'menu' radio is selected in *Display type* (in new form)
     if (($this->options['as_nav'] === true) || ($this->options['as_nav'] === 'menu')) {
       $this->options['additional_classes'] = 'navigation';
     }
