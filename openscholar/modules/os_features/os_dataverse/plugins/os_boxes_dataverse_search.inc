@@ -28,7 +28,7 @@ class os_boxes_dataverse_search extends os_boxes_default {
   public function options_form(&$form_state){
     $form = parent::options_form($form_state);
 
-    $base_url = variable_get("dataverse_base_url", "https://dataverse.harvard.edu") . "/dataverse/";
+    $base_url = variable_get("dataverse_base_url", DATAVERSE_DEFAULT_URL) . "/dataverse/";
 
     $form['user_alias'] = array(
       '#type' => 'textfield',
@@ -38,8 +38,7 @@ class os_boxes_dataverse_search extends os_boxes_default {
       '#default_value' => $this->options['user_alias'],
       '#description' => t('Need help finding your Dataset Persistent Identifier? Learn how to here: !link. ' .
         'Note: this widget should be placed in the main content area, not in sidebar.',
-        array('!link' => l('http://docs.openscholar.harvard.edu/dataverse-search-box',
-          'http://docs.openscholar.harvard.edu/dataverse-search-box',
+        array('!link' => l(HELP_DATAVERSE_SEARCH_BOX_URL, HELP_DATAVERSE_SEARCH_BOX_URL,
           array('attributes' => array('target' => '_blank'))))),
     );
 
@@ -60,7 +59,7 @@ class os_boxes_dataverse_search extends os_boxes_default {
       return;
     }
 
-    $base_url = variable_get("dataverse_base_url", "https://dataverse.harvard.edu") . "/resources/js/widgets.js?alias=" . $this->options['user_alias'] . "&amp;dvUrl=" . variable_get("dataverse_base_url", "https://dataverse.harvard.edu") . "&amp;widget=search&amp;text=" . str_replace("%20", "+", drupal_encode_path($this->options['search_box_text']));
+    $base_url = variable_get("dataverse_base_url", 'DATAVERSE_DEFAULT_URL') . "/resources/js/widgets.js?alias=" . $this->options['user_alias'] . "&amp;dvUrl=" . variable_get("dataverse_base_url", 'DATAVERSE_DEFAULT_URL') . "&amp;widget=search&amp;text=" . str_replace("%20", "+", drupal_encode_path($this->options['search_box_text']));
 
     $block = parent::render();
     $block['content'] = "<script src=\"$base_url\"></script>";

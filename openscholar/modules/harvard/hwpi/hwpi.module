@@ -8,6 +8,33 @@ define('HELP_CUSTOM_DOMAIN_URL', 'http://docs.openscholar.harvard.edu/apply-a-cu
 define('HELP_SUBSITE_THEME_URL', 'http://docs.openscholar.harvard.edu/subsite-themes');
 define('HELP_SEARCH_ENGINE_OPTIMIZATION_URL', 'http://docs.openscholar.harvard.edu/global-site-settings#search-engine-optimization');
 define('HELP_FAVICON_URL', 'http://docs.openscholar.harvard.edu/adding-site-favicon');
+define('HELP_HARVARD_KEY_LINK', 'http://docs.openscholar.harvard.edu/logging-your-site#linking-your-harvardkey-to-your-openscholar-account');
+define('HELP_BOOKLETS_URL', 'http://docs.openscholar.harvard.edu/booklet#booklet-app-settings');
+define('HELP_DATAVERSE_WIDGET_URL', 'http://docs.openscholar.harvard.edu/dataverse-dataset-widget');
+define('DATAVERSE_DEFAULT_URL', 'https://dataverse.harvard.edu/');
+define('HELP_DATAVERSE_CITATION_URL', 'http://docs.openscholar.harvard.edu/dataverse-dataset-citation');
+define('HELP_DATAVERSE_LIST_URL', 'http://docs.openscholar.harvard.edu/dataverse-list-widget');
+define('HELP_DATAVERSE_SEARCH_BOX_URL', 'http://docs.openscholar.harvard.edu/dataverse-search-box');
+define('HELP_BASE_URL', 'http://docs.openscholar.harvard.edu');
+define('HELP_EVENTS_URL', 'http://docs.openscholar.harvard.edu/events-app#events-app-settings');
+define('HELP_FAQ_URL', 'http://docs.openscholar.harvard.edu/faq-app#faq-app-settings');
+define('HELP_PRIVATE_FILES_URL', 'http://docs.openscholar.harvard.edu/private-files#setting-options');
+define('HELP_LINKS_URL', 'http://docs.openscholar.harvard.edu/links-app#link-app-settings');
+define('HELP_REDIRECT_URL', 'http://docs.openscholar.harvard.edu/global-site-settings#url-redirects');
+
+/**
+ * Dataverse URLs
+ */
+define('PREVIOUS_DATAVERSE_URL', 'http://dvn.iq.harvard.edu/');
+define('CHANGED_DATAVERSE_URL', 'http://thedata.harvard.edu/');
+
+
+
+/**
+ * Harvard sitewide name,URL
+ */
+define('SITEWIDE_NAME', 'Harvard Web Publishing');
+define('UNIVERSITY_BASE_URL', 'http://www.harvard.edu/');
 
 /**
  * Various types of vsite

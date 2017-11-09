@@ -252,7 +252,7 @@ function cp_user_remove_membership_confirm_submit($form, &$form_state) {
   $params['!site-url'] = !empty($custom_domain) ? 'http://' . $custom_domain : $purl_base_domain . '/' . $vsite->group->purl;
   $params['!account-modifier-email'] = $account_modifier->mail;
   $params['!user-firstname'] = $account->field_first_name[LANGUAGE_NONE][0]['value'];
-  $params['!sitewide-name'] = variable_get('site_name', 'Harvard Web Publishing');
+  $params['!sitewide-name'] = variable_get('site_name', SITEWIDE_NAME);
   $params['headers']['Cc'] = $account_modifier->mail;
   // Send email notification to deleted user.
   drupal_mail('cp_user', 'os_user_delete_from_group', $to, $language, $params, $from);
@@ -297,7 +297,7 @@ function cp_user_change_site_owner_form($form_state) {
 
   $description = "";
   if (module_exists('pinserver') && variable_get('pinserver_pin_url', FALSE)) {
-    $description .= t('Only users who have linked their OpenScholar accounts to HarvardKey are listed.') . ' ' . l('Learn more about linking accounts', 'http://docs.openscholar.harvard.edu/logging-your-site#linking-your-harvardkey-to-your-openscholar-account', array('attributes' => array('target' => '_blank', 'rel' => 'noopener'))) . '.';
+    $description .= t('Only users who have linked their OpenScholar accounts to HarvardKey are listed.') . ' ' . l('Learn more about linking accounts', HELP_HARVARD_KEY_LINK, array('attributes' => array('target' => '_blank', 'rel' => 'noopener'))) . '.';
   }
 
   $form['new_site_owner'] = array(
@@ -359,7 +359,7 @@ function cp_user_change_site_owner_form_submit($form, &$form_state) {
   $params['!site-url'] = !empty($custom_domain) ? 'http://' . $custom_domain : $purl_base_domain . '/' . $vsite->group->purl;
   $params['!account-modifier-email'] = $account_modifier->mail;
   $params['!user-firstname'] = $account->field_first_name[LANGUAGE_NONE][0]['value'];
-  $params['!sitewide-name'] = variable_get('site_name', 'Harvard Web Publishing');
+  $params['!sitewide-name'] = variable_get('site_name', SITEWIDE_NAME);
   $params['headers']['Cc'] = $account_modifier->mail;
   // Sending email notification to modified user.
   drupal_mail('cp_user', 'os_user_role_change', $to, $language, $params, $from);
@@ -419,7 +419,7 @@ function cp_user_edit_membership_form($form_state, $user_load) {
   else {
     $form['edit_membership']['group_manager'] = array(
       '#type' => 'markup',
-      '#markup' => '<p>' . t('@name\'s OpenScholar account is not linked to HarvardKey, so this user cannot be made site owner.', array('@name' => $name)) . ' ' . l('Learn more about linking accounts', 'http://docs.openscholar.harvard.edu/logging-your-site#linking-your-harvardkey-to-your-openscholar-account', array('attributes' => array('target' => '_blank', 'rel' => 'noopener'))) . '.</p>',
+      '#markup' => '<p>' . t('@name\'s OpenScholar account is not linked to HarvardKey, so this user cannot be made site owner.', array('@name' => $name)) . ' ' . l('Learn more about linking accounts', HELP_HARVARD_KEY_LINK, array('attributes' => array('target' => '_blank', 'rel' => 'noopener'))) . '.</p>',
     );
   }
 
@@ -500,7 +500,7 @@ function cp_user_edit_membership_form_submit($form, &$form_state) {
     $params['!site-url'] = !empty($custom_domain) ? 'http://' . $custom_domain : $purl_base_domain . '/' . $vsite->group->purl;
     $params['!account-modifier-email'] = $account_modifier->mail;
     $params['!user-firstname'] = $account->field_first_name[LANGUAGE_NONE][0]['value'];
-    $params['!sitewide-name'] = variable_get('site_name', 'Harvard Web Publishing');
+    $params['!sitewide-name'] = variable_get('site_name', SITEWIDE_NAME);
     $params['headers']['Cc'] = $account_modifier->mail;
     // Sending email notification to modified user.
     drupal_mail('cp_user', 'os_user_role_change', $to, $language, $params, $from);
