@@ -11,10 +11,10 @@ Feature:
       And I fill in "individual-scholar" with "mysite"
       And I sleep for "5"
       And I press "Next"
-      And I sleep for "1"
-      And I click on the "Next" control in the ".preNxt" element
-      And I sleep for "1"
-      And I click on the "Finish" control in the ".preNxt" element
+      And I sleep for "2"
+      And I press "Next "
+      And I sleep for "2"
+      And I press "Finish"
       And I sleep for "5"
       And I press "Take me to my site"
      Then I should see "mysite" in "mysite"
