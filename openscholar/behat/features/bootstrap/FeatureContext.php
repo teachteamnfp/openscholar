@@ -4359,7 +4359,7 @@ JS;
   }
 
   /**
-   * @When /^I navigate to "([^"]*)" cp settings of the site "([^"]*)"$/
+   * @When /^I open the "([^"]*)" settings form for the site "([^"]*)"$/
    */
   public function iNavigateCpSettings($type, $vsite) {
 
@@ -4927,6 +4927,22 @@ JS;
       new Step\When('I visit "john/file/' . $fid . '/edit"'),
     );
   }
+
+  /**
+   * @Then /^I should see disqus$/
+   */
+  public function iShouldSeeDisqus() {
+
+    $page = $this->getSession()->getPage()->getContent();
+    $element = $this->getSession()->getPage()->find('css', "div#disqus_thread");
+
+    if ($element) {
+      return;
+    }
+
+    throw new Exception("Did not find disqus panel.\n");
+  }
+
   /**
    * @Given /^I add a existing sub page named "([^"]*)" under the page "([^"]*)"$/
    */
