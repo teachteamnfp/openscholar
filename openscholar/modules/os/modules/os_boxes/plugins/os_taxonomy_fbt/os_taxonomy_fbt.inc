@@ -58,7 +58,10 @@ class os_taxonomy_fbt extends os_boxes_default {
 
     $form['advanced']['as_nav'] = array(
       '#type' => 'radios',
-      '#default_value' => ($this->options['as_nav'] ? $this->options['as_nav'] : 'classic'),
+
+      // The previous version of the form had a checkbox for the 'Menu' display type, so
+      // for back-compatibility, checkbox true is equivalent to radio 'menu'.
+      '#default_value' => ($this->options['as_nav'] ? 'menu' : 'classic'),
       '#title' => t('Display type'),
       '#return_value' => TRUE,
       '#options' => array(
