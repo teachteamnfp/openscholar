@@ -5,7 +5,7 @@ Feature:
   Scenario Outline: Test adding a link.
     Given I am logging in as "john"
      When I visit "john/cp/build/menu/link/new/primary-menu"
-      And I choose the radio button named "type" with value "url" for the vsite "john"
+      And I select the radio button named "type" with value "url"
       And I press "Continue"
       And I fill in "title" with <title>
       And I populate in "url" with <url>
