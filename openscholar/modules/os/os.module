@@ -2951,7 +2951,7 @@ function os_preprocess_block(&$vars) {
   if (isset($vars['elements']['#block']->delta) &&
       isset($vars['elements']['#block']->module) && $vars['elements']['#block']->module == "boxes") {
     $box = boxes_box_load($vars['elements']['#block']->delta);
-    if (isset($box->options['as_nav']) && $box->options['as_nav'] == "slider") {
+    if (isset($box->options['as_nav']) && $box->options['as_nav'] === "slider") {
       $vars['classes_array'][] = 'term-slider';
     }
   }
