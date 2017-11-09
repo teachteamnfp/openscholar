@@ -12,9 +12,9 @@ Feature:
       And I sleep for "5"
       And I press "Next"
       And I sleep for "1"
-      And I click on the "Next" control
+      And I click on the "Next" control in the ".preNxt" element
       And I sleep for "1"
-      And I click on the "Finish" control
+      And I click on the "Finish" control in the ".preNxt" element
       And I sleep for "5"
       And I press "Take me to my site"
      Then I should see "mysite" in "mysite"
