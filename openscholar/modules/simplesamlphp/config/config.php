@@ -172,7 +172,7 @@ $config = array (
 	 * In example when you are setting up a federation bridge.
 	 */
 	'enable.saml20-idp'		=> false,
-	'enable.shib13-idp'		=> false,
+	'enable.shib13-idp'		=> true,
 	'enable.adfs-idp'		=> false,
 	'enable.wsfed-sp'		=> false,
 	'enable.authmemcookie' => false,
