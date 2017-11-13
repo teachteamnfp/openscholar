@@ -1122,7 +1122,7 @@ function os_profiles_unlink_listeners() {
  *  array(
  *    'action' => 'insert',
  *    'UUID' => 'foobar',
- *    'listener' => UNIVERSITY_BASE_URL,
+ *    'listener' => variable_get('university_base_url'),
  *  );
  * @endcode
  *

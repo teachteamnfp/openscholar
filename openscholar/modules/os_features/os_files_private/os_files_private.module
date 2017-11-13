@@ -315,7 +315,7 @@ function os_files_private_preprocess_views_view(&$vars) {
  * Implements hook_entity_view_alter().
  *
  * Private files should have the direct URL and the inside router item path due
- * to private files handling i.e Harvard PIN.
+ * to private files handling i.e University PIN.
  */
 function os_files_private_entity_view_alter(&$build, $type) {
   if ($type != 'file') {
@@ -361,7 +361,7 @@ function os_files_private_cp_settings() {
       '#title' => t('Private Files'),
       '#weight' => 3,
       '#menu_parent' => 'app_settings',
-      '#help_link' => l(t('Learn more about private files'), HELP_PRIVATE_FILES_URL, array('attributes' => array('target' => '_blank'))),
+      '#help_link' => l(t('Learn more about private files'), variable_get('help_private_files_url'), array('attributes' => array('target' => '_blank'))),
     ),
     'form' => array(
       '#title' => t('Extend access to the Harvard Community'),
@@ -387,7 +387,7 @@ function os_files_private_cp_settings() {
         '#title' => t('Private Files'),
         '#weight' => 3,
         '#menu_parent' => 'app_settings',
-        '#help_link' => l(t('Learn more about private files'), HELP_PRIVATE_FILES_URL, array('attributes' => array('target' => '_blank'))),
+        '#help_link' => l(t('Learn more about private files'), 'http://docs.openscholar.harvard.edu/private-files#setting-options', array('attributes' => array('target' => '_blank'))),
       ),
       'form' => array(
         '#title' => t('Harvard PIN server application name'),

@@ -7,7 +7,7 @@
 
 class os_boxes_dataverse_dataset_citation extends os_boxes_default {
 
-  private $dataverse_base_url_default = DATAVERSE_DEFAULT_URL;
+  private $dataverse_base_url_default = variable_get('dataverse_default_url');
 
   public $embed_as = array(
     'iframe',
@@ -38,7 +38,9 @@ class os_boxes_dataverse_dataset_citation extends os_boxes_default {
       '#title' => t('Dataset Persistent Identifier'),
       '#description' => t('Need help finding your Dataset Persistent Identifier? Learn how to here: !link. ' .
                           'Note: this widget should be placed in the main content area, not in sidebar.',
-          array('!link' => l(HELP_DATAVERSE_CITATION_URL, HELP_DATAVERSE_CITATION_URL, array('attributes' => array('target' => '_blank'))))),
+          array('!link' => l(variable_get('help_dataverse_citation_url'),
+                                variable_get('help_dataverse_citation_url'),
+                              array('attributes' => array('target' => '_blank'))))),
       '#required' => TRUE,
       '#field_prefix' => $base_url,
       '#default_value' => $this->options['persistent_id'],
