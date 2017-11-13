@@ -2085,7 +2085,7 @@ function os_files_views_data_alter(&$data){
  */
 function os_files_os_entity_view_modes() {
   $modes = array('file' => array_fill_keys(
-    array('image', 'video', 'audio', 'document', 'presentation', 'executable', 'html', 'icon'),
+    array('image', 'video', 'audio', 'document', 'executable', 'html', 'icon'),
     array('os_files_link', 'os_files_link_icon', 'teaser', 'full', 'os_files_title')
   ));
 
@@ -2114,21 +2114,6 @@ function os_files_file_default_types() {
       'application/x-tar',
       'application/x-gtar',
       'application/x-rar-compressed'
-    ),
-    'streams' => array(
-      'public',
-    ),
-  );
-
-  $types['presentation'] = (object) array(
-    'api_version' => 1,
-    'type' => 'presentation',
-    'label' => t('Presentation'),
-    'description' => t('An <em>Presentation</em> file containing lecture slides.'),
-    'mimetypes' => array(
-      'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-      'application/vnd.ms-powerpoint',
-      'application/pdf',
     ),
     'streams' => array(
       'public',
@@ -2412,14 +2397,6 @@ function _os_files_extensions_from_type($type) {
       'enw',
       'mrc',
       'ris',
-    );
-
-    $types['presentation'] = array(
-      'ppt',
-      'pptx',
-      'pps',
-      'ppsx',
-      'pdf',
     );
 
     $types['executable'] = array(

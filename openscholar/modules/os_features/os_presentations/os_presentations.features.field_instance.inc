@@ -22,7 +22,7 @@ function os_presentations_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 2,
+        'weight' => 3,
       ),
       'links' => array(
         'label' => 'above',
@@ -92,7 +92,7 @@ function os_presentations_field_default_field_instances() {
           'show_repeat_rule' => 'show',
         ),
         'type' => 'date_default',
-        'weight' => 3,
+        'weight' => 0,
       ),
       'links' => array(
         'label' => 'above',
@@ -167,7 +167,7 @@ function os_presentations_field_default_field_instances() {
         'module' => 'file',
         'settings' => array(),
         'type' => 'file_default',
-        'weight' => 5,
+        'weight' => 2,
       ),
       'links' => array(
         'label' => 'above',
@@ -237,11 +237,15 @@ function os_presentations_field_default_field_instances() {
           'audio' => 0,
           'default' => 0,
           'document' => 0,
-          'presentation' => 'presentation',
           'executable' => 0,
           'html' => 0,
           'image' => 0,
           'video' => 0,
+          'ppt' => 'ppt',
+          'pptx' => 'pptx',
+          'pps' => 'pps',
+          'ppsx' => 'ppsx',
+          'pdf' => 'pdf',
         ),
         'browser_plugins' => array(
           'library' => 0,
@@ -269,7 +273,7 @@ function os_presentations_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 4,
+        'weight' => 1,
       ),
       'links' => array(
         'label' => 'above',
@@ -420,11 +424,83 @@ function os_presentations_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-presentation-og_vocabulary'
+  $field_instances['node-presentation-og_vocabulary'] = array(
+    'bundle' => 'presentation',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'vsite_vocab',
+        'settings' => array(
+          'concatenate' => TRUE,
+        ),
+        'type' => 'og_vocab',
+        'weight' => 2000,
+      ),
+      'links' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'no_image_teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'sidebar_teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'slide_teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'hidden',
+        'module' => 'vsite_vocab',
+        'settings' => array(
+          'concatenate' => 1,
+        ),
+        'type' => 'og_vocab',
+        'weight' => 10,
+      ),
+      'title' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'og_vocabulary',
+    'label' => 'OG vocabulary',
+    'required' => FALSE,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'module' => 'og_vocab',
+      'settings' => array(),
+      'type' => 'og_vocab_complex',
+      'weight' => 43,
+    ),
+  );
+
   // Translatables
   // Included for use with string extractors like potx.
   t('Attach Files');
   t('Body');
   t('Location');
+  t('OG vocabulary');
   t('Presentation Date');
   t('Presentation Files');
   t('Upload the file(s) for this presentation.');

@@ -42,7 +42,6 @@ function os_files_strongarm() {
     3 => 'document',
     4 => 'html',
     5 => 'html',
-    6 => 'presentation',
   );
   $export['media__wysiwyg_allowed_types'] = $strongarm;
 

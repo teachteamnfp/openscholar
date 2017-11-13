@@ -36,5 +36,5 @@ function os_presentations_update_7003() {
  * Add .pps and .ppsx to accepted file extensions
  */
 function os_presentations_update_7004() {
-  features_revert(array('os_presentations' => array('field_instance')));
+  features_revert(array('os_presentations' => array('field_base', 'field_instance')));
 }

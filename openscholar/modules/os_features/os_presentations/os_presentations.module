@@ -91,15 +91,3 @@ function os_presentations_node_validate($node, $form, &$form_state) {
     }
   }
 }
-
-/**
- * Implements hook_form_FORM_ID_alter().
- */
-function os_presentations_form_file_entity_admin_file_alter(&$form, $form_state) {
-
-  // The 'presentation' file type is only defined for the upload filter (e.g., allowing a select set of file extensions).
-  // Don't show it in the Content file filter menu.
-  if (isset($form['filter']['filters']['status']['filters']['type']['#options']['presentation'])) {
-    unset($form['filter']['filters']['status']['filters']['type']['#options']['presentation']);
-  }
-}
