@@ -1272,11 +1272,18 @@ function os_publications_node_view_alter(&$build, $type) {
         $build['field_biblio_image']['#access'] = FALSE;
       }
 
-      // Do not display update time on a newly created node
+      // Display updated or created time of a node
       if ($build['#node']->created != $build['#node']->changed) {
-        $build['footer']['#markup'] = "<i>Last updated on " . format_date($build['#node']->changed, $type = 'custom', $format = 'm/d/Y') . "</i>";
-        $build['footer']['#weight'] = 99;
+        $updated_on = $build['#node']->changed;
+        $message_string = "Last updated on ";
       }
+      else {
+        $updated_on = $build['#node']->created;
+        $message_string = "Created on ";
+      }
+
+      $build['footer']['#markup'] = "<i>" . $message_string . format_date($updated_on, $type = 'custom', $format = 'm/d/Y') . "</i>";
+      $build['footer']['#weight'] = 99;
 
       // Remove the second export links that appear at the bottom of full view
       // of a publication.
