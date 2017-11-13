@@ -71,7 +71,7 @@ Feature:
   Scenario: Test that Conference Papers using the Chicago-Author-Date style
             print 'In' correctly and doesn't capitalize unneeded words.
     Given I am logging in as "john"
-      And I navigate to "Publications" cp settings of the site "john"
+      And I open the "Publications" settings form for the site "john"
       And I change publication citation style to "Harvard chicago author-date"
       And I submit cp settings of the site
       And I visit "john/publications/confpapers-tests"
@@ -84,14 +84,14 @@ Feature:
   Scenario: Verify that the publication citations contain the indent CSS class
             when format is Chicago Author-Date style.
     Given I am logging in as "john"
-      And I navigate to "Publications" cp settings of the site "john"
+      And I open the "Publications" settings form for the site "john"
      Then I should see "div" element with the class "bib-neg-indent"
 
   @api @features_second @javascript
   Scenario: Verify the user can see message the the publication won't display
             in the publication form.
     Given I am logging in as "john"
-      And I navigate to "Publications" cp settings of the site "john"
+      And I open the "Publications" settings form for the site "john"
       And I uncheck the box "Journal Article" with id "edit-os-publications-filter-publication-types-102" publication citation filter
       And I submit cp settings of the site
       And I visit "john/node/add/biblio"
@@ -122,7 +122,7 @@ Feature:
   @api @features_second @javascript
   Scenario: Verify we don't get html tags in the publication title.
     Given I am logging in as "john"
-      And I navigate to "Publications" cp settings of the site "john"
+      And I open the "Publications" settings form for the site "john"
       And I change publication citation style to "Harvard chicago author-date"
       And I submit cp settings of the site
       And I visit "john/publications/reevaluation-Chinas-Co2-Emissions"

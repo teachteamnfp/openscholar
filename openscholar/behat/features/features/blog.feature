@@ -83,24 +83,36 @@ Feature:
  @api @select_private_comments @os_blog @javascript
  Scenario: Select "Private comments"
     Given I am logging in as "john"
-     When I visit "john/blog"
-      And I make sure admin panel is open
-      And I click "App Settings"
-      And I click "Blog Comments"
-      And I select the radio button named "blog_comments_settings"
+      And I open the "Blog Comments" settings form for the site "john"
+      And I choose the radio button named "blog_comments_settings" with value "comment" for the vsite "john"
       And I press "Save"
+     When I visit "john/blog"
      Then I should see "Add new comment"
+
+ @api @javascript @select_disqus_comments @os_blog
+ Scenario: Select "Disqus comments"
+    Given I am logging in as "john"
+      And I open the "Blog Comments" settings form for the site "john"
+      And I choose the radio button named "blog_comments_settings" with value "disqus" for the vsite "john"
+      And I fill in "Disqus Shortname" with "openscholar"
+      And I press "Save"
+     When I visit "john/blog"
+     Then I should see "Add new comment"
+     When I make sure admin panel is closed
+     When I click "Add new comment"
+     When I sleep for "7"
+     Then I should see disqus
 
  @api @select_no_comments @os_blog @javascript
  Scenario: Select "No Comments"
     Given I am logging in as "john"
       And I visit "john/blog"
       And I make sure admin panel is open
-      And I click "App Settings"
-      And I click "Blog Comments"
-      And I click on the radio button named "blog_comments_settings" with value "nc"
+      And I open the "Blog Comments" settings form for the site "john"
+      And I choose the radio button named "blog_comments_settings" with value "nc" for the vsite "john"
       And I press "Save"
-      And I sleep for "5"
+      And I sleep for "3"
+      And I visit "john/blog"
      Then I should not see "Add new comment"
 
  @api @features_first @delete_any_blog_content @os_blog
