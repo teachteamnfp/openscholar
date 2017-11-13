@@ -19,7 +19,7 @@ function vsite_preset_default_box() {
   $box->description = 'Contact';
   $box->options = array(
     'text' => array(
-      'value' => '<p>Harvard University<br> (617) 495-1000<br> Massachusetts Hall<br> Cambridge, MA 02138<br> your_name@harvard.edu</p>',
+      'value' => '<div style="background-color:#efefef;padding:10px;">You have received this email because you have registered for an event.<br><br>Our mailing address is:<br>Harvard University<br>Massachusetts Hall<br>Cambridge, MA 02138<br>your_name@harvard.edu</div>',
       'format' => 'filtered_html',
     ),
     'format' => 1,
@@ -29,3 +29,5 @@ function vsite_preset_default_box() {
 
   return $export;
 }
+
+
