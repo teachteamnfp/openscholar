@@ -2655,7 +2655,7 @@ function os_events_mail_alter(&$message) {
 
   //Adding the footer physical address for all emails
   $message['body'][] = '';
-  $message['body'][] = variable_get('site_physical_address');
+  $message['body'][] = 'Our mailing address is: ' . variable_get('site_physical_address');
 }
 
 /**
