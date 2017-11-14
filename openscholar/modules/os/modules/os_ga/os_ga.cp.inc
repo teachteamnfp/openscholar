@@ -20,7 +20,7 @@ function os_ga_cp_settings() {
       '#id' => 'ga',
       '#title' => t('Google Analytics'),
       '#weight' => -100,
-      '#help_link' => l(t('Learn more about analytics'), 'http://docs.openscholar.harvard.edu/global-site-settings#google-analytics', array('attributes' => array('target' => '_blank')))
+      '#help_link' => l(t('Learn more about analytics'), variable_get('help_analytics_url'), array('attributes' => array('target' => '_blank')))
     ),
   );
 

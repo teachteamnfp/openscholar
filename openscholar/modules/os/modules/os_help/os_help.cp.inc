@@ -37,7 +37,7 @@ function os_help_cp_settings() {
         '#title' => t('Support'),
         '#weight' => 51,
         '#menu_parent' => 'help',
-        '#help_link' => l(t('Learn about Support and Training from Harvard Web Publishing'), 'http://hwp.harvard.edu/pages/support#main-content', array('attributes' => array('target' => '_blank'))),
+        '#help_link' => l(t('Learn about Support and Training from Harvard Web Publishing'), variable_get('support_training_url'), array('attributes' => array('target' => '_blank'))),
       ),
       'form' => array(
         '#prefix' => '<p class="helpClass">Every question you ask adds to the power of our OpenScholar Community. Type your question below and click the Continue button. You will need to login or create an account to finish posting.</p><p>If you don\'t want to post publicly to the community, click Send Privately</p>',
@@ -52,7 +52,7 @@ function os_help_cp_settings() {
         '#title' => t('Support'),
         '#weight' => 52,
         '#menu_parent' => 'help',
-        '#help_link' => l(t('Learn about Support and Training from Harvard Web Publishing'), 'http://hwp.harvard.edu/pages/support#main-content', array('attributes' => array('target' => '_blank'))),
+        '#help_link' => l(t('Learn about Support and Training from Harvard Web Publishing'), variable_get('support_training_url'), array('attributes' => array('target' => '_blank'))),
       ),
       'form' => array(
         '#type' => 'help',
