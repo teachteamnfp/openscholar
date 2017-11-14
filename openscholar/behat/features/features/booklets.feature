@@ -40,6 +40,16 @@ Feature:
       And I sleep for "5"
      Then I should see "Daniel Webster"
 
+ @api @wip @delete_any_booklets_content @os_booklets
+ Scenario: Delete booklets content
+    Given I am logging in as "john"
+      And I edit the node "Profiles In Courage" in the group "john"
+     When I click "Delete this book page"
+     Then I should see "Are you sure you want to delete"
+     When I sleep for "5"
+      And I press "Delete"
+     Then I should see "has been deleted"
+
   @api @wip @os_booklets @change_order_of_booklet_content_in_outline @javascript
   Scenario: change order of booklet content in outline
      Given I am logging in as "john"
