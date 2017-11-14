@@ -1013,7 +1013,7 @@ function os_update_7055() {
 /**
  * Revoke insert link into wysiwyg permission for default roles
  */
-function os_update_7057() {
+function os_update_7058() {
   // Get all group types.
   $node_info = module_invoke_all('vsite_og_node_type_info');
   $group_bundles = array_keys($node_info, 'group');
