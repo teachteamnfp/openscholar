@@ -3734,7 +3734,7 @@ function os_field_formatter_view($entity_type, $entity, $field, $instance, $lang
         // if yes then we will use text summary function to trim texts.
         $delimiter = strpos($item['safe_value'], '<!--break-->');
 
-        if ($delimiter) {
+        if ($delimiter !== FALSE) {
           // Checks if there is a break tag inserted at the end of the content.
           // If this is the case, there is no need to add a "read more" link.
           $split_break_tag = explode('<!--break-->', $item['safe_value'], 2);
