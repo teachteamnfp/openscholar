@@ -357,3 +357,22 @@ function os_events_update_7029() {
 function os_events_update_7030() {
   features_revert(array('os_events' => array('views_view')));
 }
+
+
+/**
+ * Add Google Developer API credentials
+ */
+function os_events_update_7031() {
+  db_insert('variable')
+    ->fields(array(
+      'name' => 'google_client_secret',
+      'value' => 'ADD GOOGLE CLIENT SECRET',
+    ))
+    ->execute();
+  db_insert('variable')
+    ->fields(array(
+      'name' => 'google_credentials',
+      'value' => 'ADD GOOGLE CREDENTIALS',
+    ))
+    ->execute();
+}
