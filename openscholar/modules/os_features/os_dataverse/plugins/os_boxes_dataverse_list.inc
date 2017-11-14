@@ -28,7 +28,7 @@ class os_boxes_dataverse_list extends os_boxes_default {
   public function options_form(&$form_state){
     $form = parent::options_form($form_state);
 
-    $base_url = variable_get("dataverse_base_url", "dataverse_default_url") . "/dataverse/";
+    $base_url = variable_get("dataverse_base_url", variable_get('dataverse_default_url')) . "/dataverse/";
 
     $form['user_alias'] = array(
       '#type' => 'textfield',

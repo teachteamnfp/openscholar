@@ -2701,7 +2701,7 @@ function os_events_form_event_node_form_alter(&$form, &$form_state) {
   if(!isset($form_state['storage']['confirm']) && isset($form['nid']['#value'])) {
     $form['actions']['submit']['#submit'] = array('os_events_form_submit');
   } elseif (isset($form_state['storage']['confirm']) && isset($form['nid']['#value'])) {
-    $form = confirm_form($form, '', '', $description = "Warning: If you change the date, registrants will be removed and will have to re-register. Learn how to export the registrant list " . l('here', 'http://docs.openscholar.harvard.edu', array('attributes' => array('target' => '_blank'))) . ".<br/></br>", "Ok", "Cancel" );
+    $form = confirm_form($form, '', '', $description = "Warning: If you change the date, registrants will be removed and will have to re-register. Learn how to export the registrant list " . l('here', variable_get('doc_base_url'), array('attributes' => array('target' => '_blank'))) . ".<br/></br>", "Ok", "Cancel" );
     $form['actions']['submit']['#submit'][] = 'node_form_submit';
     $form['menu']['#attributes']['class'][] = 'element-hidden';
     $form['#after_build'][] = 'os_events_confirm_after_build';
