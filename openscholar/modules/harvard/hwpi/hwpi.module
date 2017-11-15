@@ -29,6 +29,10 @@ variable_set('help_analytics_url', 'http://docs.openscholar.harvard.edu/global-s
 variable_set('help_long_list_url', 'http://docs.openscholar.harvard.edu/global-site-settings#long-list-display');
 variable_set('help_publications_url', 'https://docs.openscholar.harvard.edu/publications-settings');
 variable_set('help_taxonomy_url', 'http://docs.openscholar.harvard.edu/categorizing-your-content-taxonomy');
+variable_set('privacy_policy_url', 'http://docs.openscholar.harvard.edu/global-site-settings#privacy-policy');
+variable_set('help_site_login_url', 'http://docs.openscholar.harvard.edu/logging-your-site');
+
+
 
 
 
@@ -100,10 +104,6 @@ variable_set('help_os_dataverse_citation_url', 'http://docs.openscholar.harvard.
 variable_set('help_os_dataverse_list_url', 'http://docs.openscholar.harvard.edu/dataverse-list-widget');
 variable_set('help_os_dataverse_search_url', 'http://docs.openscholar.harvard.edu/dataverse-search-box');
 
-
-
-
-
 /**
  * Harvard  upcoming events
  */
@@ -120,10 +120,12 @@ variable_set('modified_dataverse_url', 'http://thedata.harvard.edu/');
  */
 variable_set('sitewide_name', 'Harvard Web Publishing');
 variable_set('university_base_url', 'http://www.harvard.edu/');
+variable_set('university_url', 'http://hwp.harvard.edu/');
 variable_set('contact_url', 'http://hwp.harvard.edu/contact');
 variable_set('site_url', 'http://openscholar.harvard.edu');
 variable_set('support_training_url', 'http://hwp.harvard.edu/pages/support#main-content');
-
+variable_set('site_access', 'http://accessibility.harvard.edu/');
+variable_set('copyright_infring', 'http://www.harvard.edu/reporting-copyright-infringements');
 
 /**
  * Implements hook_init
@@ -203,8 +205,8 @@ function _hwpi_branding_header() {
     ),
     'img' => array(
       '#theme' => 'link',
-      '#path' => 'http://www.harvard.edu',
-      '#text' => theme('image', array('path' => drupal_get_path('theme', 'hwpi_basetheme') . '/images/harvard-logo.png', 'width' => 235, 'height' => 32, 'alt' => 'Harvard Logo')),
+      '#path' => variable_get('university_base_url');,
+      '#text' => theme('image', array('path' => drupal_get_path('theme', 'hwpi_basetheme') . '/images/harvard-logo.png', 'width' => 235, 'height' => 32, 'alt' => 'University Logo')),
       '#options' => array(
         'external' => TRUE,
         'html' => TRUE,
@@ -287,7 +289,7 @@ function _hwpi_get_ancestry() {
   }
 
   // Hard-codes "HARVARD.EDU" as the highest parent item.
-  $sites['http://www.harvard.edu'] = 'HARVARD.EDU';
+  $sites[variable_get('university_base_url')] = 'HARVARD.EDU';
   return $sites;
 }
 
@@ -309,8 +311,8 @@ function _hwpi_branding_footer() {
     'copyright' => array(
       '#markup' => t('<span class="harvard-copyright">Copyright &copy; @year The President and Fellows of Harvard College</span> !privacy | !access | !copyinfring', array(
           '!privacy' => variable_get('privacy_policy','')?'| '.l('Privacy', variable_get('privacy_policy')): '',
-          '!access' => l('Accessibility', 'http://accessibility.harvard.edu/'),
-          '!copyinfring' => l('Report Copyright Infringement', 'http://www.harvard.edu/reporting-copyright-infringements'),
+          '!access' => l('Accessibility', variable_get('site_access')),
+          '!copyinfring' => l('Report Copyright Infringement', variable_get('copyright_infring')),
           '@year' => date('Y'),
         )),
     ),
@@ -335,7 +337,7 @@ function hwpi_cp_settings() {
       'group' => array(
         '#title' => t('Privacy Policy'),
         '#id' => 'privacy-policy',
-        '#help_link' => l(t('Learn more about creating a privacy policy for your site'), 'http://docs.openscholar.harvard.edu/global-site-settings#privacy-policy', array('attributes' => array('target' => '_blank'))),
+        '#help_link' => l(t('Learn more about creating a privacy policy for your site'), variable_get('privacy_policy_url'), array('attributes' => array('target' => '_blank'))),
       ),
       'form' => array(
         '#type' => 'textfield',
@@ -458,13 +460,13 @@ function hwpi_vsite_register_notify_author_body_text_alter(&$body_text) {
     . "\n"
     . "Here are some handy links for you:\n"
     . "\n"
-    . " * Logging in to your site: http://docs.openscholar.harvard.edu/logging-your-site\n"
-    . " * Sign up for training: http://hwp.harvard.edu/calendar/upcoming \n"
-    . " * OpenScholar documentation: http://docs.openscholar.harvard.edu \n"
-    . " * Need help with your project? http://hwp.harvard.edu \n"
+    . " * Logging in to your site: " . variable_get('help_site_login_url') . "\n"
+    . " * Sign up for training: " . variable_get('upcoming_events') . "\n"
+    . " * OpenScholar documentation: " . variable_get('doc_base_url') . "\n"
+    . " * Need help with your project?" . variable_get('university_url') . "\n"
     . "\n"
     . "Sincerely,\n"
-    . "Harvard Web Publishing\n";
+    . variable_get('university_url'). "\n";
 }
 
 /**

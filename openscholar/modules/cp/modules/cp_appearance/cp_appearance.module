@@ -565,7 +565,7 @@ function _cp_appearance_theme_header_item($header_type) {
       break;
 
     case 'HEADER_SINGLE':
-      $params['@url'] = 'http://docs.openscholar.harvard.edu/one-page-themes';
+      $params['@url'] = variable_get('one_page_theme_url');
       $title = '<h2>' . t('One page / horizontal homepage layout themes') . '</h2>';
       $subtitle = t('<p>Mobile-friendly themes with horizontal homepage regions. <a href="@url">How to use these themes.</a></p>', $params);
       break;
