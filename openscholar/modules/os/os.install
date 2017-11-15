@@ -1009,3 +1009,23 @@ function os_update_7054() {
 function os_update_7055() {
   features_revert(array('os' => array('metatag')));
 }
+
+/**
+ * Revoke insert link into wysiwyg permission for default roles
+ */
+function os_update_7056() {
+  // Get all group types.
+  $node_info = module_invoke_all('vsite_og_node_type_info');
+  $group_bundles = array_keys($node_info, 'group');
+
+  // Iterate over all existing group permissions, and change them according to
+  // the default ones.
+  foreach ($group_bundles as $bundle) {
+    $og_roles = og_roles('node', $bundle);
+
+    foreach ($og_roles as $rid => $name) {
+      // Revoke permission
+      og_role_revoke_permissions($rid, array('insert link into wysiwyg'));
+    }
+  }
+}

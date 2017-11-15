@@ -74,7 +74,22 @@
       return var_name in settings;
     }
 
-    this.SaveSettings = function (settings) {
+    this.SaveSettings = function (settings, buttonName) {
+      var counts = 0;
+      angular.forEach(settings, function(val, key) {
+        if (val == 'Submit') {
+          counts++;
+        }
+      });
+      if (counts > 1 && buttonName != '') {
+        var settingsNew = {};
+          angular.forEach(settings, function(val, key) {
+          if (val != 'Submit' || key == buttonName) {
+            settingsNew[key] = val;
+          }
+        });
+        settings = settingsNew;
+      }
       console.log(settings);
 
       return $http.put(baseUrl+'/settings', settings, config);
@@ -123,7 +138,7 @@
               '</div>' +
             '</div>' +
             '<div class="help-link" ng-bind-html="help_link"></div>' +
-          '<div class="actions" ng-show="showSaveButton"><button type="submit" button-spinner="settings_form" spinning-text="Saving">Save</button><input type="button" value="Close" ng-click="close(false)"></div></form>',
+          '<div class="actions" ng-show="showSaveButton"><button type="submit" button-spinner="settings_form_save" name="save" spinning-text="Saving">Save</button><input type="button" value="Close" ng-click="close(false)"></div></form>',
           inputs: {
             form: scope.form
           }
@@ -220,20 +235,25 @@
     function submitForm($event) {
       var button = document.activeElement,
         triggered = false;
+      var buttonId = document.activeElement.id;
       if (apSettings.IsSetting(button.getAttribute('name'))) {
         triggered = true;
       }
 
+      var buttonName = '';
+      if (button.getAttribute('name')) {
+        buttonName = button.getAttribute('name');
+      }
       if ($s.settingsForm.$dirty || triggered) {
-        bss.SetState('settings_form', true);
-        apSettings.SaveSettings($s.formData).then(function (response) {
+        bss.SetState('settings_form_' + buttonName, true);
+        apSettings.SaveSettings($s.formData, buttonName).then(function (response) {
           var body = response.data;
           sessionStorage['messages'] = JSON.stringify(body.data.messages);
           $s.status = [];
           $s.error = [];
           var close = true;
           var reload = true;
-          bss.SetState('settings_form', false);
+          bss.SetState('settings_form_' + buttonName, false);
           for (var i = 0; i < body.data.length; i++) {
             switch (body.data[i].type) {
               case 'no_close':
@@ -260,15 +280,18 @@
               angular.forEach(body.messages.error, function(value , key) {
                 $s.errors.push($sce.trustAsHtml(value));
               });
-
-              bss.SetState('settings_form', false);
+              bss.SetState('settings_form_' + buttonName, false);
             }
           }
         }, function (error) {
           $s.errors = [];
           $s.status = [];
-          $s.errors.push("Sorry, something went wrong. Please try another time.");
-          bss.SetState('settings_form', false);
+          if (buttonId.indexOf('edit-os-importer-submit') < 0) {
+            $s.errors.push("Sorry, something went wrong. Please try another time.");
+          } else {
+            $s.errors.push("The import failed. Please review import <a href='https://docs.openscholar.harvard.edu/importing-content' target='_blank'>best practices</a> for optimal results.");
+          }
+          bss.SetState('settings_form_' + buttonName, false);
         });
       }
       else {

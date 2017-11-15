@@ -40,13 +40,18 @@
     font-style: italic;
 }
 /* Search */
-
+.search-block-form,
 #search-block-form {
     padding-bottom: 5px;
 }
+
+#columns #block-os-search-db-site-search.no-title .search-block-form,
 #columns #block-os-search-db-site-search.no-title #search-block-form {
     padding-top: 15px;
 }
+
+.search-block-form input.form-submit,
+.search-block-form #edit-submit,
 #search-block-form input.form-submit,
 #search-block-form #edit-submit,
 #search-form #edit-submit {
@@ -57,12 +62,14 @@
 .lt-ie9 .form-item-search-block-form {
     display: table;
 }
+.search-block-form .container-inline,
 #search-block-form .container-inline {
     height: auto;
     line-height: normal;
     max-width: none;
     padding-right: 0;
 }
+.search-block-form .container-inline .form-item .form-text,
 #search-block-form .container-inline .form-item .form-text {
     border-color: #D4D4D2;
     border-image: none;
@@ -82,12 +89,15 @@
 .lt-ie9 #search-block-form .container-inline .form-item .form-text {
     display: table-cell;
 }
+.search-block-form input.form-submit,
+.search-block-form #edit-submit,
 #search-block-form input.form-submit,
 #search-block-form #edit-submit,
 #search-form #edit-submit {
     margin: -1px 0 0 -44px !important;
     vertical-align: top;
 }
+.search-block-form .form-item label,
 #search-block-form .form-item label {
     display: inline;
     font-weight: normal;
@@ -97,6 +107,9 @@
     display: table-cell;
     vertical-align: middle;
 }
+#footer .search-block-form .form-item label,
+#content-panels .search-block-form .form-item label,
+.sidebar .search-block-form .form-item label,
 #footer #search-block-form .form-item label,
 #content-panels #search-block-form .form-item label,
 .sidebar #search-block-form .form-item label {
@@ -547,7 +560,8 @@ table td.mini .mini-day-on a {
 
 #content-panels .block-content,
 #content-panels .boxes-box-content,
-#content-panels #block-os-search-db-site-search.no-title #search-block-form {
+#content-panels #block-os-search-db-site-search.no-title #search-block-form,
+#content-panels #block-os-search-db-site-search.no-title .search-block-form {
     margin-top: 0;
     padding-top: 0;
 }

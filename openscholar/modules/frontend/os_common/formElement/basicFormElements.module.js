@@ -215,10 +215,15 @@
         value: '=ngModel',
         element: '='
       },
-      template: '<label for="{{id}}">{{title}}<button type="submit" button-spinner="settings_form" spinning-text="Saving" id="{{id}}" name="{{name}}">Save</button>',
+      template: '<label for="{{id}}">{{title}}<button type="submit" button-spinner="settings_form_{{name}}" spinning-text="Saving" id="{{id}}" name="{{name}}">Submit</button>',
       link: function (scope, elem, attr) {
         scope.id = attr['inputId'];
         scope.title = scope.element.title;
+        if (scope.element.value) {
+          scope.value = scope.element.value;
+        } else {
+          scope.value = 'Save';
+        }
       }
     }
   }]);

@@ -821,7 +821,7 @@ function citation_distribute_cp_settings() {
       '#title' => t('Publications'),
       '#weight' => 0,
       '#menu_parent' => 'app_settings',
-      '#help_link' => l(t('Learn more about publications'), '', array('attributes' => array('target' => '_blank'))),
+      '#help_link' => l(t('Learn more about publications'), 'https://docs.openscholar.harvard.edu/publications-settings', array('attributes' => array('target' => '_blank'))),
     ),
     'form' => array(
       '#type' => 'checkboxes',

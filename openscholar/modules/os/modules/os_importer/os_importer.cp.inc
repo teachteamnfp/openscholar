@@ -52,7 +52,7 @@ function os_importer_cp_settings() {
   );
 
   foreach ($app_info as $type => $info) {
-  	// Bypassing apps which have RSS feeds as import source.
+       // Bypassing apps which have RSS feeds as import source.
     if (in_array($type, array('os_blog', 'os_news'))) {
       continue;
     }
@@ -148,7 +148,7 @@ function os_importer_cp_settings() {
             'panes' => array('upload', 'library'),
             'hide_helpicon' => true,
             'droppable_text' => t('Drag and drop file here.'),
-            'upload_text' => t('Select file to Add'),
+            'upload_text' => t('Select file to import'),
             'max-filesize' => '500kb',
             'types' => $extension_types,
           ),
@@ -166,6 +166,26 @@ function os_importer_cp_settings() {
           '#menu_parent' => 'import',          
         ),
       );
+
+      $feeds_process_limit = variable_get('feeds_process_limit', FEEDS_PROCESS_LIMIT);
+
+      // Markup field to add help note for media-browser field
+      $settings['os_importer_file_upload_note-' . $node_type] = array(
+          'group' => array(
+            '#id' => 'os_importer_content_' . $node_type,
+            '#title' => isset($importer_menu_title[$node_type]) ? $importer_menu_title[$node_type] : ucfirst($node_type),
+            '#weight' => 4,
+            '#menu_parent' => 'import',
+          ),
+          'form' => array(
+            '#type' => 'container',
+            '#markup' => t('Note: Import files with more than %count rows are not permitted. Try creating multiple import files in %count row increments.', array('%count' => $feeds_process_limit)),
+            '#weight' => 4,
+            '#class' => array('description'),
+            '#access' => os_importer_import_access($node_type),
+          ),
+        );
+      // Biblio specific select dropdown.
       if ($node_type == 'biblio') {
         // Link to Orcid Setup
         $orcid_link = '<div><a ap-settings-form form="feature_os_publication">For ORCID imports, go publication settings</a></div>';
@@ -179,7 +199,7 @@ function os_importer_cp_settings() {
               '#type' => 'htmlmarkup',
               '#markup' => $orcid_link,
               '#weight' => 4,
-              '#access' => biblio_access('import'),
+              '#access' => os_importer_import_access($node_type),
             ),
           );
         // Biblio specific select dropdown.
@@ -200,7 +220,7 @@ function os_importer_cp_settings() {
               '#options' => $biblio_import_options,
               '#default_value' => '0',
               '#weight' => 5,
-              '#access' => biblio_access('import'),
+              '#access' => os_importer_import_access($node_type),
             ),
           );
       }
@@ -238,7 +258,7 @@ function os_importer_cp_settings() {
         'form' => array(
           '#value' => t('Submit'),
           '#type' => 'submit',
-          '#weight' => 5,
+          '#weight' => 6,
           '#access' => os_importer_import_access($node_type),
         ),
         'rest_submit' => 'os_importer_file_submit',
@@ -291,7 +311,22 @@ function os_importer_import_group_validate($values) {
       if ($extension != 'csv') {
         drupal_set_message(t('Please select a CSV file.'), 'error');
         $valid = FALSE;
-      } else {
+      }
+      else {
+
+        // check the CSV file has more than 50 rows
+        feeds_include_library('ParserCSV.inc', 'ParserCSV');
+        ini_set("auto_detect_line_endings", TRUE);
+        $parser = new ParserCSV();
+        $parser->setDelimiter(',');
+        $iterator = new ParserCSVIterator($file->uri);
+        $rows = $parser->parse($iterator);
+        $row_count = count($rows);
+        $feeds_process_limit = variable_get('feeds_process_limit', FEEDS_PROCESS_LIMIT);
+        if ($row_count > $feeds_process_limit + 1) {
+          drupal_set_message(t('Only %count rows are allowed per import file. Try creating multiple import files in %count row increments', array('%count' => $feeds_process_limit)), 'error');
+          $valid = FALSE;
+        }
 
         if ($node_type == 'person') {
           feeds_include_library('ParserCSV.inc', 'ParserCSV');

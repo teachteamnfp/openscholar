@@ -175,8 +175,8 @@ function grouper_groups_for_huid($huid, $accessLevel) {
 
   $response = drupal_http_request($grouper_url);
   if ($response->code == 200) {
-    watchdog('grouper', 'Connection to Grouper service successful [' . $grouper_url . ']');
     $raw_data = $response->data;
+    watchdog('grouper', 'Connection to Grouper service successful [' . $grouper_url . ']: ' . print_r((array)$raw_data, 1));
 
     return json_decode($raw_data);
   }
@@ -192,13 +192,17 @@ function grouper_groups_for_huid($huid, $accessLevel) {
 function grouper_user_login(&$edit, $account) {
 
   if (!array_key_exists('field_grouper_path', $account)) {
-    watchdog('grouper', "User account '{$account->uid} does not have the field_grouper_path field.'");
+    watchdog('grouper', "User account '{$account->uid}' does not have the field_grouper_path field.");
     return;
   }
   // get the pin of the user's account
   $huid = pinserver_authenticate_get_user_huid($account->uid);
+  watchdog('grouper', "HUID for user account '{$account->uid}': $huid.");
 
   $groups = grouper_groups_for_huid($huid, 'groups');
+  watchdog('grouper', "Groups for user account '{$account->uid}': ". print_r((array)$groups, 1));
+
+  watchdog('grouper', "User account '{$account->uid}' group data before:" . print_r((array)$account->field_grouper_path, 1));
 
   if ($groups !== FALSE) {
     if (count($groups)) {
@@ -220,6 +224,8 @@ function grouper_user_login(&$edit, $account) {
     unset($account->field_grouper_path);
     user_save($account);
   }
+
+  watchdog('grouper', "User account '{$account->uid}' group data after:" . print_r((array)$account->field_grouper_path, 1));
 }
 
 /**
@@ -259,18 +265,23 @@ function grouper_user_can_access($group = null, $user = null) {
   // if the site has groups, but the user is anonymous.
   // User could be logged in to pin at this point
   $user_groups = array();
-  if (user_is_anonymous()) {
+  if (empty($user->uid) || !pinserver_user_has_associated_pin($user->uid)) {
     if ($pin_user = pinserver_get_user()) {
-      if (isset($_SESSION['user_groups'])) {
-        $user_groups = $_SESSION['user_groups'];
+
+      watchdog('grouper', 'Pin user: '.print_r($pin_user,1));
+      watchdog('grouper', '_SESSION: '.print_r($_SESSION,1));
+
+      if (isset($_SESSION['user_groups'][$user->uid])) {
+        $user_groups = $_SESSION['user_groups'][$user->uid];
       }
       else {
         $user_group_raw = grouper_groups_for_huid($pin_user['raw_huid'], 'groups');
+        $user_groups = array_map(function ($item) { return $item->name; }, $user_group_raw);
+
         if ($user_groups === FALSE) {
           return false;
         } else {
-          $user_groups = array_map(function ($item) { return $item->name; }, $user_group_raw);
-          $_SESSION['user_groups'] = $user_groups;
+          $_SESSION['user_groups'][$user->uid] = $user_groups;
         }
       }
     }
@@ -313,9 +324,13 @@ function grouper_node_access($node, $op, $account) {
   if (og_is_group('node', $node)) {
     $group_id = $node->nid;
   }
-  else {
+  elseif (!empty($node->{OG_AUDIENCE_FIELD})) {
     $group_id = $node->{OG_AUDIENCE_FIELD}[LANGUAGE_NONE][0]['target_id'];
   }
+  else {
+    return NODE_ACCESS_IGNORE;
+  }
+
   $group = node_load($group_id);
   $items = field_get_items('node', $group, VSITE_ACCESS_FIELD);
   if ($items[0]['value'] == GROUPER_PRIVACY_LEVEL) {
@@ -336,15 +351,18 @@ function grouper_node_access($node, $op, $account) {
  * Implements hook_vsite_access_denied().
  */
 function grouper_vsite_access_denied($vsite) {
-  if ($vsite->group->{VSITE_ACCESS_FIELD}[LANGUAGE_NONE][0]['value'] == GROUPER_PRIVACY_LEVEL && user_is_anonymous() && !pinserver_get_user()) {
+  if ($vsite->group->{VSITE_ACCESS_FIELD}[LANGUAGE_NONE][0]['value'] == GROUPER_PRIVACY_LEVEL && !pinserver_get_user() && !pinserver_user_has_associated_pin($GLOBALS['uid'])) {
     if (!pinserver_check_system_settings()) {
-      //Load custom pinserver variables
+      // Load custom pinserver variables
       $vsite->controllers->variable->init_overrides();
 
-      pinserver_redirect(drupal_get_destination());
-
       // They are not a member, validate through pin.
-      // drupal_goto('user/pin', array('query' => drupal_get_destination()));
+      pinserver_redirect(array(
+        'redirect' => url($_GET['q'], array(
+          'absolute' => TRUE
+        )),
+        'tk_forward' => '0'
+      ));
     }
   }
 }
