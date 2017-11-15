@@ -127,7 +127,7 @@ function _os_orcid_manage_orcid_submit($var, $value) {
       global $user;
       $user_id = $user->uid;
       $orcidIdtoProcess[$vsite->group->nid] = array('orcid_id' => $orcid_id, 'user_id' => $user_id);
-      //watchdog('orcid_save', '<pre>' . print_r($orcidIdtoProcess, true).'</pre>');
+      watchdog('orcid_save', '<pre>' . print_r($orcidIdtoProcess, true).'</pre>');
     }
     // Finally set the orcidIdtoProcess variable
     variable_set('orcidIdtoProcess', $orcidIdtoProcess);
@@ -158,7 +158,7 @@ function os_orcid_cron(){
     foreach ($orcidDataToProcess as $data) {
       $queue->createItem($data);
     }
-    //watchdog('orcid', '<pre>' . print_r($orcidDataToProcess, true) . '</pre>');
+    watchdog('orcid', '<pre>' . print_r($orcidDataToProcess, true) . '</pre>');
   }
 }
 
@@ -180,7 +180,7 @@ function os_orcid_cron_queue_info() {
 function os_orcid_resync_item($data) {
   $biblio_types = _os_orcid_get_biblio_types();
   $work = $data['work'];
-  //watchdog('orcid_work', '<pre>' . print_r($work, true) . '</pre>');
+  watchdog('orcid_work', '<pre>' . print_r($work, true) . '</pre>');
   $user_id = $data['user_id'];
 
   //for($i = 0; $i < count($work); $i++ ) {
@@ -205,9 +205,9 @@ function os_orcid_resync_item($data) {
       $journaltitle = $work['work-title']['title'];
     }
 
-    //watchdog('orcid_title', $journaltitle);
-    //watchdog('orcid_url', $work['source']['source-orcid']['uri']);
-    //watchdog('orcid_type', $biblio_type);
+    watchdog('orcid_title', $journaltitle);
+    watchdog('orcid_url', $work['source']['source-orcid']['uri']);
+    watchdog('orcid_type', $biblio_type);
 
     $biblios = db_select('biblio', 'b')
       ->fields('b', array('nid'))
@@ -217,7 +217,7 @@ function os_orcid_resync_item($data) {
       ->execute()
       ->fetchAll();
 
-    //watchdog('orcid_sql', print_r($biblios, true));
+    watchdog('orcid_sql', print_r($biblios, true));
 
     if(count($biblios) > 0) {
       foreach($biblios as $biblio) {
@@ -304,7 +304,7 @@ function os_orcid_resync_item($data) {
 
       $node->og_group_ref['und'][0]['target_id'] = $data['vsite'];
 
-      //watchdog('orcid_node', '<pre>'.print_r($node, true).'</pre>');
+      watchdog('orcid_node', '<pre>'.print_r($node, true).'</pre>');
 
       // Save the node.
       node_save($node);
