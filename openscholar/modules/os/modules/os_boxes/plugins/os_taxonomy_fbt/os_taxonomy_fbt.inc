@@ -67,7 +67,7 @@ class os_taxonomy_fbt extends os_boxes_default {
       '#options' => array(
           'classic' => t('Classic/List'),
           'menu' => t('Menu'),
-          'slider' => t('Slide Down') . '<br><div class="description">' . t('Requires that each taxonomy term have its own description (see the term creation/edit form), and the Show term descriptions checkbox above is checked. Also, this display style does not show child terms, so The Show child terms checkbox above should be left unchecked.')
+          'slider' => t('Slide Down') . '<br><div class="description">' . t('Each taxonomy term must have its own description (see the term creation/edit form). Also, the Show term descriptions checkbox above must be checked, and the Show child terms checkbox above must be unchecked.')
       ),
     );
 
