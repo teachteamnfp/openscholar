@@ -203,7 +203,7 @@ function os_orcid_resync_item($data) {
   $biblios = db_select('biblio', 'b')
     ->fields('b', array('nid'))
     ->condition('b.biblio_type', $biblio_type)
-    ->condition('b.biblio_secondary_title', $journaltitle)
+    ->condition('b.biblio_sort_title', $journaltitle)
     ->condition('b.biblio_url_title', $work['source']['source-orcid']['uri'])
     ->execute()
     ->fetchAll();
