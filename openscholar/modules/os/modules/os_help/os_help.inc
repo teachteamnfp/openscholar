@@ -35,7 +35,7 @@ function os_help_get_variables_from_id($type, $id) {
         'cp/content' => array('url' => '', 'title' => ''),
         'cp/content/content' => array('url' => '', 'title' => ''),
         'cp/content/files' => array('url' => variable_get('help_cp_content_files_url'), 'title' => 'Manage Files'),
-        'cp/settings' => array('url' => variable_get('help_cp_settings_url'),, 'title' => 'Manage Site Settings'),
+        'cp/settings' => array('url' => variable_get('help_cp_settings_url'), 'title' => 'Manage Site Settings'),
         'cp/support' => array('url' => variable_get('help_cp_support_url'), 'title' => 'Get Support'),
         'cp/users' => array('url' => variable_get('help_cp_users_url'), 'title' => 'Manage Site Members'),
       );
