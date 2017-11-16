@@ -1787,6 +1787,9 @@ function os_views_pre_build(&$view) {
  * Adds contextual links to the full node view
  */
 function os_node_view_alter(&$build) {
+  $pubs = db_query("select b.nid, b.biblio_sort_title from biblio b INNER JOIN og_membership og ON b.nid = og.etid WHERE og.gid = 821516 AND b.nid NOT IN (SELECT ogv.entity_id FROM field_data_og_vocabulary ogv WHERE bundle = 'biblio')")->fetchField();
+  dsm($pubs);
+  
   $node = $build['#node'];
   if (!empty($node->nid)) {
     $build['#contextual_links']['node'] = array('node', array($node->nid));
