@@ -150,7 +150,7 @@ function _hwpi_get_ancestry() {
   }
 
   // Hard-codes "HARVARD.EDU" as the highest parent item.
-  $sites[variable_get('university_base_url')] = 'HARVARD.EDU';
+  $sites[variable_get('university_base_url')] = variable_get('highest_parent_item');
   return $sites;
 }
 
