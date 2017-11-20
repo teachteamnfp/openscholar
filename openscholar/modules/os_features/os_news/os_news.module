@@ -198,3 +198,33 @@ function os_news_date_popup_process_alter(&$element, &$form_state, $context) {
     unset($element['date']['#title']);
   }
 }
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter() for node_form.
+ */
+function os_news_form_news_node_form_alter(&$form, &$form_state) {
+  $form['#validate'][] = 'os_news_node_form_photo_validate';
+}
+
+/**
+ * @function os_news_node_form_photo_validate
+ *
+ */
+function os_news_node_form_photo_validate($form, &$form_state) {
+  if (isset($form['field_photo']['und'][0]['#file']->uri)) {
+    $file_uri = $form['field_photo']['und'][0]['#file']->uri;
+    list($width, $height) = getimagesize(drupal_realpath($file_uri));
+    $min_width = 250;
+    $min_height = 250;
+    if ($width < $min_width || $height < $min_height) {
+    $params = array(
+        '@width' => $width,
+        '@height' => $height,
+        '@min_width' => $min_width,
+        '@min_height' => $min_height,
+      );
+    form_set_error('field_photo', t("The size of the image need to be at least @min_widthX@min_height. The given image is @widthX@height", $params));
+      return false;
+    }
+  }
+}
