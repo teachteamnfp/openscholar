@@ -7,8 +7,6 @@
 
 class os_boxes_dataverse_dataset_citation extends os_boxes_default {
 
-  private $dataverse_base_url_default = variable_get('dataverse_default_url');
-
   public $embed_as = array(
     'iframe',
   );
@@ -31,7 +29,7 @@ class os_boxes_dataverse_dataset_citation extends os_boxes_default {
   public function options_form(&$form_state){
     $form = parent::options_form($form_state);
 
-    $base_url = variable_get("dataverse_base_url", $this->dataverse_base_url_default);
+    $base_url = variable_get("dataverse_base_url", "dataverse_default_url");
 
     $form['persistent_id'] = array(
       '#type' => 'textfield',
@@ -72,9 +70,9 @@ class os_boxes_dataverse_dataset_citation extends os_boxes_default {
 
     $embed_height = preg_replace('/\D/', '', $this->options['embed_height']);
     $persistent_id = preg_replace('/^\s*(doi|hdl)/', '', $this->options['persistent_id']);
-    $base_url = variable_get("dataverse_base_url", $this->dataverse_base_url_default) . "/resources/js/widgets.js?" . 
+    $base_url = variable_get("dataverse_base_url", "dataverse_default_url") . "/resources/js/widgets.js?" .
                 "persistentId=" . strtolower($this->options['doi_or_hdl']) . ":" . trim($persistent_id) . "&amp;" .
-                "dvUrl=" .  variable_get("dataverse_base_url", $this->dataverse_base_url_default) . "&amp;" .
+                "dvUrl=" .  variable_get("dataverse_base_url", "dataverse_default_url") . "&amp;" .
                 "widget=citation&amp;" . 
                 "heightPx=" . $embed_height;
 

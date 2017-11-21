@@ -66,7 +66,7 @@ function _hwpi_branding_header() {
     ),
     'img' => array(
       '#theme' => 'link',
-      '#path' => variable_get('university_base_url');,
+      '#path' => variable_get('university_base_url'),
       '#text' => theme('image', array('path' => drupal_get_path('theme', 'hwpi_basetheme') . '/images/harvard-logo.png', 'width' => 235, 'height' => 32, 'alt' => 'University Logo')),
       '#options' => array(
         'external' => TRUE,
