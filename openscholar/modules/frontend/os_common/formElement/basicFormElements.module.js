@@ -186,7 +186,7 @@
   /**
    * Textbox directive.
    */
-  m.directive('feTextfield', [function () {
+  m.directive('feTextfield', ['$rootScope', function ($rootScope) {
     return {
       scope: {
         name: '@',
@@ -194,11 +194,19 @@
         element: '='
       },
       template: '<label for="{{id}}">{{title}} <span ng-if="required" class="form-required" title="This field is required.">*</span></label>' +
-      '<input type="textfield" id="{{id}}" name="{{name}}" ng-model="value" class="form-text" ng-disabled="element.disabled">',
+      '<input type="textfield" id="{{id}}" name="{{name}}" ng-class="{error: error}" ng-model="value" class="form-text" ng-disabled="element.disabled">',
       link: function (scope, elem, attr) {
         scope.id = attr['inputId'];
         scope.title = scope.element.title;
         scope.required = (angular.isDefined(scope.element.required)) ? scope.element.required : false;
+        scope.error = false;
+
+        scope.$on("error", function (evt, data) {
+          scope.error = true;
+        });
+        scope.$on("success", function (evt, data) {
+          scope.error = false;
+        });
       }
     }
   }]);

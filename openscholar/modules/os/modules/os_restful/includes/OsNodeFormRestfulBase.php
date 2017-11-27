@@ -7,7 +7,7 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
       'form' => array(
         RestfulInterface::GET => 'getNodeForm'
       )
-    );
+    ) + parent::controllersInfo();
   }
 
   /**
@@ -154,8 +154,6 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
     $hooks = array('form', 'form_node_form', 'form_' . $node->type . '_node_form');
     drupal_alter($hooks, $form, $form_state, $form_id);
     
-    // Folllowing properties of fields was set before drupal_alter. We need to
-    // figure out from where these properties being reset after drupal_alter.
     // Assign to a group.
     $form['options']['#group'] = 'additional_settings';
     $form['author']['#group'] = 'additional_settings';
@@ -181,5 +179,49 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
 
     return $form;
   }
+  
 
+  /**
+   * Override this function to save fields value without exposing fields as 
+   * public.
+   *
+   * @param EntityMetadataWrapper $wrapper
+   *   The wrapped entity object, passed by reference.
+   * @param bool $null_missing_fields
+   *   Determine if properties that are missing form the request array should
+   *   be treated as NULL, or should be skipped. Defaults to FALSE, which will
+   *   set the fields to NULL.
+   *
+   * @throws RestfulBadRequestException
+   */
+  protected function setPropertyValues(EntityMetadataWrapper $wrapper, $null_missing_fields = FALSE) {
+    $request = $this->getRequest();
+
+    static::cleanRequest($request);
+    $save = FALSE;
+    $original_request = $request;
+
+    if (empty($original_request['title'])) {
+      throw new RestfulForbiddenException("Title field is required.");
+    } 
+    else {
+      foreach ($original_request as $property_name => $value) {
+        if (!empty($wrapper->{$property_name}) && $this->checkPropertyAccess('edit', $property_name, $wrapper->{$property_name}, $wrapper)) {
+          //print $property_name;
+          //print $value;
+         // $wrapper->{$property_name}->set($value);
+        } else {
+          // @todo
+        }
+      }
+
+      $save = TRUE;
+      $wrapper->save();
+    }
+    
+    if (!$save) {
+      // No request was sent.
+      throw new \RestfulBadRequestException('No values were sent with the request');
+    }
+  }
 }

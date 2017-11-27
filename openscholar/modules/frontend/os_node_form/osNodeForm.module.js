@@ -8,12 +8,12 @@
   m.service('nodeFormService', ['$http', '$q', function ($http, $q) {
     
     var promises = [];
+    var baseUrl = Drupal.settings.paths.api;
     this.getForm = function(bundle) {
       var deferred = $q.defer();
       if (promises.length > 0) {
         return promises[0];
       }
-      var baseUrl = Drupal.settings.paths.api;
       var queryArgs = {};
       if (angular.isDefined(Drupal.settings.spaces)) {
         if (Drupal.settings.spaces.id) {
@@ -32,8 +32,11 @@
     }
 
     this.nodeSave = function (node) {
-      console.log(node);
-
+      node.vsite = Drupal.settings.spaces.id;
+      var deferred = $q.defer();
+      return $http.post(baseUrl+'/page', node).then(function (response) {
+        deferred.resolve(response.data);
+      });
     }
 
   }]);
@@ -104,7 +107,7 @@
   /**
    * The controller for the forms themselves
    */
-  m.controller('nodeFormController', ['$scope', '$sce', 'nodeFormService', 'buttonSpinnerStatus', 'nodeType', 'close', function ($s, $sce, nodeFormService, bss, nodeType, close) {
+  m.controller('nodeFormController', ['$scope', '$sce', 'nodeFormService', 'buttonSpinnerStatus', 'nodeType', 'close', '$rootScope', function ($s, $sce, nodeFormService, bss, nodeType, close, $rootScope) {
 
     $s.formId = nodeType + '_node_form';
     $s.formElements = {};
@@ -135,16 +138,18 @@
 
     function submitForm($event) {
       bss.SetState('node_form', true);
-      console.log($s.formData);
-      /*nodeFormService.nodeSave($s.formData).then(function (response) {
+      nodeFormService.nodeSave($s.formData).then(function (response) {
         console.log(response);
+        $rootScope.$broadcast("success", response.data);
         bss.SetState('node_form', false);
       }, function (error) {
+        console.log(error);
         $s.errors = [];
         $s.status = [];
-        $s.errors.push("Sorry, something went wrong. Please try another time.");
+        $s.errors.push(error.data.title);
+        $rootScope.$broadcast("error", error.data);
         bss.SetState('node_form', false);
-      });*/
+      });
     }
     $s.submitForm = submitForm;
 
