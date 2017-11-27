@@ -90,34 +90,32 @@ function getClient() {
   include_once "$path/vendor/autoload.php";
 
   define('APPLICATION_NAME', "OpenScholar Calendar Exporter");
-  define('CLIENT_SECRET_PATH', tempnam(sys_get_temp_dir(), "google_client_secret"));
-  define('CREDENTIALS_PATH', tempnam(sys_get_temp_dir(), "google_credentials"));
+  define('CLIENT_SECRET_PATH',  "$path/client_secret");
+  define('CREDENTIALS_PATH', tempnam(file_directory_temp(), "google_credentials"));
   define('SCOPES', implode(' ', array(Google_Service_Calendar::CALENDAR)));
 
-  $google_client_secret = variable_get('google_client_secret');
-  $google_credentials = variable_get('google_credentials');
-  file_put_contents(CLIENT_SECRET_PATH, $google_client_secret);
-  file_put_contents(CREDENTIALS_PATH, $google_credentials);
+  $google_client_secret = "iMrw8KL2_duQWazMWIcC36T_";
+  $google_client_ID = "566303074219-dkanb7m2qiivtl7rjplpmgaohdcaoj4b.apps.googleusercontent.com";
+  $google_developer_key = "AIzaSyCD9_yUWhTZDMUNwbZ-L_xb9fzH2ushRCc";
 
   $client = new Google_Client();
   $client->setApplicationName(APPLICATION_NAME);
   $client->setScopes(SCOPES);
-  $client->setAuthConfig(CLIENT_SECRET_PATH);
   $client->setAccessType('online');
   $client->setApprovalPrompt('force');
+  $client->setClientId($google_client_ID);
+  $client->setClientSecret($google_client_secret);
+  $client->setDeveloperKey($google_developer_key);
 
-  // Load previously authorized credentials from a file.
-  $credentialsPath = CREDENTIALS_PATH;
-
-  // If the credentials exist, and are valid
-  if (file_exists($credentialsPath)) {
-    $accessToken = json_decode(file_get_contents($credentialsPath), true);
-  }
+  
+  $token = $client->getAccessToken();
+  $accessToken = json_encode($token);
 
   $client->setAccessToken($accessToken);
   $_base_path = rtrim(ltrim(base_path(), '/'), '/');
   $base_path = ((strlen($_base_path) == 0) ? '' : '/' . $_base_path);
   $client->setRedirectUri((($is_https) ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $base_path . '/get-google-access-token-with-auth-code');
+
   return $client;
 }
 
@@ -1277,9 +1275,11 @@ function os_events_views_pre_view(&$view, &$display_id, &$args) {
     );
 
     # Show the Google export button, if we have a Google API account
-    $google_client_secret = variable_get('google_client_secret', false);
-    $google_credentials = variable_get('google_credentials', false);
-    if ($google_credentials && $google_client_secret) {
+    $google_client_secret = "566303074219-dkanb7m2qiivtl7rjplpmgaohdcaoj4b.apps.googleusercontent.com";
+    $google_client_ID = "iMrw8KL2_duQWazMWIcC36T_";
+    $google_developer_key = "AIzaSyCD9_yUWhTZDMUNwbZ-L_xb9fzH2ushRCc";
+    
+    if ($google_client_ID && $google_client_secret && $google_developer_key) {
 
       $client = getClient();
       $_base_path = rtrim(ltrim(base_path(), '/'), '/');
@@ -2655,7 +2655,7 @@ function os_events_mail_alter(&$message) {
 
   //Adding the footer physical address for all emails
   $message['body'][] = '';
-  $message['body'][] = 'Our mailing address is: ' . variable_get('site_physical_address');
+  $message['body'][] = variable_get('site_physical_address');
 }
 
 /**
