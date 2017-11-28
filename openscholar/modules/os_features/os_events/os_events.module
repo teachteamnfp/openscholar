@@ -89,14 +89,12 @@ function getClient() {
   $path = libraries_get_path('google-api-php-client');
   include_once "$path/vendor/autoload.php";
 
-  define('APPLICATION_NAME', "OpenScholar Calendar Exporter");
-  define('CLIENT_SECRET_PATH',  "$path/client_secret");
-  define('CREDENTIALS_PATH', tempnam(file_directory_temp(), "google_credentials"));
+  define('APPLICATION_NAME', "OpenScholar Calendar Exporter");  
   define('SCOPES', implode(' ', array(Google_Service_Calendar::CALENDAR)));
 
-  $google_client_secret = "iMrw8KL2_duQWazMWIcC36T_";
-  $google_client_ID = "566303074219-dkanb7m2qiivtl7rjplpmgaohdcaoj4b.apps.googleusercontent.com";
-  $google_developer_key = "AIzaSyCD9_yUWhTZDMUNwbZ-L_xb9fzH2ushRCc";
+  $google_client_secret = variable_get('client_secret_key');
+  $google_client_ID = variable_get('client_id');
+  $google_developer_key = variable_get('developer_api_key');
 
   $client = new Google_Client();
   $client->setApplicationName(APPLICATION_NAME);
@@ -107,14 +105,13 @@ function getClient() {
   $client->setClientSecret($google_client_secret);
   $client->setDeveloperKey($google_developer_key);
 
-  
   $token = $client->getAccessToken();
   $accessToken = json_encode($token);
 
   $client->setAccessToken($accessToken);
   $_base_path = rtrim(ltrim(base_path(), '/'), '/');
   $base_path = ((strlen($_base_path) == 0) ? '' : '/' . $_base_path);
-  $client->setRedirectUri((($is_https) ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $base_path . '/get-google-access-token-with-auth-code');
+  $client->setRedirectUri(variable_get('callback_url'));
 
   return $client;
 }
@@ -137,7 +134,7 @@ function os_events_get_access_token_with_auth_code() {
   $client->setState('1');
   $_base_path = rtrim(ltrim(base_path(), '/'), '/');
   $base_path = ((strlen($_base_path) == 0) ? '' : '/' . $_base_path);
-  $client->setRedirectUri((($is_https) ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $base_path . '/get-google-access-token-with-auth-code');
+  $client->setRedirectUri(variable_get('callback_url'));
 
   // Exchange authorization code for an access token.
   $accessToken = $client->fetchAccessTokenWithAuthCode($authCode);
@@ -225,6 +222,66 @@ function os_events_gcal_create_calendar() {
   $_SESSION['exported_events'] = serialize($events);
   drupal_save_session();
   drupal_goto(url('/' . $vsite->group->purl . '/calendar'));
+}
+
+/**
+ * @file
+ * Administration page callbacks for the google calendar settings.
+ */
+/**
+ * Form builder. Configure goggle calendar account.
+ *
+ * @ingroup forms
+ * @see system_settings_form().
+ */
+function google_account_form () {
+  
+  $_base_path = rtrim(ltrim(base_path(), '/'), '/');
+  $base_path = ((strlen($_base_path) == 0) ? '' : '/' . $_base_path);
+  if(module_exists('vsite')) {
+    $vsite_details = vsite_get_vsite($_SESSION['og_context']['gid']);
+  }
+  if($vsite_details->purl_provider == "spaces_og") {
+    $redirect_url = (($is_https) ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . '/' . $vsite_details->group->purl . '/get-google-access-token-with-auth-code';
+  }
+  else {
+    $redirect_url = (($is_https) ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . '/get-google-access-token-with-auth-code';
+  }
+  
+  $form['developer_api_key'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Api Key'),
+    '#description' => t('The server api key of web application.'),
+    '#default_value' => variable_get('developer_api_key'),
+    '#size' => 3,
+    '#required' => TRUE
+  );
+  $form['client_id'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Client Id'),
+    '#description' => t('The CLIENT ID in the "Client ID for web application" section.'),
+    '#default_value' => variable_get('client_id'),
+    '#size' => 3,
+    '#required' => TRUE
+  );
+  $form['client_secret_key'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Client Secret Key'),
+    '#description' => t('The CLIENT SECRET in the "Client ID for web application" section.'),
+    '#default_value' => variable_get('client_secret_key'),
+    '#size' => 3,
+    '#required' => TRUE
+  );
+  $form['callback_url'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Redirect Url'),
+    '#description' => t('Copy this url and paste it in google project as a authorized redirect url.'),
+    '#default_value' => $redirect_url,
+    '#size' => 3,
+    '#attributes' => array('readonly' => 'readonly'),
+  );
+
+  return system_settings_form($form, TRUE); 
 }
 
 /**
@@ -451,6 +508,15 @@ function os_events_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('os_events_get_access_token_with_auth_code'),
     'access callback' => 'os_events_calendar_export_access',
+    'type' => MENU_CALLBACK,
+  );
+  
+    $items['admin/config/services/google-account-settings'] = array(
+    'title' => 'Google Account',
+    'description' => 'Google account settings for calendar',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('google_account_form'),
+    'access arguments' => array('administer site configuration'),
     'type' => MENU_CALLBACK,
   );
 
@@ -1275,18 +1341,17 @@ function os_events_views_pre_view(&$view, &$display_id, &$args) {
     );
 
     # Show the Google export button, if we have a Google API account
-    $google_client_secret = "566303074219-dkanb7m2qiivtl7rjplpmgaohdcaoj4b.apps.googleusercontent.com";
-    $google_client_ID = "iMrw8KL2_duQWazMWIcC36T_";
-    $google_developer_key = "AIzaSyCD9_yUWhTZDMUNwbZ-L_xb9fzH2ushRCc";
-    
-    if ($google_client_ID && $google_client_secret && $google_developer_key) {
+    $google_client_secret = variable_get('client_secret_key');
+    $google_client_ID = variable_get('client_id');
+    $google_developer_key = variable_get('developer_api_key');
 
+    if ($google_client_ID && $google_client_secret && $google_developer_key) {
       $client = getClient();
       $_base_path = rtrim(ltrim(base_path(), '/'), '/');
       $base_path = ((strlen($_base_path) == 0) ? '' : '/' . $_base_path);
       $vsite = vsite_get_vsite();
       $client->setState($vsite->group->nid);
-      $client->setRedirectUri((($is_https) ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $base_path . '/get-google-access-token-with-auth-code');
+      $client->setRedirectUri(variable_get('callback_url'));
 
       $authUrl = $client->createAuthUrl($client->getScopes());
       $buttons['Google'] = $authUrl;
