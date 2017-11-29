@@ -245,7 +245,7 @@ function os_events_gcal_create_calendar() {
  */
 function google_account_form () {
 
-  $redirect_url = (($is_https) ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . '/get-google-access-token-with-auth-code';
+  $redirect_url = (($is_https) ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . '/admin/get-google-access-token-with-auth-code';
 
   $form['developer_api_key'] = array(
     '#type' => 'textfield',
