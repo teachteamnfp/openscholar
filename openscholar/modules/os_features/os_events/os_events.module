@@ -172,6 +172,7 @@ function os_events_gcal_create_calendar() {
 
   # If the user is not a member of the group, deny access
   if (! $has_access) {
+    print "ssss";exit;
     drupal_access_denied();
   }
 
