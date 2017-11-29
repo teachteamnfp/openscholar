@@ -117,9 +117,11 @@ function getClient() {
 }
 
 function os_events_get_access_token_with_auth_code() {
+  watchdog("Google Calendar", "120");
   global $is_https;
 
   if (!isset($_GET['code'])) {
+    watchdog("Google Calendar", "124");
     error_log("Did not receive a Google auth code in the query string with which to create an access code or " .
               "the user did not grant access to their Google Calendar.");
     $vsite = vsite_get_vsite($_GET["state"]);
@@ -127,9 +129,10 @@ function os_events_get_access_token_with_auth_code() {
     drupal_goto(url('/' . $vsite->group->purl . '/calendar'));
     return;
   } else {
+    watchdog("Google Calendar", "132");
     $authCode = $_GET['code'];
   }
-
+  
   $client = getClient();
   $client->setState('1');
   $_base_path = rtrim(ltrim(base_path(), '/'), '/');
@@ -140,13 +143,14 @@ function os_events_get_access_token_with_auth_code() {
   $accessToken = $client->fetchAccessTokenWithAuthCode($authCode);
 
   if (! isset($accessToken['error']) && isset($accessToken['access_token'])) {
+    watchdog("Google Calendar", "146");
     $client->setAccessToken($accessToken['access_token']);
     variable_set('google_credentials', json_encode($accessToken));
     error_log("Credentials saved to database.");
   } else {
     error_log("Error getting access token via auth code.");
   }
-
+  watchdog("Google Calendar", "153");
   os_events_gcal_create_calendar();
 }
 
@@ -159,13 +163,16 @@ function os_events_calendar_export_access() {
   $has_access = false;
   foreach ($vsites_member as $vm) {
       if ($vm->group->nid == $_GET["state"]) {
+        watchdog("Google Calendar", "166");
         return true;
       }
   }
+  watchdog("Google Calendar", "170");
   return false;
 }
 
 function os_events_gcal_create_calendar() {
+  watchdog("Google Calendar", "175");
   global $is_https, $user;
 
   $has_access = os_events_calendar_export_access();
@@ -195,6 +202,7 @@ function os_events_gcal_create_calendar() {
 
   $events = array();
   foreach ($view->result as $e) {
+    watchdog("Google Calendar", "205");
 
     # Create test event and add it to the calendar
     $event = new Google_Service_Calendar_Event();
@@ -221,6 +229,7 @@ function os_events_gcal_create_calendar() {
   $_SESSION['listCalendarList'] = serialize($calendarService->calendarList->listCalendarList());
   $_SESSION['exported_events'] = serialize($events);
   drupal_save_session();
+  watchdog("Google Calendar", "232");
   drupal_goto(url('/' . $vsite->group->purl . '/calendar'));
 }
 
@@ -497,7 +506,7 @@ function os_events_menu() {
     'title' => 'Get Access Token With Auth Code',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('os_events_get_access_token_with_auth_code'),
-    //'access callback' => 'os_events_calendar_export_access',
+    'access callback' => 'os_events_calendar_export_access',
     'type' => MENU_CALLBACK,
   );
   
