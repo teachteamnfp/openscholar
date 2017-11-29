@@ -117,7 +117,7 @@ function getClient() {
 }
 
 function os_events_get_access_token_with_auth_code() {
-  watchdog("Google Calendar", "120");
+  watchdog("Google Calendar", "120", WATCHDOG_ERROR);
   global $is_https;
 
   if (!isset($_GET['code'])) {
