@@ -235,9 +235,7 @@ function os_events_gcal_create_calendar() {
  * @see system_settings_form().
  */
 function google_account_form () {
-  
-  $_base_path = rtrim(ltrim(base_path(), '/'), '/');
-  $base_path = ((strlen($_base_path) == 0) ? '' : '/' . $_base_path);
+
   if(module_exists('vsite')) {
     $vsite_details = vsite_get_vsite($_SESSION['og_context']['gid']);
   }
@@ -511,7 +509,7 @@ function os_events_menu() {
     'type' => MENU_CALLBACK,
   );
   
-    $items['admin/config/services/google-account-settings'] = array(
+    $items['cp/google-account-settings'] = array(
     'title' => 'Google Account',
     'description' => 'Google account settings for calendar',
     'page callback' => 'drupal_get_form',
