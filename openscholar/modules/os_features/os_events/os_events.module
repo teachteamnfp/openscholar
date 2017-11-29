@@ -168,13 +168,12 @@ function os_events_calendar_export_access() {
 function os_events_gcal_create_calendar() {
   global $is_https, $user;
 
-  /*$has_access = os_events_calendar_export_access();
+  $has_access = os_events_calendar_export_access();
 
   # If the user is not a member of the group, deny access
   if (! $has_access) {
-    print "ssss";exit;
     drupal_access_denied();
-  }*/
+  }
 
   $name = "os_events";
   $display_id = "feed_2_no_cache";
@@ -237,16 +236,8 @@ function os_events_gcal_create_calendar() {
  */
 function google_account_form () {
 
-  if(module_exists('vsite')) {
-    $vsite_details = vsite_get_vsite($_SESSION['og_context']['gid']);
-  }
-  if($vsite_details->purl_provider == "spaces_og") {
-    $redirect_url = (($is_https) ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . '/' . $vsite_details->group->purl . '/get-google-access-token-with-auth-code';
-  }
-  else {
-    $redirect_url = (($is_https) ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . '/get-google-access-token-with-auth-code';
-  }
-  
+  $redirect_url = (($is_https) ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . '/get-google-access-token-with-auth-code';
+
   $form['developer_api_key'] = array(
     '#type' => 'textfield',
     '#title' => t('Api Key'),
@@ -506,11 +497,11 @@ function os_events_menu() {
     'title' => 'Get Access Token With Auth Code',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('os_events_get_access_token_with_auth_code'),
-    'access callback' => 'os_events_calendar_export_access',
+    //'access callback' => 'os_events_calendar_export_access',
     'type' => MENU_CALLBACK,
   );
   
-    $items['cp/google-account-settings'] = array(
+    $items['admin/config/services/google-account-settings'] = array(
     'title' => 'Google Account',
     'description' => 'Google account settings for calendar',
     'page callback' => 'drupal_get_form',
