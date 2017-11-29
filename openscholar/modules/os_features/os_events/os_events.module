@@ -245,7 +245,7 @@ function os_events_gcal_create_calendar() {
  */
 function google_account_form () {
 
-  $redirect_url = (($is_https) ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . '/admin/get-google-access-token-with-auth-code';
+  $redirect_url = (($is_https) ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . '/admin/config/get-google-access-token-with-auth-code';
 
   $form['developer_api_key'] = array(
     '#type' => 'textfield',
@@ -502,7 +502,7 @@ function os_events_menu() {
     'type' => MENU_CALLBACK,
   );
 
-  $items['admin/get-google-access-token-with-auth-code'] = array(
+  $items['admin/config/get-google-access-token-with-auth-code'] = array(
     'title' => 'Get Access Token With Auth Code',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('os_events_get_access_token_with_auth_code'),
