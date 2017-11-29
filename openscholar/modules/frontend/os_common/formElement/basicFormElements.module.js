@@ -186,7 +186,7 @@
   /**
    * Textbox directive.
    */
-  m.directive('feTextfield', ['$rootScope', function ($rootScope) {
+  m.directive('feTextfield', [function () {
     return {
       scope: {
         name: '@',
@@ -200,12 +200,15 @@
         scope.title = scope.element.title;
         scope.required = (angular.isDefined(scope.element.required)) ? scope.element.required : false;
         scope.error = false;
-
         scope.$on("error", function (evt, data) {
-          scope.error = true;
+          if (angular.isDefined(scope.element.required) && scope.element.required) {
+            scope.error = true;
+          }
         });
         scope.$on("success", function (evt, data) {
-          scope.error = false;
+          if (angular.isDefined(scope.element.required) && scope.element.required) {
+            scope.error = false;
+          }
         });
       }
     }

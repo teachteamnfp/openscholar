@@ -30,7 +30,7 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
 
     $function = node_type_get_base($node) . '_form';
     if (function_exists($function) && ($extra = $function($node, $form_state))) {
-      // @todo: Better way to handle these.
+      // Unset: not require to send to frontend.
       unset($extra['#validate']);
       unset($extra['#cache']);
       foreach ($extra as $key => $form_field) {
@@ -41,8 +41,6 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
     foreach ($extra_fields as $key => $field) {
       $field_info = field_info_instance('node', $field[LANGUAGE_NONE]['#field_name'], $node->type);
       $form[$key] = array(
-        // @Todo: We Need look for better function that will give us proper
-        // field type instead of 'text_textarea' or 'text_textfield'.
         '#type' => str_replace('text-', '', str_replace('_', '-', $field_info['widget']['type'])),
         '#title' => $field_info['label'],
         '#weight' => $field['#weight'],
@@ -162,7 +160,7 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
     $form['path']['#group'] = 'additional_settings';
     $form['title']['#required'] = TRUE;
 
-    // @todo: Better way to handle these.
+    // Unset unnecessary form elements to send clean json output to frontend. 
     unset($form['#entity']);
     unset($form['#after_build']);
     unset($form['#validate']);
@@ -178,6 +176,19 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
     unset($form['og_group_ref']);
 
     return $form;
+  }
+
+  public function propertyValuesPreprocess($property_name, $value, $public_field_name) {
+
+    if ($property_name == 'author') {
+      return user_load_by_name($value)->uid;
+    }
+
+    $field_info = field_info_field($property_name);
+    switch ($field_info['type']) {
+      default:
+        return parent::propertyValuesPreprocess($property_name, $value, $public_field_name);
+    }
   }
   
 
@@ -205,13 +216,28 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
       throw new RestfulForbiddenException("Title field is required.");
     } 
     else {
+      // @todo : Remove debug statment.
+      //print_r($original_request);
+      $processed_unknown_property = array();
+      $processed_property = array();
+
       foreach ($original_request as $property_name => $value) {
-        if (!empty($wrapper->{$property_name}) && $this->checkPropertyAccess('edit', $property_name, $wrapper->{$property_name}, $wrapper)) {
-          //print $property_name;
-          //print $value;
-         // $wrapper->{$property_name}->set($value);
-        } else {
-          // @todo
+        if (is_array($original_request[$property_name]['fields'])) {
+          foreach ($original_request[$property_name]['fields'] as $key => $value) {
+            $processed_unknown_property[$key] = $value;
+          }
+        }
+        if (!empty($wrapper->$property_name)) {
+          $processed_property[$property_name] = $value;
+        }
+      }
+      $processed_property = array_merge($processed_property, $processed_unknown_property);
+       // @todo : Remove debug statment.
+       //print_r($wrapper->getPropertyInfo());
+      foreach ($processed_property as $property_name => $value) {
+        if (!empty($wrapper->{$property_name})) {
+          $field_value = $this->propertyValuesPreprocess($property_name, $value, $property_name);
+          $wrapper->{$property_name}->set($field_value);
         }
       }
 

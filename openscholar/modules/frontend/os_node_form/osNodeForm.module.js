@@ -32,11 +32,14 @@
     }
 
     this.nodeSave = function (node) {
-      node.vsite = Drupal.settings.spaces.id;
+      node.og_group_ref = Drupal.settings.spaces.id;
       var deferred = $q.defer();
-      return $http.post(baseUrl+'/page', node).then(function (response) {
-        deferred.resolve(response.data);
+      $http.post(baseUrl+'/page', node).then(function (response) {
+        deferred.resolve(response);
+      }, function(error) {
+        deferred.reject(error);
       });
+      return deferred.promise;
     }
 
   }]);
@@ -139,11 +142,10 @@
     function submitForm($event) {
       bss.SetState('node_form', true);
       nodeFormService.nodeSave($s.formData).then(function (response) {
-        console.log(response);
         $rootScope.$broadcast("success", response.data);
         bss.SetState('node_form', false);
+        $s.errors = [];
       }, function (error) {
-        console.log(error);
         $s.errors = [];
         $s.status = [];
         $s.errors.push(error.data.title);
