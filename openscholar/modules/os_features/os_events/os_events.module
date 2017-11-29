@@ -277,7 +277,7 @@ function google_account_form () {
     '#description' => t('Copy this url and paste it in google project as a authorized redirect url.'),
     '#default_value' => $redirect_url,
     '#size' => 3,
-    '#attributes' => array('readonly' => 'readonly'),
+    //'#attributes' => array('readonly' => 'readonly'),
   );
 
   return system_settings_form($form, TRUE); 
