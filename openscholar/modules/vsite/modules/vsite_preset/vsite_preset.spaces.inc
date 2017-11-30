@@ -15,7 +15,7 @@ function vsite_preset_spaces_presets() {
   $spaces_presets->api_version = 3;
   $spaces_presets->name = 'hwp_administrative';
   $spaces_presets->title = 'HWP Administrative';
-  $spaces_presets->description = DEPARTMENTAL_SITE;
+  $spaces_presets->description = 'The Standard Adminstrative Department site.';
   $spaces_presets->space_type = 'og';
   $spaces_presets->value = array(
     'bundles' => array(
@@ -214,7 +214,7 @@ function vsite_preset_spaces_presets() {
   // Translatables
   // Included for use with string extractors like potx.
   t('HWP Administrative');
-  t(DEPARTMENTAL_SITE);
+  t('The Standard Adminstrative Department site.');
   $export['hwp_administrative'] = $spaces_presets;
 
   $spaces_presets = new stdClass();
@@ -222,7 +222,7 @@ function vsite_preset_spaces_presets() {
   $spaces_presets->api_version = 3;
   $spaces_presets->name = 'hwp_lab_research_group';
   $spaces_presets->title = 'HWP Lab/Research Group';
-  $spaces_presets->description = LAB_AND_RESEARCH_SITE;
+  $spaces_presets->description = 'The Standard Lab and Research Group site.';
   $spaces_presets->space_type = 'og';
   $spaces_presets->value = array(
     'bundles' => array(
@@ -448,7 +448,7 @@ function vsite_preset_spaces_presets() {
   // Translatables
   // Included for use with string extractors like potx.
   t('HWP Lab/Research Group');
-  t(LAB_AND_RESEARCH_SITE);
+  t('The Standard Lab and Research Group site.');
   $export['hwp_lab_research_group'] = $spaces_presets;
 
   $spaces_presets = new stdClass();
@@ -456,7 +456,7 @@ function vsite_preset_spaces_presets() {
   $spaces_presets->api_version = 3;
   $spaces_presets->name = 'hwp_project';
   $spaces_presets->title = 'HWP Project';
-  $spaces_presets->description = PROJECT_SITE;
+  $spaces_presets->description = 'The Standard Project site.';
   $spaces_presets->space_type = 'og';
   $spaces_presets->value = array(
     'bundles' => array(
@@ -655,7 +655,7 @@ function vsite_preset_spaces_presets() {
   // Translatables
   // Included for use with string extractors like potx.
   t('HWP Project');
-  t(PROJECT_SITE);
+  t('The Standard Project site.');
   $export['hwp_project'] = $spaces_presets;
 
   $spaces_presets = new stdClass();
@@ -663,7 +663,7 @@ function vsite_preset_spaces_presets() {
   $spaces_presets->api_version = 3;
   $spaces_presets->name = 'hwp_personal';
   $spaces_presets->title = 'HWP Personal';
-  $spaces_presets->description = PERSONAL_SITE;
+  $spaces_presets->description ='The Standard Personal site.';
   $spaces_presets->space_type = 'og';
   $spaces_presets->value = array(
     'bundles' => array('personal'),
@@ -808,7 +808,7 @@ function vsite_preset_spaces_presets() {
   // Translatables
   // Included for use with string extractors like potx.
   t('HWP Personal');
-  t(PERSONAL_SITE);
+  t('The Standard Personal site.');
   $export['hwp_personal'] = $spaces_presets;
 
   $spaces_presets = new stdClass();
@@ -816,7 +816,7 @@ function vsite_preset_spaces_presets() {
   $spaces_presets->api_version = 3;
   $spaces_presets->name = 'hwp_event_conference';
   $spaces_presets->title = 'HWP Event/Conference';
-  $spaces_presets->description = EVENT_CONFERENCE_SITE;
+  $spaces_presets->description = 'The Standard Event or Conference site.';
   $spaces_presets->space_type = 'og';
   $spaces_presets->value = array(
     'bundles' => array(
@@ -1013,7 +1013,7 @@ function vsite_preset_spaces_presets() {
   // Translatables
   // Included for use with string extractors like potx.
   t('HWP Event/Conference');
-  t(EVENT_CONFERENCE_SITE);
+  t('The Standard Event or Conference site.');
   t('Speakers');
   t('Program');
   t('Schedule');

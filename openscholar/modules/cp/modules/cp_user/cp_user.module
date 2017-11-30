@@ -301,7 +301,7 @@ function cp_user_og_ui_admin_permissions($variables) {
     $show_permission = TRUE;
     if (!in_array($permission, array_keys($allowed_permissions))) {
 
-    	if (!user_access('administer permissions')) {
+      if (!user_access('administer permissions')) {
         // Do not show this permission in the UI.
         // Not including it in the table is not enough, because later we call the
         // function drupal_render_children() which will render it anyway unless
@@ -316,11 +316,11 @@ function cp_user_og_ui_admin_permissions($variables) {
 
         $show_permission = FALSE;
         continue;
-    	}
+      }
       else {
         // This is an super-admin type user.
         $form['permission'][$permission]['#markup'] .= '**' . t('Admin Only') . '**';
-    	}
+      }
     }
 
     if ($show_permission) {
@@ -820,7 +820,10 @@ function cp_user_mail($key, &$message, $params){
       $message['body'][] = t("Don't forget to bookmark the site and save this email for future reference.");
       $message['body'][] = t("Here are some handy links for you:");
       $links = array();
-      $links[] = " * Sign up for training: " . variable_get('one_page_theme_url') . "\n";
+      if(variable_get('training_signup_url')) {
+              $links[] = " * Sign up for training: " . variable_get('training_signup_url') . "\n";
+      }
+
       $links[] = " * OpenScholar documentation: " . variable_get('doc_base_url'). "\n";
       $links[] = " * Need help with your project? " . variable_get('contact_url');
       $message['body'][] = implode("", $links);
