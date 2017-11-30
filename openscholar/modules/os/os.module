@@ -880,6 +880,18 @@ function os_preprocess_page(&$vars) {
     );
   }
 
+  // Ensure "Import" is always the last item in the menu
+  usort($links, 
+    function ($a, $b) {
+      if (isset($a["title"]) && (($a["title"] == 'Import') || ($a["title"] == 'Sync'))) {
+        return 1;
+      } else if (isset($b["title"]) &&  (($a["title"] == 'Import') || ($a["title"] == 'Sync'))) {
+        return -1;
+      } else {
+        return 0;
+      }
+    }
+  );
 
   if (count($links) > 1) {
     $vars['title_suffix']['controls']['add_new'] = array(
@@ -2498,6 +2510,7 @@ function os_field_default_fields_alter(&$fields) {
  * Make all select fields use Select2.
  */
 function os_field_widget_options_select_form_alter(&$element, &$form_state, $context) {
+  $element['#title'] = html_entity_decode($element['#title'], ENT_QUOTES | ENT_HTML5);
   $element += array(
     '#after_build' => array('os_select2_widget_after_build'),
     '#cardinality' => $context['field']['cardinality'],
@@ -3718,6 +3731,7 @@ function os_field_formatter_view($entity_type, $entity, $field, $instance, $lang
           'html' => TRUE,
           'max_length' => $display['settings']['trim_length'],
           'word_boundary' => TRUE,
+          'ellipsis' => TRUE,
         );
         $text = views_trim_text($alter, media_filter($item['value']));
 
@@ -3730,7 +3744,7 @@ function os_field_formatter_view($entity_type, $entity, $field, $instance, $lang
         // if yes then we will use text summary function to trim texts.
         $delimiter = strpos($item['safe_value'], '<!--break-->');
 
-        if ($delimiter) {
+        if ($delimiter !== FALSE) {
           // Checks if there is a break tag inserted at the end of the content.
           // If this is the case, there is no need to add a "read more" link.
           $split_break_tag = explode('<!--break-->', $item['safe_value'], 2);
@@ -3741,12 +3755,12 @@ function os_field_formatter_view($entity_type, $entity, $field, $instance, $lang
             $text_after_break = strip_tags(trim($split_break_tag[1]), '<img><iframe><embed><object><param>');
           }
           $text = text_summary($item['safe_value'], $item['format'], $display['settings']['trim_length']);
-          // Remove the ellipsis we got from the text summary.
-          if (strpos($text, '…') !== 0) {
-            $text = str_replace('…', ' ', $text);
-          }
-          // Only display read more link if there is a content after break tag.
           if (!empty(drupal_strlen($text_after_break))) {
+            $text = htmlentities($text);
+            // Remove non breaking spaces (e.g &nbsp;) from the start and end
+            // of a string.
+            $text = rtrim(preg_replace('#(^(&nbsp;|\s)+|(&nbsp;|\s)+$)#', '', $text)).t('...');
+            $text = decode_entities($text);
             $read_more($entity_type, $entity, $text);
           }
         }
@@ -3941,6 +3955,7 @@ function os_redirect_goto($redirect) {
   $parse_url = drupal_parse_url($redirect->redirect);
   $redirect->redirect_options['absolute'] = TRUE;
   $redirect->redirect_options['fragment'] = $parse_url['fragment'];
+  $redirect->redirect_options['query'] = $parse_url['query'];
   $url = url($parse_url['path'], $redirect->redirect_options);
   
   drupal_add_http_header('Location', $url);

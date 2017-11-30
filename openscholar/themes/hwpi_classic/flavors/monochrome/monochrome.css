@@ -41,6 +41,11 @@ a,
 a:visited {
     color: #A51C30;
 }
+a.os-swipe-large,
+a.os-swipe-small {
+    background-color: #A51C30;
+}
+
 .biblio-title a {
     font-weight: normal !important;
 }

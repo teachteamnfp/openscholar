@@ -21,6 +21,58 @@ a:visited {
 #columns .block-boxes-os_slideshow_box a:hover {
     text-decoration: none;
 }
+/* BUTTON HOVER EFFECT WHEN OS-SWIPE CLASSES ARE APPLIED */
+a.os-swipe-small,
+a.os-swipe-large {
+    font-weight: normal;
+    background-color: #215990;
+    color: #FFF !important;
+    text-decoration: none !important;
+    display: inline-block;
+    text-align: center;
+    border: 1px solid #FFF;
+    -webkit-transition: all .75s;
+     transition: all .75s;
+      position: relative;
+    overflow: hidden;
+    transform: translate3d(0,0,0)
+}
+a.os-swipe-small {
+    padding: 5px 10px;
+}
+a.os-swipe-large {
+    padding: 10px 20px;
+}
+a.os-swipe-large:hover,
+a.os-swipe-small:hover {
+    opacity: .7;
+}
+
+a.os-swipe-large:after,
+a.os-swipe-small:after
+ {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    background-image: radial-gradient(circle,#000 10%,transparent 10.01%);
+    background-repeat: no-repeat;
+    background-position: 50%;
+    transform: scale(10,10);
+    opacity: 0;
+    transition: transform .5s,opacity 1s
+}
+a.os-swipe-large:active:after,
+a.os-swipe-small:active:after
+ {
+    transform: scale(0,0);
+    opacity: .2;
+    transition: 0s
+}
 #columns .block ul {
     list-style: disc;
 }
@@ -30,14 +82,76 @@ a:visited {
 #columns .block.block-boxes-twitter ul {
     list-style: none;
 }
-#columns .block-boxes-os_boxes_manual_list .field-name-body ul {
-    list-style: disc;
+
+.cke_editable ol ul,
+.cke_editable ul {
+  display: table;
+  margin-left: 0;
+  padding-left: 0;
+  list-style: none;
+  counter-reset: table-ul;
+ }
+
+ .cke_editable ul li {
+    display: table-row;
+    counter-increment: table-ul;
 }
-#columns .block-boxes-os_boxes_manual_list .field-name-body ul ul {
-    list-style: circle;
+
+ .cke_editable ul li:before {
+      content: counter(table-ul) ".";
+      display: table-cell;
+      padding-right: 0.4em;
+      text-align: right;
 }
-#columns .block-boxes-os_boxes_manual_list .field-name-body ul ul ul {
-    list-style: square;
+
+
+.cke_editable ol ol ul li:before,
+.cke_editable ol ul li:before,
+.cke_editable ul li:before {
+    content: counter(table-ul,disc);
+}
+
+.cke_editable ol ol ul ul li:before,
+.cke_editable ol ul ul li:before,
+.cke_editable ul ul li:before {
+    content: counter(table-ul,circle);
+}
+
+.cke_editable ol ol ul ul ul li:before,
+.cke_editable ol ul ul ul li:before,
+.cke_editable ul ul ul li:before {
+    content: counter(table-ul,square);
+}
+
+
+
+
+
+
+
+.cke_editable ol ul,
+.cke_editable ol {
+    display: table;
+    margin-left: 0;
+    padding-left: 0;
+    list-style: none;
+    counter-reset: table-ol;
+}
+.cke_editable ol li {
+    display: table-row;
+    counter-increment: table-ol;
+}
+.cke_editable ol li:before {
+    content: counter(table-ol) ".";
+    display: table-cell;
+    padding-right: 0.4em;
+    text-align: right;
+}
+.cke_editable ol ol li:before {
+    content: counter(table-ol, upper-alpha) ".";
+}
+.cke_editable ol ol ol li:before {
+    content: counter(table-ol, lower-alpha) ".";
 }
 .block-boxes-os_taxonomy_fbt.term-slider .item-list ul li {
     width: 100%;

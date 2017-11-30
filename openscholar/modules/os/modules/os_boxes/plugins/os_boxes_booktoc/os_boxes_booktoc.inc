@@ -60,7 +60,7 @@ class os_boxes_booktoc extends os_boxes_default {
       '#type' => 'checkbox',
       '#default_value' => $this->options['as_nav'],
       '#title' => t('Display As Navigation'),
-      '#description' => t('Check this to make this vocabulary display like a menu.'),
+      '#description' => t('Check this to make this table display like a menu.'),
       '#return_value' => TRUE,
     );
 
