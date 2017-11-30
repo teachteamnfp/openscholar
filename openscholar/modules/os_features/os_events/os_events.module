@@ -173,12 +173,12 @@ function os_events_gcal_create_calendar() {
   watchdog("Google Calendar", "fffffffffffffffffffffffffffff");
   global $is_https, $user;
 
-  $has_access = os_events_calendar_export_access();
+  /*$has_access = os_events_calendar_export_access();
 
   # If the user is not a member of the group, deny access
   if (! $has_access) {
     drupal_access_denied();
-  }
+  }*/
 
   $name = "os_events";
   $display_id = "feed_2_no_cache";
