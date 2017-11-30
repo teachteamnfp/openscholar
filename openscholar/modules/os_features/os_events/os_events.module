@@ -507,6 +507,7 @@ function os_events_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('os_events_get_access_token_with_auth_code'),
     'access callback' => 'os_events_calendar_export_access',
+    'access arguments' => array('administer site configuration'),
     'type' => MENU_CALLBACK,
   );
   
