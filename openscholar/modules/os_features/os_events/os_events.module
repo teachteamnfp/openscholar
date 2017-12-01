@@ -169,7 +169,7 @@ function os_events_calendar_export_access() {
   return false;
 }
 
-function os_events_gcal_create_calendar() {
+/*function os_events_gcal_create_calendar() {
   watchdog("Google Calendar", "fffffffffffffffffffffffffffff");
   global $is_https, $user;
 
@@ -178,7 +178,7 @@ function os_events_gcal_create_calendar() {
   # If the user is not a member of the group, deny access
   if (! $has_access) {
     drupal_access_denied();
-  }*/
+  }
 
   $name = "os_events";
   $display_id = "feed_2_no_cache";
@@ -199,7 +199,7 @@ function os_events_gcal_create_calendar() {
   }
 
   $events = array();
-  /*foreach ($view->result as $e) {
+  foreach ($view->result as $e) {
     watchdog("Google Calendar", "gggggggggggggggggggggggggggggg");
 
     # Create test event and add it to the calendar
@@ -219,7 +219,7 @@ function os_events_gcal_create_calendar() {
     $event->setEnd($calendarDateTime2);
     watchdog("Events", $event);
     $events[] = $event;
-  }*/
+  }
 
   $client = getClient();
   $calendarService = new Google_Service_Calendar($client);
@@ -230,7 +230,7 @@ function os_events_gcal_create_calendar() {
   watchdog("Google Calendar", "hhhhhhhhhhhhhhhhhhhhhhhhh");
   drupal_goto(url('/' . $vsite->group->purl . '/calendar'));
 }
-
+*/
 /**
  * @file
  * Administration page callbacks for the google calendar settings.
