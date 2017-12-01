@@ -1,0 +1,3 @@
+name = "OS Style override"
+core = 7.x
+description = "Module to override style for the active theme."

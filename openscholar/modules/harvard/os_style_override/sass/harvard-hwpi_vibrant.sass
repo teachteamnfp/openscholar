@@ -1,0 +1,1089 @@
+//colors
+@import "colors"
+
+//fonts
+$font_0: Georgia
+$font_1: Baskerville
+$font_2: Palatino
+$font_3: Palatino Linotype
+$font_4: Book Antiqua
+$font_5: Times New Roman
+$font_6: serif
+$font_7: Arial
+$font_8: Helvetica
+$font_9: sans-serif
+$font_10: georgia
+$font_11: arial
+
+//urls
+$url_0: url(../images/standard-body-gradient.png)
+$url_1: url(../images/readmore.png)
+
+html 
+	background: $color_0
+	color: $color_1
+
+body 
+	background: $color_0
+	color: $color_1
+	&.front 
+		overflow-x: hidden
+		#columns 
+			background-position: 0 -252px
+
+		&.no-sidebars .content-top-slideshow-enabled #columns .hg-container 
+			padding-top: 0
+
+
+	&.no-sidebars .content-top-slideshow-enabled 
+		.region-content-top 
+			position: relative
+
+		#menu-bar 
+			border-bottom: 0
+
+		#content-panels .region-content-top 
+			.block 
+				margin-bottom: 0
+
+			.block-inner 
+				margin-top: 0
+				overflow: hidden
+
+			.block-boxes-os_boxes_widget_slider .block-inner 
+				overflow: visible
+
+
+		#columns .contextual-controls-wrapper 
+			right: -45px
+			top: 0
+
+
+
+#columns 
+	margin-left: auto
+	margin-right: auto
+	margin-top: 0
+	width: auto
+	background-image: $url_0
+	background-repeat: repeat-x
+	background-position: 0 0
+
+#content-panels 
+	border-right: none
+	border-left: none
+	.block-inner 
+		margin-top: 0
+
+	.block 
+		margin-bottom: 15px
+		&.no-title .view .date-nav-wrapper 
+			border-top: 0
+
+
+
+.front 
+	#content-panels 
+		.block 
+			border: 1px solid $color_3
+			background: $color_0
+			//If you use compass, instead of the line below you could use + box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+			box-shadow: 0 1px 2px 0 $color_3
+			-webkit-border-radius: 3px
+			//If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
+			border-radius: 3px
+			-moz-box-sizing: border-box
+			-webkit-box-sizing: border-box
+			//If you use compass, instead of the line below you could use + box-sizing($bs)
+			box-sizing: border-box
+			&.block-boxes-os_boxes_manual_list 
+				&.styled 
+					background-color: $color_2
+					color: $color_0
+					padding: 0
+					a 
+						color: $color_17
+
+					.block-title 
+						border-bottom: none
+						margin-bottom: 0
+						color: $color_6 !important
+						background: $color_19
+						background: -moz-linear-gradient(top, $color_19 0, $color_20 100%)
+						background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, $color_19), color-stop(100%, $color_20))
+						background: -webkit-linear-gradient(top, $color_19 0, $color_20 100%)
+						background: -o-linear-gradient(top, $color_19 0, $color_20 100%)
+						background: -ms-linear-gradient(top, $color_19 0, $color_20 100%)
+						background: linear-gradient(to bottom, $color_19 0, $color_20 100%)
+						
+						padding: 8px 15px
+
+					.block-content 
+						border-top: none
+
+
+				&.converted-bio 
+					background-color: $color_0
+					color: $color_15
+					a 
+						color: $color_18
+
+
+
+
+		.block-title 
+			background: $color_14
+			color: $color_15
+			border-bottom: 1px solid $color_3
+			font-size: 16px
+			line-height: 20px
+			min-height: 20px
+			padding: 7px 15px
+			font-weight: bold
+
+		.block-content 
+			padding: 15px
+			border-top: 1px solid $color_16
+
+		.region-content-top .block-boxes-os_slideshow_box .block-content 
+			border-top: none
+			padding: 0
+
+		.block-boxes-os_boxes_slideshow .block-content 
+			padding: 0
+			margin: 0
+			border: 0
+			//If you use compass, instead of the line below you could use + box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+			box-shadow: 0 0 0 transparent
+
+		.block-boxes-os_boxes_tabs .block-content 
+			padding: 0
+
+		.ui-tabs .ui-tabs-panel 
+			.block 
+				padding: 0
+				margin: 0
+				border: 0
+				//If you use compass, instead of the line below you could use + box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+				box-shadow: 0 0 0 transparent
+
+			.block-content 
+				padding: 0
+				margin: 0
+				border: 0
+				//If you use compass, instead of the line below you could use + box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+				box-shadow: 0 0 0 transparent
+
+
+
+	&.no-sidebars .region-content-top .block-boxes-os_slideshow_box:after 
+		background: $color_2
+		bottom: auto
+		content: ""
+		display: block
+		height: 100%
+		left: -1000px
+		position: absolute
+		right: auto
+		top: 0
+		width: 3000px
+		z-index: 0
+
+	#content-column .block 
+		border-top: 6px solid $color_13
+		&.block-boxes-os_boxes_columns 
+			border: none
+			background: none
+			//If you use compass, instead of the line below you could use + box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+			box-shadow: none
+			-webkit-border-radius: none
+			//If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
+			border-radius: none
+			-moz-box-sizing: none
+			-webkit-box-sizing: none
+			//If you use compass, instead of the line below you could use + box-sizing($bs)
+			box-sizing: none
+			.block-content:first-child 
+				border-top: none
+				padding: 0
+
+
+
+
+.view-os-image-gallery-slideshow 
+	background: $color_2
+	border: 0
+
+.block-boxes-os_boxes_slideshow 
+	border-top: 0 !important
+	padding: 0
+	margin: 0
+	border: 0
+	//If you use compass, instead of the line below you could use + box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+	box-shadow: 0 0 0 transparent
+	.block-inner 
+		margin: 0
+		padding: 0
+		padding: 0
+		margin: 0
+		border: 0
+		//If you use compass, instead of the line below you could use + box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+		box-shadow: 0 0 0 transparent
+
+	.views-row 
+		margin: 0
+		padding: 0
+
+	.block-content 
+		padding: 0
+		margin: 0
+		border: 0
+		//If you use compass, instead of the line below you could use + box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+		box-shadow: 0 0 0 transparent
+
+	.views_slideshow_slide img 
+		line-height: 0
+		padding: 0
+
+
+.hg-container 
+	margin-left: auto
+	margin-right: auto
+	padding-top: 40px
+	width: 980px
+
+.not-front 
+	.hg-container 
+		padding-top: 65px
+
+	#content-column 
+		font-size: 15px
+		#content-panels h2.block-title 
+			color: $color_15
+			font-size: 16px
+			line-height: 20px
+			font-weight: bold
+			overflow: auto
+
+
+	.content-inner 
+		padding: 0 30px 20px
+		border: 1px solid $color_3
+		background: $color_0
+		//If you use compass, instead of the line below you could use + box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+		box-shadow: 0 1px 2px 0 $color_3
+		-webkit-border-radius: 3px
+		//If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
+		border-radius: 3px
+		-moz-box-sizing: border-box
+		-webkit-box-sizing: border-box
+		//If you use compass, instead of the line below you could use + box-sizing($bs)
+		box-sizing: border-box
+
+	.field-name-body 
+		font-family: $font_10
+
+	&.two-sidebars #content-column .content-inner 
+		border-right: 1px solid $color_12
+
+
+.region-inner 
+	border: 0 !important
+
+a 
+	-webkit-transition: all 0.25s linear
+	-moz-transition: all 0.25s linear
+	-ms-transition: all 0.25s linear
+	-o-transition: all 0.25s linear
+	//If you use compass, instead of the line below you could use + transition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
+	transition: all 0.25s linear
+	&:visited 
+		-webkit-transition: all 0.25s linear
+		-moz-transition: all 0.25s linear
+		-ms-transition: all 0.25s linear
+		-o-transition: all 0.25s linear
+		//If you use compass, instead of the line below you could use + transition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
+		transition: all 0.25s linear
+
+	&.rslides_nav 
+		background-color: $color_34
+
+
+.field-name-body 
+	ol 
+		margin: 0 0 1.5em 25px
+
+	h2 
+		font-family: $font_7, $font_8, $font_9
+
+	h3 
+		font-family: $font_7, $font_8, $font_9
+
+	h4 
+		font-family: $font_7, $font_8, $font_9
+
+
+#header 
+	background: $color_4
+	color: $color_5
+
+#boxes-box-site_info 
+	color: $color_5
+	a 
+		color: $color_5
+
+
+#menu-bar 
+	background: $color_4
+	padding: 0 0 30px
+	min-height: 39px
+	nav 
+		background: $color_0
+		-webkit-border-radius: 2px
+		//If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
+		border-radius: 2px
+		-webkit-box-shadow: 0 1px 1px 1px $color_3
+		//If you use compass, instead of the line below you could use + box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+		box-shadow: 0 1px 1px 1px $color_3
+		> ul.menu 
+			padding: 0 8px 0 0
+
+
+	a 
+		-webkit-transition: color 0.25s linear
+		-moz-transition: color 0.25s linear
+		-ms-transition: color 0.25s linear
+		-o-transition: color 0.25s linear
+		//If you use compass, instead of the line below you could use + transition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
+		transition: color 0.25s linear
+		&:visited 
+			-webkit-transition: color 0.25s linear
+			-moz-transition: color 0.25s linear
+			-ms-transition: color 0.25s linear
+			-o-transition: color 0.25s linear
+			//If you use compass, instead of the line below you could use + transition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
+			transition: color 0.25s linear
+
+
+	ul 
+		&.nice-menu 
+			a 
+				color: $color_5
+				font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6
+				font-weight: normal
+				padding: 12px 15px
+				background: transparent
+				background-image: none
+				&.active 
+					background: $color_5
+					color: $color_6
+					&:hover 
+						background: $color_5
+						color: $color_6
+
+
+				&:hover 
+					background: $color_5
+					color: $color_6
+					background: $color_7
+					background: -moz-linear-gradient(top, $color_8 0, $color_7 100%)
+					background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$color_8), color-stop(100%,$color_7))
+					background: -webkit-linear-gradient(top, $color_8 0,$color_7 100%)
+					background: -o-linear-gradient(top, $color_8 0,$color_7 100%)
+					background: -ms-linear-gradient(top, $color_8 0,$color_7 100%)
+					background: linear-gradient(to bottom, $color_8 0,$color_7 100%)
+					filter: "progid: dximagetransform.microsoft.gradient(startcolorstr={$color_8}, endcolorstr={$color_7},gradienttype=0 )"
+					color: $color_0
+					-webkit-border-radius: 3px 3px 0 0
+					//If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
+					border-radius: 3px 3px 0 0
+
+
+			.menuparent 
+				padding-right: 0
+				a 
+					color: $color_5
+					font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6
+					font-weight: normal
+					padding: 12px 15px
+					background: transparent
+					background-image: none
+					&:hover 
+						padding-right: 15px
+						&:before 
+							background-position: -46px -566px
+
+
+					&.active 
+						padding-right: 15px
+						background: $color_7
+						background: -moz-linear-gradient(top, $color_8 0, $color_7 100%)
+						background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$color_8), color-stop(100%,$color_7))
+						background: -webkit-linear-gradient(top, $color_8 0,$color_7 100%)
+						background: -o-linear-gradient(top, $color_8 0,$color_7 100%)
+						background: -ms-linear-gradient(top, $color_8 0,$color_7 100%)
+						background: linear-gradient(to bottom, $color_8 0,$color_7 100%)
+						filter: "progid: dximagetransform.microsoft.gradient(startcolorstr={$color_8}, endcolorstr={$color_7},gradienttype=0 )"
+						&:before 
+							background-position: -46px -566px
+
+
+					&:before 
+						background-position: -46px -566px
+
+
+				ul 
+					a span 
+						background: none !important
+
+					li a 
+						background: $color_7 !important
+						color: $color_10 !important
+						font-family: $font_7, $font_8, $font_9
+						font-weight: bold
+						-webkit-border-radius: 0 !important
+						//If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
+						border-radius: 0 !important
+						&:hover 
+							background: $color_7 !important
+							color: $color_0 !important
+							-webkit-border-radius: 0 !important
+							//If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
+							border-radius: 0 !important
+
+						&.active 
+							background: $color_7 !important
+							color: $color_0 !important
+							-webkit-border-radius: 0 !important
+							//If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
+							border-radius: 0 !important
+
+
+
+
+			li 
+				margin-right: 0
+				&.menuparent:hover a 
+					background: $color_7
+					background: -moz-linear-gradient(top, $color_8 0, $color_7 100%)
+					background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$color_8), color-stop(100%,$color_7))
+					background: -webkit-linear-gradient(top, $color_8 0,$color_7 100%)
+					background: -o-linear-gradient(top, $color_8 0,$color_7 100%)
+					background: -ms-linear-gradient(top, $color_8 0,$color_7 100%)
+					background: linear-gradient(to bottom, $color_8 0,$color_7 100%)
+					filter: "progid: dximagetransform.microsoft.gradient(startcolorstr={$color_8}, endcolorstr={$color_7},gradienttype=0 )"
+					color: $color_0
+					-webkit-border-radius: 3px 3px 0 0
+					//If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
+					border-radius: 3px 3px 0 0
+					&.active 
+						padding: 12px 15px
+						margin-top: 0
+						-webkit-border-radius: 3px 3px 0 0
+						//If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
+						border-radius: 3px 3px 0 0
+
+
+
+			ul 
+				background: $color_7
+				min-width: 200px
+
+
+		a 
+			color: $color_5
+			font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6
+			font-weight: normal
+			padding: 12px 15px
+			background: transparent
+			background-image: none
+
+		> li > a 
+			&:hover 
+				background: $color_7
+				background: -moz-linear-gradient(top, $color_8 0, $color_7 100%)
+				background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$color_8), color-stop(100%,$color_7))
+				background: -webkit-linear-gradient(top, $color_8 0,$color_7 100%)
+				background: -o-linear-gradient(top, $color_8 0,$color_7 100%)
+				background: -ms-linear-gradient(top, $color_8 0,$color_7 100%)
+				background: linear-gradient(to bottom, $color_8 0,$color_7 100%)
+				filter: "progid: dximagetransform.microsoft.gradient(startcolorstr={$color_8}, endcolorstr={$color_7},gradienttype=0 )"
+				color: $color_0
+				-webkit-border-radius: 3px 3px 0 0
+				//If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
+				border-radius: 3px 3px 0 0
+
+			&.active 
+				background: $color_7
+				background: -moz-linear-gradient(top, $color_8 0, $color_7 100%)
+				background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$color_8), color-stop(100%,$color_7))
+				background: -webkit-linear-gradient(top, $color_8 0,$color_7 100%)
+				background: -o-linear-gradient(top, $color_8 0,$color_7 100%)
+				background: -ms-linear-gradient(top, $color_8 0,$color_7 100%)
+				background: linear-gradient(to bottom, $color_8 0,$color_7 100%)
+				filter: "progid: dximagetransform.microsoft.gradient(startcolorstr={$color_8}, endcolorstr={$color_7},gradienttype=0 )"
+				&:hover 
+					background: $color_0
+					color: $color_9
+
+
+
+
+
+ul 
+	&.primary 
+		margin: 0
+
+	&.nice-menu-down li ul li ul 
+		left: 13.5em
+
+	&.links li 
+		display: inline-block
+		font: bold 12px arial,sans-serif !important
+		padding: 6px 15px
+		&.link-count-node-readmore 
+			border: 1px solid $color_3 !important
+			-webkit-border-radius: 3px
+			//If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
+			border-radius: 3px
+			background: $color_14
+			background: -moz-linear-gradient(top, $color_14 0, $color_31 100%)
+			background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$color_14), color-stop(100%,$color_31))
+			background: -webkit-linear-gradient(top, $color_14 0,$color_31 100%)
+			background: -o-linear-gradient(top, $color_14 0,$color_31 100%)
+			background: -ms-linear-gradient(top, $color_14 0,$color_31 100%)
+			background: linear-gradient(to bottom, $color_14 0,$color_31 100%)
+			filter: "progid: dximagetransform.microsoft.gradient(startcolorstr={$color_14}, endcolorstr={$color_31},gradienttype=0 )"
+			a 
+				border: 0 !important
+				background: $url_1 no-repeat 100% center transparent
+				padding: 0 15px 0 0
+
+
+
+
+#page-title 
+	font-family: $font_7, $font_8, $font_9
+
+.node-title 
+	font-family: $font_7, $font_8, $font_9
+
+.page-search 
+	.title a 
+		font-family: $font_7, $font_8, $font_9
+		font-weight: normal
+		font-size: 18px
+		margin-bottom: 18px
+
+	#content-column p 
+		font-family: $font_7, $font_8, $font_9
+
+	h1#page-title 
+		margin-top: 10px
+
+
+#content-column 
+	.block 
+		&.section-nav 
+			border-top: none
+
+		&.block-boxes-os_boxes_manual_list .links.inline a 
+			font-family: $font_7, $font_8, $font_9
+
+
+	p 
+		font-family: $font_10
+
+	li 
+		font-family: $font_10
+
+	.field-name-body 
+		h2 
+			margin-bottom: 16px
+			font-size: 1.7em
+
+		h3 
+			margin-bottom: 16px
+			font-size: 1.4em
+
+		h4 
+			margin-bottom: 16px
+			font-size: 1.2em
+
+
+
+.more-link 
+	font-family: $font_7, $font_8, $font_9
+
+#footer 
+	color: $color_0
+	padding: 60px 0 12px
+	position: relative
+	background: $color_32
+	background: -moz-linear-gradient(top, $color_32 0, $color_33 100%)
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$color_32), color-stop(100%,$color_33))
+	background: -webkit-linear-gradient(top, $color_32 0,$color_33 100%)
+	background: -o-linear-gradient(top, $color_32 0,$color_33 100%)
+	background: -ms-linear-gradient(top, $color_32 0,$color_33 100%)
+	background: linear-gradient(to bottom, $color_32 0,$color_33 100%)
+	filter: "progid: dximagetransform.microsoft.gradient(startcolorstr={$color_32}, endcolorstr={$color_33},gradienttype=0 )"
+	a 
+		color: $color_17
+
+	.footer-login 
+		background: none
+		border-left: none
+		color: $color_17
+		//If you use compass, instead of the line below you could use + text-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+		text-shadow: none
+		padding: 0
+		font-size: 13px
+
+	ul.menu a 
+		font-family: $font_7, $font_8, $font_9
+		text-transform: none
+		font-size: 16px
+		&.menu-heading 
+			font-size: 1.35em
+
+
+
+.cke_editable 
+	* 
+		font-family: $font_10
+
+	h2 
+		font-family: $font_11
+
+	h3 
+		font-family: $font_11
+
+	h4 
+		font-family: $font_11
+
+
+h1 
+	&.node-title 
+		font-weight: normal
+		font-size: 18px
+		margin-bottom: 18px
+		font-weight: bold
+
+	&#page-title 
+		font-size: 30px
+		margin: 0
+		padding: 15px 0 30px
+
+
+#tasks 
+	margin-top: 0
+
+.breadcrumb 
+	margin: -40px 0 35px -27px
+	color: $color_0
+	a 
+		color: $color_0
+
+
+.comment-wrapper 
+	border-top: 6px solid $color_13
+
+.sidebar 
+	.block 
+		border: 1px solid $color_3
+		background: $color_0
+		//If you use compass, instead of the line below you could use + box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+		box-shadow: 0 1px 2px 0 $color_3
+		-webkit-border-radius: 3px
+		//If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
+		border-radius: 3px
+		-moz-box-sizing: border-box
+		-webkit-box-sizing: border-box
+		//If you use compass, instead of the line below you could use + box-sizing($bs)
+		box-sizing: border-box
+		margin-bottom: 20px
+		&.section-nav 
+			border-top: none
+
+		&.block-boxes-os_boxes_manual_list.styled .block-content 
+			border-top: none
+
+
+	.block-title 
+		background: $color_14
+		color: $color_15
+		border-bottom: 1px solid $color_3
+		font-size: 16px
+		line-height: 20px
+		min-height: 20px
+		padding: 7px 15px
+		font-weight: bold
+
+	.block-content 
+		padding: 15px
+		border-top: 1px solid $color_16
+
+
+.block 
+	&.no-title 
+		.block-content 
+			margin-top: 0
+			border-top: 0
+
+		.view .date-nav-wrapper 
+			border-top: 1px solid $color_21
+
+
+	.view .date-nav-wrapper .date-nav 
+		margin-bottom: 7px
+
+
+.ui-tabs 
+	.ui-tabs-panel 
+		border: 0
+		.block 
+			padding: 0
+			margin: 0
+			border: 0
+			//If you use compass, instead of the line below you could use + box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+			box-shadow: 0 0 0 transparent
+
+		.block-content 
+			padding: 0
+			margin: 0
+			border: 0
+			//If you use compass, instead of the line below you could use + box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+			box-shadow: 0 0 0 transparent
+
+
+	.block.no-title .view .date-nav-wrapper 
+		border-top: 0
+		border-top: 0
+
+	ul.ui-tabs-nav li 
+		border-top: 0
+		border-left: 0
+		border-right: 1px solid $color_25
+		&.ui-tabs-active 
+			border: 0
+			border-bottom: 1px solid $color_26
+			border-top: 1px solid $color_27
+			background: linear-gradient(to bottom, $color_27 0, $color_26 100%) repeat scroll 0 0 transparent
+			a 
+				color: $color_0
+				outline: 0 none
+				position: relative
+				z-index: 10
+
+
+		&.first 
+
+		&.last 
+			border-right: 0
+
+
+	.ui-tabs-nav li a 
+		text-transform: capitalize
+		font-size: 14px
+
+
+.calendar-calendar 
+	.mini-day-on 
+		border: none
+		background: $color_22
+		-webkit-border-radius: 3px
+		//If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
+		border-radius: 3px
+
+	.mini tbody 
+		border-top-color: none
+		border: none
+
+	th.days 
+		background-color: $color_0
+		border: none
+		&.sun 
+			border-left-color: none
+
+		&.sat 
+			border-right-color: none
+
+
+
+.event-start-day 
+	color: $color_23
+
+.event-start-month 
+	color: $color_24
+
+#block-boxes-os-pages-section-nav 
+	padding: 0
+	border: 0
+	//If you use compass, instead of the line below you could use + box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+	box-shadow: 0 0 0 transparent
+
+.block-boxes-os_boxes_sectionnav 
+	#boxes-box-os_pages_section_nav 
+		border: 0
+
+	.block-content 
+		padding: 0
+
+
+.section-nav 
+	.menu-depth-1 
+		> ul 
+			border: 1px solid $color_3
+			border-top: 0
+			background: $color_0
+			//If you use compass, instead of the line below you could use + box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+			box-shadow: 0 1px 2px 0 $color_3
+			-webkit-border-radius: 0 0 3px 3px
+			//If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
+			border-radius: 0 0 3px 3px
+			-moz-box-sizing: border-box
+			-webkit-box-sizing: border-box
+			//If you use compass, instead of the line below you could use + box-sizing($bs)
+			box-sizing: border-box
+
+		> a 
+			background: $color_28 !important
+			border: 0
+			text-transform: none
+			position: relative
+			font-size: 16px
+
+
+	ul 
+		&.menu li 
+			a 
+				font-weight: bold
+
+			&.menu-depth-2 a 
+				border-top: 1px solid $color_0
+				border-bottom: 1px solid $color_0
+
+
+		ul a.active 
+			color: $color_1 !important
+
+
+	.expanded.menu-depth-2 
+		> a 
+			background-color: transparent
+			color: $color_30
+			background: $color_11
+			&:hover 
+				background-color: $color_29 !important
+
+
+		.menu-depth-3 > a 
+			background-color: transparent
+
+		.menu-depth-4 > a 
+			background-color: transparent
+
+		.menu-depth-5 > a 
+			background-color: transparent
+
+
+	.menu-depth-2 a 
+		&:hover 
+			background-color: $color_29 !important
+			border-top: 1px solid $color_3
+			border-bottom: 1px solid $color_3
+
+		&:focus 
+			background-color: $color_29 !important
+			border-top: 1px solid $color_3
+			border-bottom: 1px solid $color_3
+
+
+
+.page-node #content-column .content-inner 
+	padding: 0 30px 20px
+	border: 1px solid $color_3
+	background: $color_0
+	//If you use compass, instead of the line below you could use + box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+	box-shadow: 0 1px 2px 0 $color_3
+	-webkit-border-radius: 3px
+	//If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
+	border-radius: 3px
+	-moz-box-sizing: border-box
+	-webkit-box-sizing: border-box
+	//If you use compass, instead of the line below you could use + box-sizing($bs)
+	box-sizing: border-box
+
+div.contextual-links-wrapper a 
+	-webkit-transition: none
+	-moz-transition: none
+	-ms-transition: none
+	-o-transition: none
+	//If you use compass, instead of the line below you could use + transition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
+	transition: none
+
+.contextual-controls-wrapper div.ctools-dropdown.section_links a.ctools-dropdown-text-link 
+	-webkit-transition: none
+	-moz-transition: none
+	-ms-transition: none
+	-o-transition: none
+	//If you use compass, instead of the line below you could use + transition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
+	transition: none
+
+.block-boxes-os_boxes_html .block-content 
+	ul 
+		list-style-type: disc
+
+	ol 
+		list-style-type: decimal
+
+
+.block-content .field-name-body 
+	ul 
+		list-style-type: disc
+
+	ol 
+		list-style-type: decimal
+
+
+.lt-ie9 #menu-bar nav 
+	border: 1px solid $color_3
+	border-bottom-width: 2px
+
+.links a 
+	font-family: $font_7, $font_8, $font_9
+
+.boxes-box-content h2 
+	font-family: $font_7, $font_8, $font_9
+	font-weight: normal
+	font-size: 18px
+	margin-bottom: 18px
+	font-size: 24px
+	line-height: 28px
+
+.view-os-events .views-field-colorbox 
+	font-family: $font_7, $font_8, $font_9
+
+.block-boxes-os_boxes_columns .boxes-box-content h2 
+	margin-bottom: 0
+
+.node-type-person #content-column .node-person h1.node-title 
+	font-weight: bold
+
+.node-person .node-content .block .block-title 
+	font: bold 16px/24px $font_11, $font_9
+	margin-bottom: 24px
+	background: $color_11
+	padding: 6px 15px
+	-webkit-box-shadow: 0 1px 0 1px $color_3
+	//If you use compass, instead of the line below you could use + box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+	box-shadow: 0 1px 0 1px $color_3
+	border-top: 1px solid $color_3
+	-webkit-border-radius: 2px
+	//If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
+	border-radius: 2px
+
+.page-calendar #tasks 
+	margin-top: 30px
+
+.node-type-page .breadcrumb 
+	margin: -40px 0 35px -27px
+
+.block-boxes block-boxes-os_sv_list_box 
+	border-top: none
+
+.block-boxes-os_boxes_manual_list.styled 
+	border-top: none
+
+.block-os-search-db .block-content 
+	overflow: hidden
+
+.block-boxes-os_boxes_tabs .block-content 
+	padding: 0
+
+#block-views-os-events-block-1 .view .date-nav-wrapper 
+	margin-top: 0
+	width: auto
+	margin-bottom: 0
+	padding: 7px 0 0
+
+table td.mini 
+	font-weight: normal
+	.mini-day-on a 
+		color: $color_0
+
+
+.date-nav h3 a 
+	color: $color_1
+	font-family: $font_11
+	font-weight: bold
+	font-size: 15px
+
+.no-sidebars #main-content .view .date-nav-wrapper .date-prev 
+	right: 93%
+
+.view .date-nav-wrapper 
+	.date-next a 
+		background-position: -16px -590px
+		height: 14px
+		width: 16px
+
+	.date-prev a 
+		background-position: 0 -590px
+		height: 14px
+		width: 16px
+
+
+.event-start .event-start 
+	background: $color_14
+	border: 1px solid $color_3
+	//If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
+	border-radius: 3px
+	height: 60px
+
+.block-boxes-os_boxes_facetapi_vocabulary.navigation 
+	.block-content 
+		padding: 0 !important
+
+	ul 
+		border-bottom: none
+		border-left: none
+		border-right: none
+		border-top: none
+		li 
+			border-top: none
+
+
+	a 
+		font-weight: bold
+
+
+.block-boxes-os_taxonomy_fbt.navigation 
+	.block-content 
+		padding: 0 !important
+
+	ul 
+		border-bottom: none
+		border-left: none
+		border-right: none
+		border-top: none
+		li 
+			border-top: none
+
+
+	a 
+		font-weight: bold
+
+
+#powered-by a 
+	background-position-y: -546px
+
+#layout_16_9_side .slide 
+	background: $color_19
+	background: -moz-linear-gradient(top, $color_19 0, $color_20 100%)
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, $color_19), color-stop(100%, $color_20))
+	background: -webkit-linear-gradient(top, $color_19 0, $color_20 100%)
+	background: -o-linear-gradient(top, $color_19 0, $color_20 100%)
+	background: -ms-linear-gradient(top, $color_19 0, $color_20 100%)
+	background: linear-gradient(to bottom, $color_19 0, $color_20 100%)
+	

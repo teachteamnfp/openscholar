@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * Implements hook_init().
+ *
+ * Override theme specific file.
+ */
+function os_style_override_init() {
+  global $theme;
+
+  $path_to_module = drupal_get_path('module', drupal_basename(__DIR__));
+  $path_to_site_module = str_replace(drupal_basename(__DIR__), '', $path_to_module);
+  $site_module = drupal_basename($path_to_site_module);
+
+  $module_theme = $site_module . '-' . $theme;
+  $path_to_css = $path_to_module . '/css/' . $module_theme . '.css';
+  if (file_exists($path_to_css)) {
+    drupal_add_css($path_to_css, array(
+      'group' => CSS_THEME,
+      'every_page' => TRUE,
+      'weight' => 9999
+    ));
+  }
+}

@@ -1,0 +1,535 @@
+//colors
+@import "colors"
+
+//fonts
+$font_0: arial
+$font_1: Arial
+$font_2: Helvetica
+$font_3: sans-serif
+
+//urls
+$url_0: url(../../hwpi_basetheme/images/hwpi_basesprite.png)
+$url_1: url(../images/event-shield.png)
+$url_2: url(../images/footer-top-gradient.png)
+
+html 
+	background: $color_0
+	color: $color_1
+
+body 
+	background: $color_0
+	color: $color_1
+
+.not-front 
+	#content-column 
+		font-size: 15px
+		p 
+			font-family: $font_1, $font_2, $font_3
+
+
+	&.two-sidebars #content-column .content-inner 
+		border-right: 1px solid $color_21
+
+
+#header 
+	background: $color_37
+	color: $color_0
+
+#boxes-box-site_info 
+	color: $color_0
+	a 
+		color: $color_0
+
+
+#menu-bar 
+	background: $color_35
+	padding: 0
+	ul.nice-menu 
+		li 
+			margin-right: 0
+
+		a 
+			color: $color_0
+			padding: 16px 15px
+			&.active 
+				background: $color_36
+				color: $color_0
+
+			&:hover 
+				background: $color_36
+				color: $color_0
+
+
+		ul 
+			background: $color_36
+			a 
+				padding: 10px 15px
+
+			.menuparent 
+				a 
+					&:hover 
+						color: $color_37
+
+					&.active 
+						color: $color_37
+
+
+				&.over > a 
+					color: $color_37
+
+
+
+		.menuparent 
+			a 
+				&:before 
+					background-position: 0 -566px
+
+				&:hover 
+					background-color: $color_36
+
+				&.active 
+					background-color: $color_36
+
+
+			&.over > a 
+				background-color: $color_36
+
+			ul li a 
+				color: $color_0
+				font-family: $font_0
+				font-size: 13px
+				font-weight: bold
+				padding-right: 8px
+				&.active 
+					color: $color_0
+					font-family: $font_0
+					font-size: 13px
+					font-weight: bold
+					padding-right: 8px
+
+				&:hover 
+					color: $color_37
+					padding-right: 8px
+
+
+
+
+
+ul 
+	&.nice-menu ul 
+		top: 3.9em !important
+
+	&.nice-menu-down li ul li ul 
+		left: 12em
+
+
+#footer 
+	background: $url_2 repeat-x 0 0 $color_45
+	ul.menu 
+		li 
+			&.menuparent 
+				font-size: 12px
+				font-weight: bold
+
+			a 
+				font-family: $font_0
+				text-transform: uppercase
+				font-size: 13px
+
+			ul li a 
+				font-family: $font_0
+				text-transform: none
+				font-size: 14px
+
+
+		a 
+			font-family: $font_1, $font_2, $font_3
+			text-transform: none
+			font-size: 16px
+
+
+
+#page-title 
+	font-family: $font_1, $font_2, $font_3
+
+.node-title 
+	font-family: $font_1, $font_2, $font_3
+
+.page-search 
+	.title a 
+		font-family: $font_1, $font_2, $font_3
+		font-weight: normal
+		font-size: 18px
+		margin-bottom: 18px
+		font-size: 15px
+		font-weight: bold
+
+	#content-column p 
+		font-family: $font_1, $font_2, $font_3
+
+	h1#page-title 
+		margin-top: 10px
+
+
+.more-link 
+	font-family: $font_1, $font_2, $font_3
+	font-size: 12px
+	font-weight: bold
+
+.page-node 
+	h1#page-title 
+
+	&.node-type-person .node-person .block-inner 
+		border-top: none
+
+
+.search-block-form 
+	#edit-submit 
+		background-position: 2px -340px
+
+	.container-inline .form-item .form-text 
+		height: 32px
+
+	input.form-submit 
+		background-position: 2px -340px
+
+	.form-item label 
+		color: $color_39
+
+
+#search-block-form 
+	#edit-submit 
+		background-position: 2px -340px
+
+	.container-inline .form-item .form-text 
+		height: 32px
+
+	input.form-submit 
+		background-position: 2px -340px
+
+	.form-item label 
+		color: $color_39
+
+
+.comment-wrapper 
+	border-top: 6px solid $color_41
+
+.block-boxes-os_boxes_manual_list 
+	border-top: none
+
+.node-type-person 
+	#content-column .node-person h2.block-title 
+		background: none repeat scroll 0 0 $color_40
+		color: $color_6
+		font-size: 14px
+		line-height: 16px
+		padding: 7px 10px
+		font-weight: normal
+
+	.node-person .field-name-field-professional-title 
+		margin-top: 0
+
+
+.block-content 
+	margin-top: 20px
+
+.block 
+	&.no-title 
+		.block-content 
+			margin-top: 0
+
+		.view .date-nav-wrapper 
+			border-top: 1px solid $color_21
+
+
+	.view .date-nav-wrapper .date-nav 
+		margin-bottom: 7px
+
+
+#content-panels 
+	.block 
+		margin-bottom: 15px
+		&.no-title .view .date-nav-wrapper 
+			border-top: 0
+
+
+	.block-boxes-os_slideshow_box .block-inner 
+		margin-top: 0
+
+
+.ui-tabs 
+	.block.no-title .view .date-nav-wrapper 
+		border-top: 0
+		border-top: 0
+
+	.ui-tabs-nav li a 
+		text-transform: capitalize
+		font-size: 14px
+
+	ul.ui-tabs-nav li.ui-tabs-active 
+		background: $color_42 !important
+		a 
+			border-bottom-width: 1px
+			color: $color_0
+
+
+
+.calendar-calendar 
+	td 
+		border-color: $color_21
+		&.empty 
+			border-color: $color_21
+
+
+	.mini tbody 
+		border-top-color: $color_41
+		border-color: $color_21
+
+	th.days 
+		background-color: $color_0
+		border-top-color: $color_21
+		border-color: $color_21
+		&.sun 
+			border-left-color: $color_21
+
+		&.sat 
+			border-right-color: $color_21
+
+
+
+#boxes-box-os_pages_section_nav 
+	border-color: $color_43
+	font-weight: bold
+
+.section-nav 
+	.leaf 
+		&.menu-depth-3 > a 
+			background-color: $color_41 !important
+			&:hover 
+				background-color: $color_29 !important
+
+
+		&.menu-depth-4 > a 
+			background-color: $color_41 !important
+			&:hover 
+				background-color: $color_29 !important
+
+
+		&.menu-depth-5 > a 
+			background-color: $color_41 !important
+			&:hover 
+				background-color: $color_29 !important
+
+
+		&.menu-depth-6 > a 
+			background-color: $color_41 !important
+			&:hover 
+				background-color: $color_29 !important
+
+
+
+	ul.menu li a 
+		border-color: $color_43
+		font-weight: bold
+
+	.menu-depth-1 > a 
+		background-color: $color_1 !important
+
+	.expanded.menu-depth-2 
+		> a 
+			background-color: $color_44
+			&:hover 
+				background-color: $color_35 !important
+
+
+		.menu-depth-3 > a 
+			background-color: $color_41 !important
+			&:hover 
+				background-color: $color_29 !important
+
+
+		.menu-depth-4 > a 
+			background-color: $color_41 !important
+			&:hover 
+				background-color: $color_29 !important
+
+
+		.menu-depth-5 > a 
+			background-color: $color_41 !important
+			&:hover 
+				background-color: $color_29 !important
+
+
+		.menu-depth-6 > a 
+			background-color: $color_41 !important
+			&:hover 
+				background-color: $color_29 !important
+
+
+
+
+#columns a.node-readmore 
+	border-bottom: none
+	font-size: 12px
+	font-weight: bold
+	float: none
+	padding-right: 11px
+	position: relative
+	&:after 
+		background: $url_0 no-repeat 3px -572px
+		padding-right: 11px
+		content: ""
+
+
+.region-header-third ul.nice-menu a 
+	color: $color_38
+
+#content-column .block 
+	&.block-boxes-os_boxes_manual_list 
+		&.styled 
+			background: none
+			border: none
+			border-top: 6px solid $color_41
+			padding: 0
+			h2.block-title 
+				border-bottom: none
+				margin-bottom: 0
+
+			h1.node-title a 
+				font-weight: bold
+				font-size: 22px
+
+
+		.links.inline a 
+			font-family: $font_1, $font_2, $font_3
+			font-size: 12px
+			font-weight: bold
+
+
+	&.section-nav 
+		border-top: none
+
+
+.links a 
+	font-family: $font_1, $font_2, $font_3
+
+.boxes-box-content h2 
+	font-family: $font_1, $font_2, $font_3
+	font-weight: normal
+	font-size: 18px
+	margin-bottom: 18px
+	font-size: 24px
+	line-height: 28px
+
+.view-os-events .views-field-colorbox 
+	font-family: $font_1, $font_2, $font_3
+
+h1#page-title 
+	font-size: 30px
+	margin: 0 0 20px
+
+h2.block-title 
+	padding: 10px 0
+	text-transform: none
+	font-size: 12px
+	font-weight: normal
+	letter-spacing: 0.1em
+	font-weight: bold
+
+#search-form #edit-submit 
+	background-position: 2px -340px
+
+.two-sidebars #content-panels 
+	border-right: none
+
+.one-sidebar.sidebar-second #content-panels 
+	border-right: none
+
+.front #content-column .block 
+	border-top: 6px solid $color_41
+	&.block-boxes-os_boxes_columns 
+		border-top: none
+
+	&.block-boxes-os_slideshow_box 
+		border-top: none
+
+
+.node-person .block-inner 
+	border-top: 6px solid $color_41
+
+.block-boxes.block-boxes-os_sv_list_box .block-inner 
+	border-top: none
+
+.sidebar .block 
+	margin-bottom: 20px
+	&.section-nav 
+		border-top: none
+
+	h2.block-title 
+		background: none repeat scroll 0 0 $color_40
+		color: $color_6
+		font-size: 14px
+		line-height: 16px
+		padding: 7px 10px
+		font-weight: normal
+
+
+#block-views-os-events-block-1 .view .date-nav-wrapper 
+	margin-top: 0
+	width: auto
+	margin-bottom: 0
+	padding: 7px 0 0
+	border-color: $color_21
+
+table td.mini 
+	font-weight: normal
+
+.date-nav h3 
+	font-family: $font_0
+	a 
+		color: $color_1
+
+
+.event-start .event-start 
+	background: $url_1 no-repeat scroll 0 0 transparent
+
+.block-boxes-os_boxes_tabs .links li a 
+	background-image: none !important
+
+.block-boxes-os_boxes_facetapi_vocabulary.navigation 
+	a 
+		font-weight: bold
+
+	ul 
+		border-bottom: 1px solid $color_43
+		border-left: 1px solid $color_43
+		border-right: 1px solid $color_43
+		li 
+			border-top: 1px solid $color_43
+
+
+
+.block-boxes-os_taxonomy_fbt.navigation 
+	a 
+		font-weight: bold
+
+	ul 
+		border-bottom: 1px solid $color_43
+		border-left: 1px solid $color_43
+		border-right: 1px solid $color_43
+		li 
+			border-top: 1px solid $color_43
+
+
+
+.page-news .view .node-teaser 
+	padding: 10px 0 30px
+
+a.rslides_nav 
+	background-color: $color_15
+
+.slide-copy h2 a 
+	font-weight: bold
+
+#layout_3_1_overlay .slide-copy h2 a 
+	font-weight: normal
