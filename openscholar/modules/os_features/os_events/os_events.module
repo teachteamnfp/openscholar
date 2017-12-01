@@ -201,40 +201,28 @@ function os_events_gcal_create_calendar() {
   $events = array();
   foreach ($view->result as $e) {
     # Create test event and add it to the calendar
+    $client = getClient();
+    $calendarService = new Google_Service_Calendar($client);
+    
     $event = new Google_Service_Calendar_Event();
-    watchdog("Google Calendar", "1111111111111111111111111111");
     $event->setDescription($e->_field_data['nid']['entity']->body[LANGUAGE_NONE][0]['value']);
-    watchdog("Google Calendar", "2222222222222222222222222222222");
     $event->setLocation($e->_field_data['nid']['entity']->field_event_location[LANGUAGE_NONE][0]['value']);
-    watchdog("Google Calendar", "33333333333333333333333333");
     $event->setSummary($e->_field_data['nid']['entity']->title);
-    watchdog("Google Calendar", "444444444444444444444444444");
 
     $dt1 = new DateTime($e->field_data_field_date_field_date_value . "Z");
-    watchdog("Google Calendar", "555555555555555555555555");
     $dt2 = new DateTime($e->field_data_field_date_field_date_value2 . "Z");
-    watchdog("Google Calendar", "666666666666666666666666666666666");
 
     $calendarDateTime1 = new Google_Service_Calendar_EventDateTime();
-    watchdog("Google Calendar", "7777777777777777777777777777");
     $calendarDateTime2 = new Google_Service_Calendar_EventDateTime();
-    watchdog("Google Calendar", "8888888888888888888888888888");
     $calendarDateTime1->setDateTime($dt1->format(DateTime::RFC3339));
-    watchdog("Google Calendar", "99999999999999999999999999");
     $event->setStart($calendarDateTime1);
-    watchdog("Google Calendar", "@@@@@@@@@@@@@@@@@@@@@@@@@@");
     $calendarDateTime2->setDateTime($dt2->format(DateTime::RFC3339));
-    watchdog("Google Calendar", "++++++++++++++++++++++++++++++++++");
     $event->setEnd($calendarDateTime2);
-    
-    watchdog("Google Calendar", "%%%%%%%%%%%%%%%%%%%%%%%");
-    $events[] = $event;
+    $createdEvent = $calendarService->events->insert('primary', $event);
+    watchdog("Calendar Service", print_r($createdEvent, TRUE));
+    //$events[] = $event;
   }
-  $client = getClient();
-  watchdog("Google Calendar", "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-  $calendarService = new Google_Service_Calendar($client);
-  watchdog("Google Calendar", "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-  watchdog("Calendar Service", print_r($calendarService->calendarList->listCalendarList(), TRUE));
+  
   //$_SESSION['listCalendarList'] = serialize($calendarService->calendarList->listCalendarList());
   //watchdog("SESSION LIST", print_r($_SESSION['listCalendarList'], TRUE));
   //$_SESSION['exported_events'] = serialize($events);
