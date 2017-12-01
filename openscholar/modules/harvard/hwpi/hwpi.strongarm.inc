@@ -726,9 +726,36 @@ function hwpi_strongarm() {
   $strongarm->value = 'http://docs.openscholar.harvard.edu/dataverse-search-box';
   $export['help_os_dataverse_search_url'] = $strongarm;
 
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'university_name';
+  $strongarm->value = 'Harvard';
+  $export['university_name'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pin_authenticate';
+  $strongarm->value = 'https://www.pin1.harvard.edu/pin/authenticate';
+  $export['pin_authenticate'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'getting_started_os';
+  $strongarm->value = 'http://docs.openscholar.harvard.edu/getting-started-with-openscholar';
+  $export['getting_started_os'] = $strongarm;
+
+/**
+ * DASH
+ */
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'dash_base_url';
+  $strongarm->value = 'http://dash.harvard.edu';
+  $export['dash_base_url'] = $strongarm;
+
   return $export;
 }
-
-
-
-

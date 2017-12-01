@@ -9,16 +9,16 @@ $plugin = array(
   'file' => 'citation_distribute_service_sword_dash.inc',
   'parent' => 'citation_distribute_service_sword',
   'title' => t('DASH'),
-  'href' => 'http://dash.harvard.edu',
+  'href' => variable_get('dash_base_url'),
   'name' => 'dash',
-  'description' => 'Harvard\'s open access repository',
+  'description' => t('%university\'s open access repository', array('%university' => variable_get('university_name'))),
 );
 
 
 class citation_distribute_service_sword_dash extends citation_distribute_service_sword {
 	public $name = 			'dash';
 	public $title = 		'DASH';
-	public $location = 	'http://dash.harvard.edu';
+	public $location = 	variable_get('dash_base_url');
 	public $username;
 	public $password;
 	//public $username = 	'swap@lists.iq.harvard.edu';

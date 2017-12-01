@@ -310,7 +310,7 @@ class OsRestfulSiteReport extends \OsRestfulReports {
           '0' => 'Public on the web.',
           '1' => 'Site members only.',
           '2' => 'Anyone with the link.',
-          '4' => 'Harvard Community'
+          '4' => t('%university Community', array('%university' => variable_get('university_name')))
         );
         $new_row['site_privacy_setting'] = $privacy_values[$row->site_privacy_setting];
       }

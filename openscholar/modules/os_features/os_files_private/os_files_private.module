@@ -364,8 +364,8 @@ function os_files_private_cp_settings() {
       '#help_link' => l(t('Learn more about private files'), variable_get('help_private_files_url'), array('attributes' => array('target' => '_blank'))),
     ),
     'form' => array(
-      '#title' => t('Extend access to the Harvard Community'),
-      '#description' => t('This will enable anyone with a valid Harvard ID to log in using the Harvard Pinserver to access your private files. You must have a custom domain and pin application to choose this setting.'),
+      '#title' => t('Extend access to the %university Community', array('%university' => variable_get('university_name'))),
+      '#description' => t('This will enable anyone with a valid %university ID to log in using the %university Pinserver to access your private files. You must have a custom domain and pin application to choose this setting.', array('%university' => variable_get('university_name'))),
       '#type' => 'checkbox',
       '#default_value' => variable_get('os_files_private_pinserver', 0),
       '#weight' => -1,
@@ -390,8 +390,8 @@ function os_files_private_cp_settings() {
         '#help_link' => l(t('Learn more about private files'), variable_get('help_private_files_url'), array('attributes' => array('target' => '_blank'))),
       ),
       'form' => array(
-        '#title' => t('Harvard PIN server application name'),
-        '#description' => t('Enter the application name given to you by Harvard Directory Services.'),
+        '#title' => t('%university PIN server application name', array('%university' => variable_get('university_name'))),
+        '#description' => t('Enter the application name given to you by %university Directory Services.', array('%university' => variable_get('university_name'))),
         '#type' => 'textfield',
         '#default_value' => variable_get('pinserver_app_name', ''),
         '#weight' => -1,
