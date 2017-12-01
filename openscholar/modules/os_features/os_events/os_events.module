@@ -228,13 +228,13 @@ function os_events_gcal_create_calendar() {
     $event->setEnd($calendarDateTime2);
     
     watchdog("Google Calendar", "%%%%%%%%%%%%%%%%%%%%%%%");
-    watchdog("Events", print_r($event, TRUE));
-
     $events[] = $event;
   }
   $client = getClient();
+  watchdog("Google Calendar", "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
   $calendarService = new Google_Service_Calendar($client);
-  watchdog("Calendar Service", $calendarService);
+  watchdog("Google Calendar", "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+  watchdog("Calendar Service", print_r($calendarService, TRUE));
   $_SESSION['listCalendarList'] = serialize($calendarService->calendarList->listCalendarList());
   $_SESSION['exported_events'] = serialize($events);
   drupal_save_session();
