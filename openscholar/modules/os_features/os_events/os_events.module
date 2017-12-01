@@ -213,7 +213,7 @@ function os_events_gcal_create_calendar() {
     $calendarDateTime2->setDateTime($dt2->format(DateTime::RFC3339));
     $event->setEnd($calendarDateTime2);
     //$createdEvent = $calendarService->events->insert('primary', $event);
-    //watchdog("Calendar Service", print_r($createdEvent, TRUE));
+    watchdog("Calendar Service", print_r($calendarService, TRUE));
     //$events[] = $event;
   }
   
