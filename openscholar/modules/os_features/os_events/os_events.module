@@ -217,13 +217,13 @@ function os_events_gcal_create_calendar() {
     $event->setStart($calendarDateTime1);
     $calendarDateTime2->setDateTime($dt2->format(DateTime::RFC3339));
     $event->setEnd($calendarDateTime2);
-
+    watchdog("Events", $event);
     $events[] = $event;
   }
 
   $client = getClient();
   $calendarService = new Google_Service_Calendar($client);
-
+  watchdog("Calendar Service", $calendarService);
   $_SESSION['listCalendarList'] = serialize($calendarService->calendarList->listCalendarList());
   $_SESSION['exported_events'] = serialize($events);
   drupal_save_session();
