@@ -151,7 +151,7 @@ function os_events_get_access_token_with_auth_code() {
     error_log("Error getting access token via auth code.");
   }
   watchdog("Google Calendar", "eeeeeeeeeeeeeeeeeeeeeeeeee");
-  //os_events_gcal_create_calendar();
+  os_events_gcal_create_calendar();
 }
 
 
@@ -169,11 +169,11 @@ function os_events_calendar_export_access() {
   return false;
 }
 
-/*function os_events_gcal_create_calendar() {
+function os_events_gcal_create_calendar() {
   watchdog("Google Calendar", "fffffffffffffffffffffffffffff");
   global $is_https, $user;
 
-  /*$has_access = os_events_calendar_export_access();
+  $has_access = os_events_calendar_export_access();
 
   # If the user is not a member of the group, deny access
   if (! $has_access) {
@@ -230,7 +230,7 @@ function os_events_calendar_export_access() {
   watchdog("Google Calendar", "hhhhhhhhhhhhhhhhhhhhhhhhh");
   drupal_goto(url('/' . $vsite->group->purl . '/calendar'));
 }
-*/
+
 /**
  * @file
  * Administration page callbacks for the google calendar settings.
