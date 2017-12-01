@@ -200,8 +200,10 @@ function os_events_gcal_create_calendar() {
 
   $events = array();
   foreach ($view->result as $e) {
+    watchdog("Google Calendar", "*******************");
     watchdog("Google Calendar", print_r($e, TRUE));
-
+    watchdog("Google Calendar", "*******************");
+    
     # Create test event and add it to the calendar
     $event = new Google_Service_Calendar_Event();
     $event->setDescription($e->_field_data['nid']['entity']->body[LANGUAGE_NONE][0]['value']);
@@ -217,7 +219,9 @@ function os_events_gcal_create_calendar() {
     $event->setStart($calendarDateTime1);
     $calendarDateTime2->setDateTime($dt2->format(DateTime::RFC3339));
     $event->setEnd($calendarDateTime2);
+    watchdog("Google Calendar", "%%%%%%%%%%%%%%%%%%%%%%%");
     watchdog("Events", print_r($event, TRUE));
+    watchdog("Google Calendar", "%%%%%%%%%%%%%%%%%%%%%%%");
     $events[] = $event;
   }
 
