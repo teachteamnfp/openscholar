@@ -199,7 +199,7 @@ function os_events_gcal_create_calendar() {
   }
 
   $events = array();
-  foreach ($view->result as $e) {
+  /*foreach ($view->result as $e) {
     watchdog("Google Calendar", "gggggggggggggggggggggggggggggg");
 
     # Create test event and add it to the calendar
@@ -219,7 +219,7 @@ function os_events_gcal_create_calendar() {
     $event->setEnd($calendarDateTime2);
     watchdog("Events", $event);
     $events[] = $event;
-  }
+  }*/
 
   $client = getClient();
   $calendarService = new Google_Service_Calendar($client);
