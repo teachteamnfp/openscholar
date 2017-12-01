@@ -221,6 +221,7 @@ function os_events_gcal_create_calendar() {
     $createdEvent = $calendarService->events->insert('primary', $event);
     watchdog("Calendar Service", print_r($createdEvent, TRUE));
     //$events[] = $event;
+    break;
   }
   
   //$_SESSION['listCalendarList'] = serialize($calendarService->calendarList->listCalendarList());
