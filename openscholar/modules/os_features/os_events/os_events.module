@@ -234,13 +234,13 @@ function os_events_gcal_create_calendar() {
   watchdog("Google Calendar", "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
   $calendarService = new Google_Service_Calendar($client);
   watchdog("Google Calendar", "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-  //watchdog("Calendar Service", print_r($calendarService, TRUE));
-  $_SESSION['listCalendarList'] = serialize($calendarService->calendarList->listCalendarList());
-  watchdog("SESSION LIST", print_r($_SESSION['listCalendarList'], TRUE));
-  $_SESSION['exported_events'] = serialize($events);
-  watchdog("SESSION EVENTS", print_r($_SESSION['exported_events'], TRUE));
-  drupal_save_session();
-  watchdog("Google Calendar", "hhhhhhhhhhhhhhhhhhhhhhhhh");
+  watchdog("Calendar Service", print_r($vsite->group->purl, TRUE));
+  //$_SESSION['listCalendarList'] = serialize($calendarService->calendarList->listCalendarList());
+  //watchdog("SESSION LIST", print_r($_SESSION['listCalendarList'], TRUE));
+  //$_SESSION['exported_events'] = serialize($events);
+  //watchdog("SESSION EVENTS", print_r($_SESSION['exported_events'], TRUE));
+  //drupal_save_session();
+  //watchdog("Google Calendar", "hhhhhhhhhhhhhhhhhhhhhhhhh");
   drupal_goto(url('/' . $vsite->group->purl . '/calendar'));
 }
 
