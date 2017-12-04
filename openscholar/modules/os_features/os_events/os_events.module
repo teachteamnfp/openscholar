@@ -202,7 +202,6 @@ function os_events_gcal_create_calendar() {
   $client = getClient();
   $calendarService = new Google_Service_Calendar($client);
 
-  $this->service = $calendarService;
   watchdog("Calendar 1", print_r($createdCalendar, TRUE));
   $createdCalendar = $this->service->calendars->insert($calendarService);
   watchdog("Calendar 2", print_r($createdCalendar, TRUE));
@@ -214,7 +213,6 @@ function os_events_gcal_create_calendar() {
   $calendarListEntry->setId($this::$calendar_ID);
   $service = $this->service;
   $service->calendarList->insert($calendarListEntry);*/
-  
 
   
   $events = array();
