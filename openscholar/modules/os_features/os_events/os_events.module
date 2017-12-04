@@ -224,7 +224,7 @@ function os_events_gcal_create_calendar() {
     $event->setStart($calendarDateTime1);
     $calendarDateTime2->setDateTime($dt2->format(DateTime::RFC3339));
     $event->setEnd($calendarDateTime2);
-    $calendarService = $service->events->insert($calendar_ID, $event);
+    $calendarService = $service->events->insert('primary', $event);
     watchdog("Calendar Service", print_r($calendarService, TRUE));
     //$events[] = $event;
   }
