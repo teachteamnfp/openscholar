@@ -792,6 +792,19 @@ ul ul ul ul {
     left: 0;
     content: '';
 }
+.google {
+    padding: 3px 0 3px 25px !important;
+    border-bottom: none !important;
+    position: relative;
+}
+.google:before {
+    /*background: url('../images/scholarbase-sprite.png?0615b') no-repeat 0px -727px;*/
+    width: 21px;
+    height: 22px;
+    position: absolute;
+    left: 0;
+    content: '';
+}
 .subscribe {
     padding: 3px 0 3px 25px !important;
     border-bottom: none !important;
