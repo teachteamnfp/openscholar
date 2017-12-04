@@ -200,10 +200,25 @@ function os_events_gcal_create_calendar() {
   }
   
   $client = getClient();
-  watchdog("Client", print_r($client, TRUE));
   $calendarService = new Google_Service_Calendar($client);
-  watchdog("Calendar Service", print_r($calendarService, TRUE));
-    
+ 
+  $calendarService->setSummary("Openscholar");
+  $calendarService->setTimeZone(date_default_timezone_get());
+  $this->service = $calendarService;
+  watchdog("Calendar 1", print_r($createdCalendar, TRUE));
+  $createdCalendar = $this->service->calendars->insert($calendarService);
+  watchdog("Calendar 2", print_r($createdCalendar, TRUE));
+  // Store calendar ID on current object.
+  $this::$calendar_ID = $createdCalendar->getId();
+  variable_set('google_calendar_sync_calendar_id', $this::$calendar_ID);
+  // Create Calendar list entry
+  /*$calendarListEntry = new Google_Service_Calendar_CalendarListEntry();
+  $calendarListEntry->setId($this::$calendar_ID);
+  $service = $this->service;
+  $service->calendarList->insert($calendarListEntry);*/
+  
+
+  
   $events = array();
   foreach ($view->result as $e) {
     # Create test event and add it to the calendar    
@@ -221,8 +236,11 @@ function os_events_gcal_create_calendar() {
     $event->setStart($calendarDateTime1);
     $calendarDateTime2->setDateTime($dt2->format(DateTime::RFC3339));
     $event->setEnd($calendarDateTime2);
+    $service = $this->service;
+    watchdog("Calendar Events 1", print_r($createdEvent, TRUE));
+    $createdEvent = $service->events->insert($this::$calendar_ID, $event);
     //$createdEvent = $calendarService->events->insert('primary', $event);
-    watchdog("Calendar Service", print_r($calendarService, TRUE));
+    watchdog("Calendar Events 2", print_r($createdEvent, TRUE));
     //$events[] = $event;
   }
   
