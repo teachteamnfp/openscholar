@@ -114,7 +114,6 @@ function getClient() {
   watchdog("Refresh Token", print_r($refresh_token, TRUE));
 
   $client->setAccessToken($accessToken);
-  $client->setRefreshToken($refresh_token);
   
   
   $_base_path = rtrim(ltrim(base_path(), '/'), '/');
