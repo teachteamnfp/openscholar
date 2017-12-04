@@ -109,13 +109,9 @@ function getClient() {
   $accessToken = json_encode($token);
   $get_refresh_token = $client->getRefreshToken();
   $refresh_token = json_encode($get_refresh_token);
-
-  watchdog("Access Token", print_r($accessToken, TRUE));
-  watchdog("Refresh Token", print_r($refresh_token, TRUE));
-
+  
   $client->setAccessToken($accessToken);
-  
-  
+
   $_base_path = rtrim(ltrim(base_path(), '/'), '/');
   $base_path = ((strlen($_base_path) == 0) ? '' : '/' . $_base_path);
   $client->setRedirectUri(variable_get('callback_url'));
@@ -145,7 +141,6 @@ function os_events_get_access_token_with_auth_code() {
 
   // Exchange authorization code for an access token.
   $accessToken = $client->fetchAccessTokenWithAuthCode($authCode);
-  watchdog("Access Tocken", print_r($accessToken, TRUE));
   if (! isset($accessToken['error']) && isset($accessToken['access_token'])) {
     $client->setAccessToken($accessToken['access_token']);
     variable_set('google_credentials', json_encode($accessToken));
