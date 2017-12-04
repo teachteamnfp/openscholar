@@ -170,50 +170,6 @@ function os_events_get_access_token_with_auth_code() {
 }*/
 
 
-class GoogleCalendarSync{
-  
-  protected static $calendar_ID;
-  protected static $calendar_name;
-  public $service;
-  public $calendar_timezone;
-
-  function __construct() {
-    $this::$calendar_name                       = 'Openscholar';
-    $this->calendar_timezone                    = date_default_timezone();
-    $this->buildGoogleClient();
-    $service  = new Google_Service_Calendar($this->client);
-    $this->service = $service;
-    /* Create calendar if calendarID is not present */
-    $current_Client_ID = variable_get('google_calendar_sync_calendar_id', '');
-    if(!$current_Client_ID){
-      $this->createCalendar($this::$calendar_name);
-    }else{
-      $this::$calendar_ID = $current_Client_ID;
-    }
-  }
-  /**
-   * Create new calendar on Google calendars
-   * @param $calendar_title
-   * @return mixed
-   */
-  public function createCalendar($calendar_title){
-    // Create Calendar.
-    $calendar = new Google_Service_Calendar_Calendar();
-    $calendar->setSummary($calendar_title);
-    $calendar->setTimeZone($this->calendar_timezone);
-    $createdCalendar = $this->service->calendars->insert($calendar);
-    // Store calendar ID on current object.
-    $this::$calendar_ID = $createdCalendar->getId();
-    variable_set('google_calendar_sync_calendar_id', $this::$calendar_ID);
-    // Create Calendar list entry
-    //$calendarListEntry = new Google_Service_Calendar_CalendarListEntry();
-    //$calendarListEntry->setId($this::$calendar_ID);
-    //$service = $this->service;
-    //$service->calendarList->insert($calendarListEntry);
-  }
-}
-
-
 function os_events_gcal_create_calendar() {
   global $is_https, $user;
 
@@ -241,10 +197,21 @@ function os_events_gcal_create_calendar() {
   if ($view = views_get_view($name, $get_fresh_view)) {
     $view->execute_display($display_id, $args);
   }
-  
+
+
+
   $client = getClient();
-  $calendarService = createCalendar('Openscholar');
-    
+  $service  = new Google_Service_Calendar($client);
+  // Create Calendar.
+  $calendar = new Google_Service_Calendar_Calendar();
+  $calendar->setSummary('Openscholar');
+  $calendar->setTimeZone(date_default_timezone());
+  $createdCalendar = $service->calendars->insert($calendar);
+  $calendar_ID = $createdCalendar->getId();
+  
+  
+
+
   $events = array();
   foreach ($view->result as $e) {
     # Create test event and add it to the calendar    
@@ -274,6 +241,7 @@ function os_events_gcal_create_calendar() {
   //drupal_save_session();
   drupal_goto(url('/' . $vsite->group->purl . '/calendar'));
 }
+
 
 /**
  * @file
