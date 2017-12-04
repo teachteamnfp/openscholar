@@ -99,7 +99,7 @@ function getClient() {
   $client = new Google_Client();
   $client->setApplicationName(APPLICATION_NAME);
   $client->setScopes(SCOPES);
-  $client->setAccessType('online');
+  $client->setAccessType('offline');
   $client->setApprovalPrompt('force');
   $client->setClientId($google_client_ID);
   $client->setClientSecret($google_client_secret);
@@ -145,7 +145,7 @@ function os_events_get_access_token_with_auth_code() {
 
   // Exchange authorization code for an access token.
   $accessToken = $client->fetchAccessTokenWithAuthCode($authCode);
-
+  watchdog("Access Tocken", print_r($accessToken, TRUE));
   if (! isset($accessToken['error']) && isset($accessToken['access_token'])) {
     $client->setAccessToken($accessToken['access_token']);
     variable_set('google_credentials', json_encode($accessToken));
