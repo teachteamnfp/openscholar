@@ -191,13 +191,17 @@ function os_events_gcal_create_calendar() {
   if ($view = views_get_view($name, $get_fresh_view)) {
     $view->execute_display($display_id, $args);
   }
-
+  
+  $client = getClient();
+  watchdog("Client","%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+  watchdog("Client", print_r($client, TRUE));
+  $calendarService = new Google_Service_Calendar($client);
+  watchdog("Calendar Service","&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+  watchdog("Calendar Service", print_r($calendarService, TRUE));
+    
   $events = array();
   foreach ($view->result as $e) {
-    # Create test event and add it to the calendar
-    $client = getClient();
-    $calendarService = new Google_Service_Calendar($client);
-    
+    # Create test event and add it to the calendar    
     $event = new Google_Service_Calendar_Event();
     $event->setDescription($e->_field_data['nid']['entity']->body[LANGUAGE_NONE][0]['value']);
     $event->setLocation($e->_field_data['nid']['entity']->field_event_location[LANGUAGE_NONE][0]['value']);
@@ -222,7 +226,6 @@ function os_events_gcal_create_calendar() {
   //$_SESSION['exported_events'] = serialize($events);
   //watchdog("SESSION EVENTS", print_r($_SESSION['exported_events'], TRUE));
   //drupal_save_session();
-  //watchdog("Google Calendar", "hhhhhhhhhhhhhhhhhhhhhhhhh");
   drupal_goto(url('/' . $vsite->group->purl . '/calendar'));
 }
 
