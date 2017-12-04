@@ -201,9 +201,7 @@ function os_events_gcal_create_calendar() {
   
   $client = getClient();
   $calendarService = new Google_Service_Calendar($client);
- 
-  $calendarService->setSummary("Openscholar");
-  $calendarService->setTimeZone(date_default_timezone_get());
+
   $this->service = $calendarService;
   watchdog("Calendar 1", print_r($createdCalendar, TRUE));
   $createdCalendar = $this->service->calendars->insert($calendarService);
