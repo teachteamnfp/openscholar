@@ -107,8 +107,16 @@ function getClient() {
 
   $token = $client->getAccessToken();
   $accessToken = json_encode($token);
+  $get_refresh_token = $client->getRefreshToken();
+  $refresh_token = json_encode($get_refresh_token);
+
+  watchdog("Access Token", print_r($accessToken, TRUE));
+  watchdog("Refresh Token", print_r($refresh_token, TRUE));
 
   $client->setAccessToken($accessToken);
+  $client->setRefreshToken($refresh_token);
+  
+  
   $_base_path = rtrim(ltrim(base_path(), '/'), '/');
   $base_path = ((strlen($_base_path) == 0) ? '' : '/' . $_base_path);
   $client->setRedirectUri(variable_get('callback_url'));
@@ -193,10 +201,8 @@ function os_events_gcal_create_calendar() {
   }
   
   $client = getClient();
-  watchdog("Client","%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
   watchdog("Client", print_r($client, TRUE));
   $calendarService = new Google_Service_Calendar($client);
-  watchdog("Calendar Service","&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
   watchdog("Calendar Service", print_r($calendarService, TRUE));
     
   $events = array();
