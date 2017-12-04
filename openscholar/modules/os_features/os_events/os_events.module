@@ -155,7 +155,7 @@ function os_events_get_access_token_with_auth_code() {
 }
 
 
-/*function os_events_calendar_export_access() {
+function os_events_calendar_export_access() {
   global $user;
 
   # Ensure the user is a member of this group
@@ -167,19 +167,24 @@ function os_events_get_access_token_with_auth_code() {
       }
   }
   return false;
-}*/
+}
 
+/**
+ * @file
+ * Synchronizing the openscholar calendar events with
+ * Googlw calendar.
+ */
 
 function os_events_gcal_create_calendar() {
   global $is_https, $user;
 
-  /*$has_access = os_events_calendar_export_access();
+  $has_access = os_events_calendar_export_access();
 
   # If the user is not a member of the group, deny access
   if (! $has_access) {
     drupal_access_denied();
   }
-*/
+
   $name = "os_events";
   $display_id = "feed_2_no_cache";
   $args = array("upcoming", "all");
@@ -200,12 +205,13 @@ function os_events_gcal_create_calendar() {
 
   $client = getClient();
   $service  = new Google_Service_Calendar($client);
-  // Create Calendar.
-  $calendar = new Google_Service_Calendar_Calendar();
-  $calendar->setSummary('Openscholar');
-  $calendar->setTimeZone(date_default_timezone());
-  $createdCalendar = $service->calendars->insert($calendar);
-  $calendar_ID = $createdCalendar->getId();
+  
+  // Create New Calendar.
+  //$calendar = new Google_Service_Calendar_Calendar();
+  //$calendar->setSummary('Openscholar');
+  //$calendar->setTimeZone(date_default_timezone());
+  //$createdCalendar = $service->calendars->insert($calendar);
+  //$calendar_ID = $createdCalendar->getId();
 
   $events = array();
   foreach ($view->result as $e) {
@@ -225,15 +231,8 @@ function os_events_gcal_create_calendar() {
     $calendarDateTime2->setDateTime($dt2->format(DateTime::RFC3339));
     $event->setEnd($calendarDateTime2);
     $calendarService = $service->events->insert('primary', $event);
-    watchdog("Calendar Service", print_r($calendarService, TRUE));
-    //$events[] = $event;
   }
-
-  //$_SESSION['listCalendarList'] = serialize($calendarService->calendarList->listCalendarList());
-  //watchdog("SESSION LIST", print_r($_SESSION['listCalendarList'], TRUE));
-  //$_SESSION['exported_events'] = serialize($events);
-  //watchdog("SESSION EVENTS", print_r($_SESSION['exported_events'], TRUE));
-  //drupal_save_session();
+  drupal_set_message(t('Openscholar calendar has been exported to Google calendar.'));
   drupal_goto(url('/' . $vsite->group->purl . '/calendar'));
 }
 
@@ -281,7 +280,7 @@ function google_account_form () {
     '#description' => t('Copy this url and paste it in google project as a authorized redirect url.'),
     '#default_value' => $redirect_url,
     '#size' => 3,
-    //'#attributes' => array('readonly' => 'readonly'),
+    '#attributes' => array('readonly' => 'readonly'),
   );
 
   return system_settings_form($form, TRUE); 
