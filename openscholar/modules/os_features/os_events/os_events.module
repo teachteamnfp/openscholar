@@ -104,18 +104,23 @@ function getClient() {
   $client->setClientId($google_client_ID);
   $client->setClientSecret($google_client_secret);
   $client->setDeveloperKey($google_developer_key);
-
-  $token = $client->getAccessToken();
-  $accessToken = json_encode($token);
-  $get_refresh_token = $client->getRefreshToken();
-  $refresh_token = json_encode($get_refresh_token);
   
+  // Load previously authorized credentials from a file.
+  $credentialsPath = variable_get('google_credentials');
+
+  // If the credentials exist, and are valid
+  if ($credentialsPath) {
+    $accessToken = $credentialsPath;
+  }
+  else {
+    $token = $client->getAccessToken();
+    $accessToken = json_encode($token);
+    $get_refresh_token = $client->getRefreshToken();
+    $refresh_token = json_encode($get_refresh_token);
+  }
+
   $client->setAccessToken($accessToken);
-
-  $_base_path = rtrim(ltrim(base_path(), '/'), '/');
-  $base_path = ((strlen($_base_path) == 0) ? '' : '/' . $_base_path);
   $client->setRedirectUri(variable_get('callback_url'));
-
   return $client;
 }
 
