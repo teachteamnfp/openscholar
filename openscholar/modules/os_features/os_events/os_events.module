@@ -159,9 +159,9 @@ function os_events_calendar_export_access() {
   global $user;
 
   # Ensure the user is a member of this group
-  $vsites_member = vsite_get_user_vsites($user->id);
-  $has_access = false;
+  $vsites_member = vsite_load_user_membership($user->id);
   foreach ($vsites_member as $vm) {
+    watchdog("Member", print_r($vm, TRUE));
       if ($vm->group->nid == $_GET["state"]) {
         return true;
       }
@@ -181,7 +181,7 @@ function os_events_gcal_create_calendar() {
   $has_access = os_events_calendar_export_access();
 
   # If the user is not a member of the group, deny access
-  if (! $has_access) {
+  if (!$has_access) {
     drupal_access_denied();
   }
 
@@ -509,8 +509,8 @@ function os_events_menu() {
     'title' => 'Get Access Token With Auth Code',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('os_events_get_access_token_with_auth_code'),
-    //'access callback' => 'os_events_calendar_export_access',
-    'access arguments' => array('administer site configuration'),
+    'access callback' => 'os_events_calendar_export_access',
+    //'access arguments' => array('administer site configuration'),
     'type' => MENU_CALLBACK,
   );
   
