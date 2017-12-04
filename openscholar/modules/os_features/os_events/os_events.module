@@ -198,8 +198,6 @@ function os_events_gcal_create_calendar() {
     $view->execute_display($display_id, $args);
   }
 
-
-
   $client = getClient();
   $service  = new Google_Service_Calendar($client);
   // Create Calendar.
@@ -208,9 +206,6 @@ function os_events_gcal_create_calendar() {
   $calendar->setTimeZone(date_default_timezone());
   $createdCalendar = $service->calendars->insert($calendar);
   $calendar_ID = $createdCalendar->getId();
-  
-  
-
 
   $events = array();
   foreach ($view->result as $e) {
@@ -229,11 +224,11 @@ function os_events_gcal_create_calendar() {
     $event->setStart($calendarDateTime1);
     $calendarDateTime2->setDateTime($dt2->format(DateTime::RFC3339));
     $event->setEnd($calendarDateTime2);
-    //$createdEvent = $calendarService->events->insert('primary', $event);
+    $calendarService = $calendar->events->insert($calendar_ID, $event);
     watchdog("Calendar Service", print_r($calendarService, TRUE));
     //$events[] = $event;
   }
-  
+
   //$_SESSION['listCalendarList'] = serialize($calendarService->calendarList->listCalendarList());
   //watchdog("SESSION LIST", print_r($_SESSION['listCalendarList'], TRUE));
   //$_SESSION['exported_events'] = serialize($events);
@@ -241,7 +236,6 @@ function os_events_gcal_create_calendar() {
   //drupal_save_session();
   drupal_goto(url('/' . $vsite->group->purl . '/calendar'));
 }
-
 
 /**
  * @file
