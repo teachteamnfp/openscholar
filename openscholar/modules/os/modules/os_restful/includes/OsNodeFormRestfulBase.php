@@ -82,7 +82,7 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
       '#access' => $node->revision || user_access('administer nodes'),
       'revision' => array(
         '#type' => 'checkbox',
-        '#title' => t('Create new revision'),
+        '#title' => t('When checked, a new version of this content will be created'),
         '#default_value' => $node->revision,
         '#access' => user_access('administer nodes'),
       ),
@@ -91,7 +91,7 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
         '#title' => t('Revision log message'),
         '#rows' => 4,
         '#default_value' => !empty($node->log) ? $node->log : '',
-        '#description' => t('Provide an explanation of the changes you are making. This will help other authors understand your motivations.'),
+        '#description' => t('Provide an explanation of the changes you are making.</br></br> !help_link', array('!help_link' => l(t('What’s being stored as a revision?'), 'https://docs.openscholar.harvard.edu/revisions', array('attributes' => array('target' => array('_blank')))))),
         '#access' => user_access('administer nodes'),
       ),
     );
@@ -141,7 +141,7 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
       ),
       'sticky' => array(
         '#type' => 'checkbox',
-        '#title' => t('Sticky at top of lists'),
+        '#title' => t('Display at top of lists'),
         '#default_value' => $node->sticky,
       ),
     );
@@ -183,7 +183,12 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
     if ($property_name == 'author') {
       return user_load_by_name($value)->uid;
     }
-
+    if ($property_name == 'field_upload' && empty($value)) {
+      return array();
+    }
+    if ($property_name == 'created' && !empty($value)) {
+      return array(strtotime($value));
+    }
     $field_info = field_info_field($property_name);
     switch ($field_info['type']) {
       default:
@@ -214,7 +219,7 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
 
     if (empty($original_request['title'])) {
       throw new RestfulForbiddenException("Title field is required.");
-    } 
+    }
     else {
       // @todo : Remove debug statment.
       //print_r($original_request);
@@ -234,6 +239,7 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
       $processed_property = array_merge($processed_property, $processed_unknown_property);
        // @todo : Remove debug statment.
        //print_r($wrapper->getPropertyInfo());
+      //print_r($processed_property);
       foreach ($processed_property as $property_name => $value) {
         if (!empty($wrapper->{$property_name})) {
           $field_value = $this->propertyValuesPreprocess($property_name, $value, $property_name);
@@ -243,6 +249,8 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
 
       $save = TRUE;
       $wrapper->save();
+
+      print_r($wrapper);
     }
     
     if (!$save) {
