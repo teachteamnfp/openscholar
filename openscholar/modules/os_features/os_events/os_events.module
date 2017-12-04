@@ -140,8 +140,6 @@ function os_events_get_access_token_with_auth_code() {
   
   $client = getClient();
   $client->setState('1');
-  $_base_path = rtrim(ltrim(base_path(), '/'), '/');
-  $base_path = ((strlen($_base_path) == 0) ? '' : '/' . $_base_path);
   $client->setRedirectUri(variable_get('callback_url'));
 
   // Exchange authorization code for an access token.
@@ -161,9 +159,9 @@ function os_events_get_access_token_with_auth_code() {
   global $user;
 
   # Ensure the user is a member of this group
-  $vsites_member = vsite_get_user_vsites($user->id);
-  $has_access = false;
+  $vsites_member = vsite_load_user_membership($user->id);
   foreach ($vsites_member as $vm) {
+    watchdog("Member", print_r($vm, TRUE));
       if ($vm->group->nid == $_GET["state"]) {
         return true;
       }
@@ -171,16 +169,23 @@ function os_events_get_access_token_with_auth_code() {
   return false;
 }*/
 
+/**
+ * @file
+ * Synchronizing the openscholar calendar events with
+ * Googlw calendar.
+ */
+
 function os_events_gcal_create_calendar() {
   global $is_https, $user;
 
-  /*$has_access = os_events_calendar_export_access();
+  //$has_access = os_events_calendar_export_access();
+
 
   # If the user is not a member of the group, deny access
-  if (! $has_access) {
+  /*if (!$has_access) {
     drupal_access_denied();
-  }
-*/
+  }*/
+
   $name = "os_events";
   $display_id = "feed_2_no_cache";
   $args = array("upcoming", "all");
@@ -198,23 +203,17 @@ function os_events_gcal_create_calendar() {
   if ($view = views_get_view($name, $get_fresh_view)) {
     $view->execute_display($display_id, $args);
   }
-  
+
   $client = getClient();
-  $calendarService = new Google_Service_Calendar($client);
-
-  watchdog("Calendar 1", print_r($createdCalendar, TRUE));
-  $createdCalendar = $this->service->calendars->insert($calendarService);
-  watchdog("Calendar 2", print_r($createdCalendar, TRUE));
-  // Store calendar ID on current object.
-  $this::$calendar_ID = $createdCalendar->getId();
-  variable_set('google_calendar_sync_calendar_id', $this::$calendar_ID);
-  // Create Calendar list entry
-  /*$calendarListEntry = new Google_Service_Calendar_CalendarListEntry();
-  $calendarListEntry->setId($this::$calendar_ID);
-  $service = $this->service;
-  $service->calendarList->insert($calendarListEntry);*/
-
+  $service  = new Google_Service_Calendar($client);
   
+  // Create New Calendar.
+  //$calendar = new Google_Service_Calendar_Calendar();
+  //$calendar->setSummary('Openscholar');
+  //$calendar->setTimeZone(date_default_timezone());
+  //$createdCalendar = $service->calendars->insert($calendar);
+  //$calendar_ID = $createdCalendar->getId();
+
   $events = array();
   foreach ($view->result as $e) {
     # Create test event and add it to the calendar    
@@ -232,19 +231,9 @@ function os_events_gcal_create_calendar() {
     $event->setStart($calendarDateTime1);
     $calendarDateTime2->setDateTime($dt2->format(DateTime::RFC3339));
     $event->setEnd($calendarDateTime2);
-    $service = $this->service;
-    watchdog("Calendar Events 1", print_r($createdEvent, TRUE));
-    $createdEvent = $service->events->insert($this::$calendar_ID, $event);
-    //$createdEvent = $calendarService->events->insert('primary', $event);
-    watchdog("Calendar Events 2", print_r($createdEvent, TRUE));
-    //$events[] = $event;
+    $calendarService = $service->events->insert('primary', $event);
   }
-  
-  //$_SESSION['listCalendarList'] = serialize($calendarService->calendarList->listCalendarList());
-  //watchdog("SESSION LIST", print_r($_SESSION['listCalendarList'], TRUE));
-  //$_SESSION['exported_events'] = serialize($events);
-  //watchdog("SESSION EVENTS", print_r($_SESSION['exported_events'], TRUE));
-  //drupal_save_session();
+  drupal_set_message(t('Openscholar calendar has been exported to Google calendar.'));
   drupal_goto(url('/' . $vsite->group->purl . '/calendar'));
 }
 
@@ -292,7 +281,7 @@ function google_account_form () {
     '#description' => t('Copy this url and paste it in google project as a authorized redirect url.'),
     '#default_value' => $redirect_url,
     '#size' => 3,
-    //'#attributes' => array('readonly' => 'readonly'),
+    '#attributes' => array('readonly' => 'readonly'),
   );
 
   return system_settings_form($form, TRUE); 
@@ -521,8 +510,7 @@ function os_events_menu() {
     'title' => 'Get Access Token With Auth Code',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('os_events_get_access_token_with_auth_code'),
-    //'access callback' => 'os_events_calendar_export_access',
-    'access arguments' => array('administer site configuration'),
+    'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
   
