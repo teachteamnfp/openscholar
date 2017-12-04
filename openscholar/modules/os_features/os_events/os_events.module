@@ -155,7 +155,7 @@ function os_events_get_access_token_with_auth_code() {
 }
 
 
-function os_events_calendar_export_access() {
+/*function os_events_calendar_export_access() {
   global $user;
 
   # Ensure the user is a member of this group
@@ -167,7 +167,7 @@ function os_events_calendar_export_access() {
       }
   }
   return false;
-}
+}*/
 
 /**
  * @file
@@ -178,8 +178,8 @@ function os_events_calendar_export_access() {
 function os_events_gcal_create_calendar() {
   global $is_https, $user;
 
-  $has_access = os_events_calendar_export_access();
-  watchdog("Access", print_r($has_access, TRUE));
+  //$has_access = os_events_calendar_export_access();
+
 
   # If the user is not a member of the group, deny access
   /*if (!$has_access) {
@@ -511,7 +511,6 @@ function os_events_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('os_events_get_access_token_with_auth_code'),
     'access callback' => 'user_access',
-    //'access arguments' => array('administer site configuration'),
     'type' => MENU_CALLBACK,
   );
   
