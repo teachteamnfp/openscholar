@@ -213,7 +213,20 @@ function os_events_gcal_create_calendar() {
   //$calendar->setTimeZone(date_default_timezone());
   //$createdCalendar = $service->calendars->insert($calendar);
   //$calendar_ID = $createdCalendar->getId();
-
+  
+  
+  $eventList = $service->events->listEvents('primary');
+  watchdog("Events List", print_r($eventList, TRUE));
+  while(true) {
+    foreach ($events->getItems() as $event) {
+      echo $event->getSummary();
+    }
+  }
+    
+  
+  
+  
+  
   $events = array();
   foreach ($view->result as $e) {
     //watchdog('debug',kprint_r($e->_field_data['nid'], TRUE, NULL));
