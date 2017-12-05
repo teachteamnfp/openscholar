@@ -216,12 +216,10 @@ function os_events_gcal_create_calendar() {
   
   
   $eventList = $service->events->listEvents('primary');
-  while(true) {
-    foreach ($eventList->getItems() as $event) {
-      watchdog("Events ID", print_r($event->getId(), TRUE));
-    }
+  foreach ($eventList->getItems() as $event) {
+    watchdog("Events ID", print_r($event->getId(), TRUE));
   }
-    
+
   
   
   
