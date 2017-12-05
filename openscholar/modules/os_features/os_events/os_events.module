@@ -216,12 +216,13 @@ function os_events_gcal_create_calendar() {
   
   
   $eventList = $service->events->listEvents('primary');
+  watchdog('Event List', print_r($eventList, TRUE));
   foreach ($eventList->getItems() as $event) {
     $event_ID = $event->getId();
+    watchdog('E ID', print_r($event_ID, TRUE));
     $events = array();
 
     foreach ($view->result as $e) {
-      watchdog('E ID', print_r($event_ID, TRUE));
       watchdog('Events ID', print_r($e->_field_data['nid']['entity']->nid, TRUE));
       if($event_ID != $e->_field_data['nid']['entity']->nid) {
 
