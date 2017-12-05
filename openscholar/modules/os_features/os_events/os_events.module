@@ -216,7 +216,7 @@ function os_events_gcal_create_calendar() {
 
   $events = array();
   foreach ($view->result as $e) {
-    watchdog("Events", print_r($e, TRUE));
+    watchdog("E", print_r($e, TRUE));
     # Create test event and add it to the calendar    
     $event = new Google_Service_Calendar_Event();
     $event->setDescription($e->_field_data['nid']['entity']->body[LANGUAGE_NONE][0]['value']);
