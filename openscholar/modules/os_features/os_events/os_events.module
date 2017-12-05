@@ -216,10 +216,9 @@ function os_events_gcal_create_calendar() {
   
   
   $eventList = $service->events->listEvents('primary');
-  watchdog("Events List", print_r($eventList, TRUE));
   while(true) {
     foreach ($eventList->getItems() as $event) {
-      watchdog("Events List", print_r($event->getSummary(), TRUE));
+      watchdog("Events ID", print_r($event->getId(), TRUE));
     }
   }
     
@@ -248,7 +247,6 @@ function os_events_gcal_create_calendar() {
     $calendarDateTime2->setDateTime($dt2->format(DateTime::RFC3339));
     $event->setEnd($calendarDateTime2);
     $calendarService = $service->events->insert('primary', $event);
-    $event_ID = $calendarService->getId();
   }
   drupal_set_message(t('Openscholar calendar has been exported to Google calendar.'));
   drupal_goto(url('/' . $vsite->group->purl . '/calendar'));
