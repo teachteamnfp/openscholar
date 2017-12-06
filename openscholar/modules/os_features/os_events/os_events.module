@@ -219,6 +219,7 @@ function os_events_gcal_create_calendar() {
   $events = array();
   watchdog('Event List 1', print_r($eventList, TRUE));
   if($eventList->getItems()){
+    $service3  = new Google_Service_Calendar($client);
     watchdog('Event List 2', print_r($eventList, TRUE));
     foreach ($eventList->getItems() as $event) {
       $event_ID = $event->getId();
@@ -227,7 +228,6 @@ function os_events_gcal_create_calendar() {
       foreach ($view->result as $e) {
         watchdog('Events ID', print_r($e->_field_data['nid']['entity']->nid, TRUE));
         if($event_ID != $e->_field_data['nid']['entity']->nid) {
-
           # Create event and add it to the calendar    
           $event = new Google_Service_Calendar_Event();
           $event->setDescription($e->_field_data['nid']['entity']->body[LANGUAGE_NONE][0]['value']);
@@ -245,7 +245,7 @@ function os_events_gcal_create_calendar() {
           $calendarDateTime2->setDateTime($dt2->format(DateTime::RFC3339));
           $event->setEnd($calendarDateTime2);
 
-          $calendarService = $service->events->insert('primary', $event);
+          $calendarService = $service3->events->insert('primary', $event);
           drupal_set_message(t('Openscholar calendar has been exported to Google calendar.'));
         }
         else {
@@ -274,6 +274,7 @@ function os_events_gcal_create_calendar() {
     }
   }
   else{
+    $service2  = new Google_Service_Calendar($client);
     foreach ($view->result as $e) {
       watchdog('Debug', print_r("Hello", TRUE));
       # Create event and add it to the calendar    
@@ -293,7 +294,7 @@ function os_events_gcal_create_calendar() {
       $calendarDateTime2->setDateTime($dt2->format(DateTime::RFC3339));
       $event->setEnd($calendarDateTime2);
 
-      $calendarService = $service->events->insert('primary', $event);
+      $calendarService = $service2->events->insert('primary', $event);
       drupal_set_message(t('Openscholar calendar has been exported to Google calendar.'));
     }
   }
