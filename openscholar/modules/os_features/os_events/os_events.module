@@ -274,7 +274,7 @@ function os_events_gcal_create_calendar() {
     }
   }
   else{
-    $service  = new Google_Service_Calendar($client);
+    //$service  = new Google_Service_Calendar($client);
     foreach ($view->result as $e) {
       # Create event and add it to the calendar    
       $event = new Google_Service_Calendar_Event();
