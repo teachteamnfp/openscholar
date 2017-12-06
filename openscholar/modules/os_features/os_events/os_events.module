@@ -221,6 +221,7 @@ function os_events_gcal_create_calendar() {
     $event->setDescription($e->_field_data['nid']['entity']->body[LANGUAGE_NONE][0]['value']);
     $event->setLocation($e->_field_data['nid']['entity']->field_event_location[LANGUAGE_NONE][0]['value']);
     $event->setSummary($e->_field_data['nid']['entity']->title);
+    $event->setId($e->_field_data['nid']['entity']->nid);
 
     $dt1 = new DateTime($e->field_data_field_date_field_date_value . "Z");
     $dt2 = new DateTime($e->field_data_field_date_field_date_value2 . "Z");
