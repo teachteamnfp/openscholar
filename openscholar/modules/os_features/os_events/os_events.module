@@ -206,9 +206,8 @@ function os_events_gcal_create_calendar() {
 
   $client = getClient();
   $calendarService  = new Google_Service_Calendar($client);
-  $events = $calendarService->events;
-  watchdog('Event List', print_r($events, TRUE));
-  //$eventList = $service_calendar->events->listEvents('primary');
+  $eventList = $calendarService->events->listEvents('primary');
+  watchdog('Event List', print_r($eventList, TRUE));
   //if(!$eventList->getItems()){
 
     $service  = new Google_Service_Calendar($client);
