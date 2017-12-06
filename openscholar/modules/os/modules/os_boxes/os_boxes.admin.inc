@@ -54,20 +54,24 @@ function os_boxes_form_boxes_box_form_alter(&$form, &$form_state) {
   if (method_exists($form_state['box'], 'validate')) {
     $form['#validate'][] = 'os_boxes_alter_options_widget';
   }
+
+  if (method_exists($form_state['box'], 'clean_widget_title')) {
+    $form['#validate'][] = 'os_boxes_clean_widget_title';
+  }
 }
 
 /**
  * Allow widgets alter the values of the forms before process by boxes.
  */
-function os_boxes_alter_options_widget(&$form, &$form_state) {
+function os_boxes_alter_options_widget($form, &$form_state) {
   $form_state['box']->validate($form_state['values']);
+}
 
-  if (preg_match("/[{}]/", $form_state['values']['title']) === 1) {
-    $filtered_title = preg_replace("/[{}]/", "", $form_state['values']['title']);
-    form_set_value($form['title'], $filtered_title, $form_state);
-    $form['title']['#value'] = $filtered_title;
-    form_set_error('', t('Curly braces are not allowed.'));
-  }
+/**
+ * Alter the widget title before process by boxes.
+ */
+function os_boxes_clean_widget_title(&$form, &$form_state) {
+  $form_state['box']->clean_widget_title($form, $form_state);
 }
 
 /**

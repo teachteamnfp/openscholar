@@ -108,6 +108,19 @@ class os_boxes_html extends os_boxes_default {
     }
   }
 
+  public function clean_widget_title(&$form, &$form_state) {
+    if (preg_match("/[{}]/", $form_state['values']['title']) === 1) {
+      // Remove curly braces from the widget title
+      $filtered_title = preg_replace("/[{}]/", "", $form_state['values']['title']);
+
+      // Modify a widget title.
+      form_set_value($form['title'], $filtered_title, $form_state);
+      $form['title']['#value'] = $filtered_title;
+
+      form_set_error('', t('Curly braces are not allowed.'));
+    }
+  }
+
   public function render() {
     $block = parent::render();
 
