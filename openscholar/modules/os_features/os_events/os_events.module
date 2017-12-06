@@ -293,7 +293,8 @@ function os_events_gcal_create_calendar() {
       $event->setStart($calendarDateTime1);
       $calendarDateTime2->setDateTime($dt2->format(DateTime::RFC3339));
       $event->setEnd($calendarDateTime2);
-      watchdog('Debug 2', print_r($event, TRUE));
+      watchdog('Debug 2', print_r($service2, TRUE));
+      watchdog('Debug 2', print_r($service, TRUE));
       $calendarService = $service2->events->insert('primary', $event);
       watchdog('Debug 3', print_r($calendarService, TRUE));
       drupal_set_message(t('Openscholar calendar has been exported to Google calendar.'));
