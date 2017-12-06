@@ -230,7 +230,7 @@ function os_events_gcal_create_calendar() {
       $calendarInsert = $calendarService->events->insert('primary', $event);
       drupal_set_message(t('Openscholar calendar has been exported to Google calendar.'));
     }
-    else{
+    /*else{
       watchdog('Debugg 2', print_r("Hii", TRUE));
      # Update events to the Google calendar   
       $event = $calendarService->events->get('primary', $e->_field_data['nid']['entity']->nid);
@@ -251,7 +251,7 @@ function os_events_gcal_create_calendar() {
 
       $calendarUpdate = $calendarService->events->update('primary', $event->getId(), $event);
       drupal_set_message(t('Google calender has been updated.'));
-    }
+    }*/
   }
   drupal_goto(url('/' . $vsite->group->purl . '/calendar'));
 }
@@ -260,7 +260,7 @@ function os_events_gcal_create_calendar() {
  * Check if this events is already on Google Calendar
  * @param $event_id
  *
- * @return bool true if calendar don't exists
+ * @return bool true if event don't exists
  */
 function checkEvent ($event_id) {
   watchdog('Event ID', print_r($event_id, TRUE));
@@ -280,7 +280,7 @@ function checkEvent ($event_id) {
  * Administration page callbacks for the google calendar settings.
  */
 /**
- * Form builder. Configure goggle calendar account.
+ * Form builder. Configure google calendar account.
  *
  * @ingroup forms
  * @see system_settings_form().
