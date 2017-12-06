@@ -209,6 +209,7 @@ function os_events_gcal_create_calendar() {
 
   $event = array();
   foreach ($view->result as $e) {
+    watchdog('Debugg', print_r("Hello", TRUE));
     if(checkEvent($e->_field_data['nid']['entity']->nid)) {
       # Create event and add it to the calendar    
       $event = new Google_Service_Calendar_Event();
@@ -230,6 +231,7 @@ function os_events_gcal_create_calendar() {
       drupal_set_message(t('Openscholar calendar has been exported to Google calendar.'));
     }
     else{
+      watchdog('Debugg 2', print_r("Hii", TRUE));
      # Update events to the Google calendar   
       $event = $calendarService->events->get('primary', $e->_field_data['nid']['entity']->nid);
 
@@ -261,6 +263,7 @@ function os_events_gcal_create_calendar() {
  * @return bool true if calendar don't exists
  */
 function checkEvent ($event_id) {
+  watchdog('Event ID', print_r($event_id, TRUE));
   $client = getClient();
   $calendarService = new Google_Service_Calendar($client);
   try {
