@@ -219,11 +219,11 @@ function os_events_gcal_create_calendar() {
     //watchdog('debug',kprint_r($e->_field_data['nid'], TRUE, NULL));
     //watchdog("debug", '<pre>' . print_r( $e->_field_data['nid'], true) . '</pre>'); 
     # Create event and add it to the calendar    
-    $event = new Google_Service_Calendar_Event();
-    $event->setDescription($e->_field_data['nid']['entity']->body[LANGUAGE_NONE][0]['value']);
-    $event->setLocation($e->_field_data['nid']['entity']->field_event_location[LANGUAGE_NONE][0]['value']);
-    $event->setSummary($e->_field_data['nid']['entity']->title);
-    $event->setId($e->_field_data['nid']['entity']->nid);
+    $events = new Google_Service_Calendar_Event();
+    $events->setDescription($e->_field_data['nid']['entity']->body[LANGUAGE_NONE][0]['value']);
+    $events->setLocation($e->_field_data['nid']['entity']->field_event_location[LANGUAGE_NONE][0]['value']);
+    $events->setSummary($e->_field_data['nid']['entity']->title);
+    $events->setId($e->_field_data['nid']['entity']->nid);
 
     $dt1 = new DateTime($e->field_data_field_date_field_date_value . "Z");
     $dt2 = new DateTime($e->field_data_field_date_field_date_value2 . "Z");
@@ -231,11 +231,11 @@ function os_events_gcal_create_calendar() {
     $calendarDateTime1 = new Google_Service_Calendar_EventDateTime();
     $calendarDateTime2 = new Google_Service_Calendar_EventDateTime();
     $calendarDateTime1->setDateTime($dt1->format(DateTime::RFC3339));
-    $event->setStart($calendarDateTime1);
+    $events->setStart($calendarDateTime1);
     $calendarDateTime2->setDateTime($dt2->format(DateTime::RFC3339));
-    $event->setEnd($calendarDateTime2);
-    watchdog('Debug', print_r($event, TRUE));
-    $calendarService = $service->events->insert('primary', $event);
+    $events->setEnd($calendarDateTime2);
+    watchdog('Debug', print_r($service, TRUE));
+    $calendarService = $service->events->insert('primary', $events);
     watchdog('Debug 2', print_r($calendarService, TRUE));
   }
   drupal_set_message(t('Openscholar calendar has been exported to Google calendar.'));
