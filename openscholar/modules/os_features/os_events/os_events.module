@@ -206,35 +206,35 @@ function os_events_gcal_create_calendar() {
 
   $client = getClient();
   $service  = new Google_Service_Calendar($client);
-  
-  // Create New Calendar.
-  //$calendar = new Google_Service_Calendar_Calendar();
-  //$calendar->setSummary('Openscholar');
-  //$calendar->setTimeZone(date_default_timezone());
-  //$createdCalendar = $service->calendars->insert($calendar);
-  //$calendar_ID = $createdCalendar->getId();
+  $eventList = $service->events->listEvents('primary');
+  if(!$eventList->getItems()){
 
-  $event = array();
-  foreach ($view->result as $e) {
-    # Create test event and add it to the calendar    
-    $event = new Google_Service_Calendar_Event();
-    $event->setDescription($e->_field_data['nid']['entity']->body[LANGUAGE_NONE][0]['value']);
-    $event->setLocation($e->_field_data['nid']['entity']->field_event_location[LANGUAGE_NONE][0]['value']);
-    $event->setSummary($e->_field_data['nid']['entity']->title);
-    $event->setId($e->_field_data['nid']['entity']->nid);
 
-    $dt1 = new DateTime($e->field_data_field_date_field_date_value . "Z");
-    $dt2 = new DateTime($e->field_data_field_date_field_date_value2 . "Z");
+    $event = array();
+    foreach ($view->result as $e) {
+      # Create test event and add it to the calendar    
+      $event = new Google_Service_Calendar_Event();
+      $event->setDescription($e->_field_data['nid']['entity']->body[LANGUAGE_NONE][0]['value']);
+      $event->setLocation($e->_field_data['nid']['entity']->field_event_location[LANGUAGE_NONE][0]['value']);
+      $event->setSummary($e->_field_data['nid']['entity']->title);
+      $event->setId($e->_field_data['nid']['entity']->nid);
 
-    $calendarDateTime1 = new Google_Service_Calendar_EventDateTime();
-    $calendarDateTime2 = new Google_Service_Calendar_EventDateTime();
-    $calendarDateTime1->setDateTime($dt1->format(DateTime::RFC3339));
-    $event->setStart($calendarDateTime1);
-    $calendarDateTime2->setDateTime($dt2->format(DateTime::RFC3339));
-    $event->setEnd($calendarDateTime2);
-    $calendarService = $service->events->insert('primary', $event);
+      $dt1 = new DateTime($e->field_data_field_date_field_date_value . "Z");
+      $dt2 = new DateTime($e->field_data_field_date_field_date_value2 . "Z");
+
+      $calendarDateTime1 = new Google_Service_Calendar_EventDateTime();
+      $calendarDateTime2 = new Google_Service_Calendar_EventDateTime();
+      $calendarDateTime1->setDateTime($dt1->format(DateTime::RFC3339));
+      $event->setStart($calendarDateTime1);
+      $calendarDateTime2->setDateTime($dt2->format(DateTime::RFC3339));
+      $event->setEnd($calendarDateTime2);
+      $calendarService = $service->events->insert('primary', $event);
+    }
+    drupal_set_message(t('Openscholar calendar has been exported to Google calendar.'));
   }
-  drupal_set_message(t('Openscholar calendar has been exported to Google calendar.'));
+  else{
+    watchdog('Event List 1', print_r("Hello", TRUE));
+  }
   drupal_goto(url('/' . $vsite->group->purl . '/calendar'));
 }
 
