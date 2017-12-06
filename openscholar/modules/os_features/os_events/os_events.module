@@ -205,11 +205,11 @@ function os_events_gcal_create_calendar() {
   }
 
   $client = getClient();
-  $service  = new Google_Service_Calendar($client);
-  $eventList = $service->events->listEvents('primary');
+  $service_calendar  = new Google_Service_Calendar($client);
+  $eventList = $service_calendar->events->listEvents('primary');
   if(!$eventList->getItems()){
 
-
+    $service  = new Google_Service_Calendar($client);
     $event = array();
     foreach ($view->result as $e) {
       # Create test event and add it to the calendar    
