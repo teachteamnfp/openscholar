@@ -231,7 +231,7 @@ function os_events_gcal_create_calendar() {
     }
     else{
      # Update events to the Google calendar   
-      $event = $service->events->get('primary', $e->_field_data['nid']['entity']->nid);
+      $event = $calendarService->events->get('primary', $e->_field_data['nid']['entity']->nid);
 
       $event->setDescription($e->_field_data['nid']['entity']->body[LANGUAGE_NONE][0]['value']);
       $event->setLocation($e->_field_data['nid']['entity']->field_event_location[LANGUAGE_NONE][0]['value']);
@@ -247,7 +247,7 @@ function os_events_gcal_create_calendar() {
       $calendarDateTime2->setDateTime($dt2->format(DateTime::RFC3339));
       $event->setEnd($calendarDateTime2);
 
-      $calendarService = $service->events->update('primary', $event->getId(), $event);
+      $calendarUpdate = $calendarService->events->update('primary', $event->getId(), $event);
       drupal_set_message(t('Google calender has been updated.'));
     }
   }
