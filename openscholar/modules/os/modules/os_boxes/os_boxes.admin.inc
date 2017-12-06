@@ -59,8 +59,15 @@ function os_boxes_form_boxes_box_form_alter(&$form, &$form_state) {
 /**
  * Allow widgets alter the values of the forms before process by boxes.
  */
-function os_boxes_alter_options_widget($form, &$form_state) {
+function os_boxes_alter_options_widget(&$form, &$form_state) {
   $form_state['box']->validate($form_state['values']);
+
+  if (preg_match("/[{}]/", $form_state['values']['title']) === 1) {
+    $filtered_title = preg_replace("/[{}]/", "", $form_state['values']['title']);
+    form_set_value($form['title'], $filtered_title, $form_state);
+    $form['title']['#value'] = $filtered_title;
+    form_set_error('', t('Curly braces are not allowed.'));
+  }
 }
 
 /**
