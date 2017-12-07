@@ -630,6 +630,9 @@ function os_publications_form_biblio_node_form_alter(&$form, &$form_state) {
   // Add in a new validation for patents
   $form['#validate'][] = 'os_publications_biblio_form_patent_validate';
 
+  // Add in a new validation for non-supported unicode characters
+  $form['#validate'][] = 'os_publication_validate_unicode_charset';
+
   // Change labels in the menu fieldset.
   $form['os_menu']['#title'] = t('Menu options');
   $form['os_menu']['enabled']['#title'] = t('Place it in a menu');
@@ -990,6 +993,25 @@ function os_publications_biblio_form_patent_validate(&$form, &$form_state) {
   }
   $patent_key = $form_state['values']['biblio_section'];
   $form_state['values']['biblio_edition'] = $form['biblio_section']['#options'][$patent_key];
+}
+
+/**
+ * Callback for custom validation.
+ * Function will match for the non basic multilingual plane unicode characters
+ */
+function os_publication_validate_unicode_charset(&$form, &$form_state) {
+  $biblio_abst_e = $form_state['values']['biblio_abst_e']['value'];
+  $biblio_title = $form_state['values']['title_field'][LANGUAGE_NONE][0]['value'];
+
+  $exp = '/^[\x{0000}-\x{FFFF}]+$/u';
+  if ($biblio_title !='' && !preg_match($exp, $biblio_title)) {
+    form_set_error('title_field', t("Sorry, the character you entered in Title field is not supported."));
+    return $form;
+  }
+  if ($biblio_abst_e !='' && !preg_match($exp, $biblio_abst_e)) {
+    form_set_error('biblio_abst_e][value', t("Sorry, the character you entered in Abstract field is not supported."));
+    return $form;
+  }
 }
 
 function os_publications_entity_prepare_view($entities, $type, $langcode) {

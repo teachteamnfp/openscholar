@@ -1,4 +1,4 @@
-;Drupal.org Makefile for OpenScholar
+; Drupal.org Makefile for OpenScholar
 
 core = 7.x
 api = 2
@@ -39,7 +39,7 @@ projects[comment_sources][patch][] = "https://drupal.org/files/issues/change-sub
 projects[comment_sources][patch][] = "https://raw.github.com/openscholar/openscholar/bb0856af84a58881a0438cd32d9b6a21dcfd15ea/patches/comment_sources.9139.comment_settings.patch"
 
 projects[context][subdir] = "contrib"
-projects[context][version] = 3.0-beta4
+projects[context][version] = 3.6
 projects[context][patch][] = "http://drupal.org/files/os-custom-beta4.patch"
 projects[context][patch][] = "http://drupal.org/files/1855004.context.float_block_weights.patch"
 
@@ -47,14 +47,15 @@ projects[contextual_annotation][subdir] = "contrib"
 projects[contextual_annotation][type] = module
 projects[contextual_annotation][download][type] = git
 projects[contextual_annotation][download][url] =  "http://git.drupal.org/project/contextual_annotation.git"
-;needs patches to contrib
+; needs patches to contrib
 
 projects[ctools][subdir] = "contrib"
-projects[ctools][version] = 1.12
-; projects[ctools][download][revision] = be2607142ce97d093acce9417833640680330efe
-; projects[ctools][patch][] = "http://drupal.org/files/1707810-ctools-fields-mock-field-7.patch"
-; projects[ctools][patch][] = "http://drupal.org/files/ctools-plugin_extension-1623044-1.patch"
-; projects[ctools][patch][] = "https://drupal.org/files/issues/2147905-allow-alter-with-more-context-1.patch"
+projects[ctools][download][type] = git
+projects[ctools][download][branch] = 7.x-1.x
+projects[ctools][download][revision] = be2607142ce97d093acce9417833640680330efe
+projects[ctools][patch][] = "http://drupal.org/files/1707810-ctools-fields-mock-field-7.patch"
+projects[ctools][patch][] = "http://drupal.org/files/ctools-plugin_extension-1623044-1.patch"
+projects[ctools][patch][] = "https://drupal.org/files/issues/2147905-allow-alter-with-more-context-1.patch"
 
 projects[date][subdir] = "contrib"
 projects[date][version] = 2.8
@@ -68,6 +69,7 @@ projects[devel][version] = 1.3
 projects[disqus][subdir] = "contrib"
 projects[disqus][version] = 1.9
 projects[disqus][patch][] = "http://drupal.org/files/comment_sources-disqus-2120703-1.patch"
+projects[disqus][patch][] = "https://raw.githubusercontent.com/openscholar/openscholar/60d08936644e3243258d8702d1d0dea111e91a44/patches/disqus-9804_cross_domain_fix.patch"
 
 projects[dragndrop_upload][subdir] = "contrib"
 projects[dragndrop_upload][version] = 1.x-dev
@@ -89,7 +91,7 @@ projects[entitycache][version] = 1.5
 projects[entitycache][patch][] = https://www.drupal.org/files/issues/2516094-1-entitycache_fix_arry_flip.patch
 
 projects[entityreference][subdir] = "contrib"
-projects[entityreference][version] = 1.1
+projects[entityreference][version] = 1.2
 projects[entityreference][patch][] = "http://drupal.org/files/1802916-er-show-identifier-14.patch"
 
 projects[entityreference_prepopulate][subdir] = "contrib"
@@ -97,7 +99,7 @@ projects[entityreference_prepopulate][version] = 1.5
 projects[entityreference_prepopulate][patch][] = "https://drupal.org/files/issues/1994702-er-ajax-9.patch"
 
 projects[elysia_cron][subdir] = "contrib"
-projects[elysia_cron][version] = 2.1
+projects[elysia_cron][version] = 2.4
 
 projects[eva][subdir] = "contrib"
 projects[eva][version] = 1.2
@@ -111,7 +113,7 @@ projects[facetapi][version] = 1.1
 projects[facetapi][patch][] = "http://drupal.org/files/2006704-facetapi-er-regroup-2.patch"
 
 projects[features][subdir] = "contrib"
-projects[features][version] = 2.0
+projects[features][version] = 2.6
 
 projects[feeds][subdir] = "contrib"
 projects[feeds][version] = 2.0-alpha7
@@ -142,13 +144,13 @@ projects[file_entity][patch][] = "http://drupal.org/files/file_entity.1834902-3.
 projects[file_entity][patch][] = "http://drupal.org/files/filter-by-file-schema-type-1881356-12.patch"
 
 projects[filefield_paths][subdir] = "contrib"
-;projects[filefield_paths][version] = 1.0-beta3+2-dev
+; projects[filefield_paths][version] = 1.0-beta3+2-dev
 projects[filefield_paths][download][type] = git
 projects[filefield_paths][download][branch] = 7.x-5.x
 projects[filefield_paths][download][revision] = 84fb637
 
 projects[flag][subdir] = "contrib"
-projects[flag][version] = 2.0
+projects[flag][version] = 3.9
 
 projects[hierarchical_taxonomy][subdir] = "contrib"
 projects[hierarchical_taxonomy][download][type] = git
@@ -171,7 +173,7 @@ projects[imagemagick][version] = 1.0
 projects[imagemagick][patch][] = "https://raw.githubusercontent.com/openscholar/openscholar/53169db65764686c511972619fdeb902704731d6/patches/imagemagick.no-resize-for-animated-gifs.patch"
 
 projects[imagefield_crop][subdir] = "contrib"
-;projects[imagefield_crop][version] = 2.0
+; projects[imagefield_crop][version] = 2.0
 projects[imagefield_crop][download][type] = git
 projects[imagefield_crop][download][branch] = 7.x-2.x
 projects[imagefield_crop][download][revision] = 4a5302
@@ -182,9 +184,8 @@ projects[jcarousel][subdir] = "contrib"
 projects[jcarousel][version] = 2.6
 
 projects[jquery_update][subdir] = "contrib"
-projects[jquery_update][download][type] = git
-projects[jquery_update][download][branch] = 7.x-2.x
-projects[jquery_update][download][revision] = 65eecb0
+projects[jquery_update][version] = 2.7
+; projects[jquery_update][download][revision] = 65eecb0
 
 projects[js][subdir] = "contrib"
 projects[js][version] = 1.0-beta2
@@ -203,20 +204,20 @@ projects[link][patch][] = "https://raw.githubusercontent.com/openscholar/opensch
 projects[link][subdir] = "contrib"
 projects[link][download][branch] = 7.x-1.x
 projects[link][download][type] = git
-;projects[link][revision] = "799bca2"
+; projects[link][revision] = "799bca2"
 projects[link][download][revision] = "ff518b60113f29885a8f358e8b0fa4499b0c608d"
 
 projects[linkchecker][subdir] = "contrib"
 projects[linkchecker][version] = 1.0-beta1
 
 projects[media][subdir] = "contrib"
-projects[media][version] = 2.x-dev
-projects[media][download][type] = git
-projects[media][download][branch] = 7.x-2.x
-projects[media][download][revision] = "b433b278d7e0ab7420f5a874886843fb9fe7ebe2"
+projects[media][version] = 2.1
+; projects[media][download][type] = git
+; projects[media][download][branch] = 7.x-2.x
+; projects[media][download][revision] = "b433b278d7e0ab7420f5a874886843fb9fe7ebe2"
 ; projects[media][patch][] = "http://drupal.org/files/issues/1121808-media-resuse-files-by-uri.patch"
 ; projects[media][patch][] = "http://drupal.org/files/media-7.x-2.x-fix-class-array.patch"
-projects[media][patch][] = "http://drupal.org/files/media_fatal_wysiwyg_remove_1937864_11.patch"
+; projects[media][patch][] = "http://drupal.org/files/media_fatal_wysiwyg_remove_1937864_11.patch"
 
 projects[media_gallery][subdir] = "contrib"
 projects[media_gallery][version] = 2.x-dev
@@ -234,7 +235,7 @@ projects[message][subdir] = "contrib"
 projects[message][version] = 1.12
 
 projects[metatag][subdir] = "contrib"
-projects[metatag][version] = 1.0-beta9
+projects[metatag][version] = 1.22
 
 projects[module_filter][subdir] = "contrib"
 projects[module_filter][version] = 1.7
@@ -286,8 +287,8 @@ projects[oembed][patch][] = "https://raw.githubusercontent.com/openscholar/opens
 projects[oembed][patch][] = "https://raw.githubusercontent.com/openscholar/openscholar/56c5f68a45a6ce8d49be722bf7dfdb10da5cf60f/patches/oembed.9433.youtube_https_schema.patch"
 
 projects[og][subdir] = "contrib"
-projects[og][version] = 2.6
-projects[og][patch][] = "https://drupal.org/files/issues/2231217-og-save-no-entity-load-1.patch"
+projects[og][version] = 2.9
+; projects[og][patch][] = "https://drupal.org/files/issues/2231217-og-save-no-entity-load-1.patch"
 projects[og][patch][] = "https://drupal.org/files/issues/add_entity_type_parameter-2308279-3.patch"
 
 projects[og_moderation][subdir] = "contrib"
@@ -316,10 +317,10 @@ projects[olark][patch][] = "http://drupal.org/files/olark-suppress_roles-1984210
 projects[olark][patch][] = "http://drupal.org/files/olark-js-to-d7-update-1785322-5.patch"
 
 projects[password_policy][subdir] = "contrib"
-projects[password_policy][version] = 2.0-alpha1
-projects[password_policy][patch][] = "http://drupal.org/files/password-policy-anonymous-users.patch"
-projects[password_policy][patch][] = "http://drupal.org/files/password_policy-remove_focus-1998862-7455062.patch"
-projects[password_policy][patch][] = "https://gist.github.com/sagotsky/7321750/raw/b26f07c902f7cd5ef8650a3a6891941054a4a8db/password_policy-consecutive_regex-2127421-1.patch"
+projects[password_policy][version] = 2.0-alpha7
+; projects[password_policy][patch][] = "http://drupal.org/files/password-policy-anonymous-users.patch"
+; projects[password_policy][patch][] = "http://drupal.org/files/password_policy-remove_focus-1998862-7455062.patch"
+; projects[password_policy][patch][] = "https://gist.github.com/sagotsky/7321750/raw/b26f07c902f7cd5ef8650a3a6891941054a4a8db/password_policy-consecutive_regex-2127421-1.patch"
 
 projects[pathauto][subdir] = "contrib"
 projects[pathauto][version] = 1.2
@@ -328,10 +329,10 @@ projects[pinserver][subdir] = "contrib"
 projects[pinserver][type] = module
 projects[pinserver][download][type] = git
 projects[pinserver][download][url] = "git://github.com/openscholar/pinserver.git"
-projects[pinserver][download][tag] = 7.x-3.4.22
+projects[pinserver][download][tag] = 7.x-3.4.23
 
 projects[purl][subdir] = "contrib"
-;: projects[purl][version] = 1.0-beta1+11-dev
+; projects[purl][version] = 1.0-beta1+11-dev
 projects[purl][download][type] = git
 projects[purl][download][branch] = 7.x-1.x
 projects[purl][download][revision] = 469e8668
@@ -350,7 +351,7 @@ projects[respondjs][subdir] = "contrib"
 projects[respondjs][version] = 1.1
 
 projects[restful][subdir] = "contrib"
-projects[restful][version] = "1.6"
+projects[restful][version] = "1.7"
 # Patch to be able to update a taxonomy term.
 projects[restful][patch][] = "https://patch-diff.githubusercontent.com/raw/RESTful-Drupal/restful/pull/445.diff"
 projects[restful][patch][] = "https://raw.githubusercontent.com/openscholar/openscholar/839d0cc214f2422e924e35d33133d1268b8cc1cd/patches/restful.put_file.patch"
@@ -375,7 +376,7 @@ projects[securepages][subdir] = "contrib"
 projects[securepages][version] = 1.0-beta1
 
 projects[services][subdir] = "contrib"
-;projects[services][version] = 3.3+42-dev
+; projects[services][version] = 3.3+42-dev
 projects[services][download][branch] = 7.x-3.x
 projects[services][download][revision] = 761e620
 
@@ -383,7 +384,7 @@ projects[services_basic_auth][subdir] = "contrib"
 projects[services_basic_auth][version] = "1.3"
 
 projects[spaces][subdir] = "contrib"
-;projects[spaces][version] = 3.0-alpha1+9-dev
+; projects[spaces][version] = 3.0-alpha1+9-dev
 projects[spaces][revision] = "eac3a7e"
 projects[spaces][patch][] = "http://drupal.org/files/1470434-spaces-og-28.patch"
 projects[spaces][patch][] = "http://drupal.org/files/spaces_ui-show_disabled-1662918-1.patch"
@@ -403,7 +404,7 @@ projects[term_reference_tree][version] = 1.x-dev
 projects[term_reference_tree][patch][] = "https://drupal.org/files/issues/2235057-term-er-3.patch"
 
 projects[title][subdir] = "contrib"
-projects[title][version] = 1.0-alpha7
+projects[title][version] = 1.0-alpha9
 
 projects[token][subdir] = "contrib"
 projects[token][version] = 1.4
@@ -419,11 +420,11 @@ projects[twitter_pull][patch][] = "https://raw.githubusercontent.com/openscholar
 projects[twitter_pull][patch][] = "https://raw.githubusercontent.com/openscholar/openscholar/1811fd556f5ef60be92a5b5249a81f652a73681c/patches/twitter_pull.class.inc-tweet-mode-extended.patch"
 
 projects[views][subdir] = "contrib"
-projects[views][version] = 3.8
-projects[views][patch][] = "https://drupal.org/files/issues/views-jquery_dialog-2125261-1.patch"
+projects[views][version] = 3.18
+; projects[views][patch][] = "https://drupal.org/files/issues/views-jquery_dialog-2125261-1.patch"
 
 projects[views_bulk_operations][subdir] = "contrib"
-projects[views_bulk_operations][version] = 3.0
+projects[views_bulk_operations][version] = 3.4
 
 projects[views_og_cache][subdir] = "contrib"
 projects[views_og_cache][version] = 1.1
@@ -439,8 +440,8 @@ projects[views_litepager][patch][] = "http://drupal.org/files/views_litepager-of
 
 projects[views_infinite_scroll][subdir] = "contrib"
 projects[views_infinite_scroll][version] = 1.1
-;projects[views_infinite_scroll][patch][] = "http://drupal.org/files/views_infinite_scroll-vbo-1965288-2.patch"
-;projects[views_infinite_scroll][patch][] = "http://localhost/patch/views_infinite_scroll-no_auto_scroll-2012910-1.patch"
+; projects[views_infinite_scroll][patch][] = "http://drupal.org/files/views_infinite_scroll-vbo-1965288-2.patch"
+; projects[views_infinite_scroll][patch][] = "http://localhost/patch/views_infinite_scroll-no_auto_scroll-2012910-1.patch"
 
 projects[web_widgets][subdir] = "contrib"
 projects[web_widgets][version] = 1.0-alpha2
