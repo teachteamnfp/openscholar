@@ -273,13 +273,13 @@ function checkEvent ($event_id) {
     watchdog('If', print_r(" Event exists!", TRUE));
     unset($calendarService);
     $client = NULL;
-    return FALSE;
+    return TRUE;
   } 
   else{
     watchdog('Else', print_r("No Event exists!", TRUE));
     unset($calendarService);
     $client = NULL;
-    return  TRUE;
+    return  FALSE;
   }
 }
 
