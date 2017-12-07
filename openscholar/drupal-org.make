@@ -317,7 +317,7 @@ projects[olark][patch][] = "http://drupal.org/files/olark-suppress_roles-1984210
 projects[olark][patch][] = "http://drupal.org/files/olark-js-to-d7-update-1785322-5.patch"
 
 projects[password_policy][subdir] = "contrib"
-projects[password_policy][version] = 2.0-alpha7
+projects[password_policy][version] = 2.0-alpha6
 ; projects[password_policy][patch][] = "http://drupal.org/files/password-policy-anonymous-users.patch"
 ; projects[password_policy][patch][] = "http://drupal.org/files/password_policy-remove_focus-1998862-7455062.patch"
 ; projects[password_policy][patch][] = "https://gist.github.com/sagotsky/7321750/raw/b26f07c902f7cd5ef8650a3a6891941054a4a8db/password_policy-consecutive_regex-2127421-1.patch"
