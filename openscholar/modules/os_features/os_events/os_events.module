@@ -268,7 +268,11 @@ function checkEvent ($event_id) {
   watchdog('Event ID', print_r($event_id, TRUE));
   $client = getClient();
   $calendarService = new Google_Service_Calendar($client);
+
   if($calendarService->events->get('primary', $event_id)) {
+    watchdog('If', print_r(" Event exists!", TRUE));
+    unset($calendarService);
+    $client = NULL;
     return FALSE;
   } 
   else{
