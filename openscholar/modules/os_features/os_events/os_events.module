@@ -267,7 +267,9 @@ function checkEvent ($event_id) {
   $client = getClient();
   $calendarService = new Google_Service_Calendar($client);
   try {
-      $calendarService->events->get('primary', $event_id);
+    $calendarService->events->get('primary', $event_id);
+    watchdog('Try', print_r("inside try", TRUE));
+    unset($calendarService); 
   } 
   catch (Exception $e) {
     return TRUE;
