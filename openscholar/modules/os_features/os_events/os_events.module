@@ -268,16 +268,15 @@ function checkEvent ($event_id) {
   watchdog('Event ID', print_r($event_id, TRUE));
   $client = getClient();
   $calendarService = new Google_Service_Calendar($client);
-  try {
-    $calendarService->events->get('primary', $event_id);
-    watchdog('Try', print_r("inside try", TRUE));
+  if($calendarService->events->get('primary', $event_id)) {
+    return FALSE;
+  } 
+  else{
+    watchdog('Else', print_r("No Event exists!", TRUE));
     unset($calendarService);
     $client = NULL;
-  } 
-  catch (Exception $e) {
-    return TRUE;
+    return  TRUE;
   }
-  return FALSE;
 }
 
 /**
