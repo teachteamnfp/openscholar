@@ -210,9 +210,10 @@ function os_events_gcal_create_calendar() {
   $event = array();
   foreach ($view->result as $e) {
     if(checkEvent($e->_field_data['nid']['entity']->nid)) {
-      watchdog('Debugg 4', print_r($e->_field_data['nid']['entity']->nid, TRUE));
+      watchdog('Debugg', print_r("Hello", TRUE));
       # Create event and add it to the calendar    
       $event = new Google_Service_Calendar_Event();
+      
       $event->setDescription($e->_field_data['nid']['entity']->body[LANGUAGE_NONE][0]['value']);
       $event->setLocation($e->_field_data['nid']['entity']->field_event_location[LANGUAGE_NONE][0]['value']);
       $event->setSummary($e->_field_data['nid']['entity']->title);
@@ -227,12 +228,11 @@ function os_events_gcal_create_calendar() {
       $event->setStart($calendarDateTime1);
       $calendarDateTime2->setDateTime($dt2->format(DateTime::RFC3339));
       $event->setEnd($calendarDateTime2);
-      watchdog('Debugg', print_r($event, TRUE));
       $calendarInsert = $calendarService->events->insert('primary', $event);
-      watchdog('Debugg 2', print_r($calendarInsert, TRUE));
       drupal_set_message(t('Openscholar calendar has been exported to Google calendar.'));
     }
-    /*else{
+    else{
+      watchdog('Debugg 2', print_r("Hii", TRUE));
      # Update events to the Google calendar   
       $event = $calendarService->events->get('primary', $e->_field_data['nid']['entity']->nid);
 
@@ -251,9 +251,8 @@ function os_events_gcal_create_calendar() {
       $event->setEnd($calendarDateTime2);
 
       $calendarUpdate = $calendarService->events->update('primary', $event->getId(), $event);
-      watchdog('Debugg 2', print_r($calendarUpdate, TRUE));
       drupal_set_message(t('Google calender has been updated.'));
-    }*/
+    }
   }
   drupal_goto(url('/' . $vsite->group->purl . '/calendar'));
 }
@@ -268,19 +267,13 @@ function checkEvent ($event_id) {
   watchdog('Event ID', print_r($event_id, TRUE));
   $client = getClient();
   $calendarService = new Google_Service_Calendar($client);
-
-  if($calendarService->events->get('primary', $event_id)) {
-    watchdog('If', print_r(" Event exists!", TRUE));
-    unset($calendarService);
-    $client = NULL;
-    return TRUE;
+  try {
+      $calendarService->events->get('primary', $event_id);
   } 
-  else{
-    watchdog('Else', print_r("No Event exists!", TRUE));
-    unset($calendarService);
-    $client = NULL;
-    return  FALSE;
+  catch (Exception $e) {
+    return TRUE;
   }
+  return FALSE;
 }
 
 /**
