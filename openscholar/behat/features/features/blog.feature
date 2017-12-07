@@ -53,24 +53,24 @@ Feature:
     Given I am logging in as "john"
       And I visit "john/node/add/blog"
      When I fill in "Title" with "A day in the life of The POTUS."
-     When I fill in "Body" with "Each day the President is briefed."
+#    When I fill in "Body" with "Each day the President is briefed."
       And I press "Save"
       And I sleep for "2"
      Then I should see "A day in the life of The POTUS"
-      And I should see "Each day the President is briefed."
+#     And I should see "Each day the President is briefed."
 
  @api @features_first @edit_existing_blog_content @os_blog
  Scenario: Edit existing blog content
     Given I am logging in as "john"
      And I edit the node "A day in the life of The POTUS." in the group "john"
      When I fill in "Title" with "Another day in the life of The POTUS."
-     When I fill in "Body" with "Each day the President eats lunch."
+#    When I fill in "Body" with "Each day the President eats lunch."
       And I press "Save"
       And I sleep for "2"
      Then I should see "Another day in the life of The POTUS."
-      And I should see "Each day the President eats lunch."
+#     And I should see "Each day the President eats lunch."
 
- @api @wip_needs_js_enabled_webdriver @administer_blog_settings @os_blog
+ @api @administer_blog_settings @os_blog @javascript
  Scenario: Administer Blog Settings
     Given I am logging in as "john"
      When I visit "john/blog"
@@ -80,27 +80,39 @@ Feature:
      When I sleep for "2"
      Then I should see "Choose which comment type you'd like to use"
 
- @api @wip_needs_js_enabled_webdriver @select_private_comments @os_blog
+ @api @select_private_comments @os_blog @javascript
  Scenario: Select "Private comments"
     Given I am logging in as "john"
-     When I visit "john/blog"
-      And I make sure admin panel is open
-      And I click "App Settings"
-      And I click "Blog Comments"
-      And I select the radio button named "blog_comments_settings"
+      And I open the "Blog Comments" settings form for the site "john"
+      And I choose the radio button named "blog_comments_settings" with value "comment" for the vsite "john"
       And I press "Save"
+     When I visit "john/blog"
      Then I should see "Add new comment"
 
- @api @wip_needs_js_enabled_webdriver @select_no_comments @os_blog @wip
+ @api @javascript @select_disqus_comments @os_blog
+ Scenario: Select "Disqus comments"
+    Given I am logging in as "john"
+      And I open the "Blog Comments" settings form for the site "john"
+      And I choose the radio button named "blog_comments_settings" with value "disqus" for the vsite "john"
+      And I fill in "Disqus Shortname" with "openscholar"
+      And I press "Save"
+     When I visit "john/blog"
+     Then I should see "Add new comment"
+     When I make sure admin panel is closed
+     When I click "Add new comment"
+     When I sleep for "7"
+     Then I should see disqus
+
+ @api @select_no_comments @os_blog @javascript
  Scenario: Select "No Comments"
     Given I am logging in as "john"
       And I visit "john/blog"
       And I make sure admin panel is open
-      And I click "App Settings"
-      And I click "Blog Comments"
-      And I click on the radio button named "blog_comments_settings" with value "nc"
+      And I open the "Blog Comments" settings form for the site "john"
+      And I choose the radio button named "blog_comments_settings" with value "nc" for the vsite "john"
       And I press "Save"
-      And I sleep for "5"
+      And I sleep for "3"
+      And I visit "john/blog"
      Then I should not see "Add new comment"
 
  @api @features_first @delete_any_blog_content @os_blog

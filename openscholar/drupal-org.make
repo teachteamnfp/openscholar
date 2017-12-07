@@ -453,6 +453,7 @@ projects[wysiwyg][patch][] = "http://drupal.org/files/wysiwyg-table-format.patch
 
 projects[wysiwyg_filter][subdir] = "contrib"
 projects[wysiwyg_filter][version] = 1.6-rc3
+projects[wysiwyg_filter][revision] = "4848d306a2f7526f7eeaf22edb9268d3c96654fe"
 projects[wysiwyg_filter][patch][] = "https://www.drupal.org/files/issues/wysiwyg-filter-border-radius-support-2692163-1.patch"
 
 ; Libraries.
@@ -621,3 +622,7 @@ libraries[jsonp][download][url] = "https://raw.githubusercontent.com/yui/yui3/v3
 libraries[yql-jsonp][type] = "libraries"
 libraries[yql-jsonp][download][type] = "file"
 libraries[yql-jsonp][download][url] = "https://raw.githubusercontent.com/yui/yui3/v3.18.1/build/yql-jsonp/yql-jsonp-min.js"
+
+libraries[google-api-php-client][type] = "libraries"
+libraries[google-api-php-client][download][type] = "file"
+libraries[google-api-php-client][download][url] = "https://github.com/google/google-api-php-client/releases/download/v2.1.3/google-api-php-client-2.1.3.zip"

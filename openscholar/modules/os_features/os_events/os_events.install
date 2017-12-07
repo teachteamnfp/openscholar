@@ -350,3 +350,10 @@ function os_events_update_7028() {
 function os_events_update_7029() {
   features_revert(array('os_events' => array('field_instance')));
 }
+
+/**
+ * Add feed_2_no_cache display
+ */
+function os_events_update_7030() {
+  features_revert(array('os_events' => array('views_view')));
+}

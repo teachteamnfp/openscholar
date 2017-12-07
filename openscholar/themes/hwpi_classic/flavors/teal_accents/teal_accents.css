@@ -6,8 +6,12 @@ All Body Copy: Cardo
 */
 
 body {
-    background: #F3F3F1;
+   
     font-size: 15px;
+}
+#page {
+    background: #f9f9f9;
+    
 }
 h1#page-title {
     line-height: 1.3;
@@ -97,7 +101,7 @@ h2.block-title,
 #content-column .block.block-boxes-os_boxes_columns .block,
 .node-person .block-inner,
 .comment-wrapper {
-    border-top: 6px solid #1ebfb3;
+    border-top: 3px solid #1ebfb3;
 }
 #menu-bar ul.nice-menu a,
 #boxes-box-site_info,
@@ -110,7 +114,7 @@ a.rslides_nav {
 }
 #footer {
     background: #FFF;
-    border-top: 6px solid #75c5bc;
+    border-top: 3px solid #75c5bc;
 }
 .search-block-form input.form-submit,
 .search-block-form #edit-submit,
@@ -139,3 +143,8 @@ a.rslides_nav {
     border-bottom: 1px solid #ebe3df !important;
     font-family: 'Montserrat', helvetica !important;
 }
+.event-start .event-start {
+    background-image: none;
+    background-color: #fff;
+    border-top: 3px solid #ccc;
+   }

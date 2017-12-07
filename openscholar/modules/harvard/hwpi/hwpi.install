@@ -130,9 +130,9 @@ function hwpi_update_7008() {
 }
 
 /**
- * Change registration "From:" email (again)
+ * Change registration "From:" email and also the admin mail address
  */
-function hwpi_update_7010() {
-  variable_set('vsite_register_admin_mail', 'swap@lists.iq.harvard.edu, hwp@openscholar.harvard.edu');
-  variable_set('site_mail', 'hwp@openscholar.harvard.edu');
+function hwpi_update_7012() {
+  variable_set('vsite_register_admin_mail', 'swap@lists.iq.harvard.edu, hwp@harvard.edu');
+  variable_set('site_mail', 'hwp@harvard.edu');
 }

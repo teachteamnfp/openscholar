@@ -211,7 +211,7 @@ function vsite_vocab_form_taxonomy_form_vocabulary_alter(&$form, $form_state) {
   $form['widget_type_autocomplete'] = array(
     '#type' => 'radios',
     '#title' => t('Type'),
-    '#description' => t('Should terms be created on advanced or may be created on the fly, when adding / editing a post.'),
+    '#description' => t('Terms may be created in advance or on the fly, when adding / editing a post.'),
     '#options' => array(
       'entityreference_autocomplete' => t('Managed'),
       'entityreference_autocomplete_tags' => t('Tags style'),

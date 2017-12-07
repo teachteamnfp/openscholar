@@ -47,20 +47,28 @@ class FeatureContext extends DrupalContext {
    */
   public function urlChangeHandler(StepEvent $e) {
     if ($this->currentUrl != $this->getSession()->getCurrentUrl()) {
-      $script = "
-      (function () {
-        if (!window.BehatScriptRun) {
-          window.BehatScriptRun = true;
-          window.BehatConsoleErrors = [];
-
-          window.onerror = function (error, url, line) {
-            BehatConsoleErrors.push({error: error, url: url, line: line});
-          }
-        }
-      })();
-      ";
-      $this->getSession()->executeScript($script);
+      $this->_captureJavaScriptConsoleErrors();
     }
+    $this->_printJavaScriptConsoleErrors();
+  }
+
+  private function _captureJavaScriptConsoleErrors() {
+    $script = "
+    (function () {
+      if (!window.BehatScriptRun) {
+        window.BehatScriptRun = true;
+        window.BehatConsoleErrors = [];
+
+        window.onerror = function (error, url, line) {
+          BehatConsoleErrors.push({error: error, url: url, line: line});
+        }
+      }
+    })();
+    ";
+    $this->getSession()->executeScript($script);
+  }
+
+  private function _printJavaScriptConsoleErrors() {
     if ($jserrors = $this->getSession()->evaluateScript("return window.BehatConsoleErrors")) {
       print_r($jserrors);
     }
@@ -1677,7 +1685,7 @@ class FeatureContext extends DrupalContext {
         $john_response_code = $this->responseCode($baseUrl . $row[0]);
         $lincoln_response_code = $this->responseCode('http://lincoln.local/' . $row[0]);
         if ($john_response_code != $row[1] && $lincoln_response_code != $row[1]) {
-          throw new Exception("When visiting {$row[0]} we did not get a {$row[1]} reponse code but the {$john_response_code}/{$lincoln_response_code} reponse code.");
+          throw new Exception("When visiting {$row[0]} we did not get a {$row[1]} response code but the {$john_response_code}/{$lincoln_response_code} response code.");
         }
       }
     }
@@ -1705,7 +1713,7 @@ class FeatureContext extends DrupalContext {
 
         $response_code = $this->responseCode($baseUrl . $VisitUrl);
         if ($response_code != $row[3]) {
-          throw new Exception("When visiting {$VisitUrl} we did not get a {$row[3]} reponse code but the {$response_code} reponse code.");
+          throw new Exception("When visiting {$VisitUrl} we did not get a {$row[3]} response code but the {$response_code} response code.");
         }
       }
     }
@@ -4034,7 +4042,6 @@ class FeatureContext extends DrupalContext {
   public function adminPanelClosed() {
     $page = $this->getSession()->getPage();
     $this->waitForPageActionsToComplete();
-
     if (! $page->find('css', '[left-menu].closed')) {
       return array(
         new Step\When('I press "Close Menu"'),
@@ -4048,7 +4055,6 @@ class FeatureContext extends DrupalContext {
     return array();
   }
 
-
   /**
    * @Given /^I open the admin panel to "([^"]*)"$/
    */
@@ -4056,9 +4062,12 @@ class FeatureContext extends DrupalContext {
     $output = $this->adminPanelOpen();
     $page = $this->getSession()->getPage();
 
+    $this->_captureJavaScriptConsoleErrors();
+
     //$elem = $page->find('xpath', "//*[text() = '{$text}']/ancestor::li[@admin-panel-menu-row]");
     $elem = $page->find('xpath', "//li[@admin-panel-menu-row]/descendant::span[text()='$text']/ancestor::li[@admin-panel-menu-row][1]");
     if (!$elem) {
+      $this->_printJavaScriptConsoleErrors();
       throw new \Exception("The link $text cannot be found in the admin panel.");
     }
     if (!$elem->hasClass('open')) {
@@ -4085,6 +4094,17 @@ class FeatureContext extends DrupalContext {
       $url = $this->getSession()->getCurrentUrl();
       throw new \Exception("Could not find user menu on page $url");
     }
+  }
+
+  /**
+   * @Given /^I visit the Add class material URL for "([^"]*)" on vsite "([^"]*)"$/
+   */
+  public function iVisitTheAddClassMaterialUrl($url, $vsite) {
+
+    $session = $this->getSession();
+    $nid = $this->_getNodeIdOfUrl("$vsite/$url");
+
+    return new Step\When('I visit "' . $vsite . '/node/add/class-material?field_class=' . $nid . '"');
   }
 
   /**
@@ -4341,7 +4361,7 @@ JS;
   }
 
   /**
-   * @When /^I navigate to "([^"]*)" cp settings of the site "([^"]*)"$/
+   * @When /^I open the "([^"]*)" settings form for the site "([^"]*)"$/
    */
   public function iNavigateCpSettings($type, $vsite) {
 
@@ -4466,6 +4486,27 @@ JS;
     $element->click();
   }
 
+  /*
+   * Helper to get unaliased edit path from Drupal URL
+   */
+  private function _getUnaliasedPathFromAliasPath($url, $vsite) {
+
+    foreach (array("$vsite/", "") as $prefix) {
+
+      $unaliased_path = drupal_lookup_path('source', "$prefix$url");
+
+      if (! $unaliased_path) {
+        $nid = $this->_getNodeIdOfUrl("$prefix$url");
+        $unaliased_path = "$vsite/node/$nid";
+        break;
+      } else {
+        break;
+      }
+    }
+
+    return $unaliased_path;
+  }
+
   /**
    * Visit the internal (unaliased) Drupal path of the current page
    *
@@ -4486,24 +4527,69 @@ JS;
     $this->visit("/$vsite/$unaliased_path/delete");
   }
 
-  /**
-   * Visit the internal (unaliased) Drupal path of the current page
-   *
-   * @When /^I visit the unaliased path of "([^"]*)" on vsite "([^"]*)" and append "([^"]*)"$/
+  /*
+   * Helper function to get node id from Drupal aliased URL
    */
-  public function iVisitTheUnaliasedPathOfAndAppend($url, $vsite, $appendage) {
-    $unaliased_path = drupal_lookup_path('source', $url);
+  private function _getNodeIdOfUrl($url) {
 
-    # Check the url with the vsite prepended
-    if (! $unaliased_path) {
-      $unaliased_path = drupal_lookup_path('source', "$vsite/$url");
+    $this->visit($url);
+
+    $a_element = $this->getSession()->getPage()->find('xpath', "//a[contains(@href, '?destination=node/') or contains(@href, 'destination%3Dnode%2F')]");
+    $page = $this->getSession()->getPage()->getContent();
+
+    if ($a_element) {
+      $href_unaliased = $a_element->getAttribute('href');
+
+      if (preg_match("/\bnode(?:\%2f|\/)(\d+)/i", $href_unaliased, $matches)) {
+        if (isset($matches[1])) {
+          $nid = (int)($matches[1]);
+          return $nid;
+        }
+      }
     }
+  }
 
-    if (! $unaliased_path) {
-      throw new Exception("Could not find an unaliased path for '$url' on vsite '$vsite' with '$appendage' appended.");
+  /**
+   *
+   * @When /^I visit the "([^"]*)" form for node "([^"]*)" in site "([^"]*)"
+   */
+  public function iVisitTheXFormForNodeYinSiteZ($form, $url, $vsite) {
+    $path = $this->_getUnaliasedPathFromAliasPath($url, $vsite);
+    if (! $path) {
+      throw new Exception("Could not find an unaliased path for '$url' on vsite '$vsite'.");
     }
+    $this->visit("$path/$form");
+  }
 
-    $this->visit("$vsite/$unaliased_path/$appendage");
+  /**
+   * @When /^I intentionally throw some javascript errors$/
+   */
+  public function iIntentionallyThrowSomeJsErrors() {
+    $BehatConsoleErrorsScript = "
+    (function () {
+      if (!window.BehatScriptRun) {
+        window.BehatScriptRun = true;
+        window.BehatConsoleErrors = [];
+
+        window.onerror = function (error, url, line) {
+          BehatConsoleErrors.push({error: error, url: url, line: line});
+        }
+      }
+    })();
+    ";
+
+    $errorCausingScripts = array(
+      "var abc = xyz.ThisPropertyDoesNotExist.NorDoesThisOne;",
+      "throw new Error('Something bad happened.');",
+    );
+
+    foreach ($errorCausingScripts as $s) {
+      $this->getSession()->executeScript($s);
+      $this->getSession()->executeScript($BehatConsoleErrors);
+      if ($jserrors = $this->getSession()->evaluateScript("return window.BehatConsoleErrors")) {
+        print_r($jserrors);
+      }
+    }
   }
 
   /**
@@ -4753,9 +4839,7 @@ JS;
    * @When /^I click the gear icon in the content region$/
    */
   public function iClickTheGearIconInTheContentRegion() {
-    $content_region = $this->getSession()->getPage()->find('xpath', "//div[@id='content']");
-    $gear_icon = $this->getSession()->getPage()->find('xpath', "//div[@class='contextual-links-wrapper contextual-links-processed']");
-    $gear_icon_trigger_link = $this->getSession()->getPage()->find('xpath', "//div[@id='content']//div/a[text()='Configure']");
+    list ($content_region, $gear_icon, $gear_icon_trigger_link) = $this->_getGearIconInContentRegion();
 
     $content_region->mouseOver();
     $content_region->click();
@@ -4763,6 +4847,35 @@ JS;
     $gear_icon->click();
     $gear_icon_trigger_link->mouseOver();
     $gear_icon_trigger_link->click();
+  }
+
+  /**
+   * @When /^I should "([^"]*)" see the "([^"]*)" menu item in the gear menu$/
+   */
+  public function iDoNotSeeTheMenuItemUnderTheGearMenu($negation, $menu_label) {
+    list ($content_region, $gear_icon, $gear_icon_trigger_link) = $this->_getGearIconInContentRegion();
+
+    if (! $gear_icon) {
+      return;
+    }
+
+    $gear_menu_item = $this->getSession()->getPage()->find('xpath', "//div[@class='contextual-links-wrapper contextual-links-processed']/ul/li/a[text()='$menu_label']");
+
+    if ($negation) {
+      if (! $gear_menu_item) {
+        return;
+      } else {
+        throw new Exception("Found menu item '$menu_label', but should not have.");
+      }
+    }
+  }
+
+  private function _getGearIconInContentRegion() {
+    $content_region = $this->getSession()->getPage()->find('xpath', "//div[@id='content']");
+    $gear_icon = $this->getSession()->getPage()->find('xpath', "//div[@class='contextual-links-wrapper contextual-links-processed']");
+    $gear_icon_trigger_link = $this->getSession()->getPage()->find('xpath', "//div[@id='content']//div/a[text()='Configure']");
+
+    return array($content_region, $gear_icon, $gear_icon_trigger_link);
   }
 
   /**
@@ -4835,6 +4948,21 @@ JS;
     }
 
     return false;
+  }
+
+  /**
+   * @Then /^I should see disqus$/
+   */
+  public function iShouldSeeDisqus() {
+
+    $page = $this->getSession()->getPage()->getContent();
+    $element = $this->getSession()->getPage()->find('css', "div#disqus_thread");
+
+    if ($element) {
+      return;
+    }
+
+    throw new Exception("Did not find disqus panel.\n");
   }
 
   /**
@@ -4926,5 +5054,14 @@ JS;
   public function iClickOnEditor($class) {
     $element = $this->getSession()->getPage()->find('xpath', "//*[contains(@class, '{$class}')]");
     $element->click();
+  }
+ 
+  /**
+   * @When /^I visit the absolute path "([^"]*)"$/
+   */
+  public function iVisitTheAbsolutePath($path) {
+    $this->getSession()->visit($path);
+    $content = $this->getSession()->getPage()->getContent();
+    var_dump($content);
   }
 }

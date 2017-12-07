@@ -126,3 +126,9 @@ function os_profiles_update_7054() {
   features_revert(array('os_profiles' => array('field', 'field_base', 'field_instance')));
 }
 
+/**
+ * Restore missing path i.e people/glossary.
+ */
+function os_profiles_update_7055() {
+  features_revert(array('os_profiles' => array('views_view')));
+}
