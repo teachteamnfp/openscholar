@@ -1005,3 +1005,21 @@ function cp_redirect_parse_url_alter(&$parsed, $original_url) {
     unset($parsed['fragment']);
   }
 }
+
+/**
+ * Implements hook_entity_property_info
+ */
+function cp_entity_property_info() {
+  $info = array();
+  $properties = &$info['node']['properties'];
+
+  $properties['noindex'] = array(
+    'label' => t("noindex"),
+    'type' => 'integer', 
+    'description' => t("Prevent this page from appearing in search engine results"),
+    'schema field' => 'node_noindex',
+    'setter callback' => 'entity_property_verbatim_set',
+  );
+
+  return $info;
+}

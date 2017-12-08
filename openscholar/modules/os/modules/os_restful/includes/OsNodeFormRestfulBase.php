@@ -237,20 +237,28 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
         }
       }
       $processed_property = array_merge($processed_property, $processed_unknown_property);
-       // @todo : Remove debug statment.
-       //print_r($wrapper->getPropertyInfo());
-      //print_r($processed_property);
+      // @todo : Remove debug statment.
+      // print_r($wrapper->getPropertyInfo());
+      // print_r($processed_property);
+      // print_r($processed_unknown_property);
       foreach ($processed_property as $property_name => $value) {
         if (!empty($wrapper->{$property_name})) {
           $field_value = $this->propertyValuesPreprocess($property_name, $value, $property_name);
           $wrapper->{$property_name}->set($field_value);
         }
       }
-
-      $save = TRUE;
       $wrapper->save();
-
-      print_r($wrapper);
+      $save = TRUE;
+      $entity = entity_load_single($this->entityType, $wrapper->getIdentifier());
+      foreach ($processed_unknown_property as $property_name => $value) {
+        if ($property_name == 'date' && !empty($value)) {
+          $entity->created = strtotime($value);
+        }
+        if ($property_name == 'noindex' && !empty($value)) {
+          $entity->noindex = $value;
+        }
+      }
+      entity_save($this->entityType, $entity);
     }
     
     if (!$save) {
