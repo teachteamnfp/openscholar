@@ -1162,6 +1162,21 @@ ul.no-event-export {
 .block-boxes-os_boxes_widget_slider #layout_16_9_side .rslides_tabs li:last-of-type {
     display: none;
 }
+.block-boxes-os_boxes_widget_slider.arrow-nav #layout_16_9_side .rslides_tabs li:first-of-type,
+.block-boxes-os_boxes_widget_slider.arrow-nav #layout_16_9_side .rslides_tabs li:last-of-type {
+    display: block;
+.block-boxes-os_boxes_widget_slider.arrow-nav #layout_16_9_side .rslides_tabs li:first-of-type a,
+.block-boxes-os_boxes_widget_slider.arrow-nav #layout_16_9_side .rslides_tabs li:last-of-type a }
+{
+    background-color: transparent;
+    background-image: none;
+}
+.block-boxes-os_boxes_widget_slider.arrow-nav #layout_16_9_side .rslides_tabs li:first-of-type a:after,
+.block-boxes-os_boxes_widget_slider.arrow-nav #layout_16_9_side .rslides_tabs li:last-of-type a:after }
+{
+    content:'ccc';
+    position:absolute;
+}
 .block-boxes-os_boxes_widget_slider #layout_16_9_side .rslides_tabs a,
 .block-boxes-os_boxes_widget_slider #layout_16_9_side .rslides_tabs a:visited {
     font-weight: normal;
