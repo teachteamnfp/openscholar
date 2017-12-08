@@ -70,7 +70,7 @@ class os_boxes_widget_slider extends os_boxes_widget_collection {
     $form['display']['display_nav_arrow'] = array(
       '#type' => 'checkbox',
       '#description' => t('Left and right arrows will display on either side of the navigation dots.'),
-      '#title' => t('Display navigation arrow'),
+      '#title' => t('Display navigation arrows'),
       '#default_value' => isset($this->options['display_nav_arrow']) ? $this->options['display_nav_arrow'] : $defaults['display_nav_arrow'],
     );
 
