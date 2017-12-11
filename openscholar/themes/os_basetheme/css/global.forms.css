@@ -264,7 +264,7 @@ input[type="radio"] {
     *width: 13px;
 }
 /* Addresses styling for 'hidden' attribute not present in IE7/8/9, FF3, S4 */
-
+.field-name-field-migrate-example-gender,
 [hidden] {
     display: none;
 }
