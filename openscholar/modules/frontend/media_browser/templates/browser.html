@@ -63,7 +63,15 @@
             </div>
             <div class="embed-failure" ng-show="embedFailure" ng-click="$parent.embedFailure = false">
                 <span class="error-icon"></span>
-                URL(s) not from accepted domain! Please check that all URLs are from an accepted provider, and all URLs in HTML code are from an accepted domain.
+                URL(s) in HTML code are not from accepted domain! Please check that all URLs are from an accepted provider, and all URLs in HTML code are from an accepted domain.
+            </div>
+            <div class="embed-failure" ng-show="embedFailureHttps" ng-click="$parent.embedFailureHttps = false">
+                <span class="error-icon"></span>
+                URL(s) in HTML code are not accepted if the source is not https or from an accepted provider, Please check that all HTML code are from an accepted domain.
+            </div>
+            <div class="embed-failure" ng-show="embedFailureHttps" ng-click="$parent.embedFailureHttps = false">
+                <span class="error-icon"></span>
+                URL(s) in HTML code are not accepted if the source is not https or from an accepted provider, Please check that all HTML code are from an accepted domain.
             </div>
             <div class="actions">
                 <button value="submit" ng-click="$parent.embedSubmit()">Submit</button>

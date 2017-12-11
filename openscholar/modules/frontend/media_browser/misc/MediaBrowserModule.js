@@ -61,8 +61,8 @@
         }
       }
     }])
-  .controller('BrowserCtrl', ['$scope', '$filter', '$http', 'EntityService', 'EntityConfig', '$sce', '$q', '$upload', '$timeout', 'FILEEDITOR_RESPONSES', 'params', 'close',
-      function ($scope, $filter, $http, EntityService, config, $sce, $q, $upload, $timeout, FER, params, close) {
+  .controller('BrowserCtrl', ['$scope', '$filter', '$http', 'EntityService', 'EntityConfig', '$sce', '$q', '$upload', '$timeout', 'FILEEDITOR_RESPONSES', 'params', 'close', '$location',
+      function ($scope, $filter, $http, EntityService, config, $sce, $q, $upload, $timeout, FER, params, close, $location) {
 
     // Initialization
     var service = new EntityService('files', 'id'),
@@ -631,10 +631,17 @@
         }
       })
       .error(function (e) {
-        $scope.embedFailure = true;
+        if ($location.protocol() == 'https') {
+          $scope.embedFailureHttps = true;
+          $timeout(function () {
+            $scope.embedFailureHttps = false;
+          }, 5000);
+        } else {
+          $scope.embedFailure = true;
           $timeout(function () {
             $scope.embedFailure = false;
           }, 5000);
+        }
       });
     }
 
