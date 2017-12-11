@@ -1169,7 +1169,7 @@ ul.no-event-export {
 .block-boxes-os_boxes_widget_slider.arrow-nav #layout_16_9_side .rslides_tabs li:first-of-type a,
 .block-boxes-os_boxes_widget_slider.arrow-nav #layout_16_9_side .rslides_tabs li:last-of-type a 
 {
-   background-color:transparent;
+   background-color:transparent !important;
     background-image: none;
 }
 
