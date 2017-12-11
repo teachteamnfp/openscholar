@@ -154,6 +154,7 @@ function os_profiles_init() {
 
   foreach ($nodes as $node) {
     if (empty($node->field_original_destination_url)) {
+        $url = $node->field_destination_url[LANGUAGE_NONE][0]['value'] . '/' . OS_PROFILE_JSON_PREFIX . $node->nid;
       continue;
     }
 
@@ -161,7 +162,7 @@ function os_profiles_init() {
     $wrapper = entity_metadata_wrapper('node', $node);
     $original_photo = $wrapper->field_person_photo->value();
 
-    $data = os_profiles_get_origin_node_values($node->field_original_destination_url[LANGUAGE_NONE][0]['value'], $fields);
+    $data = os_profiles_get_origin_node_values($url, $fields);
 
     // Since using "put" will set NULL for missing fields we must send the original
     // url too. Otherwise it will be cleared.
@@ -178,7 +179,7 @@ function os_profiles_init() {
       // The field person is an array. Remove him for the update method but keep
       // it for later.
       unset($data->values['photo']);
-      $handler->patch($node->nid, $data->values);
+      $handler->put($node->nid, $data->values);
     } catch(\Exception $e) {
       variable_del('os_profiles_nodes_uuid');
       variable_del('os_profiles_nodes_uuid_time');
