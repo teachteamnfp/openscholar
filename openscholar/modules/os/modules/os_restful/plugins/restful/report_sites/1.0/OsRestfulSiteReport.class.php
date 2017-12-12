@@ -98,7 +98,7 @@ class OsRestfulSiteReport extends \OsRestfulReports {
       $query->innerJoin('node', 'n', 'purl.id = n.nid AND provider = :provider', array(':provider' => 'spaces_og'));
     }
 
-    $url_parts = explode(".", str_replace("http://", "", $base_url));
+    $url_parts = explode(".", preg_replace('/^https?:\/\//', "", $base_url));
     $query->addExpression("'" . $url_parts[0] . "'", 'os_install');
     $query->addField('n', 'title');
     $query->addField('u', 'mail', 'site_owner_email');
