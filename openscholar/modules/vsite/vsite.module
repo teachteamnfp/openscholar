@@ -3430,14 +3430,6 @@ function vsite_og_permission() {
         'vsite admin',
       ),
     ),
-    'insert link into wysiwyg' => array(
-      'title' => t('Insert link into wysiwyg'),
-      'os_override' => TRUE,
-      'default role' => array(
-        'content editor',
-        'vsite admin',
-      ),
-    ),
   );
 }
 

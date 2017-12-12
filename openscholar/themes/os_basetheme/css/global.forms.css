@@ -565,3 +565,8 @@ form[id^="os-mailchimp-form--"] .form-item label,
 div.ctools-modal-content #os-mailchimp-form .form-item label {
     float: none;
 }
+form[id^="os-mailchimp-form--"] input.form-text {
+
+width:auto;
+
+}
