@@ -357,3 +357,10 @@ function os_events_update_7029() {
 function os_events_update_7030() {
   features_revert(array('os_events' => array('views_view')));
 }
+
+/**
+ * Adding year to date format in teaser and sidebar teaser view
+ */
+function os_events_update_7031() {
+  features_revert(array('os_events' => array('field_instance')));
+}
