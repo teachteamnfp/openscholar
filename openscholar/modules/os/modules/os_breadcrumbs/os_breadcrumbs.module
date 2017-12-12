@@ -318,8 +318,15 @@ function _os_breadcrumbs_build_taxonomy_breadcrumb($path) {
       $links[] = ''; // t(ucfirst($short_title));
     }else {
       $term_path = taxonomy_term_uri($term);
+      $path_alias = drupal_get_path_alias($term_path['path']);
+      $path_array = explode('/', $path_alias);
+      $child_path= array_slice($path_array, 1);
+      $term_uri = '';
+      foreach($child_path as $child_path_append) {
+          $term_uri = $term_uri . '/' . $child_path_append;
+      }
       // If we are in a content type, it needs to be appended onto the breadcrumb link for consistancy.
-      $term_url = $prepend_taxonomy == TRUE ? $append_paths . '/' . $term_path['path'] : $term_path['path'];
+      $term_url = $prepend_taxonomy == TRUE ? $append_paths . $term_uri : $term_uri;
       $links[] = l(strtoupper($short_title), $term_url);
     }
   }
