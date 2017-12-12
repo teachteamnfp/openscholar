@@ -34,7 +34,7 @@ Feature:
       And I visit "john/about"
      Then I should see "Dataverse Dataset Citation"
 
-  @api @widgets
+  @api @widgets @javascript
   Scenario: Verify the Dataverse Dataset Box widget.
      Given I am logging in as "john"
       And I visit "john/os/widget/add/os_boxes_dataverse_dataset/cp-layout"
@@ -42,6 +42,6 @@ Feature:
       And I fill in "Widget Title" with "Dataverse Dataset"
       And I fill in "Dataset Persistent Identifier" with "10.7910/DVN/AURKTO"
       And I press "Save"
-      When the dataverse widget "Dataverse Dataset" is placed in the "About" layout
+    When the dataverse widget "Dataverse Dataset" is placed in the "About" layout
       And I visit "john/about"
      Then I should see "Dataverse Dataset"
