@@ -12,10 +12,12 @@
 .front .block.block-boxes-os_slideshow_box #layout_16_9_below,
 .front .block-boxes-os_boxes_media img,
 .front #columns .block-boxes-os_boxes_html,
-.front #columns .block-boxes-os_boxes_accordion {
+.front #columns .block-boxes-os_boxes_accordion,
+.front .block-boxes-os_taxonomy_fbt.term-slider {
     margin-left: auto;
     margin-right: auto;
 }
+.front .block-boxes-os_taxonomy_fbt.term-slider,
 .front .block-boxes-os_boxes_tabs,
 .front .block-boxes-os_sv_list_box,
 .front .block.block-boxes-os_boxes_columns,
@@ -41,6 +43,9 @@
 .front #columns .block-boxes-os_boxes_tabs .block-boxes-os_boxes_html,
 .front #columns .block-boxes-os_boxes_accordion .block-boxes-os_boxes_html,
 .front #columns .block-boxes-os_boxes_columns .block-boxes-os_boxes_accordion,
+.front #columns .block-boxes-os_boxes_columns .block-boxes-os_taxonomy_fbt.term-slider,
+.front #columns .block-boxes-os_boxes_tabs .block-boxes-os_taxonomy_fbt.term-slider,
+.front #columns .block-boxes-os_boxes_accordion .block-boxes-os_taxonomy_fbt.term-slider,
 .front #columns .block-boxes-os_boxes_media img,
 .front .block-boxes-os_boxes_columns .block.block-boxes-os_slideshow_box #layout_16_9_side, 
 .front .block-boxes-os_boxes_columns .block.block-boxes-os_slideshow_box #layout_16_9_overlay, 
