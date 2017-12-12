@@ -108,6 +108,11 @@ abstract class citation_distribute_service_sword extends citation_distribute_ser
 		try {
   		$packager->create();
 		} catch (Exception $e) {
+      watchdog('SWORD', 'Exception at: @file, @line: @message', array(
+        '@file' => $e->getFile(),
+        '@line' => $e->getLine(),
+        '@message' => $e->getMessage()
+      ));
 			drupal_set_message('service_sword: ' . $e->getMessage(), 'error');
 		return false;
 	}
@@ -191,6 +196,11 @@ abstract class citation_distribute_service_sword extends citation_distribute_ser
 				$deposit = $sac->deposit($deposit_url, $this->username, $this->password, $this->obo, $file, $this->packaging, 'application/zip');
 			} catch(Exception $e) {
 				drupal_set_message('DASH deposit error', 'error');
+        watchdog('SWORD', 'Exception at: @file, @line: @message', array(
+          '@file' => $e->getFile(),
+          '@line' => $e->getLine(),
+          '@message' => $e->getMessage()
+        ));
 				return false;
 			}
 		} else {
@@ -231,7 +241,10 @@ abstract class citation_distribute_service_sword extends citation_distribute_ser
 				break;
 			default:
 				//other, nonspecific error
-				drupal_set_message('Error connecting to sword server', 'error');
+				drupal_set_message('Error '.$sac_doc->sac_status.' connecting to sword server', 'error');
+        watchdog('SWORD', 'HTTP @code Error connecting to SWORD server', array(
+          '@code' => $sac_doc->sac_status,
+        ));
 				return false;
 		}
 
