@@ -1,0 +1,27 @@
+<?php
+
+function os_sanitize_markup_form_alter(&$form, &$form_state, $form_id) {
+  $form['#validate'][] = 'os_sanitize_markup_submit_handler';
+}
+
+function os_sanitize_markup_submit_handler(&$form, &$form_state) {
+  _element_children_recursive($form, $form, $form_state);
+}
+
+function _element_children_recursive(&$element, &$form, &$form_state) {
+
+  foreach (element_children($element) as $element_key) {
+    $value = drupal_array_get_nested_value($form_state['values'], $element[$element_key]['#parents']);
+
+    if (is_string($value)) {
+      $count = 0;
+      $replaced = str_replace(['{', '}'], ['{ ', '} '], $value, $count);
+
+      if ($count != 0) {
+        drupal_array_set_nested_value($form_state['values'], $element[$element_key]['#parents'], $replaced);
+      }
+    }
+
+    _element_children_recursive($element[$element_key], $form, $form_state);
+  }
+}
