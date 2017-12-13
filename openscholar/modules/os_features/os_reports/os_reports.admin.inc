@@ -350,7 +350,7 @@ function os_reports_site_form($form, &$form_state) {
     '#type' => 'hidden',
     '#attributes' => array(
       'ng-model' => 'params.range',
-      'ng-init' => "params.range = '" . $handler->getRange() . "'",
+      'ng-init' => "params.range = " . $handler->getRange(),
     ),
   );
 
@@ -378,6 +378,7 @@ function os_reports_site_form($form, &$form_state) {
   return $form;
 }
 
+// download CSV of report results
 function os_reports_site_form_submit($form, &$form_state) {
   $form_state['rebuild'] = TRUE;
   $params = $form_state['input'];

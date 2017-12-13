@@ -3,7 +3,7 @@
   var reportModule = angular.module('ReportModule', ['os-auth']);
   reportModule.controller('SiteReportQuery', ['$sce', '$http', '$scope', function ($sce, $http, $scope) {
     $scope.params = {};
-    $scope.params.includesites = 'content';
+    $scope.params.includesites = 'all';
     $scope.report_url = 'report_sites';
 
     $scope.fieldConversion = {
@@ -219,7 +219,7 @@
           delete $scope.params[key];
         }
       }
-      $scope.params.includesites = 'content';
+      $scope.params.includesites = 'all';
       for (var key in $scope.queryform) {
         delete $scope.queryform[key];
       }

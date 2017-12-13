@@ -300,8 +300,11 @@ class OsRestfulSiteReport extends \OsRestfulReports {
       $new_row = parent::mapDbRowToPublicFields($row);
 
       // if vsite id isn't a requested column, remove from result set
-      if (isset($row->vsite_id)) {
-        $new_row['vsite_id'] = $row->id;
+      if (!isset($row->vsite_id)) {
+        unset($new_row['id']);
+      }
+      else {
+        unset($new_row['vsite_id']);
       }
 
       // format dates
