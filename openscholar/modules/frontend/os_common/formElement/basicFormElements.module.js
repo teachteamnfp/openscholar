@@ -186,20 +186,24 @@
   /**
    * Textbox directive.
    */
-  m.directive('feTextfield', [function () {
+  m.directive('feTextfield', ['$rootScope', function ($rootScope) {
     return {
       scope: {
         name: '@',
         value: '=ngModel',
         element: '='
       },
-      template: '<label for="{{id}}">{{title}} <span ng-if="required" class="form-required" title="This field is required.">*</span></label>' +
+      template: '<label for="{{id}}">{{title}} <span ng-if="required" class="form-required">*</span></label>' +
       '<input type="textfield" id="{{id}}" name="{{name}}" ng-class="{error: error}" ng-model="value" class="form-text" ng-disabled="element.disabled">',
       link: function (scope, elem, attr) {
         scope.id = attr['inputId'];
         scope.title = scope.element.title;
         scope.required = (angular.isDefined(scope.element.required)) ? scope.element.required : false;
+        scope.$watch('value', function(newValue) {
+          $rootScope.$broadcast("textFieldValue", scope.value);
+        })
         scope.error = false;
+        // Error handling.
         scope.$on("error", function (evt, data) {
           if (angular.isDefined(scope.element.required) && scope.element.required) {
             scope.error = true;
@@ -498,6 +502,9 @@
         '<div form-element element="field" value="formDataLink[key]"><span>placeholder</span></div>'+
       '</div>',
       link: function (scope, elem, attr) {
+        scope.$on("textFieldValue", function (evt, data) {
+          scope.formDataLink.link_title = data;
+        });
         scope.osMenuEnabled = {
           defaultValue: scope.element.enabled['#default_value'],
           title: scope.element.enabled['#title'],
@@ -521,8 +528,14 @@
             scope.formElementsLink[k] = attributes;
           }
         }
-        scope.$watch('osMenuEnabled.defaultValue', function() {
-          var message = (!scope.osMenuEnabled.defaultValue) ? '(Not in menu)' : '';
+        scope.$watchGroup(['osMenuEnabled.defaultValue', 'formDataLink.link_title'], function() {
+          var message = '';
+          if (scope.formDataLink.link_title) {
+            message = '(' + scope.formDataLink.link_title + ')';
+          }
+          if (!scope.osMenuEnabled.defaultValue) {
+            message = '(Not in menu)';
+          }
           scope.value = {
             message: message,
             fields: {
