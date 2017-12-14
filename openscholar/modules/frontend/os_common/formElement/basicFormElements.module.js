@@ -186,7 +186,7 @@
   /**
    * Textbox directive.
    */
-  m.directive('feTextfield', ['$rootScope', function ($rootScope) {
+  m.directive('feTextfield', ['$rootScope', '$http', function ($rootScope, $http) {
     return {
       scope: {
         name: '@',
@@ -194,16 +194,44 @@
         element: '='
       },
       template: '<label for="{{id}}">{{title}} <span ng-if="required" class="form-required">*</span></label>' +
-      '<input type="textfield" id="{{id}}" name="{{name}}" ng-class="{error: error}" ng-model="value" class="form-text" ng-disabled="element.disabled">',
+      '<input type="textfield" ng-blur="getUrlAlias()" id="{{id}}" name="{{name}}" ng-class="{error: error}" ng-model="value" class="form-text" ng-disabled="element.disabled">' +
+      '<div ng-if="urlAlias" class="description"><strong>Link URL:</strong> {{urlAlias}} <a id="pathauto-extra-edit-path" href="#path[pathauto]">edit</a></div>',
       link: function (scope, elem, attr) {
         scope.id = attr['inputId'];
         scope.title = scope.element.title;
         scope.required = (angular.isDefined(scope.element.required)) ? scope.element.required : false;
+        // Set visibility of path alias element for node type page. 
+        var page_node_form = document.querySelector("div.ui-dialog-content #page_node_form");
+        scope.urlAlias = false;
+        scope.getUrlAlias = function () {
+          if (page_node_form && scope.name == 'title') {
+            var queryArgs = {};
+            var baseUrl = Drupal.settings.paths.vsite_home;
+            if (angular.isDefined(Drupal.settings.spaces)) {
+              if (Drupal.settings.spaces.id) {
+                queryArgs.type = 'page';
+                queryArgs.gid = Drupal.settings.spaces.id;
+                queryArgs.prefix = baseUrl;
+                queryArgs.title = scope.value;
+              }
+            }
+            var config = {
+              params: queryArgs
+            };
+            $http.get(baseUrl+'/os/pages/alias-preview', config).then(function (res) {
+              console.log(res);
+              scope.urlAlias = Drupal.settings.admin_panel.purl_base_domain + '/' + res.data.data;
+            });
+          }
+        }
+
+        // Broadcast the text field value so that other directive can use it.
         scope.$watch('value', function(newValue) {
-          $rootScope.$broadcast("textFieldValue", scope.value);
+          $rootScope.$broadcast("textFieldValue", {name: scope.name, value: newValue});
         })
-        scope.error = false;
+
         // Error handling.
+        scope.error = false;
         scope.$on("error", function (evt, data) {
           if (angular.isDefined(scope.element.required) && scope.element.required) {
             scope.error = true;
@@ -502,13 +530,20 @@
         '<div form-element element="field" value="formDataLink[key]"><span>placeholder</span></div>'+
       '</div>',
       link: function (scope, elem, attr) {
-        scope.$on("textFieldValue", function (evt, data) {
-          scope.formDataLink.link_title = data;
-        });
+        var nodeTitle = '';
         scope.osMenuEnabled = {
           defaultValue: scope.element.enabled['#default_value'],
           title: scope.element.enabled['#title'],
         };
+
+        scope.$on("textFieldValue", function (evt, data) {
+          if (data.name == 'title' && data.value) {
+            nodeTitle = data.value;
+            if (!scope.osMenuEnabled.defaultValue) {
+              scope.formDataLink.link_title = data.value;
+            }
+          }
+        });
 
         var linkElements = scope.element.link;
         scope.formElementsLink = {};
@@ -535,6 +570,7 @@
           }
           if (!scope.osMenuEnabled.defaultValue) {
             message = '(Not in menu)';
+            scope.formDataLink.link_title = nodeTitle;
           }
           scope.value = {
             message: message,

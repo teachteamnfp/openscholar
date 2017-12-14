@@ -30,7 +30,7 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
 
     $function = node_type_get_base($node) . '_form';
     if (function_exists($function) && ($extra = $function($node, $form_state))) {
-      // Unset: not require to send to frontend.
+      // Unset: not require in frontend.
       unset($extra['#validate']);
       unset($extra['#cache']);
       foreach ($extra as $key => $form_field) {

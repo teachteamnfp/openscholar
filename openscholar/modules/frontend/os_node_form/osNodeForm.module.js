@@ -31,10 +31,10 @@
       
     }
 
-    this.nodeSave = function (node) {
+    this.nodeSave = function (nodeType, node) {
       node.og_group_ref = Drupal.settings.spaces.id;
       var deferred = $q.defer();
-      $http.post(baseUrl+'/page', node).then(function (response) {
+      $http.post(baseUrl+'/'+nodeType, node).then(function (response) {
         deferred.resolve(response);
       }, function(error) {
         deferred.reject(error);
@@ -141,7 +141,7 @@
 
     function submitForm($event) {
       bss.SetState('node_form', true);
-      nodeFormService.nodeSave($s.formData).then(function (response) {
+      nodeFormService.nodeSave(nodeType, $s.formData).then(function (response) {
         $rootScope.$broadcast("success", response.data);
         bss.SetState('node_form', false);
         $s.errors = [];
