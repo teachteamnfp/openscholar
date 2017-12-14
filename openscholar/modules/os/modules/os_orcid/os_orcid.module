@@ -185,7 +185,6 @@ function os_orcid_resync_item($data) {
   } else {
     $works = $work_feed;
   }
-
   foreach ($works as $work) {
     foreach($biblio_types as $key => $value) {
       if($biblio_types[$key]->name == str_replace('-', ' ', $work['work-type'])) {
