@@ -226,7 +226,7 @@ class OsRestfulSiteReport extends \OsRestfulReports {
         $subquery->addExpression('COUNT(ogm.etid)', 'num_nodes');
         $subquery->addField('ogm','gid');
         $subquery->groupBy('ogm.gid');
-        $query->leftJoin($subquery, 'og_nodes', 'og_nodes.gid = purl.id');
+        $query->innerJoin($subquery, 'og_nodes', 'og_nodes.gid = purl.id');
         $query->addField('og_nodes', 'num_nodes');
         $fields['num_nodes'] = array('property' => 'num_nodes');
         $this->setPublicFields($fields);
