@@ -198,19 +198,13 @@ function os_orcid_resync_item($data) {
     }
 
     $insert = true;
-
     // If there is a journal-title, set the node title, otherwise use the title.
-    if(isset($work['journal-title'])) {
-      $journaltitle = $work['journal-title'];
-    }
-    else {
-      $journaltitle = $work['work-title']['title'];
-    }
+    $work_title = $work['work-title']['title'];
 
     $biblios = db_select('biblio', 'b')
       ->fields('b', array('nid'))
       ->condition('b.biblio_type', $biblio_type)
-      ->condition('b.biblio_sort_title', $journaltitle)
+      ->condition('b.biblio_sort_title', $work_title)
       ->condition('b.biblio_url_title', $work['source']['source-orcid']['uri'])
       ->execute()
       ->fetchAll();
@@ -232,7 +226,7 @@ function os_orcid_resync_item($data) {
     // Setup the new node.
     $node = new stdClass();
 
-    $node->title = $journaltitle;
+    $node->title = $work_title;
 
     $node->type = 'biblio';
 
@@ -246,26 +240,33 @@ function os_orcid_resync_item($data) {
     $node->comment = 0;
 
     // Set the biblio title.
-    if(isset($work['journal-title'])) {
-      $node->biblio_sort_title = $journaltitle;
-    }
-    else {
-      $node->biblio_sort_title = $journaltitle;
-    }
+    $node->biblio_sort_title = $work_title;
 
     // Set the title field.
-    $node->title_field[LANGUAGE_NONE][0]['value'] = $journaltitle;
+    $node->title_field[LANGUAGE_NONE][0]['value'] = $work_title;
     $node->title_field[LANGUAGE_NONE][0]['format'] = 'title_filter';
-    $node->title_field[LANGUAGE_NONE][0]['safe_value'] = $journaltitle;
+    $node->title_field[LANGUAGE_NONE][0]['safe_value'] = $work_title;
 
-    // Set the secondary title, which is the full title.
-    $node->biblio_secondary_title = $work['work-title']['title'];
+    // Set the secondary title
+    $node->biblio_secondary_title = $work['journal-title'];
 
     // Set the year of the publication.
     $node->biblio_year = $work['publication-date']['year'];
 
+    // Set the month of the publication.
+    $node->field_biblio_pub_month[LANGUAGE_NONE][0]['value'] = $work['publication-date']['month'];
+
+    // Set the month of the publication.
+    $node->field_biblio_pub_day[LANGUAGE_NONE][0]['value'] = $work['publication-date']['day'];
+
     // Set the URL of the publication.
-    $node->biblio_url_title = $work['source']['source-orcid']['uri'];
+    $node->biblio_url_title = "Publisher's Version";
+
+    //Set the abstract.
+    $node->biblio_abst_e = $work['short-description'];
+
+    //Set the biblio url.
+    $node->biblio_url = $work['url'];
 
     // Counter used in for loop.
     $counter = 0;
