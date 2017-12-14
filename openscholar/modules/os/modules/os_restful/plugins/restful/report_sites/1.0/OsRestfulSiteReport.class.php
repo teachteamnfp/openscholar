@@ -107,9 +107,20 @@ class OsRestfulSiteReport extends \OsRestfulReports {
     // site content data
     if (!isset($request['includesites']) || $request['includesites'] == "all") {
       if ($this->latestUpdate || isset($fields['content_last_updated'])) {
-        $query->addExpression('MAX(content.changed)', 'content_last_updated');
-        $query->leftJoin('og_membership', 'ogm', "ogm.gid = purl.id AND ogm.group_type = 'node' AND ogm.entity_type = 'node'");
-        $query->leftJoin('node', 'content', "ogm.etid = content.nid and content.type NOT IN ('" . implode("','", $this->excludedContentTypes) . "')");
+        $subquery = db_select('og_membership','ogm')
+          ->condition('group_type', 'node', '=')
+          ->condition('entity_type', 'node', '=')
+          ->condition('field_name', 'og_group_ref', '=')
+          ->condition('ogm.type', 'og_membership_type_default', '=');
+        $subquery->addExpression('COUNT(ogm.etid)', 'num_nodes');
+        $subquery->addField('ogm','gid');
+        $subquery->addExpression('MAX(n.changed)', 'content_last_updated');
+        $subquery->innerJoin('node', 'n', "n.nid = ogm.etid AND n.type NOT IN ('" . implode("','", $this->excludedContentTypes) . "') AND ogm.group_type = 'node' AND ogm.entity_type = 'node' AND ogm.field_name = 'og_group_ref' AND ogm.type = 'og_membership_type_default'");
+        $subquery->groupBy('ogm.gid');
+        $query->leftJoin($subquery, 'og_content', 'og_content.gid = purl.id');
+        $query->addField('og_content', 'content_last_updated');
+        $fields['content_last_updated'] = array('property' => 'content_last_updated');
+        $this->setPublicFields($fields);
      }
       $query->groupBy('purl.id, purl.value');
     }
@@ -130,10 +141,20 @@ class OsRestfulSiteReport extends \OsRestfulReports {
       $query->innerJoin($subquery, 'configuration', 'configuration.id = purl.id');
 
       if (isset($fields['content_last_updated']) || $this->latestUpdate) {
-        $query->addExpression('MAX(content.changed)', 'content_last_updated');
-        $query->leftJoin('og_membership', 'ogm', "ogm.gid = purl.id AND ogm.group_type = 'node' AND ogm.entity_type = 'node'");
-        $query->leftJoin('node', 'content', "ogm.etid = content.nid and content.type NOT IN ('" . implode("','", $this->excludedContentTypes) . "')");
-        $query->groupBy('purl.id, purl.value');
+        $subquery = db_select('og_membership','ogm')
+          ->condition('group_type', 'node', '=')
+          ->condition('entity_type', 'node', '=')
+          ->condition('field_name', 'og_group_ref', '=')
+          ->condition('ogm.type', 'og_membership_type_default', '=');
+        $subquery->addExpression('COUNT(ogm.etid)', 'num_nodes');
+        $subquery->addField('ogm','gid');
+        $subquery->addExpression('MAX(n.changed)', 'content_last_updated');
+        $subquery->leftJoin('node', 'n', "n.nid = ogm.etid AND n.type NOT IN ('" . implode("','", $this->excludedContentTypes) . "') AND ogm.group_type = 'node' AND ogm.entity_type = 'node' AND ogm.field_name = 'og_group_ref' AND ogm.type = 'og_membership_type_default'");
+        $subquery->groupBy('ogm.gid');
+        $query->innerJoin($subquery, 'og_content', 'og_content.gid = purl.id');
+        $query->addField('og_content', 'content_last_updated');
+        $fields['content_last_updated'] = array('property' => 'content_last_updated');
+        $this->setPublicFields($fields);
       }
     }
     elseif ($request['includesites'] == "nocontent"){
@@ -226,7 +247,7 @@ class OsRestfulSiteReport extends \OsRestfulReports {
         $subquery->addExpression('COUNT(ogm.etid)', 'num_nodes');
         $subquery->addField('ogm','gid');
         $subquery->groupBy('ogm.gid');
-        $query->innerJoin($subquery, 'og_nodes', 'og_nodes.gid = purl.id');
+        $query->leftJoin($subquery, 'og_nodes', 'og_nodes.gid = purl.id');
         $query->addField('og_nodes', 'num_nodes');
         $fields['num_nodes'] = array('property' => 'num_nodes');
         $this->setPublicFields($fields);
