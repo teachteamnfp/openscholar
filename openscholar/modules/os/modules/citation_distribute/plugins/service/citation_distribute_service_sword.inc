@@ -220,7 +220,7 @@ abstract class citation_distribute_service_sword extends citation_distribute_ser
 		return true;
 	}
 
-	private function _get_service_doc($sac) {
+	private function _get_service_doc(SWORDAPPClient $sac) {
 
 		/* retrieve service document from sword server */
 		$service_url = $this->location . 'sword/servicedocument';
