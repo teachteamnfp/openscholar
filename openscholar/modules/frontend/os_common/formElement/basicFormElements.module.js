@@ -195,7 +195,7 @@
       },
       template: '<label for="{{id}}">{{title}} <span ng-if="required" class="form-required">*</span></label>' +
       '<input type="textfield" ng-blur="getUrlAlias()" id="{{id}}" name="{{name}}" ng-class="{error: error}" ng-model="value" class="form-text" ng-disabled="element.disabled">' +
-      '<div ng-if="urlAlias" class="description"><strong>Link URL:</strong> {{urlAlias}} <a id="pathauto-extra-edit-path" href="#path[pathauto]">edit</a></div>',
+      '<div ng-if="dataLoading">Loading...</div><div ng-if="urlAlias" class="description"><strong>Link URL:</strong> {{urlAlias}} <a id="pathauto-extra-edit-path" ng-click="editUrlAlias($event)">edit</a></div>',
       link: function (scope, elem, attr) {
         scope.id = attr['inputId'];
         scope.title = scope.element.title;
@@ -203,8 +203,13 @@
         // Set visibility of path alias element for node type page. 
         var page_node_form = document.querySelector("div.ui-dialog-content #page_node_form");
         scope.urlAlias = false;
+        var pathAutoStatus;
+        scope.$on("getPathautoStatus", function (evt, data) {
+          pathAutoStatus = data;
+        });
         scope.getUrlAlias = function () {
           if (page_node_form && scope.name == 'title') {
+            scope.dataLoading = true;
             var queryArgs = {};
             var baseUrl = Drupal.settings.paths.vsite_home;
             if (angular.isDefined(Drupal.settings.spaces)) {
@@ -218,16 +223,28 @@
             var config = {
               params: queryArgs
             };
-            $http.get(baseUrl+'/os/pages/alias-preview', config).then(function (res) {
-              console.log(res);
-              scope.urlAlias = Drupal.settings.admin_panel.purl_base_domain + '/' + res.data.data;
-            });
+            if (queryArgs.title && pathAutoStatus) {
+              $http.get(baseUrl+'/os/pages/alias-preview', config).then(function (res) {
+                var alias = res.data.data.split('/')[1];
+                $rootScope.$broadcast("getUrlAlias", {alias: alias});
+                scope.dataLoading = false;
+                scope.urlAlias = res.data.prefix + '/' + alias;
+              });
+            } else {
+              scope.dataLoading = false;
+            }
           }
         }
+        var state;
+        scope.editUrlAlias = function(evt) {
+          state = !state;
+          $rootScope.$broadcast("editUrlAliasClicked", {fieldset: 'path', collapsed: state});
+          evt.stopImmediatePropagation();
 
+        }
         // Broadcast the text field value so that other directive can use it.
-        scope.$watch('value', function(newValue) {
-          $rootScope.$broadcast("textFieldValue", {name: scope.name, value: newValue});
+        scope.$watch('value', function(newValue, oldValue) {
+          $rootScope.$broadcast("getTextFieldValue", {name: scope.name, value: newValue});
         })
 
         // Error handling.
@@ -433,6 +450,13 @@
         scope.collapsibleToggle = function () {
           scope.collapsed = !scope.collapsed;
         }
+
+        scope.$on("editUrlAliasClicked", function (evt, data) {
+          if (data.fieldset == scope.name) {
+            scope.collapsed = !data.collapsed;
+          }
+        });
+
         scope.collapsible = scope.element.collapsible;
         scope.title = scope.element.title;
         scope.id = $filter('idClean')(scope.element.name, 'edit');
@@ -536,7 +560,7 @@
           title: scope.element.enabled['#title'],
         };
 
-        scope.$on("textFieldValue", function (evt, data) {
+        scope.$on("getTextFieldValue", function (evt, data) {
           if (data.name == 'title' && data.value) {
             nodeTitle = data.value;
             if (!scope.osMenuEnabled.defaultValue) {
@@ -585,7 +609,7 @@
 
   }]);
 
-  m.directive('fieldsetPath', [function () {
+  m.directive('fieldsetPath', ['$rootScope', function ($rootScope) {
     return {
       restrict: 'A',
       scope: {
@@ -603,6 +627,11 @@
       '</div>',
       link: function (scope, elem, attr) {
         var vsiteHome = angular.isDefined(Drupal.settings.paths.vsite_home) ? Drupal.settings.paths.vsite_home : '';
+        
+        scope.$on("getUrlAlias", function (evt, data) {
+          scope.pathalias.defaultValue = data.alias;
+        });
+
         scope.pathauto = {
           title: scope.element.pathauto['#title'],
           description: scope.element.pathauto['#description'],
@@ -616,6 +645,7 @@
         };
         var message = '(No alias)';
         scope.$watchGroup(['pathalias.defaultValue', 'pathauto.defaultValue'], function(newValue) {
+          $rootScope.$broadcast('getPathautoStatus', scope.pathauto.defaultValue);
           if (scope.pathauto.defaultValue) {
             message = '(Automatic alias)';
           } else {
