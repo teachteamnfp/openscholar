@@ -167,3 +167,10 @@ body.page-admin-reports-os .fieldset-wrapper .form-item-only-vsite-ids {
   margin-top: -5px;
   padding-bottom: 8px;
 }
+body.page-admin-reports-os #edit-columns {
+  overflow: hidden;
+}
+body.page-admin-reports-os #edit-columns .form-type-checkbox {
+  display: block;
+  float: left;
+}
