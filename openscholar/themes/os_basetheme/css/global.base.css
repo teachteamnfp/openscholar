@@ -797,9 +797,10 @@ ul ul ul ul {
     border-bottom: none !important;
     position: relative;
 }
+
 .google:before {
-    /*background: url('../images/scholarbase-sprite.png?0615b') no-repeat 0px -727px;*/
-    width: 21px;
+    background: url('../images/scholarbase-sprite.png?0gfgfgb') no-repeat -74px -727px;
+    width: 22px;
     height: 22px;
     position: absolute;
     left: 0;
