@@ -1029,3 +1029,10 @@ function os_update_7056() {
     }
   }
 }
+
+/**
+ * Change os_date_abbreviated value
+ */
+function os_update_7057() {
+  variable_set('date_format_os_date_abbreviated', 'D M j, g:ia');
+}
