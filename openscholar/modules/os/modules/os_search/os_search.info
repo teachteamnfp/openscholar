@@ -1,0 +1,5 @@
+name = OpenScholar search
+description = Provides OpenScholar Search support using Search API
+core = 7.x
+package = OpenScholar
+dependencies[] = search_api
