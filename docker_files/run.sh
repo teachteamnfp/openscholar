@@ -94,7 +94,7 @@ curl -sS https://getcomposer.org/installer | php
 php composer.phar install
 cp behat.local.yml.travis behat.local.yml
 
-if [ $DOCKER_DEBUG -eq 1 ]; then
+if [ -v $DOCKER_DEBUG ] && [ $DOCKER_DEBUG -eq 1 ]; then
   bash
 else
   # Run tests

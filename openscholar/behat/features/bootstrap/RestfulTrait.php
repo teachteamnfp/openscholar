@@ -277,6 +277,9 @@ trait RestfulTrait {
       ]);
     } catch (\GuzzleHttp\Exception\ClientException $e) {
       return $this->handleExceptions($e, $return);
+    } catch (Exception $e) {
+      watchdog('Restful Trait Exception', $response->getContent());
+      throw $e;
     }
 
     return $response;
