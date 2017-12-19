@@ -35,6 +35,7 @@ chmod -R 777 /var/www/html/openscholar/www/sites/default/files/
 # Install custom domains
 echo -e "\n # Add lincoln virtual domain."
 service apache2 restart
+echo "\n"
 cat /etc/hosts
 sh -c "echo 127.0.0.1	lincoln.local >> /etc/hosts"
 sh -c "cat openscholar/behat/lincoln-vhost.txt > /etc/apache2/sites-available/lincoln.local.conf"
