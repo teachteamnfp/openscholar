@@ -3,7 +3,7 @@
   var reportModule = angular.module('ReportModule', ['os-auth']);
   reportModule.controller('SiteReportQuery', ['$sce', '$http', '$scope', function ($sce, $http, $scope) {
     $scope.params = {};
-    $scope.params.includesites = 'content';
+    $scope.params.includesites = 'all';
     $scope.report_url = 'report_sites';
 
     $scope.fieldConversion = {
@@ -51,8 +51,27 @@
         'display' : 'site type (preset)',
         'sort' : false,
       },
+      'site_owner_linked_huid' : {
+        'display' : 'site Owner has Associated HUID',
+      },
       'site_owner_huid' : {
-        'display' : 'Site Owner has Associated HUID',
+        'display' : 'site owner HUID',
+        'sort' : false,
+      },
+      'num_nodes' : {
+        'display' : 'number of nodes',
+      },
+      'num_files' : {
+        'display' : 'number of files',
+      },
+      'num_widgets' : {
+        'display' : 'number of widgets',
+      },
+      'num_members' : {
+        'display' : 'number of site members',
+      },
+      'num_redirects' : {
+        'display' : 'number of site redirects',
       },
     };
 
@@ -120,7 +139,7 @@
 
         var $request = {
           method: 'POST',
-          url : Drupal.settings.paths.api + '/' + $scope.report_url,
+          url : Drupal.settings.paths.api + '/v1/' + $scope.report_url,
           headers : {'Content-Type' : 'application/json'},
           data : $scope.params,
         };
@@ -200,7 +219,7 @@
           delete $scope.params[key];
         }
       }
-      $scope.params.includesites = 'content';
+      $scope.params.includesites = 'all';
       for (var key in $scope.queryform) {
         delete $scope.queryform[key];
       }

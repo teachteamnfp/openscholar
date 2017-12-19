@@ -4635,8 +4635,7 @@ JS;
           "//div[@class='calendar-calendar']//td[starts-with(@id, 'os_events-')]//span[@class='field-content']/a[text()='$event_title']"));
 
       $page = $this->getSession()->getPage()->getContent();
-
-      $date_next_arrow = $this->getSession()->getPage()->find('xpath', "//li[@class='date-next']/a");
+      $date_next_arrow = $this->getSession()->getPage()->find('xpath', "//section[@id='main-content']//li[@class='date-next']/a");
       $date_next_arrow->click();
     }
 
@@ -4645,7 +4644,7 @@ JS;
 
       # Return to today's calendar page
       while ($counter++ <= $num_intervals) {
-        $date_prev_arrow = $this->getSession()->getPage()->find('xpath', "//li[@class='date-prev']/a");
+        $date_prev_arrow = $this->getSession()->getPage()->find('xpath', "//section[@id='main-content']//li[@class='date-prev']/a");
         $date_prev_arrow->click();
       }
       return true;

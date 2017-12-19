@@ -41,6 +41,24 @@ function hwpi_init() {
  * Implements hook_cp_settings().
  */
 function hwpi_cp_settings() {
+
+  $settings = array();
+  $spaces_features = variable_get('spaces_features');
+
+  // The app won't appear in CP menu if not enabled.
+  if (empty($spaces_features['os_files_private'])) {
+    return $settings;
+  }
+
+  // Checks that the current vsite has a value for the pinserver app name
+  // variable.
+  $pinserver_app_name = variable_get('pinserver_app_name', NULL);
+
+  // Private Files settings link won't appear in CP menu if Private files app is
+  // not enabled and pinserver app name is not setup.
+  if (!$pinserver_app_name) {
+    return $settings;
+  }
   // For non-user-1, only adds the responsive setting for HWPI-themed sites.
   $theme = variable_get('theme_default');
 
@@ -48,21 +66,64 @@ function hwpi_cp_settings() {
     return;
   }
 
-  $settings = array(
-    'privacy_policy' => array(
-      'group' => array(
-        '#title' => t('Privacy Policy'),
-        '#id' => 'privacy-policy',
-        '#help_link' => l(t('Learn more about creating a privacy policy for your site'), variable_get('privacy_policy_url'), array('attributes' => array('target' => '_blank'))),
+    $settings['privacy_policy'] = array(
+    'group' => array(
+      '#title' => t('Privacy Policy'),
+      '#id' => 'privacy-policy',
+      '#help_link' => l(t('Learn more about creating a privacy policy for your site'), 'http://docs.openscholar.harvard.edu/global-site-settings#privacy-policy', array('attributes' => array('target' => '_blank'))),
       ),
-      'form' => array(
-        '#type' => 'textfield',
-        '#default_value' => variable_get('privacy_policy', ''),
-        '#title' => t('Privacy Policy URL'),
-        '#description' => t('Enter the URL to the privacy policy you wish to use for your site. Can be a link to a post on your own site.'),
-      ),
+    'form' => array(
+      '#type' => 'textfield',
+      '#default_value' => variable_get('privacy_policy', ''),
+      '#title' => t('Privacy Policy URL'),
+      '#description' => t('Enter the URL to the privacy policy you wish to use for your site. Can be a link to a post on your own site.'),
     ),
   );
+
+    $settings['os_files_private_pinserver'] = array(
+    'group' => array(
+      '#id' => 'feature_os_files_private',
+      '#title' => t('Private Files'),
+      '#weight' => 3,
+      '#menu_parent' => 'app_settings',
+      '#help_link' => l(t('Learn more about private files'), 'http://docs.openscholar.harvard.edu/private-files#setting-options', array('attributes' => array('target' => '_blank'))),
+    ),
+    'form' => array(
+      '#title' => t('Extend access to the Harvard Community'),
+      '#description' => t('This will enable anyone with a valid Harvard ID to log in using the Harvard Pinserver to access your private files. You must have a custom domain and pin application to choose this setting.'),
+      '#type' => 'checkbox',
+      '#default_value' => variable_get('os_files_private_pinserver', 0),
+      '#weight' => -1,
+      '#prefix' => '<label class="margin-bottom settings-form-heading">Private files are only accessible to your site members.</label>',
+      '#disabled' => !(user_access('administer pinserver') && variable_get('vsite_domain_name', FALSE)),
+      '#access' => module_exists('spaces') ? spaces_access_admin() : user_access('administer site configuration'),
+    ),
+    'rest_after_submit' => 'os_pinserver_auth_vsite_private_file_settings_submit',
+  );
+
+  // Allows administrators only to edit pinserver app name in spaces_overrides if they have a custom domain.
+  $pinserver_app_name_access = FALSE;
+  if (user_access('administer pinserver') && variable_get('vsite_domain_name', FALSE)) {
+    $pinserver_app_name_access = module_exists('spaces') ? spaces_access_admin() : user_access('administer site configuration');
+  }
+    $settings['pinserver_app_name'] = array(
+      'group' => array(
+        '#id' => 'feature_os_files_private',
+        '#title' => t('Private Files'),
+        '#weight' => 3,
+        '#menu_parent' => 'app_settings',
+        '#help_link' => l(t('Learn more about private files'), 'http://docs.openscholar.harvard.edu/private-files#setting-options', array('attributes' => array('target' => '_blank'))),
+      ),
+      'form' => array(
+        '#title' => t('Harvard PIN server application name'),
+        '#description' => t('Enter the application name given to you by Harvard Directory Services.'),
+        '#type' => 'textfield',
+        '#default_value' => variable_get('pinserver_app_name', ''),
+        '#weight' => -1,
+        '#access' => $pinserver_app_name_access,
+      ),
+      'rest_after_submit' => 'os_pinserver_auth_vsite_private_file_settings_submit',
+    );
 
   return $settings;
 }
@@ -218,4 +279,393 @@ function hwpi_features_revert($module) {
     }
   }
   return $count_vars;
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function hwpi_change_site_owner_form_alter($form, $form_state) {
+    $description = "";
+  if (module_exists('pinserver') && variable_get('pinserver_pin_url', FALSE)) {
+    $description .= t('Only users who have linked their OpenScholar accounts to HarvardKey are listed.') . ' ' . l('Learn more about linking accounts', 'http://docs.openscholar.harvard.edu/logging-your-site#linking-your-harvardkey-to-your-openscholar-account', array('attributes' => array('target' => '_blank', 'rel' => 'noopener'))) . '.';
+  }
+
+  $form['new_site_owner'] = array(
+    '#type' => 'select',
+    '#title' => t('Username'),
+    '#required' => TRUE,
+    '#description' => $description,
+    '#options' => $options,
+  );
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function hwpi_edit_membership_form_alter($form, $form_state, $user_load) {
+  $space = spaces_get_space();
+  $group_user = $user_load['build_info']['args'][0];
+
+  // Show the option to change site owner only for the current owner or a support team member with an associated HUID if the pinserver module is enabled
+  global $user;
+  if ($user->uid == 1 || !module_exists('pinserver') || (module_exists('pinserver') && variable_get('pinserver_pin_url', FALSE) && pinserver_user_has_associated_pin($group_user->uid))) {
+
+    $form['edit_membership']['group_manager'] = array(
+      '#type' => 'checkbox',
+      // Theme the checkbox label to look like the radio options.
+      '#title' => _cp_user_role_option(t('Set as site owner'), t('Make <em>@name</em> the site owner.', array('@name' => $name))),
+      '#default_value' => $space->group->uid == $group_user->uid,
+      '#access' => in_array('support team', $user->roles) || ($space->group->uid == $user->uid) || ($user->uid == 1),
+    );
+  }
+  else {
+    $form['edit_membership']['group_manager'] = array(
+      '#type' => 'markup',
+      '#markup' => '<p>' . t('@name\'s OpenScholar account is not linked to HarvardKey, so this user cannot be made site owner.', array('@name' => $name)) . ' ' . l('Learn more about linking accounts', variable_get('help_key_link'), array('attributes' => array('target' => '_blank', 'rel' => 'noopener'))) . '.</p>',
+
+    );
+  }
+}
+
+
+/**
+ * Implements hook_entity_view_alter().
+ *
+ * Private files should have the direct URL and the inside router item path due
+ * to private files handling i.e Harvard PIN.
+ */
+function hwpi_private_entity_view_alter(&$build, $type) {
+  if ($type != 'file') {
+    return;
+  }
+
+  $file = $build['#file'];
+
+  if (strpos($file->uri, 'private://') !== 0) {
+    // Not a private file. Return.
+    return;
+  }
+
+  $build['file']['file-info']['title']['#path'] = file_create_url($file->uri);
+}
+
+/**
+ * Implements hook_mail_alter().
+ *
+ * Alters system emails to users based on certain actions.
+ */
+function hwpi_mail_alter(&$message){
+  global $base_url;
+
+  if ($vsite = spaces_get_space()) {
+    $site_owner = user_load($vsite->group->uid);
+    if ($site_owner->field_first_name['und'][0]['value']) {
+      $site_owner_first_name = $site_owner->field_first_name['und'][0]['value'];
+    }
+    if ($site_owner->field_last_name['und'][0]['value']) {
+      $site_owner_last_name = $site_owner->field_last_name['und'][0]['value'];
+    }
+    if (!$site_owner->field_first_name['und'][0]['value'] && !$site_owner->field_last_name['und'][0]['value']) {
+      $site_owner_first_name = $site_owner->name;
+    }
+
+    $site_owner_full_name = trim(join(" ", array($site_owner_first_name, $site_owner_last_name)));
+
+    switch ($message['id']) {
+      // Account created during "Create this OS Site on behalf of another user".
+      case 'user_register_no_approval_required' :
+        // Gets the user id we just created.
+        $uid = $message['params']['account']->uid;
+        // Loads the user.
+        $user = user_load($uid);
+        // Grab their first name, if it doesnt exist, use their user name.
+        if (!empty($user->field_first_name['und'][0]['value'])) {
+          $first_name = $user->field_first_name['und'][0]['value'];
+        } else {
+          $first_name = $user->name;
+        }
+
+        if (!empty($user->field_last_name['und'][0]['value'])) {
+          $last_name = $user->field_last_name['und'][0]['value'];
+        }
+
+        $full_name = trim(join(" ", array($first_name, $last_name)));
+
+        // Alter the subject.
+        $message['subject'] = t('An OpenScholar account has been created for you at !site_name', array(
+          '!site_name' => $vsite->group->title
+        ));
+        $replacements = array(
+          '!site' => $base_url . "/" . $vsite->group->purl,
+          '!site_owner' => $site_owner_full_name,
+          '!login_url' => user_pass_reset_url($user),
+          '!mailto' => $user->mail,
+          '!firstname' => $first_name,
+          '!lastname' => $last_name,
+          '!fullname' => $full_name,
+          '!username' => $user->name,
+          '!futurelogin' => $base_url . '/user/',
+        );
+
+        // Alter the body message.
+        $message['body'][0] = t("Dear !fullname, \n\n!site_owner, site owner of !site, has created a user account for you so that you may access this website. Log in by clicking on the following link or by pasting it into your browser: \n\n!login_url \n\nFor your security, this link can be used only once.  \n\nYour OpenScholar username is: !username \n\nAfter setting your OpenScholar user password with the included link, you can then <a href=" . variable_get('help_site_login_url') . " target='_blank'></a>. \n\nOnce paired, you will be able to log in at !site in the future. Don't forget to bookmark the site and save this email for future reference.\n\nHere are some handy links for you:\n\n* <a href=" . variable_get('help_site_login_url') . " target='_blank'>Logging in to your site</a>\n\n* <a href=" . variable_get('upcoming_events') . "target='_blank'>Sign up for training</a>\n\n* <a href=" . variable_get('doc_base_url') . " target='_blank'>OpenScholar documentation</a>\n\n* <a href=" . variable_get('contact_url') . " target='_blank'>Need help with your project?</a>\n\n-The OpenScholar Team", $replacements);
+
+        break;
+
+      // Account created by admin in the admin/people panel.
+      case 'user_register_admin_created' :
+        // Get the user id we just created.
+        $uid = $message['params']['account']->uid;
+        // Load the user data.
+        $user = user_load($uid);
+        // Grab their first name, if it doesnt exist, use their user name.
+        if (!empty($user->field_first_name['und'][0]['value'])) {
+          $first_name = $user->field_first_name['und'][0]['value'];
+        } else {
+          $first_name = $user->name;
+        }
+
+        // Grab their last name, if it doesnt exist, use their user name.
+        if (!empty($user->field_last_name['und'][0]['value'])) {
+          $last_name = $user->field_last_name['und'][0]['value'];
+        }
+
+        $full_name = trim(join(" ", array($first_name, $last_name)));
+
+        // Alter the email subject.
+        $message['subject'] = t('An OpenScholar account has been created for you at !site_name', array(
+          '!site_name' => $vsite->group->title
+        ));
+        $replacements = array(
+          '!site' => $base_url . "/" . $vsite->group->purl,
+          '!site_owner' => $site_owner_full_name,
+          '!login_url' => user_pass_reset_url($user),
+          '!mailto' => $user->mail,
+          '!firstname' => $first_name,
+          '!lastname' => $last_name,
+          '!fullname' => $full_name,
+          '!username' => $user->name,
+          '!futurelogin' => $base_url . '/user/'
+        );
+        // Alter the message body.
+        // Alter the body message.
+        $message['body'][0] = t("Dear !fullname, \n\n!site_owner, site owner of !site, has created a user account for you so that you may access this website. Log in by clicking on the following link or by pasting it into your browser: \n\n!login_url \n\nFor your security, this link can be used only once.  \n\nYour username is: !username \n\nAfter setting your password with the included link, you will be able to log in at !futurelogin in the future.  \n\n-The OpenScholar Team", $replacements);
+
+        break;
+
+      case 'contact_page_mail':
+        $message['headers']['Sender'] = $message['headers']['Return-Path'] = $message['headers']['From'];
+        break;
+    }
+  }
+
+/*
+ * @ file defines dash as a sword destination
+ */
+
+$plugin = array(
+  'class' => 'citation_distribute_service_sword_dash',
+  'file' => 'citation_distribute_service_sword_dash.inc',
+  'parent' => 'citation_distribute_service_sword',
+  'title' => t('DASH'),
+  'href' => 'http://dash.harvard.edu',
+  'name' => 'dash',
+  'description' => 'Harvard\'s open access repository',
+);
+
+
+class citation_distribute_service_sword_dash extends citation_distribute_service_sword {
+  public $name =      'dash';
+  public $title =     'DASH';
+  public $location =  'http://dash.harvard.edu';
+  public $username;
+  public $password;
+  //public $username =  'swap@lists.iq.harvard.edu';
+  //public $password =  'citation_distribute_dash_password';    //variable to fetch for this password
+  public $root_in  =  '/tmp/sword';
+  public $subdir_in = 'dash';
+  public $root_out =  '/tmp/sword';
+  public $file_out =  'dash_files.zip';
+  public $obo      =  '';
+
+  public function __construct() {
+    parent::__construct();
+    $this->username = variable_get('citation_distribute_service_dash_username');
+    $this->password = variable_get('citation_distribute_service_dash_password');
+  }
+
+  //variable or function for determining school.
+
+  // optional validate function
+  // note that this take's nodeapi's $a3 arg (which is the $form during validation)
+  // OR it can take a nid, depending on when the validation takes place.
+  public function validate($a3) {
+
+    if (is_array($a3)) {
+      $files = $a3['values']['field_upload'];
+    } elseif (is_int($a3) && $node = node_load($a3)) {
+      $files = $node->field_upload;
+      if (empty($files)) {
+        //during node insert, files may not be availabe.  if so, use staticly cached node object.
+        $citation_distribute_node_object = &drupal_static('citation_distribute_node_object');
+        $files = $citation_distribute_node_object->field_upload;
+      }
+    } else {
+      //not sure what a3 is anymore, so bail.
+      return FALSE;
+    }
+
+    //if (count($files) > 0) { // or body-> full text?
+    if ($files[LANGUAGE_NONE][0]['fid']) { //has a file been added?
+      return TRUE;
+    } else {
+      form_set_error('files', $this->title . ' requires the full text document be uploaded as an attachment.  Please upload your document in the Attach Files section of this form.');
+      return FALSE;
+
+      //TODO: check if a user has set his affiliation.  if not, send them to where that setting can be adjusted.
+      //TODO: add a harvard affiliation setting.  can plugins modify admin pages I wonder?
+    }
+
+  }
+
+  //if present, this form will be used as an admin menu for CD:repec
+  public function admin_form() {
+    $form = array();
+    $form['dash'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Configure DASH'),
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    );
+
+    $form['dash']['citation_distribute_service_dash_username'] = array(
+      '#type' => 'textfield',
+      '#title' => 'DASH username',
+      '#description' => 'Desposits to DASH will be made via this user account.',
+      '#default_value' => variable_get('citation_distribute_service_dash_username'),
+    );
+
+    $form['dash']['citation_distribute_service_dash_password'] = array(
+      '#type' => 'textfield',
+      '#title' => 'DASH password',
+      '#default_value' => variable_get('citation_distribute_service_dash_password'),
+    );
+
+    return $form;
+  }
+
+  /*
+   * get_deposit_url($workspace)
+   * returns deposit url
+   * given workspaces/collections, try to figure out the correct collection.
+   */
+  public function get_deposit_url($workspaces, $nid) {
+    //get email address
+    $query = db_select('users', 'u');
+    $query->join('node', 'n', 'n.uid = u.uid');
+    $query->condition('n.nid', $nid);
+    $query->fields('u', array('mail'));
+    $email = $query->execute()->fetchColumn();
+    //$email = db_result(db_query($query, $nid));
+
+    //get department of email domain
+    $domain = end(explode('@', $email));
+    $department = (isset($this->department_domains[$domain])) ? $this->department_domains[$domain] : $this->department_domains['harvard.edu'];
+
+    //
+    foreach ($workspaces as $workspace) {
+      foreach ($workspace->sac_collections as $collection) {
+        if ($collection->sac_colltitle == $department) {
+          //yes this is a simplexmlelement.  yes curl and/or sword can read it
+          $deposit_url = $collection->sac_href;
+        }
+      }
+    }
+
+    if (isset($deposit_url)) {
+      return $deposit_url;
+    } else {
+      return false;
+    }
+  }
+
+  // DASH has no interest in metadata only submissions.  Other sword repos may feel otherwise.
+  // $node->body is where biblio keeps full text of articles.  maybe that could be saved...
+  // service_sword should check
+  //public $document_required = true;
+
+  /*******************
+   * r. engel's list of minimum data:
+   *
+   * submitter info:
+   * name, email, primary affiliation (which school)
+   *
+   * article info:
+   * authors, title, journal/proceedings/etc, year
+   * ****************/
+
+  /* mapping of email domains to harvard departments by collection name */
+  public $department_domains = array(
+    'fas.harvard.edu' => 'FAS Scholarly Articles',
+    'harvard.edu' =>  'FAS Scholarly Articles',
+    'iq.harvard.edu' =>  'FAS Scholarly Articles',
+    'lists.iq.harvard.edu' =>  'FAS Scholarly Articles',
+    'hmdc.harvard.edu' =>  'FAS Scholarly Articles',
+
+    'hsps.harvard.edu' => 'HSPH Scholarly Articles',
+
+    'hms.harvard.edu' => 'HMS Scholarly Articles',
+
+    'law.harvard.edu' => 'HLS Scholarly Articles',
+    'mail.law.harvard.edu' => 'HLS Scholarly Articles',
+    'llm11.law.harvard.edu' => 'HLS Scholarly Articles',
+    'jd13.law.harvard.edu' => 'HLS Scholarly Articles',
+
+    'hds.harvard.edu' => 'HDS Scholarly Articles',
+
+    'gse.harvard.edu' => 'GSE Scholarly Articles',
+
+    'gsd.harvard.edu' => 'GSD Scholarly Articles',
+  );
+  /* unknown domains:
+   * wjh
+   * post
+   * gov
+   * seas
+   * mail
+   * wcfia
+   * hks
+   * rwj
+   * mcb
+   * law
+   * hksphd
+   * harvardd.edu do we do typo correction?  (see also: fass.)
+   * schepens
+   * math
+   * ksg
+   * jbcc
+   * hulmail
+   * hbsp
+   * eecs
+   * college
+   * chemistry
+   * cga
+   * bwh
+   * bidmc
+   * mgh
+   * oeb
+   * cfa
+   *
+   * other schools/colleections:
+   *
+'Harvard Business School'
+'Harvard Central Administration'
+
+
+
+
+'John F. Kennedy School of Government'
+
+   */
+  }
 }

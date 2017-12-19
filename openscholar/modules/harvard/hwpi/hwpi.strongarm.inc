@@ -747,15 +747,17 @@ function hwpi_strongarm() {
   $strongarm->value = 'http://docs.openscholar.harvard.edu/getting-started-with-openscholar';
   $export['getting_started_os'] = $strongarm;
 
-/**
- * DASH
- */
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'dash_base_url';
-  $strongarm->value = 'http://dash.harvard.edu';
-  $export['dash_base_url'] = $strongarm;
-
+  $strongarm->name = 'privacy_values';
+  $strongarm->value = array(
+          '0' => 'Public on the web.',
+          '1' => 'Site members only.',
+          '2' => 'Anyone with the link.',
+          '4' => 'Harvard University',
+          '6' => 'Groups within the Harvard Community',
+        );
+  $export['privacy_values'] = $strongarm;
   return $export;
 }
