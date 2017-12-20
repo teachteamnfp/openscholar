@@ -344,6 +344,13 @@ function os_boxes_block_view_alter(&$array, &$block) {
     // box returned no content, but boxes wrapped it in some divs anyway. clear them out
     $array['content'] = '';
   }
+
+  _os_boxes_block_view_filter($array['title']);
+  _os_boxes_block_view_filter($array['content']['#markup']);
+}
+
+function _os_boxes_block_view_filter(&$value) {
+  $value = preg_replace('/(}|{)/', '${1} ', $value);
 }
 
 /**
