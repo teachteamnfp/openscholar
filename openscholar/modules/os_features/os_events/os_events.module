@@ -535,8 +535,10 @@ function os_events_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('google_account_form'),
     'access arguments' => array('administer site configuration'),
-    'type' => MENU_CALLBACK,
-  );
+    );
+
+    $items['admin/config/services/google-account-settings/google-account-settings'] = $items['admin/config/services/google-account-settings'];
+    $items['admin/config/services/google-account-settings/google-account-settings']['type'] = MENU_DEFAULT_LOCAL_TASK;
 
   return $items;
 }
