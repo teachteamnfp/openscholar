@@ -530,7 +530,7 @@ function os_events_menu() {
   );
   
     $items['admin/config/services/google-account-settings'] = array(
-    'title' => 'Google Account',
+    'title' => 'Google Calendar Settings',
     'description' => 'Google account settings for calendar',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('google_account_form'),
