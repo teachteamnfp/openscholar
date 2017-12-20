@@ -126,18 +126,23 @@ trait RestfulTrait {
    * @throws Exception
    */
   private function handleExceptions(\GuzzleHttp\Exception\ClientException $e, $return = FALSE) {
-    $json = $e->getResponse()->json();
+    try {
+      $json = $e->getResponse()->json();
 
-    $implode = array();
-    if (!empty($json['errors'])) {
-      foreach ($json['errors'] as $errors) {
-        foreach ($errors as $error) {
-          $implode[] = $error;
+      $implode = array();
+      if (!empty($json['errors'])) {
+        foreach ($json['errors'] as $errors) {
+          foreach ($errors as $error) {
+            $implode[] = $error;
+          }
         }
+      } else {
+        $implode[] = $json['title'];
       }
     }
-    else {
-      $implode[] = $json['title'];
+    catch (ParseException $e) {
+      $raw = (string)$e->getResponse()->getBody();
+      throw new Exception($raw);
     }
 
     $errors = implode(', ', $implode);
@@ -277,9 +282,6 @@ trait RestfulTrait {
       ]);
     } catch (\GuzzleHttp\Exception\ClientException $e) {
       return $this->handleExceptions($e, $return);
-    } catch (Exception $e) {
-      watchdog('Restful Trait Exception', $response->getContent());
-      throw $e;
     }
 
     return $response;
