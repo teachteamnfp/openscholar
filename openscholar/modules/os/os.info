@@ -142,7 +142,6 @@ features[user_permission][] = download any files
 features[user_permission][] = edit any files
 features[user_permission][] = edit meta tags
 features[user_permission][] = import media
-features[user_permission][] = insert link into wysiwyg
 features[user_permission][] = manage features
 features[user_permission][] = notify of path changes
 features[user_permission][] = revert revisions
