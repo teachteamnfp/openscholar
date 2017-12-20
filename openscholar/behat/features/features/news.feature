@@ -93,7 +93,7 @@ Feature:
   @api @features_second
   Scenario: Permission to delete any news content
     Given I am logging in as "alexander"
-      And I visit to delete the post "news/semester-notification" on vsite "john"
+      And I open the delete form for the post "news/semester-notification" on vsite "john"
      Then I should see "Access Denied"
 
   @api @features_second
