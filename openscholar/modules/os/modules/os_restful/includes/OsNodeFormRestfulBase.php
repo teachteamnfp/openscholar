@@ -37,7 +37,7 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
         $form[$key] = $form_field;
       }
     }
-    $extra_fields =  _field_invoke_default('form', 'node', $node, $form, $form_state, $options);
+    $extra_fields =  _field_invoke_default('form', 'node', $node, $form, $form_state);
     foreach ($extra_fields as $key => $field) {
       $field_info = field_info_instance('node', $field[LANGUAGE_NONE]['#field_name'], $node->type);
       $form[$key] = array(
@@ -47,7 +47,7 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
         '#required' => $field[LANGUAGE_NONE]['#required'],
         '#description' => $field[LANGUAGE_NONE]['#description'],
         '#access' => $field['#access'],
-        '#default_value' => $field[LANGUAGE_NONE]['#default_value'],
+        '#default_value' => !empty($node->{$key}[LANGUAGE_NONE]) ? $node->{$key}[LANGUAGE_NONE] : $field[LANGUAGE_NONE]['#default_value'],
       );
       $file_upload_info = array();
       if ($field_info['widget']['type'] == 'media_draggable_file') {
@@ -185,9 +185,6 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
     }
     if ($property_name == 'field_upload' && empty($value)) {
       return array();
-    }
-    if ($property_name == 'created' && !empty($value)) {
-      return array(strtotime($value));
     }
     $field_info = field_info_field($property_name);
     switch ($field_info['type']) {

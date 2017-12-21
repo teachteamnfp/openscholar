@@ -18,6 +18,7 @@
       if (angular.isDefined(Drupal.settings.spaces)) {
         if (Drupal.settings.spaces.id) {
           queryArgs.vsite = Drupal.settings.spaces.id;
+          //queryArgs.nid = 2110; @todo: This will be replaced with actual nid.
         }
       }
       var config = {

@@ -688,6 +688,9 @@
           '<option value="plain_text">Plain text</option>'+
         '</select>',
       link: function (scope, elem, attr, ngModel) {
+        if (scope.element.default_value) {
+          scope.value = scope.element.default_value[0].value;
+        }
         scope.id = attr['inputId'];
         scope.title = scope.element.title;
          // @Todo: Format, Editor, Field can be dynamic but we don't know yet.
@@ -729,6 +732,12 @@
       },
       template: '<div media-browser-field max-filesize="{{MaxFileSize}}" types="{{types}}" extensions="{{validExtensiond}}" upload-text="{{uploadText}}" droppable-text="{{droppableText}}" files="files" cardinality="{{cardinality}}" class="field-widget-media-draggable-file"></div>',
       link: function (scope, elem, attr) {
+        if (scope.element.default_value) {
+          scope.files = [];
+          angular.forEach(scope.element.default_value, function(value, key) {
+            scope.files.push(value);
+          });
+        }
         var directive_parameters = scope.element.custom_directive_parameters;
         scope.validExtensiond = scope.element.upload_validators.file_validate_extensions[0];
         scope.MaxFileSize = directive_parameters.max_filesize;
@@ -760,6 +769,11 @@
       link: function (scope, elem, attr) {
         scope.bundle = scope.element.bundle;
         scope.terms = scope.value || [];
+        if (scope.element.default_value) {
+          angular.forEach(scope.element.default_value, function(value, key) {
+            scope.terms.push({id:value['target_id']});
+          });
+        }
         scope.$watch('terms', function(newTerms, oldTerms) {
           var selectedTermNames = '';
           var selectedTermIds = [];
