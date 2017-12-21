@@ -9,9 +9,9 @@ $plugin = array(
   'file' => 'citation_distribute_service_sword_dash.inc',
   'parent' => 'citation_distribute_service_sword',
   'title' => t('DASH'),
-  'href' => variable_get('dash_base_url'),
+  'href' => 'http://dash.harvard.edu',
   'name' => 'dash',
-  'description' => t('%university\'s open access repository', array('%university' => variable_get('university_name'))),
+  'description' => 'Harvard\'s open access repository',
 );
 
 
