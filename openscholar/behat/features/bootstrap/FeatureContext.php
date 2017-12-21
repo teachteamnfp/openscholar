@@ -3723,6 +3723,8 @@ class FeatureContext extends DrupalContext {
     if ($event->getResult() == StepEvent::FAILED)  {
 
       try {
+        $url = $this->getSession()->getCurrentUrl();
+        print_r($url);
         $this->iDisplayWatchdog();
         $this->iShouldPrintPage();
 
