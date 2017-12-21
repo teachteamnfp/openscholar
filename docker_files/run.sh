@@ -66,8 +66,9 @@ drush solr-mark-all
 drush solr-index
 drush vset oembedembedly_api_key $EMBEDLYAPIKEY
 drush cc all
-drush eval "print_r(menu_get_item('user'))"
+pwd
 cd -
+curl -I http://localhost/openscholar/www
 
 # Install Firefox (iceweasel).
 echo -e "\n${BGCYAN}[RUN] Install firefox. ${RESTORE}"
