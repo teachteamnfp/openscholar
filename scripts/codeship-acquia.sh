@@ -28,6 +28,7 @@ mkdir ~/.drush
 printf "disable_functions =\nmemory_limit = 256M\ndate.timezone = \"America/New_York\"" > ~/.drush/php.ini
 drush --version 2> /dev/null || exit 1
 npm install -g bower
+npm install -g node-sass
 
 echo $CI_BRANCH
 echo $CI_COMMIT_ID
@@ -63,6 +64,15 @@ $DRUSH make --no-core --contrib-destination drupal-org.make .
 
 	# Get the angular components
 	bower -q install
+)
+
+(
+  # Build CSS files from SASS
+  for DIR in modules/*; do
+    if [ -d $DIR ] && [ -d $DIR/os_style_override ] ; then
+      node-sass $DIR/os_style_override/sass -o $DIR/os_style_override/css
+    fi
+  done
 )
 
 cd ../../
@@ -166,6 +176,14 @@ $DRUSH make --no-core --contrib-destination drupal-org.make .
 
 	# Get the angular components
 	bower -q install
+)
+(
+  # Build CSS files from SASS
+  for DIR in modules/*; do
+    if [ -d $DIR ] && [ -d $DIR/os_style_override ] ; then
+      node-sass $DIR/os_style_override/sass -o $DIR/os_style_override/css
+    fi
+  done
 )
 cd ../..
 # Build core.
