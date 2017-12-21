@@ -9,6 +9,7 @@ service mysql start
 
 # Configure apache2.
 echo -e "\n # Configure apache2."
+ls /etc/apache2
 cp docker_files/default.apache2.conf /etc/apache2/apache2.conf
 service apache2 restart
 
@@ -36,7 +37,6 @@ chmod -R 777 /var/www/html/openscholar/www/sites/default/files/
 echo -e "\n # Add lincoln virtual domain.\n"
 service apache2 restart
 sh -c "echo 127.0.0.1	lincoln.local >> /etc/hosts"
-sh -c "echo 127.0.0.1   localhost >> /etc/hosts"
 sh -c "cat openscholar/behat/lincoln-vhost.txt > /etc/apache2/sites-available/lincoln.local.conf"
 cat /etc/hosts
 a2ensite lincoln.local
@@ -65,9 +65,6 @@ drush en os_search_solr -y
 drush solr-mark-all
 drush solr-index
 drush vset oembedembedly_api_key $EMBEDLYAPIKEY
-drush cc all
-pwd
-ls
 cd -
 
 curl -I http://localhost/openscholar/www
