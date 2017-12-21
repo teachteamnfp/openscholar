@@ -3724,7 +3724,7 @@ class FeatureContext extends DrupalContext {
 
       try {
         $url = $this->getSession()->getCurrentUrl();
-        print_r($url);
+        echo $url."\n";
         $this->iDisplayWatchdog();
         $this->iShouldPrintPage();
 

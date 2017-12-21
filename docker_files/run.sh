@@ -65,6 +65,8 @@ drush en os_search_solr -y
 drush solr-mark-all
 drush solr-index
 drush vset oembedembedly_api_key $EMBEDLYAPIKEY
+drush cc all
+drush eval "print_r(menu_get_item('user'))"
 cd -
 
 # Install Firefox (iceweasel).
