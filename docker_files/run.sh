@@ -67,7 +67,9 @@ drush solr-index
 drush vset oembedembedly_api_key $EMBEDLYAPIKEY
 drush cc all
 pwd
+ls
 cd -
+
 curl -I http://localhost/openscholar/www
 
 # Install Firefox (iceweasel).
