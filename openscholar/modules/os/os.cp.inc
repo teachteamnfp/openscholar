@@ -8,7 +8,7 @@
 function os_cp_settings() {
   $setting = array();
 
-  $settings['privacy_policy'] = array(
+  $setting['privacy_policy'] = array(
    'group' => array(
      '#title' => t('Privacy Policy'),
       '#id' => 'privacy-policy',
