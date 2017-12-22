@@ -10,6 +10,7 @@ service mysql start
 # Configure apache2.
 echo -e "\n # Configure apache2."
 ls /etc/apache2
+cat /etc/apache2/apache2.conf
 cp docker_files/default.apache2.conf /etc/apache2/apache2.conf
 service apache2 restart
 
