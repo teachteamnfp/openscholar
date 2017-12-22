@@ -31,10 +31,3 @@ function os_blog_update_7003() {
 function os_blog_update_7004() {
   features_revert(array('os_blog' => array('field_instance')));
 }
-
-/**
- * Map published date to created from RSS feed.
- */
-function os_blog_update_7005() {
-  features_revert(array('os_blog' => array('feeds_importer_default')));
-}
