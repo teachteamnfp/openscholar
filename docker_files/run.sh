@@ -9,8 +9,6 @@ service mysql start
 
 # Configure apache2.
 echo -e "\n # Configure apache2."
-ls /etc/apache2
-cat /etc/apache2/apache2.conf
 cp docker_files/default.apache2.conf /etc/apache2/apache2.conf
 service apache2 restart
 
@@ -68,6 +66,13 @@ drush solr-index
 drush vset oembedembedly_api_key $EMBEDLYAPIKEY
 cd -
 
+echo -e "\n curl localhost \n"
+curl -I http://localhost
+echo -e "\n curl localhost/user\n"
+curl -I http://localhost/user
+echo -e "\n curl localhost/openscholar\n"
+curl -I http://localhost/openscholar
+echo -e "\n curl localhost/openscholar/www\n"
 curl -I http://localhost/openscholar/www
 
 # Install Firefox (iceweasel).
