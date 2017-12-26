@@ -783,10 +783,15 @@ div[aria-describedby*=" event-popover-"] .ui-icon-closethickt {
 }
 div[aria-describedby^="event-popover-"] .ui-widget-header .ui-state-default:hover,
 div[aria-describedby^="event-popover-"] .ui-widget-header .ui-state-default:hover,
-div[aria-describedby^="event-popover-"] .ui-widget-header .ui-state-default,
 div[aria-describedby^="event-popover-"] .ui-widget-header .ui-state-default {
     border: none;
     background: none;
+   
+}
+.logged-in div[aria-describedby^="event-popover-"] .ui-widget-header .ui-state-default {
+  
+    right:-15px;
+    top:-38px;
 }
 div[aria-describedby^="event-popover-"] .ui-dialog-titlebar,
 div[aria-describedby*=" event-popover-"] .ui-dialog-titlebar,
