@@ -236,8 +236,7 @@ class OSRestfulCPMenu extends \RestfulBase implements \RestfulDataProviderInterf
         $node_add_link = array(
           'type' => 'directive',
           'directive' => array(
-            'node-form-modal',
-            'node-type' => $type_url_str,
+            'node-form-modal' => $type_url_str,
           ),
         );
       }

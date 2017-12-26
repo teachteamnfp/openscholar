@@ -889,8 +889,7 @@ function os_pages_preprocess_page(&$page) {
   if ($item['access']) {
     $section_links['page-edit'] = array(
       'title' => t('Edit'),
-      'href' => 'node/' . $node->nid . '/edit',
-      'query' => drupal_get_destination(),
+      'attributes' => array('node-form-modal' => 'page', 'nid' => $node->nid, 'nodetitle' => $node->title),
     );
   }
   else {

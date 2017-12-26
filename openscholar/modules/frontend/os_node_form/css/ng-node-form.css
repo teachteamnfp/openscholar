@@ -107,3 +107,13 @@ body:not(.overlay) .ng-node-form form.node-form {
 .ng-node-form .form-item input.error {
   border: 2px solid #ff0000;
 }
+div.ctools-dropdown-container li.page-edit span{
+  color: #293352 !important;
+  padding: 5px !important;
+  text-decoration: none !important;
+  font-weight: normal;
+  font-size: 13px;
+  font-style: normal;
+  background: none !important;
+  cursor: pointer;
+}

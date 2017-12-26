@@ -9,7 +9,7 @@
     
     var promises = [];
     var baseUrl = Drupal.settings.paths.api;
-    this.getForm = function(bundle) {
+    this.getForm = function(bundle, nid) {
       var deferred = $q.defer();
       if (promises.length > 0) {
         return promises[0];
@@ -18,8 +18,11 @@
       if (angular.isDefined(Drupal.settings.spaces)) {
         if (Drupal.settings.spaces.id) {
           queryArgs.vsite = Drupal.settings.spaces.id;
-          //queryArgs.nid = 2110; @todo: This will be replaced with actual nid.
         }
+      }
+      // Edit node form.
+      if (nid) {
+        queryArgs.nid = nid;
       }
       var config = {
         params: queryArgs
@@ -68,9 +71,14 @@
         // basically CKEditor dialog forms not accessible when in a modal dialog.
         // It's a known issue and discussed here
         // https://forum.jquery.com/topic/can-t-edit-fields-of-ckeditor-in-jquery-ui-modal-dialog.
-        jQuery('<div id="overlay" class="ui-widget-overlay" />').insertBefore(elem);
+        jQuery('<div id="overlay" class="ui-widget-overlay" />').insertBefore(elem.parent().parent().parent());
 
-        scope.title = 'Create ' + attrs.nodeType;
+
+        scope.title = (attrs.nid) ? attrs.nodetitle : 'Create ' + attrs.nodeFormModal;
+        var inputs = {
+          nodeType: attrs.nodeFormModal
+        };
+        inputs.nid = (attrs.nid) ? attrs.nid : 0;
 
         e.preventDefault();
         e.stopPropagation();
@@ -78,9 +86,7 @@
         ModalService.showModal({
           controller: 'nodeFormController',
           templateUrl: Drupal.settings.paths.osNodeForm + '/node-form.html',
-          inputs: {
-            nodeType: attrs.nodeType
-          }
+          inputs: inputs
         })
         .then(function (modal) {
           dialogOptions.title = scope.title;
@@ -111,7 +117,7 @@
   /**
    * The controller for the forms themselves
    */
-  m.controller('nodeFormController', ['$scope', '$sce', 'nodeFormService', 'buttonSpinnerStatus', 'nodeType', 'close', '$rootScope', function ($s, $sce, nodeFormService, bss, nodeType, close, $rootScope) {
+  m.controller('nodeFormController', ['$scope', '$sce', 'nodeFormService', 'buttonSpinnerStatus', 'nodeType', 'nid', 'close', '$rootScope', function ($s, $sce, nodeFormService, bss, nodeType, nid, close, $rootScope) {
 
     $s.formId = nodeType + '_node_form';
     $s.formElements = {};
@@ -121,7 +127,7 @@
     $s.showSaveButton = true;
     $s.loading = true;
 
-    nodeFormService.getForm(nodeType).then(function(response) {
+    nodeFormService.getForm(nodeType, nid).then(function(response) {
       var formElementsRaw = response.data;
       $s.loading = false;
       for (var formElem in formElementsRaw) {
