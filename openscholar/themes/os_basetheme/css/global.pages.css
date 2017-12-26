@@ -799,6 +799,8 @@ div[aria-describedby^="event-popover-"] .ui-dialog-content,
 div[aria-describedby*=" event-popover-"] .ui-dialog-content {
     padding: 0 1em;
     overflow: initial;
+    background: none !important;
+    border-bottom: none;
 }
 div[id^=event-popover] .event-title a {
     outline: none;
