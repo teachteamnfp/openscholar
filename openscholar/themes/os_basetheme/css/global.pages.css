@@ -791,7 +791,7 @@ div[aria-describedby^="event-popover-"] .ui-widget-header .ui-state-default {
 .logged-in div[aria-describedby^="event-popover-"] .ui-widget-header .ui-state-default {
   
     right:-15px;
-    top:-38px;
+    top:-22px;
 }
 div[aria-describedby^="event-popover-"] .ui-dialog-titlebar,
 div[aria-describedby*=" event-popover-"] .ui-dialog-titlebar,
