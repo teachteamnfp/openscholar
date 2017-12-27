@@ -12,6 +12,11 @@ function cp_layout_full_form($form, $form_state){
   $contexts = os_layout_get_contexts(array(1, 2));
   $ctxs = $ctxs ? $ctxs : array('os_front', 'os_public');
 
+  // Sort the site content alphabetically in the site section dropdown.
+  $content = array_splice($contexts, 2);
+  sort($content);
+  $contexts = array_merge($contexts, $content);
+
   $current = '';
   if ($ctxs == array('os_public')) {
     $current = 'os_public';

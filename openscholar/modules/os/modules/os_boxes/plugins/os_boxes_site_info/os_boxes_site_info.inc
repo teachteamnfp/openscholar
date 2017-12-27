@@ -112,9 +112,7 @@ class os_boxes_site_info extends os_boxes_default {
 
     $output = '<h1>'.l($this->options['site_title'], '<front>').'</h1>
     '.(!empty($this->options['descrip'])?'<h2>'.filter_xss($this->options['descrip'], $tags).'</h2>':'').'
-    <p>'.((!empty($this->options['address1']) || !empty($this->options['address2']))?
-        filter_xss($this->options['address1']).'<br>'.filter_xss($this->options['address2']):'').'
-    '. ($contact ? l('Contact', 'contact_owner') : '' . '</p>');
+    <p>'.((!empty($this->options['address1']))?filter_xss($this->options['address1']).'<br>':'').((!empty($this->options['address2']))?filter_xss($this->options['address2']).'<br>':''). ($contact ? l('Contact', 'contact_owner') : '' . '</p>');
 
     $block['content'] = $output;
     return $block;

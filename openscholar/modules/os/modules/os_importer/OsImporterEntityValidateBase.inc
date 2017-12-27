@@ -157,7 +157,7 @@ class OsImporterEntityValidateBase extends EntityValidateBase {
         '@min_width' => $min_width,
         '@min_height' => $min_height,
       );
-      $this->setError($field_name, 'The size of the image need to be at least @min_widthX@min_height. The given image is @widthX@height', $params);
+      $this->setError($field_name, 'The size of the image needs to be at least @min_widthX@min_height. The given image is @widthX@height', $params);
     }
   }
 

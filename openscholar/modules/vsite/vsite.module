@@ -2132,6 +2132,11 @@ function vsite_form_user_profile_form_alter(&$form, &$form_state, &$form_id){
     $form['field_first_name']['#prefix'] = '<a name="user_first_name" class="field_first_name_anchor">';
     $form['field_first_name']['#suffix'] = '</a>';
   }
+  
+  if (module_exists('migrate_example')) {
+    // To hide the Gender field from user_profile_form #10048
+    unset($form['field_migrate_example_gender']);
+  }
 }
 
 /**
