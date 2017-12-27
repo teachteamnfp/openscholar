@@ -117,3 +117,22 @@ div.ctools-dropdown-container li.page-edit span{
   background: none !important;
   cursor: pointer;
 }
+div.contextual-links-wrapper li.link-count-os-pages-edit span{
+  padding: 0.5em .75em 0.5em 0.75em !important;
+  font-family: helvetica;
+  font-size: 11px !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  text-decoration: none !important;
+  text-transform: none !important;
+  background: none !important;
+  letter-spacing: 0;
+  text-transform: none;
+  line-height: 12px !important;
+  height: auto !important;
+  border-bottom: none !important;
+  text-shadow: none !important;
+  border: none !important;
+  margin-left: 0;
+  cursor: pointer;
+}
