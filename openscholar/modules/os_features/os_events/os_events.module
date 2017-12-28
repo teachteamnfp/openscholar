@@ -85,7 +85,7 @@ function os_events_settings() {
  */
 function getClient() {
   global $is_https;
-  
+
   $path = libraries_get_path('google-api-php-client');
   include_once "$path/vendor/autoload.php";
 
@@ -264,6 +264,7 @@ function checkEventExists ($event_id) {
  */
 function google_account_form () {
 
+  global $is_https;
   $redirect_url = (($is_https) ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . '/admin/config/get-google-access-token-with-auth-code';
 
   $form['developer_api_key'] = array(
