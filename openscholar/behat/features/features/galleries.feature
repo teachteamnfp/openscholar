@@ -96,32 +96,19 @@ Feature:
      Then I should see "Add Slide"
       And I click "Add Slide"
       And the overlay opens
-      And I press "edit-field-image-und-0-selected-file"
-      And I wait "1 second" for the media browser to open
-      And I should wait for the text "Please wait while we get information on your files." to "disappear"
-      And I drop the file "desert.jpg" onto the "Drag and drop files here." area
-      And I should wait for "File Edit" directive to "appear"
-      And I fill in "fe-alt-text" with "Desert"
-      And I click on the "Save" control
-      And I sleep for "10"
-      And I should see "This is for testing"
       And I press "Save"
       And the overlay closes
-      And I should see "Slideshow Image desert.jpg has been created"
+      And I should see "Slideshow Image has been created"
 
   @api @features_second @javascript
    Scenario: Edit own slideshow image content permission
      Given I am logging in as "john"
        And I visit "john/cp/content"
-       And I click "desert.jpg"
-       And I click the gear icon in the content region
-       And I click "Edit" in the gear menu
-       And the overlay opens
+       And I click on the first "edit" control in the ".views-row-first" element
        And I fill in "Description" with "Desert Image"
        And I press "Save"
-       And I wait for page actions to complete
        And the overlay closes
-       And I should see "Desert Image"
+       And I should see "Slideshow Image has been updated"
 
   @api @features_second
    Scenario: Edit any slideshow image content permission
@@ -139,14 +126,14 @@ Feature:
    Scenario: Delete own slideshow image content permission
      Given I am logging in as "john"
        And I visit "john/cp/content"
-       And I click "desert.jpg"
-       And I click the gear icon in the content region
-       And I click "Delete" in the gear menu
+       And I click "edit"
+       And I click on the first "edit" control in the ".views-row-first" element
+       And I click "Delete this slideshow image"
        And the overlay opens
        And I press "Delete"
        And I wait for page actions to complete
        And the overlay closes
-       And I should see "has been deleted"
+       And I should see "Slideshow Image has been deleted"
 
   @api @features_first @javascript
   Scenario: Delete existing image gallery content
