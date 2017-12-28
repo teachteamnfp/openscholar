@@ -20,7 +20,7 @@ class PageNodeRestfulBase extends OsNodeRestfulBase {
     if ($this->getBundle() == 'page') {
       // Adds a custom fieldset for the right-hand column to hold meta
       // description.
-      if (isset($form['field_meta_description']) && $this->request['vsite'] > 0) {
+      if (isset($form['os_seo']) && $this->request['vsite'] > 0) {
         $form['os_seo'] = array(
           '#type' => 'fieldset',
           '#title' => t('Search Engine Optimization (SEO)'),
@@ -33,21 +33,11 @@ class PageNodeRestfulBase extends OsNodeRestfulBase {
         );
         unset($form['field_meta_description']);
       }
-      if (isset($form['field_os_css_class']) && $this->request['vsite'] > 0) {
-        $form['os_css_class_fieldset'] = array(
-          '#type' => 'fieldset',
-          '#title' => t('Apply css'),
-          '#collapsible' => TRUE,
-          '#collapsed' => TRUE,
-          '#weight' => 21,
-          '#group' => 'additional_settings',
-          'field_os_css_class' => $form['field_os_css_class'],
-          '#region' => 'right',
-          '#access' => og_user_access('node', $this->request['vsite'], 'add widget custom class', NULL, FALSE, TRUE),
-        );
-        unset($form['field_os_css_class']);
+      if (isset($form['os_css_class_fieldset']) && $this->request['vsite'] > 0) {
+        $form['os_css_class_fieldset']['#weight'] = 21;
+        $form['os_css_class_fieldset']['#group'] = 'additional_settings';
+        unset($form['os_css_class_fieldset']['#attributes']);
       }
-
     }
 
     return $form;

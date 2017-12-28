@@ -16,7 +16,11 @@
         scope.formData = {};
         for (var k in fieldsetElements) {
           if (angular.isObject(fieldsetElements[k])) {
-            scope.formData[k] = fieldsetElements[k]['#default_value'] || null;
+            if (fieldsetElements.name == 'options' || fieldsetElements.name == 'revision_information') {
+              scope.formData[k] = fieldsetElements[k]['#default_value'] || null;
+            } else {
+              scope.formData[k] = fieldsetElements[k]['#default_value'][0].value || null;
+            }
             var attributes = {
               name: k
             };

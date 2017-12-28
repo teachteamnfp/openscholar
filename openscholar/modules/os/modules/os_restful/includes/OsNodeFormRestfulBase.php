@@ -14,20 +14,28 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
    * Get node form based on bundle.
    */
   public function getNodeForm() {
+    $form = array();
+    $form_state = array();
+    // Activate space in this context.
+    if (!empty($this->request['vsite'])) {
+      $space = spaces_load('og', $this->request['vsite']);
+      spaces_set_space($space);
+    }
+    // Handle node edit.
     if (!empty($this->request['nid'])) {
       $node = node_load($this->request['nid']);
+      $form['nid']['#value'] = $node->nid;
+      $form['#node'] = $node;
+      $node->date = format_date($node->created, 'custom', 'Y-m-d H:i:s O');
     }
     else {
       $node = new stdClass;
       $node->type = $this->getBundle();
       node_object_prepare($node);
     }
-    $form = array();
-    $form_state = array();
-    $options = array();
     $form_state['node'] = $node;
     $form['#bundle'] = $node->type;
-
+    
     $function = node_type_get_base($node) . '_form';
     if (function_exists($function) && ($extra = $function($node, $form_state))) {
       // Unset: not require in frontend.
@@ -78,7 +86,7 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
       '#collapsible' => TRUE,
       '#collapsed' => !$node->revision,
       '#group' => 'additional_settings',
-      '#weight' => -8,
+      '#weight' => -6,
       '#access' => $node->revision || user_access('administer nodes'),
       'revision' => array(
         '#type' => 'checkbox',
@@ -103,7 +111,7 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
       '#collapsible' => TRUE,
       '#collapsed' => TRUE,
       '#group' => 'additional_settings',
-      '#weight' => -9,
+      '#weight' => -7,
       'author_name' => array(
         '#type' => 'textfield',
         '#title' => t('Posted by'),
@@ -157,7 +165,10 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
     $form['author']['#group'] = 'additional_settings';
     $form['revision_information']['#group'] = 'additional_settings';
     $form['os_menu']['#group'] = 'additional_settings';
+    $form['os_menu']['#weight'] = -8;
     $form['path']['#group'] = 'additional_settings';
+    $form['path']['#weight'] = -9;
+    $form['path']['alias']['#default_value'] = !empty($this->request['nid']) ? explode('/', drupal_get_path_alias('node/' . $node->nid))[1] : '';
     $form['title']['#required'] = TRUE;
 
     // Unset unnecessary form elements to send clean json output to frontend. 
@@ -174,7 +185,10 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
     unset($form['#bundle']);
     unset($form['author']['name']);
     unset($form['og_group_ref']);
-
+    unset($form['nid']);
+    unset($form['#node']);
+    unset($form['#space']);
+    
     return $form;
   }
 
