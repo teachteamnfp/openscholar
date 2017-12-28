@@ -98,7 +98,7 @@ class OsRestfulSiteReport extends \OsRestfulReports {
       $query->innerJoin('node', 'n', 'purl.id = n.nid AND provider = :provider', array(':provider' => 'spaces_og'));
     }
 
-    $url_parts = explode(".", str_replace("http://", "", $base_url));
+    $url_parts = explode(".", preg_replace('/^https?:\/\//', "", $base_url));
     $query->addExpression("'" . $url_parts[0] . "'", 'os_install');
     $query->addField('n', 'title');
     $query->addField('u', 'mail', 'site_owner_email');
@@ -107,9 +107,20 @@ class OsRestfulSiteReport extends \OsRestfulReports {
     // site content data
     if (!isset($request['includesites']) || $request['includesites'] == "all") {
       if ($this->latestUpdate || isset($fields['content_last_updated'])) {
-        $query->addExpression('MAX(content.changed)', 'content_last_updated');
-        $query->leftJoin('og_membership', 'ogm', "ogm.gid = purl.id AND ogm.group_type = 'node' AND ogm.entity_type = 'node'");
-        $query->leftJoin('node', 'content', "ogm.etid = content.nid and content.type NOT IN ('" . implode("','", $this->excludedContentTypes) . "')");
+        $subquery = db_select('og_membership','ogm')
+          ->condition('group_type', 'node', '=')
+          ->condition('entity_type', 'node', '=')
+          ->condition('field_name', 'og_group_ref', '=')
+          ->condition('ogm.type', 'og_membership_type_default', '=');
+        $subquery->addExpression('COUNT(ogm.etid)', 'num_nodes');
+        $subquery->addField('ogm','gid');
+        $subquery->addExpression('MAX(n.changed)', 'content_last_updated');
+        $subquery->innerJoin('node', 'n', "n.nid = ogm.etid AND n.type NOT IN ('" . implode("','", $this->excludedContentTypes) . "') AND ogm.group_type = 'node' AND ogm.entity_type = 'node' AND ogm.field_name = 'og_group_ref' AND ogm.type = 'og_membership_type_default'");
+        $subquery->groupBy('ogm.gid');
+        $query->leftJoin($subquery, 'og_content', 'og_content.gid = purl.id');
+        $query->addField('og_content', 'content_last_updated');
+        $fields['content_last_updated'] = array('property' => 'content_last_updated');
+        $this->setPublicFields($fields);
      }
       $query->groupBy('purl.id, purl.value');
     }
@@ -130,10 +141,20 @@ class OsRestfulSiteReport extends \OsRestfulReports {
       $query->innerJoin($subquery, 'configuration', 'configuration.id = purl.id');
 
       if (isset($fields['content_last_updated']) || $this->latestUpdate) {
-        $query->addExpression('MAX(content.changed)', 'content_last_updated');
-        $query->leftJoin('og_membership', 'ogm', "ogm.gid = purl.id AND ogm.group_type = 'node' AND ogm.entity_type = 'node'");
-        $query->leftJoin('node', 'content', "ogm.etid = content.nid and content.type NOT IN ('" . implode("','", $this->excludedContentTypes) . "')");
-        $query->groupBy('purl.id, purl.value');
+        $subquery = db_select('og_membership','ogm')
+          ->condition('group_type', 'node', '=')
+          ->condition('entity_type', 'node', '=')
+          ->condition('field_name', 'og_group_ref', '=')
+          ->condition('ogm.type', 'og_membership_type_default', '=');
+        $subquery->addExpression('COUNT(ogm.etid)', 'num_nodes');
+        $subquery->addField('ogm','gid');
+        $subquery->addExpression('MAX(n.changed)', 'content_last_updated');
+        $subquery->leftJoin('node', 'n', "n.nid = ogm.etid AND n.type NOT IN ('" . implode("','", $this->excludedContentTypes) . "') AND ogm.group_type = 'node' AND ogm.entity_type = 'node' AND ogm.field_name = 'og_group_ref' AND ogm.type = 'og_membership_type_default'");
+        $subquery->groupBy('ogm.gid');
+        $query->innerJoin($subquery, 'og_content', 'og_content.gid = purl.id');
+        $query->addField('og_content', 'content_last_updated');
+        $fields['content_last_updated'] = array('property' => 'content_last_updated');
+        $this->setPublicFields($fields);
       }
     }
     elseif ($request['includesites'] == "nocontent"){
@@ -194,6 +215,9 @@ class OsRestfulSiteReport extends \OsRestfulReports {
       if (isset($fields['site_owner_huid'])) {
         $query->addField('u', 'uid', 'site_owner_huid');
       }
+      if (isset($fields['site_owner_linked_huid'])) {
+        $query->addField('u', 'uid', 'site_owner_linked_huid');
+      }
       if (isset($fields['preset'])) {
         $query->addField('n', 'type', 'preset');
       }
@@ -213,6 +237,65 @@ class OsRestfulSiteReport extends \OsRestfulReports {
         $query->addField('configuration', 'other_site_changes');
         $fields['other_site_changes'] = array('property' => 'other_site_changes');
         $this->setPublicFields($fields);
+      }
+      if (isset($fields['num_nodes'])) {
+        $subquery = db_select('og_membership','ogm')
+          ->condition('group_type', 'node', '=')
+          ->condition('entity_type', 'node', '=')
+          ->condition('field_name', 'og_group_ref', '=')
+          ->condition('type', 'og_membership_type_default', '=');
+        $subquery->addExpression('COUNT(ogm.etid)', 'num_nodes');
+        $subquery->addField('ogm','gid');
+        $subquery->groupBy('ogm.gid');
+        $query->leftJoin($subquery, 'og_nodes', 'og_nodes.gid = purl.id');
+        $query->addField('og_nodes', 'num_nodes');
+        $fields['num_nodes'] = array('property' => 'num_nodes');
+        $this->setPublicFields($fields);
+      }
+      if (isset($fields['num_files'])) {
+        $subquery = db_select('og_membership','ogm')
+          ->condition('group_type', 'node', '=')
+          ->condition('entity_type', 'file', '=')
+          ->condition('field_name', 'og_group_ref', '=')
+          ->condition('type', 'og_membership_type_default', '=');
+        $subquery->addExpression('COUNT(ogm.etid)', 'num_files');
+        $subquery->addField('ogm','gid');
+        $subquery->groupBy('ogm.gid');
+        $query->leftJoin($subquery, 'og_files', 'og_files.gid = purl.id');
+        $query->addField('og_files', 'num_files');
+        $fields['num_files'] = array('property' => 'num_files');
+        $this->setPublicFields($fields);
+      }
+      if (isset($fields['num_widgets'])) {
+        $subquery = db_select('spaces_overrides', 'so')
+          ->condition('object_type', 'boxes', '=')
+          ->condition('type', 'og', '=');
+        $subquery->addExpression('COUNT(so.object_id)', 'num_widgets');
+        $subquery->addField('so','id');
+        $subquery->groupBy('id');
+        $query->leftJoin($subquery, 'widgets', 'widgets.id = purl.id');
+        $query->addField('widgets', 'num_widgets');
+        $fields['num_widgets'] = array('property' => 'num_widgets');
+        $this->setPublicFields($fields);
+      }
+      if (isset($fields['num_members'])) {
+        $subquery = db_select('og_membership','ogm')
+          ->condition('group_type', 'node', '=')
+          ->condition('entity_type', 'user', '=')
+          ->condition('field_name', 'og_user_node', '=')
+          ->condition('type', 'og_membership_type_default', '=');
+        $subquery->addExpression('COUNT(ogm.etid)', 'num_members');
+        $subquery->addField('ogm','gid');
+        $subquery->groupBy('ogm.gid');
+        $query->leftJoin($subquery, 'og_members', 'og_members.gid = purl.id');
+        $query->addField('og_members', 'num_members');
+        $fields['num_members'] = array('property' => 'num_members');
+        $this->setPublicFields($fields);
+      }
+      if (isset($fields['num_redirects'])) {
+        $query->addExpression('COUNT(DISTINCT redirect.rid)', 'num_redirects');
+        $query->leftJoin('redirect', 'redirect', "redirect <> '' AND status_code = 0  AND redirect.type = 'redirect' AND redirect_options LIKE CONCAT(:before, purl.id, :after)", array(':before' => '%:"', ':after' => '";}}}}'));
+        $query->groupBy('purl.id, purl.value');
       }
     }
     else {
@@ -238,11 +321,11 @@ class OsRestfulSiteReport extends \OsRestfulReports {
       $new_row = parent::mapDbRowToPublicFields($row);
 
       // if vsite id isn't a requested column, remove from result set
-      if (isset($row->vsite_id)) {
-        unset($new_row['vsite_id']);
+      if (!isset($row->vsite_id)) {
+        unset($new_row['id']);
       }
       else {
-        unset($new_row['id']);
+        unset($new_row['vsite_id']);
       }
 
       // format dates
@@ -261,8 +344,24 @@ class OsRestfulSiteReport extends \OsRestfulReports {
       }
 
       // check for site owner HUID
-      if (isset($row->site_owner_huid)) {
-        $new_row['site_owner_huid'] = (pinserver_user_has_associated_pin($row->site_owner_huid)) ? 'Y' : 'N';
+      if (isset($row->site_owner_linked_huid)) {
+        $new_row['site_owner_linked_huid'] = (pinserver_user_has_associated_pin($row->site_owner_linked_huid)) ? 'Y' : 'N';
+      }
+
+      // check for site owner HUID
+      if (isset($row->site_owner_huid) && pinserver_authenticate_get_user_huid($row->site_owner_huid)) {
+        $new_row['site_owner_huid'] = pinserver_authenticate_get_user_huid($row->site_owner_huid);
+      }
+      elseif(isset($row->site_owner_huid) && pinserver_user_has_associated_pin($row->site_owner_huid)) {
+        $new_row['site_owner_hashID'] = db_select('pinserver_users', 'pin')
+          ->fields('pin', array('hashID'))
+          ->condition('uid', $row->site_owner_huid, '=')
+          ->execute()
+          ->fetchField();
+        unset($new_row['site_owner_huid']);
+      }
+      elseif (isset($row->site_owner_huid)) {
+        $new_row['site_owner_huid'] = '';
       }
 
       // check for custom domain
@@ -310,7 +409,8 @@ class OsRestfulSiteReport extends \OsRestfulReports {
           '0' => 'Public on the web.',
           '1' => 'Site members only.',
           '2' => 'Anyone with the link.',
-          '4' => 'Harvard Community'
+          '4' => 'Harvard Community',
+          '6' => 'Groups within the Harvard Community',
         );
         $new_row['site_privacy_setting'] = $privacy_values[$row->site_privacy_setting];
       }
