@@ -17,7 +17,7 @@ function os_search_default_box() {
   $box->delta = 'os_search_box';
   $box->plugin_key = 'os_search_search_box';
   $box->title = '';
-  $box->description = 'Search box';
+  $box->description = 'New Search box';
   $box->options = array();
   $export['os_search_box'] = $box;
 
