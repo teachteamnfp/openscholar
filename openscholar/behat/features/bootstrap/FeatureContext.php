@@ -4870,7 +4870,7 @@ JS;
     $gear_icon->click();
     $gear_icon_trigger_link->mouseOver();
     $gear_icon_trigger_link->click();
-
+  }
   /**
    * @When /^I should "([^"]*)" see the "([^"]*)" menu item in the gear menu$/
    */
