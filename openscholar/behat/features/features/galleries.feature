@@ -103,7 +103,7 @@ Feature:
       And I should wait for "File Edit" directive to "appear"
       And I fill in "fe-alt-text" with "Desert"
       And I click on the "Save" control
-      And I sleep for "3"
+      And I sleep for "10"
       And I should see "This is for testing"
       And I press "Save"
       And the overlay closes
