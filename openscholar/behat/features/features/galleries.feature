@@ -100,7 +100,7 @@ Feature:
       And the overlay closes
       And I should see "Slideshow Image has been created"
 
-  @api @features_second @javascript
+  @api @features_second
    Scenario: Edit own slideshow image content permission
      Given I am logging in as "john"
        And I visit "john/cp/content"
@@ -128,10 +128,7 @@ Feature:
        And I visit "john/cp/content"
        And I click "edit"
        And I click "Delete this slideshow image"
-       And the overlay opens
        And I press "Delete"
-       And I wait for page actions to complete
-       And the overlay closes
        And I should see "Slideshow Image has been deleted"
 
   @api @features_first @javascript
