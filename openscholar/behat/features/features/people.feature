@@ -86,11 +86,13 @@ Feature:
       And I edit the node "Hillary Diane Rodham Clinton" in the group "john"
      Then I should see "Professional Titles/Affiliations"
 
-  @api @features_second
+  @api @features_second @javascript
   Scenario: Test changing the owner of a VSite.
     Given I am logging in as "admin"
       And I give the user "john" the role "vsite admin" in the group "obama"
      When I am logging in as "john"
+      And I visit "obama/cp/users"
+      And I should see "testing in progress"
       And I edit the membership of "michelle" in vsite "obama"
       And I check the box "Set as site owner"
       And I press "Save"
