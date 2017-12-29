@@ -107,7 +107,6 @@ Feature:
        And I click "edit"
        And I fill in "Description" with "Desert Image"
        And I press "Save"
-       And the overlay closes
        And I should see "Slideshow Image has been updated"
 
   @api @features_second
