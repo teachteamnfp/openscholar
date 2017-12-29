@@ -11,6 +11,7 @@ div.messages ul li {
 .ui-dialog * {
     font-size: 14px;
 }
+
 .logged-in div[aria-describedby^="event-popover-"] .ui-dialog-title,
 #page {
     padding: 0;
