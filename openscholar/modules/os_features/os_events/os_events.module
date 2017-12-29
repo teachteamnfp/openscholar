@@ -171,7 +171,7 @@ function os_events_gcal_create_calendar() {
   $vsite = vsite_get_vsite($_GET["state"]);
   watchdog("Calendar Vsite", print_r($vsite->group->title, TRUE));
   // Set the vsite space, since we've moved to the top-level docroot
-  $space = spaces_set_space($vsite);
+  spaces_set_space($vsite);
   $vsite->activate_user_roles();
   $vsite->init_overrides();
 
@@ -183,7 +183,7 @@ function os_events_gcal_create_calendar() {
 
   $client = getClient();
   $calendarService = new Google_Service_Calendar($client);
-  //$calendar_name = $vsite->purl_provider['group']->title;
+  //$calendar_name = 
 
   $event = array();
   foreach ($view->result as $e) {
