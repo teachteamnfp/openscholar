@@ -169,7 +169,7 @@ function os_events_gcal_create_calendar() {
 
   // The vsite group ID is stored in the state parameter
   $vsite = vsite_get_vsite($_GET["state"]);
-  watchdog("Calendar Vsite", print_r($vsite->purl_provider, TRUE));
+  watchdog("Calendar Vsite", print_r($vsite, TRUE));
   // Set the vsite space, since we've moved to the top-level docroot
   spaces_set_space($vsite);
   $vsite->activate_user_roles();
