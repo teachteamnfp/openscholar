@@ -337,7 +337,6 @@ function hwpi_mail_alter(&$message){
 function hwpi_form_cp_user_edit_membership_form_alter(&$form, $form_state) {
 
   $space = spaces_get_space();
-  $group_user = $user_load['build_info']['args'][0];
 
   // Prepares replacement value text for the modal form.
   $name = $form['user_name']['#value'];
