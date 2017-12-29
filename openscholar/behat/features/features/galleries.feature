@@ -104,7 +104,7 @@ Feature:
    Scenario: Edit own slideshow image content permission
      Given I am logging in as "john"
        And I visit "john/cp/content"
-       And I click on the first "edit" control in the ".views-row-first" element
+       And I click "edit"
        And I fill in "Description" with "Desert Image"
        And I press "Save"
        And the overlay closes
@@ -127,7 +127,6 @@ Feature:
      Given I am logging in as "john"
        And I visit "john/cp/content"
        And I click "edit"
-       And I click on the first "edit" control in the ".views-row-first" element
        And I click "Delete this slideshow image"
        And the overlay opens
        And I press "Delete"
