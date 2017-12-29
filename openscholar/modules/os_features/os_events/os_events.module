@@ -169,7 +169,7 @@ function os_events_gcal_create_calendar() {
 
   // The vsite group ID is stored in the state parameter
   $vsite = vsite_get_vsite($_GET["state"]);
-
+  //watchdog("Calendar Vsite", print_r($vsite, TRUE));
   // Set the vsite space, since we've moved to the top-level docroot
   spaces_set_space($vsite);
   $vsite->activate_user_roles();
@@ -183,6 +183,7 @@ function os_events_gcal_create_calendar() {
 
   $client = getClient();
   $calendarService = new Google_Service_Calendar($client);
+  $calendar_name = $vsite;
 
   $event = array();
   foreach ($view->result as $e) {
@@ -205,7 +206,7 @@ function os_events_gcal_create_calendar() {
       $event->setStart($calendarDateTime1);
       $calendarDateTime2->setDateTime($dt2->format(DateTime::RFC3339));
       $event->setEnd($calendarDateTime2);
-      $calendarInsert = $calendarService->events->insert('primary', $event);
+      $calendarInsert = $calendarService->events->insert($calendar_name, $event);
     }
     else{
      # Update events to the Google calendar   
@@ -225,7 +226,7 @@ function os_events_gcal_create_calendar() {
       $calendarDateTime2->setDateTime($dt2->format(DateTime::RFC3339));
       $event->setEnd($calendarDateTime2);
 
-      $calendarUpdate = $calendarService->events->update('primary', $event->getId(), $event);
+      $calendarUpdate = $calendarService->events->update($calendar_name, $event->getId(), $event);
     }
   }
   if($calendarInsert || $calendarUpdate) {
