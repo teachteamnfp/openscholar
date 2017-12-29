@@ -136,3 +136,12 @@ function hwpi_update_7012() {
   variable_set('vsite_register_admin_mail', 'swap@lists.iq.harvard.edu, hwp@harvard.edu');
   variable_set('site_mail', 'hwp@harvard.edu');
 }
+
+/**
+ * Saving strongarm variables to DB
+ */
+function hwpi_update_7013() {
+
+  $results = hwpi_features_revert('hwpi');
+  return t('@results variables have been saved to database', array('@results' => $results));
+}

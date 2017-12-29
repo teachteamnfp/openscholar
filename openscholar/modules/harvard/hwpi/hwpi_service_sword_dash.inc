@@ -6,7 +6,7 @@
 
 $plugin = array(
   'class' => 'citation_distribute_service_sword_dash',
-  'file' => 'citation_distribute_service_sword_dash.inc',
+  'file' => 'hwpi_service_sword_dash.inc',
   'parent' => 'citation_distribute_service_sword',
   'title' => t('DASH'),
   'href' => 'http://dash.harvard.edu',
@@ -18,7 +18,7 @@ $plugin = array(
 class citation_distribute_service_sword_dash extends citation_distribute_service_sword {
 	public $name = 			'dash';
 	public $title = 		'DASH';
-	public $location = 	'http://dash.harvard.edu';
+	public $location = 	    'http://dash.harvard.edu';
 	public $username;
 	public $password;
 	//public $username = 	'swap@lists.iq.harvard.edu';

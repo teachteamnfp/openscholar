@@ -1426,7 +1426,7 @@ function os_os_layout_contexts($privacy = TRUE) {
  */
 function theme_openscholar_powered_by() {
   return '<span>' . t('<a href="@poweredby">OpenScholar</a>', array(
-      '@poweredby' => 'http://openscholar.harvard.edu',
+      '@poweredby' => variable_get('site_url'),
     )) . '</span>';
 }
 
@@ -2246,7 +2246,7 @@ function os_form_user_login_alter(&$form, $form_state) {
   // Overriding the text of first button on the login screen.
   if (isset($form['pin'])) {
     $query['destination'] = isset($_GET['destination']) ? $_GET['destination'] : 'user';
-    $form['pin']['#markup'] = l('Log in using your Harvard Key', 'user/pin', array('query' => $query));
+    $form['pin']['#markup'] = l(t('Log in using your @university Key', array('@university' => variable_get('university_name'))), 'user/pin', array('query' => $query));
   }
 
   // If user login form is overridden by pinserver_authenticate module, then $form['pin-fieldset'] will be initialized from there.

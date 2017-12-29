@@ -549,7 +549,7 @@ function _cp_appearance_theme_header_item($header_type) {
   switch ($header_type) {
     case 'HEADER_FEATURED':
       $default = t('Featured themes');
-      $subtitle = t('Mobile-friendly themes ussing Harvard color palettes');
+      $subtitle = t('Mobile-friendly themes using %university color palettes', array('%university' => variable_get('university_name')));
       $display_title = variable_get('cp_appearance_featured_display_title', $default);
       if (!empty($display_title)) {
         $title = '<h2>' . check_plain($display_title) . '</h2>';
@@ -565,7 +565,7 @@ function _cp_appearance_theme_header_item($header_type) {
       break;
 
     case 'HEADER_SINGLE':
-      $params['@url'] = 'http://docs.openscholar.harvard.edu/one-page-themes';
+      $params['@url'] = variable_get('one_page_theme_url');
       $title = '<h2>' . t('One page / horizontal homepage layout themes') . '</h2>';
       $subtitle = t('<p>Mobile-friendly themes with horizontal homepage regions. <a href="@url">How to use these themes.</a></p>', $params);
       break;

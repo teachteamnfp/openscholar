@@ -405,14 +405,8 @@ class OsRestfulSiteReport extends \OsRestfulReports {
 
       // optional privacy column
       if (isset($new_row['site_privacy_setting'])) {
-        $privacy_values = array(
-          '0' => 'Public on the web.',
-          '1' => 'Site members only.',
-          '2' => 'Anyone with the link.',
-          '4' => 'Harvard Community',
-          '6' => 'Groups within the Harvard Community',
-        );
-        $new_row['site_privacy_setting'] = $privacy_values[$row->site_privacy_setting];
+        $privacy_values_settings = variable_get('privacy_values');
+        $new_row['site_privacy_setting'] = $privacy_values_settings[$row->site_privacy_setting];
       }
 
       // optional custom theme uploaded column

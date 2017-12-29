@@ -252,7 +252,7 @@ function cp_user_remove_membership_confirm_submit($form, &$form_state) {
   $params['!site-url'] = !empty($custom_domain) ? 'http://' . $custom_domain : $purl_base_domain . '/' . $vsite->group->purl;
   $params['!account-modifier-email'] = $account_modifier->mail;
   $params['!user-firstname'] = $account->field_first_name[LANGUAGE_NONE][0]['value'];
-  $params['!sitewide-name'] = variable_get('site_name', 'Harvard Web Publishing');
+  $params['!sitewide-name'] = variable_get('site_name', variable_get('sitewide_name'));
   $params['headers']['Cc'] = $account_modifier->mail;
   // Send email notification to deleted user.
   drupal_mail('cp_user', 'os_user_delete_from_group', $to, $language, $params, $from);
@@ -294,19 +294,6 @@ function cp_user_change_site_owner_form($form_state) {
       }
     }
   }
-
-  $description = "";
-  if (module_exists('pinserver') && variable_get('pinserver_pin_url', FALSE)) {
-    $description .= t('Only users who have linked their OpenScholar accounts to HarvardKey are listed.') . ' ' . l('Learn more about linking accounts', 'http://docs.openscholar.harvard.edu/logging-your-site#linking-your-harvardkey-to-your-openscholar-account', array('attributes' => array('target' => '_blank', 'rel' => 'noopener'))) . '.';
-  }
-
-  $form['new_site_owner'] = array(
-    '#type' => 'select',
-    '#title' => t('Username'),
-    '#required' => TRUE,
-    '#description' => $description,
-    '#options' => $options,
-  );
 
   // Builds and returns a confirmation form.
   return confirm_form($form, t('Change Site Ownership'), 'cp/users', '', t('Save'), t('Cancel'));
@@ -359,7 +346,7 @@ function cp_user_change_site_owner_form_submit($form, &$form_state) {
   $params['!site-url'] = !empty($custom_domain) ? 'http://' . $custom_domain : $purl_base_domain . '/' . $vsite->group->purl;
   $params['!account-modifier-email'] = $account_modifier->mail;
   $params['!user-firstname'] = $account->field_first_name[LANGUAGE_NONE][0]['value'];
-  $params['!sitewide-name'] = variable_get('site_name', 'Harvard Web Publishing');
+  $params['!sitewide-name'] = variable_get('site_name', variable_get('sitewide_name'));
   $params['headers']['Cc'] = $account_modifier->mail;
   // Sending email notification to modified user.
   drupal_mail('cp_user', 'os_user_role_change', $to, $language, $params, $from);
@@ -380,6 +367,7 @@ function cp_user_edit_membership_form($form_state, $user_load) {
   // Prepares replacement value text for the modal form.
   $name = _cp_user_get_full_name($group_user);
   $site = $space->group->title;
+
 
   // Form sets.
   $form['gid'] = array('#type' => 'value', '#value' => $space->group->nid);
@@ -403,25 +391,6 @@ function cp_user_edit_membership_form($form_state, $user_load) {
     '#options' => _cp_user_list_roles('options', $space->group->type, $space->group->nid),
     '#default_value' => _cp_user_get_role($group_user->uid, $space->group->nid),
   );
-
-  // Show the option to change site owner only for the current owner or a support team member with an associated HUID if the pinserver module is enabled
-  global $user;
-  if ($user->uid == 1 || !module_exists('pinserver') || (module_exists('pinserver') && variable_get('pinserver_pin_url', FALSE) && pinserver_user_has_associated_pin($group_user->uid))) {
-
-    $form['edit_membership']['group_manager'] = array(
-      '#type' => 'checkbox',
-      // Theme the checkbox label to look like the radio options.
-      '#title' => _cp_user_role_option(t('Set as site owner'), t('Make <em>@name</em> the site owner.', array('@name' => $name))),
-      '#default_value' => $space->group->uid == $group_user->uid,
-      '#access' => in_array('support team', $user->roles) || ($space->group->uid == $user->uid) || ($user->uid == 1),
-    );
-  }
-  else {
-    $form['edit_membership']['group_manager'] = array(
-      '#type' => 'markup',
-      '#markup' => '<p>' . t('@name\'s OpenScholar account is not linked to HarvardKey, so this user cannot be made site owner.', array('@name' => $name)) . ' ' . l('Learn more about linking accounts', 'http://docs.openscholar.harvard.edu/logging-your-site#linking-your-harvardkey-to-your-openscholar-account', array('attributes' => array('target' => '_blank', 'rel' => 'noopener'))) . '.</p>',
-    );
-  }
 
   // Builds and returns a confirmation form.
   $question = t('Editing members for site <em>@site</em>', array('@name' => $name, '@site' => $site));
@@ -500,7 +469,7 @@ function cp_user_edit_membership_form_submit($form, &$form_state) {
     $params['!site-url'] = !empty($custom_domain) ? 'http://' . $custom_domain : $purl_base_domain . '/' . $vsite->group->purl;
     $params['!account-modifier-email'] = $account_modifier->mail;
     $params['!user-firstname'] = $account->field_first_name[LANGUAGE_NONE][0]['value'];
-    $params['!sitewide-name'] = variable_get('site_name', 'Harvard Web Publishing');
+    $params['!sitewide-name'] = variable_get('site_name', variable_get('sitewide_name'));
     $params['headers']['Cc'] = $account_modifier->mail;
     // Sending email notification to modified user.
     drupal_mail('cp_user', 'os_user_role_change', $to, $language, $params, $from);

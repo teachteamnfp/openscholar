@@ -141,7 +141,7 @@ function os_faq_cp_settings() {
       '#title' => t('FAQs'),
       '#weight' => 3,
       '#menu_parent' => 'app_settings',
-      '#help_link' => l(t('Learn more about FAQs'), 'http://docs.openscholar.harvard.edu/faq-app#faq-app-settings', array('attributes' => array('target' => '_blank'))),
+      '#help_link' => l(t('Learn more about FAQs'), variable_get('help_faq_url'), array('attributes' => array('target' => '_blank'))),
     ),
     'form' => array(
       '#title' => t('Disable question/answer slider behavior'),
@@ -159,7 +159,7 @@ function os_faq_cp_settings() {
       '#title' => t('FAQs'),
       '#weight' => 3,
       '#menu_parent' => 'app_settings',
-      '#help_link' => l(t('Learn more about FAQs'), 'http://docs.openscholar.harvard.edu/faq-app#faq-app-settings', array('attributes' => array('target' => '_blank'))),
+      '#help_link' => l(t('Learn more about FAQs'), variable_get('help_faq_url'), array('attributes' => array('target' => '_blank'))),
     ),
     'form' => array(
       '#type' => 'radios',
