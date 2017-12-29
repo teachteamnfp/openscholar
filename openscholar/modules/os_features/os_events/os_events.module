@@ -172,6 +172,8 @@ function os_events_gcal_create_calendar() {
   watchdog("Calendar Vsite", print_r($vsite, TRUE));
   // Set the vsite space, since we've moved to the top-level docroot
   spaces_set_space($vsite);
+  $space = spaces_get_space($vsite);
+  watchdog("Calendar Space", print_r($space, TRUE));
   $vsite->activate_user_roles();
   $vsite->init_overrides();
 
