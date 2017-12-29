@@ -18,6 +18,36 @@
   width: 27%;
   float: right;
 }
+.ui-dialog.ng-node-form {
+  padding: 0;
+  top:10% !important;
+  font-size: 14px;
+}
+.ui-dialog.ng-node-form .ui-dialog-content { 
+  overflow: visible;
+}
+.ui-dialog.ng-node-form button,
+.ui-dialog.ng-node-form input[type="button"],
+.ui-dialog.ng-node-form input[type="submit"] {
+  cursor: pointer;
+  padding: 5px 12px;
+  margin-bottom: 1em;
+  margin-right: 1em;
+  color: #fff;
+  text-align: center;
+  font-weight: normal;
+  font-size: 1.077em;
+  border: 1px solid #888;
+  border-bottom: 1px solid #888;
+  border-left-color: #888;
+  border-right-color: #888;
+  background: #888;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  padding: 8px 15px;
+  font-family:helvetica;
+}
 .ng-node-form fieldset .fieldset-legend {
   margin-top: 0.5em;
   padding-left: 15px;
