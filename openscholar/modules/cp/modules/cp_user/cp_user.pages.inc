@@ -294,6 +294,13 @@ function cp_user_change_site_owner_form($form_state) {
       }
     }
   }
+  $form['new_site_owner'] = array(
+    '#type' => 'select',
+    '#title' => t('Username'),
+    '#required' => TRUE,
+    '#description' => $description,
+    '#options' => $options,
+  );
 
   // Builds and returns a confirmation form.
   return confirm_form($form, t('Change Site Ownership'), 'cp/users', '', t('Save'), t('Cancel'));
