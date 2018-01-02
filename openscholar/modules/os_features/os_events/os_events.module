@@ -247,9 +247,9 @@ function createCalendar($calendarName) {
   $client = getClient();
   $service = new Google_Service_Calendar($client);
   watchdog('Calendar Namessuuuuus', print_r('yyyyyyyyyyyyyy', TRUE));
-  $calendar = $service->calendars->get('primary');
+  //$calendar = $service->calendars->get($calendarName);
   watchdog('Calendar Namesss', print_r($calendar, TRUE));
-  if(!$calendar) {
+  //if(!$calendar) {
     watchdog('Calendar Create', print_r('hhhhhhh', TRUE));
     // set up the calendar and save
     $calendar = new Google_Service_Calendar_Calendar();
@@ -261,11 +261,11 @@ function createCalendar($calendarName) {
         return false;
     }
     return $createdCalendar->getId();
-  }
+  /*}
   else {
     watchdog('Calendar Create', print_r('wwwwwwwwwwwww', TRUE));
     return false;
-  }
+  }*/
 }
 
 /**
