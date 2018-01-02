@@ -184,6 +184,7 @@ function os_events_gcal_create_calendar() {
   $client = getClient();
   $calendar_name = $vsite->group->title;
   createCalendar($calendar_name);
+  deleteEventsfromGCal($view, $calendar_name);
 
   $event = array();
   foreach ($view->result as $e) {
@@ -268,7 +269,7 @@ function createCalendar($calendarName) {
  *
  * @return bool true if event don't exists
  */
-function checkEventExists ($event_id) {
+function checkEventExists($event_id) {
   $client = getClient();
   $calendarService = new Google_Service_Calendar($client);
   try {
@@ -281,6 +282,26 @@ function checkEventExists ($event_id) {
 }
 
 /**
+ * Delete events from Google Calendar
+ * @param array $view 
+ * @param string $calendar_name
+ *
+ */
+function deleteEventsfromGCal($view, $calendar_name) {
+  $client = getClient();
+  $service = new Google_Service_Calendar($client);
+  $events = $service->events->listEvents($calendar_name);
+  foreach ($view->result as $e) {
+    foreach ($events->getItems() as $event) {
+      if($event->getId() != $e->_field_data['nid']['entity']->nid) {
+        $service->events->delete($calendar_name, $event->getId());
+      }
+    }
+  }
+}
+
+
+/**
  * @file
  * Administration page callbacks for the google calendar settings.
  */
@@ -290,7 +311,7 @@ function checkEventExists ($event_id) {
  * @ingroup forms
  * @see system_settings_form().
  */
-function google_account_form () {
+function google_account_form() {
 
   global $is_https;
   $redirect_url = (($is_https) ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . '/admin/config/get-google-access-token-with-auth-code';
