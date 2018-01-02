@@ -202,34 +202,20 @@ function os_orcid_resync_item($data) {
     // If there is a journal-title, set the node title, otherwise use the title.
     $work_title = $work['work-title']['title'];
 
-    $biblios = db_select('biblio', 'b')
-      ->fields('b', array('nid'))
-      ->condition('b.biblio_type', $biblio_type)
-      ->condition('b.biblio_sort_title', $work_title)
-      ->condition('b.biblio_url', $work['source']['source-orcid']['uri'])
-      ->execute()
-      ->fetchAll();
-    if(count($biblios) > 0) {
-      foreach($biblios as $biblio) {
-        $nodes = db_select('node', 'n')
-          ->fields('n', array('nid'))
-          ->condition('n.nid', $biblio->nid)
-          ->condition('n.uid', $user_id)
-          ->execute()
-          ->fetchAll();
-        if(count($nodes) > 0) {
-          foreach($nodes as $node) {
-            $og = db_select('og_membership', 'og')
-              ->fields('og', array('id'))
-              ->condition('og.gid', $vsite)
-              ->condition('og.etid', $node->nid)
-              ->execute()
-              ->fetchAll();
-            if(count($og) > 0) {
-              $insert = false;
-            }
-          }
-        }
+    $query = db_select('biblio', 'b')
+              ->condition('b.biblio_type', $biblio_type)
+              ->condition('b.biblio_sort_title', $work_title)
+              ->condition('b.biblio_url', $work['source']['source-orcid']['uri']);
+    $query->leftJoin('og_membership', 'og', 'og.etid = b.nid');
+    $query = $query->fields('b', array('nid'))
+              ->condition('og.gid', $vsite);
+    $biblios = $query->execute()->fetchAll();
+    $all_biblios = array_unique($biblios, SORT_REGULAR);
+    if(count($all_biblios) > 0) {
+      $insert = false;
+      foreach($all_biblios as $bilbio) {
+        // Get the Biblio id to update
+        $nid = $bilbio->nid;
       }
     }
     // Setup the new node.
@@ -314,7 +300,7 @@ function os_orcid_resync_item($data) {
       $context['results']['imported']++;
     }
     else {
-      $node->nid = $biblio->nid;
+      $node->nid = $nid;
       node_save($node);
       // Increment the exists counter, used in displaying the results.
       $context['results']['exists']++;
