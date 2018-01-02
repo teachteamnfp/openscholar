@@ -184,7 +184,7 @@ function os_events_gcal_create_calendar() {
   $client = getClient();
   $calendar_name = $vsite->group->title;
   createCalendar($calendar_name);
-  deleteEventsfromGCal($view, $calendar_name);
+  //deleteEventsfromGCal($view, $calendar_name);
 
   $event = array();
   foreach ($view->result as $e) {
@@ -287,7 +287,7 @@ function checkEventExists($event_id) {
  * @param string $calendar_name
  *
  */
-function deleteEventsfromGCal($view, $calendar_name) {
+/*function deleteEventsfromGCal($view, $calendar_name) {
   $client = getClient();
   $service = new Google_Service_Calendar($client);
   $events = $service->events->listEvents($calendar_name);
@@ -298,7 +298,7 @@ function deleteEventsfromGCal($view, $calendar_name) {
       }
     }
   }
-}
+}*/
 
 
 /**
