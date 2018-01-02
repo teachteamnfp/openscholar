@@ -11,7 +11,7 @@
     var baseUrl = Drupal.settings.paths.api;
     this.getForm = function(bundle, nid) {
       var deferred = $q.defer();
-      if (promises.length > 0) {
+      if (promises.length > 0 && !nid) {
         return promises[0];
       }
       var queryArgs = {};

@@ -27,6 +27,7 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
       $form['nid']['#value'] = $node->nid;
       $form['#node'] = $node;
       $node->date = format_date($node->created, 'custom', 'Y-m-d H:i:s O');
+      $node->revision = !empty($node->revision_timestamp) ? TRUE : FALSE;
     }
     else {
       $node = new stdClass;
@@ -44,6 +45,7 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
       foreach ($extra as $key => $form_field) {
         $form[$key] = $form_field;
       }
+      $form['title']['#type'] = 'os-node-title-textfield'; 
     }
     $extra_fields =  _field_invoke_default('form', 'node', $node, $form, $form_state);
     foreach ($extra_fields as $key => $field) {
