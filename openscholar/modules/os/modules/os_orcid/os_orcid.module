@@ -178,9 +178,11 @@ function os_orcid_resync_item($data) {
   if (!isset($data['orcidId']) || !isset($data['vsite'])) {
     return;
   }
+
   $biblio_types = _os_orcid_get_biblio_types();
   $work_feed = $data['work'];
   $user_id = $data['user_id'];
+  $vsite = $data['vsite'];
 
   if (is_array($work_feed['@attributes'])) {
     // For single bibilo, Orcid doesn't return array but returns array for multiple enties
@@ -189,17 +191,13 @@ function os_orcid_resync_item($data) {
     $works = $work_feed;
   }
   foreach ($works as $work) {
+    $biblio_type = 102;
     foreach($biblio_types as $key => $value) {
       if($biblio_types[$key]->name == str_replace('-', ' ', $work['work-type'])) {
         $biblio_type = $biblio_types[$key]->tid;
         break;
       }
     }
-
-    if(!isset($biblio_type)) {
-      $biblio_type = 102;
-    }
-
     $insert = true;
     // If there is a journal-title, set the node title, otherwise use the title.
     $work_title = $work['work-title']['title'];
@@ -220,7 +218,17 @@ function os_orcid_resync_item($data) {
           ->execute()
           ->fetchAll();
         if(count($nodes) > 0) {
-          $insert = false;
+          foreach($nodes as $node) {
+            $og = db_select('og_membership', 'og')
+              ->fields('og', array('id'))
+              ->condition('og.gid', $vsite)
+              ->condition('og.etid', $node->nid)
+              ->execute()
+              ->fetchAll();
+            if(count($og) > 0) {
+              $insert = false;
+            }
+          }
         }
       }
     }
@@ -298,7 +306,7 @@ function os_orcid_resync_item($data) {
       $node->biblio_type = 102;
     }
 
-    $node->og_group_ref['und'][0]['target_id'] = $data['vsite'];
+    $node->og_group_ref['und'][0]['target_id'] = $vsite;
       // Save the node.
     if($insert) {
       node_save($node);
