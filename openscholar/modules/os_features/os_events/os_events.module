@@ -182,6 +182,7 @@ function os_events_gcal_create_calendar() {
   }
 
   $client = getClient();
+  $calendarService = new Google_Service_Calendar($client);
   //$calendar_name = $vsite->group->title;
   //watchdog('Calendar Name', print_r($calendar_name, TRUE));
   //createCalendar($calendar_name);
