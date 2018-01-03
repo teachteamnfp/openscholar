@@ -208,7 +208,7 @@ Feature: Media Browser
       And I fill in "URL or HTML" with "http://this.is.a.fake.site.com/id/52ac3d"
       And I press the "Submit" button
       And I wait "3 seconds"
-     Then I should see "URL(s) not from accepted domain!"
+     Then I should see "HTML code are from an accepted domain."
 
   @frontend @javascript
   Scenario: Test adding embed codes from trusted and untrusted sources
@@ -222,7 +222,7 @@ Feature: Media Browser
       And I fill in "URL or HTML" with "<iframe src=\"https://untrusted.domain\"></iframe>"
       And I press the "Submit" button
       And I wait "1 seconds"
-     Then I should see "URL(s) not from accepted domain!"
+     Then I should see "HTML code are from an accepted domain."
      When I whitelist the domain "trusted.domain"
       And I fill in "URL or HTML" with "<iframe src=\"https://trusted.domain\"></iframe>"
       And I press the "Submit" button

@@ -784,7 +784,11 @@ class OsFilesResource extends OsRestfulEntityCacheableBase {
 
         return true;
       }
-      $this->addError('embed_code', 'This embed code failed validation. Please check that all urls are from accepted domains');
+      if ($GLOBALS['is_https']) {
+        $this->addError('embed_code', 'This embed code failed validation. Please check that all urls are with https and from accepted domains');
+      }else {
+        $this->addError('embed_code', 'This embed code failed validation. Please check that all urls are from accepted domains');
+      }
     }
     return false;
   }

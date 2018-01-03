@@ -70,3 +70,24 @@ function os_presentations_preprocess_node(&$vars) {
 function os_presentations_os_entity_view_modes_alter(&$info) {
   $info['node']['presentation'] = array_diff($info['node']['presentation'], array('slide_teaser'));
 }
+
+/**
+ * Implements hook_node_validate
+ *
+ * Enforce white list for file extensions
+ **/
+function os_presentations_node_validate($node, $form, &$form_state) {
+  if ($node->type == 'presentation') {
+    $i = 0;
+    $extensions = isset($form_state['field']['field_presentation_file'][LANGUAGE_NONE]['instance']['settings']['file_extensions']) ?
+      $form_state['field']['field_presentation_file'][LANGUAGE_NONE]['instance']['settings']['file_extensions'] : 'ppt pptx pps ppsx pdf';
+
+    while ($file = $form_state['complete form']['field_presentation_file'][LANGUAGE_NONE][$i++]['#file']) {
+      $errors = file_validate_extensions($file, $extensions);
+      if (count($errors) > 0) {
+        form_set_error('field_presentation_file', join("\n", $errors));
+        break;
+      }
+    }
+  }
+}
