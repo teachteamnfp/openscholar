@@ -254,9 +254,11 @@ function createCalendar($calendarName) {
   watchdog('Calendar.Name.service', '<pre>'.print_r($service, TRUE).'</pre>');
   $calendarList = $service->calendarList->listCalendarList();
   foreach ($calendarList->getItems() as $calendarListEntry) {
+    watchdog('Calendar.Name.list', '<pre>'.print_r($calendarListEntry->getSummary(), TRUE).'</pre>');
     if ($calendarListEntry->getSummary() == $calendarName) {
       $calendar_exists = true;
       $calendar_id = $calendarListEntry->getId();
+      break;
     }
   }
   watchdog('Calendar.Name.cal', '<pre>'.print_r($calendarList, TRUE).'</pre>');
