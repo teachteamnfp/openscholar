@@ -251,7 +251,7 @@ function createCalendar($calendarName) {
   $client = getClient();
   $service = new Google_Service_Calendar($client);
   watchdog('Calendar.Name.service', '<pre>'.print_r($service, TRUE).'</pre>');
-  $calendar = $service->calendars->get('primary');
+  $calendar = $service->calendarList->get($calendarName);
   watchdog('Calendar.Name.cal', '<pre>'.print_r($calendar, TRUE).'</pre>');
   //watchdog('Calendar Namesss', print_r($calendar, TRUE));
   if(!isset($calendar)) {
