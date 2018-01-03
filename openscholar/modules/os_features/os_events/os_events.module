@@ -190,7 +190,7 @@ function os_events_gcal_create_calendar() {
 
   $event = array();
   foreach ($view->result as $e) {
-    if(checkEventExists($e->_field_data['nid']['entity']->nid)) {
+    if(checkEventExists($e->_field_data['nid']['entity']->nid, $calendar_id)) {
 
       # Create event and add it to the calendar    
       $event = new Google_Service_Calendar_Event();
@@ -282,11 +282,11 @@ function createCalendar($calendarName) {
  *
  * @return bool true if event don't exists
  */
-function checkEventExists($event_id) {
+function checkEventExists($event_id, $calendar_id) {
   $client = getClient();
   $calendarService = new Google_Service_Calendar($client);
   try {
-      $calendarService->events->get('primary', $event_id);
+      $calendarService->events->get($calendar_id, $event_id);
   } 
   catch (Exception $e) {
     return TRUE;
