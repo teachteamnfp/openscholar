@@ -249,13 +249,23 @@ function os_events_gcal_create_calendar() {
 function createCalendar($calendarName) {
   watchdog('Calendar.Name.infun', $calendarName);
   $client = getClient();
+  $calendar_exists = false;
   $service = new Google_Service_Calendar($client);
   watchdog('Calendar.Name.service', '<pre>'.print_r($service, TRUE).'</pre>');
-  $calendarList = $service->calendarList->get($calendarName);
+  $calendarList = $service->calendarList->listCalendarList();
+  foreach ($calendarList->getItems() as $calendarListEntry) {
+    if ($calendarListEntry->getSummary() == $calendarName) {
+      $calendar_exists = true;
+      $calendar_id = $calendarListEntry->getId();
+    }
+  }
   watchdog('Calendar.Name.cal', '<pre>'.print_r($calendarList, TRUE).'</pre>');
   //watchdog('Calendar Namesss', print_r($calendar, TRUE));
-  if(!isset($calendar)) {
-    //watchdog('Calendar Create', print_r('hhhhhhh', TRUE));
+  if(!$calendar_exists) {
+    watchdog('Calendar.Name.exists', $calendar_id);
+    return $calendar_id;
+  }
+  else {
     // set up the calendar and save
     $calendar = new Google_Service_Calendar_Calendar();
     $calendar->setSummary($calendarName);
@@ -266,11 +276,7 @@ function createCalendar($calendarName) {
         return false;
     }
     watchdog('Calendar.Name.created', print_r($createdCalendar, TRUE));
-    return $createdCalendar->getId();
-  }
-  else {
-    watchdog('Calendar.Name.exists', print_r($calendar, TRUE));
-    return false;
+    return $createdCalendar->getId();    
   }
 }
 
