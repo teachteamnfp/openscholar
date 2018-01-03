@@ -185,7 +185,6 @@ function os_events_gcal_create_calendar() {
   $calendarService = new Google_Service_Calendar($client);
   //$calendar_name = $vsite->group->title;
   $calendar_name = 'OpenScholar';
-  watchdog('Calendar.Name', $calendar_name);
   $calendar_id = createCalendar($calendar_name);
   //deleteEventsfromGCal($view, $calendar_name);
 
@@ -210,10 +209,12 @@ function os_events_gcal_create_calendar() {
       $event->setStart($calendarDateTime1);
       $calendarDateTime2->setDateTime($dt2->format(DateTime::RFC3339));
       $event->setEnd($calendarDateTime2);
-      $calendarInsert = $calendarService->events->insert('OpenScholar', $event);
+      watchdog('Calendar.Add.calendar_id', $calendar_id);
+      $calendarInsert = $calendarService->events->insert($calendar_id, $event);
     }
     else{
-     # Update events to the Google calendar   
+     # Update events to the Google calendar
+      watchdog('Calendar.Update.calendar_id', $calendar_id);
       $event = $calendarService->events->get($calendar_id, $e->_field_data['nid']['entity']->nid);
 
       $event->setDescription($e->_field_data['nid']['entity']->body[LANGUAGE_NONE][0]['value']);
@@ -247,24 +248,18 @@ function os_events_gcal_create_calendar() {
  * @return string calendar ID (or false on failure)
  */
 function createCalendar($calendarName) {
-  watchdog('Calendar.Name.infun', $calendarName);
   $client = getClient();
   $calendar_exists = false;
-  $service = new Google_Service_Calendar($client);
-  watchdog('Calendar.Name.service', '<pre>'.print_r($service, TRUE).'</pre>');
+  $service = new Google_Service_Calendar($client);  
   $calendarList = $service->calendarList->listCalendarList();
   foreach ($calendarList->getItems() as $calendarListEntry) {
-    watchdog('Calendar.Name.list', '<pre>'.print_r($calendarListEntry->getSummary(), TRUE).'</pre>');
     if ($calendarListEntry->getSummary() == $calendarName) {
       $calendar_exists = true;
       $calendar_id = $calendarListEntry->getId();
       break;
     }
   }
-  watchdog('Calendar.Name.cal', '<pre>'.print_r($calendarList, TRUE).'</pre>');
-  //watchdog('Calendar Namesss', print_r($calendar, TRUE));
   if($calendar_exists) {
-    watchdog('Calendar.Name.exists', $calendar_id);
     return $calendar_id;
   }
   else {
@@ -277,7 +272,6 @@ function createCalendar($calendarName) {
     } catch (Exception $e) {
         return false;
     }
-    watchdog('Calendar.Name.created', print_r($createdCalendar, TRUE));
     return $createdCalendar->getId();    
   }
 }
