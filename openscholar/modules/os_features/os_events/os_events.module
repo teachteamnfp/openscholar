@@ -190,16 +190,17 @@ function os_events_gcal_create_calendar() {
 
   // Delete removed events
   $all_events = $service->events->listEvents($calendar_id);
-  foreach ($events->getItems() as $event) {
+  foreach ($all_events->getItems() as $all_event) {
     $event_delete = true;
     foreach ($view->result as $e) {
-      if ($e->_field_data['nid']['entity']->nid == $event->getId()) {
+      watchdog('Calendar.remove.event_id', $e->_field_data['nid']['entity']->nid."::".$all_event->getId());
+      if ($e->_field_data['nid']['entity']->nid == $all_event->getId()) {
         $event_delete = false;;
         break;
       }
     }
     if ($event_delete) {
-      $service->events->delete($calendar_id, $event->getId());
+      $service->events->delete($calendar_id, $all_event->getId());
     }
   }
 
