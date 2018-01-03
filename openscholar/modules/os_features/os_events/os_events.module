@@ -184,8 +184,9 @@ function os_events_gcal_create_calendar() {
   $client = getClient();
   $calendarService = new Google_Service_Calendar($client);
   //$calendar_name = $vsite->group->title;
+  $calendar_name = 'OpenScholar';
   //watchdog('Calendar Name', print_r($calendar_name, TRUE));
-  //createCalendar($calendar_name);
+  $calendar_id = createCalendar($calendar_name);
   //deleteEventsfromGCal($view, $calendar_name);
 
   $event = array();
@@ -209,11 +210,11 @@ function os_events_gcal_create_calendar() {
       $event->setStart($calendarDateTime1);
       $calendarDateTime2->setDateTime($dt2->format(DateTime::RFC3339));
       $event->setEnd($calendarDateTime2);
-      $calendarInsert = $calendarService->events->insert('primary', $event);
+      $calendarInsert = $calendarService->events->insert($calendar_id, $event);
     }
     else{
      # Update events to the Google calendar   
-      $event = $calendarService->events->get('primary', $e->_field_data['nid']['entity']->nid);
+      $event = $calendarService->events->get($calendar_id, $e->_field_data['nid']['entity']->nid);
 
       $event->setDescription($e->_field_data['nid']['entity']->body[LANGUAGE_NONE][0]['value']);
       $event->setLocation($e->_field_data['nid']['entity']->field_event_location[LANGUAGE_NONE][0]['value']);
@@ -229,9 +230,10 @@ function os_events_gcal_create_calendar() {
       $calendarDateTime2->setDateTime($dt2->format(DateTime::RFC3339));
       $event->setEnd($calendarDateTime2);
 
-      $calendarUpdate = $calendarService->events->update('primary', $event->getId(), $event);
+      $calendarUpdate = $calendarService->events->update($calendar_id, $event->getId(), $event);
     }
   }
+
   if($calendarInsert || $calendarUpdate) {
     drupal_set_message(t('Calendar successfully sync with Google calendar.'));
   }
@@ -248,7 +250,7 @@ function createCalendar($calendarName) {
   $client = getClient();
   $service = new Google_Service_Calendar($client);
   //watchdog('Calendar Namessuuuuus', print_r('yyyyyyyyyyyyyy', TRUE));
-  //$calendar = $service->calendars->get($calendarName);
+  $calendar = $service->calendars->get($calendarName);
   //watchdog('Calendar Namesss', print_r($calendar, TRUE));
   //if(!$calendar) {
     //watchdog('Calendar Create', print_r('hhhhhhh', TRUE));
