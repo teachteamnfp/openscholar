@@ -235,6 +235,21 @@ function os_events_gcal_create_calendar() {
     }
   }
 
+  // Delete removed events
+  $all_events = $service->events->listEvents($calendar_id);
+  foreach ($events->getItems() as $event) {
+    $event_delete = true;
+    foreach ($view->result as $e) {
+      if ($e->_field_data['nid']['entity']->nid == $event->getId()) {
+        $event_delete = false;;
+        break;
+      }
+    }
+    if ($event_delete) {
+      $service->events->delete($calendar_id, $event->getId());
+    }
+  }
+
   if($calendarInsert || $calendarUpdate) {
     drupal_set_message(t('Calendar successfully sync with Google calendar.'));
   }
