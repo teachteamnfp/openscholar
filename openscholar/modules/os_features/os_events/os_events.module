@@ -188,6 +188,21 @@ function os_events_gcal_create_calendar() {
   $calendar_id = createCalendar($calendar_name);
   //deleteEventsfromGCal($view, $calendar_name);
 
+  // Delete removed events
+  $all_events = $service->events->listEvents($calendar_id);
+  foreach ($events->getItems() as $event) {
+    $event_delete = true;
+    foreach ($view->result as $e) {
+      if ($e->_field_data['nid']['entity']->nid == $event->getId()) {
+        $event_delete = false;;
+        break;
+      }
+    }
+    if ($event_delete) {
+      $service->events->delete($calendar_id, $event->getId());
+    }
+  }
+
   $event = array();
   foreach ($view->result as $e) {
     if(checkEventExists($e->_field_data['nid']['entity']->nid, $calendar_id)) {
@@ -232,21 +247,6 @@ function os_events_gcal_create_calendar() {
       $event->setEnd($calendarDateTime2);
 
       $calendarUpdate = $calendarService->events->update($calendar_id, $event->getId(), $event);
-    }
-  }
-
-  // Delete removed events
-  $all_events = $service->events->listEvents($calendar_id);
-  foreach ($events->getItems() as $event) {
-    $event_delete = true;
-    foreach ($view->result as $e) {
-      if ($e->_field_data['nid']['entity']->nid == $event->getId()) {
-        $event_delete = false;;
-        break;
-      }
-    }
-    if ($event_delete) {
-      $service->events->delete($calendar_id, $event->getId());
     }
   }
 
