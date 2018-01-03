@@ -166,3 +166,16 @@ div.contextual-links-wrapper li.link-count-os-pages-edit span{
   margin-left: 0;
   cursor: pointer;
 }
+.undo-message-box {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-top: -100px;
+  margin-left: -250px;
+  width: 300px;
+  height: 45px;
+  background: #000;
+  color: #fff;
+  text-align: center;
+  line-height: 44px;
+ }

@@ -22,6 +22,7 @@
         <div class="actions" ng-show="showSaveButton">
           <button type="submit" button-spinner="node_form" spinning-text="Saving">Save</button>
           <input type="button" value="Cancel" ng-click="close(false)">
+          <a ng-if="deleteAccess" ng-click="entityDelete(nid)" href="#" class="os-delete-link os-page-delete-link">Delete this page</a>
         </div>
         <div class="form-item fieldset" ng-repeat="(key, field) in formElements | weight" ng-if="field.group" ng-class="field.group">
           <div form-element element="field" value="formData[key]"><span>placeholder</span></div>
@@ -31,8 +32,15 @@
         <div class="actions" ng-show="showSaveButton">
           <button type="submit" button-spinner="node_form" spinning-text="Saving">Save</button>
           <input type="button" value="Cancel" ng-click="close(false)">
+          <a ng-if="deleteAccess" ng-click="entityDelete(nid)" href="#" class="os-delete-link os-page-delete-link">Delete this page</a>
         </div>
       </div>
     </div>
   </form>
+  <div ng-hide="deleteUndoAction" class="undo-message-box">Content will be deleted. <span><a ng-click="deleteUndo()">Cancel</a></span>
+    <a class="dismiss" ng-click="deleteNodeOnClose(nid)">X</a>
+  </div>
+  <div ng-hide="deleteUndoMessage" class="undo-message-box">Action canceled.
+    <a class="dismiss" ng-click="deleteUndoMessageBoxClose()">X</a>
+  </div>
 </div>

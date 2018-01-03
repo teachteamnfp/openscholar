@@ -431,7 +431,7 @@
         $timeout(function() {
           if (scope.element.default_value) {
             var vsiteHome = angular.isDefined(Drupal.settings.paths.vsite_home) ? Drupal.settings.paths.vsite_home : '';
-            scope.urlAlias = vsiteHome + '/' + jQuery("input[name='alias']").val();
+            scope.urlAlias = vsiteHome + '/' + angular.element("input[name='alias']").val();
           }
         }, 2000)    
         var state;
@@ -619,7 +619,7 @@
           }
           if (!scope.osMenuEnabled.defaultValue) {
             message = '(Not in menu)';
-            scope.formDataLink.link_title = jQuery("input[type='textfield'][name='title']").val();
+            scope.formDataLink.link_title = angular.element("input[type='textfield'][name='title']").val();
           }
           scope.value = {
             message: message,

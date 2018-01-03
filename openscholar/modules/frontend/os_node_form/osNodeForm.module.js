@@ -27,23 +27,35 @@
       var config = {
         params: queryArgs
       };
-      $http.get(baseUrl+'/' + bundle +'/form', config).then(function (response) {
+      $http.get(baseUrl + '/' + bundle +'/form', config).then(function (response) {
         deferred.resolve(response.data);
       });
       promises.push(deferred.promise);
+
       return deferred.promise;
       
     }
 
-    this.nodeSave = function (nodeType, node) {
-      node.og_group_ref = Drupal.settings.spaces.id;
+    this.nodeSave = function (bundle, node) {
+      // Assign vsite.
+      if (Drupal.settings.spaces) {
+        node.og_group_ref = Drupal.settings.spaces.id;
+      }
       var deferred = $q.defer();
-      $http.post(baseUrl+'/'+nodeType, node).then(function (response) {
+      $http.post(baseUrl + '/' + bundle, node).then(function (response) {
         deferred.resolve(response);
       }, function(error) {
         deferred.reject(error);
       });
+
       return deferred.promise;
+    }
+
+    this.nodeDelete = function(bundle, nid) {
+      return $http.delete(baseUrl + '/' + bundle + '/' + nid)
+        .success(function (resp) {
+          return resp.data;
+      })
     }
 
   }]);
@@ -117,9 +129,10 @@
   /**
    * The controller for the forms themselves
    */
-  m.controller('nodeFormController', ['$scope', '$sce', 'nodeFormService', 'buttonSpinnerStatus', 'nodeType', 'nid', 'close', '$rootScope', function ($s, $sce, nodeFormService, bss, nodeType, nid, close, $rootScope) {
+  m.controller('nodeFormController', ['$scope', '$sce', 'nodeFormService', 'buttonSpinnerStatus', 'nodeType', 'nid', 'close', '$rootScope', '$timeout', function ($s, $sce, nodeFormService, bss, nodeType, nid, close, $rootScope, $timeout) {
 
     $s.formId = nodeType + '_node_form';
+    $s.deleteAccess = false;
     $s.formElements = {};
     $s.formData = {};
     $s.status = [];
@@ -128,6 +141,11 @@
     $s.loading = true;
 
     nodeFormService.getForm(nodeType, nid).then(function(response) {
+      if (nid) {
+        // @Todo: node delete access checks needs to be done here.
+        $s.deleteAccess = true;
+        $s.nid = nid;
+      }
       var formElementsRaw = response.data;
       $s.loading = false;
       for (var formElem in formElementsRaw) {
@@ -146,7 +164,7 @@
       }
     });
 
-    function submitForm($event) {
+    $s.submitForm = function ($event) {
       bss.SetState('node_form', true);
       nodeFormService.nodeSave(nodeType, $s.formData).then(function (response) {
         $rootScope.$broadcast("success", response.data);
@@ -160,12 +178,47 @@
         bss.SetState('node_form', false);
       });
     }
-    $s.submitForm = submitForm;
+    // Show Undo div to user for 8 seconds on delete.
+    $s.deleteUndoAction = true;
+    $s.deleteUndoMessage = true;
+    $s.entityDelete = function(nid) {
+      $s.deleteUndoAction = !$s.deleteUndoAction;
+      timer = $timeout(function() {
+        $s.deleteUndoAction = !$s.deleteUndoAction;
+        $s.deleteNodeOnClose(nid);
+      }, 8000);
+    }
+
+    $s.deleteUndo = function() {
+      $timeout.cancel(timer);
+      $s.deleteUndoAction = true;
+      $s.deleteUndoMessage = !$s.deleteUndoMessage;
+      timer = $timeout(function() {
+        $s.deleteUndoMessage = true;
+      }, 2000);
+    };
+
+    $s.deleteUndoMessageBoxClose = function() {
+      $s.deleteUndoMessage = true;
+    };
+    
+    var node_id;
+    $s.deleteNodeOnClose = function(nid) {
+      if (nid) {
+        node_id = nid; //Assign nid to global scope for future use.
+        nodeFormService.nodeDelete(nodeType, nid).then(function (res) {
+          if (res.status == 200) {
+            window.location.href = '/' + Drupal.settings.pathPrefix;
+          }
+        });
+      }
+    }
 
     $s.close = function (arg) {
       //Remove the overlay div element.
       jQuery("#overlay").remove();
       close(arg);
+      $s.deleteNodeOnClose(node_id);
     }
 
   }]);
