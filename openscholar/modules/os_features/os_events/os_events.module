@@ -210,7 +210,7 @@ function os_events_gcal_create_calendar() {
       $event->setStart($calendarDateTime1);
       $calendarDateTime2->setDateTime($dt2->format(DateTime::RFC3339));
       $event->setEnd($calendarDateTime2);
-      $calendarInsert = $calendarService->events->insert($calendar_id, $event);
+      $calendarInsert = $calendarService->events->insert('OpenScholar', $event);
     }
     else{
      # Update events to the Google calendar   
