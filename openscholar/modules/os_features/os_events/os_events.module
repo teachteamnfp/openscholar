@@ -263,7 +263,7 @@ function createCalendar($calendarName) {
   }
   watchdog('Calendar.Name.cal', '<pre>'.print_r($calendarList, TRUE).'</pre>');
   //watchdog('Calendar Namesss', print_r($calendar, TRUE));
-  if(!$calendar_exists) {
+  if($calendar_exists) {
     watchdog('Calendar.Name.exists', $calendar_id);
     return $calendar_id;
   }
