@@ -13,6 +13,7 @@ class os_boxes_widget_slider extends os_boxes_widget_collection {
       'timeout' => 5000,
       'speed' => 700,
       'display_scrollbar' => FALSE,
+      'display_nav_arrow' => FALSE,
       'slider_height' => '400'
     );
   }
@@ -23,7 +24,7 @@ class os_boxes_widget_slider extends os_boxes_widget_collection {
     $widgets = module_invoke_all('os_widget');
     $widget_options = array();
     foreach ($widgets as $wgt => $info) {
-      if ($info['module'] == 'boxes' && isset($info['delta']) && boxes_box_load($info['delta'])->plugin_key == 'os_boxes_html') {
+      if ($info['module'] == 'boxes' && isset($info['delta']) && (boxes_box_load($info['delta'])->plugin_key == 'os_boxes_html' || boxes_box_load($info['delta'])->plugin_key == 'os_boxes_columns')) {
         $widget_options[$wgt] = trim($info['info']);
         if (!empty($info['title'])) {
           $widget_options[$wgt] .= ' ('.trim($info['title']).')';
@@ -64,6 +65,13 @@ class os_boxes_widget_slider extends os_boxes_widget_collection {
       '#description' => t('Render a vertical scrollbar to view longer contents.'),
       '#title' => t('Display scrollbar'),
       '#default_value' => isset($this->options['display_scrollbar']) ? $this->options['display_scrollbar'] : $defaults['display_scrollbar'],
+    );
+
+    $form['display']['display_nav_arrow'] = array(
+      '#type' => 'checkbox',
+      '#description' => t('Left and right arrows will display on either side of the navigation dots.'),
+      '#title' => t('Display navigation arrows'),
+      '#default_value' => isset($this->options['display_nav_arrow']) ? $this->options['display_nav_arrow'] : $defaults['display_nav_arrow'],
     );
 
     $form['display']['slider_height'] = array(
@@ -123,6 +131,10 @@ class os_boxes_widget_slider extends os_boxes_widget_collection {
     $speed = isset($this->options['speed']) ? $this->options['speed'] : $defaults['speed'];
     $assets = $this->setup_assets($this->delta, $timeout, $speed, 0);
     $this->add_assets($assets);
+
+    if ($this->options['display_nav_arrow']) {
+      $this->options['additional_classes'] = 'arrow-nav';
+    }
 
     return $block;
   }

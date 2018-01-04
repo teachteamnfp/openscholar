@@ -783,10 +783,15 @@ div[aria-describedby*=" event-popover-"] .ui-icon-closethickt {
 }
 div[aria-describedby^="event-popover-"] .ui-widget-header .ui-state-default:hover,
 div[aria-describedby^="event-popover-"] .ui-widget-header .ui-state-default:hover,
-div[aria-describedby^="event-popover-"] .ui-widget-header .ui-state-default,
 div[aria-describedby^="event-popover-"] .ui-widget-header .ui-state-default {
     border: none;
     background: none;
+   
+}
+.logged-in div[aria-describedby^="event-popover-"] .ui-widget-header .ui-state-default {
+  
+    right:-15px;
+    top:-22px;
 }
 div[aria-describedby^="event-popover-"] .ui-dialog-titlebar,
 div[aria-describedby*=" event-popover-"] .ui-dialog-titlebar,
@@ -794,6 +799,8 @@ div[aria-describedby^="event-popover-"] .ui-dialog-content,
 div[aria-describedby*=" event-popover-"] .ui-dialog-content {
     padding: 0 1em;
     overflow: initial;
+    background: none !important;
+    border-bottom: none;
 }
 div[id^=event-popover] .event-title a {
     outline: none;
@@ -1030,7 +1037,7 @@ div.toggle {
 .accordion .ui-state-active,
 .accordion .ui-widget-content .ui-state-active,
 .accordion .ui-widget-header .ui-state-active {
-    background: #EEE;
+    background: #f3f3f1;
     border: none;
     color: #333;
 }
@@ -1040,6 +1047,17 @@ div.toggle {
 .accordion .ui-widget-content a {
     color: #215990;
 }
+
+.ui-state-default .ui-icon-triangle-1-e.ui-icon {
+	background-image: url('../images/scholarbase-sprite.png');
+	background-position: 5px -197px;
+	}
+
+.ui-state-default .ui-icon-triangle-1-s.ui-icon {
+	background-image: url('../images/scholarbase-sprite.png');
+	background-position:-9px -197px;
+	}
+
 .ui-widget-content {
     color: inherit;
 }

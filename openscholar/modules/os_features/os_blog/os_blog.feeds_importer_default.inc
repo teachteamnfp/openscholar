@@ -120,6 +120,11 @@ function os_blog_feeds_importer_default() {
             'target' => 'description',
             'unique' => FALSE,
           ),
+          3 => array(
+            'source' => 'timestamp',
+            'target' => 'created',
+            'unique' => FALSE,
+          ),
         ),
       ),
     ),

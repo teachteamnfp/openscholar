@@ -1924,3 +1924,49 @@ function _convert_json_endpoint_to_themed_url($url) {
   }
   return $url;
 }
+
+/**
+ * Implements hook_apachesolr_index_document_build_node().
+ * Add last name for search indexing
+ */
+function os_profiles_apachesolr_index_document_build_node(ApacheSolrDocument $document, $entity, $env_id) {
+  if ($entity->type == 'person') {
+    $last_name = field_get_items('node', $entity, 'field_last_name');
+    $first_name = field_get_items('node', $entity, 'field_first_name');
+    if (!empty($last_name)) {
+      $document->addField('ss_field_last_name', $last_name[0]['value']);
+      $document->addField('ss_field_first_name', $first_name[0]['value']);
+    }
+  }
+}
+
+/**
+ * Implements hook_apachesolr_query_prepare().
+ * Sort by last name for faceted search
+ */
+function os_profiles_apachesolr_query_prepare($query) {
+  // Add Event start Date sort to the search
+  if (arg(1) == 'person') {
+    // Add the new field as a sort option
+    $query->setAvailableSort('ss_field_last_name', array(
+      'title' => t('Last Name'),
+      'default' => 'asc',
+    ));
+    $query->setAvailableSort('ss_field_first_name', array(
+      'title' => t('First Name'),
+      'default' => 'asc',
+    ));
+
+    // Sort on the new field
+    $query->setSolrSort('ss_field_last_name', 'asc');
+    $query->setSolrSort('ss_field_first_name', 'asc');
+  }
+}
+
+/**
+ * Implements hook_apachesolr_query_alter().
+ * Sort by last name for faceted search
+ */
+function os_profiles_apachesolr_query_alter($query) {
+  $query->addParam('sort', 'ss_field_last_name asc, ss_field_first_name asc');
+}
