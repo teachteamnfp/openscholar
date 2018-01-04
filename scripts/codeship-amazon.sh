@@ -28,7 +28,7 @@ fi
 
 # Set up global configuration and install tools needed to build
 composer global require drush/drush
-mkdir ~/.drush
+mkdir -p ~/.drush
 printf "disable_functions =\nmemory_limit = 256M\ndate.timezone = \"America/New_York\"" > ~/.drush/php.ini
 drush --version 2> /dev/null || exit 1
 npm install -g bower
