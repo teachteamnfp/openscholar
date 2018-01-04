@@ -27,6 +27,7 @@ composer global require drush/drush
 echo -e "Drush Downloaded via composor\n"
 mkdir ~/.drush
 printf "disable_functions =\nmemory_limit = 256M\ndate.timezone = \"America/New_York\"" > ~/.drush/php.ini
+export PATH="$HOME/.composer/vendor/bin:$PATH"
 echo -e "Drush Configuration Set\n"
 drush --version || exit 1
 npm install -g bower
