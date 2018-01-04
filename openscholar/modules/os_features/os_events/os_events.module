@@ -169,7 +169,6 @@ function os_events_gcal_create_calendar() {
 
   // The vsite group ID is stored in the state parameter
   $vsite = vsite_get_vsite($_GET["state"]);
-  watchdog("Calendar Vsite", print_r($vsite->group->title, TRUE));
   // Set the vsite space, since we've moved to the top-level docroot
   spaces_set_space($vsite);
   $vsite->activate_user_roles();
@@ -193,7 +192,6 @@ function os_events_gcal_create_calendar() {
   foreach ($all_events->getItems() as $all_event) {
     $event_delete = true;
     foreach ($view->result as $e) {
-      watchdog('Calendar.remove.event_id', $e->_field_data['nid']['entity']->nid."::".$all_event->getId());
       if ($e->_field_data['nid']['entity']->nid == $all_event->getId()) {
         $event_delete = false;;
         break;
@@ -225,12 +223,10 @@ function os_events_gcal_create_calendar() {
       $event->setStart($calendarDateTime1);
       $calendarDateTime2->setDateTime($dt2->format(DateTime::RFC3339));
       $event->setEnd($calendarDateTime2);
-      watchdog('Calendar.Add.calendar_id', $calendar_id);
       $calendarInsert = $calendarService->events->insert($calendar_id, $event);
     }
     else{
      # Update events to the Google calendar
-      watchdog('Calendar.Update.calendar_id', $calendar_id);
       $event = $calendarService->events->get($calendar_id, $e->_field_data['nid']['entity']->nid);
 
       $event->setDescription($e->_field_data['nid']['entity']->body[LANGUAGE_NONE][0]['value']);
