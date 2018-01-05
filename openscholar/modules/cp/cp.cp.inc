@@ -26,7 +26,7 @@ function cp_cp_settings() {
       'group' => array(
         '#title' => t('URL Redirects'),
         '#id' => 'redirects',
-        '#help_link' => l(t('Learn more about redirects'), 'http://docs.openscholar.harvard.edu/global-site-settings#url-redirects', array('attributes' => array('target' => '_blank')))
+        '#help_link' => l(t('Learn more about redirects'), variable_get('help_redirect_url'), array('attributes' => array('target' => '_blank')))
       ),
       'form' => array(
         '#title' => t('Manage redirects'),
@@ -41,7 +41,7 @@ function cp_cp_settings() {
       'group' => array(
         '#title' => t('Max Redirects'),
         '#id' => 'max-redirects',
-        '#help_link' => l(t('Learn more about redirects'), 'http://docs.openscholar.harvard.edu/global-site-settings#url-redirects', array('attributes' => array('target' => '_blank')))
+        '#help_link' => l(t('Learn more about redirects'), variable_get('help_redirect_url'), array('attributes' => array('target' => '_blank')))
       ),
       'form' => array(
         '#type' => 'textfield',

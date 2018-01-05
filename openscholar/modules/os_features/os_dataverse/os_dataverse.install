@@ -13,7 +13,7 @@ function os_dataverse_update_7001() {
   
   while ($row = $results->fetchAssoc()) {
     $value = unserialize($row['value']);
-    $value = str_replace('http://dvn.iq.harvard.edu/', 'http://thedata.harvard.edu/', $value);
+    $value = str_replace(variable_get('old_dataverse_url'), variable_get('modified_dataverse_url'), $value);
     $value = serialize($value);
     
     if ($value != $row['value']) {

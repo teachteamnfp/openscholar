@@ -1,5 +1,7 @@
 <?php
 
+include_once ('hwpi.features.inc');
+
 /**
  * Implements hook_init
  */
@@ -33,171 +35,30 @@ function hwpi_init() {
   }
 }
 
-/**
- * Implements hook_preprocess_HOOK() for page.
- */
-function hwpi_preprocess_page(&$vars) {
-  if (_is_hwpi_theme()) {
-    $vars['page']['branding_header']['hwpi'] = _hwpi_branding_header();
-    $vars['page']['branding_footer']['hwpi'] = _hwpi_branding_footer();
-  }
-}
 
-/**
- * Returns if the active theme uses hwpi_basetheme as one of it's base theme.
- *
- * @return bool
- */
-function _is_hwpi_theme($theme_name = NULL) {
-  if (is_null($theme_name)) {
-    $theme_name = $GLOBALS['theme'];
-  }
-  $themes = list_themes();
-  if (isset($themes[$theme_name])) {
-    $t = $themes[$theme_name];
-    if (isset($t->base_themes) && isset($t->base_themes['hwpi_basetheme'])) {
-      return TRUE;
-    }
-  }
-  return FALSE;
-}
-
-/**
- * Returns a build array for the HWPI branding header page region.
- *
- * @return array
- */
-function _hwpi_branding_header() {
-  $header = array();
-  $header['left_container'] = array(
-    '#type' => 'container',
-    '#attributes' => array(
-      'class' => array(
-        'branding-left',
-      ),
-    ),
-    'img' => array(
-      '#theme' => 'link',
-      '#path' => 'http://www.harvard.edu',
-      '#text' => theme('image', array('path' => drupal_get_path('theme', 'hwpi_basetheme') . '/images/harvard-logo.png', 'width' => 235, 'height' => 32, 'alt' => 'Harvard Logo')),
-      '#options' => array(
-        'external' => TRUE,
-        'html' => TRUE,
-        'attributes' => array(),
-      ),
-    ),
-  );
-  $sites = _hwpi_get_ancestry();
-  $links = array();
-  foreach ($sites as $path => $title) {
-    $links[] = l($title, $path);
-  }
-  $header['right_container'] = array(
-    '#type' => 'container',
-    '#attributes' => array(
-      'class' => array(
-        'branding-right',
-      ),
-    ),
-    'sitecrumbs' => array(
-      '#type' => 'markup',
-      '#markup' => implode(' | ', $links),
-    ),
-  );
-
-  return $header;
-}
-
-/**
- * Returns website parents in an ordered, keyed array.
- *
- * Note: The returned array uses URLs as keys, and case-sensitive titles as
- * values. The top-most level of the array is hard-coded to be 'HARVARD.EDU',
- * site organization taxonomy terms are second-highest, and sub-site relations
- * will appear as the most-specific, lowest-level ancestor.
- *
- * @return array
- *   An array keyed by fully-qualified absolute URLs, values are link title text.
- */
-function _hwpi_get_ancestry() {
-  $sites = array();
-  if ($vsite = spaces_get_space()) {
-    // First, looks for parent vsites and adds them to hierarchy.
-    $vsite_original = $vsite;
-    $group = $vsite->group;
-    while (isset($group->field_group_parent) && $group->field_group_parent) {
-      $items = field_get_items('node', $group, 'field_group_parent');
-      $vsite = vsite_get_vsite($items[0]['target_id']);
-      if(!is_object($vsite) || !isset($vsite->group)) {
-        break;
-      }
-      $group = $vsite->group;
-      $sites[$vsite->get_absolute_url()] = $group->title;
-    }
-
-    // Then, looks for site organization terms and adds them to hierarchy.
-    $items = field_get_items('node', $vsite_original->group, 'field_organization');
-    if (is_array($items) && !empty($items)) {
-      $tid = $items[0]['tid'];
-      $items = field_get_items('taxonomy_term', taxonomy_term_load($tid), 'field_site_url');
-      if (isset($items[0])) {
-        $site_url = $items[0];
-        while ($site_url) {
-          $sites[$site_url['url']] = $site_url['title'];
-          $parents = taxonomy_get_parents($tid);
-          if (empty($parents)) {
-            break;
-          }
-          $tid = array_shift(array_keys($parents));
-          $items = field_get_items('taxonomy_term', taxonomy_term_load($tid), 'field_site_url');
-          if (isset($items[0])) {
-            $site_url = $items[0];
-          }
-          else {
-            $site_url = FALSE;
-          }
-        }
-      }
-    }
-  }
-
-  // Hard-codes "HARVARD.EDU" as the highest parent item.
-  $sites['http://www.harvard.edu'] = 'HARVARD.EDU';
-  return $sites;
-}
-
-/**
- * Returns a build array for the standard branding footer region (copyright).
- *
- * @return array
- *   A build array ready to render footer info.
- */
-function _hwpi_branding_footer() {
-  $footer = array();
-  $footer['hwpi_container'] = array(
-    '#type' => 'container',
-    '#attributes' => array(
-      'class' => array(
-        'copyright',
-      ),
-    ),
-    'copyright' => array(
-      '#markup' => t('<span class="harvard-copyright">Copyright &copy; @year The President and Fellows of Harvard College</span> !privacy | !access | !copyinfring', array(
-          '!privacy' => variable_get('privacy_policy','')?'| '.l('Privacy', variable_get('privacy_policy')): '',
-          '!access' => l('Accessibility', 'http://accessibility.harvard.edu/'),
-          '!copyinfring' => l('Report Copyright Infringement', 'http://www.harvard.edu/reporting-copyright-infringements'),
-          '@year' => date('Y'),
-        )),
-    ),
-  );
-
-  return $footer;
-}
 
 /**
  * Implements hook_cp_settings().
  */
 function hwpi_cp_settings() {
+
+  $settings = array();
+  $spaces_features = variable_get('spaces_features');
+
+  // The app won't appear in CP menu if not enabled.
+  if (empty($spaces_features['os_files_private'])) {
+    return $settings;
+  }
+
+  // Checks that the current vsite has a value for the pinserver app name
+  // variable.
+  $pinserver_app_name = variable_get('pinserver_app_name', NULL);
+
+  // Private Files settings link won't appear in CP menu if Private files app is
+  // not enabled and pinserver app name is not setup.
+  if (!$pinserver_app_name) {
+    return $settings;
+  }
   // For non-user-1, only adds the responsive setting for HWPI-themed sites.
   $theme = variable_get('theme_default');
 
@@ -205,21 +66,50 @@ function hwpi_cp_settings() {
     return;
   }
 
-  $settings = array(
-    'privacy_policy' => array(
+  $settings['os_files_private_pinserver'] = array(
+    'group' => array(
+      '#id' => 'feature_os_files_private',
+      '#title' => t('Private Files'),
+      '#weight' => 3,
+      '#menu_parent' => 'app_settings',
+      '#help_link' => l(t('Learn more about private files'), 'http://docs.openscholar.harvard.edu/private-files#setting-options', array('attributes' => array('target' => '_blank'))),
+    ),
+    'form' => array(
+      '#title' => t('Extend access to the Harvard Community'),
+      '#description' => t('This will enable anyone with a valid Harvard ID to log in using the Harvard Pinserver to access your private files. You must have a custom domain and pin application to choose this setting.'),
+      '#type' => 'checkbox',
+      '#default_value' => variable_get('os_files_private_pinserver', 0),
+      '#weight' => -1,
+      '#prefix' => '<label class="margin-bottom settings-form-heading">Private files are only accessible to your site members.</label>',
+      '#disabled' => !(user_access('administer pinserver') && variable_get('vsite_domain_name', FALSE)),
+      '#access' => module_exists('spaces') ? spaces_access_admin() : user_access('administer site configuration'),
+    ),
+    'rest_after_submit' => 'os_pinserver_auth_vsite_private_file_settings_submit',
+  );
+
+  // Allows administrators only to edit pinserver app name in spaces_overrides if they have a custom domain.
+  $pinserver_app_name_access = FALSE;
+  if (user_access('administer pinserver') && variable_get('vsite_domain_name', FALSE)) {
+    $pinserver_app_name_access = module_exists('spaces') ? spaces_access_admin() : user_access('administer site configuration');
+  }
+    $settings['pinserver_app_name'] = array(
       'group' => array(
-        '#title' => t('Privacy Policy'),
-        '#id' => 'privacy-policy',
-        '#help_link' => l(t('Learn more about creating a privacy policy for your site'), 'http://docs.openscholar.harvard.edu/global-site-settings#privacy-policy', array('attributes' => array('target' => '_blank'))),
+        '#id' => 'feature_os_files_private',
+        '#title' => t('Private Files'),
+        '#weight' => 3,
+        '#menu_parent' => 'app_settings',
+        '#help_link' => l(t('Learn more about private files'), 'http://docs.openscholar.harvard.edu/private-files#setting-options', array('attributes' => array('target' => '_blank'))),
       ),
       'form' => array(
+        '#title' => t('Harvard PIN server application name'),
+        '#description' => t('Enter the application name given to you by Harvard Directory Services.'),
         '#type' => 'textfield',
-        '#default_value' => variable_get('privacy_policy', ''),
-        '#title' => t('Privacy Policy URL'),
-        '#description' => t('Enter the URL to the privacy policy you wish to use for your site. Can be a link to a post on your own site.'),
+        '#default_value' => variable_get('pinserver_app_name', ''),
+        '#weight' => -1,
+        '#access' => $pinserver_app_name_access,
       ),
-    ),
-  );
+      'rest_after_submit' => 'os_pinserver_auth_vsite_private_file_settings_submit',
+    );
 
   return $settings;
 }
@@ -333,13 +223,13 @@ function hwpi_vsite_register_notify_author_body_text_alter(&$body_text) {
     . "\n"
     . "Here are some handy links for you:\n"
     . "\n"
-    . " * Logging in to your site: http://docs.openscholar.harvard.edu/logging-your-site\n"
-    . " * Sign up for training: http://hwp.harvard.edu/calendar/upcoming \n"
-    . " * OpenScholar documentation: http://docs.openscholar.harvard.edu \n"
-    . " * Need help with your project? http://hwp.harvard.edu \n"
+    . " * Logging in to your site: " . variable_get('help_site_login_url') . "\n"
+    . " * Sign up for training: " . variable_get('upcoming_events') . "\n"
+    . " * OpenScholar documentation: " . variable_get('doc_base_url') . "\n"
+    . " * Need help with your project?" . variable_get('university_url') . "\n"
     . "\n"
     . "Sincerely,\n"
-    . "Harvard Web Publishing\n";
+    . variable_get('university_url'). "\n";
 }
 
 /**
@@ -360,3 +250,127 @@ function hwpi_form_user_login_alter(&$form, $form_state) {
     )
   );
 }
+
+/**
+ * Implements hook_features_revert().
+ */
+function hwpi_features_revert($module) {
+
+  $vars = strongarm_vars_load(TRUE, TRUE);
+  $count_vars;
+  foreach ($vars as $name => $default) {
+    if (!empty($vars[$name]->in_code_only)) {
+      variable_set($name, $default->value);
+      $count_vars ++;
+    }
+  }
+  return $count_vars;
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function hwpi_change_site_owner_form_alter($form, $form_state) {
+    $description = "";
+  if (module_exists('pinserver') && variable_get('pinserver_pin_url', FALSE)) {
+    $description .= t('Only users who have linked their OpenScholar accounts to HarvardKey are listed.') . ' ' . l('Learn more about linking accounts', 'http://docs.openscholar.harvard.edu/logging-your-site#linking-your-harvardkey-to-your-openscholar-account', array('attributes' => array('target' => '_blank', 'rel' => 'noopener'))) . '.';
+  }
+
+  $form['new_site_owner'] = array(
+    '#type' => 'select',
+    '#title' => t('Username'),
+    '#required' => TRUE,
+    '#description' => $description,
+    '#options' => $options
+  );
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function hwpi_edit_membership_form_alter($form, $form_state, $user_load) {
+  $space = spaces_get_space();
+  $group_user = $user_load['build_info']['args'][0];
+
+  // Show the option to change site owner only for the current owner or a support team member with an associated HUID if the pinserver module is enabled
+  global $user;
+  if ($user->uid == 1 || !module_exists('pinserver') || (module_exists('pinserver') && variable_get('pinserver_pin_url', FALSE) && pinserver_user_has_associated_pin($group_user->uid))) {
+
+    $form['edit_membership']['group_manager'] = array(
+      '#type' => 'checkbox',
+      // Theme the checkbox label to look like the radio options.
+      '#title' => _cp_user_role_option(t('Set as site owner'), t('Make <em>@name</em> the site owner.', array('@name' => $name))),
+      '#default_value' => $space->group->uid == $group_user->uid,
+      '#access' => in_array('support team', $user->roles) || ($space->group->uid == $user->uid) || ($user->uid == 1),
+    );
+  }
+  else {
+    $form['edit_membership']['group_manager'] = array(
+      '#type' => 'markup',
+      '#markup' => '<p>' . t('@name\'s OpenScholar account is not linked to HarvardKey, so this user cannot be made site owner.', array('@name' => $name)) . ' ' . l('Learn more about linking accounts', variable_get('help_key_link'), array('attributes' => array('target' => '_blank', 'rel' => 'noopener'))) . '.</p>',
+
+    );
+  }
+}
+
+/**
+ - * Implements hook_mail_alter().
+ - *
+ - * Alters system emails to users based on certain actions.
+ - */
+function hwpi_mail_alter(&$message){
+    global $base_url;
+
+   if ($vsite = spaces_get_space()) {
+     $site_owner = user_load($vsite->group->uid);
+     if ($site_owner->field_first_name['und'][0]['value']) {
+       $site_owner_first_name = $site_owner->field_first_name['und'][0]['value'];
+     }
+     if ($site_owner->field_last_name['und'][0]['value']) {
+       $site_owner_last_name = $site_owner->field_last_name['und'][0]['value'];
+     }
+     if (!$site_owner->field_first_name['und'][0]['value'] && !$site_owner->field_last_name['und'][0]['value']) {
+       $site_owner_first_name = $site_owner->name;
+     }
+
+     $site_owner_full_name = trim(join(" ", array($site_owner_first_name, $site_owner_last_name)));
+
+     switch ($message['id']) {
+       // Account created during "Create this OS Site on behalf of another user".
+       case 'user_register_no_approval_required' :
+         // Gets the user id we just created.
+         $uid = $message['params']['account']->uid;
+         // Loads the user.
+         $user = user_load($uid);
+         // Grab their first name, if it doesnt exist, use their user name.
+         if (!empty($user->field_first_name['und'][0]['value'])) {
+           $first_name = $user->field_first_name['und'][0]['value'];
+         } else {
+           $first_name = $user->name;
+         }
+
+         if (!empty($user->field_last_name['und'][0]['value'])) {
+           $last_name = $user->field_last_name['und'][0]['value'];
+         }
+
+         $full_name = trim(join(" ", array($first_name, $last_name)));
+
+         $replacements = array(
+           '!site' => $base_url . "/" . $vsite->group->purl,
+           '!site_owner' => $site_owner_full_name,
+           '!login_url' => user_pass_reset_url($user),
+           '!mailto' => $user->mail,
+           '!firstname' => $first_name,
+           '!lastname' => $last_name,
+           '!fullname' => $full_name,
+           '!username' => $user->name,
+           '!futurelogin' => $base_url . '/user/',
+         );
+
+         // Alter the body message to keep the parts related to training.
+          $message['body'][0] = t("Dear !fullname, \n\n!site_owner, site owner of !site, has created a user account for you so that you may access this website. Log in by clicking on the following link or by pasting it into your browser: \n\n!login_url \n\nFor your security, this link can be used only once.  \n\nYour OpenScholar username is: !username \n\nAfter setting your OpenScholar user password with the included link, you can then <a href=" . variable_get('help_site_login_url') . " target='_blank'>associate this user account with your Harvard Key</a>. \n\nOnce paired, you will be able to log in at !site in the future. Don't forget to bookmark the site and save this email for future reference.\n\nHere are some handy links for you:\n\n* <a href=" . variable_get('help_site_login_url') . " target='_blank'>Logging in to your site</a>\n\n* <a href=" . variable_get('upcoming_events') . "target='_blank'>Sign up for training</a>\n\n* <a href=" . variable_get('doc_base_url') . " target='_blank'>OpenScholar documentation</a>\n\n* <a href=" . variable_get('contact_url') . " target='_blank'>Need help with your project?</a>\n\n-The OpenScholar Team", $replacements);
+
+         break;
+      }
+    }
+  }

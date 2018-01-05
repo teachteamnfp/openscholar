@@ -28,7 +28,7 @@ class os_boxes_dataverse_list extends os_boxes_default {
   public function options_form(&$form_state){
     $form = parent::options_form($form_state);
 
-    $base_url = variable_get("dataverse_base_url", "https://dataverse.harvard.edu") . "/dataverse/";
+    $base_url = variable_get("dataverse_base_url", variable_get('dataverse_default_url')) . "/dataverse/";
 
     $form['user_alias'] = array(
       '#type' => 'textfield',
@@ -38,8 +38,8 @@ class os_boxes_dataverse_list extends os_boxes_default {
       '#default_value' => $this->options['user_alias'],
       '#description' => t('Need help finding your Dataset Persistent Identifier? Learn how to here: !link. ' .
         'Note: this widget should be placed in the main content area, not in sidebar.',
-        array('!link' => l('http://docs.openscholar.harvard.edu/dataverse-list-widget',
-          'http://docs.openscholar.harvard.edu/dataverse-list-widget',
+        array('!link' => l(variable_get('help_dataverse_list_url'),
+                                    variable_get('help_dataverse_list_url'),
           array('attributes' => array('target' => '_blank'))))),
     );
 
@@ -61,7 +61,7 @@ class os_boxes_dataverse_list extends os_boxes_default {
     }
 
     $embed_height = preg_replace('/\D/', '', $this->options['embed_height']);
-    $base_url = variable_get("dataverse_base_url", "https://dataverse.harvard.edu") . "/resources/js/widgets.js?alias=" . $this->options['user_alias'] . "&amp;dvUrl=" . variable_get("dataverse_base_url", "https://dataverse.harvard.edu") . "&amp;widget=iframe&amp;heightPx=" . $embed_height;
+    $base_url = variable_get("dataverse_base_url", "dataverse_default_url") . "/resources/js/widgets.js?alias=" . $this->options['user_alias'] . "&amp;dvUrl=" . variable_get("dataverse_base_url", "dataverse_default_url") . "&amp;widget=iframe&amp;heightPx=" . $embed_height;
 
     $block = parent::render();
     $block['content'] = "<script src=\"$base_url\"></script>";

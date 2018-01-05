@@ -7,8 +7,6 @@
 
 class os_boxes_dataverse_dataset extends os_boxes_default {
 
-  private $dataverse_base_url_default = "https://dataverse.harvard.edu/";
-
   public $embed_as = array(
     'iframe',
   );
@@ -31,15 +29,19 @@ class os_boxes_dataverse_dataset extends os_boxes_default {
   public function options_form(&$form_state){
     $form = parent::options_form($form_state);
 
-    $base_url = variable_get("dataverse_base_url", $this->dataverse_base_url_default);
+    $base_url = variable_get("dataverse_base_url", variable_get("dataverse_default_url"));
+
+    if(!$base_url) {
+      return;
+    }
 
     $form['persistent_id'] = array(
       '#type' => 'textfield',
       '#title' => t('Dataset Persistent Identifier'),
       '#description' => t('Need help finding your Dataset Persistent Identifier? Learn how to here: !link. ' .
                           'Note: this widget should be placed in the main content area, not in sidebar.',
-              array('!link' => l('http://docs.openscholar.harvard.edu/dataverse-dataset-widget',
-                                'http://docs.openscholar.harvard.edu/dataverse-dataset-widget',
+              array('!link' => l(variable_get('help_dataverse_widget_url'),
+                                    variable_get('help_dataverse_widget_url'),
                                 array('attributes' => array('target' => '_blank'))))),
       '#required' => TRUE,
       '#field_prefix' => $base_url,
@@ -72,9 +74,9 @@ class os_boxes_dataverse_dataset extends os_boxes_default {
 
     $embed_height = preg_replace('/\D/', '', $this->options['embed_height']);
     $persistent_id = preg_replace('/^\s*(doi|hdl)/', '', $this->options['persistent_id']);
-    $base_url = variable_get("dataverse_base_url", $this->dataverse_base_url_default) . "/resources/js/widgets.js?" . 
+    $base_url = variable_get("dataverse_base_url", "dataverse_default_url") . "/resources/js/widgets.js?" .
                 "persistentId=" . strtolower($this->options['doi_or_hdl']) . ":" . trim($persistent_id) . "&amp;" .
-                "dvUrl=" .  variable_get("dataverse_base_url", $this->dataverse_base_url_default) . "&amp;" .
+                "dvUrl=" .  variable_get("dataverse_base_url", "dataverse_default_url") . "&amp;" .
                 "widget=iframe&amp;" . 
                 "heightPx=" . $embed_height;
 

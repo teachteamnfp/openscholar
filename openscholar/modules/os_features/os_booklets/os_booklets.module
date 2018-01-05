@@ -306,7 +306,7 @@ function os_booklets_cp_settings() {
       '#title' => t('Booklets'),
       '#weight' => 0,
       '#menu_parent' => 'app_settings',
-      '#help_link' => l(t('Learn more about Booklets'), 'http://docs.openscholar.harvard.edu/booklet#booklet-app-settings', array('attributes' => array('target' => '_blank'))),
+      '#help_link' => l(t('Learn more about Booklets'), variable_get('help_booklet_url'), array('attributes' => array('target' => '_blank'))),
     ),
     'form' => array(
       '#type' => 'radios',
