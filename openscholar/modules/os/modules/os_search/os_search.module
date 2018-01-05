@@ -52,35 +52,156 @@ function os_search_search_api_item_type_info_alter(array &$infos) {
  */
 function os_search_default_search_api_index() {
   $items = array();
-  $items['site_search'] = entity_import('search_api_index', '{
-    "name" : "Site search",
-    "machine_name" : "site_search",
-    "description" : "Index for nodes used by the OpenScholar sites.",
-    "server" : "solr_server",
-    "item_type" : "node",
-    "options" : {
-      "index_directly" : 1,
-      "cron_limit" : "50",
-      "fields" : {
-        "type" : { "type" : "string" },
-        "title": { "type" : "string" }
-      },
-      "processors" : {
-        "search_api_tokenizer" : {
-          "status" : 1,
-          "weight" : "20",
-          "settings" : {
-            "fields" : { "title" : true },
-            "spaces" : "[^\\\\p{L}\\\\p{N}]",
-            "ignorable" : ""
+
+  $items['open_scholar_site_search'] = entity_import('search_api_index', '{
+      "name": "Open Scholar Site search",
+      "machine_name": "open_scholar_site_search",
+      "description": null,
+      "server": "solr_server",
+      "item_type": "node",
+      "options": {
+          "datasource": {
+              "bundles": [
+                  "blog"
+              ]
+          },
+          "index_directly": 0,
+          "cron_limit": "50",
+          "fields": {
+              "title": {"type": "string"},
+              "entity_id": {"type": "int"},
+              "entity_type": {"type": "string"},
+              "bundle": {"type": "string"},
+              "bundle_name": {"type": "string"}
+              "created": {"type" => "date"},
+              ),
+          },
+          "data_alter_callbacks": {
+              "search_api_alter_bundle_filter": {
+                  "status": 1,
+                  "weight": "-10",
+                  "settings": {
+                      "default": "1",
+                      "bundles": []
+                  }
+              },
+              "search_api_metatag_alter_callback": {
+                  "status": 0,
+                  "weight": "0",
+                  "settings": []
+              },
+              "search_api_alter_add_url": {
+                  "status": 0,
+                  "weight": "0",
+                  "settings": []
+              },
+              "search_api_alter_add_aggregation": {
+                  "status": 0,
+                  "weight": "0",
+                  "settings": []
+              },
+              "search_api_alter_add_viewed_entity": {
+                  "status": 0,
+                  "weight": "0",
+                  "settings": {
+                      "mode": "teaser"
+                  }
+              },
+              "search_api_alter_add_hierarchy": {
+                  "status": 0,
+                  "weight": "0",
+                  "settings": {
+                      "fields": []
+                  }
+              },
+              "search_api_alter_node_access": {
+                  "status": 0,
+                  "weight": "0",
+                  "settings": []
+              },
+              "search_api_alter_node_status": {
+                  "status": 1,
+                  "weight": "0",
+                  "settings": []
+              },
+              "os_search_state_alter": {
+                "status": 1,
+                "weight": "0",
+                "settings": []
+              }
+          },
+          "processors": {
+              "search_api_case_ignore": {
+                  "status": 0,
+                  "weight": "0",
+                  "settings": {
+                      "fields": []
+                  }
+              },
+              "search_api_html_filter": {
+                  "status": 0,
+                  "weight": "10",
+                  "settings": {
+                      "fields": [],
+                      "title": 0,
+                      "alt": 1,
+                      "tags": "h1 = 5\r\nh2 = 3\r\nh3 = 2\r\nstrong = 2\r\nb = 2\r\nem = 1.5\r\nu = 1.5"
+                  }
+              },
+              "search_api_transliteration": {
+                  "status": 0,
+                  "weight": "15",
+                  "settings": {
+                      "fields": []
+                  }
+              },
+              "search_api_tokenizer": {
+                  "status": 1,
+                  "weight": "20",
+                  "settings": {
+                      "fields": [],
+                      "spaces": "[^[:alnum:]]",
+                      "ignorable": "[\']"
+                  }
+              },
+              "search_api_stopwords": {
+                  "status": 1,
+                  "weight": "30",
+                  "settings": {
+                      "fields": [],
+                      "file": "",
+                      "stopwords": "but\r\ndid\r\nthe this that those\r\netc"
+                  }
+              },
+              "search_api_porter_stemmer": {
+                  "status": 1,
+                  "weight": "35",
+                  "settings": {
+                      "fields": [],
+                      "exceptions": "texan=texa"
+                  }
+              },
+              "search_api_highlighting": {
+                  "status": 0,
+                  "weight": "40",
+                  "settings": {
+                      "prefix": "<strong>",
+                      "suffix": "</strong>",
+                      "excerpt": 1,
+                      "excerpt_length": "256",
+                      "exclude_fields": [],
+                      "highlight": "always",
+                      "highlight_partial": 0
+                  }
+              }
           }
-        }
-      }
-    },
-    "enabled" : "1",
-    "read_only" : "1",
-    "rdf_mapping" : []
-  }');
+      },
+      "enabled": "1",
+      "read_only": "0",
+      "status": "1",
+      "module": "os_search"
+  }
+  ');
   return $items;
 }
 
@@ -686,14 +807,13 @@ function os_search_search_api_alter_callback_info() {
   $callbacks['os_search_state_alter'] = array(
     'name' => t('Test'),
     'description' => t('Test.'),
-    'class' => 'OsSearchStateAlterCallback',
-    'weight' => 100,
+    'class' => 'OsSearchStateAlterCallback'
   );
   
   return $callbacks;
 }
 
-function os_search_search_api_index_items_alter(array &$items, SearchApiIndex $index) {
+/*function os_search_search_api_index_items_alter(array &$items, SearchApiIndex $index) {
 
   $fields = $index->options->fields;
 
@@ -707,7 +827,7 @@ function os_search_search_api_index_items_alter(array &$items, SearchApiIndex $i
   $path = drupal_get_path('module', 'os_search');
   file_put_contents($path . "/logs/index-1.log", json_encode($index, true));
   file_put_contents($path . "/logs/items-1.log", json_encode($items, true));
-}
+}*/
 
 /**
  * @file
@@ -721,21 +841,22 @@ class OsSearchStateAlterCallback extends SearchApiAbstractAlterCallback {
     $path = drupal_get_path('module', 'os_search');
     file_put_contents($path . "/logs/alterItems.log", json_encode($items, true));
 
-    foreach ($items as $id => &$item) {
+    foreach ($items as $nid => &$item) {
       $item->bundle = $item->type;
       $item->bundle_name = self::entity_bundle_label("node", $item->type);
-      $item->entity_id = $id;
+      $item->entity_id = $nid;
       $item->entity_type = "node";
     }
   }
 
   public function propertyInfo() {
     return array(
-      'title' => ['type' => 'string', 'label' => 'Title', 'description' => 'Test'],
-      'entity_type' => ['type' => 'string', 'label' => 'Title', 'description' => 'Test'],
-      'entity_id' => ['type' => 'int', 'label' => 'Title', 'description' => 'Test'],
-      'bundle_name' => ['type' => 'string', 'label' => 'Title', 'description' => 'Test'],
-      'language' => ['type' => 'string', 'label' => 'Title', 'description' => 'Test'],
+      'title' => array('type' => 'string', 'label' => 'Title', 'description' => 'Test'),
+      'entity_type' => array('type' => 'string', 'label' => 'entity_type', 'description' => 'entity_type'),
+      'entity_id' => array('type' => 'int', 'label' => 'entity_id', 'description' => 'entity_id'),
+      'bundle_name' => array('type' => 'string', 'label' => 'bundle_name', 'description' => 'bundle_name'),
+      'bundle' => array('type' => 'string', 'label' => 'Bundle', 'description' => 'bundle'),
+      'language' => array('type' => 'string', 'label' => 'Title', 'description' => 'Test'),
     );
   }
 
