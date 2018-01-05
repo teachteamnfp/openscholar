@@ -1,6 +1,7 @@
 (function ($) {
   Drupal.behaviors.osBoxesRss = {
     attach: function (ctx) {
+      $('#rss_feed').hide();
       $('.feed-icon').click(function (e) {
         var rss = document.createElement("input");
         rss.setAttribute("value", $('#rss_feed').html());
