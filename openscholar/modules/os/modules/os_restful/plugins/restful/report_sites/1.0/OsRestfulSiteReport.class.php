@@ -405,7 +405,7 @@ class OsRestfulSiteReport extends \OsRestfulReports {
 
       // optional privacy column
       if (isset($new_row['site_privacy_setting'])) {
-        $privacy_values_settings = variable_get('privacy_values');
+        $privacy_values_settings = vsite_access_privacy_available_values();
         $new_row['site_privacy_setting'] = $privacy_values_settings[$row->site_privacy_setting];
       }
 
