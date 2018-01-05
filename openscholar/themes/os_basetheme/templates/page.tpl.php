@@ -171,7 +171,7 @@
 		print render($login_link);
 	}
  ?>
-  	<div id="powered-by"><a href="https://theopenscholar.com">OpenScholar</a></div>
+  	<div id="powered-by"><a href="http://theopenscholar.com">OpenScholar</a></div>
     </div>
   </footer>
   </div>
