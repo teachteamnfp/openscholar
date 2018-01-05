@@ -226,13 +226,17 @@ function os_restful_entity_delete($entity, $type) {
     $extra = module_invoke_all('os_restful_entity_delete_data', $type, $entity);
     drupal_alter('os_restful_entity_delete_data', $extra);
 
-    db_insert('entities_deleted')
-      ->fields(array(
-        'entity_id' => $id,
-        'entity_type' => $type,
-        'deleted' => REQUEST_TIME,
-        'extra' => serialize($extra)
-      ))
-      ->execute();
+    try {
+      db_insert('entities_deleted')
+        ->fields(array(
+          'entity_id' => $id,
+          'entity_type' => $type,
+          'deleted' => REQUEST_TIME,
+          'extra' => serialize($extra)
+        ))
+        ->execute();
+    } catch(Exception $e) {
+      watchdog('os_restful', $e->getMessage(), array(), WATCHDOG_ERROR, $link = NULL);
+    }
   }
 }
