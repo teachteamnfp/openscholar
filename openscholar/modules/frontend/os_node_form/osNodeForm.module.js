@@ -7,13 +7,8 @@
    */
   m.service('nodeFormService', ['$http', '$q', function ($http, $q) {
     
-    var promises = [];
     var baseUrl = Drupal.settings.paths.api;
     this.getForm = function(bundle, nid) {
-      var deferred = $q.defer();
-      if (promises.length > 0 && !nid) {
-        return promises[0];
-      }
       var queryArgs = {};
       if (angular.isDefined(Drupal.settings.spaces)) {
         if (Drupal.settings.spaces.id) {
@@ -27,31 +22,40 @@
       var config = {
         params: queryArgs
       };
+      // Rest call to get a node form.
+      var deferred = $q.defer();
       $http.get(baseUrl + '/' + bundle +'/form', config).then(function (response) {
         deferred.resolve(response.data);
       });
-      promises.push(deferred.promise);
 
       return deferred.promise;
       
     }
 
-    this.nodeSave = function (bundle, node) {
+    this.save = function (bundle, node, nid) {
       // Assign vsite.
       if (Drupal.settings.spaces) {
         node.og_group_ref = Drupal.settings.spaces.id;
       }
       var deferred = $q.defer();
-      $http.post(baseUrl + '/' + bundle, node).then(function (response) {
-        deferred.resolve(response);
-      }, function(error) {
-        deferred.reject(error);
-      });
-
+      // Node edit.
+      if (nid) {
+        $http.patch(baseUrl + '/' + bundle + '/' + nid, node).then(function (res) {
+          deferred.resolve(res);
+        }, function(err) {
+          deferred.reject(err);
+        });
+      } else {
+        $http.post(baseUrl + '/' + bundle, node).then(function (res) {
+          deferred.resolve(res);
+        }, function(err) {
+          deferred.reject(err);
+        });
+      }
       return deferred.promise;
     }
 
-    this.nodeDelete = function(bundle, nid) {
+    this.delete = function(bundle, nid) {
       return $http.delete(baseUrl + '/' + bundle + '/' + nid)
         .success(function (resp) {
           return resp.data;
@@ -140,13 +144,13 @@
     $s.showSaveButton = true;
     $s.loading = true;
 
-    nodeFormService.getForm(nodeType, nid).then(function(response) {
+    nodeFormService.getForm(nodeType, nid).then(function(res) {
       if (nid) {
         // @Todo: node delete access checks needs to be done here.
         $s.deleteAccess = true;
         $s.nid = nid;
       }
-      var formElementsRaw = response.data;
+      var formElementsRaw = res.data;
       $s.loading = false;
       for (var formElem in formElementsRaw) {
         $s.formData[formElem] = formElementsRaw[formElem]['#default_value'] || null;
@@ -166,18 +170,22 @@
 
     $s.submitForm = function ($event) {
       bss.SetState('node_form', true);
-      nodeFormService.nodeSave(nodeType, $s.formData).then(function (response) {
-        $rootScope.$broadcast("success", response.data);
+      nodeFormService.save(nodeType, $s.formData, nid).then(function (res) {
+        $rootScope.$broadcast("success", res.data);
         bss.SetState('node_form', false);
+        if (res.status == 200 || res.status == 201) {
+          window.location.href = Drupal.settings.basePath + res.data.data[0].path;
+        }
         $s.errors = [];
-      }, function (error) {
+      }, function (err) {
         $s.errors = [];
         $s.status = [];
-        $s.errors.push(error.data.title);
-        $rootScope.$broadcast("error", error.data);
+        $s.errors.push(err.data.title);
+        $rootScope.$broadcast("error", err.data);
         bss.SetState('node_form', false);
       });
     }
+
     // Show Undo div to user for 8 seconds on delete.
     $s.deleteUndoAction = true;
     $s.deleteUndoMessage = true;
@@ -206,7 +214,7 @@
     $s.deleteNodeOnClose = function(nid) {
       if (nid) {
         node_id = nid; //Assign nid to global scope for future use.
-        nodeFormService.nodeDelete(nodeType, nid).then(function (res) {
+        nodeFormService.delete(nodeType, nid).then(function (res) {
           if (res.status == 200) {
             window.location.href = '/' + Drupal.settings.pathPrefix;
           }
