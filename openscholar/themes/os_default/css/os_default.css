@@ -63,9 +63,8 @@ h2 {
 body.page-site-register,
 body.logged-in.no-sidebars.page-user,
 body.not-logged-in.page-user {
-    background: #fff;
-    /*background-image:none #f6f5ed !important;*/
-    
+    background: #efefef;
+  
     background-image: none #fff !important;
     font-family: 'Helvetica neue', sans-serif;
     line-height: 1em;
@@ -77,8 +76,7 @@ body.not-logged-in.page-user {
 .not-logged-in.page-user #columns {
     width: 573px;
     margin: 100px auto 7px auto;
-    border: 1px solid #e1e1e1;
-    border-bottom: 4px solid #e1e1e1;
+   
     background: #FFF;
     -moz-border-radius: 0;
     -webkit-border-radius: 0;
@@ -87,6 +85,11 @@ body.not-logged-in.page-user {
     -webkit-box-shadow: none;
     box-shadow: none;
     min-height: 100px;
+}
+
+.not-logged-in.page-user #columns #tasks {
+    margin-bottom: .5em;
+    margin-top: 2em;
 }
 .page-site-register #columns,
 .logged-in.no-sidebars.page-user #columns {
@@ -103,10 +106,12 @@ body.not-logged-in.page-user.no-sidebars #content-column {
 .page-site-register #columns h1,
 .logged-in.no-sidebars.page-user #columns h1,
 .not-logged-in.page-user #columns h1 {
-    font-size: 1.7em;
+   font-size: 1.9em;
     margin: 0 !important;
     font-family: 'Helvetica neue', sans-serif;
     color: #555;
+    font-weight: normal;
+    text-align: center;
 }
 .denied #content a {
     font-weight: bold;
@@ -148,17 +153,16 @@ margin-bottom:20px;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
-    background: #3b76b1;
+    background: #215990;
 }
 .denied #content,
 .maintenance-page #main-content,
 .page-site-register #content,
 .logged-in.no-sidebars.page-user #content,
 .not-logged-in.page-user #content {
-    background: #f7f7f7;
-    padding: 1px 12px;
+  
     margin-bottom: 15px;
-    border: 1px solid #e1e1e1;
+   
     font-size: 15px;
     color: #555;
     line-height: 25px;
@@ -307,7 +311,7 @@ fieldset.pin-fieldset legend a,
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
-    background: #3b76b1;
+    background: #215990;
 }
 .pin-button-inline {
     display: inline-block;
@@ -354,7 +358,7 @@ fieldset.pin-fieldset legend,
     width: 300px;
 }
 fieldset#edit-pin-fieldset {
-    background: #F7F7F7;
+    background: #fff;
 }
 .page-user #user-login {
     position: relative;
@@ -362,12 +366,12 @@ fieldset#edit-pin-fieldset {
 #user-login .user-login-message-text {
     position: absolute;
     width: 160px;
-    /*top: 105px;*/
+  
     top: 10px;
     right: 0px;
-    background-color: #FFF;
+    background-color: #efefef;
     padding: 8px;
-    border: 1px solid #e1e1e1;
+
     z-index: 2;
 }
 
