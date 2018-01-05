@@ -18,7 +18,8 @@ function os_style_override_init() {
     drupal_add_css($path_to_css, array(
       'group' => CSS_THEME,
       'every_page' => TRUE,
-      'weight' => 9999
+      'weight' => 9999,
+      'preprocess' => FALSE
     ));
   }
 }
