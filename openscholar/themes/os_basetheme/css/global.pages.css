@@ -1048,24 +1048,16 @@ div.toggle {
     color: #215990;
 }
 
+.ui-state-default .ui-icon-triangle-1-e.ui-icon {
+	background-image: url('../images/scholarbase-sprite.png');
+	background-position: 5px -197px;
+	}
 
-h3.ui-accordion-header:before,
-h3.ui-accordion-header-active:before {
-    position: absolute;
-  transition:all .5s;
-    left:8px;
-    font-size:9px;
-}
-h3.ui-accordion-header:before {
-  
-    content:'▶';
-  
-}
-h3.ui-accordion-header-active:before {
-  
-    content:'▼';
-  
-}
+.ui-state-default .ui-icon-triangle-1-s.ui-icon {
+	background-image: url('../images/scholarbase-sprite.png');
+	background-position:-9px -197px;
+	}
+
 .ui-widget-content {
     color: inherit;
 }
