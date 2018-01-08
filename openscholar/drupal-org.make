@@ -450,7 +450,7 @@ projects[wysiwyg][subdir] = "contrib"
 projects[wysiwyg][version] = "2.x-dev"
 projects[wysiwyg][revision] = "9490393"
 projects[wysiwyg][patch][] = "http://drupal.org/files/wysiwyg-table-format.patch"
-projects[wysiwyg][patch][] = "https://github.com/openscholar/openscholar/blob/ce98a39f04e3d9b838ea5948cf95ed792b195825/patches/wysiwyg_ckeditor_angular_support.patch"
+projects[wysiwyg][patch][] = "https://raw.githubusercontent.com/openscholar/openscholar/ce98a39f04e3d9b838ea5948cf95ed792b195825/patches/wysiwyg_ckeditor_angular_support.patch"
 
 projects[wysiwyg_filter][subdir] = "contrib"
 projects[wysiwyg_filter][version] = 1.6-rc3

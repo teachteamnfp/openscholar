@@ -172,9 +172,9 @@
       bss.SetState('node_form', true);
       nodeFormService.save(nodeType, $s.formData, nid).then(function (res) {
         $rootScope.$broadcast("success", res.data);
-        bss.SetState('node_form', false);
         if (res.status == 200 || res.status == 201) {
           window.location.href = Drupal.settings.basePath + res.data.data[0].path;
+          bss.SetState('node_form', false);
         }
         $s.errors = [];
       }, function (err) {
