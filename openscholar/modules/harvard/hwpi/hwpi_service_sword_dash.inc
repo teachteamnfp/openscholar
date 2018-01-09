@@ -18,7 +18,7 @@ $plugin = array(
 class citation_distribute_service_sword_dash extends citation_distribute_service_sword {
 	public $name = 			'dash';
 	public $title = 		'DASH';
-	public $location = 	    'http://dash.harvard.edu';
+	public $location = 	'https://dash.harvard.edu';
 	public $username;
 	public $password;
 	//public $username = 	'swap@lists.iq.harvard.edu';
