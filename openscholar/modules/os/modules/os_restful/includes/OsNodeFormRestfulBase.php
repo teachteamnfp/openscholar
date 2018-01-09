@@ -78,7 +78,11 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
         $form[$key] = array_merge($form[$key], $file_upload_info);
       }
       if ($field_info['widget']['type'] == 'og_vocab_complex') {
-        $form[$key] = array_merge($form[$key], array('#bundle' => $this->getBundle()));
+        $form[$key] = array_merge($form[$key], array(
+          '#bundle' => $this->getBundle(),
+          '#access' => $this->og_vocab_access_bundle($this->getBundle(), $this->request['vsite']),
+          )
+        );
       }
     }
     // Node revision information for administrators.
@@ -190,9 +194,27 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
     unset($form['nid']);
     unset($form['#node']);
     unset($form['#space']);
+    unset($form['max_revisions']);
+    unset($form['revisions']);
     
     return $form;
   }
+
+  public function og_vocab_access_bundle($bundle, $vsite) {
+    $query = db_select('og_vocab_relation', 'ogr');
+    $query->join('og_vocab', 'ov', 'ov.vid = ogr.vid');
+    // We need to check if a vocabulary is assigned to a bundle.
+    $result = $query
+      ->fields('ogr')
+      ->condition('group_type', 'node')
+      ->condition('gid', $vsite)
+      ->condition('ov.bundle', $bundle)
+      ->execute()
+      ->fetchAllAssoc('vid');
+
+    return (count($result) > 0)  ? TRUE : FALSE;
+
+  } 
 
   public function propertyValuesPreprocess($property_name, $value, $public_field_name) {
 
