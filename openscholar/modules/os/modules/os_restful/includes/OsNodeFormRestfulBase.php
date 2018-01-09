@@ -28,6 +28,11 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
       $form['#node'] = $node;
       $node->date = format_date($node->created, 'custom', 'Y-m-d H:i:s O');
       $node->revision = !empty($node->revision_timestamp) ? TRUE : FALSE;
+      $form['node_access'] = array(
+        '#type' => 'hidden',
+        '#access' => FALSE,
+        '#default_value' => $this->checkEntityAccess('delete', $this->entityType, $node)
+      );
     }
     else {
       $node = new stdClass;
@@ -196,7 +201,7 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
     unset($form['#space']);
     unset($form['max_revisions']);
     unset($form['revisions']);
-    
+       
     return $form;
   }
 
@@ -245,60 +250,60 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
    *
    * @throws RestfulBadRequestException
    */
-  protected function setPropertyValues(EntityMetadataWrapper $wrapper, $null_missing_fields = FALSE) {
-    $request = $this->getRequest();
+//   protected function setPropertyValues(EntityMetadataWrapper $wrapper, $null_missing_fields = FALSE) {
+//     $request = $this->getRequest();
 
-    static::cleanRequest($request);
-    $save = FALSE;
-    $original_request = $request;
+//     static::cleanRequest($request);
+//     $save = FALSE;
+//     $original_request = $request;
 
-    if (empty($original_request['title'])) {
-      throw new RestfulForbiddenException("Title field is required.");
-    }
-    else {
-      // @todo : Remove debug statment.
-      //print_r($original_request);
-      $processed_unknown_property = array();
-      $processed_property = array();
+//     if (empty($original_request['title'])) {
+//       throw new RestfulForbiddenException("Title field is required.");
+//     }
+//     else {
+//       // @todo : Remove debug statment.
+//       //print_r($original_request);
+//       $processed_unknown_property = array();
+//       $processed_property = array();
 
-      foreach ($original_request as $property_name => $value) {
-        if (is_array($original_request[$property_name]['fields'])) {
-          foreach ($original_request[$property_name]['fields'] as $key => $value) {
-            $processed_unknown_property[$key] = $value;
-          }
-        }
-        if (!empty($wrapper->$property_name)) {
-          $processed_property[$property_name] = $value;
-        }
-      }
-      $processed_property = array_merge($processed_property, $processed_unknown_property);
-      // @todo : Remove debug statment.
-      // print_r($wrapper->getPropertyInfo());
-      // print_r($processed_property);
-      // print_r($processed_unknown_property);
-      foreach ($processed_property as $property_name => $value) {
-        if (!empty($wrapper->{$property_name})) {
-          $field_value = $this->propertyValuesPreprocess($property_name, $value, $property_name);
-          $wrapper->{$property_name}->set($field_value);
-        }
-      }
-      $wrapper->save();
-      $save = TRUE;
-      $entity = entity_load_single($this->entityType, $wrapper->getIdentifier());
-      foreach ($processed_unknown_property as $property_name => $value) {
-        if ($property_name == 'date' && !empty($value)) {
-          $entity->created = strtotime($value);
-        }
-        if ($property_name == 'noindex' && !empty($value)) {
-          $entity->noindex = $value;
-        }
-      }
-      entity_save($this->entityType, $entity);
-    }
+//       foreach ($original_request as $property_name => $value) {
+//         if (is_array($original_request[$property_name]['fields'])) {
+//           foreach ($original_request[$property_name]['fields'] as $key => $value) {
+//             $processed_unknown_property[$key] = $value;
+//           }
+//         }
+//         if (!empty($wrapper->$property_name)) {
+//           $processed_property[$property_name] = $value;
+//         }
+//       }
+//       $processed_property = array_merge($processed_property, $processed_unknown_property);
+//       // @todo : Remove debug statment.
+//       // print_r($wrapper->getPropertyInfo());
+//       // print_r($processed_property);
+//       // print_r($processed_unknown_property);
+//       foreach ($processed_property as $property_name => $value) {
+//         if (!empty($wrapper->{$property_name})) {
+//           $field_value = $this->propertyValuesPreprocess($property_name, $value, $property_name);
+//           $wrapper->{$property_name}->set($field_value);
+//         }
+//       }
+//       $wrapper->save();
+//       $save = TRUE;
+//       $entity = entity_load_single($this->entityType, $wrapper->getIdentifier());
+//       foreach ($processed_unknown_property as $property_name => $value) {
+//         if ($property_name == 'date' && !empty($value)) {
+//           $entity->created = strtotime($value);
+//         }
+//         if ($property_name == 'noindex' && !empty($value)) {
+//           $entity->noindex = $value;
+//         }
+//       }
+//       entity_save($this->entityType, $entity);
+//     }
     
-    if (!$save) {
-      // No request was sent.
-      throw new \RestfulBadRequestException('No values were sent with the request');
-    }
-  }
-}
+//     if (!$save) {
+//       // No request was sent.
+//       throw new \RestfulBadRequestException('No values were sent with the request');
+//     }
+//   }
+// }

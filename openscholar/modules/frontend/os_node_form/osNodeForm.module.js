@@ -145,8 +145,7 @@
     $s.loading = true;
 
     nodeFormService.getForm(nodeType, nid).then(function(res) {
-      if (nid) {
-        // @Todo: node delete access checks needs to be done here.
+      if (nid && res.data.node_access['#default_value']) {
         $s.deleteAccess = true;
         $s.nid = nid;
       }
