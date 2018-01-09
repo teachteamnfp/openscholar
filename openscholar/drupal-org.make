@@ -462,6 +462,9 @@ projects[search_api][version] = 1.22
 projects[search_api_solr][subdir] = "contrib"
 projects[search_api_solr][version] = 1.12
 
+projects[search_api_page][subdir] = "contrib"
+projects[search_api_page][version] = 1.12
+
 ; Libraries.
 libraries[jquery.bgiframe][type] = "libraries"
 libraries[jquery.bgiframe][download][type] = "git"
