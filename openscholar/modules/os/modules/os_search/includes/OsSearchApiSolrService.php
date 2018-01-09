@@ -49,9 +49,7 @@ class OsSearchApiSolrService extends SearchApiSolrService
                 !((user_access('administer group') || og_is_member('node', $group_wrapper->getIdentifier())))
             )
             {
-                $f = $query->createFilter();
-                $f->condition('bs_private', '1', '<>');
-                //$query->filter($f);    
+                $query->condition('private', '1', '<>');
             }
 
             // Bundles which belong for disabled apps should appear in the search.
@@ -66,31 +64,53 @@ class OsSearchApiSolrService extends SearchApiSolrService
             drupal_exit();
         }
 
-        if (!variable_get('os_search_solr_query_multisites', false)) {
-            // Limit searches to just this OpenScholar install in shared indexes.
-            //$query->addFilter('hash', apachesolr_site_hash());
+        try {
+            $r = parent::search($query);
+            return $r;
+        } catch(Exception $e) {
+            watchdog_exception("os_search", $e);
         }
 
-        return parent::search($query);
+        return [];
     }
 
     public function alterSolrDocuments(array &$documents, SearchApiIndex $index, array $items)
     {
-        $path = drupal_get_path('module', 'os_search');
+        $field_maps = field_info_field_map();
 
-        file_put_contents($path . "/logs/index.log", print_r($index, true));
+        foreach($documents as $i => &$document) {
 
-        for ($i = 0; $i < count($documents); $i++) {
             if (empty($items[$i])) {
                 continue;
             }
 
-            //$documents[$i]->entity_id = $items[$i]['nid']['value'];
-            $documents[$i]->entity_type = "node";
+            $item                  = $items[$i];
+            $entity_id             = $item['nid']['value'];
+            $entity_type           = "node";
+            $entity                = node_load($entity_id);
+            $document->entity_type = $entity_type;
+            $item_field_maps       = field_info_instances($entity_type, $entity->type);
 
-            $documents[$i]->bs_private = $this->_isPrivate($items[$i]['nid']['value']);
-            file_put_contents($path . "/logs/items[{$i}].log", print_r($items[$i], true));
-            file_put_contents($path . "/logs/documents[{$i}].log", print_r($documents[$i], true));
+            foreach( $item_field_maps as $name => $data ) {
+                $field_info = $field_maps[$name];
+
+                if ( $field_info["type"] == "entityreference" ) {
+
+                    $item_entity_type = $data['entity_type'];
+                    $fields = [];
+
+                    foreach ($entity->{$name}[LANGUAGE_NONE] as $reference) {
+                        if ($id = (!empty($reference['target_id'])) ? $reference['target_id'] : FALSE) {
+                            $fields[] = $item_entity_type . ':' . $id;
+                        }
+                    }
+
+                    $index_field_name = "sm_{$name}";
+                    $document->{$index_field_name} = $fields;
+                }
+            }
+
+            $document->bs_private = $this->_isPrivate($items[$i]['nid']['value']);
         }
     }
 

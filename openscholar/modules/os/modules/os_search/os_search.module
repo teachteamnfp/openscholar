@@ -30,7 +30,8 @@ function os_search_default_search_api_server() {
       "description" : "",
       "host" : "localhost",
       "port" : "8983",
-      "path" : "solr"
+      "path" : "solr",
+      "site_hash": true
     },
     "enabled" : "1",
     "rdf_mapping" : []
@@ -53,158 +54,137 @@ function os_search_search_api_item_type_info_alter(array &$infos) {
 function os_search_default_search_api_index() {
   $items = array();
 
-  $items['open_scholar_site_search'] = entity_import('search_api_index', '{
-      "name": "Open Scholar Site search",
-      "machine_name": "open_scholar_site_search",
-      "description": null,
-      "server": "solr_server",
-      "item_type": "node",
-      "options": {
-          "datasource": {
-              "bundles": [
-                  "blog"
-              ]
-          },
-          "index_directly": 0,
-          "cron_limit": "50",
-          "fields": {
-              "title": {"type": "string"},
-              "entity_id": {"type": "int"},
-              "entity_type": {"type": "string"},
-              "bundle": {"type": "string"},
-              "bundle_name": {"type": "string"}
-              "created": {"type" => "date"},
-              ),
-          },
-          "data_alter_callbacks": {
-              "search_api_alter_bundle_filter": {
-                  "status": 1,
-                  "weight": "-10",
-                  "settings": {
-                      "default": "1",
-                      "bundles": []
-                  }
-              },
-              "search_api_metatag_alter_callback": {
-                  "status": 0,
-                  "weight": "0",
-                  "settings": []
-              },
-              "search_api_alter_add_url": {
-                  "status": 0,
-                  "weight": "0",
-                  "settings": []
-              },
-              "search_api_alter_add_aggregation": {
-                  "status": 0,
-                  "weight": "0",
-                  "settings": []
-              },
-              "search_api_alter_add_viewed_entity": {
-                  "status": 0,
-                  "weight": "0",
-                  "settings": {
-                      "mode": "teaser"
-                  }
-              },
-              "search_api_alter_add_hierarchy": {
-                  "status": 0,
-                  "weight": "0",
-                  "settings": {
-                      "fields": []
-                  }
-              },
-              "search_api_alter_node_access": {
-                  "status": 0,
-                  "weight": "0",
-                  "settings": []
-              },
-              "search_api_alter_node_status": {
-                  "status": 1,
-                  "weight": "0",
-                  "settings": []
-              },
-              "os_search_state_alter": {
-                "status": 1,
-                "weight": "0",
-                "settings": []
-              }
-          },
-          "processors": {
-              "search_api_case_ignore": {
-                  "status": 0,
-                  "weight": "0",
-                  "settings": {
-                      "fields": []
-                  }
-              },
-              "search_api_html_filter": {
-                  "status": 0,
-                  "weight": "10",
-                  "settings": {
-                      "fields": [],
-                      "title": 0,
-                      "alt": 1,
-                      "tags": "h1 = 5\r\nh2 = 3\r\nh3 = 2\r\nstrong = 2\r\nb = 2\r\nem = 1.5\r\nu = 1.5"
-                  }
-              },
-              "search_api_transliteration": {
-                  "status": 0,
-                  "weight": "15",
-                  "settings": {
-                      "fields": []
-                  }
-              },
-              "search_api_tokenizer": {
-                  "status": 1,
-                  "weight": "20",
-                  "settings": {
-                      "fields": [],
-                      "spaces": "[^[:alnum:]]",
-                      "ignorable": "[\']"
-                  }
-              },
-              "search_api_stopwords": {
-                  "status": 1,
-                  "weight": "30",
-                  "settings": {
-                      "fields": [],
-                      "file": "",
-                      "stopwords": "but\r\ndid\r\nthe this that those\r\netc"
-                  }
-              },
-              "search_api_porter_stemmer": {
-                  "status": 1,
-                  "weight": "35",
-                  "settings": {
-                      "fields": [],
-                      "exceptions": "texan=texa"
-                  }
-              },
-              "search_api_highlighting": {
-                  "status": 0,
-                  "weight": "40",
-                  "settings": {
-                      "prefix": "<strong>",
-                      "suffix": "</strong>",
-                      "excerpt": 1,
-                      "excerpt_length": "256",
-                      "exclude_fields": [],
-                      "highlight": "always",
-                      "highlight_partial": 0
-                  }
-              }
-          }
-      },
-      "enabled": "1",
-      "read_only": "0",
-      "status": "1",
-      "module": "os_search"
-  }
-  ');
+  $fields = array();
+  $fields["title"] = array("type" => "string");
+  $fields["entity_id"] = array("type" => "string");
+  $fields["entity_type"] = array("type" => "string");
+  $fields["bundle"] = array("type" => "string");
+  $fields["bundle_name"] = array("type" => "string");
+  $fields["created"] = array("type" => "string");
+
+  $bundles = array("blog",);
+
+  $index = array(
+    'name' => "Open Scholar Site search",
+    'machine_name' => "open_scholar_site_search",
+    'description' => t('An automatically created search index for indexing node data.'),
+    'server' => "solr_server",
+    'item_type' => 'node',
+    'options' => array(
+      'index_directly' => 1,
+      'cron_limit' => '50',
+      'data_alter_callbacks' => array(
+        'search_api_alter_node_access' => array(
+          'status' => 1,
+          'weight' => '0',
+          'settings' => array(),
+        ),
+        'os_search_state_alter' => array(
+          'status' => 1,
+          'weight' => '0',
+          'settings' => array(),
+        ),
+      ),
+      'processors' => array(
+        'search_api_case_ignore' => array(
+          'status' => 1,
+          'weight' => '0',
+          'settings' => array(
+            'strings' => 0,
+          ),
+        ),
+        'search_api_html_filter' => array(
+          'status' => 1,
+          'weight' => '10',
+          'settings' => array(
+            'title' => 0,
+            'alt' => 1,
+            'tags' => "h1 = 5\n" .
+                "h2 = 3\n" .
+                "h3 = 2\n" .
+                "strong = 2\n" .
+                "b = 2\n" .
+                "em = 1.5\n" .
+                "u = 1.5",
+          ),
+        ),
+        'search_api_tokenizer' => array(
+          'status' => 1,
+          'weight' => '20',
+          'settings' => array(
+            'spaces' => '[^\\p{L}\\p{N}]',
+            'ignorable' => '[-]',
+          ),
+        ),
+      ),
+      'fields' => array(
+        'nid' => array (
+          'type' => 'int',
+        ),
+        'is_entity' => array (
+          'type' => 'boolean',
+        ),
+        'type' => array(
+          'type' => 'string',
+        ),
+        'title' => array(
+          'type' => 'text',
+          'boost' => '5.0',
+        ),
+        'promote' => array(
+          'type' => 'boolean',
+        ),
+        'sticky' => array(
+          'type' => 'boolean',
+        ),
+        'created' => array(
+          'type' => 'date',
+        ),
+        'changed' => array(
+          'type' => 'date',
+        ),
+        'author' => array(
+          'type' => 'integer',
+          'entity_type' => 'user',
+        ),
+        'bundle' => array(
+          'type' => 'string',
+        ),
+        'bundle_name' => array(
+          "type" => "string",
+        ),
+        'og_roles_permissions' => array(
+          "type" => "boolean",
+          'multiValued' => true
+        ),
+        'group_group' => array(
+          "type" => "boolean",
+        ),
+        'comment_count' => array(
+          'type' => 'integer',
+        ),
+        'search_api_language' => array(
+          'type' => 'string',
+        ),
+        'body:value' => array(
+          'type' => 'text',
+        ),
+        'hash' => array(
+          'type' => 'string'
+        ),
+        'entity_id' => array(
+          'type' => 'int'
+        ),
+        'private' => array(
+          'type' => 'boolean'
+        )
+      ),
+    ),
+  );
+
+  $items['open_scholar_site_search'] = entity_import('search_api_index', json_encode($index));
   return $items;
 }
-
 
 /**
  * Implements hook_boxes_plugins().
@@ -813,22 +793,6 @@ function os_search_search_api_alter_callback_info() {
   return $callbacks;
 }
 
-/*function os_search_search_api_index_items_alter(array &$items, SearchApiIndex $index) {
-
-  $fields = $index->options->fields;
-
-  $fields["title"]       = ['type' => 'string'];
-  $fields["bundle"]      = ['type' => 'string'];
-  $fields["bundle_name"] = ['type' => 'string'];
-  $fields["entity_id"]   = ['type' => 'int'];
-
-  $index->update($fields);
-
-  $path = drupal_get_path('module', 'os_search');
-  file_put_contents($path . "/logs/index-1.log", json_encode($index, true));
-  file_put_contents($path . "/logs/items-1.log", json_encode($items, true));
-}*/
-
 /**
  * @file
  * Search API data alteration callback that adds the workflow state info to the entity.
@@ -837,10 +801,6 @@ function os_search_search_api_alter_callback_info() {
 class OsSearchStateAlterCallback extends SearchApiAbstractAlterCallback {
   
   public function alterItems(array &$items) {
-
-    $path = drupal_get_path('module', 'os_search');
-    file_put_contents($path . "/logs/alterItems.log", json_encode($items, true));
-
     foreach ($items as $nid => &$item) {
       $item->bundle = $item->type;
       $item->bundle_name = self::entity_bundle_label("node", $item->type);
