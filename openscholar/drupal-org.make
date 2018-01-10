@@ -8,6 +8,7 @@ projects[advagg][version] = 2.6
 
 projects[apachesolr][subdir] = "contrib"
 projects[apachesolr][version] = 1.6
+projects[apachesolr][patch][] = "https://raw.githubusercontent.com/openscholar/openscholar/29dbe3313a9d57ca6e9ed425955b6ed5db279ce4/patches/apachesolr-1.6-index_error_catching.patch"
 
 projects[apachesolr_attachments][subdir] = "contrib"
 projects[apachesolr_attachments][version] = 1.2
