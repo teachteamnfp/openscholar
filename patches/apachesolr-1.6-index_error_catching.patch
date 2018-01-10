@@ -1,0 +1,34 @@
+diff --git a/apachesolr.index.inc b/apachesolr.index.inc
+index ea7ba10..36bcc63 100644
+--- a/apachesolr.index.inc
++++ b/apachesolr.index.inc
+@@ -231,8 +231,27 @@ function apachesolr_index_entity_to_documents($item, $env_id) {
+ 
+   // Entity cache will be reset at the end of the indexing algorithm, to use the cache properly whenever
+   // the code does another entity_load
+-  $entity = entity_load($entity_type, array($item->entity_id));
+-  $entity = $entity ? reset($entity) : FALSE;
++  try {
++    $entity = entity_load($entity_type, array($item->entity_id));
++    $entity = $entity ? reset($entity) : FALSE;
++  }
++  catch (EntityMalformedException $e) {
++    if (strpos("Missing bundle", $e->getMessage() !== FALSE)) {
++      $trace = $e->getTrace();
++      $msg = t("Missing bundle property on entity @id of type @type in @function() (line @line of @file).", array(
++        '@id' => $item->entity_id,
++        '@type' => $entity_type,
++        '@function' => $trace[0]['function'],
++        '@line' => $e->getLine(),
++        '@file' => $e->getFile(),
++      ));
++    }
++
++    error_log("EntityMalformedException: $msg");
++    watchdog('Apachesolr', $msg, array(), WATCHDOG_ERROR);
++
++    return FALSE;
++  }
+ 
+   if (empty($entity)) {
+     // If the object failed to load, just stop.
