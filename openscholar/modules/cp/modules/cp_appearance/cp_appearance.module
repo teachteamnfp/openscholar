@@ -594,6 +594,7 @@ function _cp_appearance_theme_screenshot_item($theme, &$form) {
   ));
 
   // Prepares each theme's subtheme select list and screenshot URL.
+  ctools_include('themes', 'os');
   $key = 'os_appearance_' . $theme->name . '_flavor';
   if (array_key_exists($key, $form)) {
     $subtheme_select_list = drupal_render($form[$key]);
@@ -1052,7 +1053,8 @@ function cp_appearance_get_flavors() {
   $flavors = array();
 
   foreach ($vsite->controllers->variable->get('flavors') as $name => $info) {
-    $info_files = glob($info['path'] . '/*.flav');
+    $stream = file_stream_wrapper_get_instance_by_uri($info['path']);
+    $info_files = glob($stream->realpath() . '/*.flav');
     $info_file = reset($info_files);
 
     // Get the information from the info file.

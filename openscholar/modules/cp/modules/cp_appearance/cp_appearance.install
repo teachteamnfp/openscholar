@@ -41,3 +41,32 @@ function cp_appearance_requirements() {
   }
 }
  */
+
+
+/**
+ * Fixes paths in custom themes
+ */
+function cp_appearance_update_7001() {
+  $s = db_select('spaces_overrides', 'so')
+    ->fields('so')
+    ->condition('object_id', 'flavors')
+    ->condition('object_type', 'variable')
+    ->execute();
+
+  foreach ($s as $r) {
+    $value = unserialize($r->value);
+    foreach ($value as $k => $flavor) {
+      $value[$k]['path'] = preg_replace('|^files|', 'public:/', $flavor['path']);
+    }
+    db_update('spaces_overrides')
+      ->fields(array(
+        'value' => serialize($value),
+      ))
+      ->condition('object_id', $r->object_id)
+      ->condition('object_type', $r->object_type)
+      ->condition('id', $r->id)
+      ->execute();
+  }
+
+  return t('All custom themes have been set to use a relative path');
+}
