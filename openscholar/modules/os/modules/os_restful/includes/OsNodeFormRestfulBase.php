@@ -236,7 +236,6 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
     }
   }
   
-
   /**
    * Override this function to save fields value without exposing fields as 
    * public.
@@ -250,60 +249,96 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
    *
    * @throws RestfulBadRequestException
    */
-//   protected function setPropertyValues(EntityMetadataWrapper $wrapper, $null_missing_fields = FALSE) {
-//     $request = $this->getRequest();
+  protected function setPropertyValues(EntityMetadataWrapper $wrapper, $null_missing_fields = FALSE) {
+    // Node save limited to page content type. In future we won't need this 
+    // condtion.
+    if ($this->entityType == 'node' && $this->bundle == 'page') {
+      $request = $this->getRequest();
+      static::cleanRequest($request);
+      $save = FALSE;
+      $original_request = $request;
 
-//     static::cleanRequest($request);
-//     $save = FALSE;
-//     $original_request = $request;
+      if (empty($original_request['title'])) {
+        throw new RestfulForbiddenException("Title field is required.");
+      }
+      else {
+        // @todo : Remove debug statment.
+        // print_r($original_request);
+        $processed_unknown_property = array();
+        $processed_property = array();
 
-//     if (empty($original_request['title'])) {
-//       throw new RestfulForbiddenException("Title field is required.");
-//     }
-//     else {
-//       // @todo : Remove debug statment.
-//       //print_r($original_request);
-//       $processed_unknown_property = array();
-//       $processed_property = array();
-
-//       foreach ($original_request as $property_name => $value) {
-//         if (is_array($original_request[$property_name]['fields'])) {
-//           foreach ($original_request[$property_name]['fields'] as $key => $value) {
-//             $processed_unknown_property[$key] = $value;
-//           }
-//         }
-//         if (!empty($wrapper->$property_name)) {
-//           $processed_property[$property_name] = $value;
-//         }
-//       }
-//       $processed_property = array_merge($processed_property, $processed_unknown_property);
-//       // @todo : Remove debug statment.
-//       // print_r($wrapper->getPropertyInfo());
-//       // print_r($processed_property);
-//       // print_r($processed_unknown_property);
-//       foreach ($processed_property as $property_name => $value) {
-//         if (!empty($wrapper->{$property_name})) {
-//           $field_value = $this->propertyValuesPreprocess($property_name, $value, $property_name);
-//           $wrapper->{$property_name}->set($field_value);
-//         }
-//       }
-//       $wrapper->save();
-//       $save = TRUE;
-//       $entity = entity_load_single($this->entityType, $wrapper->getIdentifier());
-//       foreach ($processed_unknown_property as $property_name => $value) {
-//         if ($property_name == 'date' && !empty($value)) {
-//           $entity->created = strtotime($value);
-//         }
-//         if ($property_name == 'noindex' && !empty($value)) {
-//           $entity->noindex = $value;
-//         }
-//       }
-//       entity_save($this->entityType, $entity);
-//     }
-    
-//     if (!$save) {
-//       // No request was sent.
-//       throw new \RestfulBadRequestException('No values were sent with the request');
-//     }
-//   }
-// }
+        foreach ($original_request as $property_name => $value) {
+          if (is_array($original_request[$property_name]['fields'])) {
+            foreach ($original_request[$property_name]['fields'] as $key => $value) {
+              $processed_unknown_property[$key] = $value;
+            }
+          }
+          if (!empty($wrapper->$property_name)) {
+            $processed_property[$property_name] = $value;
+          }
+        }
+        $processed_property = array_merge($processed_property, $processed_unknown_property);
+        // @todo : Remove debug statment.
+        // print_r($wrapper->getPropertyInfo());
+        // print_r($processed_property);
+        // print_r($processed_unknown_property);
+        foreach ($processed_property as $property_name => $value) {
+          if (!empty($wrapper->{$property_name})) {
+            $field_value = $this->propertyValuesPreprocess($property_name, $value, $property_name);
+            $wrapper->{$property_name}->set($field_value);
+          }
+        }
+        $wrapper->save();
+        $save = TRUE;
+        $entity = entity_load_single($this->entityType, $wrapper->getIdentifier());
+        //print_r($entity);
+        //print_r($processed_unknown_property);
+        foreach ($processed_unknown_property as $property_name => $value) {
+          if ($property_name == 'date' && !empty($value)) {
+            $entity->created = strtotime($value);
+          }
+          if ($property_name == 'noindex' && !empty($value)) {
+            $entity->noindex = $value;
+          }
+          if ($property_name == 'pathauto') {
+            if (empty($value) && !empty($processed_unknown_property['pathalias'])) {
+              $this->updatePathAlias($entity->nid, $processed_unknown_property['pathalias']);
+            }
+            else {
+              $entity->path['pathauto'] = TRUE;
+            }
+          }
+        }
+        entity_save($this->entityType, $entity);
+      }
+      if (!$save) {
+        // No request was sent.
+        throw new \RestfulBadRequestException('No values were sent with the request');
+      }
+    }
+  }
+  
+   /**
+   * Update pathalias.
+   *
+   * @param int $entity_id
+   *   Id of an entity object.
+   * @param string $alias
+   *   Alias string.
+   * @return bool 
+   *   Return TRUE if database update successful.
+   */
+  public function updatePathAlias($entity_id, $alias, $vsite) {
+    $vsite = vsite_get_vsite();
+    if (!$vsite) {
+      // No VSite.
+      return FALSE;
+    }
+    $update_auto_aliases = db_update('url_alias')
+      ->fields(array(
+        'alias' => $vsite->group->title . '/' . $alias,
+      ))
+      ->condition('source', $this->entityType . '/' . $entity_id, '=')
+      ->execute();
+  }
+}
