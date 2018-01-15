@@ -296,6 +296,14 @@ function os_entity_info_alter(&$info) {
 function os_block_info() {
   ctools_include('menu', 'os');
 
+  $blocks['query_debug'] = array(
+    'info' => 'Solr Devel: Query Debugger',
+    'cache' => DRUPAL_NO_CACHE,
+    'region' => 'content',
+    'status' => 1,
+    'weight' => -1,
+  );
+
   $blocks['get-started'] = array(
     'info' => t('Get Started - A block to help site admins setup thier site.'),
     'weight' => '-10',
@@ -328,6 +336,27 @@ function os_block_info() {
  * all os menu blocks.
  */
 function os_block_view($delta = '') {
+  //////////////////////////
+  $searchers = &drupal_static('solr_devel_apachesolr_searchers', array());
+  dsm($searchers);
+      foreach ($searchers as $searcher) {
+        if ($response = apachesolr_static_response_cache($searcher)) {
+          $debug[$searcher] = solr_devel_prepare_debug_output($response);
+        }
+      }
+
+      // Iterate over Search API responses and gather debug data for all of them.
+      $responses = &drupal_static('solr_devel_search_api_responses', array());
+      foreach ($responses as $key => $response) {
+        // Get the debug output, initialize request array.
+        $debug[$key] = solr_devel_prepare_debug_output($response);
+      }
+
+      // If we have debug information, display.
+      if ($debug) {
+        dsm($debug);
+      }  
+/////////////////////////////////////  
   $block = array();
   switch ($delta) {
 
@@ -342,6 +371,31 @@ function os_block_view($delta = '') {
       $block['subject'] = NULL;
       $block['content'] = _os_get_install_status();
       return $block;
+
+    case 'query_debug':
+      $debug = array();
+      // Iterate over Apache Solr searchers and gather debug data for all of them.
+      $searchers = &drupal_static('solr_devel_apachesolr_searchers', array());
+      foreach ($searchers as $searcher) {
+        if ($response = apachesolr_static_response_cache($searcher)) {
+          $debug[$searcher] = solr_devel_prepare_debug_output($response);
+        }
+      }
+
+      // Iterate over Search API responses and gather debug data for all of them.
+      $responses = &drupal_static('solr_devel_search_api_responses', array());
+      foreach ($responses as $key => $response) {
+        // Get the debug output, initialize request array.
+        $debug[$key] = solr_devel_prepare_debug_output($response);
+      }
+
+      // If we have debug information, display.
+      if ($debug) {
+        return array(
+          'subject' => t('Solr query debugger'),
+          'content' => kprint_r($debug, TRUE),
+        );
+      }  
 
     default:
       // All os menu blocks.
@@ -1787,6 +1841,8 @@ function os_views_pre_build(&$view) {
  * Adds contextual links to the full node view
  */
 function os_node_view_alter(&$build) {
+
+
   $node = $build['#node'];
   if (!empty($node->nid)) {
     $build['#contextual_links']['node'] = array('node', array($node->nid));
