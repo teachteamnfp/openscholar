@@ -1054,14 +1054,17 @@ function cp_appearance_get_flavors() {
 
   foreach ($vsite->controllers->variable->get('flavors') as $name => $info) {
     $stream = file_stream_wrapper_get_instance_by_uri($info['path']);
-    $info_files = glob($stream->realpath() . '/*.flav');
+    $path = str_replace(DRUPAL_ROOT, '', $stream->realpath());
+    echo $path;
+    $info_files = glob($path . '/*.flav');
     $info_file = reset($info_files);
 
     // Get the information from the info file.
     $file_content = drupal_parse_info_file($info_file);
+    print_r($file_content);
 
     $flavors[$name] = $file_content + array(
-      'path' => $info['path'],
+      'path' => $path,
     );
   }
 
