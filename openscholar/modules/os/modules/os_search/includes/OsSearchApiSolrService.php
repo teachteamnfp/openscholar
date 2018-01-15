@@ -7,10 +7,11 @@ class OsSearchApiSolrService extends SearchApiSolrService
      */
     public function search(SearchApiQueryInterface $query)
     {
-
         if (module_exists('vsite') && ($vsite = spaces_get_space())) {
+            $vsite_filter = $query->createFilter('OR');
+
             // This site.
-            $sites = array('"' . $vsite->group_type . ":" . $vsite->id . '"');
+            $vsite_filter->condition('og_group_ref', $vsite->group_type . ":" . $vsite->id);
 
             if (variable_get('os_search_solr_include_subsites') || variable_get('os_search_solr_search_sites')) {
                 ctools_include('subsite', 'vsite');
@@ -19,7 +20,7 @@ class OsSearchApiSolrService extends SearchApiSolrService
                     // Get Subsites.
                     $subsites = vsite_get_subsites($vsite);
                     foreach ($subsites as $sid) {
-                        $sites[] = '"' . $vsite->group_type . ":" . $sid . '"';
+                        $vsite_filter->condition('og_group_ref', $vsite->group_type . ":" . $sid);
                     }
                 }
 
@@ -27,18 +28,13 @@ class OsSearchApiSolrService extends SearchApiSolrService
                     // Parse the list of 'other sites'.
                     foreach (variable_get('os_search_solr_search_sites', array()) as $sid) {
                         if (intval($sid)) {
-                            $sites[] = '"' . $vsite->group_type . ":" . $sid . '"';
+                            $vsite_filter->condition('og_group_ref', $vsite->group_type . ":" . $sid);
                         }
                     }
                 }
             }
 
-            // Filter to the specified sites.
-            $site_filter = '(' . implode(' OR ', $sites) . ')';
-
-            $f = $query->createFilter();
-            $f->condition('sm_og_group_ref', $site_filter);
-            //$query->filter($f);
+            $query->filter($vsite_filter);
 
             $group_wrapper = entity_metadata_wrapper('node', $vsite->group);
 
@@ -74,10 +70,15 @@ class OsSearchApiSolrService extends SearchApiSolrService
         return [];
     }
 
+    protected function addIndexField(SearchApiSolrDocument $doc, $key, $value, $type, $multi_valued = FALSE) {
+        parent::addIndexField($doc, $key, $value, $type, $multi_valued);
+    }
+
     public function alterSolrDocuments(array &$documents, SearchApiIndex $index, array $items)
     {
-        $field_maps = field_info_field_map();
-
+        $field_maps  = field_info_field_map();
+        $entity_type = "node";
+        
         foreach($documents as $i => &$document) {
 
             if (empty($items[$i])) {
@@ -86,49 +87,102 @@ class OsSearchApiSolrService extends SearchApiSolrService
 
             $item                  = $items[$i];
             $entity_id             = $item['nid']['value'];
-            $entity_type           = "node";
+
             $entity                = node_load($entity_id);
+            $emw                   = entity_metadata_wrapper('node', $entity);
             $document->entity_type = $entity_type;
-            $item_field_maps       = field_info_instances($entity_type, $entity->type);
+            $document->entity_id   = $entity_id;
+            $document->bundle      = $emw->getBundle();
+            $document->bundle_name = self::entity_bundle_label($entity_type, $emw->getBundle());
+            $document->bs_private  = !$this->privacy_callback($entity_type, $emw);
 
-            foreach( $item_field_maps as $name => $data ) {
-                $field_info = $field_maps[$name];
+            $build = node_view($entity, 'search_index', $language);
+            unset($build['#theme']);
+            $build['#cache'] = true;
+            $text = drupal_render($build);
+            $document->content = self::clean_text($text);
 
-                if ( $field_info["type"] == "entityreference" ) {
-
-                    $item_entity_type = $data['entity_type'];
-                    $fields = [];
-
-                    foreach ($entity->{$name}[LANGUAGE_NONE] as $reference) {
-                        if ($id = (!empty($reference['target_id'])) ? $reference['target_id'] : FALSE) {
-                            $fields[] = $item_entity_type . ':' . $id;
-                        }
-                    }
-
-                    $index_field_name = "sm_{$name}";
-                    $document->{$index_field_name} = $fields;
+            // Adding the teaser
+            if (isset($entity->teaser)) {
+                $document->teaser = self::clean_text($entity->teaser);
+            } else {
+                // If there is no node teaser we will have to generate the teaser
+                // ourselves. We have to be careful to not leak the author and other
+                // information that is normally also not visible.
+                if (isset($entity->body[$language][0]['safe_summary'])) {
+                    $document->teaser = self::clean_text($entity->body[$language][0]['safe_summary']);
+                }
+                else {
+                    $document->teaser = truncate_utf8($document->content, 300, TRUE);
                 }
             }
 
-            $document->bs_private = $this->_isPrivate($items[$i]['nid']['value']);
+            $property_info   = $emw->getPropertyInfo();
+            $item_field_maps = field_info_instances($entity_type, $entity->type);
+
+            foreach( $item_field_maps as $name => $data ) {
+                $field_info = $field_maps[$name];
+                $info       = $property_info[$name];
+                $field_type = explode( '<', str_replace('>', '', $info["type"]) );
+
+                if ( $field_info["type"] == "entityreference" ) {
+
+                    $item_entity_type = (count($field_type) > 1) ? $field_type[1] : $field_type[0];
+                    $fields = [];
+                    $ids    = [];
+
+                    if ( $entity->{$name}[LANGUAGE_NONE] ) {
+                        foreach ($entity->{$name}[LANGUAGE_NONE] as $reference) {
+                            if ($id = (!empty($reference['target_id'])) ? $reference['target_id'] : FALSE) {
+                                $fields[] = $item_entity_type . ':' . $id;
+                                $ids[]    = $id;
+                            }
+                        }
+                    }
+
+                    if ( $item_entity_type == 'taxonomy_term' ) {
+                        $terms  = entity_load($entity_type, $ids);
+                        $fields = [];
+
+                        foreach ($terms as $term) {
+                            if ( empty($fields[$vid]) ) {
+                                $fields[$vid] = [];
+                            }
+                            $fields[$term->vid][] = $term->name;
+                        }
+
+                        foreach ( $fields as $vid => $values ) {
+                            $document->setField('tm_vid_' . $vid . '_names', $values);
+                        }
+                    }
+
+                    $document->setField("sm_{$name}", $fields);
+                }
+            }
         }
     }
 
-    private function _isPrivate($entity_id)
-    {
-        $entity_type = "node";
+    public static function entity_bundle_label($entity_type, $bundle_name) {
+        $labels = &drupal_static(__FUNCTION__, array());
 
+        if (empty($labels)) {
+            foreach (entity_get_info() as $type => $info) {
+            foreach ($info['bundles'] as $bundle => $bundle_info) {
+                $labels[$type][$bundle] = !empty($bundle_info['label']) ? $bundle_info['label'] : FALSE;
+            }
+            }
+        }
+        
+        return $labels[$entity_type][$bundle_name];
+    }
+
+    private function privacy_callback($entity_type, $wrapper)
+    {
         if (!module_exists('vsite')) {
             // We don't have groups.
             return true;
         }
 
-        if (!$entity = entity_load_single($entity_type, $entity_id)) {
-            // Entity can't be loaded.
-            return false;
-        }
-
-        $wrapper = entity_metadata_wrapper($entity_type, $entity);
         $bundle = $wrapper->getBundle();
 
         if ($entity_type != 'node' || !og_is_group_content_type($entity_type, $bundle)) {
@@ -175,5 +229,32 @@ class OsSearchApiSolrService extends SearchApiSolrService
 
         // If we reached this point, it means the node is 'public'.
         return true;
+    }
+
+    /**
+     * Strip html tags and also control characters that cause Jetty/Solr to fail.
+     */
+    public static function clean_text($text) {
+        // Remove invisible content.
+        $text = preg_replace('@<(applet|audio|canvas|command|embed|iframe|map|menu|noembed|noframes|noscript|script|style|svg|video)[^>]*>.*</\1>@siU', ' ', $text);
+        // Add spaces before stripping tags to avoid running words together.
+        $text = filter_xss(str_replace(array('<', '>'), array(' <', '> '), $text), array());
+        // Decode entities and then make safe any < or > characters.
+        $text = htmlspecialchars(html_entity_decode($text, ENT_QUOTES, 'UTF-8'), ENT_QUOTES, 'UTF-8');
+        // Remove extra spaces.
+        $text = preg_replace('/\s+/s', ' ', $text);
+        // Remove white spaces around punctuation marks probably added
+        // by the safety operations above. This is not a world wide perfect solution,
+        // but a rough attempt for at least US and Western Europe.
+        // Pc: Connector punctuation
+        // Pd: Dash punctuation
+        // Pe: Close punctuation
+        // Pf: Final punctuation
+        // Pi: Initial punctuation
+        // Po: Other punctuation, including ¿?¡!,.:;
+        // Ps: Open punctuation
+        $text = preg_replace('/\s(\p{Pc}|\p{Pd}|\p{Pe}|\p{Pf}|!|\?|,|\.|:|;)/s', '$1', $text);
+        $text = preg_replace('/(\p{Ps}|¿|¡)\s/s', '$1', $text);
+        return $text;
     }
 }

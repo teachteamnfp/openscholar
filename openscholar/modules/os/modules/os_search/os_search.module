@@ -131,6 +131,10 @@ function os_search_default_search_api_index() {
           'type' => 'text',
           'boost' => '5.0',
         ),
+        'title' => array(
+          'type' => 'text',
+          'boost' => '5.0',
+        ),
         'promote' => array(
           'type' => 'boolean',
         ),
@@ -154,20 +158,19 @@ function os_search_default_search_api_index() {
           "type" => "string",
         ),
         'og_roles_permissions' => array(
-          "type" => "boolean",
-          'multiValued' => true
+          "type" => "list<boolean>"
         ),
         'group_group' => array(
           "type" => "boolean",
+        ),
+        'og_group_ref' => array(
+          "type" => "list<string>",
         ),
         'comment_count' => array(
           'type' => 'integer',
         ),
         'search_api_language' => array(
           'type' => 'string',
-        ),
-        'body:value' => array(
-          'type' => 'text',
         ),
         'hash' => array(
           'type' => 'string'
@@ -244,11 +247,27 @@ function os_search_block_view($delta = '') {
 * Enabling using templates inside module
 */
 function os_search_views_api() {
+  $path = drupal_get_path('module', 'os_search');
+
   return array(
     'api' => 3,
-    'path' => drupal_get_path('module', 'os_search'),
-    'template path' => drupal_get_path('module', 'os_search') . '/templates'
+    'path' => $path,
+    'template path' => $path . '/templates'
   );
+}
+
+function os_search_views_default_views() {
+
+  $path = drupal_get_path('module', 'os_search');  
+
+  $views = [];
+
+  foreach (glob("{$path}/views/*.inc") as $filename) {
+    include_once($filename);
+    $views[$view->name] = $view;
+  }
+
+  return $views;
 }
 
 function os_search_search_api_service_info_alter(array &$service_info) {
@@ -807,17 +826,6 @@ class OsSearchStateAlterCallback extends SearchApiAbstractAlterCallback {
       $item->entity_id = $nid;
       $item->entity_type = "node";
     }
-  }
-
-  public function propertyInfo() {
-    return array(
-      'title' => array('type' => 'string', 'label' => 'Title', 'description' => 'Test'),
-      'entity_type' => array('type' => 'string', 'label' => 'entity_type', 'description' => 'entity_type'),
-      'entity_id' => array('type' => 'int', 'label' => 'entity_id', 'description' => 'entity_id'),
-      'bundle_name' => array('type' => 'string', 'label' => 'bundle_name', 'description' => 'bundle_name'),
-      'bundle' => array('type' => 'string', 'label' => 'Bundle', 'description' => 'bundle'),
-      'language' => array('type' => 'string', 'label' => 'Title', 'description' => 'Test'),
-    );
   }
 
   public static function entity_bundle_label($entity_type, $bundle_name) {
