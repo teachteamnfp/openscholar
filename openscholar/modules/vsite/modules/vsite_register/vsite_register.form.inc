@@ -596,7 +596,7 @@ function _vsite_register_validate($element, &$values) {
         if (module_exists('password_policy')) {
           //borrowed from `password_policy_user_profile_form_validate()`
           $account = user_load(0);
-          $policies = PasswordPolicy::matched_policies($account);
+          $policies = PasswordPolicy::matchedPolicies($account);
           $errors = array();
           foreach ($policies as $policy) {
             $errors = $errors + $policy->check($pass1, $account);

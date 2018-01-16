@@ -1031,8 +1031,15 @@ function os_update_7056() {
 }
 
 /**
- * Enable the os_site_creation module for new site creation forms.
+ * Adding day to the os_date_abbreviated format
  */
 function os_update_7057() {
+  variable_set('date_format_os_date_abbreviated', 'D M j, g:ia');
+}
+
+/**
+ * Enable the os_site_creation module for new site creation forms.
+ */
+function os_update_7058() {
   module_enable(array('os_site_creation'));
 }

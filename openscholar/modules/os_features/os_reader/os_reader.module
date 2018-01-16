@@ -534,6 +534,11 @@ function os_reader_copy_feed_item_to_news($feed, $vsite) {
   $wrapper->body->set(array('value' => $new_description, 'format' => 'filtered_html'));
   $wrapper->save();
 
+  // Overriding news date to node creation date
+  $node = node_load($node->nid);
+  $node->created = $feed->created;
+  node_save($node);
+
   // Reference the feed to the VSite.
   $feed_wrapper = entity_metadata_wrapper('os_feed_item', $feed);
   $feed_wrapper->field_vsites_reference[] = $vsite->id;
