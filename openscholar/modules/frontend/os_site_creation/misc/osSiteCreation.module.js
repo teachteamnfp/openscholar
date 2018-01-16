@@ -174,6 +174,7 @@
       $scope.successData = response.data.data.data;
       $scope.vsiteUrl = response.data.data.data;
       $scope.siteCreated = true;
+      bss.SetState('site_creation_form', false);
     });
   }
 
