@@ -621,11 +621,11 @@
             message = '(Not in menu)';
             scope.formDataLink.link_title = angular.element("input[type='textfield'][name='title']").val();
           }
+          scope.formDataLink.enabled = scope.osMenuEnabled.defaultValue;
           scope.value = {
             message: message,
             fields: {
-              enabled: scope.osMenuEnabled.defaultValue,
-              link: scope.formDataLink
+              os_menu: scope.formDataLink
             }
           };
         });

@@ -219,10 +219,9 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
 
     return (count($result) > 0)  ? TRUE : FALSE;
 
-  } 
+  }
 
   public function propertyValuesPreprocess($property_name, $value, $public_field_name) {
-
     if ($property_name == 'author') {
       return user_load_by_name($value)->uid;
     }
@@ -279,7 +278,7 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
         }
         $processed_property = array_merge($processed_property, $processed_unknown_property);
         // @todo : Remove debug statment.
-        // print_r($wrapper->getPropertyInfo());
+        //print_r($wrapper->getPropertyInfo());
         // print_r($processed_property);
         // print_r($processed_unknown_property);
         foreach ($processed_property as $property_name => $value) {
@@ -308,6 +307,14 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
               $entity->path['pathauto'] = TRUE;
             }
           }
+          if ($property_name == 'os_menu' && !empty($value['enabled'])) {
+            ctools_include('menu','os');
+            $link = array();
+            $link['link_path'] = 'node/' . $entity->nid;
+            $link['link_title'] = $value['link_title'];
+            $link['menu_name'] = $value['parent'];
+            os_menu_link_save($link);
+          }
         }
         entity_save($this->entityType, $entity);
       }
@@ -318,7 +325,7 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
     }
   }
   
-   /**
+  /**
    * Update pathalias.
    *
    * @param int $entity_id
