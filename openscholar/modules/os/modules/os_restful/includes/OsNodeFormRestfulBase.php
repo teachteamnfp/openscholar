@@ -222,12 +222,24 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
   }
 
   public function propertyValuesPreprocess($property_name, $value, $public_field_name) {
-    if ($property_name == 'author') {
-      return user_load_by_name($value)->uid;
+    switch ($property_name) {
+      case 'author':
+        return user_load_by_name($value)->uid;
+        break;
+
+      case 'field_upload':
+        $fid = array();
+        if (empty($value)) {
+          return array();
+        }
+        foreach($value as $v) {
+          $fid[] = !empty($v['fid']) ? $v['fid'] : $v;
+        }
+        $value = $fid;
+        break;
+  
     }
-    if ($property_name == 'field_upload' && empty($value)) {
-      return array();
-    }
+
     $field_info = field_info_field($property_name);
     switch ($field_info['type']) {
       default:
