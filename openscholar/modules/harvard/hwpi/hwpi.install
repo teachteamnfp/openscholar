@@ -142,6 +142,11 @@ function hwpi_update_7012() {
  */
 function hwpi_update_7013() {
 
-  $results = hwpi_features_revert('hwpi');
-  return t('@results variables have been saved to database', array('@results' => $results));
+  $revert = array(
+    'hwpi' => array(
+      'variable',
+    )
+  );
+
+  features_revert($revert);
 }

@@ -22,7 +22,6 @@ features[variable][] = copyright_infring
 features[variable][] = upcoming_events
 features[variable][] = highest_parent_item
 features[variable][] = university_name
-features[variable][] = pin_authenticate
 features[variable][] = getting_started_os
 features_exclude[dependencies][strongarm] = strongarm
 
