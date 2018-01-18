@@ -127,6 +127,13 @@ function hwpi_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'pin_authenticate';
+  $strongarm->value = 'https://www.pin1.harvard.edu/pin/authenticate';
+  $export['pin_authenticate'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'getting_started_os';
   $strongarm->value = 'http://docs.openscholar.harvard.edu/getting-started-with-openscholar';
   $export['getting_started_os'] = $strongarm;

@@ -23,5 +23,6 @@ features[variable][] = upcoming_events
 features[variable][] = highest_parent_item
 features[variable][] = university_name
 features[variable][] = getting_started_os
+features[variable][] = pin_authenticate
 features_exclude[dependencies][strongarm] = strongarm
 
