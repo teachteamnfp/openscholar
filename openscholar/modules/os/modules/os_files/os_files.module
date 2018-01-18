@@ -1813,6 +1813,21 @@ function os_files_modules_installed($modules){
 }
 
 /**
+ * Implements hook_module_implements_alter().
+ *
+ * Prevents media from overriding our image style for theirs
+ */
+/**
+ * Implements hook_module_implements_alter().
+ */
+function os_files_module_implements_alter(&$implementations, $hook) {
+  if ($hook == 'file_default_displays_alter') {
+    dpm($implementations);
+    unset($implementations['media']);
+  }
+}
+
+/**
  * Remove field_license because no one will use it
  * Add title and description to file types media_gallery didn't add them to
  */
