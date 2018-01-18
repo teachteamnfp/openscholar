@@ -137,16 +137,3 @@ function hwpi_update_7012() {
   variable_set('site_mail', 'hwp@harvard.edu');
 }
 
-/**
- * Saving strongarm variables to DB
- */
-function hwpi_update_7013() {
-
-  $revert = array(
-    'hwpi' => array(
-      'variable',
-    )
-  );
-
-  features_revert($revert);
-}
