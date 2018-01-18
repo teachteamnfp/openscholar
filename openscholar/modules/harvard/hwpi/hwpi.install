@@ -1,0 +1,152 @@
+<?php
+
+/**
+ * Enable the os_pinserver_auth module.
+ */
+function hwpi_update_7001(&$sandbox) {
+  module_enable(array('os_pinserver_auth'));
+}
+
+/**
+ * Grants anonymous users access to create department sites.
+ */
+//function hwpi_update_7002() {
+//  $permissions = array(
+//    'create department content',
+//  );
+//  user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, $permissions);
+//}
+
+/**
+ * Sets action menu order to be correct after css change reversed it
+ */
+function hwpi_update_7003(&$sb) {
+  $sites = db_select('spaces_overrides', 'so')
+    ->fields('so')
+    ->condition('object_type', 'context')
+    ->condition('value', '%menu%', 'LIKE')
+    ->condition('value', '%header_third%', 'LIKE')
+    ->execute();
+
+  $reversed = array();
+  foreach ($sites as $s) {
+    $s->value = unserialize($s->value);
+    $menus = array_filter($s->value['blocks'], '_hwpi_is_header_third_menu');
+
+    foreach ($menus as $m) {
+      if (empty($reversed[$s->id][$m['delta']])) {
+        _hwpi_reverse_menu($s->id, $m['delta']);
+        $reversed[$s->id][$m['delta']] = true;
+      }
+    }
+  }
+}
+
+function _hwpi_is_header_third_menu($item) {
+  return ($item['region'] == 'header_third' && $item['module'] == 'os');
+}
+
+function _hwpi_reverse_menu($site, $key) {
+  $controller = new spaces_controller_menus('menus', 'og', $site);
+  $menu = $controller->get($key);
+
+  $start = NULL;
+  foreach ($menu as $m) {
+    if ($start == NULL) {
+      $start = $m['weight'];
+    }
+    elseif ($m['weight'] < $start) {
+      $start = $m['weight'];
+    }
+  }
+
+  // reverse order
+  uasort($menu, function ($a, $b) {
+    if ($a['weight'] == $b['weight']) {
+      return 0;
+    }
+
+    return ($a['weight'] < $b['weight']) ? 1 : -1;
+  });
+
+  foreach ($menu as $k => $m) {
+    $menu[$k]['weight'] = $start++;
+  }
+
+  $controller->set($key, $menu);
+}
+
+/**
+ * Enables new `College` theme and set new featured themes variable to highlight
+ * and describe HWPI themes.
+ */
+function hwpi_update_7005() {
+  // Enables the new `hwpi_college` theme.
+  theme_enable(array('hwpi_college'));
+  // Sets the description that appears under "Featured Themes" heading.
+  $name = 'cp_appearance_featured_description';
+  $value = t('Mobile-friendly themes using Harvard color palettes.');
+  variable_set($name, $value);
+
+  // Sets the themes to use as featured themes.
+  $name = 'cp_appearance_featured_themes';
+  $value = drupal_map_assoc(array('hwpi_classic', 'hwpi_modern', 'hwpi_vibrant', 'hwpi_college', 'hwpi_widener', 'hwpi_sterling'));
+  variable_set($name, $value);
+}
+
+/**
+ * Enables new `Onepage` theme.
+ */
+function hwpi_update_7006() {
+    // Enables the new `hwpi_onepage` theme.
+    theme_enable(array('hwpi_onepage'));
+}
+
+/**
+ * Set Image Magick variables.
+ */
+function openscholar_update_7007() {
+  module_enable(array('imagemagick'));
+  variable_set('image_toolkit', 'imagemagick');
+  variable_set('imageapi_optimize_toolkit', 'imagemagick');
+  variable_set('imagemagick_convert', '/usr/bin/convert');
+  variable_set('imagemagick_debug', 1);
+  variable_set('imagemagick_gm', 0);
+  variable_set('imagemagick_quality', '75');
+}
+
+/**
+ * Change Help Documenation screenshot
+ */
+function hwpi_update_7008() {
+  $nid = variable_get('vsite_register_welcome_message', 0);
+   if ($nid > 0) {
+    $node = node_load($nid);
+    if ($node) {
+      $node->body['und'][0]['value'] = str_replace('https://cloud.githubusercontent.com/assets/867075/13850911/66ce079a-ec32-11e5-80cc-5cb577f96d19.png', 'https://cloud.githubusercontent.com/assets/867075/22668310/48267e28-ec8e-11e6-95cc-0eb13240eeda.png', $node->body['und'][0]['value']);
+      node_save($node);
+    }
+  }
+}
+
+/**
+ * Change registration "From:" email and also the admin mail address
+ */
+function hwpi_update_7012() {
+  variable_set('vsite_register_admin_mail', 'swap@lists.iq.harvard.edu, hwp@harvard.edu');
+  variable_set('site_mail', 'hwp@harvard.edu');
+}
+
+/**
+ * Saving strongarm variables
+ */
+function hwpi_update_7013() {
+
+  $revert = array(
+    'hwpi' => array(
+      'variable',
+    )
+  );
+
+  features_revert($revert);
+}
