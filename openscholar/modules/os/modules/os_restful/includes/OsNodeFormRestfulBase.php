@@ -261,8 +261,6 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
         throw new RestfulForbiddenException("Title field is required.");
       }
       else {
-        // @todo : Remove debug statment.
-        // print_r($original_request);
         $processed_unknown_property = array();
         $processed_property = array();
 
@@ -277,10 +275,6 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
           }
         }
         $processed_property = array_merge($processed_property, $processed_unknown_property);
-        // @todo : Remove debug statment.
-        //print_r($wrapper->getPropertyInfo());
-        // print_r($processed_property);
-        // print_r($processed_unknown_property);
         foreach ($processed_property as $property_name => $value) {
           if (!empty($wrapper->{$property_name})) {
             $field_value = $this->propertyValuesPreprocess($property_name, $value, $property_name);
@@ -290,8 +284,6 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
         $wrapper->save();
         $save = TRUE;
         $entity = entity_load_single($this->entityType, $wrapper->getIdentifier());
-        //print_r($entity);
-        //print_r($processed_unknown_property);
         foreach ($processed_unknown_property as $property_name => $value) {
           if ($property_name == 'date' && !empty($value)) {
             $entity->created = strtotime($value);
@@ -307,13 +299,17 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
               $entity->path['pathauto'] = TRUE;
             }
           }
-          if ($property_name == 'os_menu' && !empty($value['enabled'])) {
-            ctools_include('menu','os');
+          if ($property_name == 'os_menu') {
             $link = array();
             $link['link_path'] = 'node/' . $entity->nid;
             $link['link_title'] = $value['link_title'];
             $link['menu_name'] = $value['parent'];
-            os_menu_link_save($link);
+            if (!empty($value['enabled'])) {
+              vsite_menu_menu_link_save($link, $processed_property['og_group_ref']);
+            }
+            elseif ($mlid = vsite_menu_get_link_path($link['menu_name'], $link['link_path'])) {
+              vsite_menu_delete_menu_link($link['menu_name'], $mlid);
+            }
           }
         }
         entity_save($this->entityType, $entity);

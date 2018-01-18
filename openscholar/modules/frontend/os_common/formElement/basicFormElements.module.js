@@ -590,7 +590,7 @@
           title: scope.element.enabled['#title'],
         };
         scope.$on("getNodeTitle", function (evt, data) {
-          if (data.value && !scope.osMenuEnabled.defaultValue) {
+          if (data.value) {
             scope.formDataLink.link_title = data.value;
           }
         });
