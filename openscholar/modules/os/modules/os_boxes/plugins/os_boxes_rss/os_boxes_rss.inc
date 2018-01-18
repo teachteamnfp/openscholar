@@ -59,6 +59,13 @@ class os_boxes_rss extends os_boxes_default {
   public function render() {
     // @todo
     $block = parent::render();
+    $render = array(
+      '#attached' => array(
+        'js' => array(
+            drupal_get_path('module', 'os_boxes').'/plugins/os_boxes_rss/os_boxes_rss.js',
+          ),
+        ),
+      );
 
     $arg = '';
     $types = array_filter($this->options['content']);
@@ -71,12 +78,15 @@ class os_boxes_rss extends os_boxes_default {
       'title' => t('Syndicate content')
     );
     if ($image = theme('image', $vars)) {
-      $block['content'] = l($image . ' Subscribe', 'feed' . $arg, array(
-          'html' => TRUE,
-          'attributes' => array(
-              'class' => 'feed-icon'
-          )
+      $rss_feed_url = url("feed" . $arg , array('absolute' => TRUE));
+      $block['content'] = l($image . " <span id='rss_label'>Subscribe</span> <span id ='rss_feed'>" . $rss_feed_url . "</span>", NULL, array(
+        'html' => TRUE,
+        'attributes' => array(
+            'class' => 'feed-icon',
+        ),
+        'external' => TRUE,
       ));
+      $block['content'] .= drupal_render($render);
     }
 
     return $block;
