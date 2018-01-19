@@ -314,6 +314,21 @@ fieldset.pin-fieldset legend a,
     border-radius: 4px;
     background: #215990;
 }
+.pin-button a,
+#user-login fieldset legend a,
+.pin-button a:hover,
+#user-login fieldset legend a:hover
+ {
+    padding: 0;
+    border: none;
+    font-size: 14px;
+  font-weight: normal;
+    color: #215990 !important;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    background: #fff;
+}
 .pin-button-inline {
     display: inline-block;
     width: 100px;
@@ -340,7 +355,7 @@ fieldset.pin-fieldset legend,
 .pin-button a,
 fieldset.pin-fieldset legend a,
 #user-login fieldset legend a {
-    color: #FFF !important;
+   
     width: 300px;
 }
 .pin-button,
