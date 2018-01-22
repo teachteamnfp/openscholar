@@ -227,31 +227,12 @@ class OSRestfulCPMenu extends \RestfulBase implements \RestfulDataProviderInterf
       }
 
       $type_url_str = str_replace('_', '-', $bundle);
-
-      // @todo: Since all the content type are not an angular form yet. We have
-      // to hard code page temporarily to avoid failure of tests. Once all node
-      // form are angular ready then we don't need to hard code content type 
-      // here. All will be replaced with directive instead of link.
-      if ($type_url_str == 'page') {
-        $node_add_link = array(
-          'type' => 'directive',
-          'directive' => array(
-            'node-form-modal' => $type_url_str,
-          ),
-        );
-      }
-      else {
-        $node_add_link = array(
-          'type' => 'link',
-          'href' => "node/add/{$type_url_str}",
-        );
-      }
       $add_links["{$bundle}"] = array(
         'label' => $type_info[$bundle]->name,
-        'parent' => 'add',
+        'type' => 'link',
+        'href' => "node/add/{$type_url_str}",
         'alt' => $type_info[$bundle]->description,
       );
-      $add_links["{$bundle}"] = array_merge($add_links["{$bundle}"], $node_add_link);
 
       if (os_importer_importable_content($bundle) && in_array($bundle, array('news', 'blog'))) {
         $import_links["{$bundle}"] = array(
@@ -346,7 +327,7 @@ class OSRestfulCPMenu extends \RestfulBase implements \RestfulDataProviderInterf
             'label' => 'Browse',
             'type' => 'heading',
             'default_state' => 'collapsed',
-            'children' => array(
+            'children' => array(              
               'content' => array(
                 'label' => 'Content',
                 'type' => 'link',

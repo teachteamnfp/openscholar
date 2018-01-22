@@ -315,7 +315,7 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
       $original_request = $request;
 
       if (empty($original_request['label'])) {
-        throw new RestfulForbiddenException("Title field is required.");
+        throw new RestfulBadRequestException("Title field is required.");
       }
       else {
         $original_request['title'] = $original_request['label'];
