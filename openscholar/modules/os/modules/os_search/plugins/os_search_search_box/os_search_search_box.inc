@@ -46,7 +46,7 @@ class os_search_search_box extends os_boxes_default {
       '#options' => array(NULL => t('All')) + $bundles,
       '#default_value' => !empty($bundle) ? $bundle : '-none-',
       '#ajax' => array(
-        'callback' => 'os_search_solr_vocabularies_switch',
+        'callback' => 'os_search_vocabularies_switch',
         'wrapper' => 'vocab',
       ),
     );
@@ -60,7 +60,7 @@ class os_search_search_box extends os_boxes_default {
       '#prefix' => '<div id="vocab">',
       '#suffix' => '</div>',
       '#ajax' => array(
-        'callback' => 'os_search_solr_terms_switch',
+        'callback' => 'os_search_terms_switch',
         'wrapper' => 'terms',
       ),
       '#default_value' => $this->options['vocab'],

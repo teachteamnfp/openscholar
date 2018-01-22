@@ -50,8 +50,12 @@ class OsSearchApiSolrService extends SearchApiSolrService
 
             // Bundles which belong for disabled apps should appear in the search.
             if ($bundles = array_keys(os_get_bundles(array(OS_DISABLED_APP)))) {
-                $f = $query->createFilter();
-                $f->condition('bundle', '(' . implode(' OR ', $bundles) . ')', '<>');
+                $f = $query->createFilter('OR');
+
+                foreach( $bundles as $bundle ) {
+                    $f->condition('bundle', $bundle, '<>');
+                }
+
                 $query->filter($f);
             }
         } elseif (variable_get('file_default_scheme', 'public') == 'private') {
