@@ -400,7 +400,7 @@
           pathAutoStatus = data;
         });
         scope.getUrlAlias = function () {
-          if (page_node_form && scope.name == 'title' && !scope.element.default_value) {
+          if (page_node_form && !scope.element.default_value) {
             scope.dataLoading = true;
             var queryArgs = {};
             var baseUrl = Drupal.settings.paths.vsite_home;
@@ -433,7 +433,7 @@
             var vsiteHome = angular.isDefined(Drupal.settings.paths.vsite_home) ? Drupal.settings.paths.vsite_home : '';
             scope.urlAlias = vsiteHome + '/' + angular.element("input[name='alias']").val();
           }
-        }, 2000)    
+        }, 1000)    
         var state;
         scope.editUrlAlias = function(evt) {
           state = !state;

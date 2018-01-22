@@ -50,7 +50,8 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
       foreach ($extra as $key => $form_field) {
         $form[$key] = $form_field;
       }
-      $form['title']['#type'] = 'os-node-title-textfield'; 
+      $form['title']['#type'] = 'os-node-title-textfield';
+      $form['label'] = $form['title'];
     }
     $extra_fields =  _field_invoke_default('form', 'node', $node, $form, $form_state);
     foreach ($extra_fields as $key => $field) {
@@ -201,6 +202,7 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
     unset($form['#space']);
     unset($form['max_revisions']);
     unset($form['revisions']);
+    unset($form['title']);
        
     return $form;
   }
@@ -220,7 +222,10 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
     return (count($result) > 0)  ? TRUE : FALSE;
 
   }
-
+  
+  /** Override this parent function to handle author and file field
+  * info.
+  */
   public function propertyValuesPreprocess($property_name, $value, $public_field_name) {
     switch ($property_name) {
       case 'author':
@@ -246,6 +251,46 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
         return parent::propertyValuesPreprocess($property_name, $value, $public_field_name);
     }
   }
+
+  public function unknownPropertyValuesPreprocess($entity, $property_name, $value, $processed_property, $processed_unknown_property) {
+    switch ($property_name) {
+      case 'date':
+        if (!empty($value)) {
+          $entity->created = strtotime($value);
+        }
+        break;
+
+      case 'noindex':
+        if (!empty($value)) {
+          $entity->noindex = $value;
+        }
+        break;
+      
+      case 'pathauto': 
+        if (empty($value) && !empty($processed_unknown_property['pathalias'])) {
+          $this->updatePathAlias($entity->nid, $processed_unknown_property['pathalias']);
+        }
+        else {
+          $entity->path['pathauto'] = TRUE;
+        }
+        break;
+      
+      case 'os_menu':
+        $link = array();
+        $link['link_path'] = 'node/' . $entity->nid;
+        $link['link_title'] = $value['link_title'];
+        $link['menu_name'] = $value['parent'];
+        if (!empty($value['enabled'])) {
+          vsite_menu_menu_link_save($link, $processed_property['og_group_ref']);
+        }
+        elseif ($mlid = vsite_menu_get_link_path($link['menu_name'], $link['link_path'])) {
+          vsite_menu_delete_menu_link($link['menu_name'], $mlid);
+        }
+        break;
+    }
+
+    return $entity;
+  }
   
   /**
    * Override this function to save fields value without exposing fields as 
@@ -269,10 +314,12 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
       $save = FALSE;
       $original_request = $request;
 
-      if (empty($original_request['title'])) {
+      if (empty($original_request['label'])) {
         throw new RestfulForbiddenException("Title field is required.");
       }
       else {
+        $original_request['title'] = $original_request['label'];
+        unset($original_request['label']);
         $processed_unknown_property = array();
         $processed_property = array();
 
@@ -297,32 +344,7 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
         $save = TRUE;
         $entity = entity_load_single($this->entityType, $wrapper->getIdentifier());
         foreach ($processed_unknown_property as $property_name => $value) {
-          if ($property_name == 'date' && !empty($value)) {
-            $entity->created = strtotime($value);
-          }
-          if ($property_name == 'noindex' && !empty($value)) {
-            $entity->noindex = $value;
-          }
-          if ($property_name == 'pathauto') {
-            if (empty($value) && !empty($processed_unknown_property['pathalias'])) {
-              $this->updatePathAlias($entity->nid, $processed_unknown_property['pathalias']);
-            }
-            else {
-              $entity->path['pathauto'] = TRUE;
-            }
-          }
-          if ($property_name == 'os_menu') {
-            $link = array();
-            $link['link_path'] = 'node/' . $entity->nid;
-            $link['link_title'] = $value['link_title'];
-            $link['menu_name'] = $value['parent'];
-            if (!empty($value['enabled'])) {
-              vsite_menu_menu_link_save($link, $processed_property['og_group_ref']);
-            }
-            elseif ($mlid = vsite_menu_get_link_path($link['menu_name'], $link['link_path'])) {
-              vsite_menu_delete_menu_link($link['menu_name'], $mlid);
-            }
-          }
+          $this->unknownPropertyValuesPreprocess($entity, $property_name, $value, $processed_property, $processed_unknown_property);
         }
         entity_save($this->entityType, $entity);
       }
