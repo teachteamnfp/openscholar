@@ -331,6 +331,9 @@ class OsNodeFormRestfulBase extends RestfulEntityBaseNode {
         throw new \RestfulBadRequestException('No values were sent with the request');
       }
     }
+    else {
+      return parent::setPropertyValues($wrapper, $null_missing_fields);
+    }
   }
   
   /**
