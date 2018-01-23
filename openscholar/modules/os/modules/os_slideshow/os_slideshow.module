@@ -79,8 +79,8 @@ function os_slideshow_form_slideshow_slide_node_form_alter(&$form, &$state, $for
   $form['field_image']['#suffix'] = t('Images must meet the minimum size requirements defined below. Unintended crop results are likely caused by undersized images.
     Minimum image size requirements:<br>
     <ul>
-      <li>Wide slideshow style = 980px x 330px
-      <li>Standard slideshow styles = 980px x 550px
+      <li>Wide slideshow style = 985px x 335px
+      <li>Standard slideshow styles = 985px x 555px
     </ul>
     <i>(acceptable file formats: png, jpg and gif)</i>
 ');
