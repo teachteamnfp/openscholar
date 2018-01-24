@@ -14,7 +14,7 @@ function cp_layout_full_form($form, $form_state){
 
   // Sort the site content alphabetically in the site section dropdown.
   $content = array_splice($contexts, 2);
-  sort($content);
+  asort($content);
   $contexts = array_merge($contexts, $content);
 
   $current = '';
