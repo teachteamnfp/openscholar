@@ -30,3 +30,6 @@ openscholar/1/
 openscholar/libraries/
 openscholar/modules/contrib/
 www/
+
+# Ignore css files which are result of sass compile
+**/os_style_override/css
