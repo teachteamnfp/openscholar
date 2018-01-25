@@ -1372,16 +1372,16 @@ function os_pages_entity_load($entities, $type) {
 /**
  * Implements hook_contextual_links_view_alter().
  */
-// function os_pages_contextual_links_view_alter(&$element, $items) {
-//   if (!$node = menu_get_object()) {
-//     return;
-//   }
+function os_pages_contextual_links_view_alter(&$element, $items) {
+  if (!$node = menu_get_object()) {
+    return;
+  }
 
-//   if ($node->type != 'page') {
-//     return;
-//   }
-//   $element['#links']['os-pages-edit'] = array(
-//     'title' => t('Edit'),
-//     'attributes' => array('node-form-modal' => 'page', 'nid' => $node->nid, 'nodetitle' => $node->title),
-//   );
-// }
+  if ($node->type != 'page') {
+    return;
+  }
+  $element['#links']['os-pages-edit'] = array(
+    'title' => t('Edit'),
+    'attributes' => array('node-form-modal' => 'page', 'nid' => $node->nid, 'nodetitle' => $node->title),
+  );
+}
