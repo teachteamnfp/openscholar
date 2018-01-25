@@ -193,7 +193,7 @@ function os_metatag_export_default() {
         'value' => '[node:title]',
       ),
       'og:description' => array(
-        'value' => preg_replace("/\[\[[^)]+\]/",'','[node:summary]',
+        'value' => preg_replace("/\[\[.*?\]\]/s",'','[node:summary]'),
       ),
       'og:type' => array(
         'value' => 'article',
