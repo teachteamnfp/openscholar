@@ -179,3 +179,6 @@ div.contextual-links-wrapper li.link-count-os-pages-edit span{
   text-align: center;
   line-height: 44px;
  }
+.ui-widget-overlay {
+  z-index: 301;
+}
