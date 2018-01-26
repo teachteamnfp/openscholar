@@ -3149,7 +3149,7 @@ function os_page_build(&$page) {
     }
     else {
       $warning_msg = t('This website or page content is accessible to authorized users.');
-      $warning_msg .= 'For access, please ' . l('log in here.', 'user/login', array('query' => array('destination' => $redirect['destination']) ));
+      $warning_msg .= ' For access, please ' . l('log in here.', 'user/login', array('query' => array('destination' => $redirect['destination']) ));
     }
 
     $page['content']['system_main']['main']['#markup'] = $warning_msg;
