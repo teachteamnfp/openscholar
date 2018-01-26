@@ -52,7 +52,7 @@ body {
      float: none;
 }
  .denied, .maintenance-page, body.page-site-register, body.logged-in.no-sidebars.page-user, body.not-logged-in.page-user {
-     background: #FFF;
+     background: #f8fafc;
      background-image: none !important;
      font-family: 'Helvetica neue', sans-serif;
      line-height: 1em;
@@ -91,7 +91,7 @@ body {
      padding: 0;
 }
  .denied #columns h1, .maintenance-page h1#site-name, .page-site-register #columns h1, .logged-in.no-sidebars.page-user #columns h1, .not-logged-in.page-user #columns h1 {
-     font-size: 2.5em;
+     font-size: 2.25em;
      margin: 0 !important;
      font-family: 'Helvetica neue', sans-serif;
      color: #555;
@@ -291,6 +291,18 @@ body {
 }
  fieldset.pin-fieldset legend, #user-login fieldset legend, .pin-button a, fieldset.pin-fieldset legend a, #user-login fieldset legend a {
      width: 300px;
+}
+.pin-button a, 
+#user-login fieldset legend a {
+    background-position: center right;
+    background-repeat: no-repeat;
+}
+.pin-button a {
+    background-image: url('../images/external-link.png');
+}
+
+#user-login fieldset legend a {
+    background-image: url('../images/plus.png');
 }
  .pin-button, fieldset.pin-fieldset legend, #user-login fieldset legend {
      background-color: transparent;
