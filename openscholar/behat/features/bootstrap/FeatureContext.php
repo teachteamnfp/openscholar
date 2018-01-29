@@ -4067,7 +4067,6 @@ class FeatureContext extends DrupalContext {
    */
   public function iOpenAdminPanelTo($text) {
     $output = $this->adminPanelOpen();
-    sleep(1);
     $page = $this->getSession()->getPage();
     $this->_captureJavaScriptConsoleErrors();
     //$elem = $page->find('xpath', "//*[text() = '{$text}']/ancestor::li[@admin-panel-menu-row]");
