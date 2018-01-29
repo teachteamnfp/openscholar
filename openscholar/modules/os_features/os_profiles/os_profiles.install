@@ -13,7 +13,7 @@ function os_profiles_update_7000() {
  */
 function os_profiles_update_7001() {
 if (module_exists('field_redirection')) {
-    module_enable(array('field_redirection'));
+    module_enable(array('field_redirection')); 
   }
 }
 
