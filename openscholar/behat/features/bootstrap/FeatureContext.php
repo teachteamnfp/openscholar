@@ -4067,19 +4067,11 @@ class FeatureContext extends DrupalContext {
    */
   public function iOpenAdminPanelTo($text) {
     $output = $this->adminPanelOpen();
-    print_r($output);
-    print "-------Admin panel open end----";
+    sleep(1);
     $page = $this->getSession()->getPage();
-    print_r($page);
-    print "-------Page end----";
-
     $this->_captureJavaScriptConsoleErrors();
-
     //$elem = $page->find('xpath', "//*[text() = '{$text}']/ancestor::li[@admin-panel-menu-row]");
     $elem = $page->find('xpath', "//li[@admin-panel-menu-row]/descendant::span[text()='$text']/ancestor::li[@admin-panel-menu-row][1]");
-    print_r($elem);
-    print "-------Element end----";
-
     if (!$elem) {
       $this->_printJavaScriptConsoleErrors();
       throw new \Exception("The link $text cannot be found in the admin panel.");
