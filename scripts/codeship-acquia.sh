@@ -68,14 +68,20 @@ $DRUSH make --no-core --contrib-destination drupal-org.make .
 	bower -q install
 )
 
+echo "Building sass files START"
+
 (
   # Build CSS files from SASS
   for DIR in modules/*; do
     if [ -d $DIR ] && [ -d $DIR/os_style_override ] ; then
+      echo $DIR/os_style_override/sass
       node-sass $DIR/os_style_override/sass -o $DIR/os_style_override/css
+      ls -la $DIR/os_style_override/css
     fi
   done
 )
+
+echo "Building sass files DONE"
 
 cd ../../
 $DRUSH make openscholar/openscholar/drupal-org-core.make $BUILD_ROOT/www-build
