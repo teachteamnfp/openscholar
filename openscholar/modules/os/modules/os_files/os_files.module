@@ -1822,7 +1822,6 @@ function os_files_modules_installed($modules){
  */
 function os_files_module_implements_alter(&$implementations, $hook) {
   if ($hook == 'file_default_displays_alter') {
-    dpm($implementations);
     unset($implementations['media']);
   }
 }
