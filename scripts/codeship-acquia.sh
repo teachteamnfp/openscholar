@@ -68,21 +68,6 @@ $DRUSH make --no-core --contrib-destination drupal-org.make .
 	bower -q install
 )
 
-echo "Building sass files START"
-
-(
-  # Build CSS files from SASS
-  for DIR in modules/*; do
-    if [ -d $DIR ] && [ -d $DIR/os_style_override ] ; then
-      echo $DIR/os_style_override/sass
-      node-sass $DIR/os_style_override/sass -o $DIR/os_style_override/css
-      ls -la $DIR/os_style_override/css
-    fi
-  done
-)
-
-echo "Building sass files DONE"
-
 cd ../../
 $DRUSH make openscholar/openscholar/drupal-org-core.make $BUILD_ROOT/www-build
 
@@ -128,6 +113,22 @@ else
 cp -R openscholar/temporary/* openscholar/openscholar/modules/contrib/
 git commit -a -m "Update Temporary Modules." || echo 'Nothing to commit.'
 fi
+
+echo "Building sass files START"
+
+(
+  # Build CSS files from SASS
+  for DIR in openscholar/openscholar/modules/*; do
+    if [ -d $DIR ] && [ -d $DIR/os_style_override ] ; then
+      echo $DIR/os_style_override/sass
+      node-sass $DIR/os_style_override/sass -o $DIR/os_style_override/css
+      ls -la $DIR/os_style_override/css
+    fi
+  done
+)
+
+echo "Building sass files DONE"
+
 git push origin $CI_BRANCH
 echo -e "\033[1;36mFINISHED BUILDING $CI_BRANCH ON HWPI1\e[0m"
 # space so I can see where one ends and another begins
