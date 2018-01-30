@@ -4070,7 +4070,7 @@ class FeatureContext extends DrupalContext {
     $page = $this->getSession()->getPage();
 
     $this->_captureJavaScriptConsoleErrors();
-    
+
     //$elem = $page->find('xpath', "//*[text() = '{$text}']/ancestor::li[@admin-panel-menu-row]");
     $elem = $page->find('xpath', "//li[@admin-panel-menu-row]/descendant::span[text()='$text']/ancestor::li[@admin-panel-menu-row][1]");
     if (!$elem) {
