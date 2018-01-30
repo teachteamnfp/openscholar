@@ -132,7 +132,7 @@ function hwpi_update_7008() {
 /**
  * Change registration "From:" email and also the admin mail address
  */
-function hwpi_update_7009() {
+function hwpi_update_7012() {
   variable_set('vsite_register_admin_mail', 'swap@lists.iq.harvard.edu, hwp@harvard.edu');
   variable_set('site_mail', 'hwp@harvard.edu');
 }
