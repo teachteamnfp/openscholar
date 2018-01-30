@@ -294,6 +294,7 @@ function cp_user_change_site_owner_form($form_state) {
       }
     }
   }
+
   $form['new_site_owner'] = array(
     '#type' => 'select',
     '#title' => t('Username'),

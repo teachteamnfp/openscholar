@@ -81,7 +81,7 @@ function media_browser_library_alter(&$libs) {
             'moduleRoot' => url(drupal_get_path('module', 'media_browser'), $disable),
           ),
           'version' => array(
-            'mediaBrowser' => '1.0.4'
+            'mediaBrowser' => '1.0.5'
           ),
           'extensionMap' => $map,
           'maximumFileSize' => $max_size,
