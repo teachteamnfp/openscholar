@@ -120,14 +120,3 @@ CUR_DIR=$(pwd)
   $BOWER install
   cd -
 )
-
-(
-  cd $BUILD_ROOT/openscholar
-  # Build CSS files from SASS
-  for DIR in modules/*; do
-    if [ -d $DIR ] && [ -d $DIR/os_style_override ] ; then
-      node-sass $DIR/os_style_override/sass -o $DIR/os_style_override/css
-    fi
-  done
-  cd -
-)
