@@ -276,7 +276,7 @@ body#widget {
     bottom: -29px;
 }
 #powered-by a {
-    background: url("../images/scholarbase-sprite.png") no-repeat scroll -14px -521px transparent;
+    background: url("../images/scholarbase-sprite.png?123") no-repeat scroll -14px -521px transparent;
     border: medium none !important;
     display: block;
     height: 26px;
