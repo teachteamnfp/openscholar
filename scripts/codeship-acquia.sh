@@ -114,20 +114,18 @@ cp -R openscholar/temporary/* openscholar/openscholar/modules/contrib/
 git commit -a -m "Update Temporary Modules." || echo 'Nothing to commit.'
 fi
 
-echo "Building sass files START"
+echo "Building sass files for hwpi1 START"
 
 (
   # Build CSS files from SASS
   for DIR in openscholar/openscholar/modules/*; do
     if [ -d $DIR ] && [ -d $DIR/os_style_override ] ; then
-      echo $DIR/os_style_override/sass
       node-sass $DIR/os_style_override/sass -o $DIR/os_style_override/css
-      ls -la $DIR/os_style_override/css
     fi
   done
 )
 
-echo "Building sass files DONE"
+echo "Building sass files for hwpi1 DONE"
 
 git push origin $CI_BRANCH
 echo -e "\033[1;36mFINISHED BUILDING $CI_BRANCH ON HWPI1\e[0m"
@@ -242,5 +240,19 @@ else
 	cp -R openscholar/temporary/* openscholar/openscholar/modules/contrib/
 	git commit -a -m "Update Temporary Modules."  || echo 'Nothing to commit.'
 fi
+
+echo "Building sass files for hwpi2 START"
+
+(
+  # Build CSS files from SASS
+  for DIR in openscholar/openscholar/modules/*; do
+    if [ -d $DIR ] && [ -d $DIR/os_style_override ] ; then
+      node-sass $DIR/os_style_override/sass -o $DIR/os_style_override/css
+    fi
+  done
+)
+
+echo "Building sass files for hwpi2 DONE"
+
 git push origin $CI_BRANCH
 echo "FINISHED BUILDING $CI_BRANCH ON HWPI2"
