@@ -75,15 +75,6 @@ $DRUSH make --no-core --contrib-destination drupal-org.make .
 	bower -q install
 )
 
-(
-  # Build CSS files from SASS
-  for DIR in modules/*; do
-    if [ -d $DIR ] && [ -d $DIR/os_style_override ] ; then
-      node-sass $DIR/os_style_override/sass -o $DIR/os_style_override/css
-    fi
-  done
-)
-
 cd ../../
 $DRUSH make openscholar/openscholar/drupal-org-core.make $BUILD_ROOT/www-build
 
@@ -146,7 +137,19 @@ cp -R openscholar/temporary/* openscholar/openscholar/modules/contrib/
 git commit -a -m "CI_MESSAGE" || echo 'Nothing to commit.'
 fi
 
+echo "Building sass files START"
+
+(
+  # Build CSS files from SASS
+  for DIR in openscholar/openscholar/modules/*; do
+    if [ -d $DIR ] && [ -d $DIR/os_style_override ] ; then
+      node-sass $DIR/os_style_override/sass -o $DIR/os_style_override/css
+    fi
+  done
+)
+
+echo "Building sass files DONE"
+
+
 git push origin $CI_BRANCH
 echo -e "\033[1;36mFINISHED BUILDING $CI_BRANCH ON BITBUCKET\e[0m"
-
-
