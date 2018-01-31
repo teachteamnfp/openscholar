@@ -346,7 +346,12 @@ function theme_os_publications_export_links($variables) {
   }
   $title = isset($node->nid) ? t('Download Citation') : (!isset($_REQUEST['page']) ? t('Download Citations') : '');
 
-  return theme('ctools_dropdown', array('links' => $links, 'title' => $title, 'attributes' => array('class' => array('biblio-export-buttons'))));
+  if (!empty($links)) {
+    return theme('ctools_dropdown', array('links' => $links, 'title' => $title, 'attributes' => array('class' => array('biblio-export-buttons'))));
+  }
+  else {
+    return "";
+  }
 }
 
 /**
