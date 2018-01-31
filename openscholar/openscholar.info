@@ -119,6 +119,7 @@ dependencies[] = cp_user
 dependencies[] = admin_panel
 dependencies[] = ap_settings_form
 dependencies[] = app_form
+dependencies[] = os_node_form
 dependencies[] = restful_messages
 
 ; Features
