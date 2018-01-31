@@ -1040,6 +1040,7 @@ function os_update_7057() {
 /**
  * Setting metatag_token_sanitize as true to filter out media tags
  */
-function os_update_7059() {
-  variable_set('metatag_token_sanitize', TRUE);
+function os_update_7058() {
+  $revert = array('os' => array('variable'));
+  features_revert($revert);
 }
