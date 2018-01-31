@@ -2975,8 +2975,8 @@ class FeatureContext extends DrupalContext {
    * @Given /^I edit the page "([^"]*)"$/
    */
   public function iEditThePage($title) {
-    $element = $this->getSession()->getPage()->find('xpath', "//*[@class='page-edit']/a[.='Edit']");
-    $this->visit($element->getAttribute('href'));
+    $element = $this->getSession()->getPage()->find('xpath', "//*[@class='page-edit']/span[.='Edit']");
+    $element->click();
   }
 
   /**
