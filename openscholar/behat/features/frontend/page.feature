@@ -7,7 +7,8 @@ Feature:
       And I visit "john/node/add/page"
       And I fill in "Title" with "Testing page"
       And I press "Save"
-      And I edit the page "Testing page"
+      And I click the big gear
+      And I click "Edit"
       And I save the page address
      When I fill in "Title" with "Other page"
      Then I verify the page kept the same
