@@ -386,7 +386,7 @@
       },
       template: '<label for="{{id}}">{{title}} <span ng-if="required" class="form-required">*</span></label>' +
       '<input type="textfield" ng-blur="getUrlAlias()" id="{{id}}" name="{{name}}" ng-class="{error: error}" ng-model="value" class="form-text" ng-disabled="element.disabled">' +
-      '<div ng-if="dataLoading">Loading...</div><div ng-if="urlAlias" class="url-alias"><strong>Link URL:</strong> {{urlAlias}} <a id="pathauto-extra-edit-path" ng-click="editUrlAlias($event)">edit</a></div>',
+      '<div ng-if="dataLoading">Loading...</div><div ng-if="urlAlias" class="url-alias"><strong>{{linkLabelText}}:</strong> {{urlAlias}} <a id="pathauto-extra-edit-path" ng-click="editUrlAlias($event)">edit</a></div>',
       
       link: function (scope, elem, attr) {
         scope.id = attr['inputId'];
@@ -401,6 +401,7 @@
         });
         scope.getUrlAlias = function () {
           if (page_node_form && !scope.element.default_value) {
+            scope.linkLabelText = 'Link URL';
             scope.dataLoading = true;
             var queryArgs = {};
             var baseUrl = Drupal.settings.paths.vsite_home;
@@ -432,6 +433,7 @@
           if (scope.element.default_value) {
             var vsiteHome = angular.isDefined(Drupal.settings.paths.vsite_home) ? Drupal.settings.paths.vsite_home : '';
             scope.urlAlias = vsiteHome + '/' + angular.element("input[name='alias']").val();
+            scope.linkLabelText = 'URL';
           }
         }, 1000)    
         var state;
