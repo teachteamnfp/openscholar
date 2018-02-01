@@ -42,6 +42,7 @@ projects[context][subdir] = "contrib"
 projects[context][version] = 3.6
 projects[context][patch][] = "http://drupal.org/files/os-custom-beta4.patch"
 projects[context][patch][] = "http://drupal.org/files/1855004.context.float_block_weights.patch"
+projects[context][patch][] = "https://raw.githubusercontent.com/openscholar/openscholar/fd23acf610135d4387a93020bf735c198d09fa60/patches/context-10085-breadcrumb_menu_context.patch"
 
 projects[contextual_annotation][subdir] = "contrib"
 projects[contextual_annotation][type] = module
