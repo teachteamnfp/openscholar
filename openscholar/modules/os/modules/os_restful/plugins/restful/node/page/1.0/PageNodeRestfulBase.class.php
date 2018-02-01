@@ -38,6 +38,7 @@ class PageNodeRestfulBase extends OsNodeRestfulBase {
         $form['os_css_class_fieldset']['#group'] = 'additional_settings';
         unset($form['os_css_class_fieldset']['#attributes']);
       }
+      unset($form['book']);
     }
 
     return $form;

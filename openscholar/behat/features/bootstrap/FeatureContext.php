@@ -1039,7 +1039,7 @@ class FeatureContext extends DrupalContext {
    * @Given /^I click the big gear$/
    */
   public function iClickTheBigGear() {
-    $big_gear = $this->getSession()->getPage()->find('css', "a.ctools-dropdown-link.ctools-dropdown-text-link");
+    $big_gear = $this->getSession()->getPage()->find('css', ".section_links a.ctools-dropdown-link.ctools-dropdown-text-link");
     if (! $big_gear) {
       throw new Exception("I did not locate the big gear icon.");
     }
@@ -2949,7 +2949,10 @@ class FeatureContext extends DrupalContext {
    * @Given /^I save the page address$/
    */
   public function iSaveThePageAddress() {
-    $element = $this->getSession()->getPage()->find('xpath', "//div[@class='form-region-main']//div[@class='description']");
+    $this->getSession()->wait(5000);
+    if (!$element = $this->getSession()->getPage()->find('css', '.ui-dialog.ng-node-form .form-region-main div.url-alias')) {
+      throw new Exception('The page node form failed to open.');
+    }
     $childrens = explode(" ", $element->getText());
 
     if (!$childrens) {
@@ -2969,6 +2972,18 @@ class FeatureContext extends DrupalContext {
     if ($this->url != $prev_url) {
       throw new Exception('The text has been changed during the title changing.');
     }
+  }
+
+  /**
+   * @Given /^I edit the page$/
+   */
+  public function iEditThePage() {
+    $element = $this->getSession()->getPage()->find('xpath', "//*[@class='page-edit']/span[.='Edit']");
+    if (!$element) {
+      throw new \Exception('The link was not found.');
+    }
+
+    $element->click();
   }
 
   /**

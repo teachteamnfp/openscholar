@@ -386,7 +386,7 @@
       },
       template: '<label for="{{id}}">{{title}} <span ng-if="required" class="form-required">*</span></label>' +
       '<input type="textfield" ng-blur="getUrlAlias()" id="{{id}}" name="{{name}}" ng-class="{error: error}" ng-model="value" class="form-text" ng-disabled="element.disabled">' +
-      '<div ng-if="dataLoading">Loading...</div><div ng-if="urlAlias" class="description"><strong>Link URL:</strong> {{urlAlias}} <a id="pathauto-extra-edit-path" ng-click="editUrlAlias($event)">edit</a></div>',
+      '<div ng-if="dataLoading">Loading...</div><div ng-if="urlAlias" class="url-alias"><strong>Link URL:</strong> {{urlAlias}} <a id="pathauto-extra-edit-path" ng-click="editUrlAlias($event)">edit</a></div>',
       
       link: function (scope, elem, attr) {
         scope.id = attr['inputId'];
