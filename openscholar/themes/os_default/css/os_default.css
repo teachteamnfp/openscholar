@@ -327,12 +327,13 @@ body {
 }
  #user-login .user-login-message-text {
      position: absolute;
-     width: 160px;
-     top: 10px;
-     right: 0px;
-     border: 1px solid #ccc;
-     padding: 8px;
-     z-index: 2;
+    width: 160px;
+    top: 10px;
+    right: 0px;
+    padding: 8px;
+    z-index: 2;
+    background-color: #f8fafc;
+    line-height: 20px;
 }
  .pin-button#pin-nvm {
      display: block;
