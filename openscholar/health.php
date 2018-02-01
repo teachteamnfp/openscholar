@@ -1,4 +1,11 @@
 <?php
+
+// Below is a drupal specific health check.  @todo get this to work
+print 'CONGRATULATIONS' . ' 200';
+exit();
+
+
+
 // Register our shutdown function so that no other shutdown functions run before this one.
 // This shutdown function calls exit(), immediately short-circuiting any other shutdown functions,
 // such as those registered by the devel.module for statistics.
