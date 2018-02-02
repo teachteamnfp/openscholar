@@ -80,13 +80,6 @@ function os_help_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'help_private_files_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/private-files#setting-options';
-  $export['help_private_files_url'] = $strongarm;
-
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
   $strongarm->name = 'help_links_url';
   $strongarm->value = 'http://docs.openscholar.harvard.edu/links-app#link-app-settings';
   $export['help_links_url'] = $strongarm;
@@ -320,9 +313,9 @@ function os_help_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'help_os_image_gallery';
+  $strongarm->name = 'help_os_image_gallery_url';
   $strongarm->value = 'http://docs.openscholar.harvard.edu/image-management';
-  $export['help_os_image_gallery'] = $strongarm;
+  $export['help_os_image_gallery_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
