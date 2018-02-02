@@ -294,9 +294,7 @@ body {
      position: absolute;
      padding: .04em 10px;
 }
- fieldset.pin-fieldset legend, #user-login fieldset legend, .pin-button a, fieldset.pin-fieldset legend a, #user-login fieldset legend a {
-     width: 300px;
-}
+
 .pin-button a, 
 #user-login fieldset legend a {
     background-position: center right;
