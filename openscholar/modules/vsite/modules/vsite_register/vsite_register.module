@@ -19,7 +19,6 @@ function vsite_register_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('vsite_register_form'),
     'access callback' => 'vsite_vsite_exists_access',
-    'file' => 'vsite_register.form.inc',
   );
 
   $items['admin/config/openscholar/vsite_register'] = array(
