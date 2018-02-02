@@ -304,6 +304,11 @@ body {
 }
 .pin-button a {
     background-image: url('../images/external-link.png');
+        background-color: #215990;
+    color: #fff !important;
+    text-decoration: none;
+    border-radius: 2px;
+    padding: 0 10px 0 20px;
 }
 #pin-login:after {
     content:'';
