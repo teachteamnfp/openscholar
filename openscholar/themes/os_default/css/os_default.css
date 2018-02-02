@@ -306,7 +306,7 @@ body {
     color: #fff !important;
     text-decoration: none;
     border-radius: 2px;
-    padding: 0 10px 0 10px;
+    padding: 0 25px 0 10px;
 }
 #pin-login:after {
     content:'';
