@@ -306,7 +306,9 @@ body {
     background-image: url('../images/external-link.png');
 }
 #pin-login:after {
-    content:'or';
+    content:'';
+    background-image: url('../images/or-separator.png');
+    
     position: relative;
     left:20px;
     top: 10px;
