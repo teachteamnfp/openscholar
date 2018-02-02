@@ -308,13 +308,13 @@ body {
 #pin-login:after {
     content:'';
     background-image: url('../images/or-separator.png');
-    
-    position: relative;
-    left:20px;
-    top: 10px;
-    width:100px;
-    height:50px;
-    color: #333;
+    background-repeat:no-repeat;
+    position: absolute;
+   
+    top: 60px;
+    width: 160px;
+    height:9px;
+
 }
 /*
 #user-login fieldset legend a {
@@ -329,6 +329,7 @@ body {
 }
  #pin-login.pin-button {
      width: 300px;
+     margin-bottom:45px;
 }
  fieldset#edit-pin-fieldset {
      background: #fff;
