@@ -308,7 +308,7 @@ body {
     color: #fff !important;
     text-decoration: none;
     border-radius: 2px;
-    padding: 0 10px 0 20px;
+    padding: 0 10px 0 10px;
 }
 #pin-login:after {
     content:'';
@@ -334,7 +334,7 @@ body {
 }
  #pin-login.pin-button {
      width: 300px;
-     margin-bottom:45px;
+     margin-bottom:33px;
 }
  fieldset#edit-pin-fieldset {
      background: #fff;
