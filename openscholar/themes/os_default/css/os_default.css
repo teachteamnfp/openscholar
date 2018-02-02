@@ -193,7 +193,7 @@ body {
      width: 850px;
 }
  .form-type-password a, .user-login-message-text a, .logged-in.no-sidebars.page-user ul.primary li a, .not-logged-in.page-user ul.primary li a, .logged-in.no-sidebars.page-user #content a {
-     color: #3A72AB;
+     color: #215990;
 }
  .add-full-name-wrapper {
      position: absolute;
@@ -305,10 +305,19 @@ body {
 .pin-button a {
     background-image: url('../images/external-link.png');
 }
-
+#pin-login:after {
+    content:'or';
+    position: relative;
+    left:20px;
+    top: 10px;
+    width:100px;
+    height:50px;
+    color: #333;
+}
+/*
 #user-login fieldset legend a {
     background-image: url('../images/plus.png');
-}
+}*/
  .pin-button, fieldset.pin-fieldset legend, #user-login fieldset legend {
      background-color: transparent;
      margin: 15px 0 0;
@@ -330,17 +339,18 @@ body {
     width: 160px;
     top: 10px;
     right: 0px;
-    padding: 8px;
+    padding: 25px 10px 10px 10px;
     z-index: 2;
     background-color: #f8fafc;
     line-height: 20px;
 }
  #user-login .user-login-message-text:before {
+     content:'';
      position: absolute;
-    width: 43px;
-    height:32px;
-    top: 10px;
-    right: 0px;
+    width: 48px;
+    height:48px;
+   top:-25px;
+   left:35%;
     background-image: url('../images/map-icon.png');
 }
  .pin-button#pin-nvm {
@@ -371,7 +381,7 @@ body {
      padding-top: 15px;
 }
  .maintenance-page a {
-     color: #3A72AB;
+     color: #215990;
 }
  .maintenance-page #logo {
      display: none;
