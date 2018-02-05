@@ -849,7 +849,6 @@ class OsFilesResource extends OsRestfulEntityCacheableBase {
     $fullname = $dir . $new_filename;
     $counter = 0;
     $collision = false;
-    error_log("Checking filename $fullname for duplicate");
     while (file_exists($fullname)) {
       $collision = true;
       $pos = strrpos($new_filename, '.');
