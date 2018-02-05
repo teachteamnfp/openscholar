@@ -82,4 +82,5 @@ features[variable][] = help_os_dataverse_dataset_url
 features[variable][] = help_os_dataverse_citation_url
 features[variable][] = help_os_dataverse_list_url
 features[variable][] = help_os_dataverse_search_url
+features[variable][] = help_cp_users_url
 features_exclude[dependencies][strongarm] = strongarm

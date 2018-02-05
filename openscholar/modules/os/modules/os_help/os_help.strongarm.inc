@@ -535,6 +535,13 @@ function os_help_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'help_os_addthis_url';
+  $strongarm->value = 'http://docs.openscholar.harvard.edu/addthis-widget';
+  $export['help_os_addthis_url'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'help_os_accordion_url';
   $strongarm->value = 'http://docs.openscholar.harvard.edu/accordion-widget';
   $export['help_os_accordion_url'] = $strongarm;
@@ -615,6 +622,13 @@ function os_help_strongarm() {
   $strongarm->name = 'getting_started_os';
   $strongarm->value = 'http://docs.openscholar.harvard.edu/getting-started-with-openscholar';
   $export['getting_started_os'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'help_cp_users_url';
+  $strongarm->value = 'http://docs.openscholar.harvard.edu/managing-users';
+  $export['help_cp_users_url'] = $strongarm;
  
   return $export;
 }
