@@ -347,3 +347,8 @@ h3 {
 .os-themes .theme-info .form-type-select select {
     max-width: 90px;
 }
+.ui-dialog .ui-dialog-titlebar button.ui-dialog-titlebar-close {
+ 
+    margin: -8px 15px 0;
+    
+}
