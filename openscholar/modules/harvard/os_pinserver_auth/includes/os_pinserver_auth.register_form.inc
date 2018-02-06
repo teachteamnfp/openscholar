@@ -4,7 +4,7 @@ include_once (drupal_get_path('module', 'vsite_register') . '/vsite_register.for
 /**
  * Menu callback; provides vsite_register_form for authorized users.
  */
-function os_pinserver_auth_vsite_register_form_page_old() {
+function os_pinserver_auth_vsite_register_form_page() {
   global $user;
 
   // Handle users not logged in already.
@@ -39,7 +39,11 @@ function os_pinserver_auth_vsite_register_form_page_old() {
   }
 }
 
-function os_pinserver_auth_vsite_register_form_page() {
+
+/**
+ * Helper function to check whether user has permission to create a new.
+ */
+function _os_pinserver_auth_vsite_register_form_page() {
   global $user;
 
   // Handle users not logged in already.

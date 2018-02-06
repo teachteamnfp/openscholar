@@ -75,7 +75,7 @@ class OsRestfulPurl extends \RestfulBase implements \RestfulDataProviderInterfac
    */
   public function check_exiting_sites($siteValue) {
     // Checking site creation permission
-    if (!vsite_vsite_exists_access() || (function_exists('pinserver_user_has_associated_pin') && !os_pinserver_auth_vsite_register_form_page())) {
+    if (!vsite_vsite_exists_access() || (module_exists('os_pinserver_auth') && !_os_pinserver_auth_vsite_register_form_page())) {
       $return['msg'] = "Not-Permissible";
       return $return;
     }
