@@ -1038,8 +1038,16 @@ function os_update_7057() {
 }
 
 /**
- * Enable the os_site_creation module for new site creation forms.
+ * Setting metatag_token_sanitize as true to filter out media tags
  */
 function os_update_7058() {
+  $revert = array('os' => array('variable'));
+  features_revert($revert);
+}
+
+/**
+ * Enable the os_site_creation module for new site creation forms.
+ */
+function os_update_7059() {
   module_enable(array('os_site_creation'));
 }
