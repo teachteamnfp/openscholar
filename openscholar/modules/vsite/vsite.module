@@ -863,11 +863,11 @@ function vsite_vsite_exists_access($vsites = array()) {
     if ($path_site_register) {
       // Clear message queue.
       //drupal_get_messages();
-      /*drupal_set_message(t('You have already created the maximum of %num OpenScholar !sites. !link', array(
+      drupal_set_message(t('You have already created the maximum of %num OpenScholar !sites. !link', array(
         '%num' => count($vsites),
         '!sites' => count($vsites) > 1 ? 'sites' : 'site',
         '!link' => l(t('Go to your site' . (count($vsites) > 1 ? 's.' : '.')), count($vsites) > 1 ? 'user' : $vsites[0]->get_absolute_url())
-      )), 'error');*/
+      )), 'error');
     }
 
     return FALSE;
