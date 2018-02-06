@@ -127,7 +127,7 @@ body {
  .page-site-register .description {
      font-size: .75em;
 }
- .page-site-register #edit-actions #edit-submit, .not-logged-in.page-user #edit-actions #edit-submit {
+ .page-site-register #edit-actions #edit-submit {
      padding: 5px 10px;
      border: none;
      color: #fff;
@@ -159,22 +159,27 @@ body {
      -moz-border-radius: 5px 5px 0 0;
      border-radius: 5px 5px 0 0;
 }
- .logged-in.no-sidebars.page-user ul.primary li a, .not-logged-in.page-user ul.primary li a {
+ .logged-in.no-sidebars.page-user ul.primary li a, 
+ .not-logged-in.page-user ul.primary li a {
+    background-color: #FFF;
+     border-bottom: none;
+     border-width: 0;
+}
+
+ .logged-in.no-sidebars.page-user ul.primary li.active a, 
+ .not-logged-in.page-user ul.primary li a.active {
      background-color: #FFF;
      border-color: #e1e1e1;
      border-width: 1px;
      margin-right: 0;
      padding: 0.5em 15px;
      font-family: sans-serif;
-     border-radius: 5px 5px 0 0;
-     -moz-border-radius: 5px 5px 0 0;
-     border-radius: 5px 5px 0 0;
+     border-radius: 0;
+     -moz-border-radius: 0;
+     border-radius: 0;
      font-size: 14px;
 }
- .logged-in.no-sidebars.page-user ul.primary li.active a, .not-logged-in.page-user ul.primary li.active a {
-     background-color: #f7f7f7;
-     border-bottom: 1px solid #f7f7f7;
-}
+
  .logged-in.no-sidebars.page-user ul.primary li.active a:hover, .not-logged-in.page-user ul.primary li.active a:hover {
      text-decoration: none;
 }
@@ -192,7 +197,7 @@ body {
  .page-site-register #footer, .logged-in.no-sidebars.page-user #footer {
      width: 850px;
 }
- .form-type-password a, .user-login-message-text a, .logged-in.no-sidebars.page-user ul.primary li a, .not-logged-in.page-user ul.primary li a, .logged-in.no-sidebars.page-user #content a {
+ .form-type-password a, .user-login-message-text a, .logged-in.no-sidebars.page-user ul.primary li a, .logged-in.no-sidebars.page-user #content a {
      color: #215990;
 }
  .add-full-name-wrapper {
@@ -252,6 +257,7 @@ body {
      border-radius: 4px;
      background: #FF3A2D;
 }
+.not-logged-in.page-user #edit-actions #edit-submit,
  .pin-button a, #edit-login, #edit-back, fieldset.pin-fieldset legend a, #user-login fieldset legend a, .page-site-register .form-submit, .logged-in.no-sidebars.page-user #content .user-add-website, .logged-in.no-sidebars.page-user #content .add-subsite, .os-green-button {
      padding: 10px 10px;
      border: none;
@@ -332,7 +338,7 @@ body {
 }
  #pin-login.pin-button {
      width: 300px;
-     margin-bottom:33px;
+     margin-bottom:42px;
 }
  fieldset#edit-pin-fieldset {
      background: #fff;
