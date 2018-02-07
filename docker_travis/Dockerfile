@@ -1,6 +1,6 @@
 FROM gizra/drupal-lamp
 
-ADD .. /var/www/html/openscholar
+ADD . /var/www/html/openscholar
 WORKDIR /var/www/html/openscholar
 
 # Add a bash script to finalize all
