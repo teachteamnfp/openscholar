@@ -10,7 +10,7 @@ set -e
 #DEBUG=1
 cd ..
 docker build -f docker_travis/Dockerfile -t openscholar .
-docker run -f docker_travis/Dockerfile -it -p 8080:80 -e TEST_SUITE=${TEST_SUITE} -e DOCKER_DEBUG=${DEBUG} openscholar
+docker run -it -p 8080:80 -e TEST_SUITE=${TEST_SUITE} -e DOCKER_DEBUG=${DEBUG} openscholar
 
 # After the docker will finish the command above it will terminate it self.
 # In order to keep docker up and running you need to:
