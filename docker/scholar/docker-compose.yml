@@ -43,7 +43,7 @@ services:
       - ../../:/var/www/html:cached
       - ./drushrc.php:/var/www/html/www/sites/all/drush/drushrc.php:cached
       - ../../www/sites/scholar/settings.php:/var/www/html/www/sites/default/settings.php:cached
-      - ../../ww/sites/scholar/files:/var/www/html/ww/sites/default/files:cached
+      - ../../www/sites/scholar/files:/var/www/html/www/sites/default/files:cached
     labels:
       - 'traefik.backend=openscholar_scholar_apache_1'
       - 'traefik.port=80'
@@ -96,8 +96,8 @@ services:
 #      - 'traefik.port=8025'
 #      - 'traefik.frontend.rule=Host:mailhog.drupal.docker.localhost'
 
-#  memcached:
-#    image: wodby/memcached:1.4-2.0.0
+  memcached:
+    image: wodby/memcached:1.4-2.0.0
 
 #  rsyslog:
 #    image: wodby/rsyslog
