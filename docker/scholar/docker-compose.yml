@@ -96,8 +96,8 @@ services:
 #      - 'traefik.port=8025'
 #      - 'traefik.frontend.rule=Host:mailhog.drupal.docker.localhost'
 
-  memcached:
-    image: wodby/memcached:1.4-2.0.0
+#  memcached:
+#    image: wodby/memcached:1.4-2.0.0
 
 #  rsyslog:
 #    image: wodby/rsyslog
