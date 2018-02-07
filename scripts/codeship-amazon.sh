@@ -144,9 +144,15 @@ echo "Building sass files START"
   for DIR in openscholar/openscholar/modules/*; do
     if [ -d $DIR ] && [ -d $DIR/os_style_override ] ; then
       node-sass $DIR/os_style_override/sass -o $DIR/os_style_override/css
+      git add $DIR/os_style_override/css
     fi
   done
 )
+
+STAGED_FILES=$(git diff --name-only --cached)
+if [ "$STAGED_FILES" ]; then
+  git commit -m "Update override css files"
+fi
 
 echo "Building sass files DONE"
 
