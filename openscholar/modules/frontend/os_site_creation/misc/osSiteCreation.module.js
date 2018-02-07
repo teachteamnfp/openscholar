@@ -114,7 +114,7 @@
           $scope.themes.others[key].flavorKey = item.key;
           angular.forEach(value.flavorOptions, function(v, k) {
             if (v.key == item.key) {
-              if (v.screenshot != '/') {
+              if (v.screenshot.indexOf('png') > -1) {
                 $scope.themes.others[key].screenshot = v.screenshot;
               } else {
                 $scope.themes.others[key].screenshot = $scope.themes.others[key].defaultscreenshot;
