@@ -95,7 +95,7 @@ body {
  .not-logged-in.page-user #columns #tasks {
      margin-bottom: 2em;
      margin-top: 2em;
-     border-bottom: 1px solid #ccc;
+     border-bottom: 1px solid #e1e1e1;
      padding-bottom: 6px;
 }
  .page-site-register #columns, .logged-in.no-sidebars.page-user #columns {
@@ -173,6 +173,7 @@ body {
     background-color: #FFF;
      border-bottom: none;
      border-width: 0;
+         font-size: 14px;
 }
 
  .logged-in.no-sidebars.page-user ul.primary li.active a, 
@@ -276,7 +277,7 @@ body {
      -moz-border-radius: 2px;
      border-radius: 2px;
      background: #215990;
-     width: 63%;
+        width: auto;
 }
  .pin-button a, #user-login fieldset legend a, .pin-button a:hover, #user-login fieldset legend a:hover {
      padding: 0;
@@ -290,10 +291,8 @@ body {
      background: #fff;
      text-decoration: underline;
 }
- .pin-button-inline {
-     display: inline-block;
-     width: 100px;
-     margin: 0 3px 0 0;
+#edit-login {
+    width: 63%;
 }
  .logged-in.no-sidebars.page-user #content .add-subsite a {
      color: #FFFFFF;
@@ -310,11 +309,7 @@ body {
      padding: .04em 10px;
 }
 
-.pin-button a, 
-#user-login fieldset legend a {
-    background-position: center right;
-    background-repeat: no-repeat;
-}
+.pin-button a:hover,
 .pin-button a {
     background-image: url('../images/external-link.png');
     background-color: #215990;
@@ -323,6 +318,7 @@ body {
     border-radius: 2px;
     padding: 3px 33px 3px 15px;
     background-position: 97% 5px;
+    background-repeat: no-repeat;
 }
 #pin-login:after {
     content:'';
@@ -335,10 +331,11 @@ body {
     height:9px;
 
 }
-/*
-#user-login fieldset legend a {
-    background-image: url('../images/plus.png');
-}*/
+.pin-button:hover,
+fieldset.pin-fieldset legend:hover,
+#user-login fieldset legend:hover {
+  background-color: transparent;
+}
  .pin-button, fieldset.pin-fieldset legend, #user-login fieldset legend {
      background-color: transparent;
      margin: 13px 0 0;
@@ -349,7 +346,7 @@ body {
 }
  #pin-login.pin-button {
      width: 300px;
-     margin-bottom:42px;
+     margin-bottom:47px;
 }
  fieldset#edit-pin-fieldset {
      background: #fff;
