@@ -86,8 +86,10 @@ body {
     clip-path: polygon(0 0, 100% 0, 100% 75%, 0 100%);
 }
  .not-logged-in.page-user #columns #tasks {
-     margin-bottom: .5em;
+     margin-bottom: 2em;
      margin-top: 2em;
+     border-bottom: 1px solid #ccc;
+     padding-bottom: 6px;
 }
  .page-site-register #columns, .logged-in.no-sidebars.page-user #columns {
      width: 700px;
@@ -308,11 +310,12 @@ body {
 }
 .pin-button a {
     background-image: url('../images/external-link.png');
-        background-color: #215990;
+    background-color: #215990;
     color: #fff !important;
     text-decoration: none;
     border-radius: 2px;
-    padding: 2px 25px 0 10px;
+    padding: 3px 33px 3px 15px;
+    background-position: 97% 5px;
 }
 #pin-login:after {
     content:'';
