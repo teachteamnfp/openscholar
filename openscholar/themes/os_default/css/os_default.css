@@ -267,7 +267,7 @@ body {
      border-radius: 4px;
      background: #FF3A2D;
 }
-.not-logged-in.page-user #edit-actions #edit-submit,
+#edit-submit,
  .pin-button a, #edit-login, #edit-back, fieldset.pin-fieldset legend a, #user-login fieldset legend a, .page-site-register .form-submit, .logged-in.no-sidebars.page-user #content .user-add-website, .logged-in.no-sidebars.page-user #content .add-subsite, .os-green-button {
      padding: 10px 10px;
      border: none;
@@ -291,6 +291,7 @@ body {
      background: #fff;
      text-decoration: underline;
 }
+#edit-submit,
 #edit-login {
     width: 63%;
 }
@@ -338,7 +339,7 @@ fieldset.pin-fieldset legend:hover,
 }
  .pin-button, fieldset.pin-fieldset legend, #user-login fieldset legend {
      background-color: transparent;
-     margin: 13px 0 0;
+     margin: 11px 0 0;
 }
  #user-login fieldset, .pin-button, fieldset.pin-fieldset legend, #user-login fieldset legend {
      padding-left: 0;
