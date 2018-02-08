@@ -295,6 +295,11 @@ function cp_user_change_site_owner_form($form_state) {
     }
   }
 
+  $description = "";
+  if (module_exists('pinserver') && variable_get('pinserver_pin_url', FALSE)) {
+    $description .= t('Only users who have linked their OpenScholar accounts to HarvardKey are listed.') . ' ' . l('Learn more about linking accounts', 'http://docs.openscholar.harvard.edu/logging-your-site#linking-your-harvardkey-to-your-openscholar-account', array('attributes' => array('target' => '_blank', 'rel' => 'noopener'))) . '.';
+  }
+
   $form['new_site_owner'] = array(
     '#type' => 'select',
     '#title' => t('Username'),
@@ -302,6 +307,7 @@ function cp_user_change_site_owner_form($form_state) {
     '#description' => $description,
     '#options' => $options,
   );
+  dsm($form);
 
   // Builds and returns a confirmation form.
   return confirm_form($form, t('Change Site Ownership'), 'cp/users', '', t('Save'), t('Cancel'));
