@@ -56,7 +56,7 @@ body {
 
 #edit-pin-fieldset input.form-text {
 	background-image:none;
-	
+	    width: 53%;
 }
 
 #edit-pin-fieldset input.form-text:after {
@@ -100,7 +100,7 @@ body {
     -moz-box-shadow: 14px 17px 15px -1px rgba(0,0,0,0.05);
     box-shadow: 14px 17px 15px -1px rgba(0,0,0,0.05);
 }
-#page-wrapper:before {
+.not-logged-in.no-sidebars.page-user.navbar-off #page-wrapper:before {
    position: absolute;
     top: 0;
     left: 0;
@@ -313,7 +313,7 @@ body {
 }
 #edit-submit,
 #edit-login {
-    width: 63%;
+    width: 56%;
 }
  .logged-in.no-sidebars.page-user #content .add-subsite a {
      color: #FFFFFF;
@@ -348,7 +348,7 @@ body {
     position: absolute;
    
     top: 67px;
-    width: 160px;
+    width: 100%;
     height:9px;
 
 }
@@ -367,7 +367,7 @@ fieldset.pin-fieldset legend:hover,
 }
  #pin-login.pin-button {
      width: 300px;
-     margin-bottom:47px;
+     margin-bottom:48px;
 }
  fieldset#edit-pin-fieldset {
      background: #fff;
