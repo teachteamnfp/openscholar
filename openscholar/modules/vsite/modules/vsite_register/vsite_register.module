@@ -185,7 +185,6 @@ function vsite_register_block_view($delta = '') {
     );
 
     if ($text == 'Create Your Site Here' && !user_is_anonymous()) {
-      $text = "Create Your Site";
       // user is either loggedin by pin or os account
       $markup = '<site-creation-form>' . l($text, $path, $options) . '</site-creation-form>';
     } else {

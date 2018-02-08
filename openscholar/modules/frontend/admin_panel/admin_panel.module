@@ -26,16 +26,14 @@ function admin_panel_page_alter(&$page) {
  * Adds the user_panel angular library.
  */
 function admin_panel_preprocess_page(&$vars) {
-	//if (user_is_logged_in() && variable_get('admin_panel_enabled', FALSE)) {
-    drupal_add_library('admin_panel','user_panel');
-    os_common_angular_apps('UserPanel');
+  drupal_add_library('admin_panel','user_panel');
+  os_common_angular_apps('UserPanel');
 
-    if (admin_panel_is_closed()) {
-      $vars['classes_array'][] = 'admin-menu-closed';
-    }
+  if (admin_panel_is_closed()) {
+    $vars['classes_array'][] = 'admin-menu-closed';
+  }
 
-    drupal_add_js(array('admin_panel' => array('purl_base_domain' => variable_get('purl_base_domain'))), 'setting');
-	//}
+  drupal_add_js(array('admin_panel' => array('purl_base_domain' => variable_get('purl_base_domain'))), 'setting');
 }
 
 /**
