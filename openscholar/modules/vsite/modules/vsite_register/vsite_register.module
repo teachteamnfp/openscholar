@@ -183,7 +183,7 @@ function vsite_register_block_view($delta = '') {
         'id' => 'get-your-site-block',
       ),
     );
-    if ($text == 'Create Your Site Here' && (vsite_vsite_exists_access() || (module_exists('os_pinserver_auth') && _os_pinserver_auth_vsite_register_form_page()))) {
+    if ($text == 'Create Your Site Here' && (vsite_vsite_exists_access()) {
       // user is either loggedin by pin or os account
       $markup = '<site-creation-form>' . l($text, $path, $options) . '</site-creation-form>';
     } else {
