@@ -49,9 +49,29 @@ body {
 }
 /* LOG IN and USER ACCOUNT PAGES */
 
+.not-logged-in.no-sidebars.page-user.navbar-off #page {
+    position:initial;
+}
+
+
 #edit-pin-fieldset input.form-text {
 	background-image:none;
 	
+}
+
+#edit-pin-fieldset input.form-text:after {
+    border-left: 2px solid green;
+    content: "";
+    display: block;
+    width: 3px;
+   
+    height: 0;
+    transition:all .250s;
+}
+#edit-pin-fieldset input.form-text:focus:after {
+   
+    height: 100%;
+   
 }
 
 
