@@ -264,7 +264,7 @@ input[type="radio"] {
     *width: 13px;
 }
 /* Addresses styling for 'hidden' attribute not present in IE7/8/9, FF3, S4 */
-
+.field-name-field-migrate-example-gender,
 [hidden] {
     display: none;
 }
@@ -564,4 +564,9 @@ div.ctools-modal-content #os-mailchimp-form .fieldset-legend {
 form[id^="os-mailchimp-form--"] .form-item label,
 div.ctools-modal-content #os-mailchimp-form .form-item label {
     float: none;
+}
+form[id^="os-mailchimp-form--"] input.form-text {
+
+width:auto;
+
 }

@@ -206,6 +206,17 @@ function os_reports_site_form($form, &$form_state) {
     ),
   );
   if (module_exists('os_pinserver_auth') && variable_get('pinserver_pin_url', FALSE)) {
+    $form['columns_set']['columns']['site_owner_linked_huid'] = array(
+      '#title' => 'Site owner has linked HKey',
+      '#type' => 'checkbox',
+      '#attributes' => array(
+        'ng-model' => 'queryform.columns.site_owner_linked_huid',
+        'ng-click' => "updateCheckedValues('columns', 'site_owner_linked_huid')",
+        'value' => 'site_owner_linked_huid',
+      ),
+    );
+  }
+  if (module_exists('os_pinserver_auth') && variable_get('pinserver_pin_url', FALSE)) {
     $form['columns_set']['columns']['site_owner_huid'] = array(
       '#title' => 'Site owner HUID',
       '#type' => 'checkbox',
@@ -288,13 +299,58 @@ function os_reports_site_form($form, &$form_state) {
       'value' => 'preset',
     ),
   );
+  $form['columns_set']['columns']['num_nodes'] = array(
+    '#title' => 'Number of posts in site',
+    '#type' => 'checkbox',
+    '#attributes' => array(
+      'ng-model' => 'queryform.columns.num_nodes',
+      'ng-click' => "updateCheckedValues('columns', 'num_nodes')",
+      'value' => 'num_nodes',
+    ),
+  );
+  $form['columns_set']['columns']['num_files'] = array(
+    '#title' => 'Number of files associated with site',
+    '#type' => 'checkbox',
+    '#attributes' => array(
+      'ng-model' => 'queryform.columns.num_files',
+      'ng-click' => "updateCheckedValues('columns', 'num_files')",
+      'value' => 'num_files',
+    ),
+  );
+  $form['columns_set']['columns']['num_widgets'] = array(
+    '#title' => 'Number of widgets in site',
+    '#type' => 'checkbox',
+    '#attributes' => array(
+      'ng-model' => 'queryform.columns.num_widgets',
+      'ng-click' => "updateCheckedValues('columns', 'num_widgets')",
+      'value' => 'num_widgets',
+    ),
+  );
+  $form['columns_set']['columns']['num_members'] = array(
+    '#title' => 'Number of site members',
+    '#type' => 'checkbox',
+    '#attributes' => array(
+      'ng-model' => 'queryform.columns.num_members',
+      'ng-click' => "updateCheckedValues('columns', 'num_members')",
+      'value' => 'num_members',
+    ),
+  );
+  $form['columns_set']['columns']['num_redirects'] = array(
+    '#title' => 'Number of redirects in site',
+    '#type' => 'checkbox',
+    '#attributes' => array(
+      'ng-model' => 'queryform.columns.num_redirects',
+      'ng-click' => "updateCheckedValues('columns', 'num_redirects')",
+      'value' => 'num_redirects',
+    ),
+  );
   $handler = restful_get_restful_handler('report_sites');
   $form['range'] = array(
     '#value' => $handler->getRange(),
     '#type' => 'hidden',
     '#attributes' => array(
       'ng-model' => 'params.range',
-      'ng-init' => "params.range = '" . $handler->getRange() . "'",
+      'ng-init' => "params.range = " . $handler->getRange(),
     ),
   );
 
@@ -322,6 +378,7 @@ function os_reports_site_form($form, &$form_state) {
   return $form;
 }
 
+// download CSV of report results
 function os_reports_site_form_submit($form, &$form_state) {
   $form_state['rebuild'] = TRUE;
   $params = $form_state['input'];
@@ -350,7 +407,6 @@ function os_reports_site_form_submit($form, &$form_state) {
   $results = $handler->post('', $params);
 
   if ($results) {
-    $operations = array();
     $headers = array_keys($results[0]);
     $operations = array(array("os_reports_assemble_header_row", array($headers)));
 

@@ -207,7 +207,7 @@ function vsite_register_form($form, &$state) {
     );
 
     if (module_exists('pinserver') && variable_get('pinserver_pin_url', FALSE)) {
-      $form['user_fieldset']['existing_username']['#description'] .= ' ' . t('Only users who have linked their OpenScholar accounts to HarvardKey are listed.') . ' ' . l('Learn more about linking accounts', 'http://docs.openscholar.harvard.edu/logging-your-site#linking-your-harvardkey-to-your-openscholar-account', array('attributes' => array('target' => '_blank', 'rel' => 'noopener')));
+      $form['user_fieldset']['existing_username']['#description'] .= ' ' . t('Only users who have linked their OpenScholar accounts to HarvardKey are listed.') . ' ' . l('Learn more about linking accounts', 'https://harvard.service-now.com/ithelp?id=kb_article&sys_id=bcb7c5eadbba0fc0a914fff31d9619dc', array('attributes' => array('target' => '_blank', 'rel' => 'noopener')));
     }
 
       // Prepares flag for JS to set when create new user is clicked.
@@ -596,7 +596,7 @@ function _vsite_register_validate($element, &$values) {
         if (module_exists('password_policy')) {
           //borrowed from `password_policy_user_profile_form_validate()`
           $account = user_load(0);
-          $policies = PasswordPolicy::matched_policies($account);
+          $policies = PasswordPolicy::matchedPolicies($account);
           $errors = array();
           foreach ($policies as $policy) {
             $errors = $errors + $policy->check($pass1, $account);
