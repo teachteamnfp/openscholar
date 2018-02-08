@@ -185,7 +185,7 @@ function vsite_register_block_view($delta = '') {
     );
 
     global $user;
-    if ($text == 'Create Your Site Here' && ($user->uid || (module_exists('os_pinserver_auth') && _os_pinserver_auth_vsite_register_form_page()))) {
+    if ($text == 'Create Your Site Here' && $user->uid) {
       // user is either loggedin by pin or os account
       $markup = '<site-creation-form>' . l($text, $path, $options) . '</site-creation-form>';
     } else {
