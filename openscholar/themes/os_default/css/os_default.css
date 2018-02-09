@@ -55,22 +55,24 @@ h2 {
 .not-logged-in.no-sidebars.page-user.navbar-off #page {
 	position: initial;
 }
-#user-login input.form-text,
-#edit-pin-fieldset input.form-text {
+#user-login input.form-text
+/* #edit-pin-fieldset input.form-text */ {
 	background-image: none;
 	width: 53%;
-}
-#edit-pin-fieldset input.form-text:after {
-	border-left: 2px solid green;
-	content: "";
-	display: block;
-	width: 3px;
-	height: 0;
 	transition: all .250s;
 }
-#edit-pin-fieldset input.form-text:focus:after {
-	height: 100%;
+#user-login input.form-text#edit-name {
+	background-image: url('../images/person.svg');
+	background-size: 53%;
+	
 }
+
+#user-login input.form-text#edit-name:focus {
+	background-image: url('../images/person.svg');
+	background-size: 30%;
+	
+}
+
 .denied #footer,
 .page-site-register #footer,
 .logged-in.no-sidebars.page-user #footer,
