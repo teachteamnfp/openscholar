@@ -88,7 +88,7 @@ function os_help_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'doc_base_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu';
+  $strongarm->value = 'https://help.theopenscholar.com';
   $export['doc_base_url'] = $strongarm;
 
   $strongarm = new stdClass();
