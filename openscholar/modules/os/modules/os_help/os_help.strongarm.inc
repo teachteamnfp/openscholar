@@ -18,7 +18,7 @@ function os_help_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_redirect_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/global-site-settings#url-redirects';
+  $strongarm->value = 'https://help.theopenscholar.com/global-site-settings#url-redirects';
   $export['help_redirect_url'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -32,56 +32,56 @@ function os_help_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_booklet_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/booklet#booklet-app-settings';
+  $strongarm->value = 'https://help.theopenscholar.com/booklet#booklet-app-settings';
   $export['help_booklet_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_dataverse_widget_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/dataverse-dataset-widget';
+  $strongarm->value = 'https://help.theopenscholar.com/dataverse-dataset-widget';
   $export['help_dataverse_widget_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_dataverse_citation_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/dataverse-dataset-citation';
+  $strongarm->value = 'https://help.theopenscholar.com/dataverse-dataset-citation';
   $export['help_dataverse_citation_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_dataverse_list_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/dataverse-list-widget';
+  $strongarm->value = 'https://help.theopenscholar.com/dataverse-list-widget';
   $export['help_dataverse_list_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_dataverse_search_box_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/dataverse-search-box';
+  $strongarm->value = 'https://help.theopenscholar.com/dataverse-search-box';
   $export['help_dataverse_search_box_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_faq_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/faq-app#faq-app-settings';
+  $strongarm->value = 'https://help.theopenscholar.com/faq-app#faq-app-settings';
   $export['help_faq_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_events_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/events-app#events-app-settings';
+  $strongarm->value = 'https://help.theopenscholar.com/events-app#events-app-settings';
   $export['help_events_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_links_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/links-app#link-app-settings';
+  $strongarm->value = 'https://help.theopenscholar.com/links-app#link-app-settings';
   $export['help_links_url'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -95,91 +95,91 @@ function os_help_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_site_visibility_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/private-files#setting-options';
+  $strongarm->value = 'https://help.theopenscholar.com/private-files#setting-options';
   $export['help_site_visibility_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_custom_domain_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/apply-a-custom-domain';
+  $strongarm->value = 'https://help.theopenscholar.com/apply-a-custom-domain';
   $export['help_custom_domain_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_subsite_theme_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/subsite-themes';
+  $strongarm->value = 'https://help.theopenscholar.com/subsite-themes';
   $export['help_subsite_theme_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_search_engine_optimization_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/global-site-settings#search-engine-optimization';
+  $strongarm->value = 'https://help.theopenscholar.com/global-site-settings#search-engine-optimization';
   $export['help_search_engine_optimization_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_favicon_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/adding-site-favicon';
+  $strongarm->value = 'https://help.theopenscholar.com/adding-site-favicon';
   $export['help_favicon_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_breadcrumbs_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/enable-breadcrumbs';
+  $strongarm->value = 'https://help.theopenscholar.com/enable-breadcrumbs';
   $export['help_breadcrumbs_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_blog_comments_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/blogs#blog-settings';
+  $strongarm->value = 'https://help.theopenscholar.com/blogs#blog-settings';
   $export['help_blog_comments_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_analytics_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/global-site-settings#google-analytics';
+  $strongarm->value = 'https://help.theopenscholar.com/global-site-settings#google-analytics';
   $export['help_analytics_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_long_list_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/global-site-settings#long-list-display';
+  $strongarm->value = 'https://help.theopenscholar.com/global-site-settings#long-list-display';
   $export['help_long_list_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_publications_url';
-  $strongarm->value = 'https://docs.openscholar.harvard.edu/publications-settings';
+  $strongarm->value = 'https://help.theopenscholar.com/publications-settings';
   $export['help_publications_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_taxonomy_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/categorizing-your-content-taxonomy';
+  $strongarm->value = 'https://help.theopenscholar.com/categorizing-your-content-taxonomy';
   $export['help_taxonomy_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'privacy_policy_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/global-site-settings#privacy-policy';
+  $strongarm->value = 'https://help.theopenscholar.com/global-site-settings#privacy-policy';
   $export['privacy_policy_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_site_login_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/logging-your-site';
+  $strongarm->value = 'https://help.theopenscholar.com/logging-your-site';
   $export['help_site_login_url'] = $strongarm;
 
 
@@ -191,35 +191,35 @@ function os_help_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_cp_appearance_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/managing-look-your-site';
+  $strongarm->value = 'https://help.theopenscholar.com/managing-look-your-site';
   $export['help_cp_appearance_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_cp_build_layout_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/customizing-your-site-layout';
+  $strongarm->value = 'https://help.theopenscholar.com/customizing-your-site-layout';
   $export['help_cp_build_layout_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_cp_build_menu_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/menus';
+  $strongarm->value = 'https://help.theopenscholar.com/menus';
   $export['help_cp_build_menu_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_cp_build_taxonomy_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/categorizing-your-content-taxonomy';
+  $strongarm->value = 'https://help.theopenscholar.com/categorizing-your-content-taxonomy';
   $export['help_cp_build_taxonomy_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_cp_content_files_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/file-management';
+  $strongarm->value = 'https://help.theopenscholar.com/file-management';
   $export['help_cp_content_files_url'] = $strongarm;
 
 /**
@@ -230,266 +230,266 @@ function os_help_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_os_custom_texthtml_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/custom-texthtml-widget';
+  $strongarm->value = 'https://help.theopenscholar.com/custom-texthtml-widget';
   $export['help_os_custom_texthtml_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_os_taxonomy_fbt_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/taxonomy-widget';
+  $strongarm->value = 'https://help.theopenscholar.com/taxonomy-widget';
   $export['help_os_taxonomy_fbt_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_os_featured_posts_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/featured-posts-widget';
+  $strongarm->value = 'https://help.theopenscholar.com/featured-posts-widget';
   $export['help_os_featured_posts_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_os_search_solr_more_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/more';
+  $strongarm->value = 'https://help.theopenscholar.com/more';
   $export['help_os_search_solr_more_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_os_sv_list_box_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/list-of-posts-widget';
+  $strongarm->value = 'https://help.theopenscholar.com/list-of-posts-widget';
   $export['help_os_sv_list_box_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_os_sv_list_file_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/custom-texthtml-widget';
+  $strongarm->value = 'https://help.theopenscholar.com/custom-texthtml-widget';
   $export['help_os_sv_list_file_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_os_feedreader_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/taxonomy-widget';
+  $strongarm->value = 'https://help.theopenscholar.com/taxonomy-widget';
   $export['help_os_feedreader_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_os_pub_year_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/featured-posts-widget';
+  $strongarm->value = 'https://help.theopenscholar.com/featured-posts-widget';
   $export['help_os_pub_year_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_os_booktoc_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/more';
+  $strongarm->value = 'https://help.theopenscholar.com/more';
   $export['help_os_booktoc_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_os_pub_author_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/list-of-posts-widget';
+  $strongarm->value = 'https://help.theopenscholar.com/list-of-posts-widget';
   $export['help_os_pub_author_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_os_sv_list_file_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/list-files';
+  $strongarm->value = 'https://help.theopenscholar.com/list-files';
   $export['help_os_sv_list_file_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_os_feedreader_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/feed-reader-widget';
+  $strongarm->value = 'https://help.theopenscholar.com/feed-reader-widget';
   $export['help_os_feedreader_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_os_pub_year_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/publications-year-widget';
+  $strongarm->value = 'https://help.theopenscholar.com/publications-year-widget';
   $export['help_os_pub_year_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_os_booktoc_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/booklet-table-contents-widget';
+  $strongarm->value = 'https://help.theopenscholar.com/booklet-table-contents-widget';
   $export['help_os_booktoc_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_os_pub_author_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/publications-authors-widget';
+  $strongarm->value = 'https://help.theopenscholar.com/publications-authors-widget';
   $export['help_os_pub_author_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_os_pub_types_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/publications-types-widget';
+  $strongarm->value = 'https://help.theopenscholar.com/publications-types-widget';
   $export['help_os_pub_types_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_os_slideshow_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/photo-slideshow-widget';
+  $strongarm->value = 'https://help.theopenscholar.com/photo-slideshow-widget';
   $export['help_os_slideshow_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_os_embed_media_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/embed-media-widget';
+  $strongarm->value = 'https://help.theopenscholar.com/embed-media-widget';
   $export['help_os_embed_media_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_os_rss_feed_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/rss-feed-widget';
+  $strongarm->value = 'https://help.theopenscholar.com/rss-feed-widget';
   $export['help_os_rss_feed_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_os_mailchimp_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/embedding-mailchimp-newsletter-sign';
+  $strongarm->value = 'https://help.theopenscholar.com/embedding-mailchimp-newsletter-sign';
   $export['help_os_mailchimp_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_os_follow_me_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/follow-me-widget';
+  $strongarm->value = 'https://help.theopenscholar.com/follow-me-widget';
   $export['help_os_follow_me_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_os_twitter_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/twitter-widget';
+  $strongarm->value = 'https://help.theopenscholar.com/twitter-widget';
   $export['help_os_twitter_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_os_bio_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/bio-widget';
+  $strongarm->value = 'https://help.theopenscholar.com/bio-widget';
   $export['help_os_bio_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_os_addthis_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/addthis-widget';
+  $strongarm->value = 'https://help.theopenscholar.com/addthis-widget';
   $export['help_os_addthis_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_os_addthis_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/addthis-widget';
+  $strongarm->value = 'https://help.theopenscholar.com/addthis-widget';
   $export['help_os_addthis_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_os_accordion_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/accordion-widget';
+  $strongarm->value = 'https://help.theopenscholar.com/accordion-widget';
   $export['help_os_accordion_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_os_tabs_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/tabs-widget';
+  $strongarm->value = 'https://help.theopenscholar.com/tabs-widget';
   $export['help_os_tabs_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_os_random_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/random-widget';
+  $strongarm->value = 'https://help.theopenscholar.com/random-widget';
   $export['help_os_random_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_os_slider_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/widget-slider';
+  $strongarm->value = 'https://help.theopenscholar.com/widget-slider';
   $export['help_os_slider_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_os_columns_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/columns-widget';
+  $strongarm->value = 'https://help.theopenscholar.com/columns-widget';
   $export['help_os_columns_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_os_facetapi_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/filtering-content-faceted-taxonomy-widget';
+  $strongarm->value = 'https://help.theopenscholar.com/filtering-content-faceted-taxonomy-widget';
   $export['help_os_facetapi_url'] = $strongarm;  
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_os_filtered_search_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/filtered-search-widget';
+  $strongarm->value = 'https://help.theopenscholar.com/filtered-search-widget';
   $export['help_os_filtered_search_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_os_dataverse_dataset_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/dataverse-dataset-widget';
+  $strongarm->value = 'https://help.theopenscholar.com/dataverse-dataset-widget';
   $export['help_os_dataverse_dataset_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_os_dataverse_citation_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/dataverse-dataset-citation';
+  $strongarm->value = 'https://help.theopenscholar.com/dataverse-dataset-citation';
   $export['help_os_dataverse_citation_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_os_dataverse_list_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/dataverse-list-widget';
+  $strongarm->value = 'https://help.theopenscholar.com/dataverse-list-widget';
   $export['help_os_dataverse_list_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_os_dataverse_search_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/dataverse-search-box';
+  $strongarm->value = 'https://help.theopenscholar.com/dataverse-search-box';
   $export['help_os_dataverse_search_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'getting_started_os';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/getting-started-with-openscholar';
+  $strongarm->value = 'https://help.theopenscholar.com/getting-started-with-openscholar';
   $export['getting_started_os'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_cp_users_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/managing-users';
+  $strongarm->value = 'https://help.theopenscholar.com/managing-users';
   $export['help_cp_users_url'] = $strongarm;
  
   return $export;

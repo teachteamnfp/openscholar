@@ -12,7 +12,7 @@ function os_cp_settings() {
    'group' => array(
      '#title' => t('Privacy Policy'),
       '#id' => 'privacy-policy',
-      '#help_link' => l(t('Learn more about creating a privacy policy for your site'), 'http://docs.openscholar.harvard.edu/global-site-settings#privacy-policy', array('attributes' => array('target' => '_blank'))),
+      '#help_link' => l(t('Learn more about creating a privacy policy for your site'), 'https://help.theopenscholar.com/global-site-settings#privacy-policy', array('attributes' => array('target' => '_blank'))),
       ),
     'form' => array(
       '#type' => 'textfield',
