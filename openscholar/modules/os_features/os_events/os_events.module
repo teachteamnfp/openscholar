@@ -2614,8 +2614,8 @@ function os_events_date_ical_feed_event_render_alter(&$event, $view, &$context) 
   $wrapper = entity_metadata_wrapper('node', $context['entity']);
   $event['description'] = '';
   $event['summary'] = $wrapper->label();
-  if ($value = $wrapper->body->value()) {
-    $event['description'] = drupal_html_to_text($value['value']);;
+  if (!empty($context['entity']->body)) {
+    $event['description'] = $context['entity']->body[LANGUAGE_NONE][0]['safe_value'];
   }
 
   $event['location'] = $wrapper->field_event_location->value();
