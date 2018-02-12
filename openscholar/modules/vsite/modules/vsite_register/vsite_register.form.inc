@@ -137,7 +137,7 @@ function _vsite_register_mail_in_use($mail) {
  * @see purl_validate()
  */
 function _vsite_register_valid_url($url) {
-  foreach (array('!', ';', '/', '?', ':', '@', '&', '=', '"', "'",
+  foreach (array('!', ';', '/', '?', ':', '@', '&', '=', '"', "'", ".",
     ) as $char) {
     if (strpos($url, $char) !== FALSE) {
       return FALSE;
