@@ -25,7 +25,7 @@ function os_help_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'help_key_link';
-  $strongarm->value = 'http://docs.openscholar.harvard.edulogging-your-site#linking-your-harvardkey-to-your-openscholar-account';
+  $strongarm->value = 'http://docs.openscholar.harvard.edu/logging-your-site#linking-your-harvardkey-to-your-openscholar-account';
   $export['help_key_link'] = $strongarm;
 
   $strongarm = new stdClass();
