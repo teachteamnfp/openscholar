@@ -72,7 +72,7 @@ function hwpi_cp_settings() {
       '#title' => t('Private Files'),
       '#weight' => 3,
       '#menu_parent' => 'app_settings',
-      '#help_link' => l(t('Learn more about private files'), 'http://docs.openscholar.harvard.edu/private-files#setting-options', array('attributes' => array('target' => '_blank'))),
+      '#help_link' => l(t('Learn more about private files'), 'https://help.theopenscholar.com/private-files#setting-options', array('attributes' => array('target' => '_blank'))),
     ),
     'form' => array(
       '#title' => t('Extend access to the Harvard Community'),
@@ -335,7 +335,7 @@ function hwpi_form_cp_user_edit_membership_form_alter(&$form, $form_state) {
   else {
     $form['edit_membership']['group_manager'] = array(
       '#type' => 'markup',
-      '#markup' => '<p>' . t('@name\'s OpenScholar account is not linked to HarvardKey, so this user cannot be made site owner.', array('@name' => $name)) . ' ' . l('Learn more about linking accounts', 'http://docs.openscholar.harvard.edu/logging-your-site#linking-your-harvardkey-to-your-openscholar-account', array('attributes' => array('target' => '_blank', 'rel' => 'noopener'))) . '.</p>',
+      '#markup' => '<p>' . t('@name\'s OpenScholar account is not linked to HarvardKey, so this user cannot be made site owner.', array('@name' => $name)) . ' ' . l('Learn more about linking accounts', 'https://help.theopenscholar.com/logging-your-site#linking-your-harvardkey-to-your-openscholar-account', array('attributes' => array('target' => '_blank', 'rel' => 'noopener'))) . '.</p>',
     );
   }
 }
@@ -349,6 +349,6 @@ function hwpi_change_site_owner_form_alter(&$form, $form_state, $form_id)
   if (module_exists('pinserver') && variable_get('pinserver_pin_url', FALSE)) {
 
     unset( $form['new_site_owner']['#description']);
-    $form['new_site_owner']['#description'] = t('Only users who have linked their OpenScholar accounts to HarvardKey are listed.') . ' ' . l('Learn more about linking accounts', 'http://docs.openscholar.harvard.edu/logging-your-site#linking-your-harvardkey-to-your-openscholar-account', array('attributes' => array('target' => '_blank', 'rel' => 'noopener'))) . '.';
+    $form['new_site_owner']['#description'] = t('Only users who have linked their OpenScholar accounts to HarvardKey are listed.') . ' ' . l('Learn more about linking accounts', 'https://help.theopenscholar.com/logging-your-site#linking-your-harvardkey-to-your-openscholar-account', array('attributes' => array('target' => '_blank', 'rel' => 'noopener'))) . '.';
   }
 }
