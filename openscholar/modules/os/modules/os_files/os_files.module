@@ -1037,6 +1037,15 @@ function os_files_image_default_styles(){
   return $styles;
 }
 
+/**
+ * Implements hook_image_styles_alter().
+ */
+function os_files_image_styles_alter(&$styles) {
+  if (!isset($styles['media_thumbnail']) && isset($styles['square_thumbnail'])) {
+    $styles['media_thumbnail'] = $styles['square_thumbnail'];
+  }
+}
+
 function os_files_file_default_displays(){
   $keys = array(
     'image__os_files_xxlarge__os_files_image' => array(
@@ -1809,6 +1818,21 @@ function os_files_views_default_views_alter(&$views){
 function os_files_modules_installed($modules){
   if (in_array('media_gallery', $modules)) {
     _os_files_clean_up_fields();
+  }
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ *
+ * Prevents media from overriding our image style for theirs
+ */
+/**
+ * Implements hook_module_implements_alter().
+ */
+function os_files_module_implements_alter(&$implementations, $hook) {
+  if ($hook == 'file_default_displays_alter') {
+    dpm($implementations);
+    unset($implementations['media']);
   }
 }
 

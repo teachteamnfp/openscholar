@@ -188,8 +188,9 @@ function os_restful_restful_parse_request_alter(&$request) {
   }
 
   if (!empty($request['vsite'])) {    // find way to get vsite when it's not explicitly given
-    $vsite = vsite_get_vsite($request['vsite']);
-    $vsite->activate_user_roles();
+    if ($vsite = vsite_get_vsite($request['vsite'])) {
+      $vsite->activate_user_roles();
+    }
   }
 
   if (!empty($request['file'])) {
