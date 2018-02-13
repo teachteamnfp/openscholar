@@ -821,7 +821,7 @@ function cp_user_mail($key, &$message, $params){
       $message['body'][] = t("Here are some handy links for you:");
       $links = array();
       $links[] = " * Sign up for training: http://hwp.harvard.edu/calendar/upcoming\n";
-      $links[] = " * OpenScholar documentation: http://docs.openscholar.harvard.edu\n";
+      $links[] = " * OpenScholar documentation: https://help.theopenscholar.com\n";
       $links[] = " * Need help with your project? http://hwp.harvard.edu/contact";
       $message['body'][] = implode("", $links);
       $message['body'][] = t("Sincerely,\n!sitewide-name", $params);

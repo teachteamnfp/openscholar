@@ -8,7 +8,7 @@
 /**
  * Define URL for OpenScholar revisions documentation
  */
-define('OS_REVISIONS_DOCS_URL', 'https://docs.openscholar.harvard.edu/revisions');
+define('OS_REVISIONS_DOCS_URL', 'https://help.theopenscholar.com/revisions');
 
 /**
  * Implements hook_form_BASE_FORM_ID_alter() for node_form to display revision fieldset in certain cases
