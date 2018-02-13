@@ -452,6 +452,14 @@ fieldset.pin-fieldset legend,
 	width: 300px;
 	margin-bottom: 48px;
 }
+@-moz-document url-prefix() {
+#pin-login.pin-button {
+	margin-bottom: 40px;
+}
+}
+
+
+
 fieldset#edit-pin-fieldset {
 	background: #fff;
 }
