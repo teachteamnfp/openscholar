@@ -22,7 +22,7 @@
 
 ;----------// Stylesheets
 
-  stylesheets[screen][] = css/hwpi_vibrant.css
+  stylesheets[screen][] = css/hwpi_themethree_bentley.css
 
 
 
