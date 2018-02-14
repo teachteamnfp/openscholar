@@ -241,7 +241,7 @@ projects[module_filter][subdir] = "contrib"
 projects[module_filter][version] = 1.7
 
 projects[memcache][subdir] = "contrib"
-projects[memcache][version] = 1.5
+projects[memcache][version] = 1.6
 projects[memcache][patch][] = "https://www.drupal.org/files/issues/2415109.patch"
 projects[memcache][patch][] = "https://www.drupal.org/files/issues/2415109-memcache-7.x-1.x-fix-php-warning.patch"
 
