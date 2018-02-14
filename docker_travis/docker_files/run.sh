@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Increasing the memory limitation.
-mv docker_files/php.ini /usr/local/etc/php
+mv docker_travis/docker_files/php.ini /usr/local/etc/php
 
 # Start MySQL.
 echo -e "\n # Start MySQL."
@@ -9,7 +9,7 @@ service mysql start
 
 # Configure apache2.
 echo -e "\n # Configure apache2."
-cp docker_files/default.apache2.conf /etc/apache2/apache2.conf
+cp docker_travis/docker_files/default.apache2.conf /etc/apache2/apache2.conf
 service apache2 restart
 
 # Install Bower.
@@ -24,12 +24,12 @@ composer global require drush/drush:7.*
 
 cd /var/www/html/openscholar
 mkdir ~/.drush/
-cp docker_files/aliases.drushrc.php ~/.drush/aliases.drushrc.php
+cp docker_travis/docker_files/aliases.drushrc.php ~/.drush/aliases.drushrc.php
 source /root/.bashrc
 
 # Install Drupal
 echo -e "\n # Install Drupal"
-bash docker.install.sh
+bash docker_travis/docker.install.sh
 chmod -R 777 /var/www/html/openscholar/www/sites/default/files/
 
 # Install custom domains
