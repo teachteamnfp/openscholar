@@ -880,6 +880,17 @@ function os_importer_feeds_presave(FeedsSource $source, $entity, $item) {
 
   // When importing an event and the end date is empty we use the start date.
   if ($entity->type == "event") {
+    if (!empty($entity->body[LANGUAGE_NONE][0]['value'])) {
+      $html_obj = new simple_html_dom();
+      // Load HTML from a string.
+      $html_obj->load($entity->body[LANGUAGE_NONE][0]['value']);
+      foreach ($html_obj->find('img[class=media-element]') as $img_obj ) {
+        // TODO: Idea to save source image into imported site and replace the 
+        // img src path with current site path here.
+        print $img_obj->src;
+      }
+
+    }
     if (empty($entity->field_date[LANGUAGE_NONE][0]['value2'])) {
       $entity->field_date[LANGUAGE_NONE][0]['value2'] = $entity->field_date[LANGUAGE_NONE][0]['value'];
     }
