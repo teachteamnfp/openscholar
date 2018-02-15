@@ -302,7 +302,6 @@ function cp_user_change_site_owner_form($form_state) {
     '#description' => $description,
     '#options' => $options,
   );
-  dsm($form);
 
   // Builds and returns a confirmation form.
   return confirm_form($form, t('Change Site Ownership'), 'cp/users', '', t('Save'), t('Cancel'));

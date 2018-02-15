@@ -38,8 +38,8 @@ class os_boxes_dataverse_list extends os_boxes_default {
       '#default_value' => $this->options['user_alias'],
       '#description' => t('Need help finding your Dataset Persistent Identifier? Learn how to here: !link. ' .
         'Note: this widget should be placed in the main content area, not in sidebar.',
-        array('!link' => l(variable_get('help_dataverse_list_url'),
-                                    variable_get('help_dataverse_list_url'),
+        array('!link' => l('http://docs.openscholar.harvard.edu/dataverse-list-widget',
+                           'http://docs.openscholar.harvard.edu/dataverse-list-widget',
           array('attributes' => array('target' => '_blank'))))),
     );
 

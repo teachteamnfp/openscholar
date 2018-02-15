@@ -131,6 +131,13 @@ function hwpi_strongarm() {
   $strongarm->value = 'http://docs.openscholar.harvard.edu/getting-started-with-openscholar';
   $export['getting_started_os'] = $strongarm;
 
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'linking_account';
+  $strongarm->value = 'http://docs.openscholar.harvard.edu/getting-started-with-openscholar';
+  $export['linking_account'] = $strongarm
+
   return $export;
 
 }

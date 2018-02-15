@@ -824,7 +824,7 @@ function cp_user_mail($key, &$message, $params){
               $links[] = " * Sign up for training: " . variable_get('training_signup_url') . "\n";
       }
 
-      $links[] = " * OpenScholar documentation: " . variable_get('doc_base_url'). "\n";
+      $links[] = " * OpenScholar documentation: http://docs.openscholar.harvard.edu\n";
       $links[] = " * Need help with your project? " . variable_get('contact_url');
       $message['body'][] = implode("", $links);
       $message['body'][] = t("Sincerely,\n!sitewide-name", $params);

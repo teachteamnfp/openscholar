@@ -3576,7 +3576,7 @@ function os_events_cp_settings() {
       '#title' => t('Events'),
       '#weight' => 4,
       '#menu_parent' => 'app_settings',
-      '#help_link' => l(t('Learn more about Events'), variable_get('help_events_url'), array('attributes' => array('target' => '_blank'))),
+      '#help_link' => l(t('Learn more about Events'), 'http://docs.openscholar.harvard.edu/events-app#events-app-settings', array('attributes' => array('target' => '_blank'))),
     ),
     'form' => array(
       '#title' => t('Disable export option on Event pages; don\'t allow site Events to be shared to iCal, RSS or subscription.'),

@@ -38,8 +38,8 @@ class os_boxes_dataverse_search extends os_boxes_default {
       '#default_value' => $this->options['user_alias'],
       '#description' => t('Need help finding your Dataset Persistent Identifier? Learn how to here: !link. ' .
         'Note: this widget should be placed in the main content area, not in sidebar.',
-        array('!link' => l(variable_get('help_dataverse_search_box_url'),
-                                variable_get('help_dataverse_search_box_url'),
+        array('!link' => l('http://docs.openscholar.harvard.edu/dataverse-search-box',
+                           'http://docs.openscholar.harvard.edu/dataverse-search-box',
           array('attributes' => array('target' => '_blank'))))),
     );
 

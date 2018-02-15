@@ -28,7 +28,7 @@ function vsite_domain_cp_settings() {
       '#title' => t('Custom Domain'),
       '#weight' => 0,
       '#group_validate' => 'vsite_domain_cp_settings_validate',
-      '#help_link' => l(t('Learn more about custom domains'), variable_get('help_custom_domain_url'), array('attributes' => array('target' => '_blank')))
+      '#help_link' => l(t('Learn more about custom domains'), 'http://docs.openscholar.harvard.edu/apply-a-custom-domain', array('attributes' => array('target' => '_blank')))
     ),
   );
 

@@ -41,23 +41,6 @@ class RestfulAppform extends RestfulBase implements \RestfulDataProviderInterfac
 
   public function getAppStates() {
     $this->activateSpace();
-    $os_help = array( 'Blog' => 'https://help.theopenscholar.com/blogs',
-                      'Classes' => 'https://help.theopenscholar.com/classes-app',
-                      'FAQs' => 'https://help.theopenscholar.com/faq-app',
-                      'Links' => 'https://help.theopenscholar.com/links-app',
-                      'News' => 'https://help.theopenscholar.com/news-app',
-                      'Basic Pages' => 'https://help.theopenscholar.com/basic-page',
-                      'Software' => 'https://help.theopenscholar.com/software-app',
-                      'Private Files' => 'https://help.theopenscholar.com/private-files',
-                      'Booklets' => 'https://help.theopenscholar.com/booklet',
-                      'Events' => 'https://help.theopenscholar.com/events-app',
-                      'Media Gallery' => 'https://help.theopenscholar.com/media-gallery',
-                      'Presentations' => 'https://help.theopenscholar.com/presentations-app',
-                      'Profiles' => 'https://help.theopenscholar.com/people-profiles',
-                      'Publications' => 'https://help.theopenscholar.com/creating-publications',
-                      'Reader' => 'https://help.theopenscholar.com/rss-feed'
-                    );
-
     $features = variable_get('spaces_features', array());
     $info = spaces_features('og');
 
@@ -68,8 +51,7 @@ class RestfulAppform extends RestfulBase implements \RestfulDataProviderInterfac
         'machine_name' => $name,
         'description' => $i->info['description'],
         'enabled' => $features[$name] ? 1 : 0,
-        'private' => $features[$name] ? $features[$name] - 1 : 0,
-        'help' => $os_help[$i->info['name']]
+        'private' => $features[$name] ? $features[$name] - 1 : 0
       );
     }
 

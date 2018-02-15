@@ -1,6 +1,4 @@
 <?php
-
-include_once ('os_help.features.inc');
 /**
  * @file
  * The OpenScholar Help module provides inline help links with popup docs.
