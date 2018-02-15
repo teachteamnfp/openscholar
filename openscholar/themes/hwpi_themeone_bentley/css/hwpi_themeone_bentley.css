@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Arvo:400,400i,700');
+
 /* Main wrappers */
 html,
  body {
@@ -46,8 +48,10 @@ margin-top: 12px;
 #content-column h4,
 .cke_editable h2,
 .cke_editable h3,
-.cke_editable h4 {
-	font-family: Georgia, Baskerville, Palatino, 'Palatino Linotype', 'Book Antiqua', 'Times New Roman', serif;
+.cke_editable h4,
+#menu-bar ul.nice-menu a,
+#boxes-box-site_info, #boxes-box-site_info a {
+	font-family: 'Arvo', Baskerville, Palatino, 'Palatino Linotype', 'Book Antiqua', 'Times New Roman', serif;
 }
 
 .cke_editable *  {
@@ -60,7 +64,7 @@ margin-top: 12px;
 }
 
 .section-nav .menu-depth-1 > a {
-    background: none repeat scroll 0 0 #293352 !important;
+    background: none repeat scroll 0 0 #365375 !important;
 }
 
 .section-nav .expanded.menu-depth-2 > a {
@@ -69,13 +73,13 @@ margin-top: 12px;
 }
 
 .section-nav .expanded.menu-depth-2 > a:hover {
-	background-color: #293352 !important;
+	background-color: #365375 !important;
 }
 
  .block-boxes-os_boxes_facetapi_vocabulary.navigation a,
 .block-boxes-os_taxonomy_fbt.navigation a {
 	font-size: 16px;
-	font-family:georgia;
+	font-family:'Arvo';
 
 	}
 
@@ -188,7 +192,7 @@ margin-left:6em;
 #content-column .block.block-boxes-os_boxes_columns .block,
 .node-person .block-inner,
 .comment-wrapper {
-	border-top: 3px solid #4384C4;
+	border-top: 3px solid #0075BE;
 	margin-top:12px;
 }
 
@@ -255,7 +259,7 @@ margin-left:6em;
 #footer ul.menu li ul li a {
     font-family:arial;
     text-transform: none;
-    font-family:georgia;
+    font-family:'Arvo';
     font-size:16px;
 }
 
@@ -263,11 +267,11 @@ margin-left:6em;
 /** SLIDESHOW **/
 	
 a.rslides_nav {
-    background-color:#4384C4;
+    background-color:#0075BE;
 }
 
 #layout_16_9_below a.rslides_nav {
-    background-color: #284F76;
+    background-color: #365375;
 }
 
 
@@ -275,7 +279,7 @@ a.rslides_nav {
 #layout_3_1_overlay .slide-copy h2,
 #layout_16_9_below .slide-copy h2,
 #layout_16_9_overlay .slide-copy h2 {
-  font-family: Georgia,arial;
+  font-family: 'Arvo',arial;
   font-size:28px;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
   font-weight:normal;
