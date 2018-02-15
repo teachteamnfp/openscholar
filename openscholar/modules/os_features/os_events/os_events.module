@@ -169,7 +169,6 @@ function os_events_gcal_create_calendar() {
 
   // The vsite group ID is stored in the state parameter
   $vsite = vsite_get_vsite($_GET["state"]);
-  //watchdog("Calendar Vsite", print_r($vsite->group->title, TRUE));
   // Set the vsite space, since we've moved to the top-level docroot
   spaces_set_space($vsite);
   $vsite->activate_user_roles();
@@ -182,14 +181,30 @@ function os_events_gcal_create_calendar() {
   }
 
   $client = getClient();
+  $calendarService = new Google_Service_Calendar($client);
   $calendar_name = $vsite->group->title;
-  watchdog('Calendar Name', print_r($calendar_name, TRUE));
-  createCalendar($calendar_name);
+  //$calendar_name = 'OpenScholar';
+  $calendar_id = createCalendar($calendar_name);
   //deleteEventsfromGCal($view, $calendar_name);
+
+  // Delete removed events
+  $all_events = $calendarService->events->listEvents($calendar_id);
+  foreach ($all_events->getItems() as $all_event) {
+    $event_delete = true;
+    foreach ($view->result as $e) {
+      if ($e->_field_data['nid']['entity']->nid == $all_event->getId()) {
+        $event_delete = false;;
+        break;
+      }
+    }
+    if ($event_delete) {
+      $calendarService->events->delete($calendar_id, $all_event->getId());
+    }
+  }
 
   $event = array();
   foreach ($view->result as $e) {
-    if(checkEventExists($e->_field_data['nid']['entity']->nid)) {
+    if(checkEventExists($e->_field_data['nid']['entity']->nid, $calendar_id)) {
 
       # Create event and add it to the calendar    
       $event = new Google_Service_Calendar_Event();
@@ -208,11 +223,11 @@ function os_events_gcal_create_calendar() {
       $event->setStart($calendarDateTime1);
       $calendarDateTime2->setDateTime($dt2->format(DateTime::RFC3339));
       $event->setEnd($calendarDateTime2);
-      $calendarInsert = $calendarService->events->insert($calendar_name, $event);
+      $calendarInsert = $calendarService->events->insert($calendar_id, $event);
     }
     else{
-     # Update events to the Google calendar   
-      $event = $calendarService->events->get($calendar_name, $e->_field_data['nid']['entity']->nid);
+     # Update events to the Google calendar
+      $event = $calendarService->events->get($calendar_id, $e->_field_data['nid']['entity']->nid);
 
       $event->setDescription($e->_field_data['nid']['entity']->body[LANGUAGE_NONE][0]['value']);
       $event->setLocation($e->_field_data['nid']['entity']->field_event_location[LANGUAGE_NONE][0]['value']);
@@ -228,9 +243,10 @@ function os_events_gcal_create_calendar() {
       $calendarDateTime2->setDateTime($dt2->format(DateTime::RFC3339));
       $event->setEnd($calendarDateTime2);
 
-      $calendarUpdate = $calendarService->events->update($calendar_name, $event->getId(), $event);
+      $calendarUpdate = $calendarService->events->update($calendar_id, $event->getId(), $event);
     }
   }
+
   if($calendarInsert || $calendarUpdate) {
     drupal_set_message(t('Calendar successfully sync with Google calendar.'));
   }
@@ -245,12 +261,20 @@ function os_events_gcal_create_calendar() {
  */
 function createCalendar($calendarName) {
   $client = getClient();
+  $calendar_exists = false;
   $service = new Google_Service_Calendar($client);
-  watchdog('Calendar Namessuuuuus', print_r('yyyyyyyyyyyyyy', TRUE));
-  //$calendar = $service->calendars->get($calendarName);
-  watchdog('Calendar Namesss', print_r($calendar, TRUE));
-  //if(!$calendar) {
-    watchdog('Calendar Create', print_r('hhhhhhh', TRUE));
+  $calendarList = $service->calendarList->listCalendarList();
+  foreach ($calendarList->getItems() as $calendarListEntry) {
+    if ($calendarListEntry->getSummary() == $calendarName) {
+      $calendar_exists = true;
+      $calendar_id = $calendarListEntry->getId();
+      break;
+    }
+  }
+  if($calendar_exists) {
+    return $calendar_id;
+  }
+  else {
     // set up the calendar and save
     $calendar = new Google_Service_Calendar_Calendar();
     $calendar->setSummary($calendarName);
@@ -260,12 +284,8 @@ function createCalendar($calendarName) {
     } catch (Exception $e) {
         return false;
     }
-    return $createdCalendar->getId();
-  /*}
-  else {
-    watchdog('Calendar Create', print_r('wwwwwwwwwwwww', TRUE));
-    return false;
-  }*/
+    return $createdCalendar->getId();    
+  }
 }
 
 /**
@@ -274,11 +294,11 @@ function createCalendar($calendarName) {
  *
  * @return bool true if event don't exists
  */
-function checkEventExists($event_id) {
+function checkEventExists($event_id, $calendar_id) {
   $client = getClient();
   $calendarService = new Google_Service_Calendar($client);
   try {
-      $calendarService->events->get('primary', $event_id);
+      $calendarService->events->get($calendar_id, $event_id);
   } 
   catch (Exception $e) {
     return TRUE;

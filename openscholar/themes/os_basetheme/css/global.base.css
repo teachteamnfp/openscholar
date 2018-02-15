@@ -799,7 +799,7 @@ ul ul ul ul {
 }
 
 .google:before {
-    background: url('../images/scholarbase-sprite.png?0gfgfgb') no-repeat -74px -727px;
+    background: url('../images/scholarbase-sprite.png?45678') no-repeat -76px -726px;
     width: 22px;
     height: 22px;
     position: absolute;
@@ -1164,7 +1164,7 @@ ul.no-event-export {
 }
 .block-boxes-os_boxes_widget_slider #layout_16_9_side .rslides_tabs {
     left: 0;
-    position: static;
+    position: relative;
     top: 0;
 }
 .block-boxes-os_boxes_widget_slider #layout_16_9_side .rslides_tabs li {

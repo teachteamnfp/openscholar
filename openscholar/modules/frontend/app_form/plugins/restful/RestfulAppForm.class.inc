@@ -51,7 +51,8 @@ class RestfulAppform extends RestfulBase implements \RestfulDataProviderInterfac
         'machine_name' => $name,
         'description' => $i->info['description'],
         'enabled' => $features[$name] ? 1 : 0,
-        'private' => $features[$name] ? $features[$name] - 1 : 0
+        'private' => $features[$name] ? $features[$name] - 1 : 0,
+        'help' => $os_help[$i->info['name']]
       );
     }
 
