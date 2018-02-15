@@ -279,14 +279,14 @@ function os_entity_info_alter(&$info) {
   );
 
   // Remove field replacement for entities that don't need it
-  if (!empty($entity_info['file']['field replacement'])) {
-    unset($entity_info['file']['field replacement']);
+  if (!empty($info['file']['field replacement'])) {
+    unset($info['file']['field replacement']);
   }
-  if (!empty($entity_info['taxonomy_term']['field replacement'])) {
-    unset($entity_info['taxonomy_term']['field replacement']);
+  if (!empty($info['taxonomy_term']['field replacement'])) {
+    unset($info['taxonomy_term']['field replacement']);
   }
-  if (!empty($entity_info['comment']['field replacement'])) {
-    unset($entity_info['comment']['field replacement']);
+  if (!empty($info['comment']['field replacement'])) {
+    unset($info['comment']['field replacement']);
   }
 }
 
@@ -881,7 +881,7 @@ function os_preprocess_page(&$vars) {
   }
 
   // Ensure "Import" is always the last item in the menu
-  usort($links, 
+  usort($links,
     function ($a, $b) {
       if (isset($a["title"]) && (($a["title"] == 'Import') || ($a["title"] == 'Sync'))) {
         return 1;
@@ -2256,7 +2256,7 @@ function os_form_user_login_alter(&$form, $form_state) {
         '#value' => t('Login'),
         '#attributes' => array('class' => array('pin-button-inline')),
     );
-   
+
 
     unset($form['pin-fieldset']['actions']['submit']);
   }
@@ -3943,7 +3943,7 @@ function os_redirect_goto($redirect) {
   $redirect->redirect_options['fragment'] = $parse_url['fragment'];
   $redirect->redirect_options['query'] = $parse_url['query'];
   $url = url($parse_url['path'], $redirect->redirect_options);
-  
+
   drupal_add_http_header('Location', $url);
   drupal_add_http_header('Status', redirect_status_code_options($redirect->status_code));
 
