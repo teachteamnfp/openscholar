@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css?family=Arvo:400,400i,700');
 
+#menu-bar ul.nice-menu a,
+#boxes-box-site_info, #boxes-box-site_info a {
+    font-family: 'Arvo', Baskerville, Palatino, 'Palatino Linotype', 'Book Antiqua', 'Times New Roman', serif;
+}
+
+
 a, a:visited {
     color: #0075BE;
 }
@@ -45,7 +51,7 @@ content: '';
 
 /* Menu bar */
 #menu-bar {
-  background: #a23338;
+  background: #d0433a;
   padding: 0;
 }
 
@@ -80,7 +86,7 @@ ul.nice-menu ul {
 #menu-bar ul.nice-menu .menuparent.over > a,
 #menu-bar ul.nice-menu .menuparent a:hover,
 #menu-bar ul.nice-menu .menuparent a.active {
-  background-color: #d0433a;
+  background-color: #af342d;
 }
 
 #menu-bar ul.nice-menu .menuparent ul li a,
@@ -106,7 +112,7 @@ ul.nice-menu ul {
 
 
 #menu-bar ul.nice-menu ul {
-    background:#d0433a;
+    background:#af342d;
 }
 
 
@@ -198,7 +204,8 @@ h2.block-title {
 #search-block-form input.form-submit,
 #search-block-form #edit-submit,
 #search-form #edit-submit {
-   background-position: 2px -340px;
+       background-position: 2px -440px;
+    background-color: #d0433a;
 }
 
 

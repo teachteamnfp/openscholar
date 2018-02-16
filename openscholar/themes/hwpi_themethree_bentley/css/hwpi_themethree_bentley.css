@@ -715,3 +715,11 @@ a.rslides_nav {
     margin: 5px 0 0 -30px;
    
 }	
+.search-block-form input.form-submit,
+.search-block-form #edit-submit,
+#search-block-form input.form-submit,
+#search-block-form #edit-submit,
+#search-form #edit-submit {
+       background-position: 2px -440px;
+    background-color: #0075BE;
+}
