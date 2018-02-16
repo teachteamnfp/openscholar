@@ -7,10 +7,10 @@ ul.primary li a {
     padding: 4px;
 }
 .link-count-mobi-main a {
-    background-color:#3A72AB;
+    background-color:#0075BE;
 }
 .link-count-mobi-util a {
-    background-color: #2A527A;
+    background-color: #365375;
 }
 .link-count-mobi-search a {
     background-color: #1e1e1e;
@@ -38,7 +38,7 @@ ul.primary li a {
     padding: 0;
 }
 #menu-bar #block-os-primary-menu{
-    background: none repeat scroll 0 0 #3A72AB;
+    background: none repeat scroll 0 0 #0075BE;
 }
 #menu-bar ul.nice-menu a.active, #menu-bar ul.nice-menu a:hover {
     background: none repeat scroll 0 0 #293352;
