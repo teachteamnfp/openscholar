@@ -1,8 +1,6 @@
 name = "HWPI"
 core = 7.x
 description = "Module to provide functionality specific to Harvard Web Publishing Initiative sites."
-
-core = 7.x
 package = Features
 dependencies[] = ctools
 files[] = hwpi_service_sword_dash.inc
