@@ -136,8 +136,7 @@ function hwpi_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'linking_account';
   $strongarm->value = 'https://harvard.service-now.com/ithelp?id=kb_article&sys_id=bcb7c5eadbba0fc0a914fff31d9619dc';
-  $export['linking_account'] = $strongarm
+  $export['linking_account'] = $strongarm;
 
   return $export;
-
 }
