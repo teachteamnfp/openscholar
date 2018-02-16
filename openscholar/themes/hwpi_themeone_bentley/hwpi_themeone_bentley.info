@@ -22,6 +22,7 @@ os[theme_access] = 'public'
 
   
   stylesheets[screen][] = css/hwpi_themeone_bentley.css
+  stylesheets[screen][] = css/responsive.themeone.css
 
 scripts[] = script.js
 
