@@ -285,5 +285,9 @@ a.rslides_nav {
   font-weight:normal;
 
 }
-
-	
+/* TWEAK THE POSITION OF THE BENTLEY IN THE HEADER */
+.branding-left {
+  
+    margin: 5px 0 0 -30px;
+   
+}	

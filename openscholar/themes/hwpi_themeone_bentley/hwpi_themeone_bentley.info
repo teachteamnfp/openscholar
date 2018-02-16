@@ -23,7 +23,7 @@ os[theme_access] = 'public'
   
   stylesheets[screen][] = css/hwpi_themeone_bentley.css
 
-
+scripts[] = script.js
 
 ;----------// Theme Settings
 
