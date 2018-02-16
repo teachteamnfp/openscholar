@@ -24,5 +24,6 @@ features[variable][] = highest_parent_item
 features[variable][] = university_name
 features[variable][] = getting_started_os
 features[variable][] = linking_account
+features[variable][] = contact_default_address
 features_exclude[dependencies][strongarm] = strongarm
 

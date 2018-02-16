@@ -138,5 +138,12 @@ function hwpi_strongarm() {
   $strongarm->value = 'https://harvard.service-now.com/ithelp?id=kb_article&sys_id=bcb7c5eadbba0fc0a914fff31d9619dc';
   $export['linking_account'] = $strongarm;
 
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'contact_default_address';
+  $strongarm->value = '<p>Harvard University<br> (617) 495-1000<br> Massachusetts Hall<br> Cambridge, MA 02138<br> your_name@harvard.edu</p>';
+  $export['contact_default_address'] = $strongarm;
+
   return $export;
 }
