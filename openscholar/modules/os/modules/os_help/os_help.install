@@ -7,3 +7,18 @@ function os_help_update_7000() {
   module_disable(array('advanced_help'));
   return t('Disabled module: @module', array('@module' => 'advanced_help'));
 }
+
+/**
+ * Change Help Documenation
+ */
+function os_help_update_7002() {
+  $nid = variable_get('vsite_register_welcome_message', 0);
+  if ($nid > 0) {
+    $node = node_load($nid);
+    if ($node) {
+      $node->body['und'][0]['value'] = str_replace('<h2>Other Resources</h2>
+<p>Want an in-person training? Attend one of our regularly scheduled <a href="http://hwp.harvard.edu/calendar/upcoming" target="_blank">OpenScholar training sessions.</a><br>Need help with your project? Contact the <a href="http://hwp.harvard.edu/contact" target="_blank">Harvard Web Publishing Team</a>.</p>','', $node->body['und'][0]['value']);
+      node_save($node);
+    }
+  }
+}
