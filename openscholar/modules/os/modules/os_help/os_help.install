@@ -14,7 +14,7 @@ function os_help_update_7000() {
  function os_help_update_7001() {
    $nid = variable_get('vsite_register_welcome_message', 0);
    $old_value = array("http://docs.openscholar.harvard.edu/", "https://cloud.githubusercontent.com/assets/867075/22668310/48267e28-ec8e-11e6-95cc-0eb13240eeda.png");
-   $new_value = array("https://help.theopenscholar.com/", "https://user-images.githubusercontent.com/2111600/36170890-c0bc3692-10ce-11e8-89ab-63ac39283814.png");
+   $new_value = array("https://help.theopenscholar.com/", "/profiles/openscholar/themes/os_basetheme/images/os_documentation.png");
     if ($nid > 0) {
      $node = node_load($nid);
      if ($node) {
