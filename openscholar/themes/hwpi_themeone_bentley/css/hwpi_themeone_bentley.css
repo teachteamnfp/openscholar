@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css?family=Arvo:400,400i,700');
 
+
+a, a:visited {
+    color: #0075BE;
+}
+
 /* Main wrappers */
 html,
  body {

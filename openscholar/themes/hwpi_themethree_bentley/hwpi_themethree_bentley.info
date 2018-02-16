@@ -23,8 +23,9 @@
 ;----------// Stylesheets
 
   stylesheets[screen][] = css/hwpi_themethree_bentley.css
+  stylesheets[screen][] = css/responsive.themethree.css
 
-
+scripts[] = script.js
 
 ;----------// Theme Settings
 
