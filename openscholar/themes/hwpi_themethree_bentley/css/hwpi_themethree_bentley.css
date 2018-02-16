@@ -169,6 +169,7 @@ div.contextual-links-wrapper a,.contextual-controls-wrapper div.ctools-dropdown.
     background: #303030;
     color: #FFFFFF;
 }
+#boxes-box-site_info, #boxes-box-site_info a,
 #menu-bar ul a,#menu-bar ul.nice-menu a,#menu-bar ul.nice-menu .menuparent a {
     color: #303030;
     font-family: 'Arvo', Baskerville, Palatino, 'Palatino Linotype', 'Book Antiqua', 'Times New Roman', serif;
@@ -672,13 +673,7 @@ ul.links li.link-count-node-readmore a {
     padding: 60px 0 12px;
     position: relative;
     background: #2b2b2b;
-    background: -moz-linear-gradient(top, #d0433a 0%, #1b1b1b 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#d0433a), color-stop(100%,#1b1b1b));
-    background: -webkit-linear-gradient(top, #d0433a 0%,#1b1b1b 100%);
-    background: -o-linear-gradient(top, #d0433a 0%,#1b1b1b 100%);
-    background: -ms-linear-gradient(top, #d0433a 0%,#1b1b1b 100%);
-    background: linear-gradient(to bottom, #d0433a 0%,#1b1b1b 100%);
-    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#d0433a', endColorstr='#1b1b1b',GradientType=0 );
+
 }
 #footer a {
     color: #57ACFF;
@@ -703,14 +698,20 @@ ul.links li.link-count-node-readmore a {
 }
 #layout_16_9_side .slide {
     background: #ac253a;
-    background: -moz-linear-gradient(top, #ac253a 0%, #880f1c 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ac253a), color-stop(100%, #880f1c));
-    background: -webkit-linear-gradient(top, #ac253a 0%, #880f1c 100%);
-    background: -o-linear-gradient(top, #ac253a 0%, #880f1c 100%);
-    background: -ms-linear-gradient(top, #ac253a 0%, #880f1c 100%);
-    background: linear-gradient(to bottom, #ac253a 0%, #880f1c 100%);
-    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#ac253a', endColorstr='#880f1c',GradientType=0 );
+    background: -moz-linear-gradient(top, #d0433a 0%, #880f1c 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #d0433a), color-stop(100%, #880f1c));
+    background: -webkit-linear-gradient(top, #d0433a 0%, #880f1c 100%);
+    background: -o-linear-gradient(top, #d0433a 0%, #880f1c 100%);
+    background: -ms-linear-gradient(top, #d0433a 0%, #880f1c 100%);
+    background: linear-gradient(to bottom, #d0433a 0%, #880f1c 100%);
+    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#d0433a', endColorstr='#880f1c',GradientType=0 );
 }
 a.rslides_nav {
     background-color: #4F0912;
 }
+/* TWEAK THE POSITION OF THE BENTLEY IN THE HEADER */
+.branding-left {
+  
+    margin: 5px 0 0 -30px;
+   
+}	
