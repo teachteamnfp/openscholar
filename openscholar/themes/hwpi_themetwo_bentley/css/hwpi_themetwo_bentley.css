@@ -52,7 +52,7 @@ content: '';
 
 /* Menu bar */
 #menu-bar {
-  background: #fd6f50;
+  background: #d0433a;
   padding: 0;
 }
 
@@ -76,7 +76,7 @@ ul.nice-menu ul {
 
 #menu-bar ul.nice-menu a.active,
 #menu-bar ul.nice-menu a:hover {
-  background: #fd6f50;
+  background: #d0433a;
   color: #FFF;
 }
 
@@ -206,7 +206,7 @@ h2.block-title {
 #search-block-form #edit-submit,
 #search-form #edit-submit {
        background-position: 2px -440px;
-    background-color: #fd6f50;
+    background-color: #d0433a;
 }
 
 
