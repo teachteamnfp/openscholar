@@ -1,11 +1,11 @@
 @media (max-width: 1008px) {
 		
 .link-count-mobi-main a {
-    background-color: #A23338;
+    background-color: #d0433a;
     color: #FFFFFF;
 }
 .link-count-mobi-util a {
-    background-color: #80282C;
+    background-color: #9a403b;
 
 }
 .link-count-mobi-search a {
@@ -17,7 +17,7 @@
     background: none!important;
 }
 #menu-bar #block-os-primary-menu{
-    background: none repeat scroll 0 0 #A23338;
+    background: none repeat scroll 0 0 #d0433a;
 
 }
 #menu-bar ul.nice-menu a.active, 
@@ -34,18 +34,18 @@
     padding: 0;
 }
 #menu-bar ul.nice-menu ul {
-    background: none repeat scroll 0 0 #80282C!important;
+    background: none repeat scroll 0 0 #9a403b!important;
 }
 
 #menu-bar #block-os-primary-menu li {
-    border-bottom: 1px solid #80282C!important;
+    border-bottom: 1px solid #9a403b!important;
     border-top: 1px solid #AB383E!important;
         display: block;
 }
 
 .region-header-third .os-custom-menu.opened,
 .region-header-third #block-os-secondary-menu.opened {
-    background-color: #80282C!important;
+    background-color: #9a403b!important;
 }
 .region-header-third .os-custom-menu li,
 .region-header-third #block-os-secondary-menu li{
