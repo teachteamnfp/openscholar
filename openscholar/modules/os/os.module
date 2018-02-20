@@ -279,14 +279,14 @@ function os_entity_info_alter(&$info) {
   );
 
   // Remove field replacement for entities that don't need it
-  if (!empty($entity_info['file']['field replacement'])) {
-    unset($entity_info['file']['field replacement']);
+  if (!empty($info['file']['field replacement'])) {
+    unset($info['file']['field replacement']);
   }
-  if (!empty($entity_info['taxonomy_term']['field replacement'])) {
-    unset($entity_info['taxonomy_term']['field replacement']);
+  if (!empty($info['taxonomy_term']['field replacement'])) {
+    unset($info['taxonomy_term']['field replacement']);
   }
-  if (!empty($entity_info['comment']['field replacement'])) {
-    unset($entity_info['comment']['field replacement']);
+  if (!empty($info['comment']['field replacement'])) {
+    unset($info['comment']['field replacement']);
   }
 }
 
@@ -881,7 +881,7 @@ function os_preprocess_page(&$vars) {
   }
 
   // Ensure "Import" is always the last item in the menu
-  usort($links, 
+  usort($links,
     function ($a, $b) {
       if (isset($a["title"]) && (($a["title"] == 'Import') || ($a["title"] == 'Sync'))) {
         return 1;
@@ -2246,38 +2246,30 @@ function os_form_user_login_alter(&$form, $form_state) {
   // Overriding the text of first button on the login screen.
   if (isset($form['pin'])) {
     $query['destination'] = isset($_GET['destination']) ? $_GET['destination'] : 'user';
-    $form['pin']['#markup'] = l('Log in using your Harvard Key', 'user/pin', array('query' => $query));
+    $form['pin']['#markup'] = l('Login using your Harvard Key', 'user/pin', array('query' => $query));
   }
 
   // If user login form is overridden by pinserver_authenticate module, then $form['pin-fieldset'] will be initialized from there.
   // $form['name'] and $form['pass'] both will be unset from pinserver_authenticate module
   if (isset($form['pin-fieldset'])) {
-    $form['pin-fieldset']['#title'] = t('Log in with your OpenScholar account');
-    $form['pin-fieldset']['name']['#title'] = t('OpenScholar Username / E-Mail');
+    $form['pin-fieldset']['#title'] = t('Login using your OpenScholar account');
+    $form['pin-fieldset']['name']['#title'] = t('OpenScholar Username or E-Mail');
     $form['pin-fieldset']['pass']['#description'] = t('!request', array('!request' => l('Forgot your password?', 'user/password')));
     $form['pin-fieldset']['pass']['#title'] = "OpenScholar Password";
 
     $form['pin-fieldset']['login'] = array(
         '#type' => 'submit',
-        '#value' => t('Log in'),
+        '#value' => t('Login'),
         '#attributes' => array('class' => array('pin-button-inline')),
     );
-    $form['pin-fieldset']['back'] = array(
-        '#type' => 'button',
-        '#value' => t('Back'),
-        '#suffix' => '</a>',
-        '#attributes' => array(
-            'class' => array('pin-button-inline'),
-            'onclick' => "window.history.back()",
-        ),
-    );
+
 
     unset($form['pin-fieldset']['actions']['submit']);
   }
 
   // If pinserver_authenticate module is not overriding login form, then $form['name'] and $form['pass'] will not be unset.
   if (isset($form['name']) && isset($form['pass'])) {
-    $form['name']['#title'] = t('OpenScholar Username / E-Mail');
+    $form['name']['#title'] = t('OpenScholar Username or E-Mail');
     unset($form['pass']['#description']);
   }
 }
@@ -3156,8 +3148,8 @@ function os_page_build(&$page) {
       $warning_msg = t('Sorry, you are not authorized to access this page.<br/>Please contact the site owner to gain access.');
     }
     else {
-      $warning_msg = t('You are not authorized to access this page.');
-      $warning_msg .= '<br/>' . 'You need to ' . l('log in', 'user/login', array('query' => array('destination' => $redirect['destination']) )) . ' to access this page';
+      $warning_msg = t('This website or page content is accessible to authorized users.');
+      $warning_msg .= ' For access, please ' . l('log in here.', 'user/login', array('query' => array('destination' => $redirect['destination']) ));
     }
 
     $page['content']['system_main']['main']['#markup'] = $warning_msg;
@@ -3957,7 +3949,7 @@ function os_redirect_goto($redirect) {
   $redirect->redirect_options['fragment'] = $parse_url['fragment'];
   $redirect->redirect_options['query'] = $parse_url['query'];
   $url = url($parse_url['path'], $redirect->redirect_options);
-  
+
   drupal_add_http_header('Location', $url);
   drupal_add_http_header('Status', redirect_status_code_options($redirect->status_code));
 
