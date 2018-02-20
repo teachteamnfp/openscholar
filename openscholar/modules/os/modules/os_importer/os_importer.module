@@ -893,23 +893,37 @@ function os_importer_feeds_presave(FeedsSource $source, $entity, $item) {
       $html_obj = new simple_html_dom();
       // Load HTML from a string.
       $html_obj->load($entity->body[LANGUAGE_NONE][0]['value']);
-      foreach ($html_obj->find('img[class=media-element]') as $img_obj ) {
-        $url = $img_obj->src;
-        // TODO: We need to export protocol as well. Image src doesn't have the
-        // protocol http or https. For now let's consider https.
-        if ($path = system_retrieve_file('https:' . $url, $destination, FALSE, FILE_EXISTS_REPLACE)) {
-          $img_obj->setAttribute('src', file_create_url($path));
+      $media_img_tags = $html_obj->find('img[class=media-element]');
+      $media_anchor_tags = $html_obj->find('span[class=media-element] > a');
+      if (!empty($media_img_tags) || !empty($media_anchor_tags)) {
+        foreach ($media_img_tags as $img_obj ) {
+          $url = $img_obj->src;
+          // TODO: We need to export protocol as well. Image src doesn't have the
+          // protocol http or https. For now let's consider https.
+          if ($path = system_retrieve_file('https:' . $url, $destination, FALSE, FILE_EXISTS_REPLACE)) {
+            $img_obj->setAttribute('src', file_create_url($path));
+          }
+          else {
+            // Debug.
+            watchdog('os_importer', 'Unable to create new file from %url', array('%url' =>$url), WATCHDOG_ERROR);
+          }
         }
-        else {
-          // Debug;
-          // TODO: Remove after testing.
-          print "Failed"; exit;
+        foreach ($media_anchor_tags as $anchor_obj ) {
+          $url = $anchor_obj->href;
+          // TODO: We need to export protocol as well. Image src doesn't have the
+          // protocol http or https. For now let's consider https.
+          if ($path = system_retrieve_file('https:' . $url, $destination, FALSE, FILE_EXISTS_REPLACE)) {
+            $anchor_obj->setAttribute('href', file_create_url($path));
+          }
+          else {
+            // Debug.
+            watchdog('os_importer', 'Unable to create new file from %url', array('%url' =>$url), WATCHDOG_ERROR);
+          }
         }
+        $new_doc = $html_obj->save();
+        $html_obj->clear();
+        $entity->body[LANGUAGE_NONE][0]['value'] = $new_doc;
       }
-      $new_doc = $html_obj->save();
-      $html_obj->clear();
-      $entity->body[LANGUAGE_NONE][0]['value'] = $new_doc;
-
     }
     if (empty($entity->field_date[LANGUAGE_NONE][0]['value2'])) {
       $entity->field_date[LANGUAGE_NONE][0]['value2'] = $entity->field_date[LANGUAGE_NONE][0]['value'];
