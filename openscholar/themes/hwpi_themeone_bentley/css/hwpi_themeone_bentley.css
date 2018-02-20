@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css?family=Arvo:400,400i,700');
 
 
+
+.region-header-third ul.nice-menu a,
 a, a:visited {
     color: #0075BE;
 }
@@ -10,6 +12,7 @@ html,
  body {
 	background: #fff;
 	color: #1e1e1e;
+	font-family:  Helvetica, sans-serif;
 }
 
 

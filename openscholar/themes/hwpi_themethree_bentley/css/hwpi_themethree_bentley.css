@@ -8,6 +8,7 @@ a, a:visited {
 html,body {
     background: #fff;
     color: #1e1e1e;
+    font-family: Helvetica, sans-serif;
 }
 body.front {
     overflow-x: hidden;
@@ -177,6 +178,11 @@ div.contextual-links-wrapper a,.contextual-controls-wrapper div.ctools-dropdown.
     padding: 12px 15px;
     background: transparent;
     background-image: none;
+}
+#boxes-box-site_info, #boxes-box-site_info a {
+  
+    padding: 12px 15px 12px 0;
+ 
 }
 #menu-bar ul.nice-menu li {
     margin-right: 0;
