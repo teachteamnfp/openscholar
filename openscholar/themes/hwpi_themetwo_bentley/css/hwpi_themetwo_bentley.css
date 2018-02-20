@@ -52,7 +52,7 @@ content: '';
 
 /* Menu bar */
 #menu-bar {
-  background: #d0433a;
+  background: #fd6f50;
   padding: 0;
 }
 
@@ -76,7 +76,7 @@ ul.nice-menu ul {
 
 #menu-bar ul.nice-menu a.active,
 #menu-bar ul.nice-menu a:hover {
-  background: #d0433a;
+  background: #fd6f50;
   color: #FFF;
 }
 
@@ -87,7 +87,7 @@ ul.nice-menu ul {
 #menu-bar ul.nice-menu .menuparent.over > a,
 #menu-bar ul.nice-menu .menuparent a:hover,
 #menu-bar ul.nice-menu .menuparent a.active {
-  background-color: #af342d;
+  background-color: #d0433a;
 }
 
 #menu-bar ul.nice-menu .menuparent ul li a,
@@ -113,7 +113,7 @@ ul.nice-menu ul {
 
 
 #menu-bar ul.nice-menu ul {
-    background:#af342d;
+    background:#d0433a;
 }
 
 
@@ -206,7 +206,7 @@ h2.block-title {
 #search-block-form #edit-submit,
 #search-form #edit-submit {
        background-position: 2px -440px;
-    background-color: #d0433a;
+    background-color: #fd6f50;
 }
 
 
