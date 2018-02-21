@@ -525,7 +525,7 @@ table td.mini {
     border-radius: 3px;
 }
 table td.mini .mini-day-on a {
-    color: #FFF;
+    color: #FFF !important;
 }
 .event-start .event-start {
     background: #F8F8F8;
