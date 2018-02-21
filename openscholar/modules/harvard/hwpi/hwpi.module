@@ -301,10 +301,53 @@ function hwpi_mail_alter(&$message){
           $message['body'][0] = t("Dear !fullname, \n\n!site_owner, site owner of !site, has created a user account for you so that you may access this website. Log in by clicking on the following link or by pasting it into your browser: \n\n!login_url \n\nFor your security, this link can be used only once.  \n\nYour OpenScholar username is: !username \n\nAfter setting your OpenScholar user password with the included link, you can then <a href=" . variable_get('help_site_login_url') . " target='_blank'>associate this user account with your Harvard Key</a>. \n\nOnce paired, you will be able to log in at !site in the future. Don't forget to bookmark the site and save this email for future reference.\n\nHere are some handy links for you:\n\n* <a href=" . variable_get('help_site_login_url') . " target='_blank'>Logging in to your site</a>\n\n* <a href=" . variable_get('upcoming_events') . "target='_blank'>Sign up for training</a>\n\n* <a href=" . variable_get('doc_base_url') . " target='_blank'>OpenScholar documentation</a>\n\n* <a href=" . variable_get('contact_url') . " target='_blank'>Need help with your project?</a>\n\n-The OpenScholar Team", $replacements);
 
          break;
+
+       // Account created by admin in the admin/people panel.
+       case 'user_register_admin_created' :
+         // Get the user id we just created.
+         $uid = $message['params']['account']->uid;
+         // Load the user data.
+         $user = user_load($uid);
+         // Grab their first name, if it doesnt exist, use their user name.
+         if (!empty($user->field_first_name['und'][0]['value'])) {
+           $first_name = $user->field_first_name['und'][0]['value'];
+         } else {
+           $first_name = $user->name;
+         }
+
+         // Grab their last name, if it doesnt exist, use their user name.
+         if (!empty($user->field_last_name['und'][0]['value'])) {
+           $last_name = $user->field_last_name['und'][0]['value'];
+         }
+
+         $full_name = trim(join(" ", array($first_name, $last_name)));
+
+         // Alter the email subject.
+         $message['subject'] = t('An OpenScholar account has been created for you at !site_name', array(
+           '!site_name' => $vsite->group->title
+         ));
+         $replacements = array(
+           '!site' => $base_url . "/" . $vsite->group->purl,
+           '!site_owner' => $site_owner_full_name,
+           '!login_url' => user_pass_reset_url($user),
+           '!mailto' => $user->mail,
+           '!firstname' => $first_name,
+           '!lastname' => $last_name,
+           '!fullname' => $full_name,
+           '!username' => $user->name,
+           '!futurelogin' => $base_url . '/user/'
+         );
+         // Alter the message body.
+         $message['body'][0] = t("Dear !fullname, \n\n!site_owner, site owner of !site, has created a user account for you so that you may access this website. Log in by clicking on the following link or by pasting it into your browser: \n\n!login_url \n\nFor your security, this link can be used only once.  \n\nYour username is: !username \n\nAfter setting your password with the included link, you will be able to log in at !futurelogin in the future.  \n\n-The OpenScholar Team", $replacements);
+
+         break;
+
+       case 'contact_page_mail':
+         $message['headers']['Sender'] = $message['headers']['Return-Path'] = $message['headers']['From'];
+         break;
       }
     }
   }
-
 
 /**
  * Implements hook_form_FORM_ID_alter().
