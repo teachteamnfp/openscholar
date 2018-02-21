@@ -274,7 +274,8 @@ function vsite_form_alter(&$form, &$form_state, $form_id) {
      if ($preset = $space->controllers->variable->get('spaces_preset_' . $space->type)) {
        $preset = spaces_preset_load($preset, $space->type);
        if (!empty($form['actions']['preset'])) {
-        $form['actions']['preset']['#value'] = t('Save to !title', array('!title' => $preset->title));
+        // Removing the Save to site type button
+        unset($form['actions']['preset']);
        }
        if (!empty($form['actions']['submit'])) {
         $form['actions']['submit']['#value'] = t('Save for !name', array('!name' => $space->title()));
