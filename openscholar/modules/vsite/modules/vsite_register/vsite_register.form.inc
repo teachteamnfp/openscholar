@@ -32,7 +32,7 @@ function vsite_register_form($form, &$state) {
     '#required' => TRUE,
     '#field_prefix' => $base_url . '/',
     '#size' => 35,
-    '#description' => t('Enter a minimum of 3 characters, lowercase only. Punctuation is not allowed except for hyphens and underscores. <br />Example: Entering jdoe into the field above will result in this URL: %site.', array('%site' => $base_url . '/jdoe')),
+    '#description' => t('Enter a minimum of 3 characters, lowercase only. Periods and punctuation are not allowed except for hyphens and underscores. <br />Example: Entering jdoe into the field above will result in this URL: %site.', array('%site' => $base_url . '/jdoe')),
     '#ajax' => array(
       'callback' => 'vsite_register_ajax_validation',
       'wrapper' => 'domain-errors',
@@ -207,7 +207,7 @@ function vsite_register_form($form, &$state) {
     );
 
     if (module_exists('pinserver') && variable_get('pinserver_pin_url', FALSE)) {
-      $form['user_fieldset']['existing_username']['#description'] .= ' ' . t('Only users who have linked their OpenScholar accounts to HarvardKey are listed.') . ' ' . l('Learn more about linking accounts', 'http://docs.openscholar.harvard.edu/logging-your-site#linking-your-harvardkey-to-your-openscholar-account', array('attributes' => array('target' => '_blank', 'rel' => 'noopener')));
+      $form['user_fieldset']['existing_username']['#description'] .= ' ' . t('Only users who have linked their OpenScholar accounts to HarvardKey are listed.') . ' ' . l('Learn more about linking accounts', 'https://harvard.service-now.com/ithelp?id=kb_article&sys_id=bcb7c5eadbba0fc0a914fff31d9619dc', array('attributes' => array('target' => '_blank', 'rel' => 'noopener')));
     }
 
       // Prepares flag for JS to set when create new user is clicked.
@@ -643,7 +643,7 @@ function _vsite_register_mail_in_use($mail) {
  * @see purl_validate()
  */
 function _vsite_register_valid_url($url) {
-  foreach (array('!', ';', '/', '?', ':', '@', '&', '=', '"', "'",
+  foreach (array('!', ';', '/', '?', ':', '@', '&', '=', '"', "'", ".",
     ) as $char) {
     if (strpos($url, $char) !== FALSE) {
       return FALSE;

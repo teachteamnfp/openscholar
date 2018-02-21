@@ -241,7 +241,7 @@ projects[module_filter][subdir] = "contrib"
 projects[module_filter][version] = 1.7
 
 projects[memcache][subdir] = "contrib"
-projects[memcache][version] = 1.5
+projects[memcache][version] = 1.6
 
 projects[migrate][subdir] = "contrib"
 projects[migrate][version] = 2.5

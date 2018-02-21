@@ -792,6 +792,20 @@ ul ul ul ul {
     left: 0;
     content: '';
 }
+.google {
+    padding: 3px 0 3px 25px !important;
+    border-bottom: none !important;
+    position: relative;
+}
+
+.google:before {
+    background: url('../images/scholarbase-sprite.png?45678') no-repeat -76px -726px;
+    width: 22px;
+    height: 22px;
+    position: absolute;
+    left: 0;
+    content: '';
+}
 .subscribe {
     padding: 3px 0 3px 25px !important;
     border-bottom: none !important;
@@ -1150,7 +1164,7 @@ ul.no-event-export {
 }
 .block-boxes-os_boxes_widget_slider #layout_16_9_side .rslides_tabs {
     left: 0;
-    position: static;
+    position: relative;
     top: 0;
 }
 .block-boxes-os_boxes_widget_slider #layout_16_9_side .rslides_tabs li {
