@@ -1167,3 +1167,25 @@ function cp_user_form_og_ui_admin_new_role_alter(&$form, &$form_state) {
 function cp_user_roles_add_redirect($form, &$form_state) {
   $form_state['redirect'] = 'cp/users/roles';
 }
+
+/**
+ * Implements hook_node_type_update().
+ * Adding new role 'Viewer' and its permission set for readonly access
+ */
+function cp_user_node_type_update($info) {
+  $res = db_select('og_role','ogr')
+    ->fields('ogr', array('gid'))
+    ->condition('ogr.name', 'nice user', '=')
+    ->execute();
+  $num_of_results = $res->rowCount();
+
+  if ($num_of_results == 0) {
+    // Inserting into 'og_role' table for 'viewer' default role entry with gid = 0 for 3 types of OS site.
+    $viewer_role_ids = array('department', 'personal', 'project');
+    foreach ($viewer_role_ids as $group_bundle) {
+      db_insert('og_role')
+        ->fields(array('gid' => '0', 'group_type' => 'node', 'group_bundle' => $group_bundle, 'name' => 'viewer'))
+        ->execute();
+    }
+  }
+}
