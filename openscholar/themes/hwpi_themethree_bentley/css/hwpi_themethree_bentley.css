@@ -345,6 +345,8 @@ ul.primary {
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
 }
+
+.front #content-panels .block.block-boxes-os_slideshow_box,
 .front #content-column .block.block-boxes-os_boxes_columns {
     border: none;
     background: none;
