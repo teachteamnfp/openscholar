@@ -194,12 +194,21 @@ function os_pages_menu_contextual_links_alter(&$links, $router_item, $root_path)
   }
   // vsite users skip to here because they don't have access to any of the widget contextual links
   elseif ($root_path == 'node/%' && !empty($router_item['page_arguments'])) {
-    if (empty($router_item['page_arguments'][2]) || empty($router_item['page_arguments'][2]->nid)) {
+    if ($router_item['page_callback'] == 'restws_page_callback') {
+      if (empty($router_item['page_arguments'][2]) || empty($router_item['page_arguments'][2]->nid)) {
+        // Not a node.
+        return;
+      }
+      $node = $router_item['page_arguments'][2];
+    }
+    elseif (empty($router_item['page_arguments'][0]) || empty($router_item['page_arguments'][0]->nid)) {
       // Not a node.
       return;
     }
 
-    $node = $router_item['page_arguments'][2];
+    if (empty($node)) {
+      $node = $router_item['page_arguments'][0];
+    }
 
     // we don't want to mess with the links for other content types by accident
     // only pages are edited at the node/nid/edit paths.
