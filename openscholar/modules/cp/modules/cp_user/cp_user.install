@@ -23,7 +23,7 @@ function cp_user_uninstall($info) {
     db_delete('og_role')
       ->condition('gid', '0')
       ->condition('group_type', 'node')
-      ->condition('group_bundle', $group_bundle),
+      ->condition('group_bundle', $group_bundle)
       ->condition('name', 'viewer')
       ->execute();
   }
