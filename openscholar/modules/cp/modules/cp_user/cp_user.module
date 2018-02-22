@@ -1169,10 +1169,10 @@ function cp_user_roles_add_redirect($form, &$form_state) {
 }
 
 /**
- * Implements hook_node_type_update().
+ * Implements hook_node_type_insert().
  * Adding new role 'Viewer' and its permission set for readonly access
  */
-function cp_user_node_type_update($info) {
+function cp_user_node_type_insert($info) {
   $res = db_select('og_role','ogr')
     ->fields('ogr', array('gid'))
     ->condition('ogr.name', 'viewer', '=')
