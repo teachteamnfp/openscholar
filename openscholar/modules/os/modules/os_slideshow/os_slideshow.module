@@ -412,6 +412,11 @@ function os_slideshow_preprocess_os_slideshow_slide(&$vars) {
 
   $vars['image'] = theme('image_style', $img_vars);
   $url = ($node->field_link) ? $node->field_link[$lang][0]['url'] : '';
+  $match = preg_match("/\[(\d+)\]/", $url, $matches);
+
+  if (isset($matches[1])) {
+    $url = "node/" . $matches[1];
+  }
   if ($url) {
     foreach (array('headline', 'description', 'image') as $elem) {
       if (empty($vars[$elem])) {
@@ -686,7 +691,7 @@ function _os_slideshow_add_css() {
   return $css_file;
 }
 
-/*
+/**
  * Implements hook_node_submit
  *
  * Convert the returned value from os_pages_autocomplete to a relative URL
@@ -697,14 +702,6 @@ function os_slideshow_node_submit($node, $form, &$form_state) {
   }
 
   if (isset($form['field_link'][LANGUAGE_NONE][0]['#value'])) {
-
-    // The autocomplete web-service formats results as "node-title [node-id]"
-    $match = preg_match("/\[(\d+)\]/", $form['field_link'][LANGUAGE_NONE][0]['#value'], $matches);
-
-    $url = $form['field_link'][LANGUAGE_NONE][0]['#value'];
-    if (isset($matches[1])) {
-      $url = "/node/" . $matches[1];
-    }
 
     $node->field_link[LANGUAGE_NONE][0]['url'] = $url;
   }
