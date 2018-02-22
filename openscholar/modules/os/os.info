@@ -186,6 +186,7 @@ features[variable][] = transliteration_file_lowercase
 features[variable][] = transliteration_file_uploads
 features[variable][] = user_failed_login_user_window
 features[variable][] = user_register
+features[variable][] = metatag_token_sanitize
 features[views_view][] = os_feed
 features[views_view][] = os_site_members
 features[views_view][] = os_users

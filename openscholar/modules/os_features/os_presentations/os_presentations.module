@@ -83,7 +83,10 @@ function os_presentations_node_validate($node, $form, &$form_state) {
       $form_state['field']['field_presentation_file'][LANGUAGE_NONE]['instance']['settings']['file_extensions'] : 'ppt pptx pps ppsx pdf';
 
     while ($file = $form_state['complete form']['field_presentation_file'][LANGUAGE_NONE][$i++]['#file']) {
+      $name = $file->filename;
+      $file->filename = basename($file->uri);
       $errors = file_validate_extensions($file, $extensions);
+      $file->filename = $name;
       if (count($errors) > 0) {
         form_set_error('field_presentation_file', join("\n", $errors));
         break;

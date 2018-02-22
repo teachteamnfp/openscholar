@@ -10,8 +10,8 @@
                  drag-over-class="media-browser-drag-over" ng-multiple="true" allow-dir="true"
                  hide-on-drop-not-available="true" ng-accept="$parent.validate($file)">
                 <span id="drag-text">Drag and drop files here. <span class="help_icon" ng-mouseenter="showHelp = true" ng-mouseleave="showHelp = false">?</span></span>
-                <a href="#" id="media-browser-file-select" ng-file-select ng-file-change="$parent.checkForDupes($files, $event)"
-                   ng-accept="$parent.validate($file)" accept="{{'.'+extensions.join(',.')}}" ng-multiple="true">{{button_text}}</a>
+                <span id="media-browser-file-select" ng-file-select ng-file-change="$parent.checkForDupes($files, $event)"
+                   ng-accept="$parent.validate($file)" accept="{{'.'+extensions.join(',.')}}" ng-multiple="true">{{button_text}}</span>
                      <div class="help" ng-show="showHelp"><strong>Allowed file types:</strong><br /> {{extensions.join(' ')}}<br /><br />
                    <strong>Max file size:</strong> {{maxFilesize}}.</div>
                 <span id="filename-check" ng-show="$parent.checkingFilenames">Checking for duplicate files...</span>

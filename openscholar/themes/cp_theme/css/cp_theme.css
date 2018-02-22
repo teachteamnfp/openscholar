@@ -198,7 +198,7 @@ html.js input.throbbing {
 .view-id-cp_files .cp-controls-wrapper .add_new {
     margin-right: 0;
 }
-
+#file-entity-add-upload #edit-upload-ajax-wrapper .add-new,
 .view-id-cp_files .cp-controls-wrapper .add_new {
     line-height: 15px !important;
     display: inline-block;
