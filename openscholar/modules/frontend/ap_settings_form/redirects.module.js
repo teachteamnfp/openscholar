@@ -9,7 +9,7 @@
   m.service('RedirectService', ['$http', 'buttonSpinnerStatus', function ($http, bss) {
     var redirects = {};
 
-    var restApi = Drupal.settings.paths.api + '/redirect/';
+    var restApi = Drupal.settings.paths.api + '/redirect';
     var http_config = {
       params: {}
     };
