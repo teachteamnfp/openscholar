@@ -1,12 +1,40 @@
 <?php
 
 /**
+ * Implements hook_install().
+ * Adding new role 'Viewer' and its permission set for readonly access
+ */
+function cp_user_install($info) {
+  // Inserting into 'og_role' table for 'viewer' default role entry with gid = 0 for 3 types of OS site.
+  $viewer_role_ids = array('department', 'personal', 'project');
+  foreach ($viewer_role_ids as $group_bundle) {
+    db_insert('og_role')
+      ->fields(array('gid' => '0', 'group_type' => 'node', 'group_bundle' => $group_bundle, 'name' => 'viewer'))
+      ->execute();
+  }
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function cp_user_uninstall($info) {
+  $viewer_role_ids = array('department', 'personal', 'project');
+  foreach ($viewer_role_ids as $group_bundle) {
+    db_delete('og_role')
+      ->condition('gid', '0')
+      ->condition('group_type', 'node')
+      ->condition('group_bundle', $group_bundle),
+      ->condition('name', 'viewer')
+      ->execute();
+  }
+}
+
+/**
  * Updates for adding new role 'Viewer' and its permission set for readonly access.
  */
 function cp_user_update_7000() {
   features_revert(array('cp_user' => array('user_role', 'user_permission')));
-
-  $res = db_select('og_role','ogr')
+    $res = db_select('og_role','ogr')
     ->fields('ogr', array('gid'))
     ->condition('ogr.name', 'viewer', '=')
     ->condition('ogr.gid', '0', '=')
