@@ -703,6 +703,6 @@ function os_slideshow_node_submit($node, $form, &$form_state) {
 
   if (isset($form['field_link'][LANGUAGE_NONE][0]['#value'])) {
 
-    $node->field_link[LANGUAGE_NONE][0]['url'] = $url;
+    $node->field_link[LANGUAGE_NONE][0]['url'] = $form['field_link'][LANGUAGE_NONE][0]['#value'];
   }
 }
