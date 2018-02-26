@@ -451,6 +451,9 @@ projects[wysiwyg][version] = "2.x-dev"
 projects[wysiwyg][revision] = "9490393"
 projects[wysiwyg][patch][] = "http://drupal.org/files/wysiwyg-table-format.patch"
 
+projects[simplehtmldom][subdir] = "contrib"
+projects[simplehtmldom][version] = 1.12
+
 projects[wysiwyg_filter][subdir] = "contrib"
 projects[wysiwyg_filter][version] = 1.6-rc3
 projects[wysiwyg_filter][revision] = "4848d306a2f7526f7eeaf22edb9268d3c96654fe"
