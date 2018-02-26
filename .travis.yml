@@ -29,5 +29,5 @@ env:
 
 script:
 
-  - cd /home/travis/build/openscholar/openscholar
+  - cd /home/travis/build/openscholar/openscholar/docker_travis
   - bash docker.sh

@@ -8,8 +8,8 @@ set -e
 
 # If we want to debug the failing tests, set the variable to 1.
 #DEBUG=1
-
-docker build -t openscholar .
+cd ..
+docker build -f docker_travis/Dockerfile -t openscholar .
 docker run -it -p 8080:80 -e TEST_SUITE=${TEST_SUITE} -e DOCKER_DEBUG=${DEBUG} openscholar
 
 # After the docker will finish the command above it will terminate it self.
