@@ -880,7 +880,7 @@ function os_importer_feeds_presave(FeedsSource $source, $entity, $item) {
 
   // When importing an event and the end date is empty we use the start date.
   if ($entity->type == "event") {
-    if ($source->id == 'os_ical') {
+    if (!empty($entity->body[LANGUAGE_NONE][0]['value']) && $source->id == 'os_ical') {
       $destination = 'public://';
       // Public files are put inside of a files directory within the vsite folder
       // This keeps user uploaded files seperate from other vsite resources.
