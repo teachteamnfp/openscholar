@@ -199,19 +199,15 @@ form[id^="os-mailchimp-form--"] input[type="submit"],
     bottom: -20px;
 }
 #footer .footer-login {
-    -moz-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
-    -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
-    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
-    background: -moz-linear-gradient(19% 75% 90deg, #E0E0E0, #FAFAFA);
-    background: -webkit-gradient(linear, left top, left bottom, from(#FAFAFA), to(#E0E0E0));
-    color: #4A4A4A;
+
+    background-color: #EEE;
+    color: #215990;
     float: right;
     display: inline;
     font-family: helvetica, sans-serif;
     font-size: 11px;
     font-weight: normal;
-    padding: 1px 5px 0;
-    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.7);
+    padding: 1px 4px 0;
     font-style: normal;
     line-height: 18px;
     text-decoration: none;

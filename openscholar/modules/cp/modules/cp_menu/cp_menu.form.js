@@ -11,7 +11,12 @@
 
   function changeSelect() {
     var $this = $(this.oldRowElement),
-      $prev = $this.prevAll('.section-heading'),
+      $prev = $this.prevAll('.section-heading').sort(function (a, b) {
+         var ad = Math.abs($this.index() - $(a).index()),
+             bd = Math.abs($this.index() - $(b).index());
+
+        return (ad - bd);
+      }).first(),
       val = $prev.find('.menu-name').val(),
       select = $this.find('.menu-name');
 
