@@ -32,4 +32,5 @@ For developers, see the [glossary](https://github.com/openscholar/openscholar/wi
 * [Scripts](https://github.com/openscholar/openscholar/wiki/Scripts)
 
 ## Quality Assurance by
-![browser-stack](https://cloud.githubusercontent.com/assets/867075/23173035/da708a06-f825-11e6-85e3-77c30f832f23.png)
+![browser-stack](https://cloud.githubusercontent.com/assets/867075/23173035/da708a06-f825-11e6-85e3-77c30f832f23.png
+ )
