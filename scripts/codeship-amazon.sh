@@ -10,7 +10,7 @@ if git show-ref --verify refs/tags/$CI_BRANCH 2>&1 > /dev/null; then
   # This is just a tag push
   # There's no need to build ever for tags
   # All we need to do it
-  #export $BRANCH = $(git branch --contains tags/$CI_BRANCH | grep -s 'SCHOLAR-' | sed -n 2p)
+  echo "Tag $CI_BRANCH Found."
   export TAG_COMMIT=$(git rev-list -n 1 $CI_BRANCH)
   git clone git@bitbucket.org:openscholar/deploysource.git
   cd deploysource
