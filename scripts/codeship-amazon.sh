@@ -14,7 +14,8 @@ if git show-ref --verify refs/tags/$CI_BRANCH 2>&1 > /dev/null; then
   export TAG_COMMIT=$(git rev-list -n 1 $CI_BRANCH)
   git clone git@bitbucket.org:openscholar/deploysource.git
   cd deploysource
-  git checkout $TAG_COMMIT
+  export ROOT_COMMIT=$(git log --all --grep="git-subtree-split: $TAG_COMMIT" | grep "^commit" | sed "s/commit //")
+  git checkout $ROOT_COMMIT
   git tag $CI_BRANCH
   git push --tags
   exit 0
@@ -48,7 +49,7 @@ preserve_files=( .htaccess robots_disallow.txt sites 404_fast.html favicon.ico f
 cp -f openscholar/openscholar/drupal-org-core.make /tmp/
 cp -f openscholar/openscholar/drupal-org.make /tmp/
 cp -f openscholar/openscholar/bower.json /tmp/
-git subtree pull -q -m "$CI_MESSAGE \n\ngit-subtree-split: $CI_COMMIT_ID" --prefix=openscholar git://github.com/openscholar/openscholar.git $CI_BRANCH
+git subtree pull -q -m "$CI_MESSAGE" --prefix=openscholar git://github.com/openscholar/openscholar.git $CI_BRANCH
 
 #Only build if no build has ever happened, or if the make files have changed
 if [ ! -d openscholar/openscholar/modules/contrib ] || [ $FORCE_REBUILD == "1" ] || [ "$(cmp -b 'openscholar/openscholar/drupal-org-core.make' '/tmp/drupal-org-core.make')" != "" ] || [ "$(cmp -b 'openscholar/openscholar/drupal-org.make' '/tmp/drupal-org.make')" != "" ] || [ "$(cmp -b 'openscholar/openscholar/bower.json' '/tmp/bower.json')" != "" ]; then
@@ -123,7 +124,7 @@ done
 ls $BUILD_ROOT/openscholar
 rm -rf $BUILD_ROOT/openscholar/behat &> /dev/null
 
-git commit -a -m "$CI_MESSAGE"
+git commit -a -m "$CI_MESSAGE \n\ngit-subtree-split: $CI_COMMIT_ID"
 #END BUILD PROCESS
 else
 
@@ -133,7 +134,7 @@ rm -rf $BUILD_ROOT/openscholar/behat &> /dev/null
 
 #Copy unmakable modules, when we don’t build
 cp -R openscholar/temporary/* openscholar/openscholar/modules/contrib/
-git commit -a -m "$CI_MESSAGE" || echo 'Nothing to commit.'
+git commit -a -m "$CI_MESSAGE \n\ngit-subtree-split: $CI_COMMIT_ID" || echo 'Nothing to commit.'
 fi
 
 git push origin $CI_BRANCH
