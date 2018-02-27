@@ -600,7 +600,7 @@ function os_pages_form_node_delete_confirm_alter(&$form, &$form_state) {
   // plid is empty when it's the top level of the outline
   // we only want to redirect when it isn't empty
   // Adding book type in case of sub-booklet
-  if (($form['#node']->type == 'page' || $form['#node']->type == 'book') && !empty($form['#node']->book) && $form['#node']->book['plid']) {
+  if (isset($form['#node']->book) && $form['#node']->book['plid']) {
     $form['#submit'][] = 'os_pages_node_delete_redirect';
   }
 }
