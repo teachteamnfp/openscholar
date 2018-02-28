@@ -3,7 +3,7 @@
   name        = American Bold
   description = A vibrant looking theme for use by departments at american.
   core        = 7.x
-  base theme  = hwpi_vibrant
+  base theme  = hwpi_classic
   release     = 7.x-3.x
   engine      = phptemplate
   screenshot  = screenshot.png
