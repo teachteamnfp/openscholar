@@ -395,3 +395,25 @@ function hwpi_change_site_owner_form_alter(&$form, $form_state, $form_id)
     $form['new_site_owner']['#description'] = t('Only users who have linked their OpenScholar accounts to HarvardKey are listed.') . ' ' . l('Learn more about linking accounts', 'http://docs.openscholar.harvard.edu/logging-your-site#linking-your-harvardkey-to-your-openscholar-account', array('attributes' => array('target' => '_blank', 'rel' => 'noopener'))) . '.';
   }
 }
+
+/**
+ * Implements hook_ctools_plugin_type
+ */
+function hwpi_ctools_plugin_type() {
+  return array(
+    'service' => array(
+      'use hooks' => TRUE,
+      'class' => array('class'),
+    )
+  );
+}
+
+
+/**
+ * Implements hook_ctools_plugin_directory
+ */
+function hwpi_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'hwpi' && $plugin == 'service') {
+    return 'plugins/service/';
+  }
+}

@@ -2,8 +2,10 @@ name = "HWPI"
 core = 7.x
 description = "Module to provide functionality specific to Harvard Web Publishing Initiative sites."
 package = Features
-dependencies[] = ctools
-files[] = hwpi_service_sword_dash.inc
+
+dependencies[] = "ctools"
+dependencies[] = "citation_distribute"
+
 features[ctools][] = strongarm:strongarm:1
 features[features_api][] = api:2
 features[variable][] = training_signup_url
@@ -24,4 +26,4 @@ features[variable][] = getting_started_os
 features[variable][] = linking_account
 features[variable][] = contact_default_address
 features_exclude[dependencies][strongarm] = strongarm
-
+files[] = plugins/service/hwpi_service_sword_dash.inc
