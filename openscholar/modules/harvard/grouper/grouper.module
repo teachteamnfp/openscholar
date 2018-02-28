@@ -332,6 +332,11 @@ function grouper_node_access($node, $op, $account) {
   }
 
   $group = node_load($group_id);
+  if (!$group) {
+    // Invalid Group
+    return NODE_ACCESS_IGNORE;
+  }
+
   $items = field_get_items('node', $group, VSITE_ACCESS_FIELD);
   if ($items[0]['value'] == GROUPER_PRIVACY_LEVEL) {
     if (grouper_user_can_access($group, $account)) {
