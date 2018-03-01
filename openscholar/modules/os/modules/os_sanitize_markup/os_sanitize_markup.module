@@ -5,9 +5,6 @@ function _ng_non_bindable(&$variables) {
     'ng-non-bindable' => 'true',
   ));
 
-  if (strpos($variables['attributes'], 'ng-non-bindable') === FALSE) {
-    $variables['attributes'] .= $ng_non_bindable;
-  }
   if (strpos($variables['title_attributes'], 'ng-non-bindable') === FALSE) {
     $variables['title_attributes'] .= $ng_non_bindable;
   }
@@ -16,7 +13,7 @@ function _ng_non_bindable(&$variables) {
   }
 }
 
-function _element_children_recursive(&$element, $form_state) {
+function _element_children_recursive(&$element) {
   foreach (element_children($element) as $element_key) {
     $is_text_field = !empty($element[$element_key]['#type']) && in_array($element[$element_key]['#type'], array('container', 'fieldset', 'file', 'form', 'password', 'textarea', 'text_format', 'textfield'));
     $is_attributed_added = !empty($element[$element_key]['#attributes']) && isset($element[$element_key]['#attributes']['ng-non-bindable']);
@@ -24,7 +21,7 @@ function _element_children_recursive(&$element, $form_state) {
       $element[$element_key]['#attributes']['ng-non-bindable'][] = 'true';
     }
 
-    _element_children_recursive($element[$element_key], $form_state);
+    _element_children_recursive($element[$element_key]);
   }
 }
 
@@ -33,9 +30,10 @@ function os_sanitize_markup_process_node(&$variables, $hook) {
 }
 
 function os_sanitize_markup_process_block(&$variables, $hook) {
+  dpm($variables);
   _ng_non_bindable($variables);
 }
 
 function os_sanitize_markup_form_alter(&$form, $form_state, $form_id) {
-  _element_children_recursive($form, $form_state);
+  _element_children_recursive($form);
 }
