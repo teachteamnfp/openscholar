@@ -2,7 +2,7 @@
 
 function _ng_non_bindable(&$variables) {
   $ng_non_bindable = drupal_attributes(array(
-    'ng-non-bindable' => 'true',
+    'ng-non-bindable' => '',
   ));
 
   if (strpos($variables['title_attributes'], 'ng-non-bindable') === FALSE) {
@@ -15,10 +15,10 @@ function _ng_non_bindable(&$variables) {
 
 function _element_children_recursive(&$element) {
   foreach (element_children($element) as $element_key) {
-    $is_text_field = !empty($element[$element_key]['#type']) && in_array($element[$element_key]['#type'], array('container', 'fieldset', 'file', 'form', 'password', 'textarea', 'text_format', 'textfield'));
+    $is_text_field = !empty($element[$element_key]['#type']) && in_array($element[$element_key]['#type'], array('file', 'form', 'password', 'textarea', 'text_format', 'textfield'));
     $is_attributed_added = !empty($element[$element_key]['#attributes']) && isset($element[$element_key]['#attributes']['ng-non-bindable']);
     if ($is_text_field && !$is_attributed_added) {
-      $element[$element_key]['#attributes']['ng-non-bindable'][] = 'true';
+      $element[$element_key]['#attributes']['ng-non-bindable'] = '';
     }
 
     _element_children_recursive($element[$element_key]);
@@ -30,7 +30,6 @@ function os_sanitize_markup_process_node(&$variables, $hook) {
 }
 
 function os_sanitize_markup_process_block(&$variables, $hook) {
-  dpm($variables);
   _ng_non_bindable($variables);
 }
 
