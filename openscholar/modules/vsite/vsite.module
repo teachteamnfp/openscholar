@@ -4072,13 +4072,14 @@ function vsite_oembed_uri_fragments($uri) {
  * Implements hook_redirect_load_by_source_existing_url_alter
  */
 function vsite_redirect_load_by_source_existing_url_alter(&$source) {
+  global $language;
   if(drupal_valid_path($source)) {
     // checking and converting the source to the form as it's save
     // on the redirect table if needed
     $redirect_query = db_select('redirect');
     $redirect_query->addField('redirect', 'source');
     $redirect_query->condition('source', db_like($source), 'LIKE');
-    $redirect_query->condition('language', array($language, LANGUAGE_NONE));
+    $redirect_query->condition('language', array($language->language, LANGUAGE_NONE));
     $redirect_result = $redirect_query->execute()->fetchCol();
     if ($redirect_result) {
       $source = $redirect_result[0];
