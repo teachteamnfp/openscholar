@@ -22,9 +22,9 @@ function hwpi_basetheme_preprocess_html(&$vars) {
 }
 
 /**
- * Implements hook_preprocess_HOOK() for page.
+ * Preprocess variables for page.tpl.php
  */
-function hwpi_preprocess_page(&$vars) {
+function hwpi_basetheme_preprocess_page(&$vars) {
   if (_is_hwpi_theme()) {
     $vars['page']['branding_header']['hwpi'] = _hwpi_branding_header();
     $vars['page']['branding_footer']['hwpi'] = _hwpi_branding_footer();
