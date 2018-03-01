@@ -900,7 +900,7 @@ function os_importer_feeds_presave(FeedsSource $source, $entity, $item) {
           $url = $img_obj->src;
           // TODO: We need to export protocol as well. Image src doesn't have the
           // protocol http or https. For now let's consider https.
-          if ($path = system_retrieve_file('https:' . $url, $destination, FALSE, FILE_EXISTS_REPLACE)) {
+          if ($path = system_retrieve_file('https:' . $url, $destination, TRUE, FILE_EXISTS_REPLACE)) {
             $img_obj->setAttribute('src', file_create_url($path));
           }
           else {
@@ -910,7 +910,7 @@ function os_importer_feeds_presave(FeedsSource $source, $entity, $item) {
         }
         foreach ($media_anchor_tags as $anchor_obj ) {
           $url = $anchor_obj->href;
-          if ($path = system_retrieve_file($url, $destination, FALSE, FILE_EXISTS_REPLACE)) {
+          if ($path = system_retrieve_file($url, $destination, TRUE, FILE_EXISTS_REPLACE)) {
             $anchor_obj->setAttribute('href', file_create_url($path));
           }
           else {
