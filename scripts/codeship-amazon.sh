@@ -14,7 +14,8 @@ if git show-ref --verify refs/tags/$CI_BRANCH 2>&1 > /dev/null; then
   export TAG_COMMIT=$(git rev-list -n 1 $CI_BRANCH)
   git clone git@bitbucket.org:openscholar/deploysource.git
   cd deploysource
-  git checkout $TAG_COMMIT
+  export ROOT_COMMIT=$(git log --all --grep="git-subtree-split: $TAG_COMMIT" | grep "^commit" | sed "s/commit //")
+  git checkout $ROOT_COMMIT
   git tag $CI_BRANCH
   git push --tags
   exit 0
@@ -123,7 +124,7 @@ done
 ls $BUILD_ROOT/openscholar
 rm -rf $BUILD_ROOT/openscholar/behat &> /dev/null
 
-git commit -a -m "$CI_MESSAGE"
+git commit -a -m "$CI_MESSAGE" -m "" -m "git-subtree-split: $CI_COMMIT_ID"
 #END BUILD PROCESS
 else
 
@@ -133,7 +134,7 @@ rm -rf $BUILD_ROOT/openscholar/behat &> /dev/null
 
 #Copy unmakable modules, when we don’t build
 cp -R openscholar/temporary/* openscholar/openscholar/modules/contrib/
-git commit -a -m "$CI_MESSAGE" || echo 'Nothing to commit.'
+git commit -a -m "$CI_MESSAGE" -m "" -m "git-subtree-split: $CI_COMMIT_ID" || echo 'Nothing to commit.'
 fi
 
 git push origin $CI_BRANCH

@@ -244,10 +244,10 @@ function hwpi_features_revert($module) {
 }
 
 /**
- - * Implements hook_mail_alter().
- - *
- - * Alters system emails to users based on certain actions.
- - */
+ * Implements hook_mail_alter().
+ *
+ * Alters system emails to users based on certain actions.
+ */
 function hwpi_mail_alter(&$message){
     global $base_url;
 
@@ -396,6 +396,16 @@ function hwpi_change_site_owner_form_alter(&$form, $form_state, $form_id)
   }
 }
 
+/** Implements hook_boxes_box_load_alter().
+ *
+ * This is the global form of the hook, for use with default boxes, not boxes that are overridden in spaces().
+ */
+function hwpi_boxes_box_load_alter(&$box) {
+  if ($box->delta == 'hwp_personal_contact_html') {
+    $box->options['text']['value'] = '<p>Harvard University<br> (617) 495-1000<br> Massachusetts Hall<br> Cambridge, MA 02138<br> your_name@harvard.edu</p>';
+  }
+}
+
 /**
  * Implements hook_ctools_plugin_type
  */
@@ -407,7 +417,6 @@ function hwpi_ctools_plugin_type() {
     )
   );
 }
-
 
 /**
  * Implements hook_ctools_plugin_directory
