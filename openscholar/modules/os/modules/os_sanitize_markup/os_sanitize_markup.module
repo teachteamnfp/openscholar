@@ -36,3 +36,8 @@ function os_sanitize_markup_process_block(&$variables, $hook) {
 function os_sanitize_markup_form_alter(&$form, $form_state, $form_id) {
   _element_children_recursive($form);
 }
+
+function os_sanitize_markup_field_widget_og_vocab_complex_form_alter(&$element, $form_state, $context) {
+  $element['#prefix'] = '<div ng-non-bindable>';
+  $element['#suffix'] = '</div>';
+}
