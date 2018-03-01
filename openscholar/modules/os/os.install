@@ -1044,3 +1044,10 @@ function os_update_7058() {
   $revert = array('os' => array('variable'));
   features_revert($revert);
 }
+
+/**
+ * Install santize markup module
+ */
+function os_update_7059() {
+  module_enable(array('os_sanitize_markup'));
+}
