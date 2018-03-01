@@ -872,6 +872,9 @@ class FeatureContext extends DrupalContext {
       case "feed reader":
         $widgetType = "os_boxes_feedreader";
         break;
+      case "slideshow":
+        $widgetType = "os_slideshow_box";
+        break;
       case "dataverse list":
         $widgetType = "os_boxes_dataverse_list";
         break;
@@ -919,7 +922,11 @@ class FeatureContext extends DrupalContext {
       }
     }
 
-    $metasteps[] = new Step\When('I check the box "edit-make-embeddable"');
+    if ($widgetType != "os_slideshow_box") {
+      // Skip Make Embeddable step for slide show widget
+      $metasteps[] = new Step\When('I check the box "edit-make-embeddable"');
+    }
+    $metasteps[] = new Step\When('I make sure admin panel is closed');
     $metasteps[] = new Step\When('I press "Save"');
     return $metasteps;
   }
@@ -4635,8 +4642,7 @@ JS;
           "//div[@class='calendar-calendar']//td[starts-with(@id, 'os_events-')]//span[@class='field-content']/a[text()='$event_title']"));
 
       $page = $this->getSession()->getPage()->getContent();
-
-      $date_next_arrow = $this->getSession()->getPage()->find('xpath', "//li[@class='date-next']/a");
+      $date_next_arrow = $this->getSession()->getPage()->find('xpath', "//section[@id='main-content']//li[@class='date-next']/a");
       $date_next_arrow->click();
     }
 
@@ -4645,7 +4651,7 @@ JS;
 
       # Return to today's calendar page
       while ($counter++ <= $num_intervals) {
-        $date_prev_arrow = $this->getSession()->getPage()->find('xpath', "//li[@class='date-prev']/a");
+        $date_prev_arrow = $this->getSession()->getPage()->find('xpath', "//section[@id='main-content']//li[@class='date-prev']/a");
         $date_prev_arrow->click();
       }
       return true;
@@ -4851,6 +4857,21 @@ JS;
   }
 
   /**
+   * @When /^I click the gear icon in the node content region$/
+   */
+  public function iClickTheGearIconInTheNodeContentRegion() {
+    $content_region = $this->getSession()->getPage()->find('xpath', "//div[@class='node-content']");
+    $gear_icon = $this->getSession()->getPage()->find('xpath', "//div[@class='contextual-links-wrapper contextual-links-processed']");
+    $gear_icon_trigger_link = $this->getSession()->getPage()->find('xpath', "//div[@id='content']//div/a[text()='Configure']");
+
+    $content_region->mouseOver();
+    $content_region->click();
+    $gear_icon->mouseOver();
+    $gear_icon->click();
+    $gear_icon_trigger_link->mouseOver();
+    $gear_icon_trigger_link->click();
+  }
+  /**
    * @When /^I should "([^"]*)" see the "([^"]*)" menu item in the gear menu$/
    */
   public function iDoNotSeeTheMenuItemUnderTheGearMenu($negation, $menu_label) {
@@ -4905,6 +4926,20 @@ JS;
   }
 
   /**
+   * @Given /^I click "([^"]*)" in the gear menu in node content$/
+   */
+  public function iClickInTheGearMenuNodeContent($menu_item) {
+    $gear_menu_item = $this->getSession()->getPage()->find('xpath', "//div[@class='node-content']//div[@class='contextual-links-wrapper contextual-links-processed contextual-links-active']/..//a[text()='$menu_item']");
+    try {
+      $gear_menu_item->click();
+    }
+    catch (Exception $e) {
+      throw new Exception($menu_item . " is not clickable");
+    }
+  }
+
+
+  /**
    * @When /^I swap the order of the first two items in the outline on vsite "([^"]*)"$/
    */
   public function iSwapTheOrderOfTheBookOutline($vsite) {
@@ -4952,6 +4987,17 @@ JS;
   }
 
   /**
+   * @When /^I edit the media element "([^"]*)"$/
+   */
+  public function iClickToEditTheMedia($filename) {
+    $fid = FeatureHelp::getEntityID('file', $filename);
+    $file = file_load($fid);
+    return array(
+      new Step\When('I visit "john/file/' . $fid . '/edit"'),
+    );
+  }
+
+  /**
    * @Then /^I should see disqus$/
    */
   public function iShouldSeeDisqus() {
@@ -4973,6 +5019,27 @@ JS;
     $nid = FeatureHelp::getNodeId($parent_title);
     return array(
       new Step\When('I visit "john/os/pages/' . $nid . '/subpage' . '"'),
+    );
+  }
+
+  /**
+   * @When /^I visit the file "([^"]*)"$/
+   */
+  public function iVisitTheFile($filename) {
+    $fid = FeatureHelp::getEntityID('file', $filename);
+    return array(
+      new Step\When('I visit "john/file/' . $fid . '"'),
+    );
+  }
+    /**
+   * @When /^I delete the media element "([^"]*)"$/
+   */
+  public function iClickToDeleteTheMedia($filename) {
+    $fid = FeatureHelp::getEntityID('file', $filename);
+    $file = file_load($fid);
+    return array(
+      new Step\When('I visit "john/file/' . $fid . '/delete"'),
+      new Step\When('I press "Delete"'),
     );
   }
 

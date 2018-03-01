@@ -1,4 +1,6 @@
 sudo: required
+dist: trusty
+group: deprecated-2017Q4
 
 language: php
 
@@ -27,5 +29,5 @@ env:
 
 script:
 
-  - cd /home/travis/build/openscholar/openscholar
+  - cd /home/travis/build/openscholar/openscholar/docker_travis
   - bash docker.sh
