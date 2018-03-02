@@ -85,39 +85,42 @@ function os_events_settings() {
  */
 function getClient() {
   global $is_https;
-  
+
   $path = libraries_get_path('google-api-php-client');
   include_once "$path/vendor/autoload.php";
 
   define('APPLICATION_NAME', "OpenScholar Calendar Exporter");
-  define('CLIENT_SECRET_PATH', tempnam(sys_get_temp_dir(), "google_client_secret"));
-  define('CREDENTIALS_PATH', tempnam(sys_get_temp_dir(), "google_credentials"));
   define('SCOPES', implode(' ', array(Google_Service_Calendar::CALENDAR)));
 
-  $google_client_secret = variable_get('google_client_secret');
-  $google_credentials = variable_get('google_credentials');
-  file_put_contents(CLIENT_SECRET_PATH, $google_client_secret);
-  file_put_contents(CREDENTIALS_PATH, $google_credentials);
+  $google_client_secret = variable_get('client_secret_key');
+  $google_client_ID = variable_get('client_id');
+  $google_developer_key = variable_get('developer_api_key');
 
   $client = new Google_Client();
   $client->setApplicationName(APPLICATION_NAME);
   $client->setScopes(SCOPES);
-  $client->setAuthConfig(CLIENT_SECRET_PATH);
-  $client->setAccessType('online');
+  $client->setAccessType('offline');
   $client->setApprovalPrompt('force');
+  $client->setClientId($google_client_ID);
+  $client->setClientSecret($google_client_secret);
+  $client->setDeveloperKey($google_developer_key);
 
   // Load previously authorized credentials from a file.
-  $credentialsPath = CREDENTIALS_PATH;
+  $credentialsPath = variable_get('google_credentials');
 
   // If the credentials exist, and are valid
-  if (file_exists($credentialsPath)) {
-    $accessToken = json_decode(file_get_contents($credentialsPath), true);
+  if ($credentialsPath) {
+    $accessToken = $credentialsPath;
+  }
+  else {
+    $token = $client->getAccessToken();
+    $accessToken = json_encode($token);
+    $get_refresh_token = $client->getRefreshToken();
+    $refresh_token = json_encode($get_refresh_token);
   }
 
   $client->setAccessToken($accessToken);
-  $_base_path = rtrim(ltrim(base_path(), '/'), '/');
-  $base_path = ((strlen($_base_path) == 0) ? '' : '/' . $_base_path);
-  $client->setRedirectUri((($is_https) ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $base_path . '/get-google-access-token-with-auth-code');
+  $client->setRedirectUri(variable_get('callback_url'));
   return $client;
 }
 
@@ -137,13 +140,10 @@ function os_events_get_access_token_with_auth_code() {
 
   $client = getClient();
   $client->setState('1');
-  $_base_path = rtrim(ltrim(base_path(), '/'), '/');
-  $base_path = ((strlen($_base_path) == 0) ? '' : '/' . $_base_path);
-  $client->setRedirectUri((($is_https) ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $base_path . '/get-google-access-token-with-auth-code');
+  $client->setRedirectUri(variable_get('callback_url'));
 
   // Exchange authorization code for an access token.
   $accessToken = $client->fetchAccessTokenWithAuthCode($authCode);
-
   if (! isset($accessToken['error']) && isset($accessToken['access_token'])) {
     $client->setAccessToken($accessToken['access_token']);
     variable_set('google_credentials', json_encode($accessToken));
@@ -151,34 +151,17 @@ function os_events_get_access_token_with_auth_code() {
   } else {
     error_log("Error getting access token via auth code.");
   }
-
   os_events_gcal_create_calendar();
 }
 
-
-function os_events_calendar_export_access() {
-  global $user;
-
-  # Ensure the user is a member of this group
-  $vsites_member = vsite_get_user_vsites($user->id);
-  $has_access = false;
-  foreach ($vsites_member as $vm) {
-      if ($vm->group->nid == $_GET["state"]) {
-        return true;
-      }
-  }
-  return false;
-}
+/**
+ * @file
+ * Synchronizing the openscholar calendar events with
+ * Googlw calendar.
+ */
 
 function os_events_gcal_create_calendar() {
   global $is_https, $user;
-
-  $has_access = os_events_calendar_export_access();
-
-  # If the user is not a member of the group, deny access
-  if (! $has_access) {
-    drupal_access_denied();
-  }
 
   $name = "os_events";
   $display_id = "feed_2_no_cache";
@@ -186,7 +169,6 @@ function os_events_gcal_create_calendar() {
 
   // The vsite group ID is stored in the state parameter
   $vsite = vsite_get_vsite($_GET["state"]);
-
   // Set the vsite space, since we've moved to the top-level docroot
   spaces_set_space($vsite);
   $vsite->activate_user_roles();
@@ -198,35 +180,201 @@ function os_events_gcal_create_calendar() {
     $view->execute_display($display_id, $args);
   }
 
-  $events = array();
-  foreach ($view->result as $e) {
-
-    # Create test event and add it to the calendar
-    $event = new Google_Service_Calendar_Event();
-    $event->setDescription($e->_field_data['nid']['entity']->body[LANGUAGE_NONE][0]['value']);
-    $event->setLocation($e->_field_data['nid']['entity']->field_event_location[LANGUAGE_NONE][0]['value']);
-    $event->setSummary($e->_field_data['nid']['entity']->title);
-
-    $dt1 = new DateTime($e->field_data_field_date_field_date_value . "Z");
-    $dt2 = new DateTime($e->field_data_field_date_field_date_value2 . "Z");
-
-    $calendarDateTime1 = new Google_Service_Calendar_EventDateTime();
-    $calendarDateTime2 = new Google_Service_Calendar_EventDateTime();
-    $calendarDateTime1->setDateTime($dt1->format(DateTime::RFC3339));
-    $event->setStart($calendarDateTime1);
-    $calendarDateTime2->setDateTime($dt2->format(DateTime::RFC3339));
-    $event->setEnd($calendarDateTime2);
-
-    $events[] = $event;
-  }
-
   $client = getClient();
   $calendarService = new Google_Service_Calendar($client);
+  $calendar_name = $vsite->group->title;
+  //$calendar_name = 'OpenScholar';
+  $calendar_id = createCalendar($calendar_name);
+  //deleteEventsfromGCal($view, $calendar_name);
 
-  $_SESSION['listCalendarList'] = serialize($calendarService->calendarList->listCalendarList());
-  $_SESSION['exported_events'] = serialize($events);
-  drupal_save_session();
+  // Delete removed events
+  $all_events = $calendarService->events->listEvents($calendar_id);
+  foreach ($all_events->getItems() as $all_event) {
+    $event_delete = true;
+    foreach ($view->result as $e) {
+      if ($e->_field_data['nid']['entity']->nid == $all_event->getId()) {
+        $event_delete = false;;
+        break;
+      }
+    }
+    if ($event_delete) {
+      $calendarService->events->delete($calendar_id, $all_event->getId());
+    }
+  }
+
+  $event = array();
+  foreach ($view->result as $e) {
+    if(checkEventExists($e->_field_data['nid']['entity']->nid, $calendar_id)) {
+
+      # Create event and add it to the calendar
+      $event = new Google_Service_Calendar_Event();
+
+      $event->setDescription($e->_field_data['nid']['entity']->body[LANGUAGE_NONE][0]['value']);
+      $event->setLocation($e->_field_data['nid']['entity']->field_event_location[LANGUAGE_NONE][0]['value']);
+      $event->setSummary($e->_field_data['nid']['entity']->title);
+      $event->setId($e->_field_data['nid']['entity']->nid);
+
+      $dt1 = new DateTime($e->field_data_field_date_field_date_value . "Z");
+      $dt2 = new DateTime($e->field_data_field_date_field_date_value2 . "Z");
+
+      $calendarDateTime1 = new Google_Service_Calendar_EventDateTime();
+      $calendarDateTime2 = new Google_Service_Calendar_EventDateTime();
+      $calendarDateTime1->setDateTime($dt1->format(DateTime::RFC3339));
+      $event->setStart($calendarDateTime1);
+      $calendarDateTime2->setDateTime($dt2->format(DateTime::RFC3339));
+      $event->setEnd($calendarDateTime2);
+      $calendarInsert = $calendarService->events->insert($calendar_id, $event);
+    }
+    else{
+     # Update events to the Google calendar
+      $event = $calendarService->events->get($calendar_id, $e->_field_data['nid']['entity']->nid);
+
+      $event->setDescription($e->_field_data['nid']['entity']->body[LANGUAGE_NONE][0]['value']);
+      $event->setLocation($e->_field_data['nid']['entity']->field_event_location[LANGUAGE_NONE][0]['value']);
+      $event->setSummary($e->_field_data['nid']['entity']->title);
+
+      $dt1 = new DateTime($e->field_data_field_date_field_date_value . "Z");
+      $dt2 = new DateTime($e->field_data_field_date_field_date_value2 . "Z");
+
+      $calendarDateTime1 = new Google_Service_Calendar_EventDateTime();
+      $calendarDateTime2 = new Google_Service_Calendar_EventDateTime();
+      $calendarDateTime1->setDateTime($dt1->format(DateTime::RFC3339));
+      $event->setStart($calendarDateTime1);
+      $calendarDateTime2->setDateTime($dt2->format(DateTime::RFC3339));
+      $event->setEnd($calendarDateTime2);
+
+      $calendarUpdate = $calendarService->events->update($calendar_id, $event->getId(), $event);
+    }
+  }
+
+  if($calendarInsert || $calendarUpdate) {
+    drupal_set_message(t('Calendar successfully sync with Google calendar.'));
+  }
   drupal_goto(url('/' . $vsite->group->purl . '/calendar'));
+}
+
+/**
+ * Creates a new calendar
+ *
+ * @param string calendar name
+ * @return string calendar ID (or false on failure)
+ */
+function createCalendar($calendarName) {
+  $client = getClient();
+  $calendar_exists = false;
+  $service = new Google_Service_Calendar($client);
+  $calendarList = $service->calendarList->listCalendarList();
+  foreach ($calendarList->getItems() as $calendarListEntry) {
+    if ($calendarListEntry->getSummary() == $calendarName) {
+      $calendar_exists = true;
+      $calendar_id = $calendarListEntry->getId();
+      break;
+    }
+  }
+  if($calendar_exists) {
+    return $calendar_id;
+  }
+  else {
+    // set up the calendar and save
+    $calendar = new Google_Service_Calendar_Calendar();
+    $calendar->setSummary($calendarName);
+    $calendar->setTimeZone(date_default_timezone_get());
+    try {
+        $createdCalendar = $service->calendars->insert($calendar);
+    } catch (Exception $e) {
+        return false;
+    }
+    return $createdCalendar->getId();
+  }
+}
+
+/**
+ * Check if this events is already on Google Calendar
+ * @param $event_id
+ *
+ * @return bool true if event don't exists
+ */
+function checkEventExists($event_id, $calendar_id) {
+  $client = getClient();
+  $calendarService = new Google_Service_Calendar($client);
+  try {
+      $calendarService->events->get($calendar_id, $event_id);
+  }
+  catch (Exception $e) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+/**
+ * Delete events from Google Calendar
+ * @param array $view
+ * @param string $calendar_name
+ *
+ */
+/*function deleteEventsfromGCal($view, $calendar_name) {
+  $client = getClient();
+  $service = new Google_Service_Calendar($client);
+  $events = $service->events->listEvents($calendar_name);
+  foreach ($view->result as $e) {
+    foreach ($events->getItems() as $event) {
+      if($event->getId() != $e->_field_data['nid']['entity']->nid) {
+        $service->events->delete($calendar_name, $event->getId());
+      }
+    }
+  }
+}*/
+
+
+/**
+ * @file
+ * Administration page callbacks for the google calendar settings.
+ */
+/**
+ * Form builder. Configure google calendar account.
+ *
+ * @ingroup forms
+ * @see system_settings_form().
+ */
+function google_account_form() {
+
+  global $is_https;
+  $redirect_url = (($is_https) ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . '/admin/config/get-google-access-token-with-auth-code';
+
+  $form['developer_api_key'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Api Key'),
+    '#description' => t('The server api key of web application.'),
+    '#default_value' => variable_get('developer_api_key'),
+    '#size' => 3,
+    '#required' => TRUE
+  );
+  $form['client_id'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Client Id'),
+    '#description' => t('The CLIENT ID in the "Client ID for web application" section.'),
+    '#default_value' => variable_get('client_id'),
+    '#size' => 3,
+    '#required' => TRUE
+  );
+  $form['client_secret_key'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Client Secret Key'),
+    '#description' => t('The CLIENT SECRET in the "Client ID for web application" section.'),
+    '#default_value' => variable_get('client_secret_key'),
+    '#size' => 3,
+    '#required' => TRUE
+  );
+  $form['callback_url'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Redirect Url'),
+    '#description' => t('Copy this url and paste it in google project as a authorized redirect url.'),
+    '#default_value' => $redirect_url,
+    '#size' => 3,
+    '#attributes' => array('readonly' => 'readonly'),
+  );
+
+  return system_settings_form($form, TRUE);
 }
 
 /**
@@ -239,7 +387,7 @@ function os_events_gcal_create_calendar() {
  * @param $mail_key
  *   The mail key for notification.
  */
-function os_events_event_change_notification($registration, $params, $mail_key) {  
+function os_events_event_change_notification($registration, $params, $mail_key) {
   // Not sending notification to past events registrants.
   if (strtotime($params['@event-date']) < REQUEST_TIME) {
     return;
@@ -247,7 +395,7 @@ function os_events_event_change_notification($registration, $params, $mail_key) 
   // Triggering email to registrants if event timings / location are changed or events are deleted.
   $from = $params['@event-creator-mail'];
   $language = language_default();
-  $to = $registration->anon_mail;  
+  $to = $registration->anon_mail;
   $params['@event-date'] = date('l, F j, Y g:ia', strtotime($params['@event-date'] .' UTC'));
   $params['@event-new-date'] = date('l, F j, Y g:ia', strtotime($params['@event-new-date'] .' UTC'));
   $params['@user-name'] = $registration->field_full_name[LANGUAGE_NONE][0]['value'];
@@ -267,6 +415,9 @@ function os_events_node_delete($node) {
     ->entityCondition('bundle', 'event_signup_simple')
     ->propertyCondition('entity_id', $node->nid);
   $result = $query->execute();
+  if (!count($result)) {
+    return;
+  }
   $entity_ids = array_keys($result['registration']);
   $registration_entities = entity_load('registration', $entity_ids);
   $event_author = user_load($node->uid);
@@ -325,7 +476,7 @@ function os_events_node_update($node) {
     }
     return;
   }
-  
+
   $deleted_dates = array();
   $submitted_dates = array();
   foreach ($node->field_date[LANGUAGE_NONE] as $date) {
@@ -448,13 +599,24 @@ function os_events_menu() {
     'type' => MENU_CALLBACK,
   );
 
-  $items['get-google-access-token-with-auth-code'] = array(
+  $items['admin/config/get-google-access-token-with-auth-code'] = array(
     'title' => 'Get Access Token With Auth Code',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('os_events_get_access_token_with_auth_code'),
-    'access callback' => 'os_events_calendar_export_access',
+    'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
+
+    $items['admin/config/services/google-account-settings'] = array(
+    'title' => 'Google Calendar Settings',
+    'description' => 'Google account settings for calendar',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('google_account_form'),
+    'access arguments' => array('administer site configuration'),
+    );
+
+    $items['admin/config/services/google-account-settings/google-account-settings'] = $items['admin/config/services/google-account-settings'];
+    $items['admin/config/services/google-account-settings/google-account-settings']['type'] = MENU_DEFAULT_LOCAL_TASK;
 
   return $items;
 }
@@ -711,7 +873,7 @@ function os_events_views_pre_render(&$view) {
     return;
   }
 
-  // only display subscribe links if listing is the events landing page or a list of upcoming events 
+  // only display subscribe links if listing is the events landing page or a list of upcoming events
   // and if it is set to be displayed as per cp/settings page checkbox
   if (!variable_get('os_exporter_disable_event_export', 0) && ((isset($view->exposed_input['month']) && $view->exposed_input['month'] == date('Y-m')) || strpos($view->get_path(), "calendar/upcoming") !== FALSE)) {
     $view->attachment_before = '<a title="Note: Past events are not included" class="cal-export">' . t('Export') . '</a>' . $view->attachment_before;
@@ -878,7 +1040,7 @@ function os_events_process_node(&$variables) {
         '#markup' => theme('os_events_export_links', $params),
         '#weight' => 10,
       );
-    }    
+    }
   }
 
   // In case of a "teaser" view mode, put the link before the date.
@@ -895,7 +1057,7 @@ function os_events_process_node(&$variables) {
       }
     } elseif ($registrations_type && !$show_register_link) {
         $event_start_date = $variables['node']->field_date[LANGUAGE_NONE][0]['value'];
-        // If the event is a past event        
+        // If the event is a past event
         if (!empty($event_start_date) && REQUEST_TIME > strtotime($event_start_date)) {
           $register = '<span class="register-event-full">' . t('Registration Closed') . '</span>';
         } elseif (os_events_event_registration_reach_capacity($variables['node'], $date)) {
@@ -1189,7 +1351,7 @@ function os_events_modal_submit($form, &$form_state) {
 
   // In case event is full update the register links via ajax.
   $event = node_load($form_state['registration']->entity_id);
- 
+
   // Obtaining menu router item of the Ajax URL.
   $menu_item = menu_get_item();
 
@@ -1227,7 +1389,7 @@ function os_events_modal_submit($form, &$form_state) {
       '@user-name' => isset($event_author->field_first_name[LANGUAGE_NONE][0]['value']) ? $event_author->field_first_name[LANGUAGE_NONE][0]['value'] : $event_author->name,
       '@site' => variable_get('site_name', 'OpenScholar')
     );
-    drupal_mail('os_events', 'registration_full_notification', $event_author->mail, $language, $params, $from);    
+    drupal_mail('os_events', 'registration_full_notification', $event_author->mail, $language, $params, $from);
   }
 
   // Clean any message.
@@ -1277,16 +1439,17 @@ function os_events_views_pre_view(&$view, &$display_id, &$args) {
     );
 
     # Show the Google export button, if we have a Google API account
-    $google_client_secret = variable_get('google_client_secret', false);
-    $google_credentials = variable_get('google_credentials', false);
-    if ($google_credentials && $google_client_secret) {
+    $google_client_secret = variable_get('client_secret_key');
+    $google_client_ID = variable_get('client_id');
+    $google_developer_key = variable_get('developer_api_key');
 
+    if ($google_client_ID && $google_client_secret && $google_developer_key) {
       $client = getClient();
       $_base_path = rtrim(ltrim(base_path(), '/'), '/');
       $base_path = ((strlen($_base_path) == 0) ? '' : '/' . $_base_path);
       $vsite = vsite_get_vsite();
       $client->setState($vsite->group->nid);
-      $client->setRedirectUri((($is_https) ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $base_path . '/get-google-access-token-with-auth-code');
+      $client->setRedirectUri(variable_get('callback_url'));
 
       $authUrl = $client->createAuthUrl($client->getScopes());
       $buttons['Google'] = $authUrl;
@@ -1328,7 +1491,7 @@ function os_events_views_pre_view(&$view, &$display_id, &$args) {
         $warning_msg[] = t('No events are available for export');
         $view->attachment_before = theme('item_list', array('items' => $warning_msg, 'attributes' => array('class' => 'links no-event-export')));
       }
-    }  
+    }
   }
 
   if (empty($view->display_handler->display->display_options['pager']['options']['date_id'])) {
@@ -2102,7 +2265,7 @@ function os_events_registration_form_validate($form, &$form_state) {
         }
       }
       break;
-  }  
+  }
 }
 
 /**
@@ -2575,7 +2738,7 @@ function os_events_mail($key, &$message, $params) {
         $message['body'][] = t('You had been registered for @title on @event-date@location.', $params);
         $message['body'][] = t('This event has been cancelled. To view our other events, please visit the event page here: @event-url', $params);
         $message['body'][] = t("Questions? Email the event organizer @event-creator-mail.\n\nThe @site Team", $params);
-        break;  
+        break;
 
     case 'event_time_updated_notification':
         $message['subject'] = t("Change in @title", $params);
@@ -2585,7 +2748,7 @@ function os_events_mail($key, &$message, $params) {
         $message['body'][] = t('That ​event​ has been changed, and you are now registered for @event-new-date@new-location.', $params);
         $message['body'][] = t('Please visit the event page here: @event-url', $params);
         $message['body'][] = t("Questions? Email the event organizer @event-creator-mail.\n\nThe @site Team", $params);
-        break;  
+        break;
   }
 }
 
@@ -2655,7 +2818,7 @@ function os_events_mail_alter(&$message) {
 
   //Adding the footer physical address for all emails
   $message['body'][] = '';
-  $message['body'][] = 'Our mailing address is: ' . variable_get('site_physical_address');
+  $message['body'][] = variable_get('site_physical_address');
 }
 
 /**
@@ -2835,7 +2998,7 @@ function os_events_register_show_register_link($node, $date = '') {
   if (!$result['status']) {
     return FALSE;
   }
-  
+
   // If there is no closing date given, checking if current date is greater than the opening date or not.
   if (isset($result['open']) && REQUEST_TIME >= strtotime($result['open']) && !$result['close']) {
     return os_events_show_register_by_node($node, $date);
@@ -2854,7 +3017,7 @@ function os_events_register_show_register_link($node, $date = '') {
   if (!empty($result['close'])) {
     return REQUEST_TIME >= strtotime($result['open']) && REQUEST_TIME <= strtotime($result['close']);
   }
-  
+
   return REQUEST_TIME >= strtotime($result['open']);
 }
 

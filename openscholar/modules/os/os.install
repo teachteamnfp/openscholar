@@ -1036,3 +1036,12 @@ function os_update_7056() {
 function os_update_7057() {
   variable_set('date_format_os_date_abbreviated', 'D M j, g:ia');
 }
+
+/**
+ * Setting metatag_token_sanitize as true to filter out media tags
+ */
+function os_update_7058() {
+  $revert = array('os' => array('variable'));
+  features_revert($revert);
+}
+

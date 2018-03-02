@@ -226,6 +226,10 @@ class OSRestfulCPMenu extends \RestfulBase implements \RestfulDataProviderInterf
         continue;
       }
 
+      $add_label = $type_info[$bundle]->name;
+      if (strcasecmp($add_label, 'biblio') == 0) {
+        $add_label = 'Publication';
+      }
       $type_url_str = str_replace('_', '-', $bundle);
 
       // @todo: Since all the content type are not an angular form yet. We have
@@ -247,8 +251,9 @@ class OSRestfulCPMenu extends \RestfulBase implements \RestfulDataProviderInterf
         );
       }
       $add_links["{$bundle}"] = array(
-        'label' => $type_info[$bundle]->name,
-        'parent' => 'add',
+        'label' => $add_label,
+        'type' => 'link',
+        'href' => "node/add/{$type_url_str}",
         'alt' => $type_info[$bundle]->description,
       );
       $add_links["{$bundle}"] = array_merge($add_links["{$bundle}"], $node_add_link);

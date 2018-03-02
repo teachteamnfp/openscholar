@@ -274,7 +274,8 @@ function vsite_form_alter(&$form, &$form_state, $form_id) {
      if ($preset = $space->controllers->variable->get('spaces_preset_' . $space->type)) {
        $preset = spaces_preset_load($preset, $space->type);
        if (!empty($form['actions']['preset'])) {
-        $form['actions']['preset']['#value'] = t('Save to !title', array('!title' => $preset->title));
+        // Removing the Save to site type button
+        unset($form['actions']['preset']);
        }
        if (!empty($form['actions']['submit'])) {
         $form['actions']['submit']['#value'] = t('Save for !name', array('!name' => $space->title()));
@@ -806,6 +807,7 @@ function vsite_vsite_exists_access($vsites = array()) {
     $purl_base_domain = variable_get('purl_base_domain', '');
     // If the domain is NOT the purl base domain, alerts user and denies access.
     if ($base_url != $purl_base_domain) {
+      watchdog('vsite', 'Base domain mismatch: @base_url', array('@base_url' => $base_url));
       drupal_set_message(t('You may not register new sites on custom domains.'), 'warning');
       return FALSE;
     }

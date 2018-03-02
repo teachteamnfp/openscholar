@@ -42,6 +42,22 @@ class RestfulAppform extends RestfulBase implements \RestfulDataProviderInterfac
   public function getAppStates() {
     $this->activateSpace();
 
+    $os_help = array( 'Blog' => 'https://docs.openscholar.harvard.edu/blogs',
+                      'Classes' => 'https://docs.openscholar.harvard.edu/classes-app',
+                      'FAQs' => 'https://docs.openscholar.harvard.edu/faq-app',
+                      'Links' => 'https://docs.openscholar.harvard.edu/links-app',
+                      'News' => 'https://docs.openscholar.harvard.edu/news-app',
+                      'Basic Pages' => 'https://docs.openscholar.harvard.edu/basic-page',
+                      'Software' => 'https://docs.openscholar.harvard.edu/software-app',
+                      'Private Files' => 'https://docs.openscholar.harvard.edu/private-files',
+                      'Booklets' => 'https://docs.openscholar.harvard.edu/booklet',
+                      'Events' => 'https://docs.openscholar.harvard.edu/events-app',
+                      'Media Gallery' => 'https://docs.openscholar.harvard.edu/media-gallery',
+                      'Presentations' => 'https://docs.openscholar.harvard.edu/presentations-app',
+                      'Profiles' => 'https://docs.openscholar.harvard.edu/people-profiles',
+                      'Publications' => 'https://docs.openscholar.harvard.edu/creating-publications',
+                      'Reader' => 'https://docs.openscholar.harvard.edu/rss-feed'
+                    );
     $features = variable_get('spaces_features', array());
     $info = spaces_features('og');
 
@@ -52,7 +68,8 @@ class RestfulAppform extends RestfulBase implements \RestfulDataProviderInterfac
         'machine_name' => $name,
         'description' => $i->info['description'],
         'enabled' => $features[$name] ? 1 : 0,
-        'private' => $features[$name] ? $features[$name] - 1 : 0
+        'private' => $features[$name] ? $features[$name] - 1 : 0,
+        'help' => $os_help[$i->info['name']]
       );
     }
 

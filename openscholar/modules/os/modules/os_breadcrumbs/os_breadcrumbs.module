@@ -30,7 +30,7 @@ function os_breadcrumbs_build_breadcrumbs() {
     switch($bundle) {
       case 'page':
       case 'book':
-        $links = _os_breadcrumbs_build_subsection_breadcrumb($menu_active_trail);
+        $links = _os_breadcrumbs_build_subsection_breadcrumb($menu_active_trail, $bundle);
         break;
       case 'class_material':
       case 'software_release':
@@ -335,7 +335,17 @@ function _os_breadcrumbs_build_taxonomy_breadcrumb($path) {
  * @param $menu_active_trail
  *  Variable based off menu_active_trail().
  */
-function _os_breadcrumbs_build_subsection_breadcrumb($menu_active_trail) {
+function _os_breadcrumbs_build_subsection_breadcrumb($menu_active_trail, $bundle = '') {
+  if (count($menu_active_trail) > 1 && $bundle == 'book') {
+    $document_trail[] = array(
+        'title' => t('Documents'),
+        'href' => 'documents',
+        'link_path' => '',
+        'localized_options' => array(),
+        'type' => 0,
+      );
+    array_splice($menu_active_trail, 1, 0, $document_trail);
+  }
   $links = array();
   foreach($menu_active_trail as $key => $menu) {
     $short_title = _os_breadcrumbs_shorten_title($menu['title']);
