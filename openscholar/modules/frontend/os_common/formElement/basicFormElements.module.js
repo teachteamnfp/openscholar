@@ -494,7 +494,7 @@
         scope.title = scope.element.title;
         scope.id = $filter('idClean')(scope.element.name, 'edit');
         var copy = elem.find('span').clone();
-        copy.attr('fieldset-'+$filter('idClean')(scope.element.name), '');
+        copy.attr('widget-'+$filter('idClean')(scope.element.name), '');
         copy.attr('element', 'element');
         copy.attr('input-id', scope.id);
         copy.attr('ng-model', 'value');
@@ -504,7 +504,7 @@
     }
   }]);
 
-  m.directive('fieldsetAuthor', ['$http', '$q', function ($http, $q) {
+  m.directive('widgetAuthor', ['$http', '$q', function ($http, $q) {
     return {
       restrict: 'A',
       scope: {
@@ -571,7 +571,7 @@
 
   }]);
 
-  m.directive('fieldsetOsMenu', [function () {
+  m.directive('widgetOsMenu', [function () {
     return {
       restrict: 'A',
       scope: {
@@ -636,7 +636,7 @@
 
   }]);
 
-  m.directive('fieldsetPath', ['$rootScope', function ($rootScope) {
+  m.directive('widgetPath', ['$rootScope', function ($rootScope) {
     return {
       restrict: 'A',
       scope: {
@@ -690,13 +690,13 @@
     };
   }]);
 
-  m.directive('fieldsetRevisionInformation', renderFieldsetElements);
+  m.directive('widgetRevisionInformation', renderFieldsetElements);
 
-  m.directive('fieldsetOptions', renderFieldsetElements);
+  m.directive('widgetOptions', renderFieldsetElements);
 
-  m.directive('fieldsetOsCssClassFieldset', renderFieldsetElements);
+  m.directive('widgetOsCssClassFieldset', renderFieldsetElements);
 
-  m.directive('fieldsetOsSeo', renderFieldsetElements);
+  m.directive('widgetOsSeo', renderFieldsetElements);
   
   m.directive('feOsWysiwygExpandingTextarea', ['$parse', '$q', '$document', function ($parse, $q, $document) {
     return {
