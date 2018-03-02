@@ -152,7 +152,7 @@ function _hwpi_branding_footer() {
     ),
     'copyright' => array(
       '#markup' => t('<span class="harvard-copyright">Copyright &copy; @year The President and Fellows of Harvard College</span> !privacy !access !copyinfring', array(
-          '!privacy' => variable_get('privacy_policy','')?'| '.l('Privacy', variable_get('privacy_policy')): '',
+          '!privacy' => variable_get('privacy_policy_url','')?'| '.l('Privacy', variable_get('privacy_policy_url')): '',
           '!access' => variable_get('site_access','')?'| '.l('Accessibility', variable_get('site_access')): '',
           '!copyinfring' => variable_get('copyright_infring','')?'| '.l('Report Copyright Infringement', variable_get('copyright_infring')): '',
           '@year' => date('Y'),
