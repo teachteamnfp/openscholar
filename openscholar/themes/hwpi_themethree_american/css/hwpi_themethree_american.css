@@ -30,15 +30,20 @@ a,
 a:visited {
 	color: #006796;
 }
+.node-type-page .breadcrumb, .breadcrumb, .breadcrumb a  {
+	color: #fff;
+}
+
+
 a.rslides_nav {
-	background: #006796;
+    background-color: #006796;
 }
 .search-block-form input.form-submit,
 .search-block-form #edit-submit,
 #search-block-form input.form-submit,
 #search-block-form #edit-submit,
 #search-form #edit-submit {
-	background: url("../images/hwpi_basesprite.png") no-repeat scroll 2px -441px #006796;
+	background: url(/profiles/openscholar/themes/hwpi_basetheme/images/hwpi_basesprite.png) no-repeat scroll 2px -441px #006796;
 }
 #layout_16_9_side .slide {
 	background: #13477d;
@@ -49,4 +54,15 @@ a.rslides_nav {
 	background: -ms-linear-gradient(top, #13477d 0%, #2d629a 100%);
 	background: linear-gradient(to bottom, #13477d 0%, #2d629a 100%);
 	filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#13477d', endColorstr='#2d629a', GradientType=0);
+}
+.branding-left {
+  
+    margin: 5px 0 0 -30px;
+   
+}
+.not-front #columns {
+  
+    background-image: url(../images/standard-body-gradient.png?sdfdf);
+  
+  
 }
