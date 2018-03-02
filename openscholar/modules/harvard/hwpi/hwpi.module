@@ -362,12 +362,10 @@ function hwpi_form_user_login_alter(&$form, $form_state) {
 }
 
 /**
- * Implements hook_boxes_box_load_alter().
+ * Implements hook_default_box_alter().
  *
- * This is the global form of the hook, for use with default boxes, not boxes that are overridden in spaces().
+ * Changes the default for the contact block to be Harvard-specific.
  */
-function hwpi_boxes_box_load_alter(&$box) {
-  if ($box->delta == 'hwp_personal_contact_html') {
-    $box->options['text']['value'] = '<p>Harvard University<br> (617) 495-1000<br> Massachusetts Hall<br> Cambridge, MA 02138<br> your_name@harvard.edu</p>';
-  }
+function hwpi_default_box_alter(&$boxes) {
+  $boxes['hwp_personal_contact_html']->options['text']['value'] = '<p>Harvard University<br> (617) 495-1000<br> Massachusetts Hall<br> Cambridge, MA 02138<br> your_name@harvard.edu</p>';
 }
