@@ -1,6 +1,6 @@
 ;----------// Theme Information
 
-  name        = American Bold
+  name        = Boston College Bold
   description = A vibrant looking theme for use by departments at american.
   core        = 7.x
   base theme  = hwpi_vibrant
@@ -22,7 +22,7 @@
 
 ;----------// Stylesheets
 
-  stylesheets[screen][] = css/hwpi_themethree_american.css
+  stylesheets[screen][] = css/hwpi_themethree_bostoncollege.css
   stylesheets[screen][] = css/responsive.themethree.css
 
 scripts[] = script.js
