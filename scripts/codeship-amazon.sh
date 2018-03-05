@@ -6,7 +6,7 @@ mkdir -p ~/src/amazon/
 git config --global user.email "openscholar@swap.lists.harvard.edu"
 git config --global user.name "OpenScholar Auto Push Bot"
 
-if git show-ref --verify refs/tags/$CI_BRANCH 2>&1 > /dev/null; then
+if git show-ref -q --verify refs/tags/$CI_BRANCH 2>&1 > /dev/null; then
   # This is just a tag push
   # There's no need to build ever for tags
   # All we need to do it
