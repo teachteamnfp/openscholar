@@ -254,7 +254,20 @@ function os_search_solr_block_view_alter(&$data, $block) {
   if ($block->delta == $delta) {
     $data['title'] = t('Filter By Taxonomy');
   }
+}
 
+/**
+ * Shortens the Info field for Facetapi widgets
+ */
+function os_search_solr_os_widget_alter(&$block) {
+  if ($block['module'] == 'facetapi') {
+    if (isset($block['info'])) {
+      $matches = array();
+      if (preg_match('|Facet API: Apache Solr environment: [a-zA-Z ]*: ([a-zA-Z0-9 ]*)|', $block['info'], $matches)) {
+        $block['info'] = 'Faceted Search: Filter by '.$matches[1];
+      }
+    }
+  }
 }
 
 /**
