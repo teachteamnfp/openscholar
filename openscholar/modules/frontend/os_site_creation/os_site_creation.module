@@ -61,3 +61,20 @@ function os_site_creation_library_alter(&$libs) {
     $libs['admin_panel']['dependencies'][] = array('os_site_creation', 'site_creation');
   }
 }
+
+/**
+ * Implements hook_preprocess_page().
+ *
+ * Loads angular library if user logged in by Harvard pin but
+ * don't have OS user account yet to open site registratin form.
+ */
+function os_site_creation_preprocess_page(&$vars) {
+  //if (module_exists('pinserver') && $huid = pinserver_get_user_huid()) {
+    //if (!pinserver_authenticate_get_uid_from_huid($huid)) {
+      // Load the Angular dependencies
+      drupal_add_library('os_site_creation','site_creation');
+      //os_common_angular_apps('UserPanel');
+      drupal_add_js(array('os_site_creation' => array('purl_base_domain' => variable_get('purl_base_domain'))), 'setting');
+    //}
+  //}
+}
