@@ -440,8 +440,10 @@ function vsite_register_mail_alter(&$message) {
     '@user_name' => $message['params']['account']->name,
     '@user_real' => $user_full_name,
     '@one-time-login-url' => user_pass_reset_url($message['params']['account']),
-    '@site_name' => variable_get('site_admin_label', "The OpenScholar Team"),
+    '@site_name' => variable_get('site_name', 'OpenScholar'),
+    '@site_admin_label' => variable_get('site_admin_label', "The OpenScholar Team"),
   );
+  $message['subject'] = t("Password reset information for @user_name at @site_name", $params);
 
   // Overwrite mail body in case of Reset Password mail
   $message['body'][0] = t("Hello @user_real", $params);
@@ -449,6 +451,6 @@ function vsite_register_mail_alter(&$message) {
   $message['body'][2] = t("@one-time-login-url", $params);
   $message['body'][3] = t("For your security, this link can only be used once to log in and will lead you to a page where you can create a new password. It expires after one day and if not used, no changes will occur.", $params);
   if ($params['@site_name']) {
-    $message['body'][4] = t("Sincerely,\n-@site_name", $params);
+    $message['body'][4] = t("Sincerely,\n-@site_admin_label", $params);
   }
  }
