@@ -10,7 +10,7 @@ include_once ('includes/os.inc');
 
 
 /**
- * Define a message to be used in site read-only mode. Empty commit
+ * Define a message to be used in site read-only mode.
  */
 define('OS_READONLY_MODE_MESSAGE', 'Site is under maintenance, login and registration is currently disabled.');
 
