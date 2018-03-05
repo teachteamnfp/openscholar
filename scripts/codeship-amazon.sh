@@ -15,6 +15,9 @@ if git show-ref --verify refs/tags/$CI_BRANCH 2>&1 > /dev/null; then
   git clone git@bitbucket.org:openscholar/deploysource.git
   cd deploysource
   export ROOT_COMMIT=$(git log --all --grep="git-subtree-split: $TAG_COMMIT" | grep "^commit" | sed "s/commit //")
+  if [ -z "$ROOT_COMMIT" ]; then
+    exit 1
+  fi
   git checkout $ROOT_COMMIT
   git tag $CI_BRANCH
   git push --tags
