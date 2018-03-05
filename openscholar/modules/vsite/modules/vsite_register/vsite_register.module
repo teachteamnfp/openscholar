@@ -422,19 +422,34 @@ function vsite_register_mail_alter(&$message) {
   if (!in_array($message['id'], array('user_password_reset'))) {
     return;
   }
+  
+  $user = $message['params']['account'];
+  if ($user->field_first_name['und'][0]['value']) {
+    $user_first_name = $user->field_first_name['und'][0]['value'];
+  }
+  if ($user->field_last_name['und'][0]['value']) {
+    $user_last_name = $user->field_last_name['und'][0]['value'];
+  }
+  if (!$user->field_first_name['und'][0]['value'] && !$user->field_last_name['und'][0]['value']) {
+    $user_first_name = $user->name;
+  }
+
+  $user_full_name = trim(join(" ", array($user_first_name, $user_last_name)));
 
   $params = array(
     '@user_name' => $message['params']['account']->name,
+    '@user_real' => $user_full_name,
     '@one-time-login-url' => user_pass_reset_url($message['params']['account']),
     '@site_name' => variable_get('vsite_register_owner_of_install'),
   );
 
   // Overwrite mail body in case of Reset Password mail
-  $message['body'][0] = t("Hello @user_name", $params);
-  $message['body'][1] = t("To reset your password, please copy and paste this link into a browser:", $params);
+  $message['body'][0] = t("Hello @user_real", $params);
+  $message['body'][1] = t("To reset your password for @user_name, please copy and paste this link into a browser:", $params);
   $message['body'][2] = t("@one-time-login-url", $params);
-  $message['body'][3] = t("For your security, this link can only be used once to log in and will lead you to a page where you can create a new password. It expires after one day and nothing will happen if it's not used.", $params);
+  $message['body'][3] = t("For your security, this link can only be used once to log in and will lead you to a page where you can create a new password. It expires after one day and if not used, no changes will occur.", $params);
   if ($params['@site_name']) {
-    $message['body'][4] = t("-@site_name", $params);
+    $message['body'][4] = t("Sincerely,");
+    $message['body'][5] = t("-@site_name", $params);
   }
  }
