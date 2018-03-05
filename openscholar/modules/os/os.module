@@ -3990,6 +3990,9 @@ function os_redirect_goto($redirect) {
  * Changes the site:name token only for emails
  */
 function os_tokens_alter(&$replacements, $context) {
+  if (empty($context['options']['callback'])) {
+    return;
+  }
   if ($context['options']['callback'] == "user_mail_tokens" && $context['type'] == 'site') {
     $replacements['[site:name]'] = variable_get('site_admin_label', 'The OpenScholar Team');
   }

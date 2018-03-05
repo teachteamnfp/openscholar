@@ -473,7 +473,20 @@ function cp_user_edit_membership_form_submit($form, &$form_state) {
     $vsite = vsite_get_vsite();
     // Loading logged in user's user object for full name.
     $account_modifier = user_load($user->uid);
-    $account_modifier_full_name = $account_modifier->field_first_name[LANGUAGE_NONE][0]['value'] . ' ' . $account_modifier->field_last_name[LANGUAGE_NONE][0]['value'];
+
+    // Grab their first name, if it doesnt exist, use their user name.
+    $first_name = $account_modifier->name;
+    if (!empty($account_modifier->field_first_name['und'][0]['value'])) {
+      $first_name = $account_modifier->field_first_name['und'][0]['value'];
+    }
+
+    // Grab their last name, if it doesnt exist, leave blank.
+    $last_name = '';
+    if (!empty($account_modifier->field_last_name['und'][0]['value'])) {
+      $last_name = $account_modifier->field_last_name['und'][0]['value'];
+    }
+
+    $account_modifier_full_name = trim(join(" ", array($first_name, $last_name)));
     $purl_base_domain = variable_get('purl_base_domain');
 
     // Role will be 'Site Owner' is site owner checkbox is selected.
@@ -496,13 +509,14 @@ function cp_user_edit_membership_form_submit($form, &$form_state) {
     $to = $account->mail;
     $from = variable_get('site_mail', ini_get('sendmail_from'));
     $params['!user-role'] = $new_role_name;
-    $params['!account-modifier'] = !empty($account_modifier_full_name) ? $account_modifier_full_name : $account_modifier->name;
+    $params['!account-modifier'] = $account_modifier_full_name;
     $params['!site-url'] = !empty($custom_domain) ? 'http://' . $custom_domain : $purl_base_domain . '/' . $vsite->group->purl;
     $params['!account-modifier-email'] = $account_modifier->mail;
-    $params['!user-firstname'] = $account->field_first_name[LANGUAGE_NONE][0]['value'];
+    $params['!user-firstname'] = !empty($account->field_first_name[LANGUAGE_NONE][0]['value']) ? $account->field_first_name[LANGUAGE_NONE][0]['value'] : $account->name;
     $params['!sitewide-name'] = variable_get('site_admin_label', 'The OpenScholar Team');
     $params['headers']['Cc'] = $account_modifier->mail;
     // Sending email notification to modified user.
+    global $language;
     drupal_mail('cp_user', 'os_user_role_change', $to, $language, $params, $from);
   }
 

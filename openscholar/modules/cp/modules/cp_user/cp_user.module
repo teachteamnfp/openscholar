@@ -811,6 +811,8 @@ function cp_user_og_ui_add_users_submit(&$form, &$form_state) {
  * Implements hook_mail().
  */
 function cp_user_mail($key, &$message, $params){
+  $message['headers'] += $params['headers'];
+  $params = array_filter($params, 'is_string');
   switch ($key) {
     case 'os_user_add_to_group' :
       $message['subject'] = t("You have been added as a member to the !site-url website", $params);
@@ -823,7 +825,6 @@ function cp_user_mail($key, &$message, $params){
       $links[] = " * OpenScholar documentation: http://docs.openscholar.harvard.edu\n";
       $message['body'][] = implode("", $links);
       $message['body'][] = t("Sincerely,\n!site-name", $params);
-      $message['headers'] += $params['headers'];
       break;
 
     case 'os_user_delete_from_group' :
@@ -832,16 +833,14 @@ function cp_user_mail($key, &$message, $params){
       $message['body'][] = t("Hi !user-firstname,", $params);
       $message['body'][] = t("!account-modifier has removed you as a member with the role of !user-role from the website !site-url. If you feel this was in error or have any questions, please contact them at !account-modifier-email", $params);
       $message['body'][] = t("Sincerely,\n!sitewide-name", $params);
-      $message['headers'] += $params['headers'];
       break;
 
     case 'os_user_role_change' :
       $message['subject'] = t("Your role on the !site-url website has changed", $params);
       $message['body'] = array();
       $message['body'][] = t("Hi !user-firstname,", $params);
-      $message['body'][] = t("!account-modifier has changed your role to !user-role on the website!site-url. If you feel this was in error or have any questions, please contact them at !account-modifier-email", $params);
+      $message['body'][] = t("!account-modifier has changed your role to !user-role on the website !site-url. If you feel this was in error or have any questions, please contact them at !account-modifier-email", $params);
       $message['body'][] = t("Sincerely,\n!sitewide-name", $params);
-      $message['headers'] += $params['headers'];
       break; 
   }
 }

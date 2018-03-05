@@ -2038,13 +2038,13 @@ function vsite_mail_alter(&$message){
         // Load the user data.
         $user = user_load($uid);
         // Grab their first name, if it doesnt exist, use their user name.
+        $first_name = $user->name;
         if (!empty($user->field_first_name['und'][0]['value'])) {
           $first_name = $user->field_first_name['und'][0]['value'];
-        } else {
-          $first_name = $user->name;
         }
 
         // Grab their last name, if it doesnt exist, use their user name.
+        $last_name = '';
         if (!empty($user->field_last_name['und'][0]['value'])) {
           $last_name = $user->field_last_name['und'][0]['value'];
         }
