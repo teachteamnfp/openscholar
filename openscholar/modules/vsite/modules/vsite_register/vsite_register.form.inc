@@ -781,13 +781,24 @@ function _vsite_register_mail_replacements($vsite, $author, $key) {
   global $base_url;
   $purl_base_domain = variable_get('purl_base_domain', $base_url);
   // Initialize replacements array with values common to both mail keys.
+  if (!empty($author->field_first_name['und'][0]['value'])) {
+    $first_name = $author->field_first_name['und'][0]['value'];
+  } else {
+    $first_name = $author->name;
+  }
+
+  if (!empty($author->field_last_name['und'][0]['value'])) {
+    $last_name = $author->field_last_name['und'][0]['value'];
+  }
+
+  $full_name = trim(join(" ", array($first_name, $last_name)));
   $replacements = array(
-    '!username' => $author->name,
+    '!username' => $full_name,
     '!site_login_uri' => url($purl_base_domain . '/' . $vsite->group->purl . '/user/login', array('absolute' => TRUE, 'query' => array('destination' => $vsite->group->purl))),
     '!site_uri' => url($purl_base_domain . '/user', array('absolute' => TRUE, 'query' => array('destination' => $vsite->group->purl))),
     '!user_mail' => $author->mail,
     '!site_url' => url($purl_base_domain . '/' . $vsite->group->purl, array('absolute' => TRUE)),
-    '!sitewide_name' => variable_get('site_name', 'OpenScholar'),
+    '!sitewide_name' => variable_get('site_admin_label', 'The OpenScholar Team'),
   );
 
   // Adds additional replacement values depending on which email is being sent.
@@ -796,17 +807,6 @@ function _vsite_register_mail_replacements($vsite, $author, $key) {
 
       // Prepares vsite count value (total number of vsites owned by author).
       $count = count(vsite_get_vsite_by_owner($author->uid));
-
-      // Prepares the new vsite owner (user)'s full name.
-      $name_values = array();
-      $name_fields = array('field_first_name', 'field_last_name');
-      foreach ($name_fields as $field) {
-        $items = field_get_items('user', $author, $field);
-        if (isset($items[0]['value']) && !empty($items[0]['value'])) {
-          $name_values[] = $items[0]['value'];
-        }
-      }
-      $full_name = sizeof($name_values) > 1 ? implode(' ', $name_values) : t('(No entry)');
 
       // Prepares the site visibility value and fetches human-readable name.
       $items = field_get_items('node', $vsite->group, VSITE_ACCESS_FIELD);
@@ -875,8 +875,11 @@ function _vsite_register_notify_author_body_text($current_user, $author) {
   $returning_author = (bool) count(vsite_get_vsite_by_owner($author->uid)) > 1;
   // In either of these cases, no password reset is required.
   $no_reset_required = (bool) $returning_author || $author_is_current_user;
+  
+  // Grab their first name, if it doesnt exist, use their user name.
+  
   if ($no_reset_required) {
-    $body_text = "Hi !username,\n\n"
+    $body_text = "Hi !fullname,\n\n"
       . "Your new web site at !sitewide_name has been activated."
       . "Your web site url is !site_url\n\n"
       . "You will be able to log into your site at !site_login_uri "
@@ -888,7 +891,7 @@ function _vsite_register_notify_author_body_text($current_user, $author) {
   // author's very first site.
   // Includes instructions to reset password in order to login.
   else {
-    $body_text = "Hi !username,\n\n"
+    $body_text = "Hi !fullname,\n\n"
       . "Your new web site at !sitewide_name has been activated.\n\n"
       . "Your web site url is !site_url\n\n"
       . "You may now log in and reset your password by clicking on this link "
