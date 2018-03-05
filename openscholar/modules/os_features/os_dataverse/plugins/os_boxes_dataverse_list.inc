@@ -61,7 +61,7 @@ class os_boxes_dataverse_list extends os_boxes_default {
     }
 
     $embed_height = preg_replace('/\D/', '', $this->options['embed_height']);
-    $base_url = variable_get("dataverse_base_url", "dataverse_default_url") . "/resources/js/widgets.js?alias=" . $this->options['user_alias'] . "&amp;dvUrl=" . variable_get("dataverse_base_url", "dataverse_default_url") . "&amp;widget=iframe&amp;heightPx=" . $embed_height;
+    $base_url = variable_get("dataverse_base_url", variable_get("dataverse_default_url")) . "/resources/js/widgets.js?alias=" . $this->options['user_alias'] . "&amp;dvUrl=" . variable_get("dataverse_base_url", variable_get("dataverse_default_url")) . "&amp;widget=iframe&amp;heightPx=" . $embed_height;
 
     $block = parent::render();
     $block['content'] = "<script src=\"$base_url\"></script>";
