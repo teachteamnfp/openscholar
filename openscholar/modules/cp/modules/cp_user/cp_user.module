@@ -800,7 +800,7 @@ function cp_user_og_ui_add_users_submit(&$form, &$form_state) {
      $params['!site-url'] = !empty($custom_domain) ? 'http://' . $custom_domain : $purl_base_domain . '/' . $vsite->group->purl;
      $params['!account-modifier-email'] = $account_modifier->mail;
      $params['!user-firstname'] = $account->field_first_name[LANGUAGE_NONE][0]['value'];
-     $params['!sitewide-name'] = variable_get('site_name', 'OpenScholar');
+     $params['!sitewide-name'] = variable_get('site_admin_label', 'The OpenScholar Team');
      $params['headers']['Cc'] = $account_modifier->mail;
      drupal_mail('cp_user', 'os_user_add_to_group', $to, LANGUAGE_NONE, $params, $from);
    }
@@ -822,7 +822,7 @@ function cp_user_mail($key, &$message, $params){
       $links = array();
       $links[] = " * OpenScholar documentation: http://docs.openscholar.harvard.edu\n";
       $message['body'][] = implode("", $links);
-      $message['body'][] = t("Sincerely,\nThe OpenScholar Team", $params);
+      $message['body'][] = t("Sincerely,\n!site-name", $params);
       $message['headers'] += $params['headers'];
       break;
 

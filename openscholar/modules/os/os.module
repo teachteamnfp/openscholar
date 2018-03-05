@@ -3983,3 +3983,14 @@ function os_redirect_goto($redirect) {
 
   exit;
 }
+
+/**
+ * Implements hook_tokens_alter().
+ *
+ * Changes the site:name token only for emails
+ */
+function os_tokens_alter(&$replacements, $context) {
+  if ($context['options']['callback'] == "user_mail_tokens" && $context['type'] == 'site') {
+    $replacements['[site:name]'] = variable_get('site_admin_label', 'The OpenScholar Team');
+  }
+}

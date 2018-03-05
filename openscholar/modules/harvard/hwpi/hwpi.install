@@ -136,3 +136,10 @@ function hwpi_update_7012() {
   variable_set('vsite_register_admin_mail', 'swap@lists.iq.harvard.edu, hwp@harvard.edu');
   variable_set('site_mail', 'hwp@harvard.edu');
 }
+
+/**
+ * Sets label for name used in e-mails
+ */
+function hwpi_update_7013() {
+  variable_set('site_admin_label', 'Harvard Web Publishing');
+}

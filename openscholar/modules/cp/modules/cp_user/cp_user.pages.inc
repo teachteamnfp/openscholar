@@ -252,7 +252,7 @@ function cp_user_remove_membership_confirm_submit($form, &$form_state) {
   $params['!site-url'] = !empty($custom_domain) ? 'http://' . $custom_domain : $purl_base_domain . '/' . $vsite->group->purl;
   $params['!account-modifier-email'] = $account_modifier->mail;
   $params['!user-firstname'] = $account->field_first_name[LANGUAGE_NONE][0]['value'];
-  $params['!sitewide-name'] = variable_get('site_name', 'Harvard Web Publishing');
+  $params['!sitewide-name'] = variable_get('site_name', 'The OpenScholar Team');
   $params['headers']['Cc'] = $account_modifier->mail;
   // Send email notification to deleted user.
   drupal_mail('cp_user', 'os_user_delete_from_group', $to, $language, $params, $from);
