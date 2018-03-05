@@ -437,3 +437,20 @@ function vsite_register_form($form, &$state) {
 
   return $form;
 }
+
+/**
+ * Implements hook_preprocess_page().
+ *
+ * Loads angular library if user logged in by Harvard pin but
+ * don't have OS user account yet to open site registratin form.
+ */
+function vsite_register_preprocess_page(&$vars) {
+  if (module_exists('pinserver') && $huid = pinserver_get_user_huid()) {
+    if (!pinserver_authenticate_get_uid_from_huid($huid)) {
+      // Load the Angular dependencies
+      drupal_add_library('os_common','angular-modal-service');
+      //os_common_angular_apps('UserPanel');
+      //drupal_add_js(array('admin_panel' => array('purl_base_domain' => variable_get('purl_base_domain'))), 'setting');
+    }
+  }
+}
