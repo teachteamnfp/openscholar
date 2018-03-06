@@ -3300,11 +3300,15 @@ function vsite_redirect_load_by_source_alter(&$redirects, $source, $context) {
  * Implements hook_og_default_roles_alter().
  */
 function vsite_og_default_roles_alter(&$roles) {
-  $roles = array(
+  $roles = array_unique(array_merge($roles, array(
     'vsite user',
     'content editor',
     'vsite admin',
-  );
+  )));
+
+  if ($key = array_search('administrator member', $roles)) {
+    unset($roles[$key]);
+  }
 }
 
 /**
