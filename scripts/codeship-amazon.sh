@@ -14,7 +14,7 @@ if git show-ref -q --verify refs/tags/$CI_BRANCH 2>&1 > /dev/null; then
   export TAG_COMMIT=$(git rev-list -n 1 $CI_BRANCH)
   git clone git@bitbucket.org:openscholar/deploysource.git
   cd deploysource
-  export ROOT_COMMIT=$(git log --all --grep="git-subtree-split: $TAG_COMMIT" | grep "^commit" | sed "s/commit //")
+  export ROOT_COMMIT=$(git log --all --grep="git-subtree-split: $TAG_COMMIT" | grep "^commit" | sed "s/commit //" | head -n 1)
   if [ -z "$ROOT_COMMIT" ]; then
     exit 1
   fi
