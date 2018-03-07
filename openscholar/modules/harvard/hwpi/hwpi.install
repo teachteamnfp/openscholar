@@ -207,7 +207,7 @@ function hwpi_update_7013() {
 /**
  * Saving strongarm variables.
  */
-function hwpi_update_7013() {
+function hwpi_update_7014() {
   $revert = array(
     'hwpi' => array(
       'variable',
