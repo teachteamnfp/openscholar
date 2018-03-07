@@ -807,6 +807,7 @@ function vsite_vsite_exists_access($vsites = array()) {
     $purl_base_domain = variable_get('purl_base_domain', '');
     // If the domain is NOT the purl base domain, alerts user and denies access.
     if ($base_url != $purl_base_domain) {
+      watchdog('vsite', 'Base domain mismatch: @base_url', array('@base_url' => $base_url));
       drupal_set_message(t('You may not register new sites on custom domains.'), 'warning');
       return FALSE;
     }
@@ -3299,11 +3300,15 @@ function vsite_redirect_load_by_source_alter(&$redirects, $source, $context) {
  * Implements hook_og_default_roles_alter().
  */
 function vsite_og_default_roles_alter(&$roles) {
-  $roles = array(
+  $roles = array_unique(array_merge($roles, array(
     'vsite user',
     'content editor',
     'vsite admin',
-  );
+  )));
+
+  if ($key = array_search('administrator member', $roles)) {
+    unset($roles[$key]);
+  }
 }
 
 /**
