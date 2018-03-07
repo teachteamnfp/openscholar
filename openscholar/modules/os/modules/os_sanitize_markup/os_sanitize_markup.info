@@ -1,4 +1,0 @@
-name = OS Sanitization
-description = Handle user generated content.
-core = 7.x
-package = OpenScholar
