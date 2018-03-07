@@ -480,6 +480,12 @@ function os_common_menu_contextual_links_alter(&$links, $router_item, $root_path
   }
 }
 
+/**
+ * ng-non-bindable handling
+ *
+ * Prevents user-entered text wrapped in {{ }} from breaking the js on sites, due to angular thinking its a binding.
+ * We add ng-non-bindable to everything that could print a string the user has entered to prevent this.
+ */
 
 function _ng_non_bindable(&$variables) {
   $ng_non_bindable = drupal_attributes(array(
@@ -525,4 +531,14 @@ function os_common_field_widget_og_vocab_complex_form_alter(&$element, $form_sta
 
 function os_common_preprocess_page(&$vars) {
   $vars['attributes_array']['ng-non-bindable'] = '';
+}
+
+function os_common_preprocess_table(&$vars) {
+  if ($vars['attributes']['id'] == 'taxonomy') {
+    $vars['attributes']['ng-non-bindable'] = '';
+  }
+}
+
+function os_common_preprocess_overlay(&$vars) {
+  $vars['title_attributes_array']['ng-non-bindable'] = '';
 }
