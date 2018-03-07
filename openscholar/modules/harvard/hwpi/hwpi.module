@@ -1,5 +1,7 @@
 <?php
 
+include_once ('hwpi.features.inc');
+
 /**
  * Implements hook_init
  */
@@ -368,4 +370,20 @@ function hwpi_form_user_login_alter(&$form, $form_state) {
  */
 function hwpi_default_box_alter(&$boxes) {
   $boxes['hwp_personal_contact_html']->options['text']['value'] = '<p>Harvard University<br> (617) 495-1000<br> Massachusetts Hall<br> Cambridge, MA 02138<br> your_name@harvard.edu</p>';
+}
+
+/**
+ * Implements hook_features_revert().
+ */
+function hwpi_features_revert($module) {
+
+  $vars = strongarm_vars_load(TRUE, TRUE);
+  $count_vars;
+  foreach ($vars as $name => $default) {
+    if (!empty($vars[$name]->in_code_only)) {
+      variable_set($name, $default->value);
+      $count_vars ++;
+    }
+  }
+  return $count_vars;
 }
