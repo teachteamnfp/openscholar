@@ -62,7 +62,8 @@ function grouper_vsite_access_privacy_values_alter(&$options) {
  * Implements hook_page_build().
  */
 function grouper_page_build(&$page) {
-  if (spaces_access_admin()) {
+  $added = &drupal_static('drupal_add_library', array());
+  if (spaces_access_admin() && !empty($added['grouper']['module'])) {
     os_common_angular_apps('grouper');
   }
 }
