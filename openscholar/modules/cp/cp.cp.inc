@@ -42,7 +42,7 @@ function cp_cp_settings() {
         '#title' => t('Max Redirects'),
         '#id' => 'max-redirects',
         '#help_link' => l(t('Learn more about redirects'), 'http://docs.openscholar.harvard.edu/global-site-settings#url-redirects', array('attributes' => array('target' => '_blank')))
-        ),
+      ),
       'form' => array(
         '#type' => 'textfield',
         '#title' => 'Number of maximum redirects',

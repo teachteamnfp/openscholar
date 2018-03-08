@@ -6,7 +6,7 @@
 
 $plugin = array(
   'class' => 'citation_distribute_service_sword_dash',
-  'file' => 'hwpi_service_sword_dash.inc',
+  'file' => 'citation_distribute_service_sword_dash.inc',
   'parent' => 'citation_distribute_service_sword',
   'title' => t('DASH'),
   'href' => 'http://dash.harvard.edu',

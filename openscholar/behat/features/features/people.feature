@@ -91,7 +91,6 @@ Feature:
     Given I am logging in as "admin"
       And I give the user "john" the role "vsite admin" in the group "obama"
      When I am logging in as "john"
-      And I visit "obama/cp/users"
       And I edit the membership of "michelle" in vsite "obama"
       And I check the box "Set as site owner"
       And I press "Save"
