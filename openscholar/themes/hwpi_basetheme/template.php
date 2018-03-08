@@ -798,3 +798,61 @@ function _hwpi_branding_footer() {
 
   return $footer;
 }
+
+/**
+ * Returns website parents in an ordered, keyed array.
+ *
+ * Note: The returned array uses URLs as keys, and case-sensitive titles as
+ * values. The top-most level of the array is hard-coded to be 'HARVARD.EDU',
+ * site organization taxonomy terms are second-highest, and sub-site relations
+ * will appear as the most-specific, lowest-level ancestor.
+ *
+ * @return array
+ *   An array keyed by fully-qualified absolute URLs, values are link title text.
+ */
+function _hwpi_get_ancestry() {
+  $sites = array();
+  if ($vsite = spaces_get_space()) {
+    // First, looks for parent vsites and adds them to hierarchy.
+    $vsite_original = $vsite;
+    $group = $vsite->group;
+    while (isset($group->field_group_parent) && $group->field_group_parent) {
+      $items = field_get_items('node', $group, 'field_group_parent');
+      $vsite = vsite_get_vsite($items[0]['target_id']);
+      if(!is_object($vsite) || !isset($vsite->group)) {
+        break;
+      }
+      $group = $vsite->group;
+      $sites[$vsite->get_absolute_url()] = $group->title;
+    }
+
+    // Then, looks for site organization terms and adds them to hierarchy.
+    $items = field_get_items('node', $vsite_original->group, 'field_organization');
+    if (is_array($items) && !empty($items)) {
+      $tid = $items[0]['tid'];
+      $items = field_get_items('taxonomy_term', taxonomy_term_load($tid), 'field_site_url');
+      if (isset($items[0])) {
+        $site_url = $items[0];
+        while ($site_url) {
+          $sites[$site_url['url']] = $site_url['title'];
+          $parents = taxonomy_get_parents($tid);
+          if (empty($parents)) {
+            break;
+          }
+          $tid = array_shift(array_keys($parents));
+          $items = field_get_items('taxonomy_term', taxonomy_term_load($tid), 'field_site_url');
+          if (isset($items[0])) {
+            $site_url = $items[0];
+          }
+          else {
+            $site_url = FALSE;
+          }
+        }
+      }
+    }
+  }
+
+  // Hard-codes "HARVARD.EDU" as the highest parent item.
+  $sites[variable_get('university_base_url')] = variable_get('highest_parent_item');
+  return $sites;
+}
