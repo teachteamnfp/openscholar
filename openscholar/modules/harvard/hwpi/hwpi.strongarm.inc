@@ -87,7 +87,7 @@ function hwpi_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'copyright_infring';
-  $strongarm->value = 'http://www.harvard.edu/reporting-copyright-infringements';
+  $strongarm->value = 'http://www.harvard.edu/reporting-copyright-iiiinfringements';
   $export['copyright_infring'] = $strongarm;
 
 /**
