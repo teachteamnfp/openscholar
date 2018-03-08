@@ -535,8 +535,10 @@ function citation_distribute_cron() {
 function _citation_distribute_plugins() {
   ctools_include('plugins');
   $plugins = ctools_get_plugins('citation_distribute', 'service');
-  $plugins_hwpi = ctools_get_plugins('hwpi', 'service');
-  $plugins = $plugins + $plugins_hwpi;
+  if (module_exists('hwpi')) {
+    $plugins_hwpi = ctools_get_plugins('hwpi', 'service');
+    $plugins = $plugins + $plugins_hwpi;
+  }
   $plugin_sorted = &drupal_static(__FUNCTION__);
 
   // If static cache is already set, returning immediately.

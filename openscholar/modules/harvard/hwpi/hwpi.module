@@ -372,6 +372,8 @@ function hwpi_default_box_alter(&$boxes) {
 }
 
 
+
+
 /**
  * Implements hook_features_revert().
  */
@@ -386,4 +388,26 @@ function hwpi_features_revert($module) {
     }
   }
   return $count_vars;
+}
+
+/**
+ * Implements hook_ctools_plugin_type
+ */
+function hwpi_ctools_plugin_type() {
+  return array(
+    'service' => array(
+      'use hooks' => TRUE,
+      'class' => array('class'),
+    )
+  );
+}
+
+
+/**
+ * Implements hook_ctools_plugin_directory
+ */
+function hwpi_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'hwpi' && $plugin == 'service') {
+    return 'plugins/service/';
+  }
 }
