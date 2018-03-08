@@ -714,3 +714,87 @@ function hwpi_basetheme_nice_menus_build($variables) {
   }
   return $output;
 }
+
+/**
+ * Implements template_preprocess_page() for page.
+ */
+function hwpi_basetheme_preprocess_page(&$vars) {
+  if (_is_hwpi_theme()) {
+    $vars['page']['branding_header']['hwpi'] = _hwpi_branding_header();
+    $vars['page']['branding_footer']['hwpi'] = _hwpi_branding_footer();
+  }
+}
+
+/**
+ * Returns a build array for the HWPI branding header page region.
+ *
+ * @return array
+ */
+function _hwpi_branding_header() {
+  $header = array();
+  $header['left_container'] = array(
+    '#type' => 'container',
+    '#attributes' => array(
+      'class' => array(
+        'branding-left',
+      ),
+    ),
+    'img' => array(
+      '#theme' => 'link',
+      '#path' => variable_get('university_base_url'),
+      '#text' => theme('image', array('path' => drupal_get_path('theme', 'hwpi_basetheme') . '/images/harvard-logo.png', 'width' => 235, 'height' => 32, 'alt' => 'University Logo')),
+      '#options' => array(
+        'external' => TRUE,
+        'html' => TRUE,
+        'attributes' => array(),
+      ),
+    ),
+  );
+  $sites = _hwpi_get_ancestry();
+  $links = array();
+  foreach ($sites as $path => $title) {
+    $links[] = l($title, $path);
+  }
+  $header['right_container'] = array(
+    '#type' => 'container',
+    '#attributes' => array(
+      'class' => array(
+        'branding-right',
+      ),
+    ),
+    'sitecrumbs' => array(
+      '#type' => 'markup',
+      '#markup' => implode(' | ', $links),
+    ),
+  );
+
+  return $header;
+}
+
+/**
+ * Returns a build array for the standard branding footer region (copyright).
+ *
+ * @return array
+ *   A build array ready to render footer info.
+ */
+function _hwpi_branding_footer() {
+  $footer = array();
+  $footer['hwpi_container'] = array(
+    '#type' => 'container',
+    '#attributes' => array(
+      'class' => array(
+        'copyright',
+      ),
+    ),
+    'copyright' => array(
+      '#markup' => t('<span class="harvard-copyright">Copyright &copy; @year The President and Fellows of Harvard College</span> !privacy !access !copyinfring', array(
+          '!privacy' => variable_get('privacy_policy_url','')?'| '.l('Privacy', variable_get('privacy_policy_url')): '',
+          '!access' => variable_get('site_access','')?'| '.l('Accessibility', variable_get('site_access')): '',
+          '!copyinfring' => variable_get('copyright_infring','')?'| '.l('Report Copyright Infringement', variable_get('copyright_infring')): '',
+          '@year' => date('Y'),
+        )),
+    ),
+  );
+
+  return $footer;
+}

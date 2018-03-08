@@ -34,81 +34,6 @@ function hwpi_init() {
 }
 
 /**
- * Implements hook_preprocess_HOOK() for page.
- */
-function hwpi_preprocess_page(&$vars) {
-  if (_is_hwpi_theme()) {
-    $vars['page']['branding_header']['hwpi'] = _hwpi_branding_header();
-    $vars['page']['branding_footer']['hwpi'] = _hwpi_branding_footer();
-  }
-}
-
-/**
- * Returns if the active theme uses hwpi_basetheme as one of it's base theme.
- *
- * @return bool
- */
-function _is_hwpi_theme($theme_name = NULL) {
-  if (is_null($theme_name)) {
-    $theme_name = $GLOBALS['theme'];
-  }
-  $themes = list_themes();
-  if (isset($themes[$theme_name])) {
-    $t = $themes[$theme_name];
-    if (isset($t->base_themes) && isset($t->base_themes['hwpi_basetheme'])) {
-      return TRUE;
-    }
-  }
-  return FALSE;
-}
-
-/**
- * Returns a build array for the HWPI branding header page region.
- *
- * @return array
- */
-function _hwpi_branding_header() {
-  $header = array();
-  $header['left_container'] = array(
-    '#type' => 'container',
-    '#attributes' => array(
-      'class' => array(
-        'branding-left',
-      ),
-    ),
-    'img' => array(
-      '#theme' => 'link',
-      '#path' => 'http://www.harvard.edu',
-      '#text' => theme('image', array('path' => drupal_get_path('theme', 'hwpi_basetheme') . '/images/harvard-logo.png', 'width' => 235, 'height' => 32, 'alt' => 'Harvard Logo')),
-      '#options' => array(
-        'external' => TRUE,
-        'html' => TRUE,
-        'attributes' => array(),
-      ),
-    ),
-  );
-  $sites = _hwpi_get_ancestry();
-  $links = array();
-  foreach ($sites as $path => $title) {
-    $links[] = l($title, $path);
-  }
-  $header['right_container'] = array(
-    '#type' => 'container',
-    '#attributes' => array(
-      'class' => array(
-        'branding-right',
-      ),
-    ),
-    'sitecrumbs' => array(
-      '#type' => 'markup',
-      '#markup' => implode(' | ', $links),
-    ),
-  );
-
-  return $header;
-}
-
-/**
  * Returns website parents in an ordered, keyed array.
  *
  * Note: The returned array uses URLs as keys, and case-sensitive titles as
@@ -166,33 +91,7 @@ function _hwpi_get_ancestry() {
   return $sites;
 }
 
-/**
- * Returns a build array for the standard branding footer region (copyright).
- *
- * @return array
- *   A build array ready to render footer info.
- */
-function _hwpi_branding_footer() {
-  $footer = array();
-  $footer['hwpi_container'] = array(
-    '#type' => 'container',
-    '#attributes' => array(
-      'class' => array(
-        'copyright',
-      ),
-    ),
-    'copyright' => array(
-      '#markup' => t('<span class="harvard-copyright">Copyright &copy; @year The President and Fellows of Harvard College</span> !privacy | !access | !copyinfring', array(
-          '!privacy' => variable_get('privacy_policy','')?'| '.l('Privacy', variable_get('privacy_policy')): '',
-          '!access' => l('Accessibility', 'http://accessibility.harvard.edu/'),
-          '!copyinfring' => l('Report Copyright Infringement', 'http://www.harvard.edu/reporting-copyright-infringements'),
-          '@year' => date('Y'),
-        )),
-    ),
-  );
 
-  return $footer;
-}
 
 /**
  * Implements hook_cp_settings().
@@ -368,4 +267,20 @@ function hwpi_form_user_login_alter(&$form, $form_state) {
  */
 function hwpi_default_box_alter(&$boxes) {
   $boxes['hwp_personal_contact_html']->options['text']['value'] = '<p>Harvard University<br> (617) 495-1000<br> Massachusetts Hall<br> Cambridge, MA 02138<br> your_name@harvard.edu</p>';
+}
+
+/**
+ * Implements hook_features_revert().
+ */
+function hwpi_features_revert($module) {
+
+  $vars = strongarm_vars_load(TRUE, TRUE);
+  $count_vars;
+  foreach ($vars as $name => $default) {
+    if (!empty($vars[$name]->in_code_only)) {
+      variable_set($name, $default->value);
+      $count_vars ++;
+    }
+  }
+  return $count_vars;
 }
