@@ -27,7 +27,7 @@ body *,
 .field-name-body h4 {
 	font-family: 'Josefin Sans', Helvetica, sans-serif;
 }
-
+.node-type-person #content-column .node-person h1.node-title,
 .block-title,h1#page-title {
 	text-transform:uppercase;
 }
@@ -39,6 +39,7 @@ a,
 a:visited {
 	color: #0479a8;
 }
+.breadcrumb span,
 #footer a,
 .node-type-page .breadcrumb, .breadcrumb, .breadcrumb a  {
 	color: #fff;
@@ -67,7 +68,7 @@ background: #c5050c;
 }
 .branding-left {
   
-margin: -3px 0 0 0px;
+margin: -3px 0 0 -28px;
    
 }
 .not-front #columns {
