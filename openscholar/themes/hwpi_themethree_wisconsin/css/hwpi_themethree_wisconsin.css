@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700');
+@import url('https://fonts.googleapis.com/css?family=Josefin+Sans:400,400i,700');
 
 .not-front .field-name-body,
 #content-column p,
@@ -25,7 +25,7 @@ body *,
 .field-name-body h2,
 .field-name-body h3,
 .field-name-body h4 {
-	font-family: 'Open Sans', Helvetica, sans-serif;
+	font-family: 'Josefin Sans', Helvetica, sans-serif;
 }
 .ui-widget-content a,
 .region-header-third ul.nice-menu a,
