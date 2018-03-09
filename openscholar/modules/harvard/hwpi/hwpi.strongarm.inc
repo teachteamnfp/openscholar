@@ -90,6 +90,13 @@ function hwpi_strongarm() {
   $strongarm->value = 'http://www.harvard.edu/reporting-copyright-infringements';
   $export['copyright_infring'] = $strongarm;
 
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'copyright_text';
+  $strongarm->value = 'The President and Fellows of Harvard College';
+  $export['copyright_text'] = $strongarm;
+
 /**
  * Harvard  upcoming events
  */
