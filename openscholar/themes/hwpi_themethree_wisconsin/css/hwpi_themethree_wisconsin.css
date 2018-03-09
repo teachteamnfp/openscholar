@@ -27,11 +27,17 @@ body *,
 .field-name-body h4 {
 	font-family: 'Josefin Sans', Helvetica, sans-serif;
 }
+
+.block-title,h1#page-title {
+	text-transform:uppercase;
+}
+
+
 .ui-widget-content a,
 .region-header-third ul.nice-menu a,
 a,
 a:visited {
-	color: #990000;
+	color: #0479a8;
 }
 #footer a,
 .node-type-page .breadcrumb, .breadcrumb, .breadcrumb a  {
@@ -40,28 +46,28 @@ a:visited {
 
 
 a.rslides_nav {
-    background-color: #990000;
+    background-color: #0479a8;
 }
 .search-block-form input.form-submit,
 .search-block-form #edit-submit,
 #search-block-form input.form-submit,
 #search-block-form #edit-submit,
 #search-form #edit-submit {
-	background: url(/profiles/openscholar/themes/hwpi_basetheme/images/hwpi_basesprite.png) no-repeat scroll 2px -441px #900;
+	background: url(/profiles/openscholar/themes/hwpi_basetheme/images/hwpi_basesprite.png) no-repeat scroll 2px -441px #0479a8;
 }
 #layout_16_9_side .slide {
-	background: #990000;
-	background: -moz-linear-gradient(top, #990000 0%, #ad1616 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #990000), color-stop(100%, #ad1616));
-	background: -webkit-linear-gradient(top, #990000 0%, #ad1616 100%);
-	background: -o-linear-gradient(top, #990000 0%, #ad1616 100%);
-	background: -ms-linear-gradient(top, #990000 0%, #ad1616 100%);
-	background: linear-gradient(to bottom, #990000 0%, #ad1616 100%);
-	filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#990000', endColorstr='#ad1616', GradientType=0);
+background: #c5050c;
+	background: -moz-linear-gradient(top, #c5050c 0%, #ab1616 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c5050c), color-stop(100%, #ab1616));
+	background: -webkit-linear-gradient(top, #c5050c 0%, #ab1616 100%);
+	background: -o-linear-gradient(top, #c5050c 0%, #ad1616 100%);
+	background: -ms-linear-gradient(top, #c5050c 0%, #ad1616 100%);
+	background: linear-gradient(to bottom, #c5050c 0%, #ab1616 100%);
+	filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#c5050c', endColorstr='#ab1616', GradientType=0);
 }
 .branding-left {
   
-margin: 5px 0 0 0px;
+margin: -3px 0 0 0px;
    
 }
 .not-front #columns {
