@@ -1235,8 +1235,8 @@ LIST OF POSTS - PERSON TEASER IN SIDEBAR
 .os-trim-text p {
     display: inline;
 }
-.not-logged-in div.messages {
-    display:none;
+.not-logged-in:not(.page-user) div.messages {
+    display: none;
 }
 div.messages {
     margin: 0 0 10px;
