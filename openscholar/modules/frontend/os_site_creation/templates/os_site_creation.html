@@ -210,7 +210,7 @@
 					&nbsp;
 				</div>
 				<div id="nxt">
-					<input type="button" class="preNxt" value="Next &#10132;" ng-disabled="btnDisable == true" ng-click="navigatePage('page1','page2');">
+					<input type="button" class="preNxt stepnav" value="Next ►" ng-disabled="btnDisable == true" ng-click="navigatePage('page1','page2');">
 				</div>
 			</div>
 		</div>
@@ -337,13 +337,12 @@
 					</div>
 				</div>
 			</div>
-
 			<div id="footer-container">
 				<div id="pre">
-					<button type="button" class="preNxt" value="Back" ng-disabled="btnDisable == true"  ng-click="navigatePage('page2','page1');">Back</button>
+					<button type="button" class="preNxt stepnav" value="Back" ng-disabled="btnDisable == true"  ng-click="navigatePage('page2','page1');">◄ Back</button>
 				</div>
 				<div id="nxt">
-				<input type="button" class="preNxt" value="Next &#10132;" ng-disabled="btnDisable == true" ng-click="navigatePage('page2','page3');">
+				<input type="button" class="preNxt stepnav" value="Next ►" ng-disabled="btnDisable == true" ng-click="navigatePage('page2','page3');">
 				</div>
 			</div>
 		</div>
@@ -444,7 +443,7 @@
 
 			<div id="footer-container">
 				<div id="pre">
-					<input type="button" class="preNxt" value="Back" ng-disabled="btnDisable == true"  ng-click="navigatePage('page3','page2');">
+					<input type="button" class="preNxt stepnav" value="◄ Back" ng-disabled="btnDisable == true"  ng-click="navigatePage('page3','page2');">
 				</div>
 				<div id="nxt">
 					<button type="button" class="preNxt" ng-show="siteCreated == false" ng-click="saveAllValues();" button-spinner="site_creation_form" spinning-text="Saving">Finish</button>
