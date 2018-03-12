@@ -1,5 +1,4 @@
 <?php
-//include_once ('hwpi.features.inc');
 
 /**
  * Implements hook_init
