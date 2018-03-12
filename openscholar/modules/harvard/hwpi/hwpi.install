@@ -203,3 +203,15 @@ function hwpi_update_7013() {
 
   return t('@count Contexts have been updated.', array('@count' => $count));
 }
+
+/**
+ * Saving strongarm variables.
+ */
+function hwpi_update_7014() {
+  $revert = array(
+    'hwpi' => array(
+      'variable',
+    )
+  );
+  features_revert($revert);
+}
