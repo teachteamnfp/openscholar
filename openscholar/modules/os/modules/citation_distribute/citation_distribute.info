@@ -8,4 +8,3 @@ files[] = plugins/service/citation_distribute_service.inc
 files[] = plugins/service/citation_distribute_service_googlescholar.inc
 files[] = plugins/service/citation_distribute_service_repec.inc
 files[] = plugins/service/citation_distribute_service_sword.inc
-files[] = plugins/service/citation_distribute_service_sword_dash.inc
