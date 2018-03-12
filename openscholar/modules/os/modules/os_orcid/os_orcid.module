@@ -323,7 +323,7 @@ function _os_orcid_get_orcid_from_api($orcid_id) {
     ),
   );
 
-  // The response from the API.
+  // The response from the API..
   $response = drupal_http_request(url($url, array()), $default_request_options);
 
   // If there is data, process it.
