@@ -38,24 +38,26 @@ function hwpi_basetheme_preprocess_page(&$vars) {
  */
 function _hwpi_branding_header() {
   $header = array();
-  $header['left_container'] = array(
-    '#type' => 'container',
-    '#attributes' => array(
-      'class' => array(
-        'branding-left',
+  if (variable_get('logo_path')) {
+    $header['left_container'] = array(
+      '#type' => 'container',
+      '#attributes' => array(
+        'class' => array(
+          'branding-left',
+        ),
       ),
-    ),
-    'img' => array(
-      '#theme' => 'link',
-      '#path' => variable_get('university_base_url'),
-      '#text' => theme('image', array('path' => drupal_get_path('theme', 'hwpi_basetheme') . '/images/harvard-logo.png', 'width' => 235, 'height' => 32, 'alt' => 'University Logo')),
-      '#options' => array(
-        'external' => TRUE,
-        'html' => TRUE,
-        'attributes' => array(),
+      'img' => array(
+        '#theme' => 'link',
+        '#path' => variable_get('university_base_url'),
+        '#text' => theme('image', array('path' => variable_get('logo_path'), 'width' => 235, 'height' => 32, 'alt' => 'University Logo')),
+        '#options' => array(
+          'external' => TRUE,
+          'html' => TRUE,
+          'attributes' => array(),
+        ),
       ),
-    ),
-  );
+    );
+  }
   $sites = _hwpi_get_ancestry();
   $links = array();
   foreach ($sites as $path => $title) {

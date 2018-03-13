@@ -10,10 +10,6 @@
 function hwpi_strongarm() {
   $export = array();
 
-/**
- * List of Harvard documentation help link
- */
-
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
@@ -27,10 +23,6 @@ function hwpi_strongarm() {
   $strongarm->name = 'privacy_policy_text';
   $strongarm->value = 'Privacy';
   $export['privacy_policy_text'] = $strongarm;
-
-/**
- * Harvard sitewide name,URL
- */
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
@@ -74,15 +66,19 @@ function hwpi_strongarm() {
   $strongarm->value = 'Copyright &copy; @year The President and Fellows of Harvard College';
   $export['copyright_text'] = $strongarm;
 
-/**
- * Hard-coded names.
- */
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'highest_parent_item';
   $strongarm->value = 'HARVARD.EDU';
   $export['highest_parent_item'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'logo_path';
+  $strongarm->value = drupal_get_path('theme', 'hwpi_basetheme') . '/images/harvard-logo.png';
+  $export['logo_path'] = $strongarm;
 
   return $export;
 }
