@@ -15,7 +15,7 @@
  */
 function os_breadcrumbs_update_7000() {
   // The variable's name and new value.
-  include_once(drupal_get_path('theme', 'hwpi_basetheme').'/template.php')
+  include_once(drupal_get_path('theme', 'hwpi_basetheme').'/template.php');
   if (function_exists('_is_hwpi_theme')) {
     $name = 'os_breadcrumbs_show_breadcrumbs';
     $value = 0;
