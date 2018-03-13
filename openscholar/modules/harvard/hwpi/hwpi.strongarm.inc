@@ -21,6 +21,13 @@ function hwpi_strongarm() {
   $strongarm->value = 'http://docs.openscholar.harvard.edu/global-site-settings#privacy-policy';
   $export['privacy_policy_url'] = $strongarm;
 
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'privacy_policy_text';
+  $strongarm->value = 'Privacy';
+  $export['privacy_policy_text'] = $strongarm;
+
 /**
  * Harvard sitewide name,URL
  */
@@ -42,6 +49,13 @@ function hwpi_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'site_access_text';
+  $strongarm->value = 'Accessibility';
+  $export['site_access_text'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'copyright_infring';
   $strongarm->value = 'http://www.harvard.edu/reporting-copyright-infringements';
   $export['copyright_infring'] = $strongarm;
@@ -49,8 +63,15 @@ function hwpi_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'copyright_infring_text';
+  $strongarm->value = 'Report Copyright Infringement';
+  $export['copyright_infring_text'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'copyright_text';
-  $strongarm->value = 'TTThe President and Fellows of Harvard College';
+  $strongarm->value = 'Copyright &copy; @year The President and Fellows of Harvard College';
   $export['copyright_text'] = $strongarm;
 
 /**
