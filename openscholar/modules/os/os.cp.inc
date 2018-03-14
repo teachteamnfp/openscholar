@@ -12,7 +12,7 @@ function os_cp_settings() {
       '#title' => t('Long List Display'),
       '#id' => 'long-list-content-pagination',
       '#weight' => 40,
-      '#help_link' => l(t('Learn more about Long list display'), 'http://docs.openscholar.harvard.edu/global-site-settings#long-list-display', array('attributes' => array('target' => '_blank')))
+      '#help_link' => l(t('Learn more about Long list display'), 'https://help.theopenscholar.com/global-site-settings#long-list-display', array('attributes' => array('target' => '_blank')))
     ),
     'form' => array(
       '#type' => 'radios',
