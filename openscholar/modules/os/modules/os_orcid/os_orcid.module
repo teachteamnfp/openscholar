@@ -308,7 +308,7 @@ function os_orcid_resync_item($data) {
   }
 }
 
-/****** HELPER FUNCTIONS ******/
+/****** HELPER FUNCTIONS *******/
 
 /**
  * Helper function to get orcid data from a given url.
