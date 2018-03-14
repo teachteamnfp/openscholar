@@ -15,7 +15,7 @@
  */
 function os_breadcrumbs_update_7000() {
   // The variable's name and new value.
-  include_once(drupal_get_path('theme', 'hwpi_basetheme').'/template.php');
+  //include_once(drupal_get_path('theme', 'hwpi_basetheme').'/template.php');
   if (function_exists('_is_hwpi_theme')) {
     $name = 'os_breadcrumbs_show_breadcrumbs';
     $value = 0;
@@ -35,10 +35,10 @@ function os_breadcrumbs_update_7000() {
     while ($record = $result->fetchAssoc()) {
       $vsite = vsite_get_vsite($record['nid']);
       $theme = $vsite->controllers->variable->get('theme_default');
-      //if (_is_hwpi_theme($theme)) {
-        //$vsite->controllers->variable->set($name, $value);
+      if (_is_hwpi_theme($theme)) {
+        $vsite->controllers->variable->set($name, $value);
         $count++;
-      //}
+      }
     }
 
     $message = '@count vsite(s) with HWPI themes were found and set to display breadcrumbs.';
