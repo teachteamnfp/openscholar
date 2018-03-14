@@ -14,7 +14,7 @@
  * by updating existing vsites with HWPI themes to show breadcrumbs.
  */
 function os_breadcrumbs_update_7000() {
-// The variable's name and new value.
+  // The variable's name and new value.
   $name = 'os_breadcrumbs_show_breadcrumbs';
   $value = 0;
 
@@ -30,10 +30,12 @@ function os_breadcrumbs_update_7000() {
     ->execute();
 
   $count = 0;
+  $themes = list_themes();
   while ($record = $result->fetchAssoc()) {
     $vsite = vsite_get_vsite($record['nid']);
     $theme = $vsite->controllers->variable->get('theme_default');
-    if (_is_hwpi_theme($theme)) {
+    $t = $themes[$theme];
+    if (isset($t->base_themes) && isset($t->base_themes['hwpi_basetheme'])) {
       $vsite->controllers->variable->set($name, $value);
       $count++;
     }
