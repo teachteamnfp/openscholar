@@ -35,7 +35,7 @@ function hwpi_basetheme_preprocess_page(&$vars) {
  * Returns if the active theme uses hwpi_basetheme as one of it's base theme.
  *
  * @return bool
-
+ */
 function _is_hwpi_theme($theme_name = NULL) {
   if (is_null($theme_name)) {
     $theme_name = $GLOBALS['theme'];
@@ -48,7 +48,7 @@ function _is_hwpi_theme($theme_name = NULL) {
     }
   }
   return FALSE;
-}*/
+}
 
 /**
  * Returns a build array for the HWPI branding header page region.
