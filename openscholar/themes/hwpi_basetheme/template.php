@@ -31,24 +31,6 @@ function hwpi_basetheme_preprocess_page(&$vars) {
   }
 }
 
-/**
- * Returns if the active theme uses hwpi_basetheme as one of it's base theme.
- *
- * @return bool
- */
-function _is_hwpi_theme($theme_name = NULL) {
-  if (is_null($theme_name)) {
-    $theme_name = $GLOBALS['theme'];
-  }
-  $themes = list_themes();
-  if (isset($themes[$theme_name])) {
-    $t = $themes[$theme_name];
-    if (isset($t->base_themes) && isset($t->base_themes['hwpi_basetheme'])) {
-      return TRUE;
-    }
-  }
-  return FALSE;
-}
 
 /**
  * Returns a build array for the HWPI branding header page region.

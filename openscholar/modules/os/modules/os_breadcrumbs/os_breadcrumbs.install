@@ -33,7 +33,7 @@ function os_breadcrumbs_update_7000() {
   while ($record = $result->fetchAssoc()) {
     $vsite = vsite_get_vsite($record['nid']);
     $theme = $vsite->controllers->variable->get('theme_default');
-    if (os_breadcrumbs_is_hwpi_theme($theme)) {
+    if (_is_hwpi_theme($theme)) {
       $vsite->controllers->variable->set($name, $value);
       $count++;
     }
@@ -49,18 +49,4 @@ function os_breadcrumbs_update_7000() {
  */
 function os_breadcrumbs_update_7001() {
   spaces_preset_load(null, null, true);
-}
-
-function os_breadcrumbs_is_hwpi_theme($theme_name = NULL) {
-  if (is_null($theme_name)) {
-    $theme_name = $GLOBALS['theme'];
-  }
-  $themes = list_themes();
-  if (isset($themes[$theme_name])) {
-    $t = $themes[$theme_name];
-    if (isset($t->base_themes) && isset($t->base_themes['hwpi_basetheme'])) {
-      return TRUE;
-    }
-  }
-  return FALSE;
 }
