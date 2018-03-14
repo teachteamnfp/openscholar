@@ -34,10 +34,12 @@ function os_breadcrumbs_update_7000() {
   while ($record = $result->fetchAssoc()) {
     $vsite = vsite_get_vsite($record['nid']);
     $theme = $vsite->controllers->variable->get('theme_default');
+    if (isset($themes[$theme])) {
     $t = $themes[$theme];
-    if (isset($t->base_themes) && isset($t->base_themes['hwpi_basetheme'])) {
-      $vsite->controllers->variable->set($name, $value);
-      $count++;
+      if (isset($t->base_themes) && isset($t->base_themes['hwpi_basetheme'])) {
+        $vsite->controllers->variable->set($name, $value);
+        $count++;
+      }
     }
   }
 
