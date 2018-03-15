@@ -312,6 +312,27 @@ function os_files_private_preprocess_views_view(&$vars) {
 }
 
 /**
+ * Implements hook_entity_view_alter().
+ *
+ * Private files should have the direct URL and the inside router item path due
+ * to private files handling i.e Harvard PIN.
+ */
+function os_files_private_entity_view_alter(&$build, $type) {
+  if ($type != 'file') {
+    return;
+  }
+
+  $file = $build['#file'];
+
+  if (strpos($file->uri, 'private://') !== 0) {
+    // Not a private file. Return.
+    return;
+  }
+
+  $build['file']['file-info']['title']['#path'] = file_create_url($file->uri);
+}
+
+/**
  * Process private file settings for a vsite.
  */
 function os_pinserver_auth_vsite_private_file_settings_submit($value, $var) {
@@ -345,25 +366,4 @@ function os_pinserver_auth_vsite_private_file_settings_submit($value, $var) {
   }
 
   variable_set('os_fastpath_domain_pinapps', $domain_pin_apps);
-}
-
-/**
- * Implements hook_entity_view_alter().
- *
- * Private files should have the direct URL and the inside router item path due
- * to private files handling i.e Harvard PIN.
- */
-function os_files_private_entity_view_alter(&$build, $type) {
-  if ($type != 'file') {
-    return;
-  }
-
-  $file = $build['#file'];
-
-  if (strpos($file->uri, 'private://') !== 0) {
-    // Not a private file. Return.
-    return;
-  }
-
-  $build['file']['file-info']['title']['#path'] = file_create_url($file->uri);
 }
