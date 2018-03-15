@@ -42,21 +42,21 @@ class RestfulAppform extends RestfulBase implements \RestfulDataProviderInterfac
   public function getAppStates() {
     $this->activateSpace();
 
-    $os_help = array( 'Blog' => 'https://docs.openscholar.harvard.edu/blogs',
-                      'Classes' => 'https://docs.openscholar.harvard.edu/classes-app',
-                      'FAQs' => 'https://docs.openscholar.harvard.edu/faq-app',
-                      'Links' => 'https://docs.openscholar.harvard.edu/links-app',
-                      'News' => 'https://docs.openscholar.harvard.edu/news-app',
-                      'Basic Pages' => 'https://docs.openscholar.harvard.edu/basic-page',
-                      'Software' => 'https://docs.openscholar.harvard.edu/software-app',
-                      'Private Files' => 'https://docs.openscholar.harvard.edu/private-files',
-                      'Booklets' => 'https://docs.openscholar.harvard.edu/booklet',
-                      'Events' => 'https://docs.openscholar.harvard.edu/events-app',
-                      'Media Gallery' => 'https://docs.openscholar.harvard.edu/media-gallery',
-                      'Presentations' => 'https://docs.openscholar.harvard.edu/presentations-app',
-                      'Profiles' => 'https://docs.openscholar.harvard.edu/people-profiles',
-                      'Publications' => 'https://docs.openscholar.harvard.edu/creating-publications',
-                      'Reader' => 'https://docs.openscholar.harvard.edu/rss-feed'
+    $os_help = array( 'Blog' => 'https://help.theopenscholar.com/blogs',
+                      'Classes' => 'https://help.theopenscholar.com/classes-app',
+                      'FAQs' => 'https://help.theopenscholar.com/faq-app',
+                      'Links' => 'https://help.theopenscholar.com/links-app',
+                      'News' => 'https://help.theopenscholar.com/news-app',
+                      'Basic Pages' => 'https://help.theopenscholar.com/basic-page',
+                      'Software' => 'https://help.theopenscholar.com/software-app',
+                      'Private Files' => 'https://help.theopenscholar.com/private-files',
+                      'Booklets' => 'https://help.theopenscholar.com/booklet',
+                      'Events' => 'https://help.theopenscholar.com/events-app',
+                      'Media Gallery' => 'https://help.theopenscholar.com/media-gallery',
+                      'Presentations' => 'https://help.theopenscholar.com/presentations-app',
+                      'Profiles' => 'https://help.theopenscholar.com/people-profiles',
+                      'Publications' => 'https://help.theopenscholar.com/creating-publications',
+                      'Reader' => 'https://help.theopenscholar.com/rss-feed'
                     );
     $features = variable_get('spaces_features', array());
     $info = spaces_features('og');
