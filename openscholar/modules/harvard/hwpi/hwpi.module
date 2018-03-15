@@ -1,5 +1,6 @@
 <?php
 include_once ('hwpi.features.inc');
+include_once(drupal_get_path('theme', 'hwpi_basetheme') . '/template.php');
 /**
  * Implements hook_init
  */
@@ -40,7 +41,7 @@ function hwpi_cp_settings() {
   // For non-user-1, only adds the responsive setting for HWPI-themed sites.
   $theme = variable_get('theme_default');
 
-  if (!_is_hwpi_theme($theme)) {
+  if (function_exists('_is_hwpi_theme') && (!_is_hwpi_theme($theme))) {
     return;
   }
 
@@ -69,7 +70,8 @@ function hwpi_cp_settings() {
  * Hides the search bar title display.
  */
 function hwpi_block_view_alter(&$render, $block) {
-  if ($block->delta == 'site-search' && _is_hwpi_theme()) {
+  //theme_disable(array('hwpi_basetheme'));
+  if ($block->delta == 'site-search' && (function_exists('_is_hwpi_theme') && _is_hwpi_theme())) {
     unset($render['content']['search_block_form']['#title_display']);
   }
 }
