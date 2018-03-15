@@ -241,6 +241,30 @@ function hwpi_cp_settings() {
     'rest_after_submit' => 'os_pinserver_auth_vsite_private_file_settings_submit',
   );
 
+  // Allows administrators only to edit pinserver app name in spaces_overrides if they have a custom domain.
+  $pinserver_app_name_access = FALSE;
+  if (user_access('administer pinserver') && variable_get('vsite_domain_name', FALSE)) {
+    $pinserver_app_name_access = module_exists('spaces') ? spaces_access_admin() : user_access('administer site configuration');
+  }
+  $settings['pinserver_app_name'] = array(
+   'group' => array(
+      '#id' => 'feature_os_files_private',
+      '#title' => t('Private Files'),
+      '#weight' => 3,
+      '#menu_parent' => 'app_settings',
+      '#help_link' => l(t('Learn more about private files'), 'http://docs.openscholar.harvard.edu/private-files#setting-options', array('attributes' => array('target' => '_blank'))),
+    ),
+    'form' => array(
+      '#title' => t('Harvard PIN server application name'),
+      '#description' => t('Enter the application name given to you by Harvard Directory Services.'),
+      '#type' => 'textfield',
+      '#default_value' => variable_get('pinserver_app_name', ''),
+      '#weight' => -1,
+      '#access' => $pinserver_app_name_access,
+    ),
+    'rest_after_submit' => 'os_pinserver_auth_vsite_private_file_settings_submit',
+  );
+
   return $settings;
 }
 
