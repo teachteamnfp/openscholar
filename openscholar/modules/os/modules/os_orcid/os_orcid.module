@@ -61,7 +61,7 @@ function os_orcid_cp_settings() {
 /**
  * Submit callback to import/update from orcid.
  */
-function _os_orcid_manage_orcid_submit($var, $value) {
+function _os_orcid_manage_orcid_submit($var, $value = array()) {
   if (is_array($var)) {
     $orcid_id = "";
     // Set variable to store the orcid_id from the form.
@@ -146,11 +146,11 @@ function os_orcid_cron(){
     foreach($getStack as $vsite => $orcidId) {
       // Get all works for individual Orcid Id into array
       $works = _os_orcid_get_orcid_from_api($orcidId['orcid_id']);
-      foreach($works as $work){
+      foreach($works[0] as $work){
         $orcidDataToProcess[] = array('orcidId' => $orcidId['orcid_id'], 'vsite' => $vsite, 'work' => $work, 'user_id' => $orcidId['user_id']);
       }
     }
-
+    
     //Setup drupal the drupal queue
     $queue = DrupalQueue::get("syncOrcidData");
     foreach ($orcidDataToProcess as $data) {
@@ -190,17 +190,19 @@ function os_orcid_resync_item($data) {
   } else {
     $works = $work_feed;
   }
-  foreach ($works as $work) {
+  foreach ($works['work-summary'] as $work) {
     $biblio_type = 102;
     foreach($biblio_types as $key => $value) {
-      if($biblio_types[$key]->name == str_replace('-', ' ', $work['work-type'])) {
+      watchdog("biblio_types", "<pre>". print_r($biblio_types, true) ."</pre>");
+      if($biblio_types[$key]->name == strtolower(str_replace('-', ' ', $work['type']))) {
         $biblio_type = $biblio_types[$key]->tid;
         break;
       }
     }
     $insert = true;
     // If there is a journal-title, set the node title, otherwise use the title.
-    $work_title = $work['work-title']['title'];
+    $work_title = $work['title']['title']['value'];
+    $subtitle = $work['title']['subtitle']['value'];
 
     $query = db_select('biblio', 'b')
               ->condition('b.biblio_type', $biblio_type)
@@ -243,25 +245,25 @@ function os_orcid_resync_item($data) {
     $node->title_field[LANGUAGE_NONE][0]['safe_value'] = $work_title;
 
     // Set the secondary title
-    $node->biblio_secondary_title = $work['journal-title'];
+    $node->biblio_secondary_title = $subtitle;
 
     // Set the year of the publication.
-    $node->biblio_year = $work['publication-date']['year'];
+    $node->biblio_year = $work['publication-date']['year']['value'];
 
     // Set the month of the publication.
-    $node->field_biblio_pub_month[LANGUAGE_NONE][0]['value'] = $work['publication-date']['month'];
+    $node->field_biblio_pub_month[LANGUAGE_NONE][0]['value'] = $work['publication-date']['month']['value'];
 
     // Set the month of the publication.
-    $node->field_biblio_pub_day[LANGUAGE_NONE][0]['value'] = $work['publication-date']['day'];
+    $node->field_biblio_pub_day[LANGUAGE_NONE][0]['value'] = $work['publication-date']['day']['value'];
 
     // Set the URL of the publication.
     $node->biblio_url_title = "Publisher's Version";
 
     //Set the abstract.
-    $node->biblio_abst_e = $work['short-description'];
+    $node->biblio_abst_e = $subtitle;
 
     //Set the biblio url.
-    $node->biblio_url = $work['source']['source-orcid']['uri'];
+    $node->biblio_url = $work['source']['source-client-id']['uri'];
 
     // Counter used in for loop.
     $counter = 0;
@@ -275,14 +277,14 @@ function os_orcid_resync_item($data) {
         $counter++;
       }
     }else{
-      $node->biblio_contributors[$counter]['name'] = $work['source']['source-name'];
+      $node->biblio_contributors[$counter]['name'] = $work['source']['source-name']['value'];
       $node->biblio_contributors[$counter]['auth_type'] = 1;
       $node->biblio_contributors[$counter]['auth_category'] = 1;
     }
 
     // Step through each biblio type and if it is a match to the orcid type, set it.
     foreach($biblio_types as $type => $biblio_type) {
-      if(strtolower($biblio_types[$type]->name) == strtolower(str_replace('-', ' ', $work['work-type']))) {
+      if(strtolower($biblio_types[$type]->name) == strtolower(str_replace('-', ' ', $work['type']))) {
         $node->biblio_type = $biblio_types[$type]->tid;
       }
     }
@@ -305,6 +307,7 @@ function os_orcid_resync_item($data) {
       // Increment the exists counter, used in displaying the results.
       $context['results']['exists']++;
     }
+
   }
 }
 
@@ -315,11 +318,11 @@ function os_orcid_resync_item($data) {
  */
 function _os_orcid_get_orcid_from_api($orcid_id) {
   // The URL that gets the orcid data from the API.
-  $url = 'https://pub.orcid.org/v1.2/' . $orcid_id . '/orcid-works/';
+  $url = 'https://pub.orcid.org/v2.0/' . $orcid_id . '/works';
   // Setting the default request options for getting info from the API.
   $default_request_options = array(
     'headers' => array(
-      'Accept' => 'application/orcid+xml',
+      'Accept' => 'application/json',
     ),
   );
 
@@ -329,16 +332,12 @@ function _os_orcid_get_orcid_from_api($orcid_id) {
   // If there is data, process it.
   if ($response->code == "200") {
 
-    // Get the response data into simple XML format.
-    $data = new SimpleXMLElement($response->data);
-
-    // Convert the data to json and decode.
-    $data = drupal_json_decode(drupal_json_encode($data));
+    $data = $response->data;     
+    $data = drupal_json_decode($data);
 
     // Set the variable works to the actual works from ORCID API.
-    $works[] = $data['orcid-profile']['orcid-activities']['orcid-works']['orcid-work'];
+    $works[] = $data['group'];
   }
-
   return $works;
 }
 
