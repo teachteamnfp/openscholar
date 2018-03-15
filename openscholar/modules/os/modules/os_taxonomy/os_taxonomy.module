@@ -1026,7 +1026,11 @@ function theme_os_taxonomy_tagged_nodes($variables) {
     }
   }
 
-  $options = $variables['options'] + array(
+  $options = array();
+  if (isset($variable['options']) && is_array($variables['options'])) {
+    $options = $variables['options'];
+  }
+  $options += array(
     'range' => $tagged_item_per_page,
     'offset' => $page * $tagged_item_per_page,
     'tree' => FALSE,
@@ -1148,15 +1152,17 @@ function theme_os_taxonomy_tagged_nodes($variables) {
     $build += array_map(function ($a) use ($term_id, $options) {
       if ($a['entity_type'] == "node") {
         // Render a node.
-        $entity = node_load($a['entity_id']);
-        $entity->contextual_annotation_key = 'tid-' . $term_id;
-        return node_view($entity, $options['view_mode']);
+        if ($entity = node_load($a['entity_id'])) {
+          $entity->contextual_annotation_key = 'tid-' . $term_id;
+          return node_view($entity, $options['view_mode']);
+        }
       }
 
       // Render a non-node entity.
-      $entity = entity_load_single($a['entity_type'], $a['entity_id']);
-      $entity->contextual_annotation_key = 'tid-' . $term_id;
-      return entity_view($a['entity_type'], array($entity), $options['view_mode']);
+      if ($entity = entity_load_single($a['entity_type'], $a['entity_id'])) {
+        $entity->contextual_annotation_key = 'tid-' . $term_id;
+        return entity_view($a['entity_type'], array($entity), $options['view_mode']);
+      }
     }, $entities);
 
   }
