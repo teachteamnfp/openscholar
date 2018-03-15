@@ -409,9 +409,11 @@ function hwpi_form_user_login_alter(&$form, $form_state) {
  * Implements hook_form_FORM_ID_alter().
  * To alter the description.
  */
-function hwpi_form_cp_user_edit_membership_form_alter($form, $form_state, $user_load) {
+function hwpi_form_cp_user_edit_membership_form_alter($form, $form_state) {
   $space = spaces_get_space();
-  $group_user = $user_load['build_info']['args'][0];
+  $name = $form['user_name']['#value'];
+  $group_user_uid = $form['uid']['#value'];
+  $site = $space->group->title;
 
   // Show the option to change site owner only for the current owner or a support team member with an associated HUID if the pinserver module is enabled
   global $user;
