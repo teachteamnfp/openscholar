@@ -417,7 +417,7 @@ function hwpi_form_cp_user_edit_membership_form_alter($form, $form_state) {
 
   // Show the option to change site owner only for the current owner or a support team member with an associated HUID if the pinserver module is enabled
   global $user;
-  if ($user->uid == 1 || !module_exists('pinserver') || (module_exists('pinserver') && variable_get('pinserver_pin_url', FALSE) && pinserver_user_has_associated_pin($group_user->uid))) {
+  if ($user->uid == 1 || !module_exists('pinserver') || (module_exists('pinserver') && variable_get('pinserver_pin_url', FALSE) && pinserver_user_has_associated_pin($group_user_uid))) {
   // Please check cp_user_edit_membership_form in cp_user.pages.inc
   }
   else {
