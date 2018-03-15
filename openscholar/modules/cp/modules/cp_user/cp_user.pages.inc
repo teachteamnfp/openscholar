@@ -401,13 +401,13 @@ function cp_user_edit_membership_form($form_state, $user_load) {
 
   // Show the option to change site owner only for the current owner or a support team member with an associated HUID if the pinserver module is enabled
   global $user;
-  if ($user->uid == 1 || !module_exists('pinserver') || (module_exists('pinserver') && variable_get('pinserver_pin_url', FALSE) && pinserver_user_has_associated_pin($group_user_uid))) {
+  if ($user->uid == 1 || !module_exists('pinserver') || (module_exists('pinserver') && variable_get('pinserver_pin_url', FALSE) && pinserver_user_has_associated_pin($group_user->uid))) {
 
     $form['edit_membership']['group_manager'] = array(
       '#type' => 'checkbox',
       // Theme the checkbox label to look like the radio options.
       '#title' => _cp_user_role_option(t('Set as site owner'), t('Make <em>@name</em> the site owner.', array('@name' => $name))),
-      '#default_value' => $space->group->uid == $group_user_uid,
+      '#default_value' => $space->group->uid == $group_user->uid,
       '#access' => in_array('support team', $user->roles) || ($space->group->uid == $user->uid) || ($user->uid == 1),
     );
   }
