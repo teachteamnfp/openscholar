@@ -299,7 +299,7 @@ function cp_user_change_site_owner_form($form_state) {
     '#type' => 'select',
     '#title' => t('Username'),
     '#required' => TRUE,
-    '#description' => $description,
+    '#description' => '',
     '#options' => $options,
   );
 
@@ -409,12 +409,6 @@ function cp_user_edit_membership_form($form_state, $user_load) {
       '#title' => _cp_user_role_option(t('Set as site owner'), t('Make <em>@name</em> the site owner.', array('@name' => $name))),
       '#default_value' => $space->group->uid == $group_user->uid,
       '#access' => in_array('support team', $user->roles) || ($space->group->uid == $user->uid) || ($user->uid == 1),
-    );
-  }
-  else {
-    $form['edit_membership']['group_manager'] = array(
-      '#type' => 'markup',
-      '#markup' => '<p>' . t('@name\'s OpenScholar account is not linked to HarvardKey, so this user cannot be made site owner.', array('@name' => $name)) . ' ' . l('Learn more about linking accounts', 'http://docs.openscholar.harvard.edu/logging-your-site#linking-your-harvardkey-to-your-openscholar-account', array('attributes' => array('target' => '_blank', 'rel' => 'noopener'))) . '.</p>',
     );
   }
 
