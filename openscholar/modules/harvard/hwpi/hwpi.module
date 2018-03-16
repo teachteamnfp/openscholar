@@ -194,80 +194,6 @@ function _hwpi_branding_footer() {
   return $footer;
 }
 
-function hwpi_cp_settings() {
-
-  $settings = array();
-  $spaces_features = variable_get('spaces_features');
-
-  // The app won't appear in CP menu if not enabled.
-  if (empty($spaces_features['os_files_private'])) {
-    return $settings;
-  }
-
-  // Checks that the current vsite has a value for the pinserver app name
-  // variable.
-  $pinserver_app_name = variable_get('pinserver_app_name', NULL);
-
-  // Private Files settings link won't appear in CP menu if Private files app is
-  // not enabled and pinserver app name is not setup.
-  if (!$pinserver_app_name) {
-    return $settings;
-  }
-  // For non-user-1, only adds the responsive setting for HWPI-themed sites.
-  $theme = variable_get('theme_default');
-
-  if (!_is_hwpi_theme($theme)) {
-    return;
-  }
-
-  $settings['os_files_private_pinserver'] = array(
-    'group' => array(
-      '#id' => 'feature_os_files_private',
-      '#title' => t('Private Files'),
-      '#weight' => 3,
-      '#menu_parent' => 'app_settings',
-      '#help_link' => l(t('Learn more about private files'), 'http://docs.openscholar.harvard.edu/private-files#setting-options', array('attributes' => array('target' => '_blank'))),
-    ),
-    'form' => array(
-      '#title' => t('Extend access to the Harvard Community'),
-      '#description' => t('This will enable anyone with a valid Harvard ID to log in using the Harvard Pinserver to access your private files. You must have a custom domain and pin application to choose this setting.'),
-      '#type' => 'checkbox',
-      '#default_value' => variable_get('os_files_private_pinserver', 0),
-      '#weight' => -1,
-      '#prefix' => '<label class="margin-bottom settings-form-heading">Private files are only accessible to your site members.</label>',
-      '#disabled' => !(user_access('administer pinserver') && variable_get('vsite_domain_name', FALSE)),
-      '#access' => module_exists('spaces') ? spaces_access_admin() : user_access('administer site configuration'),
-    ),
-    'rest_after_submit' => 'os_pinserver_auth_vsite_private_file_settings_submit',
-  );
-
-  // Allows administrators only to edit pinserver app name in spaces_overrides if they have a custom domain.
-  $pinserver_app_name_access = FALSE;
-  if (user_access('administer pinserver') && variable_get('vsite_domain_name', FALSE)) {
-    $pinserver_app_name_access = module_exists('spaces') ? spaces_access_admin() : user_access('administer site configuration');
-  }
-  $settings['pinserver_app_name'] = array(
-   'group' => array(
-      '#id' => 'feature_os_files_private',
-      '#title' => t('Private Files'),
-      '#weight' => 3,
-      '#menu_parent' => 'app_settings',
-      '#help_link' => l(t('Learn more about private files'), 'http://docs.openscholar.harvard.edu/private-files#setting-options', array('attributes' => array('target' => '_blank'))),
-    ),
-    'form' => array(
-      '#title' => t('Harvard PIN server application name'),
-      '#description' => t('Enter the application name given to you by Harvard Directory Services.'),
-      '#type' => 'textfield',
-      '#default_value' => variable_get('pinserver_app_name', ''),
-      '#weight' => -1,
-      '#access' => $pinserver_app_name_access,
-    ),
-    'rest_after_submit' => 'os_pinserver_auth_vsite_private_file_settings_submit',
-  );
-
-  return $settings;
-}
-
 /**
  * Implements hook_block_view_alter().
  *
@@ -438,6 +364,17 @@ function hwpi_form_cp_user_change_site_owner_form_alter(&$form, $form_state, $fo
   if (module_exists('pinserver') && variable_get('pinserver_pin_url', FALSE)) {
     unset( $form['new_site_owner']['#description']);
     $form['new_site_owner']['#description'] = t('Only users who have linked their OpenScholar accounts to HarvardKey are listed.') . ' ' . l('Learn more about linking accounts', 'http://docs.openscholar.harvard.edu/logging-your-site#linking-your-harvardkey-to-your-openscholar-account', array('attributes' => array('target' => '_blank', 'rel' => 'noopener'))) . '.';
+  }
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter() for user_login form.
+ */
+function hwpi_form_user_login_alter(&$form, $form_state) {
+  // Overriding the text of first button on the login screen.
+  if (isset($form['pin'])) {
+    $query['destination'] = isset($_GET['destination']) ? $_GET['destination'] : 'user';
+    $form['pin']['#markup'] = l('Login using your HarvardKey', 'user/pin', array('query' => $query));
   }
 }
 
