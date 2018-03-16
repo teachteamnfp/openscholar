@@ -1,6 +1,7 @@
 name = "HWPI"
 core = 7.x
 description = "Module to provide functionality specific to Harvard Web Publishing Initiative sites."
+
 package = Features
 
 features[ctools][] = strongarm:strongarm:1
@@ -16,3 +17,5 @@ features[variable][] = copyright_text
 features[variable][] = logo_path
 features[variable][] = highest_parent_item
 features_exclude[dependencies][strongarm] = strongarm
+
+files[] = plugins/service/hwpi_service_sword_dash.inc

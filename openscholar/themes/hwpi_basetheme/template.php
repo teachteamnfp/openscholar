@@ -203,7 +203,7 @@ function hwpi_basetheme_page_alter(&$page) {
     '#links' => array(
       'mobi-main' => array(
         'href' => '#',
-        'title' => '<span aria-hidden="true" class="icon-menu"></span>',
+        'title' => '<span aria-hidden="true" class="icon-menu"></span><span class="move">Main Menu</span>',
         'external' => true,
         'html' => true,
         'attributes' => array(
