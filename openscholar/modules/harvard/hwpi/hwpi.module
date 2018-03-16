@@ -70,7 +70,6 @@ function hwpi_cp_settings() {
  * Hides the search bar title display.
  */
 function hwpi_block_view_alter(&$render, $block) {
-  //theme_disable(array('hwpi_basetheme'));
   if ($block->delta == 'site-search' && (function_exists('_is_hwpi_theme') && _is_hwpi_theme())) {
     unset($render['content']['search_block_form']['#title_display']);
   }
