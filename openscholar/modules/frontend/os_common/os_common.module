@@ -479,3 +479,24 @@ function os_common_menu_contextual_links_alter(&$links, $router_item, $root_path
     drupal_add_library('os_common', 'FileEditorModal');
   }
 }
+
+
+/**
+ * Implements a post_render function.
+ *
+ * Add this to any element with the #angular_app property to include the app on the page
+ */
+function os_common_element_post_render($content, $elem) {
+  if (!empty($elem['#angular_app'])) {
+    if (is_array($elem['#angular_app'])) {
+      foreach ($elem['#angular_app'] as $app) {
+        os_common_angular_apps($app);
+      }
+    }
+    elseif (is_string($elem['#angular_app'])) {
+      os_common_angular_apps($elem['#angular_app']);
+    }
+  }
+
+  return $content;
+}
