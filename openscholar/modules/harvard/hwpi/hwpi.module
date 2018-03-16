@@ -380,3 +380,12 @@ function hwpi_form_cp_user_change_site_owner_form_alter(&$form, $form_state, $fo
 function hwpi_default_box_alter(&$boxes) {
   $boxes['hwp_personal_contact_html']->options['text']['value'] = '<p>Harvard University<br> (617) 495-1000<br> Massachusetts Hall<br> Cambridge, MA 02138<br> your_name@harvard.edu</p>';
 }
+
+/**
+ * Implements hook_ctools_plugin_directory
+ */
+function hwpi_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'citation_distribute' && $plugin == 'service') {
+    return 'plugins/service/';
+  }
+}
