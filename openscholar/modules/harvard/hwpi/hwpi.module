@@ -329,6 +329,11 @@ function hwpi_form_user_login_alter(&$form, $form_state) {
       ))
     )
   );
+    // Overriding the text of first button on the login screen.
+  if (isset($form['pin'])) {
+    $query['destination'] = isset($_GET['destination']) ? $_GET['destination'] : 'user';
+    $form['pin']['#markup'] = l('Login using your HarvardKey', 'user/pin', array('query' => $query));
+  }
 }
 
 /**
@@ -364,17 +369,6 @@ function hwpi_form_cp_user_change_site_owner_form_alter(&$form, $form_state, $fo
   if (module_exists('pinserver') && variable_get('pinserver_pin_url', FALSE)) {
     unset( $form['new_site_owner']['#description']);
     $form['new_site_owner']['#description'] = t('Only users who have linked their OpenScholar accounts to HarvardKey are listed.') . ' ' . l('Learn more about linking accounts', 'http://docs.openscholar.harvard.edu/logging-your-site#linking-your-harvardkey-to-your-openscholar-account', array('attributes' => array('target' => '_blank', 'rel' => 'noopener'))) . '.';
-  }
-}
-
-/**
- * Implements hook_form_BASE_FORM_ID_alter() for user_login form.
- */
-function hwpi_form_user_login_alter(&$form, $form_state) {
-  // Overriding the text of first button on the login screen.
-  if (isset($form['pin'])) {
-    $query['destination'] = isset($_GET['destination']) ? $_GET['destination'] : 'user';
-    $form['pin']['#markup'] = l('Login using your HarvardKey', 'user/pin', array('query' => $query));
   }
 }
 
