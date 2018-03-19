@@ -878,7 +878,7 @@ function os_importer_feeds_presave(FeedsSource $source, $entity, $item) {
     return;
   }
 
-  // When importing an event and the end date is empty we use the start date.
+ // When importing an event and the end date is empty we use the start date.
   if ($entity->type == "event") {
     if (!empty($entity->body[LANGUAGE_NONE][0]['value']) && $source->id == 'os_ical') {
       $destination = 'public://';
@@ -964,7 +964,7 @@ function os_importer_feeds_presave(FeedsSource $source, $entity, $item) {
       $entity->field_date[LANGUAGE_NONE] = date_repeat_build_dates(NULL, date_ical_parse_rrule($field_info, $rrule), $field_info, $date_item);
     }
   }
-
+  
   // Allow importing a presentation with date is empty.
   if ($entity->type == "presentation" && empty($item['date'])) {
     $entity->field_presentation_date = array();
