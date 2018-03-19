@@ -162,6 +162,9 @@ ul.nice-menu-down li ul li ul {
 .front .block h2.block-title {
     text-align: center;
 }
+.front .footer .block h2.block-title {
+    text-align: left;
+}
 .front #columns .region-content-top .region-inner,
 .front #content-panels {
     margin-bottom: 0;
