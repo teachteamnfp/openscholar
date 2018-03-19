@@ -106,6 +106,16 @@
 .front .block-boxes-os_sv_list_box.lopz-3 .node {
     width: 31%;
 }
+
+.front .block-boxes-os_boxes_tabs .block-boxes-os_sv_list_box.lopz-4 .node,
+.front .block-boxes-os_boxes_tabs .block-boxes-os_sv_list_box.lopz-2 .node {
+    width: 47%;
+}
+
+.front .block-boxes-os_boxes_tabs .block-boxes-os_sv_list_box.lopz-6 .node,
+.front .block-boxes-os_boxes_tabs .block-boxes-os_sv_list_box.lopz-3 .node {
+    width: 30%;
+}
 /* LOPs in the frontpage -  columns widget */
 
 .front .block-boxes-os_boxes_columns .block-boxes-os_sv_list_box .node {
