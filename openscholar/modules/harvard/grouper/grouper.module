@@ -54,7 +54,7 @@ function grouper_library_alter(&$libraries, $module) {
  */
 function grouper_vsite_access_privacy_values_alter(&$options) {
   if (spaces_access_admin()) {
-    $options[GROUPER_PRIVACY_LEVEL] = t('Group within the @university Community',array('@university' => variable_get('university_name'))) . "<br><span class='description'>" . t("Only select groups at @university can view your site.", array('@university' => variable_get('university_name'))) . "</span>";
+    $options[GROUPER_PRIVACY_LEVEL] = t('Groups within the Harvard Community <br><span class="description">Only select groups at harvard can view your site.</span>');
   }
 }
 

@@ -359,7 +359,8 @@ function os_files_private_cp_settings() {
     'group' => array(
       '#id' => 'feature_os_files_private',
       '#title' => t('Private Files'),
-      '#weight' => 3,      '#menu_parent' => 'app_settings',
+      '#weight' => 3,
+      '#menu_parent' => 'app_settings',
       '#help_link' => l(t('Learn more about private files'), 'https://help.theopenscholar.com/private-files#setting-options', array('attributes' => array('target' => '_blank'))),
     ),
     'form' => array(
