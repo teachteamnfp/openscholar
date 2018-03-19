@@ -913,6 +913,19 @@ function os_importer_feeds_presave(FeedsSource $source, $entity, $item) {
             }
           }
         }
+        //For media iframe processing
+        if($media_embed_tags = $html_obj->find('div[class=media-element-container] > iframe')) {
+          foreach ($media_embed_tags as $iframe_obj ) {
+            //Iframe source
+            $src             = $iframe_obj->attr['src'];
+            //Other parameters
+            $width           = $iframe_obj->attr['width'] ? $iframe_obj->attr['width'] : "560";
+            $height          = $iframe_obj->attr['height'] ? $iframe_obj->attr['height'] : "315";
+            $frameborder     = $iframe_obj->attr['frameborder'] ? $iframe_obj->attr['frameborder'] : "0";
+            $allow           = $iframe_obj->attr['width'] ? $iframe_obj->attr['width'] : "autoplay; encrypted-media";
+            $allowfullscreen = $iframe_obj->attr['width'] ? $iframe_obj->attr['width'] : "allowfullscreen";
+          }
+        }
       $new_doc = $html_obj->save();
       $html_obj->clear();
       $entity->body[LANGUAGE_NONE][0] = array('format' => 'full_html', 'value' => $new_doc);
