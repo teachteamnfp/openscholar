@@ -35,6 +35,14 @@ function os_common_library() {
         'group' => JS_LIBRARY,
         'weight' => -14
       ),
+      array(
+        'type' => 'setting',
+        'data' => array(
+          'paths' => array(
+            'api' => $rest,
+          )
+        )
+      )
     )
   );
 
