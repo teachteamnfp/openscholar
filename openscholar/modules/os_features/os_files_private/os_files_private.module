@@ -343,7 +343,7 @@ function os_files_private_cp_settings() {
   // The app won't appear in CP menu if not enabled.
   if (empty($spaces_features['os_files_private'])) {
     return $settings;
- }
+  }
 
   // Checks that the current vsite has a value for the pinserver app name
   // variable.
