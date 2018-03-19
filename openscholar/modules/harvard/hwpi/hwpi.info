@@ -14,6 +14,7 @@ features[variable][] = upcoming_events
 features[variable][] = university_url
 features[variable][] = site_url
 features[variable][] = university_base_url
+features[variable][] = signup_pin_text
 features_exclude[dependencies][strongarm] = strongarm
 
 files[] = plugins/service/hwpi_service_sword_dash.inc
