@@ -41,7 +41,7 @@ function hwpi_cp_settings() {
   // For non-user-1, only adds the responsive setting for HWPI-themed sites.
   $theme = variable_get('theme_default');
 
-  if (function_exists('_is_hwpi_theme') && (!_is_hwpi_theme($theme))) {
+  if (!_is_hwpi_theme($theme)) {
     return;
   }
 
