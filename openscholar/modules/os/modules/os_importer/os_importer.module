@@ -913,6 +913,7 @@ function os_importer_feeds_presave(FeedsSource $source, $entity, $item) {
           }
         }
       }
+      watchdog('html_obj','<pre>'. print_r($html_obj, true) .'</pre>');
       $new_doc = $html_obj->save();
       $html_obj->clear();
       $entity->body[LANGUAGE_NONE][0] = array('format' => 'full_html', 'value' => $new_doc);
