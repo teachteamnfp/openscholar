@@ -251,7 +251,7 @@ function os_front_default_box() {
           2 => t('<a href="@url">Customize what type of sites can be created</a> (personal / projects/ departments).', array('@url' => url('admin/config/openscholar/vsite_register'))),
           3 => t('Customize this front page.  (examples:  <a href="http://openscholar.harard.edu">http://openscholar.harard.edu</a>, <a href="http://scholar.harvard.edu">http://scholar.harvard.edu</a>).'),
           4 => t('Other configuration settings.'),
-          5 => t('To provide your end-users with additional site-building guides and documentation, feel free to refer to OpenScholar @ Harvard\'s <a href="http://support.openscholar.harvard.edu">Help Center</a> and <a href="http://community.openscholar.harvard.edu">Community forum</a>.'),
+          5 => t('To provide your end-users with additional site-building guides and documentation, feel free to refer to OpenScholar @ Harvard\'s <a href="' . variable_get('support_url') . '"">Help Center</a> and <a href="' . variable_get('community_url') . '">Community forum</a>.'),
           6 => t('For questions about administering and configuring your new OpenScholar installation, search and/or post to our <a href="https://github.com/openscholar/openscholar/issues">GitHub issue queue</a>.'),
         ),
       ),

@@ -1426,7 +1426,7 @@ function os_os_layout_contexts($privacy = TRUE) {
  */
 function theme_openscholar_powered_by() {
   return '<span>' . t('<a href="@poweredby">OpenScholar</a>', array(
-      '@poweredby' => 'http://openscholar.harvard.edu',
+      '@poweredby' => variable_get('site_url'),
     )) . '</span>';
 }
 

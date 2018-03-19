@@ -3202,7 +3202,7 @@ function vsite_get_entity_alias($entity_type, $entity, $alias = NULL) {
   }
 
   if ($entity_type == 'node' && !os_app_info_declared_node_bundle($entity->type)) {
-    // Harvard courses shouldn't get the vsite prefix.
+    // University courses shouldn't get the vsite prefix.
     return $alias;
   }
 

@@ -1,5 +1,5 @@
 <?php
-
+include_once ('hwpi.features.inc');
 /**
  * Implements hook_init
  */
@@ -334,9 +334,9 @@ function hwpi_vsite_register_notify_author_body_text_alter(&$body_text) {
     . "Here are some handy links for you:\n"
     . "\n"
     . " * Logging in to your site: https://help.theopenscholar.com/logging-your-site\n"
-    . " * Sign up for training: http://hwp.harvard.edu/calendar/upcoming \n"
+    . " * Sign up for training: " . variable_get('upcoming_events') . "\n"
     . " * OpenScholar documentation: https://help.theopenscholar.com \n"
-    . " * Need help with your project? http://hwp.harvard.edu \n"
+    . " * Need help with your project? " . variable_get('university_url') . "\n"
     . "\n"
     . "Sincerely,\n"
     . "Harvard Web Publishing\n";
