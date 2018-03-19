@@ -878,7 +878,7 @@ function os_importer_feeds_presave(FeedsSource $source, $entity, $item) {
     return;
   }
 
- // When importing an event and the end date is empty we use the start date.
+  // When importing an event and the end date is empty we use the start date.
   if ($entity->type == "event") {
     if (!empty($entity->body[LANGUAGE_NONE][0]['value']) && $source->id == 'os_ical') {
       $destination = 'public://';
@@ -893,39 +893,26 @@ function os_importer_feeds_presave(FeedsSource $source, $entity, $item) {
       $html_obj = new simple_html_dom();
       // Load HTML from a string.
       $html_obj->load($entity->body[LANGUAGE_NONE][0]['value']);
-        //For image processing
-        if ($media_img_tags = $html_obj->find('img[class=media-element]')) {
-          foreach ($media_img_tags as $img_obj ) {
-            $url = $img_obj->src;
-            // TODO: We need to export protocol as well. Image src doesn't have the
-            // protocol http or https. For now let's consider https.
-            if ($path = system_retrieve_file('https:' . $url, $destination, TRUE, FILE_EXISTS_REPLACE)) {
-              $img_obj->setAttribute('src', file_create_url($path));
-            }
+      //For image processing
+      if ($media_img_tags = $html_obj->find('img[class=media-element]')) {
+        foreach ($media_img_tags as $img_obj ) {
+          $url = $img_obj->src;
+          // TODO: We need to export protocol as well. Image src doesn't have the
+          // protocol http or https. For now let's consider https.
+          if ($path = system_retrieve_file('https:' . $url, $destination, TRUE, FILE_EXISTS_REPLACE)) {
+            $img_obj->setAttribute('src', file_create_url($path));
           }
         }
-        //For achor tags processing
-        if ($media_anchor_tags = $html_obj->find('span[class=media-element] > a')) {
-          foreach ($media_anchor_tags as $anchor_obj ) {
-            $url = $anchor_obj->href;
-            if ($path = system_retrieve_file($url, $destination, TRUE, FILE_EXISTS_REPLACE)) {
-              $anchor_obj->setAttribute('href', file_create_url($path));
-            }
+      }
+      //For achor tags processing
+      if ($media_anchor_tags = $html_obj->find('span[class=media-element] > a')) {
+        foreach ($media_anchor_tags as $anchor_obj ) {
+          $url = $anchor_obj->href;
+          if ($path = system_retrieve_file($url, $destination, TRUE, FILE_EXISTS_REPLACE)) {
+            $anchor_obj->setAttribute('href', file_create_url($path));
           }
         }
-        //For media iframe processing
-        if($media_embed_tags = $html_obj->find('div[class=media-element-container] > iframe')) {
-          foreach ($media_embed_tags as $iframe_obj ) {
-            //Iframe source
-            $src             = $iframe_obj->attr['src'];
-            //Other parameters
-            $width           = $iframe_obj->attr['width'] ? $iframe_obj->attr['width'] : "560";
-            $height          = $iframe_obj->attr['height'] ? $iframe_obj->attr['height'] : "315";
-            $frameborder     = $iframe_obj->attr['frameborder'] ? $iframe_obj->attr['frameborder'] : "0";
-            $allow           = $iframe_obj->attr['width'] ? $iframe_obj->attr['width'] : "autoplay; encrypted-media";
-            $allowfullscreen = $iframe_obj->attr['width'] ? $iframe_obj->attr['width'] : "allowfullscreen";
-          }
-        }
+      }
       $new_doc = $html_obj->save();
       $html_obj->clear();
       $entity->body[LANGUAGE_NONE][0] = array('format' => 'full_html', 'value' => $new_doc);
@@ -977,7 +964,7 @@ function os_importer_feeds_presave(FeedsSource $source, $entity, $item) {
       $entity->field_date[LANGUAGE_NONE] = date_repeat_build_dates(NULL, date_ical_parse_rrule($field_info, $rrule), $field_info, $date_item);
     }
   }
-  
+
   // Allow importing a presentation with date is empty.
   if ($entity->type == "presentation" && empty($item['date'])) {
     $entity->field_presentation_date = array();
