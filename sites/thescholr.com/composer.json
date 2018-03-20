@@ -3,7 +3,7 @@
   "require": {
     "openscholar/thescholr" : "master"
   },
-  "respositories": [
+  "repositories": [
     {
       "type": "vcs",
       "url": "https://openscholar@bitbucket.org/openscholar/thescholr.git"
