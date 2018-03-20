@@ -227,3 +227,15 @@ function hwpi_update_7015() {
     ->condition('type', 'module', '=')
     ->execute();
 }
+
+/**
+ * Saving strongarm variables.
+ */
+function hwpi_update_7016() {
+  $revert = array(
+    'hwpi' => array(
+      'variable',
+    )
+  );
+  features_revert($revert);
+}
