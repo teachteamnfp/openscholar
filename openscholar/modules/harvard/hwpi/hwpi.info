@@ -6,7 +6,6 @@ package = Features
 
 features[ctools][] = strongarm:strongarm:1
 features[features_api][] = api:2
-features[variable][] = privacy_policy_url
 features[variable][] = privacy_policy_text
 features[variable][] = university_base_url
 features[variable][] = site_access
