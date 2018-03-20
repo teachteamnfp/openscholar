@@ -4,6 +4,8 @@
 # builds all the composer files in root/sites
 function buildComposer() {
     cd $1
+    pwd
+    ls
     for site in $(ls sites/); do
         cd sites/$site
         composer global config vendor-dir "$1/$2/sites/$site/modules"
