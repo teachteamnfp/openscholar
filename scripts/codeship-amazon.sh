@@ -3,14 +3,15 @@
 
 # builds all the composer files in root/sites
 function buildComposer() {
+    export ORIG = $(pwd)
     cd $1
-    pwd
-    ls
-    for site in $(ls sites/); do
-        cd sites/$site
+    for site in $(ls openscholar/sites/); do
+        cd openscholar/sites/$site
         composer global config vendor-dir "$1/$2/sites/$site/modules"
         composer install
+        cd -
     done
+    cd $ORIG
 }
 
 # pull down the acquia branch
