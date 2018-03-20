@@ -8,7 +8,7 @@ function buildComposer() {
     for site in $(ls openscholar/sites/); do
         cd openscholar/sites/$site
         composer global config vendor-dir $1/$2/sites/$site/modules
-        composer install
+        composer -v install
         cd -
     done
     cd $ORIG
