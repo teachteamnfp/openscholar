@@ -6,7 +6,7 @@
   "respositories": [
     {
       "type": "vcs",
-      "url": "https://bitbucket.org/openscholar/thescholr"
+      "url": "https://openscholar@bitbucket.org/openscholar/thescholr.git"
     }
   ]
 }

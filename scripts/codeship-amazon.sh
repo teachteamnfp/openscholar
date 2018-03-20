@@ -3,11 +3,11 @@
 
 # builds all the composer files in root/sites
 function buildComposer() {
-    export ORIG = $(pwd)
+    export ORIG=$(pwd)
     cd $1
     for site in $(ls openscholar/sites/); do
         cd openscholar/sites/$site
-        composer global config vendor-dir "$1/$2/sites/$site/modules"
+        composer global config vendor-dir $1/$2/sites/$site/modules
         composer install
         cd -
     done
