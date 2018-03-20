@@ -1,0 +1,12 @@
+{
+  "name": "TheScholr",
+  "require": {
+    "openscholar/thescholr" : "master"
+  },
+  "respositories": [
+    {
+      "type": "vcs",
+      "url": "https://bitbucket.org/openscholar/thescholr"
+    }
+  ],
+}
