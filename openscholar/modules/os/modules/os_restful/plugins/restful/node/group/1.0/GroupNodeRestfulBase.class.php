@@ -2,6 +2,72 @@
 
 class GroupNodeRestfulBase extends OsNodeRestfulBase {
 
+  public static function controllersInfo() {
+    return parent::controllersInfo() + array(
+      'check' => array(
+        \RestfulInterface::POST => 'check',
+      ),
+      'themes' => array(
+        \RestfulInterface::GET => 'themes',
+      )
+    );
+  }
+
+  /**
+   * Validates the fields passed in via POST against a variety of tests
+   * Supports the following fields:
+   *    url
+   */
+  protected function check() {
+    $output = array();
+    foreach ($this->request as $k => $val) {
+      switch ($k) {
+        case 'url':
+          if (!preg_match('|^[a-zA-Z0-9_-]*$|', $val)) {
+            $output[$k] = array(
+              'pass' => false,
+              'errors' => array(
+                'urlPattern' => t('Url can only contain alphanumberics, underscore and hyphen.'),
+              )
+            );
+          }
+          else {
+            $q = db_select('purl', 'p')
+              ->condition('value', $val)
+              ->condition('provider', 'spaces_og')
+              ->countQuery()
+              ->execute()
+              ->fetchField();
+
+            if ($q > 0) {
+              $output[$k] = array(
+                'pass' => false,
+                'errors' => array(
+                  'urlTaken' => t('Url is already in use. Do you have a site already?'),
+                )
+              );
+            }
+          }
+          break;
+      }
+      if (!isset($output[$k])) {
+        $output[$k] = array(
+          'pass' => true,
+        );
+      }
+    }
+
+    return $output;
+  }
+
+  /**
+   * Returns a list of available themes a site administrator may choose
+   *
+   */
+  protected function themes() {
+
+  }
+
   public function publicFieldsInfo() {
     $public_fields = parent::publicFieldsInfo();
 
@@ -75,7 +141,7 @@ class GroupNodeRestfulBase extends OsNodeRestfulBase {
   protected function setPropertyValues(EntityMetadataWrapper $wrapper, $null_missing_fields = FALSE) {
     $request = $this->getRequest();
     self::cleanRequest($request);
-    $wrapper->type->set($request['type']);
+    $wrapper->type()->set($request['type']);
 
     parent::setPropertyValues($wrapper, $null_missing_fields);
     $id = $wrapper->getIdentifier();
