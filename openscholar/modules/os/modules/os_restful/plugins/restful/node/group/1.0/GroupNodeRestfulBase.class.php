@@ -65,7 +65,30 @@ class GroupNodeRestfulBase extends OsNodeRestfulBase {
    *
    */
   protected function themes() {
+    module_load_include('inc', 'os', 'includes/themes');
+    $flavors = os_theme_get_flavors();
+    $approved_themes = array(
+      'Ivy Accents',
+      'Lemon Sand',
+      'Blue Sky',
+      'Teal Accents',
+      'Slate',
+      'White',
+      'Monochrome',
+      'Sterling'
+    );
+    $output = array();
+    foreach ($flavors as $k => $t) {
+      if (in_array($t['name'], $approved_themes)) {
+        $output[$k] = array(
+          'id' => $k,
+          'name' => $t['name'],
+          'thumb' => url($t['path'].'/'.$t['screenshot'], array('absolute' => true, 'alias' => true)),
+        );
+      }
+    }
 
+    return $output;
   }
 
   public function publicFieldsInfo() {
