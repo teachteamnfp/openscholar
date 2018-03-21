@@ -12,7 +12,7 @@ function buildComposer() {
         echo "Installing site-specific modules for $site"
         composer -v install
         ls -l $1/$2/sites/$site
-        ls -l /home/rof/.composer
+        ls -l /home/rof/.composer/vendor
         git add -A $1/$2/sites/$site/modules/
         cd -
     done
