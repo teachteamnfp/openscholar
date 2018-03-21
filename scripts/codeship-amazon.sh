@@ -4,6 +4,7 @@
 # builds all the composer files in root/sites
 function buildComposer() {
     export ORIG=$(pwd)
+    echo -e 'Begin pulling in site-specific code\n'
     echo $1/$2
     cd $1
     for site in $(ls openscholar/sites/); do
