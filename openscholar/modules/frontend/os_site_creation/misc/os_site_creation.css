@@ -1,3 +1,4 @@
+
 #site-creation-container .preNx {
     -webkit-transition: all .125s linear;
     -moz-transition: all .125s linear;
@@ -65,13 +66,14 @@ h3 {
 #site-creation-container #header-container-group-3 {
     margin: 100px 5px 20px;
 }
+
+.stepnav,
 .site-vis-radios,
 .starter-content .form-type-radio,
-#site-creation-container .preNxt,
 #site-creation-container .step.disable,
 #site-creation-container .site-type,
 #site-creation-container #body-container-group-3 {
-    background-color: #efefef;
+    background-color: #f5f5f5;
 }
 .os-themes,
 #site-creation-container #footer-container div#pre,
@@ -94,6 +96,7 @@ h3 {
     margin-right: 25px;
     padding: 15px;
     height: 150px;
+ 
 }
 .starter-content.four .form-type-radio {
     height: 190px;
@@ -101,6 +104,7 @@ h3 {
 .site-vis-radios {
     width: 63%;
     padding: 1px 10px 7px;
+  
 }
 #site-creation-container .site-type:last-child,
 .starter-content .form-type-radio:last-child {
@@ -134,6 +138,7 @@ h3 {
     background-color: #888;
     color: #fff;
     border-radius: 2px;
+  
 }
 .starter-content input ~ span:hover,
 .starter-content input:checked ~ span {
@@ -155,11 +160,7 @@ h3 {
 #site-creation-container .clear {
     clear: both;
 }
-#site-creation-container .preNxt,
-#site-creation-container .step,
-#site-creation-container a.button,
-#site-creation-container a:hover.button,
-#site-creation-container .center {
+#site-creation-contajiner .preNxt, #site-creation-container .step, #site-creation-container a.button, #site-creation-container a:hover.button, #site-creation-container .center {
     text-align: center;
 }
 
@@ -173,7 +174,7 @@ h3 {
 #site-creation-container #body-container-group-3 {
     margin: 5px;
 }
-#site-creation-container .preNxt,
+.stepnav,
 #site-creation-container .step,
 #site-creation-container a:hover.button,
 #site-creation-container a,
@@ -185,10 +186,7 @@ h3 {
 #site-creation-container a.button {
     background: none;
 }
-#site-creation-container .preNxt:hover {
-    background-color: #215990;
-    color: #fff;
-}
+
 #site-creation-container .site-type {
     padding: 75px 0 0 0;
     width: 31.3%;
@@ -196,6 +194,7 @@ h3 {
     background-repeat: no-repeat;
     background-position: 95px -3px;
     background-size: 32%;
+
 }
 #site-creation-container .site-type.individual {
     background-image:url('images/individual.svg');
@@ -225,6 +224,7 @@ h3 {
     border: none;
     color: white;
     padding: 8px 16px;
+ 
 }
 #site-creation-container a:hover.button {
 
@@ -239,7 +239,7 @@ h3 {
 }
 #site-creation-container #footer-container div#nxt {
     padding: 10px 0 0;
-    width: 200px;
+    /* width: 100px; */
     text-align: right;
 }
 #site-creation-container .popup {
@@ -271,8 +271,8 @@ h3 {
 #site-creation-container .preNxt {
     border: none;
     padding: 10px 16px;
-    border-radius: 3px;
 }
+
 #footer-container #nxt {
     float: right;
 }
