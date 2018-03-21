@@ -12,6 +12,7 @@ function buildComposer() {
         echo "Installing site-specific modules for $site"
         composer -vvv install
         ls -l $1/$2/sites/$site
+        git status $1/$2/sites/$site/modules
         git add -A $1/$2/sites/$site/modules/*
         cd -
     done
