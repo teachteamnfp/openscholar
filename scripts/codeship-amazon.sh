@@ -9,7 +9,7 @@ function buildComposer() {
         cd openscholar/sites/$site
         composer global config vendor-dir $1/$2/sites/$site/modules
         composer -v install
-        git add -A .
+        git add -A $1/$2/sites/$site/modules/
         cd -
     done
     cd $ORIG
