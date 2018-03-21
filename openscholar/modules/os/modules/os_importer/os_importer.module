@@ -913,10 +913,11 @@ function os_importer_feeds_presave(FeedsSource $source, $entity, $item) {
           }
         }
       }
-
+      $embed_flag = false;
       if ($media_embed_tags = $html_obj->find('div[class=media-element-container] > iframe')) {
         foreach ($media_embed_tags as $iframe_obj ) {
           //Save the imported file
+          $embed_flag = true;
           $file = new stdClass();
           global $user;
           $file->uid = $user->uid;
@@ -935,14 +936,16 @@ function os_importer_feeds_presave(FeedsSource $source, $entity, $item) {
                 ->propertyCondition('filename', $filename, '=');
           $result = $query->execute();
           $fid = key($result['file']);
-          $string = '[[{"fid":' . $fid . ',"view_mode":"default","type":"media","attributes":{"height":"' . $iframe_obj->attr['height'] . '","width":"' . $iframe_obj->attr['width'] . '","class":"wysiwyg-placeholder media-element file-default"}}]]';
+          $embed_string = '[[{"fid":' . $fid . ',"view_mode":"default","type":"media","attributes":{"height":"' . $iframe_obj->attr['height'] . '","width":"' . $iframe_obj->attr['width'] . '","class":"wysiwyg-placeholder media-element file-default"}}]]';
         }
-        watchdog("html_obj", "<pre>".print_r($html_obj)."</pre>");
       }
-
-      $new_doc = $html_obj->save();
-      $html_obj->clear();
-      $entity->body[LANGUAGE_NONE][0] = array('format' => 'full_html', 'value' => $new_doc);
+      if(!$embed_flag){
+        $new_doc = $html_obj->save();
+        $html_obj->clear();
+        $entity->body[LANGUAGE_NONE][0]['value'] = $new_doc;
+      }else{
+        $entity->body[LANGUAGE_NONE][0]['value'] = $embed_string;
+      }
     }
     if (empty($entity->field_date[LANGUAGE_NONE][0]['value2'])) {
       $entity->field_date[LANGUAGE_NONE][0]['value2'] = $entity->field_date[LANGUAGE_NONE][0]['value'];
