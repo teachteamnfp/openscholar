@@ -12,7 +12,7 @@ function buildComposer() {
         echo "Installing site-specific modules for $site"
         composer install
         MODULE=$(composer show -s | grep 'names' | sed -r 's|^[^:]*: ||')
-        git rm -rf $1/$2/sites/$site/modules/openscholar/$MODULE
+        git rm -rf --cached $1/$2/sites/$site/modules/openscholar/$MODULE
         git add $1/$2/sites/$site
         cd $1
     done
