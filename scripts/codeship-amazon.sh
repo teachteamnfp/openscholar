@@ -10,9 +10,8 @@ function buildComposer() {
         cd openscholar/sites/$site
         composer global config vendor-dir $1/$2/sites/$site/modules
         echo "Installing site-specific modules for $site"
-        composer -v install
+        composer -vvv install
         ls -l $1/$2/sites/$site
-        ls -l /home/rof/.composer/vendor
         git add -A $1/$2/sites/$site/modules/
         cd -
     done
