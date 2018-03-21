@@ -142,7 +142,7 @@ ls $BUILD_ROOT/openscholar
 rm -rf $BUILD_ROOT/openscholar/behat &> /dev/null
 
 #pull in site-specific code
-buildComposer $BUILD_ROOT $DOC_ROOT
+buildComposer $BUILD_ROOT $DOCROOT
 
 git commit -a -m "$CI_MESSAGE" -m "" -m "git-subtree-split: $CI_COMMIT_ID"
 #END BUILD PROCESS
