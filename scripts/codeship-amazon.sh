@@ -8,7 +8,7 @@ function buildComposer() {
     cd $1
     for site in $(ls openscholar/sites/); do
         cd openscholar/sites/$site
-        composer global config vendor-dir $1/$2/sites/$site/modules
+        composer config vendor-dir $1/$2/sites/$site/modules
         echo "Installing site-specific modules for $site"
         composer -vvv install
         ls -l $1/$2/sites/$site
