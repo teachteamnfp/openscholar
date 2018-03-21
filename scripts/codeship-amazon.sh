@@ -5,14 +5,13 @@
 function buildComposer() {
     export ORIG=$(pwd)
     echo 'Begin pulling in site-specific code'
-    echo "BUILD_ROOT: $1"
-    echo "DOCROOT: $2"
     cd $1
     for site in $(ls openscholar/sites/); do
         cd openscholar/sites/$site
         composer global config vendor-dir $1/$2/sites/$site/modules
+        echo "Installing site-specific modules for $site"
         composer -v install
-        git status
+        ls $1/$2/sites/$site
         git add -A $1/$2/sites/$site/modules/
         cd -
     done
