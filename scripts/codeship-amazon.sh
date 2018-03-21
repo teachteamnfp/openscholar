@@ -23,6 +23,9 @@ mkdir -p ~/src/amazon/
 git config --global user.email "openscholar@swap.lists.harvard.edu"
 git config --global user.name "OpenScholar Auto Push Bot"
 
+BUILD_ROOT='/home/rof/src/amazon'
+DOCROOT='web';
+
 if git show-ref -q --verify refs/tags/$CI_BRANCH 2>&1 > /dev/null; then
   # This is just a tag push
   # There's no need to build ever for tags
@@ -60,7 +63,6 @@ npm install -g bower
 
 # Drush executable.
 [[ $DRUSH && ${DRUSH-x} ]] || DRUSH=drush
-BUILD_ROOT='/home/rof/src/amazon'
 cd $BUILD_ROOT
 rm .gitmodules
 #List of files from docroot that should be preserved
@@ -100,7 +102,6 @@ $DRUSH make openscholar/openscholar/drupal-org-core.make $BUILD_ROOT/www-build
 
 # Backup files from existing installation.
 cd $BUILD_ROOT
-DOCROOT='web';
 ls
 for BACKUP_FILE in "${preserve_files[@]}"; do
 	rm -Rf www-build/$BACKUP_FILE
