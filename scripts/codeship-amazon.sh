@@ -11,7 +11,8 @@ function buildComposer() {
         composer global config vendor-dir $1/$2/sites/$site/modules
         echo "Installing site-specific modules for $site"
         composer -v install
-        ls $1/$2/sites/$site
+        ls -l $1/$2/sites/$site
+        ls -l /home/rof/.composer
         git add -A $1/$2/sites/$site/modules/
         cd -
     done
