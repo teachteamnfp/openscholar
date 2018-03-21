@@ -320,7 +320,7 @@ a {
     position: absolute;
     right: 152px;
     background-color: #FFF;
-    width: 350px;
+    width: 380px;
     color: #1e1e1e;
     border: 1px solid #CCC;
     -webkit-box-shadow: 3px 3px 3px 0px rgba(50, 50, 50, 0.3);
@@ -389,11 +389,11 @@ td.user-site-controls {
     color: #215990;
 }
 .btton {
-    border-radius: 3px 3px 3px 3px;
-    -moz-border-radius: 3px 3px 3px 3px;
-    -webkit-border-radius: 3px 3px 3px 3px;
+    border-radius: 2px 2px 2px 2px;
+    -moz-border-radius: 2px 2px 2px 2px;
+    -webkit-border-radius: 2px 2px 2px 2px;
     color: #FFF;
-    padding: 3px 4px;
+    padding: 4px 5px;
 }
 .btton.add {
     background-color: #458C00;

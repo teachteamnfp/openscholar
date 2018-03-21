@@ -210,7 +210,7 @@ function hwpi_cp_settings() {
       'group' => array(
         '#title' => t('Privacy Policy'),
         '#id' => 'privacy-policy',
-        '#help_link' => l(t('Learn more about creating a privacy policy for your site'), 'http://docs.openscholar.harvard.edu/global-site-settings#privacy-policy', array('attributes' => array('target' => '_blank'))),
+        '#help_link' => l(t('Learn more about creating a privacy policy for your site'), 'https://help.theopenscholar.com/global-site-settings#privacy-policy', array('attributes' => array('target' => '_blank'))),
       ),
       'form' => array(
         '#type' => 'textfield',
@@ -333,9 +333,9 @@ function hwpi_vsite_register_notify_author_body_text_alter(&$body_text) {
     . "\n"
     . "Here are some handy links for you:\n"
     . "\n"
-    . " * Logging in to your site: http://docs.openscholar.harvard.edu/logging-your-site\n"
+    . " * Logging in to your site: https://help.theopenscholar.com/logging-your-site\n"
     . " * Sign up for training: http://hwp.harvard.edu/calendar/upcoming \n"
-    . " * OpenScholar documentation: http://docs.openscholar.harvard.edu \n"
+    . " * OpenScholar documentation: https://help.theopenscholar.com \n"
     . " * Need help with your project? http://hwp.harvard.edu \n"
     . "\n"
     . "Sincerely,\n"
@@ -359,4 +359,22 @@ function hwpi_form_user_login_alter(&$form, $form_state) {
       ))
     )
   );
+}
+
+/**
+ * Implements hook_default_box_alter().
+ *
+ * Changes the default for the contact block to be Harvard-specific.
+ */
+function hwpi_default_box_alter(&$boxes) {
+  $boxes['hwp_personal_contact_html']->options['text']['value'] = '<p>Harvard University<br> (617) 495-1000<br> Massachusetts Hall<br> Cambridge, MA 02138<br> your_name@harvard.edu</p>';
+}
+
+/**
+ * Implements hook_ctools_plugin_directory
+ */
+function hwpi_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'citation_distribute' && $plugin == 'service') {
+    return 'plugins/service/';
+  }
 }

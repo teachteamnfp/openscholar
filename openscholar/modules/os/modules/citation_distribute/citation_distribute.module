@@ -40,13 +40,13 @@ function citation_distribute_menu() {
       }
     }
   }
-  
+
   $items['repec'] = array(
     'title' => t(''),
     'page callback' => 'citation_distribute_repec_page',
     'access arguments' => array('access content'),
   );
-  
+
   return $items;
 }
 
@@ -118,12 +118,12 @@ function citation_distribute_preprocess_page(&$variables) {
 
 /**
  * @function citation_distribute_repec_page
- * 
+ *
  * If we can't write out to a folder, render a page very much like a repec folder.
  */
 function citation_distribute_repec_page($type = NULL, $filename = NULL) {
   $repec = _citation_distribute_load_plugin('citation_distribute_service_repec');
-  
+
   //get all CD'ed nids, and their biblio types
   $query = db_select('citation_distribute', 'cd')
     ->condition('plugin', 'repec')
@@ -132,15 +132,15 @@ function citation_distribute_repec_page($type = NULL, $filename = NULL) {
   $query->join('biblio_types', 'bt', 'b.biblio_type = bt.tid');
   $query->fields('bt', array('name'));
   $result = $query->execute();
-  
+
   $archives = array();
   while ($row = $result->fetchObject()) {
     $name = $repec->_map_biblio_type($row->name);
     if ($name) { //repec only lets us do wpapers
       $archives['wpaper'][] = $row->nid;
-    } 
+    }
   }
-  
+
   $return = array();
   if (empty($type)) {
     //print links to all archives, indices.
@@ -148,21 +148,21 @@ function citation_distribute_repec_page($type = NULL, $filename = NULL) {
     $seri = $repec->archive_code . 'seri.rdf';
     $return[] = l($arch, 'repec/'.$arch);
     $return[] = l($seri, 'repec/'.$seri);
-    
+
     foreach (array_keys($archives) as $type) {
       $return[] = l($type.'/', 'repec/'.$type);
     }
   } elseif (empty($filename)) {
     //print this index
     if ($type == $repec->archive_code . 'arch.rdf') {
-      
+
       $return[]  = 'Template-Type: ReDIF-Archive 1.0';
       $return[] =  'Handle: RePEc:' . $repec->archive_code;
       $return[] =  'Name: ' . $repec->inst_name;
       $return[] =  'Maintainer-Email: ' . $repec->maintainer_email;
       $return[] =  'Description: ' . $repec->inst_name;
       $return[] =  'URL: ' . $repec->archive_url;
-      
+
     } elseif ($type == $repec->archive_code . 'seri.rdf') {
       $types = array(
         'sftwre' => 'Software',
@@ -171,7 +171,7 @@ function citation_distribute_repec_page($type = NULL, $filename = NULL) {
         'booktm' => 'Book',
         'wpaper' => 'Working Paper',
       );
-      
+
       foreach (array_keys($archives) as $type) {
         $return[] = 'Template-Type: ReDIF-Series 1.0';
         $return[] = 'Name: ' . $types[$type];
@@ -184,22 +184,22 @@ function citation_distribute_repec_page($type = NULL, $filename = NULL) {
         $return[] = 'Handle: RePEc:' . $repec->archive_code . ':' . $type . "\n";
         $return[] = '';
       }
-    } else {       
+    } else {
       //or this folder
       foreach ($archives[$type] as $nid) {
         $filename = "${type}_${nid}.rdf";
         $return[] = l($filename, "repec/${type}/${filename}");
       }
     }
-    
+
   } else {
     //print this archive
-    
+
     $nid = str_replace(array("${type}_", '.rdf'), '', $filename);
     $metadata = $repec->map_metadata($nid);
     $return[] = $repec->render($metadata);
-  }  
-  
+  }
+
   print(implode("<br />\n", $return));
   exit;
 }
@@ -251,6 +251,10 @@ function _citation_distribute_node_apply_plugins($node) {
     if (isset($node->{$plugin['name']})) {
 
       $flag = flag_get_flag($plugin['name']);
+      if (!is_object($flag)) {
+        // If the flag is not created.
+        continue;
+      }
 
       if ( $node->{$plugin['name']} ) {
         //node should use this flag
@@ -401,11 +405,10 @@ function citation_distribute_flag_default_flags() {
   $flags = array();
   foreach (_citation_distribute_plugins() as $plugin) {
     if (isset($plugin['title'])) {
-      $flags[] = array (
-        'content_type' => 'node',
-        'name' => $plugin['name'],
+      $flags[$plugin['name']] = array (
+        'entity_type' => 'node',
         'title' => 'title:' . $plugin['title'],
-        'roles' => array('flag'=>array('vsite admin'),'unflag'=>array('vsite admin')), //vsite admin
+        'import_roles' => array('flag'=>array('vsite admin'),'unflag'=>array('vsite admin')), //vsite admin
         'global' => 0,
         'types' => array ('biblio' ),
         'flag_short' => 'Send to ' . $plugin['title'],
@@ -414,8 +417,8 @@ function citation_distribute_flag_default_flags() {
         'unflag_short' => 'Remove from ' . $plugin['title'],
         'unflag_long' => 'Remove from ' . $plugin['title'] . ' repository',
         'unflag_message' => '',
-        //'unflag_denied_text' => '',
-        //'link_type' => 'normal', //normal, toggle, confirm
+        'unflag_denied_text' => '',
+        'link_type' => 'toggle', //normal, toggle, confirm
         //hiding these on page, teaser, and edit node
         'show_on_page' => false,
         'show_on_teaser' => false,
@@ -433,7 +436,7 @@ function citation_distribute_flag_default_flags() {
           'link_type' => 'link_type',
           'types' => 'types'
         ),
-        'api_version' => 2,
+        'api_version' => 3,
         'module' => 'citation_distribute'
       );
     }
@@ -533,8 +536,8 @@ function _citation_distribute_plugins() {
   ctools_include('plugins');
   $plugins = ctools_get_plugins('citation_distribute', 'service');
   $plugin_sorted = &drupal_static(__FUNCTION__);
-  
-  // If static cache is already set, returning immediately. 
+
+  // If static cache is already set, returning immediately.
   if (isset($plugin_sorted)) {
     return $plugin_sorted;
   }
@@ -544,7 +547,7 @@ function _citation_distribute_plugins() {
     return array();
   }
 
-  // Iterating through plugins having plugin title. 
+  // Iterating through plugins having plugin title.
   foreach ($plugins as $key => $plugin) {
     if (isset($plugin['title'])) {
       $plugin_sorted[$key]['title'] = $plugin['title'];
@@ -821,7 +824,7 @@ function citation_distribute_cp_settings() {
       '#title' => t('Publications'),
       '#weight' => 0,
       '#menu_parent' => 'app_settings',
-      '#help_link' => l(t('Learn more about publications'), 'https://docs.openscholar.harvard.edu/publications-settings', array('attributes' => array('target' => '_blank'))),
+      '#help_link' => l(t('Learn more about publications'), 'https://help.theopenscholar.com/publications-settings', array('attributes' => array('target' => '_blank'))),
     ),
     'form' => array(
       '#type' => 'checkboxes',

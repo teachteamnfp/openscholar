@@ -11,6 +11,7 @@ div.messages ul li {
 .ui-dialog * {
     font-size: 14px;
 }
+fieldset#edit-og-vocabulary-und .fieldset-wrapper,
 .logged-in div[aria-describedby^="event-popover-"] .ui-dialog-title,
 #page {
     padding: 0;
@@ -968,7 +969,7 @@ html.js fieldset.collapsible#edit-publication-extras .fieldset-wrapper .fieldset
     background: none;
     padding-left: 0;
 }
-
+fieldset#edit-og-vocabulary-und,
 .field-name-field-biblio-extra table.field-multiple-table,
 .field-name-field-biblio-extra table.field-multiple-table tr,
 .field-name-field-biblio-extra table.field-multiple-table th,
@@ -1269,27 +1270,7 @@ ul.term-reference-tree-level {
     background: none;
 }
 
-/** I think these aren't used anymore, but I'd need someone who remembers what they're used for to confirm
-.term-reference-tree-button {
-  background: url('../../os_basetheme/images/scholarbase-sprite.png') 2px -449px no-repeat;
-}
 
-.term-reference-tree-button.term-reference-tree-collapsed {
-  background: url('../../os_basetheme/images/scholarbase-sprite.png') 6px -433px no-repeat;
-}
-
-.field-widget-og-vocab-complex .expand {
-	 background: url('../../os_basetheme/images/scholarbase-sprite.png') 0 -509px no-repeat;
-	 padding-left:14px;
-}
-
-.field-widget-og-vocab-complex .collapse {
-	 background: url('../../os_basetheme/images/scholarbase-sprite.png') 0 -529px no-repeat;
-	 padding-left:14px;
-	 margin-left:10px;
-}
-
- */
 /* PUB FORM EXTERNAL URL SECTIONON */
 #edit-url .form-item-biblio-url-title {
     margin-right: 0;
@@ -1515,12 +1496,7 @@ div.warning {
     background-position: 0 -675px;
 }
 
-#og-vocabulary-add-more-wrapper #edit-og-vocabulary-und .fieldset-wrapper {
-    border: 1px solid #ccc;
-    background: #f1f1f1;
-    padding: 5px;
-    width: 96%;
-}
+
 
 /** News edit page calendar field override */
 .node-news-form .date-padding {
@@ -1971,6 +1947,4 @@ div.no-bold {
      cursor:pointer;
  }
 
-#edit-og-vocabulary a.tabledrag-handle .handle{
-    display: none;
-}
+
