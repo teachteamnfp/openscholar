@@ -193,7 +193,6 @@ function os_orcid_resync_item($data) {
   foreach ($works['work-summary'] as $work) {
     $biblio_type = 102;
     foreach($biblio_types as $key => $value) {
-      watchdog("biblio_types", "<pre>". print_r($biblio_types, true) ."</pre>");
       if($biblio_types[$key]->name == strtolower(str_replace('-', ' ', $work['type']))) {
         $biblio_type = $biblio_types[$key]->tid;
         break;
@@ -263,7 +262,7 @@ function os_orcid_resync_item($data) {
     $node->biblio_abst_e = $subtitle;
 
     //Set the biblio url.
-    $node->biblio_url = $work['source']['source-client-id']['uri'];
+    $node->biblio_url = $work['source']['source-orcid']['uri'];
 
     // Counter used in for loop.
     $counter = 0;
