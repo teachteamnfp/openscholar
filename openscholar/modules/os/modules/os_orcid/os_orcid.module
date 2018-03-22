@@ -178,7 +178,6 @@ function os_orcid_resync_item($data) {
   if (!isset($data['orcidId']) || !isset($data['vsite'])) {
     return;
   }
-
   $biblio_types = _os_orcid_get_biblio_types();
   $work_feed = $data['work'];
   $user_id = $data['user_id'];
@@ -193,7 +192,7 @@ function os_orcid_resync_item($data) {
   foreach ($works['work-summary'] as $work) {
     $biblio_type = 102;
     foreach($biblio_types as $key => $value) {
-      if($biblio_types[$key]->name == strtolower(str_replace('-', ' ', $work['type']))) {
+      if($biblio_types[$key]->name == strtolower(str_replace('_', ' ', $work['type']))) {
         $biblio_type = $biblio_types[$key]->tid;
         break;
       }
@@ -204,7 +203,6 @@ function os_orcid_resync_item($data) {
     $subtitle = $work['title']['subtitle']['value'];
 
     $query = db_select('biblio', 'b')
-              ->condition('b.biblio_type', $biblio_type)
               ->condition('b.biblio_sort_title', $work_title)
               ->condition('b.biblio_url', $work['source']['source-orcid']['uri']);
     $query->leftJoin('og_membership', 'og', 'og.etid = b.nid');
@@ -281,12 +279,8 @@ function os_orcid_resync_item($data) {
       $node->biblio_contributors[$counter]['auth_category'] = 1;
     }
 
-    // Step through each biblio type and if it is a match to the orcid type, set it.
-    foreach($biblio_types as $type => $biblio_type) {
-      if(strtolower($biblio_types[$type]->name) == strtolower(str_replace('-', ' ', $work['type']))) {
-        $node->biblio_type = $biblio_types[$type]->tid;
-      }
-    }
+    // Set the Biblio Type
+    $node->biblio_type = $biblio_type;
 
     // If there was no biblio type found, set the it to default to journal article.
     if(!isset($node->biblio_type)) {
