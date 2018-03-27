@@ -33,8 +33,8 @@ function admin_panel_preprocess_page(&$vars) {
     if (admin_panel_is_closed()) {
       $vars['classes_array'][] = 'admin-menu-closed';
     }
-
-    drupal_add_js(array('admin_panel' => array('purl_base_domain' => variable_get('purl_base_domain'))), 'setting');
+    global $base_url;
+    drupal_add_js(array('admin_panel' => array('purl_base_domain' => variable_get('purl_base_domain'), 'base_domain' => $base_url)), 'setting');
   }
 }
 

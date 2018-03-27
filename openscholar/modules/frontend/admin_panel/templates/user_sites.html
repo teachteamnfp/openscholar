@@ -1,6 +1,7 @@
 <div class="my-sites-click" href="#" ng-show="site_data.length" data-id='101' ng-click="close_others(101); showSites = ! showSites" ng-class="{menu_modal_open: showSites}">My Sites</div>
 <div class="account_tab_popout user_sites" ng-show="showSites">
-    <div class="new-site-link" ng-show="create_access"><a site-creation-form class="btton add">Add a new site</a></div>
+    <div class="new-site-link" ng-show="create_access" ng-if='baseDomain==purlBaseDomain'><a site-creation-form class="btton add">Add a new site</a></div>
+    <div class="new-site-link" ng-show="create_access" ng-if='baseDomain!=purlBaseDomain'><a href="{{purlBaseDomain}}site/register" class="btton add">Add a new site</a></div>
     <div class="close-link user_sites-close" ng-click="showSites = ! showSites"></div>
     <div class="vsite-search-row"><input placeholder="Search sites" ng-model="searchString" name="search-site" value="" class="clearable search-vsite-textfield" /><a class="search-clear" ng-click="searchString = ''">x</a></div>
 	<div ng-repeat="(key, own) in [true,false]" ng-init="currentPage[key] = 0">

@@ -42,6 +42,7 @@
   }]).controller("UserSitesController",['$scope', '$http', function ($scope, $http) {
     $scope.baseUrl = Drupal.settings.basePath;
     $scope.purlBaseDomain = Drupal.settings.admin_panel.purl_base_domain + "/";
+    $scope.baseDomain = Drupal.settings.admin_panel.base_domain + "/";
 
     var url = paths.api + '/users/' + user_data.uid;
     $http({method: 'get', url: url}).then(function(response) {
