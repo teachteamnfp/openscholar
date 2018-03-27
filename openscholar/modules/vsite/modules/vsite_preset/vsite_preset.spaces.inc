@@ -448,7 +448,7 @@ function vsite_preset_spaces_presets() {
   // Translatables
   // Included for use with string extractors like potx.
   t('HWP Lab/Research Group');
-  t('The Harvard Web Publishing standard Lab and Research Group site.');
+  t('The standard Lab and Research Group site.');
   $export['hwp_lab_research_group'] = $spaces_presets;
 
   $spaces_presets = new stdClass();
@@ -816,7 +816,7 @@ function vsite_preset_spaces_presets() {
   $spaces_presets->api_version = 3;
   $spaces_presets->name = 'hwp_event_conference';
   $spaces_presets->title = 'HWP Event/Conference';
-  $spaces_presets->description = 'The Harvard Web Publishing standard Event or Conference site.';
+  $spaces_presets->description = 'The Standard Event or Conference site.';
   $spaces_presets->space_type = 'og';
   $spaces_presets->value = array(
     'bundles' => array(
@@ -1020,6 +1020,8 @@ function vsite_preset_spaces_presets() {
   t('Register');
   t('Logistics');
   $export['hwp_event_conference'] = $spaces_presets;
+
+  drupal_alter('spaces_presets', $export);
 
   return $export;
 }
