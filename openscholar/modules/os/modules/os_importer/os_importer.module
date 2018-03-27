@@ -914,8 +914,8 @@ function os_importer_feeds_presave(FeedsSource $source, $entity, $item) {
         }
       }
       $embed_flag = false;
-      if ($media_embed_tags = $html_obj->find('div[class=media-element-container] > iframe')) {
-        foreach ($media_embed_tags as $iframe_obj ) {
+      if ($media_embed_tags = $html_obj->find('div[class=media-wrapper-custom]')) {
+        foreach ($media_embed_tags as $embed_obj ) {
           //Save the imported file
           $embed_flag = true;
           $file = new stdClass();
@@ -924,19 +924,32 @@ function os_importer_feeds_presave(FeedsSource $source, $entity, $item) {
           $filename = md5(time());
           $file->filename = $filename;
           $file->uri = 'embed://'.$filename;
-          $file->filemime = 'html/embed';
-          $file->type = 'html';
+          $file->filemime = $embed_obj->attr['data-mime'];
+          $file->type = $embed_obj->attr['data-type'];
           $file->status = 1;
-          $file->field_html_code['und'][0]['value'] = '<iframe src="' . $iframe_obj->attr['src'] . '" webkitallowfullscreen="' . $iframe_obj->attr['allowfullscreen'] . '" mozallowfullscreen="' . $iframe_obj->attr['allowfullscreen'] . '" allowfullscreen="' . $iframe_obj->attr['allowfullscreen'] . '" width="' . $iframe_obj->attr['width'] . '" height="' . $iframe_obj->attr['height'] . '" frameborder="' . $iframe_obj->attr['frameborder'] . '"></iframe>';
+          $file->field_html_code['und'][0]['value'] = html_entity_decode($embed_obj->attr['data-oembed-url']);
           entity_save('file', $file);
           
           //Prepare the values for node save
+          $arrtibutes = unserialize(base64_decode($embed_obj->attr['attributes']));
+          $file->type = $embed_obj->attr['data-type'];
           $query = new EntityFieldQuery();
           $query->entityCondition('entity_type', 'file')
                 ->propertyCondition('filename', $filename, '=');
           $result = $query->execute();
           $fid = key($result['file']);
-          $embed_string = '[[{"fid":' . $fid . ',"view_mode":"default","type":"media","attributes":{"height":"' . $iframe_obj->attr['height'] . '","width":"' . $iframe_obj->attr['width'] . '","class":"wysiwyg-placeholder media-element file-default"}}]]';
+          $embed_string = json_encode(
+            array(
+              array(
+                array (
+                  'fid' => $fid,
+                  'view_mode' => 'default',
+                  'type' => 'media',
+                  'attributes' => $arrtibutes,
+                ),
+              ),
+            )
+          );
         }
       }
       if(!$embed_flag){
