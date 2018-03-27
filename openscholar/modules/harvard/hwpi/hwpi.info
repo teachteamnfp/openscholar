@@ -1,6 +1,14 @@
 name = "HWPI"
 core = 7.x
 description = "Module to provide functionality specific to Harvard Web Publishing Initiative sites."
+package = Features
+
+dependencies[] = "ctools"
+
+features[ctools][] = strongarm:strongarm:1
+features[features_api][] = api:2
+features[variable][] = university_name
+features_exclude[dependencies][strongarm] = strongarm
 
 package = Features
 

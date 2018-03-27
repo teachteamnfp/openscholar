@@ -205,7 +205,7 @@ function hwpi_update_7013() {
 }
 
 /**
- * Saving strongarm variables.
+ * Saving strongarm variables to separate DASH option.
  */
 function hwpi_update_7014() {
   $revert = array(
@@ -217,19 +217,7 @@ function hwpi_update_7014() {
 }
 
 /**
- * Place it behind citation_distribute module
- * so that DASH option generates at last
- */
-function hwpi_update_7015() {
-  db_update('system')
-    ->fields(array('weight' => 150))
-    ->condition('name', 'hwpi', '=')
-    ->condition('type', 'module', '=')
-    ->execute();
-}
-
-/**
- * Saving strongarm variables.
+ * Saving strongarm variables for e-mails.
  */
 function hwpi_update_7016() {
   $revert = array(
