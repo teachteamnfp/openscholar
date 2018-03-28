@@ -2029,7 +2029,14 @@ function vsite_mail_alter(&$message){
         );
 
         // Alter the body message.
-        $message['body'][0] = t("Dear !fullname, \n\n!site_owner, site owner of !site, has created a user account for you so that you may access this website. Log in by clicking on the following link or by pasting it into your browser: \n\n!login_url \n\nFor your security, this link can be used only once.  \n\nYour OpenScholar username is: !username \n\n" . variable_get('signup_pin_text')?"!signup_pin_text\n\n ":"" . "Once paired, you will be able to log in at !site in the future. Don't forget to bookmark the site and save this email for future reference.\n\nHere are some handy links for you:\n\n* <a href='https://help.theopenscholar.com/logging-your-site' target='_blank'>Logging in to your site</a>\n\n* ". variable_get('upcoming_training')?"<a href='!upcoming_training' target='_blank'>Sign up for training</a>\n\n* ":"" . "<a href='https://help.theopenscholar.com' target='_blank'>OpenScholar documentation</a>\n\n* " . variable_get('contact_url')?"<a href='!contact_url' target='_blank'>Need help with your project?</a>\n\n":"" . "-The OpenScholar Team", $replacements);
+        $message = "Dear !fullname, \n\n!site_owner, site owner of !site, has created a user account for you so that you may access this website. Log in by clicking on the following link or by pasting it into your browser: \n\n!login_url \n\nFor your security, this link can be used only once.  \n\nYour OpenScholar username is: !username \n\n";
+        $message .= variable_get('signup_pin_text')?"!signup_pin_text\n\n ":"";
+        $message .= "Once paired, you will be able to log in at !site in the future. Don't forget to bookmark the site and save this email for future reference.\n\nHere are some handy links for you:\n\n* <a href='https://help.theopenscholar.com/logging-your-site' target='_blank'>Logging in to your site</a>\n\n* ";
+        $message .= variable_get('upcoming_training')?"<a href='!upcoming_training' target='_blank'>Sign up for training</a>\n\n* ":"";
+        $message .= "<a href='https://help.theopenscholar.com' target='_blank'>OpenScholar documentation</a>\n\n* ";
+        $message .= variable_get('contact_url')?"<a href='!contact_url' target='_blank'>Need help with your project?</a>\n\n":"";
+        $message .= "-The OpenScholar Team";
+        $message['body'][0] = t($message, $replacements);
 
         break;
 
