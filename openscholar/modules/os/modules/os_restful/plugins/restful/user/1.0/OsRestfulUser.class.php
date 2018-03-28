@@ -58,6 +58,16 @@ class OsRestfulUser extends \RestfulEntityBaseUser {
       );
     }
 
+    // Add all non-interal use data fields
+    $instances = field_info_instances('user');
+    foreach ($instances['user'] as $field_name => $info) {
+      if (strpos($field_name, 'field_') === 0 && $field_name != 'field_grouper_path') {
+        $public_fields[str_replace('field_','',$field_name)] = array(
+          'property' => $field_name,
+        );
+      }
+    }
+
     return $public_fields;
   }
 
@@ -71,10 +81,29 @@ class OsRestfulUser extends \RestfulEntityBaseUser {
   }
 
   /**
+   * Override this so anonymous users can create accounts.
+   * Restful's rate-limiting should protect us
+   */
+  public function checkEntityAccess($op, $entity_type, $entity) {
+    $account = $this->getAccount();
+    if ($op == 'create' && $account->uid == 0) {
+      return TRUE;
+    }
+    return parent::checkEntityAccess($op, $entity_type, $entity);
+  }
+
+  /**
    * Overriding the create entity method in order to load the password.inc file.
    */
   public function createEntity() {
     require_once DRUPAL_ROOT . '/' . variable_get('password_inc', 'includes/password.inc');
+    try {
+      $account = $this->getAccount();
+    }
+    catch (\RestfulBadRequestException $e) {
+      $account = user_load(0);
+      $this->setAccount($account);
+    }
     return parent::createEntity();
   }
 
@@ -92,6 +121,7 @@ class OsRestfulUser extends \RestfulEntityBaseUser {
 
   /**
    * Returns whether a user can create new sites or not
+   * Used in a property
    */
   public function getCreateAccess() {
     if (module_exists('vsite')) {
