@@ -65,7 +65,7 @@ class GroupNodeRestfulBase extends OsNodeRestfulBase {
    *
    */
   protected function themes() {
-    module_load_include('inc', 'os', 'includes/themes');
+    ctools_include('themes', 'os');
     $flavors = os_theme_get_flavors();
     $approved_themes = array(
       'Ivy Accents',
@@ -115,6 +115,14 @@ class GroupNodeRestfulBase extends OsNodeRestfulBase {
       'property' => 'type',
     );
 
+    $public_fields['owner'] = array(
+      'property' => 'uid',
+    );
+
+    $public_fields['theme'] = array(
+      'callback' => array($this, 'getTheme'),
+    );
+
     return $public_fields;
   }
 
@@ -159,12 +167,42 @@ class GroupNodeRestfulBase extends OsNodeRestfulBase {
   }
 
   /**
+   * Returns the currently active theme for the site
+   */
+  public function getTheme(EntityDrupalWrapper $wrapper) {
+    $id = $wrapper->getIdentifier();
+
+    if ($vsite = vsite_get_vsite($id)) {
+      $theme = $vsite->controllers->variable->get('theme_default');
+      $current_flavor = variable_get('os_appearance_'.$theme.'_flavor','default');
+
+      return $current_flavor;
+    }
+  }
+
+  /**
    * {@inheritdoc}
    */
   protected function setPropertyValues(EntityMetadataWrapper $wrapper, $null_missing_fields = FALSE) {
     $request = $this->getRequest();
     self::cleanRequest($request);
     $wrapper->type()->set($request['type']);
+
+    if ($request['theme']) {
+      // this value will be a flavor, most likely
+      ctools_include('themes', 'os');
+
+      $themes = os_get_themes();
+      foreach ($themes as $name => $info) {
+        $flavors = os_theme_get_flavors($name);
+        if (isset($flavors[$request['theme']])) {
+          $vsite->controllers->variable->set('theme_default', $theme);
+          $flavor_key = 'os_appearance_' . $name . '_flavor';
+          $vsite->controllers->variable->set($flavor_key, $request['theme']);
+        }
+      }
+      unset($this->request['theme']);
+    }
 
     parent::setPropertyValues($wrapper, $null_missing_fields);
     $id = $wrapper->getIdentifier();
