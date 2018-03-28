@@ -132,6 +132,12 @@ div.contextual-links-wrapper a,.contextual-controls-wrapper div.ctools-dropdown.
 #boxes-box-site_info,#boxes-box-site_info a {
     color: #303030;
 }
+#boxes-box-site_info h2 {
+    font-size: 20px;
+}
+#boxes-box-site_info {
+    line-height: 1;
+}
 #menu-bar {
     background: #e8e8e8;
     padding: 0 0 30px;
