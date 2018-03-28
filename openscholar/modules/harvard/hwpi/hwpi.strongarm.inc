@@ -73,5 +73,12 @@ function hwpi_strongarm() {
   $strongarm->value = drupal_get_path('theme', 'hwpi_basetheme') . '/images/harvard-logo.png';
   $export['logo_path'] = $strongarm;
 
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'university_name';
+  $strongarm->value = 'Harvard';
+  $export['university_name'] = $strongarm;
+
   return $export;
 }

@@ -199,6 +199,47 @@ function hwpi_form_user_login_alter(&$form, $form_state) {
       ))
     )
   );
+    // Overriding the text of first button on the login screen.
+  if (isset($form['pin'])) {
+    $query['destination'] = isset($_GET['destination']) ? $_GET['destination'] : 'user';
+    $form['pin']['#markup'] = l('Login using your HarvardKey', 'user/pin', array('query' => $query));
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ * To alter the description.
+ */
+function hwpi_form_cp_user_edit_membership_form_alter(&$form, &$form_state) {
+  $space = spaces_get_space();
+  $name = $form['user_name']['#value'];
+  $group_user_uid = $form['uid']['#value'];
+  $site = $space->group->title;
+
+  // Show the option to change site owner only for the current owner or a support team member with an associated HUID if the pinserver module is enabled
+  global $user;
+  if ($user->uid == 1 || !module_exists('pinserver') || (module_exists('pinserver') && variable_get('pinserver_pin_url', FALSE) && pinserver_user_has_associated_pin($group_user_uid))) {
+  // Please check cp_user_edit_membership_form in cp_user.pages.inc
+  }
+  else {
+    $form['edit_membership']['group_manager'] = array(
+      '#type' => 'markup',
+      '#markup' => '<p>' . t('@name\'s OpenScholar account is not linked to HarvardKey, so this user cannot be made site owner.', array('@name' => $name)) . ' ' . l('Learn more about linking accounts', variable_get('help_key_link'), array('attributes' => array('target' => '_blank', 'rel' => 'noopener'))) . '.</p>',
+
+    );
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ * To alter the description.
+ */
+function hwpi_form_cp_user_change_site_owner_form_alter(&$form, $form_state, $form_id)
+{
+  if (module_exists('pinserver') && variable_get('pinserver_pin_url', FALSE)) {
+    unset( $form['new_site_owner']['#description']);
+    $form['new_site_owner']['#description'] = t('Only users who have linked their OpenScholar accounts to HarvardKey are listed.') . ' ' . l('Learn more about linking accounts', 'http://docs.openscholar.harvard.edu/logging-your-site#linking-your-harvardkey-to-your-openscholar-account', array('attributes' => array('target' => '_blank', 'rel' => 'noopener'))) . '.';
+  }
 }
 
 /**
