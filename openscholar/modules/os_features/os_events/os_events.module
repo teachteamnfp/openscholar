@@ -2615,9 +2615,18 @@ function os_events_date_ical_feed_event_render_alter(&$event, $view, &$context) 
   $event['description'] = '';
   $event['summary'] = $wrapper->label();
   if (!empty($context['entity']->body[LANGUAGE_NONE][0]['safe_value'])) {
-    $event['description'] = $context['entity']->body[LANGUAGE_NONE][0]['safe_value'];
+    $exportValue = $context['entity']->body[LANGUAGE_NONE][0]['safe_value'];
+    $tagsArray = array(
+      'iframe',
+      'img',
+      'script',
+    );
+    foreach($tagsArray as $tag){
+      $removeTag = "/<" . $tag . ".*?\/" . $tag . ">|<" . $tag . "[^>]+\>/i";
+      $exportValue = preg_replace($removeTag,'', $exportValue);
+    }
+    $event['description'] = $exportValue;
   }
-
   $event['location'] = $wrapper->field_event_location->value();
 }
 
@@ -3686,15 +3695,3 @@ function os_events_apachesolr_query_prepare($query) {
     $query->setSolrSort('ds_field_event_date', 'desc');
   }
 }
-
-/**
- * Implements hook_media_token_to_markup_alter()
- */
-function os_events_media_token_to_markup_alter(&$element, $tag_info, $settings){
-  $attributes = base64_encode(serialize($element['content']['file']['#file']->override['attributes']));
-  //Wrap div with data-type and data-oembed-code
-  $element['content']["#prefix"] = '<div class="media-wrapper-custom" data-mime="'.$element['content']['file']['#file']->filemime.'" data-oembed-url="'.htmlentities($element['content']['file']['#file']->field_html_code['und'][0]['safe_value']).'" data-type="'.$element['content']['file']['#file']->type.'" attributes="'.$attributes.'">';
-  $element['content']["#suffix"] = '</div>';
-}
- 
- 

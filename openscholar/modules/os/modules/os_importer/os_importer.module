@@ -893,17 +893,6 @@ function os_importer_feeds_presave(FeedsSource $source, $entity, $item) {
       $html_obj = new simple_html_dom();
       // Load HTML from a string.
       $html_obj->load($entity->body[LANGUAGE_NONE][0]['value']);
-      //For image processing
-      if ($media_img_tags = $html_obj->find('img[class=media-element]')) {
-        foreach ($media_img_tags as $img_obj ) {
-          $url = $img_obj->src;
-          // TODO: We need to export protocol as well. Image src doesn't have the
-          // protocol http or https. For now let's consider https.
-          if ($path = system_retrieve_file('https:' . $url, $destination, TRUE, FILE_EXISTS_REPLACE)) {
-            $img_obj->setAttribute('src', file_create_url($path));
-          }
-        }
-      }
       //For achor tags processing
       if ($media_anchor_tags = $html_obj->find('span[class=media-element] > a')) {
         foreach ($media_anchor_tags as $anchor_obj ) {
@@ -913,52 +902,9 @@ function os_importer_feeds_presave(FeedsSource $source, $entity, $item) {
           }
         }
       }
-      $embed_flag = false;
-      if ($media_embed_tags = $html_obj->find('div[class=media-wrapper-custom]')) {
-        foreach ($media_embed_tags as $embed_obj ) {
-          //Save the imported file
-          $embed_flag = true;
-          $file = new stdClass();
-          global $user;
-          $file->uid = $user->uid;
-          $filename = md5(time());
-          $file->filename = $filename;
-          $file->uri = 'embed://'.$filename;
-          $file->filemime = $embed_obj->attr['data-mime'];
-          $file->type = $embed_obj->attr['data-type'];
-          $file->status = 1;
-          $file->field_html_code['und'][0]['value'] = html_entity_decode($embed_obj->attr['data-oembed-url']);
-          entity_save('file', $file);
-          
-          //Prepare the values for node save
-          $arrtibutes = unserialize(base64_decode($embed_obj->attr['attributes']));
-          $file->type = $embed_obj->attr['data-type'];
-          $query = new EntityFieldQuery();
-          $query->entityCondition('entity_type', 'file')
-                ->propertyCondition('filename', $filename, '=');
-          $result = $query->execute();
-          $fid = key($result['file']);
-          $embed_string = json_encode(
-            array(
-              array(
-                array (
-                  'fid' => $fid,
-                  'view_mode' => 'default',
-                  'type' => 'media',
-                  'attributes' => $arrtibutes,
-                ),
-              ),
-            )
-          );
-        }
-      }
-      if(!$embed_flag){
-        $new_doc = $html_obj->save();
-        $html_obj->clear();
-        $entity->body[LANGUAGE_NONE][0]['value'] = $new_doc;
-      }else{
-        $entity->body[LANGUAGE_NONE][0]['value'] = $embed_string;
-      }
+      $new_doc = $html_obj->save();
+      $html_obj->clear();
+      $entity->body[LANGUAGE_NONE][0]['value'] = $new_doc;
     }
     if (empty($entity->field_date[LANGUAGE_NONE][0]['value2'])) {
       $entity->field_date[LANGUAGE_NONE][0]['value2'] = $entity->field_date[LANGUAGE_NONE][0]['value'];
