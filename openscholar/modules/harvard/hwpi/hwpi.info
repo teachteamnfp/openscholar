@@ -8,21 +8,23 @@ dependencies[] = "ctools"
 features[ctools][] = strongarm:strongarm:1
 features[features_api][] = api:2
 features[variable][] = university_name
-features_exclude[dependencies][strongarm] = strongarm
-
-package = Features
-
-features[ctools][] = strongarm:strongarm:1
-features[features_api][] = api:2
-features[variable][] = university_name
 features[variable][] = training_signup_url
 features[variable][] = contact_url
 features[variable][] = sitewide_name
 features[variable][] = upcoming_events
 features[variable][] = university_url
 features[variable][] = site_url
-features[variable][] = university_base_url
 features[variable][] = signup_pin_text
+features[variable][] = privacy_policy_text
+features[variable][] = university_base_url
+features[variable][] = site_access
+features[variable][] = site_access_text
+features[variable][] = copyright_infring
+features[variable][] = copyright_infring_text
+features[variable][] = copyright_text
+features[variable][] = logo_path
+features[variable][] = highest_parent_item
+
 features_exclude[dependencies][strongarm] = strongarm
 
 files[] = plugins/service/hwpi_service_sword_dash.inc

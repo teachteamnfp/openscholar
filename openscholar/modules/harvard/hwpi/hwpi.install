@@ -217,9 +217,21 @@ function hwpi_update_7014() {
 }
 
 /**
- * Saving strongarm variables for e-mails.
+ * Saving strongarm variables for header and footer.
  */
 function hwpi_update_7016() {
+  $revert = array(
+    'hwpi' => array(
+      'variable',
+    )
+  );
+  features_revert($revert);
+}
+
+/**
+ * Saving strongarm variables for e-mails.
+ */
+function hwpi_update_7017() {
   $revert = array(
     'hwpi' => array(
       'variable',

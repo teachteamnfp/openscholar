@@ -15,33 +15,35 @@
  */
 function os_breadcrumbs_update_7000() {
   // The variable's name and new value.
-  $name = 'os_breadcrumbs_show_breadcrumbs';
-  $value = 0;
+  if (function_exists('_is_hwpi_theme')) {
+    $name = 'os_breadcrumbs_show_breadcrumbs';
+    $value = 0;
 
-  // Needed to use os_theme_get()
-  ctools_include('themes', 'os');
+    // Needed to use os_theme_get()
+    ctools_include('themes', 'os');
 
-  $group_types = array('personal', 'project', 'department');
-  $result = db_select('node', 'n')
-    ->fields('n', array('nid', 'title'))
-    ->condition('type', $group_types, 'IN')
-    ->orderBy('nid', 'DESC')
-    ->range(0, 100)
-    ->execute();
+    $group_types = array('personal', 'project', 'department');
+    $result = db_select('node', 'n')
+      ->fields('n', array('nid', 'title'))
+      ->condition('type', $group_types, 'IN')
+      ->orderBy('nid', 'DESC')
+      ->range(0, 100)
+      ->execute();
 
-  $count = 0;
-  while ($record = $result->fetchAssoc()) {
-    $vsite = vsite_get_vsite($record['nid']);
-    $theme = $vsite->controllers->variable->get('theme_default');
-    if (_is_hwpi_theme($theme)) {
-      $vsite->controllers->variable->set($name, $value);
-      $count++;
+    $count = 0;
+    while ($record = $result->fetchAssoc()) {
+      $vsite = vsite_get_vsite($record['nid']);
+      $theme = $vsite->controllers->variable->get('theme_default');
+      if (_is_hwpi_theme($theme)) {
+        $vsite->controllers->variable->set($name, $value);
+        $count++;
+      }
     }
-  }
 
-  $message = '@count vsite(s) with HWPI themes were found and set to display breadcrumbs.';
-  $replacements = array('@count' => $count);
-  return t($message, $replacements);
+    $message = '@count vsite(s) with HWPI themes were found and set to display breadcrumbs.';
+    $replacements = array('@count' => $count);
+    return t($message, $replacements);
+  }
 }
 
 /**
