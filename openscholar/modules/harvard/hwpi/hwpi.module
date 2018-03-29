@@ -1,5 +1,6 @@
 <?php
 include_once ('hwpi.features.inc');
+include_once(drupal_get_path('theme', 'hwpi_basetheme') . '/template.php');
 /**
  * Implements hook_init
  */
@@ -34,164 +35,33 @@ function hwpi_init() {
 }
 
 /**
- * Implements hook_preprocess_HOOK() for page.
+ * Implements hook_cp_settings().
  */
-function hwpi_preprocess_page(&$vars) {
-  if (_is_hwpi_theme()) {
-    $vars['page']['branding_header']['hwpi'] = _hwpi_branding_header();
-    $vars['page']['branding_footer']['hwpi'] = _hwpi_branding_footer();
-  }
-}
+function hwpi_cp_settings() {
+  // For non-user-1, only adds the responsive setting for HWPI-themed sites.
+  $theme = variable_get('theme_default');
 
-/**
- * Returns if the active theme uses hwpi_basetheme as one of it's base theme.
- *
- * @return bool
- */
-function _is_hwpi_theme($theme_name = NULL) {
-  if (is_null($theme_name)) {
-    $theme_name = $GLOBALS['theme'];
+  if (!_is_hwpi_theme($theme)) {
+    return;
   }
-  $themes = list_themes();
-  if (isset($themes[$theme_name])) {
-    $t = $themes[$theme_name];
-    if (isset($t->base_themes) && isset($t->base_themes['hwpi_basetheme'])) {
-      return TRUE;
-    }
-  }
-  return FALSE;
-}
 
-/**
- * Returns a build array for the HWPI branding header page region.
- *
- * @return array
- */
-function _hwpi_branding_header() {
-  $header = array();
-  $header['left_container'] = array(
-    '#type' => 'container',
-    '#attributes' => array(
-      'class' => array(
-        'branding-left',
+  $settings = array(
+    'privacy_policy' => array(
+      'group' => array(
+        '#title' => t('Privacy Policy'),
+        '#id' => 'privacy-policy',
+        '#help_link' => l(t('Learn more about creating a privacy policy for your site'), 'https://help.theopenscholar.com/global-site-settings#privacy-policy', array('attributes' => array('target' => '_blank'))),
       ),
-    ),
-    'img' => array(
-      '#theme' => 'link',
-      '#path' => 'http://www.harvard.edu',
-      '#text' => theme('image', array('path' => drupal_get_path('theme', 'hwpi_basetheme') . '/images/harvard-logo.png', 'width' => 235, 'height' => 32, 'alt' => 'Harvard Logo')),
-      '#options' => array(
-        'external' => TRUE,
-        'html' => TRUE,
-        'attributes' => array(),
+      'form' => array(
+        '#type' => 'textfield',
+        '#default_value' => variable_get('privacy_policy', ''),
+        '#title' => t('Privacy Policy URL'),
+        '#description' => t('Enter the URL to the privacy policy you wish to use for your site. Can be a link to a post on your own site.'),
       ),
     ),
   );
-  $sites = _hwpi_get_ancestry();
-  $links = array();
-  foreach ($sites as $path => $title) {
-    $links[] = l($title, $path);
-  }
-  $header['right_container'] = array(
-    '#type' => 'container',
-    '#attributes' => array(
-      'class' => array(
-        'branding-right',
-      ),
-    ),
-    'sitecrumbs' => array(
-      '#type' => 'markup',
-      '#markup' => implode(' | ', $links),
-    ),
-  );
 
-  return $header;
-}
-
-/**
- * Returns website parents in an ordered, keyed array.
- *
- * Note: The returned array uses URLs as keys, and case-sensitive titles as
- * values. The top-most level of the array is hard-coded to be 'HARVARD.EDU',
- * site organization taxonomy terms are second-highest, and sub-site relations
- * will appear as the most-specific, lowest-level ancestor.
- *
- * @return array
- *   An array keyed by fully-qualified absolute URLs, values are link title text.
- */
-function _hwpi_get_ancestry() {
-  $sites = array();
-  if ($vsite = spaces_get_space()) {
-    // First, looks for parent vsites and adds them to hierarchy.
-    $vsite_original = $vsite;
-    $group = $vsite->group;
-    while (isset($group->field_group_parent) && $group->field_group_parent) {
-      $items = field_get_items('node', $group, 'field_group_parent');
-      $vsite = vsite_get_vsite($items[0]['target_id']);
-      if(!is_object($vsite) || !isset($vsite->group)) {
-        break;
-      }
-      $group = $vsite->group;
-      $sites[$vsite->get_absolute_url()] = $group->title;
-    }
-
-    // Then, looks for site organization terms and adds them to hierarchy.
-    $items = field_get_items('node', $vsite_original->group, 'field_organization');
-    if (is_array($items) && !empty($items)) {
-      $tid = $items[0]['tid'];
-      $items = field_get_items('taxonomy_term', taxonomy_term_load($tid), 'field_site_url');
-      if (isset($items[0])) {
-        $site_url = $items[0];
-        while ($site_url) {
-          $sites[$site_url['url']] = $site_url['title'];
-          $parents = taxonomy_get_parents($tid);
-          if (empty($parents)) {
-            break;
-          }
-          $tid = array_shift(array_keys($parents));
-          $items = field_get_items('taxonomy_term', taxonomy_term_load($tid), 'field_site_url');
-          if (isset($items[0])) {
-            $site_url = $items[0];
-          }
-          else {
-            $site_url = FALSE;
-          }
-        }
-      }
-    }
-  }
-
-  // Hard-codes "HARVARD.EDU" as the highest parent item.
-  $sites['http://www.harvard.edu'] = 'HARVARD.EDU';
-  return $sites;
-}
-
-/**
- * Returns a build array for the standard branding footer region (copyright).
- *
- * @return array
- *   A build array ready to render footer info.
- */
-function _hwpi_branding_footer() {
-  $footer = array();
-  $footer['hwpi_container'] = array(
-    '#type' => 'container',
-    '#attributes' => array(
-      'class' => array(
-        'copyright',
-      ),
-    ),
-    'copyright' => array(
-      '#markup' => t('<span class="harvard-copyright">Copyright &copy; @year The President and Fellows of Harvard College</span> !privacy | !access | !copyinfring', array(
-          '!privacy' => variable_get('privacy_policy','')?'| '.l('Privacy', variable_get('privacy_policy')): '',
-          '!access' => l('Accessibility', 'http://accessibility.harvard.edu/'),
-          '!copyinfring' => l('Report Copyright Infringement', 'http://www.harvard.edu/reporting-copyright-infringements'),
-          '@year' => date('Y'),
-        )),
-    ),
-  );
-
-  return $footer;
+  return $settings;
 }
 
 /**
@@ -200,7 +70,7 @@ function _hwpi_branding_footer() {
  * Hides the search bar title display.
  */
 function hwpi_block_view_alter(&$render, $block) {
-  if ($block->delta == 'site-search' && _is_hwpi_theme()) {
+  if ($block->delta == 'site-search' && (function_exists('_is_hwpi_theme') && _is_hwpi_theme())) {
     unset($render['content']['search_block_form']['#title_display']);
   }
 }
@@ -354,7 +224,7 @@ function hwpi_form_cp_user_edit_membership_form_alter(&$form, &$form_state) {
   else {
     $form['edit_membership']['group_manager'] = array(
       '#type' => 'markup',
-      '#markup' => '<p>' . t('@name\'s OpenScholar account is not linked to HarvardKey, so this user cannot be made site owner.', array('@name' => $name)) . ' ' . l('Learn more about linking accounts', variable_get('help_key_link'), array('attributes' => array('target' => '_blank', 'rel' => 'noopener'))) . '.</p>',
+      '#markup' => '<p>' . t('@name\'s OpenScholar account is not linked to HarvardKey, so this user cannot be made site owner.', array('@name' => $name)) . ' ' . l('Learn more about linking accounts', 'https://harvard.service-now.com/ithelp?id=kb_article&sys_id=bcb7c5eadbba0fc0a914fff31d9619dc', array('attributes' => array('target' => '_blank', 'rel' => 'noopener'))) . '.</p>',
 
     );
   }
@@ -368,7 +238,7 @@ function hwpi_form_cp_user_change_site_owner_form_alter(&$form, $form_state, $fo
 {
   if (module_exists('pinserver') && variable_get('pinserver_pin_url', FALSE)) {
     unset( $form['new_site_owner']['#description']);
-    $form['new_site_owner']['#description'] = t('Only users who have linked their OpenScholar accounts to HarvardKey are listed.') . ' ' . l('Learn more about linking accounts', 'http://docs.openscholar.harvard.edu/logging-your-site#linking-your-harvardkey-to-your-openscholar-account', array('attributes' => array('target' => '_blank', 'rel' => 'noopener'))) . '.';
+    $form['new_site_owner']['#description'] = t('Only users who have linked their OpenScholar accounts to HarvardKey are listed.') . ' ' . l('Learn more about linking accounts', 'https://harvard.service-now.com/ithelp?id=kb_article&sys_id=bcb7c5eadbba0fc0a914fff31d9619dc', array('attributes' => array('target' => '_blank', 'rel' => 'noopener'))) . '.';
   }
 }
 

@@ -216,14 +216,15 @@ function hwpi_update_7014() {
   features_revert($revert);
 }
 
+
 /**
- * Place it behind citation_distribute module
- * so that DASH option generates at last
+ * Saving strongarm variables.
  */
-function hwpi_update_7015() {
-  db_update('system')
-    ->fields(array('weight' => 150))
-    ->condition('name', 'hwpi', '=')
-    ->condition('type', 'module', '=')
-    ->execute();
+function hwpi_update_7016() {
+  $revert = array(
+    'hwpi' => array(
+      'variable',
+    )
+  );
+  features_revert($revert);
 }
