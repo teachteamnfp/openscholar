@@ -12,7 +12,12 @@
 				<tr>
                     <td class="site-name"><a href="{{baseUrl}}node/{{ site.id }}" class="text_link">{{ site.title }}</a></td>
                     <td class="user-site-controls">
+                        <span ng-if='baseDomain==purlBaseDomain'>
                         <a ng-show="site.subsite_access" site-creation-form class="btton add" id="add-subsite-{{ site.id }}">Add subsite</a>
+                        </span>
+                        <span ng-if='baseDomain!=purlBaseDomain'>
+                        <a ng-show="site.subsite_access" href="{{purlBaseDomain}}site/register?parent={{ site.id }}" class="btton add" id="add-subsite-{{ site.id }}">Add subsite</a>
+                        </span>
                         <a ng-show="site.delete_access" href="{{site.delete_base_url}}node/{{ site.id }}/delete{{delete_destination}}" class="btton remove">Delete</a>
                         <a ng-show="!site.delete_access && site.owner" href="{{site.delete_base_url}}os/vsite/delete/{{ site.id }}{{delete_destination}}" class="btton remove">Delete</a>
                     </td>

@@ -186,7 +186,8 @@ function vsite_register_block_view($delta = '') {
 
     if ($text == 'Create Your Site Here' && !user_is_anonymous()) {
       // user is either loggedin by pin or os account
-      $markup = '<site-creation-form>' . l($text, $path, $options) . '</site-creation-form>';
+      $param = drupal_get_query_parameters();
+      $markup = '<site-creation-form ' . ($param['parent']? ' id="add-subsite-' . $param['parent'] . '"':''). '>' . l($text, $path, $options) . '</site-creation-form>';
     } else {
       $markup = l($text, $path, $options);
     }
@@ -429,10 +430,11 @@ function vsite_register_mail_alter(&$message) {
  * Display Site Creation button only
  */
 function vsite_register_form($form, &$state) {
-
+  // For sub-sites
+  $param = drupal_get_query_parameters();
   $form['html'] = array(
     '#type' => 'markup',
-    '#markup' => '<site-creation-form><a>Create Your Site Here</a></site-creation-form>',
+    '#markup' => '<site-creation-form ' . ($param['parent']? ' id="add-subsite-' . $param['parent'] . '"':''). '><a>Create Your Site Here</a></site-creation-form>',
   );
 
   return $form;
