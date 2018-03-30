@@ -1021,7 +1021,5 @@ function vsite_preset_spaces_presets() {
   t('Logistics');
   $export['hwp_event_conference'] = $spaces_presets;
 
-  drupal_alter('spaces_presets', $export);
-
   return $export;
 }
