@@ -183,7 +183,7 @@ class OsRestfulPurl extends \RestfulBase implements \RestfulDataProviderInterfac
     $state['additional_settings'] = empty($state['additional_settings']) ? array() : $state['additional_settings'];
     $vsite = vsite_create_vsite($name, $purl, $author, $bundle, $preset, $parent, $visibility, $state['additional_settings']);
     if ($vsite) {
-      $message = vsite_register_message($form, $values['domain']);
+      $message = vsite_register_message_angular($form, $values['domain']);
       $commands[] = ajax_command_replace('#submit-suffix', $message);
       $commands[] = ajax_command_remove('#edit-submit');
 
