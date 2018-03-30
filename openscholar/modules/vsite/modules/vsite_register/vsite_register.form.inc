@@ -9,7 +9,7 @@
  * Form builder for the vsite register form found at "site/register".
  */
 function vsite_register_form($form, &$state) {
-  if (variable_get($is_angular, FALSE)) {
+  if (variable_get($is_angular, TRUE)) {
     // For sub-sites
     $param = drupal_get_query_parameters();
     $form['html'] = array(
