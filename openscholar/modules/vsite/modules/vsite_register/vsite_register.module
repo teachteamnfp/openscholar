@@ -18,7 +18,8 @@ function vsite_register_menu() {
     'title' => 'Create your web site',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('vsite_register_form'),
-    'access callback' => true,
+    'access callback' => 'vsite_vsite_exists_access',
+    'file' => 'vsite_register.form.inc',
   );
 
   $items['admin/config/openscholar/vsite_register'] = array(
@@ -424,18 +425,4 @@ function vsite_register_mail_alter(&$message) {
   if ($params['@site_name']) {
     $message['body'][4] = t("-@site_name", $params);
   }
- }
-
- /**
- * Display Site Creation button only
- */
-function vsite_register_form($form, &$state) {
-  // For sub-sites
-  $param = drupal_get_query_parameters();
-  $form['html'] = array(
-    '#type' => 'markup',
-    '#markup' => '<site-creation-form ' . ($param['parent']? ' id="add-subsite-' . $param['parent'] . '"':''). '><a>Create Your Site Here</a></site-creation-form>',
-  );
-
-  return $form;
 }

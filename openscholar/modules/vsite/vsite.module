@@ -800,7 +800,7 @@ function vsite_vsite_exists_access($vsites = array()) {
   // First, checks that the site would be created on the correct domain.
   // If this function is being called on the site register form...
   $path_site_register = (bool) ($_GET['q'] == 'site/register');
-  //if ($path_site_register) {
+  if ($path_site_register) {
     // Checks that the form is being accessed from the purl base domain.
     global $base_url;
     // Checks that this site is being created on sitewide domain.
@@ -810,7 +810,7 @@ function vsite_vsite_exists_access($vsites = array()) {
       drupal_set_message(t('You may not register new sites on custom domains.'), 'warning');
       return FALSE;
     }
-  //}
+  }
 
   // Next, checks this user's permissions.
   // Finds if user has permission to create at least 1 group node type.
