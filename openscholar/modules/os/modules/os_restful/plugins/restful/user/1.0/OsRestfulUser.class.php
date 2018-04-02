@@ -104,7 +104,32 @@ class OsRestfulUser extends \RestfulEntityBaseUser {
       $account = user_load(0);
       $this->setAccount($account);
     }
-    return parent::createEntity();
+    $output = parent::createEntity();
+    if ($output[0] != null) {
+      return $output;
+    }
+    // we were denied access to view the entity because the active user is still anonymous
+    $user;
+    if (!empty($this->request['mail'])) {
+      $user = user_load_by_mail($this->request['mail']);
+    }
+    elseif (!empty($this->request['name'])) {
+      $user = user_load_by_name($this->request['name']);
+    }
+    else {
+      foreach (user_load_multiple(FALSE, array('created' => REQUEST_TIME)) as $obj) {
+        $user = $obj;
+        break;
+      }
+    }
+
+    if ($user) {
+      $user = user_save($user, array('status' => 1));
+      $this->setAccount($user);
+      drupal_save_session(true);
+      user_login_finalize();
+      return $this->viewEntity($user->uid);
+    }
   }
 
   /**
