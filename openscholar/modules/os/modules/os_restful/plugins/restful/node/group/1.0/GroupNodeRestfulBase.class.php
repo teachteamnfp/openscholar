@@ -129,6 +129,10 @@ class GroupNodeRestfulBase extends OsNodeRestfulBase {
       'property' => 'domain',
     );
 
+    $public_fields['url'] = array(
+      'callback' => array($this, 'getUrl'),
+    );
+
     $public_fields['theme'] = array(
       'callback' => array($this, 'getTheme'),
     );
@@ -194,6 +198,17 @@ class GroupNodeRestfulBase extends OsNodeRestfulBase {
     list(,,$bundle) = entity_extract_ids('node', $wrapper->value());
 
     return $bundle;
+  }
+
+  public function getUrl($wrapper) {
+    $id = $wrapper->getIdentifier();
+    return url('<front>', array(
+      'absolute' => true,
+      'purl' => array(
+        'provider' => 'spaces_og',
+        'id' => $id,
+      )
+    ));
   }
 
   /**
