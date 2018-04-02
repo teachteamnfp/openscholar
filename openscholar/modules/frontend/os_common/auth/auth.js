@@ -8,7 +8,7 @@
   angular.module('os-auth', [])
     .service('authenticate-token', ['$http', function ($http) {
       this.fetch = function () {
-        $http.get(Drupal.settings.paths.api+'/session/token').success(setToken);
+        return $http.get(Drupal.settings.paths.api+'/session/token').success(setToken);
       }
     }])
     .factory('authenticate', ['$q', function ($q) {
