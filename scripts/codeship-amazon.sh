@@ -10,7 +10,7 @@ function buildComposer() {
         cd openscholar/sites/$site
         composer config vendor-dir $1/$2/sites/$site/modules
         echo "Installing site-specific modules for $site"
-        composer install
+        composer install --prefer-dist
         MODULE=$(composer show -s | grep 'names' | sed -r 's|^[^:]*: ||')
         git add $1/$2/sites/$site
         git rm -rf --cached $1/$2/sites/$site/modules/openscholar/$MODULE
