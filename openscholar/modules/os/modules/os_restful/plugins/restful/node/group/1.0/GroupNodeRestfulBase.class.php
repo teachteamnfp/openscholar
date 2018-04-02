@@ -130,7 +130,7 @@ class GroupNodeRestfulBase extends OsNodeRestfulBase {
     );
 
     $public_fields['url'] = array(
-      'callback' => array($this, 'getUrl'),
+      'callback' => array($this, 'getExternalUrl'),
     );
 
     $public_fields['theme'] = array(
@@ -200,7 +200,7 @@ class GroupNodeRestfulBase extends OsNodeRestfulBase {
     return $bundle;
   }
 
-  public function getUrl($wrapper) {
+  public function getExternalUrl($wrapper) {
     $id = $wrapper->getIdentifier();
     return url('<front>', array(
       'absolute' => true,
