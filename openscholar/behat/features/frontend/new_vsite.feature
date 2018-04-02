@@ -12,7 +12,7 @@ Feature:
       And I sleep for "5"
       And I press "Next"
       And I sleep for "2"
-      And I press "Next "
+      And I press " Next"
       And I sleep for "2"
       And I press "Finish"
       And I sleep for "5"
