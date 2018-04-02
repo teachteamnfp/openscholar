@@ -641,16 +641,19 @@ function vsite_node_access($node, $op, $account) {
       if (user_access('administer group', $account)) {
         return NODE_ACCESS_IGNORE;
       }
-      if (og_is_group_type('node', $node)) {
-        // Deny direct access to creating groups.
+      $vsite = vsite_get_vsite();
+      if ($vsite && og_is_group_type('node', $node)) {
+        // Prevent access when in vsite
         return NODE_ACCESS_DENY;
       }
-      if (!$vsite = vsite_get_vsite()) {
-        // Deny access when outside of VSite.
+      if (!$vsite && !og_is_group_type('node', $node)) {
+        // Deny access when outside of VSite and creating non-group type content
         return NODE_ACCESS_DENY;
       }
-      // Check the user's permission to create new content in the current VSite.
-      return !og_user_access('node', $vsite->group->nid, 'create ' . $node . ' content', $account) ? NODE_ACCESS_DENY : NODE_ACCESS_IGNORE;
+      if ($vsite) {
+        // Check the user's permission to create new content in the current VSite.
+        return !og_user_access('node', $vsite->group->nid, 'create ' . $node . ' content', $account) ? NODE_ACCESS_DENY : NODE_ACCESS_IGNORE;
+      }
       break;
 
     // Handle 'delete' cases:
@@ -661,13 +664,9 @@ function vsite_node_access($node, $op, $account) {
       }
       return !user_access('delete vsite', $account) ? NODE_ACCESS_DENY : NODE_ACCESS_IGNORE;
       break;
-
-    // Ignore any other operator:
-    default:
-      return NODE_ACCESS_IGNORE;
   }
 
-
+  return NODE_ACCESS_IGNORE;
 }
 
 /**
