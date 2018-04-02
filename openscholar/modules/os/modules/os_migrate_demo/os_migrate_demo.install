@@ -29,4 +29,7 @@ function os_migrate_demo_install() {
   unset($preset->value['menus']);
   spaces_preset_save($preset);
   module_enable(array('os_dataverse', 'hwpi'));
+
+  $enable = array('hwpi_basetheme');
+  theme_enable($enable);
 }
