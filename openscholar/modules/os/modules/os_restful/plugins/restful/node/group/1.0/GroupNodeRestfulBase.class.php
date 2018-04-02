@@ -91,6 +91,9 @@ class GroupNodeRestfulBase extends OsNodeRestfulBase {
     return $output;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function publicFieldsInfo() {
     $public_fields = parent::publicFieldsInfo();
 
@@ -103,20 +106,27 @@ class GroupNodeRestfulBase extends OsNodeRestfulBase {
       ),
     );
 
+    $public_fields['type'] = array(
+      'property' => 'bundle',
+      'callback' => array($this, 'getBundleForView'),
+    );
+
+    $public_fields['owner'] = array(
+      'property' => 'author',
+      'resource' => array(
+        'user' => array(
+          'name' => 'users',
+          'full_view' => true,
+        )
+      ),
+    );
+
     $public_fields['preset'] = array(
       'property' => 'preset',
     );
 
     $public_fields['purl'] = array(
       'property' => 'domain',
-    );
-
-    $public_fields['type'] = array(
-      'property' => 'type',
-    );
-
-    $public_fields['owner'] = array(
-      'property' => 'uid',
     );
 
     $public_fields['theme'] = array(
@@ -180,29 +190,36 @@ class GroupNodeRestfulBase extends OsNodeRestfulBase {
     }
   }
 
+  public function getBundleForView(EntityDrupalWrapper $wrapper) {
+    list(,,$bundle) = entity_extract_ids('node', $wrapper->value());
+
+    return $bundle;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function createEntity() {
+    $fields = $this->getPublicFields();
+    foreach ($fields as $k => $f) {
+      if ($f['property'] == 'bundle') {
+        if (!empty($this->request[$k])) {
+          $this->bundle = $this->request[$k];
+        }
+        unset($this->request[$k]);
+      }
+    }
+
+    return parent::createEntity();
+  }
+
   /**
    * {@inheritdoc}
    */
   protected function setPropertyValues(EntityMetadataWrapper $wrapper, $null_missing_fields = FALSE) {
     $request = $this->getRequest();
     self::cleanRequest($request);
-    $wrapper->type()->set($request['type']);
-
-    if ($request['theme']) {
-      // this value will be a flavor, most likely
-      ctools_include('themes', 'os');
-
-      $themes = os_get_themes();
-      foreach ($themes as $name => $info) {
-        $flavors = os_theme_get_flavors($name);
-        if (isset($flavors[$request['theme']])) {
-          $vsite->controllers->variable->set('theme_default', $theme);
-          $flavor_key = 'os_appearance_' . $name . '_flavor';
-          $vsite->controllers->variable->set($flavor_key, $request['theme']);
-        }
-      }
-      unset($this->request['theme']);
-    }
+    unset($this->request['theme']);
 
     parent::setPropertyValues($wrapper, $null_missing_fields);
     $id = $wrapper->getIdentifier();
@@ -224,5 +241,27 @@ class GroupNodeRestfulBase extends OsNodeRestfulBase {
       );
       purl_save($modifier);
     }
+
+    if ($request['theme']) {
+      // this value will be a flavor, most likely
+      ctools_include('themes', 'os');
+
+      $themes = os_get_themes();
+      foreach ($themes as $name => $info) {
+        $flavors = os_theme_get_flavors($name);
+        if (isset($flavors[$request['theme']])) {
+          $space->controllers->variable->set('theme_default', $theme);
+          $flavor_key = 'os_appearance_' . $name . '_flavor';
+          $space->controllers->variable->set($flavor_key, $request['theme']);
+        }
+      }
+    }
+  }
+
+  public function cleanUser($value) {
+    $safe_values = array(
+
+    );
+    return $value;
   }
 }
