@@ -877,8 +877,8 @@ function _vsite_register_notify_author_body_text($current_user, $author) {
   $no_reset_required = (bool) $returning_author || $author_is_current_user;
   if ($no_reset_required) {
     $body_text = "Hi !username,\n\n"
-      . "Your new web site at !sitewide_name has been activated."
-      . "Your web site url is !site_url\n\n"
+      . "Your new !sitewide_name site has been activated."
+      . "Your website url is !site_url\n\n"
       . "You will be able to log into your site at !site_login_uri "
       . "with username:\n\n!username\n\n"
       . "We hope you will enjoy your new web site.\n\n"
