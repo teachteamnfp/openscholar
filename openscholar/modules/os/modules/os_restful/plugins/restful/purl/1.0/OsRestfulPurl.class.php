@@ -21,6 +21,9 @@ class OsRestfulPurl extends \RestfulBase implements \RestfulDataProviderInterfac
       'email' => array(
         \RestfulInterface::POST => 'check_email',
       ),
+      'pwd' => array(
+        \RestfulInterface::POST => 'check_pwd',
+      ),
       '^.*$' => array(
         \RestfulInterface::GET => 'check_exiting_sites',
       )
@@ -63,6 +66,31 @@ class OsRestfulPurl extends \RestfulBase implements \RestfulDataProviderInterfac
     }
     return $msg;
   }
+
+  /**
+   * Checking for Email address
+   */
+  public function check_pwd() {
+    // Checks password matches confirmed password.
+    $pass1 = $this->request['password'];
+    if (empty($pass1)) {
+     $msg[] = t('The password field is required.');
+    }
+
+    if (module_exists('password_policy')) {
+      //borrowed from `password_policy_user_profile_form_validate()`
+      $account = user_load(0);
+      $policies = PasswordPolicy::matchedPolicies($account);
+      $errors = array();
+      foreach ($policies as $policy) {
+        $errors = $errors + $policy->check($pass1, $account);
+      }
+      $err_msg = implode(" ", $errors);
+      $msg[] = $err_msg;
+    }
+    return $msg;
+  }
+
 
   /**
    * {@inheritdoc}

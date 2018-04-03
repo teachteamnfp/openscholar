@@ -188,7 +188,8 @@
 						<div class = "popup">
 							<div><b>Password</b></div>
 							<div class="form-text-mini">
-								<input type="password" ng-model="password" class="form-text form-text-micro" autocomplete="off">
+								<input type="password" ng-model="password" class="form-text form-text-micro" autocomplete="off" ng-blur="checkPwd()">
+								<div class="message error" ng-show="showPwdError" ng-bind-html="pwdErrorMsg"></div>
 								<div class="password-strength-text">
 									<div>Password compliance: {{strength}}</div>
 									<div><meter value="{{score()}}" min="0" max="4" class="password-indicator"></meter></div>

@@ -62,6 +62,7 @@
   $scope.newUserResistrationName = false;
   $scope.newUserResistrationPwd = false;
   $scope.newUserValidPwd = false;
+  $scope.newUserResistrationPwdMatch = false;
 
   //Navigate between screens
   $scope.page1 = true;
@@ -222,9 +223,31 @@
     $scope.isCompletedRes();
   }
 
+  $scope.checkPwd = function() {
+    $scope.newUserResistrationPwd = false;
+    if (typeof $scope.password !== 'undefined' && $scope.password != '') {
+      var formdata = {};
+      formdata = {
+        password: $scope.password,
+      };
+      $http.post(paths.api + '/purl/pwd', formdata).then(function (response) {
+        console.log(response);
+        if (response.data == "") {
+          $scope.showPwdError = false;
+          $scope.pwdErrorMsg = '';
+          $scope.newUserResistrationPwd = true;
+        } else {
+          $scope.showPwdError = true;
+          $scope.pwdErrorMsg = $sce.trustAsHtml(response.data.data[0]);
+        }
+      });
+    }
+    $scope.isCompletedRes();
+  }
+
   $scope.isCompletedRes = function() {
     $timeout(function () {
-      if ($scope.newUserResistrationEmail && $scope.newUserResistrationName && $scope.newUserValidPwd && $scope.newUserResistrationPwd && $scope.siteNameValid) {
+      if ($scope.newUserResistrationEmail && $scope.newUserResistrationName && $scope.newUserValidPwd && $scope.newUserResistrationPwd && $scope.siteNameValid && $scope.newUserResistrationPwdMatch) {
         $scope.btnDisable = false;
       } else {
         $scope.btnDisable = true;
@@ -253,10 +276,10 @@
   }
 
  $scope.pwdMatch = function() {
-  $scope.newUserResistrationPwd = false;
+  $scope.newUserResistrationPwdMatch = false;
   if (typeof $scope.password !== 'undefined' && $scope.password != '') {
     if (angular.equals($scope.password, $scope.confirmPwd)) {
-      $scope.newUserResistrationPwd = true;
+      $scope.newUserResistrationPwdMatch = true;
       $scope.isCompletedRes();
       return 'yes';
     } else {
