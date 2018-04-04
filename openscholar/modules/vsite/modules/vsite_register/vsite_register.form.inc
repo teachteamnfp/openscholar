@@ -881,7 +881,11 @@ function _vsite_register_notify_author_body_text($current_user, $author) {
       . "Your website url is !site_url\n\n"
       . "You will be able to log into your site at !site_login_uri "
       . "with username:\n\n!username\n\n"
-      . "We hope you will enjoy your new web site.\n\n"
+      . "We hope you will enjoy your new web site.\n"
+      . "\n"
+      . " * Logging in to your site: https://help.theopenscholar.com/logging-your-site\n"
+      . " * OpenScholar documentation: https://help.theopenscholar.com \n"
+      . "\n"
       . "Sincerely,\nThe OpenScholar Team";
   }
   // Otherwise, this site was created on the author's behalf, or this is the
@@ -889,8 +893,8 @@ function _vsite_register_notify_author_body_text($current_user, $author) {
   // Includes instructions to reset password in order to login.
   else {
     $body_text = "Hi !username,\n\n"
-      . "Your new web site at !sitewide_name has been activated.\n\n"
-      . "Your web site url is !site_url\n\n"
+      . "Your new web site at OpenScholar has been activated.\n\n"
+      . "Your website url is !site_url\n\n"
       . "You may now log in and reset your password by clicking on this link "
       . "or copying and pasting it in your browser: \n\n !user_login_url \n\n"
       . "This login can be used only once. "
@@ -899,7 +903,11 @@ function _vsite_register_notify_author_body_text($current_user, $author) {
       . "Once you have set your own password, "
       . "you will be able to log in at !site_login_uri "
       . "as username:\n\n!username\n\n"
-      . "We hope you will enjoy your new web site.\n\n"
+      . "We hope you will enjoy your new web site.\n"
+      . "\n"
+      . " * Logging in to your site: https://help.theopenscholar.com/logging-your-site\n"
+      . " * OpenScholar documentation: https://help.theopenscholar.com \n"
+      . "\n"
       . "Sincerely,\nThe !sitewide_name Team";
   }
 
