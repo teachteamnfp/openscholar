@@ -169,9 +169,7 @@
     if (typeof $scope.selected !== 'undefined') {
       formdata['themeKey'] = $scope.selected;
     }
-    console.log(formdata);
     $http.post(paths.api + '/purl', formdata).then(function (response) {
-      console.log(response);
       $scope.successData = response.data.data.data;
       $scope.vsiteUrl = response.data.data.data;
       $scope.siteCreated = true;
@@ -187,7 +185,6 @@
         name: $scope.userName,
       };
       $http.post(paths.api + '/purl/name', formdata).then(function (response) {
-        console.log(response);
         if (response.data == "") {
           $scope.showUserError = false;
           $scope.userErrorMsg = '';
@@ -209,7 +206,6 @@
         email: $scope.email,
       };
       $http.post(paths.api + '/purl/email', formdata).then(function (response) {
-        console.log(response);
         if (response.data == "") {
           $scope.showEmailError = false;
           $scope.emailErrorMsg = '';
@@ -231,7 +227,6 @@
         password: $scope.password,
       };
       $http.post(paths.api + '/purl/pwd', formdata).then(function (response) {
-        console.log(response);
         if (response.data == "") {
           $scope.showPwdError = false;
           $scope.pwdErrorMsg = '';

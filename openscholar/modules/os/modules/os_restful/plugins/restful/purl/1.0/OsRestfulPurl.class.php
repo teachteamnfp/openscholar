@@ -85,8 +85,10 @@ class OsRestfulPurl extends \RestfulBase implements \RestfulDataProviderInterfac
       foreach ($policies as $policy) {
         $errors = $errors + $policy->check($pass1, $account);
       }
-      $err_msg = implode(" ", $errors);
-      $msg[] = $err_msg;
+      if (count($errors) > 0) {
+        $err_msg = implode(" ", $errors);
+        $msg[] = $err_msg;
+      }
     }
     return $msg;
   }
