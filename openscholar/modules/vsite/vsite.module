@@ -677,6 +677,11 @@ function vsite_node_access($node, $op, $account) {
  *   related permissions if outside of their own VSite.
  */
 function vsite_custom_theme(){
+  // we do not care about themes at all when drupal is being run from the command line
+  // this breaks every drush command and registry rebuilding if there's an error
+  if (drupal_is_cli()) {
+    return;
+  }
   _vsite_purl_init();
 
   if (!$vsite = vsite_get_vsite()) {
