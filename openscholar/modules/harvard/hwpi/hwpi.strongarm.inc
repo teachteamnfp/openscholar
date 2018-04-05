@@ -84,7 +84,7 @@ function hwpi_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'training_signup_url';
-  $strongarm->value = 'http://docs.openscholar.harvard.edu/one-page-themes';
+  $strongarm->value = 'https://hwp.harvard.edu/calendar/upcoming';
   $export['training_signup_url'] = $strongarm;
 
   $strongarm = new stdClass();
