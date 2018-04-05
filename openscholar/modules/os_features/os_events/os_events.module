@@ -2617,7 +2617,7 @@ function os_events_date_ical_feed_event_render_alter(&$event, $view, &$context) 
   $wrapper = entity_metadata_wrapper('node', $context['entity']);
   $event['description'] = '';
   $event['summary'] = $wrapper->label();
-  $event['description'] = preg_replace("/[[[{].*?[}]]]/i",'',$context['entity']->body[LANGUAGE_NONE][0]['value']);
+  $event['description'] = strip_tags(preg_replace("/[[[{].*?[}]]]/i",'',$context['entity']->body[LANGUAGE_NONE][0]['value']));
   $event['location'] = $wrapper->field_event_location->value();
 }
 
