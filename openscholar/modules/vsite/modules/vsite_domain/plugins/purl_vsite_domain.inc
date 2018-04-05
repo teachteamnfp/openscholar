@@ -5,11 +5,11 @@
  * Create the processor that will override the purl_domain
  */
 if (!class_exists('purl_vsite_domain')) {
-
   /**
    *  Full domain handling for scholar, will also remove purl prefix's from alias's
    */
   class purl_vsite_domain extends purl_domain implements purl_processor {
+    use VsitePathHandling;
 
     public $modifier_regex = '!^[a-z0-9_\.-]+$!';
 
@@ -61,87 +61,8 @@ if (!class_exists('purl_vsite_domain')) {
       return t('Enter a domain registered for this site, such as "www.example.edu".');
     }
 
-    private function remove_scholar_purl($path, &$options) {
-      if (!($vsite = spaces_get_space()) || !strlen($vsite->group->purl)) {
-        return $path;
-      }
-
-      // Removes URL prefix if prefix is part of the path alias
-      if (!empty($path) && $path != '<front>' && !$options['alias']) {
-        $language = isset($options['language']) && isset($options['language']->language) ? $options['language']->language : '';
-
-        //Get the stored alias.
-        $alias = drupal_get_path_alias($path, $language);
-        $args = explode('/', $alias);
-
-        //If an alias exists and is prefixed with the purl value then remove it.
-        if ($alias != $path && current($args) === (string) $vsite->group->purl) {
-          // Removes the value from the front of the query string.
-          array_shift($args);
-          $options['alias'] = true;
-          return implode('/', $args);
-        }
-      }
-
-      return $path;
-    }
-
-    /**
-     * Either force the url, or set it back to the base.
-     */
-    public function rewrite(&$path, &$options, $element) {
-      $plugin = ctools_get_plugins('spaces', 'plugins', 'vsite');
-      if ($plugin) {
-        $class = ctools_plugin_get_class($plugin, 'handler');
-      }
-
-      // Doesn't alter if link destination is an excluded path
-      if (isset($class) && call_user_func(array($class, 'is_excluded_path'), $path)) {
-        return;
-      }
-
-      $options['absolute'] = TRUE;
-      if (!_purl_skip($element, $options)) {
-        $path = $this->remove_scholar_purl($path, $options);
-        $options['base_url'] = "http://{$element->value}";
-      }
-      elseif (!isset($options['base_url'])) {
-        //If purl_skip was triggered and no base_url has been set manually then set as purl_base_domain
-        global $base_url;
-        $options['base_url'] = variable_get('purl_base_domain', $base_url);
-      }
-    }
-
-    /**
-     * If a purl_path/domain has been set we should rewrite the current url
-     * so that aliased paths will be picked up
-     */
-    public function adjust(&$value, $item, &$q) {
-      if ((!($vsite = spaces_get_space()) && !($vsite = spaces_load('og', $item->id))) || !strlen($vsite->group->purl)) {
-        return;
-      }
-
-      // Aliases query if it has not been aliased yet
-      if (!in_array($vsite->group->purl, _vsite_domain_processed_purls())) {
-        _vsite_domain_processed_purls($vsite->group->purl);
-
-        $args = explode('/', trim($_GET['q'], '/'));
-
-        // Prepends the value to the front of the query string
-        if (current($args) !== (string) $vsite->group->purl) {
-          array_unshift($args, $vsite->group->purl);
-        }
-
-        // String with purl added
-        $qstring = implode('/', $args);
-        // Alias of that url
-        $qstring_alias = drupal_lookup_path('source', $qstring);
-
-        // Modifies $q since purl/path/path has an alias
-        if ($qstring_alias && $qstring != $qstring_alias) {
-          $q = $qstring;
-        }
-      }
+    protected function rewriteBaseUrl($url) {
+      return "http://$url";
     }
   }
 }
