@@ -5,7 +5,6 @@ package = IQSS
 dependencies[] = boxes
 dependencies[] = ctools
 dependencies[] = features
-dependencies[] = mollom
 dependencies[] = os_stats
 dependencies[] = strongarm
 features[box][] = iqss_scholars_fixed_header
