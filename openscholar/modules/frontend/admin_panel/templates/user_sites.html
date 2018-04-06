@@ -13,7 +13,7 @@
                     <td class="user-site-controls">
                         <a ng-show="site.subsite_access" href="{{purlBaseDomain}}site/register?parent={{ site.id }}" class="btton add">Add subsite</a>
                         <a ng-show="site.delete_access" href="{{site.delete_base_url}}node/{{ site.id }}/delete{{delete_destination}}" class="btton remove">Delete</a>
-                        <a ng-show="!site.delete_access && site.owner" href="{{site.delete_base_url}}os/vsite/delete/{{ site.id }}{{delete_destination}}" class="btton remove">Delete</a>
+                        <a ng-show="!site.delete_access && site.owner" ng-href="{{site.delete_base_url}}os/vsite/delete/{{ site.id }}{{delete_destination}}" class="btton remove">Delete</a>
                     </td>
 			    </tr>
 			</table>

@@ -166,11 +166,19 @@ class OsRestfulUser extends \RestfulEntityBaseUser {
     $custom_domains = $this->getCustomDomains($values);
     $purl_base_domain = variable_get('purl_base_domain');
     foreach ($values as $value) {
+
+      $base_site_url = url('', array(
+        'absolute' => true,
+        'purl' => array(
+          'id' => $value->nid,
+          'provider' => isset($custom_domains[$value->nid]) ? 'vsite_domain' : 'spaces_og'
+        )
+      ));
       $groups[] = array(
         'title' => $value->title,
         'id' => $value->nid,
         'purl' => $value->purl,
-        'delete_base_url' => isset($custom_domains[$value->nid]) ? 'http://' . $custom_domains[$value->nid] . '/user#overlay=' : $purl_base_domain . '/' . $value->purl . '/#overlay=' . $value->purl . '/',
+        'delete_base_url' => $base_site_url,
         'owner' => ($value->uid == $account->uid),
         'subsite_access' => vsite_subsite_access('create', $value),
         'delete_access' => node_access('delete', $value),
