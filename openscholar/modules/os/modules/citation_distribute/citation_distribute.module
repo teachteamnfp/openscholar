@@ -696,7 +696,7 @@ function _citation_distribute_unlist_db($plugin, $nid, $batch_command = '') {
       'noauto' => 1,
       'batch_command' => $batch_command,
     ));
-  } elseif (strpos($type,'InsertQuery') === 0) {
+  } else {
     $query->fields(array(
       'nid' => $nid,
       'plugin' => $plugin,
