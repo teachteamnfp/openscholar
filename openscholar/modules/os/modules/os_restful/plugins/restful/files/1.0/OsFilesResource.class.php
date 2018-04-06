@@ -437,6 +437,9 @@ class OsFilesResource extends OsRestfulEntityCacheableBase {
         throw new RestfulBadRequestException(t('No vsite with the id @id', array('@id' => $this->request['vsite'])));
       }
     }
+    elseif (module_exists('vsite')) {
+      $query->fieldCondition(OG_AUDIENCE_FIELD, 'target_id', 'NULL');
+    }
     // Make getting private files explicit
     // Private files currently require PIN authentication before they can even be access checked
     if (!isset($this->request['private'])) {

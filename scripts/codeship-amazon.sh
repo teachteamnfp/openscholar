@@ -1,10 +1,32 @@
 #!/usr/bin/env bash
 # Quick codeship script to push builds to a pair of acquia repos as new branches are made.
 
+# builds all the composer files in root/sites
+function buildComposer() {
+    export ORIG=$(pwd)
+    echo 'Begin pulling in site-specific code'
+    cd $1
+    for site in $(ls openscholar/sites/); do
+        cd openscholar/sites/$site
+        composer config vendor-dir $1/$2/sites/$site/modules
+        echo "Installing site-specific modules for $site"
+        composer install --prefer-dist
+        MODULE=$(composer show -s | grep 'names' | sed -r 's|^[^:]*: ||')
+        git add $1/$2/sites/$site
+        git rm -rf --cached $1/$2/sites/$site/modules/openscholar/$MODULE
+        git add $1/$2/sites/$site/modules/openscholar/$MODULE/.
+        cd $1
+    done
+    cd $ORIG
+}
+
 # pull down the acquia branch
 mkdir -p ~/src/amazon/
 git config --global user.email "openscholar@swap.lists.harvard.edu"
 git config --global user.name "OpenScholar Auto Push Bot"
+
+BUILD_ROOT='/home/rof/src/amazon'
+DOCROOT='web';
 
 if git show-ref -q --verify refs/tags/$CI_BRANCH 2>&1 > /dev/null; then
   # This is just a tag push
@@ -43,7 +65,6 @@ npm install -g bower
 
 # Drush executable.
 [[ $DRUSH && ${DRUSH-x} ]] || DRUSH=drush
-BUILD_ROOT='/home/rof/src/amazon'
 cd $BUILD_ROOT
 rm .gitmodules
 #List of files from docroot that should be preserved
@@ -83,7 +104,6 @@ $DRUSH make openscholar/openscholar/drupal-org-core.make $BUILD_ROOT/www-build
 
 # Backup files from existing installation.
 cd $BUILD_ROOT
-DOCROOT='web';
 ls
 for BACKUP_FILE in "${preserve_files[@]}"; do
 	rm -Rf www-build/$BACKUP_FILE
@@ -127,6 +147,9 @@ done
 ls $BUILD_ROOT/openscholar
 rm -rf $BUILD_ROOT/openscholar/behat &> /dev/null
 
+#pull in site-specific code
+buildComposer "$BUILD_ROOT" "$DOCROOT"
+
 git commit -a -m "$CI_MESSAGE" -m "" -m "git-subtree-split: $CI_COMMIT_ID"
 #END BUILD PROCESS
 else
@@ -137,6 +160,9 @@ rm -rf $BUILD_ROOT/openscholar/behat &> /dev/null
 
 #Copy unmakable modules, when we don’t build
 cp -R openscholar/temporary/* openscholar/openscholar/modules/contrib/
+
+#pull in site-specific code
+buildComposer "$BUILD_ROOT" "$DOCROOT"
 git commit -a -m "$CI_MESSAGE" -m "" -m "git-subtree-split: $CI_COMMIT_ID" || git commit --amend -m "$CI_MESSAGE" -m "" -m "git-subtree-split: $CI_COMMIT_ID"
 fi
 
