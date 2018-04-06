@@ -2253,7 +2253,7 @@ function os_form_user_login_alter(&$form, $form_state) {
 
     $form['pin-fieldset']['login'] = array(
         '#type' => 'submit',
-        '#value' => t('Login'),
+        '#value' => t('Log In'),
         '#attributes' => array('class' => array('pin-button-inline')),
     );
 
