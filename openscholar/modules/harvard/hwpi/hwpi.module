@@ -259,3 +259,15 @@ function hwpi_ctools_plugin_directory($module, $plugin) {
     return 'plugins/service/';
   }
 }
+
+/**
+ * Implements hook_module_implements_alter
+ * to put hwpi_form_user_login_alter at last
+ */
+function hwpi_module_implements_alter(&$implementations, $hook) {
+  if (($hook == 'form_alter' || $hook == 'form_node_form_alter') && isset($implementations['hwpi'])) {
+    $group = $implementations['hwpi'];
+    unset($implementations['hwpi']);
+    $implementations['hwpi'] = $group;
+  }
+}
