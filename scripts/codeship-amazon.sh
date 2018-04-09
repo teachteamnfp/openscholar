@@ -10,17 +10,20 @@ function buildComposer() {
         cd openscholar/sites/$site
         composer config vendor-dir $1/$2/sites/$site/modules
         echo "Installing site-specific modules for $site"
-        if [ -d "$1/$2/sites/$site/modules/openscholar/$MODULE/gitdir" ]; then
-            mv $1/$2/sites/$site/modules/openscholar/$MODULE/gitdir $1/$2/sites/$site/modules/openscholar/$MODULE/.git
-        fi
+        GITDIR=$(find $1 -type d -name 'gitdir')
+        echo $GITDIR
+        while read -r line; do
+            ROOT=$(dirname $line);
+            echo $ROOT
+            mv $ROOT/gitdir $ROOT/.git
+        done <<< "$GITDIR"
         composer install
         MODULE=$(composer show -s | grep 'names' | sed -r 's|^[^:]*: ||')
-        git add $1/$2/sites/$site
-        git rm -rf --cached $1/$2/sites/$site/modules/openscholar/$MODULE
         cd $1/$2/sites/$site/modules/openscholar/$MODULE
         git branch | grep -v "master" | xargs git branch -D
         cd -
         mv $1/$2/sites/$site/modules/openscholar/$MODULE/.git $1/$2/sites/$site/modules/openscholar/$MODULE/gitdir
+        git add $1/$2/sites/$site
         git add $1/$2/sites/$site/modules/openscholar/$MODULE/.
         cd $1
     done
