@@ -641,6 +641,7 @@ ul ul ul ul {
 .sidebar .block-boxes-os_boxes_facetapi_vocabulary .item-list {
     margin-bottom: 15px;
 }
+.sidebar .block-boxes-os_boxes_facetapi_vocabulary .item-list.ui-accordion,
 .sidebar .block-boxes-os_boxes_facetapi_vocabulary.collapsible .item-list,
 .sidebar .block-boxes-os_boxes_facetapi_vocabulary .item-list:last-child {
     margin-bottom: 0;
