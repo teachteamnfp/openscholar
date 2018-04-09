@@ -3977,3 +3977,12 @@ function os_redirect_goto($redirect) {
 
   exit;
 }
+
+/**
+ * Change the title of sign on page
+ */
+function os_process_page(&$vars) {
+  if (arg(0) == 'user' && (arg(1) === 'login' || (arg(1) == '' && user_is_anonymous()))) {
+    $vars['title'] = t('Welcome. Please Log In.');
+  }
+}
