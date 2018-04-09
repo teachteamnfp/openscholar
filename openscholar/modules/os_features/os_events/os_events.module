@@ -2185,6 +2185,12 @@ function os_events_form_registration_form_alter(&$form, &$form_state) {
   $form_state['rebuild'] = TRUE;
   unset($form['field_full_name'], $form['field_department'], $form['anon_mail'], $form['user']);
 
+  honeypot_add_form_protection(
+    $form,
+    $form_state,
+    array('honeypot', 'time_restriction')
+  );
+
   $form['#validate'][] = 'os_events_registration_form_validate';
   $form['#validate'][] = 'os_events_modal_validate';
   $form['#submit'][] = 'os_events_modal_submit';
