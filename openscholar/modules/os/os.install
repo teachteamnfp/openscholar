@@ -1044,10 +1044,3 @@ function os_update_7058() {
   $revert = array('os' => array('variable'));
   features_revert($revert);
 }
-
-/**
- * Enable the honeypot module to protect against spam
- */
-function os_update_7059() {
-  module_enable(array('honeypot'));
-}

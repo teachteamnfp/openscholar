@@ -109,6 +109,9 @@ projects[eva][revision] = "6d92c27"
 projects[expire][subdir] = "contrib"
 projects[expire][version] = 2.0-beta2
 
+projects[honeypot][subdir] = "contrib"
+projects[honeypot][version] = 7.x-1.24
+
 projects[facetapi][subdir] = "contrib"
 projects[facetapi][version] = 1.1
 projects[facetapi][patch][] = "http://drupal.org/files/2006704-facetapi-er-regroup-2.patch"
