@@ -252,7 +252,7 @@ function cp_user_remove_membership_confirm_submit($form, &$form_state) {
   $params['!site-url'] = !empty($custom_domain) ? 'http://' . $custom_domain : $purl_base_domain . '/' . $vsite->group->purl;
   $params['!account-modifier-email'] = $account_modifier->mail;
   $params['!user-firstname'] = $account->field_first_name[LANGUAGE_NONE][0]['value'];
-  $params['!sitewide-name'] = variable_get('site_name', 'Harvard Web Publishing');
+  $params['!sitewide-name'] = variable_get('site_name', variable_get('sitewide_name'));
   $params['headers']['Cc'] = $account_modifier->mail;
   // Send email notification to deleted user.
   drupal_mail('cp_user', 'os_user_delete_from_group', $to, $language, $params, $from);
@@ -354,7 +354,7 @@ function cp_user_change_site_owner_form_submit($form, &$form_state) {
   $params['!site-url'] = !empty($custom_domain) ? 'http://' . $custom_domain : $purl_base_domain . '/' . $vsite->group->purl;
   $params['!account-modifier-email'] = $account_modifier->mail;
   $params['!user-firstname'] = $account->field_first_name[LANGUAGE_NONE][0]['value'];
-  $params['!sitewide-name'] = variable_get('site_name', 'Harvard Web Publishing');
+  $params['!sitewide-name'] = variable_get('site_name', variable_get('sitewide_name'));
   $params['headers']['Cc'] = $account_modifier->mail;
   // Sending email notification to modified user.
   drupal_mail('cp_user', 'os_user_role_change', $to, $language, $params, $from);
@@ -489,7 +489,7 @@ function cp_user_edit_membership_form_submit($form, &$form_state) {
     $params['!site-url'] = !empty($custom_domain) ? 'http://' . $custom_domain : $purl_base_domain . '/' . $vsite->group->purl;
     $params['!account-modifier-email'] = $account_modifier->mail;
     $params['!user-firstname'] = $account->field_first_name[LANGUAGE_NONE][0]['value'];
-    $params['!sitewide-name'] = variable_get('site_name', 'Harvard Web Publishing');
+    $params['!sitewide-name'] = variable_get('site_name', variable_get('sitewide_name'));
     $params['headers']['Cc'] = $account_modifier->mail;
     // Sending email notification to modified user.
     drupal_mail('cp_user', 'os_user_role_change', $to, $language, $params, $from);

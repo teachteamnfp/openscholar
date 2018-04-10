@@ -273,3 +273,15 @@ function hwpi_ctools_plugin_directory($module, $plugin) {
     return 'plugins/service/';
   }
 }
+
+/**
+ * Implements hook_spaces_presets_alter
+ * to override non harvard descriptions
+ */
+function hwpi_spaces_presets_alter(&$export) {
+  $export['hwp_administrative']->description = t('The Harvard Web Publishing standard Adminstrative Department site.');
+  $export['hwp_lab_research_group']->description = t('The Harvard Web Publishing standard Lab and Research Group site.');
+  $export['hwp_project']->description = t('The Harvard Web Publishing standard Project site.');
+  $export['hwp_personal']->description = t('The Harvard Web Publishing standard Personal site.');
+  $export['hwp_event_conference']->description = t('The Harvard Web Publishing standard Event or Conference site.');
+}
