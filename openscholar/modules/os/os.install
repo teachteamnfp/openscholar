@@ -1049,6 +1049,10 @@ function os_update_7058() {
  * Enable the honeypot module to protect against spam
  */
 function os_update_7059() {
+  //Enable honeypot module and set variable to enable honeypot for password reset form
   module_enable(array('honeypot'));
+  variable_set('honeypot_form_user_pass', 1);
+
+  //Disable mollom as it is no longer used
   module_disable(array('mollom'));
 }
