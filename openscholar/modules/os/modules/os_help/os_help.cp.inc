@@ -11,8 +11,7 @@
 function os_help_cp_settings() {
 
   $form = array();
-  $document_content = _vsite_register_welcome_page();
-  $document_prefix = !empty($document_content['welcome_page']['#markup']) ? $document_content['welcome_page']['#markup'] : '';
+
   $form['os_help'] = array(
     'group' => array(
       '#id' => 'documentation',
@@ -21,9 +20,9 @@ function os_help_cp_settings() {
       '#menu_parent' => 'help'
     ),
     'form' => array(
-      '#prefix' => $document_prefix,
-      '#type' => 'markup',
+      '#custom_directive' => 'documentation',
       '#access' => TRUE,
+      '#weight' => -1,
     ),
   );
 
