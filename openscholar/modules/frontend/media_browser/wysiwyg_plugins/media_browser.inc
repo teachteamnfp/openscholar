@@ -10,7 +10,7 @@ function media_browser_media_browser_plugin() {
   $path = drupal_get_path('module', 'media_browser');
   $plugins['media_browser'] = array(
     'title' => 'Media Browser',
-    'vendor url' => 'http://openscholar.harvard.edu',
+    'vendor url' => 'https://theopenscholar.com',
     'icon path' => $path.'/theme',
     'icon file' => 'os_link.gif',
     'icon title' => 'Media Browser',
