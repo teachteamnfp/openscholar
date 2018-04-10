@@ -274,7 +274,6 @@ function hwpi_ctools_plugin_directory($module, $plugin) {
   }
 }
 
-
 /**
  * Implements hook_spaces_presets_alter
  * to override non harvard descriptions
