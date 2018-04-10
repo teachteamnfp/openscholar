@@ -202,7 +202,7 @@ function hwpi_form_user_login_alter(&$form, $form_state) {
     // Overriding the text of first button on the login screen.
   if (isset($form['pin'])) {
     $query['destination'] = isset($_GET['destination']) ? $_GET['destination'] : 'user';
-    $form['pin']['#markup'] = l('Login using your HarvardKey', 'user/pin', array('query' => $query));
+    $form['pin']['#markup'] = l('Log in using your HarvardKey', 'user/pin', array('query' => $query));
   }
 }
 
@@ -257,5 +257,17 @@ function hwpi_default_box_alter(&$boxes) {
 function hwpi_ctools_plugin_directory($module, $plugin) {
   if ($module == 'citation_distribute' && $plugin == 'service') {
     return 'plugins/service/';
+  }
+}
+
+/**
+ * Implements hook_module_implements_alter
+ * to put hwpi_form_user_login_alter at last
+ */
+function hwpi_module_implements_alter(&$implementations, $hook) {
+  if (($hook == 'form_alter' || $hook == 'form_node_form_alter') && isset($implementations['hwpi'])) {
+    $group = $implementations['hwpi'];
+    unset($implementations['hwpi']);
+    $implementations['hwpi'] = $group;
   }
 }
