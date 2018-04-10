@@ -2464,13 +2464,13 @@ function vsite_contact_mail_owner($form, &$form_state, $recipient){
     '#value' => t('Send e-mail'),
     '#weight' => 100
   );
-  if (module_exists('honeypot')) {
+  /*if (module_exists('honeypot')) {
     honeypot_add_form_protection(
       $form,
       $form_state,
       array('honeypot', 'time_restriction')
     );
-  }
+  }*/
   return $form;
 }
 
