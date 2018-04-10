@@ -301,12 +301,13 @@ function citation_distribute_node_delete($node) {
 }
 
 /**
- * Implementats of hook_flag()
+ * Implementats of hook_flag_flag()
  *
  * This gets called whenever a node recieves a flag.  If it gets a citation_distribute flag, process it.
  */
-function citation_distribute_flag($event, $flag, $nid, $account) {
+function citation_distribute_flag_flag($flag, $entity_id, $account, $flagging) {
   $dist_mode = variable_get('citation_distribute_module_mode', '');
+  $nid = $entity_id;
   $plugins = _citation_distribute_plugins();
   foreach ($plugins as $plugin) {
     if ($plugin['name'] == $flag->name) {
@@ -326,46 +327,61 @@ function citation_distribute_flag($event, $flag, $nid, $account) {
     return;
   }
 
-  switch($event) {
+  if ($dist_mode == 'per_submission') {
+    $dist = _citation_distribute_distribute($nid, $plugin);
+    $batch_cmd = '';
+  } else {
+    $batch_cmd = 'distribute';                      //assume batch mode
+    $dist = TRUE;
+  }
 
-    case 'flag':
-
-      if ($dist_mode == 'per_submission') {
-        $dist = _citation_distribute_distribute($nid, $plugin);
-        $batch_cmd = '';
-      } else {
-        $batch_cmd = 'distribute';                      //assume batch mode
-        $dist = TRUE;
-      }
-
-      if ($dist) {
-        _citation_distribute_update_db($plugin['name'], $nid, $batch_cmd);
-        $msg = t('Submitted citation to @title', array('@title'=>$plugin['title']));
-        drupal_set_message($msg);
-      }
-
-      break;
-
-    case 'unflag':
-      if ($dist_mode == 'per_submission') {
-        //try to remove now.
-        if ($class = ctools_plugin_get_class($plugin, 'handler', TRUE)) {
-          $service = new $class();
-          if (method_exists($service, 'remove')) {
-            $removed = $service->remove($nid);
-          }
-        }
-        $batch_cmd = NULL;
-      } else {
-        $batch_cmd = 'remove'; //schedule a removal at next cron run
-      }
-
-      _citation_distribute_unlist_db($plugin['name'], $nid, $batch_cmd); //unlist, don't delete
-      drupal_set_message('Publication has been removed from ' . $plugin['title']);
-      break;
+  if ($dist) {
+    _citation_distribute_update_db($plugin['name'], $nid, $batch_cmd);
+    $msg = t('Submitted citation to @title', array('@title'=>$plugin['title']));
+    drupal_set_message($msg);
   }
 }
 
+/**
+ * Implementats of hook_flag_unflag()
+ */
+function citation_distribute_flag_unflag($flag, $entity_id, $account, $flagging) {
+  $dist_mode = variable_get('citation_distribute_module_mode', '');
+  $nid = $entity_id;
+  $plugins = _citation_distribute_plugins();
+  foreach ($plugins as $plugin) {
+    if ($plugin['name'] == $flag->name) {
+      break;
+    }
+  }
+
+  //make sure node is published first
+  $published = db_select('node', 'n')
+    ->condition('nid', $nid)
+    ->fields('n', array('status'))
+    ->execute()
+    ->fetchCol();
+
+  if (!$published) {
+    drupal_set_message(t('This node is not listed for publication and has not been sent to external repositories.') ,'warning');
+    return;
+  }
+
+  if ($dist_mode == 'per_submission') {
+    //try to remove now.
+    if ($class = ctools_plugin_get_class($plugin, 'handler', TRUE)) {
+      $service = new $class();
+      if (method_exists($service, 'remove')) {
+        $removed = $service->remove($nid);
+      }
+    }
+    $batch_cmd = NULL;
+  } else {
+    $batch_cmd = 'remove'; //schedule a removal at next cron run
+  }
+  _citation_distribute_unlist_db($plugin['name'], $nid, $batch_cmd); //unlist, don't delete
+  drupal_set_message('Publication has been removed from ' . $plugin['title']);
+}
 
 /**
  * Implements hook_form_FORM_ID_alter().
@@ -696,7 +712,7 @@ function _citation_distribute_unlist_db($plugin, $nid, $batch_command = '') {
       'noauto' => 1,
       'batch_command' => $batch_command,
     ));
-  } else {
+  } elseif (strpos($type,'InsertQuery') === 0) {
     $query->fields(array(
       'nid' => $nid,
       'plugin' => $plugin,
