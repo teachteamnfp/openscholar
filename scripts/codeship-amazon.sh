@@ -10,11 +10,9 @@ function buildComposer() {
         cd openscholar/sites/$site
         composer config vendor-dir $1/$2/sites/$site/modules
         echo "Installing site-specific modules for $site"
-        GITDIR=$(find $1 -type d -name 'gitdir')
-        echo $GITDIR
+        GITDIR=$(find $1/$2 -type d -name 'gitdir')
         while read -r line; do
             ROOT=$(dirname $line);
-            echo $ROOT
             mv $ROOT/gitdir $ROOT/.git
         done <<< "$GITDIR"
         composer install
