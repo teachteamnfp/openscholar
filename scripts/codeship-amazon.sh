@@ -17,7 +17,7 @@ function buildComposer() {
         done <<< "$GITDIR"
         composer install
         MODULE=$(composer show -s | grep 'names' | sed -r 's|^[^:]*: ||')
-        cd $1/$2/sites/$site/modules/openscholar/$MODULEcd
+        cd $1/$2/sites/$site/modules/openscholar/$MODULE
         git branch | grep -v "master" | xargs git branch -D
         cd -
         mv $1/$2/sites/$site/modules/openscholar/$MODULE/.git $1/$2/sites/$site/modules/openscholar/$MODULE/gitdir
