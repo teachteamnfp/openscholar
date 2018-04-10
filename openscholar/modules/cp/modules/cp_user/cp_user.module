@@ -820,9 +820,13 @@ function cp_user_mail($key, &$message, $params){
       $message['body'][] = t("Don't forget to bookmark the site and save this email for future reference.");
       $message['body'][] = t("Here are some handy links for you:");
       $links = array();
-      $links[] = " * Sign up for training: http://hwp.harvard.edu/calendar/upcoming\n";
+      if(variable_get('training_signup_url')) {
+        $links[] = " * Sign up for training: " . variable_get('training_signup_url') . "\n";
+      }
       $links[] = " * OpenScholar documentation: https://help.theopenscholar.com\n";
-      $links[] = " * Need help with your project? http://hwp.harvard.edu/contact";
+      if(variable_get('contact_url')) {
+        $links[] = " * Need help with your project? " . variable_get('contact_url');
+      }
       $message['body'][] = implode("", $links);
       $message['body'][] = t("Sincerely,\n!sitewide-name", $params);
       $message['headers'] += $params['headers'];

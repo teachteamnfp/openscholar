@@ -203,3 +203,39 @@ function hwpi_update_7013() {
 
   return t('@count Contexts have been updated.', array('@count' => $count));
 }
+
+/**
+ * Saving strongarm variables to separate DASH option.
+ */
+function hwpi_update_7014() {
+  $revert = array(
+    'hwpi' => array(
+      'variable',
+    )
+  );
+  features_revert($revert);
+}
+
+/**
+ * Saving strongarm variables for header and footer.
+ */
+function hwpi_update_7016() {
+  $revert = array(
+    'hwpi' => array(
+      'variable',
+    )
+  );
+  features_revert($revert);
+}
+
+/**
+ * Saving strongarm variables for e-mails.
+ */
+function hwpi_update_7017() {
+  $revert = array(
+    'hwpi' => array(
+      'variable',
+    )
+  );
+  features_revert($revert);
+}

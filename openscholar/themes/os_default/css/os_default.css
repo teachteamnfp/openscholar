@@ -434,7 +434,7 @@ fieldset.pin-fieldset legend a,
 	background-image: url('../images/or-separator.png');
 	background-repeat: no-repeat;
 	position: absolute;
-	top: 67px;
+	top: 77px;
 	width: 100%;
 	height: 9px;
 }
@@ -458,7 +458,7 @@ fieldset.pin-fieldset legend,
 }
 #pin-login.pin-button {
 	width: 300px;
-	margin-bottom: 48px;
+	margin-bottom: 70px;
 }
 @-moz-document url-prefix() {
 #pin-login.pin-button {
