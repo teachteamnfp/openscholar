@@ -320,13 +320,13 @@ a {
     position: absolute;
     right: 152px;
     background-color: #FFF;
-    width: 380px;
+    width: 450px;
     color: #1e1e1e;
     border: 1px solid #CCC;
     -webkit-box-shadow: 3px 3px 3px 0px rgba(50, 50, 50, 0.3);
     -moz-box-shadow: 3px 3px 3px 0px rgba(50, 50, 50, 0.3);
     box-shadow: 3px 3px 3px 0px rgba(50, 50, 50, 0.3);
-    padding: 3px 12px 12px;
+    padding: 15px;
 }
 .new-site-link {
     position: absolute;
@@ -351,6 +351,7 @@ td.site-name {
 }
 td.user-site-controls {
     text-align: right;
+    position:relative;
 }
 .user_sites .site-list:nth-child(odd) {
     background-color: #FFF;
@@ -393,7 +394,7 @@ td.user-site-controls {
     -moz-border-radius: 2px 2px 2px 2px;
     -webkit-border-radius: 2px 2px 2px 2px;
     color: #FFF;
-    padding: 4px 5px;
+    padding: 7px 8px;
 }
 .btton.add {
     background-color: #458C00;
@@ -412,6 +413,12 @@ table.table-shading {
     color: #444;
     margin-bottom: 0;
 }
+table.table-shading tr {
+    height:60px;
+}
+table.table-shading td {
+    vertical-align:middle;
+}
 .header-row {
     background-color: #EAEAEA;
     padding: 6px 0 6px 8px;
@@ -425,11 +432,12 @@ table.table-shading {
     padding: 5px 8px;
 }
 .clearable{
-    background: url(images/clear_site_search.gif) no-repeat right 6px center;
+     background: url(images/clear_site_search.gif) no-repeat right 6px center;
     border: 1px solid #999;
-    padding: 3px 18px 3px 4px;
-    border-radius: 3px;
+    padding: 7px 8px;
+    border-radius: 2px;
     transition: background 0.4s;
+    width: 200px;
 }
 a.search-clear {
     position: relative;
