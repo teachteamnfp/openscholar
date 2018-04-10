@@ -174,6 +174,7 @@ class OsRestfulUser extends \RestfulEntityBaseUser {
           'provider' => isset($custom_domains[$value->nid]) ? 'vsite_domain' : 'spaces_og'
         )
       ));
+      $base_site_url = rtrim($base_site_url, '/') . '/';  // enforce single trailing slash
       $groups[] = array(
         'title' => $value->title,
         'id' => $value->nid,
