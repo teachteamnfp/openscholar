@@ -40,9 +40,11 @@ function hwpi_init() {
 function hwpi_cp_settings() {
   // For non-user-1, only adds the responsive setting for HWPI-themed sites.
   $theme = variable_get('theme_default');
+  if (!_is_hwpi_theme($theme)) {
+    return;
+  }
 
   $settings = array();
-
   $settings['other_resources'] = array(
     'group' => array(
       '#id' => 'documentation',
@@ -55,24 +57,6 @@ function hwpi_cp_settings() {
       '#markup' => '<h2>Other Resources</h2>
 <p>Want an in-person training? Attend one of our regularly scheduled <a href="http://hwp.harvard.edu/calendar/upcoming" target="_blank">OpenScholar training sessions.</a><br />Need help with your project? Contact the <a href="http://hwp.harvard.edu/contact" target="_blank">Harvard Web Publishing Team</a>.</p>'
     )
-  );
-
-  if (!_is_hwpi_theme($theme)) {
-    return;
-  }
-
-  $settings['privacy_policy'] = array(
-    'group' => array(
-      '#title' => t('Privacy Policy'),
-      '#id' => 'privacy-policy',
-      '#help_link' => l(t('Learn more about creating a privacy policy for your site'), 'https://help.theopenscholar.com/global-site-settings#privacy-policy', array('attributes' => array('target' => '_blank'))),
-    ),
-    'form' => array(
-      '#type' => 'textfield',
-      '#default_value' => variable_get('privacy_policy', ''),
-      '#title' => t('Privacy Policy URL'),
-      '#description' => t('Enter the URL to the privacy policy you wish to use for your site. Can be a link to a post on your own site.'),
-    ),
   );
 
   return $settings;
