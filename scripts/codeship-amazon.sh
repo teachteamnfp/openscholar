@@ -8,7 +8,6 @@ function buildComposer() {
     cd $1
     for site in $(ls openscholar/sites/); do
         cd openscholar/sites/$site
-        composer config vendor-dir $1/$2/sites/$site/modules
         echo "Installing site-specific modules for $site"
         GITDIR=$(find $1/$2 -type d -name 'gitdir')
         while read -r line; do
