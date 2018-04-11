@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Josefin+Sans:400,400i,700');
+@import url('https://fonts.googleapis.com/css?family=Libre+Franklin:400,400i,700');
 
 .not-front .field-name-body,
 #content-column p,
@@ -25,7 +25,7 @@ body *,
 .field-name-body h2,
 .field-name-body h3,
 .field-name-body h4 {
-	font-family: 'Josefin Sans', Helvetica, sans-serif;
+	font-family: 'Libre Franklin', Helvetica, sans-serif;
 }
 .node-type-person #content-column .node-person h1.node-title,
 .block-title,h1#page-title {
@@ -37,7 +37,7 @@ body *,
 .region-header-third ul.nice-menu a,
 a,
 a:visited {
-	color: #0479a8;
+	color: #A31F34;
 }
 .breadcrumb span,
 #footer a,
@@ -47,7 +47,7 @@ a:visited {
 
 
 a.rslides_nav {
-    background-color: #0479a8;
+    background-color: #A31F34;
 }
 .search-block-form input.form-submit,
 .search-block-form #edit-submit,
@@ -57,19 +57,18 @@ a.rslides_nav {
 	background: url(/profiles/openscholar/themes/hwpi_basetheme/images/hwpi_basesprite.png) no-repeat scroll 2px -441px #0479a8;
 }
 #layout_16_9_side .slide {
-background: #c5050c;
-	background: -moz-linear-gradient(top, #c5050c 0%, #ab1616 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c5050c), color-stop(100%, #ab1616));
-	background: -webkit-linear-gradient(top, #c5050c 0%, #ab1616 100%);
-	background: -o-linear-gradient(top, #c5050c 0%, #ad1616 100%);
-	background: -ms-linear-gradient(top, #c5050c 0%, #ad1616 100%);
-	background: linear-gradient(to bottom, #c5050c 0%, #ab1616 100%);
-	filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#c5050c', endColorstr='#ab1616', GradientType=0);
+background: #A31F34;
+	background: -moz-linear-gradient(top, #A31F34 0%, #ab1616 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #A31F34), color-stop(100%, #ab1616));
+	background: -webkit-linear-gradient(top, #A31F34 0%, #ab1616 100%);
+	background: -o-linear-gradient(top, #A31F34 0%, #ad1616 100%);
+	background: -ms-linear-gradient(top, #A31F34 0%, #ad1616 100%);
+	background: linear-gradient(to bottom, #A31F34 0%, #ab1616 100%);
+	filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#A31F34', endColorstr='#ab1616', GradientType=0);
 }
 .branding-left {
   
-margin: -3px 0 0 -28px;
-   
+       margin: 4px 0 0 0;
 }
 .not-front #columns {
   
