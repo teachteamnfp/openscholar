@@ -15,7 +15,7 @@ function buildComposer() {
             ROOT=$(dirname $line);
             mv $ROOT/gitdir $ROOT/.git
         done <<< "$GITDIR"
-        composer install
+        composer install -n
         MODULE=$(composer show -s | grep 'names' | sed -r 's|^[^:]*: ||')
         cd $1/$2/sites/$site/modules/openscholar/$MODULE
         git branch | grep -v "master" | xargs git branch -D
