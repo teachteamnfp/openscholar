@@ -54,17 +54,17 @@ a.rslides_nav {
 #search-block-form input.form-submit,
 #search-block-form #edit-submit,
 #search-form #edit-submit {
-	background: url(/profiles/openscholar/themes/hwpi_basetheme/images/hwpi_basesprite.png) no-repeat scroll 2px -441px #0479a8;
+	background: url(/profiles/openscholar/themes/hwpi_basetheme/images/hwpi_basesprite.png) no-repeat scroll 2px -441px #A31F34;
 }
 #layout_16_9_side .slide {
 background: #A31F34;
-	background: -moz-linear-gradient(top, #A31F34 0%, #ab1616 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #A31F34), color-stop(100%, #ab1616));
-	background: -webkit-linear-gradient(top, #A31F34 0%, #ab1616 100%);
-	background: -o-linear-gradient(top, #A31F34 0%, #ad1616 100%);
-	background: -ms-linear-gradient(top, #A31F34 0%, #ad1616 100%);
-	background: linear-gradient(to bottom, #A31F34 0%, #ab1616 100%);
-	filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#A31F34', endColorstr='#ab1616', GradientType=0);
+	background: -moz-linear-gradient(top, #A31F34 0%, #b9243c 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #A31F34), color-stop(100%, #b9243c));
+	background: -webkit-linear-gradient(top, #A31F34 0%, #b9243c 100%);
+	background: -o-linear-gradient(top, #A31F34 0%, #b9243c 100%);
+	background: -ms-linear-gradient(top, #A31F34 0%, #b9243c 100%);
+	background: linear-gradient(to bottom, #A31F34 0%, #b9243c 100%);
+	filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#A31F34', endColorstr='#b9243c', GradientType=0);
 }
 .branding-left {
   
@@ -80,4 +80,18 @@ background: #A31F34;
  
     background-image: none;
  
+}
+
+.view .date-nav-wrapper .date-prev a {
+    background: url(/profiles/openscholar/themes/os_basetheme/images/scholarbase-sprite.png) repeat scroll 0 0 #A31F34;
+    background-position: -24px -29px;
+    width: 20px;
+    height: 20px;
+}
+
+.view .date-nav-wrapper .date-next a {
+    background: url(/profiles/openscholar/themes/os_basetheme/images/scholarbase-sprite.png) repeat scroll 0 0 #A31F34;
+    background-position: -56px -30px;
+    width: 20px;
+    height: 20px;
 }
