@@ -7,8 +7,8 @@
  * See: https://rnd.feide.no/content/idp-remote-metadata-reference
  */
 
-$metadata['https://stage.fed.huit.harvard.edu/idp/shibboleth'] = array (
-  'entityid' => 'https://stage.fed.huit.harvard.edu/idp/shibboleth',
+$metadata['https://fed.huit.harvard.edu/idp/shibboleth'] = array (
+  'entityid' => 'https://fed.huit.harvard.edu/idp/shibboleth',
   'name' => 
   array (
     'en' => 'Harvard University',
@@ -69,17 +69,17 @@ $metadata['https://stage.fed.huit.harvard.edu/idp/shibboleth'] = array (
     0 => 
     array (
       'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST',
-      'Location' => 'https://key-idp.stage.iam.harvard.edu/idp/profile/SAML2/POST/SSO',
+      'Location' => 'https://key-idp.iam.harvard.edu/idp/profile/SAML2/POST/SSO',
     ),
     1 => 
     array (
       'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign',
-      'Location' => 'https://key-idp.stage.iam.harvard.edu/idp/profile/SAML2/POST-SimpleSign/SSO',
+      'Location' => 'https://key-idp.iam.harvard.edu/idp/profile/SAML2/POST-SimpleSign/SSO',
     ),
     2 => 
     array (
       'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect',
-      'Location' => 'https://key-idp.stage.iam.harvard.edu/idp/profile/SAML2/Redirect/SSO',
+      'Location' => 'https://key-idp.iam.harvard.edu/idp/profile/SAML2/Redirect/SSO',
     ),
   ),
   'SingleLogoutService' => 
@@ -95,7 +95,26 @@ $metadata['https://stage.fed.huit.harvard.edu/idp/shibboleth'] = array (
       'encryption' => false,
       'signing' => true,
       'type' => 'X509Certificate',
-      'X509Certificate' => 'MIIDXDCCAkSgAwIBAgIUX70XzpDd3czVVVgMHAMjrVWZe50wDQYJKoZIhvcNAQELBQAwKDEmMCQG A1UEAwwda2V5LWlkcC5zdGFnZS5pYW0uaGFydmFyZC5lZHUwHhcNMTYwNjA5MTQwOTQyWhcNMzYw NjA5MTQwOTQyWjAoMSYwJAYDVQQDDB1rZXktaWRwLnN0YWdlLmlhbS5oYXJ2YXJkLmVkdTCCASIw DQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAJtwvk/OboUMGy3ojXXB3MiLwkpzEyPvnHhNDhBd +aCJ8tIvxSgLe0r+jnjAKGoKjxJ/VqGBYgHNn/8oUNNOl9iPPOZSXUw9wsQqb2mWmPsVim/+9YVv +w+hn/P/dAk7NZU7bDMgn2kgWmm7osyzNYecJMyMLkZmwahA8/m8RRVSZBILMM8b/9cWOTN2vzFI kiOpQpjegZ6dw+gUUE/DzAVCDct1O03UmydHKRmT97xV6JpWfiHC1/RzFxgLcdRpuoBD2JqycA3Z 9EkVAV8SBzAbKJxABGxPSFyA6YUKyY9g/Cvd0KFLgLnDB8NFRU9WW1fWco10l1g1giTE6smYWakC AwEAAaN+MHwwHQYDVR0OBBYEFAmQGAp65E1Xy43rs5GIV9TF0l9gMFsGA1UdEQRUMFKCHWtleS1p ZHAuc3RhZ2UuaWFtLmhhcnZhcmQuZWR1hjFodHRwczovL3N0YWdlLmZlZC5odWl0LmhhcnZhcmQu ZWR1L2lkcC9zaGliYm9sZXRoMA0GCSqGSIb3DQEBCwUAA4IBAQAq4yThR//VPPmRySI6I0EvUBt4 Iv+K5HfkLn8LDRpMSa4hRXSm+ZLSULqxvqxony1gY7xviQdu9sVp2fnE3YjTRFvEzRDk/emsQOsC P+FQvUFJKmokKT3aVupuP8snmwOgEbmE0Q3upNhZCr3Ygs8ZDpCG6Ol99kFjedHATOYqSvpd+VOW HdeAKj8lyiy+Z0QQjpRNfZluSqUpfthjSeXJXFqq2ABnQZmdQNG+5wfLOcnRJu3UnBqk1J2/daqT g67kGKBA4IS+MwhyF1VSb3UxCCwQJk56rcFy8RoFh8KStsOwj5hY0gMCPSFWnfZ4KNc9nYGQV25a +SAZT1uCpunZ',
+      'X509Certificate' => '
+                        MIIDRDCCAiygAwIBAgIUdXfRRGHcHe0kqyWjt9pzdElroS8wDQYJKoZIhvcNAQEL
+                        BQAwIjEgMB4GA1UEAwwXa2V5LWlkcC5pYW0uaGFydmFyZC5lZHUwHhcNMTYwNjA5
+                        MjAyNDEyWhcNMzYwNjA5MjAyNDEyWjAiMSAwHgYDVQQDDBdrZXktaWRwLmlhbS5o
+                        YXJ2YXJkLmVkdTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAIr/Hd3R
+                        cDBNh5C2hi9GicY0LCOJDW34ndazmFZy5djYajqxoy7+RPDZwOlJdjIq7hpzxKvD
+                        K59dSLha60XfSSzqKpnQ8S/jcvpKnpW9UStMR7lGaIUTLSAEqHvguzR7iQt3wuKD
+                        FxGPxvQeO/z32F0wvmbmemI1XhLSIo1aJAOujsAFPex1K3QYTkBQDOiDqd9gatr9
+                        W163rx+Nd7BHpXaUWGQcLpkM7iMH9lgmWg4F4yvJLOV72ygOwb/YP7bnVog2B+VM
+                        AuX//TVhMHc3d4QOMS7zDDKexbG1kdlBuFrawV5betGnIywEFE9Du3RCH61Zhppd
+                        rhtfP+ie2tbqFlUCAwEAAaNyMHAwHQYDVR0OBBYEFHKP/f1hfPpCGc1DKMtXlWom
+                        aAV7ME8GA1UdEQRIMEaCF2tleS1pZHAuaWFtLmhhcnZhcmQuZWR1hitodHRwczov
+                        L2ZlZC5odWl0LmhhcnZhcmQuZWR1L2lkcC9zaGliYm9sZXRoMA0GCSqGSIb3DQEB
+                        CwUAA4IBAQAFLHg4EBEDDeUhQi+QRVgbgmkiKkPSiZLeeDbmaWyELEr5kGye7Q6Z
+                        wcXDK3qHOQc6GRhBw13A7YqCuuhjgxD51hzlPvOy6HAmPkaqWuNfXl2QMxb1LNkY
+                        0WJiEHLOZvnpItV5mTgszzlTfg/rj1l8IfsBSYfSZjePIk7IIW4y0PsQG+mOCz4D
+                        jrZDSJtefq5iaDcZKHGmAOex9osIjM2JJ7hUV52YV/ct+Ha6q+oBnzUo62lVGOsx
+                        zyNYEoUX1Q25f0lm72MYS7M4LifZ4sW3fF9OZClDelj2VcqAWHeMQhjkbtMyrTc5
+                        59SJSzhAtL9UdzpgB0Poym6nF34EgDtl
+                    ',
     ),
   ),
   'scope' => 
