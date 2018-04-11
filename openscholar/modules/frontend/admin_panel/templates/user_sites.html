@@ -12,8 +12,8 @@
                     <td class="site-name"><a href="{{baseUrl}}node/{{ site.id }}" class="text_link">{{ site.title }}</a></td>
                     <td class="user-site-controls">
                         <a ng-show="site.subsite_access" href="{{purlBaseDomain}}site/register?parent={{ site.id }}" class="btton add">Add subsite</a>
-                        <a ng-show="site.delete_access" href="{{site.delete_base_url}}node/{{ site.id }}/delete{{delete_destination}}" class="btton remove">Delete</a>
-                        <a ng-show="!site.delete_access && site.owner" ng-href="{{site.delete_base_url}}os/vsite/delete/{{ site.id }}{{delete_destination}}" class="btton remove">Delete</a>
+                        <a ng-show="site.delete_access" href="{{site.delete_base_url}}node/{{ site.id }}/delete{{site.id == spaceId ? delete_destination_root : delete_destination}}" class="btton remove">Delete</a>
+                        <a ng-show="!site.delete_access && site.owner" ng-href="{{site.delete_base_url}}os/vsite/delete/{{ site.id }}{{site.id == spaceId ? delete_destination_root : delete_destination}}" class="btton remove">Delete</a>
                     </td>
 			    </tr>
 			</table>

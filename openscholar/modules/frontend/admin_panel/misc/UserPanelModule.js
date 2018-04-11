@@ -54,6 +54,8 @@
     });
     $scope.pageSize = 7;
     if (Drupal.settings.spaces) {
+      $scope.spaceId = Drupal.settings.spaces.id;
+      $scope.delete_destination_root = '?destination=<base_domain>';
       $scope.delete_destination = '?'+encodeURIComponent('destination=node/' + Drupal.settings.spaces.id + encodeURIComponent('?destination=' + window.location.pathname.replace(/^\/|\/$/g, '')));
     } else {
       $scope.delete_destination = '';
