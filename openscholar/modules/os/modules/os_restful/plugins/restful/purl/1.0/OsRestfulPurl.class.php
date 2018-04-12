@@ -190,13 +190,13 @@ class OsRestfulPurl extends \RestfulBase implements \RestfulDataProviderInterfac
       $new_user = TRUE;
 
       // Logs in as the new user, if we're not already logged in.
-      global $user;
-      $user = $site_owner;
+      //##//global $user;
+      //##//$user = $site_owner;
 
       // Link huid and uid
       if (module_exists('pinserver')) {
         if ($huid = pinserver_get_user_huid()) {
-          pinserver_authenticate_set_user_huid($user->uid, $huid);
+          pinserver_authenticate_set_user_huid($site_owner->uid, $huid);
         }
       }
     }
