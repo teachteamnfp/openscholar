@@ -141,6 +141,7 @@
   //Get all values and save them in localstorage for use
   $scope.saveAllValues = function() {
     bss.SetState('site_creation_form', true);
+    $timeout.cancel(timer);
     $scope.btnDisable = true;
     var formdata = {};
     formdata = {
@@ -241,7 +242,7 @@
   }
 
   $scope.isCompletedRes = function() {
-    $timeout(function () {
+    var timer = $timeout(function () {
       if ($scope.newUserResistrationEmail && $scope.newUserResistrationName && $scope.newUserValidPwd && $scope.newUserResistrationPwd && $scope.siteNameValid && $scope.newUserResistrationPwdMatch) {
         $scope.btnDisable = false;
       } else {
