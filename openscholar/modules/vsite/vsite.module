@@ -641,16 +641,19 @@ function vsite_node_access($node, $op, $account) {
       if (user_access('administer group', $account)) {
         return NODE_ACCESS_IGNORE;
       }
-      if (og_is_group_type('node', $node)) {
-        // Deny direct access to creating groups.
+      $vsite = vsite_get_vsite();
+      if ($vsite && og_is_group_type('node', $node)) {
+        // Prevent access when in vsite
         return NODE_ACCESS_DENY;
       }
-      if (!$vsite = vsite_get_vsite()) {
-        // Deny access when outside of VSite.
+      if (!$vsite && !og_is_group_type('node', $node)) {
+        // Deny access when outside of VSite and creating non-group type content
         return NODE_ACCESS_DENY;
       }
-      // Check the user's permission to create new content in the current VSite.
-      return !og_user_access('node', $vsite->group->nid, 'create ' . $node . ' content', $account) ? NODE_ACCESS_DENY : NODE_ACCESS_IGNORE;
+      if ($vsite) {
+        // Check the user's permission to create new content in the current VSite.
+        return !og_user_access('node', $vsite->group->nid, 'create ' . $node . ' content', $account) ? NODE_ACCESS_DENY : NODE_ACCESS_IGNORE;
+      }
       break;
 
     // Handle 'delete' cases:
@@ -661,13 +664,9 @@ function vsite_node_access($node, $op, $account) {
       }
       return !user_access('delete vsite', $account) ? NODE_ACCESS_DENY : NODE_ACCESS_IGNORE;
       break;
-
-    // Ignore any other operator:
-    default:
-      return NODE_ACCESS_IGNORE;
   }
 
-
+  return NODE_ACCESS_IGNORE;
 }
 
 /**
@@ -678,6 +677,11 @@ function vsite_node_access($node, $op, $account) {
  *   related permissions if outside of their own VSite.
  */
 function vsite_custom_theme(){
+  // we do not care about themes at all when drupal is being run from the command line
+  // this breaks every drush command and registry rebuilding if there's an error
+  if (drupal_is_cli()) {
+    return;
+  }
   _vsite_purl_init();
 
   if (!$vsite = vsite_get_vsite()) {
@@ -2021,11 +2025,21 @@ function vsite_mail_alter(&$message){
           '!lastname' => $last_name,
           '!fullname' => $full_name,
           '!username' => $user->name,
-          '!futurelogin' => $base_url . '/user/'
+          '!futurelogin' => $base_url . '/user/',
+          '!upcoming_training' => variable_get('upcoming_events'),
+          '!contact_url' => variable_get('contact_url'),
+          '!signup_pin_text' => variable_get('signup_pin_text'),
         );
 
         // Alter the body message.
-        $message['body'][0] = t("Dear !fullname, \n\n!site_owner, site owner of !site, has created a user account for you so that you may access this website. Log in by clicking on the following link or by pasting it into your browser: \n\n!login_url \n\nFor your security, this link can be used only once.  \n\nYour OpenScholar username is: !username \n\nAfter setting your OpenScholar user password with the included link, you can then <a href='https://help.theopenscholar.com/logging-your-site' target='_blank'>associate this user account with your HarvardKey</a>. \n\nOnce paired, you will be able to log in at !site in the future. Don't forget to bookmark the site and save this email for future reference.\n\nHere are some handy links for you:\n\n* <a href='https://help.theopenscholar.com/logging-your-site' target='_blank'>Logging in to your site</a>\n\n* <a href='http://hwp.harvard.edu/calendar/upcoming' target='_blank'>Sign up for training</a>\n\n* <a href='https://help.theopenscholar.com' target='_blank'>OpenScholar documentation</a>\n\n* <a href='http://hwp.harvard.edu/contact' target='_blank'>Need help with your project?</a>\n\n-The OpenScholar Team", $replacements);
+        $msg = "Dear !fullname, \n\n!site_owner, site owner of !site, has created a user account for you so that you may access this website. Log in by clicking on the following link or by pasting it into your browser: \n\n!login_url \n\nFor your security, this link can be used only once.  \n\nYour OpenScholar username is: !username \n\n";
+        $msg .= variable_get('signup_pin_text')?"!signup_pin_text\n\n ":"";
+        $msg .= "Once paired, you will be able to log in at !site in the future. Don't forget to bookmark the site and save this email for future reference.\n\nHere are some handy links for you:\n\n* <a href='https://help.theopenscholar.com/logging-your-site' target='_blank'>Logging in to your site</a>\n\n* ";
+        $msg .= variable_get('upcoming_training')?"<a href='!upcoming_training' target='_blank'>Sign up for training</a>\n\n* ":"";
+        $msg .= "<a href='https://help.theopenscholar.com' target='_blank'>OpenScholar documentation</a>\n\n* ";
+        $msg .= variable_get('contact_url')?"<a href='!contact_url' target='_blank'>Need help with your project?</a>\n\n":"";
+        $msg .= "-The OpenScholar Team";
+        $message['body'][0] = t($msg, $replacements);
 
         break;
 

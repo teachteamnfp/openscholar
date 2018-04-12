@@ -1426,7 +1426,7 @@ function os_os_layout_contexts($privacy = TRUE) {
  */
 function theme_openscholar_powered_by() {
   return '<span>' . t('<a href="@poweredby">OpenScholar</a>', array(
-      '@poweredby' => 'http://openscholar.harvard.edu',
+      '@poweredby' => 'https://theopenscholar.com.',
     )) . '</span>';
 }
 
@@ -2246,14 +2246,14 @@ function os_form_user_login_alter(&$form, $form_state) {
   // If user login form is overridden by pinserver_authenticate module, then $form['pin-fieldset'] will be initialized from there.
   // $form['name'] and $form['pass'] both will be unset from pinserver_authenticate module
   if (isset($form['pin-fieldset'])) {
-    $form['pin-fieldset']['#title'] = t('Login using your OpenScholar account');
+    $form['pin-fieldset']['#title'] = t('Log in using your OpenScholar account');
     $form['pin-fieldset']['name']['#title'] = t('OpenScholar Username or E-Mail');
     $form['pin-fieldset']['pass']['#description'] = t('!request', array('!request' => l('Forgot your password?', 'user/password')));
     $form['pin-fieldset']['pass']['#title'] = "OpenScholar Password";
 
     $form['pin-fieldset']['login'] = array(
         '#type' => 'submit',
-        '#value' => t('Login'),
+        '#value' => t('Log In'),
         '#attributes' => array('class' => array('pin-button-inline')),
     );
 
@@ -3976,4 +3976,13 @@ function os_redirect_goto($redirect) {
   }
 
   exit;
+}
+
+/**
+ * Change the title of sign on page
+ */
+function os_process_page(&$vars) {
+  if (arg(0) == 'user' && (arg(1) === 'login' || (arg(1) == '' && user_is_anonymous()))) {
+    $vars['title'] = t('Welcome. Please Log In.');
+  }
 }

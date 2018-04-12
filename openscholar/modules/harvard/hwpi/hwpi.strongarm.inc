@@ -80,5 +80,61 @@ function hwpi_strongarm() {
   $strongarm->value = 'Harvard';
   $export['university_name'] = $strongarm;
 
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'training_signup_url';
+  $strongarm->value = 'https://hwp.harvard.edu/calendar/upcoming';
+  $export['training_signup_url'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'contact_url';
+  $strongarm->value = 'http://hwp.harvard.edu/contact';
+  $export['contact_url'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'sitewide_name';
+  $strongarm->value = 'Harvard Web Publishing';
+  $export['sitewide_name'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'upcoming_events';
+  $strongarm->value = 'http://hwp.harvard.edu/calendar/upcoming';
+  $export['upcoming_events'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'university_url';
+  $strongarm->value = 'http://hwp.harvard.edu/';
+  $export['university_url'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'site_url';
+  $strongarm->value = 'http://openscholar.harvard.edu';
+  $export['site_url'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'university_base_url';
+  $strongarm->value = 'http://www.harvard.edu/';
+  $export['university_base_url'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'signup_pin_text';
+  $strongarm->value = "After setting your OpenScholar user password with the included link, you can then <a href='https://help.theopenscholar.com/logging-your-site' target='_blank'>associate this user account with your HarvardKey</a>.";
+  $export['signup_pin_text'] = $strongarm;
+
   return $export;
 }
