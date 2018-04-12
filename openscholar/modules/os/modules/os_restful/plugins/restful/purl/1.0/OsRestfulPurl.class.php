@@ -131,6 +131,7 @@ class OsRestfulPurl extends \RestfulBase implements \RestfulDataProviderInterfac
    */
   function save_site() {
     // Checking site creation permission
+    global $base_url;
     if (!vsite_vsite_exists_access() || (function_exists('pinserver_user_has_associated_pin') && !os_pinserver_auth_vsite_register_form_page())) {
       $commands[] = "Not-Permissible";
       return($commands[0]);
@@ -194,7 +195,7 @@ class OsRestfulPurl extends \RestfulBase implements \RestfulDataProviderInterfac
       // Link huid and uid
       if (module_exists('pinserver')) {
         if ($huid = pinserver_get_user_huid()) {
-          //#//pinserver_authenticate_set_user_huid($site_owner->uid, $huid);
+          pinserver_authenticate_set_user_huid($site_owner->uid, $huid);
         }
       }
     }
@@ -214,6 +215,12 @@ class OsRestfulPurl extends \RestfulBase implements \RestfulDataProviderInterfac
     $vsite = vsite_create_vsite($name, $purl, $author, $bundle, $preset, $parent, $visibility, $state['additional_settings']);
     if ($vsite) {
       $message = vsite_register_message_angular($form, $values['domain']);
+      if ($this->request['vicarious_user']) {
+        // For vicarious_user need to redirect them to login page.
+        $message = str_replace($base_url.'/', '', $message);
+        $message = $base_url . '/user?destination='.$message;
+      }
+      watchdog("vsite_message", '<pre>'.print_r($message, true).'</pre>');
       $commands[] = ajax_command_replace('#submit-suffix', $message);
       $commands[] = ajax_command_remove('#edit-submit');
 
