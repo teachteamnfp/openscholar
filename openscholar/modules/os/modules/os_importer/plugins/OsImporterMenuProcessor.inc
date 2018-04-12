@@ -1,0 +1,252 @@
+<?php
+
+/**
+ * @file
+ * Contains OS Importer MenuProcessor.
+ */
+
+/**
+ * Creates menu items from feed items.
+ */
+class OsImporterMenuProcessor extends FeedsProcessor {
+
+  /**
+   * {@inheritdoc}
+   */
+  public function entityType() {
+    return 'menu';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function bundleOptions() {
+    return menu_get_menus();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function entityInfo() {
+    return array(
+      'label' => t('Menu link'),
+      'label plural' => t('Menu links'),
+      'bundle name' => t('Menu'),
+      'entity keys' => array('bundle' => 'menu_name'),
+    );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function newEntity(FeedsSource $source) {
+    // Use object to have reference by default.
+    return (object) array(
+      'link_path' => '',
+      'link_title' => '',
+      'menu_name' => '',
+      'language' => LANGUAGE_NONE,
+      'expanded' => TRUE,
+      'weight' => 0,
+    );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function entityLoad(FeedsSource $source, $entity_id) {
+    return (object) menu_link_load($entity_id);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function entityValidate($menu_link) {
+    $this->cleanPath($menu_link->link_path);
+    if (!$this->config['skip_link_path_validation']) {
+      if (!drupal_valid_path($menu_link->link_path)) {
+        throw new FeedsValidationException(t('Invalid link path.'));
+      }
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function entitySave($menu_link) {
+    $menu_link_item = (array) $menu_link;
+    menu_link_save($menu_link_item);
+    $menu_link = (object) $menu_link_item;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function entityDeleteMultiple($mlid) {
+    foreach ($mlid as $mlid) {
+      menu_link_delete($mlid);
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function configDefaults() {
+    $defaults = parent::configDefaults();
+    $defaults['skip_link_path_validation'] = TRUE;
+    return $defaults;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function configForm(&$form_state) {
+    $form = parent::configForm($form_state);
+    unset($form['input_format']);
+    $form['skip_link_path_validation'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Skip link path validation'),
+      '#default_value' => $this->config['skip_link_path_validation'],
+      '#description' => t('Do not run link path validation for imported menu item.'),
+    );
+    return $form;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setTargetElement(FeedsSource $source, $target_item, $target_element, $value) {
+    switch ($target_element) {
+      case 'parent_guid':
+        $target_item->plid = (int) db_select('feeds_item', 'f')
+          ->fields('f', ['entity_id'])
+          ->condition('entity_type', 'menu')
+          ->condition('guid', $value)
+          ->execute()
+          ->fetchField();
+        break;
+
+      case 'description':
+        $target_item->options['attributes']['title'] = $value;
+        break;
+
+      case 'weight':
+        $target_item->weight = (int) $value;
+        break;
+
+      default:
+        parent::setTargetElement($source, $target_item, $target_element, $value);
+        break;
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getMappingTargets() {
+    $targets = parent::getMappingTargets();
+
+    $targets += array(
+      'menu_name' => array(
+        'name' => t('Menu name'),
+        'description' => t('Menu name'),
+      ),
+      'link_path' => array(
+        'name' => t('Link path'),
+        'description' => t('The path of link.'),
+      ),
+      'link_title' => array(
+        'name' => t('Link title'),
+        'description' => t('The title of link.'),
+      ),
+      'weight' => array(
+        'name' => t('Weight'),
+        'description' => t('The weight of link.'),
+      ),
+      'description' => array(
+        'name' => t('Description'),
+        'description' => t('Description of link.'),
+      ),
+      'parent_guid' => array(
+        'name' => t('Parent link GUID'),
+        'description' => t('Parent menu link GUID.'),
+      ),
+    );
+
+    if (module_exists('i18n_menu')) {
+      $targets['language'] = array(
+        'name' => t('Menu link language'),
+        'description' => t('Menu link language.'),
+      );
+    }
+
+    // Let other modules expose mapping targets.
+    drupal_alter('feeds_processor_targets', $targets);
+
+    return $targets;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function clear(FeedsSource $source) {
+
+    $state = $source->state(FEEDS_PROCESS_CLEAR);
+    $info = $this->entityInfo();
+
+    // Build base select statement.
+    $select = db_select('feeds_item', 'fi')
+      ->condition('fi.id', $this->id)
+      ->fields('fi', ['entity_id']);
+
+    // If there is no total, query it.
+    if (!$state->total) {
+      $state->total = $select->countQuery()
+        ->execute()
+        ->fetchField();
+    }
+
+    // Delete a batch of entities.
+    $ids = $select->range(0, $this->getLimit())->execute()->fetchCol();
+    $this->entityDeleteMultiple($ids);
+
+    // Report progress, take into account that we may not have deleted as
+    // many items as we have counted at first.
+    if (count($ids)) {
+      $state->deleted += count($ids);
+      $state->progress($state->total, $state->deleted);
+    }
+    else {
+      $state->progress($state->total, $state->total);
+    }
+
+    // Report results when done.
+    if ($source->progressClearing() == FEEDS_BATCH_COMPLETE) {
+      if ($state->deleted) {
+        $message = format_plural(
+          $state->deleted,
+          'Deleted @number @entity',
+          'Deleted @number @entities',
+          array(
+            '@number' => $state->deleted,
+            '@entity' => strtolower($info['label']),
+            '@entities' => strtolower($info['label plural']),
+          )
+        );
+        $source->log('clear', $message, [], WATCHDOG_INFO);
+        drupal_set_message($message);
+      }
+      else {
+        drupal_set_message(t('There are no @entities to be deleted.', ['@entities' => $info['label plural']]));
+      }
+    }
+  }
+
+  /**
+   * Trim and normalize path.
+   */
+  protected function cleanPath(&$path) {
+    $path = drupal_get_normal_path(trim($path, " \t\n\r\0\x0B/"));
+  }
+
+}

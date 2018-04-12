@@ -56,6 +56,15 @@ function vsite_preset_og_tasks_info($entity_type, $entity) {
   );
   $tasks['vsite_preset_menu_order'] = new vsite_task($properties);
 
+  $properties = array(
+    'title' => t('Import menu items from CSV'),
+    'description' => t('Import vsite menu items from CSV files.'),
+    'required' => FALSE,
+    'callback' => 'vsite_preset_import_menu_task',
+    'file' => $path . '/includes/import_menu.inc',
+  );
+  $tasks['vsite_preset_import_menu'] = new vsite_task($properties);
+
   return $tasks;
 }
 

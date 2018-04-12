@@ -43,6 +43,17 @@ function os_importer_feeds_plugins() {
       'path' => drupal_get_path('module', 'os_importer') . '/plugins',
     ),
   );
+  $info['OsImporterMenuProcessor'] = array(
+    'name' => t('OS Importer Menu processor'),
+    'description' => t('Create and update menu links.'),
+    'help' => t('Create and update menu links from parsed content.'),
+    'handler' => array(
+      'parent' => 'FeedsProcessor',
+      'class' => 'OsImporterMenuProcessor',
+      'file' => 'OsImporterMenuProcessor.inc',
+      'path' => drupal_get_path('module', 'os_importer') . '/plugins',
+    ),
+  );
   return $info;
 }
 
