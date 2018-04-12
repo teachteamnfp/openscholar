@@ -243,7 +243,6 @@ projects[module_filter][version] = 1.7
 
 projects[memcache][subdir] = "contrib"
 projects[memcache][version] = 1.6
-projects[memcache][patch][] = "https://www.drupal.org/files/issues/notice_trying_to_get-2864659-4.patch"
 
 projects[migrate][subdir] = "contrib"
 projects[migrate][version] = 2.5
