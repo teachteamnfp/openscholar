@@ -79,5 +79,66 @@ function os_importer_feeds_importer_default() {
   );
   $export['os_documents'] = $feeds_importer;
 
+  $feeds_importer = new stdClass();
+  $feeds_importer->disabled = FALSE; /* Edit this to true to make a default feeds_importer disabled initially */
+  $feeds_importer->api_version = 1;
+  $feeds_importer->id = 'os_menu';
+  $feeds_importer->config = array(
+    'name' => 'OS Menu',
+    'description' => 'Import menu items from CSV',
+    'fetcher' => array(
+      'plugin_key' => 'FeedsFileFetcher',
+      'config' => array(
+        'allowed_extensions' => 'csv',
+        'direct' => 0,
+      ),
+    ),
+    'parser' => array(
+      'plugin_key' => 'OsFeedsCSVParser',
+      'config' => array(
+        'delimiter' => ',',
+        'no_headers' => 0,
+      ),
+    ),
+    'processor' => array(
+      'plugin_key' => 'OsImporterMenuProcessor',
+      'config' => array(
+        'mappings' => array(
+          0 => array(
+            'source' => 'Link Title',
+            'target' => 'link_title',
+            'unique' => FALSE,
+          ),
+          1 => array(
+            'source' => 'Menu',
+            'target' => 'menu_name',
+            'unique' => FALSE,
+          ),
+          2 => array(
+            'source' => 'Weight',
+            'target' => 'weight',
+            'unique' => FALSE,
+          ),
+          3 => array(
+            'source' => 'Path',
+            'target' => 'link_path',
+            'unique' => FALSE,
+          ),
+        ),
+        'update_existing' => '0',
+        'input_format' => 'plain_text',
+        'skip_hash_check' => 0,
+        'skip_link_path_validation' => 1,
+      ),
+    ),
+    'content_type' => '',
+    'update' => 0,
+    'import_period' => '1800',
+    'expire_period' => 3600,
+    'import_on_create' => 1,
+    'process_in_background' => 1,
+  );
+  $export['os_menu'] = $feeds_importer;
+
   return $export;
 }
