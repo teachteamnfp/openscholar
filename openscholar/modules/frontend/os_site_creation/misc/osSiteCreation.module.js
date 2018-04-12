@@ -35,6 +35,9 @@
   // Set site creation status
   $scope.siteCreated = false;
 
+  // Initialize the $timout var
+  var timer;
+
   //Toggle open/close for 'who can view your site'
   $scope.showAll = false;
   $scope.toggleFunc = function() {
@@ -242,7 +245,7 @@
   }
 
   $scope.isCompletedRes = function() {
-    var timer = $timeout(function () {
+    timer = $timeout(function () {
       if ($scope.newUserResistrationEmail && $scope.newUserResistrationName && $scope.newUserValidPwd && $scope.newUserResistrationPwd && $scope.siteNameValid && $scope.newUserResistrationPwdMatch) {
         $scope.btnDisable = false;
       } else {
