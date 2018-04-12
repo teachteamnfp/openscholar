@@ -9,6 +9,7 @@ function os_site_creation_library() {
   $libs = array();
   $self = drupal_get_path('module', 'os_site_creation');
   $disable = array('alias' => TRUE);
+  $rest = url('api', $disable);
   // Determining whether user has got huid and Drupal id
   $vicariousUser = false;
   if (module_exists('pinserver')) {
@@ -31,6 +32,7 @@ function os_site_creation_library() {
             'siteCreationForm' => url($self.'/templates', $disable),
             'siteCreationModuleRoot' => url(drupal_get_path('module', 'os_site_creation'), $disable),
             'hasOsId' => $vicariousUser,
+            'api' => $rest,
           ),
           'version' => array(
             'siteCreationForm' => OS_SITE_CREATION_FORM,
@@ -75,12 +77,11 @@ function os_site_creation_preprocess_page(&$vars) {
   if (module_exists('pinserver') && $huid = pinserver_get_user_huid()) {
     if (!pinserver_authenticate_get_uid_from_huid($huid)) {
       // Load the Angular dependencies
-      //if(user_is_anonymous()) { // tobe removed
-        drupal_add_library('os_site_creation','site_creation');
-        os_common_angular_apps('SiteCreationForm');
-        global $base_url;
-        drupal_add_js(array('admin_panel' => array('purl_base_domain' => variable_get('purl_base_domain'), 'base_domain' => $base_url)), 'setting');
-      //}
+      drupal_add_library('os_site_creation','site_creation');
+      os_common_angular_apps('SiteCreationForm');
+      global $base_url;
+      drupal_add_js(array('admin_panel' => array('purl_base_domain' => variable_get('purl_base_domain'), 'base_domain' => $base_url)), 'setting');
+      drupal_add_css(drupal_get_path('theme', 'cp_theme').'/css/cp_theme.css');
     }
   }
 }
