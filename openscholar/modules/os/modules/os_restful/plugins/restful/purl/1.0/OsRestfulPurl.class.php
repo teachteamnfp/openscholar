@@ -220,7 +220,6 @@ class OsRestfulPurl extends \RestfulBase implements \RestfulDataProviderInterfac
         $message = str_replace($base_url.'/', '', $message);
         $message = $base_url . '/user?destination='.$message;
       }
-      watchdog("vsite_message", '<pre>'.print_r($message, true).'</pre>');
       $commands[] = ajax_command_replace('#submit-suffix', $message);
       $commands[] = ajax_command_remove('#edit-submit');
 
