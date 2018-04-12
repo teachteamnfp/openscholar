@@ -3,6 +3,32 @@
 trait VsitePathHandling {
 
   /**
+   * Prevents the vsite from activating at all if the path is excluded.
+   */
+  function detect($q) {
+    $plugin = ctools_get_plugins('spaces', 'plugins', 'vsite');
+    if ($plugin) {
+      $class = ctools_plugin_get_class($plugin, 'handler');
+    }
+
+    if (isset($class) && call_user_func(array($class, 'is_excluded_path'), $q)) {
+      global $base_url;
+      // Matches based on global base URL
+      return $base_url;
+    }
+    else {
+      $domain = parent::detect($q);
+
+      // Removes the port if it is 80 (some browsers don't do this by default)
+      if (substr($domain, -3) == ":80") {
+        $domain = substr($domain, 0, (strlen($domain) - 3));
+      }
+
+      return $domain;
+    }
+  }
+
+  /**
    * Triggered on hook_url_inbound_alter().
    *
    * Rewrites the given url to include the purl, so we can match against the url alias.

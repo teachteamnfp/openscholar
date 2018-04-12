@@ -17,23 +17,34 @@
  *   refreshed, and the value represents the section of the Drupal $page array
  *   corresponding to this region.
  */
-Drupal.overlay.refreshRegions = function (data) {
-  $.each(data, function () {
-    var region_info = this;
-    $.each(region_info, function (regionClass) {
-      var regionName = region_info[regionClass];
-      var regionSelector = '.' + regionClass;
-      // Allow special behaviors to detach.
-      Drupal.detachBehaviors($(regionSelector));
+  function refreshRegions(data) {
+    $.each(data, function () {
+      var region_info = this;
+      $.each(region_info, function (regionClass) {
+        var regionName = region_info[regionClass];
+        var regionSelector = '.' + regionClass;
+        // Allow special behaviors to detach.
+        Drupal.detachBehaviors($(regionSelector));
 
-      // This is where we override Overlay, and use our PURLified ajax callback
-      // URL.
-      $.get(Drupal.settings.overlay.ajaxCallback + '/' + regionName, function (newElement) {
-        $(regionSelector).replaceWith($(newElement));
-        Drupal.attachBehaviors($(regionSelector), Drupal.settings);
+        // This is where we override Overlay, and use our PURLified ajax callback
+        // URL.
+        $.get(Drupal.settings.overlay.ajaxCallback + '/' + regionName, function (newElement) {
+          $(regionSelector).replaceWith($(newElement));
+          Drupal.attachBehaviors($(regionSelector), Drupal.settings);
+        });
       });
     });
-  });
-};
+  };
+
+  function swap() {
+    if (Drupal.overlay) {
+      Drupal.overlay.refreshRegions = refreshRegions;
+    }
+    else {
+      setTimeout(swap, 10)
+    }
+  }
+
+  swap();
 
 })(jQuery);
