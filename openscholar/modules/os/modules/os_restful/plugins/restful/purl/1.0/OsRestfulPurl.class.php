@@ -130,6 +130,8 @@ class OsRestfulPurl extends \RestfulBase implements \RestfulDataProviderInterfac
    * Callback save to create site.
    */
   function save_site() {
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
     // Checking site creation permission
     if (!vsite_vsite_exists_access() || (function_exists('pinserver_user_has_associated_pin') && !os_pinserver_auth_vsite_register_form_page())) {
       $commands[] = "Not-Permissible";
