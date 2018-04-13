@@ -797,7 +797,12 @@ function cp_user_og_ui_add_users_submit(&$form, &$form_state) {
      $from = variable_get('site_mail', ini_get('sendmail_from'));
      $params['!user-role'] = _cp_user_list_roles('rids-human', NULL, $form['gid']['#value'])[$form_state['input']['roles']];
      $params['!account-modifier'] = !empty($account_modifier_full_name) ? $account_modifier_full_name : $account_modifier->name;
-     $params['!site-url'] = !empty($custom_domain) ? 'http://' . $custom_domain : $purl_base_domain . '/' . $vsite->group->purl;
+     $params['!site-url'] = url('', array(
+       'purl' => array(
+         'id' => $vsite->id,
+         'provider' => $custom_domain ? 'vsite_domain' : 'spaces_og',
+       )
+     ));
      $params['!account-modifier-email'] = $account_modifier->mail;
      $params['!user-firstname'] = $account->field_first_name[LANGUAGE_NONE][0]['value'];
      $params['!sitewide-name'] = variable_get('site_name', 'OpenScholar');

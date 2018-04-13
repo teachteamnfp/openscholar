@@ -249,7 +249,12 @@ function cp_user_remove_membership_confirm_submit($form, &$form_state) {
   $from = variable_get('site_mail', ini_get('sendmail_from'));
   $params['!user-role'] = $roles_human_names[$deleted_member_rid[0]];
   $params['!account-modifier'] = !empty($account_modifier_full_name) ? $account_modifier_full_name : $account_modifier->name;
-  $params['!site-url'] = !empty($custom_domain) ? 'http://' . $custom_domain : $purl_base_domain . '/' . $vsite->group->purl;
+  $params['!site-url'] = url('', array(
+    'purl' => array(
+      'id' => $vsite->id,
+      'provider' => $custom_domain ? 'vsite_domain' : 'spaces_og',
+    )
+  ));
   $params['!account-modifier-email'] = $account_modifier->mail;
   $params['!user-firstname'] = $account->field_first_name[LANGUAGE_NONE][0]['value'];
   $params['!sitewide-name'] = variable_get('site_name', variable_get('sitewide_name'));
@@ -351,7 +356,12 @@ function cp_user_change_site_owner_form_submit($form, &$form_state) {
   $from = variable_get('site_mail', ini_get('sendmail_from'));
   $params['!user-role'] = 'Site Owner';
   $params['!account-modifier'] = !empty($account_modifier_full_name) ? $account_modifier_full_name : $account_modifier->name;
-  $params['!site-url'] = !empty($custom_domain) ? 'http://' . $custom_domain : $purl_base_domain . '/' . $vsite->group->purl;
+  $params['!site-url'] = url('', array(
+    'purl' => array(
+      'id' => $vsite->id,
+      'provider' => $custom_domain ? 'vsite_domain' : 'spaces_og',
+    )
+  ));
   $params['!account-modifier-email'] = $account_modifier->mail;
   $params['!user-firstname'] = $account->field_first_name[LANGUAGE_NONE][0]['value'];
   $params['!sitewide-name'] = variable_get('site_name', variable_get('sitewide_name'));
@@ -486,7 +496,12 @@ function cp_user_edit_membership_form_submit($form, &$form_state) {
     $from = variable_get('site_mail', ini_get('sendmail_from'));
     $params['!user-role'] = $new_role_name;
     $params['!account-modifier'] = !empty($account_modifier_full_name) ? $account_modifier_full_name : $account_modifier->name;
-    $params['!site-url'] = !empty($custom_domain) ? 'http://' . $custom_domain : $purl_base_domain . '/' . $vsite->group->purl;
+    $params['!site-url'] = url('', array(
+      'purl' => array(
+        'id' => $vsite->id,
+        'provider' => $custom_domain ? 'vsite_domain' : 'spaces_og',
+      )
+    ));
     $params['!account-modifier-email'] = $account_modifier->mail;
     $params['!user-firstname'] = $account->field_first_name[LANGUAGE_NONE][0]['value'];
     $params['!sitewide-name'] = variable_get('site_name', variable_get('sitewide_name'));
