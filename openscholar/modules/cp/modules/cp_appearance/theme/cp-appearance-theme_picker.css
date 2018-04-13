@@ -150,6 +150,15 @@ ul.theme-picker li.checked h3,
   background: #f80000;
   color: #fff;
   }
+.page-cp-appearance .form-item-os-appearance-hwpi-modern-flavor option[value="default"], 
+.page-cp-appearance option[value="default"],
+.page-cp-appearance option[value="modern_saffron_accents"],
+.page-cp-appearance option[value="modern-monument"],
+.page-cp-appearance option[value="classic_cabot"],
+.page-cp-appearance option[value="classic_red_raven"],
+.page-cp-appearance option[value="classic_indigo"] {
+display:none;
+}
 
 form#cp-appearance-theme-picker-form div.form-radios {
   display:none;
