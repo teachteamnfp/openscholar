@@ -1334,6 +1334,7 @@ function os_pages_os_layout_set_alter(&$blocks, $context_name) {
  * Implements hook_form_FORM_ID_form_alter() for boxes_box
  */
 function os_pages_form_boxes_box_form_alter(&$form, &$form_state) {
+  natcasesort($form['options']['add']['new']['#options']);
   $form['#submit'][] = 'os_pages_widget_submit';
 }
 
