@@ -487,6 +487,12 @@ function vsite_form_node_delete_confirm_submit($form, &$form_state) {
   $redirect_url = drupal_parse_url($destination['destination']);
   $options = array();
   $options['query'] = $redirect_url['query'];
+
+  if ($redirect_url['path'] == '<base_domain>') {
+    $redirect_url['path'] = variable_get('purl_base_domain', $GLOBALS['base_url']);
+    $options['external'] = true;
+  }
+
   // Closing the modal and redirecting the user to destination path.
   if (isset($redirect_url['path'])) {
     overlay_close_dialog($redirect_url['path'], $options);
