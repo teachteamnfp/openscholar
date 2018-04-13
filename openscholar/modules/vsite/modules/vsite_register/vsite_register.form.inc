@@ -783,10 +783,15 @@ function _vsite_register_mail_replacements($vsite, $author, $key) {
   // Initialize replacements array with values common to both mail keys.
   $replacements = array(
     '!username' => $author->name,
-    '!site_login_uri' => url($purl_base_domain . '/user', array('absolute' => TRUE, 'query' => array('destination' => $vsite->group->purl))),
-    '!site_uri' => url($purl_base_domain . '/user', array('absolute' => TRUE, 'query' => array('destination' => $vsite->group->purl))),
+    '!site_login_uri' => url($purl_base_domain . '/user', array('absolute' => TRUE, 'query' => array('destination' => 'node/'.$vsite->id))),
+    '!site_uri' => url($purl_base_domain . '/user', array('absolute' => TRUE, 'query' => array('destination' => 'node/'.$vsite->id))),
     '!user_mail' => $author->mail,
-    '!site_url' => url($purl_base_domain . '/' . $vsite->group->purl, array('absolute' => TRUE)),
+    '!site_url' => url('', array(
+      'purl' => array(
+        'id' => $vsite->id,
+        'provider' => $vsite->purl_provider
+      )
+    )),
     '!sitewide_name' => variable_get('site_name', 'OpenScholar'),
   );
 

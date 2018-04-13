@@ -2024,7 +2024,12 @@ function vsite_mail_alter(&$message){
           '!site_name' => $vsite->group->title
         ));
         $replacements = array(
-          '!site' => $base_url . "/" . $vsite->group->purl,
+          '!site' => url('', array(
+            'purl' => array(
+              'id' => $vsite->id,
+              'provider' => $vsite->purl_provider
+            )
+          )),
           '!site_owner' => $site_owner_full_name,
           '!login_url' => user_pass_reset_url($user),
           '!mailto' => $user->mail,
@@ -2075,7 +2080,12 @@ function vsite_mail_alter(&$message){
           '!site_name' => $vsite->group->title
         ));
         $replacements = array(
-          '!site' => $base_url . "/" . $vsite->group->purl,
+          '!site' => url('', array(
+            'purl' => array(
+              'id' => $vsite->id,
+              'provider' => $vsite->purl_provider
+            )
+          )),
           '!site_owner' => $site_owner_full_name,
           '!login_url' => user_pass_reset_url($user),
           '!mailto' => $user->mail,
