@@ -358,9 +358,14 @@ function vsite_register_node_insert($node){
   if (og_is_group_type('node', $node->type)) {
     if(($vsite = spaces_load('og', $node->nid))){
       //PURL is needed but spaces_og_node_insert may not have fired yet
-      if (!isset($vsite->group->purl) && is_array($node->purl) && !empty($node->purl['value'])) {
-        $vsite->group->purl = $node->purl['value'];
+      if (!isset($vsite->group->purl)) {
+        if (is_array($node->purl) && !empty($node->purl['value'])) {
+          $vsite->group->purl = $node->purl['value'];
+        }
+        elseif (is_string($node->purl)) {
+          $vsite->group->purl = $node->purl;
       }
+    }
 
 	    // Emails user to inform them of new created site, email is always sent.
 	    // This function may additionally send a second email to a specified
