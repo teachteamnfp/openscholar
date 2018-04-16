@@ -41,7 +41,7 @@ function vsite_preset_import_menu($preset) {
   $path = drupal_get_path('module', $preset->export_module);
   $file = $path . '/preset_assets/' . $preset->name . '/menu/menu.csv';
   if (file_exists($file) && is_readable($file)) {
-    $source = feeds_source('os_blog_csv');
+    $source = feeds_source('os_menu');
     if (!is_null($source->state)) {
       // Load the source fetcher config.
       $fetcher_config = $source->getConfigFor($source->importer->fetcher);

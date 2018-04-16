@@ -74,16 +74,21 @@ class OsImporterMenuProcessor extends FeedsProcessor {
    * {@inheritdoc}
    */
   public function entitySave($menu_link) {
-    $menu_link_item = (array) $menu_link;
-    menu_link_save($menu_link_item);
-    $menu_link = (object) $menu_link_item;
+    $item = (array) $menu_link;
+    if (isset($item['og_group_ref'])) {
+      vsite_menu_menu_link_save($item, $item['og_group_ref'][LANGUAGE_NONE][0]['target_id']);
+    }
+    else {
+      menu_link_save($item);
+    }
+    $menu_link = (object) $item;
   }
 
   /**
    * {@inheritdoc}
    */
-  protected function entityDeleteMultiple($mlid) {
-    foreach ($mlid as $mlid) {
+  protected function entityDeleteMultiple($mlids) {
+    foreach ($mlids as $mlid) {
       menu_link_delete($mlid);
     }
   }
