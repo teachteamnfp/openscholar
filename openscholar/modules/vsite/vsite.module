@@ -2930,7 +2930,7 @@ function vsite_entity_property_info_alter(&$info) {
  */
 function vsite_entity_property_pass_set(&$data, $name, $value, $langcode, $type, $info) {
   // prevent rehashing an already hashed password. Also, prevent changing the password to itself again
-  if ($data->pass != $value && !user_check_password($value, $data)) {
+  if (empty($data->pass) || ($data->pass != $value && !user_check_password($value, $data))) {
     $data->pass = user_hash_password($value);
   }
 }
