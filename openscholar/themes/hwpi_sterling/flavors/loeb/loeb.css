@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans|Quintessential');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
 body *,
 .region-header-third ul.nice-menu a,
 #menu-bar ul.nice-menu a,
@@ -35,7 +35,7 @@ body {
     background-color: #f9f9f9;
 }
 #boxes-box-site_info h1 a {
-    font-family: 'Quintessential';
+    font-family: Georgia;
     font-size: 1.1em;
 }
 #menu-bar {

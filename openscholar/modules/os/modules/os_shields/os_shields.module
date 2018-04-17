@@ -47,7 +47,7 @@ function os_shields_form($form_state) {
     '#type' => 'file',
     '#size' => 60,
     '#title' => t('Upload New Shield'),
-    '#description' => t('Your new shield will appear below for selection. If this is your first shield, it will replace the Harvard shields below.'),
+    '#description' => t('Your new shield will appear below for selection. If this is your first shield, it will replace the %university shields below.', array('%university' => variable_get('university_name'))),
   );
 
   $shield_info = variable_get('os_shields_shield_info', array());

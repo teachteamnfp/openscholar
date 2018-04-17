@@ -28,7 +28,7 @@ function os_pinserver_auth_vsite_register_form_page() {
       return drupal_get_form('vsite_register_form');
     }
     else {
-      drupal_set_message(t('Only users who have linked their OpenScholar accounts to HarvardKey are eligible to create a new site.') . ' ' . l('Learn more about linking accounts', 'http://docs.openscholar.harvard.edu/logging-your-site#linking-your-harvardkey-to-your-openscholar-account', array('attributes' => array('target' => '_blank', 'rel' => 'noopener'))), 'error', FALSE);
+      drupal_set_message(t('Only users who have linked their OpenScholar accounts to HarvardKey are eligible to create a new site.') . ' ' . l('Learn more about linking accounts', 'https://harvard.service-now.com/ithelp?id=kb_article&sys_id=bcb7c5eadbba0fc0a914fff31d9619dc', array('attributes' => array('target' => '_blank', 'rel' => 'noopener'))), 'error', FALSE);
       drupal_goto('/user');
     }
   }

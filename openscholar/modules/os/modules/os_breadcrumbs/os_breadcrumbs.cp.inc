@@ -11,7 +11,7 @@ function os_breadcrumbs_cp_settings() {
       '#title' => t('Breadcrumbs'),
       '#weight' => 50,
       '#menu_parent' => 'appearance',
-      '#help_link' => l(t('Learn more about breadcrumbs'), 'http://docs.openscholar.harvard.edu/enable-breadcrumbs', array('attributes' => array('target' => '_blank')))
+      '#help_link' => l(t('Learn more about breadcrumbs'), 'https://help.theopenscholar.com/enable-breadcrumbs', array('attributes' => array('target' => '_blank')))
     ),
     'form' => array(
       '#prefix' => '<p>'
@@ -23,7 +23,7 @@ function os_breadcrumbs_cp_settings() {
       '#type' => 'checkbox',
       '#title' => t('Show breadcrumbs on my site'),
       '#default_value' => variable_get('os_breadcrumbs_show_breadcrumbs', 1),
-      '#help_link' => l(t('Learn more about breadcrumbs'), 'http://docs.openscholar.harvard.edu/enable-breadcrumbs', array('attributes' => array('target' => '_blank')))
+      '#help_link' => l(t('Learn more about breadcrumbs'), 'https://help.theopenscholar.com/enable-breadcrumbs', array('attributes' => array('target' => '_blank')))
     ),
   );
 
