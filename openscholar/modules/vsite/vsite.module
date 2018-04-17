@@ -1702,8 +1702,17 @@ function vsite_menu_alter(&$items) {
     $items[$path]['access callback'] = 'vsite_group_node_edit_access';
   }
 
-  // Site-Wide contact page is not used and is a valuable path so we make it avalible here.
+  // Site-Wide contact page is not used and is a valuable path so we make it available here.
   unset($items['contact']);
+
+  $items['node/add']['access callback'] = '_vsite_node_add_access_override';
+}
+
+/**
+ * This function prevents the users from seeing anything when they hit node/add
+ */
+function _vsite_node_add_access_override() {
+  return FALSE;
 }
 
 /**
