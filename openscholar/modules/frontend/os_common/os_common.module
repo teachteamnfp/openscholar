@@ -562,8 +562,7 @@ function os_common_element_post_render($content, $elem) {
       foreach ($elem['#angular_app'] as $app) {
         os_common_angular_apps($app);
       }
-    }
-    elseif (is_string($elem['#angular_app'])) {
+    } elseif (is_string($elem['#angular_app'])) {
       os_common_angular_apps($elem['#angular_app']);
     }
   }

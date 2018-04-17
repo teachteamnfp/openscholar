@@ -760,7 +760,7 @@ function hwpi_basetheme_status_messages($vars) {
     'warning' => t('Warning'),
   );
   foreach (drupal_get_messages($display) as $type => $messages) {
-    $output .= '<div class="messages ' . $type . '"><div class="message-inner"><div class="message-wrapper">';
+    $output .= '<div class="messages ' . $type . '"><div ng-non-bindable class="message-inner"><div class="message-wrapper">';
     if (!empty($status_heading[$type])) {
       $output .= '<h2>' . $status_heading[$type] . "</h2>";
     }
