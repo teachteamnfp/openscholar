@@ -13,6 +13,7 @@ div.messages ul li {
 }
 fieldset#edit-og-vocabulary-und .fieldset-wrapper,
 .logged-in div[aria-describedby^="event-popover-"] .ui-dialog-title,
+.ui-dialog.app-form,
 #page {
     padding: 0;
 }
@@ -1919,7 +1920,7 @@ div.no-bold {
 
  .visibility-selector {
 
-     background: url('../images/cp-sprite.png') no-repeat 100px -767px;
+     background: url('../images/cp-sprite.png') no-repeat 130px -767px;
      display:block;
  }
 
