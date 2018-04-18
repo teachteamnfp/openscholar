@@ -13,16 +13,16 @@ function vsite_preset_import_menu_task($entity, $task, &$context) {
   if (!$vsite) {
     return FALSE;
   }
-  // Save the current space.
-  $current_space = spaces_get_space();
-  // Temporary switch the current space to created vsite.
+  // Save the current vsite.
+  $current_vsite = vsite_get_vsite();
+  // Temporary switch from the current vsite to created vsite.
   spaces_set_space($vsite);
 
   $preset = spaces_preset_load($entity->spaces_preset_og, 'og');
   $imported = vsite_preset_import_menu($preset);
 
-  // Switch back the current space.
-  spaces_set_space($current_space);
+  // Switch back the current vsite.
+  spaces_set_space($current_vsite);
 
   return $imported;
 }

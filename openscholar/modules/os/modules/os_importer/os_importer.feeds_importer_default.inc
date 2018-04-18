@@ -124,6 +124,11 @@ function os_importer_feeds_importer_default() {
             'target' => 'link_path',
             'unique' => FALSE,
           ),
+          4 => array(
+            'source' => 'Parent Path',
+            'target' => 'parent_path',
+            'unique' => FALSE,
+          ),
         ),
         'update_existing' => '0',
         'input_format' => 'plain_text',

@@ -122,13 +122,14 @@ class OsImporterMenuProcessor extends FeedsProcessor {
    */
   public function setTargetElement(FeedsSource $source, $target_item, $target_element, $value) {
     switch ($target_element) {
-      case 'parent_guid':
-        $target_item->plid = (int) db_select('feeds_item', 'f')
-          ->fields('f', ['entity_id'])
-          ->condition('entity_type', 'menu')
-          ->condition('guid', $value)
-          ->execute()
-          ->fetchField();
+      case 'parent_path':
+        if (!empty($value)) {
+          $this->cleanPath($value);
+          $parent_item = os_menu_load_link_path($value);
+          if ($parent_item) {
+            $target_item->plid = $parent_item['mlid'];
+          }
+        }
         break;
 
       case 'description':
@@ -172,9 +173,9 @@ class OsImporterMenuProcessor extends FeedsProcessor {
         'name' => t('Description'),
         'description' => t('Description of link.'),
       ),
-      'parent_guid' => array(
-        'name' => t('Parent link GUID'),
-        'description' => t('Parent menu link GUID.'),
+      'parent_path' => array(
+        'name' => t('Parent link path'),
+        'description' => t('Parent menu link path.'),
       ),
     );
 
@@ -251,7 +252,13 @@ class OsImporterMenuProcessor extends FeedsProcessor {
    * Trim and normalize path.
    */
   protected function cleanPath(&$path) {
-    $path = drupal_get_normal_path(trim($path, " \t\n\r\0\x0B/"));
+    $path = trim($path, " \t\n\r\0\x0B/");
+    $purl = vsite_get_purl();
+    $prefix = $purl ? $purl . '/' : '';
+    $normal_path = drupal_get_normal_path($prefix . $path);
+    if ($path != $normal_path) {
+      $path = $normal_path;
+    }
   }
 
 }
