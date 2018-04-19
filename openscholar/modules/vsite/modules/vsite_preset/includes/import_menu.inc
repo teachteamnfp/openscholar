@@ -42,21 +42,19 @@ function vsite_preset_import_menu($preset) {
   $file = $path . '/preset_assets/' . $preset->name . '/menu/menu.csv';
   if (file_exists($file) && is_readable($file)) {
     $source = feeds_source('os_menu');
-    if (!is_null($source->state)) {
-      // Load the source fetcher config.
-      $fetcher_config = $source->getConfigFor($source->importer->fetcher);
-      // Add the new source file to the fetcher config.
-      $fetcher_config['source'] = $file;
-      $source->setConfigFor($source->importer->fetcher, $fetcher_config);
-      // Explicitly set process in background.
-      $config = ['process_in_background' => TRUE];
-      $source->importer->addConfig($config);
-      // Save the source.
-      $source->save();
-      // Execute the import.
-      $source->startImport();
-      $imported = TRUE;
-    }
+    // Load the source fetcher config.
+    $fetcher_config = $source->getConfigFor($source->importer->fetcher);
+    // Add the new source file to the fetcher config.
+    $fetcher_config['source'] = $file;
+    $source->setConfigFor($source->importer->fetcher, $fetcher_config);
+    // Explicitly set process in background.
+    $config = ['process_in_background' => TRUE];
+    $source->importer->addConfig($config);
+    // Save the source.
+    $source->save();
+    // Execute the import.
+    $source->startImport();
+    $imported = TRUE;
   }
   return $imported;
 }
