@@ -646,6 +646,13 @@ function os_publications_form_biblio_node_form_alter(&$form, &$form_state) {
   // Set the element max length to NULL won't trigger the normal form validation
   // for of standard element.
   $form['author']['date']['#maxlength'] = NULL;
+  
+  if(is_array($form['biblio_tabs'])){
+    $form['biblio_tabs']['biblio_authors']['#title'] = t('Author / Editor1');
+  }else{
+    $form['biblio_authors']['#title'] = t('Author / Editor');
+  }
+  //echo "<pre>"; die(print_r($form));
 
   // Adding after build function.
   $form['#after_build'][] = 'os_publications_biblio_rearrange';
