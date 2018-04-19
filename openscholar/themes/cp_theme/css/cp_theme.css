@@ -1050,6 +1050,7 @@ fieldset#edit-biblio-authors {
 
 fieldset#edit-biblio-authors .fieldset-wrapper {
     padding-left: 0;
+    margin: 20px 0 0 0;
 }
 
 fieldset#edit-biblio-authors .fieldset-legend {
