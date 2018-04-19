@@ -58,21 +58,19 @@ function vsite_preset_import_content($types, $preset) {
     $file = $path . '/preset_assets/' . $preset->name . '/content/' . $type . '.csv';
     if (file_exists($file) && is_readable($file) && isset($importer_info['csv'])) {
       $source = feeds_source($importer_info['csv']);
-      if (!is_null($source->state)) {
-        // Load the source fetcher config.
-        $fetcher_config = $source->getConfigFor($source->importer->fetcher);
-        // Add the new source file to the fetcher config.
-        $fetcher_config['source'] = $file;
-        $source->setConfigFor($source->importer->fetcher, $fetcher_config);
-        // Explicitly set process in background.
-        $config = ['process_in_background' => TRUE];
-        $source->importer->addConfig($config);
-        // Save the source.
-        $source->save();
-        // Execute the import.
-        $source->startImport();
-        $imported = TRUE;
-      }
+      // Load the source fetcher config.
+      $fetcher_config = $source->getConfigFor($source->importer->fetcher);
+      // Add the new source file to the fetcher config.
+      $fetcher_config['source'] = $file;
+      $source->setConfigFor($source->importer->fetcher, $fetcher_config);
+      // Explicitly set process in background.
+      $config = ['process_in_background' => TRUE];
+      $source->importer->addConfig($config);
+      // Save the source.
+      $source->save();
+      // Execute the import.
+      $source->startImport();
+      $imported = TRUE;
     }
   }
   return $imported;
