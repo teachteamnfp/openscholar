@@ -1380,3 +1380,46 @@ function os_pages_entity_load($entities, $type) {
     }
   }
 }
+
+/**
+ * Implements hook_feeds_processor_targets_alter().
+ *
+ * @see FeedsProcessor::getMappingTargets()
+ */
+function os_pages_feeds_processor_targets_alter(&$targets, $entity_type, $bundle_name) {
+  if ($entity_type == 'node' && $bundle_name == 'page') {
+    $targets['parent_path'] = array(
+      'name' => t('Parent node path'),
+      'description' => t('Parent node path.'),
+      'callback' => 'os_pages_parent_page_import',
+    );
+  }
+}
+
+/**
+ * Importer callback for the set the parent page of imported node.
+ *
+ * @param $source
+ *   Field mapper source settings.
+ * @param $entity
+ *   An entity object, for instance a node object.
+ * @param $target
+ *   A string identifying the target on the node.
+ * @param $value
+ *   The value to populate the target with.
+ * @param $mapping
+ *  Associative array of the mapping settings from the per mapping configuration
+ *  form.
+ */
+function os_pages_parent_page_import($source, $entity, $target, $value, $mapping) {
+  if ($value && $entity->type == 'page') {
+    $path = trim($value, " \t\n\r\0\x0B/");
+    $purl = vsite_get_purl();
+    $prefix = $purl ? $purl . '/' : '';
+    $normal_path = drupal_get_normal_path($prefix . $path);
+    $parent_node = menu_get_object('node', 1, $normal_path);
+    if ($parent_node && $parent_node->type == 'page') {
+      os_pages_make_subpage($entity, $parent_node->nid);
+    }
+  }
+}
