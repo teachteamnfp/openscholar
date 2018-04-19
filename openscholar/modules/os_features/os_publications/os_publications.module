@@ -652,6 +652,8 @@ function os_publications_form_biblio_node_form_alter(&$form, &$form_state) {
   }else{
     $form['biblio_authors']['#title'] = t('Author / Editor');
   }
+  echo "<pre>";
+  die(print_r($form));
 
   // Adding after build function.
   $form['#after_build'][] = 'os_publications_biblio_rearrange';
