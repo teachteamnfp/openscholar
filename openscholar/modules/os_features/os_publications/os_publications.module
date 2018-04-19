@@ -648,7 +648,7 @@ function os_publications_form_biblio_node_form_alter(&$form, &$form_state) {
   $form['author']['date']['#maxlength'] = NULL;
   
   if(is_array($form['biblio_tabs'])){
-    $form['biblio_tabs']['biblio_authors']['#title'] = t('Author / Editor1');
+    $form['biblio_tabs']['biblio_authors']['#title'] = t('Author / Editor');
   }else{
     $form['biblio_authors']['#title'] = t('Author / Editor');
   }
