@@ -372,7 +372,7 @@ function citation_distribute_flag($event, $flag, $nid, $account) {
  */
 function citation_distribute_form_biblio_node_form_alter(&$form, &$form_state, $form_id) {
   $form['biblio_authors']['#title'] = t('Author / Editor');
-  echo "<pre>"; die(print_r($form['biblio_authors']));
+  echo "<pre>"; die(print_r($form));
   if (!$form['biblio_type']['#default_value']) {
     return;
   }
