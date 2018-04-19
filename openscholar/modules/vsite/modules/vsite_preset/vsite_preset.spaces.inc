@@ -814,6 +814,138 @@ function vsite_preset_spaces_presets() {
   $spaces_presets = new stdClass();
   $spaces_presets->disabled = FALSE; /* Edit this to true to make a default spaces_presets disabled initially */
   $spaces_presets->api_version = 3;
+  $spaces_presets->name = 'hwp_professional';
+  $spaces_presets->title = 'HWP Professional';
+  $spaces_presets->description = 'The Professional site.';
+  $spaces_presets->space_type = 'og';
+  $spaces_presets->value = array(
+    'bundles' => array(
+      0 => 'personal',
+    ),
+    'og_tasks' => array(
+      0 => 'vsite_preset_import_content',
+      1 => 'vsite_preset_import_menu',
+    ),
+    'variable' => array(
+      'vsite_preset_import_content_types' => array(
+        'page',
+        'blog',
+      ),
+      'spaces_features' => array(
+        'os' => '1',
+        'os_pages' => '1',
+        'os_blog' => '1',
+      ),
+      'spaces_features_available' => array(
+        0 => 'os_blog',
+        1 => 'os_booklets',
+        2 => 'os_classes',
+        3 => 'os_events',
+        4 => 'os_faq',
+        5 => 'os_files_private',
+        6 => 'os_image_gallery',
+        7 => 'os_links',
+        8 => 'os_news',
+        9 => 'os_pages',
+        10 => 'os_presentations',
+        11 => 'os_profiles',
+        12 => 'os_publications',
+        13 => 'os_reader',
+        14 => 'os_software',
+        15 => 'harvard_courses',
+      ),
+      'site_frontpage' => 'home',
+      'theme_default' => 'hwpi_classic',
+      'os_appearance_hwpi_classic_flavor' => 'classic_indigo',
+      'os_breadcrumbs_show_breadcrumbs' => 1,
+    ),
+    'menus' => array(
+      'primary-menu' => array(
+        900 => array(
+          'link_path' => '<front>',
+          'link_title' => 'HOME',
+          'options' => array(),
+          'mlid' => 900,
+          'p1' => 900,
+          'depth' => 1,
+          'router_path' => 'home',
+          'menu_name' => 'primary-menu',
+          'external' => 1,
+          'weight' => 0,
+          'hidden' => 0,
+          'has_children' => 0,
+          'expanded' => 0,
+          'module' => 'menu',
+          'customized' => 0,
+          'updated' => 0,
+          'plid' => 0,
+          'p2' => 0,
+          'p3' => 0,
+          'p4' => 0,
+          'p5' => 0,
+          'p6' => 0,
+          'p7' => 0,
+          'p8' => 0,
+          'p9' => 0,
+        ),
+      ),
+    ),
+    'context' => array(
+      'os_public:reaction:block' => array(
+        'blocks' => array(
+          'boxes-site_info' => array(
+            'module' => 'boxes',
+            'delta' => 'site_info',
+            'region' => 'header_first',
+            'weight' => '-10',
+            'status' => 0,
+            'title' => '',
+            'options' => array(
+              'site_title' => t('Alison Francis'),
+              'descrip' => t('Independent Consultant'),
+            ),
+          ),
+          'os_search_db-site-search' => array(
+            'module' => 'os_search_db',
+            'delta' => 'site-search',
+            'region' => 'header_third',
+            'weight' => '-10',
+            'status' => 0,
+            'title' => '',
+          ),
+          'os-primary-menu' => array(
+            'module' => 'os',
+            'delta' => 'primary-menu',
+            'region' => 'menu_bar',
+            'weight' => '-10',
+            'status' => 0,
+            'title' => '',
+          ),
+          'boxes-hwp_personal_contact_html' => array(
+            'module' => 'boxes',
+            'delta' => 'hwp_personal_contact_html',
+            'region' => 'footer_third',
+            'weight' => '-10',
+          ),
+        ),
+      ),
+      'os_front:reaction:block' => array(
+        'blocks' => array(
+
+        ),
+      ),
+    ),
+  );
+
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('HWP Professional');
+  t('The Professional site.');
+  $export['hwp_professional'] = $spaces_presets;
+
+  $spaces_presets = new stdClass();
+  $spaces_presets->disabled = FALSE; /* Edit this to true to make a default spaces_presets disabled initially */
+  $spaces_presets->api_version = 3;
   $spaces_presets->name = 'hwp_event_conference';
   $spaces_presets->title = 'HWP Event/Conference';
   $spaces_presets->description = 'The Standard Event or Conference site.';

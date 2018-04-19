@@ -190,6 +190,7 @@ function vsite_strongarm() {
     'hwp_lab_research_group' => 'hwp_lab_research_group',
     'hwp_project' => 'hwp_project',
     'hwp_personal' => 'hwp_personal',
+    'hwp_professional' => 'hwp_professional',
     'hwp_event_conference' => 'hwp_event_conference',
   );
   $export['os_enabled_spaces_presets'] = $strongarm;
