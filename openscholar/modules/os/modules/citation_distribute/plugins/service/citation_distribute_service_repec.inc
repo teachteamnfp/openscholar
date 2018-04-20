@@ -392,6 +392,7 @@ class citation_distribute_service_repec extends citation_distribute_service {
   /* _write() saves rdf metadata to disk */
   public function _write($data, $nid) {
     $path = $this->_citation_distribute_service_repec_path() . $this->_nid_to_type($nid) . '/';
+    dsm($path);
 
     //create the path if necessary.  otherwise fail.  mkdir goes to logs, but users get generic failure message
     if (!( is_dir($path) || mkdir($path, 0775, TRUE) )) {
@@ -400,7 +401,10 @@ class citation_distribute_service_repec extends citation_distribute_service {
     }
 
     $filename = $path . $this->_file_name($nid);
-    return file_put_contents($filename, $data);
+    dsm($filename);
+    $file_content = file_put_contents($filename, $data);
+    dsm($file_content);
+    return $file_content;
   }
 
   /* writes repec index file */
