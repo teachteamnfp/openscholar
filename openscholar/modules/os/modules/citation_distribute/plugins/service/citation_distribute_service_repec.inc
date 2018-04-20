@@ -301,7 +301,7 @@ class citation_distribute_service_repec extends citation_distribute_service {
    *   success bool.  only relevant for nid mode
    **/
   public function validate($a3) {
-    dsm("into validate function")
+    dsm("into validate function");
     $return = TRUE;
 
     // Get the vars we're checking by any means.
