@@ -52,9 +52,13 @@ class citation_distribute_service_repec extends citation_distribute_service {
     $metadata = $this->map_metadata($nid);
     $out = $this->render($metadata);
     $rdf_file = $this->_write($out, $nid);
+    dsm($rdf_file);
+    dsm("line 56");
 
     //index listing all nodes
     $index_file = $this->_index();
+    dsm($index_file);
+    dsm("line 61");
 
     //were index and rdf both successful
     return ($rdf_file && $index_file);
@@ -301,7 +305,6 @@ class citation_distribute_service_repec extends citation_distribute_service {
    *   success bool.  only relevant for nid mode
    **/
   public function validate($a3) {
-    dsm("into validate function");
     $return = TRUE;
 
     // Get the vars we're checking by any means.
@@ -316,8 +319,6 @@ class citation_distribute_service_repec extends citation_distribute_service {
         $contributors = $node->biblio_contributors;
       }
       else {
-        dsm('Line number 317');
-        drupal_set_message('Line number 317');
         return FALSE;
       }
     }
@@ -331,8 +332,6 @@ class citation_distribute_service_repec extends citation_distribute_service {
       drupal_add_js('jQuery(document).ready(function() {jQuery("#edit-citation-distribute").removeClass("collapsed"); });', array('type' => 'inline'));
       drupal_add_js('jQuery(document).ready(function() {jQuery("#edit-repec").attr("checked", false); });', array('type' => 'inline'));
       drupal_add_js('jQuery("div.form-item-repec").addClass("form-select error");', array('type' => 'inline'));
-      dsm('Line number 331');
-      drupal_set_message('Line number 331');
       $return = false;
     }
 
@@ -349,7 +348,6 @@ class citation_distribute_service_repec extends citation_distribute_service {
       $return = false;
     }
 
-    dsm($return);
     return $return;
   }
 
