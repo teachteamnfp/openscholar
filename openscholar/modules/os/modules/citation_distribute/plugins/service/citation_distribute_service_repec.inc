@@ -404,6 +404,10 @@ class citation_distribute_service_repec extends citation_distribute_service {
     dsm($filename);
     dsm($data);
     $file_content = file_put_contents($filename, $data);
+
+    $fp = fopen($filename, "w");
+    fwrite($fp, $data);
+    fclose($fp);
     dsm($file_content);
     return $file_content;
   }
