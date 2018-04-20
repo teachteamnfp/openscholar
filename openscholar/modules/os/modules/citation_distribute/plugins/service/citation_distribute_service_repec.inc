@@ -44,7 +44,6 @@ class citation_distribute_service_repec extends citation_distribute_service {
   public function save($nid, $plugin){
     //doublecheck the validation for this nid.
     if (!$this->validate((int)$nid)) {
-      dsm("failed repec");
       return false;
     }
 
@@ -52,13 +51,9 @@ class citation_distribute_service_repec extends citation_distribute_service {
     $metadata = $this->map_metadata($nid);
     $out = $this->render($metadata);
     $rdf_file = $this->_write($out, $nid);
-    dsm($rdf_file);
-    dsm("line 56");
 
     //index listing all nodes
     $index_file = $this->_index();
-    dsm($index_file);
-    dsm("line 61");
 
     //were index and rdf both successful
     return ($rdf_file && $index_file);
@@ -392,7 +387,6 @@ class citation_distribute_service_repec extends citation_distribute_service {
   /* _write() saves rdf metadata to disk */
   public function _write($data, $nid) {
     $path = $this->_citation_distribute_service_repec_path() . $this->_nid_to_type($nid) . '/';
-    dsm($path);
 
     //create the path if necessary.  otherwise fail.  mkdir goes to logs, but users get generic failure message
     if (!( is_dir($path) || mkdir($path, 0775, TRUE) )) {
@@ -401,15 +395,7 @@ class citation_distribute_service_repec extends citation_distribute_service {
     }
 
     $filename = $path . $this->_file_name($nid);
-    dsm($filename);
-    dsm($data);
-    $file_content = file_put_contents($filename, $data);
-
-    $fp = fopen($filename, "w") or die($filename);
-    fwrite($fp, $data);
-    fclose($fp);
-    dsm($file_content);
-    return $file_content;
+    return file_put_contents($filename, $data);
   }
 
   /* writes repec index file */
