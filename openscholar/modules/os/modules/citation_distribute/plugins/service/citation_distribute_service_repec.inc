@@ -349,6 +349,7 @@ class citation_distribute_service_repec extends citation_distribute_service {
       $return = false;
     }
 
+    dsm($return);
     return $return;
   }
 
