@@ -656,6 +656,7 @@ function _citation_distribute_distribute($nid, $plugin) {
   if (!$out) {
     $msg = t('Error sending document to @title.', array('@title' =>$plugin['title']));
     drupal_set_message('Error sending document to ' . $plugin['title'], 'error');
+    dsm("here l");
     error_log(t('Citation Distribute: ') . $msg);
   }
 

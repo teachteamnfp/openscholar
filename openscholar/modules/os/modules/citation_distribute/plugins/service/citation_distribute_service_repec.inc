@@ -44,6 +44,7 @@ class citation_distribute_service_repec extends citation_distribute_service {
   public function save($nid, $plugin){
     //doublecheck the validation for this nid.
     if (!$this->validate((int)$nid)) {
+      dsm("failed repec");
       return false;
     }
 
@@ -300,6 +301,7 @@ class citation_distribute_service_repec extends citation_distribute_service {
    *   success bool.  only relevant for nid mode
    **/
   public function validate($a3) {
+    dsm("into validate function")
     $return = TRUE;
 
     // Get the vars we're checking by any means.
@@ -314,6 +316,7 @@ class citation_distribute_service_repec extends citation_distribute_service {
         $contributors = $node->biblio_contributors;
       }
       else {
+        dsm('Line number 317');
         drupal_set_message('Line number 317');
         return FALSE;
       }
@@ -328,6 +331,7 @@ class citation_distribute_service_repec extends citation_distribute_service {
       drupal_add_js('jQuery(document).ready(function() {jQuery("#edit-citation-distribute").removeClass("collapsed"); });', array('type' => 'inline'));
       drupal_add_js('jQuery(document).ready(function() {jQuery("#edit-repec").attr("checked", false); });', array('type' => 'inline'));
       drupal_add_js('jQuery("div.form-item-repec").addClass("form-select error");', array('type' => 'inline'));
+      dsm('Line number 331');
       drupal_set_message('Line number 331');
       $return = false;
     }
