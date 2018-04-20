@@ -13,6 +13,7 @@ div.messages ul li {
 }
 fieldset#edit-og-vocabulary-und .fieldset-wrapper,
 .logged-in div[aria-describedby^="event-popover-"] .ui-dialog-title,
+.ui-dialog.app-form,
 #page {
     padding: 0;
 }
@@ -290,7 +291,7 @@ a.form-cancel {
  display: inline-block;
     float: left;
     margin-right:6px;
-    font-size: 7px;
+    font-size: 6px;
     position: relative;
     text-indent: -9999em;
     border-top: .5em solid rgb(255, 255, 255);
@@ -1122,15 +1123,15 @@ form.node-form .form-region-main .fieldset-legend span.summary {
 html.js .form-region-right fieldset.collapsible .fieldset-legend
 /*form.node-form.overlay-processed .form-region-right  fieldset.collapsed .fieldset-legend*/
 {
-    border: 1px solid #CCCCCC;
+    /* border: 1px solid #CCCCCC; */
     display: block;
     font-weight: normal;
     line-height: 13px;
-    min-height: 25px;
-    padding: 6px 15px 4px;
+    /* min-height: 25px; */
+    padding: 8px 0px 6px 15px;
     text-transform: none;
     width: 89%;
-    background-color: #f1f1f1;
+    background-color: #efefef;
 }
 
 html.js fieldset.collapsible .fieldset-legend {
@@ -1145,7 +1146,7 @@ html.js fieldset.collapsible > legend .fieldset-legend:before {
     background-repeat: no-repeat;
     width: 15px;
     height: 15px;
-    top: 3px;
+    top: 8px;
     left: 0;
 }
 
@@ -1166,12 +1167,13 @@ form.node-form {
 }
 
 form.node-form .form-region-right .fieldset-wrapper {
-    border-bottom: 1px solid #CCCCCC;
-    border-left: 1px solid #CCCCCC;
-    border-right: 1px solid #CCCCCC;
-    padding-top: 15px;
-    padding-right: 15px;
-    width: 89%;
+    /* border-bottom: 1px solid #CCCCCC; */
+    /* border-left: 1px solid #CCCCCC; */
+    /* border-right: 1px solid #CCCCCC; */
+    /* padding-top: 15px; */
+    /* padding-right: 15px; */
+    /* width: 89%; */
+    background-color: #f7f7f7;
 }
 
 .form-region-right .field-prefix {
@@ -1920,7 +1922,7 @@ div.no-bold {
 
  .visibility-selector {
 
-     background: url('../images/cp-sprite.png') no-repeat 100px -767px;
+     background: url('../images/cp-sprite.png') no-repeat 130px -767px;
      display:block;
  }
 
