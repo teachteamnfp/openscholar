@@ -402,6 +402,7 @@ class citation_distribute_service_repec extends citation_distribute_service {
 
     $filename = $path . $this->_file_name($nid);
     dsm($filename);
+    dsm($data);
     $file_content = file_put_contents($filename, $data);
     dsm($file_content);
     return $file_content;
