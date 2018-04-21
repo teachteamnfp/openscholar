@@ -1094,7 +1094,7 @@ form.node-form .form-region-main input.form-text {
 }
 
 form.node-form .form-region-right fieldset {
-    background: none repeat scroll 0% 0% transparent;
+    background-color: #f1f1f1;
     border: medium none;
     margin: 1em 0px;
     padding: 3em 0px 0.1em;
@@ -1128,10 +1128,10 @@ html.js .form-region-right fieldset.collapsible .fieldset-legend
     font-weight: normal;
     line-height: 13px;
     /* min-height: 25px; */
-    padding: 8px 0px 6px 15px;
-    text-transform: none;
-    width: 89%;
-    background-color: #efefef;
+    /* padding: 10px 0 10px 10px; */
+    /* text-transform: none; */
+    /* width: 100%; */
+    /* background-color: #f1f1f1; */
 }
 
 html.js fieldset.collapsible .fieldset-legend {
@@ -1146,7 +1146,7 @@ html.js fieldset.collapsible > legend .fieldset-legend:before {
     background-repeat: no-repeat;
     width: 15px;
     height: 15px;
-    top: 8px;
+    top: 3px;
     left: 0;
 }
 
@@ -1169,11 +1169,10 @@ form.node-form {
 form.node-form .form-region-right .fieldset-wrapper {
     /* border-bottom: 1px solid #CCCCCC; */
     /* border-left: 1px solid #CCCCCC; */
-    /* border-right: 1px solid #CCCCCC; */
+    /* background-color: #f1f1f1; */
     /* padding-top: 15px; */
     /* padding-right: 15px; */
-    /* width: 89%; */
-    background-color: #f7f7f7;
+    /* width: 220px; */
 }
 
 .form-region-right .field-prefix {
@@ -1213,7 +1212,7 @@ form#cp-user-edit-membership-form .form-item-group-manager {
 }
 
 h1.biblio-type-prefix {
-    float: left;
+    /* float: left; */
     margin: 18px 10px 0px 0px;
     padding: 0.3em 0;
     color: #666;
@@ -1224,6 +1223,9 @@ h1.biblio-type-prefix {
 .form-item-biblio-type select {
     font-size: 18px;
     color: #666;
+    width: 100%;
+    border-top-color: #ccc;
+    /* padding: 8px; */
 }
 
 .form-item-biblio-type span.form-required {
