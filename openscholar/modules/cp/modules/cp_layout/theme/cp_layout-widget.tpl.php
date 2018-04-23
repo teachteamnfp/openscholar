@@ -1,4 +1,4 @@
-<div id="<?php echo $bid; ?>" class="<?php echo implode(' ', $classes_array); ?>">
+<div id="<?php echo $bid; ?>" class="<?php echo implode(' ', $classes_array); ?>" ng-non-bindable>
   <?php echo $widget_title; ?>
     <div class="widget-icon"></div>
     <div class="widget-controls">

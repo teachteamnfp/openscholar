@@ -1046,9 +1046,14 @@ function os_update_7058() {
 }
 
 /**
- * Enable the honeypot module to protect against spam
+ * Install santize markup module
  */
 function os_update_7059() {
+  module_enable(array('os_sanitize_markup'));
+
+ * Enable the honeypot module to protect against spam
+ */
+function os_update_7060() {
   //Enable honeypot module and set variable to enable honeypot for password reset form
   module_enable(array('honeypot'));
   variable_set('honeypot_form_user_pass', 1);

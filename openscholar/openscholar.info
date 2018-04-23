@@ -101,6 +101,7 @@ dependencies[] = os_importer
 dependencies[] = os_revisions
 dependencies[] = os_restful
 dependencies[] = os_rss
+dependencies[] = os_sanitize_markup
 dependencies[] = os_search_db
 dependencies[] = os_shields
 dependencies[] = os_slideshow
