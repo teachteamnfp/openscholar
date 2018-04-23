@@ -626,7 +626,7 @@ function _citation_distribute_checked($plugin, $nid) {
     $noauto = $status->fetchColumn();
     $return = (!$noauto);
   } elseif ($nid){
-    //node has no CD settings i.e. not submitted
+    //node has no CD settings i.e. no plug-ins were selected
     $return = 0;
   } else {
     // In case of adding for the first time, use plugin's autoflag preferences
