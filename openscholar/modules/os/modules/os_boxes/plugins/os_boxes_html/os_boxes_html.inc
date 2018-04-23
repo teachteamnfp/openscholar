@@ -98,7 +98,7 @@ class os_boxes_html extends os_boxes_default {
   /**
    * {@inheritdoc}
    */
-   public function validate(&$values) {
+  public function validate(&$values) {
     if (empty($values['text']['value'])) {
       form_set_error('', t('If the content is empty, you may have difficulties displaying the widget.'));
     } else if (strlen($values['text']['value']) < 65000) {

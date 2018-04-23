@@ -1864,10 +1864,13 @@ function os_contextual_links_view_alter(&$element, $items) {
     return FALSE;
   }
 
-  $element['#links']['node-revisions'] = array(
-    'title' => t('Revisions'),
-    'href' => 'node/' . $node->nid . '/revisions',
-  );
+  if ($element['#element']['#node']->type != 'page') {
+    // Page has page-revisions. See os_pages_menu_contextual_links_alter
+    $element['#links']['node-revisions'] = array(
+      'title' => t('Revisions'),
+      'href' => 'node/' . $node->nid . '/revisions',
+    );
+  }
 }
 
 /**
