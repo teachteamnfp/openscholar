@@ -625,8 +625,11 @@ function _citation_distribute_checked($plugin, $nid) {
     //node has CD settings.  use those
     $noauto = $status->fetchColumn();
     $return = (!$noauto);
+  } elseif ($nid){
+    //node has no CD settings i.e. not submitted
+    $return = 0;
   } else {
-    //no settings.  use plugin's autoflag preferences
+    // In case of adding for the first time, use plugin's autoflag preferences
     if ($vsite = vsite_get_vsite()) {
       $autoflags = $vsite->controllers->variable->get('citation_distribute_autoflags');
     } else {
