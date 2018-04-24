@@ -553,6 +553,12 @@ function os_common_preprocess_overlay(&$vars) {
   $vars['title_attributes_array']['ng-non-bindable'] = '';
 }
 
+function os_common_preprocess_views_view_field(&$vars) {
+  if ($vars['field']->field_alias == 'node_title') {
+    $vars['output'] = '<span ng-non-bindable>'.$vars['output'].'</span>';
+  }
+}
+
 /**
  * Implements a post_render function.
  *
