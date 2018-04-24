@@ -56,6 +56,42 @@ function vsite_preset_og_tasks_info($entity_type, $entity) {
   );
   $tasks['vsite_preset_menu_order'] = new vsite_task($properties);
 
+  $properties = array(
+    'title' => t('Import content from CSV'),
+    'description' => t('Import vsite content from CSV files.'),
+    'required' => FALSE,
+    'callback' => 'vsite_preset_import_content_task',
+    'file' => $path . '/includes/import_content.inc',
+  );
+  $tasks['vsite_preset_import_content'] = new vsite_task($properties);
+
+  $properties = array(
+    'title' => t('Import menu items from CSV'),
+    'description' => t('Import vsite menu items from CSV files.'),
+    'required' => FALSE,
+    'callback' => 'vsite_preset_import_menu_task',
+    'file' => $path . '/includes/import_menu.inc',
+  );
+  $tasks['vsite_preset_import_menu'] = new vsite_task($properties);
+
+  $properties = array(
+    'title' => t('Create widgets'),
+    'description' => t('Create vsite widgets.'),
+    'required' => FALSE,
+    'callback' => 'vsite_preset_create_widgets_task',
+    'file' => $path . '/includes/create_widgets.inc',
+  );
+  $tasks['vsite_preset_create_widgets'] = new vsite_task($properties);
+
+  $properties = array(
+    'title' => t('Update page contexts'),
+    'description' => t('Update page contexts with real nids instead of aliases.'),
+    'required' => FALSE,
+    'callback' => 'vsite_preset_update_page_contexts_task',
+    'file' => $path . '/includes/update_contexts.inc',
+  );
+  $tasks['vsite_preset_update_page_contexts'] = new vsite_task($properties);
+
   return $tasks;
 }
 

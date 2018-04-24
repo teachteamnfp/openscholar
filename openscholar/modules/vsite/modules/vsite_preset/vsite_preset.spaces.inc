@@ -825,6 +825,8 @@ function vsite_preset_spaces_presets() {
     'og_tasks' => array(
       0 => 'vsite_preset_import_content',
       1 => 'vsite_preset_import_menu',
+      2 => 'vsite_preset_create_widgets',
+      3 => 'vsite_preset_update_page_contexts',
     ),
     'variable' => array(
       'vsite_preset_import_content_types' => array(
@@ -898,40 +900,51 @@ function vsite_preset_spaces_presets() {
             'delta' => 'site_info',
             'region' => 'header_first',
             'weight' => '-10',
-            'status' => 0,
-            'title' => '',
-            'options' => array(
-              'site_title' => t('Alison Francis'),
-              'descrip' => t('Independent Consultant'),
-            ),
           ),
           'os_search_db-site-search' => array(
             'module' => 'os_search_db',
             'delta' => 'site-search',
             'region' => 'header_third',
             'weight' => '-10',
-            'status' => 0,
-            'title' => '',
           ),
           'os-primary-menu' => array(
             'module' => 'os',
             'delta' => 'primary-menu',
             'region' => 'menu_bar',
             'weight' => '-10',
-            'status' => 0,
-            'title' => '',
           ),
-          'boxes-hwp_personal_contact_html' => array(
+          'boxes-contact-hwp_professional' => array(
             'module' => 'boxes',
-            'delta' => 'hwp_personal_contact_html',
-            'region' => 'footer_third',
+            'delta' => 'contact-hwp_professional',
+            'region' => 'footer',
             'weight' => '-10',
           ),
         ),
       ),
       'os_front:reaction:block' => array(
         'blocks' => array(
-
+          'boxes-follow_me-hwp_professional' => array(
+            'module' => 'boxes',
+            'delta' => 'follow_me-hwp_professional',
+            'region' => 'footer_first',
+            'weight' => '-10',
+          ),
+        ),
+      ),
+      'os_pages-page-work:reaction:block' => array(
+        'blocks' => array(
+          'boxes-basic_page_app_links-hwp_professional' => array(
+            'module' => 'boxes',
+            'delta' => 'basic_page_app_links-hwp_professional',
+            'region' => 'sidebar_second',
+            'weight' => '-10',
+          ),
+          'boxes-basic_page_app_video-hwp_professional' => array(
+            'module' => 'boxes',
+            'delta' => 'basic_page_app_video-hwp_professional',
+            'region' => 'sidebar_second',
+            'weight' => '-9',
+          ),
         ),
       ),
     ),
