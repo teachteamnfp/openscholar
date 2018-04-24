@@ -1051,6 +1051,7 @@ fieldset#edit-biblio-authors {
 
 fieldset#edit-biblio-authors .fieldset-wrapper {
     padding-left: 0;
+    margin: 20px 0 0 0;
 }
 
 fieldset#edit-biblio-authors .fieldset-legend {
@@ -1093,7 +1094,7 @@ form.node-form .form-region-main input.form-text {
 }
 
 form.node-form .form-region-right fieldset {
-    background: none repeat scroll 0% 0% transparent;
+    background-color: #f1f1f1;
     border: medium none;
     margin: 1em 0px;
     padding: 3em 0px 0.1em;
@@ -1122,15 +1123,15 @@ form.node-form .form-region-main .fieldset-legend span.summary {
 html.js .form-region-right fieldset.collapsible .fieldset-legend
 /*form.node-form.overlay-processed .form-region-right  fieldset.collapsed .fieldset-legend*/
 {
-    border: 1px solid #CCCCCC;
+    /* border: 1px solid #CCCCCC; */
     display: block;
     font-weight: normal;
     line-height: 13px;
-    min-height: 25px;
-    padding: 6px 15px 4px;
-    text-transform: none;
-    width: 89%;
-    background-color: #f1f1f1;
+    /* min-height: 25px; */
+    /* padding: 10px 0 10px 10px; */
+    /* text-transform: none; */
+    /* width: 100%; */
+    /* background-color: #f1f1f1; */
 }
 
 html.js fieldset.collapsible .fieldset-legend {
@@ -1166,12 +1167,12 @@ form.node-form {
 }
 
 form.node-form .form-region-right .fieldset-wrapper {
-    border-bottom: 1px solid #CCCCCC;
-    border-left: 1px solid #CCCCCC;
-    border-right: 1px solid #CCCCCC;
-    padding-top: 15px;
-    padding-right: 15px;
-    width: 89%;
+    /* border-bottom: 1px solid #CCCCCC; */
+    /* border-left: 1px solid #CCCCCC; */
+    /* background-color: #f1f1f1; */
+    /* padding-top: 15px; */
+    /* padding-right: 15px; */
+    /* width: 220px; */
 }
 
 .form-region-right .field-prefix {
@@ -1211,7 +1212,7 @@ form#cp-user-edit-membership-form .form-item-group-manager {
 }
 
 h1.biblio-type-prefix {
-    float: left;
+    /* float: left; */
     margin: 18px 10px 0px 0px;
     padding: 0.3em 0;
     color: #666;
@@ -1222,6 +1223,9 @@ h1.biblio-type-prefix {
 .form-item-biblio-type select {
     font-size: 18px;
     color: #666;
+    width: 100%;
+    border-top-color: #ccc;
+    /* padding: 8px; */
 }
 
 .form-item-biblio-type span.form-required {
