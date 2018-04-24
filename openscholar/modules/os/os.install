@@ -1046,13 +1046,6 @@ function os_update_7058() {
 }
 
 /**
- * Install santize markup module
- */
-function os_update_7059() {
-  module_enable(array('os_sanitize_markup'));
- }
-
-/**
  * Enable the honeypot module to protect against spam
  */
 function os_update_7060() {
