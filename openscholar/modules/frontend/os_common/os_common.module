@@ -525,7 +525,9 @@ function os_common_process_node(&$variables, $hook) {
 }
 
 function os_common_process_block(&$variables, $hook) {
-  _ng_non_bindable($variables);
+  if (empty($variables['elements']['#block']->allow_binding) && !$variables['elements']['#block']->allow_binding) {
+    _ng_non_bindable($variables);
+  }
 }
 
 function os_common_form_alter(&$form, $form_state, $form_id) {
