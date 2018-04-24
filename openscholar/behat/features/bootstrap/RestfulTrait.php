@@ -137,6 +137,7 @@ trait RestfulTrait {
       }
     }
     else {
+      print_r($json);
       $implode[] = $json['title'];
     }
 
