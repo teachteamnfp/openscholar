@@ -165,7 +165,15 @@ function vsite_preset_create_slide($options) {
     if (file_prepare_directory($destination, FILE_CREATE_DIRECTORY)) {
       $file = system_retrieve_file($options['image'], $destination, TRUE);
       if (is_object($file) && file_exists($file->uri)) {
-        $wrapper->field_image->file->set($file);
+        $slide->field_image[LANGUAGE_NONE][0] = array(
+          'fid' => $file->fid,
+          'display' => 1,
+          'description' => '',
+          'cropbox_x' => 0,
+          'cropbox_y' => 0,
+          'cropbox_height' => $options['height'],
+          'cropbox_width' => $options['width'],
+        );
       }
     }
   }
