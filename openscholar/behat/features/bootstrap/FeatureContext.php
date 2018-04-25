@@ -4569,6 +4569,18 @@ JS;
   }
 
   /**
+   *
+   * @When /^I can't visit "([^"]*)" form for node "([^"]*)" in site "([^"]*)"
+   */
+  public function iVisitTheXFormForNodeYinSiteZ($form, $url, $vsite) {
+    $path = $this->_getUnaliasedPathFromAliasPath($url, $vsite);
+    if (! $path) {
+      throw new Exception("Could not find an unaliased path for '$url' on vsite '$vsite'.");
+    }
+    $this->iCanTVisit("$path/$form");
+  }
+
+  /**
    * @When /^I intentionally throw some javascript errors$/
    */
   public function iIntentionallyThrowSomeJsErrors() {
