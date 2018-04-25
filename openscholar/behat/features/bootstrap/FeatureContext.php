@@ -4570,9 +4570,9 @@ JS;
 
   /**
    *
-   * @When /^I can't visit "([^"]*)" form for node "([^"]*)" in site "([^"]*)"
+   * @When /^I can't visit "([^"]*)" form for node "([^"]*)" in group "([^"]*)"
    */
-  public function iVisitTheXFormForNodeYinSiteZ($form, $url, $vsite) {
+  public function iCantVisitTheXFormForNodeYinSiteZ($form, $url, $vsite) {
     $path = $this->_getUnaliasedPathFromAliasPath($url, $vsite);
     if (! $path) {
       throw new Exception("Could not find an unaliased path for '$url' on vsite '$vsite'.");
