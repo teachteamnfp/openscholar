@@ -77,7 +77,7 @@ Feature:
   @api @features_second
   Scenario: Make sure that when a source node is deleted the copied node becomes
             editable.
-    Given I am logging in as "john"
+    Given I am logging in as "admin"
       And I visit "john/people/hillary-diane-rodham-clinton"
       And I edit the node "Hillary Diane Rodham Clinton" in the group "john"
       And I should not see "Professional Titles/Affiliations"
