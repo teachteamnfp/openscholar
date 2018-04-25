@@ -487,6 +487,12 @@ function vsite_form_node_delete_confirm_submit($form, &$form_state) {
   $redirect_url = drupal_parse_url($destination['destination']);
   $options = array();
   $options['query'] = $redirect_url['query'];
+
+  if ($redirect_url['path'] == '<base_domain>') {
+    $redirect_url['path'] = variable_get('purl_base_domain', $GLOBALS['base_url']);
+    $options['external'] = true;
+  }
+
   // Closing the modal and redirecting the user to destination path.
   if (isset($redirect_url['path'])) {
     overlay_close_dialog($redirect_url['path'], $options);
@@ -2018,7 +2024,12 @@ function vsite_mail_alter(&$message){
           '!site_name' => $vsite->group->title
         ));
         $replacements = array(
-          '!site' => $base_url . "/" . $vsite->group->purl,
+          '!site' => url('', array(
+            'purl' => array(
+              'id' => $vsite->id,
+              'provider' => $vsite->purl_provider
+            )
+          )),
           '!site_owner' => $site_owner_full_name,
           '!login_url' => user_pass_reset_url($user),
           '!mailto' => $user->mail,
@@ -2069,7 +2080,12 @@ function vsite_mail_alter(&$message){
           '!site_name' => $vsite->group->title
         ));
         $replacements = array(
-          '!site' => $base_url . "/" . $vsite->group->purl,
+          '!site' => url('', array(
+            'purl' => array(
+              'id' => $vsite->id,
+              'provider' => $vsite->purl_provider
+            )
+          )),
           '!site_owner' => $site_owner_full_name,
           '!login_url' => user_pass_reset_url($user),
           '!mailto' => $user->mail,
@@ -2478,7 +2494,13 @@ function vsite_contact_mail_owner($form, &$form_state, $recipient){
     '#value' => t('Send e-mail'),
     '#weight' => 100
   );
-
+  if (module_exists('honeypot')) {
+    honeypot_add_form_protection(
+      $form,
+      $form_state,
+      array('honeypot', 'time_restriction')
+    );
+  }
   return $form;
 }
 
@@ -2904,9 +2926,19 @@ function vsite_entity_property_info_alter(&$info) {
     'description' => t("The password for a user entity."),
     'type' => 'text',
     'getter callback' => 'entity_metadata_user_get_properties',
-    'setter callback' => 'entity_property_verbatim_set',
+    'setter callback' => 'vsite_entity_property_pass_set',
   );
 
+}
+
+/**
+ * Hashes the password
+ */
+function vsite_entity_property_pass_set(&$data, $name, $value, $langcode, $type, $info) {
+  // prevent rehashing an already hashed password. Also, prevent changing the password to itself again
+  if (empty($data->pass) || ($data->pass != $value && !user_check_password($value, $data))) {
+    $data->pass = user_hash_password($value);
+  }
 }
 
 /**
@@ -4090,13 +4122,14 @@ function vsite_oembed_uri_fragments($uri) {
  * Implements hook_redirect_load_by_source_existing_url_alter
  */
 function vsite_redirect_load_by_source_existing_url_alter(&$source) {
+  global $language;
   if(drupal_valid_path($source)) {
     // checking and converting the source to the form as it's save
     // on the redirect table if needed
     $redirect_query = db_select('redirect');
     $redirect_query->addField('redirect', 'source');
     $redirect_query->condition('source', db_like($source), 'LIKE');
-    $redirect_query->condition('language', array($language, LANGUAGE_NONE));
+    $redirect_query->condition('language', array($language->language, LANGUAGE_NONE));
     $redirect_result = $redirect_query->execute()->fetchCol();
     if ($redirect_result) {
       $source = $redirect_result[0];

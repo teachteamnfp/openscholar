@@ -488,6 +488,68 @@ function os_common_menu_contextual_links_alter(&$links, $router_item, $root_path
   }
 }
 
+/**
+ * ng-non-bindable handling
+ *
+ * Prevents user-entered text wrapped in {{ }} from breaking the js on sites, due to angular thinking its a binding.
+ * We add ng-non-bindable to everything that could print a string the user has entered to prevent this.
+ */
+
+function _ng_non_bindable(&$variables) {
+  $ng_non_bindable = drupal_attributes(array(
+    'ng-non-bindable' => '',
+  ));
+
+  if (strpos($variables['title_attributes'], 'ng-non-bindable') === FALSE) {
+    $variables['title_attributes'] .= $ng_non_bindable;
+  }
+  if (strpos($variables['content_attributes'], 'ng-non-bindable') === FALSE) {
+    $variables['content_attributes'] .= $ng_non_bindable;
+  }
+}
+
+function _element_children_recursive(&$element) {
+  foreach (element_children($element) as $element_key) {
+    $is_text_field = !empty($element[$element_key]['#type']) && in_array($element[$element_key]['#type'], array('file', 'form', 'password', 'textarea', 'text_format', 'textfield'));
+    $is_attributed_added = !empty($element[$element_key]['#attributes']) && isset($element[$element_key]['#attributes']['ng-non-bindable']);
+    if ($is_text_field && !$is_attributed_added) {
+      $element[$element_key]['#attributes']['ng-non-bindable'] = '';
+    }
+
+    _element_children_recursive($element[$element_key]);
+  }
+}
+
+function os_common_process_node(&$variables, $hook) {
+  _ng_non_bindable($variables);
+}
+
+function os_common_process_block(&$variables, $hook) {
+  _ng_non_bindable($variables);
+}
+
+function os_common_form_alter(&$form, $form_state, $form_id) {
+  _element_children_recursive($form);
+}
+
+function os_common_field_widget_og_vocab_complex_form_alter(&$element, $form_state, $context) {
+  $element['#prefix'] = '<div ng-non-bindable>';
+  $element['#suffix'] = '</div>';
+}
+
+function os_common_preprocess_page(&$vars) {
+  $vars['attributes_array']['ng-non-bindable'] = '';
+}
+
+function os_common_preprocess_table(&$vars) {
+  if ($vars['attributes']['id'] == 'taxonomy') {
+    $vars['attributes']['ng-non-bindable'] = '';
+  }
+}
+
+function os_common_preprocess_overlay(&$vars) {
+  $vars['title_attributes_array']['ng-non-bindable'] = '';
+}
 
 /**
  * Implements a post_render function.
@@ -500,8 +562,7 @@ function os_common_element_post_render($content, $elem) {
       foreach ($elem['#angular_app'] as $app) {
         os_common_angular_apps($app);
       }
-    }
-    elseif (is_string($elem['#angular_app'])) {
+    } elseif (is_string($elem['#angular_app'])) {
       os_common_angular_apps($elem['#angular_app']);
     }
   }

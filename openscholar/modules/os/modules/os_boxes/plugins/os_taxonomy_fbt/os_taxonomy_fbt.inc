@@ -101,6 +101,9 @@ class os_taxonomy_fbt extends os_boxes_default {
       '#title' => t('Vocabularies'),
       '#options' => self::get_all_vocabularies(),
       '#required' => TRUE,
+      '#attributes' => array(
+        'ng-non-bindable' => '',
+      ),
       '#ajax' => array(
         'callback' => 'os_boxes_taxonomy_fbt_vocab_ajax_callback',
         'wrapper' => 'bundles-wrapper',

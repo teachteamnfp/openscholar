@@ -760,7 +760,7 @@ function hwpi_basetheme_status_messages($vars) {
     'warning' => t('Warning'),
   );
   foreach (drupal_get_messages($display) as $type => $messages) {
-    $output .= '<div class="messages ' . $type . '"><div class="message-inner"><div class="message-wrapper">';
+    $output .= '<div class="messages ' . $type . '"><div ng-non-bindable class="message-inner"><div class="message-wrapper">';
     if (!empty($status_heading[$type])) {
       $output .= '<h2>' . $status_heading[$type] . "</h2>";
     }
@@ -769,10 +769,10 @@ function hwpi_basetheme_status_messages($vars) {
       foreach ($messages as $message) {
         if (strpos($message, 'Biblio') === 0 || strpos($message, 'Publication') === 0) {
           // Allow some tags in messages about a Biblio.
-          $output .= '  <li>' . strip_tags(html_entity_decode($message), $allowed_html_elements) . "</li>";
+          $output .= '  <li ng-non-bindable>' . strip_tags(html_entity_decode($message), $allowed_html_elements) . "</li>";
         }
         else {
-          $output .= '  <li>' . $message . "</li>";
+          $output .= '  <li ng-non-bindable>' . $message . "</li>";
         }
       }
       $output .= " </ul>";

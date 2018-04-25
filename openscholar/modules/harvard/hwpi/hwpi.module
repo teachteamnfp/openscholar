@@ -9,7 +9,7 @@ function hwpi_init() {
 
   // Is securepages enabled?
   // If we are not on a harvard domain turn it off.
-  if (variable_get('securepages_enable', 0)) {
+  if (module_exists('securepages') && variable_get('securepages_enable', 0)) {
 
     //Turn SSL off for pages that don't match the wildcard certificate
     $conf['securepages_enable'] = 0;

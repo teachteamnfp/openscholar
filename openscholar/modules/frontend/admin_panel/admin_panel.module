@@ -260,4 +260,9 @@ function admin_panel_drupal_goto_alter(&$path, &$options, &$http_response_code) 
     unset($options['query']['admin_panel']);
     unset($options['query']['login']);
   }
+
+  if ($path == '<base_domain>') {
+    $path = variable_get('purl_base_domain', $GLOBALS['base_url']);
+    $options['external'] = true;
+  }
 }
