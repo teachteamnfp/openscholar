@@ -2651,7 +2651,7 @@ class FeatureContext extends DrupalContext {
 
     $private = array(
       new Step\When('I click the "[app-privacy-selector]" control in the "'.$feature.'" row'),
-      new Step\When('I click the "Site Members" control in the "'.$feature.'" row'),
+      new Step\When('I click the "Site Members Only" control in the "'.$feature.'" row'),
     );
 
     $output = array();
