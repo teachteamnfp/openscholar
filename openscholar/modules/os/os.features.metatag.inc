@@ -77,7 +77,7 @@ function os_metatag_export_default() {
       'twitter:description' => array(
         'value' => '[site:site_description]',
       ),
-      'twitter:image' => array(
+      'twitter:image:src' => array(
         'value' => '[site:site_logo]',
       ),
       'twitter:card' => array(
