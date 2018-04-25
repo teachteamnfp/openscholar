@@ -4570,7 +4570,7 @@ JS;
 
   /**
    *
-   * @When /^I can't visit "([^"]*)" form for node "([^"]*)" in group "([^"]*)"
+   * @When /^I can not visit "([^"]*)" form for node "([^"]*)" in group "([^"]*)"
    */
   public function iCantVisitTheXFormForNodeYinSiteZ($form, $url, $vsite) {
     $path = $this->_getUnaliasedPathFromAliasPath($url, $vsite);
