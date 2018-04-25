@@ -121,3 +121,69 @@ function _vsite_preset_new_section_task($title, $info = array()) {
 
   return $task;
 }
+
+/**
+ * Get node ID by alias.
+ *
+ * @param string $alias
+ *   Alias of the node.
+ *
+ * @return int
+ *   Node id for the given alias or FALSE if not found.
+ */
+function vsite_preset_get_nid_from_alias($alias) {
+  $purl = vsite_get_purl();
+  $prefix = $purl ? $purl . '/' : '';
+  $path = drupal_get_normal_path($prefix . $alias);
+  if (strpos($path, 'node/') !== FALSE) {
+    $parts = explode('/', $path);
+    if (isset($parts[1]) && !empty($parts[1])) {
+      return $parts[1];
+    }
+  }
+  return FALSE;
+}
+
+/**
+ * Create slideshow_slide node.
+ *
+ * @param array $options
+ *   Slide node properties.
+ *
+ * @return obj
+ *   Slide node.
+ */
+function vsite_preset_create_slide($options) {
+  $slide = new stdClass();
+  $slide->type = 'slideshow_slide';
+  $slide->is_new = TRUE;
+  node_object_prepare($slide);
+  $wrapper = entity_metadata_wrapper('node', $slide);
+  if (isset($options['image']) && !empty($options['image'])) {
+    $purl = vsite_get_purl();
+    $destination = file_default_scheme() . '://' . $purl . '/files';
+    if (file_prepare_directory($destination, FILE_CREATE_DIRECTORY)) {
+      $file = system_retrieve_file($options['image'], $destination, TRUE);
+      if (is_object($file) && file_exists($file->uri)) {
+        $wrapper->field_image->file->set($file);
+      }
+    }
+  }
+  if (isset($options['link']) && !empty($options['link'])) {
+    $wrapper->field_link->set($options['link']);
+  }
+  if (isset($options['headline']) && !empty($options['headline'])) {
+    $wrapper->field_headline->set($options['headline']);
+  }
+  if (isset($options['description']) && !empty($options['description'])) {
+    $wrapper->field_description->set($options['description']);
+  }
+  if (isset($options['alt']) && !empty($options['alt'])) {
+    $wrapper->field_slideshow_alt_text->set($options['alt']);
+  }
+  if (isset($options['title']) && !empty($options['title'])) {
+    $wrapper->field_slideshow_title_text->set($options['title']);
+  }
+  $wrapper->save();
+  return $wrapper->getIdentifier();
+}

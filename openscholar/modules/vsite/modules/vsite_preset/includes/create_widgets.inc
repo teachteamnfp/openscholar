@@ -53,6 +53,36 @@ function vsite_preset_create_widgets($preset, $vsite) {
     $options['delta'] = $delta . '-' . $preset->name;
     $plugin = $options['plugin'];
     unset($options['plugin']);
+    if ($plugin == 'os_boxes_manual_list') {
+      $nodes = array();
+      foreach ($options['options']['nodes'] as $i => $node) {
+        if (!$node['nid'] && $node['alias']) {
+          $nid = vsite_preset_get_nid_from_alias($node['alias']);
+          if ($nid) {
+            $nodes[$nid]['nid'] = $nid;
+          }
+        }
+      }
+      if (!empty($nodes)) {
+        $options['options']['nodes'] = $nodes;
+      }
+    }
+
+    if ($plugin == 'os_slideshow_box') {
+      $nodes = array();
+      foreach ($options['options']['nodes'] as $i => $node) {
+        if (!$node['nid'] && $node['image']) {
+          $nid = vsite_preset_create_slide($node);
+          if ($nid) {
+            $nodes[]['nid'] = $nid;
+          }
+        }
+      }
+      if (!empty($nodes)) {
+        $options['options']['nodes'] = $nodes;
+      }
+    }
+
     if (!$box = boxes_box::factory($plugin, $options)) {
       throw new Exception(sprintf('The box %s failed to saved', $options['title']));
     }

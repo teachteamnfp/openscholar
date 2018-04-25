@@ -20,15 +20,12 @@ function vsite_preset_update_page_contexts_task($entity, $task, &$context) {
 
   $preset = spaces_preset_load($entity->spaces_preset_og, 'og');
   foreach ($preset->value['context'] as $context => $value) {
-    if (strpos($context, 'os_pages-page-') !== FALSE) {
-      $alias = str_replace(['os_pages-page-', ':reaction:block'], '', $context);
-      $purl = vsite_get_purl();
-      $prefix = $purl ? $purl . '/' : '';
-      $path = drupal_get_normal_path($prefix . $alias);
-      if (strpos($path, 'node/') !== FALSE) {
-        $parts = explode('/', $path);
-        if (isset($parts[1]) && !empty($parts[1])) {
-          $new_context = 'os_pages-page-' . $parts[1] . ':reaction:block';
+    foreach (array('os_pages-page-', 'os_pages-section-') as $id) {
+      if (strpos($context, $id) !== FALSE) {
+        $alias = str_replace([$id, ':reaction:block'], '', $context);
+        $nid = vsite_preset_get_nid_from_alias($alias);
+        if ($nid) {
+          $new_context = $id . $nid . ':reaction:block';
           $vsite->controllers->context->set($new_context, $value);
         }
       }

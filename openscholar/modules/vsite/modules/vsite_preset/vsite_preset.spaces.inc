@@ -860,6 +860,7 @@ function vsite_preset_spaces_presets() {
       'theme_default' => 'hwpi_classic',
       'os_appearance_hwpi_classic_flavor' => 'classic_indigo',
       'os_breadcrumbs_show_breadcrumbs' => 1,
+      'show_email' => 0,
     ),
     'menus' => array(
       'primary-menu' => array(
@@ -895,10 +896,10 @@ function vsite_preset_spaces_presets() {
     'context' => array(
       'os_public:reaction:block' => array(
         'blocks' => array(
-          'boxes-site_info' => array(
+          'boxes-site_info-hwp_professional' => array(
             'module' => 'boxes',
-            'delta' => 'site_info',
-            'region' => 'header_first',
+            'delta' => 'site_info-hwp_professional',
+            'region' => 'header_second',
             'weight' => '-10',
           ),
           'os_search_db-site-search' => array(
@@ -913,26 +914,53 @@ function vsite_preset_spaces_presets() {
             'region' => 'menu_bar',
             'weight' => '-10',
           ),
+          'boxes-follow_me-hwp_professional' => array(
+            'module' => 'boxes',
+            'delta' => 'follow_me-hwp_professional',
+            'region' => 'footer',
+            'weight' => '-10',
+          ),
           'boxes-contact-hwp_professional' => array(
             'module' => 'boxes',
             'delta' => 'contact-hwp_professional',
-            'region' => 'footer',
+            'region' => 'footer_third',
             'weight' => '-10',
           ),
         ),
       ),
       'os_front:reaction:block' => array(
         'blocks' => array(
-          'boxes-follow_me-hwp_professional' => array(
+          'boxes-homepage_slideshow-hwp_professional' => array(
             'module' => 'boxes',
-            'delta' => 'follow_me-hwp_professional',
-            'region' => 'footer_first',
+            'delta' => 'homepage_slideshow-hwp_professional',
+            'region' => 'content_top',
             'weight' => '-10',
+            'title' => '',
+          ),
+          'boxes-blog_post_list-hwp_professional' => array(
+            'module' => 'boxes',
+            'delta' => 'blog_post_list-hwp_professional',
+            'region' => 'content_top',
+            'weight' => '0',
+            'title' => '',
+          ),
+          'boxes-about_featured_post-hwp_professional' => array(
+            'module' => 'boxes',
+            'delta' => 'about_featured_post-hwp_professional',
+            'region' => 'sidebar_second',
+            'weight' => '-10',
+            'title' => '',
           ),
         ),
       ),
       'os_pages-page-work:reaction:block' => array(
         'blocks' => array(
+          'os_pages-main_content' => array(
+            'module' => 'os_pages',
+            'delta' => 'main_content',
+            'region' => 'content_top',
+            'weight' => '-10',
+          ),
           'boxes-basic_page_app_links-hwp_professional' => array(
             'module' => 'boxes',
             'delta' => 'basic_page_app_links-hwp_professional',
@@ -944,6 +972,74 @@ function vsite_preset_spaces_presets() {
             'delta' => 'basic_page_app_video-hwp_professional',
             'region' => 'sidebar_second',
             'weight' => '-9',
+          ),
+        ),
+      ),
+      'blog_blog:reaction:block' => array(
+        'blocks' => array(
+          'boxes-os_addthis' => array(
+            'module' => 'boxes',
+            'delta' => 'os_addthis',
+            'region' => 'sidebar_second',
+            'weight' => '-9',
+          ),
+          'views-os_blog-block' => array(
+            'module' => 'views',
+            'delta' => 'os_blog-block',
+            'region' => 'sidebar_second',
+            'weight' => '-8',
+          ),
+          'views-os_blog_comments-block' => array(
+            'module' => 'views',
+            'delta' => 'os_blog_comments-block',
+            'region' => 'sidebar_second',
+            'weight' => '-7',
+          ),
+          'boxes-blog_rss_feed' => array(
+            'module' => 'boxes',
+            'delta' => 'blog_rss_feed',
+            'region' => 'footer',
+            'weight' => '-10',
+          ),
+          'boxes-blog_help_docs-hwp_professional' => array(
+            'module' => 'boxes',
+            'delta' => 'blog_help_docs-hwp_professional',
+            'region' => 'sidebar_second',
+            'weight' => '1',
+          ),
+        ),
+      ),
+      'os_pages-section-about:reaction:block' => array(
+        'blocks' => array(
+          'boxes-os_pages_section_nav' => array(
+            'module' => 'boxes',
+            'delta' => 'os_pages_section_nav',
+            'region' => 'sidebar_first',
+            'weight' => '-10',
+          ),
+          'boxes-basic_page_app_links-hwp_professional' => array(
+            'module' => 'boxes',
+            'delta' => 'basic_page_app_links-hwp_professional',
+            'region' => 'sidebar_first',
+            'weight' => '1',
+          ),
+          'boxes-basic_page_app_video-hwp_professional' => array(
+            'module' => 'boxes',
+            'delta' => 'basic_page_app_video-hwp_professional',
+            'region' => 'sidebar_first',
+            'weight' => '2',
+          ),
+          'boxes-page_vs_section_layouts_video-hwp_professional' => array(
+            'module' => 'boxes',
+            'delta' => 'page_vs_section_layouts_video-hwp_professional',
+            'region' => 'sidebar_first',
+            'weight' => '3',
+          ),
+          'os_pages-main_content' => array(
+            'module' => 'os_pages',
+            'delta' => 'main_content',
+            'region' => 'content_top',
+            'weight' => '-10',
           ),
         ),
       ),
