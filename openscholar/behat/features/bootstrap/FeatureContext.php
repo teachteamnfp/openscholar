@@ -2646,7 +2646,7 @@ class FeatureContext extends DrupalContext {
 
     $public = array(
       new Step\When('I click the "[app-privacy-selector]" control in the "'.$feature.'" row'),
-      new Step\When('I click the "Everyone" control in the "'.$feature.'" row'),
+      new Step\When('I click the "The Public" control in the "'.$feature.'" row'),
     );
 
     $private = array(
