@@ -43,7 +43,7 @@ Feature:
   @api @features_first
   Scenario: Edit the existing image gallery content
      Given I am logging in as "john"
-       When I visit the "edit" form for node galleries/safari" in site "john"
+       When I visit the "edit" form for node "galleries/safari" in site "john"
        When I fill in "Title" with "World Safari"
        When I fill in "Description" with "Enjoying world safari"
         And I press "Save"
@@ -133,7 +133,7 @@ Feature:
   @api @features_first @javascript
   Scenario: Delete existing image gallery content
      Given I am logging in as "john"
-      When I visit the "edit" form for node galleries/safari" in site "john"
+      When I visit the "edit" form for node "galleries/safari" in site "john"
        And I sleep for "2"
       When I click "Delete this media gallery"
       Then I should see "This action cannot be undone."
