@@ -53,6 +53,18 @@ function vsite_preset_create_widgets($preset, $vsite) {
     $options['delta'] = $delta . '-' . $preset->name;
     $plugin = $options['plugin'];
     unset($options['plugin']);
+    if ($plugin == 'os_boxes_site_info') {
+      if (isset($options['options']['site_title']) || isset($options['options']['descrip'])) {
+        $wrapper = entity_metadata_wrapper('node', $vsite->group);
+        if (isset($options['options']['site_title'])) {
+          $wrapper->title->set($options['options']['site_title']);
+        }
+        if (isset($options['options']['descrip'])) {
+          $wrapper->field_site_description->set($options['options']['descrip']);
+        }
+        $wrapper->save();
+      }
+    }
     if ($plugin == 'os_boxes_manual_list') {
       $nodes = array();
       foreach ($options['options']['nodes'] as $i => $node) {
@@ -74,7 +86,12 @@ function vsite_preset_create_widgets($preset, $vsite) {
         if (!$node['nid'] && $node['image']) {
           $nid = vsite_preset_create_slide($node);
           if ($nid) {
-            $nodes[]['nid'] = $nid;
+            $nodes[$nid] = array(
+              'nid' => $nid,
+              'weight' => $node['weight'],
+              '#weight' => $node['weight'],
+            );
+
           }
         }
       }

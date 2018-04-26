@@ -51,6 +51,11 @@ $widgets = [
     'title' => '',
     'description' => t('Home Page Slideshow'),
     'options' => [
+      'effect' => 'fade',
+      'timeout' => 5000,
+      'speed' => 700,
+      'random' => FALSE,
+      'layout' => '16_9_overlay',
       'nodes' => [
         [
           'nid' => FALSE,
@@ -61,8 +66,6 @@ $widgets = [
           'alt' => 'writing',
           'title' => 'writing',
           'weight' => 0,
-          'width' => 820,
-          'height' => 461,
         ],
         [
           'nid' => FALSE,
@@ -73,8 +76,6 @@ $widgets = [
           'alt' => 'location',
           'title' => 'location',
           'weight' => 1,
-          'width' => 820,
-          'height' => 461,
         ],
         [
           'nid' => FALSE,
@@ -85,8 +86,6 @@ $widgets = [
           'alt' => 'books',
           'title' => 'books',
           'weight' => 2,
-          'width' => 820,
-          'height' => 461,
         ],
       ],
     ],
