@@ -8,6 +8,7 @@
  * Implements hook_metatag_export_default().
  */
 function os_metatag_export_default() {
+  die("test");
   $config = array();
 
   // Exported Metatag config instance: global.
