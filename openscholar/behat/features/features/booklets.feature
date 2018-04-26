@@ -154,7 +154,7 @@ Feature:
  @api @features_first @edit_any_book_content_permissions @os_booklets
  Scenario: Edit any book content (permissions)
     Given I am logging in as "michelle"
-     Then I can not edit node "book/profiles-courage" in group "john"
+     Then I can not visit "edit" form for node "book/profiles-courage" in group "john"
 
  @api @features_first @delete_any_book_content_permissions @os_booklets
  Scenario: Delete any book content (permissions)

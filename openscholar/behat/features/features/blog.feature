@@ -143,7 +143,7 @@ Feature:
  @api @features_first @edit_any_blog_content_permissions @os_blog
  Scenario: Edit any blog content (permissions)
     Given I am logging in as "michelle"
-     Then I can not edit node "blog/profiles-courage" in group "john"
+     Then I can not visit "edit" form for node "blog/profiles-courage" in group "john"
 
  @api @features_first @delete_any_blog_content_permissions @os_blog
  Scenario: Delete any blog content (permissions)

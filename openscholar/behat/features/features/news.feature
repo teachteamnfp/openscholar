@@ -93,7 +93,7 @@ Feature:
   @api @features_second
   Scenario: Permission to delete any news content
     Given I am logging in as "alexander"
-     When I visit the "delete" form for node "Semester dates published" in site "john"
+     When I visit the "delete" form for node "news/semester-notification" in site "john"
      Then I should see "Access Denied"
 
   @api @features_second

@@ -4558,7 +4558,7 @@ JS;
 
   /**
    *
-   * @When /^I visit the "([^"]*)" form for node "([^"]*)" in site "([^"]*)"
+   * @When /^I visit the "([^"]*)" form for node "([^"]*)" in site "([^"]*)"$/
    */
   public function iVisitTheFormForNodeInSite($form, $url, $vsite) {
     $path = $this->_getUnaliasedPathFromAliasPath($url, $vsite);
@@ -4570,7 +4570,7 @@ JS;
 
   /**
    *
-   * @Then /^I can not visit "([^"]*)" form for node "([^"]*)" in group "([^"]*)"
+   * @Then /^I can not visit "([^"]*)" form for node "([^"]*)" in group "([^"]*)"$/
    */
   public function iCanNotVisitFormForNodeInGroup($form, $url, $vsite) {
     $path = $this->_getUnaliasedPathFromAliasPath($url, $vsite);

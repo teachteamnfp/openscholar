@@ -79,7 +79,7 @@ Feature:
             editable.
     Given I am logging in as "john"
       And I delete the node of type "person" named "Hillary Diane Rodham Clinton" in the group "obama"
-     When I visit the "edit" form for node "Hillary Diane Rodham Clinton" in site "john"
+     When I visit the "edit" form for node "people/hillary-diane-rodham-clinton" in site "john"
      Then I should see "Professional Titles/Affiliations"
 
   @api @features_second
