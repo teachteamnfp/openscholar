@@ -320,7 +320,7 @@ class os_taxonomy_fbt extends os_boxes_default {
     drupal_add_js($settings, array('type' => 'setting'));
     drupal_add_js(drupal_get_path('module', 'os_boxes') . '/plugins/os_taxonomy_fbt/os_taxonomy_fbt.js');
 
-    if ($this->options['behavior'] == '--all--') {
+    if ($this->options['behavior'] == '--all--'  || ($this->options['behavior'] == 'contextual' && empty(os_get_active_feature()))) {
       $this->options['bundles'] = array();
     }
     else if (!empty($this->options['behavior']) && $this->options['behavior'] == 'contextual' && ($feature = os_get_active_feature())) {
@@ -370,7 +370,7 @@ class os_taxonomy_fbt extends os_boxes_default {
 
     // Content type's machine name is added in cache id.
     // So that different set of cached links can be generated per content type for 'Determine for me' settings.
-    if ($this->options['behavior'] == 'contextual') {
+    if ($this->options['behavior'] == 'contextual' && !empty(os_get_active_feature())) {
       $id = 'vocabulary:' . $this->options['vocabulary'] . ':' . implode(":", $this->options['bundles']);
     }
     else {
