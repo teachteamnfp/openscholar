@@ -1863,7 +1863,7 @@ function vsite_user_view_alter(&$build){
         $css_selector = array(
           'class' => 'plural'
         );
-        $website_title = t('Websites I own:');
+        $website_title = t('Websites I own');
       }
       else {
         $css_selector = array(
@@ -1883,13 +1883,13 @@ function vsite_user_view_alter(&$build){
         $css_selector = array(
           'class' => 'plural'
         );
-        $membership_title = t('Websites I am a member of:');
+        $membership_title = t('Websites I am a member of');
       }
       else {
         $css_selector = array(
           'class' => 'single'
         );
-        $membership_title = t('Websites I am a member of:');
+        $membership_title = t('Websites I am a member of');
       }
       // end if
       $vsites_list .= theme('item_list', array(

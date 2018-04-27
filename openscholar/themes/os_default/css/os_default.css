@@ -313,8 +313,7 @@ ul.primary li {
 .page-site-register .form-item-domain,
 .page-site-register .form-item-bundle,
 .page-site-register .form-item-vsite-private,
-.page-site-register .form-item-vicarious-user,
-.logged-in.no-sidebars.page-user #content .item-list {
+.page-site-register .form-item-vicarious-user {
 	border-radius: 5px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;
@@ -330,10 +329,24 @@ ul.primary li {
 	padding: 0;
 	border: none;
 }
-.logged-in.no-sidebars.page-user #content ul.plural li .item-list {
-	border-bottom: 1px solid #e9e7e7;
-	padding-bottom: 10px;
+.logged-in.no-sidebars.page-user #content ul.single,
+.logged-in.no-sidebars.page-user #content ul.plural {
+    border-top: 3px solid #ccc;
+    margin-top:5px;
 }
+
+.logged-in.no-sidebars.page-user #content ul.plural > li,
+.logged-in.no-sidebars.page-user #content ul.single > li {
+	
+	padding: 9px 7px;
+}
+.logged-in.no-sidebars.page-user #content ul.plural > li:nth-child(odd),
+.logged-in.no-sidebars.page-user #content ul.single > li:nth-child(odd) {
+border-bottom:1px solid #ccc;
+background-color:#eee;
+}
+
+
 .logged-in.no-sidebars.page-user #content .user-add-site-block,
 .logged-in.no-sidebars.page-user #content .delete-link {
 	float: right;
@@ -503,8 +516,9 @@ fieldset#edit-pin-fieldset {
 	padding-left: 0;
 }
 .profile h3 {
-	margin: -5px -5px 15px;
-	padding: 5px;
+	/* margin: -5px -5px 15px; */
+	/* padding: 5px; */
+	font-size: 1em;
 }
 .page-site-register ul.error {
 	margin-left: 15px;
