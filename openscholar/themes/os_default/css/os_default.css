@@ -137,7 +137,7 @@ body.not-logged-in.page-user {
 }
     
 
-.not-logged-in.no-sidebars.page-user.navbar-off #page-wrapper:before {
+.no-sidebars.page-user.navbar-off #page-wrapper:before {
     position: absolute;
     top: 0;
     left: 0;
@@ -154,10 +154,7 @@ body.not-logged-in.page-user {
 	border-bottom: 1px solid #e1e1e1;
 	padding-bottom: 6px;
 }
-.page-site-register #columns,
-.logged-in.no-sidebars.page-user #columns {
-	width: 700px;
-}
+
 .denied #content-column,
 .page-site-register #content-column,
 body.logged-in.no-sidebars.page-user #content-column,
