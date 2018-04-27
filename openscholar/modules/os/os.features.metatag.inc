@@ -8,7 +8,6 @@
  * Implements hook_metatag_export_default().
  */
 function os_metatag_export_default() {
-  die("test");
   $config = array();
 
   // Exported Metatag config instance: global.
@@ -78,7 +77,7 @@ function os_metatag_export_default() {
       'twitter:description' => array(
         'value' => '[site:site_description]',
       ),
-      'twitter:image:src' => array(
+      'twitter:image' => array(
         'value' => '[site:site_logo]',
       ),
       'twitter:card' => array(
