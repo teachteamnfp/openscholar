@@ -280,9 +280,9 @@ ul.primary li {
 }
 /* USER ACCOUNT PAGE */
 
-.page-site-register #footer,
-.logged-in.no-sidebars.page-user #footer {
-	width: 850px;
+.page-site-register #footer, .logged-in.no-sidebars.page-user #footer {
+    width: 575px;
+    margin: 0 auto;
 }
 .form-type-password a,
 .user-login-message-text a,
