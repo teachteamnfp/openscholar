@@ -78,9 +78,12 @@ Feature:
   Scenario: Make sure that when a source node is deleted the copied node becomes
             editable.
     Given I am logging in as "john"
-      And I delete the node of type "person" named "Hillary Diane Rodham Clinton" in the group "obama"
-     When I visit the "edit" form for node "people/hillary-diane-rodham-clinton" in site "john"
-     Then I should see "Professional Titles/Affiliations"
+      And I visit "john/people/hillary-diane-rodham-clinton"
+      And I edit the node "Hillary Diane Rodham Clinton" in the group "john"
+      And I should not see "Professional Titles/Affiliations"
+          # Delete the original node.
+     When I delete the node of type "person" named "Hillary Diane Rodham Clinton" in the group "obama"
+      And I edit the node "Hillary Diane Rodham Clinton" in the site "john"
 
   @api @features_second
   Scenario: Test changing the owner of a VSite.
