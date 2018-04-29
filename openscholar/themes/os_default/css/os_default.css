@@ -331,7 +331,7 @@ ul.primary li {
 }
 .logged-in.no-sidebars.page-user #content ul.single,
 .logged-in.no-sidebars.page-user #content ul.plural {
-    border-top: 3px solid #ccc;
+    border-top: 3px solid #e2e2e2;
     margin-top:5px;
 }
 
@@ -342,8 +342,14 @@ ul.primary li {
 }
 .logged-in.no-sidebars.page-user #content ul.plural > li:nth-child(odd),
 .logged-in.no-sidebars.page-user #content ul.single > li:nth-child(odd) {
-border-bottom:1px solid #ccc;
-background-color:#eee;
+border-bottom:1px solid #e2e2e2;
+background-color:#f5f5f5f5;
+}
+
+.logged-in.no-sidebars.page-user #content ul.plural > li:nth-child(odd):last-child,
+.logged-in.no-sidebars.page-user #content ul.single > li:nth-child(odd):last-child {
+border-bottom:1px solid transparent;
+
 }
 
 
