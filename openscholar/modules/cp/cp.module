@@ -357,7 +357,7 @@ function cp_custom_theme() {
  * Returns TRUE/FALSE, whether or not to use cp theme.
  */
 function cp_use_cp_theme() {
-  $ops = array('edit', 'usage', 'delete', 'devel', 'revisions');
+  $ops = array('edit', 'usage', 'delete', 'devel', 'revisions', 'cancel');
   if (in_array(arg(0), array('cp', 'os', 'media', 'group'))) {
     return TRUE;
   }

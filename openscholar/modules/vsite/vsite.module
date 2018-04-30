@@ -1957,7 +1957,8 @@ function vsite_preprocess_page(&$vars) {
       }
 
       // Don't show the link on the user/%/edit page either, redundant.
-      if(strpos($item['path'], 'edit') !== false) {
+      // Or on the cancel form, they're about to delete
+      if(strpos($item['path'], 'edit') !== false || strpos($item['path'], 'cancel') !== false) {
         return;
       }
 
