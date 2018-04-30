@@ -31,7 +31,7 @@ class OSPublicStreamWrapper extends DrupalPublicStreamWrapper {
 
     $url = $base_url . '/' . self::getExternalDirectoryPath() . '/' . drupal_encode_path($path);
 
-    if ((!$file || (!empty($file->type) && in_array($file->type, $types))) && variable_get('os_files_mtime_query', TRUE)) {
+    if (variable_get('os_files_mtime_query', TRUE)) {
       $mtime = @filemtime($this->getLocalPath());
       if (!$mtime) {
         $mtime = REQUEST_TIME;
