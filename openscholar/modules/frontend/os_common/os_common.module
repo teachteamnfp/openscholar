@@ -525,7 +525,9 @@ function os_common_process_node(&$variables, $hook) {
 }
 
 function os_common_process_block(&$variables, $hook) {
-  _ng_non_bindable($variables);
+  if (empty($variables['elements']['#block']->allow_binding)) {
+    _ng_non_bindable($variables);
+  }
 }
 
 function os_common_form_alter(&$form, $form_state, $form_id) {
@@ -549,6 +551,12 @@ function os_common_preprocess_table(&$vars) {
 
 function os_common_preprocess_overlay(&$vars) {
   $vars['title_attributes_array']['ng-non-bindable'] = '';
+}
+
+function os_common_preprocess_views_view_field(&$vars) {
+  if ($vars['field']->field_alias == 'node_title') {
+    $vars['output'] = '<span ng-non-bindable>'.$vars['output'].'</span>';
+  }
 }
 
 /**
