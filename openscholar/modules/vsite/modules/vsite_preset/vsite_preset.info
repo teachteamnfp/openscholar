@@ -16,5 +16,6 @@ features[spaces_presets][] = hwp_administrative
 features[spaces_presets][] = hwp_lab_research_group
 features[spaces_presets][] = hwp_project
 features[spaces_presets][] = hwp_personal
+features[spaces_presets][] = hwp_professional
 features[spaces_presets][] = hwp_event_conference
 files[] = includes/vsite_task.inc

@@ -74,6 +74,24 @@ function vsite_preset_og_tasks_info($entity_type, $entity) {
   );
   $tasks['vsite_preset_import_menu'] = new vsite_task($properties);
 
+  $properties = array(
+    'title' => t('Create widgets'),
+    'description' => t('Create vsite widgets.'),
+    'required' => FALSE,
+    'callback' => 'vsite_preset_create_widgets_task',
+    'file' => $path . '/includes/create_widgets.inc',
+  );
+  $tasks['vsite_preset_create_widgets'] = new vsite_task($properties);
+
+  $properties = array(
+    'title' => t('Update page contexts'),
+    'description' => t('Update page contexts with real nids instead of aliases.'),
+    'required' => FALSE,
+    'callback' => 'vsite_preset_update_page_contexts_task',
+    'file' => $path . '/includes/update_contexts.inc',
+  );
+  $tasks['vsite_preset_update_page_contexts'] = new vsite_task($properties);
+
   return $tasks;
 }
 
@@ -102,4 +120,89 @@ function _vsite_preset_new_section_task($title, $info = array()) {
   $task = new vsite_task($properties);
 
   return $task;
+}
+
+/**
+ * Get node ID by alias.
+ *
+ * @param string $alias
+ *   Alias of the node.
+ *
+ * @return int
+ *   Node id for the given alias or FALSE if not found.
+ */
+function vsite_preset_get_nid_from_alias($alias) {
+  $purl = vsite_get_purl();
+  $prefix = $purl ? $purl . '/' : '';
+  $path = drupal_get_normal_path($prefix . $alias);
+  if (strpos($path, 'node/') !== FALSE) {
+    $parts = explode('/', $path);
+    if (isset($parts[1]) && !empty($parts[1])) {
+      return $parts[1];
+    }
+  }
+  return FALSE;
+}
+
+/**
+ * Create slideshow_slide node.
+ *
+ * @param array $options
+ *   Slide node properties.
+ *
+ * @return obj
+ *   Slide node.
+ */
+function vsite_preset_create_slide($options) {
+  $slide = new stdClass();
+  $slide->type = 'slideshow_slide';
+  $slide->language = LANGUAGE_NONE;
+  $slide->status = NODE_PUBLISHED;
+  $slide->is_new = TRUE;
+  node_object_prepare($slide);
+  $wrapper = entity_metadata_wrapper('node', $slide);
+  if (isset($options['image']) && !empty($options['image'])) {
+    $purl = vsite_get_purl();
+    $destination = file_default_scheme() . '://' . $purl . '/files';
+    if (file_prepare_directory($destination, FILE_CREATE_DIRECTORY)) {
+      $file = system_retrieve_file($options['image'], $destination, TRUE);
+      if (is_object($file) && file_exists($file->uri)) {
+        $crop_x = isset($options['crop_x']) ? $options['crop_x'] : 0;
+        $crop_y = isset($options['crop_y']) ? $options['crop_y'] : 0;
+        $crop_height = isset($options['height']) ? $options['height'] : $file->image_dimensions['height'];
+        $crop_width = isset($options['width']) ? $options['width'] : $file->image_dimensions['width'];
+        $slide->field_image[LANGUAGE_NONE][0] = array(
+          'fid' => $file->fid,
+          'display' => 1,
+          'description' => '',
+          'cropbox_x' => $crop_x,
+          'cropbox_y' => $crop_y,
+          'cropbox_height' => $crop_height,
+          'cropbox_width' => $crop_width,
+        );
+      }
+    }
+  }
+  if (isset($options['link']) && !empty($options['link'])) {
+    $link = array(
+      'url' => $options['link'],
+      'title' => '',
+      'attributes' => array(),
+    );
+    $wrapper->field_link->set($link);
+  }
+  if (isset($options['headline']) && !empty($options['headline'])) {
+    $wrapper->field_headline->set($options['headline']);
+  }
+  if (isset($options['description']) && !empty($options['description'])) {
+    $wrapper->field_description->set($options['description']);
+  }
+  if (isset($options['alt']) && !empty($options['alt'])) {
+    $wrapper->field_slideshow_alt_text->set($options['alt']);
+  }
+  if (isset($options['title']) && !empty($options['title'])) {
+    $wrapper->field_slideshow_title_text->set($options['title']);
+  }
+  $wrapper->save();
+  return $wrapper->getIdentifier();
 }
