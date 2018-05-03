@@ -237,3 +237,12 @@ function os_restful_entity_delete($entity, $type) {
       ->execute();
   }
 }
+
+/**
+ * Sends restful response that the batch has finished
+ */
+function os_restful_output_batch_finished($url, $options) {
+  if ($options['query']['op'] != 'start') {
+    drupal_goto($url, $options);
+  }
+}
