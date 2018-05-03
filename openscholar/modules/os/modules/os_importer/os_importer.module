@@ -884,70 +884,72 @@ function os_importer_feeds_presave(FeedsSource $source, $entity, $item) {
     return;
   }
 
-  if (!os_app_info_declared_node_bundle($entity->type)) {
-    // This is not a valid bundle name. Return early.
-    return;
-  }
-
-  // When importing an event and the end date is empty we use the start date.
-  if ($entity->type == "event") {
-    if (empty($entity->field_date[LANGUAGE_NONE][0]['value2'])) {
-      $entity->field_date[LANGUAGE_NONE][0]['value2'] = $entity->field_date[LANGUAGE_NONE][0]['value'];
+  if (isset($entity->type)) {
+    if (!os_app_info_declared_node_bundle($entity->type)) {
+      // This is not a valid bundle name. Return early.
+      return;
     }
 
-    // Allow events with both empty start and end dates in CSV import.
-    // We clear them here since date module autopopulates empty values with
-    // today's date.
-    if ($source->id == 'os_events_csv' && empty($item['start date']) && empty($item['start date'])) {
-      $entity->field_date = array();
-    }
-    // Handling repeating events for Event import by ical files.
-    if ($source->id == 'os_ical' && !empty($item->component->rrule[0]['value'])) {
-      include_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'date_api') . '/date_api_ical.inc';
-      $rrule = 'RRULE:';
-      // Building rrule string from array.
-      foreach ($item->component->rrule[0]['value'] as $key => $value) {
-        $separator = ',';
-        if (is_array($value)) {
-          $options = array();
-          foreach ($value as $option) {
-            $element = is_array($option) ? array_shift($option) : $option;
-            $options[] = $element;
-            if(strpos($element, '+') === 0 || strpos($element, '-') === 0) {
-              $separator = '';
-            }
-          }
-          if ($key == 'UNTIL') {
-            $separator = '';
-            $options = array($options[0], str_pad($options[1], 2, '0', STR_PAD_LEFT), $options[2], 'T', $options[3], $options[4], $options[5], $options[6]);
-          }
-          $rrule .= $key . '=' . implode($separator, $options) . ';';
-          $separator = ',';
-        }
-        else {
-          $rrule .= $key . '=' . $value . ';';
-        }
+    // When importing an event and the end date is empty we use the start date.
+    if ($entity->type == "event") {
+      if (empty($entity->field_date[LANGUAGE_NONE][0]['value2'])) {
+        $entity->field_date[LANGUAGE_NONE][0]['value2'] = $entity->field_date[LANGUAGE_NONE][0]['value'];
       }
-      $field_info = field_info_field('field_date');
-      $date_item = array(
-        'value' => $entity->field_date[LANGUAGE_NONE][0]['value'],
-        'value2' => $entity->field_date[LANGUAGE_NONE][0]['value2'],
-        'rrule' => $rrule
-      );
-      // Assigning repeat dates from date_repeat module.
-      $entity->field_date[LANGUAGE_NONE] = date_repeat_build_dates(NULL, date_ical_parse_rrule($field_info, $rrule), $field_info, $date_item);
+
+      // Allow events with both empty start and end dates in CSV import.
+      // We clear them here since date module autopopulates empty values with
+      // today's date.
+      if ($source->id == 'os_events_csv' && empty($item['start date']) && empty($item['start date'])) {
+        $entity->field_date = array();
+      }
+      // Handling repeating events for Event import by ical files.
+      if ($source->id == 'os_ical' && !empty($item->component->rrule[0]['value'])) {
+        include_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'date_api') . '/date_api_ical.inc';
+        $rrule = 'RRULE:';
+        // Building rrule string from array.
+        foreach ($item->component->rrule[0]['value'] as $key => $value) {
+          $separator = ',';
+          if (is_array($value)) {
+            $options = array();
+            foreach ($value as $option) {
+              $element = is_array($option) ? array_shift($option) : $option;
+              $options[] = $element;
+              if(strpos($element, '+') === 0 || strpos($element, '-') === 0) {
+                $separator = '';
+              }
+            }
+            if ($key == 'UNTIL') {
+              $separator = '';
+              $options = array($options[0], str_pad($options[1], 2, '0', STR_PAD_LEFT), $options[2], 'T', $options[3], $options[4], $options[5], $options[6]);
+            }
+            $rrule .= $key . '=' . implode($separator, $options) . ';';
+            $separator = ',';
+          }
+          else {
+            $rrule .= $key . '=' . $value . ';';
+          }
+        }
+        $field_info = field_info_field('field_date');
+        $date_item = array(
+          'value' => $entity->field_date[LANGUAGE_NONE][0]['value'],
+          'value2' => $entity->field_date[LANGUAGE_NONE][0]['value2'],
+          'rrule' => $rrule
+        );
+        // Assigning repeat dates from date_repeat module.
+        $entity->field_date[LANGUAGE_NONE] = date_repeat_build_dates(NULL, date_ical_parse_rrule($field_info, $rrule), $field_info, $date_item);
+      }
     }
-  }
 
-  // Allow importing a presentation with date is empty.
-  if ($entity->type == "presentation" && empty($item['date'])) {
-    $entity->field_presentation_date = array();
-  }
+    // Allow importing a presentation with date is empty.
+    if ($entity->type == "presentation" && empty($item['date'])) {
+      $entity->field_presentation_date = array();
+    }
 
-  // If the item we import didn't have a year value, clear the default value
-  // given by the date module from the entity.
-  if ($entity->type == "class" && empty($item['year'])) {
-    $entity->field_offered_year = array();
+    // If the item we import didn't have a year value, clear the default value
+    // given by the date module from the entity.
+    if ($entity->type == "class" && empty($item['year'])) {
+      $entity->field_offered_year = array();
+    }
   }
 
   // Only import vocabularies, if not disallowed explicitly.
