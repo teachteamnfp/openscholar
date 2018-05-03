@@ -253,6 +253,13 @@ class OsImporterMenuProcessor extends FeedsProcessor {
    */
   protected function cleanPath(&$path) {
     $path = trim($path, " \t\n\r\0\x0B/");
+    // first we check if its an app path
+    // if it is, we don't have to do anything
+    foreach (os_app_info() as $app_name => $info) {
+      if (!empty($info['path']) && $info['path'] == $path) {
+        return;
+      }
+    }
     $purl = vsite_get_purl();
     $prefix = $purl ? $purl . '/' : '';
     $normal_path = drupal_get_normal_path($prefix . $path);
