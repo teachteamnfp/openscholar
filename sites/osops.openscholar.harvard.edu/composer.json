@@ -10,7 +10,7 @@
     }
   ],
   "config": {
-    "vendor-dir": "~/src/amazon/web/sites/osops.openscholar.harvard.edu",
+    "vendor-dir": "~/src/amazon/web/sites/osops.openscholar.harvard.edu/modules",
     "discard-changes": true
   }
 }
