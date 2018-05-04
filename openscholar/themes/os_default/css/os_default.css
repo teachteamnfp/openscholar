@@ -860,3 +860,43 @@ div.warning {
 	padding: 10px 30px 10px 20px;
 	border-left: 5px solid #8a6d3b;
 }
+
+/* scholr front page css */
+
+.scholr-front-footer {
+	padding-top: 10px;
+	width: 750px;
+	margin: 80px auto 0 auto;
+	border-top: 1px solid #ccc;
+}
+
+.scholr-front-footer a {
+	color: #fff;
+}
+
+.scholr-front-button {
+	text-decoration: none;
+	color: #505d6d;
+	background-color: #f0d090;
+	padding: 10px;
+	font-size: 1.2em;
+}
+
+.scholr-front-logo {
+	padding: 10px 0;
+}
+
+.scholr-front-body {
+	background-color: #505d6d;
+	height: 100%;
+	padding-top: 7%;
+}
+
+.scholr-front-wrapper {
+	text-align: center;
+	color: #fff;
+	width: 100%;
+	background-color: #FFF;
+}
+
+
