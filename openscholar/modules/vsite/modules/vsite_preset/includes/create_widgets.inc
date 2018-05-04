@@ -50,7 +50,6 @@ function vsite_preset_create_widgets($preset, $vsite) {
   }
   
   foreach ($widgets as $delta => $options) {
-    $options['delta'] = $delta . '-' . $preset->name;
     $plugin = $options['plugin'];
     unset($options['plugin']);
     if ($plugin == 'os_boxes_site_info') {

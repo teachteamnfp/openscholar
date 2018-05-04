@@ -896,9 +896,9 @@ function vsite_preset_spaces_presets() {
     'context' => array(
       'os_public:reaction:block' => array(
         'blocks' => array(
-          'boxes-site_info-hwp_professional' => array(
+          'boxes-site_info' => array(
             'module' => 'boxes',
-            'delta' => 'site_info-hwp_professional',
+            'delta' => 'site_info',
             'region' => 'header_second',
             'weight' => '-10',
           ),
@@ -914,15 +914,15 @@ function vsite_preset_spaces_presets() {
             'region' => 'menu_bar',
             'weight' => '-10',
           ),
-          'boxes-follow_me-hwp_professional' => array(
+          'boxes-follow_me' => array(
             'module' => 'boxes',
-            'delta' => 'follow_me-hwp_professional',
+            'delta' => 'follow_me',
             'region' => 'footer',
             'weight' => '-10',
           ),
           'boxes-contact-hwp_professional' => array(
             'module' => 'boxes',
-            'delta' => 'contact-hwp_professional',
+            'delta' => 'contact',
             'region' => 'footer_third',
             'weight' => '-10',
           ),
@@ -930,23 +930,23 @@ function vsite_preset_spaces_presets() {
       ),
       'os_front:reaction:block' => array(
         'blocks' => array(
-          'boxes-homepage_slideshow-hwp_professional' => array(
+          'boxes-homepage_slideshow' => array(
             'module' => 'boxes',
-            'delta' => 'homepage_slideshow-hwp_professional',
+            'delta' => 'homepage_slideshow',
             'region' => 'content_top',
             'weight' => '-10',
             'title' => '',
           ),
-          'boxes-blog_post_list-hwp_professional' => array(
+          'boxes-blog_post_list' => array(
             'module' => 'boxes',
-            'delta' => 'blog_post_list-hwp_professional',
+            'delta' => 'blog_post_list',
             'region' => 'content_top',
             'weight' => '0',
             'title' => '',
           ),
-          'boxes-about_featured_post-hwp_professional' => array(
+          'boxes-about_featured_post' => array(
             'module' => 'boxes',
-            'delta' => 'about_featured_post-hwp_professional',
+            'delta' => 'about_featured_post',
             'region' => 'sidebar_second',
             'weight' => '-10',
             'title' => '',
@@ -961,15 +961,15 @@ function vsite_preset_spaces_presets() {
             'region' => 'content_top',
             'weight' => '-10',
           ),
-          'boxes-basic_page_app_links-hwp_professional' => array(
+          'boxes-basic_page_app_links' => array(
             'module' => 'boxes',
-            'delta' => 'basic_page_app_links-hwp_professional',
+            'delta' => 'basic_page_app_links',
             'region' => 'sidebar_second',
             'weight' => '-10',
           ),
-          'boxes-basic_page_app_video-hwp_professional' => array(
+          'boxes-basic_page_app_video' => array(
             'module' => 'boxes',
-            'delta' => 'basic_page_app_video-hwp_professional',
+            'delta' => 'basic_page_app_video',
             'region' => 'sidebar_second',
             'weight' => '-9',
           ),
@@ -1001,9 +1001,9 @@ function vsite_preset_spaces_presets() {
             'region' => 'footer',
             'weight' => '-10',
           ),
-          'boxes-blog_help_docs-hwp_professional' => array(
+          'boxes-blog_help_docs' => array(
             'module' => 'boxes',
-            'delta' => 'blog_help_docs-hwp_professional',
+            'delta' => 'blog_help_docs',
             'region' => 'sidebar_second',
             'weight' => '1',
           ),
@@ -1017,21 +1017,21 @@ function vsite_preset_spaces_presets() {
             'region' => 'sidebar_first',
             'weight' => '-10',
           ),
-          'boxes-basic_page_app_links-hwp_professional' => array(
+          'boxes-basic_page_app_links' => array(
             'module' => 'boxes',
-            'delta' => 'basic_page_app_links-hwp_professional',
+            'delta' => 'basic_page_app_links',
             'region' => 'sidebar_first',
             'weight' => '1',
           ),
-          'boxes-basic_page_app_video-hwp_professional' => array(
+          'boxes-basic_page_app_video' => array(
             'module' => 'boxes',
-            'delta' => 'basic_page_app_video-hwp_professional',
+            'delta' => 'basic_page_app_video',
             'region' => 'sidebar_first',
             'weight' => '2',
           ),
-          'boxes-page_vs_section_layouts_video-hwp_professional' => array(
+          'boxes-page_vs_section_layouts_video' => array(
             'module' => 'boxes',
-            'delta' => 'page_vs_section_layouts_video-hwp_professional',
+            'delta' => 'page_vs_section_layouts_video',
             'region' => 'sidebar_first',
             'weight' => '3',
           ),
