@@ -279,4 +279,25 @@ class GroupNodeRestfulBase extends OsNodeRestfulBase {
     );
     return $value;
   }
+
+  public function additionalHateoas () {
+    $hateoas = array();
+    if (is_callable('parent::additionalHateoas')) {
+      $hateoas = parent::additionalHateoas();
+    }
+
+    if ($batch = &batch_get()) {
+      $redirectUrl = array(
+        '',
+        array()
+      );
+      batch_process($redirectUrl, 'batch', 'os_restful_output_batch_finished');
+      $id = $batch['id'];
+      $hateoas += array(
+        'batch-id' => $id
+      );
+    }
+
+    return $hateoas;
+  }
 }
