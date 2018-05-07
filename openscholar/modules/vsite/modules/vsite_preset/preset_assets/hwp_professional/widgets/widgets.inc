@@ -111,6 +111,7 @@ $widgets = [
         [
           'nid' => FALSE,
           'alias' => 'about',
+          'title' => 'About',
           'weight' => 0,
         ],
       ],

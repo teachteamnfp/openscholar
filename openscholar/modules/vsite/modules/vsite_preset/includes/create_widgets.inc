@@ -72,7 +72,8 @@ function vsite_preset_create_widgets($preset, $vsite) {
         if (!$node['nid'] && $node['alias']) {
           $nid = vsite_preset_get_nid_from_alias($node['alias']);
           if ($nid) {
-            $nodes[$nid]['nid'] = $nid;
+            $node['nid'] = $nid;
+            $nodes[] = $node;
           }
         }
       }
