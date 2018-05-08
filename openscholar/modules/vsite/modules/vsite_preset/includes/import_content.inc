@@ -54,8 +54,9 @@ function vsite_preset_import_content_task($entity, $task, &$context) {
 function vsite_preset_import_content($types, $preset) {
   $imported = FALSE;
   $path = drupal_get_path('module', $preset->export_module);
+  $content_path = $path . '/preset_assets/' . $preset->name . '/content/';
   foreach ($types as $type => $importer_info) {
-    $file = $path . '/preset_assets/' . $preset->name . '/content/' . $type . '.csv';
+    $file = $content_path . $type . '.csv';
     if (file_exists($file) && is_readable($file) && isset($importer_info['csv'])) {
       $source = feeds_source($importer_info['csv']);
       // Load the source fetcher config.
@@ -72,6 +73,26 @@ function vsite_preset_import_content($types, $preset) {
       $source->startImport();
       $imported = TRUE;
     }
+  }
+  $pubs_path = $content_path.'/publications.bib';
+  if (file_exists($pubs_path)) {
+    $import_file = file_uri_to_object($pubs_path);
+    $session_id = microtime();
+    $filesize = sprintf("%01.1f", $import_file->filesize / 1000);
+    $filesize = " ($filesize KB)";
+    $batch_op = array(
+      'title' => t('Importing @filename', array('@filename' => $import_file->filename . $filesize)),
+      'operations' => array(
+        array('biblio_import', array($import_file, 'biblio_bibtex', $GLOBALS['user']->uid, NULL, true, $session_id)),
+        array('biblio_import_batch_operations', array($session_id, $GLOBALS['user'], $GLOBALS['user']->uid, null))
+      ),
+      'progressive' => TRUE,
+      'finished' => 'biblio_import_batch_finished',
+      'init_message' => t('Parsing file...'),
+      'progress_message' => t('Saving nodes...'),
+      'file' => './' . drupal_get_path('module', 'biblio') . '/includes/biblio.import.export.inc'
+    );
+    batch_set($batch_op);
   }
   return $imported;
 }
