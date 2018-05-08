@@ -2033,13 +2033,20 @@ function vsite_mail_alter(&$message){
         $message['subject'] = t('An OpenScholar account has been created for you at !site_name', array(
           '!site_name' => $vsite->group->title
         ));
-        $replacements = array(
-          '!site' => url('', array(
+
+        // Getting the site url
+        $site = url('', array(
             'purl' => array(
               'id' => $vsite->id,
               'provider' => $vsite->purl_provider
             )
-          )),
+          ));
+        if ($vsite->purl_provider == 'spaces_og' && $base_url) {
+          // For non-custom domain building up the full URL
+          $site = $base_url . $site;
+        }
+        $replacements = array(
+          '!site' => $site,
           '!site_owner' => $site_owner_full_name,
           '!login_url' => user_pass_reset_url($user),
           '!mailto' => $user->mail,
@@ -2089,13 +2096,20 @@ function vsite_mail_alter(&$message){
         $message['subject'] = t('An OpenScholar account has been created for you at !site_name', array(
           '!site_name' => $vsite->group->title
         ));
-        $replacements = array(
-          '!site' => url('', array(
+
+        // Getting the site url
+        $site = url('', array(
             'purl' => array(
               'id' => $vsite->id,
               'provider' => $vsite->purl_provider
             )
-          )),
+          ));
+        if ($vsite->purl_provider == 'spaces_og' && $base_url) {
+          // For non-custom domain building up the full URL
+          $site = $base_url . $site;
+        }
+        $replacements = array(
+          '!site' => $site,
           '!site_owner' => $site_owner_full_name,
           '!login_url' => user_pass_reset_url($user),
           '!mailto' => $user->mail,
