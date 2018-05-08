@@ -59,7 +59,7 @@ $widgets = [
       'nodes' => [
         [
           'nid' => FALSE,
-          'image' => 'https://professional.thescholr.com/files/professional/files/alphabets-ancient-box-529926.jpg',
+          'image' => 'https://thescholr.com/files/professional/files/alphabets-ancient-box-529926.jpg',
           'link' => '',
           'headline' => 'Awesome Headline',
           'description' => "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
@@ -69,7 +69,7 @@ $widgets = [
         ],
         [
           'nid' => FALSE,
-          'image' => 'https://professional.thescholr.com/files/professional/files/beach-clouds-dawn-977737.jpg',
+          'image' => 'https://thescholr.com/files/professional/files/beach-clouds-dawn-977737.jpg',
           'link' => '',
           'headline' => 'Another awesome headline',
           'description' => "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
@@ -79,7 +79,7 @@ $widgets = [
         ],
         [
           'nid' => FALSE,
-          'image' => 'https://professional.thescholr.com/files/professional/files/background-book-pages-book-series-762686_1.jpg',
+          'image' => 'https://thescholr.com/files/professional/files/background-book-pages-book-series-762686_1.jpg',
           'link' => 'https://professional.thescholr.com/',
           'headline' => 'Third Awesome Headline',
           'description' => "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium",

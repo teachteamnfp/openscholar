@@ -862,37 +862,6 @@ function vsite_preset_spaces_presets() {
       'os_breadcrumbs_show_breadcrumbs' => 1,
       'show_email' => 0,
     ),
-    'menus' => array(
-      'primary-menu' => array(
-        900 => array(
-          'link_path' => '<front>',
-          'link_title' => 'HOME',
-          'options' => array(),
-          'mlid' => 900,
-          'p1' => 900,
-          'depth' => 1,
-          'router_path' => 'home',
-          'menu_name' => 'primary-menu',
-          'external' => 1,
-          'weight' => 0,
-          'hidden' => 0,
-          'has_children' => 0,
-          'expanded' => 0,
-          'module' => 'menu',
-          'customized' => 0,
-          'updated' => 0,
-          'plid' => 0,
-          'p2' => 0,
-          'p3' => 0,
-          'p4' => 0,
-          'p5' => 0,
-          'p6' => 0,
-          'p7' => 0,
-          'p8' => 0,
-          'p9' => 0,
-        ),
-      ),
-    ),
     'context' => array(
       'os_public:reaction:block' => array(
         'blocks' => array(

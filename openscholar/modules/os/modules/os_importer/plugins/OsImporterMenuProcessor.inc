@@ -99,6 +99,7 @@ class OsImporterMenuProcessor extends FeedsProcessor {
   public function configDefaults() {
     $defaults = parent::configDefaults();
     $defaults['skip_link_path_validation'] = TRUE;
+    $defaults['update_skip_existing'] = FEEDS_UPDATE_EXISTING;  // needed so global links get into spaces. Inheritance doesn't happen
     return $defaults;
   }
 
@@ -268,4 +269,15 @@ class OsImporterMenuProcessor extends FeedsProcessor {
     }
   }
 
+  /**
+   * @inheritdoc
+   */
+  protected function existingEntityId(FeedsSource $source, FeedsParserResult $result) {
+    $item = $result->currentItem();
+    if ($link = menu_link_get_preferred($item['path'])) {
+      return $link['mlid'];
+    }
+
+    return 0;
+  }
 }
