@@ -57,6 +57,9 @@ projects[ctools][patch][] = "http://drupal.org/files/1707810-ctools-fields-mock-
 projects[ctools][patch][] = "http://drupal.org/files/ctools-plugin_extension-1623044-1.patch"
 projects[ctools][patch][] = "https://drupal.org/files/issues/2147905-allow-alter-with-more-context-1.patch"
 
+projects[d8_migration_check][subdir] = "contrib"
+projects[d8_migration_check][version] = 1.4
+
 projects[date][subdir] = "contrib"
 projects[date][version] = 2.8
 
