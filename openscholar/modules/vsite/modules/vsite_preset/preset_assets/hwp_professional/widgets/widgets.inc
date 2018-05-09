@@ -167,7 +167,16 @@ $widgets = [
     'description' => t('Blog help docs'),
     'options' => [
       'text' => [
-        'value' => '<p>The Blog App adds a blog section to your site.</p><p>Learn More about how to use the Blog App including:</p><ul><li><a href="https://help.theopenscholar.com/blogs#blog-settings" title="">Blog Settings</a></li><li><a href="/professional/adding-the-blog-to-a-menu" title="">Adding a Blog link to a&nbsp;Menu</a></li><li><a href="https://help.theopenscholar.com/blogs#adding-the-blog-to-a-menu" title="">Creating Blog Entries</a></li><li><a href="https://help.theopenscholar.com/blogs#content-revisions" title="">Content Revisions</a></li><li><a href="https://help.theopenscholar.com/blogs#importing-a-blog" title="">Importing a Blog</a></li><li><a href="https://help.theopenscholar.com/blogs" title="">and more!&nbsp;</a></li></ul>',
+        'value' => '<p>The Blog App adds a blog section to your site.</p>
+<p>Learn More about how to use the Blog App including:</p>
+<ul>
+  <li><a href="https://help.theopenscholar.com/blogs#blog-settings" title="">Blog Settings</a></li>
+  <li><a href="https://help.theopenscholar.com/blogs#adding-the-blog-to-a-menu" title="">Adding a Blog link to a&nbsp;Menu</a></li>
+  <li><a href="https://help.theopenscholar.com/blogs#creating-blog-entries" title="">Creating Blog Entries</a></li>
+  <li><a href="https://help.theopenscholar.com/blogs#content-revisions" title="">Content Revisions</a></li>
+  <li><a href="https://help.theopenscholar.com/blogs#importing-a-blog" title="">Importing a Blog</a></li>
+  <li><a href="https://help.theopenscholar.com/blogs" title="">and more!&nbsp;</a></li>
+</ul>',
         'format' => 'filtered_html',
       ],
       'format' => 1,
