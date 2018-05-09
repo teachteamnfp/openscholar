@@ -1,0 +1,5 @@
+Link Title,Menu,Weight,Path,Parent Path
+HOME,primary-menu,-10,<front>
+Work,primary-menu,1,work,
+Blog,primary-menu,2,blog,
+About,primary-menu,3,about,

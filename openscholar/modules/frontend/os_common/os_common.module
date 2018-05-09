@@ -379,6 +379,17 @@ function os_common_library() {
     )
   );
 
+  $info['batchApi'] = array(
+    'title' => 'Angular Batch operations',
+    'version' => '0.1',
+    'js' => array(
+      $path.'/batch/batch.module.js' => array(),
+    ),
+    'dependencies' => array(
+      array('os_common', 'angularjs'),
+    )
+  );
+
   return $info;
 }
 

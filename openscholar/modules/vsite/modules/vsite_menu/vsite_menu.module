@@ -132,6 +132,7 @@ function vsite_menu_menu_link_save(&$item, $gid = FALSE) {
   }
 
   if (list($menu, $existing_menu) = _vsite_menu_prepare_menu_item($item, $vsite)) {
+    error_log(print_r($existing_menu,1));
     $vsite->controllers->menus->set($menu, $existing_menu);
 
     /**
