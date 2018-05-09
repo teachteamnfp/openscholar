@@ -160,5 +160,35 @@ function os_aws_purge_shutdown_send_queue(){
     return;
   }
 
-  // SEND THE API CALL....
+  $payload = array(
+    'purge' => array(),
+    'ban' => array()
+  );
+
+  foreach ($paths as $path) {
+    //Special parameters for Wildcard
+    $ban = (substr($path, -1) == "*");
+
+    if ($ban) {
+      $payload['ban'][] = $path;
+    } else {
+      $payload['purge'][] = $path;
+    }
+  }
+
+  $data_string = json_encode($payload);
+
+  $ch = curl_init(variable_get('os_varnish_api_endpoint', 'https://skuyz0fu77.execute-api.us-east-1.amazonaws.com/dev/varnishPurgeBan'));
+  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+  curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+  curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+      'Content-Type: application/json',
+      'Content-Length: ' . strlen($data_string)),
+      'x-os-token: ' . variable_get('os_varnish_api_token', '')
+  );
+
+  $result = curl_exec($ch);
+
+  return $result;
 }
