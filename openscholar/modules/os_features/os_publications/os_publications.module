@@ -2076,21 +2076,41 @@ function os_publications_biblio_pm_node_alter($node, $article) {
 */
 function os_publications_html_head_alter(&$head_elements) {
   $args = arg();
-  if($args[0] == 'node'){
+  //Twitter image change for news and event
+  if($args[0] == 'node' && is_numeric($args[1])){
     $node = node_load($args[1]);
-    if($node->type == 'news'){
-      foreach($head_elements as $metatag){
+    if($node->type == 'news' || $node->type == 'event'){
+      foreach($head_elements as $key => $metatag){
         if($metatag['#name'] == "twitter:image"){
           //Retrive image from field_upload if image exists
           if($node->field_upload[LANGUAGE_NONE][0]['uri']){
-            $metatag['#value'] = file_create_url($node->field_upload[LANGUAGE_NONE][0]['uri']);
+            $head_elements[$key]['#value'] = file_create_url($node->field_upload[LANGUAGE_NONE][0]['uri']);
           }else{
             //Rertive all images from node body
             preg_match_all('@src="([^"]+)"@' , $node->body[LANGUAGE_NONE][0]['safe_value'], $match);
             $bodyImage = array_pop($match);
             //Check if image exists and assign first image to twitter:image
             if($bodyImage[0]){
-              $metatag['#value'] = $bodyImage[0];
+              $head_elements[$key]['#value'] = $bodyImage[0];
+            }
+          }
+        }
+      }
+    }
+    //Twitter image change for person
+    if($node->type == 'person'){
+      foreach($head_elements as $key => $metatag){
+        if($metatag['#name'] == "twitter:image"){
+          //Retrive image from field_upload if image exists
+          if($node->field_person_photo[LANGUAGE_NONE][0]['uri']){
+            $head_elements[$key]['#value'] = file_create_url($node->field_person_photo[LANGUAGE_NONE][0]['uri']);
+          }else{
+            //Rertive all images from node body
+            preg_match_all('@src="([^"]+)"@' , $node->body[LANGUAGE_NONE][0]['safe_value'], $match);
+            $bodyImage = array_pop($match);
+            //Check if image exists and assign first image to twitter:image
+            if($bodyImage[0]){
+              $head_elements[$key]['#value'] = $bodyImage[0];
             }
           }
         }
