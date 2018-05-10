@@ -650,7 +650,7 @@ table th label {
 /* CP/BUILD MENU */
 #redirects .actions,
 #os-maintenance .actions,
-.page-cp-build-menu table thead,
+.page-cp-build-menu #page table thead,
 .page-node-revisions .comment-wrapper,
 .page-node-revisions .ctools-dropdown,
 .page-node-revisions .biblio-download-links-label {
