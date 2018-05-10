@@ -863,40 +863,54 @@ div.warning {
 
 /* scholr front page css */
 
+
+body.sitewide-front:not(.og-context) {
+	background-image:none;
+	
+}
+
+
 .scholr-front-footer {
 	padding-top: 10px;
 	width: 750px;
 	margin: 80px auto 0 auto;
 	border-top: 1px solid #ccc;
+	color:#fff;
 }
 
 .scholr-front-footer a {
-	color: #fff;
+color:#fff;
+	text-decoration:underline;
 }
 
 .scholr-front-button {
-	text-decoration: none;
-	color: #505d6d;
 	background-color: #f0d090;
-	padding: 10px;
-	font-size: 1.2em;
+border: none;
+padding: 10px;
+text-decoration:none !important;
+color:#505d6d !important;
+font-size: 1.2em ;
+border-bottom: 3px solid #d6940f;
+border-radius: 4px;
 }
 
 .scholr-front-logo {
-	padding: 10px 0;
+	padding: 20px 0;
+	background-color: #fff;
 }
 
 .scholr-front-body {
-	background-color: #505d6d;
 	height: 100%;
 	padding-top: 7%;
+	background-color: #505d6d;
+	color:#fff;
+}
+.scholr-front-body h1 {
+	margin-bottom:60px;
 }
 
 .scholr-front-wrapper {
 	text-align: center;
-	color: #fff;
+	color: #505d6d;
 	width: 100%;
-	background-color: #FFF;
 }
-
-
