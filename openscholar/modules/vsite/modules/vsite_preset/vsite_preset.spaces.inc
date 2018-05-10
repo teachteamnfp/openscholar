@@ -814,6 +814,222 @@ function vsite_preset_spaces_presets() {
   $spaces_presets = new stdClass();
   $spaces_presets->disabled = FALSE; /* Edit this to true to make a default spaces_presets disabled initially */
   $spaces_presets->api_version = 3;
+  $spaces_presets->name = 'hwp_professional';
+  $spaces_presets->title = 'HWP Professional';
+  $spaces_presets->description = 'The Professional site.';
+  $spaces_presets->space_type = 'og';
+  $spaces_presets->value = array(
+    'bundles' => array(
+      0 => 'personal',
+    ),
+    'og_tasks' => array(
+      0 => 'vsite_preset_import_content',
+      1 => 'vsite_preset_import_menu',
+      2 => 'vsite_preset_create_widgets',
+      3 => 'vsite_preset_update_page_contexts',
+    ),
+    'variable' => array(
+      'vsite_preset_import_content_types' => array(
+        'page',
+        'blog',
+      ),
+      'spaces_features' => array(
+        'os' => '1',
+        'os_pages' => '1',
+        'os_blog' => '1',
+      ),
+      'spaces_features_available' => array(
+        0 => 'os_blog',
+        1 => 'os_booklets',
+        2 => 'os_classes',
+        3 => 'os_events',
+        4 => 'os_faq',
+        5 => 'os_files_private',
+        6 => 'os_image_gallery',
+        7 => 'os_links',
+        8 => 'os_news',
+        9 => 'os_pages',
+        10 => 'os_presentations',
+        11 => 'os_profiles',
+        12 => 'os_publications',
+        13 => 'os_reader',
+        14 => 'os_software',
+        15 => 'harvard_courses',
+      ),
+      'site_frontpage' => 'home',
+      'theme_default' => 'hwpi_classic',
+      'os_appearance_hwpi_classic_flavor' => 'classic_indigo',
+      'os_breadcrumbs_show_breadcrumbs' => 1,
+      'show_email' => 0,
+    ),
+    'context' => array(
+      'os_public:reaction:block' => array(
+        'blocks' => array(
+          'boxes-site_info' => array(
+            'module' => 'boxes',
+            'delta' => 'site_info',
+            'region' => 'header_second',
+            'weight' => '-10',
+          ),
+          'os_search_db-site-search' => array(
+            'module' => 'os_search_db',
+            'delta' => 'site-search',
+            'region' => 'header_third',
+            'weight' => '-10',
+          ),
+          'boxes-solr_search_box' => array(
+            'module' => 'boxes',
+            'delta' => 'solr_search_box',
+            'region' => 'header_third',
+            'weight' => '-10',
+          ),
+          'os-primary-menu' => array(
+            'module' => 'os',
+            'delta' => 'primary-menu',
+            'region' => 'menu_bar',
+            'weight' => '-10',
+          ),
+          'boxes-follow_me' => array(
+            'module' => 'boxes',
+            'delta' => 'follow_me',
+            'region' => 'footer',
+            'weight' => '-10',
+          ),
+          'boxes-contact-hwp_professional' => array(
+            'module' => 'boxes',
+            'delta' => 'contact',
+            'region' => 'footer_third',
+            'weight' => '-10',
+          ),
+        ),
+      ),
+      'os_front:reaction:block' => array(
+        'blocks' => array(
+          'boxes-homepage_slideshow' => array(
+            'module' => 'boxes',
+            'delta' => 'homepage_slideshow',
+            'region' => 'content_top',
+            'weight' => '-10',
+            'title' => '',
+          ),
+          'boxes-blog_post_list' => array(
+            'module' => 'boxes',
+            'delta' => 'blog_post_list',
+            'region' => 'content_top',
+            'weight' => '0',
+            'title' => '',
+          ),
+          'boxes-about_featured_post' => array(
+            'module' => 'boxes',
+            'delta' => 'about_featured_post',
+            'region' => 'sidebar_second',
+            'weight' => '-10',
+            'title' => '',
+          ),
+        ),
+      ),
+      'os_pages-page-work:reaction:block' => array(
+        'blocks' => array(
+          'os_pages-main_content' => array(
+            'module' => 'os_pages',
+            'delta' => 'main_content',
+            'region' => 'content_top',
+            'weight' => '-10',
+          ),
+          'boxes-basic_page_app_links' => array(
+            'module' => 'boxes',
+            'delta' => 'basic_page_app_links',
+            'region' => 'sidebar_second',
+            'weight' => '-10',
+          ),
+          'boxes-basic_page_app_video' => array(
+            'module' => 'boxes',
+            'delta' => 'basic_page_app_video',
+            'region' => 'sidebar_second',
+            'weight' => '-9',
+          ),
+        ),
+      ),
+      'blog_blog:reaction:block' => array(
+        'blocks' => array(
+          'boxes-os_addthis' => array(
+            'module' => 'boxes',
+            'delta' => 'os_addthis',
+            'region' => 'sidebar_second',
+            'weight' => '-9',
+          ),
+          'views-os_blog-block' => array(
+            'module' => 'views',
+            'delta' => 'os_blog-block',
+            'region' => 'sidebar_second',
+            'weight' => '-8',
+          ),
+          'views-os_blog_comments-block' => array(
+            'module' => 'views',
+            'delta' => 'os_blog_comments-block',
+            'region' => 'sidebar_second',
+            'weight' => '-7',
+          ),
+          'boxes-blog_rss_feed' => array(
+            'module' => 'boxes',
+            'delta' => 'blog_rss_feed',
+            'region' => 'footer',
+            'weight' => '-10',
+          ),
+          'boxes-blog_help_docs' => array(
+            'module' => 'boxes',
+            'delta' => 'blog_help_docs',
+            'region' => 'sidebar_second',
+            'weight' => '1',
+          ),
+        ),
+      ),
+      'os_pages-section-about:reaction:block' => array(
+        'blocks' => array(
+          'boxes-os_pages_section_nav' => array(
+            'module' => 'boxes',
+            'delta' => 'os_pages_section_nav',
+            'region' => 'sidebar_first',
+            'weight' => '-10',
+          ),
+          'boxes-basic_page_app_links' => array(
+            'module' => 'boxes',
+            'delta' => 'basic_page_app_links',
+            'region' => 'sidebar_first',
+            'weight' => '1',
+          ),
+          'boxes-basic_page_app_video' => array(
+            'module' => 'boxes',
+            'delta' => 'basic_page_app_video',
+            'region' => 'sidebar_first',
+            'weight' => '2',
+          ),
+          'boxes-page_vs_section_layouts_video' => array(
+            'module' => 'boxes',
+            'delta' => 'page_vs_section_layouts_video',
+            'region' => 'sidebar_first',
+            'weight' => '3',
+          ),
+          'os_pages-main_content' => array(
+            'module' => 'os_pages',
+            'delta' => 'main_content',
+            'region' => 'content_top',
+            'weight' => '-10',
+          ),
+        ),
+      ),
+    ),
+  );
+
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('HWP Professional');
+  t('The Professional site.');
+  $export['hwp_professional'] = $spaces_presets;
+
+  $spaces_presets = new stdClass();
+  $spaces_presets->disabled = FALSE; /* Edit this to true to make a default spaces_presets disabled initially */
+  $spaces_presets->api_version = 3;
   $spaces_presets->name = 'hwp_event_conference';
   $spaces_presets->title = 'HWP Event/Conference';
   $spaces_presets->description = 'The Standard Event or Conference site.';
