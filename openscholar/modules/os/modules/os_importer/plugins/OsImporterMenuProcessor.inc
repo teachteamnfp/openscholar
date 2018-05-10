@@ -255,7 +255,13 @@ class OsImporterMenuProcessor extends FeedsProcessor {
    */
   protected function cleanPath(&$path) {
     $path = trim($path, " \t\n\r\0\x0B/");
-    // first we check if its an app path
+    // first check that its not <front>
+    // ignore it if it is
+    if ($path == '<front>') {
+      return;
+    }
+
+    // then we check if its an app path
     // if it is, we don't have to do anything
     foreach (os_app_info() as $app_name => $info) {
       if (!empty($info['path']) && $info['path'] == $path) {
@@ -275,7 +281,8 @@ class OsImporterMenuProcessor extends FeedsProcessor {
    */
   protected function existingEntityId(FeedsSource $source, FeedsParserResult $result) {
     $item = $result->currentItem();
-    if ($link = menu_link_get_preferred($item['path'])) {
+    error_log(print_r($item,1));
+    if ($item['path'] != '<front>' && $link = menu_link_get_preferred($item['path'])) {
       return $link['mlid'];
     }
 
