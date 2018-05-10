@@ -388,9 +388,10 @@ function os_importer_map_files($source, $entity, $target, $value, $mapping) {
   $files = array();
 
   $sources = explode('|', $value);
+  $destination = 'public://' . token_replace(os_files_get_save_path(), array());
+  file_prepare_directory($destination, FILE_MODIFY_PERMISSIONS | FILE_CREATE_DIRECTORY);
 
   foreach ($sources as $source) {
-    $destination = 'public://' . token_replace(os_files_get_save_path(), array());
     if ($file = system_retrieve_file($source, $destination, TRUE)) {
       $files[] = array(
         'fid' => $file->fid,
