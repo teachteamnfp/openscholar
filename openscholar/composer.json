@@ -1,6 +1,6 @@
 {
   "require": {
-    "cpliakas/git-wrapper": "1.0.0-RC1"
+    "cpliakas/git-wrapper": "1.1.0"
   },
   "minimum-stability": "dev",
   "config": {
