@@ -188,6 +188,7 @@ class OsImporterMenuProcessor extends FeedsProcessor {
     }
 
     // Let other modules expose mapping targets.
+    self::loadMappers();
     drupal_alter('feeds_processor_targets', $targets);
 
     return $targets;

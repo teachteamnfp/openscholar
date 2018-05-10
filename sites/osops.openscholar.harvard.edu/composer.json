@@ -1,5 +1,5 @@
 {
-  "name": "OS Operations ",
+  "name": "osops",
   "require": {
     "openscholar/osops" : "1.3"
   },
