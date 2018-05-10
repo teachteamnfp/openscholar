@@ -281,7 +281,6 @@ class OsImporterMenuProcessor extends FeedsProcessor {
    */
   protected function existingEntityId(FeedsSource $source, FeedsParserResult $result) {
     $item = $result->currentItem();
-    error_log(print_r($item,1));
     if ($item['path'] != '<front>' && $link = menu_link_get_preferred($item['path'])) {
       return $link['mlid'];
     }
