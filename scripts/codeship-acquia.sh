@@ -56,12 +56,12 @@ $DRUSH make --no-core --contrib-destination drupal-org.make .
 (
 	# Download composer components
 	composer install
-	rm -rf libraries/git/symfony/event-dispatcher/Symfony/Component/EventDispatcher/.git
-	rm -f libraries/git/symfony/event-dispatcher/Symfony/Component/EventDispatcher/.gitignore
-	git rm -r --cached libraries/git/symfony/event-dispatcher/Symfony/Component/EventDispatcher
-	rm -rf libraries/git/symfony/process/Symfony/Component/Process/.git
-	rm -f libraries/git/symfony/process/Symfony/Component/Process/.gitignore
-	git rm -r --cached libraries/git/symfony/process/Symfony/Component/Process
+	rm -rf libraries/git/symfony/event-dispatcher/.git
+	rm -f libraries/git/symfony/event-dispatcher/.gitignore
+	git rm -r --cached libraries/git/symfony/event-dispatcher
+	rm -rf libraries/git/symfony/process/.git
+	rm -f libraries/git/symfony/process/.gitignore
+	git rm -r --cached libraries/git/symfony/process/
 
 	# Get the angular components
 	bower -q install
@@ -159,12 +159,12 @@ $DRUSH make --no-core --contrib-destination drupal-org.make .
 (
 	# Download composer components
 	composer install
-	rm -rf libraries/git/symfony/event-dispatcher/Symfony/Component/EventDispatcher/.git
-	rm -f libraries/git/symfony/event-dispatcher/Symfony/Component/EventDispatcher/.gitignore
-	git rm -r --cached libraries/git/symfony/event-dispatcher/Symfony/Component/EventDispatcher
-	rm -rf libraries/git/symfony/process/Symfony/Component/Process/.git
-	rm -f libraries/git/symfony/process/Symfony/Component/Process/.gitignore
-	git rm -r --cached libraries/git/symfony/process/Symfony/Component/Process
+	rm -rf libraries/git/symfony/event-dispatcher/.git
+	rm -f libraries/git/symfony/event-dispatcher/.gitignore
+	git rm -r --cached libraries/git/symfony/event-dispatcher
+	rm -rf libraries/git/symfony/process/.git
+	rm -f libraries/git/symfony/process/.gitignore
+	git rm -r --cached libraries/git/symfony/process
 
 	# Get the angular components
 	bower -q install
