@@ -139,9 +139,9 @@ function os_aws_purge_expire_cache($paths, $wildcards = array()) {
  */
 function _os_aws_purge_queue_add($path = FALSE) {
 
-  $queue = drupal_static(__FUNCTION__, array());
+  $queue = &drupal_static(__FUNCTION__, array());
 
-  if ($path && !in_array($path, $queue)) {
+  if ($path) {
     $queue[] = $path;
   }
 
@@ -165,27 +165,28 @@ function os_aws_purge_shutdown_send_queue(){
     'ban' => array()
   );
 
-  foreach ($paths as $path) {
-    //Special parameters for Wildcard
-    $ban = (substr($path, -1) == "*");
+  foreach ($paths as $clear_data) {
+    list($path, $domain, $ban) = $clear_data;
 
-    if ($ban) {
-      $payload['ban'][] = $path;
-    } else {
-      $payload['purge'][] = $path;
+    foreach (array('http', 'https') as $scheme) {
+      if ($ban) {
+        $payload['ban'][] = "{$scheme}://{$domain}/{$path}";
+      } else {
+        $payload['purge'][] = "{$scheme}://{$domain}/{$path}";
+      }
     }
   }
 
   $data_string = json_encode($payload);
 
-  $ch = curl_init(variable_get('os_varnish_api_endpoint', 'https://skuyz0fu77.execute-api.us-east-1.amazonaws.com/dev/varnishPurgeBan'));
+  $ch = curl_init(variable_get('os_varnish_api_endpoint', 'https://lambda-endpoint/dev/varnishPurgeBan'));
   curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
   curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
   curl_setopt($ch, CURLOPT_HTTPHEADER, array(
       'Content-Type: application/json',
-      'Content-Length: ' . strlen($data_string)),
-      'x-os-token: ' . variable_get('os_varnish_api_token', '')
+      'Content-Length: ' . strlen($data_string),
+      'x-os-token: ' . variable_get('os_varnish_api_token', ''))
   );
 
   $result = curl_exec($ch);
