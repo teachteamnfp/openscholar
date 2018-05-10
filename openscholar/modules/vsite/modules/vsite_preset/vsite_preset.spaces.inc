@@ -871,13 +871,7 @@ function vsite_preset_spaces_presets() {
             'region' => 'header_second',
             'weight' => '-10',
           ),
-          'os_search_db-site-search' => array(
-            'module' => 'os_search_db',
-            'delta' => 'site-search',
-            'region' => 'header_third',
-            'weight' => '-10',
-          ),
-          'boxes-solr_search_box' => array(
+          'os_search_solr-solr_search_box' => array(
             'module' => 'boxes',
             'delta' => 'solr_search_box',
             'region' => 'header_third',
