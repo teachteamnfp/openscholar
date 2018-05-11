@@ -2091,7 +2091,7 @@ function os_publications_html_head_alter(&$head_elements) {
             $bodyImage = array_pop($match);
             //Check if image exists and assign first image to twitter:image
             if($bodyImage[0]){
-              $head_elements[$key]['#value'] = file_create_url($bodyImage[0]);
+              $head_elements[$key]['#value'] = addhttp($bodyImage[0]);
             }
           }
         }
@@ -2110,7 +2110,7 @@ function os_publications_html_head_alter(&$head_elements) {
             $bodyImage = array_pop($match);
             //Check if image exists and assign first image to twitter:image
             if($bodyImage[0]){
-              $head_elements[$key]['#value'] = file_create_url($bodyImage[0]);
+              $head_elements[$key]['#value'] = addhttp($bodyImage[0]);
             }
           }
         }
@@ -2125,10 +2125,19 @@ function os_publications_html_head_alter(&$head_elements) {
           $bodyImage = array_pop($match);
           //Check if image exists and assign first image to twitter:image
           if($bodyImage[0]){
-            $head_elements[$key]['#value'] = file_create_url($bodyImage[0]);
+            $head_elements[$key]['#value'] = addhttp($bodyImage[0]);
           }
         }
       }
     }
   }
+}
+/**
+* Add http to url
+*/
+function addhttp($url) {
+  if (!preg_match("~^(?:f|ht)tps?://~i", $url)) {
+      $url = "http://" . $url;
+  }
+  return $url;
 }
