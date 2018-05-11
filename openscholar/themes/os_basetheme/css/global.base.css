@@ -178,9 +178,9 @@ h4 a {
     text-decoration: none;
 }
 
-.field-name-body h2,
-.field-name-body h3,
-.field-name-body h4 {
+#content-column .field-name-body h2,
+#content-column .field-name-body h3,
+#content-column .field-name-body h4 {
     line-height: 1.2em;
 }
 
