@@ -9,7 +9,7 @@ if (!class_exists('purl_vsite_domain')) {
    *  Full domain handling for scholar, will also remove purl prefix's from alias's
    */
   class purl_vsite_domain extends purl_domain implements purl_processor {
-    use VsitePathHandling;
+    //use VsitePathHandling;
 
     public $modifier_regex = '!^[a-z0-9_\.-]+$!';
 

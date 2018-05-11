@@ -2136,8 +2136,8 @@ function os_publications_html_head_alter(&$head_elements) {
 * Add http to url
 */
 function addhttp($url) {
-  if (!preg_match("~^(?:f|ht)tps?://~i", $url)) {
-      $url = "http://" . $url;
+  if(!preg_match("~^(?:f|ht)tps?://~i", $url)) {
+    $url = "http:" . $url;
   }
   return $url;
 }
