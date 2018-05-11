@@ -827,6 +827,13 @@ function _citation_distribute_get_query($plugin, $nid) {
 function citation_distribute_cp_settings() {
 
   $settings = array();
+  $vsite = vsite_get_vsite();
+  $spaces_features = $vsite->controllers->variable->get('spaces_features');
+
+  // Publication settings link won't appear in CP menu if publication app is not enabled.
+  if (!$spaces_features['os_publications']) {
+    return $settings;
+  }
   // Distribute to Repository option
   $autoflags_options = array();
   $default_autoflags = array();
