@@ -44,6 +44,8 @@ margin-top: 12px;
 #content-column h2,
 #content-column h3,
 #content-column h4,
+.field-name-body h3,
+.field-name-body h4,
 .cke_editable h2,
 .cke_editable h3,
 .cke_editable h4 {
@@ -239,7 +241,8 @@ margin-left:6em;
     font-weight: bold;
 
 }
-
+.field-name-body h3,
+.field-name-body h4,
 #footer ul.menu li.menuparent ul li {
 
     font-weight: normal;
