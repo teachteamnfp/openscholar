@@ -74,6 +74,10 @@ margin-top: 12px;
 	background-color: #293352 !important;
 }
 
+.section-nav .expanded.menu-depth-2 .menu-depth-3 > a {
+    background-color:#f3f3f1;
+}
+
  .block-boxes-os_boxes_facetapi_vocabulary.navigation a,
 .block-boxes-os_taxonomy_fbt.navigation a {
 	font-size: 16px;
