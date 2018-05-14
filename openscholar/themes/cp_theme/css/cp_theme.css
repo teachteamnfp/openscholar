@@ -1935,3 +1935,19 @@ div.no-bold {
  }
 
 
+/* WRANGLE THE WELCOME MODAL FOR https://scholar-demo.iq.harvard.edu/abc#overlay=cp/welcome */
+.page-cp-welcome.overlay #overlay { 
+	width: 400px;
+	 } 
+	 
+.page-cp-welcome.overlay #overlay ol { 
+	font-size: 1.2em;
+	 } 
+.page-cp-welcome.overlay #overlay p { 
+	font-size: 1.1em;
+	 } 
+.vsite-welcome-okay {
+	 display:none;
+	  } 
+	  
+
