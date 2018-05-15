@@ -1,7 +1,7 @@
 {
   "name": "TheScholr",
   "require": {
-    "openscholar/thescholr" : "dev-github_10332-htaccess_alter"
+    "openscholar/thescholr" : "v1.4"
   },
   "repositories": [
     {
