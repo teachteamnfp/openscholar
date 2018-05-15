@@ -527,9 +527,24 @@ function cp_clear_site_cache() {
   }
   ctools_include('cache','os');
 
+  $active = purl_active()->get();
+  if (!count($active) || (!count($active['vsite_domain']) && !count($active['vsite_path']))) {
+
+    // If this is called with REST we need to activate the purl provider
+    $modifier = array(
+      'provider' => 'spaces_og',
+      'id' => $vsite->id,
+    );
+    if (($path_modifier = purl_load($modifier))) {
+      $wildcard = "{$path_modifier['value']}|wildcard";
+    }
+  }
+
   //Internal URL's are all that work with wildcards, use <front> for the sites front page
   //The expire module uses "|wildcard" for wildcards, go figure
-  $wildcard = "<front>|wildcard";
+  if (!isset($wildcard)) {
+    $wildcard = "<front>|wildcard";
+  }
 
   // Clear the cache at the front page of this vsite
   // Ex. http://host/site1/
