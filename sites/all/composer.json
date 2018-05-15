@@ -1,7 +1,7 @@
 {
   "name": "OpenScholarLLC",
   "require": {
-    "openscholar/thescholr" : "dev-master"
+    "openscholar/osllc" : "dev-master"
   },
   "repositories": [
     {
