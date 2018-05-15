@@ -528,7 +528,11 @@ function cp_clear_site_cache() {
   ctools_include('cache','os');
 
   $active = purl_active()->get();
-  if (!count($active) || (!count($active['vsite_domain']) && !count($active['vsite_path']))) {
+  $modifier = array(
+    'provider' => 'vsite_domain',
+    'id' => $vsite->id,
+  );
+  if (!purl_load($modifier) && (!count($active) || (!count($active['vsite_domain']) && !count($active['vsite_path'])))) {
 
     // If this is called with REST we need to activate the purl provider
     $modifier = array(
