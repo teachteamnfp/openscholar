@@ -2075,6 +2075,9 @@ function os_publications_biblio_pm_node_alter($node, $article) {
 * Implements hook_html_head_alter
 */
 function os_publications_html_head_alter(&$head_elements) {
+  //Facebook image changes
+  
+  //Twitter image changes
   //Default site logo for all vsite pages
   foreach($head_elements as $key => $metatag){
     if($metatag['#name'] == "twitter:image"){
