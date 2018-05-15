@@ -787,7 +787,7 @@ function _vsite_register_mail_replacements($vsite, $author, $key) {
       'purl' => array(
         'id' => $vsite->id,
         'provider' => $vsite->purl_provider ? $vsite->purl_provider : 'spaces_og'
-      )
+      ),
     ));
   }
   else {

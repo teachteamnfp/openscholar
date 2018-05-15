@@ -253,7 +253,8 @@ function cp_user_remove_membership_confirm_submit($form, &$form_state) {
     'purl' => array(
       'id' => $vsite->id,
       'provider' => $custom_domain ? 'vsite_domain' : 'spaces_og',
-    )
+    ),
+    'absolute' => true,
   ));
   $params['!account-modifier-email'] = $account_modifier->mail;
   $params['!user-firstname'] = $account->field_first_name[LANGUAGE_NONE][0]['value'];
@@ -360,7 +361,8 @@ function cp_user_change_site_owner_form_submit($form, &$form_state) {
     'purl' => array(
       'id' => $vsite->id,
       'provider' => $custom_domain ? 'vsite_domain' : 'spaces_og',
-    )
+    ),
+    'absolute' => true,
   ));
   $params['!account-modifier-email'] = $account_modifier->mail;
   $params['!user-firstname'] = $account->field_first_name[LANGUAGE_NONE][0]['value'];
@@ -500,7 +502,8 @@ function cp_user_edit_membership_form_submit($form, &$form_state) {
       'purl' => array(
         'id' => $vsite->id,
         'provider' => $custom_domain ? 'vsite_domain' : 'spaces_og',
-      )
+      ),
+      'absolute' => true,
     ));
     $params['!account-modifier-email'] = $account_modifier->mail;
     $params['!user-firstname'] = $account->field_first_name[LANGUAGE_NONE][0]['value'];
