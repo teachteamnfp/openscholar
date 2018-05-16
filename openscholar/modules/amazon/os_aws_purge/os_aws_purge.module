@@ -90,7 +90,7 @@ function os_aws_purge_expire_cache($paths, $wildcards = array()) {
       // Check if wildcard is enabled for this URL.
       if(!empty($wildcards[$internal_path])){
         //Handle Wildcard paths
-        $paths[$internal_path] = $absolute_path."*";
+        $paths[$internal_path] = $absolute_path.".*";
       }
     }
   }

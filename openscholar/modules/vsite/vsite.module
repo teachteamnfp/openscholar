@@ -2038,7 +2038,8 @@ function vsite_mail_alter(&$message){
             'purl' => array(
               'id' => $vsite->id,
               'provider' => $vsite->purl_provider
-            )
+            ),
+            'absolute' => true,
           )),
           '!site_owner' => $site_owner_full_name,
           '!login_url' => user_pass_reset_url($user),
@@ -2094,7 +2095,8 @@ function vsite_mail_alter(&$message){
             'purl' => array(
               'id' => $vsite->id,
               'provider' => $vsite->purl_provider
-            )
+            ),
+            'absolute' => true,
           )),
           '!site_owner' => $site_owner_full_name,
           '!login_url' => user_pass_reset_url($user),

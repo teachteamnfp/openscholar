@@ -787,7 +787,7 @@ function _vsite_register_mail_replacements($vsite, $author, $key) {
       'purl' => array(
         'id' => $vsite->id,
         'provider' => $vsite->purl_provider ? $vsite->purl_provider : 'spaces_og'
-      )
+      ),
     ));
   }
   else {
@@ -798,6 +798,9 @@ function _vsite_register_mail_replacements($vsite, $author, $key) {
     $options = array('absolute' => true);
     $element->processor->rewrite($site_url, $options, $element);
     if (!empty($options['base_url'])) {
+      if (empty($site_url) && !empty($vsite->group->purl)) {
+        $site_url = $vsite->group->purl;
+      }
       $site_url = trim($options['base_url'],'/').'/'.ltrim($site_url, '/');
     }
   }
