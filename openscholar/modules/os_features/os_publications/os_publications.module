@@ -2075,6 +2075,27 @@ function os_publications_biblio_pm_node_alter($node, $article) {
 * Implements hook_html_head_alter
 */
 function os_publications_html_head_alter(&$head_elements) {
+  //Facebook image changes
+  foreach($head_elements as $key => $metatag){
+    if($metatag['#name'] == "og:image"){
+      //Get actual height and width of the image
+      list($imageWidth, $imageHeight) = getimagesize($metatag['#value']);
+      //Prepare with metadata for width and height metatag
+      $metatagWidth = $metatagHeight = $metatag;
+      $metatagWidth['#value'] = $imageWidth;
+      $metatagWidth['#name'] = 'og:image:width';
+      $metatagWidth['#id'] = $key.'_width';
+      $metatagWidth['#weight'] = $metatag['#weight']+1;
+      $metatagHeight['#value'] = $imageHeight;
+      $metatagHeight['#name'] = 'og:image:height';
+      $metatagHeight['#id'] = $key.'_height';
+      $metatagHeight['#weight'] = $metatag['#weight']+1;
+      //Create new head element
+      $head_elements[$key.'_width'] = $metatagWidth;
+      $head_elements[$key.'_height'] = $metatagHeight;
+    }
+  }
+  //Twitter image changes
   //Default site logo for all vsite pages
   foreach($head_elements as $key => $metatag){
     if($metatag['#name'] == "twitter:image"){
