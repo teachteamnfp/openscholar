@@ -4,6 +4,7 @@ description = "Module to provide functionality specific to Harvard Web Publishin
 package = Features
 
 dependencies[] = "ctools"
+dependencies[] = boxes
 
 features[ctools][] = strongarm:strongarm:1
 features[features_api][] = api:2
