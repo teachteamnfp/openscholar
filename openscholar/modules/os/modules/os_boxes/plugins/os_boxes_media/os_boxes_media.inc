@@ -94,6 +94,7 @@ class os_boxes_media extends os_boxes_default {
 
   public function render() {
     $block = parent::render();
+    $block['allow_binding'] = true;
     if (($block['content'] = $this->get_cache()) === FALSE) {
       $fid = is_array($this->options['fid']) ? $this->options['fid']['fid'] : $this->options['fid'];
       if ($file = file_load($fid)) {
