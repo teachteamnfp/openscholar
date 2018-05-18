@@ -2763,11 +2763,7 @@ function vsite_preprocess_html(&$vars){
 
   // If we aren't in a vsite, or if this vsite hasn't uploaded a custom favicon.
   if (empty($uri)) {
-    $theme = variable_get('theme_default');
-    $uri = drupal_get_path('theme', $theme) . '/favicon.png';
-    if (!file_exists($uri)) {
-      $uri = drupal_get_path('theme', 'os_basetheme') . '/favicon.png';
-    }
+    $uri = variable_get('favicon_default', drupal_get_path('theme', 'os_basetheme') . '/favicon.png');
   }
 
   // Returns if no valid favicon or no favicon found.
@@ -2777,7 +2773,7 @@ function vsite_preprocess_html(&$vars){
 
   $favicon = file_create_url($uri);
   $type = theme_get_setting('favicon_mimetype');
-  drupal_add_html_head_link(array('rel' => 'shortcut icon', 'href' => drupal_strip_dangerous_protocols($favicon), 'type' => $type));
+  drupal_add_html_head_link(array('rel' => 'shortcut icon', 'href' => drupal_strip_dangerous_protocols($favicon)));
 }
 
 /**
