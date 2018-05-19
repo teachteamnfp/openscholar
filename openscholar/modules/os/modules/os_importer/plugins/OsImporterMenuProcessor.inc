@@ -99,7 +99,7 @@ class OsImporterMenuProcessor extends FeedsProcessor {
   public function configDefaults() {
     $defaults = parent::configDefaults();
     $defaults['skip_link_path_validation'] = TRUE;
-    $defaults['update_skip_existing'] = FEEDS_UPDATE_EXISTING;  // needed so global links get into spaces. Inheritance doesn't happen
+    $defaults['update_existing'] = FEEDS_UPDATE_EXISTING;  // needed so global links get into spaces. Inheritance doesn't happen
     return $defaults;
   }
 
