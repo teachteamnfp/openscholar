@@ -535,9 +535,14 @@ EOF;
  * Given a list of domains, returns htaccess rewrite conditions matching all of them.
  */
 function _os_drush_domain_htaccess_rewrite_condition($domains) {
+  $domains_raw = $domains;
   foreach ($domains as $n => $domain) {
     $condition = '  RewriteCond %{HTTP_HOST} ^' . $domain;
     $domains[$n] = str_replace('.', '\.', $condition);
   }
-  return "\n" . implode(" [OR]\n", $domains) . "\n";
+  $rule = "\n" . implode(" [OR]\n", $domains) . "\n";
+
+  drupal_alter('os_htaccess_file_rule', $rule, $domains_raw);
+
+  return $rule;
 }
