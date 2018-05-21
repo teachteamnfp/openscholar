@@ -767,17 +767,7 @@ table.biblio-contributors {
     max-width: 650px;
 }
 
-.field-name-og-vocabulary table,
-.field-name-og-vocabulary table th,
-.field-name-og-vocabulary table tr,
-table#field-biblio-extra-values,
-table#field-biblio-extra-values th,
-#edit-biblio-authors table,
-#edit-biblio-authors table tr,
-#edit-biblio-authors table,
-table.biblio-contributors,
-table.biblio-contributors tr.odd,
-table.biblio-contributors tr.even {
+.field-name-og-vocabulary table, .field-name-og-vocabulary table th, .field-name-og-vocabulary table tr, table#field-biblio-extra-values, table#field-biblio-extra-values th, #edit-biblio-authors table, #edit-biblio-authors table, table.biblio-contributors, table.biblio-contributors tr.odd, table.biblio-contributors tr.even {
     border: none;
     background: #FFF;
     margin: 0;
@@ -1044,8 +1034,9 @@ fieldset#edit-5 {
 
 fieldset#edit-biblio-authors {
     background-color: transparent;
-    border: 0 none;
-    padding: 0;
+    border: none;
+   
+    padding: 00px 0 0;
     margin: 0;
 }
 
@@ -1058,6 +1049,19 @@ fieldset#edit-biblio-authors .fieldset-legend {
     padding-left: 0;
     margin-top: 0;
     text-transform: none;
+    padding-top: 10px;
+}
+#edit-biblio-authors table tr,
+#edit-url, fieldset#edit-biblio-authors {
+
+     background-color: #f1f1f1;
+ 
+}
+#edit-biblio-authors table tr,
+#edit-url, fieldset#edit-biblio-authors {
+
+    padding:10px 0;
+     margin:5px 0 20px 0;
 }
 
 /**
@@ -1087,6 +1091,7 @@ form.node-form .form-region-main input a,
 
 form.node-form .form-region-right input.form-text {
     width: 85% !important;
+    background-color: #fff;
 }
 
 form.node-form .form-region-main input.form-text {
@@ -1096,9 +1101,10 @@ form.node-form .form-region-main input.form-text {
 form.node-form .form-region-right fieldset {
     background-color: #f1f1f1;
     border: medium none;
-    margin: 1em 0px;
-    padding: 3em 0px 0.1em;
+    margin: .5em 0 0 0px;
+    padding: 3.5em 0px 0.5em 0;
     width: 100%;
+    height: inherit;
 }
 
 form.node-form .form-region-right fieldset legend {
@@ -1146,7 +1152,7 @@ html.js fieldset.collapsible > legend .fieldset-legend:before {
     background-repeat: no-repeat;
     width: 15px;
     height: 15px;
-    top: 3px;
+    top: -1px;
     left: 0;
 }
 
@@ -1213,16 +1219,15 @@ form#cp-user-edit-membership-form .form-item-group-manager {
 
 h1.biblio-type-prefix {
     /* float: left; */
-    margin: 18px 10px 0px 0px;
+       margin: 18px 10px 0px 0px;
     padding: 0.3em 0;
-    color: #666;
-    font-size: 18px;
-    font-weight: normal;
+    color: #000;
+    font-size: 13px;
+    font-weight: bold;
 }
 
 .form-item-biblio-type select {
     font-size: 18px;
-    color: #666;
     width: 100%;
     border-top-color: #ccc;
     /* padding: 8px; */
@@ -1277,7 +1282,7 @@ ul.term-reference-tree-level {
 
 #edit-biblio-url-title {
     border: none;
-    background: url('../images/cp-sprite.png') no-repeat 0 -475px #FFFFFF;
+    background: url('../images/cp-sprite.png') no-repeat 0 -475px #eee;
     padding-left: 25px;
     color: #0074BD;
     text-decoration: underline;
@@ -1909,7 +1914,8 @@ body.page-node-revisions .node {
 .page-node-revisions .media-element[style*="float: left"] {
 	padding-right:15px;
 }
-
+.form-item-biblio-url-title label[for="edit-biblio-url-title"],
+#edit-biblio-authors legend,
 .page-node-revisions .media-element[style*="float: right"] {
 	padding-left:15px;
 }
