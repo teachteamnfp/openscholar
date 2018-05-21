@@ -375,7 +375,7 @@ function os_publications_field_default_field_instances() {
     'bundle' => 'biblio',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'ex. http://amazon.com/mybook If used the publication title in the citation will link directly to the URL provided here and will bypass the landing page.',
+    'description' => 'Note: if used, the publication title in the citation will link directly to the URL provided here and will bypass the landing page. ex. http://amazon.com/mybook',
     'display' => array(
       'default' => array(
         'label' => 'above',

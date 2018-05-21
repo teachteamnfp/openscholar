@@ -767,17 +767,7 @@ table.biblio-contributors {
     max-width: 650px;
 }
 
-.field-name-og-vocabulary table,
-.field-name-og-vocabulary table th,
-.field-name-og-vocabulary table tr,
-table#field-biblio-extra-values,
-table#field-biblio-extra-values th,
-#edit-biblio-authors table,
-#edit-biblio-authors table tr,
-#edit-biblio-authors table,
-table.biblio-contributors,
-table.biblio-contributors tr.odd,
-table.biblio-contributors tr.even {
+.field-name-og-vocabulary table, .field-name-og-vocabulary table th, .field-name-og-vocabulary table tr, table#field-biblio-extra-values, table#field-biblio-extra-values th, #edit-biblio-authors table, #edit-biblio-authors table, table.biblio-contributors, table.biblio-contributors tr.odd, table.biblio-contributors tr.even {
     border: none;
     background: #FFF;
     margin: 0;
@@ -1044,8 +1034,9 @@ fieldset#edit-5 {
 
 fieldset#edit-biblio-authors {
     background-color: transparent;
-    border: 0 none;
-    padding: 0;
+    border: none;
+   
+    padding: 00px 0 0;
     margin: 0;
 }
 
@@ -1058,6 +1049,18 @@ fieldset#edit-biblio-authors .fieldset-legend {
     padding-left: 0;
     margin-top: 0;
     text-transform: none;
+}
+#edit-biblio-authors table tr,
+#edit-url, fieldset#edit-biblio-authors {
+
+     background-color: #f1f1f1;
+ 
+}
+#edit-biblio-authors table tr,
+#edit-url, fieldset#edit-biblio-authors {
+
+    padding:10px 0;
+     margin:5px 0 20px 0;
 }
 
 /**
@@ -1277,7 +1280,7 @@ ul.term-reference-tree-level {
 
 #edit-biblio-url-title {
     border: none;
-    background: url('../images/cp-sprite.png') no-repeat 0 -475px #FFFFFF;
+    background: url('../images/cp-sprite.png') no-repeat 0 -475px #eee;
     padding-left: 25px;
     color: #0074BD;
     text-decoration: underline;
