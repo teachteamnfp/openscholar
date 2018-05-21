@@ -643,7 +643,7 @@ function os_publications_field_default_field_instances() {
   t('Publication Image');
   t('Title');
   t('You may use these fields to add extra information about your publication that may not be common to publications if this type. For example, key "Publication Global ID" and value "http://hdl.handle.net/1902.1". These fields will be displayed at the bottom of the detail page of this publication.');
-  t('ex. http://amazon.com/mybook If used the publication title in the citation will link directly to the URL provided here and will bypass the landing page.');
+  t('Note: if used, the publication title in the citation will link directly to the URL provided here and will bypass the landing page. ex. http://amazon.com/mybook');
 
   return $field_instances;
 }

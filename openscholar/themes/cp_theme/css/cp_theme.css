@@ -1149,7 +1149,7 @@ html.js fieldset.collapsible > legend .fieldset-legend:before {
     background-repeat: no-repeat;
     width: 15px;
     height: 15px;
-    top: 3px;
+    top: -1px;
     left: 0;
 }
 
@@ -1216,16 +1216,15 @@ form#cp-user-edit-membership-form .form-item-group-manager {
 
 h1.biblio-type-prefix {
     /* float: left; */
-    margin: 18px 10px 0px 0px;
+       margin: 18px 10px 0px 0px;
     padding: 0.3em 0;
-    color: #666;
-    font-size: 18px;
-    font-weight: normal;
+    color: #000;
+    font-size: 13px;
+    font-weight: bold;
 }
 
 .form-item-biblio-type select {
     font-size: 18px;
-    color: #666;
     width: 100%;
     border-top-color: #ccc;
     /* padding: 8px; */
