@@ -1091,6 +1091,7 @@ form.node-form .form-region-main input a,
 
 form.node-form .form-region-right input.form-text {
     width: 85% !important;
+    background-color: #fff;
 }
 
 form.node-form .form-region-main input.form-text {
