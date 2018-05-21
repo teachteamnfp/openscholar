@@ -1049,6 +1049,7 @@ fieldset#edit-biblio-authors .fieldset-legend {
     padding-left: 0;
     margin-top: 0;
     text-transform: none;
+    padding-top: 10px;
 }
 #edit-biblio-authors table tr,
 #edit-url, fieldset#edit-biblio-authors {
@@ -1911,7 +1912,8 @@ body.page-node-revisions .node {
 .page-node-revisions .media-element[style*="float: left"] {
 	padding-right:15px;
 }
-
+.form-item-biblio-url-title label[for="edit-biblio-url-title"],
+#edit-biblio-authors legend,
 .page-node-revisions .media-element[style*="float: right"] {
 	padding-left:15px;
 }
