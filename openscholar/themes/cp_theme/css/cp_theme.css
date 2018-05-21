@@ -1101,9 +1101,10 @@ form.node-form .form-region-main input.form-text {
 form.node-form .form-region-right fieldset {
     background-color: #f1f1f1;
     border: medium none;
-    margin: 1em 0px;
-    padding: 3em 0px 0.1em;
+    margin: .5em 0 0 0px;
+    padding: 3.5em 0px 0.5em 0;
     width: 100%;
+    height: inherit;
 }
 
 form.node-form .form-region-right fieldset legend {
