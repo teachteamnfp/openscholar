@@ -58,4 +58,11 @@ if (jQuery('.region-header-second .region-inner').has('.block-boxes-os_boxes_sit
 	jQuery('.block-boxes-os_taxonomy_fbt.term-slider .item-list ul li .description ~ span').click(function() {
 		jQuery(this).parent('.block-boxes-os_taxonomy_fbt.term-slider .item-list ul li').toggleClass('open');
 	});
+	// COUNTS THE NUMBER OF EVENTS IN A SINGLE TIME SLOT IN THE CAL WEEK VIEW
+	jQuery('.week-view #single-day-container .single-day').each(function() {
+		var $this = jQuery(this);
+		var count = jQuery('div[class*="md_"]', $this).length;
+
+		jQuery($this).addClass('events-' + count);
+	});
 });
