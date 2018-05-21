@@ -16,7 +16,7 @@ function buildComposer() {
         echo "Installing site-specific modules for $site"
         composer install -n
         if ! composer install -n; then
-          rm -r $1/$2/sites/$site/modules/*
+          rm -r $1/$2/sites/$site/modules/
           composer install -n
         fi
         MODULE=$(composer show -s | sed -e '1,/requires/d' -e 's/ [^[:space:]]*$// ')
