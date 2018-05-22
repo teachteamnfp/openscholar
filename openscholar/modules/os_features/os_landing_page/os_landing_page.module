@@ -1,0 +1,33 @@
+<?php
+/**
+ * include css file for template()
+ */
+drupal_add_css(drupal_get_path('module', 'os_landing_page').'/includes/frontpage.css');
+ 
+/**
+ * Implements hook_menu()
+ */
+function os_landing_page_menu() {
+  $items = array();
+  $items['os/frontpage'] = array(
+    'page callback' => 'os_landing_page',
+    'access callback' => TRUE,
+    'file' => 'frontpage.inc',
+    'file path' => drupal_get_path('module', 'os_landing_page').'/includes',
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function os_landing_page_theme($existing, $type, $theme, $path) {
+  $path = drupal_get_path( 'module', 'os_landing_page');
+  return array(
+    'os_landing_page_template' => array(
+      'template' => 'os_landing_page',
+      'variables' => array(),
+      'path' => $path . '/templates',
+    ),
+  );
+}
