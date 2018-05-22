@@ -156,6 +156,7 @@ rm -rf $BUILD_ROOT/openscholar/behat &> /dev/null
 
 #pull in site-specific code
 buildComposer "$BUILD_ROOT" "$DOCROOT"
+node "$BUILD_ROOT/scripts/themes.js" "$DOCROOT"
 
 git commit -a -m "$CI_MESSAGE" -m "" -m "git-subtree-split: $CI_COMMIT_ID"
 #END BUILD PROCESS
@@ -170,28 +171,9 @@ cp -R openscholar/temporary/* openscholar/openscholar/modules/contrib/
 
 #pull in site-specific code
 buildComposer "$BUILD_ROOT" "$DOCROOT"
+node "$BUILD_ROOT/scripts/themes.js" "$DOCROOT"
 git commit -a -m "$CI_MESSAGE" -m "" -m "git-subtree-split: $CI_COMMIT_ID" || git commit --amend -m "$CI_MESSAGE" -m "" -m "git-subtree-split: $CI_COMMIT_ID"
 fi
-
-echo "Building sass files START"
-
-(
-  # Build CSS files from SASS
-  for DIR in openscholar/openscholar/modules/*; do
-    if [ -d $DIR ] && [ -d $DIR/os_style_override ] ; then
-      node-sass $DIR/os_style_override/sass -o $DIR/os_style_override/css
-      git add $DIR/os_style_override/css
-    fi
-  done
-)
-
-STAGED_FILES=$(git diff --name-only --cached)
-if [ "$STAGED_FILES" ]; then
-  git commit -m "Update override css files"
-fi
-
-echo "Building sass files DONE"
-
 
 git push origin $CI_BRANCH
 echo -e "\033[1;36mFINISHED BUILDING $CI_BRANCH ON BITBUCKET\e[0m"
