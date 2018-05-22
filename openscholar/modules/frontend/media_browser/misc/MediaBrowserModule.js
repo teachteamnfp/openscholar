@@ -243,6 +243,8 @@
     }
 
     $scope.validate = function($file) {
+      // Deleting previous error messages
+      $scope.removeMsg();
       var file = $file;
       if (file && file instanceof File) {
         // TODO: Get validating properties from somewhere and check the file against them

@@ -500,6 +500,7 @@ div[file-edit] .control button,
     border: 1px solid #ccc;
     padding: 10px;
     background: #efefef;
+    z-index: 100;
 }
 .node-form .help {
     top: 70%;
