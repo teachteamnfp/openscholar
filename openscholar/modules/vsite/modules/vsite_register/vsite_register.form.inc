@@ -32,7 +32,7 @@ function vsite_register_form($form, &$state) {
     '#required' => TRUE,
     '#field_prefix' => $base_url . '/',
     '#size' => 35,
-    '#description' => t('Enter a minimum of 3 characters, lowercase only. Punctuation is not allowed except for hyphens and underscores. <br />Example: Entering jdoe into the field above will result in this URL: %site.', array('%site' => $base_url . '/jdoe')),
+    '#description' => t('Enter a minimum of 3 characters, lowercase only. Periods and punctuation are not allowed except for hyphens and underscores. <br />Example: Entering jdoe into the field above will result in this URL: %site.', array('%site' => $base_url . '/jdoe')),
     '#ajax' => array(
       'callback' => 'vsite_register_ajax_validation',
       'wrapper' => 'domain-errors',
@@ -207,7 +207,7 @@ function vsite_register_form($form, &$state) {
     );
 
     if (module_exists('pinserver') && variable_get('pinserver_pin_url', FALSE)) {
-      $form['user_fieldset']['existing_username']['#description'] .= ' ' . t('Only users who have linked their OpenScholar accounts to HarvardKey are listed.') . ' ' . l('Learn more about linking accounts', 'http://docs.openscholar.harvard.edu/logging-your-site#linking-your-harvardkey-to-your-openscholar-account', array('attributes' => array('target' => '_blank', 'rel' => 'noopener')));
+      $form['user_fieldset']['existing_username']['#description'] .= ' ' . t('Only users who have linked their OpenScholar accounts to HarvardKey are listed.') . ' ' . l('Learn more about linking accounts', 'https://harvard.service-now.com/ithelp?id=kb_article&sys_id=bcb7c5eadbba0fc0a914fff31d9619dc', array('attributes' => array('target' => '_blank', 'rel' => 'noopener')));
     }
 
       // Prepares flag for JS to set when create new user is clicked.
@@ -643,7 +643,7 @@ function _vsite_register_mail_in_use($mail) {
  * @see purl_validate()
  */
 function _vsite_register_valid_url($url) {
-  foreach (array('!', ';', '/', '?', ':', '@', '&', '=', '"', "'",
+  foreach (array('!', ';', '/', '?', ':', '@', '&', '=', '"', "'", ".",
     ) as $char) {
     if (strpos($url, $char) !== FALSE) {
       return FALSE;
@@ -781,12 +781,35 @@ function _vsite_register_mail_replacements($vsite, $author, $key) {
   global $base_url;
   $purl_base_domain = variable_get('purl_base_domain', $base_url);
   // Initialize replacements array with values common to both mail keys.
+  $site_url = '';
+  if ($vsite->purl_provider) {
+    $site_url = url('', array(
+      'purl' => array(
+        'id' => $vsite->id,
+        'provider' => $vsite->purl_provider ? $vsite->purl_provider : 'spaces_og'
+      ),
+    ));
+  }
+  else {
+    $method = variable_get('purl_method_spaces_og', 'path');
+
+    $processor = purl_get_processor($method);
+    $element = new purl_path_element($processor, $vsite->group->purl, 'spaces_og', $vsite->id);
+    $options = array('absolute' => true);
+    $element->processor->rewrite($site_url, $options, $element);
+    if (!empty($options['base_url'])) {
+      if (empty($site_url) && !empty($vsite->group->purl)) {
+        $site_url = $vsite->group->purl;
+      }
+      $site_url = trim($options['base_url'],'/').'/'.ltrim($site_url, '/');
+    }
+  }
   $replacements = array(
     '!username' => $author->name,
-    '!site_login_uri' => url($purl_base_domain . '/' . $vsite->group->purl . '/user/login', array('absolute' => TRUE, 'query' => array('destination' => $vsite->group->purl))),
-    '!site_uri' => url($purl_base_domain . '/user', array('absolute' => TRUE, 'query' => array('destination' => $vsite->group->purl))),
+    '!site_login_uri' => url($purl_base_domain . '/user', array('absolute' => TRUE, 'query' => array('destination' => 'node/'.$vsite->id))),
+    '!site_uri' => url($purl_base_domain . '/user', array('absolute' => TRUE, 'query' => array('destination' => 'node/'.$vsite->id))),
     '!user_mail' => $author->mail,
-    '!site_url' => url($purl_base_domain . '/' . $vsite->group->purl, array('absolute' => TRUE)),
+    '!site_url' => $site_url,
     '!sitewide_name' => variable_get('site_name', 'OpenScholar'),
   );
 
@@ -877,20 +900,24 @@ function _vsite_register_notify_author_body_text($current_user, $author) {
   $no_reset_required = (bool) $returning_author || $author_is_current_user;
   if ($no_reset_required) {
     $body_text = "Hi !username,\n\n"
-      . "Your new web site at !sitewide_name has been activated."
-      . "Your web site url is !site_url\n\n"
+      . "Your new OpenScholar site has been activated. "
+      . "Your website url is !site_url\n\n"
       . "You will be able to log into your site at !site_login_uri "
       . "with username:\n\n!username\n\n"
-      . "We hope you will enjoy your new web site.\n\n"
-      . "Sincerely,\nThe !sitewide_name Team";
+      . "We hope you will enjoy your new web site.\n"
+      . "\n"
+      . " * Logging in to your site: https://help.theopenscholar.com/logging-your-site\n"
+      . " * OpenScholar documentation: https://help.theopenscholar.com \n"
+      . "\n"
+      . "Sincerely,\nThe OpenScholar Team";
   }
   // Otherwise, this site was created on the author's behalf, or this is the
   // author's very first site.
   // Includes instructions to reset password in order to login.
   else {
     $body_text = "Hi !username,\n\n"
-      . "Your new web site at !sitewide_name has been activated.\n\n"
-      . "Your web site url is !site_url\n\n"
+      . "Your new web site at OpenScholar has been activated.\n\n"
+      . "Your website url is !site_url\n\n"
       . "You may now log in and reset your password by clicking on this link "
       . "or copying and pasting it in your browser: \n\n !user_login_url \n\n"
       . "This login can be used only once. "
@@ -899,7 +926,11 @@ function _vsite_register_notify_author_body_text($current_user, $author) {
       . "Once you have set your own password, "
       . "you will be able to log in at !site_login_uri "
       . "as username:\n\n!username\n\n"
-      . "We hope you will enjoy your new web site.\n\n"
+      . "We hope you will enjoy your new web site.\n"
+      . "\n"
+      . " * Logging in to your site: https://help.theopenscholar.com/logging-your-site\n"
+      . " * OpenScholar documentation: https://help.theopenscholar.com \n"
+      . "\n"
       . "Sincerely,\nThe !sitewide_name Team";
   }
 

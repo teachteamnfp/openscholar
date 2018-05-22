@@ -349,6 +349,7 @@ class vsite extends space_og {
       'pinserver/error/*',
       'pinserver/forbidden',
       'pinserver/forbidden/*',
+      'api/*',
       // 'files/*', Need files menu entry to be loaded in a space so that the purl can be used to serve old file pats. -RB
     );
 

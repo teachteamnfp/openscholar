@@ -57,7 +57,7 @@ button.close-menu-button:hover {
     left: 120px;
 }
 .close-menu-button-oslogo {
-    background: url('images/os-cp_button.png') no-repeat;
+    background: url('images/os-cp_button.png?123') no-repeat;
     width: 60px;
     height: 60px;
     position: absolute;

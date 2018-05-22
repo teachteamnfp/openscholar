@@ -1036,3 +1036,23 @@ function os_update_7056() {
 function os_update_7057() {
   variable_set('date_format_os_date_abbreviated', 'D M j, g:ia');
 }
+
+/**
+ * Setting metatag_token_sanitize as true to filter out media tags
+ */
+function os_update_7058() {
+  $revert = array('os' => array('variable'));
+  features_revert($revert);
+}
+
+/**
+ * Enable the honeypot module to protect against spam
+ */
+function os_update_7060() {
+  //Enable honeypot module and set variable to enable honeypot for password reset form
+  module_enable(array('honeypot'));
+  variable_set('honeypot_form_user_pass', 1);
+
+  //Disable mollom as it is no longer used
+  module_disable(array('mollom'));
+}

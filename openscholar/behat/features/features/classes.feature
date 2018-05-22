@@ -49,7 +49,7 @@ Feature:
       Then I should see "Overview"
        And I should see "Class:"
        And I should see "Political Science"
-       And I should see breadcrumbs "HOME / CLASSES / POLITICAL SCIENCE 102 / CLASS MATERIAL"
+       And I should see breadcrumb "HOME / CLASSES / POLITICAL SCIENCE 102 / CLASS MATERIAL"
 
   @api @features_first @edit_existing_class_material_content @os_classes
   Scenario: Edit existing class material content

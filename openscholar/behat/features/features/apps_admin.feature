@@ -11,19 +11,19 @@ Feature:
      When I click on the "Enable / Disable Apps" control
       #And I should see "Apps"
      Then I should see the "apps-table" table with the following <contents>:
-      | Blog          | Everyone |
-      | Booklets      | Everyone |
-      | Classes       | Everyone |
-      | Events        | Everyone |
-      | Media Gallery | Everyone |
-      | Links         | Everyone |
-      | News          | Everyone |
-      | Basic Pages   | Everyone |
-      | Presentations | Everyone |
-      | Profiles      | Everyone |
-      | Publications  | Everyone |
-      | Reader        | Everyone |
-      | Software      | Everyone |
+      | Blog          | The Public |
+      | Booklets      | The Public |
+      | Classes       | The Public |
+      | Events        | The Public |
+      | Media Gallery | The Public |
+      | Links         | The Public |
+      | News          | The Public |
+      | Basic Pages   | The Public |
+      | Presentations | The Public |
+      | Profiles      | The Public |
+      | Publications  | The Public |
+      | Reader        | The Public |
+      | Software      | The Public |
 
   @api @features_first @javascript
     Scenario: Check site owner can't manage permissions of disabled app.

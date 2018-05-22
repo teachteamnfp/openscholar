@@ -38,3 +38,19 @@ background-position: 0 -128px!important;
 .addthis_32x32_style .at15t_linkedin {
 background-position: 0 -320px!important;
 }
+
+#boxes-box-os_addthis .boxes-box-content .addthis_default_style .google_plusone_iframe_widget{
+width :35px!important;
+}
+
+#block-boxes-os-addthis .block-inner {
+text-align: left;
+}
+
+#block-boxes-os-addthis .block-inner .block-content {
+margin-top: 0px;
+}
+
+.block-boxes-os_boxes_addthis .boxes-box-content{
+padding : 0px!important;
+}

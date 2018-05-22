@@ -118,10 +118,6 @@ function spaces_form_alter(&$form, &$form_state, $form_id) {
         ) {
           if ($preset = $space->controllers->variable->get('spaces_preset_' . $space->type)) {
             $preset = spaces_preset_load($preset, $space->type);
-            $form['actions']['preset'] = array(
-              '#type' => 'submit',
-              '#value' => t('Save to @title', array('@title' => $preset->title)),
-            );
             $form['actions']['reset'] = array(
               '#type' => 'submit',
               '#value' => t('Reset to defaults'),

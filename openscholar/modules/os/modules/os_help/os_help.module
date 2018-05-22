@@ -21,6 +21,8 @@ function os_help_process_page(&$vars) {
     $vars['page']['help'] = theme_link($variables);
     drupal_add_css(drupal_get_path('module', 'os_help') . '/os_help.css');
   }
+
+  os_common_angular_apps('osHelp');
 }
 
 /**
@@ -51,6 +53,28 @@ function os_help_library() {
     )
   );
 
+  $path = drupal_get_path('module', 'os_help');
+  $libs['documentation'] = array(
+    'title' => 'Documentation',
+    'version' => '0.1',
+    'js' => array(
+      $path.'/os_help.module.js' => array(
+        'group' => JS_LIBRARY,
+      ),
+      0 => array(
+        'type' => 'setting',
+        'data' => array(
+          'paths' => array(
+            'documentation' => url($path.'/os_help.template.html', array('alias' => true)),
+          )
+        )
+      )
+    ),
+    'css' => array(
+      $path.'/os_help.css' => array()
+    )
+  );
+
   return $libs;
 }
 
@@ -59,6 +83,9 @@ function os_help_library() {
  */
 function os_help_library_alter(&$libs) {
   if (isset($libs['admin_panel'])) {
-    $libs['admin_panel']['dependencies'][] = array('os_help', 'gsfn');
+    if (variable_get('cp_support_getsatisfaction_widget')) {
+      $libs['admin_panel']['dependencies'][] = array('os_help', 'gsfn');
+    }
+    $libs['user_panel']['dependencies'][] = array('os_help', 'documentation');
   }
 }

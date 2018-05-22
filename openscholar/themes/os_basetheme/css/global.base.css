@@ -177,6 +177,7 @@ h3 a,
 h4 a {
     text-decoration: none;
 }
+
 #content-column .field-name-body h2,
 #content-column .field-name-body h3,
 #content-column .field-name-body h4 {
@@ -641,6 +642,7 @@ ul ul ul ul {
 .sidebar .block-boxes-os_boxes_facetapi_vocabulary .item-list {
     margin-bottom: 15px;
 }
+.sidebar .block-boxes-os_boxes_facetapi_vocabulary .item-list.ui-accordion,
 .sidebar .block-boxes-os_boxes_facetapi_vocabulary.collapsible .item-list,
 .sidebar .block-boxes-os_boxes_facetapi_vocabulary .item-list:last-child {
     margin-bottom: 0;
@@ -787,6 +789,20 @@ ul ul ul ul {
 .rss:before {
     background: url('../images/scholarbase-sprite.png?0615b') no-repeat 0px -727px;
     width: 21px;
+    height: 22px;
+    position: absolute;
+    left: 0;
+    content: '';
+}
+.google {
+    padding: 3px 0 3px 25px !important;
+    border-bottom: none !important;
+    position: relative;
+}
+
+.google:before {
+    background: url('../images/scholarbase-sprite.png?45678') no-repeat -76px -726px;
+    width: 22px;
     height: 22px;
     position: absolute;
     left: 0;
@@ -1150,7 +1166,7 @@ ul.no-event-export {
 }
 .block-boxes-os_boxes_widget_slider #layout_16_9_side .rslides_tabs {
     left: 0;
-    position: static;
+    position: relative;
     top: 0;
 }
 .block-boxes-os_boxes_widget_slider #layout_16_9_side .rslides_tabs li {
@@ -1257,4 +1273,7 @@ ul.no-event-export {
 .media-element-container {
     height: auto !important;
     margin: 0 1em 0 1em;
+}
+form#registration-form div.url-textfield {
+    display: none !important;
 }

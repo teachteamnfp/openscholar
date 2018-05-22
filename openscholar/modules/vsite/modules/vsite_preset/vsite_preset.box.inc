@@ -19,7 +19,7 @@ function vsite_preset_default_box() {
   $box->description = 'Contact';
   $box->options = array(
     'text' => array(
-      'value' => '<p>Harvard University<br> (617) 495-1000<br> Massachusetts Hall<br> Cambridge, MA 02138<br> your_name@harvard.edu</p>',
+      'value' => '<p>OpenScholar University<br> (800) 555-0000<br> Main Building<br> Your Town, State 00000<br> your_name@your_school.edu</p>',
       'format' => 'filtered_html',
     ),
     'format' => 1,

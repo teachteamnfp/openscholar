@@ -42,6 +42,7 @@ projects[context][subdir] = "contrib"
 projects[context][version] = 3.6
 projects[context][patch][] = "http://drupal.org/files/os-custom-beta4.patch"
 projects[context][patch][] = "http://drupal.org/files/1855004.context.float_block_weights.patch"
+projects[context][patch][] = "https://raw.githubusercontent.com/openscholar/openscholar/7c018f93a3f6c663fd3b91ccda6561dade707127/patches/context-10085-breadcrumb_menu_context.patch"
 
 projects[contextual_annotation][subdir] = "contrib"
 projects[contextual_annotation][type] = module
@@ -159,6 +160,9 @@ projects[hierarchical_taxonomy][download][branch] = 7.x-1.x
 projects[hierarchical_taxonomy][download][revision] = 5bbe344
 projects[hierarchical_taxonomy][patch][] = "http://drupal.org/files/2034713-hs-comaprse-name-2.patch"
 
+projects[honeypot][subdir] = "contrib"
+projects[honeypot][version] = 1.24
+
 projects[html_title][subdir] = "contrib"
 projects[html_title][version] = 1.1
 projects[html_title][patch][] = "https://www.drupal.org/files/issues/fix_for_other_titles-2783297.patch"
@@ -241,7 +245,7 @@ projects[module_filter][subdir] = "contrib"
 projects[module_filter][version] = 1.7
 
 projects[memcache][subdir] = "contrib"
-projects[memcache][version] = 1.5
+projects[memcache][version] = 1.6
 
 projects[migrate][subdir] = "contrib"
 projects[migrate][version] = 2.5
@@ -626,3 +630,5 @@ libraries[yql-jsonp][download][url] = "https://raw.githubusercontent.com/yui/yui
 libraries[google-api-php-client][type] = "libraries"
 libraries[google-api-php-client][download][type] = "file"
 libraries[google-api-php-client][download][url] = "https://github.com/google/google-api-php-client/releases/download/v2.1.3/google-api-php-client-2.1.3.zip"
+
+

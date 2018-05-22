@@ -112,12 +112,13 @@ class os_boxes_widget_slider extends os_boxes_widget_collection {
     // Iterating all selected widgets to be rendered.
     foreach ($this->options['widgets'] as $key => $widget) {
       list(, $delta) = explode('-', $widget['bid'], 2);
-      $box = boxes_box_load($delta);
-      $content = $box->render();
-      // Setting inline height attributes for div wrapper for each widget content.
-      $inline_height = !empty($this->options['slider_height']) ? $this->options['slider_height'] : $defaults['slider_height'];
-      $title = !empty($widget['title']) ? '<h2>' . $widget['title'] . '</h2>' : '';
-      $slides[] = '<div style="height:'. $inline_height . 'px;">' . $title . $content['content'] . '</div>';
+      if ($box = boxes_box_load($delta)) {
+        $content = $box->render();
+        // Setting inline height attributes for div wrapper for each widget content.
+        $inline_height = !empty($this->options['slider_height']) ? $this->options['slider_height'] : $defaults['slider_height'];
+        $title = !empty($widget['title']) ? '<h2>' . $widget['title'] . '</h2>' : '';
+        $slides[] = '<div style="height:' . $inline_height . 'px;">' . $title . $content['content'] . '</div>';
+      }
     }
 
     $vars = array();

@@ -93,3 +93,23 @@ function os_taxonomy_update_7005() {
     field_update_instance($instance);
   }
 }
+
+/**
+ * Remove the show_description field
+ */
+function os_taxonomy_update_7006() {
+
+  // Mark the field instance for deletion.
+  db_update('field_config_instance')
+    ->fields(array('deleted' => 1))
+    ->condition('field_name', 'show_description')
+    ->condition('entity_type', 'taxonomy_term')
+    ->execute();
+
+  // Clear the cache.
+  field_cache_clear();
+
+  // Delete the field itself we just deleted its last instance.
+  field_delete_field('show_description');
+
+}

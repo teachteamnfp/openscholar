@@ -26,6 +26,10 @@ function os_importer_utf_8_form($importer, $element_key, $settings) {
  * Tamper callback.
  */
 function os_importer_utf_8_convert($result, $item_key, $element_key, &$field, $settings, $source) {
+  if (!isset($source->config['FeedsFileFetcher']['encode'])) {
+    // if there's no encoding set, do nothing.
+    return;
+  }
   if (is_array($field)) {
     foreach ($field as $key => $value) {
       $field[$key] = iconv($source->config['FeedsFileFetcher']['encode'], "UTF-8", $value);

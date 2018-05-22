@@ -34,7 +34,7 @@ if (!$page) {
   <div class="node-inner">
   <?php if ($teaser): // begin teaser ?>
     <?php print render($title_prefix); ?>
-      <span class="title">
+      <span class="title" <?php echo $title_attributes; ?>>
         <strong>
           <a href="<?php print $node_url; ?>" title="<?php print $title ?>">
             <?php print $title; ?></a><?php if (isset($location_value) && !empty($location_value)): ?>, <?php endif; ?>

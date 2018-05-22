@@ -194,12 +194,21 @@ function os_pages_menu_contextual_links_alter(&$links, $router_item, $root_path)
   }
   // vsite users skip to here because they don't have access to any of the widget contextual links
   elseif ($root_path == 'node/%' && !empty($router_item['page_arguments'])) {
-    if (empty($router_item['page_arguments'][2]) || empty($router_item['page_arguments'][2]->nid)) {
+    if ($router_item['page_callback'] == 'restws_page_callback') {
+      if (empty($router_item['page_arguments'][2]) || empty($router_item['page_arguments'][2]->nid)) {
+        // Not a node.
+        return;
+      }
+      $node = $router_item['page_arguments'][2];
+    }
+    elseif (empty($router_item['page_arguments'][0]) || empty($router_item['page_arguments'][0]->nid)) {
       // Not a node.
       return;
     }
 
-    $node = $router_item['page_arguments'][2];
+    if (empty($node)) {
+      $node = $router_item['page_arguments'][0];
+    }
 
     // we don't want to mess with the links for other content types by accident
     // only pages are edited at the node/nid/edit paths.
@@ -484,8 +493,12 @@ function _os_pages_get_link_children($link, $can_access = false) {
 function os_pages_form_page_node_form_alter(&$form, &$form_state) {
   // if page content widget has been removed, do not display body field
   $page_context = context_load('os_pages-page-' . $form_state['node']->nid);
-  if(!isset($page_context->reactions['block']['blocks']['os_pages-main_content'])) {
-    $form['body']['#access'] = FALSE;
+  if (!isset($page_context->reactions['block']['blocks']['os_pages-main_content'])) {
+    if (isset($form['#node']->book) && $book_context = context_load('os_pages-section-'.$form['#node']->book['bid'])) {
+      if (!isset($book_context->reactions['block']['blocks']['os_pages-main_content'])) {
+        $form['body']['#access'] = FALSE;
+      }
+    }
   }
 
   // Adds a custom fieldset for the right-hand column to hold meta description.
@@ -599,7 +612,8 @@ function os_pages_form_node_delete_confirm_alter(&$form, &$form_state) {
 
   // plid is empty when it's the top level of the outline
   // we only want to redirect when it isn't empty
-  if ($form['#node']->type == 'page' && !empty($form['#node']->book) && $form['#node']->book['plid']) {
+  // Adding book type in case of sub-booklet
+  if (isset($form['#node']->book) && $form['#node']->book['plid']) {
     $form['#submit'][] = 'os_pages_node_delete_redirect';
   }
 }
@@ -611,6 +625,7 @@ function os_pages_form_node_delete_confirm_alter(&$form, &$form_state) {
  */
 function os_pages_node_delete_redirect($form, &$form_state) {
   $link = menu_link_load($form['#node']->book['plid']);
+  unset($_GET['destination']);
   $form_state['redirect'] = $link['link_path'];
 }
 
@@ -1323,6 +1338,7 @@ function os_pages_os_layout_set_alter(&$blocks, $context_name) {
  * Implements hook_form_FORM_ID_form_alter() for boxes_box
  */
 function os_pages_form_boxes_box_form_alter(&$form, &$form_state) {
+  natcasesort($form['options']['add']['new']['#options']);
   $form['#submit'][] = 'os_pages_widget_submit';
 }
 
@@ -1366,6 +1382,49 @@ function os_pages_entity_load($entities, $type) {
       if (isset($entity->metatags[LANGUAGE_NONE]) && is_array($entity->metatags[LANGUAGE_NONE]['description']) && empty($entity->metatags[LANGUAGE_NONE]['description']['value'])) {
         $entity->metatags = array();
       }
+    }
+  }
+}
+
+/**
+ * Implements hook_feeds_processor_targets_alter().
+ *
+ * @see FeedsProcessor::getMappingTargets()
+ */
+function os_pages_feeds_processor_targets_alter(&$targets, $entity_type, $bundle_name) {
+  if ($entity_type == 'node' && $bundle_name == 'page') {
+    $targets['parent_path'] = array(
+      'name' => t('Parent node path'),
+      'description' => t('Parent node path.'),
+      'callback' => 'os_pages_parent_page_import',
+    );
+  }
+}
+
+/**
+ * Importer callback for the set the parent page of imported node.
+ *
+ * @param $source
+ *   Field mapper source settings.
+ * @param $entity
+ *   An entity object, for instance a node object.
+ * @param $target
+ *   A string identifying the target on the node.
+ * @param $value
+ *   The value to populate the target with.
+ * @param $mapping
+ *  Associative array of the mapping settings from the per mapping configuration
+ *  form.
+ */
+function os_pages_parent_page_import($source, $entity, $target, $value, $mapping) {
+  if ($value && $entity->type == 'page') {
+    $path = trim($value, " \t\n\r\0\x0B/");
+    $purl = vsite_get_purl();
+    $prefix = $purl ? $purl . '/' : '';
+    $normal_path = drupal_get_normal_path($prefix . $path);
+    $parent_node = menu_get_object('node', 1, $normal_path);
+    if ($parent_node && $parent_node->type == 'page') {
+      os_pages_make_subpage($entity, $parent_node->nid);
     }
   }
 }

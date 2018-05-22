@@ -1,28 +1,63 @@
 #!/usr/bin/env bash
 # Quick codeship script to push builds to a pair of acquia repos as new branches are made.
 
-# Get PR branch, default to empty string.
-PR_BRANCH=$(git show -s --format=%B $CI_COMMIT_ID | grep -oP 'Merge pull request #[\d]* from openscholar/\K(.*)' || echo "")
-echo "'$PR_BRANCH' set as PR branch."
-
+# builds all the composer files in root/sites
+function buildComposer() {
+    export ORIG=$(pwd)
+    echo 'Begin pulling in site-specific code'
+    cd $1
+    GITDIR=$(find $1/$2 -type d -name 'gitdir')
+    while read -r line; do
+        ROOT=$(dirname $line);
+        mv $ROOT/gitdir $ROOT/.git
+    done <<< "$GITDIR"
+    for site in $(ls openscholar/sites/); do
+        cd openscholar/sites/$site
+        echo "Installing site-specific modules for $site"
+        composer install -n
+        MODULE=$(composer show -s | sed -e '1,/requires/d' -e 's/ [^[:space:]]*$// ')
+        cd $1/$2/sites/$site/modules/$MODULE
+        git branch | grep -v "master" | xargs git branch -D
+        cd -
+        mv $1/$2/sites/$site/modules/$MODULE/.git $1/$2/sites/$site/modules/$MODULE/gitdir
+        git add $1/$2/sites/$site
+        cd $1
+    done
+    cd $ORIG
+}
 
 # pull down the acquia branch
 mkdir -p ~/src/amazon/
 git config --global user.email "openscholar@swap.lists.harvard.edu"
 git config --global user.name "OpenScholar Auto Push Bot"
-if git ls-remote --heads git@bitbucket.org:openscholar/deploysource.git | grep -sw $CI_BRANCH 2>&1>/dev/null; then
-git clone -b $CI_BRANCH git@bitbucket.org:openscholar/deploysource.git  ~/src/amazon;
-cd ~/src/amazon
+
+BUILD_ROOT='/home/rof/src/amazon'
+DOCROOT='web';
+
+if git show-ref -q --verify refs/tags/$CI_BRANCH 2>&1 > /dev/null; then
+  # This is just a tag push
+  # There's no need to build ever for tags
+  # All we need to do it
+  #export $BRANCH = $(git branch --contains tags/$CI_BRANCH | grep -s 'SCHOLAR-' | sed -n 2p)
+  export TAG_COMMIT=$(git rev-list -n 1 $CI_BRANCH)
+  git clone git@bitbucket.org:openscholar/deploysource.git
+  cd deploysource
+  export ROOT_COMMIT=$(git log --all --grep="git-subtree-split: $TAG_COMMIT" | grep "^commit" | sed "s/commit //" | head -n 1)
+  if [ -z "$ROOT_COMMIT" ]; then
+    exit 1
+  fi
+  git checkout $ROOT_COMMIT
+  git tag $CI_BRANCH
+  git push --tags
+  exit 0
+elif git ls-remote --heads git@bitbucket.org:openscholar/deploysource.git | grep -sw $CI_BRANCH 2>&1>/dev/null; then
+  git clone -b $CI_BRANCH git@bitbucket.org:openscholar/deploysource.git  ~/src/amazon;
+  cd ~/src/amazon
 else
-git clone -b amazon-base git@bitbucket.org:openscholar/deploysource.git  ~/src/amazon;
-cd ~/src/amazon
-git checkout -b $CI_BRANCH;
+  git clone -b SCHOLAR-3.x git@bitbucket.org:openscholar/deploysource.git  ~/src/amazon;
+  cd ~/src/amazon
+  git checkout -b $CI_BRANCH;
 fi
-#if ! test "$PR_BRANCH" = ""; then
-# do things
-# This branch is probably deleted, or will be soon, so we don't need to build
-#git push origin :$PR_BRANCH || echo "$PR_BRANCH not found"
-#fi
 
 # Build this branch and push it to Amazon
 
@@ -35,13 +70,9 @@ drush --version || exit 1
 npm install -g bower
 npm install -g node-sass
 
-echo $CI_BRANCH
-echo $CI_COMMIT_ID
 # Drush executable.
 [[ $DRUSH && ${DRUSH-x} ]] || DRUSH=drush
-BUILD_ROOT='/home/rof/src/amazon'
 cd $BUILD_ROOT
-ls
 rm .gitmodules
 #List of files from docroot that should be preserved
 preserve_files=( .htaccess robots_disallow.txt sites 404_fast.html favicon.ico files )
@@ -49,7 +80,7 @@ preserve_files=( .htaccess robots_disallow.txt sites 404_fast.html favicon.ico f
 cp -f openscholar/openscholar/drupal-org-core.make /tmp/
 cp -f openscholar/openscholar/drupal-org.make /tmp/
 cp -f openscholar/openscholar/bower.json /tmp/
-git subtree pull -q -m "CI_MESSAGE" --prefix=openscholar git://github.com/openscholar/openscholar.git $CI_BRANCH
+git subtree pull -q -m "$CI_MESSAGE" --prefix=openscholar git://github.com/openscholar/openscholar.git $CI_BRANCH
 
 #Only build if no build has ever happened, or if the make files have changed
 if [ ! -d openscholar/openscholar/modules/contrib ] || [ $FORCE_REBUILD == "1" ] || [ "$(cmp -b 'openscholar/openscholar/drupal-org-core.make' '/tmp/drupal-org-core.make')" != "" ] || [ "$(cmp -b 'openscholar/openscholar/drupal-org.make' '/tmp/drupal-org.make')" != "" ] || [ "$(cmp -b 'openscholar/openscholar/bower.json' '/tmp/bower.json')" != "" ]; then
@@ -64,12 +95,12 @@ $DRUSH make --no-core --contrib-destination drupal-org.make .
 (
 	# Download composer components
 	composer install
-	rm -rf libraries/git/symfony/event-dispatcher/Symfony/Component/EventDispatcher/.git
-	rm -f libraries/git/symfony/event-dispatcher/Symfony/Component/EventDispatcher/.gitignore
-	git rm -r --cached libraries/git/symfony/event-dispatcher/Symfony/Component/EventDispatcher
-	rm -rf libraries/git/symfony/process/Symfony/Component/Process/.git
-	rm -f libraries/git/symfony/process/Symfony/Component/Process/.gitignore
-	git rm -r --cached libraries/git/symfony/process/Symfony/Component/Process
+	rm -rf libraries/git/symfony/event-dispatcher/.git
+	rm -f libraries/git/symfony/event-dispatcher/.gitignore
+	git rm -r --cached libraries/git/symfony/event-dispatcher
+	rm -rf libraries/git/symfony/process/.git
+	rm -f libraries/git/symfony/process/.gitignore
+	git rm -r --cached libraries/git/symfony/process
 
 	# Get the angular components
 	bower -q install
@@ -80,7 +111,6 @@ $DRUSH make openscholar/openscholar/drupal-org-core.make $BUILD_ROOT/www-build
 
 # Backup files from existing installation.
 cd $BUILD_ROOT
-DOCROOT='web';
 ls
 for BACKUP_FILE in "${preserve_files[@]}"; do
 	rm -Rf www-build/$BACKUP_FILE
@@ -124,7 +154,10 @@ done
 ls $BUILD_ROOT/openscholar
 rm -rf $BUILD_ROOT/openscholar/behat &> /dev/null
 
-git commit -a -m "$CI_MESSAGE"
+#pull in site-specific code
+buildComposer "$BUILD_ROOT" "$DOCROOT"
+
+git commit -a -m "$CI_MESSAGE" -m "" -m "git-subtree-split: $CI_COMMIT_ID"
 #END BUILD PROCESS
 else
 
@@ -134,7 +167,10 @@ rm -rf $BUILD_ROOT/openscholar/behat &> /dev/null
 
 #Copy unmakable modules, when we don’t build
 cp -R openscholar/temporary/* openscholar/openscholar/modules/contrib/
-git commit -a -m "CI_MESSAGE" || echo 'Nothing to commit.'
+
+#pull in site-specific code
+buildComposer "$BUILD_ROOT" "$DOCROOT"
+git commit -a -m "$CI_MESSAGE" -m "" -m "git-subtree-split: $CI_COMMIT_ID" || git commit --amend -m "$CI_MESSAGE" -m "" -m "git-subtree-split: $CI_COMMIT_ID"
 fi
 
 echo "Building sass files START"

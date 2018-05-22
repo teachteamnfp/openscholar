@@ -226,9 +226,13 @@ class OSRestfulCPMenu extends \RestfulBase implements \RestfulDataProviderInterf
         continue;
       }
 
+      $add_label = $type_info[$bundle]->name;
+      if (strcasecmp($add_label, 'biblio') == 0) {
+        $add_label = 'Publication';
+      }
       $type_url_str = str_replace('_', '-', $bundle);
       $add_links["{$bundle}"] = array(
-        'label' => $type_info[$bundle]->name,
+        'label' => $add_label,
         'type' => 'link',
         'href' => "node/add/{$type_url_str}",
         'alt' => $type_info[$bundle]->description,

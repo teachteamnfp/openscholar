@@ -281,18 +281,7 @@ table caption {
     border-left: 1px solid #ccc;
     position: relative;
 }
-#footer .footer-login:after {
-    position: absolute;
-    content: '';
-    background-image: url("../../hwpi_basetheme/images/hwpi_basesprite.png");
-    background-position: 0 -575px;
-    margin: auto;
-    top: 1px;
-    bottom: 0;
-    height: 9px;
-    width: 6px;
-    right: 0;
-}
+
 #powerby-login {
     float: none;
     margin-top: 20px;
@@ -613,7 +602,41 @@ ol.search-results li.search-result:last-child {
 .calendar-calendar .week-view div.single-day .i_3 .view-item .calendar {
   width: 50%;
 }
+.calendar-calendar .week-view .events-2 div[class*="md_"] {
+    position:absolute;
+    top:0;
+    width:75%;
+}
+.calendar-calendar .week-view .events-2 div[class*="md_"]:nth-of-type(2) {
+    left:50%;
+  }
 
+.calendar-calendar .week-view .events-3 div[class*="md_"] {
+    position:absolute;
+    top:0;
+    width:40%;
+}
+.calendar-calendar .week-view .events-3 div[class*="md_"]:nth-of-type(2) {
+    left: 26%;
+  }
+  .calendar-calendar .week-view .events-3 div[class*="md_"]:nth-of-type(3) {
+    left: 50%;
+  }
+
+.calendar-calendar .week-view .events-4 div[class*="md_"] {
+    position:absolute;
+    top:0;
+    width:25%;
+}
+.calendar-calendar .week-view .events-4 div[class*="md_"]:nth-of-type(2) {
+    left: 22%;
+  }
+  .calendar-calendar .week-view .events-4 div[class*="md_"]:nth-of-type(3) {
+    left: 50%;
+  }
+ .calendar-calendar .week-view .events-4 div[class*="md_"]:nth-of-type(4) {
+    left: 60%;
+  }
 .calendar-calendar div.date-nav h3 {
     color: #1e1e1e;
 }

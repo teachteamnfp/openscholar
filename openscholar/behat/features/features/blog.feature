@@ -133,7 +133,7 @@ Feature:
  @api @features_first @delete_any_blog_content_permissions @os_blog
  Scenario: Delete any blog content (permissions)
     Given I am logging in as "michelle"
-     Then I can't visit "delete" form for node "blog/profiles-courage" in group "john"
+     Then I can not visit "delete" form for node "blog/first-blog" in group "john"
 
  @api @features_first @create_new_blog_content_permissions @os_blog
  Scenario: Create new blog content (permissions)
@@ -143,9 +143,4 @@ Feature:
  @api @features_first @edit_any_blog_content_permissions @os_blog
  Scenario: Edit any blog content (permissions)
     Given I am logging in as "michelle"
-     Then I can't edit node "blog/profiles-courage" in group "john"
-
- @api @features_first @delete_any_blog_content_permissions @os_blog
- Scenario: Delete any blog content (permissions)
-    Given I am logging in as "michelle"
-     Then I can't visit "delete" form for node "blog/profiles-courage" in group "john"
+     Then I can not visit "edit" form for node "blog/first-blog" in group "john"
