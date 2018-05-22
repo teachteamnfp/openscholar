@@ -6,10 +6,12 @@ package = Features
 dependencies[] = ctools
 dependencies[] = boxes
 dependencies[] = features
+dependencies[] = context
 
 features[box][] = shield
 features[ctools][] = strongarm:strongarm:1
 features[ctools][] = boxes:box:1
+features[ctools][] = context:context:3
 features[features_api][] = api:2
 features[variable][] = university_name
 features[variable][] = training_signup_url
