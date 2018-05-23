@@ -15,6 +15,10 @@ function buildComposer() {
         cd openscholar/sites/$site
         echo "Installing site-specific modules for $site"
         composer install -n
+        if ! composer install -n; then
+          rm -r $1/$2/sites/$site/modules/
+          composer install -n
+        fi
         MODULE=$(composer show -s | sed -e '1,/requires/d' -e 's/ [^[:space:]]*$// ')
         cd $1/$2/sites/$site/modules/$MODULE
         git branch | grep -v "master" | xargs git branch -D
