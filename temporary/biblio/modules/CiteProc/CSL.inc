@@ -1246,6 +1246,10 @@ class csl_text extends csl_format {
 
     if (empty($text)) return;
     if ($this->variable == 'title') {
+      // Trim the trailing period while display in teaser view
+      if (substr($text, -1) == '.') {
+        $text = substr($text, 0, -1);
+      }
       $url = biblio_get_title_url_info($data);
       $text =  l($text, $url['link'], $url['options']) ;
     }
