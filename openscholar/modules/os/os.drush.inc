@@ -148,6 +148,9 @@ function drush_os_domain_build() {
   /* flatten the multisites array for sites.php */  
   $a_sites = array();
   foreach ($multisites as $site => $domains) {
+    $domains = array_map(function ($v) {
+      return trim($v, '*.');
+    }, $domains);
     $a_sites += array_fill_keys($domains, $site);
   }
   $inc_file= $srv_conf['sites_inc'];
