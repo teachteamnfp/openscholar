@@ -794,6 +794,10 @@ body.sitewide-front {
 .os-align-center {
 	text-align: center;
 }
+#user-pass .url-textfield {
+	display:none;
+	}
+	
 /** Messages - success, error style overrides */
 
 div.messages {
@@ -879,7 +883,7 @@ body.sitewide-front:not(.og-context) {
 }
 
 .scholr-front-footer a {
-color:#fff;
+    color:#fff;
 	text-decoration:underline;
 }
 
