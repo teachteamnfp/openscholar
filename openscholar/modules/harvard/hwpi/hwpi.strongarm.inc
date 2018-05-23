@@ -143,5 +143,17 @@ function hwpi_strongarm() {
   $strongarm->value = 'profiles/openscholar/themes/hwpi_basetheme/images/person-default-image.png';
   $export['profile_default_photo'] = $strongarm;
 
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+
+  $strongarm->name = 'profile_default_photo';
+  $strongarm->value = "profiles/openscholar/themes/hwpi_basetheme/images/person-default-image.png";
+  $export['profile_default_photo'] = $strongarm;
+
+  $strongarm->name = 'favicon_default';
+  $strongarm->value = "profiles/openscholar/themes/hwpi_basetheme/favicon.png";
+  $export['favicon_default'] = $strongarm;
+
   return $export;
 }

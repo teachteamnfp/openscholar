@@ -243,6 +243,8 @@
     }
 
     $scope.validate = function($file) {
+      // Deleting previous error messages
+      $scope.removeMsg();
       var file = $file;
       if (file && file instanceof File) {
         // TODO: Get validating properties from somewhere and check the file against them
@@ -267,17 +269,26 @@
       }
     }
 
+    $scope.removeMsg = function() {
+      angular.forEach($scope.messages, function(value, id){
+        if (!isNaN(id)) {
+          delete $scope.messages[id];
+        }
+      });
+    }
+
     function addMessage(message) {
       var id = $scope.messages.next++;
       $scope.messages[id] = {
         text: message
       };
-      $timeout(angular.bind($scope, removeMessage, id), 5000);
+      //$timeout(angular.bind($scope, removeMessage, id), 5000);
     }
 
     function removeMessage(id) {
       delete this.messages[id];
     }
+
 
     // filter out weird characters that look like normal characters, like –, which gets converted to â€“
     function cleanPaths(text) {

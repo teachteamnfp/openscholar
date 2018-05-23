@@ -500,6 +500,13 @@ div[file-edit] .control button,
     border: 1px solid #ccc;
     padding: 10px;
     background: #efefef;
+    z-index: 100;
+}
+.form-managed-file .media-browser-drop-box .help {
+    top: 85% !important;
+}
+#edit-field-upload div {
+    overflow: visible;
 }
 .node-form .help {
     top: 70%;
