@@ -493,6 +493,34 @@ class OsFilesResource extends OsRestfulEntityCacheableBase {
         $entity = file_save($entity);
       }
 
+      // Handle cropped photos
+      if (module_exists('imagefield_crop') && $original = _imagefield_crop_file_to_crop($entity->fid)) {
+        if ($original->fid != $entity->fid) {
+          // this is a cropped image
+          $fields = field_read_fields(array('type' => 'imagefield_crop'));
+          foreach ($fields as $name => $info) {
+            $q = db_select($name, 'f')
+              ->condition($name.'_fid', $entity->id)
+              ->fields('f')
+              ->execute();
+
+            foreach ($q as $r) {
+              $input = array(
+                'cropbox_x' => $r->{$name.'_cropbox_x'},
+                'cropbox_y' => $r->{$name.'_cropbox_y'},
+                'cropbox_width' => $r->{$name.'_cropbox_width'},
+                'cropbox_height' => $r->{$name.'_cropbox_height'}
+              );
+              file_delete($original, true);
+              $orig = imagefield_crop_create_copy($entity);
+              file_usage_add($orig, 'imagefield_crop', 'file', $entity->fid);
+              _imagefield_crop_resize(drupal_realpath($orig->uri), $input, $scale, $entity);
+              file_save($entity);
+            }
+          }
+        }
+      }
+
       $wrapper = entity_metadata_wrapper($this->entityType, $entity);
 
       return array($this->viewEntity($wrapper->getIdentifier()));
