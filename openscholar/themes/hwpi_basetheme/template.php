@@ -316,7 +316,7 @@ function hwpi_basetheme_profile_default_image($size = 'small') {
 
   // Use default image.
   $image = $size == 'small' ? 'person-default-image-small.png' : 'person-default-image-large.png';
-  $install_default_image = variable_get('profile_default_photo', drupal_get_path('theme', 'os_basetheme') . '/images/' . $image);
+  $install_default_image = variable_get('profile_default_photo_'.$size, drupal_get_path('theme', 'os_basetheme') . '/images/' . $image);
   $path = variable_get('os_person_default_image', $install_default_image);
   return '<div class="field-name-field-person-photo">' . theme('image',  array('path' => $path)) . '</div>';
 }
