@@ -438,7 +438,9 @@ function hwpi_basetheme_node_view_alter(&$build) {
         unset($build['contact_details']['#prefix'], $build['contact_details']['#suffix']);
 
         //move title, website. body
-        $build['pic_bio']['body']['#weight'] = 5;
+        if (!empty($build['pic_bio']['body'])) {
+          $build['pic_bio']['body']['#weight'] = 5;
+        }
         foreach (array(0=>'field_professional_title', 15=>'field_website') as $weight => $field) {
           if (isset($build[$field])) {
             $build['pic_bio'][$field] = $build[$field];
@@ -467,7 +469,7 @@ function hwpi_basetheme_node_view_alter(&$build) {
           }
         }
 
-        if (isset($build['links']['node']['#links']['node-readmore'])) {
+        if (isset($build['links']['node']['#links']['node-readmore']) && !empty($build['pic_bio']['body'])) {
           $link = $build['links']['node']['#links']['node-readmore'];
           if (preg_match('!</?(?:p)[^>]*>\s*$!i', $build['pic_bio']['body'][0]['#markup'], $match, PREG_OFFSET_CAPTURE)) {
             $insert_point = $match[0][1];
