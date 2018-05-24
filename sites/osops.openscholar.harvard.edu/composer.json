@@ -1,7 +1,7 @@
 {
   "name": "osops",
   "require": {
-    "openscholar/osops" : "1.4"
+    "openscholar/osops" : "1.4.1"
   },
   "repositories": [
     {
