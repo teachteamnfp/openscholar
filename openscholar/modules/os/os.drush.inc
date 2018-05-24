@@ -544,7 +544,7 @@ function _os_drush_domain_htaccess_rewrite_condition($domains) {
     if (strpos($domain, '*') === 0) {
       $subdomain = '';
     }
-    $condition = '  RewriteCond %{HTTP_HOST} ' . $subdomain . ltrim($domain, '.');
+    $condition = '  RewriteCond %{HTTP_HOST} ' . $subdomain . ltrim($domain, '*.');
     $domains[$n] = str_replace('.', '\.', $condition);
   }
   $rule = "\n" . implode(" [OR]\n", $domains) . "\n";
