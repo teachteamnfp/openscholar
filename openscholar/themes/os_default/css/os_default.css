@@ -430,7 +430,7 @@ fieldset.pin-fieldset legend a,
 	margin-top: 10px;
 }
 #user-login .user-login-message-text h2 {
-	margin-top: 8px;
+	    margin: 6px 0;
 }
 .logged-in.no-sidebars.page-user #content .add-subsite a {
 	color: #FFFFFF;
@@ -807,6 +807,11 @@ list-style-type: none;
 #user-pass .url-textfield {
 	display:none;
 	}
+
+#user-login .user-login-message-text ul {
+	margin-left:25px;
+}	
+	
 	
 /** Messages - success, error style overrides */
 

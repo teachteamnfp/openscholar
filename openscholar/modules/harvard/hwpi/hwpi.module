@@ -195,7 +195,7 @@ function hwpi_form_user_login_alter(&$form, $form_state) {
       '#markup' => t('<h2>Help</h2><ul><li>!roadmap-link</li><li>!roadmap-link2</li><li>!roadmap-link3</li></ul>', array(
         '!roadmap-link' => l('Contact Support', 'mailto:harvard-support@theopenscholar.com'),
 		'!roadmap-link2' => l('Documentation', 'https://help.theopenscholar.com/'),
-		'!roadmap-link3' => l('Training Videos', 'http://theopenscholar.org/roadmap')
+		'!roadmap-link3' => l('Training Video\'s', 'http://theopenscholar.org/roadmap')
       ))
     )
   );
