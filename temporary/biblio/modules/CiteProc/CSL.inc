@@ -235,6 +235,7 @@ class csl_rendering_element extends csl_element {
   function render($data, $mode = NULL) {
     $text = '';
     $text_parts = array();
+
     $delim = $this->delimiter;
     foreach ($this->elements as $element) {
       $text_parts[] = $element->render($data, $mode);
@@ -939,7 +940,7 @@ class csl_names extends csl_format {
     }
 
     if (!empty($variable_parts)) {
-      $text = implode("joj", $variable_parts);
+      $text = implode($this->delimiter, $variable_parts);
       return $this->format($text);
     }
 
@@ -1397,6 +1398,7 @@ class csl_group extends csl_format{
             if (strrpos($stripped, $no_space) == strlen($stripped) - 1) {
               $text .= $t . $space;
             } elseif (in_array(substr($stripped_noquote, -1), $string_period)) {
+              // Removing delimiter in case of trailing period
               $text .= $t . $space;
             }
             else {
@@ -1460,6 +1462,7 @@ class csl_layout extends csl_format {
             $string_period_part = array("!", "?", ",", ".");
             $stripped_noquote_part = trim(strip_tags($prevpart), '“”""');
             if (in_array(mb_substr($stripped_noquote_part, -1), $string_period_part)) {
+              // Removing delimiter in case of trailing period
               $parts[$counter - 1] = mb_substr($prevpart, 0, mb_strlen($prevpart) - 1) . "$lastchar";
             } else {
               $parts[$counter - 1] = mb_substr($prevpart, 0, mb_strlen($prevpart) - 1) . "$firstchar$lastchar";
