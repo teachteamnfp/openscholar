@@ -190,6 +190,9 @@ body.not-logged-in.page-user.no-sidebars #content-column {
 .page-user-password #main-content-header {
 	margin-bottom: 20px;
 }
+#user-login .user-login-message-text ul li {
+margin-bottom: 5px;
+}
 .denied #powerby-login,
 .page-site-register #powerby-login,
 .logged-in.no-sidebars.page-user #powerby-login,
@@ -426,6 +429,9 @@ fieldset.pin-fieldset legend a,
 #edit-submit {
 	margin-top: 10px;
 }
+#user-login .user-login-message-text h2 {
+	margin-top: 8px;
+}
 .logged-in.no-sidebars.page-user #content .add-subsite a {
 	color: #FFFFFF;
 }
@@ -514,7 +520,7 @@ fieldset#edit-pin-fieldset {
 	width: 45px;
     height: 45px;
     top: -23px;
-    left: 36%;
+    left: 37%;
     background-image: url(/profiles/openscholar/themes/os_default/images/help-icon.png);
 }
 .pin-button#pin-nvm {
@@ -677,11 +683,14 @@ body.sitewide-front {
 }
 .sitewide-front #boxes-box-os_front_sample ul li {
 	float: left;
-	list-style: none;
+	
 	margin-left: 40px;
 }
+#user-login .user-login-message-text ul,
+.sitewide-front #boxes-box-os_front_sample ul li {
+list-style-type: none;
+}
 #block-boxes-os-front-sample img {
-	width: 200px;
 	border: 1px solid #ccc;
 }
 /** TODO MOVE TO PROPER CSS FILE **/
@@ -791,6 +800,7 @@ body.sitewide-front {
 	background: #4CD964;
 	text-decoration: none;
 }
+#user-login .user-login-message-text h2,
 .os-align-center {
 	text-align: center;
 }
