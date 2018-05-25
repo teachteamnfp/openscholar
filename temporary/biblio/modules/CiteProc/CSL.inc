@@ -1398,7 +1398,7 @@ class csl_group extends csl_format{
             if (strrpos($stripped, $no_space) == strlen($stripped) - 1) {
               $text .= $t . $space;
             } elseif (in_array(substr($stripped_noquote, -1),$string_end)) {
-              $text .= $t;
+              $text .= $t . $space;
             }
             else {
               $text .= $t . $delimiter;
