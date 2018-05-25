@@ -1246,10 +1246,6 @@ class csl_text extends csl_format {
 
     if (empty($text)) return;
     if ($this->variable == 'title') {
-      // Trim the trailing period while display in teaser view
-      if (substr($text, -1) == '.') {
-        $text = substr($text, 0, -1);
-      }
       $url = biblio_get_title_url_info($data);
       $text =  l($text, $url['link'], $url['options']) ;
     }
@@ -1397,9 +1393,14 @@ class csl_group extends csl_format{
           }
           else {
             $stripped = strip_tags($t);
+            $stripped_noquote = trim($stripped, '“”""');
+            $string_end = array('.', '?');
             if (strrpos($stripped, $no_space) == strlen($stripped) - 1) {
               $text .= $t . $space;
-            } else {
+            } elseif (in_array(substr($stripped_noquote, -1),$string_end)) {
+              $text .= $t;
+            }
+            else {
               $text .= $t . $delimiter;
             }
           }

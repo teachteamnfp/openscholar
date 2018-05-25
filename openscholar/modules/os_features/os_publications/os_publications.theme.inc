@@ -201,10 +201,6 @@ function _os_publications_plain_citation($node) {
     $node->biblio_publisher = "Working Paper";
   }
 
-  // Trim the trailing period while display in full view
-  if (substr($node->title, -1) == '.') {
-    $node->title = substr($node->title, 0, -1);
-  }
   $citation = theme('biblio_style', array('node' => $node, 'base' => $base, 'style_name' => $style));
 
   // Add the patent number, patent source and patent issuing country, if no
