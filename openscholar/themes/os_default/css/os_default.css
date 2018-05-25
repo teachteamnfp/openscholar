@@ -511,11 +511,11 @@ fieldset#edit-pin-fieldset {
 #user-login .user-login-message-text:before {
 	content: '';
 	position: absolute;
-	width: 48px;
-	height: 48px;
-	top: -25px;
-	left: 35%;
-	background-image: url('../images/map-icon.png');
+	width: 45px;
+    height: 45px;
+    top: -23px;
+    left: 36%;
+    background-image: url(/profiles/openscholar/themes/os_default/images/help-icon.png);
 }
 .pin-button#pin-nvm {
 	display: block;
