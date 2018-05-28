@@ -58,6 +58,13 @@ function _is_hwpi_theme($theme_name = NULL) {
 function _hwpi_branding_header() {
   $header = array();
   if (variable_get('logo_path')) {
+    $logo_path = variable_get('logo_path');
+    if (file_exists($logo_path)) {
+      $imageinfo = getimagesize($logo_path);
+    }
+    else {
+      $imageinfo = array(null, null);
+    }
     $header['left_container'] = array(
       '#type' => 'container',
       '#attributes' => array(
@@ -68,12 +75,13 @@ function _hwpi_branding_header() {
       'img' => array(
         '#theme' => 'link',
         '#path' => variable_get('university_base_url'),
-        '#text' => theme('image', array('path' => variable_get('logo_path'), 'width' => 235, 'height' => 32, 'alt' => 'University Logo')),
+        '#text' => theme('image', array('path' => $logo_path, 'width' => $imageinfo[0], 'height' => $imageinfo[1], 'alt' => 'University Logo')),
         '#options' => array(
           'external' => TRUE,
           'html' => TRUE,
           'attributes' => array(),
         ),
+        '#access' => file_exists($logo_path)
       ),
     );
   }
@@ -308,7 +316,8 @@ function hwpi_basetheme_profile_default_image($size = 'small') {
 
   // Use default image.
   $image = $size == 'small' ? 'person-default-image.png' : 'person-default-image-big.png';
-  $path = variable_get('os_person_default_image', drupal_get_path('theme', 'hwpi_basetheme') . '/images/' . $image);
+  $install_default_image = variable_get('profile_default_photo', drupal_get_path('theme', 'os_basetheme') . '/images/profile-default.png');
+  $path = variable_get('os_person_default_image', $install_default_image);
   return '<div class="field-name-field-person-photo">' . theme('image',  array('path' => $path)) . '</div>';
 }
 

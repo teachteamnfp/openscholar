@@ -190,6 +190,9 @@ body.not-logged-in.page-user.no-sidebars #content-column {
 .page-user-password #main-content-header {
 	margin-bottom: 20px;
 }
+#user-login .user-login-message-text ul li {
+margin-bottom: 5px;
+}
 .denied #powerby-login,
 .page-site-register #powerby-login,
 .logged-in.no-sidebars.page-user #powerby-login,
@@ -426,6 +429,9 @@ fieldset.pin-fieldset legend a,
 #edit-submit {
 	margin-top: 10px;
 }
+#user-login .user-login-message-text h2 {
+	    margin: 6px 0;
+}
 .logged-in.no-sidebars.page-user #content .add-subsite a {
 	color: #FFFFFF;
 }
@@ -511,11 +517,11 @@ fieldset#edit-pin-fieldset {
 #user-login .user-login-message-text:before {
 	content: '';
 	position: absolute;
-	width: 48px;
-	height: 48px;
-	top: -25px;
-	left: 35%;
-	background-image: url('../images/map-icon.png');
+	width: 45px;
+    height: 45px;
+    top: -23px;
+    left: 37%;
+    background-image: url(/profiles/openscholar/themes/os_default/images/help-icon.png);
 }
 .pin-button#pin-nvm {
 	display: block;
@@ -677,11 +683,14 @@ body.sitewide-front {
 }
 .sitewide-front #boxes-box-os_front_sample ul li {
 	float: left;
-	list-style: none;
+	
 	margin-left: 40px;
 }
+#user-login .user-login-message-text ul,
+.sitewide-front #boxes-box-os_front_sample ul li {
+list-style-type: none;
+}
 #block-boxes-os-front-sample img {
-	width: 200px;
 	border: 1px solid #ccc;
 }
 /** TODO MOVE TO PROPER CSS FILE **/
@@ -791,9 +800,19 @@ body.sitewide-front {
 	background: #4CD964;
 	text-decoration: none;
 }
+#user-login .user-login-message-text h2,
 .os-align-center {
 	text-align: center;
 }
+#user-pass .url-textfield {
+	display:none;
+	}
+
+#user-login .user-login-message-text ul {
+	margin-left:25px;
+}	
+	
+	
 /** Messages - success, error style overrides */
 
 div.messages {
@@ -879,7 +898,7 @@ body.sitewide-front:not(.og-context) {
 }
 
 .scholr-front-footer a {
-color:#fff;
+    color:#fff;
 	text-decoration:underline;
 }
 

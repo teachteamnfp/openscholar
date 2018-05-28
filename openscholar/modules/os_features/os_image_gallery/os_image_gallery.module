@@ -235,6 +235,8 @@ function os_image_gallery_node_view($node, $view_mode) {
       }
     }
   }
+
+  $node->allow_binding = OS_COMMON_NONBIND_CONTENT;
 }
 
 /**
@@ -293,6 +295,19 @@ function os_image_gallery_file_delete($file) {
  */
 function os_image_gallery_theme_registry_alter(&$registry){
   array_unshift($registry['media_gallery_media_item_thumbnail']['preprocess functions'], 'os_image_gallery_preprocess_media_item_thumbnail');
+
+  // the defualt function is very inflexible
+  if (isset($registry['media_gallery_item'])) {
+    $registry['media_gallery_item'] = array(
+        'function' => 'theme_os_image_gallery_media_gallery_item',
+        'file' => 'os_image_gallery.thene.inc',
+        'includes' => array(
+          drupal_get_path('module', 'os_image_gallery') .'/os_image_gallery.theme.inc',
+        ),
+        'theme path' => drupal_get_path('module', 'os_image_gallery'),
+      ) + $registry['media_gallery_item'];
+    dpm($registry['media_gallery_item']);
+  }
 }
 
 /**
@@ -304,12 +319,27 @@ function os_image_gallery_theme_registry_alter(&$registry){
  * Also change the cache key so thumbnail and lightbox view don't get html from same cache
  */
 function os_image_gallery_preprocess_media_item_thumbnail(&$vars) {
-
   $vars['attributes_array']['media-gallery-item'] = '';
   if ($vars['element']['#bundle'] == 'video') {
     $vars['element']['file']['#display'] = 'thumbnail';
     $vars['element']['file']['#cache']['keys'][] = 'os_image_gallery_thumbnail_' . $vars['element']['#file']->fid;
   }
+}
+
+/**
+ * Implements hook_preprocess_media_gallery_item().
+ *
+ * Keep this separate for now.
+ */
+function os_image_gallery_preprocess_media_gallery_item(&$vars) {
+  $vars['attributes_array']['ng-non-bindable'] = '';
+}
+
+/**
+ * Template preprocess for media_gallery_item.
+ */
+function template_process_media_gallery_item(&$vars) {
+  $vars['attributes'] = drupal_attributes($vars['attributes_array']);
 }
 
 /**
@@ -541,4 +571,10 @@ function os_image_gallery_media_gallery_detail_page($gallery_node, $file) {
   drupal_set_title($file->filename);
 
   return $content;
+}
+
+function os_image_gallery_preprocess_node(&$vars) {
+  if ($vars['type'] == 'media_gallery') {
+    $vars['allow_binding'] = OS_COMMON_NONBIND_CONTENT;
+  }
 }

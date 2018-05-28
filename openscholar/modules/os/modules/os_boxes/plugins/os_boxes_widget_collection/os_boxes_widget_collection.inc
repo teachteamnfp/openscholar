@@ -159,6 +159,13 @@ abstract class os_boxes_widget_collection extends os_boxes_default {
     return $form;
   }
 
+  function render() {
+    $block = parent::render();
+    $block['allow_binding'] = true;
+
+    return $block;
+  }
+
   function render_widget($key) {
     module_load_include('module', 'block', 'block');
     $plugin = context_get_plugin('reaction', 'block');

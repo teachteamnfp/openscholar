@@ -30,6 +30,8 @@ features[variable][] = copyright_infring_text
 features[variable][] = copyright_text
 features[variable][] = logo_path
 features[variable][] = highest_parent_item
+features[variable][] = profile_default_photo
+features[variable][] = favicon_default
 
 features_exclude[dependencies][strongarm] = strongarm
 

@@ -148,6 +148,9 @@ function drush_os_domain_build() {
   /* flatten the multisites array for sites.php */  
   $a_sites = array();
   foreach ($multisites as $site => $domains) {
+    $domains = array_map(function ($v) {
+      return trim($v, '*.');
+    }, $domains);
     $a_sites += array_fill_keys($domains, $site);
   }
   $inc_file= $srv_conf['sites_inc'];
@@ -537,12 +540,14 @@ EOF;
 function _os_drush_domain_htaccess_rewrite_condition($domains) {
   $domains_raw = $domains;
   foreach ($domains as $n => $domain) {
-    $condition = '  RewriteCond %{HTTP_HOST} ^' . $domain;
+    $subdomain = '^';
+    if (strpos($domain, '*') === 0) {
+      $subdomain = '';
+    }
+    $condition = '  RewriteCond %{HTTP_HOST} ' . $subdomain . ltrim($domain, '*.');
     $domains[$n] = str_replace('.', '\.', $condition);
   }
   $rule = "\n" . implode(" [OR]\n", $domains) . "\n";
-
-  drupal_alter('os_htaccess_file_rule', $rule, $domains_raw);
 
   return $rule;
 }
