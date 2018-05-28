@@ -75,6 +75,7 @@ class os_boxes_mailchimp extends os_boxes_default {
         '#title' => t('MailChimp form width.'),
         '#default_value' => (isset($this->options['mailchimp_iframe_width'])) ? $this->options['mailchimp_iframe_width'] : $defaults['mailchimp_iframe_width'],
         '#states' => array('visible' => array('input[name="display"]' => array('value' => 'mailchimp_form'))),
+        '#description' => t('For flexibility, recommended values should be in percentages. (ex. 100%)'),
       );
     }
     
