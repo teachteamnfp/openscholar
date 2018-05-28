@@ -1,0 +1,31 @@
+<?php
+
+/**
+ * Implements hook_install()
+ */
+/*function os_landing_page_install(){
+  //Change default frontpage
+  $value = 'os/frontpage';
+  variable_set('site_frontpage', $value);
+}*/
+
+/**
+ * Implements hook_install()
+ */
+/*function os_landing_page_uninstall(){
+  //Change default frontpage
+  $value = 'home';
+  variable_set('site_frontpage', $value);
+}*/
+
+/**
+ * Saving strongarm variables
+ */
+function os_landing_page_update_1002() {
+  $revert = array(
+    'os_landing_page' => array(
+      'variable',
+    )
+  );
+  features_revert($revert);
+}

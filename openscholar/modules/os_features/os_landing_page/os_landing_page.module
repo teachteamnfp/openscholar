@@ -2,7 +2,7 @@
 /**
  * include css file for template()
  */
-drupal_add_css(drupal_get_path('module', 'os_landing_page').'/includes/frontpage.css');
+drupal_add_css(drupal_get_path('module', 'os_landing_page').'/includes/frontpage.css', array('group' => CSS_THEME,'weight' => '999'));
  
 /**
  * Implements hook_menu()
@@ -31,3 +31,10 @@ function os_landing_page_theme($existing, $type, $theme, $path) {
     ),
   );
 }
+
+/**
+ * Implements hook_css_alter().
+ */
+/*function hook_css_alter(&$css) {
+  die(print_r($css));
+}*/

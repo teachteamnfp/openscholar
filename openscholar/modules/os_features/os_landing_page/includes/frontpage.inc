@@ -4,8 +4,6 @@
  * Callback function().
  */
 function os_landing_page() {
-  //Change front page
-  //variable_set('site_frontpage', $value);
   //Pass all values to theme
   $schoolDetails['path_to_school_main_website'] = "http://www.google.com";
   $schoolDetails['path_to_logo'] = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png";
