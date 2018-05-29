@@ -66,3 +66,12 @@ color: #fff;
         font-size: .9em;
 }
 
+
+.hero button {
+background-color: #f0d090;
+    border: none;
+    padding: 10px;
+    font-size: 1.2em;
+    border-bottom: 3px solid #d6940f;
+    border-radius: 4px;
+}

@@ -15,10 +15,9 @@
     </div>
     <div class="menu">
       <ul>
-        <li><a href="link">Link 1</a></li>
-        <li><a href="link">Link 2</a></li>
-        <li><a href="link">Link 3</a></li>
-        <li><a href="link">Link 4</a></li>
+        <li><a href="link">Support</a></li>
+        <li><a href="link">Documentation</a></li>
+        <li><a href="link">Video Tutorials</a></li>
         <li><a href="link" class="log-in">Log In</a></li>
       </ul>
     </div>
@@ -27,7 +26,7 @@
   <div class="hero row">
     <div class="heading">
       <h1>Create and Manage Your Own Beautiful Website</h1>
-      <h2>An easy-to-use platform for labs, research centers, departments, schools, faculty and students</h2>
+      <h2>For labs, research centers, departments, schools, faculty and students</h2>
       <button>Create a Wesbite</button>
     </div>
     <div class="visual-image">TBD</div>
