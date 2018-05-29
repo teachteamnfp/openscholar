@@ -35,6 +35,14 @@ function os_landing_page_theme($existing, $type, $theme, $path) {
 /**
  * Implements hook_css_alter().
  */
-/*function hook_css_alter(&$css) {
-  die(print_r($css));
-}*/
+function os_landing_page_css_alter(&$css) {
+  global $user;
+  if($user->uid == 0){
+    $path = path_to_theme();
+    foreach($css as $key => $file){
+      if (strpos($key, $path) !== false) {
+        unset($css[$key]);
+      }
+    }
+  }
+}
