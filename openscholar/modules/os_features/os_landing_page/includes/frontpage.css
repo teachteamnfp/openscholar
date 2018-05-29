@@ -1,4 +1,12 @@
-#landing-page-content-wrapper {
-  margin: 0;
+body.page-os-frontpage {
+	background-color: #f5f5f5;
+	  margin: 0;
   padding: 0;
+}
+
+
+#landing-page-content-wrapper {
+    width: 1025px;
+    margin: 0 auto;
+    background-color: #FFF;
 }

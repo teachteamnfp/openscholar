@@ -8,12 +8,12 @@
 ?>
 <div id="landing-page-content-wrapper">
   <!-- menu bar -->
-  <div id="menu-bar">
-    <div class="logo-wrapper">
+  <div id="logo-menu-bar-wrapper">
+    <div class="logo">
       <a href="<?php echo $variables['schoolDetails']['path_to_school_main_website']; ?>">
       <img src="<?php echo $variables['schoolDetails']['path_to_logo']; ?>"></a>
     </div>
-    <div class="menu-wrapper">
+    <div class="menu">
       <ul>
         <li><a href="link">Link 1</a></li>
         <li><a href="link">Link 2</a></li>
@@ -24,7 +24,7 @@
     </div>
   </div>
   <!-- region content top -->
-  <div id="region-content-top">
+  <div id="hero">
     <div class="heading">
       <h1>Header 1</h1>
       <h2>Header 2</h2>
@@ -33,7 +33,7 @@
     <div class="visual-image">TBD</div>
   </div>
   <!-- region content first -->
-  <div id="region-content-first">
+  <div id="panel-first">
     <div class="grid-wrapper">
       <div class="block-1">TBD</div>
       <div class="block-2">TBD</div>
@@ -42,7 +42,7 @@
     </div>
   </div>
   <!-- region content second -->
-  <div id="region-content-second">
+  <div id="panel-second">
     <div class="grid-wrapper">
       <h2>Feaures</h2>
       <div class="block-1">TBD</div>
@@ -52,7 +52,7 @@
     </div>
   </div>
   <!-- region footer -->
-  <div id="region-footer">
+  <div id="panel-footer">
     <div class="grid-wrapper">
       <h2>Feaures</h2>
       <div class="block-1">TBD</div>
@@ -62,7 +62,7 @@
     </div>
   </div>
   <!-- region branding footer -->
-  <div id="region-branding-footer">
+ 
     <div id="branding_footer">
       <div class="branding-container">
         <div class="copyright">
@@ -71,5 +71,5 @@
           <a href="<?php echo $variables['schoolDetails']['path_to_schools_reporting_copyright_infringements']; ?>">Report Copyright Infringement</a></div>
       </div>
     </div>
-  </div>
+
 </div>
