@@ -4,6 +4,13 @@ body.page-os-frontpage {
 	padding: 0;
 	font-family: helvetica, arial;
 }
+
+
+#landing-page-content-wrapper h1,
+#landing-page-content-wrapper h2 {
+font-weight:normal;
+}
+
 #landing-page-content-wrapper .branding_footer,
 #landing-page-content-wrapper .branding_footer a
 {
@@ -21,6 +28,8 @@ body.page-os-frontpage {
 }
 #landing-page-content-wrapper .hero {
 	text-align: center;
+	background-color: red;
+    color: #fff;
 }
 #landing-page-content-wrapper .menu {
 	width: 75%;
@@ -63,15 +72,19 @@ color: #fff;
 {
     background-color: #1e1e1e;
   
-        font-size: .9em;
+        font-size: .8em;
 }
 
 
 .hero button {
-background-color: #f0d090;
+background-color: #ffffff;
     border: none;
     padding: 10px;
     font-size: 1.2em;
-    border-bottom: 3px solid #d6940f;
+    border-bottom: 3px solid #bdbdbd;
     border-radius: 4px;
+    color: blue;
+}
+.hero button:hover {
+cursor:pointer;
 }
