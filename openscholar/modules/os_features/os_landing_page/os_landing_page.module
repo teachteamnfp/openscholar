@@ -37,7 +37,8 @@ function os_landing_page_theme($existing, $type, $theme, $path) {
  */
 function os_landing_page_css_alter(&$css) {
   global $user;
-  if($user->uid == 0){
+  $args = arg();
+  if($user->uid == 0 && $args[0] == 'os' && $args[1] == 'frontpage'){
     $path = path_to_theme();
     foreach($css as $key => $file){
       if (strpos($key, $path) !== false) {
@@ -45,4 +46,57 @@ function os_landing_page_css_alter(&$css) {
       }
     }
   }
+}
+
+/**
+ * Implements hook_ctools_plugin_api().
+ */
+function os_landing_page_ctools_plugin_api($module = NULL, $api = NULL) {
+  if ($module == "strongarm" && $api == "strongarm") {
+    return array("version" => "1");
+  }
+}
+
+/**
+ * Implements hook_strongarm().
+ */
+function os_landing_page_strongarm() {
+  $export = array();
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE;
+  $strongarm->api_version = 1;
+  $strongarm->name = 'path_to_school_main_website';
+  $strongarm->value = 'http://www.google.com';
+  $export['path_to_school_main_website'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE;
+  $strongarm->api_version = 1;
+  $strongarm->name = 'path_to_logo';
+  $strongarm->value = 'https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png';
+  $export['path_to_logo'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE;
+  $strongarm->api_version = 1;
+  $strongarm->name = 'name_of_school';
+  $strongarm->value = 'School Name';
+  $export['name_of_school'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE;
+  $strongarm->api_version = 1;
+  $strongarm->name = 'path_to_schools_accessibility_policy';
+  $strongarm->value = 'http://www.google.com';
+  $export['path_to_schools_accessibility_policy'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE;
+  $strongarm->api_version = 1;
+  $strongarm->name = 'path_to_schools_reporting_copyright_infringements';
+  $strongarm->value = 'http://www.google.com';
+  $export['path_to_schools_reporting_copyright_infringements'] = $strongarm;
+
+  return $export;
 }
