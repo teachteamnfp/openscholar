@@ -1,21 +1,68 @@
 body.page-os-frontpage {
 	background-color: #f5f5f5;
-	  margin: 0;
-  padding: 0;
+	margin: 0;
+	padding: 0;
+	font-family: helvetica, arial;
 }
-
-
+#landing-page-content-wrapper .branding_footer,
+#landing-page-content-wrapper .branding_footer a
+{
+  
+    color: #fff;
+     
+}
 #landing-page-content-wrapper {
-    width: 1025px;
-    margin: 0 auto;
-    background-color: #FFF;
+	width: 1025px;
+	margin: 0 auto;
+	background-color: #FFF;
 }
-
-
 #landing-page-content-wrapper .row {
-    padding:10px;
+	padding: 10px 15px;
+}
+#landing-page-content-wrapper .hero {
+	text-align: center;
+}
+#landing-page-content-wrapper .menu {
+	width: 75%;
+	text-align: right;
+}
+.logo-menu-bar-wrapper {
+	align-items: center;
+	display: flex;
+}
+#landing-page-content-wrapper .menu ul {
+	list-style: none;
+}
+#landing-page-content-wrapper .menu ul li {
+	display: inline;
 }
 
-#landing-page-content-wrapper .hero {
-    text-align:center;
+
+#landing-page-content-wrapper .menu ul li a
+{
+    text-decoration: none;
+    padding:0 12px;
 }
+
+
+#landing-page-content-wrapper .menu ul li a.log-in
+{
+color: #fff;
+    background-color: #505d6d;
+    border-radius: 2px;
+    text-align: center;
+    padding: 3px 6px 5px 6px;
+   }
+
+#landing-page-content-wrapper .logo img {
+	max-width: 200px;
+}
+
+
+#landing-page-content-wrapper .branding_footer
+{
+    background-color: #1e1e1e;
+  
+        font-size: .9em;
+}
+

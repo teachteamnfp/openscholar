@@ -67,14 +67,14 @@ function os_landing_page_strongarm() {
   $strongarm->disabled = FALSE;
   $strongarm->api_version = 1;
   $strongarm->name = 'path_to_school_main_website';
-  $strongarm->value = 'http://www.google.com';
+  $strongarm->value = 'http://web.mit.edu/';
   $export['path_to_school_main_website'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE;
   $strongarm->api_version = 1;
   $strongarm->name = 'path_to_logo';
-  $strongarm->value = 'https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png';
+  $strongarm->value = 'http://www.communityactionschool.org/files/news/mit_logo.png';
   $export['path_to_logo'] = $strongarm;
 
   $strongarm = new stdClass();

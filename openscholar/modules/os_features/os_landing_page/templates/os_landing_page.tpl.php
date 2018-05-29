@@ -19,15 +19,15 @@
         <li><a href="link">Link 2</a></li>
         <li><a href="link">Link 3</a></li>
         <li><a href="link">Link 4</a></li>
-        <li><a href="link">Link 5</a></li>
+        <li><a href="link" class="log-in">Log In</a></li>
       </ul>
     </div>
   </div>
   <!-- region content top -->
   <div class="hero row">
     <div class="heading">
-      <h1>Header 1</h1>
-      <h2>Header 2</h2>
+      <h1>Create and Manage Your Own Beautiful Website</h1>
+      <h2>An easy-to-use platform for labs, research centers, departments, schools, faculty and students</h2>
       <button>Create a Wesbite</button>
     </div>
     <div class="visual-image">TBD</div>
