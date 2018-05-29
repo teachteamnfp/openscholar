@@ -10,3 +10,12 @@ body.page-os-frontpage {
     margin: 0 auto;
     background-color: #FFF;
 }
+
+
+#landing-page-content-wrapper .row {
+    padding:10px;
+}
+
+#landing-page-content-wrapper .hero {
+    text-align:center;
+}
