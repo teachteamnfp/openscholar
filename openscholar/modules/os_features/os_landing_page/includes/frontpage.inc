@@ -10,6 +10,8 @@ function os_landing_page() {
   $schoolDetails['name_of_school'] = variable_get('name_of_school');
   $schoolDetails['path_to_schools_accessibility_policy'] = variable_get('path_to_schools_accessibility_policy');
   $schoolDetails['path_to_schools_reporting_copyright_infringements'] = variable_get('path_to_schools_reporting_copyright_infringements');
+  $schoolDetails['school_primary_color'] = variable_get('school_primary_color');
+  
   
   //Call to custom theme
   return theme('os_landing_page_template', array('schoolDetails' => $schoolDetails));

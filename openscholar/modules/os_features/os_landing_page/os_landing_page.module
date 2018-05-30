@@ -98,5 +98,12 @@ function os_landing_page_strongarm() {
   $strongarm->value = 'http://www.google.com';
   $export['path_to_schools_reporting_copyright_infringements'] = $strongarm;
 
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE;
+  $strongarm->api_version = 1;
+  $strongarm->name = 'school_primary_color';
+  $strongarm->value = '#00FF00';
+  $export['school_primary_color'] = $strongarm;
+
   return $export;
 }

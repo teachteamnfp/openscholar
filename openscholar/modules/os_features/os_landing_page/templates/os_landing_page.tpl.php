@@ -23,14 +23,14 @@
     </div>
   </div>
   <!-- region content top -->
-  <div class="hero row">
+  <div class="hero row" style="background-color:<?php echo $variables['schoolDetails']['school_primary_color']; ?>;">
     <div class="heading">
       <h1>Create and Manage Your Own Beautiful Website</h1>
       <h2>For labs, research centers, departments, schools, faculty and students</h2>
       <button>Create a Wesbite</button>
     </div>
-    <div class="visual-image"><img src="/profiles/openscholar/modules/os_features/os_landing_page/includes/images/devices.png"></div>
   </div>
+  <div class="visual-image"><img src="/profiles/openscholar/modules/os_features/os_landing_page/includes/images/devices.png"></div>
   <!-- region content first -->
   <div class="panel-first row">
     <div class="grid-wrapper">
