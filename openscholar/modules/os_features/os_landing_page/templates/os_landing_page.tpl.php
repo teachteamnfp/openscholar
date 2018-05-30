@@ -23,7 +23,18 @@
     </div>
   </div>
   <!-- region content top -->
-  <div class="hero row" style="background-color:<?php echo $variables['schoolDetails']['school_primary_color']; ?>;">
+  <div class="hero row">
+  	<svg width="838px" height="286px" viewBox="0 0 838 286" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>Path</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard" fill="<?php echo $variables['schoolDetails']['school_primary_color']; ?>">
+            <path d="M851.320312,153.9375 C847.705248,165.514818 835.48162,154.976938 822.421875,159.644531 C819.376159,160.73308 808.572945,169.156487 806.628906,171.449219 C754.161068,233.327972 716.471657,273.861849 705.132812,280.589844 C691.572377,288.636038 668.956491,286.594371 637.285156,274.464844 L508.660156,213.386719 L150.296875,254.414063 C111.538252,254.994772 86.3481477,252.484355 74.7265625,246.882812 C63.1049773,241.28127 34.9252898,218.067728 -9.8125,177.242188 L-9.8125,-2.84765625 L851.320312,-2.84765625 C854.292412,92.1575736 854.292412,144.419292 851.320312,153.9375 Z" id="Path"></path>
+        </g>
+    </g>
+</svg>
     <div class="heading">
       <h1>Create and Manage Your Own Beautiful Website</h1>
       <h2>For labs, research centers, departments, schools, faculty and students</h2>
