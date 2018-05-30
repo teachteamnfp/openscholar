@@ -35,7 +35,7 @@
   <div class="panel-first row">
     <div class="grid-wrapper">
     	<h2>Feature Highlights</h2>
-      <div class="block-1"><h3 class="widgets">
+      <div class="block-1 block"><h3 class="widgets">
 	Widgets
 </h3>
 <span>Display snippets of larger pieces of content as:</span>
@@ -50,7 +50,7 @@
 		Other media such as slideshows or videos
 	</li>
 </ul></div>
-      <div class="block-2"><h3 class="choose-theme">
+      <div class="block-2 block"><h3 class="choose-theme">
 	CHOOSE FROM MANY THEME DESIGNS
 </h3>
 
@@ -61,7 +61,7 @@
 		Templates to make construction simple while maintaining your individual style
 	</li>
 </ul></div>
-      <div class="block-3"><h3 class="drag-drop">
+      <div class="block-3 block"><h3 class="drag-drop">
 	DRAG AND DROP<br>INTERFACE
 </h3>
 <span>The "drag-and-drop" tool allows you to:</span>
@@ -76,7 +76,7 @@
 		Create unique layouts for different sections of your site
 	</li>
 </ul></div>
-      <div class="block-4"><h3 class="share-content">
+      <div class="block-4 block"><h3 class="share-content">
 	SHARE CONTENT TO SOCIAL MEDIA
 </h3>
 

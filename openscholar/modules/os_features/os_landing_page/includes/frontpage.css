@@ -8,12 +8,19 @@ body.page-os-frontpage {
 a, a:visited {
     color: #215990;
 }
-
-#landing-page-content-wrapper h1,
-#landing-page-content-wrapper h2 {
-font-weight:normal;
+.row h2,
+#landing-page-content-wrapper .hero,
+.visual-image {
+text-align: center;
 }
 
+#landing-page-content-wrapper h1,
+#landing-page-content-wrapper h2,
+#landing-page-content-wrapper h3 {
+font-weight:normal;
+}
+#landing-page-content-wrapper .menu ul li a.log-in,
+#landing-page-content-wrapper .hero,
 #landing-page-content-wrapper .branding_footer,
 #landing-page-content-wrapper .branding_footer a
 {
@@ -21,6 +28,10 @@ font-weight:normal;
     color: #fff;
      
 }
+.visual-image img {
+    width: 400px;
+}
+
 #landing-page-content-wrapper {
 	width: 1025px;
 	margin: 0 auto;
@@ -29,10 +40,7 @@ font-weight:normal;
 #landing-page-content-wrapper .row {
 	padding: 10px 15px;
 }
-#landing-page-content-wrapper .hero {
-	text-align: center;
-    color: #fff;
-}
+
 #landing-page-content-wrapper .menu {
 	width: 75%;
 	text-align: right;
@@ -58,10 +66,10 @@ font-weight:normal;
 
 #landing-page-content-wrapper .menu ul li a.log-in
 {
-color: #fff;
+
     background-color: #505d6d;
     border-radius: 2px;
-    text-align: center;
+   
     padding: 3px 6px 5px 6px;
    }
 
