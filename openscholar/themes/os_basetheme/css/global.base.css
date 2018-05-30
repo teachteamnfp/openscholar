@@ -1277,6 +1277,6 @@ ul.no-event-export {
 form#registration-form div.url-textfield {
     display: none !important;
 }
-#os-mailchimp-form {
+.modal-content #os-mailchimp-form {
     padding-right: 20px;
 }
