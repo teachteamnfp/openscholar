@@ -587,9 +587,11 @@ div[file-edit] .control button,
 }
 
 .form-managed-file .media-browser-drop-box .help {
-	top: 85% !important;
+	top: -9px;
 }
-
+.form-managed-file .media-browser-drop-box .help:after {
+	right: 40%;
+}
 #edit-field-upload div {
 	overflow: visible;
 }
