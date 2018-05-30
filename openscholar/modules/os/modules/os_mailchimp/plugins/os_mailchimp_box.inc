@@ -121,7 +121,7 @@ class os_boxes_mailchimp extends os_boxes_default {
           'mailchimp-modal-style' => array(
             'modalSize' => array(
               'type' => 'fixed',
-              'width' => 600,
+              'width' => '100%',
               'height' => 360,
               'addWidth' => 10,
               'addHeight' => 10,
