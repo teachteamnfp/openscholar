@@ -16,6 +16,7 @@ class os_boxes_mailchimp extends os_boxes_default {
     $options['text'] = t('Subscribe to our mailing list');
     $options['display'] = 'link';
     $options['mailchimp_iframe_height'] = 800;
+    $options['mailchimp_iframe_width'] = 600;
     
     return $options;
   }
@@ -68,6 +69,14 @@ class os_boxes_mailchimp extends os_boxes_default {
         '#default_value' => (isset($this->options['mailchimp_iframe_height'])) ? $this->options['mailchimp_iframe_height'] : $defaults['mailchimp_iframe_height'],
         '#states' => array('visible' => array('input[name="display"]' => array('value' => 'mailchimp_form'))),
       );
+
+      $form['subscribe']['mailchimp_iframe_width'] = array(
+        '#type' => 'textfield',
+        '#title' => t('MailChimp form width.'),
+        '#default_value' => (isset($this->options['mailchimp_iframe_width'])) ? $this->options['mailchimp_iframe_width'] : $defaults['mailchimp_iframe_width'],
+        '#states' => array('visible' => array('input[name="display"]' => array('value' => 'mailchimp_form'))),
+        '#description' => t('For flexibility, recommended values should be in percentages. (ex. 100%)'),
+      );
     }
     
     return $form;
@@ -102,7 +111,7 @@ class os_boxes_mailchimp extends os_boxes_default {
               $subscribe_url_long = str_replace('http://', '//', $subscribe_url_long);
               $block['content'] = t('<iframe src="@url" width="@width", height="@height"></iframe>', array(
                 '@url' => $subscribe_url_long,
-                '@width' => "640px",
+                '@width' => (intval($this->options['mailchimp_iframe_width']) > 0) ? $this->options['mailchimp_iframe_width'] : $defaults['mailchimp_iframe_width'],
                 '@height' => (intval($this->options['mailchimp_iframe_height']) > 0) ? $this->options['mailchimp_iframe_height'] : $defaults['mailchimp_iframe_height'],
               ));
               break;
