@@ -148,7 +148,7 @@ function hwpi_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'privacy_policy';
   $strongarm->value = "https://hwp.harvard.edu/privacy-policy";
-  $export['favicon_default'] = $strongarm;
+  $export['privacy_policy'] = $strongarm;
 
 
   return $export;
