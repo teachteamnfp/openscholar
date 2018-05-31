@@ -23,7 +23,7 @@
     </div>
   </div>
   <!-- region content top -->
-  <div class="hero row">
+  <div class="hero">
   	<div class="svg-wrapper">
   	<svg width="1025px" height="537px" viewBox="0 0 1025 537" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -42,8 +42,9 @@
       <h2>For labs, research centers, departments, schools, faculty and students</h2>
       <button>Get Started</button>
     </div>
+    <div class="visual-image"><img src="/profiles/openscholar/modules/os_features/os_landing_page/includes/images/devices.png"></div>
   </div>
-  <div class="visual-image"><img src="/profiles/openscholar/modules/os_features/os_landing_page/includes/images/devices.png"></div>
+  
   <!-- region content first -->
   <div class="panel-first row">
     <div class="grid-wrapper">
