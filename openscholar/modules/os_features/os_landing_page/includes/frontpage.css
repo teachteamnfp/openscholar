@@ -1,3 +1,8 @@
+#branding {
+	display:none;
+}
+
+
 body.page-os-frontpage {
 	background-color: #f5f5f5;
 	margin: 0;
@@ -5,11 +10,11 @@ body.page-os-frontpage {
 	font-family: helvetica, arial;
 }
 .hero button,
-a, a:visited {
+#landing-page-content-wrapper a, #landing-page-content-wrapper a:visited {
     color: #215990;
 }
 .row h2,
-#landing-page-content-wrapper .hero {
+.hero {
 text-align: center;
 }
 
@@ -25,7 +30,7 @@ font-weight:normal;
     margin-bottom: 0;
 }
 #landing-page-content-wrapper .menu ul li a.log-in,
-#landing-page-content-wrapper .hero,
+.hero,
 #landing-page-content-wrapper .branding_footer,
 #landing-page-content-wrapper .branding_footer a
 {
@@ -33,6 +38,11 @@ font-weight:normal;
     color: #fff;
      
 }
+
+.hero {
+	position:relative;
+}
+
 .visual-image img {
     width: 500px;
 }
@@ -55,7 +65,7 @@ font-weight:normal;
 	margin: 0 auto;
 	background-color: #FFF;
 }
-#landing-page-content-wrapper .row {
+.row {
 	padding: 10px 15px;
 }
 
