@@ -3,25 +3,25 @@
 /**
  * Implements hook_install()
  */
-/*function os_landing_page_install(){
+function os_landing_page_enable(){
   //Change default frontpage
   $value = 'os/frontpage';
   variable_set('site_frontpage', $value);
-}*/
+}
 
 /**
  * Implements hook_install()
  */
-/*function os_landing_page_uninstall(){
+function os_landing_page_disable(){
   //Change default frontpage
   $value = 'home';
   variable_set('site_frontpage', $value);
-}*/
+}
 
 /**
  * Saving strongarm variables
  */
-function os_landing_page_update_1002() {
+function os_landing_page_update_1003() {
   $revert = array(
     'os_landing_page' => array(
       'variable',
