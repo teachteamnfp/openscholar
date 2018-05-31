@@ -102,7 +102,7 @@ function os_landing_page_strongarm() {
   $strongarm->disabled = FALSE;
   $strongarm->api_version = 1;
   $strongarm->name = 'school_primary_color';
-  $strongarm->value = '#00FF00';
+  $strongarm->value = '#991C2E';
   $export['school_primary_color'] = $strongarm;
 
   return $export;
