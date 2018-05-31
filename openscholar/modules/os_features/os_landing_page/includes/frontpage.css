@@ -1,77 +1,87 @@
 #branding {
-	display:none;
+	display: none;
 }
-
-
 body.page-os-frontpage {
-	background-color: #f5f5f5;
+	
 	margin: 0;
 	padding: 0;
 	font-family: helvetica, arial;
-}
-.hero button,
-#landing-page-content-wrapper a, #landing-page-content-wrapper a:visited {
-    color: #215990;
-}
-.row h2,
-.hero {
-text-align: center;
+	font-size: 1em;
 }
 
+body.page-os-frontpage,
+.panel-first .block {
+	background-color: #f5f5f5;
+}
+
+.hero button,
+#landing-page-content-wrapper a,
+#landing-page-content-wrapper a:visited {
+	color: #215990;
+}
+.panel-first h3,
+.row h2,
+.hero {
+	text-align: center;
+}
 #landing-page-content-wrapper h1,
 #landing-page-content-wrapper h2,
 #landing-page-content-wrapper h3 {
-font-weight:normal;
+	font-weight: normal;
 }
 .heading h1 {
-    font-size: 2.5em;
+	font-size: 2.5em;
 }
 .heading h1 {
-    margin-bottom: 0;
+	margin-bottom: 0;
 }
+.panel-first {
+	margin-top: 120px;
+}
+
 #landing-page-content-wrapper .menu ul li a.log-in,
 .hero,
 #landing-page-content-wrapper .branding_footer,
-#landing-page-content-wrapper .branding_footer a
-{
-  
-    color: #fff;
-     
+#landing-page-content-wrapper .branding_footer a {
+	color: #fff;
 }
-
 .hero {
-	position:relative;
+	position: relative;
 }
-
 .visual-image img {
-    width: 500px;
+	width: 500px;
 }
 .heading {
-    position: absolute;
-    top: 12%;
-    margin-left: 512px;
-    transform: translateX(-50%);
-    width: 100%;
+	position: absolute;
+	top: 12%;
+	margin-left: 512px;
+	transform: translateX(-50%);
+	width: 100%;
 }
 .visual-image {
-    position: absolute;
-    top: 60%;
-    margin-left: 512px;
-    transform: translateX(-50%);
-    width: 500px;
+	position: absolute;
+	top: 60%;
+	margin-left: 512px;
+	transform: translateX(-50%);
+	width: 500px;
 }
 #landing-page-content-wrapper {
 	width: 1025px;
 	margin: 0 auto;
 	background-color: #FFF;
 }
+.panel-first .block,
 .row {
 	padding: 10px 15px;
 }
-
 #landing-page-content-wrapper .menu {
 	width: 75%;
 	text-align: right;
+}
+.panel-first .block {
+    width: 45%;
+    margin-top: 20px;
+    border-top: 3px solid #C4CCCE;
 }
 .logo-menu-bar-wrapper {
 	align-items: center;
@@ -83,70 +93,67 @@ font-weight:normal;
 #landing-page-content-wrapper .menu ul li {
 	display: inline;
 }
-
-
-#landing-page-content-wrapper .menu ul li a
-{
-    text-decoration: none;
-    padding:0 12px;
+#landing-page-content-wrapper .menu ul li a {
+	text-decoration: none;
+	padding: 0 12px;
 }
-
-
-#landing-page-content-wrapper .menu ul li a.log-in
-{
-
-    background-color: #505d6d;
-    border-radius: 2px;
-   
-    padding: 3px 6px 5px 6px;
-   }
-
+#landing-page-content-wrapper .menu ul li a.log-in {
+	background-color: #505d6d;
+	border-radius: 2px;
+	padding: 3px 6px 5px 6px;
+}
 #landing-page-content-wrapper .logo img {
 	max-width: 200px;
 }
-
-
-#landing-page-content-wrapper .branding_footer
-{
-    background-color: #1e1e1e;
-  
-        font-size: .8em;
+#landing-page-content-wrapper .branding_footer {
+	background-color: #1e1e1e;
+	font-size: .8em;
 }
-
-
 .hero button {
-background-color: #ffffff;
-    border: none;
-    padding: 10px;
-    font-size: 1.2em;
-    border-bottom: 3px solid #bdbdbd;
-    border-radius: 4px;
-        -webkit-transition: all .75s;
-    transition: all .75s;
-    position: relative;
-    overflow: hidden;
-    transform: translate3d(0,0,0);
-   
+	background-color: #ffffff;
+	border: none;
+	padding: 10px;
+	font-size: 1.2em;
+	border-bottom: 3px solid #bdbdbd;
+	border-radius: 4px;
+	-webkit-transition: all .75s;
+	transition: all .75s;
+	position: relative;
+	overflow: hidden;
+	transform: translate3d(0, 0, 0);
 }
-
 .hero button:after {
-    content: "";
-    display: block;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-    background-image: radial-gradient(circle,#000 10%,transparent 10.01%);
-    background-repeat: no-repeat;
-    background-position: 50%;
-    transform: scale(10,10);
-    opacity: 0;
-    transition: transform .5s,opacity 1s;
+	content: "";
+	display: block;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	pointer-events: none;
+	background-image: radial-gradient(circle, #000 10%, transparent 10.01%);
+	background-repeat: no-repeat;
+	background-position: 50%;
+	transform: scale(10, 10);
+	opacity: 0;
+	transition: transform .5s, opacity 1s;
 }
-
-
 .hero button:hover {
-cursor:pointer;
+	cursor: pointer;
 }
+ .panel-first .grid-wrapper   {
+display: flex;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: stretch;
+   }
+
+
+
+
+

@@ -47,9 +47,11 @@
   
   <!-- region content first -->
   <div class="panel-first row">
+  	<h2>Feature Highlights</h2>
     <div class="grid-wrapper">
-    	<h2>Feature Highlights</h2>
-      <div class="block-1 block"><h3 class="widgets">
+    <div class="block-1 block">
+    	<img src="/profiles/openscholar/modules/os_features/os_landing_page/includes/images/widgets-icon.png">
+    	<h3 class="widgets">
 	Widgets
 </h3>
 <span>Display snippets of larger pieces of content as:</span>
@@ -64,8 +66,10 @@
 		Other media such as slideshows or videos
 	</li>
 </ul></div>
-      <div class="block-2 block"><h3 class="choose-theme">
-	CHOOSE FROM MANY THEME DESIGNS
+      <div class="block-2 block">
+      	<img src="/profiles/openscholar/modules/os_features/os_landing_page/includes/images/themes-icon.png">
+      	<h3 class="choose-theme">
+	Many Theme Designs
 </h3>
 
 <ul><li>
@@ -75,8 +79,10 @@
 		Templates to make construction simple while maintaining your individual style
 	</li>
 </ul></div>
-      <div class="block-3 block"><h3 class="drag-drop">
-	DRAG AND DROP<br>INTERFACE
+      <div class="block-3 block">
+      	<img src="/profiles/openscholar/modules/os_features/os_landing_page/includes/images/drag-drop-icon.png">
+      	<h3 class="drag-drop">
+	Drag and Drop Interface
 </h3>
 <span>The "drag-and-drop" tool allows you to:</span>
 
@@ -90,8 +96,10 @@
 		Create unique layouts for different sections of your site
 	</li>
 </ul></div>
-      <div class="block-4 block"><h3 class="share-content">
-	SHARE CONTENT TO SOCIAL MEDIA
+      <div class="block-4 block">
+      	<img src="/profiles/openscholar/modules/os_features/os_landing_page/includes/images/social-icon.png">
+      	<h3 class="share-content">
+	Share Content to Social Media
 </h3>
 
 <ul><li>
