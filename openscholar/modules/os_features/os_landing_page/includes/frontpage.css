@@ -176,6 +176,16 @@ display: flex;
 /* RESPONSIVE CSS */
 
 @media (max-width: 1008px) {
+
+
+
+#landing-page-content-wrapper .visual-image {
+
+	display:none;
+	
+	
+}
+	
 #landing-page-content-wrapper div,
 #landing-page-content-wrapper svg,
 #landing-page-content-wrapper .menu,
@@ -185,11 +195,21 @@ display: flex;
 	
 	
 }
+#landing-page-content-wrapper .block, 
+#landing-page-content-wrapper .branding_footer {
+	width:90%;
+	
+	
+}
 #landing-page-content-wrapper div {
 	position:relative;
 	display:block;
 	margin:0 auto;
 }	
+#landing-page-content-wrapper .heading {
+    position: absolute;
+    transform: translateX(0%);
+}
 #landing-page-content-wrapper .menu,
 #landing-page-content-wrapper {
    
