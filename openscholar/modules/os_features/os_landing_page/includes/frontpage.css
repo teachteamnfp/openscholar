@@ -7,6 +7,7 @@ body.page-os-frontpage {
 	padding: 0;
 	font-family: helvetica, arial;
 	font-size: 1em;
+	color:#464646;
 }
 
 body.page-os-frontpage,
@@ -51,6 +52,17 @@ body.page-os-frontpage,
 .visual-image img {
 	width: 500px;
 }
+
+.panel-first .block {
+	line-height:22px;
+}
+
+.panel-first img {
+    margin: 10px auto 15px auto;
+    display: block;
+}
+
+
 .heading {
 	position: absolute;
 	top: 12%;
@@ -116,28 +128,9 @@ body.page-os-frontpage,
 	font-size: 1.2em;
 	border-bottom: 3px solid #bdbdbd;
 	border-radius: 4px;
-	-webkit-transition: all .75s;
-	transition: all .75s;
-	position: relative;
-	overflow: hidden;
-	transform: translate3d(0, 0, 0);
+	margin-top: 20px;
 }
-.hero button:after {
-	content: "";
-	display: block;
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	top: 0;
-	left: 0;
-	pointer-events: none;
-	background-image: radial-gradient(circle, #000 10%, transparent 10.01%);
-	background-repeat: no-repeat;
-	background-position: 50%;
-	transform: scale(10, 10);
-	opacity: 0;
-	transition: transform .5s, opacity 1s;
-}
+
 .hero button:hover {
 	cursor: pointer;
 }

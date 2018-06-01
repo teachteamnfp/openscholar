@@ -114,20 +114,11 @@
   <!-- region content second -->
   <div class="panel-second row">
     <div class="grid-wrapper">
-      <h2>Feaures</h2>
-      <div class="block-1">TBD</div>
-      <div class="block-2"><iframe width="560" height="315" src="https://www.youtube.com/embed/tG6lcd73kN0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
+      <h2>Easy-to-Use</h2>
+      <div class="block-1 block"><p>Take a 1 1/2 minute tour to see what simple steps you will take to build a unique, professional-looking website on your own.</p>
+<p>As soon as you know the basics, your content will shine online.</p> </div>
+      <div class="block-2 block"><iframe width="476" src="https://www.youtube.com/embed/WadTyp3FcgU" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
      
-    </div>
-  </div>
-  <!-- region footer -->
-  <div class="panel-footer row">
-    <div class="grid-wrapper">
-      <h2>Feaures</h2>
-      <div class="block-1">TBD</div>
-      <div class="block-2">TBD</div>
-      <div class="block-3">TBD</div>
-      <div class="block-4">TBD</div>
     </div>
   </div>
   <!-- region branding footer -->
