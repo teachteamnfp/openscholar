@@ -306,7 +306,6 @@ function os_image_gallery_theme_registry_alter(&$registry){
         ),
         'theme path' => drupal_get_path('module', 'os_image_gallery'),
       ) + $registry['media_gallery_item'];
-    //dpm($registry['media_gallery_item']);
   }
 }
 
