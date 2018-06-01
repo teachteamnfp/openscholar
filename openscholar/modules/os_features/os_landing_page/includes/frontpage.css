@@ -2,20 +2,17 @@
 	display: none;
 }
 body.page-os-frontpage {
-	
 	margin: 0;
 	padding: 0;
 	font-family: helvetica, arial;
 	font-size: 1em;
-	color:#464646;
+	color: #464646;
 }
-
 body.page-os-frontpage,
 body.page-os-frontpage #page,
 .panel-first .block {
 	background-color: #f5f5f5;
 }
-
 .hero button,
 #landing-page-content-wrapper a,
 #landing-page-content-wrapper a:visited {
@@ -43,11 +40,12 @@ body.page-os-frontpage #page,
 .panel-first {
 	margin-top: 120px;
 }
-
 .block h3 {
-    margin-bottom: 15px;
+	margin-bottom: 15px;
 }
-
+.panel-second h2 {
+	margin: 35px 0;
+}
 #landing-page-content-wrapper .menu ul li a.log-in,
 .hero,
 #landing-page-content-wrapper .branding_footer,
@@ -62,15 +60,12 @@ body.page-os-frontpage #page,
 }
 .panel-second .block,
 .panel-first .block {
-	line-height:22px;
+	line-height: 22px;
 }
-
 .panel-first img {
-    margin: 10px auto 15px auto;
-    display: block;
+	margin: 10px auto 15px auto;
+	display: block;
 }
-
-
 .heading {
 	position: absolute;
 	top: 12%;
@@ -98,14 +93,14 @@ body.page-os-frontpage #page,
 	width: 75%;
 	text-align: right;
 }
-.panel-first .block{
-    width: 43%;
-    margin-top: 40px;
-    border-top: 3px solid #C4CCCE;
+.panel-first .block {
+	width: 43%;
+	margin-top: 40px;
+	border-top: 3px solid #C4CCCE;
 }
 .panel-second .block {
-    width: 46%;
-    margin-top: 20px;
+	width: 46%;
+	margin-top: 20px;
 }
 .logo-menu-bar-wrapper {
 	align-items: center;
@@ -143,88 +138,77 @@ body.page-os-frontpage #page,
 	border-radius: 4px;
 	margin-top: 20px;
 }
-
 .hero button:hover {
 	cursor: pointer;
 }
- .panel-second .grid-wrapper,
- .panel-first .grid-wrapper   {
-display: flex;
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-flex-flow: row wrap;
-    justify-content: space-around;
-    align-items: center;
-   }
-
-
- .os-logo a {
-    background: url(/profiles/openscholar/themes/os_basetheme/images/scholarbase-sprite.png?123) no-repeat scroll -14px -521px transparent;
-    height: 26px;
-    text-decoration: none !important;
-    text-indent: -999em;
-    width: 85px;
-    margin-top: 5px;
-    float: right;
-
+.panel-second .grid-wrapper,
+.panel-first .grid-wrapper {
+	display: flex;
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-flex-flow: row wrap;
+	justify-content: space-around;
+	align-items: center;
 }
-
-
+.os-logo a {
+	background: url(/profiles/openscholar/themes/os_basetheme/images/scholarbase-sprite.png?123) no-repeat scroll -14px -521px transparent;
+	height: 26px;
+	text-decoration: none !important;
+	text-indent: -999em;
+	width: 85px;
+	margin-top: 5px;
+	float: right;
+}
 /* RESPONSIVE CSS */
 
 @media (max-width: 1008px) {
-
-
-
-#landing-page-content-wrapper .visual-image {
-
-	display:none;
-	
-	
+	body.page-os-frontpage,
+	body.page-os-frontpage #page {
+		background-color: #FFF;
+	}
+	#landing-page-content-wrapper .visual-image {
+		display: none;
+	}
+	#landing-page-content-wrapper div,
+	#landing-page-content-wrapper svg,
+	#landing-page-content-wrapper .menu,
+	#landing-page-content-wrapper {
+		width: 100%;
+	}
+	#landing-page-content-wrapper .block,
+	#landing-page-content-wrapper .branding_footer {
+		width: 90%;
+	}
+	#landing-page-content-wrapper div {
+		position: relative;
+		display: block;
+		margin: 0 auto;
+	}
+	#landing-page-content-wrapper .heading {
+		position: absolute;
+		transform: translateX(0%);
+	}
+	#landing-page-content-wrapper .menu,
+	#landing-page-content-wrapper {
+		margin: 0;
+	}
+	#landing-page-content-wrapper .logo,
+	#landing-page-content-wrapper .menu {
+		text-align: center;
+		float: none;
+	}
+	#landing-page-content-wrapper .block {
+		margin-top: 30px;
+	}
+	#landing-page-content-wrapper .row:not(.branding_footer) {
+		padding: 0;
+	}
 }
-	
-#landing-page-content-wrapper div,
-#landing-page-content-wrapper svg,
-#landing-page-content-wrapper .menu,
-#landing-page-content-wrapper {
-
-	width:100%;
-	
-	
-}
-#landing-page-content-wrapper .block, 
-#landing-page-content-wrapper .branding_footer {
-	width:90%;
-	
-	
-}
-#landing-page-content-wrapper div {
-	position:relative;
-	display:block;
-	margin:0 auto;
-}	
-#landing-page-content-wrapper .heading {
-    position: absolute;
-    transform: translateX(0%);
-}
-#landing-page-content-wrapper .menu,
-#landing-page-content-wrapper {
-   
-    margin: 0;
-    
-}
-#landing-page-content-wrapper .logo,
-#landing-page-content-wrapper .menu {
-	
-	text-align:center;
-	float:none;
-}
-#landing-page-content-wrapper .block {
-	
-	margin-top:30px;
-}	
-	
+@media (max-width: 715px) {
+	.heading {
+		top: 20%;
+	}
 }

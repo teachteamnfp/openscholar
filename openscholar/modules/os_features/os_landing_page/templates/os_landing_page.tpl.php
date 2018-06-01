@@ -41,6 +41,7 @@
       <h1>Create and Manage Your Own Beautiful Website</h1>
       <h2>For labs, research centers, departments, schools, faculty and students</h2>
       <button>Get Started</button>
+      <span>Websites branded for <?php echo $variables['schoolDetails']['name_of_school']; ?></span>
     </div>
     <div class="visual-image"><img src="/profiles/openscholar/modules/os_features/os_landing_page/includes/images/devices.png"></div>
   </div>
