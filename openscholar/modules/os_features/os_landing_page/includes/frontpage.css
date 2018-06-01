@@ -37,8 +37,15 @@ body.page-os-frontpage #page,
 .heading h1 {
 	margin-bottom: 0;
 }
+.block ul {
+	margin-top: 0;
+}
 .panel-first {
 	margin-top: 120px;
+}
+
+.block h3 {
+    margin-bottom: 15px;
 }
 
 #landing-page-content-wrapper .menu ul li a.log-in,
@@ -92,12 +99,12 @@ body.page-os-frontpage #page,
 	text-align: right;
 }
 .panel-first .block{
-    width: 45%;
-    margin-top: 20px;
+    width: 43%;
+    margin-top: 40px;
     border-top: 3px solid #C4CCCE;
 }
 .panel-second .block {
-    width: 47%;
+    width: 46%;
     margin-top: 20px;
 }
 .logo-menu-bar-wrapper {

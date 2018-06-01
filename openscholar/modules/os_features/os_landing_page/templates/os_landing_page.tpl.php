@@ -118,7 +118,7 @@
       
       <div class="block-1 block"><p>Take a 1 1/2 minute tour to see what simple steps you will take to build a unique, professional-looking website on your own.</p>
 <p>As soon as you know the basics, your content will shine online.</p> </div>
-      <div class="block-2 block"><iframe width="476" height="250" src="https://www.youtube.com/embed/WadTyp3FcgU" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
+      <div class="block-2 block"><iframe width="100%" height="250" src="https://www.youtube.com/embed/WadTyp3FcgU" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
      
     </div>
   </div>
