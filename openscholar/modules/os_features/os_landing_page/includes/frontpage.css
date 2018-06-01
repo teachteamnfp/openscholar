@@ -161,7 +161,7 @@ display: flex;
    }
 
 
- .os-logo img {
+ .os-logo a {
     background: url(/profiles/openscholar/themes/os_basetheme/images/scholarbase-sprite.png?123) no-repeat scroll -14px -521px transparent;
     height: 26px;
     text-decoration: none !important;
@@ -173,3 +173,38 @@ display: flex;
 }
 
 
+/* RESPONSIVE CSS */
+
+@media (max-width: 1008px) {
+#landing-page-content-wrapper div,
+#landing-page-content-wrapper svg,
+#landing-page-content-wrapper .menu,
+#landing-page-content-wrapper {
+
+	width:100%;
+	
+	
+}
+#landing-page-content-wrapper div {
+	position:relative;
+	display:block;
+	margin:0 auto;
+}	
+#landing-page-content-wrapper .menu,
+#landing-page-content-wrapper {
+   
+    margin: 0;
+    
+}
+#landing-page-content-wrapper .logo,
+#landing-page-content-wrapper .menu {
+	
+	text-align:center;
+	float:none;
+}
+#landing-page-content-wrapper .block {
+	
+	margin-top:30px;
+}	
+	
+}
