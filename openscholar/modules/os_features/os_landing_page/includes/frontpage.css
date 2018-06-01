@@ -161,6 +161,15 @@ display: flex;
    }
 
 
+ .os-logo img {
+    background: url(/profiles/openscholar/themes/os_basetheme/images/scholarbase-sprite.png?123) no-repeat scroll -14px -521px transparent;
+    height: 26px;
+    text-decoration: none !important;
+    text-indent: -999em;
+    width: 85px;
+    margin-top: 5px;
+    float: right;
 
+}
 
 

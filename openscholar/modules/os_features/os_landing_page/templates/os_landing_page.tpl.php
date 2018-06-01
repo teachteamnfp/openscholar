@@ -132,5 +132,5 @@
           <a href="<?php echo $variables['schoolDetails']['path_to_schools_reporting_copyright_infringements']; ?>">Report Copyright Infringement</a></div>
       </div>
     </div>
-
+<div class="os-logo"><a href="https://theopenscholar.com">OpenScholar</a></div>
 </div>
