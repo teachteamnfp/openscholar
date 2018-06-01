@@ -106,4 +106,5 @@ function os_landing_page_strongarm() {
   $export['school_primary_color'] = $strongarm;
 
   return $export;
+  
 }
