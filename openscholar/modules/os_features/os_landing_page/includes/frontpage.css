@@ -53,7 +53,7 @@ body.page-os-frontpage #page,
 .visual-image img {
 	width: 500px;
 }
-
+.panel-second .block,
 .panel-first .block {
 	line-height:22px;
 }
@@ -91,11 +91,14 @@ body.page-os-frontpage #page,
 	width: 75%;
 	text-align: right;
 }
-.panel-first .block,
-.panel-second .block {
+.panel-first .block{
     width: 45%;
     margin-top: 20px;
     border-top: 3px solid #C4CCCE;
+}
+.panel-second .block {
+    width: 47%;
+    margin-top: 20px;
 }
 .logo-menu-bar-wrapper {
 	align-items: center;
@@ -122,6 +125,7 @@ body.page-os-frontpage #page,
 #landing-page-content-wrapper .branding_footer {
 	background-color: #1e1e1e;
 	font-size: .8em;
+	margin-top: 50px;
 }
 .hero button {
 	background-color: #ffffff;
@@ -146,7 +150,7 @@ display: flex;
     display: flex;
     -webkit-flex-flow: row wrap;
     justify-content: space-around;
-    align-items: stretch;
+    align-items: center;
    }
 
 
