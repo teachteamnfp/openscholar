@@ -81,7 +81,7 @@ function os_landing_page_strongarm() {
   $strongarm->disabled = FALSE;
   $strongarm->api_version = 1;
   $strongarm->name = 'name_of_school';
-  $strongarm->value = 'School Name';
+  $strongarm->value = 'MIT';
   $export['name_of_school'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -102,7 +102,7 @@ function os_landing_page_strongarm() {
   $strongarm->disabled = FALSE;
   $strongarm->api_version = 1;
   $strongarm->name = 'school_primary_color';
-  $strongarm->value = '#991C2E';
+  $strongarm->value = 'blah';
   $export['school_primary_color'] = $strongarm;
 
   return $export;
