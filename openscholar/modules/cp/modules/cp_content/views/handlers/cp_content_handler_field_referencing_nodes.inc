@@ -12,6 +12,7 @@ class cp_content_handler_field_referencing_nodes extends views_handler_field {
    */
   function pre_render(&$values) {
     $fids = array();
+   // $values = _ng_non_bindable($values);
     foreach ($values as $value) {
       $fids[] = $value->fid;
     }
@@ -42,7 +43,7 @@ class cp_content_handler_field_referencing_nodes extends views_handler_field {
       $nid = $row->id;
 
       // Don't show links to a VSite.
-      $fids_data[$row->fid][] = !og_is_group('node', $nid) ? l($nodes[$nid]->title, 'node/' . $nid) : "";
+      $fids_data[$row->fid][] = !og_is_group('node', $nid) ? l($nodes[$nid]->title, 'node/' . $nid, array('attributes' => array('ng-non-bindable' => ''))) : "";
     }
 
     $this->fids_data = $fids_data;
