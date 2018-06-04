@@ -12,7 +12,6 @@ class cp_content_handler_field_referencing_nodes extends views_handler_field {
    */
   function pre_render(&$values) {
     $fids = array();
-   // $values = _ng_non_bindable($values);
     foreach ($values as $value) {
       $fids[] = $value->fid;
     }
