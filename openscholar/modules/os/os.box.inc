@@ -53,16 +53,6 @@ function os_default_box() {
   $box = new stdClass();
   $box->disabled = FALSE; /* Edit this to true to make a default box disabled initially */
   $box->api_version = 1;
-  $box->delta = 'shield';
-  $box->plugin_key = 'os_shields_box';
-  $box->title = '';
-  $box->description = 'Shield';
-  $box->options = array();
-  $export['shield'] = $box;
-
-  $box = new stdClass();
-  $box->disabled = FALSE; /* Edit this to true to make a default box disabled initially */
-  $box->api_version = 1;
   $box->delta = 'site_info';
   $box->plugin_key = 'os_boxes_site_info';
   $box->title = '';
