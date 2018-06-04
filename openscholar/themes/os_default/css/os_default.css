@@ -431,6 +431,7 @@ fieldset.pin-fieldset legend a,
 }
 #user-login .user-login-message-text h2 {
 	    margin: 6px 0;
+	    color: #555;
 }
 .logged-in.no-sidebars.page-user #content .add-subsite a {
 	color: #FFFFFF;
