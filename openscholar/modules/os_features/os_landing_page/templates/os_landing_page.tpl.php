@@ -129,6 +129,7 @@
       <div class="branding-container">
         <div class="copyright">
           <span class="copyright">Copyright &copy; <?php echo date('Y'); ?> <?php echo $variables['schoolDetails']['name_of_school']; ?></span>  | 
+          <a href="<?php echo $variables['THIS_NEEDS_A_VAR']; ?>">Privacy</a> | 
           <a href="<?php echo $variables['site_access']; ?>">Accessibility</a> | 
           <a href="<?php echo $variables['copyright_infring']; ?>">Report Copyright Infringement</a></div>
       </div>
