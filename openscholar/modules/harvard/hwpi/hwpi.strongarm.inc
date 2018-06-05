@@ -177,7 +177,7 @@ function hwpi_strongarm() {
   $strongarm->disabled = FALSE;
   $strongarm->api_version = 1;
   $strongarm->name = 'school_primary_color';
-  $strongarm->value = 'blah';
+  $strongarm->value = '#000000';
   $export['school_primary_color'] = $strongarm;
 
   return $export;
