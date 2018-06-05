@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Implements hook_install()
+ * Implements hook_enable()
  */
 function os_landing_page_enable(){
   //Change default frontpage
@@ -10,22 +10,10 @@ function os_landing_page_enable(){
 }
 
 /**
- * Implements hook_install()
+ * Implements hook_disable()
  */
 function os_landing_page_disable(){
   //Change default frontpage
   $value = 'home';
   variable_set('site_frontpage', $value);
-}
-
-/**
- * Saving strongarm variables
- */
-function os_landing_page_update_1003() {
-  $revert = array(
-    'os_landing_page' => array(
-      'variable',
-    )
-  );
-  features_revert($revert);
 }

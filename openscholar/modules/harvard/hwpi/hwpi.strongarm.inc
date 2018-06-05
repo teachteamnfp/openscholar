@@ -135,6 +135,50 @@ function hwpi_strongarm() {
   $strongarm->name = 'signup_pin_text';
   $strongarm->value = "After setting your OpenScholar user password with the included link, you can then <a href='https://help.theopenscholar.com/logging-your-site' target='_blank'>associate this user account with your HarvardKey</a>.";
   $export['signup_pin_text'] = $strongarm;
+  
+  //strongarm variable to be used for os_landing_page module
+  
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE;
+  $strongarm->api_version = 1;
+  $strongarm->name = 'path_to_school_main_website';
+  $strongarm->value = 'http://web.mit.edu/';
+  $export['path_to_school_main_website'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE;
+  $strongarm->api_version = 1;
+  $strongarm->name = 'path_to_logo';
+  $strongarm->value = 'http://www.communityactionschool.org/files/news/mit_logo.png';
+  $export['path_to_logo'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE;
+  $strongarm->api_version = 1;
+  $strongarm->name = 'name_of_school';
+  $strongarm->value = 'MIT';
+  $export['name_of_school'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE;
+  $strongarm->api_version = 1;
+  $strongarm->name = 'path_to_schools_accessibility_policy';
+  $strongarm->value = 'http://www.google.com';
+  $export['path_to_schools_accessibility_policy'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE;
+  $strongarm->api_version = 1;
+  $strongarm->name = 'path_to_schools_reporting_copyright_infringements';
+  $strongarm->value = 'http://www.google.com';
+  $export['path_to_schools_reporting_copyright_infringements'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE;
+  $strongarm->api_version = 1;
+  $strongarm->name = 'school_primary_color';
+  $strongarm->value = 'blah';
+  $export['school_primary_color'] = $strongarm;
 
   return $export;
 }

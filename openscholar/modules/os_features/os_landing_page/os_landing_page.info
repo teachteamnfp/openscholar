@@ -5,14 +5,4 @@ package = Features
 version = 7.x-1.0-unstable1
 project = os_landing_page
 
-dependencies[] = "ctools"
-
-features[ctools][] = strongarm:strongarm:1
-features[features_api][] = api:2
-features[variable][] = path_to_school_main_website
-features[variable][] = path_to_logo
-features[variable][] = name_of_school
-features[variable][] = path_to_schools_accessibility_policy
-features[variable][] = path_to_schools_reporting_copyright_infringements
-
-features_exclude[dependencies][strongarm] = strongarm
+dependencies[] = "HWPI"

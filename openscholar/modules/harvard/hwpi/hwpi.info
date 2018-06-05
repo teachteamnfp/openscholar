@@ -25,6 +25,12 @@ features[variable][] = copyright_text
 features[variable][] = logo_path
 features[variable][] = highest_parent_item
 
+features[variable][] = path_to_school_main_website
+features[variable][] = path_to_logo
+features[variable][] = name_of_school
+features[variable][] = path_to_schools_accessibility_policy
+features[variable][] = path_to_schools_reporting_copyright_infringements
+
 features_exclude[dependencies][strongarm] = strongarm
 
 files[] = plugins/service/hwpi_service_sword_dash.inc

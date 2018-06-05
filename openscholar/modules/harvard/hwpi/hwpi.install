@@ -239,3 +239,15 @@ function hwpi_update_7017() {
   );
   features_revert($revert);
 }
+
+/**
+ * Saving strongarm variables
+ */
+function os_school_update_7018() {
+  $revert = array(
+    'hwpi' => array(
+      'variable',
+    )
+  );
+  features_revert($revert);
+}
