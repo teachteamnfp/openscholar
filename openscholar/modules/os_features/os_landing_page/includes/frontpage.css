@@ -66,7 +66,7 @@ body.page-os-frontpage #page,
 	margin: 10px auto 15px auto;
 	display: block;
 }
-.heading {
+#landing-page-content-wrapper .heading {
 	position: absolute;
 	top: 12%;
 	margin-left: 512px;

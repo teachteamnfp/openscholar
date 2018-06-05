@@ -10,7 +10,7 @@
   <!-- menu bar -->
   <div class="logo-menu-bar-wrapper row">
     <div class="logo">
-      <a href="<?php echo $variables['schoolDetails']['path_to_school_main_website']; ?>">
+      <a href="<?php echo $variables['university_base_url']; ?>">
       <img src="<?php echo $variables['schoolDetails']['path_to_logo']; ?>"></a>
     </div>
     <div class="menu">
@@ -41,7 +41,7 @@
       <h1>Create and Manage Your Own Beautiful Website</h1>
       <h2>For labs, research centers, departments, schools, faculty and students</h2>
       <button>Get Started</button>
-      <span>Websites branded for <?php echo $variables['schoolDetails']['name_of_school']; ?></span>
+      <span>Websites branded for <?php echo $variables['university_name']; ?></span>
     </div>
     <div class="visual-image"><img src="/profiles/openscholar/modules/os_features/os_landing_page/includes/images/devices.png"></div>
   </div>
@@ -129,8 +129,8 @@
       <div class="branding-container">
         <div class="copyright">
           <span class="copyright">Copyright &copy; <?php echo date('Y'); ?> <?php echo $variables['schoolDetails']['name_of_school']; ?></span>  | 
-          <a href="<?php echo $variables['schoolDetails']['path_to_schools_accessibility_policy']; ?>">Accessibility</a> | 
-          <a href="<?php echo $variables['schoolDetails']['path_to_schools_reporting_copyright_infringements']; ?>">Report Copyright Infringement</a></div>
+          <a href="<?php echo $variables['site_access']; ?>">Accessibility</a> | 
+          <a href="<?php echo $variables['copyright_infring']; ?>">Report Copyright Infringement</a></div>
       </div>
     </div>
 <div class="os-logo"><a href="https://theopenscholar.com">OpenScholar</a></div>
