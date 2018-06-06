@@ -27,7 +27,7 @@ function os_help_cp_settings() {
   );
 
   $id = variable_get('cp_support_getsatisfaction_widget');
-  if (!$id) {
+  if ($id) {
     $form['os_help'] = array(
       'group' => array(
         '#id' => 'support',
