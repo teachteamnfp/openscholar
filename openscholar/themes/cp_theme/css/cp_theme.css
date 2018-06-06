@@ -2050,3 +2050,57 @@ div.no-bold {
     }
 }
 /* PROGRESS BAR CSS  END */
+
+/* ADMIN MENU SUPPORT MODAL */
+
+ #support .feature-block  {
+    background-color: #f2f2f2;
+    padding: 0 12px 10px;
+    width: 45.4%;
+    display: inline-block;
+    margin-right: 20px;
+    text-align: center;
+    margin: 10px 20px 0 0;
+    position:relative;
+    vertical-align: top;
+}
+#support .feature-block:last-of-type  {
+    margin-right: 0;
+}
+
+
+
+
+
+#support .feature-block:before {
+    height: 150px;
+    width: 150px;
+    content: '';
+    position: absolute;
+    left: 31%;
+    top: -68px;
+    z-index: 2;
+}
+
+#support .feature-block h3 {
+    padding: 40px 0 25px 0;
+    /* font-size: 20px !important; */
+    text-transform: uppercase;
+    text-align: center;
+    font-weight: bold;
+}
+#support .feature-block h3 strong {
+   
+    font-size: 18px !important;
+ 
+}
+#support .feature-block li,
+ #support .feature-block span {
+    font-size: 1.2em !important;
+    line-height: 1.65em;
+    text-align:left;
+}
+
+#support .os-swipe-large {
+    text-transform:uppercase;
+}
