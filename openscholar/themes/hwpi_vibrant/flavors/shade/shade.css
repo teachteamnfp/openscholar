@@ -417,6 +417,9 @@ h2.field-label {
 .node {
     margin-bottom: 50px;
 }
+.block-boxes-os_sv_list_box .node.node-person.node-teaser {
+    margin-bottom: 0;
+}
 .navigation a:link,
 .navigation a:visited {
     color: #215990;
