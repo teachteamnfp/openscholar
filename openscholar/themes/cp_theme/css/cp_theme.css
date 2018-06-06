@@ -2069,9 +2069,6 @@ div.no-bold {
 }
 
 
-
-
-
 #support .feature-block:before {
     height: 150px;
     width: 150px;
@@ -2084,8 +2081,6 @@ div.no-bold {
 
 #support .feature-block h3 {
     padding: 40px 0 25px 0;
-    /* font-size: 20px !important; */
-    text-transform: uppercase;
     text-align: center;
     font-weight: bold;
 }
