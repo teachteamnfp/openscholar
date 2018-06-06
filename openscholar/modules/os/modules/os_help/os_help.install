@@ -23,3 +23,15 @@ function os_help_update_7000() {
      }
    }
  }
+
+ /**
+ * Saving strongarm variable os_support_mail_to.
+ */
+function os_help_update_7002() {
+  $revert = array(
+    'os_help' => array(
+      'variable',
+    )
+  );
+  features_revert($revert);
+}
