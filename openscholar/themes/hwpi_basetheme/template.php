@@ -279,7 +279,7 @@ function hwpi_basetheme_preprocess_node(&$vars) {
     }
 
     // Set up the size of the picture.
-    $size = (!empty($vars['os_sv_list_box']) && $vars['os_sv_list_box']) || $vars['view_mode'] == 'full' ? 'big' : 'small';
+    $size = (!empty($vars['os_sv_list_box']) && $vars['os_sv_list_box']) || $vars['view_mode'] == 'full' ? 'large' : 'small';
 
     $key['field_person_photo'][0] = array('#markup' => hwpi_basetheme_profile_default_image($size));
   }
