@@ -1359,7 +1359,7 @@ function os_search_solr_search_box($form, $form_state) {
  */
 function os_search_solr_form_boxes_box_form_alter(&$form, &$form_state) {
 
-  if ($form['plugin_key']['#value'] != 'os_search_solr_search_box') {
+  if (isset($form['plugin_key']) && $form['plugin_key']['#value'] != 'os_search_solr_search_box') {
     return;
   }
 
