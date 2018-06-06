@@ -83,7 +83,7 @@ function os_profiles_settings($form, &$form_state) {
   $dimensions['ratio'] = $dimensions['width']/$dimensions['height'];
 
   // Show the default image used before a custom default image has been uploaded.
-  $path = variable_get('profile_default_photo', drupal_get_path('theme', 'os_basetheme') . '/images/person-default-image-large.png');
+  $path = variable_get('profile_default_photo_large', drupal_get_path('theme', 'os_basetheme') . '/images/person-default-image-large.png');
   $image = '<div class="field-name-field-person-photo">' . theme('image',  array('path' => $path)) . '</div>';
 
   // Form element for uploading a default image.
