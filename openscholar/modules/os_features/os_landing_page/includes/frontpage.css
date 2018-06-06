@@ -208,13 +208,16 @@ body.page-os-frontpage #page,
 		margin: 0 auto;
 	}
 	#landing-page-content-wrapper .heading {
-		position: absolute;
-		transform: translateX(0%);
+		    transform: translateX(0%);
+    		margin-left: 0;
 	}
 	#landing-page-content-wrapper .menu,
 	#landing-page-content-wrapper {
 		margin: 0;
 	}
+	#landing-page-content-wrapper .menu ul {
+    padding-left: 0;
+}
 	#landing-page-content-wrapper .logo,
 	#landing-page-content-wrapper .menu {
 		text-align: center;
