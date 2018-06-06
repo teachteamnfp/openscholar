@@ -48,7 +48,7 @@ services:
     labels:
       - 'traefik.backend=openscholar_thescholr_apache_1'
       - 'traefik.port=80'
-      - 'traefik.frontend.rule=Host:home.thescholr.com,home.partnership.one'
+      - 'traefik.frontend.rule=Host:home.thescholr.com,home.partnership.one,partnershipone.home.thescholr.com'
 
 #  varnish:
 #    image: wodby/drupal-varnish:4.1-2.1.2
