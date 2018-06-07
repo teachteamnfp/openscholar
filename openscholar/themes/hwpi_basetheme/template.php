@@ -308,7 +308,7 @@ function hwpi_basetheme_profile_default_image($size = 'small') {
     $path = $image_file->uri;
     $options = array(
       'path' => $path,
-      'style_name' => 'profile_thumbnail',
+      'style_name' => $size == 'small' ? 'profile_thumbnail' : 'profile_full',
     );
 
     return '<div class="field-name-field-person-photo">' . theme('image_style',  $options) . '</div>';
