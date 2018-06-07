@@ -111,7 +111,7 @@ function os_help_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'os_support_mail_to';
-  $strongarm->value = 'ithelp@harvard.edu';
+  $strongarm->value = 'support@theopenscholar.com';
   $export['os_support_mail_to'] = $strongarm;
   return $export;
 }
