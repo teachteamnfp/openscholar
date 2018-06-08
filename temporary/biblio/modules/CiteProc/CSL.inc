@@ -1393,9 +1393,15 @@ class csl_group extends csl_format{
           }
           else {
             $stripped = strip_tags($t);
+            $stripped_noquote = trim($stripped, '“”""');
+            $string_period = array("!", "?", ",", ".");
             if (strrpos($stripped, $no_space) == strlen($stripped) - 1) {
               $text .= $t . $space;
-            } else {
+            } elseif (in_array(substr($stripped_noquote, -1), $string_period)) {
+              // Removing delimiter in case of trailing period
+              $text .= $t . $space;
+            }
+            else {
               $text .= $t . $delimiter;
             }
           }
@@ -1453,7 +1459,14 @@ class csl_layout extends csl_format {
           $firstchar = mb_substr($part, 0, 1);
           if (in_array($lastchar, $quotes) && in_array($firstchar, $punctuation) && !in_array($secondtolastchar, $punctuation)) {
             $part = mb_substr($part, 1);
-            $parts[$counter - 1] = mb_substr($prevpart, 0, mb_strlen($prevpart) - 1) . "$firstchar$lastchar";
+            $string_period_part = array("!", "?", ",", ".");
+            $stripped_noquote_part = trim(strip_tags($prevpart), '“”""');
+            if (in_array(mb_substr($stripped_noquote_part, -1), $string_period_part)) {
+              // Removing delimiter in case of trailing period
+              $parts[$counter - 1] = mb_substr($prevpart, 0, mb_strlen($prevpart) - 1) . "$lastchar";
+            } else {
+              $parts[$counter - 1] = mb_substr($prevpart, 0, mb_strlen($prevpart) - 1) . "$firstchar$lastchar";
+            }
           }
         }
         $parts[$counter] = $part;

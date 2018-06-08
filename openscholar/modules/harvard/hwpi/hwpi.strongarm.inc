@@ -150,5 +150,12 @@ function hwpi_strongarm() {
   $strongarm->value = "profiles/openscholar/themes/hwpi_basetheme/images/person-default-image-big.png";
   $export['profile_default_photo_large'] = $strongarm;
 
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'privacy_policy';
+  $strongarm->value = "https://hwp.harvard.edu/privacy-policy";
+  $export['privacy_policy'] = $strongarm;
+
   return $export;
 }
