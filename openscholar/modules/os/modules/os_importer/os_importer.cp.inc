@@ -593,9 +593,9 @@ function os_importer_import_group_validate($values) {
     $fetcher_config['encode'] = isset($request['os_importer_encode-' . $node_type])? $request['os_importer_encode-' . $node_type] : 'csv';
     $source->setConfigFor($source->importer->fetcher, $fetcher_config);
     echo "1";
+    die("1.5");
     $source->save();
     echo "2";
-    die("2.5");
     $source->startImport();
     echo "3";
   } else if ($node_type == 'biblio') {
