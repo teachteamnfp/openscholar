@@ -468,8 +468,9 @@ function os_importer_import_group_validate($values) {
             }
             
             echo $field;
-
             $info = $wrapper->{$field}->info();
+            print_r($info);
+            echo '------------';
 
             if (!is_array($value) && $info['type'] == 'list<text>') {
               $value = array($value);
@@ -492,8 +493,6 @@ function os_importer_import_group_validate($values) {
                 $valid = FALSE;
               }
             }
-            echo $field;
-            echo $value;
 
             try {
               $wrapper->{$field}->set($value);
