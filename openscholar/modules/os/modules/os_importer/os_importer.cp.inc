@@ -585,6 +585,7 @@ function os_importer_import_group_validate($values) {
   }
 
   if ($node_type != 'biblio' && in_array($extension, array('csv', 'ical'))) {
+    die("www");
     $bundle = os_importer_importable_content($node_type);
     $source = feeds_source($bundle[$extension]);
     $fetcher_config = $source->getConfigFor($source->importer->fetcher);
