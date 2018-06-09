@@ -591,13 +591,10 @@ function os_importer_import_group_validate($values) {
     $fetcher_config['source'] = $import_file->uri;
     $fetcher_config['file'] = $import_file;
     $fetcher_config['encode'] = isset($request['os_importer_encode-' . $node_type])? $request['os_importer_encode-' . $node_type] : 'csv';
+    die("hello");
     $source->setConfigFor($source->importer->fetcher, $fetcher_config);
-    echo "1";
-    die("1.5");
     $source->save();
-    echo "2";
     $source->startImport();
-    echo "3";
   } else if ($node_type == 'biblio') {
     $userid = $user->uid;
     $filetype = $request['os_importer_filetype-biblio'];
