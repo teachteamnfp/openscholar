@@ -255,7 +255,6 @@ function os_importer_cp_settings() {
 }
 
 function os_importer_import_group_validate($values) {
-  die("1st");
   $valid = TRUE;
   // Determining node type from array key.
   foreach($values as $var => $value) {
@@ -305,6 +304,7 @@ function os_importer_import_group_validate($values) {
         $parser = new ParserCSV();
         $parser->setDelimiter(',');
         $iterator = new ParserCSVIterator($file->uri);
+        echo "eee";
         $rows = $parser->parse($iterator);
         $row_count = count($rows);
         $feeds_process_limit = variable_get('feeds_process_limit', FEEDS_PROCESS_LIMIT);
@@ -385,11 +385,13 @@ function os_importer_import_group_validate($values) {
         $parser = new ParserCSV();
         $parser->setDelimiter(',');
         $iterator = new ParserCSVIterator($file->uri);
+        echo "test";
 
         $rows = $parser->parse($iterator);
 
         // Parse file's headers.
         $header = _os_importer_parse_header($parser, $iterator, $mappings);
+        die("test 2");
 
         // Check what columns are missing from the uploaded CSV file and display
         // message if needed.
