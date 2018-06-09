@@ -1391,6 +1391,7 @@ function os_pages_entity_load($entities, $type) {
  * @see FeedsProcessor::getMappingTargets()
  */
 function os_pages_feeds_processor_targets_alter(&$targets, $entity_type, $bundle_name) {
+echo "in hook";
   if ($entity_type == 'node' && $bundle_name == 'page') {
     $targets['parent_path'] = array(
       'name' => t('Parent node path'),
