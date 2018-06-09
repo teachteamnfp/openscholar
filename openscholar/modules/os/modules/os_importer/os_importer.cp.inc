@@ -435,6 +435,7 @@ function os_importer_import_group_validate($values) {
           );
           $node = entity_create('node', $node);
           $wrapper = entity_metadata_wrapper('node', $node);
+          print_r($wrapper);
           // Build the form values - break down the r
           
           foreach ($row as $delta => $value) {
@@ -500,7 +501,6 @@ function os_importer_import_group_validate($values) {
               drupal_set_message(t('Settings the value of field "!field" with value "!value" failed.', array('!field' => $field, '!value' => $orig_value)));
               $valid = FALSE;
             }
-            die("***");
           }
 
           if ($handler->validate($node, TRUE) === FALSE) {
