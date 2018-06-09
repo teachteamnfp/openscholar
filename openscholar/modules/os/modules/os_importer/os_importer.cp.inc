@@ -501,8 +501,8 @@ function os_importer_import_group_validate($values) {
               drupal_set_message(t('Settings the value of field "!field" with value "!value" failed.', array('!field' => $field, '!value' => $orig_value)));
               $valid = FALSE;
             }
-            die("5th");
           }
+          die("6h");
 
           if ($handler->validate($node, TRUE) === FALSE) {
             $errors = $handler->getErrors(FALSE);
