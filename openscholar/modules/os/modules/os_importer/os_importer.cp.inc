@@ -490,8 +490,6 @@ function os_importer_import_group_validate($values) {
                 $valid = FALSE;
               }
             }
-            
-            die("5th");
 
             try {
               $wrapper->{$field}->set($value);
@@ -502,6 +500,7 @@ function os_importer_import_group_validate($values) {
             }
           }
 
+          die("6th");
           if ($handler->validate($node, TRUE) === FALSE) {
             $errors = $handler->getErrors(FALSE);
 
