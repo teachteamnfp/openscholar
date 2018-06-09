@@ -597,6 +597,7 @@ function os_importer_import_group_validate($values) {
     echo "2";
     $source->startImport();
     echo "3";
+    die();
   } else if ($node_type == 'biblio') {
     $userid = $user->uid;
     $filetype = $request['os_importer_filetype-biblio'];
