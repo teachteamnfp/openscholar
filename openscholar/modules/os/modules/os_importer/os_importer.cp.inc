@@ -467,9 +467,11 @@ function os_importer_import_group_validate($values) {
 
             // Altering parent_path field to a valid one.
             if ($field == 'parent_path') {
-              $field = 'path_alias';  
+              $info_parent = 'path_alias';
+              $info = $wrapper->{$info_parent}->info(); 
+            } else {
+              $info = $wrapper->{$field}->info();
             }
-            $info = $wrapper->{$field}->info();
 
             if (!is_array($value) && $info['type'] == 'list<text>') {
               $value = array($value);
