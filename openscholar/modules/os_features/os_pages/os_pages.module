@@ -1391,7 +1391,6 @@ function os_pages_entity_load($entities, $type) {
  * @see FeedsProcessor::getMappingTargets()
  */
 function os_pages_feeds_processor_targets_alter(&$targets, $entity_type, $bundle_name) {
-echo "in hook";
   if ($entity_type == 'node' && $bundle_name == 'page') {
     $targets['parent_path'] = array(
       'name' => t('Parent node path'),
@@ -1417,12 +1416,6 @@ echo "in hook";
  *  form.
  */
 function os_pages_parent_page_import($source, $entity, $target, $value, $mapping) {
-echo "--------------";
-print_r($source);
-echo "---------------";
-print_r($target);
-echo "---------------";
-echo $value;
 if (isset($value) && $entity->type == 'page') {
     $path = trim($value, " \t\n\r\0\x0B/");
     $purl = vsite_get_purl();
