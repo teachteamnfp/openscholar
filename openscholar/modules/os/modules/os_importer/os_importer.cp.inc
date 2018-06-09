@@ -498,6 +498,7 @@ function os_importer_import_group_validate($values) {
               $ii++;
             }
             catch (EntityMetadataWrapperException $e) {
+              die("8h");
               drupal_set_message(t('Settings the value of field "!field" with value "!value" failed.', array('!field' => $field, '!value' => $orig_value)));
               $valid = FALSE;
             }
