@@ -387,7 +387,6 @@ function os_importer_import_group_validate($values) {
         $iterator = new ParserCSVIterator($file->uri);
 
         $rows = $parser->parse($iterator);
-        print_r($rows);
 
         // Parse file's headers.
         $header = _os_importer_parse_header($parser, $iterator, $mappings);
@@ -437,7 +436,7 @@ function os_importer_import_group_validate($values) {
           $node = entity_create('node', $node);
           $wrapper = entity_metadata_wrapper('node', $node);
           // Build the form values - break down the r
-          
+          print_r($row);
           foreach ($row as $delta => $value) {
             // Check only the fields found in the mappings array. Columns after the
             // last mapping column are used to create taxonomy terms.
@@ -467,6 +466,8 @@ function os_importer_import_group_validate($values) {
             if ($field == 'body') {
               $value = array('value' => $value);
             }
+            
+            echo $field;
 
             $info = $wrapper->{$field}->info();
 
