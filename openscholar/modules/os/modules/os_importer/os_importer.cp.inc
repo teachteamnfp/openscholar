@@ -495,12 +495,14 @@ function os_importer_import_group_validate($values) {
               }
             }
 
-            try {
-              $wrapper->{$field}->set($value);
-            }
-            catch (EntityMetadataWrapperException $e) {
-              drupal_set_message(t('Settings the value of field "!field" with value "!value" failed.', array('!field' => $field, '!value' => $orig_value)));
-              $valid = FALSE;
+            if ($field != 'parent_path') {
+              try {
+                $wrapper->{$field}->set($value);
+              }
+              catch (EntityMetadataWrapperException $e) {
+                drupal_set_message(t('Settings the value of field "!field" with value "!value" failed.', array('!field' => $field, '!value' => $orig_value)));
+                $valid = FALSE;
+              }
             }
           }
 
