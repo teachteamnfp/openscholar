@@ -387,6 +387,7 @@ function os_importer_import_group_validate($values) {
         $iterator = new ParserCSVIterator($file->uri);
 
         $rows = $parser->parse($iterator);
+        print_r($rows);
 
         // Parse file's headers.
         $header = _os_importer_parse_header($parser, $iterator, $mappings);
