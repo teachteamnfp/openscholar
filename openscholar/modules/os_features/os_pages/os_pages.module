@@ -1416,7 +1416,7 @@ function os_pages_feeds_processor_targets_alter(&$targets, $entity_type, $bundle
  *  form.
  */
 function os_pages_parent_page_import($source, $entity, $target, $value, $mapping) {
-if (isset($value) && $entity->type == 'page') {
+ if ($value && $entity->type == 'page') {
     $path = trim($value, " \t\n\r\0\x0B/");
     $purl = vsite_get_purl();
     $prefix = $purl ? $purl . '/' : '';
