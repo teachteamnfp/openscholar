@@ -490,6 +490,8 @@ function os_importer_import_group_validate($values) {
                 $valid = FALSE;
               }
             }
+            
+            die("5th");
 
             try {
               $wrapper->{$field}->set($value);
@@ -517,7 +519,6 @@ function os_importer_import_group_validate($values) {
                 // it's a property we added, then the one defined in
                 // os_importer_entity_property_info_alter().
                 $field_info = $wrapper->{$field}->info();
-                die("4th");
                 $field_label = $field_info['label'];
                 $error['params']['@field'] = $field_label;
 
@@ -594,7 +595,6 @@ function os_importer_import_group_validate($values) {
     $fetcher_config['source'] = $import_file->uri;
     $fetcher_config['file'] = $import_file;
     $fetcher_config['encode'] = isset($request['os_importer_encode-' . $node_type])? $request['os_importer_encode-' . $node_type] : 'csv';
-    die("hello");
     $source->setConfigFor($source->importer->fetcher, $fetcher_config);
     $source->save();
     $source->startImport();
