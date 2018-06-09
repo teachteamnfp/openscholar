@@ -426,7 +426,7 @@ function os_importer_import_group_validate($values) {
           /** @var OsImporterEntityValidateBase $handler */
           if (!$handler = entity_validator_get_validator_handler('node', $node_type)) {
             continue;
-          }       
+          }
           $handler->rest = FALSE;
           $node = array(
             'type' => $node_type,
@@ -434,7 +434,7 @@ function os_importer_import_group_validate($values) {
           $node = entity_create('node', $node);
           $wrapper = entity_metadata_wrapper('node', $node);
           // Build the form values - break down the row.
-          
+
           foreach ($row as $delta => $value) {
             // Check only the fields found in the mappings array. Columns after the
             // last mapping column are used to create taxonomy terms.
@@ -464,7 +464,8 @@ function os_importer_import_group_validate($values) {
             if ($field == 'body') {
               $value = array('value' => $value);
             }
-            
+
+            // Altering parent_path field to a valid one.
             if ($field == 'parent_path') {
               $field = 'path_alias';  
             }
