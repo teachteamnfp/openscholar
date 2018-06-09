@@ -468,7 +468,6 @@ function os_importer_import_group_validate($values) {
             }
 
             $info = $wrapper->{$field}->info();
-            die("3rd");
 
             if (!is_array($value) && $info['type'] == 'list<text>') {
               $value = array($value);
@@ -518,6 +517,7 @@ function os_importer_import_group_validate($values) {
                 // it's a property we added, then the one defined in
                 // os_importer_entity_property_info_alter().
                 $field_info = $wrapper->{$field}->info();
+                die("4th");
                 $field_label = $field_info['label'];
                 $error['params']['@field'] = $field_label;
 
@@ -572,7 +572,6 @@ function os_importer_import_group_validate($values) {
  * Submit handler for os_importer_submit button for CSV/iCal import.
  */
  function os_importer_file_submit($request) {
-   die("2nd");
   global $user, $language;
   foreach($request as $var => $value) {
     if (strpos($var, 'os_importer_submit-') === 0) {
@@ -589,7 +588,6 @@ function os_importer_import_group_validate($values) {
   }
 
   if ($node_type != 'biblio' && in_array($extension, array('csv', 'ical'))) {
-    die("www");
     $bundle = os_importer_importable_content($node_type);
     $source = feeds_source($bundle[$extension]);
     $fetcher_config = $source->getConfigFor($source->importer->fetcher);
