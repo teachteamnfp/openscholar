@@ -435,7 +435,6 @@ function os_importer_import_group_validate($values) {
           );
           $node = entity_create('node', $node);
           $wrapper = entity_metadata_wrapper('node', $node);
-          print_r($wrapper);
           // Build the form values - break down the r
           
           foreach ($row as $delta => $value) {
