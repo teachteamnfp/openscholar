@@ -467,6 +467,9 @@ function os_importer_import_group_validate($values) {
             }
             
             echo $field;
+            if ($field == 'parent_path') {
+              $field = 'path_alias';  
+            }
             $info = $wrapper->{$field}->info();
             echo "After info";
             echo '------------';
