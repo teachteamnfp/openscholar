@@ -429,7 +429,7 @@ function os_importer_import_group_validate($values) {
           if (!$handler = entity_validator_get_validator_handler('node', $node_type)) {
             continue;
           }
-          die("ok");
+          
           $handler->rest = FALSE;
           $node = array(
             'type' => $node_type,
@@ -437,6 +437,7 @@ function os_importer_import_group_validate($values) {
           $node = entity_create('node', $node);
           $wrapper = entity_metadata_wrapper('node', $node);
           // Build the form values - break down the row.
+          die("opl");
 
           foreach ($row as $delta => $value) {
             // Check only the fields found in the mappings array. Columns after the
