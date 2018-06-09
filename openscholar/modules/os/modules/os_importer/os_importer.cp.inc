@@ -435,9 +435,8 @@ function os_importer_import_group_validate($values) {
           );
           $node = entity_create('node', $node);
           $wrapper = entity_metadata_wrapper('node', $node);
-          // Build the form values - break down the row.
-
-          $ii = 0;
+          // Build the form values - break down the r
+          
           foreach ($row as $delta => $value) {
             // Check only the fields found in the mappings array. Columns after the
             // last mapping column are used to create taxonomy terms.
@@ -491,16 +490,18 @@ function os_importer_import_group_validate($values) {
                 $valid = FALSE;
               }
             }
+            echo $field;
+            echo $value;
+            die("---");
 
-            /*try {
+            try {
               $wrapper->{$field}->set($value);
-              echo $ii;
-              $ii++;
             }
             catch (EntityMetadataWrapperException $e) {
               drupal_set_message(t('Settings the value of field "!field" with value "!value" failed.', array('!field' => $field, '!value' => $orig_value)));
               $valid = FALSE;
-            }*/
+            }
+            die("***");
           }
 
           if ($handler->validate($node, TRUE) === FALSE) {
