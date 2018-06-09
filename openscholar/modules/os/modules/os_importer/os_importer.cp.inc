@@ -255,7 +255,7 @@ function os_importer_cp_settings() {
 }
 
 function os_importer_import_group_validate($values) {
-  echo "1st";
+  die("1st");
   $valid = TRUE;
   // Determining node type from array key.
   foreach($values as $var => $value) {
