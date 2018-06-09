@@ -385,7 +385,6 @@ function os_importer_import_group_validate($values) {
         $parser = new ParserCSV();
         $parser->setDelimiter(',');
         $iterator = new ParserCSVIterator($file->uri);
-        echo "test";
 
         $rows = $parser->parse($iterator);
 
@@ -437,7 +436,6 @@ function os_importer_import_group_validate($values) {
           $node = entity_create('node', $node);
           $wrapper = entity_metadata_wrapper('node', $node);
           // Build the form values - break down the row.
-          die("opl");
 
           foreach ($row as $delta => $value) {
             // Check only the fields found in the mappings array. Columns after the
@@ -470,6 +468,7 @@ function os_importer_import_group_validate($values) {
             }
 
             $info = $wrapper->{$field}->info();
+            die("3rd");
 
             if (!is_array($value) && $info['type'] == 'list<text>') {
               $value = array($value);
