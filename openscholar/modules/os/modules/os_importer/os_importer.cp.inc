@@ -492,7 +492,6 @@ function os_importer_import_group_validate($values) {
             }
             echo $field;
             echo $value;
-            die("---");
 
             try {
               $wrapper->{$field}->set($value);
