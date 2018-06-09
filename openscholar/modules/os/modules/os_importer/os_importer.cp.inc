@@ -426,16 +426,15 @@ function os_importer_import_group_validate($values) {
           /** @var OsImporterEntityValidateBase $handler */
           if (!$handler = entity_validator_get_validator_handler('node', $node_type)) {
             continue;
-          }
-          
+          }       
           $handler->rest = FALSE;
           $node = array(
             'type' => $node_type,
           );
           $node = entity_create('node', $node);
           $wrapper = entity_metadata_wrapper('node', $node);
-          // Build the form values - break down the r
-          print_r($row);
+          // Build the form values - break down the row.
+          
           foreach ($row as $delta => $value) {
             // Check only the fields found in the mappings array. Columns after the
             // last mapping column are used to create taxonomy terms.
@@ -466,13 +465,10 @@ function os_importer_import_group_validate($values) {
               $value = array('value' => $value);
             }
             
-            echo $field;
             if ($field == 'parent_path') {
               $field = 'path_alias';  
             }
             $info = $wrapper->{$field}->info();
-            echo "After info";
-            echo '------------';
 
             if (!is_array($value) && $info['type'] == 'list<text>') {
               $value = array($value);
@@ -600,7 +596,7 @@ function os_importer_import_group_validate($values) {
     $fetcher_config['encode'] = isset($request['os_importer_encode-' . $node_type])? $request['os_importer_encode-' . $node_type] : 'csv';
     $source->setConfigFor($source->importer->fetcher, $fetcher_config);
     $source->save();
-    $source->startImport();
+    $source->startImport(); 
   } else if ($node_type == 'biblio') {
     $userid = $user->uid;
     $filetype = $request['os_importer_filetype-biblio'];
