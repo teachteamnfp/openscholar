@@ -391,7 +391,6 @@ function os_importer_import_group_validate($values) {
 
         // Parse file's headers.
         $header = _os_importer_parse_header($parser, $iterator, $mappings);
-        die("test 2");
 
         // Check what columns are missing from the uploaded CSV file and display
         // message if needed.
@@ -430,6 +429,7 @@ function os_importer_import_group_validate($values) {
           if (!$handler = entity_validator_get_validator_handler('node', $node_type)) {
             continue;
           }
+          die("ok");
           $handler->rest = FALSE;
           $node = array(
             'type' => $node_type,
