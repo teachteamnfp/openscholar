@@ -304,7 +304,6 @@ function os_importer_import_group_validate($values) {
         $parser = new ParserCSV();
         $parser->setDelimiter(',');
         $iterator = new ParserCSVIterator($file->uri);
-        echo "eee";
         $rows = $parser->parse($iterator);
         $row_count = count($rows);
         $feeds_process_limit = variable_get('feeds_process_limit', FEEDS_PROCESS_LIMIT);
@@ -469,7 +468,7 @@ function os_importer_import_group_validate($values) {
             
             echo $field;
             $info = $wrapper->{$field}->info();
-            print_r($info);
+            echo "After info";
             echo '------------';
 
             if (!is_array($value) && $info['type'] == 'list<text>') {
