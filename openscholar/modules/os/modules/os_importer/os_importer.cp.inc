@@ -255,6 +255,7 @@ function os_importer_cp_settings() {
 }
 
 function os_importer_import_group_validate($values) {
+  echo "1st";
   $valid = TRUE;
   // Determining node type from array key.
   foreach($values as $var => $value) {
@@ -569,6 +570,7 @@ function os_importer_import_group_validate($values) {
  * Submit handler for os_importer_submit button for CSV/iCal import.
  */
  function os_importer_file_submit($request) {
+   die("2nd");
   global $user, $language;
   foreach($request as $var => $value) {
     if (strpos($var, 'os_importer_submit-') === 0) {
