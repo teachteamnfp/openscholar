@@ -487,6 +487,9 @@ fieldset.pin-fieldset legend,
 	padding-left: 0;
 	display: block;
 }
+fieldset.pin-fieldset {
+	background-color:#fff;
+}
 #pin-login.pin-button {
 	width: 300px;
 	margin-bottom: 70px;
