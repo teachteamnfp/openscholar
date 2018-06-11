@@ -638,7 +638,9 @@ function os_process_node(&$vars) {
   $vars['theme_hook_suggestions'][] = 'node__'.$vars['type'].'__'.$vars['view_mode'];
 
   // Building "Read more" link for "No image teaser" for profiles
-  if($vars['type'] == 'person' && $vars['content']['pic_bio']['body']['#view_mode'] == 'no_image_teaser') {
+  if($vars['type'] == 'person'
+    && !empty($vars['content']['pic_bio']['body'])
+    && $vars['content']['pic_bio']['body']['#view_mode'] == 'no_image_teaser') {
     $vars['content']['links']['node']['#links']['node-readmore'] = array(
                                                                       'title' => t('Read more'),
                                                                       'href' => 'node/' . $vars['nid'],
