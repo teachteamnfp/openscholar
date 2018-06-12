@@ -68,7 +68,7 @@ function os_help_library() {
             'documentation' => url($path.'/os_help.template.html', array('alias' => true)),
             'support' => url($path.'/os_support.template.html', array('alias' => true)),
           ),
-          'os_support_mail_to' => variable_get('os_support_mail_to'),
+          'os_support_mail_to' => variable_get('os_support_mail_to', 'support@theopenscholar.com'),
         )
       )
     ),
