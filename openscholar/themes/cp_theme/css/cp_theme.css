@@ -2099,3 +2099,7 @@ div.no-bold {
 #support .os-swipe-large {
     text-transform:uppercase;
 }
+
+#support .actions, #documentation .actions {
+    display: none;
+}
