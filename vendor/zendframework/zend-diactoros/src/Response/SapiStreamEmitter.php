@@ -8,8 +8,11 @@
 namespace Zend\Diactoros\Response;
 
 use Psr\Http\Message\ResponseInterface;
-use RuntimeException;
-use Zend\Diactoros\RelativeStream;
+
+use function is_array;
+use function preg_match;
+use function strlen;
+use function substr;
 
 class SapiStreamEmitter implements EmitterInterface
 {
@@ -27,8 +30,8 @@ class SapiStreamEmitter implements EmitterInterface
     public function emit(ResponseInterface $response, $maxBufferLength = 8192)
     {
         $this->assertNoPreviousOutput();
-        $this->emitStatusLine($response);
         $this->emitHeaders($response);
+        $this->emitStatusLine($response);
 
         $range = $this->parseContentRange($response->getHeaderLine('Content-Range'));
 

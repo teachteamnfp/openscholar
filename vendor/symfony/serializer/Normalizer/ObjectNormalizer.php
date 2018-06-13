@@ -16,6 +16,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Serializer\Exception\CircularReferenceException;
 use Symfony\Component\Serializer\Exception\LogicException;
+use Symfony\Component\Serializer\Exception\RuntimeException;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
 use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
 
@@ -28,13 +29,14 @@ class ObjectNormalizer extends AbstractNormalizer
 {
     private $attributesCache = array();
 
-    /**
-     * @var PropertyAccessorInterface
-     */
     protected $propertyAccessor;
 
     public function __construct(ClassMetadataFactoryInterface $classMetadataFactory = null, NameConverterInterface $nameConverter = null, PropertyAccessorInterface $propertyAccessor = null)
     {
+        if (!class_exists('Symfony\Component\PropertyAccess\PropertyAccess')) {
+            throw new RuntimeException('The ObjectNormalizer class requires the "PropertyAccess" component. Install "symfony/property-access" to use it.');
+        }
+
         parent::__construct($classMetadataFactory, $nameConverter);
 
         $this->propertyAccessor = $propertyAccessor ?: PropertyAccess::createPropertyAccessor();
@@ -45,7 +47,7 @@ class ObjectNormalizer extends AbstractNormalizer
      */
     public function supportsNormalization($data, $format = null)
     {
-        return is_object($data) && !$data instanceof \Traversable;
+        return \is_object($data) && !$data instanceof \Traversable;
     }
 
     /**
@@ -66,14 +68,14 @@ class ObjectNormalizer extends AbstractNormalizer
         $attributes = $this->getAttributes($object, $context);
 
         foreach ($attributes as $attribute) {
-            if (in_array($attribute, $this->ignoredAttributes)) {
+            if (\in_array($attribute, $this->ignoredAttributes)) {
                 continue;
             }
 
             $attributeValue = $this->propertyAccessor->getValue($object, $attribute);
 
             if (isset($this->callbacks[$attribute])) {
-                $attributeValue = call_user_func($this->callbacks[$attribute], $attributeValue);
+                $attributeValue = \call_user_func($this->callbacks[$attribute], $attributeValue);
             }
 
             if (null !== $attributeValue && !is_scalar($attributeValue)) {
@@ -121,8 +123,8 @@ class ObjectNormalizer extends AbstractNormalizer
                 $attribute = $this->nameConverter->denormalize($attribute);
             }
 
-            $allowed = $allowedAttributes === false || in_array($attribute, $allowedAttributes);
-            $ignored = in_array($attribute, $this->ignoredAttributes);
+            $allowed = false === $allowedAttributes || \in_array($attribute, $allowedAttributes);
+            $ignored = \in_array($attribute, $this->ignoredAttributes);
 
             if ($allowed && !$ignored) {
                 try {
@@ -196,7 +198,7 @@ class ObjectNormalizer extends AbstractNormalizer
         $reflClass = new \ReflectionClass($object);
         foreach ($reflClass->getMethods(\ReflectionMethod::IS_PUBLIC) as $reflMethod) {
             if (
-                $reflMethod->getNumberOfRequiredParameters() !== 0 ||
+                0 !== $reflMethod->getNumberOfRequiredParameters() ||
                 $reflMethod->isStatic() ||
                 $reflMethod->isConstructor() ||
                 $reflMethod->isDestructor()
@@ -215,7 +217,7 @@ class ObjectNormalizer extends AbstractNormalizer
                 }
 
                 $attributes[$propertyName] = true;
-            } elseif (strpos($name, 'is') === 0) {
+            } elseif (0 === strpos($name, 'is')) {
                 // issers
                 $propertyName = substr($name, 2);
 

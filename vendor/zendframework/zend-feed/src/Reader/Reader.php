@@ -12,9 +12,9 @@ namespace Zend\Feed\Reader;
 use DOMDocument;
 use DOMXPath;
 use Zend\Cache\Storage\StorageInterface as CacheStorage;
+use Zend\Feed\Reader\Exception\InvalidHttpClientException;
 use Zend\Http as ZendHttp;
 use Zend\Stdlib\ErrorHandler;
-use Zend\Feed\Reader\Exception\InvalidHttpClientException;
 
 /**
 */
@@ -672,6 +672,7 @@ class Reader implements ReaderImportInterface
         static::registerExtension('WellFormedWeb');
         static::registerExtension('Thread');
         static::registerExtension('Podcast');
+        static::registerExtension('GooglePlayPodcast');
     }
 
     /**

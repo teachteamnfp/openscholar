@@ -2,6 +2,121 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 1.7.2 - 2018-05-29
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- [#301](https://github.com/zendframework/zend-diactoros/pull/301) adds stricter comparisons within the `uri` class to ensure non-empty
+  values are not treated as empty.
+
+## 1.7.1 - 2018-02-26
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- [#293](https://github.com/zendframework/zend-diactoros/pull/293) updates
+  `Uri::getHost()` to cast the value via `strtolower()` before returning it.
+  While this represents a change, it is fixing a bug in our implementation: 
+  the PSR-7 specification for the method, which follows IETF RFC 3986 section
+  3.2.2, requires that the host name be normalized to lowercase.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- [#290](https://github.com/zendframework/zend-diactoros/pull/290) fixes
+  `Stream::getSize()` such that it checks that the result of `fstat` was
+  succesful before attempting to return its `size` member; in the case of an
+  error, it now returns `null`.
+
+## 1.7.0 - 2018-01-04
+
+### Added
+
+- [#285](https://github.com/zendframework/zend-diactoros/pull/285) adds a new
+  custom response type, `Zend\Diactoros\Response\XmlResponse`, for generating
+  responses representing XML. Usage is the same as with the `HtmlResponse` or
+  `TextResponse`; the response generated will have a `Content-Type:
+  application/xml` header by default.
+
+- [#280](https://github.com/zendframework/zend-diactoros/pull/280) adds the
+  response status code/phrase pairing "103 Early Hints" to the
+  `Response::$phrases` property. This is a new status proposed via
+  [RFC 8297](https://datatracker.ietf.org/doc/rfc8297/).
+
+- [#279](https://github.com/zendframework/zend-diactoros/pull/279) adds explicit
+  support for PHP 7.2; previously, we'd allowed build failures, though none
+  occured; we now require PHP 7.2 builds to pass.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Nothing.
+
+## 1.6.1 - 2017-10-12
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- [#273](https://github.com/zendframework/zend-diactoros/pull/273) updates each
+  of the SAPI emitter implementations to emit the status line after emitting
+  other headers; this is done to ensure that the status line is not overridden
+  by PHP.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- [#273](https://github.com/zendframework/zend-diactoros/pull/273) modifies how
+  the `SapiEmitterTrait` calls `header()` to ensure that a response code is
+  _always_ passed as the third argument; this is done to prevent PHP from
+  silently overriding it.
+
 ## 1.6.0 - 2017-09-13
 
 ### Added

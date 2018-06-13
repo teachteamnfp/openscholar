@@ -49,6 +49,8 @@ class ApplicationTest extends TestCase
         require_once self::$fixturesPath.'/BarBucCommand.php';
         require_once self::$fixturesPath.'/FooSubnamespaced1Command.php';
         require_once self::$fixturesPath.'/FooSubnamespaced2Command.php';
+        require_once self::$fixturesPath.'/TestTiti.php';
+        require_once self::$fixturesPath.'/TestToto.php';
     }
 
     protected function normalizeLineBreaks($text)
@@ -224,6 +226,14 @@ class ApplicationTest extends TestCase
         $application->add(new \FooCommand());
         $application->add(new \Foo2Command());
         $application->findNamespace('f');
+    }
+
+    public function testFindNonAmbiguous()
+    {
+        $application = new Application();
+        $application->add(new \TestTiti());
+        $application->add(new \TestToto());
+        $this->assertEquals('test-toto', $application->find('test')->getName());
     }
 
     /**
@@ -610,6 +620,22 @@ class ApplicationTest extends TestCase
 
         $tester->run(array('command' => 'foo'), array('decorated' => false));
         $this->assertStringEqualsFile(self::$fixturesPath.'/application_renderexception_escapeslines.txt', $tester->getDisplay(true), '->renderException() escapes lines containing formatting');
+    }
+
+    public function testRenderExceptionLineBreaks()
+    {
+        $application = $this->getMockBuilder('Symfony\Component\Console\Application')->setMethods(array('getTerminalWidth'))->getMock();
+        $application->setAutoExit(false);
+        $application->expects($this->any())
+            ->method('getTerminalWidth')
+            ->will($this->returnValue(120));
+        $application->register('foo')->setCode(function () {
+            throw new \InvalidArgumentException("\n\nline 1 with extra spaces        \nline 2\n\nline 4\n");
+        });
+        $tester = new ApplicationTester($application);
+
+        $tester->run(array('command' => 'foo'), array('decorated' => false));
+        $this->assertStringEqualsFile(self::$fixturesPath.'/application_renderexception_linebreaks.txt', $tester->getDisplay(true), '->renderException() keep multiple line breaks');
     }
 
     public function testRun()

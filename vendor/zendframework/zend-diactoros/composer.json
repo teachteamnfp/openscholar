@@ -18,8 +18,9 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-master": "1.6-dev",
-      "dev-develop": "1.7-dev"
+      "dev-master": "1.7.x-dev",
+      "dev-develop": "1.8.x-dev",
+      "dev-release-2.0": "2.0.x-dev"
     }
   },
   "require": {
@@ -54,7 +55,6 @@
       "@cs-check",
       "@test"
     ],
-    "upload-coverage": "coveralls -v",
     "cs-check": "phpcs",
     "cs-fix": "phpcbf",
     "test": "phpunit --colors=always",
