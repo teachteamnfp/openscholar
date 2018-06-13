@@ -2535,7 +2535,7 @@ function vsite_contact_mail_owner_submit($form, &$form_state) {
   $values['vsite'] = $space;
 
   if ($user->uid != 0) {
-    $values['headers']['Cc'] = $user->mail;
+    $values['headers']['Reply-To'] = $user->mail;
     // Needed for the watchdog entry.
     $flood_name = $user->name;
   }
@@ -2546,7 +2546,7 @@ function vsite_contact_mail_owner_submit($form, &$form_state) {
     }
     // Needed for the watchdog entry.
     $flood_name = 'anonymous';
-    $values['headers']['Cc'] = $form_state['values']['from'];
+    $values['headers']['Reply-To'] = $form_state['values']['from'];
   }
   $from = variable_get('site_mail', ini_get('sendmail_from'));
 
@@ -2588,7 +2588,7 @@ function vsite_delete_request_submit($form, &$form_state) {
   $values['user'] = $user;
   $values['node'] = $form_state['build_info']['args'][0];
   $values['subject'] = variable_get('vsite_site_delete_subject', 'Site Deletion Request');
-  $values['headers']['Cc'] = $user->mail;
+  $values['headers']['Reply-To'] = $user->mail;
   $from = variable_get('site_mail', ini_get('sendmail_from'));
 
   // Send the e-mail in the requested user language.
@@ -2664,7 +2664,7 @@ function vsite_mail($key, &$message, $params){
 
       // This is done so that when the recipient auto-reply is on, the response
       // won't be sent to the site email (held in the site_mail variable).
-      $message['headers']['Cc'] = $params['headers']['Cc'];
+      $message['headers']['Reply-To'] = $params['headers']['Reply-To'];
       $message['headers']['Sender'] = $message['headers']['Return-Path'] = $message['headers']['From'] = variable_get('site_mail', ini_get('sendmail_from'));
       break;
 
@@ -2681,7 +2681,7 @@ function vsite_mail($key, &$message, $params){
           'absolute' => TRUE,
           'language' => $language,
         ))));
-      $message['headers']['Cc'] = $params['headers']['Cc'];
+      $message['headers']['Reply-To'] = $params['headers']['Reply-To'];
       $message['from'] = $message['headers']['Sender'] = $message['headers']['Return-Path'] = $message['headers']['From'] = variable_get('site_mail', ini_get('sendmail_from'));
       break;
   }
