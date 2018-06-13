@@ -11,13 +11,16 @@
 
 namespace Symfony\Component\VarDumper\Tests\Caster;
 
-use Symfony\Component\VarDumper\Test\VarDumperTestCase;
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\VarDumper\Test\VarDumperTestTrait;
 
 /**
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
  */
-class SplCasterTest extends VarDumperTestCase
+class SplCasterTest extends TestCase
 {
+    use VarDumperTestTrait;
+
     public function getCastFileInfoTests()
     {
         return array(
@@ -140,5 +143,24 @@ EOTXT;
             array(\SplDoublyLinkedList::IT_MODE_FIFO | \SplDoublyLinkedList::IT_MODE_DELETE, 'IT_MODE_FIFO | IT_MODE_DELETE'),
             array(\SplDoublyLinkedList::IT_MODE_LIFO | \SplDoublyLinkedList::IT_MODE_DELETE, 'IT_MODE_LIFO | IT_MODE_DELETE'),
         );
+    }
+
+    public function testCastObjectStorageIsntModified()
+    {
+        $var = new \SplObjectStorage();
+        $var->attach(new \stdClass());
+        $var->rewind();
+        $current = $var->current();
+
+        $this->assertDumpMatchesFormat('%A', $var);
+        $this->assertSame($current, $var->current());
+    }
+
+    public function testCastObjectStorageDumpsInfo()
+    {
+        $var = new \SplObjectStorage();
+        $var->attach(new \stdClass(), new \DateTime());
+
+        $this->assertDumpMatchesFormat('%ADateTime%A', $var);
     }
 }

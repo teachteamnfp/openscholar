@@ -296,10 +296,6 @@ class ArgvInputTest extends TestCase
         $input = new ArgvInput(array('cli.php', '-f', 'foo'));
         $this->assertTrue($input->hasParameterOption('-f'), '->hasParameterOption() returns true if the given short option is in the raw input');
 
-        $input = new ArgvInput(array('cli.php', '-etest'));
-        $this->assertTrue($input->hasParameterOption('-e'), '->hasParameterOption() returns true if the given short option is in the raw input');
-        $this->assertFalse($input->hasParameterOption('-s'), '->hasParameterOption() returns true if the given short option is in the raw input');
-
         $input = new ArgvInput(array('cli.php', '--foo', 'foo'));
         $this->assertTrue($input->hasParameterOption('--foo'), '->hasParameterOption() returns true if the given short option is in the raw input');
 
@@ -310,44 +306,19 @@ class ArgvInputTest extends TestCase
         $this->assertTrue($input->hasParameterOption('--foo'), '->hasParameterOption() returns true if the given option with provided value is in the raw input');
     }
 
-    public function testHasParameterOptionEdgeCasesAndLimitations()
+    public function testHasParameterOptionOnlyOptions()
     {
-        $input = new ArgvInput(array('cli.php', '-fh'));
-        // hasParameterOption does not know if the previous short option, -f,
-        // takes a value or not. If -f takes a value, then -fh does NOT include
-        // -h; Otherwise it does. Since we do not know which short options take
-        // values, hasParameterOption does not support this use-case.
-        $this->assertFalse($input->hasParameterOption('-h'), '->hasParameterOption() returns true if the given short option is in the raw input');
-        // hasParameterOption does detect that `-fh` contains `-f`, since
-        // `-f` is the first short option in the set.
-        $this->assertTrue($input->hasParameterOption('-f'), '->hasParameterOption() returns true if the given short option is in the raw input');
-        // The test below happens to pass, although it might make more sense
-        // to disallow it, and require the use of
-        // $input->hasParameterOption('-f') && $input->hasParameterOption('-h')
-        // instead.
-        $this->assertTrue($input->hasParameterOption('-fh'), '->hasParameterOption() returns true if the given short option is in the raw input');
-        // In theory, if -fh is supported, then -hf should also work.
-        // However, this is not supported.
-        $this->assertFalse($input->hasParameterOption('-hf'), '->hasParameterOption() returns true if the given short option is in the raw input');
+        $input = new ArgvInput(array('cli.php', '-f', 'foo'));
+        $this->assertTrue($input->hasParameterOption('-f', true), '->hasParameterOption() returns true if the given short option is in the raw input');
 
-        $input = new ArgvInput(array('cli.php', '-f', '-h'));
-        // If hasParameterOption('-fh') is supported for 'cli.php -fh', then
-        // one might also expect that it should also be supported for
-        // 'cli.php -f -h'. However, this is not supported.
-        $this->assertFalse($input->hasParameterOption('-fh'), '->hasParameterOption() returns true if the given short option is in the raw input');
-    }
+        $input = new ArgvInput(array('cli.php', '--foo', '--', 'foo'));
+        $this->assertTrue($input->hasParameterOption('--foo', true), '->hasParameterOption() returns true if the given long option is in the raw input');
 
-    public function testNoWarningOnInvalidParameterOption()
-    {
-        $input = new ArgvInput(array('cli.php', '-edev'));
+        $input = new ArgvInput(array('cli.php', '--foo=bar', 'foo'));
+        $this->assertTrue($input->hasParameterOption('--foo', true), '->hasParameterOption() returns true if the given long option with provided value is in the raw input');
 
-        $this->assertTrue($input->hasParameterOption(array('-e', '')));
-        // No warning thrown
-        $this->assertFalse($input->hasParameterOption(array('-m', '')));
-
-        $this->assertEquals('dev', $input->getParameterOption(array('-e', '')));
-        // No warning thrown
-        $this->assertFalse($input->getParameterOption(array('-m', '')));
+        $input = new ArgvInput(array('cli.php', '--', '--foo'));
+        $this->assertFalse($input->hasParameterOption('--foo', true), '->hasParameterOption() returns false if the given option is in the raw input but after an end of options signal');
     }
 
     public function testToString()
@@ -362,22 +333,25 @@ class ArgvInputTest extends TestCase
     /**
      * @dataProvider provideGetParameterOptionValues
      */
-    public function testGetParameterOptionEqualSign($argv, $key, $expected)
+    public function testGetParameterOptionEqualSign($argv, $key, $onlyParams, $expected)
     {
         $input = new ArgvInput($argv);
-        $this->assertEquals($expected, $input->getParameterOption($key), '->getParameterOption() returns the expected value');
+        $this->assertEquals($expected, $input->getParameterOption($key, false, $onlyParams), '->getParameterOption() returns the expected value');
     }
 
     public function provideGetParameterOptionValues()
     {
         return array(
-            array(array('app/console', 'foo:bar', '-edev'), '-e', 'dev'),
-            array(array('app/console', 'foo:bar', '-e', 'dev'), '-e', 'dev'),
-            array(array('app/console', 'foo:bar', '--env=dev'), '--env', 'dev'),
-            array(array('app/console', 'foo:bar', '-e', 'dev'), array('-e', '--env'), 'dev'),
-            array(array('app/console', 'foo:bar', '--env=dev'), array('-e', '--env'), 'dev'),
-            array(array('app/console', 'foo:bar', '--env=dev', '--en=1'), array('--en'), '1'),
-            array(array('app/console', 'foo:bar', '--env=dev', '', '--en=1'), array('--en'), '1'),
+            array(array('app/console', 'foo:bar', '-e', 'dev'), '-e', false, 'dev'),
+            array(array('app/console', 'foo:bar', '--env=dev'), '--env', false, 'dev'),
+            array(array('app/console', 'foo:bar', '-e', 'dev'), array('-e', '--env'), false, 'dev'),
+            array(array('app/console', 'foo:bar', '--env=dev'), array('-e', '--env'), false, 'dev'),
+            array(array('app/console', 'foo:bar', '--env=dev', '--en=1'), array('--en'), false, '1'),
+            array(array('app/console', 'foo:bar', '--env=dev', '', '--en=1'), array('--en'), false, '1'),
+            array(array('app/console', 'foo:bar', '--env', 'val'), '--env', false, 'val'),
+            array(array('app/console', 'foo:bar', '--env', 'val', '--dummy'), '--env', false, 'val'),
+            array(array('app/console', 'foo:bar', '--', '--env=dev'), '--env', false, 'dev'),
+            array(array('app/console', 'foo:bar', '--', '--env=dev'), '--env', true, false),
         );
     }
 

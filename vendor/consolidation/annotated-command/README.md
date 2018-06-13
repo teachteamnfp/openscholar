@@ -24,7 +24,7 @@ Extant commandline tools that utilize this technique include:
 
 This library provides routines to produce the Symfony\Component\Console\Command\Command from all public methods defined in the provided class.
 
-**Note** If you are looking for a very fast way to write a Symfony Console-base command-line tool, you should consider using [Robo](https://github.com/consolidation/Robo), which is built on top of this library, and adds additional conveniences to get you going quickly. See [Using Robo as a Framework](https://github.com/consolidation/Robo/docs/framework.md).  It is possible to use this project without Robo if desired, of course.
+**Note** If you are looking for a very fast way to write a Symfony Console-base command-line tool, you should consider using [Robo](https://github.com/consolidation/Robo), which is built on top of this library, and adds additional conveniences to get you going quickly. See [Using Robo as a Framework](http://robo.li/framework/).  It is possible to use this project without Robo if desired, of course.
 
 ## Library Usage
 
@@ -87,7 +87,7 @@ The `$options` array must be an associative array whose key is the name of the o
   - If the user adds `--no-foo` on the commandline, then the value of `foo` will be `false`.
 - An empty array, which indicates that the option may appear multiple times on the command line.
 
-No other values should be used for the default value. For example, `$options = ['a' => 1]` is **incorrect**; instead, use `$options = ['a' => '1']`. Similarly, `$options = ['a' => true]` is unsupported, or at least not useful, as this would indicate that the value of `--a` was always `true`, whether or not it appeared on the command line.
+No other values should be used for the default value. For example, `$options = ['a' => 1]` is **incorrect**; instead, use `$options = ['a' => '1']`.
 
 Default values for options may also be provided via the `@default` annotation. See hook alter, below.
 

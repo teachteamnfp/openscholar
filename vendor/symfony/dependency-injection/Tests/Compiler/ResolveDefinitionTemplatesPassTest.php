@@ -12,7 +12,6 @@
 namespace Symfony\Component\DependencyInjection\Tests\Compiler;
 
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Compiler\ResolveDefinitionTemplatesPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -78,28 +77,6 @@ class ResolveDefinitionTemplatesPassTest extends TestCase
 
         $def = $container->getDefinition('child');
         $this->assertFalse($def->isAbstract());
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testProcessDoesNotCopyScope()
-    {
-        $container = new ContainerBuilder();
-
-        $container
-            ->register('parent')
-            ->setScope('foo')
-        ;
-
-        $container
-            ->setDefinition('child', new DefinitionDecorator('parent'))
-        ;
-
-        $this->process($container);
-
-        $def = $container->getDefinition('child');
-        $this->assertEquals(ContainerInterface::SCOPE_CONTAINER, $def->getScope());
     }
 
     public function testProcessDoesNotCopyShared()
@@ -280,23 +257,23 @@ class ResolveDefinitionTemplatesPassTest extends TestCase
         $this->process($container);
 
         $configurator = $container->getDefinition('sibling')->getConfigurator();
-        $this->assertInstanceOf('Symfony\Component\DependencyInjection\Definition', $configurator);
+        $this->assertSame('Symfony\Component\DependencyInjection\Definition', get_class($configurator));
         $this->assertSame('parentClass', $configurator->getClass());
 
         $factory = $container->getDefinition('sibling')->getFactory();
-        $this->assertInstanceOf('Symfony\Component\DependencyInjection\Definition', $factory[0]);
+        $this->assertSame('Symfony\Component\DependencyInjection\Definition', get_class($factory[0]));
         $this->assertSame('parentClass', $factory[0]->getClass());
 
         $argument = $container->getDefinition('sibling')->getArgument(0);
-        $this->assertInstanceOf('Symfony\Component\DependencyInjection\Definition', $argument);
+        $this->assertSame('Symfony\Component\DependencyInjection\Definition', get_class($argument));
         $this->assertSame('parentClass', $argument->getClass());
 
         $properties = $container->getDefinition('sibling')->getProperties();
-        $this->assertInstanceOf('Symfony\Component\DependencyInjection\Definition', $properties['prop']);
+        $this->assertSame('Symfony\Component\DependencyInjection\Definition', get_class($properties['prop']));
         $this->assertSame('parentClass', $properties['prop']->getClass());
 
         $methodCalls = $container->getDefinition('sibling')->getMethodCalls();
-        $this->assertInstanceOf('Symfony\Component\DependencyInjection\Definition', $methodCalls[0][1][0]);
+        $this->assertSame('Symfony\Component\DependencyInjection\Definition', get_class($methodCalls[0][1][0]));
         $this->assertSame('parentClass', $methodCalls[0][1][0]->getClass());
     }
 
@@ -366,6 +343,20 @@ class ResolveDefinitionTemplatesPassTest extends TestCase
 
         $parentDef = $container->getDefinition('parent');
         $this->assertSame(array('Foo'), $parentDef->getAutowiringTypes());
+    }
+
+    public function testProcessResolvesAliases()
+    {
+        $container = new ContainerBuilder();
+
+        $container->register('parent', 'ParentClass');
+        $container->setAlias('parent_alias', 'parent');
+        $container->setDefinition('child', new DefinitionDecorator('parent_alias'));
+
+        $this->process($container);
+
+        $def = $container->getDefinition('child');
+        $this->assertSame('ParentClass', $def->getClass());
     }
 
     protected function process(ContainerBuilder $container)

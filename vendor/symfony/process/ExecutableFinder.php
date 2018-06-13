@@ -23,6 +23,8 @@ class ExecutableFinder
 
     /**
      * Replaces default suffixes of executable.
+     *
+     * @param array $suffixes
      */
     public function setSuffixes(array $suffixes)
     {
@@ -77,7 +79,7 @@ class ExecutableFinder
         }
         foreach ($suffixes as $suffix) {
             foreach ($dirs as $dir) {
-                if (@is_file($file = $dir.DIRECTORY_SEPARATOR.$name.$suffix) && ('\\' === DIRECTORY_SEPARATOR || @is_executable($file))) {
+                if (@is_file($file = $dir.DIRECTORY_SEPARATOR.$name.$suffix) && ('\\' === DIRECTORY_SEPARATOR || is_executable($file))) {
                     return $file;
                 }
             }

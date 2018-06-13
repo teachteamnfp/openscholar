@@ -18,11 +18,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class RequestTest extends TestCase
 {
-    protected function tearDown()
-    {
-        Request::setTrustedHosts(array());
-    }
-
     public function testInitialize()
     {
         $request = new Request();
@@ -50,18 +45,18 @@ class RequestTest extends TestCase
 
     public function testGetUser()
     {
-        $request = Request::create('http://user:password@test.com');
+        $request = Request::create('http://user_test:password_test@test.com/');
         $user = $request->getUser();
 
-        $this->assertEquals('user', $user);
+        $this->assertEquals('user_test', $user);
     }
 
     public function testGetPassword()
     {
-        $request = Request::create('http://user:password@test.com');
+        $request = Request::create('http://user_test:password_test@test.com/');
         $password = $request->getPassword();
 
-        $this->assertEquals('password', $password);
+        $this->assertEquals('password_test', $password);
     }
 
     public function testIsNoCache()
@@ -300,7 +295,7 @@ class RequestTest extends TestCase
     }
 
     /**
-     * @dataProvider getFormatToMimeTypeMapProvider
+     * @dataProvider getFormatToMimeTypeMapProviderWithAdditionalNullFormat
      */
     public function testGetFormatFromMimeType($format, $mimeTypes)
     {
@@ -318,10 +313,42 @@ class RequestTest extends TestCase
         }
     }
 
+    public function getFormatToMimeTypeMapProviderWithAdditionalNullFormat()
+    {
+        return array_merge(
+            array(array(null, array(null, 'unexistent-mime-type'))),
+            $this->getFormatToMimeTypeMapProvider()
+        );
+    }
+
     public function testGetFormatFromMimeTypeWithParameters()
     {
         $request = new Request();
         $this->assertEquals('json', $request->getFormat('application/json; charset=utf-8'));
+    }
+
+    /**
+     * @dataProvider getFormatToMimeTypeMapProvider
+     */
+    public function testGetMimeTypeFromFormat($format, $mimeTypes)
+    {
+        $request = new Request();
+        $this->assertEquals($mimeTypes[0], $request->getMimeType($format));
+    }
+
+    /**
+     * @dataProvider getFormatToMimeTypeMapProvider
+     */
+    public function testGetMimeTypesFromFormat($format, $mimeTypes)
+    {
+        $this->assertEquals($mimeTypes, Request::getMimeTypes($format));
+    }
+
+    public function testGetMimeTypesFromInexistentFormat()
+    {
+        $request = new Request();
+        $this->assertNull($request->getMimeType('foo'));
+        $this->assertEquals(array(), Request::getMimeTypes('foo'));
     }
 
     public function testGetFormatWithCustomMimeType()
@@ -334,12 +361,10 @@ class RequestTest extends TestCase
     public function getFormatToMimeTypeMapProvider()
     {
         return array(
-            array(null, array(null, 'unexistent-mime-type')),
             array('txt', array('text/plain')),
             array('js', array('application/javascript', 'application/x-javascript', 'text/javascript')),
             array('css', array('text/css')),
             array('json', array('application/json', 'application/x-json')),
-            array('jsonld', array('application/ld+json')),
             array('xml', array('text/xml', 'application/xml', 'application/x-xml')),
             array('rdf', array('application/rdf+xml')),
             array('atom', array('application/atom+xml')),
@@ -1273,6 +1298,25 @@ class RequestTest extends TestCase
         $this->assertEquals('/', $request->getPathInfo());
     }
 
+    public function testGetParameterPrecedence()
+    {
+        $request = new Request();
+        $request->attributes->set('foo', 'attr');
+        $request->query->set('foo', 'query');
+        $request->request->set('foo', 'body');
+
+        $this->assertSame('attr', $request->get('foo'));
+
+        $request->attributes->remove('foo');
+        $this->assertSame('query', $request->get('foo'));
+
+        $request->query->remove('foo');
+        $this->assertSame('body', $request->get('foo'));
+
+        $request->request->remove('foo');
+        $this->assertNull($request->get('foo'));
+    }
+
     public function testGetPreferredLanguage()
     {
         $request = new Request();
@@ -1419,6 +1463,9 @@ class RequestTest extends TestCase
         $request = new Request();
         $this->assertNull($request->setRequestFormat('foo'));
         $this->assertEquals('foo', $request->getRequestFormat(null));
+
+        $request = new Request(array('_format' => 'foo'));
+        $this->assertEquals('html', $request->getRequestFormat());
     }
 
     public function testHasSession()
@@ -1459,18 +1506,8 @@ class RequestTest extends TestCase
         $request = new Request();
 
         $request->headers->set('Accept-language', 'zh, en-us; q=0.8, en; q=0.6');
-        $request->cookies->set('Foo', 'Bar');
 
-        $asString = (string) $request;
-
-        $this->assertContains('Accept-Language: zh, en-us; q=0.8, en; q=0.6', $asString);
-        $this->assertContains('Cookie: Foo=Bar', $asString);
-
-        $request->cookies->set('Another', 'Cookie');
-
-        $asString = (string) $request;
-
-        $this->assertContains('Cookie: Foo=Bar; Another=Cookie', $asString);
+        $this->assertContains('Accept-Language: zh, en-us; q=0.8, en; q=0.6', $request->__toString());
     }
 
     public function testIsMethod()
@@ -1925,15 +1962,9 @@ class RequestTest extends TestCase
 
         $request->headers->set('host', 'subdomain.trusted.com');
         $this->assertEquals('subdomain.trusted.com', $request->getHost());
-    }
 
-    public function testSetTrustedHostsDoesNotBreakOnSpecialCharacters()
-    {
-        Request::setTrustedHosts(array('localhost(\.local){0,1}#,example.com', 'localhost'));
-
-        $request = Request::create('/');
-        $request->headers->set('host', 'localhost');
-        $this->assertSame('localhost', $request->getHost());
+        // reset request for following tests
+        Request::setTrustedHosts(array());
     }
 
     public function testFactory()
@@ -2007,6 +2038,32 @@ class RequestTest extends TestCase
     }
 
     /**
+     * @dataProvider methodIdempotentProvider
+     */
+    public function testMethodIdempotent($method, $idempotent)
+    {
+        $request = new Request();
+        $request->setMethod($method);
+        $this->assertEquals($idempotent, $request->isMethodIdempotent());
+    }
+
+    public function methodIdempotentProvider()
+    {
+        return array(
+            array('HEAD', true),
+            array('GET', true),
+            array('POST', false),
+            array('PUT', true),
+            array('PATCH', false),
+            array('DELETE', true),
+            array('PURGE', true),
+            array('OPTIONS', true),
+            array('TRACE', true),
+            array('CONNECT', false),
+        );
+    }
+
+    /**
      * @dataProvider methodSafeProvider
      */
     public function testMethodSafe($method, $safe)
@@ -2032,6 +2089,10 @@ class RequestTest extends TestCase
         );
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation Checking only for cacheable HTTP methods with Symfony\Component\HttpFoundation\Request::isMethodSafe() is deprecated since version 3.2 and will throw an exception in 4.0. Disable checking only for cacheable methods by calling the method with `false` as first argument or use the Request::isMethodCacheable() instead.
+     */
     public function testMethodSafeChecksCacheable()
     {
         $request = new Request();
@@ -2042,11 +2103,11 @@ class RequestTest extends TestCase
     /**
      * @dataProvider methodCacheableProvider
      */
-    public function testMethodCacheable($method, $cacheable)
+    public function testMethodCacheable($method, $chacheable)
     {
         $request = new Request();
         $request->setMethod($method);
-        $this->assertEquals($cacheable, $request->isMethodCacheable());
+        $this->assertEquals($chacheable, $request->isMethodCacheable());
     }
 
     public function methodCacheableProvider()
@@ -2125,7 +2186,7 @@ class RequestContentProxy extends Request
 {
     public function getContent($asResource = false)
     {
-        return http_build_query(array('_method' => 'PUT', 'content' => 'mycontent'), '', '&');
+        return http_build_query(array('_method' => 'PUT', 'content' => 'mycontent'));
     }
 }
 

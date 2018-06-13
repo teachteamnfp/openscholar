@@ -21,7 +21,6 @@ class Response
     const HTTP_CONTINUE = 100;
     const HTTP_SWITCHING_PROTOCOLS = 101;
     const HTTP_PROCESSING = 102;            // RFC2518
-    const HTTP_EARLY_HINTS = 103;           // RFC8297
     const HTTP_OK = 200;
     const HTTP_CREATED = 201;
     const HTTP_ACCEPTED = 202;
@@ -127,7 +126,6 @@ class Response
         100 => 'Continue',
         101 => 'Switching Protocols',
         102 => 'Processing',            // RFC2518
-        103 => 'Early Hints',
         200 => 'OK',
         201 => 'Created',
         202 => 'Accepted',
@@ -188,7 +186,33 @@ class Response
         511 => 'Network Authentication Required',                             // RFC6585
     );
 
+    private static $deprecatedMethods = array(
+        'setDate', 'getDate',
+        'setExpires', 'getExpires',
+        'setLastModified', 'getLastModified',
+        'setProtocolVersion', 'getProtocolVersion',
+        'setStatusCode', 'getStatusCode',
+        'setCharset', 'getCharset',
+        'setPrivate', 'setPublic',
+        'getAge', 'getMaxAge', 'setMaxAge', 'setSharedMaxAge',
+        'getTtl', 'setTtl', 'setClientTtl',
+        'getEtag', 'setEtag',
+        'hasVary', 'getVary', 'setVary',
+        'isInvalid', 'isSuccessful', 'isRedirection',
+        'isClientError', 'isOk', 'isForbidden',
+        'isNotFound', 'isRedirect', 'isEmpty',
+    );
+    private static $deprecationsTriggered = array(
+        __CLASS__ => true,
+        BinaryFileResponse::class => true,
+        JsonResponse::class => true,
+        RedirectResponse::class => true,
+        StreamedResponse::class => true,
+    );
+
     /**
+     * Constructor.
+     *
      * @param mixed $content The response content, see setContent()
      * @param int   $status  The response status code
      * @param array $headers An array of response headers
@@ -205,6 +229,23 @@ class Response
         /* RFC2616 - 14.18 says all Responses need to have a Date */
         if (!$this->headers->has('Date')) {
             $this->setDate(\DateTime::createFromFormat('U', time()));
+        }
+
+        // Deprecations
+        $class = get_class($this);
+        if ($this instanceof \PHPUnit_Framework_MockObject_MockObject || $this instanceof \Prophecy\Doubler\DoubleInterface) {
+            $class = get_parent_class($class);
+        }
+        if (isset(self::$deprecationsTriggered[$class])) {
+            return;
+        }
+
+        self::$deprecationsTriggered[$class] = true;
+        foreach (self::$deprecatedMethods as $method) {
+            $r = new \ReflectionMethod($class, $method);
+            if (__CLASS__ !== $r->getDeclaringClass()->getName()) {
+                @trigger_error(sprintf('Extending %s::%s() in %s is deprecated since version 3.2 and won\'t be supported anymore in 4.0 as it will be final.', __CLASS__, $method, $class), E_USER_DEPRECATED);
+            }
         }
     }
 
@@ -261,6 +302,8 @@ class Response
      * compliant with RFC 2616. Most of the changes are based on
      * the Request that is "associated" with this Response.
      *
+     * @param Request $request A Request instance
+     *
      * @return $this
      */
     public function prepare(Request $request)
@@ -310,7 +353,7 @@ class Response
         }
 
         // Check if we need to send extra expire info headers
-        if ('1.0' == $this->getProtocolVersion() && 'no-cache' == $this->headers->get('Cache-Control')) {
+        if ('1.0' == $this->getProtocolVersion() && false !== strpos($this->headers->get('Cache-Control'), 'no-cache')) {
             $this->headers->set('pragma', 'no-cache');
             $this->headers->set('expires', -1);
         }
@@ -349,7 +392,11 @@ class Response
 
         // cookies
         foreach ($this->headers->getCookies() as $cookie) {
-            setcookie($cookie->getName(), $cookie->getValue(), $cookie->getExpiresTime(), $cookie->getPath(), $cookie->getDomain(), $cookie->isSecure(), $cookie->isHttpOnly());
+            if ($cookie->isRaw()) {
+                setrawcookie($cookie->getName(), $cookie->getValue(), $cookie->getExpiresTime(), $cookie->getPath(), $cookie->getDomain(), $cookie->isSecure(), $cookie->isHttpOnly());
+            } else {
+                setcookie($cookie->getName(), $cookie->getValue(), $cookie->getExpiresTime(), $cookie->getPath(), $cookie->getDomain(), $cookie->isSecure(), $cookie->isHttpOnly());
+            }
         }
 
         return $this;
@@ -379,7 +426,7 @@ class Response
 
         if (function_exists('fastcgi_finish_request')) {
             fastcgi_finish_request();
-        } elseif (!\in_array(PHP_SAPI, array('cli', 'phpdbg'), true)) {
+        } elseif ('cli' !== PHP_SAPI) {
             static::closeOutputBuffers(0, true);
         }
 
@@ -445,11 +492,11 @@ class Response
     /**
      * Sets the response status code.
      *
-     * If the status text is null it will be automatically populated for the known
-     * status codes and left empty otherwise.
-     *
      * @param int   $code HTTP status code
      * @param mixed $text HTTP status text
+     *
+     * If the status text is null it will be automatically populated for the known
+     * status codes and left empty otherwise.
      *
      * @return $this
      *
@@ -514,19 +561,13 @@ class Response
     }
 
     /**
-     * Returns true if the response may safely be kept in a shared (surrogate) cache.
+     * Returns true if the response is worth caching under any circumstance.
      *
      * Responses marked "private" with an explicit Cache-Control directive are
      * considered uncacheable.
      *
      * Responses with neither a freshness lifetime (Expires, max-age) nor cache
-     * validator (Last-Modified, ETag) are considered uncacheable because there is
-     * no way to tell when or how to remove them from the cache.
-     *
-     * Note that RFC 7231 and RFC 7234 possibly allow for a more permissive implementation,
-     * for example "status codes that are defined as cacheable by default [...]
-     * can be reused by a cache with heuristic expiration unless otherwise indicated"
-     * (https://tools.ietf.org/html/rfc7231#section-6.1)
+     * validator (Last-Modified, ETag) are considered uncacheable.
      *
      * @return bool true if the response is worth caching, false otherwise
      */
@@ -636,6 +677,8 @@ class Response
 
     /**
      * Sets the Date header.
+     *
+     * @param \DateTime $date A \DateTime instance
      *
      * @return $this
      */
@@ -1011,6 +1054,8 @@ class Response
      * If the Response is not modified, it sets the status code to 304 and
      * removes the actual content by calling the setNotModified() method.
      *
+     * @param Request $request A Request instance
+     *
      * @return bool true if the Response validators match the Request, false otherwise
      */
     public function isNotModified(Request $request)
@@ -1164,9 +1209,10 @@ class Response
     {
         $status = ob_get_status(true);
         $level = count($status);
+        // PHP_OUTPUT_HANDLER_* are not defined on HHVM 3.3
         $flags = defined('PHP_OUTPUT_HANDLER_REMOVABLE') ? PHP_OUTPUT_HANDLER_REMOVABLE | ($flush ? PHP_OUTPUT_HANDLER_FLUSHABLE : PHP_OUTPUT_HANDLER_CLEANABLE) : -1;
 
-        while ($level-- > $targetLevel && ($s = $status[$level]) && (!isset($s['del']) ? !isset($s['flags']) || ($s['flags'] & $flags) === $flags : $s['del'])) {
+        while ($level-- > $targetLevel && ($s = $status[$level]) && (!isset($s['del']) ? !isset($s['flags']) || $flags === ($s['flags'] & $flags) : $s['del'])) {
             if ($flush) {
                 ob_end_flush();
             } else {
@@ -1182,7 +1228,7 @@ class Response
      */
     protected function ensureIEOverSSLCompatibility(Request $request)
     {
-        if (false !== stripos($this->headers->get('Content-Disposition'), 'attachment') && 1 == preg_match('/MSIE (.*?);/i', $request->server->get('HTTP_USER_AGENT'), $match) && true === $request->isSecure()) {
+        if (false !== stripos($this->headers->get('Content-Disposition'), 'attachment') && preg_match('/MSIE (.*?);/i', $request->server->get('HTTP_USER_AGENT'), $match) == 1 && true === $request->isSecure()) {
             if ((int) preg_replace('/(MSIE )(.*?);/', '$2', $match[0]) < 9) {
                 $this->headers->remove('Cache-Control');
             }
