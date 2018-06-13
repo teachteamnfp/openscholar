@@ -1,0 +1,17 @@
+uuid: 5ea81fa0-a0f8-4f86-b14f-21e86f3893db
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.department
+  enforced:
+    config:
+      - user.role.administrator
+id: department-a416e6833
+label: Administrator
+weight: 2
+internal: true
+audience: outsider
+group_type: department
+permissions_ui: false
+permissions: {  }

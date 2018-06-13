@@ -1,0 +1,17 @@
+uuid: ab4808cd-7fc4-4621-8b62-79c8974a1ab1
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.project
+  enforced:
+    config:
+      - user.role.administrator
+id: project-a416e6833
+label: Administrator
+weight: 2
+internal: true
+audience: outsider
+group_type: project
+permissions_ui: false
+permissions: {  }

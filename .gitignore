@@ -1,0 +1,41 @@
+web/sites/*/files/*
+web/sites/*/settings.local.php
+web/sites/all/drush/drushrc.php
+web/sites/sites.php
+
+config/dev/devel.settings.yml
+config/dev/devel.toolbar.settings.yml
+config/dev/system.menu.devel.yml
+
+private/*
+private-files/*
+logs/
+
+db/*.local.*sql
+db/*.local.*sql.gz
+db/*.stage.*sql
+db/*.stage.*sql.gz
+db/*.prod.*sql
+db/*.prod.*sql.gz
+
+# Ignore editor files
+local
+.projects
+*.sublime-project
+*.sublime-workspace
+*.sublime-projectcompletions
+.idea*
+*/.idea*
+
+# Ignore OS-generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon\?
+ehthumbs.db
+Thumbs.db
+
+# Ignore vagrant
+/.vagrant

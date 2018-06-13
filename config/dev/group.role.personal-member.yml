@@ -1,0 +1,14 @@
+uuid: 1e8ce891-f259-488b-8212-75a8143baa58
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.personal
+id: personal-member
+label: Member
+weight: -100
+internal: true
+audience: member
+group_type: personal
+permissions_ui: true
+permissions: {  }

@@ -1,0 +1,14 @@
+uuid: 61331a63-658b-4d15-96b6-406ded09b356
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.project
+id: project-outsider
+label: Outsider
+weight: -101
+internal: true
+audience: outsider
+group_type: project
+permissions_ui: true
+permissions: {  }

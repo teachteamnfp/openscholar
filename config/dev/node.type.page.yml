@@ -1,0 +1,23 @@
+uuid: a7d8966a-4e57-4572-b40b-7c7e129f60c5
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+    - purl
+third_party_settings:
+  menu_ui:
+    available_menus:
+      - main
+    parent: 'main:'
+  purl:
+    keep_context: 1
+_core:
+  default_config_hash: KuyA4NHPXcmKAjRtwa0vQc2ZcyrUJy6IlS2TAyMNRbc
+name: 'Basic page (Group Content)'
+type: page
+description: 'Use <em>basic pages</em> for your static content, such as an ''About us'' page.'
+help: ''
+new_revision: true
+preview_mode: 1
+display_submitted: false

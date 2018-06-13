@@ -1,0 +1,7 @@
+uuid: 7ee4bd90-a346-4a31-8afd-9504464201fe
+langcode: en
+status: true
+dependencies: {  }
+provider_key: group_purl_provider
+label: 'Group by Path'
+method_key: group_prefix

@@ -1,0 +1,17 @@
+uuid: ed2a4416-34ab-4bea-9a4f-f8f9e7ca7a6b
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.personal
+  enforced:
+    config:
+      - user.role.administrator
+id: personal-a416e6833
+label: Administrator
+weight: 2
+internal: true
+audience: outsider
+group_type: personal
+permissions_ui: false
+permissions: {  }

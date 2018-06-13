@@ -1,0 +1,11 @@
+uuid: 981fa906-aad2-4b25-b572-2158653cb50b
+langcode: en
+status: true
+dependencies: {  }
+id: project
+label: Project
+description: 'A project site.'
+creator_membership: true
+creator_wizard: false
+creator_roles:
+  - project-admin

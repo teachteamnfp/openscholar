@@ -1,0 +1,11 @@
+uuid: d7639b89-505c-4e41-92e7-c592a86e46e7
+langcode: en
+status: true
+dependencies: {  }
+id: personal
+label: Personal
+description: 'A personal scholar site.'
+creator_membership: true
+creator_wizard: false
+creator_roles:
+  - personal-admin
