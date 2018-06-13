@@ -2654,7 +2654,7 @@ function vsite_mail($key, &$message, $params){
       $message['body'][] = "\n\n---------------";
 
       $message['body'][] = t("This message was sent to you from \"!site\" on behalf of !name through your website contact form (!form-url).", array(
-        '!name' => isset($user->name) ? $user->name : $params['sender_firstname'] . ' ' . $params['sender_lastname'] . ' (' . $message['from'] . ')',
+        '!name' => isset($user->name) ? $user->name : $params['sender_firstname'] . ' ' . $params['sender_lastname'] . ' (' . $params['headers']['Reply-To'] . ')',
         '!form-url' => url($_GET['q'], array(
           'absolute' => TRUE,
           'language' => $language
