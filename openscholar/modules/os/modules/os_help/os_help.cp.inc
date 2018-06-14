@@ -41,7 +41,6 @@ function os_help_cp_settings() {
       ),
     );
   }
-
   return $form;
 }
 
