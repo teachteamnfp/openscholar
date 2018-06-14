@@ -761,7 +761,9 @@ function vsite_spaces_presets_alter(&$presets) {
   $pathauto_settings = _vsite_get_pathauto_settings();
   foreach ($presets as $name => &$preset) {
     if (in_array($name, variable_get('os_enabled_spaces_presets',array()))) {
-      $preset->value['variable'] = array_merge($pathauto_settings, $preset->value['variable']);
+      if (isset($preset->value) && is_array($preset->value['variable'])) {
+        $preset->value['variable'] = array_merge($pathauto_settings, $preset->value['variable']);
+      }
     }
   }
 }
@@ -2176,7 +2178,7 @@ function vsite_form_user_profile_form_alter(&$form, &$form_state, &$form_id){
     $form['field_first_name']['#prefix'] = '<a name="user_first_name" class="field_first_name_anchor">';
     $form['field_first_name']['#suffix'] = '</a>';
   }
-  
+
   if (module_exists('migrate_example')) {
     // To hide the Gender field from user_profile_form #10048
     unset($form['field_migrate_example_gender']);
