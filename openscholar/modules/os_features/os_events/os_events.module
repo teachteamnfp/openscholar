@@ -2696,9 +2696,9 @@ function os_events_entity_insert($entity, $type) {
   $default_email = $info['settings']['default_registration_settings']['settings']['from_address'];
   if ($registration_settings['settings']['from_address'] == $default_email) {
     $event_author = user_load($node->uid);
-    $params['headers']['Cc'] = $event_author->mail;
+    $params['headers']['Reply-To'] = $event_author->mail;
   } else {
-    $params['headers']['Cc'] =  $registration_settings['settings']['from_address'];
+    $params['headers']['Reply-To'] =  $registration_settings['settings']['from_address'];
   }
   $from = variable_get('site_mail', ini_get('sendmail_from'));
 
@@ -2800,7 +2800,7 @@ function os_events_mail_alter(&$message) {
 
     // Set default value of the "From" field to author of the event's e-mail
     $message['headers']['From'] = $message['from'] = $defaultMail;
-    $message['headers']['Cc'] = $event_author_email;
+    $message['headers']['Reply-To'] = $event_author_email;
 
     // Set the sender and return-path headers.
     $message['headers']['Sender'] = $message['headers']['Return-Path'] = $defaultMail;
