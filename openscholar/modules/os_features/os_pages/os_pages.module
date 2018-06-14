@@ -1338,7 +1338,6 @@ function os_pages_os_layout_set_alter(&$blocks, $context_name) {
  * Implements hook_form_FORM_ID_form_alter() for boxes_box
  */
 function os_pages_form_boxes_box_form_alter(&$form, &$form_state) {
-  natcasesort($form['options']['add']['new']['#options']);
   $form['#submit'][] = 'os_pages_widget_submit';
 }
 
@@ -1418,13 +1417,82 @@ function os_pages_feeds_processor_targets_alter(&$targets, $entity_type, $bundle
  */
 function os_pages_parent_page_import($source, $entity, $target, $value, $mapping) {
   if ($value && $entity->type == 'page') {
-    $path = trim($value, " \t\n\r\0\x0B/");
-    $purl = vsite_get_purl();
-    $prefix = $purl ? $purl . '/' : '';
-    $normal_path = drupal_get_normal_path($prefix . $path);
-    $parent_node = menu_get_object('node', 1, $normal_path);
-    if ($parent_node && $parent_node->type == 'page') {
-      os_pages_make_subpage($entity, $parent_node->nid);
+    os_pages_assign_to_parent ($entity, $value);
+  }
+}
+
+function os_pages_assign_to_parent($entity, $parent_path) {
+  $path = trim($parent_path, " \t\n\r\0\x0B/");
+  $purl = vsite_get_purl();
+  $prefix = $purl ? $purl . '/' : '';
+  $normal_path = drupal_get_normal_path($prefix . $path);
+  $parent_node = menu_get_object('node', 1, $normal_path);
+  if ($parent_node && $parent_node->type == 'page') {
+    // figure out what weight we want this to be in the book
+    $weight = 0;
+    if (!empty($parent_node->book)) {
+      $parent_link = menu_link_load($parent_node->book['mlid']);
+      if ($parent_link['has_children']) {
+        $weight = db_select('menu_links', 'ml')
+          ->fields('ml')
+          ->condition('plid', $parent_node->book['mlid'])
+          ->countQuery ()
+          ->execute()
+          ->fetchField();
+
+      }
     }
+    os_pages_make_subpage($entity, $parent_node->nid);
+
+    // set the weight so pages are ordered in creation order, rather than alphabetical
+    $entity->book['weight'] = $weight;
+  }
+}
+
+function os_pages_entity_property_info() {
+  return array(
+    'node' => array(
+      'bundles' => array(
+        'page' => array(
+          'properties' => array(
+            'parent_path' => array(
+              'label' => 'Parent Path',
+              'type' => 'text',
+              'description' => 'Path to the parent node',
+              'getter callback' => 'os_pages_entity_property_parent_path_get',
+              'setter callback' => 'os_pages_entity_property_parent_path_set',
+              'translatable' => false,
+              'field' => 0,
+              'requred' => false,
+            )
+          )
+        )
+      )
+    )
+  );
+}
+
+function os_pages_entity_property_parent_path_get($data, array $options, $name, $type, $info) {
+  $node = $data->getValue();
+  if (!empty($node->book)) {
+    $parent_link = $node->book['plid'];
+    $link = menu_link_load($parent_link);
+    $alias = drupal_get_path_alias ($link['link_path']);
+
+    $purl = db_select('purl', 'p')
+      ->field('p', array('value'))
+      ->condition('id', $node->{OG_AUDIENCE_FIELD}[LANGUAGE_NONE][0]['target_id'])
+      ->condition('provider', 'spaces_og')
+      ->execute()
+      ->fetchField();
+
+    return str_replace($purl.'/', '', $alias);
+  }
+  return '';
+}
+
+function os_pages_entity_property_parent_path_set(&$data, $name, $value, $langcode, $type, $info) {
+  if (!empty($value) && $type == 'node' && $data->bundle == 'page') {
+    os_pages_assign_to_parent ($data->getValue(), $value);
   }
 }

@@ -279,7 +279,7 @@ function hwpi_basetheme_preprocess_node(&$vars) {
     }
 
     // Set up the size of the picture.
-    $size = (!empty($vars['os_sv_list_box']) && $vars['os_sv_list_box']) || $vars['view_mode'] == 'full' ? 'big' : 'small';
+    $size = (!empty($vars['os_sv_list_box']) && $vars['os_sv_list_box']) || $vars['view_mode'] == 'full' ? 'large' : 'small';
 
     $key['field_person_photo'][0] = array('#markup' => hwpi_basetheme_profile_default_image($size));
   }
@@ -308,15 +308,15 @@ function hwpi_basetheme_profile_default_image($size = 'small') {
     $path = $image_file->uri;
     $options = array(
       'path' => $path,
-      'style_name' => 'profile_thumbnail',
+      'style_name' => $size == 'small' ? 'profile_thumbnail' : 'profile_full',
     );
 
     return '<div class="field-name-field-person-photo">' . theme('image_style',  $options) . '</div>';
   }
 
   // Use default image.
-  $image = $size == 'small' ? 'person-default-image.png' : 'person-default-image-big.png';
-  $install_default_image = variable_get('profile_default_photo', drupal_get_path('theme', 'os_basetheme') . '/images/profile-default.png');
+  $image = $size == 'small' ? 'person-default-image-small.png' : 'person-default-image-large.png';
+  $install_default_image = variable_get('profile_default_photo_'.$size, drupal_get_path('theme', 'os_basetheme') . '/images/' . $image);
   $path = variable_get('os_person_default_image', $install_default_image);
   return '<div class="field-name-field-person-photo">' . theme('image',  array('path' => $path)) . '</div>';
 }
@@ -438,7 +438,9 @@ function hwpi_basetheme_node_view_alter(&$build) {
         unset($build['contact_details']['#prefix'], $build['contact_details']['#suffix']);
 
         //move title, website. body
-        $build['pic_bio']['body']['#weight'] = 5;
+        if (!empty($build['pic_bio']['body'])) {
+          $build['pic_bio']['body']['#weight'] = 5;
+        }
         foreach (array(0=>'field_professional_title', 15=>'field_website') as $weight => $field) {
           if (isset($build[$field])) {
             $build['pic_bio'][$field] = $build[$field];
@@ -467,7 +469,7 @@ function hwpi_basetheme_node_view_alter(&$build) {
           }
         }
 
-        if (isset($build['links']['node']['#links']['node-readmore'])) {
+        if (isset($build['links']['node']['#links']['node-readmore']) && !empty($build['pic_bio']['body'])) {
           $link = $build['links']['node']['#links']['node-readmore'];
           if (preg_match('!</?(?:p)[^>]*>\s*$!i', $build['pic_bio']['body'][0]['#markup'], $match, PREG_OFFSET_CAPTURE)) {
             $insert_point = $match[0][1];
