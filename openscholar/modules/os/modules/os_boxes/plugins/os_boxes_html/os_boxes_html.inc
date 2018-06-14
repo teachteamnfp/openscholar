@@ -65,8 +65,9 @@ class os_boxes_html extends os_boxes_default {
         if ($old_file_count > $new_files[$fid]) {
           $deprecate = $old_file_count - $new_files[$fid];
           // Now deprecate this usage.
-          $file = file_load($fid);
-          file_usage_delete($file, 'media', 'node', $vsite->group->nid, $deprecate);
+          if($file = file_load($fid)) {
+            file_usage_delete($file, 'media', 'node', $vsite->group->nid, $deprecate);
+          }
           // Usage is deleted, nothing more to do with this file.
           unset($new_files[$fid]);
         }
