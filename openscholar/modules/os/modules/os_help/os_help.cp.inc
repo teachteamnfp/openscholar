@@ -26,21 +26,20 @@ function os_help_cp_settings() {
     ),
   );
 
-  if (variable_get('os_support_email')) {
-    $form['os_help'] = array(
-      'group' => array(
-        '#id' => 'support',
-        '#title' => t('Support'),
-        '#weight' => 50,
-        '#menu_parent' => 'help'
-      ),
-      'form' => array(
-        '#custom_directive' => 'support',
-        '#access' => TRUE,
-        '#weight' => -1,
-      ),
-    );
-  }
+  $form['os_help'] = array(
+    'group' => array(
+      '#id' => 'support',
+      '#title' => t('Support'),
+      '#weight' => 50,
+      '#menu_parent' => 'help'
+    ),
+    'form' => array(
+      '#custom_directive' => 'support',
+      '#access' => TRUE,
+      '#weight' => -1,
+    ),
+  );
+
   return $form;
 }
 
