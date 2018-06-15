@@ -1224,9 +1224,6 @@ LIST OF POSTS - PERSON TEASER IN SIDEBAR
     border-bottom: none !important;
     clear: both;
 }
-#support .actions, #documentation .actions {
-    display: none;
-}
 
 .block-element {
     display: block;
