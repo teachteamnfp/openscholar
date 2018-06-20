@@ -41,6 +41,7 @@
         "drupal/group_purl": "1.x-dev",
         "drupal/metatag": "^1.2",
         "drupal/pathauto": "^1.0",
+        "drupal/purl": "1.x-dev",
         "drupal/webform": "^5.0@beta",
         "drush/drush": "~8.0",
         "webflo/drupal-finder": "^0.3.0",
