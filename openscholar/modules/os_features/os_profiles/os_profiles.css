@@ -39,6 +39,9 @@
 .node-person .field-name-field-professional-title {
     font-weight: bold;
 }
+.node-person .field-name-field-email, .node-person .field-name-field-phone{
+    clear: both;
+}
 .sv-list-view-full .node-person .pic-bio {
     width: 100%;
 }
