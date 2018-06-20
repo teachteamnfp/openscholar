@@ -14,7 +14,7 @@ class WebformTestComposite extends WebformCompositeBase {
   /**
    * {@inheritdoc}
    */
-  public static function getCompositeElements() {
+  public static function getCompositeElements(array $element) {
     $elements = [];
     $elements['textfield'] = [
       '#type' => 'textfield',
@@ -42,6 +42,15 @@ class WebformTestComposite extends WebformCompositeBase {
         'three' => t('Three'),
       ],
       '#select2' => TRUE,
+    ];
+    $elements['radios'] = [
+      '#type' => 'radios',
+      '#title' => t('radios'),
+      '#options' => [
+        'one' => t('One'),
+        'two' => t('Two'),
+        'three' => t('Three'),
+      ],
     ];
     $elements['date'] = [
       '#type' => 'date',
@@ -76,6 +85,25 @@ class WebformTestComposite extends WebformCompositeBase {
     $elements['datetime'] = [
       '#type' => 'datetime',
       '#title' => t('datetime'),
+    ];
+    $elements['fieldset'] = [
+      '#type' => 'fieldset',
+      '#title' => t('fieldset'),
+    ];
+    $elements['fieldset']['nested_tel'] = [
+      '#type' => 'tel',
+      '#title' => t('nested_tel'),
+      '#international' => TRUE,
+    ];
+    $elements['fieldset']['nested_select'] = [
+      '#type' => 'select',
+      '#title' => t('nested_select'),
+      '#options' => 'days',
+    ];
+    $elements['fieldset']['nested_radios'] = [
+      '#type' => 'radios',
+      '#title' => t('nested_radios'),
+      '#options' => 'days',
     ];
 
     // Below elements throw exceptions.

@@ -55,13 +55,10 @@ trait WebformEntityTrait {
       $options += $bundle_options;
     }
 
-    /** @var \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository */
-    $entity_repository = \Drupal::service('entity.repository');
-    foreach ($options as $key => $value) {
-      // Set the entity in the correct language for display.
-      $option = \Drupal::entityTypeManager()->getStorage($element['#target_type'])->load($key);
-      $option = $entity_repository->getTranslationFromContext($option);
-      $options[$key] = $option->label();
+    // If the selection handler is not using views, then translate
+    // the entity reference's options.
+    if ($element['#selection_handler'] != 'views') {
+      $options = self::translateOptions($options, $element);
     }
 
     // Only select menu can support optgroups.
@@ -73,6 +70,37 @@ trait WebformEntityTrait {
     $options = WebformOptionsHelper::decodeOptions($options);
 
     $element['#options'] = $options;
+  }
+
+  /**
+   * Translate the select options.
+   *
+   * @param array $options
+   *   Untranslated options.
+   * @param array $element
+   *   An element.
+   *
+   * @return array
+   *   Translated options.
+   */
+  protected static function translateOptions(array $options, array $element) {
+    /** @var \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository */
+    $entity_repository = \Drupal::service('entity.repository');
+
+    foreach ($options as $key => $value) {
+      if (is_array($value)) {
+        $options[$key] = self::translateOptions($value, $element);
+      }
+      else {
+        // Set the entity in the correct language for display.
+        $option = \Drupal::entityTypeManager()
+          ->getStorage($element['#target_type'])
+          ->load($key);
+        $option = $entity_repository->getTranslationFromContext($option);
+        $options[$key] = $option->label();
+      }
+    }
+    return $options;
   }
 
 }

@@ -7,6 +7,7 @@
 
 use Drupal\file\Entity\File;
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Template\Attribute;
 
 /******************************************************************************/
 // Theme hooks.
@@ -24,11 +25,22 @@ function webform_theme() {
       'variables' => ['youtube_id' => NULL, 'autoplay' => TRUE],
     ],
 
+    'webform_contribute' => [
+      'variables' => [
+        'account' => [],
+        'membership' => [],
+        'contribution' => [],
+      ],
+    ],
+
     'webform' => [
       'render element' => 'element',
     ],
     'webform_actions' => [
       'render element' => 'element',
+    ],
+    'webform_handler_action_summary' => [
+      'variables' => ['settings' => NULL, 'handler' => NULL],
     ],
     'webform_handler_debug_summary' => [
       'variables' => ['settings' => NULL, 'handler' => NULL],
@@ -39,17 +51,24 @@ function webform_theme() {
     'webform_handler_remote_post_summary' => [
       'variables' => ['settings' => NULL, 'handler' => NULL],
     ],
+    'webform_handler_settings_summary' => [
+      'variables' => ['settings' => NULL, 'handler' => NULL],
+    ],
 
     'webform_confirmation' => [
       'variables' => ['webform' => NULL, 'source_entity' => NULL, 'webform_submission' => NULL],
     ],
 
-    'webform_preview' => [
-      'variables' => ['webform_submission' => NULL],
+    'webform_required' => [
+      'variables' => ['label' => NULL],
     ],
 
     'webform_submission' => [
-      'variables' => ['webform_submission' => NULL, 'source_entity' => NULL, 'type' => NULL],
+      'render element' => 'elements',
+    ],
+
+    'webform_submission_form' => [
+      'render element' => 'form',
     ],
 
     'webform_submission_navigation' => [
@@ -57,19 +76,6 @@ function webform_theme() {
     ],
     'webform_submission_information' => [
       'variables' => ['webform_submission' => NULL, 'source_entity' => NULL, 'open' => TRUE],
-    ],
-
-    'webform_submission_html' => [
-      'variables' => ['webform_submission' => NULL, 'source_entity' => NULL, 'excluded_elements' => [], 'exclude_empty' => TRUE],
-    ],
-    'webform_submission_table' => [
-      'variables' => ['webform_submission' => NULL, 'source_entity' => NULL, 'excluded_elements' => [], 'exclude_empty' => TRUE],
-    ],
-    'webform_submission_text' => [
-      'variables' => ['webform_submission' => NULL, 'source_entity' => NULL, 'excluded_elements' => [], 'exclude_empty' => TRUE],
-    ],
-    'webform_submission_yaml' => [
-      'variables' => ['webform_submission' => NULL, 'source_entity' => NULL],
     ],
 
     'webform_element_base_html' => [
@@ -86,12 +92,12 @@ function webform_theme() {
       'variables' => ['element' => [], 'value' => NULL, 'webform_submission' => NULL, 'options' => []],
     ],
 
-    'webform_element_color_value_swatch' => [
-      'variables' => ['element' => [], 'value' => NULL, 'webform_submission' => NULL, 'options' => []],
-    ],
-
     'webform_element_help' => [
       'variables' => ['help' => NULL],
+    ],
+
+    'webform_element_more' => [
+      'variables' => ['more' => NULL, 'more_title' => '', 'attributes' => []],
     ],
 
     'webform_element_managed_file' => [
@@ -117,16 +123,20 @@ function webform_theme() {
       'variables' => ['message' => '', 'webform_submission' => NULL, 'handler' => NULL],
     ],
 
+    'webform_horizontal_rule' => [
+      'render element' => 'element',
+    ],
     'webform_message' => [
       'render element' => 'element',
     ],
+    'webform_section' => [
+      'render element' => 'element',
+    ],
+
     'webform_composite_address' => [
       'render element' => 'element',
     ],
     'webform_composite_contact' => [
-      'render element' => 'element',
-    ],
-    'webform_composite_creditcard' => [
       'render element' => 'element',
     ],
     'webform_composite_location' => [
@@ -204,12 +214,10 @@ function webform_theme_registry_alter(&$theme_registry) {
  * Applies custom link attributes to local actions.
  * Custom attributes are used to open Webform UI modals.
  *
- * Issue #2897396: Add a Reference Tab to track Webform nodes.
- * @see https://www.drupal.org/node/2897396
- *
  * @see template_preprocess_menu_local_action();
  * @see \Drupal\webform\WebformEntityHandlersForm
  * @see \Drupal\webform_ui\WebformUiEntityEditForm
+ * @see https://www.drupal.org/node/2897396
  */
 function webform_preprocess_menu_local_action(&$variables) {
   $link = $variables['element']['#link'];
@@ -255,15 +263,16 @@ function webform_preprocess_radios(&$variables) {
 /**
  * Prepares variables for checkboxes and radios options templates.
  *
- * Below code must be trigger and template_preprocess_(radios|checkboxes) which
+ * Below code must be called by template_preprocess_(radios|checkboxes) which
  * reset the element's 'attributes';
  */
 function _webform_preprocess_options(&$variables) {
   $element = $variables['element'];
 
+  $variables['attributes']['class'][] = Html::getClass('js-webform-' . $element['#type']);
+
   if (!empty($element['#options_display'])) {
-    $variables['attributes']['class'][] = 'js-webform-' . $element['#type'];
-    $variables['attributes']['class'][] = 'webform-options-display-' . str_replace('_', '-', $element['#options_display']);
+    $variables['attributes']['class'][] = Html::getClass('webform-options-display-' . $element['#options_display']);
     $variables['#attached']['library'][] = 'webform/webform.element.options';
   }
 }
@@ -275,11 +284,22 @@ function webform_preprocess_details(&$variables) {
   // Move #description to #help for webform admin routes.
   _webform_preprocess_description_help($variables);
 
+  // Add (read) more to #description.
+  _webform_preprocess_details_description_more($variables);
+
   $element = &$variables['element'];
 
   // Restructure the details's title to include #help.
   if (isset($variables['title'])) {
     _webform_preprocess_help_title($variables['title'], $element);
+  }
+
+  // Remove invalid 'required' and 'aria-required' attributes from details.
+  if (isset($element['#webform_key'])) {
+    unset(
+      $variables['attributes']['required'],
+      $variables['attributes']['aria-required']
+    );
   }
 }
 
@@ -290,11 +310,50 @@ function webform_preprocess_fieldset(&$variables) {
   // Move #description to #help for webform admin routes.
   _webform_preprocess_description_help($variables);
 
+  // Add (read) more to #description.
+  _webform_preprocess_form_element_description_more($variables);
+
   $element = &$variables['element'];
+
+  // Apply inline title defined by radios, checkboxes, and buttons.
+  // @see \Drupal\webform\Plugin\WebformElement\OptionsBase::prepare
+  if (isset($element['#_title_display'])) {
+    $variables['attributes']['class'][] = 'webform-fieldset--title-inline';
+  }
 
   // Restructure the fieldset's legend title to include #help.
   if (isset($variables['legend']['title'])) {
     _webform_preprocess_help_title($variables['legend']['title'], $element);
+  }
+
+  // Add .js-webform-form-composite class to be used #states API.
+  // @see js/webform.states.js
+  if (isset($element['#type']) && in_array($element['#type'], ['checkboxes', 'radios'])) {
+    $variables['attributes']['class'][] = 'js-webform-type-' . $element['#type'];
+    $variables['attributes']['class'][] = 'webform-type-' . $element['#type'];
+  }
+
+  // Remove invalid 'required' and 'aria-required' attributes from fieldset.
+  if (isset($element['#webform_key'])) {
+    unset(
+      $variables['attributes']['required'],
+      $variables['attributes']['aria-required']
+    );
+  }
+}
+
+/**
+ * Prepares variables for webform section element templates.
+ */
+function webform_preprocess_webform_section(&$variables) {
+  // Move #description to #help for webform admin routes.
+  _webform_preprocess_description_help($variables);
+
+  $element = &$variables['element'];
+
+  // Restructure the section's title to include #help.
+  if (isset($variables['title'])) {
+    _webform_preprocess_help_title($variables['title'], $element);
   }
 }
 
@@ -304,6 +363,9 @@ function webform_preprocess_fieldset(&$variables) {
 function webform_preprocess_datetime_wrapper(&$variables) {
   // Move #description to #help for webform admin routes.
   _webform_preprocess_description_help($variables);
+
+  // Add (read) more to #description.
+  _webform_preprocess_form_element_description_more($variables);
 
   $element = &$variables['element'];
 
@@ -340,8 +402,11 @@ function webform_preprocess_form_element(&$variables) {
   // Move #description to #help for webform admin routes.
   _webform_preprocess_description_help($variables);
 
+  // Add (read) more to #description.
+  _webform_preprocess_form_element_description_more($variables);
+
   // Add #help and #_title_display to label.
-  // Note: #_title_display is used to track inline titles
+  // Note: #_title_display is used to track inline titles.
   // @see \Drupal\webform\Plugin\WebformElementBase::prepare
   $variables['label'] += array_intersect_key($element, array_flip(['#help', '#_title_display']));
 }
@@ -351,10 +416,10 @@ function webform_preprocess_form_element(&$variables) {
  */
 function _webform_preprocess_description_help(&$variables) {
   $element = &$variables['element'];
-
   // Move #description to #help for webform admin routes.
   if (\Drupal::config('webform.settings')->get('ui.description_help')
     && \Drupal::service('webform.request')->isWebformAdminRoute()
+    && \Drupal::routeMatch()->getRouteName() != 'webform.contribute.settings'
     && isset($element['#description'])
     && !isset($element['#help'])
     && !empty($element['#title'])
@@ -369,7 +434,7 @@ function _webform_preprocess_description_help(&$variables) {
 }
 
 /**
- * Appent #help to title variable..
+ * Append #help to title variable.
  */
 function _webform_preprocess_help_title(&$variables, array &$element) {
   if (empty($element['#help'])) {
@@ -379,13 +444,14 @@ function _webform_preprocess_help_title(&$variables, array &$element) {
   $variables = [
     'title' => (is_array($variables)) ? $variables : ['#markup' => $variables],
     'help' => [
-        '#type' => 'webform_help',
-      ] + array_intersect_key($element, array_flip(['#help'])),
+      '#type' => 'webform_help',
+    ] + array_intersect_key($element, array_flip(['#help'])),
   ];
 
   // Get #title_display and move help before title for 'inline' titles.
   if (isset($element['#_title_display'])) {
-    // #_title_display is set via \Drupal\webform\Plugin\WebformElementBase::prepare
+    // #_title_display is set
+    // via \Drupal\webform\Plugin\WebformElementBase::prepare.
     $title_display = $element['#_title_display'];
   }
   elseif (isset($element['#title_display'])) {
@@ -399,6 +465,76 @@ function _webform_preprocess_help_title(&$variables, array &$element) {
     $variables['title']['#weight'] = 0;
     $variables['help']['#weight'] = -1;
   }
+}
+
+/**
+ * Prepares #more property for form element template.
+ *
+ * @see template_preprocess_form_element()
+ * @see form-element.html.twig
+ * @see template_preprocess_datetime_wrapper()
+ * @see datetime-wrapper.html.twig
+ */
+function _webform_preprocess_form_element_description_more(&$variables) {
+  $element = &$variables['element'];
+  if (empty($element['#more'])) {
+    return;
+  }
+
+  // Make sure $variables['description']['content'] is a render array.
+  if (!isset($variables['description'])) {
+    $variables['description_display'] = $element['#description_display'];
+    $description_attributes = [];
+    if (!empty($element['#id'])) {
+      $description_attributes['id'] = $element['#id'] . '--description';
+    }
+    $variables['description']['attributes'] = new Attribute($description_attributes);
+    $variables['description']['content'] = [];
+  }
+
+  // Move content to content.description and convert description to
+  // render array.
+  $variables['description']['content'] = [
+    'description' => is_array($variables['description']['content']) ? $variables['description']['content'] : ['#markup' => $variables['description']['content']],
+  ];
+
+  // If description display is invisible hie the description.
+  if (isset($variables['description_display']) && $variables['description_display'] == 'invisible') {
+    $variables['description']['content']['description']['#prefix'] = '<div class="visually-hidden">';
+    $variables['description']['content']['description']['#suffix'] = '</div>';
+    $variables['description_display'] = 'after';
+  }
+
+  // Add more element.
+  $variables['description']['content']['more'] = [
+    '#type' => 'webform_more',
+    '#attributes' => (!empty($element['#id'])) ? ['id' => $element['#id'] . '--more'] : [],
+  ] + array_intersect_key($element, array_flip(['#more', '#more_title']));
+}
+
+/**
+ * Prepares #more property for details template.
+ *
+ * @see template_preprocess_details()
+ * @see details.html.twig
+ */
+function _webform_preprocess_details_description_more(&$variables) {
+  $element = &$variables['element'];
+  if (empty($element['#more'])) {
+    return;
+  }
+
+  // Convert description to render array.
+  $variables['description'] = [
+    'description' => is_array($variables['description']) ? $variables['description'] : ['#markup' => $variables['description']],
+  ];
+
+  // Add more element.
+  $variables['description']['more'] = [
+    '#type' => 'webform_more',
+    '#attributes' => (!empty($element['#id'])) ? ['id' => $element['#id'] . '--more'] : [],
+  ] + array_intersect_key($element, array_flip(['#more', '#more_title']));
+
 }
 
 /**
@@ -503,6 +639,9 @@ function _webform_theme_suggestions(array $variables, $hook) {
   if ($hook == 'webform' && isset($variables['element']) && isset($variables['element']['#webform_id'])) {
     $suggestions[] = $hook . '__' . $variables['element']['#webform_id'];
   }
+  elseif ($hook == 'webform_submission_form' && isset($variables['form']) && isset($variables['form']['#webform_id'])) {
+    $suggestions[] = $hook . '__' . $variables['form']['#webform_id'];
+  }
   elseif (strpos($hook, 'webform_element_base_') === 0 || strpos($hook, 'webform_container_base_') === 0) {
     $element = $variables['element'];
 
@@ -514,16 +653,39 @@ function _webform_theme_suggestions(array $variables, $hook) {
       $suggestions[] = $hook . '__' . $type . '__' . $name;
     }
   }
-  elseif (isset($variables['webform_submission'])) {
-    /** @var \Drupal\webform\WebformSubmissionInterface $webform_submission */
-    $webform_submission = $variables['webform_submission'];
-    $webform = $webform_submission->getWebform();
-    $suggestions[] = $hook . '__' . $webform->id();
-  }
-  elseif (isset($variables['webform'])) {
-    /** @var \Drupal\webform\WebformInterface $webform */
-    $webform = $variables['webform'];
-    $suggestions[] = $hook . '__' . $webform->id();
+  else {
+    $webform = NULL;
+    $webform_submission = NULL;
+    $sanitized_view_mode = NULL;
+    if (isset($variables['elements']) && isset($variables['elements']['#webform_submission'])) {
+      /** @var \Drupal\webform\WebformSubmissionInterface $webform_submission */
+      $webform_submission = $variables['elements']['#webform_submission'];
+      $webform = $webform_submission->getWebform();
+      $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
+    }
+    elseif (isset($variables['webform_submission'])) {
+      /** @var \Drupal\webform\WebformSubmissionInterface $webform_submission */
+      $webform_submission = $variables['webform_submission'];
+      $webform = $webform_submission->getWebform();
+    }
+    elseif (isset($variables['webform'])) {
+      /** @var \Drupal\webform\WebformInterface $webform */
+      $webform = $variables['webform'];
+    }
+
+    if ($webform) {
+      $suggestions[] = $hook . '__' . $webform->id();
+      if (isset($variables['handler'])) {
+        /** @var \Drupal\webform\Plugin\WebformHandlerInterface $handler */
+        $handler = $variables['handler'];
+        $suggestions[] = $hook . '__' . $webform->id() . '__' . $handler->getPluginId();
+        $suggestions[] = $hook . '__' . $webform->id() . '__' . $handler->getPluginId() . '__' . $handler->getHandlerId();
+      }
+      if ($sanitized_view_mode) {
+        $suggestions[] = $hook . '__' . $webform->id() . '__' . $sanitized_view_mode;
+        $suggestions[] = $hook . '__' . $sanitized_view_mode;
+      }
+    }
   }
 
   return $suggestions;
@@ -607,36 +769,15 @@ function webform_theme_suggestions_webform_submission(array $variables) {
 /**
  * Implements hook_theme_suggestions_HOOK().
  */
+function webform_theme_suggestions_webform_submission_form(array $variables) {
+  return _webform_theme_suggestions($variables, 'webform_submission_form');
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
 function webform_theme_suggestions_webform_submission_information(array $variables) {
   return _webform_theme_suggestions($variables, 'webform_submission_information');
-}
-
-/**
- * Implements hook_theme_suggestions_HOOK().
- */
-function webform_theme_suggestions_webform_submission_html(array $variables) {
-  return _webform_theme_suggestions($variables, 'webform_submission_html');
-}
-
-/**
- * Implements hook_theme_suggestions_HOOK().
- */
-function webform_theme_suggestions_webform_submission_table(array $variables) {
-  return _webform_theme_suggestions($variables, 'webform_submission_table');
-}
-
-/**
- * Implements hook_theme_suggestions_HOOK().
- */
-function webform_theme_suggestions_webform_submission_text(array $variables) {
-  return _webform_theme_suggestions($variables, 'webform_submission_text');
-}
-
-/**
- * Implements hook_theme_suggestions_HOOK().
- */
-function webform_theme_suggestions_webform_submission_yaml(array $variables) {
-  return _webform_theme_suggestions($variables, 'webform_submission_yaml');
 }
 
 /**

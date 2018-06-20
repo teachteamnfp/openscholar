@@ -21,7 +21,7 @@
                 "version": "1.x-dev",
                 "type": "drupal-module",
                 "source": {
-                    "url": "https://github.com/freelock/purl-d8.git",
+                    "url": "https://github.com/rbran100/purl-d8.git",
                     "type": "git",
                     "reference": "master"
                 }

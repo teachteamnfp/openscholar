@@ -3,7 +3,7 @@
 entity.webform.source_form:
   path: '/admin/structure/webform/manage/{webform}/source'
   defaults:
-    _title_callback: '\Drupal\webform\Controller\WebformController::title'
+    _title_callback: '\Drupal\webform\Controller\WebformEntityController::title'
     _entity_form: 'webform.source'
   requirements:
     _custom_access: '\Drupal\webform_ui\Access\WebformUiAccess::checkWebformSourceAccess'
@@ -11,9 +11,8 @@ entity.webform.source_form:
 # Options.
 
 entity.webform_options.source_form:
-  path: '/admin/structure/webform/settings/options/manage/{webform_options}/source'
+  path: '/admin/structure/webform/config/options/manage/{webform_options}/source'
   defaults:
-    _title_callback: '\Drupal\webform\Controller\WebformOptionsController::title'
     _entity_form: 'webform_options.source'
   requirements:
     _custom_access: '\Drupal\webform_ui\Access\WebformUiAccess::checkWebformOptionSourceAccess'
@@ -44,6 +43,24 @@ entity.webform_ui.element.add_form:
   requirements:
     _custom_access: '\Drupal\webform_ui\Access\WebformUiAccess::checkWebformEditAccess'
 
+entity.webform_ui.element.add_page:
+  path: '/admin/structure/webform/manage/{webform}/element/add/page'
+  defaults:
+    _form: '\Drupal\webform_ui\Form\WebformUiElementAddForm'
+    _title: 'Add page'
+    type: webform_wizard_page
+  requirements:
+    _custom_access: '\Drupal\webform_ui\Access\WebformUiAccess::checkWebformElementAccess'
+
+entity.webform_ui.element.add_layout:
+  path: '/admin/structure/webform/manage/{webform}/element/add/layout'
+  defaults:
+    _form: '\Drupal\webform_ui\Form\WebformUiElementAddForm'
+    _title: 'Add layout'
+    type: webform_flexbox
+  requirements:
+    _custom_access: '\Drupal\webform_ui\Access\WebformUiAccess::checkWebformElementAccess'
+
 entity.webform_ui.element.edit_form:
   path: '/admin/structure/webform/manage/{webform}/element/{key}/edit'
   defaults:
@@ -68,8 +85,8 @@ entity.webform_ui.element.delete_form:
   requirements:
     _custom_access: '\Drupal\webform_ui\Access\WebformUiAccess::checkWebformEditAccess'
 
-webform.element_plugins.test:
-  path: '/admin/structure/webform/settings/elements/{type}/test'
+webform.reports_plugins.elements.test:
+  path: '/admin/structure/webform/config/elements/{type}/test'
   defaults:
     _form: '\Drupal\webform_ui\Form\WebformUiElementTestForm'
     _title: 'Test element'

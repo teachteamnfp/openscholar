@@ -17,6 +17,27 @@ class WebformOptionsHelper {
   const DESCRIPTION_DELIMITER = ' -- ';
 
   /**
+   * Append option value to option text
+   *
+   * @param array $options
+   *   An associative array of options.
+   *
+   * @return array
+   *   An associative array of options.
+   */
+  public static function appendValueToText(array $options) {
+    foreach ($options as $value => $text) {
+      if (is_array($text)) {
+        $options[$value] = self::appendValueToText($text);
+      }
+      else {
+        $options[$value] = $text . ' (' . $value . ')';
+      }
+    }
+    return $options;
+  }
+
+  /**
    * Determine if the options has a specified value..
    *
    * @param string $value
@@ -79,7 +100,7 @@ class WebformOptionsHelper {
           return $text;
         }
       }
-      elseif ($value == $option_value) {
+      elseif ($value !== NULL && (string) $value === (string) $option_value) {
         if ($options_description && strpos($option_text, static::DESCRIPTION_DELIMITER) !== FALSE) {
           list($option_text) = explode(static::DESCRIPTION_DELIMITER, $option_text);
           return $option_text;
@@ -98,20 +119,20 @@ class WebformOptionsHelper {
    * @param array $options
    *   An associative array of options with TranslatableMarkup.
    *
-   * @return string
+   * @return array
    *   An associative array of options of strings,
    */
   public static function convertOptionsToString(array $options) {
-    $string = [];
+    $strings = [];
     foreach ($options as $option_value => $option_text) {
       if (is_array($option_text)) {
-        $string[(string) $option_value] = self::convertOptionsToString($option_text);
+        $strings[(string) $option_value] = self::convertOptionsToString($option_text);
       }
       else {
-        $string[(string) $option_value] = (string) $option_text;
+        $strings[(string) $option_value] = (string) $option_text;
       }
     }
-    return $string;
+    return $strings;
   }
 
   /**
@@ -122,7 +143,7 @@ class WebformOptionsHelper {
    * @param array $options
    *   An associative array of options.
    *
-   * @return string
+   * @return array
    *   An associative array of options with HTML entities decoded.
    */
   public static function decodeOptions(array $options) {

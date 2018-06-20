@@ -59,11 +59,11 @@ Tidy YAML files
 
     # Run all tests
     cd /var/www/sites/d8_webform
-    php core/scripts/run-tests.sh --url http://localhost/wf --module webform --dburl mysql://drupal_d8_webform:drupal.@dm1n@localhost/drupal_d8_webform
+    php core/scripts/run-tests.sh --suppress-deprecations --url http://localhost/wf --module webform --dburl mysql://drupal_d8_webform:drupal.@dm1n@localhost/drupal_d8_webform
 
     # Run single tests
     cd /var/www/sites/d8_webform
-    php core/scripts/run-tests.sh --verbose --class "Drupal\webform\Tests\WebformSubmissionStorageTest"
+    php core/scripts/run-tests.sh --suppress-deprecations --url http://localhost/wf --verbose --class "Drupal\Tests\webform\Functional\WebformListBuilderTest"
 
 [PHPUnit](https://www.drupal.org/node/2116263)
      
@@ -83,16 +83,18 @@ References
 
     # Execute individual PHPUnit tests.
     export SIMPLETEST_DB=mysql://drupal_d8_webform:drupal.@dm1n@localhost/drupal_d8_webform;
+    export SIMPLETEST_BASE_URL='http://localhost/wf';
 
     # Functional test.    
-    php ../vendor/phpunit/phpunit/phpunit --printer="\Drupal\Tests\Listeners\HtmlOutputPrinter" ../modules/sandbox/webform/tests/src/Functional/WebformExampleFunctionalTest.php
+    php ../../vendor/phpunit/phpunit/phpunit --printer="\Drupal\Tests\Listeners\HtmlOutputPrinter" ../modules/sandbox/webform/tests/src/Functional/WebformExampleFunctionalTest.php
 
     # Kernal test.    
-    php ../vendor/phpunit/phpunit/phpunit --printer="\Drupal\Tests\Listeners\HtmlOutputPrinter" ../modules/sandbox/webform/tests/src/Kernal/Utility/WebformDialogHelperTest.php
+    php ../../vendor/phpunit/phpunit/phpunit --printer="\Drupal\Tests\Listeners\HtmlOutputPrinter" ../modules/sandbox/webform/tests/src/Kernal/Utility/WebformDialogHelperTest.php
 
     # Unit test.
-    php ../vendor/phpunit/phpunit/phpunit --printer="\Drupal\Tests\Listeners\HtmlOutputPrinter"  ../modules/sandbox/webform/tests/src/Unit/Utility/WebformYamlTest.php
+    php ../../vendor/phpunit/phpunit/phpunit --printer="\Drupal\Tests\Listeners\HtmlOutputPrinter"  ../modules/sandbox/webform/tests/src/Unit/Utility/WebformYamlTest.php
 
+    php ../../vendor/phpunit/phpunit/phpunit --printer="\Drupal\Tests\Listeners\HtmlOutputPrinter"  ../modules/sandbox/webform/tests/src/Unit/Access/WebformAccessCheckTest
 
 5. Generate release notes
 -------------------------

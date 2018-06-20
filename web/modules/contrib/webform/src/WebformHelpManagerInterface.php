@@ -10,6 +10,17 @@ use Drupal\Core\Routing\RouteMatchInterface;
 interface WebformHelpManagerInterface {
 
   /**
+   * Get group.
+   *
+   * @param string|null $id
+   *   (optional) Group name.
+   *
+   * @return array|mixed
+   *   A single group item or all groups.
+   */
+  public function getGroup($id = NULL);
+
+  /**
    * Get help.
    *
    * @param string|null $id
@@ -32,6 +43,68 @@ interface WebformHelpManagerInterface {
   public function getVideo($id = NULL);
 
   /**
+   * Get video links.
+   *
+   * @param string $id
+   *   Video id.
+   *
+   * @return array
+   *   An array of links.
+   */
+  public function getVideoLinks($id);
+
+  /**
+   * Sets a notification to be displayed to webform administrators.
+   *
+   * @param string $id
+   *   The notification id.
+   * @param string|\Drupal\Component\Render\MarkupInterface|array $message
+   *   The notification to be displayed to webform administrators.
+   * @param string $type
+   *   (optional) The message's type. Defaults to 'status'. These values are
+   *   supported:
+   *   - 'info'
+   *   - 'status'
+   *   - 'warning'
+   *   - 'error'
+   *
+   * @internal
+   *   Currently being used to display notifications related to updates.
+   */
+  public function addNotification($id, $message, $type = 'status');
+
+  /**
+   * Get notifications.
+   *
+   * @param string $type
+   *   (optional) The message's type. These values are
+   *   supported:
+   *   - 'info'
+   *   - 'status'
+   *   - 'warning'
+   *   - 'error'
+   *
+   * @return array
+   *   An array of messages for specified message type or
+   *   all notifications grouped by type.
+   *
+   * @internal
+   *   Currently being used to display notifications related to updates.
+   */
+  public function getNotifications($type = NULL);
+
+  /**
+   * Delete a notification by id.
+   *
+   * @param string $id
+   *   The notification id.
+   *
+   * @internal
+   *   Currently being used to display notifications related to updates.
+   */
+  public function deleteNotification($id);
+
+  /**
    * Build help for specific route.
    *
    * @param string $route_name
@@ -51,28 +124,6 @@ interface WebformHelpManagerInterface {
    *   An render array containing help for the Webform module.
    */
   public function buildIndex();
-
-  /**
-   * Build the elements section.
-   *
-   * @param bool $docs
-   *   Set to TRUE to build exportable HTML documentation.
-   *
-   * @return array
-   *   An render array containing the elements section.
-   */
-  public function buildElements($docs = FALSE);
-
-  /**
-   * Build the uses section.
-   *
-   * @param bool $docs
-   *   Set to TRUE to build exportable HTML documentation.
-   *
-   * @return array
-   *   An render array containing the uses section.
-   */
-  public function buildUses($docs = FALSE);
 
   /**
    * Build the videos section.
@@ -117,4 +168,5 @@ interface WebformHelpManagerInterface {
    *   An render array containing the comparison section.
    */
   public function buildComparison($docs = FALSE);
+
 }

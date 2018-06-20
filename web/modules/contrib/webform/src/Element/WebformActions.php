@@ -54,6 +54,11 @@ class WebformActions extends Container {
    *   The processed element.
    */
   public static function processWebformActions(&$element, FormStateInterface $form_state, &$complete_form) {
+    /** @var \Drupal\webform\WebformSubmissionForm $form_object */
+    $form_object = $form_state->getFormObject();
+    /** @var \Drupal\webform\webform_submission $webform_submission */
+    $webform_submission = $form_object->getEntity();
+
     $prefix = ($element['#webform_key']) ? 'edit-' . $element['#webform_key'] . '-' : '';
 
     // Add class names only if form['actions']['#type'] is set to 'actions'.
@@ -79,18 +84,21 @@ class WebformActions extends Container {
       }
 
       // Hide buttons using #access.
-      if (!empty($element['#' . $button_name .'_hide'])) {
+      if (!empty($element['#' . $button_name . '_hide'])) {
         $element[$button_name]['#access'] = FALSE;
       }
 
-      // Apply custom label.
-      if (!empty($element['#' . $button_name .'__label']) && empty($element[$button_name]['#webform_actions_button_custom'])) {
-        $element[$button_name]['#value'] = $element['#' . $button_name .'__label'];
+      // Apply custom label except to update button (aka Save).
+      if (!empty($element['#' . $button_name . '__label']) && empty($element[$button_name]['#webform_actions_button_custom'])) {
+        $is_update_button = ($button_name === 'submit' && !($webform_submission->isNew() || $webform_submission->isDraft()));
+        if (!$is_update_button) {
+          $element[$button_name]['#value'] = $element['#' . $button_name . '__label'];
+        }
       }
 
       // Apply attributes (class, style, properties).
-      if (!empty($element['#' . $button_name .'__attributes'])) {
-        foreach ($element['#' . $button_name .'__attributes'] as $attribute_name => $attribute_value) {
+      if (!empty($element['#' . $button_name . '__attributes'])) {
+        foreach ($element['#' . $button_name . '__attributes'] as $attribute_name => $attribute_value) {
           if ($attribute_name == 'class') {
             // Merge class names.
             $element[$button_name]['#attributes']['class'] = array_merge($element[$button_name]['#attributes']['class'], $attribute_value);
@@ -106,7 +114,7 @@ class WebformActions extends Container {
       }
     }
 
-    // Hide actions element if no buttons are visible (ie #access = FALSE).
+    // Hide actions element if no buttons are visible (i.e. #access = FALSE).
     if (!$has_visible_button) {
       $element['#access'] = FALSE;
     }

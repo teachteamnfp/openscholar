@@ -32,13 +32,13 @@ class Date extends DateBase {
       }
     }
 
-    return parent::getDefaultProperties() + [
+    return [
       // Date settings.
       'datepicker' => FALSE,
       'date_date_format' => $date_format,
       'step' => '',
       'size' => '',
-    ];
+    ] + parent::getDefaultProperties();
   }
 
   /**
@@ -51,7 +51,7 @@ class Date extends DateBase {
       unset($element['#date_date_format']);
     }
 
-    // Set defautl date format to HTML date.
+    // Set default date format to HTML date.
     if (!isset($element['#date_date_format'])) {
       $element['#date_date_format'] = $this->getDefaultProperty('date_date_format');
     }
@@ -64,10 +64,6 @@ class Date extends DateBase {
     // @see \Drupal\Core\Render\Element\Date::getInfo
     $element['#attributes']['type'] = 'date';
 
-    // Issue #2817693: Min date option not working with jQuery UI
-    // datepicker.
-    $element['#attached']['library'][] = 'webform/webform.element.date';
-
     // Convert date element into textfield with date picker.
     if (!empty($element['#datepicker'])) {
       $element['#attributes']['type'] = 'text';
@@ -75,12 +71,41 @@ class Date extends DateBase {
       // Must manually set 'data-drupal-date-format' to trigger date picker.
       // @see \Drupal\Core\Render\Element\Date::processDate
       $element['#attributes']['data-drupal-date-format'] = [$element['#date_date_format']];
+    }
+  }
 
-      // Format default value.
+  /**
+   * {@inheritdoc}
+   */
+  public function setDefaultValue(array &$element) {
+    parent::setDefaultValue($element);
+
+    // Format date picker default value.
+    if (!empty($element['#datepicker'])) {
       if (isset($element['#default_value'])) {
-        $element['#default_value'] = date($element['#date_date_format'], strtotime($element['#default_value']));
+        if ($this->hasMultipleValues($element)) {
+          foreach ($element['#default_value'] as $index => $default_value) {
+            $element['#default_value'][$index] = date($element['#date_date_format'], strtotime($default_value));
+          }
+        }
+        else {
+          $element['#default_value'] = date($element['#date_date_format'], strtotime($element['#default_value']));
+        }
       }
     }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getItemFormat(array $element) {
+    $format = parent::getItemFormat($element);
+    // Drupal's default date fallback includes the time so we need to fallback
+    // to the specified or default date only format.
+    if ($format === 'fallback') {
+      $format = (isset($element['#date_date_format'])) ? $element['#date_date_format'] : $this->getDefaultProperty('date_date_format');
+    }
+    return $format;
   }
 
   /**
@@ -92,7 +117,7 @@ class Date extends DateBase {
     $form['date']['datepicker'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Use date picker'),
-      '#description' => $this->t('If checked, HTML5 date element will be replaced with <a href="https://jqueryui.com/datepicker/">jQuery UI datepicker</a>'),
+      '#description' => $this->t('If checked, the HTML5 date element will be replaced with <a href="https://jqueryui.com/datepicker/">jQuery UI datepicker</a>'),
       '#return_value' => TRUE,
     ];
     $date_format = DateFormat::load('html_date')->getPattern();

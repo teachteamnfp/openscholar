@@ -38,7 +38,7 @@ trait WebformEntityReferenceTrait {
   /**
    * {@inheritdoc}
    */
-  public function formatHtmlItem(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
+  protected function formatHtmlItem(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
     $entity = $this->getTargetEntity($element, $webform_submission, $options);
     if (!$entity) {
       return '';
@@ -69,7 +69,7 @@ trait WebformEntityReferenceTrait {
   /**
    * {@inheritdoc}
    */
-  public function formatTextItem(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
+  protected function formatTextItem(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
     $entity = $this->getTargetEntity($element, $webform_submission, $options);
     if (!$entity) {
       return '';
@@ -205,9 +205,9 @@ trait WebformEntityReferenceTrait {
       '#type' => 'checkboxes',
       '#title' => $this->t('Entity reference format'),
       '#options' => [
-        'id' => $this->t("ID, the entity's unique identified."),
-        'title' => $this->t("Title, the entity's title/label."),
-        'url' => $this->t("URL, the entity's URL."),
+        'id' => $this->t("ID, an entity's unique identified"),
+        'title' => $this->t("Title, an entity's title/label"),
+        'url' => $this->t("URL, an entity's URL"),
       ],
       '#required' => TRUE,
       '#default_value' => $export_options['entity_reference_items'],
@@ -421,7 +421,7 @@ trait WebformEntityReferenceTrait {
     // Set 'User' entity reference selection filter type role's #default_value
     // to an array and not NULL, which throws
     // "Warning: Invalid argument supplied for foreach()
-    // in Drupal\Core\Render\Element\Checkboxes::valueCallback() "
+    // in Drupal\Core\Render\Element\Checkboxes::valueCallback()"
     // @see \Drupal\user\Plugin\EntityReferenceSelection\UserSelection::buildConfigurationForm
     if ($target_type == 'user'
       && isset($selection_settings['filter']['type'])
@@ -583,13 +583,17 @@ trait WebformEntityReferenceTrait {
   public function validateConfigurationForm(array &$form, FormStateInterface $form_state) {
     parent::validateConfigurationForm($form, $form_state);
     $values = $form_state->getValues();
+
     if (isset($values['selection_settings']['target_bundles']) && empty($values['selection_settings']['target_bundles'])) {
       unset($values['selection_settings']['target_bundles']);
     }
     if (isset($values['selection_settings']['sort']['field']) && $values['selection_settings']['sort']['field'] == '_none') {
       unset($values['selection_settings']['sort']);
     }
-    // Convert include_anonymous into boolean.
+    // Convert auto_create and include_anonymous into boolean.
+    if (isset($values['selection_settings']['auto_create'])) {
+      $values['selection_settings']['auto_create'] = (bool) $values['selection_settings']['auto_create'];
+    }
     if (isset($values['selection_settings']['include_anonymous'])) {
       $values['selection_settings']['include_anonymous'] = (bool) $values['selection_settings']['include_anonymous'];
     }

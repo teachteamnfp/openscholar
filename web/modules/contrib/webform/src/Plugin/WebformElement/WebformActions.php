@@ -12,6 +12,7 @@ use Drupal\webform\WebformSubmissionInterface;
  *
  * @WebformElement(
  *   id = "webform_actions",
+ *   default_key = "actions",
  *   label = @Translation("Submit button(s)"),
  *   description = @Translation("Provides an element that contains a Webform's submit, draft, wizard, and/or preview buttons."),
  *   category = @Translation("Buttons"),
@@ -57,7 +58,7 @@ class WebformActions extends ContainerBase {
    * {@inheritdoc}
    */
   public function isRoot() {
-    return TRUE;
+    return FALSE;
   }
 
   /**
@@ -146,13 +147,13 @@ class WebformActions extends ContainerBase {
       'preview_prev' => [
         'title' => $this->t('Preview previous'),
         'label' => $this->t('preview previous'),
-        'description' => $this->t('The text for the button that will proceed to the preview page.'),
+        'description' => $this->t('The text for the button to go backwards from the preview page.'),
         'access' => $preview_enabled,
       ],
       'preview_next' => [
         'title' => $this->t('Preview next'),
         'label' => $this->t('preview next'),
-        'description' => $this->t('The text for the button to go backwards from the preview page.'),
+        'description' => $this->t('The text for the button that will proceed to the preview page.'),
         'access' => $preview_enabled,
       ],
     ];
@@ -186,7 +187,7 @@ class WebformActions extends ContainerBase {
         $form[$name . '_settings'][$name . '_hide_message'] = [
           '#type' => 'webform_message',
           '#access' => TRUE,
-          '#message_message' => $this->t('Hiding the %label button can cause unexpected issues, please make sure to include the %label button using another actions element.', $t_args),
+          '#message_message' => $this->t("Hiding the %label button can cause unexpected issues, please make sure to include the %label button using another 'Submit button(s)' element.", $t_args),
           '#message_type' => 'warning',
           '#states' => [
             'visible' => [':input[name="properties[' . $name . '_hide]"]' => ['checked' => TRUE]],
@@ -230,8 +231,8 @@ class WebformActions extends ContainerBase {
 
     if (!$webform->hasActions()) {
       $form['element']['title']['#default_value'] = $this->t('Submit button(s)');
-      $this->key = 'acccc';
     }
+
     return $form;
   }
 

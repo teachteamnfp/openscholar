@@ -55,6 +55,9 @@ class WebformResultsExportOptionsTest extends WebformTestBase {
     $this->assertRaw('Abraham,Lincoln');
     $this->assertRaw('Hillary,Clinton');
 
+    // Check special characters.
+    $this->assertRaw("quotes' \"\"", "html <markup>");
+
     // Check delimiter.
     $this->getExport($webform, ['delimiter' => '|']);
     $this->assertRaw('"First name"|"Last name"');
@@ -135,10 +138,18 @@ class WebformResultsExportOptionsTest extends WebformTestBase {
     $this->assertRaw('Address,"Address 2",City/Town,State/Province,"Zip/Postal Code",Country');
 
     // Check limit.
-    $this->getExport($webform, ['range_type' => 'latest', 'range_latest' => 1]);
+    $this->getExport($webform, ['range_type' => 'latest', 'range_latest' => 2]);
     $this->assertRaw('Hillary,Clinton');
     $this->assertNoRaw('George,Washington');
     $this->assertNoRaw('Abraham,Lincoln');
+
+    // Check sort ASC.
+    $this->getExport($webform, ['order' => 'asc']);
+    $this->assertPattern('/George.*Abraham.*Hillary/ms');
+
+    // Check sort DESC.
+    $this->getExport($webform, ['order' => 'desc']);
+    $this->assertPattern('/Hillary.*Abraham.*George/ms');
 
     // Check sid start.
     $this->getExport($webform, ['range_type' => 'sid', 'range_start' => $submissions[1]->id()]);
@@ -184,18 +195,29 @@ class WebformResultsExportOptionsTest extends WebformTestBase {
 
     // Check changing default exporter to 'table' settings.
     $this->drupalLogin($this->rootUser);
-    $this->drupalPostForm('admin/structure/webform/manage/' . $webform->id() . '/results/download', ['exporter' => 'table'], t('Download'));
+    $edit = [
+      'exporter' => 'table',
+    ];
+    $this->drupalPostForm('admin/structure/webform/manage/' . $webform->id() . '/results/download', $edit, t('Download'));
     $this->assertRaw('<body><table border="1"><thead><tr bgcolor="#cccccc" valign="top"><th>Serial number</th>');
     $this->assertPattern('#<td>George</td>\s+<td>Washington</td>\s+<td>Male</td>#ms');
 
     // Check changing default export (delimiter) settings.
     $this->drupalLogin($this->rootUser);
-    $this->drupalPostForm('admin/structure/webform/settings/exporters', ['delimiter' => '|'], t('Save configuration'));
+    $edit = [
+      'exporter' => 'delimited',
+      'exporters[delimited][delimiter]' => '|',
+    ];
+    $this->drupalPostForm('admin/structure/webform/config/exporters', $edit, t('Save configuration'));
     $this->drupalPostForm('admin/structure/webform/manage/' . $webform->id() . '/results/download', [], t('Download'));
     $this->assertRaw('"Submission ID"|"Submission URI"');
 
     // Check saved webform export (delimiter) settings.
-    $this->drupalPostForm('admin/structure/webform/manage/' . $webform->id() . '/results/download', ['delimiter' => '.'], t('Save settings'));
+    $edit = [
+      'exporter' => 'delimited',
+      'exporters[delimited][delimiter]' => '.',
+    ];
+    $this->drupalPostForm('admin/structure/webform/manage/' . $webform->id() . '/results/download', $edit, t('Save settings'));
     $this->drupalPostForm('admin/structure/webform/manage/' . $webform->id() . '/results/download', [], t('Download'));
     $this->assertRaw('"Submission ID"."Submission URI"');
 

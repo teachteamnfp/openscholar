@@ -17,7 +17,6 @@ class WebformEntitySettingsAccessForm extends WebformEntitySettingsBaseForm {
     $webform = $this->entity;
 
     $access = $webform->getAccessRules();
-
     $permissions = [
       'create' => $this->t('Create webform submissions'),
       'view_any' => $this->t('View all webform submissions'),
@@ -27,6 +26,8 @@ class WebformEntitySettingsAccessForm extends WebformEntitySettingsBaseForm {
       'view_own' => $this->t('View own webform submissions'),
       'update_own' => $this->t('Update own webform submissions'),
       'delete_own' => $this->t('Delete own webform submissions'),
+      'administer' => $this->t('Administer webform &amp; submissions'),
+      'test' => $this->t('Test webform'),
     ];
 
     $form['access']['#tree'] = TRUE;
@@ -55,6 +56,13 @@ class WebformEntitySettingsAccessForm extends WebformEntitySettingsBaseForm {
         '#default_value' => $access[$name]['permissions'],
       ];
     }
+
+    $form['access']['administer']['message'] = [
+      '#weight' => -10,
+      '#type' => 'webform_message',
+      '#message_type' => 'warning',
+      '#message_message' => $this->t('<strong>Warning</strong>: The below settings give users, permissions, and roles full access to this webform and its submissions.'),
+    ];
 
     return parent::form($form, $form_state);
   }

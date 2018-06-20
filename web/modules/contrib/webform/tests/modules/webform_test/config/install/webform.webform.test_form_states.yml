@@ -8,6 +8,7 @@ open: null
 close: null
 uid: null
 template: false
+archive: false
 id: test_form_states
 title: 'Test: Form API #states'
 description: 'Test Drupal''s #states API states (visible, required, disabled, checked, and expanded).'
@@ -19,27 +20,6 @@ elements: |
     visible_trigger:
       '#type': checkbox
       '#title': 'Displays and require elements'
-    visible_processed_text:
-      '#type': processed_text
-      '#title': 'Advanced HTML/Text'
-      '#states':
-        visible:
-          ':input[name="visible_trigger"]':
-            checked: true
-        required:
-          ':input[name="visible_trigger"]':
-            checked: true
-    visible_webform_markup:
-      '#type': webform_markup
-      '#title': 'Basic HTML'
-      '#description': '<b>Known Issues:</b><br /><a href="https://www.drupal.org/node/2700667">Issue #2700667: Notice: Undefined index: #type in drupal_process_states()</a>'
-      '#states':
-        visible:
-          ':input[name="visible_trigger"]':
-            checked: true
-        required:
-          ':input[name="visible_trigger"]':
-            checked: true
     visible_container:
       '#type': container
       '#title': Container
@@ -71,36 +51,9 @@ elements: |
         required:
           ':input[name="visible_trigger"]':
             checked: true
-    visible_item:
-      '#type': item
-      '#title': Item
-      '#markup': '{markup}'
-      '#field_prefix': '{field_prefix}'
-      '#field_suffix': '{field_suffix}'
-      '#description': '<b>Known Issues:</b><br /><a href="https://www.drupal.org/node/783438">Issue #783438: #states doesn''t work for #type item</a>'
-      '#states':
-        visible:
-          ':input[name="visible_trigger"]':
-            checked: true
-        required:
-          ':input[name="visible_trigger"]':
-            checked: true
-    visible_label:
-      '#type': label
-      '#title': Label
-      '#states':
-        visible:
-          ':input[name="visible_trigger"]':
-            checked: true
-        required:
-          ':input[name="visible_trigger"]':
-            checked: true
-    visible_webform_message:
-      '#type': webform_message
-      '#title': Message
-      '#message_type': warning
-      '#message_message': 'This is a <strong>warning</strong> message.'
-      '#description': '<b>Known Issues:</b><br /><a href="https://www.drupal.org/node/77245">Issue #77245: A place for JavaScript status messages</a>'
+    visible_webform_section:
+      '#type': webform_section
+      '#title': Section
       '#states':
         visible:
           ':input[name="visible_trigger"]':
@@ -126,8 +79,18 @@ elements: |
         address_2: '10 Main Street'
         city: Springfield
         state_province: Alabama
-        postal_code: Loremipsum
+        postal_code: '11111'
         country: Afghanistan
+      '#states':
+        visible:
+          ':input[name="visible_trigger"]':
+            checked: true
+        required:
+          ':input[name="visible_trigger"]':
+            checked: true
+    visible_processed_text:
+      '#type': processed_text
+      '#title': 'Advanced HTML/Text'
       '#states':
         visible:
           ':input[name="visible_trigger"]':
@@ -149,6 +112,17 @@ elements: |
       '#type': webform_autocomplete
       '#title': Autocomplete
       '#default_value': Loremipsum
+      '#states':
+        visible:
+          ':input[name="visible_trigger"]':
+            checked: true
+        required:
+          ':input[name="visible_trigger"]':
+            checked: true
+    visible_webform_markup:
+      '#type': webform_markup
+      '#title': 'Basic HTML'
+      '#description': '<b>Known Issues:</b><br /><a href="https://www.drupal.org/node/2700667">Issue #2700667: Notice: Undefined index: #type in drupal_process_states()</a>'
       '#states':
         visible:
           ':input[name="visible_trigger"]':
@@ -275,7 +249,6 @@ elements: |
       '#type': webform_computed_token
       '#title': 'Computed token'
       '#value': 'This is a Computed token value.'
-      '#default_value': Loremipsum
       '#states':
         visible:
           ':input[name="visible_trigger"]':
@@ -287,7 +260,6 @@ elements: |
       '#type': webform_computed_twig
       '#title': 'Computed Twig'
       '#value': 'This is a Computed Twig value.'
-      '#default_value': Loremipsum
       '#states':
         visible:
           ':input[name="visible_trigger"]':
@@ -307,7 +279,7 @@ elements: |
         address_2: '10 Main Street'
         city: Springfield
         state_province: Alabama
-        postal_code: Loremipsum
+        postal_code: '11111'
         country: Afghanistan
       '#states':
         visible:
@@ -316,29 +288,31 @@ elements: |
         required:
           ':input[name="visible_trigger"]':
             checked: true
-    visible_webform_creditcard:
-      '#type': webform_creditcard
-      '#title': 'Credit card'
+    visible_webform_custom_composite:
+      '#type': webform_custom_composite
+      '#title': 'Custom composite'
+      '#element':
+        name:
+          '#type': textfield
+          '#title': Name
+          '#title_display': invisible
+        gender:
+          '#type': select
+          '#title': Gender
+          '#title_display': invisible
+          '#options':
+            Male: Male
+            Female: Female
       '#default_value':
-        warning: null
-        name: Loremipsum
-        type: VI
-        number: '4111111111111111'
-        civ: 111
-        expiration: null
-        expiration_month: 1
-        expiration_year: 2017
-      '#states':
-        visible:
-          ':input[name="visible_trigger"]':
-            checked: true
-        required:
-          ':input[name="visible_trigger"]':
-            checked: true
-    visible_webform_creditcard_number:
-      '#type': webform_creditcard_number
-      '#title': 'Credit card number'
-      '#default_value': '4111111111111111'
+        -
+          name: Loremipsum
+          gender: Male
+        -
+          name: Loremipsum
+          gender: Male
+        -
+          name: Loremipsum
+          gender: Male
       '#states':
         visible:
           ':input[name="visible_trigger"]':
@@ -349,7 +323,7 @@ elements: |
     visible_date:
       '#type': date
       '#title': Date
-      '#default_value': '1942-06-18'
+      '#default_value': '2026-06-22T01:12:56-0400'
       '#states':
         visible:
           ':input[name="visible_trigger"]':
@@ -361,7 +335,7 @@ elements: |
       '#type': datetime
       '#title': Date/time
       '#description': '<b>Known Issues:</b><br /><a href="https://www.drupal.org/node/2419131">Issue #2419131: #states attribute does not work on #type datetime</a>'
-      '#default_value': '1942-06-18'
+      '#default_value': '2010-09-02T11:55:59-0400'
       '#states':
         visible:
           ':input[name="visible_trigger"]':
@@ -372,7 +346,7 @@ elements: |
     visible_datelist:
       '#type': datelist
       '#title': 'Date list'
-      '#default_value': '1942-06-18'
+      '#default_value': '2013-06-05T17:39:18-0400'
       '#states':
         visible:
           ':input[name="visible_trigger"]':
@@ -507,6 +481,19 @@ elements: |
         required:
           ':input[name="visible_trigger"]':
             checked: true
+    visible_webform_horizontal_rule:
+      '#type': webform_horizontal_rule
+      '#attributes':
+        class:
+          - webform-horizontal-rule--dotted
+          - webform-horizontal-rule--thick
+      '#states':
+        visible:
+          ':input[name="visible_trigger"]':
+            checked: true
+        required:
+          ':input[name="visible_trigger"]':
+            checked: true
     visible_webform_image_file:
       '#type': webform_image_file
       '#title': 'Image file'
@@ -532,6 +519,30 @@ elements: |
           text: 'Bear 3'
           src: 'https://www.placebear.com/120/100'
       '#default_value': Loremipsum
+      '#states':
+        visible:
+          ':input[name="visible_trigger"]':
+            checked: true
+        required:
+          ':input[name="visible_trigger"]':
+            checked: true
+    visible_item:
+      '#type': item
+      '#title': Item
+      '#markup': '{markup}'
+      '#field_prefix': '{field_prefix}'
+      '#field_suffix': '{field_suffix}'
+      '#description': '<b>Known Issues:</b><br /><a href="https://www.drupal.org/node/783438">Issue #783438: #states doesn''t work for #type item</a>'
+      '#states':
+        visible:
+          ':input[name="visible_trigger"]':
+            checked: true
+        required:
+          ':input[name="visible_trigger"]':
+            checked: true
+    visible_label:
+      '#type': label
+      '#title': Label
       '#states':
         visible:
           ':input[name="visible_trigger"]':
@@ -633,6 +644,19 @@ elements: |
         required:
           ':input[name="visible_trigger"]':
             checked: true
+    visible_webform_message:
+      '#type': webform_message
+      '#title': Message
+      '#message_type': warning
+      '#message_message': 'This is a <strong>warning</strong> message.'
+      '#description': '<b>Known Issues:</b><br /><a href="https://www.drupal.org/node/77245">Issue #77245: A place for JavaScript status messages</a>'
+      '#states':
+        visible:
+          ':input[name="visible_trigger"]':
+            checked: true
+        required:
+          ':input[name="visible_trigger"]':
+            checked: true
     visible_webform_name:
       '#type': webform_name
       '#title': Name
@@ -725,9 +749,9 @@ elements: |
       '#min': 0
       '#max': 100
       '#step': 1
-      '#range__output': true
-      '#range__output_prefix': $
-      '#range__output_suffix': '.00'
+      '#output': below
+      '#output__field_prefix': $
+      '#output__field_suffix': '.00'
       '#states':
         visible:
           ':input[name="visible_trigger"]':
@@ -738,7 +762,6 @@ elements: |
     visible_webform_rating:
       '#type': webform_rating
       '#title': Rating
-      '#default_value': 1
       '#states':
         visible:
           ':input[name="visible_trigger"]':
@@ -881,12 +904,11 @@ elements: |
     visible_webform_term_checkboxes:
       '#type': webform_term_checkboxes
       '#title': 'Term checkboxes'
-      '#options_display': side_by_side
       '#vocabulary': tags
       '#default_value':
-        - 49
-        - 33
-        - 21
+        - Loremipsum
+        - Oratione
+        - Dixisset
       '#states':
         visible:
           ':input[name="visible_trigger"]':
@@ -898,7 +920,7 @@ elements: |
       '#type': webform_term_select
       '#title': 'Term select'
       '#vocabulary': tags
-      '#default_value': 49
+      '#default_value': Loremipsum
       '#states':
         visible:
           ':input[name="visible_trigger"]':
@@ -1024,21 +1046,6 @@ elements: |
     invisible_trigger:
       '#type': checkbox
       '#title': 'Hide and empty elements'
-    invisible_processed_text:
-      '#type': processed_text
-      '#title': 'Advanced HTML/Text'
-      '#states':
-        invisible:
-          ':input[name="invisible_trigger"]':
-            checked: true
-    invisible_webform_markup:
-      '#type': webform_markup
-      '#title': 'Basic HTML'
-      '#description': '<b>Known Issues:</b><br /><a href="https://www.drupal.org/node/2700667">Issue #2700667: Notice: Undefined index: #type in drupal_process_states()</a>'
-      '#states':
-        invisible:
-          ':input[name="invisible_trigger"]':
-            checked: true
     invisible_container:
       '#type': container
       '#title': Container
@@ -1061,30 +1068,9 @@ elements: |
         invisible:
           ':input[name="invisible_trigger"]':
             checked: true
-    invisible_item:
-      '#type': item
-      '#title': Item
-      '#markup': '{markup}'
-      '#field_prefix': '{field_prefix}'
-      '#field_suffix': '{field_suffix}'
-      '#description': '<b>Known Issues:</b><br /><a href="https://www.drupal.org/node/783438">Issue #783438: #states doesn''t work for #type item</a>'
-      '#states':
-        invisible:
-          ':input[name="invisible_trigger"]':
-            checked: true
-    invisible_label:
-      '#type': label
-      '#title': Label
-      '#states':
-        invisible:
-          ':input[name="invisible_trigger"]':
-            checked: true
-    invisible_webform_message:
-      '#type': webform_message
-      '#title': Message
-      '#message_type': warning
-      '#message_message': 'This is a <strong>warning</strong> message.'
-      '#description': '<b>Known Issues:</b><br /><a href="https://www.drupal.org/node/77245">Issue #77245: A place for JavaScript status messages</a>'
+    invisible_webform_section:
+      '#type': webform_section
+      '#title': Section
       '#states':
         invisible:
           ':input[name="invisible_trigger"]':
@@ -1104,8 +1090,15 @@ elements: |
         address_2: '10 Main Street'
         city: Springfield
         state_province: Alabama
-        postal_code: Loremipsum
+        postal_code: '11111'
         country: Afghanistan
+      '#states':
+        invisible:
+          ':input[name="invisible_trigger"]':
+            checked: true
+    invisible_processed_text:
+      '#type': processed_text
+      '#title': 'Advanced HTML/Text'
       '#states':
         invisible:
           ':input[name="invisible_trigger"]':
@@ -1121,6 +1114,14 @@ elements: |
       '#type': webform_autocomplete
       '#title': Autocomplete
       '#default_value': Loremipsum
+      '#states':
+        invisible:
+          ':input[name="invisible_trigger"]':
+            checked: true
+    invisible_webform_markup:
+      '#type': webform_markup
+      '#title': 'Basic HTML'
+      '#description': '<b>Known Issues:</b><br /><a href="https://www.drupal.org/node/2700667">Issue #2700667: Notice: Undefined index: #type in drupal_process_states()</a>'
       '#states':
         invisible:
           ':input[name="invisible_trigger"]':
@@ -1220,7 +1221,6 @@ elements: |
       '#type': webform_computed_token
       '#title': 'Computed token'
       '#value': 'This is a Computed token value.'
-      '#default_value': Loremipsum
       '#states':
         invisible:
           ':input[name="invisible_trigger"]':
@@ -1229,7 +1229,6 @@ elements: |
       '#type': webform_computed_twig
       '#title': 'Computed Twig'
       '#value': 'This is a Computed Twig value.'
-      '#default_value': Loremipsum
       '#states':
         invisible:
           ':input[name="invisible_trigger"]':
@@ -1246,32 +1245,37 @@ elements: |
         address_2: '10 Main Street'
         city: Springfield
         state_province: Alabama
-        postal_code: Loremipsum
+        postal_code: '11111'
         country: Afghanistan
       '#states':
         invisible:
           ':input[name="invisible_trigger"]':
             checked: true
-    invisible_webform_creditcard:
-      '#type': webform_creditcard
-      '#title': 'Credit card'
+    invisible_webform_custom_composite:
+      '#type': webform_custom_composite
+      '#title': 'Custom composite'
+      '#element':
+        name:
+          '#type': textfield
+          '#title': Name
+          '#title_display': invisible
+        gender:
+          '#type': select
+          '#title': Gender
+          '#title_display': invisible
+          '#options':
+            Male: Male
+            Female: Female
       '#default_value':
-        warning: null
-        name: Loremipsum
-        type: VI
-        number: '4111111111111111'
-        civ: 111
-        expiration: null
-        expiration_month: 1
-        expiration_year: 2017
-      '#states':
-        invisible:
-          ':input[name="invisible_trigger"]':
-            checked: true
-    invisible_webform_creditcard_number:
-      '#type': webform_creditcard_number
-      '#title': 'Credit card number'
-      '#default_value': '4111111111111111'
+        -
+          name: Loremipsum
+          gender: Male
+        -
+          name: Loremipsum
+          gender: Male
+        -
+          name: Loremipsum
+          gender: Male
       '#states':
         invisible:
           ':input[name="invisible_trigger"]':
@@ -1279,7 +1283,7 @@ elements: |
     invisible_date:
       '#type': date
       '#title': Date
-      '#default_value': '1942-06-18'
+      '#default_value': '2012-09-09T14:24:41-0400'
       '#states':
         invisible:
           ':input[name="invisible_trigger"]':
@@ -1288,7 +1292,7 @@ elements: |
       '#type': datetime
       '#title': Date/time
       '#description': '<b>Known Issues:</b><br /><a href="https://www.drupal.org/node/2419131">Issue #2419131: #states attribute does not work on #type datetime</a>'
-      '#default_value': '1942-06-18'
+      '#default_value': '2018-12-28T05:58:05-0500'
       '#states':
         invisible:
           ':input[name="invisible_trigger"]':
@@ -1296,7 +1300,7 @@ elements: |
     invisible_datelist:
       '#type': datelist
       '#title': 'Date list'
-      '#default_value': '1942-06-18'
+      '#default_value': '2034-07-13T18:52:51-0400'
       '#states':
         invisible:
           ':input[name="invisible_trigger"]':
@@ -1401,6 +1405,16 @@ elements: |
         invisible:
           ':input[name="invisible_trigger"]':
             checked: true
+    invisible_webform_horizontal_rule:
+      '#type': webform_horizontal_rule
+      '#attributes':
+        class:
+          - webform-horizontal-rule--dotted
+          - webform-horizontal-rule--thick
+      '#states':
+        invisible:
+          ':input[name="invisible_trigger"]':
+            checked: true
     invisible_webform_image_file:
       '#type': webform_image_file
       '#title': 'Image file'
@@ -1423,6 +1437,24 @@ elements: |
           text: 'Bear 3'
           src: 'https://www.placebear.com/120/100'
       '#default_value': Loremipsum
+      '#states':
+        invisible:
+          ':input[name="invisible_trigger"]':
+            checked: true
+    invisible_item:
+      '#type': item
+      '#title': Item
+      '#markup': '{markup}'
+      '#field_prefix': '{field_prefix}'
+      '#field_suffix': '{field_suffix}'
+      '#description': '<b>Known Issues:</b><br /><a href="https://www.drupal.org/node/783438">Issue #783438: #states doesn''t work for #type item</a>'
+      '#states':
+        invisible:
+          ':input[name="invisible_trigger"]':
+            checked: true
+    invisible_label:
+      '#type': label
+      '#title': Label
       '#states':
         invisible:
           ':input[name="invisible_trigger"]':
@@ -1503,6 +1535,16 @@ elements: |
         invisible:
           ':input[name="invisible_trigger"]':
             checked: true
+    invisible_webform_message:
+      '#type': webform_message
+      '#title': Message
+      '#message_type': warning
+      '#message_message': 'This is a <strong>warning</strong> message.'
+      '#description': '<b>Known Issues:</b><br /><a href="https://www.drupal.org/node/77245">Issue #77245: A place for JavaScript status messages</a>'
+      '#states':
+        invisible:
+          ':input[name="invisible_trigger"]':
+            checked: true
     invisible_webform_name:
       '#type': webform_name
       '#title': Name
@@ -1577,9 +1619,9 @@ elements: |
       '#min': 0
       '#max': 100
       '#step': 1
-      '#range__output': true
-      '#range__output_prefix': $
-      '#range__output_suffix': '.00'
+      '#output': below
+      '#output__field_prefix': $
+      '#output__field_suffix': '.00'
       '#states':
         invisible:
           ':input[name="invisible_trigger"]':
@@ -1587,7 +1629,6 @@ elements: |
     invisible_webform_rating:
       '#type': webform_rating
       '#title': Rating
-      '#default_value': 1
       '#states':
         invisible:
           ':input[name="invisible_trigger"]':
@@ -1700,12 +1741,11 @@ elements: |
     invisible_webform_term_checkboxes:
       '#type': webform_term_checkboxes
       '#title': 'Term checkboxes'
-      '#options_display': side_by_side
       '#vocabulary': tags
       '#default_value':
-        - 49
-        - 33
-        - 21
+        - Loremipsum
+        - Oratione
+        - Dixisset
       '#states':
         invisible:
           ':input[name="invisible_trigger"]':
@@ -1714,7 +1754,7 @@ elements: |
       '#type': webform_term_select
       '#title': 'Term select'
       '#vocabulary': tags
-      '#default_value': 49
+      '#default_value': Loremipsum
       '#states':
         invisible:
           ':input[name="invisible_trigger"]':
@@ -1818,8 +1858,15 @@ elements: |
         address_2: '10 Main Street'
         city: Springfield
         state_province: Alabama
-        postal_code: Loremipsum
+        postal_code: '11111'
         country: Afghanistan
+      '#states':
+        disabled:
+          ':input[name="disabled_trigger"]':
+            checked: true
+    disabled_processed_text:
+      '#type': processed_text
+      '#title': 'Advanced HTML/Text'
       '#states':
         disabled:
           ':input[name="disabled_trigger"]':
@@ -1835,6 +1882,14 @@ elements: |
       '#type': webform_autocomplete
       '#title': Autocomplete
       '#default_value': Loremipsum
+      '#states':
+        disabled:
+          ':input[name="disabled_trigger"]':
+            checked: true
+    disabled_webform_markup:
+      '#type': webform_markup
+      '#title': 'Basic HTML'
+      '#description': '<b>Known Issues:</b><br /><a href="https://www.drupal.org/node/2700667">Issue #2700667: Notice: Undefined index: #type in drupal_process_states()</a>'
       '#states':
         disabled:
           ':input[name="disabled_trigger"]':
@@ -1934,7 +1989,6 @@ elements: |
       '#type': webform_computed_token
       '#title': 'Computed token'
       '#value': 'This is a Computed token value.'
-      '#default_value': Loremipsum
       '#states':
         disabled:
           ':input[name="disabled_trigger"]':
@@ -1943,7 +1997,6 @@ elements: |
       '#type': webform_computed_twig
       '#title': 'Computed Twig'
       '#value': 'This is a Computed Twig value.'
-      '#default_value': Loremipsum
       '#states':
         disabled:
           ':input[name="disabled_trigger"]':
@@ -1960,32 +2013,37 @@ elements: |
         address_2: '10 Main Street'
         city: Springfield
         state_province: Alabama
-        postal_code: Loremipsum
+        postal_code: '11111'
         country: Afghanistan
       '#states':
         disabled:
           ':input[name="disabled_trigger"]':
             checked: true
-    disabled_webform_creditcard:
-      '#type': webform_creditcard
-      '#title': 'Credit card'
+    disabled_webform_custom_composite:
+      '#type': webform_custom_composite
+      '#title': 'Custom composite'
+      '#element':
+        name:
+          '#type': textfield
+          '#title': Name
+          '#title_display': invisible
+        gender:
+          '#type': select
+          '#title': Gender
+          '#title_display': invisible
+          '#options':
+            Male: Male
+            Female: Female
       '#default_value':
-        warning: null
-        name: Loremipsum
-        type: VI
-        number: '4111111111111111'
-        civ: 111
-        expiration: null
-        expiration_month: 1
-        expiration_year: 2017
-      '#states':
-        disabled:
-          ':input[name="disabled_trigger"]':
-            checked: true
-    disabled_webform_creditcard_number:
-      '#type': webform_creditcard_number
-      '#title': 'Credit card number'
-      '#default_value': '4111111111111111'
+        -
+          name: Loremipsum
+          gender: Male
+        -
+          name: Loremipsum
+          gender: Male
+        -
+          name: Loremipsum
+          gender: Male
       '#states':
         disabled:
           ':input[name="disabled_trigger"]':
@@ -1993,7 +2051,7 @@ elements: |
     disabled_date:
       '#type': date
       '#title': Date
-      '#default_value': '1942-06-18'
+      '#default_value': '2023-03-04T06:00:33-0500'
       '#states':
         disabled:
           ':input[name="disabled_trigger"]':
@@ -2002,7 +2060,7 @@ elements: |
       '#type': datetime
       '#title': Date/time
       '#description': '<b>Known Issues:</b><br /><a href="https://www.drupal.org/node/2419131">Issue #2419131: #states attribute does not work on #type datetime</a>'
-      '#default_value': '1942-06-18'
+      '#default_value': '2011-07-16T08:52:39-0400'
       '#states':
         disabled:
           ':input[name="disabled_trigger"]':
@@ -2010,7 +2068,7 @@ elements: |
     disabled_datelist:
       '#type': datelist
       '#title': 'Date list'
-      '#default_value': '1942-06-18'
+      '#default_value': '2023-07-20T18:43:53-0400'
       '#states':
         disabled:
           ':input[name="disabled_trigger"]':
@@ -2115,6 +2173,16 @@ elements: |
         disabled:
           ':input[name="disabled_trigger"]':
             checked: true
+    disabled_webform_horizontal_rule:
+      '#type': webform_horizontal_rule
+      '#attributes':
+        class:
+          - webform-horizontal-rule--dotted
+          - webform-horizontal-rule--thick
+      '#states':
+        disabled:
+          ':input[name="disabled_trigger"]':
+            checked: true
     disabled_webform_image_file:
       '#type': webform_image_file
       '#title': 'Image file'
@@ -2137,6 +2205,24 @@ elements: |
           text: 'Bear 3'
           src: 'https://www.placebear.com/120/100'
       '#default_value': Loremipsum
+      '#states':
+        disabled:
+          ':input[name="disabled_trigger"]':
+            checked: true
+    disabled_item:
+      '#type': item
+      '#title': Item
+      '#markup': '{markup}'
+      '#field_prefix': '{field_prefix}'
+      '#field_suffix': '{field_suffix}'
+      '#description': '<b>Known Issues:</b><br /><a href="https://www.drupal.org/node/783438">Issue #783438: #states doesn''t work for #type item</a>'
+      '#states':
+        disabled:
+          ':input[name="disabled_trigger"]':
+            checked: true
+    disabled_label:
+      '#type': label
+      '#title': Label
       '#states':
         disabled:
           ':input[name="disabled_trigger"]':
@@ -2217,6 +2303,16 @@ elements: |
         disabled:
           ':input[name="disabled_trigger"]':
             checked: true
+    disabled_webform_message:
+      '#type': webform_message
+      '#title': Message
+      '#message_type': warning
+      '#message_message': 'This is a <strong>warning</strong> message.'
+      '#description': '<b>Known Issues:</b><br /><a href="https://www.drupal.org/node/77245">Issue #77245: A place for JavaScript status messages</a>'
+      '#states':
+        disabled:
+          ':input[name="disabled_trigger"]':
+            checked: true
     disabled_webform_name:
       '#type': webform_name
       '#title': Name
@@ -2291,9 +2387,9 @@ elements: |
       '#min': 0
       '#max': 100
       '#step': 1
-      '#range__output': true
-      '#range__output_prefix': $
-      '#range__output_suffix': '.00'
+      '#output': below
+      '#output__field_prefix': $
+      '#output__field_suffix': '.00'
       '#states':
         disabled:
           ':input[name="disabled_trigger"]':
@@ -2301,7 +2397,6 @@ elements: |
     disabled_webform_rating:
       '#type': webform_rating
       '#title': Rating
-      '#default_value': 1
       '#states':
         disabled:
           ':input[name="disabled_trigger"]':
@@ -2414,12 +2509,11 @@ elements: |
     disabled_webform_term_checkboxes:
       '#type': webform_term_checkboxes
       '#title': 'Term checkboxes'
-      '#options_display': side_by_side
       '#vocabulary': tags
       '#default_value':
-        - 49
-        - 33
-        - 21
+        - Loremipsum
+        - Oratione
+        - Dixisset
       '#states':
         disabled:
           ':input[name="disabled_trigger"]':
@@ -2428,7 +2522,7 @@ elements: |
       '#type': webform_term_select
       '#title': 'Term select'
       '#vocabulary': tags
-      '#default_value': 49
+      '#default_value': Loremipsum
       '#states':
         disabled:
           ':input[name="disabled_trigger"]':
@@ -2522,6 +2616,7 @@ css: ''
 javascript: ''
 settings:
   ajax: false
+  ajax_scroll_top: form
   page: true
   page_submit_path: ''
   page_confirm_path: ''
@@ -2540,19 +2635,35 @@ settings:
   form_reset: false
   form_disable_autocomplete: false
   form_novalidate: false
+  form_disable_inline_errors: false
+  form_required: false
   form_unsaved: false
   form_disable_back: false
+  form_submit_back: false
   form_autofocus: false
   form_details_toggle: false
+  form_login: false
+  form_login_message: ''
   submission_label: ''
   submission_log: false
   submission_user_columns: {  }
+  submission_user_duplicate: false
+  submission_login: false
+  submission_login_message: ''
+  submission_exception_message: ''
+  submission_locked_message: ''
+  previous_submission_message: ''
+  previous_submissions_message: ''
+  autofill: false
+  autofill_message: ''
+  autofill_excluded_elements: {  }
   wizard_progress_bar: true
   wizard_progress_pages: false
   wizard_progress_percentage: false
   wizard_start_label: ''
-  wizard_complete: true
-  wizard_complete_label: ''
+  wizard_confirmation: true
+  wizard_confirmation_label: ''
+  wizard_track: ''
   preview: 0
   preview_label: ''
   preview_title: ''
@@ -2560,6 +2671,7 @@ settings:
   preview_attributes: {  }
   preview_excluded_elements: {  }
   preview_exclude_empty: true
+  preview_exclude_empty_checkbox: false
   draft: none
   draft_multiple: false
   draft_auto_save: false
@@ -2573,14 +2685,20 @@ settings:
   confirmation_back: true
   confirmation_back_label: ''
   confirmation_back_attributes: {  }
+  confirmation_exclude_query: false
+  confirmation_exclude_token: false
   limit_total: null
+  limit_total_interval: null
   limit_total_message: ''
   limit_user: null
+  limit_user_interval: null
   limit_user_message: ''
+  entity_limit_total: null
+  entity_limit_total_interval: null
+  entity_limit_user: null
+  entity_limit_user_interval: null
   purge: none
   purge_days: null
-  entity_limit_total: null
-  entity_limit_user: null
   results_disabled: false
   results_disabled_ignore: false
   token_update: false
@@ -2616,6 +2734,14 @@ access:
     users: {  }
     permissions: {  }
   delete_own:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  administer:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  test:
     roles: {  }
     users: {  }
     permissions: {  }

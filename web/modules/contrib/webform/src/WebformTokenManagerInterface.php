@@ -20,7 +20,13 @@ interface WebformTokenManagerInterface {
    *   (optional) An array of keyed objects.
    * @param array $options
    *   (optional) A keyed array of settings and flags to control the token
-   *   replacement process.
+   *   replacement process. Supported options are:
+   *   - langcode: A language code to be used when generating locale-sensitive
+   *     tokens.
+   *   - callback: A callback function that will be used to post-process the
+   *     array of token replacements after they are generated.
+   *   - clear: A boolean flag indicating that tokens should be removed from the
+   *     final text if no replacement value can be generated.
    *
    * @return string|array
    *   Text or array with tokens replaced.
@@ -38,5 +44,17 @@ interface WebformTokenManagerInterface {
    *   (optional) Description to appear after the token tree link.
    */
   public function buildTreeLink(array $token_types = ['webform', 'webform_submission'], $description = NULL);
+
+  /**
+   * Validate form that should have tokens in it.
+   *
+   * @param array $form
+   *   A form.
+   * @param array $token_types
+   *   An array containing token types that should be validated.
+   *
+   * @see token_element_validate()
+   */
+  public function elementValidate(array &$form, array $token_types = ['webform', 'webform_submission', 'webform_handler']);
 
 }

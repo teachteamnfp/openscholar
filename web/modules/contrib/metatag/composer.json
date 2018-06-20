@@ -4,7 +4,7 @@
   "type": "drupal-module",
   "license": "GPL-2.0+",
   "keywords": [
-    "php",
+    "Drupal",
     "seo"
   ],
   "homepage": "https://www.drupal.org/project/metatag",
@@ -16,13 +16,15 @@
     }
   ],
   "support": {
-    "issues": "http://drupal.org/project/issues/metatag"
+    "issues": "http://drupal.org/project/issues/metatag",
+    "source": "http://cgit.drupalcode.org/metatag"
   },
   "require": {
     "drupal/token": "^1.0"
   },
   "require-dev": {
     "drupal/devel": "^1.0",
+    "drupal/redirect": "^1.0",
     "drupal/restui": "^1.0"
   }
 }

@@ -6,6 +6,7 @@ use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element\FormElement;
 use Drupal\Core\Serialization\Yaml;
+use Drupal\webform\Utility\WebformElementHelper;
 use Drupal\webform\Utility\WebformYaml;
 
 /**
@@ -76,26 +77,12 @@ class WebformElementAttributes extends FormElement {
         '#other__option_delimiter' => ' ',
         '#attributes' => [
           'class' => [
-            'js-webform-select2',
-            'webform-select2',
             'js-' . $element['#id'] . '-attributes-style',
           ],
         ],
-        '#attached' => ['library' => ['webform/webform.element.select2']],
         '#default_value' => $element['#default_value']['class'],
       ];
-
-      // ISSUE:
-      // Nested element with #element_validate callback that alter an
-      // element's value can break the returned value.
-      //
-      // WORKAROUND:
-      // Manually process the 'webform_select_other' element.
-      WebformSelectOther::valueCallback($element['class'], FALSE, $form_state);
-      WebformSelectOther::processWebformOther($element['class'], $form_state, $complete_form);
-
-      $element['class']['#type'] = 'item';
-      unset($element['class']['#element_validate']);
+      WebformElementHelper::enhanceSelect($element['class'], TRUE);
     }
     else {
       $element['class'] = [
@@ -147,13 +134,9 @@ class WebformElementAttributes extends FormElement {
       }
     }
 
-    // Set validation.
-    if (isset($element['#element_validate'])) {
-      $element['#element_validate'] = array_merge([[get_called_class(), 'validateWebformElementAttributes']], $element['#element_validate']);
-    }
-    else {
-      $element['#element_validate'] = [[get_called_class(), 'validateWebformElementAttributes']];
-    }
+    // Add validate callback.
+    $element += ['#element_validate' => []];
+    array_unshift($element['#element_validate'], [get_called_class(), 'validateWebformElementAttributes']);
 
     return $element;
   }
@@ -194,6 +177,8 @@ class WebformElementAttributes extends FormElement {
     $form_state->setValueForElement($element['class'], NULL);
     $form_state->setValueForElement($element['style'], NULL);
     $form_state->setValueForElement($element['attributes'], NULL);
+
+    $element['#value'] = $attributes;
     $form_state->setValueForElement($element, $attributes);
   }
 

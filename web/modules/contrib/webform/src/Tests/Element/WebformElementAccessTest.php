@@ -4,14 +4,13 @@ namespace Drupal\webform\Tests\Element;
 
 use Drupal\webform\Entity\Webform;
 use Drupal\webform\Entity\WebformSubmission;
-use Drupal\webform\Tests\WebformTestBase;
 
 /**
  * Tests for webform element access.
  *
  * @group Webform
  */
-class WebformElementAccessTest extends WebformTestBase {
+class WebformElementAccessTest extends WebformElementTestBase {
 
   /**
    * Modules to enable.
@@ -118,12 +117,11 @@ class WebformElementAccessTest extends WebformTestBase {
     $this->assertFieldByName('access_update_users');
     $this->assertFieldByName('access_update_permissions');
 
-    /* View, Table, Customize, and Download access */
+    /* View, Table, and Download access */
 
     $urls = [
       ['path' => "/admin/structure/webform/manage/test_element_access/submission/$sid"],
       ['path' => '/admin/structure/webform/manage/test_element_access/results/submissions'],
-      ['path' => '/admin/structure/webform/manage/test_element_access/results/submissions/custom'],
       ['path' => '/admin/structure/webform/manage/test_element_access/results/download'],
       ['path' => '/admin/structure/webform/manage/test_element_access/results/download', 'options' => ['query' => ['download' => 1]]],
     ];

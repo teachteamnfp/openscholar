@@ -3,20 +3,25 @@
 namespace Drupal\webform\EventSubscriber;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Routing\RedirectDestinationInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
+use Drupal\webform\Element\WebformHtmlEditor;
+use Drupal\webform\Entity\Webform;
+use Drupal\webform\Entity\WebformSubmission;
+use Drupal\webform\WebformTokenManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Response subscriber to redirect to user login when access is denied to private webform file uploads.
- *
- * @see webform_file_download()
- * @see \Drupal\webform\Plugin\WebformElement\WebformManagedFileBase::accessFileDownload
+ * Event subscriber to redirect to login form when webform settings instruct to.
  */
 class WebformSubscriber implements EventSubscriberInterface {
 
@@ -37,25 +42,69 @@ class WebformSubscriber implements EventSubscriberInterface {
   protected $configFactory;
 
   /**
+   * The renderer.
+   *
+   * @var \Drupal\Core\Render\RendererInterface
+   */
+  protected $renderer;
+
+  /**
+   * The redirect.destination service.
+   *
+   * @var \Drupal\Core\Routing\RedirectDestinationInterface
+   */
+  protected $redirectDestination;
+
+  /**
+   * The webform token manager.
+   *
+   * @var \Drupal\webform\WebformTokenManagerInterface
+   */
+  protected $tokenManager;
+
+  /**
    * Constructs a new WebformSubscriber.
    *
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The current user.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The configuration object factory.
+   * @param \Drupal\Core\Render\RendererInterface $renderer
+   *   The renderer.
+   * @param \Drupal\Core\Routing\RedirectDestinationInterface $redirect_destination
+   *   The redirect.destination service.
+   * @param \Drupal\webform\WebformTokenManagerInterface $token_manager
+   *   The webform token manager.
    */
-  public function __construct(AccountInterface $account, ConfigFactoryInterface $config_factory) {
+  public function __construct(AccountInterface $account, ConfigFactoryInterface $config_factory, RendererInterface $renderer, RedirectDestinationInterface $redirect_destination, WebformTokenManagerInterface $token_manager) {
     $this->account = $account;
     $this->configFactory = $config_factory;
+    $this->renderer = $renderer;
+    $this->redirectDestination = $redirect_destination;
+
+    $this->tokenManager = $token_manager;
   }
 
   /**
-   * Redirect to user login when access is denied to private webform file uploads.
+   * Redirect to user login when access is denied to private webform file.
    *
    * @param \Symfony\Component\HttpKernel\Event\FilterResponseEvent $event
    *   The event to process.
+   *
+   * @see webform_file_download()
+   * @see \Drupal\webform\Plugin\WebformElement\WebformManagedFileBase::accessFileDownload
    */
   public function onRespondRedirectPrivateFileAccess(FilterResponseEvent $event) {
+    if ($event->getRequestType() != HttpKernelInterface::MASTER_REQUEST) {
+      return;
+    }
+
+    // Check for 403 access denied status code in (master) response.
+    $response = $event->getResponse();
+    if ($response->getStatusCode() != Response::HTTP_FORBIDDEN) {
+      return;
+    }
+
     $path = $event->getRequest()->getPathInfo();
     // Make sure the user is trying to access a private webform file upload.
     if (strpos($path, '/system/files/webform/') !== 0) {
@@ -74,22 +123,88 @@ class WebformSubscriber implements EventSubscriberInterface {
     }
 
     // Check that private file redirection is enabled.
-    if ($this->configFactory->get('webform.settings')->get('file.file_private_redirect') === FALSE) {
+    if (!$this->configFactory->get('webform.settings')->get('file.file_private_redirect')) {
       return;
     }
 
-    if ($event->getResponse()->getStatusCode() === Response::HTTP_FORBIDDEN) {
-      // Display message on user login.
-      drupal_set_message($this->t('Please login to access the uploaded file.'));
+    $message = $this->configFactory->get('webform.settings')->get('file.file_private_redirect_message');
+    $this->redirectToLogin($event, $message);
+  }
 
-      // Redirect to user login with destination set to the private file.
-      $redirect_url = Url::fromRoute(
-        'user.login',
-        [],
-        ['absolute' => TRUE, 'query' => ['destination' => ltrim($path, '/')]]
-      );
-      $event->setResponse(new RedirectResponse($redirect_url->toString()));
+  /**
+   * Redirect to user login when access is denied for webform or submission.
+   *
+   * @param \Symfony\Component\HttpKernel\Event\FilterResponseEvent $event
+   *   The event to process.
+   */
+  public function onRespondRedirectEntityAccess(FilterResponseEvent $event) {
+    if ($event->getRequestType() != HttpKernelInterface::MASTER_REQUEST) {
+      return;
     }
+
+    // Check for 403 access denied status code in (master) response.
+    $response = $event->getResponse();
+    if ($response->getStatusCode() != Response::HTTP_FORBIDDEN) {
+      return;
+    }
+
+    $url = Url::fromUserInput($event->getRequest()->getPathInfo());
+    if (!$url) {
+      return;
+    }
+
+    $route_parameters = $url->isRouted() ? $url->getRouteParameters() : [];
+    if (empty($route_parameters['webform']) && empty($route_parameters['webform_submission'])) {
+      return;
+    }
+
+    // If webform submission, handle login redirect.
+    if (!empty($route_parameters['webform_submission'])) {
+      $webform_submission = WebformSubmission::load($route_parameters['webform_submission']);
+      if ($webform_submission->getWebform()->getSetting('submission_login')) {
+        $message = $webform_submission->getWebform()->getSetting('submission_login_message')
+          ?: $this->configFactory->get('webform.settings')->get('settings.default_submission_login_message');
+        $this->redirectToLogin($event, $message, $webform_submission);
+      };
+      return;
+    }
+
+    // If webform, handle login redirect.
+    if (!empty($route_parameters['webform'])) {
+      $webform = Webform::load($route_parameters['webform']);
+      if ($webform->getSetting('form_login')) {
+        $message = $webform->getSetting('form_login_message')
+          ?: $this->configFactory->get('webform.settings')->get('settings.default_form_login_message');
+        $this->redirectToLogin($event, $message, $webform);
+      };
+      return;
+    }
+  }
+
+  /**
+   * Redirect to user login with destination and display custom message.
+   *
+   * @param \Symfony\Component\HttpKernel\Event\FilterResponseEvent $event
+   *   The event to process.
+   * @param null|string $message
+   *   (Optional) Message to be display on user login.
+   * @param null|\Drupal\Core\Entity\EntityInterface $entity
+   *   (Optional) Entity to be used when replacing tokens.
+   */
+  protected function redirectToLogin(FilterResponseEvent $event, $message = NULL, EntityInterface $entity = NULL) {
+    // Display message.
+    if ($message) {
+      $message = $this->tokenManager->replace($message, $entity);
+      $build = WebformHtmlEditor::checkMarkup($message);
+      drupal_set_message($this->renderer->renderPlain($build));
+    }
+
+    $redirect_url = Url::fromRoute(
+      'user.login',
+      [],
+      ['absolute' => TRUE, 'query' => $this->redirectDestination->getAsArray()]
+    );
+    $event->setResponse(new RedirectResponse($redirect_url->toString()));
   }
 
   /**
@@ -98,6 +213,7 @@ class WebformSubscriber implements EventSubscriberInterface {
   public static function getSubscribedEvents() {
     $events = [];
     $events[KernelEvents::RESPONSE][] = ['onRespondRedirectPrivateFileAccess'];
+    $events[KernelEvents::RESPONSE][] = ['onRespondRedirectEntityAccess'];
     return $events;
   }
 

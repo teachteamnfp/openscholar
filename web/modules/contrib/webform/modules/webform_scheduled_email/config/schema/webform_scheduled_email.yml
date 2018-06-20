@@ -59,19 +59,25 @@ webform.handler.scheduled_email:
       label: 'Exclude elements'
       sequence:
         type: string
-        label: 'Element name'
+        label: 'Element key'
     ignore_access:
       type: boolean
       label: 'Always include private and restricted access elements.'
     exclude_empty:
       type: boolean
       label: 'Preview exclude empty elements'
+    exclude_empty_checkbox:
+      type: boolean
+      label: 'Exclude unselected checkboxes'
     html:
       type: boolean
       label: 'HTML'
     attachments:
       type: boolean
       label: 'Attachments'
+    twig:
+      type: boolean
+      label: 'Twig'
     debug:
       type: boolean
       label: 'Enable debugging'

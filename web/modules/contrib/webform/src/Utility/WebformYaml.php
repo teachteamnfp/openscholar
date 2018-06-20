@@ -11,6 +11,19 @@ use Symfony\Component\Yaml\Unescaper;
 class WebformYaml {
 
   /**
+   * Determine if string is valid YAML.
+   *
+   * @param string $yaml
+   *   A YAML string.
+   *
+   * @return bool
+   *   TRUE if string is valid YAML.
+   */
+  public static function isValid($yaml) {
+    return self::validate($yaml) ? FALSE : TRUE;
+  }
+
+  /**
    * Validate YAML string.
    *
    * @param string $yaml
@@ -46,7 +59,7 @@ class WebformYaml {
     }
 
     // Remove return after array delimiter.
-    $yaml = preg_replace('#(\n[ ]+-)\n[ ]+(\w|[\'"])#', '\1 \2', $yaml);
+    $yaml = preg_replace('#((?:\n|^)[ ]*-)\n[ ]+(\w|[\'"])#', '\1 \2', $yaml);
 
     // Support YAML newlines preserved syntax via pipe (|).
     $lines = explode(PHP_EOL, $yaml);

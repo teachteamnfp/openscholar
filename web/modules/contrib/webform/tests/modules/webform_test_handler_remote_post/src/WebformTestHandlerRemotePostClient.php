@@ -21,15 +21,32 @@ class WebformTestHandlerRemotePostClient extends Client {
       return parent::request($method, $uri, $options);
     }
 
+    if ($method == 'get') {
+      parse_str(parse_url($uri, PHP_URL_QUERY), $params);
+    }
+    else {
+      $params = (isset($options['json'])) ? $options['json'] : $options['form_params'];
+    }
+
+    $response_type = (isset($params['response_type'])) ? $params['response_type'] : 200;
     $operation = str_replace('http://webform-test-handler-remote-post/', '', $uri);
-    $params = (isset($options['json'])) ? $options['json'] : $options['form_params'];
-    $response_type = $params['response_type'];
     $random = new Random();
     // Handle 404 errors.
     switch ($response_type) {
       // 404 Not Found.
       case 404:
         return new Response(404, [], 'File not found');
+
+      // 401 Unauthorized.
+      case 401:
+        $status = 401;
+        $headers = ['Content-Type' => ['application/json']];
+        $json = [
+          'status' => 'unauthorized',
+          'message' => (string) new FormattableMarkup('Unauthorized to process @type request.', ['@type' => $operation]),
+          'options' => $options,
+        ];
+        return new Response($status, $headers, Json::encode($json));
 
       // 500 Internal Server Error.
       case 500:

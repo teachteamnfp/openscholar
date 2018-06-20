@@ -144,7 +144,8 @@ class WebformPluginElementController extends ControllerBase implements Container
             'data' => [
               '#type' => 'link',
               '#title' => $element_plugin_id,
-              '#url' => new Url('webform.element_plugins.test', ['type' => $element_plugin_id]),
+              '#url' => new Url('webform.reports_plugins.elements.test', ['type' => $element_plugin_id]),
+              '#attributes' => ['class' => ['webform-form-filter-text-source']],
             ],
           ];
         }
@@ -181,6 +182,7 @@ class WebformPluginElementController extends ControllerBase implements Container
           'hidden' => $webform_element->isHidden(),
           'multiple' => $webform_element->supportsMultipleValues(),
           'multiline' => $webform_element->isMultiline($element),
+          'default_key' => $webform_element_plugin_definition['default_key'],
           'states_wrapper' => $webform_element_plugin_definition['states_wrapper'],
         ];
         $webform_info = [];
@@ -221,7 +223,7 @@ class WebformPluginElementController extends ControllerBase implements Container
         if ($test_element_enabled) {
           $operations['test'] = [
             'title' => $this->t('Test'),
-            'url' => new Url('webform.element_plugins.test', ['type' => $element_plugin_id]),
+            'url' => new Url('webform.reports_plugins.elements.test', ['type' => $element_plugin_id]),
           ];
         }
         if ($api_url = $webform_element->getPluginApiUrl()) {
@@ -280,21 +282,21 @@ class WebformPluginElementController extends ControllerBase implements Container
       ],
     ];
 
-    // Settings
+    // Settings.
     $build['settings'] = [
       '#type' => 'link',
-      '#title' => $this->t('Edit settings'),
-      '#url' => Url::fromRoute('webform.settings.elements'),
+      '#title' => $this->t('Edit configuration'),
+      '#url' => Url::fromRoute('webform.config.elements'),
       '#attributes' => ['class' => ['button', 'button--small'], 'style' => 'float: right'],
     ];
 
     // Display info.
     $build['info'] = [
-      '#markup' => $this->t('@total exporters', ['@total' => count($webform_form_element_rows)]),
+      '#markup' => $this->t('@total elements', ['@total' => count($webform_form_element_rows)]),
       '#prefix' => '<p>',
       '#suffix' => '</p>',
     ];
-    
+
     ksort($webform_form_element_rows);
     $build['webform_elements'] = [
       '#type' => 'table',

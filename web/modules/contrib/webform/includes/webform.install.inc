@@ -5,6 +5,7 @@
  * Webform install helper functions.
  */
 
+use Drupal\Core\Render\Element;
 use Drupal\Core\Serialization\Yaml;
 use Drupal\system\Entity\Action;
 use Drupal\webform\Entity\Webform;
@@ -17,9 +18,9 @@ use Drupal\webform\WebformInterface;
  * done via an update hook.
  *
  * @param bool $reset
- *  If set TRUE old admin settings will be completly deleted.
+ *   If set TRUE old admin settings will be completly deleted.
  *
- * @see drush_webform_repair().
+ * @see drush_webform_repair()
  */
 function _webform_update_admin_settings($reset = FALSE) {
   $admin_config = \Drupal::configFactory()->getEditable('webform.settings');
@@ -67,7 +68,7 @@ function _webform_update_admin_settings($reset = FALSE) {
 }
 
 /**
- * Update webform setting to reflect changes in the default settings.
+ * Update webform settings to reflect changes in the default settings.
  *
  * This function can be used to apply new webform settings to all existing
  * webforms.
@@ -75,6 +76,25 @@ function _webform_update_admin_settings($reset = FALSE) {
  * @see \Drupal\webform\Entity\Webform::setSettings
  */
 function _webform_update_webform_settings() {
+  $config_factory = \Drupal::configFactory();
+  foreach ($config_factory->listAll('webform.webform.') as $webform_config_name) {
+    $webform_config = $config_factory->getEditable($webform_config_name);
+    $data = $webform_config->getRawData();
+    $data = _webform_update_webform_setting($data);
+    $webform_config->setData($data)->save();
+  }
+}
+
+/**
+ * Update webform setting to reflect changes in the default settings.
+ *
+ * @param array $data
+ *   A webform's raw configuration data from webform.webform.*.yml
+ *
+ * @return array
+ *   Updated raw configuration data.
+ */
+function _webform_update_webform_setting(array $data) {
   $default_properties = [
     'langcode' => 'en',
     'status' => WebformInterface::STATUS_OPEN,
@@ -83,6 +103,7 @@ function _webform_update_webform_settings() {
     'close' => NULL,
     'uid' => '',
     'template' => FALSE,
+    'archive' => FALSE,
     'id' => '',
     'title' => '',
     'description' => '',
@@ -96,6 +117,49 @@ function _webform_update_webform_settings() {
   ];
 
   $default_settings = Webform::getDefaultSettings();
+
+  // Always apply the default properties.
+  $properties = $default_properties;
+  // Now apply defined properties.
+  foreach ($data as $name => $value) {
+    $properties[$name] = $value;
+  }
+  // Set properties.
+  $data = $properties;
+
+  // Always apply the default settings.
+  $settings = $default_settings;
+  // Now apply custom settings.
+  foreach ($data['settings'] as $name => $value) {
+    $settings[$name] = $value;
+  }
+  // Set settings.
+  $data['settings'] = $settings;
+
+  // Set access.
+  $data['access'] += Webform::getDefaultAccessRules();
+
+  return $data;
+}
+
+/**
+ * Update webform handler settings to reflect changes in a handler's default configuration.
+ *
+ * @see \Drupal\webform\Plugin\WebformHandlerInterface
+ */
+function _webform_update_webform_handler_settings() {
+  // Get the default configuration (aka settings) for all handlers provided
+  // by the Webform module.
+  /** @var \Drupal\webform\Plugin\WebformHandlerManagerInterface $handler_manager */
+  $handler_manager = \Drupal::service('plugin.manager.webform.handler');
+  $definitions = $handler_manager->getDefinitions();
+  $default_handler_settings = [];
+  foreach ($definitions as $plugin_id => $definition) {
+    if (strpos($definition['provider'], 'webform_test_') === 0 || in_array($definition['provider'], ['webform', 'webform_scheduled_email'])) {
+      $default_handler_settings[$plugin_id] = $handler_manager->createInstance($plugin_id)->defaultConfiguration();
+    }
+  }
+
   $config_factory = \Drupal::configFactory();
   // Update 'webform.webform.*' configuration.
   foreach ($config_factory->listAll('webform.webform.') as $webform_config_name) {
@@ -104,65 +168,26 @@ function _webform_update_webform_settings() {
     // Get data.
     $data = $webform_config->getRawData();
 
-    // Always apply the default properties.
-    $properties = $default_properties;
-    // Now apply defined properties.
-    foreach ($data as $name => $value) {
-      $properties[$name] = $value;
-    }
-    // Set properties.
-    $data = $properties;
-
-    // Always apply the default settings.
-    $settings = $default_settings;
-    // Now apply custom settings.
-    foreach ($data['settings'] as $name => $value) {
-      $settings[$name] = $value;
-    }
-    // Set settings.
-    $data['settings'] = $settings;
-
-    // Save data.
-    $webform_config->setData($data)->save();
-  }
-}
-
-/**
- * Update webform handler setting to reflect changes in a handler's default configuration.
- *
- * Must be called by passing in the handler's class using ::class
- *
- * Example usage:
- * @code
- * _webform_update_webform_handler_class_settings(EmailWebformHandler::class);
- * @endcode
- *
- * @param \Drupal\webform\Plugin\WebformHandlerInterface $handler_class
- *   A handler class instance.
- *
- * @see \Drupal\webform\Plugin\WebformHandlerInterface
- */
-function _webform_update_webform_handler_class_settings($handler_class) {
-  /** @var \Drupal\webform\WebformInterface[] $webforms */
-  $webforms = Webform::loadMultiple();
-  foreach ($webforms as $webform) {
+    // Apply the default handler settings.
     $has_handler = FALSE;
-    $handlers = $webform->getHandlers();
-    foreach ($handlers as $handler) {
-      if ($handler instanceof $handler_class) {
-        $has_handler = TRUE;
-        $configuration = $handler->getConfiguration();
+    foreach ($data['handlers'] as &$handler) {
+      if (!isset($default_handler_settings[$handler['id']])) {
+        continue;
+      }
 
-        $settings = $handler->defaultConfiguration();
-        foreach ($configuration['settings'] as $settings_key => $setting_value) {
-          $settings[$settings_key] = $setting_value;
-        }
-        $configuration['settings'] = $settings;
-        $handler->setConfiguration($configuration);
+      $settings = $default_handler_settings[$handler['id']];
+      foreach ($handler['settings'] as $settings_key => $setting_value) {
+        $settings[$settings_key] = $setting_value;
+      }
+
+      if ($handler['settings'] != $settings) {
+        $has_handler = TRUE;
+        $handler['settings'] = $settings;
       }
     }
+
     if ($has_handler) {
-      $webform->save();
+      $webform_config->setData($data)->save();
     }
   }
 }
@@ -252,4 +277,84 @@ function _webform_update_field_storage_definitions() {
 function _webform_update_webform_submission_storage_schema() {
   $manager = \Drupal::entityDefinitionUpdateManager();
   $manager->updateEntityType($manager->getEntityType('webform_submission'));
+}
+
+/**
+ * Replace string in webform.settings.yml and webform.webform.*.yml
+ *
+ * @param string $search
+ *   String to be search for.
+ * @param string $replace
+ *   String to be replace with.
+ */
+function _webform_update_string_replace($search, $replace) {
+  $config_factory = \Drupal::configFactory();
+
+  // Update 'webform.settings' configuration.
+  $settings_config = \Drupal::configFactory()->getEditable('webform.settings');
+  $yaml = Yaml::encode($settings_config->getRawData());
+  if (strpos($yaml, $search) !== FALSE) {
+    $yaml = str_replace($search, $replace, $yaml);
+    $settings_config->setData(Yaml::decode($yaml));
+    $settings_config->save();
+  }
+
+  // Update 'webform.webform.*' configuration.
+  foreach ($config_factory->listAll('webform.webform.') as $webform_config_name) {
+    $webform_config = $config_factory->getEditable($webform_config_name);
+    $yaml = Yaml::encode($webform_config->getRawData());
+    if (strpos($yaml, $search) !== FALSE) {
+      $yaml = str_replace($search, $replace, $yaml);
+      $webform_config->setData(Yaml::decode($yaml));
+      $webform_config->save();
+    }
+  }
+}
+
+/**
+ * Clear/remove selected webform element properties.
+ *
+ * @param array $properties
+ *   An associative array of webform element properties.
+ */
+function _webform_update_elements_clear_properties(array $properties) {
+  $pattern = '/(?:' . implode('|', array_keys($properties)) . ')/';
+  $config_factory = \Drupal::configFactory();
+  foreach ($config_factory->listAll('webform.webform.') as $webform_config_name) {
+    $webform_config = $config_factory->getEditable($webform_config_name);
+    $data = $webform_config->getRawData();
+
+    // Make sure elements contains the properties.
+    if (!preg_match($pattern, $data['elements'])) {
+      continue;
+    }
+
+    $elements = Yaml::decode($data['elements']);
+    _webform_update_elements_clear_properties_recursive($elements, $properties);
+    $data['elements'] = Yaml::encode($elements);
+
+    $webform_config->setData($data);
+    $webform_config->save();
+  }
+}
+
+/**
+ * Recursively clear/remove selected webform element properties.
+ *
+ * @param array $element
+ *   An element.
+ * @param array $properties
+ *   An associative array of webform element properties.
+ */
+function _webform_update_elements_clear_properties_recursive(array &$element, array $properties) {
+  foreach ($properties as $property_name => $property_value) {
+    if (isset($element[$property_name]) && $element[$property_name] === $property_value) {
+      unset($element[$property_name]);
+    }
+  }
+  foreach (Element::children($element) as $key) {
+    if (is_array($element[$key])) {
+      _webform_update_elements_clear_properties_recursive($element[$key], $properties);
+    }
+  }
 }

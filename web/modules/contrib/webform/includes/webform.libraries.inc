@@ -9,19 +9,17 @@
  * Implements hook_library_info_alter().
  */
 function webform_library_info_alter(&$libraries, $extension) {
-  // Only alter webform libraries.
-  if ($extension != 'webform') {
+  $webform_libraries_modules = \Drupal::moduleHandler()->getImplementations('webform_libraries_info');
+  $webform_libraries_modules[] = 'webform';
+
+  // Only alter modules that declare webform libraries.
+  // @see hook_webform_libraries_info()
+  if (!in_array($extension, $webform_libraries_modules)) {
     return;
   }
 
   /** @var \Drupal\webform\WebformLibrariesManagerInterface $libraries_manager */
   $libraries_manager = \Drupal::service('webform.libraries_manager');
-
-  // Add off-canvas system tray to dialog dependencies.
-  if (isset($libraries['webform.admin.dialog']) && (floatval(\Drupal::VERSION) >= 8.3) && \Drupal::moduleHandler()->moduleExists('outside_in')) {
-    $libraries['webform.admin.dialog']['dependencies'][] = 'outside_in/drupal.off_canvas';
-    $libraries['webform.admin.dialog']['dependencies'][] = 'outside_in/drupal.outside_in';
-  }
 
   // Map /library/* paths to CDN.
   // @see webform.libraries.yml.
@@ -77,7 +75,7 @@ function _webform_library_info_alter_recursive(array &$library, array $cdn) {
       continue;
     }
 
-    // Replace the CDN sources (ie /library/*) with the CDN URL destination
+    // Replace the CDN sources (i.e. /library/*) with the CDN URL destination
     // (https://cdnjs.cloudflare.com/ajax/libs/*).
     foreach ($cdn as $source => $destination) {
       if (strpos($key, $source) === 0) {
