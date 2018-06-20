@@ -7369,85 +7369,20 @@
     },
     {
         "name": "drupal/purl",
-        "version": "dev-1.x",
-        "version_normalized": "dev-1.x",
+        "version": "1.x-dev",
+        "version_normalized": "1.9999999.9999999.9999999-dev",
         "source": {
             "type": "git",
-            "url": "https://git.drupal.org/project/purl",
-            "reference": "9f244923f7926de606e2abad8d961a822cf725ec"
+            "url": "https://github.com/freelock/purl-d8.git",
+            "reference": "master"
         },
-        "require": {
-            "drupal/core": "~8.0"
+        "dist": {
+            "type": "zip",
+            "url": "https://github.com/freelock/purl-d8/archive/master.zip",
+            "reference": "master",
+            "shasum": null
         },
         "type": "drupal-module",
-        "extra": {
-            "branch-alias": {
-                "dev-1.x": "1.x-dev"
-            },
-            "drupal": {
-                "version": "8.x-1.x-dev",
-                "datestamp": "1471893239",
-                "security-coverage": {
-                    "status": "not-covered",
-                    "message": "Project has not opted into security advisory coverage!"
-                }
-            }
-        },
-        "installation-source": "source",
-        "notification-url": "https://packages.drupal.org/8/downloads",
-        "license": [
-            "GPL-2.0-or-later"
-        ],
-        "authors": [
-            {
-                "name": "Ian Ward",
-                "homepage": "https://www.drupal.org/user/4736"
-            },
-            {
-                "name": "Jose Reyero",
-                "homepage": "https://www.drupal.org/user/4299"
-            },
-            {
-                "name": "alex_b",
-                "homepage": "https://www.drupal.org/user/53995"
-            },
-            {
-                "name": "bblake",
-                "homepage": "https://www.drupal.org/user/620248"
-            },
-            {
-                "name": "bezhermoso",
-                "homepage": "https://www.drupal.org/user/3206871"
-            },
-            {
-                "name": "febbraro",
-                "homepage": "https://www.drupal.org/user/43670"
-            },
-            {
-                "name": "jmiccolis",
-                "homepage": "https://www.drupal.org/user/31731"
-            },
-            {
-                "name": "mpotter",
-                "homepage": "https://www.drupal.org/user/616192"
-            },
-            {
-                "name": "tobby",
-                "homepage": "https://www.drupal.org/user/154797"
-            },
-            {
-                "name": "tom friedhof",
-                "homepage": "https://www.drupal.org/user/62769"
-            },
-            {
-                "name": "yhahn",
-                "homepage": "https://www.drupal.org/user/264833"
-            }
-        ],
-        "description": "Persistent URL",
-        "homepage": "https://www.drupal.org/project/purl",
-        "support": {
-            "source": "http://cgit.drupalcode.org/purl"
-        }
+        "installation-source": "source"
     }
 ]

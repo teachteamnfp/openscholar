@@ -11,21 +11,25 @@
     ],
     "repositories": [
         {
-            "type": "composer",
-            "url": "https://packages.drupal.org/8"
-        },
-        {
             "type": "package",
             "package": {
                 "name": "drupal/purl",
                 "version": "1.x-dev",
                 "type": "drupal-module",
+                "dist": {
+                    "url": "https://github.com/freelock/purl-d8/archive/master.zip",
+                    "type": "zip"
+                },
                 "source": {
-                    "url": "https://github.com/rbran100/purl-d8.git",
+                    "url": "https://github.com/freelock/purl-d8.git",
                     "type": "git",
                     "reference": "master"
                 }
             }
+        },	
+        {
+            "type": "composer",
+            "url": "https://packages.drupal.org/8"
         }
     ],
     "require": {
