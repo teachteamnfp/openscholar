@@ -51,11 +51,12 @@ projects[contextual_annotation][download][url] =  "http://git.drupal.org/project
 ; needs patches to contrib
 
 projects[ctools][subdir] = "contrib"
-projects[ctools][download][type] = git
-projects[ctools][download][branch] = 7.x-1.x
-projects[ctools][download][revision] = be2607142ce97d093acce9417833640680330efe
-projects[ctools][patch][] = "http://drupal.org/files/1707810-ctools-fields-mock-field-7.patch"
-projects[ctools][patch][] = "http://drupal.org/files/ctools-plugin_extension-1623044-1.patch"
+projects[ctools][version] = 1.14
+;projects[ctools][download][type] = git
+;projects[ctools][download][branch] = 7.x-1.14
+;projects[ctools][download][revision] = be2607142ce97d093acce9417833640680330efe
+;projects[ctools][patch][] = "http://drupal.org/files/1707810-ctools-fields-mock-field-7.patch"
+;projects[ctools][patch][] = "http://drupal.org/files/ctools-plugin_extension-1623044-1.patch"
 projects[ctools][patch][] = "https://drupal.org/files/issues/2147905-allow-alter-with-more-context-1.patch"
 
 projects[date][subdir] = "contrib"
@@ -595,9 +596,9 @@ libraries[angularSlideables][download][url] = "https://raw.githubusercontent.com
 libraries[angularSlideables][patch][] = "https://raw.githubusercontent.com/openscholar/openscholar/719c14a04c389e75c16c9f5cf3da59a22a640d5d/patches/angularSlideables-wrap_file_in_jQuery_function_scope.patch"
 
 ; YUI js libraries
-libraries[yui][type] = "libraries"
-libraries[yui][download][type] = "file"
-libraries[yui][download][url] = "http://yui.yahooapis.com/3.18.1/build/yui/yui-min.js"
+;libraries[yui][type] = "libraries"
+;libraries[yui][download][type] = "file"
+;libraries[yui][download][url] = "http://yui.yahooapis.com/3.18.1/build/yui/yui-min.js"
 
 libraries[yql][type] = "libraries"
 libraries[yql][download][type] = "file"
