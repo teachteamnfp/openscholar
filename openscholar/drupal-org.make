@@ -53,7 +53,7 @@ projects[contextual_annotation][download][url] =  "http://git.drupal.org/project
 projects[ctools][subdir] = "contrib"
 projects[ctools][version] = 1.14
 ;projects[ctools][download][type] = git
-;projects[ctools][download][branch] = 7.x-1.14
+;projects[ctools][download][branch] = 7.x-1.x
 ;projects[ctools][download][revision] = be2607142ce97d093acce9417833640680330efe
 ;projects[ctools][patch][] = "http://drupal.org/files/1707810-ctools-fields-mock-field-7.patch"
 ;projects[ctools][patch][] = "http://drupal.org/files/ctools-plugin_extension-1623044-1.patch"
@@ -116,6 +116,7 @@ projects[facetapi][patch][] = "http://drupal.org/files/2006704-facetapi-er-regro
 
 projects[features][subdir] = "contrib"
 projects[features][version] = 2.6
+projects[features][patch][] = "https://www.drupal.org/files/issues/2018-03-12/features-support_php_72-2931464-10.patch"
 
 projects[feeds][subdir] = "contrib"
 projects[feeds][version] = 2.0-alpha7
