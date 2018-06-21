@@ -136,6 +136,5 @@ function hwpi_strongarm() {
   $strongarm->value = "After setting your OpenScholar user password with the included link, you can then <a href='https://help.theopenscholar.com/logging-your-site' target='_blank'>associate this user account with your HarvardKey</a>.";
   $export['signup_pin_text'] = $strongarm;
 
-
   return $export;
 }
