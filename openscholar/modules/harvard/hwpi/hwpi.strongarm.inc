@@ -132,6 +132,13 @@ function hwpi_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'signup_pin_text';
+  $strongarm->value = "After setting your OpenScholar user password with the included link, you can then <a href='https://help.theopenscholar.com/logging-your-site' target='_blank'>associate this user account with your HarvardKey</a>.";
+  $export['signup_pin_text'] = $strongarm;
+ 
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'favicon_default';
   $strongarm->value = 'profiles/openscholar/themes/hwpi_basetheme/favicon.png';
   $export['favicon_default'] = $strongarm;
