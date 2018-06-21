@@ -1972,9 +1972,9 @@ function os_profiles_apachesolr_query_alter($query) {
   $filters = $query->getFilters();
   dsm($filters);
   foreach ($filters as $filter) {
-    if ($filter['#name'] == 'bundle' && $filter['#value'] == 'person' && strstr($query['sortstring'], 'sort_label')) {
+    if ($filter['#name'] == 'bundle' && $filter['#value'] == 'person' && stristr($query->sortstring, 'sort_label') !== FALSE) {
       $sort_order = 'desc';
-      if (strstr($query['sortstring'], 'asc') !== FALSE) {
+      if (stristr($query->sortstring, 'asc') !== FALSE) {
         $sort_order = 'asc';
       }
       dsm($sort_order);
