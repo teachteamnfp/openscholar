@@ -76,7 +76,12 @@ class OsImporterMenuProcessor extends FeedsProcessor {
   public function entitySave($menu_link) {
     $item = (array) $menu_link;
     if (isset($item['og_group_ref'])) {
-      vsite_menu_menu_link_save($item, $item['og_group_ref'][LANGUAGE_NONE][0]['target_id']);
+      if (!$item['menu_name'] || $item['menu_name'] == 'false') {
+        vsite_menu_delete_menu_link ('primary-menu', $item['mlid']);
+      }
+      else {
+        vsite_menu_menu_link_save ($item, $item['og_group_ref'][LANGUAGE_NONE][0]['target_id']);
+      }
     }
     else {
       menu_link_save($item);
@@ -99,7 +104,7 @@ class OsImporterMenuProcessor extends FeedsProcessor {
   public function configDefaults() {
     $defaults = parent::configDefaults();
     $defaults['skip_link_path_validation'] = TRUE;
-    $defaults['update_skip_existing'] = FEEDS_UPDATE_EXISTING;  // needed so global links get into spaces. Inheritance doesn't happen
+    $defaults['update_existing'] = FEEDS_UPDATE_EXISTING;  // needed so global links get into spaces. Inheritance doesn't happen
     return $defaults;
   }
 

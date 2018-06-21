@@ -9,7 +9,7 @@ function os_common_library() {
   $path = drupal_get_path('module', 'os_common');
   $disable = array('alias' => TRUE);
   $rest = url('api', $disable);
-  $vsite = vsite_get_vsite();
+  $vsite = function_exists('vsite_get_vsite') ? vsite_get_vsite() : FALSE;
 
   $info['angularjs'] = array(
     'title' => 'AngularJS',
@@ -506,15 +506,18 @@ function os_common_menu_contextual_links_alter(&$links, $router_item, $root_path
  * We add ng-non-bindable to everything that could print a string the user has entered to prevent this.
  */
 
-function _ng_non_bindable(&$variables) {
+define("OS_COMMON_NONBIND_TITLE", 1);
+define("OS_COMMON_NONBIND_CONTENT", 2);
+define("OS_COMMON_NONBIND_BOTH", 3);
+function _ng_non_bindable(&$variables, $flags = OS_COMMON_NONBIND_BOTH) {
   $ng_non_bindable = drupal_attributes(array(
     'ng-non-bindable' => '',
   ));
 
-  if (strpos($variables['title_attributes'], 'ng-non-bindable') === FALSE) {
+  if (($flags & OS_COMMON_NONBIND_TITLE) && strpos($variables['title_attributes'], 'ng-non-bindable') === FALSE) {
     $variables['title_attributes'] .= $ng_non_bindable;
   }
-  if (strpos($variables['content_attributes'], 'ng-non-bindable') === FALSE) {
+  if (($flags & OS_COMMON_NONBIND_CONTENT) && strpos($variables['content_attributes'], 'ng-non-bindable') === FALSE) {
     $variables['content_attributes'] .= $ng_non_bindable;
   }
 }
@@ -532,13 +535,19 @@ function _element_children_recursive(&$element) {
 }
 
 function os_common_process_node(&$variables, $hook) {
-  _ng_non_bindable($variables);
+  $bind = OS_COMMON_NONBIND_BOTH;
+  if (isset($variables['allow_binding'])) {
+    $bind = $bind & !$variables['allow_binding'];
+  }
+  _ng_non_bindable($variables, $bind);
 }
 
 function os_common_process_block(&$variables, $hook) {
-  if (empty($variables['elements']['#block']->allow_binding)) {
-    _ng_non_bindable($variables);
+  $flag = OS_COMMON_NONBIND_BOTH;
+  if (!empty($variables['elements']['#block']->allow_binding)) {
+    $flag = OS_COMMON_NONBIND_TITLE;
   }
+  _ng_non_bindable($variables, $flag);
 }
 
 function os_common_form_alter(&$form, $form_state, $form_id) {

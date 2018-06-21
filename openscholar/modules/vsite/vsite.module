@@ -761,7 +761,9 @@ function vsite_spaces_presets_alter(&$presets) {
   $pathauto_settings = _vsite_get_pathauto_settings();
   foreach ($presets as $name => &$preset) {
     if (in_array($name, variable_get('os_enabled_spaces_presets',array()))) {
-      $preset->value['variable'] = array_merge($pathauto_settings, $preset->value['variable']);
+      if (isset($preset->value) && is_array($preset->value['variable'])) {
+        $preset->value['variable'] = array_merge($pathauto_settings, $preset->value['variable']);
+      }
     }
   }
 }
@@ -2114,7 +2116,7 @@ function vsite_mail_alter(&$message){
         break;
 
       case 'contact_page_mail':
-        $message['headers']['Sender'] = $message['headers']['Return-Path'] = $message['headers']['From'];
+        $message['headers']['Sender'] = $message['headers']['Return-Path'] = $message['headers']['From'] = variable_get('site_mail', ini_get('sendmail_from'));
         break;
     }
   }
@@ -2176,7 +2178,7 @@ function vsite_form_user_profile_form_alter(&$form, &$form_state, &$form_id){
     $form['field_first_name']['#prefix'] = '<a name="user_first_name" class="field_first_name_anchor">';
     $form['field_first_name']['#suffix'] = '</a>';
   }
-  
+
   if (module_exists('migrate_example')) {
     // To hide the Gender field from user_profile_form #10048
     unset($form['field_migrate_example_gender']);
@@ -2527,8 +2529,15 @@ function vsite_contact_mail_owner_submit($form, &$form_state) {
 
   // Send from the current user to the requested user.
   $to = $account->mail;
+
+  // Save both users and all form values for email composition.
+  $values = $form_state['values'];
+  $values['account'] = $account;
+  $values['user'] = $user;
+  $values['vsite'] = $space;
+
   if ($user->uid != 0) {
-    $from = $user->mail;
+    $values['headers']['Reply-To'] = $user->mail;
     // Needed for the watchdog entry.
     $flood_name = $user->name;
   }
@@ -2539,14 +2548,9 @@ function vsite_contact_mail_owner_submit($form, &$form_state) {
     }
     // Needed for the watchdog entry.
     $flood_name = 'anonymous';
-    $from = $form_state['values']['from'];
+    $values['headers']['Reply-To'] = $form_state['values']['from'];
   }
-
-  // Save both users and all form values for email composition.
-  $values = $form_state['values'];
-  $values['account'] = $account;
-  $values['user'] = $user;
-  $values['vsite'] = $space;
+  $from = variable_get('site_mail', ini_get('sendmail_from'));
 
   // Send the e-mail in the requested user language.
   drupal_mail('vsite', 'user_mail', $to, user_preferred_language($account), $values, $from);
@@ -2586,9 +2590,11 @@ function vsite_delete_request_submit($form, &$form_state) {
   $values['user'] = $user;
   $values['node'] = $form_state['build_info']['args'][0];
   $values['subject'] = variable_get('vsite_site_delete_subject', 'Site Deletion Request');
+  $values['headers']['Reply-To'] = $user->mail;
+  $from = variable_get('site_mail', ini_get('sendmail_from'));
 
   // Send the e-mail in the requested user language.
-  drupal_mail('vsite', 'vsite_delete', $to, $language, $values, $user->mail);
+  drupal_mail('vsite', 'vsite_delete', $to, $language, $values, $from);
 
   // Add new message.
   drupal_set_message(t('The delete request has been sent.'));
@@ -2650,20 +2656,18 @@ function vsite_mail($key, &$message, $params){
       $message['body'][] = "\n\n---------------";
 
       $message['body'][] = t("This message was sent to you from \"!site\" on behalf of !name through your website contact form (!form-url).", array(
-        '!name' => isset($user->name) ? $user->name : $params['sender_firstname'] . ' ' . $params['sender_lastname'] . ' (' . $message['from'] . ')',
+        '!name' => isset($user->name) ? $user->name : $params['sender_firstname'] . ' ' . $params['sender_lastname'] . ' (' . $params['headers']['Reply-To'] . ')',
         '!form-url' => url($_GET['q'], array(
           'absolute' => TRUE,
           'language' => $language
         )),
         '!site' => variable_get('site_name', 'Drupal')
       ));
-      $message['body'][] = t("If you don't want to receive such e-mails, you can change your settings at !url.", array(
-        '!url' => $vsite->get_absolute_url("cp/settings")
-      ));
 
       // This is done so that when the recipient auto-reply is on, the response
       // won't be sent to the site email (held in the site_mail variable).
-      $message['headers']['Sender'] = $message['headers']['Return-Path'] = $message['headers']['From'];
+      $message['headers']['Reply-To'] = $params['headers']['Reply-To'];
+      $message['headers']['Sender'] = $message['headers']['Return-Path'] = $message['headers']['From'] = variable_get('site_mail', ini_get('sendmail_from'));
       break;
 
     case 'vsite_delete' :
@@ -2679,7 +2683,8 @@ function vsite_mail($key, &$message, $params){
           'absolute' => TRUE,
           'language' => $language,
         ))));
-      $message['from'] = $message['headers']['Sender'] = $message['headers']['Return-Path'] = $message['headers']['From'];
+      $message['headers']['Reply-To'] = $params['headers']['Reply-To'];
+      $message['from'] = $message['headers']['Sender'] = $message['headers']['Return-Path'] = $message['headers']['From'] = variable_get('site_mail', ini_get('sendmail_from'));
       break;
   }
 }
@@ -2763,11 +2768,7 @@ function vsite_preprocess_html(&$vars){
 
   // If we aren't in a vsite, or if this vsite hasn't uploaded a custom favicon.
   if (empty($uri)) {
-    $theme = variable_get('theme_default');
-    $uri = drupal_get_path('theme', $theme) . '/favicon.png';
-    if (!file_exists($uri)) {
-      $uri = drupal_get_path('theme', 'os_basetheme') . '/favicon.png';
-    }
+    $uri = variable_get('favicon_default', drupal_get_path('theme', 'os_basetheme') . '/favicon.png');
   }
 
   // Returns if no valid favicon or no favicon found.
@@ -2777,7 +2778,7 @@ function vsite_preprocess_html(&$vars){
 
   $favicon = file_create_url($uri);
   $type = theme_get_setting('favicon_mimetype');
-  drupal_add_html_head_link(array('rel' => 'shortcut icon', 'href' => drupal_strip_dangerous_protocols($favicon), 'type' => $type));
+  drupal_add_html_head_link(array('rel' => 'shortcut icon', 'href' => drupal_strip_dangerous_protocols($favicon)));
 }
 
 /**

@@ -236,6 +236,12 @@ function os_shields_ctools_plugin_api($module, $api) {
   if ($module == 'boxes' && $api == 'plugins') {
     return array('version' => 1);
   }
+  if ($module == "boxes" && $api == "box") {
+    return array("version" => "1");
+  }
+  if ($module == "context" && $api == "context") {
+    return array("version" => "3");
+  }
 }
 
 function os_shields_boxes_plugins() {

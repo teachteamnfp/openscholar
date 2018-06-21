@@ -161,8 +161,6 @@ Feature: Media Browser
       And I should see "Max file size: 15 MB."
       And I drop the file "abc.pdf" onto the "Drag and drop files here." area
       And I should see "abc.pdf is not an accepted file type."
-      And I wait "6 seconds"
-      And I should not see "abc.pdf is not an accepted file type."
       And I drop the file "Expeditionary_Fighting_Vehicle_test.jpg" onto the "Drag and drop files here." area
       And I should see "Expeditionary_Fighting_Vehicle_test.jpg is larger than the maximum filesize of 15 MB"
 

@@ -393,7 +393,7 @@ function os_events_event_change_notification($registration, $params, $mail_key) 
     return;
   }
   // Triggering email to registrants if event timings / location are changed or events are deleted.
-  $from = $params['@event-creator-mail'];
+  $from = variable_get('site_mail', ini_get('sendmail_from'));
   $language = language_default();
   $to = $registration->anon_mail;
   $params['@event-date'] = date('l, F j, Y g:ia', strtotime($params['@event-date'] .' UTC'));
@@ -2400,7 +2400,9 @@ function os_events_preprocess_page(&$variables) {
   $menu = menu_get_item();
 
   // Hidden export dialog div (only shown when exporting to Google Calendar)
-  $variables['page']['content']['system_main']['main']['#markup'] .= '<div id="export-to-google-calendar-dialog-confirm"></div>';
+  if (!empty($variables['page']['content']['system_main']['main'])) {
+    $variables['page']['content']['system_main']['main']['#markup'] .= '<div id="export-to-google-calendar-dialog-confirm"></div>';
+  }
 
   // If we're exporting events, prompt user to either overwrite an old or create new calendar
   if (isset($_SESSION['exported_events'])) {
@@ -2694,11 +2696,11 @@ function os_events_entity_insert($entity, $type) {
   $default_email = $info['settings']['default_registration_settings']['settings']['from_address'];
   if ($registration_settings['settings']['from_address'] == $default_email) {
     $event_author = user_load($node->uid);
-    $from = $event_author->mail;
+    $params['headers']['Reply-To'] = $event_author->mail;
+  } else {
+    $params['headers']['Reply-To'] =  $registration_settings['settings']['from_address'];
   }
-  else {
-    $from = $registration_settings['settings']['from_address'];
-  }
+  $from = variable_get('site_mail', ini_get('sendmail_from'));
 
   // Displaying confirmation message to user's screen.
   drupal_set_message(t('You have successfully registered for the event. Please check your email for confirmation.'));
@@ -2766,7 +2768,7 @@ function os_events_mail_alter(&$message) {
 
   //get user 1 email address as default from address
   $admin = user_load(1);
-  $defaultMail = $admin->mail;
+  $defaultMail = variable_get('site_mail', ini_get('sendmail_from'));
 
 
   //Check if it is an event related mail
@@ -2797,10 +2799,11 @@ function os_events_mail_alter(&$message) {
     }
 
     // Set default value of the "From" field to author of the event's e-mail
-    $message['headers']['From'] = $message['from'] = $event_author_email;
+    $message['headers']['From'] = $message['from'] = $defaultMail;
+    $message['headers']['Reply-To'] = $event_author_email;
 
     // Set the sender and return-path headers.
-    $message['headers']['Sender'] = $message['headers']['Return-Path'] = $event_author_email;
+    $message['headers']['Sender'] = $message['headers']['Return-Path'] = $defaultMail;
   }
   else {
     // Set default value of the "From" field.

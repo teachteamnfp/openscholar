@@ -282,7 +282,10 @@ function biblio_import_form_submit($form, & $form_state) {
         biblio_import($import_file, $filetype, $userid, $terms, $batch_proc, $session_id, $context);
         biblio_import_finalize(TRUE, $context['results']);
       }
-      file_delete($import_file);
+      // suppress errors we don't care about when
+      if (file_valid_uri ($import_file->uri)) {
+        file_delete ($import_file);
+      }
     }
     else {
       drupal_set_message(t("File was NOT successfully uploaded"), 'error');
@@ -352,8 +355,11 @@ function biblio_import_batch_finished($success, $results, $operations) {
   db_delete('biblio_import_cache')
     ->condition('session_id', $results['session_id'])
     ->execute();
-    
-  file_delete($results['file']);
+
+  // suppress error we don't care about
+  if (file_valid_uri ($results['file']->uri)) {
+    file_delete ($results['file']);
+  }
 }
 
 function biblio_import_finalize($success, $results) {

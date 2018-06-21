@@ -602,7 +602,41 @@ ol.search-results li.search-result:last-child {
 .calendar-calendar .week-view div.single-day .i_3 .view-item .calendar {
   width: 50%;
 }
+.calendar-calendar .week-view .events-2 div[class*="md_"] {
+    position:absolute;
+    top:0;
+    width:75%;
+}
+.calendar-calendar .week-view .events-2 div[class*="md_"]:nth-of-type(2) {
+    left:50%;
+  }
 
+.calendar-calendar .week-view .events-3 div[class*="md_"] {
+    position:absolute;
+    top:0;
+    width:40%;
+}
+.calendar-calendar .week-view .events-3 div[class*="md_"]:nth-of-type(2) {
+    left: 26%;
+  }
+  .calendar-calendar .week-view .events-3 div[class*="md_"]:nth-of-type(3) {
+    left: 50%;
+  }
+
+.calendar-calendar .week-view .events-4 div[class*="md_"] {
+    position:absolute;
+    top:0;
+    width:25%;
+}
+.calendar-calendar .week-view .events-4 div[class*="md_"]:nth-of-type(2) {
+    left: 22%;
+  }
+  .calendar-calendar .week-view .events-4 div[class*="md_"]:nth-of-type(3) {
+    left: 50%;
+  }
+ .calendar-calendar .week-view .events-4 div[class*="md_"]:nth-of-type(4) {
+    left: 60%;
+  }
 .calendar-calendar div.date-nav h3 {
     color: #1e1e1e;
 }
