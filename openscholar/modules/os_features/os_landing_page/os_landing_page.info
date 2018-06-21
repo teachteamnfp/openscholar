@@ -4,5 +4,3 @@ core = 7.x
 package = Features
 version = 7.x-1.0-unstable1
 project = os_landing_page
-
-;dependencies[] = "hwpi"
