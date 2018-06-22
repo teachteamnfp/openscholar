@@ -166,7 +166,9 @@ function drush_os_domain_build() {
   /* try acquia cloud api. */  
   if ($srv_conf['acquia-cloud-api']) {
     //acquia doesn't differentiate multisites.  this list is all or nothing.
-    $all_domains = array_reduce($multisites, create_function('$ret, $arr', 'return array_merge($ret, $arr);'), array());
+    $all_domains = array_reduce($multisites, function ($ret, $arr) {
+      return array_merge($ret, $arr);
+    }, array());
 
     ob_start();
     $response = drush_invoke('ac-domain-list');
@@ -267,11 +269,15 @@ function drush_os_domain_remove() {
   
   // read current domains
   $domains = file($srv_conf['domains_list']);
-  $domains = array_map(create_function('$s', 'return trim($s);'), $domains);
+  $domains = array_map(function ($s) {
+    return trim($s);
+  }, $domains);
   
   //prepend www. 
   if ($www) {
-    $args = array_merge($args, array_map(create_function('$s', 'return "www.".$s;'),$args));
+    $args = array_merge($args, array_map(function ($s) {
+      return "www." . $s;
+    } ,$args));
   }
   
   //diff and write
