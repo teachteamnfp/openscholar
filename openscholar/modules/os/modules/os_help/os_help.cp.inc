@@ -26,7 +26,7 @@ function os_help_cp_settings() {
     ),
   );
 
-  $form['os_help'] = array(
+  $form['os_support'] = array(
     'group' => array(
       '#id' => 'support',
       '#title' => t('Support'),
