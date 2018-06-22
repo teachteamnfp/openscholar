@@ -1969,12 +1969,14 @@ function os_profiles_apachesolr_query_prepare($query) {
  */
 function os_profiles_apachesolr_query_alter($query) {
   $filters = $query->getFilters();
+  dsm($query);
   foreach ($filters as $filter) {
     if ($filter['#name'] == 'bundle' && $filter['#value'] == 'person' && stristr($query->sortstring, 'sort_label') !== FALSE) {
       $sort_order = 'desc';
       if (stristr($query->sortstring, 'asc') !== FALSE) {
         $sort_order = 'asc';
       }
+      dsm($sort_order);
       $query->addParam('sort', 'ss_field_last_name ' . $sort_order . ', ss_field_first_name ' . $sort_order);
       break;
     }
