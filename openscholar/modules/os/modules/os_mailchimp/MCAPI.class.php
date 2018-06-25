@@ -1,7 +1,7 @@
 <?php
 
 /**
- * THIS LIBRARY IS COMPLETELY UNSUPPORTED. DO NOT GO LOOKING FOR A NEW VERSION OF IT
+ * THIS LIBRARY IS COMPLETELY UNSUPPORTED.
  */
 
 class MCAPI {
@@ -40,7 +40,7 @@ class MCAPI {
      * @param string $apikey Your MailChimp apikey
      * @param string $secure Whether or not this should use a secure connection
      */
-    function __construct($apikey, $secure=false) {
+    function MCAPI($apikey, $secure=false) {
         $this->secure = $secure;
         $this->apiUrl = parse_url("http://api.mailchimp.com/" . $this->version . "/?output=php");
         $this->api_key = $apikey;
@@ -2448,11 +2448,17 @@ class MCAPI {
         $response = curl_exec($ch);
         curl_close($ch);
 
-        if ($response["timed_out"]) {
-            $this->errorMessage = "Could not read response (timed out)";
-            $this->errorCode = -98;
-            return false;
+        if ($response === FALSE) {
+          $this->errorMessage = "Error making Mailchimp request";
+          $this->errorCode = 0;
+          return false;
         }
+
+//        if ($response["timed_out"]) {
+//          $this->errorMessage = "Could not read response (timed out)";
+//          $this->errorCode = -98;
+//          return false;
+//        }
         
         $serial = json_decode($response);
         if($response && $serial === false) {
