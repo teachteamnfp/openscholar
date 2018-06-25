@@ -21,9 +21,6 @@ projects[boxes][patch][] = "http://raw.github.com/openscholar/openscholar/b38919
 projects[boxes][patch][] = "https://www.drupal.org/files/1859150-1-boxes-strict_warning.patch"
 projects[boxes][patch][] = "https://www.drupal.org/files/issues/default_object_empty_value-2042101-3.patch"
 
-projects[cache_consistent][subdir] = "contrib"
-projects[cache_consistent][version] = 1.2
-
 projects[calendar][subdir] = "contrib"
 projects[calendar][version] = 3.5
 projects[calendar][patch][] = "http://raw.github.com/openscholar/openscholar/72d63ee3537c31505b7481975886ec13789feeb5/patches/calendar-fix-week-view-overflow.patch"
@@ -43,6 +40,7 @@ projects[context][version] = 3.6
 projects[context][patch][] = "http://drupal.org/files/os-custom-beta4.patch"
 projects[context][patch][] = "http://drupal.org/files/1855004.context.float_block_weights.patch"
 projects[context][patch][] = "https://raw.githubusercontent.com/openscholar/openscholar/7c018f93a3f6c663fd3b91ccda6561dade707127/patches/context-10085-breadcrumb_menu_context.patch"
+projects[context][patch][] = "https://www.drupal.org/files/issues/context-support_php_72-2946595-3.patch"
 
 projects[contextual_annotation][subdir] = "contrib"
 projects[contextual_annotation][type] = module
@@ -124,6 +122,7 @@ projects[feeds][patch][] = "https://raw.githubusercontent.com/openscholar/opensc
 
 projects[feeds_tamper][subdir] = "contrib"
 projects[feeds_tamper][version] = 1.1
+projects[feeds_tamper][patch][] = "https://www.drupal.org/files/issues/feeds_tamper-fix-params-default-value-callback-2567431-2-7.x.patch"
 
 projects[feeds_xpathparser][subdir] = "contrib"
 projects[feeds_xpathparser][download][type] = git
@@ -250,7 +249,7 @@ projects[memcache][subdir] = "contrib"
 projects[memcache][version] = 1.6
 
 projects[migrate][subdir] = "contrib"
-projects[migrate][version] = 2.5
+projects[migrate][version] = 2.11
 
 projects[migrate_extras][patch][] = "http://drupal.org/files/migrate_extras-duplicate_MigrateDestinationOgMembership-1788440-5.patch"
 projects[migrate_extras][subdir] = "contrib"
