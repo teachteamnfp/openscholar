@@ -279,14 +279,14 @@ function os_entity_info_alter(&$info) {
   );
 
   // Remove field replacement for entities that don't need it
-  if (!empty($entity_info['file']['field replacement'])) {
-    unset($entity_info['file']['field replacement']);
+  if (!empty($info['file']['field replacement'])) {
+    unset($info['file']['field replacement']);
   }
-  if (!empty($entity_info['taxonomy_term']['field replacement'])) {
-    unset($entity_info['taxonomy_term']['field replacement']);
+  if (!empty($info['taxonomy_term']['field replacement'])) {
+    unset($info['taxonomy_term']['field replacement']);
   }
-  if (!empty($entity_info['comment']['field replacement'])) {
-    unset($entity_info['comment']['field replacement']);
+  if (!empty($info['comment']['field replacement'])) {
+    unset($info['comment']['field replacement']);
   }
 }
 
@@ -638,7 +638,9 @@ function os_process_node(&$vars) {
   $vars['theme_hook_suggestions'][] = 'node__'.$vars['type'].'__'.$vars['view_mode'];
 
   // Building "Read more" link for "No image teaser" for profiles
-  if($vars['type'] == 'person' && $vars['content']['pic_bio']['body']['#view_mode'] == 'no_image_teaser') {
+  if($vars['type'] == 'person'
+    && !empty($vars['content']['pic_bio']['body'])
+    && $vars['content']['pic_bio']['body']['#view_mode'] == 'no_image_teaser') {
     $vars['content']['links']['node']['#links']['node-readmore'] = array(
                                                                       'title' => t('Read more'),
                                                                       'href' => 'node/' . $vars['nid'],
@@ -880,6 +882,18 @@ function os_preprocess_page(&$vars) {
     );
   }
 
+  // Ensure "Import" is always the last item in the menu
+  usort($links,
+    function ($a, $b) {
+      if (isset($a["title"]) && (($a["title"] == 'Import') || ($a["title"] == 'Sync'))) {
+        return 1;
+      } else if (isset($b["title"]) &&  (($a["title"] == 'Import') || ($a["title"] == 'Sync'))) {
+        return -1;
+      } else {
+        return 0;
+      }
+    }
+  );
 
   if (count($links) > 1) {
     $vars['title_suffix']['controls']['add_new'] = array(
@@ -1335,7 +1349,7 @@ function os_date_formats() {
     ),
     array(
       'type' => 'os_date_abbreviated',
-      'format' => 'M j, g:ia',
+      'format' => 'D M j, g:ia',
     ),
     array(
       'type' => 'os_date',
@@ -1414,7 +1428,7 @@ function os_os_layout_contexts($privacy = TRUE) {
  */
 function theme_openscholar_powered_by() {
   return '<span>' . t('<a href="@poweredby">OpenScholar</a>', array(
-      '@poweredby' => 'http://openscholar.harvard.edu',
+      '@poweredby' => 'https://theopenscholar.com.',
     )) . '</span>';
 }
 
@@ -1852,10 +1866,13 @@ function os_contextual_links_view_alter(&$element, $items) {
     return FALSE;
   }
 
-  $element['#links']['node-revisions'] = array(
-    'title' => t('Revisions'),
-    'href' => 'node/' . $node->nid . '/revisions',
-  );
+  if ($element['#element']['#node']->type != 'page') {
+    // Page has page-revisions. See os_pages_menu_contextual_links_alter
+    $element['#links']['node-revisions'] = array(
+      'title' => t('Revisions'),
+      'href' => 'node/' . $node->nid . '/revisions',
+    );
+  }
 }
 
 /**
@@ -2231,41 +2248,27 @@ function os_form_user_login_alter(&$form, $form_state) {
     array_unshift($form['#validate'],'os_user_login_validate');
   }
 
-  // Overriding the text of first button on the login screen.
-  if (isset($form['pin'])) {
-    $query['destination'] = isset($_GET['destination']) ? $_GET['destination'] : 'user';
-    $form['pin']['#markup'] = l('Log in using your Harvard Key', 'user/pin', array('query' => $query));
-  }
-
   // If user login form is overridden by pinserver_authenticate module, then $form['pin-fieldset'] will be initialized from there.
   // $form['name'] and $form['pass'] both will be unset from pinserver_authenticate module
   if (isset($form['pin-fieldset'])) {
-    $form['pin-fieldset']['#title'] = t('Log in with your OpenScholar account');
-    $form['pin-fieldset']['name']['#title'] = t('OpenScholar Username / E-Mail');
+    $form['pin-fieldset']['#title'] = t('Log in using your OpenScholar account');
+    $form['pin-fieldset']['name']['#title'] = t('OpenScholar Username or E-Mail');
     $form['pin-fieldset']['pass']['#description'] = t('!request', array('!request' => l('Forgot your password?', 'user/password')));
     $form['pin-fieldset']['pass']['#title'] = "OpenScholar Password";
 
     $form['pin-fieldset']['login'] = array(
         '#type' => 'submit',
-        '#value' => t('Log in'),
+        '#value' => t('Log In'),
         '#attributes' => array('class' => array('pin-button-inline')),
     );
-    $form['pin-fieldset']['back'] = array(
-        '#type' => 'button',
-        '#value' => t('Back'),
-        '#suffix' => '</a>',
-        '#attributes' => array(
-            'class' => array('pin-button-inline'),
-            'onclick' => "window.history.back()",
-        ),
-    );
+
 
     unset($form['pin-fieldset']['actions']['submit']);
   }
 
   // If pinserver_authenticate module is not overriding login form, then $form['name'] and $form['pass'] will not be unset.
   if (isset($form['name']) && isset($form['pass'])) {
-    $form['name']['#title'] = t('OpenScholar Username / E-Mail');
+    $form['name']['#title'] = t('OpenScholar Username or E-Mail');
     unset($form['pass']['#description']);
   }
 }
@@ -2498,6 +2501,7 @@ function os_field_default_fields_alter(&$fields) {
  * Make all select fields use Select2.
  */
 function os_field_widget_options_select_form_alter(&$element, &$form_state, $context) {
+  $element['#title'] = html_entity_decode($element['#title'], ENT_QUOTES | ENT_HTML5);
   $element += array(
     '#after_build' => array('os_select2_widget_after_build'),
     '#cardinality' => $context['field']['cardinality'],
@@ -2946,6 +2950,16 @@ function os_preprocess_block(&$vars) {
   // Adding the name of the module and the delta.
   $vars['attributes_array']['module'] = $vars['block']->module;
   $vars['attributes_array']['delta'] = $vars['block']->delta;
+
+  // Add 'slider' CSS class if the display style is set to 'Slide down'
+  if (isset($vars['elements']['#block']->delta) &&
+      isset($vars['elements']['#block']->module) && $vars['elements']['#block']->module == "boxes") {
+    $box = boxes_box_load($vars['elements']['#block']->delta);
+    if (isset($box->options['as_nav']) && $box->options['as_nav'] === "slider") {
+      $vars['classes_array'][] = 'term-slider';
+    }
+  }
+
 }
 
 /**
@@ -3133,8 +3147,8 @@ function os_page_build(&$page) {
       $warning_msg = t('Sorry, you are not authorized to access this page.<br/>Please contact the site owner to gain access.');
     }
     else {
-      $warning_msg = t('You are not authorized to access this page.');
-      $warning_msg .= '<br/>' . 'You need to ' . l('log in', 'user/login', array('query' => array('destination' => $redirect['destination']) )) . ' to access this page';
+      $warning_msg = t('This website or page content is accessible to authorized users.');
+      $warning_msg .= ' For access, please ' . l('log in here.', 'user/login', array('query' => array('destination' => $redirect['destination']) ));
     }
 
     $page['content']['system_main']['main']['#markup'] = $warning_msg;
@@ -3708,6 +3722,7 @@ function os_field_formatter_view($entity_type, $entity, $field, $instance, $lang
           'html' => TRUE,
           'max_length' => $display['settings']['trim_length'],
           'word_boundary' => TRUE,
+          'ellipsis' => TRUE,
         );
         $text = views_trim_text($alter, media_filter($item['value']));
 
@@ -3720,7 +3735,7 @@ function os_field_formatter_view($entity_type, $entity, $field, $instance, $lang
         // if yes then we will use text summary function to trim texts.
         $delimiter = strpos($item['safe_value'], '<!--break-->');
 
-        if ($delimiter) {
+        if ($delimiter !== FALSE) {
           // Checks if there is a break tag inserted at the end of the content.
           // If this is the case, there is no need to add a "read more" link.
           $split_break_tag = explode('<!--break-->', $item['safe_value'], 2);
@@ -3731,12 +3746,12 @@ function os_field_formatter_view($entity_type, $entity, $field, $instance, $lang
             $text_after_break = strip_tags(trim($split_break_tag[1]), '<img><iframe><embed><object><param>');
           }
           $text = text_summary($item['safe_value'], $item['format'], $display['settings']['trim_length']);
-          // Remove the ellipsis we got from the text summary.
-          if (strpos($text, '…') !== 0) {
-            $text = str_replace('…', ' ', $text);
-          }
-          // Only display read more link if there is a content after break tag.
           if (!empty(drupal_strlen($text_after_break))) {
+            $text = htmlentities($text);
+            // Remove non breaking spaces (e.g &nbsp;) from the start and end
+            // of a string.
+            $text = rtrim(preg_replace('#(^(&nbsp;|\s)+|(&nbsp;|\s)+$)#', '', $text)).t('...');
+            $text = decode_entities($text);
             $read_more($entity_type, $entity, $text);
           }
         }
@@ -3931,8 +3946,9 @@ function os_redirect_goto($redirect) {
   $parse_url = drupal_parse_url($redirect->redirect);
   $redirect->redirect_options['absolute'] = TRUE;
   $redirect->redirect_options['fragment'] = $parse_url['fragment'];
+  $redirect->redirect_options['query'] = $parse_url['query'];
   $url = url($parse_url['path'], $redirect->redirect_options);
-  
+
   drupal_add_http_header('Location', $url);
   drupal_add_http_header('Status', redirect_status_code_options($redirect->status_code));
 
@@ -3965,4 +3981,13 @@ function os_redirect_goto($redirect) {
   }
 
   exit;
+}
+
+/**
+ * Change the title of sign on page
+ */
+function os_process_page(&$vars) {
+  if (arg(0) == 'user' && (arg(1) === 'login' || (arg(1) == '' && user_is_anonymous()))) {
+    $vars['title'] = t('Welcome. Please Log In.');
+  }
 }

@@ -478,19 +478,6 @@ function os_user_default_permissions() {
     'module' => 'media',
   );
 
-  // Exported permission: 'insert link into wysiwyg'.
-  $permissions['insert link into wysiwyg'] = array(
-    'name' => 'insert link into wysiwyg',
-    'roles' => array(
-      'administrator' => 'administrator',
-      'content editor' => 'content editor',
-      'manager' => 'manager',
-      'vsite admin' => 'vsite admin',
-      'vsite user' => 'vsite user',
-    ),
-    'module' => 'os_wysiwyg_link',
-  );
-
   // Exported permission: 'manage features'.
   $permissions['manage features'] = array(
     'name' => 'manage features',

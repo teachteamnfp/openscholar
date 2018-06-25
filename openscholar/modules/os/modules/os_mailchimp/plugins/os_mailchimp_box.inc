@@ -16,6 +16,7 @@ class os_boxes_mailchimp extends os_boxes_default {
     $options['text'] = t('Subscribe to our mailing list');
     $options['display'] = 'link';
     $options['mailchimp_iframe_height'] = 800;
+    $options['mailchimp_iframe_width'] = 600;
     
     return $options;
   }
@@ -36,9 +37,7 @@ class os_boxes_mailchimp extends os_boxes_default {
     $api = variable_get('os_mailchimp_vsite_api_key', '');
     
     if (!$api) {
-      $form['subscribe']['api_warning'] = array(
-        '#markup' => '<div class="error messages">You have not set a <strong>MailChimp API key</strong>.  Until you do so, mailing lists will not work.  You can set up an API key in <a href="/' . $space->group->purl . '/cp/settings" target="_new">site settings</a>.</div>', '#type' => 'markup'
-      );
+	    drupal_set_message(t('You have not set a <strong>MailChimp API key</strong>.  Until you do so, mailing lists will not work.  You can set up an API key in Settings > Global Settings > Mailing List.'), 'error');
     } else {
       $form['subscribe']['list'] = array(
         '#type' => 'select', 
@@ -69,6 +68,14 @@ class os_boxes_mailchimp extends os_boxes_default {
         '#title' => t('MailChimp form height.'),
         '#default_value' => (isset($this->options['mailchimp_iframe_height'])) ? $this->options['mailchimp_iframe_height'] : $defaults['mailchimp_iframe_height'],
         '#states' => array('visible' => array('input[name="display"]' => array('value' => 'mailchimp_form'))),
+      );
+
+      $form['subscribe']['mailchimp_iframe_width'] = array(
+        '#type' => 'textfield',
+        '#title' => t('MailChimp form width.'),
+        '#default_value' => (isset($this->options['mailchimp_iframe_width'])) ? $this->options['mailchimp_iframe_width'] : $defaults['mailchimp_iframe_width'],
+        '#states' => array('visible' => array('input[name="display"]' => array('value' => 'mailchimp_form'))),
+        '#description' => t('For flexibility, recommended values should be in percentages. (ex. 100%)'),
       );
     }
     
@@ -104,7 +111,7 @@ class os_boxes_mailchimp extends os_boxes_default {
               $subscribe_url_long = str_replace('http://', '//', $subscribe_url_long);
               $block['content'] = t('<iframe src="@url" width="@width", height="@height"></iframe>', array(
                 '@url' => $subscribe_url_long,
-                '@width' => "640px",
+                '@width' => (intval($this->options['mailchimp_iframe_width']) > 0) ? $this->options['mailchimp_iframe_width'] : $defaults['mailchimp_iframe_width'],
                 '@height' => (intval($this->options['mailchimp_iframe_height']) > 0) ? $this->options['mailchimp_iframe_height'] : $defaults['mailchimp_iframe_height'],
               ));
               break;
@@ -123,7 +130,7 @@ class os_boxes_mailchimp extends os_boxes_default {
           'mailchimp-modal-style' => array(
             'modalSize' => array(
               'type' => 'fixed',
-              'width' => 600,
+              'width' => '100%',
               'height' => 360,
               'addWidth' => 10,
               'addHeight' => 10,

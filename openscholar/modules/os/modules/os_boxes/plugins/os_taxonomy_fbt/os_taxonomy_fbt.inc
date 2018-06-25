@@ -57,15 +57,18 @@ class os_taxonomy_fbt extends os_boxes_default {
     }
 
     $form['advanced']['as_nav'] = array(
-      '#type' => 'checkbox',
-      '#default_value' => $this->options['as_nav'],
-      '#title' => t('Display as a menu'),
+      '#type' => 'radios',
+
+      // The previous version of the form had a checkbox for the 'Menu' display type, so
+      // for back-compatibility, checkbox true is equivalent to radio 'menu'.
+      '#default_value' => (($this->options['as_nav'] === true) ? 'menu' : (is_string($this->options['as_nav']) ? $this->options['as_nav'] : 'classic')),
+      '#title' => t('Display type'),
       '#return_value' => TRUE,
-      '#states' => array(
-       'invisible' => array(
-        ':input[name="widget_type"]' => array('value' => 'select'),
-        ),             
-       ),
+      '#options' => array(
+          'classic' => t('Classic/List'),
+          'menu' => t('Menu'),
+          'slider' => t('Slide Down') . '<br><div class="description">' . t('Each taxonomy term must have its own description (see the term creation/edit form). Also, the Show term descriptions checkbox above must be checked, and the Show child terms checkbox above must be unchecked.')
+      ),
     );
 
     if (module_exists('vsite') && $vsite = vsite_get_vsite()) {
@@ -88,6 +91,9 @@ class os_taxonomy_fbt extends os_boxes_default {
    */
   public function form_elements(&$form_state) {
     $form = array();
+
+    drupal_add_js(drupal_get_path('module', 'os_boxes') . '/plugins/os_taxonomy_fbt/os_taxonomy_fbt.js');
+
     $selected_vid = isset($form_state['values']['vocabulary']) ? $form_state['values']['vocabulary'] : $this->options['vocabulary'];
     $form['vocabulary'] = array(
       '#type' => 'select',
@@ -95,6 +101,9 @@ class os_taxonomy_fbt extends os_boxes_default {
       '#title' => t('Vocabularies'),
       '#options' => self::get_all_vocabularies(),
       '#required' => TRUE,
+      '#attributes' => array(
+        'ng-non-bindable' => '',
+      ),
       '#ajax' => array(
         'callback' => 'os_boxes_taxonomy_fbt_vocab_ajax_callback',
         'wrapper' => 'bundles-wrapper',
@@ -248,6 +257,10 @@ class os_taxonomy_fbt extends os_boxes_default {
       return;
     }
 
+    if (isset($form_state['values']['as_nav']) && $form_state['values']['as_nav'] == 'slider') {
+      $this->options['additional_classes'] .= ' slider';
+    }
+
     if (isset($this->options['vocabulary'])) {
       $id = 'vocabulary:' . $this->options['vocabulary'];
     }
@@ -307,7 +320,7 @@ class os_taxonomy_fbt extends os_boxes_default {
     drupal_add_js($settings, array('type' => 'setting'));
     drupal_add_js(drupal_get_path('module', 'os_boxes') . '/plugins/os_taxonomy_fbt/os_taxonomy_fbt.js');
 
-    if ($this->options['behavior'] == '--all--') {
+    if ($this->options['behavior'] == '--all--'  || ($this->options['behavior'] == 'contextual' && empty(os_get_active_feature()))) {
       $this->options['bundles'] = array();
     }
     else if (!empty($this->options['behavior']) && $this->options['behavior'] == 'contextual' && ($feature = os_get_active_feature())) {
@@ -357,14 +370,17 @@ class os_taxonomy_fbt extends os_boxes_default {
 
     // Content type's machine name is added in cache id.
     // So that different set of cached links can be generated per content type for 'Determine for me' settings.
-    if ($this->options['behavior'] == 'contextual') {
+    if ($this->options['behavior'] == 'contextual' && !empty(os_get_active_feature())) {
       $id = 'vocabulary:' . $this->options['vocabulary'] . ':' . implode(":", $this->options['bundles']);
     }
     else {
       $id = 'vocabulary:' . $this->options['vocabulary'];
     }
 
-    if ($this->options['as_nav']) {
+    // Two cases bring about the navigation CSS class:
+    //    * Menu display checkbox is checked (in old form)
+    //    * New 'menu' radio is selected in *Display type* (in new form)
+    if (($this->options['as_nav'] === true) || ($this->options['as_nav'] === 'menu')) {
       $this->options['additional_classes'] = 'navigation';
     }
 

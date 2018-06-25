@@ -154,6 +154,7 @@ function os_profiles_views_default_views() {
   $handler->display->display_options['arguments']['field_last_name_value']['glossary'] = TRUE;
   $handler->display->display_options['arguments']['field_last_name_value']['limit'] = '1';
   $handler->display->display_options['arguments']['field_last_name_value']['break_phrase'] = TRUE;
+  $handler->display->display_options['path'] = 'people/glossary';
   $export['os_profiles'] = $view;
 
   return $export;

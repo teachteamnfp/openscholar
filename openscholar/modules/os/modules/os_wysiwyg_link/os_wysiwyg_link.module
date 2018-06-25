@@ -8,7 +8,7 @@ function os_wysiwyg_link_menu() {
 
   $items['os/wysiwyg/link/insert'] = array(
     'title' => 'Insert Link',
-    'access arguments' => array('insert link into wysiwyg'),
+    'access arguments' => array('access content'),
     'page callback' => 'os_wysiwyg_link_insert',
     'file' => 'os_wysiwyg_link.insert.inc',
     'type' => MENU_CALLBACK,
@@ -39,20 +39,6 @@ function os_wysiwyg_link_get_media_browser_plugins() {
  */
 function os_wysiwyg_link_get_media_browser_types() {
   return array();
-}
-
-/**
- * Implements hook_permission().
- */
-function os_wysiwyg_link_permission() {
-  $perms = array();
-
-  $perms['insert link into wysiwyg'] = array(
-    'title' => t('Insert a link into the Wysiwyg'),
-    'description' => t('Insert a link into the wysiwyg'),
-  );
-
-  return $perms;
 }
 
 /**

@@ -116,14 +116,9 @@ div.vertical-tabs .vertical-tabs-list {
 
 #file-entity-add-upload #edit-upload-ajax-wrapper label {
 	padding: 13px 13px;
+	margin-top: 18px;
 }
 
-#file-entity-add-upload #edit-upload-ajax-wrapper .add-new {
-  background: #A1D4A1;
-  border-radius: 5px;
-  border: 1px solid #8B8;
-  color: #293552;
-}
 
 #file-entity-add-upload .form-item-upload .form-file {
 	left: -500px;

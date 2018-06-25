@@ -148,6 +148,9 @@ function drush_os_domain_build() {
   /* flatten the multisites array for sites.php */  
   $a_sites = array();
   foreach ($multisites as $site => $domains) {
+    $domains = array_map(function ($v) {
+      return trim($v, '*.');
+    }, $domains);
     $a_sites += array_fill_keys($domains, $site);
   }
   $inc_file= $srv_conf['sites_inc'];
@@ -535,9 +538,16 @@ EOF;
  * Given a list of domains, returns htaccess rewrite conditions matching all of them.
  */
 function _os_drush_domain_htaccess_rewrite_condition($domains) {
+  $domains_raw = $domains;
   foreach ($domains as $n => $domain) {
-    $condition = '  RewriteCond %{HTTP_HOST} ^' . $domain;
+    $subdomain = '^';
+    if (strpos($domain, '*') === 0) {
+      $subdomain = '';
+    }
+    $condition = '  RewriteCond %{HTTP_HOST} ' . $subdomain . ltrim($domain, '*.');
     $domains[$n] = str_replace('.', '\.', $condition);
   }
-  return "\n" . implode(" [OR]\n", $domains) . "\n";
+  $rule = "\n" . implode(" [OR]\n", $domains) . "\n";
+
+  return $rule;
 }

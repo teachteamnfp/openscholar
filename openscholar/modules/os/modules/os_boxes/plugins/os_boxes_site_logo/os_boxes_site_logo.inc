@@ -85,7 +85,10 @@ class os_boxes_site_logo extends os_boxes_default {
               'type' => 'inline'
             )
           )
-        )
+        ),
+        '#field_parents' => array(),
+        '#field_name' => 'field_site_logo',
+        '#language' => LANGUAGE_NONE,
       );
 
       if (function_exists('imagefield_crop_upload_validate')) {

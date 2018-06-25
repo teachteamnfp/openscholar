@@ -11,7 +11,7 @@ function os_mailchimp_cp_settings() {
       '#id' => 'mailchimp',
       '#title' => t('Mailing List'),
       '#weight' => 0,
-      '#help_link' => l(t('Learn more about the mailing list'), 'http://docs.openscholar.harvard.edu/embedding-mailchimp-newsletter-sign', array('attributes' => array('target' => '_blank')))
+      '#help_link' => l(t('Learn more about the mailing list'), 'https://help.theopenscholar.com/embedding-mailchimp-newsletter-sign', array('attributes' => array('target' => '_blank')))
     ),
     'form' => array(
       '#type' => 'textfield',

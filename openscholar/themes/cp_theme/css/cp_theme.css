@@ -11,7 +11,9 @@ div.messages ul li {
 .ui-dialog * {
     font-size: 14px;
 }
-
+fieldset#edit-og-vocabulary-und .fieldset-wrapper,
+.logged-in div[aria-describedby^="event-popover-"] .ui-dialog-title,
+.ui-dialog.app-form,
 #page {
     padding: 0;
 }
@@ -198,7 +200,7 @@ html.js input.throbbing {
 .view-id-cp_files .cp-controls-wrapper .add_new {
     margin-right: 0;
 }
-
+#file-entity-add-upload #edit-upload-ajax-wrapper .add-new,
 .view-id-cp_files .cp-controls-wrapper .add_new {
     line-height: 15px !important;
     display: inline-block;
@@ -226,6 +228,7 @@ html.js input.throbbing {
     color: #FFF;
     font-weight: bold;
 }
+button.button,
 #edit-field_software_package-und-drop .media-browser-drop-box .ng-binding.ng-scope,
 .redirect-add,
 body.page-node-revisions ul.action-links a,
@@ -288,7 +291,7 @@ a.form-cancel {
  display: inline-block;
     float: left;
     margin-right:6px;
-    font-size: 7px;
+    font-size: 6px;
     position: relative;
     text-indent: -9999em;
     border-top: .5em solid rgb(255, 255, 255);
@@ -456,12 +459,13 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
 
 
 /** OVERLAY MODAL OVERRIDES **/
-.ui-dialog button.ui-dialog-titlebar-close, #overlay-close, #overlay-close:hover  {
-    background: url('../images/cp-sprite.png') no-repeat 0 -547px;
+.ui-dialog button.ui-dialog-titlebar-close, #overlay-close:hover, #overlay-close  {
+    background: url(../images/cp-sprite.png) no-repeat 0 -547px;
     width: 30px;
     height: 30px;
     position: relative;
-    /* margin: -28px 10px; */
+
+    border: none;
 }
 
 
@@ -471,8 +475,13 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
     margin: -8px 0;
     border: 0;
     cursor: pointer;
+   
 }
 
+.ui-dialog .ui-dialog-titlebar-close {
+
+    right:-10px;
+}
 #overlay-close-wrapper {
    
     margin: -30px 15px;
@@ -496,6 +505,10 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
     height: 24px;
 }
 
+.app-form.ui-dialog .ui-dialog-content {
+
+    overflow: inherit
+}
 
 #overlay-title, .ui-dialog-title {
     float: left;
@@ -637,7 +650,7 @@ table th label {
 /* CP/BUILD MENU */
 #redirects .actions,
 #os-maintenance .actions,
-.page-cp-build-menu table thead,
+.page-cp-build-menu #page table thead,
 .page-node-revisions .comment-wrapper,
 .page-node-revisions .ctools-dropdown,
 .page-node-revisions .biblio-download-links-label {
@@ -754,17 +767,7 @@ table.biblio-contributors {
     max-width: 650px;
 }
 
-.field-name-og-vocabulary table,
-.field-name-og-vocabulary table th,
-.field-name-og-vocabulary table tr,
-table#field-biblio-extra-values,
-table#field-biblio-extra-values th,
-#edit-biblio-authors table,
-#edit-biblio-authors table tr,
-#edit-biblio-authors table,
-table.biblio-contributors,
-table.biblio-contributors tr.odd,
-table.biblio-contributors tr.even {
+.field-name-og-vocabulary table, .field-name-og-vocabulary table th, .field-name-og-vocabulary table tr, table#field-biblio-extra-values, table#field-biblio-extra-values th, #edit-biblio-authors table, #edit-biblio-authors table, table.biblio-contributors, table.biblio-contributors tr.odd, table.biblio-contributors tr.even {
     border: none;
     background: #FFF;
     margin: 0;
@@ -942,7 +945,7 @@ html.js fieldset.collapsible#edit-publication-extras .fieldset-wrapper .fieldset
     background: none;
     padding-left: 0;
 }
-
+fieldset#edit-og-vocabulary-und,
 .field-name-field-biblio-extra table.field-multiple-table,
 .field-name-field-biblio-extra table.field-multiple-table tr,
 .field-name-field-biblio-extra table.field-multiple-table th,
@@ -1031,19 +1034,34 @@ fieldset#edit-5 {
 
 fieldset#edit-biblio-authors {
     background-color: transparent;
-    border: 0 none;
-    padding: 0;
+    border: none;
+   
+    padding: 00px 0 0;
     margin: 0;
 }
 
 fieldset#edit-biblio-authors .fieldset-wrapper {
     padding-left: 0;
+    margin: 20px 0 0 0;
 }
 
 fieldset#edit-biblio-authors .fieldset-legend {
     padding-left: 0;
     margin-top: 0;
     text-transform: none;
+    padding-top: 10px;
+}
+#edit-biblio-authors table tr,
+#edit-url, fieldset#edit-biblio-authors {
+
+     background-color: #f1f1f1;
+ 
+}
+#edit-biblio-authors table tr,
+#edit-url, fieldset#edit-biblio-authors {
+
+    padding:10px 0;
+     margin:5px 0 20px 0;
 }
 
 /**
@@ -1073,6 +1091,7 @@ form.node-form .form-region-main input a,
 
 form.node-form .form-region-right input.form-text {
     width: 85% !important;
+    background-color: #fff;
 }
 
 form.node-form .form-region-main input.form-text {
@@ -1080,11 +1099,12 @@ form.node-form .form-region-main input.form-text {
 }
 
 form.node-form .form-region-right fieldset {
-    background: none repeat scroll 0% 0% transparent;
+    background-color: #f1f1f1;
     border: medium none;
-    margin: 1em 0px;
-    padding: 3em 0px 0.1em;
+    margin: .5em 0 0 0px;
+    padding: 3.5em 0px 0.5em 0;
     width: 100%;
+    height: inherit;
 }
 
 form.node-form .form-region-right fieldset legend {
@@ -1109,15 +1129,15 @@ form.node-form .form-region-main .fieldset-legend span.summary {
 html.js .form-region-right fieldset.collapsible .fieldset-legend
 /*form.node-form.overlay-processed .form-region-right  fieldset.collapsed .fieldset-legend*/
 {
-    border: 1px solid #CCCCCC;
+    /* border: 1px solid #CCCCCC; */
     display: block;
     font-weight: normal;
     line-height: 13px;
-    min-height: 25px;
-    padding: 6px 15px 4px;
-    text-transform: none;
-    width: 89%;
-    background-color: #f1f1f1;
+    /* min-height: 25px; */
+    /* padding: 10px 0 10px 10px; */
+    /* text-transform: none; */
+    /* width: 100%; */
+    /* background-color: #f1f1f1; */
 }
 
 html.js fieldset.collapsible .fieldset-legend {
@@ -1132,7 +1152,7 @@ html.js fieldset.collapsible > legend .fieldset-legend:before {
     background-repeat: no-repeat;
     width: 15px;
     height: 15px;
-    top: 3px;
+    top: -1px;
     left: 0;
 }
 
@@ -1153,12 +1173,12 @@ form.node-form {
 }
 
 form.node-form .form-region-right .fieldset-wrapper {
-    border-bottom: 1px solid #CCCCCC;
-    border-left: 1px solid #CCCCCC;
-    border-right: 1px solid #CCCCCC;
-    padding-top: 15px;
-    padding-right: 15px;
-    width: 89%;
+    /* border-bottom: 1px solid #CCCCCC; */
+    /* border-left: 1px solid #CCCCCC; */
+    /* background-color: #f1f1f1; */
+    /* padding-top: 15px; */
+    /* padding-right: 15px; */
+    /* width: 220px; */
 }
 
 .form-region-right .field-prefix {
@@ -1198,17 +1218,19 @@ form#cp-user-edit-membership-form .form-item-group-manager {
 }
 
 h1.biblio-type-prefix {
-    float: left;
-    margin: 18px 10px 0px 0px;
+    /* float: left; */
+       margin: 18px 10px 0px 0px;
     padding: 0.3em 0;
-    color: #666;
-    font-size: 18px;
-    font-weight: normal;
+    color: #000;
+    font-size: 13px;
+    font-weight: bold;
 }
 
 .form-item-biblio-type select {
     font-size: 18px;
-    color: #666;
+    width: 100%;
+    border-top-color: #ccc;
+    /* padding: 8px; */
 }
 
 .form-item-biblio-type span.form-required {
@@ -1243,27 +1265,7 @@ ul.term-reference-tree-level {
     background: none;
 }
 
-/** I think these aren't used anymore, but I'd need someone who remembers what they're used for to confirm
-.term-reference-tree-button {
-  background: url('../../os_basetheme/images/scholarbase-sprite.png') 2px -449px no-repeat;
-}
 
-.term-reference-tree-button.term-reference-tree-collapsed {
-  background: url('../../os_basetheme/images/scholarbase-sprite.png') 6px -433px no-repeat;
-}
-
-.field-widget-og-vocab-complex .expand {
-	 background: url('../../os_basetheme/images/scholarbase-sprite.png') 0 -509px no-repeat;
-	 padding-left:14px;
-}
-
-.field-widget-og-vocab-complex .collapse {
-	 background: url('../../os_basetheme/images/scholarbase-sprite.png') 0 -529px no-repeat;
-	 padding-left:14px;
-	 margin-left:10px;
-}
-
- */
 /* PUB FORM EXTERNAL URL SECTIONON */
 #edit-url .form-item-biblio-url-title {
     margin-right: 0;
@@ -1280,7 +1282,7 @@ ul.term-reference-tree-level {
 
 #edit-biblio-url-title {
     border: none;
-    background: url('../images/cp-sprite.png') no-repeat 0 -475px #FFFFFF;
+    background: url('../images/cp-sprite.png') no-repeat 0 -475px #eee;
     padding-left: 25px;
     color: #0074BD;
     text-decoration: underline;
@@ -1324,7 +1326,7 @@ margin: 0 0 10px;
     font-size: 15px;
     line-height:20px;
 }
-
+#overlay-close,
 :not(form) div.messages {
 margin: 0;
 }
@@ -1489,12 +1491,7 @@ div.warning {
     background-position: 0 -675px;
 }
 
-#og-vocabulary-add-more-wrapper #edit-og-vocabulary-und .fieldset-wrapper {
-    border: 1px solid #ccc;
-    background: #f1f1f1;
-    padding: 5px;
-    width: 96%;
-}
+
 
 /** News edit page calendar field override */
 .node-news-form .date-padding {
@@ -1527,7 +1524,7 @@ div.warning {
     height: 23px;
 }
 
-.description {
+form .description {
     margin: 5px 0;
     line-height: 1.231em;
     font-size: 0.923em !important;
@@ -1679,7 +1676,7 @@ form#documentation img {
 span[name="faq_sort"] .form-radios {
     margin: 0 15px 15px 0;
 }
-
+.margin_bottom-15,
 .margin-bottom{
     margin-bottom: 15px;
 }
@@ -1917,7 +1914,8 @@ body.page-node-revisions .node {
 .page-node-revisions .media-element[style*="float: left"] {
 	padding-right:15px;
 }
-
+.form-item-biblio-url-title label[for="edit-biblio-url-title"],
+#edit-biblio-authors legend,
 .page-node-revisions .media-element[style*="float: right"] {
 	padding-left:15px;
 }
@@ -2130,6 +2128,8 @@ label[for=cp-title-bulk] {
     border-top: 9px solid transparent;
     border-bottom: 9px solid transparent;
     z-index: 1;
+    background: url('../images/cp-sprite.png') no-repeat 130px -767px;
+    display:block;
  }
  .undo-message-box {
     position: fixed;
@@ -2328,6 +2328,166 @@ md-switch .md-bar {
      cursor:pointer;
 }
 
-#edit-og-vocabulary a.tabledrag-handle .handle{
+
+/* WRANGLE THE WELCOME MODAL FOR https://scholar-demo.iq.harvard.edu/abc#overlay=cp/welcome */
+.page-cp-welcome.overlay #overlay { 
+	width: 400px;
+	 } 
+	 
+.page-cp-welcome.overlay #overlay ol { 
+	font-size: 1.2em;
+	 } 
+.page-cp-welcome.overlay #overlay p { 
+	font-size: 1.1em;
+	 } 
+.vsite-welcome-okay {
+	 display:none;
+	  } 
+	  
+/* PROGRESS BAR CSS  BEGIN*/
+.progress .bar,
+.progress-bar {
+    overflow: hidden;
+    height: 18px;
+    margin: 5px 0;
+    background-color: #f7f7f7;
+    background-image: -moz-linear-gradient(top, #f5f5f5, #f9f9f9);
+    background-image: -ms-linear-gradient(top, #f5f5f5, #f9f9f9);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f5f5), to(#f9f9f9));
+    background-image: -webkit-linear-gradient(top, #f5f5f5, #f9f9f9);
+    background-image: -o-linear-gradient(top, #f5f5f5, #f9f9f9);
+    background-image: linear-gradient(top, #f5f5f5, #f9f9f9);
+    background-repeat: repeat-x;
+    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#f9f9f9', GradientType=0);
+    -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    border:none;
+}
+.progress .filled,
+.progress-bar .progress-bar-completed {
+    width: 0%;
+    height: 18px;
+    color: #ffffff;
+    font-size: 12px;
+    text-align: center;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    background-color: #0e90d2;
+    background-image: -moz-linear-gradient(top, #149bdf, #0480be);
+    background-image: -ms-linear-gradient(top, #149bdf, #0480be);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#149bdf), to(#0480be));
+    background-image: -webkit-linear-gradient(top, #149bdf, #0480be);
+    background-image: -o-linear-gradient(top, #149bdf, #0480be);
+    background-image: linear-gradient(top, #149bdf, #0480be);
+    background-repeat: repeat-x;
+    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#149bdf', endColorstr='#0480be', GradientType=0);
+    -webkit-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+    -moz-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+    box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-transition: width 0.6s ease;
+    -moz-transition: width 0.6s ease;
+    -ms-transition: width 0.6s ease;
+    -o-transition: width 0.6s ease;
+    transition: width 0.6s ease;
+}
+.progress .filled,
+.progress-striped .progress-bar-completed {
+    background-color: #62c462;
+    background-image: -webkit-gradient(linear, 0 100%, 100% 0, color-stop(0.25, rgba(255, 255, 255, 0.15)), color-stop(0.25, transparent), color-stop(0.5, transparent), color-stop(0.5, rgba(255, 255, 255, 0.15)), color-stop(0.75, rgba(255, 255, 255, 0.15)), color-stop(0.75, transparent), to(transparent));
+    background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+    background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+    background-image: -ms-linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+    background-image: -o-linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+    background-image: linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+    -webkit-background-size: 40px 40px;
+    -moz-background-size: 40px 40px;
+    -o-background-size: 40px 40px;
+    background-size: 40px 40px;
+    -webkit-animation: progress-bar-stripes 2s linear infinite;
+    -moz-animation: progress-bar-stripes 2s linear infinite;
+    animation: progress-bar-stripes 2s linear infinite;
+}
+@-webkit-keyframes progress-bar-stripes {
+    from {
+        background-position: 0 0
+    }
+    to {
+        background-position: 40px 0
+    }
+}
+@-moz-keyframes progress-bar-stripes {
+    from {
+        background-position: 0 0
+    }
+    to {
+        background-position: 40px 0
+    }
+}
+@keyframes progress-bar-stripes {
+    from {
+        background-position: 0 0
+    }
+    to {
+        background-position: 40px 0
+    }
+}
+/* PROGRESS BAR CSS  END */
+
+/* ADMIN MENU SUPPORT MODAL */
+
+ #support .feature-block  {
+    background-color: #f2f2f2;
+    padding: 0 12px 10px;
+    width: 45.4%;
+    display: inline-block;
+    margin-right: 20px;
+    text-align: center;
+    margin: 10px 20px 0 0;
+    position:relative;
+    vertical-align: top;
+}
+#support .feature-block:last-of-type  {
+    margin-right: 0;
+}
+
+
+#support .feature-block:before {
+    height: 150px;
+    width: 150px;
+    content: '';
+    position: absolute;
+    left: 31%;
+    top: -68px;
+    z-index: 2;
+}
+
+#support .feature-block h3 {
+    padding: 40px 0 25px 0;
+    text-align: center;
+    font-weight: bold;
+}
+#support .feature-block h3 strong {
+   
+    font-size: 18px !important;
+ 
+}
+#support .feature-block li,
+ #support .feature-block span {
+    font-size: 1.2em !important;
+    line-height: 1.65em;
+    text-align:left;
+}
+
+#support .os-swipe-large {
+    text-transform:uppercase;
+}
+
+#support .actions, #documentation .actions {
     display: none;
 }

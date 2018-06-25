@@ -1,0 +1,1 @@
+This provides a instance of openscholar running in a docker container for running tests on travis.

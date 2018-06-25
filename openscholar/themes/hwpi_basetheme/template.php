@@ -22,6 +22,177 @@ function hwpi_basetheme_preprocess_html(&$vars) {
 }
 
 /**
+ * Implements template_preprocess_page() for page.
+ */
+function hwpi_basetheme_preprocess_page(&$vars) {
+  if (_is_hwpi_theme()) {
+    $vars['page']['branding_header']['hwpi'] = _hwpi_branding_header();
+    $vars['page']['branding_footer']['hwpi'] = _hwpi_branding_footer();
+  }
+}
+
+/**
+ * Returns if the active theme uses hwpi_basetheme as one of it's base theme.
+ *
+ * @return bool
+ */
+function _is_hwpi_theme($theme_name = NULL) {
+  if (is_null($theme_name)) {
+    $theme_name = $GLOBALS['theme'];
+  }
+  $themes = list_themes();
+  if (isset($themes[$theme_name])) {
+    $t = $themes[$theme_name];
+    if (isset($t->base_themes) && isset($t->base_themes['hwpi_basetheme'])) {
+      return TRUE;
+    }
+  }
+  return FALSE;
+}
+
+/**
+ * Returns a build array for the HWPI branding header page region.
+ *
+ * @return array
+ */
+function _hwpi_branding_header() {
+  $header = array();
+  if (variable_get('logo_path')) {
+    $logo_path = variable_get('logo_path');
+    if (file_exists($logo_path)) {
+      $imageinfo = getimagesize($logo_path);
+    }
+    else {
+      $imageinfo = array(null, null);
+    }
+    $header['left_container'] = array(
+      '#type' => 'container',
+      '#attributes' => array(
+        'class' => array(
+          'branding-left',
+        ),
+      ),
+      'img' => array(
+        '#theme' => 'link',
+        '#path' => variable_get('university_base_url'),
+        '#text' => theme('image', array('path' => $logo_path, 'width' => $imageinfo[0], 'height' => $imageinfo[1], 'alt' => 'University Logo')),
+        '#options' => array(
+          'external' => TRUE,
+          'html' => TRUE,
+          'attributes' => array(),
+        ),
+        '#access' => file_exists($logo_path)
+      ),
+    );
+  }
+  $sites = _hwpi_get_ancestry();
+  $links = array();
+  foreach ($sites as $path => $title) {
+    $links[] = l($title, $path);
+  }
+  $header['right_container'] = array(
+    '#type' => 'container',
+    '#attributes' => array(
+      'class' => array(
+        'branding-right',
+      ),
+    ),
+    'sitecrumbs' => array(
+      '#type' => 'markup',
+      '#markup' => implode(' | ', $links),
+    ),
+  );
+
+  return $header;
+}
+
+/**
+ * Returns website parents in an ordered, keyed array.
+ *
+ * Note: The returned array uses URLs as keys, and case-sensitive titles as
+ * values. The top-most level of the array is hard-coded to be 'HARVARD.EDU',
+ * site organization taxonomy terms are second-highest, and sub-site relations
+ * will appear as the most-specific, lowest-level ancestor.
+ *
+ * @return array
+ *   An array keyed by fully-qualified absolute URLs, values are link title text.
+ */
+function _hwpi_get_ancestry() {
+  $sites = array();
+  if ($vsite = spaces_get_space()) {
+    // First, looks for parent vsites and adds them to hierarchy.
+    $vsite_original = $vsite;
+    $group = $vsite->group;
+    while (isset($group->field_group_parent) && $group->field_group_parent) {
+      $items = field_get_items('node', $group, 'field_group_parent');
+      $vsite = vsite_get_vsite($items[0]['target_id']);
+      if(!is_object($vsite) || !isset($vsite->group)) {
+        break;
+      }
+      $group = $vsite->group;
+      $sites[$vsite->get_absolute_url()] = $group->title;
+    }
+
+    // Then, looks for site organization terms and adds them to hierarchy.
+    $items = field_get_items('node', $vsite_original->group, 'field_organization');
+    if (is_array($items) && !empty($items)) {
+      $tid = $items[0]['tid'];
+      $items = field_get_items('taxonomy_term', taxonomy_term_load($tid), 'field_site_url');
+      if (isset($items[0])) {
+        $site_url = $items[0];
+        while ($site_url) {
+          $sites[$site_url['url']] = $site_url['title'];
+          $parents = taxonomy_get_parents($tid);
+          if (empty($parents)) {
+            break;
+          }
+          $tid = array_shift(array_keys($parents));
+          $items = field_get_items('taxonomy_term', taxonomy_term_load($tid), 'field_site_url');
+          if (isset($items[0])) {
+            $site_url = $items[0];
+          }
+          else {
+            $site_url = FALSE;
+          }
+        }
+      }
+    }
+  }
+
+  // Hard-codes "HARVARD.EDU" as the highest parent item.
+  $sites[variable_get('university_base_url')] = variable_get('highest_parent_item');
+  return $sites;
+}
+
+/**
+ * Returns a build array for the standard branding footer region (copyright).
+ *
+ * @return array
+ *   A build array ready to render footer info.
+ */
+function _hwpi_branding_footer() {
+  $footer = array();
+  $footer['hwpi_container'] = array(
+    '#type' => 'container',
+    '#attributes' => array(
+      'class' => array(
+        'copyright',
+      ),
+    ),
+    'copyright' => array(
+      '#markup' => t('<span class="harvard-copyright">!copyright_text</span> !privacy !access !copyinfring', array(
+          '!copyright_text' => str_replace("@year", date('Y'), variable_get('copyright_text', '')),
+          '!privacy' => variable_get('privacy_policy','')?'| '.l(variable_get('privacy_policy_text'), variable_get('privacy_policy')): '',
+          '!access' => variable_get('site_access_text','')?'| '.l(variable_get('site_access_text'), variable_get('site_access')): '',
+          '!copyinfring' => variable_get('copyright_infring_text','')?'| '.l(variable_get('copyright_infring_text'), variable_get('copyright_infring')): '',
+        )),
+    ),
+  );
+
+  return $footer;
+}
+
+/**
  * Adds mobile menu controls to menubar.
  */
 function hwpi_basetheme_page_alter(&$page) {
@@ -40,7 +211,7 @@ function hwpi_basetheme_page_alter(&$page) {
     '#links' => array(
       'mobi-main' => array(
         'href' => '#',
-        'title' => '<span aria-hidden="true" class="icon-menu"></span>',
+        'title' => '<span aria-hidden="true" class="icon-menu"></span><span class="move">Main Menu</span>',
         'external' => true,
         'html' => true,
         'attributes' => array(
@@ -108,7 +279,7 @@ function hwpi_basetheme_preprocess_node(&$vars) {
     }
 
     // Set up the size of the picture.
-    $size = (!empty($vars['os_sv_list_box']) && $vars['os_sv_list_box']) || $vars['view_mode'] == 'full' ? 'big' : 'small';
+    $size = (!empty($vars['os_sv_list_box']) && $vars['os_sv_list_box']) || $vars['view_mode'] == 'full' ? 'large' : 'small';
 
     $key['field_person_photo'][0] = array('#markup' => hwpi_basetheme_profile_default_image($size));
   }
@@ -137,15 +308,16 @@ function hwpi_basetheme_profile_default_image($size = 'small') {
     $path = $image_file->uri;
     $options = array(
       'path' => $path,
-      'style_name' => 'profile_thumbnail',
+      'style_name' => $size == 'small' ? 'profile_thumbnail' : 'profile_full',
     );
 
     return '<div class="field-name-field-person-photo">' . theme('image_style',  $options) . '</div>';
   }
 
   // Use default image.
-  $image = $size == 'small' ? 'person-default-image.png' : 'person-default-image-big.png';
-  $path = variable_get('os_person_default_image', drupal_get_path('theme', 'hwpi_basetheme') . '/images/' . $image);
+  $image = $size == 'small' ? 'person-default-image-small.png' : 'person-default-image-large.png';
+  $install_default_image = variable_get('profile_default_photo_'.$size, drupal_get_path('theme', 'os_basetheme') . '/images/' . $image);
+  $path = variable_get('os_person_default_image', $install_default_image);
   return '<div class="field-name-field-person-photo">' . theme('image',  array('path' => $path)) . '</div>';
 }
 
@@ -266,7 +438,9 @@ function hwpi_basetheme_node_view_alter(&$build) {
         unset($build['contact_details']['#prefix'], $build['contact_details']['#suffix']);
 
         //move title, website. body
-        $build['pic_bio']['body']['#weight'] = 5;
+        if (!empty($build['pic_bio']['body'])) {
+          $build['pic_bio']['body']['#weight'] = 5;
+        }
         foreach (array(0=>'field_professional_title', 15=>'field_website') as $weight => $field) {
           if (isset($build[$field])) {
             $build['pic_bio'][$field] = $build[$field];
@@ -295,7 +469,7 @@ function hwpi_basetheme_node_view_alter(&$build) {
           }
         }
 
-        if (isset($build['links']['node']['#links']['node-readmore'])) {
+        if (isset($build['links']['node']['#links']['node-readmore']) && !empty($build['pic_bio']['body'])) {
           $link = $build['links']['node']['#links']['node-readmore'];
           if (preg_match('!</?(?:p)[^>]*>\s*$!i', $build['pic_bio']['body'][0]['#markup'], $match, PREG_OFFSET_CAPTURE)) {
             $insert_point = $match[0][1];
@@ -597,7 +771,7 @@ function hwpi_basetheme_status_messages($vars) {
     'warning' => t('Warning'),
   );
   foreach (drupal_get_messages($display) as $type => $messages) {
-    $output .= '<div class="messages ' . $type . '"><div class="message-inner"><div class="message-wrapper">';
+    $output .= '<div class="messages ' . $type . '"><div ng-non-bindable class="message-inner"><div class="message-wrapper">';
     if (!empty($status_heading[$type])) {
       $output .= '<h2>' . $status_heading[$type] . "</h2>";
     }
@@ -606,10 +780,10 @@ function hwpi_basetheme_status_messages($vars) {
       foreach ($messages as $message) {
         if (strpos($message, 'Biblio') === 0 || strpos($message, 'Publication') === 0) {
           // Allow some tags in messages about a Biblio.
-          $output .= '  <li>' . strip_tags(html_entity_decode($message), $allowed_html_elements) . "</li>";
+          $output .= '  <li ng-non-bindable>' . strip_tags(html_entity_decode($message), $allowed_html_elements) . "</li>";
         }
         else {
-          $output .= '  <li>' . $message . "</li>";
+          $output .= '  <li ng-non-bindable>' . $message . "</li>";
         }
       }
       $output .= " </ul>";

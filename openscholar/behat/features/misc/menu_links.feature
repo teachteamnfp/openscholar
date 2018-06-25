@@ -5,7 +5,7 @@ Feature:
   Scenario Outline: Test adding a link.
     Given I am logging in as "john"
      When I visit "john/cp/build/menu/link/new/primary-menu"
-      And I select "url" from "type"
+      And I select the radio button named "type" with value "url"
       And I press "Continue"
       And I fill in "title" with <title>
       And I populate in "url" with <url>
@@ -16,8 +16,7 @@ Feature:
      Then I should see <output>
 
   Examples:
-    | title                  | url                                                 | output                   |
-    | "Google"               | "http://maps.google.com"                            | "google maps"            |
-    | "Obama"                | "LOCALHOST/obama/blog"                              | "Me and michelle obama"  |
-    | "More publications"    | "LOCALHOST/john/publications"                       | "The Little Prince"      |
-    | "Stocks"               | "http://finance.yahoo.com/q?s=AAPL&reco=1"          | "Apple"                  |
+    | title                     | url                                             | output                                |
+    | "Obama's Wikipedia Entry" | "https://en.wikipedia.org/wiki/Barack_Obama"    | "44th President of the United States" |
+    | "Yale's Wikipedia Entry"  | "https://en.wikipedia.org/wiki/Yale_University" | "October 9, 1701"                     |
+    | "Apple's Wikipedia Entry" | "https://en.wikipedia.org/wiki/Apple_Inc."      | "Steve Jobs"                          |

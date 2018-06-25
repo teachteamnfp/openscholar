@@ -11,7 +11,7 @@ index 1d4921d..2da51d7 100644
 +// @todo COMMENTED OUT TMP  5/29 throwing fatal error -RWB
 +////    $blocks[$box->delta]['cache'] = $box->cache_setting();
    }
- 
+
    // 'Add' blocks for editing a page inline
 @@ -371,15 +373,37 @@ function boxes_box_load($delta = NULL) {
    if (isset($delta)) {
@@ -53,4 +53,4 @@ index 1d4921d..2da51d7 100644
 +
    return $boxes;
  }
- 
+

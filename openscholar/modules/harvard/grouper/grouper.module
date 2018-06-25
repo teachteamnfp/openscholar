@@ -61,8 +61,9 @@ function grouper_vsite_access_privacy_values_alter(&$options) {
 /**
  * Implements hook_page_build().
  */
-function grouper_page_build(&$page) {
-  if (spaces_access_admin()) {
+function grouper_process_page(&$page) {
+  $added = &drupal_static('drupal_add_library', array());
+  if (spaces_access_admin() && !empty($added['grouper']['module'])) {
     os_common_angular_apps('grouper');
   }
 }
@@ -197,12 +198,12 @@ function grouper_user_login(&$edit, $account) {
   }
   // get the pin of the user's account
   $huid = pinserver_authenticate_get_user_huid($account->uid);
-  watchdog('grouper', "HUID for user account '{$account->uid}': $huid.");
 
+  // user has no huid. Bailing out.
+  if (!$huid) {
+    return;
+  }
   $groups = grouper_groups_for_huid($huid, 'groups');
-  watchdog('grouper', "Groups for user account '{$account->uid}': ". print_r((array)$groups, 1));
-
-  watchdog('grouper', "User account '{$account->uid}' group data before:" . print_r((array)$account->field_grouper_path, 1));
 
   if ($groups !== FALSE) {
     if (count($groups)) {
@@ -332,6 +333,11 @@ function grouper_node_access($node, $op, $account) {
   }
 
   $group = node_load($group_id);
+  if (!$group) {
+    // Invalid Group
+    return NODE_ACCESS_IGNORE;
+  }
+
   $items = field_get_items('node', $group, VSITE_ACCESS_FIELD);
   if ($items[0]['value'] == GROUPER_PRIVACY_LEVEL) {
     if (grouper_user_can_access($group, $account)) {

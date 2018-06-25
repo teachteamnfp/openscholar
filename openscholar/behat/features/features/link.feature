@@ -20,7 +20,7 @@ Feature:
   @api @features_first
   Scenario: Edit link content
      Given I am logging in as "john"
-        And I visit the unaliased edit path of "links/google" on vsite "john"
+       And I edit the node "Google" in the group "john"
        When I fill in "Title" with "Google_one"
        When I fill in "edit-field-links-link-und-0-url" with "https://www.google.com"
         And I press "Save"
@@ -30,7 +30,7 @@ Feature:
   @api @features_first
   Scenario: Delete link content
      Given I am logging in as "john"
-        And I visit the unaliased edit path of "links/google" on vsite "john"
+      And I edit the node "Google_one" in the group "john"
       When I click "Delete this link"
       Then I should see "This action cannot be undone."
        And I press "Delete"
@@ -61,7 +61,7 @@ Feature:
   @api @feature_second
   Scenario: Permission to edit own content
     Given I am logging in as "michelle"
-      And I visit the unaliased edit path of "links/issac-newton" on vsite "john"
+      And I edit the node "Issac Newton" in the group "john"
       And I fill in "Title" with "Sir Issac Newton"
       And I press "Save"
      Then I should see "Sir Issac Newton"
@@ -69,19 +69,19 @@ Feature:
   @api @feature_second
   Scenario: Permission to edit any content
     Given I am logging in as "alexander"
-      And I visit the unaliased edit path of "links/issac-newton" on vsite "john"
+     And I edit the node "Sir Issac Newton" in the group "john"
      Then I should see "Access Denied"
 
   @api @feature_second
   Scenario: Permission to delete any content
     Given I am logging in as "alexander"
-      And I visit the unaliased delete path of "links/issac-newton" on vsite "john"
+      And I open the delete form for the post "links/issac-newton" on vsite "john"
      Then I should see "Access Denied"
 
   @api @feature_second
   Scenario: Permission to delete own content
     Given I am logging in as "michelle"
-      And I visit the unaliased edit path of "links/issac-newton" on vsite "john"
+      And I edit the node "Sir Issac Newton" in the group "john"
       And I click "Delete this link"
      Then I should see "This action cannot be undone."
       And I press "Delete"

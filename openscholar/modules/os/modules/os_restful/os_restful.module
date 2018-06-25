@@ -188,8 +188,9 @@ function os_restful_restful_parse_request_alter(&$request) {
   }
 
   if (!empty($request['vsite'])) {    // find way to get vsite when it's not explicitly given
-    $vsite = vsite_get_vsite($request['vsite']);
-    $vsite->activate_user_roles();
+    if ($vsite = vsite_get_vsite($request['vsite'])) {
+      $vsite->activate_user_roles();
+    }
   }
 
   if (!empty($request['file'])) {
@@ -234,5 +235,14 @@ function os_restful_entity_delete($entity, $type) {
         'extra' => serialize($extra)
       ))
       ->execute();
+  }
+}
+
+/**
+ * Sends restful response that the batch has finished
+ */
+function os_restful_output_batch_finished($url, $options) {
+  if ($options['query']['op'] != 'start') {
+    drupal_goto($url, $options);
   }
 }

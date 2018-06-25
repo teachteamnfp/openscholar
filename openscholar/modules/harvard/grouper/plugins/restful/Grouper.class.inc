@@ -36,6 +36,7 @@ class Grouper extends \RestfulBase implements \RestfulDataProviderInterface {
         '{accessLevel}' => 'viewablegroups',
       );
       $grouper_url = strtr($grouper_url, $replacements);
+      watchdog('Grouper', "Grouper URL: $grouper_url");
 
       $response = drupal_http_request($grouper_url);
       if ($response->code == 200) {

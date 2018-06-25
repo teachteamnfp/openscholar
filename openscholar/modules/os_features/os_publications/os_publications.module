@@ -508,7 +508,8 @@ function os_publications_form_biblio_node_form_alter(&$form, &$form_state) {
       $form['biblio_authors']['biblio_contributors'][$k]['auth_category']['#type'] = 'hidden';
     }
   }
-  unset($form['biblio_authors']['#title'], $form['biblio_authors']['#description']);
+  unset($form['biblio_authors']['#description']);
+  $form['biblio_authors']['#title'] = t('Author / Editor');
 
   $form['body'][LANGUAGE_NONE][0]['summary']['#access'] = false;
   $form['biblio_tabs']['biblio_full_text']['body'] = $form['body'];
@@ -629,6 +630,9 @@ function os_publications_form_biblio_node_form_alter(&$form, &$form_state) {
 
   // Add in a new validation for patents
   $form['#validate'][] = 'os_publications_biblio_form_patent_validate';
+
+  // Add in a new validation for non-supported unicode characters
+  $form['#validate'][] = 'os_publication_validate_unicode_charset';
 
   // Change labels in the menu fieldset.
   $form['os_menu']['#title'] = t('Menu options');
@@ -990,6 +994,25 @@ function os_publications_biblio_form_patent_validate(&$form, &$form_state) {
   }
   $patent_key = $form_state['values']['biblio_section'];
   $form_state['values']['biblio_edition'] = $form['biblio_section']['#options'][$patent_key];
+}
+
+/**
+ * Callback for custom validation.
+ * Function will match for the non basic multilingual plane unicode characters
+ */
+function os_publication_validate_unicode_charset(&$form, &$form_state) {
+  $biblio_abst_e = $form_state['values']['biblio_abst_e']['value'];
+  $biblio_title = $form_state['values']['title_field'][LANGUAGE_NONE][0]['value'];
+
+  $exp = '/^[\x{0000}-\x{FFFF}]+$/u';
+  if ($biblio_title !='' && !preg_match($exp, $biblio_title)) {
+    form_set_error('title_field', t("Sorry, the character you entered in Title field is not supported."));
+    return $form;
+  }
+  if ($biblio_abst_e !='' && !preg_match($exp, $biblio_abst_e)) {
+    form_set_error('biblio_abst_e][value', t("Sorry, the character you entered in Abstract field is not supported."));
+    return $form;
+  }
 }
 
 function os_publications_entity_prepare_view($entities, $type, $langcode) {
@@ -2047,3 +2070,120 @@ function os_publications_biblio_pm_node_alter($node, $article) {
     $node->title = substr($node->title, 0, -1);
   }
 } 
+
+/**
+* Implements hook_html_head_alter
+*/
+function os_publications_html_head_alter(&$head_elements) {
+  //Facebook image changes
+  foreach($head_elements as $key => $metatag){
+    if (!empty($metatag['#name']) && $metatag['#name'] == "og:image"){
+      //Get actual height and width of the image
+      list($imageWidth, $imageHeight) = getimagesize($metatag['#value']);
+      //Prepare with metadata for width and height metatag
+      $metatagWidth = $metatagHeight = $metatag;
+      $metatagWidth['#value'] = $imageWidth;
+      $metatagWidth['#name'] = 'og:image:width';
+      $metatagWidth['#id'] = $key.'_width';
+      $metatagWidth['#weight'] = $metatag['#weight']+1;
+      $metatagHeight['#value'] = $imageHeight;
+      $metatagHeight['#name'] = 'og:image:height';
+      $metatagHeight['#id'] = $key.'_height';
+      $metatagHeight['#weight'] = $metatag['#weight']+1;
+      //Create new head element
+      $head_elements[$key.'_width'] = $metatagWidth;
+      $head_elements[$key.'_height'] = $metatagHeight;
+    }
+  }
+  //Twitter image changes
+  //Default site logo for all vsite pages
+  foreach($head_elements as $key => $metatag){
+    if (!empty($metatag['#name']) && $metatag['#name'] == "twitter:image"){
+      $vsite = vsite_get_vsite();
+      $head_elements[$key]['#value'] = file_create_url($vsite->group->field_site_logo[LANGUAGE_NONE][0]['uri']);
+    }
+  }
+  $args = arg();
+  if($args[0] == 'node' && is_numeric($args[1])){
+    $node = node_load($args[1]);
+    //Twitter image change for news
+    if($node->type == 'news'){
+      foreach($head_elements as $key => $metatag){
+        if (!empty($metatag['#name']) && $metatag['#name'] == "twitter:image"){
+          //Retrive image from field_photo if image exists
+          if($node->field_photo[LANGUAGE_NONE][0]['uri']){
+            $head_elements[$key]['#value'] = file_create_url($node->field_photo[LANGUAGE_NONE][0]['uri']);
+          }else{
+            //Rertive all images from node body
+            preg_match_all('@src="([^"]+)"@' , $node->body[LANGUAGE_NONE][0]['safe_value'], $match);
+            $bodyImage = array_pop($match);
+            //Check if image exists and assign first image to twitter:image
+            if(is_array($bodyImage)){
+              foreach($bodyImage as $image){
+                $imageUrl = addhttp($image);
+                if(is_array(getimagesize($imageUrl))){
+                  $head_elements[$key]['#value'] = $imageUrl;
+                  break;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    //Twitter image change for person
+    else if($node->type == 'person'){
+      foreach($head_elements as $key => $metatag){
+        if (!empty($metatag['#name']) && $metatag['#name'] == "twitter:image"){
+          //Retrive image from field_person_photo if image exists
+          if($node->field_person_photo[LANGUAGE_NONE][0]['uri']){
+            $head_elements[$key]['#value'] = file_create_url($node->field_person_photo[LANGUAGE_NONE][0]['uri']);
+          }else{
+            //Rertive all images from node body
+            preg_match_all('@src="([^"]+)"@' , $node->body[LANGUAGE_NONE][0]['safe_value'], $match);
+            $bodyImage = array_pop($match);
+            //Check if image exists and assign first image to twitter:image
+            if(is_array($bodyImage)){
+              foreach($bodyImage as $image){
+                $imageUrl = addhttp($image);
+                if(is_array(getimagesize($imageUrl))){
+                  $head_elements[$key]['#value'] = $imageUrl;
+                  break;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    //Twitter image for other node types
+    else{
+      foreach($head_elements as $key => $metatag){
+        if (!empty($metatag['#name']) && $metatag['#name'] == "twitter:image"){
+          //Rertive all images from node body
+          preg_match_all('@src="([^"]+)"@' , $node->body[LANGUAGE_NONE][0]['safe_value'], $match);
+          $bodyImage = array_pop($match);
+          //Check if image exists and assign first image to twitter:image
+          if(is_array($bodyImage)){
+            foreach($bodyImage as $image){
+              $imageUrl = addhttp($image);
+              if(is_array(getimagesize($imageUrl))){
+                $head_elements[$key]['#value'] = $imageUrl;
+                break;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+/**
+* Add http to url
+*/
+function addhttp($url) {
+  if(!preg_match("~^(?:f|ht)tps?://~i", $url)) {
+    $url = "http:" . $url;
+  }
+  return $url;
+}

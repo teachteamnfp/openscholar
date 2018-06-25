@@ -161,8 +161,6 @@ Feature: Media Browser
       And I should see "Max file size: 15 MB."
       And I drop the file "abc.pdf" onto the "Drag and drop files here." area
       And I should see "abc.pdf is not an accepted file type."
-      And I wait "6 seconds"
-      And I should not see "abc.pdf is not an accepted file type."
       And I drop the file "Expeditionary_Fighting_Vehicle_test.jpg" onto the "Drag and drop files here." area
       And I should see "Expeditionary_Fighting_Vehicle_test.jpg is larger than the maximum filesize of 15 MB"
 
@@ -208,7 +206,7 @@ Feature: Media Browser
       And I fill in "URL or HTML" with "http://this.is.a.fake.site.com/id/52ac3d"
       And I press the "Submit" button
       And I wait "3 seconds"
-     Then I should see "URL(s) not from accepted domain!"
+     Then I should see "HTML code are from an accepted domain."
 
   @frontend @javascript
   Scenario: Test adding embed codes from trusted and untrusted sources
@@ -222,7 +220,7 @@ Feature: Media Browser
       And I fill in "URL or HTML" with "<iframe src=\"https://untrusted.domain\"></iframe>"
       And I press the "Submit" button
       And I wait "1 seconds"
-     Then I should see "URL(s) not from accepted domain!"
+     Then I should see "HTML code are from an accepted domain."
      When I whitelist the domain "trusted.domain"
       And I fill in "URL or HTML" with "<iframe src=\"https://trusted.domain\"></iframe>"
       And I press the "Submit" button
@@ -234,7 +232,7 @@ Feature: Media Browser
       And I wait for page actions to complete
       And I edit the entity "node" with title "About"
       And I sleep for "10"
-     When I press "Media browser"
+      And I click on "cke_button__media" button in the wysiwyg editor
       And I wait "1 second" for the media browser to open
       And I should wait for the text "Please wait while we get information on your files." to "disappear"
       And I drop the file "kitten-3.jpg" onto the "Drag and drop files here." area

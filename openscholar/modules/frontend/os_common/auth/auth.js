@@ -6,6 +6,11 @@
   var token = '';
 
   angular.module('os-auth', [])
+    .service('authenticate-token', ['$http', function ($http) {
+      this.fetch = function () {
+        return $http.get(Drupal.settings.paths.api+'/session/token').success(setToken);
+      }
+    }])
     .factory('authenticate', ['$q', function ($q) {
       return {
         request: function (config) {
@@ -29,8 +34,8 @@
     .config(['$httpProvider', function ($httpProvider) {
         $httpProvider.interceptors.push('authenticate');
     }])
-    .run(['$http', function ($http) {
-      $http.get(Drupal.settings.paths.api+'/session/token').success(setToken);
+    .run(['authenticate-token', function (at) {
+      at.fetch();
     }]);
 
   function setToken(resp) {

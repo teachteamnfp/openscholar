@@ -433,7 +433,7 @@ function os_publications_update_7010() {
 }
 
 /**
- * Import Data publication type from harvard prod.
+ * Import Data publication type from university prod.
  *
  * @see biblio_admin_types_add_form_submit().
  */
@@ -751,7 +751,7 @@ function os_publications_update_7011() {
 }
 
 /**
- * Import Working Paper publication type from harvard prod.
+ * Import Working Paper publication type from university prod.
  *
  * @see biblio_admin_types_add_form_submit().
  */

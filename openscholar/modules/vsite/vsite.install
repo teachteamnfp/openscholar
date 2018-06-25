@@ -845,3 +845,22 @@ function vsite_update_7035() {
     }
   }
 }
+
+/**
+ * Updates the enabled presets value to expose new `HWP Professional` preset.
+ */
+function vsite_update_7036() {
+  // Sets the available presets variable (instead of reverting vsite strongarm).
+  $default = array(
+    'os_department' => 'os_department',
+    'os_department_minimal' => 'os_department_minimal',
+    'os_scholar' => 'os_scholar',
+    'os_project' => 'os_project',
+    'hwp_administrative' => 'hwp_administrative',
+    'hwp_lab_research_group' => 'hwp_lab_research_group',
+    'hwp_project' => 'hwp_project',
+  );
+  $value = variable_get('os_enabled_spaces_presets', $default);
+  $value['hwp_professional'] = 'hwp_professional';
+  variable_set('os_enabled_spaces_presets', $value);
+}

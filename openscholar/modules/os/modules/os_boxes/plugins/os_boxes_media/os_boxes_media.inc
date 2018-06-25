@@ -94,6 +94,7 @@ class os_boxes_media extends os_boxes_default {
 
   public function render() {
     $block = parent::render();
+    $block['allow_binding'] = true;
     if (($block['content'] = $this->get_cache()) === FALSE) {
       $fid = is_array($this->options['fid']) ? $this->options['fid']['fid'] : $this->options['fid'];
       if ($file = file_load($fid)) {
@@ -149,6 +150,12 @@ class os_boxes_media extends os_boxes_default {
               'widget_max_width' => array('boxes-box-' . $this->delta => $this->options['maxwidth'])
             )
           );
+        }
+        if (!empty($render['#file']->field_file_image_alt_text)) {
+          $render['file']['#alt'] = $render['#file']->field_file_image_alt_text[LANGUAGE_NONE][0]['safe_value'];
+        }
+        if (!empty($render['#file']->field_file_image_title_text)) {
+          $render['file']['#title'] = $render['#file']->field_file_image_title_text[LANGUAGE_NONE][0]['safe_value'];
         }
         // Removing embedded media title from render element.
         unset($render['file']['file-info']['title']);

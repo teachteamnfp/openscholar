@@ -833,6 +833,14 @@ function os_events_views_default_views() {
   $handler->display->display_options['filters']['field_date_value']['default_date'] = 'now';
   $handler->display->display_options['path'] = 'calendar/%/%/rss.xml';
   $handler->display->display_options['sitename_title'] = 0;
+
+  $display_options_feed_2 = $handler->display->display_options;
+
+  /* Display: RSS with caching turned off (for Google export) */
+  $handler = $view->new_display('feed', 'RSS', 'feed_2_no_cache');
+  $handler->display->display_options = $display_options_feed_2;
+  $handler->display->display_options['cache']['type'] = 'none';
+
   $export['os_events'] = $view;
 
   return $export;

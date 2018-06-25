@@ -61,8 +61,8 @@
         }
       }
     }])
-  .controller('BrowserCtrl', ['$scope', '$filter', '$http', 'EntityService', 'EntityConfig', '$sce', '$q', '$upload', '$timeout', 'FILEEDITOR_RESPONSES', 'params', 'close',
-      function ($scope, $filter, $http, EntityService, config, $sce, $q, $upload, $timeout, FER, params, close) {
+  .controller('BrowserCtrl', ['$scope', '$filter', '$http', 'EntityService', 'EntityConfig', '$sce', '$q', '$upload', '$timeout', 'FILEEDITOR_RESPONSES', 'params', 'close', '$location',
+      function ($scope, $filter, $http, EntityService, config, $sce, $q, $upload, $timeout, FER, params, close, $location) {
 
     // Initialization
     var service = new EntityService('files', 'id'),
@@ -243,6 +243,8 @@
     }
 
     $scope.validate = function($file) {
+      // Deleting previous error messages
+      $scope.removeMsg();
       var file = $file;
       if (file && file instanceof File) {
         // TODO: Get validating properties from somewhere and check the file against them
@@ -267,17 +269,26 @@
       }
     }
 
+    $scope.removeMsg = function() {
+      angular.forEach($scope.messages, function(value, id){
+        if (!isNaN(id)) {
+          delete $scope.messages[id];
+        }
+      });
+    }
+
     function addMessage(message) {
       var id = $scope.messages.next++;
       $scope.messages[id] = {
         text: message
       };
-      $timeout(angular.bind($scope, removeMessage, id), 5000);
+      //$timeout(angular.bind($scope, removeMessage, id), 5000);
     }
 
     function removeMessage(id) {
       delete this.messages[id];
     }
+
 
     // filter out weird characters that look like normal characters, like –, which gets converted to â€“
     function cleanPaths(text) {
@@ -631,10 +642,17 @@
         }
       })
       .error(function (e) {
-        $scope.embedFailure = true;
+        if ($location.protocol() == 'https') {
+          $scope.embedFailureHttps = true;
+          $timeout(function () {
+            $scope.embedFailureHttps = false;
+          }, 5000);
+        } else {
+          $scope.embedFailure = true;
           $timeout(function () {
             $scope.embedFailure = false;
           }, 5000);
+        }
       });
     }
 

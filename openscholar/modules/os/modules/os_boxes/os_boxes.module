@@ -546,11 +546,13 @@ function _os_image_remove_handler($form, $form_state) {
   $element = drupal_array_get_nested_value($form, $parents);
 
   // @see: file_managed_file_submit
-  if (isset($element['#file'])) {
+  if (!empty($element['#file'])) {
     $orig = _imagefield_crop_file_to_crop($element['#file']->fid);
-    file_usage_delete($orig, 'imagefield_crop', NULL, NULL, 0);
+    if ($orig) {
+      file_usage_delete($orig, 'imagefield_crop', NULL, NULL, 0);
+      file_delete($orig);
+    }
     file_usage_delete($element['#file'], 'os_boxes', NULL, NULL, 0);
-    file_delete($orig);
     file_delete($element['#file']);
     $element['#value']['fid'] = NULL;
     unset($element['#file']);

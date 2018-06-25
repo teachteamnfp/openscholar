@@ -24,7 +24,7 @@ function os_taxonomy_cp_settings() {
       '#id' => 'os_taxonomy',
       '#title' => t('Taxonomy'),
       '#weight' => 50,
-      '#help_link' => l(t('Learn more about taxonomy'), 'http://docs.openscholar.harvard.edu/categorizing-your-content-taxonomy', array('attributes' => array('target' => '_blank')))
+      '#help_link' => l(t('Learn more about taxonomy'), 'https://help.theopenscholar.com/categorizing-your-content-taxonomy', array('attributes' => array('target' => '_blank')))
     ),
     'rest_after_submit' => array(
       'os_taxonomy_clear_caches'

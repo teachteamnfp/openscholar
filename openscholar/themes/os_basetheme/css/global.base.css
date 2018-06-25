@@ -177,6 +177,7 @@ h3 a,
 h4 a {
     text-decoration: none;
 }
+
 #content-column .field-name-body h2,
 #content-column .field-name-body h3,
 #content-column .field-name-body h4 {
@@ -641,6 +642,7 @@ ul ul ul ul {
 .sidebar .block-boxes-os_boxes_facetapi_vocabulary .item-list {
     margin-bottom: 15px;
 }
+.sidebar .block-boxes-os_boxes_facetapi_vocabulary .item-list.ui-accordion,
 .sidebar .block-boxes-os_boxes_facetapi_vocabulary.collapsible .item-list,
 .sidebar .block-boxes-os_boxes_facetapi_vocabulary .item-list:last-child {
     margin-bottom: 0;
@@ -699,7 +701,7 @@ ul ul ul ul {
 }
 .cal-export {
     padding: 0 25px 0 0;
-    background: url('../images/scholarbase-sprite.png?abf') no-repeat 54px -963px;
+    background: url('../images/scholarbase-sprite.png?abf') no-repeat 50px -963px;
 }
 .cal-export:hover {
     cursor: pointer;
@@ -750,6 +752,16 @@ ul ul ul ul {
 .os_events_export_links .last a {
     display: block;
 }
+
+.os_events_export_dialog {
+    text-align: center;
+}
+
+/* Hide the top-right close button, since we handle it with the "Cancel" button */
+.os_events_export_dialog .ui-dialog-titlebar-close {
+    display: none;
+}
+
 .ical {
     padding: 3px 0 3px 25px !important;
     border-bottom: none !important;
@@ -777,6 +789,20 @@ ul ul ul ul {
 .rss:before {
     background: url('../images/scholarbase-sprite.png?0615b') no-repeat 0px -727px;
     width: 21px;
+    height: 22px;
+    position: absolute;
+    left: 0;
+    content: '';
+}
+.google {
+    padding: 3px 0 3px 25px !important;
+    border-bottom: none !important;
+    position: relative;
+}
+
+.google:before {
+    background: url('../images/scholarbase-sprite.png?45678') no-repeat -76px -726px;
+    width: 22px;
     height: 22px;
     position: absolute;
     left: 0;
@@ -1140,7 +1166,7 @@ ul.no-event-export {
 }
 .block-boxes-os_boxes_widget_slider #layout_16_9_side .rslides_tabs {
     left: 0;
-    position: static;
+    position: relative;
     top: 0;
 }
 .block-boxes-os_boxes_widget_slider #layout_16_9_side .rslides_tabs li {
@@ -1151,6 +1177,37 @@ ul.no-event-export {
 .block-boxes-os_boxes_widget_slider #layout_16_9_side .rslides_tabs li:first-of-type,
 .block-boxes-os_boxes_widget_slider #layout_16_9_side .rslides_tabs li:last-of-type {
     display: none;
+}
+.block-boxes-os_boxes_widget_slider.arrow-nav #layout_16_9_side .rslides_tabs li:first-of-type,
+.block-boxes-os_boxes_widget_slider.arrow-nav #layout_16_9_side .rslides_tabs li:last-of-type {
+    display: inline-block;
+   }
+.block-boxes-os_boxes_widget_slider.arrow-nav #layout_16_9_side .rslides_tabs li:first-of-type a,
+.block-boxes-os_boxes_widget_slider.arrow-nav #layout_16_9_side .rslides_tabs li:last-of-type a 
+{
+   background-color:transparent !important;
+    background-image: none;
+}
+
+
+.block-boxes-os_boxes_widget_slider.arrow-nav #layout_16_9_side .rslides_tabs li:first-of-type a
+{
+   width: 0;
+   height: 0;
+   border-top: 10px solid transparent;
+   border-bottom: 10px solid transparent;
+   border-right: 10px solid #000;
+   margin-right: 10px;
+}
+
+.block-boxes-os_boxes_widget_slider.arrow-nav #layout_16_9_side .rslides_tabs li:last-of-type a 
+{
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 10px solid #000;
+    margin-left: 10px;
 }
 .block-boxes-os_boxes_widget_slider #layout_16_9_side .rslides_tabs a,
 .block-boxes-os_boxes_widget_slider #layout_16_9_side .rslides_tabs a:visited {
@@ -1216,4 +1273,10 @@ ul.no-event-export {
 .media-element-container {
     height: auto !important;
     margin: 0 1em 0 1em;
+}
+form#registration-form div.url-textfield {
+    display: none !important;
+}
+.modal-content #os-mailchimp-form {
+    padding-right: 20px;
 }

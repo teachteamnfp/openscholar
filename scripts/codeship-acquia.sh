@@ -24,8 +24,10 @@ fi
 
 # Set up global configuration and install tools needed to build
 composer global require drush/drush
-mkdir ~/.drush
+echo -e "Drush Downloaded via composor\n"
+mkdir -p ~/.drush
 printf "disable_functions =\nmemory_limit = 256M\ndate.timezone = \"America/New_York\"" > ~/.drush/php.ini
+export PATH="$HOME/.composer/vendor/bin:$PATH"
 drush --version 2> /dev/null || exit 1
 npm install -g bower
 
@@ -54,12 +56,12 @@ $DRUSH make --no-core --contrib-destination drupal-org.make .
 (
 	# Download composer components
 	composer install
-	rm -rf libraries/git/symfony/event-dispatcher/Symfony/Component/EventDispatcher/.git
-	rm -f libraries/git/symfony/event-dispatcher/Symfony/Component/EventDispatcher/.gitignore
-	git rm -r --cached libraries/git/symfony/event-dispatcher/Symfony/Component/EventDispatcher
-	rm -rf libraries/git/symfony/process/Symfony/Component/Process/.git
-	rm -f libraries/git/symfony/process/Symfony/Component/Process/.gitignore
-	git rm -r --cached libraries/git/symfony/process/Symfony/Component/Process
+	rm -rf libraries/git/symfony/event-dispatcher/.git
+	rm -f libraries/git/symfony/event-dispatcher/.gitignore
+	git rm -r --cached libraries/git/symfony/event-dispatcher
+	rm -rf libraries/git/symfony/process/.git
+	rm -f libraries/git/symfony/process/.gitignore
+	git rm -r --cached libraries/git/symfony/process/
 
 	# Get the angular components
 	bower -q install
@@ -157,12 +159,12 @@ $DRUSH make --no-core --contrib-destination drupal-org.make .
 (
 	# Download composer components
 	composer install
-	rm -rf libraries/git/symfony/event-dispatcher/Symfony/Component/EventDispatcher/.git
-	rm -f libraries/git/symfony/event-dispatcher/Symfony/Component/EventDispatcher/.gitignore
-	git rm -r --cached libraries/git/symfony/event-dispatcher/Symfony/Component/EventDispatcher
-	rm -rf libraries/git/symfony/process/Symfony/Component/Process/.git
-	rm -f libraries/git/symfony/process/Symfony/Component/Process/.gitignore
-	git rm -r --cached libraries/git/symfony/process/Symfony/Component/Process
+	rm -rf libraries/git/symfony/event-dispatcher/.git
+	rm -f libraries/git/symfony/event-dispatcher/.gitignore
+	git rm -r --cached libraries/git/symfony/event-dispatcher
+	rm -rf libraries/git/symfony/process/.git
+	rm -f libraries/git/symfony/process/.gitignore
+	git rm -r --cached libraries/git/symfony/process
 
 	# Get the angular components
 	bower -q install

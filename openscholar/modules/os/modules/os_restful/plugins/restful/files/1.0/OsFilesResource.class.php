@@ -437,6 +437,9 @@ class OsFilesResource extends OsRestfulEntityCacheableBase {
         throw new RestfulBadRequestException(t('No vsite with the id @id', array('@id' => $this->request['vsite'])));
       }
     }
+    elseif (module_exists('vsite')) {
+      $query->fieldCondition(OG_AUDIENCE_FIELD, 'target_id', 'NULL');
+    }
     // Make getting private files explicit
     // Private files currently require PIN authentication before they can even be access checked
     if (!isset($this->request['private'])) {
@@ -489,6 +492,9 @@ class OsFilesResource extends OsRestfulEntityCacheableBase {
         $entity->status = FILE_STATUS_PERMANENT;
         $entity = file_save($entity);
       }
+
+      // Handle cropped photos
+      $this->handleCrops($entity);
 
       $wrapper = entity_metadata_wrapper($this->entityType, $entity);
 
@@ -609,6 +615,8 @@ class OsFilesResource extends OsRestfulEntityCacheableBase {
           og_group('node', $oldFile->{OG_AUDIENCE_FIELD}[LANGUAGE_NONE][0]['target_id'], array('entity_type' => 'file', 'entity' => $file));
         }
 
+        $this->handleCrops($file);
+
         return array($this->viewEntity($entity_id));
       }
       else {
@@ -617,6 +625,40 @@ class OsFilesResource extends OsRestfulEntityCacheableBase {
     }
 
     return parent::putEntity($entity_id);
+  }
+
+  protected function handleCrops($entity) {
+    if (module_exists('imagefield_crop') && $original = _imagefield_crop_file_to_crop($entity->fid)) {
+      if ($original->fid != $entity->fid) {
+        // this is a cropped image
+        $fields = field_read_fields(array('type' => 'imagefield_crop'));
+        foreach ($fields as $name => $info) {
+          $q = db_select("field_data_$name", 'f')
+            ->condition("{$name}_fid", $entity->fid)
+            ->fields('f')
+            ->execute();
+
+          foreach ($q as $r) {
+            $input = array(
+              'cropbox_x' => $r->{$name.'_cropbox_x'},
+              'cropbox_y' => $r->{$name.'_cropbox_y'},
+              'cropbox_width' => $r->{$name.'_cropbox_width'},
+              'cropbox_height' => $r->{$name.'_cropbox_height'}
+            );
+            file_copy($entity, $original->uri, FILE_EXISTS_REPLACE);
+            // long drawn out process to get the $scale value for this crop
+            $owner = entity_load($r->entity_type, array($r->entity_id));
+            list(,,$bundle) = entity_extract_ids($r->entity_type, $owner[$r->entity_id]);
+            $instance = field_info_instance($r->entity_type, $name, $bundle);
+            $resolution = $instance['widget']['settings']['resolution'];
+            list($scale['width'], $scale['height']) = explode('x', $resolution);
+            // got everything we need. crop the image
+            _imagefield_crop_resize(drupal_realpath($original->uri), $input, $scale, $entity);
+            file_save($entity);
+          }
+        }
+      }
+    }
   }
 
   protected function setPropertyValues(EntityMetadataWrapper $wrapper, $null_missing_fields = FALSE) {
@@ -784,7 +826,11 @@ class OsFilesResource extends OsRestfulEntityCacheableBase {
 
         return true;
       }
-      $this->addError('embed_code', 'This embed code failed validation. Please check that all urls are from accepted domains');
+      if ($GLOBALS['is_https']) {
+        $this->addError('embed_code', 'This embed code failed validation. Please check that all urls are with https and from accepted domains');
+      }else {
+        $this->addError('embed_code', 'This embed code failed validation. Please check that all urls are from accepted domains');
+      }
     }
     return false;
   }
