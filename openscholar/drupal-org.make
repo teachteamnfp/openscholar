@@ -379,14 +379,6 @@ projects[shorten][version] = 1.2
 projects[securepages][subdir] = "contrib"
 projects[securepages][version] = 1.0-beta1
 
-projects[services][subdir] = "contrib"
-; projects[services][version] = 3.3+42-dev
-projects[services][download][branch] = 7.x-3.x
-projects[services][download][revision] = 761e620
-
-projects[services_basic_auth][subdir] = "contrib"
-projects[services_basic_auth][version] = "1.3"
-
 projects[spaces][subdir] = "contrib"
 ; projects[spaces][version] = 3.0-alpha1+9-dev
 projects[spaces][revision] = "eac3a7e"
