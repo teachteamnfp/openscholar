@@ -426,7 +426,7 @@ projects[twitter_pull][patch][] = "https://raw.githubusercontent.com/openscholar
 projects[twitter_pull][patch][] = "https://raw.githubusercontent.com/openscholar/openscholar/1811fd556f5ef60be92a5b5249a81f652a73681c/patches/twitter_pull.class.inc-tweet-mode-extended.patch"
 
 projects[views][subdir] = "contrib"
-projects[views][version] = 3.18
+projects[views][version] = 3.20
 ; projects[views][patch][] = "https://drupal.org/files/issues/views-jquery_dialog-2125261-1.patch"
 
 projects[views_bulk_operations][subdir] = "contrib"
@@ -437,7 +437,7 @@ projects[views_og_cache][version] = 1.1
 projects[views_og_cache][patch][] = "https://drupal.org/files/issues/2226219-easy-key-data-override-2.patch"
 
 projects[views_slideshow][subdir] = "contrib"
-projects[views_slideshow][version] = 3.0
+projects[views_slideshow][version] = 3.9
 
 projects[views_litepager][subdir] = "contrib"
 projects[views_litepager][version] = 3.0
