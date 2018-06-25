@@ -1133,8 +1133,10 @@ function vsite_attach_fields_to_group_content($entity_type, $bundle){
  */
 function vsite_attach_fields_to_group($bundle){
   og_create_field(OG_GROUP_FIELD, 'node', $bundle);
-  og_create_field(VSITE_ACCESS_FIELD, 'node', $bundle);
   og_create_field(OG_DEFAULT_ACCESS_FIELD, 'node', $bundle);
+  if (module_exists('vsite_access')) {
+    og_create_field (VSITE_ACCESS_FIELD, 'node', $bundle);
+  }
 
   if (! field_info_field('field_site_address')) {
     // field_site_address.
