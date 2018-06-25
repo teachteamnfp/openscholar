@@ -1178,15 +1178,28 @@ function _cp_appearance_pull_subtheme_git(&$form, &$form_state, $info) {
 }
 
 /**
+ * Validate handler for theme update form.
+ */
+function cp_appearance_pull_subtheme_validate($form, &$form_state) {
+  if ($form_state['subtheme_method'] == 'zip') {
+    $subtheme = new SubTheme();
+    $subtheme->verifyZip($form_state['values']['file']);
+
+    if (empty($subtheme->flavourPath)) {
+      form_set_error('file', 'Theme update should contain a flavor file');
+    }
+  }
+}
+
+/**
  * Submit handler; Checkout and/or pull from the repository.
  */
-function cp_appearance_pull_subtheme_submit($form, $form_state) {
+function cp_appearance_pull_subtheme_submit($form, &$form_state) {
+  $success = FALSE;
   if ($form_state['subtheme_method'] == 'zip') {
-    $subtheme = new SubTheme($form_state['values']['file']);
-
-    // Set the extract path in order to override the previous extracted theme.
-    $subtheme->extractPath = $form_state['path'];
-    $subtheme->extract();
+    $subtheme = new SubTheme();
+    $subtheme->updateFromZip($form_state['values']['file'], $form_state['path']);
+    $success = !empty($subtheme->flavourPath);
   }
   else {
     require_once libraries_get_path('git') . '/autoload.php';
@@ -1223,10 +1236,11 @@ function cp_appearance_pull_subtheme_submit($form, $form_state) {
 //
 //    registry_rebuild();
 //    drupal_clear_css_cache();
+  }
 
-    if ($success) {
-      drupal_set_message(t('The subtheme updated succesfully.'));
-    }
+  if (!empty($success)) {
+    drupal_set_message(t('The subtheme updated succesfully.'));
+    $form_state['redirect'] = 'cp/appearance';
   }
 }
 

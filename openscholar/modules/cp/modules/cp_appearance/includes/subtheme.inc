@@ -53,7 +53,7 @@ class SubTheme {
    *
    * @var string|null
    */
-  private $flavourPath;
+  public $flavourPath;
 
   /**
    * Constructing the class.
@@ -67,7 +67,7 @@ class SubTheme {
     $this->fileInfo();
 
     if (!empty(glob($this->extractPath . DIRECTORY_SEPARATOR . '*.flav'))) {
-      // Subtheme has a falvour file and
+      // Subtheme has a flavor file and
       // is extracted already
       // OR
       // it's a git project, not a ZIP archive.
@@ -140,6 +140,7 @@ class SubTheme {
   private function processExtractedSubtheme($cleanup_needed = FALSE) {
     $flav_root = $this->findFileByPattern($this->extractPath, '*.flav');
     // We found a flavour file and can set up path for this subtheme.
+    $this->flavourPath = $flav_root;
     $this->path = $this->extractPath;
 
     if (
@@ -216,6 +217,7 @@ class SubTheme {
     $path_match = NULL;
     $files_in_path = glob($path . DIRECTORY_SEPARATOR . trim($pattern, " \t\n\r\0\x0B" . DIRECTORY_SEPARATOR));
 
+
     if (!empty($files_in_path)) {
       return $path;
     }
@@ -267,7 +269,7 @@ class SubTheme {
       $this->extract();
     }
 
-    $info_files = glob($this->path . '/*.flav');
+    $info_files = glob($this->path  . DIRECTORY_SEPARATOR . '*.flav');
     $info = array();
 
     $info_file = reset($info_files);
@@ -283,4 +285,102 @@ class SubTheme {
 
     return $info;
   }
+
+  /**
+   * Checks the uploaded file.
+   *
+   * @param string $fid
+   *   The file id of the zip uploaded as an update.
+   */
+  public function verifyZip($fid) {
+    $public_folder = variable_get('file_public_path', conf_path() . DIRECTORY_SEPARATOR . 'files');
+    $streams = array();
+    foreach (stream_get_wrappers() as $stream) {
+      $streams[] = $stream . '://';
+    }
+    $this->fid = $fid;
+    $this->fileInfo();
+    $this->filePath = $public_folder . DIRECTORY_SEPARATOR . str_replace($streams, '', $this->file->uri);
+    $destination_temp = drupal_realpath('temporary://cp_appearance_theme_update_verify');
+    file_prepare_directory($destination_temp, FILE_CREATE_DIRECTORY);
+    $this->extractPath = $destination_temp;
+    $this->extract();
+    $this->deleteTree($destination_temp);
+  }
+
+  /**
+   * Update existing subtheme.
+   *
+   * @param string $new_fid
+   *   The file id of the zip uploaded as an update.
+   *
+   * @param string $path_target
+   *   The original path of the subtheme to update.
+   *
+   */
+  public function updateFromZip($new_fid, $path_target) {
+    $info_files_original = glob($path_target . DIRECTORY_SEPARATOR . '*.flav');
+    $info_file_original = reset($info_files_original);
+    $info_file_name_original = pathinfo($info_file_original, PATHINFO_FILENAME);
+    $public_folder = variable_get('file_public_path', conf_path() . DIRECTORY_SEPARATOR . 'files');
+
+    $streams = array();
+    foreach (stream_get_wrappers() as $stream) {
+      $streams[] = $stream . '://';
+    }
+
+    $this->fid = $new_fid;
+    $this->fileInfo();
+    $this->filePath = $public_folder . DIRECTORY_SEPARATOR . str_replace($streams, '', $this->file->uri);
+    $destination_temp = $public_folder . DIRECTORY_SEPARATOR . 'cp_appearance_theme_update';
+    file_prepare_directory($destination_temp, FILE_CREATE_DIRECTORY);
+    $this->extractPath = $destination_temp;
+    $this->flavourPath = NULL;
+    $this->extract();
+
+    // Continue only if there is a flavor file in the extracted zip archive.
+    if ($this->flavourPath) {
+      // Keep the new theme info filename the same as it was previously.
+      if (pathinfo(reset(glob($destination_temp . DIRECTORY_SEPARATOR . '*.flav')), PATHINFO_FILENAME) !== $info_file_name_original) {
+        rename(
+          reset(glob($destination_temp . DIRECTORY_SEPARATOR . '*.flav')),
+          $destination_temp . DIRECTORY_SEPARATOR . $info_file_name_original . '.flav'
+        );
+      }
+      $this->recursiveMove($destination_temp, $path_target);
+      $this->deleteTree($destination_temp);
+    }
+  }
+
+  /**
+   * Helper callback to move a subtheme.
+   *
+   * @param string $source_path
+   *   Source path.
+   * @param string $target_path
+   *   Target path.
+   */
+  private function recursiveMove($source_path, $target_path) {
+    //
+    // Move files and folders found in source path to the target path.
+    //
+    $source_path_content = array_filter(scandir($source_path), function($value) {
+      return !in_array($value, ['.', '..']);
+    });
+
+    foreach ($source_path_content as $resource) {
+      if (
+        is_dir($target_path .  DIRECTORY_SEPARATOR . $resource)
+      ) {
+        $this->recursiveMove($source_path . DIRECTORY_SEPARATOR . $resource, $target_path .  DIRECTORY_SEPARATOR . $resource);
+      }
+      else {
+        rename(
+          $source_path . DIRECTORY_SEPARATOR . $resource,
+          $target_path .  DIRECTORY_SEPARATOR . $resource
+        );
+      }
+    }
+  }
+
 }
