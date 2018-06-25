@@ -8,6 +8,7 @@ projects[advagg][version] = 2.6
 
 projects[apachesolr][subdir] = "contrib"
 projects[apachesolr][version] = 1.6
+projects[apachesolr][patch][] = "https://www.drupal.org/files/issues/apachesolr-support_php_72-2946579-2.patch"
 
 projects[apachesolr_attachments][subdir] = "contrib"
 projects[apachesolr_attachments][version] = 1.2
@@ -490,7 +491,7 @@ libraries[ckeditor][download][url] = "http://download.cksource.com/CKEditor/CKEd
 
 libraries[spyc][type] = "libraries"
 libraries[spyc][download][type] = "file"
-libraries[spyc][download][url] = "https://github.com/mustangostang/spyc/archive/0.5.1.zip"
+libraries[spyc][download][url] = "https://github.com/mustangostang/spyc/archive/0.6.2.zip"
 
 libraries[respondjs][type] = "libraries"
 libraries[respondjs][download][type] = "file"
