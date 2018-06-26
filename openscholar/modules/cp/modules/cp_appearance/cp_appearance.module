@@ -1199,7 +1199,7 @@ function cp_appearance_pull_subtheme_submit($form, &$form_state) {
   if ($form_state['subtheme_method'] == 'zip') {
     $subtheme = new SubTheme();
     $info = $subtheme->updateFromZip($form_state['values']['file'], $form_state['path']);
-    $success = !empty($subtheme->flavourPath);
+    $success = !empty($subtheme->flavorPath);
   }
   else {
     require_once libraries_get_path('git') . '/autoload.php';

@@ -50,11 +50,11 @@ class SubTheme {
   public $path;
 
   /**
-   * Path of the flavour file in the subthemes' folder (and it's ready to use).
+   * Path of the flavor file in the subthemes' folder (and it's ready to use).
    *
    * @var string|null
    */
-  public $flavourPath;
+  public $flavorPath;
 
   /**
    * Constructing the class.
@@ -64,7 +64,7 @@ class SubTheme {
    */
   public function __construct($fid = NULL) {
     $this->fid = $fid;
-    $this->flavourPath = NULL;
+    $this->flavorPath = NULL;
     $this->fileInfo();
 
     if (
@@ -78,7 +78,7 @@ class SubTheme {
       if (empty($this->path)) {
         $this->path = $this->extractPath;
       }
-      $this->flavourPath = reset(glob($this->extractPath . DIRECTORY_SEPARATOR . '*.flav'));
+      $this->flavorPath = reset(glob($this->extractPath . DIRECTORY_SEPARATOR . '*.flav'));
     }
   }
 
@@ -111,7 +111,7 @@ class SubTheme {
    * Extracting the zip file.
    */
   public function extract() {
-    if (!empty($this->flavourPath)) {
+    if (!empty($this->flavorPath)) {
       return;
     }
 
@@ -147,7 +147,7 @@ class SubTheme {
   private function processExtractedSubtheme($cleanup_needed = FALSE) {
     $flav_root = $this->findFileByPattern($this->extractPath, '*.flav');
     // We found a flavour file and can set up path for this subtheme.
-    $this->flavourPath = $flav_root;
+    $this->flavorPath = $flav_root;
     $this->path = $this->extractPath;
 
     if (
@@ -298,6 +298,9 @@ class SubTheme {
    *
    * @param string $fid
    *   The file id of the zip uploaded as an update.
+   *
+   * @return bool
+   *   TRUE if the uploaded zip is contains a valid flavor, FALSE otherwise.
    */
   public function verifyZip($fid) {
     $this->fid = $fid;
@@ -308,7 +311,7 @@ class SubTheme {
     $this->extract();
     $this->deleteTree($destination_temp);
 
-    return !empty($this->flavourPath);
+    return !empty($this->flavorPath);
   }
 
   /**
@@ -320,23 +323,27 @@ class SubTheme {
    * @param string $path_target
    *   The original path of the subtheme to update.
    *
+   * @return array
+   *   An array with previous and new display name of the flavor, or empty array
+   *   if one of them is missing or the operation was unsuccessful.
    */
   public function updateFromZip($new_fid, $path_target) {
     $info_files_original = glob($path_target . DIRECTORY_SEPARATOR . '*.flav');
     $info_file_original = reset($info_files_original);
     $info_original = drupal_parse_info_file($info_file_original);
     $info_file_name_original = pathinfo($info_file_original, PATHINFO_FILENAME);
+    $info = array();
 
     $this->fid = $new_fid;
     $this->fileInfo();
     $destination_temp = drupal_realpath('temporary://cp_appearance_theme_update');
     file_prepare_directory($destination_temp, FILE_CREATE_DIRECTORY);
     $this->extractPath = $destination_temp;
-    $this->flavourPath = NULL;
+    $this->flavorPath = NULL;
     $this->extract();
 
     // Continue only if there is a flavor file in the extracted zip archive.
-    if ($this->flavourPath) {
+    if ($this->flavorPath) {
       $info_file_new = reset(glob($destination_temp . DIRECTORY_SEPARATOR . '*.flav'));
       $info_new = drupal_parse_info_file($info_file_new);
       // Keep the new theme info filename the same as it was previously.
@@ -350,8 +357,6 @@ class SubTheme {
       $this->deleteTree($destination_temp);
       // Delete the uploaded zip.
       file_delete($this->file);
-
-      $info = array();
       if (
         !empty($info_original['name']) &&
         !empty($info_new['name']) &&
@@ -360,8 +365,9 @@ class SubTheme {
         $info['name_original'] = $info_original['name'];
         $info['name_new'] = $info_new['name'];
       }
-      return $info;
     }
+
+    return $info;
   }
 
   /**
