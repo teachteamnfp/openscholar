@@ -1183,9 +1183,8 @@ function _cp_appearance_pull_subtheme_git(&$form, &$form_state, $info) {
 function cp_appearance_pull_subtheme_validate($form, &$form_state) {
   if ($form_state['subtheme_method'] == 'zip') {
     $subtheme = new SubTheme();
-    $subtheme->verifyZip($form_state['values']['file']);
 
-    if (empty($subtheme->flavourPath)) {
+    if (!$subtheme->verifyZip($form_state['values']['file'])) {
       form_set_error('file', 'Theme update should contain a flavor file');
     }
   }
@@ -1196,9 +1195,10 @@ function cp_appearance_pull_subtheme_validate($form, &$form_state) {
  */
 function cp_appearance_pull_subtheme_submit($form, &$form_state) {
   $success = FALSE;
+  $info = array();
   if ($form_state['subtheme_method'] == 'zip') {
     $subtheme = new SubTheme();
-    $subtheme->updateFromZip($form_state['values']['file'], $form_state['path']);
+    $info = $subtheme->updateFromZip($form_state['values']['file'], $form_state['path']);
     $success = !empty($subtheme->flavourPath);
   }
   else {
@@ -1239,8 +1239,17 @@ function cp_appearance_pull_subtheme_submit($form, &$form_state) {
   }
 
   if (!empty($success)) {
-    drupal_set_message(t('The subtheme updated succesfully.'));
+    $message = empty($info) ?
+      t('The subtheme updated succesfully.') :
+      t('The subtheme updated succesfully. Theme display name changed from @name-original to @name-new', array(
+        '@name-original' => $info['name_original'],
+        '@name-new' => $info['name_new'],
+      ));
+    drupal_set_message($message);
     $form_state['redirect'] = 'cp/appearance';
+  }
+  else {
+    drupal_set_message(t('An error has occurred.'), 'error');
   }
 }
 

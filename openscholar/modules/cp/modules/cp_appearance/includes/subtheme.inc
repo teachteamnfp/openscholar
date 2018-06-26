@@ -21,30 +21,31 @@ class SubTheme {
 
   /**
    * The file ID.
-   * @var
+   * @var string|null
    */
   public $fid;
 
   /**
    * The path of the ZIP file.
-   * @var
+   * @var string|null
    */
   public $filePath;
 
   /**
    * The path which the ZIP file is extracted to.
+   * @var string|null
    */
   public $extractPath;
 
   /**
    * The file object.
-   * @var
+   * @var object|null
    */
   public $file;
 
   /**
    * The path of the folder.
-   * @var string
+   * @var string|null
    */
   public $path;
 
@@ -66,7 +67,10 @@ class SubTheme {
     $this->flavourPath = NULL;
     $this->fileInfo();
 
-    if (!empty(glob($this->extractPath . DIRECTORY_SEPARATOR . '*.flav'))) {
+    if (
+      !empty(glob($this->extractPath . DIRECTORY_SEPARATOR . '*.flav')) ||
+      !empty(glob($this->path . DIRECTORY_SEPARATOR . '*.flav'))
+    ) {
       // Subtheme has a flavor file and
       // is extracted already
       // OR
@@ -82,22 +86,25 @@ class SubTheme {
    * Return info for the intended folder path for a zip file.
    */
   public function fileInfo() {
-    $this->file = file_load($this->fid);
+    if (
+      !empty($this->fid) &&
+      $this->file = file_load($this->fid)
+    ) {
+      // Creating an array of stream wrappers that will be removed.
+      $streams = array();
+      foreach (stream_get_wrappers() as $stream) {
+        $streams[] = $stream . '://';
+      }
 
-    // Creating an array of stream wrappers that will be removed.
-    $streams = array();
-    foreach (stream_get_wrappers() as $stream) {
-      $streams[] = $stream . '://';
+      $files_folder = variable_get('file_public_path', conf_path() . DIRECTORY_SEPARATOR . 'files');
+
+      // Generate the folder name by the unique URI of the file.
+      $file_name = str_replace($streams, '', $this->file->uri);
+      $folder_name = str_replace(array('.', '_'), '-', $file_name);
+
+      $this->filePath = empty($this->filePath) ? $files_folder . DIRECTORY_SEPARATOR . $file_name : $this->filePath;
+      $this->extractPath = empty($this->extractPath) ? $files_folder . DIRECTORY_SEPARATOR . $folder_name : $this->extractPath;
     }
-
-    $files_folder = variable_get('file_public_path', conf_path() . DIRECTORY_SEPARATOR . 'files');
-
-    // Generate the folder name by the unique URI of the file.
-    $file_name = str_replace($streams, '', $this->file->uri);
-    $folder_name = str_replace(array('.', '_'), '-', $file_name);
-
-    $this->filePath = empty($this->filePath) ? $files_folder . DIRECTORY_SEPARATOR . $file_name : $this->filePath;
-    $this->extractPath = empty($this->extractPath) ? $files_folder . DIRECTORY_SEPARATOR . $folder_name : $this->extractPath;
   }
 
   /**
@@ -167,7 +174,7 @@ class SubTheme {
     // Move theme files and folders into the root path.
     //
     $flav_root_content = array_filter(scandir($flav_root), function($value) {
-      return !in_array($value, ['.', '..']);
+      return !in_array($value, array('.', '..'));
     });
 
     foreach ($flav_root_content as $resource) {
@@ -250,7 +257,7 @@ class SubTheme {
    */
   private function deleteTree($dir) {
     $files = array_filter(scandir($dir), function($value) {
-      return !in_array($value, ['.', '..']);
+      return !in_array($value, array('.', '..'));
     });
 
     foreach ($files as $file) {
@@ -293,19 +300,15 @@ class SubTheme {
    *   The file id of the zip uploaded as an update.
    */
   public function verifyZip($fid) {
-    $public_folder = variable_get('file_public_path', conf_path() . DIRECTORY_SEPARATOR . 'files');
-    $streams = array();
-    foreach (stream_get_wrappers() as $stream) {
-      $streams[] = $stream . '://';
-    }
     $this->fid = $fid;
     $this->fileInfo();
-    $this->filePath = $public_folder . DIRECTORY_SEPARATOR . str_replace($streams, '', $this->file->uri);
     $destination_temp = drupal_realpath('temporary://cp_appearance_theme_update_verify');
     file_prepare_directory($destination_temp, FILE_CREATE_DIRECTORY);
     $this->extractPath = $destination_temp;
     $this->extract();
     $this->deleteTree($destination_temp);
+
+    return !empty($this->flavourPath);
   }
 
   /**
@@ -321,18 +324,12 @@ class SubTheme {
   public function updateFromZip($new_fid, $path_target) {
     $info_files_original = glob($path_target . DIRECTORY_SEPARATOR . '*.flav');
     $info_file_original = reset($info_files_original);
+    $info_original = drupal_parse_info_file($info_file_original);
     $info_file_name_original = pathinfo($info_file_original, PATHINFO_FILENAME);
-    $public_folder = variable_get('file_public_path', conf_path() . DIRECTORY_SEPARATOR . 'files');
-
-    $streams = array();
-    foreach (stream_get_wrappers() as $stream) {
-      $streams[] = $stream . '://';
-    }
 
     $this->fid = $new_fid;
     $this->fileInfo();
-    $this->filePath = $public_folder . DIRECTORY_SEPARATOR . str_replace($streams, '', $this->file->uri);
-    $destination_temp = $public_folder . DIRECTORY_SEPARATOR . 'cp_appearance_theme_update';
+    $destination_temp = drupal_realpath('temporary://cp_appearance_theme_update');
     file_prepare_directory($destination_temp, FILE_CREATE_DIRECTORY);
     $this->extractPath = $destination_temp;
     $this->flavourPath = NULL;
@@ -340,15 +337,30 @@ class SubTheme {
 
     // Continue only if there is a flavor file in the extracted zip archive.
     if ($this->flavourPath) {
+      $info_file_new = reset(glob($destination_temp . DIRECTORY_SEPARATOR . '*.flav'));
+      $info_new = drupal_parse_info_file($info_file_new);
       // Keep the new theme info filename the same as it was previously.
-      if (pathinfo(reset(glob($destination_temp . DIRECTORY_SEPARATOR . '*.flav')), PATHINFO_FILENAME) !== $info_file_name_original) {
+      if (pathinfo($info_file_new, PATHINFO_FILENAME) !== $info_file_name_original) {
         rename(
-          reset(glob($destination_temp . DIRECTORY_SEPARATOR . '*.flav')),
+          $info_file_new,
           $destination_temp . DIRECTORY_SEPARATOR . $info_file_name_original . '.flav'
         );
       }
       $this->recursiveMove($destination_temp, $path_target);
       $this->deleteTree($destination_temp);
+      // Delete the uploaded zip.
+      file_delete($this->file);
+
+      $info = array();
+      if (
+        !empty($info_original['name']) &&
+        !empty($info_new['name']) &&
+        $info_original['name'] !== $info_new['name']
+      ) {
+        $info['name_original'] = $info_original['name'];
+        $info['name_new'] = $info_new['name'];
+      }
+      return $info;
     }
   }
 
@@ -365,7 +377,7 @@ class SubTheme {
     // Move files and folders found in source path to the target path.
     //
     $source_path_content = array_filter(scandir($source_path), function($value) {
-      return !in_array($value, ['.', '..']);
+      return !in_array($value, array('.', '..'));
     });
 
     foreach ($source_path_content as $resource) {
