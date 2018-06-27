@@ -1,4 +1,8 @@
 default:
+  filters:
+    tags: "~@wip"
+  context:
+      class:  'FeatureContext'
   paths:
     features: 'features'
   extensions:
