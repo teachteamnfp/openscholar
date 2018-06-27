@@ -51,17 +51,21 @@ function os_events_os_app_info() {
  * Implements hook_theme().
  */
 function os_events_theme() {
-  return array(
-    'os_events_export_links' => array(
-      'variables' => array(
-        'register' => NULL,
-        'ical' => NULL,
-        'subscribe' => NULL,
-      ),
-      'template' => 'os-events-export-links',
-      'path' => drupal_get_path('module', 'os_events') . '/template',
-    ),
+  $theme = array();
+  $theme['field__event__rss'] = array(
+    'base hook' => 'field',
   );
+  $theme['os_events_export_links'] = array(
+    'variables' => array(
+      'register' => NULL,
+      'ical' => NULL,
+      'subscribe' => NULL,
+    ),
+    'template' => 'os-events-export-links',
+    'path' => drupal_get_path('module', 'os_events') . '/template',
+  );
+
+  return $theme;
 }
 
 /**
@@ -409,6 +413,10 @@ function os_events_node_delete($node) {
   if ($node->type !== 'event') {
     return;
   }
+
+  // Flush event views caches.
+  _os_events_flush_og_views_caches('os_events', 'calendar/');
+
   // Initializing EntityFieldQuery to obtain all registration entities with a certain event node id
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', 'registration')
@@ -436,12 +444,28 @@ function os_events_node_delete($node) {
 }
 
 /**
+ * Implements hook_node_insert().
+ */
+function os_events_node_insert($node) {
+  if ($node->type !== 'event') {
+    return;
+  }
+
+  // Flush event views caches.
+  _os_events_flush_og_views_caches('os_events', 'calendar/');
+}
+
+/**
  * Implements hook_node_update().
  */
 function os_events_node_update($node) {
   if ($node->type !== 'event') {
     return;
   }
+
+  // Flush event views caches.
+  _os_events_flush_og_views_caches('os_events', 'calendar/');
+
   // For non-recurring events.
   if (!empty($node->field_date) && !empty($node->original->field_date) && empty($node->field_date[LANGUAGE_NONE][0]['rrule'])) {
     // If event start date or location has been altered, then registrants should be notified.
@@ -559,6 +583,84 @@ function os_events_node_update($node) {
       entity_delete_multiple('registration', $entity_ids);
     }
   }
+}
+
+/**
+ * Helper callback to flush views caches of events.
+ *
+ * @param string $view_name
+ *   Name of the view which cache should be cleared.
+ * @param string $page_wildcard
+ *   Page path wildcard where page cache should be dropped.
+ *   If ommitted, no page cache clear happens at all.
+ */
+function _os_events_flush_og_views_caches($view_name = NULL, $page_wildcard = NULL) {
+  // For result and output key calc, check get_results_key() and
+  // get_output_key() funcions in views_og_cache_plugin_cache_time.inc.
+  if (
+    $view_name &&
+    views_get_view($view_name)
+  ) {
+    $og_context = og_context();
+    $view_og_cid_wildcard =
+      'og:' .
+      $og_context['group_type'] . ':' .
+      $og_context['gid'] . ':' .
+      $view_name . ':';
+
+    cache_clear_all($view_og_cid_wildcard, 'cache_views_data', TRUE);
+    cache_clear_all($view_og_cid_wildcard, 'cache_views', TRUE);
+
+    dpm([$view, $og_context, $view_og_cid_wildcard, vsite_get_vsite()]);
+  }
+
+  if (
+    $page_wildcard &&
+    $base_url = _os_events_site_url()
+  ) {
+    cache_clear_all($base_url . '/' . $page_wildcard, 'cache_page', TRUE);
+
+    dpm($base_url);
+  }
+}
+
+function _os_events_site_url() {
+  $og_context = og_context();
+  $site_url = FALSE;
+  if (
+    module_exists('spaces') &&
+    $vsite = spaces_load('og', $og_context['gid'])
+  ) {
+    if ($vsite->purl_provider) {
+      $site_url = url(NULL, array(
+        'absolute' => TRUE,
+        'purl' => array(
+          'id' => $vsite->id,
+          'provider' => $vsite->purl_provider ? $vsite->purl_provider : 'spaces_og'
+        ),
+      ));
+    }
+  }
+
+  return $site_url;
+  // else {
+  //   $method = variable_get('purl_method_spaces_og', 'path');
+  //
+  //   $processor = purl_get_processor($method);
+  //   $element = new purl_path_element($processor, $vsite->group->purl, 'spaces_og', $vsite->id);
+  //   $options = array('absolute' => TRUE);
+  //   $element->processor->rewrite($site_url, $options, $element);
+  //
+  //   if (!empty($options['base_url'])) {
+  //     $site_url_base = empty($site_url) && !empty($vsite->group->purl) ?
+  //     $vsite->group->purl : '';
+  //     $site_url = trim($options['base_url'], '/');
+  //
+  //     if (variable_get('purl_method_spaces_og', NULL) !== 'thescholr_subdomain') {
+  //       $site_url .= '/' . ltrim($site_url_base, '/');
+  //     }
+  //   }
+  // }
 }
 
 /**
@@ -2192,7 +2294,7 @@ function os_events_form_registration_form_alter(&$form, &$form_state) {
       array('honeypot', 'time_restriction')
     );
   }
-  
+
   $form['#validate'][] = 'os_events_registration_form_validate';
   $form['#validate'][] = 'os_events_modal_validate';
   $form['#submit'][] = 'os_events_modal_submit';
@@ -3696,4 +3798,40 @@ function os_events_apachesolr_query_prepare($query) {
     // Sort on the new field
     $query->setSolrSort('ds_field_event_date', 'desc');
   }
+}
+
+/**
+ * Implements template_preprocess_field().
+ */
+function os_events_preprocess_field(&$variables) {
+  if (
+    $variables['element']['#bundle'] === 'event' &&
+    $variables['element']['#view_mode'] === 'rss'
+  ) {
+    $variables['theme_hook_suggestions'][] = 'field__event__rss';
+  }
+}
+
+function theme_field__event__rss(&$variables) {
+  $output = '';
+
+  // Render the label, if it's not hidden.
+  if (!$variables['label_hidden']) {
+    $inline_label = !empty($variables['classes_array']) && in_array('field-label-inline', $variables['classes_array']);
+    $tag = $inline_label ? 'strong' : 'div';
+    $output .= '<' . $tag . ' class="field-label"' . $variables['title_attributes'] . '>' . $variables['label'] . ($inline_label ? ':&nbsp;' : '') . '</' . $tag . '>';
+  }
+
+  // Render the items.
+  $output .= '<div class="field-items"' . $variables['content_attributes'] . '>';
+  foreach ($variables['items'] as $delta => $item) {
+    $classes = 'field-item ' . ($delta % 2 ? 'odd' : 'even');
+    $output .= '<div class="' . $classes . '"' . $variables['item_attributes'][$delta] . '>' . drupal_render($item) . '</div>';
+  }
+  $output .= '</div>';
+
+  // Render the top-level DIV.
+  $output = '<div class="' . $variables['classes'] . '"' . $variables['attributes'] . '>' . $output . '</div>';
+
+  return $output;
 }
