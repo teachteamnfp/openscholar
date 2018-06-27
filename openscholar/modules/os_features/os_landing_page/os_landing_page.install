@@ -14,7 +14,7 @@ function os_landing_page_enable(){
   variable_set('landing_page_university_base_url', 'https://theopenscholar.com/');
   variable_set('landing_page_university_name', 'OpenScholar');
   variable_set('landing_page_copyright_infring', '');
-  variable_set('landing_page_site_access', ');
+  variable_set('landing_page_site_access', '');
   variable_set('landing_page_site_privacy', '');
 }
 
