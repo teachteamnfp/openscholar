@@ -1973,7 +1973,8 @@ function os_profiles_apachesolr_query_alter($query) {
     dsm($filter);
     if ($filter['#name'] == 'bundle' && $filter['#value'] == 'person') {
       $query->addParam('sort', 'ss_field_last_name asc, ss_field_first_name asc');
-    }/*
+    }
+    /*
     if ($filter['#name'] == 'bundle' && $filter['#value'] == 'person' && stristr($query->sortstring, 'sort_label') !== FALSE) {
       $sort_order = 'desc';
       if (stristr($query->sortstring, 'asc') !== FALSE) {
