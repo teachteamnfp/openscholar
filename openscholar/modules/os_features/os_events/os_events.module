@@ -589,7 +589,7 @@ function os_events_node_update($node) {
  * Helper callback to flush views caches of events.
  *
  * @param string $view_name
- *   Name of the view which cache should be cleared.
+ *   Name of the view which cache should be cleared (query + render).
  * @param string $page_wildcard
  *   Page path wildcard where page cache should be dropped.
  *   If ommitted, no page cache clear happens at all.
@@ -610,8 +610,6 @@ function _os_events_flush_og_views_caches($view_name = NULL, $page_wildcard = NU
 
     cache_clear_all($view_og_cid_wildcard, 'cache_views_data', TRUE);
     cache_clear_all($view_og_cid_wildcard, 'cache_views', TRUE);
-
-    dpm([$view, $og_context, $view_og_cid_wildcard, vsite_get_vsite()]);
   }
 
   if (
@@ -619,8 +617,6 @@ function _os_events_flush_og_views_caches($view_name = NULL, $page_wildcard = NU
     $base_url = _os_events_site_url()
   ) {
     cache_clear_all($base_url . '/' . $page_wildcard, 'cache_page', TRUE);
-
-    dpm($base_url);
   }
 }
 
@@ -643,24 +639,6 @@ function _os_events_site_url() {
   }
 
   return $site_url;
-  // else {
-  //   $method = variable_get('purl_method_spaces_og', 'path');
-  //
-  //   $processor = purl_get_processor($method);
-  //   $element = new purl_path_element($processor, $vsite->group->purl, 'spaces_og', $vsite->id);
-  //   $options = array('absolute' => TRUE);
-  //   $element->processor->rewrite($site_url, $options, $element);
-  //
-  //   if (!empty($options['base_url'])) {
-  //     $site_url_base = empty($site_url) && !empty($vsite->group->purl) ?
-  //     $vsite->group->purl : '';
-  //     $site_url = trim($options['base_url'], '/');
-  //
-  //     if (variable_get('purl_method_spaces_og', NULL) !== 'thescholr_subdomain') {
-  //       $site_url .= '/' . ltrim($site_url_base, '/');
-  //     }
-  //   }
-  // }
 }
 
 /**
