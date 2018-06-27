@@ -39,11 +39,11 @@ function os_profiles_field_default_field_instances() {
       ),
       'no_image_teaser' => array(
         'label' => 'hidden',
-        'module' => 'text',
+        'module' => 'os',
         'settings' => array(
           'trim_length' => 160,
         ),
-        'type' => 'text_summary_or_trimmed',
+        'type' => 'os_text_trimmed',
         'weight' => 5,
       ),
       'sidebar_teaser' => array(
@@ -263,6 +263,12 @@ function os_profiles_field_default_field_instances() {
         'weight' => 0,
       ),
       'links' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'no_image_teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -685,6 +691,12 @@ function os_profiles_field_default_field_instances() {
         'weight' => 0,
       ),
       'links' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'no_image_teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -1161,6 +1173,12 @@ function os_profiles_field_default_field_instances() {
         'weight' => 0,
       ),
       'links' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'no_image_teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',

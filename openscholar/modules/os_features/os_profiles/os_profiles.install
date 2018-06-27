@@ -132,3 +132,10 @@ function os_profiles_update_7054() {
 function os_profiles_update_7055() {
   features_revert(array('os_profiles' => array('views_view')));
 }
+
+/**
+ * Change the no_image_teaser short bio text trimming.
+ */
+function os_profiles_update_7056() {
+  features_revert(array('os_profiles' => array('field', 'field_base', 'field_instance')));
+}
