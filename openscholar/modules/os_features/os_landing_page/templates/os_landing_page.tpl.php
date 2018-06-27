@@ -15,10 +15,9 @@
     </div>
     <div class="menu">
       <ul>
-        <li><a href="link">Contact Support</a></li>
         <li><a href="https://help.theopenscholar.com/" target="_blank">Documentation</a></li>
         <li><a href="https://help.theopenscholar.com/video-tutorials" target="_blank">Video Tutorials</a></li>
-        <li><a href="/user" class="log-in">Log In</a></li>
+        <!--<li><a href="/user" class="log-in">Log In</a></li>-->
       </ul>
     </div>
   </div>
@@ -40,7 +39,7 @@
     <div class="heading">
       <h1>Create and Manage Your Own Beautiful Website</h1>
       <h2>For labs, research centers, departments, schools, faculty and students</h2>
-      <button>Get Started</button>
+      <!--<button>Get Started</button>-->
       <span>Websites branded for <?php echo $variables['university_name']; ?></span>
     </div>
     <div class="visual-image"><img src="/profiles/openscholar/modules/os_features/os_landing_page/includes/images/devices.png"></div>
