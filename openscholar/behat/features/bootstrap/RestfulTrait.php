@@ -641,7 +641,10 @@ trait RestfulTrait {
   }
 
   private function jsonContent() {
-    return $this->results->json()['data'];
+    if (!empty($this->results) && method_exists($this->results, 'json')) {
+      return $this->results->json ()['data'];
+    }
+    return '';
   }
 
   /**
