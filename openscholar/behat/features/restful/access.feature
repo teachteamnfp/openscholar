@@ -4,13 +4,13 @@ Feature:
   @api @restful
   Scenario: Testing private group content type consuming
     Given I define "obama" as a "private" group
-     When I consume "api/blog/12" as "demo"
+     When I consume "api/blog/10" as "demo"
      Then I verify the request "failed"
 
   @api @restful
   Scenario: Testing public group content consuming
     Given I define "obama" as a "public" group
-     When I consume "api/blog/12" as "demo"
+     When I consume "api/blog/10" as "demo"
      Then I verify the request "passed"
 
   @api @restful
