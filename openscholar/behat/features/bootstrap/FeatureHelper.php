@@ -533,7 +533,7 @@ class FeatureHelp {
     $query = new \entityFieldQuery();
     $result = $query
       ->entityCondition('entity_type', 'node')
-      ->propertyCondition('title', $title, 'CONTAINS')
+      ->propertyCondition('title', $title)
       ->fieldCondition(OG_AUDIENCE_FIELD, 'target_id', $gid)
       ->execute();
 
