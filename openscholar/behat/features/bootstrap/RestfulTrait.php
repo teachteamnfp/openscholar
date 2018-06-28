@@ -592,6 +592,7 @@ trait RestfulTrait {
    */
   public function iConsumeAs($enpdoint, $account) {
     $token = $this->restLogin($account);
+    error_log($token);
     $this->results = $this->invokeRestRequest('get', $this->locatePath($enpdoint), ['access_token' => $token], [], TRUE);
   }
 
@@ -601,7 +602,7 @@ trait RestfulTrait {
   public function iVerifyTheRequest($status) {
     if ($status == 'passed') {
       if (!($this->results instanceof ResponseInterface) || $this->results->getStatusCode() != 200) {
-        throw new Exception('The last REST request did not passed');
+        throw new Exception('The last REST request did not pass.');
       }
     }
     else {
