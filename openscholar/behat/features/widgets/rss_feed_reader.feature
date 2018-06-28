@@ -22,5 +22,6 @@ Feature:
     Given the widget "Gazette News Feed" is placed in the "About" layout
       And I visit "john/about"
      Then I should see "Gazette News Feed"
+      And I should print page
       And I should see "div" element with the class "feed_item"
 
