@@ -30,8 +30,10 @@ env:
     - TEST_SUITE=vsite
     - TEST_SUITE=widgets
 
-before_script: phpenv config-add travis.ini
+before_script: 
+  - phpenv config-add travis.ini
+  - phpenv config-rm xdebug.ini
+  
 script:
-
   - cd /home/travis/build/openscholar/openscholar/docker_travis
   - bash docker.sh
