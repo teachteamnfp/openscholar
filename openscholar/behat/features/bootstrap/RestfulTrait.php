@@ -592,7 +592,7 @@ trait RestfulTrait {
    */
   public function iConsumeAs($enpdoint, $account) {
     $token = $this->restLogin($account);
-    error_log($token);
+    echo ($token."\n");
     $this->results = $this->invokeRestRequest('get', $this->locatePath($enpdoint), ['access_token' => $token], [], TRUE);
   }
 
