@@ -47,7 +47,7 @@ function os_events_field_default_field_instances() {
         'label' => 'hidden',
         'module' => 'text',
         'type' => 'text_default',
-        'weight' => 0,
+        'weight' => 2,
       ),
       'sidebar_teaser' => array(
         'label' => 'above',
@@ -157,7 +157,7 @@ function os_events_field_default_field_instances() {
           'show_repeat_rule' => 'show',
         ),
         'type' => 'date_default',
-        'weight' => 1,
+        'weight' => 0,
       ),
       'sidebar_teaser' => array(
         'label' => 'hidden',
@@ -266,7 +266,7 @@ function os_events_field_default_field_instances() {
         'label' => 'inline',
         'module' => 'text',
         'type' => 'text_default',
-        'weight' => 2,
+        'weight' => 1,
       ),
       'sidebar_teaser' => array(
         'label' => 'above',

@@ -960,7 +960,10 @@ function os_events_views_pre_render(&$view) {
   }
 }
 
-function os_events_date_formatter_pre_view_alter(&$entity, $vars) {
+/**
+ * Implements hook_date_formatter_pre_view_alter().
+ */
+function os_events_date_formatter_pre_view_alter(&$entity, &$vars) {
   if ($entity->type != 'event') {
     return;
   }
@@ -3801,12 +3804,13 @@ function theme_field__event__rss(&$variables) {
   }
 
   // Render the items.
-  $output .= '<div class="field-items"' . $variables['content_attributes'] . '>';
   foreach ($variables['items'] as $delta => $item) {
+    if ($delta > 0) {
+      $output .= '<br />';
+    }
     $classes = 'field-item ' . ($delta % 2 ? 'odd' : 'even');
-    $output .= '<div class="' . $classes . '"' . $variables['item_attributes'][$delta] . '>' . drupal_render($item) . '</div>';
+    $output .= '<span class="' . $classes . '"' . $variables['item_attributes'][$delta] . '>' . drupal_render($item) . '</span>';
   }
-  $output .= '</div>';
 
   // Render the top-level DIV.
   $output = '<div class="' . $variables['classes'] . '"' . $variables['attributes'] . '>' . $output . '</div>';

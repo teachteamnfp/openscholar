@@ -362,5 +362,15 @@ function os_events_update_7030() {
  * Update RSS feed view mode and feed view displays.
  */
 function os_events_update_7031() {
-  features_revert(array('os_events' => array('field_instance', 'views_view')));
+  features_revert(array(
+    'os_events' => array(
+      'strongarm',
+      'field_instance',
+      'views_view',
+    ),
+  ));
+  $settings = field_bundle_settings('node', 'event');
+  $settings['view_modes']['rss']['custom_settings'] = TRUE;
+  field_bundle_settings('node', 'event', $settings);
+  system_rebuild_module_data();
 }
