@@ -2413,7 +2413,8 @@ class FeatureContext extends DrupalContext {
     $element = $this->getSession()->getPage();
 
     if (strpos($element->getContent(), $string) === FALSE) {
-      throw new Exception("the string '$string' was not found.");
+      error_log($element->getContent());
+      throw new Exception("The string '$string' was not found.");
     }
   }
 
