@@ -13,7 +13,7 @@ require 'vendor/autoload.php';
 require_once 'RestfulTrait.php';
 
 // prevent behat from failing on PHP notification or warning
-define("BEHAT_ERROR_REPORTING", E_ALL ^ E_NOTICE ^ E_WARNING);
+define("BEHAT_ERROR_REPORTING", E_ALL ^ E_NOTICE);
 
 class FeatureContext extends DrupalContext {
 
@@ -3722,8 +3722,9 @@ class FeatureContext extends DrupalContext {
 
   /**
    * @AfterStep
+   * @param $event Current event
    */
-  public function dumpInfoAfterFailedStep(StepEvent $event) {
+  public function dumpInfoAfterFailedStep($event) {
     if ($event->getResult() == StepEvent::FAILED)  {
 
       try {
