@@ -1971,8 +1971,6 @@ function os_profiles_apachesolr_query_alter($query) {
   $filters = $query->getFilters();
   $flag_person_vocabulary = false;
   foreach ($filters as $filter) {
-    dsm($filter);
-    dsm($query);
     if ($filter['#name'] == 'bundle' && $filter['#value'] == 'person' && stristr($query->sortstring, 'sort_label') !== FALSE) {
       // If the search has filter "bundle:person" and sort by title
       $sort_order = 'desc';
