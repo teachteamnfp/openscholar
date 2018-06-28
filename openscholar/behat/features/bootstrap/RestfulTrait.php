@@ -109,12 +109,21 @@ trait RestfulTrait {
       return $this->accessToken[$user]['access_token'];
     }
 
-    $handler = new RestfulAccessTokenAuthentication(['entity_type' => 'restful_token_auth','bundle' => 'access_token']);
-    $handler->setAccount(user_load_by_name($user));
-    $data = $handler->getOrCreateToken();
+    if ($handler = new RestfulAccessTokenAuthentication(['entity_type' => 'restful_token_auth','bundle' => 'access_token'])) {
+      if ($account = user_load_by_name ($user)) {
+        $handler->setAccount ($account);
+        $data = $handler->getOrCreateToken ();
 
-    $this->accessToken[$user] = $data;
-    return $data['access_token'];
+        $this->accessToken[$user] = $data;
+        return $data['access_token'];
+      }
+      else {
+        throw new Exception("No user with name $user found");
+      }
+    }
+    else {
+      throw new Exception('No Restful Access handler found');
+    }
   }
 
   /**
