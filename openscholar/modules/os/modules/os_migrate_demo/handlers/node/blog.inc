@@ -18,6 +18,7 @@ class OsMigrateBlogNode extends OsMigrate {
   );
 
   public $dependencies = array(
+    'OsMigrateScienceTaxonomyTerm',
     'OsMigratePersonalNode',
     'OsMigrateProjectNode',
     'OsMigrateUsers',
