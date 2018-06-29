@@ -13,7 +13,7 @@ require 'vendor/autoload.php';
 require_once 'RestfulTrait.php';
 
 // prevent behat from failing on PHP notification or warning
-//define("BEHAT_ERROR_REPORTING", E_ALL ^ E_NOTICE);
+define("BEHAT_ERROR_REPORTING", E_ALL ^ E_NOTICE);
 
 class FeatureContext extends DrupalContext {
 
@@ -4703,7 +4703,7 @@ JS;
    * @Given /^I fill in the "([^"]*)" "([^"]*)" field within the "([^"]*)" section with date interval "([^"]*)" from "([^"]*)"$/
    */
   public function iFillInTheNthFieldWithinXyzWithDateInterval($nth, $field_type1, $field_within_text, $date_interval, $start_date) {
-    $element = $this->_getNthFieldWithinXyz($nth, $field_type1, $field_within_text, $field_type2);
+    $element = $this->_getNthFieldWithinXyz($nth, $field_type1, $field_within_text);
     $future_date = $this->_getDateInterval($start_date, $date_interval);
     $element->setValue($future_date);
   }
