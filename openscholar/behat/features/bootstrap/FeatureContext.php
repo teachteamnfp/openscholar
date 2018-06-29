@@ -13,7 +13,7 @@ require 'vendor/autoload.php';
 require_once 'RestfulTrait.php';
 
 // prevent behat from failing on PHP notification or warning
-define("BEHAT_ERROR_REPORTING", E_ALL ^ E_NOTICE);
+//define("BEHAT_ERROR_REPORTING", E_ALL ^ E_NOTICE);
 
 class FeatureContext extends DrupalContext {
 
@@ -2413,6 +2413,7 @@ class FeatureContext extends DrupalContext {
     $element = $this->getSession()->getPage();
 
     if (strpos($element->getContent(), $string) === FALSE) {
+      echo $this->getSession()->getCurrentUrl ()."\n";
       echo $element->getContent()."\n";
       throw new Exception("The string '$string' was not found.");
     }
@@ -5141,5 +5142,13 @@ JS;
     $this->getSession()->visit($path);
     $content = $this->getSession()->getPage()->getContent();
     var_dump($content);
+  }
+
+  /**
+   * delete when done
+   */
+  public function assertVisit($path) {
+    echo $path."\n";
+    return parent::assertVisit($path);
   }
 }
