@@ -597,9 +597,9 @@ libraries[angularSlideables][download][url] = "https://raw.githubusercontent.com
 libraries[angularSlideables][patch][] = "https://raw.githubusercontent.com/openscholar/openscholar/719c14a04c389e75c16c9f5cf3da59a22a640d5d/patches/angularSlideables-wrap_file_in_jQuery_function_scope.patch"
 
 ; YUI js libraries
-;libraries[yui][type] = "libraries"
-;libraries[yui][download][type] = "file"
-;libraries[yui][download][url] = "http://yui.yahooapis.com/3.18.1/build/yui/yui-min.js"
+libraries[yui][type] = "libraries"
+libraries[yui][download][type] = "file"
+libraries[yui][download][url] = "http://yui.yahooapis.com/3.18.1/build/yui/yui-min.js"
 
 libraries[yql][type] = "libraries"
 libraries[yql][download][type] = "file"
