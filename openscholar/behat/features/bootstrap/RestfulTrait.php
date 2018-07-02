@@ -160,7 +160,7 @@ trait RestfulTrait {
       return $errors;
     }
 
-    throw new Exception('Your request has failed: ' . $errors);
+    throw new Exception('Your request has failed with the status code '.$e->getResponse()->getStatusCode().': ' . $errors);
   }
 
   /**
@@ -598,7 +598,6 @@ trait RestfulTrait {
    */
   public function iConsumeAs($enpdoint, $account) {
     $token = $this->restLogin($account);
-    echo ($token."\n");
     $this->results = $this->invokeRestRequest('get', $this->locatePath($enpdoint), ['access_token' => $token], [], TRUE);
   }
 

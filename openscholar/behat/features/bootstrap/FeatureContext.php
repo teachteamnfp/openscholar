@@ -5166,7 +5166,7 @@ JS;
       throw new Exception("Error reading the error log file");
     }
 
-    echo "Errors from this run.";
+    echo "Errors from this run.\n";
     foreach ($contents as $line) {
       echo $line;
     }
