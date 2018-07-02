@@ -8,8 +8,15 @@
         $('#boxes-box-' + data.delta + ' > .boxes-box-content > .accordion', ctx).accordion({
           collapsible: true,
           heightStyle: 'content',
-          active: data.active
-        })
+          active: data.active,
+          beforeActivate: function( event, ui ) {
+            $(ui.newPanel).removeClass('os-boxes-accordion-loadfix');
+          }
+        }).children('.accordion-panel').each(function (index) {
+          if (data.active !== index) {
+            $(this).addClass('os-boxes-accordion-loadfix');
+          }
+        });
       });
     }
   }
