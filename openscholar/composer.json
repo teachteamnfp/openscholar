@@ -1,8 +1,7 @@
 {
   "require": {
     "cpliakas/git-wrapper": "1.1.0",
-    "composer/installers": "^1.0@dev",
-    "kigkonsult/icalcreator": "2.24"
+    "composer/installers": "^1.0@dev"
   },
   "minimum-stability": "dev",
   "config": {
