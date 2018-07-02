@@ -5151,4 +5151,24 @@ JS;
     echo $path."\n";
     return parent::assertVisit($path);
   }
+
+  /**
+   * @AfterSuite
+   */
+  public static function dumpErrorLogs(Behat\Behat\Event\SuiteEvent $event) {
+    $file = ini_get('error_log');
+    if (!file_exists($file)) {
+      throw new Exception("No error log found");
+    }
+
+    $contents = file($file);
+    if ($contents === FALSE) {
+      throw new Exception("Error reading the error log file");
+    }
+
+    echo "Errors from this run.";
+    foreach ($contents as $line) {
+      echo $line;
+    }
+  }
 }
