@@ -109,12 +109,17 @@ trait RestfulTrait {
       return $this->accessToken[$user]['access_token'];
     }
 
+    if (!module_exists('restful_token_auth')) {
+      throw new Exception('Token authentication is disabled.');
+    }
+
     if ($handler = new RestfulAccessTokenAuthentication(['entity_type' => 'restful_token_auth','bundle' => 'access_token'])) {
       if ($account = user_load_by_name ($user)) {
         $handler->setAccount ($account);
         $data = $handler->getOrCreateToken ();
 
         $this->accessToken[$user] = $data;
+        echo 'Setting token '.$data['access_token'].' for user '.$user;
         return $data['access_token'];
       }
       else {
