@@ -104,9 +104,9 @@ CUR_DIR=$(pwd)
 
 # iCalcreator cannot be downloaded via make because a temporary token is needed,
 # so we have the library inside os_events directory and we copy it to libraries.
-(
-  cp -R openscholar/modules/os_features/os_events/iCalcreator/ openscholar/libraries/
-)
+#(
+ #cp -R openscholar/modules/os_features/os_events/iCalcreator/ openscholar/libraries/
+#)
 
 # Copy our custom .htaccess file.
 (

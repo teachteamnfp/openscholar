@@ -5,6 +5,8 @@
  *
  * Provides and handles form for cp/appearance
  */
+// Adding the git library.
+require_once drupal_get_path('profile', 'openscholar').'/libraries/autoload.php';
 
 use GitWrapper\GitWrapper;
 use GitWrapper\GitException;
@@ -852,8 +854,6 @@ function cp_appearance_manage_base_submit($form, &$form_state) {
  * Adding a theme - git.
  */
 function cp_appearance_manage_git($form, &$form_state, $type) {
-  // Adding the git library.
-  require_once libraries_get_path('git') . '/autoload.php';
 
   // Get the name of the current vsite so we can create a library to clone into
   // the themes via GIT.

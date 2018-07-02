@@ -1,9 +1,16 @@
 {
   "require": {
-    "cpliakas/git-wrapper": "1.1.0"
+    "cpliakas/git-wrapper": "1.1.0",
+    "composer/installers": "^1.0@dev",
+    "kigkonsult/icalcreator": "2.24"
   },
   "minimum-stability": "dev",
   "config": {
-    "vendor-dir": "libraries/git"
+    "vendor-dir": "libraries"
+  },
+  "extra": {
+    "installer-paths": {
+      "libraries/git": ["cpliakas/git-wrapper"]
+    }
   }
 }
