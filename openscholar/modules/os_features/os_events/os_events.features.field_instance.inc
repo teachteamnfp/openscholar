@@ -150,13 +150,8 @@ function os_events_field_default_field_instances() {
       ),
       'rss' => array(
         'label' => 'inline',
-        'module' => 'date',
-        'settings' => array(
-          'format_type' => 'long',
-          'fromto' => 'both',
-          'show_repeat_rule' => 'show',
-        ),
-        'type' => 'date_default',
+        'settings' => array(),
+        'type' => 'hidden',
         'weight' => 0,
       ),
       'sidebar_teaser' => array(
@@ -264,8 +259,8 @@ function os_events_field_default_field_instances() {
       ),
       'rss' => array(
         'label' => 'inline',
-        'module' => 'text',
-        'type' => 'text_default',
+        'settings' => array(),
+        'type' => 'hidden',
         'weight' => 1,
       ),
       'sidebar_teaser' => array(

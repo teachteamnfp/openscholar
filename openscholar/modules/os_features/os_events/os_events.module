@@ -701,6 +701,42 @@ function os_events_menu() {
 }
 
 /**
+ * Implements template_preprocess_views_view_row_rss()
+ */
+function os_events_preprocess_views_view_row_rss(&$variables) {
+  // Hack: instead of the last modified date, Openscholar wants to have
+  // the events' date in the RSS feed as pubDate.
+  // TODO: revise this: if feed date can be valid again, this code could be
+  // removed safely.
+  if (isset($variables['row']->nid) && !empty($variables['row']->nid) && isset($variables['row']->elements) && !empty($variables['row']->elements) && is_array($variables['row']->elements)) {
+    $node_wrapper = entity_metadata_wrapper('node', $variables['row']->nid);
+
+    if ($node_wrapper->getBundle() != 'event') {
+      return;
+    }
+
+    $event_date = FALSE;
+
+    if (isset($node_wrapper->field_date) && !empty($node_wrapper->field_date) && !empty($node_wrapper->field_date[0]->value())) {
+      $event_date_value = $node_wrapper->field_date[0]->value();
+      $event_date = is_array($event_date_value) && !empty($event_date_value['date_type']) ?
+        new DateObject($event_date_value['value']) : FALSE;
+
+      if ($event_date) {
+        foreach ($variables['row']->elements as $delta => $meta) {
+          if ($meta['key'] == 'pubDate') {
+            $variables['row']->elements[$delta]['value'] = $event_date->format('r');
+            break 1;
+          }
+        }
+
+        $variables['item_elements'] = format_xml_elements($variables['row']->elements);
+      }
+    }
+  }
+}
+
+/**
  * Implements hook_entity_view_alter().
  */
 function os_events_entity_view_alter(&$build, $type) {
