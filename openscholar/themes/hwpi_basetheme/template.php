@@ -576,17 +576,7 @@ function hwpi_basetheme_node_view_alter(&$build) {
  * Implements hook_field_display_ENTITY_TYPE_alter().
  */
 function hwpi_basetheme_field_display_node_alter(&$display, $context) {
-  if (
-    $context['entity']->type == 'event' &&
-    $context['instance']['field_name'] == 'field_date' &&
-    (
-      !in_array($context['view_mode'], ['full', 'rss']) ||
-      (
-        isset($context['entity']->os_sv_list_box) &&
-        $context['entity']->os_sv_list_box
-      )
-    )
-  ) {
+  if ($context['entity']->type == 'event' && $context['instance']['field_name'] == 'field_date' && (!in_array($context['view_mode'], ['full', 'rss']) || (isset($context['entity']->os_sv_list_box) && $context['entity']->os_sv_list_box))) {
 
     if (isset($context['entity']->field_date[LANGUAGE_NONE][0]['value2']) &&
         (strtotime($context['entity']->field_date[LANGUAGE_NONE][0]['value2']) - strtotime($context['entity']->field_date[LANGUAGE_NONE][0]['value']) > 24*60*60)) {

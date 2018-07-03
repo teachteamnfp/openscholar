@@ -590,6 +590,7 @@ function os_events_node_update($node) {
  *
  * @param string $view_name
  *   Name of the view which cache should be cleared (query + render).
+ *   If ommitted, no views cache invalidation happens at all.
  * @param string $page_wildcard
  *   Page path wildcard where page cache should be dropped.
  *   If ommitted, no page cache clear happens at all.
@@ -597,10 +598,7 @@ function os_events_node_update($node) {
 function _os_events_flush_og_views_caches($view_name = NULL, $page_wildcard = NULL) {
   // For result and output key calc, check get_results_key() and
   // get_output_key() funcions in views_og_cache_plugin_cache_time.inc.
-  if (
-    $view_name &&
-    views_get_view($view_name)
-  ) {
+  if ($view_name && views_get_view($view_name)) {
     $og_context = og_context();
     $view_og_cid_wildcard =
       'og:' .
@@ -612,27 +610,28 @@ function _os_events_flush_og_views_caches($view_name = NULL, $page_wildcard = NU
     cache_clear_all($view_og_cid_wildcard, 'cache_views', TRUE);
   }
 
-  if (
-    $page_wildcard &&
-    $base_url = _os_events_site_url()
-  ) {
+  if ($page_wildcard && $base_url = _os_events_site_url()) {
     cache_clear_all($base_url . '/' . $page_wildcard, 'cache_page', TRUE);
   }
 }
 
+/**
+ * Helper callback which returns current vsites' absolute url.
+ *
+ * @return string|false
+ *   The absolute url string of the current vsite or FALSE if it cannot be
+ *   determined.
+ */
 function _os_events_site_url() {
   $og_context = og_context();
   $site_url = FALSE;
-  if (
-    module_exists('spaces') &&
-    $vsite = spaces_load('og', $og_context['gid'])
-  ) {
+  if (module_exists('spaces') && $vsite = spaces_load('og', $og_context['gid'])) {
     if ($vsite->purl_provider) {
       $site_url = url(NULL, array(
         'absolute' => TRUE,
         'purl' => array(
           'id' => $vsite->id,
-          'provider' => $vsite->purl_provider ? $vsite->purl_provider : 'spaces_og'
+          'provider' => $vsite->purl_provider ? $vsite->purl_provider : 'spaces_og',
         ),
       ));
     }
@@ -970,9 +969,7 @@ function os_events_date_formatter_pre_view_alter(&$entity, &$vars) {
 
   if (!isset($entity->date_id)) {
        // The current view rendering this entity. We try and set it if it is not already set.
-    if ((isset($entity->view) || $entity->view = views_get_current_view())
-      && isset($entity->view->row_index)
-      && isset($entity->view->result[$entity->view->row_index])) {
+    if ((isset($entity->view) || $entity->view = views_get_current_view()) && isset($entity->view->row_index) && isset($entity->view->result[$entity->view->row_index])) {
 
       // This entity is being rendered by a view.
       $view = $entity->view;
@@ -3785,14 +3782,20 @@ function os_events_apachesolr_query_prepare($query) {
  * Implements template_preprocess_field().
  */
 function os_events_preprocess_field(&$variables) {
-  if (
-    $variables['element']['#bundle'] === 'event' &&
-    $variables['element']['#view_mode'] === 'rss'
-  ) {
+  if ($variables['element']['#bundle'] === 'event' && $variables['element']['#view_mode'] === 'rss') {
     $variables['theme_hook_suggestions'][] = 'field__event__rss';
   }
 }
 
+/**
+ * Implements theme_HOOK() for 'field__event_rss'.
+ *
+ * Returns a plainer HTML for a field, mainly for rss feed items.
+ *
+ * @see theme_field()
+ *
+ * @ingroup themeable
+ */
 function theme_field__event__rss(&$variables) {
   $output = '';
 
