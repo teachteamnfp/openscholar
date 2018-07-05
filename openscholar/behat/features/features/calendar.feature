@@ -96,6 +96,7 @@ Feature: Testing OpenScholar calendar page.
      Then I should see the link "Future event" under "view-os-events"
       And I should not see the link "Past event" under "view-os-events"
      When I click on link "iCal" under "content"
+      And I dump debug info about the library
      Then I should find the text "SUMMARY:Halleys Comet" in the file
       And I should not find the text "Past event" in the file
       

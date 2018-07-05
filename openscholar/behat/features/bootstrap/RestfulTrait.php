@@ -285,8 +285,8 @@ trait RestfulTrait {
    */
   private function invokeRestRequest($method, $path, $headers, $body, $return = FALSE) {
     try {
-      echo "currently on ".$this->getSession()->getCurrentUrl();
-      echo "making request to $path";
+      $this->printCurrentUrl ();
+      //echo "making request to $path";
       $response = $this->getClient()->{$method}($path, [
         'headers' => $headers,
         'json' => $body,

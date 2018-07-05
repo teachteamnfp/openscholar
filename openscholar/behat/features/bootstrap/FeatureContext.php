@@ -540,7 +540,9 @@ class FeatureContext extends DrupalContext {
   public function iShouldPrintPage() {
     $element = $this->getSession()->getPage();
     $url = $this->createGist($element->getContent());
-    print_r('You asked to see the page content. Here is a gist contain the html: ' . $url . "\n");
+    if ($url) {
+      print_r ('You asked to see the page content. Here is a gist contain the html: ' . $url . "\n");
+    }
 
     // Make sure the temp directory exists and is writable before using it
     $tmpdir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'screenshots';
@@ -553,7 +555,9 @@ class FeatureContext extends DrupalContext {
     $screenshot = $driver->getScreenshot();
     $gistUrl = $this->createGist('<img src="data:image/png;base64,'.base64_encode($screenshot).'">');
     $this->iPrintPageScreenShot();
-    print_r("Here is a screenshot of the page: $gistUrl\n");
+    if ($gistUrl) {
+      print_r ("Here is a screenshot of the page: $gistUrl\n");
+    }
   }
 
   /**
@@ -563,6 +567,9 @@ class FeatureContext extends DrupalContext {
    *   List of files and the content.
    */
   public function createGist($file) {
+    return '';
+    // TODO: Fix
+    // Github no longer allows anonymous gists to be created as of March 19, 2018.
     $request = $this->invokeRestRequest('post', 'https://api.github.com/gists', [], [
       'description' => 'http log',
       'public' => TRUE,
@@ -5172,5 +5179,13 @@ JS;
         echo $line;
       }
     }
+  }
+
+  /**
+   * @When /^I dump debug info about the library$/
+   */
+  public function iDumpDebugInfo() {
+    echo getcwd();
+    echo print_r(libraries_detect('iCalcreator'), 1);
   }
 }
