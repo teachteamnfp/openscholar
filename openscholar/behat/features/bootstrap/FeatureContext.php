@@ -5186,6 +5186,8 @@ JS;
    */
   public function iDumpDebugInfo() {
     echo getcwd();
+    echo drupal_get_profile ()."\n";
+    echo drupal_get_path('profile', drupal_get_profile())."\n";
     echo print_r(libraries_detect('iCalcreator'), 1);
   }
 }
