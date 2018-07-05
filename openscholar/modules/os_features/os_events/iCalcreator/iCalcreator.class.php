@@ -6434,7 +6434,7 @@ class vevent extends calendarComponent {
  * @return void
  */
   function __construct( $config = array()) {
-    $this->calendarComponent();
+    parent::__construct();
 
     $this->attach          = '';
     $this->attendee        = '';
@@ -6581,7 +6581,7 @@ class vtodo extends calendarComponent {
  * @return void
  */
   function __construct( $config = array()) {
-    $this->calendarComponent();
+    parent::__construct();
 
     $this->attach          = '';
     $this->attendee        = '';
@@ -6720,7 +6720,7 @@ class vjournal extends calendarComponent {
  * @return void
  */
   function __construct( $config = array()) {
-    $this->calendarComponent();
+    parent::__construct();
 
     $this->attach          = '';
     $this->attendee        = '';
@@ -6830,7 +6830,7 @@ class vfreebusy extends calendarComponent {
  * @return void
  */
   function __construct( $config = array()) {
-    $this->calendarComponent();
+    parent::__construct();
 
     $this->attendee        = '';
     $this->comment         = '';
@@ -6912,7 +6912,7 @@ class valarm extends calendarComponent {
  * @return void
  */
   function __construct( $config = array()) {
-    $this->calendarComponent();
+    parent::__construct();
 
     $this->action          = '';
     $this->attach          = '';
@@ -7003,7 +7003,7 @@ class vtimezone extends calendarComponent {
       $this->timezonetype = 'VTIMEZONE';
     else
       $this->timezonetype = strtoupper( $timezonetype );
-    $this->calendarComponent();
+    parent::__construct();
 
     $this->comment         = '';
     $this->dtstart         = '';
