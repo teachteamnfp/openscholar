@@ -118,7 +118,5 @@ CUR_DIR=$(pwd)
 (
   cd $BUILD_ROOT/openscholar
   $BOWER install
-  ls libraries
-  ls libraries/iCalcreator
   cd -
 )

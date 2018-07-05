@@ -285,6 +285,7 @@ trait RestfulTrait {
    */
   private function invokeRestRequest($method, $path, $headers, $body, $return = FALSE) {
     try {
+      echo "currently on ".$this->getSession()->getCurrentUrl();
       echo "making request to $path";
       $response = $this->getClient()->{$method}($path, [
         'headers' => $headers,
@@ -314,6 +315,7 @@ trait RestfulTrait {
     $delta = $this->getDelta($values);
     $viste = FeatureHelp::getNodeId($values['Site']);
 
+    echo 'using token '.$token;
     $request = $this->invokeRestRequest($this->operations[$operation], $path,
       ['access_token' => $token],
       [
