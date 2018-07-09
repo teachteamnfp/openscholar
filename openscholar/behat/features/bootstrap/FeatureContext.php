@@ -13,7 +13,8 @@ require 'vendor/autoload.php';
 require_once 'RestfulTrait.php';
 
 // prevent behat from failing on PHP notification or warning
-define("BEHAT_ERROR_REPORTING", E_ALL ^ E_NOTICE ^ E_WARNING);
+// we want it to fail on deprecation errors though
+define("BEHAT_ERROR_REPORTING", E_ALL & ~E_NOTICE & ~E_WARNING);
 
 class FeatureContext extends DrupalContext {
 
