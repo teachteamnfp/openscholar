@@ -161,7 +161,7 @@ function hwpi_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'privacy_policy';
-  $strongarm->value = "https://hwp.harvard.edu/privacy-policy";
+  $strongarm->value = "";
   $export['privacy_policy'] = $strongarm;
 
   return $export;
