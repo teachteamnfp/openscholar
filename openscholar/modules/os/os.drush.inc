@@ -530,29 +530,30 @@ function _os_drush_domain_htaccess_domain_rules($site, $domains, $prefix) {
   $rules = '';
 
   if ($prefix) {
-    $prod_domain = substr(current($domains), strlen($prefix+1));
+    $prod_domain = substr(reset($domains), strlen($prefix)+1);
     $rules .= <<<EOF
   # REWRITE FOR IMAGE STYLES THAT HAVE LOCAL FILE IN PLACE
   RewriteCond %{REQUEST_FILENAME} !-f                                                                                  
   RewriteCond %{REQUEST_FILENAME} !-d 
   # Force image styles that have local files that exist to be generated.
   RewriteCond %{REQUEST_URI} ^\/files\/styles\/[^\/]*\/public\/((.*))$
-  RewriteCond %{DOCUMENT_ROOT} /sites/' . $site . '/files/%2 -f 
+  RewriteCond %{DOCUMENT_ROOT}/sites/{$site}/files/%2 -f 
 EOF;
 
     $rules .= _os_drush_domain_htaccess_rewrite_condition($domains);
-    $rules .= '  RewriteRule ^(.*)$ https://' . $prod_domain . '/files/$1 [QSA,L]' . "\n";
+    $rules .= '  RewriteRule ^(.*)$ /sites/' . $site . '/files/$1 [L]' . "\n";
 
     $rules .= <<<EOF
   # REWRITE FOR FILES THAT ARE NOT IN LOWER ENV
   RewriteCond %{REQUEST_FILENAME} !-f                                                                                  
   RewriteCond %{REQUEST_FILENAME} !-d 
   RewriteCond %{REQUEST_FILENAME} ^(.*?)\/files\/
-  RewriteCond %{DOCUMENT_ROOT} /sites/' . $site . '/files/%2 !-f 
+  RewriteCond %{DOCUMENT_ROOT}/sites/{$site}/files/%2 !-f 
 EOF;
 
     $rules .= _os_drush_domain_htaccess_rewrite_condition($domains);
-    $rules .= '  RewriteRule ^(.*)$ /sites/' . $site . '/files/$1 [L]' . "\n";
+    $rules .= '  RewriteRule ^(.*)$ https://' . $prod_domain . '/files/$1 [QSA,L]' . "\n";
+
   }
 
   $rules .= <<<EOF
