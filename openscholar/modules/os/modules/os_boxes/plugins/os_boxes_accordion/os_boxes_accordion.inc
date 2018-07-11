@@ -31,6 +31,7 @@ class os_boxes_accordion extends os_boxes_widget_collection {
 
   function render() {
     $output = parent::render();
+    $accordion_plugin_path = drupal_get_path('module', 'os_boxes') . '/plugins/os_boxes_accordion';
 
     // Static variable to hold multiple accordion per page.
     $os_accordion_boxes = &drupal_static('os_accordion_boxes');
@@ -53,8 +54,9 @@ class os_boxes_accordion extends os_boxes_widget_collection {
           'library' => array(
             array('system', 'ui.accordion'),
           ),
+          'css' => array($accordion_plugin_path . '/os_boxes_accordion.css'),
           'js' => array(
-            drupal_get_path('module', 'os_boxes') . '/plugins/os_boxes_accordion/os_boxes_accordion.render.js',
+            $accordion_plugin_path . '/os_boxes_accordion.render.js',
             array(
               'type' => 'setting',
               'data' => array(
