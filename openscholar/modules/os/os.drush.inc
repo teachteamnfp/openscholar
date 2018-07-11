@@ -530,7 +530,7 @@ function _os_drush_domain_htaccess_domain_rules($site, $domains, $prefix) {
   $rules = '';
 
   if ($prefix) {
-    $prod_domain = substr(reset($domains), strlen($prefix)+1);
+    $prod_domain = trim(substr(reset($domains), strlen($prefix)+1), '*');
     $rules .= <<<EOF
   # REWRITE FOR IMAGE STYLES THAT HAVE LOCAL FILE IN PLACE
   RewriteCond %{REQUEST_FILENAME} !-f                                                                                  
