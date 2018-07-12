@@ -96,6 +96,7 @@ features[variable][] = date_views_monthformat_without_year
 features[variable][] = date_views_week_format_with_year
 features[variable][] = date_views_weekformat_with_year
 features[variable][] = diff_show_preview_changes_node_event
+features[variable][] = field_bundle_settings_node__event
 features[variable][] = menu_options_event
 features[variable][] = menu_parent_event
 features[variable][] = node_options_event
