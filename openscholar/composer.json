@@ -1,0 +1,21 @@
+{
+    "name": "openscholar/openscholar",
+    "description": "The installation profile for the OpenScholar distribution",
+    "type": "drupal-profile",
+    "license": "GPL",
+    "authors": [
+        {
+            "name": "mpetrovic",
+            "email": "mpetrovic@guneva.net"
+        }
+    ],
+	"repositories": [
+        {
+            "type": "composer",
+            "url": "https://packages.drupal.org/8"
+        }
+	],
+    "require": {
+        "drupal/ctools": "^3.0"
+    }
+}
