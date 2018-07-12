@@ -1,7 +1,7 @@
 {
   "name": "OpenScholarLLC",
   "require": {
-    "openscholar/osllc" : "1.3"
+    "openscholar/osllc" : "saml_support-dev"
   },
   "repositories": [
     {
