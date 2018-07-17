@@ -445,7 +445,7 @@ function _os_drush_confirm_file_overwrite($contents, $destination) {
 
 
   $action = 'u';
-  $prompt_loop = !(drush_get_option('y')); //skip the prompt and use the new files when -y is enabled
+  $prompt_loop = !drush_get_context('DRUSH_AFFIRMATIVE'); //skip the prompt and use the new files when -y is enabled
   while ($prompt_loop) {
     $action = drush_prompt(dt('Created @filename file.  [v]iew, [d]iff, [u]se this file, or [q]uit?', array('@filename' => $filename)));
     switch ($action) {
