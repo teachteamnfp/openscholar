@@ -547,8 +547,10 @@ EOF;
   # REWRITE FOR FILES THAT ARE NOT IN LOWER ENV
   RewriteCond %{REQUEST_FILENAME} !-f                                                                                  
   RewriteCond %{REQUEST_FILENAME} !-d 
+  RewriteCond %{REQUEST_URI} !^(.*?)\/files\/css\/.*$
+  RewriteCond %{REQUEST_URI} !^(.*?)\/files\/js\/.*$
   RewriteCond %{REQUEST_FILENAME} ^(.*?)\/files\/
-  RewriteCond %{DOCUMENT_ROOT}/sites/{$site}/files/%2 !-f 
+  RewriteCond %{DOCUMENT_ROOT}/sites/{$site}/%{REQUEST_URI} !-f
 EOF;
 
     $rules .= _os_drush_domain_htaccess_rewrite_condition($domains);
