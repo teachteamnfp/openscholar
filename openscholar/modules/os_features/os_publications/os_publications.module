@@ -1123,6 +1123,12 @@ function _os_publications_biblio_entry_alter($markup, $node) {
       $html = str_replace($node->biblio_year . '.', $node->field_biblio_pub_month['und'][0]['value'] . '/' . $day . $node->biblio_year . '. ', $html);
     }
   }
+
+  // Add extra space after Year of Publication.
+  if (in_array($style, array('asa.csl'))) {
+    $html = str_replace($node->biblio_year . '.', $node->biblio_year . '. ', $html);
+  }
+
   $insert = strrpos($html, '</div>');
 
   // Since the biblio_url is wiped out in the CSL file, get the url back from
