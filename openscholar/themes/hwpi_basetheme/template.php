@@ -58,6 +58,13 @@ function _is_hwpi_theme($theme_name = NULL) {
 function _hwpi_branding_header() {
   $header = array();
   if (variable_get('logo_path')) {
+    $logo_path = variable_get('logo_path');
+    if (file_exists($logo_path)) {
+      $imageinfo = getimagesize($logo_path);
+    }
+    else {
+      $imageinfo = array(null, null);
+    }
     $header['left_container'] = array(
       '#type' => 'container',
       '#attributes' => array(
@@ -68,12 +75,13 @@ function _hwpi_branding_header() {
       'img' => array(
         '#theme' => 'link',
         '#path' => variable_get('university_base_url'),
-        '#text' => theme('image', array('path' => variable_get('logo_path'), 'width' => 235, 'height' => 32, 'alt' => 'University Logo')),
+        '#text' => theme('image', array('path' => $logo_path, 'width' => $imageinfo[0], 'height' => $imageinfo[1], 'alt' => 'University Logo')),
         '#options' => array(
           'external' => TRUE,
           'html' => TRUE,
           'attributes' => array(),
         ),
+        '#access' => file_exists($logo_path)
       ),
     );
   }
@@ -271,7 +279,7 @@ function hwpi_basetheme_preprocess_node(&$vars) {
     }
 
     // Set up the size of the picture.
-    $size = (!empty($vars['os_sv_list_box']) && $vars['os_sv_list_box']) || $vars['view_mode'] == 'full' ? 'big' : 'small';
+    $size = (!empty($vars['os_sv_list_box']) && $vars['os_sv_list_box']) || $vars['view_mode'] == 'full' ? 'large' : 'small';
 
     $key['field_person_photo'][0] = array('#markup' => hwpi_basetheme_profile_default_image($size));
   }
@@ -300,15 +308,15 @@ function hwpi_basetheme_profile_default_image($size = 'small') {
     $path = $image_file->uri;
     $options = array(
       'path' => $path,
-      'style_name' => 'profile_thumbnail',
+      'style_name' => $size == 'small' ? 'profile_thumbnail' : 'profile_full',
     );
 
     return '<div class="field-name-field-person-photo">' . theme('image_style',  $options) . '</div>';
   }
 
   // Use default image.
-  $image = $size == 'small' ? 'person-default-image.png' : 'person-default-image-big.png';
-  $install_default_image = variable_get('profile_default_photo', drupal_get_path('theme', 'os_basetheme') . '/images/profile-default.png');
+  $image = $size == 'small' ? 'person-default-image-small.png' : 'person-default-image-large.png';
+  $install_default_image = variable_get('profile_default_photo_'.$size, drupal_get_path('theme', 'os_basetheme') . '/images/' . $image);
   $path = variable_get('os_person_default_image', $install_default_image);
   return '<div class="field-name-field-person-photo">' . theme('image',  array('path' => $path)) . '</div>';
 }
@@ -338,7 +346,7 @@ function hwpi_basetheme_process_node(&$build) {
  * Implements hook_node_view_alter
  *
  */
-function hwpi_basetheme_node_view_alter(&$build) { 
+function hwpi_basetheme_node_view_alter(&$build) {
 
   // Persons, heavily modify the output to match the HC designs
   if ($build['#node']->type == 'person') {
@@ -430,7 +438,9 @@ function hwpi_basetheme_node_view_alter(&$build) {
         unset($build['contact_details']['#prefix'], $build['contact_details']['#suffix']);
 
         //move title, website. body
-        $build['pic_bio']['body']['#weight'] = 5;
+        if (!empty($build['pic_bio']['body'])) {
+          $build['pic_bio']['body']['#weight'] = 5;
+        }
         foreach (array(0=>'field_professional_title', 15=>'field_website') as $weight => $field) {
           if (isset($build[$field])) {
             $build['pic_bio'][$field] = $build[$field];
@@ -459,7 +469,7 @@ function hwpi_basetheme_node_view_alter(&$build) {
           }
         }
 
-        if (isset($build['links']['node']['#links']['node-readmore'])) {
+        if (isset($build['links']['node']['#links']['node-readmore']) && !empty($build['pic_bio']['body'])) {
           $link = $build['links']['node']['#links']['node-readmore'];
           if (preg_match('!</?(?:p)[^>]*>\s*$!i', $build['pic_bio']['body'][0]['#markup'], $match, PREG_OFFSET_CAPTURE)) {
             $insert_point = $match[0][1];
@@ -566,17 +576,15 @@ function hwpi_basetheme_node_view_alter(&$build) {
  * Implements hook_field_display_ENTITY_TYPE_alter().
  */
 function hwpi_basetheme_field_display_node_alter(&$display, $context) {
-  if ($context['entity']->type == 'event' && $context['instance']['field_name'] == 'field_date') {
-    if (($context['view_mode'] != 'full') || (isset($context['entity']->os_sv_list_box) && $context['entity']->os_sv_list_box)) {
+  if ($context['entity']->type == 'event' && $context['instance']['field_name'] == 'field_date' && (!in_array($context['view_mode'], ['full', 'rss']) || (isset($context['entity']->os_sv_list_box) && $context['entity']->os_sv_list_box))) {
 
-      if (isset($context['entity']->field_date[LANGUAGE_NONE][0]['value2']) &&
-          (strtotime($context['entity']->field_date[LANGUAGE_NONE][0]['value2']) - strtotime($context['entity']->field_date[LANGUAGE_NONE][0]['value']) > 24*60*60)) {
-        return; //event is more than one day long - keep both dates visible
-      }
-
-      //hide the date - it's already visible in the shield
-      $display['settings']['format_type'] = 'os_time';
+    if (isset($context['entity']->field_date[LANGUAGE_NONE][0]['value2']) &&
+        (strtotime($context['entity']->field_date[LANGUAGE_NONE][0]['value2']) - strtotime($context['entity']->field_date[LANGUAGE_NONE][0]['value']) > 24*60*60)) {
+      return; //event is more than one day long - keep both dates visible
     }
+
+    //hide the date - it's already visible in the shield
+    $display['settings']['format_type'] = 'os_time';
   }
 }
 

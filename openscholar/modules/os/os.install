@@ -1056,3 +1056,14 @@ function os_update_7060() {
   //Disable mollom as it is no longer used
   module_disable(array('mollom'));
 }
+
+/**
+ * Configure Honeypot.
+ */
+function os_update_7061() {
+  variable_set('honeypot_time_limit', 2);
+
+  db_delete('honeypot_user')
+    ->condition('uid', 0)
+    ->execute();
+}

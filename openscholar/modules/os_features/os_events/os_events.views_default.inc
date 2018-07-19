@@ -728,16 +728,8 @@ function os_events_views_default_views() {
   $handler->display->display_options['pager']['options']['items_per_page'] = '40';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['style_plugin'] = 'rss';
-  $handler->display->display_options['row_plugin'] = 'rss_fields';
-  $handler->display->display_options['row_options']['title_field'] = 'title';
-  $handler->display->display_options['row_options']['link_field'] = 'os_rss_link';
-  $handler->display->display_options['row_options']['description_field'] = 'body';
-  $handler->display->display_options['row_options']['creator_field'] = 'name';
-  $handler->display->display_options['row_options']['date_field'] = 'os_rss_pubDate';
-  $handler->display->display_options['row_options']['guid_field_options'] = array(
-    'guid_field' => 'os_rss_guid',
-    'guid_field_is_permalink' => 0,
-  );
+  $handler->display->display_options['row_plugin'] = 'node_rss';
+  $handler->display->display_options['row_options']['item_length'] = 'rss';
   $handler->display->display_options['defaults']['relationships'] = FALSE;
   /* Relationship: Content: Author */
   $handler->display->display_options['relationships']['uid']['id'] = 'uid';
@@ -839,7 +831,9 @@ function os_events_views_default_views() {
   /* Display: RSS with caching turned off (for Google export) */
   $handler = $view->new_display('feed', 'RSS', 'feed_2_no_cache');
   $handler->display->display_options = $display_options_feed_2;
-  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['cache'] = array(
+    'type' => 'none',
+  );
 
   $export['os_events'] = $view;
 

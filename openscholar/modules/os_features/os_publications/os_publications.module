@@ -2118,8 +2118,14 @@ function os_publications_html_head_alter(&$head_elements) {
             preg_match_all('@src="([^"]+)"@' , $node->body[LANGUAGE_NONE][0]['safe_value'], $match);
             $bodyImage = array_pop($match);
             //Check if image exists and assign first image to twitter:image
-            if($bodyImage[0]){
-              $head_elements[$key]['#value'] = addhttp($bodyImage[0]);
+            if(is_array($bodyImage)){
+              foreach($bodyImage as $image){
+                $imageUrl = addhttp($image);
+                if(is_array(getimagesize($imageUrl))){
+                  $head_elements[$key]['#value'] = $imageUrl;
+                  break;
+                }
+              }
             }
           }
         }
@@ -2137,8 +2143,14 @@ function os_publications_html_head_alter(&$head_elements) {
             preg_match_all('@src="([^"]+)"@' , $node->body[LANGUAGE_NONE][0]['safe_value'], $match);
             $bodyImage = array_pop($match);
             //Check if image exists and assign first image to twitter:image
-            if($bodyImage[0]){
-              $head_elements[$key]['#value'] = addhttp($bodyImage[0]);
+            if(is_array($bodyImage)){
+              foreach($bodyImage as $image){
+                $imageUrl = addhttp($image);
+                if(is_array(getimagesize($imageUrl))){
+                  $head_elements[$key]['#value'] = $imageUrl;
+                  break;
+                }
+              }
             }
           }
         }
@@ -2152,8 +2164,14 @@ function os_publications_html_head_alter(&$head_elements) {
           preg_match_all('@src="([^"]+)"@' , $node->body[LANGUAGE_NONE][0]['safe_value'], $match);
           $bodyImage = array_pop($match);
           //Check if image exists and assign first image to twitter:image
-          if($bodyImage[0]){
-            $head_elements[$key]['#value'] = addhttp($bodyImage[0]);
+          if(is_array($bodyImage)){
+            foreach($bodyImage as $image){
+              $imageUrl = addhttp($image);
+              if(is_array(getimagesize($imageUrl))){
+                $head_elements[$key]['#value'] = $imageUrl;
+                break;
+              }
+            }
           }
         }
       }

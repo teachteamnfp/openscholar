@@ -140,12 +140,6 @@ function os_context_default_contexts() {
           'region' => 'header_second',
           'weight' => '-10',
         ),
-        'boxes-shield' => array(
-          'module' => 'boxes',
-          'delta' => 'shield',
-          'region' => 'header_third',
-          'weight' => '-10',
-        ),
       ),
     ),
   );

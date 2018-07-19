@@ -9,7 +9,7 @@ function os_common_library() {
   $path = drupal_get_path('module', 'os_common');
   $disable = array('alias' => TRUE);
   $rest = url('api', $disable);
-  $vsite = vsite_get_vsite();
+  $vsite = function_exists('vsite_get_vsite') ? vsite_get_vsite() : FALSE;
 
   $info['angularjs'] = array(
     'title' => 'AngularJS',
@@ -535,7 +535,11 @@ function _element_children_recursive(&$element) {
 }
 
 function os_common_process_node(&$variables, $hook) {
-  _ng_non_bindable($variables);
+  $bind = OS_COMMON_NONBIND_BOTH;
+  if (isset($variables['allow_binding'])) {
+    $bind = $bind & !$variables['allow_binding'];
+  }
+  _ng_non_bindable($variables, $bind);
 }
 
 function os_common_process_block(&$variables, $hook) {
