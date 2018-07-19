@@ -2595,7 +2595,7 @@ function vsite_delete_request_submit($form, &$form_state) {
 
   // Send the email to the requestor as well.
   if ($user->mail) {
-    $to = $to . ', ' . $user->mail;
+    $values['cc'] = $user->mail;
   }
 
   // Send the e-mail in the requested user language.
@@ -2691,6 +2691,14 @@ function vsite_mail($key, &$message, $params){
       $message['headers']['Reply-To'] = $params['headers']['Reply-To'];
       $message['from'] = $message['headers']['Sender'] = $message['headers']['Return-Path'] = $message['headers']['From'] = variable_get('site_mail', ini_get('sendmail_from'));
       break;
+  }
+  if (isset($params['cc'])) {
+    if (is_array($params['cc'])) {
+      $messages['headers']['Cc'] = implode(',', $params['cc']);
+    }
+    elseif (is_string($params['cc'])) {
+      $message['headers']['Cc'] = $params['cc'];
+    }
   }
 }
 
