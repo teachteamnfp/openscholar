@@ -60,7 +60,9 @@ class OsMigrateGalleryNode extends OsMigrate {
 
       // Create a dummy file_usage entry. It will be removed only when the file is
       // deleted.
-      file_usage_add(file_load($file['fid']), 'os_files', 'node', $gid);
+      if ($file_temp = file_load($file['fid'])) {
+        file_usage_add($file_temp, 'os_files', 'node', $gid);
+      }
     }
   }
 }

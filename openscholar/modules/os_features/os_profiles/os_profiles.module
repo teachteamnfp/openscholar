@@ -1969,10 +1969,22 @@ function os_profiles_apachesolr_query_prepare($query) {
  */
 function os_profiles_apachesolr_query_alter($query) {
   $filters = $query->getFilters();
+  $flag_person_vocabulary = false;
   foreach ($filters as $filter) {
-    if ($filter['#name'] == 'bundle' && $filter['#value'] == 'person') {
-      $query->addParam('sort', 'ss_field_last_name asc, ss_field_first_name asc');
+    if ($filter['#name'] == 'bundle' && $filter['#value'] == 'person' && stristr($query->sortstring, 'sort_label') !== FALSE) {
+      // If the search has filter "bundle:person" and sort by title
+      $sort_order = 'desc';
+      if (stristr($query->sortstring, 'asc') !== FALSE) {
+        $sort_order = 'asc';
+      }
+      $query->addParam('sort', 'ss_field_last_name ' . $sort_order . ', ss_field_first_name ' . $sort_order);
       break;
+    } elseif ($filter['#name'] == 'bundle' && $filter['#value'] == 'person') {
+      // If the search has a filter "bundle:person" then set the flag and check for taxonomy in next iteration
+      $flag_person_vocabulary = true;
+    } elseif ($filter['#name'] == 'sm_og_vocabulary' && $flag_person_vocabulary && stristr($filter['#value'], 'taxonomy_term')) {
+      // If the search has a filter "bundle:person" and another filter with taxonomy
+      $query->addParam('sort', 'ss_field_last_name asc, ss_field_first_name asc');
     }
   }
 }
