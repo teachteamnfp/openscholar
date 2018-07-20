@@ -1938,9 +1938,9 @@ function os_events_form_registration_entity_settings_form_alter(&$form, $form_st
   // Add 'from' field.
   $form['from'] = array(
     '#type' =>'textfield',
-    '#title' => t('From'),
+    '#title' => t('Event Organizer email'),
     '#required' => TRUE,
-    '#description' => t('Email address to be displayed as the message\'s sender.'),
+    '#description' => t('Email address to be displayed as the event organizer in mail content.'),
     '#default_value' => $from_default_value,
     '#element_validate' => array('os_events_validate_mail'),
   );
@@ -2759,9 +2759,6 @@ function os_events_entity_insert($entity, $type) {
   $wrapper = entity_metadata_Wrapper($type, $entity);
   $node = node_load($entity->entity_id);
 
-  // Get author mail id
-  $event_author = user_load($node->uid);
-
   // Obtaining menu router item of the Ajax URL.
   $menu_item = menu_get_item();
 
@@ -2786,6 +2783,13 @@ function os_events_entity_insert($entity, $type) {
     $date = date('l, F j, Y g:ia', strtotime($node->field_date['und'][$delta]['value'].' UTC'));
   }
 
+  // Get author mail id
+  $settings = os_events_registration_repeating_entity_settings('node', $node->nid, $date);
+
+  if ($settings) {
+    $event_author_mail = $settings['settings']['from_address'] ?: '';
+  }
+
   $module = 'os_events';
   $key = 'registration_confirmation';
   $language = language_default();
@@ -2795,7 +2799,7 @@ function os_events_entity_insert($entity, $type) {
     '@user-name' => $wrapper->field_full_name->value(),
     '@event_date_time' => $date,
     '@event_location' => $node->field_event_location['und'][0]['value'],
-    '@event_creator_email' => $event_author->mail,
+    '@event_creator_email' => $event_author_mail,
   );
 
   // Pass the entity type and ID to give modules implementing
