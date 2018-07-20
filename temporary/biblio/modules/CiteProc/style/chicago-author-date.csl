@@ -340,7 +340,7 @@
           </else>
         </choose>
       </else-if>
-      <else-if type="chapter">
+      <else-if type="chapter paper-conference" match="any">
         <!-- https://github.com/openscholar/openscholar/issues/10475
         remove duplicated page when type is Book Chapter,
         because locators-chapter macro places a page number before this
