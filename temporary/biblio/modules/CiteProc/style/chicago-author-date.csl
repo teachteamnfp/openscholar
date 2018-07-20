@@ -340,6 +340,12 @@
           </else>
         </choose>
       </else-if>
+      <else-if type="chapter">
+        <!-- https://github.com/openscholar/openscholar/issues/10475
+        remove duplicated page when type is Book Chapter,
+        because locators-chapter macro places a page number before this
+         -->
+      </else-if>
       <else>
         <text variable="volume" prefix=", " font-style="italic"/>
         <text variable="issue" prefix=", "/>
