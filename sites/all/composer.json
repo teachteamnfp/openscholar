@@ -1,13 +1,18 @@
 {
   "name": "OpenScholarLLC",
   "require": {
-    "openscholar/osllc" : "1.4"
+    "openscholar/osllc" : "dev-saml_support"
   },
   "repositories": [
-    {
+    "0": {
       "type": "vcs",
       "url": "git@bitbucket.org:openscholar/osllc.git"
     }
+    "drupal": {
+        "type": "composer",
+        "url": "https://packages.drupal.org/7"
+    }
+  
   ],
   "config": {
     "vendor-dir": "~/src/amazon/web/sites/all/modules",
