@@ -1900,14 +1900,7 @@ function os_events_form_registration_entity_settings_form_alter(&$form, $form_st
   // Default value of the From field should be the author of the event's e-mail
   // in case it hasn't been changed yet (if it hasn't been changed yet, the email
   // will be set by default to be as defined in the field instance).
-  $info = field_info_instance('node', 'field_event_registration', 'event');
-  $default_email = $info['settings']['default_registration_settings']['settings']['from_address'];
-  if ($form['settings']['from_address']['#default_value'] == $default_email) {
-    $from_default_value = $wrapper->author->mail->value();
-  }
-  else {
-    $from_default_value = $form['settings']['from_address']['#default_value'];
-  }
+  $from_default_value = _os_events_get_node_event_creator_email($form['settings']['from_address']['#default_value'], $wrapper);
 
   $form['status']['#title'] = t('Enable registrations');
   $form['status']['#description'] = t('Users must register their attendance in advance.');
@@ -2785,10 +2778,7 @@ function os_events_entity_insert($entity, $type) {
 
   // Get author mail id
   $settings = os_events_registration_repeating_entity_settings('node', $node->nid, $date);
-
-  if ($settings) {
-    $event_author_mail = $settings['settings']['from_address'] ?: '';
-  }
+  $event_author_mail = _os_events_get_node_event_creator_email($settings['settings']['from_address'], $wrapper);
 
   $module = 'os_events';
   $key = 'registration_confirmation';
@@ -2826,6 +2816,25 @@ function os_events_entity_insert($entity, $type) {
   drupal_set_message(t('You have successfully registered for the event. Please check your email for confirmation.'));
 
   drupal_mail($module, $key, $wrapper->anon_mail->value(), $language, $params, $from);
+}
+
+/**
+ * @param $from_address_value
+ * @param $wrapper
+ *
+ * @return string
+ */
+function _os_events_get_node_event_creator_email($from_address_value, $wrapper) {
+
+  $info = field_info_instance('node', 'field_event_registration', 'event');
+  $default_email = $info['settings']['default_registration_settings']['settings']['from_address'];
+  if ($from_address_value == $default_email) {
+    $event_author_mail = $wrapper->author->mail->value();
+  }
+  else {
+    $event_author_mail = $from_address_value;
+  }
+  return $event_author_mail;
 }
 
 /**
@@ -2886,8 +2895,6 @@ function os_events_mail_alter(&$message) {
   //Array for event mails
   $eventEmailArr = array("broadcast","registration_confirmation","event_cancel_notification","event_time_updated_notification");
 
-  //get user 1 email address as default from address
-  $admin = user_load(1);
   $defaultMail = variable_get('site_mail', ini_get('sendmail_from'));
 
 
