@@ -1774,3 +1774,14 @@ function os_publications_update_7056() {
     os_publications_revert_citeproc_style($citation);
   }
 }
+
+/**
+ * Import modified "Chicago Manual of Style 16th edition (author-date)" CSL file.
+ */
+function os_publications_update_7057() {
+  module_load_include('inc', 'biblio_citeproc', 'biblio_citeproc.admin');
+
+  // Read the CSL file from the directory.
+  $csl = file_get_contents(drupal_get_path('module', 'os_publications') . '/csl_styles/' . 'chicago-author-date.csl');
+  _install_csl('chicago-author-date.csl', $csl);
+}
