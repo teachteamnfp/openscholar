@@ -51,17 +51,21 @@ function os_events_os_app_info() {
  * Implements hook_theme().
  */
 function os_events_theme() {
-  return array(
-    'os_events_export_links' => array(
-      'variables' => array(
-        'register' => NULL,
-        'ical' => NULL,
-        'subscribe' => NULL,
-      ),
-      'template' => 'os-events-export-links',
-      'path' => drupal_get_path('module', 'os_events') . '/template',
-    ),
+  $theme = array();
+  $theme['field__event__rss'] = array(
+    'base hook' => 'field',
   );
+  $theme['os_events_export_links'] = array(
+    'variables' => array(
+      'register' => NULL,
+      'ical' => NULL,
+      'subscribe' => NULL,
+    ),
+    'template' => 'os-events-export-links',
+    'path' => drupal_get_path('module', 'os_events') . '/template',
+  );
+
+  return $theme;
 }
 
 /**
@@ -409,6 +413,10 @@ function os_events_node_delete($node) {
   if ($node->type !== 'event') {
     return;
   }
+
+  // Flush event views caches.
+  _os_events_flush_og_views_caches('os_events', 'calendar/');
+
   // Initializing EntityFieldQuery to obtain all registration entities with a certain event node id
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', 'registration')
@@ -436,12 +444,28 @@ function os_events_node_delete($node) {
 }
 
 /**
+ * Implements hook_node_insert().
+ */
+function os_events_node_insert($node) {
+  if ($node->type !== 'event') {
+    return;
+  }
+
+  // Flush event views caches.
+  _os_events_flush_og_views_caches('os_events', 'calendar/');
+}
+
+/**
  * Implements hook_node_update().
  */
 function os_events_node_update($node) {
   if ($node->type !== 'event') {
     return;
   }
+
+  // Flush event views caches.
+  _os_events_flush_og_views_caches('os_events', 'calendar/');
+
   // For non-recurring events.
   if (!empty($node->field_date) && !empty($node->original->field_date) && empty($node->field_date[LANGUAGE_NONE][0]['rrule'])) {
     // If event start date or location has been altered, then registrants should be notified.
@@ -562,6 +586,61 @@ function os_events_node_update($node) {
 }
 
 /**
+ * Helper callback to flush views caches of events.
+ *
+ * @param string $view_name
+ *   Name of the view which cache should be cleared (query + render).
+ *   If ommitted, no views cache invalidation happens at all.
+ * @param string $page_wildcard
+ *   Page path wildcard where page cache should be dropped.
+ *   If ommitted, no page cache clear happens at all.
+ */
+function _os_events_flush_og_views_caches($view_name = NULL, $page_wildcard = NULL) {
+  // For result and output key calc, check get_results_key() and
+  // get_output_key() funcions in views_og_cache_plugin_cache_time.inc.
+  if ($view_name && views_get_view($view_name)) {
+    $og_context = og_context();
+    $view_og_cid_wildcard =
+      'og:' .
+      $og_context['group_type'] . ':' .
+      $og_context['gid'] . ':' .
+      $view_name . ':';
+
+    cache_clear_all($view_og_cid_wildcard, 'cache_views_data', TRUE);
+    cache_clear_all($view_og_cid_wildcard, 'cache_views', TRUE);
+  }
+
+  if ($page_wildcard && $base_url = _os_events_site_url()) {
+    cache_clear_all($base_url . '/' . $page_wildcard, 'cache_page', TRUE);
+  }
+}
+
+/**
+ * Helper callback which returns current vsites' absolute url.
+ *
+ * @return string|false
+ *   The absolute url string of the current vsite or FALSE if it cannot be
+ *   determined.
+ */
+function _os_events_site_url() {
+  $og_context = og_context();
+  $site_url = FALSE;
+  if (module_exists('spaces') && $vsite = spaces_load('og', $og_context['gid'])) {
+    if ($vsite->purl_provider) {
+      $site_url = url(NULL, array(
+        'absolute' => TRUE,
+        'purl' => array(
+          'id' => $vsite->id,
+          'provider' => $vsite->purl_provider ? $vsite->purl_provider : 'spaces_og',
+        ),
+      ));
+    }
+  }
+
+  return $site_url;
+}
+
+/**
  * Implements hook_menu().
  */
 function os_events_menu() {
@@ -619,6 +698,42 @@ function os_events_menu() {
     $items['admin/config/services/google-account-settings/google-account-settings']['type'] = MENU_DEFAULT_LOCAL_TASK;
 
   return $items;
+}
+
+/**
+ * Implements template_preprocess_views_view_row_rss()
+ */
+function os_events_preprocess_views_view_row_rss(&$variables) {
+  // Hack: instead of the last modified date, Openscholar wants to have
+  // the events' date in the RSS feed as pubDate.
+  // TODO: revise this: if feed date can be valid again, this code could be
+  // removed safely.
+  if (isset($variables['row']->nid) && !empty($variables['row']->nid) && isset($variables['row']->elements) && !empty($variables['row']->elements) && is_array($variables['row']->elements)) {
+    $node_wrapper = entity_metadata_wrapper('node', $variables['row']->nid);
+
+    if ($node_wrapper->getBundle() != 'event') {
+      return;
+    }
+
+    $event_date = FALSE;
+
+    if (isset($node_wrapper->field_date) && !empty($node_wrapper->field_date) && !empty($node_wrapper->field_date[0]->value())) {
+      $event_date_value = $node_wrapper->field_date[0]->value();
+      $event_date = is_array($event_date_value) && !empty($event_date_value['date_type']) ?
+        new DateObject($event_date_value['value']) : FALSE;
+
+      if ($event_date) {
+        foreach ($variables['row']->elements as $delta => $meta) {
+          if ($meta['key'] == 'pubDate') {
+            $variables['row']->elements[$delta]['value'] = $event_date->format('r');
+            break 1;
+          }
+        }
+
+        $variables['item_elements'] = format_xml_elements($variables['row']->elements);
+      }
+    }
+  }
 }
 
 /**
@@ -880,16 +995,17 @@ function os_events_views_pre_render(&$view) {
   }
 }
 
-function os_events_date_formatter_pre_view_alter(&$entity, $vars) {
+/**
+ * Implements hook_date_formatter_pre_view_alter().
+ */
+function os_events_date_formatter_pre_view_alter(&$entity, &$vars) {
   if ($entity->type != 'event') {
     return;
   }
 
   if (!isset($entity->date_id)) {
        // The current view rendering this entity. We try and set it if it is not already set.
-    if ((isset($entity->view) || $entity->view = views_get_current_view())
-      && isset($entity->view->row_index)
-      && isset($entity->view->result[$entity->view->row_index])) {
+    if ((isset($entity->view) || $entity->view = views_get_current_view()) && isset($entity->view->row_index) && isset($entity->view->result[$entity->view->row_index])) {
 
       // This entity is being rendered by a view.
       $view = $entity->view;
@@ -2192,7 +2308,7 @@ function os_events_form_registration_form_alter(&$form, &$form_state) {
       array('honeypot', 'time_restriction')
     );
   }
-  
+
   $form['#validate'][] = 'os_events_registration_form_validate';
   $form['#validate'][] = 'os_events_modal_validate';
   $form['#submit'][] = 'os_events_modal_submit';
@@ -3696,4 +3812,47 @@ function os_events_apachesolr_query_prepare($query) {
     // Sort on the new field
     $query->setSolrSort('ds_field_event_date', 'desc');
   }
+}
+
+/**
+ * Implements template_preprocess_field().
+ */
+function os_events_preprocess_field(&$variables) {
+  if ($variables['element']['#bundle'] === 'event' && $variables['element']['#view_mode'] === 'rss') {
+    $variables['theme_hook_suggestions'][] = 'field__event__rss';
+  }
+}
+
+/**
+ * Implements theme_HOOK() for 'field__event_rss'.
+ *
+ * Returns a plainer HTML for a field, mainly for rss feed items.
+ *
+ * @see theme_field()
+ *
+ * @ingroup themeable
+ */
+function theme_field__event__rss(&$variables) {
+  $output = '';
+
+  // Render the label, if it's not hidden.
+  if (!$variables['label_hidden']) {
+    $inline_label = !empty($variables['classes_array']) && in_array('field-label-inline', $variables['classes_array']);
+    $tag = $inline_label ? 'strong' : 'div';
+    $output .= '<' . $tag . ' class="field-label"' . $variables['title_attributes'] . '>' . $variables['label'] . ($inline_label ? ':&nbsp;' : '') . '</' . $tag . '>';
+  }
+
+  // Render the items.
+  foreach ($variables['items'] as $delta => $item) {
+    if ($delta > 0) {
+      $output .= '<br />';
+    }
+    $classes = 'field-item ' . ($delta % 2 ? 'odd' : 'even');
+    $output .= '<span class="' . $classes . '"' . $variables['item_attributes'][$delta] . '>' . drupal_render($item) . '</span>';
+  }
+
+  // Render the top-level DIV.
+  $output = '<div class="' . $variables['classes'] . '"' . $variables['attributes'] . '>' . $output . '</div>';
+
+  return $output;
 }
