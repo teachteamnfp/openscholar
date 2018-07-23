@@ -7,7 +7,7 @@
     "0": {
       "type": "vcs",
       "url": "git@bitbucket.org:openscholar/osllc.git"
-    }
+    },
     "drupal": {
         "type": "composer",
         "url": "https://packages.drupal.org/7"
