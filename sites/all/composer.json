@@ -1,7 +1,7 @@
 {
   "name": "OpenScholarLLC",
   "require": {
-    "openscholar/osllc" : "dev-saml_support"
+    "openscholar/osllc" : "dev-saml_support@dev"
   },
   "repositories": {
     "0": {
@@ -17,5 +17,7 @@
   "config": {
     "vendor-dir": "~/src/amazon/web/sites/all/modules",
     "discard-changes": true
-  }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": "true"
 }
