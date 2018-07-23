@@ -3,7 +3,7 @@
   "require": {
     "openscholar/osllc" : "dev-saml_support"
   },
-  "repositories": [
+  "repositories": {
     "0": {
       "type": "vcs",
       "url": "git@bitbucket.org:openscholar/osllc.git"
@@ -13,7 +13,7 @@
         "url": "https://packages.drupal.org/7"
     }
   
-  ],
+  },
   "config": {
     "vendor-dir": "~/src/amazon/web/sites/all/modules",
     "discard-changes": true
