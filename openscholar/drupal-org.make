@@ -254,9 +254,6 @@ projects[migrate_extras][patch][] = "http://drupal.org/files/migrate_extras-dupl
 projects[migrate_extras][subdir] = "contrib"
 projects[migrate_extras][version] = 2.4
 
-projects[mollom][subdir] = "contrib"
-projects[mollom][version] = 2.14
-
 projects[multiform][subdir] = "contrib"
 projects[multiform][version] = 1.0
 
@@ -347,6 +344,7 @@ projects[purl][patch][] = "http://drupal.org/files/issues/purl-integrate_redirec
 
 projects[recaptcha][subdir] = "contrib"
 projects[recaptcha][version] = 2.2
+projects[recaptcha][patch][] = "https://www.drupal.org/files/issues/2018-05-31/2493183_ajax_support_98.patch"
 
 projects[registration][subdir] = "contrib"
 projects[registration][version] = 1.5

@@ -1251,6 +1251,7 @@ function _os_events_style_recurring_event($markup) {
  *  Link for the revealing the modal.
  */
 function os_events_generate_modal_register_link($nid, $delta = FALSE, $modal_settings = array(), $sv_list = FALSE) {
+  global $language;
   $modal_settings += array(
     'modalSize' => array(
       'type' => 'fixed',
@@ -1323,8 +1324,9 @@ function os_events_generate_modal_register_link($nid, $delta = FALSE, $modal_set
     }
   }
 
-  // Adding Mollom's js since ctools modal don't add the js.
-  drupal_add_js(drupal_get_path('module', 'mollom') . '/mollom.js');
+  // Adding recaptcha's js since ctools modal don't add the js.
+  drupal_add_js(drupal_get_path('module', 'recaptcha') . '/js/recaptcha.js');
+  drupal_add_js(url('https://www.google.com/recaptcha/api.js', array('query' => array('hl' => $language->language, 'render' => 'explicit', 'onload' => 'drupalRecaptchaOnload'), 'absolute' => TRUE)), 'external');
 
   $sign_up = ctools_ajax_text_button(t('Sign up for this event'), $path, '', 'ctools-use-modal ctools-modal-events-modal-style register use-ajax');
 
