@@ -444,7 +444,7 @@ function os_events_node_delete($node) {
     '@event-url' => url('calendar', array('absolute' => TRUE))
   );
   foreach ($registration_entities as $registration) {
-    $wrapper = entity_metadata_Wrapper('registration', $registration);
+    $wrapper = entity_metadata_wrapper('registration', $registration);
     $event_author_mail = _os_events_get_node_event_creator_email($settings['settings']['from_address'], $wrapper);
     $params['@event-creator-mail'] = $event_author_mail;
     // Sending email notification to registrants for event cancellation.
@@ -484,6 +484,7 @@ function os_events_node_update($node) {
     $location = !empty($node->field_event_location) ? $node->field_event_location[LANGUAGE_NONE][0]['value'] : "";
     $original_location = !empty($node->original->field_event_location) ? $node->original->field_event_location[LANGUAGE_NONE][0]['value'] : '';
     if ($date != $original_date || $location != $original_location) {
+      $settings = os_events_registration_repeating_entity_settings('node', $node->nid, $date);
       // Initializing EntityFieldQuery to obtain all registration entities with a certain event node id
       $query = new EntityFieldQuery();
       $query->entityCondition('entity_type', 'registration')
@@ -492,7 +493,6 @@ function os_events_node_update($node) {
       $result = $query->execute();
       $entity_ids = array_keys($result['registration']);
       $registration_entities = entity_load('registration', $entity_ids);
-      $event_author = user_load($node->uid);
       $params = array(
         '@title' => $node->title,
         '@event-date' => $node->original->field_date[LANGUAGE_NONE][0]['value'],
@@ -500,11 +500,13 @@ function os_events_node_update($node) {
         '@location' => !empty($node->original->field_event_location[LANGUAGE_NONE][0]['value']) ? ' at ' . $node->original->field_event_location[LANGUAGE_NONE][0]['value'] : '',
         '@new-location' => !empty($node->field_event_location[LANGUAGE_NONE][0]['value']) ? ' at ' . $node->field_event_location[LANGUAGE_NONE][0]['value'] : '',
         '@event-url' => url('node/' . $node->nid, array('absolute' => TRUE)),
-        '@event-creator-mail' => $event_author->mail,
         '@site' => variable_get('site_name', 'OpenScholar')
       );
       // Sending notification email to each registrants for this event time change.
       foreach ($registration_entities as $registration) {
+        $wrapper = entity_metadata_wrapper('registration', $registration);
+        $event_author_mail = _os_events_get_node_event_creator_email($settings['settings']['from_address'], $wrapper);
+        $params['@event-creator-mail'] = $event_author_mail;
         os_events_event_change_notification($registration, $params, 'event_time_updated_notification');
       }
     }
