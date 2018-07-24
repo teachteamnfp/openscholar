@@ -401,7 +401,9 @@ function os_events_event_change_notification($registration, $params, $mail_key) 
   $language = language_default();
   $to = $registration->anon_mail;
   $params['@event-date'] = date('l, F j, Y g:ia', strtotime($params['@event-date'] .' UTC'));
-  $params['@event-new-date'] = date('l, F j, Y g:ia', strtotime($params['@event-new-date'] .' UTC'));
+  if ($mail_key == 'event_time_updated_notification') {
+    $params['@event-new-date'] = date('l, F j, Y g:ia', strtotime($params['@event-new-date'] .' UTC'));
+  }
   $params['@user-name'] = $registration->field_full_name[LANGUAGE_NONE][0]['value'];
   drupal_mail('os_events', $mail_key, $to, $language, $params, $from);
 }
@@ -428,15 +430,23 @@ function os_events_node_delete($node) {
   }
   $entity_ids = array_keys($result['registration']);
   $registration_entities = entity_load('registration', $entity_ids);
-  $event_author = user_load($node->uid);
+
+
+  $field_date_values = field_get_items('node', $node, 'field_date');
+  $date = !empty($field_date_values[0]['value']) ? $field_date_values[0]['value'] : '';
+  // Get author mail id
+  $settings = os_events_registration_repeating_entity_settings('node', $node->nid, $date);
+
   $params = array(
     '@title' => $node->title,
     '@location' => !empty($node->field_event_location[LANGUAGE_NONE][0]['value']) ? ' at ' . $node->field_event_location[LANGUAGE_NONE][0]['value'] : '',
-    '@event-creator-mail' => $event_author->mail,
     '@site' => variable_get('site_name', 'OpenScholar'),
     '@event-url' => url('calendar', array('absolute' => TRUE))
   );
   foreach ($registration_entities as $registration) {
+    $wrapper = entity_metadata_Wrapper('registration', $registration);
+    $event_author_mail = _os_events_get_node_event_creator_email($settings['settings']['from_address'], $wrapper);
+    $params['@event-creator-mail'] = $event_author_mail;
     // Sending email notification to registrants for event cancellation.
     $params['@event-date'] = $registration->field_repeating_event_date[LANGUAGE_NONE][0]['value'];
     os_events_event_change_notification($registration, $params, 'event_cancel_notification');
@@ -2789,7 +2799,7 @@ function os_events_entity_insert($entity, $type) {
     '@user-name' => $wrapper->field_full_name->value(),
     '@event_date_time' => $date,
     '@event_location' => $node->field_event_location['und'][0]['value'],
-    '@event_creator_email' => $event_author_mail,
+    '@event-creator-mail' => $event_author_mail,
   );
 
   // Pass the entity type and ID to give modules implementing
@@ -2856,7 +2866,7 @@ function os_events_mail($key, &$message, $params) {
         }
         $message['body'][1].= ".";
         $message['body'][2] = t("View the event listing here: @url", $params);
-        $message['body'][3] = t("Questions? Email the event organizer @event_creator_email", $params);
+        $message['body'][3] = t("Questions? Email the event organizer @event-creator-mail", $params);
         $message['body'][4] = t("See you there!", $params);
         break;
 
@@ -2905,7 +2915,7 @@ function os_events_mail_alter(&$message) {
 
     //Get the value of event creator email for all event related emails except broadcast.
     foreach($message['params'] as $param_key => $param_value){
-      if ($param_key == '@event_creator_email' || $param_key == '@event-creator-email' || $param_key == '@event-creator-mail') {
+      if ($param_key == '@event-creator-email' || $param_key == '@event-creator-mail') {
        // Get event author event's author email address.
        $event_author_email = check_plain(trim($param_value));
       }
@@ -3349,8 +3359,11 @@ function os_events_entity_settings_page($entity_type, $entity) {
  * @param int $entity_id
  *   The host entity ID.
  *
- * @return array|bool
- *   A row from {registration_entity}, or FALSE if no settings exist.
+ * @param $date_string
+ * @param bool $reset
+ *
+ * @return array|bool A row from {registration_entity}, or FALSE if no settings exist.
+ * A row from {registration_entity}, or FALSE if no settings exist.
  */
 function os_events_registration_repeating_entity_settings($entity_type, $entity_id, $date_string, $reset = FALSE) {
   $result = &drupal_static(__FUNCTION__ . $entity_type . $entity_id . $date_string);
