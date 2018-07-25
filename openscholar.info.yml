@@ -1,0 +1,52 @@
+name: OpenScholar
+core: 8.x
+type: profile
+description: 'A distribution focused on providing multiple virtual sites for academics and academic departments'
+version: '8.x-dev'
+distribution:
+  name: OpenScholar
+dependencies:
+  - big_pipe
+  - block
+  - block_content
+  - block_place
+  - book
+  - ckeditor
+  - comment
+  - config
+  - contact
+  - content_moderation
+  - contextual
+  - datetime
+  - datetime_range
+  - dynamic_page_cache
+  - editor
+  - entity_reference
+  - field
+  - field_layout
+  - file
+  - filter
+  - image
+  - inline_form_errors
+  - layout_builder
+  - layout_discovery
+  - link
+  - locale
+  - media
+  - menu_ui
+  - node
+  - options
+  - page_cache
+  - path
+  - quickedit
+  - responsive_image
+  - rest
+  - search
+  - serialization
+  - system
+  - taxonomy
+  - telephone
+  - text
+  - toolbar
+  - user
+  - views
