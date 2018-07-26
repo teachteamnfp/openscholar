@@ -2789,7 +2789,7 @@ function os_events_entity_insert($entity, $type) {
   }
 
   // Get author mail id
-  $settings = os_events_registration_repeating_entity_settings('node', $node->nid, $date);
+  $settings = os_events_registration_repeating_entity_settings('node', $node->nid, $node->field_date['und'][$delta]['value']);
   $event_author_mail = _os_events_get_node_event_creator_email($settings['settings']['from_address'], $wrapper);
 
   $module = 'os_events';
@@ -2811,17 +2811,7 @@ function os_events_entity_insert($entity, $type) {
     'entity_id' => $node->nid,
   );
 
-  // Get the event's author to set the "from" email address. If it hasn't been
-  // set yet in the registration settings, use the event's author email address.
-  $registration_settings = registration_entity_settings('node', $node->nid);
-  $info = field_info_instance('node', 'field_event_registration', 'event');
-  $default_email = $info['settings']['default_registration_settings']['settings']['from_address'];
-  if ($registration_settings['settings']['from_address'] == $default_email) {
-    $event_author = user_load($node->uid);
-    $params['headers']['Reply-To'] = $event_author->mail;
-  } else {
-    $params['headers']['Reply-To'] =  $registration_settings['settings']['from_address'];
-  }
+  $params['headers']['Reply-To'] =  $event_author_mail;
   $from = variable_get('site_mail', ini_get('sendmail_from'));
 
   // Displaying confirmation message to user's screen.
