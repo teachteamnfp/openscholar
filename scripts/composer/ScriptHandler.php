@@ -12,6 +12,9 @@ use Composer\Semver\Comparator;
 use DrupalFinder\DrupalFinder;
 use Symfony\Component\Filesystem\Filesystem;
 use Webmozart\PathUtil\Path;
+use Composer\Util\Platform;
+use Composer\Util\ProcessExecutor;
+use Composer\Util\Filesystem as ComposerFilesystem;
 
 class ScriptHandler {
 
@@ -97,4 +100,38 @@ class ScriptHandler {
     }
   }
 
+  public static function placeProfile(Event $event) {
+    $fs = new ComposerFilesystem();
+    $io = $event->getIO();
+    $fileList = array(
+      'openscholar.info.yml',
+      'openscholar.install',
+      'openscholar.profile',
+      'profile'
+    );
+    $root = realpath($event->getComposer()->getPackage()->getDistUrl());
+    $path = $root.'/web/profiles/contrib/openscholar';
+
+    try {
+      foreach ($fileList as $file) {
+        if (Platform::isWindows () && is_dir($root.DIRECTORY_SEPARATOR.$file)) {
+
+          $io->writeError (sprintf ('Junctioning from %s', $file), false);
+          $fs->junction ($root.'/'.$file, $path.DIRECTORY_SEPARATOR.$file);
+        } else {
+          $absolutePath = $path;
+          if (!$fs->isAbsolutePath ($absolutePath)) {
+            $absolutePath = getcwd () . DIRECTORY_SEPARATOR . $path;
+          }
+          $shortestPath = $fs->findShortestPath ($absolutePath, $root.DIRECTORY_SEPARATOR.$file);
+          $path = rtrim ($path, DIRECTORY_SEPARATOR);
+          $io->writeError (sprintf ('Symlinking from %s', $file), false);
+          $fs->ensureDirectoryExists(dirname($path.DIRECTORY_SEPARATOR.$file));
+          $fs->relativeSymlink ($root.DIRECTORY_SEPARATOR.$file, $path.DIRECTORY_SEPARATOR.$file);
+        }
+      }
+    } catch (IOException $e) {
+        throw new \RuntimeException(sprintf('Symlink from "%s" to "%s" failed!', $root, $path));
+    }
+  }
 }
