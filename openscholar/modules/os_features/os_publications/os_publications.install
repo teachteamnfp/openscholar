@@ -1485,7 +1485,7 @@ function os_publications_update_7040() {
 
   // Checking existing sites space ids whose default citation is not present in spaces_overrides table.
   $query = db_select('purl', 'p');
-  $query->leftjoin('spaces_overrides', 'so', 'so.id = p.id AND object_type = :object_type AND object_id = :object_id', 
+  $query->leftjoin('spaces_overrides', 'so', 'so.id = p.id AND object_type = :object_type AND object_id = :object_id',
   array(':object_type' => 'variable', ':object_id' => 'biblio_citeproc_style'));
   $query->condition('p.provider', 'spaces_og', '=');
   $query->isNull('so.value');
@@ -1783,5 +1783,18 @@ function os_publications_update_7057() {
 
   // Read the CSL file from the directory.
   $csl = file_get_contents(drupal_get_path('module', 'biblio_citeproc') . '/style/chicago-author-date.csl');
-  _install_csl('chicago-author-date.csl' . '.csl', $csl);
+  _install_csl('chicago-author-date' . '.csl', $csl);
+}
+
+/**
+ * Fix misnamed "Chicago Manual of Style 16th edition (author-date)" CSL file.
+ */
+function os_publications_update_7058() {
+
+  // Fix the CSL that was appended with .csl twice.
+  db_update('biblio_citeproc_styles')
+    ->fields(array('filename' => 'chicago-author-date.csl'))
+    ->condition('filename', 'chicago-author-date.csl.csl')
+    ->execute();
+
 }
