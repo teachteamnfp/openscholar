@@ -431,12 +431,6 @@ function os_events_node_delete($node) {
   $entity_ids = array_keys($result['registration']);
   $registration_entities = entity_load('registration', $entity_ids);
 
-
-  $field_date_values = field_get_items('node', $node, 'field_date');
-  $date = !empty($field_date_values[0]['value']) ? $field_date_values[0]['value'] : '';
-  // Get author mail id
-  $settings = os_events_registration_repeating_entity_settings('node', $node->nid, $date);
-
   $params = array(
     '@title' => $node->title,
     '@location' => !empty($node->field_event_location[LANGUAGE_NONE][0]['value']) ? ' at ' . $node->field_event_location[LANGUAGE_NONE][0]['value'] : '',
@@ -444,11 +438,17 @@ function os_events_node_delete($node) {
     '@event-url' => url('calendar', array('absolute' => TRUE))
   );
   foreach ($registration_entities as $registration) {
+    // Get author mail id
+    $repeating_event_date_value = !empty($registration->field_repeating_event_date[LANGUAGE_NONE][0]['value'])
+      ? $registration->field_repeating_event_date[LANGUAGE_NONE][0]['value']
+      : ''
+    ;
     $wrapper = entity_metadata_wrapper('registration', $registration);
+    $settings = os_events_registration_repeating_entity_settings('node', $node->nid, $repeating_event_date_value);
     $event_author_mail = _os_events_get_node_event_creator_email($settings['settings']['from_address'], $wrapper);
     $params['@event-creator-mail'] = $event_author_mail;
     // Sending email notification to registrants for event cancellation.
-    $params['@event-date'] = $registration->field_repeating_event_date[LANGUAGE_NONE][0]['value'];
+    $params['@event-date'] = $repeating_event_date_value;
     os_events_event_change_notification($registration, $params, 'event_cancel_notification');
   }
 }
