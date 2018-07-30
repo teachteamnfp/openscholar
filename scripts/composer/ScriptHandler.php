@@ -119,11 +119,6 @@ class ScriptHandler {
           $io->writeError (sprintf ('Junctioning from %s', $file), false);
           $fs->junction ($root.'/'.$file, $path.DIRECTORY_SEPARATOR.$file);
         } else {
-          $absolutePath = $path;
-          if (!$fs->isAbsolutePath ($absolutePath)) {
-            $absolutePath = getcwd () . DIRECTORY_SEPARATOR . $path;
-          }
-          $shortestPath = $fs->findShortestPath ($absolutePath, $root.DIRECTORY_SEPARATOR.$file);
           $path = rtrim ($path, DIRECTORY_SEPARATOR);
           $io->writeError (sprintf ('Symlinking from %s', $file), false);
           $fs->ensureDirectoryExists(dirname($path.DIRECTORY_SEPARATOR.$file));
