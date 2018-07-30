@@ -14,6 +14,7 @@ dependencies:
   - ckeditor
   - comment
   - config
+  - config_update
   - contact
   - content_moderation
   - contextual
@@ -26,6 +27,7 @@ dependencies:
   - field_layout
   - file
   - filter
+  - group
   - image
   - inline_form_errors
   - layout_builder
@@ -50,3 +52,6 @@ dependencies:
   - toolbar
   - user
   - views
+themes:
+  - bartik
+  - seven
