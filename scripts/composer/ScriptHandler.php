@@ -107,22 +107,36 @@ class ScriptHandler {
       'openscholar.info.yml',
       'openscholar.install',
       'openscholar.profile',
-      'profile'
+      'profile'.DIRECTORY_SEPARATOR.'config' => 'config',
     );
     $root = realpath($event->getComposer()->getPackage()->getDistUrl());
     $path = $root.'/web/profiles/contrib/openscholar';
 
     try {
-      foreach ($fileList as $file) {
-        if (Platform::isWindows () && is_dir($root.DIRECTORY_SEPARATOR.$file)) {
+      foreach ($fileList as $orig_file => $file) {
+        $orig = $root.DIRECTORY_SEPARATOR.(is_int($orig_file) ? $file : $orig_file);
+        $link = $path.DIRECTORY_SEPARATOR.$file;
+        if (Platform::isWindows () && is_dir($orig)) {
+          if (file_exists($link)) {
+            if ($fs->isJunction ($link)) {
+              $io->writeError(sprintf("Removing junction from %s\n", $file));
+              $fs->removeJunction ($link);
+            }
+            elseif (is_dir($link)) {
+              $fs->removeDirectory($link);
+            }
+            else {
+              $fs->unlink($link);
+            }
+          }
 
-          $io->writeError (sprintf ('Junctioning from %s', $file), false);
-          $fs->junction ($root.'/'.$file, $path.DIRECTORY_SEPARATOR.$file);
+          $io->writeError (sprintf ("Junctioning from %s\n", $file), false);
+          $fs->junction ($orig, $link);
         } else {
           $path = rtrim ($path, DIRECTORY_SEPARATOR);
-          $io->writeError (sprintf ('Symlinking from %s', $file), false);
-          $fs->ensureDirectoryExists(dirname($path.DIRECTORY_SEPARATOR.$file));
-          $fs->relativeSymlink ($root.DIRECTORY_SEPARATOR.$file, $path.DIRECTORY_SEPARATOR.$file);
+          $io->writeError (sprintf ("Symlinking from %s\n", $file), false);
+          $fs->ensureDirectoryExists(dirname($link));
+          $fs->relativeSymlink ($orig, $link);
         }
       }
     } catch (IOException $e) {
