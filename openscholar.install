@@ -1,0 +1,36 @@
+<?php
+
+use Drupal\user\Entity\User;
+use Drupal\user\RoleInterface;
+
+function openscholar_install() {
+  // Assign user 1 the "administrator" role.
+  $user = User::load(1);
+  $user->roles[] = 'administrator';
+  $user->save();
+
+  // Don't do anything else during config sync.
+  if (\Drupal::isConfigSyncing()) {
+    return;
+  }
+
+  // Set front page to "node".
+  \Drupal::configFactory()
+    ->getEditable('system.site')
+    ->set('page.front', '/node')
+    ->save(TRUE);
+
+
+  // Set the default and admin theme.
+  \Drupal::configFactory()
+    ->getEditable('system.theme')
+    ->set('default', 'bartik')
+    ->set('admin', 'seven')
+    ->save(TRUE);
+
+  // Enable the admin theme.
+  \Drupal::configFactory()
+    ->getEditable('node.settings')
+    ->set('use_admin_theme', TRUE)
+    ->save(TRUE);
+}
