@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: links
+label: Links
+type: 'canonical_entities:node'
+pattern: 'links/[node:title]'
+selection_criteria:
+  d156ea2e-c5ce-4575-b24e-75a6522e4d02:
+    id: node_type
+    bundles:
+      link: link
+    negate: false
+    context_mapping:
+      node: node
+    uuid: d156ea2e-c5ce-4575-b24e-75a6522e4d02
+selection_logic: and
+weight: -5
+relationships: {  }

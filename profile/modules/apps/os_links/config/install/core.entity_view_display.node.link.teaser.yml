@@ -4,6 +4,7 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.link.body
+    - field.field.node.link.field_url_web_address
     - node.type.link
   module:
     - layout_builder
@@ -50,4 +51,5 @@ content:
     weight: 100
     region: content
 hidden:
+  field_url_web_address: true
   langcode: true
