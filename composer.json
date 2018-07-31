@@ -43,7 +43,8 @@
         "drush/drush": "^9.0.0",
         "vlucas/phpdotenv": "^2.4",
         "webflo/drupal-finder": "^1.0.0",
-        "webmozart/path-util": "^2.3"
+        "webmozart/path-util": "^2.3",
+        "drupal/pathauto": "^1.2"
     },
     "require-dev": {
         "drupal/features": "^3.7",
