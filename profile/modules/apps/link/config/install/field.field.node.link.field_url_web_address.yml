@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_url_web_address
+    - node.type.link
+  module:
+    - link
+id: node.link.field_url_web_address
+field_name: field_url_web_address
+entity_type: node
+bundle: link
+label: 'URL (Web address)'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 16
+  title: 1
+field_type: link
