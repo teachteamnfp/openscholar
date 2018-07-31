@@ -1,4 +1,4 @@
-name: Link
+name: Links
 description: 'Provides Link content type and related configuration. A link to an external url.'
 type: module
 core: 8.x
