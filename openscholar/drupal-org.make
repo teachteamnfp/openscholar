@@ -163,9 +163,6 @@ projects[hierarchical_taxonomy][download][branch] = 7.x-1.x
 projects[hierarchical_taxonomy][download][revision] = 5bbe344
 projects[hierarchical_taxonomy][patch][] = "http://drupal.org/files/2034713-hs-comaprse-name-2.patch"
 
-projects[honeypot][subdir] = "contrib"
-projects[honeypot][version] = 1.24
-
 projects[html_title][subdir] = "contrib"
 projects[html_title][version] = 1.1
 projects[html_title][patch][] = "https://www.drupal.org/files/issues/fix_for_other_titles-2783297.patch"
@@ -256,9 +253,6 @@ projects[migrate][version] = 2.5
 projects[migrate_extras][patch][] = "http://drupal.org/files/migrate_extras-duplicate_MigrateDestinationOgMembership-1788440-5.patch"
 projects[migrate_extras][subdir] = "contrib"
 projects[migrate_extras][version] = 2.4
-
-projects[mollom][subdir] = "contrib"
-projects[mollom][version] = 2.14
 
 projects[multiform][subdir] = "contrib"
 projects[multiform][version] = 1.0
