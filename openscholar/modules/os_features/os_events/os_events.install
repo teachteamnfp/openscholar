@@ -21,6 +21,10 @@ function os_events_install() {
       'description' => 'A optional date when a repeating event occurs.',
     ));
   db_add_primary_key('registration_entity', array('entity_id', 'entity_type', 'repeating_event_date'));
+
+  if (module_exists('captcha')) {
+    captcha_set_form_id_setting('registration_form', 'default');
+  }
 }
 
 function os_events_uninstall() {
