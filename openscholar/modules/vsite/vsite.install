@@ -30,6 +30,10 @@ function vsite_install() {
     $rid = array_search('vsite admin', $og_roles);
     variable_set('og_group_manager_default_rids_node_' . $bundle, $rid);
   }
+  if (module_exists('captcha')) {
+    captcha_set_form_id_setting('vsite_contact_mail_owner', 'default');
+    captcha_set_form_id_setting('registration_form', 'default');
+  }
 }
 
 /**
