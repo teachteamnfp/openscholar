@@ -98,5 +98,9 @@ function openscholar_install() {
   // Set image toolkit variables.
   variable_set('imageapi_optimize_service', 'resmushit');
   variable_set('image_toolkit', 'imageapi_optimize');
+  if (module_exists('captcha')) {
+    captcha_set_form_id_setting('vsite_contact_mail_owner', 'default');
+    captcha_set_form_id_setting('registration_form', 'default');
+  }
 }
 
