@@ -876,3 +876,16 @@ function vsite_update_7037() {
     features_revert(array('os' => array('variable')));
   }
 }
+
+/**
+ * Uninstall mollom and honepot module
+ */
+function vsite_update_7038() {
+  if( module_exists('honeypot')) {
+    module_disable(array('honeypot'));
+  }
+  if( module_exists('mollom')) {
+    module_disable(array('mollom'));
+  }
+  drupal_uninstall_modules(array('mollom', 'honeypot', 'honeypot_test'));
+}
