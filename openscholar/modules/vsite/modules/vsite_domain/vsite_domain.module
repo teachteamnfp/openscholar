@@ -59,6 +59,40 @@ function vsite_domain_enable() {
 }
 
 /**
+ * Implements hook_init
+ */
+function vsite_domain_init() {
+  global $conf, $is_https;
+  $domains = variable_get('vsite_domain_ssl_domains',array());
+
+  // Is securepages enabled?
+  // If we are not on a harvard domain turn it off.
+  if (!empty($domains) && module_exists('securepages') && variable_get('securepages_enable', 0)) {
+
+    //Turn SSL off for pages that don't match the wildcard certificate
+    $conf['securepages_enable'] = 0;
+
+    // Loop through the domains that are configured to work with our SSL certificate
+    foreach ($domains as $domain) {
+      $offset = (strlen($domain) * -1);
+      // Check to see if the current domain matches one of our wildcard domains in the SSL cert.
+      // IF the cert has ".harvard.edu" then "foo.harvard.edu" is valid and we should enable, whild "bar.foo.harvard.edu" is not.
+      if(substr($_SERVER['HTTP_HOST'],$offset) == $domain && !strrpos($_SERVER['HTTP_HOST'],".",($offset-1))){
+        //We found a Match
+        $conf['securepages_enable'] = 1;
+        break;
+      }
+    }
+
+    // We were unable to find a domain that matches our SSL cert.
+    if (!$conf['securepages_enable'] && $is_https) {
+      // Redirect to insecure.
+      securepages_goto(FALSE);
+    }
+  }
+}
+
+/**
  * Implements hook_perm().
  */
 function vsite_domain_permission() {
