@@ -29,8 +29,7 @@ drush vset purl_base_domain $BASE_DOMAIN_URL
 drush en -y os_migrate_demo
 drush mi --all --user=1
 
-# Disable captcha for login page, because behat login use this
-drush sql-query "INSERT INTO captcha_points (form_id, module, captcha_type) VALUES ('user_login', NULL, NULL);"
+# Disable captcha for forms that use behat tests
 drush sql-query "INSERT INTO captcha_points (form_id, module, captcha_type) VALUES ('comment_node_blog_form', NULL, NULL);"
 drush sql-query "INSERT INTO captcha_points (form_id, module, captcha_type) VALUES ('user_register_form', NULL, NULL);"
 drush sql-query "UPDATE captcha_points SET captcha_type = NULL  WHERE form_id = 'registration_form';"
