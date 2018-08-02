@@ -1,0 +1,6 @@
+name: VSite
+type: module
+core: 8.x
+dependencies:
+  - group
+version: '1.0'
