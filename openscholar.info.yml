@@ -28,6 +28,7 @@ dependencies:
   - file
   - filter
   - group
+  - gnode
   - image
   - inline_form_errors
   - layout_builder
@@ -52,6 +53,7 @@ dependencies:
   - toolbar
   - user
   - views
+  - pathauto
 themes:
   - bartik
   - seven
