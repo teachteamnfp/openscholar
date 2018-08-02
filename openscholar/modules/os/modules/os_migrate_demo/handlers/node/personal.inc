@@ -52,7 +52,7 @@ class OsMigratePersonalNode extends OsMigrate {
 
     // This is a private site.
     if ($row->public == 'private') {
-      $entity->{OG_ACCESS_FIELD}[LANGUAGE_NONE][0]['value'] = TRUE;
+      $entity->{VSITE_ACCESS_FIELD}[LANGUAGE_NONE][0]['value'] = TRUE;
     }
   }
 
