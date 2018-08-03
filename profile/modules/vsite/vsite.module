@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * Implements hook_modules_installed().
+ * @param array $modules
+ */
+function vsite_modules_installed(array $modules) {
+  vsite_setup_new_apps($modules);
+}
+
+/**
+ * Sets up associations between app content and group types.
+ * @param array $modules
+ */
+function vsite_setup_new_apps(array $modules) {
+  \Drupal::service ('vsite.app.manager');
+}

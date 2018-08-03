@@ -1,0 +1,4 @@
+services:
+  vsite.app.manager:
+    class: Drupal\vsite\Plugin\AppManager
+    parent: default_plugin_manager
