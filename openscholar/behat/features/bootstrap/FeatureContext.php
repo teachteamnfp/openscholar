@@ -3146,7 +3146,7 @@ class FeatureContext extends DrupalContext {
   }
 
   /**
-   * @When /^ I upload the file "{[^"]*)" to the "{[^"]*)" control$/
+   * @When /^ I upload the file "([^"]*)" to the "([^"]*)" control$/
    *
    * Skip for now. May need to update ng-file-upload for it to work ever
    */
