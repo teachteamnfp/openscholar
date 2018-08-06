@@ -872,20 +872,44 @@ function vsite_update_7036() {
 function vsite_update_7037() {
   if (!module_exists('recaptcha')) {
     module_enable(['captcha', 'recaptcha']);
-    _os_set_additional_captcha_points();
-    features_revert(array('os' => array('variable')));
   }
+  _os_set_additional_captcha_points();
+  drupal_set_message(t('Successfully added custom captcha points!'));
+
+  // Revert captcha settings what is stored in feature strongarm
+  features_revert(array('os' => array('variable')));
+  drupal_set_message(t('Reverted to default OS feature variable component!'));
 }
 
 /**
- * Uninstall mollom and honepot module
+ * Disable and uninstall mollom and honeypot module
  */
 function vsite_update_7038() {
-  if( module_exists('honeypot')) {
-    module_disable(array('honeypot'));
+  $honeypot_modules = array(
+    'honeypot',
+    'honeypot_test'
+  );
+  if (module_exists('honeypot')) {
+    module_disable($honeypot_modules);
   }
-  if( module_exists('mollom')) {
-    module_disable(array('mollom'));
+  if (drupal_uninstall_modules($honeypot_modules)) {
+    drupal_set_message(t('Successfully uninstalled honeypot module.'));
   }
-  drupal_uninstall_modules(array('mollom', 'honeypot', 'honeypot_test'));
+  else {
+    drupal_set_message(t('Unable to uninstall honeypot module.'), 'error');
+  }
+  $mollom_modules = array(
+    'mollom',
+    'mollom_test',
+    'mollom_test_server',
+  );
+  if (module_exists('mollom')) {
+    module_disable($mollom_modules);
+  }
+  if (drupal_uninstall_modules($mollom_modules)) {
+    drupal_set_message(t('Successfully uninstalled mollom module.'));
+  }
+  else {
+    drupal_set_message(t('Unable to uninstall mollom module.'), 'error');
+  }
 }
