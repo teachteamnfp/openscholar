@@ -309,7 +309,7 @@ trait RestfulTrait {
     $viste = FeatureHelp::getNodeId($values['Site']);
 
     $request = $this->invokeRestRequest($this->operations[$operation], $path,
-      ['access_token' => $token],
+      ['access-token' => $token],
       [
         'vsite' => $viste,
         'delta' => $delta,
@@ -322,7 +322,7 @@ trait RestfulTrait {
 
     $this->meta['delta'] = $request->json()['data']['delta'];
     $this->meta['widget'] = $request->json()['data'];
-    $headers = ['headers' => ['access_token' => $token]];
+    $headers = ['headers' => ['access-token' => $token]];
     $get = $this->getClient()->get($path . '/' . $delta . '?vsite=' . $viste, $headers);
     $this->results = $get->json();
     $this->verifyOperationPassed($operation);
@@ -339,7 +339,7 @@ trait RestfulTrait {
 
     if ($op == 'post') {
       $request = $this->invokeRestRequest($op, $box_path,
-        ['access_token' => $token],
+        ['access-token' => $token],
         [
           'vsite' => FeatureHelp::getNodeId($values['Site']),
           'delta' => $delta,
@@ -372,7 +372,7 @@ trait RestfulTrait {
     else {
       // Create the layout override.
       $this->invokeRestRequest($op, $path,
-        ['access_token' => $token],
+        ['access-token' => $token],
         [
           'vsite' => FeatureHelp::getNodeId($values['Site']),
           'object_id' => $values['Context'],
@@ -384,7 +384,7 @@ trait RestfulTrait {
 
     // Create the layout override.
     $this->invokeRestRequest($op, $path,
-      ['access_token' => $token],
+      ['access-token' => $token],
       [
         'vsite' => FeatureHelp::getNodeId($values['Site']),
         'object_id' => $values['Context'],
@@ -402,7 +402,7 @@ trait RestfulTrait {
     $op = $this->operations[$operation];
 
     $this->invokeRestRequest($op, $path,
-      ['access_token' => $token],
+      ['access-token' => $token],
       [
         'vsite' => FeatureHelp::getNodeId($site),
         'object_id' => $name,
@@ -420,7 +420,7 @@ trait RestfulTrait {
     $delta = $this->getDelta(array());
 
     $request = $this->invokeRestRequest($this->operations[$operation], $path,
-      ['access_token' => $token],
+      ['access-token' => $token],
       [
         'vsite' => FeatureHelp::getNodeId($site),
         'delta' => $delta,
@@ -468,7 +468,7 @@ trait RestfulTrait {
     }
 
     $this->invokeRestRequest('post', $path,
-      ['access_token' => $token],
+      ['access-token' => $token],
       $values
     );
   }
@@ -484,7 +484,7 @@ trait RestfulTrait {
       $path .= '/' . $this->meta['id'];
     }
 
-    $request = $this->invokeRestRequest($method, $path, ['access_token' => $token], $values);
+    $request = $this->invokeRestRequest($method, $path, ['access-token' => $token], $values);
     if ($method == 'delete') {
       if (!empty($request->json()['data'])) {
         throw new \Exception('The delete of the taxonomy term did not occurred.');
@@ -508,7 +508,7 @@ trait RestfulTrait {
     if ($operation == 'create') {
       foreach ($groups as $group) {
         $this->invokeRestRequest($op, $path,
-          ['access_token' => $token],
+          ['access-token' => $token],
           $group
         );
       }
@@ -542,7 +542,7 @@ trait RestfulTrait {
       $values['vsite'] = FeatureHelp::getNodeId($values['vsite']);
     }
 
-    $request = $this->invokeRestRequest($method, $path, ['access_token' => $token], $values);
+    $request = $this->invokeRestRequest($method, $path, ['access-token' => $token], $values);
     if ($method == 'delete') {
       if (!empty($request->json()['data'])) {
         throw new \Exception('The delete of the vocabulary did not occurred.');
@@ -572,7 +572,7 @@ trait RestfulTrait {
       $path .= '/' . $this->meta['id'];
     }
 
-    $request = $this->invokeRestRequest($method, $path, ['access_token' => $token], $values);
+    $request = $this->invokeRestRequest($method, $path, ['access-token' => $token], $values);
 
     if ($method == 'delete') {
       if (!empty($request->json()['data'])) {
@@ -592,7 +592,7 @@ trait RestfulTrait {
    */
   public function iConsumeAs($enpdoint, $account) {
     $token = $this->restLogin($account);
-    $this->results = $this->invokeRestRequest('get', $this->locatePath($enpdoint), ['access_token' => $token], [], TRUE);
+    $this->results = $this->invokeRestRequest('get', $this->locatePath($enpdoint), ['access-token' => $token], [], TRUE);
   }
 
   /**
