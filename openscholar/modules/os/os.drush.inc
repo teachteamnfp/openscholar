@@ -451,7 +451,7 @@ function _os_drush_confirm_file_overwrite($contents, $destination) {
 
 
   $action = 'u';
-  $prompt_loop = !(drush_get_option('y')); //skip the prompt and use the new files when -y is enabled
+  $prompt_loop = !drush_get_context('DRUSH_AFFIRMATIVE'); //skip the prompt and use the new files when -y is enabled
   while ($prompt_loop) {
     $action = drush_prompt(dt('Created @filename file.  [v]iew, [d]iff, [u]se this file, or [q]uit?', array('@filename' => $filename)));
     switch ($action) {
@@ -553,8 +553,10 @@ EOF;
   # REWRITE FOR FILES THAT ARE NOT IN LOWER ENV
   RewriteCond %{REQUEST_FILENAME} !-f                                                                                  
   RewriteCond %{REQUEST_FILENAME} !-d 
+  RewriteCond %{REQUEST_URI} !^(.*?)\/files\/css\/.*$
+  RewriteCond %{REQUEST_URI} !^(.*?)\/files\/js\/.*$
   RewriteCond %{REQUEST_FILENAME} ^(.*?)\/files\/
-  RewriteCond %{DOCUMENT_ROOT}/sites/{$site}/files/%2 !-f 
+  RewriteCond %{DOCUMENT_ROOT}/sites/{$site}/%{REQUEST_URI} !-f
 EOF;
 
     $rules .= _os_drush_domain_htaccess_rewrite_condition($domains);
