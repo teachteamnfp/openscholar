@@ -633,7 +633,7 @@ trait RestfulTrait {
       'vsite' => $gid,
     ];
     try {
-      $this->invokeRestRequest('post', $this->locatePath($this->endpoints[$type]), ['access_token' => $this->restLogin($account)], $values);
+      $this->invokeRestRequest('post', $this->locatePath($this->endpoints[$type]), ['access-token' => $this->restLogin($account)], $values);
       $this->meta['passed'] = TRUE;
     } catch (\Exception $e) {
       $this->meta['passed'] = FALSE;
