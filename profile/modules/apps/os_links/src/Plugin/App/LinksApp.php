@@ -8,7 +8,9 @@ use Drupal\vsite\AppInterface;
 /**
  * @App(
  *   title = @Translation("Links"),
- *   canDisable = true
+ *   canDisable = true,
+ *   entityType = "node",
+ *   bundle = "link"
  * )
  */
 class LinksApp extends PluginBase implements AppInterface {
