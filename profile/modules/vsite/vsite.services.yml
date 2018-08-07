@@ -1,4 +1,10 @@
 services:
+  path.alias_storage:
+    class: Drupal\vsite\Path\VsiteAliasStorage
+    arguments: ['@path.alias_storage.inner', '@database', '@module_handler']
+    decorates: path.alias_storage
+    tags:
+      - { name: backend_overridable }
   vsite.app.manager:
     class: Drupal\vsite\Plugin\AppManager
     parent: default_plugin_manager
