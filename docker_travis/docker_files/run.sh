@@ -3,6 +3,11 @@
 # Increasing the memory limitation.
 mv docker_travis/docker_files/php.ini /usr/local/etc/php
 
+echo -e "\n # Docker PHP version"
+php -v
+echo -e "\n # Docker Composer version"
+composer --version
+
 # Start MySQL.
 echo -e "\n # Start MySQL."
 service mysql start
