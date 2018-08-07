@@ -3,8 +3,6 @@ dist: trusty
 group: deprecated-2017Q4
 
 language: php
-php:
-  - '7.2'
 
 services:
   - docker
@@ -29,7 +27,7 @@ env:
 #    - TEST_SUITE=vsite
 #    - TEST_SUITE=widgets
 
-before_script: phpenv config-add travis.ini
+#before_script: phpenv config-add travis.ini
 script:
 
   - cd /home/travis/build/openscholar/openscholar/docker_travis
