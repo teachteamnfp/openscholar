@@ -54,6 +54,9 @@ dependencies:
   - user
   - views
   - pathauto
+  - vsite
+  - os_links
+  - devel
 themes:
   - bartik
   - seven
