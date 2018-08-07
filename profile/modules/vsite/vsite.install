@@ -1,0 +1,9 @@
+<?php
+
+function vsite_install() {
+  vsite_setup_new_apps (array());
+}
+
+function vsite_uninstall() {
+  // fill in
+}

@@ -5,13 +5,42 @@
  * @param array $modules
  */
 function vsite_modules_installed(array $modules) {
-  vsite_setup_new_apps($modules);
+  vsite_setup_new_apps();
 }
 
 /**
  * Sets up associations between app content and group types.
  * @param array $modules
  */
-function vsite_setup_new_apps(array $modules) {
-  \Drupal::service ('vsite.app.manager');
+function vsite_setup_new_apps() {
+  \Drupal::service('vsite.app.manager')->clearCachedDefinitions();
+  $defs = \Drupal::service ('vsite.app.manager')->getDefinitions();
+
+  /** @var \Drupal\group\Entity\Storage\GroupContentTypeStorageInterface $groupContentStorage */
+  $groupContentStorage = \Drupal::entityTypeManager ()->getStorage ('group_content_type');
+  /** @var \Drupal\group\Plugin\GroupContentEnablerCollection $allPlugins */
+  $allPlugins = \Drupal::service('plugin.manager.group_content_enabler')->getAll();
+  $group_types =\Drupal::entityTypeManager ()->getStorage('group_type')->loadMultiple ();
+  $map = array();
+  foreach ($allPlugins as $p) {
+    if ($p->getEntityTypeId() == 'node') {
+      $map[$p->getEntityBundle()] = $p->getPluginId();
+    }
+  }
+  $existing = $groupContentStorage->loadByEntityTypeId ('node');
+  $config = array(
+    'group_cardinality' => 1,
+    'use_creation_wizard' => 0,
+  );
+
+  foreach ($defs as $d) {
+    if ($d['entityType'] != 'node') continue;
+
+    foreach ($group_types as $type => $gt) {
+      $k = $type.'-group_node-'.$d['bundle'];
+      if (empty($existing[$k])) {
+        $groupContentStorage->createFromPlugin ($gt, $map[$d['bundle']], $config)->save();
+      }
+    }
+  }
 }
