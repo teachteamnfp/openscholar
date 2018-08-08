@@ -37,6 +37,12 @@ echo -e "\n # Install Drupal"
 bash docker_travis/docker.install.sh
 chmod -R 777 /var/www/html/openscholar/www/sites/default/files/
 
+# Configure apache2 to drupal root
+echo -e "\n # Configure apache2 to drupal root"
+cp docker_travis/docker_files/docker-php.conf /etc/apache2/conf-available/docker-php.conf
+cp docker_travis/docker_files/000-default.conf /etc/apache2/sites-available/000-default.conf
+service apache2 reload
+
 # Install custom domains
 echo -e "\n # Add lincoln virtual domain."
 service apache2 restart
