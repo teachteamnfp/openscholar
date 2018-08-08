@@ -712,8 +712,13 @@ function os_profiles_sync_profile_validate($form, &$form_state) {
     }
 
     $request = drupal_http_request($form_state['values']['url']);
+    error_log(print_r($request, 1));
     if ($request->code == 403) {
       form_set_error('url', t('The profile cannot be synced: it seems that the profile you are trying to sync belong to a private site or is set to private on a public site.'));
+      return;
+    }
+    elseif (isset($request->redirect_code) && $request->redirect_code == 301) {
+      form_set_error('url', t('The profile cannot be synced: The source is set to redirect to another url.'));
       return;
     }
 
