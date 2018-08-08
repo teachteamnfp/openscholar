@@ -717,7 +717,7 @@ function os_profiles_sync_profile_validate($form, &$form_state) {
       return;
     }
     elseif (isset($request->redirect_code) && $request->redirect_code == 301) {
-      form_set_error('url', t('The profile cannot be synced: The source is set to redirect to another url.'));
+      form_set_error('url', t('The profile cannot be synced: '.$form_state['values']['url'].' is set to redirect to another url.'));
       return;
     }
 
