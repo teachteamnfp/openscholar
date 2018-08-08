@@ -12,3 +12,16 @@ function vsite_domain_update_7001() {
     ->condition('object_id', 'vsite_domain_proccessing')
     ->execute();
 }
+
+/**
+ * Have vsite_domain run before securepages.
+ */
+function vsite_domain_update_7002() {
+
+  // place it behind os_publications modules
+  db_update('system')
+    ->fields(array('weight' => 5))
+    ->condition('name', 'securepages', '=')
+    ->condition('type', 'module', '=')
+    ->execute();
+}
