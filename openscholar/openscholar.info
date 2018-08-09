@@ -100,6 +100,7 @@ dependencies[] = os_help
 dependencies[] = os_importer
 dependencies[] = os_revisions
 dependencies[] = os_restful
+dependencies[] = os_restful_config
 dependencies[] = os_rss
 dependencies[] = os_search_db
 dependencies[] = os_slideshow
