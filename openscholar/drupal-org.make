@@ -126,7 +126,7 @@ projects[feeds][version] = 2.0-alpha7
 projects[feeds][patch][] = "https://raw.githubusercontent.com/openscholar/openscholar/8e532e05ef206421f0b2e259223ee12afdcff877/patches/feeds-fid_9097_resubmitting.patch"
 
 projects[feeds_tamper][subdir] = "contrib"
-projects[feeds_tamper][version] = 1.1
+projects[feeds_tamper][version] = 1.2
 
 projects[feeds_xpathparser][subdir] = "contrib"
 projects[feeds_xpathparser][download][type] = git
@@ -274,7 +274,7 @@ projects[nodeformcols][subdir] = "contrib"
 projects[nodeformcols][version] = 1.0
 
 projects[node_revision_restrict][subdir] = "contrib"
-projects[node_revision_restrict][version] = 1.4
+projects[node_revision_restrict][version] = 1.5
 
 projects[entity_validator][subdir] = "contrib"
 projects[entity_validator][download][type] = git
