@@ -96,9 +96,20 @@ wget http://selenium-release.storage.googleapis.com/2.53/selenium-server-standal
 java -jar selenium-server-standalone-2.53.0.jar > /dev/null 2>&1 &
 sleep 10
 
+# Clear cache twice for restful
+cd /var/www/html/openscholar/www/
+echo -e "\n # GET api/blog1/12 try1"
+wget localhost/api/blog/12
+drush cc all
+echo -e "\n # GET api/blog1/12 try2"
+wget localhost/api/blog/12
+drush cc all
+echo -e "\n # GET api/blog1/12 try3"
+wget localhost/api/blog/12
+
 # Install behat
 echo -e "\n # Install behat"
-cd openscholar/behat
+cd /var/www/html/openscholar/openscholar/behat
 pwd
 ls -al
 curl -sS https://getcomposer.org/installer | php
