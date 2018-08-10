@@ -82,7 +82,7 @@ class FeatureContext extends DrupalContext {
   /**
    * The box delta we need to hide.
    */
-  private $box = '';
+  private $box = array();
 
   /**
    * Save for later the list of domain we need to remove after a scenario is
