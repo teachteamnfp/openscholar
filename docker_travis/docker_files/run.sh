@@ -96,16 +96,18 @@ wget http://selenium-release.storage.googleapis.com/2.53/selenium-server-standal
 java -jar selenium-server-standalone-2.53.0.jar > /dev/null 2>&1 &
 sleep 10
 
-# Clear cache twice for restful
-cd /var/www/html/openscholar/www/
-echo -e "\n # GET api/blog/12 try1"
-wget localhost/api/blog/12
-drush cc all
-echo -e "\n # GET api/blog/12 try2"
-wget localhost/api/blog/12
-drush cc all
-echo -e "\n # GET api/blog/12 try3"
-wget localhost/api/blog/12
+if [ "${TEST_SUITE}" = 'restful' ]; then
+    # Clear cache twice for restful
+    cd /var/www/html/openscholar/www/
+    echo -e "\n # GET api/blog/12 try1"
+    wget localhost/api/blog/12
+    drush cache-clear all
+    echo -e "\n # GET api/blog/12 try2"
+    wget localhost/api/blog/12
+    drush cache-clear all
+    echo -e "\n # GET api/blog/12 try3"
+    wget localhost/api/blog/12
+fi
 
 # Install behat
 echo -e "\n # Install behat"
@@ -121,7 +123,7 @@ if [ $DOCKER_DEBUG -eq 1 ]; then
 else
   # Run tests
   echo -e "\n # Run tests"
-  ./bin/behat --tags=$TEST_SUITE --strict
+  ./bin/behat --tags="${TEST_SUITE}" --strict
 
 
   if [ $? -ne 0 ]; then
