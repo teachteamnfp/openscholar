@@ -161,6 +161,9 @@ class os_boxes_manual_list extends os_boxes_default {
 
       foreach ($nodes as $n) {
         if ($node = node_load($n['nid'])) {
+          if (!node_access('view', $node)) {
+            continue;
+          }
           // nullify title unless user has selected to show only titles
           if($this->options['style'] != 'titles' && $this->options['hide_title']) {
             $node->title = NULL;
