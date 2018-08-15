@@ -602,7 +602,7 @@ libraries[angularSlideables][patch][] = "https://raw.githubusercontent.com/opens
 ; YUI js libraries
 libraries[yui][type] = "libraries"
 libraries[yui][download][type] = "file"
-libraries[yui][download][url] = "http://yui.yahooapis.com/3.18.1/build/yui/yui-min.js"
+libraries[yui][download][url] = "https://github.com/yui/yui3/archive/v3.18.1.tar.gz"
 
 libraries[yql][type] = "libraries"
 libraries[yql][download][type] = "file"
