@@ -100,7 +100,7 @@ class os_slideshow_box extends os_boxes_default {
 
       $form['nodes']['#process'][] = 'os_slideshow_process_form_nodes';
       $form['nodes_list'] = array(
-        '#type' => 'hidden',
+        '#access' => FALSE,
         '#value' => $nids,
       );
 
@@ -126,7 +126,7 @@ class os_slideshow_box extends os_boxes_default {
 
         $form['nodes'][$nid] = array(
           'nid' => array(
-            '#type' => 'hidden',
+            '#access' => FALSE,
             '#default_value' => $nid,
           ),
           'text' => array(
