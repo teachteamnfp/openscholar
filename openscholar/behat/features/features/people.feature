@@ -83,7 +83,7 @@ Feature:
       And I should not see "Professional Titles/Affiliations"
           # Delete the original node.
      When I delete the node of type "person" named "Hillary Diane Rodham Clinton" in the group "obama"
-      And I edit the node "Hillary Diane Rodham Clinton" in the site "john"
+      And I edit the node "Hillary Diane Rodham Clinton" in the group "john"
 
   @api @features_second
   Scenario: Test changing the owner of a VSite.
