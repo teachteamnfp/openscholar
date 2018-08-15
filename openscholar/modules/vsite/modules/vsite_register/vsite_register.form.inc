@@ -790,12 +790,40 @@ function _vsite_register_mail_replacements($vsite, $author, $key) {
   global $base_url;
   $purl_base_domain = variable_get('purl_base_domain', $base_url);
   // Initialize replacements array with values common to both mail keys.
+  $site_url = '';
+  if ($vsite->purl_provider) {
+    $site_url = url(NULL, array(
+      'absolute' => TRUE,
+      'purl' => array(
+        'id' => $vsite->id,
+        'provider' => $vsite->purl_provider ? $vsite->purl_provider : 'spaces_og'
+      ),
+    ));
+  }
+  else {
+    $method = variable_get('purl_method_spaces_og', 'path');
+
+    $processor = purl_get_processor($method);
+    $element = new purl_path_element($processor, $vsite->group->purl, 'spaces_og', $vsite->id);
+    $options = array('absolute' => TRUE);
+    $element->processor->rewrite($site_url, $options, $element);
+
+    if (!empty($options['base_url'])) {
+      $site_url_base = empty($site_url) && !empty($vsite->group->purl) ?
+        $vsite->group->purl : '';
+      $site_url = trim($options['base_url'], '/');
+
+      if (variable_get('purl_method_spaces_og', NULL) !== 'thescholr_subdomain') {
+        $site_url .= '/' . ltrim($site_url_base, '/');
+      }
+    }
+  }
   $replacements = array(
     '!username' => $author->name,
-    '!site_login_uri' => url($purl_base_domain . '/user', array('absolute' => TRUE, 'query' => array('destination' => $vsite->group->purl))),
-    '!site_uri' => url($purl_base_domain . '/user', array('absolute' => TRUE, 'query' => array('destination' => $vsite->group->purl))),
+    '!site_login_uri' => url($purl_base_domain . '/user', array('absolute' => TRUE, 'query' => array('destination' => 'node/'.$vsite->id))),
+    '!site_uri' => url($purl_base_domain . '/user', array('absolute' => TRUE, 'query' => array('destination' => 'node/'.$vsite->id))),
     '!user_mail' => $author->mail,
-    '!site_url' => url($purl_base_domain . '/' . $vsite->group->purl, array('absolute' => TRUE)),
+    '!site_url' => $site_url,
     '!sitewide_name' => variable_get('site_name', 'OpenScholar'),
   );
 

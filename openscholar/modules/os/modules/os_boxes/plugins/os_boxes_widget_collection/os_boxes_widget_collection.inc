@@ -54,7 +54,7 @@ abstract class os_boxes_widget_collection extends os_boxes_default {
         $widget_collection[$wgt]['desc'] = $options[$wgt];
       }
     }
-    asort($options);
+    natcasesort($options);
     // Adding widget collection Drupal.settings object.
     drupal_add_js(array('os_boxes' => array('widget_collection' => $widget_collection)), 'setting');
 
@@ -157,6 +157,13 @@ abstract class os_boxes_widget_collection extends os_boxes_default {
     );
 
     return $form;
+  }
+
+  function render() {
+    $block = parent::render();
+    $block['allow_binding'] = true;
+
+    return $block;
   }
 
   function render_widget($key) {

@@ -96,6 +96,7 @@ function os_news_process_node(&$vars) {
     // Moves the profile photo thumbnail before teaser title (full name)
     if (isset($vars['content']['field_photo'])) {
       $vars['title_prefix'] = $vars['content']['field_photo'];
+      $vars['title_prefix'][0]['#item']['attributes'] = array('ng-non-bindable' => '');
       unset($vars['content']['field_photo']);
     }
 

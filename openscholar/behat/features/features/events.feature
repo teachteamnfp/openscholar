@@ -13,7 +13,6 @@ Feature:
     Given I am logging in as "john"
       And I sign up "Foo bar" with email "foo@example.com" to the event "Registration event"
       And I manage registrations for the event "Registration event"
-      And text exists "Foo bar"
      Then I click "Download Registrant List"
      Then I should see "Simple view"
       And I should see "CSV"

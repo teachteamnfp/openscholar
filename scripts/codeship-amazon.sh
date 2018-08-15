@@ -6,23 +6,25 @@ function buildComposer() {
     export ORIG=$(pwd)
     echo 'Begin pulling in site-specific code'
     cd $1
+    GITDIR=$(find $1/$2 -type d -name 'gitdir')
+    while read -r line; do
+        ROOT=$(dirname $line);
+        mv $ROOT/gitdir $ROOT/.git
+    done <<< "$GITDIR"
     for site in $(ls openscholar/sites/); do
         cd openscholar/sites/$site
         echo "Installing site-specific modules for $site"
-        GITDIR=$(find $1/$2 -type d -name 'gitdir')
-        while read -r line; do
-            ROOT=$(dirname $line);
-            mv $ROOT/gitdir $ROOT/.git
-        done <<< "$GITDIR"
         composer install -n
-        MODULE=$(composer show -s | grep 'names' | sed -r 's|^[^:]*: ||')
-        cd $1/$2/sites/$site/modules/openscholar/$MODULE
+        if ! composer install -n; then
+          rm -r $1/$2/sites/$site/modules/
+          composer install -n
+        fi
+        MODULE=$(composer show -s | sed -e '1,/requires/d' -e 's/ [^[:space:]]*$// ')
+        cd $1/$2/sites/$site/modules/$MODULE
         git branch | grep -v "master" | xargs git branch -D
         cd -
-        mv $1/$2/sites/$site/modules/openscholar/$MODULE/.git $1/$2/sites/$site/modules/openscholar/$MODULE/gitdir
+        mv $1/$2/sites/$site/modules/$MODULE/.git $1/$2/sites/$site/modules/$MODULE/gitdir
         git add $1/$2/sites/$site
-        git add $1/$2/sites/$site/modules/openscholar/$MODULE/.
-        git add $1/$2/sites/$site/modules/*/.git
         cd $1
     done
     cd $ORIG
@@ -96,12 +98,12 @@ $DRUSH make --no-core --contrib-destination drupal-org.make .
 (
 	# Download composer components
 	composer install
-	rm -rf libraries/git/symfony/event-dispatcher/Symfony/Component/EventDispatcher/.git
-	rm -f libraries/git/symfony/event-dispatcher/Symfony/Component/EventDispatcher/.gitignore
-	git rm -r --cached libraries/git/symfony/event-dispatcher/Symfony/Component/EventDispatcher
-	rm -rf libraries/git/symfony/process/Symfony/Component/Process/.git
-	rm -f libraries/git/symfony/process/Symfony/Component/Process/.gitignore
-	git rm -r --cached libraries/git/symfony/process/Symfony/Component/Process
+	rm -rf libraries/git/symfony/event-dispatcher/.git
+	rm -f libraries/git/symfony/event-dispatcher/.gitignore
+	git rm -r --cached libraries/git/symfony/event-dispatcher
+	rm -rf libraries/git/symfony/process/.git
+	rm -f libraries/git/symfony/process/.gitignore
+	git rm -r --cached libraries/git/symfony/process
 
 	# Get the angular components
 	bower -q install

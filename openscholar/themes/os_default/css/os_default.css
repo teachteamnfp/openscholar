@@ -137,7 +137,7 @@ body.not-logged-in.page-user {
 }
     
 
-.not-logged-in.no-sidebars.page-user.navbar-off #page-wrapper:before {
+.no-sidebars.page-user.navbar-off #page-wrapper:before {
     position: absolute;
     top: 0;
     left: 0;
@@ -154,10 +154,7 @@ body.not-logged-in.page-user {
 	border-bottom: 1px solid #e1e1e1;
 	padding-bottom: 6px;
 }
-.page-site-register #columns,
-.logged-in.no-sidebars.page-user #columns {
-	width: 700px;
-}
+
 .denied #content-column,
 .page-site-register #content-column,
 body.logged-in.no-sidebars.page-user #content-column,
@@ -192,6 +189,9 @@ body.not-logged-in.page-user.no-sidebars #content-column {
 }
 .page-user-password #main-content-header {
 	margin-bottom: 20px;
+}
+#user-login .user-login-message-text ul li {
+margin-bottom: 5px;
 }
 .denied #powerby-login,
 .page-site-register #powerby-login,
@@ -271,6 +271,14 @@ ul.primary li {
 .not-logged-in.page-user ul.primary li.active a:hover {
 	text-decoration: none;
 }
+body.logged-in.no-sidebars.page-user #tasks
+{
+   
+    margin-bottom: 2em;
+    margin-top: 2em;
+    border-bottom: 1px solid #e1e1e1;
+    padding-bottom: 13px;
+}
 .login-announcements {
 	background: url('../images/announce_icon.png') center left no-repeat;
 	background-size: 60px 60px;
@@ -283,9 +291,9 @@ ul.primary li {
 }
 /* USER ACCOUNT PAGE */
 
-.page-site-register #footer,
-.logged-in.no-sidebars.page-user #footer {
-	width: 850px;
+.page-site-register #footer, .logged-in.no-sidebars.page-user #footer {
+    width: 575px;
+    margin: 0 auto;
 }
 .form-type-password a,
 .user-login-message-text a,
@@ -316,8 +324,7 @@ ul.primary li {
 .page-site-register .form-item-domain,
 .page-site-register .form-item-bundle,
 .page-site-register .form-item-vsite-private,
-.page-site-register .form-item-vicarious-user,
-.logged-in.no-sidebars.page-user #content .item-list {
+.page-site-register .form-item-vicarious-user {
 	border-radius: 5px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;
@@ -333,10 +340,30 @@ ul.primary li {
 	padding: 0;
 	border: none;
 }
-.logged-in.no-sidebars.page-user #content ul.plural li .item-list {
-	border-bottom: 1px solid #e9e7e7;
-	padding-bottom: 10px;
+.logged-in.no-sidebars.page-user #content ul.single,
+.logged-in.no-sidebars.page-user #content ul.plural {
+    border-top: 3px solid #e2e2e2;
+    margin-top:5px;
 }
+
+.logged-in.no-sidebars.page-user #content ul.plural > li,
+.logged-in.no-sidebars.page-user #content ul.single > li {
+	
+	padding: 9px 7px;
+}
+.logged-in.no-sidebars.page-user #content ul.plural > li:nth-child(odd),
+.logged-in.no-sidebars.page-user #content ul.single > li:nth-child(odd) {
+border-bottom:1px solid #e2e2e2;
+background-color:#f5f5f5f5;
+}
+
+.logged-in.no-sidebars.page-user #content ul.plural > li:nth-child(odd):last-child,
+.logged-in.no-sidebars.page-user #content ul.single > li:nth-child(odd):last-child {
+border-bottom:1px solid transparent;
+
+}
+
+
 .logged-in.no-sidebars.page-user #content .user-add-site-block,
 .logged-in.no-sidebars.page-user #content .delete-link {
 	float: right;
@@ -402,6 +429,10 @@ fieldset.pin-fieldset legend a,
 #edit-submit {
 	margin-top: 10px;
 }
+#user-login .user-login-message-text h2 {
+	    margin: 6px 0;
+	    color: #555;
+}
 .logged-in.no-sidebars.page-user #content .add-subsite a {
 	color: #FFFFFF;
 }
@@ -456,6 +487,9 @@ fieldset.pin-fieldset legend,
 	padding-left: 0;
 	display: block;
 }
+fieldset.pin-fieldset {
+	background-color:#fff;
+}
 #pin-login.pin-button {
 	width: 300px;
 	margin-bottom: 70px;
@@ -487,11 +521,11 @@ fieldset#edit-pin-fieldset {
 #user-login .user-login-message-text:before {
 	content: '';
 	position: absolute;
-	width: 48px;
-	height: 48px;
-	top: -25px;
-	left: 35%;
-	background-image: url('../images/map-icon.png');
+	width: 45px;
+    height: 45px;
+    top: -23px;
+    left: 37%;
+    background-image: url(/profiles/openscholar/themes/os_default/images/help-icon.png);
 }
 .pin-button#pin-nvm {
 	display: block;
@@ -506,8 +540,9 @@ fieldset#edit-pin-fieldset {
 	padding-left: 0;
 }
 .profile h3 {
-	margin: -5px -5px 15px;
-	padding: 5px;
+	/* margin: -5px -5px 15px; */
+	/* padding: 5px; */
+	font-size: 1em;
 }
 .page-site-register ul.error {
 	margin-left: 15px;
@@ -652,11 +687,14 @@ body.sitewide-front {
 }
 .sitewide-front #boxes-box-os_front_sample ul li {
 	float: left;
-	list-style: none;
+	
 	margin-left: 40px;
 }
+#user-login .user-login-message-text ul,
+.sitewide-front #boxes-box-os_front_sample ul li {
+list-style-type: none;
+}
 #block-boxes-os-front-sample img {
-	width: 200px;
 	border: 1px solid #ccc;
 }
 /** TODO MOVE TO PROPER CSS FILE **/
@@ -766,9 +804,19 @@ body.sitewide-front {
 	background: #4CD964;
 	text-decoration: none;
 }
+#user-login .user-login-message-text h2,
 .os-align-center {
 	text-align: center;
 }
+#user-pass .url-textfield {
+	display:none;
+	}
+
+#user-login .user-login-message-text ul {
+	margin-left:25px;
+}	
+	
+	
 /** Messages - success, error style overrides */
 
 div.messages {
@@ -834,4 +882,58 @@ div.warning {
 	color: #8a6d3b;
 	padding: 10px 30px 10px 20px;
 	border-left: 5px solid #8a6d3b;
+}
+
+/* scholr front page css */
+
+
+body.sitewide-front:not(.og-context) {
+	background-image:none;
+	
+}
+
+
+.scholr-front-footer {
+	padding: 15px 0;
+	width: 750px;
+	margin: 80px auto 0 auto;
+	border-top: 1px solid #ccc;
+	color:#fff;
+}
+
+.scholr-front-footer a {
+    color:#fff;
+	text-decoration:underline;
+}
+
+.scholr-front-button {
+	background-color: #f0d090;
+border: none;
+padding: 10px;
+text-decoration:none !important;
+color:#505d6d !important;
+font-size: 1.2em ;
+border-bottom: 3px solid #d6940f;
+border-radius: 4px;
+}
+
+.scholr-front-logo {
+	padding: 20px 0;
+	background-color: #fff;
+}
+
+.scholr-front-body {
+	height: 100%;
+	padding-top: 7%;
+	background-color: #505d6d;
+	color:#fff;
+}
+.scholr-front-body h1 {
+	margin-bottom:60px;
+}
+
+.scholr-front-wrapper {
+	text-align: center;
+	color: #505d6d;
+	width: 100%;
 }

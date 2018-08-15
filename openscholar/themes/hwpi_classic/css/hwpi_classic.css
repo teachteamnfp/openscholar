@@ -44,6 +44,8 @@ margin-top: 12px;
 #content-column h2,
 #content-column h3,
 #content-column h4,
+.field-name-body h3,
+.field-name-body h4,
 .cke_editable h2,
 .cke_editable h3,
 .cke_editable h4 {
@@ -70,6 +72,10 @@ margin-top: 12px;
 
 .section-nav .expanded.menu-depth-2 > a:hover {
 	background-color: #293352 !important;
+}
+
+.section-nav .expanded.menu-depth-2 .menu-depth-3 > a {
+    background-color:#f3f3f1;
 }
 
  .block-boxes-os_boxes_facetapi_vocabulary.navigation a,
@@ -239,7 +245,8 @@ margin-left:6em;
     font-weight: bold;
 
 }
-
+.field-name-body h3,
+.field-name-body h4,
 #footer ul.menu li.menuparent ul li {
 
     font-weight: normal;

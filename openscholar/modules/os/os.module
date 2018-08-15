@@ -638,7 +638,9 @@ function os_process_node(&$vars) {
   $vars['theme_hook_suggestions'][] = 'node__'.$vars['type'].'__'.$vars['view_mode'];
 
   // Building "Read more" link for "No image teaser" for profiles
-  if($vars['type'] == 'person' && $vars['content']['pic_bio']['body']['#view_mode'] == 'no_image_teaser') {
+  if($vars['type'] == 'person'
+    && !empty($vars['content']['pic_bio']['body'])
+    && $vars['content']['pic_bio']['body']['#view_mode'] == 'no_image_teaser') {
     $vars['content']['links']['node']['#links']['node-readmore'] = array(
                                                                       'title' => t('Read more'),
                                                                       'href' => 'node/' . $vars['nid'],
@@ -1864,10 +1866,13 @@ function os_contextual_links_view_alter(&$element, $items) {
     return FALSE;
   }
 
-  $element['#links']['node-revisions'] = array(
-    'title' => t('Revisions'),
-    'href' => 'node/' . $node->nid . '/revisions',
-  );
+  if ($element['#element']['#node']->type != 'page') {
+    // Page has page-revisions. See os_pages_menu_contextual_links_alter
+    $element['#links']['node-revisions'] = array(
+      'title' => t('Revisions'),
+      'href' => 'node/' . $node->nid . '/revisions',
+    );
+  }
 }
 
 /**
@@ -2252,9 +2257,9 @@ function os_form_user_login_alter(&$form, $form_state) {
     $form['pin-fieldset']['pass']['#title'] = "OpenScholar Password";
 
     $form['pin-fieldset']['login'] = array(
-        '#type' => 'submit',
-        '#value' => t('Log In'),
-        '#attributes' => array('class' => array('pin-button-inline')),
+      '#type' => 'submit',
+      '#value' => t('Log In'),
+      '#attributes' => array('class' => array('pin-button-inline')),
     );
 
 
@@ -3985,4 +3990,14 @@ function os_process_page(&$vars) {
   if (arg(0) == 'user' && (arg(1) === 'login' || (arg(1) == '' && user_is_anonymous()))) {
     $vars['title'] = t('Welcome. Please Log In.');
   }
+}
+
+function _os_set_additional_captcha_points() {
+  if (!module_exists('captcha')) {
+    return;
+  }
+  module_load_include('inc', 'captcha');
+  captcha_set_form_id_setting('vsite_contact_mail_owner', 'default');
+  captcha_set_form_id_setting('user_login', 'none');
+  captcha_set_form_id_setting('registration_form', 'default');
 }

@@ -24,6 +24,8 @@
     for (var i = 0; i < iframes.length; i++) {
       var delta = jQuery(iframes[i]).closest('.boxes-box').attr('id');
       if (
+        typeof Drupal !== 'undefined' &&
+        typeof Drupal.settings !== 'undefined' &&
         typeof Drupal.settings.widget_max_width != 'undefined' &&
         typeof Drupal.settings.widget_max_width[delta] != 'undefined' &&
         Drupal.settings.widget_max_width[delta] != '' &&
@@ -35,12 +37,11 @@
           jQuery(iframes[i]).attr("src", jQuery(iframes[i]).attr("src"));
           iframes[i].resized = true;
         }
-
       }
-      else if (typeof data.width != 'undefined') {
+      else if (typeof data.width != 'undefined' && data.width > 0) {
         iframes[i].width = data.width;
       }
-      if (typeof data.height != 'undefined') {
+      if (typeof data.height != 'undefined' && data.width > 0) {
         iframes[i].height = data.height;
       }
     }

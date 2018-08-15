@@ -2646,12 +2646,12 @@ class FeatureContext extends DrupalContext {
 
     $public = array(
       new Step\When('I click the "[app-privacy-selector]" control in the "'.$feature.'" row'),
-      new Step\When('I click the "Everyone" control in the "'.$feature.'" row'),
+      new Step\When('I click the "The Public" control in the "'.$feature.'" row'),
     );
 
     $private = array(
       new Step\When('I click the "[app-privacy-selector]" control in the "'.$feature.'" row'),
-      new Step\When('I click the "Site Members" control in the "'.$feature.'" row'),
+      new Step\When('I click the "Site Members Only" control in the "'.$feature.'" row'),
     );
 
     $output = array();
@@ -4558,14 +4558,26 @@ JS;
 
   /**
    *
-   * @When /^I visit the "([^"]*)" form for node "([^"]*)" in site "([^"]*)"
+   * @When /^I visit the "([^"]*)" form for node "([^"]*)" in site "([^"]*)"$/
    */
-  public function iVisitTheXFormForNodeYinSiteZ($form, $url, $vsite) {
+  public function iVisitTheFormForNodeInSite($form, $url, $vsite) {
     $path = $this->_getUnaliasedPathFromAliasPath($url, $vsite);
     if (! $path) {
       throw new Exception("Could not find an unaliased path for '$url' on vsite '$vsite'.");
     }
     $this->visit("$path/$form");
+  }
+
+  /**
+   *
+   * @Then /^I can not visit "([^"]*)" form for node "([^"]*)" in group "([^"]*)"$/
+   */
+  public function iCanNotVisitFormForNodeInGroup($form, $url, $vsite) {
+    $path = $this->_getUnaliasedPathFromAliasPath($url, $vsite);
+    if (! $path) {
+      throw new Exception("Could not find an unaliased path for '$url' on vsite '$vsite'.");
+    }
+    $this->iCanTVisit("$path/$form");
   }
 
   /**

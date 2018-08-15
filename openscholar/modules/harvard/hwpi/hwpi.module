@@ -1,38 +1,6 @@
 <?php
 include_once ('hwpi.features.inc');
 include_once(drupal_get_path('theme', 'hwpi_basetheme') . '/template.php');
-/**
- * Implements hook_init
- */
-function hwpi_init() {
-  global $conf, $is_https;
-
-  // Is securepages enabled?
-  // If we are not on a harvard domain turn it off.
-  if (variable_get('securepages_enable', 0)) {
-
-    //Turn SSL off for pages that don't match the wildcard certificate
-    $conf['securepages_enable'] = 0;
-
-    // Loop through the domains that are configured to work with our SSL certificate
-    foreach (variable_get('hwpi_ssl_domains',array()) as $domain) {
-      $offset = (strlen($domain) * -1);
-      // Check to see if the current domain matches one of our wildcard domains in the SSL cert.
-      // IF the cert has ".harvard.edu" then "foo.harvard.edu" is valid and we should enable, whild "bar.foo.harvard.edu" is not.
-      if(substr($_SERVER['HTTP_HOST'],$offset) == $domain && !strrpos($_SERVER['HTTP_HOST'],".",($offset-1))){
-        //We found a Match
-        $conf['securepages_enable'] = 1;
-        break;
-      }
-    }
-
-    // We were unable to find a domain that matches our SSL cert.
-    if (!$conf['securepages_enable'] && $is_https) {
-      // Redirect to insecure.
-      securepages_goto(FALSE);
-    }
-  }
-}
 
 /**
  * Implements hook_cp_settings().
@@ -192,8 +160,10 @@ function hwpi_form_user_login_alter(&$form, $form_state) {
       )
     ),
     'message-text' => array(
-      '#markup' => t('!roadmap-link for the latest new feature and bug fix information.', array(
-        '!roadmap-link' => l('Visit our roadmap', 'http://theopenscholar.org/roadmap')
+      '#markup' => t('<h2>Help</h2><ul><li>!roadmap-link</li><li>!roadmap-link2</li><li>!roadmap-link3</li></ul>', array(
+        '!roadmap-link' => l('Contact Support', 'mailto:harvard-support@theopenscholar.com'),
+		'!roadmap-link2' => l('Documentation', 'https://help.theopenscholar.com/'),
+		'!roadmap-link3' => l('Training Videos', 'https://help.theopenscholar.com/video-tutorials')
       ))
     )
   );

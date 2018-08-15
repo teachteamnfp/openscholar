@@ -23,11 +23,11 @@ class GroupNodeRestfulBase extends OsNodeRestfulBase {
     foreach ($this->request as $k => $val) {
       switch ($k) {
         case 'url':
-          if (!preg_match('|^[a-zA-Z0-9_-]*$|', $val)) {
+          if (!preg_match('|^[a-zA-Z0-9-]*$|', $val)) {
             $output[$k] = array(
               'pass' => false,
               'errors' => array(
-                'urlPattern' => t('Url can only contain alphanumberics, underscore and hyphen.'),
+                'urlPattern' => t('Url can only contain lowercase alphanumberics and hyphen.'),
               )
             );
           }
@@ -278,5 +278,26 @@ class GroupNodeRestfulBase extends OsNodeRestfulBase {
 
     );
     return $value;
+  }
+
+  public function additionalHateoas () {
+    $hateoas = array();
+    if (is_callable('parent::additionalHateoas')) {
+      $hateoas = parent::additionalHateoas();
+    }
+
+    if ($batch = &batch_get()) {
+      $redirectUrl = array(
+        '',
+        array()
+      );
+      batch_process($redirectUrl, 'batch', 'os_restful_output_batch_finished');
+      $id = $batch['id'];
+      $hateoas += array(
+        'batch-id' => $id
+      );
+    }
+
+    return $hateoas;
   }
 }

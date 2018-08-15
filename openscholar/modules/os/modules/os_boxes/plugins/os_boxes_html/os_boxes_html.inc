@@ -65,8 +65,9 @@ class os_boxes_html extends os_boxes_default {
         if ($old_file_count > $new_files[$fid]) {
           $deprecate = $old_file_count - $new_files[$fid];
           // Now deprecate this usage.
-          $file = file_load($fid);
-          file_usage_delete($file, 'media', 'node', $vsite->group->nid, $deprecate);
+          if($file = file_load($fid)) {
+            file_usage_delete($file, 'media', 'node', $vsite->group->nid, $deprecate);
+          }
           // Usage is deleted, nothing more to do with this file.
           unset($new_files[$fid]);
         }
@@ -98,7 +99,7 @@ class os_boxes_html extends os_boxes_default {
   /**
    * {@inheritdoc}
    */
-   public function validate(&$values) {
+  public function validate(&$values) {
     if (empty($values['text']['value'])) {
       form_set_error('', t('If the content is empty, you may have difficulties displaying the widget.'));
     } else if (strlen($values['text']['value']) < 65000) {

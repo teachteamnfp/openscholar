@@ -29,6 +29,9 @@ projects[calendar][version] = 3.5
 projects[calendar][patch][] = "http://raw.github.com/openscholar/openscholar/72d63ee3537c31505b7481975886ec13789feeb5/patches/calendar-fix-week-view-overflow.patch"
 projects[calendar][patch][] = "http://raw.github.com/openscholar/openscholar/b334cd4b6831a5a1869647b7cbaaec1e8058d9bc/patches/calendar.scroll_to_first_event.patch"
 
+projects[captcha][subdir] = "contrib"
+projects[captcha][version] = 1.5
+
 projects[colorbox][subdir] = "contrib"
 projects[colorbox][version] = 2.13
 
@@ -160,6 +163,9 @@ projects[hierarchical_taxonomy][download][branch] = 7.x-1.x
 projects[hierarchical_taxonomy][download][revision] = 5bbe344
 projects[hierarchical_taxonomy][patch][] = "http://drupal.org/files/2034713-hs-comaprse-name-2.patch"
 
+projects[honeypot][subdir] = "contrib"
+projects[honeypot][version] = 1.24
+
 projects[html_title][subdir] = "contrib"
 projects[html_title][version] = 1.1
 projects[html_title][patch][] = "https://www.drupal.org/files/issues/fix_for_other_titles-2783297.patch"
@@ -243,7 +249,6 @@ projects[module_filter][version] = 1.7
 
 projects[memcache][subdir] = "contrib"
 projects[memcache][version] = 1.6
-projects[memcache][patch][] = "https://www.drupal.org/files/issues/notice_trying_to_get-2864659-4.patch"
 
 projects[migrate][subdir] = "contrib"
 projects[migrate][version] = 2.5
@@ -331,7 +336,7 @@ projects[pinserver][subdir] = "contrib"
 projects[pinserver][type] = module
 projects[pinserver][download][type] = git
 projects[pinserver][download][url] = "git://github.com/openscholar/pinserver.git"
-projects[pinserver][download][tag] = 7.x-3.4.23
+projects[pinserver][download][tag] = 7.x-3.4.24
 
 projects[purl][subdir] = "contrib"
 ; projects[purl][version] = 1.0-beta1+11-dev
@@ -342,6 +347,10 @@ projects[purl][patch][] = "http://drupal.org/files/1473502-purl-init-2_0.patch"
 projects[purl][patch][] = "http://drupal.org/files/1982198-purl-cache-set-1.patch"
 projects[purl][patch][] = "http://drupal.org/files/729862-9-purl-inbound-alter-modifies-q.patch"
 projects[purl][patch][] = "http://drupal.org/files/issues/purl-integrate_redirect_keep_options-1735266-4.patch"
+
+projects[recaptcha][subdir] = "contrib"
+projects[recaptcha][version] = 2.2
+projects[recaptcha][patch][] = "https://www.drupal.org/files/issues/2018-05-31/2493183_ajax_support_98.patch"
 
 projects[registration][subdir] = "contrib"
 projects[registration][version] = 1.5
@@ -628,3 +637,5 @@ libraries[yql-jsonp][download][url] = "https://raw.githubusercontent.com/yui/yui
 libraries[google-api-php-client][type] = "libraries"
 libraries[google-api-php-client][download][type] = "file"
 libraries[google-api-php-client][download][url] = "https://github.com/google/google-api-php-client/releases/download/v2.1.3/google-api-php-client-2.1.3.zip"
+
+

@@ -1046,8 +1046,32 @@ function os_update_7058() {
 }
 
 /**
+ * Enable the honeypot module to protect against spam
+ */
+function os_update_7060() {
+  //Enable honeypot module and set variable to enable honeypot for password reset form
+  module_enable(array('honeypot'));
+  variable_set('honeypot_form_user_pass', 1);
+
+  //Disable mollom as it is no longer used
+  module_disable(array('mollom'));
+}
+
+/**
+ * Configure Honeypot.
+ */
+function os_update_7061() {
+  variable_set('honeypot_time_limit', 2);
+
+  db_delete('honeypot_user')
+    ->condition('uid', 0)
+    ->execute();
+}
+
+/**
  * Enable the os_site_creation module for new site creation forms.
  */
-function os_update_7059() {
+function os_update_7062() {
   module_enable(array('os_site_creation'));
 }
+

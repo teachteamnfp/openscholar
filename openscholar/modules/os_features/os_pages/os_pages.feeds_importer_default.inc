@@ -64,6 +64,11 @@ function os_pages_feeds_importer_default() {
             'pathauto_override' => 1,
             'unique' => FALSE,
           ),
+          5 => array(
+            'source' => 'Parent Path',
+            'target' => 'parent_path',
+            'unique' => FALSE,
+          ),
         ),
         'update_existing' => '0',
         'input_format' => 'filtered_html',

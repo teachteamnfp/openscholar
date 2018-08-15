@@ -487,6 +487,12 @@ function vsite_form_node_delete_confirm_submit($form, &$form_state) {
   $redirect_url = drupal_parse_url($destination['destination']);
   $options = array();
   $options['query'] = $redirect_url['query'];
+
+  if ($redirect_url['path'] == '<base_domain>') {
+    $redirect_url['path'] = variable_get('purl_base_domain', $GLOBALS['base_url']);
+    $options['external'] = true;
+  }
+
   // Closing the modal and redirecting the user to destination path.
   if (isset($redirect_url['path'])) {
     overlay_close_dialog($redirect_url['path'], $options);
@@ -755,7 +761,9 @@ function vsite_spaces_presets_alter(&$presets) {
   $pathauto_settings = _vsite_get_pathauto_settings();
   foreach ($presets as $name => &$preset) {
     if (in_array($name, variable_get('os_enabled_spaces_presets',array()))) {
-      $preset->value['variable'] = array_merge($pathauto_settings, $preset->value['variable']);
+      if (isset($preset->value) && is_array($preset->value['variable'])) {
+        $preset->value['variable'] = array_merge($pathauto_settings, $preset->value['variable']);
+      }
     }
   }
 }
@@ -1701,8 +1709,17 @@ function vsite_menu_alter(&$items) {
     $items[$path]['access callback'] = 'vsite_group_node_edit_access';
   }
 
-  // Site-Wide contact page is not used and is a valuable path so we make it avalible here.
+  // Site-Wide contact page is not used and is a valuable path so we make it available here.
   unset($items['contact']);
+
+  $items['node/add']['access callback'] = '_vsite_node_add_access_override';
+}
+
+/**
+ * This function prevents the users from seeing anything when they hit node/add
+ */
+function _vsite_node_add_access_override() {
+  return FALSE;
 }
 
 /**
@@ -1856,7 +1873,7 @@ function vsite_user_view_alter(&$build){
         $css_selector = array(
           'class' => 'plural'
         );
-        $website_title = t('My websites:');
+        $website_title = t('Websites I own');
       }
       else {
         $css_selector = array(
@@ -1876,13 +1893,13 @@ function vsite_user_view_alter(&$build){
         $css_selector = array(
           'class' => 'plural'
         );
-        $membership_title = t('Websites I am a member of:');
+        $membership_title = t('Websites I am a member of');
       }
       else {
         $css_selector = array(
           'class' => 'single'
         );
-        $membership_title = t('Website I am a member of:');
+        $membership_title = t('Websites I am a member of');
       }
       // end if
       $vsites_list .= theme('item_list', array(
@@ -1919,7 +1936,7 @@ function vsite_preprocess_page(&$vars) {
     if (isset($vars['tabs']['#primary']) && is_array($vars['tabs']['#primary'])) {
       foreach ($vars['tabs']['#primary'] as $delta => $tab) {
         if (in_array($tab['#link']['title'], array("Edit"))) {
-          $vars['tabs']['#primary'][$delta]['#link']['title'] = "Edit Account";
+          $vars['tabs']['#primary'][$delta]['#link']['title'] = "Manage my account";
         }
       }
     }
@@ -1941,7 +1958,8 @@ function vsite_preprocess_page(&$vars) {
       }
 
       // Don't show the link on the user/%/edit page either, redundant.
-      if(strpos($item['path'], 'edit') !== false) {
+      // Or on the cancel form, they're about to delete
+      if(strpos($item['path'], 'edit') !== false || strpos($item['path'], 'cancel') !== false) {
         return;
       }
 
@@ -2017,7 +2035,13 @@ function vsite_mail_alter(&$message){
           '!site_name' => $vsite->group->title
         ));
         $replacements = array(
-          '!site' => $base_url . "/" . $vsite->group->purl,
+          '!site' => url('', array(
+            'purl' => array(
+              'id' => $vsite->id,
+              'provider' => $vsite->purl_provider
+            ),
+            'absolute' => true,
+          )),
           '!site_owner' => $site_owner_full_name,
           '!login_url' => user_pass_reset_url($user),
           '!mailto' => $user->mail,
@@ -2068,7 +2092,13 @@ function vsite_mail_alter(&$message){
           '!site_name' => $vsite->group->title
         ));
         $replacements = array(
-          '!site' => $base_url . "/" . $vsite->group->purl,
+          '!site' => url('', array(
+            'purl' => array(
+              'id' => $vsite->id,
+              'provider' => $vsite->purl_provider
+            ),
+            'absolute' => true,
+          )),
           '!site_owner' => $site_owner_full_name,
           '!login_url' => user_pass_reset_url($user),
           '!mailto' => $user->mail,
@@ -2085,7 +2115,7 @@ function vsite_mail_alter(&$message){
         break;
 
       case 'contact_page_mail':
-        $message['headers']['Sender'] = $message['headers']['Return-Path'] = $message['headers']['From'];
+        $message['headers']['Sender'] = $message['headers']['Return-Path'] = $message['headers']['From'] = variable_get('site_mail', ini_get('sendmail_from'));
         break;
     }
   }
@@ -2147,7 +2177,7 @@ function vsite_form_user_profile_form_alter(&$form, &$form_state, &$form_id){
     $form['field_first_name']['#prefix'] = '<a name="user_first_name" class="field_first_name_anchor">';
     $form['field_first_name']['#suffix'] = '</a>';
   }
-  
+
   if (module_exists('migrate_example')) {
     // To hide the Gender field from user_profile_form #10048
     unset($form['field_migrate_example_gender']);
@@ -2492,8 +2522,15 @@ function vsite_contact_mail_owner_submit($form, &$form_state) {
 
   // Send from the current user to the requested user.
   $to = $account->mail;
+
+  // Save both users and all form values for email composition.
+  $values = $form_state['values'];
+  $values['account'] = $account;
+  $values['user'] = $user;
+  $values['vsite'] = $space;
+
   if ($user->uid != 0) {
-    $from = $user->mail;
+    $values['headers']['Reply-To'] = $user->mail;
     // Needed for the watchdog entry.
     $flood_name = $user->name;
   }
@@ -2504,14 +2541,9 @@ function vsite_contact_mail_owner_submit($form, &$form_state) {
     }
     // Needed for the watchdog entry.
     $flood_name = 'anonymous';
-    $from = $form_state['values']['from'];
+    $values['headers']['Reply-To'] = $form_state['values']['from'];
   }
-
-  // Save both users and all form values for email composition.
-  $values = $form_state['values'];
-  $values['account'] = $account;
-  $values['user'] = $user;
-  $values['vsite'] = $space;
+  $from = variable_get('site_mail', ini_get('sendmail_from'));
 
   // Send the e-mail in the requested user language.
   drupal_mail('vsite', 'user_mail', $to, user_preferred_language($account), $values, $from);
@@ -2551,9 +2583,16 @@ function vsite_delete_request_submit($form, &$form_state) {
   $values['user'] = $user;
   $values['node'] = $form_state['build_info']['args'][0];
   $values['subject'] = variable_get('vsite_site_delete_subject', 'Site Deletion Request');
+  $values['headers']['Reply-To'] = $user->mail;
+  $from = variable_get('site_mail', ini_get('sendmail_from'));
+
+  // Send the email to the requestor as well.
+  if ($user->mail) {
+    $values['cc'] = $user->mail;
+  }
 
   // Send the e-mail in the requested user language.
-  drupal_mail('vsite', 'vsite_delete', $to, $language, $values, $user->mail);
+  drupal_mail('vsite', 'vsite_delete', $to, $language, $values, $from);
 
   // Add new message.
   drupal_set_message(t('The delete request has been sent.'));
@@ -2615,20 +2654,18 @@ function vsite_mail($key, &$message, $params){
       $message['body'][] = "\n\n---------------";
 
       $message['body'][] = t("This message was sent to you from \"!site\" on behalf of !name through your website contact form (!form-url).", array(
-        '!name' => isset($user->name) ? $user->name : $params['sender_firstname'] . ' ' . $params['sender_lastname'] . ' (' . $message['from'] . ')',
+        '!name' => isset($user->name) ? $user->name : $params['sender_firstname'] . ' ' . $params['sender_lastname'] . ' (' . $params['headers']['Reply-To'] . ')',
         '!form-url' => url($_GET['q'], array(
           'absolute' => TRUE,
           'language' => $language
         )),
         '!site' => variable_get('site_name', 'Drupal')
       ));
-      $message['body'][] = t("If you don't want to receive such e-mails, you can change your settings at !url.", array(
-        '!url' => $vsite->get_absolute_url("cp/settings")
-      ));
 
       // This is done so that when the recipient auto-reply is on, the response
       // won't be sent to the site email (held in the site_mail variable).
-      $message['headers']['Sender'] = $message['headers']['Return-Path'] = $message['headers']['From'];
+      $message['headers']['Reply-To'] = $params['headers']['Reply-To'];
+      $message['headers']['Sender'] = $message['headers']['Return-Path'] = $message['headers']['From'] = variable_get('site_mail', ini_get('sendmail_from'));
       break;
 
     case 'vsite_delete' :
@@ -2644,8 +2681,17 @@ function vsite_mail($key, &$message, $params){
           'absolute' => TRUE,
           'language' => $language,
         ))));
-      $message['from'] = $message['headers']['Sender'] = $message['headers']['Return-Path'] = $message['headers']['From'];
+      $message['headers']['Reply-To'] = $params['headers']['Reply-To'];
+      $message['from'] = $message['headers']['Sender'] = $message['headers']['Return-Path'] = $message['headers']['From'] = variable_get('site_mail', ini_get('sendmail_from'));
       break;
+  }
+  if (isset($params['cc'])) {
+    if (is_array($params['cc'])) {
+      $messages['headers']['Cc'] = implode(',', $params['cc']);
+    }
+    elseif (is_string($params['cc'])) {
+      $message['headers']['Cc'] = $params['cc'];
+    }
   }
 }
 
@@ -2728,11 +2774,7 @@ function vsite_preprocess_html(&$vars){
 
   // If we aren't in a vsite, or if this vsite hasn't uploaded a custom favicon.
   if (empty($uri)) {
-    $theme = variable_get('theme_default');
-    $uri = drupal_get_path('theme', $theme) . '/favicon.png';
-    if (!file_exists($uri)) {
-      $uri = drupal_get_path('theme', 'os_basetheme') . '/favicon.png';
-    }
+    $uri = variable_get('favicon_default', drupal_get_path('theme', 'os_basetheme') . '/favicon.png');
   }
 
   // Returns if no valid favicon or no favicon found.
@@ -2742,7 +2784,7 @@ function vsite_preprocess_html(&$vars){
 
   $favicon = file_create_url($uri);
   $type = theme_get_setting('favicon_mimetype');
-  drupal_add_html_head_link(array('rel' => 'shortcut icon', 'href' => drupal_strip_dangerous_protocols($favicon), 'type' => $type));
+  drupal_add_html_head_link(array('rel' => 'shortcut icon', 'href' => drupal_strip_dangerous_protocols($favicon)));
 }
 
 /**
@@ -2903,9 +2945,19 @@ function vsite_entity_property_info_alter(&$info) {
     'description' => t("The password for a user entity."),
     'type' => 'text',
     'getter callback' => 'entity_metadata_user_get_properties',
-    'setter callback' => 'entity_property_verbatim_set',
+    'setter callback' => 'vsite_entity_property_pass_set',
   );
 
+}
+
+/**
+ * Hashes the password
+ */
+function vsite_entity_property_pass_set(&$data, $name, $value, $langcode, $type, $info) {
+  // prevent rehashing an already hashed password. Also, prevent changing the password to itself again
+  if (empty($data->pass) || ($data->pass != $value && !user_check_password($value, $data))) {
+    $data->pass = user_hash_password($value);
+  }
 }
 
 /**
@@ -4089,13 +4141,14 @@ function vsite_oembed_uri_fragments($uri) {
  * Implements hook_redirect_load_by_source_existing_url_alter
  */
 function vsite_redirect_load_by_source_existing_url_alter(&$source) {
+  global $language;
   if(drupal_valid_path($source)) {
     // checking and converting the source to the form as it's save
     // on the redirect table if needed
     $redirect_query = db_select('redirect');
     $redirect_query->addField('redirect', 'source');
     $redirect_query->condition('source', db_like($source), 'LIKE');
-    $redirect_query->condition('language', array($language, LANGUAGE_NONE));
+    $redirect_query->condition('language', array($language->language, LANGUAGE_NONE));
     $redirect_result = $redirect_query->execute()->fetchCol();
     if ($redirect_result) {
       $source = $redirect_result[0];
