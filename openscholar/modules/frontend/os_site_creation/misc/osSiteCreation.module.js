@@ -258,7 +258,7 @@
     $scope.newUserValidPwd = false;
     var pwdScore = ps.checkStrength($scope.password);
     if (pwdScore < 1 ) {
-      $scope.strength = "Atleast 6 characters";
+      $scope.strength = "At least 6 characters";
     } else if (pwdScore == 1) {
       $scope.strength = "Weak";
     } else if (pwdScore == 2) {
