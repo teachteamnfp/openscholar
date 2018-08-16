@@ -5,7 +5,6 @@
  * Main OpenScholar module update functions.
  */
 
-
 function os_install() {
   _os_date_formats();
 }
