@@ -766,6 +766,7 @@ class FeatureContext extends DrupalContext {
       new Step\When('I fill in "edit-field-date-und-0-value2-datepicker-popup-0" with "' . date('M j Y', strtotime($date)) . '"'),
       new Step\When('I check the box "edit-field-date-und-0-all-day"'),
       new Step\When('I check the box "edit-field-date-und-0-show-repeat-settings"'),
+      new Step\When('I check the box "Signup"'),
       new Step\When('I fill in "edit-field-date-und-0-rrule-freq" with "' . $frequentlyValue . '"'),
       new Step\When('I fill in "edit-field-date-und-0-rrule-count-child" with "' . $times . '"'),
     );
