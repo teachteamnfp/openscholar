@@ -75,7 +75,8 @@ class os_boxes_rss extends os_boxes_default {
 
     $vars = array(
       'path' => drupal_get_path('module', 'os_boxes').'/plugins/os_boxes_rss/images/rss_square-24.png',
-      'title' => t('Syndicate content')
+      'title' => t('Syndicate content'),
+      'alt' => t('RSS Feed')
     );
     if ($image = theme('image', $vars)) {
       $rss_feed_url = url("feed" . $arg , array('absolute' => TRUE));
