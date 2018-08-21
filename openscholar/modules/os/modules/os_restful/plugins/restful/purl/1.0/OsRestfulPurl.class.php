@@ -112,10 +112,10 @@ class OsRestfulPurl extends \RestfulBase implements \RestfulDataProviderInterfac
     //Validate new vsite URL
     $return['msg'] = '';
     module_load_include('inc', 'vsite_register', 'vsite_register.form');
-    if (strlen($siteValue) < 3 || !valid_url($siteValue) || !_vsite_register_valid_url($siteValue)) {
+    if (strlen($siteValue) < 3 || !valid_url($siteValue) || !check_plain($siteValue) || !preg_match('!^[\.a-z0-9_-]+$!', $siteValue) || menu_get_item($siteValue)) {
       $return['msg'] = 'Invalid';
     }
-    else if (($purl = purl_load(array('value' => $siteValue, 'provider' => 'spaces_og'), TRUE)) || menu_get_item($siteValue)) {
+    else if (!_vsite_register_valid_url($siteValue) || menu_get_item($siteValue)) {
       $return['msg'] = "Not-Available";
     }
     else {
