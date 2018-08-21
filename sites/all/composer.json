@@ -1,7 +1,7 @@
 {
   "name": "OpenScholarLLC",
   "require": {
-    "openscholar/osllc" : "dev-1-subdomains"
+    "openscholar/osllc" : "1.5"
   },
   "repositories": [
     {
