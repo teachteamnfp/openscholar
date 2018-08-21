@@ -717,6 +717,66 @@ class FeatureContext extends DrupalContext {
   }
 
   /**
+   * @When /^I create a new repeating event with title "([^"]*)" on "([^"]*)" that repeats "([^"]*)" times and repeats "([^"]*)" with Repeat on "([^"]*)"$/
+   */
+  public function iCreateANewRepeatingEventWithTitleThatOnDateRepeatsTimesAndRepeatsWithRepeatOn($title, $date, $times, $frequently, $onDay) {
+    switch ($frequently) {
+      case 'Daily':
+        $frequentlyValue = 'DAILY';
+        break;
+      case 'Yearly':
+        $frequentlyValue = 'YEARLY';
+        break;
+      case 'Monthly':
+        $frequentlyValue = 'MONTHLY';
+        break;
+      case 'Weekly':
+      default:
+        $frequentlyValue = 'WEEKLY';
+        break;
+    }
+    $onDayCheckbox = '';
+    switch ($onDay) {
+      case 'Sun':
+        $onDayCheckbox = 'edit-field-date-und-0-rrule-weekly-byday-su';
+        break;
+      case 'Mon':
+        $onDayCheckbox = 'edit-field-date-und-0-rrule-weekly-byday-mo';
+        break;
+      case 'Tue':
+        $onDayCheckbox = 'edit-field-date-und-0-rrule-weekly-byday-tu';
+        break;
+      case 'Wed':
+        $onDayCheckbox = 'edit-field-date-und-0-rrule-weekly-byday-we';
+        break;
+      case 'Thu':
+        $onDayCheckbox = 'edit-field-date-und-0-rrule-weekly-byday-th';
+        break;
+      case 'Fri':
+        $onDayCheckbox = 'edit-field-date-und-0-rrule-weekly-byday-fr';
+        break;
+      case 'Sat':
+        $onDayCheckbox = 'edit-field-date-und-0-rrule-weekly-byday-sa';
+        break;
+    }
+    $steps = array(
+      new Step\When('I visit "john/node/add/event"'),
+      new Step\When('I fill in "Title" with "' . $title . '"'),
+      new Step\When('I fill in "edit-field-date-und-0-value-datepicker-popup-0" with "' . date('M j Y', strtotime($date)) . '"'),
+      new Step\When('I fill in "edit-field-date-und-0-value2-datepicker-popup-0" with "' . date('M j Y', strtotime($date)) . '"'),
+      new Step\When('I check the box "edit-field-date-und-0-all-day"'),
+      new Step\When('I check the box "edit-field-date-und-0-show-repeat-settings"'),
+      new Step\When('I fill in "edit-field-date-und-0-rrule-freq" with "' . $frequentlyValue . '"'),
+      new Step\When('I fill in "edit-field-date-und-0-rrule-count-child" with "' . $times . '"'),
+    );
+    if (!empty($onDayCheckbox)) {
+      $steps[] = new Step\When('I check the box "' . $onDayCheckbox . '"');
+    }
+    $steps[] = new Step\When('I press "edit-submit"');
+    return $steps;
+  }
+
+  /**
    * @When /^I create a new registration event with title "([^"]*)"$/
    */
   public function iCreateANewRegistrationEventWithTitle($title) {
@@ -769,6 +829,15 @@ class FeatureContext extends DrupalContext {
     $two_weeks_from_tmr = time() + ($repeat * 7 + 1) * (24 * 60 * 60);
     return array(
       new Step\When('I should see "' . date('l, F j, Y', $two_weeks_from_tmr) .'"'),
+    );
+  }
+
+  /**
+   * @When /^I should see the date of "([^"]*)" on repeat of the event$/
+   */
+  public function iShouldSeeTheDateOfRepeatDate($date) {
+    return array(
+      new Step\When('I should see "' . date('l, F j, Y', strtotime($date)) .'"'),
     );
   }
 
@@ -1132,21 +1201,20 @@ class FeatureContext extends DrupalContext {
   /**
    * @Given /^the widget "([^"]*)" is set in the "([^"]*)" page with the following <settings>:$/
    */
-  public function theWidgetIsSetInThePageWithSettings($page, $widget, TableNode $table) {
-    return $this->theWidgetIsSetInThePageByTheNameWithSettings($page, $widget, '', $table);
+  public function theWidgetIsSetInThePageWithSettings($widget, $page, TableNode $table) {
+    return $this->theWidgetIsSetInThePageByTheNameWithSettings($widget, $page, '', $table);
   }
 
   /**
    * @Given /^the widget "([^"]*)" is set in the "([^"]*)" page by the name "([^"]*)" with the following <settings>:$/
    */
-  public function theWidgetIsSetInThePageByTheNameWithSettings($page, $widget, $name, TableNode $table) {
-    $this->box[] = FeatureHelp::setBoxInRegion($this->nid, $page, $widget, 'sidebar_second', $name);
+  public function theWidgetIsSetInThePageByTheNameWithSettings($widget, $page, $name, TableNode $table) {
+    $this->box[] = FeatureHelp::setBoxInRegion($this->nid, $widget, $page, 'sidebar_second', $name);
     $hash = $table->getRows();
 
     list($box, $delta, $context) = explode(",", $this->box[0]);
 
     $metasteps = array();
-    // @TODO: Don't use the hard coded address - remove john from the address.
     $this->visit(FeatureHelp::getVsitePurl($this->nid) . '/os/widget/boxes/' . $delta . '/edit');
 
     // @TODO: Use XPath to fill the form instead of giving the type of the in
