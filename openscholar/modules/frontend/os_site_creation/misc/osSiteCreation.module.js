@@ -184,8 +184,7 @@
   $scope.checkUserName = function() {
     $scope.newUserResistrationName = false;
     if (typeof $scope.userName !== 'undefined' && $scope.userName != '') {
-      var formdata = {};
-      formdata = {
+      var formdata = {
         name: $scope.userName,
       };
       $http.post(paths.api + '/purl/name', formdata).then(function (response) {
@@ -226,8 +225,7 @@
   $scope.checkPwd = function() {
     $scope.newUserResistrationPwd = false;
     if (typeof $scope.password !== 'undefined' && $scope.password != '') {
-      var formdata = {};
-      formdata = {
+      var formdata = {
         password: $scope.password,
       };
       $http.post(paths.api + '/purl/pwd', formdata).then(function (response) {
@@ -355,15 +353,15 @@
             responseData = response.data.data;
             if (responseData.msg == "Not-Permissible") {
               siteCreationCtrl.$setValidity('permission', false);
-              siteCreationCtrl.$setValidity('sitename', true);
               siteCreationCtrl.$setValidity('isinvalid', true);
+              siteCreationCtrl.$setValidity('sitename', true);
               scope.btnDisable = true;
               scope.siteNameValid = false;
             }
             else if (responseData.msg == "Invalid"){
               siteCreationCtrl.$setValidity('permission', true);
-              siteCreationCtrl.$setValidity('sitename', true);
               siteCreationCtrl.$setValidity('isinvalid', false);
+              siteCreationCtrl.$setValidity('sitename', true);
               scope.btnDisable = true;
               scope.siteNameValid = false;
             }
