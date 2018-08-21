@@ -74,14 +74,12 @@ function os_site_creation_library_alter(&$libs) {
  * don't have OS user account yet to open site registratin form.
  */
 function os_site_creation_preprocess_page(&$vars) {
-  if (module_exists('pinserver') && $huid = pinserver_get_user_huid()) {
-    if (!pinserver_authenticate_get_uid_from_huid($huid)) {
-      // Load the Angular dependencies
-      drupal_add_library('os_site_creation','site_creation');
-      os_common_angular_apps('SiteCreationForm');
-      global $base_url;
-      drupal_add_js(array('admin_panel' => array('purl_base_domain' => variable_get('purl_base_domain'), 'base_domain' => $base_url)), 'setting');
-      drupal_add_css(drupal_get_path('theme', 'cp_theme').'/css/cp_theme.css');
-    }
+  if (vsite_vsite_exists_access ()) {
+    // Load the Angular dependencies
+    drupal_add_library('os_site_creation','site_creation');
+    os_common_angular_apps('SiteCreationForm');
+    global $base_url;
+    drupal_add_js(array('admin_panel' => array('purl_base_domain' => variable_get('purl_base_domain'), 'base_domain' => $base_url)), 'setting');
+    drupal_add_css(drupal_get_path('theme', 'cp_theme').'/css/cp_theme.css');
   }
 }
