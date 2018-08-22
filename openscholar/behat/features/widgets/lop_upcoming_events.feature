@@ -35,6 +35,7 @@ Feature:
           | Content Type               | Event  | select list |
           | Display style              | Title  | select list |
           | more                       | check  | checkbox    |
+          | more_link                  | calendar | textfield   |
           | Number of items to display | 3      | select list |
       And I visit "john/software"
      Then I should see "more"
