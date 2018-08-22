@@ -3724,7 +3724,8 @@ function os_field_formatter_view($entity_type, $entity, $field, $instance, $lang
           'word_boundary' => TRUE,
           'ellipsis' => TRUE,
         );
-        $text = views_trim_text($alter, media_filter($item['value']));
+        $text = str_replace("\r", '', $item['value']);
+        $text = views_trim_text($alter, media_filter($text));
 
         $read_more = function($entity_type, $entity, &$text) {
           $uri = entity_uri($entity_type, $entity);
