@@ -59,7 +59,7 @@ Feature:
   Scenario: Verify that registration shows correctly for repeated events and the option
             to switch to another date is present.
     Given I am logging in as "john"
-     When I create a new repeating registration event in site "john" with title "Repeating Signup event" that repeats "4" times and repeats "Weekly" with Repeat on "Fri"
+     When I create a new repeating event with title "Repeating Signup event" on "2021-08-03" that repeats "4" times and repeats "Weekly" with Repeat on "Fri"
       And I visit "john/calendar"
      Then I should see the event "Repeating Signup event" in the LOP
       And I visit "john/event/repeating-signup-event?delta=2"

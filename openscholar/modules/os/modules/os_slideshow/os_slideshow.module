@@ -94,7 +94,7 @@ function os_slideshow_form_slideshow_slide_node_form_alter(&$form, &$state, $for
   }
 
   if ($widget) {
-    $form['widget'] = array('#type' => 'hidden', '#value' => $widget);
+    $form['widget'] = array('#access' => FALSE, '#value' => $widget);
   }
 
   // Remove sticky. Pull published out of vertical tab.
@@ -105,11 +105,11 @@ function os_slideshow_form_slideshow_slide_node_form_alter(&$form, &$state, $for
 
   //Hide additional settings that are no longer grouped as such
   foreach (array('revision_information', 'author', 'comment_settings', 'path', 'metatags', 'actions_top') as $elem) {
-    $form[$elem]['#type'] = 'hidden';
+    $form[$elem]['#access'] = FALSE;
   }
 
   // Hide title. it will be automatically generated later.
-  $form['title']['#type'] = 'hidden';
+  $form['title']['#access'] = FALSE;
   $form['title']['#required'] = FALSE;
 
   // Remove preview, diff buttons.

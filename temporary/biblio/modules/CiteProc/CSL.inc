@@ -1028,7 +1028,7 @@ class csl_date extends csl_format {
 
   function render($data, $mode = NULL) {
     $date_parts = array();
-    $date = '';
+    $date = array();
     $text = '';
 
     if (($var = $this->variable) && isset($data->{$var})) {

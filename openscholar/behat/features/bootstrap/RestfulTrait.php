@@ -109,12 +109,21 @@ trait RestfulTrait {
       return $this->accessToken[$user]['access_token'];
     }
 
-    $handler = new RestfulAccessTokenAuthentication(['entity_type' => 'restful_token_auth','bundle' => 'access_token']);
-    $handler->setAccount(user_load_by_name($user));
-    $data = $handler->getOrCreateToken();
+    if ($handler = new RestfulAccessTokenAuthentication(['entity_type' => 'restful_token_auth','bundle' => 'access_token'])) {
+      if ($account = user_load_by_name ($user)) {
+        $handler->setAccount ($account);
+        $data = $handler->getOrCreateToken ();
 
-    $this->accessToken[$user] = $data;
-    return $data['access_token'];
+        $this->accessToken[$user] = $data;
+        return $data['access_token'];
+      }
+      else {
+        throw new Exception("No user with name $user found");
+      }
+    }
+    else {
+      throw new Exception('No Restful Access handler found');
+    }
   }
 
   /**
@@ -137,7 +146,7 @@ trait RestfulTrait {
       }
     }
     else {
-      $implode[] = $json['title'];
+      $implode[] = isset($json['title']) ? $json['title'] : '';
     }
 
     $errors = implode(', ', $implode);
@@ -300,7 +309,7 @@ trait RestfulTrait {
     $viste = FeatureHelp::getNodeId($values['Site']);
 
     $request = $this->invokeRestRequest($this->operations[$operation], $path,
-      ['access_token' => $token],
+      ['access-token' => $token],
       [
         'vsite' => $viste,
         'delta' => $delta,
@@ -313,7 +322,7 @@ trait RestfulTrait {
 
     $this->meta['delta'] = $request->json()['data']['delta'];
     $this->meta['widget'] = $request->json()['data'];
-    $headers = ['headers' => ['access_token' => $token]];
+    $headers = ['headers' => ['access-token' => $token]];
     $get = $this->getClient()->get($path . '/' . $delta . '?vsite=' . $viste, $headers);
     $this->results = $get->json();
     $this->verifyOperationPassed($operation);
@@ -330,7 +339,7 @@ trait RestfulTrait {
 
     if ($op == 'post') {
       $request = $this->invokeRestRequest($op, $box_path,
-        ['access_token' => $token],
+        ['access-token' => $token],
         [
           'vsite' => FeatureHelp::getNodeId($values['Site']),
           'delta' => $delta,
@@ -363,7 +372,7 @@ trait RestfulTrait {
     else {
       // Create the layout override.
       $this->invokeRestRequest($op, $path,
-        ['access_token' => $token],
+        ['access-token' => $token],
         [
           'vsite' => FeatureHelp::getNodeId($values['Site']),
           'object_id' => $values['Context'],
@@ -375,7 +384,7 @@ trait RestfulTrait {
 
     // Create the layout override.
     $this->invokeRestRequest($op, $path,
-      ['access_token' => $token],
+      ['access-token' => $token],
       [
         'vsite' => FeatureHelp::getNodeId($values['Site']),
         'object_id' => $values['Context'],
@@ -393,7 +402,7 @@ trait RestfulTrait {
     $op = $this->operations[$operation];
 
     $this->invokeRestRequest($op, $path,
-      ['access_token' => $token],
+      ['access-token' => $token],
       [
         'vsite' => FeatureHelp::getNodeId($site),
         'object_id' => $name,
@@ -411,7 +420,7 @@ trait RestfulTrait {
     $delta = $this->getDelta(array());
 
     $request = $this->invokeRestRequest($this->operations[$operation], $path,
-      ['access_token' => $token],
+      ['access-token' => $token],
       [
         'vsite' => FeatureHelp::getNodeId($site),
         'delta' => $delta,
@@ -459,7 +468,7 @@ trait RestfulTrait {
     }
 
     $this->invokeRestRequest('post', $path,
-      ['access_token' => $token],
+      ['access-token' => $token],
       $values
     );
   }
@@ -475,7 +484,7 @@ trait RestfulTrait {
       $path .= '/' . $this->meta['id'];
     }
 
-    $request = $this->invokeRestRequest($method, $path, ['access_token' => $token], $values);
+    $request = $this->invokeRestRequest($method, $path, ['access-token' => $token], $values);
     if ($method == 'delete') {
       if (!empty($request->json()['data'])) {
         throw new \Exception('The delete of the taxonomy term did not occurred.');
@@ -499,7 +508,7 @@ trait RestfulTrait {
     if ($operation == 'create') {
       foreach ($groups as $group) {
         $this->invokeRestRequest($op, $path,
-          ['access_token' => $token],
+          ['access-token' => $token],
           $group
         );
       }
@@ -533,7 +542,7 @@ trait RestfulTrait {
       $values['vsite'] = FeatureHelp::getNodeId($values['vsite']);
     }
 
-    $request = $this->invokeRestRequest($method, $path, ['access_token' => $token], $values);
+    $request = $this->invokeRestRequest($method, $path, ['access-token' => $token], $values);
     if ($method == 'delete') {
       if (!empty($request->json()['data'])) {
         throw new \Exception('The delete of the vocabulary did not occurred.');
@@ -563,7 +572,7 @@ trait RestfulTrait {
       $path .= '/' . $this->meta['id'];
     }
 
-    $request = $this->invokeRestRequest($method, $path, ['access_token' => $token], $values);
+    $request = $this->invokeRestRequest($method, $path, ['access-token' => $token], $values);
 
     if ($method == 'delete') {
       if (!empty($request->json()['data'])) {
@@ -583,7 +592,7 @@ trait RestfulTrait {
    */
   public function iConsumeAs($enpdoint, $account) {
     $token = $this->restLogin($account);
-    $this->results = $this->invokeRestRequest('get', $this->locatePath($enpdoint), ['access_token' => $token], [], TRUE);
+    $this->results = $this->invokeRestRequest('get', $this->locatePath($enpdoint), ['access-token' => $token], [], TRUE);
   }
 
   /**
@@ -624,7 +633,7 @@ trait RestfulTrait {
       'vsite' => $gid,
     ];
     try {
-      $this->invokeRestRequest('post', $this->locatePath($this->endpoints[$type]), ['access_token' => $this->restLogin($account)], $values);
+      $this->invokeRestRequest('post', $this->locatePath($this->endpoints[$type]), ['access-token' => $this->restLogin($account)], $values);
       $this->meta['passed'] = TRUE;
     } catch (\Exception $e) {
       $this->meta['passed'] = FALSE;
@@ -641,7 +650,10 @@ trait RestfulTrait {
   }
 
   private function jsonContent() {
-    return $this->results->json()['data'];
+    if (!empty($this->results) && method_exists($this->results, 'json')) {
+      return $this->results->json ()['data'];
+    }
+    return '';
   }
 
   /**

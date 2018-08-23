@@ -61,7 +61,7 @@ function os_basetheme_preprocess_page(&$vars) {
     'footer-right' => $vars['page']['footer_third'],
   );
   foreach (array('header', 'content', 'footer') as $var) {
-    $visible = array_filter($$var, "__os_basetheme_is_empty");
+    $visible = array_filter($$var, "_os_basetheme_is_empty");
     if (count($visible)) {
       $vars['classes_array'] = array_merge($vars['classes_array'], array_keys($visible));
      }
@@ -106,7 +106,7 @@ function os_basetheme_preprocess_page(&$vars) {
 /**
  * For header region classes
  */
-function __os_basetheme_is_empty($s){
+function _os_basetheme_is_empty($s){
   return $s ? TRUE : FALSE;
 }
 

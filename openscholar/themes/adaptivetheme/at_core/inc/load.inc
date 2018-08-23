@@ -311,7 +311,7 @@ function load_polyfills($theme_name) {
       }
     }
     // AT Core Polyfills
-    $polly = '';
+    $polly = array();
     $polly_settings_array = array(
       'load_respondjs',
       'load_html5js',

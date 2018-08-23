@@ -8,6 +8,7 @@ projects[advagg][version] = 2.6
 
 projects[apachesolr][subdir] = "contrib"
 projects[apachesolr][version] = 1.6
+projects[apachesolr][patch][] = "https://www.drupal.org/files/issues/apachesolr-support_php_72-2946579-2.patch"
 
 projects[apachesolr_attachments][subdir] = "contrib"
 projects[apachesolr_attachments][version] = 1.2
@@ -54,12 +55,13 @@ projects[contextual_annotation][download][url] =  "http://git.drupal.org/project
 ; needs patches to contrib
 
 projects[ctools][subdir] = "contrib"
-projects[ctools][download][type] = git
-projects[ctools][download][branch] = 7.x-1.x
-projects[ctools][download][revision] = be2607142ce97d093acce9417833640680330efe
-projects[ctools][patch][] = "http://drupal.org/files/1707810-ctools-fields-mock-field-7.patch"
-projects[ctools][patch][] = "http://drupal.org/files/ctools-plugin_extension-1623044-1.patch"
-projects[ctools][patch][] = "https://drupal.org/files/issues/2147905-allow-alter-with-more-context-1.patch"
+projects[ctools][version] = 1.10
+;projects[ctools][download][type] = git
+;projects[ctools][download][branch] = 7.x-1.x
+;projects[ctools][download][revision] = be2607142ce97d093acce9417833640680330efe
+;projects[ctools][patch][] = "http://drupal.org/files/1707810-ctools-fields-mock-field-7.patch"
+;projects[ctools][patch][] = "http://drupal.org/files/ctools-plugin_extension-1623044-1.patch"
+;projects[ctools][patch][] = "https://drupal.org/files/issues/2147905-allow-alter-with-more-context-1.patch"
 
 projects[date][subdir] = "contrib"
 projects[date][version] = 2.8
@@ -93,6 +95,7 @@ projects[entity][patch][] = https://www.drupal.org/files/issues/2086225-entity-a
 projects[entitycache][subdir] = "contrib"
 projects[entitycache][version] = 1.5
 projects[entitycache][patch][] = https://www.drupal.org/files/issues/2516094-1-entitycache_fix_arry_flip.patch
+projects[entitycache][patch][] = https://www.drupal.org/files/issues/2018-07-05/entitycache_php_7-2981629-0.patch
 
 projects[entityreference][subdir] = "contrib"
 projects[entityreference][version] = 1.2
@@ -117,14 +120,16 @@ projects[facetapi][version] = 1.1
 projects[facetapi][patch][] = "http://drupal.org/files/2006704-facetapi-er-regroup-2.patch"
 
 projects[features][subdir] = "contrib"
-projects[features][version] = 2.6
+projects[features][version] = 2.10
+projects[features][patch][] = "https://www.drupal.org/files/issues/2018-03-12/features-support_php_72-2931464-10.patch"
+
 
 projects[feeds][subdir] = "contrib"
 projects[feeds][version] = 2.0-alpha7
 projects[feeds][patch][] = "https://raw.githubusercontent.com/openscholar/openscholar/8e532e05ef206421f0b2e259223ee12afdcff877/patches/feeds-fid_9097_resubmitting.patch"
 
 projects[feeds_tamper][subdir] = "contrib"
-projects[feeds_tamper][version] = 1.1
+projects[feeds_tamper][version] = 1.2
 
 projects[feeds_xpathparser][subdir] = "contrib"
 projects[feeds_xpathparser][download][type] = git
@@ -272,7 +277,7 @@ projects[nodeformcols][subdir] = "contrib"
 projects[nodeformcols][version] = 1.0
 
 projects[node_revision_restrict][subdir] = "contrib"
-projects[node_revision_restrict][version] = 1.4
+projects[node_revision_restrict][version] = 1.5
 
 projects[entity_validator][subdir] = "contrib"
 projects[entity_validator][download][type] = git
@@ -386,14 +391,6 @@ projects[shorten][version] = 1.2
 projects[securepages][subdir] = "contrib"
 projects[securepages][version] = 1.0-beta1
 
-projects[services][subdir] = "contrib"
-; projects[services][version] = 3.3+42-dev
-projects[services][download][branch] = 7.x-3.x
-projects[services][download][revision] = 761e620
-
-projects[services_basic_auth][subdir] = "contrib"
-projects[services_basic_auth][version] = "1.3"
-
 projects[spaces][subdir] = "contrib"
 ; projects[spaces][version] = 3.0-alpha1+9-dev
 projects[spaces][revision] = "eac3a7e"
@@ -431,7 +428,7 @@ projects[twitter_pull][patch][] = "https://raw.githubusercontent.com/openscholar
 projects[twitter_pull][patch][] = "https://raw.githubusercontent.com/openscholar/openscholar/1811fd556f5ef60be92a5b5249a81f652a73681c/patches/twitter_pull.class.inc-tweet-mode-extended.patch"
 
 projects[views][subdir] = "contrib"
-projects[views][version] = 3.18
+projects[views][version] = 3.20
 ; projects[views][patch][] = "https://drupal.org/files/issues/views-jquery_dialog-2125261-1.patch"
 
 projects[views_bulk_operations][subdir] = "contrib"
@@ -442,7 +439,7 @@ projects[views_og_cache][version] = 1.1
 projects[views_og_cache][patch][] = "https://drupal.org/files/issues/2226219-easy-key-data-override-2.patch"
 
 projects[views_slideshow][subdir] = "contrib"
-projects[views_slideshow][version] = 3.0
+projects[views_slideshow][version] = 3.9
 
 projects[views_litepager][subdir] = "contrib"
 projects[views_litepager][version] = 3.0
@@ -496,7 +493,7 @@ libraries[ckeditor][download][url] = "http://download.cksource.com/CKEditor/CKEd
 
 libraries[spyc][type] = "libraries"
 libraries[spyc][download][type] = "file"
-libraries[spyc][download][url] = "https://github.com/mustangostang/spyc/archive/0.5.1.zip"
+libraries[spyc][download][url] = "https://github.com/mustangostang/spyc/archive/0.6.2.zip"
 
 libraries[respondjs][type] = "libraries"
 libraries[respondjs][download][type] = "file"
@@ -612,7 +609,7 @@ libraries[angularSlideables][patch][] = "https://raw.githubusercontent.com/opens
 ; YUI js libraries
 libraries[yui][type] = "libraries"
 libraries[yui][download][type] = "file"
-libraries[yui][download][url] = "http://yui.yahooapis.com/3.18.1/build/yui/yui-min.js"
+libraries[yui][download][url] = "https://github.com/yui/yui3/archive/v3.18.1.tar.gz"
 
 libraries[yql][type] = "libraries"
 libraries[yql][download][type] = "file"
@@ -636,6 +633,6 @@ libraries[yql-jsonp][download][url] = "https://raw.githubusercontent.com/yui/yui
 
 libraries[google-api-php-client][type] = "libraries"
 libraries[google-api-php-client][download][type] = "file"
-libraries[google-api-php-client][download][url] = "https://github.com/google/google-api-php-client/releases/download/v2.1.3/google-api-php-client-2.1.3.zip"
+libraries[google-api-php-client][download][url] = "https://github.com/google/google-api-php-client/releases/download/v2.2.2/google-api-php-client-2.2.2.zip"
 
 

@@ -503,22 +503,24 @@ function os_events_node_update($node) {
         ->entityCondition('bundle', 'event_signup_simple')
         ->propertyCondition('entity_id', $node->nid);
       $result = $query->execute();
-      $entity_ids = array_keys($result['registration']);
-      $registration_entities = entity_load('registration', $entity_ids);
-      $params = array(
-        '@title' => $node->title,
-        '@event-date' => $node->original->field_date[LANGUAGE_NONE][0]['value'],
-        '@event-new-date' => $node->field_date[LANGUAGE_NONE][0]['value'],
-        '@location' => !empty($node->original->field_event_location[LANGUAGE_NONE][0]['value']) ? ' at ' . $node->original->field_event_location[LANGUAGE_NONE][0]['value'] : '',
-        '@new-location' => !empty($node->field_event_location[LANGUAGE_NONE][0]['value']) ? ' at ' . $node->field_event_location[LANGUAGE_NONE][0]['value'] : '',
-        '@event-url' => url('node/' . $node->nid, array('absolute' => TRUE)),
-        '@site' => variable_get('site_name', 'OpenScholar')
-      );
-      // Sending notification email to each registrants for this event time change.
-      foreach ($registration_entities as $registration) {
-        list(, $event_author_mail) = _os_events_get_settings_by_registration($node, $registration);
-        $params['@event-creator-mail'] = $event_author_mail;
-        os_events_event_change_notification($registration, $params, 'event_time_updated_notification');
+      if (!empty($result['registration'])) {
+        $entity_ids = array_keys($result['registration']);
+        $registration_entities = entity_load('registration', $entity_ids);
+        $params = array(
+          '@title' => $node->title,
+          '@event-date' => $node->original->field_date[LANGUAGE_NONE][0]['value'],
+          '@event-new-date' => $node->field_date[LANGUAGE_NONE][0]['value'],
+          '@location' => !empty($node->original->field_event_location[LANGUAGE_NONE][0]['value']) ? ' at ' . $node->original->field_event_location[LANGUAGE_NONE][0]['value'] : '',
+          '@new-location' => !empty($node->field_event_location[LANGUAGE_NONE][0]['value']) ? ' at ' . $node->field_event_location[LANGUAGE_NONE][0]['value'] : '',
+          '@event-url' => url('node/' . $node->nid, array('absolute' => TRUE)),
+          '@site' => variable_get('site_name', 'OpenScholar')
+        );
+        // Sending notification email to each registrants for this event time change.
+        foreach ($registration_entities as $registration) {
+          list(, $event_author_mail) = _os_events_get_settings_by_registration($node, $registration);
+          $params['@event-creator-mail'] = $event_author_mail;
+          os_events_event_change_notification($registration, $params, 'event_time_updated_notification');
+        }
       }
     }
     return;

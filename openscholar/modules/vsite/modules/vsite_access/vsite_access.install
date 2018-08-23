@@ -1,5 +1,12 @@
 <?php
 
+function vsite_access_install() {
+  $group_types = og_get_all_group_bundle ('node');
+  foreach ($group_types as $bundle => $label) {
+    og_create_field(VSITE_ACCESS_FIELD, 'node', $bundle);
+  }
+}
+
 /**
  * Update the privacy field
  */
