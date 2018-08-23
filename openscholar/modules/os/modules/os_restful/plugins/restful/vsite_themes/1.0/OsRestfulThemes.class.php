@@ -49,20 +49,26 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
         if (!empty($flavor)) {
           $flavors = os_theme_get_flavors();
           foreach ($flavor as $key => $value) {
+            if ($key == 'default') continue;
             $path = $GLOBALS['base_url'] . '/' . $flavors[$key]['path'] . '/' . $flavors[$key]['screenshot'];
             $flavor_options[] = array('key' => $key, 'name' => $value, 'screenshot' => $path);
           }
         }
-
-        $others[] = array('name' => $info['name'],
+        $t = array('name' => $info['name'],
           'themeKey' => $info['theme_name'],
           'screenshot' => $info['screenshot'],
-          'defaultscreenshot' => $info['screenshot'],
-          'flavorName' => $info['flavor_name'],
-          'flavorOptions' => $flavor_options,
-          'flavorKey' => 'default',
+          'defaultscreenshot' => $info['screenshot']
         );
 
+        if (isset($info['flavor_name'])) {
+          $t += array(
+            'flavorName' => $info['flavor_name'],
+            'flavorOptions' => $flavor_options,
+            'flavorKey' => 'default',
+          );
+        }
+
+        $others[] = $t;
       }
       else {
         if (!empty($info['single'])) {
@@ -76,8 +82,7 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
           );
 
           $flavors = os_theme_get_flavors($info['theme_name']);
-           foreach ($flavors as $flavor_name => $flav) {
-            $flavor_theme->info['screenshot'] = $GLOBALS['base_url'] . '/' . $flav['path'].'/screenshot.png';
+          foreach ($flavors as $flavor_name => $flav) {
             $single[] = array('name' => $flav['name'],
               'themeKey' => $info['theme_name'],
               'screenshot' => $GLOBALS['base_url'] . '/' . $flav['path'].'/screenshot.png',
@@ -99,7 +104,6 @@ class OsRestfulThemes extends \RestfulBase implements \RestfulDataProviderInterf
 
           $flavors = os_theme_get_flavors($info['theme_name']);
            foreach ($flavors as $flavor_name => $flav) {
-            $flavor_theme->info['screenshot'] = $GLOBALS['base_url'] . '/' . $flav['path'].'/screenshot.png';
             $featured[] = array('name' => $flav['name'],
               'themeKey' => $info['theme_name'],
               'screenshot' => $GLOBALS['base_url'] . '/' . $flav['path'].'/screenshot.png',
