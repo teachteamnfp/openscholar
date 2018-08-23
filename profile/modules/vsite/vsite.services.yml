@@ -2,3 +2,8 @@ services:
   vsite.app.manager:
     class: Drupal\vsite\Plugin\AppManager
     parent: default_plugin_manager
+  vsite.config_factory_override:
+    class: Drupal\vsite\Config\VsiteConfigFactoryOverride
+    tags:
+      - { name: config.factory.override, priority: -254 }
+      - { name: event_subscriber }
