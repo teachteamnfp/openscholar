@@ -1,4 +1,4 @@
-FROM gizra/drupal-lamp
+FROM gizra/drupal-lamp:php7
 
 ADD . /var/www/html/openscholar
 WORKDIR /var/www/html/openscholar
