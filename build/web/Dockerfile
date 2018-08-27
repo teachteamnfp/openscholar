@@ -1,8 +1,6 @@
 FROM centos:centos7.5.1804
 
-RUN yum install -y epel-release # for nginx
-RUN yum install -y initscripts  # for old "service"
-RUN yum -y install nano
+RUN yum install -y epel-release initscripts
 
 ENV container docker
 
@@ -18,22 +16,19 @@ rm -f /lib/systemd/system/anaconda.target.wants/*;
 VOLUME [ "/sys/fs/cgroup" ]
 
 # named (dns server) service
-RUN yum install -y bind bind-utils
-RUN systemctl enable named.service
-
-RUN yum -y install httpd; systemctl enable httpd.service
-RUN rpm -Uvh http://rpms.remirepo.net/enterprise/remi-release-7.rpm
-RUN yum -y install yum-utils
-RUN yum -y update
-RUN yum-config-manager --enable remi-php72
-RUN yum -y install unzip which wget java-1.8.0-openjdk.x86_64 patch
-RUN yum -y install php git
-RUN yum -y install php-mysqlnd php-pdo
-RUN yum -y install php-gd php-ldap php-odbc php-pear php-xml php-xmlrpc php-mbstring php-soap curl curl-devel php-xdebug php-zip
-RUN yum -y install http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm
-RUN yum -y install mysql-community-server; systemctl enable mysqld.service
-RUN yum -y install nodejs
-RUN yum clean all
+RUN yum install -y bind bind-utils && \
+    systemctl enable named.service && \
+    yum -y install httpd; systemctl enable httpd.service && \
+    rpm -Uvh http://rpms.remirepo.net/enterprise/remi-release-7.rpm && \
+    yum -y install yum-utils && \
+    yum -y update && \
+    yum-config-manager --enable remi-php72 && \
+    yum -y install unzip which wget java-1.8.0-openjdk.x86_64 patch nano && \
+    yum -y install php git php-mysqlnd php-pdo php-gd php-ldap php-odbc php-pear php-xml php-xmlrpc php-mbstring php-soap curl curl-devel php-xdebug php-zip && \
+    yum -y install http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm && \
+    yum -y install mysql-community-server; systemctl enable mysqld.service && \
+    yum -y install nodejs && \
+    yum clean all
 
 RUN curl -sS https://getcomposer.org/installer | php && \
     mv composer.phar /usr/local/bin/composer && \
@@ -47,11 +42,11 @@ RUN npm install -g bower
 RUN mkdir /opt/apache-solr && \
     cd /opt/apache-solr && \
     wget https://archive.apache.org/dist/lucene/solr/3.6.2/apache-solr-3.6.2.zip && \
-    unzip -oq apache-solr-3.6.2.zip
+    unzip -oq apache-solr-3.6.2.zip && \
+    rm apache-solr-3.6.2.zip
 
 
-COPY docker_files/httpd.conf /etc/httpd/conf/httpd.conf
-COPY docker_files/php.ini /etc/php.ini
+COPY docker_files/ /
 
 EXPOSE 80
 EXPOSE 3306

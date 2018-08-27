@@ -6,4 +6,7 @@ yes | cp /var/www/html/www/profiles/openscholar/behat/solr/solrconfig.xml .
 cd /opt/apache-solr/apache-solr-3.6.2/example
 java -jar start.jar &
 sleep 10
-cd /var/www/html/www
+cd /var/www/html/openscholar/behat
+composer install
+cp behat.local.yml.travis behat.local.yml
+./bin/behat --tags=restful --strict
