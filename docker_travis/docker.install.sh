@@ -15,6 +15,8 @@ ADMIN_USERNAME="admin"
 ADMIN_PASSWORD="admin"
 ADMIN_EMAIL="admin@example.com"
 
+php -v
+
 if [ -d "www/sites/default" ]; then
   chmod 777 www/sites/default
   rm -rf www/
