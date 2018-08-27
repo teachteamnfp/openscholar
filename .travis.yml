@@ -32,6 +32,6 @@ script:
 
   - cd /home/travis/build/openscholar/openscholar
   - docker-compose up -d
-  - docker-compose exec -T scripts/build
+  - docker-compose exec -T web scripts/build
   - cd www
   - ls -la
