@@ -30,5 +30,7 @@ env:
 #before_script: phpenv config-add travis.ini
 script:
 
+  - docker --version
+  - docker-compose --version
   - cd /home/travis/build/openscholar/openscholar/docker_travis
   - bash behat-docker.sh
