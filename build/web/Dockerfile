@@ -26,7 +26,7 @@ RUN rpm -Uvh http://rpms.remirepo.net/enterprise/remi-release-7.rpm
 RUN yum -y install yum-utils
 RUN yum -y update
 RUN yum-config-manager --enable remi-php72
-RUN yum -y install unzip which wget java-1.8.0-openjdk.x86_64
+RUN yum -y install unzip which wget java-1.8.0-openjdk.x86_64 patch
 RUN yum -y install php git
 RUN yum -y install php-mysqlnd php-pdo
 RUN yum -y install php-gd php-ldap php-odbc php-pear php-xml php-xmlrpc php-mbstring php-soap curl curl-devel php-xdebug php-zip

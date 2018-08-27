@@ -30,9 +30,8 @@ env:
 #before_script: phpenv config-add travis.ini
 script:
 
-  - export PATH="$HOME/.composer/vendor/bin:$PATH"
-  - composer global require drush/drush:8.*
-  - drush --version
   - cd /home/travis/build/openscholar/openscholar
-  - bash scripts/build
-
+  - docker-compose up -d
+  - docker-compose exec -T scripts/build
+  - cd www
+  - ls -la
