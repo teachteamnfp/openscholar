@@ -31,6 +31,7 @@ env:
 script:
 
   - cd /home/travis/build/openscholar/openscholar
+  - cp docker_travis/docker-compose.override.yml.travis docker-compose.override.yml
   - docker-compose up -d
   - docker-compose exec web docker_travis/docker.install.sh
   - docker-compose exec  -e TEST_SUITE="${TEST_SUITE}" -e DOCKER_DEBUG="${DEBUG}" web docker_travis/run.sh
