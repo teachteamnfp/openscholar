@@ -9,4 +9,16 @@ sleep 10
 cd /var/www/html/openscholar/behat
 composer install
 cp behat.local.yml.travis behat.local.yml
-./bin/behat --tags=restful --strict
+
+if [ $DOCKER_DEBUG -eq 1 ]; then
+  bash
+else
+  # Run tests
+  echo -e "\n # Run tests with tag: ${TEST_SUITE}"
+  ./bin/behat --tags="${TEST_SUITE}" --strict
+
+  if [ $? -ne 0 ]; then
+    echo "Behat failed"
+    exit 1
+  fi
+fi
