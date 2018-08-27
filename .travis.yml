@@ -31,7 +31,7 @@ env:
 script:
 
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
-  - composer global require drush/drush:7.*
+  - composer global require drush/drush:8.*
   - drush --version
   - cd /home/travis/build/openscholar/openscholar
   - bash scripts/build
