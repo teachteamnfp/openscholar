@@ -10,6 +10,19 @@ cd /var/www/html/openscholar/behat
 composer install
 cp behat.local.yml.travis behat.local.yml
 
+if [ "${TEST_SUITE}" = 'restful' ]; then
+    # Clear cache twice for restful
+    cd /var/www/html/openscholar/www/
+    echo -e "\n # GET api/blog/12 try1"
+    wget http://localhost/api/blog/12
+    drush cache-clear all
+    echo -e "\n # GET api/blog/12 try2"
+    wget http://localhost/api/blog/12
+    drush cache-clear all
+    echo -e "\n # GET api/blog/12 try3"
+    wget http://localhost/api/blog/12
+fi
+
 if [ $DOCKER_DEBUG -eq 1 ]; then
   bash
 else

@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 # Modify the MySQL settings below so they will match your own.
 MYSQL_USERNAME="root"
