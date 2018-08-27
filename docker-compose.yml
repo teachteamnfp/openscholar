@@ -10,10 +10,3 @@ services:
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
       - ".:/var/www/html"
-    ports:
-      - "80:80"
-      - "3306:3306"
-    # The DNS server works within container (dig @localhost example.com), but
-    # *not* via published port. Not sure this is related to systemd.
-    #- "53:53/tcp"
-    #- "53:53/udp"

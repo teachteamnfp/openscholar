@@ -30,3 +30,4 @@ openscholar/1/
 openscholar/libraries/
 openscholar/modules/contrib/
 www/
+docker-compose.override.yml
