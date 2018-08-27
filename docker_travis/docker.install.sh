@@ -14,6 +14,9 @@ ADMIN_USERNAME="admin"
 ADMIN_PASSWORD="admin"
 ADMIN_EMAIL="admin@example.com"
 
+
+echo -e "Selected tag: ${TEST_SUITE}"
+exit 1
 chmod 777 www/sites/default
 rm -rf www/
 mkdir www
