@@ -32,5 +32,5 @@ script:
 
   - docker --version
   - docker-compose --version
-  - cd /home/travis/build/openscholar/openscholar/docker_travis
-  - bash behat-docker.sh
+  - cd /home/travis/build/openscholar/openscholar
+  - bash docker_travis/behat-docker.sh

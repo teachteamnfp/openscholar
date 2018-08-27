@@ -15,10 +15,11 @@ ADMIN_USERNAME="admin"
 ADMIN_PASSWORD="admin"
 ADMIN_EMAIL="admin@example.com"
 
-
-chmod 777 www/sites/default
-rm -rf www/
-mkdir www
+if [ -d "www/sites/default" ]; then
+  chmod 777 www/sites/default
+  rm -rf www/
+  mkdir www
+fi
 
 bash scripts/build
 
