@@ -10,13 +10,13 @@ sleep 10
 
 cd /var/www/html/www
 echo -e "\n # GET api/blog/12 try1"
-wget http://localhost/api/blog/12
+wget http://web/api/blog/12
 drush cache-clear all
 echo -e "\n # GET api/blog/12 try2"
-wget http://localhost/api/blog/12
+wget http://web/api/blog/12
 drush cache-clear all
 echo -e "\n # GET api/blog/12 try3"
-wget http://localhost/api/blog/12
+wget http://web/api/blog/12
 
 cd /var/www/html/openscholar/behat
 composer install

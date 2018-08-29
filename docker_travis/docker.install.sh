@@ -15,6 +15,7 @@ ADMIN_USERNAME="admin"
 ADMIN_PASSWORD="admin"
 ADMIN_EMAIL="admin@example.com"
 
+echo -e "\n # Drupal running on this PHP version"
 php -v
 
 if [ -d "www/sites/default" ]; then
