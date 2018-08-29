@@ -23,4 +23,12 @@ wget http://localhost/api/blog/12
 cd /var/www/html/openscholar/behat
 composer install
 cp behat.local.yml.travis behat.local.yml
-./bin/behat --tags="restful" --strict
+
+# Run tests
+echo -e "\n # Run tests"
+./bin/behat --tags="${TEST_SUITE}" --strict
+
+if [ $? -ne 0 ]; then
+  echo "Behat failed"
+  exit 1
+fi

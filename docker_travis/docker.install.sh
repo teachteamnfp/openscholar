@@ -33,16 +33,21 @@ drush vset purl_base_domain $BASE_DOMAIN_URL
 
 # These commands migrates dummy content and is used for development and testing. Comment out both lines if you wish to have a clean OpenScholar installation.
 drush en -y os_migrate_demo
+echo -e "\n # Run migrates ..."
 drush mi --all --user=1
 
+echo -e "\n # Run extra captcha SQL ..."
 # Disable captcha for forms that use behat tests
 drush sql-query "INSERT INTO captcha_points (form_id, module, captcha_type) VALUES ('comment_node_blog_form', NULL, NULL);"
 drush sql-query "INSERT INTO captcha_points (form_id, module, captcha_type) VALUES ('user_register_form', NULL, NULL);"
 drush sql-query "UPDATE captcha_points SET captcha_type = NULL  WHERE form_id = 'registration_form';"
 
+echo -e "\n # Get user login url: "
 # This command does the login for you when the build script is done. It will open a new tab in your default browser and login to your project as the Administrator. Comment out this line if you do not want the login to happen automatically.
 drush uli --uri=$BASE_DOMAIN_URL
 
+echo -e "\n # Finished drupal install"
 if [ -d "www/sites/default" ]; then
+  echo -e "\n # Directory exists, exit 0"
   exit 0
 fi
