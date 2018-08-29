@@ -9,4 +9,6 @@ services:
       - seccomp:unconfined
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
-      - ".:/var/www/html"
+      - .:/var/www/html
+    ports:
+      - "80:80"
