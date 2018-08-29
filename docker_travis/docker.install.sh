@@ -17,7 +17,6 @@ ADMIN_EMAIL="admin@example.com"
 
 echo -e "\n # Drupal running on this PHP version"
 php -v
-systemctl status httpd
 
 if [ -d "www/sites/default" ]; then
   chmod 777 www/sites/default
