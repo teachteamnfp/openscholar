@@ -16,7 +16,7 @@ env:
     - secure: "HvsIfxg/7BaZepgsKc7s9LK/TEf75drUm+LlyE1BiO3HTq5wwOuyWYiJ5/40JhAGnGsU7dEoUqTR5JePjyQxlV6uyIc6suOsZJz4fOuukEPs/dG9B5W4eMP4cS2UoIb/QU2YEd6Uk0OZWCdZCsHlT1j1MFUiuRHWYSIcvrDFKkY="
   matrix:
     - TEST_SUITE=restful
-#    - TEST_SUITE=features_first
+    - TEST_SUITE=features_first
 #    - TEST_SUITE=features_second
 ##    - TEST_SUITE=harvard
 #    - TEST_SUITE=frontend
