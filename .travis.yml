@@ -33,6 +33,7 @@ script:
   - docker --version
   - docker-compose --version
   - cd /home/travis/build/openscholar/openscholar
-  - docker-compose -f docker/travis/docker-compose.yml up -d
+  - cp docker/travis/docker-compose.yml docker-compose.yml
+  - docker-compose up -d
   - docker-compose exec web docker_travis/docker.install.sh
   - docker-compose exec web docker_travis/run.sh
