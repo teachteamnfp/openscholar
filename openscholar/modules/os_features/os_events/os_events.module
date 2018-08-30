@@ -745,12 +745,14 @@ function os_events_preprocess_views_view_row_rss(&$variables) {
     if (isset($node_wrapper->field_date) && !empty($node_wrapper->field_date) && !empty($node_wrapper->field_date[0]->value())) {
       $event_date_value = $node_wrapper->field_date[0]->value();
       $event_date = is_array($event_date_value) && !empty($event_date_value['date_type']) ?
-        new DateObject($event_date_value['value']) : FALSE;
+        new DateObject($event_date_value['value'], $event_date_value['timezone_db']) : FALSE;
 
       if ($event_date) {
+        $timezone = new DateTimeZone($event_date_value['timezone']);
+        $event_date->setTimezone ($timezone);
         foreach ($variables['row']->elements as $delta => $meta) {
           if ($meta['key'] == 'pubDate') {
-            $variables['row']->elements[$delta]['value'] = $event_date->format('r');
+            $variables['row']->elements[$delta]['value'] = $event_date->format(DateTime::RSS);
             break 1;
           }
         }
