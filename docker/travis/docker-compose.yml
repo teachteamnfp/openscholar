@@ -12,3 +12,11 @@ services:
       - .:/var/www/html
     ports:
       - "80:80"
+
+  mysql:
+    image: mysql:5.6
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: scholar
+      MYSQL_USER: scholar
+      MYSQL_PASSWORD: drupal
