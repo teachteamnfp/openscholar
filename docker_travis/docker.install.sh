@@ -34,7 +34,7 @@ drush vset purl_base_domain $BASE_DOMAIN_URL
 # These commands migrates dummy content and is used for development and testing. Comment out both lines if you wish to have a clean OpenScholar installation.
 drush en -y os_migrate_demo
 echo -e "\n # Run migrates ..."
-drush mi --all --user=1
+#drush mi --all --user=1
 
 echo -e "\n # Run extra captcha SQL ..."
 # Disable captcha for forms that use behat tests

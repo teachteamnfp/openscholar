@@ -10,15 +10,18 @@ cd /opt/apache-solr/apache-solr-3.6.2/example
 java -jar start.jar &
 sleep 10
 
-cd /var/www/html/www
-echo -e "\n # GET api/blog/12 try1"
-wget http://localhost/api/blog/12
-drush cache-clear all
-echo -e "\n # GET api/blog/12 try2"
-wget http://localhost/api/blog/12
-drush cache-clear all
-echo -e "\n # GET api/blog/12 try3"
-wget http://localhost/api/blog/12
+if [ "${TEST_SUITE}" = 'restful' ]; then
+  # Clear cache twice for restful
+  cd /var/www/html/www
+  echo -e "\n # GET api/blog/12 try1"
+  wget localhost/api/blog/12
+  drush cache-clear all
+  echo -e "\n # GET api/blog/12 try2"
+  wget localhost/api/blog/12
+  drush cache-clear all
+  echo -e "\n # GET api/blog/12 try3"
+  wget localhost/api/blog/12
+fi
 
 cd /var/www/html/openscholar/behat
 composer install
