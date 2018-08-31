@@ -23,11 +23,11 @@ RUN yum install -y bind bind-utils && \
     yum -y install yum-utils && \
     yum -y update && \
     yum-config-manager --enable remi-php72 && \
-    yum -y install unzip which wget java-1.8.0-openjdk.x86_64 patch nano && \
+    yum -y install unzip which wget bzip2 java-1.8.0-openjdk.x86_64 patch nano && \
     yum -y install php git php-mysqlnd php-pdo php-gd php-ldap php-odbc php-pear php-xml php-xmlrpc php-mbstring php-soap curl curl-devel php-xdebug php-zip && \
-    yum -y install http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm && \
-    yum -y install mysql-community-server; systemctl enable mysqld.service && \
     yum -y install nodejs && \
+    yum install -y java Xvfb firefox && \
+    yum remove -y firefox && \
     yum clean all
 
 RUN curl -sS https://getcomposer.org/installer | php && \
@@ -44,7 +44,14 @@ RUN mkdir /opt/apache-solr && \
     wget https://archive.apache.org/dist/lucene/solr/3.6.2/apache-solr-3.6.2.zip && \
     unzip -oq apache-solr-3.6.2.zip && \
     rm apache-solr-3.6.2.zip
-
+RUN wget http://selenium-release.storage.googleapis.com/2.53/selenium-server-standalone-2.53.0.jar && \
+    mv selenium-server-standalone-2.53.0.jar /opt/selenium-server-standalone.jar && \
+    wget http://ftp.mozilla.org/pub/mozilla.org/firefox/releases/45.0/linux-x86_64/en-US/firefox-45.0.tar.bz2 && \
+    tar -xvjf firefox-45.0.tar.bz2 && \
+    rm firefox-45.0.tar.bz2 && \
+    mv firefox /usr/local/firefox && \
+    ln -s /usr/local/firefox/firefox /usr/local/bin/firefox && \
+    echo "export DISPLAY=:99" >> ~/.profile
 
 COPY docker_files/ /
 

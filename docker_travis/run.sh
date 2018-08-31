@@ -8,6 +8,12 @@ yes | cp /var/www/html/www/profiles/openscholar/modules/contrib/apachesolr/solr-
 yes | cp /var/www/html/www/profiles/openscholar/behat/solr/solrconfig.xml .
 cd /opt/apache-solr/apache-solr-3.6.2/example
 java -jar start.jar &
+rm /tmp/.X99-lock
+Xvfb :99 -ac &
+export DISPLAY=:99
+sleep 5
+# run the server
+java -jar /opt/selenium-server-standalone.jar &> /dev/null &
 sleep 10
 
 if [ "${TEST_SUITE}" = 'restful' ]; then
