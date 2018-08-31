@@ -29,6 +29,7 @@ bash scripts/build
 cd www
 
 drush si -y openscholar --locale=en --account-name=$ADMIN_USERNAME --account-pass=$ADMIN_PASSWORD --account-mail=$ADMIN_EMAIL --db-url=mysql://$MYSQL_USERNAME:$MYSQL_PASSWORD@$MYSQL_HOST/$MYSQL_DB_NAME --uri=$BASE_DOMAIN_URL openscholar_flavor_form.os_profile_flavor=development openscholar_install_type.os_profile_type=vsite
+echo "\$conf['mail_system'] = array('default-system' => 'DevelMailLog', 'mimemail' => 'MimeMailSystem');" >> sites/default/settings.php
 drush vset purl_base_domain $BASE_DOMAIN_URL
 
 # These commands migrates dummy content and is used for development and testing. Comment out both lines if you wish to have a clean OpenScholar installation.
