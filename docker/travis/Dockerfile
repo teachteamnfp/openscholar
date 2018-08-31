@@ -25,6 +25,8 @@ RUN yum install -y bind bind-utils && \
     yum-config-manager --enable remi-php72 && \
     yum -y install unzip which wget bzip2 java-1.8.0-openjdk.x86_64 patch nano && \
     yum -y install php git php-mysqlnd php-pdo php-gd php-ldap php-odbc php-pear php-xml php-xmlrpc php-mbstring php-soap curl curl-devel php-xdebug php-zip && \
+    yum -y install http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm && \
+    yum -y install mysql && \
     yum -y install nodejs && \
     yum install -y java Xvfb firefox && \
     yum remove -y firefox && \
