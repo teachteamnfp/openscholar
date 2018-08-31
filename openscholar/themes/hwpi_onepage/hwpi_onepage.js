@@ -1,12 +1,17 @@
 jQuery(document).ready(function($) {
-	var num = 184;
-	//number of pixels before modifying styles
+  //number of pixels before modifying styles
+	var num = jQuery('#menu-bar').offset().top;
+
+	// Size of the un-fixed menu.
+	var menu_size = jQuery('#menu-bar').height();
 
 	jQuery(window).bind('scroll', function() {
 		if (jQuery(window).scrollTop() > num) {
+			jQuery('#page-wrapper').css('marginTop', menu_size + 'px');
 			jQuery('#menu-bar').addClass('fixed');
 		} else {
 			jQuery('#menu-bar').removeClass('fixed');
+      jQuery('#page-wrapper').css('marginTop', '0px');
 		}
 	});
 
