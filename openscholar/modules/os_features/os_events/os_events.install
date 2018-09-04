@@ -375,3 +375,14 @@ function os_events_update_7031() {
   field_bundle_settings('node', 'event', $settings);
   system_rebuild_module_data();
 }
+
+/**
+ * Update Google Calendar View
+ */
+function os_events_update_7032() {
+  features_revert(array(
+    'os_events' => array(
+      'views_view'
+    )
+  ));
+}
