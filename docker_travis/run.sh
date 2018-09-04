@@ -7,20 +7,20 @@ cd /opt/apache-solr/apache-solr-3.6.2/example/solr/conf
 yes | cp /var/www/html/www/profiles/openscholar/modules/contrib/apachesolr/solr-conf/solr-3.x/* .
 yes | cp /var/www/html/www/profiles/openscholar/behat/solr/solrconfig.xml .
 cd /opt/apache-solr/apache-solr-3.6.2/example
-#java -jar start.jar &
-#sleep 10
+java -jar start.jar &
+sleep 10
 
 cd /var/www/html/openscholar/behat
 sh -c "echo 127.0.0.1  lincoln.local >> /etc/hosts"
 sh -c "cat lincoln-vhost.txt > /etc/httpd/conf.d/lincoln.local.conf"
 systemctl restart httpd
 
-Xvfb :99 -ac &
+#Xvfb :99 -ac &
 export DISPLAY=:99
-sleep 5
+#sleep 5
 # run the server
-java -jar /opt/selenium-server-standalone.jar > /dev/null 2>&1 &
-sleep 10
+#java -jar /opt/selenium-server-standalone.jar > /dev/null 2>&1 &
+#sleep 10
 
 if [ "${TEST_SUITE}" = 'restful' ]; then
   # Clear cache twice for restful
