@@ -16,6 +16,7 @@ sh -c "cat lincoln-vhost.txt > /etc/httpd/conf.d/lincoln.local.conf"
 systemctl restart httpd
 
 Xvfb :99 -ac &
+THE_X_PID=$!
 export DISPLAY=:99
 sleep 5
 # run the server
@@ -47,3 +48,6 @@ if [ $? -ne 0 ]; then
   echo "Behat failed"
   exit 1
 fi
+
+# kill Xvfb
+kill -15 ${THE_X_PID}
