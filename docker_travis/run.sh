@@ -15,9 +15,9 @@ sh -c "echo 127.0.0.1  lincoln.local >> /etc/hosts"
 sh -c "cat lincoln-vhost.txt > /etc/httpd/conf.d/lincoln.local.conf"
 systemctl restart httpd
 
-#Xvfb :99 -ac &
+Xvfb :99 -ac &
 export DISPLAY=:99
-#sleep 5
+sleep 5
 # run the server
 #java -jar /opt/selenium-server-standalone.jar > /dev/null 2>&1 &
 #sleep 10
