@@ -20,8 +20,9 @@ THE_X_PID=$!
 export DISPLAY=:99
 sleep 5
 # run the server
-#java -jar /opt/selenium-server-standalone.jar > /dev/null 2>&1 &
-#sleep 10
+java -jar /opt/selenium-server-standalone.jar > /dev/null 2>&1 &
+THE_S_PID=$!
+sleep 10
 
 if [ "${TEST_SUITE}" = 'restful' ]; then
   # Clear cache twice for restful
@@ -51,3 +52,5 @@ fi
 
 # kill Xvfb
 kill -15 ${THE_X_PID}
+# kill selenium
+kill -15 ${THE_S_PID}
