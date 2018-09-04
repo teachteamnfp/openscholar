@@ -188,29 +188,23 @@ function os_events_gcal_create_calendar() {
 
   $client = getClient ();
   $calendarService = new Google_Service_Calendar($client);
-  $calendar_name = $vsite->group->title;
+  $calendar_name = trim(variable_get('university_name') . ' ' . $vsite->group->title);
   //$calendar_name = 'OpenScholar';
   $calendar_id = createCalendar ($calendar_name);
   //deleteEventsfromGCal($view, $calendar_name);
 
-  // Delete removed events
+  // Collect a list of all events already pushed to Google Calendar
   $all_events = $calendarService->events->listEvents ($calendar_id);
+  $received = array();
   foreach ($all_events->getItems () as $all_event) {
-    $event_delete = true;
-    foreach ($view->result as $e) {
-      if ($e->_field_data['nid']['entity']->nid == $all_event->getId ()) {
-        $event_delete = false;;
-        break;
-      }
-    }
-    if ($event_delete) {
-      $calendarService->events->delete ($calendar_id, $all_event->getId ());
-    }
+    $received[] = $all_event->getId();
   }
 
-  $event = array ();
+  $local = array();
+  // Push all local events to Google Calendar
   foreach ($view->result as $e) {
-    if (checkEventExists ($e->_field_data['nid']['entity']->nid, $calendar_id)) {
+    $local[] = $id = _os_events_generate_uuid ($e->_field_data['nid']['entity']->nid);
+    if (!in_array($id, $received)) {
 
       # Create event and add it to the calendar
       $event = new Google_Service_Calendar_Event();
@@ -218,7 +212,7 @@ function os_events_gcal_create_calendar() {
       $event->setDescription ($e->_field_data['nid']['entity']->body[LANGUAGE_NONE][0]['value']);
       $event->setLocation ($e->_field_data['nid']['entity']->field_event_location[LANGUAGE_NONE][0]['value']);
       $event->setSummary ($e->_field_data['nid']['entity']->title);
-      $event->setId ($e->_field_data['nid']['entity']->nid);
+      $event->setId ($id);
 
       $dt1 = new DateTime($e->field_data_field_date_field_date_value . "Z");
       $dt2 = new DateTime($e->field_data_field_date_field_date_value2 . "Z");
@@ -232,7 +226,7 @@ function os_events_gcal_create_calendar() {
       $calendarInsert = $calendarService->events->insert ($calendar_id, $event);
     } else {
       # Update events to the Google calendar
-      $event = $calendarService->events->get ($calendar_id, $e->_field_data['nid']['entity']->nid);
+      $event = $calendarService->events->get ($calendar_id, $id);
 
       $event->setDescription ($e->_field_data['nid']['entity']->body[LANGUAGE_NONE][0]['value']);
       $event->setLocation ($e->_field_data['nid']['entity']->field_event_location[LANGUAGE_NONE][0]['value']);
@@ -252,10 +246,24 @@ function os_events_gcal_create_calendar() {
     }
   }
 
+  // Delete any events on Google Calendar that are not on local anymore
+  $delete = array_diff($received, $local);
+  foreach ($delete as $id) {
+    $calendarService->events->delete ($calendar_id, $id );
+  }
+
   if($calendarInsert || $calendarUpdate) {
     drupal_set_message(t('Calendar successfully sync with Google calendar.'));
   }
-  drupal_goto(url('/' . $vsite->group->purl . '/calendar'));
+  drupal_goto($vsite->group->purl . '/calendar');
+}
+
+/**
+ * Generates the UUID for an event
+ */
+function _os_events_generate_uuid($nid) {
+  $base = variable_get('purl_base_domain', $GLOBALS['base_url']).':node:'.$nid;
+  return sha1($base);
 }
 
 /**
