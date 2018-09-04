@@ -181,7 +181,9 @@ function os_events_gcal_create_calendar() {
   // Load the view so we can iterate over it's results
   $get_fresh_view = true;
   if ($view = views_get_view($name, $get_fresh_view)) {
+    ob_get_contents();
     $view->execute_display($display_id, $args);
+    ob_end_clean ();
   }
 
   $client = getClient ();
