@@ -2,7 +2,7 @@ version: "3.0"
 
 services:
   web:
-    image: sztrehab/openscholar-env
+    image: theopenscholar/openscholar-env
     cap_add:
       - SYS_ADMIN
     security_opt:

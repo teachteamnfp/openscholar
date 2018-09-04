@@ -1,9 +1,9 @@
 # How to build a new image
 
-TODO: replace the image location to openscholar from sztrehab
+You have to login to docker with `theopenscholar` account.
 
 ```
 (cd docker/travis)
-docker build -t sztrehab/openscholar-env .
-docker push sztrehab/openscholar-env
+docker build -t theopenscholar/openscholar-env .
+docker push theopenscholar/openscholar-env
 ```
