@@ -1255,8 +1255,8 @@ class FeatureContext extends DrupalContext {
   /**
    * @Given /^the widget "([^"]*)" is set in the "([^"]*)" page$/
    */
-  public function theWidgetIsSetInThePage($page, $widget) {
-    $this->box[] = FeatureHelp::setBoxInRegion($this->nid, $page, $widget);
+  public function theWidgetIsSetInThePage($widget, $page) {
+    $this->box[] = FeatureHelp::setBoxInRegion($this->nid, $widget, $page);
   }
 
   /**
