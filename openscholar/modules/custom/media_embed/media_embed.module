@@ -322,7 +322,12 @@ function media_embed_file_formatter_media_embed_view($file, $display, $langcode)
         $replacements[1] = 'height="'.$height.'"';
         $replacements[0] = 'width="'.$width.'"';
 
+        $ratio = $height / $width * 100;
+
         $html = preg_replace($patterns, $replacements, $html);
+        if (!empty($ratio)) {
+          $html = '<div class="media-embed-auto-scaler" style="padding-top: '.$ratio.'%">' . $html . '</div>';
+        }
       }
       // file attaches fields for us. I just need to return something so we break out here.
       $output = array('#markup' => '');
