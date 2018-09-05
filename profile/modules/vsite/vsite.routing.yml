@@ -1,0 +1,13 @@
+vsite.settings.form:
+  path: '/vsite/settings'
+  defaults:
+    _form: '\Drupal\vsite\Form\VsiteTestForm'
+    _title: 'Testing vsites'
+  requirements:
+    _permission: 'access vsite settings'
+vsite.example:
+  path: '/vsite'
+  defaults:
+    _access: 'TRUE'
+    _controller: '\Drupal\vsite\Controller\VsiteExampleController::content'
+    _title: 'Hello World'

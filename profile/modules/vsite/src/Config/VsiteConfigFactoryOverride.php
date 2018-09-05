@@ -10,20 +10,37 @@ use Drupal\Core\Config\ConfigFactoryOverrideBase;
 use Drupal\Core\Config\ConfigFactoryOverrideInterface;
 use Drupal\Core\Config\ConfigRenameEvent;
 use Drupal\Core\Config\StorageInterface;
+use Drupal\Core\Url;
 
 class VsiteConfigFactoryOverride extends ConfigFactoryOverrideBase implements ConfigFactoryOverrideInterface {
+
+  private static $blacklist = [
+    'language.entity.en',
+    'language.entity.und',
+    'language.entity.zxx'
+  ];
 
   /**
    * @return bool|StorageInterface
    */
   protected function getVsiteCollection() {
+    static $running = false;
     /** @var \Drupal\group_purl\Context\GroupPurlContext $purl_context */
     $purl_context = \Drupal::service ('group_purl.context_provider');
     /** @var \Drupal\Core\Config\StorageInterface $config_storage */
     $config_storage = \Drupal::service('config.storage');
-    if ($group = $purl_context->getGroupFromRoute()) {
-      $purl = trim($group->path->getValue()[0]['alias'], '/');
-      return $config_storage->createCollection('vsite.'.$purl);
+    if (!$running) {
+      $running = true;
+      /** @var \Drupal\group\Entity\Group $group */
+      if ($group = $purl_context->getGroupFromRoute()) {
+        /** @var \Drupal\Core\Path\AliasManagerInterface $alias_manager */
+        $alias_manager = \Drupal::service('path.alias_manager');
+        $path = $alias_manager->getAliasByPath('/group/' . $group->id ());
+        $purl = substr($path, 1);
+
+        return $config_storage->createCollection('vsite.'.$purl);
+      }
+      $running = false;
     }
     return false;
   }
@@ -31,7 +48,9 @@ class VsiteConfigFactoryOverride extends ConfigFactoryOverrideBase implements Co
    * @inheritDoc
    */
   public function loadOverrides ($names) {
-    if ($storage = $this->getVsiteCollection ()) {
+    static $searched = array();
+    $names = array_diff($names, static::$blacklist);
+    if (!empty($names) && $storage = $this->getVsiteCollection ()) {
       return $storage->readMultiple ($names);
     }
     return array();
@@ -68,10 +87,14 @@ class VsiteConfigFactoryOverride extends ConfigFactoryOverrideBase implements Co
    * Unless suggested otherwise, I'm going to return one for every vsite
    */
   public function addCollections (ConfigCollectionInfo $collection_info) {
-    $group_purl_provider = \Drupal::service('purl.plugin.provider_manager')->createPlugin('group_purl_provider');
-    $modifiers = $group_purl_provider->getModifiers();
-    foreach ($modifiers as $m) {
-      $collection_info->addCollection ('vsite.'.(trim($m, '/')), $this);
+    /** @var \Drupal\purl\Plugin\ProviderManager $manager */
+    if ($manager = \Drupal::service('purl.plugin.provider_manager')) {
+      /** @var \Drupal\purl\Plugin\Purl\Provider\ProviderInterface $group_purl_provider */
+      $group_purl_provider = $manager->getProvider ('group_purl_provider');
+      $modifiers = $group_purl_provider->getModifierData ();
+      foreach ($modifiers as $m) {
+        $collection_info->addCollection ('vsite.' . (trim ($m, '/')), $this);
+      }
     }
   }
 
