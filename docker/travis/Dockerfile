@@ -58,7 +58,6 @@ RUN wget http://selenium-release.storage.googleapis.com/2.53/selenium-server-sta
 COPY docker_files/ /
 
 EXPOSE 80
-EXPOSE 3306
 
 WORKDIR /var/www/html
 
