@@ -47,6 +47,10 @@ echo -e "\n # Run tests"
 
 if [ $? -ne 0 ]; then
   echo "Behat failed"
+  # kill Xvfb
+  kill -15 ${THE_X_PID}
+  # kill selenium
+  kill -15 ${THE_S_PID}
   exit 1
 fi
 
