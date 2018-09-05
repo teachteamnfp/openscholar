@@ -124,6 +124,14 @@ textarea,
     background-color: #fff;
 }
 
+.form-text-mini {
+    width: 60% !important;
+}
+
+.form-text-micro {
+    width: 30% !important;
+}
+
 #og-vocabulary-add-more-wrapper select.form-select {
     height: 120px;
 }
@@ -164,7 +172,7 @@ html.js input.throbbing {
 }
 .apps-help-link,
 .revision-suffix.help-link a:after,
-.help-link.ng-binding a:after {
+.help-link a:after {
     padding: 5px 25px 5px 0;
     background: url("../images/cp-sprite.png") no-repeat 4px -732px;
    content:'';
@@ -459,8 +467,10 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
 
 
 /** OVERLAY MODAL OVERRIDES **/
-.ui-dialog button.ui-dialog-titlebar-close, #overlay-close:hover, #overlay-close  {
-    background: url(../images/cp-sprite.png) no-repeat 0 -547px;
+.ui-dialog .ui-dialog-titlebar button.ui-dialog-titlebar-close,
+#overlay-close,
+#overlay-close:hover {
+    background: url('../images/cp-sprite.png') no-repeat 0 -547px;
     width: 30px;
     height: 30px;
     position: relative;
@@ -468,9 +478,7 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
     border: none;
 }
 
-
-#overlay-close-wrapper,
-.ui-dialog .ui-dialog-titlebar-close {
+.ui-dialog .ui-dialog-titlebar button.ui-dialog-titlebar-close {
     float: right;
     margin: -8px 0;
     border: 0;
@@ -495,7 +503,9 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
     background-image: none;
 }
 
-.ui-dialog .ui-dialog-titlebar, #overlay-titlebar {
+.ui-dialog.ap-settings-form .ui-dialog-titlebar,
+.ui-dialog.site-creation-form .ui-dialog-titlebar,
+#overlay-titlebar {
     padding: 7px 10px 17px;
     position: relative;
     white-space: nowrap;
@@ -536,6 +546,11 @@ div.ctools-modal-content .modal-content .modal-throbber-wrapper img {
     padding: 0;
     top:10% !important;
     font-size: 14px; 
+}
+
+.ui-dialog.site-creation-form {
+    padding: 0;
+    top:2% !important;
 }
 
 .ui-dialog.ap-settings-form .ui-dialog-content {
@@ -1926,6 +1941,9 @@ body.page-node-revisions .node {
 
 div.no-bold {
     font-weight: normal;
+}
+.cp-themes .screenshot {
+    width: 245px;
 }
 
  .visibility-selector {

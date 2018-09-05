@@ -184,11 +184,20 @@ function vsite_register_block_view($delta = '') {
         'id' => 'get-your-site-block',
       ),
     );
+
+    if ($text == 'Create Your Site Here' && !user_is_anonymous()) {
+      // user is either loggedin by pin or os account
+      $param = drupal_get_query_parameters();
+      $markup = '<site-creation-form ' . ($param['parent']? ' id="add-subsite-' . $param['parent'] . '"':''). '>' . l($text, $path, $options) . '</site-creation-form>';
+    } else {
+      $markup = l($text, $path, $options);
+    }
     $block['content'] = array(
       'content' => array(
-        '#markup' => l($text, $path, $options),
+        '#markup' => $markup,
       ),
     );
+
   }
 
   return $block;
@@ -286,6 +295,58 @@ function vsite_register_message($form, $domain) {
   // Gives other modules a chance to alter message
   module_invoke_all('vsite_register_message', $build, $form, $domain);
   $message = drupal_render($build);
+
+  return $message;
+}
+
+
+/**
+ * Generates the success message to display when vsite register form is submit.
+ *
+ * @return string $message
+ * The function is called after submitting site creation form in Angular screen.
+ */
+function vsite_register_message_angular($form, $domain) {
+  global $user, $base_url;
+
+  // Checks if the current user is logged in.
+  $user_is_anonymous = (bool) in_array('anonymous user', $user->roles);
+
+  // Checks if the current user may create sites on other users' behalf.
+  $may_create_on_behalf = (bool) user_access('create openscholar site on behalf of others');
+  // Displays "the site" or "your site" depending on current users' permission.
+  if ($may_create_on_behalf) {
+    $whose_site = 'the';
+  }
+  else {
+    $whose_site = 'your';
+  }
+
+  // Prepares the href attribute for the "Go there now" link.
+  $href = "$base_url/$domain";
+  // Checks if there is a welcome message node set to display
+  // when the user clicks the "Go there now" link and visits their new site.
+  $display_welcome = (bool) variable_get('vsite_register_welcome_message', FALSE);
+  if ($display_welcome) {
+    $fragment = 'overlay=' . VSITE_REGISTER_WELCOME_PATH;
+    $href .= "#$fragment";
+  }
+  $link = l(t('Go there now &raquo;'), $href, array(
+    'html' => TRUE,
+    'attributes' => array(
+      'title' => t('Visit your new site now'),
+      'class' => array('os-green-button')
+    )
+  ));
+
+  // Prepares an array of messages to display to the user,
+  // to be rendered each as individual paragraph elements.
+  $paragraphs = array();
+  $paragraphs[] = $href;
+
+  // Gives other modules a chance to alter message
+  module_invoke_all('vsite_register_message', $paragraphs, $form, $domain);
+  $message = $href;
 
   return $message;
 }
@@ -442,4 +503,4 @@ function vsite_register_mail_alter(&$message) {
   if ($params['@site_name']) {
     $message['body'][4] = t("-@site_name", $params);
   }
- }
+}
