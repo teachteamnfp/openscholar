@@ -4175,3 +4175,15 @@ function vsite_redirect_load_by_source_existing_url_alter(&$source) {
     }
   }
 }
+
+/**
+ * Implements hook_url_inbound_alter().
+ */
+function vsite_url_inbound_alter(&$path, $original_path, $path_language) {
+  if ($vsite = vsite_get_vsite()) {
+    $frontpage = $vsite->controllers->variable->get('site_frontpage', 'original');
+    if ($frontpage == $path) {
+      $path = variable_get('site_frontpage', 'node');
+    }
+  }
+}
