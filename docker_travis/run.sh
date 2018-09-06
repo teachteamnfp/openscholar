@@ -9,6 +9,11 @@ yes | cp /var/www/html/www/profiles/openscholar/behat/solr/solrconfig.xml .
 cd /opt/apache-solr/apache-solr-3.6.2/example
 java -jar start.jar &
 sleep 10
+cd /var/www/html/www
+drush en os_search_solr -y
+drush solr-mark-all
+drush solr-index
+drush vset oembedembedly_api_key ${EMBEDLYAPIKEY}
 
 cd /var/www/html/openscholar/behat
 sh -c "echo 127.0.0.1  lincoln.local >> /etc/hosts"

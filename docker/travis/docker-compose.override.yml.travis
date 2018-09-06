@@ -6,3 +6,4 @@ services:
       - "80:80"
     environment:
       - TEST_SUITE=${TEST_SUITE}
+      - EMBEDLYAPIKEY=${EMBEDLYAPIKEY}
