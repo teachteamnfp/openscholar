@@ -3,6 +3,8 @@
 echo -e "\n # Start services and run behat tests ..."
 systemctl start httpd
 
+chmod -R 777 /var/www/html/www/sites/default/files/
+
 cd /opt/apache-solr/apache-solr-3.6.2/example/solr/conf
 yes | cp /var/www/html/www/profiles/openscholar/modules/contrib/apachesolr/solr-conf/solr-3.x/* .
 yes | cp /var/www/html/www/profiles/openscholar/behat/solr/solrconfig.xml .
@@ -45,21 +47,22 @@ fi
 cd /var/www/html/openscholar/behat
 composer install
 cp behat.local.yml.travis behat.local.yml
+./bin/behat -V
 
 # Run tests
 echo -e "\n # Run tests"
-./bin/behat --tags="${TEST_SUITE}" --strict
+./bin/behat --tags="galleries" --strict
 
 if [ $? -ne 0 ]; then
   echo "Behat failed"
   # kill Xvfb
-  kill -15 ${THE_X_PID}
+#  kill -15 ${THE_X_PID}
   # kill selenium
-  kill -15 ${THE_S_PID}
+#  kill -15 ${THE_S_PID}
   exit 1
 fi
 
 # kill Xvfb
-kill -15 ${THE_X_PID}
+#kill -15 ${THE_X_PID}
 # kill selenium
-kill -15 ${THE_S_PID}
+#kill -15 ${THE_S_PID}
