@@ -7,3 +7,9 @@ services:
     tags:
       - { name: config.factory.override, priority: -254 }
       - { name: event_subscriber }
+  vsite.config.factory:
+    class: Drupal\vsite\Config\VsiteConfigFactory
+    public: false
+    decorates: config.factory
+    decoration_priority: 3
+    arguments: ['@config.storage', '@event_dispatcher', '@config.typed']

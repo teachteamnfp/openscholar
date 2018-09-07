@@ -8,8 +8,11 @@ use Drupal\Core\Controller\ControllerBase;
 class VsiteExampleController extends ControllerBase {
 
   public function content() {
+
+    $config = $this->config('vsite.test_settings');
+    dvm($config->get('checkbox'));
     $build = [
-      '#markup' => $this->t('Hello World!'),
+      '#markup' => $config->get('checkbox'),
     ];
 
     return $build;

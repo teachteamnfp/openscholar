@@ -48,7 +48,6 @@ class VsiteConfigFactoryOverride extends ConfigFactoryOverrideBase implements Co
    * @inheritDoc
    */
   public function loadOverrides ($names) {
-    static $searched = array();
     $names = array_diff($names, static::$blacklist);
     if (!empty($names) && $storage = $this->getVsiteCollection ()) {
       return $storage->readMultiple ($names);
@@ -67,6 +66,8 @@ class VsiteConfigFactoryOverride extends ConfigFactoryOverrideBase implements Co
 
   /**
    * @inheritDoc
+   *
+   * This is only called by ConfigImporter during the import process.
    */
   public function createConfigObject ($name, $collection = StorageInterface::DEFAULT_COLLECTION) {
     return NULL;
@@ -102,11 +103,15 @@ class VsiteConfigFactoryOverride extends ConfigFactoryOverrideBase implements Co
    * @inheritDoc
    */
   public function onConfigSave (ConfigCrudEvent $event) {
+    dvm('configsave');
     if ($storage = $this->getVsiteCollection ()) {
+      dvm('storagefound');
       $config = $event->getConfig ()->get();
+      dvm($config);
       foreach ($config as $key => $value) {
         $storage->write($key, $value);
       }
+      dvm('done writing');
       $event->stopPropagation ();
     }
   }
