@@ -8,6 +8,7 @@ vsite.settings.form:
 vsite.example:
   path: '/vsite'
   defaults:
-    _access: 'TRUE'
     _controller: '\Drupal\vsite\Controller\VsiteExampleController::content'
     _title: 'Hello World'
+  requirements:
+    _access: 'TRUE'

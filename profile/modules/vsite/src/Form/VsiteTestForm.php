@@ -44,4 +44,16 @@ class VsiteTestForm extends ConfigFormBase {
 
     return $form;
   }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function submitForm(array &$form, FormStateInterface $form_state) {
+    $this->config('vsite.test_settings')
+      // Remove unchecked types.
+      ->set('checkbox', $form_state->getValue('checkbox'))
+      ->save();
+
+    parent::submitForm($form, $form_state);
+  }
 }
