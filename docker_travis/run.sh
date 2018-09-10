@@ -51,18 +51,18 @@ cp behat.local.yml.travis behat.local.yml
 
 # Run tests
 echo -e "\n # Run tests"
-./bin/behat --tags="galleries" --strict
+./bin/behat --tags="${TEST_SUITE}" --strict
 
 if [ $? -ne 0 ]; then
   echo "Behat failed"
   # kill Xvfb
-#  kill -15 ${THE_X_PID}
+  kill -15 ${THE_X_PID}
   # kill selenium
-#  kill -15 ${THE_S_PID}
+  kill -15 ${THE_S_PID}
   exit 1
 fi
 
 # kill Xvfb
-#kill -15 ${THE_X_PID}
+kill -15 ${THE_X_PID}
 # kill selenium
-#kill -15 ${THE_S_PID}
+kill -15 ${THE_S_PID}
