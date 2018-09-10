@@ -72,7 +72,7 @@ printf "disable_functions =\nmemory_limit = 256M\ndate.timezone = \"America/New_
 export PATH="$HOME/.composer/vendor/bin:$PATH"
 drush --version || exit 1
 npm install -g bower
-npm install -g --verbose node-sass
+npm install -g node-sass
 export NODE_PATH=/home/rof/.nvm/v0.10.48/lib/node_modules
 
 # Drush executable.
