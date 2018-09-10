@@ -175,8 +175,7 @@ cp -R openscholar/temporary/* openscholar/openscholar/modules/contrib/
 
 #pull in site-specific code
 buildComposer "$BUILD_ROOT" "$DOCROOT"
-ls "$BUILD_ROOT/scripts"
-node "$BUILD_ROOT/scripts/themes.js" "$DOCROOT"
+node "$BUILD_ROOT/openscholar/scripts/themes.js" "$DOCROOT"
 git commit -a -m "$CI_MESSAGE" -m "" -m "git-subtree-split: $CI_COMMIT_ID" || git commit --amend -m "$CI_MESSAGE" -m "" -m "git-subtree-split: $CI_COMMIT_ID"
 fi
 
