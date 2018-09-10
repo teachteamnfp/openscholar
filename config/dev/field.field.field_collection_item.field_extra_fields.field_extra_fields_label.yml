@@ -1,0 +1,19 @@
+uuid: d34290a4-0985-4cc5-b500-b6946270a9eb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.field_collection_item.field_extra_fields_label
+    - field_collection.field_collection.field_extra_fields
+id: field_collection_item.field_extra_fields.field_extra_fields_label
+field_name: field_extra_fields_label
+entity_type: field_collection_item
+bundle: field_extra_fields
+label: Label
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

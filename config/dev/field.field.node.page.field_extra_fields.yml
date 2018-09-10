@@ -1,0 +1,23 @@
+uuid: 3a4b6820-b06b-450a-bde8-7114404fa201
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_extra_fields
+    - node.type.page
+  module:
+    - field_collection
+id: node.page.field_extra_fields
+field_name: field_extra_fields
+entity_type: node
+bundle: page
+label: 'Extra fields'
+description: ''
+required: false
+translatable: false
+default_value:
+  - {  }
+  - {  }
+default_value_callback: ''
+settings: {  }
+field_type: field_collection

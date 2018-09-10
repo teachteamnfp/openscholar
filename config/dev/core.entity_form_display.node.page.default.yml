@@ -4,8 +4,10 @@ status: true
 dependencies:
   config:
     - field.field.node.page.body
+    - field.field.node.page.field_extra_fields
     - node.type.page
   module:
+    - field_collection
     - path
     - text
 _core:
@@ -30,6 +32,12 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_extra_fields:
+    weight: 121
+    settings: {  }
+    third_party_settings: {  }
+    type: field_collection_embed
+    region: content
   path:
     type: path
     weight: 30
@@ -41,6 +49,13 @@ content:
     settings:
       display_label: true
     weight: 15
+    region: content
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 120
     region: content
     third_party_settings: {  }
   sticky:
