@@ -3589,7 +3589,7 @@ class FeatureContext extends DrupalContext {
           throw $e;
         }
       }
-    }, 10000);
+    }, 20000);
   }
 
   /**
