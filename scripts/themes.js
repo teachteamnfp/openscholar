@@ -57,9 +57,6 @@ function renderFile(directory, source) {
         filename = directory + '/css/' + base + '.css';
 
       var flag = 'w';
-      if (fs.existsSync(filename)) {
-        flag = 'r+';
-      }
       var fd = fs.open(filename, flag, parseInt('666', 8), function (err, fd) {
         if (!err) {
           fs.write(fd, result.css, 0, result.css.length, 0, function (err, bytesWritten, buffer) {
