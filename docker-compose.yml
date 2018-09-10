@@ -15,7 +15,7 @@ services:
 #      - /path/to/mariadb/data/on/host:/var/lib/mysql # I want to manage volumes manually.
 
   php:
-    image: wodby/drupal-php:7.0-2.4.3
+    image: wodby/drupal-php:7.2
     environment:
 #      PHP_EXTRA_BUILD_DEPS: gettext-base
 #      PHP_EXTRA_CONFIGURE_ARGS: --with-gettext
