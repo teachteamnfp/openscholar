@@ -160,6 +160,8 @@ rm -rf $BUILD_ROOT/openscholar/behat &> /dev/null
 
 #pull in site-specific code
 buildComposer "$BUILD_ROOT" "$DOCROOT"
+echo -e $BUILD_ROOT"\n"
+echo -e $DOCROOT"\n"
 node "$BUILD_ROOT/scripts/themes.js" "$DOCROOT"
 
 git commit -a -m "$CI_MESSAGE" -m "" -m "git-subtree-split: $CI_COMMIT_ID"
