@@ -73,10 +73,7 @@ export PATH="$HOME/.composer/vendor/bin:$PATH"
 drush --version || exit 1
 npm install -g bower
 npm install -g --verbose node-sass
-
-which npm
-which node
-echo $NODE_PATH
+export NODE_PATH=/home/rof/.nvm/v0.10.48/lib/node_modules
 
 # Drush executable.
 [[ $DRUSH && ${DRUSH-x} ]] || DRUSH=drush
