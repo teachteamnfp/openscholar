@@ -55,6 +55,7 @@ function renderFile(directory, source) {
     if (!err) {
       var base = path.basename(source, '.sass'),
         filename = directory + '/css/' + base + '.css';
+      fs.mkdirSync(directory + '/css');
 
       var flag = 'w';
       var fd = fs.open(filename, flag, parseInt('666', 8), function (err, fd) {
