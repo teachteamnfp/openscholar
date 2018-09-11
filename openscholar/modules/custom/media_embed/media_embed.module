@@ -275,9 +275,10 @@ function media_embed_file_formatter_media_embed_view($file, $display, $langcode)
       $file->field_html_code['und'][0]['safe_value'] = $file->field_html_code['und'][0]['value'];
       $html = &$file->field_html_code[LANGUAGE_NONE][0]['safe_value'];
 
+
       // copied from dead embedfilter module
-      preg_match('/height="([^\"]*)"/', $html, $fetchheight);
-      preg_match('/width="([^\"]*)"/', $html, $fetchwidth);
+      preg_match('/<iframe [^>]*height="([^\"]*)"/', $html, $fetchheight);
+      preg_match('/<iframe [^>]*width="([^\"]*)"/', $html, $fetchwidth);
 
       if ($fetchheight && $fetchwidth) {
         $height = $fetchheight[1];
