@@ -4,7 +4,6 @@ Feature:
  @api @features_first @create_new_booklets_content @os_booklets @javascript
  Scenario: Create new booklets content
     Given I am logging in as "john"
-      And I visit the absolute path "about:"
       And I visit "john/node/add/book"
      When I fill in "Title" with "Profiles In Courage"
       And I press "Save"
@@ -98,7 +97,7 @@ Feature:
 #     And I press "Delete"
 #    Then I should see "has been deleted"
 
- @api @features_first @os_booklets @delete_booklet_content_in_outline @javascript
+ @api @wip @features_first @os_booklets @delete_booklet_content_in_outline @javascript
  Scenario: delete booklet content in outline
     Given I am logging in as "john"
       And I visit the site "john/book/profiles-courage"
