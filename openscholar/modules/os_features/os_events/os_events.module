@@ -260,14 +260,6 @@ function os_events_gcal_create_calendar() {
     drupal_set_message(t('Calendar successfully sync with Google calendar.'));
   }
 
-  $has_domain = db_select('purl', 'p')
-    ->fields('p', array('id', 'value'))
-    ->condition('provider', 'vsite_domain', '=')
-    ->condition('id', $vsite->id)
-    ->countQuery()
-    ->execute()
-    ->fetchField();
-
   drupal_goto($vsite->get_absolute_url('calendar'));
 }
 
