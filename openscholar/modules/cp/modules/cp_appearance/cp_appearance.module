@@ -162,28 +162,28 @@ function cp_appearance_theme_picker_form($form, &$form_state) {
     //Flavors is not shown for the featured themes
     if ((!in_array($theme->name, $featured_themes) || !count(os_theme_get_flavors($info['theme_name']))) && empty($theme->info['single'])) {
       //Add this theme to the list of theme options.
-      $radio_options[$info['theme_name']] = $info['theme_name'];
-      $themes_sorted[$info['theme_name']] = $theme;
-
-      // Only continues if this theme has flavors.
-      $theme_flavors = os_theme_get_flavors($info['theme_name']);
-      $flavor_options = _cp_appearance_get_flavor_options($theme_flavors, $info, $default_flavor);
-      if (!count($flavor_options)) {
-        continue;
-      }
-
-      // Adds the flavor select option to the form.
-      $flavor_key = 'os_appearance_' . $info['theme_name'] . '_flavor';
-      $form[$flavor_key] = array(
-        '#type' => 'select',
-        '#title' => t('Flavor'),
-        '#options' => $flavor_options,
-        '#default_value' => variable_get($flavor_key, $default_flavor),
-        '#ajax' => array(
-          'callback' => 'cp_appearance_swap_screenshot',
-          'wrapper' => 'screenshot_' . $theme->name
-        )
-      );
+//      $radio_options[$info['theme_name']] = $info['theme_name'];
+//      $themes_sorted[$info['theme_name']] = $theme;
+//
+//      // Only continues if this theme has flavors.
+//      $theme_flavors = os_theme_get_flavors($info['theme_name']);
+//      $flavor_options = _cp_appearance_get_flavor_options($theme_flavors, $info, $default_flavor);
+//      if (!count($flavor_options)) {
+//        continue;
+//      }
+//
+//      // Adds the flavor select option to the form.
+//      $flavor_key = 'os_appearance_' . $info['theme_name'] . '_flavor';
+//      $form[$flavor_key] = array(
+//        '#type' => 'select',
+//        '#title' => t('Flavor'),
+//        '#options' => $flavor_options,
+//        '#default_value' => variable_get($flavor_key, $default_flavor),
+//        '#ajax' => array(
+//          'callback' => 'cp_appearance_swap_screenshot',
+//          'wrapper' => 'screenshot_' . $theme->name
+//        )
+//      );
     }
     else
     {
@@ -296,7 +296,7 @@ function cp_appearance_theme_picker_form($form, &$form_state) {
     $featured_header =  array('HEADER_FEATURED' => 'HEADER_FEATURED');
     $other_header = array('HEADER_OTHER' => 'HEADER_OTHER');
 
-    $themes = array_merge($featured_header, $first_themes, $other_header, $other_themes);
+    $themes = array_merge($featured_header, $first_themes);
   }
   elseif (isset($themes[$current_theme])) {
     $current_theme = _cp_appearance_move_option_to_front($themes, $current_theme);
