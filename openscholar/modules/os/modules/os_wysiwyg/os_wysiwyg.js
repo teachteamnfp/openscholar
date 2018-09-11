@@ -29,4 +29,64 @@
     }
   };
 
+  Drupal.behaviors.osWysiwygImagePropertiesDialog = {
+    attach: function (ctx) {
+      if (CKEDITOR.osWysiwygImagePropertiesDialog == undefined) {
+        CKEDITOR.osWysiwygImagePropertiesDialog = true;
+
+        CKEDITOR.on('dialogDefinition', function (ev) {
+          var dialogName = ev.data.name,
+            dialogDefinition = ev.data.definition;
+
+          if (dialogName == 'image') {
+            var infoTab = dialogDefinition.getContents('info');
+            console.log(dialogDefinition);
+            infoTab.remove('txtWidth');
+            infoTab.remove('txtHeight');
+            infoTab.remove('ratioLock');
+            infoTab.remove('cmbAlign');
+            infoTab.remove('htmlPreview');
+            cleanUpDialog(infoTab.elements);
+            console.log(infoTab.elements);
+
+            var advTab = dialogDefinition.getContents('advanced');
+            advTab.remove('txtdlgGenStyle');
+
+            dialogDefinition.removeContents('Link');
+            var onShow = dialogDefinition.onShow;
+            dialogDefinition.onShow = function () {
+              onShow.call(this);
+              this.getContentElement('info', 'txtUrl').disable();
+            }
+          }
+        });
+      }
+    }
+  }
+
+  function cleanUpDialog(elements) {
+    var splice = [];
+    if (!elements) return;
+    for (var i = 0, l = elements.length; i < l; i++) {
+      if (elements[i].children == undefined) {
+        continue;
+      }
+      else if (elements[i].children.length == 0) {
+        splice.push(i);
+      }
+      else {
+        cleanUpDialog(elements[i].children);
+        if (elements[i].children.length == 1) {
+          if (elements[i].type == 'vbox' || elements[i].type == 'hbox') {
+            elements.splice(i, 1, elements[i].children[0]);
+          }
+        }
+      }
+    }
+    while (splice.length) {
+      i = splice.pop();
+      elements.splice(i, 1);
+    }
+  }
+
 })(jQuery);

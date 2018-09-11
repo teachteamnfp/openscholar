@@ -5,13 +5,13 @@
   var uid;
   var morphButton;
 
-    angular.module('AdminPanel', [ 'os-auth', 'ngCookies','ngStorage', 'RecursionHelper', 'ApSettingsForm', 'AppForm'])
+    angular.module('AdminPanel', [ 'os-auth', 'ngCookies','ngStorage', 'RecursionHelper', 'ApSettingsForm', 'AppForm', 'SiteCreationForm'])
     .config(function (){
        paths = Drupal.settings.paths
        vsite = typeof Drupal.settings.spaces != 'undefined' ? Drupal.settings.spaces.id : 0;
        cid = Drupal.settings.admin_panel.cid + Drupal.settings.version.adminPanel;
        uid = Drupal.settings.admin_panel.user;
-                    
+
     }).service('adminMenuStateService', ['$sessionStorage', '$cookies', function ($ss, $cookies) {
       $ss['menuState'] = $ss['menuState'] || {};
       var cookieConfig = {
@@ -44,14 +44,14 @@
 
       var menu = 'admin_panel';
       $scope.paths = paths;
-      
+
       $scope.getListStyle = function(id) {
         if ($menuState.GetState(id)) {
           return {'display':'block'};
         }
         return {};
       };
-      
+
       //Force menu open Special case
        if (window.location.search.indexOf('login=1') > -1) {
          $menuState.SetState('main', true);
@@ -70,13 +70,13 @@
           return;
         }
       }
-      
+
       //Go get the admin menu from the server.
       params = { cid: cid, uid: uid};
       if (vsite) {
         params.vsite = vsite;
       }
-      
+
       var url = paths.api + '/cp_menu/' + menu;
       $http({method: 'get', url: url, params: params, cache: true}).
         then(function(response) {
@@ -87,16 +87,16 @@
           }
           $scope.admin_panel = response.data.data;
           $scope.open = $menuState.GetState('main');
-        }); 
-      
-     
+        });
+
+
     }]).directive('toggleOpen', ['$cookies', '$timeout', 'adminMenuStateService', function($cookies, $t, $menuState) {
-      
+
       function openLink(elm) {
         elm.addClass('open');
         elm.children('ul').slideDown(200);
       }
-      
+
       function closeLink(elm) {
         elm.removeClass('open');
         elm.children('ul').css('display', 'none');
@@ -115,7 +115,7 @@
 
         return elem;
       }
-      
+
       return {
         link: function(scope, element, attrs) {
           var parent = getAncestor(element, 'li');
@@ -154,9 +154,9 @@
           });
         },
       };
-      
+
     }]).directive('leftMenu', ['$timeout', 'adminMenuStateService', function($t, $menuState) {
-      
+
       return {
         templateUrl: paths.adminPanelModuleRoot+'/templates/admin_menu.html?vers='+Drupal.settings.version.adminPanel,
         controller: 'AdminMenuController',
@@ -255,10 +255,6 @@
           }
         }
     }]);
-  
- 
-  
+
+
 })(jQuery);
-
-
- 
