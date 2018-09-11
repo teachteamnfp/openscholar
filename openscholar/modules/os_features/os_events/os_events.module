@@ -93,8 +93,12 @@ function getClient() {
   $path = libraries_get_path('google-api-php-client');
   include_once "$path/vendor/autoload.php";
 
-  define('APPLICATION_NAME', "OpenScholar Calendar Exporter");
-  define('SCOPES', implode(' ', array(Google_Service_Calendar::CALENDAR)));
+  if (!defined('APPLICATION_NAME')) {
+    define ('APPLICATION_NAME', "OpenScholar Calendar Exporter");
+  }
+  if (!defined('SCOPES')) {
+    define ('SCOPES', implode (' ', array (Google_Service_Calendar::CALENDAR)));
+  }
 
   $google_client_secret = variable_get('client_secret_key');
   $google_client_ID = variable_get('client_id');
@@ -255,7 +259,21 @@ function os_events_gcal_create_calendar() {
   if($calendarInsert || $calendarUpdate) {
     drupal_set_message(t('Calendar successfully sync with Google calendar.'));
   }
-  drupal_goto($vsite->group->purl . '/calendar');
+
+  $has_domain = db_select('purl', 'p')
+    ->fields('p', array('id', 'value'))
+    ->condition('provider', 'vsite_domain', '=')
+    ->condition('id', $vsite->id)
+    ->countQuery()
+    ->execute()
+    ->fetchField();
+
+  drupal_goto('calendar', array(
+    'purl' => array(
+      'id' => $vsite->id,
+      'provider' => $has_domain ? 'vsite_domain' : 'spaces_og'
+    )
+  ));
 }
 
 /**
