@@ -316,6 +316,10 @@ function media_embed_file_formatter_media_embed_view($file, $display, $langcode)
         else {
           $height = $target_height;
         }
+        $padding = true;
+        if (strpos($width, '%') !== FALSE) {
+          $padding = false;
+        }
         $width = $target_width;
 
         $patterns[0] = '/height="([0-9]*)"/';
@@ -326,7 +330,7 @@ function media_embed_file_formatter_media_embed_view($file, $display, $langcode)
         $ratio = $height / $width * 100;
 
         $html = preg_replace($patterns, $replacements, $html);
-        if (!empty($ratio)) {
+        if (!empty($ratio) && $padding) {
           $html = '<div class="media-embed-auto-scaler" style="padding-top: '.$ratio.'%">' . $html . '</div>';
         }
       }
