@@ -226,7 +226,7 @@ Feature: Media Browser
       And I press the "Submit" button
       And I should wait for "File Edit" directive to "appear"
 
-#  @frontend @javascript
+#  @frontend @javascript @wip
 #  Scenario: Test the node save after inserting a file through WYSIWYG editor and deleting it through media browser immediately before saving
 #    Given I am logging in as "john"
 #      And I wait for page actions to complete
