@@ -6,9 +6,9 @@ body:not(.content-left.content-right):not(.no-sidebars) .media-embed-auto-scaler
 /** I don't know why this needed to be separate. It didn't work in the ruleset above. Matched elements don't change */
 .not-front .content-right:not(.content-left) .region-content-second .media-embed-auto-scaler,
 .not-front .content-left:not(.content-right) .region-content-first .media-embed-auto-scaler,
-.front .content-right:not(.content-left):not(.content-bottom) .region-content-second .media-embed-auto-scaler,
-.front .content-left:not(.content-right):not(.content-bottom) .region-content-first .media-embed-auto-scaler,
-.front .content-bottom:not(.content-right):not(.content-left) .region-content-bottom .media-embed-auto-scaler,
+.front.no-sidebars .content-right:not(.content-left):not(.content-bottom) .region-content-second .media-embed-auto-scaler,
+.front.no-sidebars .content-left:not(.content-right):not(.content-bottom) .region-content-first .media-embed-auto-scaler,
+.front.no-sidebars .content-bottom:not(.content-right):not(.content-left) .region-content-bottom .media-embed-auto-scaler,
 .no-sidebars .region-content-top .media-embed-auto-scaler,
 .not-front.no-sidebars .region-content-bottom .media-embed-auto-scaler,
 .media-element-container[style*="float"] .media-embed-auto-scaler {
