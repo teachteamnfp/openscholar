@@ -1988,6 +1988,9 @@ function os_js_alter(&$javascript) {
     if (strpos($url, 'colorbox.js')) {
       $file = drupal_get_path('module', 'os') . '/theme/os_colorbox.js';
       $javascript[$file] = drupal_js_defaults($file);
+      if (variable_get('os_footer_js', TRUE)) {
+        $javascript[$file]['scope'] = 'footer';
+      }
     }
 
     if (variable_get('os_footer_js', TRUE)) {
