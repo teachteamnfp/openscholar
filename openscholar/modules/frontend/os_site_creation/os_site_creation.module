@@ -74,7 +74,7 @@ function os_site_creation_library_alter(&$libs) {
  * don't have OS user account yet to open site registratin form.
  */
 function os_site_creation_preprocess_page(&$vars) {
-  if (vsite_vsite_exists_access () && !user_is_anonymous ()) {
+  if (vsite_vsite_exists_access () && (!user_is_anonymous () || (module_exists('pinserver') && pinserver_get_user ()))) {
     // Load the Angular dependencies
     drupal_add_library('os_site_creation','site_creation');
     os_common_angular_apps('SiteCreationForm');
