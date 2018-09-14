@@ -1,6 +1,6 @@
 <?php
 
-define('OS_SITE_CREATION_FORM', '1.0.0');
+define('OS_SITE_CREATION_FORM', '1.0.1');
 
 /**
  * Implements hook_library().
