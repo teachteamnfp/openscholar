@@ -393,7 +393,7 @@ function os_pages_translated_menu_link_alter(&$link, $map) {
   // Non-site members can never see unpublished page.
   // User 1 should be able to though
   if ($vsite = vsite_get_vsite()) {
-    if ($GLOBALS['user']->uid != 1 && !og_is_member('node', $vsite->group->id)) {
+    if ($GLOBALS['user']->uid != 1 && !og_is_member('node', $vsite->group->nid)) {
       return;
     }
   }
