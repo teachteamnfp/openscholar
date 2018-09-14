@@ -167,7 +167,7 @@ class OsRestfulCPSettings extends \RestfulBase implements \RestfulDataProviderIn
    * @return bool - TRUE if the space activated
    */
   protected function activateSpace() {
-    if ($_GET['vsite'] && $vsite = vsite_get_vsite($_GET['vsite'])) {
+    if (!empty($_GET['vsite']) && $vsite = vsite_get_vsite($_GET['vsite'])) {
       // Make sure the Drupal $user account is the account Restful authenticated
       $account = $this->getAccount();
       spaces_set_space($vsite);
