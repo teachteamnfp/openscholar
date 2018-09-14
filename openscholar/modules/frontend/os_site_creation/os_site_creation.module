@@ -11,7 +11,7 @@ function os_site_creation_library() {
   $disable = array('alias' => TRUE);
   $rest = url('api', $disable);
   // Determining whether user has got huid and Drupal id
-  $vicariousUser = false;
+  $vicariousUser = variable_get('os_site_creation_allow_anonymous', false);
   if (module_exists('pinserver')) {
     if ($huid = pinserver_get_user_huid()) {
       if (!$uid = pinserver_authenticate_get_uid_from_huid($huid)) {
@@ -49,6 +49,7 @@ function os_site_creation_library() {
     ),
     'dependencies' => array(
       array('system', 'ui.dialog'),
+      array('os_common', 'auth'),
       array('os_common', 'angular-modal-service'),
       array('os_common', 'buttonSpinner'),
 
@@ -72,9 +73,15 @@ function os_site_creation_library_alter(&$libs) {
  *
  * Loads angular library if user logged in by Harvard pin but
  * don't have OS user account yet to open site registratin form.
+ *
+ * is anon and allow_anonymous
+ * is anon and is pin
+ * is auth and vsite_exists
  */
 function os_site_creation_preprocess_page(&$vars) {
-  if (vsite_vsite_exists_access () && (!user_is_anonymous () || (module_exists('pinserver') && pinserver_get_user ()))) {
+  if ((variable_get('os_site_creation_allow_anonymous', false) && user_is_anonymous ()) ||
+      (user_is_anonymous () && (module_exists('pinserver') && pinserver_get_user ())) ||
+      vsite_vsite_exists_access ()) {
     // Load the Angular dependencies
     drupal_add_library('os_site_creation','site_creation');
     os_common_angular_apps('SiteCreationForm');
@@ -82,4 +89,17 @@ function os_site_creation_preprocess_page(&$vars) {
     drupal_add_js(array('admin_panel' => array('purl_base_domain' => variable_get('purl_base_domain'), 'base_domain' => $base_url)), 'setting');
     drupal_add_css(drupal_get_path('theme', 'cp_theme').'/css/cp_theme.css');
   }
+}
+
+function os_site_creation_menu_alter(&$menu) {
+  if (isset($menu['site/register'])) {
+    $menu['site/register']['access callback'] = 'os_site_creation_site_register_access';
+  }
+}
+
+function os_site_creation_site_register_access() {
+  if (variable_get('os_site_creation_allow_anonymous', false) && user_is_anonymous ()) {
+    return true;
+  }
+  return vsite_vsite_exists_access ();
 }
