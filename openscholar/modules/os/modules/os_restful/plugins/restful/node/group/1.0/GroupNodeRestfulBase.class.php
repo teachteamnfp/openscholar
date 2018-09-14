@@ -144,10 +144,19 @@ class GroupNodeRestfulBase extends OsNodeRestfulBase {
     }
 
     $public_fields['parent'] = array(
-      'property' => 'field_group_parent'
+      'property' => 'field_group_parent',
+      'callback' => Closure::bind(function ($wrapper) { return $this->optionalPropertyCallback ('field_group_parent', $wrapper); }, $this)
     );
 
     return $public_fields;
+  }
+
+  public function optionalPropertyCallback($property, EntityDrupalWrapper $wrapper) {
+    $info = $wrapper->getPropertyInfo ();
+    if (isset($info[$property])) {
+      return $wrapper->{$property}->value();
+    }
+    return null;
   }
 
   /**
