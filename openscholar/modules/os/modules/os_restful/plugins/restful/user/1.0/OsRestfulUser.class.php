@@ -109,7 +109,7 @@ class OsRestfulUser extends \RestfulEntityBaseUser {
       return $output;
     }
     // we were denied access to view the entity because the active user is still anonymous
-    $user;
+    $user = null;
     if (!empty($this->request['mail'])) {
       $user = user_load_by_mail($this->request['mail']);
     }
