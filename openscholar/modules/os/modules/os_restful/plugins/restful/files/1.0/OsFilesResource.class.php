@@ -429,7 +429,7 @@ class OsFilesResource extends OsRestfulEntityCacheableBase {
    */
   protected function queryForListFilter(EntityFieldQuery $query) {
     $query->propertyCondition('status', 1);
-    if ($this->request['vsite']) {
+    if (!empty($this->request['vsite'])) {
       if ($vsite = vsite_get_vsite($this->request['vsite'])) {
         $query->fieldCondition(OG_AUDIENCE_FIELD, 'target_id', $this->request['vsite']);
       }
