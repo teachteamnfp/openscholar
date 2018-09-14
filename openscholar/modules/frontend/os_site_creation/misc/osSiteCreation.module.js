@@ -26,7 +26,7 @@
     }
   }]);
 
-  m.controller('siteCreationCtrl', ['$scope', '$http', '$q', '$rootScope', 'buttonSpinnerStatus', '$filter', '$sce', '$timeout', 'passwordStrength', 'authenticate-token', '$window', function($scope, $http, $q, $rootScope, bss, $filter, $sce, $timeout, ps, at, $w) {
+  m.controller('siteCreationCtrl', ['$scope', '$http', '$q', '$rootScope', 'buttonSpinnerStatus', '$filter', '$sce', '$timeout', 'passwordStrength', 'authenticate-token', 'parent', function($scope, $http, $q, $rootScope, bss, $filter, $sce, $timeout, ps, at, parent) {
 
   //Set default value for vsite
   $scope.vsite_private = {
@@ -94,6 +94,14 @@
     }
   };
 
+  $scope.canBeSubsite = function (type) {
+    if (!parent) {
+      return true;
+    }
+
+    return Drupal.settings.subsite_types[type] != undefined;
+  };
+
   var queryArgs = {};
   if (Drupal.settings.spaces != undefined) {
     if (Drupal.settings.spaces.id) {
@@ -148,16 +156,8 @@
 
     $scope.btnDisable = true;
     var url = $scope.individualScholar ? $scope.individualScholar : ($scope.projectLabSmallGroup ? $scope.projectLabSmallGroup : $scope.departmentSchool),
-      theme = $scope.selected,
-      parent = '';
-
-    // Get sub site parent id
-    if (typeof $rootScope.siteCreationFormId !== 'undefined') {
-      var splitId = $rootScope.siteCreationFormId.split('add-subsite-');
-      if (splitId.length > 1) {
-        parent = splitId[1];
-      }
-    }
+      bundle = $scope.individualScholar ? 'personal' : ($scope.projectLabSmallGroup ? 'project' : 'department'),
+      theme = $scope.selected;
 
     var user = {};
     if (Drupal.settings.user_panel != undefined) {
@@ -176,14 +176,14 @@
       $http.post(Drupal.settings.paths.api+'/users', user).then(function (response) {
         // we were just logged in. We need to fetch the RESTful authentication token
         at.fetch().then (function (resp) {
-          submitGroup(response.data.data.id, url, $scope.contentOption.value, theme, $scope.vsite_private.value, parent);
+          submitGroup(response.data.data.id, url, bundle, $scope.contentOption.value, theme, $scope.vsite_private.value);
           return resp;
         });
       });
     }
 
     if (user.uid) {
-      submitGroup(user.uid, url, $scope.contentOption.value, theme, $scope.vsite_private.value, parent)
+      submitGroup(user.uid, url, bundle, $scope.contentOption.value, theme, $scope.vsite_private.value)
     }
 
     // var formdata = {
@@ -212,11 +212,11 @@
     // });
   };
 
-  function submitGroup(owner, url, starter, theme, privacy, parent) {
+  function submitGroup(owner, url, bundle, starter, theme, privacy) {
     var fields = {
       owner: owner,
       label: 'Change Me',
-      type: 'personal',
+      type: bundle,
       purl: url,
       preset: starter,
       theme: theme,
@@ -255,7 +255,7 @@
     $scope.newUserResistrationName = false;
     if (typeof $scope.userName !== 'undefined' && $scope.userName != '') {
       var formdata = {
-        name: $scope.userName,
+        name: $scope.userName
       };
       $http.post(paths.api + '/purl/name', formdata).then(function (response) {
         if (response.data == "") {
@@ -274,8 +274,7 @@
   $scope.checkEmail = function() {
     $scope.newUserResistrationEmail = false;
     if (typeof $scope.email !== 'undefined' && $scope.email != '') {
-      var formdata = {};
-      formdata = {
+      var formdata = {
         email: $scope.email,
       };
       $http.post(paths.api + '/purl/email', formdata).then(function (response) {
@@ -379,7 +378,8 @@
           controller: 'siteCreationCtrl',
           templateUrl: rootPath + '/templates/os_site_creation.html',
           inputs: {
-            form: scope.form
+            form: scope.form,
+            parent: scope.parent
           }
         })
         .then(function (modal) {
@@ -400,7 +400,8 @@
     return {
       link: link,
       scope: {
-        form: '@'
+        form: '@',
+        parent: '@'
       }
     };
   }]);

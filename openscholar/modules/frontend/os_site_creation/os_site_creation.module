@@ -11,7 +11,7 @@ function os_site_creation_library() {
   $disable = array('alias' => TRUE);
   $rest = url('api', $disable);
   // Determining whether user has got huid and Drupal id
-  $vicariousUser = variable_get('os_site_creation_allow_anonymous', false);
+  $vicariousUser = (user_is_anonymous () && variable_get('os_site_creation_allow_anonymous', false));
   if (module_exists('pinserver')) {
     if ($huid = pinserver_get_user_huid()) {
       if (!$uid = pinserver_authenticate_get_uid_from_huid($huid)) {
@@ -36,7 +36,8 @@ function os_site_creation_library() {
           ),
           'version' => array(
             'siteCreationForm' => OS_SITE_CREATION_FORM,
-          )
+          ),
+          'subsite_types' => variable_get('subsite_bundles', array('personal', 'project'))
         ),
         'type' => 'setting',
       )
