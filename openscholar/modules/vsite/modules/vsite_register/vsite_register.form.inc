@@ -9,12 +9,12 @@
  * Form builder for the vsite register form found at "site/register".
  */
 function vsite_register_form($form, &$state) {
-  if (variable_get($is_angular, TRUE)) {
+  if (variable_get('is_angular', TRUE)) {
     // For sub-sites
     $param = drupal_get_query_parameters();
     $form['html'] = array(
       '#type' => 'markup',
-      '#markup' => '<site-creation-form ' . ($param['parent']? ' id="add-subsite-' . $param['parent'] . '"':''). '><a>Create Your Site Here</a></site-creation-form>',
+      '#markup' => '<site-creation-form ' . (!empty($param['parent']) ? ' id="add-subsite-' . $param['parent'] . '"':''). '><a>Create Your Site Here</a></site-creation-form>',
     );
     return $form;
   }
