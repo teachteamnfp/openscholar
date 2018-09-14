@@ -3753,7 +3753,7 @@ function os_events_cp_settings() {
   $spaces_features = variable_get('spaces_features');
   // Event settings link won't appear in CP menu if event app is not enabled.
   if (empty($spaces_features['os_events'])) {
-    return $settings;
+    return array();
   }
 
   $settings['os_exporter_disable_event_export'] = array(
