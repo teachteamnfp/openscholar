@@ -2,14 +2,14 @@ services:
   vsite.app.manager:
     class: Drupal\vsite\Plugin\AppManager
     parent: default_plugin_manager
-  vsite.config_factory_override:
-    class: Drupal\vsite\Config\VsiteConfigFactoryOverride
-    tags:
-      - { name: config.factory.override, priority: -254 }
-      - { name: event_subscriber }
-  vsite.config.factory:
-    class: Drupal\vsite\Config\VsiteConfigFactory
+  hierarchical.storage:
+    class: Drupal\vsite\Config\HierarchicalStorage
     public: false
-    decorates: config.factory
-    decoration_priority: 3
-    arguments: ['@config.storage', '@event_dispatcher', '@config.typed']
+    decorates: config.storage
+    decoration_priority: 4
+    arguments: ['@hierarchical.storage.inner']
+  vsite.storage:
+    class: Drupal\vsite\Config\VsiteStorageDefinition
+    arguments: ['@hierarchical.storage']
+    tags:
+      - { name: event_subscriber }
