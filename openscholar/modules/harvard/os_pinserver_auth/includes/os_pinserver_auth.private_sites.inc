@@ -37,6 +37,7 @@ function _os_pinserver_auth_private_site_access($node, $op, $account){
  * @see os_pinserver_auth_vsite_access_denied
  */
 function _os_pinserver_auth_vsite_access_denied($vsite){
+  global $is_https;
 
   //Get Privacy Setting
   $wrapper = entity_metadata_wrapper('node', $vsite->group);
@@ -49,11 +50,20 @@ function _os_pinserver_auth_vsite_access_denied($vsite){
         if (! user_access('administer group') && ! og_is_member('node', $vsite->group->nid, 'user', $user) && !pinserver_check_system_settings()) {
           //Load custom pinserver variables
           $vsite->controllers->variable->init_overrides();
+          $https = $is_https;
+
+
+          $domains = variable_get('vsite_domain_ssl_domains',array());
+          // Is securepages enabled?
+          if (!empty($domains) && module_exists('securepages') && variable_get('securepages_enable', 0)) {
+            $https = vsite_domain_on_secure_domain($domains);
+          }
 
           // They are not a member, validate through pin.
           pinserver_redirect(array(
             'redirect' => url($_GET['q'], array(
-              'absolute' => TRUE
+              'absolute' => TRUE,
+              'https' => $https,
             )),
             'tk_forward' => '0'
           ));

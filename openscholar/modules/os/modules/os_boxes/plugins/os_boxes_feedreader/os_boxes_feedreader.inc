@@ -170,7 +170,7 @@ class os_boxes_feedreader extends os_boxes_default {
           ),
           array(
             'type' => 'file',
-            'data' => libraries_get_path('yui') . '/yui-min.js',
+            'data' => libraries_get_path('yui') . '/build/yui/yui-min.js',
             'weight' => 1,
           ),
           array(

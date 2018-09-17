@@ -9,6 +9,15 @@
  * Form builder for the vsite register form found at "site/register".
  */
 function vsite_register_form($form, &$state) {
+  if (variable_get('is_angular', TRUE)) {
+    // For sub-sites
+    $param = drupal_get_query_parameters();
+    $form['html'] = array(
+      '#type' => 'markup',
+      '#markup' => '<site-creation-form ' . (!empty($param['parent']) ? ' id="add-subsite-' . $param['parent'] . '"':''). '><a>Create Your Site Here</a></site-creation-form>',
+    );
+    return $form;
+  }
   global $base_url;
   global $user;
   $form = array();
@@ -32,7 +41,7 @@ function vsite_register_form($form, &$state) {
     '#required' => TRUE,
     '#field_prefix' => $base_url . '/',
     '#size' => 35,
-    '#description' => t('Enter a minimum of 3 characters, lowercase only. Periods and punctuation are not allowed except for hyphens and underscores. <br />Example: Entering jdoe into the field above will result in this URL: %site.', array('%site' => $base_url . '/jdoe')),
+    '#description' => t('Enter a minimum of 3 characters, lowercase only. Periods and punctuation are not allowed except for hyphens. <br />Example: Entering jdoe into the field above will result in this URL: %site.', array('%site' => $base_url . '/jdoe')),
     '#ajax' => array(
       'callback' => 'vsite_register_ajax_validation',
       'wrapper' => 'domain-errors',
@@ -643,7 +652,7 @@ function _vsite_register_mail_in_use($mail) {
  * @see purl_validate()
  */
 function _vsite_register_valid_url($url) {
-  foreach (array('!', ';', '/', '?', ':', '@', '&', '=', '"', "'", ".",
+  foreach (array('!', ';', '/', '?', ':', '@', '&', '=', '"', "'", ".", '_',
     ) as $char) {
     if (strpos($url, $char) !== FALSE) {
       return FALSE;
@@ -783,7 +792,8 @@ function _vsite_register_mail_replacements($vsite, $author, $key) {
   // Initialize replacements array with values common to both mail keys.
   $site_url = '';
   if ($vsite->purl_provider) {
-    $site_url = url('', array(
+    $site_url = url(NULL, array(
+      'absolute' => TRUE,
       'purl' => array(
         'id' => $vsite->id,
         'provider' => $vsite->purl_provider ? $vsite->purl_provider : 'spaces_og'
@@ -795,13 +805,17 @@ function _vsite_register_mail_replacements($vsite, $author, $key) {
 
     $processor = purl_get_processor($method);
     $element = new purl_path_element($processor, $vsite->group->purl, 'spaces_og', $vsite->id);
-    $options = array('absolute' => true);
+    $options = array('absolute' => TRUE);
     $element->processor->rewrite($site_url, $options, $element);
+
     if (!empty($options['base_url'])) {
-      if (empty($site_url) && !empty($vsite->group->purl)) {
-        $site_url = $vsite->group->purl;
+      $site_url_base = empty($site_url) && !empty($vsite->group->purl) ?
+        $vsite->group->purl : '';
+      $site_url = trim($options['base_url'], '/');
+
+      if (variable_get('purl_method_spaces_og', NULL) !== 'thescholr_subdomain') {
+        $site_url .= '/' . ltrim($site_url_base, '/');
       }
-      $site_url = trim($options['base_url'],'/').'/'.ltrim($site_url, '/');
     }
   }
   $replacements = array(

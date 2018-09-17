@@ -5,7 +5,6 @@
  * Main OpenScholar module update functions.
  */
 
-
 function os_install() {
   _os_date_formats();
 }
@@ -1067,3 +1066,11 @@ function os_update_7061() {
     ->condition('uid', 0)
     ->execute();
 }
+
+/**
+ * Enable the os_site_creation module for new site creation forms.
+ */
+function os_update_7062() {
+  module_enable(array('os_site_creation'));
+}
+

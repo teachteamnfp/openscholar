@@ -62,7 +62,7 @@ function theme_os_publications_tabular(&$vars) {
       continue;
     }
     // field doesn't exist. do nothing
-    if (!isset($node->$f['name'])) {
+    if (!isset($node->{$f['name']})) {
       continue;
     }
 

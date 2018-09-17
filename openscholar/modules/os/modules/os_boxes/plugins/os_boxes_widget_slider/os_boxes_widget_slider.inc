@@ -31,6 +31,7 @@ class os_boxes_widget_slider extends os_boxes_widget_collection {
         }
       }
     }
+    asort($widget_options, SORT_FLAG_CASE | SORT_NATURAL);
     // Rendering HTML widgets in Widget select list.
     $form['add']['new']['#options'] = $widget_options; 
     

@@ -3,6 +3,11 @@
 # Increasing the memory limitation.
 mv docker_travis/docker_files/php.ini /usr/local/etc/php
 
+echo -e "\n # Docker PHP version"
+php -v
+echo -e "\n # Docker Composer version"
+composer --version
+
 # Start MySQL.
 echo -e "\n # Start MySQL."
 service mysql start
@@ -31,6 +36,12 @@ source /root/.bashrc
 echo -e "\n # Install Drupal"
 bash docker_travis/docker.install.sh
 chmod -R 777 /var/www/html/openscholar/www/sites/default/files/
+
+# Configure apache2 to drupal root
+echo -e "\n # Configure apache2 to drupal root"
+cp docker_travis/docker_files/docker-php.conf /etc/apache2/conf-available/docker-php.conf
+cp docker_travis/docker_files/000-default.conf /etc/apache2/sites-available/000-default.conf
+service apache2 reload
 
 # Install custom domains
 echo -e "\n # Add lincoln virtual domain."
@@ -85,9 +96,22 @@ wget http://selenium-release.storage.googleapis.com/2.53/selenium-server-standal
 java -jar selenium-server-standalone-2.53.0.jar > /dev/null 2>&1 &
 sleep 10
 
+if [ "${TEST_SUITE}" = 'restful' ]; then
+    # Clear cache twice for restful
+    cd /var/www/html/openscholar/www/
+    echo -e "\n # GET api/blog/12 try1"
+    wget localhost/api/blog/12
+    drush cache-clear all
+    echo -e "\n # GET api/blog/12 try2"
+    wget localhost/api/blog/12
+    drush cache-clear all
+    echo -e "\n # GET api/blog/12 try3"
+    wget localhost/api/blog/12
+fi
+
 # Install behat
 echo -e "\n # Install behat"
-cd openscholar/behat
+cd /var/www/html/openscholar/openscholar/behat
 pwd
 ls -al
 curl -sS https://getcomposer.org/installer | php
@@ -99,7 +123,7 @@ if [ $DOCKER_DEBUG -eq 1 ]; then
 else
   # Run tests
   echo -e "\n # Run tests"
-  ./bin/behat --tags=$TEST_SUITE
+  ./bin/behat --tags="${TEST_SUITE}" --strict
 
 
   if [ $? -ne 0 ]; then

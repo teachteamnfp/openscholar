@@ -39,6 +39,45 @@ function os_pinserver_auth_vsite_register_form_page() {
   }
 }
 
+
+/**
+ * Helper function to check whether user has permission to create a new.
+ */
+function _os_pinserver_auth_vsite_register_form_page() {
+  global $user;
+
+  // Handle users not logged in already.
+  if (!$user->uid){
+
+    // Sends user to pinserver if not logged-in locally or via the pinserver
+    if (!pinserver_check_status()) {
+      return false;
+    }
+
+    // Redirects pinserver-logged-in user if they don't own a vsite.
+    if ($uid = pinserver_authenticate_get_uid_from_huid()) {
+      // Logs the user in based on the HUID->UID association.
+      $user = user_load(array('uid' => $uid));
+      $user->login = time();
+      db_update('users')->fields(array('login' => $user->login))->condition('uid', $user->uid, '=')->execute();
+    }
+  }
+  else {
+    if(pinserver_user_has_associated_pin($user->uid) || $user->uid == 1) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+  //This will redirect the user to their site or return TRUE if they can create a site
+  if(_os_pinserver_auth_create_vsite_redirect()){
+    return true;
+  }
+  return false;
+}
+
 /**
  * Access callback for /[site|user]/register
  */

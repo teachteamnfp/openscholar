@@ -44,6 +44,16 @@ function vsite_drush_command() {
     ),
     'aliases' => array('vip'),
   );
+  $items['vsite-domain-prefix'] = array(
+    'description' => dt('Prefix all custom domains and the purl_base_domain with a prefix'),
+    'arguments' => array(
+      'prefix' => dt('The prefix to add'),
+    ),
+    'examples' => array(
+      'drush vdp dev' => dt('Prefixing with dev'),
+    ),
+    'aliases' => array('vdp'),
+  );
   return $items;
 }
 
@@ -206,4 +216,54 @@ function _drush_vsite_import_properly($path, $default, $variable_name) {
   if (!is_writeable($path)) {
     drush_shell_exec("chmod -R 777 {$path}");
   }
+}
+
+/**
+ * Command callback.
+ */
+function drush_vsite_domain_prefix($prefix) {
+
+  $spaces_query = db_select('spaces_overrides')
+    ->fields('spaces_overrides')
+    ->condition('object_type', 'variable')
+    ->condition('object_id', 'vsite_domain_name');
+
+
+  $purl_query = db_update('purl')
+    ->expression('value', "CONCAT(:prefix,'.',value)", array(':prefix' => $prefix))
+    ->condition('provider', 'vsite_domain');
+
+  $results = $spaces_query->execute();
+  $purl_query->execute();
+
+  while($record = $results->fetchAssoc()) {
+
+    $domain = unserialize($record['value']);
+
+    if (empty($domain)) {
+      continue;
+    }
+
+    $domain = $prefix . "." . $domain;
+
+    db_update('spaces_overrides')
+      ->fields(array(
+        'value' => serialize($domain)
+      ))
+      ->condition('object_type', 'variable')
+      ->condition('id', $record['id'])
+      ->condition('object_id', 'vsite_domain_name')
+      ->execute();
+  }
+
+  $purl_base_domain = variable_get('purl_base_domain');
+  variable_set('purl_base_domain', $prefix . "." . $purl_base_domain);
+
+  // Clearing the cache for the change to take place.
+  drupal_flush_all_caches();
+
+  $params = array(
+    '@prefix' => $prefix,
+  );
+  drush_log(dt('The domains have been prefixed with @prefix', $params), 'success');
 }

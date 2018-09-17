@@ -1,0 +1,85 @@
+<?php
+
+define('OS_SITE_CREATION_FORM', '1.0.0');
+
+/**
+ * Implements hook_library().
+ */
+function os_site_creation_library() {
+  $libs = array();
+  $self = drupal_get_path('module', 'os_site_creation');
+  $disable = array('alias' => TRUE);
+  $rest = url('api', $disable);
+  // Determining whether user has got huid and Drupal id
+  $vicariousUser = false;
+  if (module_exists('pinserver')) {
+    if ($huid = pinserver_get_user_huid()) {
+      if (!$uid = pinserver_authenticate_get_uid_from_huid($huid)) {
+        $vicariousUser = true;
+      }
+    }
+  }
+
+  $libs['site_creation'] = array(
+    'title' => 'Site Creation Form',
+    'version' => OS_SITE_CREATION_FORM,
+    'js' => array(
+      $self.'/misc/osSiteCreation.module.js' => array(),
+      $self.'/misc/messages.min.js' => array(),
+      array(
+        'data' => array(
+          'paths' => array(
+            'siteCreationForm' => url($self.'/templates', $disable),
+            'siteCreationModuleRoot' => url(drupal_get_path('module', 'os_site_creation'), $disable),
+            'hasOsId' => $vicariousUser,
+            'api' => $rest,
+          ),
+          'version' => array(
+            'siteCreationForm' => OS_SITE_CREATION_FORM,
+          )
+        ),
+        'type' => 'setting',
+      )
+    ),
+    'css' => array(
+      drupal_get_path('module', 'os_site_creation') . '/misc/os_site_creation.css' => array(
+      'group' => CSS_THEME,
+      'every_page' => TRUE,
+      'media' => 'screen'),
+    ),
+    'dependencies' => array(
+      array('system', 'ui.dialog'),
+      array('os_common', 'angular-modal-service'),
+      array('os_common', 'buttonSpinner'),
+
+    )
+  );
+  return $libs;
+}
+
+/**
+ * Implements hook_library_alter().
+ *
+ */
+function os_site_creation_library_alter(&$libs) {
+  if (isset($libs['admin_panel'])) {
+    $libs['admin_panel']['dependencies'][] = array('os_site_creation', 'site_creation');
+  }
+}
+
+/**
+ * Implements hook_preprocess_page().
+ *
+ * Loads angular library if user logged in by Harvard pin but
+ * don't have OS user account yet to open site registratin form.
+ */
+function os_site_creation_preprocess_page(&$vars) {
+  if (vsite_vsite_exists_access () && !user_is_anonymous ()) {
+    // Load the Angular dependencies
+    drupal_add_library('os_site_creation','site_creation');
+    os_common_angular_apps('SiteCreationForm');
+    global $base_url;
+    drupal_add_js(array('admin_panel' => array('purl_base_domain' => variable_get('purl_base_domain'), 'base_domain' => $base_url)), 'setting');
+    drupal_add_css(drupal_get_path('theme', 'cp_theme').'/css/cp_theme.css');
+  }
+}

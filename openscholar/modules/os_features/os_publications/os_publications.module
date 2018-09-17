@@ -1123,6 +1123,12 @@ function _os_publications_biblio_entry_alter($markup, $node) {
       $html = str_replace($node->biblio_year . '.', $node->field_biblio_pub_month['und'][0]['value'] . '/' . $day . $node->biblio_year . '. ', $html);
     }
   }
+
+  // Add extra space after Year of Publication.
+  if (in_array($style, array('asa.csl'))) {
+    $html = str_replace($node->biblio_year . '.', $node->biblio_year . '. ', $html);
+  }
+
   $insert = strrpos($html, '</div>');
 
   // Since the biblio_url is wiped out in the CSL file, get the url back from
@@ -2097,10 +2103,12 @@ function os_publications_html_head_alter(&$head_elements) {
   }
   //Twitter image changes
   //Default site logo for all vsite pages
+  $vsite = vsite_get_vsite();
   foreach($head_elements as $key => $metatag){
-    if (!empty($metatag['#name']) && $metatag['#name'] == "twitter:image"){
-      $vsite = vsite_get_vsite();
-      $head_elements[$key]['#value'] = file_create_url($vsite->group->field_site_logo[LANGUAGE_NONE][0]['uri']);
+    if (!empty($metatag['#name']) && $metatag['#name'] == "twitter:image" && !empty($vsite->group->field_site_logo)){
+      if (!empty($vsite->group->field_site_logo)) {
+        $head_elements[$key]['#value'] = file_create_url($vsite->group->field_site_logo[LANGUAGE_NONE][0]['uri']);
+      }
     }
   }
   $args = arg();

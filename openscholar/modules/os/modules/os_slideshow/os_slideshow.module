@@ -85,16 +85,9 @@ function os_slideshow_form_slideshow_slide_node_form_alter(&$form, &$state, $for
     <i>(acceptable file formats: png, jpg and gif)</i>
 ');
 
-  $widget = (isset($_GET['widget'])) ? $_GET['widget'] : @$state['input']['widget'];
-  if (module_exists('spaces') && $space = spaces_get_space()) {
-    $box = $space->controllers->boxes->get($widget);
-  }
-  else {
-    $box = boxes_box_load($widget);
-  }
-
+  $widget = (isset($_GET['widget'])) ? $_GET['widget'] : @$state['values']['widget'];
   if ($widget) {
-    $form['widget'] = array('#type' => 'hidden', '#value' => $widget);
+    $form['widget'] = array('#type' => 'value', '#value' => $widget);
   }
 
   // Remove sticky. Pull published out of vertical tab.
@@ -105,11 +98,11 @@ function os_slideshow_form_slideshow_slide_node_form_alter(&$form, &$state, $for
 
   //Hide additional settings that are no longer grouped as such
   foreach (array('revision_information', 'author', 'comment_settings', 'path', 'metatags', 'actions_top') as $elem) {
-    $form[$elem]['#type'] = 'hidden';
+    $form[$elem]['#access'] = FALSE;
   }
 
   // Hide title. it will be automatically generated later.
-  $form['title']['#type'] = 'hidden';
+  $form['title']['#access'] = FALSE;
   $form['title']['#required'] = FALSE;
 
   // Remove preview, diff buttons.
@@ -211,7 +204,7 @@ function os_slideshow_handle_slide_update($nid, $widget, $action) {
   }
 
   // Save the box after changes.
-  if ($space) {
+  if (isset($space)) {
     $space->controllers->boxes->set($box->delta, $box);
   }
   else {
@@ -235,6 +228,13 @@ function os_slideshow_node_presave($node) {
     // Set a default title.
     $node->title = isset($node->field_headline[$lang][0]) ? $node->field_headline[$lang][0]['value'] : $file->filename;
 
+    // make sure no values in the cropbox are null
+    if ($node->field_image[LANGUAGE_NONE][0]['cropbox_height'] == null) {
+      $node->field_image[LANGUAGE_NONE][0]['cropbox_height'] = 200;
+    }
+    if ($node->field_image[LANGUAGE_NONE][0]['cropbox_width'] == null) {
+      $node->field_image[LANGUAGE_NONE][0]['cropbox_width'] = 200;
+    }
     // Add og_group_ref to attached slide.
     if (empty($file->og_group_ref)) {
       $file->og_group_ref = $node->og_group_ref;
