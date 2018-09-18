@@ -68,6 +68,10 @@ class OsRestfulUser extends \RestfulEntityBaseUser {
       }
     }
 
+    $public_fields['permissions'] = array(
+      'callback' => array($this, 'getPermissions')
+    );
+
     return $public_fields;
   }
 
@@ -203,6 +207,25 @@ class OsRestfulUser extends \RestfulEntityBaseUser {
       ->execute()
       ->fetchAllKeyed(0, 1);
     return $result;
+  }
+
+  /**
+   * Returns subset of permissions this user holds
+   */
+  protected function getPermissions(EntityDrupalWrapper $wrapper) {
+    $permissions = array();
+
+    $group_bundles = og_get_all_group_bundle('node');
+    foreach ($group_bundles as $type => $label) {
+      $permissions[] = 'create ' . $type . ' content';
+    }
+
+    $output = array();
+    foreach ($permissions as $p) {
+      $output[$p] = user_access($p, $wrapper->value());
+    }
+
+    return $output;
   }
 
   /**
