@@ -26,12 +26,17 @@
     }
   }]);
 
-  m.controller('siteCreationCtrl', ['$scope', '$http', '$q', '$rootScope', 'buttonSpinnerStatus', '$filter', '$sce', '$timeout', 'passwordStrength', 'authenticate-token', 'parent', function($scope, $http, $q, $rootScope, bss, $filter, $sce, $timeout, ps, at, parent) {
+  m.controller('siteCreationCtrl', ['$scope', '$http', '$q', '$rootScope', 'buttonSpinnerStatus', '$filter', '$sce', '$timeout', 'passwordStrength', 'authenticate-token', 'ActiveUserService', 'parent', function($scope, $http, $q, $rootScope, bss, $filter, $sce, $timeout, ps, at, aus, parent) {
 
   //Set default value for vsite
   $scope.vsite_private = {
     value: '0'
   };
+
+  var user;
+  aus.getUser(function (u) {
+    user = u;
+  });
 
   // Set site creation status
   $scope.siteCreated = false;
@@ -94,7 +99,11 @@
     }
   };
 
-  $scope.canBeSubsite = function (type) {
+  $scope.canBeCreated = function (type) {
+    if (!user.permissions['create ' +type+' content']) {
+      return false;
+    }
+
     if (!parent) {
       return true;
     }
