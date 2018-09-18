@@ -1189,7 +1189,7 @@ function os_form_node_form_alter(&$form, $form_state) {
     $delete = array(
       '#type' => 'item',
       '#markup' => l($text, 'node/' . $form['#node']->nid . '/delete', $options),
-      '#weight' => 99,
+      '#weight' => 100,
     );
     $form['actions']['delete'] = $form['actions_top']['delete'] = $delete;
   }
