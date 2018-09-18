@@ -215,7 +215,7 @@
   function submitGroup(owner, url, bundle, starter, theme, privacy) {
     var fields = {
       owner: owner,
-      label: 'Change Me',
+      label: url,
       type: bundle,
       purl: url,
       preset: starter,
