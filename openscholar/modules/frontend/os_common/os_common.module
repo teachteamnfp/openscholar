@@ -390,6 +390,27 @@ function os_common_library() {
     )
   );
 
+  global $user;
+  $info['ActiveUser'] = array(
+    'title' => 'Active User',
+    'version' => '0.1',
+    'js' => array(
+      $path.'/ActiveUser/ActiveUser.module.js' => array(),
+      array(
+        'type' => 'setting',
+        'data' => array(
+          'user' => array(
+            'uid' => $user->uid,
+            'name' => $user->name,
+          )
+        )
+      )
+    ),
+    'dependencies' => array(
+      array('os_common', 'angularjs'),
+    )
+  );
+
   return $info;
 }
 
