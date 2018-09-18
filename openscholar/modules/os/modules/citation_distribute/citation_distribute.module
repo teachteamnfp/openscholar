@@ -215,6 +215,10 @@ function citation_distribute_module_implements_alter(&$implementations, $hook) {
     unset($implementations['citation_distribute']);
     $implementations['citation_distribute'] = $tmp;
   }
+  elseif ($hook == 'cp_settings') {
+    unset($implementations['citation_distribute']);
+    $implementations['citation_distribute'] = true;
+  }
 }
 
 /**
