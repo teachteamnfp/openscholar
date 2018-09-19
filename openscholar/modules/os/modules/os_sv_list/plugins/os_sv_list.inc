@@ -351,7 +351,7 @@ class os_sv_list extends os_boxes_default {
 
         $layout_func = 'layout_' . $this->options['layout'];
         if ($this->options['layout'] != 'List' && method_exists($this, $layout_func)) {
-          $this->{$layout_func}($render);
+          $this->$layout_func($render);
         }
 
         // Now render to html.
@@ -425,7 +425,7 @@ class os_sv_list extends os_boxes_default {
     // Sort - if $this doesn't have it, one of the plugins will.
     $sort = $this->options['sort_by'];
     if (method_exists($this, $sort)) {
-      $this->{$sort}($query);
+      $this->$sort($query);
     }
     else {
       $this->_plugins_invoke($sort, $query);
@@ -491,7 +491,7 @@ class os_sv_list extends os_boxes_default {
     $this->options = ($this->options) ? $this->options + $this->options_defaults() : $this->options_defaults();
     foreach ($this->plugins as $name => &$plugin) {
       if (method_exists($plugin['instance'], $method)) {
-        $ret[$plugin['name']] = $plugin['instance']->{$method}($this->options, $args); //to pass by ref we can't use func_get_args
+        $ret[$plugin['name']] = $plugin['instance']->$method($this->options, $args); //to pass by ref we can't use func_get_args
       }
     }
 
