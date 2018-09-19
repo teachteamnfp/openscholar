@@ -1062,7 +1062,7 @@ function os_events_date_formatter_pre_view_alter(&$entity, &$vars) {
       else {
         // Use the date in the result field to get the delta on the repeated field_date field.
         foreach ($entity->field_date[LANGUAGE_NONE] as $d => $r) {
-          if ($r['value'] == $result->$field) {
+          if ($r['value'] == $result->{$field}) {
             $delta = $d;
             break;
           }

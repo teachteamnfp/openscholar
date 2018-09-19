@@ -90,16 +90,16 @@ abstract class citation_distribute_service_sword extends citation_distribute_ser
 				$func = 'add' . $name;
 				foreach ($data as $delta => $d) {
 					if ($name == 'File') {
-						$packager->$func($d['filepath'], $d['filemime']);  //	addFile takes mime as well
+						$packager->{$func}($d['filepath'], $d['filemime']);  //	addFile takes mime as well
 					} else {
-						$packager->$func($d);
+						$packager->{$func}($d);
 					}
 				}
 			} else {
 				//set scalars if they have content
 				if (strlen($data) > 0) {
 	  			$func = 'set' . $name;
-		  		$packager->$func(strip_tags($data));
+		  		$packager->{$func}(strip_tags($data));
 				}
 			}
 		}
