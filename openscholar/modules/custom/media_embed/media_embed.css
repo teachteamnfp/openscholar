@@ -1,55 +1,9 @@
-body:not(.content-left.content-right):not(.no-sidebars) .media-embed-auto-scaler,
-body:not(.content-left.content-right):not(.no-sidebars) .media-embed-auto-scaler {
-    padding-top: unset !important;
-}
-
-/** I don't know why this needed to be separate. It didn't work in the ruleset above. Matched elements don't change */
-.not-front .content-right:not(.content-left) .region-content-second .media-embed-auto-scaler,
-.not-front .content-left:not(.content-right) .region-content-first .media-embed-auto-scaler,
-.front.no-sidebars .content-right:not(.content-left):not(.content-bottom) .region-content-second .media-embed-auto-scaler,
-.front.no-sidebars .content-left:not(.content-right):not(.content-bottom) .region-content-first .media-embed-auto-scaler,
-.front.no-sidebars .content-bottom:not(.content-right):not(.content-left) .region-content-bottom .media-embed-auto-scaler,
-.no-sidebars .region-content-top .media-embed-auto-scaler,
-.not-front.no-sidebars .region-content-bottom .media-embed-auto-scaler,
-.media-element-container[style*="float"] .media-embed-auto-scaler {
-    padding-top: unset !important;
-}
-
-.front .content-bottom.content-left .region-content-bottom .media-element-container:not([style*="float"]) .media-embed-auto-scaler,
-.front .content-bottom.content-left .region-content-bottom .file-html .media-embed-auto-scaler,
-.front .content-bottom.content-right .region-content-bottom .media-element-container:not([style*="float"]) .media-embed-auto-scaler,
-.front .content-bottom.content-right .region-content-bottom .file-html .media-embed-auto-scaler,
-.front .content-left.content-bottom .region-content-first .media-element-container:not([style*="float"]) .media-embed-auto-scaler,
-.front .content-left.content-bottom .region-content-first .file-html .media-embed-auto-scaler,
-.front .content-right.content-bottom .region-content-second .media-element-container:not([style*="float"]) .media-embed-auto-scaler,
-.front .content-right.content-bottom .region-content-second .file-html .media-embed-auto-scaler,
-.content-left.content-right .region-content-first .media-element-container:not([style*="float"]) .media-embed-auto-scaler,
-.content-left.content-right .region-content-first .file-html .media-embed-auto-scaler,
-.content-left.content-right .region-content-second .media-element-container:not([style*="float"]) .media-embed-auto-scaler,
-.content-left.content-right .region-content-second .file-html .medai-embed-auto-scaler,
-.two-sidebars #columns .media-element-container:not([style*="float"]) .media-embed-auto-scaler,
-.two-sidebars #columns .file-html .media-embed-auto-scaler,
-.one-sidebar #columns .media-element-container:not([style*="float"]) .media-embed-auto-scaler,
-.one-sidebar #columns .file-html .media-embed-auto-scaler {
+.media-embed-auto-scaler {
     width: 100%;
     position: relative;
 }
-.front .content-bottom.content-left .region-content-bottom .media-element-container:not([style*="float"]) .media-embed-auto-scaler iframe,
-.front .content-bottom.content-left .region-content-bottom .file-html .media-embed-auto-scaler iframe,
-.front .content-bottom.content-right .region-content-bottom .media-element-container:not([style*="float"]) .media-embed-auto-scaler iframe,
-.front .content-bottom.content-right .region-content-bottom .file-html .media-embed-auto-scaler iframe,
-.front .content-left.content-bottom .region-content-first .media-element-container:not([style*="float"]) .media-embed-auto-scaler iframe,
-.front .content-left.content-bottom .region-content-first .file-html .media-embed-auto-scaler iframe,
-.front .content-right.content-bottom .region-content-second .media-element-container:not([style*="float"]) .media-embed-auto-scaler iframe,
-.front .content-right.content-bottom .region-content-second .file-html .media-embed-auto-scaler iframe,
-.content-left.content-right .region-content-first .media-element-container:not([style*="float"]) .media-embed-auto-scaler iframe,
-.content-left.content-right .region-content-first .file-html .media-embed-auto-scaler iframe,
-.content-left.content-right .region-content-second .media-element-container:not([style*="float"]) .media-embed-auto-scaler iframe,
-.content-left.content-right .region-content-second .file-html .medai-embed-auto-scaler iframe,
-.two-sidebars #columns .media-element-container:not([style*="float"]) .media-embed-auto-scaler iframe,
-.two-sidebars #columns .file-html .media-embed-auto-scaler iframe,
-.one-sidebar #columns .media-element-container:not([style*="float"]) .media-embed-auto-scaler iframe,
-.one-sidebar #columns .file-html .media-embed-auto-scaler iframe {
+
+.media-embed-auto-scaler iframe {
     position: absolute;
     top: 0;
     left: 0;
