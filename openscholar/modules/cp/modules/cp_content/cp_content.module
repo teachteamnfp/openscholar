@@ -237,7 +237,7 @@ function _cp_content_build_taxonomy_action_form($title, $list_title, $action, $f
   $load_function = $form_entity_type . "_load_multiple";
   $nodes = $load_function($form_state['selection']);
   foreach ($nodes as $node) {
-    $node_titles[] = $node->{$file_indentification};
+    $node_titles[] = $node->$file_indentification;
   }
 
   // All rows on all pages have been selected, so show a count of additional items.
