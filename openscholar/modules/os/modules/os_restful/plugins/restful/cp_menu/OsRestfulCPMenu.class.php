@@ -155,7 +155,7 @@ class OSRestfulCPMenu extends \RestfulBase implements \RestfulDataProviderInterf
 
     $function = "get_$name_string";
     if (method_exists($this, $function)) {
-      $output = $this->{$function}();
+      $output = $this->$function();
       $user = $this->getAccount();
 
       drupal_alter('os_restful_cp_menu_'.$name_string, $output, $user);
