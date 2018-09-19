@@ -1075,10 +1075,9 @@ function os_update_7062() {
 }
 
 /**
- * Enable the os_cron_settings feature module to set elysia cron settings.
+ * Revert the os_importer feature module to set elysia cron settings.
  */
 function os_update_7063() {
-  module_enable(array('os_cron_settings'));
-  $revert = array('os_cron_settings' => array('elysia_cron'));
+  $revert = array('os_importer' => array('elysia_cron'));
   features_revert($revert);
 }

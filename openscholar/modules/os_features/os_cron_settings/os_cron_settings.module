@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the OS Cron settings feature.
- */
-
-include_once 'os_cron_settings.features.inc';

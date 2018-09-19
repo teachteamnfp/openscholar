@@ -17,7 +17,7 @@ function os_importer_feeds_tamper_default() {
   $feeds_tamper->importer = 'os_menu';
   $feeds_tamper->source = 'Link Title';
   $feeds_tamper->plugin_id = 'utf8_convert';
-  $feeds_tamper->settings = '';
+  $feeds_tamper->settings = array();
   $feeds_tamper->weight = 0;
   $feeds_tamper->description = 'Convert to UTF-8';
   $export['os_menu-link_title-utf8_convert'] = $feeds_tamper;

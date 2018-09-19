@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * os_cron_settings.default_elysia_cron_rules.inc
+ * os_importer.default_elysia_cron_rules.inc
  */
 
 /**
  * Implements hook_default_elysia_cron_rules().
  */
-function os_cron_settings_default_elysia_cron_rules() {
+function os_importer_default_elysia_cron_rules() {
   $cron_rules = array();
 
   $cron_rule = new stdClass;
