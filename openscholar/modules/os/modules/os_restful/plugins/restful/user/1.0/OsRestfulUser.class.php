@@ -85,6 +85,30 @@ class OsRestfulUser extends \RestfulEntityBaseUser {
   }
 
   /**
+   * @inheritdoc
+   *
+   * Override to allow 0 values through (so we can get permissions for anonymous users)
+   */
+  public function setPath($path = '') {
+    $this->path = implode(',', array_unique(array_filter(explode(',', $path), 'strlen')));
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * Override to allow 0 values through
+   */
+  public function viewEntities($ids_string) {
+    $ids = array_unique(array_filter(explode(',', $ids_string), 'strlen'));
+    $output = array();
+
+    foreach ($ids as $id) {
+      $output[] = $this->viewEntity($id);
+    }
+    return $output;
+  }
+
+  /**
    * Override this so anonymous users can create accounts.
    * Restful's rate-limiting should protect us
    */
@@ -215,6 +239,20 @@ class OsRestfulUser extends \RestfulEntityBaseUser {
   protected function getPermissions(EntityDrupalWrapper $wrapper) {
     $permissions = array();
 
+    $vicariousUser = (user_is_anonymous () && variable_get('os_site_creation_allow_anonymous', false));
+    if (module_exists('pinserver')) {
+      if ($huid = pinserver_get_user_huid()) {
+        if (!$uid = pinserver_authenticate_get_uid_from_huid($huid)) {
+          $vicariousUser = true;
+        }
+      }
+    }
+    $account = $wrapper->value();
+
+    if ($vicariousUser && user_is_anonymous ()) {
+      $account->roles[2] = 'authenticated user';
+    }
+
     $group_bundles = og_get_all_group_bundle('node');
     foreach ($group_bundles as $type => $label) {
       $permissions[] = 'create ' . $type . ' content';
@@ -222,7 +260,7 @@ class OsRestfulUser extends \RestfulEntityBaseUser {
 
     $output = array();
     foreach ($permissions as $p) {
-      $output[$p] = user_access($p, $wrapper->value());
+      $output[$p] = user_access($p, $account);
     }
 
     return $output;
