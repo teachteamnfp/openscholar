@@ -1,7 +1,7 @@
 (function () {
   var rootPath, paths;
 
-  var m = angular.module('SiteCreationForm', ['angularModalService', 'ngMessages', 'os-buttonSpinner', 'os-auth'])
+  var m = angular.module('SiteCreationForm', ['angularModalService', 'ngMessages', 'os-buttonSpinner', 'os-auth', 'ActiveUser'])
   .config(function (){
     rootPath = Drupal.settings.paths.siteCreationModuleRoot;
     paths = Drupal.settings.paths
