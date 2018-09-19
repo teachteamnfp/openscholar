@@ -13,3 +13,7 @@ services:
     arguments: ['@hierarchical.storage']
     tags:
       - { name: event_subscriber }
+  vsite.outboundpathprocessor:
+    class: Drupal\vsite\PathProcessor\VsiteOutboundPathProcessor
+    tags:
+      - { name: path_processor_outbound, priority: 301 }
