@@ -1,7 +1,7 @@
 {
   "name": "TheScholr",
   "require": {
-    "openscholar/thescholr" : "v1.11.3"
+    "openscholar/thescholr" : "1.11.3"
   },
   "repositories": [
     {
