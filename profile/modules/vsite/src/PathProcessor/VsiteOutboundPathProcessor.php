@@ -24,6 +24,8 @@ class VsiteOutboundPathProcessor implements OutboundPathProcessorInterface {
 
   /**
    * @inheritDoc
+   *
+   * Disables purl handling from a whitelist of paths
    */
   public function processOutbound ($path, &$options = [], Request $request = NULL, BubbleableMetadata $bubbleable_metadata = NULL) {
     foreach ($this->non_vsite_paths as $p) {
