@@ -1858,8 +1858,8 @@ function os_profile_feeds_set_target($source, $entity, $target, $value) {
   list($field_name, $column) = explode(':', $target);
   $info = field_info_field($field_name);
 
-  $field = isset($entity->$field_name) ? $entity->$field_name : array();
-  
+  $field = isset($entity->{$field_name}) ? $entity->{$field_name} : array();
+
   // Initializing static variable for field delta value for this callback.
   $field_delta = &drupal_static(__FUNCTION__);
   if (!isset($field_delta[$column])) {
@@ -1875,7 +1875,7 @@ function os_profile_feeds_set_target($source, $entity, $target, $value) {
       $field_delta[$column]++;
     }
   }
-  $entity->$field_name = $field;
+  $entity->{$field_name} = $field;
 }
 
 /**
