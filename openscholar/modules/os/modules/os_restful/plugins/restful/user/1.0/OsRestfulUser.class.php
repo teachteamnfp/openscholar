@@ -129,7 +129,8 @@ class OsRestfulUser extends \RestfulEntityBaseUser {
       drupal_save_session(true);
       user_login_finalize();
       // TODO: Remove this with saml
-      if (module_exists('pinserver_authenticate') && $huid = pinserver_get_user_huid () && !pinserver_authenticate_get_uid_from_huid ()) {
+      // lmao, && has higher precedence than = so this was setting $huid to true.
+      if (module_exists('pinserver_authenticate') && ($huid = pinserver_get_user_huid ()) && !pinserver_authenticate_get_uid_from_huid ()) {
         pinserver_authenticate_set_user_huid ($user->uid, $huid);
       }
       return $this->viewEntity($user->uid);
