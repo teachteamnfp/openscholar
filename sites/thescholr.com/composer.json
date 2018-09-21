@@ -1,7 +1,7 @@
 {
   "name": "TheScholr",
   "require": {
-    "openscholar/thescholr" : "dev-22_thescholr"
+    "openscholar/thescholr" : "dev-22-add_new_site_button"
   },
   "repositories": [
     {
