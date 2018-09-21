@@ -1,11 +1,16 @@
 (function () {
   var rootPath, paths;
 
-  var m = angular.module('SiteCreationForm', ['angularModalService', 'ngMessages', 'os-buttonSpinner', 'os-auth'])
+  var m = angular.module('SiteCreationForm', ['angularModalService', 'ngMessages', 'os-buttonSpinner', 'os-auth', 'DependencyManager'])
   .config(function (){
     rootPath = Drupal.settings.paths.siteCreationModuleRoot;
     paths = Drupal.settings.paths
   });
+
+  m.run(['Dependencies', function (dm) {
+    var deps = dm.GetDependencies('UserPanel');
+    Array.prototype.push.apply(m.requires, deps);
+  }]);
 
   m.service('passwordStrength', [function () {
     var tests = [/[0-9]/, /[a-z]/, /[A-Z]/, /[^A-Z-0-9]/i];
