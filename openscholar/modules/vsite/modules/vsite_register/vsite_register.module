@@ -197,6 +197,9 @@ function vsite_register_block_view($delta = '') {
         '#markup' => $markup,
       ),
     );
+    if (module_exists('os_site_creation')) {
+      $block['allow_binding'] = true;
+    }
 
   }
 
