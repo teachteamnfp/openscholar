@@ -156,7 +156,7 @@ function os_restful_entity_metadata_user_properties_access($op, $property, $enti
  * Set the node path.
  */
 function os_restful_page_path_set(&$data, $name, $value, $langcode, $type, $info) {
-  $data->$name = $value;
+  $data->{$name} = $value;
 }
 
 /**

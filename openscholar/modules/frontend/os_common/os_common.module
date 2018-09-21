@@ -585,7 +585,7 @@ function os_common_preprocess_page(&$vars) {
 }
 
 function os_common_preprocess_table(&$vars) {
-  if ($vars['attributes']['id'] == 'taxonomy') {
+  if (isset($vars['attributes']['id']) && $vars['attributes']['id'] == 'taxonomy') {
     $vars['attributes']['ng-non-bindable'] = '';
   }
 }
