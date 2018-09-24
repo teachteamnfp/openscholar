@@ -211,7 +211,7 @@ h3 {
 #site-creation-container .site-type.department {
     background-image: url('images/building.svg');
     background-size: 75.25px;
-    background-position: 95px 1px;
+    background-position: 50% 1px;
 }
 #site-creation-container .popup.site-type_nameurl {
     border-top: 2px solid #fff;
