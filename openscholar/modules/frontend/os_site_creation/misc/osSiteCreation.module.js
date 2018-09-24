@@ -302,7 +302,7 @@
         name: $scope.userName
       };
       $http.post(paths.api + '/purl/name', formdata).then(function (response) {
-        if (response.data == "") {
+        if (response.data.data.length == 0) {
           $scope.showUserError = false;
           $scope.userErrorMsg = '';
           $scope.newUserResistrationName = true;
@@ -319,10 +319,10 @@
     $scope.newUserResistrationEmail = false;
     if (typeof $scope.email !== 'undefined' && $scope.email != '') {
       var formdata = {
-        email: $scope.email,
+        email: $scope.email
       };
       $http.post(paths.api + '/purl/email', formdata).then(function (response) {
-        if (response.data == "") {
+        if (response.data.data.length == 0) {
           $scope.showEmailError = false;
           $scope.emailErrorMsg = '';
           $scope.newUserResistrationEmail = true;
@@ -342,7 +342,7 @@
         password: $scope.password
       };
       $http.post(paths.api + '/purl/pwd', formdata).then(function (response) {
-        if (response.data == "") {
+        if (response.data.data.length == 0) {
           $scope.showPwdError = false;
           $scope.pwdErrorMsg = '';
           $scope.newUserResistrationPwd = true;
