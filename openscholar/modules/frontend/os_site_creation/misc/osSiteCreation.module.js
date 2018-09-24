@@ -41,6 +41,36 @@
   var user;
   aus.getUser(function (u) {
     user = u;
+
+    var types = {
+        'create personal content': true,
+        'create project content': true,
+        'create department content': true
+      },
+      typecount = 0;
+    for (var perm in user.permissions) {
+      if (types[perm] != undefined) {
+        typecount++;
+        types[perm] = user.permissions[perm];
+      }
+    }
+    if (typecount == 1) {
+      for (perm in user.permissions) {
+        if (types[perm]) {
+          switch (perm) {
+            case 'create personal content':
+              $scope.display = 'individualScholar';
+              break;
+            case 'create project content':
+              $scope.display = 'projectLabSmallGroup';
+              break;
+            case 'create department content':
+              $scope.display = 'department';
+              break;
+          }
+        }
+      }
+    }
   });
 
   // Set site creation status
@@ -105,7 +135,7 @@
   };
 
   $scope.canBeCreated = function (type) {
-    if (!user.permissions['create ' +type+' content']) {
+    if (user && !user.permissions['create ' +type+' content']) {
       return false;
     }
 
