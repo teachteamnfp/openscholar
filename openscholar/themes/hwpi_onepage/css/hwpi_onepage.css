@@ -398,6 +398,9 @@ h2.block-title {
 #content-panels .block-boxes-os_slideshow_box .block-inner {
     margin-top: 0;
 }
+#content-panels .block-boxes-os_slideshow_box .add_new {
+    left: calc(50% - 980px/2);
+}
 a.rslides_nav {
     background-color: #787878;
 }
