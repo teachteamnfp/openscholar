@@ -386,3 +386,14 @@ function os_events_update_7032() {
     )
   ));
 }
+
+/**
+ * Update weights on fields
+ */
+function os_events_update_7033() {
+  features_revert(array(
+    'os_events' => array(
+      'field_instance'
+    )
+  ));
+}
