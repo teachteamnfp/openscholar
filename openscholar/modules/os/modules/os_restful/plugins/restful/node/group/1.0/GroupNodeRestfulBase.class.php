@@ -283,14 +283,21 @@ class GroupNodeRestfulBase extends OsNodeRestfulBase {
     if ($request['theme']) {
       // this value will be a flavor, most likely
       ctools_include('themes', 'os');
-
-      $themes = os_get_themes();
-      foreach ($themes as $name => $info) {
-        $flavors = os_theme_get_flavors($name);
-        if (isset($flavors[$request['theme']])) {
-          $space->controllers->variable->set('theme_default', $name);
-          $flavor_key = 'os_appearance_' . $name . '_flavor';
-          $space->controllers->variable->set($flavor_key, $request['theme']);
+      list($theme,,$flavor) = explode('-', $request['theme']);
+      if (!empty($flavor)) {
+        $space->controllers->variable->set('theme_default', $theme);
+        $flavor_key = 'os_appearance_' . $theme . '_flavor';
+        $space->controllers->variable->set($flavor_key, $flavor);
+      }
+      else {
+        $themes = os_get_themes ();
+        foreach ($themes as $name => $info) {
+          $flavors = os_theme_get_flavors ($name);
+          if (isset($flavors[$request['theme']])) {
+            $space->controllers->variable->set ('theme_default', $name);
+            $flavor_key = 'os_appearance_' . $name . '_flavor';
+            $space->controllers->variable->set ($flavor_key, $request['theme']);
+          }
         }
       }
     }
