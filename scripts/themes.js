@@ -49,7 +49,8 @@ function renderFile(directory, source) {
   sass.render({
     file: source,
     includePaths: [
-      directory
+      directory,
+      __dirname
     ]
   }, function (err, result) {
     if (!err) {
