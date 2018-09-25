@@ -1,5 +1,6 @@
 //colors
 @import _colors
+@import _helpers
 
 //fonts
 $font_0: Georgia
@@ -19,127 +20,30 @@ $font_11: arial
 $url_0: url(../images/standard-body-gradient.png)
 $url_1: url(../images/readmore.png)
 
-html 
-	background: #fff
-	color: #1e1e1e
-
-body 
-	background: #fff
-	color: #1e1e1e
-	&.front 
-		overflow-x: hidden
-		#columns 
-			background-position: 0 -252px
-
-		&.no-sidebars .content-top-slideshow-enabled #columns .hg-container 
-			padding-top: 0
-
-
-	&.no-sidebars .content-top-slideshow-enabled 
-		.region-content-top 
-			position: relative
-
-		#menu-bar 
-			border-bottom: 0
-
-		#content-panels .region-content-top 
-			.block 
-				margin-bottom: 0
-
-			.block-inner 
-				margin-top: 0
-				overflow: hidden
-
-			.block-boxes-os_boxes_widget_slider .block-inner 
-				overflow: visible
-
-
-		#columns .contextual-controls-wrapper 
-			right: -45px
-			top: 0
-
-
-
-#columns 
-	margin-left: auto
-	margin-right: auto
-	margin-top: 0
-	width: auto
-	background-image: $url_0
-	background-repeat: repeat-x
-	background-position: 0 0
-
-#content-panels 
-	border-right: none
-	border-left: none
-	.block-inner 
-		margin-top: 0
-
-	.block 
-		margin-bottom: 15px
-		&.no-title .view .date-nav-wrapper 
-			border-top: 0
-
-
-
 .front 
 	#content-panels 
-		.block 
-			border: 1px solid #dededc
-			background: #fff
-			//If you use compass, instead of the line below you could use + box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
-			box-shadow: 0 1px 2px 0 #dededc
-			-webkit-border-radius: 3px
-			//If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
-			border-radius: 3px
-			-moz-box-sizing: border-box
-			-webkit-box-sizing: border-box
-			//If you use compass, instead of the line below you could use + box-sizing($bs)
-			box-sizing: border-box
+		.block
 			&.block-boxes-os_boxes_manual_list 
-				&.styled 
-					background-color: #252525
-					color: #fff
-					padding: 0
-					a 
-						color: #57acff
-
-					.block-title 
-						border-bottom: none
-						margin-bottom: 0
-						color: #ffffff !important
-						background: $color_19
-						background: -moz-linear-gradient(top, $color_19 0, $color_20 100%)
-						background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, $color_19), color-stop(100%, $color_20))
-						background: -webkit-linear-gradient(top, $color_19 0, $color_20 100%)
-						background: -o-linear-gradient(top, $color_19 0, $color_20 100%)
-						background: -ms-linear-gradient(top, $color_19 0, $color_20 100%)
-						background: linear-gradient(to bottom, $color_19 0, $color_20 100%)
+				&.styled
+					.block-title
+						color: contrasting-color($school_l, $font_light, $font_dark) !important
+						background: $school_l
+						background: -moz-linear-gradient(top, $school_l 0, $school_d 100%)
+						background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, $school_l), color-stop(100%, $school_d))
+						background: -webkit-linear-gradient(top, $school_l 0, $school_d 100%)
+						background: -o-linear-gradient(top, $school_l 0, $school_d 100%)
+						background: -ms-linear-gradient(top, $school_l 0, $school_d 100%)
+						background: linear-gradient(to bottom, $school_l 0, $school_d 100%)
 						
 						padding: 8px 15px
 
 					.block-content 
 						border-top: none
 
-
-				&.converted-bio 
-					background-color: #fff
-					color: #000
-					a 
-						color: #215990
-
-
-
-
 		.block-title 
 			background: #f8f8f8
 			color: #000
 			border-bottom: 1px solid #dededc
-			font-size: 16px
-			line-height: 20px
-			min-height: 20px
-			padding: 7px 15px
-			font-weight: bold
 
 		.block-content 
 			padding: 15px
@@ -306,7 +210,7 @@ a
 		transition: all 0.25s linear
 
 	&.rslides_nav 
-		background-color: $color_34
+		background-color: $school_d
 
 
 .field-name-body 
@@ -883,12 +787,12 @@ h1
 
 	.menu-depth-2 a 
 		&:hover 
-			background-color: $color_29 !important
+			background-color: #e3e3e1 !important
 			border-top: 1px solid #dededc
 			border-bottom: 1px solid #dededc
 
 		&:focus 
-			background-color: $color_29 !important
+			background-color: #e3e3e1 !important
 			border-top: 1px solid #dededc
 			border-bottom: 1px solid #dededc
 
@@ -1072,11 +976,11 @@ table td.mini
 	background-position-y: -546px
 
 #layout_16_9_side .slide 
-	background: $color_19
-	background: -moz-linear-gradient(top, $color_19 0, $color_20 100%)
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, $color_19), color-stop(100%, $color_20))
-	background: -webkit-linear-gradient(top, $color_19 0, $color_20 100%)
-	background: -o-linear-gradient(top, $color_19 0, $color_20 100%)
-	background: -ms-linear-gradient(top, $color_19 0, $color_20 100%)
-	background: linear-gradient(to bottom, $color_19 0, $color_20 100%)
+	background: $school_l
+	background: -moz-linear-gradient(top, $school_l 0, $school_d 100%)
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, $school_l), color-stop(100%, $school_d))
+	background: -webkit-linear-gradient(top, $school_l 0, $school_d 100%)
+	background: -o-linear-gradient(top, $school_l 0, $school_d 100%)
+	background: -ms-linear-gradient(top, $school_l 0, $school_d 100%)
+	background: linear-gradient(to bottom, $school_l 0, $school_d 100%)
 	
