@@ -183,6 +183,12 @@ class OsRestfulUser extends \RestfulEntityBaseUser {
    */
   public function getCreateAccess() {
     if (module_exists('vsite')) {
+      global $user;
+      if (module_exists('pinserver') && $user->uid != 1) {
+        if (!pinserver_user_has_associated_pin ($user->uid)) {
+          return false;
+        }
+      }
       return _vsite_user_access_create_vsite();
     }
   }

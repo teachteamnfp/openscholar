@@ -47,7 +47,7 @@
     aus.getUser(function (user) {
       $scope.site_data = user.og_user_node || [];
       $scope.create_access = user.create_access;
-    })
+    });
 
     // var url = paths.api + '/users/' + user_data.uid;
     // $http({method: 'get', url: url}).then(function(response) {
