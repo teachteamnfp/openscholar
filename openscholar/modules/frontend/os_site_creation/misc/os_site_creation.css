@@ -1,4 +1,8 @@
 
+site-creation-form.ng-isolate-scope {
+    cursor: pointer;
+}
+
 #site-creation-container .preNx {
     -webkit-transition: all .125s linear;
     -moz-transition: all .125s linear;
@@ -92,11 +96,11 @@ h3 {
     position: relative;
 }
 .starter-content .form-type-radio {
-   
+
     margin-right: 25px;
     padding: 15px;
     height: 150px;
- 
+
 }
 .starter-content.four .form-type-radio {
     height: 190px;

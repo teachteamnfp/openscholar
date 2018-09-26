@@ -137,7 +137,26 @@ class GroupNodeRestfulBase extends OsNodeRestfulBase {
       'callback' => array($this, 'getTheme'),
     );
 
+    if (module_exists('vsite_access')) {
+      $public_fields['privacy'] = array (
+        'property' => VSITE_ACCESS_FIELD
+      );
+    }
+
+    $public_fields['parent'] = array(
+      'property' => 'field_group_parent',
+      'callback' => Closure::bind(function ($wrapper) { return $this->optionalPropertyCallback ('field_group_parent', $wrapper); }, $this)
+    );
+
     return $public_fields;
+  }
+
+  public function optionalPropertyCallback($property, EntityDrupalWrapper $wrapper) {
+    $info = $wrapper->getPropertyInfo ();
+    if (isset($info[$property])) {
+      return $wrapper->{$property}->value();
+    }
+    return null;
   }
 
   /**
@@ -211,6 +230,10 @@ class GroupNodeRestfulBase extends OsNodeRestfulBase {
     ));
   }
 
+  public function getPrivacyLevel($wrapper) {
+    return $wrapper->{VSITE_ACCESS_FIELD}->value();
+  }
+
   /**
    * {@inheritdoc}
    */
@@ -265,7 +288,7 @@ class GroupNodeRestfulBase extends OsNodeRestfulBase {
       foreach ($themes as $name => $info) {
         $flavors = os_theme_get_flavors($name);
         if (isset($flavors[$request['theme']])) {
-          $space->controllers->variable->set('theme_default', $theme);
+          $space->controllers->variable->set('theme_default', $name);
           $flavor_key = 'os_appearance_' . $name . '_flavor';
           $space->controllers->variable->set($flavor_key, $request['theme']);
         }

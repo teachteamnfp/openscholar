@@ -148,7 +148,7 @@ function admin_panel_library() {
           ),
         ),
         'version' => array(
-          'userPanel' => '1.0'
+          'userPanel' => '1.0.1'
         ),
         'paths' => array(
           'support_subscribe' => ($vsite) ? $vsite->get_absolute_url('group/node/' . $vsite->id . '/subscribe/vsite_support_expire') : '',

@@ -154,7 +154,7 @@ class OsRestfulPurl extends \RestfulBase implements \RestfulDataProviderInterfac
     $values['vsite_private'] = $this->request['vsite_private'];
 
     $parent = FALSE;
-    if($this->request['parent']){
+    if (!empty($this->request['parent'])) {
       $parent = $this->request['parent'];
     }
 
@@ -214,7 +214,7 @@ class OsRestfulPurl extends \RestfulBase implements \RestfulDataProviderInterfac
     $state['additional_settings'] = empty($state['additional_settings']) ? array() : $state['additional_settings'];
     $vsite = vsite_create_vsite($name, $purl, $author, $bundle, $preset, $parent, $visibility, $state['additional_settings']);
     if ($vsite) {
-      $message = vsite_register_message_angular($form, $values['domain']);
+      $message = vsite_register_message_angular(array(), $values['domain']);
       if ($this->request['vicarious_user']) {
         // For vicarious_user need to redirect them to login page.
         $message = str_replace($base_url.'/', '', $message);

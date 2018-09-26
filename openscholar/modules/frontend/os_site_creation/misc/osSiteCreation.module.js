@@ -1,6 +1,7 @@
 (function () {
+  var rootPath, paths;
 
-  var m = angular.module('SiteCreationForm', ['angularModalService', 'ngMessages', 'os-buttonSpinner', 'DependencyManager'])
+  var m = angular.module('SiteCreationForm', ['angularModalService', 'ngMessages', 'os-buttonSpinner', 'os-auth', 'DependencyManager'])
   .config(function (){
     rootPath = Drupal.settings.paths.siteCreationModuleRoot;
     paths = Drupal.settings.paths
@@ -30,7 +31,7 @@
     }
   }]);
 
-  m.controller('siteCreationCtrl', ['$scope', '$http', '$q', '$rootScope', 'buttonSpinnerStatus', '$filter', '$sce', '$timeout', 'passwordStrength', function($scope, $http, $q, $rootScope, bss, $filter, $sce, $timeout, ps) {
+  m.controller('siteCreationCtrl', ['$scope', '$http', '$q', '$rootScope', 'buttonSpinnerStatus', '$filter', '$sce', '$timeout', 'passwordStrength', 'authenticate-token', 'parent', function($scope, $http, $q, $rootScope, bss, $filter, $sce, $timeout, ps, at, parent) {
 
   //Set default value for vsite
   $scope.vsite_private = {
@@ -60,7 +61,7 @@
     if (field != 'departmentSchool') {
       $scope.departmentSchool = null;
     }
-  }
+  };
 
   //Set status of next button to disabled initially
   $scope.btnDisable = true;
@@ -80,15 +81,15 @@
     if (pagefrom == 'page1' && pageto == 'page2') {
       if ($scope.individualScholar != null) {
         $scope.contentOption = {
-          value: 'os_scholar',
+          value: 'os_scholar'
         };
       } else if ($scope.projectLabSmallGroup != null) {
          $scope.contentOption = {
-          value: 'os_project',
+          value: 'os_project'
         };
       } else {
         $scope.contentOption = {
-          value: 'os_department_minimal',
+          value: 'os_department_minimal'
         };
       }
     } else if (pagefrom == 'page2' && pageto == 'page3') {
@@ -96,51 +97,58 @@
       featuredThemeTop = featuredThemeTop > 0 ? featuredThemeTop : 650;
       angular.element(document.querySelectorAll('#body-container-page3')).animate({ scrollTop: featuredThemeTop + 200}, 200);
     }
-  }
+  };
+
+  $scope.canBeSubsite = function (type) {
+    if (!parent) {
+      return true;
+    }
+
+    return Drupal.settings.subsite_types[type] != undefined;
+  };
 
   var queryArgs = {};
-  var promises = [];
-    if (Drupal.settings.spaces != undefined) {
-      if (Drupal.settings.spaces.id) {
-        queryArgs.vsite = Drupal.settings.spaces.id;
-      }
+  if (Drupal.settings.spaces != undefined) {
+    if (Drupal.settings.spaces.id) {
+      queryArgs.vsite = Drupal.settings.spaces.id;
     }
-    var config = {
-      params: queryArgs
-    };
-    $http.get(paths.api+'/themes', config).then(function (response) {
-      $scope.themes = response.data.data;
-    });
-    $scope.selected = false;
-    $scope.selectedOption = {key: 'default'};
-    $scope.setTheme = function(themeKey, flavorKey) {
-      $scope.selected = themeKey + '-os_featured_flavor-' + flavorKey;
-    }
+  }
+  var config = {
+    params: queryArgs
+  };
+  $http.get(paths.api+'/themes', config).then(function (response) {
+    $scope.themes = response.data.data;
+  });
+  $scope.selected = false;
+  $scope.selectedOption = {key: 'default'};
+  $scope.setTheme = function(themeKey, flavorKey) {
+    $scope.selected = themeKey + '-os_featured_flavor-' + flavorKey;
+  };
 
-    $scope.changeSubTheme = function(item, themeKey) {      
-      angular.forEach($scope.themes.others, function(value, key) {
-        if (value.themeKey == themeKey) {
-          $scope.themes.others[key].flavorKey = item.key;
-          angular.forEach(value.flavorOptions, function(v, k) {
-            if (v.key == item.key) {
-              if (v.screenshot.indexOf('png') > -1) {
-                $scope.themes.others[key].screenshot = v.screenshot;
-              } else {
-                $scope.themes.others[key].screenshot = $scope.themes.others[key].defaultscreenshot;
-              }
+  $scope.changeSubTheme = function(item, themeKey) {
+    angular.forEach($scope.themes.others, function(value, key) {
+      if (value.themeKey == themeKey) {
+        $scope.themes.others[key].flavorKey = item.key;
+        angular.forEach(value.flavorOptions, function(v, k) {
+          if (v.key == item.key) {
+            if (v.screenshot.indexOf('png') > -1) {
+              $scope.themes.others[key].screenshot = v.screenshot;
+            } else {
+              $scope.themes.others[key].screenshot = $scope.themes.others[key].defaultscreenshot;
             }
-          });
-        }
-      });
-    }
+          }
+        });
+      }
+    });
+  };
 
-    $scope.navigateToSite = function(themeKey) {
-      window.location.href = $scope.vsiteUrl;
-    }
+  $scope.navigateToSite = function() {
+    window.location.href = $scope.vsiteUrl;
+  };
 
   //Set default value for Content Option
   $scope.contentOption = {
-    value: 'os_department_minimal',
+    value: 'os_department_minimal'
   };
   $scope.selected = 'hwpi_classic-os_featured_flavor-default';
   //Site URL
@@ -150,39 +158,101 @@
   $scope.saveAllValues = function() {
     bss.SetState('site_creation_form', true);
     $timeout.cancel(timer);
+
     $scope.btnDisable = true;
-    var formdata = {};
-    formdata = {
-      individualScholar: $scope.individualScholar,
-      projectLabSmallGroup: $scope.projectLabSmallGroup,
-      departmentSchool: $scope.departmentSchool,
-      vsite_private: $scope.vsite_private.value,
-      contentOption: $scope.contentOption.value,
-      vicarious_user: $scope.vicariousUser,
-      name: $scope.userName,
-      first_name: $scope.fname,
-      last_name: $scope.lname,
-      mail: $scope.email,
-      password: $scope.confirmPwd,
-     };
+    var url = $scope.individualScholar ? $scope.individualScholar : ($scope.projectLabSmallGroup ? $scope.projectLabSmallGroup : $scope.departmentSchool),
+      bundle = $scope.individualScholar ? 'personal' : ($scope.projectLabSmallGroup ? 'project' : 'department'),
+      theme = $scope.selected;
 
-    // Get sub site parent id
-    if (typeof $rootScope.siteCreationFormId !== 'undefined') {
-      var splitId = $rootScope.siteCreationFormId.split('add-subsite-');
-      if (splitId.length > 1) {
-        formdata['parent'] = splitId[1];
+    var user = {};
+    if (Drupal.settings.user_panel != undefined) {
+      // existing user who came to the page logged in
+      user.uid = Drupal.settings.user_panel.user.uid;
+    }
+    else if ($scope.vicariousUser) {
+      // brand new user
+      user.first_name = $scope.fname;
+      user.last_name = $scope.lname;
+      user.mail = $scope.email;
+      user.name = $scope.userName;
+      user.password = $scope.confirmPwd;
+
+      $scope.submitStateText = 'User Information...';
+      $http.post(Drupal.settings.paths.api+'/users', user).then(function (response) {
+        // we were just logged in. We need to fetch the RESTful authentication token
+        at.fetch().then (function (resp) {
+          submitGroup(response.data.data.id, url, bundle, $scope.contentOption.value, theme, $scope.vsite_private.value);
+          return resp;
+        });
+      });
+    }
+
+    if (user.uid) {
+      submitGroup(user.uid, url, bundle, $scope.contentOption.value, theme, $scope.vsite_private.value)
+    }
+
+    // var formdata = {
+    //   individualScholar: $scope.individualScholar,
+    //   projectLabSmallGroup: $scope.projectLabSmallGroup,
+    //   departmentSchool: $scope.departmentSchool,
+    //   vsite_private: $scope.vsite_private.value,
+    //   contentOption: $scope.contentOption.value,
+    //   vicarious_user: $scope.vicariousUser,
+    //   name: $scope.userName,
+    //   first_name: $scope.fname,
+    //   last_name: $scope.lname,
+    //   mail: $scope.email,
+    //   password: $scope.confirmPwd,
+    //  };
+    //
+    // // Send the theme key
+    // if (typeof $scope.selected !== 'undefined') {
+    //   formdata['themeKey'] = $scope.selected;
+    // }
+    // $http.post(paths.api + '/purl', formdata).then(function (response) {
+    //   $scope.successData = response.data.data.data;
+    //   $scope.vsiteUrl = response.data.data.data;
+    //   $scope.siteCreated = true;
+    //   bss.SetState('site_creation_form', false);
+    // });
+  };
+
+  function submitGroup(owner, url, bundle, starter, theme, privacy) {
+    var fields = {
+      owner: owner,
+      label: url,
+      type: bundle,
+      purl: url,
+      preset: starter,
+      theme: theme,
+      privacy: privacy
+    };
+    if (parent) {
+      fields.parent = parent;
+    }
+    $http.post(Drupal.settings.paths.api+'/group', fields).then(function (response) {
+      if (response.data.data[0].id != undefined) {
+        bss.SetState('site_creation_form', false);
+        $scope.submitSuccess = true;
+        $scope.submitting = false;
+        $scope.submitted = true;
+        $scope.siteCreated = true;
+        if (response.data['batch-id']) {
+          var link = document.createElement('a');
+          link.href = response.data.data[0].url;
+
+          document.cookie = 'has_js=1;domain='+link.hostname+'path=/';
+          $scope.vsiteUrl = response.data.data[0].url + '/batch?id=' + response.data['batch-id'] + '&op=start';
+        } else {
+          $scope.vsiteUrl = response.data.data[0].url;
+        }
       }
-    }
-
-    // Send the theme key
-    if (typeof $scope.selected !== 'undefined') {
-      formdata['themeKey'] = $scope.selected;
-    }
-    $http.post(paths.api + '/purl', formdata).then(function (response) {
-      $scope.successData = response.data.data.data;
-      $scope.vsiteUrl = response.data.data.data;
-      $scope.siteCreated = true;
+      // gotta figure out what an error looks like
+    }, function (errorResponse) {
       bss.SetState('site_creation_form', false);
+      $scope.submitError = errorResponse.data.title;
+      $scope.submtitted = true;
+      $scope.submitting = false;
     });
   }
 
@@ -190,7 +260,7 @@
     $scope.newUserResistrationName = false;
     if (typeof $scope.userName !== 'undefined' && $scope.userName != '') {
       var formdata = {
-        name: $scope.userName,
+        name: $scope.userName
       };
       $http.post(paths.api + '/purl/name', formdata).then(function (response) {
         if (response.data == "") {
@@ -204,13 +274,12 @@
       });
     }
     $scope.isCompletedRes();
-  }
+  };
 
   $scope.checkEmail = function() {
     $scope.newUserResistrationEmail = false;
     if (typeof $scope.email !== 'undefined' && $scope.email != '') {
-      var formdata = {};
-      formdata = {
+      var formdata = {
         email: $scope.email,
       };
       $http.post(paths.api + '/purl/email', formdata).then(function (response) {
@@ -225,13 +294,13 @@
       });
     }
     $scope.isCompletedRes();
-  }
+  };
 
   $scope.checkPwd = function() {
     $scope.newUserResistrationPwd = false;
     if (typeof $scope.password !== 'undefined' && $scope.password != '') {
       var formdata = {
-        password: $scope.password,
+        password: $scope.password
       };
       $http.post(paths.api + '/purl/pwd', formdata).then(function (response) {
         if (response.data == "") {
@@ -245,7 +314,7 @@
       });
     }
     $scope.isCompletedRes();
-  }
+  };
 
   $scope.isCompletedRes = function() {
     timer = $timeout(function () {
@@ -255,7 +324,7 @@
         $scope.btnDisable = true;
       }
     }, 2000);
-  }
+  };
 
   $scope.score = function() {
     $scope.newUserValidPwd = false;
@@ -275,7 +344,7 @@
       $scope.newUserValidPwd = true;
     }
     return pwdScore;
-  }
+  };
 
  $scope.pwdMatch = function() {
   $scope.newUserResistrationPwdMatch = false;
@@ -322,7 +391,8 @@
           controller: 'siteCreationCtrl',
           templateUrl: rootPath + '/templates/os_site_creation.html',
           inputs: {
-            form: scope.form
+            form: scope.form,
+            parent: scope.parent
           }
         })
         .then(function (modal) {
@@ -345,6 +415,7 @@
       scope: {
         form: '@',
         autoOpen: '@?'
+        parent: '@'
       }
     };
   }]);
@@ -406,16 +477,16 @@
   };
 }]);
 jQuery(document).ready(function(){
- var highestBox = 0;
-        jQuery('.starter-content .form-item').each(function(){  
-                if(jQuery(this).height() > highestBox){  
-                highestBox = jQuery(this).height();  
-        }
-    });    
-    jQuery('.starter-content .form-item').height(highestBox);
+  var highestBox = 0;
+  jQuery('.starter-content .form-item').each(function(){
+    if (jQuery(this).height() > highestBox) {
+      highestBox = jQuery(this).height();
+    }
+  });
+  jQuery('.starter-content .form-item').height(highestBox);
 
 });
 
-})()
+})();
 
 
