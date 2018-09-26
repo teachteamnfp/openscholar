@@ -26,6 +26,7 @@ features[variable][] = logo_path
 features[variable][] = highest_parent_item
 features[variable][] = profile_default_photo
 features[variable][] = favicon_default
+features[variable][] = os_terms_of_use
 
 features_exclude[dependencies][strongarm] = strongarm
 
