@@ -137,8 +137,8 @@ function _os_files_install_find_files($node) {
 
   $files = array();
   foreach ($fields as $name => $type) {
-    if (empty($node->$name)) continue;
-    $field = $node->$name;
+    if (empty($node->{$name})) continue;
+    $field = $node->{$name};
     if (in_array($type, $file_field_types)) {
       foreach ($field[LANGUAGE_NONE] as $f) {
         $files['file'][$f['fid']]++;
@@ -162,7 +162,7 @@ function _os_files_install_find_files($node) {
     );
 
     foreach ($biblio_fields as $bf) {
-      $usage =  _os_files_install_get_files_from_string($node->$bf, $path_prefix);
+      $usage =  _os_files_install_get_files_from_string($node->{$bf}, $path_prefix);
       foreach ($usage as $fid => $count) {
         $files['media'][$fid] += $count;
       }

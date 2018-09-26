@@ -1093,7 +1093,7 @@ fieldset#edit-biblio-authors .fieldset-legend {
 }
 
 /** STYLE IMPROVEMENTS BASED ON MOCKUP https://d2r1vs3d9006ap.cloudfront.net/s3_images/1010882/pubform_expanded.png **/
-.node-form .form-region-right {
+.node-form.node-form-has-region-right .form-region-right {
     border-left: 1px dotted #777777;
     padding-left: 15px;
     width: 27%;

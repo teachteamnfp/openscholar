@@ -433,7 +433,7 @@ function cp_menu_remove_confirm($form, &$form_state) {
 
   $remove_link_text = in_array($menu,$revert) ? 'reset' : 'remove';
 	
-  $form = confirm_form($form, t('Are you sure you want to ' . $remove_link_text . ' the menu: @menu?', array('@menu' => $menu)));
+  $form = confirm_form($form, t('Are you sure you want to ' . $remove_link_text . ' the menu: @menu?', array('@menu' => $menu)), 'cp/build/menu');
 
   $form['actions']['cancel'] = array(
     '#type' => 'submit',

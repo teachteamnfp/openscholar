@@ -93,8 +93,12 @@ function getClient() {
   $path = libraries_get_path('google-api-php-client');
   include_once "$path/vendor/autoload.php";
 
-  define('APPLICATION_NAME', "OpenScholar Calendar Exporter");
-  define('SCOPES', implode(' ', array(Google_Service_Calendar::CALENDAR)));
+  if (!defined('APPLICATION_NAME')) {
+    define ('APPLICATION_NAME', "OpenScholar Calendar Exporter");
+  }
+  if (!defined('SCOPES')) {
+    define ('SCOPES', implode (' ', array (Google_Service_Calendar::CALENDAR)));
+  }
 
   $google_client_secret = variable_get('client_secret_key');
   $google_client_ID = variable_get('client_id');
@@ -255,7 +259,8 @@ function os_events_gcal_create_calendar() {
   if($calendarInsert || $calendarUpdate) {
     drupal_set_message(t('Calendar successfully sync with Google calendar.'));
   }
-  drupal_goto($vsite->group->purl . '/calendar');
+
+  drupal_goto($vsite->get_absolute_url('calendar'));
 }
 
 /**
@@ -1057,7 +1062,7 @@ function os_events_date_formatter_pre_view_alter(&$entity, &$vars) {
       else {
         // Use the date in the result field to get the delta on the repeated field_date field.
         foreach ($entity->field_date[LANGUAGE_NONE] as $d => $r) {
-          if ($r['value'] == $result->$field) {
+          if ($r['value'] == $result->{$field}) {
             $delta = $d;
             break;
           }
@@ -3748,7 +3753,7 @@ function os_events_cp_settings() {
   $spaces_features = variable_get('spaces_features');
   // Event settings link won't appear in CP menu if event app is not enabled.
   if (empty($spaces_features['os_events'])) {
-    return $settings;
+    return array();
   }
 
   $settings['os_exporter_disable_event_export'] = array(

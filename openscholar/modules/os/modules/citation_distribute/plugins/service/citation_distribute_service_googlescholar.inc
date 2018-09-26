@@ -68,7 +68,7 @@ class citation_distribute_service_googlescholar extends citation_distribute_serv
     );
 
     foreach ($metadata as $key => $value) {
-      $metadata[$key] = (isset($node->$value)) ? htmlspecialchars(strip_tags($node->$value), ENT_COMPAT, 'ISO-8859-1', FALSE) : NULL;
+      $metadata[$key] = (isset($node->{$value})) ? htmlspecialchars(strip_tags($node->{$value}), ENT_COMPAT, 'ISO-8859-1', FALSE) : NULL;
     }
 
     if (isset($node->biblio_keywords)) {

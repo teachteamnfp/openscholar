@@ -188,7 +188,7 @@ function vsite_register_block_view($delta = '') {
     if ($text == 'Create Your Site Here' && !user_is_anonymous()) {
       // user is either loggedin by pin or os account
       $param = drupal_get_query_parameters();
-      $markup = '<site-creation-form ' . ($param['parent']? ' id="add-subsite-' . $param['parent'] . '"':''). '>' . l($text, $path, $options) . '</site-creation-form>';
+      $markup = '<site-creation-form ' . (!empty($param['parent']) ? ' id="add-subsite-' . $param['parent'] . '"':''). '>' . l($text, $path, $options) . '</site-creation-form>';
     } else {
       $markup = l($text, $path, $options);
     }

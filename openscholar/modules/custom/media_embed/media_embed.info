@@ -6,4 +6,3 @@ files[] = includes/MediaEmbedStreamWrapper.inc
 files[] = includes/MediaInternetEmbedHandler.inc
 files[] = media_embed.test
 dependencies[] = media
-stylesheets[all][] = media_embed.css
