@@ -93,7 +93,7 @@ class OsImporterEntityValidateBase extends EntityValidateBase {
 
     $value = reset($value);
     // Validate the date format for the start and end date.
-    $this->validateDateFormats(array('M j Y'), $value, $field_name);
+    $this->validateDateFormats(array('M j Y', 'M d Y'), $value, $field_name);
   }
 
   /**
