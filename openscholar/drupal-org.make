@@ -178,7 +178,7 @@ projects[html_title][patch][] = "https://www.drupal.org/files/issues/fix_for_oth
 projects[imageapi_optimize][subdir] = "contrib"
 projects[imageapi_optimize][download][type] = git
 projects[imageapi_optimize][download][branch] = 7.x-1.x
-projects[imageapi_optimize][download][revision] = 72c58fc
+projects[imageapi_optimize][download][revision] = 234f208
 
 projects[imagemagick][subdir] = "contrib"
 projects[imagemagick][version] = 1.0
