@@ -50,7 +50,9 @@
       typecount = 0;
     for (var perm in user.permissions) {
       if (types[perm] != undefined) {
-        typecount++;
+        if (user.permissions[perm]) {
+          typecount++;
+        }
         types[perm] = user.permissions[perm];
       }
     }
