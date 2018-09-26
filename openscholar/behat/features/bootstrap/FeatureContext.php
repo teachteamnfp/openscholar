@@ -1255,8 +1255,8 @@ class FeatureContext extends DrupalContext {
   /**
    * @Given /^the widget "([^"]*)" is set in the "([^"]*)" page$/
    */
-  public function theWidgetIsSetInThePage($page, $widget) {
-    $this->box[] = FeatureHelp::setBoxInRegion($this->nid, $page, $widget);
+  public function theWidgetIsSetInThePage($widget, $page) {
+    $this->box[] = FeatureHelp::setBoxInRegion($this->nid, $widget, $page);
   }
 
   /**
@@ -3208,7 +3208,7 @@ class FeatureContext extends DrupalContext {
    * @When /^I wait "([^"]*)" for the media browser to open$/
    */
   public function iWaitForTheMediaBrowserToOpen($time) {
-    $this->getSession()->wait($time * 1000);
+    $this->getSession()->wait((int)$time * 1000);
     if (!$elem = $this->getSession()->getPage()->find('css', '.ui-dialog.media-wrapper') || !$this->getSession()->getPage()->find('css', '.ui-dialog.media-wrapper .media-browser-panes')) {
       throw new Exception('The media browser failed to open.');
     }
@@ -3589,7 +3589,7 @@ class FeatureContext extends DrupalContext {
           throw $e;
         }
       }
-    }, 10000);
+    }, 20000);
   }
 
   /**

@@ -17,6 +17,7 @@ env:
   matrix:
     - TEST_SUITE=restful
     - TEST_SUITE=features_first
+    - TEST_SUITE=galleries
     - TEST_SUITE=features_second
 #    - TEST_SUITE=harvard
     - TEST_SUITE=frontend
@@ -30,5 +31,11 @@ env:
 #before_script: phpenv config-add travis.ini
 script:
 
-  - cd /home/travis/build/openscholar/openscholar/docker_travis
-  - bash docker.sh
+  - docker --version
+  - docker-compose --version
+  - cd /home/travis/build/openscholar/openscholar
+  - cp docker/travis/docker-compose.yml docker-compose.yml
+  - cp docker/travis/docker-compose.override.yml.travis docker-compose.override.yml
+  - docker-compose up -d
+  - docker-compose exec web docker_travis/docker.install.sh
+  - docker-compose exec web docker_travis/run.sh
