@@ -58,7 +58,7 @@ $url_1: url(../images/readmore.png)
 		font-family: $font_10
 
 .region-inner
-	&.rslides_nav 
+	.rslides_nav
 		background-color: $school_d
 .field-name-body
 	h2 
@@ -82,16 +82,16 @@ $url_1: url(../images/readmore.png)
 			a
 				font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6
 				&.active 
-					background: $color_5
-					color: #ffffff
+					background: #1E2540
+					color: $font_light
 					&:hover 
-						background: $color_5
-						color: #ffffff
+						background: #1E2540
+						color: $font_light
 
 
 			.menuparent
 				a 
-					color: $color_5
+					color: inherit
 					font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6
 					&.active
 						background: #282828
@@ -231,9 +231,9 @@ ul
 		font-family: $font_11
 
 .breadcrumb
-	color: #fff
+	color: #000
 	a 
-		color: #fff
+		color: #000
 
 
 .comment-wrapper 
@@ -265,11 +265,11 @@ ul
 	ul.ui-tabs-nav li
 		border-right: 1px solid #d3d3d3
 		&.ui-tabs-active
-			border-bottom: 1px solid #2a68ac
-			border-top: 1px solid #5090c8
-			background: linear-gradient(to bottom, #5090c8 0, #2a68ac 100%) repeat scroll 0 0 transparent
+			border-bottom: 1px solid $school_d
+			border-top: 1px solid $school
+			background: linear-gradient(to bottom, $school 0, $school_d 100%) repeat scroll 0 0 transparent
 			a 
-				color: #fff
+				color: contrasting-color($school, $font_light, $font_dark)
 
 .calendar-calendar 
 	.mini-day-on
@@ -365,4 +365,7 @@ table td.mini
 	background: -o-linear-gradient(top, $school_l 0, $school_d 100%)
 	background: -ms-linear-gradient(top, $school_l 0, $school_d 100%)
 	background: linear-gradient(to bottom, $school_l 0, $school_d 100%)
-	
+
+#search-block-form #edit-submit
+	background-position: -43px -440px
+	background-color: $school
