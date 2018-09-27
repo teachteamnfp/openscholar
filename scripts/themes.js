@@ -55,7 +55,7 @@ function renderFile(directory, source) {
   }, function (err, result) {
     if (!err) {
       var base = path.basename(source, '.sass'),
-        filename = directory + '/css/' + base + '.css';
+        filename = directory + '/css/' + base + '_override.css';
       if (!fs.existsSync(directory + '/css')) {
         fs.mkdirSync(directory + '/css');
       }
