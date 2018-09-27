@@ -53,6 +53,7 @@ function os_site_creation_library() {
       array('os_common', 'auth'),
       array('os_common', 'angular-modal-service'),
       array('os_common', 'buttonSpinner'),
+      array('os_common', 'ActiveUser'),
       array('os_common', 'DependencyManager')
     )
   );
