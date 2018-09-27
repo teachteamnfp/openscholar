@@ -32,7 +32,7 @@ body
 
 
 #header 
-	background: #bac5c6
+	background: #303030
 	color: #fff
 
 #boxes-box-site_info 
@@ -42,86 +42,54 @@ body
 
 
 #menu-bar 
-	background: $color_35
-	padding: 0
-	ul.nice-menu 
-		li 
-			margin-right: 0
-
+	background: $school_l
+	ul.nice-menu
 		a 
-			color: #fff
-			padding: 16px 15px
+			color: contrasting-color($school_l, $font_light, $font_dark)
 			&.active 
-				background: $color_36
-				color: #fff
+				background: $school
+				color: contrasting-color($school, $font_light, $font_dark)
 
 			&:hover 
-				background: $color_36
-				color: #fff
+				background: $school
+				color: contrasting-color($school, $font_light, $font_dark)
 
 
 		ul 
-			background: $color_36
-			a 
-				padding: 10px 15px
-
+			background: $school
 			.menuparent 
 				a 
 					&:hover 
-						color: #bac5c6
+						color: contrasting-color($school, $font_light, $font_dark)
 
 					&.active 
-						color: #bac5c6
+						color: contrasting-color($school, $font_light, $font_dark)
 
 
 				&.over > a 
-					color: #bac5c6
+					color: contrasting-color($school, $font_light, $font_dark)
 
 
 
 		.menuparent 
-			a 
-				&:before 
-					background-position: 0 -566px
-
+			a
 				&:hover 
-					background-color: $color_36
-
+					background-color: $school
 				&.active 
-					background-color: $color_36
-
-
+					background-color: $school
 			&.over > a 
-				background-color: $color_36
-
+				background-color: $school
 			ul li a 
-				color: #fff
+				color: contrasting-color($school_l, $font_light, $font_dark)
 				font-family: $font_0
 				font-size: 13px
-				font-weight: bold
-				padding-right: 8px
 				&.active 
-					color: #fff
+					color: contrasting-color($school_l, $font_light, $font_dark)
 					font-family: $font_0
 					font-size: 13px
-					font-weight: bold
-					padding-right: 8px
 
 				&:hover 
-					color: #bac5c6
-					padding-right: 8px
-
-
-
-
-
-ul 
-	&.nice-menu ul 
-		top: 3.9em !important
-
-	&.nice-menu-down li ul li ul 
-		left: 12em
-
+					color: contrasting-color($school_l, $font_light, $font_dark)
 
 #footer 
 	background: $url_2 repeat-x 0 0 #ebebeb
@@ -130,25 +98,17 @@ ul
 			&.menuparent 
 				font-size: 12px
 				font-weight: bold
-
 			a 
 				font-family: $font_0
 				text-transform: uppercase
 				font-size: 13px
-
 			ul li a 
 				font-family: $font_0
 				text-transform: none
 				font-size: 14px
-
-
-		a 
+		a
 			font-family: $font_1, $font_2, $font_3
-			text-transform: none
 			font-size: 16px
-
-
-
 #page-title 
 	font-family: $font_1, $font_2, $font_3
 
@@ -158,9 +118,6 @@ ul
 .page-search 
 	.title a 
 		font-family: $font_1, $font_2, $font_3
-		font-weight: normal
-		font-size: 18px
-		margin-bottom: 18px
 		font-size: 15px
 		font-weight: bold
 
@@ -324,7 +281,7 @@ ul
 		> a 
 			background-color: #545454
 			&:hover 
-				background-color: $color_35 !important
+				background-color: $school_l !important
 
 
 		.menu-depth-3 > a 
@@ -516,3 +473,7 @@ a.rslides_nav
 
 #layout_3_1_overlay .slide-copy h2 a 
 	font-weight: normal
+
+#search-block-form #edit-submit
+	background-position: -43px -440px
+	background-color: $school
