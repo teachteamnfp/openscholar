@@ -37,7 +37,7 @@
 
 			<div id="body-container">
 				<div id="body-container-group-1">
-					<div class="site-type center individual" ng-show="canBeSubsite('personal')">
+					<div class="site-type center individual" ng-show="canBeCreated('personal')">
 						<div class="site-type-button">
 							<a class="button" ng-click="display = 'individualScholar'" title="Individual Scholar">Individual Scholar</a>
 						</div>
@@ -46,7 +46,7 @@
 								<b>Choose the URL of the Website</b>
 							</div>
 
-							<div>
+							<div class="url-selector">
 								<span>{{baseURL}}</span>
 								<span>
 									<input type="text" name="individualScholar" ng-model="individualScholar" formcheck-directive ng-keyup="clearRest('individualScholar');" id="individual-scholar" class="form-text">
@@ -65,7 +65,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="site-type center group" ng-show="canBeSubsite('project')">
+					<div class="site-type center group" ng-show="canBeCreated('project')">
 						<div class="site-type-button">
 							<a class="button" ng-click="display = 'projectLabSmallGroup'">Project/Lab/Small Group</a>
 						</div>
@@ -74,7 +74,7 @@
 								<b>Choose the URL of the Website</b>
 							</div>
 
-							<div>
+							<div class="url-selector">
 								<span>{{baseURL}}</span>
 								<span>
 									<input type="text" name="projectLabSmallGroup" ng-model="projectLabSmallGroup" formcheck-directive ng-keyup="clearRest('projectLabSmallGroup');" id="project-lab-small-group" class="form-text">
@@ -93,7 +93,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="site-type center department" ng-show="canBeSubsite('department')">
+					<div class="site-type center department" ng-show="canBeCreated('department')">
 						<div class="site-type-button">
 							<a class="button" ng-click="display = 'departmentSchool'">Department/School</a>
 						</div>
@@ -102,7 +102,7 @@
 								<b>Choose the URL of the Website</b>
 							</div>
 
-							<div>
+							<div class="url-selector">
 								<span>{{baseURL}}</span>
 								<span>
 									<input type="text" name="departmentSchool" ng-model="departmentSchool" formcheck-directive ng-keyup="clearRest('departmentSchool');" id="department-school" class="form-text">

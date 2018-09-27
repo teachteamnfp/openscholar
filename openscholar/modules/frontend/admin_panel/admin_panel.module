@@ -161,6 +161,7 @@ function admin_panel_library() {
   );
   $libs['user_panel']['dependencies'] = array(
     array('admin_panel', 'admin_panel'),
+    array('os_common', 'ActiveUser'),
   );
 
   return $libs;

@@ -1,7 +1,7 @@
 (function () {
   var rootPath, paths;
 
-  var m = angular.module('SiteCreationForm', ['angularModalService', 'ngMessages', 'os-buttonSpinner', 'os-auth', 'DependencyManager'])
+  var m = angular.module('SiteCreationForm', ['angularModalService', 'ngMessages', 'os-buttonSpinner', 'os-auth', 'ActiveUser', 'DependencyManager'])
   .config(function (){
     rootPath = Drupal.settings.paths.siteCreationModuleRoot;
     paths = Drupal.settings.paths
@@ -31,12 +31,49 @@
     }
   }]);
 
-  m.controller('siteCreationCtrl', ['$scope', '$http', '$q', '$rootScope', 'buttonSpinnerStatus', '$filter', '$sce', '$timeout', 'passwordStrength', 'authenticate-token', 'parent', function($scope, $http, $q, $rootScope, bss, $filter, $sce, $timeout, ps, at, parent) {
+  m.controller('siteCreationCtrl', ['$scope', '$http', '$q', '$rootScope', 'buttonSpinnerStatus', '$filter', '$sce', '$timeout', 'passwordStrength', 'authenticate-token', 'ActiveUserService', 'parent', function($scope, $http, $q, $rootScope, bss, $filter, $sce, $timeout, ps, at, aus, parent) {
 
   //Set default value for vsite
   $scope.vsite_private = {
     value: '0'
   };
+
+  var user;
+  aus.getUser(function (u) {
+    user = u;
+
+    var types = {
+        'create personal content': true,
+        'create project content': true,
+        'create department content': true
+      },
+      typecount = 0;
+    for (var perm in user.permissions) {
+      if (types[perm] != undefined) {
+        if (user.permissions[perm]) {
+          typecount++;
+        }
+        types[perm] = user.permissions[perm];
+      }
+    }
+    if (typecount == 1) {
+      for (perm in user.permissions) {
+        if (types[perm]) {
+          switch (perm) {
+            case 'create personal content':
+              $scope.display = 'individualScholar';
+              break;
+            case 'create project content':
+              $scope.display = 'projectLabSmallGroup';
+              break;
+            case 'create department content':
+              $scope.display = 'department';
+              break;
+          }
+        }
+      }
+    }
+  });
 
   // Set site creation status
   $scope.siteCreated = false;
@@ -99,7 +136,11 @@
     }
   };
 
-  $scope.canBeSubsite = function (type) {
+  $scope.canBeCreated = function (type) {
+    if (user && !user.permissions['create ' +type+' content']) {
+      return false;
+    }
+
     if (!parent) {
       return true;
     }
@@ -263,7 +304,7 @@
         name: $scope.userName
       };
       $http.post(paths.api + '/purl/name', formdata).then(function (response) {
-        if (response.data == "") {
+        if (response.data.data.length == 0) {
           $scope.showUserError = false;
           $scope.userErrorMsg = '';
           $scope.newUserResistrationName = true;
@@ -280,10 +321,10 @@
     $scope.newUserResistrationEmail = false;
     if (typeof $scope.email !== 'undefined' && $scope.email != '') {
       var formdata = {
-        email: $scope.email,
+        email: $scope.email
       };
       $http.post(paths.api + '/purl/email', formdata).then(function (response) {
-        if (response.data == "") {
+        if (response.data.data.length == 0) {
           $scope.showEmailError = false;
           $scope.emailErrorMsg = '';
           $scope.newUserResistrationEmail = true;
@@ -303,7 +344,7 @@
         password: $scope.password
       };
       $http.post(paths.api + '/purl/pwd', formdata).then(function (response) {
-        if (response.data == "") {
+        if (response.data.data.length == 0) {
           $scope.showPwdError = false;
           $scope.pwdErrorMsg = '';
           $scope.newUserResistrationPwd = true;
