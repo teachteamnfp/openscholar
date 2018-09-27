@@ -69,13 +69,6 @@ function os_pages_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'enable_revisions_page';
-  $strongarm->value = TRUE;
-  $export['enable_revisions_page'] = $strongarm;
-
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
   $strongarm->name = 'menu_options_page';
   $strongarm->value = array(
     0 => 'main-menu',
@@ -123,7 +116,7 @@ function os_pages_strongarm() {
       'collapsed' => 1,
       'hidden' => 0,
     ),
-    'os_css_class_fieldset' => array(
+     'os_css_class_fieldset' => array(
       'region' => 'right',
       'weight' => '8',
       'has_required' => FALSE,
@@ -239,6 +232,20 @@ function os_pages_strongarm() {
   $strongarm->name = 'pathauto_node_page_pattern';
   $strongarm->value = '[node:title]';
   $export['pathauto_node_page_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'enable_revisions_page';
+  $strongarm->value = TRUE;
+  $export['enable_revisions_page'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'restrict_node_revision_number_for_page';
+  $strongarm->value = 10;
+  $export['restrict_node_revision_number_for_page'] = $strongarm;
 
   return $export;
 }

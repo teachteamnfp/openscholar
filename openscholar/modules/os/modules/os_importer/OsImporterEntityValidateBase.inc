@@ -168,15 +168,11 @@ class OsImporterEntityValidateBase extends EntityValidateBase {
     if (empty($value)) {
       return;
     }
-    if (!module_exists('pathauto')) {
-      $this->setError($field_name, t('Please enable pathauto module, to validate the path.'));
-    }
-    module_load_include('inc', 'pathauto');
 
     $vsite = vsite_get_vsite();
     $purl = $vsite->group->purl;
-    $alias_without_purl = pathauto_cleanstring($value[0]);
-    $alias_with_purl = $purl . '/' . $alias_without_purl;
+    $alias_without_purl = $value[0];
+    $alias_with_purl = $purl . '/' . $value[0];
 
     // Ensure that the alias does not exist yet.
     $query = db_select('url_alias')

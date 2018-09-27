@@ -10,7 +10,7 @@
 function os_pages_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'node-page-body'.
+  // Exported field_instance: 'node-page-body'
   $field_instances['node-page-body'] = array(
     'bundle' => 'page',
     'default_value' => NULL,
@@ -37,12 +37,6 @@ function os_pages_field_default_field_instances() {
         'weight' => 0,
       ),
       'sidebar_teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'slide_teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -86,7 +80,7 @@ function os_pages_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-page-field_meta_description'.
+  // Exported field_instance: 'node-page-field_meta_description'
   $field_instances['node-page-field_meta_description'] = array(
     'bundle' => 'page',
     'default_value' => NULL,
@@ -112,12 +106,6 @@ function os_pages_field_default_field_instances() {
         'weight' => 0,
       ),
       'sidebar_teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'slide_teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -155,7 +143,7 @@ function os_pages_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-page-field_os_css_class'.
+  // Exported field_instance: 'node-page-field_os_css_class'
   $field_instances['node-page-field_os_css_class'] = array(
     'bundle' => 'page',
     'default_value' => NULL,
@@ -224,7 +212,7 @@ function os_pages_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-page-field_upload'.
+  // Exported field_instance: 'node-page-field_upload'
   $field_instances['node-page-field_upload'] = array(
     'bundle' => 'page',
     'deleted' => 0,
@@ -250,12 +238,6 @@ function os_pages_field_default_field_instances() {
         'weight' => 0,
       ),
       'sidebar_teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'slide_teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -340,184 +322,13 @@ function os_pages_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-page-og_group_ref'.
-  $field_instances['node-page-og_group_ref'] = array(
-    'bundle' => 'page',
-    'default_value' => NULL,
-    'default_value_function' => 'entityreference_prepopulate_field_default_value',
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 5,
-      ),
-      'links' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'no_image_teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'sidebar_teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'slide_teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 2,
-      ),
-      'title' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'og_group_ref',
-    'label' => 'Groups audience',
-    'required' => 0,
-    'settings' => array(
-      'behaviors' => array(
-        'og_widget' => array(
-          'admin' => array(
-            'widget_type' => 'entityreference_autocomplete',
-          ),
-          'default' => array(
-            'widget_type' => 'options_select',
-          ),
-          'status' => TRUE,
-        ),
-        'prepopulate' => array(
-          'action' => 'hide',
-          'action_on_edit' => TRUE,
-          'fallback' => 'none',
-          'og_context' => 1,
-          'skip_perm' => 'administer group',
-          'status' => 1,
-        ),
-      ),
-      'user_register_form' => FALSE,
-    ),
-    'view modes' => array(
-      'full' => array(
-        'custom settings' => FALSE,
-        'label' => 'Full',
-        'type' => 'og_list_default',
-      ),
-      'teaser' => array(
-        'custom settings' => FALSE,
-        'label' => 'Teaser',
-        'type' => 'og_list_default',
-      ),
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'og',
-      'settings' => array(),
-      'type' => 'og_complex',
-      'weight' => 34,
-    ),
-  );
-
-  // Exported field_instance: 'node-page-og_vocabulary'.
-  $field_instances['node-page-og_vocabulary'] = array(
-    'bundle' => 'page',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'hidden',
-        'module' => 'vsite_vocab',
-        'settings' => array(
-          'concatenate' => TRUE,
-        ),
-        'type' => 'og_vocab',
-        'weight' => 6,
-      ),
-      'links' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'no_image_teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'sidebar_teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'slide_teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'hidden',
-        'module' => 'vsite_vocab',
-        'settings' => array(
-          'concatenate' => 1,
-        ),
-        'type' => 'og_vocab',
-        'weight' => 10,
-      ),
-      'title' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'og_vocabulary',
-    'label' => 'OG vocabulary',
-    'required' => FALSE,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'module' => 'og_vocab',
-      'settings' => array(),
-      'type' => 'og_vocab_complex',
-      'weight' => 35,
-    ),
-  );
-
   // Translatables
   // Included for use with string extractors like potx.
   t('Apply css class name to this page\'s body tag');
   t('Attach Files');
   t('Best if 150 characters or less. Used as a meta description tag and instead of trimmed body in certain lists.');
   t('Body');
-  t('Groups audience');
-  t('Meta description');
-  t('OG vocabulary');
+  t('Summary description');
   t('Warning: this is to be used for custom themeing purpose only.');
 
   return $field_instances;
