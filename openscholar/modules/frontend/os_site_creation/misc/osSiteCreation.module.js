@@ -37,6 +37,7 @@
   $scope.vsite_private = {
     value: '0'
   };
+  $scope.privacyLevels = Drupal.settings.site_creation.privacy_levels;
 
   var user;
   aus.getUser(function (u) {
@@ -145,7 +146,7 @@
       return true;
     }
 
-    return Drupal.settings.subsite_types[type] != undefined;
+    return Drupal.settings.site_creation.subsite_types[type] != undefined;
   };
 
   var queryArgs = {};
