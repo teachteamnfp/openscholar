@@ -37,7 +37,10 @@ function os_site_creation_library() {
           'version' => array(
             'siteCreationForm' => OS_SITE_CREATION_FORM,
           ),
-          'subsite_types' => variable_get('subsite_bundles', array('personal', 'project'))
+          'site_creation' => array(
+            'subsite_types' => variable_get('subsite_bundles', array('personal', 'project')),
+            'privacy_levels' => vsite_access_privacy_available_values ()
+          )
         ),
         'type' => 'setting',
       )
