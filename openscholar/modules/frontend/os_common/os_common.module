@@ -390,6 +390,27 @@ function os_common_library() {
     )
   );
 
+  global $user;
+  $info['ActiveUser'] = array(
+    'title' => 'Active User',
+    'version' => '0.1',
+    'js' => array(
+      $path.'/ActiveUser/ActiveUser.module.js' => array(),
+      array(
+        'type' => 'setting',
+        'data' => array(
+          'user' => array(
+            'uid' => $user->uid,
+            'name' => $user->name,
+          )
+        )
+      )
+    ),
+    'dependencies' => array(
+      array('os_common', 'angularjs'),
+    )
+  );
+
   return $info;
 }
 
@@ -564,7 +585,7 @@ function os_common_preprocess_page(&$vars) {
 }
 
 function os_common_preprocess_table(&$vars) {
-  if ($vars['attributes']['id'] == 'taxonomy') {
+  if (isset($vars['attributes']['id']) && $vars['attributes']['id'] == 'taxonomy') {
     $vars['attributes']['ng-non-bindable'] = '';
   }
 }

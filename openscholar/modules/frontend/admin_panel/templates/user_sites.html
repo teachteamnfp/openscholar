@@ -1,4 +1,4 @@
-<div class="my-sites-click" href="#" ng-show="site_data.length" data-id='101' ng-click="close_others(101); showSites = ! showSites" ng-class="{menu_modal_open: showSites}">My Sites</div>
+<div class="my-sites-click" href="#" data-id='101' ng-click="close_others(101); showSites = ! showSites" ng-class="{menu_modal_open: showSites}">My Sites</div>
 <div class="account_tab_popout user_sites" ng-show="showSites">
     <div class="new-site-link" ng-show="create_access"><a site-creation-form class="btton add">Add a new site</a></div>
     <div class="close-link user_sites-close" ng-click="showSites = ! showSites"></div>
@@ -20,7 +20,7 @@
 			    </tr>
 			</table>
 		</div>
-		<div ng-show="own && (site_data | filter:{owner: own}:strict).length && !(site_data | filter:{owner: own}:strict | filter: {title : searchString}).length" class="site-list no-search-result">No site found.</div>
+		<div ng-show="own && (!((site_data | filter:{owner: own}:strict).length) || !(site_data | filter:{owner: own}:strict | filter: {title : searchString}).length)" class="site-list no-search-result">No site found.</div>
 		<div ng-show="!own && (site_data | filter:{owner: own}:strict).length && !(site_data | filter:{owner: own}:strict | filter: {title : searchString}).length" class="site-list no-search-result">No site found.</div>
 		<div ng-if='filtered.length > pageSize' class='pager'>
 			<button ng-disabled="currentPage[key] == 0" ng-click="currentPage[key]=currentPage[key]-1">

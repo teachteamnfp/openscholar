@@ -66,7 +66,7 @@ function theme_os_publications_tabular(&$vars) {
       continue;
     }
 
-    $value = $node->$f['name'];
+    $value = $node->{$f['name']};
     $display_title = TRUE;
 
     switch ($f['name']) {

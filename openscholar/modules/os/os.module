@@ -1189,7 +1189,7 @@ function os_form_node_form_alter(&$form, $form_state) {
     $delete = array(
       '#type' => 'item',
       '#markup' => l($text, 'node/' . $form['#node']->nid . '/delete', $options),
-      '#weight' => 99,
+      '#weight' => 100,
     );
     $form['actions']['delete'] = $form['actions_top']['delete'] = $delete;
   }
@@ -1988,6 +1988,9 @@ function os_js_alter(&$javascript) {
     if (strpos($url, 'colorbox.js')) {
       $file = drupal_get_path('module', 'os') . '/theme/os_colorbox.js';
       $javascript[$file] = drupal_js_defaults($file);
+      if (variable_get('os_footer_js', TRUE)) {
+        $javascript[$file]['scope'] = 'footer';
+      }
     }
 
     if (variable_get('os_footer_js', TRUE)) {
@@ -3842,9 +3845,15 @@ function os_metatag_pattern_alter(&$pattern, &$types, $tag_name) {
     }
 
     if (isset($types['node'])) {
-      if ($types['node']->field_site_description[LANGUAGE_NONE][0]['safe_value']) {
+      if (
+        $types['node']->field_site_description &&
+        $types['node']->field_site_description[LANGUAGE_NONE][0]['safe_value']
+      ) {
         $pattern = $types['node']->field_site_description[LANGUAGE_NONE][0]['safe_value'];
-      } else if ($types['node']->field_meta_description[LANGUAGE_NONE][0]['safe_value']) {
+      } else if (
+        $types['node']->field_meta_description &&
+        $types['node']->field_meta_description[LANGUAGE_NONE][0]['safe_value']
+      ) {
         $pattern = $types['node']->field_meta_description[LANGUAGE_NONE][0]['safe_value'];
       } else if ($types['node']->title) {
         $pattern = $types['node']->title;

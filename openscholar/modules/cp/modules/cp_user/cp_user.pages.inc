@@ -356,7 +356,7 @@ function cp_user_change_site_owner_form_submit($form, &$form_state) {
   $to = $account->mail;
   $from = variable_get('site_mail', ini_get('sendmail_from'));
   $params['!user-role'] = 'Site Owner';
-  $params['!account-modifier'] = !empty($account_modifier_full_name) ? $account_modifier_full_name : $account_modifier->name;
+  $params['!account-modifier'] = !empty(trim($account_modifier_full_name)) ? $account_modifier_full_name : $account_modifier->name;
   $params['!site-url'] = url('', array(
     'purl' => array(
       'id' => $vsite->id,
@@ -369,7 +369,7 @@ function cp_user_change_site_owner_form_submit($form, &$form_state) {
   $params['!sitewide-name'] = variable_get('site_name', variable_get('sitewide_name'));
   $params['headers']['Cc'] = $account_modifier->mail;
   // Sending email notification to modified user.
-  drupal_mail('cp_user', 'os_user_role_change', $to, $language, $params, $from);
+  drupal_mail('cp_user', 'os_user_role_change', $to, language_default(), $params, $from);
 
   drupal_goto('cp/users');
 }
@@ -497,7 +497,7 @@ function cp_user_edit_membership_form_submit($form, &$form_state) {
     $to = $account->mail;
     $from = variable_get('site_mail', ini_get('sendmail_from'));
     $params['!user-role'] = $new_role_name;
-    $params['!account-modifier'] = !empty($account_modifier_full_name) ? $account_modifier_full_name : $account_modifier->name;
+    $params['!account-modifier'] = !empty(trim($account_modifier_full_name)) ? $account_modifier_full_name : $account_modifier->name;
     $params['!site-url'] = url('', array(
       'purl' => array(
         'id' => $vsite->id,
@@ -510,7 +510,7 @@ function cp_user_edit_membership_form_submit($form, &$form_state) {
     $params['!sitewide-name'] = variable_get('site_name', variable_get('sitewide_name'));
     $params['headers']['Cc'] = $account_modifier->mail;
     // Sending email notification to modified user.
-    drupal_mail('cp_user', 'os_user_role_change', $to, $language, $params, $from);
+    drupal_mail('cp_user', 'os_user_role_change', $to, language_default(), $params, $from);
   }
 
   drupal_goto('cp/users');

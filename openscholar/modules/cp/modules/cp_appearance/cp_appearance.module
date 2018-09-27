@@ -160,7 +160,7 @@ function cp_appearance_theme_picker_form($form, &$form_state) {
     $info['theme_name'] = $theme->name;
 
     //Flavors is not shown for the featured themes
-    if ((!in_array($theme->name, $featured_themes) || !count(os_theme_get_flavors($info['theme_name']))) && empty($theme->info['single'])) {
+    if ((!in_array($theme->name, $featured_themes)) && empty($theme->info['single'])) {
       //Add this theme to the list of theme options.
 //      $radio_options[$info['theme_name']] = $info['theme_name'];
 //      $themes_sorted[$info['theme_name']] = $theme;
@@ -187,7 +187,6 @@ function cp_appearance_theme_picker_form($form, &$form_state) {
     }
     else
     {
-
       //Add this theme to the list of theme options.
       $radio_options[$info['theme_name'].'-os_featured_flavor-default'] = $info['theme_name'];
       $theme->name = $info['theme_name'].'-os_featured_flavor-default';
@@ -196,7 +195,7 @@ function cp_appearance_theme_picker_form($form, &$form_state) {
       $theme->info['theme_flavor_name'] = $info['flavor_name'];
 
       $flavors = os_theme_get_flavors($info['theme_name']);
-       foreach ($flavors as $flavor_name => $flav) {
+      foreach ($flavors as $flavor_name => $flav) {
 
         $flavor_theme = (object)array(
           'filename' => $flav['path'].'/'.$flav['file'],
@@ -212,9 +211,9 @@ function cp_appearance_theme_picker_form($form, &$form_state) {
           'prefix' => 'phptemplate',
           'stylesheets' => $theme->stylesheets,
           'engine' => 'phptemplate',
-          'base_theme' => 'hwpi_basetheme',
+          'base_theme' => $theme->base_theme,
           'is_flavor' => true,  // Indicate that this is a flavor not a full theme.
-          'single' => $theme->info['single'],
+          'single' => !empty($theme->info['single']) ? true: false,
         );
         $flavor_theme->info['flavor_name'] = $flavor_theme->info['name'];
         $flavor_theme->info['name'] = $info['name'];

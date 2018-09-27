@@ -16,8 +16,7 @@ site-creation-form.ng-isolate-scope {
     padding: 17px 0 5px 0;
 }
 #site-creation-container {
-  
-    padding: 0;
+
     line-height: 1.4;
     margin: auto;
     width: 60%;
@@ -82,7 +81,6 @@ h3 {
 .os-themes,
 #site-creation-container #footer-container div#pre,
 #site-creation-container .step-container,
-#site-creation-container .site-type,
 #site-creation-container .left,
 .os-themes .cp-themes {
     float: left;
@@ -191,13 +189,17 @@ h3 {
     background: none;
 }
 
+#site-creation-container #body-container-group-1 {
+    display: flex;
+}
+
 #site-creation-container .site-type {
     padding: 75px 0 0 0;
-    width: 31.3%;
+    flex: 1 1 0;
     margin: 0 25px 0 0;
     background-repeat: no-repeat;
-    background-position: 95px -3px;
-    background-size: 32%;
+    background-position: 50% -3px;
+    background-size: 86px;
 
 }
 #site-creation-container .site-type.individual {
@@ -207,14 +209,23 @@ h3 {
     background-image:url('images/group.svg');
 }
 #site-creation-container .site-type.department {
-        background-image: url('images/building.svg');
-    background-size: 28%;
-    background-position: 95px 1px;
+    background-image: url('images/building.svg');
+    background-size: 75.25px;
+    background-position: 50% 1px;
 }
 #site-creation-container .popup.site-type_nameurl {
     border-top: 2px solid #fff;
-  
 }
+#site-creation-container .url-selector span:first-child {
+    float: left;
+    padding: 7px;
+}
+
+#site-creation-container .url-selector span:last-child {
+    display: block;
+    overflow: hidden;
+}
+
 #site-creation-container .site-type input.form-text {
     width: 90%;
 }
