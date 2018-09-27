@@ -176,7 +176,7 @@ function hwpi_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'os_terms_of_use';
   $strongarm->value = "https://hwp.harvard.edu/terms-use";
-  $export['privacy_policy'] = $strongarm;
+  $export['os_terms_of_use'] = $strongarm;
 
   return $export;
 }
