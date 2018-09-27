@@ -414,7 +414,7 @@
       link: link,
       scope: {
         form: '@',
-        autoOpen: '@?'
+        autoOpen: '@?',
         parent: '@'
       }
     };
