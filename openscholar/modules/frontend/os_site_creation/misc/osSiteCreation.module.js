@@ -500,6 +500,18 @@
                 scope.btnDisable = false;
               }
             }
+          }, function (response) {
+            // this triggers if the entered URL has a slash or backslash in it
+            if (response.status == 404) {
+              siteCreationCtrl.$setValidity('permission', true);
+              siteCreationCtrl.$setValidity('isinvalid', false);
+              siteCreationCtrl.$setValidity('sitename', true);
+              scope.btnDisable = true;
+              scope.siteNameValid = false;
+            }
+            else {
+              // error on server end
+            }
           });
         }
         return ngModelValue;
