@@ -37,7 +37,8 @@ function os_site_creation_library() {
           'version' => array(
             'siteCreationForm' => OS_SITE_CREATION_FORM,
           ),
-          'subsite_types' => variable_get('subsite_bundles', array('personal', 'project'))
+          'subsite_types' => variable_get('subsite_bundles', array('personal', 'project')),
+          'tos_url' => variable_get('os_terms_of_use', false)
         ),
         'type' => 'setting',
       )

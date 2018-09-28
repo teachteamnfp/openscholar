@@ -77,6 +77,7 @@
 
   // Set site creation status
   $scope.siteCreated = false;
+  $scope.tos = Drupal.settings.tos_url;
 
   // Initialize the $timout var
   var timer;
@@ -109,6 +110,7 @@
   $scope.newUserResistrationPwd = false;
   $scope.newUserValidPwd = false;
   $scope.newUserResistrationPwdMatch = false;
+  $scope.tosChecked = !$scope.tos;  // circumvent if no tos was provided by site
 
   //Navigate between screens
   $scope.page1 = true;
@@ -365,6 +367,10 @@
         $scope.btnDisable = true;
       }
     }, 2000);
+  };
+
+  $scope.validateForms = function() {
+      return $scope.btnDisable || !$scope.tosChecked;
   };
 
   $scope.score = function() {

@@ -203,6 +203,9 @@
 						</div>
 					</div>
 				</div>
+				<div id="tos" ng-show="tos">
+					<input type="checkbox" ng-model="tosChecked" id="tos-checkbox" required><label for="tos-checkbox">I agree to the <a href="{{tos}}" target="_blank">Terms of Use</a></label>
+				</div>
 
 			</div>
 
@@ -211,7 +214,7 @@
 					&nbsp;
 				</div>
 				<div id="nxt">
-					<input type="button" class="preNxt stepnav" value="Next ►" ng-disabled="btnDisable == true" ng-click="navigatePage('page1','page2');">
+					<input type="button" class="preNxt stepnav" value="Next ►" ng-disabled="validateForms()" ng-click="navigatePage('page1','page2');">
 				</div>
 			</div>
 		</div>
