@@ -1136,10 +1136,10 @@ function os_importer_round_hour($hour) {
 
 function _os_importer_get_readable_validator_labels($formats) {
   $labels = array(
-    'M j Y' => t('(Jan through Dec) (1 to 31) (1999 or 2003)'),
-    'M d Y' => t('(Jan through Dec) (01 to 31) (1999 or 2003)'),
-    'M j Y g:ia' => t('(Jan through Dec) (1 to 31) (1999 or 2003) (1 through 12):(00 to 59)(am or pm)'),
-    'M d Y g:ia' => t('(Jan through Dec) (01 to 31) (1999 or 2003) (1 through 12):(00 to 59)(am or pm)'),
+    'M j Y' => 'Feb 8 2018',
+    'M d Y' => 'Feb 08 2018',
+    'M j Y g:ia' => 'Feb 8 2018 9:45am',
+    'M d Y g:ia' => 'Feb 08 2018 9:45am',
   );
   $formatLabels = array();
   foreach ($formats as $format) {

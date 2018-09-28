@@ -121,9 +121,9 @@ class OsImporterEntityValidateBase extends EntityValidateBase {
       $formats = _os_importer_get_readable_validator_labels($formats);
       $params = array(
           '@date' => $value,
-          '@format' => join(", ", $formats),
+          '@format' => join(" or ", $formats),
       );
-      $this->setError($field_name, 'The value of the date field (@date) is not valid. The date should be in a format similar to one of the following formats: @format.', $params);
+      $this->setError($field_name, 'Please display the date in the following formats - ex: @format', $params);
     }
 
     return TRUE;
