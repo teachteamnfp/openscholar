@@ -118,6 +118,7 @@ class OsImporterEntityValidateBase extends EntityValidateBase {
     }
 
     if (! $validationSuccess) {
+      $formats = _os_importer_get_readable_validator_labels($formats);
       $params = array(
           '@date' => $value,
           '@format' => join(", ", $formats),
