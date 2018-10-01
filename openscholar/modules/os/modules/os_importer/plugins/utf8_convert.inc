@@ -43,15 +43,12 @@ function os_importer_utf_8_convert($result, $item_key, $element_key, &$field, $s
 function _os_importer_get_converted_string($encode, $field) {
   $targetEncode = $encode;
   if ($encode == 'auto-detect') {
-    foreach (_os_importer_get_encode_strings() as $encode_string) {
-      if (mb_detect_encoding($field, $encode_string, true)) {
-        $targetEncode = $encode_string;
-        break;
-      }
+    if ($detectedEncode = mb_detect_encoding($field, _os_importer_get_encode_strings(), true)) {
+      $targetEncode = $detectedEncode;
     }
   }
   if ($targetEncode == 'auto-detect') {
-    throw Exception('Could not be detected');
+    return $field;
   }
   return iconv($targetEncode, "UTF-8", $field);
 }
