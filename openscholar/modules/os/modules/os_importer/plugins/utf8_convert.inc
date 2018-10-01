@@ -32,10 +32,41 @@ function os_importer_utf_8_convert($result, $item_key, $element_key, &$field, $s
   }
   if (is_array($field)) {
     foreach ($field as $key => $value) {
-      $field[$key] = iconv($source->config['FeedsFileFetcher']['encode'], "UTF-8", $value);
+      $field[$key] = _os_importer_get_converted_string($source->config['FeedsFileFetcher']['encode'], $value);
     }
   }
   else {
-    $field = iconv($source->config['FeedsFileFetcher']['encode'], "UTF-8", $field);
+    $field = _os_importer_get_converted_string($source->config['FeedsFileFetcher']['encode'], $field);
   }
+}
+
+function _os_importer_get_converted_string($encode, $field) {
+  $targetEncode = $encode;
+  if ($encode == 'auto-detect') {
+    foreach (_os_importer_get_encode_strings() as $encode_string) {
+      if (mb_detect_encoding($field, $encode_string, true)) {
+        $targetEncode = $encode_string;
+        break;
+      }
+    }
+  }
+  if ($targetEncode == 'auto-detect') {
+    throw Exception('Could not be detected');
+  }
+  return iconv($targetEncode, "UTF-8", $field);
+}
+
+function _os_importer_get_encode_strings() {
+  $encode_options = _os_importer_get_available_encoding();
+  $strings = array();
+  foreach ($encode_options as $encode => $encode_option) {
+    if (!is_array($encode_option)) {
+      $strings[] = $encode;
+      continue;
+    }
+    foreach ($encode_option as $subEncode => $value) {
+      $strings[] = $subEncode;
+    }
+  }
+  return $strings;
 }

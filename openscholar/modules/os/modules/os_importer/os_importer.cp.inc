@@ -28,28 +28,7 @@ function os_importer_cp_settings() {
     '@wikipedia-url' => 'http://en.wikipedia.org/wiki/Character_encoding',
   );
 
-  $encode_options = array(
-    'utf-8' => t('UTF-8'),
-    'utf-16' => t('UTF-16'),
-    'utf-32' => t('UTF-32'),
-    t('MS-Windows character sets') => array(
-      'Windows-1250' => t('Central European languages that use Latin script'),
-      'Windows-1251' => t('Cyrillic alphabets'),
-      'Windows-1252' => t('Western languages'),
-      'Windows-1253' => t('Greek'),
-      'Windows-1254' => t('Turkish'),
-      'Windows-1255' => t('Hebrew'),
-      'Windows-1256' => t('Arabic'),
-      'Windows-1257' => t('Baltic languages'),
-      'Windows-1258' => t('Vietnamese'),
-    ),
-    t('ISO 8859') => array(
-      'ISO 8859-1' => t('Western Europe'),
-      'ISO 8859-2' => t('Western and Central Europe'),
-      'ISO 8859-9' => t('Western Europe with amended Turkish character set'),
-      'ISO 8859-14' => t('Celtic languages (Irish Gaelic, Scottish, Welsh)'),
-    ),
-  );
+  $encode_options = _os_importer_get_available_encoding();
 
   foreach ($app_info as $type => $info) {
        // Bypassing apps which have RSS feeds as import source.
@@ -252,6 +231,36 @@ function os_importer_cp_settings() {
   }
   
   return $settings;
+}
+
+/**
+ * @return array
+ */
+function _os_importer_get_available_encoding(): array {
+  $encode_options = [
+    'auto-detect' => t('Auto-detect'),
+    'utf-8' => t('UTF-8'),
+    'utf-16' => t('UTF-16'),
+    'utf-32' => t('UTF-32'),
+    t('MS-Windows character sets') => [
+      'Windows-1250' => t('Central European languages that use Latin script'),
+      'Windows-1251' => t('Cyrillic alphabets'),
+      'Windows-1252' => t('Western languages'),
+      'Windows-1253' => t('Greek'),
+      'Windows-1254' => t('Turkish'),
+      'Windows-1255' => t('Hebrew'),
+      'Windows-1256' => t('Arabic'),
+      'Windows-1257' => t('Baltic languages'),
+      'Windows-1258' => t('Vietnamese'),
+    ],
+    t('ISO 8859') => [
+      'ISO 8859-1' => t('Western Europe'),
+      'ISO 8859-2' => t('Western and Central Europe'),
+      'ISO 8859-9' => t('Western Europe with amended Turkish character set'),
+      'ISO 8859-14' => t('Celtic languages (Irish Gaelic, Scottish, Welsh)'),
+    ],
+  ];
+  return $encode_options;
 }
 
 function os_importer_import_group_validate($values) {
