@@ -258,7 +258,7 @@ class OsRestfulUser extends \RestfulEntityBaseUser {
         }
       }
     }
-    $account = $wrapper->value();
+    $account = user_load($wrapper->getIdentifier ());
 
     if ($vicariousUser && user_is_anonymous ()) {
       $account->roles[2] = 'authenticated user';
