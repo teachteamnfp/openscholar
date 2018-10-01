@@ -472,7 +472,7 @@
         var baseUrl = Drupal.settings.paths.api;
         if(ngModelValue){
           //Ajax call to get all existing sites
-          $http.get(baseUrl + '/purl/' + ngModelValue).then(function mySuccess(response) {
+          $http.get(baseUrl + '/purl/' + encodeURIComponent(ngModelValue)).then(function mySuccess(response) {
             responseData = response.data.data;
             if (responseData.msg == "Not-Permissible") {
               siteCreationCtrl.$setValidity('permission', false);
@@ -505,6 +505,18 @@
               } else {
                 scope.btnDisable = false;
               }
+            }
+          }, function (response) {
+            // this triggers if the entered URL has a slash or backslash in it
+            if (response.status == 404 || response.status == -1) {
+              siteCreationCtrl.$setValidity('permission', true);
+              siteCreationCtrl.$setValidity('isinvalid', false);
+              siteCreationCtrl.$setValidity('sitename', true);
+              scope.btnDisable = true;
+              scope.siteNameValid = false;
+            }
+            else {
+              // error on server end
             }
           });
         }
