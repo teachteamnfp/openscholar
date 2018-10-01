@@ -135,7 +135,7 @@
 						<div ng-show="showAll" class="site-vis-radios">
 							<div ng-repeat="(key, level) in privacyLevels" class="form-item form-type-radio">
 								<input id="privacy-level-{{key}}" type="radio" ng-model="vsite_private.value" value="{{key}}">
-								<label class="option" for="privacy-level-{{key}}" ng-bind-html="level"></label>
+								<label class="option" for="privacy-level-{{key}}" ng-bind-html="trustAsHtml(level)"></label>
 							</div>
 							<div class="help-link">
 								<a href="https://docs.openscholar.harvard.edu/global-site-settings#site-visibility" target="_blank">Learn more about site visibility</a>

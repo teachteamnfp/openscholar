@@ -38,6 +38,9 @@
     value: '0'
   };
   $scope.privacyLevels = Drupal.settings.site_creation.privacy_levels;
+  $scope.trustAsHtml = function (arg) {
+    return $sce.trustAsHtml(arg);
+  }
 
   var user;
   aus.getUser(function (u) {
