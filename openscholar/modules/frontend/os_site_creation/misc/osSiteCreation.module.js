@@ -411,7 +411,7 @@
   /**
    * Open modals for the site creation forms
    */
-  m.directive('siteCreationForm', ['ModalService','$rootScope', function (ModalService,$rootScope) {
+  m.directive('siteCreationForm', ['ModalService', '$rootScope', function (ModalService,$rootScope) {
     var dialogOptions = {
       minWidth: 900,
       minHeight: 300,
@@ -426,6 +426,14 @@
         e.stopPropagation();
         $rootScope.siteCreationFormId = attrs.id;
 
+        openModal(scope);
+      });
+
+      if (scope.autoOpen) {
+        openModal(scope);
+      }
+
+      function openModal(scope) {
         ModalService.showModal({
           controller: 'siteCreationCtrl',
           templateUrl: rootPath + '/templates/os_site_creation.html',
@@ -446,13 +454,14 @@
             }
           });
         });
-      });
+      }
     }
 
     return {
       link: link,
       scope: {
         form: '@',
+        autoOpen: '@?',
         parent: '@'
       }
     };

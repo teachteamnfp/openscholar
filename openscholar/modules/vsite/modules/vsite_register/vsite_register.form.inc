@@ -14,7 +14,16 @@ function vsite_register_form($form, &$state) {
     $param = drupal_get_query_parameters();
     $form['html'] = array(
       '#type' => 'markup',
-      '#markup' => '<site-creation-form ' . (!empty($param['parent']) ? ' id="add-subsite-' . $param['parent'] . '"':''). '><a>Create Your Site Here</a></site-creation-form>',
+      '#markup' => '<site-creation-form ' . (!empty($param['parent']) ? ' id="add-subsite-' . $param['parent'] . '"':''). ' auto-open="true"><a>Create Your Site Here</a></site-creation-form>',
+      '#attached' => array(
+        'library' => array(
+          array('os_site_creation',  'site_creation')
+        )
+      ),
+      '#angular_app' => 'SiteCreationForm',
+      '#post_render' => array(
+        'os_common_element_post_render'
+      )
     );
     return $form;
   }
