@@ -1133,17 +1133,3 @@ function os_importer_round_hour($hour) {
 
   return $hours . ':' . $new_minutes;
 }
-
-function _os_importer_get_readable_validator_labels($formats) {
-  $labels = array(
-    'M j Y' => 'Feb 8 2018',
-    'M d Y' => 'Feb 08 2018',
-    'M j Y g:ia' => 'Feb 8 2018 9:45am',
-    'M d Y g:ia' => 'Feb 08 2018 9:45am',
-  );
-  $formatLabels = array();
-  foreach ($formats as $format) {
-    $formatLabels[] = isset($labels[$format]) ? $labels[$format] : $format;
-  }
-  return $formatLabels;
-}

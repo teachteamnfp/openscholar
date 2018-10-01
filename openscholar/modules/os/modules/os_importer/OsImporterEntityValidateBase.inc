@@ -109,19 +109,20 @@ class OsImporterEntityValidateBase extends EntityValidateBase {
   protected function validateDateFormats($formats, $value, $field_name) {
     // Validate the date format for the start and end date.
     $validationSuccess = false;
+    $formatLabels = array();
     foreach ($formats as $format) {
       if ($date = DateTime::createFromFormat($format, $value)) {
         if ($date->format($format) == $value) {
           $validationSuccess = true;
         }
       }
+      $formatLabels[] = format_date(REQUEST_TIME, 'custom', $format);
     }
 
     if (! $validationSuccess) {
-      $formats = _os_importer_get_readable_validator_labels($formats);
       $params = array(
           '@date' => $value,
-          '@format' => join(" or ", $formats),
+          '@format' => join(" or ", $formatLabels),
       );
       $this->setError($field_name, 'The value of the date field (@date) is not valid. The date should be in a format similar to one of the following formats: @format', $params);
     }
