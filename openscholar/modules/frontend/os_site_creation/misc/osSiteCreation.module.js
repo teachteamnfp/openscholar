@@ -502,7 +502,7 @@
             }
           }, function (response) {
             // this triggers if the entered URL has a slash or backslash in it
-            if (response.status == 404) {
+            if (response.status == 404 || response.status == -1) {
               siteCreationCtrl.$setValidity('permission', true);
               siteCreationCtrl.$setValidity('isinvalid', false);
               siteCreationCtrl.$setValidity('sitename', true);
