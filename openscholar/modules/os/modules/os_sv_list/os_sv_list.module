@@ -163,7 +163,7 @@ function os_sv_list_query_random_alter($query) {
  * Implements hook_query_TAG_alter
  */
 function os_sv_list_query_sv_list_biblio_alter(&$query) {
-  $query->join('biblio', 'b', 'b.nid = ogm.etid');
+  $query->join('biblio', 'b', 'b.vid = node.vid');
   $query->orderBy('b.biblio_year', 'DESC');
 
   // If this query is used for the sv_list plugin, keep the sticky sort as is.
