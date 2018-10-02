@@ -20,3 +20,12 @@ function admin_panel_update_7001($ctx) {
 
   return t("$rows_deleted 'admin_panel_enabled' overrides have been removed.");
 }
+
+/**
+ * Enable the app_form module automatically
+ */
+function admin_panel_update_7002() {
+  if (module_enable(array('app_form'))) {
+    return t('App Form module is enabled');
+  }
+}
