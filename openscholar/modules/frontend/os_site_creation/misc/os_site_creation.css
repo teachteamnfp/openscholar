@@ -301,6 +301,11 @@ h3 {
     overflow: scroll;
     height: 500px;
 }
+
+#site-creation-container .visibility span b *{
+    display: none;
+}
+
 .os-themes .cp-themes {
     padding: 0;
     margin: 3px 20px 20px 3px;
