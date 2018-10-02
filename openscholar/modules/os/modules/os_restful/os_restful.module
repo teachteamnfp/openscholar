@@ -46,6 +46,36 @@ function os_restful_init() {
 }
 
 /**
+ * Implements hook_module_implements_alter().
+ */
+function os_restful_module_implements_alter(&$implementations, $hook) {
+  if ($hook == 'entity_info_alter') {
+    unset($implementations['os_restful']);
+    $implementations['os_restful'] = true;
+  }
+}
+
+/**
+ * Implements hook_entity_info_alter().
+ */
+function os_restful_entity_info_alter(&$info) {
+  if (!empty($info['user'])) {
+    $info['user']['access callback'] = 'os_restful_entity_metadata_user_access';
+  }
+}
+
+/**
+ * Override to allow special exceptions.
+ */
+function os_restful_entity_metadata_user_access($op, $entity = NULL, $account = NULL, $entity_type = NULL) {
+  $account = isset($account) ? $account : $GLOBALS['user'];
+  if (!empty($entity->is_new) && $account->uid == 0) {
+    return true;
+  }
+  return entity_metadata_user_access($op, $entity, $account, $entity_type);
+}
+
+/**
  * Implements hook_entity_property_info_alter().
  */
 function os_restful_entity_property_info_alter(&$info) {
@@ -97,13 +127,36 @@ function os_restful_entity_property_info_alter(&$info) {
 
   $info['file']['properties']['name']['setter callback'] = 'entity_property_verbatim_set';
   $info['file']['properties']['timestamp']['setter callback'] = 'entity_property_verbatim_set';
+
+  foreach ($info['user']['properties'] as $k => $value) {
+    if (!empty($value['access callback']) && $value['access callback'] == 'entity_metadata_user_properties_access') {
+      $info['user']['properties'][$k]['access callback'] = 'os_restful_entity_metadata_user_properties_access';
+    }
+  }
+
+  foreach ($info['node']['properties'] as $k => $value) {
+    // dump these setter permissions that make it impossible to create nodes for anyone but a very high level user
+    unset ($info['node']['properties'][$k]['setter permission']);
+  }
+}
+
+/**
+ * Override to allow special exceptions
+ */
+function os_restful_entity_metadata_user_properties_access($op, $property, $entity = NULL, $account = NULL) {
+  $account = isset($account) ? $account : $GLOBALS['user'];
+  if (!empty($entity) && !empty($entity->is_new) && $account->uid == 0) {
+    // this will be the user's new account. let them do whatever they want with it
+    return TRUE;
+  }
+  return entity_metadata_user_properties_access($op, $property, $entity, $account);
 }
 
 /**
  * Set the node path.
  */
 function os_restful_page_path_set(&$data, $name, $value, $langcode, $type, $info) {
-  $data->$name = $value;
+  $data->{$name} = $value;
 }
 
 /**

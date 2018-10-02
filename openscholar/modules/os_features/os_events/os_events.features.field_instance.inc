@@ -186,7 +186,7 @@ function os_events_field_default_field_instances() {
           'show_repeat_rule' => 'show',
         ),
         'type' => 'date_default',
-        'weight' => 1,
+        'weight' => 0,
       ),
       'title' => array(
         'label' => 'above',
@@ -280,7 +280,7 @@ function os_events_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 0,
+        'weight' => 1,
       ),
       'title' => array(
         'label' => 'above',

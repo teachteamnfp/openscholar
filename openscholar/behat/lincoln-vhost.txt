@@ -1,4 +1,4 @@
 <virtualhost lincoln.local:*>
 ServerName lincoln.local
-DocumentRoot /var/www/html/openscholar/www
+DocumentRoot /var/www/html/www
 </virtualhost>

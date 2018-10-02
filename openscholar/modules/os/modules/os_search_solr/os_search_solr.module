@@ -1115,7 +1115,7 @@ function os_search_solr_apachesolr_field_mappings_alter(&$mappings, $entity) {
  */
 function os_search_solr_entityreference_indexing_callback($entity, $field_name, $index_key, $field_info) {
   $fields = array();
-  if (!empty($entity->{$field_name}) && array_key_exists(LANGUAGE_NONE, $entity->$field_name)) {
+  if (!empty($entity->{$field_name}) && array_key_exists(LANGUAGE_NONE, $entity->{$field_name})) {
 
     // Gets entity type and index key. We need to prefix the ID with the entity
     // type so we know what entity we are dealing with in the mapping callback.
