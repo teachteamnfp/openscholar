@@ -343,7 +343,7 @@ function _os_mailchimp_get_lists($api) {
       $ret[$list->id] = $list->name;
     }
   }
-  asort($ret);
+  natcasesort($ret);
 
   return ($ret) ? $ret : FALSE;
 }
