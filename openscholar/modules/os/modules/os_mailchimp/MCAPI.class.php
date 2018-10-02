@@ -1136,14 +1136,15 @@ class MCAPI {
                  int click_rate the average click rate per campaign for the list  (empty value if we haven't calculated this yet)
              array modules Any list specific modules installed for this list (example is SocialPro)
      */
-    function lists($filters=array (
-), $start=0, $limit=25) {
-        $params = array();
-        return $this->callServer("lists", $params, "GET");
-    }
+  function lists($filters = [], $start = 0, $limit = 25) {
+    $params = [
+      'count' => $limit,
+    ];
+    return $this->callServer("lists", $params, "GET");
+  }
 
-    /**
-     * Get the list of merge tags for a given list, including their name, tag, and required setting
+  /**
+   * Get the list of merge tags for a given list, including their name, tag, and required setting
      *
      * @section List Related
      * @example xml-rpc_listMergeVars.php
