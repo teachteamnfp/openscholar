@@ -81,6 +81,7 @@
 
   // Set site creation status
   $scope.siteCreated = false;
+  $scope.tos = Drupal.settings.tos_url;
 
   // Initialize the $timout var
   var timer;
@@ -113,6 +114,7 @@
   $scope.newUserResistrationPwd = false;
   $scope.newUserValidPwd = false;
   $scope.newUserResistrationPwdMatch = false;
+  $scope.tosChecked = !$scope.tos;  // circumvent if no tos was provided by site
 
   //Navigate between screens
   $scope.page1 = true;
@@ -371,6 +373,10 @@
     }, 2000);
   };
 
+  $scope.validateForms = function() {
+      return $scope.btnDisable || !$scope.tosChecked;
+  };
+
   $scope.score = function() {
     $scope.newUserValidPwd = false;
     var pwdScore = ps.checkStrength($scope.password);
@@ -409,7 +415,7 @@
   /**
    * Open modals for the site creation forms
    */
-  m.directive('siteCreationForm', ['ModalService','$rootScope', function (ModalService,$rootScope) {
+  m.directive('siteCreationForm', ['ModalService', '$rootScope', function (ModalService,$rootScope) {
     var dialogOptions = {
       minWidth: 900,
       minHeight: 300,
@@ -424,6 +430,14 @@
         e.stopPropagation();
         $rootScope.siteCreationFormId = attrs.id;
 
+        openModal(scope);
+      });
+
+      if (scope.autoOpen) {
+        openModal(scope);
+      }
+
+      function openModal(scope) {
         ModalService.showModal({
           controller: 'siteCreationCtrl',
           templateUrl: rootPath + '/templates/os_site_creation.html',
@@ -444,13 +458,14 @@
             }
           });
         });
-      });
+      }
     }
 
     return {
       link: link,
       scope: {
         form: '@',
+        autoOpen: '@?',
         parent: '@'
       }
     };
@@ -470,7 +485,7 @@
         var baseUrl = Drupal.settings.paths.api;
         if(ngModelValue){
           //Ajax call to get all existing sites
-          $http.get(baseUrl + '/purl/' + ngModelValue).then(function mySuccess(response) {
+          $http.get(baseUrl + '/purl/' + encodeURIComponent(ngModelValue)).then(function mySuccess(response) {
             responseData = response.data.data;
             if (responseData.msg == "Not-Permissible") {
               siteCreationCtrl.$setValidity('permission', false);
@@ -503,6 +518,18 @@
               } else {
                 scope.btnDisable = false;
               }
+            }
+          }, function (response) {
+            // this triggers if the entered URL has a slash or backslash in it
+            if (response.status == 404 || response.status == -1) {
+              siteCreationCtrl.$setValidity('permission', true);
+              siteCreationCtrl.$setValidity('isinvalid', false);
+              siteCreationCtrl.$setValidity('sitename', true);
+              scope.btnDisable = true;
+              scope.siteNameValid = false;
+            }
+            else {
+              // error on server end
             }
           });
         }
