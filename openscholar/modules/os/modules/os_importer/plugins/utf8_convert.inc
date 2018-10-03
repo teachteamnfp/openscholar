@@ -41,16 +41,15 @@ function os_importer_utf_8_convert($result, $item_key, $element_key, &$field, $s
 }
 
 function _os_importer_get_converted_string($encode, $field) {
-  $targetEncode = $encode;
   if ($encode == 'auto-detect') {
-    if ($detectedEncode = mb_detect_encoding($field, _os_importer_get_encode_strings(), true)) {
-      $targetEncode = $detectedEncode;
+    foreach(_os_importer_get_encode_strings() as $encode_string) {
+      $convertedField = iconv($encode_string, "UTF-8", $field);
+      if ($convertedField != false) {
+        return $convertedField;
+      }
     }
   }
-  if ($targetEncode == 'auto-detect') {
-    return $field;
-  }
-  return iconv($targetEncode, "UTF-8", $field);
+  return iconv($encode, "UTF-8", $field);
 }
 
 function _os_importer_get_encode_strings() {

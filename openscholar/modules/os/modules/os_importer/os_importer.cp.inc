@@ -201,7 +201,7 @@ function os_importer_cp_settings() {
               '#title' => t('Encoding'),
               '#type' => 'optgroup',
               '#options' => $encode_options,
-              '#default_value' => 'utf-8',
+              '#default_value' => 'auto-detect',
               '#description' => t('Select the encoding of your file. For a full list of encodings you can visit <a href="@wikipedia-url">this</a> Wikipedia page.', $params),
               '#weight' => 5,
               '#class' => array('csv-import-fields'),
