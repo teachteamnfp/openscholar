@@ -44,7 +44,7 @@ function _os_importer_get_converted_string($encode, $field) {
   if ($encode == 'auto-detect') {
     foreach(_os_importer_get_encode_strings() as $encode_string) {
       $convertedField = iconv($encode_string, "UTF-8", $field);
-      if ($convertedField != false) {
+      if ($convertedField !== false) {
         return $convertedField;
       }
     }
