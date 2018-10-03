@@ -1,0 +1,12 @@
+uuid: ce597257-c5e5-4edb-a01a-b32e9317f85d
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: LkcodupOW2ip805bQS1a8B5XlcjfhN8zfU0AiZE417Q
+id: personal
+label: Personal
+description: ''
+creator_membership: true
+creator_wizard: true
+creator_roles: {  }

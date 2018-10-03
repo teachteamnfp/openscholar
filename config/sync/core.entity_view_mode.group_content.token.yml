@@ -1,0 +1,10 @@
+uuid: daa44091-20f1-4fac-952e-b795e67a89b7
+langcode: en
+status: true
+dependencies:
+  module:
+    - group
+id: group_content.token
+label: Token
+targetEntityType: group_content
+cache: true

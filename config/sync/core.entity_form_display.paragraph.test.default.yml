@@ -1,0 +1,39 @@
+uuid: b0402944-b384-4aa3-afae-8204f6839e40
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.test.field_media
+    - paragraphs.paragraphs_type.test
+  module:
+    - content_moderation
+    - field_layout
+    - layout_discovery
+third_party_settings:
+  field_layout:
+    id: layout_onecol
+    settings: {  }
+id: paragraph.test.default
+targetEntityType: paragraph
+bundle: test
+mode: default
+content:
+  field_media:
+    weight: 101
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  moderation_state:
+    type: moderation_state_default
+    weight: 100
+    settings: {  }
+    region: content
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true
+  uid: true

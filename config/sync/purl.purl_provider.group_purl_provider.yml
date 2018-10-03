@@ -1,0 +1,7 @@
+uuid: 1d1bfe5c-aa29-4c91-b4d9-aad06ecbb44c
+langcode: en
+status: true
+dependencies: {  }
+provider_key: group_purl_provider
+label: Personal
+method_key: group_prefix

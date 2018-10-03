@@ -1,0 +1,20 @@
+uuid: c7179e86-3b1b-4405-b715-03f40bd30326
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus:
+      - main
+    parent: 'main:'
+_core:
+  default_config_hash: YDH8ZN1lOVFCdUK1ALsRww9EgChperYk9Z71_khV-Sg
+name: Link
+type: link
+description: 'A link to an external url.'
+help: ''
+new_revision: true
+preview_mode: 1
+display_submitted: true

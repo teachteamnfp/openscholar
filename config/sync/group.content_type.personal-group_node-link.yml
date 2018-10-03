@@ -1,0 +1,19 @@
+uuid: 97d46f74-a4dc-4362-a9d4-8f9554eea6d6
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.personal
+    - node.type.link
+  module:
+    - gnode
+    - node
+id: personal-group_node-link
+label: 'Personal: Group node (Link)'
+description: 'Adds <em class="placeholder">Link</em> content to groups both publicly and privately.'
+group_type: personal
+content_plugin: 'group_node:link'
+plugin_config:
+  group_cardinality: 1
+  entity_cardinality: 1
+  use_creation_wizard: false

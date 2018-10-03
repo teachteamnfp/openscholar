@@ -1,0 +1,25 @@
+uuid: f3376f56-ba8e-4128-9b6d-426c1b5759f8
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_media
+    - paragraphs.paragraphs_type.test
+id: paragraph.test.field_media
+field_name: field_media
+entity_type: paragraph
+bundle: test
+label: Media
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: views
+  handler_settings:
+    view:
+      view_name: ermv
+      display_name: entity_reference_1
+      arguments: {  }
+field_type: entity_reference

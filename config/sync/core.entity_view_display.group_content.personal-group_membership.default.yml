@@ -1,0 +1,51 @@
+uuid: c76c88af-f84f-46d0-8b10-633a2e66f93c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.group_content.personal-group_membership.group_roles
+    - group.content_type.personal-group_membership
+  module:
+    - layout_builder
+    - layout_discovery
+third_party_settings:
+  layout_builder:
+    sections:
+      -
+        layout_id: layout_onecol
+        layout_settings: {  }
+        components:
+          26d0e94b-5c12-4e4e-b1ea-51dbe9cfcd1b:
+            uuid: 26d0e94b-5c12-4e4e-b1ea-51dbe9cfcd1b
+            region: content
+            configuration:
+              id: 'field_block:group_content:personal-group_membership:group_roles'
+              label_display: ''
+              formatter:
+                label: above
+                type: entity_reference_label
+                settings:
+                  link: false
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+            additional: {  }
+            weight: 0
+    enabled: true
+id: group_content.personal-group_membership.default
+targetEntityType: group_content
+bundle: personal-group_membership
+mode: default
+content:
+  group_roles:
+    label: above
+    type: entity_reference_label
+    settings:
+      link: false
+    weight: -4
+    third_party_settings: {  }
+    region: content
+hidden:
+  entity_id: true
+  langcode: true
+  uid: true

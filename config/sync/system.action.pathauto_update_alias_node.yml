@@ -1,0 +1,11 @@
+id: pathauto_update_alias_node
+label: 'Update URL alias'
+status: true
+langcode: en
+type: node
+plugin: pathauto_update_alias
+dependencies:
+  module:
+    - node
+_core:
+  default_config_hash: '-SdRoSbsl_FULjbX8mgESZdeoEOjgi7rDhHNdLOJ8n8'
