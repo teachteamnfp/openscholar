@@ -28,10 +28,32 @@ function os_importer_cp_settings() {
     '@wikipedia-url' => 'http://en.wikipedia.org/wiki/Character_encoding',
   );
 
-  $encode_options = _os_importer_get_available_encoding();
+  $encode_options = array(
+    'auto-detect' => t('Auto-detect'),
+    'utf-8' => t('UTF-8'),
+    'utf-16' => t('UTF-16'),
+    'utf-32' => t('UTF-32'),
+    t('MS-Windows character sets') => array(
+      'Windows-1250' => t('Central European languages that use Latin script'),
+      'Windows-1251' => t('Cyrillic alphabets'),
+      'Windows-1252' => t('Western languages'),
+      'Windows-1253' => t('Greek'),
+      'Windows-1254' => t('Turkish'),
+      'Windows-1255' => t('Hebrew'),
+      'Windows-1256' => t('Arabic'),
+      'Windows-1257' => t('Baltic languages'),
+      'Windows-1258' => t('Vietnamese'),
+    ),
+    t('ISO 8859') => array(
+      'ISO 8859-1' => t('Western Europe'),
+      'ISO 8859-2' => t('Western and Central Europe'),
+      'ISO 8859-9' => t('Western Europe with amended Turkish character set'),
+      'ISO 8859-14' => t('Celtic languages (Irish Gaelic, Scottish, Welsh)'),
+    ),
+  );
 
   foreach ($app_info as $type => $info) {
-       // Bypassing apps which have RSS feeds as import source.
+    // Bypassing apps which have RSS feeds as import source.
     if (in_array($type, array('os_blog', 'os_news'))) {
       continue;
     }
@@ -76,7 +98,7 @@ function os_importer_cp_settings() {
           '#access' => os_importer_import_access($node_type),
         );
       }
-    
+
       // Import format option should be displayed for all content types except biblio/publication.
       if ($node_type != 'biblio') {
         $settings['os_importer_content_format-' . $node_type] = array(
@@ -142,7 +164,7 @@ function os_importer_cp_settings() {
           '#id' => 'os_importer_content_' . $node_type,
           '#title' => isset($importer_menu_title[$node_type]) ? $importer_menu_title[$node_type] : ucfirst($node_type),
           '#weight' => 3,
-          '#menu_parent' => 'import',          
+          '#menu_parent' => 'import',
         ),
       );
 
@@ -229,38 +251,8 @@ function os_importer_cp_settings() {
       );
     }
   }
-  
-  return $settings;
-}
 
-/**
- * @return array
- */
-function _os_importer_get_available_encoding(): array {
-  $encode_options = [
-    'auto-detect' => t('Auto-detect'),
-    'utf-8' => t('UTF-8'),
-    'utf-16' => t('UTF-16'),
-    'utf-32' => t('UTF-32'),
-    t('MS-Windows character sets') => [
-      'Windows-1250' => t('Central European languages that use Latin script'),
-      'Windows-1251' => t('Cyrillic alphabets'),
-      'Windows-1252' => t('Western languages'),
-      'Windows-1253' => t('Greek'),
-      'Windows-1254' => t('Turkish'),
-      'Windows-1255' => t('Hebrew'),
-      'Windows-1256' => t('Arabic'),
-      'Windows-1257' => t('Baltic languages'),
-      'Windows-1258' => t('Vietnamese'),
-    ],
-    t('ISO 8859') => [
-      'ISO 8859-1' => t('Western Europe'),
-      'ISO 8859-2' => t('Western and Central Europe'),
-      'ISO 8859-9' => t('Western Europe with amended Turkish character set'),
-      'ISO 8859-14' => t('Celtic languages (Irish Gaelic, Scottish, Welsh)'),
-    ],
-  ];
-  return $encode_options;
+  return $settings;
 }
 
 function os_importer_import_group_validate($values) {
@@ -298,7 +290,7 @@ function os_importer_import_group_validate($values) {
       drupal_set_message(t('The file field is required.'), 'error');
       $valid = FALSE;
     } else if (!empty($values['os_importer_file_upload-' . $node_type])) {
-      $file = file_load($values['os_importer_file_upload-' . $node_type]);      
+      $file = file_load($values['os_importer_file_upload-' . $node_type]);
       $part = !empty($file->filename) ? explode('.', $file->filename) : array();
       $extension = end($part);
       if ($extension != 'csv') {
@@ -337,15 +329,15 @@ function os_importer_import_group_validate($values) {
 
             // If title is not empty but url is empty.
             if (!empty($row[11]) && empty($row[12])) {
-              $valid_url = FALSE;        
+              $valid_url = FALSE;
               break;
             }
             else if (!empty($row[13]) && empty($row[14])) {
-              $valid_url = FALSE;        
+              $valid_url = FALSE;
               break;
             }
             else if (!empty($row[15]) && empty($row[16])) {
-              $valid_url = FALSE;        
+              $valid_url = FALSE;
               break;
             }
           }
@@ -560,7 +552,7 @@ function os_importer_import_group_validate($values) {
           'unique_id' => '',
           'filename' => drupal_realpath($file->uri),
         );
-        
+
         $creator_path = libraries_get_path('iCalcreator');
         require_once($creator_path . '/iCalcreator.class.php');
         $calendar = new vcalendar($config);
@@ -577,7 +569,7 @@ function os_importer_import_group_validate($values) {
 /**
  * Submit handler for os_importer_submit button for CSV/iCal import.
  */
- function os_importer_file_submit($request) {
+function os_importer_file_submit($request) {
   global $user, $language;
   foreach($request as $var => $value) {
     if (strpos($var, 'os_importer_submit-') === 0) {
@@ -586,7 +578,7 @@ function os_importer_import_group_validate($values) {
     }
   }
   $import_file_fid = $request['os_importer_file_upload-' . $node_type];
-  $import_file = file_load($import_file_fid);  
+  $import_file = file_load($import_file_fid);
   $part = !empty($import_file->uri) ? explode('.', $import_file->uri) : array();
   $extension = end($part);
   if ($extension == 'ics') {
@@ -602,7 +594,7 @@ function os_importer_import_group_validate($values) {
     $fetcher_config['encode'] = isset($request['os_importer_encode-' . $node_type])? $request['os_importer_encode-' . $node_type] : 'csv';
     $source->setConfigFor($source->importer->fetcher, $fetcher_config);
     $source->save();
-    $source->startImport(); 
+    $source->startImport();
   } else if ($node_type == 'biblio') {
     $userid = $user->uid;
     $filetype = $request['os_importer_filetype-biblio'];

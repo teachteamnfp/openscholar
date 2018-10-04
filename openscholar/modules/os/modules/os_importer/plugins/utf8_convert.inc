@@ -49,18 +49,3 @@ function _os_importer_get_converted_string($encode, $field) {
   }
   return iconv($encode, "UTF-8", $field);
 }
-
-function _os_importer_get_encode_strings() {
-  $encode_options = _os_importer_get_available_encoding();
-  $strings = array();
-  foreach ($encode_options as $encode => $encode_option) {
-    if (!is_array($encode_option)) {
-      $strings[] = $encode;
-      continue;
-    }
-    foreach ($encode_option as $subEncode => $value) {
-      $strings[] = $subEncode;
-    }
-  }
-  return $strings;
-}
