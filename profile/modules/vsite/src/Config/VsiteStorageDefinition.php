@@ -32,8 +32,8 @@ class VsiteStorageDefinition implements EventSubscriberInterface {
     return $events;
   }
 
-  public function onModifierMatched(ModifierMatchedEvent $e) {
-    $modifier = $e->getModifier ();
+  public function onModifierMatched(ModifierMatchedEvent $event) {
+    $modifier = $event->getModifier ();
     $collection = $this->hierarchicalStorage->createCollection ('vsite.'.$modifier);
     $this->hierarchicalStorage->addStorage($collection, self::VSITE_STORAGE);
   }
