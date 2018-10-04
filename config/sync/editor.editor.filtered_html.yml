@@ -61,4 +61,8 @@ image_upload:
   max_size: ''
   max_dimensions:
     width: null
+<<<<<<< HEAD
     height: null
+=======
+    height: null
+>>>>>>> 8.x-1.x-dev
