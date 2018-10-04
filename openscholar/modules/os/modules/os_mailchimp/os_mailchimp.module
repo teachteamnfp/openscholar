@@ -338,11 +338,12 @@ function os_mailchimp_form_submit($form, $form_state) {
 function _os_mailchimp_get_lists($api) {
   $MC = _os_mailchimp_mailchimp_connect($api);
   $ret = array();
-  if (($lists = $MC->lists()) != FALSE) {
+  if (($lists = $MC->lists(null, 0, 100)) != FALSE) {
     foreach ($lists['lists'] as $delta => $list) {
       $ret[$list->id] = $list->name;
     }
   }
+  natcasesort($ret);
 
   return ($ret) ? $ret : FALSE;
 }

@@ -1,6 +1,6 @@
 <?php
 
-define('OS_SITE_CREATION_FORM', '1.0.1');
+define('OS_SITE_CREATION_FORM', '1.0.3');
 
 /**
  * Implements hook_library().
@@ -34,10 +34,18 @@ function os_site_creation_library() {
             'hasOsId' => $vicariousUser,
             'api' => $rest,
           ),
+          'admin_panel' => array(
+            'purl_base_domain' => variable_get('purl_base_domain', $GLOBALS['base_url'])
+          ),
           'version' => array(
             'siteCreationForm' => OS_SITE_CREATION_FORM,
           ),
-          'subsite_types' => variable_get('subsite_bundles', array('personal', 'project'))
+          'site_creation' => array(
+            'subsite_types' => variable_get('subsite_bundles', array('personal', 'project')),
+            'privacy_levels' => vsite_access_privacy_available_values (),
+            'tos_label' => variable_get('os_terms_of_use_label', t('Terms of Use')),
+            'tos_url' => variable_get('os_terms_of_use', false)
+          )
         ),
         'type' => 'setting',
       )
@@ -53,6 +61,7 @@ function os_site_creation_library() {
       array('os_common', 'auth'),
       array('os_common', 'angular-modal-service'),
       array('os_common', 'buttonSpinner'),
+      array('os_common', 'ActiveUser'),
       array('os_common', 'DependencyManager')
     )
   );

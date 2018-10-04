@@ -1,7 +1,7 @@
 (function () {
   var rootPath, paths;
 
-  var m = angular.module('SiteCreationForm', ['angularModalService', 'ngMessages', 'os-buttonSpinner', 'os-auth', 'DependencyManager'])
+  var m = angular.module('SiteCreationForm', ['angularModalService', 'ngMessages', 'os-buttonSpinner', 'os-auth', 'ActiveUser', 'DependencyManager'])
   .config(function (){
     rootPath = Drupal.settings.paths.siteCreationModuleRoot;
     paths = Drupal.settings.paths
@@ -31,15 +31,58 @@
     }
   }]);
 
-  m.controller('siteCreationCtrl', ['$scope', '$http', '$q', '$rootScope', 'buttonSpinnerStatus', '$filter', '$sce', '$timeout', 'passwordStrength', 'authenticate-token', 'parent', function($scope, $http, $q, $rootScope, bss, $filter, $sce, $timeout, ps, at, parent) {
+  m.controller('siteCreationCtrl', ['$scope', '$http', '$q', '$rootScope', 'buttonSpinnerStatus', '$filter', '$sce', '$timeout', 'passwordStrength', 'authenticate-token', 'ActiveUserService', 'parent', function($scope, $http, $q, $rootScope, bss, $filter, $sce, $timeout, ps, at, aus, parent) {
 
   //Set default value for vsite
   $scope.vsite_private = {
     value: '0'
   };
+  $scope.privacyLevels = Drupal.settings.site_creation.privacy_levels;
+  $scope.trustAsHtml = function (arg) {
+    return $sce.trustAsHtml(arg);
+  }
+
+  var user;
+  aus.getUser(function (u) {
+    user = u;
+
+    var types = {
+        'create personal content': true,
+        'create project content': true,
+        'create department content': true
+      },
+      typecount = 0;
+    for (var perm in user.permissions) {
+      if (types[perm] != undefined) {
+        if (user.permissions[perm]) {
+          typecount++;
+        }
+        types[perm] = user.permissions[perm];
+      }
+    }
+    if (typecount == 1) {
+      for (perm in user.permissions) {
+        if (types[perm]) {
+          switch (perm) {
+            case 'create personal content':
+              $scope.display = 'individualScholar';
+              break;
+            case 'create project content':
+              $scope.display = 'projectLabSmallGroup';
+              break;
+            case 'create department content':
+              $scope.display = 'department';
+              break;
+          }
+        }
+      }
+    }
+  });
 
   // Set site creation status
   $scope.siteCreated = false;
+  $scope.tos = Drupal.settings.site_creation.tos_url;
+  $scope.tos_label = Drupal.settings.site_creation.tos_label;
 
   // Initialize the $timout var
   var timer;
@@ -72,6 +115,7 @@
   $scope.newUserResistrationPwd = false;
   $scope.newUserValidPwd = false;
   $scope.newUserResistrationPwdMatch = false;
+  $scope.tosChecked = !$scope.tos;  // circumvent if no tos was provided by site
 
   //Navigate between screens
   $scope.page1 = true;
@@ -99,12 +143,16 @@
     }
   };
 
-  $scope.canBeSubsite = function (type) {
+  $scope.canBeCreated = function (type) {
+    if (user && !user.permissions['create ' +type+' content']) {
+      return false;
+    }
+
     if (!parent) {
       return true;
     }
 
-    return Drupal.settings.subsite_types[type] != undefined;
+    return Drupal.settings.site_creation.subsite_types[type] != undefined;
   };
 
   var queryArgs = {};
@@ -263,7 +311,7 @@
         name: $scope.userName
       };
       $http.post(paths.api + '/purl/name', formdata).then(function (response) {
-        if (response.data == "") {
+        if (response.data.data.length == 0) {
           $scope.showUserError = false;
           $scope.userErrorMsg = '';
           $scope.newUserResistrationName = true;
@@ -280,10 +328,10 @@
     $scope.newUserResistrationEmail = false;
     if (typeof $scope.email !== 'undefined' && $scope.email != '') {
       var formdata = {
-        email: $scope.email,
+        email: $scope.email
       };
       $http.post(paths.api + '/purl/email', formdata).then(function (response) {
-        if (response.data == "") {
+        if (response.data.data.length == 0) {
           $scope.showEmailError = false;
           $scope.emailErrorMsg = '';
           $scope.newUserResistrationEmail = true;
@@ -303,7 +351,7 @@
         password: $scope.password
       };
       $http.post(paths.api + '/purl/pwd', formdata).then(function (response) {
-        if (response.data == "") {
+        if (response.data.data.length == 0) {
           $scope.showPwdError = false;
           $scope.pwdErrorMsg = '';
           $scope.newUserResistrationPwd = true;
@@ -324,6 +372,10 @@
         $scope.btnDisable = true;
       }
     }, 2000);
+  };
+
+  $scope.validateForms = function() {
+      return $scope.btnDisable || !$scope.tosChecked;
   };
 
   $scope.score = function() {
@@ -364,7 +416,7 @@
   /**
    * Open modals for the site creation forms
    */
-  m.directive('siteCreationForm', ['ModalService','$rootScope', function (ModalService,$rootScope) {
+  m.directive('siteCreationForm', ['ModalService', '$rootScope', function (ModalService,$rootScope) {
     var dialogOptions = {
       minWidth: 900,
       minHeight: 300,
@@ -379,6 +431,14 @@
         e.stopPropagation();
         $rootScope.siteCreationFormId = attrs.id;
 
+        openModal(scope);
+      });
+
+      if (scope.autoOpen) {
+        openModal(scope);
+      }
+
+      function openModal(scope) {
         ModalService.showModal({
           controller: 'siteCreationCtrl',
           templateUrl: rootPath + '/templates/os_site_creation.html',
@@ -399,13 +459,14 @@
             }
           });
         });
-      });
+      }
     }
 
     return {
       link: link,
       scope: {
         form: '@',
+        autoOpen: '@?',
         parent: '@'
       }
     };
@@ -425,7 +486,7 @@
         var baseUrl = Drupal.settings.paths.api;
         if(ngModelValue){
           //Ajax call to get all existing sites
-          $http.get(baseUrl + '/purl/' + ngModelValue).then(function mySuccess(response) {
+          $http.get(baseUrl + '/purl/' + encodeURIComponent(ngModelValue)).then(function mySuccess(response) {
             responseData = response.data.data;
             if (responseData.msg == "Not-Permissible") {
               siteCreationCtrl.$setValidity('permission', false);
@@ -458,6 +519,18 @@
               } else {
                 scope.btnDisable = false;
               }
+            }
+          }, function (response) {
+            // this triggers if the entered URL has a slash or backslash in it
+            if (response.status == 404 || response.status == -1) {
+              siteCreationCtrl.$setValidity('permission', true);
+              siteCreationCtrl.$setValidity('isinvalid', false);
+              siteCreationCtrl.$setValidity('sitename', true);
+              scope.btnDisable = true;
+              scope.siteNameValid = false;
+            }
+            else {
+              // error on server end
             }
           });
         }

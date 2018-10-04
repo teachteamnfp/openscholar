@@ -34,6 +34,7 @@ class OsRestfulPurl extends \RestfulBase implements \RestfulDataProviderInterfac
    * Checking for user name
    */
   public function check_user_name() {
+    $msg = array();
     if ($this->request['name'] != "") {
       $name = $this->request['name'];
       if ($user_error = user_validate_name($name)) {
@@ -52,6 +53,7 @@ class OsRestfulPurl extends \RestfulBase implements \RestfulDataProviderInterfac
    * Checking for Email address
    */
   public function check_email() {
+    $msg = array();
     if ($this->request['email'] != "") {
       $email = $this->request['email'];
       if ($mail_error = user_validate_mail($email)) {
@@ -72,6 +74,7 @@ class OsRestfulPurl extends \RestfulBase implements \RestfulDataProviderInterfac
    */
   public function check_pwd() {
     // Checks password matches confirmed password.
+    $msg = array();
     $pass1 = $this->request['password'];
     if (empty($pass1)) {
      $msg[] = t('The password field is required.');
@@ -105,6 +108,7 @@ class OsRestfulPurl extends \RestfulBase implements \RestfulDataProviderInterfac
    */
   public function check_exiting_sites($siteValue) {
     // Checking site creation permission
+    $return = array();
     if (!vsite_vsite_exists_access() || (module_exists('os_pinserver_auth') && !_os_pinserver_auth_vsite_register_form_page())) {
       $return['msg'] = "Not-Permissible";
       return $return;
@@ -112,7 +116,7 @@ class OsRestfulPurl extends \RestfulBase implements \RestfulDataProviderInterfac
     //Validate new vsite URL
     $return['msg'] = '';
     module_load_include('inc', 'vsite_register', 'vsite_register.form');
-    if (strlen($siteValue) < 3 || !valid_url($siteValue) || !check_plain($siteValue) || !preg_match('!^[\.a-z0-9_-]+$!', $siteValue) || menu_get_item($siteValue)) {
+    if (strlen($siteValue) < 3 || !valid_url($siteValue) || !check_plain($siteValue) || !preg_match('!^[a-z0-9-]+$!', $siteValue)) {
       $return['msg'] = 'Invalid';
     }
     else if (!_vsite_register_valid_url($siteValue) || menu_get_item($siteValue)) {
