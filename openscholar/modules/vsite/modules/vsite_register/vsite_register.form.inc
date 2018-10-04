@@ -9,6 +9,24 @@
  * Form builder for the vsite register form found at "site/register".
  */
 function vsite_register_form($form, &$state) {
+  if (variable_get('is_angular', TRUE)) {
+    // For sub-sites
+    $param = drupal_get_query_parameters();
+    $form['html'] = array(
+      '#type' => 'markup',
+      '#markup' => '<site-creation-form ' . (!empty($param['parent']) ? ' id="add-subsite-' . $param['parent'] . '"':''). ' auto-open="true"><a>Create Your Site Here</a></site-creation-form>',
+      '#attached' => array(
+        'library' => array(
+          array('os_site_creation',  'site_creation')
+        )
+      ),
+      '#angular_app' => 'SiteCreationForm',
+      '#post_render' => array(
+        'os_common_element_post_render'
+      )
+    );
+    return $form;
+  }
   global $base_url;
   global $user;
   $form = array();
@@ -32,7 +50,7 @@ function vsite_register_form($form, &$state) {
     '#required' => TRUE,
     '#field_prefix' => $base_url . '/',
     '#size' => 35,
-    '#description' => t('Enter a minimum of 3 characters, lowercase only. Periods and punctuation are not allowed except for hyphens and underscores. <br />Example: Entering jdoe into the field above will result in this URL: %site.', array('%site' => $base_url . '/jdoe')),
+    '#description' => t('Enter a minimum of 3 characters, lowercase only. Periods and punctuation are not allowed except for hyphens. <br />Example: Entering jdoe into the field above will result in this URL: %site.', array('%site' => $base_url . '/jdoe')),
     '#ajax' => array(
       'callback' => 'vsite_register_ajax_validation',
       'wrapper' => 'domain-errors',
@@ -643,7 +661,7 @@ function _vsite_register_mail_in_use($mail) {
  * @see purl_validate()
  */
 function _vsite_register_valid_url($url) {
-  foreach (array('!', ';', '/', '?', ':', '@', '&', '=', '"', "'", ".",
+  foreach (array('!', ';', '/', '?', ':', '@', '&', '=', '"', "'", ".", '_',
     ) as $char) {
     if (strpos($url, $char) !== FALSE) {
       return FALSE;

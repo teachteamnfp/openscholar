@@ -84,3 +84,10 @@ ul.nice-menu ul {
 #boxes-box-site_info h1 {
     font-size: 2.6em;
 }
+
+/* I need to use important, because of this line in global.base.css:
+.node-teaser .field-name-body h2
+*/
+.block-boxes-os_boxes_manual_list .node-teaser .field-name-body h2 {
+    font-size: 1.3em !important;
+}

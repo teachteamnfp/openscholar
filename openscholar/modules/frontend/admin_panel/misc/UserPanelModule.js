@@ -6,7 +6,7 @@
   var user_data;
   var paths;
 
-  angular.module('UserPanel', ['AdminPanel'])
+  angular.module('UserPanel', ['AdminPanel', 'ActiveUser'])
   .config(function () {
     rootPath = Drupal.settings.paths.adminPanelModuleRoot;
     restPath = Drupal.settings.paths.api;
@@ -39,19 +39,25 @@
       	});
       };
 
-  }]).controller("UserSitesController",['$scope', '$http', function ($scope, $http) {
+  }]).controller("UserSitesController",['$scope', '$http', 'ActiveUserService', function ($scope, $http, aus) {
     $scope.baseUrl = Drupal.settings.basePath;
     $scope.purlBaseDomain = Drupal.settings.admin_panel.purl_base_domain + "/";
+    $scope.baseDomain = Drupal.settings.admin_panel.base_domain + "/";
 
-    var url = paths.api + '/users/' + user_data.uid;
-    $http({method: 'get', url: url}).then(function(response) {
-      if(typeof(response.data.data[0].og_user_node) == 'undefined') {
-        $scope.site_data = [];
-      } else {
-        $scope.site_data = response.data.data[0].og_user_node;
-      }
-      $scope.create_access = response.data.data[0].create_access;
+    aus.getUser(function (user) {
+      $scope.site_data = user.og_user_node || [];
+      $scope.create_access = user.create_access;
     });
+
+    // var url = paths.api + '/users/' + user_data.uid;
+    // $http({method: 'get', url: url}).then(function(response) {
+    //   if(typeof(response.data.data[0].og_user_node) == 'undefined') {
+    //     $scope.site_data = [];
+    //   } else {
+    //     $scope.site_data = response.data.data[0].og_user_node;
+    //   }
+    //   $scope.create_access = response.data.data[0].create_access;
+    // });
     $scope.pageSize = 7;
     if (Drupal.settings.spaces) {
       $scope.spaceId = Drupal.settings.spaces.id;

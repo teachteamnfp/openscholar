@@ -252,6 +252,12 @@ margin-top:-2px;
 	font-size: 24px;
 	padding-bottom: 0;
 }
+/* I need to use important, because of this line in global.base.css:
+.node-teaser .field-name-body h2
+*/
+.block-boxes-os_boxes_manual_list .node-teaser .field-name-body h2 {
+    font-size: 24px !important;
+}
 
 
 #content-column .field-name-body h3 {

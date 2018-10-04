@@ -885,12 +885,12 @@ function os_files_download(){
 /**
  * Implements hook_ctools_plugin_api_alter().
  */
-function os_files_ctools_plugin_api_alter(&$value, $context) {
-  if (!isset($context['owner']) || $context['owner'] != 'file_entity') {
+function os_files_ctools_plugin_api_alter(&$value, $owner, $api) {
+  if ($owner != 'file_entity') {
     return;
   }
 
-  if (in_array($context['api'], array('file_default_displays', 'file_type'))) {
+  if (in_array($api, array('file_default_displays', 'file_type'))) {
     $value['os_files'] = array(
       'version' => 1,
       'path' => drupal_get_path('module', 'os_files'),

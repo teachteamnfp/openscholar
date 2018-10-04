@@ -21,6 +21,7 @@ function os_events_install() {
       'description' => 'A optional date when a repeating event occurs.',
     ));
   db_add_primary_key('registration_entity', array('entity_id', 'entity_type', 'repeating_event_date'));
+
 }
 
 function os_events_uninstall() {
@@ -373,4 +374,26 @@ function os_events_update_7031() {
   $settings['view_modes']['rss']['custom_settings'] = TRUE;
   field_bundle_settings('node', 'event', $settings);
   system_rebuild_module_data();
+}
+
+/**
+ * Update Google Calendar View
+ */
+function os_events_update_7032() {
+  features_revert(array(
+    'os_events' => array(
+      'views_view'
+    )
+  ));
+}
+
+/**
+ * Update weights on fields
+ */
+function os_events_update_7033() {
+  features_revert(array(
+    'os_events' => array(
+      'field_instance'
+    )
+  ));
 }

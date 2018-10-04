@@ -29,7 +29,7 @@ Feature:
       Then I should see "Kittens gallery"
        And I should not see "jfk"
 
-  @api @features_first
+  @api @galleries
   Scenario: Create new image gallery content
      Given I am logging in as "john"
         And I visit "john/node/add/media-gallery"
@@ -40,7 +40,7 @@ Feature:
        Then I should see "Safari"
        And I should see "Visit to world safari"
 
-  @api @features_first
+  @api @galleries
   Scenario: Edit the existing image gallery content
      Given I am logging in as "john"
        When I visit the "edit" form for node "galleries/safari" in site "john"
@@ -51,7 +51,7 @@ Feature:
        Then I should see "World Safari"
        And I should see "Enjoying world safari"
 
-  @api @features_first @javascript
+  @api @galleries @javascript
   Scenario: Add media to existing gallery
      Given I am logging in as "john"
        And I visit "john/galleries/safari"
@@ -67,7 +67,7 @@ Feature:
      Then I should see the images:
       | safari |
 
-  @api @features_first @javascript
+  @api @galleries @javascript
   Scenario: Edit media of a existing gallery
      Given I am logging in as "john"
        And I visit "john/galleries/safari"
@@ -77,7 +77,7 @@ Feature:
        And I visit the file "safari_edited.jpg"
       Then I should see "safari_edited.jpg"
 
-  @api @features_first @javascript
+  @api @galleries @javascript
   Scenario: Delete media of a existing gallery
      Given I am logging in as "john"
        And I visit "john/galleries/safari"
@@ -130,7 +130,7 @@ Feature:
        And I press "Delete"
        And I should see "Slideshow Image has been deleted"
 
-  @api @features_first @javascript
+  @api @galleries @javascript
   Scenario: Delete existing image gallery content
      Given I am logging in as "john"
       When I visit the "edit" form for node "galleries/safari" in site "john"

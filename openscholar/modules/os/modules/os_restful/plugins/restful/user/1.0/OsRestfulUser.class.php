@@ -68,6 +68,10 @@ class OsRestfulUser extends \RestfulEntityBaseUser {
       }
     }
 
+    $public_fields['permissions'] = array(
+      'callback' => array($this, 'getPermissions')
+    );
+
     return $public_fields;
   }
 
@@ -78,6 +82,30 @@ class OsRestfulUser extends \RestfulEntityBaseUser {
    */
   protected function hideField() {
     return NULL;
+  }
+
+  /**
+   * @inheritdoc
+   *
+   * Override to allow 0 values through (so we can get permissions for anonymous users)
+   */
+  public function setPath($path = '') {
+    $this->path = implode(',', array_unique(array_filter(explode(',', $path), 'strlen')));
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * Override to allow 0 values through
+   */
+  public function viewEntities($ids_string) {
+    $ids = array_unique(array_filter(explode(',', $ids_string), 'strlen'));
+    $output = array();
+
+    foreach ($ids as $id) {
+      $output[] = $this->viewEntity($id);
+    }
+    return $output;
   }
 
   /**
@@ -109,7 +137,7 @@ class OsRestfulUser extends \RestfulEntityBaseUser {
       return $output;
     }
     // we were denied access to view the entity because the active user is still anonymous
-    $user;
+    $user = null;
     if (!empty($this->request['mail'])) {
       $user = user_load_by_mail($this->request['mail']);
     }
@@ -128,6 +156,11 @@ class OsRestfulUser extends \RestfulEntityBaseUser {
       $this->setAccount($user);
       drupal_save_session(true);
       user_login_finalize();
+      // TODO: Remove this with saml
+      // lmao, && has higher precedence than = so this was setting $huid to true.
+      if (module_exists('pinserver_authenticate') && ($huid = pinserver_get_user_huid ()) && !pinserver_authenticate_get_uid_from_huid ()) {
+        pinserver_authenticate_set_user_huid ($user->uid, $huid);
+      }
       return $this->viewEntity($user->uid);
     }
   }
@@ -150,6 +183,12 @@ class OsRestfulUser extends \RestfulEntityBaseUser {
    */
   public function getCreateAccess() {
     if (module_exists('vsite')) {
+      global $user;
+      if (module_exists('pinserver') && $user->uid != 1) {
+        if (!pinserver_user_has_associated_pin ($user->uid)) {
+          return false;
+        }
+      }
       return _vsite_user_access_create_vsite();
     }
   }
@@ -203,6 +242,39 @@ class OsRestfulUser extends \RestfulEntityBaseUser {
       ->execute()
       ->fetchAllKeyed(0, 1);
     return $result;
+  }
+
+  /**
+   * Returns subset of permissions this user holds
+   */
+  protected function getPermissions(EntityDrupalWrapper $wrapper) {
+    $permissions = array();
+
+    $vicariousUser = (user_is_anonymous () && variable_get('os_site_creation_allow_anonymous', false));
+    if (module_exists('pinserver')) {
+      if ($huid = pinserver_get_user_huid()) {
+        if (!$uid = pinserver_authenticate_get_uid_from_huid($huid)) {
+          $vicariousUser = true;
+        }
+      }
+    }
+    $account = user_load($wrapper->getIdentifier ());
+
+    if ($vicariousUser && user_is_anonymous ()) {
+      $account->roles[2] = 'authenticated user';
+    }
+
+    $group_bundles = og_get_all_group_bundle('node');
+    foreach ($group_bundles as $type => $label) {
+      $permissions[] = 'create ' . $type . ' content';
+    }
+
+    $output = array();
+    foreach ($permissions as $p) {
+      $output[$p] = user_access($p, $account);
+    }
+
+    return $output;
   }
 
   /**

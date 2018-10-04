@@ -1,20 +1,27 @@
 jQuery(document).ready(function($) {
-	var num = 184;
-	//number of pixels before modifying styles
+  //number of pixels before modifying styles
+	var $menuBar = jQuery('#menu-bar');
+	if ($menuBar.length) {
+		var num = $menuBar.offset().top;
 
-	jQuery(window).bind('scroll', function() {
-		if (jQuery(window).scrollTop() > num) {
-			jQuery('#menu-bar').addClass('fixed');
-		} else {
-			jQuery('#menu-bar').removeClass('fixed');
-		}
-	});
+		// Size of the un-fixed menu.
+		var menu_size = $menuBar.height();
 
-	jQuery('.front .block-boxes-os_sv_list_box').each(function() {
-		var $this = $(this);
-		var count = jQuery('.node', $this).length;
+		jQuery(window).bind('scroll', function () {
+			if (jQuery(window).scrollTop() > num) {
+				jQuery('#page-wrapper').css('marginTop', menu_size + 'px');
+				$menuBar.addClass('fixed');
+			} else {
+				$menuBar.removeClass('fixed');
+				jQuery('#page-wrapper').css('marginTop', '0px');
+			}
+		});
 
-		jQuery($this).addClass('lopz-' + count);
-	});
+		jQuery('.front .block-boxes-os_sv_list_box').each(function () {
+			var $this = $(this);
+			var count = jQuery('.node', $this).length;
 
+			jQuery($this).addClass('lopz-' + count);
+		});
+	}
 });

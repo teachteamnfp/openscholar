@@ -38,17 +38,6 @@ function os_user_default_permissions() {
     'module' => 'node',
   );
 
-  // Exported permission: 'access content overview'.
-  $permissions['access content overview'] = array(
-    'name' => 'access content overview',
-    'roles' => array(
-      'administrator' => 'administrator',
-      'manager' => 'manager',
-      'vsite admin' => 'vsite admin',
-    ),
-    'module' => 'node',
-  );
-
   // Exported permission: 'access contextual links'.
   $permissions['access contextual links'] = array(
     'name' => 'access contextual links',
@@ -149,6 +138,13 @@ function os_user_default_permissions() {
       'vsite user' => 'vsite user',
     ),
     'module' => 'media_internet',
+  );
+
+  // Exported permission: 'administer CAPTCHA settings'.
+  $permissions['administer CAPTCHA settings'] = array(
+    'name' => 'administer CAPTCHA settings',
+    'roles' => array(),
+    'module' => 'captcha',
   );
 
   // Exported permission: 'administer actions'.
@@ -256,6 +252,13 @@ function os_user_default_permissions() {
       'administrator' => 'administrator',
     ),
     'module' => 'user',
+  );
+
+  // Exported permission: 'administer recaptcha'.
+  $permissions['administer recaptcha'] = array(
+    'name' => 'administer recaptcha',
+    'roles' => array(),
+    'module' => 'recaptcha',
   );
 
   // Exported permission: 'administer search'.
@@ -426,9 +429,9 @@ function os_user_default_permissions() {
     'name' => 'delete revisions',
     'roles' => array(
       'administrator' => 'administrator',
+      'content editor' => 'content editor',
       'manager' => 'manager',
       'vsite admin' => 'vsite admin',
-      'content editor' => 'content editor',
     ),
     'module' => 'node',
   );
@@ -503,9 +506,9 @@ function os_user_default_permissions() {
     'name' => 'revert revisions',
     'roles' => array(
       'administrator' => 'administrator',
+      'content editor' => 'content editor',
       'manager' => 'manager',
       'vsite admin' => 'vsite admin',
-      'content editor' => 'content editor',
     ),
     'module' => 'node',
   );
@@ -527,6 +530,13 @@ function os_user_default_permissions() {
       'administrator' => 'administrator',
     ),
     'module' => 'user',
+  );
+
+  // Exported permission: 'skip CAPTCHA'.
+  $permissions['skip CAPTCHA'] = array(
+    'name' => 'skip CAPTCHA',
+    'roles' => array(),
+    'module' => 'captcha',
   );
 
   // Exported permission: 'use advanced search'.

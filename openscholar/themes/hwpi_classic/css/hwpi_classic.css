@@ -116,7 +116,12 @@ h1.node-title,
 #content-column .field-name-body h2 {
 	font-size: 25px;
 }
-
+/* I need to use important, because of this line in global.base.css:
+.node-teaser .field-name-body h2
+*/
+.block-boxes-os_boxes_manual_list .node-teaser .field-name-body h2 {
+	font-size: 25px !important;
+}
 
 #content-column .field-name-body h3 {
 	font-size: 21px;
@@ -288,5 +293,3 @@ a.rslides_nav {
   font-weight:normal;
 
 }
-
-	

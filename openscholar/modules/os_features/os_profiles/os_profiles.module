@@ -716,6 +716,10 @@ function os_profiles_sync_profile_validate($form, &$form_state) {
       form_set_error('url', t('The profile cannot be synced: it seems that the profile you are trying to sync belong to a private site or is set to private on a public site.'));
       return;
     }
+    elseif (isset($request->redirect_code) && $request->redirect_code == 301) {
+      form_set_error('url', t('The profile cannot be synced: '.$form_state['values']['url'].' is set to redirect to another url.'));
+      return;
+    }
 
     $headers = get_headers($form_state['values']['url']);
 
@@ -1854,8 +1858,8 @@ function os_profile_feeds_set_target($source, $entity, $target, $value) {
   list($field_name, $column) = explode(':', $target);
   $info = field_info_field($field_name);
 
-  $field = isset($entity->$field_name) ? $entity->$field_name : array();
-  
+  $field = isset($entity->{$field_name}) ? $entity->{$field_name} : array();
+
   // Initializing static variable for field delta value for this callback.
   $field_delta = &drupal_static(__FUNCTION__);
   if (!isset($field_delta[$column])) {
@@ -1871,7 +1875,7 @@ function os_profile_feeds_set_target($source, $entity, $target, $value) {
       $field_delta[$column]++;
     }
   }
-  $entity->$field_name = $field;
+  $entity->{$field_name} = $field;
 }
 
 /**

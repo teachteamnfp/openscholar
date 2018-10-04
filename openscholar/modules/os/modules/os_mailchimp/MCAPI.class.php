@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * THIS LIBRARY IS COMPLETELY UNSUPPORTED.
+ */
+
 class MCAPI {
     var $version = "3.0";
     var $errorMessage;
@@ -36,7 +40,7 @@ class MCAPI {
      * @param string $apikey Your MailChimp apikey
      * @param string $secure Whether or not this should use a secure connection
      */
-    function MCAPI($apikey, $secure=false) {
+    function __construct($apikey, $secure=false) {
         $this->secure = $secure;
         $this->apiUrl = parse_url("http://api.mailchimp.com/" . $this->version . "/?output=php");
         $this->api_key = $apikey;
@@ -1132,14 +1136,15 @@ class MCAPI {
                  int click_rate the average click rate per campaign for the list  (empty value if we haven't calculated this yet)
              array modules Any list specific modules installed for this list (example is SocialPro)
      */
-    function lists($filters=array (
-), $start=0, $limit=25) {
-        $params = array();
-        return $this->callServer("lists", $params, "GET");
-    }
+  function lists($filters = [], $start = 0, $limit = 25) {
+    $params = [
+      'count' => $limit,
+    ];
+    return $this->callServer("lists", $params, "GET");
+  }
 
-    /**
-     * Get the list of merge tags for a given list, including their name, tag, and required setting
+  /**
+   * Get the list of merge tags for a given list, including their name, tag, and required setting
      *
      * @section List Related
      * @example xml-rpc_listMergeVars.php
@@ -2444,13 +2449,17 @@ class MCAPI {
         $response = curl_exec($ch);
         curl_close($ch);
 
-        if ($info["timed_out"]) {
-            $this->errorMessage = "Could not read response (timed out)";
-            $this->errorCode = -98;
-            return false;
+        if ($response === FALSE) {
+          $this->errorMessage = "Error making Mailchimp request";
+          $this->errorCode = 0;
+          return false;
         }
-        
-        if(ini_get("magic_quotes_runtime")) $response = stripslashes($response);
+
+//        if ($response["timed_out"]) {
+//          $this->errorMessage = "Could not read response (timed out)";
+//          $this->errorCode = -98;
+//          return false;
+//        }
         
         $serial = json_decode($response);
         if($response && $serial === false) {

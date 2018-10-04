@@ -65,7 +65,7 @@ class OsMigratePublicationNode extends OsMigrate {
         continue;
       }
 
-      $entity->$row_key = $row_value;
+      $entity->{$row_key} = $row_value;
     }
   }
 }

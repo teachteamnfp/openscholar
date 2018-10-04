@@ -218,7 +218,12 @@ Drupal.wysiwyg.plugins['os_link'] = {
             text = $('.form-item-link-text input', doc).val();
 
         if (text == selected) {
-          text = selection.content;
+          if (selection.node.tagName == 'IMG') {
+            text = selection.node.outerHTML;
+          }
+          else {
+            text = selection.content;
+          }
         }
         else if (text == '') {
           text = window.Drupal.settings.osWysiwygLinkResult;

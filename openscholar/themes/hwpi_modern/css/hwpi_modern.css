@@ -523,4 +523,9 @@ a.rslides_nav {
     margin-top: 0;
 }
 
-
+/* I need to use important, because of this line in global.base.css:
+.node-teaser .field-name-body h2
+*/
+.block-boxes-os_boxes_manual_list .node-teaser .field-name-body h2 {
+    font-size: 1.3em !important;
+}

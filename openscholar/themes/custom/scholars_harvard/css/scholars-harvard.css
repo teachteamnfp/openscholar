@@ -13,7 +13,7 @@
 body {
     font-family: helvetica, arial, serif;
     font-size: 13px;
-    line-height: 1.5;
+   line-height: 23px;
    background: url('../images/startpage-bg.jpg') no-repeat 50% 0;
 }
 .logged-in .region-page-top .region-inner {

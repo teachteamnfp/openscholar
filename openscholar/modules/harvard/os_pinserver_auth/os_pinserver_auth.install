@@ -76,3 +76,14 @@ function os_pinserver_auth_update_7004() {
   }
 }
 
+/**
+ * Remove pin login setting that is no longer used.
+ */
+function os_pinserver_auth_update_7005() {
+
+  db_delete('spaces_overrides')
+    ->condition('object_id', 'login_via_pin_by_default', "=")
+    ->condition('object_type', "variable", "=")
+    ->execute();
+
+}

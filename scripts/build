@@ -117,6 +117,6 @@ CUR_DIR=$(pwd)
 # Get the angualr components.
 (
   cd $BUILD_ROOT/openscholar
-  $BOWER install
+  $BOWER install --allow-root
   cd -
 )

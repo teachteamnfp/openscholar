@@ -98,5 +98,7 @@ function openscholar_install() {
   // Set image toolkit variables.
   variable_set('imageapi_optimize_service', 'resmushit');
   variable_set('image_toolkit', 'imageapi_optimize');
+
+  features_revert(array('os_restful_config' => array('variable')));
 }
 

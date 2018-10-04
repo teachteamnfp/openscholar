@@ -819,7 +819,6 @@ function vsite_vsite_exists_access($vsites = array()) {
     $purl_base_domain = variable_get('purl_base_domain', '');
     // If the domain is NOT the purl base domain, alerts user and denies access.
     if ($base_url != $purl_base_domain) {
-      watchdog('vsite', 'Base domain mismatch: @base_url', array('@base_url' => $base_url));
       drupal_set_message(t('You may not register new sites on custom domains.'), 'warning');
       return FALSE;
     }
@@ -1133,8 +1132,10 @@ function vsite_attach_fields_to_group_content($entity_type, $bundle){
  */
 function vsite_attach_fields_to_group($bundle){
   og_create_field(OG_GROUP_FIELD, 'node', $bundle);
-  og_create_field(VSITE_ACCESS_FIELD, 'node', $bundle);
   og_create_field(OG_DEFAULT_ACCESS_FIELD, 'node', $bundle);
+  if (module_exists('vsite_access')) {
+    og_create_field (VSITE_ACCESS_FIELD, 'node', $bundle);
+  }
 
   if (! field_info_field('field_site_address')) {
     // field_site_address.
@@ -2508,13 +2509,7 @@ function vsite_contact_mail_owner($form, &$form_state, $recipient){
     '#value' => t('Send e-mail'),
     '#weight' => 100
   );
-  if (module_exists('honeypot')) {
-    honeypot_add_form_protection(
-      $form,
-      $form_state,
-      array('honeypot', 'time_restriction')
-    );
-  }
+
   return $form;
 }
 
@@ -4176,6 +4171,18 @@ function vsite_redirect_load_by_source_existing_url_alter(&$source) {
         $source_uri = implode('/', $request_split);
         $source = $source_uri;
       }
+    }
+  }
+}
+
+/**
+ * Implements hook_url_inbound_alter().
+ */
+function vsite_url_inbound_alter(&$path, $original_path, $path_language) {
+  if ($vsite = vsite_get_vsite()) {
+    $frontpage = $vsite->controllers->variable->get('site_frontpage', 'original');
+    if ($frontpage == $path) {
+      $path = variable_get('site_frontpage', 'node');
     }
   }
 }

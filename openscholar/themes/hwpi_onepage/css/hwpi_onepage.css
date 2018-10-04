@@ -398,6 +398,10 @@ h2.block-title {
 #content-panels .block-boxes-os_slideshow_box .block-inner {
     margin-top: 0;
 }
+#content-panels .block-boxes-os_slideshow_box .add_new {
+    left: auto;
+    right: calc(50% - 980px/2);
+}
 a.rslides_nav {
     background-color: #787878;
 }
@@ -448,4 +452,11 @@ a.rslides_nav {
 }
 #powered-by a {
     background-position: -14px -548px;
+}
+
+/* I need to use important, because of this line in global.base.css:
+.node-teaser .field-name-body h2
+*/
+.block-boxes-os_boxes_manual_list .node-teaser .field-name-body h2 {
+    font-size: 1.3em !important;
 }

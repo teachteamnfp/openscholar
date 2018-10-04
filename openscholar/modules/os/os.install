@@ -5,7 +5,6 @@
  * Main OpenScholar module update functions.
  */
 
-
 function os_install() {
   _os_date_formats();
 }
@@ -1066,4 +1065,19 @@ function os_update_7061() {
   db_delete('honeypot_user')
     ->condition('uid', 0)
     ->execute();
+}
+
+/**
+ * Enable the os_site_creation module for new site creation forms.
+ */
+function os_update_7062() {
+  module_enable(array('os_site_creation'));
+}
+
+/**
+ * Revert the os_importer feature module to set elysia cron settings.
+ */
+function os_update_7063() {
+  $revert = array('os_importer' => array('elysia_cron'));
+  features_revert($revert);
 }
