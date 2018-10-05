@@ -92,11 +92,16 @@ class sv_list_node_biblio extends sv_list_plugin {
     }
     
     if (count($types) > count($whitelist)) {
-      $nids = db_select('biblio', 'b') 
+      $query = db_select('biblio', 'b')
         ->condition('biblio_type', array_values($whitelist), 'IN')
-        ->fields('b', array('nid'))
-        ->execute()
-        ->fetchCol();  
+        ->fields('b', array('nid'));
+      $query->innerJoin ('node', 'n', 'b.nid = n.nid AND n.vid = b.vid'); // filter out
+      if ($vsite = vsite_get_vsite()) {
+        $query->innerJoin('og_membership', 'ogm', "ogm.etid = b.nid AND ogm.entity_type = 'node'");
+        $query->condition('ogm.gid', $vsite->group->nid);
+      }
+      $nids = $query->execute()
+        ->fetchCol();
 
       $efq->entityCondition('nid', $nids, 'IN');
     }
