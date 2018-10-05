@@ -1,4 +1,4 @@
-<div id="site-creation-container" ng-controller="siteCreationCtrl">
+<div id="site-creation-container">
 	<form name="siteCreationform">
 		<!-- Screen 1 Start -->
 		<div id="page-1" ng-show="page1">
@@ -37,19 +37,19 @@
 
 			<div id="body-container">
 				<div id="body-container-group-1">
-					<div class="site-type center individual">
+					<div class="site-type center individual" ng-show="canBeCreated('personal')">
 						<div class="site-type-button">
 							<a class="button" ng-click="display = 'individualScholar'" title="Individual Scholar">Individual Scholar</a>
 						</div>
-						<div id="individual-scholar" class="popup site-type_nameurl" ng-show="display == 'individualScholar'">
-							<div class="left">
+						<div id="individual-scholar-wrapper" class="popup site-type_nameurl" ng-show="display == 'individualScholar'">
+							<div>
 								<b>Choose the URL of the Website</b>
 							</div>
 
-							<div>
+							<div class="url-selector">
 								<span>{{baseURL}}</span>
 								<span>
-									<input type="text" name="individualScholar" ng-model="individualScholar" formcheck-Directive ng-keyup="clearRest('individualScholar');" id="individual-scholar" class="form-text">
+									<input type="text" name="individualScholar" ng-model="individualScholar" formcheck-directive ng-keyup="clearRest('individualScholar');" id="individual-scholar" class="form-text">
 								</span>
 							</div>
 							<div ng-messages="siteCreationform.individualScholar.$error">
@@ -57,7 +57,7 @@
 									You don't have permission to create site
 								</div>
 								<div class="message error" ng-message="isinvalid">
-									Invalid URL specified
+									Url must be 3 or more characters, and only contain lowercase alphanumerics and hyphens.
 								</div>
 								<div class="message error" ng-message="sitename">
 									Site name is already taken
@@ -65,19 +65,19 @@
 							</div>
 						</div>
 					</div>
-					<div class="site-type center group">
+					<div class="site-type center group" ng-show="canBeCreated('project')">
 						<div class="site-type-button">
 							<a class="button" ng-click="display = 'projectLabSmallGroup'">Project/Lab/Small Group</a>
 						</div>
-						<div id="project-lab-small-group" class="popup site-type_nameurl" ng-show="display == 'projectLabSmallGroup'">
-							<div class="left">
+						<div id="project-lab-small-group-wrapper" class="popup site-type_nameurl" ng-show="display == 'projectLabSmallGroup'">
+							<div>
 								<b>Choose the URL of the Website</b>
 							</div>
 
-							<div>
+							<div class="url-selector">
 								<span>{{baseURL}}</span>
 								<span>
-									<input type="text" name="projectLabSmallGroup" ng-model="projectLabSmallGroup" formcheck-Directive ng-keyup="clearRest('projectLabSmallGroup');" id="project-lab-small-group" class="form-text">
+									<input type="text" name="projectLabSmallGroup" ng-model="projectLabSmallGroup" formcheck-directive ng-keyup="clearRest('projectLabSmallGroup');" id="project-lab-small-group" class="form-text">
 								</span>
 							</div>
 							<div ng-messages="siteCreationform.projectLabSmallGroup.$error">
@@ -85,7 +85,7 @@
 									You don't have permission to create site
 								</div>
 								<div class="message error" ng-message="isinvalid">
-									Invalid URL specified
+									Url must be 3 or more characters, and only contain lowercase alphanumerics and hyphens.
 								</div>
 								<div class="message error" ng-message="sitename">
 									Site name is already taken
@@ -93,19 +93,19 @@
 							</div>
 						</div>
 					</div>
-					<div class="site-type center department">
+					<div class="site-type center department" ng-show="canBeCreated('department')">
 						<div class="site-type-button">
 							<a class="button" ng-click="display = 'departmentSchool'">Department/School</a>
 						</div>
-						<div id="department-school" class="popup site-type_nameurl" ng-show="display == 'departmentSchool'">
-							<div class="left">
+						<div id="department-school-wrapper" class="popup site-type_nameurl" ng-show="display == 'departmentSchool'">
+							<div>
 								<b>Choose the URL of the Website</b>
 							</div>
 
-							<div>
+							<div class="url-selector">
 								<span>{{baseURL}}</span>
 								<span>
-									<input type="text" name="departmentSchool" ng-model="departmentSchool" formcheck-Directive ng-keyup="clearRest('departmentSchool');" id="department-school" class="form-text">
+									<input type="text" name="departmentSchool" ng-model="departmentSchool" formcheck-directive ng-keyup="clearRest('departmentSchool');" id="department-school" class="form-text">
 								</span>
 							</div>
 							<div ng-messages="siteCreationform.departmentSchool.$error">
@@ -113,7 +113,7 @@
 									You don't have permission to create site
 								</div>
 								<div class="message error" ng-message="isinvalid">
-									Invalid URL specified
+									Url must be 3 or more characters, and only contain lowercase alphanumerics and hyphens.
 								</div>
 								<div class="message error" ng-message="sitename">
 									Site name is already taken
@@ -129,33 +129,13 @@
 				<div id="body-container-group-2">
 					<div class="visibility">
 						<div>
-							<span class="enlarged-text" ng-switch="vsite_private.value">Choose who can view your site: <b ng-switch-when="0">Public on the web</b> <b ng-switch-when="1">Invite only during site creation</b> <b ng-switch-when="2">Anyone with a link</b> <b ng-switch-when="3">Harvard Community</b> </span>
+							<span class="enlarged-text">Choose who can view your site: <b ng-bind-html="privacyLevels[vsite_private.value]"></b> </span>
 							<a ng-click="toggleFunc()">Change</a>
 						</div>
 						<div ng-show="showAll" class="site-vis-radios">
-							<div class="form-item form-type-radio">
-								<input type="radio" ng-model="vsite_private.value" value="0">
-								<label class="option">Public on web
-									<br>
-									<span class="description">Anyone on the internet can view your site. Your site will be shown in search results. No sign-in required.</span> </label>
-							</div>
-							<div class="form-item form-type-radio">
-								<input type="radio" ng-model="vsite_private.value" value="1">
-								<label class="option">Invite only during site creation
-									<br>
-									<span class="description">Only site members can view your site. Your site will not be indexed by search engines.</span> </label>
-							</div>
-							<div class="form-item form-type-radio">
-								<input type="radio" ng-model="vsite_private.value" value="2">
-								<label class="option">Anyone with a link
-									<br>
-									<span class="description"> Anyone who has the URL to your site can view your site. Your site will not be indexed by search engines.</span> </label>
-							</div>
-							<div class="form-item form-type-radio">
-								<input type="radio" ng-model="vsite_private.value" value="3">
-								<label class="option">Harvard Community
-									<br>
-									<span class="description">Only the harvard community can access your site. Sign-in via HarvardKey required.</span> </label>
+							<div ng-repeat="(key, level) in privacyLevels" class="form-item form-type-radio">
+								<input id="privacy-level-{{key}}" type="radio" ng-model="vsite_private.value" value="{{key}}">
+								<label class="option" for="privacy-level-{{key}}" ng-bind-html="trustAsHtml(level)"></label>
 							</div>
 							<div class="help-link">
 								<a href="https://docs.openscholar.harvard.edu/global-site-settings#site-visibility" target="_blank">Learn more about site visibility</a>
@@ -203,6 +183,9 @@
 						</div>
 					</div>
 				</div>
+				<div id="tos" ng-show="tos">
+					<input type="checkbox" ng-model="tosChecked" id="tos-checkbox" required><label for="tos-checkbox">I agree to the <a href="{{tos}}" target="_blank">{{tos_label}}</a></label>
+				</div>
 
 			</div>
 
@@ -211,7 +194,7 @@
 					&nbsp;
 				</div>
 				<div id="nxt">
-					<input type="button" class="preNxt stepnav" value="Next ►" ng-disabled="btnDisable == true" ng-click="navigatePage('page1','page2');">
+					<input type="button" class="preNxt stepnav" value="Next ►" ng-disabled="validateForms()" ng-click="navigatePage('page1','page2');">
 				</div>
 			</div>
 		</div>

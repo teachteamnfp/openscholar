@@ -1,6 +1,7 @@
 (function () {
+  var rootPath, paths;
 
-  var m = angular.module('SiteCreationForm', ['angularModalService', 'ngMessages', 'os-buttonSpinner', 'DependencyManager'])
+  var m = angular.module('SiteCreationForm', ['angularModalService', 'ngMessages', 'os-buttonSpinner', 'os-auth', 'ActiveUser', 'DependencyManager'])
   .config(function (){
     rootPath = Drupal.settings.paths.siteCreationModuleRoot;
     paths = Drupal.settings.paths
@@ -30,15 +31,58 @@
     }
   }]);
 
-  m.controller('siteCreationCtrl', ['$scope', '$http', '$q', '$rootScope', 'buttonSpinnerStatus', '$filter', '$sce', '$timeout', 'passwordStrength', function($scope, $http, $q, $rootScope, bss, $filter, $sce, $timeout, ps) {
+  m.controller('siteCreationCtrl', ['$scope', '$http', '$q', '$rootScope', 'buttonSpinnerStatus', '$filter', '$sce', '$timeout', 'passwordStrength', 'authenticate-token', 'ActiveUserService', 'parent', function($scope, $http, $q, $rootScope, bss, $filter, $sce, $timeout, ps, at, aus, parent) {
 
   //Set default value for vsite
   $scope.vsite_private = {
     value: '0'
   };
+  $scope.privacyLevels = Drupal.settings.site_creation.privacy_levels;
+  $scope.trustAsHtml = function (arg) {
+    return $sce.trustAsHtml(arg);
+  }
+
+  var user;
+  aus.getUser(function (u) {
+    user = u;
+
+    var types = {
+        'create personal content': true,
+        'create project content': true,
+        'create department content': true
+      },
+      typecount = 0;
+    for (var perm in user.permissions) {
+      if (types[perm] != undefined) {
+        if (user.permissions[perm]) {
+          typecount++;
+        }
+        types[perm] = user.permissions[perm];
+      }
+    }
+    if (typecount == 1) {
+      for (perm in user.permissions) {
+        if (types[perm]) {
+          switch (perm) {
+            case 'create personal content':
+              $scope.display = 'individualScholar';
+              break;
+            case 'create project content':
+              $scope.display = 'projectLabSmallGroup';
+              break;
+            case 'create department content':
+              $scope.display = 'department';
+              break;
+          }
+        }
+      }
+    }
+  });
 
   // Set site creation status
   $scope.siteCreated = false;
+  $scope.tos = Drupal.settings.site_creation.tos_url;
+  $scope.tos_label = Drupal.settings.site_creation.tos_label;
 
   // Initialize the $timout var
   var timer;
@@ -60,7 +104,7 @@
     if (field != 'departmentSchool') {
       $scope.departmentSchool = null;
     }
-  }
+  };
 
   //Set status of next button to disabled initially
   $scope.btnDisable = true;
@@ -71,6 +115,7 @@
   $scope.newUserResistrationPwd = false;
   $scope.newUserValidPwd = false;
   $scope.newUserResistrationPwdMatch = false;
+  $scope.tosChecked = !$scope.tos;  // circumvent if no tos was provided by site
 
   //Navigate between screens
   $scope.page1 = true;
@@ -80,15 +125,15 @@
     if (pagefrom == 'page1' && pageto == 'page2') {
       if ($scope.individualScholar != null) {
         $scope.contentOption = {
-          value: 'os_scholar',
+          value: 'os_scholar'
         };
       } else if ($scope.projectLabSmallGroup != null) {
          $scope.contentOption = {
-          value: 'os_project',
+          value: 'os_project'
         };
       } else {
         $scope.contentOption = {
-          value: 'os_department_minimal',
+          value: 'os_department_minimal'
         };
       }
     } else if (pagefrom == 'page2' && pageto == 'page3') {
@@ -96,51 +141,62 @@
       featuredThemeTop = featuredThemeTop > 0 ? featuredThemeTop : 650;
       angular.element(document.querySelectorAll('#body-container-page3')).animate({ scrollTop: featuredThemeTop + 200}, 200);
     }
-  }
+  };
+
+  $scope.canBeCreated = function (type) {
+    if (user && !user.permissions['create ' +type+' content']) {
+      return false;
+    }
+
+    if (!parent) {
+      return true;
+    }
+
+    return Drupal.settings.site_creation.subsite_types[type] != undefined;
+  };
 
   var queryArgs = {};
-  var promises = [];
-    if (Drupal.settings.spaces != undefined) {
-      if (Drupal.settings.spaces.id) {
-        queryArgs.vsite = Drupal.settings.spaces.id;
-      }
+  if (Drupal.settings.spaces != undefined) {
+    if (Drupal.settings.spaces.id) {
+      queryArgs.vsite = Drupal.settings.spaces.id;
     }
-    var config = {
-      params: queryArgs
-    };
-    $http.get(paths.api+'/themes', config).then(function (response) {
-      $scope.themes = response.data.data;
-    });
-    $scope.selected = false;
-    $scope.selectedOption = {key: 'default'};
-    $scope.setTheme = function(themeKey, flavorKey) {
-      $scope.selected = themeKey + '-os_featured_flavor-' + flavorKey;
-    }
+  }
+  var config = {
+    params: queryArgs
+  };
+  $http.get(paths.api+'/themes', config).then(function (response) {
+    $scope.themes = response.data.data;
+  });
+  $scope.selected = false;
+  $scope.selectedOption = {key: 'default'};
+  $scope.setTheme = function(themeKey, flavorKey) {
+    $scope.selected = themeKey + '-os_featured_flavor-' + flavorKey;
+  };
 
-    $scope.changeSubTheme = function(item, themeKey) {      
-      angular.forEach($scope.themes.others, function(value, key) {
-        if (value.themeKey == themeKey) {
-          $scope.themes.others[key].flavorKey = item.key;
-          angular.forEach(value.flavorOptions, function(v, k) {
-            if (v.key == item.key) {
-              if (v.screenshot.indexOf('png') > -1) {
-                $scope.themes.others[key].screenshot = v.screenshot;
-              } else {
-                $scope.themes.others[key].screenshot = $scope.themes.others[key].defaultscreenshot;
-              }
+  $scope.changeSubTheme = function(item, themeKey) {
+    angular.forEach($scope.themes.others, function(value, key) {
+      if (value.themeKey == themeKey) {
+        $scope.themes.others[key].flavorKey = item.key;
+        angular.forEach(value.flavorOptions, function(v, k) {
+          if (v.key == item.key) {
+            if (v.screenshot.indexOf('png') > -1) {
+              $scope.themes.others[key].screenshot = v.screenshot;
+            } else {
+              $scope.themes.others[key].screenshot = $scope.themes.others[key].defaultscreenshot;
             }
-          });
-        }
-      });
-    }
+          }
+        });
+      }
+    });
+  };
 
-    $scope.navigateToSite = function(themeKey) {
-      window.location.href = $scope.vsiteUrl;
-    }
+  $scope.navigateToSite = function() {
+    window.location.href = $scope.vsiteUrl;
+  };
 
   //Set default value for Content Option
   $scope.contentOption = {
-    value: 'os_department_minimal',
+    value: 'os_department_minimal'
   };
   $scope.selected = 'hwpi_classic-os_featured_flavor-default';
   //Site URL
@@ -150,39 +206,101 @@
   $scope.saveAllValues = function() {
     bss.SetState('site_creation_form', true);
     $timeout.cancel(timer);
+
     $scope.btnDisable = true;
-    var formdata = {};
-    formdata = {
-      individualScholar: $scope.individualScholar,
-      projectLabSmallGroup: $scope.projectLabSmallGroup,
-      departmentSchool: $scope.departmentSchool,
-      vsite_private: $scope.vsite_private.value,
-      contentOption: $scope.contentOption.value,
-      vicarious_user: $scope.vicariousUser,
-      name: $scope.userName,
-      first_name: $scope.fname,
-      last_name: $scope.lname,
-      mail: $scope.email,
-      password: $scope.confirmPwd,
-     };
+    var url = $scope.individualScholar ? $scope.individualScholar : ($scope.projectLabSmallGroup ? $scope.projectLabSmallGroup : $scope.departmentSchool),
+      bundle = $scope.individualScholar ? 'personal' : ($scope.projectLabSmallGroup ? 'project' : 'department'),
+      theme = $scope.selected;
 
-    // Get sub site parent id
-    if (typeof $rootScope.siteCreationFormId !== 'undefined') {
-      var splitId = $rootScope.siteCreationFormId.split('add-subsite-');
-      if (splitId.length > 1) {
-        formdata['parent'] = splitId[1];
+    var user = {};
+    if (Drupal.settings.user_panel != undefined) {
+      // existing user who came to the page logged in
+      user.uid = Drupal.settings.user_panel.user.uid;
+    }
+    else if ($scope.vicariousUser) {
+      // brand new user
+      user.first_name = $scope.fname;
+      user.last_name = $scope.lname;
+      user.mail = $scope.email;
+      user.name = $scope.userName;
+      user.password = $scope.confirmPwd;
+
+      $scope.submitStateText = 'User Information...';
+      $http.post(Drupal.settings.paths.api+'/users', user).then(function (response) {
+        // we were just logged in. We need to fetch the RESTful authentication token
+        at.fetch().then (function (resp) {
+          submitGroup(response.data.data.id, url, bundle, $scope.contentOption.value, theme, $scope.vsite_private.value);
+          return resp;
+        });
+      });
+    }
+
+    if (user.uid) {
+      submitGroup(user.uid, url, bundle, $scope.contentOption.value, theme, $scope.vsite_private.value)
+    }
+
+    // var formdata = {
+    //   individualScholar: $scope.individualScholar,
+    //   projectLabSmallGroup: $scope.projectLabSmallGroup,
+    //   departmentSchool: $scope.departmentSchool,
+    //   vsite_private: $scope.vsite_private.value,
+    //   contentOption: $scope.contentOption.value,
+    //   vicarious_user: $scope.vicariousUser,
+    //   name: $scope.userName,
+    //   first_name: $scope.fname,
+    //   last_name: $scope.lname,
+    //   mail: $scope.email,
+    //   password: $scope.confirmPwd,
+    //  };
+    //
+    // // Send the theme key
+    // if (typeof $scope.selected !== 'undefined') {
+    //   formdata['themeKey'] = $scope.selected;
+    // }
+    // $http.post(paths.api + '/purl', formdata).then(function (response) {
+    //   $scope.successData = response.data.data.data;
+    //   $scope.vsiteUrl = response.data.data.data;
+    //   $scope.siteCreated = true;
+    //   bss.SetState('site_creation_form', false);
+    // });
+  };
+
+  function submitGroup(owner, url, bundle, starter, theme, privacy) {
+    var fields = {
+      owner: owner,
+      label: url,
+      type: bundle,
+      purl: url,
+      preset: starter,
+      theme: theme,
+      privacy: privacy
+    };
+    if (parent) {
+      fields.parent = parent;
+    }
+    $http.post(Drupal.settings.paths.api+'/group', fields).then(function (response) {
+      if (response.data.data[0].id != undefined) {
+        bss.SetState('site_creation_form', false);
+        $scope.submitSuccess = true;
+        $scope.submitting = false;
+        $scope.submitted = true;
+        $scope.siteCreated = true;
+        if (response.data['batch-id']) {
+          var link = document.createElement('a');
+          link.href = response.data.data[0].url;
+
+          document.cookie = 'has_js=1;domain='+link.hostname+'path=/';
+          $scope.vsiteUrl = response.data.data[0].url + '/batch?id=' + response.data['batch-id'] + '&op=start';
+        } else {
+          $scope.vsiteUrl = response.data.data[0].url;
+        }
       }
-    }
-
-    // Send the theme key
-    if (typeof $scope.selected !== 'undefined') {
-      formdata['themeKey'] = $scope.selected;
-    }
-    $http.post(paths.api + '/purl', formdata).then(function (response) {
-      $scope.successData = response.data.data.data;
-      $scope.vsiteUrl = response.data.data.data;
-      $scope.siteCreated = true;
+      // gotta figure out what an error looks like
+    }, function (errorResponse) {
       bss.SetState('site_creation_form', false);
+      $scope.submitError = errorResponse.data.title;
+      $scope.submtitted = true;
+      $scope.submitting = false;
     });
   }
 
@@ -190,10 +308,10 @@
     $scope.newUserResistrationName = false;
     if (typeof $scope.userName !== 'undefined' && $scope.userName != '') {
       var formdata = {
-        name: $scope.userName,
+        name: $scope.userName
       };
       $http.post(paths.api + '/purl/name', formdata).then(function (response) {
-        if (response.data == "") {
+        if (response.data.data.length == 0) {
           $scope.showUserError = false;
           $scope.userErrorMsg = '';
           $scope.newUserResistrationName = true;
@@ -204,17 +322,16 @@
       });
     }
     $scope.isCompletedRes();
-  }
+  };
 
   $scope.checkEmail = function() {
     $scope.newUserResistrationEmail = false;
     if (typeof $scope.email !== 'undefined' && $scope.email != '') {
-      var formdata = {};
-      formdata = {
-        email: $scope.email,
+      var formdata = {
+        email: $scope.email
       };
       $http.post(paths.api + '/purl/email', formdata).then(function (response) {
-        if (response.data == "") {
+        if (response.data.data.length == 0) {
           $scope.showEmailError = false;
           $scope.emailErrorMsg = '';
           $scope.newUserResistrationEmail = true;
@@ -225,16 +342,16 @@
       });
     }
     $scope.isCompletedRes();
-  }
+  };
 
   $scope.checkPwd = function() {
     $scope.newUserResistrationPwd = false;
     if (typeof $scope.password !== 'undefined' && $scope.password != '') {
       var formdata = {
-        password: $scope.password,
+        password: $scope.password
       };
       $http.post(paths.api + '/purl/pwd', formdata).then(function (response) {
-        if (response.data == "") {
+        if (response.data.data.length == 0) {
           $scope.showPwdError = false;
           $scope.pwdErrorMsg = '';
           $scope.newUserResistrationPwd = true;
@@ -245,7 +362,7 @@
       });
     }
     $scope.isCompletedRes();
-  }
+  };
 
   $scope.isCompletedRes = function() {
     timer = $timeout(function () {
@@ -255,7 +372,11 @@
         $scope.btnDisable = true;
       }
     }, 2000);
-  }
+  };
+
+  $scope.validateForms = function() {
+      return $scope.btnDisable || !$scope.tosChecked;
+  };
 
   $scope.score = function() {
     $scope.newUserValidPwd = false;
@@ -275,7 +396,7 @@
       $scope.newUserValidPwd = true;
     }
     return pwdScore;
-  }
+  };
 
  $scope.pwdMatch = function() {
   $scope.newUserResistrationPwdMatch = false;
@@ -295,7 +416,7 @@
   /**
    * Open modals for the site creation forms
    */
-  m.directive('siteCreationForm', ['ModalService','$rootScope', function (ModalService,$rootScope) {
+  m.directive('siteCreationForm', ['ModalService', '$rootScope', function (ModalService,$rootScope) {
     var dialogOptions = {
       minWidth: 900,
       minHeight: 300,
@@ -310,18 +431,27 @@
         e.stopPropagation();
         $rootScope.siteCreationFormId = attrs.id;
 
+        openModal(scope);
+      });
+
+      if (scope.autoOpen) {
+        openModal(scope);
+      }
+
+      function openModal(scope) {
         ModalService.showModal({
           controller: 'siteCreationCtrl',
           templateUrl: rootPath + '/templates/os_site_creation.html',
           inputs: {
-            form: scope.form
+            form: scope.form,
+            parent: scope.parent
           }
         })
         .then(function (modal) {
           dialogOptions.title = scope.title;
           dialogOptions.close = function (event, ui) {
             modal.element.remove();
-          }
+          };
           modal.element.dialog(dialogOptions);
           modal.close.then(function (result) {
             if (result) {
@@ -329,13 +459,15 @@
             }
           });
         });
-      });
+      }
     }
 
     return {
       link: link,
       scope: {
-        form: '@'
+        form: '@',
+        autoOpen: '@?',
+        parent: '@'
       }
     };
   }]);
@@ -354,7 +486,7 @@
         var baseUrl = Drupal.settings.paths.api;
         if(ngModelValue){
           //Ajax call to get all existing sites
-          $http.get(baseUrl + '/purl/' + ngModelValue).then(function mySuccess(response) {
+          $http.get(baseUrl + '/purl/' + encodeURIComponent(ngModelValue)).then(function mySuccess(response) {
             responseData = response.data.data;
             if (responseData.msg == "Not-Permissible") {
               siteCreationCtrl.$setValidity('permission', false);
@@ -388,6 +520,18 @@
                 scope.btnDisable = false;
               }
             }
+          }, function (response) {
+            // this triggers if the entered URL has a slash or backslash in it
+            if (response.status == 404 || response.status == -1) {
+              siteCreationCtrl.$setValidity('permission', true);
+              siteCreationCtrl.$setValidity('isinvalid', false);
+              siteCreationCtrl.$setValidity('sitename', true);
+              scope.btnDisable = true;
+              scope.siteNameValid = false;
+            }
+            else {
+              // error on server end
+            }
           });
         }
         return ngModelValue;
@@ -397,16 +541,16 @@
   };
 }]);
 jQuery(document).ready(function(){
- var highestBox = 0;
-        jQuery('.starter-content .form-item').each(function(){  
-                if(jQuery(this).height() > highestBox){  
-                highestBox = jQuery(this).height();  
-        }
-    });    
-    jQuery('.starter-content .form-item').height(highestBox);
+  var highestBox = 0;
+  jQuery('.starter-content .form-item').each(function(){
+    if (jQuery(this).height() > highestBox) {
+      highestBox = jQuery(this).height();
+    }
+  });
+  jQuery('.starter-content .form-item').height(highestBox);
 
 });
 
-})()
+})();
 
 
