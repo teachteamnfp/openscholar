@@ -142,7 +142,7 @@ function os_boxes_web_widget_style_load($name) {
   if (module_exists('web_widgets')) {
     $styles = web_widgets_get_styles ();
     if (isset($styles[$name])) {
-      return true;
+      return $name;
     }
   }
   return false;
