@@ -106,13 +106,15 @@ function os_basetheme_preprocess_page(&$vars) {
 
   // Load install-specific css here
   if (module_exists('scholar')) {
-    $path = drupal_get_path('module', 'scholar').'/css/'.$GLOBALS['theme_key'].'_override.css';
-    if (file_exists($path)) {
-      drupal_add_css($path, array(
-        'group' => CSS_THEME,
-        'weight' => 9999,
-        'preprocess' => FALSE
-      ));
+    if (variable_get('os_appearance_'.$theme_name.'_flavor', 'default') == 'default') {
+      $path = drupal_get_path('module', 'scholar').'/css/'.$GLOBALS['theme_key'].'_override.css';
+      if (file_exists($path)) {
+        drupal_add_css ($path, array (
+          'group' => CSS_THEME,
+          'weight' => 9999,
+          'preprocess' => FALSE
+        ));
+      }
     }
   }
 }
