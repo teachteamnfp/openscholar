@@ -485,7 +485,7 @@ function os_importer_import_group_validate($values) {
               $value = strtotime($value);
               // if strtotime() output is blank, then date format is not correct, displaying error message.
               if(empty($value) || ($value < 0)) {
-                drupal_set_message(t('Invalid date value entered for the field "!field" with value "!value".', array('!field' => $field, '!value' => $orig_value_created)), 'error');
+                drupal_set_message(t('Invalid date value entered for the field "!field" with value "!value".', array('!field' => $mappings_diff[$delta], '!value' => $orig_value_created)), 'error');
                 $valid = FALSE;
               }
             }
