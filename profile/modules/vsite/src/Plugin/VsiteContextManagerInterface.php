@@ -12,7 +12,7 @@ namespace Drupal\vsite\Plugin;
 use Drupal\group\Entity\GroupInterface;
 
 interface VsiteContextManagerInterface {
-  
+
   public function activateVsite(GroupInterface $group);
 
   public function activateRoles();
