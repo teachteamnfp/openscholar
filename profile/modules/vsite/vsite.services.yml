@@ -17,3 +17,14 @@ services:
     class: Drupal\vsite\PathProcessor\VsiteOutboundPathProcessor
     tags:
       - { name: path_processor_outbound, priority: 301 }
+  vsite.context_manager:
+    class: Drupal\vsite\Plugin\VsiteContextManager
+    arguments:
+      - '@event_dispatcher'
+  vsite.path_activator:
+    class: Drupal\vsite\Plugin\VsitePathActivator
+    arguments:
+      - '@vsite.context_manager'
+      - '@entity_type.manager'
+    tags:
+      - { name: event_subscriber }
