@@ -8,9 +8,8 @@
 
 namespace Drupal\vsite\Config;
 
-
-use Drupal\purl\Event\ModifierMatchedEvent;
-use Drupal\purl\PurlEvents;
+use Drupal\vsite\Event\VsiteActivatedEvent;
+use Drupal\vsite\VsiteEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class VsiteStorageDefinition implements EventSubscriberInterface {
@@ -28,13 +27,13 @@ class VsiteStorageDefinition implements EventSubscriberInterface {
    */
   public static function getSubscribedEvents () {
     $events = [];
-    $events[PurlEvents::MODIFIER_MATCHED][] = ['onModifierMatched', 255];
+    $events[VsiteEvents::VSITE_ACTIVATED][] = ['onVsiteActivated', 1];
+
     return $events;
   }
 
-  public function onModifierMatched(ModifierMatchedEvent $event) {
-    $modifier = $event->getModifier ();
-    $collection = $this->hierarchicalStorage->createCollection ('vsite.'.$modifier);
-    $this->hierarchicalStorage->addStorage($collection, self::VSITE_STORAGE);
+  public function onVsiteActivated(VsiteActivatedEvent $event) {
+    $storage = $this->hierarchicalStorage->createCollection ('vsite:'.$event->getGroup ()->id());
+    $this->hierarchicalStorage->addStorage ($storage, self::VSITE_STORAGE);
   }
 }
