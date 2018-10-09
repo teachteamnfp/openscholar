@@ -1,0 +1,14 @@
+cp.admin:
+  path: '/cp'
+  defaults:
+    _controller: '\Drupal\cp\Controller\CpController::cpAdminMenuBlockPage'
+    _title: 'Control Panel'
+  requirements:
+    _permission: 'access control panel'
+cp.dummy:
+  path: '/cp/dummy'
+  defaults:
+    _controller: '\Drupal\cp\Controller\CpController:dummyPage'
+    _title: 'Control Panel: Dummy page'
+  requirements:
+    _permission: 'access control panel'

@@ -1,0 +1,84 @@
+<?php
+
+use Drupal\Core\Cache\CacheableMetadata;
+use Drupal\Core\Menu\MenuTreeParameters;
+use Drupal\Core\Url;
+
+function cp_toolbar_toolbar() {
+  /**
+   *  @var $hash string
+   *  @var $hash_cacheability CacheableMetadata
+   */
+  list($hash, $hash_cacheability) = _toolbar_get_subtrees_hash();
+  // The administration element has a link that is themed to correspond to
+  // a toolbar tray. The tray contains the full administrative menu of the site.
+  $subtrees_attached['drupalSettings']['toolbar'] = [
+    'subtreesHash' => $hash,
+  ];
+
+  $items['control_panel'] = [
+    '#type' => 'toolbar_item',
+    'tab' => [
+      '#type' => 'link',
+      '#title' => t('Control Panel'),
+      '#url' => Url::fromRoute('cp.admin'),
+      '#attributes' => [
+        'title' => t('Control Panel'),
+        'class' => ['toolbar-icon', 'toolbar-icon-menu'],
+        // A data attribute that indicates to the client to defer loading of
+        // the admin menu subtrees until this tab is activated. Admin menu
+        // subtrees will not render to the DOM if this attribute is removed.
+        // The value of the attribute is intentionally left blank. Only the
+        // presence of the attribute is necessary.
+        'data-drupal-subtrees' => '',
+      ],
+    ],
+    'tray' => [
+      '#heading' => t('Control Panel'),
+      '#attached' => $subtrees_attached,
+      'toolbar_control_panel' => [
+        '#pre_render' => [
+          'cp_toolbar_prerender_toolbar_administration_tray',
+        ],
+        '#type' => 'container',
+        '#attributes' => [
+          'class' => ['toolbar-control-panel'],
+        ],
+      ],
+    ],
+    '#weight' => -15,
+  ];
+  $hash_cacheability->applyTo($items['control_panel']);
+
+  return $items;
+}
+
+/**
+ * Renders the toolbar's administration tray.
+ *
+ * @param array $element
+ *   A renderable array.
+ *
+ * @return array
+ *   The updated renderable array.
+ *
+ * @see \Drupal\Core\Render\RendererInterface::render()
+ */
+function cp_toolbar_prerender_toolbar_administration_tray(array $element) {
+  $menu_tree = \Drupal::service('toolbar.menu_tree');
+  // Load the administrative menu. The first level is the "Administration" link.
+  // In order to load the children of that link, start and end on the second
+  // level.
+  $parameters = new MenuTreeParameters();
+  $parameters->setMinDepth(2)->setMaxDepth(2)->onlyEnabledLinks();
+  // @todo Make the menu configurable in https://www.drupal.org/node/1869638.
+  $tree = $menu_tree->load('control_panel', $parameters);
+  $manipulators = [
+    ['callable' => 'menu.default_tree_manipulators:checkAccess'],
+    ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
+    ['callable' => 'toolbar_menu_navigation_links'],
+  ];
+  $tree = $menu_tree->transform($tree, $manipulators);
+  $element['control_panel'] = $menu_tree->build($tree);
+  return $element;
+}
