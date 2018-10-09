@@ -8,7 +8,6 @@
 
 namespace Drupal\vsite\Plugin;
 
-
 use Drupal\group\Entity\GroupInterface;
 
 interface VsiteContextManagerInterface {
@@ -19,5 +18,7 @@ interface VsiteContextManagerInterface {
 
   public function getActiveVsite();
 
-  public function getAbsoluteUrl(string $path);
+  public function getAbsoluteUrl(string $path = '');
+
+  public function getStorage(GroupInterface $group = null);
 }
