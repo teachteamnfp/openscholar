@@ -311,7 +311,10 @@ function os_reader_update_7008() {
   if (!db_field_exists('os_feed_item', 'gid')) {
     db_add_field('os_feed_item', 'gid', $schema['os_feed_item']['fields']['gid']);
   }
-  db_add_index('os_feed_item', 'gid', array('gid'));
+  if (!db_index_exists('os_feed_item', 'gid')) {
+    db_add_index('os_feed_item', 'gid', array('gid'));
+  }
   db_query("UPDATE {os_feed_item} ofi SET gid = (SELECT gid FROM {og_membership} om WHERE ofi.`importer_nid` = om.`etid` AND om.`entity_type` = 'node')");
+  drupal_set_message('Finished os_feed_item and og_membership table gid value synchronization!');
 }
 
