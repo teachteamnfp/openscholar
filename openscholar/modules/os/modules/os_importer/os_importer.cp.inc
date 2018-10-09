@@ -50,6 +50,13 @@ function os_importer_cp_settings() {
       'ISO 8859-9' => t('Western Europe with amended Turkish character set'),
       'ISO 8859-14' => t('Celtic languages (Irish Gaelic, Scottish, Welsh)'),
     ),
+    t('Chinese character encoding') => array(
+      'GB2312' => t('Guobiao GB2312'),
+      'GBK' => t('Guobiao GBK'),
+      'GB18030' => t('Guobiao GB18030'),
+      'Big5' => t('Big5'),
+      'Big5-HKSCS' => t('Big5-HKSCS'),
+    ),
   );
 
   foreach ($app_info as $type => $info) {
