@@ -1135,7 +1135,15 @@ function os_form_node_form_alter(&$form, $form_state) {
     unset($form[$c]['#group']);
   }
 
-  $form['actions_top'] = $form['actions'];
+  $importerTypes = [
+    'blog_import','feed_importer'
+  ];
+  if (!in_array($form['#node']->type, $importerTypes)) {
+    $form['actions_top'] = $form['actions'];
+  }
+  if (in_array($form['#node']->type, $importerTypes)) {
+    unset($form['actions']['preview']);
+  }
 
   // Overriding Author section title, name and date field title for all content types.
   $form['author']['#title'] = t('Post Created/Edited By');
