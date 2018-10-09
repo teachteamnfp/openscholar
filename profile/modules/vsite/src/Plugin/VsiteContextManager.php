@@ -36,7 +36,7 @@ class VsiteContextManager implements VsiteContextManagerInterface {
     $this->activateRoles ();
 
     $event = new VsiteActivatedEvent($group);
-    $this->dispatcher->dispatch (VsiteEvents::VSITE_ACTIVATED);
+    $this->dispatcher->dispatch (VsiteEvents::VSITE_ACTIVATED, $event);
   }
 
   public function activateRoles () {
