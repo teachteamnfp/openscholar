@@ -41,11 +41,6 @@ function os_importer_utf_8_convert($result, $item_key, $element_key, &$field, $s
 }
 
 function _os_importer_get_converted_string($encode, $field) {
-  require_once(drupal_get_path('module', 'os_importer') . '/src/Encoding.php');
-
-  if ($encode == 'auto-detect') {
-    $convertedField = \ForceUTF8\Encoding::toUTF8($field);
-    return $convertedField;
-  }
-  return iconv($encode, "UTF-8", $field);
+  $convertedField = iconv($encode, "UTF-8", $field);
+  return $convertedField;
 }
