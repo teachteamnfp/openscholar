@@ -44,3 +44,15 @@ function vsite_setup_new_apps() {
     }
   }
 }
+
+function vsite_views_data_alter(&$data) {
+  $data['group_content']['current_vsite_filter'] = [
+    'title' => t('Current Vsite Filter'),
+    'filter' => [
+      'title' => t('Current Vsite Filter'),
+      'help' => 'Filters content on the current vsite',
+      'field' => 'gid',
+      'id' => 'vsite_current_filter'
+    ]
+  ];
+}
