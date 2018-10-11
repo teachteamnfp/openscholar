@@ -595,7 +595,63 @@ function os_importer_import($form, &$form_state, $type) {
     ),
   );
 
+  $helpLinkMapping = _os_importer_get_help_link_mapping();
+  if (isset($helpLinkMapping[$type])) {
+    $path = $helpLinkMapping[$type]['path'];
+    $form['group'] = array(
+      '#id' => 'help-link-' . $type,
+      '#title' => t('Help link'),
+      '#weight' => -100,
+      '#markup' => '<div class="help-link ng-binding">' . l(t('Learn more about importing'), $path, array('attributes' => array('target' => '_blank'))) . '</div>'
+    );
+  }
+
   return $form;
+}
+
+/**
+ * @return array
+ */
+function _os_importer_get_help_link_mapping(): array {
+  $helpLinkMapping = [
+    'blog' => [
+      'path' => 'https://help.theopenscholar.com/blogs#importing-a-blog',
+    ],
+    'class' => [
+      'path' => 'https://help.theopenscholar.com/classes-app#importing-class',
+    ],
+    'event' => [
+      'path' => 'https://help.theopenscholar.com/importing-events',
+    ],
+    'faq' => [
+      'path' => 'https://help.theopenscholar.com/faq-app#importing-faqs',
+    ],
+    'feed' => [
+      'path' => 'https://help.theopenscholar.com/rss-feed#importing-feeds',
+    ],
+    'link' => [
+      'path' => 'https://help.theopenscholar.com/links-app#importing-links',
+    ],
+    'media_gallery' => [
+      'path' => 'https://help.theopenscholar.com/media-gallery#importing-a-media-gallery',
+    ],
+    'page' => [
+      'path' => 'https://help.theopenscholar.com/importing-pages',
+    ],
+    'presentation' => [
+      'path' => 'https://help.theopenscholar.com/presentations-app#importing-presentations',
+    ],
+    'person' => [
+      'path' => 'https://help.theopenscholar.com/people-profiles#importing-people',
+    ],
+    'news' => [
+      'path' => 'https://help.theopenscholar.com/import-news-rss',
+    ],
+    'biblio' => [
+      'path' => 'https://help.theopenscholar.com/publications-app#importing-publications',
+    ],
+  ];
+  return $helpLinkMapping;
 }
 
 /**
