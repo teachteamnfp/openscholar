@@ -8,7 +8,14 @@ cp.admin:
 cp.dummy:
   path: '/cp/dummy'
   defaults:
-    _controller: '\Drupal\cp\Controller\CpController:dummyPage'
+    _controller: '\Drupal\cp\Controller\CpController::dummyPage'
     _title: 'Control Panel: Dummy page'
+  requirements:
+    _permission: 'access control panel'
+cp.javascript:
+  path: '/cp/javascript'
+  defaults:
+    _controller: '\Drupal\cp\Controller\CpController::dummyPage'
+    _title: 'Control Panel: Javascript dummy'
   requirements:
     _permission: 'access control panel'

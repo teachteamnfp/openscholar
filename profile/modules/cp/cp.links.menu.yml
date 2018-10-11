@@ -9,3 +9,12 @@ cp.dummy:
   weight: 10
   parent: cp.admin
   menu_name: control_panel
+cp.javascript:
+  title: 'Not a real link'
+  weight: 11
+  route_name: cp.javascript
+  parent: cp.admin
+  menu_name: control_panel
+  options:
+    attributes:
+      angular-element: ''
