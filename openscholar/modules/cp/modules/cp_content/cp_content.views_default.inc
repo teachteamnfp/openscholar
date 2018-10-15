@@ -316,14 +316,12 @@ function cp_content_views_default_views() {
   $handler->display->display_options['filters']['type']['field'] = 'type';
   $handler->display->display_options['filters']['type']['value'] = array(
     'blog' => 'blog',
-    'blog_import' => 'blog_import',
     'book' => 'book',
     'class' => 'class',
     'class_material' => 'class_material',
     'event' => 'event',
     'faq' => 'faq',
     'feed' => 'feed',
-    'feed_importer' => 'feed_importer',
     'harvard_course' => 'harvard_course',
     'link' => 'link',
     'media_gallery' => 'media_gallery',

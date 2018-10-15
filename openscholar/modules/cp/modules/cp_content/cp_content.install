@@ -85,10 +85,3 @@ function cp_content_update_7010() {
 function cp_content_update_7011() {
   features_revert(array('cp_content' => array('views_view')));
 }
-
-/**
- * Add new content types to user content filters.
- */
-function cp_content_update_7012() {
-  features_revert(array('cp_content' => array('views_view')));
-}
