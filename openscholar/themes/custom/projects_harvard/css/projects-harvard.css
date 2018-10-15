@@ -189,7 +189,6 @@ h2 {
   font-size: .9em !important;
   line-height: normal !important;
   margin-top: .5em;
-  margin-bottom: 1em;
   color: #777;
   }
 
@@ -222,6 +221,11 @@ span.big-button a {
   text-shadow: rgba(51,51,51, .2) 0px 1px 1px;
   */
   }
+
+.os-terms-of-use {
+  text-align: center;
+  font-size: smaller;
+}
 
 ul#top-front li#get-form a:hover {
   color: #f0ff00;

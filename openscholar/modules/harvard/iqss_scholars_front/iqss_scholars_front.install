@@ -42,6 +42,13 @@ function iqss_scholars_front_update_7003(&$sandbox) {
 }
 
 /**
+ * Revert boxes
+ */
+function iqss_scholars_front_update_7004() {
+  features_revert(array('iqss_scholars_front' => array('box')));
+}
+
+/**
  * Init mollom to protect the following forms.
  */
 function iqss_scholars_front_init_mollom_forms(){
@@ -272,3 +279,5 @@ function _iqss_scholars_front_update_paths_in_node($info, $savedfile) {
     }
   }
 }
+
+
