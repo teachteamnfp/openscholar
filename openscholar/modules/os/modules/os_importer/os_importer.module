@@ -650,6 +650,9 @@ function _os_importer_get_help_link_mapping(): array {
     'biblio' => [
       'path' => 'https://help.theopenscholar.com/publications-app#importing-publications',
     ],
+    'software_project' => [
+      'path' => 'https://help.theopenscholar.com/software-app#importing-software',
+    ],
   ];
   return $helpLinkMapping;
 }
