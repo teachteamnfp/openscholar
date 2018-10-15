@@ -10,6 +10,7 @@ namespace Drupal\vsite\Plugin;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\group\Context\GroupRouteContextTrait;
 use Drupal\group\Entity\GroupInterface;
+use Drupal\group\Entity\Storage\GroupContentStorageInterface;
 use Drupal\purl\PurlEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -75,14 +76,16 @@ class VsitePathActivator implements EventSubscriberInterface {
 
     $route_match = $this->getCurrentRouteMatch();
 
-    $node = $route_match->getParameter('node');
-    $storage = \Drupal::entityTypeManager()->getStorage('group_content');
-    // Loads all groups with a relation to the node
-    $group_content = $storage->loadByEntity($node);
-    if (count($group_content)) {
-      // Return the first group associated with this content, assuming we are limiting to 1?
-      $group = current($group_content)->getGroup();
-      return $group;
+    if ($node = $route_match->getParameter('node')) {
+      /** @var GroupContentStorageInterface $storage */
+      $storage = \Drupal::entityTypeManager ()->getStorage ('group_content');
+      // Loads all groups with a relation to the node
+      $group_content = $storage->loadByEntity ($node);
+      if (count ($group_content)) {
+        // Return the first group associated with this content, assuming we are limiting to 1?
+        $group = current ($group_content)->getGroup ();
+        return $group;
+      }
     }
 
     return NULL;
