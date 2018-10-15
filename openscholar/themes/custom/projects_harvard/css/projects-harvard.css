@@ -227,6 +227,10 @@ span.big-button a {
   font-size: smaller;
 }
 
+.os-terms-of-use a {
+  color: #005C9C;
+}
+
 ul#top-front li#get-form a:hover {
   color: #f0ff00;
   }
