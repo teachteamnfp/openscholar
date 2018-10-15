@@ -17,7 +17,7 @@ function os_reader_feeds_tamper_default() {
   $feeds_tamper->importer = 'os_feed';
   $feeds_tamper->source = 'Created date';
   $feeds_tamper->plugin_id = 'adjust_date_to_timezone';
-  $feeds_tamper->settings = '';
+  $feeds_tamper->settings = array();
   $feeds_tamper->weight = 0;
   $feeds_tamper->description = 'Adjust date to timezone';
   $export['os_feed-created_date-adjust_date_to_timezone'] = $feeds_tamper;
@@ -29,7 +29,7 @@ function os_reader_feeds_tamper_default() {
   $feeds_tamper->importer = 'os_feed';
   $feeds_tamper->source = 'Title';
   $feeds_tamper->plugin_id = 'utf8_convert';
-  $feeds_tamper->settings = '';
+  $feeds_tamper->settings = array();
   $feeds_tamper->weight = 0;
   $feeds_tamper->description = 'Convert to UTF-8';
   $export['os_feed-title-utf8_convert'] = $feeds_tamper;

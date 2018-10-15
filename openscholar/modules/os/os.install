@@ -1074,3 +1074,11 @@ function os_update_7062() {
   module_enable(array('os_site_creation'));
 }
 
+/**
+ * Revert the new views modification, add delete button to header.
+ */
+function os_update_7063() {
+  $revert = array('os_reader' => array('views_view'));
+  features_revert($revert);
+}
+

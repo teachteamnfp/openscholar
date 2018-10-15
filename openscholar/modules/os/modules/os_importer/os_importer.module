@@ -1133,3 +1133,25 @@ function os_importer_round_hour($hour) {
 
   return $hours . ':' . $new_minutes;
 }
+
+/**
+ * Implements hook_views_api().
+ */
+function os_importer_views_api() {
+  return [
+    'api' => 3,
+    'path' => drupal_get_path('module', 'os_importer') . '/views',
+  ];
+}
+
+function os_importer_node_entry_delete_button_form($form, &$form_state, $node) {
+
+  $form['#action'] = url('node/' . $node->nid . '/delete');
+
+  $form['delete'] = array(
+    '#type' => 'submit',
+    '#value' => t('Delete !title importer', ['!title' => $node->title]),
+    '#weight' => 15,
+  );
+  return $form;
+}
