@@ -107,7 +107,7 @@ function iqss_scholars_front_default_box() {
   $box->options = array(
     'body' => array(
       'value' => '<div align="center"><span>or</span><div class="hwp_option"><a href="http://faculty.hwp.harvard.edu/">Engage Harvard Web Publising</a> for custom
-content organization and design services</div></div>',
+content organization and design services</div><div><a href="https://hwp.harvard.edu/terms-use" target="_blank">OpenScholar Terms of Use</a></div></div>',
       'format' => 'filtered_html',
     ),
     'additional_classes' => '',
