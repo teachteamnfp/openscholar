@@ -4,6 +4,11 @@
  * Callback function().
  */
 function os_landing_page() {
+  /**
+   * include css file for template()
+   */
+  drupal_add_css(drupal_get_path('module', 'os_landing_page').'/includes/frontpage.css', array('group' => CSS_THEME,'weight' => '999'));
+
   //Pass all values to theme
   $path_to_logo         = variable_get('landing_page_path_to_logo');
   $school_primary_color = variable_get('landing_page_school_primary_color');
