@@ -10,13 +10,14 @@
 function os_reader_field_default_field_bases() {
   $field_bases = array();
 
-  // Exported field_base: 'field_nodes_reference'.
+  // Exported field_base: 'field_nodes_reference'
   $field_bases['field_nodes_reference'] = array(
     'active' => 1,
     'cardinality' => -1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_nodes_reference',
+    'foreign keys' => array(),
     'indexes' => array(
       'target_id' => array(
         0 => 'target_id',
@@ -43,13 +44,14 @@ function os_reader_field_default_field_bases() {
     'type' => 'entityreference',
   );
 
-  // Exported field_base: 'field_vsites_reference'.
+  // Exported field_base: 'field_vsites_reference'
   $field_bases['field_vsites_reference'] = array(
     'active' => 1,
     'cardinality' => -1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_vsites_reference',
+    'foreign keys' => array(),
     'indexes' => array(
       'target_id' => array(
         0 => 'target_id',

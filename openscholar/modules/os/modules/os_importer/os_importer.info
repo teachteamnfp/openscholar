@@ -38,5 +38,3 @@ files[] = plugins/OsImporterMenuProcessor.inc
 files[] = plugins/OsImporterNodeProcessor.inc
 files[] = plugins/OsFeedsCSVParser.inc
 files[] = OsImporterEntityValidateBase.inc
-files[] = views/handlers/os_importer_node_entry_delete_button.inc
-stylesheets[all][] = theme/os_importer.css

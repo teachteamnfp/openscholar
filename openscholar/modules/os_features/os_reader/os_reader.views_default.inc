@@ -52,6 +52,10 @@ function os_reader_views_default_views() {
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
+  $handler->display->display_options['fields']['title']['spaces'] = array(
+    'type' => 'spaces_og',
+    'frontpage' => 0,
+  );
   /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
@@ -129,10 +133,6 @@ function os_reader_views_default_views() {
       'empty_column' => 0,
     ),
   );
-  /* Header: Global: Import entry delete button */
-  $handler->display->display_options['header']['os_importer_node_entry_delete_button']['id'] = 'os_importer_node_entry_delete_button';
-  $handler->display->display_options['header']['os_importer_node_entry_delete_button']['table'] = 'views';
-  $handler->display->display_options['header']['os_importer_node_entry_delete_button']['field'] = 'os_importer_node_entry_delete_button';
   /* No results behavior: Global: Text area */
   $handler->display->display_options['empty']['area']['id'] = 'area';
   $handler->display->display_options['empty']['area']['table'] = 'views';

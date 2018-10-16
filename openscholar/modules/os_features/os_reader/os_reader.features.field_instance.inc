@@ -10,7 +10,7 @@
 function os_reader_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'node-feed-body'.
+  // Exported field_instance: 'node-feed-body'
   $field_instances['node-feed-body'] = array(
     'bundle' => 'feed',
     'default_value' => NULL,
@@ -30,19 +30,7 @@ function os_reader_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
-      'no_image_teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
       'sidebar_teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'slide_teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -50,7 +38,7 @@ function os_reader_field_default_field_instances() {
       ),
       'teaser' => array(
         'label' => 'hidden',
-        'module' => 'os',
+        'module' => 'text',
         'settings' => array(
           'trim_length' => 600,
         ),
@@ -86,7 +74,7 @@ function os_reader_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-feed-field_url'.
+  // Exported field_instance: 'node-feed-field_url'
   $field_instances['node-feed-field_url'] = array(
     'bundle' => 'feed',
     'default_value' => NULL,
@@ -110,19 +98,7 @@ function os_reader_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
-      'no_image_teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
       'sidebar_teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'slide_teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -179,7 +155,7 @@ function os_reader_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-feed_importer-body'.
+  // Exported field_instance: 'node-feed_importer-body'
   $field_instances['node-feed_importer-body'] = array(
     'bundle' => 'feed_importer',
     'default_value' => NULL,
@@ -199,19 +175,7 @@ function os_reader_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
-      'no_image_teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
       'sidebar_teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'slide_teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -253,7 +217,7 @@ function os_reader_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-feed_importer-field_rss_url'.
+  // Exported field_instance: 'node-feed_importer-field_rss_url'
   $field_instances['node-feed_importer-field_rss_url'] = array(
     'bundle' => 'feed_importer',
     'default_value' => NULL,
@@ -273,19 +237,7 @@ function os_reader_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
-      'no_image_teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
       'sidebar_teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'slide_teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -323,7 +275,7 @@ function os_reader_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'os_feed_item-feed_item-field_nodes_reference'.
+  // Exported field_instance: 'os_feed_item-feed_item-field_nodes_reference'
   $field_instances['os_feed_item-feed_item-field_nodes_reference'] = array(
     'bundle' => 'feed_item',
     'default_value' => NULL,
@@ -367,7 +319,7 @@ function os_reader_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'os_feed_item-feed_item-field_vsites_reference'.
+  // Exported field_instance: 'os_feed_item-feed_item-field_vsites_reference'
   $field_instances['os_feed_item-feed_item-field_vsites_reference'] = array(
     'bundle' => 'feed_item',
     'default_value' => NULL,
