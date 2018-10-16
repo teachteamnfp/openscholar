@@ -135,18 +135,38 @@ function os_reader_views_query_alter(&$view, views_plugin_query_default &$query)
   // Views try to join 2 very big table (1 million records), modify this only one
   // I try to add more index, but the query getting slower
   unset($query->tables['os_feed_item']['og_membership_node']);
+  unset($query->tables['os_feed_item']['node_os_feed_item']);
+  unset($query->table_queue['og_membership_node']);
+  unset($query->table_queue['node_os_feed_item']);
   unset($query->relationships['og_membership_node']);
+  unset($query->relationships['node_os_feed_item']);
+  $gid = 0;
+
   foreach ($query->where[1]['conditions'] as $i => &$condition) {
     if (is_object($condition['field'])) {
       continue;
     }
     if ($condition['field'] == 'og_membership_node.gid') {
-      $condition['field'] = 'os_feed_item.gid';
+      $gid = $query->where[1]['conditions'][$i]['value'];
+      unset($query->where[1]['conditions'][$i]);
     }
     if ($condition['field'] == 'og_membership_node.group_type') {
       unset($query->where[1]['conditions'][$i]);
     }
   }
+  $preQuery = db_select('og_membership', 'om');
+  $preQuery->fields('om', ['etid']);
+
+  $preQuery->condition('entity_type', 'node');
+  $preQuery->condition('group_type', 'node');
+  $preQuery->condition('gid', $gid);
+  $result = $preQuery->execute()->fetchAllKeyed();
+  $nids = array_keys($result);
+  $query->where[1]['conditions'][] = [
+    'field' => 'os_feed_item.importer_nid',
+    'value' => $nids,
+    'operator' => 'IN',
+  ];
 }
 
 /**
