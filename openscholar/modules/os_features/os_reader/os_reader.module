@@ -199,7 +199,8 @@ function os_reader_get_importers_list($feed_importer_nid = NULL, $type) {
     else {
       // Display importer as link.
       $items[] = array(
-        'data' => l($importer->title, 'cp/os-importer/' . $type . '/manage/' . $importer->nid),
+        'data' => l($importer->title, 'cp/os-importer/' . $type . '/manage/' . $importer->nid)
+          . l(t('Delete'), 'node/' . $importer->nid . '/delete', ['attributes' => ['class' => ['button']], 'query' => ['destination' => $_GET['q']]]),
       );
     }
   }
