@@ -72,6 +72,8 @@ printf "disable_functions =\nmemory_limit = 256M\ndate.timezone = \"America/New_
 export PATH="$HOME/.composer/vendor/bin:$PATH"
 drush --version || exit 1
 npm install -g bower
+npm install -g node-sass
+export NODE_PATH=/home/rof/.nvm/v0.10.48/lib/node_modules
 
 # Drush executable.
 [[ $DRUSH && ${DRUSH-x} ]] || DRUSH=drush
@@ -159,7 +161,8 @@ rm -rf $BUILD_ROOT/openscholar/behat &> /dev/null
 
 #pull in site-specific code
 buildComposer "$BUILD_ROOT" "$DOCROOT"
-
+node "$BUILD_ROOT/openscholar/scripts/themes.js" "$DOCROOT"
+git add web/sites
 git commit -a -m "$CI_MESSAGE" -m "" -m "git-subtree-split: $CI_COMMIT_ID"
 #END BUILD PROCESS
 else
@@ -173,10 +176,10 @@ cp -R openscholar/temporary/* openscholar/openscholar/modules/contrib/
 
 #pull in site-specific code
 buildComposer "$BUILD_ROOT" "$DOCROOT"
+node "$BUILD_ROOT/openscholar/scripts/themes.js" "$DOCROOT"
+git add web/sites
 git commit -a -m "$CI_MESSAGE" -m "" -m "git-subtree-split: $CI_COMMIT_ID" || git commit --amend -m "$CI_MESSAGE" -m "" -m "git-subtree-split: $CI_COMMIT_ID"
 fi
 
 git push origin $CI_BRANCH
 echo -e "\033[1;36mFINISHED BUILDING $CI_BRANCH ON BITBUCKET\e[0m"
-
-

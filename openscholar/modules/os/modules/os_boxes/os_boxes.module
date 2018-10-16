@@ -82,7 +82,7 @@ function os_boxes_menu() {
     'weight' => 2,
   );
 
-  $items['widget/embed/%os_boxes/%'] = array(
+  $items['widget/embed/%os_boxes/%os_boxes_web_widget_style'] = array(
     'title' => 'Embed Widget',
     'page callback' => 'os_boxes_embed_code',
     'page arguments' => array(2, 3),
@@ -131,6 +131,21 @@ function os_boxes_load($key) {
     return $box;
   }
   return FALSE;
+}
+
+/**
+ * Implements hook_load().
+ *
+ * Makes sure the style exists before we do something.
+ */
+function os_boxes_web_widget_style_load($name) {
+  if (module_exists('web_widgets')) {
+    $styles = web_widgets_get_styles ();
+    if (isset($styles[$name])) {
+      return $name;
+    }
+  }
+  return false;
 }
 
 /**

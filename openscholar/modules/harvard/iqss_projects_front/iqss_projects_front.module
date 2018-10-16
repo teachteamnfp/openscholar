@@ -189,7 +189,7 @@ function iqss_projects_front_infoblock_content() {
   $block_button = drupal_render($items);
 
   // Setup the content.
-  $block_content = '<div class="os-fp-imageholder">' . $image .'</div><div class="os-more-info">' . $text . '<div class="os-big-button">' . $block_button . '</div></div>';
+  $block_content = '<div class="os-fp-imageholder">' . $image .'</div><div class="os-more-info">' . $text . '<div class="os-big-button">' . $block_button . '</div><div class="os-terms-of-use" target="_blank"><a href="https://hwp.harvard.edu/terms-use">OpenScholar Terms of Use</a></div></div>';
 
   return $block_content;
 }

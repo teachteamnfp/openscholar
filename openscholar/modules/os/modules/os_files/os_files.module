@@ -1761,7 +1761,7 @@ function os_files_file_view($file, $view_mode, $langcode) {
 
   //outside of sv list, we should still include the file preview
   if (!@$file->sv_list && $view_mode == 'full') {
-    $content['file-info']['os_file_description'] = $file->os_file_description;
+    //$content['file-info']['os_file_description'] = $file->os_file_description;
 
     switch ($file->type) {
       case 'image':

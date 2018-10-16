@@ -1,7 +1,7 @@
 {
   "name": "TheScholr",
   "require": {
-    "openscholar/thescholr" : "dev-17-owned_sites"
+    "openscholar/thescholr" : "dev-17-owned_sites-2"
   },
   "repositories": [
     {
