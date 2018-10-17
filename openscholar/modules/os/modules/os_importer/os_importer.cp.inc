@@ -10,7 +10,7 @@
 function os_importer_cp_settings() {
   $settings = array();
   $app_info = os_app_info();
-  $purl = vsite_get_purl();
+  $vsite = vsite_get_vsite();
   $importer_menu_title = array(
     'biblio' => 'Publication',
     'media_gallery' => 'Media Gallery',
@@ -110,7 +110,14 @@ function os_importer_cp_settings() {
           'form' => $form_settings,
         );
 
-        $template_markup = '<div class="import-help csv-import-fields">' . l(t('Download a template'), (isset($purl) ? $purl . '/' : '') . 'cp/os-importer/' . $node_type . '/template', array('attributes' => array('class' => 'overlay-exclude'))) . '</div>';
+        $url_options = array(
+          'attributes' => array(
+            'class' => 'overlay-exclude'
+          ),
+          'external' => true,
+        );
+        $url = $vsite->get_absolute_url ('cp/os-importer/' . $node_type . '/template');
+        $template_markup = '<div class="import-help csv-import-fields">' . l(t('Download a template'), $url, $url_options) . '</div>';
 
         $settings['os_importer_download_template-' . $node_type] = array(
           'group' => array(
