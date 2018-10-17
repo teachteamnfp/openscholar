@@ -320,7 +320,7 @@ function os_reader_update_7008() {
 }
 
 /**
- * Add gid value to os_feed_item table from og_membership table and migrate necessary data.
+ * Add importer_type_nid grouped index to os_feed_item table.
  */
 function os_reader_update_7009() {
   if (!db_index_exists('os_feed_item', 'importer_type_nid')) {
