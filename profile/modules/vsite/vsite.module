@@ -63,8 +63,11 @@ function vsite_pathauto_alias_alter(&$alias, array &$context) {
   /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContext */
   $vsiteContext = \Drupal::service('vsite.context_manager');
 
+  /** @var \Drupal\group\Entity\GroupInterface $group */
   if ($group = $vsiteContext->getActiveVsite ()) {
-
+    $purl = $vsiteContext->getActivePurl ();
+    $trimmed_alias = ltrim($alias, '/');
+    $alias = '/'.$purl.'/'.$trimmed_alias;
   }
 }
 
