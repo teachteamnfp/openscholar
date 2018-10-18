@@ -680,9 +680,7 @@ function os_importer_verify_uploaded_file($form, $form_state) {
   // Load the uploaded file and parse his headers.
   $file = file_load($form_state['values']['file']);
 
-  // Replace the \r with \n.
-  $file_content = file_get_contents($file->uri);
-  $file_content = str_replace("\r", "\n", $file_content);
+  $file_content = _os_importer_fix_file_content($file);
   $file_rows = explode("\n", $file_content);
   file_put_contents($file->uri, $file_content);
 
@@ -1132,4 +1130,23 @@ function os_importer_round_hour($hour) {
   }
 
   return $hours . ':' . $new_minutes;
+}
+
+/**
+ * @param $file
+ *
+ * @return bool|mixed|string
+ */
+function _os_importer_fix_file_content($file) {
+  // Replace the \r with \n.
+  $file_content = file_get_contents($file->uri);
+  $file_content = str_replace(["\r\n", "\r"], "\n", $file_content);
+
+  // UTF-8 BOM detection
+  $bom = pack("CCC", 0xef, 0xbb, 0xbf);
+  if (0 === strncmp($file_content, $bom, 3)) {
+    drupal_set_message('UTF-8 BOM detected and removed');
+    $file_content = substr($file_content, 3);
+  }
+  return $file_content;
 }

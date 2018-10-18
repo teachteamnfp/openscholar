@@ -349,8 +349,7 @@ function os_importer_import_group_validate($values) {
 
         if ($node_type == 'event') {
           // Parse uploaded file content with ParserCSV class.          
-          $file_content = file_get_contents($file->uri);
-          $file_content = str_replace("\r", "\n", $file_content);
+          $file_content = _os_importer_fix_file_content($file);
           file_put_contents($file->uri, $file_content);
           feeds_include_library('ParserCSV.inc', 'ParserCSV');
           $parser = new ParserCSV();
@@ -373,17 +372,7 @@ function os_importer_import_group_validate($values) {
           $mappings_diff[] = strtolower($mapping['source']);
           $mappings[] = $mapping['target'];
         }
-
-        // Replace the \r with \n.
-        $file_content = file_get_contents($file->uri);
-        $file_content = str_replace("\r", "\n", $file_content);
-
-        // UTF-8 BOM detection
-        $bom = pack("CCC", 0xef, 0xbb, 0xbf);
-        if (0 === strncmp($file_content, $bom, 3)) {
-          drupal_set_message('UTF-8 BOM detected and removed');
-          $file_content = substr($file_content, 3);
-        }
+        $file_content = _os_importer_fix_file_content($file);
 
         $file_rows = explode("\n", $file_content);
         file_put_contents($file->uri, $file_content);
