@@ -50,6 +50,7 @@ function os_importer_cp_settings() {
       'ISO 8859-14' => t('Celtic languages (Irish Gaelic, Scottish, Welsh)'),
     ),
   );
+  $helpLinkMapping = _os_importer_get_help_link_mapping();
 
   foreach ($app_info as $type => $info) {
        // Bypassing apps which have RSS feeds as import source.
@@ -170,7 +171,7 @@ function os_importer_cp_settings() {
           '#id' => 'os_importer_content_' . $node_type,
           '#title' => isset($importer_menu_title[$node_type]) ? $importer_menu_title[$node_type] : ucfirst($node_type),
           '#weight' => 3,
-          '#menu_parent' => 'import',          
+          '#menu_parent' => 'import',
         ),
       );
 
@@ -255,6 +256,9 @@ function os_importer_cp_settings() {
         'rest_submit' => 'os_importer_file_submit',
         'submit_full_request' => TRUE,
       );
+      if (isset($helpLinkMapping[$node_type]['path'])) {
+        $settings['os_importer_submit-' . $node_type]['group']['#help_link'] = l(t('Learn more about importing'), $helpLinkMapping[$node_type]['path'], array('attributes' => array('target' => '_blank')));
+      }
     }
   }
   
