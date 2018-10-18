@@ -91,7 +91,7 @@ class sv_list_node_biblio extends sv_list_plugin {
       return;
     }
     
-    if (count($types) > count($whitelist)) {
+    if (count($types) > count($whitelist) && !in_array('all', $whitelist)) {
       $query = db_select('biblio', 'b')
         ->condition('biblio_type', array_values($whitelist), 'IN')
         ->fields('b', array('nid'));
