@@ -642,10 +642,10 @@ function _os_importer_get_help_link_mapping(): array {
       'path' => 'https://help.theopenscholar.com/presentations-app#importing-presentations',
     ],
     'person' => [
-      'path' => 'https://help.theopenscholar.com/people-profiles#importing-people',
+      'path' => 'https://help.theopenscholar.com/importing-people-profiles',
     ],
     'news' => [
-      'path' => 'https://help.theopenscholar.com/import-news-rss',
+      'path' => 'https://help.theopenscholar.com/news-app#importing-news-items',
     ],
     'biblio' => [
       'path' => 'https://help.theopenscholar.com/publications-app#importing-publications',
