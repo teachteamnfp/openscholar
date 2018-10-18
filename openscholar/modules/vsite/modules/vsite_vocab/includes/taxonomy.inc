@@ -19,7 +19,15 @@ function vsite_vocab_get_vocabularies($vsite = false) {
   }
 
   if ($vsite) {
-    $vocabs = db_select('og_vocab_relation', 'ogr')->fields('ogr')->condition('group_type', $vsite->group_type)->condition('gid', $vsite->id)->execute()->fetchAllAssoc('vid');
+    $query = db_select('og_vocab_relation', 'ogr')
+      ->fields('ogr')
+      ->condition('group_type', $vsite->group_type)
+      ->condition('gid', $vsite->id);
+    $query->leftJoin('taxonomy_vocabulary', 'tv', 'ogr.vid = tv.vid');
+    $query->orderBy('tv.weight');
+    $query->orderBy('tv.name');
+    $vocabs = $query->execute()
+      ->fetchAllAssoc('vid');
 
     if (count($vocabs)) {
       return taxonomy_vocabulary_load_multiple(array_keys($vocabs));
