@@ -28,3 +28,12 @@ services:
       - '@entity_type.manager'
     tags:
       - { name: event_subscriber }
+  vsite.alias_storage:
+    class: Drupal\vsite\Path\VsiteAliasStorage
+    decorates: path.alias_storage
+    decoration_priority: 4
+    arguments:
+      - '@vsite.alias_storage.inner'
+      - '@purl.modifier_index'
+      - '@entity_type.manager'
+      - '@vsite.context_manager'
