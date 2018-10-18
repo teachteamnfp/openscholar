@@ -18,6 +18,8 @@ interface VsiteContextManagerInterface {
 
   public function getActiveVsite();
 
+  public function getActivePurl();
+
   public function getAbsoluteUrl(string $path = '');
 
   public function getStorage(GroupInterface $group = null);
