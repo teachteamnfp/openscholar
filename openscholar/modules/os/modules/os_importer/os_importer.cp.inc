@@ -53,7 +53,7 @@ function os_importer_cp_settings() {
   $helpLinkMapping = _os_importer_get_help_link_mapping();
 
   foreach ($app_info as $type => $info) {
-       // Bypassing apps which have RSS feeds as import source.
+    // Bypassing apps which have RSS feeds as import source.
     if (in_array($type, array('os_blog', 'os_news'))) {
       continue;
     }
@@ -98,7 +98,7 @@ function os_importer_cp_settings() {
           '#access' => os_importer_import_access($node_type),
         );
       }
-    
+
       // Import format option should be displayed for all content types except biblio/publication.
       if ($node_type != 'biblio') {
         $settings['os_importer_content_format-' . $node_type] = array(
@@ -261,7 +261,7 @@ function os_importer_cp_settings() {
       }
     }
   }
-  
+
   return $settings;
 }
 
@@ -300,7 +300,7 @@ function os_importer_import_group_validate($values) {
       drupal_set_message(t('The file field is required.'), 'error');
       $valid = FALSE;
     } else if (!empty($values['os_importer_file_upload-' . $node_type])) {
-      $file = file_load($values['os_importer_file_upload-' . $node_type]);      
+      $file = file_load($values['os_importer_file_upload-' . $node_type]);
       $part = !empty($file->filename) ? explode('.', $file->filename) : array();
       $extension = end($part);
       if ($extension != 'csv') {
@@ -339,15 +339,15 @@ function os_importer_import_group_validate($values) {
 
             // If title is not empty but url is empty.
             if (!empty($row[11]) && empty($row[12])) {
-              $valid_url = FALSE;        
+              $valid_url = FALSE;
               break;
             }
             else if (!empty($row[13]) && empty($row[14])) {
-              $valid_url = FALSE;        
+              $valid_url = FALSE;
               break;
             }
             else if (!empty($row[15]) && empty($row[16])) {
-              $valid_url = FALSE;        
+              $valid_url = FALSE;
               break;
             }
           }
@@ -360,8 +360,7 @@ function os_importer_import_group_validate($values) {
 
         if ($node_type == 'event') {
           // Parse uploaded file content with ParserCSV class.          
-          $file_content = file_get_contents($file->uri);
-          $file_content = str_replace("\r", "\n", $file_content);
+          $file_content = _os_importer_fix_file_content($file);
           file_put_contents($file->uri, $file_content);
           feeds_include_library('ParserCSV.inc', 'ParserCSV');
           $parser = new ParserCSV();
@@ -384,10 +383,8 @@ function os_importer_import_group_validate($values) {
           $mappings_diff[] = strtolower($mapping['source']);
           $mappings[] = $mapping['target'];
         }
+        $file_content = _os_importer_fix_file_content($file);
 
-        // Replace the \r with \n.
-        $file_content = file_get_contents($file->uri);
-        $file_content = str_replace("\r", "\n", $file_content);
         $file_rows = explode("\n", $file_content);
         file_put_contents($file->uri, $file_content);
 
@@ -495,7 +492,7 @@ function os_importer_import_group_validate($values) {
               $value = strtotime($value);
               // if strtotime() output is blank, then date format is not correct, displaying error message.
               if(empty($value) || ($value < 0)) {
-                drupal_set_message(t('Invalid date value entered for the field "!field" with value "!value".', array('!field' => $field, '!value' => $orig_value_created)), 'error');
+                drupal_set_message(t('Invalid date value entered for the field "!field" with value "!value".', array('!field' => $mappings_diff[$delta], '!value' => $orig_value_created)), 'error');
                 $valid = FALSE;
               }
             }
@@ -562,7 +559,7 @@ function os_importer_import_group_validate($values) {
           'unique_id' => '',
           'filename' => drupal_realpath($file->uri),
         );
-        
+
         $creator_path = libraries_get_path('iCalcreator');
         require_once($creator_path . '/iCalcreator.class.php');
         $calendar = new vcalendar($config);
@@ -579,7 +576,7 @@ function os_importer_import_group_validate($values) {
 /**
  * Submit handler for os_importer_submit button for CSV/iCal import.
  */
- function os_importer_file_submit($request) {
+function os_importer_file_submit($request) {
   global $user, $language;
   foreach($request as $var => $value) {
     if (strpos($var, 'os_importer_submit-') === 0) {
@@ -588,7 +585,7 @@ function os_importer_import_group_validate($values) {
     }
   }
   $import_file_fid = $request['os_importer_file_upload-' . $node_type];
-  $import_file = file_load($import_file_fid);  
+  $import_file = file_load($import_file_fid);
   $part = !empty($import_file->uri) ? explode('.', $import_file->uri) : array();
   $extension = end($part);
   if ($extension == 'ics') {
@@ -604,7 +601,7 @@ function os_importer_import_group_validate($values) {
     $fetcher_config['encode'] = isset($request['os_importer_encode-' . $node_type])? $request['os_importer_encode-' . $node_type] : 'csv';
     $source->setConfigFor($source->importer->fetcher, $fetcher_config);
     $source->save();
-    $source->startImport(); 
+    $source->startImport();
   } else if ($node_type == 'biblio') {
     $userid = $user->uid;
     $filetype = $request['os_importer_filetype-biblio'];

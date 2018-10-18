@@ -1081,3 +1081,11 @@ function os_update_7063() {
   $revert = array('os_importer' => array('elysia_cron'));
   features_revert($revert);
 }
+
+/**
+ * Update page feeds importer with pathauto clean.
+ */
+function os_update_7064() {
+  $revert = array('os_pages' => array('feeds_tamper'));
+  features_revert($revert);
+}
