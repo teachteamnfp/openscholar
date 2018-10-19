@@ -146,10 +146,11 @@ class VsiteAliasStorage implements AliasStorageInterface {
    * @inheritDoc
    */
   public function lookupPathAlias ($path, $langcode) {
+    $output = $this->storage->lookupPathAlias ($path, $langcode);
     if (strpos($path, '/group/') === FALSE) {
-      $path = $this->tokenToPath ($path);
+      $output = $this->tokenToPath ($output);
     }
-    return $this->storage->lookupPathAlias ($path, $langcode);
+    return $output;
   }
 
   /**

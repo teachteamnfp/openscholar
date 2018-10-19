@@ -15,8 +15,10 @@ services:
       - { name: event_subscriber }
   vsite.outboundpathprocessor:
     class: Drupal\vsite\PathProcessor\VsiteOutboundPathProcessor
+    arguments:
+      - '@vsite.context_manager'
     tags:
-      - { name: path_processor_outbound, priority: 301 }
+      - { name: path_processor_outbound, priority: 299 }
   vsite.context_manager:
     class: Drupal\vsite\Plugin\VsiteContextManager
     arguments:

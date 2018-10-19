@@ -11,6 +11,7 @@ namespace Drupal\vsite\Pathprocessor;
 
 use Drupal\Core\PathProcessor\OutboundPathProcessorInterface;
 use Drupal\Core\Render\BubbleableMetadata;
+use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class VsiteOutboundPathProcessor implements OutboundPathProcessorInterface {
@@ -22,6 +23,13 @@ class VsiteOutboundPathProcessor implements OutboundPathProcessorInterface {
     'user/*'
   ];
 
+  /** @var VsiteContextManagerInterface */
+  protected $vsiteContextManager;
+
+  public function __construct (VsiteContextManagerInterface $vsiteContextManager) {
+    $this->vsiteContextManager = $vsiteContextManager;
+  }
+
   /**
    * @inheritDoc
    *
@@ -32,6 +40,12 @@ class VsiteOutboundPathProcessor implements OutboundPathProcessorInterface {
       $pattern = '|'.str_replace('*', '.+?', $p).'|';
       if (preg_match($pattern, $path)) {
         $options['purl_context'] = false;
+      }
+    }
+
+    if ($purl = $this->vsiteContextManager->getActivePurl ()) {
+      if (strpos($path, $purl) !== FALSE) {
+        $options['purl_exit'] = true;
       }
     }
 
