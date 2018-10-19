@@ -10,7 +10,7 @@
 function os_pages_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'node-page-body'
+  // Exported field_instance: 'node-page-body'.
   $field_instances['node-page-body'] = array(
     'bundle' => 'page',
     'default_value' => NULL,
@@ -37,6 +37,12 @@ function os_pages_field_default_field_instances() {
         'weight' => 0,
       ),
       'sidebar_teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'slide_teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -80,7 +86,7 @@ function os_pages_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-page-field_meta_description'
+  // Exported field_instance: 'node-page-field_meta_description'.
   $field_instances['node-page-field_meta_description'] = array(
     'bundle' => 'page',
     'default_value' => NULL,
@@ -106,6 +112,12 @@ function os_pages_field_default_field_instances() {
         'weight' => 0,
       ),
       'sidebar_teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'slide_teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -143,7 +155,7 @@ function os_pages_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-page-field_os_css_class'
+  // Exported field_instance: 'node-page-field_os_css_class'.
   $field_instances['node-page-field_os_css_class'] = array(
     'bundle' => 'page',
     'default_value' => NULL,
@@ -212,7 +224,7 @@ function os_pages_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-page-field_upload'
+  // Exported field_instance: 'node-page-field_upload'.
   $field_instances['node-page-field_upload'] = array(
     'bundle' => 'page',
     'deleted' => 0,
@@ -238,6 +250,12 @@ function os_pages_field_default_field_instances() {
         'weight' => 0,
       ),
       'sidebar_teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'slide_teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -328,7 +346,7 @@ function os_pages_field_default_field_instances() {
   t('Attach Files');
   t('Best if 150 characters or less. Used as a meta description tag and instead of trimmed body in certain lists.');
   t('Body');
-  t('Summary description');
+  t('Meta description');
   t('Warning: this is to be used for custom themeing purpose only.');
 
   return $field_instances;
