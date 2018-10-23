@@ -740,3 +740,72 @@ function vsite_vocab_html_cut($text, $max_length)
     $result = $result_trim . '<span class="morecontent"><span class="morechildren">' . str_replace($result_trim, '', $text) .  '</span></span>';
     return $result;
 }
+
+/**
+ * Implements hook_facetapi_facet_info_alter().
+ *
+ * @param $facet_info
+ */
+function vsite_vocab_facetapi_facet_info_alter(&$facet_info) {
+  if (isset($facet_info['sm_og_vocabulary'])) {
+    $facet_info['sm_og_vocabulary']['alter callbacks'][] = 'vsite_vocab_facet_alter';
+  }
+}
+
+/**
+ * Alter the facet results so weight is a parameter we can use during sorting
+ *
+ * @param $values
+ */
+function vsite_vocab_facet_alter(&$values) {
+  module_load_include('inc', 'vsite_vocab', 'includes/taxonomy');
+  $vocabs = vsite_vocab_get_vocabularies ();
+  $tids = array();
+  foreach ($values as $k => $v) {
+    list(,$entity_id) = explode(':', $k);
+    $tids[] = $entity_id;
+  }
+
+  // get all the terms at once in one query
+  $terms = taxonomy_term_load_multiple ($tids);
+
+  foreach ($values as $k => &$v) {
+    list(,$tid) = explode(':', $k);
+    $v['#weight'] = $terms[$tid]->weight + $vocabs[$terms[$tid]->vid]->weight * 10000;
+  }
+}
+
+/**
+ * Implements hook_facetapi_sort_info().
+ */
+function vsite_vocab_facetapi_sort_info() {
+  $sorts = array();
+
+  $sorts['weight'] = array(
+    'label' => t('Facet Weight'),
+    'callback' => 'vsite_vocab_facetapi_sort_weight',
+    'description' => t('Sort by weights of the individual elements'),
+    'weight' => 50,
+  );
+
+  return $sorts;
+}
+
+/**
+ * Sort the facet results by the weight property. If it's not set, do nothing
+ *
+ * Requires the active_sorts property in the facetapi default hook to be set to 'weight' => 'weight'
+ */
+function vsite_vocab_facetapi_sort_weight(array $a, array $b) {
+  if (!isset($a['#weight']) || !isset($b['#weight'])) {
+    return 0;
+  }
+  if ($a['#weight'] > $b['#weight']) {
+    return -1;
+  }
+  elseif ($a['#weight'] < $b['#weight']) {
+    return 1;
+  }
+  return 0;
+}
+
