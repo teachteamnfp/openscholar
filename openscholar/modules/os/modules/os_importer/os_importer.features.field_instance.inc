@@ -10,7 +10,7 @@
 function os_importer_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'node-blog_import-body'
+  // Exported field_instance: 'node-blog_import-body'.
   $field_instances['node-blog_import-body'] = array(
     'bundle' => 'blog_import',
     'default_value' => NULL,
@@ -30,7 +30,19 @@ function os_importer_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'no_image_teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'sidebar_teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'slide_teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -72,7 +84,7 @@ function os_importer_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-blog_import-field_rss_url'
+  // Exported field_instance: 'node-blog_import-field_rss_url'.
   $field_instances['node-blog_import-field_rss_url'] = array(
     'bundle' => 'blog_import',
     'default_value' => NULL,
@@ -92,7 +104,19 @@ function os_importer_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'no_image_teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'sidebar_teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'slide_teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',

@@ -12,7 +12,7 @@ function os_pages_ctools_plugin_api($module = NULL, $api = NULL) {
     return array("version" => "1");
   }
   if ($module == "context" && $api == "context") {
-   return array("version" => "3");
+    return array("version" => "3");
   }
   if ($module == "feeds" && $api == "feeds_importer_default") {
     return array("version" => "1");
@@ -39,5 +39,6 @@ function os_pages_node_info() {
       'help' => '',
     ),
   );
+  drupal_alter('node_info', $items);
   return $items;
 }

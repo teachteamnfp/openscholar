@@ -93,7 +93,7 @@ class OsImporterEntityValidateBase extends EntityValidateBase {
 
     $value = reset($value);
     // Validate the date format for the start and end date.
-    $this->validateDateFormats(array('M j Y'), $value, $field_name);
+    $this->validateDateFormats(array('M j Y', 'M d Y'), $value, $field_name);
   }
 
   /**
@@ -109,20 +109,22 @@ class OsImporterEntityValidateBase extends EntityValidateBase {
   protected function validateDateFormats($formats, $value, $field_name) {
     // Validate the date format for the start and end date.
     $validationSuccess = false;
+    $formatLabels = array();
     foreach ($formats as $format) {
       if ($date = DateTime::createFromFormat($format, $value)) {
         if ($date->format($format) == $value) {
           $validationSuccess = true;
         }
       }
+      $formatLabels[] = format_date(REQUEST_TIME, 'custom', $format);
     }
 
     if (! $validationSuccess) {
       $params = array(
           '@date' => $value,
-          '@format' => join(", ", $formats),
+          '@format' => join(" or ", $formatLabels),
       );
-      $this->setError($field_name, 'The value of the date field (@date) is not valid. The date should be in a format similar to one of the following formats: @format.', $params);
+      $this->setError($field_name, 'The value of the date field (@date) is not valid. The date should be in a format similar to one of the following formats: @format', $params);
     }
 
     return TRUE;
@@ -168,11 +170,15 @@ class OsImporterEntityValidateBase extends EntityValidateBase {
     if (empty($value)) {
       return;
     }
+    if (!module_exists('pathauto')) {
+      $this->setError($field_name, t('Please enable pathauto module, to validate the path.'));
+    }
+    module_load_include('inc', 'pathauto');
 
     $vsite = vsite_get_vsite();
     $purl = $vsite->group->purl;
-    $alias_without_purl = $value[0];
-    $alias_with_purl = $purl . '/' . $value[0];
+    $alias_without_purl = pathauto_cleanstring($value[0]);
+    $alias_with_purl = $purl . '/' . $alias_without_purl;
 
     // Ensure that the alias does not exist yet.
     $query = db_select('url_alias')

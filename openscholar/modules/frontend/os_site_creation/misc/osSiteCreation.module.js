@@ -81,7 +81,8 @@
 
   // Set site creation status
   $scope.siteCreated = false;
-  $scope.tos = Drupal.settings.tos_url;
+  $scope.tos = Drupal.settings.site_creation.tos_url;
+  $scope.tos_label = Drupal.settings.site_creation.tos_label;
 
   // Initialize the $timout var
   var timer;

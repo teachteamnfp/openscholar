@@ -82,6 +82,8 @@ class OsImporterEventValidator extends OsImporterEntityValidateBase {
     $formats = array(
       'M j Y g:ia',
       'M j Y',
+      'M d Y g:ia',
+      'M d Y',
     );
 
     $this->validateDateFormats($formats, $value, $field_name);

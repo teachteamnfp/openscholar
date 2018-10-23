@@ -1074,3 +1074,18 @@ function os_update_7062() {
   module_enable(array('os_site_creation'));
 }
 
+/**
+ * Revert the os_importer feature module to set elysia cron settings.
+ */
+function os_update_7063() {
+  $revert = array('os_importer' => array('elysia_cron'));
+  features_revert($revert);
+}
+
+/**
+ * Update page feeds importer with pathauto clean.
+ */
+function os_update_7064() {
+  $revert = array('os_pages' => array('feeds_tamper'));
+  features_revert($revert);
+}
