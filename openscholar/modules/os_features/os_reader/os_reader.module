@@ -130,6 +130,43 @@ function os_reader_views_query_alter(&$view, views_plugin_query_default &$query)
 
   $group_key = key($query->where);
   $query->add_where($group_key, 'os_feed_item.importer_type', $type);
+
+  // This is a workaround solution for loading "cp/os-importer/news/manage" page
+  // Views try to join 2 very big table (1 million records), modify this only one
+  // I try to add more index, but the query getting slower
+  unset($query->tables['os_feed_item']['og_membership_node']);
+  unset($query->tables['os_feed_item']['node_os_feed_item']);
+  unset($query->table_queue['og_membership_node']);
+  unset($query->table_queue['node_os_feed_item']);
+  unset($query->relationships['og_membership_node']);
+  unset($query->relationships['node_os_feed_item']);
+  $gid = 0;
+
+  foreach ($query->where[1]['conditions'] as $i => &$condition) {
+    if (is_object($condition['field'])) {
+      continue;
+    }
+    if ($condition['field'] == 'og_membership_node.gid') {
+      $gid = $query->where[1]['conditions'][$i]['value'];
+      unset($query->where[1]['conditions'][$i]);
+    }
+    if ($condition['field'] == 'og_membership_node.group_type') {
+      unset($query->where[1]['conditions'][$i]);
+    }
+  }
+  $preQuery = db_select('og_membership', 'om');
+  $preQuery->fields('om', ['etid']);
+
+  $preQuery->condition('entity_type', 'node');
+  $preQuery->condition('group_type', 'node');
+  $preQuery->condition('gid', $gid);
+  $result = $preQuery->execute()->fetchAllKeyed();
+  $nids = array_keys($result);
+  $query->where[1]['conditions'][] = [
+    'field' => 'os_feed_item.importer_nid',
+    'value' => $nids,
+    'operator' => 'IN',
+  ];
 }
 
 /**
@@ -174,20 +211,22 @@ function os_reader_get_importers_list($feed_importer_nid = NULL, $type) {
   foreach ($importers as $importer) {
     if ($feed_importer_nid == $importer->nid) {
       // Currently viewed importer, display as active text.
-      $items[] = array(
-        'data' => check_plain($importer->title),
+      $item = array(
+        'data' => '<div class="importer-title">' . check_plain($importer->title) . '</div>',
         'class' => array('active'),
       );
     }
     else {
       // Display importer as link.
-      $items[] = array(
-        'data' => l($importer->title, 'cp/os-importer/' . $type . '/manage/' . $importer->nid),
+      $item = array(
+        'data' => '<div class="importer-title">' . l($importer->title, 'cp/os-importer/' . $type . '/manage/' . $importer->nid) . '</div>',
       );
     }
+    $item['data'] .= l(t('Delete'), 'node/' . $importer->nid . '/delete', ['attributes' => ['class' => ['importer-delete']], 'query' => ['destination' => 'cp/os-importer/news/manage']]);
+    $items[] = $item;
   }
 
-  return theme('item_list', array('items' => $items));
+  return theme('item_list', array('items' => $items, 'attributes' => ['class' => 'importer-list']));
 }
 
 /**
@@ -344,8 +383,25 @@ function os_reader_feed_item_create($values = array()) {
     'type' => 'feed_item',
     'created' => time(),
   );
+  if (!empty($values['importer_nid'])) {
+    $values['gid'] = _os_reader_get_gid_from_og_membership($values['importer_nid']);
+  }
 
   return entity_create('os_feed_item', $values);
+}
+
+/**
+ * @param $importer_nid
+ *
+ * @return int
+ */
+function _os_reader_get_gid_from_og_membership($importer_nid) {
+  $query = db_select('og_membership', 'om');
+  $query->fields('om', ['gid']);
+  $query->condition('etid', $importer_nid);
+  $query->condition('entity_type', 'node');
+  $result = $query->execute();
+  return $result->fetchField();
 }
 
 /**
