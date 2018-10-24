@@ -175,13 +175,19 @@ function os_search_solr_facetapi_default_facet_settings() {
     'widget' => 'facetapi_links',
     'filters' => array(),
     'active_sorts' => array(
-      'weight' => 'weight'
+      'active' => 'active',
+      'count' => 'count',
+      'display' => 'display',
     ),
     'sort_weight' => array(
-      'weight' => -50,
+      'active' => -50,
+      'count' => -49,
+      'display' => -48,
     ),
     'sort_order' => array(
-      'weight' => 3,
+      'active' => 3,
+      'count' => 3,
+      'display' => 4,
     ),
     'empty_behavior' => 'none',
     'soft_limit' => 20,
