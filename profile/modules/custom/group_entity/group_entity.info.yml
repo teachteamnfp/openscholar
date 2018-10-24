@@ -1,0 +1,6 @@
+name: Group Entity
+core: 8.x
+type: module
+description: Allows for relating any Entity type to Groups
+dependencies:
+  - group
