@@ -63,16 +63,8 @@ function os_reader_schema() {
         'description' => 'The feed importer NID',
         'type' => 'int',
       ),
-      'gid' => array(
-        'description' => 'OG membership gid value.',
-        'type' => 'int',
-      ),
     ),
     'primary key' => array('id'),
-    'indexes' => array(
-      'gid' => array('gid'),
-      'importer_type_nid' => array('importer_type', 'importer_nid'),
-    ),
   );
 
   if (module_exists('entitycache')) {
@@ -302,29 +294,5 @@ function os_reader_update_7006() {
  */
 function os_reader_update_7007() {
   features_revert(array('os_reader' => array('field_instance')));
-}
-
-/**
- * Add gid value to os_feed_item table from og_membership table and migrate necessary data.
- */
-function os_reader_update_7008() {
-  $schema = os_reader_schema();
-  if (!db_field_exists('os_feed_item', 'gid')) {
-    db_add_field('os_feed_item', 'gid', $schema['os_feed_item']['fields']['gid']);
-  }
-  if (!db_index_exists('os_feed_item', 'gid')) {
-    db_add_index('os_feed_item', 'gid', array('gid'));
-  }
-  db_query("UPDATE {os_feed_item} ofi SET gid = (SELECT gid FROM {og_membership} om WHERE ofi.`importer_nid` = om.`etid` AND om.`entity_type` = 'node')");
-  drupal_set_message('Finished os_feed_item and og_membership table gid value synchronization!');
-}
-
-/**
- * Add importer_type_nid grouped index to os_feed_item table.
- */
-function os_reader_update_7009() {
-  if (!db_index_exists('os_feed_item', 'importer_type_nid')) {
-    db_add_index('os_feed_item', 'importer_type_nid', array('importer_type', 'importer_nid'));
-  }
 }
 
