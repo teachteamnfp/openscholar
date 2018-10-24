@@ -103,7 +103,9 @@ class sv_list_node_biblio extends sv_list_plugin {
       $nids = $query->execute()
         ->fetchCol();
 
-      $efq->entityCondition('nid', $nids, 'IN');
+      if (!empty($nids)) {
+        $efq->entityCondition ('nid', $nids, 'IN');
+      }
     }
   }
   
