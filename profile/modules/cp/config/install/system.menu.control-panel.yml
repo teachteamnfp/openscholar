@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+id: control-panel
+label: 'Control Panel'
+description: ''
+locked: false
