@@ -99,3 +99,15 @@
 .os-reader-feed-items li {
   list-style-type: none;
 }
+
+.page-cp-os-importer-news-manage ul.importer-list li {
+   display: flex;
+}
+.page-cp-os-importer-news-manage .importer-title {
+   float: left;
+   width: 70%;
+}
+.page-cp-os-importer-news-manage .importer-delete {
+   float: right;
+   width: 30%;
+}

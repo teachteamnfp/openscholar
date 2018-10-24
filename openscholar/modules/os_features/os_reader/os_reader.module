@@ -211,21 +211,22 @@ function os_reader_get_importers_list($feed_importer_nid = NULL, $type) {
   foreach ($importers as $importer) {
     if ($feed_importer_nid == $importer->nid) {
       // Currently viewed importer, display as active text.
-      $items[] = array(
-        'data' => check_plain($importer->title),
+      $item = array(
+        'data' => '<div class="importer-title">' . check_plain($importer->title) . '</div>',
         'class' => array('active'),
       );
     }
     else {
       // Display importer as link.
-      $items[] = array(
-        'data' => l($importer->title, 'cp/os-importer/' . $type . '/manage/' . $importer->nid)
-          . l(t('Delete'), 'node/' . $importer->nid . '/delete', ['attributes' => ['class' => ['button']], 'query' => ['destination' => $_GET['q']]]),
+      $item = array(
+        'data' => '<div class="importer-title">' . l($importer->title, 'cp/os-importer/' . $type . '/manage/' . $importer->nid) . '</div>',
       );
     }
+    $item['data'] .= l(t('Delete'), 'node/' . $importer->nid . '/delete', ['attributes' => ['class' => ['importer-delete']], 'query' => ['destination' => 'cp/os-importer/news/manage']]);
+    $items[] = $item;
   }
 
-  return theme('item_list', array('items' => $items));
+  return theme('item_list', array('items' => $items, 'attributes' => ['class' => 'importer-list']));
 }
 
 /**
