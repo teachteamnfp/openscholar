@@ -109,6 +109,21 @@ function os_layout_get($context_name, $load_meta = FALSE, $unused_blocks = FALSE
 
   if (array_key_exists('blocks', $context->reactions['block'])) {
     $block_settings = $context->reactions['block']['blocks'];
+    $spaceCurrent = spaces_get_space();
+    // Case of os_search context the removed blocks is not listed at unused blocks.
+    // Removed blocks exists in current space controllers context.
+    if ($context->name == 'os_search' && !empty($spaceCurrent->controllers->context->values['original']["os_search:reaction:block"])) {
+      $spaceControllerValuesOsSearch = $spaceCurrent->controllers->context->values['original']["os_search:reaction:block"];
+      $spaceBlockKeys = array_keys($spaceControllerValuesOsSearch);
+      $contextBlockKeys = array_keys($context->reactions['block']['blocks']);
+      $unusedSpaceBlockIds = array_diff($spaceBlockKeys, $contextBlockKeys);
+      // Add to unused block list what we found.
+      foreach ($unusedSpaceBlockIds as $blockId) {
+        $block = $spaceControllerValuesOsSearch['blocks'][$blockId];
+        $block['region'] = FALSE;
+        $block_settings[$blockId] = $block;
+      }
+    }
   }
   else {
     // No blocks set yet for this context.
