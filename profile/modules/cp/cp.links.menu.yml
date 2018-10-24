@@ -2,19 +2,19 @@ cp.admin:
   title: 'Control Panel'
   route_name: cp.admin
   weight: 9
-  menu_name: control_panel
+  menu_name: control-panel
 cp.dummy:
   title: 'Control Panel Dummy'
   route_name: cp.dummy
   weight: 10
   parent: cp.admin
-  menu_name: control_panel
+  menu_name: control-panel
 cp.javascript:
   title: 'Not a real link'
   weight: 11
   route_name: cp.javascript
   parent: cp.admin
-  menu_name: control_panel
+  menu_name: control-panel
   options:
     attributes:
       angular-element: ''
