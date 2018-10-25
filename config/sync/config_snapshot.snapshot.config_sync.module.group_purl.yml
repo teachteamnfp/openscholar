@@ -1,0 +1,11 @@
+uuid: 1e6a64e7-fc22-475e-99a2-08a5c8198e67
+langcode: en
+status: true
+dependencies:
+  module:
+    - group_purl
+id: config_sync.module.group_purl
+snapshotSet: config_sync
+extensionType: module
+extensionName: group_purl
+items: {  }

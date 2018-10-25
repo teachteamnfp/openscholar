@@ -1,0 +1,235 @@
+uuid: f253cceb-d837-45d4-ab75-bd6b400b8a89
+langcode: en
+status: true
+dependencies:
+  module:
+    - book
+id: config_sync.module.book
+snapshotSet: config_sync
+extensionType: module
+extensionName: book
+items:
+  -
+    collection: ''
+    name: book.settings
+    data:
+      allowed_types:
+        - book
+      block:
+        navigation:
+          mode: 'all pages'
+      child_type: book
+  -
+    collection: ''
+    name: core.base_field_override.node.book.promote
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - node.type.book
+      id: node.book.promote
+      field_name: promote
+      entity_type: node
+      bundle: book
+      label: 'Promoted to front page'
+      description: ''
+      required: false
+      translatable: true
+      default_value:
+        -
+          value: 0
+      default_value_callback: ''
+      settings:
+        on_label: 'On'
+        off_label: 'Off'
+      field_type: boolean
+  -
+    collection: ''
+    name: core.entity_form_display.node.book.default
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - field.field.node.book.body
+          - node.type.book
+        module:
+          - text
+      id: node.book.default
+      targetEntityType: node
+      bundle: book
+      mode: default
+      content:
+        body:
+          type: text_textarea_with_summary
+          weight: 26
+          region: content
+          settings:
+            rows: 9
+            summary_rows: 3
+            placeholder: ''
+          third_party_settings: {  }
+        created:
+          type: datetime_timestamp
+          weight: 10
+          region: content
+          settings: {  }
+          third_party_settings: {  }
+        promote:
+          type: boolean_checkbox
+          settings:
+            display_label: true
+          weight: 15
+          region: content
+          third_party_settings: {  }
+        status:
+          type: boolean_checkbox
+          settings:
+            display_label: true
+          weight: 120
+          region: content
+          third_party_settings: {  }
+        sticky:
+          type: boolean_checkbox
+          settings:
+            display_label: true
+          weight: 16
+          region: content
+          third_party_settings: {  }
+        title:
+          type: string_textfield
+          weight: -5
+          region: content
+          settings:
+            size: 60
+            placeholder: ''
+          third_party_settings: {  }
+        uid:
+          type: entity_reference_autocomplete
+          weight: 5
+          region: content
+          settings:
+            match_operator: CONTAINS
+            size: 60
+            placeholder: ''
+          third_party_settings: {  }
+      hidden: {  }
+  -
+    collection: ''
+    name: core.entity_view_display.node.book.default
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - field.field.node.book.body
+          - node.type.book
+        module:
+          - text
+          - user
+      id: node.book.default
+      targetEntityType: node
+      bundle: book
+      mode: default
+      content:
+        body:
+          label: hidden
+          type: text_default
+          weight: 100
+          region: content
+          settings: {  }
+          third_party_settings: {  }
+        links:
+          weight: 101
+          region: content
+      hidden: {  }
+  -
+    collection: ''
+    name: core.entity_view_display.node.book.teaser
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - core.entity_view_mode.node.teaser
+          - field.field.node.book.body
+          - node.type.book
+        module:
+          - text
+          - user
+      id: node.book.teaser
+      targetEntityType: node
+      bundle: book
+      mode: teaser
+      content:
+        body:
+          label: hidden
+          type: text_summary_or_trimmed
+          weight: 100
+          region: content
+          settings:
+            trim_length: 600
+          third_party_settings: {  }
+        links:
+          weight: 101
+          region: content
+      hidden: {  }
+  -
+    collection: ''
+    name: core.entity_view_mode.node.print
+    data:
+      langcode: en
+      status: false
+      dependencies:
+        enforced:
+          module:
+            - book
+        module:
+          - node
+      id: node.print
+      label: Print
+      targetEntityType: node
+      cache: true
+  -
+    collection: ''
+    name: field.field.node.book.body
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - field.storage.node.body
+          - node.type.book
+        module:
+          - text
+      id: node.book.body
+      field_name: body
+      entity_type: node
+      bundle: book
+      label: Body
+      description: ''
+      required: false
+      translatable: true
+      default_value: {  }
+      default_value_callback: ''
+      settings:
+        display_summary: true
+      field_type: text_with_summary
+  -
+    collection: ''
+    name: node.type.book
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        enforced:
+          module:
+            - book
+      name: 'Book page'
+      type: book
+      description: '<em>Books</em> have a built-in hierarchical navigation. Use for handbooks or tutorials.'
+      help: ''
+      new_revision: true
+      preview_mode: 1
+      display_submitted: true

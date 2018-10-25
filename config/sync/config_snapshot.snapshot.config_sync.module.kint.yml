@@ -1,0 +1,11 @@
+uuid: bb7916d3-6493-471d-a4e8-08f9e688224e
+langcode: en
+status: true
+dependencies:
+  module:
+    - kint
+id: config_sync.module.kint
+snapshotSet: config_sync
+extensionType: module
+extensionName: kint
+items: {  }

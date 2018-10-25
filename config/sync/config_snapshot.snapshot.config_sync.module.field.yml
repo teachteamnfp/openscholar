@@ -1,0 +1,16 @@
+uuid: 3c87a8d8-87cb-4f15-821d-3ed282dfa1ee
+langcode: en
+status: true
+dependencies:
+  module:
+    - field
+id: config_sync.module.field
+snapshotSet: config_sync
+extensionType: module
+extensionName: field
+items:
+  -
+    collection: ''
+    name: field.settings
+    data:
+      purge_batch_size: 50

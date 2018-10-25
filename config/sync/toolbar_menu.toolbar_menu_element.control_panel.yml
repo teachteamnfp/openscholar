@@ -1,0 +1,9 @@
+uuid: e0b92375-31dd-44f0-b883-8e0675d893b2
+langcode: en
+status: true
+dependencies: {  }
+id: control_panel
+label: 'Control Panel'
+weight: null
+menu: control-panel
+rewrite_label: true
