@@ -1,20 +1,23 @@
-cp.admin:
-  title: 'Control Panel'
-  route_name: cp.admin
-  weight: 9
-  menu_name: control-panel
 cp.dummy:
   title: 'Control Panel Dummy'
   route_name: cp.dummy
   weight: 10
-  parent: cp.admin
   menu_name: control-panel
 cp.javascript:
   title: 'Not a real link'
   weight: 11
-  route_name: cp.javascript
-  parent: cp.admin
-  menu_name: control-panel
+  url: 'internal:##'       # The only way to make non-clickable menu headings work. Route <nolink> doesn't render a link,
+  menu_name: control-panel # which is required for the menu toggling to work, and route <none> leaves the link clickable
   options:
     attributes:
       angular-element: ''
+cp.build:
+  title: 'Build'
+  url: 'internal:##'
+  weight: 12
+  menu_name: control-panel
+cp.build.taxonomy:
+  title: 'Taxonomy'
+  route_name: cp.build.taxonomy
+  weight: 0
+  parent: cp.build

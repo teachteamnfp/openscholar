@@ -1,0 +1,8 @@
+langcode: en
+status: true
+dependencies: {  }
+id: control_panel
+label: 'Control Panel'
+weight: null
+menu: control-panel
+rewrite_label: true
