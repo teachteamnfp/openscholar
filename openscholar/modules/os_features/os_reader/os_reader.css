@@ -99,3 +99,12 @@
 .os-reader-feed-items li {
   list-style-type: none;
 }
+
+.page-cp-os-importer .importer-title {
+   display: inline-block;
+   width: 70%;
+}
+.page-cp-os-importer .first-region .item-list ul li a.importer-delete {
+   display: inline-block;
+   width: 30%;
+}
