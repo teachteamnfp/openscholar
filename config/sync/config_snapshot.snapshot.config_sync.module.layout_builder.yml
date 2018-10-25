@@ -1,0 +1,11 @@
+uuid: bf459392-4b78-416e-a73f-9aa110bd500a
+langcode: en
+status: true
+dependencies:
+  module:
+    - layout_builder
+id: config_sync.module.layout_builder
+snapshotSet: config_sync
+extensionType: module
+extensionName: layout_builder
+items: {  }

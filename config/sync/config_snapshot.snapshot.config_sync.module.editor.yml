@@ -1,0 +1,11 @@
+uuid: fc6fb67a-cdb5-4158-b617-7dc847c8fc78
+langcode: en
+status: true
+dependencies:
+  module:
+    - editor
+id: config_sync.module.editor
+snapshotSet: config_sync
+extensionType: module
+extensionName: editor
+items: {  }

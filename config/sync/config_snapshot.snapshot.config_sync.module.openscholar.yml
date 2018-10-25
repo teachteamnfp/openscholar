@@ -1,0 +1,20 @@
+uuid: e7ad6c58-70dd-4d26-8690-374fe8027bc0
+langcode: en
+status: true
+dependencies:
+  module:
+    - openscholar
+id: config_sync.module.openscholar
+snapshotSet: config_sync
+extensionType: module
+extensionName: openscholar
+items:
+  -
+    collection: ''
+    name: user.role.administrator
+    data:
+      id: administrator
+      label: Administrator
+      weight: 2
+      langcode: en
+      is_admin: true

@@ -9,6 +9,7 @@
 namespace Drupal\vsite\Plugin;
 
 
+use Drupal\Core\Path\AliasManagerInterface;
 use Drupal\Core\Routing\UrlGeneratorInterface;
 use Drupal\group\Entity\GroupInterface;
 use Drupal\vsite\Event\VsiteActivatedEvent;
@@ -18,17 +19,13 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class VsiteContextManager implements VsiteContextManagerInterface {
 
   /** @var GroupInterface */
-  protected $activeGroup;
+  protected $activeGroup = null;
 
   /** @var EventDispatcherInterface  */
   protected $dispatcher;
 
-  /** @var UrlGeneratorInterface  */
-  protected $urlGenerator;
-
   public function __construct(EventDispatcherInterface $dispatcher) {
     $this->dispatcher = $dispatcher;
-   // $this->urlGenerator = $urlGenerator;
   }
 
   public function activateVsite (GroupInterface $group) {
@@ -47,10 +44,18 @@ class VsiteContextManager implements VsiteContextManagerInterface {
     return $this->activeGroup;
   }
 
+  public function getActivePurl() {
+    if (!empty($this->activeGroup)) {
+      return trim (\Drupal::service('path.alias_manager')->getAliasByPath ('/group/' . $this->activeGroup->id ()), '/');
+    }
+    return '';
+  }
+
   public function getAbsoluteUrl (string $path = '', GroupInterface $group = null) {
     // TODO: Implement getAbsoluteUrl() method.
     // 1. Generate modifier based on Group given
     // 2. Apply it to path or route
+    $purl = $this->activeGroup->toUrl('canonical', ['base_url' => ''])->toString();
   }
 
   public function getStorage(GroupInterface $group = null) {

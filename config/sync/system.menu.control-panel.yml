@@ -1,0 +1,8 @@
+uuid: c85684cd-e61f-4353-b0a4-9c87a5d782f8
+langcode: en
+status: true
+dependencies: {  }
+id: control-panel
+label: 'Control Panel'
+description: ''
+locked: false

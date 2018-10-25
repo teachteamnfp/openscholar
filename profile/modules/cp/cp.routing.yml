@@ -19,3 +19,10 @@ cp.javascript:
     _title: 'Control Panel: Javascript dummy'
   requirements:
     _permission: 'access control panel'
+cp.build.taxonomy:
+  path: '/cp/build/taxonomy'
+  defaults:
+    _controller: '\Drupal\taxonomy\Controller\TaxonomyController::addForm'
+    _title: 'Add term'
+  requirements:
+    _entity_create_access: 'taxonomy_term:{taxonomy_vocabulary}'

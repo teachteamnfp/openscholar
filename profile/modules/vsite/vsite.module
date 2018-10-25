@@ -1,5 +1,7 @@
 <?php
 
+use Drupal\Core\Render\Element;
+
 /**
  * Implements hook_modules_installed().
  * @param array $modules
@@ -55,4 +57,45 @@ function vsite_views_data_alter(&$data) {
       'id' => 'vsite_current_filter'
     ]
   ];
+}
+
+function vsite_pathauto_alias_alter(&$alias, array &$context) {
+  /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContext */
+  $vsiteContext = \Drupal::service('vsite.context_manager');
+
+  /** @var \Drupal\group\Entity\GroupInterface $group */
+  if ($group = $vsiteContext->getActiveVsite ()) {
+    $purl = $vsiteContext->getActivePurl ();
+    $trimmed_alias = ltrim($alias, '/');
+    $alias = '/'.$purl.'/'.$trimmed_alias;
+  }
+}
+
+function vsite_form_node_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContext */
+  $vsiteContext = \Drupal::service('vsite.context_manager');
+
+  if ($group = $vsiteContext->getActiveVsite ()) {
+    /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
+    $entity = $form_state->getFormObject ()->getEntity();
+    $form_state->set('group', $group);
+    $form_state->set('group_content_enabler', 'group_node:'.$entity->bundle ());
+    foreach (Element::children($form['actions']) as $name) {
+
+      // Skip buttons without submit handlers.
+      if (empty($form['actions'][$name]['#submit'])) {
+        continue;
+      }
+
+      // Skip buttons that do not properly build and save an entity.
+      $submit = $form['actions'][$name]['#submit'];
+      if (!in_array('::submitForm', $submit) || !in_array('::save', $submit)) {
+        continue;
+      }
+
+      // If we are using the wizard, we need to substitute the entity save
+      // handler in order to add the entity to the private temp store.
+      $form['actions'][$name]['#submit'][] = 'group_content_entity_submit';
+    }
+  }
 }

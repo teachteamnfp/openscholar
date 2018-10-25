@@ -12,6 +12,7 @@ module:
   contact: 0
   content_moderation: 0
   contextual: 0
+  cp: 0
   ctools: 0
   datetime: 0
   datetime_range: 0
@@ -27,6 +28,7 @@ module:
   filter: 0
   gnode: 0
   group: 0
+  group_entity: 0
   group_purl: 0
   image: 0
   inline_form_errors: 0
@@ -45,6 +47,7 @@ module:
   path: 0
   purl: 0
   quickedit: 0
+  redirect: 0
   responsive_image: 0
   rest: 0
   search: 0
@@ -55,6 +58,7 @@ module:
   text: 0
   token: 0
   toolbar: 0
+  toolbar_menu: 0
   update: 0
   user: 0
   views_ui: 0

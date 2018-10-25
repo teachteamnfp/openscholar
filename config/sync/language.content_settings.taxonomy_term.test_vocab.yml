@@ -1,0 +1,11 @@
+uuid: 10fc0641-23c8-4af5-b2d2-7e4e560323a4
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.test_vocab
+id: taxonomy_term.test_vocab
+target_entity_type_id: taxonomy_term
+target_bundle: test_vocab
+default_langcode: site_default
+language_alterable: false
