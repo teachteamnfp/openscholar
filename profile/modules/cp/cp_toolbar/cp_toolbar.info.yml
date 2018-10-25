@@ -1,7 +1,0 @@
-name: 'Control Panel: Toolbar'
-type: module
-core: 8.x
-version: 1.0
-dependencies:
-  - toolbar
-  - cp
