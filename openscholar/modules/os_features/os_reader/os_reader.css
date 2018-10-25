@@ -100,11 +100,11 @@
   list-style-type: none;
 }
 
-.page-cp-os-importer-news-manage .importer-title {
+.page-cp-os-importer .importer-title {
    display: inline-block;
    width: 70%;
 }
-.page-cp-os-importer-news-manage .first-region .item-list ul li a.importer-delete {
+.page-cp-os-importer .first-region .item-list ul li a.importer-delete {
    display: inline-block;
    width: 30%;
 }
