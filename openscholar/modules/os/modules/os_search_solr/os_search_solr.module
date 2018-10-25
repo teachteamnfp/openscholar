@@ -1369,7 +1369,7 @@ function os_search_solr_form_boxes_box_form_alter(&$form, &$form_state) {
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function os_search_solr_os_layout_get_alter($context, &$blocks) {
+function os_search_solr_os_layout_get_alter($context_name, &$blocks) {
   // Legacy block replaced with os_search_solr-solr_search_box.
   $blocks = array_filter($blocks, function ($item) {
 
@@ -1383,4 +1383,23 @@ function os_search_solr_os_layout_get_alter($context, &$blocks) {
 
     return FALSE;
   });
+  if ($context_name != 'os_search') {
+    return;
+  }
+  $spaceCurrent = spaces_get_space();
+  $context = context_load($context_name);
+  // Case of os_search context the removed blocks is not listed at unused blocks.
+  // Removed blocks exists in current space controllers context.
+  if (!empty($spaceCurrent->controllers->context->values['original']["os_search:reaction:block"])) {
+    $spaceControllerValuesOsSearch = $spaceCurrent->controllers->context->values['original']["os_search:reaction:block"]['blocks'];
+    $spaceBlockKeys = array_keys($spaceControllerValuesOsSearch);
+    $contextBlockKeys = array_keys($context->reactions['block']['blocks']);
+    $unusedSpaceBlockIds = array_diff($spaceBlockKeys, $contextBlockKeys);
+    // Add to unused block list what we found.
+    foreach ($unusedSpaceBlockIds as $blockId) {
+      $block = $spaceControllerValuesOsSearch[$blockId];
+      $block['region'] = FALSE;
+      $blocks[$blockId] = os_layout_load_block($blockId, TRUE, $block);
+    }
+  }
 }
