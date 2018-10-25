@@ -296,3 +296,11 @@ function os_reader_update_7007() {
   features_revert(array('os_reader' => array('field_instance')));
 }
 
+/**
+ * Add importer_type_nid grouped index to os_feed_item table.
+ */
+function os_reader_update_7008() {
+  if (!db_index_exists('os_feed_item', 'importer_type_nid')) {
+    db_add_index('os_feed_item', 'importer_type_nid', array('importer_type', 'importer_nid'));
+  }
+}
