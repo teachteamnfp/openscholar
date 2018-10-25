@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b937e1042de34ca80c456249f5efbb05",
+    "content-hash": "ea4c6a88849ece943d15e58df7acc49b",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -2414,6 +2414,116 @@
             "time": "2017-07-28T17:11:54+00:00"
         },
         {
+            "name": "drupal/context",
+            "version": "4.0.0-beta2",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/context",
+                "reference": "8.x-4.0-beta2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/context-8.x-4.0-beta2.zip",
+                "reference": "8.x-4.0-beta2",
+                "shasum": "e41bc912e1ec73bc4d08a3cf730dc2405a9213d3"
+            },
+            "require": {
+                "drupal/core": "~8.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-4.x": "4.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-4.0-beta2",
+                    "datestamp": "1505378944",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Beta releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Christoffer Palm",
+                    "homepage": "http://www.oddhill.se/",
+                    "email": "christoffer.palm@oddhill.se",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Steven Jones",
+                    "homepage": "https://www.drupal.org/user/99644"
+                },
+                {
+                    "name": "alex_b",
+                    "homepage": "https://www.drupal.org/user/53995"
+                },
+                {
+                    "name": "boshtian",
+                    "homepage": "https://www.drupal.org/user/1773456"
+                },
+                {
+                    "name": "colan",
+                    "homepage": "https://www.drupal.org/user/58704"
+                },
+                {
+                    "name": "emanaton",
+                    "homepage": "https://www.drupal.org/user/120853"
+                },
+                {
+                    "name": "febbraro",
+                    "homepage": "https://www.drupal.org/user/43670"
+                },
+                {
+                    "name": "fizk",
+                    "homepage": "https://www.drupal.org/user/473174"
+                },
+                {
+                    "name": "hass",
+                    "homepage": "https://www.drupal.org/user/85918"
+                },
+                {
+                    "name": "hefox",
+                    "homepage": "https://www.drupal.org/user/426416"
+                },
+                {
+                    "name": "hyrcan",
+                    "homepage": "https://www.drupal.org/user/26618"
+                },
+                {
+                    "name": "jmiccolis",
+                    "homepage": "https://www.drupal.org/user/31731"
+                },
+                {
+                    "name": "tekante",
+                    "homepage": "https://www.drupal.org/user/640024"
+                },
+                {
+                    "name": "yhahn",
+                    "homepage": "https://www.drupal.org/user/264833"
+                }
+            ],
+            "description": "Manage contextual conditions and reactions for different portions of your site.",
+            "homepage": "https://github.com/oddhill/context",
+            "keywords": [
+                "Drupal",
+                "block",
+                "conditions",
+                "context",
+                "visibility"
+            ],
+            "support": {
+                "source": "https://github.com/oddhill/context",
+                "issues": "https://github.com/oddhill/context/issues",
+                "docs": "https://github.com/oddhill/context"
+            }
+        },
+        {
             "name": "drupal/core",
             "version": "8.6.1",
             "source": {
@@ -2745,6 +2855,64 @@
             }
         },
         {
+            "name": "drupal/entity_reference_revisions",
+            "version": "1.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/entity_reference_revisions",
+                "reference": "8.x-1.6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/entity_reference_revisions-8.x-1.6.zip",
+                "reference": "8.x-1.6",
+                "shasum": "82d515de04d3a75fb677ed82241a6aff3f54ab47"
+            },
+            "require": {
+                "drupal/core": "~8.0"
+            },
+            "require-dev": {
+                "drupal/diff": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.6",
+                    "datestamp": "1539588781",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Frans",
+                    "homepage": "https://www.drupal.org/user/514222"
+                },
+                {
+                    "name": "jeroen.b",
+                    "homepage": "https://www.drupal.org/user/1853532"
+                },
+                {
+                    "name": "miro_dietiker",
+                    "homepage": "https://www.drupal.org/user/227761"
+                }
+            ],
+            "description": "Adds a Entity Reference field type with revision support.",
+            "homepage": "https://www.drupal.org/project/entity_reference_revisions",
+            "support": {
+                "source": "http://cgit.drupalcode.org/entity_reference_revisions"
+            }
+        },
+        {
             "name": "drupal/group",
             "version": "1.0.0-rc2",
             "source": {
@@ -2838,6 +3006,86 @@
                 "issues": "https://www.drupal.org/project/issues/group_purl"
             },
             "time": "2017-08-03T00:19:26+00:00"
+        },
+        {
+            "name": "drupal/paragraphs",
+            "version": "1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/paragraphs",
+                "reference": "8.x-1.3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/paragraphs-8.x-1.3.zip",
+                "reference": "8.x-1.3",
+                "shasum": "24c6d2153127f9d783a03c05baf3b9beb219113f"
+            },
+            "require": {
+                "drupal/core": "~8",
+                "drupal/entity_reference_revisions": "~1.3"
+            },
+            "require-dev": {
+                "drupal/block_field": "~1.0",
+                "drupal/ctools": "3.x-dev",
+                "drupal/diff": "~1.0",
+                "drupal/entity_browser": "1.x-dev",
+                "drupal/entity_usage": "2.x-dev",
+                "drupal/field_group": "~1.0",
+                "drupal/inline_entity_form": "~1.0",
+                "drupal/paragraphs-paragraphs_library": "*",
+                "drupal/replicate": "~1.0",
+                "drupal/search_api": "~1.0",
+                "drupal/search_api_db": "*"
+            },
+            "suggest": {
+                "drupal/entity_browser": "Recommended for an improved user experience when using the Paragraphs library module"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.3",
+                    "datestamp": "1527502684",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Berdir",
+                    "homepage": "https://www.drupal.org/user/214652"
+                },
+                {
+                    "name": "Frans",
+                    "homepage": "https://www.drupal.org/user/514222"
+                },
+                {
+                    "name": "Primsi",
+                    "homepage": "https://www.drupal.org/user/282629"
+                },
+                {
+                    "name": "jeroen.b",
+                    "homepage": "https://www.drupal.org/user/1853532"
+                },
+                {
+                    "name": "miro_dietiker",
+                    "homepage": "https://www.drupal.org/user/227761"
+                }
+            ],
+            "description": "Enables the creation of Paragraphs entities.",
+            "homepage": "https://www.drupal.org/project/paragraphs",
+            "support": {
+                "source": "http://cgit.drupalcode.org/paragraphs"
+            }
         },
         {
             "name": "drupal/pathauto",
@@ -3053,6 +3301,67 @@
             "homepage": "https://www.drupal.org/project/token",
             "support": {
                 "source": "http://cgit.drupalcode.org/token"
+            }
+        },
+        {
+            "name": "drupal/video_embed_field",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/video_embed_field",
+                "reference": "8.x-2.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/video_embed_field-8.x-2.0.zip",
+                "reference": "8.x-2.0",
+                "shasum": "e864f090b3cb9405376ca324d81ace83613e2019"
+            },
+            "require": {
+                "drupal/core": "*"
+            },
+            "require-dev": {
+                "drupal/colorbox": "*",
+                "drupal/media_entity": "*",
+                "drupal/media_entity_embeddable_video": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-2.x": "2.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.x",
+                    "datestamp": "1523338084",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    },
+                    "package": "Field types"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Sam152",
+                    "homepage": "https://www.drupal.org/user/1485048"
+                },
+                {
+                    "name": "jec006",
+                    "homepage": "https://www.drupal.org/user/855980"
+                },
+                {
+                    "name": "plopesc",
+                    "homepage": "https://www.drupal.org/user/282415"
+                }
+            ],
+            "description": "A pluggable field type for storing videos from external video hosts such as Vimeo and YouTube.",
+            "homepage": "https://www.drupal.org/project/video_embed_field",
+            "support": {
+                "source": "http://cgit.drupalcode.org/video_embed_field"
             }
         },
         {
@@ -8602,7 +8911,8 @@
     "stability-flags": {
         "drupal/purl": 20,
         "drupal/group_purl": 20,
-        "drupal/config_sync": 15
+        "drupal/config_sync": 15,
+        "drupal/context": 10
     },
     "prefer-stable": true,
     "prefer-lowest": false,
