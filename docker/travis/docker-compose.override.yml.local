@@ -13,5 +13,5 @@ services:
       - "3306:3306"
     volumes:
       # override mysql config if necessary.
-      - ./docker/build/mysql/server.cnf:/etc/mysql/conf.d/server.cnf
+      - ./docker/travis/mysql/server.cnf:/etc/mysql/conf.d/server.cnf
       - ./docker/dump:/docker-entrypoint-initdb.d
