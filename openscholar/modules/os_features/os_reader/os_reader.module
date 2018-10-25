@@ -141,7 +141,6 @@ function os_reader_views_query_alter(&$view, views_plugin_query_default &$query)
   unset($query->relationships['og_membership_node']);
   unset($query->relationships['node_os_feed_item']);
   $gid = 0;
-
   foreach ($query->where[1]['conditions'] as $i => &$condition) {
     if (is_object($condition['field'])) {
       continue;
@@ -156,7 +155,6 @@ function os_reader_views_query_alter(&$view, views_plugin_query_default &$query)
   }
   $preQuery = db_select('og_membership', 'om');
   $preQuery->fields('om', ['etid']);
-
   $preQuery->condition('entity_type', 'node');
   $preQuery->condition('group_type', 'node');
   $preQuery->condition('gid', $gid);
