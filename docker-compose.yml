@@ -1,0 +1,45 @@
+version: "2"
+
+services:
+  mariadb:
+    image: wodby/mariadb:10.1-2.3.3
+    ports:
+      - "33208:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: osd8dev
+      MYSQL_USER: osd8dev
+      MYSQL_PASSWORD: drupal
+#    volumes:
+#      - ./mariadb-init:/docker-entrypoint-initdb.d # Place init .sql file(s) here.
+#      - /path/to/mariadb/data/on/host:/var/lib/mysql # I want to manage volumes manually.
+
+  php:
+    image: wodby/drupal-php:7.2-4.6.3
+    environment:
+      PHP_SENDMAIL_PATH: /usr/sbin/sendmail -t -i -S mailhog:1025
+      PHP_MAX_INPUT_VARS: 10000
+      PHP_XDEBUG: 1
+      PHP_XDEBUG_REMOTE_AUTOSTART: "0"
+      PHP_XDEBUG_DEFAULT_ENABLE: 0
+      PHP_XDEBUG_REMOTE_CONNECT_BACK: 0         # Disable this if not on MAC - This is needed to respect remote.host setting below
+      PHP_XDEBUG_REMOTE_HOST: "10.254.254.254"  # Disable this if not on MAC - You will also need to 'sudo ifconfig lo0 alias 10.254.254.254'
+    volumes:
+      - ./:/var/www/html:cached
+
+  apache:
+    image: jaybeaton/drupal-apache:2.4-1.0.3
+    depends_on:
+      - php
+    environment:
+      APACHE_LOG_LEVEL: debug
+      APACHE_BACKEND_HOST: php
+      APACHE_SERVER_ROOT: /var/www/html/web
+      APACHE_PRODUCTION_URL: http://d8.theopenscholar.com
+      APACHE_PRODUCTION_IMAGE_REWRITE: http://d8.theopenscholar.com/%1default%2
+    volumes:
+      - ./:/var/www/html:cached
+    labels:
+      - 'traefik.backend=osd8_apache_1'
+      - 'traefik.port=80'
+      - 'traefik.frontend.rule=Host:home.d8.theopenscholar.com'
