@@ -751,6 +751,7 @@ function vsite_vocab_html_cut($text, $max_length)
  */
 function vsite_vocab_block_view_alter(&$array, $block) {
   if (isset($array['content']['#facet']) && $array['content']['#facet']['name'] == 'sm_og_vocabulary') {
+    module_load_include('inc', 'vsite_vocab', 'includes/taxonomy');
     $vocabs = vsite_vocab_get_vocabularies ();
     $new_content = array();
     $selected = array_keys($array['content']['sm_og_vocabulary']);
