@@ -67,6 +67,7 @@ function os_reader_schema() {
     'primary key' => array('id'),
     'indexes' => array(
       'importer_type_nid' => array('importer_type', 'importer_nid'),
+      'importer_nid' => array('importer_nid'),
     ),
   );
 
