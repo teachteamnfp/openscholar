@@ -67,6 +67,7 @@ function os_reader_schema() {
     'primary key' => array('id'),
     'indexes' => array(
       'importer_type_nid' => array('importer_type', 'importer_nid'),
+      'importer_nid' => array('importer_nid'),
     ),
   );
 
@@ -305,5 +306,14 @@ function os_reader_update_7007() {
 function os_reader_update_7008() {
   if (!db_index_exists('os_feed_item', 'importer_type_nid')) {
     db_add_index('os_feed_item', 'importer_type_nid', array('importer_type', 'importer_nid'));
+  }
+}
+
+/**
+ * Add importer_nid index to os_feed_item table.
+ */
+function os_reader_update_7009() {
+  if (!db_index_exists('os_feed_item', 'importer_nid')) {
+    db_add_index('os_feed_item', 'importer_nid', array('importer_nid'));
   }
 }
