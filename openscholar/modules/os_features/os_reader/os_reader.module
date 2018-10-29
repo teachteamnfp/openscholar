@@ -220,7 +220,9 @@ function os_reader_get_importers_list($feed_importer_nid = NULL, $type) {
         'data' => '<div class="importer-title">' . l($importer->title, 'cp/os-importer/' . $type . '/manage/' . $importer->nid) . '</div>',
       );
     }
-    $item['data'] .= l(t('Delete'), 'node/' . $importer->nid . '/delete', ['attributes' => ['class' => ['importer-delete']], 'query' => ['destination' => 'cp/os-importer/news/manage']]);
+    $path = current_path();
+    $destination = empty($importer->nid) ? $path : str_replace('/' . $importer->nid, '', $path);
+    $item['data'] .= l(t('Delete'), 'node/' . $importer->nid . '/delete', ['attributes' => ['class' => ['importer-delete']], 'query' => ['destination' => $destination]]);
     $items[] = $item;
   }
 
@@ -761,4 +763,19 @@ function os_reader_cron() {
   // Delete the feed items and save the last one we processed.
   os_reader_feed_item_delete_multiple(array_keys($results));
   variable_set('os_reader_last_feed_item', end($results)->id);
+}
+
+/**
+ * Implements hook_node_delete().
+ */
+function os_reader_node_delete($node) {
+  switch ($node->type) {
+    case 'feed_importer':
+    case 'blog_import':
+      // Delete all related feed item
+      $query = db_delete('os_feed_item');
+      $query->condition('importer_nid', $node->nid);
+      $query->execute();
+      break;
+  }
 }
