@@ -307,3 +307,12 @@ function os_reader_update_7008() {
     db_add_index('os_feed_item', 'importer_type_nid', array('importer_type', 'importer_nid'));
   }
 }
+
+/**
+ * Add importer_nid index to os_feed_item table.
+ */
+function os_reader_update_7009() {
+  if (!db_index_exists('os_feed_item', 'importer_nid')) {
+    db_add_index('os_feed_item', 'importer_nid', array('importer_nid'));
+  }
+}
