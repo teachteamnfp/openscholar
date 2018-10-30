@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e211821f633f5f4b4dbce241f791b3f2",
+    "content-hash": "65209417a7745c368ea2f7a3ee921768",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -4199,6 +4199,23 @@
             ],
             "description": "Highlight PHP code in terminal",
             "time": "2018-09-29T18:48:56+00:00"
+        },
+        {
+            "name": "kenwheeler/slick",
+            "version": "master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kenwheeler/slick.git",
+                "reference": "master"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/kenwheeler/slick/archive/master.zip",
+                "reference": "master",
+                "shasum": null
+            },
+            "type": "drupal-library",
+            "time": "2018-04-17T19:49:13+00:00"
         },
         {
             "name": "league/container",
@@ -9163,7 +9180,8 @@
         "drupal/purl": 20,
         "drupal/group_purl": 20,
         "drupal/config_sync": 15,
-        "drupal/context": 10
+        "drupal/context": 10,
+        "kenwheeler/slick": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
