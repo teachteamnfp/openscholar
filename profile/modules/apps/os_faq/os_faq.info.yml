@@ -1,0 +1,10 @@
+name: 'OpenScholar Frequently Asked Questions'
+type: module
+description: 'Manages configuration of questions for a FAQ page.'
+package: FAQ
+dependencies:
+  - node
+  - media
+  - views_accordion
+core: '8.x'
+project: 'os_faq'

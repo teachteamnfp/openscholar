@@ -1,0 +1,28 @@
+uuid: c93383d8-f269-4435-9ff6-be860eaf8515
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_faq_files
+    - media.type.file
+    - node.type.faq
+id: node.faq.field_faq_files
+field_name: field_faq_files
+entity_type: node
+bundle: faq
+label: Files
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      file: file
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
