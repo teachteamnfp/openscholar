@@ -1,0 +1,7 @@
+block.block.*.third_party.os_widgets:
+  type: mapping
+  label: OS widgets third party settings
+  mapping:
+    classes:
+      type: string
+      label: Render settings

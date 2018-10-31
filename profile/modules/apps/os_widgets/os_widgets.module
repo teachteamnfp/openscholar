@@ -1,0 +1,77 @@
+<?php
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\block\Entity\Block;
+use Drupal\Component\Utility\Html;
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function os_widgets_form_block_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if (\Drupal::currentUser()->hasPermission('administer block classes')) {
+
+    /** @var \Drupal\block\BlockInterface $block */
+    $block = $form_state->getFormObject()->getEntity();
+    $block_content_id = $block->getPlugin()->getDerivativeId();
+    if (empty($block_content_id)) {
+      return;
+    }
+    $block_content = \Drupal::entityTypeManager()->getStorage('block_content')->loadByProperties(['uuid' => $block_content_id]);
+    $blockContentBundle = reset($block_content)->bundle();
+    if ($blockContentBundle != 'featured_posts') {
+      return;
+    }
+    // This will automatically be saved in the third party settings.
+    $form['third_party_settings']['#tree'] = TRUE;
+    $form['third_party_settings']['os_widgets']['display_style'] = [
+      '#type' => 'select',
+      '#title' => t('Display style'),
+      '#options' => [
+        'default' => t('Full Post'),
+        'teaser' => t('Teaser'),
+        'title' => t('Title'),
+      ],
+      '#default_value' => $block->getThirdPartySetting('os_widgets', 'display_style'),
+    ];
+    $form['third_party_settings']['os_widgets']['is_styled'] = [
+      '#type' => 'checkbox',
+      '#title' => t('Is styled'),
+      '#description' => t('If checked, the markup will got an extra class name "styled"'),
+      '#default_value' => $block->getThirdPartySetting('os_widgets', 'is_styled'),
+    ];
+    $form['third_party_settings']['os_widgets']['is_random'] = [
+      '#type' => 'checkbox',
+      '#title' => t('Display single random post'),
+      '#description' => t('Displaying a single random post instead of a list of posts (consider cache layer)'),
+      '#default_value' => $block->getThirdPartySetting('os_widgets', 'is_random'),
+    ];
+
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function os_widgets_preprocess_block(&$variables) {
+  // Blocks coming from page manager widget does not have id.
+  if (!empty($variables['elements']['#id'])) {
+    $block = Block::load($variables['elements']['#id']);
+    if ($block && $display_style = $block->getThirdPartySetting('os_widgets', 'display_style')) {
+      // TODO: continue with this implementation
+      $variables['attributes']['class'][] = Html::cleanCssIdentifier($display_style);
+    }
+    if ($block && $block->getThirdPartySetting('os_widgets', 'is_styled')) {
+      $variables['attributes']['class'][] = 'styled';
+    }
+    if ($block && $block->getThirdPartySetting('os_widgets', 'is_random')) {
+      $children = \Drupal\Core\Render\Element::children($variables['content']['field_featured_posts']);
+      $displayedDelta = array_rand($children);
+      foreach ($children as $delta) {
+        if ($displayedDelta != $delta) {
+          $variables['content']['field_featured_posts'][$delta]['#type'] = 'hidden';
+        }
+      }
+    }
+  }
+}
+
