@@ -741,6 +741,14 @@ function _os_process_node_links_comment_add_class(&$vars) {
 }
 
 /**
+ * Override or insert variables into the maintenance page template.
+ */
+function os_preprocess_maintenance_page(&$vars) {
+  // Add a custom header when on the maintenance page.
+  drupal_add_http_header('X-OpenScholar-Maintenance', true);
+}
+
+/**
  * Implements hook_preprocess_HOOK() for page.tpl.php.
  */
 function os_preprocess_page(&$vars) {
