@@ -179,8 +179,6 @@ function os_sv_list_query_sv_list_biblio_alter(&$query) {
     }
   }
 
-  // Order by biblio_date.
-  $query->orderBy('b.biblio_date', 'DESC');
   // Lastly order by created.
   $query->orderBy('node.created', 'DESC');
 }
