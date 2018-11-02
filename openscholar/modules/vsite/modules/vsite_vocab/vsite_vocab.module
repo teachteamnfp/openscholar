@@ -740,3 +740,27 @@ function vsite_vocab_html_cut($text, $max_length)
     $result = $result_trim . '<span class="morecontent"><span class="morechildren">' . str_replace($result_trim, '', $text) .  '</span></span>';
     return $result;
 }
+
+/**
+ * Implements hook_block_view_alter().
+ *
+ * Sort the vocab facet by vocab weight.`
+ *
+ * @param $array
+ * @param $block
+ */
+function vsite_vocab_block_view_alter(&$array, $block) {
+  if (isset($array['content']['#facet']) && $array['content']['#facet']['name'] == 'sm_og_vocabulary' &&
+    empty(variable_get('os_search_solr_include_subsites', FALSE)) && empty(variable_get('os_search_solr_search_sites', array()))) {
+    module_load_include('inc', 'vsite_vocab', 'includes/taxonomy');
+    $vocabs = vsite_vocab_get_vocabularies ();
+    $new_content = array();
+    $selected = array_keys($array['content']['sm_og_vocabulary']);
+    foreach ($vocabs as $v) {
+      if (in_array($v->machine_name, $selected)) {
+        $new_content[$v->machine_name] = $array['content']['sm_og_vocabulary'][$v->machine_name];
+      }
+    }
+    $array['content']['sm_og_vocabulary'] = $new_content;
+  }
+}
