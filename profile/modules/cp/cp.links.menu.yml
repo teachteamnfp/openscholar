@@ -1,23 +1,60 @@
-cp.dummy:
-  title: 'Control Panel Dummy'
-  route_name: cp.dummy
-  weight: 10
-  menu_name: control-panel
-cp.javascript:
-  title: 'Not a real link'
-  weight: 11
-  url: 'internal:##'       # The only way to make non-clickable menu headings work. Route <nolink> doesn't render a link,
-  menu_name: control-panel # which is required for the menu toggling to work, and route <none> leaves the link clickable
-  options:
-    attributes:
-      angular-element: ''
-cp.build:
-  title: 'Build'
+#cp.dummy:
+#  title: 'Control Panel Dummy'
+#  route_name: cp.dummy
+#  weight: 10
+#  menu_name: control-panel
+#cp.javascript:
+#  title: 'Not a real link'
+#  weight: 11
+#  url: 'internal:##'       # The only way to make non-clickable menu headings work. Route <nolink> doesn't render a link,
+#  menu_name: control-panel # which is required for the menu toggling to work, and route <none> leaves the link clickable
+#  options:
+#    attributes:
+#      angular-element: ''
+#cp.build.taxonomy:
+#  title: 'Taxonomy'
+#  route_name: cp.build.taxonomy
+#  weight: 0
+#  parent: cp.build
+cp.content:
+  title: 'Content'
   url: 'internal:##'
-  weight: 12
   menu_name: control-panel
-cp.build.taxonomy:
-  title: 'Taxonomy'
-  route_name: cp.build.taxonomy
   weight: 0
-  parent: cp.build
+cp.content.add:
+  title: 'Add'
+  url: 'internal:##'
+  parent: cp.content
+cp.content.add.link:
+  title: 'Link'
+  route_name: node.add
+  route_parameters: { node_type: 'link'}
+  parent: cp.content.add
+cp.content.import:
+  title: 'Import'
+  url: 'internal:##'
+  parent: cp.content
+cp.content.browse:
+  title: 'Browse'
+  url: 'internal:##'
+  parent: cp.content
+cp.menu:
+  title: 'Menus'
+  url: 'internal:##'
+  weight: 1
+  menu_name: control-panel
+cp.appearance:
+  title: 'Appearance'
+  url: 'internal:##'
+  weight: 2
+  menu_name: control-panel
+cp.taxonomy:
+  title: 'Taxonomy'
+  url: 'internal:##'
+  weight: 3
+  menu_name: control-panel
+cp.settings:
+  title: 'Settings'
+  url: 'internal:##'
+  weight: 4
+  menu_name: control-panel
