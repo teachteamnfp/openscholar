@@ -1,0 +1,10 @@
+<?php
+
+use Drupal\node\NodeInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Access\AccessResultNeutral;
+use Drupal\Core\Access\AccessResultForbidden;
+
+function os_app_access_node_access(NodeInterface $node, $op, AccountInterface $account) {
+
+}
