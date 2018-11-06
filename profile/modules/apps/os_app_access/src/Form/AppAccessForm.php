@@ -9,6 +9,7 @@
 namespace Drupal\os_app_access\Form;
 
 
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -169,6 +170,8 @@ class AppAccessForm extends ConfigFormBase {
     }
 
     $app_access->save(true);
+    Cache::invalidateTags (['app:access_changed', 'config:system.menu.main']);
+    drupal_set_message('Invalidating config:system.menu.main');
 
     parent::submitForm ($form, $form_state);
   }
