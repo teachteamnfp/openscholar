@@ -317,3 +317,24 @@ function os_reader_update_7009() {
     db_add_index('os_feed_item', 'importer_nid', array('importer_nid'));
   }
 }
+
+/**
+ * Delete orphan os feed items.
+ */
+function os_reader_update_7010() {
+  $query = db_select('os_feed_item', 'ofi');
+  $query->distinct();
+  $query->fields('ofi', ['importer_nid']);
+  $query->leftJoin('node', 'n', 'n.nid = ofi.importer_nid');
+  $query->isNull('n.nid');
+  $result = $query->execute();
+  $nids = $result->fetchAllKeyed();
+
+  if (count($nids)) {
+    // Delete all related feed item
+    $query = db_delete('os_feed_item');
+    $query->condition('importer_nid', array_keys($nids));
+    $query->execute();
+  }
+  drupal_set_message(t('%count orphan os feed items has been deleted.', ['%count' => count($nids)]));
+}
