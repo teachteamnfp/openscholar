@@ -153,10 +153,10 @@ projects[file_entity][patch][] = "http://drupal.org/files/file_entity.1834902-3.
 projects[file_entity][patch][] = "http://drupal.org/files/filter-by-file-schema-type-1881356-12.patch"
 
 projects[filefield_paths][subdir] = "contrib"
-; projects[filefield_paths][version] = 1.0-beta3+2-dev
-projects[filefield_paths][download][type] = git
-projects[filefield_paths][download][branch] = 7.x-5.x
-projects[filefield_paths][download][revision] = 84fb637
+projects[filefield_paths][version] = 1.1
+;projects[filefield_paths][download][type] = git
+;projects[filefield_paths][download][branch] = 7.x-5.x
+;projects[filefield_paths][download][revision] = 84fb637
 
 projects[flag][subdir] = "contrib"
 projects[flag][version] = 3.9
