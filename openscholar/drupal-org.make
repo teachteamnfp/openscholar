@@ -154,9 +154,6 @@ projects[file_entity][patch][] = "http://drupal.org/files/filter-by-file-schema-
 
 projects[filefield_paths][subdir] = "contrib"
 projects[filefield_paths][version] = 1.1
-;projects[filefield_paths][download][type] = git
-;projects[filefield_paths][download][branch] = 7.x-5.x
-;projects[filefield_paths][download][revision] = 84fb637
 
 projects[flag][subdir] = "contrib"
 projects[flag][version] = 3.9
