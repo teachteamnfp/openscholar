@@ -27,7 +27,6 @@ class LinksApp extends PluginBase implements AppInterface {
    * @inheritDoc
    */
   public function getTitle () {
-    dpm($this->pluginDefinition);
     return $this->pluginDefinition['title'];
   }
 }
