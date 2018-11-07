@@ -107,6 +107,6 @@ class AppAccess extends AccessPluginBase {
    * @inheritDoc
    */
   public function alterRouteDefinition (Route $route) {
-    $route->setRequirement ('_custom_access', '\Drupal\os_app_access\Access\AppAccess::access');
+    $route->setRequirement ('_custom_access', '\Drupal\os_app_access\Access\AppAccess::accessFromRouteMatch');
   }
 }
