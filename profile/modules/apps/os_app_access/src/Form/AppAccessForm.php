@@ -171,7 +171,6 @@ class AppAccessForm extends ConfigFormBase {
 
     $app_access->save(true);
     Cache::invalidateTags (['app:access_changed', 'config:system.menu.main']);
-    drupal_set_message('Invalidating config:system.menu.main');
 
     parent::submitForm ($form, $form_state);
   }
