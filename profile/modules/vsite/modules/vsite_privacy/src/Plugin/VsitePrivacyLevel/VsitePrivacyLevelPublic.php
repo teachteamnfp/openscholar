@@ -10,7 +10,8 @@ use Drupal\Core\Session\AccountInterface;
  * @VsitePrivacyLevel(
  *   title = @Translation("Public"),
  *   id = "public",
- *   description = @Translation("Accessible to everyone.")
+ *   description = @Translation("Accessible to everyone."),
+ *   weight = -1000
  * )
  */
 class VsitePrivacyLevelPublic extends PluginBase implements VsitePrivacyLevelInterface {
