@@ -2,3 +2,8 @@ services:
   vsite.privacy.manager:
     class: Drupal\vsite_privacy\Plugin\VsitePrivacyLevelManager
     parent: default_plugin_manager
+  vsite.privacy.accessCheck:
+    class: Drupal\vsite_privacy\VsitePrivacyAccessCheck
+    arguments: ['@config.factory', '@vsite.privacy.manager']
+    tags:
+      - { name: event_subscriber }
