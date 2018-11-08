@@ -3244,8 +3244,8 @@ function os_events_date_display_range($variables) {
     ));
 
     // e.g., Aug 18 to Aug 22
-    $date1 = date('M j', strtotime($variables['date1']));
-    $date2 = date('M j', strtotime($variables['date2']));
+    $date1 = format_date(strtotime($variables['dates']['value']['formatted_iso']), 'custom', 'M j');
+    $date2 = format_date(strtotime($variables['dates']['value2']['formatted_iso']), 'custom', 'M j');
     $start_date = '<span class="date-display-start"' . drupal_attributes($attributes_start) . '>' . $date1 . '</span>';
     $end_date = '<span class="date-display-end"' . drupal_attributes($attributes_end) . '>' . $date2 . $timezone . '</span>, ';
 
