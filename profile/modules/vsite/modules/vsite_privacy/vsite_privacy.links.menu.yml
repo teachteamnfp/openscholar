@@ -1,0 +1,4 @@
+cp.settings.privacy:
+  route_name: cp.settings.privacy
+  title: 'Privacy'
+  parent: cp.settings
