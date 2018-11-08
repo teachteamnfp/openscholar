@@ -45,7 +45,7 @@ class AppAccess implements AccessInterface {
       $result = AccessResult::allowed ();
     }
     if ($access_level == AppAccessLevels::PRIVATE) {
-      $result = AccessResult::allowedIfHasPermission ($account, 'Access private apps');
+      $result = AccessResult::allowedIfHasPermission ($account, 'access private apps');
       if ($result->isNeutral ()) {
         $result = AccessResult::forbidden ();
       }
