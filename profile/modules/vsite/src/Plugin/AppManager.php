@@ -41,6 +41,7 @@ class AppManager extends DefaultPluginManager implements AppManangerInterface {
     if ($app) {
       return $app;
     }
-    throw new PluginNotFoundException('app:bundle:'.$bundle);
+
+    return '';
   }
 }
