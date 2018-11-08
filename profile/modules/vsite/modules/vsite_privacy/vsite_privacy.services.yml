@@ -1,0 +1,4 @@
+services:
+  vsite.privacy.manager:
+    class: Drupal\vsite_privacy\Plugin\VsitePrivacyLevelManager
+    parent: default_plugin_manager
