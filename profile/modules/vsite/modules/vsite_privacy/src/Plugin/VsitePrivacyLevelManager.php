@@ -28,6 +28,18 @@ class VsitePrivacyLevelManager extends DefaultPluginManager implements VsitePriv
     $defs = $this->getDefinitions ();
     $options = [];
 
+    uasort($defs, function ($a, $b) {
+      if ($a['weight'] == $b['weight']) {
+        return 0;
+      }
+      elseif ($a['weight'] > $b['weight']) {
+        return 1;
+      }
+      else {
+        return -1;
+      }
+    });
+
     foreach ($defs as $d) {
       /** @var TranslatableMarkup $title */
       $title = $d['title'];
