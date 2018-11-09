@@ -18,26 +18,16 @@ class GroupEntityDeriver extends DeriverBase {
    */
   public function getDerivativeDefinitions($base_plugin_definition) {
     $entity_types = [ // @todo: Make this array configurable
-      'media' => 'Drupal\media\Entity\MediaType', // this key is found in the annotation for the entity_type, bundle_of
-      'block_content' => 'Drupal\block_content\Entity\BlockContentType',
+      'media', // this key is found in the annotation for the entity_type, bundle_of
+      'block_content',
+      'taxonomy_term'
     ];
-    foreach ($entity_types as $type_id => $type) {
-
-      if (class_exists($type)) {
-        /**
-         * @var $name string
-         * @var $bundle ConfigEntityBundleBase
-         */
-        foreach ($type::loadMultiple() as $name => $bundle) {
-          $label = $bundle->label();
-          $this->derivatives[$type_id.'-'.$name] = [
-              'entity_type_id' => $type_id,
-              'entity_bundle' => $name,
-              'label' => t('Group @type (@bundle)', ['@type' => $type_id, '@bundle' => $label]),
-              'description' => t('Adds %type - %bundle content to groups both publicly and privately.', ['%type' => $type_id, '%bundle' => $label]),
-            ] + $base_plugin_definition;
-        }
-      }
+    foreach ($entity_types as $type_id) {
+      $this->derivatives[$type_id] = [
+        'entity_type_id' => $type_id,
+        'label' => t('Group @type', ['@type' => $type_id]),
+        'description' => t('Adds %type content to groups both publicly and privately.', ['%type' => $type_id]),
+      ] + $base_plugin_definition;
     }
 
     return $this->derivatives;
