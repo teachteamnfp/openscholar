@@ -102,7 +102,7 @@ function vsite_form_node_form_alter(&$form, FormStateInterface $form_state, $for
 }
 
 function vsite_form_alter(&$form, FormStateInterface $formState, $form_id) {
-  if ($form = $formState->getFormObject () instanceof \Drupal\Core\Entity\EntityFormInterface) {
+  if ($formState->getFormObject () instanceof \Drupal\Core\Entity\EntityFormInterface) {
 
     /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContext */
     $vsiteContext = \Drupal::service('vsite.context_manager');
