@@ -1,0 +1,7 @@
+<?php
+
+function cp_toolbar_alter(&$toolbar) {
+  if (!\Drupal::currentUser ()->hasPermission ('access administration toolbar')) {
+    unset($toolbar['administration']);
+  }
+}
