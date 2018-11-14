@@ -18,3 +18,4 @@ permissions:
   - 'update any group_node:landing_page entity'
   - 'view group_node:landing_page entity'
   - 'view unpublished group_node:landing_page entity'
+  - 'vsite access group_node overview'
