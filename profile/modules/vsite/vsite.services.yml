@@ -39,12 +39,6 @@ services:
       - '@purl.modifier_index'
       - '@entity_type.manager'
       - '@vsite.context_manager'
-  vsite.group_id_listener:
-    class: Drupal\vsite\Listener\VsiteGroupIdListener
-    arguments:
-      - '@group_purl.context_provider'
-    tags:
-      - { name: event_subscriber }
   access_check.group.permission:
     class: 'Drupal\vsite\Access\VsiteGroupPermissionAccessCheck'
     arguments:
