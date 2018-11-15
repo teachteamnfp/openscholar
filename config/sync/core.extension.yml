@@ -1,5 +1,6 @@
 module:
   big_pipe: 0
+  blazy: 0
   block: 0
   block_content: 0
   block_place: 0
@@ -46,6 +47,7 @@ module:
   node: 0
   options: 0
   os_links: 0
+  os_media_gallery: 0
   page_cache: 0
   path: 0
   purl: 0
@@ -55,6 +57,7 @@ module:
   rest: 0
   search: 0
   serialization: 0
+  slick: 0
   system: 0
   taxonomy: 0
   telephone: 0
