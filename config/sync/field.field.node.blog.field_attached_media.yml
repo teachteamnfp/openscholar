@@ -1,0 +1,28 @@
+uuid: cb7f54df-bd26-4eca-9274-ba7f799bbaf8
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_attached_media
+    - media.type.video
+    - node.type.blog
+id: node.blog.field_attached_media
+field_name: field_attached_media
+entity_type: node
+bundle: blog
+label: 'Attached Media'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      video: video
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
