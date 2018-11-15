@@ -1,9 +1,10 @@
-uuid: b3bbe5b3-4974-429d-b259-9f9ac9444f51
+uuid: ce4ae95b-ba01-496e-a3a6-b1df8ccf71db
 langcode: en
 status: true
 dependencies:
   config:
     - block_content.type.media_gallery
+    - core.entity_view_mode.block_content.grid
     - field.field.block_content.media_gallery.body
     - field.field.block_content.media_gallery.field_gallery_format
     - field.field.block_content.media_gallery.field_gallery_media
@@ -11,10 +12,10 @@ dependencies:
   module:
     - image
     - text
-id: block_content.media_gallery.default
+id: block_content.media_gallery.grid
 targetEntityType: block_content
 bundle: media_gallery
-mode: default
+mode: grid
 content:
   body:
     label: hidden

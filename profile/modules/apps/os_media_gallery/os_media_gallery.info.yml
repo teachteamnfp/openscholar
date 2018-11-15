@@ -1,0 +1,7 @@
+name: Media gallery
+description: 'Media gallery development.'
+type: module
+core: 8.x
+dependencies:
+  - block
+  - node

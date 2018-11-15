@@ -1,0 +1,102 @@
+uuid: 75c9bd20-efc1-4da5-a3ab-4882cc862bbc
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.media_gallery
+    - core.entity_view_mode.block_content.carousel
+    - field.field.block_content.media_gallery.body
+    - field.field.block_content.media_gallery.field_gallery_format
+    - field.field.block_content.media_gallery.field_gallery_media
+  module:
+    - slick
+    - text
+id: block_content.media_gallery.carousel
+targetEntityType: block_content
+bundle: media_gallery
+mode: carousel
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_gallery_media:
+    weight: 1
+    label: above
+    settings:
+      style: ''
+      optionset: slick_media_gallery
+      optionset_thumbnail: ''
+      skin: default
+      skin_thumbnail: ''
+      image_style: large
+      thumbnail_style: ''
+      responsive_image_style: ''
+      thumbnail_effect: ''
+      thumbnail_position: ''
+      media_switch: ''
+      ratio: ''
+      grid: null
+      grid_medium: null
+      grid_small: null
+      visible_items: null
+      layout: ''
+      thumbnail_caption: ''
+      caption:
+        title: title
+        alt: '0'
+      cache: 0
+      sizes: ''
+      breakpoints:
+        xs:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+        sm:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+        md:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+        lg:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+        xl:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+      current_view_mode: carousel
+      background: false
+      grid_header: ''
+      preserve_keys: false
+      override: false
+      overridables:
+        arrows: '0'
+        autoplay: '0'
+        dots: '0'
+        draggable: '0'
+        infinite: '0'
+        mouseWheel: '0'
+        randomize: '0'
+        variableWidth: '0'
+      skin_arrows: ''
+      skin_dots: ''
+      iframe_lazy: true
+      icon: ''
+      view_mode: ''
+      box_caption: ''
+      box_caption_custom: ''
+      box_style: ''
+      box_media_style: ''
+    third_party_settings: {  }
+    type: slick_image
+    region: content
+hidden:
+  field_gallery_format: true
+  langcode: true

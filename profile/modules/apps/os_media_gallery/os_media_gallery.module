@@ -1,0 +1,33 @@
+<?php
+
+use Drupal\block\Entity\Block;
+
+/**
+ * Implements hook_preprocess_block().
+ */
+function os_media_gallery_preprocess_block(&$variables) {
+  // Blocks coming from page manager widget does not have id.
+  if (!empty($variables['elements']['#id'])) {
+    /** @var Block $block */
+    $block = Block::load($variables['elements']['#id']);
+    $block_content_id = $block->getPlugin()->getDerivativeId();
+    if (empty($block_content_id)) {
+      return;
+    }
+    $block_content = \Drupal::entityTypeManager()->getStorage('block_content')->loadByProperties(['uuid' => $block_content_id]);
+    if (empty($block_content)) {
+      return;
+    }
+    $blockContentBundle = reset($block_content)->bundle();
+    if ($blockContentBundle != 'media_gallery') {
+      return;
+    }
+    /** @var \Drupal\block_content\Entity\BlockContent $blockContent */
+    $blockContent = $variables['content']['#block_content'];
+    $galleryFormatValues = $blockContent->get('field_gallery_format')->getValue();
+    $galleryFormatValue = $galleryFormatValues[0]['value'];
+    $galleryMediaField = $blockContent->get('field_gallery_media');
+    // @TODO: Test the cache layer, might be need to invalidate
+    $variables['content']['field_gallery_media'] = $galleryMediaField->view($galleryFormatValue);
+  }
+}
