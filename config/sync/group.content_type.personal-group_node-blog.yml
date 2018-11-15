@@ -1,0 +1,19 @@
+uuid: 409f581b-4829-42f2-b92e-501376870f5a
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.personal
+    - node.type.blog
+  module:
+    - gnode
+    - node
+id: personal-group_node-blog
+label: 'Personal: Group node (Blog)'
+description: 'Adds <em class="placeholder">Blog</em> content to groups both publicly and privately.'
+group_type: personal
+content_plugin: 'group_node:blog'
+plugin_config:
+  group_cardinality: 0
+  entity_cardinality: 1
+  use_creation_wizard: true
