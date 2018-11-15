@@ -40,7 +40,10 @@ class VsiteContextManager implements VsiteContextManagerInterface {
     // TODO: Implement activateRoles() method.
   }
 
-  public function getActiveVsite () {
+  /**
+   * @return GroupInterface
+   */
+  public function getActiveVsite () : ?GroupInterface {
     return $this->activeGroup;
   }
 
