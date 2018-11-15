@@ -45,6 +45,7 @@ module:
   menu_ui: 0
   node: 0
   options: 0
+  os_app_access: 0
   os_links: 0
   page_cache: 0
   path: 0
