@@ -32,7 +32,7 @@ content:
       optionset_thumbnail: ''
       skin: default
       skin_thumbnail: ''
-      image_style: large
+      image_style: medium
       thumbnail_style: ''
       responsive_image_style: ''
       thumbnail_effect: ''

@@ -11,12 +11,12 @@ id: slick_media_gallery
 name: slick_media_gallery
 label: 'Slick Media Gallery'
 weight: -10
-group: ''
+group: overlay
 skin: default
-breakpoints: 0
+breakpoints: 3
 optimized: false
 options:
-  options__active_tab: edit-options-settings
+  options__active_tab: edit-options-responsives
   settings:
     mobileFirst: false
     asNavFor: ''
@@ -45,13 +45,13 @@ options:
     lazyLoad: ondemand
     mouseWheel: false
     randomize: false
-    respondTo: window
+    respondTo: slider
     rtl: false
     rows: 1
     slidesPerRow: 1
     slide: ''
-    slidesToShow: 4
-    slidesToScroll: 1
+    slidesToShow: 0
+    slidesToScroll: 0
     speed: 500
     swipe: true
     swipeToSlide: false
@@ -68,3 +68,104 @@ options:
     vertical: false
     verticalSwiping: false
     waitForAnimate: true
+  responsives:
+    responsive:
+      -
+        breakpoint: 1024
+        unslick: false
+        settings:
+          adaptiveHeight: false
+          autoplay: false
+          autoplaySpeed: 3000
+          pauseOnHover: false
+          pauseOnDotsHover: false
+          arrows: false
+          centerMode: false
+          centerPadding: 50px
+          dots: false
+          draggable: false
+          fade: false
+          focusOnSelect: false
+          infinite: false
+          initialSlide: 0
+          respondTo: slider
+          rows: 1
+          slidesPerRow: 1
+          slidesToShow: 4
+          slidesToScroll: 4
+          speed: 500
+          swipe: false
+          swipeToSlide: false
+          edgeFriction: 0.35000000000002
+          touchMove: false
+          touchThreshold: 5
+          variableWidth: false
+          vertical: false
+          verticalSwiping: false
+          waitForAnimate: false
+      -
+        breakpoint: 600
+        unslick: false
+        settings:
+          adaptiveHeight: false
+          autoplay: false
+          autoplaySpeed: 3000
+          pauseOnHover: false
+          pauseOnDotsHover: false
+          arrows: false
+          centerMode: false
+          centerPadding: 50px
+          dots: false
+          draggable: false
+          fade: false
+          focusOnSelect: false
+          infinite: false
+          initialSlide: 0
+          respondTo: slider
+          rows: 1
+          slidesPerRow: 1
+          slidesToShow: 2
+          slidesToScroll: 2
+          speed: 500
+          swipe: false
+          swipeToSlide: false
+          edgeFriction: 0.35000000000002
+          touchMove: false
+          touchThreshold: 5
+          variableWidth: false
+          vertical: false
+          verticalSwiping: false
+          waitForAnimate: false
+      -
+        breakpoint: 480
+        unslick: false
+        settings:
+          adaptiveHeight: false
+          autoplay: false
+          autoplaySpeed: 3000
+          pauseOnHover: false
+          pauseOnDotsHover: false
+          arrows: false
+          centerMode: false
+          centerPadding: 50px
+          dots: false
+          draggable: false
+          fade: false
+          focusOnSelect: false
+          infinite: false
+          initialSlide: 0
+          respondTo: slider
+          rows: 1
+          slidesPerRow: 1
+          slidesToShow: 1
+          slidesToScroll: 1
+          speed: 500
+          swipe: false
+          swipeToSlide: false
+          edgeFriction: 0.35000000000002
+          touchMove: false
+          touchThreshold: 5
+          variableWidth: false
+          vertical: false
+          verticalSwiping: false
+          waitForAnimate: false
