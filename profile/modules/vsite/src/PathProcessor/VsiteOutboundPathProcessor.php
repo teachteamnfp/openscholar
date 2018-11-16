@@ -11,8 +11,11 @@ namespace Drupal\vsite\Pathprocessor;
 
 use Drupal\Core\PathProcessor\OutboundPathProcessorInterface;
 use Drupal\Core\Render\BubbleableMetadata;
+use Drupal\group\Entity\GroupInterface;
 use Drupal\vsite\Plugin\VsiteContextManagerInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 class VsiteOutboundPathProcessor implements OutboundPathProcessorInterface {
 
@@ -49,6 +52,13 @@ class VsiteOutboundPathProcessor implements OutboundPathProcessorInterface {
       }
     }
 
+    /** @var GroupInterface $group */
+    if ($request && ($group = $request->get ('group')) && (!isset($options['purl_context']) || $options['purl_context'] !== FALSE) && (!isset($options['purl_exit']) || !$options['purl_exit'])) {
+      $path = $this->vsiteContextManager->getAbsoluteUrl ($path);
+    }
+
     return $path;
   }
+
+
 }
