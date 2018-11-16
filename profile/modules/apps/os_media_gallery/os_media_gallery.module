@@ -41,6 +41,7 @@ function os_media_gallery_preprocess_block(&$variables) {
     $galleryMediaField = $blockContent->get('field_gallery_media');
     // @TODO: Test the cache layer, might be need to invalidate
     $variables['content']['field_gallery_media'] = $galleryMediaField->view($galleryFormatValue);
+    $variables['#attached']['library'][] = 'os_media_gallery/os_slick_lightbox';
   }
 }
 

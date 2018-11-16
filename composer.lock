@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4f5b0ede59bf4bcf6cc47d0bc005cdb4",
+    "content-hash": "223373e5f0e659871379b8a357a8f61b",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -4484,6 +4484,23 @@
                 "xml"
             ],
             "time": "2018-10-22T16:58:34+00:00"
+        },
+        {
+            "name": "mreq/slick-lightbox",
+            "version": "master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mreq/slick-lightbox.git",
+                "reference": "master"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/mreq/slick-lightbox/archive/master.zip",
+                "reference": "master",
+                "shasum": null
+            },
+            "type": "drupal-library",
+            "time": "2018-10-23T06:36:49+00:00"
         },
         {
             "name": "nikic/php-parser",
