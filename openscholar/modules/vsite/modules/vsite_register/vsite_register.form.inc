@@ -699,7 +699,7 @@ function vsite_register_notify_author($vsite) {
   $author = user_load($vsite->group->uid);
   $replacements = _vsite_register_mail_replacements($vsite, $author, $key);
 
-  $subject = t('An OpenScholar web site has been created for you.');
+  $subject = t('An OpenScholar website has been created for you.');
 
   // Checks to see if the user logged in matched the newly created user.
   global $user;
