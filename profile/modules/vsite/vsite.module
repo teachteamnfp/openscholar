@@ -2,6 +2,7 @@
 
 use Drupal\Core\Render\Element;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\views\ViewExecutable;
 
 /**
  * Implements hook_modules_installed().
@@ -141,5 +142,14 @@ function vsite_form_alter(&$form, FormStateInterface $formState, $form_id) {
         }
       }
     }
+  }
+}
+
+/**
+ * Implements hook_views_pre_build().
+ */
+function vsite_views_pre_build(ViewExecutable $view) {
+  if (!empty($view->filter['current_vsite_filter'])) {
+    $view->element['#cache']['tags'][] = 'vsite:current_vsite_filter';
   }
 }
