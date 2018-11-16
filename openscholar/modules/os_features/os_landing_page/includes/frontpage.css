@@ -5,9 +5,14 @@ body.page-os-frontpage {
 	margin: 0;
 	padding: 0;
 	font-family: helvetica, arial;
-	font-size: 1em;
 	color: #464646;
 }
+
+body.page-os-frontpage #page {
+	font-size: initial;
+	line-height: 1.538em;
+}
+
 body.page-os-frontpage,
 body.page-os-frontpage #page,
 .panel-first .block {
