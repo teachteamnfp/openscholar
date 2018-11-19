@@ -1,7 +1,7 @@
 {
   "name": "OpenScholarLLC",
   "require": {
-    "openscholar/osllc" : "1.5"
+    "openscholar/osllc" : "dev-3-medical_professional_preset"
   },
   "repositories": [
     {
