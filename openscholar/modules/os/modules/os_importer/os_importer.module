@@ -169,7 +169,7 @@ function os_importer_os_add_new_links_alter(&$links) {
   foreach ($current_app['importers'] as $type => $importers) {
     if (os_importer_import_access($type) || os_importer_import_access($type, FALSE)) {
       $title = count($current_app['importers']) > 1 ? t('Import @type', array('@type' => node_type_get_name($type))) : $title = t('Import');
-      if ($type == 'news' || $type == 'blog') {
+      if ($type == 'news' || $type == 'blog' || $type == 'feed') {
         $links['cp/os-importer-' . $type] = array(
         'title' => $title,
         'href' => 'cp/os-importer/' . $type,
