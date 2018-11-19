@@ -20,6 +20,20 @@ function os_site_creation_library() {
     }
   }
 
+  $allPresets = spaces_preset_load();
+  $enabled = variable_get('os_enabled_spaces_presets', array());
+  $allPresets = array_filter($allPresets, function ($i) use ($enabled) {
+    return $enabled[$i->name] !== 0;
+  });
+  $presets = array_map(function ($i) {
+    return array(
+      'name' => $i->name,
+      'title' => $i->title,
+      'description' => $i->description,
+      'site_type' => $i->value['bundles'][0],
+    );
+  }, $allPresets);
+
   $libs['site_creation'] = array(
     'title' => 'Site Creation Form',
     'version' => OS_SITE_CREATION_FORM,
@@ -44,7 +58,8 @@ function os_site_creation_library() {
             'subsite_types' => variable_get('subsite_bundles', array('personal', 'project')),
             'privacy_levels' => vsite_access_privacy_available_values (),
             'tos_label' => variable_get('os_terms_of_use_label', t('Terms of Use')),
-            'tos_url' => variable_get('os_terms_of_use', false)
+            'tos_url' => variable_get('os_terms_of_use', false),
+            'presets' => $presets,
           )
         ),
         'type' => 'setting',

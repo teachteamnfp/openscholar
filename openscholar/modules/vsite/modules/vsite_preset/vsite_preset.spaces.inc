@@ -14,8 +14,8 @@ function vsite_preset_spaces_presets() {
   $spaces_presets->disabled = FALSE; /* Edit this to true to make a default spaces_presets disabled initially */
   $spaces_presets->api_version = 3;
   $spaces_presets->name = 'hwp_administrative';
-  $spaces_presets->title = 'HWP Administrative';
-  $spaces_presets->description = 'The Standard Adminstrative Department site.';
+  $spaces_presets->title = 'Administrative';
+  $spaces_presets->description = 'Pre-set menu links and pages: Services, Activities, People, Resources, News &amp; Events, About';
   $spaces_presets->space_type = 'og';
   $spaces_presets->value = array(
     'bundles' => array(
@@ -213,16 +213,16 @@ function vsite_preset_spaces_presets() {
 
   // Translatables
   // Included for use with string extractors like potx.
-  t('HWP Administrative');
-  t('The Standard Adminstrative Department site.');
+  t('Administrative');
+  t('Pre-set menu links and pages: Services, Activities, People, Resources, News &amp; Events, About');
   $export['hwp_administrative'] = $spaces_presets;
 
   $spaces_presets = new stdClass();
   $spaces_presets->disabled = FALSE; /* Edit this to true to make a default spaces_presets disabled initially */
   $spaces_presets->api_version = 3;
   $spaces_presets->name = 'hwp_lab_research_group';
-  $spaces_presets->title = 'HWP Lab/Research Group';
-  $spaces_presets->description = 'The Standard Lab and Research Group site.';
+  $spaces_presets->title = 'Lab/Research Group';
+  $spaces_presets->description = 'Pre-set menu links and pages: Research, Publications, People, Resources, News &amp; Events, About';
   $spaces_presets->space_type = 'og';
   $spaces_presets->value = array(
     'bundles' => array(
@@ -447,16 +447,16 @@ function vsite_preset_spaces_presets() {
 
   // Translatables
   // Included for use with string extractors like potx.
-  t('HWP Lab/Research Group');
-  t('The standard Lab and Research Group site.');
+  t('Lab/Research Group');
+  t('Pre-set menu links and pages: Research, Publications, People, Resources, News &amp; Events, About');
   $export['hwp_lab_research_group'] = $spaces_presets;
 
   $spaces_presets = new stdClass();
   $spaces_presets->disabled = FALSE; /* Edit this to true to make a default spaces_presets disabled initially */
   $spaces_presets->api_version = 3;
   $spaces_presets->name = 'hwp_project';
-  $spaces_presets->title = 'HWP Project';
-  $spaces_presets->description = 'The Standard Project site.';
+  $spaces_presets->title = 'Project';
+  $spaces_presets->description = 'Pre-set menu links and pages: Overview, Activities, People, Resources, News &amp; Events, About';
   $spaces_presets->space_type = 'og';
   $spaces_presets->value = array(
     'bundles' => array(
@@ -654,16 +654,16 @@ function vsite_preset_spaces_presets() {
 
   // Translatables
   // Included for use with string extractors like potx.
-  t('HWP Project');
-  t('The Standard Project site.');
+  t('Project');
+  t('Pre-set menu links and pages: Overview, Activities, People, Resources, News &amp; Events, About');
   $export['hwp_project'] = $spaces_presets;
 
   $spaces_presets = new stdClass();
   $spaces_presets->disabled = FALSE; /* Edit this to true to make a default spaces_presets disabled initially */
   $spaces_presets->api_version = 3;
   $spaces_presets->name = 'hwp_personal';
-  $spaces_presets->title = 'HWP Personal';
-  $spaces_presets->description = 'The Standard Personal site.';
+  $spaces_presets->title = 'Personal';
+  $spaces_presets->description = 'Pre-set menu links and pages: Bio, Classes, Publications';
   $spaces_presets->space_type = 'og';
   $spaces_presets->value = array(
     'bundles' => array('personal'),
@@ -894,16 +894,16 @@ function vsite_preset_spaces_presets() {
 
   // Translatables
   // Included for use with string extractors like potx.
-  t('HWP Personal');
-  t('The Standard Personal site.');
+  t('Personal');
+  t('Pre-set menu links and pages: Bio, Classes, Publications');
   $export['hwp_personal'] = $spaces_presets;
 
   $spaces_presets = new stdClass();
   $spaces_presets->disabled = FALSE; /* Edit this to true to make a default spaces_presets disabled initially */
   $spaces_presets->api_version = 3;
   $spaces_presets->name = 'hwp_event_conference';
-  $spaces_presets->title = 'HWP Event/Conference';
-  $spaces_presets->description = 'The Standard Event or Conference site.';
+  $spaces_presets->title = 'Event/Conference';
+  $spaces_presets->description = 'Pre-set menu links and pages: Program, Speakers, Register, Logistics, About';
   $spaces_presets->space_type = 'og';
   $spaces_presets->value = array(
     'bundles' => array(
@@ -1099,8 +1099,8 @@ function vsite_preset_spaces_presets() {
 
   // Translatables
   // Included for use with string extractors like potx.
-  t('HWP Event/Conference');
-  t('The Standard Event or Conference site.');
+  t('Event/Conference');
+  t('Pre-set menu links and pages: Program, Speakers, Register, Logistics, About');
   t('Speakers');
   t('Program');
   t('Schedule');
