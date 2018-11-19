@@ -239,32 +239,48 @@
 						
 
 							<div ng-hide="!departmentSchool" class="starter-content three">
-								<div class="form-item form-type-radio">
-									<h2>Minimal</h2>
-									<div>Blank site with no pre-set menu links or pages.</div>
+								<div ng-repeat="preset in presets('department')" class="form-item form-type-radio">
+									<h2>{{preset.title}}</h2>
+									<div>{{preset.description}}</div>
 									<label class="option">
-										<input type="radio" ng-model="contentOption.value" value="os_department_minimal">
-										<span></span></label>
+										<input type="radio" ng-model="contentOption.value" value="{{preset.name}}">
+										<span></span>
+									</label>
 								</div>
-								<div class="form-item form-type-radio">
-									<h2>Academic</h2>
-									<div>Pre-set menu links and pages: Academics, Research, Activities, People, Resources, News &amp; Events, About</div>
-									<label class="option">
-										<input type="radio" ng-model="contentOption.value" value="os_department">
-										<span></span></label>
-								</div>
-								<div class="form-item form-type-radio">
-									<h2>Administrative</h2>
-									<div>Pre-set menu links and pages: Services, Activities, People, Resources, News &amp; Events, About</div>
-									<label class="option">
-										<input type="radio" ng-model="contentOption.value" value="hwp_administrative">
-										<span></span></label>
-								</div>
+								<!--<div class="form-item form-type-radio">-->
+									<!--<h2>Minimal</h2>-->
+									<!--<div>Blank site with no pre-set menu links or pages.</div>-->
+									<!--<label class="option">-->
+										<!--<input type="radio" ng-model="contentOption.value" value="os_department_minimal">-->
+										<!--<span></span></label>-->
+								<!--</div>-->
+								<!--<div class="form-item form-type-radio">-->
+									<!--<h2>Academic</h2>-->
+									<!--<div>Pre-set menu links and pages: Academics, Research, Activities, People, Resources, News &amp; Events, About</div>-->
+									<!--<label class="option">-->
+										<!--<input type="radio" ng-model="contentOption.value" value="os_department">-->
+										<!--<span></span></label>-->
+								<!--</div>-->
+								<!--<div class="form-item form-type-radio">-->
+									<!--<h2>Administrative</h2>-->
+									<!--<div>Pre-set menu links and pages: Services, Activities, People, Resources, News &amp; Events, About</div>-->
+									<!--<label class="option">-->
+										<!--<input type="radio" ng-model="contentOption.value" value="hwp_administrative">-->
+										<!--<span></span></label>-->
+								<!--</div>-->
 							</div>
 							
 
 							<div ng-hide="!individualScholar" class="starter-content two">
-								<div class="form-item form-type-radio">
+								<div ng-repeat="preset in presets('personal')" class="form-item form-type-radio">
+									<h2>{{preset.title}}</h2>
+									<div>{{preset.description}}</div>
+									<label class="option">
+										<input type="radio" ng-model="contentOption.value" value="{{preset.name}}">
+										<span></span>
+									</label>
+								</div>
+								<!--<div class="form-item form-type-radio">
 									<h2>Minimal</h2>
 									<div>Blank site with no pre-set menu links or pages.</div>
 									<label class="option">
@@ -277,12 +293,21 @@
 									<label class="option">
 										<input type="radio" ng-model="contentOption.value" value="hwp_personal">
 										<span></span></label>
-								</div>
+								</div>-->
+
 							</div>
 						
 
 							<div ng-hide="!projectLabSmallGroup" class="starter-content four">
-								<div class="form-item form-type-radio">
+								<div ng-repeat="preset in presets('project')" class="form-item form-type-radio">
+									<h2>{{preset.title}}</h2>
+									<div>{{preset.description}}</div>
+									<label class="option">
+										<input type="radio" ng-model="contentOption.value" value="{{preset.name}}">
+										<span></span>
+									</label>
+								</div>
+								<!--<div class="form-item form-type-radio">
 									<h2>Minimal</h2>
 									<div>Blank site with no pre-set menu links or pages.</div>
 									<label class="option">
@@ -309,7 +334,7 @@
 									<label class="option">
 										<input type="radio" ng-model="contentOption.value" value="hwp_project">
 										<span></span></label>
-								</div>
+								</div>-->
 							</div>
 
 					

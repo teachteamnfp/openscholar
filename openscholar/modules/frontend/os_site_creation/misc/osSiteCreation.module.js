@@ -84,6 +84,17 @@
   $scope.tos = Drupal.settings.site_creation.tos_url;
   $scope.tos_label = Drupal.settings.site_creation.tos_label;
 
+  var presetList = Drupal.settings.site_creation.presets;
+  $scope.presets = function (type) {
+    var output = [];
+    for (var i in presetList) {
+      if (presetList[i].site_type == type) {
+        output.push(presetList[i]);
+      }
+    }
+    return output;
+  };
+
   // Initialize the $timout var
   var timer;
 
