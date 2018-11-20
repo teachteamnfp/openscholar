@@ -1,7 +1,7 @@
 {
   "name": "OpenScholarLLC",
   "require": {
-    "openscholar/osllc" : "1.5"
+    "openscholar/osllc" : "v1.6"
   },
   "repositories": [
     {
