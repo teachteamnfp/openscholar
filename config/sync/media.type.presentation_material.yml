@@ -1,0 +1,13 @@
+uuid: e9a8d02c-c5aa-471c-956a-383d02ef3e43
+langcode: en
+status: true
+dependencies: {  }
+id: presentation_material
+label: 'Presentation Material'
+description: ''
+source: file
+queue_thumbnail_downloads: false
+new_revision: false
+source_configuration:
+  source_field: field_media_file
+field_map: {  }

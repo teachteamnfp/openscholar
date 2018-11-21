@@ -1,0 +1,27 @@
+uuid: b5d9e47d-ad8d-4aa1-a1ee-e71201e57390
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_media_file_1
+    - media.type.downloadable
+  module:
+    - file
+id: media.downloadable.field_media_file_1
+field_name: field_media_file_1
+entity_type: media
+bundle: downloadable
+label: File
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: 'downloadable/[date:custom:Y]-[date:custom:m]'
+  file_extensions: 'jpg jpeg gif png txt doc docx gz xls xlsx pdf ppt pptx pps odt ods odp tex tgz xml zip sas'
+  max_filesize: ''
+  description_field: false
+  handler: 'default:file'
+  handler_settings: {  }
+field_type: file

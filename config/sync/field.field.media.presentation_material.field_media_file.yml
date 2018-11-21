@@ -1,0 +1,27 @@
+uuid: 8a144937-b222-44bf-9234-cfce2af4274e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_media_file
+    - media.type.presentation_material
+  module:
+    - file
+id: media.presentation_material.field_media_file
+field_name: field_media_file
+entity_type: media
+bundle: presentation_material
+label: File
+description: '.ppt, .pptx, .pps, .ppsx, and .pdf'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: presentation-material
+  file_extensions: 'pdf doc docx odt xls pps ppsx ppt pptx key txt'
+  max_filesize: ''
+  description_field: false
+  handler: 'default:file'
+  handler_settings: {  }
+field_type: file

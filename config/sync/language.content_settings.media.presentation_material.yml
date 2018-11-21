@@ -1,0 +1,11 @@
+uuid: 2ba72d60-92b9-4892-a7e9-7b2bb5fc3232
+langcode: en
+status: true
+dependencies:
+  config:
+    - media.type.presentation_material
+id: media.presentation_material
+target_entity_type_id: media
+target_bundle: presentation_material
+default_langcode: site_default
+language_alterable: false

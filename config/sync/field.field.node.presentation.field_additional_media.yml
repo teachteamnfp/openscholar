@@ -1,0 +1,28 @@
+uuid: 4d37e3c3-5822-4b69-b341-9853bb2d4f45
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_additional_media
+    - media.type.downloadable
+    - node.type.presentation
+id: node.presentation.field_additional_media
+field_name: field_additional_media
+entity_type: node
+bundle: presentation
+label: 'Additional Media'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      downloadable: downloadable
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
