@@ -566,3 +566,7 @@ form[id^="os-mailchimp-form--"] input.form-text {
 width:auto;
 
 }
+
+.ui-widget {
+    line-height: 23px;
+}
