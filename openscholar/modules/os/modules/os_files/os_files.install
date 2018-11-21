@@ -907,3 +907,121 @@ function os_files_update_7025() {
 function os_files_update_7026() {
   image_style_flush(image_style_load('os_files_xxlarge'));
 }
+
+/**
+ * Ensure images have all the correct settings for their displays
+ */
+function os_files_update_7027() {
+  $types = file_type_get_all_types ();
+  foreach ($types as $bundle => $info) {
+    $osd = field_read_instance ('file', 'os_file_description', $bundle);
+    $osd['display'] = array (
+      'default' => array (
+        'label' => 'hidden',
+        'module' => 'text',
+        'settings' => array (),
+        'type' => 'text_default',
+        'weight' => 0,
+      ),
+      'media_gallery_block_thumbnail' => array (
+        'label' => 'above',
+        'settings' => array (),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'media_gallery_detail' => array (
+        'label' => 'hidden',
+        'module' => 'text',
+        'settings' => array (),
+        'type' => 'text_default',
+        'weight' => 1,
+      ),
+      'media_gallery_lightbox' => array (
+        'label' => 'hidden',
+        'module' => 'text',
+        'settings' => array (),
+        'type' => 'text_default',
+        'weight' => 1,
+      ),
+      'media_gallery_thumbnail' => array (
+        'label' => 'hidden',
+        'module' => 'text',
+        'settings' => array (),
+        'type' => 'text_default',
+        'weight' => 1,
+      ),
+      'os_files_large' => array (
+        'label' => 'above',
+        'settings' => array (),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'os_files_link' => array (
+        'label' => 'above',
+        'settings' => array (),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'os_files_link_icon' => array (
+        'label' => 'above',
+        'settings' => array (),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'os_files_med' => array (
+        'label' => 'above',
+        'settings' => array (),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'os_files_small' => array (
+        'label' => 'above',
+        'settings' => array (),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'os_files_thumbnail' => array (
+        'label' => 'above',
+        'settings' => array (),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'os_files_title' => array (
+        'label' => 'above',
+        'settings' => array (),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'os_files_xlarge' => array (
+        'label' => 'above',
+        'settings' => array (),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'os_files_xxlarge' => array (
+        'label' => 'above',
+        'settings' => array (),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'preview' => array (
+        'label' => 'hidden',
+        'module' => 'text',
+        'settings' => array (),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array (
+        'label' => 'hidden',
+        'module' => 'text',
+        'settings' => array (
+          'trim_length' => 160,
+        ),
+        'type' => 'text_summary_or_trimmed',
+        'weight' => 0,
+      ),
+    );
+
+    field_update_instance ($osd);
+  }
+}
