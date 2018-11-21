@@ -45,10 +45,6 @@ services:
       - '@current_route_match'
     tags:
     - { name: 'access_check', applies_to: '_group_permission' }
-  vsite.views_invalidate_cache:
-    class: Drupal\vsite\Cache\VsiteViewsInvalidateCache
-    tags:
-    - { name: event_subscriber }
   cache_context.vsite:
     class: Drupal\vsite\Cache\VsiteCacheContext
     arguments: ['@entity_type.manager']

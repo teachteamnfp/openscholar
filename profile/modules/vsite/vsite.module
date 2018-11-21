@@ -4,6 +4,8 @@ use Drupal\Core\Render\Element;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\views\ViewExecutable;
 
+const VSITE_CACHE_CONTEXTS_NONE = 'vsite:none';
+
 /**
  * Implements hook_modules_installed().
  * @param array $modules
@@ -150,7 +152,14 @@ function vsite_form_alter(&$form, FormStateInterface $formState, $form_id) {
  */
 function vsite_views_pre_build(ViewExecutable $view) {
   if (!empty($view->filter['current_vsite_filter'])) {
-    $view->element['#cache']['tags'][] = 'vsite:current_vsite_filter';
+    /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContext */
+    $vsiteContext = \Drupal::service('vsite.context_manager');
+    if ($group = $vsiteContext->getActiveVsite ()) {
+      $view->element['#cache']['contexts'][] = 'vsite:' . $vsiteContext->getActiveVsite()->id();
+    }
+    else {
+      $view->element['#cache']['contexts'][] = VSITE_CACHE_CONTEXTS_NONE;
+    }
   }
 }
 
@@ -175,7 +184,7 @@ function _vsite_prerender_control_panel_links($element) {
     $metadata->addCacheContexts (['vsite:' . $vsiteContext->getActiveVsite ()->id ()]);
   }
   else {
-    $metadata->addCacheContexts(['vsite:none']);
+    $metadata->addCacheContexts([VSITE_CACHE_CONTEXTS_NONE]);
   }
 
   $metadata->applyTo ($element['toolbar_menu_control-panel']);
