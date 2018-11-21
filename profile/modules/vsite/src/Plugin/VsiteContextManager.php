@@ -40,7 +40,10 @@ class VsiteContextManager implements VsiteContextManagerInterface {
     // TODO: Implement activateRoles() method.
   }
 
-  public function getActiveVsite () {
+  /**
+   * @return GroupInterface
+   */
+  public function getActiveVsite () : ?GroupInterface {
     return $this->activeGroup;
   }
 
@@ -56,6 +59,7 @@ class VsiteContextManager implements VsiteContextManagerInterface {
     // 1. Generate modifier based on Group given
     // 2. Apply it to path or route
     $purl = $this->activeGroup->toUrl('canonical', ['base_url' => ''])->toString();
+    return $purl . '/'. ltrim($path, '/'); 
   }
 
   public function getStorage(GroupInterface $group = null) {
