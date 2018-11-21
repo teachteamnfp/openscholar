@@ -158,7 +158,8 @@ function vsite_views_pre_build(ViewExecutable $view) {
       $view->element['#cache']['contexts'][] = 'vsite:' . $vsiteContext->getActiveVsite()->id();
     }
     else {
-      $view->element['#cache']['contexts'][] = VSITE_CACHE_CONTEXTS_NONE;
+      // To solve cache problem, we won't serve the page without vsite context
+      throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
     }
   }
 }
