@@ -1,0 +1,18 @@
+uuid: f6850e25-0001-4687-bc3e-1002794c5c5e
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.personal
+  module:
+    - group_entity
+    - media
+id: personal-group_entity-media
+label: 'Personal: Group media'
+description: 'Adds <em class="placeholder">media</em> content to groups both publicly and privately.'
+group_type: personal
+content_plugin: 'group_entity:media'
+plugin_config:
+  group_cardinality: 1
+  entity_cardinality: 1
+  use_creation_wizard: false
