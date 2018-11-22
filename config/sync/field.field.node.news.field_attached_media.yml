@@ -1,0 +1,28 @@
+uuid: 3ba7af20-90fb-4f40-a6e6-59c98671b767
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_attached_media
+    - media.type.downloadable
+    - node.type.news
+id: node.news.field_attached_media
+field_name: field_attached_media
+entity_type: node
+bundle: news
+label: 'Attached Media'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      downloadable: downloadable
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
