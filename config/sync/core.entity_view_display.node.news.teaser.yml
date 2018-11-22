@@ -5,8 +5,15 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.news.body
+    - field.field.node.news.field_attached_media
+    - field.field.node.news.field_date
+    - field.field.node.news.field_photo
+    - field.field.node.news.field_redirect_to_source
+    - image.style.news_photo_icon
     - node.type.news
   module:
+    - datetime
+    - image
     - text
     - user
 id: node.news.teaser
@@ -17,15 +24,35 @@ content:
   body:
     label: hidden
     type: text_summary_or_trimmed
-    weight: 101
+    weight: 3
     settings:
       trim_length: 600
     third_party_settings: {  }
     region: content
+  field_date:
+    type: datetime_default
+    weight: 1
+    region: content
+    label: inline
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+  field_photo:
+    type: image
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      image_style: news_photo_icon
+      image_link: content
+    third_party_settings: {  }
   links:
-    weight: 100
+    weight: 0
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
 hidden:
+  field_attached_media: true
+  field_redirect_to_source: true
   langcode: true

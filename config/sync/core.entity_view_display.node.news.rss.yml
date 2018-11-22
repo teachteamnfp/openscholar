@@ -1,24 +1,23 @@
-uuid: 007fbf34-19ab-48e4-b90c-6ae8684b5509
+uuid: 355df57f-e81d-45e9-bac8-3a880a70f3a6
 langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.node.rss
     - field.field.node.news.body
     - field.field.node.news.field_attached_media
     - field.field.node.news.field_date
     - field.field.node.news.field_photo
     - field.field.node.news.field_redirect_to_source
-    - image.style.news_photo_icon
     - node.type.news
   module:
     - datetime
-    - image
     - text
     - user
-id: node.news.default
+id: node.news.rss
 targetEntityType: node
 bundle: news
-mode: default
+mode: rss
 content:
   body:
     label: hidden
@@ -27,32 +26,14 @@ content:
     settings: {  }
     third_party_settings: {  }
     region: content
-  field_attached_media:
-    type: entity_reference_entity_view
-    weight: 4
-    label: above
-    settings:
-      view_mode: default
-      link: false
-    third_party_settings: {  }
-    region: content
   field_date:
     weight: 2
-    label: inline
+    label: hidden
     settings:
       timezone_override: ''
       format_type: long
     third_party_settings: {  }
     type: datetime_default
-    region: content
-  field_photo:
-    weight: 3
-    label: hidden
-    settings:
-      image_style: news_photo_icon
-      image_link: ''
-    third_party_settings: {  }
-    type: image
     region: content
   links:
     weight: 0
@@ -60,5 +41,7 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_attached_media: true
+  field_photo: true
   field_redirect_to_source: true
   langcode: true
