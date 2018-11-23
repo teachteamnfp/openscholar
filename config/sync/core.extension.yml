@@ -16,6 +16,7 @@ module:
   context_ui: 0
   contextual: 0
   cp: 0
+  crop: 0
   ctools: 0
   datetime: 0
   datetime_range: 0
@@ -34,6 +35,7 @@ module:
   group_entity: 0
   group_purl: 0
   image: 0
+  image_widget_crop: 0
   inline_form_errors: 0
   kint: 0
   language: 0
