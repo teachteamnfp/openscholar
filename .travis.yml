@@ -6,9 +6,6 @@ php:
   - 7.1
   - 7.2
 
-services:
-  - sqlite3
-
 env:
   global:
     - SIMPLETEST_DB=sqlite://tmp/site.sqlite
@@ -26,6 +23,7 @@ matrix:
       env: RELEASE=stable COMPOSER_CHANNEL=snapshot
 
 before_install:
+  - compgen -abck
   - if [[ $TRAVIS_PHP_VERSION = 5.6 ]]; then export COMPOSER_MEMORY_LIMIT=-1; fi;
   - echo 'sendmail_path = /bin/true' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - phpenv config-rm xdebug.ini
