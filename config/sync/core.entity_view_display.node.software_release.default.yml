@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.software_release.body
+    - field.field.node.software_release.field_is_recommended_version
     - field.field.node.software_release.field_software_project
     - field.field.node.software_release.field_software_version
     - node.type.software_release
@@ -21,6 +22,16 @@ content:
     weight: 101
     settings: {  }
     third_party_settings: {  }
+    region: content
+  field_is_recommended_version:
+    weight: 104
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
     region: content
   field_software_project:
     weight: 103

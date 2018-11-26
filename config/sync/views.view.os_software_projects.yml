@@ -12,7 +12,7 @@ dependencies:
     - user
     - vsite
 id: os_software_projects
-label: 'Os software projects'
+label: 'OS Software projects'
 module: views
 description: ''
 tag: ''
