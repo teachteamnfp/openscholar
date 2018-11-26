@@ -29,7 +29,7 @@ before_install:
   - composer --verbose self-update --$COMPOSER_CHANNEL
   - composer --version
   - sqlite3 -version
-  - php -r 'print_r(SQLite3::version())'
+  - php -r 'print_r(SQLite3::version());'
 
 install:
   - composer --verbose validate
