@@ -31,6 +31,7 @@ before_install:
   - phpenv config-rm xdebug.ini
   - composer --verbose self-update --$COMPOSER_CHANNEL
   - composer --version
+  - sqlite -version
 
 install:
   - composer --verbose validate
