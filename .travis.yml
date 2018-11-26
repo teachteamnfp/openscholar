@@ -29,6 +29,7 @@ before_install:
   - composer --verbose self-update --$COMPOSER_CHANNEL
   - composer --version
   - sqlite3 -version
+  - php -i | grep 'sqlite'
 
 install:
   - composer --verbose validate
