@@ -166,7 +166,7 @@ class RoboFile extends \Robo\Tasks
     {
         $task = $this->drush()
             ->args('site-install')
-            ->option('verbose')
+            ->option('-vvv')
             ->option('yes')
             ->option('db-url', static::DB_URL, '=')
             ->option('sites-subdir', 'autotest')
