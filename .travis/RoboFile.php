@@ -60,8 +60,8 @@ class RoboFile extends \Robo\Tasks
         return $this->taskExecStack()
             ->stopOnFail()
             ->exec('vendor/bin/phpcs --config-set installed_paths vendor/drupal/coder/coder_sniffer')
-            ->exec('vendor/bin/phpcs --standard=Drupal web/modules/custom')
-            ->exec('vendor/bin/phpcs --standard=DrupalPractice web/modules/custom')
+            ->exec('vendor/bin/phpcs --standard=Drupal profile')
+            ->exec('vendor/bin/phpcs --standard=DrupalPractice profile')
             ->run();
     }
 
@@ -168,7 +168,10 @@ class RoboFile extends \Robo\Tasks
             ->args('site-install')
             ->option('verbose')
             ->option('yes')
-            ->option('db-url', static::DB_URL, '=');
+            ->option('db-url', static::DB_URL, '=')
+            ->option('sites-subdir', 'autotest')
+            ->option('existing-config')
+            ->arg('openscholar');
         return $task;
     }
 
@@ -228,8 +231,8 @@ class RoboFile extends \Robo\Tasks
     protected function drush()
     {
         // Drush needs an absolute path to the docroot.
-        $docroot = $this->getDocroot() . '/web';
-        return $this->taskExec('vendor/bin/drush')
+        $docroot = $this->getDocroot() . DIRECTORY_SEPARATOR. 'web';
+        return $this->taskExec('vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'drush')
             ->option('root', $docroot, '=');
     }
 
