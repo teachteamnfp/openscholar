@@ -1,0 +1,25 @@
+<?php
+
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function os_redirect_node_view(
+  array &$build,
+  \Drupal\Core\Entity\EntityInterface $entity,
+  \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display,
+  $view_mode
+) {
+  $bundle = $entity->bundle();
+  if ($bundle == 'news' && $view_mode == 'full') {
+    /** @var \Drupal\Core\Field\FieldItemList $urlValues */
+    $urlItemList = $entity->get('field_redirect_to_source');
+    $urlValues = $urlItemList->getValue();
+    if (!empty($urlValues[0]['uri'])) {
+      $response = new RedirectResponse($urlValues[0]['uri'], 307);
+      $response->send();
+      exit();
+    }
+  }
+}

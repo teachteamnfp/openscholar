@@ -12,12 +12,12 @@ field_name: field_redirect_to_source
 entity_type: node
 bundle: news
 label: 'Redirect to source'
-description: ''
+description: 'If this field is filled, the node page will forward the page with 307 redirect'
 required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
   link_type: 17
-  title: 1
+  title: 0
 field_type: link
