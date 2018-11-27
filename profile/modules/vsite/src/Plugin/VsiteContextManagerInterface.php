@@ -16,7 +16,7 @@ interface VsiteContextManagerInterface {
 
   public function activateRoles();
 
-  public function getActiveVsite();
+  public function getActiveVsite() : ?GroupInterface;
 
   public function getActivePurl();
 
