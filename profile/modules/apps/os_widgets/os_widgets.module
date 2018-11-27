@@ -27,7 +27,7 @@ function os_widgets_form_block_form_alter(&$form, FormStateInterface $form_state
   }
   // This will automatically be saved in the third party settings.
   $form['third_party_settings']['#tree'] = TRUE;
-  $form['third_party_settings']['os_widgets']['#title'] = new \Drupal\Core\StringTranslation\TranslatableMarkup('OpenScholar settings');
+  $form['third_party_settings']['os_widgets']['#title'] = t('OpenScholar settings');
   $form['third_party_settings']['os_widgets']['#type'] = 'details';
   $form['third_party_settings']['os_widgets']['#group'] = 'visibility_tabs';
   $form['third_party_settings']['os_widgets']['display_style'] = [
