@@ -1,10 +1,10 @@
-uuid: c93383d8-f269-4435-9ff6-be860eaf8515
+uuid: a2d9dbff-3e07-4457-888d-476f587436d0
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.node.field_faq_files
-    - media.type.file
+    - media.type.document
     - node.type.faq
 id: node.faq.field_faq_files
 field_name: field_faq_files
@@ -20,7 +20,7 @@ settings:
   handler: 'default:media'
   handler_settings:
     target_bundles:
-      file: file
+      document: document
     sort:
       field: _none
     auto_create: false
