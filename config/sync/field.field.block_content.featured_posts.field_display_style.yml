@@ -1,0 +1,21 @@
+uuid: 5211a1b3-dede-4154-8256-fe0ed5f43574
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.featured_posts
+    - field.storage.block_content.field_display_style
+  module:
+    - options
+id: block_content.featured_posts.field_display_style
+field_name: field_display_style
+entity_type: block_content
+bundle: featured_posts
+label: 'Display style'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

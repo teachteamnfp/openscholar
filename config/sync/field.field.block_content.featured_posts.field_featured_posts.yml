@@ -6,6 +6,8 @@ dependencies:
     - block_content.type.featured_posts
     - field.storage.block_content.field_featured_posts
     - node.type.book
+    - node.type.landing_page
+    - node.type.page
 id: block_content.featured_posts.field_featured_posts
 field_name: field_featured_posts
 entity_type: block_content
@@ -21,8 +23,10 @@ settings:
   handler_settings:
     target_bundles:
       book: book
+      landing_page: landing_page
+      page: page
     sort:
       field: _none
     auto_create: false
-    auto_create_bundle: ''
+    auto_create_bundle: book
 field_type: entity_reference

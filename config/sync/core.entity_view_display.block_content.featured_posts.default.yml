@@ -4,7 +4,11 @@ status: true
 dependencies:
   config:
     - block_content.type.featured_posts
+    - field.field.block_content.featured_posts.field_display_style
     - field.field.block_content.featured_posts.field_featured_posts
+    - field.field.block_content.featured_posts.field_hide_title
+    - field.field.block_content.featured_posts.field_is_random
+    - field.field.block_content.featured_posts.field_is_styled
 id: block_content.featured_posts.default
 targetEntityType: block_content
 bundle: featured_posts
@@ -19,4 +23,8 @@ content:
     type: entity_reference_label
     region: content
 hidden:
+  field_display_style: true
+  field_hide_title: true
+  field_is_random: true
+  field_is_styled: true
   langcode: true

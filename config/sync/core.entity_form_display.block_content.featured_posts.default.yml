@@ -4,7 +4,11 @@ status: true
 dependencies:
   config:
     - block_content.type.featured_posts
+    - field.field.block_content.featured_posts.field_display_style
     - field.field.block_content.featured_posts.field_featured_posts
+    - field.field.block_content.featured_posts.field_hide_title
+    - field.field.block_content.featured_posts.field_is_random
+    - field.field.block_content.featured_posts.field_is_styled
   module:
     - content_moderation
     - field_layout
@@ -18,6 +22,12 @@ targetEntityType: block_content
 bundle: featured_posts
 mode: default
 content:
+  field_display_style:
+    weight: 102
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
   field_featured_posts:
     weight: 101
     settings:
@@ -26,6 +36,27 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+    region: content
+  field_hide_title:
+    weight: 105
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_is_random:
+    weight: 104
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_is_styled:
+    weight: 103
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
     region: content
   info:
     type: string_textfield
