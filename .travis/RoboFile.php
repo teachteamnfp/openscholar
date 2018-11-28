@@ -42,6 +42,10 @@ class RoboFile extends \Robo\Tasks
     public function jobRunUnitTests()
     {
         $collection = $this->collectionBuilder();
+        $debugTask = $this->drush()
+          ->arg('eval')
+          ->arg('print_r(\Drush\Drush::bootstrapManager()->bootstrapPhases())');
+        $collection->addTask($debugTask);
         $collection->addTask($this->installDrupal());
         $collection->addTaskList($this->runUnitTests());
         return $collection->run();
