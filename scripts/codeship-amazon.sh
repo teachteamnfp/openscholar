@@ -73,6 +73,9 @@ git add $BUILD_ROOT/openscholar
 git commit -a -m "$CI_MESSAGE" -m "" -m "git-subtree-split: $CI_COMMIT_ID"
 #END BUILD PROCESS
 else
+git commit -a -m "$CI_MESSAGE" -m "" -m "git-subtree-split: $CI_COMMIT_ID" || git commit --amend -m "$CI_MESSAGE" -m "" -m "git-subtree-split: $CI_COMMIT_ID"
+fi
+
 
 git push origin $CI_BRANCH
 echo -e "FINISHED BUILDING $CI_BRANCH ON BITBUCKET"
