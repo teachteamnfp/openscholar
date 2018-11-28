@@ -1,0 +1,27 @@
+uuid: e31ca266-c76c-49cb-bc24-1ee00dd2cc35
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_media_file
+    - media.type.audio
+  module:
+    - file
+id: media.audio.field_media_file
+field_name: field_media_file
+entity_type: media
+bundle: audio
+label: 'Audio file'
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: ''
+  file_extensions: 'mp3 wav aac flac ogg mp4 mov mpeg avi wmv'
+  max_filesize: ''
+  description_field: true
+  handler: 'default:file'
+  handler_settings: {  }
+field_type: file
