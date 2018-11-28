@@ -1,0 +1,27 @@
+uuid: a29b6112-1db0-428f-8369-d160c8077380
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_media_file
+    - media.type.executable
+  module:
+    - file
+id: media.executable.field_media_file
+field_name: field_media_file
+entity_type: media
+bundle: executable
+label: File
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: '[date:custom:Y]-[date:custom:m]'
+  file_extensions: 'exe zip gz tar rar'
+  max_filesize: ''
+  description_field: true
+  handler: 'default:file'
+  handler_settings: {  }
+field_type: file
