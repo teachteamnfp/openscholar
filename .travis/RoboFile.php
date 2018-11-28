@@ -42,10 +42,9 @@ class RoboFile extends \Robo\Tasks
     public function jobRunUnitTests()
     {
         $collection = $this->collectionBuilder();
-        $debugTask = $this->drush()
-          ->arg('eval')
-          ->arg('print_r(\Drush\Drush::bootstrapManager()->bootstrapPhases())');
+        $debugTask = $this->taskExec('ls');
         $collection->addTask($debugTask);
+        $collection->addTask($this->taskExec('ls web'));
         $collection->addTask($this->installDrupal());
         $collection->addTaskList($this->runUnitTests());
         return $collection->run();
@@ -236,8 +235,8 @@ class RoboFile extends \Robo\Tasks
     {
         // Drush needs an absolute path to the docroot.
         $docroot = $this->getDocroot() . DIRECTORY_SEPARATOR. 'web';
-        return $this->taskExec('vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'drush');
-           // ->option('root', $docroot, '=');
+        return $this->taskExec('vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'drush')
+           ->option('root', $docroot, '=');
     }
 
     /**
