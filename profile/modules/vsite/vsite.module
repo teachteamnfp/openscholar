@@ -16,6 +16,7 @@ function vsite_modules_installed(array $modules) {
  * @param array $modules
  */
 function vsite_setup_new_apps() {
+  return; // TODO: Fix this so it doesn't block installs
   \Drupal::service('vsite.app.manager')->clearCachedDefinitions();
   $defs = \Drupal::service ('vsite.app.manager')->getDefinitions();
 
@@ -41,6 +42,7 @@ function vsite_setup_new_apps() {
 
     foreach ($group_types as $type => $gt) {
       $k = $type.'-group_node-'.$d['bundle'];
+      error_log($k);
       if (empty($existing[$k])) {
         $groupContentStorage->createFromPlugin ($gt, $map[$d['bundle']], $config)->save();
       }
