@@ -18,8 +18,13 @@ function os_redirect_node_view(
     $urlValues = $urlItemList->getValue();
     if (!empty($urlValues[0]['uri'])) {
       $response = new RedirectResponse($urlValues[0]['uri'], 307);
+      $request = \Drupal::request();
+      $request->getSession()->save();
+      $response->prepare($request);
+      \Drupal::service('kernel')->terminate($request, $response);
       $response->send();
-      exit();
+      // I have to exit, because the code is in a middle of invokeAll
+      exit;
     }
   }
 }
