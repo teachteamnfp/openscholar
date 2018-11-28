@@ -42,9 +42,6 @@ class RoboFile extends \Robo\Tasks
     public function jobRunUnitTests()
     {
         $collection = $this->collectionBuilder();
-        $debugTask = $this->taskExec('ls');
-        $collection->addTask($debugTask);
-        $collection->addTask($this->taskExec('ls web'));
         $collection->addTask($this->installDrupal());
         $collection->addTaskList($this->runUnitTests());
         return $collection->run();
@@ -168,13 +165,12 @@ class RoboFile extends \Robo\Tasks
     protected function installDrupal()
     {
         $task = $this->drush()
-            ->args('site-install')
+            ->args('site-install', 'openscholar')
             ->option('-vvv')
             ->option('yes')
             ->option('db-url', static::DB_URL, '=')
             ->option('sites-subdir', 'autotest')
-            ->option('existing-config')
-            ->arg('openscholar');
+            ->option('existing-config');
         return $task;
     }
 
@@ -204,10 +200,10 @@ class RoboFile extends \Robo\Tasks
         $force = true;
         $tasks = [];
         $tasks[] = $this->taskFilesystemStack()
-            ->copy('.travis/config/phpunit.xml', 'web/core/phpunit.xml', $force);
+            ->copy('.travis'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'phpunit.xml', 'web'.DIRECTORY_SEPARATOR.'core'.DIRECTORY_SEPARATOR.'phpunit.xml', $force);
         $tasks[] = $this->taskExecStack()
             ->dir('web')
-            ->exec('../vendor/bin/phpunit -c core --debug --coverage-clover ../build/logs/clover.xml --verbose modules/custom');
+            ->exec('..'.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'phpunit -c core --debug --coverage-clover ..'.DIRECTORY_SEPARATOR.'build'.DIRECTORY_SEPARATOR.'logs'.DIRECTORY_SEPARATOR.'clover.xml --verbose core');
         return $tasks;
     }
 
