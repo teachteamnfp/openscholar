@@ -9,6 +9,31 @@ git config --global user.name "OpenScholar Auto Push Bot"
 BUILD_ROOT='/home/rof/src/amazon'
 DOCROOT='web';
 
+if git show-ref -q --verify refs/tags/$CI_BRANCH 2>&1 > /dev/null; then
+  # This is just a tag push
+  # There's no need to build ever for tags
+  # All we need to do it
+  #export $BRANCH = $(git branch --contains tags/$CI_BRANCH | grep -s 'SCHOLAR-' | sed -n 2p)
+  export TAG_COMMIT=$(git rev-list -n 1 $CI_BRANCH)
+  git clone git@bitbucket.org:openscholar/deploysource.git
+  cd deploysource
+  export ROOT_COMMIT=$(git log --all --grep="git-subtree-split: $TAG_COMMIT" | grep "^commit" | sed "s/commit //" | head -n 1)
+  if [ -z "$ROOT_COMMIT" ]; then
+    exit 1
+  fi
+  git checkout $ROOT_COMMIT
+  git tag $CI_BRANCH
+  git push --tags
+  exit 0
+elif git ls-remote --heads git@bitbucket.org:openscholar/deploysource.git | grep -sw $CI_BRANCH 2>&1>/dev/null; then
+  git clone -b $CI_BRANCH git@bitbucket.org:openscholar/deploysource.git  ~/src/amazon;
+  cd ~/src/amazon
+else
+  git clone -b SCHOLAR-3.x git@bitbucket.org:openscholar/deploysource.git  ~/src/amazon;
+  cd ~/src/amazon
+  git checkout -b $CI_BRANCH;
+fi
+
 # Build this branch and push it to Amazon
 # Set up global configuration and install tools needed to build
 composer global require drush/drush
@@ -50,4 +75,4 @@ git commit -a -m "$CI_MESSAGE" -m "" -m "git-subtree-split: $CI_COMMIT_ID"
 else
 
 git push origin $CI_BRANCH
-echo -e "\033[1;36mFINISHED BUILDING $CI_BRANCH ON BITBUCKET\e[0m"
+echo -e "FINISHED BUILDING $CI_BRANCH ON BITBUCKET"
