@@ -48,11 +48,6 @@ position: relative;
   bottom: 0;
 }
 
-/* Kill the down arrow in dropdown parent li's 2nd level or deeper */
-#menu-bar ul.nice-menu .menuparent ul li a:before {
-background-image: none;
-}
-
 /* Targets all menuparents, top level or descendents of top */
 #menu-bar ul.nice-menu .menuparent.over > a,
 #menu-bar ul.nice-menu .menuparent a:hover,
