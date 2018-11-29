@@ -6,14 +6,8 @@ use Drupal\Component\Annotation\Plugin;
 
 /**
  * @Annotation
+ * Annotation Plugin for the App plugin system
  */
 class App extends Plugin {
-
-  /**
-   *
-   */
-  public function __construct($values) {
-    parent::__construct($values);
-  }
 
 }

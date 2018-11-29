@@ -11,7 +11,7 @@ use Drupal\purl\Event\ModifierMatchedEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
 /**
- *
+ *  Activates a vsite based on the path
  */
 class VsitePathActivator implements EventSubscriberInterface {
   use GroupRouteContextTrait {
@@ -19,15 +19,17 @@ class VsitePathActivator implements EventSubscriberInterface {
   }
 
   /**
-   * @var VsiteContextManagerInterface*/
+   * @var VsiteContextManagerInterface
+   */
   protected $vsiteContextManager;
 
   /**
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface*/
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
   protected $entityTypeManager;
 
   /**
-   *
+   *  Constructor
    */
   public function __construct(VsiteContextManagerInterface $vsiteContextManager, EntityTypeManagerInterface $entityTypeManager) {
     $this->vsiteContextManager = $vsiteContextManager;
@@ -35,7 +37,7 @@ class VsitePathActivator implements EventSubscriberInterface {
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
   public static function getSubscribedEvents() {
     $events = [];
@@ -46,7 +48,8 @@ class VsitePathActivator implements EventSubscriberInterface {
   }
 
   /**
-   *
+   * Event handler for ModifierMatched event
+   * Activates the vsite for the modifier
    */
   public function onModifierMatched(ModifierMatchedEvent $event) {
     $id = $event->getValue();
@@ -56,7 +59,8 @@ class VsitePathActivator implements EventSubscriberInterface {
   }
 
   /**
-   *
+   * Event Handler for the ResponseEvent event
+   * Activates the group if one is found in the RouteMatch parameters
    */
   public function onRequest(GetResponseEvent $event) {
     if ($group = $this->getGroupFromRoute()) {

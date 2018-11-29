@@ -7,30 +7,32 @@ use Drupal\Core\Cache\Context\CalculatedCacheContextInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 
 /**
- *
+ *  Provides a cache context for an arbitrary vsite.
+ *  Activate with 'group:{int}'
  */
 class VsiteCacheContext implements CalculatedCacheContextInterface {
 
   /**
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface*/
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
   protected $entityTypeManager;
 
   /**
-   *
+   * Constructor
    */
   public function __construct(EntityTypeManagerInterface $entityTypeManager) {
     $this->entityTypeManager = $entityTypeManager;
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
   public static function getLabel() {
     return t('Active VSite');
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
   public function getContext($parameter = NULL) {
     if ($parameter) {
@@ -42,7 +44,7 @@ class VsiteCacheContext implements CalculatedCacheContextInterface {
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
   public function getCacheableMetadata($parameter = NULL) {
     return new CacheableMetadata();

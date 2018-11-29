@@ -6,26 +6,26 @@ use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- *
+ *  Manually test vsite-level config storage functions
  */
 class VsiteTestForm extends ConfigFormBase {
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
   public function getFormId() {
     return 'vsite_test';
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
   protected function getEditableConfigNames() {
     return ['vsite.test_settings'];
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildForm($form, $form_state);

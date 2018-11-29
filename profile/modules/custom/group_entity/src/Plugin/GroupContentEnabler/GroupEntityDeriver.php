@@ -5,12 +5,12 @@ namespace Drupal\group_entity\Plugin\GroupContentEnabler;
 use Drupal\Component\Plugin\Derivative\DeriverBase;
 
 /**
- *
+ * Derives enabler plugins for every entity type we want. Does not separate by bundle
  */
 class GroupEntityDeriver extends DeriverBase {
 
   /**
-   * {@inheritdoc}.
+   * @inheritdoc
    */
   public function getDerivativeDefinitions($base_plugin_definition) {
     // @todo: Make this array configurable

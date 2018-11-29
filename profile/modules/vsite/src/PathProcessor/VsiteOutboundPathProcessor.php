@@ -8,11 +8,11 @@ use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- *
+ * Modifications to urls based on our own requirements
  */
 class VsiteOutboundPathProcessor implements OutboundPathProcessorInterface {
 
-  protected $non_vsite_paths = [
+  protected $nonVsitePaths = [
     'admin',
     'admin/*',
     'user',
@@ -20,23 +20,24 @@ class VsiteOutboundPathProcessor implements OutboundPathProcessorInterface {
   ];
 
   /**
-   * @var \Drupal\vsite\Plugin\VsiteContextManagerInterface*/
+   * @var \Drupal\vsite\Plugin\VsiteContextManagerInterface
+   */
   protected $vsiteContextManager;
 
   /**
-   *
+   * Constructor
    */
   public function __construct(VsiteContextManagerInterface $vsiteContextManager) {
     $this->vsiteContextManager = $vsiteContextManager;
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    *
    * Disables purl handling from a whitelist of paths
    */
   public function processOutbound($path, &$options = [], Request $request = NULL, BubbleableMetadata $bubbleable_metadata = NULL) {
-    foreach ($this->non_vsite_paths as $p) {
+    foreach ($this->nonVsitePaths as $p) {
       $pattern = '|' . str_replace('*', '.+?', $p) . '|';
       if (preg_match($pattern, $path)) {
         $options['purl_context'] = FALSE;

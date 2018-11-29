@@ -2,7 +2,6 @@
 
 namespace Drupal\vsite\Path;
 
-// This is a decorator. still needs to be added to services.yml.
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Path\AliasStorageInterface;
@@ -10,28 +9,32 @@ use Drupal\purl\Plugin\ModifierIndex;
 use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 
 /**
- *
+ * Wraps AliasStorage so we can replace the vsite path with an integer id
  */
 class VsiteAliasStorage implements AliasStorageInterface {
 
   /**
-   * @var \Drupal\Core\Path\AliasStorageInterface*/
+   * @var \Drupal\Core\Path\AliasStorageInterface
+   */
   protected $storage;
 
   /**
-   * @var \Drupal\purl\Plugin\ModifierIndex*/
+   * @var \Drupal\purl\Plugin\ModifierIndex
+   */
   protected $modifierIndex;
 
   /**
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface*/
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
   protected $entityTypeManager;
 
   /**
-   * @var \Drupal\vsite\Plugin\VsiteContextManagerInterface*/
+   * @var \Drupal\vsite\Plugin\VsiteContextManagerInterface
+   */
   protected $vsiteContextManager;
 
   /**
-   *
+   * Constructor
    */
   public function __construct(AliasStorageInterface $storage, ModifierIndex $modifierIndex, EntityTypeManagerInterface $entityTypeManager, VsiteContextManagerInterface $vsiteContextManager) {
     $this->storage = $storage;
@@ -41,7 +44,7 @@ class VsiteAliasStorage implements AliasStorageInterface {
   }
 
   /**
-   * @return \Drupal\purl\Modifier[]
+   * @return \Drupal\purl\Modifier[] An array of purl modifiers
    */
   protected function getModifiers() {
     /** @var \Drupal\purl\Entity\Provider $provider */
@@ -98,7 +101,7 @@ class VsiteAliasStorage implements AliasStorageInterface {
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
   public function save($source, $alias, $langcode = LanguageInterface::LANGCODE_NOT_SPECIFIED, $pid = NULL) {
     $alias = $this->pathToToken($alias);
@@ -110,7 +113,7 @@ class VsiteAliasStorage implements AliasStorageInterface {
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
   public function load($conditions) {
     if (!empty($conditions['alias'])) {
@@ -124,7 +127,7 @@ class VsiteAliasStorage implements AliasStorageInterface {
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
   public function delete($conditions) {
     if (!empty($conditions['alias'])) {
@@ -134,7 +137,7 @@ class VsiteAliasStorage implements AliasStorageInterface {
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
   public function preloadPathAlias($preloaded, $langcode) {
     $output = $this->storage->preloadPathAlias($preloaded, $langcode);
@@ -147,7 +150,7 @@ class VsiteAliasStorage implements AliasStorageInterface {
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
   public function lookupPathAlias($path, $langcode) {
     $output = $this->storage->lookupPathAlias($path, $langcode);
@@ -158,7 +161,7 @@ class VsiteAliasStorage implements AliasStorageInterface {
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    *
    * This is the entry point for requests to determine what the real route is going to be
    *
@@ -175,7 +178,7 @@ class VsiteAliasStorage implements AliasStorageInterface {
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
   public function aliasExists($alias, $langcode, $source = NULL) {
     $alias = $this->pathToToken($alias);
@@ -183,14 +186,14 @@ class VsiteAliasStorage implements AliasStorageInterface {
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
   public function languageAliasExists() {
     return $this->storage->languageAliasExists();
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
   public function getAliasesForAdminListing($header, $keys = NULL) {
     $output = $this->storage->getAliasesForAdminListing($header, $keys);
@@ -201,7 +204,7 @@ class VsiteAliasStorage implements AliasStorageInterface {
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
   public function pathHasMatchingAlias($initial_substring) {
     return $this->storage->pathHasMatchingAlias($initial_substring);

@@ -12,11 +12,13 @@ use Drupal\vsite\AppInterface;
  *   entityType = "node",
  *   bundle = "link"
  * )
+ *
+ * Plugin for the Links App
  */
 class LinksApp extends PluginBase implements AppInterface {
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function getGroupContentTypes() {
     return [

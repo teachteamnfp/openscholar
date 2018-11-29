@@ -7,16 +7,16 @@ use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Plugin\DefaultPluginManager;
 
 /**
- *
+ * Manager for the App plugin system
  */
 class AppManager extends DefaultPluginManager implements AppManangerInterface {
 
   /**
    * Constructs an AppManager object.
    *
-   * @param \Traversable $namespaces
-   * @param \Drupal\Core\Cache\CacheBackendInterface
-   * @param \Drupal\Core\Extension\ModuleHandlerInterface
+   * @param \Traversable $namespaces  namespace object
+   * @param \Drupal\Core\Cache\CacheBackendInterface $cache_backend  Cache backend
+   * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler Module handler
    */
   public function __construct(\Traversable $namespaces, CacheBackendInterface $cache_backend, ModuleHandlerInterface $module_handler) {
     parent::__construct(

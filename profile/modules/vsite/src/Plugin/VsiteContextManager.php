@@ -8,27 +8,33 @@ use Drupal\vsite\VsiteEvents;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- *
+ * Manages and stores active vsites.
+ * Other classes declare a vsite is active to this manager, and this
+ * class responds and dispatches an event for other modules to listen to.
  */
 class VsiteContextManager implements VsiteContextManagerInterface {
 
   /**
-   * @var \Drupal\group\Entity\GroupInterface*/
+   * @var \Drupal\group\Entity\GroupInterface
+   * The active vsite
+   */
   protected $activeGroup = NULL;
 
   /**
-   * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface*/
+   * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
+   * Event displatcher
+   */
   protected $dispatcher;
 
   /**
-   *
+   * Constructor
    */
   public function __construct(EventDispatcherInterface $dispatcher) {
     $this->dispatcher = $dispatcher;
   }
 
   /**
-   *
+   * Activate a vsite and handle all processing that entails.
    */
   public function activateVsite(GroupInterface $group) {
     $this->activeGroup = $group;
@@ -39,13 +45,14 @@ class VsiteContextManager implements VsiteContextManagerInterface {
   }
 
   /**
-   *
+   * Activate the user roles a given user should have within the active vsite
    */
   public function activateRoles() {
     // TODO: Implement activateRoles() method.
   }
 
   /**
+   * Returns the active vsite
    * @return \Drupal\group\Entity\GroupInterface
    */
   public function getActiveVsite() : ?GroupInterface {
@@ -53,7 +60,7 @@ class VsiteContextManager implements VsiteContextManagerInterface {
   }
 
   /**
-   *
+   * Returns just the purl for the active vsite
    */
   public function getActivePurl() {
     if (!empty($this->activeGroup)) {
@@ -63,7 +70,7 @@ class VsiteContextManager implements VsiteContextManagerInterface {
   }
 
   /**
-   *
+   * Gets an absolute url to a vsite
    */
   public function getAbsoluteUrl(string $path = '', GroupInterface $group = NULL) {
     // TODO: Implement getAbsoluteUrl() method.
@@ -74,7 +81,7 @@ class VsiteContextManager implements VsiteContextManagerInterface {
   }
 
   /**
-   *
+   *  Returns the ConfigStorage for the given vsite
    */
   public function getStorage(GroupInterface $group = NULL) {
 
