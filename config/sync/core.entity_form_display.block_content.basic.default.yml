@@ -5,10 +5,12 @@ dependencies:
   config:
     - block_content.type.basic
     - field.field.block_content.basic.body
+    - field.field.block_content.basic.field_slideshow
   module:
     - content_moderation
     - field_layout
     - layout_discovery
+    - paragraphs
     - text
 third_party_settings:
   field_layout:
@@ -28,6 +30,18 @@ content:
       rows: 9
       summary_rows: 3
       placeholder: ''
+    third_party_settings: {  }
+    region: content
+  field_slideshow:
+    type: entity_reference_paragraphs
+    weight: 101
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
     third_party_settings: {  }
     region: content
   info:
