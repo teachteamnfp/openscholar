@@ -39,11 +39,11 @@ class RoboFile extends \Robo\Tasks
      * @return \Robo\Result
      *   The result of the collection of tasks.
      */
-    public function jobRunUnitTests()
+    public function jobRunUnitTests($groups = '')
     {
         $collection = $this->collectionBuilder();
         $collection->addTask($this->installDrupal());
-        $collection->addTaskList($this->runUnitTests());
+        $collection->addTaskList($this->runUnitTests($groups));
         return $collection->run();
     }
 
@@ -195,7 +195,7 @@ class RoboFile extends \Robo\Tasks
      * @return \Robo\Task\Base\Exec[]
      *   An array of tasks.
      */
-    protected function runUnitTests()
+    protected function runUnitTests($groups)
     {
         $force = true;
         $tasks = [];
@@ -203,7 +203,7 @@ class RoboFile extends \Robo\Tasks
             ->copy('.travis'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'phpunit.xml', 'web'.DIRECTORY_SEPARATOR.'core'.DIRECTORY_SEPARATOR.'phpunit.xml', $force);
         $tasks[] = $this->taskExecStack()
             ->dir('web')
-            ->exec('..'.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'phpunit -c core --verbose core');
+            ->exec('..'.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'phpunit -c core --debug --coverage-clover ../build/logs/clover.xml'. ($groups ? '--group '.$groups: ' ')  .'--verbose profiles/contrib/openscholar');
         return $tasks;
     }
 
