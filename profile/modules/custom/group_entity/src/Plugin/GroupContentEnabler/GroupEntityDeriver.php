@@ -1,26 +1,24 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: New User
- * Date: 10/19/2018
- * Time: 4:37 PM
- */
 
 namespace Drupal\group_entity\Plugin\GroupContentEnabler;
 
 use Drupal\Component\Plugin\Derivative\DeriverBase;
-use Drupal\Core\Config\Entity\ConfigEntityBundleBase;
 
+/**
+ *
+ */
 class GroupEntityDeriver extends DeriverBase {
 
   /**
    * {@inheritdoc}.
    */
   public function getDerivativeDefinitions($base_plugin_definition) {
-    $entity_types = [ // @todo: Make this array configurable
-      'media', // this key is found in the annotation for the entity_type, bundle_of
+    // @todo: Make this array configurable
+    $entity_types = [
+    // This key is found in the annotation for the entity_type, bundle_of.
+      'media',
       'block_content',
-      'taxonomy_term'
+      'taxonomy_term',
     ];
     foreach ($entity_types as $type_id) {
       $this->derivatives[$type_id] = [
@@ -32,4 +30,5 @@ class GroupEntityDeriver extends DeriverBase {
 
     return $this->derivatives;
   }
+
 }

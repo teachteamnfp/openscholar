@@ -6,6 +6,9 @@ use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Plugin\DefaultPluginManager;
 
+/**
+ *
+ */
 class AppManager extends DefaultPluginManager implements AppManangerInterface {
 
   /**
@@ -15,8 +18,8 @@ class AppManager extends DefaultPluginManager implements AppManangerInterface {
    * @param \Drupal\Core\Cache\CacheBackendInterface
    * @param \Drupal\Core\Extension\ModuleHandlerInterface
    */
-  public function __construct (\Traversable $namespaces, CacheBackendInterface $cache_backend, ModuleHandlerInterface $module_handler) {
-    parent::__construct (
+  public function __construct(\Traversable $namespaces, CacheBackendInterface $cache_backend, ModuleHandlerInterface $module_handler) {
+    parent::__construct(
       'Plugin/App',
       $namespaces,
       $module_handler,
@@ -24,7 +27,8 @@ class AppManager extends DefaultPluginManager implements AppManangerInterface {
       'Drupal\vsite\Annotation\App'
     );
 
-    $this->alterInfo ('app_info');
+    $this->alterInfo('app_info');
     $this->setCacheBackend($cache_backend, 'app_info_plugins');
   }
+
 }

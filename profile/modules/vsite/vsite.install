@@ -1,9 +1,19 @@
 <?php
 
+/**
+ * @file
+ */
+
+/**
+ *
+ */
 function vsite_install() {
-  vsite_setup_new_apps (array());
+  vsite_setup_new_apps([]);
 }
 
+/**
+ *
+ */
 function vsite_uninstall() {
-  // fill in
+  // Fill in.
 }

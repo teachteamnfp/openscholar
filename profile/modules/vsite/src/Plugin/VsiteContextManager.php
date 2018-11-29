@@ -1,68 +1,82 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: New User
- * Date: 10/8/2018
- * Time: 10:01 AM
- */
 
 namespace Drupal\vsite\Plugin;
 
-
-use Drupal\Core\Path\AliasManagerInterface;
-use Drupal\Core\Routing\UrlGeneratorInterface;
 use Drupal\group\Entity\GroupInterface;
 use Drupal\vsite\Event\VsiteActivatedEvent;
 use Drupal\vsite\VsiteEvents;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
+/**
+ *
+ */
 class VsiteContextManager implements VsiteContextManagerInterface {
 
-  /** @var GroupInterface */
-  protected $activeGroup = null;
+  /**
+   * @var \Drupal\group\Entity\GroupInterface*/
+  protected $activeGroup = NULL;
 
-  /** @var EventDispatcherInterface  */
+  /**
+   * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface*/
   protected $dispatcher;
 
+  /**
+   *
+   */
   public function __construct(EventDispatcherInterface $dispatcher) {
     $this->dispatcher = $dispatcher;
   }
 
-  public function activateVsite (GroupInterface $group) {
+  /**
+   *
+   */
+  public function activateVsite(GroupInterface $group) {
     $this->activeGroup = $group;
-    $this->activateRoles ();
+    $this->activateRoles();
 
     $event = new VsiteActivatedEvent($group);
-    $this->dispatcher->dispatch (VsiteEvents::VSITE_ACTIVATED, $event);
+    $this->dispatcher->dispatch(VsiteEvents::VSITE_ACTIVATED, $event);
   }
 
-  public function activateRoles () {
+  /**
+   *
+   */
+  public function activateRoles() {
     // TODO: Implement activateRoles() method.
   }
 
   /**
-   * @return GroupInterface
+   * @return \Drupal\group\Entity\GroupInterface
    */
-  public function getActiveVsite () : ?GroupInterface {
+  public function getActiveVsite() : ?GroupInterface {
     return $this->activeGroup;
   }
 
+  /**
+   *
+   */
   public function getActivePurl() {
     if (!empty($this->activeGroup)) {
-      return trim (\Drupal::service('path.alias_manager')->getAliasByPath ('/group/' . $this->activeGroup->id ()), '/');
+      return trim(\Drupal::service('path.alias_manager')->getAliasByPath('/group/' . $this->activeGroup->id()), '/');
     }
     return '';
   }
 
-  public function getAbsoluteUrl (string $path = '', GroupInterface $group = null) {
+  /**
+   *
+   */
+  public function getAbsoluteUrl(string $path = '', GroupInterface $group = NULL) {
     // TODO: Implement getAbsoluteUrl() method.
     // 1. Generate modifier based on Group given
-    // 2. Apply it to path or route
+    // 2. Apply it to path or route.
     $purl = $this->activeGroup->toUrl('canonical', ['base_url' => ''])->toString();
-    return $purl . '/'. ltrim($path, '/'); 
+    return $purl . '/' . ltrim($path, '/');
   }
 
-  public function getStorage(GroupInterface $group = null) {
+  /**
+   *
+   */
+  public function getStorage(GroupInterface $group = NULL) {
 
   }
 

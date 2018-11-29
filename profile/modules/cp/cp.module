@@ -1,8 +1,15 @@
 <?php
 
+/**
+ * @file
+ */
+
+/**
+ *
+ */
 function cp_toolbar_alter(&$toolbar) {
-  // prevent the Admin menu toolbar tray from appearing to users who don't have permission to do anything with it.
-  if (!\Drupal::currentUser ()->hasPermission ('access administration toolbar')) {
+  // Prevent the Admin menu toolbar tray from appearing to users who don't have permission to do anything with it.
+  if (!\Drupal::currentUser()->hasPermission('access administration toolbar')) {
 
     if (isset($toolbar['toolbar_menu_control_panel'])) {
       $toolbar['toolbar_menu_control_panel']['tray']['#attached'] = $toolbar['administration']['tray']['#attached'];

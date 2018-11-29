@@ -1,31 +1,37 @@
 <?php
-/**
- * Allows Drupal to keep a list of multiple storages to search from.
- */
 
 namespace Drupal\vsite\Config;
 
-
 use Drupal\Core\Config\StorageInterface;
 
+/**
+ *
+ */
 class HierarchicalStorage implements HierarchicalStorageInterface {
 
   const GLOBAL_STORAGE = INF;
 
-  /** @var array  */
+  /**
+   * @var array*/
   protected $storages = [];
 
+  /**
+   *
+   */
   public function __construct(StorageInterface $storage) {
     $this->storages[] = [
       'storage' => $storage,
-      'weight' => self::GLOBAL_STORAGE
+      'weight' => self::GLOBAL_STORAGE,
     ];
   }
 
+  /**
+   *
+   */
   public function addStorage(StorageInterface $s, $weight) {
     $this->storages[] = [
       'storage' => $s,
-      'weight' => $weight
+      'weight' => $weight,
     ];
 
     usort($this->storages, function ($a, $b) {
@@ -36,22 +42,25 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
     });
   }
 
+  /**
+   *
+   */
   protected function iterate(callable $func) {
     foreach ($this->storages as $s) {
-      /** @var StorageInterface $store */
+      /** @var \Drupal\Core\Config\StorageInterface $store */
       $store = $s['storage'];
       $output = $func($store);
       if (!is_null($output)) {
         return $output;
       }
     }
-    return false;
+    return FALSE;
   }
 
   /**
    * @inheritDoc
    */
-  public function exists ($name) {
+  public function exists($name) {
     return $this->iterate(function (StorageInterface $store) use ($name) {
       return $store->exists($name);
     });
@@ -60,7 +69,7 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   /**
    * @inheritDoc
    */
-  public function read ($name) {
+  public function read($name) {
     $output = $this->iterate(function (StorageInterface $store) use ($name) {
       $output = $store->read($name);
       if (!is_null($output)) {
@@ -73,12 +82,12 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   /**
    * @inheritDoc
    */
-  public function readMultiple (array $names) {
+  public function readMultiple(array $names) {
     $output = [];
     foreach ($this->storages as $s) {
-      /** @var StorageInterface $store */
+      /** @var \Drupal\Core\Config\StorageInterface $store */
       $store = $s['storage'];
-      $output += $store->readMultiple ($names);
+      $output += $store->readMultiple($names);
     }
 
     return $output;
@@ -89,8 +98,8 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
    *
    * We always write to the bottom-most storage
    */
-  public function write ($name, array $data) {
-    /** @var StorageInterface $store */
+  public function write($name, array $data) {
+    /** @var \Drupal\Core\Config\StorageInterface $store */
     $store = $this->storages[0]['storage'];
     $store->write($name, $data);
   }
@@ -98,8 +107,8 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   /**
    * @inheritDoc
    */
-  public function delete ($name) {
-    /** @var StorageInterface $store */
+  public function delete($name) {
+    /** @var \Drupal\Core\Config\StorageInterface $store */
     $store = $this->storages[0]['storage'];
     $store->delete($name);
   }
@@ -107,8 +116,8 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   /**
    * @inheritDoc
    */
-  public function rename ($name, $new_name) {
-    /** @var StorageInterface $store */
+  public function rename($name, $new_name) {
+    /** @var \Drupal\Core\Config\StorageInterface $store */
     $store = $this->storages[0]['storage'];
     $store->rename($name, $new_name);
   }
@@ -116,8 +125,8 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   /**
    * @inheritDoc
    */
-  public function encode ($data) {
-    /** @var StorageInterface $store */
+  public function encode($data) {
+    /** @var \Drupal\Core\Config\StorageInterface $store */
     $store = end($this->storages)['storage'];
     return $store->encode($data);
   }
@@ -125,8 +134,8 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   /**
    * @inheritDoc
    */
-  public function decode ($raw) {
-    /** @var StorageInterface $store */
+  public function decode($raw) {
+    /** @var \Drupal\Core\Config\StorageInterface $store */
     $store = end($this->storages)['storage'];
     return $store->decode($raw);
   }
@@ -134,10 +143,10 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   /**
    * @inheritDoc
    */
-  public function listAll ($prefix = '') {
+  public function listAll($prefix = '') {
     $output = [];
     foreach ($this->storages as $s) {
-      /** @var StorageInterface $store */
+      /** @var \Drupal\Core\Config\StorageInterface $store */
       $store = $s['storage'];
       $output += $store->listAll($prefix);
     }
@@ -148,36 +157,37 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   /**
    * @inheritDoc
    */
-  public function deleteAll ($prefix = '') {
-    /** @var StorageInterface $store */
+  public function deleteAll($prefix = '') {
+    /** @var \Drupal\Core\Config\StorageInterface $store */
     $store = $this->storages[0]['storage'];
-    $store->deleteAll ($prefix);
+    $store->deleteAll($prefix);
   }
 
   /**
    * @inheritDoc
    */
-  public function createCollection ($collection) {
-    /** @var StorageInterface $store */
+  public function createCollection($collection) {
+    /** @var \Drupal\Core\Config\StorageInterface $store */
     $store = end($this->storages)['storage'];
-    return $store->createCollection ($collection);
+    return $store->createCollection($collection);
   }
 
   /**
    * @inheritDoc
    */
-  public function getAllCollectionNames () {
-    /** @var StorageInterface $store */
+  public function getAllCollectionNames() {
+    /** @var \Drupal\Core\Config\StorageInterface $store */
     $store = end($this->storages)['storage'];
-    return $store->getAllCollectionNames ();
+    return $store->getAllCollectionNames();
   }
 
   /**
    * @inheritDoc
    */
-  public function getCollectionName () {
-    /** @var StorageInterface $store */
+  public function getCollectionName() {
+    /** @var \Drupal\Core\Config\StorageInterface $store */
     $store = $this->storages[0]['storage'];
-    return $store->getCollectionName ();
+    return $store->getCollectionName();
   }
+
 }

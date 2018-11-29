@@ -15,10 +15,13 @@ use Drupal\vsite\AppInterface;
  */
 class LinksApp extends PluginBase implements AppInterface {
 
-
+  /**
+   *
+   */
   public function getGroupContentTypes() {
-    return array(
-      'link'
-    );
+    return [
+      'link',
+    ];
   }
+
 }
