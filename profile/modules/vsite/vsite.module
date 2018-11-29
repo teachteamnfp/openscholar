@@ -155,7 +155,7 @@ function vsite_views_pre_build(ViewExecutable $view) {
     /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContext */
     $vsiteContext = \Drupal::service('vsite.context_manager');
     if ($group = $vsiteContext->getActiveVsite ()) {
-      $view->element['#cache']['contexts'][] = 'vsite:' . $vsiteContext->getActiveVsite()->id();
+      $view->element['#cache']['contexts'][] = 'vsite:' . $group->id();
     }
     else {
       // To solve cache problem, we won't serve the page without vsite context
