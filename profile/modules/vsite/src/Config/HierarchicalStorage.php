@@ -5,18 +5,20 @@ namespace Drupal\vsite\Config;
 use Drupal\Core\Config\StorageInterface;
 
 /**
- *
+ *  Allows multiple StorageInterfaces to be stacked
  */
 class HierarchicalStorage implements HierarchicalStorageInterface {
 
   const GLOBAL_STORAGE = INF;
 
   /**
-   * @var array*/
+   * @var array
+   * Each value is in the format [StorageInterface storage, int weight]
+   */
   protected $storages = [];
 
   /**
-   *
+   * Constructor
    */
   public function __construct(StorageInterface $storage) {
     $this->storages[] = [
@@ -26,7 +28,7 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   }
 
   /**
-   *
+   * @inheritdoc
    */
   public function addStorage(StorageInterface $s, $weight) {
     $this->storages[] = [
@@ -43,7 +45,7 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   }
 
   /**
-   *
+   * Iterate over every storage and call the function given
    */
   protected function iterate(callable $func) {
     foreach ($this->storages as $s) {
@@ -58,7 +60,7 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
   public function exists($name) {
     return $this->iterate(function (StorageInterface $store) use ($name) {
@@ -67,7 +69,7 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
   public function read($name) {
     $output = $this->iterate(function (StorageInterface $store) use ($name) {
@@ -80,7 +82,7 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
   public function readMultiple(array $names) {
     $output = [];
@@ -94,7 +96,7 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    *
    * We always write to the bottom-most storage
    */
@@ -105,7 +107,7 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
   public function delete($name) {
     /** @var \Drupal\Core\Config\StorageInterface $store */
@@ -114,7 +116,7 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
   public function rename($name, $new_name) {
     /** @var \Drupal\Core\Config\StorageInterface $store */
@@ -123,7 +125,7 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
   public function encode($data) {
     /** @var \Drupal\Core\Config\StorageInterface $store */
@@ -132,7 +134,7 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
   public function decode($raw) {
     /** @var \Drupal\Core\Config\StorageInterface $store */
@@ -141,7 +143,7 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
   public function listAll($prefix = '') {
     $output = [];
@@ -155,7 +157,7 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
   public function deleteAll($prefix = '') {
     /** @var \Drupal\Core\Config\StorageInterface $store */
@@ -164,7 +166,7 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
   public function createCollection($collection) {
     /** @var \Drupal\Core\Config\StorageInterface $store */
@@ -173,7 +175,7 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
   public function getAllCollectionNames() {
     /** @var \Drupal\Core\Config\StorageInterface $store */
@@ -182,7 +184,7 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
   public function getCollectionName() {
     /** @var \Drupal\Core\Config\StorageInterface $store */

@@ -2,10 +2,14 @@
 
 /**
  * @file
+ *
+ * Hooks Implementations
  */
 
 /**
+ * Implements hook_toolbar_alter().
  *
+ * Hides the administration toolbar unless the user has access to see it
  */
 function cp_toolbar_alter(&$toolbar) {
   // Prevent the Admin menu toolbar tray from appearing to users who don't have permission to do anything with it.
