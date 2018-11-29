@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * @group vsite
- * @coversDefaultClass VsiteContextManager
+ * @coversDefaultClass \Drupal\vsite\Plugin\VsiteContextManager
  */
 class VsiteContextManagerTest extends UnitTestCase {
 
