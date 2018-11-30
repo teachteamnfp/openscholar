@@ -766,27 +766,6 @@ display:
         - user.permissions
       tags:
         - 'config:field.storage.node.field_software_version'
-  block_4:
-    display_plugin: block
-    id: block_4
-    display_title: 'Filesize Block'
-    position: 4
-    display_options:
-      display_extenders: {  }
-      display_description: ''
-      title: 'Filesize of Releases'
-      defaults:
-        title: false
-    cache_metadata:
-      max-age: -1
-      contexts:
-        - 'languages:language_content'
-        - 'languages:language_interface'
-        - url
-        - 'user.node_grants:view'
-        - user.permissions
-      tags:
-        - 'config:field.storage.node.field_software_version'
   page_1:
     display_plugin: page
     id: page_1

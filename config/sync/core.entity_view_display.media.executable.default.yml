@@ -13,7 +13,7 @@ bundle: executable
 mode: default
 content:
   field_media_file:
-    type: file_default
+    type: file_table
     weight: 0
     region: content
     label: hidden
