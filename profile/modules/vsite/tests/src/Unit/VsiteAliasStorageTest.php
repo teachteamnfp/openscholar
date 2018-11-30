@@ -17,22 +17,22 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 class VsiteAliasStorageTest extends UnitTestCase {
 
   /**
-   * @var \Symfony\Component\DependencyInjection\ContainerBuilder
+   * @var \Symfony\Component\DependencyInjection\ContainerBuilder Dependency Injection container
    */
   protected $container;
 
   /**
-   * @var \Drupal\vsite\Path\VsiteAliasStorage
+   * @var \Drupal\vsite\Path\VsiteAliasStorage The object to test
    */
   protected $vsiteAliasStorage;
 
   /**
-   * @var \PHPUnit_Framework_MockObject_MockObject
+   * @var \PHPUnit_Framework_MockObject_MockObject Mock for EntityTypeManagerInterface
    */
   protected $entityTypeManager;
 
   /**
-   * @var \PHPUnit_Framework_MockObject_MockObject
+   * @var \PHPUnit_Framework_MockObject_MockObject The AliasStorage our tested class is wrapping
    */
   protected $innerAliasStorage;
 

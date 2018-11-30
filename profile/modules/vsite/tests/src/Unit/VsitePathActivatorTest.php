@@ -15,38 +15,37 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 class VsitePathActivatorTest extends UnitTestCase {
 
   /**
-   * @var \Symfony\Component\DependencyInjection\ContainerBuilder
+   * @var \Symfony\Component\DependencyInjection\ContainerBuilder Dependency injection container
    */
   protected $container;
 
   /**
-   * @var \Drupal\vsite\Plugin\VsitePathActivator
+   * @var \Drupal\vsite\Plugin\VsitePathActivator  The object we're testing
    */
   protected $vsitePathActivator;
 
   /**
-   * @var \PHPUnit_Framework_MockObject_MockObject
+   * @var \PHPUnit_Framework_MockObject_MockObject  Mock for the VsiteContextManager object
    */
   protected $vsiteContextManager;
 
   /**
-   * @var \PHPUnit_Framework_MockObject_MockObject
+   * @var \PHPUnit_Framework_MockObject_MockObject  Mock for EntityTypeManager
    */
   protected $entityTypeManager;
 
   /**
-   * @var \PHPUnit_Framework_MockObject_MockObject
+   * @var \PHPUnit_Framework_MockObject_MockObject  Mock for a node we're pretending to view
    */
   protected $node;
 
   /**
-   * @var \PHPUnit_Framework_MockObject_MockObject
+   * @var \PHPUnit_Framework_MockObject_MockObject  Mock for the group we're in
    */
   protected $group;
 
   /**
-   * Set up steps needed for the tests
-   * Sets up a node-group relationship to be referred to later.
+   * Set up steps needed for the tests. Sets up a node-group relationship to be referred to later.
    */
   public function setUp() {
     parent::setUp();

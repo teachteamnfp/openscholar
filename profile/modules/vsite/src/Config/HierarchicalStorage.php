@@ -12,8 +12,7 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   const GLOBAL_STORAGE = INF;
 
   /**
-   * @var array
-   * Each value is in the format [StorageInterface storage, int weight]
+   * @var array Each value is in the format [StorageInterface storage, int weight]
    */
   protected $storages = [];
 
@@ -29,6 +28,7 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
 
   /**
    * @inheritdoc
+   * Add a storage to the stack
    */
   public function addStorage(StorageInterface $s, $weight) {
     $this->storages[] = [
@@ -61,6 +61,7 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
 
   /**
    * @inheritdoc
+   * See interface
    */
   public function exists($name) {
     return $this->iterate(function (StorageInterface $store) use ($name) {
@@ -70,6 +71,7 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
 
   /**
    * @inheritdoc
+   * See interface
    */
   public function read($name) {
     $output = $this->iterate(function (StorageInterface $store) use ($name) {
@@ -83,6 +85,7 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
 
   /**
    * @inheritdoc
+   * See interface
    */
   public function readMultiple(array $names) {
     $output = [];
@@ -108,6 +111,8 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
 
   /**
    * @inheritdoc
+   *
+   * Only delete from the bottom-most storage
    */
   public function delete($name) {
     /** @var \Drupal\Core\Config\StorageInterface $store */
@@ -117,6 +122,8 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
 
   /**
    * @inheritdoc
+   *
+   * Only rename from the bottom-most storage
    */
   public function rename($name, $new_name) {
     /** @var \Drupal\Core\Config\StorageInterface $store */

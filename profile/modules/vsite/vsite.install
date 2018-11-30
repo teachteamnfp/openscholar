@@ -11,10 +11,3 @@
 function vsite_install() {
   vsite_setup_new_apps([]);
 }
-
-/**
- * Undo all the app setup.
- */
-function vsite_uninstall() {
-  // Fill in.
-}

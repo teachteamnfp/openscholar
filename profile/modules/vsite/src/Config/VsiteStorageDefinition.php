@@ -13,7 +13,7 @@ class VsiteStorageDefinition implements EventSubscriberInterface {
   const VSITE_STORAGE = 0;
 
   /**
-   * @var HierarchicalStorageInterface
+   * @var HierarchicalStorageInterface The storage element to add a vsite storage to
    */
   protected $hierarchicalStorage;
 
@@ -25,7 +25,7 @@ class VsiteStorageDefinition implements EventSubscriberInterface {
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
   public static function getSubscribedEvents() {
     $events = [];

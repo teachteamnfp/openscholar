@@ -19,22 +19,17 @@ class VsiteContextManagerTest extends UnitTestCase {
 
 
   /**
-   * @var \Symfony\Component\DependencyInjection\ContainerBuilder
-   *
-   * The dependency injection container
+   * @var \Symfony\Component\DependencyInjection\ContainerBuilder The dependency injection container
    */
   protected $container;
 
   /**
-   * @var \Drupal\vsite\Plugin\VsiteContextManager
-   * The object to test
+   * @var \Drupal\vsite\Plugin\VsiteContextManager The object to test
    */
   protected $vsiteContextManager;
 
   /**
-   * @var \PHPUnit_Framework_MockObject_MockObject
-   *
-   * Event Dispatcher mock object
+   * @var \PHPUnit_Framework_MockObject_MockObject Event Dispatcher mock object
    */
   protected $eventDispatcher;
 

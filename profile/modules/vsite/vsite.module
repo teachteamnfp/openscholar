@@ -2,6 +2,7 @@
 
 /**
  * @file
+ * Hook implementationss for the vsite module.
  */
 
 use Drupal\Core\Cache\CacheableMetadata;
@@ -175,11 +176,12 @@ function vsite_toolbar_alter(&$toolbar) {
 /**
  * Adds the current vsite to list of this build array's cache contexts.
  *
- * @param array $element
+ * @param array $element The full toolbar render array.
  *
- * @return array The modified element
+ * @return array
+ * The modified element
  */
-function _vsite_prerender_control_panel_links($element) {
+function _vsite_prerender_control_panel_links(array $element) {
   /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContext */
   $vsiteContext = \Drupal::service('vsite.context_manager');
   $metadata = CacheableMetadata::createFromRenderArray($element['toolbar_menu_control-panel']);
