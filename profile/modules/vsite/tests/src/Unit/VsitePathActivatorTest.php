@@ -7,6 +7,13 @@ use Drupal\Tests\UnitTestCase;
 use Drupal\vsite\Plugin\VsitePathActivator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
+/**
+ * @group vsite
+ * @coversDefaultClass \Drupal\vsite\Plugin\VsitePathActivator
+ *
+ * Tests for the VsitePathActivator class
+ */
+
 class VsitePathActivatorTest extends UnitTestCase {
 
   /**
@@ -39,6 +46,10 @@ class VsitePathActivatorTest extends UnitTestCase {
    */
   protected $group;
 
+  /**
+   * Set up steps needed for the tests
+   * Sets up a node-group relationship to be referred to later
+   */
   public function setUp() {
     parent::setUp();
 
@@ -93,6 +104,9 @@ class VsitePathActivatorTest extends UnitTestCase {
     $this->vsitePathActivator = new VsitePathActivator($this->vsiteContextManager, $this->entityTypeManager);
   }
 
+  /**
+   * Test that a vsite is activated when a purl modifier is matched
+   */
   public function testModifierMatched() {
 
     $currentRouteMatch = $this->createMock ('\Drupal\Core\Routing\CurrentRouteMatch');
@@ -113,6 +127,9 @@ class VsitePathActivatorTest extends UnitTestCase {
 
   }
 
+  /**
+   * Test that a vsite is activated when on the group entity path
+   */
   public function testOnRequest() {
 
     $currentRouteMatch = $this->createMock ('\Drupal\Core\Routing\CurrentRouteMatch');
