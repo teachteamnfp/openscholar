@@ -1,0 +1,28 @@
+uuid: 8d3d6ea0-5f8a-4ec5-a00c-f13f2d4ffca7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.media.executable.field_media_file
+    - media.type.executable
+  module:
+    - file
+id: media.executable.default
+targetEntityType: media
+bundle: executable
+mode: default
+content:
+  field_media_file:
+    type: file_default
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+hidden:
+  created: true
+  langcode: true
+  name: true
+  thumbnail: true
+  uid: true

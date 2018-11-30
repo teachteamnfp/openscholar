@@ -589,6 +589,13 @@ display:
     display_options:
       display_extenders: {  }
       display_description: ''
+      use_more: true
+      defaults:
+        use_more: false
+        use_more_always: false
+        use_more_text: false
+      use_more_always: true
+      use_more_text: 'more releases'
     cache_metadata:
       max-age: -1
       contexts:
@@ -789,7 +796,7 @@ display:
       display_extenders: {  }
       path: software/%/releases
       display_description: ''
-      title: 'All Releases'
+      title: '{{ arguments.nid }} - All Releases'
       defaults:
         title: false
         pager: false

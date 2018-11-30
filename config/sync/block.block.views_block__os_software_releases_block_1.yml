@@ -13,7 +13,7 @@ dependencies:
 id: views_block__os_software_releases_block_1
 theme: bartik
 region: content
-weight: 0
+weight: -1
 provider: null
 plugin: 'views_block:os_software_releases-block_1'
 settings:

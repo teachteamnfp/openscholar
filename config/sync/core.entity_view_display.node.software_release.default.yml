@@ -20,49 +20,40 @@ content:
   body:
     label: hidden
     type: text_default
-    weight: 101
+    weight: 0
     settings: {  }
     third_party_settings: {  }
     region: content
-  field_is_recommended_version:
-    weight: 104
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    type: boolean
-    region: content
   field_software_package:
     type: entity_reference_entity_view
-    weight: 105
-    label: above
+    weight: 3
+    label: inline
     settings:
       view_mode: default
       link: false
     third_party_settings: {  }
     region: content
   field_software_project:
-    weight: 103
-    label: above
+    weight: 1
+    label: inline
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
     region: content
   field_software_version:
-    weight: 102
-    label: above
+    weight: 2
+    label: inline
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
     region: content
   links:
-    weight: 100
+    weight: 4
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
 hidden:
+  field_is_recommended_version: true
   langcode: true
