@@ -48,7 +48,7 @@ class VsiteAliasStorageTest extends UnitTestCase {
 
     $this->innerAliasStorage = $this->createMock('\Drupal\Core\Path\AliasStorageInterface');
 
-    $mockProvider = $this->createMock('\Drupal\purl\Entity\provider');
+    $mockProvider = $this->createMock('\Drupal\purl\Entity\Provider');
 
     $modifierIndex = $this->createMock ('\Drupal\purl\Plugin\ModifierIndex');
     $method = $this->createMock('\Drupal\purl\Plugin\Purl\Method\MethodInterface');
