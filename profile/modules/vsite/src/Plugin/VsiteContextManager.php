@@ -27,7 +27,7 @@ class VsiteContextManager implements VsiteContextManagerInterface {
   protected $dispatcher;
 
   /**
-   * Constructor
+   * Constructor.
    */
   public function __construct(EventDispatcherInterface $dispatcher) {
     $this->dispatcher = $dispatcher;
@@ -45,14 +45,15 @@ class VsiteContextManager implements VsiteContextManagerInterface {
   }
 
   /**
-   * Activate the user roles a given user should have within the active vsite
+   * Activate the user roles a given user should have within the active vsite.
    */
   public function activateRoles() {
     // TODO: Implement activateRoles() method.
   }
 
   /**
-   * Returns the active vsite
+   * Returns the active vsite.
+   *
    * @return \Drupal\group\Entity\GroupInterface
    */
   public function getActiveVsite() : ?GroupInterface {
@@ -60,7 +61,7 @@ class VsiteContextManager implements VsiteContextManagerInterface {
   }
 
   /**
-   * Returns just the purl for the active vsite
+   * Returns just the purl for the active vsite.
    */
   public function getActivePurl() {
     if (!empty($this->activeGroup)) {
@@ -70,7 +71,7 @@ class VsiteContextManager implements VsiteContextManagerInterface {
   }
 
   /**
-   * Gets an absolute url to a vsite
+   * Gets an absolute url to a vsite.
    */
   public function getAbsoluteUrl(string $path = '', GroupInterface $group = NULL) {
     // TODO: Implement getAbsoluteUrl() method.
@@ -81,7 +82,7 @@ class VsiteContextManager implements VsiteContextManagerInterface {
   }
 
   /**
-   *  Returns the ConfigStorage for the given vsite
+   * Returns the ConfigStorage for the given vsite.
    */
   public function getStorage(GroupInterface $group = NULL) {
 

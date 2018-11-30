@@ -5,7 +5,7 @@ namespace Drupal\vsite\Config;
 use Drupal\Core\Config\StorageInterface;
 
 /**
- *  Allows multiple StorageInterfaces to be stacked
+ * Allows multiple StorageInterfaces to be stacked.
  */
 class HierarchicalStorage implements HierarchicalStorageInterface {
 
@@ -18,7 +18,7 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   protected $storages = [];
 
   /**
-   * Constructor
+   * Constructor.
    */
   public function __construct(StorageInterface $storage) {
     $this->storages[] = [
@@ -45,7 +45,7 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   }
 
   /**
-   * Iterate over every storage and call the function given
+   * Iterate over every storage and call the function given.
    */
   protected function iterate(callable $func) {
     foreach ($this->storages as $s) {

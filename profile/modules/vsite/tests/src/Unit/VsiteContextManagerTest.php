@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\vsite\Unit;
 
-use Drupal\group\Entity\Group;
 use Drupal\system\Tests\Routing\MockAliasManager;
 use Drupal\Tests\UnitTestCase;
 use Drupal\vsite\Event\VsiteActivatedEvent;
@@ -40,13 +39,13 @@ class VsiteContextManagerTest extends UnitTestCase {
   protected $eventDispatcher;
 
   /**
-   * Setup the tests
+   * Setup the tests.
    */
   public function setUp() {
     parent::setUp();
 
     $this->container = new ContainerBuilder();
-    \Drupal::setContainer ($this->container);
+    \Drupal::setContainer($this->container);
 
     $this->eventDispatcher = $this->createMock('Symfony\Component\EventDispatcher\EventDispatcher');
 
@@ -54,18 +53,17 @@ class VsiteContextManagerTest extends UnitTestCase {
 
     $alias_manager = new MockAliasManager();
     $this->container->set('path.alias_manager', $alias_manager);
-    $alias_manager->addAlias ('/group/1', '/site01');
+    $alias_manager->addAlias('/group/1', '/site01');
   }
 
-
   /**
-   * Test vsite activation and the getters that require an active vsite
+   * Test vsite activation and the getters that require an active vsite.
    */
   public function testActivateVsite() {
     $group = $this->createMock('\Drupal\group\Entity\Group');
 
     $group->method('id')
-      ->willReturn (1);
+      ->willReturn(1);
 
     $url = $this->createMock('\Drupal\Core\Url');
     $url->method('toString')
@@ -76,18 +74,17 @@ class VsiteContextManagerTest extends UnitTestCase {
 
     $event = new VsiteActivatedEvent($group);
 
-    $this->eventDispatcher->expects($this->at (0))
+    $this->eventDispatcher->expects($this->at(0))
       ->method('dispatch')
       ->with(VsiteEvents::VSITE_ACTIVATED, $event);
 
     $this->vsiteContextManager->activateVsite($group);
 
-    // that that roles activated as they should
-
-    $this->assertEquals ($group, $this->vsiteContextManager->getActiveVsite ());
-    $this->assertEquals('site01', $this->vsiteContextManager->getActivePurl ());
-    $this->assertEquals('/site01/foo', $this->vsiteContextManager->getAbsoluteUrl ('foo'));
-    // getStorage is currently not implemented. May be removed later
+    // That that roles activated as they should.
+    $this->assertEquals($group, $this->vsiteContextManager->getActiveVsite());
+    $this->assertEquals('site01', $this->vsiteContextManager->getActivePurl());
+    $this->assertEquals('/site01/foo', $this->vsiteContextManager->getAbsoluteUrl('foo'));
+    // getStorage is currently not implemented. May be removed later.
   }
 
 }

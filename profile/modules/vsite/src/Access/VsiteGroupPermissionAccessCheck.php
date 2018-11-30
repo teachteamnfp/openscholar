@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Route;
 use Drupal\group\Access\GroupPermissionAccessCheck;
 
 /**
- * Add the vsite to the RouteMatch's parameter set if one is active
+ * Add the vsite to the RouteMatch's parameter set if one is active.
  */
 class VsiteGroupPermissionAccessCheck extends GroupPermissionAccessCheck {
 

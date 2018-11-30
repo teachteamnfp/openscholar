@@ -2,7 +2,6 @@
 
 namespace Drupal\vsite\Plugin;
 
-use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\group\Context\GroupRouteContextTrait;
 use Drupal\purl\PurlEvents;
@@ -12,7 +11,7 @@ use Drupal\purl\Event\ModifierMatchedEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
 /**
- *  Activates a vsite based on the path
+ * Activates a vsite based on the path.
  */
 class VsitePathActivator implements EventSubscriberInterface {
   use GroupRouteContextTrait {
@@ -30,7 +29,7 @@ class VsitePathActivator implements EventSubscriberInterface {
   protected $entityTypeManager;
 
   /**
-   *  Constructor
+   * Constructor.
    */
   public function __construct(VsiteContextManagerInterface $vsiteContextManager, EntityTypeManagerInterface $entityTypeManager) {
     $this->vsiteContextManager = $vsiteContextManager;
@@ -50,7 +49,7 @@ class VsitePathActivator implements EventSubscriberInterface {
 
   /**
    * Event handler for ModifierMatched event
-   * Activates the vsite for the modifier
+   * Activates the vsite for the modifier.
    */
   public function onModifierMatched(ModifierMatchedEvent $event) {
     $id = $event->getValue();
@@ -61,7 +60,7 @@ class VsitePathActivator implements EventSubscriberInterface {
 
   /**
    * Event Handler for the ResponseEvent event
-   * Activates the group if one is found in the RouteMatch parameters
+   * Activates the group if one is found in the RouteMatch parameters.
    *
    * @throws InvalidPluginDefinitionException
    */
@@ -80,6 +79,7 @@ class VsitePathActivator implements EventSubscriberInterface {
    *
    * @return \Drupal\group\Entity\GroupInterface|null
    *   A group entity if one could be found or created, NULL otherwise.
+   *
    * @throws InvalidPluginDefinitionException
    */
   public function getGroupFromRoute() {

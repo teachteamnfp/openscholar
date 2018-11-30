@@ -3,7 +3,7 @@
 namespace Drupal\vsite;
 
 /**
- * Vsite Constants
+ * Vsite Constants.
  */
 class VsiteEvents {
   const VSITE_ACTIVATED = 'vsite.activated';

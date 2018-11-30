@@ -7,7 +7,7 @@ use Drupal\vsite\VsiteEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Sets the ConfigStorage for a vsite when it's activated
+ * Sets the ConfigStorage for a vsite when it's activated.
  */
 class VsiteStorageDefinition implements EventSubscriberInterface {
   const VSITE_STORAGE = 0;
@@ -18,7 +18,7 @@ class VsiteStorageDefinition implements EventSubscriberInterface {
   protected $hierarchicalStorage;
 
   /**
-   *  Constructor
+   * Constructor.
    */
   public function __construct(HierarchicalStorageInterface $hierarchicalStorage) {
     $this->hierarchicalStorage = $hierarchicalStorage;
@@ -35,7 +35,7 @@ class VsiteStorageDefinition implements EventSubscriberInterface {
   }
 
   /**
-   *  Listener for VsiteActivatedEvent
+   * Listener for VsiteActivatedEvent.
    */
   public function onVsiteActivated(VsiteActivatedEvent $event) {
     $storage = $this->hierarchicalStorage->createCollection('vsite:' . $event->getGroup()->id());

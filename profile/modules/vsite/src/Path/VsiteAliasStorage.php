@@ -9,7 +9,7 @@ use Drupal\purl\Plugin\ModifierIndex;
 use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 
 /**
- * Wraps AliasStorage so we can replace the vsite path with an integer id
+ * Wraps AliasStorage so we can replace the vsite path with an integer id.
  */
 class VsiteAliasStorage implements AliasStorageInterface {
 
@@ -34,7 +34,7 @@ class VsiteAliasStorage implements AliasStorageInterface {
   protected $vsiteContextManager;
 
   /**
-   * Constructor
+   * Constructor.
    */
   public function __construct(AliasStorageInterface $storage, ModifierIndex $modifierIndex, EntityTypeManagerInterface $entityTypeManager, VsiteContextManagerInterface $vsiteContextManager) {
     $this->storage = $storage;

@@ -6,7 +6,7 @@ use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- *  Manually test vsite-level config storage functions
+ * Manually test vsite-level config storage functions.
  */
 class VsiteTestForm extends ConfigFormBase {
 

@@ -38,7 +38,7 @@ class GroupEntityEnabler extends GroupContentEnablerBase {
       $operations["group_entity-create-$type-$bundle"] = [
         'title' => $this->t('Create @type: @bundle', [
           '@type' => $this->getEntityType()->getLabel(),
-          '@bundle' => $bundle
+          '@bundle' => $bundle,
         ]),
         'url' => new Url('entity.group_content.create_form', $route_params),
         'weight' => 30,

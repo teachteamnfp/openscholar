@@ -8,7 +8,7 @@ use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Modifications to urls based on our own requirements
+ * Modifications to urls based on our own requirements.
  */
 class VsiteOutboundPathProcessor implements OutboundPathProcessorInterface {
 
@@ -25,7 +25,7 @@ class VsiteOutboundPathProcessor implements OutboundPathProcessorInterface {
   protected $vsiteContextManager;
 
   /**
-   * Constructor
+   * Constructor.
    */
   public function __construct(VsiteContextManagerInterface $vsiteContextManager) {
     $this->vsiteContextManager = $vsiteContextManager;

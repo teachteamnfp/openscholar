@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\vsite\Unit;
 
-
 use Drupal\Tests\UnitTestCase;
 use Drupal\vsite\Plugin\VsitePathActivator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -21,7 +20,7 @@ class VsitePathActivatorTest extends UnitTestCase {
   protected $container;
 
   /**
-   * @var \Drupal\vsite\Plugin\VsitePathActivator;
+   * @var \Drupal\vsite\Plugin\VsitePathActivator
    */
   protected $vsitePathActivator;
 
@@ -47,56 +46,57 @@ class VsitePathActivatorTest extends UnitTestCase {
 
   /**
    * Set up steps needed for the tests
-   * Sets up a node-group relationship to be referred to later
+   * Sets up a node-group relationship to be referred to later.
    */
   public function setUp() {
     parent::setUp();
 
     $this->container = new ContainerBuilder();
-    \Drupal::setContainer ($this->container);
+    \Drupal::setContainer($this->container);
 
     $this->vsiteContextManager = $this->createMock('\Drupal\vsite\Plugin\VsiteContextManager');
-    // needed mocks:
+    // Needed mocks:
     // entity type manager
     // group entity storage interface
     // group
     // group content storage interface
     // group content
     // node
-    // current route match
+    // current route match.
+    $this->entityTypeManager = $this->createMock('\Drupal\Core\Entity\EntityTypeManagerInterface');
 
-    $this->entityTypeManager = $this->createMock ('\Drupal\Core\Entity\EntityTypeManagerInterface');
-
-    $this->node = $this->createMock ('\Drupal\node\NodeInterface');
+    $this->node = $this->createMock('\Drupal\node\NodeInterface');
     $this->group = $this->createMock('\Drupal\group\Entity\GroupInterface');
-    $group_content = $this->createMock ('\Drupal\group\Entity\GroupContentInterface');
+    $group_content = $this->createMock('\Drupal\group\Entity\GroupContentInterface');
     $group_content->method('getGroup')
-      ->willReturn ($this->group);
+      ->willReturn($this->group);
     $group_content->method('getEntity')
-      ->willReturn ($this->node);
+      ->willReturn($this->node);
 
     $groupStorage = $this->createMock('\Drupal\Core\Entity\EntityStorageInterface');
-    $groupStorage->method ('load')
+    $groupStorage->method('load')
       ->with(1)
       ->willReturn($this->group);
 
-    $groupContentStorage = $this->createMock ('\Drupal\group\Entity\Storage\GroupContentStorageInterface');
+    $groupContentStorage = $this->createMock('\Drupal\group\Entity\Storage\GroupContentStorageInterface');
     $groupContentStorage->method('load')
       ->with(1)
       ->willReturn($group_content);
     $groupContentStorage->method('loadByEntity')
       ->with($this->node)
-      ->willReturn ($group_content);
+      ->willReturn($group_content);
 
     $this->entityTypeManager->method('getStorage')
-      ->will($this->returnCallback (function ($arg) use ($groupStorage, $groupContentStorage) {
+      ->will($this->returnCallback(function ($arg) use ($groupStorage, $groupContentStorage) {
         switch ($arg) {
           case 'group':
             return $groupStorage;
+
           case 'group_content':
             return $groupContentStorage;
+
           default:
-            return null;
+            return NULL;
         }
       }));
 
@@ -104,46 +104,46 @@ class VsitePathActivatorTest extends UnitTestCase {
   }
 
   /**
-   * Test that a vsite is activated when a purl modifier is matched
+   * Test that a vsite is activated when a purl modifier is matched.
    */
   public function testModifierMatched() {
 
-    $currentRouteMatch = $this->createMock ('\Drupal\Core\Routing\CurrentRouteMatch');
+    $currentRouteMatch = $this->createMock('\Drupal\Core\Routing\CurrentRouteMatch');
     $currentRouteMatch->method('getParameter')
       ->with('node')
-      ->willReturn ($this->node);
+      ->willReturn($this->node);
     $this->container->set('current_route_match', $currentRouteMatch);
 
-    $event = $this->createMock ('\Drupal\purl\Event\ModifierMatchedEvent');
+    $event = $this->createMock('\Drupal\purl\Event\ModifierMatchedEvent');
     $event->method('getValue')
-      ->willReturn (1);
+      ->willReturn(1);
 
     $this->vsiteContextManager->expects($this->at(0))
       ->method('activateVsite')
       ->with($this->group);
 
-    $this->vsitePathActivator->onModifierMatched ($event);
+    $this->vsitePathActivator->onModifierMatched($event);
 
   }
 
   /**
-   * Test that a vsite is activated when on the group entity path
+   * Test that a vsite is activated when on the group entity path.
    */
   public function testOnRequest() {
 
-    $currentRouteMatch = $this->createMock ('\Drupal\Core\Routing\CurrentRouteMatch');
+    $currentRouteMatch = $this->createMock('\Drupal\Core\Routing\CurrentRouteMatch');
     $currentRouteMatch->method('getParameter')
       ->with('group')
-      ->willReturn ($this->group);
+      ->willReturn($this->group);
     $this->container->set('current_route_match', $currentRouteMatch);
 
-    $event = $this->createMock ('\Symfony\Component\HttpKernel\Event\GetResponseEvent');
+    $event = $this->createMock('\Symfony\Component\HttpKernel\Event\GetResponseEvent');
 
     $this->vsiteContextManager->expects($this->at(0))
       ->method('activateVsite')
       ->with($this->group);
 
-    $this->vsitePathActivator->onRequest ($event);
+    $this->vsitePathActivator->onRequest($event);
   }
 
 }

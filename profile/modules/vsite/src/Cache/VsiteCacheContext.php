@@ -7,8 +7,8 @@ use Drupal\Core\Cache\Context\CalculatedCacheContextInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 
 /**
- *  Provides a cache context for an arbitrary vsite.
- *  Activate with 'group:{int}'
+ * Provides a cache context for an arbitrary vsite.
+ *  Activate with 'group:{int}'.
  */
 class VsiteCacheContext implements CalculatedCacheContextInterface {
 
@@ -18,7 +18,7 @@ class VsiteCacheContext implements CalculatedCacheContextInterface {
   protected $entityTypeManager;
 
   /**
-   * Constructor
+   * Constructor.
    */
   public function __construct(EntityTypeManagerInterface $entityTypeManager) {
     $this->entityTypeManager = $entityTypeManager;
