@@ -2,6 +2,7 @@
 
 namespace Drupal\vsite\Plugin;
 
+use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\group\Context\GroupRouteContextTrait;
 use Drupal\purl\PurlEvents;
@@ -61,6 +62,8 @@ class VsitePathActivator implements EventSubscriberInterface {
   /**
    * Event Handler for the ResponseEvent event
    * Activates the group if one is found in the RouteMatch parameters
+   *
+   * @throws InvalidPluginDefinitionException
    */
   public function onRequest(GetResponseEvent $event) {
     if ($group = $this->getGroupFromRoute()) {
@@ -77,6 +80,7 @@ class VsitePathActivator implements EventSubscriberInterface {
    *
    * @return \Drupal\group\Entity\GroupInterface|null
    *   A group entity if one could be found or created, NULL otherwise.
+   * @throws InvalidPluginDefinitionException
    */
   public function getGroupFromRoute() {
     // Gets everything except groupContent alone.
@@ -89,7 +93,7 @@ class VsitePathActivator implements EventSubscriberInterface {
 
     if ($node = $route_match->getParameter('node')) {
       /** @var \Drupal\group\Entity\Storage\GroupContentStorageInterface $storage */
-      $storage = \Drupal::entityTypeManager()->getStorage('group_content');
+      $storage = $this->entityTypeManager->getStorage('group_content');
       // Loads all groups with a relation to the node.
       $group_content = $storage->loadByEntity($node);
       if (count($group_content)) {
