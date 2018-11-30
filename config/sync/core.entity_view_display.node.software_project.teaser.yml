@@ -28,4 +28,8 @@ content:
     third_party_settings: {  }
     region: content
 hidden:
+  field_attached_media: true
+  field_packaging_method: true
+  field_rbuild_short_name: true
+  field_repository_url: true
   langcode: true
