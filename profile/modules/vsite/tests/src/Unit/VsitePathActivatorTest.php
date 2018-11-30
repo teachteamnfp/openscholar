@@ -13,7 +13,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  *
  * Tests for the VsitePathActivator class
  */
-
 class VsitePathActivatorTest extends UnitTestCase {
 
   /**
