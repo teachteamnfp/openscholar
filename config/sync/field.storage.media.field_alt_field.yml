@@ -1,0 +1,21 @@
+uuid: 347e9ddc-16fb-4b1a-b8ea-c0747028c2e8
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+id: media.field_alt_field
+field_name: field_alt_field
+entity_type: media
+type: string
+settings:
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

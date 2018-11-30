@@ -55,11 +55,15 @@ class VsiteContextManager implements VsiteContextManagerInterface {
   }
 
   public function getAbsoluteUrl (string $path = '', GroupInterface $group = null) {
+    // In the case where there is no active group just return the path.
+    if (empty($this->activeGroup)) {
+      return $path;
+    }
     // TODO: Implement getAbsoluteUrl() method.
     // 1. Generate modifier based on Group given
     // 2. Apply it to path or route
     $purl = $this->activeGroup->toUrl('canonical', ['base_url' => ''])->toString();
-    return $purl . '/'. ltrim($path, '/'); 
+    return $purl . '/'. ltrim($path, '/');
   }
 
   public function getStorage(GroupInterface $group = null) {
