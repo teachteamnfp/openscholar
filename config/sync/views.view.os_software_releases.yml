@@ -7,7 +7,9 @@ dependencies:
     - node.type.software_project
     - node.type.software_release
   module:
+    - file
     - group
+    - media
     - node
     - user
     - vsite
@@ -90,6 +92,70 @@ display:
       row:
         type: fields
       fields:
+        filesize:
+          id: filesize
+          table: file_managed
+          field: filesize
+          relationship: field_media_file_target_id
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: false
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: file_size
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          entity_type: file
+          entity_field: filesize
+          plugin_id: field
         field_software_version:
           id: field_software_version
           table: node__field_software_version
@@ -152,6 +218,72 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          plugin_id: field
+        uri:
+          id: uri
+          table: file_managed
+          field: uri
+          relationship: field_media_file_target_id
+          group_type: group
+          admin_label: ''
+          label: Package
+          exclude: false
+          alter:
+            alter_text: true
+            text: '<a href="{{ file_url(uri|striptags|trim) }}">Download</a> ({{ filesize }})'
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: file_uri
+          settings:
+            link_to_file: false
+            file_download_path: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          entity_type: file
+          entity_field: uri
           plugin_id: field
         view_node:
           id: view_node
@@ -257,8 +389,8 @@ display:
           click_sort_column: value
           type: timestamp
           settings:
-            date_format: medium
-            custom_date_format: ''
+            date_format: custom
+            custom_date_format: 'M d Y'
             timezone: ''
           group_column: value
           group_columns: {  }
@@ -359,7 +491,7 @@ display:
           relationship: none
           group_type: group
           admin_label: 'field_software_project: Content'
-          required: true
+          required: false
           plugin_id: standard
         group_content:
           id: group_content
@@ -377,6 +509,24 @@ display:
             'group_node:software_project': '0'
           entity_type: node
           plugin_id: group_content_to_entity_reverse
+        field_software_package:
+          id: field_software_package
+          table: node__field_software_package
+          field: field_software_package
+          relationship: none
+          group_type: group
+          admin_label: 'field_software_package: Media'
+          required: true
+          plugin_id: standard
+        field_media_file_target_id:
+          id: field_media_file_target_id
+          table: media__field_media_file
+          field: field_media_file_target_id
+          relationship: field_software_package
+          group_type: group
+          admin_label: 'file from field_media_file'
+          required: false
+          plugin_id: standard
       arguments:
         nid:
           id: nid

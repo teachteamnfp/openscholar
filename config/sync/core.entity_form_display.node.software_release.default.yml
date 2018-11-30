@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.software_release.body
     - field.field.node.software_release.field_is_recommended_version
+    - field.field.node.software_release.field_software_package
     - field.field.node.software_release.field_software_project
     - field.field.node.software_release.field_software_version
     - node.type.software_release
@@ -44,6 +45,15 @@ content:
       display_label: true
     third_party_settings: {  }
     type: boolean_checkbox
+    region: content
+  field_software_package:
+    weight: 125
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
     region: content
   field_software_project:
     weight: 123

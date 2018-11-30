@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.software_release.body
     - field.field.node.software_release.field_is_recommended_version
+    - field.field.node.software_release.field_software_package
     - field.field.node.software_release.field_software_project
     - field.field.node.software_release.field_software_version
     - node.type.software_release
@@ -32,6 +33,15 @@ content:
       format_custom_true: ''
     third_party_settings: {  }
     type: boolean
+    region: content
+  field_software_package:
+    type: entity_reference_entity_view
+    weight: 105
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
     region: content
   field_software_project:
     weight: 103
