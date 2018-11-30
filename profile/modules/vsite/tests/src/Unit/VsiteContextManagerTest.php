@@ -2,8 +2,11 @@
 
 namespace Drupal\Tests\vsite\Unit;
 
+use Drupal\group\Entity\Group;
 use Drupal\Tests\UnitTestCase;
+use Drupal\vsite\Event\VsiteActivatedEvent;
 use Drupal\vsite\Plugin\VsiteContextManager;
+use Drupal\vsite\VsiteEvents;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
@@ -55,6 +58,18 @@ class VsiteContextManagerTest extends UnitTestCase {
     $i = 5;
 
     $this->assertEquals(5, $i);
+  }
+
+  public function testActivateVsite() {
+    $group = new Group([], 'group', 'personal');
+
+    $event = new VsiteActivatedEvent($group);
+
+    $this->eventDispatcher->expects($this->at (0))
+      ->method('dispatch')
+      ->with(VsiteEvents::VSITE_ACTIVATED, $event);
+
+    $this->vsiteContextManager->activateVsite($group);
   }
 
 }
