@@ -61,7 +61,7 @@ class VsiteContextManagerTest extends UnitTestCase {
   }
 
   public function testActivateVsite() {
-    $group = new Group([], 'group', 'personal');
+    $group = $this->createMock('\Drupal\group\Entity\Group');
 
     $event = new VsiteActivatedEvent($group);
 
