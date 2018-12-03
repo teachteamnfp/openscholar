@@ -1,0 +1,19 @@
+uuid: 05b880a8-b507-4423-b434-a241479cf612
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_title_field
+    - media.type.image
+id: media.image.field_title_field
+field_name: field_title_field
+entity_type: media
+bundle: image
+label: 'Title Field'
+description: 'Appears when the user hovers over the image with their mouse.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

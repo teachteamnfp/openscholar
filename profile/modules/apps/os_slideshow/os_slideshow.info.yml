@@ -1,0 +1,14 @@
+name: 'OS Slideshow'
+description: 'Create a new paragraph type to page content type'
+package: OpenScholar
+core: 8.x
+
+type: module
+
+dependencies:
+  - node
+  - media
+  - paragraphs
+  - slick
+
+project: 'os_slideshow'
