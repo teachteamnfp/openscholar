@@ -4,7 +4,10 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_attached_media
-    - media.type.downloadable
+    - media.type.audio
+    - media.type.document
+    - media.type.image
+    - media.type.video
     - node.type.news
 id: node.news.field_attached_media
 field_name: field_attached_media
@@ -20,9 +23,12 @@ settings:
   handler: 'default:media'
   handler_settings:
     target_bundles:
-      downloadable: downloadable
+      document: document
+      image: image
+      video: video
+      audio: audio
     sort:
       field: _none
     auto_create: false
-    auto_create_bundle: ''
+    auto_create_bundle: document
 field_type: entity_reference
