@@ -18,7 +18,7 @@ translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
-  file_directory: ''
+  file_directory: presentation-materials
   file_extensions: 'odt pps ppsx ppt pptx'
   max_filesize: ''
   description_field: true

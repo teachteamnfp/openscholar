@@ -3,11 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.media.image.field_alt_field
-    - field.field.media.image.field_height
     - field.field.media.image.field_media_image
-    - field.field.media.image.field_title_field
-    - field.field.media.image.field_width
     - image.style.thumbnail
     - media.type.image
   module:
@@ -31,21 +27,6 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_alt_field:
-    type: string_textfield
-    weight: 5
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_height:
-    type: number
-    weight: 4
-    region: content
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
   field_media_image:
     type: image_image
     weight: 2
@@ -53,21 +34,6 @@ content:
     settings:
       progress_indicator: throbber
       preview_image_style: thumbnail
-    third_party_settings: {  }
-  field_title_field:
-    type: string_textfield
-    weight: 1
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_width:
-    type: number
-    weight: 3
-    region: content
-    settings:
-      placeholder: ''
     third_party_settings: {  }
   langcode:
     type: language_select
