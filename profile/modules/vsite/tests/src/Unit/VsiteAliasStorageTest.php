@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 /**
  * @group vsite
  * @coversDefaultClass \Drupal\vsite\Path\VsiteAliasStorage
- * @codeCoverageIgnore 
+ * @codeCoverageIgnore
  *
  * Tests for the VsitePathActivator class
  */
