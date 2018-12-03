@@ -24,6 +24,14 @@ class VsitePrivacyLevelPrivate extends PluginBase implements VsitePrivacyLevelIn
     $roles = $account->getRoles ();
     // if ($roles = support team or site member) return true
     // TODO: Revisit when role ids are determined
+
+    /* @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $ctxManager */
+    $ctxManager = \Drupal::service('vsite.context_manager');
+    if ($group = $ctxManager->getActiveVsite ()) {
+      if ($member = $group->getMember ($account)) {
+        return true;
+      }
+    }
     return false;
   }
 }
