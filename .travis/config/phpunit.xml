@@ -64,7 +64,7 @@
       <directory>../profiles/contrib/openscholar</directory>
       <!-- By definition test classes have no tests. -->
       <exclude>
-        <directory>../profiles/contrib/openscholar/*/tests</directory>
+        <directory>../profiles/contrib/openscholar/*/*/tests</directory>
       </exclude>
     </whitelist>
   </filter>
