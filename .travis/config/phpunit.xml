@@ -65,6 +65,7 @@
       <!-- By definition test classes have no tests. -->
       <exclude>
         <directory>../profiles/contrib/openscholar/*/*/tests</directory>
+        <directory suffix="Interface.php">.</directory>
       </exclude>
     </whitelist>
   </filter>
