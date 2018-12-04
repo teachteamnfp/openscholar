@@ -9,6 +9,8 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 
 class VsiteCacheContext implements CalculatedCacheContextInterface {
 
+  const VSITE_CACHE_CONTEXTS_NONE = 'vsite:none';
+
   /** @var EntityTypeManagerInterface */
   protected $entityTypeManager;
 
