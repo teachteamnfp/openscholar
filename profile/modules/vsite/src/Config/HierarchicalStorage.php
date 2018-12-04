@@ -64,9 +64,14 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
    * See interface
    */
   public function exists($name) {
-    return $this->iterate(function (StorageInterface $store) use ($name) {
-      return $store->exists($name);
-    });
+    $output = false;
+    foreach ($this->storages as $s) {
+      /** @var \Drupal\Core\Config\StorageInterface $store */
+      $store = $s['storage'];
+      $output |= $store->exists($name);
+    }
+
+    return $output;
   }
 
   /**
