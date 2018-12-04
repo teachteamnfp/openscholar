@@ -29,6 +29,7 @@ content:
     region: content
 hidden:
   field_is_recommended_version: true
+  field_software_package: true
   field_software_project: true
   field_software_version: true
   langcode: true

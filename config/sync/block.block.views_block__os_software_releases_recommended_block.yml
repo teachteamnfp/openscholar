@@ -1,4 +1,4 @@
-uuid: 03ead271-322b-4b9b-8605-fe6598d8e69d
+uuid: 39f3a803-299d-411e-a408-1dec745d26fa
 langcode: en
 status: true
 dependencies:
@@ -7,17 +7,18 @@ dependencies:
   module:
     - block_visibility_groups
     - ctools
+    - node
     - views
   theme:
     - bartik
-id: views_block__os_software_releases_block_1
+id: views_block__os_software_releases_recommended_block
 theme: bartik
 region: content
-weight: -1
+weight: -2
 provider: null
-plugin: 'views_block:os_software_releases-block_1'
+plugin: 'views_block:os_software_releases-recommended_block'
 settings:
-  id: 'views_block:os_software_releases-block_1'
+  id: 'views_block:os_software_releases-recommended_block'
   label: ''
   provider: views
   label_display: visible
@@ -31,8 +32,8 @@ visibility:
     negate: false
     block_visibility_group: ''
     context_mapping: {  }
-  'entity_bundle:node':
-    id: 'entity_bundle:node'
+  node_type:
+    id: node_type
     bundles:
       software_project: software_project
     negate: false

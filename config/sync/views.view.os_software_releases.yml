@@ -581,9 +581,54 @@ display:
         - user.permissions
       tags:
         - 'config:field.storage.node.field_software_version'
-  block_1:
+  page_1:
+    display_plugin: page
+    id: page_1
+    display_title: All
+    position: 3
+    display_options:
+      display_extenders: {  }
+      path: software/%/releases
+      display_description: ''
+      title: '{{ arguments.nid }} - All Releases'
+      defaults:
+        title: false
+        pager: false
+      pager:
+        type: full
+        options:
+          items_per_page: 15
+          offset: 0
+          id: 0
+          total_pages: null
+          tags:
+            previous: '‹ Previous'
+            next: 'Next ›'
+            first: '« First'
+            last: 'Last »'
+          expose:
+            items_per_page: false
+            items_per_page_label: 'Items per page'
+            items_per_page_options: '5, 10, 25, 50'
+            items_per_page_options_all: false
+            items_per_page_options_all_label: '- All -'
+            offset: false
+            offset_label: Offset
+          quantity: 9
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url
+        - url.query_args
+        - 'user.node_grants:view'
+        - user.permissions
+      tags:
+        - 'config:field.storage.node.field_software_version'
+  recent_block:
     display_plugin: block
-    id: block_1
+    id: recent_block
     display_title: 'Recent Block'
     position: 1
     display_options:
@@ -606,9 +651,9 @@ display:
         - user.permissions
       tags:
         - 'config:field.storage.node.field_software_version'
-  block_2:
+  recommended_block:
     display_plugin: block
-    id: block_2
+    id: recommended_block
     display_title: 'Recommended Block'
     position: 2
     display_options:
@@ -727,9 +772,9 @@ display:
         - user.permissions
       tags:
         - 'config:field.storage.node.field_software_version'
-  block_3:
+  widget:
     display_plugin: block
-    id: block_3
+    id: widget
     display_title: Widget
     position: 5
     display_options:
@@ -1249,51 +1294,6 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
-        - url.query_args
-        - 'user.node_grants:view'
-        - user.permissions
-      tags:
-        - 'config:field.storage.node.field_software_version'
-  page_1:
-    display_plugin: page
-    id: page_1
-    display_title: All
-    position: 3
-    display_options:
-      display_extenders: {  }
-      path: software/%/releases
-      display_description: ''
-      title: '{{ arguments.nid }} - All Releases'
-      defaults:
-        title: false
-        pager: false
-      pager:
-        type: full
-        options:
-          items_per_page: 15
-          offset: 0
-          id: 0
-          total_pages: null
-          tags:
-            previous: '‹ Previous'
-            next: 'Next ›'
-            first: '« First'
-            last: 'Last »'
-          expose:
-            items_per_page: false
-            items_per_page_label: 'Items per page'
-            items_per_page_options: '5, 10, 25, 50'
-            items_per_page_options_all: false
-            items_per_page_options_all_label: '- All -'
-            offset: false
-            offset_label: Offset
-          quantity: 9
-    cache_metadata:
-      max-age: -1
-      contexts:
-        - 'languages:language_content'
-        - 'languages:language_interface'
-        - url
         - url.query_args
         - 'user.node_grants:view'
         - user.permissions
