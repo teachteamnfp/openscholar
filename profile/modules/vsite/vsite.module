@@ -153,10 +153,7 @@ function vsite_views_pre_build(ViewExecutable $view) {
   if (!empty($view->filter['current_vsite_filter'])) {
     /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContext */
     $vsiteContext = \Drupal::service('vsite.context_manager');
-    if ($group = $vsiteContext->getActiveVsite ()) {
-      $view->element['#cache']['contexts'][] = 'vsite:' . $group->id();
-    }
-    else {
+    if (!$group = $vsiteContext->getActiveVsite ()) {
       // To solve cache problem, we won't serve the page without vsite context
       throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
     }
