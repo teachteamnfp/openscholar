@@ -29,12 +29,15 @@ class HierarchicalStorageTest extends UnitTestCase {
   protected $globalVars = [
     'foo' => true,
     'bar' => false,
-    'str' => 'hello world'
+    'str' => 'hello world',
+    'long.test' => 'def'
   ];
 
   protected $overrideVars = [
     'bar' => true,
-    'str' => 'just testing'
+    'str' => 'just testing',
+    'long.test' => 'abc',
+    'long.override' => '123'
   ];
 
   public function setUp () {
@@ -48,12 +51,12 @@ class HierarchicalStorageTest extends UnitTestCase {
 
     $this->globalStorage->method('exists')
       ->willReturnCallback(function ($var) {
-        return !empty($this->globalVars[$var]);
+        return isset($this->globalVars[$var]);
       });
 
     $this->globalStorage->method('read')
       ->willReturnCallback(function ($var) {
-        if (!empty($this->globalVars[$var])) {
+        if (isset($this->globalVars[$var])) {
           return $this->globalVars[$var];
         }
         return null;
@@ -72,14 +75,14 @@ class HierarchicalStorageTest extends UnitTestCase {
   }
 
   public function testReading() {
-    $this->overrideStorage->method('exist')
+    $this->overrideStorage->method('exists')
       ->willReturnCallback(function ($var) {
-        return !empty($this->overrideVars);
+        return isset($this->overrideVars[$var]);
       });
 
     $this->overrideStorage->method('read')
       ->willReturnCallback(function ($var) {
-        if (!empty($this->overrideVars[$var])) {
+        if (isset($this->overrideVars[$var])) {
           return $this->overrideVars[$var];
         }
         return null;
@@ -122,11 +125,24 @@ class HierarchicalStorageTest extends UnitTestCase {
 
     $this->hierarchicalStorage->write('foo', $data);
 
+    $deleted = $this->overrideVars;
+    unset($deleted['bar']);
+
+    $this->overrideStorage->method('read')
+      ->willReturnCallback(function ($var) use ($deleted) {
+        if (!empty($deleted[$var])) {
+          return $deleted[$var];
+        }
+        return null;
+      });
+
     $this->overrideStorage->expects($this->once ())
       ->method('delete')
-      ->with('foo');
+      ->with('bar');
 
-    $this->hierarchicalStorage->delete('foo');
+    $this->hierarchicalStorage->delete('bar');
+
+    $this->assertEquals(false, $this->hierarchicalStorage->read('bar'));
 
     $this->overrideStorage->expects($this->once())
       ->method('rename')
@@ -136,19 +152,80 @@ class HierarchicalStorageTest extends UnitTestCase {
   }
 
   public function testEncoding() {
-    $this->overrideStorage->expects($this->once())
+    $this->globalStorage->expects($this->once())
       ->method('encode')
       ->with('value')
       ->willReturn('encoded');
 
     $this->assertEquals('encoded', $this->hierarchicalStorage->encode('value'));
 
-    $this->overrideStorage->expects($this->once())
+    $this->globalStorage->expects($this->once())
       ->method('decode')
       ->with('encoded')
       ->willReturn('value');
 
     $this->assertEquals('value', $this->hierarchicalStorage->decode('encoded'));
+  }
+
+  public function testTheAllMethods() {
+    $this->overrideStorage->expects($this->at(0))
+      ->method('listAll')
+      ->with('long')
+      ->willReturn(['long.test', 'long.override']);
+
+    $this->globalStorage->method('listAll')
+      ->with('long')
+      ->willReturn(['long.test']);
+
+    $this->overrideStorage->expects($this->at(1))
+      ->method('deleteAll')
+      ->with('long');
+
+    $this->overrideStorage->expects($this->at(2))
+      ->method('listAll')
+      ->with('long')
+      ->willReturn(['long.test']);
+
+    $expects = ['long.test', 'long.override'];
+    $this->assertArrayEquals($expects, $this->hierarchicalStorage->listAll('long'));
+
+    $this->hierarchicalStorage->deleteAll('long');
+
+    $expects = ['long.test'];
+    $this->assertArrayEquals($expects, $this->hierarchicalStorage->listAll('long'));
+    $this->assertEquals('def', $this->hierarchicalStorage->read('long.test'));
+  }
+
+  public function testCollections() {
+    $coll = $this->createMock('\Drupal\Core\Config\StorageInterface');
+    $coll->method('getCollectionName')
+      ->willReturn('collectionTest');
+    $this->globalStorage->method('createCollection')
+      ->willReturn($coll);
+
+    $this->overrideStorage->expects($this->never())
+      ->method('createCollection');
+
+    $created = $this->hierarchicalStorage->createCollection('collectionTest');
+    $this->assertEquals($coll, $created);
+    $this->assertEquals('collectionTest', $created->getCollectionName());
+
+    $this->overrideStorage->expects($this->once())
+      ->method('getCollectionName')
+      ->willReturn('vsite.site01');
+
+    $this->assertEquals('vsite.site01', $this->hierarchicalStorage->getCollectionName());
+
+    $this->globalStorage->expects($this->once())
+      ->method('getAllCollectionNames')
+      ->willReturn(['collectionTest']);
+
+    $this->overrideStorage->expects($this->never())
+      ->method('getAllCollectionNames');
+
+    $expected = ['collectionTest'];
+    $this->assertArrayEquals($expected, $this->hierarchicalStorage->getAllCollectionNames());
+
   }
 
 }
