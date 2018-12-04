@@ -2,14 +2,17 @@
 
 namespace Drupal\Tests\vsite\Unit;
 
-
 use Drupal\Tests\UnitTestCase;
 use Drupal\vsite\Config\HierarchicalStorage;
 
+/**
+ * Tests for the HierarchicalStorage object.
+ * This object allows StorageInterfaces to be stacked and prioritized.
+ */
 class HierarchicalStorageTest extends UnitTestCase {
 
   /**
-   * @var HierarchicalStorage
+   * @var \Drupal\vsite\Config\HierarchicalStorage
    * The object to test
    */
   protected $hierarchicalStorage;
@@ -27,21 +30,24 @@ class HierarchicalStorageTest extends UnitTestCase {
   protected $overrideStorage;
 
   protected $globalVars = [
-    'foo' => true,
-    'bar' => false,
+    'foo' => TRUE,
+    'bar' => FALSE,
     'str' => 'hello world',
-    'long.test' => 'def'
+    'long.test' => 'def',
   ];
 
   protected $overrideVars = [
-    'bar' => true,
+    'bar' => TRUE,
     'str' => 'just testing',
     'long.test' => 'abc',
-    'long.override' => '123'
+    'long.override' => '123',
   ];
 
-  public function setUp () {
-    parent::setUp ();
+  /**
+   * Setup test object, mocks, and behavior for global storage
+   */
+  public function setUp() {
+    parent::setUp();
 
     $this->globalStorage = $this->createMock('\Drupal\Core\Config\StorageInterface');
     $this->overrideStorage = $this->createMock('\Drupal\Core\Config\StorageInterface');
@@ -59,7 +65,7 @@ class HierarchicalStorageTest extends UnitTestCase {
         if (isset($this->globalVars[$var])) {
           return $this->globalVars[$var];
         }
-        return null;
+        return NULL;
       });
 
     $this->globalStorage->method('readMultiple')
@@ -74,6 +80,9 @@ class HierarchicalStorageTest extends UnitTestCase {
       });
   }
 
+  /**
+   * Testing the exist and various read methods.
+   */
   public function testReading() {
     $this->overrideStorage->method('exists')
       ->willReturnCallback(function ($var) {
@@ -85,7 +94,7 @@ class HierarchicalStorageTest extends UnitTestCase {
         if (isset($this->overrideVars[$var])) {
           return $this->overrideVars[$var];
         }
-        return null;
+        return NULL;
       });
 
     $this->overrideStorage->method('readMultiple')
@@ -99,25 +108,28 @@ class HierarchicalStorageTest extends UnitTestCase {
         return $vals;
       });
 
-    $this->assertEquals(false, $this->hierarchicalStorage->exists('nothing'));
-    $this->assertEquals(true, $this->hierarchicalStorage->exists('foo'));
-    $this->assertEquals(true, $this->hierarchicalStorage->exists ('bar'));
+    $this->assertEquals(FALSE, $this->hierarchicalStorage->exists('nothing'));
+    $this->assertEquals(TRUE, $this->hierarchicalStorage->exists('foo'));
+    $this->assertEquals(TRUE, $this->hierarchicalStorage->exists('bar'));
 
-    $this->assertEquals(true, $this->hierarchicalStorage->read('foo'));
-    $this->assertEquals(true, $this->hierarchicalStorage->read('bar'));
+    $this->assertEquals(TRUE, $this->hierarchicalStorage->read('foo'));
+    $this->assertEquals(TRUE, $this->hierarchicalStorage->read('bar'));
     $this->assertEquals('just testing', $this->hierarchicalStorage->read('str'));
 
     $expect = [
-      'foo' => true,
-      'bar' => true,
-      'str' => 'just testing'
+      'foo' => TRUE,
+      'bar' => TRUE,
+      'str' => 'just testing',
     ];
     $this->assertArrayEquals($expect, $this->hierarchicalStorage->readMultiple(['foo', 'bar', 'str']));
   }
 
+  /**
+   *  Test the write, delete, and rename methods.
+   */
   public function testWriting() {
     $data = [
-      'test' => 1
+      'test' => 1,
     ];
     $this->overrideStorage->expects($this->once())
       ->method('write')
@@ -133,16 +145,16 @@ class HierarchicalStorageTest extends UnitTestCase {
         if (!empty($deleted[$var])) {
           return $deleted[$var];
         }
-        return null;
+        return NULL;
       });
 
-    $this->overrideStorage->expects($this->once ())
+    $this->overrideStorage->expects($this->once())
       ->method('delete')
       ->with('bar');
 
     $this->hierarchicalStorage->delete('bar');
 
-    $this->assertEquals(false, $this->hierarchicalStorage->read('bar'));
+    $this->assertEquals(FALSE, $this->hierarchicalStorage->read('bar'));
 
     $this->overrideStorage->expects($this->once())
       ->method('rename')
@@ -151,6 +163,9 @@ class HierarchicalStorageTest extends UnitTestCase {
     $this->hierarchicalStorage->rename('foo', 'foo2');
   }
 
+  /**
+   * Test encoding methods.
+   */
   public function testEncoding() {
     $this->globalStorage->expects($this->once())
       ->method('encode')
@@ -167,6 +182,9 @@ class HierarchicalStorageTest extends UnitTestCase {
     $this->assertEquals('value', $this->hierarchicalStorage->decode('encoded'));
   }
 
+  /**
+   * Test the methods that allow acting on a prefix.
+   */
   public function testTheAllMethods() {
     $this->overrideStorage->expects($this->at(0))
       ->method('listAll')
@@ -196,6 +214,9 @@ class HierarchicalStorageTest extends UnitTestCase {
     $this->assertEquals('def', $this->hierarchicalStorage->read('long.test'));
   }
 
+  /**
+   * Test Collection handling.
+   */
   public function testCollections() {
     $coll = $this->createMock('\Drupal\Core\Config\StorageInterface');
     $coll->method('getCollectionName')

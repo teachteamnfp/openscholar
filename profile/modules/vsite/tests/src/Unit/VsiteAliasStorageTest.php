@@ -13,27 +13,31 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  * @coversDefaultClass \Drupal\vsite\Path\VsiteAliasStorage
  * @codeCoverageIgnore
  *
- * Tests for the VsitePathActivator class
+ *   Tests for the VsitePathActivator class
  */
 class VsiteAliasStorageTest extends UnitTestCase {
 
   /**
-   * @var \Symfony\Component\DependencyInjection\ContainerBuilder Dependency Injection container
+   * @var \Symfony\Component\DependencyInjection\ContainerBuilder
+   *   Dependency Injection container
    */
   protected $container;
 
   /**
-   * @var \Drupal\vsite\Path\VsiteAliasStorage The object to test
+   * @var \Drupal\vsite\Path\VsiteAliasStorage
+   *   The object to test
    */
   protected $vsiteAliasStorage;
 
   /**
-   * @var \PHPUnit_Framework_MockObject_MockObject Mock for EntityTypeManagerInterface
+   * @var \PHPUnit_Framework_MockObject_MockObject
+   *   Mock for EntityTypeManagerInterface
    */
   protected $entityTypeManager;
 
   /**
-   * @var \PHPUnit_Framework_MockObject_MockObject The AliasStorage our tested class is wrapping
+   * @var \PHPUnit_Framework_MockObject_MockObject
+   *   The AliasStorage our tested class is wrapping
    */
   protected $innerAliasStorage;
 
