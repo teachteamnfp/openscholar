@@ -1,0 +1,14 @@
+<?php
+
+use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\field\Entity\FieldStorageConfig;
+
+function os_classes_field_semester_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = null, $cacheable) {
+  // TODO: get from install config?
+  $options = [
+    'summer_1' => 'Summer 1',
+    'summer_2' => 'Summer 2',
+  ];
+
+  return $options;
+}

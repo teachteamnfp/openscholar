@@ -1,0 +1,32 @@
+uuid: 21b9a8bb-96df-4085-87ff-2fae2dd45832
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.class_material.field_attached_files
+    - field.field.paragraph.class_material.field_body
+    - paragraphs.paragraphs_type.class_material
+  module:
+    - text
+id: paragraph.class_material.default
+targetEntityType: paragraph
+bundle: class_material
+mode: default
+content:
+  field_attached_files:
+    type: entity_reference_entity_view
+    weight: 1
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    region: content
+  field_body:
+    weight: 0
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+hidden: {  }
