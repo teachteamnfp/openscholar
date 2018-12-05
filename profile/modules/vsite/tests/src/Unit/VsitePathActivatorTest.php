@@ -90,7 +90,7 @@ class VsitePathActivatorTest extends UnitTestCase {
       ->willReturn($group_content);
     $groupContentStorage->method('loadByEntity')
       ->with($this->node)
-      ->willReturn($group_content);
+      ->willReturn([$group_content]);
 
     $this->entityTypeManager->method('getStorage')
       ->will($this->returnCallback(function ($arg) use ($groupStorage, $groupContentStorage) {
@@ -138,7 +138,8 @@ class VsitePathActivatorTest extends UnitTestCase {
   public function testOnRequest() {
 
     $currentRouteMatch = $this->createMock('\Drupal\Core\Routing\CurrentRouteMatch');
-    $currentRouteMatch->method('getParameter')
+    $currentRouteMatch->expects($this->at(0))
+      ->method('getParameter')
       ->with('group')
       ->willReturn($this->group);
     $this->container->set('current_route_match', $currentRouteMatch);
@@ -150,6 +151,38 @@ class VsitePathActivatorTest extends UnitTestCase {
       ->with($this->group);
 
     $this->vsitePathActivator->onRequest($event);
+  }
+
+  /**
+   * Tests that we can fetch a group by its node param.
+   * This must be separate because PathActivator caches the request match.
+   */
+  public function testGetGroupFromNode() {
+    $currentRouteMatch = $this->createMock('\Drupal\Core\Routing\CurrentRouteMatch');
+    $currentRouteMatch->expects($this->at(0))
+      ->method('getParameter')
+      ->with('group')
+      ->willReturn(null);
+    $currentRouteMatch->expects($this->at(2))
+      ->method('getParameter')
+      ->with('node')
+      ->willReturn($this->node);
+    $this->container->set('current_route_match', $currentRouteMatch);
+
+    $this->assertEquals($this->group, $this->vsitePathActivator->getGroupFromRoute());
+  }
+
+  /**
+   * Test that the nothing will happen when neither group nor node are parameters of the route match
+   */
+  public function testNoGroupFromRoute() {
+    $currentRouteMatch = $this->createMock('\Drupal\Core\Routing\CurrentRouteMatch');
+    $currentRouteMatch->expects($this->any())
+      ->method('getParameter')
+      ->willReturn(null);
+    $this->container->set('current_route_match', $currentRouteMatch);
+
+    $this->assertNull($this->vsitePathActivator->getGroupFromRoute());
   }
 
 }
