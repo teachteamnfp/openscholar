@@ -143,4 +143,28 @@ class VsiteAliasStorageTest extends UnitTestCase {
     $this->assertArrayEquals($expected, $actual);
   }
 
+  /**
+   * Test group alias save functionality.
+   */
+  public function testSaveAliasGroup() {
+    $this->innerAliasStorage->expects($this->once())
+      ->method('save')
+      ->with()
+      ->willReturn([
+        'source' => '/group/1',
+        'alias' => '/group/1',
+        'langcode' => LanguageInterface::LANGCODE_SITE_DEFAULT,
+        'pid' => 1,
+      ]);
+
+    $expected = [
+      'source' => '/group/1',
+      'alias' => '/group/1',
+      'langcode' => LanguageInterface::LANGCODE_SITE_DEFAULT,
+      'pid' => 1,
+    ];
+    $actual = $this->vsiteAliasStorage->save('/group/1', '/group/1', LanguageInterface::LANGCODE_SITE_DEFAULT);
+    $this->assertArrayEquals($expected, $actual);
+  }
+
 }
