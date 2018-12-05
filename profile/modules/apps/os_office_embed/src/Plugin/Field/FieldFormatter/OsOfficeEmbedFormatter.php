@@ -29,6 +29,8 @@ class OsOfficeEmbedFormatter extends FileFormatterBase {
   public static function defaultSettings() {
     return array(
       // Implement default settings.
+        'width' => 500,
+        'height' => 400,
     ) + parent::defaultSettings();
   }
 
@@ -36,9 +38,21 @@ class OsOfficeEmbedFormatter extends FileFormatterBase {
    * {@inheritdoc}
    */
   public function settingsForm(array $form, FormStateInterface $form_state) {
-    return array(
+    return [
       // Implement settings form.
-    ) + parent::settingsForm($form, $form_state);
+      'width' => [
+        '#type' => 'textfield',
+        '#title' => t('Width'),
+        '#size' => 20,
+        '#default_value' => $this->getSetting('width'),
+      ],
+      'height' => [
+        '#type' => 'textfield',
+        '#title' => t('Height'),
+        '#size' => 20,
+        '#default_value' => $this->getSetting('height'),
+      ],
+    ] + parent::settingsForm($form, $form_state);
   }
 
   /**
@@ -47,6 +61,8 @@ class OsOfficeEmbedFormatter extends FileFormatterBase {
   public function settingsSummary() {
     $summary = [];
     // Implement settings summary.
+    $summary[] = t('Width') . ': ' . $this->getSetting('width') . 'px';
+    $summary[] = t('Height') . ': ' . $this->getSetting('height') . 'px';
     return $summary;
   }
 
@@ -71,6 +87,8 @@ class OsOfficeEmbedFormatter extends FileFormatterBase {
           '#theme' => 'os_office_embed',
           '#url' => $url,
           '#filename' => $filename,
+          '#width' => $this->getSetting('width'),
+          '#height' => $this->getSetting('height'),
           '#delta' => $delta,
           '#entity' => $entity,
           '#bundle' => $bundle,

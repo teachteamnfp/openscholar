@@ -9,6 +9,8 @@ function os_office_embed_theme() {
       'variables' => array(
         'url' => NULL,
         'filename' => NULL,
+        'width' => NULL,
+        'height' => NULL,
         'delta' => NULL,
         'entity' => NULL,
         'bundle' => NULL,
