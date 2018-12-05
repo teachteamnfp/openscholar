@@ -1,20 +1,6 @@
 <?php
 
 /**
- * Implements hook_enable()
- *
- * Have vsite_domain run before securepages.
- */
-function vsite_domain_enable() {
-
-  db_update('system')
-    ->fields(array('weight' => 5))
-    ->condition('name', 'securepages', '=')
-    ->condition('type', 'module', '=')
-    ->execute();
-}
-
-/**
  * Renames all "vsite_domain_proccessing" variables in spaces_overrides.
  */
 function vsite_domain_update_7001() {

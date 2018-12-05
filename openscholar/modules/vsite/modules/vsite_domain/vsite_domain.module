@@ -56,6 +56,12 @@ function vsite_domain_enable() {
   db_update('system')->fields(array(
       'weight' => ($weight + 1),
     ))->condition('name', 'vsite_domain')->execute();
+
+  db_update('system')
+    ->fields(array('weight' => 5))
+    ->condition('name', 'securepages', '=')
+    ->condition('type', 'module', '=')
+    ->execute();
 }
 
 /**
