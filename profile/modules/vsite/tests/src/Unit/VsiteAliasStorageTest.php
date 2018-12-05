@@ -167,4 +167,35 @@ class VsiteAliasStorageTest extends UnitTestCase {
     $this->assertArrayEquals($expected, $actual);
   }
 
+  /**
+   * Tests vsite storage load.
+   */
+  public function testLoad() {
+    $this->vsiteAliasStorage->save('/node/1', '/site01/foo', LanguageInterface::LANGCODE_SITE_DEFAULT);
+
+    $expected = [
+      'source' => '/node/1',
+      'alias' => '/site01/foo',
+      'langcode' => LanguageInterface::LANGCODE_SITE_DEFAULT,
+      'pid' => 1,
+    ];
+
+    $this->assertArrayEquals($expected, $this->vsiteAliasStorage->load([
+      'alias' => '/site01/foo',
+    ]));
+  }
+
+  /**
+   * Tests vsite storage delete.
+   */
+  public function testDelete() {
+    $this->vsiteAliasStorage->save('/node/1', '/site01/foo', LanguageInterface::LANGCODE_SITE_DEFAULT);
+    $this->vsiteAliasStorage->delete([
+      'alias' => '/site01/foo',
+    ]);
+    $this->assertNull($this->vsiteAliasStorage->load([
+      'alias' => '/site01/foo',
+    ]));
+  }
+
 }
