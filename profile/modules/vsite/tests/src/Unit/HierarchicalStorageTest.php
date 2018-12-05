@@ -161,6 +161,7 @@ class HierarchicalStorageTest extends UnitTestCase {
       ->with('foo', 'foo2');
 
     $this->hierarchicalStorage->rename('foo', 'foo2');
+    $this->assertEquals(FALSE, $this->hierarchicalStorage->read('foo2'));
   }
 
   /**
