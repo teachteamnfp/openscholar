@@ -11,21 +11,21 @@ use Drupal\Core\Form\FormStateInterface;
 class VsiteTestForm extends ConfigFormBase {
 
   /**
-   * @inheritdoc
+   * {@inheritdoc}
    */
   public function getFormId() {
     return 'vsite_test';
   }
 
   /**
-   * @inheritdoc
+   * {@inheritdoc}
    */
   protected function getEditableConfigNames() {
     return ['vsite.test_settings'];
   }
 
   /**
-   * @inheritdoc
+   * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildForm($form, $form_state);

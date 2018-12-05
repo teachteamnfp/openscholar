@@ -6,14 +6,14 @@ use Drupal\Component\Plugin\PluginBase;
 use Drupal\vsite\AppInterface;
 
 /**
+ * Plugin for the Links App.
+ *
  * @App(
  *   title = @Translation("Links"),
  *   canDisable = true,
  *   entityType = "node",
  *   bundle = "link"
  * )
- *
- * Plugin for the Links App
  */
 class LinksApp extends PluginBase implements AppInterface {
 

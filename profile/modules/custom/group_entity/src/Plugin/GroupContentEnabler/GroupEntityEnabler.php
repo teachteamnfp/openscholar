@@ -88,7 +88,8 @@ class GroupEntityEnabler extends GroupContentEnablerBase {
    */
   public function calculateDependencies() {
     $dependencies = parent::calculateDependencies();
-    // $dependencies['config'][] = 'node.type.' . $this->getEntityBundle(); @todo: Figure out what these are supposed to be for all other entity types.
+    // $dependencies['config'][] = 'node.type.' . $this->getEntityBundle();
+    // @todo: Figure out what these are supposed to be for all other entity types.
     return $dependencies;
   }
 

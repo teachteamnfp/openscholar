@@ -9,20 +9,23 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Manages and stores active vsites.
+ *
  * Other classes declare a vsite is active to this manager, and this
- * class responds and dispatches an event for other modules to listen to.
+ *   class responds and dispatches an event for other modules to listen to.
  */
 class VsiteContextManager implements VsiteContextManagerInterface {
 
   /**
+   * The active vsite.
+   *
    * @var \Drupal\group\Entity\GroupInterface
-   * The active vsite
    */
   protected $activeGroup = NULL;
 
   /**
+   * Event dispatcher.
+   *
    * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
-   * Event displatcher
    */
   protected $dispatcher;
 
@@ -55,6 +58,7 @@ class VsiteContextManager implements VsiteContextManagerInterface {
    * Returns the active vsite.
    *
    * @return \Drupal\group\Entity\GroupInterface
+   *   The active vsite.
    */
   public function getActiveVsite() : ?GroupInterface {
     return $this->activeGroup;

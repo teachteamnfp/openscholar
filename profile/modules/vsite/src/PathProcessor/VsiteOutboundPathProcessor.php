@@ -20,6 +20,8 @@ class VsiteOutboundPathProcessor implements OutboundPathProcessorInterface {
   ];
 
   /**
+   * The Manager for vsites.
+   *
    * @var \Drupal\vsite\Plugin\VsiteContextManagerInterface
    */
   protected $vsiteContextManager;
@@ -32,9 +34,7 @@ class VsiteOutboundPathProcessor implements OutboundPathProcessorInterface {
   }
 
   /**
-   * @inheritdoc
-   *
-   * Disables purl handling from a whitelist of paths
+   * {@inheritdoc}
    */
   public function processOutbound($path, &$options = [], Request $request = NULL, BubbleableMetadata $bubbleable_metadata = NULL) {
     foreach ($this->nonVsitePaths as $p) {

@@ -11,6 +11,8 @@ use Symfony\Component\EventDispatcher\Event;
 class VsiteActivatedEvent extends Event {
 
   /**
+   * The group this event is acting on.
+   *
    * @var \Drupal\group\Entity\GroupInterface
    */
   protected $group;
@@ -25,7 +27,8 @@ class VsiteActivatedEvent extends Event {
   /**
    * Return the Group that represents the activated vsite.
    *
-   * @return \Drupal\group\Entity\GroupInterface The activated Vsite
+   * @return \Drupal\group\Entity\GroupInterface
+   *   The activated Vsite
    */
   public function getGroup() {
     return $this->group;

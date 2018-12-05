@@ -10,7 +10,8 @@ interface AppInterface {
   /**
    * Provide list of all content types this app controls.
    *
-   * @return array List of Content Types
+   * @return array
+   *   List of Content Types
    */
   public function getGroupContentTypes();
 

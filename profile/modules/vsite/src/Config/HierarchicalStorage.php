@@ -12,7 +12,15 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   const GLOBAL_STORAGE = INF;
 
   /**
-   * @var array Each value is in the format [StorageInterface storage, int weight]
+   * The list of StorageInterfaces.
+   *
+   * Each value is in the format
+   *  [
+   *    StorageInterface storage,
+   *    int weight
+   *  ]
+   *
+   * @var array
    */
   protected $storages = [];
 
@@ -27,8 +35,9 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   }
 
   /**
-   * @inheritdoc
-   * Add a storage to the stack
+   * Add a storage to the stack.
+   *
+   * {@inheritdoc}
    */
   public function addStorage(StorageInterface $s, $weight) {
     $this->storages[] = [
@@ -60,11 +69,10 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   }
 
   /**
-   * @inheritdoc
-   * See interface
+   * {@inheritdoc}
    */
   public function exists($name) {
-    $output = false;
+    $output = FALSE;
     foreach ($this->storages as $s) {
       /** @var \Drupal\Core\Config\StorageInterface $store */
       $store = $s['storage'];
@@ -75,8 +83,7 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   }
 
   /**
-   * @inheritdoc
-   * See interface
+   * {@inheritdoc}
    */
   public function read($name) {
     $output = $this->iterate(function (StorageInterface $store) use ($name) {
@@ -89,8 +96,7 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   }
 
   /**
-   * @inheritdoc
-   * See interface
+   * {@inheritdoc}
    */
   public function readMultiple(array $names) {
     $output = [];
@@ -104,9 +110,7 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   }
 
   /**
-   * @inheritdoc
-   *
-   * We always write to the bottom-most storage
+   * {@inheritdoc}
    */
   public function write($name, array $data) {
     /** @var \Drupal\Core\Config\StorageInterface $store */
@@ -115,9 +119,7 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   }
 
   /**
-   * @inheritdoc
-   *
-   * Only delete from the bottom-most storage
+   * {@inheritdoc}
    */
   public function delete($name) {
     /** @var \Drupal\Core\Config\StorageInterface $store */
@@ -126,9 +128,7 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   }
 
   /**
-   * @inheritdoc
-   *
-   * Only rename from the bottom-most storage
+   * {@inheritdoc}
    */
   public function rename($name, $new_name) {
     /** @var \Drupal\Core\Config\StorageInterface $store */
@@ -137,7 +137,7 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   }
 
   /**
-   * @inheritdoc
+   * {@inheritdoc}
    */
   public function encode($data) {
     /** @var \Drupal\Core\Config\StorageInterface $store */
@@ -146,7 +146,7 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   }
 
   /**
-   * @inheritdoc
+   * {@inheritdoc}
    */
   public function decode($raw) {
     /** @var \Drupal\Core\Config\StorageInterface $store */
@@ -155,7 +155,7 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   }
 
   /**
-   * @inheritdoc
+   * {@inheritdoc}
    */
   public function listAll($prefix = '') {
     $output = [];
@@ -169,7 +169,7 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   }
 
   /**
-   * @inheritdoc
+   * {@inheritdoc}
    */
   public function deleteAll($prefix = '') {
     /** @var \Drupal\Core\Config\StorageInterface $store */
@@ -178,7 +178,7 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   }
 
   /**
-   * @inheritdoc
+   * {@inheritdoc}
    */
   public function createCollection($collection) {
     /** @var \Drupal\Core\Config\StorageInterface $store */
@@ -187,7 +187,7 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   }
 
   /**
-   * @inheritdoc
+   * {@inheritdoc}
    */
   public function getAllCollectionNames() {
     /** @var \Drupal\Core\Config\StorageInterface $store */
@@ -196,7 +196,7 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   }
 
   /**
-   * @inheritdoc
+   * {@inheritdoc}
    */
   public function getCollectionName() {
     /** @var \Drupal\Core\Config\StorageInterface $store */

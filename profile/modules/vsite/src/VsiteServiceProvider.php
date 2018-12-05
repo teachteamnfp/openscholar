@@ -11,7 +11,10 @@ use Drupal\Core\DependencyInjection\ServiceProviderBase;
 class VsiteServiceProvider extends ServiceProviderBase {
 
   /**
-   * Changes the priority of purl's path processor so it runs after something else.
+   * Changes the priority of purl's path processor.
+   *
+   * These processors need to be run in a certain order for them
+   *   to work properly.
    */
   public function alter(ContainerBuilder $container) {
     parent::alter($container);

@@ -19,11 +19,15 @@ class VsitePathActivator implements EventSubscriberInterface {
   }
 
   /**
+   * Manager for Vsites.
+   *
    * @var VsiteContextManagerInterface
    */
   protected $vsiteContextManager;
 
   /**
+   * Manager for Entities.
+   *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
@@ -37,7 +41,7 @@ class VsitePathActivator implements EventSubscriberInterface {
   }
 
   /**
-   * @inheritdoc
+   * {@inheritdoc}
    */
   public static function getSubscribedEvents() {
     $events = [];
@@ -48,7 +52,8 @@ class VsitePathActivator implements EventSubscriberInterface {
   }
 
   /**
-   * Event handler for ModifierMatched event
+   * Event handler for ModifierMatched event.
+   *
    * Activates the vsite for the modifier.
    */
   public function onModifierMatched(ModifierMatchedEvent $event) {
@@ -59,7 +64,8 @@ class VsitePathActivator implements EventSubscriberInterface {
   }
 
   /**
-   * Event Handler for the ResponseEvent event
+   * Event Handler for the ResponseEvent event.
+   *
    * Activates the group if one is found in the RouteMatch parameters.
    *
    * @throws InvalidPluginDefinitionException
@@ -97,7 +103,8 @@ class VsitePathActivator implements EventSubscriberInterface {
       // Loads all groups with a relation to the node.
       $group_content = $storage->loadByEntity($node);
       if (count($group_content)) {
-        // Return the first group associated with this content, assuming we are limiting to 1?
+        // Return the first group associated with this content,
+        // assuming we are limiting to 1?
         $group = current($group_content)->getGroup();
         return $group;
       }

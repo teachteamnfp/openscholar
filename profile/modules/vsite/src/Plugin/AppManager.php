@@ -15,7 +15,7 @@ class AppManager extends DefaultPluginManager implements AppManangerInterface {
    * Constructs an AppManager object.
    *
    * @param \Traversable $namespaces
-   *   namespace object.
+   *   Namespace object.
    * @param \Drupal\Core\Cache\CacheBackendInterface $cache_backend
    *   Cache backend.
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler

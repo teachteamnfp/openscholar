@@ -13,7 +13,9 @@ class VsiteStorageDefinition implements EventSubscriberInterface {
   const VSITE_STORAGE = 0;
 
   /**
-   * @var HierarchicalStorageInterface The storage element to add a vsite storage to
+   * The storage element to add a vsite storage to.
+   *
+   * @var \Drupal\vsite\Config\HierarchicalStorageInterface
    */
   protected $hierarchicalStorage;
 
@@ -25,6 +27,8 @@ class VsiteStorageDefinition implements EventSubscriberInterface {
   }
 
   /**
+   * List all events to listen for.
+   *
    * @inheritdoc
    */
   public static function getSubscribedEvents() {

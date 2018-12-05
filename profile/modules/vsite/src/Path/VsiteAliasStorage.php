@@ -14,21 +14,29 @@ use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 class VsiteAliasStorage implements AliasStorageInterface {
 
   /**
+   * The AliasStorage object we're decorating.
+   *
    * @var \Drupal\Core\Path\AliasStorageInterface
    */
   protected $storage;
 
   /**
+   * PURL's list of all modifiers.
+   *
    * @var \Drupal\purl\Plugin\ModifierIndex
    */
   protected $modifierIndex;
 
   /**
+   * Manager for entities.
+   *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
 
   /**
+   * Manager for vsites.
+   *
    * @var \Drupal\vsite\Plugin\VsiteContextManagerInterface
    */
   protected $vsiteContextManager;
@@ -44,7 +52,10 @@ class VsiteAliasStorage implements AliasStorageInterface {
   }
 
   /**
-   * @return \Drupal\purl\Modifier[] An array of purl modifiers
+   * Returns an array of all purl modifiers.
+   *
+   * @return \Drupal\purl\Modifier[]
+   *   An array of purl modifiers
    */
   protected function getModifiers() {
     /** @var \Drupal\purl\Entity\Provider $provider */
@@ -53,12 +64,15 @@ class VsiteAliasStorage implements AliasStorageInterface {
   }
 
   /**
-   * Takes the original path and translates it to a token
-   * i.e. site01/about becomes [vsite:1]/about.
+   * Takes the original path and translates it to a token.
+   *
+   * I.e. site01/about becomes [vsite:1]/about.
    *
    * @param string $path
+   *   The path with the vsite's purl.
    *
    * @return string
+   *   The path with the purl replaced by a token.
    */
   protected function pathToToken(string $path) {
     if (strpos($path, 'group/') !== FALSE) {
@@ -80,8 +94,10 @@ class VsiteAliasStorage implements AliasStorageInterface {
    * Converts a vsite token into the site url.
    *
    * @param string $path
+   *   The tokenied path.
    *
    * @return string
+   *   The path with the token replaced with the vsite's purl.
    */
   protected function tokenToPath(string $path) {
     $modifiers = $this->getModifiers();
@@ -101,7 +117,7 @@ class VsiteAliasStorage implements AliasStorageInterface {
   }
 
   /**
-   * @inheritdoc
+   * {@inheritdoc}
    */
   public function save($source, $alias, $langcode = LanguageInterface::LANGCODE_NOT_SPECIFIED, $pid = NULL) {
     $alias = $this->pathToToken($alias);
@@ -113,7 +129,7 @@ class VsiteAliasStorage implements AliasStorageInterface {
   }
 
   /**
-   * @inheritdoc
+   * {@inheritdoc}
    */
   public function load($conditions) {
     if (!empty($conditions['alias'])) {
@@ -127,7 +143,7 @@ class VsiteAliasStorage implements AliasStorageInterface {
   }
 
   /**
-   * @inheritdoc
+   * {@inheritdoc}
    */
   public function delete($conditions) {
     if (!empty($conditions['alias'])) {
@@ -137,7 +153,7 @@ class VsiteAliasStorage implements AliasStorageInterface {
   }
 
   /**
-   * @inheritdoc
+   * {@inheritdoc}
    */
   public function preloadPathAlias($preloaded, $langcode) {
     $output = $this->storage->preloadPathAlias($preloaded, $langcode);
@@ -150,7 +166,7 @@ class VsiteAliasStorage implements AliasStorageInterface {
   }
 
   /**
-   * @inheritdoc
+   * {@inheritdoc}
    */
   public function lookupPathAlias($path, $langcode) {
     $output = $this->storage->lookupPathAlias($path, $langcode);
@@ -161,13 +177,14 @@ class VsiteAliasStorage implements AliasStorageInterface {
   }
 
   /**
-   * @inheritdoc
+   * {@inheritdoc}
    *
-   * This is the entry point for requests to determine what the real route is going to be
+   * This is the entry point for requests to determine the real route.
    *
-   * PURL strips the modifier from the request and starts a new request with the stripped-down path
-   * By the time processing gets here, there's no modifiers at all on the path at all.
-   * We have to add it back on in order to detect the right entity properly
+   * PURL strips the modifier from the request and starts a new request
+   *   with the stripped-down path. By the time processing gets here, there's
+   *   no modifiers at all on the path at all. We have to add it back on in
+   *   order to detect the right entity properly.
    */
   public function lookupPathSource($path, $langcode) {
     /** @var \Drupal\group\Entity\GroupInterface $group */
@@ -178,7 +195,7 @@ class VsiteAliasStorage implements AliasStorageInterface {
   }
 
   /**
-   * @inheritdoc
+   * {@inheritdoc}
    */
   public function aliasExists($alias, $langcode, $source = NULL) {
     $alias = $this->pathToToken($alias);
@@ -186,14 +203,14 @@ class VsiteAliasStorage implements AliasStorageInterface {
   }
 
   /**
-   * @inheritdoc
+   * {@inheritdoc}
    */
   public function languageAliasExists() {
     return $this->storage->languageAliasExists();
   }
 
   /**
-   * @inheritdoc
+   * {@inheritdoc}
    */
   public function getAliasesForAdminListing($header, $keys = NULL) {
     $output = $this->storage->getAliasesForAdminListing($header, $keys);
@@ -204,7 +221,7 @@ class VsiteAliasStorage implements AliasStorageInterface {
   }
 
   /**
-   * @inheritdoc
+   * {@inheritdoc}
    */
   public function pathHasMatchingAlias($initial_substring) {
     return $this->storage->pathHasMatchingAlias($initial_substring);
