@@ -7,53 +7,59 @@ use Drupal\vsite\Plugin\VsitePathActivator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
+ * Tests for the VsitePathActivator class.
+ *
  * @group vsite
  * @coversDefaultClass \Drupal\vsite\Plugin\VsitePathActivator
- *
- * Tests for the VsitePathActivator class
  */
 class VsitePathActivatorTest extends UnitTestCase {
 
   /**
-   * @var \Symfony\Component\DependencyInjection\ContainerBuilder
-   *   Dependency injection container
+   * Dependency injection container.
    *
-   * Used in the
+   * @var \Symfony\Component\DependencyInjection\ContainerBuilder
    */
   protected $container;
 
   /**
+   * The object we're testing.
+   *
    * @var \Drupal\vsite\Plugin\VsitePathActivator
-   *   The object we're testing
    */
   protected $vsitePathActivator;
 
   /**
+   * Mock for the VsiteContextManager object.
+   *
    * @var \PHPUnit_Framework_MockObject_MockObject
-   *   Mock for the VsiteContextManager object
    */
   protected $vsiteContextManager;
 
   /**
+   * Mock for EntityTypeManager.
+   *
    * @var \PHPUnit_Framework_MockObject_MockObject
-   *   Mock for EntityTypeManager
    */
   protected $entityTypeManager;
 
   /**
+   * Mock for a node we're pretending to view.
+   *
    * @var \PHPUnit_Framework_MockObject_MockObject
-   *   Mock for a node we're pretending to view
    */
   protected $node;
 
   /**
+   * Mock for the group we're in.
+   *
    * @var \PHPUnit_Framework_MockObject_MockObject
-   *   Mock for the group we're in
    */
   protected $group;
 
   /**
-   * Set up steps needed for the tests. Sets up a node-group relationship to be referred to later.
+   * Set up steps needed for the tests.
+   *
+   * Sets up a node-group relationship to be referred to later.
    */
   public function setUp() {
     parent::setUp();
@@ -155,8 +161,9 @@ class VsitePathActivatorTest extends UnitTestCase {
   }
 
   /**
-   * Tests that we can fetch a group by its node param. This must be separate because
-   *   PathActivator caches the request match.
+   * Tests that we can fetch a group by its node param.
+   *
+   * This must be separate because PathActivator caches the request match.
    */
   public function testGetGroupFromNode() {
     $currentRouteMatch = $this->createMock('\Drupal\Core\Routing\CurrentRouteMatch');
@@ -174,7 +181,10 @@ class VsitePathActivatorTest extends UnitTestCase {
   }
 
   /**
-   * Test that the nothing will happen when neither group nor node are parameters of the route match.
+   * No vsite tests.
+   *
+   * Test that the nothing will happen when neither group nor node are
+   *   parameters of the route match.
    */
   public function testNoGroupFromRoute() {
     $currentRouteMatch = $this->createMock('\Drupal\Core\Routing\CurrentRouteMatch');
