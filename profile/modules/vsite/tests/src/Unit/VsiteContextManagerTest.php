@@ -10,26 +10,32 @@ use Drupal\vsite\VsiteEvents;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
+ * Tests for the VsiteContextManager class.
+ *
  * @group vsite
  * @coversDefaultClass \Drupal\vsite\Plugin\VsiteContextManager
- *
- * Tests for the VsiteContextManager class
  */
 class VsiteContextManagerTest extends UnitTestCase {
 
 
   /**
-   * @var \Symfony\Component\DependencyInjection\ContainerBuilderThedependencyinjectioncontainer
+   * Simple dependency injection container.
+   *
+   * @var \Symfony\Component\DependencyInjection\ContainerBuilder
    */
   protected $container;
 
   /**
-   * @var \Drupal\vsite\Plugin\VsiteContextManagerTheobjecttotest
+   * The object to test.
+   *
+   * @var \Drupal\vsite\Plugin\VsiteContextManager
    */
   protected $vsiteContextManager;
 
   /**
-   * @var \PHPUnit_Framework_MockObject_MockObjectEventDispatchermockobject
+   * Mock for Event Dispatcher.
+   *
+   * @var \PHPUnit_Framework_MockObject_MockObject
    */
   protected $eventDispatcher;
 

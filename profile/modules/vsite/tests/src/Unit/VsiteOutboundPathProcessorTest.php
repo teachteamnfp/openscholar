@@ -2,28 +2,29 @@
 
 namespace Drupal\Tests\vsite\Unit;
 
-
 use Drupal\Tests\UnitTestCase;
 use Drupal\vsite\Pathprocessor\VsiteOutboundPathProcessor;
 
 /**
- * Class VsiteOutboundPathProcessorTest
- * @package Drupal\Tests\vsite\Unit
+ * Class VsiteOutboundPathProcessorTest.
  *
+ * @package Drupal\Tests\vsite\Unit
  * @group vsite
  * @coversDefaultClass \Drupal\vsite\PathProcessor\VsiteOutboundPathProcessor
  */
 class VsiteOutboundPathProcessorTest extends UnitTestCase {
 
   /**
+   * The object to test.
+   *
    * @var \Drupal\vsite\PathProcessor\VsiteOutboundPathProcessor
-   *   The object to test.
    */
   protected $pathProcessor;
 
   /**
+   * Mock for the ContextManager.
+   *
    * @var \PHPUnit_Framework_MockObject_MockObject
-   *   Mock for the ContextManager.
    */
   protected $vsiteContextManager;
 
@@ -58,7 +59,7 @@ class VsiteOutboundPathProcessorTest extends UnitTestCase {
    */
   public function testOutsideVsite() {
     $this->vsiteContextManager->method('getActivePurl')
-      ->willReturn (FALSE);
+      ->willReturn(FALSE);
 
     $options = [];
     $output_path = $this->pathProcessor->processOutbound('bar', $options);
@@ -75,14 +76,14 @@ class VsiteOutboundPathProcessorTest extends UnitTestCase {
   }
 
   /**
-   * Test that urls in vsites are handled properly
+   * Test that urls in vsites are handled properly.
    */
   public function testInVsite() {
     $this->vsiteContextManager->method('getActivePurl')
       ->willReturn('foo');
     $this->vsiteContextManager->method('getAbsoluteUrl')
       ->willReturnCallback(function ($path) {
-        return 'http://localhost/foo/'.$path;
+        return 'http://localhost/foo/' . $path;
       });
 
     $request = $this->createMock('\Symfony\Component\HttpFoundation\Request');
@@ -100,7 +101,7 @@ class VsiteOutboundPathProcessorTest extends UnitTestCase {
     $this->assertEquals('http://localhost/foo/bar', $output_path, $request);
 
     $options = [
-      'purl_exit' => TRUE
+      'purl_exit' => TRUE,
     ];
     $output_path = $this->pathProcessor->processOutbound('bar', $options, $request);
     $this->assertEquals('bar', $output_path);
@@ -111,4 +112,5 @@ class VsiteOutboundPathProcessorTest extends UnitTestCase {
     $output_path = $this->pathProcessor->processOutbound('bar', $options, $request);
     $this->assertEquals('bar', $output_path);
   }
+
 }

@@ -7,25 +7,29 @@ use Drupal\vsite\Config\HierarchicalStorage;
 
 /**
  * Tests for the HierarchicalStorage object.
+ *
  * This object allows StorageInterfaces to be stacked and prioritized.
  */
 class HierarchicalStorageTest extends UnitTestCase {
 
   /**
+   * The object to test.
+   *
    * @var \Drupal\vsite\Config\HierarchicalStorage
-   * The object to test
    */
   protected $hierarchicalStorage;
 
   /**
+   * The mock for global storage.
+   *
    * @var \PHPUnit_Framework_MockObject_MockObject
-   * The mock for global storage
    */
   protected $globalStorage;
 
   /**
+   * The mock for the storage used to override global values.
+   *
    * @var \PHPUnit_Framework_MockObject_MockObject
-   * The mock for the storage used to override global values
    */
   protected $overrideStorage;
 
@@ -44,7 +48,7 @@ class HierarchicalStorageTest extends UnitTestCase {
   ];
 
   /**
-   * Setup test object, mocks, and behavior for global storage
+   * Setup test object, mocks, and behavior for global storage.
    */
   public function setUp() {
     parent::setUp();
@@ -121,11 +125,15 @@ class HierarchicalStorageTest extends UnitTestCase {
       'bar' => TRUE,
       'str' => 'just testing',
     ];
-    $this->assertArrayEquals($expect, $this->hierarchicalStorage->readMultiple(['foo', 'bar', 'str']));
+    $this->assertArrayEquals($expect, $this->hierarchicalStorage->readMultiple([
+      'foo',
+      'bar',
+      'str',
+    ]));
   }
 
   /**
-   *  Test the write, delete, and rename methods.
+   * Test the write, delete, and rename methods.
    */
   public function testWriting() {
     $data = [
