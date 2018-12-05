@@ -17,6 +17,8 @@ class VsitePathActivatorTest extends UnitTestCase {
   /**
    * @var \Symfony\Component\DependencyInjection\ContainerBuilder
    *   Dependency injection container
+   *
+   * Used in the
    */
   protected $container;
 
@@ -51,8 +53,7 @@ class VsitePathActivatorTest extends UnitTestCase {
   protected $group;
 
   /**
-   * Set up steps needed for the tests.
-   * Sets up a node-group relationship to be referred to later.
+   * Set up steps needed for the tests. Sets up a node-group relationship to be referred to later.
    */
   public function setUp() {
     parent::setUp();
@@ -154,15 +155,15 @@ class VsitePathActivatorTest extends UnitTestCase {
   }
 
   /**
-   * Tests that we can fetch a group by its node param.
-   * This must be separate because PathActivator caches the request match.
+   * Tests that we can fetch a group by its node param. This must be separate because
+   *   PathActivator caches the request match.
    */
   public function testGetGroupFromNode() {
     $currentRouteMatch = $this->createMock('\Drupal\Core\Routing\CurrentRouteMatch');
     $currentRouteMatch->expects($this->at(0))
       ->method('getParameter')
       ->with('group')
-      ->willReturn(null);
+      ->willReturn(NULL);
     $currentRouteMatch->expects($this->at(2))
       ->method('getParameter')
       ->with('node')
@@ -173,13 +174,13 @@ class VsitePathActivatorTest extends UnitTestCase {
   }
 
   /**
-   * Test that the nothing will happen when neither group nor node are parameters of the route match
+   * Test that the nothing will happen when neither group nor node are parameters of the route match.
    */
   public function testNoGroupFromRoute() {
     $currentRouteMatch = $this->createMock('\Drupal\Core\Routing\CurrentRouteMatch');
     $currentRouteMatch->expects($this->any())
       ->method('getParameter')
-      ->willReturn(null);
+      ->willReturn(NULL);
     $this->container->set('current_route_match', $currentRouteMatch);
 
     $this->assertNull($this->vsitePathActivator->getGroupFromRoute());
