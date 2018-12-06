@@ -44,7 +44,7 @@ class OsFeedReaderFetcher extends FeedsProcessor {
   protected function entitySave($entity) {
     $node_wrapper = entity_metadata_wrapper('node', $entity->feeds_item->feed_nid);
     $values = array(
-      'title' => $entity->title,
+      'title' => truncate_utf8($entity->title, 255, false, true),
       'description' => $entity->description,
       'created' => $entity->created,
       'guid' => $entity->feeds_item->guid,
