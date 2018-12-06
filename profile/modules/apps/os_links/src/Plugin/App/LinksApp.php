@@ -10,7 +10,8 @@ use Drupal\vsite\AppInterface;
  *   title = @Translation("Links"),
  *   canDisable = true,
  *   entityType = "node",
- *   bundle = "link"
+ *   bundle = "link",
+ *   id = "links"
  * )
  */
 class LinksApp extends PluginBase implements AppInterface {
@@ -20,5 +21,12 @@ class LinksApp extends PluginBase implements AppInterface {
     return array(
       'link'
     );
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function getTitle () {
+    return $this->pluginDefinition['title'];
   }
 }

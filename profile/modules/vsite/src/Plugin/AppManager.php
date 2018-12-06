@@ -2,6 +2,7 @@
 
 namespace Drupal\vsite\Plugin;
 
+use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Plugin\DefaultPluginManager;
@@ -26,5 +27,21 @@ class AppManager extends DefaultPluginManager implements AppManangerInterface {
 
     $this->alterInfo ('app_info');
     $this->setCacheBackend($cache_backend, 'app_info_plugins');
+  }
+
+  public function getAppForBundle (string $bundle): string {
+    $defs = $this->getDefinitions ();
+    $app = '';
+    foreach ($defs as $d) {
+      if ($d['bundle'] == $bundle) {
+        $app = $d['id'];
+      }
+    }
+
+    if ($app) {
+      return $app;
+    }
+
+    return '';
   }
 }
