@@ -64,6 +64,20 @@ class RoboFile extends \Robo\Tasks
             ->run();
     }
 
+  /**
+   * Command to run kernel tests.
+   *
+   * @return \Robo\Result
+   *   The result of the collection of tasks.
+   */
+    public function jobRunKernelTests($groups = '')
+    {
+        $collection = $this->collectionBuilder();
+        $collection->addTask($this->installDrupal());
+        $collection->addTaskList($this->runKernelTests($groups));
+        return $collection->run();
+    }
+
     /**
      * Command to run behat tests.
      *
@@ -202,8 +216,26 @@ class RoboFile extends \Robo\Tasks
             ->copy('.travis'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'phpunit.xml', 'web'.DIRECTORY_SEPARATOR.'core'.DIRECTORY_SEPARATOR.'phpunit.xml', $force);
         $tasks[] = $this->taskExecStack()
             ->dir('web')
-            ->exec('..'.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'phpunit -c core --debug --coverage-clover ../build/logs/clover.xml'. ($groups ? '--group '.$groups: ' ')  .'--verbose profiles/contrib/openscholar');
+            ->exec('..'.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'phpunit -c core --debug --coverage-clover ../build/logs/clover.xml --testsuite=unit'. ($groups ? '--group '.$groups: ' ')  .'--verbose profiles/contrib/openscholar');
         return $tasks;
+    }
+
+  /**
+   * Run kernel tests.
+   *
+   * @return \Robo\Task\Base\Exec[]
+   *   An array of tasks.
+   */
+    protected function runKernelTests($groups)
+    {
+      $force = true;
+      $tasks = [];
+      $tasks[] = $this->taskFilesystemStack()
+        ->copy('.travis'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'phpunit.xml', 'web'.DIRECTORY_SEPARATOR.'core'.DIRECTORY_SEPARATOR.'phpunit.xml', $force);
+      $tasks[] = $this->taskExecStack()
+        ->dir('web')
+        ->exec('..'.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'phpunit -c core --debug --coverage-clover ../build/logs/clover.xml --testsuite=kernel'. ($groups ? '--group '.$groups: ' ')  .'--verbose profiles/contrib/openscholar');
+      return $tasks;
     }
 
     /**

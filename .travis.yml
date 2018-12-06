@@ -18,6 +18,7 @@ env:
   matrix:
     - JOB=job:check-coding-standards
     - JOB=job:run-unit-tests
+    - JOB=job:run-kernel-tests
 #    - JOB=job:run-behat-tests
 
 before_install:
