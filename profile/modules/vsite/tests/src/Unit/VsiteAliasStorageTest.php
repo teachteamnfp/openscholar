@@ -174,7 +174,20 @@ class VsiteAliasStorageTest extends UnitTestCase {
   /**
    * Tests vsite storage load.
    */
-  public function atestLoad() {
+  public function testLoad() {
+    $this->innerAliasStorage
+      ->method('load')
+      ->with([
+        'source' => '/node/1',
+        'alias' => '/[vsite:1]/foo',
+      ])
+      ->willReturn([
+        'source' => '/node/1',
+        'alias' => '/site01/foo',
+        'langcode' => LanguageInterface::LANGCODE_SITE_DEFAULT,
+        'pid' => 1,
+      ]);
+
     $this->vsiteAliasStorage->save('/node/1', '/site01/foo', LanguageInterface::LANGCODE_SITE_DEFAULT);
 
     $expected = [
@@ -185,20 +198,30 @@ class VsiteAliasStorageTest extends UnitTestCase {
     ];
 
     $this->assertArrayEquals($expected, $this->vsiteAliasStorage->load([
-      'alias' => '/site01/foo',
+      'source' => '/node/1',
+      'alias' => '/[vsite:1]/foo',
     ]));
   }
 
   /**
    * Tests vsite storage delete.
    */
-  public function atestDelete() {
+  public function testDelete() {
+    $this->innerAliasStorage
+      ->method('load')
+      ->with([
+        'source' => '/node/1',
+        'alias' => '/[vsite:1]/foo',
+      ])
+      ->willReturn(NULL);
+
     $this->vsiteAliasStorage->save('/node/1', '/site01/foo', LanguageInterface::LANGCODE_SITE_DEFAULT);
     $this->vsiteAliasStorage->delete([
       'alias' => '/site01/foo',
     ]);
     $this->assertNull($this->vsiteAliasStorage->load([
-      'alias' => '/site01/foo',
+      'source' => '/node/1',
+      'alias' => '/[vsite:1]/foo',
     ]));
   }
 
