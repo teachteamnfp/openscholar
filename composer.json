@@ -96,6 +96,13 @@
             "@composer drupal:scaffold",
             "DrupalProject\\composer\\ScriptHandler::createRequiredFiles",
             "DrupalProject\\composer\\ScriptHandler::placeProfile"
+        ],
+        "test-requirements": [
+            "cp ./.travis/RoboFile.php ."
+        ],
+        "unit-test": [
+            "@test-requirements",
+            "./vendor/bin/robo job:run-unit-tests"
         ]
     },
     "extra": {
