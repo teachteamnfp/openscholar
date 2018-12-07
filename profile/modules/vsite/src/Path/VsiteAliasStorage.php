@@ -158,8 +158,8 @@ class VsiteAliasStorage implements AliasStorageInterface {
   public function preloadPathAlias($preloaded, $langcode) {
     $output = $this->storage->preloadPathAlias($preloaded, $langcode);
 
-    foreach ($output as &$o) {
-      $o['alias'] = $this->tokenToPath($o['alias']);
+    foreach ($output as $source => &$alias) {
+      $alias = $this->tokenToPath($alias);
     }
 
     return $output;

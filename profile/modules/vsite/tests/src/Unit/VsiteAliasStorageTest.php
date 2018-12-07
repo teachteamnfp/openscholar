@@ -225,4 +225,33 @@ class VsiteAliasStorageTest extends UnitTestCase {
     ]));
   }
 
+  /**
+   * Tests preload path alias.
+   */
+  public function testPreloadPathAlias() {
+    $this->innerAliasStorage
+      ->method('preloadPathAlias')
+      ->with([
+        '/node/1',
+        '/node/2',
+      ], LanguageInterface::LANGCODE_SITE_DEFAULT)
+      ->willReturn([
+        '/node/1' => '/site01/foo',
+        '/node/2' => '/site02/foo',
+      ]);
+
+    $this->vsiteAliasStorage->save('/node/1', '/site01/foo', LanguageInterface::LANGCODE_SITE_DEFAULT);
+    $this->vsiteAliasStorage->save('/node/2', '/site02/foo', LanguageInterface::LANGCODE_SITE_DEFAULT);
+
+    $expected = [
+      '/node/1' => '/site01/foo',
+      '/node/2' => '/site02/foo',
+    ];
+
+    $this->assertArrayEquals($expected, $this->vsiteAliasStorage->preloadPathAlias([
+      '/node/1',
+      '/node/2',
+    ], LanguageInterface::LANGCODE_SITE_DEFAULT));
+  }
+
 }
