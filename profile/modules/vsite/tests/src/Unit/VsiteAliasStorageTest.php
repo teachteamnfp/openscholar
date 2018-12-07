@@ -266,4 +266,32 @@ class VsiteAliasStorageTest extends UnitTestCase {
     $this->assertTrue($this->vsiteAliasStorage->languageAliasExists());
   }
 
+  /**
+   * Tests positive assertion of pathHasMatchingAlias.
+   */
+  public function testPositivePathHasMatchingAlias() {
+    $this->innerAliasStorage
+      ->method('pathHasMatchingAlias')
+      ->with('/first')
+      ->willReturn(TRUE);
+
+    $this->vsiteAliasStorage->save('/first-node', '/site01/foo', LanguageInterface::LANGCODE_SITE_DEFAULT);
+
+    $this->assertTrue($this->vsiteAliasStorage->pathHasMatchingAlias('/first'));
+  }
+
+  /**
+   * Tests negative assertion of pathHasMatchingAlias.
+   */
+  public function testNegativePathHasMatchingAlias() {
+    $this->innerAliasStorage
+      ->method('pathHasMatchingAlias')
+      ->with('/not-existing')
+      ->willReturn(FALSE);
+
+    $this->vsiteAliasStorage->save('/node/1', '/site01/foo', LanguageInterface::LANGCODE_SITE_DEFAULT);
+
+    $this->assertFalse($this->vsiteAliasStorage->pathHasMatchingAlias('/not-existing'));
+  }
+
 }
