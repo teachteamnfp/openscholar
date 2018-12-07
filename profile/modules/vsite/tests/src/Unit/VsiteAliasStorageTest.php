@@ -254,4 +254,16 @@ class VsiteAliasStorageTest extends UnitTestCase {
     ], LanguageInterface::LANGCODE_SITE_DEFAULT));
   }
 
+  /**
+   * Tests languageAliasExists.
+   */
+  public function testLanguageAliasExists() {
+    $this->innerAliasStorage
+      ->method('languageAliasExists')
+      ->with()
+      ->willReturn(TRUE);
+
+    $this->assertTrue($this->vsiteAliasStorage->languageAliasExists());
+  }
+
 }
