@@ -9,6 +9,9 @@ use Drupal\vsite\Config\HierarchicalStorage;
  * Tests for the HierarchicalStorage object.
  *
  * This object allows StorageInterfaces to be stacked and prioritized.
+ *
+ * @group unit
+ * @coversDefaultClass \Drupal\vsite\Config\HierarchicalStorage
  */
 class HierarchicalStorageTest extends UnitTestCase {
 
