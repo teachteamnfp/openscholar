@@ -24,7 +24,14 @@ class VsiteCurrentFilterTest extends ViewsKernelTestBase {
    *
    * @var array
    */
-  public static $modules = ['system', 'views', 'group', 'gnode', 'vsite', 'vsite_module_test'];
+  public static $modules = [
+    'system',
+    'views',
+    'group',
+    'gnode',
+    'vsite',
+    'vsite_module_test',
+  ];
 
   /**
    * Views used by this test.
@@ -65,8 +72,8 @@ class VsiteCurrentFilterTest extends ViewsKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
-    parent::setUp();
+  protected function setUp($import_test_views = TRUE) {
+    parent::setUp($import_test_views);
     $this->installEntitySchema('user');
     $this->installEntitySchema('group');
     $this->installEntitySchema('group_type');
@@ -81,7 +88,6 @@ class VsiteCurrentFilterTest extends ViewsKernelTestBase {
     $group_type = $this->entityTypeManager->getStorage('group_type')->load('default');
     $storage = $this->entityTypeManager->getStorage('group_content_type');
     $storage->createFromPlugin($group_type, 'user_as_content')->save();
-
 
     $node_type = NodeType::create(['type' => 'page', 'name' => t('Page')]);
     $node_type->save();
@@ -133,9 +139,10 @@ class VsiteCurrentFilterTest extends ViewsKernelTestBase {
   /**
    * Check that all posts appear outside a vsite.
    */
-  protected function testOutsideOfVsite() {
-    $results = $this->getViewResults();
-    error_log(print_r($results, 1));
-    $this->assertNull(null, null);
-  }
+  // public function testOutsideOfVsite() {
+    // $results = $this->getViewResults();
+    // error_log(print_r($results, 1));
+    // $this->assertNull(NULL);
+  // }
+
 }
