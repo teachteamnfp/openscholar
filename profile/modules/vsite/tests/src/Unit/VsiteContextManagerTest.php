@@ -85,7 +85,20 @@ class VsiteContextManagerTest extends UnitTestCase {
     $this->assertEquals($group, $this->vsiteContextManager->getActiveVsite());
     $this->assertEquals('site01', $this->vsiteContextManager->getActivePurl());
     $this->assertEquals('/site01/foo', $this->vsiteContextManager->getAbsoluteUrl('foo'));
-    // getStorage is currently not implemented. May be removed later.
+  }
+
+  /**
+   * Tests empty output of getActivePurl().
+   */
+  public function testEmptyGetActivePurl() {
+    /** @var \PHPUnit_Framework_MockObject_MockObject $vsite_context_manager_mock */
+    $vsite_context_manager_mock = $this->createMock('Drupal\vsite\Plugin\VsiteContextManagerInterface');
+
+    $vsite_context_manager_mock
+      ->method('getActivePurl')
+      ->willReturn('');
+
+    $this->assertEquals('', $this->vsiteContextManager->getActivePurl());
   }
 
 }

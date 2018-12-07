@@ -34,9 +34,4 @@ interface VsiteContextManagerInterface {
    */
   public function getAbsoluteUrl(string $path = '');
 
-  /**
-   * Return the StorageInterface object for a vsite.
-   */
-  public function getStorage(GroupInterface $group = NULL);
-
 }

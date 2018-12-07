@@ -85,11 +85,4 @@ class VsiteContextManager implements VsiteContextManagerInterface {
     return $purl . '/' . ltrim($path, '/');
   }
 
-  /**
-   * Returns the ConfigStorage for the given vsite.
-   */
-  public function getStorage(GroupInterface $group = NULL) {
-
-  }
-
 }
