@@ -7,12 +7,16 @@ use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\group\Entity\Group;
 use Drupal\group\Entity\GroupType;
+use Drupal\group\Entity\GroupTypeInterface;
+use Drupal\group\Plugin\GroupContentEnablerManagerInterface;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
 use Drupal\Tests\user\Traits\UserCreationTrait;
 use Drupal\Tests\views\Kernel\ViewsKernelTestBase;
+use Drupal\views\ResultRow;
 use Drupal\views\Tests\ViewTestData;
 use Drupal\views\Views;
+use Symfony\Component\DependencyInjection\Definition;
 
 /**
  * Test the Current Vsite Views Filter.
@@ -40,6 +44,8 @@ class VsiteCurrentFilterTest extends ViewsKernelTestBase {
     'views',
     'text',
     'filter',
+    'purl',
+    'vsite',
     'vsite_module_test',
   ];
 
@@ -48,7 +54,7 @@ class VsiteCurrentFilterTest extends ViewsKernelTestBase {
    *
    * @var array
    */
-  public static $testViews = ['vsite_views_test'];
+  public static $testViews = ['vsite_test_view'];
 
   /**
    * Group dummy content is being assigned (or not) to.
@@ -83,14 +89,17 @@ class VsiteCurrentFilterTest extends ViewsKernelTestBase {
    * {@inheritdoc}
    */
   protected function setUp($import_test_views = TRUE) {
+    \PHPUnit\Framework\Error\Deprecated::$enabled = false;
     parent::setUp(false);
+    $this->installSchema('node', 'node_access');
     $this->installEntitySchema('user');
     $this->installEntitySchema('node');
     $this->installEntitySchema('group_type');
     $this->installEntitySchema('group');
     $this->installEntitySchema('group_content_type');
     $this->installEntitySchema('group_content');
-    $this->installConfig(['field', 'node', 'group']);
+
+    $this->installConfig(['field', 'node', 'group', 'vsite']);
 
     // Set the current user so group creation can rely on it.
     $this->container->get('current_user')->setAccount($this->createUser());
@@ -102,34 +111,37 @@ class VsiteCurrentFilterTest extends ViewsKernelTestBase {
     $node_type = NodeType::create(['type' => 'page', 'name' => t('Page')]);
     $node_type->save();
 
-    $group_type = GroupType::create(['id' => 'personal', 'label' => t('Personal')]);
-    $group_type->save();
+    /** @var GroupTypeInterface $group_type */
+    $group_type = $entityTypeManager->getStorage('group_type')->load('personal');
 
     // Enable the user_as_content plugin on the default group type.
     /** @var \Drupal\group\Entity\Storage\GroupContentTypeStorageInterface $storage */
-    //$storage = $entityTypeManager->getStorage('group_content_type');
-    //$storage->createFromPlugin($group_type, 'user_as_content')->save();
+    $storage = $entityTypeManager->getStorage('group_content_type');
+    $plugin = $storage->createFromPlugin($group_type, 'group_node:page');
+    $plugin->save();
 
-    $group_type->installContentPlugin('personal-group_node-page');
     ViewTestData::createTestViews(get_class($this), ['vsite_module_test']);
 
     $this->group = Group::create([
       'type' => 'personal',
       'title' => 'Site01',
     ]);
+    $this->group->save();
 
     // Create the nodes we'll be displaying (or not) in the view.
     $this->ungroupedNode = Node::create([
       'type' => 'page',
       'title' => 'Ungrouped'
     ]);
+    $this->ungroupedNode->save();
 
     $this->groupedNode = Node::create([
       'type' => 'page',
       'title' => 'Grouped'
     ]);
+    $this->groupedNode->save();
 
-    $this->group->addContent($this->groupedNode, 'personal-group_node-page');
+    $this->group->addContent($this->groupedNode, $plugin->getContentPluginId());
 
     $this->vsiteContextManager = $this->container->get('vsite.context_manager');
   }
@@ -147,30 +159,13 @@ class VsiteCurrentFilterTest extends ViewsKernelTestBase {
 
     /** @var \Drupal\Core\State\StateInterface $state */
     $state = $this->container->get('state');
-    // Define the schema and views data variable before enabling the test module.
-    $state->set('views_test_data_schema', $this->schemaDefinition());
-    $state->set('views_test_data_views_data', $this->viewsData());
-    $this->container->get('views.views_data')->clear();
 
-    $this->installConfig(['vsite_module_test']);
-    foreach ($this->schemaDefinition() as $table => $schema) {
-      $this->installSchema('views_test_data', $table);
-    }
+    $this->installConfig(['views', 'vsite_module_test']);
 
     $this->container->get('router.builder')->rebuild();
-
-    // Load the test dataset.
-    $data_set = $this->dataSet();
-    $query = Database::getConnection()->insert('views_test_data')
-      ->fields(array_keys($data_set[0]));
-    foreach ($data_set as $record) {
-      $query->values($record);
-    }
-    $query->execute();
   }
 
   public function register(ContainerBuilder $container) {
-    error_log('running register');
     $purlPathProcessor = $this->createMock('\Drupal\purl\PathProcessor\PurlContextOutboundPathProcessor');
     $container->set('purl.outbound_path_processor', $purlPathProcessor);
 
@@ -199,8 +194,8 @@ class VsiteCurrentFilterTest extends ViewsKernelTestBase {
    */
    public function testOutsideOfVsite() {
      $results = $this->getViewResults();
-     error_log(print_r($results, 1));
-     $this->assertNull(NULL);
+     $this->assertEquals('Ungrouped', $results[0]->_entity->label());
+     $this->assertEquals('Grouped', $results[1]->_entity->label());
    }
 
 }
