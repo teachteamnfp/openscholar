@@ -73,7 +73,7 @@ class RoboFile extends \Robo\Tasks
     public function jobRunKernelTests($groups = '')
     {
         $collection = $this->collectionBuilder();
-        $collection->addTask($this->installDrupal());
+        //$collection->addTask($this->installDrupal());
         $collection->addTaskList($this->runKernelTests($groups));
         return $collection->run();
     }
@@ -216,7 +216,7 @@ class RoboFile extends \Robo\Tasks
             ->copy('.travis'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'phpunit.xml', 'web'.DIRECTORY_SEPARATOR.'core'.DIRECTORY_SEPARATOR.'phpunit.xml', $force);
         $tasks[] = $this->taskExecStack()
             ->dir('web')
-            ->exec('..'.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'phpunit -c core --debug --coverage-clover ../build/logs/clover.xml --testsuite unit'. ($groups ? '--group '.$groups: ' ')  .'--verbose profiles/contrib/openscholar');
+            ->exec('..'.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'phpunit -c core --debug --coverage-clover ../build/logs/clover.xml '. ($groups ? '--group '.$groups.' ': ' ')  .'--exclude-group=kernel,functional --verbose profiles/contrib/openscholar');
         return $tasks;
     }
 
@@ -228,13 +228,17 @@ class RoboFile extends \Robo\Tasks
    */
     protected function runKernelTests($groups)
     {
+      $groups = explode(',', $groups);
+      $groups = array_filter($groups, 'trim');  // strip out empty lines
+      $groups[] = 'kernel';
+      $groups = implode(',', $groups);
       $force = true;
       $tasks = [];
       $tasks[] = $this->taskFilesystemStack()
         ->copy('.travis'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'phpunit.xml', 'web'.DIRECTORY_SEPARATOR.'core'.DIRECTORY_SEPARATOR.'phpunit.xml', $force);
       $tasks[] = $this->taskExecStack()
         ->dir('web')
-        ->exec('..'.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'phpunit -c core --debug --coverage-clover ../build/logs/clover.xml --testsuite kernel'. ($groups ? '--group '.$groups: ' ')  .'--verbose profiles/contrib/openscholar');
+        ->exec('..'.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'phpunit -c core --debug --coverage-clover ../build/logs/clover.xml '. ($groups ? '--group ' . $groups . ' ': ' ')  .'--exclude-group=unit,functional --verbose profiles/contrib/openscholar');
       return $tasks;
     }
 
