@@ -216,7 +216,7 @@ class RoboFile extends \Robo\Tasks
             ->copy('.travis'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'phpunit.xml', 'web'.DIRECTORY_SEPARATOR.'core'.DIRECTORY_SEPARATOR.'phpunit.xml', $force);
         $tasks[] = $this->taskExecStack()
             ->dir('web')
-            ->exec('..'.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'phpunit -c core --debug --coverage-clover ../build/logs/clover.xml --testsuite unit'. ($groups ? '--group '.$groups: ' ')  .'--verbose profiles/contrib/openscholar');
+            ->exec('..'.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'phpunit -c core --debug --coverage-clover ../build/logs/clover.xml --coverage-html ./build/logs/html --testsuite unit'. ($groups ? '--group '.$groups: ' ')  .'--verbose profiles/contrib/openscholar');
         return $tasks;
     }
 
