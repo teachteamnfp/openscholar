@@ -29,7 +29,7 @@
     }
   };
 
-  Drupal.behaviors.osWysiwygImagePropertiesDialog = {
+  /*Drupal.behaviors.osWysiwygImagePropertiesDialog = {
     attach: function (ctx) {
       if (CKEDITOR.osWysiwygImagePropertiesDialog == undefined) {
         CKEDITOR.osWysiwygImagePropertiesDialog = true;
@@ -62,9 +62,9 @@
         });
       }
     }
-  }
+  }*/
 
-  function cleanUpDialog(elements) {
+  /*function cleanUpDialog(elements) {
     var splice = [];
     if (!elements) return;
     for (var i = 0, l = elements.length; i < l; i++) {
@@ -87,6 +87,6 @@
       i = splice.pop();
       elements.splice(i, 1);
     }
-  }
+  }*/
 
 })(jQuery);
