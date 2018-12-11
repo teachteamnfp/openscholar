@@ -104,6 +104,10 @@
         "unit-test": [
             "@test-requirements",
             "./vendor/bin/robo job:run-unit-tests"
+        ],
+        "kernel-test": [
+            "@test-requirements",
+            "./vendor/bin/robo job:run-kernel-tests"
         ]
     },
     "extra": {
