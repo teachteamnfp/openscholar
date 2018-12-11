@@ -29,7 +29,7 @@
     }
   };
 
-  /*Drupal.behaviors.osWysiwygImagePropertiesDialog = {
+  Drupal.behaviors.osWysiwygImagePropertiesDialog = {
     attach: function (ctx) {
       if (CKEDITOR.osWysiwygImagePropertiesDialog == undefined) {
         CKEDITOR.osWysiwygImagePropertiesDialog = true;
@@ -41,12 +41,12 @@
           if (dialogName == 'image') {
             var infoTab = dialogDefinition.getContents('info');
             console.log(dialogDefinition);
-            infoTab.remove('txtWidth');
-            infoTab.remove('txtHeight');
-            infoTab.remove('ratioLock');
-            infoTab.remove('cmbAlign');
-            infoTab.remove('htmlPreview');
-            cleanUpDialog(infoTab.elements);
+            //infoTab.remove('txtWidth');
+            //infoTab.remove('txtHeight');
+            //infoTab.remove('ratioLock');
+            //infoTab.remove('cmbAlign');
+            //infoTab.remove('htmlPreview');
+            //cleanUpDialog(infoTab.elements);
             console.log(infoTab.elements);
 
             var advTab = dialogDefinition.getContents('advanced');
@@ -62,7 +62,7 @@
         });
       }
     }
-  }*/
+  }
 
   /*function cleanUpDialog(elements) {
     var splice = [];
