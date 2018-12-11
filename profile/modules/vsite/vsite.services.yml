@@ -4,7 +4,6 @@ services:
     parent: default_plugin_manager
   hierarchical.storage:
     class: Drupal\vsite\Config\HierarchicalStorage
-    public: false
     decorates: config.storage
     decoration_priority: 4
     arguments: ['@hierarchical.storage.inner']
