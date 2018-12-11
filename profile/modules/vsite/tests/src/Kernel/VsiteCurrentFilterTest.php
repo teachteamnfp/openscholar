@@ -2,21 +2,15 @@
 
 namespace Drupal\Tests\vsite\Kernel;
 
-use Drupal\Core\Database\Database;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\group\Entity\Group;
-use Drupal\group\Entity\GroupType;
-use Drupal\group\Entity\GroupTypeInterface;
-use Drupal\group\Plugin\GroupContentEnablerManagerInterface;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
 use Drupal\Tests\user\Traits\UserCreationTrait;
 use Drupal\Tests\views\Kernel\ViewsKernelTestBase;
-use Drupal\views\ResultRow;
 use Drupal\views\Tests\ViewTestData;
 use Drupal\views\Views;
-use Symfony\Component\DependencyInjection\Definition;
+use PHPUnit\Framework\Error\Deprecated;
 
 /**
  * Test the Current Vsite Views Filter.
@@ -89,8 +83,8 @@ class VsiteCurrentFilterTest extends ViewsKernelTestBase {
    * {@inheritdoc}
    */
   protected function setUp($import_test_views = TRUE) {
-    \PHPUnit\Framework\Error\Deprecated::$enabled = false;
-    parent::setUp(false);
+    Deprecated::$enabled = FALSE;
+    parent::setUp(FALSE);
     $this->installSchema('node', 'node_access');
     $this->installEntitySchema('user');
     $this->installEntitySchema('node');
@@ -107,11 +101,10 @@ class VsiteCurrentFilterTest extends ViewsKernelTestBase {
     /** @var \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager */
     $entityTypeManager = $this->container->get('entity_type.manager');
 
-
     $node_type = NodeType::create(['type' => 'page', 'name' => t('Page')]);
     $node_type->save();
 
-    /** @var GroupTypeInterface $group_type */
+    /** @var \Drupal\group\Entity\GroupTypeInterface $group_type */
     $group_type = $entityTypeManager->getStorage('group_type')->load('personal');
 
     // Enable the user_as_content plugin on the default group type.
@@ -137,19 +130,19 @@ class VsiteCurrentFilterTest extends ViewsKernelTestBase {
     // Create the nodes we'll be displaying (or not) in the view.
     $this->ungroupedNode = Node::create([
       'type' => 'page',
-      'title' => 'Ungrouped'
+      'title' => 'Ungrouped',
     ]);
     $this->ungroupedNode->save();
 
     $this->groupedNode = Node::create([
       'type' => 'page',
-      'title' => 'Grouped'
+      'title' => 'Grouped',
     ]);
     $this->groupedNode->save();
 
     $otherNode = Node::create([
       'type' => 'page',
-      'title' => 'OtherGroup'
+      'title' => 'OtherGroup',
     ]);
     $otherNode->save();
 
@@ -180,6 +173,9 @@ class VsiteCurrentFilterTest extends ViewsKernelTestBase {
     $this->container->get('router.builder')->rebuild();
   }
 
+  /**
+   *
+   */
   public function register(ContainerBuilder $container) {
     $purlPathProcessor = $this->createMock('\Drupal\purl\PathProcessor\PurlContextOutboundPathProcessor');
     $container->set('purl.outbound_path_processor', $purlPathProcessor);
@@ -211,25 +207,25 @@ class VsiteCurrentFilterTest extends ViewsKernelTestBase {
   /**
    * Check that all posts appear outside a vsite.
    */
-   public function testOutsideOfVsite() {
-     $results = $this->getViewResults();
+  public function testOutsideOfVsite() {
+    $results = $this->getViewResults();
 
-     $this->assertContains('Grouped', $results);
-     $this->assertContains('Ungrouped', $results);
-     $this->assertContains('OtherGroup', $results);
-   }
+    $this->assertContains('Grouped', $results);
+    $this->assertContains('Ungrouped', $results);
+    $this->assertContains('OtherGroup', $results);
+  }
 
-   /**
-    * Check that only the grouped post shows up in a vsite.
-    */
-   public function testInsideOfVsite() {
-     $this->vsiteContextManager->activateVsite($this->group);
+  /**
+   * Check that only the grouped post shows up in a vsite.
+   */
+  public function testInsideOfVsite() {
+    $this->vsiteContextManager->activateVsite($this->group);
 
-     $results = $this->getViewResults();
+    $results = $this->getViewResults();
 
-     $this->assertContains('Grouped', $results);
-     $this->assertNotContains('Ungrouped', $results, 'View returns Ungrouped when it should not.');
-     $this->assertNotContains('OtherGroup', $results, 'View returns OtherGroup when it should not.');
-   }
+    $this->assertContains('Grouped', $results);
+    $this->assertNotContains('Ungrouped', $results, 'View returns Ungrouped when it should not.');
+    $this->assertNotContains('OtherGroup', $results, 'View returns OtherGroup when it should not.');
+  }
 
 }
