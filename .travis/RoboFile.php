@@ -58,9 +58,9 @@ class RoboFile extends \Robo\Tasks
     {
         return $this->taskExecStack()
             ->stopOnFail()
-            ->exec('vendor/bin/phpcs --config-set installed_paths vendor/drupal/coder/coder_sniffer')
-            ->exec('vendor/bin/phpcs --standard=Drupal profile')
-            ->exec('vendor/bin/phpcs --standard=DrupalPractice profile')
+            ->exec('vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'phpcs --config-set installed_paths vendor'.DIRECTORY_SEPARATOR.'drupal'.DIRECTORY_SEPARATOR.'coder'.DIRECTORY_SEPARATOR.'coder_sniffer')
+            ->exec('vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'phpcs --standard=Drupal --warning-severity=0 profile')
+            ->exec('vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'phpcs --standard=DrupalPractice --warning-severity=0 profile')
             ->run();
     }
 
@@ -73,7 +73,7 @@ class RoboFile extends \Robo\Tasks
     public function jobRunKernelTests($groups = '')
     {
         $collection = $this->collectionBuilder();
-//        $collection->addTask($this->installDrupal());
+        //$collection->addTask($this->installDrupal());
         $collection->addTaskList($this->runKernelTests($groups));
         return $collection->run();
     }
@@ -216,7 +216,7 @@ class RoboFile extends \Robo\Tasks
             ->copy('.travis'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'phpunit.xml', 'web'.DIRECTORY_SEPARATOR.'core'.DIRECTORY_SEPARATOR.'phpunit.xml', $force);
         $tasks[] = $this->taskExecStack()
             ->dir('web')
-            ->exec('..'.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'phpunit -c core --debug --coverage-clover ../build/logs/clover.xml --coverage-html ../build/logs/html --testsuite unit'. ($groups ? '--group '.$groups.' ': ' ')  .'--exclude-group=kernel,functional --verbose profiles/contrib/openscholar');
+            ->exec('..'.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'phpunit -c core --debug --coverage-clover ../build/logs/clover.xml '. ($groups ? '--group '.$groups.' ': ' ')  .'--exclude-group=kernel,functional --verbose profiles/contrib/openscholar');
         return $tasks;
     }
 
@@ -238,7 +238,7 @@ class RoboFile extends \Robo\Tasks
         ->copy('.travis'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'phpunit.xml', 'web'.DIRECTORY_SEPARATOR.'core'.DIRECTORY_SEPARATOR.'phpunit.xml', $force);
       $tasks[] = $this->taskExecStack()
         ->dir('web')
-        ->exec('..'.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'phpunit -c core --debug --coverage-clover ../build/logs/clover.xml --coverage-html ../build/logs/html '. ($groups ? '--group ' . $groups . ' ': ' ')  .'--exclude-group=unit,functional --verbose profiles/contrib/openscholar');
+        ->exec('..'.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'phpunit -c core --debug --coverage-clover ../build/logs/clover.xml '. ($groups ? '--group ' . $groups . ' ': ' ')  .'--exclude-group=unit,functional --verbose profiles/contrib/openscholar');
       return $tasks;
     }
 
