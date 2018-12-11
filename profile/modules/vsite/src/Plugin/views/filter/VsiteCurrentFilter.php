@@ -6,6 +6,8 @@ use Drupal\views\Plugin\views\filter\FilterPluginBase;
 
 /**
  * Filter a View for any content that's part of the current vsite.
+ *
+ * @ViewsFilter("vsite_current_filter")
  */
 class VsiteCurrentFilter extends FilterPluginBase {
 
