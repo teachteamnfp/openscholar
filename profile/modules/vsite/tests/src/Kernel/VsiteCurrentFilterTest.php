@@ -174,7 +174,9 @@ class VsiteCurrentFilterTest extends ViewsKernelTestBase {
   }
 
   /**
+   * {@inheritdoc}
    *
+   * Set a mock for the purl processor so we don't have to install purl.
    */
   public function register(ContainerBuilder $container) {
     $purlPathProcessor = $this->createMock('\Drupal\purl\PathProcessor\PurlContextOutboundPathProcessor');
