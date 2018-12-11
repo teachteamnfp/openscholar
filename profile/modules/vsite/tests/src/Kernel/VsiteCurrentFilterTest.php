@@ -128,6 +128,12 @@ class VsiteCurrentFilterTest extends ViewsKernelTestBase {
     ]);
     $this->group->save();
 
+    $otherGroup = Group::create([
+      'type' => 'personal',
+      'title' => 'Site02',
+    ]);
+    $otherGroup->save();
+
     // Create the nodes we'll be displaying (or not) in the view.
     $this->ungroupedNode = Node::create([
       'type' => 'page',
@@ -141,7 +147,14 @@ class VsiteCurrentFilterTest extends ViewsKernelTestBase {
     ]);
     $this->groupedNode->save();
 
+    $otherNode = Node::create([
+      'type' => 'page',
+      'title' => 'OtherGroup'
+    ]);
+    $otherNode->save();
+
     $this->group->addContent($this->groupedNode, $plugin->getContentPluginId());
+    $otherGroup->addContent($otherNode, $plugin->getContentPluginId());
 
     $this->vsiteContextManager = $this->container->get('vsite.context_manager');
   }
@@ -159,6 +172,8 @@ class VsiteCurrentFilterTest extends ViewsKernelTestBase {
 
     /** @var \Drupal\Core\State\StateInterface $state */
     $state = $this->container->get('state');
+
+    \Drupal::service('plugin.manager.views.filter')->clearCachedDefinitions();
 
     $this->installConfig(['views', 'vsite_module_test']);
 
@@ -180,10 +195,14 @@ class VsiteCurrentFilterTest extends ViewsKernelTestBase {
    */
   protected function getViewResults() {
     $view = Views::getView(reset($this::$testViews));
-    $view->setDisplay();
+    $view->setDisplay('page_1');
 
     if ($view->preview()) {
-      return $view->result;
+      $names = [];
+      foreach ($view->result as $r) {
+        $names[] = $r->_entity->label();
+      }
+      return $names;
     }
 
     return [];
@@ -194,8 +213,23 @@ class VsiteCurrentFilterTest extends ViewsKernelTestBase {
    */
    public function testOutsideOfVsite() {
      $results = $this->getViewResults();
-     $this->assertEquals('Ungrouped', $results[0]->_entity->label());
-     $this->assertEquals('Grouped', $results[1]->_entity->label());
+
+     $this->assertContains('Grouped', $results);
+     $this->assertContains('Ungrouped', $results);
+     $this->assertContains('OtherGroup', $results);
+   }
+
+   /**
+    * Check that only the grouped post shows up in a vsite.
+    */
+   public function testInsideOfVsite() {
+     $this->vsiteContextManager->activateVsite($this->group);
+
+     $results = $this->getViewResults();
+
+     $this->assertContains('Grouped', $results);
+     $this->assertNotContains('Ungrouped', $results, 'View returns Ungrouped when it should not.');
+     $this->assertNotContains('OtherGroup', $results, 'View returns OtherGroup when it should not.');
    }
 
 }
