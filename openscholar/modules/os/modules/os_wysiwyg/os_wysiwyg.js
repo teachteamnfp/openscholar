@@ -41,12 +41,12 @@
           if (dialogName == 'image') {
             var infoTab = dialogDefinition.getContents('info');
             console.log(dialogDefinition);
-            infoTab.remove('txtWidth');
-            infoTab.remove('txtHeight');
-            infoTab.remove('ratioLock');
-            infoTab.remove('cmbAlign');
-            infoTab.remove('htmlPreview');
-            cleanUpDialog(infoTab.elements);
+            //infoTab.remove('txtWidth');
+            //infoTab.remove('txtHeight');
+            //infoTab.remove('ratioLock');
+            //infoTab.remove('cmbAlign');
+            //infoTab.remove('htmlPreview');
+            //cleanUpDialog(infoTab.elements);
             console.log(infoTab.elements);
 
             var advTab = dialogDefinition.getContents('advanced');
@@ -64,7 +64,7 @@
     }
   }
 
-  function cleanUpDialog(elements) {
+  /*function cleanUpDialog(elements) {
     var splice = [];
     if (!elements) return;
     for (var i = 0, l = elements.length; i < l; i++) {
@@ -87,6 +87,6 @@
       i = splice.pop();
       elements.splice(i, 1);
     }
-  }
+  }*/
 
 })(jQuery);
