@@ -12,3 +12,40 @@ function os_classes_field_semester_allowed_values(FieldStorageConfig $definition
 
   return $options;
 }
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function os_classes_form_node_form_alter(
+  &$form,
+  \Drupal\Core\Form\FormStateInterface $form_state,
+  $form_id
+) {
+  switch ($form_id) {
+    case 'node_class_form':
+    case 'node_class_edit_form':
+      $vsiteContext = \Drupal::service('vsite.context_manager');
+      if ($group = $vsiteContext->getActiveVsite ()) {
+        $form['field_year_offered']['widget'][0]['value']['#autocomplete_route_name'] = 'os_classes.autocomplete_year_offered';
+        $form['field_year_offered']['widget'][0]['value']['#autocomplete_route_parameters'] = [
+          'vsite' => $group->id(),
+        ];
+        $form['#validate'][] = 'os_classes_node_class_form_validate';
+      }
+      break;
+  }
+}
+
+function os_classes_node_class_form_validate(&$form,
+  \Drupal\Core\Form\FormStateInterface $form_state) {
+  $field_year_offered = $form_state->getValue('field_year_offered');
+  if (empty($field_year_offered[0]['value'])) {
+    return;
+  }
+  $yearValue = (int)$field_year_offered[0]['value'];
+  $requestTime = \Drupal::time()->getRequestTime();
+  $currentYear = \Drupal::service('date.formatter')->format($requestTime, 'custom', 'Y');
+  if ($yearValue < 1970 || $yearValue > $currentYear) {
+    $form_state->setError($field_year_offered, t('Year offered value must be between 1970 and current year.'));
+  }
+}

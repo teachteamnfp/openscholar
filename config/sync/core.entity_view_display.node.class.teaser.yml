@@ -28,4 +28,8 @@ content:
     third_party_settings: {  }
     region: content
 hidden:
+  field_class_link: true
+  field_class_materials: true
+  field_semester: true
+  field_year_offered: true
   langcode: true

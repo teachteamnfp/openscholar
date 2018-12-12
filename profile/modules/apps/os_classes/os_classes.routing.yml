@@ -1,0 +1,7 @@
+os_classes.autocomplete_year_offered:
+  path: '/os-classes-autocomplete/{vsite}'
+  defaults:
+    _controller: '\Drupal\os_classes\Controller\AutocompleteController::handleAutocompleteYearOffered'
+    _format: json
+  requirements:
+    _permission: 'access content'
