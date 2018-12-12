@@ -70,5 +70,8 @@
         <directory suffix="Interface.php">../*</directory>
       </exclude>
     </whitelist>
+    <blacklist>
+      <directory>*/tests</directory>
+    </blacklist>
   </filter>
 </phpunit>
