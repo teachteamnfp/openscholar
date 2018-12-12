@@ -49,3 +49,17 @@ function os_classes_node_class_form_validate(&$form,
     $form_state->setError($field_year_offered, t('Year offered value must be between 1970 and current year.'));
   }
 }
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function os_classes_node_view(
+  array &$build,
+  \Drupal\Core\Entity\EntityInterface $entity,
+  \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display,
+  $view_mode
+) {
+  if ($entity->bundle() == 'class') {
+    $build['#attached']['library'][] = 'os_classes/os-classes-theme';
+  }
+}

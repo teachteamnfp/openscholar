@@ -18,13 +18,13 @@ content:
     weight: 1
     label: above
     settings:
-      view_mode: default
+      view_mode: teaser
       link: false
     third_party_settings: {  }
     region: content
   field_body:
     weight: 0
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
