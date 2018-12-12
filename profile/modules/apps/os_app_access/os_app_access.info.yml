@@ -1,0 +1,4 @@
+name: OS App Access
+description: 'Allows individual apps to be disabled or made private without disabling the whole module'
+type: module
+core: 8.x

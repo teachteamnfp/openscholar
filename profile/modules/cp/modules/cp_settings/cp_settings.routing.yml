@@ -1,0 +1,6 @@
+cp.settings.group:
+  path: 'cp/settings/{setting_group}'
+  defaults:
+    _form: '\Drupal\cp_settings\Form\CpSettingsForm'
+  requirements:
+    _custom_access: '\Drupal\cp_settings\Form\CpSettingsForm::access'
