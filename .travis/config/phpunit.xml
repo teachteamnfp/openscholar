@@ -68,7 +68,7 @@
       <exclude>
         <directory>../profiles/contrib/openscholar/*/*/tests</directory>
         <directory suffix="Interface.php">../*</directory>
-        <directory>*/tests</directory>
+        <directory>../*/tests</directory>
       </exclude>
     </whitelist>
   </filter>
