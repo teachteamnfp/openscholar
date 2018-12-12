@@ -1,3 +1,4 @@
+uuid: null
 langcode: en
 status: true
 dependencies:
@@ -5,6 +6,8 @@ dependencies:
     - gnode
     - group
     - node
+_core:
+  default_config_hash: ZSKjHkl45YTbsYHiq_H7py04GDuX95t-GOHAAb8ZFbk
 id: group_nodes
 label: 'Group nodes'
 module: gnode
@@ -484,6 +487,8 @@ display:
           text: 'View relation'
           entity_type: group_content
           plugin_id: entity_link
+          output_url_as_text: false
+          absolute: false
         edit_group_content:
           id: edit_group_content
           table: group_content
@@ -945,5 +950,3 @@ display:
         - url.query_args
         - 'user.node_grants:view'
       tags: {  }
-_core:
-  default_config_hash: ZSKjHkl45YTbsYHiq_H7py04GDuX95t-GOHAAb8ZFbk
