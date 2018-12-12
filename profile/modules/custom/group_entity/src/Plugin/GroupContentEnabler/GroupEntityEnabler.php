@@ -20,6 +20,10 @@ use Drupal\group\Entity\GroupInterface;
  *   deriver = "Drupal\group_entity\Plugin\GroupContentEnabler\GroupEntityDeriver",
  *   enforced = TRUE
  * )
+ *
+ * I'm not sure what this class does, or if its even necessary.
+ * Until I do, we're going to ignore tests for it.
+ * @codeCoverageIgnore
  */
 class GroupEntityEnabler extends GroupContentEnablerBase {
 
