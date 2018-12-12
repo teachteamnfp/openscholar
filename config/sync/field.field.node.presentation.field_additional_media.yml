@@ -4,7 +4,12 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_additional_media
-    - media.type.downloadable
+    - media.type.audio
+    - media.type.document
+    - media.type.executable
+    - media.type.image
+    - media.type.presentation_materials
+    - media.type.video
     - node.type.presentation
 id: node.presentation.field_additional_media
 field_name: field_additional_media
@@ -20,9 +25,14 @@ settings:
   handler: 'default:media'
   handler_settings:
     target_bundles:
-      downloadable: downloadable
+      document: document
+      executable: executable
+      image: image
+      presentation_materials: presentation_materials
+      video: video
+      audio: audio
     sort:
       field: _none
     auto_create: false
-    auto_create_bundle: ''
+    auto_create_bundle: document
 field_type: entity_reference
