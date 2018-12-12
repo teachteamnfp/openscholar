@@ -105,7 +105,6 @@ class ScriptHandler {
     $io = $event->getIO();
     $fileList = array(
       'openscholar.info.yml',
-      'openscholar.install',
       'openscholar.profile',
       'profile'.DIRECTORY_SEPARATOR.'config' => 'config',
       'profile'.DIRECTORY_SEPARATOR.'modules' => 'modules'
