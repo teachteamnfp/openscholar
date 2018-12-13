@@ -89,6 +89,7 @@ class RoboFile extends \Robo\Tasks
     public function jobRunFunctionalTests($groups = '')
     {
         $collection = $this->collectionBuilder();
+        $collection->addTaskList($this->buildEnvironment());
         $collection->addTaskList($this->runFunctionalTests($groups));
         return $collection->run();
     }
