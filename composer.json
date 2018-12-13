@@ -108,6 +108,10 @@
         "kernel-test": [
             "@test-requirements",
             "./vendor/bin/robo job:run-kernel-tests"
+        ],
+        "functional-test": [
+            "@test-requirements",
+            "./vendor/bin/robo job:run-functional-tests"
         ]
     },
     "extra": {
