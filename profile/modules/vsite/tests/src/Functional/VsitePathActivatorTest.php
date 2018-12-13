@@ -14,26 +14,22 @@ use Drupal\Tests\group\Functional\GroupBrowserTestBase;
 class VsitePathActivatorTest extends GroupBrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var string[]
    */
-  public static $modules = [
-    'purl',
-  ];
+  protected $profile = 'openscholar';
 
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
-    parent::setUp();
-    /** @var \Drupal\Core\State\StateInterface $state */
-    $state = $this->container->get('state');
-    $state->set('system.maintenance_mode', 0);
-    $state->resetCache();
-    // TODO: Remove this once debugging is completed.
-    // $this->htmlOutputEnabled = TRUE;
-    // $this->htmlOutput();
-    $this->drupalLogin($this->groupCreator);
-  }
+  public static $modules = [
+    'node',
+    'group',
+    'purl',
+    'group_purl',
+    'vsite',
+  ];
 
   /**
    * Tests modifier matched event.
