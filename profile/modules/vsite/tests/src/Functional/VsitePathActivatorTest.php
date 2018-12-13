@@ -14,6 +14,13 @@ use Drupal\Tests\group\Functional\GroupBrowserTestBase;
 class VsitePathActivatorTest extends GroupBrowserTestBase {
 
   /**
+   * Modules to enable.
+   *
+   * @var string[]
+   */
+  protected $profile = 'openscholar';
+
+  /**
    * {@inheritdoc}
    */
   public static $modules = [
