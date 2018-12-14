@@ -8,6 +8,7 @@ use weitzman\DrupalTestTraits\ExistingSiteBase;
  * Tests VsitePathActivator.
  *
  * @group vsite
+ * @group functional
  * @coversDefaultClass \Drupal\vsite\Plugin\VsitePathActivator
  */
 class VsitePathActivatorTest extends ExistingSiteBase {
