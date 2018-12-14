@@ -2,7 +2,7 @@
 
 namespace Drupal\Tests\vsite\Functional;
 
-use Drupal\Tests\group\Functional\GroupBrowserTestBase;
+use weitzman\DrupalTestTraits\ExistingSiteBase;
 
 /**
  * Tests VsitePathActivator.
@@ -11,25 +11,7 @@ use Drupal\Tests\group\Functional\GroupBrowserTestBase;
  * @group vsite
  * @coversDefaultClass \Drupal\vsite\Plugin\VsitePathActivator
  */
-class VsitePathActivatorTest extends GroupBrowserTestBase {
-
-  /**
-   * Modules to enable.
-   *
-   * @var string[]
-   */
-  protected $profile = 'openscholar';
-
-  /**
-   * {@inheritdoc}
-   */
-  public static $modules = [
-    'node',
-    'group',
-    'purl',
-    'group_purl',
-    'vsite',
-  ];
+class VsitePathActivatorTest extends ExistingSiteBase {
 
   /**
    * Tests modifier matched event.
