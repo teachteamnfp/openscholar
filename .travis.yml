@@ -32,7 +32,6 @@ before_script:
   - cp .travis/RoboFile.php .
 
 script:
-  - chown -R www-data:www-data .
   - bash -e .travis/keep-travis-running.sh &
   - vendor/bin/robo $JOB
 
