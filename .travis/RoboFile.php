@@ -274,12 +274,12 @@ class RoboFile extends \Robo\Tasks
         $groups = implode(',', $groups);
         $tasks = [];
         $tasks[] = $this->taskFilesystemStack()
-            ->copy('.travis/config/phpunit.xml', 'web/core/phpunit.xml', TRUE);
+            ->copy('.travis/config/phpunit.xml', 'web/core/phpunit.xml', TRUE)
+            ->copy('vendor/weitzman/drupal-test-traits/src/bootstrap.php', 'web/core/tests/bootstrap.php', TRUE);
         $tasks[] = $this->taskExecStack()
             ->dir('web')
             ->exec('../vendor/bin/phpunit '.
               '-c core '.
-              '--bootstrap ../vendor/weitzman/drupal-test-traits/src/bootstrap.php '.
               '--debug '.
               '--coverage-clover ../build/logs/clover.xml '.
               ($groups ? '--group ' . $groups . ' ': ' ')  .
