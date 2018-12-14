@@ -199,7 +199,6 @@ class RoboFile extends \Robo\Tasks
             ->option('-vvv')
             ->option('yes')
             ->option('db-url', static::DB_URL, '=')
-            ->option('sites-subdir', 'autotest')
             ->option('existing-config');
         return $task;
     }
