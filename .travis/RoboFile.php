@@ -283,7 +283,7 @@ class RoboFile extends \Robo\Tasks
               '--debug '.
               '--coverage-clover ../build/logs/clover.xml '.
               ($groups ? '--group ' . $groups . ' ': ' ')  .
-              '--exclude-group=unit,kernel'.
+              '--exclude-group=unit,kernel '.
               '--verbose profiles/contrib/openscholar');
         return $tasks;
     }
