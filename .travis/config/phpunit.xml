@@ -55,7 +55,7 @@
       <file>./tests/TestSuites/KernelTestSuite.php</file>
     </testsuite>
     <testsuite name="existing-site">
-      <directory>./web/profiles/contrib/openscholar/modules/*/tests/src/ExistingSite</directory>
+      <directory>../../web/profiles/contrib/openscholar/modules/*/tests/src/ExistingSite</directory>
     </testsuite>
   </testsuites>
   <listeners>
@@ -68,10 +68,10 @@
   <!-- Filter for coverage reports. -->
   <filter>
     <whitelist processUncoveredFilesFromWhitelist="true">
-      <directory>./web/profiles/contrib/openscholar</directory>
+      <directory>../profiles/contrib/openscholar</directory>
       <!-- By definition test classes have no tests. -->
       <exclude>
-        <directory>./web/profiles/contrib/openscholar/*/*/tests</directory>
+        <directory>../profiles/contrib/openscholar/*/*/tests</directory>
         <directory suffix="Interface.php">../*</directory>
         <directory suffix="Test.php">../*</directory>
       </exclude>
