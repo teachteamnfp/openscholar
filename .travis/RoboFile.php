@@ -270,7 +270,6 @@ class RoboFile extends \Robo\Tasks
     {
         $groups = explode(',', $groups);
         $groups = array_filter($groups, 'trim');
-        $groups[] = 'functional';
         $groups = implode(',', $groups);
         $tasks = [];
         $tasks[] = $this->taskExecStack()
@@ -280,7 +279,7 @@ class RoboFile extends \Robo\Tasks
             '--debug '.
             '--coverage-clover ../build/logs/clover.xml '.
             ($groups ? '--group ' . $groups . ' ': ' ')  .
-            '--exclude-group=unit,kernel '.
+            '--testsuite=existing-site '.
             '--verbose web/profiles/contrib/openscholar');
         return $tasks;
     }

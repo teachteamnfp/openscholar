@@ -29,7 +29,7 @@
     <!-- Example SIMPLETEST_DB value: mysql://username:password@localhost/databasename#table_prefix -->
     <env name="SIMPLETEST_DB" value="sqlite://tmp/site.sqlite"/>
     <!-- Example BROWSERTEST_OUTPUT_DIRECTORY value: /path/to/webroot/sites/simpletest/browser_output -->
-    <env name="BROWSERTEST_OUTPUT_DIRECTORY" value="/var/www/html/web/sites/simpletest"/>
+    <env name="BROWSERTEST_OUTPUT_DIRECTORY" value=""/>
     <env name="BROWSERTEST_OUTPUT_FILE" value="/var/www/html/web/sites/simpletest/simpletest-output.html"/>
     <!-- To disable deprecation testing uncomment the next line. -->
     <env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled"/>
@@ -53,6 +53,9 @@
     <testsuite name="nonfunctional">
       <file>./tests/TestSuites/UnitTestSuite.php</file>
       <file>./tests/TestSuites/KernelTestSuite.php</file>
+    </testsuite>
+    <testsuite name="existing-site">
+      <directory>../../web/profiles/contrib/openscholar/modules/*/tests/src/ExistingSite</directory>
     </testsuite>
   </testsuites>
   <listeners>

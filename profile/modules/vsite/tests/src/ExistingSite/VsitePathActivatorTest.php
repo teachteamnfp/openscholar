@@ -1,13 +1,12 @@
 <?php
 
-namespace Drupal\Tests\vsite\Functional;
+namespace Drupal\Tests\vsite\ExistingSite;
 
 use weitzman\DrupalTestTraits\ExistingSiteBase;
 
 /**
  * Tests VsitePathActivator.
  *
- * @group functional
  * @group vsite
  * @coversDefaultClass \Drupal\vsite\Plugin\VsitePathActivator
  */
