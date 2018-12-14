@@ -14,15 +14,49 @@ use weitzman\DrupalTestTraits\ExistingSiteBase;
 class VsitePathActivatorTest extends ExistingSiteBase {
 
   /**
+   * The entity type manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setUp() {
+    parent::setUp();
+    $this->entityTypeManager = $this->container->get('entity_type.manager');
+  }
+
+  /**
+   * Creates a group.
+   *
+   * @param array $values
+   *   (optional) The values used to create the entity.
+   *
+   * @return \Drupal\group\Entity\GroupInterface
+   *   The created group entity.
+   */
+  protected function createGroup(array $values = []) {
+    $group = $this->entityTypeManager->getStorage('group')->create($values + [
+      'type' => 'default',
+      'label' => $this->randomMachineName(),
+    ]);
+    $group->enforceIsNew();
+    $group->save();
+    return $group;
+  }
+
+  /**
    * Tests modifier matched event.
    */
   public function testModifierMatched() {
-//    $group = $this->createGroup([
-//      'type' => 'personal',
-//      'path' => [
-//        'alias' => 'test-alias',
-//      ],
-//    ]);
+    $this->createGroup([
+      'type' => 'personal',
+      'path' => [
+        'alias' => 'test-alias',
+      ],
+    ]);
 
     $this->drupalGet('<front>');
   }
