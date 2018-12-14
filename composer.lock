@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fcddee62aa08f516b157fc3845839701",
+    "content-hash": "ba3954f82a5bbae9bc410ffd6f23bec9",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -3096,7 +3096,7 @@
                     "merge-extra": false
                 },
                 "patches_applied": {
-                    "Make sure TestSitePath exist before creating .htkey": "https://www.drupal.org/files/issues/2246725-24.patch"
+                    "Make sure TestSitePath exist before creating .htkey": "https://www.drupal.org/files/issues/2018-11-30/2246725-34.patch"
                 }
             },
             "autoload": {

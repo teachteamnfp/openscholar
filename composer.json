@@ -132,7 +132,7 @@
         },
         "patches": {
             "drupal/core": {
-                "Make sure TestSitePath exist before creating .htkey": "https://www.drupal.org/files/issues/2246725-24.patch"
+                "Make sure TestSitePath exist before creating .htkey": "https://www.drupal.org/files/issues/2018-11-30/2246725-34.patch"
             }
         }
     }
