@@ -270,17 +270,19 @@ class RoboFile extends \Robo\Tasks
     {
         $groups = explode(',', $groups);
         $groups = array_filter($groups, 'trim');
+        $groups[] = 'functional';
         $groups = implode(',', $groups);
         $tasks = [];
         $tasks[] = $this->taskExecStack()
-          ->exec('vendor/bin/phpunit '.
-            '-c .travis/config/phpunit.xml '.
-            '--bootstrap vendor/weitzman/drupal-test-traits/src/bootstrap.php '.
+          ->dir('web')
+          ->exec('../vendor/bin/phpunit '.
+            '-c ../.travis/config/phpunit.xml '.
+            '--bootstrap ../vendor/weitzman/drupal-test-traits/src/bootstrap.php '.
             '--debug '.
             '--coverage-clover ../build/logs/clover.xml '.
             ($groups ? '--group ' . $groups . ' ': ' ')  .
             '--exclude-group=unit,kernel'.
-            '--verbose web/profiles/contrib/openscholar');
+            '--verbose profiles/contrib/openscholar');
         return $tasks;
     }
 
