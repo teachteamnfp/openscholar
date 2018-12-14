@@ -54,11 +54,12 @@ class VsitePathActivatorTest extends ExistingSiteBase {
     $this->createGroup([
       'type' => 'personal',
       'path' => [
-        'alias' => 'test-alias',
+        'alias' => '/test-alias',
       ],
     ]);
 
-    $this->drupalGet('<front>');
+    $this->drupalGet('/test-alias');
+    $this->assertSession()->statusCodeEquals(200);
   }
 
 }
