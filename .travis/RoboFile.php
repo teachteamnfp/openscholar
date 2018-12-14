@@ -276,8 +276,7 @@ class RoboFile extends \Robo\Tasks
         $tasks[] = $this->taskFilesystemStack()
             ->copy('.travis/config/phpunit.xml', 'web/core/phpunit.xml', TRUE)
             ->copy('.travis/config/bootstrap.php', 'web/core/tests/bootstrap.php', TRUE)
-            ->mkdir('web/sites/simpletest')
-            ->chown('.', 'www-data', true);
+            ->mkdir('web/sites/simpletest');
         $tasks[] = $this->taskExecStack()
             ->dir('web')
             ->exec('../vendor/bin/phpunit '.
