@@ -155,7 +155,6 @@ class RoboFile extends \Robo\Tasks
         $tasks[] = $this->taskExec('docker-compose up -d');
         $tasks[] = $this->taskExec('docker-compose exec php mkdir build');
         $tasks[] = $this->taskExec('docker-compose exec php chmod 777 build');
-        $tasks[] = $this->taskExec('docker-compose exec php chown -R www-data:www-data .');
         return $tasks;
     }
 
