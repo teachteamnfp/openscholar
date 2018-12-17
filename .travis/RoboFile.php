@@ -196,15 +196,7 @@ class RoboFile extends \Robo\Tasks
      */
     protected function installDrupal()
     {
-        return $this->taskDockerRun('php')
-            ->exec('./vendor/bin/drush ' .
-            'site-install ' .
-            'openscholar ' .
-            '-vvv' .
-            '-y ' .
-            '--db-url=' . static::DB_URL . ' ' .
-            '--existing-config')
-            ->run();
+        return $this->taskExec('docker-compose exec php ./vendor/bin/drush site-install openscholar -vvv -y --db-url=' . static::DB_URL . ' --existing-config');
     }
 
     /**
@@ -281,16 +273,15 @@ class RoboFile extends \Robo\Tasks
             ->copy('.travis/config/phpunit.xml', 'web/core/phpunit.xml', TRUE)
             ->copy('.travis/config/bootstrap.php', 'web/core/tests/bootstrap.php', TRUE)
             ->mkdir('web/sites/simpletest');
-        $tasks[] = $this->taskDockerRun('php')
+        $tasks[] = $this->taskExecStack()
             ->dir('web')
-            ->exec('../vendor/bin/phpunit '.
+            ->exec('docker-compose exec php ../vendor/bin/phpunit ' .
               '-c core '.
               '--debug '.
               '--coverage-clover ../build/logs/clover.xml '.
               ($groups ? '--group ' . $groups . ' ': ' ')  .
               '--exclude-group=unit,kernel '.
-              '--verbose profiles/contrib/openscholar')
-            ->run();
+              '--verbose profiles/contrib/openscholar');
         return $tasks;
     }
 
