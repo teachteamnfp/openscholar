@@ -197,7 +197,7 @@ class RoboFile extends \Robo\Tasks
      */
     protected function installDrupal()
     {
-        return $this->taskExec('docker-compose exec php ./vendor/bin/drush site-install openscholar -vvv -y --db-url=' . static::DB_URL . ' --existing-config');
+        return $this->taskExec('docker-compose exec php ./vendor/bin/drush site-install standard -vvv -y --db-url=' . static::DB_URL . ' --existing-config');
     }
 
     /**
