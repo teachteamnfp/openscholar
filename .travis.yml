@@ -32,7 +32,6 @@ before_script:
   - cp .travis/RoboFile.php .
 
 script:
-  - bash -e .travis/keep-travis-running.sh &
   - vendor/bin/robo $JOB
 
 after_success:
