@@ -17,7 +17,7 @@ class RoboFile extends \Robo\Tasks
     /**
      * The database URL.
      */
-    const DB_URL = 'sqlite://sites/default/files/.ht.sqlite';
+    const DB_URL = 'sqlite://sites/autotest/files/.ht.sqlite';
 
     /**
      * The website's URL.
@@ -153,9 +153,9 @@ class RoboFile extends \Robo\Tasks
 
         $tasks[] = $this->taskExec('docker-compose pull --parallel');
         $tasks[] = $this->taskExec('docker-compose up -d');
-        $tasks[] = $this->taskExec('docker-compose exec php mkdir -p build sites/default/files');
+        $tasks[] = $this->taskExec('docker-compose exec php mkdir -p build web/sites/autotest/files');
         $tasks[] = $this->taskExec('docker-compose exec php chmod 777 build');
-        $tasks[] = $this->taskExec('docker-compose exec php chmod 777 sites/default/files');
+        $tasks[] = $this->taskExec('docker-compose exec php chmod 777 web/sites/autotest/files');
         return $tasks;
     }
 
@@ -197,7 +197,7 @@ class RoboFile extends \Robo\Tasks
      */
     protected function installDrupal()
     {
-        return $this->taskExec('docker-compose exec php ./vendor/bin/drush site-install openscholar -vvv -y --db-url=' . static::DB_URL . ' --existing-config');
+        return $this->taskExec('docker-compose exec php ./vendor/bin/drush site-install openscholar -vvv -y --db-url=' . static::DB_URL . ' --sites-subdir=autotest --existing-config');
     }
 
     /**
