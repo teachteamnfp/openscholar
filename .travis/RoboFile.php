@@ -274,13 +274,13 @@ class RoboFile extends \Robo\Tasks
             ->copy('.travis/config/bootstrap.php', 'web/core/tests/bootstrap.php', TRUE)
             ->mkdir('web/sites/simpletest');
         $tasks[] = $this->taskExecStack()
-            ->exec('docker-compose exec php cd web && ../vendor/bin/phpunit ' .
+            ->exec('docker-compose exec php "cd web && ../vendor/bin/phpunit ' .
               '-c core '.
               '--debug '.
               '--coverage-clover ../build/logs/clover.xml '.
               ($groups ? '--group ' . $groups . ' ': ' ')  .
               '--exclude-group=unit,kernel '.
-              '--verbose profiles/contrib/openscholar');
+              '--verbose profiles/contrib/openscholar"');
         return $tasks;
     }
 
