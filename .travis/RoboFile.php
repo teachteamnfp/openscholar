@@ -196,12 +196,7 @@ class RoboFile extends \Robo\Tasks
      */
     protected function installDrupal()
     {
-        $task = $this->drush()
-            ->args('site-install', 'openscholar')
-            ->option('-vvv')
-            ->option('yes')
-            ->option('db-url', static::DB_URL, '=')
-            ->option('existing-config');
+        $task = $this->taskExec('docker-compose exec php ./vendor/bin/drush site-install openscholar -vvv -y --db-url=' . static::DB_URL . '--existing-config');
         return $task;
     }
 
@@ -279,7 +274,7 @@ class RoboFile extends \Robo\Tasks
             ->copy('.travis/config/phpunit.xml', 'web/core/phpunit.xml', TRUE)
             ->copy('.travis/config/bootstrap.php', 'web/core/tests/bootstrap.php', TRUE)
             ->mkdir('web/sites/simpletest');
-        $tasks[] = $this->taskExecStack()
+        $tasks[] = $this->taskDockerRun('php')
             ->dir('web')
             ->exec('../vendor/bin/phpunit '.
               '-c core '.
