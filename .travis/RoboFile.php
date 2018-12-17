@@ -153,10 +153,10 @@ class RoboFile extends \Robo\Tasks
 
         $tasks[] = $this->taskExec('docker-compose pull --parallel');
         $tasks[] = $this->taskExec('docker-compose up -d');
-        $tasks[] = $this->taskExec('docker-compose exec php mkdir -p build sites/default/files');
+        $tasks[] = $this->taskExec('docker-compose exec php mkdir -p build web/sites/default/files');
         $tasks[] = $this->taskExec('docker-compose exec php chmod 777 build');
-        $tasks[] = $this->taskExec('docker-compose exec php chmod 777 sites/default/files');
-        $tasks[] = $this->taskExec('docker-compose exec php chmod u+w sites/default/settings.php');
+        $tasks[] = $this->taskExec('docker-compose exec php chmod 777 web/sites/default/files');
+        $tasks[] = $this->taskExec('docker-compose exec php chmod u+w web/sites/default/settings.php');
         return $tasks;
     }
 
