@@ -10,7 +10,7 @@
 function os_slideshow_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'node-slideshow_slide-field_description'
+  // Exported field_instance: 'node-slideshow_slide-field_description'.
   $field_instances['node-slideshow_slide-field_description'] = array(
     'bundle' => 'slideshow_slide',
     'default_value' => NULL,
@@ -80,7 +80,7 @@ function os_slideshow_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-slideshow_slide-field_headline'
+  // Exported field_instance: 'node-slideshow_slide-field_headline'.
   $field_instances['node-slideshow_slide-field_headline'] = array(
     'bundle' => 'slideshow_slide',
     'default_value' => NULL,
@@ -150,7 +150,7 @@ function os_slideshow_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-slideshow_slide-field_image'
+  // Exported field_instance: 'node-slideshow_slide-field_image'.
   $field_instances['node-slideshow_slide-field_image'] = array(
     'bundle' => 'slideshow_slide',
     'deleted' => 0,
@@ -224,13 +224,13 @@ function os_slideshow_field_default_field_instances() {
       'settings' => array(
         'collapsible' => 2,
         'croparea' => '500x500',
-        'custom_ratio' => '',
-        'enforce_minimum' => 1,
-        'enforce_ratio' => 1,
+        'custom_ratio' => '16x9',
+        'enforce_minimum' => 0,
+        'enforce_ratio' => 0,
         'gif_processing' => 'convert',
         'preview_image_style' => 'thumbnail',
         'progress_indicator' => 'throbber',
-        'resolution' => '978x312',
+        'resolution' => '',
         'select_maximum_area' => 1,
         'validate_resolution' => 0,
       ),
@@ -239,7 +239,7 @@ function os_slideshow_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-slideshow_slide-field_link'
+  // Exported field_instance: 'node-slideshow_slide-field_link'.
   $field_instances['node-slideshow_slide-field_link'] = array(
     'bundle' => 'slideshow_slide',
     'default_value' => NULL,
@@ -323,7 +323,7 @@ function os_slideshow_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-slideshow_slide-field_slideshow_alt_text'
+  // Exported field_instance: 'node-slideshow_slide-field_slideshow_alt_text'.
   $field_instances['node-slideshow_slide-field_slideshow_alt_text'] = array(
     'bundle' => 'slideshow_slide',
     'default_value' => NULL,
@@ -393,7 +393,7 @@ function os_slideshow_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-slideshow_slide-field_slideshow_title_text'
+  // Exported field_instance: 'node-slideshow_slide-field_slideshow_title_text'.
   $field_instances['node-slideshow_slide-field_slideshow_title_text'] = array(
     'bundle' => 'slideshow_slide',
     'default_value' => NULL,
