@@ -275,7 +275,7 @@ class RoboFile extends \Robo\Tasks
             ->mkdir('web/sites/simpletest');
         $tasks[] = $this->taskExecStack()
             ->dir('web')
-            ->exec('docker-compose exec php ../vendor/bin/phpunit ' .
+            ->exec('docker-compose exec php sudo ../vendor/bin/phpunit ' .
               '-c core '.
               '--debug '.
               '--coverage-clover ../build/logs/clover.xml '.
