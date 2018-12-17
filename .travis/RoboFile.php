@@ -17,7 +17,7 @@ class RoboFile extends \Robo\Tasks
     /**
      * The database URL.
      */
-    const DB_URL = 'sqlite://tmp/site.sqlite';
+    const DB_URL = 'sqlite://sites/default/files/.ht.sqlite';
 
     /**
      * The website's URL.
@@ -153,8 +153,9 @@ class RoboFile extends \Robo\Tasks
 
         $tasks[] = $this->taskExec('docker-compose pull --parallel');
         $tasks[] = $this->taskExec('docker-compose up -d');
-        $tasks[] = $this->taskExec('docker-compose exec php mkdir build');
+        $tasks[] = $this->taskExec('docker-compose exec php mkdir -p build sites/default/files');
         $tasks[] = $this->taskExec('docker-compose exec php chmod 777 build');
+        $tasks[] = $this->taskExec('docker-compose exec php chmod 777 sites/default/files');
         return $tasks;
     }
 
