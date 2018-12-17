@@ -17,7 +17,7 @@ class RoboFile extends \Robo\Tasks
     /**
      * The database URL.
      */
-    const DB_URL = 'sqlite://sites/autotest/files/.ht.sqlite';
+    const DB_URL = 'sqlite://sites/default/files/.ht.sqlite';
 
     /**
      * The website's URL.
@@ -194,7 +194,7 @@ class RoboFile extends \Robo\Tasks
      */
     protected function installDrupal()
     {
-        return $this->taskExec('docker-compose exec php sudo ./vendor/bin/drush site-install openscholar -vvv -y --db-url=' . static::DB_URL . ' --sites-subdir=autotest --existing-config');
+        return $this->taskExec('docker-compose exec php sudo ./vendor/bin/drush site-install openscholar -vvv -y --db-url=' . static::DB_URL . ' --existing-config');
     }
 
     /**
@@ -273,7 +273,7 @@ class RoboFile extends \Robo\Tasks
             ->mkdir('web/sites/simpletest');
         $tasks[] = $this->taskExecStack()
             ->exec('docker-compose exec -T php ./vendor/bin/drush st')
-            ->exec('docker-compose exec -T php sudo ./vendor/bin/phpunit ' .
+            ->exec('docker-compose exec -T php ./vendor/bin/phpunit ' .
               '-c web/core '.
               '--debug '.
               '--coverage-clover build/logs/clover.xml '.
