@@ -22,6 +22,8 @@ class EndNoteXMLParser {
   private $nids;
   private $dups;
   private $unmapped;
+  private $currentElement;
+  private $elements;
 
   function parse($file, $terms, $batch, $session_id) {
     $this->terms = $terms;
@@ -80,6 +82,10 @@ class EndNoteXMLParser {
   }
 
   function endnote8_startElement($parser, $name, $attrs) {
+    if ($name != 'style') {
+      $this->elements[] = $name;
+      $this->currentElement = $name;
+    }
     switch ($name) {
       case 'record' :
         $this->node = new stdClass();
@@ -242,6 +248,9 @@ class EndNoteXMLParser {
       default :
         $this->element = '';
     }
+    if ($name != 'style') {
+      array_pop($this->elements);
+    }
 
 
   }
@@ -291,7 +300,10 @@ class EndNoteXMLParser {
           break;
         default:
           if ($field = $this->field_map(trim($this->element))) {
-            $this->node->$field .= $data;
+            $parent = $this->getParent();
+            if (!in_array($parent, ['periodical', 'alt-periodical'])) {
+              $this->node->$field .= $data;
+            }
           }
           else {
             if (!in_array($this->element, $this->unmapped)) {
@@ -323,8 +335,8 @@ class EndNoteXMLParser {
       case 'SECONDARY_AUTHOR':
       case 'TERTIARY_AUTHOR':
       case 'SUBSIDIARY_AUTHOR':
-          $this->contributors[$this->contrib_count]['name'] = '';
-          $this->element = $name;
+        $this->contributors[$this->contrib_count]['name'] = '';
+        $this->element = $name;
         break;
       case 'KEYWORDS':
         $this->keyword_count = 0;
@@ -425,6 +437,12 @@ class EndNoteXMLParser {
       $fmap = biblio_get_map('field_map', $this->format);
     }
     return (!empty($fmap[$enfield])) ? $fmap[$enfield] : '';
+  }
+
+  function getParent() {
+    $elements = $this->elements;
+    end($elements);
+    return prev($elements);
   }
 
   function type_map($entype) {
