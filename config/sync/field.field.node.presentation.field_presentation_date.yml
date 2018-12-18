@@ -1,0 +1,21 @@
+uuid: 7ca99e5f-7a3d-4343-b7d2-73d5da2e18ee
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_presentation_date
+    - node.type.presentation
+  module:
+    - datetime
+id: node.presentation.field_presentation_date
+field_name: field_presentation_date
+entity_type: node
+bundle: presentation
+label: Date
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime
