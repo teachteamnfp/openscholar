@@ -1798,3 +1798,10 @@ function os_publications_update_7058() {
     ->execute();
 
 }
+
+/**
+ * Fix sorting when ordering by type.
+ */
+function os_publications_update_7059() {
+  features_revert(array('os_publications' => array('views_view')));
+}

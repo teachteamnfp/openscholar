@@ -490,8 +490,23 @@ if(module_exists(\'apachesolr_search\')){
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['row_plugin'] = 'node';
   $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['sorts'] = FALSE;
+  /* Sort criterion: Publication: Year of Publication */
+  $handler->display->display_options['sorts']['biblio_year']['id'] = 'biblio_year';
+  $handler->display->display_options['sorts']['biblio_year']['table'] = 'biblio';
+  $handler->display->display_options['sorts']['biblio_year']['field'] = 'biblio_year';
+  $handler->display->display_options['sorts']['biblio_year']['order'] = 'DESC';
+  /* Sort criterion: Content: Sticky */
+  $handler->display->display_options['sorts']['sticky']['id'] = 'sticky';
+  $handler->display->display_options['sorts']['sticky']['table'] = 'node';
+  $handler->display->display_options['sorts']['sticky']['field'] = 'sticky';
+  $handler->display->display_options['sorts']['sticky']['order'] = 'DESC';
+  /* Sort criterion: Content: Title */
+  $handler->display->display_options['sorts']['title']['id'] = 'title';
+  $handler->display->display_options['sorts']['title']['table'] = 'node';
+  $handler->display->display_options['sorts']['title']['field'] = 'title';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
-  /* Contextual filter: Biblio: Type of Publication */
+  /* Contextual filter: Publication: Type of Publication */
   $handler->display->display_options['arguments']['name']['id'] = 'name';
   $handler->display->display_options['arguments']['name']['table'] = 'biblio_types';
   $handler->display->display_options['arguments']['name']['field'] = 'name';
@@ -505,7 +520,7 @@ if(module_exists(\'apachesolr_search\')){
   $handler->display->display_options['arguments']['name']['case'] = 'ucwords';
   $handler->display->display_options['arguments']['name']['path_case'] = 'lower';
   $handler->display->display_options['arguments']['name']['transform_dash'] = TRUE;
-  /* Contextual filter: Biblio: Type of Publication */
+  /* Contextual filter: Publication: Type of Publication */
   $handler->display->display_options['arguments']['tid']['id'] = 'tid';
   $handler->display->display_options['arguments']['tid']['table'] = 'biblio_types';
   $handler->display->display_options['arguments']['tid']['field'] = 'tid';
