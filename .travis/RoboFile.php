@@ -90,7 +90,7 @@ class RoboFile extends \Robo\Tasks
     {
         $collection = $this->collectionBuilder();
         $collection->addTaskList($this->buildEnvironment());
-        $collection->addTask($this->installDrupal());
+        $collection->addTaskList($this->installDrupal());
         $collection->addTaskList($this->enableXDebug());
         $collection->addTaskList($this->runFunctionalTests($groups));
         return $collection->run();
@@ -205,12 +205,16 @@ class RoboFile extends \Robo\Tasks
     /**
      * Install Drupal.
      *
-     * @return \Robo\Task\Base\Exec
+     * @return \Robo\Task\Base\Exec[]
      *   A task to install Drupal.
      */
     protected function installDrupal()
     {
-        return $this->taskExec('docker-compose exec php sudo ./vendor/bin/drush site-install openscholar -vvv -y --db-url=' . static::DB_URL . ' --existing-config');
+        $tasks[] = $this->taskExecStack()
+            ->exec('docker-compose exec php sudo php -i | grep xdebug')
+            ->exec('docker-compose exec php sudo ./vendor/bin/drush site-install openscholar -vvv -y --db-url=' . static::DB_URL . ' --existing-config');
+
+        return $tasks;
     }
 
     /**
