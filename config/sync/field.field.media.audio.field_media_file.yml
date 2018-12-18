@@ -18,7 +18,7 @@ translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
-  file_directory: ''
+  file_directory: audio-files
   file_extensions: 'mp3 wav aac flac ogg mp4 mov mpeg avi wmv'
   max_filesize: ''
   description_field: true

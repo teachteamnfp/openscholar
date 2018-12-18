@@ -1,0 +1,64 @@
+<?php
+
+use Drupal\Core\Language\Language;
+use Drupal\redirect\Entity\Redirect;
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ */
+function os_redirect_node_presave(
+  Drupal\Core\Entity\EntityInterface $entity
+) {
+  _os_redirect_update_node_redirect($entity);
+}
+
+/**
+ * @param \Drupal\Core\Entity\EntityInterface $entity
+ */
+function _os_redirect_update_node_redirect(
+  Drupal\Core\Entity\EntityInterface $entity
+): void {
+  /** @var \Drupal\Core\Field\FieldItemList $urlValues */
+  $urlItemList = $entity->get('field_redirect_to_source');
+  if (!empty($urlItemList)) {
+    $language = Language::LANGCODE_NOT_SPECIFIED;
+    $urlValues = $urlItemList->getValue();
+    $hash = Redirect::generateHash('node/' . $entity->id(), [], $language);
+
+    // Search for duplicate.
+    $redirects = \Drupal::entityManager()
+      ->getStorage('redirect')
+      ->loadByProperties(['hash' => $hash]);
+
+    /** @var Redirect $redirect */
+    $redirect = array_shift($redirects);
+    if (!empty($redirect)) {
+      $redirectUrl = $redirect->getRedirectUrl();
+      // Delete exists redirect
+      if (empty($urlValues[0]['uri'])) {
+        $redirect->delete();
+        return;
+      }
+      if ($redirectUrl->getUri() != $urlValues[0]['uri']) {
+        // Update with new field value
+        $redirect->setRedirect($urlValues[0]['uri']);
+        $redirect->save();
+        return;
+      }
+      // Nothing changed
+      return;
+    }
+    // If not exists, then create a new redirect
+    if (!empty($urlValues[0]['uri'])) {
+      $redirect = Redirect::create();
+      $redirect->setSource('node/' . $entity->id());
+      $redirect->setRedirect($urlValues[0]['uri']);
+      $redirect->setLanguage($language);
+      $redirect->setStatusCode(307);
+      $redirect->save();
+    }
+  }
+}
