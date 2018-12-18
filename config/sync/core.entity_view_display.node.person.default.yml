@@ -14,6 +14,7 @@ dependencies:
     - field.field.node.person.field_phone
     - field.field.node.person.field_photo_person
     - field.field.node.person.field_professional_titles
+    - field.field.node.person.field_redirect_to_source
     - field.field.node.person.field_website
     - image.style.crop_photo_person
     - node.type.person
@@ -134,4 +135,5 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_redirect_to_source: true
   langcode: true

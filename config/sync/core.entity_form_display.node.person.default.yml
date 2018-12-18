@@ -14,6 +14,7 @@ dependencies:
     - field.field.node.person.field_phone
     - field.field.node.person.field_photo_person
     - field.field.node.person.field_professional_titles
+    - field.field.node.person.field_redirect_to_source
     - field.field.node.person.field_website
     - image.style.thumbnail
     - node.type.person
@@ -133,6 +134,14 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
+  field_redirect_to_source:
+    weight: 133
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
     region: content
   field_website:
     weight: 131
