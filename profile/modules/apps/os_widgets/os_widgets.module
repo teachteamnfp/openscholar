@@ -1,0 +1,65 @@
+<?php
+
+use Drupal\block\Entity\Block;
+use Drupal\os_widgets\BlockContentType\BlockContentTypeInterface;
+use Drupal\os_widgets\BlockContentType\FeaturedPostsWidget;
+
+function _os_widgets_block_content_type_definitions() {
+  // key: block_content bundle
+  // value: handled object
+  return [
+    'featured_posts' => FeaturedPostsWidget::class,
+  ];
+}
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function os_widgets_preprocess_block(&$variables) {
+  // Blocks coming from page manager widget does not have id.
+  if (empty($variables['elements']['#id'])) {
+    return;
+  }
+  /** @var Block $block */
+  $block = Block::load($variables['elements']['#id']);
+
+  $blockContentTypeDefinitions = _os_widgets_block_content_type_definitions();
+  /** @var \Drupal\block_content\Entity\BlockContent $blockContent */
+  list($currentBlockContentBundle, $blockContent) = _os_widgets_get_block_content_by_block($block);
+  if (empty($blockContentTypeDefinitions[$currentBlockContentBundle])) {
+    return;
+  }
+  $className = $blockContentTypeDefinitions[$currentBlockContentBundle];
+  $blockContentTypeWidget = new $className();
+  if (!$blockContentTypeWidget instanceof BlockContentTypeInterface) {
+    return;
+  }
+
+  $variables = $blockContentTypeWidget->buildBlock($variables, $blockContent);
+}
+
+function _os_widgets_get_block_content_by_block(Block $block) {
+  $blockContentId = $block->getPlugin()->getDerivativeId();
+  if (empty($blockContentId)) {
+    return false;
+  }
+  $blockContent = \Drupal::entityTypeManager()->getStorage('block_content')->loadByProperties(['uuid' => $blockContentId]);
+  if (empty($blockContent)) {
+    return false;
+  }
+  $blockContent = reset($blockContent);
+  $currentBlockContentBundle = $blockContent->bundle();
+  return [
+    $currentBlockContentBundle,
+    $blockContent,
+  ];
+}
+
+/**
+ * Implements hook_preprocess_node().
+ */
+function os_widgets_preprocess_node(&$variables) {
+  if (!empty($variables['elements']['os_widgets_hide_node_title'])) {
+    $variables['label']['#access'] = false;
+  }
+}
+
