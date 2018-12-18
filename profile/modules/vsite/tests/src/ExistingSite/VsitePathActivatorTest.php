@@ -58,10 +58,9 @@ class VsitePathActivatorTest extends ExistingSiteBase {
       ],
     ]);
 
-    $this->drupalGet('/test-alias');
-    // TODO: Test check.
-    // TODO: Replace following by $this->assertSession()->statusCodeEquals(200).
-    $this->assertTrue(TRUE);
+    // TODO: This should hit /test-alias.
+    $this->drupalGet('<front>');
+    $this->assertSession()->statusCodeEquals(200);
   }
 
 }
