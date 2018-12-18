@@ -1,0 +1,15 @@
+uuid: af2dd312-73d2-4cb9-8e27-0b746c906ba4
+langcode: en
+status: true
+dependencies: {  }
+name: news_photo_icon
+label: 'News photo icon'
+effects:
+  85947ef1-3ab2-4e23-b92f-89cbbdbb782d:
+    uuid: 85947ef1-3ab2-4e23-b92f-89cbbdbb782d
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 180
+      height: 180
+      anchor: center-center

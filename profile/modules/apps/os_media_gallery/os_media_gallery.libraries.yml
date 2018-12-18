@@ -1,0 +1,10 @@
+os_slick_lightbox:
+  version: 1.x
+  js:
+    /libraries/slick-lightbox/dist/slick-lightbox.js: { weight: -3, minified: false }
+    js/os_slick_lightbox.js: {}
+  css:
+    base:
+      /libraries/slick-lightbox/dist/slick-lightbox.css: {}
+  dependencies:
+    - slick/slick

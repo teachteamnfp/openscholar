@@ -1,0 +1,5 @@
+app.access:
+  title: 'Enable/Disable Apps'
+  route_name: cp.apps
+  parent: cp.settings
+  weight: -1000

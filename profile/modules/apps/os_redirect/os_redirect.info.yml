@@ -1,0 +1,9 @@
+name: OS Redirect
+description: 'Redirect link'
+type: module
+core: 8.x
+dependencies:
+  - field
+  - link
+  - node
+  - redirect

@@ -1,0 +1,10 @@
+uuid: 956fb28e-91f2-4fe4-8792-992432d518e7
+langcode: en
+status: true
+dependencies:
+  module:
+    - block_content
+id: block_content.grid
+label: Grid
+targetEntityType: block_content
+cache: true
