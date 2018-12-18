@@ -1,0 +1,105 @@
+<?php
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\block\Entity\Block;
+use Drupal\blazy\Blazy;
+use Drupal\Core\Url;
+use Drupal\file\Entity\File;
+use Drupal\image\Entity\ImageStyle;
+
+/**
+ * Implements hook_theme().
+ */
+function os_media_gallery_theme() {
+  return ['os_media_gallery_blazy' => ['render element' => 'element']];
+}
+
+/**
+ * Prepares variables for blazy.html.twig templates.
+ */
+function template_preprocess_os_media_gallery_blazy(&$variables) {
+  // Use original logic
+  Blazy::buildAttributes($variables);
+
+  // Replace image with slick lightbox popup link
+  if (!empty($variables['image'])) {
+    $imageArray = $variables['image'];
+    $imageArray['#printed'] = false;
+    $variables['image'] = [
+      '#type' => 'link',
+      '#title' => $imageArray,
+      '#url' => Url::fromUri($variables['element']['#slick_popup_url']),
+      '#attributes' => [
+        'class' => [
+          'slick-lightbox-item'
+        ],
+        'data-caption' => $imageArray['#attributes']['title'],
+      ],
+    ];
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function os_media_gallery_form_block_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if (!\Drupal::currentUser()->hasPermission('administer block classes')) {
+    return;
+  }
+  /** @var \Drupal\block\BlockInterface $block */
+  $block = $form_state->getFormObject()->getEntity();
+  $blockContentBundle = _os_media_gallery_get_block_content_bundle_id($block);
+  if ($blockContentBundle != 'media_gallery') {
+    return;
+  }
+  $form['settings']['view_mode']['#access'] = false;
+  $form['settings']['label_display']['#access'] = false;
+  $form['settings']['label_display']['#value'] = true;
+
+}
+
+/**
+ * Implements hook_preprocess_block().
+ */
+function os_media_gallery_preprocess_block(&$variables) {
+  // Blocks coming from page manager widget does not have id.
+  if (!empty($variables['elements']['#id'])) {
+    /** @var Block $block */
+    $block = Block::load($variables['elements']['#id']);
+    $blockContentBundle = _os_media_gallery_get_block_content_bundle_id($block);
+    if ($blockContentBundle != 'media_gallery') {
+      return;
+    }
+    /** @var \Drupal\block_content\Entity\BlockContent $blockContent */
+    $blockContent = $variables['content']['#block_content'];
+    $galleryFormatValues = $blockContent->get('field_gallery_format')->getValue();
+    $galleryFormatValue = $galleryFormatValues[0]['value'];
+    /** @var \Drupal\file\Plugin\Field\FieldType\FileFieldItemList $galleryMediaField */
+    $galleryMediaField = $blockContent->get('field_gallery_media');
+    // @TODO: Test the cache layer, might be need to invalidate
+    $variables['content']['field_gallery_media'] = $galleryMediaField->view($galleryFormatValue);
+    $variables['#attached']['library'][] = 'os_media_gallery/os_slick_lightbox';
+    foreach ($variables['content']['field_gallery_media']['#build']['items'] as &$item) {
+      $item['slide']['#theme'] = 'os_media_gallery_blazy';
+      /** @var \Drupal\image\Plugin\Field\FieldType\ImageItem $imageItem */
+      $imageItem = $item['item'];
+      $imageId = $imageItem->get('target_id')->getValue();
+      $file = File::load($imageId);
+      $path = $file->getFileUri();
+      $uri = ImageStyle::load('large')->buildUrl($path);
+      $item['slide']['#slick_popup_url'] = $uri;
+    }
+  }
+}
+
+function _os_media_gallery_get_block_content_bundle_id(Block $block) {
+  $block_content_id = $block->getPlugin()->getDerivativeId();
+  if (empty($block_content_id)) {
+    return '';
+  }
+  $block_content = \Drupal::entityTypeManager()->getStorage('block_content')->loadByProperties(['uuid' => $block_content_id]);
+  if (empty($block_content)) {
+    return '';
+  }
+  return reset($block_content)->bundle();
+}

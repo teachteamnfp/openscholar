@@ -4679,6 +4679,23 @@
             "time": "2018-10-23T06:36:49+00:00"
         },
         {
+            "name": "mreq/slick-lightbox",
+            "version": "master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mreq/slick-lightbox.git",
+                "reference": "master"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/mreq/slick-lightbox/archive/master.zip",
+                "reference": "master",
+                "shasum": null
+            },
+            "type": "drupal-library",
+            "time": "2018-10-23T06:36:49+00:00"
+        },
+        {
             "name": "nikic/php-parser",
             "version": "v4.1.0",
             "source": {
