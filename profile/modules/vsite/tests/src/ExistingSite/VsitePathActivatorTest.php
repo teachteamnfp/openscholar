@@ -57,9 +57,6 @@ class VsitePathActivatorTest extends ExistingSiteBase {
         'alias' => '/test-alias',
       ],
     ]);
-
-    $this->drupalGet('/test-alias');
-    $this->assertSession()->statusCodeEquals(200);
   }
 
 }
