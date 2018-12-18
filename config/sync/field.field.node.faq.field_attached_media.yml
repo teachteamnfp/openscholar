@@ -1,0 +1,38 @@
+uuid: 37b884d9-ded8-4754-93fb-5950dc28e8fd
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_attached_media
+    - media.type.audio
+    - media.type.document
+    - media.type.executable
+    - media.type.image
+    - media.type.presentation_materials
+    - media.type.video
+    - node.type.faq
+id: node.faq.field_attached_media
+field_name: field_attached_media
+entity_type: node
+bundle: faq
+label: 'Attached Media'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      document: document
+      executable: executable
+      image: image
+      presentation_materials: presentation_materials
+      video: video
+      audio: audio
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: document
+field_type: entity_reference
