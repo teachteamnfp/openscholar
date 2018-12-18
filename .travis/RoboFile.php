@@ -166,7 +166,7 @@ class RoboFile extends \Robo\Tasks
     protected function enableXDebug()
     {
         $tasks[] = $this->taskExecStack()
-            ->exec("sed -i bak -e 's/PHP_XDEBUG_ENABLED=0/PHP_XDEBUG_ENABLED=1/g' .env")
+            ->exec("sed -i bak -e 's/PHP_XDEBUG_ENABLED=false/PHP_XDEBUG_ENABLED=true/g' .env")
             ->exec('docker-compose up -d');
 
         return $tasks;
