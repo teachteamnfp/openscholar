@@ -1,0 +1,26 @@
+uuid: 4799ec4e-8554-4c45-bbbd-d43258fb47d6
+langcode: en
+status: true
+dependencies:
+  module:
+    - ctools
+    - system
+id: people_section
+label: 'People Section'
+logic: or
+conditions:
+  fdbcc466-3b97-4f9a-838c-df785608ba19:
+    id: 'entity_bundle:node'
+    bundles:
+      person: person
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    uuid: fdbcc466-3b97-4f9a-838c-df785608ba19
+  ff041bf8-3846-463e-98b7-9de74cd10368:
+    id: request_path
+    pages: '/people*'
+    negate: false
+    context_mapping: {  }
+    uuid: ff041bf8-3846-463e-98b7-9de74cd10368
+allow_other_conditions: false

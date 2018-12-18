@@ -1,0 +1,23 @@
+uuid: 72ac0c8a-12af-4177-8dbf-3e4d97fd280d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_office_hours
+    - node.type.person
+id: node.person.field_office_hours
+field_name: field_office_hours
+entity_type: node
+bundle: person
+label: 'Office Hours'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ' hour| hours'
+field_type: integer

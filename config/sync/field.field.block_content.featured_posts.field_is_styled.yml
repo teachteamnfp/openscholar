@@ -1,0 +1,23 @@
+uuid: e4d70ec5-29af-497a-9fe0-e77adc6d0241
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.featured_posts
+    - field.storage.block_content.field_is_styled
+id: block_content.featured_posts.field_is_styled
+field_name: field_is_styled
+entity_type: block_content
+bundle: featured_posts
+label: 'Is styled'
+description: 'If checked, the markup will got an extra class name "styled"'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'Yes'
+  off_label: 'No'
+field_type: boolean

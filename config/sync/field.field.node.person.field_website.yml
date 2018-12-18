@@ -1,0 +1,23 @@
+uuid: 95558221-a42f-40c0-b84c-076c5b96d474
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_website
+    - node.type.person
+  module:
+    - link
+id: node.person.field_website
+field_name: field_website
+entity_type: node
+bundle: person
+label: Website
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 17
+  title: 1
+field_type: link
