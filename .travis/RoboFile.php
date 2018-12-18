@@ -91,6 +91,7 @@ class RoboFile extends \Robo\Tasks
         $collection = $this->collectionBuilder();
         $collection->addTaskList($this->buildEnvironment());
         $collection->addTask($this->installDrupal());
+        $collection->addTaskList($this->enableXDebug());
         $collection->addTaskList($this->runFunctionalTests($groups));
         return $collection->run();
     }
@@ -153,6 +154,21 @@ class RoboFile extends \Robo\Tasks
         $tasks[] = $this->taskExec('docker-compose up -d');
         $tasks[] = $this->taskExec('docker-compose exec php mkdir -p build');
         $tasks[] = $this->taskExec('docker-compose exec php chmod 777 build');
+        return $tasks;
+    }
+
+    /**
+     * Enables xdebug in the Docker environment.
+     *
+     * @return \Robo\Task\Base\Exec[]
+     *   Array of tasks.
+     */
+    protected function enableXDebug()
+    {
+        $tasks[] = $this->taskExecStack()
+            ->exec("sed -i bak -e 's/PHP_XDEBUG_ENABLED=0/PHP_XDEBUG_ENABLED=1/g' .env")
+            ->exec('docker-compose up -d');
+
         return $tasks;
     }
 
@@ -272,6 +288,7 @@ class RoboFile extends \Robo\Tasks
             ->copy('.travis/config/bootstrap.php', 'web/core/tests/bootstrap.php', TRUE)
             ->mkdir('web/sites/simpletest');
         $tasks[] = $this->taskExecStack()
+            ->exec('docker-compose exec -T php sudo php -i | grep xdebug')
             ->exec('docker-compose exec -T php sudo ./vendor/bin/phpunit ' .
               '-c web/core '.
               '--debug '.
