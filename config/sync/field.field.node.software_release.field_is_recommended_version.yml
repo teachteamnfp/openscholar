@@ -1,0 +1,23 @@
+uuid: 98c3d644-f4c8-4801-88e6-55f24ebdf49a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_is_recommended_version
+    - node.type.software_release
+id: node.software_release.field_is_recommended_version
+field_name: field_is_recommended_version
+entity_type: node
+bundle: software_release
+label: 'Recommended Version'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'Yes'
+  off_label: 'No'
+field_type: boolean
