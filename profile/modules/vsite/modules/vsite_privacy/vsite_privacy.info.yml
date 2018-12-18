@@ -1,0 +1,7 @@
+name: VSite Privacy
+description: 'Allows a vsite to be made inaccessible based on rules provided by plugins'
+core: 8.x
+type: module
+version: '1.0'
+dependencies:
+  - vsite

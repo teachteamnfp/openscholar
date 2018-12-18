@@ -1,0 +1,7 @@
+name: 'Control Panel: Settings Forms'
+description: 'Provides common form structure for small settings used by other modules'
+type: module
+core: 8.x
+version: 1.0
+requirements:
+  - cp
