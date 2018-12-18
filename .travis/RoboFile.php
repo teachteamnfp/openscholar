@@ -93,7 +93,6 @@ class RoboFile extends \Robo\Tasks
         $collection->addTask($this->installDrupal());
         $collection->addTaskList($this->enableXDebug());
         $collection->addTaskList($this->runFunctionalTests($groups));
-        $collection->addTaskList($this->makeCoverageBuildAvailable());
         return $collection->run();
     }
 
@@ -153,6 +152,8 @@ class RoboFile extends \Robo\Tasks
 
         $tasks[] = $this->taskExec('docker-compose pull --parallel');
         $tasks[] = $this->taskExec('docker-compose up -d');
+        $tasks[] = $this->taskExec('docker-compose exec php mkdir -p build');
+        $tasks[] = $this->taskExec('docker-compose exec php chmod 777 build');
         return $tasks;
     }
 
@@ -167,22 +168,6 @@ class RoboFile extends \Robo\Tasks
         $tasks[] = $this->taskExecStack()
             ->exec('echo PHP_XDEBUG_ENABLED=1 >> .env')
             ->exec('docker-compose up -d');
-
-        return $tasks;
-    }
-
-    /**
-     * Make sure coverage report is available for coveralls.io reporting.
-     *
-     * TODO: This is just a workaround https://github.com/openscholar/openscholar/issues/10943
-     *
-     * @return \Robo\Task\Base\Exec[]
-     *   List of tasks.
-     */
-    protected function makeCoverageBuildAvailable()
-    {
-        $tasks[] = $this->taskExecStack()
-            ->exec('sudo chmod -R 777 build');
 
         return $tasks;
     }
