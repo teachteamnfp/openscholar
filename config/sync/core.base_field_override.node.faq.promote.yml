@@ -4,6 +4,8 @@ status: true
 dependencies:
   config:
     - node.type.faq
+_core:
+  default_config_hash: dB-f8b7dcSfGbdo4AEPpk01Pgm_s-I5RHQVohtNwVqo
 id: node.faq.promote
 field_name: promote
 entity_type: node

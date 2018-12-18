@@ -4,6 +4,8 @@ status: true
 dependencies:
   config:
     - node.type.faq
+_core:
+  default_config_hash: aZVk3J8S2GIycd7By8LM9CmYLb2JtnwwOh276n9K_uc
 id: node.faq.title
 field_name: title
 entity_type: node

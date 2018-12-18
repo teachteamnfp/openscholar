@@ -9,6 +9,8 @@ dependencies:
   module:
     - text
     - user
+_core:
+  default_config_hash: rI6HbVsnup-jxCtbPt_1FNAIXQpJ99cAAxjber82-Z0
 id: node.faq.teaser
 targetEntityType: node
 bundle: faq
@@ -25,4 +27,5 @@ content:
   links:
     weight: 100
     region: content
-hidden: {  }
+hidden:
+  langcode: true

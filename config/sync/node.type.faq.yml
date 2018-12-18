@@ -8,6 +8,8 @@ third_party_settings:
   menu_ui:
     available_menus: {  }
     parent: ''
+_core:
+  default_config_hash: QTVQa8hOxSq68hCr1fS7pW8gIIVuk4QbdLJu-HLwWMM
 name: FAQ
 type: faq
 description: ''
