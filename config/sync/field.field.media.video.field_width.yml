@@ -9,7 +9,7 @@ id: media.video.field_width
 field_name: field_width
 entity_type: media
 bundle: video
-label: width
+label: Width
 description: ''
 required: true
 translatable: false

@@ -1,0 +1,7 @@
+cp.apps:
+  path: '/cp/apps'
+  defaults:
+    _form: '\Drupal\os_app_access\Form\AppAccessForm'
+    _title: 'App Access'
+  requirements:
+    _permission: 'administer apps'
