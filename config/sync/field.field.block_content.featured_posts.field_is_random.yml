@@ -1,0 +1,23 @@
+uuid: 30159709-8510-4164-ab55-869139d9f127
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.featured_posts
+    - field.storage.block_content.field_is_random
+id: block_content.featured_posts.field_is_random
+field_name: field_is_random
+entity_type: block_content
+bundle: featured_posts
+label: 'Display single random post'
+description: 'Displaying a single random post instead of a list of posts (consider cache layer)'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'Yes'
+  off_label: 'No'
+field_type: boolean
