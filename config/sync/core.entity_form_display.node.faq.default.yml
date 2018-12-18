@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.faq.body
+    - field.field.node.faq.field_attached_media
     - node.type.faq
   module:
     - content_moderation
@@ -37,6 +38,15 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_attached_media:
+    weight: 122
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
   langcode:
     type: language_select
     weight: 2
