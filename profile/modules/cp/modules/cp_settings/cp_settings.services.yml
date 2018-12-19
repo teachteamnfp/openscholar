@@ -1,0 +1,4 @@
+services:
+  cp_settings.manager:
+    class: Drupal\cp_settings\Plugin\CpSettingsmanager
+    parent: default_plugin_manager

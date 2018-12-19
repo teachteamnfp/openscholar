@@ -1,0 +1,4 @@
+cp_settings.setting_group_link:
+  class: Drupal\cp_settings\Plugin\Menu\CpSettingMenuLink
+  deriver: Drupal\cp_settings\Plugin\Derivative\CpSettingsMenuLink
+  menu_name: control_panel

@@ -1,0 +1,25 @@
+<?php
+
+use Drupal\Core\Session\AccountInterface;
+use Drupal\os_app_access\Access\AppAccess;
+use Drupal\vsite\Plugin\AppManangerInterface;
+use Drupal\Core\Access\AccessResultNeutral;
+
+function os_app_access_node_create_access(AccountInterface $account, array $context, string $bundle) {
+  return _os_app_access_node_type_access ($account, $bundle);
+}
+
+function os_app_access_node_access(\Drupal\node\NodeInterface $node, $op, $account) {
+  return _os_app_access_node_type_access ($account, $node->bundle());
+}
+
+function _os_app_access_node_type_access(AccountInterface $account, $node_type) {
+  $app_access = new AppAccess();
+  /** @var AppManangerInterface $app_manager */
+  $app_manager = Drupal::service('vsite.app.manager');
+  $app = $app_manager->getAppForBundle ($node_type);
+  if ($app) {
+    return $app_access->access ($account, $app);
+  }
+  return new AccessResultNeutral();
+}

@@ -45,6 +45,23 @@
             }
         },
         {
+            "type": "package",
+            "package": {
+                "name": "mreq/slick-lightbox",
+                "version": "master",
+                "type": "drupal-library",
+                "dist": {
+                    "url": "https://github.com/mreq/slick-lightbox/archive/master.zip",
+                    "type": "zip"
+                },
+                "source": {
+                    "url": "https://github.com/mreq/slick-lightbox.git",
+                    "type": "git",
+                    "reference": "master"
+                }
+            }
+        },
+        {
             "type": "composer",
             "url": "https://packages.drupal.org/8"
         }
@@ -70,9 +87,12 @@
         "drupal/context": "^4.0@beta",
         "drupal/redirect": "^1.3",
         "drupal/toolbar_menu": "^2.1",
+        "drupal/views_accordion": "^1.1",
         "drupal/slick": "^1.0",
         "kenwheeler/slick": "master@dev",
-        "drupal/block_visibility_groups": "^1.3"
+        "drupal/block_visibility_groups": "^1.3",
+        "mreq/slick-lightbox": "master",
+        "drupal/image_widget_crop": "^2.2"
     },
     "require-dev": {
         "drupal/features": "^3.7",
@@ -85,9 +105,9 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "config": {
-      "preferred-install": {
-        "drupal/core": "dist"
-      }
+        "preferred-install": {
+            "drupal/core": "dist"
+        }
     },
     "autoload": {
         "classmap": [

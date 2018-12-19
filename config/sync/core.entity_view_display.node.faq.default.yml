@@ -1,0 +1,38 @@
+uuid: 76a3e897-6457-43ad-9564-609e98cb9c3c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.faq.body
+    - field.field.node.faq.field_attached_media
+    - node.type.faq
+  module:
+    - text
+    - user
+_core:
+  default_config_hash: J5yyMXb6MQffgZFjqX45auhhW1Dh2ehyHs5RIaQFvRc
+id: node.faq.default
+targetEntityType: node
+bundle: faq
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 101
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_attached_media:
+    weight: 102
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  links:
+    weight: 100
+    region: content
+hidden:
+  langcode: true

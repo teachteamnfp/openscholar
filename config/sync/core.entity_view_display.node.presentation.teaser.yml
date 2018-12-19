@@ -1,0 +1,55 @@
+uuid: 36fdd964-3265-4033-afa1-5be9a5bf31cf
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.presentation.body
+    - field.field.node.presentation.field_additional_media
+    - field.field.node.presentation.field_presentation_date
+    - field.field.node.presentation.field_presentation_location
+    - field.field.node.presentation.field_presentation_slides
+    - node.type.presentation
+  module:
+    - datetime
+    - text
+    - user
+id: node.presentation.teaser
+targetEntityType: node
+bundle: presentation
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 3
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    region: content
+  field_presentation_date:
+    type: datetime_default
+    weight: 1
+    region: content
+    label: inline
+    settings:
+      timezone_override: ''
+      format_type: long
+    third_party_settings: {  }
+  field_presentation_location:
+    type: string
+    weight: 2
+    region: content
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  links:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  field_additional_media: true
+  field_presentation_slides: true
+  langcode: true

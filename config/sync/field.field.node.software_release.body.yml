@@ -1,0 +1,22 @@
+uuid: 720175df-b0a4-4fa0-98f7-35bd61240aa9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - node.type.software_release
+  module:
+    - text
+id: node.software_release.body
+field_name: body
+entity_type: node
+bundle: software_release
+label: Body
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: true
+field_type: text_with_summary
