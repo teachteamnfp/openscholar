@@ -4,6 +4,11 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_attached_media
+    - media.type.audio
+    - media.type.document
+    - media.type.executable
+    - media.type.image
+    - media.type.presentation_materials
     - media.type.video
     - node.type.blog
 id: node.blog.field_attached_media
@@ -20,9 +25,14 @@ settings:
   handler: 'default:media'
   handler_settings:
     target_bundles:
+      document: document
+      executable: executable
+      image: image
+      presentation_materials: presentation_materials
       video: video
+      audio: audio
     sort:
       field: _none
     auto_create: false
-    auto_create_bundle: ''
+    auto_create_bundle: document
 field_type: entity_reference
