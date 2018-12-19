@@ -42,6 +42,8 @@ class RoboFile extends \Robo\Tasks
     public function jobRunUnitTests($groups = '')
     {
         $collection = $this->collectionBuilder();
+        $collection->addTaskList($this->buildEnvironment());
+        $collection->addTaskList($this->enableXDebug());
         $collection->addTaskList($this->runUnitTests($groups));
         return $collection->run();
     }
@@ -49,19 +51,15 @@ class RoboFile extends \Robo\Tasks
     /**
      * Command to check coding standards.
      *
-     * @return null|\Robo\Result
-     *   The result of the set of tasks.
-     *
-     * @throws \Robo\Exception\TaskException
+     * @return \Robo\Result
+     *   The result of the collection of tasks.
      */
     public function jobCheckCodingStandards()
     {
-        return $this->taskExecStack()
-            ->stopOnFail()
-            ->exec('vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'phpcs --config-set installed_paths vendor'.DIRECTORY_SEPARATOR.'drupal'.DIRECTORY_SEPARATOR.'coder'.DIRECTORY_SEPARATOR.'coder_sniffer')
-            ->exec('vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'phpcs --standard=Drupal --warning-severity=0 profile')
-            ->exec('vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'phpcs --standard=DrupalPractice --warning-severity=0 profile')
-            ->run();
+        $collection = $this->collectionBuilder();
+        $collection->addTaskList($this->buildEnvironment());
+        $collection->addTaskList($this->runCheckCodingStandards());
+        return $collection->run();
     }
 
   /**
@@ -73,7 +71,8 @@ class RoboFile extends \Robo\Tasks
     public function jobRunKernelTests($groups = '')
     {
         $collection = $this->collectionBuilder();
-        //$collection->addTask($this->installDrupal());
+        $collection->addTaskList($this->buildEnvironment());
+        $collection->addTaskList($this->enableXDebug());
         $collection->addTaskList($this->runKernelTests($groups));
         return $collection->run();
     }
@@ -233,6 +232,23 @@ class RoboFile extends \Robo\Tasks
     }
 
     /**
+     * Run coding standard checks.
+     *
+     * @return \Robo\Task\Base\Exec[]
+     *   List of tasks.
+     */
+    protected function runCheckCodingStandards()
+    {
+        $tasks[] = $this->taskExecStack()
+            ->stopOnFail()
+            ->exec('docker-compose exec -T php ./vendor/bin/phpcs --config-set installed_paths vendor/drupal/coder/coder_sniffer')
+            ->exec('docker-compose exec -T php ./vendor/bin/phpcs --standard=Drupal --warning-severity=0 profile')
+            ->exec('docker-compose exec -T php ./vendor/bin/phpcs --standard=DrupalPractice --warning-severity=0 profile');
+
+        return $tasks;
+    }
+
+    /**
      * Run unit tests.
      *
      * @return \Robo\Task\Base\Exec[]
@@ -240,13 +256,21 @@ class RoboFile extends \Robo\Tasks
      */
     protected function runUnitTests($groups)
     {
-        $force = true;
-        $tasks = [];
-        $tasks[] = $this->taskFilesystemStack()
-            ->copy('.travis'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'phpunit.xml', 'web'.DIRECTORY_SEPARATOR.'core'.DIRECTORY_SEPARATOR.'phpunit.xml', $force);
+        $groups = explode(',', $groups);
+        $groups = array_filter($groups, 'trim');
+        $groups[] = 'unit';
+        $groups = implode(',', $groups);
         $tasks[] = $this->taskExecStack()
-            ->dir('web')
-            ->exec('..'.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'phpunit -c core --debug --coverage-clover ../build/logs/clover.xml '. ($groups ? '--group '.$groups.' ': ' ')  .'--exclude-group=kernel,functional --verbose profiles/contrib/openscholar');
+          ->exec('docker-compose exec -T php cp .travis/config/phpunit.xml web/core/phpunit.xml')
+          ->exec('docker-compose exec -T php cp .travis/config/bootstrap.php web/core/tests/bootstrap.php')
+          ->exec('docker-compose exec -T php mkdir web/sites/simpletest')
+          ->exec('docker-compose exec -T php ./vendor/bin/phpunit ' .
+              '-c web/core '.
+              '--debug '.
+              '--coverage-clover build/logs/clover.xml '.
+              ($groups ? '--group ' . $groups . ' ': ' ')  .
+              '--exclude-group=kernel,functional '.
+              '--verbose web/profiles/contrib/openscholar');
         return $tasks;
     }
 
@@ -258,18 +282,22 @@ class RoboFile extends \Robo\Tasks
    */
     protected function runKernelTests($groups)
     {
-      $groups = explode(',', $groups);
-      $groups = array_filter($groups, 'trim');  // strip out empty lines
-      $groups[] = 'kernel';
-      $groups = implode(',', $groups);
-      $force = true;
-      $tasks = [];
-      $tasks[] = $this->taskFilesystemStack()
-        ->copy('.travis'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'phpunit.xml', 'web'.DIRECTORY_SEPARATOR.'core'.DIRECTORY_SEPARATOR.'phpunit.xml', $force);
-      $tasks[] = $this->taskExecStack()
-        ->dir('web')
-        ->exec('..'.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'phpunit -c core --debug --coverage-clover ../build/logs/clover.xml '. ($groups ? '--group ' . $groups . ' ': ' ')  .'--exclude-group=unit,functional --verbose profiles/contrib/openscholar');
-      return $tasks;
+        $groups = explode(',', $groups);
+        $groups = array_filter($groups, 'trim');  // strip out empty lines
+        $groups[] = 'kernel';
+        $groups = implode(',', $groups);
+        $tasks[] = $this->taskExecStack()
+            ->exec('docker-compose exec -T php cp .travis/config/phpunit.xml web/core/phpunit.xml')
+            ->exec('docker-compose exec -T php cp .travis/config/bootstrap.php web/core/tests/bootstrap.php')
+            ->exec('docker-compose exec -T php mkdir web/sites/simpletest')
+            ->exec('docker-compose exec -T php ./vendor/bin/phpunit ' .
+                '-c web/core '.
+                '--debug '.
+                '--coverage-clover build/logs/clover.xml '.
+                ($groups ? '--group ' . $groups . ' ': ' ')  .
+                '--exclude-group=unit,functional '.
+                '--verbose web/profiles/contrib/openscholar');
+        return $tasks;
     }
 
     /**
