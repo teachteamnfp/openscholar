@@ -1,0 +1,59 @@
+uuid: 1ca0b46a-afb4-4d95-93db-2f29093b45e6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.software_release.body
+    - field.field.node.software_release.field_is_recommended_version
+    - field.field.node.software_release.field_software_package
+    - field.field.node.software_release.field_software_project
+    - field.field.node.software_release.field_software_version
+    - node.type.software_release
+  module:
+    - text
+    - user
+id: node.software_release.default
+targetEntityType: node
+bundle: software_release
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_software_package:
+    type: entity_reference_entity_view
+    weight: 3
+    label: inline
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    region: content
+  field_software_project:
+    weight: 1
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_software_version:
+    weight: 2
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  links:
+    weight: 4
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  field_is_recommended_version: true
+  langcode: true

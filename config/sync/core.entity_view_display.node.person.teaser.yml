@@ -1,0 +1,64 @@
+uuid: 02a107d5-fcfc-41b2-9e8d-3499e861a7b6
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.person.body
+    - field.field.node.person.field_address
+    - field.field.node.person.field_email
+    - field.field.node.person.field_first_name
+    - field.field.node.person.field_honorific
+    - field.field.node.person.field_last_name
+    - field.field.node.person.field_middle_name
+    - field.field.node.person.field_office_hours
+    - field.field.node.person.field_phone
+    - field.field.node.person.field_photo_person
+    - field.field.node.person.field_professional_titles
+    - field.field.node.person.field_website
+    - image.style.crop_photo_person
+    - node.type.person
+  module:
+    - image
+    - text
+    - user
+id: node.person.teaser
+targetEntityType: node
+bundle: person
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 2
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    region: content
+  field_photo_person:
+    type: image
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      image_style: crop_photo_person
+      image_link: content
+    third_party_settings: {  }
+  links:
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  field_address: true
+  field_email: true
+  field_first_name: true
+  field_honorific: true
+  field_last_name: true
+  field_middle_name: true
+  field_office_hours: true
+  field_phone: true
+  field_professional_titles: true
+  field_redirect_to_source: true
+  field_website: true
+  langcode: true

@@ -1,0 +1,19 @@
+uuid: 3f55ff27-4d72-4e4e-8251-80a6ce4f2757
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.personal
+    - node.type.presentation
+  module:
+    - gnode
+    - node
+id: personal-group_node-presentation
+label: 'Personal: Group node (Presentation)'
+description: 'Adds <em class="placeholder">Presentation</em> content to groups both publicly and privately.'
+group_type: personal
+content_plugin: 'group_node:presentation'
+plugin_config:
+  group_cardinality: 1
+  entity_cardinality: 1
+  use_creation_wizard: true

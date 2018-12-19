@@ -1,0 +1,28 @@
+uuid: 44f348d4-5037-46cd-82d4-4a4fa106a121
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_attached_media
+    - media.type.document
+    - node.type.software_project
+id: node.software_project.field_attached_media
+field_name: field_attached_media
+entity_type: node
+bundle: software_project
+label: 'Attached Media'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      document: document
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

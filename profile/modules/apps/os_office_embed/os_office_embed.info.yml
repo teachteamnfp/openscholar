@@ -1,0 +1,7 @@
+name: 'Embedded Office Documents Viewer'
+description: 'An embedded Document viewer field using Office live'
+dependencies:
+  - drupal:field
+core: 8.x
+type: module
+
