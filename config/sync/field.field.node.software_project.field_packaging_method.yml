@@ -1,0 +1,21 @@
+uuid: 17a7694c-6b1b-4be6-aea6-05b2a242b7b8
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_packaging_method
+    - node.type.software_project
+  module:
+    - options
+id: node.software_project.field_packaging_method
+field_name: field_packaging_method
+entity_type: node
+bundle: software_project
+label: 'Packaging Method'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

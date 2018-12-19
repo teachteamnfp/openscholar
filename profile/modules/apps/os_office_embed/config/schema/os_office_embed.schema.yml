@@ -1,0 +1,10 @@
+field.formatter.settings.os_office_embed:
+  type: mapping
+  label: 'Office embed viewer'
+  mapping:
+    width:
+      type: integer
+      label: 'Width'
+    height:
+      type: integer
+      label: 'Height'

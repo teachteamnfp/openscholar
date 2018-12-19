@@ -1,0 +1,19 @@
+uuid: b324e387-4e09-429e-b940-62f30c657c4d
+langcode: en
+status: true
+dependencies:
+  module:
+    - link
+    - node
+id: node.field_redirect_to_source
+field_name: field_redirect_to_source
+entity_type: node
+type: link
+settings: {  }
+module: link
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

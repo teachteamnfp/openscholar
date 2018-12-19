@@ -1,0 +1,40 @@
+<?php
+
+/**
+ * Implements hook_theme().
+ */
+function os_office_embed_theme() {
+  return array(
+    'os_office_embed' => array(
+      'variables' => array(
+        'url' => NULL,
+        'filename' => NULL,
+        'width' => NULL,
+        'height' => NULL,
+        'delta' => NULL,
+        'entity' => NULL,
+        'bundle' => NULL,
+        'field_name' => NULL,
+        'field_type' => NULL,
+      ),
+    ),
+  );
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function os_office_embed_theme_suggestions_os_office_embed(array $variables) {
+  $entity = $variables['entity'];
+  $bundle = $variables['bundle'];
+  $delta = $variables['delta'];
+  $field_name = $variables['field_name'];
+  $field_type = $variables['field_type'];
+  $suggestions[] = $variables['theme_hook_original'] . '__' . $entity;
+  $suggestions[] = $variables['theme_hook_original'] . '__' . $entity . '__' . $bundle;
+  $suggestions[] = $variables['theme_hook_original'] . '__' . $entity . '__' . $bundle . '__' . $delta;
+  $suggestions[] = $variables['theme_hook_original'] . '__' . $field_type;
+  $suggestions[] = $variables['theme_hook_original'] . '__' . $field_type . '__' . $field_name;
+  $suggestions[] = $variables['theme_hook_original'] . '__' . $field_type . '__' . $field_name . '__' . $delta;
+  return $suggestions;
+}
