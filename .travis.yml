@@ -31,9 +31,16 @@ install:
 
 before_script:
   - cp .travis/RoboFile.php .
+  - mkdir -p build/logs
+  - chmod -R 777 build/logs
 
 script:
   - robo $JOB
 
 after_success:
+  - ls -al
+  - ls -al profile
+  - ls -al build
+  - ls -al build/logs
+  - cat build/logs/clover.xml
   - test -e "build/logs/clover.xml" && travis_retry php vendor/bin/php-coveralls -v
