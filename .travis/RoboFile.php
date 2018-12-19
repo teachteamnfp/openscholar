@@ -288,8 +288,6 @@ class RoboFile extends \Robo\Tasks
             ->copy('.travis/config/bootstrap.php', 'web/core/tests/bootstrap.php', TRUE)
             ->mkdir('web/sites/simpletest');
         $tasks[] = $this->taskExecStack()
-            ->exec('docker-compose exec -T php sudo ./vendor/bin/drush cim -y')
-            ->exec('docker-compose exec -T php sudo ./vendor/bin/drush cr')
             ->exec('docker-compose exec -T php sudo ./vendor/bin/phpunit ' .
               '-c web/core '.
               '--debug '.
