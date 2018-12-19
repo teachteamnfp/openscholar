@@ -5,10 +5,19 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.class.body
+    - field.field.node.class.field_attached_media
+    - field.field.node.class.field_class_link
+    - field.field.node.class.field_class_materials
+    - field.field.node.class.field_semester
+    - field.field.node.class.field_year_offered
     - node.type.class
   module:
+    - layout_builder
     - text
     - user
+third_party_settings:
+  layout_builder:
+    sections: {  }
 id: node.class.teaser
 targetEntityType: node
 bundle: class
@@ -24,10 +33,11 @@ content:
     region: content
   links:
     weight: 100
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
 hidden:
+  field_attached_media: true
   field_class_link: true
   field_class_materials: true
   field_semester: true

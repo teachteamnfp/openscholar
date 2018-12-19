@@ -4,11 +4,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.media.teaser
-    - field.field.media.image.field_alt_field
-    - field.field.media.image.field_height
     - field.field.media.image.field_media_image
-    - field.field.media.image.field_title_field
-    - field.field.media.image.field_width
     - image.style.thumbnail
     - media.type.image
   module:
@@ -29,11 +25,7 @@ content:
     third_party_settings: {  }
 hidden:
   created: true
-  field_alt_field: true
-  field_height: true
   field_media_image: true
-  field_title_field: true
-  field_width: true
   langcode: true
   name: true
   uid: true
