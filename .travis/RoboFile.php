@@ -152,8 +152,8 @@ class RoboFile extends \Robo\Tasks
 
         $tasks[] = $this->taskExec('docker-compose pull --parallel');
         $tasks[] = $this->taskExec('docker-compose up -d');
-        $tasks[] = $this->taskExec('docker-compose exec php mkdir -p build');
-        $tasks[] = $this->taskExec('docker-compose exec php chmod 777 build');
+        $tasks[] = $this->taskExec('docker-compose exec -T php mkdir -p build');
+        $tasks[] = $this->taskExec('docker-compose exec -T php chmod 777 build');
         return $tasks;
     }
 
@@ -210,7 +210,7 @@ class RoboFile extends \Robo\Tasks
      */
     protected function installDrupal()
     {
-        return $this->taskExec('docker-compose exec php sudo ./vendor/bin/drush site-install openscholar -vvv -y --db-url=' . static::DB_URL . ' --existing-config');
+        return $this->taskExec('docker-compose exec -T php sudo ./vendor/bin/drush site-install openscholar -vvv -y --db-url=' . static::DB_URL . ' --existing-config');
     }
 
     /**
