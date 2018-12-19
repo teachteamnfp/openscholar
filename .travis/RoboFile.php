@@ -90,7 +90,7 @@ class RoboFile extends \Robo\Tasks
     {
         $collection = $this->collectionBuilder();
         $collection->addTaskList($this->buildEnvironment());
-        $collection->addTask($this->installDrupal());
+        $collection->addTaskList($this->installDrupal());
         $collection->addTaskList($this->enableXDebug());
         $collection->addTaskList($this->runFunctionalTests($groups));
         return $collection->run();
@@ -152,6 +152,7 @@ class RoboFile extends \Robo\Tasks
 
         $tasks[] = $this->taskExec('docker-compose pull --parallel');
         $tasks[] = $this->taskExec('docker-compose up -d');
+        $tasks[] = $this->taskExec('docker-compose exec -T php composer install');
         $tasks[] = $this->taskExec('docker-compose exec -T php mkdir -p build');
         $tasks[] = $this->taskExec('docker-compose exec -T php chmod 777 build');
         return $tasks;
@@ -205,12 +206,15 @@ class RoboFile extends \Robo\Tasks
     /**
      * Install Drupal.
      *
-     * @return \Robo\Task\Base\Exec
+     * @return \Robo\Task\Base\Exec[]
      *   A task to install Drupal.
      */
     protected function installDrupal()
     {
-        return $this->taskExec('docker-compose exec -T php sudo ./vendor/bin/drush site-install openscholar -vvv -y --db-url=' . static::DB_URL . ' --existing-config');
+        $tasks[] = $this->taskExecStack()
+            ->exec('docker-compose exec -T php ./vendor/bin/drush site-install openscholar -vvv -y --db-url=' . static::DB_URL . ' --existing-config');
+
+        return $tasks;
     }
 
     /**
@@ -282,19 +286,17 @@ class RoboFile extends \Robo\Tasks
         $groups = array_filter($groups, 'trim');
         $groups[] = 'functional';
         $groups = implode(',', $groups);
-        $tasks = [];
-        $tasks[] = $this->taskFilesystemStack()
-            ->copy('.travis/config/phpunit.xml', 'web/core/phpunit.xml', TRUE)
-            ->copy('.travis/config/bootstrap.php', 'web/core/tests/bootstrap.php', TRUE)
-            ->mkdir('web/sites/simpletest');
         $tasks[] = $this->taskExecStack()
-            ->exec('docker-compose exec -T php sudo ./vendor/bin/phpunit ' .
-              '-c web/core '.
-              '--debug '.
-              '--coverage-clover build/logs/clover.xml '.
-              ($groups ? '--group ' . $groups . ' ': ' ')  .
-              '--exclude-group=unit,kernel '.
-              '--verbose web/profiles/contrib/openscholar');
+            ->exec('docker-compose exec -T php cp .travis/config/phpunit.xml web/core/phpunit.xml')
+            ->exec('docker-compose exec -T php cp .travis/config/bootstrap.php web/core/tests/bootstrap.php')
+            ->exec('docker-compose exec -T php mkdir web/sites/simpletest')
+            ->exec('docker-compose exec -T php ./vendor/bin/phpunit ' .
+                '-c web/core '.
+                '--debug '.
+                '--coverage-clover build/logs/clover.xml '.
+                ($groups ? '--group ' . $groups . ' ': ' ')  .
+                '--exclude-group=unit,kernel '.
+                '--verbose web/profiles/contrib/openscholar');
         return $tasks;
     }
 
