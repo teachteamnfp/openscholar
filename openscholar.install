@@ -34,3 +34,17 @@ function openscholar_install() {
     ->set('use_admin_theme', TRUE)
     ->save(TRUE);
 }
+
+/**
+ * Implements hook_install_tasks().
+ */
+function openscholar_install_tasks(&$install_state) {
+  $tasks = [
+    'openscholar_install_settings_form' => [
+      'display_name' => t('OpenScholar options'),
+      'type' => 'form',
+    ],
+  ];
+
+  //return $tasks;
+}
