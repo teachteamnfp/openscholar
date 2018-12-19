@@ -18,7 +18,7 @@ translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
-  file_directory: ''
+  file_directory: documents
   file_extensions: 'txt doc docx pdf xls xlsx rtf csv'
   max_filesize: ''
   description_field: true
