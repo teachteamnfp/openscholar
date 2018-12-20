@@ -4,9 +4,9 @@ namespace Drupal\Tests\group_entity\Kernel;
 
 use Drupal\group\Entity\Group;
 use Drupal\group\Entity\GroupType;
+use Drupal\KernelTests\KernelTestBase;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\taxonomy\Entity\Vocabulary;
-use weitzman\DrupalTestTraits\ExistingSiteBase;
 
 /**
  * Class GroupEntityDeriverTest.
@@ -15,7 +15,26 @@ use weitzman\DrupalTestTraits\ExistingSiteBase;
  * @group kernel
  * @covers \Drupal\group_entity\Plugin\GroupContentEnabler\GroupEntityDeriver
  */
-class GroupEntityDeriverTest extends ExistingSiteBase {
+class GroupEntityDeriverTest extends KernelTestBase {
+
+  /**
+   * Modules to install.
+   *
+   * @var array
+   */
+  protected static $modules = [
+    'system',
+    'user',
+    'field',
+    'text',
+    'filter',
+    'group',
+    'media',
+    'block_content',
+    'taxonomy',
+    'group_entity',
+    'group_test_config',
+  ];
 
   /**
    * Group content enabler manager.
@@ -37,11 +56,19 @@ class GroupEntityDeriverTest extends ExistingSiteBase {
   public function setUp() {
     parent::setUp();
 
+    $this->installConfig(['group', 'group_test_config', 'field']);
+    $this->installEntitySchema('taxonomy_term');
+    $this->installEntitySchema('user');
+    $this->installEntitySchema('group');
+    $this->installEntitySchema('group_type');
+    $this->installEntitySchema('group_content');
+    $this->installEntitySchema('group_content_type');
+
     $this->groupContentEnabler = \Drupal::service('plugin.manager.group_content_enabler');
 
     $this->groupType = GroupType::create([
-      'id' => $this->randomMachineName(),
-      'label' => 'Group Entity Test Group',
+      'id' => 'personal',
+      'label' => 'Personal',
       'creator_membership' => 0,
     ]);
     $this->groupType->save();

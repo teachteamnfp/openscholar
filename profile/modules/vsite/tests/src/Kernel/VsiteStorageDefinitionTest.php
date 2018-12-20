@@ -2,9 +2,9 @@
 
 namespace Drupal\Tests\vsite\Kernel;
 
+use Drupal\Tests\group\Kernel\GroupKernelTestBase;
 use Drupal\vsite\Event\VsiteActivatedEvent;
 use Drupal\vsite\VsiteEvents;
-use weitzman\DrupalTestTraits\ExistingSiteBase;
 
 /**
  * Tests VsiteStorageDefinition.
@@ -13,7 +13,15 @@ use weitzman\DrupalTestTraits\ExistingSiteBase;
  * @group kernel
  * @coversDefaultClass \Drupal\vsite\Config\VsiteStorageDefinition
  */
-class VsiteStorageDefinitionTest extends ExistingSiteBase {
+class VsiteStorageDefinitionTest extends GroupKernelTestBase {
+
+  /**
+   * {@inheritdoc}
+   */
+  public static $modules = [
+    'purl',
+    'vsite',
+  ];
 
   /**
    * Event dispatcher.
@@ -37,41 +45,15 @@ class VsiteStorageDefinitionTest extends ExistingSiteBase {
   protected $group;
 
   /**
-   * Entity type manager.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
-
-  /**
-   * Creates a group.
-   *
-   * @param array $values
-   *   (optional) The values used to create the entity.
-   *
-   * @return \Drupal\group\Entity\GroupInterface
-   *   The created group entity.
-   */
-  protected function createGroup(array $values = []) {
-    $group = $this->entityTypeManager->getStorage('group')->create($values + [
-      'type' => 'default',
-      'label' => $this->randomMachineName(),
-    ]);
-    $group->enforceIsNew();
-    $group->save();
-    return $group;
-  }
-
-  /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  protected function setUp() {
     parent::setUp();
+
+    $this->installConfig(['vsite']);
 
     $this->eventDispatcher = $this->container->get('event_dispatcher');
     $this->hierarchicalStorage = $this->container->get('hierarchical.storage');
-    $this->entityTypeManager = $this->container->get('entity_type.manager');
-
     $this->group = $this->createGroup();
   }
 
