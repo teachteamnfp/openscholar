@@ -45,6 +45,7 @@ class RoboFile extends \Robo\Tasks
         $collection->addTaskList($this->buildEnvironment());
         $collection->addTaskList($this->enableXDebug());
         $collection->addTaskList($this->runUnitTests($groups));
+        $collection->addTaskList($this->sendCoverageReportToCoveralls());
         return $collection->run();
     }
 
@@ -262,13 +263,13 @@ class RoboFile extends \Robo\Tasks
           ->exec('docker-compose exec -T php cp .travis/config/phpunit.xml web/core/phpunit.xml')
           ->exec('docker-compose exec -T php cp .travis/config/bootstrap.php web/core/tests/bootstrap.php')
           ->exec('docker-compose exec -T php mkdir web/sites/simpletest')
-          ->exec('docker exec -it d8cidemo_php sh -c "cd web && ../vendor/bin/phpunit ' .
-              '-c core '.
+          ->exec('docker-compose exec -T php ./vendor/bin/phpunit ' .
+              '-c web/core '.
               '--debug '.
-              '--coverage-clover ../build/logs/clover.xml '.
+              '--coverage-clover ./build/logs/clover.xml '.
               ($groups ? '--group ' . $groups . ' ': ' ')  .
               '--exclude-group=kernel,functional '.
-              '--verbose profiles/contrib/openscholar"');
+              '--verbose web/profiles/contrib/openscholar');
         return $tasks;
     }
 
@@ -288,13 +289,13 @@ class RoboFile extends \Robo\Tasks
             ->exec('docker-compose exec -T php cp .travis/config/phpunit.xml web/core/phpunit.xml')
             ->exec('docker-compose exec -T php cp .travis/config/bootstrap.php web/core/tests/bootstrap.php')
             ->exec('docker-compose exec -T php mkdir web/sites/simpletest')
-            ->exec('docker exec -it d8cidemo_php sh -c "cd web && ../vendor/bin/phpunit ' .
-                '-c core '.
+            ->exec('docker-compose exec -T php ./vendor/bin/phpunit ' .
+                '-c web/core '.
                 '--debug '.
-                '--coverage-clover ../build/logs/clover.xml '.
+                '--coverage-clover ./build/logs/clover.xml '.
                 ($groups ? '--group ' . $groups . ' ': ' ')  .
                 '--exclude-group=unit,functional '.
-                '--verbose profiles/contrib/openscholar"');
+                '--verbose web/profiles/contrib/openscholar');
         return $tasks;
     }
 
@@ -316,13 +317,26 @@ class RoboFile extends \Robo\Tasks
             ->exec('docker-compose exec -T php cp .travis/config/phpunit.xml web/core/phpunit.xml')
             ->exec('docker-compose exec -T php cp .travis/config/bootstrap.php web/core/tests/bootstrap.php')
             ->exec('docker-compose exec -T php mkdir web/sites/simpletest')
-            ->exec('docker exec -it d8cidemo_php sh -c "cd web && ../vendor/bin/phpunit ' .
-                '-c core '.
+            ->exec('docker-compose exec -T php ./vendor/bin/phpunit ' .
+                '-c web/core '.
                 '--debug '.
-                '--coverage-clover ../build/logs/clover.xml '.
+                '--coverage-clover ./build/logs/clover.xml '.
                 ($groups ? '--group ' . $groups . ' ': ' ')  .
                 '--exclude-group=unit,kernel '.
-                '--verbose profiles/contrib/openscholar"');
+                '--verbose web/profiles/contrib/openscholar');
+        return $tasks;
+    }
+
+    /**
+     * Send code coverage report to Coveralls.
+     *
+     * @return \Robo\Task\Base\Exec[]
+     *   An array of tasks.
+     */
+    protected function sendCoverageReportToCoveralls()
+    {
+        $tasks[] = $this->taskExecStack()
+            ->exec('docker-compose exec -T php php vendor/bin/php-coveralls -v');
         return $tasks;
     }
 
