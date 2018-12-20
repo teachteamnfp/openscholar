@@ -165,8 +165,7 @@ class RoboFile extends \Robo\Tasks
     {
         $tasks[] = $this->taskExecStack()
             ->exec('echo PHP_XDEBUG_ENABLED=1 >> .env')
-            ->exec('docker-compose up -d')
-            ->exec('docker-compose exec -T php cp .env web');
+            ->exec('docker-compose up -d');
 
         return $tasks;
     }
