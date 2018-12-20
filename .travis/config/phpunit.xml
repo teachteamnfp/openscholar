@@ -5,7 +5,7 @@
  or your current system user. See core/tests/README.md and
  https://www.drupal.org/node/2116263 for details.
 -->
-<phpunit bootstrap="tests/bootstrap.php" colors="true"
+<phpunit bootstrap="../../vendor/weitzman/drupal-test-traits/src/bootstrap.php" colors="true"
          beStrictAboutTestsThatDoNotTestAnything="true"
          beStrictAboutOutputDuringTests="true"
          beStrictAboutChangesToGlobalState="true"
@@ -42,32 +42,26 @@
   </php>
   <testsuites>
     <testsuite name="unit">
-      <file>./tests/TestSuites/UnitTestSuite.php</file>
+      <directory>../profiles/contrib/openscholar/modules/apps/*/tests/src/Unit</directory>
+      <directory>../profiles/contrib/openscholar/modules/custom/*/tests/src/Unit</directory>
+      <directory>../profiles/contrib/openscholar/modules/*/tests/src/Unit</directory>
     </testsuite>
     <testsuite name="kernel">
-      <file>./tests/TestSuites/KernelTestSuite.php</file>
-    </testsuite>
-    <testsuite name="functional">
-      <file>./tests/TestSuites/FunctionalTestSuite.php</file>
-    </testsuite>
-    <testsuite name="nonfunctional">
-      <file>./tests/TestSuites/UnitTestSuite.php</file>
-      <file>./tests/TestSuites/KernelTestSuite.php</file>
+      <directory>../profiles/contrib/openscholar/modules/apps/*/tests/src/Kernel</directory>
+      <directory>../profiles/contrib/openscholar/modules/custom/*/tests/src/Kernel</directory>
+      <directory>../profiles/contrib/openscholar/modules/*/tests/src/Kernel</directory>
     </testsuite>
     <testsuite name="existing-site">
-      <directory>../profiles/contrib/openscholar/*/tests/src/ExistingSite</directory>
+      <directory>../profiles/contrib/openscholar/modules/apps/*/tests/src/ExistingSite</directory>
+      <directory>../profiles/contrib/openscholar/modules/custom/*/tests/src/ExistingSite</directory>
+      <directory>../profiles/contrib/openscholar/modules/*/tests/src/ExistingSite</directory>
     </testsuite>
     <testsuite name="existing-site-javascript">
-      <directory>../profiles/contrib/openscholar/*/tests/src/ExistingSiteJavascript</directory>
+      <directory>../profiles/contrib/openscholar/modules/apps/*/tests/src/ExistingSiteJavascript</directory>
+      <directory>../profiles/contrib/openscholar/modules/custom/*/tests/src/ExistingSiteJavascript</directory>
+      <directory>../profiles/contrib/openscholar/modules/*/tests/src/ExistingSiteJavascript</directory>
     </testsuite>
   </testsuites>
-  <listeners>
-    <listener class="\Drupal\Tests\Listeners\DrupalListener">
-    </listener>
-    <!-- The Symfony deprecation listener has to come after the Drupal listener -->
-    <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener">
-    </listener>
-  </listeners>
   <!-- Filter for coverage reports. -->
   <filter>
     <whitelist processUncoveredFilesFromWhitelist="true">
