@@ -18,7 +18,7 @@ use PHPUnit\Framework\Error\Deprecated;
  * @package Drupal\Tests\vsite\Kernel
  * @group vsite
  * @group kernel
- * @covers \Drupal\vsite\Plugin\views\filter\VsiteCurrentFilter
+ * @coversDefaultClass \Drupal\vsite\Plugin\views\filter\VsiteCurrentFilter
  */
 class VsiteCurrentFilterTest extends ViewsKernelTestBase {
 

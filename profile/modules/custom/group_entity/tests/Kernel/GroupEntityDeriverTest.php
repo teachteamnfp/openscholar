@@ -13,7 +13,7 @@ use Drupal\taxonomy\Entity\Vocabulary;
  *
  * @package Drupal\Tests\group_entity\Kernel
  * @group kernel
- * @covers \Drupal\group_entity\Plugin\GroupContentEnabler\GroupEntityDeriver
+ * @coversDefaultClass \Drupal\group_entity\Plugin\GroupContentEnabler\GroupEntityDeriver
  */
 class GroupEntityDeriverTest extends KernelTestBase {
 
