@@ -45,7 +45,6 @@ class RoboFile extends \Robo\Tasks
         $collection->addTaskList($this->buildEnvironment());
         $collection->addTaskList($this->enableXDebug());
         $collection->addTaskList($this->runUnitTests($groups));
-        $collection->addTaskList($this->sendCoverageReportToCoveralls());
         return $collection->run();
     }
 
@@ -93,6 +92,19 @@ class RoboFile extends \Robo\Tasks
         $collection->addTaskList($this->installDrupal());
         $collection->addTaskList($this->enableXDebug());
         $collection->addTaskList($this->runFunctionalTests($groups));
+        return $collection->run();
+    }
+
+    /**
+     * Command to send code coverage report.
+     *
+     * @return \Robo\Result
+     *   The result of the collection of tasks.
+     */
+    public function jobRunSendCoverageReport()
+    {
+        $collection = $this->collectionBuilder();
+        $collection->addTaskList($this->sendCoverageReportToCoveralls());
         return $collection->run();
     }
 
