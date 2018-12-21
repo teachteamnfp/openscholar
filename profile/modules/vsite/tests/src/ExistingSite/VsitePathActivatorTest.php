@@ -57,6 +57,8 @@ class VsitePathActivatorTest extends ExistingSiteBase {
 
   /**
    * Tests modifier matched event.
+   *
+   * @covers \Drupal\vsite\Plugin\VsitePathActivator::onModifierMatched
    */
   public function testModifierMatched() {
     $group = $this->createGroup([
@@ -65,6 +67,36 @@ class VsitePathActivatorTest extends ExistingSiteBase {
         'alias' => '/test-alias',
       ],
     ]);
+
+    $this->drupalGet('/test-alias');
+    // TODO: Fix this failing test.
+    // TODO: This should be returning 500.
+    // TODO: Found that inside Symfony's RouteListener that it is returning 403,
+    // TODO: but due to unknown reason Drupal is coverting it to 500.
+    // TODO: Find and fix the problem.
+    // See https://github.com/openscholar/openscholar/issues/10978
+    // $this->assertSession()->statusCodeEquals(200);
+    // $this->assertEquals("vsite:{$group->id()}", $this
+    // ->hierarchicalStorage
+    // ->getCollectionName());
+  }
+
+  /**
+   * Tests on request event subscriber.
+   *
+   * @covers \Drupal\vsite\Plugin\VsitePathActivator::onRequest
+   */
+  public function testOnRequest() {
+    $group = $this->createGroup([
+      'type' => 'personal',
+      'path' => [
+        'alias' => '/test-alias',
+      ],
+    ]);
+
+    $this->drupalGet('<front>');
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertNotEquals("vsite:{$group->id()}", $this->hierarchicalStorage->getCollectionName());
 
     $this->drupalGet('/test-alias');
     // TODO: Fix this failing test.
