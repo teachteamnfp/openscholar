@@ -165,6 +165,9 @@ class RoboFile extends \Robo\Tasks
         $tasks[] = $this->taskExec('docker-compose pull --parallel');
         $tasks[] = $this->taskExec('docker-compose up -d');
         $tasks[] = $this->taskExec('docker-compose exec -T php composer install');
+        $tasks[] = $this->taskExec('docker-compose exec -T php cp .travis/config/phpunit.xml web/core/phpunit.xml');
+        $tasks[] = $this->taskExec('docker-compose exec -T php cp .travis/config/bootstrap.php web/core/tests/bootstrap.php');
+        $tasks[] = $this->taskExec('docker-compose exec -T php mkdir web/sites/simpletest');
         return $tasks;
     }
 
@@ -273,10 +276,6 @@ class RoboFile extends \Robo\Tasks
         $groups[] = 'unit';
         $groups = implode(',', $groups);
         $tasks[] = $this->taskExecStack()
-          ->exec('docker-compose exec -T php cp .travis/config/phpunit.xml web/core/phpunit.xml')
-          ->exec('docker-compose exec -T php cp .travis/config/bootstrap.php web/core/tests/bootstrap.php')
-          ->exec('docker-compose exec -T php mkdir web/sites/simpletest')
-          ->exec('docker-compose exec -T php chmod 777 web/sites/simpletest')
           ->exec('docker-compose exec -T php ./vendor/bin/phpunit ' .
               '-c web/core '.
               '--debug '.
@@ -300,9 +299,6 @@ class RoboFile extends \Robo\Tasks
         $groups[] = 'kernel';
         $groups = implode(',', $groups);
         $tasks[] = $this->taskExecStack()
-            ->exec('docker-compose exec -T php cp .travis/config/phpunit.xml web/core/phpunit.xml')
-            ->exec('docker-compose exec -T php cp .travis/config/bootstrap.php web/core/tests/bootstrap.php')
-            ->exec('docker-compose exec -T php mkdir web/sites/simpletest')
             ->exec('docker-compose exec -T php ./vendor/bin/phpunit ' .
                 '-c web/core '.
                 '--debug '.
@@ -328,9 +324,6 @@ class RoboFile extends \Robo\Tasks
         $groups[] = 'functional';
         $groups = implode(',', $groups);
         $tasks[] = $this->taskExecStack()
-            ->exec('docker-compose exec -T php cp .travis/config/phpunit.xml web/core/phpunit.xml')
-            ->exec('docker-compose exec -T php cp .travis/config/bootstrap.php web/core/tests/bootstrap.php')
-            ->exec('docker-compose exec -T php mkdir web/sites/simpletest')
             ->exec('docker-compose exec -T php ./vendor/bin/phpunit ' .
                 '-c web/core '.
                 '--debug '.
