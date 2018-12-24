@@ -29,7 +29,7 @@
     <!-- Example SIMPLETEST_DB value: mysql://username:password@localhost/databasename#table_prefix -->
     <env name="SIMPLETEST_DB" value="sqlite://tmp/site.sqlite"/>
     <!-- Example BROWSERTEST_OUTPUT_DIRECTORY value: /path/to/webroot/sites/simpletest/browser_output -->
-    <env name="BROWSERTEST_OUTPUT_DIRECTORY" value=""/>
+    <env name="BROWSERTEST_OUTPUT_DIRECTORY" value="/var/www/html/web/sites/simpletest"/>
     <env name="BROWSERTEST_OUTPUT_FILE" value="/var/www/html/web/sites/simpletest/simpletest-output.html"/>
     <!-- To disable deprecation testing uncomment the next line. -->
     <env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled"/>
@@ -63,6 +63,8 @@
   </testsuites>
   <listeners>
     <listener class="\Drupal\Tests\Listeners\DrupalListener">
+    </listener>
+    <listener class="\Drupal\Tests\Listeners\HtmlOutputPrinter">
     </listener>
     <!-- The Symfony deprecation listener has to come after the Drupal listener -->
     <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener">

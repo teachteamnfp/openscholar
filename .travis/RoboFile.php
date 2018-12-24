@@ -276,6 +276,7 @@ class RoboFile extends \Robo\Tasks
           ->exec('docker-compose exec -T php cp .travis/config/phpunit.xml web/core/phpunit.xml')
           ->exec('docker-compose exec -T php cp .travis/config/bootstrap.php web/core/tests/bootstrap.php')
           ->exec('docker-compose exec -T php mkdir web/sites/simpletest')
+          ->exec('docker-compose exec -T php chmod 777 web/sites/simpletest')
           ->exec('docker-compose exec -T php ./vendor/bin/phpunit ' .
               '-c web/core '.
               '--debug '.
