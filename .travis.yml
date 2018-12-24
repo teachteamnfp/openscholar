@@ -31,9 +31,11 @@ install:
 
 before_script:
   - cp .travis/RoboFile.php .
+  - mkdir -p build/logs
+  - chmod -R 777 build/logs
 
 script:
   - robo $JOB
 
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
+  - test -e "build/logs/clover.xml" && travis_retry robo job:run-send-coverage-report
