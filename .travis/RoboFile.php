@@ -279,7 +279,6 @@ class RoboFile extends \Robo\Tasks
           ->exec('docker-compose exec -T php ./vendor/bin/phpunit ' .
               '-c web/core '.
               '--debug '.
-              '--coverage-clover ./build/logs/clover.xml '.
               ($groups ? '--group ' . $groups . ' ': ' ')  .
               '--exclude-group=kernel,functional '.
               '--verbose web/profiles/contrib/openscholar');
@@ -302,7 +301,6 @@ class RoboFile extends \Robo\Tasks
             ->exec('docker-compose exec -T php ./vendor/bin/phpunit ' .
                 '-c web/core '.
                 '--debug '.
-                '--coverage-clover ./build/logs/clover.xml '.
                 ($groups ? '--group ' . $groups . ' ': ' ')  .
                 '--exclude-group=unit,functional '.
                 '--verbose web/profiles/contrib/openscholar');
@@ -327,7 +325,6 @@ class RoboFile extends \Robo\Tasks
             ->exec('docker-compose exec -T php ./vendor/bin/phpunit ' .
                 '-c web/core '.
                 '--debug '.
-                '--coverage-clover ./build/logs/clover.xml '.
                 ($groups ? '--group ' . $groups . ' ': ' ')  .
                 '--exclude-group=unit,kernel '.
                 '--verbose web/profiles/contrib/openscholar');
@@ -344,20 +341,6 @@ class RoboFile extends \Robo\Tasks
     {
         $tasks[] = $this->taskExecStack()
             ->exec('docker-compose exec -T php php vendor/bin/php-coveralls -v');
-        return $tasks;
-    }
-
-    /**
-     * Runs Behat tests.
-     *
-     * @return \Robo\Task\Base\Exec[]
-     *   An array of tasks.
-     */
-    protected function runBehatTests()
-    {
-        $tasks = [];
-        $tasks[] = $this->taskExecStack()
-            ->exec('docker-compose exec -T php vendor/bin/behat --verbose -c tests/behat.yml');
         return $tasks;
     }
 
