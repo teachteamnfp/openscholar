@@ -68,7 +68,7 @@ class VsitePathActivatorTest extends ExistingSiteBase {
       ],
     ]);
 
-    $this->drupalGet('/test-alias');
+    $this->drupalGet('/test-alias/node/add/link');
     // TODO: Fix this failing test.
     // TODO: This should be returning 500.
     // TODO: Found that inside Symfony's RouteListener that it is returning 403,
