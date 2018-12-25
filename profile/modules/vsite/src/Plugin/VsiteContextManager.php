@@ -11,7 +11,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * Manages and stores active vsites.
  *
  * Other classes declare a vsite is active to this manager, and this
- *   class responds and dispatches an event for other modules to listen to.
+ * class responds and dispatches an event for other modules to listen to.
  */
 class VsiteContextManager implements VsiteContextManagerInterface {
 
@@ -31,13 +31,16 @@ class VsiteContextManager implements VsiteContextManagerInterface {
 
   /**
    * Constructor.
+   *
+   * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
+   *   The event dispatcher.
    */
   public function __construct(EventDispatcherInterface $dispatcher) {
     $this->dispatcher = $dispatcher;
   }
 
   /**
-   * Activate a vsite and handle all processing that entails.
+   * {@inheritdoc}
    */
   public function activateVsite(GroupInterface $group) {
     $this->activeGroup = $group;
@@ -48,24 +51,21 @@ class VsiteContextManager implements VsiteContextManagerInterface {
   }
 
   /**
-   * Activate the user roles a given user should have within the active vsite.
+   * {@inheritdoc}
    */
   public function activateRoles() {
     // TODO: Implement activateRoles() method.
   }
 
   /**
-   * Returns the active vsite.
-   *
-   * @return \Drupal\group\Entity\GroupInterface
-   *   The active vsite.
+   * {@inheritdoc}
    */
   public function getActiveVsite() : ?GroupInterface {
     return $this->activeGroup;
   }
 
   /**
-   * Returns just the purl for the active vsite.
+   * {@inheritdoc}
    */
   public function getActivePurl() {
     if (!empty($this->activeGroup)) {
@@ -75,12 +75,13 @@ class VsiteContextManager implements VsiteContextManagerInterface {
   }
 
   /**
-   * Gets an absolute url to a vsite.
+   * {@inheritdoc}
    */
   public function getAbsoluteUrl(string $path = '', GroupInterface $group = NULL) {
-    // TODO: Implement getAbsoluteUrl() method.
-    // 1. Generate modifier based on Group given
-    // 2. Apply it to path or route.
+    if (!$this->activeGroup) {
+      return $path;
+    }
+
     $purl = $this->activeGroup->toUrl('canonical', ['base_url' => ''])->toString();
     return $purl . '/' . ltrim($path, '/');
   }
