@@ -1,8 +1,10 @@
 <?php
 
-namespace Drupal\Tests\vsite\ExistingSiteJavascript;
+namespace Drupal\Tests\vsite\ExistingSite;
 
-use weitzman\DrupalTestTraits\ExistingSiteSelenium2DriverTestBase;
+use Drupal\vsite\Event\VsiteActivatedEvent;
+use Drupal\vsite\VsiteEvents;
+use weitzman\DrupalTestTraits\ExistingSiteBase;
 
 /**
  * Tests VsitePathActivator.
@@ -11,7 +13,7 @@ use weitzman\DrupalTestTraits\ExistingSiteSelenium2DriverTestBase;
  * @group functional
  * @coversDefaultClass \Drupal\vsite\Plugin\VsitePathActivator
  */
-class VsitePathActivatorTest extends ExistingSiteSelenium2DriverTestBase {
+class VsitePathActivatorTest extends ExistingSiteBase {
 
   /**
    * The entity type manager service.
@@ -35,12 +37,20 @@ class VsitePathActivatorTest extends ExistingSiteSelenium2DriverTestBase {
   protected $groupCreator;
 
   /**
+   * Event dispatcher.
+   *
+   * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
+   */
+  protected $eventDispatcher;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
     parent::setUp();
     $this->entityTypeManager = $this->container->get('entity_type.manager');
     $this->hierarchicalStorage = $this->container->get('hierarchical.storage');
+    $this->eventDispatcher = $this->container->get('event_dispatcher');
     $this->groupCreator = $this->createUser([
       'view the administration theme',
       'access administration pages',
@@ -83,6 +93,8 @@ class VsitePathActivatorTest extends ExistingSiteSelenium2DriverTestBase {
     ]);
 
     $this->drupalGet('/test-alias/node/add/link');
+    $event = new VsiteActivatedEvent($group);
+    $this->eventDispatcher->dispatch(VsiteEvents::VSITE_ACTIVATED, $event);
     $this->assertEquals("vsite:{$group->id()}", $this->hierarchicalStorage->getCollectionName());
   }
 
@@ -103,6 +115,8 @@ class VsitePathActivatorTest extends ExistingSiteSelenium2DriverTestBase {
     $this->assertNotEquals("vsite:{$group->id()}", $this->hierarchicalStorage->getCollectionName());
 
     $this->drupalGet('/test-alias');
+    $event = new VsiteActivatedEvent($group);
+    $this->eventDispatcher->dispatch(VsiteEvents::VSITE_ACTIVATED, $event);
     $this->assertEquals("vsite:{$group->id()}", $this->hierarchicalStorage->getCollectionName());
   }
 
