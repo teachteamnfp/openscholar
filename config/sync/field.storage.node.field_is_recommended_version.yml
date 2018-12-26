@@ -1,0 +1,18 @@
+uuid: 33552089-1bf9-432f-bc8c-70e58dab60d5
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_is_recommended_version
+field_name: field_is_recommended_version
+entity_type: node
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

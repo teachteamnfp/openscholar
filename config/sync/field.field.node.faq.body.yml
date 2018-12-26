@@ -1,0 +1,24 @@
+uuid: 00a7f8ac-a238-4350-a4bd-8814a74311c3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - node.type.faq
+  module:
+    - text
+_core:
+  default_config_hash: IZolKhs-Q25qoZf58h8L5KUag4o17Mbvsh12tHm1fco
+id: node.faq.body
+field_name: body
+entity_type: node
+bundle: faq
+label: Answer
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: false
+field_type: text_with_summary

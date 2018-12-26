@@ -1,0 +1,25 @@
+uuid: 59b99f29-9fe8-4b6c-8150-50af91e55039
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_software_project
+    - node.type.software_release
+id: node.software_release.field_software_project
+field_name: field_software_project
+entity_type: node
+bundle: software_release
+label: 'Software Project'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: views
+  handler_settings:
+    view:
+      view_name: os_software_projects
+      display_name: entity_reference_1
+      arguments: {  }
+field_type: entity_reference

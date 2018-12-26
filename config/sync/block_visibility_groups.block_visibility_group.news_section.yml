@@ -1,0 +1,26 @@
+uuid: ed4f3a35-9dd1-455e-92e3-dff09ada3c5c
+langcode: en
+status: true
+dependencies:
+  module:
+    - ctools
+    - system
+id: news_section
+label: 'News Section'
+logic: or
+conditions:
+  3b1b52b0-1bfa-4297-b921-46e4bf3ee5ec:
+    id: 'entity_bundle:node'
+    bundles:
+      news: news
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    uuid: 3b1b52b0-1bfa-4297-b921-46e4bf3ee5ec
+  496602eb-0ae2-4cb0-8cc9-34bbef26e496:
+    id: request_path
+    pages: '/news*'
+    negate: false
+    context_mapping: {  }
+    uuid: 496602eb-0ae2-4cb0-8cc9-34bbef26e496
+allow_other_conditions: false

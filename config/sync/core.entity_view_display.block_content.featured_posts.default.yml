@@ -1,0 +1,30 @@
+uuid: ad38b3a2-29e9-406c-b8b9-c5a7b1e0a656
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.featured_posts
+    - field.field.block_content.featured_posts.field_display_style
+    - field.field.block_content.featured_posts.field_featured_posts
+    - field.field.block_content.featured_posts.field_hide_title
+    - field.field.block_content.featured_posts.field_is_random
+    - field.field.block_content.featured_posts.field_is_styled
+id: block_content.featured_posts.default
+targetEntityType: block_content
+bundle: featured_posts
+mode: default
+content:
+  field_featured_posts:
+    weight: 0
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+hidden:
+  field_display_style: true
+  field_hide_title: true
+  field_is_random: true
+  field_is_styled: true
+  langcode: true

@@ -1,0 +1,25 @@
+uuid: 7b12fa8e-6eb5-4ea2-9a70-5c29caafd316
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_width
+    - media.type.video
+id: media.video.field_width
+field_name: field_width
+entity_type: media
+bundle: video
+label: Width
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: 100
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

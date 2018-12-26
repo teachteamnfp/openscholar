@@ -1,0 +1,14 @@
+uuid: b5601355-0a85-4543-9eaa-8b044ba8170a
+langcode: en
+status: true
+dependencies: {  }
+id: audio
+label: Video/Audio
+description: ''
+source: audio_file
+queue_thumbnail_downloads: false
+new_revision: false
+source_configuration:
+  source_field: field_media_file
+field_map:
+  name: name

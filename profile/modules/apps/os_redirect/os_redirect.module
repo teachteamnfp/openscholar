@@ -1,0 +1,119 @@
+<?php
+
+use Drupal\Core\Language\Language;
+use Drupal\redirect\Entity\Redirect;
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ */
+function os_redirect_node_insert(
+  Drupal\Core\Entity\EntityInterface $entity
+) {
+  _os_redirect_update_node_redirect($entity);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ */
+function os_redirect_node_update(
+  Drupal\Core\Entity\EntityInterface $entity
+) {
+  _os_redirect_update_node_redirect($entity);
+}
+
+/**
+ * @param \Drupal\Core\Entity\EntityInterface $entity
+ *
+ * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+ * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+ * @throws \Drupal\Core\Entity\EntityStorageException
+ */
+function _os_redirect_update_node_redirect(
+  Drupal\Core\Entity\EntityInterface $entity
+): void {
+  $redirectUri = _os_redirect_get_node_redirect_uri($entity);
+  $redirect = _os_redirect_get_node_redirect_entity($entity);
+  if (!empty($redirect)) {
+    $redirectUrl = $redirect->getRedirectUrl();
+    // Delete exists redirect
+    if (empty($redirectUri)) {
+      $redirect->delete();
+      return;
+    }
+    if ($redirectUrl->getUri() != $redirectUri) {
+      // Update with new field value
+      $redirect->setRedirect($redirectUri);
+      $redirect->save();
+      return;
+    }
+    // Nothing changed
+    return;
+  }
+  // If not exists, then create a new redirect
+  if (!empty($redirectUri)) {
+    $redirect = Redirect::create();
+    $redirect->setSource('node/' . $entity->id());
+    $redirect->setRedirect($redirectUri);
+    $redirect->setLanguage(Language::LANGCODE_NOT_SPECIFIED);
+    $redirect->setStatusCode(307);
+    $redirect->save();
+  }
+}
+
+/**
+ * @param \Drupal\Core\Entity\EntityInterface $entity
+ *
+ * @return \Drupal\redirect\Entity\Redirect
+ * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+ * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+ */
+function _os_redirect_get_node_redirect_entity(
+  Drupal\Core\Entity\EntityInterface $entity
+) {
+  $language = Language::LANGCODE_NOT_SPECIFIED;
+  $hash = Redirect::generateHash('node/' . $entity->id(), [], $language);
+
+  // Search for duplicate.
+  $redirects = \Drupal::entityManager()
+    ->getStorage('redirect')
+    ->loadByProperties(['hash' => $hash]);
+
+  if (empty($redirects)) {
+    return null;
+  }
+
+  /** @var Redirect $redirect */
+  $redirect = array_shift($redirects);
+  return $redirect;
+}
+
+function _os_redirect_get_node_redirect_uri(Drupal\Core\Entity\EntityInterface $entity) {
+  $urlItemList = $entity->get('field_redirect_to_source');
+  if (empty($urlItemList)) {
+    return '';
+  }
+  $urlValues = $urlItemList->getValue();
+
+  return !empty($urlValues[0]['uri']) ? $urlValues[0]['uri'] : '';
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete().
+ *
+ * @param \Drupal\Core\Entity\EntityInterface $entity
+ *
+ * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+ * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+ * @throws \Drupal\Core\Entity\EntityStorageException
+ */
+function os_redirect_node_delete(
+  Drupal\Core\Entity\EntityInterface $entity
+) {
+  $redirectUri = _os_redirect_get_node_redirect_uri($entity);
+  if (!empty($redirectUri)) {
+    $redirect = _os_redirect_get_node_redirect_entity($entity);
+    if (!empty($redirect)) {
+      $redirect->delete();
+    }
+  }
+}

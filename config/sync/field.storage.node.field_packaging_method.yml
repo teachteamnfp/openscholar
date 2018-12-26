@@ -1,0 +1,24 @@
+uuid: 1a30a97b-b525-4e51-a038-3d283327e86f
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_packaging_method
+field_name: field_packaging_method
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: manual_upload
+      label: 'Manual Upload'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

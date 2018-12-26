@@ -1,5 +1,6 @@
 module:
   big_pipe: 0
+  blazy: 0
   block: 0
   block_content: 0
   block_place: 0
@@ -16,6 +17,7 @@ module:
   context_ui: 0
   contextual: 0
   cp: 0
+  crop: 0
   ctools: 0
   datetime: 0
   datetime_range: 0
@@ -34,6 +36,7 @@ module:
   group_entity: 0
   group_purl: 0
   image: 0
+  image_widget_crop: 0
   inline_form_errors: 0
   kint: 0
   language: 0
@@ -45,7 +48,12 @@ module:
   menu_ui: 0
   node: 0
   options: 0
+  os_app_access: 0
   os_links: 0
+  os_office_embed: 0
+  os_media_gallery: 0
+  os_redirect: 0
+  os_slideshow: 0
   page_cache: 0
   path: 0
   purl: 0
@@ -55,6 +63,7 @@ module:
   rest: 0
   search: 0
   serialization: 0
+  slick: 0
   system: 0
   taxonomy: 0
   telephone: 0
@@ -64,8 +73,10 @@ module:
   toolbar_menu: 0
   update: 0
   user: 0
+  views_accordion: 0
   views_ui: 0
   vsite: 0
+  vsite_privacy: 0
   workflows: 0
   menu_link_content: 1
   pathauto: 1
