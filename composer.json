@@ -148,11 +148,6 @@
                 ".editorconfig": "../.editorconfig",
                 ".gitattributes": "../.gitattributes"
             }
-        },
-        "patches":{
-            "drupal/purl": {
-                "fix incorrect arguments to PurlRouterDefinition": "https://patch-diff.githubusercontent.com/raw/openscholar/purl-d8/pull/1.patch"
-            }
         }
     }
 }
