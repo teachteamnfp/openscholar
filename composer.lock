@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c9042cb5a4c9b402811d20f83f8948fb",
+    "content-hash": "7375adb27d28b683ed9b0440bbc73974",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -2977,6 +2977,9 @@
                     "recurse": false,
                     "replace": false,
                     "merge-extra": false
+                },
+                "patches_applied": {
+                    "Test runs can throw exceptions due to missing .htkey file (https://www.drupal.org/project/drupal/issues/2246725#comment-12160940)": "https://www.drupal.org/files/issues/2246725-24.patch"
                 }
             },
             "autoload": {
@@ -3540,7 +3543,10 @@
                 "shasum": null
             },
             "type": "drupal-module",
-            "time": "2018-12-10T20:05:46+00:00"
+            "extra": {
+                "patches_applied": []
+            },
+            "time": "2018-10-30T22:24:27+00:00"
         },
         {
             "name": "drupal/redirect",
@@ -8172,7 +8178,8 @@
             "homepage": "https://www.drupal.org/project/media_entity_browser",
             "support": {
                 "source": "http://cgit.drupalcode.org/media_entity_browser"
-            }
+            },
+            "time": "2018-04-05T08:15:29+00:00"
         },
         {
             "name": "enyo/dropzone",
