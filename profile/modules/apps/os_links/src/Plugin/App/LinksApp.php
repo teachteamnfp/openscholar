@@ -27,14 +27,14 @@ class LinksApp extends PluginBase implements AppInterface {
     ];
   }
 
-<<<<<<< HEAD
-}
-=======
   /**
-   * @inheritDoc
+   * Returns title.
+   *
+   * @return string
+   *   The title.
    */
-  public function getTitle () {
+  public function getTitle() {
     return $this->pluginDefinition['title'];
   }
+
 }
->>>>>>> @{-1}

@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Hook implementationss for the vsite module.
+ * Hook implementations for the vsite module.
  */
 
 use Drupal\Core\Cache\CacheableMetadata;

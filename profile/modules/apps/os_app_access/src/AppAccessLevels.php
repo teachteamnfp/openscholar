@@ -1,14 +1,10 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: New User
- * Date: 11/5/2018
- * Time: 11:12 AM
- */
 
 namespace Drupal\os_app_access;
 
-
+/**
+ * Class AppAccessLevels.
+ */
 class AppAccessLevels {
 
   public const PUBLIC = 0;

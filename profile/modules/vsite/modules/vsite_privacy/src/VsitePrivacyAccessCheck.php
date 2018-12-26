@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: New User
- * Date: 11/8/2018
- * Time: 2:53 PM
- */
 
 namespace Drupal\vsite_privacy;
-
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\vsite\VsiteEvents;
@@ -15,42 +8,71 @@ use Drupal\vsite_privacy\Plugin\VsitePrivacyLevelManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
+/**
+ * Class VsitePrivacyAccessCheck.
+ */
 class VsitePrivacyAccessCheck implements EventSubscriberInterface {
 
-  /** @var ConfigFactoryInterface */
+  /**
+   * Config factory.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
   protected $configFactory;
 
-  /** @var VsitePrivacyLevelManagerInterface */
+  /**
+   * Vsite privacy level manager.
+   *
+   * @var \Drupal\vsite_privacy\Plugin\VsitePrivacyLevelManagerInterface
+   */
   protected $vsitePrivacyLevelManager;
 
-  /** @var bool */
-  protected $checked = false;
+  /**
+   * Checked.
+   *
+   * @var bool
+   */
+  protected $checked = FALSE;
 
-  public function __construct (ConfigFactoryInterface $configFactory, VsitePrivacyLevelManagerInterface $vsitePrivacyLevelManager) {
+  /**
+   * Creates new object for VsitePrivacyAccessCheck.
+   *
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
+   *   Config factory.
+   * @param \Drupal\vsite_privacy\Plugin\VsitePrivacyLevelManagerInterface $vsitePrivacyLevelManager
+   *   Vsite privacy level manager.
+   */
+  public function __construct(ConfigFactoryInterface $configFactory, VsitePrivacyLevelManagerInterface $vsitePrivacyLevelManager) {
     $this->configFactory = $configFactory;
     $this->vsitePrivacyLevelManager = $vsitePrivacyLevelManager;
   }
 
   /**
-   * @inheritDoc
+   * {@inheritdoc}
    */
-  public static function getSubscribedEvents () {
+  public static function getSubscribedEvents() {
     $events = [];
     $events[VsiteEvents::VSITE_ACTIVATED][] = ['onVsiteActivated', 0];
     return $events;
   }
 
+  /**
+   * React on site activated event.
+   */
   public function onVsiteActivated() {
-    if ($this->checked) return;
+    if ($this->checked) {
+      return;
+    }
 
-    $this->checked = true;
-    $privacy = $this->configFactory->get ('vsite.privacy');
-    $level = $privacy->get ('level');
+    $this->checked = TRUE;
+    $privacy = $this->configFactory->get('vsite.privacy');
+    $level = $privacy->get('level');
     if (!isset($level)) {
       $level = 'public';
     }
-    if (!$this->vsitePrivacyLevelManager->checkAccessForPlugin (\Drupal::currentUser(), $level)) {
+    if (!$this->vsitePrivacyLevelManager->checkAccessForPlugin(\Drupal::currentUser(), $level)) {
       throw new AccessDeniedHttpException();
     }
   }
+
 }

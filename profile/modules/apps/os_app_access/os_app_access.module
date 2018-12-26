@@ -1,25 +1,64 @@
 <?php
 
+/**
+ * @file
+ * OS app access.
+ */
+
+use Drupal\node\NodeInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\os_app_access\Access\AppAccess;
-use Drupal\vsite\Plugin\AppManangerInterface;
 use Drupal\Core\Access\AccessResultNeutral;
 
+/**
+ * Node create access.
+ *
+ * @param \Drupal\Core\Session\AccountInterface $account
+ *   The user account.
+ * @param array $context
+ *   Context.
+ * @param string $bundle
+ *   The bundle.
+ */
 function os_app_access_node_create_access(AccountInterface $account, array $context, string $bundle) {
-  return _os_app_access_node_type_access ($account, $bundle);
+  return _os_app_access_node_type_access($account, $bundle);
 }
 
-function os_app_access_node_access(\Drupal\node\NodeInterface $node, $op, $account) {
-  return _os_app_access_node_type_access ($account, $node->bundle());
+/**
+ * Node access.
+ *
+ * @param \Drupal\node\NodeInterface $node
+ *   The node.
+ * @param string $op
+ *   Operation name.
+ * @param \Drupal\Core\Session\AccountInterface $account
+ *   The user account.
+ *
+ * @return \Drupal\Core\Access\AccessResultInterface
+ *   The access result.
+ */
+function os_app_access_node_access(NodeInterface $node, $op, AccountInterface $account) {
+  return _os_app_access_node_type_access($account, $node->bundle());
 }
 
+/**
+ * Checks node type access.
+ *
+ * @param \Drupal\Core\Session\AccountInterface $account
+ *   The user account.
+ * @param string $node_type
+ *   The node type.
+ *
+ * @return \Drupal\Core\Access\AccessResultInterface
+ *   The access result.
+ */
 function _os_app_access_node_type_access(AccountInterface $account, $node_type) {
   $app_access = new AppAccess();
-  /** @var AppManangerInterface $app_manager */
+  /** @var \Drupal\vsite\Plugin\AppManangerInterface $app_manager */
   $app_manager = Drupal::service('vsite.app.manager');
-  $app = $app_manager->getAppForBundle ($node_type);
+  $app = $app_manager->getAppForBundle($node_type);
   if ($app) {
-    return $app_access->access ($account, $app);
+    return $app_access->access($account, $app);
   }
   return new AccessResultNeutral();
 }

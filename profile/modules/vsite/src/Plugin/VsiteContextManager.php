@@ -77,7 +77,7 @@ class VsiteContextManager implements VsiteContextManagerInterface {
   /**
    * {@inheritdoc}
    */
-  public function getAbsoluteUrl (string $path = '', GroupInterface $group = NULL) {
+  public function getAbsoluteUrl(string $path = '', GroupInterface $group = NULL) {
     if (!$this->activeGroup) {
       return $path;
     }
@@ -89,7 +89,6 @@ class VsiteContextManager implements VsiteContextManagerInterface {
   /**
    * {@inheritdoc}
    */
-  public function getStorage(GroupInterface $group = NULL) {
-  }
+  public function getStorage(GroupInterface $group = NULL) {}
 
 }
