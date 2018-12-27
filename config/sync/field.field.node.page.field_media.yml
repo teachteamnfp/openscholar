@@ -1,0 +1,34 @@
+uuid: 0978c27c-fc2f-4499-94a4-c04f4824363a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_media
+    - media.type.audio
+    - media.type.document
+    - media.type.executable
+    - media.type.image
+    - node.type.page
+id: node.page.field_media
+field_name: field_media
+entity_type: node
+bundle: page
+label: 'Attach Files'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      document: document
+      executable: executable
+      image: image
+      audio: audio
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: document
+field_type: entity_reference
