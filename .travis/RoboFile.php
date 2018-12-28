@@ -72,6 +72,8 @@ class RoboFile extends \Robo\Tasks
     {
         $collection = $this->collectionBuilder();
         $collection->addTaskList($this->buildEnvironment());
+        $collection->addTaskList($this->installDrupal());
+        $collection->addTaskList($this->installTestConfigs());
         $collection->addTaskList($this->enableXDebug());
         $collection->addTaskList($this->runKernelTests($groups));
         return $collection->run();
@@ -90,6 +92,7 @@ class RoboFile extends \Robo\Tasks
         $collection = $this->collectionBuilder();
         $collection->addTaskList($this->buildEnvironment());
         $collection->addTaskList($this->installDrupal());
+        $collection->addTaskList($this->installTestConfigs());
         $collection->addTaskList($this->enableXDebug());
         $collection->addTaskList($this->runFunctionalTests($groups));
         return $collection->run();
@@ -227,6 +230,22 @@ class RoboFile extends \Robo\Tasks
         $tasks[] = $this->taskExecStack()
             ->exec('docker-compose exec -T php cp .travis/config/default.settings.php web/sites/default/default.settings.php')
             ->exec('docker-compose exec -T php ./vendor/bin/drush site-install openscholar -vvv -y --db-url=' . static::DB_URL . ' --existing-config');
+
+        return $tasks;
+    }
+
+    /**
+     * Install test configurations.
+     *
+     * @return \Robo\Task\Base\Exec[]
+     *   A task to install Drupal.
+     */
+    protected function installTestConfigs()
+    {
+        $tasks[] = $this->taskFilesystemStack()
+            ->copy('profile/modules/vsite/tests/modules/vsite_module_test', 'web/modules/contrib', true);
+        $tasks[] = $this->taskExecStack()
+            ->exec('docker-compose exec -T php ./vendor/bin/drush en -y vsite_module_test');
 
         return $tasks;
     }

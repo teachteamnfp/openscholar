@@ -3,4 +3,6 @@ name: Vsite Module Test
 description: Testing module for token functionality.
 package: Testing
 core: 8.x
+dependencies:
+  - views
 hidden: TRUE
