@@ -33,6 +33,8 @@
 /web/sites/autotest
 
 # Ignore drupal core (if not versioning drupal sources)
+.editorconfig
+.gitattributes
 /web/.csslintrc
 /web/.editorconfig
 /web/.eslintignore
