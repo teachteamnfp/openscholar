@@ -1,8 +1,8 @@
 <?php
 
-namespace Drupal\Tests\vsite\Kernel;
+namespace Drupal\Tests\vsite\ExistingSite;
 
-use Drupal\Tests\group\Kernel\GroupKernelTestBase;
+use weitzman\DrupalTestTraits\ExistingSiteBase;
 
 /**
  * Tests VsiteServiceProvider.
@@ -11,26 +11,7 @@ use Drupal\Tests\group\Kernel\GroupKernelTestBase;
  * @group kernel
  * @coversDefaultClass \Drupal\vsite\VsiteServiceProvider
  */
-class VsiteServiceProviderTest extends GroupKernelTestBase {
-
-  /**
-   * {@inheritdoc}
-   */
-  public static $modules = [
-    'purl',
-    'vsite',
-  ];
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function setUp() {
-    parent::setUp();
-    $this->installConfig([
-      'purl',
-      'vsite',
-    ]);
-  }
+class VsiteServiceProviderTest extends ExistingSiteBase {
 
   /**
    * Tests alteration in purl path processor.
