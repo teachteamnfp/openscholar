@@ -13,14 +13,18 @@ use Drupal\redirect\Entity\Redirect;
  * Implements hook_ENTITY_TYPE_insert().
  */
 function os_redirect_node_insert(EntityInterface $entity) {
-  _os_redirect_update_node_redirect($entity);
+  if (in_array($entity->bundle(), ['news', 'person'])) {
+    _os_redirect_update_node_redirect($entity);
+  }
 }
 
 /**
  * Implements hook_ENTITY_TYPE_update().
  */
 function os_redirect_node_update(EntityInterface $entity) {
-  _os_redirect_update_node_redirect($entity);
+  if (in_array($entity->bundle(), ['news', 'person'])) {
+    _os_redirect_update_node_redirect($entity);
+  }
 }
 
 /**
@@ -116,11 +120,13 @@ function _os_redirect_get_node_redirect_uri(EntityInterface $entity) {
  * Implements hook_ENTITY_TYPE_delete().
  */
 function os_redirect_node_delete(EntityInterface $entity) {
-  $redirectUri = _os_redirect_get_node_redirect_uri($entity);
-  if (!empty($redirectUri)) {
-    $redirect = _os_redirect_get_node_redirect_entity($entity);
-    if (!empty($redirect)) {
-      $redirect->delete();
+  if (in_array($entity->bundle(), ['news', 'person'])) {
+    $redirectUri = _os_redirect_get_node_redirect_uri($entity);
+    if (!empty($redirectUri)) {
+      $redirect = _os_redirect_get_node_redirect_entity($entity);
+      if (!empty($redirect)) {
+        $redirect->delete();
+      }
     }
   }
 }
