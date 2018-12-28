@@ -38,7 +38,7 @@ services:
       - 'traefik.frontend.rule=Host:mailhog.${PROJECT_BASE_URL}'
 
   apache:
-    image: wodby/php-apache:$APACHE_TAG
+    image: wodby/apache:$APACHE_TAG
     container_name: "${PROJECT_NAME}_apache"
     depends_on:
       - php
