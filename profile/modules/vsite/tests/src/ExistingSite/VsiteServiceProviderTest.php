@@ -2,8 +2,6 @@
 
 namespace Drupal\Tests\vsite\ExistingSite;
 
-use weitzman\DrupalTestTraits\ExistingSiteBase;
-
 /**
  * Tests VsiteServiceProvider.
  *
@@ -11,7 +9,7 @@ use weitzman\DrupalTestTraits\ExistingSiteBase;
  * @group kernel
  * @coversDefaultClass \Drupal\vsite\VsiteServiceProvider
  */
-class VsiteServiceProviderTest extends ExistingSiteBase {
+class VsiteServiceProviderTest extends VsiteExistingSiteTestBase {
 
   /**
    * Tests alteration in purl path processor.

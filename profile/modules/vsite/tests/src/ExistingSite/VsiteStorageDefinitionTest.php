@@ -1,8 +1,7 @@
 <?php
 
-namespace Drupal\Tests\vsite\Kernel;
+namespace Drupal\Tests\vsite\ExistingSite;
 
-use Drupal\Tests\group\Kernel\GroupKernelTestBase;
 use Drupal\vsite\Event\VsiteActivatedEvent;
 use Drupal\vsite\VsiteEvents;
 
@@ -13,15 +12,7 @@ use Drupal\vsite\VsiteEvents;
  * @group kernel
  * @coversDefaultClass \Drupal\vsite\Config\VsiteStorageDefinition
  */
-class VsiteStorageDefinitionTest extends GroupKernelTestBase {
-
-  /**
-   * {@inheritdoc}
-   */
-  public static $modules = [
-    'purl',
-    'vsite',
-  ];
+class VsiteStorageDefinitionTest extends VsiteExistingSiteTestBase {
 
   /**
    * Event dispatcher.
@@ -47,14 +38,14 @@ class VsiteStorageDefinitionTest extends GroupKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  public function setUp() {
     parent::setUp();
-
-    $this->installConfig(['vsite']);
 
     $this->eventDispatcher = $this->container->get('event_dispatcher');
     $this->hierarchicalStorage = $this->container->get('hierarchical.storage');
-    $this->group = $this->createGroup();
+    $this->group = $this->createGroup([
+      'type' => 'personal',
+    ]);
   }
 
   /**

@@ -4,7 +4,6 @@ namespace Drupal\Tests\vsite\ExistingSite;
 
 use Drupal\vsite\Event\VsiteActivatedEvent;
 use Drupal\vsite\VsiteEvents;
-use weitzman\DrupalTestTraits\ExistingSiteBase;
 
 /**
  * Tests VsitePathActivator.
@@ -13,14 +12,7 @@ use weitzman\DrupalTestTraits\ExistingSiteBase;
  * @group functional
  * @coversDefaultClass \Drupal\vsite\Plugin\VsitePathActivator
  */
-class VsitePathActivatorTest extends ExistingSiteBase {
-
-  /**
-   * The entity type manager service.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
+class VsitePathActivatorTest extends VsiteExistingSiteTestBase {
 
   /**
    * The storage element to add a vsite storage to.
@@ -48,7 +40,6 @@ class VsitePathActivatorTest extends ExistingSiteBase {
    */
   public function setUp() {
     parent::setUp();
-    $this->entityTypeManager = $this->container->get('entity_type.manager');
     $this->hierarchicalStorage = $this->container->get('hierarchical.storage');
     $this->eventDispatcher = $this->container->get('event_dispatcher');
     $this->groupCreator = $this->createUser([
@@ -58,25 +49,6 @@ class VsitePathActivatorTest extends ExistingSiteBase {
       'create personal group',
     ]);
     $this->drupalLogin($this->groupCreator);
-  }
-
-  /**
-   * Creates a group.
-   *
-   * @param array $values
-   *   (optional) The values used to create the entity.
-   *
-   * @return \Drupal\group\Entity\GroupInterface
-   *   The created group entity.
-   */
-  protected function createGroup(array $values = []) {
-    $group = $this->entityTypeManager->getStorage('group')->create($values + [
-      'type' => 'default',
-      'label' => $this->randomMachineName(),
-    ]);
-    $group->enforceIsNew();
-    $group->save();
-    return $group;
   }
 
   /**
