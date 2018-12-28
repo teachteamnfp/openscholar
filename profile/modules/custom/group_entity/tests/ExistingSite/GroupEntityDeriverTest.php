@@ -1,12 +1,12 @@
 <?php
 
-namespace Drupal\Tests\group_entity\Kernel;
+namespace Drupal\Tests\group_entity\ExistingSite;
 
 use Drupal\group\Entity\Group;
 use Drupal\group\Entity\GroupType;
-use Drupal\KernelTests\KernelTestBase;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\taxonomy\Entity\Vocabulary;
+use weitzman\DrupalTestTraits\ExistingSiteBase;
 
 /**
  * Class GroupEntityDeriverTest.
@@ -15,26 +15,7 @@ use Drupal\taxonomy\Entity\Vocabulary;
  * @group kernel
  * @coversDefaultClass \Drupal\group_entity\Plugin\GroupContentEnabler\GroupEntityDeriver
  */
-class GroupEntityDeriverTest extends KernelTestBase {
-
-  /**
-   * Modules to install.
-   *
-   * @var array
-   */
-  protected static $modules = [
-    'system',
-    'user',
-    'field',
-    'text',
-    'filter',
-    'group',
-    'media',
-    'block_content',
-    'taxonomy',
-    'group_entity',
-    'group_test_config',
-  ];
+class GroupEntityDeriverTest extends ExistingSiteBase {
 
   /**
    * Group content enabler manager.
@@ -46,7 +27,7 @@ class GroupEntityDeriverTest extends KernelTestBase {
   /**
    * Group entity to install plugins to.
    *
-   * @var \Drupal\group\Entity\GroupType
+   * @var \Drupal\group\Entity\GroupTypeInterface
    */
   protected $groupType;
 
@@ -56,22 +37,8 @@ class GroupEntityDeriverTest extends KernelTestBase {
   public function setUp() {
     parent::setUp();
 
-    $this->installConfig(['group', 'group_test_config', 'field']);
-    $this->installEntitySchema('taxonomy_term');
-    $this->installEntitySchema('user');
-    $this->installEntitySchema('group');
-    $this->installEntitySchema('group_type');
-    $this->installEntitySchema('group_content');
-    $this->installEntitySchema('group_content_type');
-
-    $this->groupContentEnabler = \Drupal::service('plugin.manager.group_content_enabler');
-
-    $this->groupType = GroupType::create([
-      'id' => 'personal',
-      'label' => 'Personal',
-      'creator_membership' => 0,
-    ]);
-    $this->groupType->save();
+    $this->groupContentEnabler = $this->container->get('plugin.manager.group_content_enabler');
+    $this->groupType = GroupType::load('personal');
   }
 
   /**

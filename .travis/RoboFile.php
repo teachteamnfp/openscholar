@@ -243,7 +243,9 @@ class RoboFile extends \Robo\Tasks
     protected function installTestConfigs()
     {
         $tasks[] = $this->taskFilesystemStack()
-            ->copy('profile/modules/vsite/tests/modules/vsite_module_test', 'web/modules/contrib', true);
+            ->mkdir('web/modules/test')
+            ->copy('profile/modules/vsite/tests/modules/vsite_module_test', 'web/modules/test', true)
+            ->copy('web/modules/contrib/group/tests/modules/group_test_config', 'web/modules/test', true);
         $tasks[] = $this->taskExecStack()
             ->exec('docker-compose exec -T php ./vendor/bin/drush en -y vsite_module_test');
 
