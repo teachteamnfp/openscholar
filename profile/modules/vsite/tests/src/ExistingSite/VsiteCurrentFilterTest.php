@@ -46,20 +46,19 @@ class VsiteCurrentFilterTest extends VsiteExistingSiteTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp($import_test_views = TRUE) {
+  public function setUp() {
     parent::setUp();
 
     // Set the current user so group creation can rely on it.
     $this->container->get('current_user')->setAccount($this->createUser());
 
-    /** @var \Drupal\group\Entity\GroupTypeInterface $group_type */
-    $group_type = $this->entityTypeManager->getStorage('group_type')->load('personal');
-
     // Enable the user_as_content plugin on the default group type.
     /** @var \Drupal\group\Entity\Storage\GroupContentTypeStorageInterface $storage */
     $storage = $this->entityTypeManager->getStorage('group_content_type');
-    $plugin = $storage->createFromPlugin($group_type, 'group_node:page');
-    $plugin->save();
+    /** @var \Drupal\group\Entity\GroupContentTypeInterface[] $plugin */
+    $plugins = $storage->loadByContentPluginId('group_node:page');
+    /** @var \Drupal\group\Entity\GroupContentTypeInterface $plugin */
+    $plugin = reset($plugins);
 
     $this->group = Group::create([
       'type' => 'personal',

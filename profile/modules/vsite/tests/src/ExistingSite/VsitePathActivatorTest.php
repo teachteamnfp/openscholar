@@ -45,7 +45,6 @@ class VsitePathActivatorTest extends VsiteExistingSiteTestBase {
     $this->groupCreator = $this->createUser([
       'view the administration theme',
       'access administration pages',
-      'access group overview',
       'create personal group',
     ]);
     $this->drupalLogin($this->groupCreator);
