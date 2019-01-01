@@ -9,7 +9,9 @@ use Drupal\redirect\Entity\Redirect;
 function os_redirect_node_insert(
   Drupal\Core\Entity\EntityInterface $entity
 ) {
-  _os_redirect_update_node_redirect($entity);
+  if (in_array($entity->bundle(), ['news', 'person'])) {
+    _os_redirect_update_node_redirect($entity);
+  }
 }
 
 /**
@@ -18,7 +20,9 @@ function os_redirect_node_insert(
 function os_redirect_node_update(
   Drupal\Core\Entity\EntityInterface $entity
 ) {
-  _os_redirect_update_node_redirect($entity);
+  if (in_array($entity->bundle(), ['news', 'person'])) {
+    _os_redirect_update_node_redirect($entity);
+  }
 }
 
 /**
@@ -109,11 +113,13 @@ function _os_redirect_get_node_redirect_uri(Drupal\Core\Entity\EntityInterface $
 function os_redirect_node_delete(
   Drupal\Core\Entity\EntityInterface $entity
 ) {
-  $redirectUri = _os_redirect_get_node_redirect_uri($entity);
-  if (!empty($redirectUri)) {
-    $redirect = _os_redirect_get_node_redirect_entity($entity);
-    if (!empty($redirect)) {
-      $redirect->delete();
+  if (in_array($entity->bundle(), ['news', 'person'])) {
+    $redirectUri = _os_redirect_get_node_redirect_uri($entity);
+    if (!empty($redirectUri)) {
+      $redirect = _os_redirect_get_node_redirect_entity($entity);
+      if (!empty($redirect)) {
+        $redirect->delete();
+      }
     }
   }
 }
