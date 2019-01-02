@@ -5,6 +5,7 @@ use Drupal\field\Entity\FieldStorageConfig;
 
 function os_classes_field_semester_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = null, $cacheable) {
   // TODO: get from install config?
+  $allowedValues = \Drupal::config('os_classes.settings')->get('field_semester_allowed_values');
   $options = [
     'summer_1' => 'Summer 1',
     'summer_2' => 'Summer 2',

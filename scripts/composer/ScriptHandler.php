@@ -108,7 +108,8 @@ class ScriptHandler {
       'openscholar.install',
       'openscholar.profile',
       'profile'.DIRECTORY_SEPARATOR.'config' => 'config',
-      'profile'.DIRECTORY_SEPARATOR.'modules' => 'modules'
+      'profile'.DIRECTORY_SEPARATOR.'modules' => 'modules',
+      'profile'.DIRECTORY_SEPARATOR.'src' => 'src',
     );
     $root = realpath($event->getComposer()->getPackage()->getDistUrl());
     $path = $root.'/web/profiles/contrib/openscholar';

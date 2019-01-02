@@ -40,11 +40,11 @@ function openscholar_install() {
  */
 function openscholar_install_tasks(&$install_state) {
   $tasks = [
-    'openscholar_install_settings_form' => [
-      'display_name' => t('OpenScholar options'),
+    '\Drupal\openscholar\Form\ConfigurationForm' => [
+      'display_name' => t('OpenScholar'),
       'type' => 'form',
     ],
   ];
 
-  //return $tasks;
+  return $tasks;
 }
