@@ -31,6 +31,9 @@ function os_redirect_node_update(
 function _os_redirect_update_node_redirect(
   Drupal\Core\Entity\EntityInterface $entity
 ): void {
+  if (!$entity->hasField('field_redirect_to_source')) {
+    return;
+  }
   $redirectUri = _os_redirect_get_node_redirect_uri($entity);
   $redirect = _os_redirect_get_node_redirect_entity($entity);
   if (!empty($redirect)) {
