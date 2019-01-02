@@ -2,6 +2,8 @@
 
 use Drupal\Core\Render\Element;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\views\ViewExecutable;
+use Drupal\vsite\Cache\VsiteCacheContext;
 
 /**
  * Implements hook_modules_installed().
@@ -145,6 +147,20 @@ function vsite_form_alter(&$form, FormStateInterface $formState, $form_id) {
 }
 
 /**
+ * Implements hook_views_pre_build().
+ */
+function vsite_views_pre_build(ViewExecutable $view) {
+  if (!empty($view->filter['current_vsite_filter'])) {
+    /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContext */
+    $vsiteContext = \Drupal::service('vsite.context_manager');
+    if (!$group = $vsiteContext->getActiveVsite ()) {
+      // To solve cache problem, we won't serve the page without vsite context
+      throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
+    }
+  }
+}
+
+/**
  * Implements hook_toolbar_alter().
  */
 function vsite_toolbar_alter(&$toolbar) {
@@ -165,7 +181,7 @@ function _vsite_prerender_control_panel_links($element) {
     $metadata->addCacheContexts (['vsite:' . $vsiteContext->getActiveVsite ()->id ()]);
   }
   else {
-    $metadata->addCacheContexts(['vsite:none']);
+    $metadata->addCacheContexts([VsiteCacheContext::VSITE_CACHE_CONTEXTS_NONE]);
   }
 
   $metadata->applyTo ($element['toolbar_menu_control-panel']);
