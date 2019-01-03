@@ -38,6 +38,9 @@ function os_redirect_node_update(EntityInterface $entity) {
  * @throws \Drupal\Core\Entity\EntityStorageException
  */
 function _os_redirect_update_node_redirect(EntityInterface $entity) {
+  if (!$entity->hasField('field_redirect_to_source')) {
+    return;
+  }
   $redirectUri = _os_redirect_get_node_redirect_uri($entity);
   $redirect = _os_redirect_get_node_redirect_entity($entity);
   if (!empty($redirect)) {
@@ -118,6 +121,12 @@ function _os_redirect_get_node_redirect_uri(EntityInterface $entity) {
 
 /**
  * Implements hook_ENTITY_TYPE_delete().
+ *
+ * @param \Drupal\Core\Entity\EntityInterface $entity
+ *
+ * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+ * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+ * @throws \Drupal\Core\Entity\EntityStorageException
  */
 function os_redirect_node_delete(EntityInterface $entity) {
   if (in_array($entity->bundle(), ['news', 'person'])) {

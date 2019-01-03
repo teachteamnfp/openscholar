@@ -13,6 +13,8 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
  */
 class VsiteCacheContext implements CalculatedCacheContextInterface {
 
+  const VSITE_CACHE_CONTEXTS_NONE = 'vsite:none';
+
   /**
    * Entity Type Manager.
    *
@@ -40,7 +42,7 @@ class VsiteCacheContext implements CalculatedCacheContextInterface {
   public function getContext($parameter = NULL) {
     if ($parameter) {
       if ($group = $this->entityTypeManager->getStorage('group')->load($parameter)) {
-        return 'group:' . $group->id();
+        return 'vsite:'.$group->id ();
       }
     }
     return NULL;
