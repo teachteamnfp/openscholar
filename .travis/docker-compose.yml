@@ -24,8 +24,6 @@ services:
       DB_NAME: $DB_NAME
       DB_DRIVER: $DB_DRIVER
       PHP_XDEBUG: $PHP_XDEBUG_ENABLED
-      COVERALLS_RUN_LOCALLY: 1
-      COVERALLS_REPO_TOKEN: $COVERALLS_REPO_TOKEN
     volumes:
       - ./:/var/www/html
 
