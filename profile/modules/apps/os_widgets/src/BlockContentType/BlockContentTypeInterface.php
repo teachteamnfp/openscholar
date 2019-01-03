@@ -2,15 +2,24 @@
 
 namespace Drupal\os_widgets\BlockContentType;
 
+use Drupal\block_content\Entity\BlockContent;
 
+/**
+ * Interface BlockContentTypeInterface.
+ */
 interface BlockContentTypeInterface {
 
   /**
-   * @param array $variables
+   * Builds block.
    *
+   * @param array $variables
+   *   Variables.
    * @param \Drupal\block_content\Entity\BlockContent $blockContent
+   *   Content.
    *
    * @return array
+   *   Renderable array.
    */
-  function buildBlock($variables, $blockContent);
+  public function buildBlock(array $variables, BlockContent $blockContent);
+
 }

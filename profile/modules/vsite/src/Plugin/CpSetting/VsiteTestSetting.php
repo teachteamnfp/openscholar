@@ -1,8 +1,5 @@
 <?php
 
-/**
- * Example CP Setting implementation. Delete this comment in order to use it.
- */
 namespace Drupal\vsite\Plugin\CpSetting;
 
 use Drupal\Component\Plugin\PluginBase;
@@ -13,8 +10,9 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\cp_settings\CpSettingInterface;
 use Drupal\Core\Form\FormStateInterface;
 
-
 /**
+ * CP setting.
+ *
  * @CpSetting(
  *   id = "test_setting",
  *   title = @Translation("Test"),
@@ -26,11 +24,18 @@ use Drupal\Core\Form\FormStateInterface;
  * )
  */
 class VsiteTestSetting extends PluginBase implements CpSettingInterface {
-  public function getEditableConfigNames (): array {
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getEditableConfigNames(): array {
     return ['vsite.example'];
   }
 
-  public function getForm (array &$form, ConfigFactoryInterface $configFactory) {
+  /**
+   * {@inheritdoc}
+   */
+  public function getForm(array &$form, ConfigFactoryInterface $configFactory) {
     $config = $configFactory->get('vsite.example');
     $form['vsite_example_text'] = [
       '#type' => 'textfield',
@@ -39,14 +44,20 @@ class VsiteTestSetting extends PluginBase implements CpSettingInterface {
     ];
   }
 
-  public function submitForm (FormStateInterface $formState, ConfigFactoryInterface $configFactory) {
-    $config = $configFactory->getEditable ('vsite.example');
-    $config->set('text', $formState->getValue ('vsite_example_text'));
-    $config->save (true);
+  /**
+   * {@inheritdoc}
+   */
+  public function submitForm(FormStateInterface $formState, ConfigFactoryInterface $configFactory) {
+    $config = $configFactory->getEditable('vsite.example');
+    $config->set('text', $formState->getValue('vsite_example_text'));
+    $config->save(TRUE);
   }
 
-
-  public function access (AccountInterface $account): AccessResultInterface {
-    return AccessResult::allowed ();
+  /**
+   * {@inheritdoc}
+   */
+  public function access(AccountInterface $account): AccessResultInterface {
+    return AccessResult::allowed();
   }
+
 }

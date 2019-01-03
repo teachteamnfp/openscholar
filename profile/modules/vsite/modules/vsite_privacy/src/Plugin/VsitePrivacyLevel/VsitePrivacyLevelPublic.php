@@ -7,6 +7,8 @@ use Drupal\vsite_privacy\Plugin\VsitePrivacyLevelInterface;
 use Drupal\Core\Session\AccountInterface;
 
 /**
+ * Vsite privacy level.
+ *
  * @VsitePrivacyLevel(
  *   title = @Translation("Public"),
  *   id = "public",
@@ -15,8 +17,12 @@ use Drupal\Core\Session\AccountInterface;
  * )
  */
 class VsitePrivacyLevelPublic extends PluginBase implements VsitePrivacyLevelInterface {
-  public function checkAccess (AccountInterface $account): bool {
-    return true;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function checkAccess(AccountInterface $account): bool {
+    return TRUE;
   }
 
 }

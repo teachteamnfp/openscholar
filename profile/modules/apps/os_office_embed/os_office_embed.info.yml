@@ -4,4 +4,3 @@ dependencies:
   - drupal:field
 core: 8.x
 type: module
-

@@ -6,6 +6,8 @@ use Drupal\Component\Plugin\PluginBase;
 use Drupal\vsite\AppInterface;
 
 /**
+ * Bog app.
+ *
  * @App(
  *   title = @Translation("Blog"),
  *   canDisable = true,
@@ -20,15 +22,16 @@ class BlogApp extends PluginBase implements AppInterface {
    * {@inheritdoc}
    */
   public function getGroupContentTypes() {
-    return array(
-      'blog'
-    );
+    return [
+      'blog',
+    ];
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getTitle () {
+  public function getTitle() {
     return $this->pluginDefinition['title'];
   }
+
 }
