@@ -5,6 +5,7 @@
  * Hook implementations for the vsite module.
  */
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\Core\Render\Element;
@@ -175,9 +176,9 @@ function vsite_views_pre_build(ViewExecutable $view) {
   if (!empty($view->filter['current_vsite_filter'])) {
     /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContext */
     $vsiteContext = \Drupal::service('vsite.context_manager');
-    if (!$group = $vsiteContext->getActiveVsite ()) {
-      // To solve cache problem, we won't serve the page without vsite context
-      throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
+    if (!$group = $vsiteContext->getActiveVsite()) {
+      // To solve cache problem, we won't serve the page without vsite context.
+      throw new AccessDeniedHttpException();
     }
   }
 }

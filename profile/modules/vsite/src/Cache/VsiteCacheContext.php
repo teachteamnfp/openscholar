@@ -42,7 +42,7 @@ class VsiteCacheContext implements CalculatedCacheContextInterface {
   public function getContext($parameter = NULL) {
     if ($parameter) {
       if ($group = $this->entityTypeManager->getStorage('group')->load($parameter)) {
-        return 'vsite:'.$group->id ();
+        return 'vsite:' . $group->id();
       }
     }
     return NULL;

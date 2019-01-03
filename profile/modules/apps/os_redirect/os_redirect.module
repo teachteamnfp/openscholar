@@ -121,12 +121,6 @@ function _os_redirect_get_node_redirect_uri(EntityInterface $entity) {
 
 /**
  * Implements hook_ENTITY_TYPE_delete().
- *
- * @param \Drupal\Core\Entity\EntityInterface $entity
- *
- * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
- * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
- * @throws \Drupal\Core\Entity\EntityStorageException
  */
 function os_redirect_node_delete(EntityInterface $entity) {
   if (in_array($entity->bundle(), ['news', 'person'])) {
