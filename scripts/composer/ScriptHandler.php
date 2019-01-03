@@ -104,18 +104,17 @@ class ScriptHandler {
     $fs = new ComposerFilesystem();
     $io = $event->getIO();
     $fileList = array(
-      'openscholar.info.yml',
-      'openscholar.install',
-      'openscholar.profile',
-      'profile'.DIRECTORY_SEPARATOR.'config' => 'config',
-      'profile'.DIRECTORY_SEPARATOR.'modules' => 'modules'
+      'openscholar.info.yml' => 'openscholar.info.yml',
+      'openscholar.profile' => 'openscholar.profile',
+      'config' => 'config',
+      'profile' . DIRECTORY_SEPARATOR . 'modules' => 'modules',
     );
     $root = realpath($event->getComposer()->getPackage()->getDistUrl());
     $path = $root.'/web/profiles/contrib/openscholar';
 
     try {
       foreach ($fileList as $orig_file => $file) {
-        $orig = $root.DIRECTORY_SEPARATOR.(is_int($orig_file) ? $file : $orig_file);
+        $orig = $root . DIRECTORY_SEPARATOR . $orig_file;
         $link = $path.DIRECTORY_SEPARATOR.$file;
         if (Platform::isWindows () && is_dir($orig)) {
           if (file_exists($link)) {

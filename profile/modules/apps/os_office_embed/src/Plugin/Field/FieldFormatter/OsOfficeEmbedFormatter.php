@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\gdoc_field\Plugin\Field\FieldFormatter\GdocFieldFormatter.
- */
-
 namespace Drupal\os_office_embed\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\FieldItemListInterface;
@@ -23,15 +18,16 @@ use Drupal\file\Plugin\Field\FieldFormatter\FileFormatterBase;
  * )
  */
 class OsOfficeEmbedFormatter extends FileFormatterBase {
+
   /**
    * {@inheritdoc}
    */
   public static function defaultSettings() {
-    return array(
+    return [
       // Implement default settings.
-        'width' => 500,
-        'height' => 400,
-    ) + parent::defaultSettings();
+      'width' => 500,
+      'height' => 400,
+    ] + parent::defaultSettings();
   }
 
   /**
@@ -61,8 +57,12 @@ class OsOfficeEmbedFormatter extends FileFormatterBase {
   public function settingsSummary() {
     $summary = [];
     // Implement settings summary.
-    $summary[] = t('Width') . ': ' . $this->getSetting('width') . 'px';
-    $summary[] = t('Height') . ': ' . $this->getSetting('height') . 'px';
+    $summary[] = $this->t('Width: @width px', [
+      '@width' => $this->getSetting('width'),
+    ]);
+    $summary[] = $this->t('Height: @height px', [
+      '@height' => $this->getSetting('height'),
+    ]);
     return $summary;
   }
 
@@ -70,7 +70,7 @@ class OsOfficeEmbedFormatter extends FileFormatterBase {
    * {@inheritdoc}
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
-    $elements = array();
+    $elements = [];
 
     foreach ($this->getEntitiesToView($items, $langcode) as $delta => $file) {
       $entity = $this->fieldDefinition->getTargetEntityTypeId();
@@ -83,7 +83,7 @@ class OsOfficeEmbedFormatter extends FileFormatterBase {
 
       if ($uri_scheme == 'public') {
         $url = file_create_url($file->getFileUri());
-        $elements[$delta] = array(
+        $elements[$delta] = [
           '#theme' => 'os_office_embed',
           '#url' => $url,
           '#filename' => $filename,
@@ -94,13 +94,13 @@ class OsOfficeEmbedFormatter extends FileFormatterBase {
           '#bundle' => $bundle,
           '#field_name' => $field_name,
           '#field_type' => $field_type,
-        );
+        ];
 
       }
       else {
         drupal_set_message(
           t('The file (%file) is not publicly accessible. It must be publicly available in order for the Office embed to be able to access it.',
-          array('%file' => $filename)
+          ['%file' => $filename]
           ),
           'error',
           FALSE
