@@ -1,0 +1,3 @@
+os_classes.settings.field_semester_allowed_values:
+  type: sequence
+  label: 'Field semester allowed values'
