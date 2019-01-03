@@ -9,7 +9,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 /**
  * Provides a cache context for an arbitrary vsite.
  *
- * Activate with 'group:{int}'.
+ * Activate with 'vsite:{int}'.
  */
 class VsiteCacheContext implements CalculatedCacheContextInterface {
 
