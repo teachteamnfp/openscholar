@@ -49,7 +49,6 @@ module:
   node: 0
   options: 0
   os_app_access: 0
-  os_classes: 0
   os_links: 0
   os_office_embed: 0
   os_media_gallery: 0
