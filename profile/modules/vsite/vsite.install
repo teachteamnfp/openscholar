@@ -1,9 +1,13 @@
 <?php
 
-function vsite_install() {
-  vsite_setup_new_apps (array());
-}
+/**
+ * @file
+ * Install file for vsite module.
+ */
 
-function vsite_uninstall() {
-  // fill in
+/**
+ * Perform all necessary setup for apps.
+ */
+function vsite_install() {
+  vsite_setup_new_apps([]);
 }

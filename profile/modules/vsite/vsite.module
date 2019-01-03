@@ -1,11 +1,20 @@
 <?php
 
+/**
+ * @file
+ * Hook implementations for the vsite module.
+ */
+
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Drupal\Core\Cache\CacheableMetadata;
+use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\views\ViewExecutable;
+use Drupal\vsite\Cache\VsiteCacheContext;
 
 /**
  * Implements hook_modules_installed().
- * @param array $modules
  */
 function vsite_modules_installed(array $modules) {
   vsite_setup_new_apps();
@@ -13,41 +22,48 @@ function vsite_modules_installed(array $modules) {
 
 /**
  * Sets up associations between app content and group types.
- * @param array $modules
  */
 function vsite_setup_new_apps() {
+  // TODO: Fix this so it doesn't block installs.
+  return;
   \Drupal::service('vsite.app.manager')->clearCachedDefinitions();
-  $defs = \Drupal::service ('vsite.app.manager')->getDefinitions();
+  $defs = \Drupal::service('vsite.app.manager')->getDefinitions();
 
   /** @var \Drupal\group\Entity\Storage\GroupContentTypeStorageInterface $groupContentStorage */
-  $groupContentStorage = \Drupal::entityTypeManager ()->getStorage ('group_content_type');
+  $groupContentStorage = \Drupal::entityTypeManager()->getStorage('group_content_type');
   /** @var \Drupal\group\Plugin\GroupContentEnablerCollection $allPlugins */
   $allPlugins = \Drupal::service('plugin.manager.group_content_enabler')->getAll();
-  $group_types =\Drupal::entityTypeManager ()->getStorage('group_type')->loadMultiple ();
-  $map = array();
+  $group_types = \Drupal::entityTypeManager()->getStorage('group_type')->loadMultiple();
+  $map = [];
   foreach ($allPlugins as $p) {
     if ($p->getEntityTypeId() == 'node') {
       $map[$p->getEntityBundle()] = $p->getPluginId();
     }
   }
-  $existing = $groupContentStorage->loadByEntityTypeId ('node');
-  $config = array(
+  $existing = $groupContentStorage->loadByEntityTypeId('node');
+  $config = [
     'group_cardinality' => 1,
     'use_creation_wizard' => 0,
-  );
+  ];
 
   foreach ($defs as $d) {
-    if ($d['entityType'] != 'node') continue;
+    if ($d['entityType'] != 'node') {
+      continue;
+    }
 
     foreach ($group_types as $type => $gt) {
-      $k = $type.'-group_node-'.$d['bundle'];
+      $k = $type . '-group_node-' . $d['bundle'];
+      error_log($k);
       if (empty($existing[$k])) {
-        $groupContentStorage->createFromPlugin ($gt, $map[$d['bundle']], $config)->save();
+        $groupContentStorage->createFromPlugin($gt, $map[$d['bundle']], $config)->save();
       }
     }
   }
 }
 
+/**
+ * Implements hook_views_data_alter().
+ */
 function vsite_views_data_alter(&$data) {
   $data['group_content']['current_vsite_filter'] = [
     'title' => t('Current Vsite Filter'),
@@ -55,32 +71,38 @@ function vsite_views_data_alter(&$data) {
       'title' => t('Current Vsite Filter'),
       'help' => 'Filters content on the current vsite',
       'field' => 'gid',
-      'id' => 'vsite_current_filter'
-    ]
+      'id' => 'vsite_current_filter',
+    ],
   ];
 }
 
+/**
+ * Implements hook_pathauto_alias_alter().
+ */
 function vsite_pathauto_alias_alter(&$alias, array &$context) {
   /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContext */
   $vsiteContext = \Drupal::service('vsite.context_manager');
 
   /** @var \Drupal\group\Entity\GroupInterface $group */
-  if ($group = $vsiteContext->getActiveVsite ()) {
-    $purl = $vsiteContext->getActivePurl ();
+  if ($group = $vsiteContext->getActiveVsite()) {
+    $purl = $vsiteContext->getActivePurl();
     $trimmed_alias = ltrim($alias, '/');
-    $alias = '/'.$purl.'/'.$trimmed_alias;
+    $alias = '/' . $purl . '/' . $trimmed_alias;
   }
 }
 
+/**
+ * Implements hook_form_node_form_alter().
+ */
 function vsite_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContext */
   $vsiteContext = \Drupal::service('vsite.context_manager');
 
-  if ($group = $vsiteContext->getActiveVsite ()) {
+  if ($group = $vsiteContext->getActiveVsite()) {
     /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
-    $entity = $form_state->getFormObject ()->getEntity();
+    $entity = $form_state->getFormObject()->getEntity();
     $form_state->set('group', $group);
-    $form_state->set('group_content_enabler', 'group_node:'.$entity->bundle ());
+    $form_state->set('group_content_enabler', 'group_node:' . $entity->bundle());
     foreach (Element::children($form['actions']) as $name) {
 
       // Skip buttons without submit handlers.
@@ -101,8 +123,11 @@ function vsite_form_node_form_alter(&$form, FormStateInterface $form_state, $for
   }
 }
 
+/**
+ * Implements hook_form_alter().
+ */
 function vsite_form_alter(&$form, FormStateInterface $formState, $form_id) {
-  if ($formState->getFormObject () instanceof \Drupal\Core\Entity\EntityFormInterface) {
+  if ($formState->getFormObject() instanceof EntityFormInterface) {
 
     /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContext */
     $vsiteContext = \Drupal::service('vsite.context_manager');
@@ -113,12 +138,12 @@ function vsite_form_alter(&$form, FormStateInterface $formState, $form_id) {
 
       /** @var \Drupal\group\Plugin\GroupContentEnablerManagerInterface $groupContentEnabler */
       $groupContentEnabler = \Drupal::service('plugin.manager.group_content_enabler');
-      $plugins = $groupContentEnabler->getGroupTypePluginMap ();
+      $plugins = $groupContentEnabler->getGroupTypePluginMap();
       $availablePlugins = $plugins[$groupTypeId];
 
       /** @var \Drupal\Core\Entity\EntityInterface $entity */
-      $entity = $formState->getFormObject ()->getEntity();
-      $plugin_id = 'group_entity:'.$entity->getEntityTypeId ();
+      $entity = $formState->getFormObject()->getEntity();
+      $plugin_id = 'group_entity:' . $entity->getEntityTypeId();
       if (in_array($plugin_id, $availablePlugins)) {
         $formState->set('group', $group);
         $formState->set('group_content_enabler', $plugin_id);
@@ -131,7 +156,7 @@ function vsite_form_alter(&$form, FormStateInterface $formState, $form_id) {
 
           // Skip buttons that do not properly build and save an entity.
           $submit = $form['actions'][$name]['#submit'];
-          if (!in_array ('::submitForm', $submit) || !in_array ('::save', $submit)) {
+          if (!in_array('::submitForm', $submit) || !in_array('::save', $submit)) {
             continue;
           }
 
@@ -140,6 +165,22 @@ function vsite_form_alter(&$form, FormStateInterface $formState, $form_id) {
           $form['actions'][$name]['#submit'][] = 'group_content_entity_submit';
         }
       }
+    }
+  }
+}
+
+/**
+ * Implements hook_views_pre_build().
+ */
+function vsite_views_pre_build(ViewExecutable $view) {
+  if (!empty($view->filter['current_vsite_filter'])) {
+    /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContext */
+    $vsiteContext = \Drupal::service('vsite.context_manager');
+    if ($group = $vsiteContext->getActiveVsite()) {
+      $view->element['#cache']['contexts'][] = 'vsite:' . $vsiteContext->getActiveVsite()->id();
+    }
+    else {
+      $view->element['#cache']['contexts'][] = 'vsite:none';
     }
   }
 }
@@ -154,21 +195,24 @@ function vsite_toolbar_alter(&$toolbar) {
 /**
  * Adds the current vsite to list of this build array's cache contexts.
  *
- * @param $element
- * @return mixed
+ * @param array $element
+ *   The full toolbar render array.
+ *
+ * @return array
+ *   The modified element
  */
-function _vsite_prerender_control_panel_links($element) {
+function _vsite_prerender_control_panel_links(array $element) {
   /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContext */
   $vsiteContext = \Drupal::service('vsite.context_manager');
-  $metadata = \Drupal\Core\Cache\CacheableMetadata::createFromRenderArray ($element['toolbar_menu_control-panel']);
-  if ($group = $vsiteContext->getActiveVsite ()) {
-    $metadata->addCacheContexts (['vsite:' . $vsiteContext->getActiveVsite ()->id ()]);
+  $metadata = CacheableMetadata::createFromRenderArray($element['toolbar_menu_control-panel']);
+  if ($group = $vsiteContext->getActiveVsite()) {
+    $metadata->addCacheContexts(['vsite:' . $vsiteContext->getActiveVsite()->id()]);
   }
   else {
-    $metadata->addCacheContexts(['vsite:none']);
+    $metadata->addCacheContexts([VsiteCacheContext::VSITE_CACHE_CONTEXTS_NONE]);
   }
 
-  $metadata->applyTo ($element['toolbar_menu_control-panel']);
+  $metadata->applyTo($element['toolbar_menu_control-panel']);
 
   return $element;
 }

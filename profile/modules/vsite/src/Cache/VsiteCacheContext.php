@@ -2,43 +2,57 @@
 
 namespace Drupal\vsite\Cache;
 
-
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Cache\Context\CalculatedCacheContextInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 
+/**
+ * Provides a cache context for an arbitrary vsite.
+ *
+ * Activate with 'vsite:{int}'.
+ */
 class VsiteCacheContext implements CalculatedCacheContextInterface {
 
-  /** @var EntityTypeManagerInterface */
+  const VSITE_CACHE_CONTEXTS_NONE = 'vsite:none';
+
+  /**
+   * Entity Type Manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
   protected $entityTypeManager;
 
+  /**
+   * Constructor.
+   */
   public function __construct(EntityTypeManagerInterface $entityTypeManager) {
     $this->entityTypeManager = $entityTypeManager;
   }
 
   /**
-   * @inheritDoc
+   * {@inheritdoc}
    */
-  public static function getLabel () {
+  public static function getLabel() {
     return t('Active VSite');
   }
 
   /**
-   * @inheritDoc
+   * {@inheritdoc}
    */
-  public function getContext ($parameter = NULL) {
+  public function getContext($parameter = NULL) {
     if ($parameter) {
-      if ($group = $this->entityTypeManager->getStorage ('group')->load ($parameter)) {
-        return 'group:'.$group->id ();
+      if ($group = $this->entityTypeManager->getStorage('group')->load($parameter)) {
+        return 'vsite:' . $group->id();
       }
     }
-    return null;
+    return NULL;
   }
 
   /**
-   * @inheritDoc
+   * {@inheritdoc}
    */
-  public function getCacheableMetadata ($parameter = NULL) {
+  public function getCacheableMetadata($parameter = NULL) {
     return new CacheableMetadata();
   }
+
 }

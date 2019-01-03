@@ -2,48 +2,63 @@
 
 namespace Drupal\vsite_privacy\Form;
 
-
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\vsite_privacy\Plugin\VsitePrivacyLevelManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * Class VsitePrivacyForm.
+ */
 class VsitePrivacyForm extends ConfigFormBase {
 
-  /** @var VsitePrivacyLevelManagerInterface */
+  /**
+   * Vsite privacy level manager.
+   *
+   * @var \Drupal\vsite_privacy\Plugin\VsitePrivacyLevelManagerInterface
+   */
   protected $vsitePrivacyLevelManager;
 
-  public function __construct (ConfigFactoryInterface $config_factory, VsitePrivacyLevelManagerInterface $vsitePrivacyLevelManager) {
-    parent::__construct ($config_factory);
+  /**
+   * Creates new VsitePrivacyForm object.
+   */
+  public function __construct(ConfigFactoryInterface $config_factory, VsitePrivacyLevelManagerInterface $vsitePrivacyLevelManager) {
+    parent::__construct($config_factory);
     $this->vsitePrivacyLevelManager = $vsitePrivacyLevelManager;
   }
 
-  public static function create (ContainerInterface $container) {
-    return new static (
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
       $container->get('config.factory'),
       $container->get('vsite.privacy.manager')
     );
   }
 
   /**
-   * @inheritDoc
+   * {@inheritdoc}
    */
-  protected function getEditableConfigNames () {
+  protected function getEditableConfigNames() {
     return ['vsite.privacy'];
   }
 
   /**
-   * @inheritDoc
+   * {@inheritdoc}
    */
-  public function getFormId () {
+  public function getFormId() {
     return 'vsite_privacy_form';
   }
 
-  public function buildForm (array $form, FormStateInterface $form_state) {
-    $form = parent::buildForm ($form, $form_state);
+  /**
+   * {@inheritdoc}
+   */
+  public function buildForm(array $form, FormStateInterface $form_state) {
+    $form = parent::buildForm($form, $form_state);
 
-    $privacy = $this->configFactory ()->get('vsite.privacy');
+    $privacy = $this->configFactory()->get('vsite.privacy');
 
     $level = $privacy->get('level');
 
@@ -53,10 +68,10 @@ class VsitePrivacyForm extends ConfigFormBase {
         public, but not private.'),
       '#type' => 'radios',
       '#options' => $this->vsitePrivacyLevelManager->getOptions(),
-      '#default_value' => $level ? $level : 'public'
+      '#default_value' => $level ? $level : 'public',
     ];
 
-    $descriptions = $this->vsitePrivacyLevelManager->getDescriptions ();
+    $descriptions = $this->vsitePrivacyLevelManager->getDescriptions();
     foreach ($descriptions as $elem => $text) {
       $form['privacy_level'][$elem]['#description'] = $text;
     }
@@ -64,13 +79,17 @@ class VsitePrivacyForm extends ConfigFormBase {
     return $form;
   }
 
-  public function submitForm (array &$form, FormStateInterface $form_state) {
+  /**
+   * {@inheritdoc}
+   */
+  public function submitForm(array &$form, FormStateInterface $form_state) {
 
     $privacy = $this->configFactory()->getEditable('vsite.privacy');
 
-    $privacy->set('level', $form_state->getValue ('privacy_level'));
-    $privacy->save(true);
+    $privacy->set('level', $form_state->getValue('privacy_level'));
+    $privacy->save(TRUE);
 
-    parent::submitForm ($form, $form_state);
+    parent::submitForm($form, $form_state);
   }
+
 }

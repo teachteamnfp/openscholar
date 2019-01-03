@@ -4,4 +4,3 @@ core: 8.x
 dependencies:
   - group
   - purl
-version: '1.0'

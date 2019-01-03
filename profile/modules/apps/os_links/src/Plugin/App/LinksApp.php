@@ -6,6 +6,8 @@ use Drupal\Component\Plugin\PluginBase;
 use Drupal\vsite\AppInterface;
 
 /**
+ * Plugin for the Links App.
+ *
  * @App(
  *   title = @Translation("Links"),
  *   canDisable = true,
@@ -16,17 +18,23 @@ use Drupal\vsite\AppInterface;
  */
 class LinksApp extends PluginBase implements AppInterface {
 
-
+  /**
+   * {@inheritdoc}
+   */
   public function getGroupContentTypes() {
-    return array(
-      'link'
-    );
+    return [
+      'link',
+    ];
   }
 
   /**
-   * @inheritDoc
+   * Returns title.
+   *
+   * @return string
+   *   The title.
    */
-  public function getTitle () {
+  public function getTitle() {
     return $this->pluginDefinition['title'];
   }
+
 }

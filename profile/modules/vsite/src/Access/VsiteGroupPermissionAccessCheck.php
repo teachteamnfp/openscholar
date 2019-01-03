@@ -7,6 +7,9 @@ use Drupal\Core\Session\AccountInterface;
 use Symfony\Component\Routing\Route;
 use Drupal\group\Access\GroupPermissionAccessCheck;
 
+/**
+ * Add the vsite to the RouteMatch's parameter set if one is active.
+ */
 class VsiteGroupPermissionAccessCheck extends GroupPermissionAccessCheck {
 
   /**
@@ -33,4 +36,5 @@ class VsiteGroupPermissionAccessCheck extends GroupPermissionAccessCheck {
     }
     return parent::access($route, $route_match, $account);
   }
+
 }

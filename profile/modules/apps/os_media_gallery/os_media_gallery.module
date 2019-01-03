@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * OS Gallery module.
+ */
+
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\block\Entity\Block;
 use Drupal\blazy\Blazy;
@@ -18,20 +23,20 @@ function os_media_gallery_theme() {
  * Prepares variables for blazy.html.twig templates.
  */
 function template_preprocess_os_media_gallery_blazy(&$variables) {
-  // Use original logic
+  // Use original logic.
   Blazy::buildAttributes($variables);
 
-  // Replace image with slick lightbox popup link
+  // Replace image with slick lightbox popup link.
   if (!empty($variables['image'])) {
     $imageArray = $variables['image'];
-    $imageArray['#printed'] = false;
+    $imageArray['#printed'] = FALSE;
     $variables['image'] = [
       '#type' => 'link',
       '#title' => $imageArray,
       '#url' => Url::fromUri($variables['element']['#slick_popup_url']),
       '#attributes' => [
         'class' => [
-          'slick-lightbox-item'
+          'slick-lightbox-item',
         ],
         'data-caption' => $imageArray['#attributes']['title'],
       ],
@@ -52,10 +57,9 @@ function os_media_gallery_form_block_form_alter(&$form, FormStateInterface $form
   if ($blockContentBundle != 'media_gallery') {
     return;
   }
-  $form['settings']['view_mode']['#access'] = false;
-  $form['settings']['label_display']['#access'] = false;
-  $form['settings']['label_display']['#value'] = true;
-
+  $form['settings']['view_mode']['#access'] = FALSE;
+  $form['settings']['label_display']['#access'] = FALSE;
+  $form['settings']['label_display']['#value'] = TRUE;
 }
 
 /**
@@ -64,7 +68,7 @@ function os_media_gallery_form_block_form_alter(&$form, FormStateInterface $form
 function os_media_gallery_preprocess_block(&$variables) {
   // Blocks coming from page manager widget does not have id.
   if (!empty($variables['elements']['#id'])) {
-    /** @var Block $block */
+    /** @var \Drupal\block\Entity\Block $block */
     $block = Block::load($variables['elements']['#id']);
     $blockContentBundle = _os_media_gallery_get_block_content_bundle_id($block);
     if ($blockContentBundle != 'media_gallery') {
@@ -92,6 +96,15 @@ function os_media_gallery_preprocess_block(&$variables) {
   }
 }
 
+/**
+ * Get content bundle id.
+ *
+ * @param \Drupal\block\Entity\Block $block
+ *   The block.
+ *
+ * @return string
+ *   Bundle name.
+ */
 function _os_media_gallery_get_block_content_bundle_id(Block $block) {
   $block_content_id = $block->getPlugin()->getDerivativeId();
   if (empty($block_content_id)) {
