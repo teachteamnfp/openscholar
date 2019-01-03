@@ -106,6 +106,7 @@ class ScriptHandler {
     $fileList = array(
       'openscholar.info.yml',
       'openscholar.profile',
+      'profile'.DIRECTORY_SEPARATOR.'config' => 'config',
       'profile'.DIRECTORY_SEPARATOR.'modules' => 'modules'
     );
     $root = realpath($event->getComposer()->getPackage()->getDistUrl());
