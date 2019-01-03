@@ -1,0 +1,6 @@
+vsite.parent_sites.allowed_parent_group_types:
+  type: sequence
+  label: 'Allowed parent group types'
+vsite.parent_sites.allowed_subsite_group_types:
+  type: sequence
+  label: 'Allowed subsite group types'

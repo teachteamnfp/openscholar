@@ -1,0 +1,18 @@
+uuid: 130a43b8-1358-46ce-a6c9-afa0600e9c41
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.subsite_test
+  module:
+    - group_entity
+    - taxonomy
+id: group_content_type_9b4409c9365b7
+label: 'Subsite test: Group taxonomy_term'
+description: 'Adds <em class="placeholder">taxonomy_term</em> content to groups both publicly and privately.'
+group_type: subsite_test
+content_plugin: 'group_entity:taxonomy_term'
+plugin_config:
+  group_cardinality: 1
+  entity_cardinality: 1
+  use_creation_wizard: false

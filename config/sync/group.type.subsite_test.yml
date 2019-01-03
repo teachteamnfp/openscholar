@@ -1,0 +1,10 @@
+uuid: c71d3153-6312-4cc2-93fa-28e17ff269af
+langcode: en
+status: true
+dependencies: {  }
+id: subsite_test
+label: 'Subsite test'
+description: ''
+creator_membership: true
+creator_wizard: true
+creator_roles: {  }

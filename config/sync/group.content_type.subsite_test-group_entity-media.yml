@@ -1,0 +1,18 @@
+uuid: ec859452-aa54-45c5-b80f-62766b7fbb90
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.subsite_test
+  module:
+    - group_entity
+    - media
+id: subsite_test-group_entity-media
+label: 'Subsite test: Group media'
+description: 'Adds <em class="placeholder">media</em> content to groups both publicly and privately.'
+group_type: subsite_test
+content_plugin: 'group_entity:media'
+plugin_config:
+  group_cardinality: 1
+  entity_cardinality: 1
+  use_creation_wizard: false

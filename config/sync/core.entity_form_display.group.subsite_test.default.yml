@@ -1,11 +1,10 @@
-uuid: ce0ca297-6b0b-4e46-8136-bf0c4c56f489
+uuid: eadd9234-fc66-49de-a691-e16b6db016d6
 langcode: en
 status: true
 dependencies:
   config:
-    - field.field.group.personal.field_parent_site
-    - field.field.group.personal.layout_builder__layout
-    - group.type.personal
+    - field.field.group.subsite_test.field_parent_site
+    - group.type.subsite_test
   module:
     - field_layout
     - layout_discovery
@@ -14,9 +13,9 @@ third_party_settings:
   field_layout:
     id: layout_onecol
     settings: {  }
-id: group.personal.default
+id: group.subsite_test.default
 targetEntityType: group
-bundle: personal
+bundle: subsite_test
 mode: default
 content:
   field_parent_site:
@@ -50,5 +49,4 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
-  layout_builder__layout: true
   uid: true

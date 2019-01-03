@@ -1,0 +1,17 @@
+uuid: c018d519-14ec-4a46-8dc9-c1bf73a49f35
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.subsite_test
+  enforced:
+    config:
+      - user.role.administrator
+id: subsite_test-a416e6833
+label: Administrator
+weight: 2
+internal: true
+audience: outsider
+group_type: subsite_test
+permissions_ui: false
+permissions: {  }

@@ -1,0 +1,29 @@
+uuid: c00cd9aa-d8e6-4e87-9a63-cea6445df3de
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.group.field_parent_site
+    - group.type.personal
+    - group.type.subsite_test
+id: group.subsite_test.field_parent_site
+field_name: field_parent_site
+entity_type: group
+bundle: subsite_test
+label: 'Parent site'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:group'
+  handler_settings:
+    target_bundles:
+      personal: personal
+      subsite_test: subsite_test
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: personal
+field_type: entity_reference
