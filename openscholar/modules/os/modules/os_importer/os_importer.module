@@ -612,7 +612,7 @@ function os_importer_import($form, &$form_state, $type) {
 /**
  * @return array
  */
-function _os_importer_get_help_link_mapping(): array {
+function _os_importer_get_help_link_mapping() {
   $helpLinkMapping = [
     'blog' => [
       'path' => 'https://help.theopenscholar.com/blogs#importing-a-blog',
