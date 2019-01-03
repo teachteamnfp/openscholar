@@ -30,7 +30,7 @@ class ConfigurationForm extends FormBase {
     $form['semester_field_options'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Semester field options'),
-      '#required' => true,
+      '#required' => TRUE,
       '#description' => $description,
     ];
     $form['actions']['#type'] = 'actions';
@@ -65,6 +65,17 @@ class ConfigurationForm extends FormBase {
     }
   }
 
+  /**
+   * Extracts the allowed values array from the allowed_values element.
+   *
+   * @param string $string
+   *   The raw string to extract values from.
+   *
+   * @return array|null
+   *   The array of extracted key/value pairs, or NULL if the string is invalid.
+   *
+   * @see \Drupal\options\Plugin\Field\FieldType\ListItemBase::allowedValuesString()
+   */
   protected static function extractAllowedValues($string) {
     $values = [];
 
@@ -102,6 +113,15 @@ class ConfigurationForm extends FormBase {
     return $values;
   }
 
+  /**
+   * Checks whether a candidate allowed value is valid.
+   *
+   * @param string $option
+   *   The option value entered by the user.
+   *
+   * @return string
+   *   The error message if the specified value is invalid, NULL otherwise.
+   */
   protected static function validateAllowedValue($option) {
     if (mb_strlen($option) > 255) {
       return t('Allowed values list: each key must be a string at most 255 characters long.');
