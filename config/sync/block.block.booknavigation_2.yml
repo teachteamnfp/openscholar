@@ -1,13 +1,15 @@
-uuid: bd837b80-46f7-4743-94a3-d1a9901da0b1
+uuid: a68e2e17-20f0-4034-be8e-86e8511cbeaf
 langcode: en
 status: true
 dependencies:
+  config:
+    - block_visibility_groups.block_visibility_group.book_section
   module:
     - block_visibility_groups
     - book
   theme:
     - bartik
-id: booknavigation
+id: booknavigation_2
 theme: bartik
 region: sidebar_second
 weight: 0
@@ -23,5 +25,5 @@ visibility:
   condition_group:
     id: condition_group
     negate: false
-    block_visibility_group: ''
+    block_visibility_group: book_section
     context_mapping: {  }
