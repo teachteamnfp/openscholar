@@ -95,7 +95,8 @@
         "drupal/image_widget_crop": "^2.2",
         "zaporylie/composer-drupal-optimizations": "^1.0",
         "drupal/fullcalendar": "1.x-dev",
-        "drupal/date_recur": "^2.0"
+        "drupal/date_recur": "^2.0",
+        "drupal/admin_toolbar": "^1.25"
     },
     "require-dev": {
         "drupal/features": "^3.7",
@@ -155,6 +156,9 @@
         "patches": {
             "drupal/core": {
                 "Make sure TestSitePath exist before creating .htkey": "https://www.drupal.org/files/issues/2246725-24.patch"
+            },
+            "drupal/fullcalendar": {
+                "Fullcalendar incompatible with Date Recur 2.x": "https://www.drupal.org/files/issues/2019-01-04/3023612-3.patch"
             }
         }
     }
