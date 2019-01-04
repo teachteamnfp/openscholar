@@ -1,0 +1,28 @@
+uuid: 80037fcd-84c3-46a7-aa5c-0ebe665c4d8f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_groups
+    - group.type.personal
+    - node.type.events
+id: node.events.field_groups
+field_name: field_groups
+entity_type: node
+bundle: events
+label: Groups
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:group'
+  handler_settings:
+    target_bundles:
+      personal: personal
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
