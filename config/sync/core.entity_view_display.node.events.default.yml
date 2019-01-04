@@ -3,11 +3,14 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.date_format.medium
     - field.field.node.events.body
     - field.field.node.events.field_location
     - field.field.node.events.field_media
+    - field.field.node.events.field_recurring_date
     - node.type.events
   module:
+    - date_recur
     - text
     - user
 id: node.events.default
@@ -38,6 +41,21 @@ content:
       view_mode: default
       link: false
     third_party_settings: {  }
+    region: content
+  field_recurring_date:
+    weight: 105
+    label: above
+    settings:
+      show_next: 5
+      count_per_item: true
+      occurrence_format_type: medium
+      same_end_date_format_type: medium
+      interpreter: null
+      separator: '-'
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: date_recur_basic_formatter
     region: content
   links:
     weight: 100

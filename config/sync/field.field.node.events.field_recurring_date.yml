@@ -1,0 +1,22 @@
+uuid: 122bc0e4-7c78-4485-8f02-725e10845984
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_recurring_date
+    - node.type.events
+  module:
+    - date_recur
+id: node.events.field_recurring_date
+field_name: field_recurring_date
+entity_type: node
+bundle: events
+label: 'Recurring date'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  precreate: P1Y
+field_type: date_recur

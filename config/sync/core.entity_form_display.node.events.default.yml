@@ -6,9 +6,11 @@ dependencies:
     - field.field.node.events.body
     - field.field.node.events.field_location
     - field.field.node.events.field_media
+    - field.field.node.events.field_recurring_date
     - node.type.events
   module:
     - content_moderation
+    - date_recur
     - field_layout
     - layout_discovery
     - path
@@ -53,6 +55,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+    region: content
+  field_recurring_date:
+    weight: 125
+    settings:
+      timezone_override: ''
+    third_party_settings: {  }
+    type: date_recur_basic_widget
     region: content
   langcode:
     type: language_select

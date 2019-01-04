@@ -21,6 +21,7 @@ module:
   cp: 0
   crop: 0
   ctools: 0
+  date_recur: 0
   datetime: 0
   datetime_range: 0
   dblog: 0
@@ -34,6 +35,8 @@ module:
   field_ui: 0
   file: 0
   filter: 0
+  fullcalendar: 0
+  fullcalendar_options: 0
   gnode: 0
   group: 0
   group_entity: 0

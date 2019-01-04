@@ -93,7 +93,9 @@
         "drupal/block_visibility_groups": "^1.3",
         "mreq/slick-lightbox": "master",
         "drupal/image_widget_crop": "^2.2",
-        "drupal/admin_toolbar": "^1.25"
+        "drupal/admin_toolbar": "^1.25",
+        "drupal/fullcalendar": "1.x-dev",
+        "drupal/date_recur": "^2.0"
     },
     "require-dev": {
         "drupal/features": "^3.7",
