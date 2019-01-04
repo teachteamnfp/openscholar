@@ -1,68 +1,68 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: New User
- * Date: 11/5/2018
- * Time: 10:42 AM
- */
 
 namespace Drupal\os_app_access\Form;
-
 
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\os_app_access\AppAccessLevels;
-use Drupal\vsite\AppInterface;
 use Drupal\vsite\Plugin\AppManangerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * Class AppAccessForm.
+ */
 class AppAccessForm extends ConfigFormBase {
 
-  /** @var AppManangerInterface */
-  protected $app_manager;
+  /**
+   * App manager.
+   *
+   * @var \Drupal\vsite\Plugin\AppManangerInterface
+   */
+  protected $appManager;
 
-
-  public function __construct (ConfigFactoryInterface $config_factory, AppManangerInterface $app_manager) {
-    parent::__construct ($config_factory);
-    $this->app_manager = $app_manager;
+  /**
+   * Creates new AppAccessForm object.
+   */
+  public function __construct(ConfigFactoryInterface $config_factory, AppManangerInterface $app_manager) {
+    parent::__construct($config_factory);
+    $this->appManager = $app_manager;
   }
 
   /**
-   * @inheritDoc
+   * {@inheritdoc}
    */
-  public static function create (ContainerInterface $container) {
-    return new static (
+  public static function create(ContainerInterface $container) {
+    return new static(
       $container->get('config.factory'),
       $container->get('vsite.app.manager')
     );
   }
 
   /**
-   * @inheritDoc
+   * {@inheritdoc}
    */
-  protected function getEditableConfigNames () {
+  protected function getEditableConfigNames() {
     return ['app.access'];
   }
 
   /**
-   * @inheritDoc
+   * {@inheritdoc}
    */
-  public function getFormId () {
+  public function getFormId() {
     return 'app_access';
   }
 
   /**
-   * @inheritDoc
+   * {@inheritdoc}
    */
-  public function buildForm (array $form, FormStateInterface $form_state) {
-    $form = parent::buildForm ($form, $form_state);
+  public function buildForm(array $form, FormStateInterface $form_state) {
+    $form = parent::buildForm($form, $form_state);
 
     $app_access = $this->config('app.access');
-    /** @var AppInterface[] $apps */
-    $apps = $this->app_manager->getDefinitions();
+    /** @var \Drupal\vsite\AppInterface[] $apps */
+    $apps = $this->appManager->getDefinitions();
 
     $enabled = [];
     $disabled = [];
@@ -84,12 +84,12 @@ class AppAccessForm extends ConfigFormBase {
     $header_en = [
       'name' => t('Name'),
       'privacy' => t('Visibility'),
-      'disable' => t('Disable')
+      'disable' => t('Disable'),
     ];
 
     $header_dis = [
       'name' => t('Name'),
-      'enable' => t('Enable')
+      'enable' => t('Enable'),
     ];
 
     $form['enabled'] = [
@@ -105,29 +105,29 @@ class AppAccessForm extends ConfigFormBase {
     ];
 
     foreach ($enabled as $k) {
-      /** @var TranslatableMarkup $title */
+      /** @var \Drupal\Core\StringTranslation\TranslatableMarkup $title */
       $title = $apps[$k]['title'];
       $form['enabled'][$k] = [
         'name' => [
-          '#markup' => $title->render()
+          '#markup' => $title->render(),
         ],
         'privacy' => [
           '#type' => 'select',
           '#options' => [
             AppAccessLevels::PUBLIC => t('Everyone'),
-            AppAccessLevels::PRIVATE => t('Site Members Only')
+            AppAccessLevels::PRIVATE => t('Site Members Only'),
           ],
           '#default_value' => $app_access->get($name),
         ],
         'disable' => [
           '#type' => 'checkbox',
-          '#default_value' => false,
-        ]
+          '#default_value' => FALSE,
+        ],
       ];
     }
 
     foreach ($disabled as $k) {
-      /** @var TranslatableMarkup $title */
+      /** @var \Drupal\Core\StringTranslation\TranslatableMarkup $title */
       $title = $apps[$k]['title'];
       $form['disabled'][$k] = [
         'name' => [
@@ -135,8 +135,8 @@ class AppAccessForm extends ConfigFormBase {
         ],
         'enable' => [
           '#type' => 'checkbox',
-          '#default_value' => false,
-        ]
+          '#default_value' => FALSE,
+        ],
       ];
     }
 
@@ -144,11 +144,11 @@ class AppAccessForm extends ConfigFormBase {
   }
 
   /**
-   * @inheritDoc
+   * {@inheritdoc}
    */
-  public function submitForm (array &$form, FormStateInterface $form_state) {
-    $app_access = $this->config ('app.access');
-    $values = $form_state->getValues ();
+  public function submitForm(array &$form, FormStateInterface $form_state) {
+    $app_access = $this->config('app.access');
+    $values = $form_state->getValues();
 
     if (is_array($values['enabled'])) {
       foreach ($values['enabled'] as $app => $v) {
@@ -169,9 +169,10 @@ class AppAccessForm extends ConfigFormBase {
       }
     }
 
-    $app_access->save(true);
-    Cache::invalidateTags (['app:access_changed', 'config:system.menu.main']);
+    $app_access->save(TRUE);
+    Cache::invalidateTags(['app:access_changed', 'config:system.menu.main']);
 
-    parent::submitForm ($form, $form_state);
+    parent::submitForm($form, $form_state);
   }
+
 }

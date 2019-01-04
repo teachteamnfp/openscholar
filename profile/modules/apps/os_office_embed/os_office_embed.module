@@ -1,12 +1,17 @@
 <?php
 
 /**
+ * @file
+ * OS embed module.
+ */
+
+/**
  * Implements hook_theme().
  */
 function os_office_embed_theme() {
-  return array(
-    'os_office_embed' => array(
-      'variables' => array(
+  return [
+    'os_office_embed' => [
+      'variables' => [
         'url' => NULL,
         'filename' => NULL,
         'width' => NULL,
@@ -16,9 +21,9 @@ function os_office_embed_theme() {
         'bundle' => NULL,
         'field_name' => NULL,
         'field_type' => NULL,
-      ),
-    ),
-  );
+      ],
+    ],
+  ];
 }
 
 /**

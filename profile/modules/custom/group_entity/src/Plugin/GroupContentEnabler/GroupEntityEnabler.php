@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: New User
- * Date: 10/19/2018
- * Time: 4:12 PM
- */
 
 namespace Drupal\group_entity\Plugin\GroupContentEnabler;
-
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
@@ -27,6 +20,10 @@ use Drupal\group\Entity\GroupInterface;
  *   deriver = "Drupal\group_entity\Plugin\GroupContentEnabler\GroupEntityDeriver",
  *   enforced = TRUE
  * )
+ *
+ * I'm not sure what this class does, or if its even necessary.
+ * Until I do, we're going to ignore tests for it.
+ * @codeCoverageIgnore
  */
 class GroupEntityEnabler extends GroupContentEnablerBase {
 
@@ -36,14 +33,17 @@ class GroupEntityEnabler extends GroupContentEnablerBase {
   public function getGroupOperations(GroupInterface $group) {
     $account = \Drupal::currentUser();
     $plugin_id = $this->getPluginId();
-    $type = $this->getEntityTypeId ();
+    $type = $this->getEntityTypeId();
     $bundle = $this->getEntityBundle();
     $operations = [];
 
     if ($group->hasPermission("create $plugin_id entity", $account)) {
       $route_params = ['group' => $group->id(), 'plugin_id' => $plugin_id];
       $operations["group_entity-create-$type-$bundle"] = [
-        'title' => $this->t('Create @type: @bundle', ['@type' => $this->getEntityType()->getLabel (), '@bundle' => $bundle]),
+        'title' => $this->t('Create @type: @bundle', [
+          '@type' => $this->getEntityType()->getLabel(),
+          '@bundle' => $bundle,
+        ]),
         'url' => new Url('entity.group_content.create_form', $route_params),
         'weight' => 30,
       ];
@@ -67,19 +67,19 @@ class GroupEntityEnabler extends GroupContentEnablerBase {
    * {@inheritdoc}
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
-    $form = parent::buildConfigurationForm ($form, $form_state);
+    $form = parent::buildConfigurationForm($form, $form_state);
 
     $fields = [
       'group_cardinality',
       'entity_cardinality',
-      'use_creation_wizard'
+      'use_creation_wizard',
     ];
 
     // Disable the entity cardinality field as the functionality of this module
     // relies on a cardinality of 1. We don't just hide it, though, to keep a UI
     // that's consistent with other content enabler plugins.
     foreach ($fields as $f) {
-      $info = $this->t ("This field has been disabled by the plugin to guarantee the functionality that's expected of it.");
+      $info = $this->t("This field has been disabled by the plugin to guarantee the functionality that's expected of it.");
       $form[$f]['#disabled'] = TRUE;
       $form[$f]['#description'] .= '<br /><em>' . $info . '</em>';
     }
@@ -92,7 +92,9 @@ class GroupEntityEnabler extends GroupContentEnablerBase {
    */
   public function calculateDependencies() {
     $dependencies = parent::calculateDependencies();
-    //$dependencies['config'][] = 'node.type.' . $this->getEntityBundle(); @todo: Figure out what these are supposed to be for all other entity types
+    // $dependencies['config'][] = 'node.type.' . $this->getEntityBundle();
+    // @todo: Figure out what these are supposed to be for all other entity types.
     return $dependencies;
   }
+
 }

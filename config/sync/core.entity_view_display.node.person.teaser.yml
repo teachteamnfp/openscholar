@@ -59,5 +59,6 @@ hidden:
   field_office_hours: true
   field_phone: true
   field_professional_titles: true
+  field_redirect_to_source: true
   field_website: true
   langcode: true
