@@ -3,6 +3,7 @@
 namespace Drupal\os_classes\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\node\NodeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -28,7 +29,7 @@ class AutocompleteController extends ControllerBase {
       $query->join('node_field_data', 'n', 'fyo.entity_id = n.nid');
       $query->join('group_content_field_data', 'gfd', 'fyo.entity_id = gfd.entity_id');
       $query->condition('gfd.type', 'personal-group_node-class')
-        ->condition('n.status', \Drupal\node\NodeInterface::PUBLISHED)
+        ->condition('n.status', NodeInterface::PUBLISHED)
         ->condition('gfd.gid', $vsite)
         ->condition('fyo.field_year_offered_value', $input . '%', 'LIKE')
         ->orderBy('fyo.field_year_offered_value', 'ASC')
