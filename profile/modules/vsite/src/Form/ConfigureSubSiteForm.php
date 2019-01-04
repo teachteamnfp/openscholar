@@ -105,6 +105,8 @@ class ConfigureSubSiteForm extends FormBase {
     \Drupal::configFactory()->getEditable('vsite.settings')
       ->set('allowed_subsite_group_types', $allowedSubSiteValues)
       ->save();
+
+    \Drupal::messenger()->addMessage(t('Allowed values settings saved successful.'));
   }
 
   /**
