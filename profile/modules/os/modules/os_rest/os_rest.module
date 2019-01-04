@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * @file
+ * Hook implementations for the os_rest module.
+ */
+
+/**
+ * Implements hook_rest_resource_alter().
+ */
 function os_rest_rest_resource_alter(&$resources) {
   $resources['entity:media']['class'] = 'Drupal\os_rest\Plugin\rest\resource\OsMediaResource';
 }
