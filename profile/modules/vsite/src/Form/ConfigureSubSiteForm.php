@@ -29,6 +29,9 @@ class ConfigureSubSiteForm extends FormBase {
       $allowedParentSiteOptions[$bundleName] = $bundle['label'];
 
       $fieldConfig = \Drupal::config('field.field.group.' . $bundleName . '.field_parent_site')->get('settings');
+      if (empty($fieldConfig)) {
+        \Drupal::messenger()->addWarning(t('Group type %type is missing field_parent_site!', ['%type' => $bundle['label']]));
+      }
       if (!empty($fieldConfig['handler_settings']['target_bundles'])) {
         foreach ($fieldConfig['handler_settings']['target_bundles'] as $target_bundle) {
           $defaultAllowedValues[$target_bundle] = $target_bundle;
@@ -94,6 +97,9 @@ class ConfigureSubSiteForm extends FormBase {
     // in all group entity bundle.
     foreach ($groupBundles as $bundleName => $bundle) {
       $fieldConfig = \Drupal::config('field.field.group.' . $bundleName . '.field_parent_site')->get('settings');
+      if (empty($fieldConfig)) {
+        continue;
+      }
       $fieldConfig['handler_settings']['target_bundles'] = $allowedParentValues;
       \Drupal::configFactory()->getEditable('field.field.group.' . $bundleName . '.field_parent_site')
         ->set('settings', $fieldConfig)

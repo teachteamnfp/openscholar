@@ -5,6 +5,7 @@
  * Hook implementations for the vsite module.
  */
 
+use Drupal\group\Entity\Group;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Entity\EntityFormInterface;
@@ -220,4 +221,23 @@ function _vsite_prerender_control_panel_links(array $element) {
   $metadata->applyTo($element['toolbar_menu_control-panel']);
 
   return $element;
+}
+
+/**
+ * Get all group id that related with field parent site.
+ *
+ * @param \Drupal\group\Entity\Group $group
+ *   Parent group entity.
+ *
+ * @return array|int
+ *   List of the related and parent gids.
+ */
+function _vsite_get_group_and_subsite_ids(Group $group) {
+  $query = \Drupal::entityQuery('group')
+    ->condition('field_parent_site', $group->id());
+
+  $gids = $query->execute();
+  // Add parent group to list.
+  $gids[$group->id()] = $group->id();
+  return $gids;
 }
