@@ -106,6 +106,9 @@ function _os_redirect_get_node_redirect_entity(EntityInterface $entity) {
  *   The URI.
  */
 function _os_redirect_get_node_redirect_uri(EntityInterface $entity) {
+  if (!$entity->hasField('field_redirect_to_source')) {
+    return;
+  }
   $urlItemList = $entity->get('field_redirect_to_source');
   if (empty($urlItemList)) {
     return '';
