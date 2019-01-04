@@ -1,16 +1,28 @@
 <?php
 
+/**
+ * @file
+ * OS widgets.
+ */
+
 use Drupal\block\Entity\Block;
 use Drupal\os_widgets\BlockContentType\BlockContentTypeInterface;
 use Drupal\os_widgets\BlockContentType\FeaturedPostsWidget;
 
+/**
+ * Return block content type definitions.
+ *
+ * @return array
+ *   Definitions.
+ */
 function _os_widgets_block_content_type_definitions() {
   // key: block_content bundle
-  // value: handled object
+  // value: handled object.
   return [
     'featured_posts' => FeaturedPostsWidget::class,
   ];
 }
+
 /**
  * Implements hook_preprocess_HOOK().
  */
@@ -19,7 +31,7 @@ function os_widgets_preprocess_block(&$variables) {
   if (empty($variables['elements']['#id'])) {
     return;
   }
-  /** @var Block $block */
+  /** @var \Drupal\block\Entity\Block $block */
   $block = Block::load($variables['elements']['#id']);
 
   $blockContentTypeDefinitions = _os_widgets_block_content_type_definitions();
@@ -37,14 +49,23 @@ function os_widgets_preprocess_block(&$variables) {
   $variables = $blockContentTypeWidget->buildBlock($variables, $blockContent);
 }
 
+/**
+ * Get block content by block.
+ *
+ * @param \Drupal\block\Entity\Block $block
+ *   The block.
+ *
+ * @return array|bool
+ *   Renderable array.
+ */
 function _os_widgets_get_block_content_by_block(Block $block) {
   $blockContentId = $block->getPlugin()->getDerivativeId();
   if (empty($blockContentId)) {
-    return false;
+    return FALSE;
   }
   $blockContent = \Drupal::entityTypeManager()->getStorage('block_content')->loadByProperties(['uuid' => $blockContentId]);
   if (empty($blockContent)) {
-    return false;
+    return FALSE;
   }
   $blockContent = reset($blockContent);
   $currentBlockContentBundle = $blockContent->bundle();
@@ -59,7 +80,6 @@ function _os_widgets_get_block_content_by_block(Block $block) {
  */
 function os_widgets_preprocess_node(&$variables) {
   if (!empty($variables['elements']['os_widgets_hide_node_title'])) {
-    $variables['label']['#access'] = false;
+    $variables['label']['#access'] = FALSE;
   }
 }
-
