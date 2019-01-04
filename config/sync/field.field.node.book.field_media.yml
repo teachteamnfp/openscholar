@@ -1,4 +1,4 @@
-uuid: 0978c27c-fc2f-4499-94a4-c04f4824363a
+uuid: bc352c24-4af9-4e59-985c-e19ca15b78be
 langcode: en
 status: true
 dependencies:
@@ -6,17 +6,19 @@ dependencies:
     - field.storage.node.field_media
     - media.type.audio
     - media.type.document
-    - media.type.executable
+    - media.type.icon
     - media.type.image
-    - node.type.page
-id: node.page.field_media
+    - media.type.presentation_materials
+    - media.type.video
+    - node.type.book
+id: node.book.field_media
 field_name: field_media
 entity_type: node
-bundle: page
+bundle: book
 label: 'Attach Files'
 description: ''
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
@@ -24,8 +26,10 @@ settings:
   handler_settings:
     target_bundles:
       document: document
-      executable: executable
+      icon: icon
       image: image
+      presentation_materials: presentation_materials
+      video: video
       audio: audio
     sort:
       field: _none
