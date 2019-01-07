@@ -5,10 +5,13 @@
  * Fullcalendar customizations for OpenScholar.
  */
 
+use Drupal\views\ViewExecutable;
+
 /**
- * Implements hook_page_attachments().
+ * Implements hook_views_pre_render().
  */
-function os_fullcalendar_page_attachments(array &$attachments) {
-  // TODO: Only load the library when required.
-  $attachments['#attached']['library'][] = 'os_fullcalendar/drupal.os_fullcalendar';
+function os_fullcalendar_views_pre_render(ViewExecutable $view) {
+  if ($view->storage->id() == 'calendar') {
+    $view->element['#attached']['library'][] = 'os_fullcalendar/drupal.os_fullcalendar';
+  }
 }
