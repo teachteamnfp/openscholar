@@ -3840,7 +3840,7 @@ function os_metatag_pattern_alter(&$pattern, &$types, $tag_name) {
   $site_description_token = '[site:site_description]';
   $site_description_token_replacement = '[current-page:title]';
   $pattern = $site_description_token_replacement;
-  if (empty(token_replace($site_description_token_replacement))) {
+  if (stristr($site_description_token, $pattern) != FALSE && empty(token_replace($site_description_token_replacement))) {
     $pattern = $site_description_token;
   }
 
@@ -3848,7 +3848,7 @@ function os_metatag_pattern_alter(&$pattern, &$types, $tag_name) {
   $site_title_token = '[site:site_title]';
   $site_title_token_replacement = '[current-page:title]';
   $pattern = $site_title_token_replacement;
-  if (empty(token_replace($site_title_token_replacement))) {
+  if (stristr($site_description_token, $pattern) != FALSE && empty(token_replace($site_title_token_replacement))) {
     $pattern = $site_title_token;
   }
   
