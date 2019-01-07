@@ -3839,8 +3839,8 @@ function os_metatag_pattern_alter(&$pattern, &$types, $tag_name) {
   // Find the empty [site:site_description] and replace with [current-page:title]
   $site_description_token = '[site:site_description]';
   $site_description_token_replacement = '[current-page:title]';
-  if (stristr($site_description_token, $pattern) != FALSE && empty(token_replace($site_description_token))) {
-    $pattern = $site_description_token_replacement;
+  if (stristr($site_description_token, $pattern) != FALSE && empty(token_replace($site_description_token_replacement))) {
+    $pattern = $site_description_token;
   }
 
   // Find the empty [site:site_title], and replace with [current-page:title]
