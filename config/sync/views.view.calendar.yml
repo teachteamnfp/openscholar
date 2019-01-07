@@ -69,7 +69,7 @@ display:
             date: ''
           left: 'today prev,next'
           center: title
-          right: 'month listWeek listDay listUpcoming'
+          right: 'month listWeek listDay listUpcoming listPast'
           timeformat: 'h:mm'
           advanced: false
           slotLabelFormat: 'h(:mm)a'
