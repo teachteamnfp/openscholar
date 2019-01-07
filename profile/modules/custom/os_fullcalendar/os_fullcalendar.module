@@ -1,0 +1,14 @@
+<?php
+
+/**
+ * @file
+ * Fullcalendar customizations for OpenScholar.
+ */
+
+/**
+ * Implements hook_page_attachments().
+ */
+function os_fullcalendar_page_attachments(array &$attachments) {
+  // TODO: Only load the library when required.
+  $attachments['#attached']['library'][] = 'os_fullcalendar/drupal.os_fullcalendar';
+}

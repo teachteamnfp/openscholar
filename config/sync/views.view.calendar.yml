@@ -69,7 +69,7 @@ display:
             date: ''
           left: 'today prev,next'
           center: title
-          right: 'month agendaWeek agendaDay'
+          right: 'month listWeek listDay listUpcoming'
           timeformat: 'h:mm'
           advanced: false
           slotLabelFormat: 'h(:mm)a'
@@ -85,7 +85,7 @@ display:
           theme: true
           sameWindow: false
           modalWindow: true
-          contentHeight: 500
+          contentHeight: 0
           editable: false
           fields:
             title: false
@@ -257,6 +257,7 @@ display:
           not: false
           plugin_id: numeric
       display_extenders: {  }
+      use_ajax: false
     cache_metadata:
       max-age: -1
       contexts:
