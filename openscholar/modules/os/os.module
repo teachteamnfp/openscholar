@@ -3838,7 +3838,7 @@ function remove_missing_modules_entry_from_DB() {
 function os_metatag_pattern_alter(&$pattern, &$types, $tag_name) {
   // Find the empty [site:site_description] and replace with [current-page:title]
   $site_description_token = '[site:site_description]';
-  $site_description_token_replacement = '[current-page:title]';
+  $site_description_token_replacement = '[current-page:description]';
   if (empty(token_replace($site_description_token_replacement))) {
     $pattern = $site_description_token;
   }
