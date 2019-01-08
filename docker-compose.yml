@@ -24,8 +24,8 @@ services:
       PHP_XDEBUG_DEFAULT_ENABLE: 0
       PHP_XDEBUG_REMOTE_CONNECT_BACK: 0         # Disable this if not on MAC - This is needed to respect remote.host setting below
       PHP_XDEBUG_REMOTE_HOST: "10.254.254.254"  # Disable this if not on MAC - You will also need to 'sudo ifconfig lo0 alias 10.254.254.254'
-      PHP_MAX_EXECUTION_TIME: 600
-      PHP_MAX_INPUT_TIME: 600
+      PHP_MAX_EXECUTION_TIME: $PHP_MAX_EXECUTION_TIME
+      PHP_MAX_INPUT_TIME: $PHP_MAX_INPUT_TIME
       PHP_IDE_CONFIG: $PHP_IDE_CONFIG # See https://www.jetbrains.com/help/phpstorm/debugging-a-php-cli-script.html
     volumes:
       - ./:/var/www/html:cached
@@ -38,7 +38,7 @@ services:
       APACHE_LOG_LEVEL: debug
       APACHE_BACKEND_HOST: php
       APACHE_SERVER_ROOT: /var/www/html/web
-      APACHE_TIMEOUT: 600
+      APACHE_TIMEOUT: $APACHE_TIMEOUT
       APACHE_VHOST_PRESET: php
     volumes:
       - ./:/var/www/html:cached
