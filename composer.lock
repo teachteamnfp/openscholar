@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "47a36f6605b3fdea16135cb44ef64d8d",
+    "content-hash": "0f2eb8b66f71b2c06cf372f7d7e9755e",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -3269,6 +3269,9 @@
                         "status": "not-covered",
                         "message": "Alpha releases are not covered by Drupal security advisories."
                     }
+                },
+                "patches_applied": {
+                    "Make compatible with Date All Day module (All day occurrences)": "https://www.drupal.org/files/issues/2019-01-08/2982275-19.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",

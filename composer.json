@@ -159,6 +159,9 @@
             },
             "drupal/fullcalendar": {
                 "Fullcalendar incompatible with Date Recur 2.x": "https://www.drupal.org/files/issues/2019-01-04/3023612-3.patch"
+            },
+            "drupal/date_recur": {
+                "Make compatible with Date All Day module (All day occurrences)": "https://www.drupal.org/files/issues/2019-01-08/2982275-19.patch"
             }
         }
     }

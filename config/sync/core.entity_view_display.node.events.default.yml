@@ -12,8 +12,12 @@ dependencies:
     - node.type.events
   module:
     - date_recur
+    - layout_builder
     - text
     - user
+third_party_settings:
+  layout_builder:
+    sections: {  }
 id: node.events.default
 targetEntityType: node
 bundle: events
@@ -55,21 +59,22 @@ content:
     weight: 105
     label: above
     settings:
-      show_next: 5
-      count_per_item: true
+      format_type: medium
       occurrence_format_type: medium
       same_end_date_format_type: medium
-      interpreter: null
+      all_day_format_type: html_date
       separator: '-'
-      format_type: medium
       timezone_override: ''
+      interpreter: ''
+      show_next: 5
+      count_per_item: true
     third_party_settings: {  }
     type: date_recur_basic_formatter
     region: content
   links:
     weight: 100
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
 hidden:
   langcode: true
