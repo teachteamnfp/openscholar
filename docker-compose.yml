@@ -31,16 +31,15 @@ services:
       - ./:/var/www/html:cached
 
   apache:
-    image: jaybeaton/drupal-apache:2.4-1.0.3
+    image: wodby/apache:2.4
     depends_on:
       - php
     environment:
       APACHE_LOG_LEVEL: debug
       APACHE_BACKEND_HOST: php
       APACHE_SERVER_ROOT: /var/www/html/web
-      APACHE_PRODUCTION_URL: http://d8.theopenscholar.com
-      APACHE_PRODUCTION_IMAGE_REWRITE: http://d8.theopenscholar.com/%1default%2
       APACHE_TIMEOUT: 600
+      APACHE_VHOST_PRESET: php
     volumes:
       - ./:/var/www/html:cached
     labels:
