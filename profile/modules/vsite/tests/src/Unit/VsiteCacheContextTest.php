@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\vsite\Tests\Kernel;
+namespace Drupal\vsite\Tests\Unit;
 
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Entity\EntityStorageInterface;
@@ -11,6 +11,9 @@ use Drupal\vsite\Cache\VsiteCacheContext;
 
 /**
  * Tests vsite cache context.
+ *
+ * @group vsite
+ * @coversDefaultClass \Drupal\vsite\Cache\VsiteCacheContext
  */
 class VsiteCacheContextTest extends UnitTestCase {
 
