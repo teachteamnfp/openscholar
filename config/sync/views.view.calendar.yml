@@ -8,7 +8,6 @@ dependencies:
     - node.type.events
   module:
     - date_recur
-    - datetime
     - fullcalendar
     - node
     - user
@@ -70,7 +69,7 @@ display:
           left: 'today prev,next'
           center: title
           right: 'month listWeek listDay listUpcoming listPast'
-          timeformat: 'h:mm'
+          timeformat: 'h:mm A'
           advanced: false
           slotLabelFormat: 'h(:mm)a'
           timeformatMonth: 'h:mm'
@@ -165,6 +164,7 @@ display:
             format_type: medium
             occurrence_format_type: medium
             same_end_date_format_type: medium
+            all_day_format_type: html_date
             separator: '-'
             timezone_override: ''
             interpreter: ''
@@ -202,20 +202,7 @@ display:
           entity_type: node
           entity_field: type
           plugin_id: bundle
-      sorts:
-        field_recurring_date_value:
-          id: field_recurring_date_value
-          table: node__field_recurring_date
-          field: field_recurring_date_value
-          relationship: none
-          group_type: group
-          admin_label: ''
-          order: ASC
-          exposed: false
-          expose:
-            label: ''
-          granularity: second
-          plugin_id: datetime
+      sorts: {  }
       title: Calendar
       header: {  }
       footer: {  }
