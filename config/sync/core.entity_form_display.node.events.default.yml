@@ -11,7 +11,7 @@ dependencies:
     - node.type.events
   module:
     - content_moderation
-    - date_recur
+    - date_recur_interactive
     - field_layout
     - layout_discovery
     - path
@@ -72,7 +72,7 @@ content:
       timezone_override: ''
       allow_all_day: true
     third_party_settings: {  }
-    type: date_recur_basic_widget
+    type: date_recur_interactive_widget
     region: content
   langcode:
     type: language_select

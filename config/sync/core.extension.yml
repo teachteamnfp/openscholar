@@ -22,6 +22,7 @@ module:
   crop: 0
   ctools: 0
   date_recur: 0
+  date_recur_interactive: 0
   datetime: 0
   datetime_range: 0
   dblog: 0
