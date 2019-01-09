@@ -27,10 +27,6 @@ class VsiteSubsiteFilter extends FilterPluginBase {
     /** @var \Drupal\group\Entity\GroupInterface $group */
     if ($group = \Drupal::service('vsite.context_manager')->getActiveVsite()) {
       $this->query->addWhere('vsite', 'field_parent_site_target_id', $group->id());
-      $this->displayHandler->display['cache_metadata']['contexts'][] = 'vsite:' . $group->id();
-    }
-    else {
-      $this->displayHandler->display['cache_metadata']['contexts'][] = 'vsite:none';
     }
   }
 
