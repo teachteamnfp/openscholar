@@ -60,7 +60,7 @@ echo "Rebuilding..."
 cd openscholar
 
 # Download composer components
-composer install
+composer install --ignore-platform-reqs
 
 cd ..
 
