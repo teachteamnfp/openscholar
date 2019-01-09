@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e6323f34ae2b53147ed15c0fe05b5361",
+    "content-hash": "74a7e8c59a9f656a3fd01126d0db3a6e",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -3433,7 +3433,7 @@
                     }
                 },
                 "patches_applied": {
-                    "Fullcalendar incompatible with Date Recur 2.x": "https://www.drupal.org/files/issues/2019-01-04/3023612-3.patch"
+                    "Fullcalendar incompatible with Date Recur 2.x": "https://www.drupal.org/files/issues/2019-01-09/3023612-5.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",

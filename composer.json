@@ -159,7 +159,7 @@
                 "Make sure TestSitePath exist before creating .htkey": "https://www.drupal.org/files/issues/2246725-24.patch"
             },
             "drupal/fullcalendar": {
-                "Fullcalendar incompatible with Date Recur 2.x": "https://www.drupal.org/files/issues/2019-01-04/3023612-3.patch"
+                "Fullcalendar incompatible with Date Recur 2.x": "https://www.drupal.org/files/issues/2019-01-09/3023612-5.patch"
             },
             "drupal/date_recur": {
                 "Make compatible with Date All Day module (All day occurrences)": "https://www.drupal.org/files/issues/2019-01-08/2982275-19.patch"
