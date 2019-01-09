@@ -75,6 +75,15 @@ function vsite_views_data_alter(&$data) {
       'id' => 'vsite_current_filter',
     ],
   ];
+  $data['groups']['subsite_vsite_filter'] = [
+    'title' => t('Subsite Filter'),
+    'filter' => [
+      'title' => t('Subsite Filter'),
+      'help' => 'Filters child sites on the current vsite',
+      'field' => 'field_parent_site',
+      'id' => 'vsite_subsite_filter',
+    ],
+  ];
 }
 
 /**
