@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - core.date_format.medium
+    - core.entity_view_mode.node.rss
     - field.storage.node.field_recurring_date
     - node.type.events
   module:
@@ -245,6 +246,8 @@ display:
           plugin_id: numeric
       display_extenders: {  }
       use_ajax: false
+      link_url: ''
+      link_display: '0'
     cache_metadata:
       max-age: -1
       contexts:
@@ -324,6 +327,42 @@ display:
       display_description: ''
       allow:
         items_per_page: false
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - purl
+        - url
+        - 'user.node_grants:view'
+        - user.permissions
+      tags:
+        - 'config:field.storage.node.field_recurring_date'
+  feed_1:
+    display_plugin: feed
+    id: feed_1
+    display_title: RSS
+    position: 3
+    display_options:
+      display_extenders: {  }
+      row:
+        type: node_rss
+        options:
+          relationship: none
+          view_mode: rss
+      pager:
+        type: none
+        options:
+          offset: 0
+      path: calendar/rss
+      displays:
+        page_1: page_1
+        default: '0'
+        block_1: '0'
+      defaults:
+        link_display: true
+        link_url: true
+      display_description: ''
     cache_metadata:
       max-age: -1
       contexts:
