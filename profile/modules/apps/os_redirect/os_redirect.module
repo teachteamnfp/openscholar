@@ -13,14 +13,14 @@ use Drupal\redirect\Entity\Redirect;
  * Implements hook_ENTITY_TYPE_insert().
  */
 function os_redirect_node_insert(EntityInterface $entity) {
-    _os_redirect_update_node_redirect($entity);
+  _os_redirect_update_node_redirect($entity);
 }
 
 /**
  * Implements hook_ENTITY_TYPE_update().
  */
 function os_redirect_node_update(EntityInterface $entity) {
-    _os_redirect_update_node_redirect($entity);
+  _os_redirect_update_node_redirect($entity);
 }
 
 /**

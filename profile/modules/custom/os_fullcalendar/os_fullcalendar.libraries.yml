@@ -3,4 +3,3 @@ drupal.os_fullcalendar:
     js/os_fullcalendar.fullcalendar.js: {}
   dependencies:
     - fullcalendar/drupal.fullcalendar
-
