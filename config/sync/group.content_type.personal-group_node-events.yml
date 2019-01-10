@@ -1,0 +1,19 @@
+uuid: b78c1d75-f727-4178-961d-06c80236cd56
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.personal
+    - node.type.events
+  module:
+    - gnode
+    - node
+id: personal-group_node-events
+label: 'Personal: Group node (Events)'
+description: 'Adds <em class="placeholder">Events</em> content to groups both publicly and privately.'
+group_type: personal
+content_plugin: 'group_node:events'
+plugin_config:
+  group_cardinality: 1
+  entity_cardinality: 1
+  use_creation_wizard: false
