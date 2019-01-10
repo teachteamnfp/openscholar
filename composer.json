@@ -97,7 +97,8 @@
         "drupal/fullcalendar": "1.x-dev",
         "drupal/date_recur": "^2.0",
         "drupal/admin_toolbar": "^1.25",
-        "drupal/date_recur_interactive": "^2.0@alpha"
+        "drupal/date_recur_interactive": "^2.0@alpha",
+        "drupal/views_ical": "1.x-dev"
     },
     "require-dev": {
         "drupal/features": "^3.7",
@@ -163,6 +164,9 @@
             },
             "drupal/date_recur": {
                 "Make compatible with Date All Day module (All day occurrences)": "https://www.drupal.org/files/issues/2019-01-08/2982275-19.patch"
+            },
+            "drupal/views_ical": {
+                "Define missing views methods": "https://www.drupal.org/files/issues/2019-01-10/2982848-2.patch"
             }
         }
     }

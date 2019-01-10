@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "74a7e8c59a9f656a3fd01126d0db3a6e",
+    "content-hash": "9b6843c230ece9b32664852a03f9aae7",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -4210,6 +4210,51 @@
             }
         },
         {
+            "name": "drupal/views_ical",
+            "version": "dev-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/views_ical",
+                "reference": "dce3d1091ad5cad16d3ac5cf0c84709adfdd1e9c"
+            },
+            "require": {
+                "drupal/core": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.x-dev",
+                    "datestamp": "1445879039",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                },
+                "patches_applied": {
+                    "Define missing views methods": "https://www.drupal.org/files/issues/2019-01-10/2982848-2.patch"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "mukhsim",
+                    "homepage": "https://www.drupal.org/user/63885"
+                }
+            ],
+            "description": "Provides an iCal Views style plugin.",
+            "homepage": "https://www.drupal.org/project/views_ical",
+            "support": {
+                "source": "http://cgit.drupalcode.org/views_ical"
+            },
+            "time": "2015-10-26T16:19:33+00:00"
+        },
+        {
             "name": "drush/drush",
             "version": "9.4.0",
             "source": {
@@ -6748,16 +6793,16 @@
         },
         {
             "name": "symfony/translation",
-            "version": "v3.4.20",
+            "version": "v3.4.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",
-                "reference": "bdbe940ed3ef4179f86032086c32d3a858becc0f"
+                "reference": "5f357063f4907cef47e5cf82fa3187fbfb700456"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation/zipball/bdbe940ed3ef4179f86032086c32d3a858becc0f",
-                "reference": "bdbe940ed3ef4179f86032086c32d3a858becc0f",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/5f357063f4907cef47e5cf82fa3187fbfb700456",
+                "reference": "5f357063f4907cef47e5cf82fa3187fbfb700456",
                 "shasum": ""
             },
             "require": {
@@ -6812,7 +6857,7 @@
             ],
             "description": "Symfony Translation Component",
             "homepage": "https://symfony.com",
-            "time": "2018-11-26T10:17:44+00:00"
+            "time": "2019-01-01T13:45:19+00:00"
         },
         {
             "name": "symfony/validator",
@@ -10518,6 +10563,7 @@
         "kenwheeler/slick": 20,
         "drupal/fullcalendar": 20,
         "drupal/date_recur_interactive": 15,
+        "drupal/views_ical": 20,
         "weitzman/drupal-test-traits": 10
     },
     "prefer-stable": true,
