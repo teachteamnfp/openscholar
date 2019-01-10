@@ -1,28 +1,26 @@
 <?php
 
-namespace Drupal\openscholar\Form;
+namespace Drupal\os_classes\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Implements a configuration form.
+ * Implements a semester field options form.
  */
-class ConfigurationForm extends FormBase {
+class SemesterFieldOptionsForm extends FormBase {
 
   /**
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'configuration_form';
+    return 'semester_field_options_form';
   }
 
   /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $form['#title'] = 'OpenScholar configuration';
-
     $description = '<p>' . t('The possible values this field can contain. Enter one value per line, in the format key|label.');
     $description .= '<br/>' . t('The key is the stored value. The label will be used in displayed values and edit forms.');
     $description .= '<br/>' . t('The label is optional: if a line contains a single string, it will be used as key and label.');
