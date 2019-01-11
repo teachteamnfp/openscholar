@@ -19,7 +19,7 @@ conditions:
     uuid: b563c91e-9188-4dce-b91e-e1e6c6a994d1
   5e73561a-2325-4b34-988a-b379886da79e:
     id: request_path
-    pages: '/events*'
+    pages: '/event*'
     negate: false
     context_mapping: {  }
     uuid: 5e73561a-2325-4b34-988a-b379886da79e
