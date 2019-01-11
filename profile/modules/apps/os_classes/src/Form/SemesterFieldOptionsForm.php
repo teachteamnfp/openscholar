@@ -48,6 +48,10 @@ class SemesterFieldOptionsForm extends FormBase {
     $description .= '</p>';
     $allowedValues = \Drupal::config('os_classes.settings')->get('field_semester_allowed_values');
     $flattenOptions = OptGroup::flattenOptions($allowedValues);
+    $field = \Drupal::entityTypeManager()->getStorage('field_storage_config')->load('node.field_semester');
+    if ($field->hasData()) {
+      \Drupal::messenger()->addWarning(t('There are already contents in the class content type!'));
+    }
     $form['semester_field_options'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Semester field options'),
