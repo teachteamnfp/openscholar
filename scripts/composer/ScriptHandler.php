@@ -160,7 +160,7 @@ class ScriptHandler {
     $io = $event->getIO();
     $root = realpath($event->getComposer()->getPackage()->getDistUrl());
     $fullcalendar_source = "$root/components/fullcalendar/dist";
-    $moment_source = "$root/component/moment/min";
+    $moment_source = "$root/components/moment/min";
     // This setting is configurable from inside
     // `admin/config/user-interface/fullcalendar`.
     $fullcalendar_destination = "$root/web/libraries/fullcalendar";
