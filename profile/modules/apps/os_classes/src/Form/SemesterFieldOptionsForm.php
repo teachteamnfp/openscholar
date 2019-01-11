@@ -2,13 +2,34 @@
 
 namespace Drupal\os_classes\Form;
 
+use Drupal\Component\Transliteration\PhpTransliteration;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Form\OptGroup;
 
 /**
  * Implements a semester field options form.
  */
 class SemesterFieldOptionsForm extends FormBase {
+
+  /**
+   * Create machine key.
+   *
+   * @param string $text
+   *    Original text.
+   * @param string $langcode
+   *    Langcode.
+   *
+   * @return string|string[]|null
+   *    Transliterated and replaced string.
+   */
+  protected static function createMachineKey($text, string $langcode) {
+    $transliteration = new PhpTransliteration();
+    $transliterated = $transliteration->transliterate($text, $langcode, '_');
+    $transliterated = mb_strtolower($transliterated);
+    $key = preg_replace('@[^a-z0-9_]+@', '_', $transliterated);
+    return $key;
+  }
 
   /**
    * {@inheritdoc}
@@ -25,11 +46,14 @@ class SemesterFieldOptionsForm extends FormBase {
     $description .= '<br/>' . t('The key is the stored value. The label will be used in displayed values and edit forms.');
     $description .= '<br/>' . t('The label is optional: if a line contains a single string, it will be used as key and label.');
     $description .= '</p>';
+    $allowedValues = \Drupal::config('os_classes.settings')->get('field_semester_allowed_values');
+    $flattenOptions = OptGroup::flattenOptions($allowedValues);
     $form['semester_field_options'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Semester field options'),
       '#required' => TRUE,
       '#description' => $description,
+      '#default_value' => !empty($flattenOptions) ? $this->allowedValuesString($flattenOptions) : '',
     ];
     $form['actions']['#type'] = 'actions';
     $form['actions']['submit'] = [
@@ -75,13 +99,14 @@ class SemesterFieldOptionsForm extends FormBase {
    * @see \Drupal\options\Plugin\Field\FieldType\ListItemBase::allowedValuesString()
    */
   protected static function extractAllowedValues($string) {
+    $langCode = \Drupal::languageManager()->getCurrentLanguage()->getId();
     $values = [];
 
     $list = explode("\n", $string);
     $list = array_map('trim', $list);
     $list = array_filter($list, 'strlen');
 
-    $generated_keys = $explicit_keys = FALSE;
+    $generatedKeys = $explicitKeys = FALSE;
     foreach ($list as $position => $text) {
       // Check for an explicit key.
       $matches = [];
@@ -89,12 +114,13 @@ class SemesterFieldOptionsForm extends FormBase {
         // Trim key and value to avoid unwanted spaces issues.
         $key = trim($matches[1]);
         $value = trim($matches[2]);
-        $explicit_keys = TRUE;
+        $explicitKeys = TRUE;
       }
       // Otherwise see if we can use the value as the key.
       elseif (!static::validateAllowedValue($text)) {
-        $key = $value = $text;
-        $explicit_keys = TRUE;
+        $key = self::createMachineKey($text, $langCode);
+        $value = $text;
+        $explicitKeys = TRUE;
       }
       else {
         return;
@@ -104,7 +130,7 @@ class SemesterFieldOptionsForm extends FormBase {
     }
 
     // We generate keys only if the list contains no explicit key at all.
-    if ($explicit_keys && $generated_keys) {
+    if ($explicitKeys && $generatedKeys) {
       return;
     }
 
@@ -134,6 +160,28 @@ class SemesterFieldOptionsForm extends FormBase {
     \Drupal::configFactory()->getEditable('os_classes.settings')
       ->set('field_semester_allowed_values', $options)
       ->save();
+  }
+
+  /**
+   * Generates a string representation of an array of 'allowed values'.
+   *
+   * This string format is suitable for edition in a textarea.
+   *
+   * @param array $values
+   *   An array of values, where array keys are values and array values are
+   *   labels.
+   *
+   * @return string
+   *   The string representation of the $values array:
+   *    - Values are separated by a carriage return.
+   *    - Each value is in the format "value|label" or "value".
+   */
+  public function allowedValuesString($values) {
+    $lines = [];
+    foreach ($values as $key => $value) {
+      $lines[] = "$key|$value";
+    }
+    return implode("\n", $lines);
   }
 
 }
