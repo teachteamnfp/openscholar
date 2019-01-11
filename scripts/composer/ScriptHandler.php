@@ -7,6 +7,7 @@
 
 namespace DrupalProject\composer;
 
+use Alchemy\Zippy\Exception\IOException;
 use Composer\Script\Event;
 use Composer\Semver\Comparator;
 use DrupalFinder\DrupalFinder;
@@ -143,4 +144,66 @@ class ScriptHandler {
         throw new \RuntimeException(sprintf('Symlink from "%s" to "%s" failed!', $root, $path));
     }
   }
+
+  /**
+   * Installs fullcalendar library.
+   *
+   * Installed via Composer packages.
+   * Not chosen to download from https://fullcalendar.io/download because then
+   * it would be difficult to specify the minimum version of the library.
+   *
+   * @param \Composer\Script\Event $event
+   *   Composer event.
+   */
+  public static function installFullcalendarLibrary(Event $event) {
+    $fs = new ComposerFilesystem();
+    $io = $event->getIO();
+    $root = realpath($event->getComposer()->getPackage()->getDistUrl());
+    $fullcalendar_source = "$root/components/fullcalendar/dist";
+    $moment_source = "$root/component/moment/min";
+    // This setting is configurable from inside
+    // `admin/config/user-interface/fullcalendar`.
+    $fullcalendar_destination = "$root/web/libraries/fullcalendar";
+    $moment_destination = "$fullcalendar_destination/lib";
+    $fullcalendar_files = [
+      'fullcalendar.css',
+      'fullcalendar.js',
+      'fullcalendar.print.css',
+      'gcal.js',
+      'fullcalendar.min.css',
+      'fullcalendar.min.js',
+      'fullcalendar.print.min.css',
+      'gcal.min.js',
+      'locale-all.js',
+    ];
+    $moment_files = [
+      'moment.min.js',
+    ];
+
+    try {
+      $io->write(sprintf("Symlinking fullcalendar library..."));
+      $fs->ensureDirectoryExists($fullcalendar_destination);
+
+      foreach ($fullcalendar_files as $file) {
+        $fs->relativeSymlink("$fullcalendar_source/$file", "$fullcalendar_destination/$file");
+        $io->write(sprintf("Symlinked %s", "$fullcalendar_source/$file"));
+      }
+
+      $io->write(sprintf("Symlinking complete."));
+
+      $io->write(sprintf("Symlinking moment.js library..."));
+      $fs->ensureDirectoryExists($moment_destination);
+
+      foreach ($moment_files as $file) {
+        $fs->relativeSymlink("$moment_source/$file", "$moment_destination/$file");
+        $io->write(sprintf("Symlinked %s", "$moment_source/$file"));
+      }
+
+      $io->write(sprintf("Symlinking complete."));
+    }
+    catch (\Exception $e) {
+      throw new \RuntimeException($e->getMessage());
+    }
+  }
+
 }

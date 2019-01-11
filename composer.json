@@ -98,7 +98,8 @@
         "drupal/date_recur": "^2.0",
         "drupal/admin_toolbar": "^1.25",
         "drupal/date_recur_interactive": "^2.0@alpha",
-        "drupal/views_ical": "1.x-dev"
+        "drupal/views_ical": "1.x-dev",
+        "fullcalendar/fullcalendar": "^3.3"
     },
     "require-dev": {
         "drupal/features": "^3.7",
@@ -132,12 +133,14 @@
         "post-install-cmd": [
             "@composer drupal:scaffold",
             "DrupalProject\\composer\\ScriptHandler::createRequiredFiles",
-            "DrupalProject\\composer\\ScriptHandler::placeProfile"
+            "DrupalProject\\composer\\ScriptHandler::placeProfile",
+            "DrupalProject\\composer\\ScriptHandler::installFullcalendarLibrary"
         ],
         "post-update-cmd": [
             "@composer drupal:scaffold",
             "DrupalProject\\composer\\ScriptHandler::createRequiredFiles",
-            "DrupalProject\\composer\\ScriptHandler::placeProfile"
+            "DrupalProject\\composer\\ScriptHandler::placeProfile",
+            "DrupalProject\\composer\\ScriptHandler::installFullcalendarLibrary"
         ]
     },
     "extra": {
