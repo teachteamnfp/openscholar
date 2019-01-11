@@ -347,7 +347,7 @@ function os_spaces_presets() {
   $spaces_presets->disabled = FALSE; /* Edit this to true to make a default spaces_presets disabled initially */
   $spaces_presets->api_version = 3;
   $spaces_presets->name = 'os_project';
-  $spaces_presets->title = 'Project';
+  $spaces_presets->title = 'Minimal';
   $spaces_presets->description = 'Blank site with no pre-set menu links or pages.';
   $spaces_presets->space_type = 'og';
   $spaces_presets->value = array(
