@@ -10,6 +10,7 @@ dependencies:
     - field.storage.node.field_location
     - field.storage.node.field_recurring_date
     - node.type.events
+    - system.menu.main
   module:
     - date_recur
     - fullcalendar
@@ -759,6 +760,15 @@ display:
       display_extenders: {  }
       path: calendar
       display_description: ''
+      menu:
+        type: normal
+        title: Calendar
+        description: Calendar
+        expanded: true
+        parent: ''
+        weight: 0
+        context: '0'
+        menu_name: main
     cache_metadata:
       max-age: -1
       contexts:
