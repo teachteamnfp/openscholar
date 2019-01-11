@@ -1,6 +1,6 @@
 {
     "name": "openscholar/openscholar",
-    "description": "OpenScholar installation profile",
+    "description": "OpenScholar installation profile.",
     "type": "drupal-profile",
     "license": "proprietary",
     "authors": [
