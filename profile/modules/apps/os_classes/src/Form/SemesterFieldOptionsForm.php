@@ -16,12 +16,12 @@ class SemesterFieldOptionsForm extends FormBase {
    * Create machine key.
    *
    * @param string $text
-   *    Original text.
+   *   Original text.
    * @param string $langcode
-   *    Langcode.
+   *   Langcode.
    *
    * @return string|string[]|null
-   *    Transliterated and replaced string.
+   *   Transliterated and replaced string.
    */
   protected static function createMachineKey($text, string $langcode) {
     $transliteration = new PhpTransliteration();
@@ -180,7 +180,7 @@ class SemesterFieldOptionsForm extends FormBase {
    *    - Values are separated by a carriage return.
    *    - Each value is in the format "value|label" or "value".
    */
-  public function allowedValuesString($values) {
+  public function allowedValuesString(array $values) {
     $lines = [];
     foreach ($values as $key => $value) {
       $lines[] = "$key|$value";
