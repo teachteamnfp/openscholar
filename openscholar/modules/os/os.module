@@ -3857,7 +3857,7 @@ function os_metatag_pattern_alter(&$pattern, &$types, $tag_name) {
         $pattern = '[node:title]';
         break;
       case 'twitter:description':
-        $pattern = '[site:site_title]';
+        $pattern = '[node:twitter_description]';
         break;
     }
   }
@@ -3926,9 +3926,15 @@ function os_token_info() {
     'description' => t('Site Title From Site Info Widget'),
   );
 
+  $node['twitter_description'] = array(
+    'name' => t('Twitter card description'),
+    'description' => t('Get value from node body or summary trimmed 150 chars.'),
+  );
+
   return array(
     'tokens' => array(
       'site' => $site,
+      'node' => $node,
     ),
   );
 }
@@ -3937,6 +3943,16 @@ function os_token_info() {
  * Implements hook_tokens().
  */
 function os_tokens($type, $tokens, array $data = array(), array $options = array()) {
+  $url_options = array('absolute' => TRUE);
+  if (isset($options['language'])) {
+    $url_options['language'] = $options['language'];
+    $language_code = $options['language']->language;
+  }
+  else {
+    $language_code = NULL;
+  }
+  $sanitize = !empty($options['sanitize']);
+
   $replacements = array();
 
  if ($type == 'site') {
@@ -3959,6 +3975,31 @@ function os_tokens($type, $tokens, array $data = array(), array $options = array
           if (module_exists('vsite') && $vsite = spaces_get_space()) {
             $title = $vsite->group->title;
             $replacements[$original] = $title;
+          }
+          break;
+      }
+    }
+  }
+  if ($type == 'node' && !empty($data['node'])) {
+    $node = $data['node'];
+    foreach ($tokens as $name => $original) {
+      switch ($name) {
+        case 'twitter_description':
+          if ($items = field_get_items('node', $node, 'body', $language_code)) {
+            $instance = field_info_instance('node', 'body', $node->type);
+            $field_langcode = field_language('node', $node, 'body', $language_code);
+            // If the summary was requested and is not empty, use it.
+            if ($name == 'summary' && !empty($items[0]['summary'])) {
+              $output = $sanitize ? _text_sanitize($instance, $field_langcode, $items[0], 'summary') : $items[0]['summary'];
+            }
+            // Attempt to provide a suitable version of the 'body' field.
+            else {
+              $output = $sanitize ? _text_sanitize($instance, $field_langcode, $items[0], 'value') : $items[0]['value'];
+            }
+            $trim_length = 150;
+            // Generate a trimmed summary of the body field.
+            $output = text_summary($output, $instance['settings']['text_processing'] ? $items[0]['format'] : NULL, $trim_length);
+            $replacements[$original] = $output;
           }
           break;
       }
