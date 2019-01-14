@@ -118,19 +118,6 @@ class RoboFile extends \Robo\Tasks
     }
 
     /**
-     * Command to send code coverage report.
-     *
-     * @return \Robo\Result
-     *   The result of the collection of tasks.
-     */
-    public function jobRunSendCoverageReport()
-    {
-        $collection = $this->collectionBuilder();
-        $collection->addTaskList($this->sendCoverageReportToCoveralls());
-        return $collection->run();
-    }
-
-    /**
      * Command to run behat tests.
      *
      * @return \Robo\Result
