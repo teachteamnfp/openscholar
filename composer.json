@@ -93,7 +93,10 @@
         "drupal/block_visibility_groups": "^1.3",
         "mreq/slick-lightbox": "master",
         "drupal/image_widget_crop": "^2.2",
-        "zaporylie/composer-drupal-optimizations": "^1.0"
+        "zaporylie/composer-drupal-optimizations": "^1.0",
+        "drupal/restui": "^1.16",
+        "drupal/pnx_media_embed": "^1.0@alpha",
+        "drupal/config_snapshot": "^1.0@alpha"
     },
     "require-dev": {
         "drupal/features": "^3.7",
