@@ -105,7 +105,8 @@
         "drupal/features": "^3.7",
         "webflo/drupal-core-require-dev": "^8.6",
         "drupal/devel": "^1.2",
-        "weitzman/drupal-test-traits": "^1.0@beta"
+        "weitzman/drupal-test-traits": "^1.0@beta",
+        "dmore/chrome-mink-driver": "^2.6"
     },
     "conflict": {
         "drupal/drupal": "*"

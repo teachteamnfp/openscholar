@@ -46,3 +46,10 @@ services:
       - 'traefik.backend=osd8_apache_1'
       - 'traefik.port=80'
       - 'traefik.frontend.rule=Host:home.d8.theopenscholar.com'
+
+  chrome:
+    # Note: chrome 67/68 is giving errors so we pin to 65 for now.
+    image: previousnext/chrome-headless:65
+    ports:
+      - "9222:9222"
+
