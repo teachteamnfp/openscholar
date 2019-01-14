@@ -99,6 +99,25 @@ class RoboFile extends \Robo\Tasks
     }
 
     /**
+     * Command to run functional javascript tests (headless).
+     *
+     * @param string $groups
+     *
+     * @return \Robo\Result
+     *   The result of the collection of tasks.
+     */
+    public function jobRunFunctionalJavaScriptTests($groups = '')
+    {
+        $collection = $this->collectionBuilder();
+        $collection->addTaskList($this->buildEnvironment());
+        $collection->addTaskList($this->installDrupal());
+        $collection->addTaskList($this->installTestConfigs());
+        $collection->addTaskList($this->enableXDebug());
+        $collection->addTaskList($this->runFunctionalJavaScriptTests($groups));
+        return $collection->run();
+    }
+
+    /**
      * Command to send code coverage report.
      *
      * @return \Robo\Result
@@ -300,7 +319,7 @@ class RoboFile extends \Robo\Tasks
               '-c web/core '.
               '--debug '.
               ($groups ? '--group ' . $groups . ' ': ' ')  .
-              '--exclude-group=kernel,functional '.
+              '--exclude-group=kernel,functional,functional-javascript '.
               '--verbose web/profiles/contrib/openscholar');
         return $tasks;
     }
@@ -322,7 +341,7 @@ class RoboFile extends \Robo\Tasks
                 '-c web/core '.
                 '--debug '.
                 ($groups ? '--group ' . $groups . ' ': ' ')  .
-                '--exclude-group=unit,functional '.
+                '--exclude-group=unit,functional,functional-javascript '.
                 '--verbose web/profiles/contrib/openscholar');
         return $tasks;
     }
@@ -346,7 +365,31 @@ class RoboFile extends \Robo\Tasks
                 '-c web/core '.
                 '--debug '.
                 ($groups ? '--group ' . $groups . ' ': ' ')  .
-                '--exclude-group=unit,kernel '.
+                '--exclude-group=unit,kernel,functional-javascript '.
+                '--verbose web/profiles/contrib/openscholar');
+        return $tasks;
+    }
+
+    /**
+     * Run functional javascript tests (headless).
+     *
+     * @param string $groups
+     *
+     * @return \Robo\Task\Base\Exec[]
+     *   An array of tasks.
+     */
+    protected function runFunctionalJavascriptTests($groups)
+    {
+        $groups = explode(',', $groups);
+        $groups = array_filter($groups, 'trim');
+        $groups[] = 'functional-javascript';
+        $groups = implode(',', $groups);
+        $tasks[] = $this->taskExecStack()
+            ->exec('docker-compose exec -T php ./vendor/bin/phpunit ' .
+                '-c web/core '.
+                '--debug '.
+                ($groups ? '--group ' . $groups . ' ': ' ')  .
+                '--exclude-group=unit,kernel,functional '.
                 '--verbose web/profiles/contrib/openscholar');
         return $tasks;
     }
