@@ -106,14 +106,14 @@ class RoboFile extends \Robo\Tasks
      * @return \Robo\Result
      *   The result of the collection of tasks.
      */
-    public function jobRunFunctionalJavaScriptTests($groups = '')
+    public function jobRunFunctionalJavascriptTests($groups = '')
     {
         $collection = $this->collectionBuilder();
         $collection->addTaskList($this->buildEnvironment());
         $collection->addTaskList($this->installDrupal());
         $collection->addTaskList($this->installTestConfigs());
         $collection->addTaskList($this->enableXDebug());
-        $collection->addTaskList($this->runFunctionalJavaScriptTests($groups));
+        $collection->addTaskList($this->runFunctionalJavascriptTests($groups));
         return $collection->run();
     }
 
