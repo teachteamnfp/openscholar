@@ -13,6 +13,7 @@ dependencies:
     - system.menu.main
   module:
     - date_recur
+    - datetime
     - fullcalendar
     - node
     - text
@@ -327,12 +328,165 @@ display:
       defaults:
         style: false
         row: false
+        title: false
       row:
         type: fields
         options: {  }
       display_description: ''
       allow:
         items_per_page: false
+      title: 'Monthly Calendar'
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - purl
+        - url
+        - 'user.node_grants:view'
+        - user.permissions
+      tags:
+        - 'config:field.storage.node.field_recurring_date'
+  block_2:
+    display_plugin: block
+    id: block_2
+    display_title: 'Upcoming Events'
+    position: 2
+    display_options:
+      display_extenders: {  }
+      block_description: 'Upcoming Events'
+      style:
+        type: fullcalendar
+        options:
+          display:
+            defaultView: month
+            firstDay: '0'
+            weekMode: fixed
+          times:
+            default_date: false
+            date: ''
+          left: 'prev,next'
+          center: title
+          right: month
+          timeformat: 'h:mm'
+          advanced: false
+          slotLabelFormat: 'h(:mm)a'
+          timeformatMonth: 'h:mm'
+          timeformatWeek: 'h:mm'
+          timeformatDay: 'h:mm'
+          titleformatMonth: 'MMMM YYYY'
+          titleformatWeek: 'MMM D YYYY'
+          titleformatDay: 'MMMM D YYYY'
+          columnformatMonth: ddd
+          columnformatWeek: 'ddd M/D'
+          columnformatDay: dddd
+          theme: true
+          sameWindow: false
+          modalWindow: false
+          contentHeight: 500
+          editable: false
+          fields:
+            title: false
+            title_field: field_recurring_date
+            url: false
+            url_field: field_recurring_date
+            date: false
+            date_field: {  }
+          fullcalendar_options:
+            firstHour: 6
+            minTime: 0
+            maxTime: 24
+            slotMinutes: 30
+            defaultEventMinutes: 120
+            allDaySlot: true
+            weekends: true
+            lazyFetching: true
+            disableDragging: false
+            disableResizing: false
+            dragRevertDuration: 500
+            dayClick: false
+            dayClickView: agendaWeek
+      defaults:
+        style: false
+        row: false
+        filters: false
+        filter_groups: false
+        title: false
+      row:
+        type: fields
+        options: {  }
+      display_description: ''
+      allow:
+        items_per_page: false
+      filters:
+        status:
+          value: '1'
+          table: node_field_data
+          field: status
+          plugin_id: boolean
+          entity_type: node
+          entity_field: status
+          id: status
+          expose:
+            operator: ''
+          group: 1
+        type:
+          id: type
+          table: node_field_data
+          field: type
+          value:
+            events: events
+          entity_type: node
+          entity_field: type
+          plugin_id: bundle
+        field_recurring_date_value:
+          id: field_recurring_date_value
+          table: node__field_recurring_date
+          field: field_recurring_date_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '>'
+          value:
+            min: ''
+            max: ''
+            value: today
+            type: offset
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            placeholder: ''
+            min_placeholder: ''
+            max_placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: datetime
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
+      title: 'Upcoming Events'
     cache_metadata:
       max-age: -1
       contexts:

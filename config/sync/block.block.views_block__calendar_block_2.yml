@@ -1,4 +1,4 @@
-uuid: aa62d8ac-dca0-4d61-bf44-18c3c77bafb0
+uuid: 3267097b-2781-477b-a499-995764038258
 langcode: en
 status: true
 dependencies:
@@ -10,14 +10,14 @@ dependencies:
     - views
   theme:
     - bartik
-id: views_block__calendar_block_1
+id: views_block__calendar_block_2
 theme: bartik
 region: sidebar_first
 weight: 0
 provider: null
-plugin: 'views_block:calendar-block_1'
+plugin: 'views_block:calendar-block_2'
 settings:
-  id: 'views_block:calendar-block_1'
+  id: 'views_block:calendar-block_2'
   label: ''
   provider: views
   label_display: visible
