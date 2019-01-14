@@ -8,4 +8,4 @@ Feature:
 #     And I click "Create Your Site Here"
 #     Then I should see "Individual Scholar"
 #     And I should see "Project/Lab/Small Group"
-#     And I should see "Department/School"
+#     And I should see "Department/School" 
