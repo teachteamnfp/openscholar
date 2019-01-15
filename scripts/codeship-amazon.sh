@@ -66,6 +66,8 @@ cd ..
 
 #remove install.php
 rm -Rf web/install.php || true
+#remove the ignore file to checkin drupal core
+rm -f .gitignore
 
 # Add New Files to repo and commit changes
 git add $BUILD_ROOT/openscholar
