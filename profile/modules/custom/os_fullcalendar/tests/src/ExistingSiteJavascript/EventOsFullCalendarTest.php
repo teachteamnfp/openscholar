@@ -2,6 +2,8 @@
 
 namespace Drupal\Tests\os_fullcalendar\ExistingSiteJavascript;
 
+use Behat\Mink\Exception\ExpectationException;
+
 /**
  * Tests os_fullcalendar module.
  *
@@ -15,15 +17,26 @@ class EventOsFullCalendarTest extends EventExistingSiteJavascriptTestBase {
    * Tests os_fullcalendar library load.
    */
   public function testOsFullCalendarLibraryLoad() {
-    $group = $this->createGroup([
+    $this->createGroup([
       'type' => 'personal',
       'path' => [
         'alias' => '/test-alias',
       ],
     ]);
+
+    $web_assert = $this->assertSession();
+
     $this->visit('/test-alias/calendar');
-    $this->assertSession()->statusCodeEquals(200);
-    $this->assertSession()->responseContains('os_fullcalendar.fullcalendar.js');
+
+    try {
+      $web_assert->statusCodeEquals(200);
+      $web_assert->responseContains('os_fullcalendar.fullcalendar.js');
+      $this->assertTrue(TRUE);
+    }
+    catch (ExpectationException $e) {
+      $this->fail(sprintf("Test failed: %s\nBacktrace: %s", $e->getMessage(), $e->getTraceAsString()));
+    }
+    // TODO: assert library not loaded in /event/* pages.
   }
 
 }
