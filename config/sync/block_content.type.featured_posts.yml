@@ -1,8 +1,0 @@
-uuid: 54e99e8b-b39c-41d2-9e41-d208ca2d80d0
-langcode: en
-status: true
-dependencies: {  }
-id: featured_posts
-label: 'Featured posts'
-revision: 1
-description: ''

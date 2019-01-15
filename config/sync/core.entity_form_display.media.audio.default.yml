@@ -1,9 +1,9 @@
-uuid: 1f919dd9-14c4-48a5-9de6-b12692ed97fa
+uuid: 3bef4c42-8308-48fa-83ef-cee37a6b9c61
 langcode: en
 status: true
 dependencies:
   config:
-    - field.field.media.audio.field_media_file
+    - field.field.media.audio.field_media_audio_file
     - media.type.audio
   module:
     - content_moderation
@@ -15,6 +15,8 @@ third_party_settings:
   field_layout:
     id: layout_onecol
     settings: {  }
+_core:
+  default_config_hash: RyyyRmiREZqnypsWhFFLYjMH0WRej2Pe8-H-8wh1o-Q
 id: media.audio.default
 targetEntityType: media
 bundle: audio
@@ -22,17 +24,17 @@ mode: default
 content:
   created:
     type: datetime_timestamp
-    weight: 4
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_media_file:
-    type: file_generic
-    weight: 1
-    region: content
+  field_media_audio_file:
+    weight: 0
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
+    type: file_generic
+    region: content
   langcode:
     type: language_select
     weight: 2
@@ -42,13 +44,13 @@ content:
     third_party_settings: {  }
   moderation_state:
     type: moderation_state_default
-    weight: 7
+    weight: 100
     settings: {  }
     region: content
     third_party_settings: {  }
   name:
     type: string_textfield
-    weight: 0
+    weight: -5
     region: content
     settings:
       size: 60
@@ -56,7 +58,7 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 5
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -64,12 +66,12 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 6
+    weight: 5
     region: content
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 3
+    weight: 2
     settings:
       match_operator: CONTAINS
       size: 60

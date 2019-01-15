@@ -1,0 +1,11 @@
+uuid: 78b4729a-d4d3-4b1f-9229-a9ae6410334c
+langcode: en
+status: true
+dependencies:
+  module:
+    - datetime
+id: config_sync.module.datetime
+snapshotSet: config_sync
+extensionType: module
+extensionName: datetime
+items: {  }

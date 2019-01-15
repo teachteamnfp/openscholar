@@ -1,0 +1,51 @@
+uuid: bcb5c4da-b0ee-4f0f-930e-70b9ba391f1b
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.media_entity_browser
+  module:
+    - os_media
+    - views
+_core:
+  default_config_hash: YN3oBEUlinWMEpFsizfpBRnxUnn-OttDmh8JlqFwd3c
+name: media_browser_embed
+label: 'Media browser embed'
+display: iframe
+display_configuration:
+  width: '1070'
+  height: '850'
+  link_text: 'Select media'
+  auto_open: true
+selection_display: no_display
+selection_display_configuration: {  }
+widget_selector: tabs
+widget_selector_configuration: {  }
+widgets:
+  b7c5e7a2-a826-4cb3-8fbc-b6a87409905e:
+    settings:
+      view: media_entity_browser
+      view_display: entity_browser_1
+      submit_text: 'Select media'
+      auto_select: 0
+    uuid: b7c5e7a2-a826-4cb3-8fbc-b6a87409905e
+    weight: '1'
+    label: 'Choose existing'
+    id: view
+  da745aaa-bade-4355-9ff3-3a74a6d12bb3:
+    settings:
+      upload_location: 'public://[vsite:current-vsite-path]/files'
+      dropzone_description: 'Drop files here to upload them'
+      max_filesize: 512M
+      extensions: 'jpg jpeg gif png txt doc xls pdf ppt pps odt ods odp'
+      clientside_resize: false
+      resize_width: ''
+      resize_height: ''
+      resize_quality: '1'
+      resize_method: contain
+      thumbnail_method: contain
+      submit_text: Upload
+    uuid: da745aaa-bade-4355-9ff3-3a74a6d12bb3
+    weight: '5'
+    label: 'Upload File'
+    id: os_media_widget

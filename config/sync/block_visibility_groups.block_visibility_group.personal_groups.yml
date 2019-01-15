@@ -1,0 +1,27 @@
+uuid: 124f4b62-1e52-4a9f-8795-e8316feb461d
+langcode: en
+status: true
+dependencies:
+  module:
+    - ctools
+id: personal_groups
+label: 'Personal Groups'
+logic: and
+conditions:
+  2c991eee-e1b5-4f66-8d8e-1a5e51d009b1:
+    id: 'entity_bundle:group'
+    bundles:
+      personal: personal
+    negate: false
+    context_mapping:
+      group: '@group.group_route_context:group'
+    uuid: 2c991eee-e1b5-4f66-8d8e-1a5e51d009b1
+  23616f7a-a6d4-4050-b556-28acdd92b52e:
+    id: 'entity_bundle:group'
+    bundles:
+      personal: personal
+    negate: false
+    context_mapping:
+      group: '@group_purl.context_provider:group'
+    uuid: 23616f7a-a6d4-4050-b556-28acdd92b52e
+allow_other_conditions: true

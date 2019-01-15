@@ -1,4 +1,4 @@
-uuid: 68151e9a-4c50-4cc5-a40a-2670df6c5d2d
+uuid: c27cbffa-a0d6-477f-839f-ec622f95a0e9
 langcode: en
 status: true
 dependencies:
@@ -7,6 +7,8 @@ dependencies:
     - media.type.video
   module:
     - file
+_core:
+  default_config_hash: OA1qtcEH8xxQhIPvf4TykZOp1MqSTA1R4HoWxbcWZD0
 id: media.video.field_media_video_file
 field_name: field_media_video_file
 entity_type: media
@@ -18,8 +20,8 @@ translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
-  file_directory: videos
   file_extensions: mp4
+  file_directory: '[date:custom:Y]-[date:custom:m]'
   max_filesize: ''
   description_field: false
   handler: 'default:file'

@@ -1,19 +1,24 @@
-uuid: 73ece093-c92c-44c3-a85d-14fdca558343
+uuid: 407239e5-d065-4b7d-8508-047df0150ef8
 langcode: en
 status: true
 dependencies:
+  enforced:
+    module:
+      - media
   module:
     - file
     - media
+_core:
+  default_config_hash: 4GNilUMnj0opT050eZIkWhkfuzu69ClyEr-cHxofjQw
 id: media.field_media_file
 field_name: field_media_file
 entity_type: media
 type: file
 settings:
+  uri_scheme: public
   target_type: file
   display_field: false
   display_default: false
-  uri_scheme: public
 module: file
 locked: false
 cardinality: 1

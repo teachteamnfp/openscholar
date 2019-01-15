@@ -1,4 +1,4 @@
-uuid: 45222826-d159-4610-a87d-f4c4b383c74c
+uuid: b4c7dd9b-8e85-48d0-81ab-1831e9c0cb4f
 langcode: en
 status: true
 dependencies:
@@ -16,6 +16,8 @@ third_party_settings:
   field_layout:
     id: layout_onecol
     settings: {  }
+_core:
+  default_config_hash: nZlttO4YMwMCpkhYMz7bQ1ZMjABGc59YY1us3eSfvTY
 id: media.image.default
 targetEntityType: media
 bundle: image
@@ -23,34 +25,34 @@ mode: default
 content:
   created:
     type: datetime_timestamp
-    weight: 8
+    weight: 10
     region: content
     settings: {  }
     third_party_settings: {  }
   field_media_image:
-    type: image_image
-    weight: 2
-    region: content
     settings:
       progress_indicator: throbber
       preview_image_style: thumbnail
     third_party_settings: {  }
+    type: image_image
+    weight: 0
+    region: content
   langcode:
     type: language_select
-    weight: 6
+    weight: 2
     region: content
     settings:
       include_locked: true
     third_party_settings: {  }
   moderation_state:
     type: moderation_state_default
-    weight: 11
+    weight: 100
     settings: {  }
     region: content
     third_party_settings: {  }
   name:
     type: string_textfield
-    weight: 0
+    weight: -5
     region: content
     settings:
       size: 60
@@ -58,7 +60,7 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 9
+    weight: 30
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -66,12 +68,12 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 10
+    weight: 100
     region: content
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 7
+    weight: 5
     settings:
       match_operator: CONTAINS
       size: 60

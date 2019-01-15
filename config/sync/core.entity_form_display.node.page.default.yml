@@ -1,16 +1,14 @@
-uuid: 56ea56f2-c83a-4e1d-b683-524e406cd311
+uuid: e308d73c-dbad-4634-9dc9-d62fe8a82ba2
 langcode: en
 status: true
 dependencies:
   config:
     - field.field.node.page.body
-    - field.field.node.page.field_slideshow
     - node.type.page
   module:
     - content_moderation
     - field_layout
     - layout_discovery
-    - paragraphs
     - path
     - text
 third_party_settings:
@@ -37,18 +35,6 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_slideshow:
-    type: entity_reference_paragraphs
-    weight: 122
-    settings:
-      title: Paragraph
-      title_plural: Paragraphs
-      edit_mode: open
-      add_mode: dropdown
-      form_display_mode: default
-      default_paragraph_type: ''
-    third_party_settings: {  }
-    region: content
   langcode:
     type: language_select
     weight: 2

@@ -1,0 +1,24 @@
+uuid: ca8cffc1-6bb7-4e1f-bc8c-10396c97eb0b
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.blog
+_core:
+  default_config_hash: A5TscCRQMYZn671aAEB3YFMGsYMhYMpu7mD5W4Xvb5M
+id: node.blog.status
+field_name: status
+entity_type: node
+bundle: blog
+label: Published
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

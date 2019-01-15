@@ -1,0 +1,31 @@
+uuid: cf38dc5d-c15a-4ddb-8463-156939041a70
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:custom_text:02f859ff-5637-4dfe-abe3-e7d9fe43db55'
+  module:
+    - block_content
+    - block_visibility_groups
+  theme:
+    - bartik
+id: vsitetestblock
+theme: bartik
+region: sidebar_first
+weight: 0
+provider: null
+plugin: 'block_content:02f859ff-5637-4dfe-abe3-e7d9fe43db55'
+settings:
+  id: 'block_content:02f859ff-5637-4dfe-abe3-e7d9fe43db55'
+  label: 'Vsite Test Block'
+  provider: block_content
+  label_display: visible
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  condition_group:
+    id: condition_group
+    negate: false
+    block_visibility_group: ''
+    context_mapping: {  }

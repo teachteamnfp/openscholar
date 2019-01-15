@@ -20,6 +20,7 @@ settings:
             - Underline
             - Strike
             - Format
+            - HorizontalRule
         -
           name: Justify
           items:
@@ -43,7 +44,7 @@ settings:
           name: Media
           items:
             - Blockquote
-            - DrupalImage
+            - embed_media
         -
           name: Tools
           items:

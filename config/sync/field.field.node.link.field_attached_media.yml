@@ -1,0 +1,35 @@
+uuid: 0fca7fbd-2b52-4963-8407-861582d24ae6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_attached_media
+    - media.type.audio
+    - media.type.file
+    - media.type.image
+    - media.type.video
+    - node.type.link
+id: node.link.field_attached_media
+field_name: field_attached_media
+entity_type: node
+bundle: link
+label: 'Attached Media'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      audio: audio
+      file: file
+      image: image
+      video: video
+    sort:
+      field: created
+      direction: DESC
+    auto_create: false
+    auto_create_bundle: audio
+field_type: entity_reference
