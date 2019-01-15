@@ -1,9 +1,8 @@
 <?php
 
-namespace Drupal\Tests\os_fullcalendar\ExistingSiteJavascript;
+namespace Drupal\Tests\os_classes\ExistingSiteJavascript;
 
 use Behat\Mink\Exception\ExpectationException;
-use Drupal\Tests\os_classes\ExistingSiteJavascript\ClassesExistingSiteJavascriptTestBase;
 
 /**
  * Tests os_classes module.
