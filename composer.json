@@ -1,6 +1,6 @@
 {
     "name": "openscholar/openscholar",
-    "description": "OpenScholar installation profile",
+    "description": "OpenScholar installation profile.",
     "type": "drupal-profile",
     "license": "proprietary",
     "authors": [
@@ -94,9 +94,8 @@
         "mreq/slick-lightbox": "master",
         "drupal/image_widget_crop": "^2.2",
         "zaporylie/composer-drupal-optimizations": "^1.0",
-        "drupal/restui": "^1.16",
-        "drupal/pnx_media_embed": "^1.0@alpha",
-        "drupal/config_snapshot": "^1.0@alpha"
+        "drupal/metatag": "^1.7",
+        "drupal/restui": "^1.16"
     },
     "require-dev": {
         "drupal/features": "^3.7",
