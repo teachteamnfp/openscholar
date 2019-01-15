@@ -81,6 +81,7 @@
         <directory>../profiles/contrib/openscholar/*/*/tests</directory>
         <directory suffix="Interface.php">../*</directory>
         <directory suffix="Test.php">../*</directory>
+        <directory suffix="TestBase.php">../*</directory>
       </exclude>
     </whitelist>
   </filter>
