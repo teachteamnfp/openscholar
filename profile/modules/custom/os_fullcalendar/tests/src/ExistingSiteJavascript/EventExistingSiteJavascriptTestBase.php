@@ -41,6 +41,9 @@ abstract class EventExistingSiteJavascriptTestBase extends ExistingSiteWebDriver
     ]);
     $group->enforceIsNew();
     $group->save();
+
+    $this->markEntityForCleanup($group);
+
     return $group;
   }
 
