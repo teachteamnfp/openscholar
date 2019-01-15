@@ -14,7 +14,7 @@ use Behat\Mink\Exception\ExpectationException;
 class EventOsFullCalendarTest extends EventExistingSiteJavascriptTestBase {
 
   /**
-   * Tests os_fullcalendar library load.
+   * Tests os_fullcalendar library should load in necessary pages.
    */
   public function testOsFullCalendarLibraryLoad() {
     $this->createGroup([
@@ -36,7 +36,31 @@ class EventOsFullCalendarTest extends EventExistingSiteJavascriptTestBase {
     catch (ExpectationException $e) {
       $this->fail(sprintf("Test failed: %s\nBacktrace: %s", $e->getMessage(), $e->getTraceAsString()));
     }
-    // TODO: assert library not loaded in /event/* pages.
+  }
+
+  /**
+   * Tests os_fullcalendar library should not load in unnecessary pages.
+   */
+  public function testOsFullCalendarLibraryNoLoad() {
+    $this->createGroup([
+      'type' => 'personal',
+      'path' => [
+        'alias' => '/test-alias',
+      ],
+    ]);
+
+    $web_assert = $this->assertSession();
+
+    $this->visit('/test-alias/');
+
+    try {
+      $web_assert->statusCodeEquals(200);
+      $web_assert->responseNotContains('os_fullcalendar.fullcalendar.js');
+      $this->assertTrue(TRUE);
+    }
+    catch (ExpectationException $e) {
+      $this->fail(sprintf("Test failed: %s\nBacktrace: %s", $e->getMessage(), $e->getTraceAsString()));
+    }
   }
 
 }
