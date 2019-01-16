@@ -5,6 +5,11 @@ sudo: false
 cache:
   directories:
     - $HOME/.composer/cache/files
+addons:
+  artifacts:
+    s3_region: $ARTIFACTS_S3_REGION
+    paths:
+      - ./web/sites/default/files
 
 services:
   - docker
@@ -21,6 +26,7 @@ env:
     - JOB=job:run-unit-tests
     - JOB=job:run-kernel-tests
     - JOB=job:run-functional-tests
+    - JOB=job:run-functional-javascript-tests
 #    - JOB=job:run-behat-tests
 
 before_install:
