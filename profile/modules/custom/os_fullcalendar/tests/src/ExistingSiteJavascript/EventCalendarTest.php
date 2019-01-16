@@ -20,8 +20,6 @@ class EventCalendarTest extends EventExistingSiteJavascriptTestBase {
   public function testEventsCalendarExists() {
     $web_assert = $this->assertSession();
 
-    $this->group->addContent($this->event, "group_node:{$this->event->bundle()}");
-
     try {
       $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/calendar");
       $web_assert->statusCodeEquals(200);

@@ -18,10 +18,6 @@ class EventTest extends EventTestBase {
   public function testEventAlias() {
     /** @var \Drupal\Core\Path\AliasManagerInterface $alias_manager */
     $alias_manager = $this->container->get('path.alias_manager');
-    /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
-    $vsite_context_manager = $this->container->get('vsite.context_manager');
-
-    $vsite_context_manager->activateVsite($this->group);
 
     /** @var \Drupal\node\NodeInterface $event */
     $event = $this->createEvent([

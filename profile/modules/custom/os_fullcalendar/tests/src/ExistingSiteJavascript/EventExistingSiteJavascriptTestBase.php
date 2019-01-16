@@ -47,12 +47,17 @@ abstract class EventExistingSiteJavascriptTestBase extends ExistingSiteWebDriver
 
     $this->entityTypeManager = $this->container->get('entity_type.manager');
     $this->config = $this->container->get('config.factory');
+    /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
+    $vsite_context_manager = $this->container->get('vsite.context_manager');
 
     $this->group = $this->createGroup([
       'path' => [
         'alias' => '/test-alias',
       ],
     ]);
+
+    $vsite_context_manager->activateVsite($this->group);
+
     $this->event = $this->createEvent([
       'title' => 'Test Event',
       'field_groups' => [
@@ -67,6 +72,7 @@ abstract class EventExistingSiteJavascriptTestBase extends ExistingSiteWebDriver
       ],
       'status' => TRUE,
     ]);
+    $this->group->addContent($this->event, "group_node:{$this->event->bundle()}");
   }
 
   /**
