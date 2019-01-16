@@ -49,7 +49,6 @@ abstract class EventExistingSiteJavascriptTestBase extends ExistingSiteWebDriver
     $this->config = $this->container->get('config.factory');
 
     $this->group = $this->createGroup([
-      'type' => 'personal',
       'path' => [
         'alias' => '/test-alias',
       ],
@@ -85,7 +84,7 @@ abstract class EventExistingSiteJavascriptTestBase extends ExistingSiteWebDriver
    */
   protected function createGroup(array $values = []) : GroupInterface {
     $group = $this->entityTypeManager->getStorage('group')->create($values + [
-      'type' => 'default',
+      'type' => 'personal',
       'label' => $this->randomMachineName(),
     ]);
     $group->enforceIsNew();
