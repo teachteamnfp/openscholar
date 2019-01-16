@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\os_classes\ExistingSiteJavascript;
 
+use Drupal\group\Entity\GroupInterface;
 use weitzman\DrupalTestTraits\ExistingSiteWebDriverTestBase;
 
 /**
@@ -42,6 +43,31 @@ abstract class ClassesExistingSiteJavascriptTestBase extends ExistingSiteWebDriv
     $node->save();
 
     return $node;
+  }
+
+  /**
+   * Creates a group.
+   *
+   * @param array $values
+   *   (optional) The values used to create the entity.
+   *
+   * @return \Drupal\group\Entity\GroupInterface
+   *   The created group entity.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   */
+  protected function createGroup(array $values = []) : GroupInterface {
+    $group = $this->entityTypeManager->getStorage('group')->create($values + [
+      'type' => 'personal',
+      'label' => $this->randomMachineName(),
+    ]);
+    $group->enforceIsNew();
+    $group->save();
+    $this->markEntityForCleanup($group);
+
+    return $group;
   }
 
 }

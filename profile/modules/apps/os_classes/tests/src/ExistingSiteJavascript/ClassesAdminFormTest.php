@@ -61,4 +61,22 @@ class ClassesAdminFormTest extends ClassesExistingSiteJavascriptTestBase {
     $this->assertTrue($checkModifiedValue, 'Modified value is not what expected.');
   }
 
+  /**
+   * Tests os_classes admin form with exists values.
+   */
+  public function testExistsDataAdminForm() {
+    $user = $this->createUser(['administer site configuration']);
+    $this->createClass([
+      'field_semester' => 'fall'
+    ]);
+    $this->drupalLogin($user);
+    $this->visit('/admin/config/openscholar/classes/field-allowed-values');
+
+    $web_assert = $this->assertSession();
+    $web_assert->statusCodeEquals(200);
+    $page = $this->getCurrentPage();
+    $checkWarningMessage = $page->hasContent('There are already contents in the class content type!');
+    $this->assertTrue($checkWarningMessage, 'Warning message does not appeared.');
+  }
+
 }
