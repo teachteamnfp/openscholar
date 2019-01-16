@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.group.personal.field_parent_site
+    - field.field.group.personal.field_privacy_level
     - field.field.group.personal.layout_builder__layout
     - group.type.personal
   module:
@@ -27,6 +28,12 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+    region: content
+  field_privacy_level:
+    weight: 32
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
     region: content
   label:
     type: string_textfield

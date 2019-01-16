@@ -4,11 +4,13 @@ status: true
 dependencies:
   config:
     - field.field.group.personal.field_parent_site
+    - field.field.group.personal.field_privacy_level
     - field.field.group.personal.layout_builder__layout
     - group.type.personal
   module:
     - layout_builder
     - layout_discovery
+    - options
 third_party_settings:
   layout_builder:
     sections:
@@ -32,6 +34,21 @@ third_party_settings:
                 type: entity_reference_label
             additional: {  }
             weight: 0
+          550bd800-a541-4a32-a950-a9c17c248329:
+            uuid: 550bd800-a541-4a32-a950-a9c17c248329
+            region: first
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:group:personal:field_privacy_level'
+              formatter:
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+                type: list_default
+            additional: {  }
+            weight: 1
     allow_custom: true
     enabled: true
 id: group.personal.default
@@ -46,6 +63,13 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: first
+  field_privacy_level:
+    weight: -3
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
     region: first
   label:
     label: hidden

@@ -1,0 +1,12 @@
+<?php
+
+/**
+ * Returns a list of allowed privacy options
+ *
+ * @return mixed
+ */
+function vsite_privacy_allowed_values() {
+  /** @var \Drupal\vsite_privacy\Plugin\VsitePrivacyLevelManagerInterface $vsitePrivacyManager */
+  $vsitePrivacyManager = \Drupal::service('vsite.privacy.manager');
+  return $vsitePrivacyManager->getOptions();
+}
