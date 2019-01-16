@@ -20,7 +20,11 @@ class EventCalendarBlocksTest extends EventExistingSiteJavascriptTestBase {
 
     $this->visit($this->aliasManager->getAliasByPath("/node/{$this->event->id()}"));
 
+    $this->getSession()->resizeWindow(1440, 900, 'current');
+    $this->getSession()->executeScript("window.scrollBy(0,1000)");
+    file_put_contents('public://screenshot-1.jpg', $this->getSession()->getScreenshot());
     try {
+      $web_assert->statusCodeEquals(200);
       $web_assert->pageTextContains('Monthly Calendar');
       $web_assert->pageTextContains(date('F Y'));
       $web_assert->pageTextContains($this->event->label());
@@ -36,6 +40,8 @@ class EventCalendarBlocksTest extends EventExistingSiteJavascriptTestBase {
    * Tests upcoming events block.
    */
   public function testUpcomingEventsBlock() {
+    $web_assert = $this->assertSession();
+
     /** @var \Drupal\node\NodeInterface $past_event */
     $past_event = $this->createEvent([
       'title' => 'Past Event',
@@ -51,6 +57,7 @@ class EventCalendarBlocksTest extends EventExistingSiteJavascriptTestBase {
       ],
       'status' => TRUE,
     ]);
+    $this->group->addContent($past_event, "group_node:{$past_event->bundle()}");
 
     /** @var \Drupal\node\NodeInterface $future_event */
     $future_event = $this->createEvent([
@@ -67,12 +74,15 @@ class EventCalendarBlocksTest extends EventExistingSiteJavascriptTestBase {
       ],
       'status' => TRUE,
     ]);
+    $this->group->addContent($future_event, "group_node:{$future_event->bundle()}");
 
-    $web_assert = $this->assertSession();
+    $this->visit($this->aliasManager->getAliasByPath("/node/{$future_event->id()}"));
 
-    $this->visit($this->aliasManager->getAliasByPath("/node/{$this->event->id()}"));
-
+    $this->getSession()->resizeWindow(1440, 900, 'current');
+    $this->getSession()->executeScript("window.scrollBy(0,1000)");
+    file_put_contents('public://screenshot-2.jpg', $this->getSession()->getScreenshot());
     try {
+      $web_assert->statusCodeEquals(200);
       $web_assert->pageTextContains('Upcoming Events');
       $web_assert->pageTextContains(date('F Y'));
       $web_assert->pageTextContains($future_event->label());
