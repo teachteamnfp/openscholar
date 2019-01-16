@@ -1,9 +1,15 @@
 <?php
 
 /**
- * Returns a list of allowed privacy options
+ * @file
+ * Hook implementations and stand-alone callbacks.
+ */
+
+/**
+ * Returns a list of allowed privacy options.
  *
  * @return mixed
+ *   An array of acceptable options for the privacy_level field.
  */
 function vsite_privacy_allowed_values() {
   /** @var \Drupal\vsite_privacy\Plugin\VsitePrivacyLevelManagerInterface $vsitePrivacyManager */

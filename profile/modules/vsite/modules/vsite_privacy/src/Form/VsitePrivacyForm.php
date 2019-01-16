@@ -2,11 +2,9 @@
 
 namespace Drupal\vsite_privacy\Form;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
-use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\TempStore\PrivateTempStoreFactory;
 use Drupal\quickedit\Form\QuickEditFieldForm;
@@ -27,7 +25,7 @@ class VsitePrivacyForm extends QuickEditFieldForm {
   protected $vsitePrivacyLevelManager;
 
   /**
-   * Vsite Context Manager
+   * Vsite Context Manager.
    *
    * @var \Drupal\vsite\Plugin\VsiteContextManagerInterface
    */
@@ -69,7 +67,6 @@ class VsitePrivacyForm extends QuickEditFieldForm {
     $vsite = $this->vsiteContextManager->getActiveVsite();
     $form = parent::buildForm($form, $form_state, $vsite, 'field_privacy_level');
 
-
     return $form;
   }
 
@@ -79,7 +76,7 @@ class VsitePrivacyForm extends QuickEditFieldForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    /** @var EntityInterface $entity */
+    /** @var \Drupal\Core\Entity\EntityInterface $entity */
     $entity = $form_state->get('entity');
     $entity->save();
   }
