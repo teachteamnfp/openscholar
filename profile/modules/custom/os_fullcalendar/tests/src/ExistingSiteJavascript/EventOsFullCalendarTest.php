@@ -9,7 +9,7 @@ use Behat\Mink\Exception\ExpectationException;
  *
  * @group vsite
  * @group functional-javascript
- * @coversDefaultClass \Drupal\os_fullcalendar\Plugin\fullcalendar\type\OsFullcalendar
+ * @covers \os_fullcalendar_views_pre_render
  */
 class EventOsFullCalendarTest extends EventExistingSiteJavascriptTestBase {
 
