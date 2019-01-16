@@ -15,18 +15,13 @@ class EventOsFullCalendarTest extends EventExistingSiteJavascriptTestBase {
 
   /**
    * Tests os_fullcalendar library should load in necessary pages.
+   *
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
   public function testOsFullCalendarLibraryLoad() {
-    $this->createGroup([
-      'type' => 'personal',
-      'path' => [
-        'alias' => '/test-alias',
-      ],
-    ]);
-
     $web_assert = $this->assertSession();
 
-    $this->visit('/test-alias/calendar');
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/calendar");
 
     try {
       $web_assert->statusCodeEquals(200);
@@ -42,16 +37,9 @@ class EventOsFullCalendarTest extends EventExistingSiteJavascriptTestBase {
    * Tests os_fullcalendar library should not load in unnecessary pages.
    */
   public function testOsFullCalendarLibraryNoLoad() {
-    $this->createGroup([
-      'type' => 'personal',
-      'path' => [
-        'alias' => '/test-alias',
-      ],
-    ]);
-
     $web_assert = $this->assertSession();
 
-    $this->visit('/test-alias/');
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/");
 
     try {
       $web_assert->statusCodeEquals(200);

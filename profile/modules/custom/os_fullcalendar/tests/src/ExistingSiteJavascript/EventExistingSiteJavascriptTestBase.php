@@ -19,12 +19,55 @@ abstract class EventExistingSiteJavascriptTestBase extends ExistingSiteWebDriver
   protected $entityTypeManager;
 
   /**
+   * Test group.
+   *
+   * @var \Drupal\group\Entity\GroupInterface
+   */
+  protected $group;
+
+  /**
+   * Test event.
+   *
+   * @var \Drupal\node\NodeInterface
+   */
+  protected $event;
+
+  /**
+   * Config factory.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $config;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
     parent::setUp();
 
     $this->entityTypeManager = $this->container->get('entity_type.manager');
+    $this->config = $this->container->get('config.factory');
+
+    $this->group = $this->createGroup([
+      'type' => 'personal',
+      'path' => [
+        'alias' => '/test-alias',
+      ],
+    ]);
+    $this->event = $this->createEvent([
+      'title' => 'Test Event',
+      'field_groups' => [
+        'target_id' => $this->group->id(),
+      ],
+      'field_recurring_date' => [
+        'value' => date("Y-m-d\TH:i:s", strtotime("today midnight")),
+        'end_value' => date("Y-m-d\TH:i:s", strtotime("tomorrow midnight")),
+        'rrule' => '',
+        'timezone' => $this->config->get('system.date')->get('timezone.default'),
+        'infinite' => FALSE,
+      ],
+      'status' => TRUE,
+    ]);
   }
 
   /**
