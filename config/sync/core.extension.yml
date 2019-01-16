@@ -52,6 +52,11 @@ module:
   locale: 0
   media: 0
   menu_ui: 0
+  metatag: 0
+  metatag_facebook: 0
+  metatag_open_graph: 0
+  metatag_twitter_cards: 0
+  metatag_views: 0
   node: 0
   options: 0
   os_app_access: 0
