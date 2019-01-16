@@ -74,8 +74,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 
   chrome:
-    image: selenium/standalone-chrome-debug:3.7.1-beryllium
+    # Note: chrome 67/68 is giving errors so we pin to 65 for now.
+    image: previousnext/chrome-headless:65
     ports:
-      - '4444:4444'
-    volumes:
-      - /dev/shm:/dev/shm
+      - "9222:9222"
