@@ -6,6 +6,9 @@ use Behat\Mink\Exception\ExpectationException;
 
 /**
  * Tests event calendar.
+ *
+ * @group vsite
+ * @group functional-javascript
  */
 class EventCalendarTest extends EventExistingSiteJavascriptTestBase {
 
