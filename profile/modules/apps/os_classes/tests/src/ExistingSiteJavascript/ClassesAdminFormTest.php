@@ -18,7 +18,7 @@ class ClassesAdminFormTest extends ClassesExistingSiteJavascriptTestBase {
    */
   public function testAccessDeniedAdminForm() {
 
-    // Create a non-admin user
+    // Create a non-admin user.
     $user = $this->createUser();
     $this->drupalLogin($user);
     $this->visit('/admin/config/openscholar/classes/field-allowed-values');
@@ -32,6 +32,7 @@ class ClassesAdminFormTest extends ClassesExistingSiteJavascriptTestBase {
       $this->fail(sprintf("Test failed: %s\nBacktrace: %s", $e->getMessage(), $e->getTraceAsString()));
     }
   }
+
   /**
    * Tests os_classes admin form access.
    */
