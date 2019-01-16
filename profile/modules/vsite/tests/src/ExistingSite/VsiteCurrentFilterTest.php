@@ -85,14 +85,37 @@ class VsiteCurrentFilterTest extends VsiteExistingSiteTestBase {
     ]);
     $this->groupedNode->save();
 
+    $subGroup1 = $this->createGroup([
+      'type' => 'subsite_test',
+      'label' => 'SubSite01',
+      'field_parent_site' => $this->group->id(),
+    ]);
+    $subGroup2 = $this->createGroup([
+      'type' => 'subsite_test',
+      'label' => 'SubSite02',
+      'field_parent_site' => $otherGroup->id(),
+    ]);
+
     $otherNode = $this->createNode([
       'type' => 'page',
       'title' => 'OtherGroup',
     ]);
     $otherNode->save();
+    $subNode1 = $this->createNode([
+      'type' => 'page',
+      'title' => 'SubNode1',
+    ]);
+    $subNode1->save();
+    $subNode2 = $this->createNode([
+      'type' => 'page',
+      'title' => 'SubNode2',
+    ]);
+    $subNode2->save();
 
     $this->group->addContent($this->groupedNode, $plugin->getContentPluginId());
     $otherGroup->addContent($otherNode, $plugin->getContentPluginId());
+    $subGroup1->addContent($subNode1, $plugin->getContentPluginId());
+    $subGroup2->addContent($subNode2, $plugin->getContentPluginId());
 
     $this->vsiteContextManager = $this->container->get('vsite.context_manager');
   }
@@ -140,6 +163,18 @@ class VsiteCurrentFilterTest extends VsiteExistingSiteTestBase {
     $this->assertContains('Grouped', $results);
     $this->assertNotContains('Ungrouped', $results, 'View returns Ungrouped when it should not.');
     $this->assertNotContains('OtherGroup', $results, 'View returns OtherGroup when it should not.');
+  }
+
+  /**
+   * Check that only the subsite grouped post shows up in a vsite.
+   */
+  public function testSubsiteContentVsite() {
+    $this->vsiteContextManager->activateVsite($this->group);
+
+    $results = $this->getViewResults();
+
+    $this->assertContains('SubNode1', $results);
+    $this->assertNotContains('SubNode2', $results, 'View returns Other content when it should not.');
   }
 
 }
