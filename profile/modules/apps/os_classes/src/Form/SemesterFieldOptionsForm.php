@@ -164,6 +164,7 @@ class SemesterFieldOptionsForm extends FormBase {
     \Drupal::configFactory()->getEditable('os_classes.settings')
       ->set('field_semester_allowed_values', $options)
       ->save();
+    \Drupal::messenger()->addMessage('Values are updated');
   }
 
   /**
