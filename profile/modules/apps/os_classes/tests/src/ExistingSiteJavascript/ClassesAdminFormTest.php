@@ -49,9 +49,11 @@ class ClassesAdminFormTest extends ClassesExistingSiteJavascriptTestBase {
     $page = $this->getCurrentPage();
     $checkDefaultValue = $page->hasContent('fall|Fall');
     $this->assertTrue($checkDefaultValue, 'Default value is not loaded on admin form.');
-    $page->fillField('semester_field_options', 'Test 1');
-    $form = $page->find('css', '#semester-field-options-form');
-    $form->submit();
+
+    $edit = [
+      'semester_field_options' => 'Test 1',
+    ];
+    $this->drupalPostForm(NULL, $edit, 'Save');
     $web_assert->statusCodeEquals(200);
     $this->visit('/admin/config/openscholar/classes/field-allowed-values');
     $page = $this->getCurrentPage();
