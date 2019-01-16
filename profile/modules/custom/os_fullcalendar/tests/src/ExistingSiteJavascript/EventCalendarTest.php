@@ -33,9 +33,30 @@ class EventCalendarTest extends EventExistingSiteJavascriptTestBase {
 
   /**
    * Tests whether irrelevant events do not appear in calendar.
+   *
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
   public function testEventsCalendarNotExists() {
-    // TODO: Implement.
+    $web_assert = $this->assertSession();
+    $group2 = $this->createGroup([
+      'path' => [
+        'alias' => '/test-alias2',
+      ],
+    ]);
+
+    try {
+      $this->visit("{$group2->get('path')->first()->getValue()['alias']}/calendar");
+      $web_assert->statusCodeEquals(200);
+      $web_assert->pageTextNotContains($this->event->label());
+
+      $this->assertTrue(TRUE);
+    }
+    catch (ExpectationException $e) {
+      $this->fail(sprintf("Test failed: %s\nBacktrace: %s", $e->getMessage(), $e->getTraceAsString()));
+    }
   }
 
 }
