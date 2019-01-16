@@ -60,12 +60,17 @@ echo "Rebuilding..."
 cd openscholar
 
 # Download composer components
-composer install
+composer install --ignore-platform-reqs
 
 cd ..
 
 #remove install.php
 rm -Rf web/install.php || true
+#remove the ignore file to checkin drupal core
+rm -f openscholar/.gitignore
+
+find openscholar/web openscholar/vendor -name '.git' | xargs rm -rf
+find openscholar/web openscholar/vendor -name '.gitignore' | xargs rm -rf
 
 # Add New Files to repo and commit changes
 git add $BUILD_ROOT/openscholar
