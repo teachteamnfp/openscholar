@@ -71,7 +71,7 @@
         "cweagans/composer-patches": "^1.6",
         "drupal-composer/drupal-scaffold": "^2.5",
         "drupal/console": "^1.0.2",
-        "drupal/core": "^8.6.1",
+        "drupal/core": "^8.6.7",
         "drupal/purl": "master@dev",
         "drupal/group_purl": "1.x-dev",
         "drupal/search_api": "^1.9",
@@ -98,13 +98,12 @@
         "drupal/admin_toolbar": "^1.25",
         "drupal/fullcalendar": "1.x-dev",
         "drupal/date_recur": "^2.0",
-        "drupal/date_recur_interactive": "^2.0",
         "drupal/views_ical": "1.x-dev",
         "fullcalendar/fullcalendar": "^3.3"
     },
     "require-dev": {
         "drupal/features": "^3.7",
-        "webflo/drupal-core-require-dev": "^8.6",
+        "webflo/drupal-core-require-dev": "^8.6.7",
         "drupal/devel": "^1.2",
         "weitzman/drupal-test-traits": "^1.0@beta",
         "dmore/chrome-mink-driver": "^2.6"
