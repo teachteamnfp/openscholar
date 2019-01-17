@@ -5,37 +5,23 @@ namespace Drupal\Tests\os_fullcalendar\ExistingSiteJavascript;
 use Behat\Mink\Exception\ExpectationException;
 
 /**
- * Tests calendar blocks.
+ * Tests upcoming events calendar block.
+ *
+ * Ideally this should have been a test case inside
+ * EventCalendarMonthlyBlockTest, but due to unknown reasons the event alias was
+ * not working, and giving "page not found" error. I have already spent around
+ * 4 hrs trying to identify the problem. I think it is not able to identify the
+ * new alias with same pattern, after it is deleted in a previous test case.
  *
  * @group vsite
  * @group functional-javascript
  */
-class EventCalendarBlocksTest extends EventExistingSiteJavascriptTestBase {
+class EventCalendarUpcomingBlockTest extends EventExistingSiteJavascriptTestBase {
 
   /**
-   * Tests monthly block.
+   * Tests the block.
    */
-  public function testMonthlyBlock() {
-    $web_assert = $this->assertSession();
-
-    $this->visit($this->aliasManager->getAliasByPath("/node/{$this->event->id()}"));
-
-    try {
-      $web_assert->pageTextContains('Monthly Calendar');
-      $web_assert->pageTextContains(date('F Y'));
-      $web_assert->pageTextContains($this->event->label());
-
-      $this->assertTrue(TRUE);
-    }
-    catch (ExpectationException $e) {
-      $this->fail(sprintf("Test failed: %s\nBacktrace: %s", $e->getMessage(), $e->getTraceAsString()));
-    }
-  }
-
-  /**
-   * Tests upcoming events block.
-   */
-  public function testUpcomingEventsBlock() {
+  public function testBlock() {
     /** @var \Drupal\node\NodeInterface $past_event */
     $past_event = $this->createEvent([
       'title' => 'Past Event',
