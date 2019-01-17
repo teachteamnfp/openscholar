@@ -61,7 +61,7 @@ class VsitePrivacyAccessCheck implements EventSubscriberInterface {
    * React on site activated event.
    *
    * @param \Drupal\vsite\Event\VsiteActivatedEvent $event
-   *   Activation event
+   *   Activation event.
    */
   public function onVsiteActivated(VsiteActivatedEvent $event) {
     if ($this->checked) {
