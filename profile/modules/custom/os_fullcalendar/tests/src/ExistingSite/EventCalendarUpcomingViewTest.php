@@ -1,22 +1,14 @@
 <?php
 
-namespace Drupal\Tests\os_fullcalendar\ExistingSiteJavascript;
-
-use Behat\Mink\Exception\ExpectationException;
+namespace Drupal\Tests\os_fullcalendar\ExistingSite;
 
 /**
- * Tests upcoming events calendar block.
- *
- * Ideally this should have been a test case inside
- * EventCalendarMonthlyBlockTest, but due to unknown reasons the event alias was
- * not working, and giving "page not found" error. I have already spent around
- * 4 hrs trying to identify the problem. I think it is not able to identify the
- * new alias with same pattern, after it is deleted in a previous test case.
+ * Tests upcoming events calendar view.
  *
  * @group vsite
- * @group functional-javascript
+ * @group kernel
  */
-class EventCalendarUpcomingBlockTest extends EventExistingSiteJavascriptTestBase {
+class EventCalendarUpcomingViewTest extends EventTestBase {
 
   /**
    * Tests the block.
@@ -54,20 +46,13 @@ class EventCalendarUpcomingBlockTest extends EventExistingSiteJavascriptTestBase
       'status' => TRUE,
     ]);
 
-    $web_assert = $this->assertSession();
+    /** @var array $result */
+    $result = views_get_view_result('calendar', 'block_2', $this->group->id());
 
-    $this->visit($this->aliasManager->getAliasByPath("/node/{$this->event->id()}"));
-
-    try {
-      $web_assert->pageTextContains('Upcoming Events');
-      $web_assert->pageTextContains(date('F Y'));
-      $web_assert->pageTextContains($future_event->label());
-      $web_assert->pageTextNotContains($past_event->label());
-
-      $this->assertTrue(TRUE);
-    }
-    catch (ExpectationException $e) {
-      $this->fail(sprintf("Test failed: %s\nBacktrace: %s", $e->getMessage(), $e->getTraceAsString()));
+    $this->assertCount(1, $result);
+    /** @var \Drupal\views\ResultRow $item */
+    foreach ($result as $item) {
+      $this->assertEquals($future_event->id(), $item->nid);
     }
   }
 
