@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7ff7134ef7804adb1083ff1d57d2bc71",
+    "content-hash": "23bde550c4c7d9542e957aca2dac9968",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -3342,6 +3342,58 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/date_recur",
                 "issues": "https://www.drupal.org/project/issues/date_recur"
+            }
+        },
+        {
+            "name": "drupal/date_recur_interactive",
+            "version": "2.0.0-alpha0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/date_recur_interactive",
+                "reference": "8.x-2.0-alpha0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/date_recur_interactive-8.x-2.0-alpha0.zip",
+                "reference": "8.x-2.0-alpha0",
+                "shasum": "d9de8c0513fc38c1ea504413b0f7ecb8c6d11233"
+            },
+            "require": {
+                "drupal/core": "^8.6",
+                "drupal/date_recur": "2.*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-2.x": "2.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-2.0-alpha0",
+                    "datestamp": "1545106384",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Alpha releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "dpi",
+                    "homepage": "https://www.drupal.org/user/81431"
+                }
+            ],
+            "description": "Provides an interactive recurring date widget.",
+            "homepage": "https://www.drupal.org/project/date_recur_interactive",
+            "keywords": [
+                "Drupal"
+            ],
+            "support": {
+                "source": "http://cgit.drupalcode.org/date_recur_interactive",
+                "issues": "https://www.drupal.org/project/issues/date_recur_interactive"
             }
         },
         {
