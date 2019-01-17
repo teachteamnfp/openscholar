@@ -59,10 +59,6 @@ class EventCalendarUpcomingBlockTest extends EventExistingSiteJavascriptTestBase
     $this->visit($this->aliasManager->getAliasByPath("/node/{$this->event->id()}"));
 
     try {
-      $this->getSession()->resizeWindow(1440, 900, 'current');
-      $this->getSession()->executeScript("window.scrollBy(0,1000)");
-      file_put_contents('public://screenshot-1.jpg', $this->getSession()->getScreenshot());
-      $web_assert->statusCodeEquals(200);
       $web_assert->pageTextContains('Upcoming Events');
       $web_assert->pageTextContains(date('F Y'));
       $web_assert->pageTextContains($future_event->label());
