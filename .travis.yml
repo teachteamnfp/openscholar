@@ -5,11 +5,6 @@ sudo: false
 cache:
   directories:
     - $HOME/.composer/cache/files
-addons:
-  artifacts:
-    s3_region: $ARTIFACTS_S3_REGION
-    paths:
-      - ./web/sites/default/files
 
 services:
   - docker
