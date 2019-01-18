@@ -81,12 +81,7 @@ function os_classes_node_class_form_validate(array &$form, FormStateInterface $f
 /**
  * Implements hook_ENTITY_TYPE_view().
  */
-function os_classes_node_view(
-  array &$build,
-  EntityInterface $entity,
-  EntityViewDisplayInterface $display,
-  $view_mode
-) {
+function os_classes_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
   if ($entity->bundle() == 'class') {
     $build['#attached']['library'][] = 'os_classes/os-classes-theme';
   }
