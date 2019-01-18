@@ -3,14 +3,33 @@
 namespace Drupal\os_classes\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Database\Connection;
 use Drupal\node\NodeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Defines a route controller for entity autocomplete form elements.
  */
 class AutocompleteController extends ControllerBase {
+
+  /**
+   * The database service.
+   *
+   * @var \Drupal\Core\Database\Database
+   */
+  protected $database;
+
+  /**
+   * Constructs a AutocompleteController object.
+   *
+   * @param \Drupal\Core\Database\Connection $database
+   *   The renderer service.
+   */
+  public function __construct(Connection $database) {
+    $this->database = $database;
+  }
 
   /**
    * Handler for autocomplete request.
@@ -20,7 +39,7 @@ class AutocompleteController extends ControllerBase {
 
     // Get the typed string from the URL, if it exists.
     if ($input = $request->query->get('q')) {
-      $query = \Drupal::database()
+      $query = $this->database
         ->select('node__field_year_offered', 'fyo')
         ->fields('fyo', [
           'field_year_offered_value',
@@ -41,6 +60,15 @@ class AutocompleteController extends ControllerBase {
     }
 
     return new JsonResponse($results);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('database')
+    );
   }
 
 }
