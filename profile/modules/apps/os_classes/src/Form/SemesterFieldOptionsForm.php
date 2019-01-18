@@ -150,7 +150,7 @@ class SemesterFieldOptionsForm extends FormBase {
    * @return string
    *   The error message if the specified value is invalid, NULL otherwise.
    */
-  protected static function validateAllowedValue($option) {
+  protected static function validateAllowedValue($option) : string {
     if (mb_strlen($option) > 255) {
       return t('Allowed values list: each key must be a string at most 255 characters long.');
     }
