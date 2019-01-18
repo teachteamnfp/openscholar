@@ -14,7 +14,7 @@ use Behat\Mink\Exception\ExpectationException;
 class ClassesAdminFormTest extends ClassesExistingSiteJavascriptTestBase {
 
   /**
-   * Tests os_classes admin form access.
+   * Tests allowed values admin form access denied.
    */
   public function testAccessDeniedAdminForm() {
 
@@ -34,7 +34,7 @@ class ClassesAdminFormTest extends ClassesExistingSiteJavascriptTestBase {
   }
 
   /**
-   * Tests os_classes admin form access.
+   * Tests allowed values admin form access with admin user and test submit machine key generate.
    */
   public function testAccessAdminForm() {
 
