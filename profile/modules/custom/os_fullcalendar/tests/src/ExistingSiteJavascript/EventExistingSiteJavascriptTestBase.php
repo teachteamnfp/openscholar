@@ -68,9 +68,6 @@ abstract class EventExistingSiteJavascriptTestBase extends ExistingSiteWebDriver
 
     $this->event = $this->createEvent([
       'title' => 'Test Event',
-      'field_groups' => [
-        'target_id' => $this->group->id(),
-      ],
       'field_recurring_date' => [
         'value' => date("Y-m-d\TH:i:s", strtotime("today midnight")),
         'end_value' => date("Y-m-d\TH:i:s", strtotime("tomorrow midnight")),

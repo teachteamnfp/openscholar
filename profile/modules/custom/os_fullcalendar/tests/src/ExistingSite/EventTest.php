@@ -22,9 +22,6 @@ class EventTest extends EventTestBase {
     /** @var \Drupal\node\NodeInterface $event */
     $event = $this->createEvent([
       'title' => 'Test Unique Event',
-      'field_groups' => [
-        'target_id' => $this->group->id(),
-      ],
       'status' => TRUE,
     ]);
     $this->group->addContent($event, "group_node:{$event->bundle()}");

@@ -14,11 +14,9 @@ class EventMiniCalendarViewsTest extends EventTestBase {
    * Tests monthly calendar view.
    */
   public function testMonthlyCalendarView() {
-    $this->createEvent([
+    /** @var \Drupal\node\NodeInterface $next_month_event */
+    $next_month_event = $this->createEvent([
       'title' => 'Next Month Event',
-      'field_groups' => [
-        'target_id' => $this->group->id(),
-      ],
       'field_recurring_date' => [
         'value' => date("Y-m-d\TH:i:s", strtotime("+1 month midnight")),
         'end_value' => date("Y-m-d\TH:i:s", strtotime("+1 day +1 month midnight")),
@@ -28,9 +26,10 @@ class EventMiniCalendarViewsTest extends EventTestBase {
       ],
       'status' => TRUE,
     ]);
+    $this->group->addContent($next_month_event, "group_node:{$next_month_event->bundle()}");
 
     /** @var array $result */
-    $result = views_get_view_result('calendar', 'block_1', $this->group->id());
+    $result = views_get_view_result('calendar', 'block_1');
 
     // Next month event should not appear.
     $this->assertCount(1, $result);
@@ -44,11 +43,9 @@ class EventMiniCalendarViewsTest extends EventTestBase {
    * Tests upcoming events calendar view.
    */
   public function testUpcomingEventsCalendarView() {
-    $this->createEvent([
+    /** @var \Drupal\node\NodeInterface $past_event */
+    $past_event = $this->createEvent([
       'title' => 'Past Event',
-      'field_groups' => [
-        'target_id' => $this->group->id(),
-      ],
       'field_recurring_date' => [
         'value' => date("Y-m-d\TH:i:s", strtotime("-2 day -1 month midnight")),
         'end_value' => date("Y-m-d\TH:i:s", strtotime("-1 day -1 month midnight")),
@@ -58,13 +55,11 @@ class EventMiniCalendarViewsTest extends EventTestBase {
       ],
       'status' => TRUE,
     ]);
+    $this->group->addContent($past_event, "group_node:{$past_event->bundle()}");
 
     /** @var \Drupal\node\NodeInterface $future_event */
     $future_event = $this->createEvent([
       'title' => 'Future Event',
-      'field_groups' => [
-        'target_id' => $this->group->id(),
-      ],
       'field_recurring_date' => [
         'value' => date("Y-m-d\TH:i:s", strtotime("1 day midnight")),
         'end_value' => date("Y-m-d\TH:i:s", strtotime("2 day midnight")),
@@ -74,9 +69,10 @@ class EventMiniCalendarViewsTest extends EventTestBase {
       ],
       'status' => TRUE,
     ]);
+    $this->group->addContent($future_event, "group_node:{$future_event->bundle()}");
 
     /** @var array $result */
-    $result = views_get_view_result('calendar', 'block_2', $this->group->id());
+    $result = views_get_view_result('calendar', 'block_2');
 
     $this->assertCount(1, $result);
     /** @var \Drupal\views\ResultRow $item */
