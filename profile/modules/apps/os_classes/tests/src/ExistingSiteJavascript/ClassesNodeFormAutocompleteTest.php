@@ -19,6 +19,13 @@ class ClassesNodeFormAutocompleteTest extends ClassesExistingSiteJavascriptTestB
   protected $group;
 
   /**
+   * Test admin user.
+   *
+   * @var \Drupal\user\Entity\User
+   */
+  protected $adminUser;
+
+  /**
    * Config factory.
    *
    * @var \Drupal\Core\Config\ConfigFactoryInterface
@@ -49,14 +56,14 @@ class ClassesNodeFormAutocompleteTest extends ClassesExistingSiteJavascriptTestB
       ],
     ]);
     $vsiteContextManager->activateVsite($this->group);
+    $this->adminUser = $this->createUser(['administer nodes', 'bypass node access']);
   }
 
   /**
    * Tests os_classes autocomplete on node form.
    */
   public function testAutocompleteNodeForm() {
-    $user = $this->createUser(['administer nodes', 'bypass node access']);
-    $this->drupalLogin($user);
+    $this->drupalLogin($this->adminUser);
     $node = $this->createClass([
       'field_year_offered' => '2016'
     ]);
