@@ -12,7 +12,7 @@ conditions:
   98e12941-b284-451b-83f9-9b0be74084a5:
     id: 'entity_bundle:node'
     bundles:
-      book: book
+      page: page
     negate: false
     context_mapping:
       node: '@node.node_route_context:node'
