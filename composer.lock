@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "23bde550c4c7d9542e957aca2dac9968",
+    "content-hash": "b1781433650ddac4c4863a107d8796a5",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -4348,7 +4348,9 @@
                     }
                 },
                 "patches_applied": {
-                    "Define missing views methods": "https://www.drupal.org/files/issues/2019-01-10/2982848-2.patch"
+                    "Define missing views methods": "https://www.drupal.org/files/issues/2019-01-10/2982848-2.patch",
+                    "No page title due to undefined variable $config": "https://www.drupal.org/files/issues/2891778-2-undefined-variable-notice-fix.patch",
+                    "Add HTTP Header: application/calendar": "https://www.drupal.org/files/issues/views_ical-set_response_header-2601522-4.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
