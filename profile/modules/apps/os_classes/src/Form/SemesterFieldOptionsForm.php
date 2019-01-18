@@ -24,6 +24,8 @@ class SemesterFieldOptionsForm extends FormBase {
   protected $entityTypeManager;
 
   /**
+   * The language manager.
+   *
    * @var \Drupal\Core\Language\LanguageManagerInterface
    */
   private $languageManager;
@@ -37,6 +39,9 @@ class SemesterFieldOptionsForm extends FormBase {
     $this->configFactory = $configFactory;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public static function create(ContainerInterface $container) {
     // Instantiates this form class.
     return new static(
