@@ -3,14 +3,49 @@
 namespace Drupal\os_classes\Form;
 
 use Drupal\Component\Transliteration\PhpTransliteration;
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\OptGroup;
+use Drupal\Core\Language\LanguageManagerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Implements a semester field options form.
  */
 class SemesterFieldOptionsForm extends FormBase {
+
+  /**
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * @var \Drupal\Core\Language\LanguageManagerInterface
+   */
+  private $languageManager;
+
+  /**
+   * Class constructor.
+   */
+  public function __construct(EntityTypeManager $entityTypeManager, LanguageManagerInterface $languageManager, ConfigFactoryInterface $configFactory) {
+    $this->entityTypeManager = $entityTypeManager;
+    $this->languageManager = $languageManager;
+    $this->configFactory = $configFactory;
+  }
+
+  public static function create(ContainerInterface $container) {
+    // Instantiates this form class.
+    return new static(
+    // Load the service required to construct this class.
+      $container->get('entity_type.manager'),
+      $container->get('language_manager'),
+      $container->get('config.factory')
+    );
+  }
 
   /**
    * Create machine key.
@@ -46,9 +81,9 @@ class SemesterFieldOptionsForm extends FormBase {
     $description .= '<br/>' . t('The key is the stored value. The label will be used in displayed values and edit forms.');
     $description .= '<br/>' . t('The label is optional: if a line contains a single string, it will be used as key and label.');
     $description .= '</p>';
-    $allowedValues = \Drupal::config('os_classes.settings')->get('field_semester_allowed_values');
+    $allowedValues = $this->config('os_classes.settings')->get('field_semester_allowed_values');
     $flattenOptions = OptGroup::flattenOptions($allowedValues);
-    $field = \Drupal::entityTypeManager()->getStorage('field_storage_config')->load('node.field_semester');
+    $field = $this->entityTypeManager->getStorage('field_storage_config')->load('node.field_semester');
     if ($field->hasData()) {
       \Drupal::messenger()->addWarning(t('There are already contents in the class content type!'));
     }
@@ -73,7 +108,7 @@ class SemesterFieldOptionsForm extends FormBase {
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $element = $form['semester_field_options'];
-    $values = static::extractAllowedValues($form_state->getValue('semester_field_options'));
+    $values = $this->extractAllowedValues($form_state->getValue('semester_field_options'));
 
     if (!is_array($values)) {
       $form_state->setError($element, t('Allowed values list: invalid input.'));
@@ -102,8 +137,8 @@ class SemesterFieldOptionsForm extends FormBase {
    *
    * @see \Drupal\options\Plugin\Field\FieldType\ListItemBase::allowedValuesString()
    */
-  protected static function extractAllowedValues($string) {
-    $langCode = \Drupal::languageManager()->getCurrentLanguage()->getId();
+  protected function extractAllowedValues($string) {
+    $langCode = $this->languageManager->getCurrentLanguage()->getId();
     $values = [];
 
     $list = explode("\n", $string);
@@ -154,6 +189,7 @@ class SemesterFieldOptionsForm extends FormBase {
     if (mb_strlen($option) > 255) {
       return t('Allowed values list: each key must be a string at most 255 characters long.');
     }
+    return '';
   }
 
   /**
@@ -161,7 +197,7 @@ class SemesterFieldOptionsForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $options = $form_state->getValue('semester_field_options');
-    \Drupal::configFactory()->getEditable('os_classes.settings')
+    $this->configFactory->getEditable('os_classes.settings')
       ->set('field_semester_allowed_values', $options)
       ->save();
     \Drupal::messenger()->addMessage('Values are updated');
