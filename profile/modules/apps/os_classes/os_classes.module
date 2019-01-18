@@ -21,10 +21,10 @@ use Drupal\field\Entity\FieldStorageConfig;
  * @param bool $cacheable
  *   Cacheable.
  *
- * @return array|mixed|null
+ * @return array
  *   List of allowed values.
  */
-function os_classes_field_semester_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+function os_classes_field_semester_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) : array {
   $allowedValues = \Drupal::config('os_classes.settings')->get('field_semester_allowed_values');
 
   if (empty($allowedValues)) {
