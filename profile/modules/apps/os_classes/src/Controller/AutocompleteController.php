@@ -15,9 +15,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class AutocompleteController extends ControllerBase {
 
   /**
-   * The database service.
+   * The database connection service.
    *
-   * @var \Drupal\Core\Database\Database
+   * @var \Drupal\Core\Database\Connection
    */
   protected $database;
 
