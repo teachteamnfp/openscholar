@@ -1,0 +1,6 @@
+name: OS Fullcalendar
+core: 8.x
+type: module
+description: Fullcalendar customizations for OpenScholar
+dependencies:
+  - fullcalendar

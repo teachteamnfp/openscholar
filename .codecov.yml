@@ -1,0 +1,12 @@
+coverage:
+  status:
+    project:
+      default:
+        # This is an arbitrary number.
+        # It is always not possible to write tests
+        # for Drupal code (Plugins, Interfaces, etc.)
+        target: 30%
+        threshold: null
+    # It is always not possible to write tests
+    # for Drupal code (Plugins, Interfaces, etc.)
+    patch: false
