@@ -284,7 +284,7 @@ class RoboFile extends \Robo\Tasks
             ->stopOnFail()
             ->exec('docker-compose exec -T php ./vendor/bin/phpcs --config-set installed_paths vendor/drupal/coder/coder_sniffer')
             ->exec('docker-compose exec -T php ./vendor/bin/phpcs --standard=Drupal --warning-severity=0 profile')
-            ->exec('docker-compose exec -T php ./vendor/bin/phpcs --standard=DrupalPractice profile');
+            ->exec('docker-compose exec -T php ./vendor/bin/phpcs --standard=DrupalPractice --warning-severity=0 profile');
 
         return $tasks;
     }
