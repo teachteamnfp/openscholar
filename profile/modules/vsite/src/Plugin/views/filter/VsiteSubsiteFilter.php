@@ -29,7 +29,6 @@ class VsiteSubsiteFilter extends FilterPluginBase {
    */
   private $vsiteContextManager;
 
-
   /**
    * Constructs a new LanguageFilter instance.
    *
@@ -39,8 +38,10 @@ class VsiteSubsiteFilter extends FilterPluginBase {
    *   The plugin_id for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
+   * @param \Drupal\vsite\Plugin\VsiteContextManager $vsite_context_manager
+   *   Vsite context manager.
    */
-  public function __construct($configuration, $plugin_id, $plugin_definition, VsiteContextManager $vsite_context_manager) {
+  public function __construct(array $configuration, string $plugin_id, $plugin_definition, VsiteContextManager $vsite_context_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
 
     $this->vsiteContextManager = $vsite_context_manager;
