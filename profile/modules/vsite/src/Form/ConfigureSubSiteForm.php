@@ -21,19 +21,19 @@ class ConfigureSubSiteForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $groupBundles = \Drupal::service('entity_type.bundle.info')->getBundleInfo('group');
+    $group_bundles = \Drupal::service('entity_type.bundle.info')->getBundleInfo('group');
 
-    $allowedParentSiteOptions = [];
+    $allowed_parent_site_options = [];
     $defaultAllowedValues = [];
-    foreach ($groupBundles as $bundleName => $bundle) {
-      $allowedParentSiteOptions[$bundleName] = $bundle['label'];
+    foreach ($group_bundles as $bundle_name => $bundle) {
+      $allowed_parent_site_options[$bundle_name] = $bundle['label'];
 
-      $fieldConfig = \Drupal::config('field.field.group.' . $bundleName . '.field_parent_site')->get('settings');
-      if (empty($fieldConfig)) {
+      $field_config = \Drupal::config('field.field.group.' . $bundle_name . '.field_parent_site')->get('settings');
+      if (empty($field_config)) {
         \Drupal::messenger()->addWarning(t('Group type %type is missing field_parent_site!', ['%type' => $bundle['label']]));
       }
-      if (!empty($fieldConfig['handler_settings']['target_bundles'])) {
-        foreach ($fieldConfig['handler_settings']['target_bundles'] as $target_bundle) {
+      if (!empty($field_config['handler_settings']['target_bundles'])) {
+        foreach ($field_config['handler_settings']['target_bundles'] as $target_bundle) {
           $defaultAllowedValues[$target_bundle] = $target_bundle;
         }
       }
@@ -42,18 +42,18 @@ class ConfigureSubSiteForm extends FormBase {
     $form['allowed_parent_sites'] = [
       '#title' => $this->t('Allowed parent sites group bundles'),
       '#type' => 'checkboxes',
-      '#options' => $allowedParentSiteOptions,
+      '#options' => $allowed_parent_site_options,
       '#default_value' => $defaultAllowedValues,
       '#required' => TRUE,
     ];
 
-    $vsiteConfig = \Drupal::config('vsite.settings')->get('allowed_subsite_group_types');
+    $vsite_config = \Drupal::config('vsite.settings')->get('allowed_subsite_group_types');
 
     $form['allowed_sub_sites'] = [
       '#title' => $this->t('Allowed sub sites group bundles'),
       '#type' => 'checkboxes',
-      '#options' => $allowedParentSiteOptions,
-      '#default_value' => !empty($vsiteConfig) ? $vsiteConfig : [],
+      '#options' => $allowed_parent_site_options,
+      '#default_value' => !empty($vsite_config) ? $vsite_config : [],
     ];
 
     $form['submit'] = [
@@ -69,11 +69,9 @@ class ConfigureSubSiteForm extends FormBase {
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
-    $allowedParentValues = $form_state->getValue('allowed_parent_sites');
-    $allowedParentValues = $this->normalizeValues($allowedParentValues);
-    $allowedSubSiteValues = $form_state->getValue('allowed_sub_sites');
-    $allowedSubSiteValues = $this->normalizeValues($allowedSubSiteValues);
-    $intersect = array_intersect($allowedParentValues, $allowedSubSiteValues);
+    $allowed_parent_values = $this->normalizeValues($form_state->getValue('allowed_parent_sites'));
+    $allowed_subsite_values = $this->normalizeValues($form_state->getValue('allowed_sub_sites'));
+    $intersect = array_intersect($allowed_parent_values, $allowed_subsite_values);
     if (!empty($intersect)) {
       $form_state->setError($form['allowed_parent_sites'], $this->t('Group types can not be both parent and sub site at the same time.'));
     }
@@ -88,28 +86,26 @@ class ConfigureSubSiteForm extends FormBase {
    *   The current state of the form.
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $allowedParentValues = $form_state->getValue('allowed_parent_sites');
-    $allowedParentValues = $this->normalizeValues($allowedParentValues);
+    $allowed_parent_values = $this->normalizeValues($form_state->getValue('allowed_parent_sites'));
 
-    $groupBundles = \Drupal::service('entity_type.bundle.info')->getBundleInfo('group');
+    $group_bundles = \Drupal::service('entity_type.bundle.info')->getBundleInfo('group');
 
     // Update field parent site field instance config
     // in all group entity bundle.
-    foreach ($groupBundles as $bundleName => $bundle) {
-      $fieldConfig = \Drupal::config('field.field.group.' . $bundleName . '.field_parent_site')->get('settings');
-      if (empty($fieldConfig)) {
+    foreach ($group_bundles as $bundle_name => $bundle) {
+      $field_config = \Drupal::config('field.field.group.' . $bundle_name . '.field_parent_site')->get('settings');
+      if (empty($field_config)) {
         continue;
       }
-      $fieldConfig['handler_settings']['target_bundles'] = $allowedParentValues;
-      \Drupal::configFactory()->getEditable('field.field.group.' . $bundleName . '.field_parent_site')
-        ->set('settings', $fieldConfig)
+      $field_config['handler_settings']['target_bundles'] = $allowed_parent_values;
+      \Drupal::configFactory()->getEditable('field.field.group.' . $bundle_name . '.field_parent_site')
+        ->set('settings', $field_config)
         ->save();
     }
 
-    $allowedSubSiteValues = $form_state->getValue('allowed_sub_sites');
-    $allowedSubSiteValues = $this->normalizeValues($allowedSubSiteValues);
+    $allowed_subsite_values = $this->normalizeValues($form_state->getValue('allowed_sub_sites'));
     \Drupal::configFactory()->getEditable('vsite.settings')
-      ->set('allowed_subsite_group_types', $allowedSubSiteValues)
+      ->set('allowed_subsite_group_types', $allowed_subsite_values)
       ->save();
 
     \Drupal::messenger()->addMessage(t('Allowed values settings saved successful.'));
