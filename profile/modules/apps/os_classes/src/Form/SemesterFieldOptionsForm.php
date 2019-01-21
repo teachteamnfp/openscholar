@@ -31,6 +31,8 @@ class SemesterFieldOptionsForm extends FormBase {
   private $languageManager;
 
   /**
+   * Core messenger.
+   *
    * @var \Drupal\Core\Messenger\Messenger
    */
   private $coreMessenger;
