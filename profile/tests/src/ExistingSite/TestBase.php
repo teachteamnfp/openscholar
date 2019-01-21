@@ -14,30 +14,6 @@ abstract class TestBase extends ExistingSiteBase {
   use BookTestTrait;
 
   /**
-   * The book outline storage.
-   *
-   * @var \Drupal\book\BookOutlineStorageInterface
-   */
-  protected $bookOutlineStorage;
-
-  /**
-   * The book manager.
-   *
-   * @var \Drupal\book\BookManagerInterface
-   */
-  protected $bookManager;
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setUp() {
-    parent::setUp();
-
-    $this->bookOutlineStorage = $this->container->get('book.outline_storage');
-    $this->bookManager = $this->container->get('book.manager');
-  }
-
-  /**
    * Creates a book page.
    *
    * @param array $values
