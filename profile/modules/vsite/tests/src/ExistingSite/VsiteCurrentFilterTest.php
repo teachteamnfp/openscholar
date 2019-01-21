@@ -16,7 +16,7 @@ use Drupal\views\Views;
 class VsiteCurrentFilterTest extends VsiteExistingSiteTestBase {
 
   /**
-   * Group dummy content is being assigned (or not) to.
+   * Group parent test entity.
    *
    * @var \Drupal\group\Entity\Group
    */
