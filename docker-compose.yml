@@ -24,26 +24,32 @@ services:
       PHP_XDEBUG_DEFAULT_ENABLE: 0
       PHP_XDEBUG_REMOTE_CONNECT_BACK: 0         # Disable this if not on MAC - This is needed to respect remote.host setting below
       PHP_XDEBUG_REMOTE_HOST: "10.254.254.254"  # Disable this if not on MAC - You will also need to 'sudo ifconfig lo0 alias 10.254.254.254'
-      PHP_MAX_EXECUTION_TIME: 600
-      PHP_MAX_INPUT_TIME: 600
+      PHP_MAX_EXECUTION_TIME: $PHP_MAX_EXECUTION_TIME
+      PHP_MAX_INPUT_TIME: $PHP_MAX_INPUT_TIME
       PHP_IDE_CONFIG: $PHP_IDE_CONFIG # See https://www.jetbrains.com/help/phpstorm/debugging-a-php-cli-script.html
     volumes:
       - ./:/var/www/html:cached
 
   apache:
-    image: jaybeaton/drupal-apache:2.4-1.0.3
+    image: wodby/apache:2.4
     depends_on:
       - php
     environment:
       APACHE_LOG_LEVEL: debug
       APACHE_BACKEND_HOST: php
       APACHE_SERVER_ROOT: /var/www/html/web
-      APACHE_PRODUCTION_URL: http://d8.theopenscholar.com
-      APACHE_PRODUCTION_IMAGE_REWRITE: http://d8.theopenscholar.com/%1default%2
-      APACHE_TIMEOUT: 600
+      APACHE_TIMEOUT: $APACHE_TIMEOUT
+      APACHE_VHOST_PRESET: php
     volumes:
       - ./:/var/www/html:cached
     labels:
       - 'traefik.backend=osd8_apache_1'
       - 'traefik.port=80'
       - 'traefik.frontend.rule=Host:home.d8.theopenscholar.com'
+
+  chrome:
+    # Note: chrome 67/68 is giving errors so we pin to 65 for now.
+    image: previousnext/chrome-headless:65
+    ports:
+      - "9222:9222"
+
