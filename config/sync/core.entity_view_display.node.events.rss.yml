@@ -1,0 +1,67 @@
+uuid: da0daa69-b662-45b6-b310-3c94c171f5e0
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.date_format.html_date
+    - core.date_format.medium
+    - core.entity_view_mode.node.rss
+    - field.field.node.events.body
+    - field.field.node.events.field_location
+    - field.field.node.events.field_media
+    - field.field.node.events.field_recurring_date
+    - node.type.events
+  module:
+    - date_recur
+    - layout_builder
+    - text
+    - user
+third_party_settings:
+  layout_builder:
+    sections: {  }
+    allow_custom: false
+    enabled: false
+id: node.events.rss
+targetEntityType: node
+bundle: events
+mode: rss
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_location:
+    weight: 2
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_recurring_date:
+    weight: 3
+    label: above
+    settings:
+      format_type: medium
+      occurrence_format_type: medium
+      same_end_date_format_type: medium
+      all_day_format_type: html_date
+      separator: '-'
+      timezone_override: ''
+      interpreter: ''
+      show_next: 5
+      count_per_item: true
+    third_party_settings: {  }
+    type: date_recur_basic_formatter
+    region: content
+  links:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  field_media: true
+  langcode: true

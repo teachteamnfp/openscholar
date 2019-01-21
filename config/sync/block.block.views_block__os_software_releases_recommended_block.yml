@@ -6,7 +6,6 @@ dependencies:
     - views.view.os_software_releases
   module:
     - block_visibility_groups
-    - ctools
     - node
     - views
   theme:

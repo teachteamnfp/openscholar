@@ -21,6 +21,7 @@ env:
     - JOB=job:run-unit-tests
     - JOB=job:run-kernel-tests
     - JOB=job:run-functional-tests
+    - JOB=job:run-functional-javascript-tests
 #    - JOB=job:run-behat-tests
 
 before_install:
