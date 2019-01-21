@@ -4,7 +4,6 @@ status: true
 dependencies:
   module:
     - ctools
-    - system
 id: book_section
 label: 'Book section'
 logic: or
@@ -17,10 +16,4 @@ conditions:
     context_mapping:
       node: '@node.node_route_context:node'
     uuid: 98e12941-b284-451b-83f9-9b0be74084a5
-  d4dbd3cd-3557-4277-89df-657673cbdf0e:
-    id: request_path
-    pages: '/book*'
-    negate: false
-    context_mapping: {  }
-    uuid: d4dbd3cd-3557-4277-89df-657673cbdf0e
 allow_other_conditions: false
