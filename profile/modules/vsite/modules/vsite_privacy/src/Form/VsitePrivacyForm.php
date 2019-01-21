@@ -34,10 +34,10 @@ class VsitePrivacyForm extends QuickEditFieldForm {
   /**
    * Creates new VsitePrivacyForm object.
    */
-  public function __construct(PrivateTempStoreFactory $privateTempStoreFactory, ModuleHandlerInterface $moduleHandler, EntityStorageInterface $entityStorage, VsitePrivacyLevelManagerInterface $vsitePrivacyLevelManager, VsiteContextManagerInterface $vsiteContextManager) {
-    parent::__construct($privateTempStoreFactory, $moduleHandler, $entityStorage);
-    $this->vsitePrivacyLevelManager = $vsitePrivacyLevelManager;
-    $this->vsiteContextManager = $vsiteContextManager;
+  public function __construct(PrivateTempStoreFactory $tempstoragefactory, ModuleHandlerInterface $module_handler, EntityStorageInterface $storage, VsitePrivacyLevelManagerInterface $vsite_privacy_level_manager, VsiteContextManagerInterface $vsite_context_manager) {
+    parent::__construct($tempstoragefactory, $module_handler, $storage);
+    $this->vsitePrivacyLevelManager = $vsite_privacy_level_manager;
+    $this->vsiteContextManager = $vsite_context_manager;
   }
 
   /**
