@@ -3,12 +3,12 @@
 namespace Drupal\os_classes\Form;
 
 use Drupal\Component\Transliteration\PhpTransliteration;
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\OptGroup;
 use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\Core\Messenger\Messenger;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -31,12 +31,17 @@ class SemesterFieldOptionsForm extends FormBase {
   private $languageManager;
 
   /**
+   * @var \Drupal\Core\Messenger\Messenger
+   */
+  private $coreMessenger;
+
+  /**
    * Class constructor.
    */
-  public function __construct(EntityTypeManager $entityTypeManager, LanguageManagerInterface $languageManager, ConfigFactoryInterface $configFactory) {
+  public function __construct(EntityTypeManager $entityTypeManager, LanguageManagerInterface $languageManager, Messenger $coreMessenger) {
     $this->entityTypeManager = $entityTypeManager;
     $this->languageManager = $languageManager;
-    $this->configFactory = $configFactory;
+    $this->coreMessenger = $coreMessenger;
   }
 
   /**
@@ -48,7 +53,7 @@ class SemesterFieldOptionsForm extends FormBase {
     // Load the service required to construct this class.
       $container->get('entity_type.manager'),
       $container->get('language_manager'),
-      $container->get('config.factory')
+      $container->get('messenger')
     );
   }
 
@@ -90,7 +95,7 @@ class SemesterFieldOptionsForm extends FormBase {
     $flattenOptions = OptGroup::flattenOptions($allowedValues);
     $field = $this->entityTypeManager->getStorage('field_storage_config')->load('node.field_semester');
     if ($field->hasData()) {
-      \Drupal::messenger()->addWarning(t('There are already contents in the class content type!'));
+      $this->coreMessenger->addWarning(t('There are already contents in the class content type!'));
     }
     $form['semester_field_options'] = [
       '#type' => 'textarea',
@@ -205,7 +210,7 @@ class SemesterFieldOptionsForm extends FormBase {
     $this->configFactory->getEditable('os_classes.settings')
       ->set('field_semester_allowed_values', $options)
       ->save();
-    \Drupal::messenger()->addMessage('Values are updated');
+    $this->coreMessenger->addMessage('Values are updated');
   }
 
   /**
