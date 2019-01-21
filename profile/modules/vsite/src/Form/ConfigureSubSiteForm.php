@@ -158,9 +158,6 @@ class ConfigureSubSiteForm extends FormBase {
    *   Normalized values.
    */
   private function normalizeValues(array $values) {
-    if (empty($values)) {
-      return $values;
-    }
     foreach ($values as $key => $value) {
       if ($value == '0') {
         unset($values[$key]);
