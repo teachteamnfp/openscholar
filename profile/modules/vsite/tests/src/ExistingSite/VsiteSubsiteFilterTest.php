@@ -29,6 +29,13 @@ class VsiteSubsiteFilterTest extends VsiteExistingSiteTestBase {
   protected $groupOther;
 
   /**
+   * Group hidden.
+   *
+   * @var \Drupal\group\Entity\Group
+   */
+  protected $groupHidden;
+
+  /**
    * Vsite Context Manager.
    *
    * @var \Drupal\vsite\Plugin\VsiteContextManagerInterface
@@ -47,21 +54,31 @@ class VsiteSubsiteFilterTest extends VsiteExistingSiteTestBase {
     $this->group = $this->createGroup([
       'type' => 'personal',
       'label' => 'Site01',
+      'field_privacy_level' => 'public',
     ]);
     $this->groupOther = $this->createGroup([
       'type' => 'personal',
       'label' => 'OtherSite',
+      'field_privacy_level' => 'public',
+    ]);
+    $this->groupHidden = $this->createGroup([
+      'type' => 'subsite_test',
+      'label' => 'HiddenSite',
+      'field_parent_site' => $this->group->id(),
+      'field_privacy_level' => 'private',
     ]);
 
     $this->createGroup([
       'type' => 'subsite_test',
       'label' => 'SubSite01',
       'field_parent_site' => $this->group->id(),
+      'field_privacy_level' => 'public',
     ]);
     $this->createGroup([
       'type' => 'subsite_test',
       'label' => 'SubSite02',
       'field_parent_site' => $this->group->id(),
+      'field_privacy_level' => 'public',
     ]);
 
     $this->vsiteContextManager = $this->container->get('vsite.context_manager');
@@ -98,6 +115,7 @@ class VsiteSubsiteFilterTest extends VsiteExistingSiteTestBase {
 
     $this->assertContains('SubSite01', $results);
     $this->assertContains('SubSite02', $results);
+    $this->assertNotContains('HiddenSite', $results);
   }
 
   /**
@@ -110,6 +128,7 @@ class VsiteSubsiteFilterTest extends VsiteExistingSiteTestBase {
 
     $this->assertNotContains('SubSite01', $results);
     $this->assertNotContains('SubSite02', $results);
+    $this->assertNotContains('HiddenSite', $results);
   }
 
 }
