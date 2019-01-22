@@ -4,7 +4,10 @@ status: true
 dependencies:
   config:
     - field.field.group.subsite_test.field_parent_site
+    - field.field.group.subsite_test.field_privacy_level
     - group.type.subsite_test
+  module:
+    - options
 id: group.subsite_test.default
 targetEntityType: group
 bundle: subsite_test
@@ -17,6 +20,13 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
+  field_privacy_level:
+    weight: -3
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
     region: content
   label:
     label: hidden

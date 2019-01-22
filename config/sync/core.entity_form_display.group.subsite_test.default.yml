@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.group.subsite_test.field_parent_site
+    - field.field.group.subsite_test.field_privacy_level
     - group.type.subsite_test
   module:
     - field_layout
@@ -26,6 +27,12 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+    region: content
+  field_privacy_level:
+    weight: 32
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
     region: content
   label:
     type: string_textfield

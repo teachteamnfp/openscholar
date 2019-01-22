@@ -69,10 +69,12 @@ class VsitePrivacyAccessCheck implements EventSubscriberInterface {
     }
 
     $this->checked = TRUE;
-    $privacy = $event->getGroup()->get('field_privacy_level')->getValue();
-    $level = $privacy[0]['value'];
-    if (!isset($level)) {
-      $level = 'public';
+    $level = 'public';
+    if ($event->getGroup()->hasField('field_privacy_level')) {
+      $privacy = $event->getGroup()->get('field_privacy_level')->getValue();
+      if (!empty($privacy[0]['value'])) {
+        $level = $privacy[0]['value'];
+      }
     }
     if (!$this->vsitePrivacyLevelManager->checkAccessForPlugin(\Drupal::currentUser(), $level)) {
       throw new AccessDeniedHttpException();

@@ -39,6 +39,7 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
+    region: content
   field_site_description:
     weight: 32
     settings:

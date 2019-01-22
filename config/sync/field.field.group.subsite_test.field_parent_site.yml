@@ -21,7 +21,6 @@ settings:
   handler_settings:
     target_bundles:
       personal: personal
-      subsite_test: subsite_test
     sort:
       field: _none
     auto_create: false
