@@ -1,0 +1,6 @@
+ui_override:
+  enable_form_override: true
+display_override:
+  reference_page_view_mode: table
+_core:
+  default_config_hash: 9rZY6YeTR9LGCivnubXpSxeIgQrcpQpM90sp3lw7GIU

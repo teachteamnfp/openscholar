@@ -1,0 +1,9 @@
+uuid: 9952fa54-fdaa-4837-9a89-f7e208504ba1
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: ZemfIN9eLkkz8HjiEeTMbWWg95la_klfMaoD_M8Zt0U
+id: department
+label: Department
+weight: 3
