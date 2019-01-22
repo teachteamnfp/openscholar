@@ -59,3 +59,6 @@ h2.block-title {
 .section-nav .expanded.menu-depth-2 > a {
     background-color: #D16103;
 }
+.block-boxes-os_boxes_manual_list .node-teaser .field-name-body h2 {
+    font-size: inherit !important;
+}
