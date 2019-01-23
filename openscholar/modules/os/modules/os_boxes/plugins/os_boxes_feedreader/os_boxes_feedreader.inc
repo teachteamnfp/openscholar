@@ -190,16 +190,6 @@ class os_boxes_feedreader extends os_boxes_default {
           ),
           array(
             'type' => 'file',
-            'data' => libraries_get_path('yql') . '/yql-min.js',
-            'weight' => 5,
-          ),
-          array(
-            'type' => 'file',
-            'data' => libraries_get_path('yql-jsonp') . '/yql-jsonp-min.js',
-            'weight' => 6,
-          ),
-          array(
-            'type' => 'file',
             'data' =>  drupal_get_path('module', 'os_boxes') . '/plugins/os_boxes_feedreader/os_boxes_feedreader.render.js',
             'weight' => 7,
           ),

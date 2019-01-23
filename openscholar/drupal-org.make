@@ -613,10 +613,6 @@ libraries[yui][type] = "libraries"
 libraries[yui][download][type] = "file"
 libraries[yui][download][url] = "https://github.com/yui/yui3/archive/v3.18.1.tar.gz"
 
-libraries[yql][type] = "libraries"
-libraries[yql][download][type] = "file"
-libraries[yql][download][url] = "https://raw.githubusercontent.com/yui/yui3/v3.18.1/build/yql/yql-min.js"
-
 libraries[jsonp-url][type] = "libraries"
 libraries[jsonp-url][download][type] = "file"
 libraries[jsonp-url][download][url] = "https://raw.githubusercontent.com/yui/yui3/v3.18.1/build/jsonp-url/jsonp-url-min.js"
@@ -628,10 +624,6 @@ libraries[oop][download][url] = "https://raw.githubusercontent.com/yui/yui3/v3.1
 libraries[jsonp][type] = "libraries"
 libraries[jsonp][download][type] = "file"
 libraries[jsonp][download][url] = "https://raw.githubusercontent.com/yui/yui3/v3.18.1/build/jsonp/jsonp-min.js"
-
-libraries[yql-jsonp][type] = "libraries"
-libraries[yql-jsonp][download][type] = "file"
-libraries[yql-jsonp][download][url] = "https://raw.githubusercontent.com/yui/yui3/v3.18.1/build/yql-jsonp/yql-jsonp-min.js"
 
 libraries[google-api-php-client][type] = "libraries"
 libraries[google-api-php-client][download][type] = "file"
