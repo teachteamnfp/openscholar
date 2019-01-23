@@ -101,7 +101,7 @@
         "drupal/views_ical": "1.x-dev",
         "fullcalendar/fullcalendar": "^3.3",
         "drupal/date_recur_interactive": "^2.0",
-        "drupal/bibcite": "^1.0@alpha"
+        "drupal/bibcite": "1.x-dev"
     },
     "require-dev": {
         "drupal/features": "^3.7",

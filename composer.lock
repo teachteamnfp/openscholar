@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "abe27118a566612b0a88ed5fcecadf14",
+    "content-hash": "5c0e406e78ccde9a5386e564da5fd1b0",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -2134,17 +2134,11 @@
         },
         {
             "name": "drupal/bibcite",
-            "version": "1.0.0-alpha8",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/bibcite",
-                "reference": "8.x-1.0-alpha8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/bibcite-8.x-1.0-alpha8.zip",
-                "reference": "8.x-1.0-alpha8",
-                "shasum": "50707c7cc30600a4c0ceb3501a463e077671478a"
+                "reference": "96a735735f0d268c22c4de8550502db3611ea1be"
             },
             "require": {
                 "academicpuma/citeproc-php": "~1.0",
@@ -2163,8 +2157,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha8",
-                    "datestamp": "1544113680",
+                    "version": "8.x-1.0-alpha7+16-dev",
+                    "datestamp": "1544112780",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -2206,7 +2200,8 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/bibcite",
                 "issues": "https://www.drupal.org/project/issues/bibcite"
-            }
+            },
+            "time": "2018-12-06T16:12:40+00:00"
         },
         {
             "name": "drupal/blazy",
@@ -11391,7 +11386,7 @@
         "kenwheeler/slick": 20,
         "drupal/fullcalendar": 20,
         "drupal/views_ical": 20,
-        "drupal/bibcite": 15,
+        "drupal/bibcite": 20,
         "weitzman/drupal-test-traits": 10
     },
     "prefer-stable": true,
