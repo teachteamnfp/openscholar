@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5c0e406e78ccde9a5386e564da5fd1b0",
+    "content-hash": "cbd42888fefe3824d035002b3a9d916d",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -2163,6 +2163,9 @@
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
                     }
+                },
+                "patches_applied": {
+                    "Ability to promote reference by marking them as sticky": "https://www.drupal.org/files/issues/2019-01-23/3027750-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
