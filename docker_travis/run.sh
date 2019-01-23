@@ -16,6 +16,7 @@ drush en os_search_solr -y
 drush solr-mark-all
 drush solr-index
 drush vset oembedembedly_api_key ${EMBEDLYAPIKEY}
+drush vset os_boxes_rss2json_api_key ${RSS2JSON_API_KEY}
 
 cd /var/www/html/openscholar/behat
 sh -c "echo 127.0.0.1  lincoln.local >> /etc/hosts"

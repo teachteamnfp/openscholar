@@ -7,3 +7,4 @@ services:
     environment:
       - TEST_SUITE=${TEST_SUITE}
       - EMBEDLYAPIKEY=${EMBEDLYAPIKEY}
+      - RSS2JSON_API_KEY=${RSS2JSON_API_KEY}
