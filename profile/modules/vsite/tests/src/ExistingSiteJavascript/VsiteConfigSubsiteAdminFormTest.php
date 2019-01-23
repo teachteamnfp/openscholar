@@ -2,8 +2,6 @@
 
 namespace Drupal\Tests\vsite\ExistingSiteJavascript;
 
-use Behat\Mink\Exception\ExpectationException;
-
 /**
  * Tests vsite module.
  *
@@ -47,12 +45,7 @@ class VsiteConfigSubsiteAdminFormTest extends VsiteExistingSiteJavascriptTestBas
 
     $web_assert = $this->assertSession();
 
-    try {
-      $web_assert->statusCodeEquals(403);
-    }
-    catch (ExpectationException $e) {
-      $this->fail(sprintf("Test failed: %s\nBacktrace: %s", $e->getMessage(), $e->getTraceAsString()));
-    }
+    $web_assert->statusCodeEquals(403);
   }
 
   /**

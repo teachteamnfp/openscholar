@@ -43,6 +43,7 @@ abstract class VsiteExistingSiteJavascriptTestBase extends ExistingSiteWebDriver
     $group = $this->entityTypeManager->getStorage('group')->create($values + [
       'type' => 'personal',
       'label' => $this->randomMachineName(),
+      'path' => '/' . $this->randomMachineName(),
     ]);
     $group->enforceIsNew();
     $group->save();
