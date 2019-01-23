@@ -8,6 +8,9 @@ Drupal.behaviors.osBoxesFeedReader = {
   attach: function (context, settings) {
     //Loop through the feeds that are on this page
     $.each(settings.osBoxesFeedReader, function(div_id, feed_settings) {
+      if (Drupal.settings.os_boxes.rss2json_api_key == '') {
+        return false;
+      }
       // run only once for each feed
       $('div#' + div_id, context).once('osBoxesFeedReader', function () {
         //Run the feed processing only once per feed

@@ -2,7 +2,6 @@
 // $Id$
 
 define('OS_BOXES_RSS2JSON_API_URL', 'https://api.rss2json.com/v1/api.json');
-define('OS_BOXES_RSS2JSON_API_KEY', 'zefezazqfykb3mlxnnua5b0gzvcpqfjkhghkoztf');
 
 /**
  * Implements hook_ctools_plugin_api().

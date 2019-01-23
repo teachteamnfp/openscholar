@@ -36,3 +36,10 @@ function os_boxes_update_7003() {
   variable_set('os_boxes_cache_enabled', TRUE);
   return t('The boxes caching turned back on.');
 }
+
+/**
+ * YQL query replaced by RSS2JSON service.
+ */
+function os_boxes_update_7004() {
+  return t('Please create an account on <a href="!url">RSS2JSON</a> webpage, and place your API key into settings.php with variable name "os_boxes_rss2json_api_key".', array('!url' => 'https://rss2json.com/'));
+}

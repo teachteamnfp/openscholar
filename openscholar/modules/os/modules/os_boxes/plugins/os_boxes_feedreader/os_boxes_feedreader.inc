@@ -197,7 +197,7 @@ class os_boxes_feedreader extends os_boxes_default {
       )
     );
     $data['os_boxes']['rss2json_api_url'] = OS_BOXES_RSS2JSON_API_URL;
-    $data['os_boxes']['rss2json_api_key'] = OS_BOXES_RSS2JSON_API_KEY;
+    $data['os_boxes']['rss2json_api_key'] = variable_get('os_boxes_rss2json_api_key', '');
     drupal_add_js($data, 'setting');
 
     $output['content'] = drupal_render($content);
