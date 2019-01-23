@@ -11,70 +11,65 @@ Drupal.behaviors.osBoxesFeedReader = {
       // run only once for each feed
       $('div#' + div_id, context).once('osBoxesFeedReader', function () {
         //Run the feed processing only once per feed
-        YUI({
-          debug: true,
-          combine: false,
-        }).use('yql', function (Y) {
-          //Load Feed
-          var query = 'select * from rss(0,100) where url = "' + feed_settings.url + '" limit ' + feed_settings.num_feeds + ' offset 0';
-          var q = new Y.YQLRequest(query, function (r) {
-            // check for results, if there are none, display a message
-            if (r.query.results != null && r.query.results.item != null) {
-              if (!r.query.results.item.length) {
-                r.query.results.item = new Array(r.query.results.item);
+        $.ajax({
+          url: Drupal.settings.os_boxes.rss2json_api_url,
+          method: 'GET',
+          dataType: 'json',
+          data: {
+            rss_url: feed_settings.url,
+            api_key: Drupal.settings.os_boxes.rss2json_api_key,
+            count: feed_settings.num_feeds
+          }
+        }).done(function (response) {
+          if(response.status != 'ok'){ throw response.message; }
+
+          if (response.items != null) {
+            for(var i in response.items){
+              var entry = response.items[i];
+              var date = "";
+              var dateToFormat = getDateFromEntry(entry);
+
+              if (dateToFormat != null) {
+                if (feed_settings.time_display == 'relative') {
+                  //@todo find a good way to do FuzzyTime in js
+                  date = fuzzyDate(dateToFormat);
+                }
+
+                if (feed_settings.time_display == 'formal') {
+                  date = formalDate(dateToFormat);
+                }
+
+                if (typeof date == 'undefined') {
+                  date = "";
+                } else {
+                  date = "<span class='date'>" + date + "</span>";
+                }
               }
-              for (var i = 0; i < r.query.results.item.length; i++) {
-                var entry = r.query.results.item[i];
-                var date = "";
-                var dateToFormat = getDateFromEntry(entry);
-
-                if (dateToFormat != null) {
-                  if (feed_settings.time_display == 'relative') {
-                    //@todo find a good way to do FuzzyTime in js
-                    date = fuzzyDate(dateToFormat);
-                  }
-
-                  if (feed_settings.time_display == 'formal') {
-                    date = formalDate(dateToFormat);
-                  }
-
-                  if (typeof date == 'undefined') {
-                    date = "";
-                  } else {
-                    date = "<span class='date'>" + date + "</span>";
-                  }
-                }
-                var content = '';
-                if (feed_settings.show_content) {
-                  content = getStringValue(entry.description);
-                }
-                var feed_markup = "<div class='feed_item'>";
-
-                // Put time before title if there is no content
-                if (!feed_settings.show_content) {
-                  feed_markup = feed_markup + date;
-                }
-
-                //Add Title
-                feed_markup = feed_markup + "<a class='title' href='" + getStringValue(entry.link) + "' target='_blank'>" + getStringValue(entry.title) + "</a>";
-                if (feed_settings.show_content) {
-                  feed_markup = feed_markup + "<br />" + date + "<span class='description'>" + content + "<span/>";
-                }
-                feed_markup = feed_markup + "</div>";
-                var div = $(feed_markup);
-
-                $('div#' + div_id).append(div);
+              var content = '';
+              if (feed_settings.show_content) {
+                content = getStringValue(entry.description);
               }
+              var feed_markup = "<div class='feed_item'>";
+
+              // Put time before title if there is no content
+              if (!feed_settings.show_content) {
+                feed_markup = feed_markup + date;
+              }
+
+              //Add Title
+              feed_markup = feed_markup + "<a class='title' href='" + getStringValue(entry.link) + "' target='_blank'>" + getStringValue(entry.title) + "</a>";
+              if (feed_settings.show_content) {
+                feed_markup = feed_markup + "<br />" + date + "<span class='description'>" + content + "<span/>";
+              }
+              feed_markup = feed_markup + "</div>";
+              var div = $(feed_markup);
+
+              $('div#' + div_id).append(div);
             }
-            else {
-              $('div#' + div_id).append('<p class="feed-message">There are currently no items in this feed. Please check again soon.</p>');
-            }
-          }, {}, // empty optional parameters
-          {
-            base: '://query.yahooapis.com/v1/public/yql?',
-            proto: 'https' //Connect using SSL
-          });
-          q.send();
+          }
+          else {
+            $('div#' + div_id).append('<p class="feed-message">There are currently no items in this feed. Please check again soon.</p>');
+          }
         });
       });
     });
