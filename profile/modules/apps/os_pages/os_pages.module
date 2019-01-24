@@ -7,6 +7,7 @@
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\block_visibility_groups\Entity\BlockVisibilityGroup;
+use Drupal\node\Entity\Node;
 
 /**
  * Implements hook_entity_insert().
@@ -18,10 +19,15 @@ function os_pages_entity_insert(EntityInterface $entity) {
   $visibility_helper = \Drupal::service('os_pages.visibility_helper');
 
   if ($visibility_helper->shouldCreatePageVisibilityGroup($entity)) {
+    /** @var \Drupal\node\NodeInterface $book */
+    $book = Node::load($entity->book['bid']);
+
     /** @var \Drupal\block_visibility_groups\Entity\BlockVisibilityGroup $bvg */
     $bvg = BlockVisibilityGroup::create([
-      'id' => 'os_pages_' . rand(1, 1000),
-      'label' => t('OS Pages'),
+      'id' => "os_pages_{$book->id()}_{$entity->id()}",
+      'label' => t('OS Pages: @book_name', [
+        '@book_name' => $book->label(),
+      ]),
       'status' => TRUE,
       'allow_other_conditions' => TRUE,
     ]);
