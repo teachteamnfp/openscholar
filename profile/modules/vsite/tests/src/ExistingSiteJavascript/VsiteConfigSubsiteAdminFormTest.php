@@ -33,7 +33,7 @@ class VsiteConfigSubsiteAdminFormTest extends VsiteExistingSiteJavascriptTestBas
     $this->adminUser = $this->createUser([
       'access administration pages',
       'access vsite settings',
-      'administer group',
+      'bypass group access',
     ]);
   }
 
