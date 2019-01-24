@@ -30,7 +30,11 @@ class VsiteConfigSubsiteAdminFormTest extends VsiteExistingSiteJavascriptTestBas
    */
   public function setUp() {
     parent::setUp();
-    $this->adminUser = $this->createUser(['access administration pages', 'access vsite settings']);
+    $this->adminUser = $this->createUser([
+      'access administration pages',
+      'access vsite settings',
+      'administer group',
+    ]);
   }
 
   /**
