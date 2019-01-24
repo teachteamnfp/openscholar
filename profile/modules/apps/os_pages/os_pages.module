@@ -22,8 +22,8 @@ function os_pages_entity_insert(EntityInterface $entity) {
     /** @var \Drupal\node\NodeInterface $book */
     $book = Node::load($entity->book['bid']);
 
-    /** @var \Drupal\block_visibility_groups\Entity\BlockVisibilityGroup $bvg */
-    $bvg = BlockVisibilityGroup::create([
+    /** @var \Drupal\block_visibility_groups\Entity\BlockVisibilityGroup $visibility_group */
+    $visibility_group = BlockVisibilityGroup::create([
       'id' => "os_pages_{$book->id()}_{$entity->id()}",
       'label' => t('OS Pages: @book_name', [
         '@book_name' => $book->label(),
@@ -32,14 +32,14 @@ function os_pages_entity_insert(EntityInterface $entity) {
       'allow_other_conditions' => TRUE,
     ]);
 
-    $bvg->save();
+    $visibility_group->save();
 
-    $bvg->addCondition([
+    $visibility_group->addCondition([
       'id' => 'request_path',
       'pages' => '/node/*',
       'negate' => 0,
     ]);
 
-    $bvg->save();
+    $visibility_group->save();
   }
 }
