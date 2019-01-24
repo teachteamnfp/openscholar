@@ -163,6 +163,8 @@ class os_boxes_feedreader extends os_boxes_default {
                   'num_feeds' => $display['settings']['num_to_show'],
                   'show_content' => $display['settings']['show_content'],
                   'time_display' => $display['settings']['time_display'],
+                  'rss2json_api_url' => OS_BOXES_RSS2JSON_API_URL,
+                  'rss2json_api_key' => variable_get('os_boxes_rss2json_api_key', ''),
                 )
               )
             ),
@@ -187,16 +189,6 @@ class os_boxes_feedreader extends os_boxes_default {
             'type' => 'file',
             'data' => libraries_get_path('jsonp-url') . '/jsonp-url-min.js',
             'weight' => 4,
-          ),
-          array(
-            'type' => 'file',
-            'data' => libraries_get_path('yql') . '/yql-min.js',
-            'weight' => 5,
-          ),
-          array(
-            'type' => 'file',
-            'data' => libraries_get_path('yql-jsonp') . '/yql-jsonp-min.js',
-            'weight' => 6,
           ),
           array(
             'type' => 'file',
