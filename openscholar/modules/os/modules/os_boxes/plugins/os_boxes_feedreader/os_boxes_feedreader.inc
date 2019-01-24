@@ -163,6 +163,8 @@ class os_boxes_feedreader extends os_boxes_default {
                   'num_feeds' => $display['settings']['num_to_show'],
                   'show_content' => $display['settings']['show_content'],
                   'time_display' => $display['settings']['time_display'],
+                  'rss2json_api_url' => OS_BOXES_RSS2JSON_API_URL,
+                  'rss2json_api_key' => variable_get('os_boxes_rss2json_api_key', ''),
                 )
               )
             ),
@@ -196,9 +198,6 @@ class os_boxes_feedreader extends os_boxes_default {
         ),
       )
     );
-    $data['os_boxes']['rss2json_api_url'] = OS_BOXES_RSS2JSON_API_URL;
-    $data['os_boxes']['rss2json_api_key'] = variable_get('os_boxes_rss2json_api_key', '');
-    drupal_add_js($data, 'setting');
 
     $output['content'] = drupal_render($content);
     return $output;
