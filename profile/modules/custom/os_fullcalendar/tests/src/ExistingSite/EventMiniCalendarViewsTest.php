@@ -18,8 +18,8 @@ class EventMiniCalendarViewsTest extends EventTestBase {
     $next_month_event = $this->createEvent([
       'title' => 'Next Month Event',
       'field_recurring_date' => [
-        'value' => date("Y-m-d\TH:i:s", strtotime("+1 month midnight")),
-        'end_value' => date("Y-m-d\TH:i:s", strtotime("+1 day +1 month midnight")),
+        'value' => date("Y-m-d\TH:i:s", strtotime("+1 month")),
+        'end_value' => date("Y-m-d\TH:i:s", strtotime("+1 day +1 month")),
         'rrule' => '',
         'timezone' => $this->config->get('system.date')->get('timezone.default'),
         'infinite' => FALSE,
@@ -47,8 +47,8 @@ class EventMiniCalendarViewsTest extends EventTestBase {
     $past_event = $this->createEvent([
       'title' => 'Past Event',
       'field_recurring_date' => [
-        'value' => date("Y-m-d\TH:i:s", strtotime("-2 day -1 month midnight")),
-        'end_value' => date("Y-m-d\TH:i:s", strtotime("-1 day -1 month midnight")),
+        'value' => date("Y-m-d\TH:i:s", strtotime("-2 day -1 month")),
+        'end_value' => date("Y-m-d\TH:i:s", strtotime("-1 day -1 month")),
         'rrule' => '',
         'timezone' => $this->config->get('system.date')->get('timezone.default'),
         'infinite' => FALSE,
@@ -61,8 +61,8 @@ class EventMiniCalendarViewsTest extends EventTestBase {
     $future_event = $this->createEvent([
       'title' => 'Future Event',
       'field_recurring_date' => [
-        'value' => date("Y-m-d\TH:i:s", strtotime("1 day midnight")),
-        'end_value' => date("Y-m-d\TH:i:s", strtotime("2 day midnight")),
+        'value' => date("Y-m-d\TH:i:s", strtotime("1 day")),
+        'end_value' => date("Y-m-d\TH:i:s", strtotime("2 day")),
         'rrule' => '',
         'timezone' => $this->config->get('system.date')->get('timezone.default'),
         'infinite' => FALSE,
