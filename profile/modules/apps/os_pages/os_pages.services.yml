@@ -1,0 +1,4 @@
+services:
+  os_pages.visibility_helper:
+    class: Drupal\os_pages\VisibilityHelper
+    arguments: ['@book.outline_storage']

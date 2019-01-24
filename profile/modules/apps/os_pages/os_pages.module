@@ -14,7 +14,10 @@ use Drupal\block_visibility_groups\Entity\BlockVisibilityGroup;
  * @throws \Drupal\Core\Entity\EntityStorageException
  */
 function os_pages_entity_insert(EntityInterface $entity) {
-  if ($entity->getEntityType()->id() === 'node' && $entity->bundle() === 'page') {
+  /** @var \Drupal\os_pages\VisibilityHelper $visibility_helper */
+  $visibility_helper = \Drupal::service('os_pages.visibility_helper');
+
+  if ($visibility_helper->shouldCreatePageVisibilityGroup($entity)) {
     /** @var \Drupal\block_visibility_groups\Entity\BlockVisibilityGroup $bvg */
     $bvg = BlockVisibilityGroup::create([
       'id' => 'os_pages_' . rand(1, 1000),

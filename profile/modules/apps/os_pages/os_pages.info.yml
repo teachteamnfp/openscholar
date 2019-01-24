@@ -3,4 +3,5 @@ description: 'Pages app'
 type: module
 core: 8.x
 dependencies:
-  - block_visibility_groups
+  - drupal:block_visibility_groups
+  - drupal:book
