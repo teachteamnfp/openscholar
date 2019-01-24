@@ -1,0 +1,6 @@
+name: OS Pages
+description: 'Pages app'
+type: module
+core: 8.x
+dependencies:
+  - block_visibility_groups

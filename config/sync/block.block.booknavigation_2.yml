@@ -2,8 +2,6 @@ uuid: a68e2e17-20f0-4034-be8e-86e8511cbeaf
 langcode: en
 status: true
 dependencies:
-  config:
-    - block_visibility_groups.block_visibility_group.book_section
   module:
     - block_visibility_groups
     - book
@@ -25,5 +23,5 @@ visibility:
   condition_group:
     id: condition_group
     negate: false
-    block_visibility_group: book_section
+    block_visibility_group: ''
     context_mapping: {  }
