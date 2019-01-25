@@ -30,9 +30,18 @@ function os_pages_entity_insert(EntityInterface $entity) {
       ]),
       'status' => TRUE,
       'allow_other_conditions' => TRUE,
+      'logic' => 'and',
     ]);
 
     $visibility_group->save();
+
+    $visibility_group->addCondition([
+      'id' => 'entity_bundle:node',
+      'bundles' => [
+        'page' => $entity->bundle(),
+      ],
+      'negate' => FALSE,
+    ]);
 
     $visibility_group->addCondition([
       'id' => 'request_path',
