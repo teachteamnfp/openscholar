@@ -253,20 +253,6 @@ display:
           entity_type: bibcite_reference
           entity_field: title
           plugin_id: standard
-        sticky:
-          id: sticky
-          table: bibcite_reference
-          field: sticky
-          relationship: none
-          group_type: group
-          admin_label: ''
-          order: ASC
-          exposed: true
-          expose:
-            label: 'Sticky at top of lists'
-          entity_type: bibcite_reference
-          entity_field: sticky
-          plugin_id: standard
       title: Publications
       header: {  }
       footer: {  }
