@@ -11,6 +11,7 @@ addons:
     s3_region: $ARTIFACTS_S3_REGION
     paths:
       - ./web/sites/simpletest
+      - ./web/sites/default/files
 
 services:
   - docker
