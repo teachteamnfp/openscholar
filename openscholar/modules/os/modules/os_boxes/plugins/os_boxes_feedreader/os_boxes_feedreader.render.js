@@ -13,8 +13,6 @@ Drupal.behaviors.osBoxesFeedReader = {
       }
       // run only once for each feed
       $('div#' + div_id, context).once('osBoxesFeedReader', function () {
-        console.log('------ processing div_id ------');
-        console.log(div_id);
         //Run the feed processing only once per feed
         $.ajax({
           url: feed_settings.rss2json_api_url,
@@ -34,8 +32,6 @@ Drupal.behaviors.osBoxesFeedReader = {
               var entry = response.items[i];
               var date = "";
               var dateToFormat = getDateFromEntry(entry);
-              console.log('------ dateToFormat ------');
-              console.log(dateToFormat);
 
               if (dateToFormat != null) {
                 if (feed_settings.time_display == 'relative') {
@@ -46,16 +42,12 @@ Drupal.behaviors.osBoxesFeedReader = {
                 if (feed_settings.time_display == 'formal') {
                   date = formalDate(dateToFormat);
                 }
-                console.log('------ date ------');
-                console.log(date);
 
                 if (typeof date == 'undefined') {
                   date = "";
                 } else {
                   date = "<span class='date'>" + date + "</span>";
                 }
-                console.log('------ rendered date ------');
-                console.log(date);
               }
               var content = '';
               if (feed_settings.show_content) {
@@ -63,8 +55,6 @@ Drupal.behaviors.osBoxesFeedReader = {
               }
               var feed_markup = "<div class='feed_item'>";
 
-              console.log('------ feed_settings ------');
-              console.log(feed_settings);
               // Put time before title if there is no content
               if (!feed_settings.show_content) {
                 feed_markup = feed_markup + date;
@@ -76,8 +66,6 @@ Drupal.behaviors.osBoxesFeedReader = {
                 feed_markup = feed_markup + "<br />" + date + "<span class='description'>" + content + "<span/>";
               }
               feed_markup = feed_markup + "</div>";
-              console.log('------ rendered feed_markup ------');
-              console.log(feed_markup);
               var div = $(feed_markup);
 
               $('div#' + div_id).append(div);
@@ -98,7 +86,7 @@ Drupal.behaviors.osBoxesFeedReader = {
 //Takes an ISO time and returns a string representing how
 //long ago the date represents.
 function fuzzyDate(time){
-  var date = new Date(time),
+  var date = new Date(time + ' UTC'),
     diff = (((new Date()).getTime() - date.getTime()) / 1000),
     day_diff = Math.floor(diff / 86400);
       
@@ -120,7 +108,7 @@ function fuzzyDate(time){
 //Takes an ISO time and returns a string representing how
 //long ago the date represents.
 function formalDate(time){
-  var date = new Date(time);
+  var date = new Date(time + ' UTC');
   var month = date.getMonth();
   var day = date.getDate();
   var year = date.getFullYear();
@@ -130,8 +118,6 @@ function formalDate(time){
 
 function getDateFromEntry(entry){
   if (entry.pubDate != null) {
-    console.log('---- Found pubDate ------');
-    console.log(entry.pubDate);
     if (typeof entry.pubDate === 'string' && entry.pubDate != 'Thu, 01 Jan 1970 00:00:00 +0000') {
       return entry.pubDate;
     }
@@ -147,8 +133,6 @@ function getDateFromEntry(entry){
     }
   }
   else if (entry.publicationDate != null) {
-    console.log('---- Found publicationDate ------');
-    console.log(entry.publicationDate);
     if (typeof entry.publicationDate === 'string' && entry.publicationDate != 'Thu, 01 Jan 1970 00:00:00 +0000') {
       return entry.publicationDate;
     }
