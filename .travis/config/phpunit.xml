@@ -79,7 +79,6 @@
       <!-- By definition test classes have no tests. -->
       <exclude>
         <directory>../profiles/contrib/openscholar/*/*/tests</directory>
-        <directory>../profiles/tests</directory>
         <directory suffix="Interface.php">../*</directory>
         <directory suffix="Test.php">../*</directory>
         <directory suffix="TestBase.php">../*</directory>
