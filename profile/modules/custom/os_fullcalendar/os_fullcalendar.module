@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * @file
+ * Fullcalendar customizations for OpenScholar.
+ */
+
+use Drupal\views\ViewExecutable;
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function os_fullcalendar_views_pre_render(ViewExecutable $view) {
+  if ($view->storage->id() == 'calendar') {
+    $view->element['#attached']['library'][] = 'os_fullcalendar/drupal.os_fullcalendar';
+  }
+}

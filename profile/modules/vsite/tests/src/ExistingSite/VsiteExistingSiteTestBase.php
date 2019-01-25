@@ -41,6 +41,9 @@ abstract class VsiteExistingSiteTestBase extends ExistingSiteBase {
     ]);
     $group->enforceIsNew();
     $group->save();
+
+    $this->markEntityForCleanup($group);
+
     return $group;
   }
 
