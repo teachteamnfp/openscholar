@@ -1,0 +1,18 @@
+uuid: ec6e3dc4-116d-4856-9a31-26d4c9e06eb7
+langcode: en
+status: true
+dependencies:
+  module:
+    - bibcite_entity
+id: bibcite_reference.field_is_sticky
+field_name: field_is_sticky
+entity_type: bibcite_reference
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - bibcite_entity.bibcite_reference_type.hearing
+    - field.field.bibcite_reference.hearing.field_is_sticky
   enforced:
     module:
       - bibcite_entity
@@ -25,6 +26,8 @@ content:
     label: above
     settings:
       link: true
+      role: false
+      category: false
     third_party_settings: {  }
   bibcite_abst_e:
     type: basic_string
@@ -397,6 +400,16 @@ content:
       thousand_separator: ''
       prefix_suffix: true
     third_party_settings: {  }
+  field_is_sticky:
+    weight: 101
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
   keywords:
     type: entity_reference_label
     weight: 4

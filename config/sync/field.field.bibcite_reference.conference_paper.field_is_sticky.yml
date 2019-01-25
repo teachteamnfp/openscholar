@@ -1,0 +1,23 @@
+uuid: 37c96eac-164c-4298-b72e-1dd6ddd090b9
+langcode: en
+status: true
+dependencies:
+  config:
+    - bibcite_entity.bibcite_reference_type.conference_paper
+    - field.storage.bibcite_reference.field_is_sticky
+id: bibcite_reference.conference_paper.field_is_sticky
+field_name: field_is_sticky
+entity_type: bibcite_reference
+bundle: conference_paper
+label: 'Is Sticky'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

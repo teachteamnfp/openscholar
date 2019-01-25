@@ -1,0 +1,23 @@
+uuid: 179f8b5f-49a3-4909-b154-b45c8939e3cd
+langcode: en
+status: true
+dependencies:
+  config:
+    - bibcite_entity.bibcite_reference_type.broadcast
+    - field.storage.bibcite_reference.field_is_sticky
+id: bibcite_reference.broadcast.field_is_sticky
+field_name: field_is_sticky
+entity_type: bibcite_reference
+bundle: broadcast
+label: 'Is Sticky'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

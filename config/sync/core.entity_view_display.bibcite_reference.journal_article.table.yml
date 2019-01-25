@@ -5,6 +5,7 @@ dependencies:
   config:
     - bibcite_entity.bibcite_reference_type.journal_article
     - core.entity_view_mode.bibcite_reference.table
+    - field.field.bibcite_reference.journal_article.field_is_sticky
   enforced:
     config:
       - core.entity_view_mode.bibcite_reference.table
@@ -27,6 +28,8 @@ content:
     label: above
     settings:
       link: true
+      role: false
+      category: false
     third_party_settings: {  }
   bibcite_abst_e:
     type: basic_string
@@ -410,5 +413,6 @@ content:
 hidden:
   bibcite_type: true
   citation: true
+  field_is_sticky: true
   langcode: true
   uid: true
