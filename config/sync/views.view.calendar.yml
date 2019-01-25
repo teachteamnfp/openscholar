@@ -395,7 +395,7 @@ display:
           value:
             min: ''
             max: ''
-            value: 'this month'
+            value: 'last day of this month 23:59:59'
             type: offset
           group: 1
           exposed: false
@@ -580,7 +580,7 @@ display:
           value:
             min: ''
             max: ''
-            value: today
+            value: 'today 23:59:59'
             type: offset
           group: 1
           exposed: false
