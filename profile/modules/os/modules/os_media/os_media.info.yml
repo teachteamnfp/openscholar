@@ -1,6 +1,6 @@
 name: "OS: Media"
 core: 8.x
 type: module
-description: "Custom handling for OpenScholar"
+description: "Custom file handling for OpenScholar"
 dependencies:
   - media

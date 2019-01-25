@@ -1,0 +1,141 @@
+angular.angularjs:
+  remote: https://github.com/angular
+  version: 1.7.6
+  license:
+    name: MIT
+    url: https://github.com/angular/angular.js/blob/master/LICENSE
+    gpl-compatible: true
+  js:
+    //ajax.googleapis.com/ajax/libs/angularjs/1.7.6/angular.js: { type: external, minified: false }
+    //code.angularjs.org/1.7.6/angular-messages.js: { type: external, minified: false }
+    //code.angularjs.org/1.7.6/angular-sanitize.js: { type: external, minified: false }
+    //code.angularjs.org/1.7.6/angular-cookies.js: { type: external, minified: false }
+    //cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.10/ngStorage.min.js: { type: external, minified: true }
+  dependencies:
+    - core/jquery
+
+os.auth:
+  version: 1.0
+  js:
+    js/auth/auth.js: { }
+  dependencies:
+    - os/angular.angularjs
+
+os.locationFix:
+  version: 1.0
+  js:
+    js/location/location.js: {}
+  dependencies:
+    - os/angular.angularjs
+
+angular.select2:
+  version: 1.0
+  js:
+    /profiles/contrib/openscholar/libraries/ui-select/dist/select.js: { }
+  css:
+    component:
+      /profiles/contrib/openscholar/libraries/ui-select/dist/select.min.css: { minified: true }
+  dependencies:
+    - os/angular.angularjs
+
+os.recursionHelper:
+  version: 1.0
+  js:
+    js/RecursionHelper/RecursionHelper.module.js: { }
+  dependencies:
+    - os/angular.angularjs
+
+os.dependencyManager:
+  version: 1.0
+  js:
+    js/DependencyManager/DependencyManager.module.js: { }
+  dependencies:
+    - os/angular.angularjs
+
+os.jsPager:
+  version: 1.0
+  js:
+    js/JSPager/JSPager.module.js: { }
+  dependencies:
+    - os/angular.angularjs
+
+os.entityService:
+  version: 1.0
+  js:
+    js/EntityService/EntityService.module.js: { }
+  dependencies:
+    - os/angular.angularjs
+    - os/angular.indexedDB
+
+os.treeSelector:
+  version: 1.0
+  js:
+    js/TreeSelector/TreeSelector.module.js: { }
+  css:
+    component:
+      js/TreeSelector/TreeSelector.css: { }
+  dependencies:
+    - os/angular.angularjs
+
+angular.ngFileUpload:
+  version: 3.1.0
+  js:
+    /profile/contrib/openscholar/libraries/ng-file-upload/dist/ng-file-upload-all.js: { }
+  dependencies:
+    - os/angular.angularjs
+
+angular.modalService:
+  version: 1.0
+  js:
+    /profile/contrib/openscholar/libraries/angular-modal-service: { }
+  dependencies:
+    - os/angular.angularjs
+
+angular.indexedDB:
+  version: 1.1.0
+  js:
+    /profile/contrib/openscholar/libraries/angularindexeddb/angular-indexed-db.js: { }
+  dependencies:
+    - os/angular.angularjs
+
+angular.uiSortable:
+  version: 0.13.4
+  js:
+    /profile/contrib/openscholar/libraries/angular-ui-sortable/sortable.js: { }
+  dependencies:
+    - core/jquery.ui.sortable
+    - os/angular.angularjs
+
+os.taxonomyWidget:
+  version: 1.0
+  js:
+    js/TaxonomyWidget/TaxonomyWidget.module.js
+  dependencies:
+    - core/drupalSettings
+    - os/angular.angularjs
+    - os/angular.select2
+    - os/os.entityService
+    - os/os.treeSelector
+
+os.fileEditor:
+  version: 1.0.1
+  js:
+    js/FileEditor/FileEditor.module.js: { }
+  css:
+    component:
+      js/FileEditor/FileEditor.style.css: { }
+  dependencies:
+    - core/drupalSettings
+    - os/os.auth
+    - os/angular.ngFileUpload
+    - os/os.entityService
+    - os/os.taxonomyWidget
+
+os.fileEditorModal:
+  version: 1.0
+  js:
+    js/FileEditor/fileEditorModal.module.js: { }
+  dependencies:
+    - os/os.fileEditor
+    - os/angular.modalService
+    - os/os.locationFix
