@@ -9,7 +9,7 @@ use Drupal\node\Entity\Node;
 /**
  * Class PagesVisibilityHelper.
  */
-class VisibilityHelper {
+final class VisibilityHelper implements VisibilityHelperInterface {
 
   /**
    * The book outline storage.
@@ -29,13 +29,7 @@ class VisibilityHelper {
   }
 
   /**
-   * Checks whether block visibility group for page should be created.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The entity which is taken into account.
-   *
-   * @return bool
-   *   TRUE if it is okay, otherwise FALSE.
+   * {@inheritdoc}
    */
   public function shouldCreatePageVisibilityGroup(EntityInterface $entity) : bool {
     return ($entity->getEntityType()->id() === 'node' &&
@@ -43,13 +37,7 @@ class VisibilityHelper {
   }
 
   /**
-   * Checks whether block visibility group for section should be created.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The entity which is taken into account.
-   *
-   * @return bool
-   *   TRUE if it is okay, otherwise FALSE.
+   * {@inheritdoc}
    */
   public function shouldCreateSectionVisibilityGroup(EntityInterface $entity) : bool {
     return ($this->shouldCreatePageVisibilityGroup($entity) &&
@@ -57,13 +45,7 @@ class VisibilityHelper {
   }
 
   /**
-   * Checks whether the page is first page of a book.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The newly created page.
-   *
-   * @return bool
-   *   TRUE if yes, otherwise FALSE.
+   * {@inheritdoc}
    */
   public function isBookFirstPage(EntityInterface $entity) : bool {
     if (empty($entity->book['pid']) || empty($entity->book['bid'])) {
