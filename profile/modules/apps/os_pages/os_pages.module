@@ -27,7 +27,7 @@ function os_pages_entity_insert(EntityInterface $entity) {
     $visibility_storage->create([
       'id' => "os_pages_page_{$entity->id()}",
       'label' => t('OS Pages: Page @name', [
-        '@book_name' => $entity->label(),
+        '@name' => $entity->label(),
       ]),
       'status' => TRUE,
       'allow_other_conditions' => TRUE,
