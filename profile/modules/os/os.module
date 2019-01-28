@@ -1,7 +1,22 @@
 <?php
 
-function os_js_settings_build(array &$settings, \Drupal\Core\Asset\AttachedAssetsInterface $assets) {
-  $libs = $assets->getLibraries();
+function os_library_info_alter(&$libraries, $extension) {
+  if ($extension == 'core') {
+    return;
+  }
 
-  ksm($libs);
+  /** @var \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler */
+  $moduleHandler = \Drupal::service('module_handler');
+
+  // filter out themes and profiles or whatever. only modules
+  if (!$moduleHandler->moduleExists($extension)) {
+    return;
+  }
+  $path = drupal_get_path('module', $extension);
+
+  foreach ($libraries as $name => &$lib) {
+    if (isset($lib['templates'])) {
+      $lib['drupalSettings']['paths'][$name] = $path . '/' . $lib['templates'] . '/';
+    }
+  }
 }
