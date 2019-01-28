@@ -1,0 +1,22 @@
+mediaBrowser:
+  version: 1.0
+  js:
+    js/MediaBrowserFilters.js: { }
+    js/MediaBrowserModule.js: { app: mediaBrowser }
+  dependencies:
+    - os/fileEditor
+    - os/angular.ngFileUpload
+    - os/angular.modalService
+    - os/jsPager
+    - os/entityService
+    - os/auth
+    - os/location
+    - core/drupal.dialog
+    - core/drupalSettings
+
+mediaBrowserField:
+  version: 1.0
+  js:
+    js/MediaBrowserField.js: { app: MediaBrowserField }
+  dependencies:
+    - os_media/mediaBrowser
