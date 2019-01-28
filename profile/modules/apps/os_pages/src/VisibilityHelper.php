@@ -29,7 +29,21 @@ class VisibilityHelper {
   }
 
   /**
-   * Checks whether the block visibility group should be created.
+   * Checks whether block visibility group for page should be created.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity which is taken into account.
+   *
+   * @return bool
+   *   TRUE if it is okay, otherwise FALSE.
+   */
+  public function shouldCreatePageVisibilityGroup(EntityInterface $entity) : bool {
+    return ($entity->getEntityType()->id() === 'node' &&
+      $entity->bundle() === 'page');
+  }
+
+  /**
+   * Checks whether block visibility group for section should be created.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity which is taken into account.
@@ -38,8 +52,7 @@ class VisibilityHelper {
    *   TRUE if it is okay, otherwise FALSE.
    */
   public function shouldCreateSectionVisibilityGroup(EntityInterface $entity) : bool {
-    return ($entity->getEntityType()->id() === 'node' &&
-      $entity->bundle() === 'page' &&
+    return ($this->shouldCreatePageVisibilityGroup($entity) &&
       $this->isBookFirstPage($entity));
   }
 
