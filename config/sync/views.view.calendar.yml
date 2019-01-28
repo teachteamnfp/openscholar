@@ -580,7 +580,7 @@ display:
           value:
             min: ''
             max: ''
-            value: 'today 23:59:59'
+            value: 'now'
             type: offset
           group: 1
           exposed: false
