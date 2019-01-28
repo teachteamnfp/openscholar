@@ -1,0 +1,17 @@
+
+os_metatag.settings:
+  type: config_object
+  label: 'OS metatag settings'
+  mapping:
+    site_title:
+      type: string
+      label: 'Site Title'
+    meta_description:
+      type: string
+      label: 'Meta Description'
+    publisher_url:
+      type: string
+      label: 'Publisher URL'
+    author_url:
+      type: string
+      label: 'Author URL'

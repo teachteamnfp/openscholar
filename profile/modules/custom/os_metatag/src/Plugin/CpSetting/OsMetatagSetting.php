@@ -44,7 +44,7 @@ class OsMetatagSetting extends PluginBase implements CpSettingInterface {
     ];
     $form['meta_description'] = [
       '#type' => 'textarea',
-      '#title' => t('Site Title'),
+      '#title' => t('Meta Description'),
       '#default_value' => $config->get('meta_description'),
     ];
     $form['publisher_url'] = [

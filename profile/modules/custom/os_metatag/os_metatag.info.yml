@@ -3,5 +3,5 @@ description: 'Define metatags control panel settings.'
 type: module
 core: 8.x
 version: 1.0
-requirements:
-  - cp
+dependencies:
+  - cp_settings
