@@ -56,8 +56,7 @@ jsPager:
   version: 1.0
   js:
     js/JSPager/JSPager.module.js: { }
-  template:
-    - js/JSPager
+  templates: js/JSPager
   dependencies:
     - os/angular.angularjs
 
@@ -112,6 +111,7 @@ taxonomyWidget:
   version: 1.0
   js:
     js/TaxonomyWidget/TaxonomyWidget.module.js: { }
+  templates: js/TaxonomyWidget
   dependencies:
     - core/drupalSettings
     - os/angular.angularjs
