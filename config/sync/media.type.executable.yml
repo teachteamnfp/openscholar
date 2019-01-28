@@ -1,0 +1,14 @@
+uuid: 3f275512-1f0e-463a-a38c-a9f8fe0c5709
+langcode: en
+status: true
+dependencies: {  }
+id: executable
+label: Executable
+description: ''
+source: file
+queue_thumbnail_downloads: false
+new_revision: false
+source_configuration:
+  source_field: field_media_file
+field_map:
+  name: name
