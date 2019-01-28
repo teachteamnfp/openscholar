@@ -31,22 +31,6 @@ final class VisibilityHelper implements VisibilityHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function shouldCreatePageVisibilityGroup(EntityInterface $entity) : bool {
-    return ($entity->getEntityType()->id() === 'node' &&
-      $entity->bundle() === 'page');
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function shouldCreateSectionVisibilityGroup(EntityInterface $entity) : bool {
-    return ($this->shouldCreatePageVisibilityGroup($entity) &&
-      $this->isBookFirstPage($entity));
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function isBookFirstPage(EntityInterface $entity) : bool {
     if (empty($entity->book['pid']) || empty($entity->book['bid'])) {
       return FALSE;

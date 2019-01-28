@@ -55,7 +55,7 @@ function os_pages_entity_insert(EntityInterface $entity) {
 
     // Create/update section visibility group.
     if (!$section_visibility_group) {
-      if ($visibility_helper->shouldCreateSectionVisibilityGroup($entity)) {
+      if ($visibility_helper->isBookFirstPage($entity)) {
         $visibility_storage->create([
           'id' => "os_pages_section_{$book->id()}",
           'label' => t('OS Pages: Section @book_name', [

@@ -17,7 +17,6 @@ class VisibilityHelperTest extends TestBase {
   /**
    * Tests if section visibility group added when a new book is created.
    *
-   * @covers ::shouldCreateSectionVisibilityGroup
    * @covers ::isBookFirstPage
    */
   public function testCreateSectionVisibilityGroupWhenBookCreated() {
@@ -30,7 +29,6 @@ class VisibilityHelperTest extends TestBase {
   /**
    * Tests if section visibility group added when a non-page node created.
    *
-   * @covers ::shouldCreateSectionVisibilityGroup
    * @covers ::isBookFirstPage
    */
   public function testCreateSectionVisibilityGroupWhenNonPageNodeCreated() {
@@ -47,7 +45,6 @@ class VisibilityHelperTest extends TestBase {
   /**
    * Tests if section visibility group added when first sub-page is created.
    *
-   * @covers ::shouldCreateSectionVisibilityGroup
    * @covers ::isBookFirstPage
    */
   public function testCreateSectionVisibilityGroupWhenFirstSubPageNodeCreated() {
@@ -61,8 +58,6 @@ class VisibilityHelperTest extends TestBase {
 
   /**
    * Tests page visibility group create.
-   *
-   * @covers ::shouldCreatePageVisibilityGroup
    */
   public function testCreatePageVisibilityGroup() {
     /** @var \Drupal\node\NodeInterface $book */
