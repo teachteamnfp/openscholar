@@ -37,6 +37,11 @@ class MediaBrowserWidget extends WidgetBase {
       '#attached' => [
         'library' => [
           'os_media/mediaBrowserField'
+        ],
+        'placeholders' => [
+          '@ng-modules' => [
+            '#markup' => 'MediaBrowserField'
+          ]
         ]
       ]
     ];
