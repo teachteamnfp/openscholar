@@ -14,7 +14,6 @@ function os_bibcite_views_data_alter(array &$data) {
     'field' => [
       'id' => 'os_bibcite_first_letter_title_excl_prep',
     ],
+    'entity field' => 'title',
   ];
-
-  // TODO Implement os_bibcite_first_letter_title_excl_prep view field.
 }
