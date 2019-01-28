@@ -15,7 +15,7 @@ use Drupal\Tests\openscholar\ExistingSite\TestBase;
 class VisibilityHelperTest extends TestBase {
 
   /**
-   * Tests if visibility group added when a new book is created.
+   * Tests if section visibility group added when a new book is created.
    *
    * @covers ::shouldCreateSectionVisibilityGroup
    * @covers ::isBookFirstPage
@@ -28,7 +28,7 @@ class VisibilityHelperTest extends TestBase {
   }
 
   /**
-   * Tests if visibility group added when a non-page node created.
+   * Tests if section visibility group added when a non-page node created.
    *
    * @covers ::shouldCreateSectionVisibilityGroup
    * @covers ::isBookFirstPage
@@ -45,7 +45,7 @@ class VisibilityHelperTest extends TestBase {
   }
 
   /**
-   * Tests if visibility group added when first sub-page node is created.
+   * Tests if section visibility group added when first sub-page is created.
    *
    * @covers ::shouldCreateSectionVisibilityGroup
    * @covers ::isBookFirstPage
@@ -57,6 +57,25 @@ class VisibilityHelperTest extends TestBase {
     $this->createBookPage([], $book->id());
 
     $this->assertNotNull(BlockVisibilityGroup::load("os_pages_section_{$book->id()}"));
+  }
+
+  /**
+   * Tests page visibility group create.
+   *
+   * @covers ::shouldCreatePageVisibilityGroup
+   */
+  public function testCreatePageVisibilityGroup() {
+    /** @var \Drupal\node\NodeInterface $book */
+    $book = $this->createBookPage();
+
+    $this->assertNotNull(BlockVisibilityGroup::load("os_pages_page_{$book->id()}"));
+
+    /** @var \Drupal\node\NodeInterface $event */
+    $event = $this->createNode([
+      'type' => 'event',
+    ]);
+
+    $this->assertNull(BlockVisibilityGroup::load("os_pages_page_{$event->id()}"));
   }
 
 }
