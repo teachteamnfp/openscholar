@@ -37,7 +37,7 @@ class VisibilityHelper {
    * @return bool
    *   TRUE if it is okay, otherwise FALSE.
    */
-  public function shouldCreatePageVisibilityGroup(EntityInterface $entity) : bool {
+  public function shouldCreateSectionVisibilityGroup(EntityInterface $entity) : bool {
     return ($entity->getEntityType()->id() === 'node' &&
       $entity->bundle() === 'page' &&
       $this->isBookFirstPage($entity));

@@ -18,7 +18,7 @@ function os_pages_entity_insert(EntityInterface $entity) {
   /** @var \Drupal\os_pages\VisibilityHelper $visibility_helper */
   $visibility_helper = \Drupal::service('os_pages.visibility_helper');
 
-  if ($visibility_helper->shouldCreatePageVisibilityGroup($entity)) {
+  if ($visibility_helper->shouldCreateSectionVisibilityGroup($entity)) {
     /** @var \Drupal\node\NodeInterface $book */
     $book = Node::load($entity->book['bid']);
 

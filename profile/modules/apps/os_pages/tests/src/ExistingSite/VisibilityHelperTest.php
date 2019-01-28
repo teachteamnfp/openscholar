@@ -17,10 +17,10 @@ class VisibilityHelperTest extends TestBase {
   /**
    * Tests if visibility group added when a new book is created.
    *
-   * @covers ::shouldCreatePageVisibilityGroup
+   * @covers ::shouldCreateSectionVisibilityGroup
    * @covers ::isBookFirstPage
    */
-  public function testCreateVisibilityGroupWhenBookCreated() {
+  public function testCreateSectionVisibilityGroupWhenBookCreated() {
     /** @var \Drupal\node\NodeInterface $book */
     $book = $this->createBookPage();
 
@@ -30,10 +30,10 @@ class VisibilityHelperTest extends TestBase {
   /**
    * Tests if visibility group added when a non-page node created.
    *
-   * @covers ::shouldCreatePageVisibilityGroup
+   * @covers ::shouldCreateSectionVisibilityGroup
    * @covers ::isBookFirstPage
    */
-  public function testCreateVisibilityGroupWhenNonPageNodeCreated() {
+  public function testCreateSectionVisibilityGroupWhenNonPageNodeCreated() {
     /** @var \Drupal\node\NodeInterface $book */
     $book = $this->createBookPage();
 
@@ -48,10 +48,10 @@ class VisibilityHelperTest extends TestBase {
   /**
    * Tests if visibility group added when first sub-page node is created.
    *
-   * @covers ::shouldCreatePageVisibilityGroup
+   * @covers ::shouldCreateSectionVisibilityGroup
    * @covers ::isBookFirstPage
    */
-  public function testCreateVisibilityGroupWhenFirstSubPageNodeCreated() {
+  public function testCreateSectionVisibilityGroupWhenFirstSubPageNodeCreated() {
     /** @var \Drupal\node\NodeInterface $book */
     $book = $this->createBookPage();
 
@@ -64,10 +64,10 @@ class VisibilityHelperTest extends TestBase {
   /**
    * Tests if visibility group added when first sub-page's sub-page is created.
    *
-   * @covers ::shouldCreatePageVisibilityGroup
+   * @covers ::shouldCreateSectionVisibilityGroup
    * @covers ::isBookFirstPage
    */
-  public function testCreateVisibilityGroupWhenFirstSubPageSubPageCreated() {
+  public function testCreateSectionVisibilityGroupWhenFirstSubPageSubPageCreated() {
     /** @var \Drupal\node\NodeInterface $book */
     $book = $this->createBookPage();
 
@@ -83,10 +83,10 @@ class VisibilityHelperTest extends TestBase {
   /**
    * Tests if visibility group added when a second sub-page node is created.
    *
-   * @covers ::shouldCreatePageVisibilityGroup
+   * @covers ::shouldCreateSectionVisibilityGroup
    * @covers ::isBookFirstPage
    */
-  public function testCreateVisibilityGroupWhenSecondSubPageCreated() {
+  public function testCreateSectionVisibilityGroupWhenSecondSubPageCreated() {
     /** @var \Drupal\node\NodeInterface $book */
     $book = $this->createBookPage();
 
