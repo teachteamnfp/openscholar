@@ -17,6 +17,8 @@ use Drupal\node\Entity\Node;
 function os_pages_entity_insert(EntityInterface $entity) {
   /** @var \Drupal\os_pages\VisibilityHelper $visibility_helper */
   $visibility_helper = \Drupal::service('os_pages.visibility_helper');
+  /** @var \Drupal\Core\Path\AliasManagerInterface $alias_manager */
+  $alias_manager = \Drupal::service('path.alias_manager');
 
   if ($visibility_helper->shouldCreateSectionVisibilityGroup($entity)) {
     /** @var \Drupal\node\NodeInterface $book */
@@ -24,7 +26,7 @@ function os_pages_entity_insert(EntityInterface $entity) {
 
     /** @var \Drupal\block_visibility_groups\Entity\BlockVisibilityGroup $visibility_group */
     $visibility_group = BlockVisibilityGroup::create([
-      'id' => "os_pages_{$book->id()}_{$entity->id()}",
+      'id' => "os_pages_section_{$book->id()}",
       'label' => t('OS Pages: @book_name', [
         '@book_name' => $book->label(),
       ]),
@@ -45,7 +47,7 @@ function os_pages_entity_insert(EntityInterface $entity) {
 
     $visibility_group->addCondition([
       'id' => 'request_path',
-      'pages' => '/node/*',
+      'pages' => $alias_manager->getAliasByPath("/node/{$entity->id()}"),
       'negate' => 0,
     ]);
 

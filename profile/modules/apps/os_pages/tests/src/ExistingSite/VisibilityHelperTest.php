@@ -24,7 +24,7 @@ class VisibilityHelperTest extends TestBase {
     /** @var \Drupal\node\NodeInterface $book */
     $book = $this->createBookPage();
 
-    $this->assertNull(BlockVisibilityGroup::load("os_pages_{$book->id()}"));
+    $this->assertNull(BlockVisibilityGroup::load("os_pages_section_{$book->id()}"));
   }
 
   /**
@@ -37,12 +37,11 @@ class VisibilityHelperTest extends TestBase {
     /** @var \Drupal\node\NodeInterface $book */
     $book = $this->createBookPage();
 
-    /** @var \Drupal\node\NodeInterface $event */
-    $event = $this->createNode([
+    $this->createNode([
       'type' => 'event',
     ]);
 
-    $this->assertNull(BlockVisibilityGroup::load("os_pages_{$book->id()}_{$event->id()}"));
+    $this->assertNull(BlockVisibilityGroup::load("os_pages_section_{$book->id()}"));
   }
 
   /**
@@ -55,47 +54,9 @@ class VisibilityHelperTest extends TestBase {
     /** @var \Drupal\node\NodeInterface $book */
     $book = $this->createBookPage();
 
-    /** @var \Drupal\node\NodeInterface $first_sub_page */
-    $first_sub_page = $this->createBookPage([], $book->id());
-
-    $this->assertNotNull(BlockVisibilityGroup::load("os_pages_{$book->id()}_{$first_sub_page->id()}"));
-  }
-
-  /**
-   * Tests if visibility group added when first sub-page's sub-page is created.
-   *
-   * @covers ::shouldCreateSectionVisibilityGroup
-   * @covers ::isBookFirstPage
-   */
-  public function testCreateSectionVisibilityGroupWhenFirstSubPageSubPageCreated() {
-    /** @var \Drupal\node\NodeInterface $book */
-    $book = $this->createBookPage();
-
-    /** @var \Drupal\node\NodeInterface $first_sub_page */
-    $first_sub_page = $this->createBookPage([], $book->id());
-
-    /** @var \Drupal\node\NodeInterface $first_sub_page_sub_page */
-    $first_sub_page_sub_page = $this->createBookPage([], $book->id(), $first_sub_page->id());
-
-    $this->assertNull(BlockVisibilityGroup::load("os_pages_{$book->id()}_{$first_sub_page_sub_page->id()}"));
-  }
-
-  /**
-   * Tests if visibility group added when a second sub-page node is created.
-   *
-   * @covers ::shouldCreateSectionVisibilityGroup
-   * @covers ::isBookFirstPage
-   */
-  public function testCreateSectionVisibilityGroupWhenSecondSubPageCreated() {
-    /** @var \Drupal\node\NodeInterface $book */
-    $book = $this->createBookPage();
-
     $this->createBookPage([], $book->id());
 
-    /** @var \Drupal\node\NodeInterface $second_sub_page_sub_page */
-    $second_sub_page_sub_page = $this->createBookPage([], $book->id());
-
-    $this->assertNull(BlockVisibilityGroup::load("os_pages_{$book->id()}_{$second_sub_page_sub_page->id()}"));
+    $this->assertNotNull(BlockVisibilityGroup::load("os_pages_section_{$book->id()}"));
   }
 
 }
