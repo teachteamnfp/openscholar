@@ -9,7 +9,7 @@ use weitzman\DrupalTestTraits\ExistingSiteBase;
  *
  * @group metatag
  * @group functional
- * @covers os_metatag.module
+ * @covers os_metatag_page_attachments()
  */
 class HtmlHeadOsMetatagTest extends ExistingSiteBase {
 
