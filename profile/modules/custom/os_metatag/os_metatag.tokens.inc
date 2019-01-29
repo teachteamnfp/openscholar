@@ -5,6 +5,7 @@
  * OS metatag tokens.
  */
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Render\BubbleableMetadata;
 
 /**
@@ -18,11 +19,11 @@ function os_metatag_token_info() {
 
   $settings['site_title'] = [
     'name' => t("Site Title"),
-    'description' => t("OS Metatag Site title from settings."),
+    'description' => t("OS Metatag escaped Site title from settings."),
   ];
   $settings['meta_description'] = [
     'name' => t("Meta Description"),
-    'description' => t("OS Metatag Meta Description from settings."),
+    'description' => t("OS Metatag escaped Meta Description from settings."),
   ];
 
   return [
@@ -50,14 +51,14 @@ function os_metatag_tokens($type, $tokens, array $data, array $options, Bubbleab
             $config_system = \Drupal::config('system.site');
             $site_title = $config_system->get('name');
           }
-          $replacements[$original] = $site_title;
+          $replacements[$original] = Html::escape($site_title);
           break;
 
         case 'meta_description':
           $config = \Drupal::config('os_metatag.setting');
           $bubbleable_metadata->addCacheableDependency($config);
           $meta_description = $config->get('meta_description');
-          $replacements[$original] = $meta_description ?? '';
+          $replacements[$original] = !empty($meta_description) ? Html::escape($meta_description) : '';
           break;
       }
     }
