@@ -9,7 +9,6 @@ use weitzman\DrupalTestTraits\ExistingSiteWebDriverTestBase;
  *
  * @group metatag
  * @group functional-javascript
- * @covers \Drupal\os_metatag\Plugin\CpSetting\OsMetatagSetting.php
  */
 class CpSettingsOsMetatagTest extends ExistingSiteWebDriverTestBase {
 
