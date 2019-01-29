@@ -26,6 +26,7 @@ class CpSettingsOsMetatagTest extends ExistingSiteWebDriverTestBase {
     parent::setUp();
     $this->adminUser = $this->createUser([
       'access administration pages',
+      'access control panel',
     ]);
   }
 
