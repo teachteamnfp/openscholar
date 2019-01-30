@@ -4,6 +4,7 @@ namespace Drupal\Tests\os_metatag\ExistingSiteJavascript;
 
 use weitzman\DrupalTestTraits\ExistingSiteWebDriverTestBase;
 
+
 /**
  * Tests os_metatag module.
  *
@@ -27,10 +28,19 @@ class CpSettingsOsMetatagTest extends ExistingSiteWebDriverTestBase {
   protected $group;
 
   /**
+   * The entity type manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
     parent::setUp();
+    $this->entityTypeManager = $this->container->get('entity_type.manager');
+
     $this->adminUser = $this->createUser([
       'access administration pages',
       'access control panel',
