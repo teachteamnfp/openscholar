@@ -1,0 +1,26 @@
+uuid: c6666644-117f-4d3f-b903-5c0ac25aa06a
+langcode: en
+status: true
+dependencies:
+  module:
+    - ctools
+    - system
+id: class_section
+label: 'Class section'
+logic: or
+conditions:
+  88d69596-5f17-4d33-bbfc-50adfb73a3e9:
+    id: request_path
+    pages: '/classes*'
+    negate: false
+    context_mapping: {  }
+    uuid: 88d69596-5f17-4d33-bbfc-50adfb73a3e9
+  f778d4de-6d83-4bf5-8e99-599f31600d86:
+    id: 'entity_bundle:node'
+    bundles:
+      class: class
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    uuid: f778d4de-6d83-4bf5-8e99-599f31600d86
+allow_other_conditions: false
