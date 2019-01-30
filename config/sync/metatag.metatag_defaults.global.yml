@@ -11,5 +11,8 @@ tags:
   canonical_url: '[current-page:url]'
   description: '[os_metatag:meta_description]'
   og_type: '[vsite:site_type]'
+  og_image: '[vsite:site_logo]'
+  twitter_cards_image: '[vsite:site_logo]'
+  twitter_cards_description: '[vsite:site_description]'
   twitter_cards_type: summary
   twitter_cards_title: '[os_metatag:site_title]'
