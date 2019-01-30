@@ -20,6 +20,13 @@ class CpSettingsOsMetatagTest extends ExistingSiteWebDriverTestBase {
   protected $adminUser;
 
   /**
+   * Test group.
+   *
+   * @var \Drupal\group\Entity\GroupInterface
+   */
+  protected $group;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
@@ -28,6 +35,13 @@ class CpSettingsOsMetatagTest extends ExistingSiteWebDriverTestBase {
       'access administration pages',
       'access control panel',
     ]);
+
+    $this->group = $this->createGroup([
+      'path' => [
+        'alias' => '/test-seo-alias',
+      ],
+    ]);
+
   }
 
   /**
