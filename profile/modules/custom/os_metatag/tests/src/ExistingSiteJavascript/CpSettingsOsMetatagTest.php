@@ -37,7 +37,7 @@ class CpSettingsOsMetatagTest extends ExistingSiteWebDriverTestBase {
     $web_assert = $this->assertSession();
     $this->drupalLogin($this->adminUser);
 
-    $this->visit("/cp/settings/seo");
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/seo");
     $this->getSession()->resizeWindow(1440, 900, 'current');
     $this->getSession()->executeScript("window.scrollBy(0,1000)");
     file_put_contents('public://screenshot-1.jpg', $this->getSession()->getScreenshot());
@@ -55,7 +55,7 @@ class CpSettingsOsMetatagTest extends ExistingSiteWebDriverTestBase {
     $this->assertTrue($checkHtmlValue, 'The form did not write the correct message.');
 
     // Check form elements load default values.
-    $this->visit("/cp/settings/seo");
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/seo");
     $web_assert->statusCodeEquals(200);
     $page = $this->getCurrentPage();
     $fieldValue = $page->findField('site_title')->getValue();
@@ -74,7 +74,7 @@ class CpSettingsOsMetatagTest extends ExistingSiteWebDriverTestBase {
   public function testHtmlHeadValuesOnFrontPage() {
     $web_assert = $this->assertSession();
     $this->drupalLogin($this->adminUser);
-    $this->visit("/cp/settings/seo");
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/seo");
     $this->getSession()->resizeWindow(1440, 900, 'current');
     $this->getSession()->executeScript("window.scrollBy(0,1000)");
     file_put_contents('public://screenshot-2.jpg', $this->getSession()->getScreenshot());
