@@ -34,9 +34,8 @@ class CpSettingsOsMetatagTest extends ExistingSiteWebDriverTestBase {
    * Tests os_metatag cp settings form behavior.
    */
   public function testCpSettingsFormSave() {
-    $this->drupalLogin($this->adminUser);
-
     $web_assert = $this->assertSession();
+    $this->drupalLogin($this->adminUser);
 
     $this->visit("/cp/settings/seo");
     $web_assert->statusCodeEquals(200);
@@ -70,10 +69,8 @@ class CpSettingsOsMetatagTest extends ExistingSiteWebDriverTestBase {
    * Tests os_metatag cp settings form behavior.
    */
   public function testHtmlHeadValuesOnFrontPage() {
-    $this->drupalLogin($this->adminUser);
-
     $web_assert = $this->assertSession();
-
+    $this->drupalLogin($this->adminUser);
     $this->visit("/cp/settings/seo");
     $web_assert->statusCodeEquals(200);
 

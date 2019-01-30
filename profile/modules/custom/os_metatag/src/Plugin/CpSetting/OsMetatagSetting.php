@@ -78,6 +78,9 @@ class OsMetatagSetting extends PluginBase implements CpSettingInterface {
    * {@inheritdoc}
    */
   public function access(AccountInterface $account): AccessResultInterface {
+    if (!$account->hasPermission('access control panel')) {
+      return AccessResult::forbidden();
+    }
     return AccessResult::allowed();
   }
 
