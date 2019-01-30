@@ -16,12 +16,14 @@ class EventMiniCalendarViewsTest extends EventTestBase {
    * Tests monthly calendar view.
    */
   public function testMonthlyCalendarView() {
+    $start = new DateTimePlus('+1 month midnight', $this->config->get('system.date')->get('timezone.default'));
+    $end = new DateTimePlus('+1 day +1 month midnight', $this->config->get('system.date')->get('timezone.default'));
     /** @var \Drupal\node\NodeInterface $next_month_event */
     $next_month_event = $this->createEvent([
       'title' => 'Next Month Event',
       'field_recurring_date' => [
-        'value' => date("Y-m-d\TH:i:s", strtotime("+1 month midnight")),
-        'end_value' => date("Y-m-d\TH:i:s", strtotime("+1 day +1 month midnight")),
+        'value' => $start->format("Y-m-d\TH:i:s"),
+        'end_value' => $end->format("Y-m-d\TH:i:s"),
         'rrule' => '',
         'timezone' => $this->config->get('system.date')->get('timezone.default'),
         'infinite' => FALSE,
@@ -45,12 +47,14 @@ class EventMiniCalendarViewsTest extends EventTestBase {
    * Tests upcoming events calendar view.
    */
   public function testUpcomingEventsCalendarView() {
+    $start = new DateTimePlus('-2 day -1 month midnight', $this->config->get('system.date')->get('timezone.default'));
+    $end = new DateTimePlus('-1 day -1 month midnight', $this->config->get('system.date')->get('timezone.default'));
     /** @var \Drupal\node\NodeInterface $past_event */
     $past_event = $this->createEvent([
       'title' => 'Past Event',
       'field_recurring_date' => [
-        'value' => date("Y-m-d\TH:i:s", strtotime("-2 day -1 month midnight")),
-        'end_value' => date("Y-m-d\TH:i:s", strtotime("-1 day -1 month midnight")),
+        'value' => $start->format("Y-m-d\TH:i:s"),
+        'end_value' => $end->format("Y-m-d\TH:i:s"),
         'rrule' => '',
         'timezone' => $this->config->get('system.date')->get('timezone.default'),
         'infinite' => FALSE,
@@ -80,6 +84,7 @@ class EventMiniCalendarViewsTest extends EventTestBase {
 
     $datetime = new DateTimePlus('now', new \DateTimeZone('America/Anguilla'));
     file_put_contents('public://now-anguilla.txt', $datetime->format("Y-m-d\TH:i:s"));
+
     foreach ($result as $item) {
       $datetime = new DateTimePlus($item->_entity->field_recurring_date->first()->getValue()['value']);
       file_put_contents("public://{$item->_entity->label()}-utc.txt", $datetime->format("Y-m-d\TH:i:s"));
