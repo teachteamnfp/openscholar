@@ -3,6 +3,8 @@
 namespace Drupal\Tests\os_metatag\ExistingSiteJavascript;
 
 use weitzman\DrupalTestTraits\ExistingSiteWebDriverTestBase;
+use Drupal\group\Entity\GroupInterface;
+use Drupal\node\NodeInterface;
 
 
 /**
