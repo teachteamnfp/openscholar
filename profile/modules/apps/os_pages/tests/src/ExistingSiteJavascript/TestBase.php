@@ -1,15 +1,15 @@
 <?php
 
-namespace Drupal\Tests\openscholar\ExistingSite;
+namespace Drupal\Tests\os_pages\ExistingSiteJavascript;
 
 use Drupal\node\NodeInterface;
 use Drupal\Tests\book\Functional\BookTestTrait;
-use weitzman\DrupalTestTraits\ExistingSiteBase;
+use weitzman\DrupalTestTraits\ExistingSiteWebDriverTestBase;
 
 /**
- * Test base for running profile tests.
+ * Test base for functional javascript tests.
  */
-abstract class TestBase extends ExistingSiteBase {
+abstract class TestBase extends ExistingSiteWebDriverTestBase {
 
   use BookTestTrait;
 

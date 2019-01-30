@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\openscholar\ExistingSite;
+namespace Drupal\Tests\os_pages\ExistingSite;
 
 /**
  * Tests book pages.

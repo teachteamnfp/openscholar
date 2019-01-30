@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\openscholar\ExistingSiteJavascript;
+namespace Drupal\Tests\os_pages\ExistingSiteJavascript;
 
 use Behat\Mink\Exception\ExpectationException;
 

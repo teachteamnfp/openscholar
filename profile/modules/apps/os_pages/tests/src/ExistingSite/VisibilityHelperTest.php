@@ -1,9 +1,8 @@
 <?php
 
-namespace Drupal\Tests\os_pages;
+namespace Drupal\Tests\os_pages\ExistingSite;
 
 use Drupal\block_visibility_groups\Entity\BlockVisibilityGroup;
-use Drupal\Tests\openscholar\ExistingSite\TestBase;
 
 /**
  * Tests for VisibilityHelper.
