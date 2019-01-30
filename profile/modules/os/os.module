@@ -22,5 +22,11 @@ function os_library_info_alter(&$libraries, $extension) {
 }
 
 function os_preprocess_html(&$variables) {
-  $variables['attributes']['ng-app'] = '@ng-modules';
+  /** @var \Drupal\os\AngularModuleManagerInterface $ngModuleManager */
+  $ngModuleManager = \Drupal::service('angular.module_manager');
+  if ($modules = $ngModuleManager->getModules()) {
+    $variables['attributes']['ng-app'] = 'openscholar';
+    $variables['attributes']['data-ng-modules'] = implode(',', $modules);
+    $variables['#attached']['library'][] = 'os/openscholarModule';
+  }
 }

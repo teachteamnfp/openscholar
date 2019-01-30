@@ -2,7 +2,6 @@
 
 namespace Drupal\os_media\Plugin\Field\FieldWidget;
 
-
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -38,15 +37,22 @@ class MediaBrowserWidget extends WidgetBase {
         'library' => [
           'os_media/mediaBrowserField'
         ],
-        'placeholders' => [
-          '@ng-modules' => [
-            '#markup' => 'MediaBrowserField'
-          ]
-        ]
+      ],
+      '#post_render' => [
+        array($this, 'addNgModule')
       ]
     ];
 
     return $element;
+  }
+
+  /**
+   * Adds the AngularJS module to the page.
+   */
+  public function addNgModule() {
+    /** @var \Drupal\os\AngularModuleManagerInterface $moduleManager */
+    $moduleManager = \Drupal::service('angular.module_manager');
+    $moduleManager->addModule('MediaBrowserField');
   }
 
 }

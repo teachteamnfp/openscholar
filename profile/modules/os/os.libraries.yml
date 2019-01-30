@@ -142,3 +142,10 @@ fileEditorModal:
     - os/fileEditor
     - os/angular.modalService
     - os/locationFix
+
+openscholarModule:
+  version: 1.0
+  js:
+    js/openscholar.module.js: { attributes: { data-ng-modules: '@ng-modules' } }
+  dependencies:
+    - os/angular.angularjs
