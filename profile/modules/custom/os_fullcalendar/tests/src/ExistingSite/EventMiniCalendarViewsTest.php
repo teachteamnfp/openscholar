@@ -74,6 +74,11 @@ class EventMiniCalendarViewsTest extends EventTestBase {
     /** @var array $result */
     $result = views_get_view_result('calendar', 'block_2');
 
+    file_put_contents('public://now.txt', date("Y-m-d\TH:i:s", strtotime('now')));
+    foreach ($result as $item) {
+      file_put_contents("public://{$item->_entity->label()}.txt", $item->_entity->field_recurring_date->first()->getValue()['value']);
+    }
+
     $this->assertCount(1, $result);
     /** @var \Drupal\views\ResultRow $item */
     foreach ($result as $item) {
