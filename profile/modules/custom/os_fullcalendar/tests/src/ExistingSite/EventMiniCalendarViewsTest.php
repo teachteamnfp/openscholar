@@ -2,6 +2,8 @@
 
 namespace Drupal\Tests\os_fullcalendar\ExistingSite;
 
+use Drupal\Component\Datetime\DateTimePlus;
+
 /**
  * Tests mini calendar views.
  *
@@ -57,12 +59,14 @@ class EventMiniCalendarViewsTest extends EventTestBase {
     ]);
     $this->group->addContent($past_event, "group_node:{$past_event->bundle()}");
 
+    $start = new DateTimePlus('tomorrow midnight', $this->config->get('system.date')->get('timezone.default'));
+    $end = new DateTimePlus('2 day midnight', $this->config->get('system.date')->get('timezone.default'));
     /** @var \Drupal\node\NodeInterface $future_event */
     $future_event = $this->createEvent([
       'title' => 'Future Event',
       'field_recurring_date' => [
-        'value' => date("Y-m-d\TH:i:s", strtotime("1 day midnight")),
-        'end_value' => date("Y-m-d\TH:i:s", strtotime("2 day midnight")),
+        'value' => $start->format("Y-m-d\TH:i:s"),
+        'end_value' => $end->format("Y-m-d\TH:i:s"),
         'rrule' => '',
         'timezone' => $this->config->get('system.date')->get('timezone.default'),
         'infinite' => FALSE,
@@ -74,9 +78,11 @@ class EventMiniCalendarViewsTest extends EventTestBase {
     /** @var array $result */
     $result = views_get_view_result('calendar', 'block_2');
 
-    file_put_contents('public://now.txt', date("Y-m-d\TH:i:s", strtotime('now')));
+    $datetime = new DateTimePlus('now', new \DateTimeZone('America/Anguilla'));
+    file_put_contents('public://now-anguilla.txt', $datetime->format("Y-m-d\TH:i:s"));
     foreach ($result as $item) {
-      file_put_contents("public://{$item->_entity->label()}.txt", $item->_entity->field_recurring_date->first()->getValue()['value']);
+      $datetime = new DateTimePlus($item->_entity->field_recurring_date->first()->getValue()['value']);
+      file_put_contents("public://{$item->_entity->label()}-utc.txt", $datetime->format("Y-m-d\TH:i:s"));
     }
 
     $this->assertCount(1, $result);
