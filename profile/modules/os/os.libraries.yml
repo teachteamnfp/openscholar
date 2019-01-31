@@ -18,13 +18,24 @@ auth:
   version: 1.0
   js:
     js/auth/auth.js: { }
+  drupalSettings:
+    paths: { api: api }
   dependencies:
     - os/angular.angularjs
+    - os/UrlGenerator/UrlGenerator.module.js
 
 locationFix:
   version: 1.0
   js:
-    js/location/location.js: {}
+    js/location/locationFix.module.js: {}
+  dependencies:
+    - os/angular.angularjs
+
+angular.ui.bootstrap:
+  version: 0.12.1
+  js:
+    js/uiBootstrap/ui-bootstrap-custom-0.12.1.min.js: { minified: true }
+    js/uiBootstrap/ui-bootstrap-custom-tpls-0.12.1.min.js: { minified: true }
   dependencies:
     - os/angular.angularjs
 
@@ -35,46 +46,6 @@ angular.select2:
   css:
     component:
       /profiles/contrib/openscholar/libraries/ui-select/dist/select.min.css: { minified: true }
-  dependencies:
-    - os/angular.angularjs
-
-recursionHelper:
-  version: 1.0
-  js:
-    js/RecursionHelper/RecursionHelper.module.js: { }
-  dependencies:
-    - os/angular.angularjs
-
-dependencyManager:
-  version: 1.0
-  js:
-    js/DependencyManager/DependencyManager.module.js: { }
-  dependencies:
-    - os/angular.angularjs
-
-jsPager:
-  version: 1.0
-  js:
-    js/JSPager/JSPager.module.js: { }
-  templates: js/JSPager
-  dependencies:
-    - os/angular.angularjs
-
-entityService:
-  version: 1.0
-  js:
-    js/EntityService/EntityService.module.js: { }
-  dependencies:
-    - os/angular.angularjs
-    - os/angular.indexedDB
-
-treeSelector:
-  version: 1.0
-  js:
-    js/TreeSelector/TreeSelector.module.js: { }
-  css:
-    component:
-      js/TreeSelector/TreeSelector.css: { }
   dependencies:
     - os/angular.angularjs
 
@@ -102,20 +73,90 @@ angular.indexedDB:
 angular.uiSortable:
   version: 0.13.4
   js:
-    /profiles/contrib/openscholar/libraries/angular-ui-sortable/sortable.js: { }
+    /profiles/contrib/openscholar/libraries/angular-ui-sortable/dist/sortable.js: { }
   dependencies:
     - core/jquery.ui.sortable
+    - os/angular.angularjs
+
+angular.slideables:
+  version: 1.0
+  js:
+    /profiles/contrib/openscholar/libraries/angular-slideables/angular-slideables.js: { }
+  dependencies:
+    - os/angular.angularjs
+
+recursionHelper:
+  version: 1.0
+  js:
+    js/RecursionHelper/RecursionHelper.module.js: { }
+  dependencies:
+    - os/angular.angularjs
+
+dependencyManager:
+  version: 1.0
+  js:
+    js/DependencyManager/DependencyManager.module.js: { }
+  dependencies:
+    - os/angular.angularjs
+
+urlGenerator:
+  version: 1.0
+  js:
+    js/UrlGenerator/UrlGenerator.module.js: { }
+  dependencies:
+    - os/angular.angularjs
+
+drupalSettings:
+  version: 1.0
+  js:
+    js/DrupalSettings/DrupalSettings.module.js: { }
+  dependencies:
+    - os/angular.angularjs
+
+jsPager:
+  version: 1.0
+  js:
+    js/JSPager/JSPager.module.js: { }
+  paths: js/JSPager
+  drupalSettings:
+    version: { jsPager: "1.0" }
+  dependencies:
+    - os/angular.angularjs
+
+entityService:
+  version: 1.0
+  js:
+    js/EntityService/EntityService.module.js: { }
+  drupalSettings:
+    paths: { api: api}
+  dependencies:
+    - os/angular.angularjs
+    - os/urlGenerator
+    - os/angular.indexedDB
+    - os/drupalSettings
+
+treeSelector:
+  version: 1.0
+  js:
+    js/TreeSelector/TreeSelector.module.js: { }
+  css:
+    component:
+      js/TreeSelector/TreeSelector.css: { }
+  dependencies:
     - os/angular.angularjs
 
 taxonomyWidget:
   version: 1.0
   js:
     js/TaxonomyWidget/TaxonomyWidget.module.js: { }
-  templates: js/TaxonomyWidget
+  paths: js/TaxonomyWidget
+  drupalSettings:
+    version: { taxonomyWidget: "1.0" }
   dependencies:
     - core/drupalSettings
     - os/angular.angularjs
     - os/angular.select2
+    - os/angular.ui.bootstrap
     - os/entityService
     - os/treeSelector
 
@@ -126,7 +167,9 @@ fileEditor:
   css:
     component:
       js/FileEditor/FileEditor.style.css: { }
-  templates: js/fileEditor
+  paths: js/fileEditor
+  drupalSettings:
+    version: { fileEditor: 1.0.1 }
   dependencies:
     - core/drupalSettings
     - os/auth
@@ -146,6 +189,6 @@ fileEditorModal:
 openscholarModule:
   version: 1.0
   js:
-    js/openscholar.module.js: { attributes: { data-ng-modules: '@ng-modules' } }
+    js/openscholar.module.js: { }
   dependencies:
     - os/angular.angularjs
