@@ -8,7 +8,7 @@ use weitzman\DrupalTestTraits\ExistingSiteBase;
  * Tests os_metatag module.
  *
  * @group metatag
- * @group functional
+ * @group kernel
  */
 class HtmlHeadOsMetatagTest extends ExistingSiteBase {
 
