@@ -22,8 +22,6 @@ function os_pages_entity_insert(EntityInterface $entity) {
     return;
   }
 
-  /** @var \Drupal\Core\Path\AliasManagerInterface $alias_manager */
-  $alias_manager = \Drupal::service('path.alias_manager');
   /** @var \Drupal\os_pages\VisibilityStorageInterface $visibility_storage */
   $visibility_storage = \Drupal::service('os_pages.visibility_storage');
 
@@ -38,16 +36,20 @@ function os_pages_entity_insert(EntityInterface $entity) {
     'logic' => 'and',
   ], [
     [
-      'id' => 'entity_bundle:node',
+      'id' => 'node_type',
       'bundles' => [
-        'page' => $entity->bundle(),
+        $entity->bundle() => $entity->bundle(),
       ],
       'negate' => FALSE,
+      'context_mapping' => [
+        'node' => '@node.node_route_context:node',
+      ],
     ],
     [
       'id' => 'request_path',
-      'pages' => $alias_manager->getAliasByPath("/node/{$entity->id()}"),
-      'negate' => 0,
+      'pages' => "/node/{$entity->id()}",
+      'negate' => FALSE,
+      'context_mapping' => [],
     ],
   ]);
 
@@ -70,16 +72,20 @@ function os_pages_entity_insert(EntityInterface $entity) {
         'logic' => 'and',
       ], [
         [
-          'id' => 'entity_bundle:node',
+          'id' => 'node_type',
           'bundles' => [
-            'page' => $entity->bundle(),
+            $entity->bundle() => $entity->bundle(),
           ],
           'negate' => FALSE,
+          'context_mapping' => [
+            'node' => '@node.node_route_context:node',
+          ],
         ],
         [
           'id' => 'request_path',
-          'pages' => $alias_manager->getAliasByPath("/node/{$entity->id()}"),
-          'negate' => 0,
+          'pages' => "/node/{$entity->id()}",
+          'negate' => FALSE,
+          'context_mapping' => [],
         ],
       ]);
     }
@@ -87,8 +93,9 @@ function os_pages_entity_insert(EntityInterface $entity) {
   else {
     $section_visibility_group->addCondition([
       'id' => 'request_path',
-      'pages' => $alias_manager->getAliasByPath("/node/{$entity->id()}"),
+      'pages' => "/node/{$entity->id()}",
       'negate' => 0,
+      'context_mapping' => [],
     ]);
 
     $section_visibility_group->save();
