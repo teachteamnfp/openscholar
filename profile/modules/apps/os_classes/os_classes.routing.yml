@@ -1,0 +1,14 @@
+os_classes.autocomplete_year_offered:
+  path: '/os-classes-autocomplete/{vsite}'
+  defaults:
+    _controller: '\Drupal\os_classes\Controller\AutocompleteController::handleAutocompleteYearOffered'
+    _format: json
+  requirements:
+    _permission: 'access content'
+os_classes.settings.semester_field_options_form:
+  path: 'admin/config/openscholar/classes/field-allowed-values'
+  defaults:
+    _form: '\Drupal\os_classes\Form\SemesterFieldOptionsForm'
+    _title: 'Semester allowed values'
+  requirements:
+    _permission: 'administer site configuration'

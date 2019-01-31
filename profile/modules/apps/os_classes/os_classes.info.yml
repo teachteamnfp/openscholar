@@ -1,0 +1,9 @@
+name: 'OS Classes'
+description: ''
+package: OpenScholar
+core: 8.x
+
+type: module
+
+dependencies:
+  - node

@@ -1,0 +1,37 @@
+uuid: 6e210f93-bb99-4d29-abe0-b77f30b9823e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_class_materials
+    - node.type.class
+    - paragraphs.paragraphs_type.class_material
+  module:
+    - entity_reference_revisions
+id: node.class.field_class_materials
+field_name: field_class_materials
+entity_type: node
+bundle: class
+label: 'Class Materials'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      class_material: class_material
+    target_bundles_drag_drop:
+      class_material:
+        enabled: true
+        weight: 4
+      slideshow:
+        weight: 5
+        enabled: false
+      test:
+        weight: 6
+        enabled: false
+field_type: entity_reference_revisions

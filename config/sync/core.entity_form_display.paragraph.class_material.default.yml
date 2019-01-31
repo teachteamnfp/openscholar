@@ -1,0 +1,42 @@
+uuid: dde390f6-7630-4924-9a32-7989b8d42bf3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.class_material.field_attached_files
+    - field.field.paragraph.class_material.field_body
+    - paragraphs.paragraphs_type.class_material
+  module:
+    - field_layout
+    - layout_discovery
+    - text
+third_party_settings:
+  field_layout:
+    id: layout_onecol
+    settings: {  }
+id: paragraph.class_material.default
+targetEntityType: paragraph
+bundle: class_material
+mode: default
+content:
+  field_attached_files:
+    weight: 1
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_body:
+    weight: 0
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+hidden:
+  created: true
+  status: true
+  uid: true
