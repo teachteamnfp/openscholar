@@ -51,6 +51,7 @@ module:
   layout_discovery: 0
   link: 0
   locale: 0
+  mailchimp: 0
   media: 0
   menu_ui: 0
   metatag: 0
