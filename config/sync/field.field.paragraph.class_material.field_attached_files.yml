@@ -1,0 +1,38 @@
+uuid: dbdf5ffd-08ca-4d05-8c9d-d1bb7fa632ea
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_attached_files
+    - media.type.audio
+    - media.type.document
+    - media.type.executable
+    - media.type.image
+    - media.type.presentation_materials
+    - media.type.video
+    - paragraphs.paragraphs_type.class_material
+id: paragraph.class_material.field_attached_files
+field_name: field_attached_files
+entity_type: paragraph
+bundle: class_material
+label: 'Attached Files'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      document: document
+      executable: executable
+      image: image
+      presentation_materials: presentation_materials
+      video: video
+      audio: audio
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: document
+field_type: entity_reference

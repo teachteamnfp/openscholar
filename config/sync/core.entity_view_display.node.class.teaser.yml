@@ -1,0 +1,45 @@
+uuid: a43b4494-5d20-4338-b771-698ac7a7bc0c
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.class.body
+    - field.field.node.class.field_attached_media
+    - field.field.node.class.field_class_link
+    - field.field.node.class.field_class_materials
+    - field.field.node.class.field_semester
+    - field.field.node.class.field_year_offered
+    - node.type.class
+  module:
+    - layout_builder
+    - text
+    - user
+third_party_settings:
+  layout_builder:
+    sections: {  }
+id: node.class.teaser
+targetEntityType: node
+bundle: class
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 101
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  field_attached_media: true
+  field_class_link: true
+  field_class_materials: true
+  field_semester: true
+  field_year_offered: true
+  langcode: true

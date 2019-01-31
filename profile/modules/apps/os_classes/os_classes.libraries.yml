@@ -1,0 +1,5 @@
+os-classes-theme:
+  version: 1.x
+  css:
+    base:
+      css/os_classes-base.css: {}

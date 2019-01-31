@@ -1,0 +1,31 @@
+uuid: be2810c2-426f-4240-861f-75351cf72fbd
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.media.teaser
+    - field.field.media.presentation_materials.field_media_file
+    - image.style.thumbnail
+    - media.type.presentation_materials
+  module:
+    - image
+id: media.presentation_materials.teaser
+targetEntityType: media
+bundle: presentation_materials
+mode: teaser
+content:
+  thumbnail:
+    type: image
+    weight: 0
+    label: hidden
+    settings:
+      image_style: thumbnail
+      image_link: ''
+    region: content
+    third_party_settings: {  }
+hidden:
+  created: true
+  field_media_file: true
+  langcode: true
+  name: true
+  uid: true
