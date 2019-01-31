@@ -22,7 +22,9 @@ function os_pages_entity_insert(EntityInterface $entity) {
   /** @var \Drupal\os_pages\VisibilityStorageInterface $visibility_storage */
   $visibility_storage = \Drupal::service('os_pages.visibility_storage');
 
-  if ($entity->getEntityType()->id() === 'node' && $entity->bundle() === 'page') {
+  if ($entity->getEntityType()->id() === 'node' &&
+    $entity->bundle() === 'page' &&
+    !empty($entity->book['bid'])) {
     // Create page visibility group.
     $visibility_storage->create([
       'id' => "os_pages_page_{$entity->id()}",

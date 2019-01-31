@@ -32,10 +32,6 @@ final class VisibilityHelper implements VisibilityHelperInterface {
    * {@inheritdoc}
    */
   public function isBookFirstPage(EntityInterface $entity) : bool {
-    if (empty($entity->book['pid']) || empty($entity->book['bid'])) {
-      return FALSE;
-    }
-
     // Book's first page is not considered, if, the page is not the immediate
     // child of the book.
     if ($entity->book['bid'] != $entity->book['pid']) {
