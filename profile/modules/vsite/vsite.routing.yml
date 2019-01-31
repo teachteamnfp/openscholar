@@ -5,6 +5,13 @@ vsite.settings.form:
     _title: 'Testing vsites'
   requirements:
     _permission: 'access vsite settings'
+vsite.settings.configure_subsite:
+  path: 'admin/config/openscholar/vsite/subsite'
+  defaults:
+    _form: '\Drupal\vsite\Form\ConfigureSubSiteForm'
+    _title: 'Configure subsite'
+  requirements:
+    _permission: 'access vsite settings'
 #vsite.example:
 #  path: '/vsite'
 #  defaults:

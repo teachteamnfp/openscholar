@@ -120,7 +120,9 @@ class VsiteAliasStorage implements AliasStorageInterface {
    * {@inheritdoc}
    */
   public function save($source, $alias, $langcode = LanguageInterface::LANGCODE_NOT_SPECIFIED, $pid = NULL) {
-    $alias = $this->pathToToken($alias);
+    if (!preg_match('|^\/group\/[\d]*$|', $source)) {
+      $alias = $this->pathToToken($alias);
+    }
     $fields = $this->storage->save($source, $alias, $langcode, $pid);
     if (!empty($fields['alias'])) {
       $fields['alias'] = $this->tokenToPath($fields['alias']);
