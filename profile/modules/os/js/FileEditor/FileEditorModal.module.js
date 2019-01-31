@@ -11,7 +11,7 @@
     fetchPromise;
 
 
-  angular.module('FileEditorModal', ['EntityService', 'FileEditor', 'angularModalService', 'angularFileUpload', 'locationFix'])
+  angular.module('FileEditorModal', ['EntityService', 'FileEditor', 'angularModalService', 'ngFileUpload', 'locationFix', 'DrupalSettings'])
     .run(['EntityService', function (EntityService) {
       service = new EntityService('files', 'id');
       loading = true;
@@ -84,9 +84,9 @@
         }
       }
     }])
-    .controller('FileEditorModalController', ['$scope', 'EntityService', 'fid', 'close', function ($scope, EntityService, fid, close) {
+    .controller('FileEditorModalController', ['$scope', 'EntityService', 'fid', 'close', 'settings', function ($scope, EntityService, fid, close, settings) {
       $scope.loading = loading;
-      $scope.asset_path = Drupal.settings.paths.FileEditor;
+      $scope.asset_path = settings.getSetting('paths.FileEditor');
       if (loading) {
         fetchPromise.then(function () {
           $scope.file = angular.copy(service.get(fid));

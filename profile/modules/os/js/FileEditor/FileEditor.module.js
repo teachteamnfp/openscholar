@@ -1,17 +1,16 @@
 (function ($) {
   var libraryPath = '';
 
-  angular.module('FileEditor', ['EntityService', 'os-auth', 'TaxonomyWidget']).
-    config(function () {
-      libraryPath = Drupal.settings.paths.FileEditor;
-    }).
+  angular.module('FileEditor', ['EntityService', 'os-auth', 'TaxonomyWidget', 'DrupalSettings']).
     constant("FILEEDITOR_RESPONSES", {
       SAVED: "saved",
       REPLACED: "replaced",
       NO_CHANGES: "no changes",
       CANCELED: "canceled"
     }).
-    directive('fileEdit', ['EntityService', '$http', '$timeout', '$filter', 'FILEEDITOR_RESPONSES', function (EntityService, $http, $timeout, $filter, FER) {
+    directive('fileEdit', ['EntityService', '$http', '$timeout', '$filter', 'FILEEDITOR_RESPONSES', 'drupalSettings', function (EntityService, $http, $timeout, $filter, FER, settings) {
+      let libraryPath = settings.getSetting('paths.fileEditor'),
+        version = settings.getSetting('versions.fileEditor');
       return {
         scope: {
           file :  '=',

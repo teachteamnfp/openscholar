@@ -5,10 +5,10 @@
 (function () {
   var token = '';
 
-  angular.module('os-auth', [])
-    .service('authenticate-token', ['$http', function ($http) {
+  angular.module('os-auth', ['DrupalSettings'])
+    .service('authenticate-token', ['$http', 'drupalSettings', function ($http, settings) {
       this.fetch = function () {
-        return $http.get(Drupal.settings.paths.api+'/session/token').success(setToken);
+        return $http.get(settings.fetchSetting('path.baseUrl') + 'rest/session/token').then(setToken);
       }
     }])
     .factory('authenticate', ['$q', function ($q) {
@@ -39,6 +39,6 @@
     }]);
 
   function setToken(resp) {
-    token = resp['X-CSRF-Token'];
+    token = resp.data;
   }
 })();

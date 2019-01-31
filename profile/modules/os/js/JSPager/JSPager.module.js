@@ -8,17 +8,28 @@
 (function () {
   var rootPath = '';
 
+  /**
+   *  Given a path, finds the root domain of it.
+   *  Needed to whitelist external asset domains
+   */
+  function findDomain(path) {
+    var parser = document.createElement('a');
+    parser.href = path;
+
+    return parser.protocol+'//'+parser.hostname;
+  }
+
   angular.module('JSPager', [])
     .config(function($sceDelegateProvider) {
       var whitelist = $sceDelegateProvider.resourceUrlWhitelist(),
-          domain = osCommonHelpers.findDomain(rootPath);
+          domain = findDomain(rootPath);
 
       domain = domain+'/**';
       whitelist.push(domain);
 
       $sceDelegateProvider.resourceUrlWhitelist(whitelist);
 
-      if (typeof Drupal != 'undefined' && typeof Drupal.settings != 'undefined') {
+      if (typeof Drupal !== 'undefined' && typeof Drupal.settings !== 'undefined') {
         rootPath = Drupal.settings.paths.JSPager;
       }
     })
@@ -29,7 +40,7 @@
           if (Array.isArray(input)) {
             return input.slice(start, start + pager.pageSize);
           }
-          else if (typeof input == "object") {
+          else if (typeof input === "object") {
             var i = 0,
               output = {};
             for (var key in input) {
