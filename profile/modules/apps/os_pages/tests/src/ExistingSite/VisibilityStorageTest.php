@@ -22,7 +22,26 @@ class VisibilityStorageTest extends TestBase {
     /** @var \Drupal\node\NodeInterface $book */
     $book = $this->createBookPage();
 
-    $this->assertNotNull(BlockVisibilityGroup::load("os_pages_page_{$book->id()}"));
+    $visibility_group = BlockVisibilityGroup::load("os_pages_page_{$book->id()}");
+
+    $this->assertNotNull($visibility_group);
+
+    /** @var array $conditions */
+    $conditions = array_values($visibility_group->getConditions()->getConfiguration());
+    array_walk($conditions, function (&$condition) {
+      unset($condition['uuid']);
+    });
+
+    $this->assertTrue(in_array([
+      'id' => 'node_type',
+      'bundles' => [
+        $book->bundle() => $book->bundle(),
+      ],
+      'negate' => FALSE,
+      'context_mapping' => [
+        'node' => '@node.node_route_context:node',
+      ],
+    ], $conditions));
   }
 
 }
