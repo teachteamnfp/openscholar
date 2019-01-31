@@ -3,6 +3,7 @@
 namespace Drupal\Tests\os_pages\ExistingSiteJavascript;
 
 use Behat\Mink\Exception\ExpectationException;
+use Drupal\block\Entity\Block;
 
 /**
  * Tests book pages.
@@ -20,6 +21,8 @@ class PagesTest extends TestBase {
     $book_manager = $this->container->get('book.manager');
     /** @var \Drupal\Core\Path\AliasManagerInterface $path_alias_manager */
     $path_alias_manager = $this->container->get('path.alias_manager');
+    /** @var \Drupal\Core\Config\ImmutableConfig $theme_config */
+    $theme_config = \Drupal::config('system.theme');
 
     /** @var \Drupal\node\NodeInterface $book1 */
     $book1 = $this->createBookPage([
@@ -44,10 +47,40 @@ class PagesTest extends TestBase {
       'type' => 'events',
     ]);
 
+    $block = Block::create([
+      'id' => "os_pages_book_nav_{$book1->id()}",
+      'theme' => $theme_config->get('default'),
+      'region' => 'sidebar_second',
+      'plugin' => 'book_navigation',
+      'settings' => [
+        'id' => 'book_navigation',
+        'label' => 'Books',
+        'provider' => 'book',
+        'label_display' => 'visible',
+        'block_mode' => 'all pages',
+      ],
+      'visibility' => [
+        'condition_group' => [
+          'id' => 'condition_group',
+          'negate' => FALSE,
+          'block_visibility_group' => "os_pages_section_{$book1->id()}",
+          'context_mapping' => [],
+        ],
+      ],
+    ]);
+    $block->save();
+
     $web_assert = $this->assertSession();
 
     try {
       $this->visit($path_alias_manager->getAliasByPath("/node/{$book1->id()}"));
+
+      $this->assertNotNull($web_assert->elementExists('css', '.block-book-navigation'));
+      $web_assert->pageTextContains($book1->label());
+      $web_assert->pageTextContains($page1->label());
+      $web_assert->pageTextContains($book2->label());
+
+      $this->visit($path_alias_manager->getAliasByPath("/node/{$page1->id()}"));
 
       $this->assertNotNull($web_assert->elementExists('css', '.block-book-navigation'));
       $web_assert->pageTextContains($book1->label());

@@ -83,7 +83,7 @@ function os_pages_entity_insert(EntityInterface $entity) {
         ],
         [
           'id' => 'request_path',
-          'pages' => "/node/{$entity->id()}",
+          'pages' => "/node/{$book->id()}\n/node/{$entity->id()}",
           'negate' => FALSE,
           'context_mapping' => [],
         ],
