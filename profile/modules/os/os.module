@@ -15,8 +15,13 @@ function os_library_info_alter(&$libraries, $extension) {
   $path = drupal_get_path('module', $extension);
 
   foreach ($libraries as $name => &$lib) {
-    if (isset($lib['templates'])) {
-      $lib['drupalSettings']['paths'][$name] = $path . '/' . $lib['templates'] . '/';
+    if (isset($lib['paths'])) {
+      if (strpos($lib['paths'], '/') === 0) {
+        $lib['drupalSettings']['paths'][$name] = ltrim($lib['paths'], '/') . '/';
+      }
+      else {
+        $lib['drupalSettings']['paths'][$name] = $path . '/' . $lib['paths'] . '/';
+      }
     }
   }
 }
