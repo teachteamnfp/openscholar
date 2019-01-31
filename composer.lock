@@ -5316,7 +5316,7 @@
                 "shasum": null
             },
             "type": "drupal-library",
-            "time": "2018-10-23T06:36:49+00:00"
+            "time": "2019-01-02T17:57:38+00:00"
         },
         {
             "name": "nikic/php-parser",

@@ -1,0 +1,85 @@
+uuid: 8610dac9-03e7-45e4-9a43-280a8c707905
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.class.body
+    - field.field.node.class.field_attached_media
+    - field.field.node.class.field_class_link
+    - field.field.node.class.field_class_materials
+    - field.field.node.class.field_semester
+    - field.field.node.class.field_year_offered
+    - node.type.class
+  module:
+    - entity_reference_revisions
+    - layout_builder
+    - link
+    - options
+    - text
+    - user
+third_party_settings:
+  layout_builder:
+    sections: {  }
+id: node.class.default
+targetEntityType: node
+bundle: class
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 101
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_attached_media:
+    weight: 107
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_class_link:
+    weight: 104
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+  field_class_materials:
+    type: entity_reference_revisions_entity_view
+    weight: 106
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
+  field_semester:
+    weight: 102
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+  field_year_offered:
+    weight: 105
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  links:
+    weight: 100
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  langcode: true

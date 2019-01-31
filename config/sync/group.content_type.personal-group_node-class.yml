@@ -1,0 +1,19 @@
+uuid: 5fe96b21-4bf3-45e5-9784-7d0c451b83b9
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.personal
+    - node.type.class
+  module:
+    - gnode
+    - node
+id: personal-group_node-class
+label: 'Personal: Group node (Class)'
+description: 'Adds <em class="placeholder">Class</em> content to groups both publicly and privately.'
+group_type: personal
+content_plugin: 'group_node:class'
+plugin_config:
+  group_cardinality: 1
+  entity_cardinality: 1
+  use_creation_wizard: true
