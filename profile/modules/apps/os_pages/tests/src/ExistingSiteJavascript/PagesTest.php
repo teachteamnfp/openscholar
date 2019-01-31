@@ -48,7 +48,7 @@ class PagesTest extends TestBase {
     ]);
 
     $block = Block::create([
-      'id' => "os_pages_book_nav_{$book1->id()}",
+      'id' => "booknavigation_{$book1->id()}",
       'theme' => $theme_config->get('default'),
       'region' => 'sidebar_second',
       'plugin' => 'book_navigation',
