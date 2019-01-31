@@ -1,0 +1,17 @@
+uuid: a3a2c1e5-16a2-4076-b06d-45a8b1dd360f
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus: {  }
+    parent: ''
+name: Class
+type: class
+description: 'A course listing for a college or university class.'
+help: ''
+new_revision: true
+preview_mode: 1
+display_submitted: false

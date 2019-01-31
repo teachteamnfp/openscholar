@@ -1,0 +1,21 @@
+uuid: dd3d53fc-5e6d-41df-b7e2-8a7ccae1562f
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_semester
+field_name: field_semester
+entity_type: node
+type: list_string
+settings:
+  allowed_values: {  }
+  allowed_values_function: os_classes_field_semester_allowed_values
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
