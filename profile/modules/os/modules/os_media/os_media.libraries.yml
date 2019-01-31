@@ -3,14 +3,17 @@ mediaBrowser:
   js:
     js/MediaBrowserFilters.js: { }
     js/MediaBrowserModule.js: { app: mediaBrowser }
+  drupalSettings: { version: { mediaBrowser: "1.0" } }
+  paths: templates
   dependencies:
-    - os/fileEditor
     - os/angular.ngFileUpload
     - os/angular.modalService
+    - os/angular.slideables
     - os/jsPager
     - os/entityService
     - os/auth
-    - os/location
+    - os/locationFix
+    - os/fileEditor
     - core/drupal.dialog
     - core/drupalSettings
 
@@ -18,5 +21,8 @@ mediaBrowserField:
   version: 1.0
   js:
     js/MediaBrowserField.js: { app: MediaBrowserField }
+  drupalSettings: { version: { mediaBrowserField : "1.0" } }
   dependencies:
+    - os/angular.uiSortable
     - os_media/mediaBrowser
+    - os/fileEditorModal
