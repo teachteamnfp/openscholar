@@ -91,15 +91,10 @@ class VisibilityHelperTest extends TestBase {
 
     $this->assertTrue(in_array([
       'id' => 'request_path',
-      'pages' => "/node/{$first_sub_sub_page->id()}",
+      'pages' => "/node/{$book->id()}\n/node/{$first_sub_page->id()}\n/node/{$first_sub_sub_page->id()}\n/node/{$second_sub_page->id()}",
       'negate' => FALSE,
+      'context_mapping' => [],
     ], $conditions));
-
-    $this->assertTrue([
-      'id' => 'request_path',
-      'pages' => "/node/{$second_sub_page->id()}",
-      'negate' => FALSE,
-    ], $conditions);
   }
 
 }

@@ -91,9 +91,30 @@ function os_pages_entity_insert(EntityInterface $entity) {
     }
   }
   else {
+    // Update the path condition for section visibility group.
+    // Making sure that it appears for the newly created page as well.
+
+    /** @var array $conditions */
+    $conditions = $section_visibility_group->getConditions()->getConfiguration();
+
+    foreach ($conditions as $condition) {
+      if ($condition['id'] === 'request_path') {
+        /** @var string $condition_id */
+        $condition_id = $condition['uuid'];
+        /** @var string $pages */
+        $pages = $condition['pages'];
+      }
+    }
+
+    if (!isset($condition_id) && !isset($pages)) {
+      return;
+    }
+
+    $section_visibility_group->removeCondition($condition_id);
+
     $section_visibility_group->addCondition([
       'id' => 'request_path',
-      'pages' => "/node/{$entity->id()}",
+      'pages' => "$pages\n/node/{$entity->id()}",
       'negate' => 0,
       'context_mapping' => [],
     ]);
