@@ -3,18 +3,14 @@
  */
 (function () {
 
-  var restPath = '',
-    entities = {},
+  var entities = {},
     fetched = {},
     defers = {},
     cache = {},
     weSaved = {},
     lockPromise;
 
-  angular.module('EntityService', ['indexedDB'])
-    .config(function () {
-      restPath = Drupal.settings.paths.api;
-    })
+  angular.module('EntityService', ['indexedDB', 'DrupalSettings', 'UrlGenerator'])
   /**
    * Provider to manage configuration options for EntityService
    */
@@ -41,7 +37,7 @@
   /**
    * Service to maintain the list of files on a user's site
    */
-    .factory('EntityService', ['$rootScope', '$http', '$q', 'EntityConfig', '$indexedDB', 'EntityCacheUpdater', function ($rootScope, $http, $q, config, $idb, ECU) {
+    .factory('EntityService', ['$rootScope', '$http', '$q', 'EntityConfig', '$indexedDB', 'EntityCacheUpdater', 'drupalSettings', 'urlGenerator', function ($rootScope, $http, $q, config, $idb, ECU, settings, urlGenerator) {
       var factory = function (entityType, idProp) {
         var type = entityType;
         var ents;
@@ -50,16 +46,15 @@
         var eventName = 'EntityService.' + type;
         var errorAttempts = 0;
         var vsite = null;
-        var fetchDefer;
 
-        if (Drupal.settings.spaces) {
-          vsite = Drupal.settings.spaces.id;
+        if (settings.hasSetting('spaces')) {
+          vsite = settings.fetchSetting('spaces.id');
         }
 
         var success = function(resp, status, headers, config) {
-          var key = config.pKey;
+          console.log(arguments);
           recursiveFetch(resp, status, headers, config);
-        }
+        };
 
         function recursiveFetch(resp, status, headers, config) {
           var key = config.pKey;
@@ -72,7 +67,7 @@
             var max = Math.ceil(resp.count/resp.data.length),
               curr = resp.next.href.match(/page=([\d]+)/)[1];
             defers[key].notify(("Loading $p% complete.").replace('$p', Math.round(((curr-1)/max)*100)));
-            $http.get(resp.next.href, {pKey: key}).success(recursiveFetch);
+            $http.get(resp.next.href, {pKey: key}).then(recursiveFetch);
           }
           else {
             saveCache(key);
@@ -84,9 +79,8 @@
         var errorFunc = function(resp, status, headers, config) {
           errorAttempts++;
           if (errorAttempts < 3) {
-            $http.get(restPath + '/' + entityType, config).
-              success(success).
-              error(errorFunc);
+            $http.get(urlGenerator.generate(settings.fetchSetting('paths.api') + '/' + entityType, true), config).
+              then(success, errorFunc);
           }
           else {
             defers[config.pKey].reject('Error getting files. Aborting after 3 attempts.');
@@ -105,7 +99,7 @@
           var cKey = entityType + ':' + id;
 
           if (!defers[cKey]) {
-            var url = restPath + '/' + entityType + '/' + id;
+            let url = url.generate(settings.fetchSetting('paths.api') + '/' + entityType + '/' + id, true);
             defers[cKey] = $q.defer();
             $http.get(url, {pKey: cKey})
               .then(function (response) {
@@ -120,7 +114,7 @@
         };
 
         this.fetchImageStyle = function(id, imageStyle) {
-          var url = restPath + '/' + entityType + '/' + id + '/image_style/' + imageStyle;
+          let url = urlGenerator.generate(settings.fetchSetting('paths.api') + '/' + entityType + '/' + id + '/image_style/' + imageStyle, true);
           var cKey = entityType + ':' + id;
 
           return $http.get(url, {pKey: cKey});
@@ -147,10 +141,9 @@
 
             lockPromise.then(function (keys) {
               if (keys.indexOf(key) === -1) {
-                var url = restPath + '/' + entityType;
+                let url = urlGenerator.generate(settings.fetchSetting('paths.api') + '/' + entityType, true);
                 $http.get(url, {params: params, pKey: key})
-                  .success(success)
-                  .error(errorFunc);
+                  .then(success, errorFunc);
                 setTimeout(function () {
                   defers[key].notify("Loading 0% complete.");
                 }, 1);
@@ -212,8 +205,8 @@
           }
 
           // rest API call to add entity to server
-          return $http.post(restPath + '/' + entityType, entity)
-            .success(function (resp) {
+          return $http.post(url.generate(settings.fetchSetting('paths.api') + entityType, true), entity)
+            .then(function (resp) {
               var entity = resp.data[0];
 
               weSaved[entity[idProp]] = entity.changed;
@@ -244,7 +237,7 @@
             data = getDiff(cache[k].data[keys[k]], entity, ignore);
             break;
           }
-          var url = [restPath, entityType, entity[idProp]];
+          var url = [urlGenerator.generate(settings.fetchSetting('paths.api'), true), entityType, entity[idProp]];
 
           if (data.length) {
             delete data.length;
@@ -319,7 +312,7 @@
           config.headers['If-Unmodified-Since'] = (new Date(updated*1000)).toString().replace(/ \([^)]*\)/, '');
 
           //rest API call to delete entity from server
-          return $http.delete(restPath+'/'+entityType+'/'+entity[idProp], config).success(function (resp) {
+          return $http.delete(urlGenerator.generate(settings.fetchSetting('paths.api') + entityType+'/'+entity[idProp], true), config).then(function (resp) {
             var k = findByProp(idProp, entity[idProp]);
             delete ents[k];
 
@@ -330,7 +323,7 @@
               saveCache(k);
             }
           });
-        }
+        };
 
         // registers an entity with this service
         // used for entities that are added outside of this service
@@ -341,7 +334,7 @@
           weSaved[entity[idProp]] = entity.changed;
           addToCaches(entityType, idProp, entity);
         };
-      }
+      };
 
       function getDiff(oEntity, nEntity, ignore) {
         var diff = {},
@@ -391,7 +384,7 @@
 
       return factory;
     }])
-  .run(['EntityCacheUpdater', '$q', '$indexedDB', function (ECU, $q, $idb) {
+  .run(['EntityCacheUpdater', '$q', '$indexedDB', 'drupalSettings', function (ECU, $q, $idb, settings) {
       var entityTypes = {},
         lock = $q.defer();
       lockPromise = lock.promise;
@@ -400,10 +393,10 @@
         var results;
         // if we're in a vsite, only get a subset of the entityservice
         // we really don't need to loop through everything
-        if (Drupal.settings.spaces && Drupal.settings.spaces.id) {
+        if (settings.hasSetting('spaces.id')) {
           var query = store.query()
               .$index('vsite')
-              .$eq(Drupal.settings.spaces.id);
+              .$eq(settings.fetchSetting('spaces.id'));
 
           results = store.eachWhere(query);
         }
@@ -496,8 +489,8 @@
           store.createIndex('vsite', 'params.vsite', { unique: false });
         });
     }])
-  .service('EntityCacheUpdater', ['$http', '$q', '$indexedDB', '$rootScope', 'EntityConfig', function ($http, $q, $idb, $rs, EntityConfig) {
-      var urlBase = restPath + '/:type/updates/:time';
+  .service('EntityCacheUpdater', ['$http', '$q', '$indexedDB', '$rootScope', 'EntityConfig', 'drupalSettings', 'urlGenerator', function ($http, $q, $idb, $rs, EntityConfig, settings, url) {
+      var urlBase = url.generate(settings.fetchSetting('paths.api') + '/:type/updates/:time', true);
 
       function update(updateType) {
         var keys = {},
@@ -522,7 +515,7 @@
       }
 
       function fetchUpdates(type, keys, timestamp, nextUrl) {
-        if (Drupal.settings.spaces == undefined) {
+        if (!settings.hasSetting('spaces')) {
           // We are not in a vsite context so we need to return early.
           return;
         }
@@ -535,12 +528,12 @@
           url = nextUrl;
         }
 
-        if (Drupal.settings.spaces && Drupal.settings.spaces.id) {
+        if (settings.hasSetting('spaces')) {
           if (url.indexOf('?') == -1) {
-            url += '?vsite=' + Drupal.settings.spaces.id;
+            url += '?vsite=' + settings.fetchSetting('spaces.id');
           }
           else {
-            url += '&vsite=' + Drupal.settings.spaces.id;
+            url += '&vsite=' + settings.fetchSetting('spaces.id');
           }
         }
 
@@ -608,8 +601,8 @@
           else {
             // construct 'everything' key
             var k = {};
-            if (Drupal.settings.spaces.id) {
-              k.vsite = Drupal.settings.spaces.id;
+            if (settings.hasSetting('spaces')) {
+              k.vsite = settings.fetchSetting('spaces.id');
             }
             for (var p in EntityConfig[type]) {
               k[p] = EntityConfig[type][p];
@@ -711,7 +704,7 @@
         // try other things
         switch (k) {
           case 'vsite':
-            if (params[k] != Drupal.settings.spaces.id) {
+            if (params[k] != settings.fetchSetting('spaces.id')) {
               return false;
             }
             break;
