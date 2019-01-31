@@ -26,22 +26,6 @@ class VisibilityHelperTest extends TestBase {
   }
 
   /**
-   * Tests if section visibility group added when a non-page node created.
-   *
-   * @covers ::isBookFirstPage
-   */
-  public function testCreateSectionVisibilityGroupWhenNonPageNodeCreated() {
-    /** @var \Drupal\node\NodeInterface $book */
-    $book = $this->createBookPage();
-
-    $this->createNode([
-      'type' => 'event',
-    ]);
-
-    $this->assertNull(BlockVisibilityGroup::load("os_pages_section_{$book->id()}"));
-  }
-
-  /**
    * Tests if section visibility group added when first sub-page is created.
    *
    * @covers ::isBookFirstPage
@@ -57,6 +41,8 @@ class VisibilityHelperTest extends TestBase {
 
   /**
    * Tests page visibility group create.
+   *
+   * @covers ::isBookPage
    */
   public function testCreatePageVisibilityGroup() {
     /** @var \Drupal\node\NodeInterface $book */
@@ -70,6 +56,13 @@ class VisibilityHelperTest extends TestBase {
     ]);
 
     $this->assertNull(BlockVisibilityGroup::load("os_pages_page_{$event->id()}"));
+
+    /** @var \Drupal\node\NodeInterface $non_book_page */
+    $non_book_page = $this->createNode([
+      'type' => 'page',
+    ]);
+
+    $this->assertNull(BlockVisibilityGroup::load("os_pages_page_{$non_book_page->id()}"));
   }
 
   /**

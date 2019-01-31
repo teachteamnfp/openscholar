@@ -17,79 +17,80 @@ use Drupal\block_visibility_groups\Entity\BlockVisibilityGroup;
 function os_pages_entity_insert(EntityInterface $entity) {
   /** @var \Drupal\os_pages\VisibilityHelper $visibility_helper */
   $visibility_helper = \Drupal::service('os_pages.visibility_helper');
+
+  if (!$visibility_helper->isBookPage($entity)) {
+    return;
+  }
+
   /** @var \Drupal\Core\Path\AliasManagerInterface $alias_manager */
   $alias_manager = \Drupal::service('path.alias_manager');
   /** @var \Drupal\os_pages\VisibilityStorageInterface $visibility_storage */
   $visibility_storage = \Drupal::service('os_pages.visibility_storage');
 
-  if ($entity->getEntityType()->id() === 'node' &&
-    $entity->bundle() === 'page' &&
-    !empty($entity->book['bid'])) {
-    // Create page visibility group.
-    $visibility_storage->create([
-      'id' => "os_pages_page_{$entity->id()}",
-      'label' => t('OS Pages: Page @name', [
-        '@name' => $entity->label(),
-      ]),
-      'status' => TRUE,
-      'allow_other_conditions' => TRUE,
-      'logic' => 'and',
-    ], [
-      [
-        'id' => 'entity_bundle:node',
-        'bundles' => [
-          'page' => $entity->bundle(),
+  // Create page visibility group.
+  $visibility_storage->create([
+    'id' => "os_pages_page_{$entity->id()}",
+    'label' => t('OS Pages: Page @name', [
+      '@name' => $entity->label(),
+    ]),
+    'status' => TRUE,
+    'allow_other_conditions' => TRUE,
+    'logic' => 'and',
+  ], [
+    [
+      'id' => 'entity_bundle:node',
+      'bundles' => [
+        'page' => $entity->bundle(),
+      ],
+      'negate' => FALSE,
+    ],
+    [
+      'id' => 'request_path',
+      'pages' => $alias_manager->getAliasByPath("/node/{$entity->id()}"),
+      'negate' => 0,
+    ],
+  ]);
+
+  /** @var \Drupal\node\NodeInterface $book */
+  $book = Node::load($entity->book['bid']);
+
+  /** @var \Drupal\block_visibility_groups\Entity\BlockVisibilityGroup|null $section_visibility_group */
+  $section_visibility_group = BlockVisibilityGroup::load("os_pages_section_{$book->id()}");
+
+  // Create/update section visibility group.
+  if (!$section_visibility_group) {
+    if ($visibility_helper->isBookFirstPage($entity)) {
+      $visibility_storage->create([
+        'id' => "os_pages_section_{$book->id()}",
+        'label' => t('OS Pages: Section @book_name', [
+          '@book_name' => $book->label(),
+        ]),
+        'status' => TRUE,
+        'allow_other_conditions' => TRUE,
+        'logic' => 'and',
+      ], [
+        [
+          'id' => 'entity_bundle:node',
+          'bundles' => [
+            'page' => $entity->bundle(),
+          ],
+          'negate' => FALSE,
         ],
-        'negate' => FALSE,
-      ],
-      [
-        'id' => 'request_path',
-        'pages' => $alias_manager->getAliasByPath("/node/{$entity->id()}"),
-        'negate' => 0,
-      ],
+        [
+          'id' => 'request_path',
+          'pages' => $alias_manager->getAliasByPath("/node/{$entity->id()}"),
+          'negate' => 0,
+        ],
+      ]);
+    }
+  }
+  else {
+    $section_visibility_group->addCondition([
+      'id' => 'request_path',
+      'pages' => $alias_manager->getAliasByPath("/node/{$entity->id()}"),
+      'negate' => 0,
     ]);
 
-    /** @var \Drupal\node\NodeInterface $book */
-    $book = Node::load($entity->book['bid']);
-
-    /** @var \Drupal\block_visibility_groups\Entity\BlockVisibilityGroup|null $section_visibility_group */
-    $section_visibility_group = BlockVisibilityGroup::load("os_pages_section_{$book->id()}");
-
-    // Create/update section visibility group.
-    if (!$section_visibility_group) {
-      if ($visibility_helper->isBookFirstPage($entity)) {
-        $visibility_storage->create([
-          'id' => "os_pages_section_{$book->id()}",
-          'label' => t('OS Pages: Section @book_name', [
-            '@book_name' => $book->label(),
-          ]),
-          'status' => TRUE,
-          'allow_other_conditions' => TRUE,
-          'logic' => 'and',
-        ], [
-          [
-            'id' => 'entity_bundle:node',
-            'bundles' => [
-              'page' => $entity->bundle(),
-            ],
-            'negate' => FALSE,
-          ],
-          [
-            'id' => 'request_path',
-            'pages' => $alias_manager->getAliasByPath("/node/{$entity->id()}"),
-            'negate' => 0,
-          ],
-        ]);
-      }
-    }
-    else {
-      $section_visibility_group->addCondition([
-        'id' => 'request_path',
-        'pages' => $alias_manager->getAliasByPath("/node/{$entity->id()}"),
-        'negate' => 0,
-      ]);
-
-      $section_visibility_group->save();
-    }
+    $section_visibility_group->save();
   }
 }

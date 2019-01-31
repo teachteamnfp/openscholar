@@ -20,4 +20,15 @@ interface VisibilityHelperInterface {
    */
   public function isBookFirstPage(EntityInterface $entity) : bool;
 
+  /**
+   * Checks whether the entity is a book page.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity.
+   *
+   * @return bool
+   *   TRUE if yes, otherwise FALSE.
+   */
+  public function isBookPage(EntityInterface $entity) : bool;
+
 }

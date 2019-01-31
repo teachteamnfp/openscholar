@@ -47,4 +47,13 @@ final class VisibilityHelper implements VisibilityHelperInterface {
     return (count($book_pages) === 1);
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function isBookPage(EntityInterface $entity): bool {
+    return ($entity->getEntityType()->id() === 'node' &&
+      $entity->bundle() === 'page' &&
+      !empty($entity->book['bid']));
+  }
+
 }
