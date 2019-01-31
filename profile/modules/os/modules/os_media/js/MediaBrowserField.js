@@ -1,6 +1,6 @@
 (function () {
 
-  angular.module('MediaBrowserField', ['mediaBrowser', 'FileEditorModal', 'EntityService', 'ui.sortable'])
+  angular.module('MediaBrowserField', ['mediaBrowser', 'FileEditorModal', 'EntityService', 'ui.sortable', 'DrupalSettings', 'UrlGenerator'])
     .config(['$injector', function ($injector) {
       try {
         depManager = $injector.get('DependenciesProvider');
@@ -9,7 +9,7 @@
       catch (err) {
       }
     }])
-    .directive('mediaBrowserField', ['mbModal', 'EntityService', function (mbModal, EntityService) {
+    .directive('mediaBrowserField', ['mbModal', 'EntityService', 'drupalSettings', 'urlGenerator', function (mbModal, EntityService, settings, url) {
 
       function link(scope, elem, attr, ngModelController) {
         // everything to define
@@ -50,9 +50,9 @@
         for (var i = 0; i < scope.allowedTypes.length; i++) {
           var type = scope.allowedTypes[i];
           types[type] = type;
-          if (Drupal.settings.extensionMap[type] && Drupal.settings.extensionMap[type].length) {
-            scope.extensionsFull = scope.extensionsFull.concat(Drupal.settings.extensionMap[type]);
-          }
+          // if (Drupal.settings.extensionMap[type] && Drupal.settings.extensionMap[type].length) {
+          //   scope.extensionsFull = scope.extensionsFull.concat(Drupal.settings.extensionMap[type]);
+          // }
         }
         scope.extensionsFull.sort();
 
@@ -84,15 +84,15 @@
           service.fetchOne(scope.$parent.value).then(generateFunc(0));
         }
 
-        if (scope.selectedFiles.length == 0 && Drupal.settings.mediaBrowserField != undefined) {
-          var fids = Drupal.settings.mediaBrowserField[scope.field_id].selectedFiles;
-
-          for (var i = 0; i < fids.length; i++) {
-            var fid = fids[i];
-            service.fetchOne(fid).then(generateFunc(i));
-          }
-          store.setData(scope.field_name, scope.selectedFiles);
-        }
+        // if (scope.selectedFiles.length == 0 && Drupal.settings.mediaBrowserField != undefined) {
+        //   var fids = Drupal.settings.mediaBrowserField[scope.field_id].selectedFiles;
+        //
+        //   for (var i = 0; i < fids.length; i++) {
+        //     var fid = fids[i];
+        //     service.fetchOne(fid).then(generateFunc(i));
+        //   }
+        //   store.setData(scope.field_name, scope.selectedFiles);
+        // }
 
         // prefetch the files now so user can open Media Browser later
         service.fetch();
@@ -200,7 +200,7 @@
           link: link,
           require: '?ngModel',
           templateUrl: function () {
-            return Drupal.settings.paths.moduleRoot + '/templates/field.html?vers=' + Drupal.settings.version.mediaBrowser
+            return url.generate(settings.fetchSetting('paths.mediaBrowser') + 'field.html?vers=' + settings.fetchSetting('version.mediaBrowser', false));
           },
           scope: {
             selectedFiles: '=files',

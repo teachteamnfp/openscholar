@@ -2,10 +2,7 @@
   var rootPath,
     open = angular.noop;
 
-  angular.module('mediaBrowser', ['JSPager', 'EntityService', 'os-auth', 'ngSanitize', 'angularFileUpload', 'angularModalService', 'FileEditor', 'mediaBrowser.filters', 'locationFix', 'angularSlideables'])
-    .config(function (){
-       rootPath = Drupal.settings.paths.moduleRoot;
-    })
+  angular.module('mediaBrowser', ['JSPager', 'EntityService', 'os-auth', 'ngSanitize', 'ngFileUpload', 'angularModalService', 'FileEditor', 'mediaBrowser.filters', 'locationFix', 'angularSlideables', 'DrupalSettings'])
     .run(['mbModal', 'FileEditorOpenModal', function (mbModal, feom) {
       // Disable drag and drop behaviors on the window object, to prevent files
       // from.
@@ -17,52 +14,52 @@
       // if the File object is not supported by this browser, fallback to the
       // original media browser.
       if (mbModal.requirementsMet()) {
-        Drupal = Drupal || {};
-        Drupal.media = Drupal.media || {};
-        Drupal.media.popups = Drupal.media.popups || {};
-        var oldPopup = Drupal.media.popups.mediaBrowser;
-        Drupal.media.popups.mediaBrowserOld = oldPopup;
-        Drupal.media.popups.mediaBrowser = function (onSelect, globalOptions, pluginOptions, widgetOptions) {
-          var options = Drupal.media.popups.mediaBrowser.getDefaults();
-          options.global = $.extend({}, options.global, globalOptions);
-          options.plugins = pluginOptions;
-          options.widget = $.extend({}, options.widget, widgetOptions);
-
-
-          // Params to send along to the iframe. WIP.
-          var params = {};
-          $.extend(params, options.global);
-          params.plugins = options.plugins;
-          params.onSelect = onSelect;
-
-          mbModal.open(params);
-        };
-
-        for (var k in oldPopup) {
-          if (!Drupal.media.popups.mediaBrowser[k]) {
-            Drupal.media.popups.mediaBrowser[k] = oldPopup[k];
-          }
-        }
-
-        var oldStyleSelector = Drupal.media.popups.mediaStyleSelector;
-        Drupal.media.popups.mediaStyleSelector = function (file, onSelect, options) {
-          if (file.type == 'media') {
-            feom.open(file.fid, function () {
-              onSelect();
-            });
-          }
-          else {
-            oldStyleSelector(file, onSelect, options);
-          }
-        };
-
-        for (var k in oldStyleSelector) {
-          Drupal.media.popups.mediaStyleSelector[k] = oldStyleSelector[k];
-        }
+        // Drupal = Drupal || {};
+        // Drupal.media = Drupal.media || {};
+        // Drupal.media.popups = Drupal.media.popups || {};
+        // var oldPopup = Drupal.media.popups.mediaBrowser;
+        // Drupal.media.popups.mediaBrowserOld = oldPopup;
+        // Drupal.media.popups.mediaBrowser = function (onSelect, globalOptions, pluginOptions, widgetOptions) {
+        //   var options = Drupal.media.popups.mediaBrowser.getDefaults();
+        //   options.global = $.extend({}, options.global, globalOptions);
+        //   options.plugins = pluginOptions;
+        //   options.widget = $.extend({}, options.widget, widgetOptions);
+        //
+        //
+        //   // Params to send along to the iframe. WIP.
+        //   var params = {};
+        //   $.extend(params, options.global);
+        //   params.plugins = options.plugins;
+        //   params.onSelect = onSelect;
+        //
+        //   mbModal.open(params);
+        // };
+        //
+        // for (var k in oldPopup) {
+        //   if (!Drupal.media.popups.mediaBrowser[k]) {
+        //     Drupal.media.popups.mediaBrowser[k] = oldPopup[k];
+        //   }
+        // }
+        //
+        // var oldStyleSelector = Drupal.media.popups.mediaStyleSelector;
+        // Drupal.media.popups.mediaStyleSelector = function (file, onSelect, options) {
+        //   if (file.type == 'media') {
+        //     feom.open(file.fid, function () {
+        //       onSelect();
+        //     });
+        //   }
+        //   else {
+        //     oldStyleSelector(file, onSelect, options);
+        //   }
+        // };
+        //
+        // for (var k in oldStyleSelector) {
+        //   Drupal.media.popups.mediaStyleSelector[k] = oldStyleSelector[k];
+        // }
       }
     }])
-  .controller('BrowserCtrl', ['$scope', '$filter', '$http', 'EntityService', 'EntityConfig', '$sce', '$q', '$upload', '$timeout', 'FILEEDITOR_RESPONSES', 'params', 'close', '$location',
-      function ($scope, $filter, $http, EntityService, config, $sce, $q, $upload, $timeout, FER, params, close, $location) {
+  .controller('BrowserCtrl', ['$scope', '$filter', '$http', 'EntityService', 'EntityConfig', '$sce', '$q', '$upload', '$timeout', 'FILEEDITOR_RESPONSES', 'params', 'close', '$location', 'drupalSettings',
+      function ($scope, $filter, $http, EntityService, config, $sce, $q, $upload, $timeout, FER, params, close, $location, settings) {
 
     // Initialization
     var service = new EntityService('files', 'id'),
@@ -70,7 +67,7 @@
       directInsert = true;
     $scope.files = [];
     $scope.numFiles = 0;
-    $scope.templatePath = rootPath;
+    $scope.templatePath = settings.getSetting('paths.MediaBrowser');
     $scope.selection = 0;
     $scope.form = '';
     $scope.pane = 'upload';
@@ -762,7 +759,7 @@
       transclude: true
     }
   }])
-  .service('mbModal', ['ModalService', function (ModalService) {
+  .service('mbModal', ['ModalService', 'drupalSettings', function (ModalService, settings) {
       this.defaultParams = function () {
         var params = {
           dialog: {
@@ -805,11 +802,11 @@
         };
 
         return params;
-      }
+      };
 
       this.requirementsMet = function() {
         return (window.File && window.FormData);
-      }
+      };
 
       this.open = function (params) {
         var defaults = this.defaultParams(),
@@ -828,7 +825,7 @@
         }
 
         ModalService.showModal({
-          templateUrl: rootPath+'/templates/browser.html?vers='+Drupal.settings.version.mediaBrowser,
+          templateUrl: settings.getSetting('paths.mediaBrowser')+'/browser.html?vers='+settings.getSetting('version.MediaBrowser'),
           controller: 'BrowserCtrl',
           inputs: {
             params: nparams
