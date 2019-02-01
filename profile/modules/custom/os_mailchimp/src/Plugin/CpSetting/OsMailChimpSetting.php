@@ -29,18 +29,18 @@ class OsMailChimpSetting extends PluginBase implements CpSettingInterface {
    * {@inheritdoc}
    */
   public function getEditableConfigNames(): array {
-    return ['os_mailchimp.setting'];
+    return ['mailchimp.settings'];
   }
 
   /**
    * {@inheritdoc}
    */
   public function getForm(array &$form, ConfigFactoryInterface $configFactory) {
-    $config = $configFactory->get('os_mailchimp.setting');
-    $form['mailchimp_api_key'] = [
+    $config = $configFactory->get('mailchimp.settings');
+    $form['api_key'] = [
       '#type' => 'textfield',
       '#title' => t('MailChimp API key'),
-      '#default_value' => $config->get('mailchimp_api_key'),
+      '#default_value' => $config->get('api_key'),
     ];
   }
 
@@ -51,8 +51,8 @@ class OsMailChimpSetting extends PluginBase implements CpSettingInterface {
     FormStateInterface $formState,
     ConfigFactoryInterface $configFactory
   ) {
-    $config = $configFactory->getEditable('os_mailchimp.setting');
-    $config->set('mailchimp_api_key', $formState->getValue('mailchimp_api_key'));
+    $config = $configFactory->getEditable('mailchimp.settings');
+    $config->set('api_key', $formState->getValue('api_key'));
     $config->save(TRUE);
   }
 
