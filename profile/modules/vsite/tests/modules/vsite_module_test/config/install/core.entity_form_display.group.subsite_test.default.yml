@@ -1,0 +1,59 @@
+uuid: eadd9234-fc66-49de-a691-e16b6db016d6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.group.subsite_test.field_parent_site
+    - field.field.group.subsite_test.field_privacy_level
+    - group.type.subsite_test
+  module:
+    - field_layout
+    - layout_discovery
+    - path
+third_party_settings:
+  field_layout:
+    id: layout_onecol
+    settings: {  }
+id: group.subsite_test.default
+targetEntityType: group
+bundle: subsite_test
+mode: default
+content:
+  field_parent_site:
+    weight: 31
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_privacy_level:
+    weight: 32
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  label:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  langcode:
+    type: language_select
+    weight: 2
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 30
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  uid: true

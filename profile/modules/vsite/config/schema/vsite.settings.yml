@@ -1,0 +1,3 @@
+vsite.settings.allowed_subsite_group_types:
+  type: sequence
+  label: 'Allowed subsite group types'
