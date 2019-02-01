@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b1781433650ddac4c4863a107d8796a5",
+    "content-hash": "4ee370d8d68cea96b5c3144cf8f6d3ca",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -3103,7 +3103,8 @@
                     "merge-extra": false
                 },
                 "patches_applied": {
-                    "Make sure TestSitePath exist before creating .htkey": "https://www.drupal.org/files/issues/2246725-24.patch"
+                    "Make sure TestSitePath exist before creating .htkey": "https://www.drupal.org/files/issues/2246725-24.patch",
+                    "Views Date Filter Datetime Granularity Option": "https://www.drupal.org/files/issues/2018-12-11/views_date_filter_granularity_2868014-60.patch"
                 }
             },
             "autoload": {

@@ -395,7 +395,7 @@ display:
           value:
             min: ''
             max: ''
-            value: 'last day of this month 23:59:59'
+            value: 'last day of this month'
             type: offset
           group: 1
           exposed: false
@@ -426,6 +426,7 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+          granularity: month
           plugin_id: datetime
         current_vsite_filter:
           id: current_vsite_filter
@@ -580,7 +581,7 @@ display:
           value:
             min: ''
             max: ''
-            value: 'now'
+            value: now
             type: offset
           group: 1
           exposed: false
@@ -611,6 +612,7 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+          granularity: minute
           plugin_id: datetime
         current_vsite_filter:
           id: current_vsite_filter
