@@ -1,0 +1,4 @@
+services:
+  os_publications.citation_examples:
+    class: Drupal\os_publications\Plugin\SampleCitations
+    arguments: ['@bibcite.citation_styler', '@entity.query']

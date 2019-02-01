@@ -1,0 +1,11 @@
+name: OS Publications
+core: 8.x
+type: module
+description: Publications customizations for OpenScholar
+dependencies:
+  - bibcite_entity
+  - cp_settings
+  - bibcite_bibtex
+  - bibcite_endnote
+  - bibcite_ris
+  - bibcite_marc

@@ -18,20 +18,46 @@ types:
   legislation: statute
   thesis: thesis
   webpage: web_article
+  article: ''
+  dataset: ''
+  entry: ''
+  entry-dictionary: ''
+  entry-encyclopedia: ''
+  figure: ''
+  graphic: ''
+  interview: ''
+  musical_score: ''
+  pamphlet: ''
+  post: ''
+  post-weblog: ''
+  review: ''
+  review-book: ''
+  song: ''
+  speech: ''
+  treaty: ''
 fields:
-  issued: bibcite_year
-  accessed: bibcite_access_date
+  title: title
+  type: type
+  keyword: ''
+  author: author
   abstract: bibcite_abst_e
+  issued: bibcite_year
+  collection-title: ''
   container-title: bibcite_secondary_title
   volume: bibcite_volume
   edition: bibcite_edition
+  version: ''
+  chapter-number: ''
   section: bibcite_section
   issue: bibcite_issue
   number-of-volumes: bibcite_number_of_volumes
   number: bibcite_number
   page: bibcite_pages
+  container: ''
+  event-date: ''
   original-date: bibcite_date
   publisher: bibcite_publisher
+  event-place: ''
   publisher-place: bibcite_place_published
   ISSN: bibcite_issn
   ISBN: bibcite_isbn
@@ -41,6 +67,47 @@ fields:
   DOI: bibcite_doi
   note: bibcite_notes
   original-title: bibcite_alternate_title
+  accessed: bibcite_access_date
+  annote: ''
+  archive: ''
+  archive_location: ''
+  archive-place: ''
+  authority: ''
+  citation-number: ''
+  collection-editor: ''
+  collection-number: ''
+  composer: ''
+  container-author: ''
+  container-title-short: ''
+  dimensions: ''
+  director: ''
+  editor: author
+  editorial-director: ''
+  first-reference-note-number: ''
+  genre: ''
+  illustrator: ''
+  interviewer: ''
+  jurisdiction: ''
+  locator: ''
+  medium: ''
+  number-of-pages: ''
+  original-author: ''
+  original-publisher: ''
+  original-publisher-place: ''
+  page-first: ''
+  PMCID: ''
+  PMID: ''
+  recipient: ''
+  references: ''
+  reviewed-author: ''
+  reviewed-title: ''
+  scale: ''
+  source: ''
+  status: ''
+  submitted: ''
+  title-short: ''
+  translator: ''
+  year-suffix: ''
 dependencies:
   enforced:
     module:
