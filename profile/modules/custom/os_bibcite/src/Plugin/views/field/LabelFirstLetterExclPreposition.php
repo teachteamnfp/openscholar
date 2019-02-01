@@ -23,6 +23,23 @@ class LabelFirstLetterExclPreposition extends FieldPluginBase {
    * {@inheritdoc}
    */
   public function render(ResultRow $values) {
+    return $this->prepareLabel($this->sanitizeValue($values->_entity->label()));
+  }
+
+  /**
+   * Prepares the label.
+   *
+   * Converts a string like, "The Velvet Underground", to "V", i.e. it trims any
+   * articles or prepositions from the beginning of the string, and returns the
+   * upper case first letter of the trimmed string.
+   *
+   * @param string $label
+   *   The label.
+   *
+   * @return string
+   *   The altered label.
+   */
+  protected function prepareLabel(string $label) : string {
     $words_to_trim = [
       'the',
       'a',
@@ -83,9 +100,9 @@ class LabelFirstLetterExclPreposition extends FieldPluginBase {
       'through',
     ];
 
-    // TODO: Implement this.
+    $pattern = '/\b^(?:' . implode('|', $words_to_trim) . ')\b/i';
 
-    return $this->sanitizeValue($values->_entity->label());
+    return mb_strtoupper(substr(trim(preg_replace($pattern, '', $label)), 0, 1));
   }
 
 }
