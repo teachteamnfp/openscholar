@@ -47,7 +47,7 @@ class PagesTest extends TestBase {
       'type' => 'events',
     ]);
 
-    $block = Block::create([
+    $section_block = Block::create([
       'id' => "booknavigation_{$book1->id()}",
       'theme' => $theme_config->get('default'),
       'region' => 'sidebar_second',
@@ -68,7 +68,33 @@ class PagesTest extends TestBase {
         ],
       ],
     ]);
-    $block->save();
+    $section_block->save();
+
+    $page_block = Block::create([
+      'id' => "entityviewcontent_{$page1->id()}",
+      'theme' => $theme_config->get('default'),
+      'region' => 'sidebar_second',
+      'plugin' => 'entity_view:node',
+      'settings' => [
+        'id' => 'entity_view:node',
+        'label' => $page1->label(),
+        'provider' => 'ctools',
+        'label_display' => '0',
+        'view_mode' => 'block',
+        'context_mapping' => [
+          'entity' => '@node.node_route_context:node',
+        ],
+      ],
+      'visibility' => [
+        'condition_group' => [
+          'id' => 'condition_group',
+          'negate' => FALSE,
+          'block_visibility_group' => "os_pages_page_{$page1->id()}",
+          'context_mapping' => [],
+        ],
+      ],
+    ]);
+    $page_block->save();
 
     $web_assert = $this->assertSession();
 
@@ -86,6 +112,9 @@ class PagesTest extends TestBase {
       $web_assert->pageTextContains($book1->label());
       $web_assert->pageTextContains($page1->label());
       $web_assert->pageTextContains($book2->label());
+
+      $this->assertNotNull($web_assert->elementExists('css', '.block-entity-viewnode'));
+      $web_assert->pageTextContains($page1->get('body')->first()->getValue()['value']);
 
       $this->visit($path_alias_manager->getAliasByPath("/node/{$event->id()}"));
       $web_assert->elementNotExists('css', '.block-book-navigation');
