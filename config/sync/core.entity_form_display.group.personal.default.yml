@@ -3,6 +3,8 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.group.personal.field_parent_site
+    - field.field.group.personal.field_privacy_level
     - field.field.group.personal.field_site_description
     - field.field.group.personal.field_site_logo
     - field.field.group.personal.layout_builder__layout
@@ -23,6 +25,21 @@ targetEntityType: group
 bundle: personal
 mode: default
 content:
+  field_parent_site:
+    weight: 31
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_privacy_level:
+    weight: 32
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
+    region: content
   field_site_description:
     weight: 32
     settings:

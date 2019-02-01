@@ -1,0 +1,14 @@
+uuid: efa1875e-0bbd-48de-a779-8b40f0b9d16b
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.subsite_test
+id: subsite_test-outsider
+label: Outsider
+weight: -101
+internal: true
+audience: outsider
+group_type: subsite_test
+permissions_ui: true
+permissions: {  }

@@ -1,0 +1,14 @@
+uuid: 8ae6696f-0e46-440d-beba-04c109cd4a02
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.subsite_test
+id: subsite_test-anonymous
+label: Anonymous
+weight: -102
+internal: true
+audience: anonymous
+group_type: subsite_test
+permissions_ui: true
+permissions: {  }

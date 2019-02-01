@@ -1,0 +1,14 @@
+uuid: 4d844365-c0e8-4963-b34a-d1a3db51a99f
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.subsite_test
+id: subsite_test-member
+label: Member
+weight: -100
+internal: true
+audience: member
+group_type: subsite_test
+permissions_ui: true
+permissions: {  }

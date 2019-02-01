@@ -3643,11 +3643,17 @@
         },
         {
             "name": "drupal/group_purl",
-            "version": "dev-1.x",
+            "version": "1.0.0-alpha1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/group_purl",
-                "reference": "dfb4692d0cb2ccd69e7fe14bee681e54b29016cf"
+                "reference": "8.x-1.0-alpha1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/group_purl-8.x-1.0-alpha1.zip",
+                "reference": "8.x-1.0-alpha1",
+                "shasum": "33c7d85d7822f74ab961154177dd9532deba13ee"
             },
             "require": {
                 "drupal/core": "~8.0",
@@ -3660,12 +3666,15 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.x-dev",
-                    "datestamp": "1501719844",
+                    "version": "8.x-1.0-alpha1",
+                    "datestamp": "1546375980",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
                     }
+                },
+                "patches_applied": {
+                    "Prevent base path from interfering with purl detection": "https://www.drupal.org/files/issues/2019-01-17/group_purl.3026646-2.basepath.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3686,8 +3695,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/group_purl",
                 "issues": "https://www.drupal.org/project/issues/group_purl"
-            },
-            "time": "2017-08-03T00:19:26+00:00"
+            }
         },
         {
             "name": "drupal/image_widget_crop",
@@ -3989,7 +3997,7 @@
                 "shasum": null
             },
             "type": "drupal-module",
-            "time": "2018-12-10T20:05:46+00:00"
+            "time": "2018-06-20T15:36:05+00:00"
         },
         {
             "name": "drupal/redirect",
@@ -11115,7 +11123,6 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "drupal/purl": 20,
-        "drupal/group_purl": 20,
         "drupal/config_sync": 15,
         "drupal/context": 10,
         "kenwheeler/slick": 20,

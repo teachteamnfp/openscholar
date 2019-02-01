@@ -2,16 +2,20 @@
 
 namespace Drupal\vsite_privacy\Form;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Form\ConfigFormBase;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityStorageInterface;
+use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\TempStore\PrivateTempStoreFactory;
+use Drupal\quickedit\Form\QuickEditFieldForm;
+use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 use Drupal\vsite_privacy\Plugin\VsitePrivacyLevelManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class VsitePrivacyForm.
  */
-class VsitePrivacyForm extends ConfigFormBase {
+class VsitePrivacyForm extends QuickEditFieldForm {
 
   /**
    * Vsite privacy level manager.
@@ -21,11 +25,19 @@ class VsitePrivacyForm extends ConfigFormBase {
   protected $vsitePrivacyLevelManager;
 
   /**
+   * Vsite Context Manager.
+   *
+   * @var \Drupal\vsite\Plugin\VsiteContextManagerInterface
+   */
+  protected $vsiteContextManager;
+
+  /**
    * Creates new VsitePrivacyForm object.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, VsitePrivacyLevelManagerInterface $vsitePrivacyLevelManager) {
-    parent::__construct($config_factory);
-    $this->vsitePrivacyLevelManager = $vsitePrivacyLevelManager;
+  public function __construct(PrivateTempStoreFactory $tempstoragefactory, ModuleHandlerInterface $module_handler, EntityStorageInterface $storage, VsitePrivacyLevelManagerInterface $vsite_privacy_level_manager, VsiteContextManagerInterface $vsite_context_manager) {
+    parent::__construct($tempstoragefactory, $module_handler, $storage);
+    $this->vsitePrivacyLevelManager = $vsite_privacy_level_manager;
+    $this->vsiteContextManager = $vsite_context_manager;
   }
 
   /**
@@ -33,16 +45,12 @@ class VsitePrivacyForm extends ConfigFormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('config.factory'),
-      $container->get('vsite.privacy.manager')
+      $container->get('tempstore.private'),
+      $container->get('module_handler'),
+      $container->get('entity.manager')->getStorage('node_type'),
+      $container->get('vsite.privacy.manager'),
+      $container->get('vsite.context_manager')
     );
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function getEditableConfigNames() {
-    return ['vsite.privacy'];
   }
 
   /**
@@ -55,26 +63,9 @@ class VsitePrivacyForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state) {
-    $form = parent::buildForm($form, $form_state);
-
-    $privacy = $this->configFactory()->get('vsite.privacy');
-
-    $level = $privacy->get('level');
-
-    $form['privacy_level'] = [
-      '#title' => t('Privacy Level'),
-      '#description' => t('Sets the privacy level for the entire site. Apps can override this when the site is 
-        public, but not private.'),
-      '#type' => 'radios',
-      '#options' => $this->vsitePrivacyLevelManager->getOptions(),
-      '#default_value' => $level ? $level : 'public',
-    ];
-
-    $descriptions = $this->vsitePrivacyLevelManager->getDescriptions();
-    foreach ($descriptions as $elem => $text) {
-      $form['privacy_level'][$elem]['#description'] = $text;
-    }
+  public function buildForm(array $form, FormStateInterface $form_state, EntityInterface $entity = NULL, $field_name = NULL) {
+    $vsite = $this->vsiteContextManager->getActiveVsite();
+    $form = parent::buildForm($form, $form_state, $vsite, 'field_privacy_level');
 
     return $form;
   }
@@ -83,13 +74,11 @@ class VsitePrivacyForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-
-    $privacy = $this->configFactory()->getEditable('vsite.privacy');
-
-    $privacy->set('level', $form_state->getValue('privacy_level'));
-    $privacy->save(TRUE);
-
     parent::submitForm($form, $form_state);
+
+    /** @var \Drupal\Core\Entity\EntityInterface $entity */
+    $entity = $form_state->get('entity');
+    $entity->save();
   }
 
 }
