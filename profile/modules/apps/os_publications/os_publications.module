@@ -8,11 +8,12 @@
 /**
  * Implements hook_views_data_alter().
  */
-function os_bibcite_views_data_alter(array &$data) {
+function os_publications_views_data_alter(array &$data)
+{
   $data['bibcite_reference']['first_letter_title_excl_prep'] = [
     'title' => t('First letter of title (Excluding prepositions)'),
     'field' => [
-      'id' => 'os_bibcite_first_letter_title_excl_prep',
+      'id' => 'os_publications_first_letter_title_excl_prep',
     ],
     'entity field' => 'title',
   ];

@@ -1,6 +1,0 @@
-name: OS Bibcite
-core: 8.x
-type: module
-description: Bibcite customizations for OpenScholar
-dependencies:
-  - bibcite_entity

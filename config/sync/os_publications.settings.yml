@@ -1,0 +1,13 @@
+biblio_sort: year
+os_publications_note_in_teaser: false
+biblio_order: DESC
+os_publications_shorten_citations: false
+os_publications_export_format:
+  bibtex: bibtex
+  endnote8: endnote8
+  endnote7: endnote7
+  tagged: tagged
+  marc: marc
+  ris: ris
+_core:
+  default_config_hash: TC2xY1A9v4fsWesp3W9Ap5yCwv0VP7AOvRXzkFaSv_U
