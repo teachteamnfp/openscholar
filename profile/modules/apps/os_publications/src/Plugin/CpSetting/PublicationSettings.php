@@ -16,7 +16,6 @@ use Drupal\Core\Entity\Query\QueryFactory;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\os_publications\Plugin\SampleCitations;
 
-
 /**
  * CP setting.
  *
@@ -30,8 +29,7 @@ use Drupal\os_publications\Plugin\SampleCitations;
  *   }
  * )
  */
-class PublicationSettings extends PluginBase implements CpSettingInterface, ContainerFactoryPluginInterface
-{
+class PublicationSettings extends PluginBase implements CpSettingInterface, ContainerFactoryPluginInterface {
 
   /**
    * The styler service.
@@ -55,8 +53,8 @@ class PublicationSettings extends PluginBase implements CpSettingInterface, Cont
     $plugin_definition,
     CitationStylerInterface $styler,
     BibciteFormatManagerInterface $format_manager,
-    QueryFactory $entityQuery, SampleCitations $citations)
-  {
+    QueryFactory $entityQuery,
+  SampleCitations $citations) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->styler = $styler;
     $this->formatManager = $format_manager;
@@ -67,8 +65,7 @@ class PublicationSettings extends PluginBase implements CpSettingInterface, Cont
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition)
-  {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     return new static(
       $configuration,
       $plugin_id,
@@ -83,8 +80,7 @@ class PublicationSettings extends PluginBase implements CpSettingInterface, Cont
   /**
    * {@inheritdoc}
    */
-  public function getEditableConfigNames() : array
-  {
+  public function getEditableConfigNames() : array {
     return [
       'publication.settings',
       'bibcite.settings',
@@ -94,9 +90,8 @@ class PublicationSettings extends PluginBase implements CpSettingInterface, Cont
   /**
    * {@inheritdoc}
    */
-  public function getForm(array &$form, ConfigFactoryInterface $configFactory)
-  {
-    $cite_example_output = $this->citations->CiteExampleOutput();
+  public function getForm(array &$form, ConfigFactoryInterface $configFactory) {
+    $cite_example_output = $this->citations->citeExampleOutput();
     $publication_config = $configFactory->get('os_publications.settings');
     $csl_styles = $this->styler->getAvailableStyles();
     $styles_options = array_map(function ($entity) {
@@ -112,19 +107,19 @@ class PublicationSettings extends PluginBase implements CpSettingInterface, Cont
       '#options' => $styles_options,
     ];
 
-    // Citation Examples
+    // Citation Examples.
     $form['os_publications_citation_examples'] = [
       '#markup' => $cite_example_output,
       '#weight' => 0,
       '#prefix' => '<div id="citation-examples">',
-      '#suffix' => '</div>'
-      //'#column' => 'top_right',
+      '#suffix' => '</div>',
+      // '#column' => 'top_right',.
     ];
 
     $query = $this->entityQuery->get('bibcite_reference_type');
     $options = array_keys($query->execute());
     $publication_types_options = array_map(function ($str) {
-    return ucwords(str_replace("_", " ", $str));
+      return ucwords(str_replace("_", " ", $str));
     }, $options);
     $publication_types_options = array_combine($options, $publication_types_options);
 
@@ -132,10 +127,10 @@ class PublicationSettings extends PluginBase implements CpSettingInterface, Cont
       '#type' => 'checkboxes',
       '#title' => 'Display on Your Publication Page',
       '#description' => 'Selected publications types will appear on your Publications page. Unselected publication types can still be added to other locations on your site using widgets.',
-      '#select_all' => true,
+      '#select_all' => TRUE,
       '#options' => $publication_types_options,
       '#weight' => 0,
-      '#sorted_options' => true,
+      '#sorted_options' => TRUE,
     ];
 
     $form['os_publications_note_in_teaser'] = [
@@ -148,9 +143,14 @@ class PublicationSettings extends PluginBase implements CpSettingInterface, Cont
 
     $form['biblio_sort'] = [
       '#type' => 'select',
-      '#title' => t('\'Sort By\' Category'),
+      '#title' => t("Sort By Category"),
       '#default_value' => $publication_config->get('biblio_sort'),
-      '#options' => array('author' => t('Author'), 'title' => t('Title'), 'type' => t('Type'), 'year' => t('Year')),
+      '#options' => [
+        'author' => t('Author'),
+        'title' => t('Title'),
+        'type' => t('Type'),
+        'year' => t('Year'),
+      ],
       '#weight' => 0,
     ];
 
@@ -183,7 +183,7 @@ class PublicationSettings extends PluginBase implements CpSettingInterface, Cont
       '#type' => 'checkboxes',
       '#title' => t('Distribute to repositories'),
       '#options' => ['test' => 'dummy'],
-      //@todo distribution repositroy options
+      // @todo distribution repositroy options
     ];
 
     $form['#attached']['library'][] = 'os_publications/drupal.os_publications';
@@ -194,8 +194,7 @@ class PublicationSettings extends PluginBase implements CpSettingInterface, Cont
   /**
    * {@inheritdoc}
    */
-  public function submitForm(FormStateInterface $formState, ConfigFactoryInterface $configFactory)
-  {
+  public function submitForm(FormStateInterface $formState, ConfigFactoryInterface $configFactory) {
     $bibcite_config = $configFactory->getEditable('bibcite.settings');
     $publication_config = $configFactory->getEditable('os_publications.settings');
     $bibcite_config

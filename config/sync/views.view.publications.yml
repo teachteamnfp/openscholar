@@ -4,7 +4,7 @@ status: true
 dependencies:
   module:
     - bibcite_entity
-    - os_bibcite
+    - os_publications
 id: publications
 label: Publications
 module: views
