@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\os_bibcite\ExistingSite;
+namespace Drupal\Tests\os_publications\ExistingSite;
 
 /**
  * Tests publication views.
