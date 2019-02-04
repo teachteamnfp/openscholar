@@ -2,6 +2,8 @@ uuid: b6a030de-0895-4bde-b13e-8e634b8a8716
 langcode: en
 status: true
 dependencies:
+  config:
+    - system.menu.main
   module:
     - bibcite_entity
     - os_publications
@@ -290,8 +292,17 @@ display:
     display_options:
       display_extenders:
         metatag_display_extender: {  }
-      path: publications/type
+      path: publications
       display_description: ''
+      menu:
+        type: normal
+        title: Publications
+        description: 'Publications by type'
+        expanded: true
+        parent: ''
+        weight: 0
+        context: '0'
+        menu_name: main
     cache_metadata:
       max-age: -1
       contexts:
@@ -465,6 +476,15 @@ display:
           expose:
             label: Sticky
           plugin_id: standard
+      menu:
+        type: normal
+        title: 'Publications by title'
+        description: 'Publications by title'
+        expanded: false
+        parent: 'views_view:views.publications.page_1'
+        weight: 0
+        context: '0'
+        menu_name: main
     cache_metadata:
       max-age: -1
       contexts:
@@ -638,6 +658,15 @@ display:
           expose:
             label: Sticky
           plugin_id: standard
+      menu:
+        type: normal
+        title: 'Publications by Author'
+        description: 'Publications by Author'
+        expanded: false
+        parent: 'views_view:views.publications.page_1'
+        weight: 0
+        context: '0'
+        menu_name: main
     cache_metadata:
       max-age: -1
       contexts:
@@ -840,6 +869,15 @@ display:
           expose:
             label: Sticky
           plugin_id: standard
+      menu:
+        type: normal
+        title: 'Publications by Year'
+        description: 'Publications by Year'
+        expanded: false
+        parent: 'views_view:views.publications.page_1'
+        weight: 0
+        context: '0'
+        menu_name: main
     cache_metadata:
       max-age: -1
       contexts:
