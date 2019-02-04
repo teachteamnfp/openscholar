@@ -6,13 +6,13 @@ use Drupal\Component\Plugin\PluginBase;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\cp_settings\CpSettingInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\bibcite\CitationStylerInterface;
 use Drupal\bibcite\Plugin\BibciteFormatManagerInterface;
-use Drupal\Core\Entity\Query\QueryFactory;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\os_publications\Plugin\SampleCitations;
 
@@ -29,7 +29,7 @@ use Drupal\os_publications\Plugin\SampleCitations;
  *   }
  * )
  */
-class PublicationSettings extends PluginBase implements CpSettingInterface, ContainerFactoryPluginInterface {
+class PublicationSettingsForm extends PluginBase implements CpSettingInterface, ContainerFactoryPluginInterface {
 
   /**
    * The styler service.
@@ -38,12 +38,28 @@ class PublicationSettings extends PluginBase implements CpSettingInterface, Cont
    */
   protected $styler;
 
+
   /**
-   * Drupal\Core\Entity\Query\QueryFactory definition.
+   * The EntityTypeManager service.
    *
-   * @var Drupal\Core\Entity\Query\QueryFactory
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected $entityQuery;
+  protected $entityTypeManager;
+
+  /**
+   * Format Manager.
+   *
+   * @var \Drupal\bibcite\Plugin\BibciteFormatManagerInterface
+   */
+  protected $formatManager;
+
+  /**
+   *  Citation generate.
+   *
+   * @var \Drupal\os_publications\Plugin\SampleCitations
+   */
+  protected $citations;
+
 
   /**
    * {@inheritdoc}
@@ -52,13 +68,13 @@ class PublicationSettings extends PluginBase implements CpSettingInterface, Cont
     $plugin_id,
     $plugin_definition,
     CitationStylerInterface $styler,
-    BibciteFormatManagerInterface $format_manager,
-    QueryFactory $entityQuery,
+    BibciteFormatManagerInterface $formatManager,
+    EntityTypeManagerInterface $entityTypeManager,
   SampleCitations $citations) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->styler = $styler;
-    $this->formatManager = $format_manager;
-    $this->entityQuery = $entityQuery;
+    $this->formatManager = $formatManager;
+    $this->entityTypeManager = $entityTypeManager;
     $this->citations = $citations;
   }
 
@@ -72,7 +88,7 @@ class PublicationSettings extends PluginBase implements CpSettingInterface, Cont
       $plugin_definition,
       $container->get('bibcite.citation_styler'),
       $container->get('plugin.manager.bibcite_format'),
-      $container->get('entity.query'),
+      $container->get('entity_type.manager'),
       $container->get('os_publications.citation_examples')
     );
   }
@@ -113,10 +129,9 @@ class PublicationSettings extends PluginBase implements CpSettingInterface, Cont
       '#weight' => 0,
       '#prefix' => '<div id="citation-examples">',
       '#suffix' => '</div>',
-      // '#column' => 'top_right',.
     ];
 
-    $query = $this->entityQuery->get('bibcite_reference_type');
+    $query = $this->entityTypeManager->getStorage('bibcite_reference_type')->getQuery();
     $options = array_keys($query->execute());
     $publication_types_options = array_map(function ($str) {
       return ucwords(str_replace("_", " ", $str));
@@ -127,7 +142,7 @@ class PublicationSettings extends PluginBase implements CpSettingInterface, Cont
       '#type' => 'checkboxes',
       '#title' => 'Display on Your Publication Page',
       '#description' => 'Selected publications types will appear on your Publications page. Unselected publication types can still be added to other locations on your site using widgets.',
-      '#select_all' => TRUE,
+      '#default_value' => $publication_config->get('os_publications_filter_publication_types'),
       '#options' => $publication_types_options,
       '#weight' => 0,
       '#sorted_options' => TRUE,
@@ -183,7 +198,7 @@ class PublicationSettings extends PluginBase implements CpSettingInterface, Cont
       '#type' => 'checkboxes',
       '#title' => t('Distribute to repositories'),
       '#options' => ['test' => 'dummy'],
-      // @todo distribution repositroy options
+      // @todo distribution repository options
     ];
 
     $form['#attached']['library'][] = 'os_publications/drupal.os_publications';
@@ -201,6 +216,7 @@ class PublicationSettings extends PluginBase implements CpSettingInterface, Cont
       ->set('default_style', $formState->getValue('os_publications_preferred_bibliographic_format'))
       ->save();
     $publication_config
+      ->set('os_publications_filter_publication_types', $formState->getValue('os_publications_filter_publication_types'))
       ->set('biblio_sort', $formState->getValue('biblio_sort'))
       ->set('os_publications_note_in_teaser', $formState->getValue('os_publications_note_in_teaser'))
       ->set('biblio_order', $formState->getValue('biblio_order'))

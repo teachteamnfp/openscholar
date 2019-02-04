@@ -3,7 +3,6 @@
 namespace Drupal\os_publications\Plugin;
 
 use Drupal\bibcite\CitationStylerInterface;
-use Drupal\Core\Entity\Query\QueryFactory;
 
 /**
  * Class SampleCitations.
@@ -17,12 +16,11 @@ class SampleCitations {
    *
    * @param \Drupal\bibcite\CitationStylerInterface $styler
    *   To use styler service.
-   * @param \Drupal\Core\Entity\Query\QueryFactory $entityQuery
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   To use entity query service.
    */
-  public function __construct(CitationStylerInterface $styler, QueryFactory $entityQuery) {
+  public function __construct(CitationStylerInterface $styler) {
     $this->styler = $styler;
-    $this->entityQuery = $entityQuery;
   }
 
   /**
@@ -41,7 +39,6 @@ class SampleCitations {
     // will display an example of the citation format.
     /* @var array of available styles $csl_styles */
     $csl_styles = $this->styler->getAvailableStyles();
-    $csl_styles_option = array();
     // module_load_include('inc', 'os_publications', 'os_publications.pages');.
     if (isset($csl_styles) && is_array($csl_styles)) {
       $csl_styles_hover = array();
