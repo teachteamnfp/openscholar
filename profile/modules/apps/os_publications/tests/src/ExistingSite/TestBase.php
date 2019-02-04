@@ -2,6 +2,8 @@
 
 namespace Drupal\Tests\os_publications\ExistingSite;
 
+use Drupal\bibcite_entity\Entity\Contributor;
+use Drupal\bibcite_entity\Entity\ContributorInterface;
 use Drupal\bibcite_entity\Entity\Reference;
 use Drupal\bibcite_entity\Entity\ReferenceInterface;
 use weitzman\DrupalTestTraits\ExistingSiteBase;
@@ -36,6 +38,31 @@ abstract class TestBase extends ExistingSiteBase {
     $this->markEntityForCleanup($reference);
 
     return $reference;
+  }
+
+  /**
+   * Creates a contributor.
+   *
+   * @param array $values
+   *   (Optional) Default values for the contributor.
+   *
+   * @return \Drupal\bibcite_entity\Entity\ContributorInterface
+   *   The new contributor entity.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public function createContributor(array $values = []) : ContributorInterface {
+    $contributor = Contributor::create($values + [
+      'first_name' => $this->randomString(),
+      'middle_name' => $this->randomString(),
+      'last_name' => $this->randomString(),
+    ]);
+
+    $contributor->save();
+
+    $this->markEntityForCleanup($contributor);
+
+    return $contributor;
   }
 
 }
