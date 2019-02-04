@@ -16,8 +16,6 @@ class SampleCitations {
    *
    * @param \Drupal\bibcite\CitationStylerInterface $styler
    *   To use styler service.
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
-   *   To use entity query service.
    */
   public function __construct(CitationStylerInterface $styler) {
     $this->styler = $styler;

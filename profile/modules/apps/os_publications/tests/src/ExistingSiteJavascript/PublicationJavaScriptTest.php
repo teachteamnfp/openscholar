@@ -1,14 +1,13 @@
 <?php
 
-namespace Drupal\Tests\os_publications\JavaScriptTest;
+namespace Drupal\Tests\os_publications\ExistingSiteJavascript;
 
 use weitzman\DrupalTestTraits\ExistingSiteWebDriverTestBase;
 
 /**
  * A WebDriver test suitable for testing Ajax and client-side interactions.
  */
-class PublicationJavaScriptTest extends ExistingSiteWebDriverTestBase
-{
+class PublicationJavaScriptTest extends ExistingSiteWebDriverTestBase {
 
   /**
    * {@inheritdoc}
@@ -16,11 +15,13 @@ class PublicationJavaScriptTest extends ExistingSiteWebDriverTestBase
   public function setUp() {
     parent::setUp();
 
-    $this->user = $this->createUser( [], '', True);
+    $this->user = $this->createUser([], '', TRUE);
     $this->simpleUser = $this->createUser();
   }
 
   /**
+   * Test show/hide of citation examples.
+   *
    * @throws \Behat\Mink\Exception\ExpectationException
    * @throws \Behat\Mink\Exception\ResponseTextException
    */
@@ -32,7 +33,7 @@ class PublicationJavaScriptTest extends ExistingSiteWebDriverTestBase
     $web_assert->statusCodeEquals(200);
     $page = $this->getCurrentPage();
 
-    //Test Modern Language hover.
+    // Test Modern Language hover.
     $format = $page->findField('edit-os-publications-preferred-bibliographic-format-modern-language-association');
     $format->mouseOver();
     $result = $web_assert->waitForElementVisible('css', '#modern_language_association');
@@ -41,7 +42,7 @@ class PublicationJavaScriptTest extends ExistingSiteWebDriverTestBase
     // Verify the text on the page.
     $web_assert->pageTextContains($value);
 
-    //Test American Medical hover.
+    // Test American Medical hover.
     $format = $page->findField('edit-os-publications-preferred-bibliographic-format-american-medical-association');
     $format->mouseOver();
     $result = $web_assert->waitForElementVisible('css', '#american_medical_association');
@@ -50,4 +51,5 @@ class PublicationJavaScriptTest extends ExistingSiteWebDriverTestBase
     // Verify the text on the page.
     $web_assert->pageTextContains($value);
   }
+
 }

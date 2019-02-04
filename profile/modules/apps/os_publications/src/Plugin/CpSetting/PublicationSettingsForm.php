@@ -54,12 +54,11 @@ class PublicationSettingsForm extends PluginBase implements CpSettingInterface, 
   protected $formatManager;
 
   /**
-   *  Citation generate.
+   * Citation generate.
    *
    * @var \Drupal\os_publications\Plugin\SampleCitations
    */
   protected $citations;
-
 
   /**
    * {@inheritdoc}

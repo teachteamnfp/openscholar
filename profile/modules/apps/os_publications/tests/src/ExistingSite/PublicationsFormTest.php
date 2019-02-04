@@ -4,6 +4,11 @@ namespace Drupal\Tests\os_publications\ExistingSite;
 
 use weitzman\DrupalTestTraits\ExistingSiteBase;
 
+/**
+ * Class PublicationsFormTest.
+ *
+ * @package Drupal\Tests\os_publications\ExistingSite
+ */
 class PublicationsFormTest extends ExistingSiteBase {
 
   /**
@@ -12,7 +17,7 @@ class PublicationsFormTest extends ExistingSiteBase {
   public function setUp() {
     parent::setUp();
 
-    $this->user = $this->createUser([],'',True);
+    $this->user = $this->createUser([], '', TRUE);
     $this->simpleUser = $this->createUser();
   }
 
@@ -27,11 +32,10 @@ class PublicationsFormTest extends ExistingSiteBase {
     $this->drupalGet('cp/settings/publications');
     $this->assertSession()->statusCodeEquals(200);
 
-//    $this->drupalLogin($this->simpleUser);
-//
-//    $this->drupalGet('cp/settings/publications');
-//    $this->assertSession()->statusCodeEquals(403);
-
+    // $this->drupalLogin($this->simpleUser);
+    //
+    //    $this->drupalGet('cp/settings/publications');
+    //    $this->assertSession()->statusCodeEquals(403);
   }
 
   /**
@@ -42,7 +46,7 @@ class PublicationsFormTest extends ExistingSiteBase {
   public function testPublicationSettingsForm() {
     $this->drupalLogin($this->user);
     $this->drupalGet('cp/settings/publications');
-    //Testing multiple form fields.
+    // Testing multiple form fields.
     $edit = [
       'os_publications_preferred_bibliographic_format' => 'apa',
       'edit-os-publications-filter-publication-types-artwork' => 'artwork',
@@ -55,4 +59,5 @@ class PublicationsFormTest extends ExistingSiteBase {
     $this->assertSession()->checkboxChecked('edit-os-publications-shorten-citations');
     $this->assertSession()->fieldValueEquals('edit-biblio-sort', 'title');
   }
+
 }
