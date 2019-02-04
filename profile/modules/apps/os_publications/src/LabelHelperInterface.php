@@ -22,4 +22,17 @@ interface LabelHelperInterface {
    */
   public function convertToPublicationsListingLabel(string $label) : string;
 
+  /**
+   * Converts contributor's last name to a name used in publications listing.
+   *
+   * Converts a string like, "Curtis", to "C".
+   *
+   * @param string $name
+   *   The name to convert.
+   *
+   * @return string
+   *   The converted name.
+   */
+  public function convertToPublicationsListingAuthorName(string $name) : string;
+
 }

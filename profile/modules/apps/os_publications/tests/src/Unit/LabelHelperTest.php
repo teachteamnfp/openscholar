@@ -40,4 +40,13 @@ class LabelHelperTest extends ExistingSiteBase {
     $this->assertEquals('U', $this->labelHelper->convertToPublicationsListingLabel('From up on Poppy Hill'));
   }
 
+  /**
+   * Tests convertToPublicationsListingAuthorName.
+   *
+   * @covers ::convertToPublicationsListingAuthorName
+   */
+  public function testConvertToPublicationsListingAuthorName() {
+    $this->assertEquals('H', $this->labelHelper->convertToPublicationsListingAuthorName('hollis'));
+  }
+
 }

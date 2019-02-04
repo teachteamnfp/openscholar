@@ -76,4 +76,11 @@ final class LabelHelper implements LabelHelperInterface {
     return mb_strtoupper(substr(trim(preg_replace($pattern, '', mb_strtolower($label))), 0, 1));
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function convertToPublicationsListingAuthorName(string $name): string {
+    return mb_strtoupper(substr($name, 0, 1));
+  }
+
 }
