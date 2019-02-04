@@ -108,7 +108,7 @@ function fuzzyDate(time){
 //Takes an ISO time and returns a string representing how
 //long ago the date represents.
 function formalDate(time){
-  var date = new Date(time + ' UTC');
+  var date = new Date(time.split(' ').join('T'));
   var month = date.getMonth();
   var day = date.getDate();
   var year = date.getFullYear();
