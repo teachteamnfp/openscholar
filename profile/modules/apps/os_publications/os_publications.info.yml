@@ -3,9 +3,9 @@ core: 8.x
 type: module
 description: Publications customizations for OpenScholar
 dependencies:
-  - bibcite_entity
-  - cp_settings
-  - bibcite_bibtex
-  - bibcite_endnote
-  - bibcite_ris
-  - bibcite_marc
+  - drupal:bibcite_entity
+  - drupal:cp_settings
+  - drupal:bibcite_bibtex
+  - drupal:bibcite_endnote
+  - drupal:bibcite_ris
+  - drupal:bibcite_marc
