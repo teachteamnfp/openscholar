@@ -155,4 +155,52 @@ class PublicationsViewsTest extends TestBase {
     $this->assertCount(1, $grouped_result['R']);
   }
 
+  /**
+   * Tests year display.
+   */
+  public function testYear() {
+    $this->createReference([
+      'title' => 'Girl with a Pearl Earring',
+      'bibcite_year' => [
+        'value' => 1665,
+      ],
+    ]);
+
+    $this->createReference([
+      'title' => 'The Persistence of Memory',
+      'bibcite_year' => [
+        'value' => 1931,
+      ],
+    ]);
+
+    $this->createReference([
+      'title' => 'The Starry Night',
+      'bibcite_year' => [
+        'value' => 1889,
+      ],
+    ]);
+
+    $this->createReference([
+      'title' => 'Foobar',
+      'bibcite_year' => [
+        'value' => 1889,
+      ],
+    ]);
+
+    /** @var array $result */
+    $result = views_get_view_result('publications', 'page_4');
+
+    $this->assertCount(4, $result);
+
+    $grouped_result = [];
+
+    foreach ($result as $item) {
+      $grouped_result[$item->_entity->get('bibcite_year')->first()->getValue()['value']][] = $item->_entity->id();
+    }
+
+    $this->assertCount(1, $grouped_result['1665']);
+    $this->assertCount(1, $grouped_result['1931']);
+    $this->assertCount(2, $grouped_result['1889']);
+  }
+
 }
