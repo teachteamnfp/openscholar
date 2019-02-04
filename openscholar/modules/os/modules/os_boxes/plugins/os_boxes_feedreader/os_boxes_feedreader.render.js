@@ -86,7 +86,7 @@ Drupal.behaviors.osBoxesFeedReader = {
 //Takes an ISO time and returns a string representing how
 //long ago the date represents.
 function fuzzyDate(time){
-  var date = new Date(time + ' UTC'),
+  var date = new Date(time.split(' ').join('T')),
     diff = (((new Date()).getTime() - date.getTime()) / 1000),
     day_diff = Math.floor(diff / 86400);
       
