@@ -24,7 +24,7 @@ class CpSettingsManager extends DefaultPluginManager implements CpSettingsManage
     );
 
     $this->alterInfo('cp_settings');
-    $this->setCacheBackend($cacheBackend, 'cp_settings_plugins');
+    $this->setCacheBackend($cacheBackend, 'cp_settings_plugins', ['url.path', 'url.query_args']);
   }
 
   /**
