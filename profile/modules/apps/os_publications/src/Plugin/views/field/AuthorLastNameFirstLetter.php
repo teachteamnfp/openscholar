@@ -2,7 +2,7 @@
 
 namespace Drupal\os_publications\Plugin\views\field;
 
-use Drupal\os_publications\LabelHelper;
+use Drupal\os_publications\PublicationsListingHelper;
 use Drupal\views\Plugin\views\field\FieldPluginBase;
 use Drupal\views\ResultRow;
 
@@ -32,9 +32,9 @@ class AuthorLastNameFirstLetter extends FieldPluginBase {
     $entity_adapter = $entity_reference_item->get('entity')->getTarget();
     /** @var \Drupal\bibcite_entity\Entity\ContributorInterface $bibcite_contributor */
     $bibcite_contributor = $entity_adapter->getValue();
-    /** @var \Drupal\os_publications\LabelHelperInterface $label_helper */
-    $label_helper = new LabelHelper();
-    return $label_helper->convertToPublicationsListingAuthorName($this->sanitizeValue($bibcite_contributor->getLastName()));
+    /** @var \Drupal\os_publications\PublicationsListingHelperInterface $publications_listing_helper */
+    $publications_listing_helper = new PublicationsListingHelper();
+    return $publications_listing_helper->convertAuthorName($this->sanitizeValue($bibcite_contributor->getLastName()));
   }
 
 }

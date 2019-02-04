@@ -3,12 +3,12 @@
 namespace Drupal\os_publications;
 
 /**
- * LabelHelperInterface.
+ * PublicationsListingHelperInterface.
  */
-interface LabelHelperInterface {
+interface PublicationsListingHelperInterface {
 
   /**
-   * Converts a label into label used in publications listing.
+   * Converts reference label into label used in publications listing.
    *
    * Converts a string like, "The Velvet Underground", to "V", i.e. it trims any
    * articles or prepositions from the beginning of the string, and returns the
@@ -20,7 +20,7 @@ interface LabelHelperInterface {
    * @return string
    *   The altered label.
    */
-  public function convertToPublicationsListingLabel(string $label) : string;
+  public function convertLabel(string $label) : string;
 
   /**
    * Converts contributor's last name to a name used in publications listing.
@@ -33,6 +33,6 @@ interface LabelHelperInterface {
    * @return string
    *   The converted name.
    */
-  public function convertToPublicationsListingAuthorName(string $name) : string;
+  public function convertAuthorName(string $name) : string;
 
 }

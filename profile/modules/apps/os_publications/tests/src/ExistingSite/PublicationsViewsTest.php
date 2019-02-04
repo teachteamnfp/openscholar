@@ -2,7 +2,7 @@
 
 namespace Drupal\Tests\os_publications\ExistingSite;
 
-use Drupal\os_publications\LabelHelper;
+use Drupal\os_publications\PublicationsListingHelper;
 
 /**
  * Tests publication views.
@@ -69,11 +69,11 @@ class PublicationsViewsTest extends TestBase {
     $this->assertCount(4, $result);
 
     $grouped_result = [];
-    /** @var \Drupal\os_publications\LabelHelperInterface $label_helper */
-    $label_helper = new LabelHelper();
+    /** @var \Drupal\os_publications\PublicationsListingHelperInterface $publications_listing_helper */
+    $publications_listing_helper = new PublicationsListingHelper();
 
     foreach ($result as $item) {
-      $grouped_result[$label_helper->convertToPublicationsListingLabel($item->_entity->label())][] = $item->_entity->id();
+      $grouped_result[$publications_listing_helper->convertLabel($item->_entity->label())][] = $item->_entity->id();
     }
 
     $this->assertCount(1, $grouped_result['G']);

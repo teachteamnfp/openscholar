@@ -2,7 +2,7 @@
 
 namespace Drupal\os_publications\Plugin\views\field;
 
-use Drupal\os_publications\LabelHelper;
+use Drupal\os_publications\PublicationsListingHelper;
 use Drupal\views\Plugin\views\field\FieldPluginBase;
 use Drupal\views\ResultRow;
 
@@ -24,9 +24,9 @@ class LabelFirstLetterExclPreposition extends FieldPluginBase {
    * {@inheritdoc}
    */
   public function render(ResultRow $values) {
-    /** @var \Drupal\os_publications\LabelHelperInterface $label_helper */
-    $label_helper = new LabelHelper();
-    return $label_helper->convertToPublicationsListingLabel($this->sanitizeValue($values->_entity->label()));
+    /** @var \Drupal\os_publications\PublicationsListingHelperInterface $publications_listing_helper */
+    $publications_listing_helper = new PublicationsListingHelper();
+    return $publications_listing_helper->convertLabel($this->sanitizeValue($values->_entity->label()));
   }
 
 }

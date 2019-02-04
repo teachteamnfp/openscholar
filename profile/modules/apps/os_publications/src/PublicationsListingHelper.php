@@ -3,14 +3,14 @@
 namespace Drupal\os_publications;
 
 /**
- * Class LabelHelper.
+ * PublicationsListingHelper.
  */
-final class LabelHelper implements LabelHelperInterface {
+final class PublicationsListingHelper implements PublicationsListingHelperInterface {
 
   /**
    * {@inheritdoc}
    */
-  public function convertToPublicationsListingLabel(string $label) : string {
+  public function convertLabel(string $label) : string {
     $words_to_trim = [
       'the',
       'a',
@@ -79,7 +79,7 @@ final class LabelHelper implements LabelHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function convertToPublicationsListingAuthorName(string $name): string {
+  public function convertAuthorName(string $name): string {
     return mb_strtoupper(substr($name, 0, 1));
   }
 
