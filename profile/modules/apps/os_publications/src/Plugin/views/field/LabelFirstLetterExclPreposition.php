@@ -102,7 +102,7 @@ class LabelFirstLetterExclPreposition extends FieldPluginBase {
 
     $pattern = '/\b^(?:' . implode('|', $words_to_trim) . ')\b/i';
 
-    return mb_strtoupper(substr(trim(preg_replace($pattern, '', $label)), 0, 1));
+    return mb_strtoupper(substr(trim(preg_replace($pattern, '', mb_strtolower($label))), 0, 1));
   }
 
 }
