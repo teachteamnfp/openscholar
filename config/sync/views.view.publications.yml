@@ -433,6 +433,7 @@ display:
         style: false
         row: false
         title: false
+        sorts: false
       style:
         type: default
         options:
@@ -451,6 +452,19 @@ display:
           hide_empty: false
           default_field_elements: true
       title: 'Publications by Title'
+      sorts:
+        field_is_sticky_value:
+          id: field_is_sticky_value
+          table: bibcite_reference__field_is_sticky
+          field: field_is_sticky_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: ASC
+          exposed: true
+          expose:
+            label: Sticky
+          plugin_id: standard
     cache_metadata:
       max-age: -1
       contexts:
@@ -485,6 +499,7 @@ display:
         row: false
         fields: false
         title: false
+        sorts: false
       row:
         type: fields
         options:
@@ -610,6 +625,19 @@ display:
           entity_field: bibcite_contributor
           plugin_id: os_publications_first_letter_last_name_author
       title: 'Publications by Author'
+      sorts:
+        field_is_sticky_value:
+          id: field_is_sticky_value
+          table: bibcite_reference__field_is_sticky
+          field: field_is_sticky_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: ASC
+          exposed: true
+          expose:
+            label: Sticky
+          plugin_id: standard
     cache_metadata:
       max-age: -1
       contexts:
