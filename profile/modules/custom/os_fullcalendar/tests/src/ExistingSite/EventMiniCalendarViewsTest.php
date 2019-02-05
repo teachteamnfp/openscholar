@@ -3,7 +3,6 @@
 namespace Drupal\Tests\os_fullcalendar\ExistingSite;
 
 use Drupal\Component\Datetime\DateTimePlus;
-use Drupal\views\Views;
 
 /**
  * Tests mini calendar views.
@@ -35,35 +34,6 @@ class EventMiniCalendarViewsTest extends EventTestBase {
 
     /** @var array $result */
     $result = views_get_view_result('calendar', 'block_1');
-    $view = Views::getView('calendar');
-    $view->setDisplay('block_1');
-    $view->preExecute();
-    $view->execute();
-    file_put_contents('public://query.txt', $view->query->query());
-
-    $datetime = new DateTimePlus('now');
-    file_put_contents('public://now.txt', $datetime->format("Y-m-d\TH:i:s"));
-    file_put_contents('public://timezone.txt', $datetime->getTimezone());
-    file_put_contents('public://now-php.txt', $datetime->getPhpDateTime());
-    file_put_contents('public://offset.txt', $datetime->getOffset());
-    file_put_contents('public://errors.txt', print_r($datetime->getErrors(), TRUE));
-
-    $datetime = new DateTimePlus('now', new \DateTimeZone('America/Anguilla'));
-    file_put_contents('public://now-anguilla.txt', $datetime->format("Y-m-d\TH:i:s"));
-
-    $datetime = new DateTimePlus($next_month_event->field_recurring_date->first()->getValue()['value']);
-    file_put_contents("public://{$next_month_event->label()}-utc.txt", $datetime->format("Y-m-d\TH:i:s"));
-
-    $datetime = new DateTimePlus($this->event->field_recurring_date->first()->getValue()['value']);
-    file_put_contents("public://{$this->event->label()}-utc.txt", $datetime->format("Y-m-d\TH:i:s"));
-
-    $connection = \Drupal::database();
-    $query = $connection->query("SELECT * from node_field_data");
-    file_put_contents("public://node_field_data.txt", print_r($query->fetchAll(), TRUE));
-    $query = $connection->query("SELECT * FROM group_content_field_data");
-    file_put_contents("public://group_content_field_data.txt", print_r($query->fetchAll(), TRUE));
-    $query = $connection->query("SELECT * FROM node__field_recurring_date");
-    file_put_contents("public://node__field_recurring_date.txt", print_r($query->fetchAll(), TRUE));
 
     // Next month event should not appear.
     $this->assertCount(1, $result);
@@ -111,6 +81,14 @@ class EventMiniCalendarViewsTest extends EventTestBase {
 
     /** @var array $result */
     $result = views_get_view_result('calendar', 'block_2');
+
+    $datetime = new DateTimePlus('now', new \DateTimeZone('America/Anguilla'));
+    file_put_contents('public://now-anguilla.txt', $datetime->format("Y-m-d\TH:i:s"));
+
+    foreach ($result as $item) {
+      $datetime = new DateTimePlus($item->_entity->field_recurring_date->first()->getValue()['value']);
+      file_put_contents("public://{$item->_entity->label()}-utc.txt", $datetime->format("Y-m-d\TH:i:s"));
+    }
 
     $this->assertCount(1, $result);
     /** @var \Drupal\views\ResultRow $item */

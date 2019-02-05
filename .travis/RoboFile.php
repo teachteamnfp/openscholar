@@ -326,7 +326,10 @@ class RoboFile extends \Robo\Tasks
         $tasks[] = $this->taskExecStack()
             ->exec('docker-compose exec -T php ./vendor/bin/phpunit ' .
                 '-c web/core '.
-                '--debug \Drupal\Tests\os_fullcalendar\ExistingSite\EventMiniCalendarViewsTest /var/www/html/profile/modules/custom/os_fullcalendar/tests/src/ExistingSite/EventMiniCalendarViewsTest.php');
+                '--debug '.
+                ($groups ? '--group ' . $groups . ' ': ' ')  .
+                '--exclude-group=unit,functional,functional-javascript '.
+                '--verbose web/profiles/contrib/openscholar');
         return $tasks;
     }
 
