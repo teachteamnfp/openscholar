@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6bee8f2d5c6028a17bfc81db3baf27e3",
+    "content-hash": "4ee370d8d68cea96b5c3144cf8f6d3ca",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -3103,7 +3103,8 @@
                     "merge-extra": false
                 },
                 "patches_applied": {
-                    "Make sure TestSitePath exist before creating .htkey": "https://www.drupal.org/files/issues/2246725-24.patch"
+                    "Make sure TestSitePath exist before creating .htkey": "https://www.drupal.org/files/issues/2246725-24.patch",
+                    "Views Date Filter Datetime Granularity Option": "https://www.drupal.org/files/issues/2018-12-11/views_date_filter_granularity_2868014-60.patch"
                 }
             },
             "autoload": {
@@ -3564,11 +3565,17 @@
         },
         {
             "name": "drupal/group_purl",
-            "version": "dev-1.x",
+            "version": "1.0.0-alpha1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/group_purl",
-                "reference": "7ed261f21f8e6195fbd92dcfd46af4a71290acb2"
+                "reference": "8.x-1.0-alpha1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/group_purl-8.x-1.0-alpha1.zip",
+                "reference": "8.x-1.0-alpha1",
+                "shasum": "33c7d85d7822f74ab961154177dd9532deba13ee"
             },
             "require": {
                 "drupal/core": "~8.0",
@@ -3581,12 +3588,15 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha1+0-dev",
+                    "version": "8.x-1.0-alpha1",
                     "datestamp": "1546375980",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
                     }
+                },
+                "patches_applied": {
+                    "Prevent base path from interfering with purl detection": "https://www.drupal.org/files/issues/2019-01-17/group_purl.3026646-2.basepath.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3607,8 +3617,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/group_purl",
                 "issues": "https://www.drupal.org/project/issues/group_purl"
-            },
-            "time": "2019-01-01T20:48:07+00:00"
+            }
         },
         {
             "name": "drupal/image_widget_crop",
@@ -3998,7 +4007,7 @@
                 "shasum": null
             },
             "type": "drupal-module",
-            "time": "2018-12-10T20:05:46+00:00"
+            "time": "2018-06-20T15:36:05+00:00"
         },
         {
             "name": "drupal/redirect",
@@ -11147,7 +11156,6 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "drupal/purl": 20,
-        "drupal/group_purl": 20,
         "drupal/config_sync": 15,
         "drupal/context": 10,
         "kenwheeler/slick": 20,

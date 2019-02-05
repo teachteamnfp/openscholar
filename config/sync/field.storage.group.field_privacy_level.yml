@@ -1,0 +1,22 @@
+uuid: a3474fa7-12d6-49ef-ba6b-61c92c156e35
+langcode: en
+status: true
+dependencies:
+  module:
+    - group
+    - options
+    - vsite_privacy
+id: group.field_privacy_level
+field_name: field_privacy_level
+entity_type: group
+type: list_string
+settings:
+  allowed_values: {  }
+  allowed_values_function: vsite_privacy_allowed_values
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
