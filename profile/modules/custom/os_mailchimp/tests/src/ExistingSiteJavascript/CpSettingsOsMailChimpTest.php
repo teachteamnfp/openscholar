@@ -62,8 +62,18 @@ class CpSettingsOsMailChimpTest extends ExistingSiteWebDriverTestBase {
   public function testBlockVisibilityInContentRegion() {
     $web_assert = $this->assertSession();
     $this->visit("/");
-    $isExists = $web_assert->pageTextContains('Mailchimp subscribe');
+    $web_assert->statusCodeEquals(200);
+    $page = $this->getCurrentPage();
+    $isExists = $page->hasContent('Mailchimp subscribe');
     $this->assertTrue($isExists, 'Region not contains mailchimp block.');
+
+    // Subscribe link is visible and press it.
+    $submit_button = $page->findLink('Subscribe to list!');
+    $submit_button->press();
+
+    // Check modal is appeared.
+    $result = $web_assert->waitForElementVisible('css', '.ui-dialog');
+    $this->assertNotNull($result);
   }
 
 }
