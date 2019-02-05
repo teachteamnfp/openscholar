@@ -52,7 +52,7 @@ class CpSettingsOsMailChimpTest extends ExistingSiteWebDriverTestBase {
     $this->visit("/cp/settings/mailchimp");
     $web_assert->statusCodeEquals(200);
     $page = $this->getCurrentPage();
-    $fieldValue = $page->findField('site_title')->getValue();
+    $fieldValue = $page->findField('api_key')->getValue();
     $this->assertSame('test1234', $fieldValue, 'Form is not loaded api key value.');
   }
 
@@ -61,7 +61,6 @@ class CpSettingsOsMailChimpTest extends ExistingSiteWebDriverTestBase {
    */
   public function testBlockVisibilityInContentRegion() {
     $web_assert = $this->assertSession();
-    $this->drupalLogout();
     $this->visit("/");
     $isExists = $web_assert->pageTextContains('Mailchimp subscribe');
     $this->assertTrue($isExists, 'Region not contains mailchimp block.');
