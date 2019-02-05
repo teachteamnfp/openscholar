@@ -5,8 +5,9 @@ namespace Drupal\os_mailchimp\Plugin\Block;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\os_mailchimp\Form\OsMailChimpSignupForm;
+use Drupal\Core\Url;
 
 /**
  * Provides a block with mailchimp subscribe.
@@ -26,19 +27,24 @@ class OsMailChimpBlock extends BlockBase {
     if (empty($config['list_id'])) {
       return '';
     }
-    $list = mailchimp_get_list($config['list_id']);
 
-    if (empty($list)) {
-      return [
-        '#markup' => $this->t('The subscription service is currently unavailable. Please check again later.'),
-      ];
-    }
-    $form = new OsMailChimpSignupForm();
-    $form->setList($list);
+    $link_url = Url::fromRoute('os_mailchimp.modal.subscribe', ['list_id' => $config['list_id']]);
+    $link_url->setOptions([
+      'attributes' => [
+        'class' => ['use-ajax', 'button', 'button--small'],
+        'data-dialog-type' => 'modal',
+      ],
+    ]);
 
-    $content = \Drupal::formBuilder()->getForm($form);
-
-    return $content;
+    return [
+      '#type' => 'markup',
+      '#markup' => Link::fromTextAndUrl(t('Subscribe to list!'), $link_url)->toString(),
+      '#attached' => [
+        'library' => [
+          'core/drupal.dialog.ajax',
+        ],
+      ],
+    ];
   }
 
   /**
@@ -61,6 +67,7 @@ class OsMailChimpBlock extends BlockBase {
       '#title' => 'List to subscribe',
       '#options' => $this->mailChimpListsToOptions($lists),
       '#default_value' => $config['list_id'],
+      '#required' => TRUE,
     ];
 
     return $form;
