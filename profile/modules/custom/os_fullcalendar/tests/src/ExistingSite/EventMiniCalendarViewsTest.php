@@ -82,12 +82,6 @@ class EventMiniCalendarViewsTest extends EventTestBase {
     /** @var array $result */
     $result = views_get_view_result('calendar', 'block_2');
 
-    $datetime = new DateTimePlus('now', new \DateTimeZone('America/Anguilla'));
-
-    foreach ($result as $item) {
-      $datetime = new DateTimePlus($item->_entity->field_recurring_date->first()->getValue()['value']);
-    }
-
     $this->assertCount(1, $result);
     /** @var \Drupal\views\ResultRow $item */
     foreach ($result as $item) {
