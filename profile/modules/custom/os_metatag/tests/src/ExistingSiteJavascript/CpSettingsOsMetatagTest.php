@@ -38,9 +38,6 @@ class CpSettingsOsMetatagTest extends ExistingSiteWebDriverTestBase {
     $this->drupalLogin($this->adminUser);
 
     $this->visit("/cp/settings/seo");
-    $web_assert->statusCodeEquals(403);
-    drupal_flush_all_caches();
-    $this->visit("/cp/settings/seo");
     $web_assert->statusCodeEquals(200);
 
     $edit = [
