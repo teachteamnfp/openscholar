@@ -45,6 +45,7 @@ class VsiteMetatagTest extends OsMetatagTestBase {
         'target_id' => $this->fileLogo->id(),
         'alt' => 'lorem',
       ],
+      'field_site_description' => '<p>Lorem ipsum dolor</p>',
     ]);
     $vsite_context_manager->activateVsite($this->group);
 
@@ -62,9 +63,17 @@ class VsiteMetatagTest extends OsMetatagTestBase {
   public function testMetatagsOnVsiteFrontPage() {
     $web_assert = $this->assertSession();
 
-    $this->visit("/test-alias");
-    file_put_contents('public://' . drupal_basename($this->getSession()->getCurrentUrl()) . '.html', $this->getCurrentPageContent());
+    $this->visit("/test-alias/");
     $web_assert->statusCodeEquals(200);
+    $expectedHtmlValue = '<meta name="twitter:image" content="http://apache/sites/default/files/styles/large/public/' . $this->fileLogo->getFilename();
+    $this->assertContains($expectedHtmlValue, $this->getCurrentPageContent(), 'HTML head not contains twitter image.');
+    $expectedHtmlValue = '<meta property="og:image" content="http://apache/sites/default/files/styles/large/public/' . $this->fileLogo->getFilename();
+    $this->assertContains($expectedHtmlValue, $this->getCurrentPageContent(), 'HTML head not contains og image.');
+    $expectedHtmlValue = '<meta property="og:type" content="personal" />';
+    $this->assertContains($expectedHtmlValue, $this->getCurrentPageContent(), 'HTML head not contains og type.');
+    $expectedHtmlValue = '<meta name="twitter:description" content="Lorem ipsum dolor" />';
+    $this->assertContains($expectedHtmlValue, $this->getCurrentPageContent(), 'HTML head not contains og type.');
+
   }
 
 }
