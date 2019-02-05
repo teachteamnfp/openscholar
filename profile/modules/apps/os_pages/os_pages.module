@@ -8,6 +8,7 @@
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\node\Entity\Node;
 use Drupal\block_visibility_groups\Entity\BlockVisibilityGroup;
+use \Drupal\Core\Form\FormStateInterface;
 
 /**
  * Implements hook_entity_insert().
@@ -121,4 +122,43 @@ function os_pages_entity_insert(EntityInterface $entity) {
 
     $section_visibility_group->save();
   }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function os_pages_form_node_page_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  /** @var int|null $pid */
+  $pid = \Drupal::request()->query->get('pid');
+
+  if (!$pid) {
+    return;
+  }
+
+  $page = Node::load($pid);
+
+  if (!isset($page->book['bid'])) {
+    return;
+  }
+
+  $form_state->setTemporary([
+    'bid' => $page->book['bid'],
+    'pid' => $pid,
+  ]);
+  array_unshift($form['actions']['submit']['#submit'], 'os_pages_node_page_form_set_book');
+}
+
+/**
+ * Sets default book data for add node page form.
+ */
+function os_pages_node_page_form_set_book(&$form, FormStateInterface $form_state) {
+  /** @var array $default_book_data */
+  $default_book_data = $form_state->getValue('book');
+  /** @var array $altered_book_data */
+  $altered_book_data = $form_state->getTemporary();
+
+  $default_book_data['bid'] = $altered_book_data['bid'];
+  $default_book_data['pid'] = $altered_book_data['pid'];
+
+  $form_state->setValue('book', $default_book_data);
 }
