@@ -1,0 +1,37 @@
+<?php
+
+/**
+ * @file
+ * OS metatag module.
+ */
+
+use Drupal\Component\Utility\Html;
+
+/**
+ * Implements hook_page_attachments().
+ */
+function os_metatag_page_attachments(array &$attachments) {
+  $config = \Drupal::config('os_metatag.setting');
+  $publisher_url = $config->get('publisher_url');
+  if (!empty($publisher_url)) {
+    $publisher_link = [
+      '#tag' => 'link',
+      '#attributes' => [
+        'rel' => 'publisher',
+        'href' => Html::escape($publisher_url),
+      ],
+    ];
+    $attachments['#attached']['html_head'][] = [$publisher_link, 'publisher_link'];
+  }
+  $author_url = $config->get('author_url');
+  if (!empty($author_url)) {
+    $author_link = [
+      '#tag' => 'link',
+      '#attributes' => [
+        'rel' => 'author',
+        'href' => Html::escape($author_url),
+      ],
+    ];
+    $attachments['#attached']['html_head'][] = [$author_link, 'author_link'];
+  }
+}
