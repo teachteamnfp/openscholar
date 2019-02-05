@@ -67,10 +67,11 @@ class OsMetatagTestBase extends ExistingSiteBase {
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
   protected function createFile(array $values = []) : File {
+    $file_name = $this->randomMachineName();
     $file = $this->entityTypeManager->getStorage('file')->create($values + [
       'uid' => 1,
-      'filename' => $this->randomMachineName(),
-      'uri' => 'public://' . $this->randomMachineName(),
+      'filename' => $file_name,
+      'uri' => 'public://' . $file_name,
       'filemime' => 'image/jpeg',
       'filesize' => 90000,
       'status' => 1,
