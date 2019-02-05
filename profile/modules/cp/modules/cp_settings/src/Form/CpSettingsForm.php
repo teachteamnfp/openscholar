@@ -73,8 +73,8 @@ class CpSettingsForm extends ConfigFormBase {
    * Returns plugins.
    */
   protected function getPlugins() {
-    if (!isset($this->plugin)) {
-      $group = $this->getRequest()->get('setting_group');
+    $group = $this->getRequest()->get('setting_group');
+    if (!isset($this->plugins) && is_string($group)) {
       $this->plugins = $this->cpSettingsManager->getPluginsForGroup($group);
     }
     return $this->plugins;
