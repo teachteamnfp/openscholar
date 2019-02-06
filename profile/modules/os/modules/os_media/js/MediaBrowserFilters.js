@@ -35,7 +35,7 @@ angular.module('mediaBrowser.filters', [])
   .filter('mbExtensions', function () {
     function testFile(file, extensions) {
       var filename = file.filename,
-        ext = filename.slice(filename.lastIndexOf('.')+1);
+        ext = 'jpg';
 
       return !(file.schema == 'public' || file.schema == 'private') || (extensions.indexOf(ext) !== -1);
     }
@@ -67,7 +67,7 @@ angular.module('mediaBrowser.filters', [])
   })
   .filter('mbType', function () {
     function testFile(file, types) {
-      return types.indexOf(file.type) != -1;
+      return types.indexOf(file.bundle[0].target_id) != -1;
     }
 
     return function (input, types) {

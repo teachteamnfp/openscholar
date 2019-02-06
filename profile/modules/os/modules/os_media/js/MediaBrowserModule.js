@@ -2,7 +2,7 @@
   var rootPath,
     open = angular.noop;
 
-  angular.module('mediaBrowser', ['JSPager', 'EntityService', 'os-auth', 'ngSanitize', 'ngFileUpload', 'angularModalService', 'FileEditor', 'mediaBrowser.filters', 'locationFix', 'angularSlideables', 'DrupalSettings'])
+  angular.module('mediaBrowser', ['JSPager', 'EntityService', 'os-auth', 'ngSanitize', 'ngFileUpload', 'angularModalService', 'FileEditor', 'mediaBrowser.filters', 'locationFix', 'angularSlideables', 'DrupalSettings', 'UrlGenerator'])
     .run(['mbModal', 'FileEditorOpenModal', function (mbModal, feom) {
       // Disable drag and drop behaviors on the window object, to prevent files
       // from.
@@ -58,16 +58,16 @@
         // }
       }
     }])
-  .controller('BrowserCtrl', ['$scope', '$filter', '$http', 'EntityService', 'EntityConfig', '$sce', '$q', '$upload', '$timeout', 'FILEEDITOR_RESPONSES', 'params', 'close', '$location', 'drupalSettings',
-      function ($scope, $filter, $http, EntityService, config, $sce, $q, $upload, $timeout, FER, params, close, $location, settings) {
+  .controller('BrowserCtrl', ['$scope', '$filter', '$http', 'EntityService', 'EntityConfig', '$sce', '$q', 'Upload', '$timeout', 'FILEEDITOR_RESPONSES', 'params', 'close', '$location', 'drupalSettings', 'urlGenerator',
+      function ($scope, $filter, $http, EntityService, config, $sce, $q, $upload, $timeout, FER, params, close, $location, settings, urlGenerator) {
 
     // Initialization
-    var service = new EntityService('files', 'id'),
+    let service = new EntityService('media', 'mid'),
       toEditForm = false,
       directInsert = true;
     $scope.files = [];
     $scope.numFiles = 0;
-    $scope.templatePath = settings.getSetting('paths.MediaBrowser');
+    $scope.templatePath = urlGenerator.generate(settings.fetchSetting('paths.mediaBrowser'), false);
     $scope.selection = 0;
     $scope.form = '';
     $scope.pane = 'upload';
@@ -88,7 +88,7 @@
 
     $scope.toInsert = [];
 
-    var allTypes = [
+    let allTypes = [
       {label: 'Image', value: 'image'},
       {label: 'Document', value: 'document'},
       {label: 'Video', value: 'video'},
@@ -98,11 +98,11 @@
       {label: 'Icon', value: 'icon'}
     ];
 
-    var defaultFilteredTypes = params.types;
+    let defaultFilteredTypes = params.types;
     $scope.availTypes = [];
     $scope.availFilter = [];
-    for (var j in defaultFilteredTypes) {
-      for (var k=0; k<allTypes.length; k++) {
+    for (let j in defaultFilteredTypes) {
+      for (let k=0; k<allTypes.length; k++) {
         if (defaultFilteredTypes[j] == allTypes[k].value) {
           $scope.availTypes.push(allTypes[k]);
           $scope.availFilter.push(allTypes[k].value);
@@ -117,7 +117,7 @@
     if (!params.override_extensions) {
       var types = params.types;
       for (var t in types) {
-        var ext = Drupal.settings.extensionMap[types[t]],
+        var ext = settings.fetchSetting('extensionMap')[types[t]],
           i = 0, l = ext ? ext.length : false;
 
         if (!ext) {
@@ -132,13 +132,13 @@
       }
     }
     $scope.extensions.sort();
-    $scope.whitelist = Drupal.settings.embedWhitelist;
+    $scope.whitelist = settings.fetchSetting('embedWhitelist');
 
     if (params.max_filesize) {
       $scope.maxFilesize = params.max_filesize;
     }
     else {
-      $scope.maxFilesize = Drupal.settings.maximumFileSize;
+      $scope.maxFilesize = settings.fetchSetting('maximumFileSize');
     }
 
     $scope.filteredTypes = [];
@@ -592,11 +592,11 @@
 
     function getKeyForFile(fid) {
       for (var i=0; i<$scope.files.length; i++) {
-        if ($scope.files[i].id == fid) {
+        if ($scope.files[i].mid == fid) {
           return i;
         }
       }
-      return FALSE;
+      return false;
     }
 
     // selected file
@@ -759,7 +759,7 @@
       transclude: true
     }
   }])
-  .service('mbModal', ['ModalService', 'drupalSettings', function (ModalService, settings) {
+  .service('mbModal', ['ModalService', 'drupalSettings', 'urlGenerator', function (ModalService, settings, url) {
       this.defaultParams = function () {
         var params = {
           dialog: {
@@ -825,7 +825,7 @@
         }
 
         ModalService.showModal({
-          templateUrl: settings.getSetting('paths.mediaBrowser')+'/browser.html?vers='+settings.getSetting('version.MediaBrowser'),
+          templateUrl: url.generate(settings.fetchSetting('paths.mediaBrowser')+'/browser.html?vers='+settings.fetchSetting('version.mediaBrowser'), false),
           controller: 'BrowserCtrl',
           inputs: {
             params: nparams

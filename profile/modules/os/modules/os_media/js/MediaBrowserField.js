@@ -13,7 +13,7 @@
 
       function link(scope, elem, attr, ngModelController) {
         // everything to define
-        var service = new EntityService('files', 'id');
+        var service = new EntityService('media', 'mid');
         var field_root_id = "";
         if (scope.$parent.element) {
           field_root_id = scope.$parent.element.id;
