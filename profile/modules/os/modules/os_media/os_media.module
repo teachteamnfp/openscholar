@@ -1,7 +1,11 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: New User
- * Date: 2/4/2019
- * Time: 11:44 AM
- */
+
+function os_media_library_info_alter(&$libraries, $extension) {
+  if ($extension == 'os_media') {
+    if (isset($libraries['mediaBrowser'])) {
+      $libraries['mediaBrowser']['drupalSettings']['extensionMap'] = [];
+      $libraries['mediaBrowser']['drupalSettings']['embedWhitelist'] = [];
+      $libraries['mediaBrowser']['drupalSettings']['maximumFileSize'] = '512MB';
+    }
+  }
+}
