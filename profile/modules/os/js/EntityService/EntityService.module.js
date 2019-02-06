@@ -8,7 +8,8 @@
     defers = {},
     cache = {},
     weSaved = {},
-    lockPromise;
+    lockPromise,
+    format = '?_format=json';
 
   angular.module('EntityService', ['indexedDB', 'DrupalSettings', 'UrlGenerator'])
   /**
@@ -51,23 +52,23 @@
           vsite = settings.fetchSetting('spaces.id');
         }
 
-        var success = function(resp, status, headers, config) {
-          console.log(arguments);
-          recursiveFetch(resp, status, headers, config);
+        var success = function(resp) {
+          recursiveFetch(resp.data, resp.status, resp.headers, resp.config);
         };
 
-        function recursiveFetch(resp, status, headers, config) {
-          var key = config.pKey;
+        function recursiveFetch(data, status, headers, config) {
+          let key = config.pKey;
           // convert the key into a params array
-          for (var i=0; i<resp.data.length; i++) {
-            cache[key].data.push(resp.data[i]);
+          for (let i=0; i<data.rows.length; i++) {
+            cache[key].data.push(data.rows[i]);
           }
+          let pager = data.pager;
 
-          if (resp.next) {
-            var max = Math.ceil(resp.count/resp.data.length),
-              curr = resp.next.href.match(/page=([\d]+)/)[1];
+          if (pager.current_page != pager.total_pages - 1) {
+            let max = pager.total_pages,
+              curr = pager.current_page;
             defers[key].notify(("Loading $p% complete.").replace('$p', Math.round(((curr-1)/max)*100)));
-            $http.get(resp.next.href, {pKey: key}).then(recursiveFetch);
+            $http.get(resp.next.href, {pKey: key}).then(recursiveFetch); // TODO: Figure out how paging works
           }
           else {
             saveCache(key);
@@ -79,7 +80,7 @@
         var errorFunc = function(resp, status, headers, config) {
           errorAttempts++;
           if (errorAttempts < 3) {
-            $http.get(urlGenerator.generate(settings.fetchSetting('paths.api') + '/' + entityType, true), config).
+            $http.get(urlGenerator.generate(settings.fetchSetting('paths.api') + '/' + entityType + format, true), config).
               then(success, errorFunc);
           }
           else {
@@ -99,7 +100,7 @@
           var cKey = entityType + ':' + id;
 
           if (!defers[cKey]) {
-            let url = url.generate(settings.fetchSetting('paths.api') + '/' + entityType + '/' + id, true);
+            let url = url.generate(settings.fetchSetting('paths.api') + '/' + entityType + '/' + id + format, true);
             defers[cKey] = $q.defer();
             $http.get(url, {pKey: cKey})
               .then(function (response) {
@@ -141,7 +142,7 @@
 
             lockPromise.then(function (keys) {
               if (keys.indexOf(key) === -1) {
-                let url = urlGenerator.generate(settings.fetchSetting('paths.api') + '/' + entityType, true);
+                let url = urlGenerator.generate(settings.fetchSetting('paths.api') + '/' + entityType + format, true);
                 $http.get(url, {params: params, pKey: key})
                   .then(success, errorFunc);
                 setTimeout(function () {
@@ -191,7 +192,7 @@
         this.add = function (entity) {
           var k = findByProp(idProp, entity[idProp]);
           if (entities[k]) {
-            throw new Exception('Cannot add entity of type ' + type + ' that already exists.');
+            throw 'Cannot add entity of type ' + type + ' that already exists.';
           }
 
           if (vsite) {
@@ -205,7 +206,7 @@
           }
 
           // rest API call to add entity to server
-          return $http.post(url.generate(settings.fetchSetting('paths.api') + entityType, true), entity)
+          return $http.post(url.generate(settings.fetchSetting('paths.api') + entityType + format, true), entity)
             .then(function (resp) {
               var entity = resp.data[0];
 
@@ -241,6 +242,7 @@
 
           if (data.length) {
             delete data.length;
+            data.bundle = entity.type;
 
             var config = {
               headers: {}
@@ -258,9 +260,9 @@
             }
             config.headers['If-Unmodified-Since'] = (new Date(updated*1000)).toString().replace(/ \([^)]*\)/, '');
 
-            return $http.patch(url.join('/'), data, config)
-              .success(function (resp) {
-                var entity = resp.data[0],
+            return $http.patch(url.join('/') + format, data, config)
+              .then(function (resp) {
+                var entity = resp.data,
                   k = findByProp(idProp, entity[idProp]);
                 ents[k] = entity;
 
@@ -271,8 +273,8 @@
                   cache[k].data[keys[k]] = entity;
                   saveCache(k);
                 }
-              })
-              .then(angular.noOp, function (resp) {
+                return resp;
+              }, function (resp) {
                 switch (resp.status) {
                   case 409:
                     console.log('conflict');
@@ -312,7 +314,7 @@
           config.headers['If-Unmodified-Since'] = (new Date(updated*1000)).toString().replace(/ \([^)]*\)/, '');
 
           //rest API call to delete entity from server
-          return $http.delete(urlGenerator.generate(settings.fetchSetting('paths.api') + entityType+'/'+entity[idProp], true), config).then(function (resp) {
+          return $http.delete(urlGenerator.generate(settings.fetchSetting('paths.api') + entityType+'/'+entity[idProp] + format, true), config).then(function (resp) {
             var k = findByProp(idProp, entity[idProp]);
             delete ents[k];
 
@@ -490,7 +492,7 @@
         });
     }])
   .service('EntityCacheUpdater', ['$http', '$q', '$indexedDB', '$rootScope', 'EntityConfig', 'drupalSettings', 'urlGenerator', function ($http, $q, $idb, $rs, EntityConfig, settings, url) {
-      var urlBase = url.generate(settings.fetchSetting('paths.api') + '/:type/updates/:time', true);
+      var urlBase = url.generate(settings.fetchSetting('paths.api') + '/:type/updates/:time' + format, true);
 
       function update(updateType) {
         var keys = {},

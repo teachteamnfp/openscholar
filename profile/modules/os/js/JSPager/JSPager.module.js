@@ -6,7 +6,6 @@
  */
 
 (function () {
-  var rootPath = '';
 
   /**
    *  Given a path, finds the root domain of it.
@@ -14,24 +13,23 @@
    */
   function findDomain(path) {
     var parser = document.createElement('a');
+    if (path == undefined) {
+      path = '';
+    }
     parser.href = path;
 
     return parser.protocol+'//'+parser.hostname;
   }
 
-  angular.module('JSPager', [])
+  angular.module('JSPager', ['DrupalSettings', 'UrlGenerator'])
     .config(function($sceDelegateProvider) {
       var whitelist = $sceDelegateProvider.resourceUrlWhitelist(),
-          domain = findDomain(rootPath);
+          domain = findDomain();
 
       domain = domain+'/**';
       whitelist.push(domain);
 
       $sceDelegateProvider.resourceUrlWhitelist(whitelist);
-
-      if (typeof Drupal !== 'undefined' && typeof Drupal.settings !== 'undefined') {
-        rootPath = Drupal.settings.paths.JSPager;
-      }
     })
     .filter('PagerCurrentPage', function () {
       function currentPage(input, pager) {
@@ -56,11 +54,11 @@
       }
       return currentPage;
     })
-    .directive('jsPager', ['$parse', function($parse) {
+    .directive('jsPager', ['$parse', 'drupalSettings', 'urlGenerator', function($parse, settings, url) {
       var currentPages = [],
         idMap = {};
       return {
-        templateUrl: rootPath+'/pager.html',
+        templateUrl: url.generate(settings.fetchSetting('paths.jsPager')+'/pager.html', false),
         transclude: true,
         controller: [function () {
 

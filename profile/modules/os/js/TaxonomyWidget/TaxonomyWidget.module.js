@@ -2,17 +2,16 @@
 /**
  * Provides mechanisms for choosing a taxonomy term for a given entity.
  */
-var taxonomy = angular.module('TaxonomyWidget', ['EntityService', 'os-auth', 'ui.select', 'ngSanitize', 'ui.bootstrap', 'ui.bootstrap.typeahead', 'TreeSelector']);
+var taxonomy = angular.module('TaxonomyWidget', ['EntityService', 'os-auth', 'ui.select', 'ngSanitize', 'ui.bootstrap', 'ui.bootstrap.typeahead', 'TreeSelector', 'DrupalSettings', 'UrlGenerator']);
 
-taxonomy.directive('taxonomyWidget', ['EntityService', function (EntityService) {
-  var path = Drupal.settings.paths.TaxonomyWidget;
+taxonomy.directive('taxonomyWidget', ['EntityService', 'drupalSettings', 'urlGenerator', function (EntityService, settings, url) {
   return {
     restrict: 'E',
     scope: {
       terms: "=",
       bundle: "@"
     },
-    templateUrl: path + '/TaxonomyWidget.html?vers='+Drupal.settings.version.TaxonomyWidget,
+    templateUrl: url.generate(settings.fetchSetting('paths.taxonomyWidget') + '/TaxonomyWidget.html?vers='+settings.fetchSetting('version.taxonomyWidget'), false),
     link: function (scope, elem, attrs) {
       var entityType = attrs.entityType;
       var vocabService = new EntityService('vocabulary', 'id');
@@ -152,7 +151,7 @@ taxonomy.directive('taxonomyWidget', ['EntityService', function (EntityService) 
         }
 
         return false;
-      }
+      };
 
       scope.termTreeChangeCallback = function(node, tree) {
 
