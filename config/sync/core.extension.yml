@@ -90,6 +90,7 @@ module:
   user: 0
   views_accordion: 0
   views_ical: 0
+  views_infinite_scroll: 0
   views_ui: 0
   vsite: 0
   vsite_privacy: 0
