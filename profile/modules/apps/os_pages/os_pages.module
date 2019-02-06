@@ -145,20 +145,19 @@ function os_pages_form_node_page_form_alter(&$form, FormStateInterface $form_sta
     'bid' => $page->book['bid'],
     'pid' => $pid,
   ]);
-  array_unshift($form['actions']['submit']['#submit'], 'os_pages_node_page_form_set_book');
+  $form['actions']['submit']['#submit'][] = 'os_pages_node_page_form_set_book';
 }
 
 /**
  * Sets default book data for add node page form.
  */
 function os_pages_node_page_form_set_book(&$form, FormStateInterface $form_state) {
-  /** @var array $default_book_data */
-  $default_book_data = $form_state->getValue('book');
-  /** @var array $altered_book_data */
-  $altered_book_data = $form_state->getTemporary();
-
-  $default_book_data['bid'] = $altered_book_data['bid'];
-  $default_book_data['pid'] = $altered_book_data['pid'];
-
-  $form_state->setValue('book', $default_book_data);
+  /** @var array $book_data */
+  $book_data = $form_state->getTemporary();
+  /** @var \Drupal\book\BookManagerInterface $book_manager */
+  $book_manager = \Drupal::service('book.manager');
+  $book_manager->saveBookLink($book_data + [
+    'nid' => $form_state->getValue('nid'),
+    'weight' => 0,
+  ], TRUE);
 }
