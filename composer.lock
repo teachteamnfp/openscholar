@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a5b9826f0c9a0309b575e13a0b07f3ec",
+    "content-hash": "ce56edddfb972baebb55f158f908daac",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1999,6 +1999,9 @@
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
+                },
+                "patches_applied": {
+                    "8.6: error when deleting a block visibility group": "https://www.drupal.org/files/issues/2018-10-18/block_visibility_groups_3000396-4.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
