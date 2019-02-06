@@ -37,10 +37,10 @@ class CpSettingsOsMailChimpTest extends ExistingSiteWebDriverTestBase {
     $web_assert = $this->assertSession();
     $this->drupalLogin($this->adminUser);
 
-    $this->visit("/cp/settings/seo");
+    $this->visit("/cp/settings/mailchimp");
     $web_assert->statusCodeEquals(403);
     drupal_flush_all_caches();
-    $this->visit("/cp/settings/seo");
+    $this->visit("/cp/settings/mailchimp");
     $web_assert->statusCodeEquals(200);
 
     $edit = [
