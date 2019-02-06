@@ -48,15 +48,15 @@ class CpSettingsOsMailChimpTest extends ExistingSiteWebDriverTestBase {
     ];
     $this->drupalPostForm(NULL, $edit, 'Save configuration');
     $page = $this->getCurrentPage();
-    $checkHtmlValue = $page->hasContent('The configuration options have been saved.');
-    $this->assertTrue($checkHtmlValue, 'The form did not write the correct message.');
+    $check_html_value = $page->hasContent('The configuration options have been saved.');
+    $this->assertTrue($check_html_value, 'The form did not write the correct message.');
 
     // Check form elements load default values.
     $this->visit("/cp/settings/mailchimp");
     $web_assert->statusCodeEquals(200);
     $page = $this->getCurrentPage();
-    $fieldValue = $page->findField('api_key')->getValue();
-    $this->assertSame('test1234', $fieldValue, 'Form is not loaded api key value.');
+    $field_value = $page->findField('api_key')->getValue();
+    $this->assertSame('test1234', $field_value, 'Form is not loaded api key value.');
   }
 
   /**
@@ -68,8 +68,8 @@ class CpSettingsOsMailChimpTest extends ExistingSiteWebDriverTestBase {
     $this->visit("/");
     $web_assert->statusCodeEquals(200);
     $page = $this->getCurrentPage();
-    $isExists = $page->hasContent('Mailchimp subscribe');
-    $this->assertTrue($isExists, 'Region not contains mailchimp block.');
+    $is_exists = $page->hasContent('Mailchimp subscribe');
+    $this->assertTrue($is_exists, 'Region not contains mailchimp block.');
 
     // Subscribe link is visible and press it.
     $submit_button = $page->findLink('Subscribe to list!');
