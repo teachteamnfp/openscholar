@@ -34,6 +34,8 @@ class PublicationsRedirectTest extends TestBase {
   public function testRedirect() {
     $this->drupalLogin($this->adminUser);
 
+    $this->visit('/cp/settings/publications');
+    file_put_contents('public://pub-settings.html', $this->getCurrentPageContent());
     $this->drupalPostForm('/cp/settings/publications', [
       'os_publications_preferred_bibliographic_format' => 'harvard_chicago_author_date',
       'biblio_sort' => 'year',
