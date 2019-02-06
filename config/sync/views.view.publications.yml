@@ -477,7 +477,7 @@ display:
             label: Sticky
           plugin_id: standard
       menu:
-        type: normal
+        type: none
         title: 'Publications by title'
         description: 'Publications by title'
         expanded: false
@@ -659,7 +659,7 @@ display:
             label: Sticky
           plugin_id: standard
       menu:
-        type: normal
+        type: none
         title: 'Publications by Author'
         description: 'Publications by Author'
         expanded: false
@@ -870,7 +870,7 @@ display:
             label: Sticky
           plugin_id: standard
       menu:
-        type: normal
+        type: none
         title: 'Publications by Year'
         description: 'Publications by Year'
         expanded: false
