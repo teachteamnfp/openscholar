@@ -8,6 +8,7 @@ use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\cp_settings\CpSettingInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -31,13 +32,14 @@ use Drupal\os_publications\Plugin\SampleCitations;
  */
 class PublicationSettingsForm extends PluginBase implements CpSettingInterface, ContainerFactoryPluginInterface {
 
+  use StringTranslationTrait;
+
   /**
    * The styler service.
    *
    * @var \Drupal\bibcite\CitationStylerInterface
    */
   protected $styler;
-
 
   /**
    * The EntityTypeManager service.
@@ -116,7 +118,7 @@ class PublicationSettingsForm extends PluginBase implements CpSettingInterface, 
 
     $form['os_publications_preferred_bibliographic_format'] = [
       '#type' => 'radios',
-      '#title' => t('Preferred bibliographic format'),
+      '#title' => $this->t('Preferred bibliographic format'),
       '#default_value' => $this->styler->getStyle()->id(),
       '#weight' => -1,
       '#options' => $styles_options,
@@ -149,7 +151,7 @@ class PublicationSettingsForm extends PluginBase implements CpSettingInterface, 
 
     $form['os_publications_note_in_teaser'] = [
       '#type' => 'checkbox',
-      '#title' => t('Show note content in teaser'),
+      '#title' => $this->t('Show note content in teaser'),
       '#default_value' => $publication_config->get('os_publications_note_in_teaser'),
       '#weight' => 0,
       '#prefix' => '<label>Notes</label>',
@@ -157,13 +159,13 @@ class PublicationSettingsForm extends PluginBase implements CpSettingInterface, 
 
     $form['biblio_sort'] = [
       '#type' => 'select',
-      '#title' => t("Sort By Category"),
+      '#title' => $this->t("Sort By Category"),
       '#default_value' => $publication_config->get('biblio_sort'),
       '#options' => [
-        'author' => t('Author'),
-        'title' => t('Title'),
-        'type' => t('Type'),
-        'year' => t('Year'),
+        'author' => $this->t('Author'),
+        'title' => $this->t('Title'),
+        'type' => $this->t('Type'),
+        'year' => $this->t('Year'),
       ],
       '#weight' => 0,
     ];
@@ -171,21 +173,21 @@ class PublicationSettingsForm extends PluginBase implements CpSettingInterface, 
     $form['biblio_order'] = [
       '#type' => 'select',
       '#default_value' => $publication_config->get('biblio_order'),
-      '#options' => ['DESC' => t('Descending'), 'ASC' => t('Ascending')],
+      '#options' => ['DESC' => $this->t('Descending'), 'ASC' => $this->t('Ascending')],
       '#weight' => 0,
-      '#title' => t('Sort Order'),
+      '#title' => $this->t('Sort Order'),
     ];
 
     $form['os_publications_shorten_citations'] = [
       '#type' => 'checkbox',
-      '#title' => t('Include Short URLs in citations'),
+      '#title' => $this->t('Include Short URLs in citations'),
       '#default_value' => $publication_config->get('os_publications_shorten_citations'),
       '#weight' => 2,
       '#prefix' => '<label>Short URLs</label>',
     ];
 
     $form['os_publications_export_format'] = [
-      '#title' => t('Export format'),
+      '#title' => $this->t('Export format'),
       '#type' => 'checkboxes',
       '#default_value' => $publication_config->get('os_publications_export_format'),
       '#options' => array_map(function ($format) {
@@ -195,14 +197,25 @@ class PublicationSettingsForm extends PluginBase implements CpSettingInterface, 
 
     $form['citation_distribute_autoflags'] = [
       '#type' => 'checkboxes',
-      '#title' => t('Distribute to repositories'),
+      '#title' => $this->t('Distribute to repositories'),
       '#options' => ['test' => 'dummy'],
       // @todo distribution repository options
     ];
 
+    $form['os_publications_sort_by'] = [
+      '#type' => 'select',
+      '#title' => $this->t("'Sort By' Category"),
+      '#options' => [
+        'type' => $this->t('Type'),
+        'title' => $this->t('Title'),
+        'author' => $this->t('Author'),
+        'year' => $this->t('Year'),
+      ],
+      '#default_value' => $publication_config->get('os_publications_sort_by') ?: 'type',
+    ];
+
     $form['#attached']['library'][] = 'os_publications/drupal.os_publications';
     $form['#attached']['drupalSettings']['default_style'] = $this->styler->getStyle()->id();
-
   }
 
   /**
@@ -221,6 +234,7 @@ class PublicationSettingsForm extends PluginBase implements CpSettingInterface, 
       ->set('biblio_order', $formState->getValue('biblio_order'))
       ->set('os_publications_shorten_citations', $formState->getValue('os_publications_shorten_citations'))
       ->set('os_publications_export_format', $formState->getValue('os_publications_export_format'))
+      ->set('os_publications_sort_by', $formState->getValue('os_publications_sort_by'))
       ->save();
   }
 
