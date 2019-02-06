@@ -2,8 +2,6 @@
 
 namespace Drupal\Tests\os_publications\ExistingSite;
 
-use Drupal\os_publications\PublicationsListingHelper;
-
 /**
  * Tests publication views.
  *
@@ -14,6 +12,8 @@ class PublicationsViewsTest extends TestBase {
 
   /**
    * Tests type display.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function testType() {
     $this->createReference([
@@ -45,6 +45,8 @@ class PublicationsViewsTest extends TestBase {
 
   /**
    * Tests title display.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function testTitle() {
     $this->createReference([
@@ -70,7 +72,7 @@ class PublicationsViewsTest extends TestBase {
 
     $grouped_result = [];
     /** @var \Drupal\os_publications\PublicationsListingHelperInterface $publications_listing_helper */
-    $publications_listing_helper = new PublicationsListingHelper();
+    $publications_listing_helper = $this->container->get('os_publications.listing_helper');
 
     foreach ($result as $item) {
       $grouped_result[$publications_listing_helper->convertLabel($item->_entity->label())][] = $item->_entity->id();
@@ -83,6 +85,9 @@ class PublicationsViewsTest extends TestBase {
 
   /**
    * Tests author display.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
   public function testAuthor() {
     $contributor1 = $this->createContributor([
@@ -136,15 +141,17 @@ class PublicationsViewsTest extends TestBase {
     $grouped_result = [];
 
     /** @var \Drupal\os_publications\PublicationsListingHelperInterface $publications_listing_helper */
-    $publications_listing_helper = new PublicationsListingHelper();
+    $publications_listing_helper = $this->container->get('os_publications.listing_helper');
 
     foreach ($result as $item) {
       /** @var \Drupal\bibcite_entity\Entity\ReferenceInterface $bibcite_reference */
       $bibcite_reference = $item->_entity;
       /** @var \Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem $entity_reference_item */
       $entity_reference_item = $bibcite_reference->get('author')->first();
+      /** @var \Drupal\Core\TypedData\TypedDataInterface $typed_data */
+      $typed_data = $entity_reference_item->get('entity');
       /** @var \Drupal\Core\Entity\Plugin\DataType\EntityAdapter $entity_adapter */
-      $entity_adapter = $entity_reference_item->get('entity')->getTarget();
+      $entity_adapter = $typed_data->getTarget();
       /** @var \Drupal\bibcite_entity\Entity\ContributorInterface $bibcite_contributor */
       $bibcite_contributor = $entity_adapter->getValue();
 
@@ -157,6 +164,8 @@ class PublicationsViewsTest extends TestBase {
 
   /**
    * Tests year display.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function testYear() {
     $this->createReference([
