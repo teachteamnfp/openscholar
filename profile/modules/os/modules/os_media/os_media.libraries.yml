@@ -3,6 +3,9 @@ mediaBrowser:
   js:
     js/MediaBrowserFilters.js: { }
     js/MediaBrowserModule.js: { app: mediaBrowser }
+  css:
+    component:
+      css/media_browser.mediaBrowser.css: { }
   drupalSettings: { version: { mediaBrowser: "1.0" } }
   paths: templates
   dependencies:
