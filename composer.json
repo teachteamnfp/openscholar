@@ -100,7 +100,8 @@
         "drupal/date_recur": "^2.0",
         "drupal/views_ical": "1.x-dev",
         "fullcalendar/fullcalendar": "^3.3",
-        "drupal/date_recur_interactive": "^2.0"
+        "drupal/date_recur_interactive": "^2.0",
+        "drupal/bootstrap": "^3.17"
     },
     "require-dev": {
         "drupal/features": "^3.7",
