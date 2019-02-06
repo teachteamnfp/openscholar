@@ -202,18 +202,6 @@ class PublicationSettingsForm extends PluginBase implements CpSettingInterface, 
       // @todo distribution repository options
     ];
 
-    $form['os_publications_sort_by'] = [
-      '#type' => 'select',
-      '#title' => $this->t("'Sort By' Category"),
-      '#options' => [
-        'type' => $this->t('Type'),
-        'title' => $this->t('Title'),
-        'author' => $this->t('Author'),
-        'year' => $this->t('Year'),
-      ],
-      '#default_value' => $publication_config->get('os_publications_sort_by') ?: 'type',
-    ];
-
     $form['#attached']['library'][] = 'os_publications/drupal.os_publications';
     $form['#attached']['drupalSettings']['default_style'] = $this->styler->getStyle()->id();
   }
@@ -234,7 +222,6 @@ class PublicationSettingsForm extends PluginBase implements CpSettingInterface, 
       ->set('biblio_order', $formState->getValue('biblio_order'))
       ->set('os_publications_shorten_citations', $formState->getValue('os_publications_shorten_citations'))
       ->set('os_publications_export_format', $formState->getValue('os_publications_export_format'))
-      ->set('os_publications_sort_by', $formState->getValue('os_publications_sort_by'))
       ->save();
   }
 
