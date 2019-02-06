@@ -25,7 +25,11 @@ class OsMailChimpBlock extends BlockBase {
   public function build() {
     $config = $this->getConfiguration();
     if (empty($config['list_id'])) {
-      return '';
+      // Debug info for html markup.
+      return [
+        '#type' => 'markup',
+        '#markup' => 'List ID is not configured!',
+      ];
     }
 
     $link_url = Url::fromRoute('os_mailchimp.modal.subscribe', ['list_id' => $config['list_id']]);
