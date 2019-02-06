@@ -11,8 +11,8 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\cp_settings\CpSettingInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\os_publications\PublicationsListingHelperInterface;
 use Drupal\redirect\Entity\Redirect;
-use Drupal\redirect\RedirectRepository;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\bibcite\CitationStylerInterface;
 use Drupal\bibcite\Plugin\BibciteFormatManagerInterface;
@@ -65,11 +65,11 @@ class PublicationSettingsForm extends PluginBase implements CpSettingInterface, 
   protected $citations;
 
   /**
-   * Redirect repository.
+   * Publications listing helper.
    *
-   * @var \Drupal\redirect\RedirectRepository
+   * @var \Drupal\os_publications\PublicationsListingHelperInterface
    */
-  protected $redirectRepository;
+  protected $publicationsListingHelper;
 
   /**
    * {@inheritdoc}
@@ -80,13 +80,14 @@ class PublicationSettingsForm extends PluginBase implements CpSettingInterface, 
     CitationStylerInterface $styler,
     BibciteFormatManagerInterface $formatManager,
     EntityTypeManagerInterface $entityTypeManager,
-  SampleCitations $citations, RedirectRepository $redirect_repository) {
+    SampleCitations $citations,
+    PublicationsListingHelperInterface $redirect_repository) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->styler = $styler;
     $this->formatManager = $formatManager;
     $this->entityTypeManager = $entityTypeManager;
     $this->citations = $citations;
-    $this->redirectRepository = $redirect_repository;
+    $this->publicationsListingHelper = $redirect_repository;
   }
 
   /**
@@ -101,7 +102,7 @@ class PublicationSettingsForm extends PluginBase implements CpSettingInterface, 
       $container->get('plugin.manager.bibcite_format'),
       $container->get('entity_type.manager'),
       $container->get('os_publications.citation_examples'),
-      $container->get('redirect.repository')
+      $container->get('os_publications.listing_helper')
     );
   }
 
@@ -235,37 +236,7 @@ class PublicationSettingsForm extends PluginBase implements CpSettingInterface, 
       ->set('os_publications_export_format', $formState->getValue('os_publications_export_format'))
       ->save();
 
-    $this->setSortByRedirect($formState->getValue('biblio_sort'));
-  }
-
-  /**
-   * Set a redirect according to the "sort by" setting.
-   *
-   * @param string $sort_by
-   *   The setting.
-   *
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
-   * @throws \Drupal\Core\Entity\EntityStorageException
-   */
-  protected function setSortByRedirect(string $sort_by) : void {
-    /** @var \Drupal\redirect\Entity\Redirect[] $redirects */
-    $redirects = $this->redirectRepository->findBySourcePath('publications');
-    /** @var \Drupal\Core\Entity\EntityStorageInterface $entity_storage */
-    $entity_storage = $this->entityTypeManager->getStorage('redirect');
-
-    $entity_storage->delete($redirects);
-
-    if ($sort_by === 'title') {
-      return;
-    }
-
-    $redirect = Redirect::create([
-      'redirect_source' => 'publications',
-      'redirect_redirect' => "internal:/publications/$sort_by",
-      'status_code' => 301,
-    ]);
-    $redirect->save();
+    $this->publicationsListingHelper->setRedirect('publications', $formState->getValue('biblio_sort'));
   }
 
   /**

@@ -2,6 +2,8 @@
 
 namespace Drupal\os_publications;
 
+use Drupal\redirect\Entity\Redirect;
+
 /**
  * PublicationsListingHelperInterface.
  */
@@ -34,5 +36,27 @@ interface PublicationsListingHelperInterface {
    *   The converted name.
    */
   public function convertAuthorName(string $name) : string;
+
+  /**
+   * Sets a redirect according to the setting.
+   *
+   * The difference between this and Redirect::create() is that, this deletes
+   * all existing redirects by source path before creating a new one.
+   *
+   * @param string $source
+   *   The source path.
+   * @param string $redirect
+   *   The redirect setting.
+   *
+   * @return \Drupal\redirect\Entity\Redirect|null
+   *   The redirect entity.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   *
+   * @see \Drupal\redirect\Entity\Redirect::create()
+   */
+  public function setRedirect(string $source, string $redirect) : Redirect;
 
 }
