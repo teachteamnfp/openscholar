@@ -11,6 +11,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\cp_settings\CpSettingInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\redirect\Entity\Redirect;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\bibcite\CitationStylerInterface;
 use Drupal\bibcite\Plugin\BibciteFormatManagerInterface;
@@ -204,6 +205,8 @@ class PublicationSettingsForm extends PluginBase implements CpSettingInterface, 
 
     $form['#attached']['library'][] = 'os_publications/drupal.os_publications';
     $form['#attached']['drupalSettings']['default_style'] = $this->styler->getStyle()->id();
+
+    $form['actions']['submit']['#submit'][] = [$this, 'setSortByRedirect'];
   }
 
   /**
@@ -223,6 +226,34 @@ class PublicationSettingsForm extends PluginBase implements CpSettingInterface, 
       ->set('os_publications_shorten_citations', $formState->getValue('os_publications_shorten_citations'))
       ->set('os_publications_export_format', $formState->getValue('os_publications_export_format'))
       ->save();
+  }
+
+  /**
+   * Set a redirect according to the "sort by" option.
+   *
+   * @param array $form
+   *   Form array.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   Form state.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public function setSortByRedirect(array &$form, FormStateInterface $form_state) {
+    /** @var string $sort_by */
+    $sort_by = $form_state->getValue('biblio_sort');
+
+    // TODO: Delete existing redirects where source is /publications.
+
+    if ($sort_by === 'title') {
+      return;
+    }
+
+    $redirect = Redirect::create([
+      'redirect_source' => 'publications',
+      'redirect_redirect' => "internal:/publications/$sort_by",
+      'status_code' => 301,
+    ]);
+    $redirect->save();
   }
 
   /**
