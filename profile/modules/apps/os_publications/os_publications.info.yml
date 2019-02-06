@@ -9,3 +9,4 @@ dependencies:
   - drupal:bibcite_endnote
   - drupal:bibcite_ris
   - drupal:bibcite_marc
+  - drupal:redirect
