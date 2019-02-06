@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d2906db19da99647f6a64a0102026a33",
+    "content-hash": "220c8e347c4ecde5c93a73e76826199e",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -3399,7 +3399,8 @@
                     "merge-extra": false
                 },
                 "patches_applied": {
-                    "Make sure TestSitePath exist before creating .htkey": "https://www.drupal.org/files/issues/2246725-24.patch"
+                    "Make sure TestSitePath exist before creating .htkey": "https://www.drupal.org/files/issues/2246725-24.patch",
+                    "Views Date Filter Datetime Granularity Option": "https://www.drupal.org/files/issues/2018-12-11/views_date_filter_granularity_2868014-60.patch"
                 }
             },
             "autoload": {
@@ -4269,7 +4270,7 @@
                 "shasum": null
             },
             "type": "drupal-module",
-            "time": "2018-06-20T15:36:05+00:00"
+            "time": "2018-12-10T20:05:46+00:00"
         },
         {
             "name": "drupal/redirect",
@@ -5663,7 +5664,7 @@
                 "shasum": null
             },
             "type": "drupal-library",
-            "time": "2019-01-02T17:57:38+00:00"
+            "time": "2018-10-23T06:36:49+00:00"
         },
         {
             "name": "nikic/php-parser",
