@@ -1,24 +1,24 @@
 (function ($) {
   var libraryPath = '';
 
-  angular.module('FileEditor', ['EntityService', 'os-auth', 'TaxonomyWidget', 'DrupalSettings']).
+  angular.module('FileEditor', ['EntityService', 'os-auth', 'TaxonomyWidget', 'DrupalSettings', 'UrlGenerator']).
     constant("FILEEDITOR_RESPONSES", {
       SAVED: "saved",
       REPLACED: "replaced",
       NO_CHANGES: "no changes",
       CANCELED: "canceled"
     }).
-    directive('fileEdit', ['EntityService', '$http', '$timeout', '$filter', 'FILEEDITOR_RESPONSES', 'drupalSettings', function (EntityService, $http, $timeout, $filter, FER, settings) {
-      let libraryPath = settings.getSetting('paths.fileEditor'),
-        version = settings.getSetting('versions.fileEditor');
+    directive('fileEdit', ['EntityService', '$http', '$timeout', '$filter', 'FILEEDITOR_RESPONSES', 'drupalSettings', 'urlGenerator', function (EntityService, $http, $timeout, $filter, FER, settings, url) {
+      let libraryPath = settings.fetchSetting('paths.fileEditor'),
+        version = settings.fetchSetting('version.fileEditor');
       return {
         scope: {
           file :  '=',
           onClose : '&'
         },
-        templateUrl: libraryPath + '/file_edit_base.html?vers='+Drupal.settings.version.FileEditor,
+        templateUrl: url.generate(libraryPath + '/file_edit_base.html?vers='+version, false),
         link: function (scope, elem, attr, c, trans) {
-          var fileService = new EntityService('files', 'id'),
+          var fileService = new EntityService('media', 'mid'),
               files = [],
               file_replaced = false;
 
@@ -31,15 +31,15 @@
           scope.date = '';
           scope.description_label = 'Descriptive Text - will display under the filename';
           scope.schema = '';
-          scope.$watch('file', function (f) {
 
+          scope.$watch('file', function (f) {
             if (!f) {
               return;
             }
 
             scope.schema = f.schema;
-            scope.fileEditAddt = libraryPath+'/file_edit_'+f.type+'.html?vers='+Drupal.settings.version.FileEditor;
-            scope.date = $filter('date')(f.timestamp+'000', 'short');
+            scope.fileEditAddt = url.generate(libraryPath+'/file_edit_'+f.type+'.html?vers='+version, false);
+            scope.date = $filter('date')(f.changed+'000', 'short');
             scope.file.terms = scope.file.terms || [];
 
             scope.fullPath = f.url.slice(0, f.url.lastIndexOf('/')+1);
@@ -109,7 +109,7 @@
           });
 
           scope.invalidAlt = true;
-          scope.$watch('file.image_alt', function (alt, old) {
+          scope.$watch('file.alt', function (alt, old) {
             scope.invalidAlt = !alt;
           });
 
@@ -136,8 +136,8 @@
               var file = $files[0],
                 fields = {};
 
-              if (typeof Drupal.settings.spaces != 'undefined') {
-                fields.vsite = Drupal.settings.spaces.id
+              if (settings.hasSetting('spaces.id')) {
+                fields.vsite = settings.fetchSetting('spaces.id');
               }
 
               var config = {
@@ -146,7 +146,7 @@
                 }
               };
 
-              $http.put(Drupal.settings.paths.api + '/files/' + scope.file.id, file, config)
+              $http.put(url.generate(settings.fetchSetting('paths.api') + '/media/' + scope.file.id, true), file, config)
                 .success(function (result) {
                   scope.showWarning = false;
                   scope.replaceSuccess = true;
@@ -158,10 +158,10 @@
                     scope.replaceSuccess = false;
                   }, 5000);
                 })
-              .error(function (error) {
+                .error(function (error) {
                   scope.errorMessages = error.title;
                   scope.showErrorMessages = true;
-              });
+                });
             }
             else {
               scope.replaceReject = true;
@@ -182,7 +182,7 @@
           };
 
           scope.save = function () {
-            fileService.edit(scope.file, ['preview', 'url', 'size', 'changed', 'mimetype']).then(function(result) {
+            fileService.edit(scope.file, ['thumbnail', 'url', 'size', 'changed', 'mimetype']).then(function(result) {
                 if (result.data || typeof scope.file.new != 'undefined') {
                   scope.onClose({saved: FER.SAVED});
                 }

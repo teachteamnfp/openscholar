@@ -13,7 +13,7 @@
 
   angular.module('FileEditorModal', ['EntityService', 'FileEditor', 'angularModalService', 'ngFileUpload', 'locationFix', 'DrupalSettings'])
     .run(['EntityService', function (EntityService) {
-      service = new EntityService('files', 'id');
+      service = new EntityService('media', 'mid');
       loading = true;
       fetchPromise = service.fetch().then(function() {
         loading = false;
