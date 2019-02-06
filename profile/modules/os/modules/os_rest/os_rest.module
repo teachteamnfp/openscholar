@@ -10,4 +10,26 @@
  */
 function os_rest_rest_resource_alter(&$resources) {
   $resources['entity:media']['class'] = 'Drupal\os_rest\Plugin\rest\resource\OsMediaResource';
+
+  $types = array(
+    'entity:media',
+    'entity:group',
+    'entity:node',
+  );
+  foreach ($types as $t) {
+    if (isset($resources[$t])) {
+      $resources[$t]['uri_paths']['canonical'] = '/api' . $resources[$t]['uri_paths']['canonical'];
+      $resources[$t]['uri_paths']['create'] = str_replace('entity', 'api', $resources[$t]['uri_paths']);
+    }
+  }
+
+  if (isset($resources['entity:taxonomy_term'])) {
+    $resources['entity:taxonomy_term']['uri_paths']['canonical'] = '/api/taxonomy/{taxonomy_term}';
+    $resources['entity:taxonomy_term']['uri_paths']['create'] = '/api/taxonomy';
+  }
+
+  if (isset($resources['entity:taxonomy_vocabulary'])) {
+    $resources['entity:taxonomy_vocabulary']['uri_paths']['canonical'] = '/api/vocabulary/{taxonomy_vocabulary}';
+    //$resources['entity:taxonomy_vocabulary']['uri_paths']['create'] = '/api/vocabulary';
+  }
 }

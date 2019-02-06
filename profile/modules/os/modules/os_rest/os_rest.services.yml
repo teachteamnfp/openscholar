@@ -1,0 +1,6 @@
+services:
+  os_rest.media:
+    class: Drupal\os_rest\Normalizer\OsMediaNormalizer
+    tags:
+      - { name: normalizer, priority: 2 }
+    arguments: ['@entity.manager']
