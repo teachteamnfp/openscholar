@@ -107,13 +107,14 @@
             </div>
             <div js-pager="file in files | mbFilename:$parent.search | mbType:availFilter | mbType:filteredTypes | mbExtensions:extensions | filter:{status:'!deleting'} | orderBy:sortType:sortReverse track by file.id" page-size="5">
                 <div class="media-row" data-fid="{{file.id}}" ng-click="setSelection(file.id)" ng-class="{selected : selection == file.id, new : file.new}">
-                    <span class="mb-preview" ng-bind-html="file.preview"></span>
+                    {{console.log(file)}}
+                    <span class="mb-preview"><img ng-src="{{file.thumbnail}}"></span>
                     <span class="mb-title">{{file.name}}</span>
                     <span class="mb-filename">{{file.filename}}</span>
-                    <span class="mb-created">{{(file.timestamp + '000') | date:'short'}}</span>
+                    <span class="mb-created">{{(file.created + '000') | date:'short'}}</span>
                     <span class="mb-file-actions">
-                        <span class="mb-actions-edit" ng-click="setSelection(file.id); selected_file.new = false; selected_file.replaced = false; changePanes('edit')">Edit</span>
-                        <span class="mb-actions-delete" ng-click="setSelection(file.id); changePanes('delete')">Delete</span>
+                        <span class="mb-actions-edit" ng-click="setSelection(file.mid); selected_file.new = false; selected_file.replaced = false; changePanes('edit')">Edit</span>
+                        <span class="mb-actions-delete" ng-click="setSelection(file.mid); changePanes('delete')">Delete</span>
                     </span>
                 </div>
             </div>
