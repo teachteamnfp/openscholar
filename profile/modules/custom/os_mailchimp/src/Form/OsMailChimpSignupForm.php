@@ -66,6 +66,7 @@ class OsMailChimpSignupForm extends FormBase {
       '#tree' => TRUE,
     ];
 
+    $user = $this->currentUser();
     $mergevar_options = $this->getMergevarOptions([$this->list->id]);
     foreach ($mergevar_options as $tag => $mergevar) {
       if (!in_array($tag, $this->allowedVars)) {
@@ -73,6 +74,9 @@ class OsMailChimpSignupForm extends FormBase {
       }
       if (!empty($mergevar)) {
         $form['mergevars'][$tag] = mailchimp_insert_drupal_form_tag($mergevar);
+        if (!empty($user) && $tag == 'EMAIL') {
+          $form['mergevars'][$tag]['#default_value'] = $user->getEmail();
+        }
       }
     }
 
