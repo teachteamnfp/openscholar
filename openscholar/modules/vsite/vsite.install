@@ -919,11 +919,7 @@ function _vsite_fix_group_path_get_all() {
   $query->fields('fgp', ['field_group_path_url', 'entity_id']);
   $query->leftJoin('purl', 'p', 'fgp.entity_id = p.id');
   $query->fields('p', ['value']);
-  $db_or = db_or()
-    ->condition('fgp.field_group_path_url', '%://scholar.harvard.edu%', 'LIKE')
-    ->condition('fgp.field_group_path_url', '%://projects.iq.harvard.edu%', 'LIKE')
-    ->condition('fgp.field_group_path_url', '%://hwpi.harvard.edu%', 'LIKE');
-  $query->condition($db_or);
+  $query->condition('fgp.field_group_path_url', '%/_', 'LIKE');
   return $query->execute();
 }
 
@@ -944,35 +940,16 @@ function _vsite_fix_group_path_update_field($node) {
   return TRUE;
 }
 /**
- * Update bad field_group_path_url values with token pattern. (phase 1)
+ * Update bad field_group_path_url values with token pattern.
  */
 function vsite_update_7039() {
   $result = _vsite_fix_group_path_get_all();
   $count = 0;
   while ($row = $result->fetchAssoc()) {
-    // First fix only one char path.
-    if (strpos($row['field_group_path_url'], $row['value']) !== FALSE) {
-      continue;
-    }
     $node = node_load($row['entity_id']);
     if(_vsite_fix_group_path_update_field($node)) {
       $count++;
     }
   }
   return t('Updated !count field one char records with token pattern.', array('!count' => $count));
-}
-
-/**
- * Update bad field_group_path_url values with token pattern. (phase 2)
- */
-function vsite_update_7040() {
-  $result = _vsite_fix_group_path_get_all();
-  $count = 0;
-  while ($row = $result->fetchAssoc()) {
-    $node = node_load($row['entity_id']);
-    if(_vsite_fix_group_path_update_field($node)) {
-      $count++;
-    }
-  }
-  return t('Updated !count field records with token pattern.', array('!count' => $count));
 }
