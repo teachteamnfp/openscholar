@@ -5,7 +5,6 @@ namespace Drupal\Tests\os_publications\ExistingSite;
 /**
  * Class PublicationsRedirectTest.
  *
- * @group vsite
  * @group functional
  */
 class PublicationsRedirectTest extends TestBase {
@@ -32,13 +31,15 @@ class PublicationsRedirectTest extends TestBase {
    * Tests publication redirect.
    *
    * @throws \Behat\Mink\Exception\ResponseTextException
+   * @throws \Behat\Mink\Exception\ExpectationException
    */
   public function testRedirect() {
     $this->drupalLogin($this->adminUser);
 
     $this->visit('/cp/settings/publications');
+    $this->assertSession()->statusCodeEquals(200);
     file_put_contents('public://pub-settings.html', $this->getCurrentPageContent());
-    $this->drupalPostForm('/cp/settings/publications', [
+    $this->drupalPostForm(NULL, [
       'os_publications_preferred_bibliographic_format' => 'harvard_chicago_author_date',
       'biblio_sort' => 'year',
       'biblio_order' => 'DESC',
