@@ -612,7 +612,6 @@ function vsite_form_os_settings_form_alter(&$form, &$form_state, $form_id){
  * @return array
  */
 function vsite_group_default_homepage_value($entity_type, $entity, $field, $instance, $langcode){
-  global $base_url;
 
   list($id, $vid, $bundle) = entity_extract_ids($entity_type, $entity);
   // Is this a group node
@@ -623,10 +622,7 @@ function vsite_group_default_homepage_value($entity_type, $entity, $field, $inst
     return array(
       0 => array(
         'title' => '',
-        'url' => url($entity->purl['value'], array(
-          'base_url' => variable_get('purl_base_domain', $base_url),
-          'absolute' => TRUE
-        ))
+        'url' => '[site:url]' . $entity->purl['value'],
       )
     );
   }
