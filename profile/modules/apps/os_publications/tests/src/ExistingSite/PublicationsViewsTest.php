@@ -14,7 +14,7 @@ class PublicationsViewsTest extends TestBase {
    *
    * @var array
    */
-  protected $filterPublicationTypeSettings;
+  protected $defaultFilterPublicationTypeSettings;
 
   /**
    * Config factory.
@@ -32,7 +32,7 @@ class PublicationsViewsTest extends TestBase {
     $this->configFactory = $this->container->get('config.factory');
     /** @var \Drupal\Core\Config\ImmutableConfig $publications_settings */
     $publications_settings = $this->configFactory->get('os_publications.settings');
-    $this->filterPublicationTypeSettings = $publications_settings->get('os_publications_filter_publication_types');
+    $this->defaultFilterPublicationTypeSettings = $publications_settings->get('os_publications_filter_publication_types');
   }
 
   /**
@@ -296,7 +296,7 @@ class PublicationsViewsTest extends TestBase {
     /** @var \Drupal\Core\Config\Config $publication_settings_mut */
     $publication_settings_mut = $this->configFactory->getEditable('os_publications.settings');
     $publication_settings_mut
-      ->set('os_publications_filter_publication_types', $this->filterPublicationTypeSettings)
+      ->set('os_publications_filter_publication_types', $this->defaultFilterPublicationTypeSettings)
       ->save();
 
     parent::tearDown();
