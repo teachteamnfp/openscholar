@@ -919,7 +919,11 @@ function _vsite_fix_group_path_get_all() {
   $query->fields('fgp', ['field_group_path_url', 'entity_id']);
   $query->leftJoin('purl', 'p', 'fgp.entity_id = p.id');
   $query->fields('p', ['value']);
-  $query->condition('fgp.field_group_path_url', '%://scholar.harvard.edu%', 'LIKE');
+  $db_or = db_or()
+    ->condition('fgp.field_group_path_url', '%://scholar.harvard.edu%', 'LIKE')
+    ->condition('fgp.field_group_path_url', '%://projects.iq.harvard.edu%', 'LIKE')
+    ->condition('fgp.field_group_path_url', '%://hwpi.harvard.edu%', 'LIKE');
+  $query->condition($db_or);
   return $query->execute();
 }
 
