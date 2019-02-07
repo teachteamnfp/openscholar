@@ -929,7 +929,7 @@ function _vsite_fix_group_path_update_field($node) {
       '!nid' => $node->nid,
       '%title' => $node->title,
     )), 'warning');
-    return;
+    return FALSE;
   }
   $group_path = '[site:url]' . $node->purl;
 
@@ -937,6 +937,7 @@ function _vsite_fix_group_path_update_field($node) {
   $node->field_group_path[LANGUAGE_NONE][0]['url'] = $group_path;
   field_attach_presave('node', $node);
   field_attach_update('node', $node);
+  return TRUE;
 }
 /**
  * Update bad field_group_path_url values with token pattern. (phase 1)
@@ -950,8 +951,9 @@ function vsite_update_7039() {
       continue;
     }
     $node = node_load($row['entity_id']);
-    _vsite_fix_group_path_update_field($node);
-    $count++;
+    if(_vsite_fix_group_path_update_field($node)) {
+      $count++;
+    }
   }
   return t('Updated !count field one char records with token pattern.', array('!count' => $count));
 }
@@ -964,8 +966,9 @@ function vsite_update_7040() {
   $count = 0;
   while ($row = $result->fetchAssoc()) {
     $node = node_load($row['entity_id']);
-    _vsite_fix_group_path_update_field($node);
-    $count++;
+    if(_vsite_fix_group_path_update_field($node)) {
+      $count++;
+    }
   }
   return t('Updated !count field records with token pattern.', array('!count' => $count));
 }
