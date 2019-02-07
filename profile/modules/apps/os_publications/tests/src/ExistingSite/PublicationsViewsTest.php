@@ -5,10 +5,35 @@ namespace Drupal\Tests\os_publications\ExistingSite;
 /**
  * Tests publication views.
  *
- * @group vsite
  * @group kernel
  */
 class PublicationsViewsTest extends TestBase {
+
+  /**
+   * Default filter publication type settings.
+   *
+   * @var array
+   */
+  protected $filterPublicationTypeSettings;
+
+  /**
+   * Config factory.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setUp() {
+    parent::setUp();
+
+    $this->configFactory = $this->container->get('config.factory');
+    /** @var \Drupal\Core\Config\ImmutableConfig $publications_settings */
+    $publications_settings = $this->configFactory->get('os_publications.settings');
+    $this->filterPublicationTypeSettings = $publications_settings->get('os_publications_filter_publication_types');
+  }
 
   /**
    * Tests type display.
@@ -210,6 +235,71 @@ class PublicationsViewsTest extends TestBase {
     $this->assertCount(1, $grouped_result['1665']);
     $this->assertCount(1, $grouped_result['1931']);
     $this->assertCount(2, $grouped_result['1889']);
+  }
+
+  /**
+   * Tests whether publication types are filtered as per the settings.
+   *
+   * @covers ::os_publications_views_query_alter
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public function testReferenceFilter() {
+    $this->createReference([
+      'title' => 'Girl with a Pearl Earring',
+    ]);
+
+    /** @var array $publications_by_type */
+    $publications_by_type = views_get_view_result('publications', 'page_1');
+    /** @var array $publications_by_title */
+    $publications_by_title = views_get_view_result('publications', 'page_2');
+    /** @var array $publications_by_author */
+    $publications_by_author = views_get_view_result('publications', 'page_3');
+    /** @var array $publications_by_year */
+    $publications_by_year = views_get_view_result('publications', 'page_4');
+
+    $this->assertCount(1, $publications_by_type);
+    $this->assertCount(1, $publications_by_title);
+    $this->assertCount(1, $publications_by_author);
+    $this->assertCount(1, $publications_by_year);
+
+    /** @var \Drupal\Core\Config\ConfigFactoryInterface $config_factory */
+    $config_factory = $this->container->get('config.factory');
+    /** @var \Drupal\Core\Config\Config $os_publications_settings_mut */
+    $os_publications_settings_mut = $config_factory->getEditable('os_publications.settings');
+    /** @var array $filter_publication_types */
+    $filter_publication_types = $os_publications_settings_mut->get('os_publications_filter_publication_types');
+    $os_publications_settings_mut->set('os_publications_filter_publication_types', [
+      'artwork' => 0,
+    ] + $filter_publication_types);
+    $os_publications_settings_mut->save();
+
+    /** @var array $publications_by_type */
+    $publications_by_type = views_get_view_result('publications', 'page_1');
+    /** @var array $publications_by_title */
+    $publications_by_title = views_get_view_result('publications', 'page_2');
+    /** @var array $publications_by_author */
+    $publications_by_author = views_get_view_result('publications', 'page_3');
+    /** @var array $publications_by_year */
+    $publications_by_year = views_get_view_result('publications', 'page_4');
+
+    $this->assertCount(0, $publications_by_type);
+    $this->assertCount(0, $publications_by_title);
+    $this->assertCount(0, $publications_by_author);
+    $this->assertCount(0, $publications_by_year);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function tearDown() {
+    /** @var \Drupal\Core\Config\Config $publication_settings_mut */
+    $publication_settings_mut = $this->configFactory->getEditable('os_publications.settings');
+    $publication_settings_mut
+      ->set('os_publications_filter_publication_types', $this->filterPublicationTypeSettings)
+      ->save();
+
+    parent::tearDown();
   }
 
 }
