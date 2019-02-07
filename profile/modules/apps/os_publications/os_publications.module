@@ -5,6 +5,9 @@
  * Bibcite customizations for Openscholar.
  */
 
+use Drupal\views\Plugin\views\query\QueryPluginBase;
+use Drupal\views\ViewExecutable;
+
 /**
  * Implements hook_views_data_alter().
  */
@@ -24,4 +27,37 @@ function os_publications_views_data_alter(array &$data) {
     ],
     'entity field' => 'bibcite_contributor',
   ];
+}
+
+/**
+ * Implements hook_views_query_alter().
+ */
+function os_publications_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
+  if ($view->id() === 'publications') {
+    foreach ($query->where as &$condition_group) {
+      foreach ($condition_group['conditions'] as &$condition) {
+        // Alter values passed to reference_type condition.
+        if ($condition['field'] === 'bibcite_reference.type') {
+          /** @var \Drupal\Core\Config\ImmutableConfig $os_publication_settings */
+          $os_publication_settings = \Drupal::config('os_publications.settings');
+          /** @var array $allowed_publication_types */
+          $allowed_publication_types = $os_publication_settings->get('os_publications_filter_publication_types');
+
+          // Convert the array structure into views suitable format.
+          // Array structure obtained from config is:
+          // [
+          //   'artwork' => 'artwork',
+          //   'journal' => 'journal',
+          //   'software' => 0,
+          // ]
+          // While views expects it to be like:
+          // [
+          //   0 => 'artwork',
+          //   1 => 'journal',
+          // ]
+          $condition['value'] = array_filter(array_values($allowed_publication_types));
+        }
+      }
+    }
+  }
 }

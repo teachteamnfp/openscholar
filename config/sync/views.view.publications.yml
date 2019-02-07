@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - bibcite_entity.bibcite_reference_type.artwork
     - system.menu.main
   module:
     - bibcite_entity
@@ -212,7 +213,47 @@ display:
           entity_type: bibcite_reference
           entity_field: type
           plugin_id: field
-      filters: {  }
+      filters:
+        type:
+          id: type
+          table: bibcite_reference
+          field: type
+          relationship: none
+          group_type: group
+          admin_label: 'Reference type (The values are controlled from the code - see os_publications_views_query_alter)'
+          operator: in
+          value:
+            artwork: artwork
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: bibcite_reference
+          entity_field: type
+          plugin_id: bundle
       sorts:
         bibcite_year:
           id: bibcite_year
