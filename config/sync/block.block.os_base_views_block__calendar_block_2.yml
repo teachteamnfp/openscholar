@@ -1,0 +1,32 @@
+uuid: 0ddc1a46-8b13-4091-a0dd-cbbe0e132465
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_visibility_groups.block_visibility_group.event_section
+    - views.view.calendar
+  module:
+    - block_visibility_groups
+    - views
+  theme:
+    - os_base
+id: os_base_views_block__calendar_block_2
+theme: os_base
+region: sidebar_first
+weight: 0
+provider: null
+plugin: 'views_block:calendar-block_2'
+settings:
+  id: 'views_block:calendar-block_2'
+  label: ''
+  provider: views
+  label_display: visible
+  views_label: ''
+  items_per_page: none
+  context_mapping: {  }
+visibility:
+  condition_group:
+    id: condition_group
+    negate: false
+    block_visibility_group: event_section
+    context_mapping: {  }
