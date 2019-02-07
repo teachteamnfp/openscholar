@@ -23,7 +23,9 @@ class PublicationsRedirectTest extends TestBase {
   public function setUp() {
     parent::setUp();
 
-    $this->adminUser = $this->createUser([], NULL, TRUE);
+    $this->adminUser = $this->createUser([
+      'access control panel',
+    ]);
   }
 
   /**

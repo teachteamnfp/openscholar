@@ -12,7 +12,6 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\cp_settings\CpSettingInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\os_publications\PublicationsListingHelperInterface;
-use Drupal\redirect\Entity\Redirect;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\bibcite\CitationStylerInterface;
 use Drupal\bibcite\Plugin\BibciteFormatManagerInterface;
@@ -243,6 +242,10 @@ class PublicationSettingsForm extends PluginBase implements CpSettingInterface, 
    * {@inheritdoc}
    */
   public function access(AccountInterface $account): AccessResultInterface {
+    if (!$account->hasPermission('access control panel')) {
+      return AccessResult::forbidden();
+    }
+
     return AccessResult::allowed();
   }
 
