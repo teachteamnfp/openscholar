@@ -771,4 +771,4 @@ $config_directories['sync'] = '../config/sync';
 # if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
 #   include $app_root . '/' . $site_path . '/settings.local.php';
 # }
-
+$config['config_split.config_split.local']['status'] = FALSE;

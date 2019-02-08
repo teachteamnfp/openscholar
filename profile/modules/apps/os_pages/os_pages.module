@@ -1,0 +1,163 @@
+<?php
+
+/**
+ * @file
+ * Pages app.
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\node\Entity\Node;
+use Drupal\block_visibility_groups\Entity\BlockVisibilityGroup;
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_entity_insert().
+ *
+ * @throws \Drupal\Core\Entity\EntityStorageException
+ */
+function os_pages_entity_insert(EntityInterface $entity) {
+  /** @var \Drupal\os_pages\VisibilityHelper $visibility_helper */
+  $visibility_helper = \Drupal::service('os_pages.visibility_helper');
+
+  if (!$visibility_helper->isBookPage($entity)) {
+    return;
+  }
+
+  /** @var \Drupal\os_pages\VisibilityStorageInterface $visibility_storage */
+  $visibility_storage = \Drupal::service('os_pages.visibility_storage');
+
+  // Create page visibility group.
+  $visibility_storage->create([
+    'id' => "os_pages_page_{$entity->id()}",
+    'label' => t('OS Pages: Page @name', [
+      '@name' => $entity->label(),
+    ]),
+    'status' => TRUE,
+    'allow_other_conditions' => TRUE,
+    'logic' => 'and',
+  ], [
+    [
+      'id' => 'node_type',
+      'bundles' => [
+        $entity->bundle() => $entity->bundle(),
+      ],
+      'negate' => FALSE,
+      'context_mapping' => [
+        'node' => '@node.node_route_context:node',
+      ],
+    ],
+    [
+      'id' => 'request_path',
+      'pages' => "/node/{$entity->id()}",
+      'negate' => FALSE,
+      'context_mapping' => [],
+    ],
+  ]);
+
+  /** @var \Drupal\node\NodeInterface $book */
+  $book = Node::load($entity->book['bid']);
+
+  /** @var \Drupal\block_visibility_groups\Entity\BlockVisibilityGroup|null $section_visibility_group */
+  $section_visibility_group = BlockVisibilityGroup::load("os_pages_section_{$book->id()}");
+
+  // Create/update section visibility group.
+  if (!$section_visibility_group) {
+    if ($visibility_helper->isBookFirstPage($entity)) {
+      $visibility_storage->create([
+        'id' => "os_pages_section_{$book->id()}",
+        'label' => t('OS Pages: Section @book_name', [
+          '@book_name' => $book->label(),
+        ]),
+        'status' => TRUE,
+        'allow_other_conditions' => TRUE,
+        'logic' => 'and',
+      ], [
+        [
+          'id' => 'node_type',
+          'bundles' => [
+            $entity->bundle() => $entity->bundle(),
+          ],
+          'negate' => FALSE,
+          'context_mapping' => [
+            'node' => '@node.node_route_context:node',
+          ],
+        ],
+        [
+          'id' => 'request_path',
+          'pages' => "/node/{$book->id()}\n/node/{$entity->id()}",
+          'negate' => FALSE,
+          'context_mapping' => [],
+        ],
+      ]);
+    }
+  }
+  else {
+    // Update the path condition for section visibility group.
+    // Making sure that it appears for the newly created page as well.
+
+    /** @var array $conditions */
+    $conditions = $section_visibility_group->getConditions()->getConfiguration();
+
+    foreach ($conditions as $condition) {
+      if ($condition['id'] === 'request_path') {
+        /** @var string $condition_id */
+        $condition_id = $condition['uuid'];
+        /** @var string $pages */
+        $pages = $condition['pages'];
+      }
+    }
+
+    if (!isset($condition_id) && !isset($pages)) {
+      return;
+    }
+
+    $section_visibility_group->removeCondition($condition_id);
+
+    $section_visibility_group->addCondition([
+      'id' => 'request_path',
+      'pages' => "$pages\n/node/{$entity->id()}",
+      'negate' => 0,
+      'context_mapping' => [],
+    ]);
+
+    $section_visibility_group->save();
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function os_pages_form_node_page_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  /** @var int|null $pid */
+  $pid = \Drupal::request()->query->get('pid');
+
+  if (!$pid) {
+    return;
+  }
+
+  $page = Node::load($pid);
+
+  if (!isset($page->book['bid'])) {
+    return;
+  }
+
+  $form_state->setTemporary([
+    'bid' => $page->book['bid'],
+    'pid' => $pid,
+  ]);
+  $form['actions']['submit']['#submit'][] = 'os_pages_node_page_form_set_book';
+}
+
+/**
+ * Sets default book data for add node page form.
+ */
+function os_pages_node_page_form_set_book(&$form, FormStateInterface $form_state) {
+  /** @var array $book_data */
+  $book_data = $form_state->getTemporary();
+  /** @var \Drupal\book\BookManagerInterface $book_manager */
+  $book_manager = \Drupal::service('book.manager');
+  $book_manager->saveBookLink($book_data + [
+    'nid' => $form_state->getValue('nid'),
+    'weight' => 0,
+  ], TRUE);
+}
