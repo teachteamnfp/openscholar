@@ -10,13 +10,12 @@ services:
       MYSQL_DATABASE: osd8dev
       MYSQL_USER: osd8dev
       MYSQL_PASSWORD: drupal
-#    volumes:
-#      - ./mariadb-init:/docker-entrypoint-initdb.d # Place init .sql file(s) here.
-#      - /path/to/mariadb/data/on/host:/var/lib/mysql # I want to manage volumes manually.
+  #    volumes:
+  #      - ./mariadb-init:/docker-entrypoint-initdb.d # Place init .sql file(s) here.
+  #      - /path/to/mariadb/data/on/host:/var/lib/mysql # I want to manage volumes manually.
 
   php:
     image: wodby/drupal-php:7.2-4.6.3
-    env_file: php.env
     environment:
       PHP_SENDMAIL_PATH: /usr/sbin/sendmail -t -i -S mailhog:1025
       PHP_MAX_INPUT_VARS: 10000
@@ -25,8 +24,11 @@ services:
       PHP_XDEBUG_DEFAULT_ENABLE: 0
       PHP_XDEBUG_REMOTE_CONNECT_BACK: 0         # Disable this if not on MAC - This is needed to respect remote.host setting below
       PHP_XDEBUG_REMOTE_HOST: "10.254.254.254"  # Disable this if not on MAC - You will also need to 'sudo ifconfig lo0 alias 10.254.254.254'
+      PHP_MAX_EXECUTION_TIME: $PHP_MAX_EXECUTION_TIME
+      PHP_MAX_INPUT_TIME: $PHP_MAX_INPUT_TIME
+      PHP_IDE_CONFIG: $PHP_IDE_CONFIG # See https://www.jetbrains.com/help/phpstorm/debugging-a-php-cli-script.html
     volumes:
-      - ./:/var/www/html
+      - ./:/var/www/html:cached
 
   apache:
     image: wodby/apache:2.4
@@ -36,10 +38,10 @@ services:
       APACHE_LOG_LEVEL: debug
       APACHE_BACKEND_HOST: php
       APACHE_SERVER_ROOT: /var/www/html/web
-      APACHE_TIMEOUT: 1200
+      APACHE_TIMEOUT: $APACHE_TIMEOUT
       APACHE_VHOST_PRESET: php
     volumes:
-      - ./:/var/www/html
+      - ./:/var/www/html:cached
     labels:
       - 'traefik.backend=osd8_apache_1'
       - 'traefik.port=80'
@@ -50,4 +52,3 @@ services:
     image: previousnext/chrome-headless:65
     ports:
       - "9222:9222"
-

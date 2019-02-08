@@ -58,5 +58,3 @@
 /web/sites/example.sites.php
 /web/sites/sites.php
 /web/themes/.gitkeep
-php.env
-docker-compose.yml
