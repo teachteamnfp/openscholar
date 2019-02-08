@@ -913,3 +913,43 @@ function vsite_update_7038() {
     drupal_set_message(t('Unable to uninstall mollom module.'), 'error');
   }
 }
+
+function _vsite_fix_group_path_get_all() {
+  $query = db_select('field_data_field_group_path', 'fgp');
+  $query->fields('fgp', ['field_group_path_url', 'entity_id']);
+  $query->leftJoin('purl', 'p', 'fgp.entity_id = p.id');
+  $query->fields('p', ['value']);
+  $query->condition('fgp.field_group_path_url', '%/_', 'LIKE');
+  return $query->execute();
+}
+
+function _vsite_fix_group_path_update_field($node) {
+  if (empty($node->purl)) {
+    drupal_set_message(t('Purl value is empty (%title [nid:!nid]).', array(
+      '!nid' => $node->nid,
+      '%title' => $node->title,
+    )), 'warning');
+    return FALSE;
+  }
+  $group_path = '[site:url]' . $node->purl;
+
+  // Do update without node save, to faster update values.
+  $node->field_group_path[LANGUAGE_NONE][0]['url'] = $group_path;
+  field_attach_presave('node', $node);
+  field_attach_update('node', $node);
+  return TRUE;
+}
+/**
+ * Update bad field_group_path_url values with token pattern.
+ */
+function vsite_update_7039() {
+  $result = _vsite_fix_group_path_get_all();
+  $count = 0;
+  while ($row = $result->fetchAssoc()) {
+    $node = node_load($row['entity_id']);
+    if(_vsite_fix_group_path_update_field($node)) {
+      $count++;
+    }
+  }
+  return t('Updated !count field one char records with token pattern.', array('!count' => $count));
+}
