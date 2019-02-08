@@ -7,6 +7,8 @@ use weitzman\DrupalTestTraits\ExistingSiteBase;
 /**
  * Class PublicationsFormTest.
  *
+ * @group functional
+ *
  * @package Drupal\Tests\os_publications\ExistingSite
  */
 class PublicationsFormTest extends ExistingSiteBase {

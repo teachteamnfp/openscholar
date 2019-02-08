@@ -10,6 +10,8 @@ use Drupal\views\ViewExecutable;
 
 /**
  * Implements hook_views_data_alter().
+ *
+ * @param array $data
  */
 function os_publications_views_data_alter(array &$data) {
   $data['bibcite_reference']['first_letter_title_excl_prep'] = [
@@ -54,9 +56,46 @@ function os_publications_views_query_alter(ViewExecutable $view, QueryPluginBase
           // [
           //   0 => 'artwork',
           //   1 => 'journal',
-          // ]
+          // ].
           $condition['value'] = array_filter(array_values($allowed_publication_types));
         }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_page_attachments().
+ */
+function os_publications_page_attachments(array &$page) {
+  $current_route = \Drupal::routeMatch();
+
+  // Drupal has fetched the entity for us already.
+  $entities = $current_route->getParameters();
+
+  if ($entities->has('bibcite_reference')) {
+    if ($entities) {
+      foreach ($entities as $entity => $value) {
+        $types[] = $entity;
+        $entity_id[$entity] = $value->id();
+      }
+    }
+    // @todo Implement checks if the entity is to be made available to GoogleScholar and if googlescholar is enabled
+    $type = \Drupal::service('os_publications.manager_citation_distribute');
+    $plugins = $type->getDefinitions();
+
+    foreach ($plugins as $plugin) {
+      if (in_array('bibcite_reference', $types)) {
+        if ($plugin['type'] == 'metadata') {
+          $service = $type->createInstance($plugin['id']);
+          if ($service && method_exists($service, 'render')) {
+            $meta = $service->render($entity_id['bibcite_reference']);
+          }
+        }
+      }
+      $head = $meta;
+      foreach ($head as $key => $item) {
+        $page['#attached']['html_head'][] = [$item, $key];
       }
     }
   }

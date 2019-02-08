@@ -6,6 +6,8 @@ use weitzman\DrupalTestTraits\ExistingSiteWebDriverTestBase;
 
 /**
  * A WebDriver test suitable for testing Ajax and client-side interactions.
+ *
+ * @group functional-javascript
  */
 class PublicationJavaScriptTest extends ExistingSiteWebDriverTestBase {
 

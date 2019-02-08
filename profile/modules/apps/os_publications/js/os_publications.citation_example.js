@@ -9,13 +9,15 @@
   Drupal.behaviors.publications = {
     attach: function (context, settings) {
 
-      $(".form-item-os-publications-preferred-bibliographic-format").mouseover(function () {
+      var formClass = '.form-item-os-publications-preferred-bibliographic-format';
+
+      $(formClass).mouseover(function () {
         var checkbox = $(this).find('input').val();
         var default_style = drupalSettings.default_style;
         $("#" + default_style).hide();
         $("#" + checkbox).show();
       });
-      $(".form-item-os-publications-preferred-bibliographic-format").mouseout(function () {
+      $(formClass).mouseout(function () {
         var checkbox = $(this).find('input').val();
         var default_style = drupalSettings.default_style;
           $("#" + checkbox).hide();

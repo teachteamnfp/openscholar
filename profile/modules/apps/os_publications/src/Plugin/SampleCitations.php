@@ -36,14 +36,11 @@ class SampleCitations extends PluginBase {
 
     // Attach extra HTML to the citation array to allow for a popup box that
     // will display an example of the citation format.
-    /* @var array of available styles $csl_styles */
     $csl_styles = $this->styler->getAvailableStyles();
-    // module_load_include('inc', 'os_publications', 'os_publications.pages');.
-    if (isset($csl_styles) && is_array($csl_styles)) {
+    if ($csl_styles) {
 
-      $counter = 0;
       foreach ($csl_styles as $style) {
-        $counter++;
+        // Setup the new citation options to be wrapped for a popup.
         // Setup the h2.
         $cite_example_title = '<h2>' . $this->t('@csl_title', ['@csl_title' => $style->label()]) . '</h2>';
         // Setup the citation exmaple for the popup.
@@ -59,25 +56,28 @@ class SampleCitations extends PluginBase {
   }
 
   /**
-   * Return a themed citation example.
+   * Generate Citation Example.
    *
-   * @params $csl
-   *    Citation style to use for theming the citation.
+   * @param string $csl
+   *   The default style.
+   *
+   * @return string
+   *   Renderable citation example.
    */
   public function osPublicationsBuildCitationExample($csl) {
-    if (!isset($csl)) {
+    if (!$csl) {
       // Get the default biblio style.
-      $style = $this->styler->getStyle()->id();
-    }
-    else {
-      $style = $csl;
+      $csl = $this->styler->getStyle()->id();
     }
     $node_array = $this->osPublicationsGetCitationExample();
-    return $this->osPublicationsThemeCitation(['style_name' => $style, 'node_array' => $node_array]);
+    return $this->osPublicationsThemeCitation(['style_name' => $csl, 'node_array' => $node_array]);
   }
 
   /**
    * Return a pre-built node for an example citation.
+   *
+   * @return array
+   *   Entity object.
    */
   public function osPublicationsGetCitationExample() {
 
@@ -245,7 +245,7 @@ class SampleCitations extends PluginBase {
     /* @var string $styled_node */
     $styled_node = '';
     $node_array = $variables['node_array'];
-    $style = isset($variables['style_name']) ? $variables['style_name'] : NULL;
+    $style = $variables['style_name'] ? $variables['style_name'] : NULL;
     $this->styler->setStyleById($style);
 
     // Display the citation.

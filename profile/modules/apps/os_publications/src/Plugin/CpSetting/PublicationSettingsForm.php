@@ -153,7 +153,7 @@ class PublicationSettingsForm extends PluginBase implements CpSettingInterface, 
     $form['os_publications_filter_publication_types'] = [
       '#type' => 'checkboxes',
       '#title' => 'Display on Your Publication Page',
-      '#description' => $this->t('Selected publications types will appear on your Publications page. Unselected publication types can still be added to other locations on your site using widgets.'),
+      '#description' => t('Selected publications types will appear on your Publications page. Unselected publication types can still be added to other locations on your site using widgets.'),
       '#default_value' => $publication_config->get('os_publications_filter_publication_types'),
       '#options' => $publication_types_options,
       '#weight' => 0,
@@ -165,7 +165,7 @@ class PublicationSettingsForm extends PluginBase implements CpSettingInterface, 
       '#title' => $this->t('Show note content in teaser'),
       '#default_value' => $publication_config->get('os_publications_note_in_teaser'),
       '#weight' => 0,
-      '#prefix' => '<label>Notes</label>',
+      '#prefix' => '<label>' . $this->t('Notes') . '</label>',
     ];
 
     $form['biblio_sort'] = [
