@@ -184,6 +184,9 @@
             },
             "drupal/block_visibility_groups": {
                 "8.6: error when deleting a block visibility group": "https://www.drupal.org/files/issues/2018-10-18/block_visibility_groups_3000396-4.patch"
+            },
+            "drupal/bootstrap": {
+                "Unsupported operand types during providers JSON discovery #8": "https://www.drupal.org/files/issues/2019-01-24/3027569-8.x-3.x-8.patch"
             }
         }
     }
