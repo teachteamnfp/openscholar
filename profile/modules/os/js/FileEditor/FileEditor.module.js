@@ -146,7 +146,7 @@
                 }
               };
 
-              $http.put(url.generate(settings.fetchSetting('paths.api') + '/media/' + scope.file.id, true), file, config)
+              $http.put(url.generate(settings.fetchSetting('paths.api') + '/file-upload/' + scope.file.id, true), file, config)
                 .success(function (result) {
                   scope.showWarning = false;
                   scope.replaceSuccess = true;
