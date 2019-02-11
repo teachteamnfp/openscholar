@@ -10,7 +10,7 @@ use weitzman\DrupalTestTraits\ExistingSiteBase;
 /**
  * Test base for event tests.
  */
-class EventTestBase extends ExistingSiteBase {
+abstract class EventTestBase extends ExistingSiteBase {
 
   /**
    * The entity type manager service.
