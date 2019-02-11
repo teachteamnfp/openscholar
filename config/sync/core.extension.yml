@@ -11,6 +11,8 @@ module:
   ckeditor: 0
   comment: 0
   config: 0
+  config_filter: 0
+  config_split: 0
   config_update: 0
   contact: 0
   content_moderation: 0
@@ -67,6 +69,7 @@ module:
   os_media_gallery: 0
   os_metatag: 0
   os_office_embed: 0
+  os_pages: 0
   os_redirect: 0
   os_slideshow: 0
   page_cache: 0

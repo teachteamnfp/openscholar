@@ -1,8 +1,8 @@
 allowed_types:
-  - book
+  - page
 block:
   navigation:
     mode: 'all pages'
-child_type: book
+child_type: page
 _core:
   default_config_hash: i-_2TVi6FUEAqBgNRJkt6aaYmiw1k_LTrXzJS6wlZ4U
