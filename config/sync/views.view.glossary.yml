@@ -1,3 +1,4 @@
+uuid: fb9c76da-440d-4325-af42-9037f71ca226
 langcode: en
 status: false
 dependencies:
@@ -6,6 +7,8 @@ dependencies:
   module:
     - node
     - user
+_core:
+  default_config_hash: _12Vkw1VGBz_s0_W_LLVCrBPpioNSnB6zcd1lUAQubM
 id: glossary
 label: Glossary
 module: node
@@ -454,5 +457,3 @@ display:
         - user.permissions
       max-age: 0
       tags: {  }
-_core:
-  default_config_hash: _12Vkw1VGBz_s0_W_LLVCrBPpioNSnB6zcd1lUAQubM

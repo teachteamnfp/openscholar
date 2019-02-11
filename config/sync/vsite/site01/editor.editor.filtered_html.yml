@@ -54,10 +54,10 @@ settings:
     stylescombo:
       styles: ''
 image_upload:
-  status: 0
+  status: false
   scheme: public
   directory: inline-images
   max_size: ''
   max_dimensions:
-    width: ''
-    height: ''
+    width: null
+    height: null

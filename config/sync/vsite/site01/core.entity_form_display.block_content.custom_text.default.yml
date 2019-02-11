@@ -23,8 +23,8 @@ content:
     type: text_textarea_with_summary
     weight: 101
     settings:
-      rows: '9'
-      summary_rows: '3'
+      rows: 9
+      summary_rows: 3
       placeholder: ''
     third_party_settings: {  }
     region: content
