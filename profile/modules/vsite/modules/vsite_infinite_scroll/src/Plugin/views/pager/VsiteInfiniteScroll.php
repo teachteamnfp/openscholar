@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Drupal\vsite_infinite_scroll\Plugin\views\pager;
 
 use Drupal\views_infinite_scroll\Plugin\views\pager\InfiniteScroll;
