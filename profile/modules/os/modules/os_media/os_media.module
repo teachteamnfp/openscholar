@@ -3,9 +3,20 @@
 function os_media_library_info_alter(&$libraries, $extension) {
   if ($extension == 'os_media') {
     if (isset($libraries['mediaBrowser'])) {
-      $libraries['mediaBrowser']['drupalSettings']['extensionMap'] = [];
+      /** @var \Drupal\media\MediaTypeInterface[] $mediaTypes */
+      $mediaTypes = \Drupal::entityTypeManager()->getStorage('media_type')->loadMultiple();
+      $map = [];
+      foreach ($mediaTypes as $type) {
+        $sourceFieldDefinition = $type->getSource()->getSourceFieldDefinition($type);
+        if (!is_null($sourceFieldDefinition)) {
+          $map[$type->id()] = explode(' ', $sourceFieldDefinition->getSetting('file_extensions'));
+        }
+      }
+
+      $libraries['mediaBrowser']['drupalSettings']['extensionMap'] = $map;
       $libraries['mediaBrowser']['drupalSettings']['embedWhitelist'] = [];
-      $libraries['mediaBrowser']['drupalSettings']['maximumFileSize'] = '512MB';
+      $libraries['mediaBrowser']['drupalSettings']['maximumFileSize'] = format_size(file_upload_max_size());
+      $libraries['mediaBrowser']['drupalSettings']['maximumFileSizeRaw'] = file_upload_max_size();
     }
   }
 }
