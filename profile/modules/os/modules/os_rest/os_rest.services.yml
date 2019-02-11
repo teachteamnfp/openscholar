@@ -4,3 +4,8 @@ services:
     tags:
       - { name: normalizer, priority: 2 }
     arguments: ['@entity.manager']
+  os_rest.content_type_header_matcher:
+    class: Drupal\os_rest\Routing\ContentTypeHeaderMatcher
+    public: false
+    decorates: content_type_header_matcher
+    decoration_priority: 1

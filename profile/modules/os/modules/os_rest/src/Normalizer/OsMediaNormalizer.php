@@ -46,6 +46,7 @@ class OsMediaNormalizer extends ContentEntityNormalizer {
     if (is_numeric($file)) {
       /** @var FileInterface $file */
       $file = \Drupal::entityTypeManager()->getStorage('file')->load($file);
+      $output['fid'] = $file->id();
       $output['url'] = file_create_url($file->getFileUri());
       $output['size'] = $file->getSize();
       $output['filename'] = $file->getFilename();

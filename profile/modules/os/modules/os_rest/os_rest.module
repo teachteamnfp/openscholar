@@ -19,8 +19,13 @@ function os_rest_rest_resource_alter(&$resources) {
   foreach ($types as $t) {
     if (isset($resources[$t])) {
       $resources[$t]['uri_paths']['canonical'] = '/api' . $resources[$t]['uri_paths']['canonical'];
-      $resources[$t]['uri_paths']['create'] = str_replace('entity', 'api', $resources[$t]['uri_paths']);
+      $resources[$t]['uri_paths']['create'] = str_replace('entity', 'api', $resources[$t]['uri_paths']['create']);
     }
+  }
+
+  if (isset($resources['entity:file'])) {
+    $resources['entity:file']['uri_paths']['canonical'] = '/api/file/{file}';
+    $resources['entity:file']['uri_paths']['create'] = '/api/file';
   }
 
   if (isset($resources['entity:taxonomy_term'])) {

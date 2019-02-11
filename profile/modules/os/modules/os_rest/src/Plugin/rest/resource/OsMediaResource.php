@@ -44,7 +44,9 @@ class OsMediaResource extends OsEntityResource {
    */
   protected function checkFilename($filename) {
     $resource = new ResourceResponse([
-      'filename' => $filename,
+      'expectedFileName' => $filename,
+      'collision' => false,
+      'invalidChars' => false
     ]);
     $resource->addCacheableDependency($filename);
     return $resource;
@@ -56,7 +58,7 @@ class OsMediaResource extends OsEntityResource {
   public function routes() {
     $routeCollection = parent::routes();
 
-    $path = '/media/filename/{filename}';
+    $path = '/api/media/filename/{filename}';
     $route = $this->getBaseRoute($path, 'get');
     $params['filename'] = 'filename';
 
