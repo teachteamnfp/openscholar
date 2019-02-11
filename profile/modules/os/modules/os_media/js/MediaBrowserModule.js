@@ -133,23 +133,18 @@
     }
     $scope.extensions.sort();
     $scope.whitelist = settings.fetchSetting('embedWhitelist');
+    $scope.maxFilesize = params.max_filesize || settings.fetchSetting('maximumFileSize');
 
-    if (params.max_filesize) {
-      $scope.maxFilesize = params.max_filesize;
-    }
-    else {
-      $scope.maxFilesize = settings.fetchSetting('maximumFileSize');
-    }
 
     $scope.filteredTypes = [];
     $scope.isFiltered = function () {
       return $scope.filteredTypes.length || $scope.search;
-    }
+    };
 
     $scope.clearFilters = function () {
       $scope.filteredTypes = defaultFilteredTypes;
       $scope.search = '';
-    }
+    };
 
     $scope.showHelp = false;
 
@@ -211,7 +206,7 @@
       if (deleteMe !== false) {
         $scope.files.splice(deleteMe, 1);
       }
-    })
+    });
 
     var fetching = service.fetch({})
       .then(function (result) {
@@ -237,7 +232,7 @@
       else {
         close(result != undefined ? result : true);
       }
-    }
+    };
 
     $scope.validate = function($file) {
       // Deleting previous error messages
@@ -246,14 +241,14 @@
       if (file && file instanceof File) {
         // TODO: Get validating properties from somewhere and check the file against them
 
-        var maxFilesize = params.max_filesize_raw || Drupal.settings.maximumFileSizeRaw;
+        var maxFilesize = params.max_filesize_raw || settings.fetchSetting('maximumFileSizeRaw');
         var size = maxFilesize > file.size,   // file is smaller than max
           ext = file.name.slice(file.name.lastIndexOf('.')+1).toLowerCase(),
           extension = $scope.extensions.indexOf(ext) !== -1,    // extension is found
           id;
 
         if (!size) {
-          addMessage(file.name + ' is larger than the maximum filesize of ' + (params.max_filesize || Drupal.settings.maximumFileSize));
+          addMessage(file.name + ' is larger than the maximum filesize of ' + (maxFilesize));
         }
         if (!extension) {
           addMessage(file.name + ' is not an accepted file type.');
@@ -264,7 +259,7 @@
 
         return size && extension;
       }
-    }
+    };
 
     $scope.removeMsg = function() {
       angular.forEach($scope.messages, function(value, id){
@@ -272,7 +267,7 @@
           delete $scope.messages[id];
         }
       });
-    }
+    };
 
     function addMessage(message) {
       var id = $scope.messages.next++;
@@ -340,17 +335,14 @@
         var hadHashtag = newName != $files[i].name;
         $files[i].sanitized = newName;
 
-        var url = Drupal.settings.paths.api + '/files/filename/' + $files[i].sanitized;
+        var url = urlGenerator.generate(settings.fetchSetting('paths.api') + '/media/filename/' + $files[i].sanitized + '?_format=json', true);
 
-        if (Drupal.settings.spaces) {
-          url += '?vsite=' + Drupal.settings.spaces.id;
-        }
         var config = {
           originalFile: $files[i]
         };
         promises.push($http.get(url, config).then(function (response) {
             var file = response.config.originalFile;
-            var data = response.data.data;
+            var data = response.data;
             file.filename = file.sanitized;
             if (data.collision) {
               file.newName = data.expectedFileName;
@@ -376,7 +368,7 @@
           $scope.checkingFilenames = false;
           console.log('Error happened with all promises');
         })
-    }
+    };
 
 /*
         var similar = [],
@@ -446,7 +438,7 @@
       if ($last) {
         finalizeDupes();
       }
-    }
+    };
 
     // tells the server to replace the old file on disk with this new one
     // (just performs a swap on the hard drive)
@@ -457,7 +449,7 @@
       if ($last) {
         finalizeDupes();
       }
-    }
+    };
 
     // cancels the upload process for this file
     $scope.cancelUpload = function ($index, $last) {
@@ -467,7 +459,7 @@
       if ($last) {
         finalizeDupes();
       }
-    }
+    };
 
     function finalizeDupes() {
       var toBeUploaded = [];
@@ -497,7 +489,7 @@
           $file = toBeUploaded[currentlyUploading];
           uploadOne($file);
         }
-      }
+      };
 
       function uploadNext(firstId) {
         currentlyUploading++;
@@ -532,17 +524,14 @@
       }
 
       function uploadOne($file) {
-        var fields = {};
-        if (Drupal.settings.spaces) {
-          fields.vsite = Drupal.settings.spaces.id;
-        }
+        let fields = {};
         if (config.files) {
-          for (var k in config.files.fields) {
+          for (let k in config.files.fields) {
             fields[k] = config.files.fields[k];
           }
         }
         $upload.upload({
-          url: Drupal.settings.paths.api+'/files',
+          url: urlGenerator.generate(settings.fetchSetting('paths.api')+'/file-upload', true),
           file: $file,
           data: $file,
           fileFormDataName: 'files[upload]',
@@ -552,27 +541,25 @@
           fileName: $file.newName || null
         }).progress(function (e) {
           progress = e;
-        }).success(function (e) {
-          for (var i = 0; i< e.data.length; i++) {
-            service.register(e.data[i]);
-            var found = false;
-            // check to see if this file exists
-            for (var j = 0; j < $scope.files.length; j++) {
-              if ($scope.files[j].id == e.data[i].id) {
-                // we just replaced an existing file.
-                e.data[i].replaced = true;
-                $scope.files[j] = e.data[i];
-                found = true;
-              }
+        }).success(function (file) {
+          service.register(file);
+          var found = false;
+          // check to see if this file exists
+          for (var j = 0; j < $scope.files.length; j++) {
+            if ($scope.files[j].id == file.id) {
+              // we just replaced an existing file.
+              file.replaced = true;
+              $scope.files[j] = file;
+              found = true;
             }
-            if (!found) {
-              // This is a brand-new file. Set the true flag and add it to the list.
-              e.data[i].new = true;
-              $scope.files.push(e.data[i]);
-            }
-            $scope.toInsert.push(e.data[i]);
           }
-          uploadNext(e.data[0].id);
+          if (!found) {
+            // This is a brand-new file. Set the true flag and add it to the list.
+            file.new = true;
+            $scope.files.push(file);
+          }
+          $scope.toInsert.push(file);
+          uploadNext(file.mid);
         }).error(function (e) {
           addMessage(e.title);
           uploadNext();
@@ -679,12 +666,10 @@
       var results = [];
       if ($scope.toInsert.length) {
         for (var i = 0; i < $scope.toInsert.length; i++) {
-          $scope.toInsert[i].fid = $scope.toInsert[i].id;
           results.push($scope.toInsert[i]);
         }
       }
       else {
-        $scope.selected_file.fid = $scope.selected_file.id; // hack to prevent rewriting a lot of Media's code.
         results.push($scope.selected_file);
       }
 
