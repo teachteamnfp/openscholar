@@ -6,6 +6,7 @@ use Drupal\Component\Utility\Html;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\media\Entity\MediaType;
 
 /**
  * Class MediaBrowserWidget
@@ -26,6 +27,15 @@ class MediaBrowserWidget extends WidgetBase {
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $media = $items;
+    $settings = $this->getFieldSettings();
+    $bundles = $settings['handler_settings']['target_bundles'];
+    $extensions = '';
+    $types = [];
+    /** @var MediaType[] $mediaTypes */
+    $mediaTypes = \Drupal::entityTypeManager()->getStorage('media_type')->loadMultiple($bundles);
+    foreach ($mediaTypes as $type) {
+      $types[] = $type->id();
+    }
 
     $element['#type'] = 'fieldset';
     $element['media-browser-field'] = [
@@ -33,7 +43,7 @@ class MediaBrowserWidget extends WidgetBase {
       '#tag' => 'div',
       '#attributes' => [
         'media-browser-field' => '',
-        'types' => 'all',
+        'types' => implode(',',$types),
         'maxFilesize' => '512 MB',
         'upload_text' => 'Upload',
         'droppable_text' => 'Drop here.',
