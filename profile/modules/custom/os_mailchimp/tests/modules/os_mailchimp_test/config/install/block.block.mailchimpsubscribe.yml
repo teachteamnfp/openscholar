@@ -5,9 +5,9 @@ dependencies:
     - block_visibility_groups
     - os_mailchimp
   theme:
-    - bartik
+    - os_base
 id: mailchimpsubscribe
-theme: bartik
+theme: os_base
 region: content
 weight: 0
 provider: null
