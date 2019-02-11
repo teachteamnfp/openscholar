@@ -64,7 +64,6 @@ class CpSettingsOsMailChimpTest extends ExistingSiteWebDriverTestBase {
    */
   public function testBlockVisibilityInContentRegion() {
     $web_assert = $this->assertSession();
-    drupal_flush_all_caches();
     $this->visit("/");
     $web_assert->statusCodeEquals(200);
     $page = $this->getCurrentPage();
