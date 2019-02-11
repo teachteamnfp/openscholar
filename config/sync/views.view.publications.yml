@@ -154,7 +154,7 @@ display:
           field: citation
           relationship: none
           group_type: group
-          admin_label: ''
+          admin_label: 'Reference: Citation (The value is controlled from the code - see os_publications_views_pre_render)'
           label: ''
           exclude: false
           alter:
@@ -407,7 +407,7 @@ display:
           field: citation
           relationship: none
           group_type: group
-          admin_label: ''
+          admin_label: 'Reference: Citation (The value is controlled from the code - see os_publications_views_pre_render)'
           label: ''
           exclude: false
           alter:
@@ -597,7 +597,7 @@ display:
           field: citation
           relationship: none
           group_type: group
-          admin_label: ''
+          admin_label: 'Reference: Citation (The value is controlled from the code - see os_publications_views_pre_render)'
           label: ''
           exclude: false
           alter:
@@ -780,7 +780,7 @@ display:
           field: citation
           relationship: none
           group_type: group
-          admin_label: ''
+          admin_label: 'Reference: Citation (The value is controlled from the code - see os_publications_views_pre_render)'
           label: ''
           exclude: false
           alter:
