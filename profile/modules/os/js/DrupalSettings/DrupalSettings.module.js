@@ -39,7 +39,7 @@
    * @returns {boolean}
    */
   DrupalSettings.prototype.hasSetting = function (settingName) {
-    return drillDown(this.settings, settingName) === undefined;
+    return drillDown(this.settings, settingName) !== undefined;
   };
 
   /**
