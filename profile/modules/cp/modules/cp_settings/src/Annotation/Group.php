@@ -5,13 +5,13 @@ namespace Drupal\cp_settings\Annotation;
 use Drupal\Component\Annotation\Plugin;
 
 /**
- * CP settings annotation.
+ * Group annotation.
  *
- * @ingroup plugin_api
+ * @ingroup plugin_context
  *
  * @Annotation
  */
-class CpSetting extends Plugin {
+class Group extends Plugin {
 
   /**
    * The plugin ID.
@@ -21,7 +21,7 @@ class CpSetting extends Plugin {
   public $id;
 
   /**
-   * The setting title.
+   * The group title.
    *
    * @var \Drupal\Core\Annotation\Translation
    *
@@ -30,10 +30,10 @@ class CpSetting extends Plugin {
   public $title;
 
   /**
-   * Setting group.
+   * Group parent.
    *
-   * @var \Drupal\cp_settings\Annotation\Group
+   * @var string
    */
-  public $group;
+  public $parent;
 
 }
