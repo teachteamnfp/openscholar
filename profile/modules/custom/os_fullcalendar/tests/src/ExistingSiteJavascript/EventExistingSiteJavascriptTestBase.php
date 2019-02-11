@@ -41,13 +41,6 @@ abstract class EventExistingSiteJavascriptTestBase extends ExistingSiteWebDriver
   protected $config;
 
   /**
-   * Alias manager.
-   *
-   * @var \Drupal\Core\Path\AliasManagerInterface
-   */
-  protected $aliasManager;
-
-  /**
    * {@inheritdoc}
    */
   public function setUp() {
@@ -55,7 +48,6 @@ abstract class EventExistingSiteJavascriptTestBase extends ExistingSiteWebDriver
 
     $this->entityTypeManager = $this->container->get('entity_type.manager');
     $this->config = $this->container->get('config.factory');
-    $this->aliasManager = $this->container->get('path.alias_manager');
     /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
     $vsite_context_manager = $this->container->get('vsite.context_manager');
 

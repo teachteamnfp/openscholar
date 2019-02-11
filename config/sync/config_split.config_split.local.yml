@@ -1,0 +1,19 @@
+uuid: 2c985784-66e4-4865-9bc5-4b68d7149706
+langcode: en
+status: true
+dependencies: {  }
+id: local
+label: Local
+description: 'Configs which are instance specific, and not global.'
+folder: ../local_config
+module: {  }
+theme: {  }
+blacklist:
+  - 'block_visibility_groups.block_visibility_group.os_pages_page_*'
+  - 'block_visibility_groups.block_visibility_group.os_pages_section_*'
+  - 'block.block.booknavigation*'
+  - 'block.block.entityviewcontent*'
+graylist: {  }
+graylist_dependents: true
+graylist_skip_equal: true
+weight: 0
