@@ -104,7 +104,7 @@ class CitationDistributeGooglescholar implements CitationDistributionInterface, 
         $contributors_arr[] = $contributor_obj->name->value;
       }
     }
-    if ($contributors_arr) {
+    if (isset($contributors_arr)) {
       $metadata['citation_author'] = $this->googleScholarListAuthors($contributors_arr);
     }
 

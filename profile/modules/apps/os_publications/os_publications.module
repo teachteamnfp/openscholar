@@ -73,7 +73,7 @@ function os_publications_page_attachments(array &$page) {
   // Drupal has fetched the entity for us already.
   $entities = $current_route->getParameters();
 
-  if ($entities->has('bibcite_reference')) {
+  if ($entities->has('bibcite_reference') && !strpos($current_route->getRouteName(), 'edit_form')) {
     if ($entities) {
       foreach ($entities as $entity => $value) {
         $types[] = $entity;
@@ -86,7 +86,7 @@ function os_publications_page_attachments(array &$page) {
 
     foreach ($plugins as $plugin) {
       if (in_array('bibcite_reference', $types)) {
-        if ($plugin['type'] == 'metadata') {
+        if (isset($plugin['type']) && $plugin['type'] == 'metadata') {
           $service = $type->createInstance($plugin['id']);
           if ($service && method_exists($service, 'render')) {
             $meta = $service->render($entity_id['bibcite_reference']);
