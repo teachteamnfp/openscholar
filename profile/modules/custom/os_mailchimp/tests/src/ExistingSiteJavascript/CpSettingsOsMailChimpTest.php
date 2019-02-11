@@ -64,11 +64,8 @@ class CpSettingsOsMailChimpTest extends ExistingSiteWebDriverTestBase {
    */
   public function testBlockVisibilityInContentRegion() {
     $web_assert = $this->assertSession();
-    $this->visit("/");
-    file_put_contents('public://' . drupal_basename($this->getSession()->getCurrentUrl()) . '-before-cache.html', $this->getCurrentPageContent());
     drupal_flush_all_caches();
     $this->visit("/");
-    file_put_contents('public://' . drupal_basename($this->getSession()->getCurrentUrl()) . '-after-cache.html', $this->getCurrentPageContent());
     $web_assert->statusCodeEquals(200);
     $page = $this->getCurrentPage();
     $is_exists = $page->hasContent('Mailchimp subscribe');
