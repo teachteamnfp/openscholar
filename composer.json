@@ -104,7 +104,8 @@
         "drupal/bootstrap": "^3.17",
         "drupal/styleguide": "^1.0@alpha",
         "drupal/config_split": "^1.4",
-        "drupal/bibcite": "1.x-dev"
+        "drupal/bibcite": "1.x-dev",
+        "drupal/field_tools": "^1.0@alpha"
     },
     "require-dev": {
         "drupal/features": "^3.7",
