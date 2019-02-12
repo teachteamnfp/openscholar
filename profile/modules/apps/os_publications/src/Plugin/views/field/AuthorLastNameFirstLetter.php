@@ -55,17 +55,13 @@ class AuthorLastNameFirstLetter extends FieldPluginBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
   public function render(ResultRow $values) {
-    /** @var \Drupal\bibcite_entity\Entity\ReferenceInterface $bibcite_reference */
-    $bibcite_reference = $values->_entity;
-    /** @var \Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem $entity_reference_item */
-    $entity_reference_item = $bibcite_reference->get('author')->first();
-    /** @var \Drupal\Core\Entity\Plugin\DataType\EntityAdapter $entity_adapter */
-    $entity_adapter = $entity_reference_item->get('entity')->getTarget();
-    /** @var \Drupal\bibcite_entity\Entity\ContributorInterface $bibcite_contributor */
-    $bibcite_contributor = $entity_adapter->getValue();
-    return $this->publicationsListingHelper->convertAuthorName($this->sanitizeValue($bibcite_contributor->getLastName()));
+    /** @var \Drupal\bibcite_entity\Entity\ReferenceInterface $reference */
+    $reference = $values->_entity;
+    return $this->sanitizeValue($this->publicationsListingHelper->convertAuthorName($reference));
   }
 
 }

@@ -71,6 +71,8 @@ class PublicationsViewsTest extends TestBase {
   /**
    * Tests title display.
    *
+   * @coversDefaultClass \Drupal\os_publications\Plugin\views\field\LabelFirstLetterExclPreposition
+   *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function testTitle() {
@@ -110,6 +112,8 @@ class PublicationsViewsTest extends TestBase {
 
   /**
    * Tests author display.
+   *
+   * @coversDefaultClass \Drupal\os_publications\Plugin\views\field\AuthorLastNameFirstLetter
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    * @throws \Drupal\Core\TypedData\Exception\MissingDataException
@@ -158,10 +162,14 @@ class PublicationsViewsTest extends TestBase {
       ],
     ]);
 
+    $this->createReference([
+      'title' => 'Unknown',
+    ]);
+
     /** @var array $result */
     $result = views_get_view_result('publications', 'page_3');
 
-    $this->assertCount(3, $result);
+    $this->assertCount(4, $result);
 
     $grouped_result = [];
 
@@ -169,22 +177,14 @@ class PublicationsViewsTest extends TestBase {
     $publications_listing_helper = $this->container->get('os_publications.listing_helper');
 
     foreach ($result as $item) {
-      /** @var \Drupal\bibcite_entity\Entity\ReferenceInterface $bibcite_reference */
-      $bibcite_reference = $item->_entity;
-      /** @var \Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem $entity_reference_item */
-      $entity_reference_item = $bibcite_reference->get('author')->first();
-      /** @var \Drupal\Core\TypedData\TypedDataInterface $typed_data */
-      $typed_data = $entity_reference_item->get('entity');
-      /** @var \Drupal\Core\Entity\Plugin\DataType\EntityAdapter $entity_adapter */
-      $entity_adapter = $typed_data->getTarget();
-      /** @var \Drupal\bibcite_entity\Entity\ContributorInterface $bibcite_contributor */
-      $bibcite_contributor = $entity_adapter->getValue();
-
-      $grouped_result[$publications_listing_helper->convertAuthorName($bibcite_contributor->getLastName())][] = $bibcite_reference->id();
+      /** @var \Drupal\bibcite_entity\Entity\ReferenceInterface $reference */
+      $reference = $item->_entity;
+      $grouped_result[$publications_listing_helper->convertAuthorName($reference)][] = $reference->id();
     }
 
     $this->assertCount(2, $grouped_result['V']);
     $this->assertCount(1, $grouped_result['R']);
+    $this->assertCount(1, $grouped_result['']);
   }
 
   /**
