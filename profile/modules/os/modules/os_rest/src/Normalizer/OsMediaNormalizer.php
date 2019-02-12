@@ -50,6 +50,7 @@ class OsMediaNormalizer extends ContentEntityNormalizer {
       $output['url'] = file_create_url($file->getFileUri());
       $output['size'] = $file->getSize();
       $output['filename'] = $file->getFilename();
+      $output['schema'] =  \Drupal::service('file_system')->uriScheme($file->getFileUri());
 
       if (!empty($temp['field_media_image'])) {
         $output['alt'] = $temp['field_media_image'][0]['alt'];
