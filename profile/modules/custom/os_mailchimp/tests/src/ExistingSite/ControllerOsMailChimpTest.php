@@ -29,6 +29,7 @@ class ControllerOsMailChimpTest extends ExistingSiteBase {
     $cache_array = unserialize($cache_data);
     $cache = \Drupal::cache('mailchimp');
     $cache->set('lists', $cache_array);
+    $cache->invalidate('lists');
     $this->user = $this->createUser();
   }
 
