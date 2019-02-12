@@ -105,7 +105,8 @@
         "drupal/styleguide": "^1.0@alpha",
         "drupal/config_split": "^1.4",
         "drupal/bibcite": "1.x-dev",
-        "drupal/field_tools": "^1.0@alpha"
+        "drupal/field_tools": "^1.0@alpha",
+        "ext-json": "*"
     },
     "require-dev": {
         "drupal/features": "^3.7",
