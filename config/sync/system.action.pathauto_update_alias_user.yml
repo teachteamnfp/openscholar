@@ -1,13 +1,11 @@
-uuid: 995fb35b-d065-4d35-bf9b-49f57ca65e9e
-langcode: en
+id: pathauto_update_alias_user
+label: 'Update URL alias'
 status: true
+langcode: en
+type: user
+plugin: pathauto_update_alias
 dependencies:
   module:
     - user
 _core:
   default_config_hash: fWszFHPeJ_dhZ8kJEEWo4w-FQH_etR4AxTQkQCW9OLk
-id: pathauto_update_alias_user
-label: 'Update URL alias'
-type: user
-plugin: pathauto_update_alias
-configuration: {  }

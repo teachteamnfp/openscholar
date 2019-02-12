@@ -28,6 +28,5 @@ content:
     third_party_settings: {  }
     region: content
 hidden:
-  field_media: true
   field_slideshow: true
   langcode: true
