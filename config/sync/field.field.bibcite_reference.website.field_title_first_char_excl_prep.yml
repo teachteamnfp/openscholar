@@ -1,0 +1,19 @@
+uuid: 4f26f8f6-f750-4b20-b8c3-967767bb6490
+langcode: en
+status: true
+dependencies:
+  config:
+    - bibcite_entity.bibcite_reference_type.website
+    - field.storage.bibcite_reference.field_title_first_char_excl_prep
+id: bibcite_reference.website.field_title_first_char_excl_prep
+field_name: field_title_first_char_excl_prep
+entity_type: bibcite_reference
+bundle: website
+label: 'Title first letter excluding prepositions'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -1,0 +1,19 @@
+uuid: 2f2d6195-37d3-4831-b75c-988f19c0ca02
+langcode: en
+status: true
+dependencies:
+  config:
+    - bibcite_entity.bibcite_reference_type.journal
+    - field.storage.bibcite_reference.field_title_first_char_excl_prep
+id: bibcite_reference.journal.field_title_first_char_excl_prep
+field_name: field_title_first_char_excl_prep
+entity_type: bibcite_reference
+bundle: journal
+label: 'Title first letter excluding prepositions'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

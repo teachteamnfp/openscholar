@@ -1,0 +1,19 @@
+uuid: 49fa7ac8-3f22-4e4a-8eb7-67a9d05f4e95
+langcode: en
+status: true
+dependencies:
+  config:
+    - bibcite_entity.bibcite_reference_type.conference_paper
+    - field.storage.bibcite_reference.field_title_first_char_excl_prep
+id: bibcite_reference.conference_paper.field_title_first_char_excl_prep
+field_name: field_title_first_char_excl_prep
+entity_type: bibcite_reference
+bundle: conference_paper
+label: 'Title first letter excluding prepositions'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

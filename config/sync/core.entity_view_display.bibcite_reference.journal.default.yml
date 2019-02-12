@@ -5,6 +5,7 @@ dependencies:
   config:
     - bibcite_entity.bibcite_reference_type.journal
     - field.field.bibcite_reference.journal.field_is_sticky
+    - field.field.bibcite_reference.journal.field_title_first_char_excl_prep
   enforced:
     module:
       - bibcite_entity
@@ -421,5 +422,6 @@ content:
 hidden:
   bibcite_type: true
   citation: true
+  field_title_first_char_excl_prep: true
   langcode: true
   uid: true

@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - bibcite_entity.bibcite_reference_type.artwork
+    - field.storage.bibcite_reference.field_title_first_char_excl_prep
     - system.menu.main
   module:
     - bibcite_entity
@@ -241,59 +242,19 @@ display:
           entity_field: type
           plugin_id: bundle
       sorts:
-        bibcite_year:
-          id: bibcite_year
+        type:
+          id: type
           table: bibcite_reference
-          field: bibcite_year
+          field: type
           relationship: none
           group_type: group
           admin_label: ''
           order: ASC
-          exposed: true
+          exposed: false
           expose:
-            label: 'Year of Publication'
+            label: ''
           entity_type: bibcite_reference
-          entity_field: bibcite_year
-          plugin_id: standard
-        bibcite_date:
-          id: bibcite_date
-          table: bibcite_reference
-          field: bibcite_date
-          relationship: none
-          group_type: group
-          admin_label: ''
-          order: ASC
-          exposed: true
-          expose:
-            label: 'Date Published'
-          entity_type: bibcite_reference
-          entity_field: bibcite_date
-          plugin_id: standard
-        title:
-          id: title
-          table: bibcite_reference
-          field: title
-          relationship: none
-          group_type: group
-          admin_label: ''
-          order: ASC
-          exposed: true
-          expose:
-            label: Title
-          entity_type: bibcite_reference
-          entity_field: title
-          plugin_id: standard
-        field_is_sticky_value:
-          id: field_is_sticky_value
-          table: bibcite_reference__field_is_sticky
-          field: field_is_sticky_value
-          relationship: none
-          group_type: group
-          admin_label: ''
-          order: ASC
-          exposed: true
-          expose:
-            label: Sticky
+          entity_field: type
           plugin_id: standard
       title: 'Publications by Type'
       header: {  }
@@ -308,8 +269,6 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
-        - 'url.query_args:sort_by'
-        - 'url.query_args:sort_order'
       tags: {  }
   page_1:
     display_plugin: page
@@ -336,8 +295,6 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
-        - 'url.query_args:sort_by'
-        - 'url.query_args:sort_order'
       tags: {  }
   page_2:
     display_plugin: page
@@ -350,57 +307,6 @@ display:
       display_description: ''
       path: publications/title
       fields:
-        first_letter_title_excl_prep:
-          id: first_letter_title_excl_prep
-          table: bibcite_reference
-          field: first_letter_title_excl_prep
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: ''
-          exclude: true
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          entity_type: bibcite_reference
-          entity_field: title
-          plugin_id: os_bibcite_first_letter_title_excl_prep
         citation:
           id: citation
           table: bibcite_reference
@@ -452,6 +358,69 @@ display:
           csl_style: harvard_chicago_author_date
           entity_type: bibcite_reference
           plugin_id: bibcite_citation
+        field_title_first_char_excl_prep:
+          id: field_title_first_char_excl_prep
+          table: bibcite_reference__field_title_first_char_excl_prep
+          field: field_title_first_char_excl_prep
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
       defaults:
         fields: false
         style: false
@@ -463,7 +432,7 @@ display:
         options:
           grouping:
             -
-              field: first_letter_title_excl_prep
+              field: field_title_first_char_excl_prep
               rendered: true
               rendered_strip: false
           row_class: ''
@@ -477,17 +446,17 @@ display:
           default_field_elements: true
       title: 'Publications by Title'
       sorts:
-        field_is_sticky_value:
-          id: field_is_sticky_value
-          table: bibcite_reference__field_is_sticky
-          field: field_is_sticky_value
+        field_title_first_char_excl_prep_value:
+          id: field_title_first_char_excl_prep_value
+          table: bibcite_reference__field_title_first_char_excl_prep
+          field: field_title_first_char_excl_prep_value
           relationship: none
           group_type: group
           admin_label: ''
           order: ASC
-          exposed: true
+          exposed: false
           expose:
-            label: Sticky
+            label: ''
           plugin_id: standard
       menu:
         type: none
@@ -501,11 +470,11 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
+        - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
-        - 'url.query_args:sort_by'
-        - 'url.query_args:sort_order'
-      tags: {  }
+      tags:
+        - 'config:field.storage.bibcite_reference.field_title_first_char_excl_prep'
   page_3:
     display_plugin: page
     id: page_3
@@ -826,31 +795,19 @@ display:
           entity_type: bibcite_reference
           plugin_id: bibcite_citation
       sorts:
-        title:
-          id: title
+        bibcite_year:
+          id: bibcite_year
           table: bibcite_reference
-          field: title
+          field: bibcite_year
           relationship: none
           group_type: group
           admin_label: ''
           order: ASC
-          exposed: true
+          exposed: false
           expose:
-            label: Title
+            label: ''
           entity_type: bibcite_reference
-          entity_field: title
-          plugin_id: standard
-        field_is_sticky_value:
-          id: field_is_sticky_value
-          table: bibcite_reference__field_is_sticky
-          field: field_is_sticky_value
-          relationship: none
-          group_type: group
-          admin_label: ''
-          order: ASC
-          exposed: true
-          expose:
-            label: Sticky
+          entity_field: bibcite_year
           plugin_id: standard
       menu:
         type: none
@@ -867,6 +824,4 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
-        - 'url.query_args:sort_by'
-        - 'url.query_args:sort_order'
       tags: {  }

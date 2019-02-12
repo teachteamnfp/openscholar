@@ -5,6 +5,7 @@ dependencies:
   config:
     - bibcite_entity.bibcite_reference_type.book
     - field.field.bibcite_reference.book.field_is_sticky
+    - field.field.bibcite_reference.book.field_title_first_char_excl_prep
   module:
     - bibcite_entity
     - field_layout
@@ -442,4 +443,5 @@ content:
       placeholder: ''
     region: content
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  field_title_first_char_excl_prep: true

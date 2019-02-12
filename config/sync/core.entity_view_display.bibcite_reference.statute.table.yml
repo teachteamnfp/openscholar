@@ -6,6 +6,7 @@ dependencies:
     - bibcite_entity.bibcite_reference_type.statute
     - core.entity_view_mode.bibcite_reference.table
     - field.field.bibcite_reference.statute.field_is_sticky
+    - field.field.bibcite_reference.statute.field_title_first_char_excl_prep
   enforced:
     config:
       - core.entity_view_mode.bibcite_reference.table
@@ -414,5 +415,6 @@ hidden:
   bibcite_type: true
   citation: true
   field_is_sticky: true
+  field_title_first_char_excl_prep: true
   langcode: true
   uid: true

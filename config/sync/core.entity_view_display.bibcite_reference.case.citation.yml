@@ -6,6 +6,7 @@ dependencies:
     - bibcite_entity.bibcite_reference_type.case
     - core.entity_view_mode.bibcite_reference.citation
     - field.field.bibcite_reference.case.field_is_sticky
+    - field.field.bibcite_reference.case.field_title_first_char_excl_prep
   enforced:
     config:
       - core.entity_view_mode.bibcite_reference.citation
@@ -76,6 +77,7 @@ hidden:
   bibcite_volume: true
   bibcite_year: true
   field_is_sticky: true
+  field_title_first_char_excl_prep: true
   keywords: true
   langcode: true
   uid: true

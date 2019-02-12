@@ -5,6 +5,7 @@
  * Bibcite customizations for Openscholar.
  */
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\views\Plugin\views\query\QueryPluginBase;
 use Drupal\views\ViewExecutable;
 
@@ -12,14 +13,6 @@ use Drupal\views\ViewExecutable;
  * Implements hook_views_data_alter().
  */
 function os_publications_views_data_alter(array &$data) {
-  $data['bibcite_reference']['first_letter_title_excl_prep'] = [
-    'title' => t('First letter of title (Excluding prepositions)'),
-    'field' => [
-      'id' => 'os_publications_first_letter_title_excl_prep',
-    ],
-    'entity field' => 'title',
-  ];
-
   $data['bibcite_reference']['first_letter_last_name_author'] = [
     'title' => t("First letter of Author's last name"),
     'field' => [
@@ -118,4 +111,16 @@ function os_publications_views_pre_render(ViewExecutable $view) {
       $field->options['csl_style'] = $publication_style;
     }
   }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ */
+function os_publications_bibcite_reference_presave(EntityInterface $entity) {
+  /** @var \Drupal\os_publications\PublicationsListingHelperInterface $publications_listing_helper */
+  $publications_listing_helper = \Drupal::service('os_publications.listing_helper');
+
+  $entity->set('field_title_first_char_excl_prep', [
+    'value' => $publications_listing_helper->convertLabel($entity->label()),
+  ]);
 }

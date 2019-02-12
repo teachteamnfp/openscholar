@@ -5,6 +5,7 @@ dependencies:
   config:
     - bibcite_entity.bibcite_reference_type.artwork
     - field.field.bibcite_reference.artwork.field_is_sticky
+    - field.field.bibcite_reference.artwork.field_title_first_char_excl_prep
   module:
     - bibcite_entity
     - field_layout
@@ -20,7 +21,7 @@ mode: default
 content:
   author:
     type: bibcite_contributor_widget
-    weight: 3
+    weight: 2
     region: content
     settings:
       match_operator: CONTAINS
@@ -32,7 +33,7 @@ content:
     settings:
       rows: 4
       placeholder: ''
-    weight: 6
+    weight: 4
     region: content
     third_party_settings: {  }
   bibcite_abst_f:
@@ -40,12 +41,12 @@ content:
     settings:
       rows: 4
       placeholder: ''
-    weight: 7
+    weight: 5
     region: content
     third_party_settings: {  }
   bibcite_access_date:
     type: string_textfield
-    weight: 50
+    weight: 48
     region: content
     settings:
       size: 60
@@ -53,7 +54,7 @@ content:
     third_party_settings: {  }
   bibcite_accession_number:
     type: string_textfield
-    weight: 34
+    weight: 32
     region: content
     settings:
       size: 60
@@ -61,7 +62,7 @@ content:
     third_party_settings: {  }
   bibcite_alternate_title:
     type: string_textfield
-    weight: 43
+    weight: 41
     region: content
     settings:
       size: 60
@@ -72,12 +73,12 @@ content:
     settings:
       rows: 1
       placeholder: ''
-    weight: 16
+    weight: 14
     region: content
     third_party_settings: {  }
   bibcite_call_number:
     type: string_textfield
-    weight: 35
+    weight: 33
     region: content
     settings:
       size: 60
@@ -85,7 +86,7 @@ content:
     third_party_settings: {  }
   bibcite_citekey:
     type: string_textfield
-    weight: 37
+    weight: 35
     region: content
     settings:
       size: 60
@@ -96,7 +97,7 @@ content:
     settings:
       rows: 1
       placeholder: ''
-    weight: 9
+    weight: 7
     region: content
     third_party_settings: {  }
   bibcite_custom2:
@@ -104,7 +105,7 @@ content:
     settings:
       rows: 1
       placeholder: ''
-    weight: 10
+    weight: 8
     region: content
     third_party_settings: {  }
   bibcite_custom3:
@@ -112,7 +113,7 @@ content:
     settings:
       rows: 1
       placeholder: ''
-    weight: 11
+    weight: 9
     region: content
     third_party_settings: {  }
   bibcite_custom4:
@@ -120,7 +121,7 @@ content:
     settings:
       rows: 1
       placeholder: ''
-    weight: 12
+    weight: 10
     region: content
     third_party_settings: {  }
   bibcite_custom5:
@@ -128,7 +129,7 @@ content:
     settings:
       rows: 1
       placeholder: ''
-    weight: 13
+    weight: 11
     region: content
     third_party_settings: {  }
   bibcite_custom6:
@@ -136,7 +137,7 @@ content:
     settings:
       rows: 1
       placeholder: ''
-    weight: 14
+    weight: 12
     region: content
     third_party_settings: {  }
   bibcite_custom7:
@@ -144,12 +145,12 @@ content:
     settings:
       rows: 1
       placeholder: ''
-    weight: 15
+    weight: 13
     region: content
     third_party_settings: {  }
   bibcite_date:
     type: string_textfield
-    weight: 26
+    weight: 24
     region: content
     settings:
       size: 60
@@ -157,7 +158,7 @@ content:
     third_party_settings: {  }
   bibcite_doi:
     type: string_textfield
-    weight: 39
+    weight: 37
     region: content
     settings:
       size: 60
@@ -165,7 +166,7 @@ content:
     third_party_settings: {  }
   bibcite_edition:
     type: string_textfield
-    weight: 20
+    weight: 18
     region: content
     settings:
       size: 60
@@ -173,7 +174,7 @@ content:
     third_party_settings: {  }
   bibcite_isbn:
     type: string_textfield
-    weight: 33
+    weight: 31
     region: content
     settings:
       size: 60
@@ -181,7 +182,7 @@ content:
     third_party_settings: {  }
   bibcite_issn:
     type: string_textfield
-    weight: 32
+    weight: 30
     region: content
     settings:
       size: 60
@@ -189,7 +190,7 @@ content:
     third_party_settings: {  }
   bibcite_issue:
     type: string_textfield
-    weight: 22
+    weight: 20
     region: content
     settings:
       size: 60
@@ -197,7 +198,7 @@ content:
     third_party_settings: {  }
   bibcite_label:
     type: string_textfield
-    weight: 49
+    weight: 47
     region: content
     settings:
       size: 60
@@ -205,7 +206,7 @@ content:
     third_party_settings: {  }
   bibcite_lang:
     type: string_textfield
-    weight: 28
+    weight: 26
     region: content
     settings:
       size: 60
@@ -216,12 +217,12 @@ content:
     settings:
       rows: 4
       placeholder: ''
-    weight: 8
+    weight: 6
     region: content
     third_party_settings: {  }
   bibcite_number:
     type: string_textfield
-    weight: 24
+    weight: 22
     region: content
     settings:
       size: 60
@@ -229,7 +230,7 @@ content:
     third_party_settings: {  }
   bibcite_number_of_volumes:
     type: string_textfield
-    weight: 23
+    weight: 21
     region: content
     settings:
       size: 60
@@ -237,7 +238,7 @@ content:
     third_party_settings: {  }
   bibcite_original_publication:
     type: string_textfield
-    weight: 45
+    weight: 43
     region: content
     settings:
       size: 60
@@ -245,7 +246,7 @@ content:
     third_party_settings: {  }
   bibcite_other_author_affiliations:
     type: string_textfield
-    weight: 46
+    weight: 44
     region: content
     settings:
       size: 60
@@ -253,7 +254,7 @@ content:
     third_party_settings: {  }
   bibcite_other_number:
     type: string_textfield
-    weight: 36
+    weight: 34
     region: content
     settings:
       size: 60
@@ -261,7 +262,7 @@ content:
     third_party_settings: {  }
   bibcite_pages:
     type: string_textfield
-    weight: 25
+    weight: 23
     region: content
     settings:
       size: 60
@@ -269,7 +270,7 @@ content:
     third_party_settings: {  }
   bibcite_place_published:
     type: string_textfield
-    weight: 31
+    weight: 29
     region: content
     settings:
       size: 60
@@ -277,7 +278,7 @@ content:
     third_party_settings: {  }
   bibcite_pmid:
     type: string_textfield
-    weight: 52
+    weight: 50
     region: content
     settings:
       size: 60
@@ -285,7 +286,7 @@ content:
     third_party_settings: {  }
   bibcite_publisher:
     type: string_textfield
-    weight: 30
+    weight: 28
     region: content
     settings:
       size: 60
@@ -293,7 +294,7 @@ content:
     third_party_settings: {  }
   bibcite_refereed:
     type: string_textfield
-    weight: 51
+    weight: 49
     region: content
     settings:
       size: 60
@@ -301,7 +302,7 @@ content:
     third_party_settings: {  }
   bibcite_remote_db_name:
     type: string_textfield
-    weight: 47
+    weight: 45
     region: content
     settings:
       size: 60
@@ -309,7 +310,7 @@ content:
     third_party_settings: {  }
   bibcite_remote_db_provider:
     type: string_textfield
-    weight: 48
+    weight: 46
     region: content
     settings:
       size: 60
@@ -317,7 +318,7 @@ content:
     third_party_settings: {  }
   bibcite_reprint_edition:
     type: string_textfield
-    weight: 29
+    weight: 27
     region: content
     settings:
       size: 60
@@ -325,7 +326,7 @@ content:
     third_party_settings: {  }
   bibcite_research_notes:
     type: string_textfield
-    weight: 40
+    weight: 38
     region: content
     settings:
       size: 60
@@ -333,7 +334,7 @@ content:
     third_party_settings: {  }
   bibcite_secondary_title:
     type: string_textfield
-    weight: 18
+    weight: 16
     region: content
     settings:
       size: 60
@@ -341,7 +342,7 @@ content:
     third_party_settings: {  }
   bibcite_section:
     type: string_textfield
-    weight: 21
+    weight: 19
     region: content
     settings:
       size: 60
@@ -349,7 +350,7 @@ content:
     third_party_settings: {  }
   bibcite_short_title:
     type: string_textfield
-    weight: 42
+    weight: 40
     region: content
     settings:
       size: 60
@@ -357,7 +358,7 @@ content:
     third_party_settings: {  }
   bibcite_tertiary_title:
     type: string_textfield
-    weight: 41
+    weight: 39
     region: content
     settings:
       size: 60
@@ -365,7 +366,7 @@ content:
     third_party_settings: {  }
   bibcite_translated_title:
     type: string_textfield
-    weight: 44
+    weight: 42
     region: content
     settings:
       size: 60
@@ -373,7 +374,7 @@ content:
     third_party_settings: {  }
   bibcite_type_of_work:
     type: string_textfield
-    weight: 27
+    weight: 25
     region: content
     settings:
       size: 60
@@ -381,7 +382,7 @@ content:
     third_party_settings: {  }
   bibcite_url:
     type: string_textfield
-    weight: 38
+    weight: 36
     region: content
     settings:
       size: 60
@@ -389,7 +390,7 @@ content:
     third_party_settings: {  }
   bibcite_volume:
     type: string_textfield
-    weight: 19
+    weight: 17
     region: content
     settings:
       size: 60
@@ -397,13 +398,13 @@ content:
     third_party_settings: {  }
   bibcite_year:
     type: number
-    weight: 17
+    weight: 15
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   field_is_sticky:
-    weight: 101
+    weight: 52
     settings:
       display_label: true
     third_party_settings: {  }
@@ -411,7 +412,7 @@ content:
     region: content
   keywords:
     type: entity_reference_autocomplete_tags
-    weight: 4
+    weight: 3
     settings:
       match_operator: CONTAINS
       size: 60
@@ -420,14 +421,14 @@ content:
     third_party_settings: {  }
   langcode:
     type: language_select
-    weight: 2
+    weight: 0
     region: content
     settings:
       include_locked: true
     third_party_settings: {  }
   title:
     type: string_textfield
-    weight: 2
+    weight: 1
     region: content
     settings:
       size: 60
@@ -435,11 +436,12 @@ content:
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 100
+    weight: 51
     settings:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
     region: content
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  field_title_first_char_excl_prep: true
