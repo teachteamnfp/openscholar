@@ -4,6 +4,7 @@ namespace Drupal\os_mailchimp\Plugin\CpSetting;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\PluginBase;
@@ -54,6 +55,12 @@ class OsMailChimpSetting extends PluginBase implements CpSettingInterface {
     $config = $configFactory->getEditable('mailchimp.settings');
     $config->set('api_key', $formState->getValue('api_key'));
     $config->save(TRUE);
+
+    $cache = \Drupal::cache('mailchimp');
+    $cache->invalidate('lists');
+    Cache::invalidateTags([
+      'mailchimp',
+    ]);
   }
 
   /**
