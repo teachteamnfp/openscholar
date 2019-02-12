@@ -153,7 +153,8 @@
                     scope.replaceSuccess = true;
                     file_replaced = true;
 
-                    fileService.register(result.data[0]);
+                    scope.file.changed = result.data.changed[0].value;
+                    scope.file.size = result.data.filesize[0].value;
 
                     $timeout(function () {
                       scope.replaceSuccess = false;
