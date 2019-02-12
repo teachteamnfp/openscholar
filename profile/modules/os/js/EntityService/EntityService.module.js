@@ -433,7 +433,7 @@
             console.log(keys);
 
             lock.resolve(keys);
-          });
+          }, function () {lock.resolve([])});
 
         }, function (error) {
           console.log(error);
@@ -528,15 +528,6 @@
         }
         else {
           url = nextUrl;
-        }
-
-        if (settings.hasSetting('spaces')) {
-          if (url.indexOf('?') == -1) {
-            url += '?vsite=' + settings.fetchSetting('spaces.id');
-          }
-          else {
-            url += '&vsite=' + settings.fetchSetting('spaces.id');
-          }
         }
 
         if (EntityConfig[type]) {
@@ -639,6 +630,7 @@
           }
         }, function (response) {
           // there was an error. Probably an access thing
+          defer.resolve([]);
           for (var i = 0; i < keys.length; i++) {
             defers[keys[i]].resolve(angular.copy(cache[keys[i]].data));
           }
