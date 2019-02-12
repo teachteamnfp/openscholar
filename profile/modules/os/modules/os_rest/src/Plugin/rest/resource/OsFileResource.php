@@ -3,6 +3,7 @@
 namespace Drupal\os_rest\Plugin\rest\resource;
 
 use Drupal\Component\Utility\Bytes;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Image\ImageFactory;
 use Drupal\file\Entity\File;
@@ -15,9 +16,11 @@ use Drupal\media\MediaSourceInterface;
 use Drupal\media\MediaSourceManager;
 use Drupal\media\MediaTypeInterface;
 use Drupal\rest\ModifiedResourceResponse;
+use Drupal\rest\RequestHandler;
 use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\Routing\Route;
 
 /**
  * File upload resource.
@@ -35,7 +38,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
  *   label = @Translation("OpenScholar File Upload"),
  *   serialization_class = "Drupal\file\Entity\File",
  *   uri_paths = {
- *     "canonical" = "/api/file-upload/{file}",
+ *     "canonical" = "/api/file-upload/{entity}",
  *     "create" = "/api/file-upload"
  *   }
  * )
@@ -99,15 +102,18 @@ class OsFileResource extends FileUploadResource {
   }
 
   /**
-   * @param Request $request
-   *   The request object
-   * @param FileInterface $target
+   * @param EntityInterface $target
    *   The file whose contents are being replaced
+   *
+   * @return ModifiedResourceResponse
+   *   The response.
    */
-  public function put(Request $request, FileInterface $target) {
-    $validators = $this->getReplacementValidators($target);
+  public function put(EntityInterface $entity) {
+    $validators = $this->getReplacementValidators($entity);
 
     $temp_file_path = $this->streamUploadData();
+    /** @var FileInterface $target */
+    $target = $entity;
 
     if (file_unmanaged_copy($temp_file_path, $target->getFileUri(), FILE_EXISTS_REPLACE) === FALSE) {
       throw new HttpException(500, 'The file could not be replaced.');
@@ -125,7 +131,7 @@ class OsFileResource extends FileUploadResource {
 
     file_unmanaged_delete($temp_file_path);
 
-    return new ModifiedResourceResponse($target, 201);
+    return new ModifiedResourceResponse($target, 200);
   }
 
   protected function getUploadLocation(array $settings = []) {
@@ -184,6 +190,15 @@ class OsFileResource extends FileUploadResource {
     $validators['file_validate_extensions'] = [$extension];
 
     return $validators;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getBaseRoute($canonical_path, $method) {
+    $route = parent::getBaseRoute($canonical_path, $method);
+    $route->setOption('parameters', ['entity' => ['type' => 'entity:file']]);
+    return $route;
   }
 
   /**

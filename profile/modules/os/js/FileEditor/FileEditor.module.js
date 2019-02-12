@@ -146,22 +146,24 @@
                 }
               };
 
-              $http.put(url.generate(settings.fetchSetting('paths.api') + '/file-upload/' + scope.file.id, true), file, config)
-                .success(function (result) {
-                  scope.showWarning = false;
-                  scope.replaceSuccess = true;
-                  file_replaced = true;
+              $http.put(url.generate(settings.fetchSetting('paths.api') + '/file-upload/' + scope.file.fid, true), file, config)
+                .then(
+                  function (result) {
+                    scope.showWarning = false;
+                    scope.replaceSuccess = true;
+                    file_replaced = true;
 
-                  fileService.register(result.data[0]);
+                    fileService.register(result.data[0]);
 
-                  $timeout(function () {
-                    scope.replaceSuccess = false;
-                  }, 5000);
-                })
-                .error(function (error) {
-                  scope.errorMessages = error.title;
-                  scope.showErrorMessages = true;
-                });
+                    $timeout(function () {
+                      scope.replaceSuccess = false;
+                    }, 5000);
+                  },
+                  function (error) {
+                    scope.errorMessages = error.title;
+                    scope.showErrorMessages = true;
+                  }
+                );
             }
             else {
               scope.replaceReject = true;
