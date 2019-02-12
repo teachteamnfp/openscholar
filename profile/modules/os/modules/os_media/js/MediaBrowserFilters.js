@@ -67,7 +67,7 @@ angular.module('mediaBrowser.filters', [])
   })
   .filter('mbType', function () {
     function testFile(file, types) {
-      return types.indexOf(file.bundle[0].target_id) != -1;
+      return types.indexOf(file.type) != -1;
     }
 
     return function (input, types) {
