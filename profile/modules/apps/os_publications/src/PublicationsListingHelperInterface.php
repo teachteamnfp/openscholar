@@ -2,6 +2,7 @@
 
 namespace Drupal\os_publications;
 
+use Drupal\bibcite_entity\Entity\ReferenceInterface;
 use Drupal\redirect\Entity\Redirect;
 
 /**
@@ -29,13 +30,15 @@ interface PublicationsListingHelperInterface {
    *
    * Converts a string like, "Curtis", to "C".
    *
-   * @param string $name
-   *   The name to convert.
+   * @param \Drupal\bibcite_entity\Entity\ReferenceInterface $reference
+   *   The reference whose contributor will be used.
    *
    * @return string
    *   The converted name.
+   *
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
-  public function convertAuthorName(string $name) : string;
+  public function convertAuthorName(ReferenceInterface $reference): string;
 
   /**
    * Sets a redirect according to the setting.

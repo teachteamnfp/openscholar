@@ -7,7 +7,6 @@ use Drupal\redirect\Entity\Redirect;
 /**
  * LabelHelperTest.
  *
- * @group vsite
  * @group kernel
  * @coversDefaultClass \Drupal\os_publications\PublicationsListingHelper
  */
@@ -43,9 +42,25 @@ class PublicationsListingHelperTest extends TestBase {
    * Tests convertToPublicationsListingAuthorName.
    *
    * @covers ::convertAuthorName
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
   public function testConvertToPublicationsListingAuthorName() {
-    $this->assertEquals('H', $this->listingHelper->convertAuthorName('hollis'));
+    $contributor = $this->createContributor([
+      'last_name' => 'Hollis',
+    ]);
+    $reference1 = $this->createReference([
+      'author' => [
+        'target_id' => $contributor->id(),
+        'category' => 'primary',
+        'role' => 'author',
+      ],
+    ]);
+    $reference2 = $this->createReference();
+
+    $this->assertEquals('H', $this->listingHelper->convertAuthorName($reference1));
+    $this->assertEquals('', $this->listingHelper->convertAuthorName($reference2));
   }
 
   /**

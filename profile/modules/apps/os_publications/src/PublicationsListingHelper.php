@@ -2,6 +2,7 @@
 
 namespace Drupal\os_publications;
 
+use Drupal\bibcite_entity\Entity\ReferenceInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\redirect\Entity\Redirect;
 use Drupal\redirect\RedirectRepository;
@@ -110,8 +111,19 @@ final class PublicationsListingHelper implements PublicationsListingHelperInterf
   /**
    * {@inheritdoc}
    */
-  public function convertAuthorName(string $name): string {
-    return mb_strtoupper(substr($name, 0, 1));
+  public function convertAuthorName(ReferenceInterface $reference): string {
+    /** @var \Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem|null $entity_reference_item */
+    $entity_reference_item = $reference->get('author')->first();
+
+    if ($entity_reference_item) {
+      /** @var \Drupal\Core\Entity\Plugin\DataType\EntityAdapter $entity_adapter */
+      $entity_adapter = $entity_reference_item->get('entity')->getTarget();
+      /** @var \Drupal\bibcite_entity\Entity\ContributorInterface $contributor */
+      $contributor = $entity_adapter->getValue();
+      return mb_strtoupper(substr($contributor->getLastName(), 0, 1));
+    }
+
+    return '';
   }
 
   /**
