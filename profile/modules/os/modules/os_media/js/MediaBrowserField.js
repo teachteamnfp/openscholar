@@ -116,7 +116,7 @@
           for (var i = 0; i < scope.selectedFiles; i++) {
             highlightDupe(scope.selectedFiles[i], false);
           }
-        }
+        };
 
         scope.addFile = function ($files) {
           for (var i = 0; i < $files.length; i++) {
@@ -146,7 +146,7 @@
             ngModelController.$setDirty();
             ngModelController.$setTouched();
           }
-        }
+        };
 
         scope.removeFile = function ($index) {
           scope.selectedFiles.splice($index, 1);
@@ -161,7 +161,7 @@
             ngModelController.$setDirty();
             ngModelController.$setTouched();
           }
-        }
+        };
 
         scope.replaceFile = function ($inserted, $index) {
           scope.selectedFiles.splice($index, 1, $inserted[0]);
@@ -176,7 +176,7 @@
             ngModelController.$setDirty();
             ngModelController.$setTouched();
           }
-        }
+        };
 
         function highlightDupe(file, toHighlight) {
           file.highlight = toHighlight;
@@ -188,7 +188,7 @@
           }
 
           return scope.selectedFiles.length >= scope.cardinality;
-        }
+        };
 
         var label = elem.parent().find(' label');
         elem.parent().find(' > *').not(elem).remove();
