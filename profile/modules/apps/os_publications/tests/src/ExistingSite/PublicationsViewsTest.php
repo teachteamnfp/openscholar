@@ -603,6 +603,19 @@ class PublicationsViewsTest extends TestBase {
   }
 
   /**
+   * Check anonymous user access to publications.
+   *
+   * @throws \Behat\Mink\Exception\ExpectationException
+   */
+  public function testAnonymousUserAccess() {
+    $this->drupalLogout();
+
+    $this->visit('/publications');
+
+    $this->assertSession()->statusCodeEquals(200);
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function tearDown() {
