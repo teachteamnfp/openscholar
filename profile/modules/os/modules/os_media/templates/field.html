@@ -13,7 +13,7 @@
     </div>
     <div ui-sortable="sortableOptions" ng-model="selectedFiles">
         <div class="file-list-single form-wrapper" ng-repeat="file in selectedFiles" ng-class="{even: $even, odd: $odd, highlight: file.highlight}">
-            <input type="hidden" name="{{field_name}}[und][{{$index}}][fid]" value="{{file.id}}">
+            <input type="hidden" name="{{field_name}}[und][{{$index}}][mid]" value="{{file.mid}}">
             <a href="#" class="tabledrag-handle" title="Drag to re-order" ng-show="selectedFiles.length > 1"><div class="handle">&nbsp;</div></a>
             <span  title="{{file.label}}">
                 <img class="file-icon" alt="" src="{{file.icon}}">
