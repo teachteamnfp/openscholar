@@ -24,12 +24,22 @@ class ControllerOsMailChimpTest extends ExistingSiteBase {
    */
   public function setUp() {
     parent::setUp();
+    $config = \Drupal::configFactory()->getEditable('mailchimp.settings');
+    $config->set('api_key', 'test1234');
+    $config->save(TRUE);
+
+    $cache = \Drupal::cache('mailchimp');
     $module_path = drupal_get_path('module', 'os_mailchimp');
+    // Cache lists data.
     $cache_data = file_get_contents($module_path . '/tests/src/ExistingSite/data/test-lists-data.cache');
     $cache_array = unserialize($cache_data);
-    $cache = \Drupal::cache('mailchimp');
     $cache->set('lists', $cache_array);
-    $cache->invalidate('lists');
+
+    // Cache mergevars data.
+    $cache_data = file_get_contents($module_path . '/tests/src/ExistingSite/data/test-71c9946c74-mergevars-data.cache');
+    $cache_array = unserialize($cache_data);
+    $cache->set('71c9946c74-mergevars', $cache_array);
+
     $this->user = $this->createUser();
   }
 
