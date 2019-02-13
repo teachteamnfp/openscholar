@@ -239,7 +239,7 @@ class PublicationsViewsTest extends TestBase {
     $result = $view->result;
 
     // Assert sorting by "first letter of author's last name".
-    $ordered_dataset = $this->orderResultSet($dataset, 'author_last_name');
+    $ordered_dataset = $this->orderResultSet($dataset, 'author_last_name', TRUE);
 
     $this->assertCount(4, $result);
     $this->assertIdenticalResultset($view, $ordered_dataset, [
