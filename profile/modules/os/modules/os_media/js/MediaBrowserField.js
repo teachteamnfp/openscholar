@@ -97,7 +97,7 @@
         // prefetch the files now so user can open Media Browser later
         service.fetch();
 
-        scope.$on('EntityService.files.update', function (e, file) {
+        scope.$on('EntityService.media.update', function (e, file) {
           for (var i = 0; i<scope.selectedFiles.length; i++) {
             if (file.id == scope.selectedFiles[i].id) {
               scope.selectedFiles[i] = angular.copy(file);
