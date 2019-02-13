@@ -1,0 +1,7 @@
+os_oublications.citation_dash_settings:
+  path: '/admin/config/dashconfig'
+  defaults:
+    _form: '\Drupal\os_publications\Form\CitationDashConfigForm'
+    _title: 'Citation Distribute Dash Configurations'
+  requirements:
+    _permission: 'administer site configuration'

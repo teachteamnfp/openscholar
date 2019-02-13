@@ -62,6 +62,23 @@
             }
         },
         {
+            "type": "package",
+            "package": {
+                "name": "swordapp/swordappv2-php-library",
+                "version": "master",
+                "type": "drupal-library",
+                "dist": {
+                    "url": "https://github.com/swordapp/swordappv2-php-library/archive/master.zip",
+                    "type": "zip"
+                },
+                "source": {
+                    "url": "https://github.com/swordapp/swordappv2-php-library.git",
+                    "type": "git",
+                    "reference": "master"
+                }
+            }
+        },
+        {
             "type": "composer",
             "url": "https://packages.drupal.org/8"
         }
@@ -107,7 +124,8 @@
         "drupal/bibcite": "1.x-dev",
         "drupal/field_tools": "^1.0@alpha",
         "ext-json": "*",
-        "php-ds/php-ds": "^1.2"
+        "php-ds/php-ds": "^1.2",
+        "swordapp/swordappv2-php-library": "master"
     },
     "require-dev": {
         "drupal/features": "^3.7",
@@ -128,7 +146,9 @@
     },
     "autoload": {
         "classmap": [
-            "scripts/composer/ScriptHandler.php"
+            "scripts/composer/ScriptHandler.php",
+            "web/libraries/swordappv2-php-library/swordappclient.php",
+            "web/libraries/swordappv2-php-library/packager_mets_swap.php"
         ],
         "files": ["load.environment.php"]
     },

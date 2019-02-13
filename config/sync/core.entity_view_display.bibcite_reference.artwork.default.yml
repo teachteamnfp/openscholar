@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - bibcite_entity.bibcite_reference_type.artwork
+    - field.field.bibcite_reference.artwork.field_files
     - field.field.bibcite_reference.artwork.field_is_sticky
     - field.field.bibcite_reference.artwork.field_title_first_char_excl_prep
   enforced:
@@ -405,6 +406,14 @@ content:
       thousand_separator: ''
       prefix_suffix: true
     third_party_settings: {  }
+  field_files:
+    weight: 102
+    label: above
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    type: file_default
+    region: content
   field_is_sticky:
     weight: 50
     label: above

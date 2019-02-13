@@ -5,6 +5,7 @@ dependencies:
   config:
     - bibcite_entity.bibcite_reference_type.chart
     - core.entity_view_mode.bibcite_reference.table
+    - field.field.bibcite_reference.chart.field_files
     - field.field.bibcite_reference.chart.field_is_sticky
     - field.field.bibcite_reference.chart.field_title_first_char_excl_prep
   enforced:
@@ -414,6 +415,7 @@ content:
 hidden:
   bibcite_type: true
   citation: true
+  field_files: true
   field_is_sticky: true
   field_title_first_char_excl_prep: true
   langcode: true

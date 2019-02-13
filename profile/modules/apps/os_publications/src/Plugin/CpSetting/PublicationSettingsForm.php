@@ -154,7 +154,7 @@ class PublicationSettingsForm extends PluginBase implements CpSettingInterface, 
       '#type' => 'checkboxes',
       '#title' => 'Display on Your Publication Page',
       '#description' => t('Selected publications types will appear on your Publications page. Unselected publication types can still be added to other locations on your site using widgets.'),
-      '#default_value' => $publication_config->get('os_publications_filter_publication_types'),
+      '#default_value' => $publication_config->get('filter_publication_types'),
       '#options' => $publication_types_options,
       '#weight' => 0,
       '#sorted_options' => TRUE,
@@ -163,7 +163,7 @@ class PublicationSettingsForm extends PluginBase implements CpSettingInterface, 
     $form['os_publications_note_in_teaser'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Show note content in teaser'),
-      '#default_value' => $publication_config->get('os_publications_note_in_teaser'),
+      '#default_value' => $publication_config->get('note_in_teaser'),
       '#weight' => 0,
       '#prefix' => '<label>' . $this->t('Notes') . '</label>',
     ];
@@ -192,7 +192,7 @@ class PublicationSettingsForm extends PluginBase implements CpSettingInterface, 
     $form['os_publications_shorten_citations'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Include Short URLs in citations'),
-      '#default_value' => $publication_config->get('os_publications_shorten_citations'),
+      '#default_value' => $publication_config->get('shorten_citations'),
       '#weight' => 2,
       '#prefix' => '<label>Short URLs</label>',
     ];
@@ -200,7 +200,7 @@ class PublicationSettingsForm extends PluginBase implements CpSettingInterface, 
     $form['os_publications_export_format'] = [
       '#title' => $this->t('Export format'),
       '#type' => 'checkboxes',
-      '#default_value' => $publication_config->get('os_publications_export_format'),
+      '#default_value' => $publication_config->get('export_format'),
       '#options' => array_map(function ($format) {
         return $format['label'];
       }, $this->formatManager->getExportDefinitions()),
@@ -227,12 +227,12 @@ class PublicationSettingsForm extends PluginBase implements CpSettingInterface, 
       ->set('default_style', $formState->getValue('os_publications_preferred_bibliographic_format'))
       ->save();
     $publication_config
-      ->set('os_publications_filter_publication_types', $formState->getValue('os_publications_filter_publication_types'))
+      ->set('filter_publication_types', $formState->getValue('os_publications_filter_publication_types'))
       ->set('biblio_sort', $formState->getValue('biblio_sort'))
-      ->set('os_publications_note_in_teaser', $formState->getValue('os_publications_note_in_teaser'))
+      ->set('note_in_teaser', $formState->getValue('os_publications_note_in_teaser'))
       ->set('biblio_order', $formState->getValue('biblio_order'))
-      ->set('os_publications_shorten_citations', $formState->getValue('os_publications_shorten_citations'))
-      ->set('os_publications_export_format', $formState->getValue('os_publications_export_format'))
+      ->set('shorten_citations', $formState->getValue('os_publications_shorten_citations'))
+      ->set('export_format', $formState->getValue('os_publications_export_format'))
       ->save();
 
     $this->publicationsListingHelper->setRedirect('publications', $formState->getValue('biblio_sort'));

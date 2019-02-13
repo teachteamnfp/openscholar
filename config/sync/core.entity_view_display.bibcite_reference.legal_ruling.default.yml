@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - bibcite_entity.bibcite_reference_type.legal_ruling
+    - field.field.bibcite_reference.legal_ruling.field_files
     - field.field.bibcite_reference.legal_ruling.field_is_sticky
     - field.field.bibcite_reference.legal_ruling.field_title_first_char_excl_prep
   enforced:
@@ -13,6 +14,7 @@ dependencies:
       - bibcite_entity.bibcite_reference_type.legal_ruling
   module:
     - bibcite_entity
+    - file
 _core:
   default_config_hash: VO0YcDR8-Sni6LV5WCPbiec9lbcp8DRWy5dMeo9Eres
 id: bibcite_reference.legal_ruling.default
@@ -401,6 +403,14 @@ content:
       thousand_separator: ''
       prefix_suffix: true
     third_party_settings: {  }
+  field_files:
+    weight: 102
+    label: above
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    type: file_default
+    region: content
   field_is_sticky:
     weight: 101
     label: above

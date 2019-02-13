@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - bibcite_entity.bibcite_reference_type.book_chapter
+    - field.field.bibcite_reference.book_chapter.field_files
     - field.field.bibcite_reference.book_chapter.field_is_sticky
     - field.field.bibcite_reference.book_chapter.field_title_first_char_excl_prep
   enforced:
@@ -13,6 +14,7 @@ dependencies:
       - bibcite_entity.bibcite_reference_type.book_chapter
   module:
     - bibcite_entity
+    - file
 _core:
   default_config_hash: fgqyDpg_AiqpMOvsXx21XleDNdIErnBp4ZyKTLuN4A4
 id: bibcite_reference.book_chapter.default
@@ -401,6 +403,14 @@ content:
       thousand_separator: ''
       prefix_suffix: true
     third_party_settings: {  }
+  field_files:
+    weight: 102
+    label: above
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    type: file_default
+    region: content
   field_is_sticky:
     weight: 101
     label: above

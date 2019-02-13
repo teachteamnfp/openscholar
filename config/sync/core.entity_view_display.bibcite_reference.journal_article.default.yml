@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - bibcite_entity.bibcite_reference_type.journal_article
+    - field.field.bibcite_reference.journal_article.field_files
     - field.field.bibcite_reference.journal_article.field_is_sticky
     - field.field.bibcite_reference.journal_article.field_title_first_char_excl_prep
   enforced:
@@ -13,6 +14,7 @@ dependencies:
       - bibcite_entity.bibcite_reference_type.journal_article
   module:
     - bibcite_entity
+    - file
 _core:
   default_config_hash: RPEyJRXr_49_msoFsxyY2dXvDrPSvw3AY6SmxpprsSM
 id: bibcite_reference.journal_article.default
@@ -401,6 +403,14 @@ content:
       thousand_separator: ''
       prefix_suffix: true
     third_party_settings: {  }
+  field_files:
+    weight: 102
+    label: above
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    type: file_default
+    region: content
   field_is_sticky:
     weight: 101
     label: above

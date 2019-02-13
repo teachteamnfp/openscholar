@@ -1,15 +1,15 @@
 biblio_sort: year
-os_publications_note_in_teaser: 0
+note_in_teaser: 0
 biblio_order: DESC
-os_publications_shorten_citations: 0
-os_publications_export_format:
+shorten_citations: 0
+export_format:
   bibtex: bibtex
   endnote8: endnote8
   endnote7: endnote7
   tagged: tagged
   marc: marc
   ris: ris
-os_publications_filter_publication_types:
+filter_publication_types:
   artwork: artwork
   audiovisual: audiovisual
   bill: bill
