@@ -157,16 +157,16 @@
     };
 
     // Watch for changes in file list
-    $scope.$on('EntityService.files.add', function (event, file) {
+    $scope.$on('EntityService.media.add', function (event, file) {
       if (file.changed == file.timestamp) {
         $scope.files.push(file);
       }
     });
 
-    $scope.$on('EntityService.files.update', function (event, file) {
+    $scope.$on('EntityService.media.update', function (event, file) {
       var t = $scope.selected_file;
       for (var i=0; i < $scope.files.length; i++) {
-        if ($scope.files[i].id == file.id) {
+        if ($scope.files[i].mid == file.mid) {
           if ($scope.files[i].replaced) {
             file.replaced = $scope.files[i].replaced;
           }
@@ -184,12 +184,12 @@
         }
       }
 
-      if ($scope.selected_file.id == file.id) {
+      if ($scope.selected_file.mid == file.mid) {
         $scope.selected_file = angular.copy(file);
       }
     });
 
-    $scope.$on('EntityService.files.delete', function (event, id) {
+    $scope.$on('EntityService.media.delete', function (event, id) {
       // Don't want to worry about what happens when you modify an array you're
       // looping over.
       if ($scope.selected_file.id == id) {
@@ -601,7 +601,7 @@
         .then(function (resp) {
         });
       for (var j = 0; j < $scope.files.length; j++) {
-        if ($scope.files[j].id == $scope.selected_file.id) {
+        if ($scope.files[j].mid == $scope.selected_file.mid) {
           $scope.files[j].status = 'deleting';
         }
       }
