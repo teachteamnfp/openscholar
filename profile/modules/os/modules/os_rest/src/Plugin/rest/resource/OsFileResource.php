@@ -8,6 +8,7 @@ use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Image\ImageFactory;
 use Drupal\file\Entity\File;
 use Drupal\file\FileInterface;
+use Drupal\file\FileUsage\FileUsageInterface;
 use Drupal\file\Plugin\rest\resource\FileUploadResource;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\media\Entity\Media;
@@ -78,26 +79,38 @@ class OsFileResource extends FileUploadResource {
 
     $extension = pathinfo($file->getFileUri(), PATHINFO_EXTENSION);
 
-    /** @var MediaTypeInterface[] $mediaTypes */
-    $mediaTypes = \Drupal::entityTypeManager()->getStorage('media_type')->loadMultiple();
-    foreach ($mediaTypes as $mediaType) {
-      $fieldDefinition = $mediaType->getSource()->getSourceFieldDefinition($mediaType);
-      if (is_null($fieldDefinition)) continue;
-      $exts = explode(' ', $fieldDefinition->getSetting('file_extensions'));
-      if (in_array($extension, $exts)) {
-        $media = Media::create([
-          'bundle' => $mediaType->id(),
-          'uid' => \Drupal::currentUser()->id(),
-          'langcode' => \Drupal::languageManager()->getDefaultLanguage()->getId(),
-          $fieldDefinition->getName() => [
-            'target_id' => $file->id()
-          ]
-        ]);
-      }
+    /** @var FileUsageInterface $fileUsage */
+    $fileUsage = \Drupal::service('file.usage');
+    $usage = $fileUsage->listUsage($file);
+    if (isset($usage['file']['media'])) {
+      ksort($usage['file']['media']);
+      /** @var MediaInterface $media */
+      $media = \Drupal::entityTypeManager()->getStorage('media')->load(reset($usage['media']));
     }
-    if (!$media) {
-      $file->delete();
-      throw new HttpException(500, 'No Media Type accepts this kind of file.');
+    else {
+
+      // This next big figures out what type of Media bundle to create around the file.
+      /** @var MediaTypeInterface[] $mediaTypes */
+      $mediaTypes = \Drupal::entityTypeManager()->getStorage('media_type')->loadMultiple();
+      foreach ($mediaTypes as $mediaType) {
+        $fieldDefinition = $mediaType->getSource()->getSourceFieldDefinition($mediaType);
+        if (is_null($fieldDefinition)) continue;
+        $exts = explode(' ', $fieldDefinition->getSetting('file_extensions'));
+        if (in_array($extension, $exts)) {
+          $media = Media::create([
+            'bundle' => $mediaType->id(),
+            'uid' => \Drupal::currentUser()->id(),
+            'langcode' => \Drupal::languageManager()->getDefaultLanguage()->getId(),
+            $fieldDefinition->getName() => [
+              'target_id' => $file->id()
+            ]
+          ]);
+        }
+      }
+      if (!$media) {
+        $file->delete();
+        throw new HttpException(500, 'No Media Type accepts this kind of file.');
+      }
     }
     $media->save();
 
