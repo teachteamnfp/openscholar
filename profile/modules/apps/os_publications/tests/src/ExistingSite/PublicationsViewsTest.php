@@ -22,6 +22,13 @@ class PublicationsViewsTest extends TestBase {
   protected $defaultFilterPublicationTypeSettings;
 
   /**
+   * Default publications sort order.
+   *
+   * @var string
+   */
+  protected $defaultSortOrder;
+
+  /**
    * Config factory.
    *
    * @var \Drupal\Core\Config\ConfigFactoryInterface
@@ -38,6 +45,7 @@ class PublicationsViewsTest extends TestBase {
     /** @var \Drupal\Core\Config\ImmutableConfig $publications_settings */
     $publications_settings = $this->configFactory->get('os_publications.settings');
     $this->defaultFilterPublicationTypeSettings = $publications_settings->get('os_publications_filter_publication_types');
+    $this->defaultSortOrder = $publications_settings->get('biblio_order');
   }
 
   /**
@@ -370,6 +378,112 @@ class PublicationsViewsTest extends TestBase {
   }
 
   /**
+   * Tests publication sort setting.
+   *
+   * @covers ::os_publications_views_query_alter
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
+   */
+  public function testSortOrder() {
+    $reference1 = $this->createReference([
+      'title' => 'Girl with a Pearl Earring',
+      'bibcite_year' => [
+        'value' => 1665,
+      ],
+      'field_is_sticky' => [
+        'value' => 0,
+      ],
+    ]);
+
+    $reference2 = $this->createReference([
+      'title' => 'The Persistence of Memory',
+      'bibcite_year' => [
+        'value' => 1931,
+      ],
+      'field_is_sticky' => [
+        'value' => 0,
+      ],
+    ]);
+
+    $reference3 = $this->createReference([
+      'title' => 'The Starry Night',
+      'bibcite_year' => [
+        'value' => 1889,
+      ],
+      'field_is_sticky' => [
+        'value' => 0,
+      ],
+    ]);
+
+    $reference4 = $this->createReference([
+      'title' => 'Foobar',
+      'bibcite_year' => [
+        'value' => 1889,
+      ],
+      'field_is_sticky' => [
+        'value' => 0,
+      ],
+    ]);
+
+    $dataset = [
+      [
+        'title' => $reference1->label(),
+        'year' => $reference1->get('bibcite_year')->first()->getValue()['value'],
+      ],
+      [
+        'title' => $reference2->label(),
+        'year' => $reference2->get('bibcite_year')->first()->getValue()['value'],
+      ],
+      [
+        'title' => $reference3->label(),
+        'year' => $reference3->get('bibcite_year')->first()->getValue()['value'],
+      ],
+      [
+        'title' => $reference4->label(),
+        'year' => $reference4->get('bibcite_year')->first()->getValue()['value'],
+      ],
+    ];
+
+    $view = Views::getView('publications');
+    $view->setDisplay('page_4');
+    $view->preExecute();
+    $view->execute();
+
+    /** @var array $result */
+    $result = $view->result;
+
+    $ordered_dataset = $this->orderResultSet($dataset, 'year', TRUE);
+
+    $this->assertCount(4, $result);
+    $this->assertIdenticalResultset($view, $ordered_dataset, [
+      '_entity' => 'title',
+    ]);
+
+    /** @var \Drupal\Core\Config\ConfigFactoryInterface $config_factory */
+    $config_factory = $this->container->get('config.factory');
+    /** @var \Drupal\Core\Config\Config $os_publications_settings_mut */
+    $os_publications_settings_mut = $config_factory->getEditable('os_publications.settings');
+    $os_publications_settings_mut->set('biblio_order', 'ASC');
+    $os_publications_settings_mut->save();
+
+    $view = Views::getView('publications');
+    $view->setDisplay('page_4');
+    $view->preExecute();
+    $view->execute();
+
+    /** @var array $result */
+    $result = $view->result;
+
+    $ordered_dataset = $this->orderResultSet($dataset, 'year');
+
+    $this->assertCount(4, $result);
+    $this->assertIdenticalResultset($view, $ordered_dataset, [
+      '_entity' => 'title',
+    ]);
+  }
+
+  /**
    * Orders a nested array containing a result set based on a given column.
    *
    * Copied from ViewsKernelTestBase::orderResultSet.
@@ -496,6 +610,7 @@ class PublicationsViewsTest extends TestBase {
     $publication_settings_mut = $this->configFactory->getEditable('os_publications.settings');
     $publication_settings_mut
       ->set('os_publications_filter_publication_types', $this->defaultFilterPublicationTypeSettings)
+      ->set('biblio_order', $this->defaultSortOrder)
       ->save();
 
     parent::tearDown();
