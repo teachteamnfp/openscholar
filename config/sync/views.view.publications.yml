@@ -8,7 +8,6 @@ dependencies:
     - system.menu.main
   module:
     - bibcite_entity
-    - os_publications
 id: publications
 label: Publications
 module: views
@@ -264,7 +263,7 @@ display:
           group_type: group
           admin_label: ''
           order: ASC
-          exposed: true
+          exposed: false
           expose:
             label: Sticky
           plugin_id: standard
@@ -281,8 +280,6 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
-        - 'url.query_args:sort_by'
-        - 'url.query_args:sort_order'
       tags: {  }
   page_1:
     display_plugin: page
@@ -309,8 +306,6 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
-        - 'url.query_args:sort_by'
-        - 'url.query_args:sort_order'
       tags: {  }
   page_2:
     display_plugin: page
@@ -482,7 +477,7 @@ display:
           group_type: group
           admin_label: ''
           order: ASC
-          exposed: true
+          exposed: false
           expose:
             label: Sticky
           plugin_id: standard
@@ -501,8 +496,6 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
-        - 'url.query_args:sort_by'
-        - 'url.query_args:sort_order'
       tags:
         - 'config:field.storage.bibcite_reference.field_title_first_char_excl_prep'
   page_3:
@@ -665,7 +658,7 @@ display:
           group_type: group
           admin_label: ''
           order: ASC
-          exposed: true
+          exposed: false
           expose:
             label: Sticky
           plugin_id: standard
@@ -695,8 +688,6 @@ display:
       contexts:
         - 'languages:language_interface'
         - url.query_args
-        - 'url.query_args:sort_by'
-        - 'url.query_args:sort_order'
       tags: {  }
   page_4:
     display_plugin: page
@@ -873,7 +864,7 @@ display:
           group_type: group
           admin_label: ''
           order: ASC
-          exposed: true
+          exposed: false
           expose:
             label: Sticky
           plugin_id: standard
@@ -892,6 +883,4 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
-        - 'url.query_args:sort_by'
-        - 'url.query_args:sort_order'
       tags: {  }
