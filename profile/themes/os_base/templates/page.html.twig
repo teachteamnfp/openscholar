@@ -176,6 +176,16 @@
               {{ page.content_bottom }}
             </div>
           {% endif %}
+          {% if page.content_bottom_first %}
+            <div class="content-bottom-first">
+              {{ page.content_bottom_first }}
+            </div>
+          {% endif %}
+          {% if page.content_bottom_second %}
+            <div class="content-bottom-second">
+              {{ page.content_bottom_second }}
+            </div>
+          {% endif %}
         {% endblock %}
       </section>
 
