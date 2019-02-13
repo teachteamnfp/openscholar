@@ -608,8 +608,6 @@ class PublicationsViewsTest extends TestBase {
    * @throws \Behat\Mink\Exception\ExpectationException
    */
   public function testAnonymousUserAccess() {
-    $this->drupalLogout();
-
     $this->visit('/publications');
 
     $this->assertSession()->statusCodeEquals(200);
