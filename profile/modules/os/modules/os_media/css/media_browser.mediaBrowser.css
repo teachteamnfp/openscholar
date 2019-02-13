@@ -339,7 +339,7 @@ button[ng-disabled="!pager.canPage(-1)"] {
 	position: relative;
 }
 
-.field-widget-media-draggable-file span.ng-binding.ng-scope,
+.media-browser-drop-box a[mb-open-modal],
 #media-browser-file-select {
 	height: 20px;
 	width: 132px;
@@ -353,16 +353,13 @@ button[ng-disabled="!pager.canPage(-1)"] {
 	margin-right: 0 !important;
 }
 
-.os-importer-file-upload-wrapper .media-browser-drop-box span.ng-scope,
-#edit-site_favicon_fid-und-drop .media-browser-drop-box span.ng-scope,
-#edit-field_upload-und-drop span.ng-binding.ng-scope,
+.media-browser-drop-box a[mb-open-modal],
 .media-browser-pane .file-clear button,
 .media-browser-pane #media-browser-file-select,
 .media-browser-pane .actions button,
 div[file-edit] .control button,
 #fe-file-display-warning {
 	cursor: pointer;
-	padding: 5px 12px;
 	margin-bottom: 1em;
 	margin-right: 1em;
 	color: #fff;
@@ -385,7 +382,7 @@ div[file-edit] .control button,
 	width: 160px;
 }
 
-.field-widget-media-draggable-file span.ng-binding.ng-scope {
+.media-browser-drop-box a[mb-open-modal] {
 	width: 80px;
 	top: 25%;
 	left: 50%;
@@ -407,7 +404,7 @@ div[file-edit] .control button,
 	font-size: 1.2em;
 }
 
-.field-widget-media-draggable-file #drag-text {
+.media-browser-drop-box #drag-text {
 	top: 43%;
 	left: 50%;
 	font-size: 1em;
@@ -632,8 +629,20 @@ div[file-edit] .control button,
  * Misc label styling associated with MB
  */
 
-.field-name-field-upload label[for="edit-field-upload-und-drop"] {
-	margin-top: 15px;
+.field--widget-media-browser-widget img.file-icon {
+	width:16px;
+}
+.form-item .file-list-single ul {
+	display: inline-block;
+	width: 34%;
+	margin: 0;
+}
+
+.form-item .file-list-single ul li {
+	display: inline-block;
+	width: 32%;
+	text-align: center;
+	white-space: nowrap;
 }
 
 @keyframes highlight {
