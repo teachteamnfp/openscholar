@@ -18,6 +18,7 @@ use Drupal\media\MediaTypeInterface;
 use Drupal\rest\ModifiedResourceResponse;
 use Drupal\rest\RequestHandler;
 use Drupal\vsite\Plugin\VsiteContextManagerInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Route;
@@ -47,8 +48,6 @@ class OsFileResource extends FileUploadResource {
 
   /**
    * {@inheritdoc}
-   *
-   * This should be guaranteed by our javascript to be a unique uri. If the file already exists, throw an exception.
    */
   public function post(Request $request, $entity_type_id = '', $bundle = '', $field_name = '') {
     $destination = $this->getUploadLocation();
@@ -61,11 +60,17 @@ class OsFileResource extends FileUploadResource {
     $validators = $this->getUploadValidators();
 
     // Save the uploaded file.
+    /** @var UploadedFile $file_raw */
     $file_raw = $request->files->get('file');
+
+    if ($newName = $request->request->get('newName')) {
+      // Make a new file that's the right name.
+      $file_raw = new UploadedFile($file_raw->getPathname(), $newName, $file_raw->getMimeType(), $file_raw->getSize(), $file_raw->getError(), true);
+    }
 
     // Can't use file_save_upload() because it expects all files to be in the files array in the files parameter of the request
     // $request->files->get('files'), which is weird and going to be empty when coming from js
-    $file = _file_save_upload_single($file_raw, 'upload', $validators, $destination, FILE_EXISTS_ERROR);
+    $file = _file_save_upload_single($file_raw, 'upload', $validators, $destination, FILE_EXISTS_REPLACE);
 
     if (!$file) {
       throw new HttpException(500, 'File could not be saved.');
@@ -91,6 +96,7 @@ class OsFileResource extends FileUploadResource {
       }
     }
     if (!$media) {
+      $file->delete();
       throw new HttpException(500, 'No Media Type accepts this kind of file.');
     }
     $media->save();
@@ -102,15 +108,15 @@ class OsFileResource extends FileUploadResource {
   }
 
   /**
-   * @param EntityInterface $target
+   * Replace an existing file on disk with the freshly uploaded file.
+   *
+   * @param EntityInterface $entity
    *   The file whose contents are being replaced
    *
    * @return ModifiedResourceResponse
    *   The response.
    */
   public function put(EntityInterface $entity) {
-    $validators = $this->getReplacementValidators($entity);
-
     $temp_file_path = $this->streamUploadData();
     /** @var FileInterface $target */
     $target = $entity;
@@ -138,9 +144,9 @@ class OsFileResource extends FileUploadResource {
     /** @var VsiteContextManagerInterface $vsiteContextManager */
     $vsiteContextManager = \Drupal::service('vsite.context_manager');
     if ($purl = $vsiteContextManager->getActivePurl()) {
-      return 'public://files/'.$purl.'/files';
+      return 'public://'.$purl.'/files';
     }
-    return 'public://files/global';
+    return 'public://global';
   }
 
   /**

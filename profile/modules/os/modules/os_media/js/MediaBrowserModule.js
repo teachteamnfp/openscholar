@@ -434,6 +434,7 @@
     // renames the file before uploading
     $scope.rename = function ($index, $last) {
       $scope.dupes[$index].processed = true;
+      $scope.dupes[$index].filename = $scope.dupes[$index].newName;
 
       if ($last) {
         finalizeDupes();

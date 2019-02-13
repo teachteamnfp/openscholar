@@ -3,7 +3,10 @@
 namespace Drupal\os_rest\Plugin\rest\resource;
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\File\FileSystemInterface;
 use Drupal\rest\ResourceResponse;
+use Drupal\vsite\Plugin\VsiteContextManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class OsMediaResource.
@@ -43,10 +46,42 @@ class OsMediaResource extends OsEntityResource {
    *   The response to the client.
    */
   protected function checkFilename($filename) {
+    /** @var VsiteContextManagerInterface $vsiteContextManager */
+    $vsiteContextManager = \Drupal::service('vsite.context_manager');
+    $directory = 'public://global/';
+    if ($purl = $vsiteContextManager->getActivePurl()) {
+      $directory = 'public://'.$purl.'/files/';
+    }
+
+    $new_filename = strtolower($filename);
+    $new_filename = preg_replace('|[^a-z0-9\-_\.]|', '_', $new_filename);
+    $new_filename = preg_replace(':__:', '_', $new_filename);
+    $new_filename = preg_replace('|_\.|', '.', $new_filename);
+    $invalidChars = false;
+    if ($filename != $new_filename) {
+      $invalidChars = true;
+    }
+
+    $fullname = $directory . $new_filename;
+    $counter = 0;
+    $collision = false;
+    while (file_exists($fullname)) {
+      $collision = true;
+      $pos = strrpos($new_filename, '.');
+      if ($pos !== FALSE) {
+        $name = substr($new_filename, 0, $pos);
+        $ext = substr($new_filename, $pos);
+      } else {
+        $name = basename($fullname);
+        $ext = '';
+      }
+
+      $fullname = sprintf("%s%s_%02d%s", $directory, $name, ++$counter, $ext);
+    }
     $resource = new ResourceResponse([
-      'expectedFileName' => $filename,
-      'collision' => false,
-      'invalidChars' => false
+      'expectedFileName' => basename($fullname),
+      'collision' => $collision,
+      'invalidChars' => $invalidChars
     ]);
     $resource->addCacheableDependency($filename);
     return $resource;

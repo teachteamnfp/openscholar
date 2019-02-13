@@ -159,7 +159,7 @@
                     if (entityType != this.entityType) {
                       return false;
                     }
-                    return testEntity.call(this, entity);
+                    return testEntity.call(this, entity, settings);
                   }
                 }
               }
@@ -314,7 +314,7 @@
           config.headers['If-Unmodified-Since'] = (new Date(updated*1000)).toString().replace(/ \([^)]*\)/, '');
 
           //rest API call to delete entity from server
-          return $http.delete(urlGenerator.generate(settings.fetchSetting('paths.api') + entityType+'/'+entity[idProp] + format, true), config).then(function (resp) {
+          return $http.delete(urlGenerator.generate(settings.fetchSetting('paths.api') + '/' + entityType + '/' + entity[idProp] + format, true), config).then(function (resp) {
             var k = findByProp(idProp, entity[idProp]);
             delete ents[k];
 
@@ -649,7 +649,7 @@
    *  this function should use the cache object as it's 'this', by using the call() method.
    *  Ex. testEntity.call(this, entity, params);
    */
-  function testEntity(entity) {
+  function testEntity(entity, settings) {
     // params is the search query we return
     var params = this.params,
       type = this.entityType;
