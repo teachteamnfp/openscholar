@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\vsite_infinite_scroll\ExistingSite;
 
-use Drupal\Core\Render\Markup;
 use Drupal\Core\Render\Renderer;
 use Drupal\views\Views;
 use Drupal\vsite_infinite_scroll\Plugin\views\pager\VsiteInfiniteScroll;
@@ -34,7 +33,8 @@ class VsiteInfiniteScrollTest extends VsiteInfiniteScrollExistingSiteTestBase {
   /**
    * Drupal renderer.
    *
-   * @var Renderer
+   * @var \Drupal\Core\Render\Renderer
+   *   Renderer.
    */
   protected $renderer;
 
