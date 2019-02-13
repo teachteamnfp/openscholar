@@ -102,7 +102,7 @@
         "fullcalendar/fullcalendar": "^3.3",
         "drupal/date_recur_interactive": "^2.0",
         "drupal/restui": "^1.16",
-        "mouf/nodejs-installer": "~1.0",
+        "mouf/nodejs-installer": "^1.0",
         "eloquent/composer-npm-bridge": "^4.1"
     },
     "require-dev": {
