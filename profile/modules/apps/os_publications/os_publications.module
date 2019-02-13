@@ -8,6 +8,7 @@
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\views\Plugin\views\query\QueryPluginBase;
 use Drupal\views\ViewExecutable;
+use Ds\Map;
 
 /**
  * Implements hook_views_data_alter().
@@ -36,7 +37,10 @@ function os_publications_views_query_alter(ViewExecutable $view, QueryPluginBase
   if ($view->id() !== 'publications') {
     return;
   }
+  /** @var \Drupal\Core\Config\ImmutableConfig $os_publication_settings */
+  $os_publication_settings = \Drupal::config('os_publications.settings');
 
+  // Alter "publication type" filter.
   foreach ($query->where as &$condition_group) {
     foreach ($condition_group['conditions'] as &$condition) {
       if ($condition['field'] !== 'bibcite_reference.type') {
@@ -44,8 +48,6 @@ function os_publications_views_query_alter(ViewExecutable $view, QueryPluginBase
       }
 
       // Alter values passed to reference_type condition.
-      /** @var \Drupal\Core\Config\ImmutableConfig $os_publication_settings */
-      $os_publication_settings = \Drupal::config('os_publications.settings');
       /** @var array $allowed_publication_types */
       $allowed_publication_types = $os_publication_settings->get('os_publications_filter_publication_types');
 
@@ -62,6 +64,23 @@ function os_publications_views_query_alter(ViewExecutable $view, QueryPluginBase
       // 1 => 'journal',
       // ].
       $condition['value'] = array_filter(array_values($allowed_publication_types));
+    }
+  }
+
+  // Alter sorting order.
+  // A mapping of display_id and the field whose sort order will be altered.
+  $mapping = new Map();
+  $mapping->put('page_1', 'bibcite_reference_type');
+  $mapping->put('page_2', 'bibcite_reference__field_title_first_char_excl_prep_field_ti');
+  $mapping->put('page_3', 'first_letter_last_name_author');
+  $mapping->put('page_4', 'bibcite_reference_bibcite_year');
+
+  /** @var string $sort_order */
+  $sort_order = $os_publication_settings->get('biblio_order');
+
+  foreach ($query->orderby as &$group) {
+    if ($group['field'] === $mapping->get($view->current_display, NULL)) {
+      $group['direction'] = $sort_order;
     }
   }
 }

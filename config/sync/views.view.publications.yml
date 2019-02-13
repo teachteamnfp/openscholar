@@ -248,7 +248,7 @@ display:
           field: type
           relationship: none
           group_type: group
-          admin_label: ''
+          admin_label: 'Reference type (Sort order altered from code, see os_publications_views_query_alter)'
           order: ASC
           exposed: false
           expose:
@@ -468,7 +468,7 @@ display:
           field: field_title_first_char_excl_prep_value
           relationship: none
           group_type: group
-          admin_label: ''
+          admin_label: 'Reference title first letter excluding prepositions (Sort order altered from code, see os_publications_views_query_alter)'
           order: ASC
           exposed: false
           expose:
@@ -650,7 +650,7 @@ display:
           field: first_letter_last_name_author
           relationship: author_target_id
           group_type: group
-          admin_label: ''
+          admin_label: 'Contributor: First letter of Author''s last name (Sort order altered from code, see os_publications_views_query_alter)'
           order: ASC
           exposed: false
           expose:
@@ -857,7 +857,7 @@ display:
           field: bibcite_year
           relationship: none
           group_type: group
-          admin_label: ''
+          admin_label: 'Reference: Year of publication (Sort order altered from code, see os_publications_views_query_alter)'
           order: ASC
           exposed: false
           expose:
