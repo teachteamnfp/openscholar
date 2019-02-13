@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\cp_settings\Plugin;
+namespace Drupal\cp_settings;
 
 use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\Component\Plugin\Discovery\CachedDiscoveryInterface;
