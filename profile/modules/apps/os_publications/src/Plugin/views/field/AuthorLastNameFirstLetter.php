@@ -9,7 +9,7 @@ use Drupal\views\ResultRow;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Field handler to display entity label excluding prepositions in beginning.
+ * Field handler to display first letter of contributor last name.
  *
  * @ViewsField("os_publications_first_letter_last_name_author")
  */

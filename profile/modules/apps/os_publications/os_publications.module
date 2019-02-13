@@ -18,7 +18,14 @@ function os_publications_views_data_alter(array &$data) {
     'field' => [
       'id' => 'os_publications_first_letter_last_name_author',
     ],
-    'entity field' => 'bibcite_contributor',
+  ];
+
+  $data['bibcite_contributor']['first_letter_last_name_author'] = [
+    'title' => t("First letter of Author's last name"),
+    'sort' => [
+      'id' => 'os_publications_first_letter_last_name_author',
+      'field' => 'last_name',
+    ],
   ];
 }
 

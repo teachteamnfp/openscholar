@@ -256,6 +256,18 @@ display:
           entity_type: bibcite_reference
           entity_field: type
           plugin_id: standard
+        field_is_sticky_value:
+          id: field_is_sticky_value
+          table: bibcite_reference__field_is_sticky
+          field: field_is_sticky_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: ASC
+          exposed: true
+          expose:
+            label: Sticky
+          plugin_id: standard
       title: 'Publications by Type'
       header: {  }
       footer: {  }
@@ -269,6 +281,8 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
+        - 'url.query_args:sort_by'
+        - 'url.query_args:sort_order'
       tags: {  }
   page_1:
     display_plugin: page
@@ -295,6 +309,8 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
+        - 'url.query_args:sort_by'
+        - 'url.query_args:sort_order'
       tags: {  }
   page_2:
     display_plugin: page
@@ -458,6 +474,18 @@ display:
           expose:
             label: ''
           plugin_id: standard
+        field_is_sticky_value:
+          id: field_is_sticky_value
+          table: bibcite_reference__field_is_sticky
+          field: field_is_sticky_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: ASC
+          exposed: true
+          expose:
+            label: Sticky
+          plugin_id: standard
       menu:
         type: none
         title: 'Publications by title'
@@ -473,6 +501,8 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
+        - 'url.query_args:sort_by'
+        - 'url.query_args:sort_order'
       tags:
         - 'config:field.storage.bibcite_reference.field_title_first_char_excl_prep'
   page_3:
@@ -501,6 +531,7 @@ display:
         fields: false
         title: false
         sorts: false
+        relationships: false
       row:
         type: fields
         options:
@@ -613,6 +644,19 @@ display:
           plugin_id: bibcite_citation
       title: 'Publications by Author'
       sorts:
+        first_letter_last_name_author:
+          id: first_letter_last_name_author
+          table: bibcite_contributor
+          field: first_letter_last_name_author
+          relationship: author_target_id
+          group_type: group
+          admin_label: ''
+          order: ASC
+          exposed: false
+          expose:
+            label: ''
+          entity_type: bibcite_contributor
+          plugin_id: os_publications_first_letter_last_name_author
         field_is_sticky_value:
           id: field_is_sticky_value
           table: bibcite_reference__field_is_sticky
@@ -634,6 +678,18 @@ display:
         weight: 0
         context: '0'
         menu_name: main
+      relationships:
+        author_target_id:
+          id: author_target_id
+          table: bibcite_reference__author
+          field: author_target_id
+          relationship: none
+          group_type: group
+          admin_label: Contributor
+          required: false
+          entity_type: bibcite_reference
+          entity_field: author
+          plugin_id: standard
     cache_metadata:
       max-age: -1
       contexts:
@@ -809,6 +865,18 @@ display:
           entity_type: bibcite_reference
           entity_field: bibcite_year
           plugin_id: standard
+        field_is_sticky_value:
+          id: field_is_sticky_value
+          table: bibcite_reference__field_is_sticky
+          field: field_is_sticky_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: ASC
+          exposed: true
+          expose:
+            label: Sticky
+          plugin_id: standard
       menu:
         type: none
         title: 'Publications by Year'
@@ -824,4 +892,6 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
+        - 'url.query_args:sort_by'
+        - 'url.query_args:sort_order'
       tags: {  }
