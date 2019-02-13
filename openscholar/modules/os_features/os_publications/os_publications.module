@@ -2112,7 +2112,7 @@ function os_publications_html_head_alter(&$head_elements) {
             if(is_array($bodyImage)){
               foreach($bodyImage as $image){
                 $imageUrl = addhttp($image);
-                $ext = strtolower(pathinfo($imageUrl, PATHINFO_EXTENSION)); // Using strtolower to overcome case sensitive
+                $ext = strtolower(pathinfo(parse_url($imageUrl, PHP_URL_PATH), PATHINFO_EXTENSION)); // Using strtolower to overcome case sensitive
                 if(in_array($ext, $image_extensions)){
                   $head_elements[$key]['#value'] = $imageUrl;
                   break;
@@ -2138,7 +2138,7 @@ function os_publications_html_head_alter(&$head_elements) {
             if(is_array($bodyImage)){
               foreach($bodyImage as $image){
                 $imageUrl = addhttp($image);
-                $ext = strtolower(pathinfo($imageUrl, PATHINFO_EXTENSION)); // Using strtolower to overcome case sensitive
+                $ext = strtolower(pathinfo(parse_url($imageUrl, PHP_URL_PATH), PATHINFO_EXTENSION)); // Using strtolower to overcome case sensitive
                 if(in_array($ext, $image_extensions)){
                   $head_elements[$key]['#value'] = $imageUrl;
                   break;
@@ -2164,7 +2164,7 @@ function os_publications_html_head_alter(&$head_elements) {
                     if(is_array($bodyImage)){
                         foreach($bodyImage as $image){
                           $imageUrl = addhttp($image);
-                          $ext = strtolower(pathinfo($imageUrl, PATHINFO_EXTENSION)); // Using strtolower to overcome case sensitive
+                          $ext = strtolower(pathinfo(parse_url($imageUrl, PHP_URL_PATH), PATHINFO_EXTENSION)); // Using strtolower to overcome case sensitive
                           if(in_array($ext, $image_extensions)){
                             $head_elements[$key]['#value'] = $imageUrl;
                             break;
@@ -2186,7 +2186,7 @@ function os_publications_html_head_alter(&$head_elements) {
           if(is_array($bodyImage)){
             foreach($bodyImage as $image){
               $imageUrl = addhttp($image);
-              $ext = strtolower(pathinfo($imageUrl, PATHINFO_EXTENSION)); // Using strtolower to overcome case sensitive
+              $ext = strtolower(pathinfo(parse_url($imageUrl, PHP_URL_PATH), PATHINFO_EXTENSION)); // Using strtolower to overcome case sensitive
               if(in_array($ext, $image_extensions)){
                 $head_elements[$key]['#value'] = $imageUrl;
                 break;
