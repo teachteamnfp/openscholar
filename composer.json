@@ -103,7 +103,8 @@
         "drupal/date_recur_interactive": "^2.0",
         "drupal/bootstrap": "^3.17",
         "drupal/styleguide": "^1.0@alpha",
-        "drupal/config_split": "^1.4"
+        "drupal/config_split": "^1.4",
+        "twbs/bootstrap-sass": "^3.3.7"
     },
     "require-dev": {
         "drupal/features": "^3.7",
@@ -139,13 +140,15 @@
             "@composer drupal:scaffold",
             "DrupalProject\\composer\\ScriptHandler::createRequiredFiles",
             "DrupalProject\\composer\\ScriptHandler::placeProfile",
-            "DrupalProject\\composer\\ScriptHandler::installFullcalendarLibrary"
+            "DrupalProject\\composer\\ScriptHandler::installFullcalendarLibrary",
+            "DrupalProject\\composer\\ScriptHandler::installBootstrapLibrary"
         ],
         "post-update-cmd": [
             "@composer drupal:scaffold",
             "DrupalProject\\composer\\ScriptHandler::createRequiredFiles",
             "DrupalProject\\composer\\ScriptHandler::placeProfile",
-            "DrupalProject\\composer\\ScriptHandler::installFullcalendarLibrary"
+            "DrupalProject\\composer\\ScriptHandler::installFullcalendarLibrary",
+            "DrupalProject\\composer\\ScriptHandler::installBootstrapLibrary"
         ]
     },
     "extra": {
