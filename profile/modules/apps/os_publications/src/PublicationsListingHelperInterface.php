@@ -60,6 +60,6 @@ interface PublicationsListingHelperInterface {
    *
    * @see \Drupal\redirect\Entity\Redirect::create()
    */
-  public function setRedirect(string $source, string $redirect) : Redirect;
+  public function setRedirect(string $source, string $redirect) : ?Redirect;
 
 }

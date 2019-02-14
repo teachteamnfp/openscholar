@@ -129,7 +129,7 @@ final class PublicationsListingHelper implements PublicationsListingHelperInterf
   /**
    * {@inheritdoc}
    */
-  public function setRedirect(string $source, string $redirect): Redirect {
+  public function setRedirect(string $source, string $redirect): ?Redirect {
     /** @var \Drupal\redirect\Entity\Redirect[] $redirects */
     $redirects = $this->redirectRepository->findBySourcePath($source);
     /** @var \Drupal\Core\Entity\EntityStorageInterface $entity_storage */
