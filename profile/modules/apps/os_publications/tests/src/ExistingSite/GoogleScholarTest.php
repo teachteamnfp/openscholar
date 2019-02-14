@@ -38,7 +38,6 @@ class GoogleScholarTest extends ExistingSiteBase {
 
   /**
    * Test Metadata on entity page.
-   *
    */
   public function testGoogleScholarMetatdata() {
 
