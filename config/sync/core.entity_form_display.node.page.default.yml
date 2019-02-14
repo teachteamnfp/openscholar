@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.page.body
+    - field.field.node.page.field_media
     - field.field.node.page.field_slideshow
     - node.type.page
   module:
@@ -37,6 +38,15 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_media:
+    weight: 123
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
   field_slideshow:
     type: entity_reference_paragraphs
     weight: 122
