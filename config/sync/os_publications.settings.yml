@@ -1,17 +1,15 @@
-biblio_sort: year
-os_publications_note_in_teaser: 0
+biblio_sort: title
+note_in_teaser: 0
 biblio_order: DESC
-os_publications_shorten_citations: 0
-os_publications_export_format:
+shorten_citations: 1
+export_format:
   bibtex: bibtex
   endnote8: endnote8
   endnote7: endnote7
   tagged: tagged
   marc: marc
   ris: ris
-_core:
-  default_config_hash: TC2xY1A9v4fsWesp3W9Ap5yCwv0VP7AOvRXzkFaSv_U
-os_publications_filter_publication_types:
+filter_publication_types:
   artwork: artwork
   audiovisual: audiovisual
   bill: bill
@@ -48,3 +46,5 @@ os_publications_filter_publication_types:
   web_project_page: web_project_page
   web_service: web_service
   website: website
+_core:
+  default_config_hash: KCwFYpsxpyK6P0j5BJMsNiSkSLHD6YXKKG78CGAFI5Y
