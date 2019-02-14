@@ -85,7 +85,9 @@ module:
   path: 0
   purl: 0
   quickedit: 0
+  rdf: 0
   redirect: 0
+  repec: 0
   responsive_image: 0
   rest: 0
   search: 0

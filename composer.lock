@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "989035ad07c037cd0bd13f726b300b2d",
+    "content-hash": "37ff104d67259a93e53e95a2218847d2",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -2075,7 +2075,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.25",
-                    "datestamp": "1549218480",
+                    "datestamp": "1542915384",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -3649,7 +3649,7 @@
                 },
                 "drupal": {
                     "version": "8.x-3.0",
-                    "datestamp": "1549603381",
+                    "datestamp": "1493401742",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -3750,7 +3750,7 @@
                 },
                 "drupal": {
                     "version": "8.x-2.0-alpha1",
-                    "datestamp": "1548047887",
+                    "datestamp": "1547651280",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Alpha releases are not covered by Drupal security advisories."
@@ -3809,7 +3809,7 @@
                 },
                 "drupal": {
                     "version": "8.x-2.0-alpha0",
-                    "datestamp": "1548160980",
+                    "datestamp": "1545106384",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Alpha releases are not covered by Drupal security advisories."
@@ -4471,6 +4471,60 @@
             }
         },
         {
+            "name": "drupal/repec",
+            "version": "dev-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/repec",
+                "reference": "db08a8e4660c6f3e992f8c84d852d065452b6915"
+            },
+            "require": {
+                "drupal/core": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.x-dev",
+                    "datestamp": "1538148480",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "EversonDaSilva",
+                    "homepage": "https://www.drupal.org/user/3002943"
+                },
+                {
+                    "name": "colorfield",
+                    "homepage": "https://www.drupal.org/user/2295486"
+                },
+                {
+                    "name": "glekli",
+                    "homepage": "https://www.drupal.org/user/930940"
+                }
+            ],
+            "description": "RDF integration with Research Papers in Economics (RePEc)",
+            "homepage": "https://www.drupal.org/project/repec",
+            "keywords": [
+                "Drupal"
+            ],
+            "support": {
+                "source": "http://cgit.drupalcode.org/repec",
+                "issues": "https://www.drupal.org/project/issues/repec"
+            },
+            "time": "2018-09-28T10:09:12+00:00"
+        },
+        {
             "name": "drupal/search_api",
             "version": "1.11.0",
             "source": {
@@ -4585,10 +4639,6 @@
                 {
                     "name": "gausarts",
                     "homepage": "https://www.drupal.org/user/159062"
-                },
-                {
-                    "name": "thalles",
-                    "homepage": "https://www.drupal.org/user/3589086"
                 }
             ],
             "description": "Slick carousel, the last carousel you'll ever need.",
@@ -9335,20 +9385,12 @@
                     "role": "contributor"
                 },
                 {
-                    "name": "Drupal Media Team",
-                    "homepage": "https://www.drupal.org/user/3260690"
-                },
-                {
                     "name": "Primsi",
                     "homepage": "https://www.drupal.org/user/282629"
                 },
                 {
                     "name": "marcingy",
                     "homepage": "https://www.drupal.org/user/77320"
-                },
-                {
-                    "name": "oknate",
-                    "homepage": "https://www.drupal.org/user/471638"
                 },
                 {
                     "name": "samuel.mortenson",
@@ -9395,10 +9437,6 @@
             ],
             "authors": [
                 {
-                    "name": "Berdir",
-                    "homepage": "https://www.drupal.org/user/214652"
-                },
-                {
                     "name": "Dave Reid",
                     "homepage": "https://www.drupal.org/user/53892"
                 },
@@ -9417,10 +9455,6 @@
                 {
                     "name": "marcingy",
                     "homepage": "https://www.drupal.org/user/77320"
-                },
-                {
-                    "name": "oknate",
-                    "homepage": "https://www.drupal.org/user/471638"
                 },
                 {
                     "name": "samuel.mortenson",
@@ -9717,7 +9751,8 @@
             "homepage": "https://www.drupal.org/project/media_entity_browser",
             "support": {
                 "source": "http://cgit.drupalcode.org/media_entity_browser"
-            }
+            },
+            "time": "2019-01-04T04:57:51+00:00"
         },
         {
             "name": "enyo/dropzone",
@@ -11756,6 +11791,7 @@
         "drupal/styleguide": 15,
         "drupal/bibcite": 20,
         "drupal/field_tools": 15,
+        "drupal/repec": 20,
         "weitzman/drupal-test-traits": 10
     },
     "prefer-stable": true,

@@ -125,7 +125,8 @@
         "drupal/field_tools": "^1.0@alpha",
         "ext-json": "*",
         "php-ds/php-ds": "^1.2",
-        "swordapp/swordappv2-php-library": "master"
+        "swordapp/swordappv2-php-library": "master",
+        "drupal/repec": "1.x-dev"
     },
     "require-dev": {
         "drupal/features": "^3.7",
