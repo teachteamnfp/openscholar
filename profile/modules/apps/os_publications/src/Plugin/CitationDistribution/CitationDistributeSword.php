@@ -160,17 +160,16 @@ abstract class CitationDistributeSword implements CitationDistributionInterface,
     }
 
     /* Add each file as well */
-    $files = $entity->field_files;
+    $files = $entity->get('field_files');
     if (empty($files)) {
       $citation_distribute_entity_object = &drupal_static('citation_distribute_entity_object');
       $files = $citation_distribute_entity_object->field_files;
     }
     foreach ($files as $file) {
-
       // $file = file_load($file->fid);
       // file load won't work yet, but data is already in db.
       $query = $this->database->select('file_managed', 'fm')
-        ->condition('fid', $file['fid'])
+        ->condition('fid', $file->target_id)
         ->fields('fm', ['filemime', 'uri']);
       $f = $query->execute()->fetchAssoc();
 
@@ -223,7 +222,8 @@ abstract class CitationDistributeSword implements CitationDistributionInterface,
 
     if (isset($metadata['File'])) {
       foreach ($metadata['File'] as $delta => $file) {
-        $filename = end(explode('/', $file['filepath']));
+        $full = explode('/', $file['filepath']);
+        $filename = end($full);
         copy($this->fileSystem->realpath($file['filepath']), $root_dir . '/' . $filename);
         $metadata['File'][$delta]['filepath'] = $id . '/' . $filename;
       }
@@ -278,7 +278,7 @@ abstract class CitationDistributeSword implements CitationDistributionInterface,
   /**
    * Push to repository.
    *
-   * @param array $file
+   * @param string $file
    *   The file object.
    * @param int $id
    *   The entity id.
@@ -288,7 +288,7 @@ abstract class CitationDistributeSword implements CitationDistributionInterface,
    *
    * @throws \Exception
    */
-  private function push(array $file, $id) {
+  private function push($file, $id) {
     $sac = new SWORDAPPClient();
     $sac_doc = $this->getServiceDoc($sac);
     $deposit_url = $this->getDepositUrl($sac_doc->sac_workspaces, $id);
