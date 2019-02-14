@@ -27,16 +27,6 @@ class OsMailChimpSignupForm extends FormBase {
   ];
 
   /**
-   * Set mailchimp list.
-   *
-   * @param \stdClass $list
-   *   Mailchimp list object from API.
-   */
-  public function setList(\stdClass $list) {
-    $this->list = $list;
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function getFormId() {
@@ -46,10 +36,11 @@ class OsMailChimpSignupForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state) {
-    if (empty($this->list)) {
+  public function buildForm(array $form, FormStateInterface $form_state, \stdClass $list = NULL) {
+    if (empty($list)) {
       return $form;
     }
+    $this->list = $list;
 
     $form['#prefix'] = '<div id="os_mailchimp_modal_signup_form">';
     $form['#suffix'] = '</div>';

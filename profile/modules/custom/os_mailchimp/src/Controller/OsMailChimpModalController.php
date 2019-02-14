@@ -87,10 +87,8 @@ class OsMailChimpModalController extends ControllerBase {
     if (empty($list)) {
       return $this->t('The subscription service is currently unavailable. Please check again later.');
     }
-    $form = new OsMailChimpSignupForm();
-    $form->setList($list);
 
-    return $this->formBuilder->getForm($form);
+    return $this->formBuilder->getForm('\Drupal\os_mailchimp\Form\OsMailChimpSignupForm', $list);
   }
 
 }
