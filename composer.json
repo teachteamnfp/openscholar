@@ -139,13 +139,19 @@
             "@composer drupal:scaffold",
             "DrupalProject\\composer\\ScriptHandler::createRequiredFiles",
             "DrupalProject\\composer\\ScriptHandler::placeProfile",
-            "DrupalProject\\composer\\ScriptHandler::installFullcalendarLibrary"
+            "DrupalProject\\composer\\ScriptHandler::installFullcalendarLibrary",
+            "./vendor/bin/phpcs --config-set installed_paths vendor/drupal/coder/coder_sniffer"
         ],
         "post-update-cmd": [
             "@composer drupal:scaffold",
             "DrupalProject\\composer\\ScriptHandler::createRequiredFiles",
             "DrupalProject\\composer\\ScriptHandler::placeProfile",
-            "DrupalProject\\composer\\ScriptHandler::installFullcalendarLibrary"
+            "DrupalProject\\composer\\ScriptHandler::installFullcalendarLibrary",
+            "./vendor/bin/phpcs --config-set installed_paths vendor/drupal/coder/coder_sniffer"
+        ],
+        "code-standard": [
+            "./vendor/bin/phpcs --standard=Drupal --warning-severity=0 profile",
+            "./vendor/bin/phpcs --standard=DrupalPractice --warning-severity=0 profile"
         ]
     },
     "extra": {
