@@ -12,7 +12,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @CitationDistribute(
  *   id = "citation_distribute_googlescholar",
  *   title = @Translation("Google scholar citation distribute service."),
- *   type = "metadata"
+ *   type = "metadata",
+ *   name = "Google Scholar"
  * )
  */
 class CitationDistributeGooglescholar implements CitationDistributionInterface, ContainerFactoryPluginInterface {

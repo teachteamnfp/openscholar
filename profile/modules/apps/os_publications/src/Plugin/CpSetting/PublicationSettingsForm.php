@@ -11,6 +11,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\cp_settings\CpSettingInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\os_publications\Plugin\CitationDistribution\CitationDistirbutePluginManager;
 use Drupal\os_publications\PublicationsListingHelperInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\bibcite\CitationStylerInterface;
@@ -80,13 +81,15 @@ class PublicationSettingsForm extends PluginBase implements CpSettingInterface, 
     BibciteFormatManagerInterface $formatManager,
     EntityTypeManagerInterface $entityTypeManager,
     SampleCitations $citations,
-    PublicationsListingHelperInterface $redirect_repository) {
+    PublicationsListingHelperInterface $redirect_repository,
+                              CitationDistirbutePluginManager $pluginManager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->styler = $styler;
     $this->formatManager = $formatManager;
     $this->entityTypeManager = $entityTypeManager;
     $this->citations = $citations;
     $this->publicationsListingHelper = $redirect_repository;
+    $this->pluginManager = $pluginManager;
   }
 
   /**
@@ -101,7 +104,8 @@ class PublicationSettingsForm extends PluginBase implements CpSettingInterface, 
       $container->get('plugin.manager.bibcite_format'),
       $container->get('entity_type.manager'),
       $container->get('os_publications.citation_examples'),
-      $container->get('os_publications.listing_helper')
+      $container->get('os_publications.listing_helper'),
+      $container->get('os_publications.manager_citation_distribute')
     );
   }
 
@@ -206,11 +210,16 @@ class PublicationSettingsForm extends PluginBase implements CpSettingInterface, 
       }, $this->formatManager->getExportDefinitions()),
     ];
 
+    $plugins = $this->pluginManager->getDefinitions();
+    foreach ($plugins as $plugin) {
+      $distribution_options[$plugin['id']] = isset($plugin['name']) ? $plugin['name'] : NULL;
+    }
+
     $form['citation_distribute_autoflags'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Distribute to repositories'),
-      '#options' => ['test' => 'dummy'],
-      // @todo distribution repository options
+      '#default_value' => $publication_config->get('distribution_repositories'),
+      '#options' => $distribution_options,
     ];
 
     $form['#attached']['library'][] = 'os_publications/drupal.os_publications';
@@ -233,6 +242,7 @@ class PublicationSettingsForm extends PluginBase implements CpSettingInterface, 
       ->set('biblio_order', $formState->getValue('biblio_order'))
       ->set('shorten_citations', $formState->getValue('os_publications_shorten_citations'))
       ->set('export_format', $formState->getValue('os_publications_export_format'))
+      ->set('distribution_repositories', $formState->getValue('citation_distribute_autoflags'))
       ->save();
 
     $this->publicationsListingHelper->setRedirect('publications', $formState->getValue('biblio_sort'));

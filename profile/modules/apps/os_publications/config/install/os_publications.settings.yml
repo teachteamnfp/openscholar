@@ -46,3 +46,6 @@ filter_publication_types:
   web_project_page: web_project_page
   web_service: web_service
   website: website
+distribution_repositories:
+  citation_distribute_googlescholar: false
+  citation_distribute_sword_dash: false

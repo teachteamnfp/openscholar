@@ -2,8 +2,6 @@
 
 namespace Drupal\Tests\os_publications\ExistingSite;
 
-use weitzman\DrupalTestTraits\ExistingSiteBase;
-
 /**
  * Class PublicationsFormTest.
  *
@@ -11,7 +9,7 @@ use weitzman\DrupalTestTraits\ExistingSiteBase;
  *
  * @package Drupal\Tests\os_publications\ExistingSite
  */
-class GoogleScholarTest extends ExistingSiteBase {
+class GoogleScholarTest extends TestBase {
 
   /**
    * {@inheritdoc}
@@ -27,12 +25,15 @@ class GoogleScholarTest extends ExistingSiteBase {
    * Test Setting form route.
    *
    * @throws \Behat\Mink\Exception\ExpectationException
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function testPublicationSettingsPath() {
     $this->drupalLogin($this->user);
-    $this->drupalGet('bibcite/reference/1');
+    $reference = $this->createReference();
+
+    $this->drupalGet('bibcite/reference/' . $reference->id());
     drupal_flush_all_caches();
-    $this->drupalGet('bibcite/reference/1');
+    $this->drupalGet('bibcite/reference/' . $reference->id());
     $this->assertSession()->statusCodeEquals(200);
   }
 
@@ -42,7 +43,8 @@ class GoogleScholarTest extends ExistingSiteBase {
   public function testGoogleScholarMetatdata() {
 
     $this->drupalLogin($this->user);
-    $this->drupalGet('bibcite/reference/1');
+    $reference = $this->createReference();
+    $this->drupalGet('bibcite/reference/' . $reference->id());
     $html = $this->getCurrentPage()->getHtml();
     $this->assertContains('citation_title', $html);
     $this->assertContains('citation_year', $html);

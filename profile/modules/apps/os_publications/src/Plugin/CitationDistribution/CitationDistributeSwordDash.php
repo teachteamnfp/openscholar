@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   id = "citation_distribute_sword_dash",
  *   title = @Translation("Sword based Dash citation distribute service."),
  *   href = "http://dash.harvard.edu",
- *   name = "dash",
+ *   name = "Dash",
  *   description = "Harvard's open access repository",
  * )
  */
