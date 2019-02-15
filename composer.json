@@ -150,8 +150,8 @@
             "DrupalProject\\composer\\ScriptHandler::installFullcalendarLibrary"
         ],
         "code-standard": [
-            "./vendor/bin/phpcs --standard=Drupal --warning-severity=0 profile",
-            "./vendor/bin/phpcs --standard=DrupalPractice --warning-severity=0 profile"
+            "./vendor/bin/phpcs --standard=Drupal",
+            "./vendor/bin/phpcs --standard=DrupalPractice"
         ]
     },
     "extra": {
