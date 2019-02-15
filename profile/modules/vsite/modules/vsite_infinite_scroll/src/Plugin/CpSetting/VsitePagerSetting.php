@@ -54,10 +54,7 @@ class VsitePagerSetting extends PluginBase implements CpSettingInterface {
   /**
    * {@inheritdoc}
    */
-  public function submitForm(
-    FormStateInterface $formState,
-    ConfigFactoryInterface $configFactory
-  ) {
+  public function submitForm(FormStateInterface $formState, ConfigFactoryInterface $configFactory) {
     $config = $configFactory->getEditable('vsite_infinite_scroll.setting');
     $config->set('long_list_content_pagination', $formState->getValue('long_list_content_pagination'));
     $config->save(TRUE);
