@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+echo "Install Drupal coder..."
+composer global require drupal/coder
+
 echo "Registering code standards..."
 composer global require dealerdirect/phpcodesniffer-composer-installer
 
