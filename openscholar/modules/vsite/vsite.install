@@ -953,3 +953,70 @@ function vsite_update_7039() {
   }
   return t('Updated !count field one char records with token pattern.', array('!count' => $count));
 }
+
+/**
+ * Delete all group content nodes which does not have a group.
+ */
+function vsite_update_7040(&$sandbox) {
+  $excepted_node_types = array(
+    'personal',
+    'department',
+    'project',
+  );
+
+  $query = db_select('node', 'n');
+  $query->condition('n.type', $excepted_node_types, 'NOT IN');
+  $query->leftJoin('og_membership', 'om', "om.etid = n.nid AND om.entity_type = 'node'");
+  $query->isNull('om.id');
+  // Use the sandbox at your convenience to store the information needed
+  // to track progression between successive calls to the function.
+  if (!isset($sandbox['progress'])) {
+
+    // The count of nodes visited so far.
+    $sandbox['progress'] = 0;
+    $query_count = clone $query;
+    // Total nodes that must be deleted.
+    $query_count->addExpression('COUNT(nid)');
+    $sandbox['max'] = $query_count->execute()->fetchField();
+
+    // A place to store messages during the run.
+    $sandbox['messages'] = array();
+
+    // Last node read via the query.
+    $sandbox['current_node'] = -1;
+  }
+  $limit = 50;
+
+  // Retrieve the next group of nids.
+  $query->fields('n', array(
+    'nid',
+  ));
+  $query->orderBy('n.nid', 'ASC');
+  $query->where('n.nid > :nid', array(
+      ':nid' => $sandbox['current_node'],
+    ));
+  $query->range(0, $limit);
+  $result = $query->execute();
+  foreach ($result as $row) {
+
+    $node = node_load($row->nid);
+    // Delete placeholder, dryrun
+
+    // Update our progress information.
+    $sandbox['progress']++;
+    $sandbox['current_node'] = $row->nid;
+    $sandbox['messages'][] = $node->title . ' [type:' . $node->type . '] [nid:' . $node->nid . ']';
+  }
+
+  // Set the "finished" status, to tell batch engine whether this function
+  // needs to run again. If you set a float, this will indicate the progress
+  // of the batch so the progress bar will update.
+  $sandbox['#finished'] = $sandbox['progress'] >= $sandbox['max'] ? TRUE : $sandbox['progress'] / $sandbox['max'];
+
+  if ($sandbox['#finished']) {
+    $final_message = '<ul><li>' . implode('</li><li>', $sandbox['messages']) . "</li></ul>";
+    return t('List of deleted content: @message', array(
+      '@message' => $final_message,
+    ));
+  }
+}
