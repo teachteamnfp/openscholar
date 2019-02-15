@@ -4,5 +4,14 @@
 // Bootstrap Framework.
 @import '../bootstrap/assets/stylesheets/bootstrap';
 
+//own styles
+@import 'base/base-main';
+
 // Base-theme overrides.
 @import 'overrides';
+
+//global style
+@import 'global/global-main';
+
+//page styles
+@import 'pages/news';

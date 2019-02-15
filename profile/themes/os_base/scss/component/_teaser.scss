@@ -1,0 +1,19 @@
+.node--teaser {
+  margin: 0 0 20px;
+  padding: 20px 0 40px;
+  border-bottom: 1px solid $color-light-gray;
+  .node--title {
+    font-size: 15px;
+    margin-top: 0;
+  }
+}
+
+.teaser--content {
+  margin-top: 15px;
+}
+
+.node--title {
+  a {
+    display: inline-block;
+  }
+}

@@ -1,0 +1,11 @@
+{% extends 'node--news--teaser.html.twig' %}
+
+{% block image %}
+  <div class="teaser--image">{{ content.field_photo_person }}</div>
+{% endblock %}
+
+{% block content %}
+  <div{{ content_attributes }}>
+    {{ content|without("field_photo_person") }}
+  </div>
+{% endblock %}

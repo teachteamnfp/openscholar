@@ -1,0 +1,16 @@
+/** all base style goes here **/
+body {
+  font-family: Arial,Helvetica,sans-serif;
+  font-size: 14px;
+  line-height: 23px;
+  min-height: inherit;
+  color: $color-black1;
+}
+a, a:visited {
+  color: $color-link;
+}
+
+.date, time {
+  color: $color-gray;
+}
+
