@@ -35,6 +35,9 @@ class VsiteCpSettingsTest extends VsiteInfiniteScrollExistingSiteTestBase {
    */
   public function testCpSettingsPageFormSave() {
     $this->drupalLogin($this->adminUser);
+    $this->visit("/cp/settings/vsite");
+    drupal_flush_all_caches();
+    $this->visit("/cp/settings/vsite");
     $this->drupalPostForm('/cp/settings/vsite', [
       'long_list_content_pagination' => 'pager',
     ], 'Save configuration');
