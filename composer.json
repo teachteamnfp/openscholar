@@ -152,6 +152,9 @@
         "code-standard": [
             "./vendor/bin/phpcs --standard=Drupal",
             "./vendor/bin/phpcs --standard=DrupalPractice"
+        ],
+        "code-standard-fix": [
+            "./vendor/bin/phpcbf --standard=Drupal"
         ]
     },
     "extra": {

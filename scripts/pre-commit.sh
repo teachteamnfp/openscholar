@@ -13,7 +13,7 @@ if [[ $? -eq 0 ]]; then
   DOCKER_CONTAINER_STATUS=$(docker ps)
 
   if ! [[ ${DOCKER_CONTAINER_STATUS} == *"openscholar_php"* ]]; then
-    echo "Docker is installed, but OpenScholar PHP container is not running. Start the container and try commiting again."
+    echo "Docker is installed, but OpenScholar PHP container is not running. Start the container and try committing again."
     exit 1
   fi
 
@@ -28,8 +28,16 @@ else
   git diff --cached --name-only | xargs composer code-standard $1
 fi
 
-# $? stores exit value of the last command
-if [[ $? -ne 0 ]]; then
- echo "Fix the code standard issues."
- exit 1
+if [[ $? -eq 0 ]]; then
+  exit 0
 fi
+
+echo "There are code standard issues. Trying to fix them automatically with phpcbf..."
+
+if [[ ${IS_DOCKER_CONTAINER_AVAILABLE} = true ]] ; then
+  git diff --cached --name-only | xargs docker-compose exec -T php composer code-standard-fix $1
+else
+  git diff --cached --name-only | xargs composer code-standard-fix $1
+fi
+
+exit 1
