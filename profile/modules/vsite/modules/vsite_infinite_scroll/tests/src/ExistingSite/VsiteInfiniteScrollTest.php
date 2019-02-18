@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\vsite_infinite_scroll\ExistingSite;
 
-use Drupal\Core\Render\Renderer;
 use Drupal\views\Views;
 use Drupal\vsite_infinite_scroll\Plugin\views\pager\VsiteInfiniteScroll;
 
@@ -84,7 +83,7 @@ class VsiteInfiniteScrollTest extends VsiteInfiniteScrollExistingSiteTestBase {
     $render_view = $this->renderPeopleView();
     $this->assertTrue($render_view['#view']->pager instanceof VsiteInfiniteScroll);
     $html = $this->renderer->renderPlain($render_view)->__toString();
-    $this->assertContains('Load More', $html, 'Vsite infinite scroll not visible.');
+    $this->assertContains('Load More', $html, 'Vsite infinite scroll is not visible.');
   }
 
   /**
@@ -100,7 +99,7 @@ class VsiteInfiniteScrollTest extends VsiteInfiniteScrollExistingSiteTestBase {
     $render_view = $this->renderPeopleView();
     $this->assertTrue($render_view['#view']->pager instanceof VsiteInfiniteScroll);
     $html = $this->renderer->renderPlain($render_view)->__toString();
-    $this->assertContains('Next page', $html, 'Default pager not visible.');
+    $this->assertContains('Next page', $html, 'Default pager is not visible.');
   }
 
   /**
