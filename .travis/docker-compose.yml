@@ -78,3 +78,9 @@ services:
     image: previousnext/chrome-headless:65
     ports:
       - "9222:9222"
+
+  npm:
+    image: wodby/node:$NODE_TAG
+    command: tail -f /dev/null
+    volumes:
+      - ./:/usr/src/app:cached
