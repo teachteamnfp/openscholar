@@ -53,3 +53,7 @@ services:
     ports:
       - "9222:9222"
 
+  npm:
+    image: wodby/node:10.15
+    depends_on:
+      - php
