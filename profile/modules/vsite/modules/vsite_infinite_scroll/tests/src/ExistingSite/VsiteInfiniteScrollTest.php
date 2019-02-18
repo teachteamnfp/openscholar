@@ -38,6 +38,14 @@ class VsiteInfiniteScrollTest extends VsiteInfiniteScrollExistingSiteTestBase {
   protected $renderer;
 
   /**
+   * Drupal config.
+   *
+   * @var \Drupal\Core\Config\ConfigFactory
+   *   Renderer.
+   */
+  protected $config;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
@@ -72,6 +80,7 @@ class VsiteInfiniteScrollTest extends VsiteInfiniteScrollExistingSiteTestBase {
 
     $this->vsiteContextManager = $this->container->get('vsite.context_manager');
     $this->renderer = \Drupal::service('renderer');
+    $this->config = \Drupal::configFactory()->getEditable('vsite_infinite_scroll.setting');
   }
 
   /**
@@ -79,11 +88,22 @@ class VsiteInfiniteScrollTest extends VsiteInfiniteScrollExistingSiteTestBase {
    */
   public function testRenderedDefaultPager() {
     $this->vsiteContextManager->activateVsite($this->group);
+    // Modify config to empty string.
+    $this->config->clear('long_list_content_pagination');
+    $this->config->save(TRUE);
 
     $render_view = $this->renderPeopleView();
     $this->assertTrue($render_view['#view']->pager instanceof VsiteInfiniteScroll);
     $html = $this->renderer->renderPlain($render_view)->__toString();
-    $this->assertContains('Load More', $html, 'Vsite infinite scroll is not visible.');
+    $this->assertContains('Load More', $html, 'Vsite infinite scroll is not visible. (null config)');
+
+    $this->config->set('long_list_content_pagination', 'infinite_scroll');
+    $this->config->save(TRUE);
+
+    $render_view = $this->renderPeopleView();
+    $this->assertTrue($render_view['#view']->pager instanceof VsiteInfiniteScroll);
+    $html = $this->renderer->renderPlain($render_view)->__toString();
+    $this->assertContains('Load More', $html, 'Vsite infinite scroll is not visible. (config set to infinite_scroll)');
   }
 
   /**
@@ -92,9 +112,8 @@ class VsiteInfiniteScrollTest extends VsiteInfiniteScrollExistingSiteTestBase {
   public function testRenderedModifiedPager() {
     $this->vsiteContextManager->activateVsite($this->group);
     // Modify default config to pager.
-    $config = \Drupal::configFactory()->getEditable('vsite_infinite_scroll.setting');
-    $config->set('long_list_content_pagination', 'pager');
-    $config->save(TRUE);
+    $this->config->set('long_list_content_pagination', 'pager');
+    $this->config->save(TRUE);
 
     $render_view = $this->renderPeopleView();
     $this->assertTrue($render_view['#view']->pager instanceof VsiteInfiniteScroll);
