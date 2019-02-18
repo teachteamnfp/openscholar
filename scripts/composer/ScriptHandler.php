@@ -209,6 +209,7 @@ class ScriptHandler {
       throw new \RuntimeException($e->getMessage());
     }
   }
+
   /**
    * Installs bootstrap library.
    *
@@ -258,25 +259,4 @@ class ScriptHandler {
     }
   }
 
-  /**
-   * Installs gulp build.
-   *
-   * Installed via Composer packages.
-   *
-   * @param \Composer\Script\Event $event
-   *   Composer event.
-   */
-  public static function gulpBuild(Event $event) {
-    $process = new Process('cd profile/themes/os_base && npm install');
-    $process->run();
-    
-    // executes after the command finishes
-    if (!$process->isSuccessful()) {
-      throw new ProcessFailedException($process);
-      $event->getIO()->write($process->getOutput());
-    }
-    else {
-      $event->getIO()->write("Recompiled and compressed CSS/JS");
-    }
-  }
 }

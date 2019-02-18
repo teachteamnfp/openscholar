@@ -55,5 +55,6 @@ services:
 
   npm:
     image: wodby/node:10.15
-    depends_on:
-      - php
+    command: tail -f /dev/null
+    volumes:
+      - ./:/usr/src/app:cached
