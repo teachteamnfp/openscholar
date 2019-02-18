@@ -13,7 +13,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   id = "citation_distribute_googlescholar",
  *   title = @Translation("Google scholar citation distribute service."),
  *   type = "metadata",
- *   name = "Google Scholar"
+ *   name = "Google Scholar",
+ *   href = "https://scholar.google.com",
+ *   description = "Google's searchable index of citations",
  * )
  */
 class CitationDistributeGooglescholar implements CitationDistributionInterface, ContainerFactoryPluginInterface {
@@ -59,6 +61,8 @@ class CitationDistributeGooglescholar implements CitationDistributionInterface, 
   public function mapMetadata($id) {
 
     $entity = $this->entityTypeManager->getStorage('bibcite_reference')->load($id);
+    $keywords_arr = [];
+    $contributors_arr = [];
 
     $metadata = [
       'citation_journal_title' => 'bibcite_secondary_title',
@@ -79,53 +83,43 @@ class CitationDistributeGooglescholar implements CitationDistributionInterface, 
     }
 
     /** @var object $keywords */
-    $keywords = $entity->get('keywords');
-    if (isset($keywords)) {
-      foreach ($keywords as $reference) {
-        $target_id = $reference->target_id;
-        $keyword_obj = $this->entityTypeManager->getStorage('bibcite_keyword')->load($target_id);
-        $keywords_arr[] = $keyword_obj->name->value;
-      }
+    $keywords = $entity->get('keywords') ?? [];
+    foreach ($keywords as $reference) {
+      $target_id = $reference->target_id;
+      $keyword_obj = $this->entityTypeManager->getStorage('bibcite_keyword')->load($target_id);
+      $keywords_arr[] = $keyword_obj->name->value;
     }
 
-    if (isset($keywords_arr)) {
-      $metadata['citation_keywords'] = htmlspecialchars(strip_tags(implode(';', $keywords_arr)), ENT_COMPAT, 'ISO-8859-1', FALSE);
-    }
+    $metadata['citation_keywords'] = htmlspecialchars(strip_tags(implode(';', $keywords_arr)), ENT_COMPAT, 'ISO-8859-1', FALSE);
 
     if (isset($entity->bibcite_year, $entity->bibcite_date)) {
       $metadata['citation_publication_date'] = $this->googleScholarDate($entity->bibcite_year->value, $entity->bibcite_date->value);
     }
 
     /** @var object $contributors */
-    $contributors = $entity->get('author');
-    if ($contributors) {
-      foreach ($contributors as $reference) {
-        $target_id = $reference->target_id;
-        $contributor_obj = $this->entityTypeManager->getStorage('bibcite_contributor')->load($target_id);
-        $contributors_arr[] = $contributor_obj->name->value;
-      }
+    $contributors = $entity->get('author') ?? [];
+    foreach ($contributors as $reference) {
+      $target_id = $reference->target_id;
+      $contributor_obj = $this->entityTypeManager->getStorage('bibcite_contributor')->load($target_id);
+      $contributors_arr[] = $contributor_obj->name->value;
     }
-    if (isset($contributors_arr)) {
-      $metadata['citation_author'] = $this->googleScholarListAuthors($contributors_arr);
-    }
+    $metadata['citation_author'] = $this->googleScholarListAuthors($contributors_arr);
 
     return $metadata;
   }
 
   /**
-   * {@inheritdoc}
+   * Returns themeable html output to include in headers.
+   *
+   * @param mixed $id
+   *   The entity Id.
+   *
+   * @return array
+   *   Header options.
    */
   public function render($id) {
-    $metadata = $this->mapMetadata($id);
 
-    /*
-     * Themable function to generate message after user submits
-     * cite_distribute widget selections
-     *
-     * @param array $metadata
-     *          associative array of GS metadata
-     * @return unknown HTML string of that metadata
-     */
+    $metadata = $this->mapMetadata($id);
     $output = [];
     foreach ($metadata as $key => $value) {
       if ($value) {

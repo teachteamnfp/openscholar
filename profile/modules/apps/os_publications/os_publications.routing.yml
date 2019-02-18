@@ -1,7 +1,7 @@
-os_oublications.citation_dash_settings:
-  path: '/admin/config/dashconfig'
+os_publications.citation_distribute_settings:
+  path: '/admin/config/openscholar/citation_distribute'
   defaults:
-    _form: '\Drupal\os_publications\Form\CitationDashConfigForm'
-    _title: 'Citation Distribute Dash Configurations'
+    _form: '\Drupal\os_publications\Form\CitationDistributeConfigForm'
+    _title: 'Common Settings'
   requirements:
     _permission: 'administer site configuration'

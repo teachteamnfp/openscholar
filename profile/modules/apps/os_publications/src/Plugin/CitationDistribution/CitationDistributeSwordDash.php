@@ -16,6 +16,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   href = "http://dash.harvard.edu",
  *   name = "Dash",
  *   description = "Harvard's open access repository",
+ *   href = "https://dash.harvard.edu",
+ *   formclass = "CitationDashConfigForm"
  * )
  */
 class CitationDistributeSwordDash extends CitationDistributeSword {
@@ -170,7 +172,7 @@ class CitationDistributeSwordDash extends CitationDistributeSword {
     $email = $group->getOwner()->getEmail();
     // Get department of email domain.
     $domain = end(explode('@', $email));
-    $department = (isset($this->departmentDomains[$domain])) ? $this->departmentDomains[$domain] : $this->departmentDomains['harvard.edu'];
+    $department = (isset($this->departmentDomains[$domain])) ? self::DEPARTMENTDOMAINS[$domain] : self::DEPARTMENTDOMAINS['harvard.edu'];
 
     foreach ($workspaces as $workspace) {
       foreach ($workspace->sac_collections as $collection) {
@@ -191,10 +193,8 @@ class CitationDistributeSwordDash extends CitationDistributeSword {
 
   /**
    * Department domains.
-   *
-   * @var array
    */
-  public $departmentDomains = [
+  const DEPARTMENTDOMAINS = [
     'fas.harvard.edu' => 'FAS Scholarly Articles',
     'harvard.edu' => 'FAS Scholarly Articles',
     'iq.harvard.edu' => 'FAS Scholarly Articles',

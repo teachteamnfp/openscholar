@@ -24,7 +24,7 @@ class CitationDistirbutePluginManager extends DefaultPluginManager {
     );
 
     $this->alterInfo('citation_distribute');
-    // $this->setCacheBackend($cacheBackend, 'citation_distribute_plugins');.
+    $this->setCacheBackend($cacheBackend, 'citation_distribute_plugins');
   }
 
 }

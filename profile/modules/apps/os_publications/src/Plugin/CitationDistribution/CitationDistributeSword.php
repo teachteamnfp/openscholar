@@ -8,12 +8,7 @@ use SWORDAPPClient;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 
 /**
- * Citation Distribute GoogleScholar service.
- *
- * @CitationDistribute(
- *   id = "citation_distribute_sword",
- *   title = @Translation("Sword based citation distribute service."),
- * )
+ * Citation Distribute Sword base service.
  */
 abstract class CitationDistributeSword implements CitationDistributionInterface, ContainerFactoryPluginInterface {
 
@@ -150,13 +145,11 @@ abstract class CitationDistributeSword implements CitationDistributionInterface,
     ];
 
     /* Add each author to Creator metadata */
-    $contributors = $entity->get('author');
-    if ($contributors) {
-      foreach ($contributors as $reference) {
-        $target_id = $reference->target_id;
-        $contributor_obj = $this->entityTypeManager->getStorage('bibcite_contributor')->load($target_id);
-        $metadata['Creator'][] = $contributor_obj->name->value;
-      }
+    $contributors = $entity->get('author') ?? [];
+    foreach ($contributors as $reference) {
+      $target_id = $reference->target_id;
+      $contributor_obj = $this->entityTypeManager->getStorage('bibcite_contributor')->load($target_id);
+      $metadata['Creator'][] = $contributor_obj->name->value;
     }
 
     /* Add each file as well */
@@ -188,12 +181,6 @@ abstract class CitationDistributeSword implements CitationDistributionInterface,
     $citation = preg_replace('/&nbsp;/', ' ', $citation);
     $metadata['Citation'] = $citation;
 
-    /* Haven't found a mapping for these yet.
-    'Identifier' => '',
-    'DateAvailable' => '',
-    'StatusStatement' => '',
-    'CopyrightHolder' => '',
-     */
     return $metadata;
   }
 
