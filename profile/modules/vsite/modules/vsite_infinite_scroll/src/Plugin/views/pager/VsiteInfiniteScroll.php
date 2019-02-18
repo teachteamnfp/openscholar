@@ -59,7 +59,7 @@ class VsiteInfiniteScroll extends InfiniteScroll {
    * {@inheritdoc}
    */
   public function render($input) {
-    $config = $this->configFactory->get('vsite_infinite_scroll.setting');
+    $config = $this->configFactory->get('vsite_infinite_scroll.settings');
     $long_list_content_pagination = $config->get('long_list_content_pagination');
     if ($long_list_content_pagination == 'pager') {
       // The 1, 3 indexes are correct, see template_preprocess_pager().

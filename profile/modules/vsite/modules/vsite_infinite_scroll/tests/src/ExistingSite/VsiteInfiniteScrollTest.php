@@ -79,17 +79,17 @@ class VsiteInfiniteScrollTest extends VsiteInfiniteScrollExistingSiteTestBase {
     }
 
     $this->vsiteContextManager = $this->container->get('vsite.context_manager');
+    $this->vsiteContextManager->activateVsite($this->group);
     $this->renderer = \Drupal::service('renderer');
-    $this->config = \Drupal::configFactory()->getEditable('vsite_infinite_scroll.setting');
+    $this->config = \Drupal::configFactory()->getEditable('vsite_infinite_scroll.settings');
   }
 
   /**
    * Check views pager settings and default result.
    */
   public function testRenderedDefaultPager() {
-    $this->vsiteContextManager->activateVsite($this->group);
     // Modify config to empty string.
-    $this->config->clear('long_list_content_pagination');
+    $this->config->set('long_list_content_pagination', '');
     $this->config->save(TRUE);
 
     $render_view = $this->renderPeopleView();
@@ -101,7 +101,6 @@ class VsiteInfiniteScrollTest extends VsiteInfiniteScrollExistingSiteTestBase {
     $this->config->save(TRUE);
 
     $render_view = $this->renderPeopleView();
-    $this->assertTrue($render_view['#view']->pager instanceof VsiteInfiniteScroll);
     $html = $this->renderer->renderPlain($render_view)->__toString();
     $this->assertContains('Load More', $html, 'Vsite infinite scroll is not visible. (config set to infinite_scroll)');
   }
@@ -110,7 +109,6 @@ class VsiteInfiniteScrollTest extends VsiteInfiniteScrollExistingSiteTestBase {
    * Check views pager settings and default result.
    */
   public function testRenderedModifiedPager() {
-    $this->vsiteContextManager->activateVsite($this->group);
     // Modify default config to pager.
     $this->config->set('long_list_content_pagination', 'pager');
     $this->config->save(TRUE);
