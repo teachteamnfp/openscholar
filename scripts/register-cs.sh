@@ -1,12 +1,10 @@
 #!/usr/bin/env bash
 
-echo "Install Drupal coder..."
-composer global require drupal/coder
-
 echo "Registering code standards..."
-composer global require dealerdirect/phpcodesniffer-composer-installer
+./vendor/bin/phpcs --config-set installed_paths "$PWD/vendor/drupal/coder/coder_sniffer"
 
-PHPCS_OUTPUT=$(phpcs -i)
+PHPCS_OUTPUT=$(./vendor/bin/phpcs -i)
+echo "$PHPCS_OUTPUT"
 
 if ! [[ ${PHPCS_OUTPUT} == *"DrupalPractice"* && ${PHPCS_OUTPUT} == *"Drupal"* ]]; then
   echo "Unable to register code standards. Please fix the problems."
