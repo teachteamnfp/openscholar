@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "833ec44f6385942d6cf243e371e8791e",
+    "content-hash": "ad2d3f3205d014e083371214c9028918",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -3919,7 +3919,7 @@
                 "shasum": null
             },
             "type": "drupal-module",
-            "time": "2018-12-10T20:05:46+00:00"
+            "time": "2018-06-20T15:36:05+00:00"
         },
         {
             "name": "drupal/redirect",
@@ -5415,62 +5415,6 @@
             "time": "2018-12-13T06:39:15+00:00"
         },
         {
-            "name": "mouf/nodejs-installer",
-            "version": "v1.0.13",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thecodingmachine/nodejs-installer.git",
-                "reference": "e9bc2e7c75665913dd73dc4765b40757e6796ee8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/nodejs-installer/zipball/e9bc2e7c75665913dd73dc4765b40757e6796ee8",
-                "reference": "e9bc2e7c75665913dd73dc4765b40757e6796ee8",
-                "shasum": ""
-            },
-            "require": {
-                "composer-plugin-api": "^1.0.0",
-                "ext-openssl": "*",
-                "php": ">=5.3.0"
-            },
-            "require-dev": {
-                "composer/composer": "*"
-            },
-            "type": "composer-plugin",
-            "extra": {
-                "class": [
-                    "Mouf\\NodeJsInstaller\\NodeJsPlugin"
-                ],
-                "mouf": {
-                    "logo": "node-js.png"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Mouf\\NodeJsInstaller\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "David Négrier",
-                    "email": "d.negrier@thecodingmachine.com",
-                    "homepage": "http://mouf-php.com"
-                }
-            ],
-            "description": "An installer package that let's you install NodeJS and NPM as a Composer dependency.",
-            "homepage": "http://mouf-php.com/packages/mouf/nodejs-installer",
-            "keywords": [
-                "installer",
-                "nodejs",
-                "npm"
-            ],
-            "time": "2018-04-16T16:03:09+00:00"
-        },
-        {
             "name": "mreq/slick-lightbox",
             "version": "master",
             "source": {
@@ -5485,7 +5429,7 @@
                 "shasum": null
             },
             "type": "drupal-library",
-            "time": "2019-01-02T17:57:38+00:00"
+            "time": "2018-10-23T06:36:49+00:00"
         },
         {
             "name": "nikic/php-parser",
@@ -11112,17 +11056,6 @@
         {
             "name": "webflo/drupal-core-require-dev",
             "version": "8.6.7",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/webflo/drupal-core-require-dev.git",
-                "reference": "7a65363ed9d6a0a2030252629f1ed9e76693094e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/webflo/drupal-core-require-dev/zipball/7a65363ed9d6a0a2030252629f1ed9e76693094e",
-                "reference": "7a65363ed9d6a0a2030252629f1ed9e76693094e",
-                "shasum": ""
-            },
             "require": {
                 "behat/mink": "1.7.x-dev",
                 "behat/mink-goutte-driver": "^1.2",

@@ -101,9 +101,7 @@
         "drupal/views_ical": "1.x-dev",
         "fullcalendar/fullcalendar": "^3.3",
         "drupal/date_recur_interactive": "^2.0",
-        "drupal/restui": "^1.16",
-        "mouf/nodejs-installer": "^1.0",
-        "eloquent/composer-npm-bridge": "^4.1"
+        "drupal/restui": "^1.16"
     },
     "require-dev": {
         "drupal/features": "^3.7",
