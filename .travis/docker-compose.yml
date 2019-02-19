@@ -84,14 +84,11 @@ services:
   npm:
     image: wodby/node:$NODE_TAG
     container_name: "${PROJECT_NAME}_npm"
-    command: tail -f /dev/null
+    command: ["./scripts/wait_for_node.sh", "npm:3000", "--", "tail", "-f", "/dev/null"]
     environment:
       NODE_PORT: $NODE_PORT
+      DEBUG: "true"
+    ports:
+      - "3000:3000"
     volumes:
       - ./:/usr/src/app:cached
-
-  start_dependencies:
-    image: dadarek/wait-for-dependencies
-    depends_on:
-      - npm
-    command: npm:$NODE_PORT
