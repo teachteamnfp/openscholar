@@ -73,8 +73,8 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
-  drupal-node:
-     image: wodby/drupal-node:$DRUPAL_NODE_TAG
+  node:
+     image: mhart/apline-node:11
      container_name: "${PROJECT_NAME}_drupal_nodejs"
      environment:
         NODE_SERVICE_KEY: node-service-key
