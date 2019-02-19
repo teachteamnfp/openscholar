@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "37ff104d67259a93e53e95a2218847d2",
+    "content-hash": "0c7bc73d809d086c28f0d19eabaf12b5",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -4493,6 +4493,9 @@
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
                     }
+                },
+                "patches_applied": {
+                    "Support for other entity types": "https://www.drupal.org/files/issues/2019-02-19/3032943-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -10820,6 +10823,7 @@
                 "mock",
                 "xunit"
             ],
+            "abandoned": true,
             "time": "2018-08-09T05:50:03+00:00"
         },
         {
