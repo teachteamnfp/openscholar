@@ -139,13 +139,22 @@
             "@composer drupal:scaffold",
             "DrupalProject\\composer\\ScriptHandler::createRequiredFiles",
             "DrupalProject\\composer\\ScriptHandler::placeProfile",
-            "DrupalProject\\composer\\ScriptHandler::installFullcalendarLibrary"
+            "DrupalProject\\composer\\ScriptHandler::installFullcalendarLibrary",
+            "./scripts/register-cs.sh",
+            "./scripts/install-hooks.sh"
         ],
         "post-update-cmd": [
             "@composer drupal:scaffold",
             "DrupalProject\\composer\\ScriptHandler::createRequiredFiles",
             "DrupalProject\\composer\\ScriptHandler::placeProfile",
             "DrupalProject\\composer\\ScriptHandler::installFullcalendarLibrary"
+        ],
+        "code-standard": [
+            "./vendor/bin/phpcs --standard=Drupal",
+            "./vendor/bin/phpcs --standard=DrupalPractice"
+        ],
+        "code-standard-fix": [
+            "./vendor/bin/phpcbf --standard=Drupal"
         ]
     },
     "extra": {
