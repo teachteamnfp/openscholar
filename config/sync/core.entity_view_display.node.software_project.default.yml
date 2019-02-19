@@ -10,10 +10,14 @@ dependencies:
     - field.field.node.software_project.field_repository_url
     - node.type.software_project
   module:
+    - layout_builder
     - link
     - options
     - text
     - user
+third_party_settings:
+  layout_builder:
+    sections: {  }
 id: node.software_project.default
 targetEntityType: node
 bundle: software_project
@@ -37,7 +41,7 @@ content:
     region: content
   field_packaging_method:
     weight: 102
-    label: above
+    label: inline
     settings: {  }
     third_party_settings: {  }
     type: list_default
@@ -64,8 +68,8 @@ content:
     region: content
   links:
     weight: 100
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
 hidden:
   langcode: true

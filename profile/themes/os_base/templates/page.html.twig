@@ -123,24 +123,16 @@
         {% endblock %}
       {% endif %#}
 
-      {# Sidebar First #}
-      {% if page.sidebar_first %}
-        {% block sidebar_first %}
-          <aside class="col-sm-3" role="complementary">
-            {{ page.sidebar_first }}
-          </aside>
-        {% endblock %}
-      {% endif %}
-
       {# Content #}
       {%
         set content_classes = [
-          page.sidebar_first and page.sidebar_second ? 'col-sm-6',
-          page.sidebar_first and page.sidebar_second is empty ? 'col-sm-9',
+          page.sidebar_first and page.sidebar_second ? 'col-sm-6 col-sm-push-3',
+          page.sidebar_first and page.sidebar_second is empty ? 'col-sm-9 col-sm-push-3',
           page.sidebar_second and page.sidebar_first is empty ? 'col-sm-9',
           page.sidebar_first is empty and page.sidebar_second is empty ? 'col-sm-12'
         ]
       %}
+      
       <section{{ content_attributes.addClass(content_classes) }}>
 
         {# Highlighted #}
@@ -188,6 +180,22 @@
           {% endif %}
         {% endblock %}
       </section>
+      {%
+        set sidebar_classes = [
+          page.sidebar_first and page.sidebar_second ? 'col-sm-3 col-sm-pull-6',
+          page.sidebar_first and page.sidebar_second is empty ? 'col-sm-3 col-sm-pull-9',
+          page.sidebar_second and page.sidebar_first is empty ? 'col-sm-3',
+          page.sidebar_first is empty and page.sidebar_second is empty ? ''
+        ]
+      %}
+      {# Sidebar First #}
+      {% if page.sidebar_first %}
+        {% block sidebar_first %}
+          <aside{{ attributes.addClass(sidebar_classes) }} role="complementary">
+            {{ page.sidebar_first }}
+          </aside>
+        {% endblock %}
+      {% endif %}
 
       {# Sidebar Second #}
       {% if page.sidebar_second %}
