@@ -65,4 +65,4 @@ services:
     image: dadarek/wait-for-dependencies
     depends_on:
       - npm
-    command: $NODE_HOST:$NODE_PORT
+    command: npm:$NODE_PORT
