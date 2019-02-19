@@ -1,0 +1,12 @@
+base_path: RePEc
+_core:
+  default_config_hash: KnncQjQ3DO9xadwGI02pP-j157hB3PIMxm42q1wAgUQ
+archive_code: cde
+provider_name: os
+provider_homepage: openscholar.com
+provider_institution: OS
+maintainer_name: OS
+maintainer_email: os@openscholar.com
+repec_bundle:
+  bibcite_reference:
+    artwork: 'a:10:{s:7:"enabled";i:1;s:10:"serie_type";s:6:"wpaper";s:10:"serie_name";s:7:"artwork";s:15:"serie_directory";s:6:"wpaper";s:17:"restriction_field";s:15:"field_is_sticky";s:11:"author_name";s:32:"field_title_first_char_excl_prep";s:8:"abstract";s:32:"field_title_first_char_excl_prep";s:13:"creation_date";s:32:"field_title_first_char_excl_prep";s:8:"file_url";s:32:"field_title_first_char_excl_prep";s:8:"keywords";s:32:"field_title_first_char_excl_prep";}'
