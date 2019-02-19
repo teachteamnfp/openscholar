@@ -74,7 +74,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 
   node:
-     image: mhart/apline-node:11
+     image: mhart/alpine-node:11
      container_name: "${PROJECT_NAME}_drupal_nodejs"
      environment:
         NODE_SERVICE_KEY: node-service-key
