@@ -38,9 +38,14 @@ class VsiteCpSettingsTest extends VsiteInfiniteScrollExistingSiteTestBase {
     $this->visit("/cp/settings/vsite");
     drupal_flush_all_caches();
     $this->visit("/cp/settings/vsite");
+    $html = $this->getSession()->getPage()->getContent();
+    $this->assertContains('Choose how long lists of content will display', $html);
     $this->drupalPostForm('/cp/settings/vsite', [
       'long_list_content_pagination' => 'pager',
     ], 'Save configuration');
+    $this->visit("/cp/settings/vsite");
+    $html = $this->getSession()->getPage()->getContent();
+    $this->assertContains('name="long_list_content_pagination" value="pager" checked="checked"', $html, 'Default value is not set.');
   }
 
 }
