@@ -173,10 +173,11 @@ class RoboFile extends \Robo\Tasks
 
         $tasks[] = $this->taskExec('docker-compose --verbose pull --parallel');
         $tasks[] = $this->taskExec('docker-compose up -d');
+        //$tasks[] = $this->taskExec('docker-compose exec -T -u root php apk add --update nodejs nodejs-npm');
         $tasks[] = $this->taskExec('docker-compose exec -T php composer install');
         $tasks[] = $this->taskExec('docker-compose exec -T php cp .travis/config/phpunit.xml web/core/phpunit.xml');
         $tasks[] = $this->taskExec('docker-compose exec -T php cp .travis/config/bootstrap.php web/core/tests/bootstrap.php');
-        $tasks[] = $this->taskExec('docker-compose exec -T php mkdir web/sites/simpletest');
+        $tasks[] = $this->taskExec('docker-compose exec -T php mkdir -p web/sites/simpletest');
         return $tasks;
     }
 
@@ -282,9 +283,9 @@ class RoboFile extends \Robo\Tasks
     {
         $tasks[] = $this->taskExecStack()
             ->stopOnFail()
-            ->exec('docker-compose exec -T php .'.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'phpcs --config-set installed_paths vendor/drupal/coder/coder_sniffer')
-            ->exec('docker-compose exec -T php .'.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'phpcs --standard=Drupal --warning-severity=0 profile')
-            ->exec('docker-compose exec -T php .'.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'phpcs --standard=DrupalPractice --warning-severity=0 profile');
+            ->exec('docker-compose exec -T php ./vendor/bin/phpcs --config-set installed_paths vendor/drupal/coder/coder_sniffer')
+            ->exec('docker-compose exec -T php ./vendor/bin/phpcs --standard=Drupal --warning-severity=0 profile')
+            ->exec('docker-compose exec -T php ./vendor/bin/phpcs --standard=DrupalPractice --warning-severity=0 profile');
 
         return $tasks;
     }
