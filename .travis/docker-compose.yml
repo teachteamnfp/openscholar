@@ -1,4 +1,4 @@
-version: "3"
+version: "2"
 
 services:
   mariadb:
@@ -84,13 +84,11 @@ services:
   npm:
     image: wodby/node:$NODE_TAG
     container_name: "${PROJECT_NAME}_npm"
-    command: tail -f /dev/null
+    command: ["./scripts/wait_for_node.sh", "npm:3000", "--", "tail", "-f", "/dev/null"]
     environment:
       NODE_PORT: $NODE_PORT
-    healthcheck:
-      test: ["CMD", "curl", "-s", "localhost:3000", "&>", "/dev/null"]
-      interval: 1m30s
-      timeout: 10s
-      retries: 3
+      DEBUG: "true"
+    ports:
+      - "3000:3000"
     volumes:
       - ./:/usr/src/app:cached
