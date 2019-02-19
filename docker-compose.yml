@@ -1,4 +1,4 @@
-version: "2"
+version: "3"
 
 services:
   mariadb:
@@ -58,11 +58,10 @@ services:
     command: tail -f /dev/null
     environment:
       NODE_PORT: $NODE_PORT
+    healthcheck:
+      test: ["CMD", "curl", "-s", "localhost:3000", "&>", "/dev/null"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
     volumes:
       - ./:/usr/src/app:cached
-
-  start_dependencies:
-    image: dadarek/wait-for-dependencies
-    depends_on:
-      - npm
-    command: npm:$NODE_PORT
