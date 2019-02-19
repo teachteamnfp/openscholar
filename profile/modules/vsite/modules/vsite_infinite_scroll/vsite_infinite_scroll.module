@@ -13,6 +13,21 @@ use Drupal\vsite_infinite_scroll\Plugin\views\pager\VsiteInfiniteScroll;
  */
 function vsite_infinite_scroll_views_post_build(ViewExecutable $view) {
   if ($view->pager instanceof VsiteInfiniteScroll) {
-    $view->storage->addCacheTags(['vsite_infinite_scroll']);
+    $view->storage->addCacheTags([_vsite_infinite_scroll_get_cache_tag()]);
   }
+}
+
+/**
+ * Get current vsite id or none string.
+ *
+ * @return string
+ *   Vsite id.
+ */
+function _vsite_infinite_scroll_get_cache_tag() {
+  $prefix = 'vsite_infinite_scroll:';
+  $vsiteContext = \Drupal::service('vsite.context_manager');
+  if ($group = $vsiteContext->getActiveVsite()) {
+    return $prefix . $vsiteContext->getActiveVsite()->id();
+  }
+  return $prefix . 'none';
 }
