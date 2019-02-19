@@ -26,6 +26,8 @@ services:
       PHP_XDEBUG: $PHP_XDEBUG_ENABLED
     volumes:
       - ./:/var/www/html
+    depends_on:
+      - npm
 
   mailhog:
     image: mailhog/mailhog
@@ -83,5 +85,13 @@ services:
     image: wodby/node:$NODE_TAG
     container_name: "${PROJECT_NAME}_npm"
     command: tail -f /dev/null
+    environment:
+      NODE_PORT: $NODE_PORT
     volumes:
       - ./:/usr/src/app:cached
+
+  start_dependencies:
+    image: dadarek/wait-for-dependencies
+    depends_on:
+      - npm
+    command: $NODE_HOST:$NODE_PORT
