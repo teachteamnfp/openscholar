@@ -1,0 +1,18 @@
+<?php
+
+/**
+ * @file
+ * Hook implementations for the vsite_infinite_scroll module.
+ */
+
+use Drupal\views\ViewExecutable;
+use Drupal\vsite_infinite_scroll\Plugin\views\pager\VsiteInfiniteScroll;
+
+/**
+ * Implements hook_views_post_build().
+ */
+function vsite_infinite_scroll_views_post_build(ViewExecutable $view) {
+  if ($view->pager instanceof VsiteInfiniteScroll) {
+    $view->storage->addCacheTags(['vsite_infinite_scroll']);
+  }
+}

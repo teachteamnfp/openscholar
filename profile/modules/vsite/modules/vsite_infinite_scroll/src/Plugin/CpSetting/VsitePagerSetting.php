@@ -60,13 +60,7 @@ class VsitePagerSetting extends PluginBase implements CpSettingInterface {
     $config->save(TRUE);
 
     Cache::invalidateTags([
-      'config:views.view.links',
-      'config:views.view.news',
-      'config:views.view.os_classes',
-      'config:views.view.os_subsites',
-      'config:views.view.os_websites',
-      'config:views.view.people',
-      'config:views.view.presentations',
+      'vsite_infinite_scroll',
     ]);
   }
 
