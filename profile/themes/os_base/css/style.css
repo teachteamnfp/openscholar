@@ -6318,8 +6318,7 @@ body.toolbar-loading {
   margin: 0 0 20px;
   padding: 20px 0 40px;
   border-bottom: 1px solid #ebebeb; }
-  .node--teaser .node--title, .teaser .node--title {
-    font-size: 15px;
+  .node--teaser .node--title, .node--teaser h2, .teaser .node--title, .teaser h2 {
     margin-top: 0; }
 
 .teaser--content {
@@ -6433,12 +6432,29 @@ p:last-child,
     font-family: inherit;
     line-height: inherit; }
 
+.field--name-field-professional-titles {
+  font-weight: bold; }
+
 .node--teaser.news .teaser--image {
   float: left;
   margin: 0 1.5em .5em 0; }
 
+.node--teaser.news .teaser--content {
+  overflow: hidden;
+  margin-top: 0; }
+
+.path-node .field--name-field-photo {
+  float: right;
+  margin-left: 1em;
+  margin-bottom: 1em; }
+
 .presentation.full .field--label {
   float: left; }
+
+.path-node .field--name-field-photo-person {
+  float: left;
+  margin-right: 1em;
+  margin-bottom: 1em; }
 
 .footer {
   border: 0 none; }

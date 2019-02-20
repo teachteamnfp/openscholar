@@ -73,22 +73,23 @@
  */
 #}
 
-<article{{ attributes.addClass("node--teaser news") }}>
+<article{{ attributes.addClass("node--teaser links") }}>
 
-  {% block image %}
-    <div class="teaser--image">{{ content.field_photo }}</div>
-  {% endblock %}
   <div class="teaser--content">
     {{ title_prefix }}
       <h2{{ title_attributes }} class="node--title">
-        <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+        <a href="{{ content.field_url_web_address.0['#plain_text'] }}" rel="bookmark">{{ label }}</a>
       </h2>
     {{ title_suffix }}
     
     {% block content %}
     <div{{ content_attributes }}>
-      {{ content|without("field_photo") }}
+      {{ content|without("field_url_web_address") }}
+      {% if content.body.0['#text']|render|length > 300 %} 
+        <a href="{{ url }}" class="read-more">Read more</a>
+      {% endif %}
     </div>
     {% endblock %}
   </div>
+
 </article>
