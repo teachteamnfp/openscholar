@@ -83,6 +83,15 @@ class EmbedMediaBlockRenderTest extends UnitTestCase {
   }
 
   /**
+   * Test build function on empty content.
+   */
+  public function testBuildOnEmptyContent() {
+    $block_content = NULL;
+    $variables = $this->embedMediaWidget->buildBlock([], $block_content);
+    $this->assertSame([], $variables);
+  }
+
+  /**
    * Create a block content mock for testing.
    */
   protected function createBlockContentMock(string $mediaBundle, array $field_max_width_values, array $field_media_select_values) {
