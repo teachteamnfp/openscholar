@@ -176,7 +176,7 @@ class RoboFile extends \Robo\Tasks
         //$tasks[] = $this->taskExec('docker-compose exec -T -u root php apk add --update nodejs nodejs-npm');
         $tasks[] = $this->taskExec('docker-compose exec -T php composer install');
         $tasks[] = $this->taskExec('docker-compose exec -T php cp .travis/config/phpunit.xml web/core/phpunit.xml');
-        $tasks[] = $this->taskExec('docker-compose exec -T php cp .travis/config/bootstrap.php web/core/tests/bootstrap.php');
+        $tasks[] = $this->taskExec('docker-compose exec -T php cp .travis/config//bootstrap.php web/core/tests/bootstrap.php');
         $tasks[] = $this->taskExec('docker-compose exec -T php mkdir -p web/sites/simpletest');
         return $tasks;
     }
@@ -221,8 +221,8 @@ class RoboFile extends \Robo\Tasks
     protected function runUpdatePath()
     {
         $tasks = [];
-        $tasks[] = $this->taskExec('docker-compose exec -T php vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'drush --yes updatedb');
-        $tasks[] = $this->taskExec('docker-compose exec -T php vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'drush --yes config-import');
+        $tasks[] = $this->taskExec('docker-compose exec -T php vendor/bin/drush --yes updatedb');
+        $tasks[] = $this->taskExec('docker-compose exec -T php vendor/bin/drush --yes config-import');
         return $tasks;
     }
 
@@ -236,7 +236,7 @@ class RoboFile extends \Robo\Tasks
     {
         $tasks[] = $this->taskExecStack()
             ->exec('docker-compose exec -T php cp .travis/config/default.settings.php web/sites/default/default.settings.php')
-            ->exec('docker-compose exec -T php .'.DIRECTORY_SEPARATOR.''.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'drush site-install openscholar -vvv -y --db-url=' . static::DB_URL . ' --existing-config');
+            ->exec('docker-compose exec -T php ./vendor/bin/drush site-install openscholar -vvv -y --db-url=' . static::DB_URL . ' --existing-config');
 
         return $tasks;
     }
@@ -250,10 +250,10 @@ class RoboFile extends \Robo\Tasks
     protected function installTestConfigs()
     {
         $tasks[] = $this->taskExecStack()
-            ->exec('docker-compose exec -T php mkdir web/modules/test')
+            ->exec('docker-compose exec -T php mkdir -p web/modules/test')
             ->exec('docker-compose exec -T php cp -r profile/modules/vsite/tests/modules/vsite_module_test web/modules/test')
             ->exec('docker-compose exec -T php cp -r web/modules/contrib/group/tests/modules/group_test_config web/modules/test')
-            ->exec('docker-compose exec -T php .'.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'drush en -y vsite_module_test group_test_config');
+            ->exec('docker-compose exec -T php ./vendor/bin/drush en -y vsite_module_test group_test_config');
 
         return $tasks;
     }
@@ -303,7 +303,7 @@ class RoboFile extends \Robo\Tasks
         $groups[] = 'unit';
         $groups = implode(',', $groups);
         $tasks[] = $this->taskExecStack()
-          ->exec('docker-compose exec -T php .'.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'phpunit ' .
+          ->exec('docker-compose exec -T php ./vendor/bin/phpunit ' .
               '-c web/core '.
               '--debug '.
               ($groups ? '--group ' . $groups . ' ': ' ')  .
@@ -325,7 +325,7 @@ class RoboFile extends \Robo\Tasks
         $groups[] = 'kernel';
         $groups = implode(',', $groups);
         $tasks[] = $this->taskExecStack()
-            ->exec('docker-compose exec -T php .'.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'phpunit ' .
+            ->exec('docker-compose exec -T php ./vendor/bin/phpunit ' .
                 '-c web/core '.
                 '--debug '.
                 ($groups ? '--group ' . $groups . ' ': ' ')  .
@@ -349,7 +349,7 @@ class RoboFile extends \Robo\Tasks
         $groups[] = 'functional';
         $groups = implode(',', $groups);
         $tasks[] = $this->taskExecStack()
-            ->exec('docker-compose exec -T php .'.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'phpunit ' .
+            ->exec('docker-compose exec -T php ./vendor/bin/phpunit ' .
                 '-c web/core '.
                 '--debug '.
                 ($groups ? '--group ' . $groups . ' ': ' ')  .
@@ -373,7 +373,7 @@ class RoboFile extends \Robo\Tasks
         $groups[] = 'functional-javascript';
         $groups = implode(',', $groups);
         $tasks[] = $this->taskExecStack()
-            ->exec('docker-compose exec -T php .'.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'phpunit ' .
+            ->exec('docker-compose exec -T php ./vendor/bin/phpunit ' .
                 '-c web/core '.
                 '--debug '.
                 ($groups ? '--group ' . $groups . ' ': ' ')  .
@@ -392,7 +392,7 @@ class RoboFile extends \Robo\Tasks
     {
         $tasks = [];
         $tasks[] = $this->taskExecStack()
-            ->exec('docker-compose exec -T php vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'behat --verbose -c tests/behat.yml');
+            ->exec('docker-compose exec -T php vendor/bin/behat --verbose -c tests/behat.yml');
         return $tasks;
     }
 
