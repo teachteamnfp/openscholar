@@ -49,7 +49,7 @@ function os_publications_views_query_alter(ViewExecutable $view, QueryPluginBase
 
       // Alter values passed to reference_type condition.
       /** @var array $allowed_publication_types */
-      $allowed_publication_types = $os_publication_settings->get('os_publications_filter_publication_types');
+      $allowed_publication_types = $os_publication_settings->get('filter_publication_types');
 
       // Convert the array structure into views suitable format.
       // Array structure obtained from config is:
