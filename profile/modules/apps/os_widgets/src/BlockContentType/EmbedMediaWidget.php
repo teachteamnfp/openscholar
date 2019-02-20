@@ -2,8 +2,6 @@
 
 namespace Drupal\os_widgets\BlockContentType;
 
-use Drupal\file\Entity\File;
-
 /**
  * Class EmbedMediaWidget.
  */
