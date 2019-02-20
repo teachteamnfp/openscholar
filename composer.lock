@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bb7d007e4619fdd3aec95665950590af",
+    "content-hash": "a5a06b9b82ae1d85842d63f4d1a2444c",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -4472,60 +4472,20 @@
         },
         {
             "name": "drupal/repec",
-            "version": "dev-1.x",
+            "version": "master",
             "source": {
                 "type": "git",
-                "url": "https://git.drupal.org/project/repec",
-                "reference": "db08a8e4660c6f3e992f8c84d852d065452b6915"
+                "url": "https://github.com/subhojit777/repec.git",
+                "reference": "master"
             },
-            "require": {
-                "drupal/core": "*"
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/subhojit777/repec/archive/master.zip",
+                "reference": "master",
+                "shasum": null
             },
             "type": "drupal-module",
-            "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
-                "drupal": {
-                    "version": "8.x-1.x-dev",
-                    "datestamp": "1538148480",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
-                    }
-                },
-                "patches_applied": {
-                    "Support for other entity types": "https://www.drupal.org/files/issues/2019-02-20/3032943-5.patch"
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "EversonDaSilva",
-                    "homepage": "https://www.drupal.org/user/3002943"
-                },
-                {
-                    "name": "colorfield",
-                    "homepage": "https://www.drupal.org/user/2295486"
-                },
-                {
-                    "name": "glekli",
-                    "homepage": "https://www.drupal.org/user/930940"
-                }
-            ],
-            "description": "RDF integration with Research Papers in Economics (RePEc)",
-            "homepage": "https://www.drupal.org/project/repec",
-            "keywords": [
-                "Drupal"
-            ],
-            "support": {
-                "source": "http://cgit.drupalcode.org/repec",
-                "issues": "https://www.drupal.org/project/issues/repec"
-            },
-            "time": "2018-09-28T10:09:12+00:00"
+            "time": "2019-02-20T08:16:07+00:00"
         },
         {
             "name": "drupal/search_api",
@@ -11795,7 +11755,6 @@
         "drupal/styleguide": 15,
         "drupal/bibcite": 20,
         "drupal/field_tools": 15,
-        "drupal/repec": 20,
         "weitzman/drupal-test-traits": 10
     },
     "prefer-stable": true,

@@ -79,6 +79,23 @@
             }
         },
         {
+            "type": "package",
+            "package": {
+                "name": "drupal/repec",
+                "version": "master",
+                "type": "drupal-module",
+                "dist": {
+                    "url": "https://github.com/subhojit777/repec/archive/master.zip",
+                    "type": "zip"
+                },
+                "source": {
+                    "url": "https://github.com/subhojit777/repec.git",
+                    "type": "git",
+                    "reference": "master"
+                }
+            }
+        },
+        {
             "type": "composer",
             "url": "https://packages.drupal.org/8"
         }
@@ -126,7 +143,7 @@
         "ext-json": "*",
         "php-ds/php-ds": "^1.2",
         "swordapp/swordappv2-php-library": "master",
-        "drupal/repec": "1.x-dev"
+        "drupal/repec": "master"
     },
     "require-dev": {
         "drupal/features": "^3.7",
@@ -221,9 +238,6 @@
             },
             "drupal/bootstrap": {
                 "Unsupported operand types during providers JSON discovery #8": "https://www.drupal.org/files/issues/2019-01-24/3027569-8.x-3.x-8.patch"
-            },
-            "drupal/repec": {
-                "Support for other entity types": "https://www.drupal.org/files/issues/2019-02-20/3032943-5.patch"
             }
         }
     }
