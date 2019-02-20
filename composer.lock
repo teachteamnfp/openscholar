@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1e57f46fb679b2f8615cdb2126fb409a",
+    "content-hash": "bb7d007e4619fdd3aec95665950590af",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -4495,7 +4495,7 @@
                     }
                 },
                 "patches_applied": {
-                    "Support for other entity types": "https://www.drupal.org/files/issues/2019-02-19/3032943-4.patch"
+                    "Support for other entity types": "https://www.drupal.org/files/issues/2019-02-20/3032943-5.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",

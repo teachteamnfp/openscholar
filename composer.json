@@ -223,7 +223,7 @@
                 "Unsupported operand types during providers JSON discovery #8": "https://www.drupal.org/files/issues/2019-01-24/3027569-8.x-3.x-8.patch"
             },
             "drupal/repec": {
-                "Support for other entity types": "https://www.drupal.org/files/issues/2019-02-19/3032943-4.patch"
+                "Support for other entity types": "https://www.drupal.org/files/issues/2019-02-20/3032943-5.patch"
             }
         }
     }
