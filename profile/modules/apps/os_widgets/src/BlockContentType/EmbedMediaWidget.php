@@ -25,15 +25,17 @@ class EmbedMediaWidget implements BlockContentTypeInterface {
       $bundle = $media->bundle();
       switch ($bundle) {
         case 'image':
-          $field_values = $media->get('field_media_image')->getValue();
-          $file_id = $field_values[0]['target_id'];
-          $file = File::load($file_id);
+          $field_media_image = $media->get('field_media_image');
+          $referenced_files = $field_media_image->referencedEntities();
+          /** @var \Drupal\file\Entity\File $file */
+          $file = $referenced_files[0];
           $uri = $file->getFileUri();
+          $field_media_image_values = $field_media_image->getValue();
           $embed_media = [
             '#theme' => 'image',
             '#uri' => $uri,
-            '#alt' => $field_values[0]['alt'],
-            '#title' => $field_values[0]['title'],
+            '#alt' => $field_media_image_values[0]['alt'],
+            '#title' => $field_media_image_values[0]['title'],
             '#width' => $max_width,
           ];
           $variables['content']['embed_media'] = $embed_media;
