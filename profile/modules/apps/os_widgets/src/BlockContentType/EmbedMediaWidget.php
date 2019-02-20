@@ -18,6 +18,7 @@ class EmbedMediaWidget implements BlockContentTypeInterface {
     }
     $field_max_width_values = $block_content->get('field_max_width')->getValue();
     $max_width = $field_max_width_values[0]['value'] ?? 0;
+    /** @var \Drupal\Core\Field\FieldItemList $media_select_list */
     $media_select_list = $block_content->get('field_media_select');
     $referenced_entities = $media_select_list->referencedEntities();
 
