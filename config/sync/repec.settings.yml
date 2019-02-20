@@ -9,4 +9,4 @@ maintainer_name: OS
 maintainer_email: os@openscholar.com
 repec_bundle:
   bibcite_reference:
-    artwork: 'a:10:{s:7:"enabled";i:1;s:10:"serie_type";s:6:"wpaper";s:10:"serie_name";s:7:"artwork";s:15:"serie_directory";s:6:"wpaper";s:17:"restriction_field";s:15:"field_is_sticky";s:11:"author_name";s:32:"field_title_first_char_excl_prep";s:8:"abstract";s:32:"field_title_first_char_excl_prep";s:13:"creation_date";s:32:"field_title_first_char_excl_prep";s:8:"file_url";s:32:"field_title_first_char_excl_prep";s:8:"keywords";s:32:"field_title_first_char_excl_prep";}'
+    artwork: 'a:10:{s:7:"enabled";i:1;s:10:"serie_type";s:6:"wpaper";s:10:"serie_name";s:7:"artwork";s:15:"serie_directory";s:6:"wpaper";s:17:"restriction_field";s:15:"field_is_sticky";s:11:"author_name";s:6:"author";s:8:"abstract";s:14:"bibcite_abst_e";s:13:"creation_date";s:7:"created";s:8:"file_url";s:11:"bibcite_url";s:8:"keywords";s:8:"keywords";}'
