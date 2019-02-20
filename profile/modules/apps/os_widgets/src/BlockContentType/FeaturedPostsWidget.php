@@ -34,7 +34,7 @@ class FeaturedPostsWidget implements BlockContentTypeInterface {
     }
     $is_random_values = $block_content->get('field_is_random')->getValue();
     if (!empty($is_random_values[0]['value'])) {
-      $displayedDelta = array_rand($referenced_entities);
+      $displayedDelta = $this->shortRandom($referenced_entities);
       foreach ($referenced_entities as $delta => $node) {
         if ($displayedDelta != $delta) {
           // Hide other referenced entity.
@@ -47,6 +47,13 @@ class FeaturedPostsWidget implements BlockContentTypeInterface {
       $variables['attributes']['class'][] = 'styled';
     }
     return $variables;
+  }
+
+  /**
+   * Create a custom function, to easy to mock.
+   */
+  public function shortRandom(array $array) {
+    return array_rand($array);
   }
 
 }

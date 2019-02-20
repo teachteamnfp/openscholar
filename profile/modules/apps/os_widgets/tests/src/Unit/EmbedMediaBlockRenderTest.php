@@ -13,7 +13,6 @@ use Drupal\Tests\UnitTestCase;
 /**
  * Class EmbedMediaWidget.
  *
- * @package Drupal\Tests\vsite\Kernel\
  * @group unit
  * @covers \Drupal\os_widgets\BlockContentType\EmbedMediaWidget
  */
