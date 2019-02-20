@@ -56,7 +56,7 @@ class PublicationsFormTest extends ExistingSiteBase {
     ];
     $this->submitForm($edit, 'edit-submit');
     $this->assertSession()->checkboxChecked('edit-os-publications-preferred-bibliographic-format-apa');
-    $this->assertSession()->checkboxChecked('os_publications_filter_publication_types[artwork]');
+    $this->assertSession()->checkboxChecked('filter_publication_types[artwork]');
     $this->assertSession()->checkboxChecked('edit-os-publications-shorten-citations');
     $this->assertSession()->fieldValueEquals('edit-biblio-sort', 'title');
   }

@@ -44,7 +44,7 @@ class PublicationsViewsTest extends TestBase {
     $this->configFactory = $this->container->get('config.factory');
     /** @var \Drupal\Core\Config\ImmutableConfig $publications_settings */
     $publications_settings = $this->configFactory->get('os_publications.settings');
-    $this->defaultFilterPublicationTypeSettings = $publications_settings->get('os_publications_filter_publication_types');
+    $this->defaultFilterPublicationTypeSettings = $publications_settings->get('filter_publication_types');
     $this->defaultSortOrder = $publications_settings->get('biblio_order');
   }
 
@@ -356,8 +356,8 @@ class PublicationsViewsTest extends TestBase {
     /** @var \Drupal\Core\Config\Config $os_publications_settings_mut */
     $os_publications_settings_mut = $config_factory->getEditable('os_publications.settings');
     /** @var array $filter_publication_types */
-    $filter_publication_types = $os_publications_settings_mut->get('os_publications_filter_publication_types');
-    $os_publications_settings_mut->set('os_publications_filter_publication_types', [
+    $filter_publication_types = $os_publications_settings_mut->get('filter_publication_types');
+    $os_publications_settings_mut->set('filter_publication_types', [
       'artwork' => 0,
     ] + $filter_publication_types);
     $os_publications_settings_mut->save();
@@ -620,7 +620,7 @@ class PublicationsViewsTest extends TestBase {
     /** @var \Drupal\Core\Config\Config $publication_settings_mut */
     $publication_settings_mut = $this->configFactory->getEditable('os_publications.settings');
     $publication_settings_mut
-      ->set('os_publications_filter_publication_types', $this->defaultFilterPublicationTypeSettings)
+      ->set('filter_publication_types', $this->defaultFilterPublicationTypeSettings)
       ->set('biblio_order', $this->defaultSortOrder)
       ->save();
 
