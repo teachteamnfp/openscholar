@@ -77,7 +77,7 @@ class VsiteInfiniteScrollFrontendTest extends VsiteInfiniteScrollExistingSiteJav
     file_put_contents('public://screenshot-before.png', $this->getSession()->getScreenshot());
     $result = $web_assert->waitForElementVisible('named', ['link', $this->lastPersonTitle]);
     file_put_contents('public://screenshot-after.png', $this->getSession()->getScreenshot());
-    $this->assertNotNull($result);
+    $this->assertNotNull($result, 'Following node title not found: ' . $this->lastPersonTitle);
   }
 
 }
