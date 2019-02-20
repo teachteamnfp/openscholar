@@ -25,20 +25,21 @@ mode: default
 content:
   body:
     label: hidden
-    type: text_default
+    type: text_trimmed
     weight: 101
-    settings: {  }
+    settings:
+      trim_length: 300
     third_party_settings: {  }
     region: content
   field_url_web_address:
     weight: 102
-    label: inline
+    label: hidden
     settings:
       trim_length: 80
+      target: _blank
       url_only: false
       url_plain: false
-      rel: ''
-      target: ''
+      rel: '0'
     third_party_settings: {  }
     type: link
     region: content
