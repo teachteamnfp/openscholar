@@ -137,13 +137,15 @@
             "@composer drupal:scaffold",
             "DrupalProject\\composer\\ScriptHandler::createRequiredFiles",
             "DrupalProject\\composer\\ScriptHandler::placeProfile",
-            "DrupalProject\\composer\\ScriptHandler::installFullcalendarLibrary"
+            "DrupalProject\\composer\\ScriptHandler::installFullcalendarLibrary",
+            "command -v npm install || echo \"NPM not installed. Please install it and run composer install again.\""
         ],
         "post-update-cmd": [
             "@composer drupal:scaffold",
             "DrupalProject\\composer\\ScriptHandler::createRequiredFiles",
             "DrupalProject\\composer\\ScriptHandler::placeProfile",
-            "DrupalProject\\composer\\ScriptHandler::installFullcalendarLibrary"
+            "DrupalProject\\composer\\ScriptHandler::installFullcalendarLibrary",
+            "command -v npm update || echo \"NPM not installed. Please install it and run composer install.\""
         ]
     },
     "extra": {

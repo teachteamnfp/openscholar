@@ -1,27 +1,40 @@
 <?php
 
+/**
+ * @file
+ * Hook implementations for the vsite module.
+ */
+
+use Drupal\Core\Render\BubbleableMetadata;
+
+/**
+ * Implements hook_token_info().
+ */
 function vsite_token_info() {
   $tokens = [
     'types' => [
       'vsite' => [
         'name' => t('Vsite'),
-        'description' => t('Tokens for vsite-specific information')
-      ]
+        'description' => t('Tokens for vsite-specific information'),
+      ],
     ],
     'tokens' => [
       'vsite' => [
         'current-vsite-path' => [
           'name' => t('Current Vsite Path'),
-          'description' => t('The path component of the current vsite')
-        ]
-      ]
-    ]
+          'description' => t('The path component of the current vsite'),
+        ],
+      ],
+    ],
   ];
 
   return $tokens;
 }
 
-function vsite_tokens($type, $tokens, array $data, array $options, \Drupal\Core\Render\BubbleableMetadata $bubbleable_metadata) {
+/**
+ * Implements hook_tokens().
+ */
+function vsite_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
   $replacements = [];
   if ($type == 'vsite') {
     /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContext */

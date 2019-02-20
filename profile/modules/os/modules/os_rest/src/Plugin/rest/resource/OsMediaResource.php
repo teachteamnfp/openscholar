@@ -3,10 +3,7 @@
 namespace Drupal\os_rest\Plugin\rest\resource;
 
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\File\FileSystemInterface;
 use Drupal\rest\ResourceResponse;
-use Drupal\vsite\Plugin\VsiteContextManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class OsMediaResource.
@@ -46,32 +43,33 @@ class OsMediaResource extends OsEntityResource {
    *   The response to the client.
    */
   protected function checkFilename($filename) {
-    /** @var VsiteContextManagerInterface $vsiteContextManager */
+    /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContextManager */
     $vsiteContextManager = \Drupal::service('vsite.context_manager');
     $directory = 'public://global/';
     if ($purl = $vsiteContextManager->getActivePurl()) {
-      $directory = 'public://'.$purl.'/files/';
+      $directory = 'public://' . $purl . '/files/';
     }
 
     $new_filename = strtolower($filename);
     $new_filename = preg_replace('|[^a-z0-9\-_\.]|', '_', $new_filename);
     $new_filename = preg_replace(':__:', '_', $new_filename);
     $new_filename = preg_replace('|_\.|', '.', $new_filename);
-    $invalidChars = false;
+    $invalidChars = FALSE;
     if ($filename != $new_filename) {
-      $invalidChars = true;
+      $invalidChars = TRUE;
     }
 
     $fullname = $directory . $new_filename;
     $counter = 0;
-    $collision = false;
+    $collision = FALSE;
     while (file_exists($fullname)) {
-      $collision = true;
+      $collision = TRUE;
       $pos = strrpos($new_filename, '.');
       if ($pos !== FALSE) {
         $name = substr($new_filename, 0, $pos);
         $ext = substr($new_filename, $pos);
-      } else {
+      }
+      else {
         $name = basename($fullname);
         $ext = '';
       }
@@ -81,7 +79,7 @@ class OsMediaResource extends OsEntityResource {
     $resource = new ResourceResponse([
       'expectedFileName' => basename($fullname),
       'collision' => $collision,
-      'invalidChars' => $invalidChars
+      'invalidChars' => $invalidChars,
     ]);
     $resource->addCacheableDependency($filename);
     return $resource;

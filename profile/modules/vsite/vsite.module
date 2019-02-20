@@ -223,7 +223,7 @@ function vsite_library_info_alter(&$libraries, $extension) {
   if ($extension == 'core' && isset($libraries['drupal.ajax'])) {
     $path = '/' . drupal_get_path('module', 'vsite') . '/js/vsite.ajaxContext.js';
     $libraries['drupal.ajax']['js'][$path] = [
-      'weight' => 0
+      'weight' => 0,
     ];
   }
 }
@@ -240,7 +240,7 @@ function vsite_page_attachments(array &$attachments) {
       'id' => $vsite->id(),
       'label' => $vsite->label(),
       'purl' => $vsiteContext->getActivePurl(),
-      'url' => $vsiteContext->getAbsoluteUrl()
+      'url' => $vsiteContext->getAbsoluteUrl(),
     ];
   }
 }

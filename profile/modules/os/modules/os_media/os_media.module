@@ -1,9 +1,17 @@
 <?php
 
+/**
+ * @file
+ * Hook implementations to support the media browser.
+ */
+
+/**
+ * Implements hook_library_info_alter().
+ */
 function os_media_library_info_alter(&$libraries, $extension) {
   if ($extension == 'os_media') {
     if (isset($libraries['mediaBrowser'])) {
-      /** @var \Drupal\media\MediaTypeInterface[] $mediaTypes */
+      /* @var \Drupal\media\MediaTypeInterface[] $mediaTypes */
       $mediaTypes = \Drupal::entityTypeManager()->getStorage('media_type')->loadMultiple();
       $map = [];
       foreach ($mediaTypes as $type) {

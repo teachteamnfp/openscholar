@@ -2,12 +2,16 @@
 
 namespace Drupal\os_rest\Routing;
 
-
 use Drupal\Core\Routing\FilterInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
 use Symfony\Component\Routing\RouteCollection;
 
+/**
+ * Replaces the core Filter to allow a wildcard on routes.
+ *
+ * We need this so we can PUT files of any content type directly to the server and have it work.
+ */
 class ContentTypeHeaderMatcher implements FilterInterface {
 
   /**
@@ -48,4 +52,5 @@ class ContentTypeHeaderMatcher implements FilterInterface {
       throw new UnsupportedMediaTypeHttpException('No route found that matches "Content-Type: ' . $request->headers->get('Content-Type') . '"');
     }
   }
+
 }

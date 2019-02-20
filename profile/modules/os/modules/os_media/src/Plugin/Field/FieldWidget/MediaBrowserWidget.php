@@ -6,10 +6,9 @@ use Drupal\Component\Utility\Html;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\media\Entity\MediaType;
 
 /**
- * Class MediaBrowserWidget
+ * Class MediaBrowserWidget.
  *
  * @FieldWidget(
  *   id = "media_browser_widget",
@@ -31,7 +30,7 @@ class MediaBrowserWidget extends WidgetBase {
     $bundles = $settings['handler_settings']['target_bundles'];
     $extensions = '';
     $types = [];
-    /** @var MediaType[] $mediaTypes */
+    /** @var \Drupal\media\Entity\MediaType[] $mediaTypes */
     $mediaTypes = \Drupal::entityTypeManager()->getStorage('media_type')->loadMultiple($bundles);
     foreach ($mediaTypes as $type) {
       $types[] = $type->id();
@@ -43,29 +42,29 @@ class MediaBrowserWidget extends WidgetBase {
       '#tag' => 'div',
       '#attributes' => [
         'media-browser-field' => '',
-        'types' => implode(',',$types),
+        'types' => implode(',', $types),
         'maxFilesize' => '512 MB',
         'upload_text' => 'Upload',
         'droppable_text' => 'Drop here.',
         'cardinality' => -1,
-        'files' => 'files'
+        'files' => 'files',
       ],
       '#markup' => t('Loading the Media Browser. Please wait a moment.'),
       '#attached' => [
         'library' => [
-          'os_media/mediaBrowserField'
+          'os_media/mediaBrowserField',
         ],
         'drupalSettings' => [
           'mediaBrowserField' => [
-            Html::cleanCssIdentifier('edit-'.$this->fieldDefinition->getName()) => [
-              'selectedFiles' => $media
-            ]
-          ]
-        ]
+            Html::cleanCssIdentifier('edit-' . $this->fieldDefinition->getName()) => [
+              'selectedFiles' => $media,
+            ],
+          ],
+        ],
       ],
       '#post_render' => [
-        array($this, 'addNgModule')
-      ]
+        [$this, 'addNgModule'],
+      ],
     ];
 
     return $element;

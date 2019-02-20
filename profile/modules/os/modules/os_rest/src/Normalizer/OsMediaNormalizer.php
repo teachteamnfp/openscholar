@@ -3,20 +3,11 @@
 namespace Drupal\os_rest\Normalizer;
 
 use Drupal\Core\Entity\FieldableEntityInterface;
-use Drupal\Core\Entity\Plugin\DataType\EntityReference;
-use Drupal\Core\Image\Image;
-use Drupal\file\FileInterface;
-use Drupal\media\MediaInterface;
-use Drupal\media\MediaTypeInterface;
 use Drupal\serialization\Normalizer\ContentEntityNormalizer;
-use Drupal\serialization\Normalizer\NormalizerBase;
-use Symfony\Component\Serializer\Exception\CircularReferenceException;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
-use Symfony\Component\Serializer\Exception\LogicException;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Converts Media to more usable format
+ * Converts Media to more usable format.
+ *
  * @package Drupal\os_rest\Normalizer
  */
 class OsMediaNormalizer extends ContentEntityNormalizer {
@@ -31,9 +22,10 @@ class OsMediaNormalizer extends ContentEntityNormalizer {
   /**
    * {@inheritdoc}
    */
-  public function normalize($object, $format = null, array $context = array ()) {
+  public function normalize($object, $format = NULL, array $context = []) {
     /** @var \Drupal\media\MediaInterface $media */
-    $media = $object; // just to get type hinting
+    // Just to get type hinting.
+    $media = $object;
     $temp = parent::normalize($object, $format, $context);
 
     $output['mid'] = $media->id();
@@ -44,13 +36,13 @@ class OsMediaNormalizer extends ContentEntityNormalizer {
     $source = $media->getSource();
     $file = $source->getSourceFieldValue($media);
     if (is_numeric($file)) {
-      /** @var FileInterface $file */
+      /** @var \Drupal\file\FileInterface $file */
       $file = \Drupal::entityTypeManager()->getStorage('file')->load($file);
       $output['fid'] = $file->id();
       $output['url'] = file_create_url($file->getFileUri());
       $output['size'] = $file->getSize();
       $output['filename'] = $file->getFilename();
-      $output['schema'] =  \Drupal::service('file_system')->uriScheme($file->getFileUri());
+      $output['schema'] = \Drupal::service('file_system')->uriScheme($file->getFileUri());
 
       if (!empty($temp['field_media_image'])) {
         $output['alt'] = $temp['field_media_image'][0]['alt'];
@@ -67,6 +59,9 @@ class OsMediaNormalizer extends ContentEntityNormalizer {
     return $output;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function denormalize($data, $class, $format = NULL, array $context = []) {
     $entity = parent::denormalize($data, $class, $format, $context);
 
@@ -88,8 +83,8 @@ class OsMediaNormalizer extends ContentEntityNormalizer {
     if (!empty($data['name'])) {
       $input = [
         'name' => [
-          'value' => $data['name']
-        ]
+          'value' => $data['name'],
+        ],
       ];
       $fieldList = $entity->get('name');
       $fieldList->setValue([]);
@@ -100,8 +95,8 @@ class OsMediaNormalizer extends ContentEntityNormalizer {
     if (!empty($data['changed'])) {
       $input = [
         'changed' => [
-          'value' => $data['changed']
-        ]
+          'value' => $data['changed'],
+        ],
       ];
       $fieldList = $entity->get('changed');
       $fieldList->setValue([]);
@@ -126,7 +121,7 @@ class OsMediaNormalizer extends ContentEntityNormalizer {
     }
     if (!empty($data['description'])) {
       $input = [
-        'field_description' => $data['description']
+        'field_description' => $data['description'],
       ];
 
       $fieldList = $entity->get('name');

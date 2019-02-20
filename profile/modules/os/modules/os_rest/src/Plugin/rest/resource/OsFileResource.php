@@ -5,24 +5,13 @@ namespace Drupal\os_rest\Plugin\rest\resource;
 use Drupal\Component\Utility\Bytes;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
-use Drupal\Core\Image\ImageFactory;
-use Drupal\file\Entity\File;
 use Drupal\file\FileInterface;
-use Drupal\file\FileUsage\FileUsageInterface;
 use Drupal\file\Plugin\rest\resource\FileUploadResource;
-use Drupal\image\Entity\ImageStyle;
 use Drupal\media\Entity\Media;
-use Drupal\media\MediaInterface;
-use Drupal\media\MediaSourceInterface;
-use Drupal\media\MediaSourceManager;
-use Drupal\media\MediaTypeInterface;
 use Drupal\rest\ModifiedResourceResponse;
-use Drupal\rest\RequestHandler;
-use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\Routing\Route;
 
 /**
  * File upload resource.
@@ -61,16 +50,16 @@ class OsFileResource extends FileUploadResource {
     $validators = $this->getUploadValidators();
 
     // Save the uploaded file.
-    /** @var UploadedFile $file_raw */
+    /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file_raw */
     $file_raw = $request->files->get('file');
 
     if ($newName = $request->request->get('newName')) {
       // Make a new file that's the right name.
-      $file_raw = new UploadedFile($file_raw->getPathname(), $newName, $file_raw->getMimeType(), $file_raw->getSize(), $file_raw->getError(), true);
+      $file_raw = new UploadedFile($file_raw->getPathname(), $newName, $file_raw->getMimeType(), $file_raw->getSize(), $file_raw->getError(), TRUE);
     }
 
     // Can't use file_save_upload() because it expects all files to be in the files array in the files parameter of the request
-    // $request->files->get('files'), which is weird and going to be empty when coming from js
+    // $request->files->get('files'), which is weird and going to be empty when coming from js.
     $file = _file_save_upload_single($file_raw, 'upload', $validators, $destination, FILE_EXISTS_REPLACE);
 
     if (!$file) {
@@ -79,22 +68,24 @@ class OsFileResource extends FileUploadResource {
 
     $extension = pathinfo($file->getFileUri(), PATHINFO_EXTENSION);
 
-    /** @var FileUsageInterface $fileUsage */
+    /** @var \Drupal\file\Entity\FileUsageInterface $fileUsage */
     $fileUsage = \Drupal::service('file.usage');
     $usage = $fileUsage->listUsage($file);
     if (isset($usage['file']['media'])) {
       ksort($usage['file']['media']);
-      /** @var MediaInterface $media */
+      /** @var \Drupal\media\Entity\MediaInterface $media */
       $media = \Drupal::entityTypeManager()->getStorage('media')->load(reset($usage['media']));
     }
     else {
 
       // This next big figures out what type of Media bundle to create around the file.
-      /** @var MediaTypeInterface[] $mediaTypes */
+      /** @var \Drupal\media\Entity\MediaTypeInterface[] $mediaTypes */
       $mediaTypes = \Drupal::entityTypeManager()->getStorage('media_type')->loadMultiple();
       foreach ($mediaTypes as $mediaType) {
         $fieldDefinition = $mediaType->getSource()->getSourceFieldDefinition($mediaType);
-        if (is_null($fieldDefinition)) continue;
+        if (is_null($fieldDefinition)) {
+          continue;
+        }
         $exts = explode(' ', $fieldDefinition->getSetting('file_extensions'));
         if (in_array($extension, $exts)) {
           $media = Media::create([
@@ -102,8 +93,8 @@ class OsFileResource extends FileUploadResource {
             'uid' => \Drupal::currentUser()->id(),
             'langcode' => \Drupal::languageManager()->getDefaultLanguage()->getId(),
             $fieldDefinition->getName() => [
-              'target_id' => $file->id()
-            ]
+              'target_id' => $file->id(),
+            ],
           ]);
         }
       }
@@ -123,15 +114,15 @@ class OsFileResource extends FileUploadResource {
   /**
    * Replace an existing file on disk with the freshly uploaded file.
    *
-   * @param EntityInterface $entity
-   *   The file whose contents are being replaced
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The file whose contents are being replaced.
    *
-   * @return ModifiedResourceResponse
+   * @return \Drupal\rest\ModifiedResourceResponse
    *   The response.
    */
   public function put(EntityInterface $entity) {
     $temp_file_path = $this->streamUploadData();
-    /** @var FileInterface $target */
+    /** @var \Drupal\file\Entity\FileInterface $target */
     $target = $entity;
 
     if (file_unmanaged_copy($temp_file_path, $target->getFileUri(), FILE_EXISTS_REPLACE) === FALSE) {
@@ -140,7 +131,7 @@ class OsFileResource extends FileUploadResource {
 
     $target->save();
     if (!file_validate_is_image($target)) {
-      /** @var ImageStyle[] $imageStyles */
+      /** @var \Drupal\image\Entity\ImageStyle[] $imageStyles */
       $imageStyles = \Drupal::entityTypeManager()->getStorage('image_style')->loadMultiple();
 
       foreach ($imageStyles as $style) {
@@ -153,24 +144,28 @@ class OsFileResource extends FileUploadResource {
     return new ModifiedResourceResponse($target, 200);
   }
 
+  /**
+   * {@inheritdoc}
+   */
   protected function getUploadLocation(array $settings = []) {
-    /** @var VsiteContextManagerInterface $vsiteContextManager */
+    /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContextManager */
     $vsiteContextManager = \Drupal::service('vsite.context_manager');
     if ($purl = $vsiteContextManager->getActivePurl()) {
-      return 'public://'.$purl.'/files';
+      return 'public://' . $purl . '/files';
     }
     return 'public://global';
   }
 
   /**
-   * Returns validators applicable for every field
+   * Returns validators applicable for every field.
    *
-   * @param FieldDefinitionInterface|null $field_definition
+   * @param \Drupal\Core\Field\FieldDefinitionInterface|null $field_definition
    *   Not used. Only here for compatibility.
+   *
    * @return array
    *   The validators
    */
-  protected function getUploadValidators(FieldDefinitionInterface $field_definition = null) {
+  protected function getUploadValidators(FieldDefinitionInterface $field_definition = NULL) {
     $validators = [
       // Add in our check of the file name length.
       'file_validate_name_length' => [],
@@ -183,16 +178,18 @@ class OsFileResource extends FileUploadResource {
     $validators['file_validate_size'] = [$max_filesize];
 
     // Add the extension check if necessary.
-    // $validators['file_validate_extensions'] = [];
-
+    // $validators['file_validate_extensions'] = [];.
     return $validators;
   }
 
   /**
    * Return validators applicable for replacing a single file.
    *
-   * @param FileInterface $target
+   * @param \Drupal\file\Entity\FileInterface $target
+   *   The target file that is having its content replaced.
+   *
    * @return array
+   *   All validators applicable for this file.
    */
   protected function getReplacementValidators(FileInterface $target) {
     $validators = [];
@@ -230,4 +227,5 @@ class OsFileResource extends FileUploadResource {
 
     return $reqs;
   }
+
 }
