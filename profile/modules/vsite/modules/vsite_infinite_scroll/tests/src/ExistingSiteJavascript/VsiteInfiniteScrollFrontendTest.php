@@ -74,7 +74,9 @@ class VsiteInfiniteScrollFrontendTest extends VsiteInfiniteScrollExistingSiteJav
 
     $load_button = $page->findLink('Load More');
     $load_button->press();
+    file_put_contents('public://screenshot-before.png', $this->getSession()->getScreenshot());
     $result = $web_assert->waitForElementVisible('named', ['link', $this->lastPersonTitle]);
+    file_put_contents('public://screenshot-after.png', $this->getSession()->getScreenshot());
     $this->assertNotNull($result);
   }
 
