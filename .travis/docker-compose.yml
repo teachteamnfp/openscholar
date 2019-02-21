@@ -76,15 +76,10 @@ services:
   node:
      image: mhart/alpine-node:11
      container_name: "${PROJECT_NAME}_drupal_nodejs"
-     environment:
-        NODE_SERVICE_KEY: node-service-key
-     labels:
-       - 'traefik.backend=${PROJECT_NAME}_nodejs'
-       - 'traefik.port=8080'
-       - 'traefik.frontend.rule=Host:nodejs.${PROJECT_BASE_URL}'
+     command: npm install
+     working_dir: /var/www/html
      volumes:
        - ./:/var/www/html
-     command: sh -c 'npm install'
 
   chrome:
     # Note: chrome 67/68 is giving errors so we pin to 65 for now.
