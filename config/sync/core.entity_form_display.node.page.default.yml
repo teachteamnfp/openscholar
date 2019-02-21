@@ -1,4 +1,4 @@
-uuid: e308d73c-dbad-4634-9dc9-d62fe8a82ba2
+uuid: 56ea56f2-c83a-4e1d-b683-524e406cd311
 langcode: en
 status: true
 dependencies:
@@ -11,6 +11,7 @@ dependencies:
     - content_moderation
     - field_layout
     - layout_discovery
+    - paragraphs
     - path
     - text
 third_party_settings:

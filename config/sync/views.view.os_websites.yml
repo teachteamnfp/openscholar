@@ -345,6 +345,7 @@ display:
           entity_type: group
           entity_field: label
           plugin_id: string
+      filters: {  }
       sorts:
         created:
           id: created
@@ -374,6 +375,7 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url
+        - url.query_args
         - url.query_args
       tags:
         - 'config:field.storage.group.field_site_description'

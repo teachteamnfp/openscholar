@@ -1,15 +1,16 @@
-uuid: fbcd6d97-8d9a-4714-834c-9d893a8573c7
+uuid: 69dbe6d6-37a2-4376-8373-4858e453beef
 langcode: en
 status: true
 dependencies: {  }
-_core:
-  default_config_hash: u7OxrscEED35iDR3R0akmw7QNvBSMEPJXFtKP57qBh8
 id: image
 label: Image
-description: 'Use local images for reusable media.'
+description: ''
 source: image
 queue_thumbnail_downloads: false
-new_revision: true
+new_revision: false
 source_configuration:
   source_field: field_media_image
-field_map: {  }
+field_map:
+  name: name
+  width: field_width
+  height: field_height

@@ -1,15 +1,14 @@
-uuid: 31727b63-299d-4832-844d-2f9ec8628147
+uuid: b5601355-0a85-4543-9eaa-8b044ba8170a
 langcode: en
 status: true
 dependencies: {  }
-_core:
-  default_config_hash: RQ75tMARZvKiI0hge9SKZpZFi-dOzZyq0nlouHHBeLM
 id: audio
-label: Audio
-description: 'A locally hosted audio file.'
+label: Video/Audio
+description: ''
 source: audio_file
 queue_thumbnail_downloads: false
-new_revision: true
+new_revision: false
 source_configuration:
-  source_field: field_media_audio_file
-field_map: {  }
+  source_field: field_media_file
+field_map:
+  name: name

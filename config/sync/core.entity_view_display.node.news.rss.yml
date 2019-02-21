@@ -1,0 +1,47 @@
+uuid: 355df57f-e81d-45e9-bac8-3a880a70f3a6
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.rss
+    - field.field.node.news.body
+    - field.field.node.news.field_attached_media
+    - field.field.node.news.field_date
+    - field.field.node.news.field_photo
+    - field.field.node.news.field_redirect_to_source
+    - node.type.news
+  module:
+    - datetime
+    - text
+    - user
+id: node.news.rss
+targetEntityType: node
+bundle: news
+mode: rss
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_date:
+    weight: 2
+    label: hidden
+    settings:
+      timezone_override: ''
+      format_type: long
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
+  links:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  field_attached_media: true
+  field_photo: true
+  field_redirect_to_source: true
+  langcode: true

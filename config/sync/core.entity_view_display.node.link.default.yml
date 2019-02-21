@@ -4,7 +4,6 @@ status: true
 dependencies:
   config:
     - field.field.node.link.body
-    - field.field.node.link.field_attached_media
     - field.field.node.link.field_url_web_address
     - node.type.link
   module:
@@ -75,23 +74,6 @@ third_party_settings:
               id: 'extra_field_block:node:link:links'
             additional: {  }
             weight: 3
-          0d0ed019-a452-4728-b241-4a6456f96610:
-            uuid: 0d0ed019-a452-4728-b241-4a6456f96610
-            region: content
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:link:field_attached_media'
-              formatter:
-                type: entity_reference_entity_view
-                label: above
-                settings:
-                  view_mode: default
-                  link: false
-                third_party_settings: {  }
-            additional: {  }
-            weight: 4
     enabled: true
 _core:
   default_config_hash: WvLTljy8YOdxVaKYdIa_ERfecF1CCUh0oSvboTROdu4
@@ -105,15 +87,6 @@ content:
     type: text_default
     weight: 101
     settings: {  }
-    third_party_settings: {  }
-    region: content
-  field_attached_media:
-    type: entity_reference_entity_view
-    weight: 103
-    label: above
-    settings:
-      view_mode: default
-      link: false
     third_party_settings: {  }
     region: content
   field_url_web_address:

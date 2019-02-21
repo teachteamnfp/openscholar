@@ -1,7 +1,11 @@
 module:
+<<<<<<< HEAD
   admin_toolbar: 0
   admin_toolbar_tools: 0
   basic_auth: 0
+=======
+  big_pipe: 0
+>>>>>>> parent of e372d64095... #10961: Config stuff
   blazy: 0
   block: 0
   block_content: 0
@@ -12,14 +16,22 @@ module:
   ckeditor: 0
   comment: 0
   config: 0
+<<<<<<< HEAD
   config_filter: 0
   config_split: 0
+=======
+>>>>>>> parent of e372d64095... #10961: Config stuff
   config_update: 0
   contact: 0
   content_moderation: 0
+  context: 0
+  context_ui: 0
   contextual: 0
   cp: 0
+<<<<<<< HEAD
   cp_settings: 0
+=======
+>>>>>>> parent of e372d64095... #10961: Config stuff
   crop: 0
   ctools: 0
   date_recur: 0
@@ -28,14 +40,8 @@ module:
   datetime_range: 0
   dblog: 0
   devel: 0
-  dropzonejs: 0
-  dropzonejs_eb_widget: 0
   dynamic_page_cache: 0
   editor: 0
-  embed: 0
-  entity_browser: 0
-  entity_browser_entity_form: 0
-  entity_embed: 0
   entity_reference: 0
   entity_reference_revisions: 0
   field: 0
@@ -49,10 +55,8 @@ module:
   group: 0
   group_entity: 0
   group_purl: 0
-  hal: 0
-  help: 0
   image: 0
-  inline_entity_form: 0
+  image_widget_crop: 0
   inline_form_errors: 0
   kint: 0
   language: 0
@@ -62,8 +66,12 @@ module:
   locale: 0
   mailchimp: 0
   media: 0
-  media_entity_browser: 0
   menu_ui: 0
+  metatag: 0
+  metatag_facebook: 0
+  metatag_open_graph: 0
+  metatag_twitter_cards: 0
+  metatag_views: 0
   node: 0
   options: 0
   os_app_access: 0
@@ -77,6 +85,9 @@ module:
   os_metatag: 0
   os_office_embed: 0
   os_pages: 0
+  os_links: 0
+  os_media_gallery: 0
+  os_office_embed: 0
   os_redirect: 0
   os_slideshow: 0
   page_cache: 0
@@ -99,10 +110,14 @@ module:
   toolbar_menu: 0
   update: 0
   user: 0
+<<<<<<< HEAD
   video_embed_field: 0
   video_embed_media: 0
   views_accordion: 0
   views_ical: 0
+=======
+  views_accordion: 0
+>>>>>>> parent of e372d64095... #10961: Config stuff
   views_ui: 0
   vsite: 0
   vsite_privacy: 0

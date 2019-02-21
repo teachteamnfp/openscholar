@@ -1,0 +1,26 @@
+uuid: 4ea7223f-4e7c-4987-8b24-4efc540f3148
+langcode: en
+status: true
+dependencies:
+  module:
+    - ctools
+    - system
+id: link_section
+label: 'Link Section'
+logic: or
+conditions:
+  32c53d01-5d4e-485b-8023-d222002f850f:
+    id: 'entity_bundle:node'
+    bundles:
+      link: link
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    uuid: 32c53d01-5d4e-485b-8023-d222002f850f
+  f2368fce-a285-407c-b55b-af4d8bc37ec1:
+    id: request_path
+    pages: '/link*'
+    negate: false
+    context_mapping: {  }
+    uuid: f2368fce-a285-407c-b55b-af4d8bc37ec1
+allow_other_conditions: false

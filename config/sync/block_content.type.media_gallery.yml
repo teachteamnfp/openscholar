@@ -1,0 +1,8 @@
+uuid: 6603991f-9373-438e-9563-1198bc6c6d63
+langcode: en
+status: true
+dependencies: {  }
+id: media_gallery
+label: 'Media Gallery'
+revision: 1
+description: ''

@@ -1,0 +1,71 @@
+uuid: 5cad2255-2046-4f48-b982-c60845d52896
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.software_project.body
+    - field.field.node.software_project.field_attached_media
+    - field.field.node.software_project.field_packaging_method
+    - field.field.node.software_project.field_rbuild_short_name
+    - field.field.node.software_project.field_repository_url
+    - node.type.software_project
+  module:
+    - link
+    - options
+    - text
+    - user
+id: node.software_project.default
+targetEntityType: node
+bundle: software_project
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 101
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_attached_media:
+    type: entity_reference_entity_view
+    weight: 105
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    region: content
+  field_packaging_method:
+    weight: 102
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+  field_rbuild_short_name:
+    weight: 104
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_repository_url:
+    weight: 103
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  langcode: true
