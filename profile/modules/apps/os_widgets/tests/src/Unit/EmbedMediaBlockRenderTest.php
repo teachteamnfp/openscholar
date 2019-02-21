@@ -4,6 +4,7 @@ namespace Drupal\Tests\os_widgets\Unit;
 
 use Drupal\block_content\Entity\BlockContent;
 use Drupal\Core\Entity\EntityTypeManager;
+use Drupal\Core\Entity\EntityViewBuilder;
 use Drupal\Core\Field\EntityReferenceFieldItemList;
 use Drupal\Core\Field\FieldItemList;
 use Drupal\file\Entity\File;
@@ -93,6 +94,25 @@ class EmbedMediaBlockRenderTest extends UnitTestCase {
   }
 
   /**
+   * Test build function with Video embed media type.
+   */
+  public function testBuildWithVideoEmbed() {
+    $field_values = [
+      'field_max_width' => [],
+    ];
+    $entity_view_builder = $this->createMock(EntityViewBuilder::class);
+    $entity_view_builder->method('view')
+      ->willReturn(['#view_mode' => 'default']);
+    $entity_type_manager = $this->createMock(EntityTypeManager::class);
+    $entity_type_manager->method('getViewBuilder')
+      ->willReturn($entity_view_builder);
+    $this->embedMediaWidget->setEntityTypeManager($entity_type_manager);
+    $block_content = $this->createBlockContentVideoMock($field_values['field_max_width']);
+    $variables = $this->embedMediaWidget->buildBlock([], $block_content);
+    $this->assertSame('default', $variables['content']['embed_media'][0]['#view_mode']);
+  }
+
+  /**
    * Create a block content mock with image media type for testing.
    */
   protected function createBlockContentImageMock(array $field_max_width_values, array $field_media_select_values) {
@@ -150,6 +170,14 @@ class EmbedMediaBlockRenderTest extends UnitTestCase {
       ->willReturn('video_embed');
     $field_media_select->method('referencedEntities')
       ->willReturn([$media]);
+
+    // Can't work on with(field_max_width).
+    $block_content->expects($this->at(0))
+      ->method('get')
+      ->willReturn($field_max_width);
+    $block_content->expects($this->at(1))
+      ->method('get')
+      ->willReturn($field_media_select);
 
     return $block_content;
   }
