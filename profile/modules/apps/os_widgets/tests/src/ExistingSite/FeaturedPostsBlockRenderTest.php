@@ -47,6 +47,24 @@ class FeaturedPostsBlockRenderTest extends OsWidgetsExistingSiteTestBase {
   }
 
   /**
+   * Test empty input parameters.
+   */
+  public function testBuildEmptyBlockOrEmptyPosts() {
+
+    $variables = $this->featuredPostsWidget->buildBlock([], NULL);
+    $this->assertSame([], $variables, 'Build empty block should not modify the variables.');
+
+    $block_content = $this->createBlockContent([
+      'type' => 'featured_posts',
+      'field_display_style' => [
+        'title',
+      ],
+    ]);
+    $variables = $this->featuredPostsWidget->buildBlock([], $block_content);
+    $this->assertSame([], $variables, 'Build block with empty posts should not modify the variables.');
+  }
+
+  /**
    * Test teaser and styled output.
    */
   public function testBuildTeaserStyledPosts() {
