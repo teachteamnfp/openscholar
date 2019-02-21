@@ -1,0 +1,31 @@
+uuid: 80dae559-8e4d-4146-b7bf-d7f0a12becb7
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.media.teaser
+    - field.field.media.audio.field_media_file
+    - image.style.thumbnail
+    - media.type.audio
+  module:
+    - image
+id: media.audio.teaser
+targetEntityType: media
+bundle: audio
+mode: teaser
+content:
+  thumbnail:
+    type: image
+    weight: 0
+    label: hidden
+    settings:
+      image_style: thumbnail
+      image_link: ''
+    region: content
+    third_party_settings: {  }
+hidden:
+  created: true
+  field_media_file: true
+  langcode: true
+  name: true
+  uid: true

@@ -1,0 +1,88 @@
+<?php
+
+/**
+ * @file
+ * OS Classes module.
+ */
+
+use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\field\Entity\FieldStorageConfig;
+
+/**
+ * Return field semester allowed values.
+ *
+ * @param \Drupal\field\Entity\FieldStorageConfig $definition
+ *   Field Storage Config.
+ * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+ *   Content Entity Interface.
+ * @param bool $cacheable
+ *   Cacheable.
+ *
+ * @return array
+ *   List of allowed values.
+ */
+function os_classes_field_semester_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) : array {
+  $allowedValues = \Drupal::config('os_classes.settings')->get('field_semester_allowed_values');
+
+  if (empty($allowedValues)) {
+    return [];
+  }
+
+  return $allowedValues;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function os_classes_form_node_form_alter(
+  &$form,
+  FormStateInterface $form_state,
+  $form_id
+) {
+  switch ($form_id) {
+    case 'node_class_form':
+    case 'node_class_edit_form':
+      $vsiteContext = \Drupal::service('vsite.context_manager');
+      if ($group = $vsiteContext->getActiveVsite()) {
+        $form['field_year_offered']['widget'][0]['value']['#autocomplete_route_name'] = 'os_classes.autocomplete_year_offered';
+        $form['field_year_offered']['widget'][0]['value']['#autocomplete_route_parameters'] = [
+          'vsite' => $group->id(),
+        ];
+        $form['#validate'][] = 'os_classes_node_class_form_validate';
+      }
+      break;
+  }
+}
+
+/**
+ * Validate form.
+ *
+ * @param array $form
+ *   Form array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Form state.
+ */
+function os_classes_node_class_form_validate(array &$form, FormStateInterface $form_state) {
+  $field_year_offered = $form_state->getValue('field_year_offered');
+  if (empty($field_year_offered[0]['value'])) {
+    return;
+  }
+  $yearValue = (int) $field_year_offered[0]['value'];
+  $requestTime = \Drupal::time()->getRequestTime();
+  $currentYear = \Drupal::service('date.formatter')->format($requestTime, 'custom', 'Y');
+  if ($yearValue < 1970 || $yearValue > $currentYear) {
+    $form_state->setError($field_year_offered, t('Year offered value must be between 1970 and current year.'));
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function os_classes_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  if ($entity->bundle() == 'class') {
+    $build['#attached']['library'][] = 'os_classes/os-classes-theme';
+  }
+}

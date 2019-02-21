@@ -1,0 +1,21 @@
+uuid: ff78a963-18b4-4282-bccb-2cfb31af3faa
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.group.field_privacy_level
+    - group.type.subsite_test
+  module:
+    - options
+id: group.subsite_test.field_privacy_level
+field_name: field_privacy_level
+entity_type: group
+bundle: subsite_test
+label: 'Privacy Level'
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

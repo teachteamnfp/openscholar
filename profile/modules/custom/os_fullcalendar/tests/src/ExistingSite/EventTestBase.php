@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\os_fullcalendar\ExistingSite;
 
+use Drupal\Component\Datetime\DateTimePlus;
 use Drupal\group\Entity\GroupInterface;
 use Drupal\node\NodeInterface;
 use weitzman\DrupalTestTraits\ExistingSiteBase;
@@ -9,7 +10,7 @@ use weitzman\DrupalTestTraits\ExistingSiteBase;
 /**
  * Test base for event tests.
  */
-class EventTestBase extends ExistingSiteBase {
+abstract class EventTestBase extends ExistingSiteBase {
 
   /**
    * The entity type manager service.
@@ -58,11 +59,13 @@ class EventTestBase extends ExistingSiteBase {
 
     $vsite_context_manager->activateVsite($this->group);
 
+    $start = new DateTimePlus('today midnight', $this->config->get('system.date')->get('timezone.default'));
+    $end = new DateTimePlus('tomorrow midnight', $this->config->get('system.date')->get('timezone.default'));
     $this->event = $this->createEvent([
       'title' => 'Test Event',
       'field_recurring_date' => [
-        'value' => date("Y-m-d\TH:i:s", strtotime("today midnight")),
-        'end_value' => date("Y-m-d\TH:i:s", strtotime("tomorrow midnight")),
+        'value' => $start->format("Y-m-d\TH:i:s"),
+        'end_value' => $end->format("Y-m-d\TH:i:s"),
         'rrule' => '',
         'timezone' => $this->config->get('system.date')->get('timezone.default'),
         'infinite' => FALSE,

@@ -5,6 +5,7 @@
  * Hook implementations for the vsite module.
  */
 
+use Drupal\group\Entity\Group;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\Core\Render\Element;
@@ -73,6 +74,15 @@ function vsite_views_data_alter(&$data) {
       'id' => 'vsite_current_filter',
     ],
   ];
+  $data['groups']['subsite_vsite_filter'] = [
+    'title' => t('Subsite Filter'),
+    'filter' => [
+      'title' => t('Subsite Filter'),
+      'help' => 'Filters child sites on the current vsite',
+      'field' => 'field_parent_site',
+      'id' => 'vsite_subsite_filter',
+    ],
+  ];
 }
 
 /**
@@ -131,6 +141,9 @@ function vsite_form_alter(&$form, FormStateInterface $formState, $form_id) {
     /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContext */
     $vsiteContext = \Drupal::service('vsite.context_manager');
 
+    /** @var \Drupal\Core\Entity\EntityInterface $entity */
+    $entity = $formState->getFormObject()->getEntity();
+    $entityTypeId = $entity->getEntityTypeId();
     /** @var \Drupal\group\Entity\GroupInterface $group */
     if ($group = $vsiteContext->getActiveVsite()) {
       $groupTypeId = $group->bundle();
@@ -140,8 +153,6 @@ function vsite_form_alter(&$form, FormStateInterface $formState, $form_id) {
       $plugins = $groupContentEnabler->getGroupTypePluginMap();
       $availablePlugins = $plugins[$groupTypeId];
 
-      /** @var \Drupal\Core\Entity\EntityInterface $entity */
-      $entity = $formState->getFormObject()->getEntity();
       $plugin_id = 'group_entity:' . $entity->getEntityTypeId();
       if (in_array($plugin_id, $availablePlugins)) {
         $formState->set('group', $group);
@@ -164,6 +175,10 @@ function vsite_form_alter(&$form, FormStateInterface $formState, $form_id) {
           $form['actions'][$name]['#submit'][] = 'group_content_entity_submit';
         }
       }
+    }
+    $allowedSubSites = \Drupal::config('vsite.settings')->get('allowed_subsite_group_types');
+    if ($entityTypeId == 'group' && !in_array($entity->bundle(), $allowedSubSites)) {
+      $form['field_parent_site']['#access'] = FALSE;
     }
   }
 }
@@ -243,4 +258,23 @@ function vsite_page_attachments(array &$attachments) {
       'url' => $vsiteContext->getAbsoluteUrl(),
     ];
   }
+}
+
+/**
+ * Get all group id that related with field parent site.
+ *
+ * @param \Drupal\group\Entity\Group $group
+ *   Parent group entity.
+ *
+ * @return array|int
+ *   List of the related and parent gids.
+ */
+function _vsite_get_group_and_subsite_ids(Group $group) {
+  $query = \Drupal::entityQuery('group')
+    ->condition('field_parent_site', $group->id());
+
+  $gids = $query->execute();
+  // Add parent group to list.
+  $gids[$group->id()] = $group->id();
+  return $gids;
 }

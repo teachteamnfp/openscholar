@@ -12,13 +12,15 @@ module:
   ckeditor: 0
   comment: 0
   config: 0
-  config_snapshot: 0
+  config_filter: 0
+  config_split: 0
   config_update: 0
   contact: 0
   content_moderation: 0
   contextual: 0
   cp: 0
   cp_settings: 0
+  crop: 0
   ctools: 0
   date_recur: 0
   date_recur_interactive: 0
@@ -58,16 +60,25 @@ module:
   layout_discovery: 0
   link: 0
   locale: 0
+  mailchimp: 0
   media: 0
   media_entity_browser: 0
   menu_ui: 0
   node: 0
   options: 0
   os_app_access: 0
+  os_classes: 0
   os_fullcalendar: 0
   os_links: 0
   os_media: 0
   os_rest: 0
+  os_mailchimp: 0
+  os_media_gallery: 0
+  os_metatag: 0
+  os_office_embed: 0
+  os_pages: 0
+  os_redirect: 0
+  os_slideshow: 0
   page_cache: 0
   path: 0
   purl: 0
@@ -78,6 +89,8 @@ module:
   restui: 0
   search: 0
   serialization: 0
+  slick: 0
+  styleguide: 0
   system: 0
   taxonomy: 0
   telephone: 0
@@ -104,6 +117,8 @@ theme:
   classy: 0
   bartik: 0
   seven: 0
+  bootstrap: 0
+  os_base: 0
 profile: openscholar
 _core:
   default_config_hash: R4IF-ClDHXxblLcG0L7MgsLvfBIMAvi_skumNFQwkDc

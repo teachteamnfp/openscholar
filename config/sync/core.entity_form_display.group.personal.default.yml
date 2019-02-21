@@ -3,6 +3,10 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.group.personal.field_parent_site
+    - field.field.group.personal.field_privacy_level
+    - field.field.group.personal.field_site_description
+    - field.field.group.personal.field_site_logo
     - field.field.group.personal.layout_builder__layout
     - group.type.personal
   module:
@@ -18,6 +22,45 @@ targetEntityType: group
 bundle: personal
 mode: default
 content:
+  field_parent_site:
+    weight: 31
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_privacy_level:
+    weight: 32
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
+    region: content
+  field_site_description:
+    weight: 32
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  field_site_logo:
+    weight: 31
+    settings:
+      show_default_crop: true
+      warn_multiple_usages: true
+      preview_image_style: thumbnail
+      crop_preview_image_style: crop_thumbnail
+      progress_indicator: throbber
+      crop_list:
+        - crop_1_1
+      crop_types_required:
+        - crop_1_1
+      show_crop_area: false
+    third_party_settings: {  }
+    type: image_widget_crop
+    region: content
   label:
     type: string_textfield
     weight: -5

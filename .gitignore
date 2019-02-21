@@ -33,6 +33,9 @@
 /build/
 /web/sites/autotest
 
+# Ignore local configs
+local_config/
+
 # Ignore drupal core (if not versioning drupal sources)
 .editorconfig
 .gitattributes

@@ -3,6 +3,7 @@
 namespace Drupal\vsite_privacy;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\vsite\Event\VsiteActivatedEvent;
 use Drupal\vsite\VsiteEvents;
 use Drupal\vsite_privacy\Plugin\VsitePrivacyLevelManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -58,17 +59,22 @@ class VsitePrivacyAccessCheck implements EventSubscriberInterface {
 
   /**
    * React on site activated event.
+   *
+   * @param \Drupal\vsite\Event\VsiteActivatedEvent $event
+   *   Activation event.
    */
-  public function onVsiteActivated() {
+  public function onVsiteActivated(VsiteActivatedEvent $event) {
     if ($this->checked) {
       return;
     }
 
     $this->checked = TRUE;
-    $privacy = $this->configFactory->get('vsite.privacy');
-    $level = $privacy->get('level');
-    if (!isset($level)) {
-      $level = 'public';
+    $level = 'public';
+    if ($event->getGroup()->hasField('field_privacy_level')) {
+      $privacy = $event->getGroup()->get('field_privacy_level')->getValue();
+      if (!empty($privacy[0]['value'])) {
+        $level = $privacy[0]['value'];
+      }
     }
     if (!$this->vsitePrivacyLevelManager->checkAccessForPlugin(\Drupal::currentUser(), $level)) {
       throw new AccessDeniedHttpException();

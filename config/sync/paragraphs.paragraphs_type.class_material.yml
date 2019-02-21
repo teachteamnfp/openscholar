@@ -1,0 +1,9 @@
+uuid: c466b455-736b-4634-8b4c-8cf1de922cd7
+langcode: en
+status: true
+dependencies: {  }
+id: class_material
+label: 'Class Material'
+icon_uuid: null
+description: ''
+behavior_plugins: {  }

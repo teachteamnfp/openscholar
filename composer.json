@@ -101,7 +101,10 @@
         "drupal/views_ical": "1.x-dev",
         "fullcalendar/fullcalendar": "^3.3",
         "drupal/date_recur_interactive": "^2.0",
-        "drupal/restui": "^1.16"
+        "drupal/bootstrap": "^3.17",
+        "drupal/styleguide": "^1.0@alpha",
+        "drupal/config_split": "^1.4",
+        "drupal/mailchimp": "^1.8"
     },
     "require-dev": {
         "drupal/features": "^3.7",
@@ -138,7 +141,9 @@
             "DrupalProject\\composer\\ScriptHandler::createRequiredFiles",
             "DrupalProject\\composer\\ScriptHandler::placeProfile",
             "DrupalProject\\composer\\ScriptHandler::installFullcalendarLibrary",
-            "command -v npm install || echo \"NPM not installed. Please install it and run composer install again.\""
+            "command -v npm install || echo \"NPM not installed. Please install it and run composer install again.\"",
+            "./scripts/register-cs.sh",
+            "./scripts/install-hooks.sh"
         ],
         "post-update-cmd": [
             "@composer drupal:scaffold",
@@ -146,6 +151,13 @@
             "DrupalProject\\composer\\ScriptHandler::placeProfile",
             "DrupalProject\\composer\\ScriptHandler::installFullcalendarLibrary",
             "command -v npm update || echo \"NPM not installed. Please install it and run composer install.\""
+        ],
+        "code-standard": [
+            "./vendor/bin/phpcs --standard=Drupal",
+            "./vendor/bin/phpcs --standard=DrupalPractice"
+        ],
+        "code-standard-fix": [
+            "./vendor/bin/phpcbf --standard=Drupal"
         ]
     },
     "extra": {
@@ -163,15 +175,10 @@
                 ".gitattributes": "../.gitattributes"
             }
         },
-        "mouf": {
-            "nodejs": {
-                "forceLocal": true,
-                "includeBinInPath": true
-            }
-        },
         "patches": {
             "drupal/core": {
                 "Make sure TestSitePath exist before creating .htkey": "https://www.drupal.org/files/issues/2246725-24.patch",
+                "Views Date Filter Datetime Granularity Option": "https://www.drupal.org/files/issues/2018-12-11/views_date_filter_granularity_2868014-60.patch",
                 "Add paging info to rest request": "https://www.drupal.org/files/issues/2018-06-30/2982729-viewsRestInfo.patch"
             },
             "drupal/group_purl": {
@@ -187,6 +194,15 @@
                 "Define missing views methods": "https://www.drupal.org/files/issues/2019-01-10/2982848-2.patch",
                 "No page title due to undefined variable $config": "https://www.drupal.org/files/issues/2891778-2-undefined-variable-notice-fix.patch",
                 "Add HTTP Header: application/calendar": "https://www.drupal.org/files/issues/views_ical-set_response_header-2601522-4.patch"
+            },
+            "drupal/block_visibility_groups": {
+                "8.6: error when deleting a block visibility group": "https://www.drupal.org/files/issues/2018-10-18/block_visibility_groups_3000396-4.patch"
+            },
+            "drupal/bootstrap": {
+                "Unsupported operand types during providers JSON discovery #8": "https://www.drupal.org/files/issues/2019-01-24/3027569-8.x-3.x-8.patch"
+            },
+            "drupal/mailchimp": {
+                "Cache read problem in mailchimp_get_mergevars()": "https://www.drupal.org/files/issues/2019-02-13/3032674-cache-fix-for-mailchimp_get_mergevars-3.patch"
             }
         },
         "patches-ignore": {

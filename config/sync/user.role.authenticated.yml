@@ -12,6 +12,7 @@ permissions:
   - 'access content'
   - 'access toolbar'
   - 'create personal group'
+  - 'create page content'
   - 'use text format filtered_html'
   - 'view control_panel in toolbar'
   - 'view media'

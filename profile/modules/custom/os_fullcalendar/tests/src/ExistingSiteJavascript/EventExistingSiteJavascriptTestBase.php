@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\os_fullcalendar\ExistingSiteJavascript;
 
+use Drupal\Component\Datetime\DateTimePlus;
 use Drupal\group\Entity\GroupInterface;
 use Drupal\node\NodeInterface;
 use weitzman\DrupalTestTraits\ExistingSiteWebDriverTestBase;
@@ -40,13 +41,6 @@ abstract class EventExistingSiteJavascriptTestBase extends ExistingSiteWebDriver
   protected $config;
 
   /**
-   * Alias manager.
-   *
-   * @var \Drupal\Core\Path\AliasManagerInterface
-   */
-  protected $aliasManager;
-
-  /**
    * {@inheritdoc}
    */
   public function setUp() {
@@ -54,7 +48,6 @@ abstract class EventExistingSiteJavascriptTestBase extends ExistingSiteWebDriver
 
     $this->entityTypeManager = $this->container->get('entity_type.manager');
     $this->config = $this->container->get('config.factory');
-    $this->aliasManager = $this->container->get('path.alias_manager');
     /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
     $vsite_context_manager = $this->container->get('vsite.context_manager');
 
@@ -66,11 +59,13 @@ abstract class EventExistingSiteJavascriptTestBase extends ExistingSiteWebDriver
 
     $vsite_context_manager->activateVsite($this->group);
 
+    $start = new DateTimePlus('today midnight', $this->config->get('system.date')->get('timezone.default'));
+    $end = new DateTimePlus('tomorrow midnight', $this->config->get('system.date')->get('timezone.default'));
     $this->event = $this->createEvent([
       'title' => 'Test Event',
       'field_recurring_date' => [
-        'value' => date("Y-m-d\TH:i:s", strtotime("today midnight")),
-        'end_value' => date("Y-m-d\TH:i:s", strtotime("tomorrow midnight")),
+        'value' => $start->format("Y-m-d\TH:i:s"),
+        'end_value' => $end->format("Y-m-d\TH:i:s"),
         'rrule' => '',
         'timezone' => $this->config->get('system.date')->get('timezone.default'),
         'infinite' => FALSE,
