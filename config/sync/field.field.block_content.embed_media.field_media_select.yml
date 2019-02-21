@@ -6,7 +6,7 @@ dependencies:
     - block_content.type.embed_media
     - field.storage.block_content.field_media_select
     - media.type.image
-    - media.type.video_embed
+    - media.type.remote
 id: block_content.embed_media.field_media_select
 field_name: field_media_select
 entity_type: block_content
@@ -22,7 +22,7 @@ settings:
   handler_settings:
     target_bundles:
       image: image
-      video_embed: video_embed
+      video_embed: remote
     sort:
       field: _none
     auto_create: false

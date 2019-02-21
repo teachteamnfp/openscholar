@@ -3,17 +3,17 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.media.video_embed.field_media_video_embed_field
-    - media.type.video_embed
+    - field.field.media.remote.field_media_video_embed_field
+    - media.type.remote
   module:
     - layout_builder
     - video_embed_field
 third_party_settings:
   layout_builder:
     sections: {  }
-id: media.video_embed.default
+id: media.remote.default
 targetEntityType: media
-bundle: video_embed
+bundle: remote
 mode: default
 content:
   field_media_video_embed_field:
