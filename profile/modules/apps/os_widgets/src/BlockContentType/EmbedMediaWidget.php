@@ -2,7 +2,7 @@
 
 namespace Drupal\os_widgets\BlockContentType;
 
-use Drupal\Core\Entity\EntityTypeManager;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 
 /**
  * Class EmbedMediaWidget.
@@ -20,17 +20,17 @@ class EmbedMediaWidget implements BlockContentTypeInterface {
   /**
    * Class constructor.
    */
-  public function __construct(EntityTypeManager $entity_type_manager = NULL) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager = NULL) {
     $this->entityTypeManager = is_null($entity_type_manager) ? \Drupal::entityTypeManager() : $entity_type_manager;
   }
 
   /**
    * Set Entity Type Manager.
    *
-   * @param \Drupal\Core\Entity\EntityTypeManager $entity_type_manager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   New entity type manager.
    */
-  public function setEntityTypeManager(EntityTypeManager $entity_type_manager) {
+  public function setEntityTypeManager(EntityTypeManagerInterface $entity_type_manager) {
     $this->entityTypeManager = $entity_type_manager;
   }
 
