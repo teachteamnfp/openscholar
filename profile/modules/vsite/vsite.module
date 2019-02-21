@@ -22,6 +22,7 @@ function vsite_modules_installed(array $modules) {
 
 /**
  * Sets up associations between app content and group types.
+ * @todo this needs work
  */
 function vsite_setup_new_apps() {
   // TODO: Fix this so it doesn't block installs.
