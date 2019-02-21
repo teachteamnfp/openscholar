@@ -2,10 +2,37 @@
 
 namespace Drupal\os_widgets\BlockContentType;
 
+use Drupal\Core\Entity\EntityTypeManager;
+
 /**
  * Class EmbedMediaWidget.
  */
 class EmbedMediaWidget implements BlockContentTypeInterface {
+
+  /**
+   * Entity Type Manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   *   EntityTypeManagerInterface.
+   */
+  protected $entityTypeManager;
+
+  /**
+   * Class constructor.
+   */
+  public function __construct() {
+    $this->entityTypeManager = \Drupal::entityTypeManager();
+  }
+
+  /**
+   * Set Entity Type Manager.
+   *
+   * @param \Drupal\Core\Entity\EntityTypeManager $entity_type_manager
+   *   New entity type manager.
+   */
+  public function setEntityTypeManager(EntityTypeManager $entity_type_manager) {
+    $this->entityTypeManager = $entity_type_manager;
+  }
 
   /**
    * {@inheritdoc}
@@ -37,11 +64,13 @@ class EmbedMediaWidget implements BlockContentTypeInterface {
             '#title' => $field_media_image_values[0]['title'],
             '#width' => $max_width,
           ];
-          $variables['content']['embed_media'] = $embed_media;
+          $variables['content']['embed_media'][$delta] = $embed_media;
           break;
 
-        case 'video':
-          $field_values = $media->get('field_media_oembed_video');
+        case 'video_embed':
+          $view_builder = $this->entityTypeManager->getViewBuilder('media');
+          $embed_media = $view_builder->view($media, 'default');
+          $variables['content']['embed_media'][$delta] = $embed_media;
           break;
       }
     }
