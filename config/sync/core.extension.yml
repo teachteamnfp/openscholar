@@ -86,7 +86,6 @@ module:
   redirect: 0
   responsive_image: 0
   rest: 0
-  restui: 0
   search: 0
   serialization: 0
   slick: 0
