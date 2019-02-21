@@ -46,6 +46,7 @@ module:
   group: 0
   group_entity: 0
   group_purl: 0
+  hal: 0
   image: 0
   image_widget_crop: 0
   inline_form_errors: 0
