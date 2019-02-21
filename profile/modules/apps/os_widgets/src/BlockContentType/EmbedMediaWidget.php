@@ -20,8 +20,8 @@ class EmbedMediaWidget implements BlockContentTypeInterface {
   /**
    * Class constructor.
    */
-  public function __construct() {
-    $this->entityTypeManager = \Drupal::entityTypeManager();
+  public function __construct(EntityTypeManager $entity_type_manager = NULL) {
+    $this->entityTypeManager = is_null($entity_type_manager) ? \Drupal::entityTypeManager() : $entity_type_manager;
   }
 
   /**

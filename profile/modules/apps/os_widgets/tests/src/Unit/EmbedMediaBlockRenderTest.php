@@ -3,6 +3,7 @@
 namespace Drupal\Tests\os_widgets\Unit;
 
 use Drupal\block_content\Entity\BlockContent;
+use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Field\EntityReferenceFieldItemList;
 use Drupal\Core\Field\FieldItemList;
 use Drupal\file\Entity\File;
@@ -30,7 +31,8 @@ class EmbedMediaBlockRenderTest extends UnitTestCase {
    */
   public function setUp() {
     parent::setUp();
-    $this->embedMediaWidget = new EmbedMediaWidget();
+    $entity_type_manager = $this->createMock(EntityTypeManager::class);
+    $this->embedMediaWidget = new EmbedMediaWidget($entity_type_manager);
   }
 
   /**
@@ -50,11 +52,11 @@ class EmbedMediaBlockRenderTest extends UnitTestCase {
         ],
       ],
     ];
-    $block_content = $this->createBlockContentMock('image', $field_values['field_max_width'], $field_values['field_media_select']);
+    $block_content = $this->createBlockContentImageMock($field_values['field_max_width'], $field_values['field_media_select']);
     $variables = $this->embedMediaWidget->buildBlock([], $block_content);
-    $this->assertSame(333, $variables['content']['embed_media']['#width']);
-    $this->assertSame('Alt test', $variables['content']['embed_media']['#alt']);
-    $this->assertSame('Title test', $variables['content']['embed_media']['#title']);
+    $this->assertSame(333, $variables['content']['embed_media'][0]['#width']);
+    $this->assertSame('Alt test', $variables['content']['embed_media'][0]['#alt']);
+    $this->assertSame('Title test', $variables['content']['embed_media'][0]['#title']);
   }
 
   /**
@@ -74,11 +76,11 @@ class EmbedMediaBlockRenderTest extends UnitTestCase {
         ],
       ],
     ];
-    $block_content = $this->createBlockContentMock('image', $field_values['field_max_width'], $field_values['field_media_select']);
+    $block_content = $this->createBlockContentImageMock($field_values['field_max_width'], $field_values['field_media_select']);
     $variables = $this->embedMediaWidget->buildBlock([], $block_content);
-    $this->assertSame(0, $variables['content']['embed_media']['#width']);
-    $this->assertSame('Alt test', $variables['content']['embed_media']['#alt']);
-    $this->assertSame('Title test', $variables['content']['embed_media']['#title']);
+    $this->assertSame(0, $variables['content']['embed_media'][0]['#width']);
+    $this->assertSame('Alt test', $variables['content']['embed_media'][0]['#alt']);
+    $this->assertSame('Title test', $variables['content']['embed_media'][0]['#title']);
   }
 
   /**
@@ -91,9 +93,9 @@ class EmbedMediaBlockRenderTest extends UnitTestCase {
   }
 
   /**
-   * Create a block content mock for testing.
+   * Create a block content mock with image media type for testing.
    */
-  protected function createBlockContentMock(string $mediaBundle, array $field_max_width_values, array $field_media_select_values) {
+  protected function createBlockContentImageMock(array $field_max_width_values, array $field_media_select_values) {
     $block_content = $this->createMock(BlockContent::class);
 
     // field_max_width Mock.
@@ -105,7 +107,7 @@ class EmbedMediaBlockRenderTest extends UnitTestCase {
     $field_media_select = $this->createMock(EntityReferenceFieldItemList::class);
     $media = $this->createMock(Media::class);
     $media->method('bundle')
-      ->willReturn($mediaBundle);
+      ->willReturn('image');
     $file = $this->createMock(File::class);
     $file->method('getFileUri')
       ->willReturn('public://file.jpg');
@@ -126,6 +128,28 @@ class EmbedMediaBlockRenderTest extends UnitTestCase {
     $block_content->expects($this->at(1))
       ->method('get')
       ->willReturn($field_media_select);
+
+    return $block_content;
+  }
+
+  /**
+   * Create a block content mock with video media type for testing.
+   */
+  protected function createBlockContentVideoMock(array $field_max_width_values) {
+    $block_content = $this->createMock(BlockContent::class);
+
+    // field_max_width Mock.
+    $field_max_width = $this->createMock(FieldItemList::class);
+    $field_max_width->method('getValue')
+      ->willReturn($field_max_width_values);
+
+    // field_media_select Mock.
+    $field_media_select = $this->createMock(EntityReferenceFieldItemList::class);
+    $media = $this->createMock(Media::class);
+    $media->method('bundle')
+      ->willReturn('video_embed');
+    $field_media_select->method('referencedEntities')
+      ->willReturn([$media]);
 
     return $block_content;
   }
