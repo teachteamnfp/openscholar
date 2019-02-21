@@ -29,7 +29,7 @@ elif git ls-remote --heads git@bitbucket.org:openscholar/deploysource.git | grep
   git clone -b $CI_BRANCH git@bitbucket.org:openscholar/deploysource.git  ~/src/amazon;
   cd ~/src/amazon
 else
-  git clone -b SCHOLAR-3.x git@bitbucket.org:openscholar/deploysource.git  ~/src/amazon;
+  git clone -b 8.x-1.x-dev git@bitbucket.org:openscholar/deploysource.git  ~/src/amazon;
   cd ~/src/amazon
   git checkout -b $CI_BRANCH;
 fi
