@@ -4,7 +4,6 @@ status: true
 dependencies:
   config:
     - field.field.media.video.field_height
-    - field.field.media.video.field_media_oembed_video
     - field.field.media.video.field_media_video_file
     - field.field.media.video.field_width
     - media.type.video
@@ -34,14 +33,6 @@ content:
     weight: 4
     region: content
     settings:
-      placeholder: ''
-    third_party_settings: {  }
-  field_media_oembed_video:
-    type: string_textfield
-    weight: 2
-    region: content
-    settings:
-      size: 60
       placeholder: ''
     third_party_settings: {  }
   field_media_video_file:
