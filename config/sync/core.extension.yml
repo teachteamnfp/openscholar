@@ -1,11 +1,8 @@
 module:
-<<<<<<< HEAD
   admin_toolbar: 0
   admin_toolbar_tools: 0
   basic_auth: 0
-=======
   big_pipe: 0
->>>>>>> parent of e372d64095... #10961: Config stuff
   blazy: 0
   block: 0
   block_content: 0
@@ -16,11 +13,8 @@ module:
   ckeditor: 0
   comment: 0
   config: 0
-<<<<<<< HEAD
   config_filter: 0
   config_split: 0
-=======
->>>>>>> parent of e372d64095... #10961: Config stuff
   config_update: 0
   contact: 0
   content_moderation: 0
@@ -28,10 +22,7 @@ module:
   context_ui: 0
   contextual: 0
   cp: 0
-<<<<<<< HEAD
   cp_settings: 0
-=======
->>>>>>> parent of e372d64095... #10961: Config stuff
   crop: 0
   ctools: 0
   date_recur: 0
@@ -110,14 +101,11 @@ module:
   toolbar_menu: 0
   update: 0
   user: 0
-<<<<<<< HEAD
   video_embed_field: 0
   video_embed_media: 0
   views_accordion: 0
   views_ical: 0
-=======
   views_accordion: 0
->>>>>>> parent of e372d64095... #10961: Config stuff
   views_ui: 0
   vsite: 0
   vsite_privacy: 0

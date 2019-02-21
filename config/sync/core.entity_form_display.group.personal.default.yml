@@ -3,11 +3,8 @@ langcode: en
 status: true
 dependencies:
   config:
-<<<<<<< HEAD
     - field.field.group.personal.field_parent_site
     - field.field.group.personal.field_privacy_level
-=======
->>>>>>> parent of e372d64095... #10961: Config stuff
     - field.field.group.personal.field_site_description
     - field.field.group.personal.field_site_logo
     - field.field.group.personal.layout_builder__layout
