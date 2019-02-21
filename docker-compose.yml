@@ -73,8 +73,8 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
-  node:
-     image: mhart/alpine-node:11
+  drupal-node:
+     image: wodby/drupal-node:$DRUPAL_NODE_TAG
      container_name: "${PROJECT_NAME}_drupal_nodejs"
      environment:
         NODE_SERVICE_KEY: node-service-key
@@ -84,7 +84,7 @@ services:
        - 'traefik.frontend.rule=Host:nodejs.${PROJECT_BASE_URL}'
      volumes:
        - ./:/var/www/html
-     command: sh -c 'npm install'
+     command: sh -c 'npm install && npm run start'
 
   chrome:
     # Note: chrome 67/68 is giving errors so we pin to 65 for now.
