@@ -51,8 +51,15 @@ class VsiteInfiniteScrollFrontendTest extends VsiteInfiniteScrollExistingSiteJav
       ]);
       $this->group->addContent($person, $plugin->getContentPluginId());
       $i++;
-      $this->lastPersonTitle = $person->getTitle();
     }
+    $old_person = $this->createNode([
+      'title' => 'Old created person',
+      'type' => 'person',
+      'status' => 1,
+      'changed' => strtotime('-1 Year'),
+      'created' => strtotime('-1 Year'),
+    ]);
+    $this->group->addContent($old_person, $plugin->getContentPluginId());
   }
 
   /**
@@ -75,9 +82,9 @@ class VsiteInfiniteScrollFrontendTest extends VsiteInfiniteScrollExistingSiteJav
     $load_button = $page->findLink('Load More');
     $load_button->press();
     file_put_contents('public://screenshot-before.png', $this->getSession()->getScreenshot());
-    $result = $web_assert->waitForElementVisible('named', ['link', $this->lastPersonTitle]);
+    $result = $web_assert->waitForElementVisible('named', ['link', 'Old created person']);
     file_put_contents('public://screenshot-after.png', $this->getSession()->getScreenshot());
-    $this->assertNotNull($result, 'Following node title not found: ' . $this->lastPersonTitle);
+    $this->assertNotNull($result, 'Following node title not found: Old created person');
   }
 
 }
