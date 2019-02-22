@@ -2,10 +2,8 @@
 
 namespace Drupal\os_widgets\Plugin\OsWidgets;
 
-use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Plugin\PluginBase;
+use Drupal\os_widgets\OsWidgetsBase;
 use Drupal\os_widgets\OsWidgetsInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class EmbedMediaWidget.
@@ -15,29 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   title = @Translation("Embed Media")
  * )
  */
-class EmbedMediaWidget extends PluginBase implements OsWidgetsInterface {
-
-  protected $entityTypeManager;
-
-  /**
-   * {@inheritdoc}
-   */
-  public function __construct($configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->entityTypeManager = $entity_type_manager;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    return new static(
-      $configuration,
-      $plugin_id,
-      $plugin_definition,
-      $container->get('entity_type_manager')
-    );
-  }
+class EmbedMediaWidget extends OsWidgetsBase implements OsWidgetsInterface {
 
   /**
    * {@inheritdoc}
