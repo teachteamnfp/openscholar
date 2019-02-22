@@ -3,27 +3,28 @@
 namespace Drupal\Tests\os_widgets\Unit;
 
 use Drupal\block_content\Entity\BlockContent;
+use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Entity\EntityViewBuilder;
 use Drupal\Core\Field\EntityReferenceFieldItemList;
 use Drupal\Core\Field\FieldItemList;
 use Drupal\file\Entity\File;
 use Drupal\media\Entity\Media;
-use Drupal\os_widgets\BlockContentType\EmbedMediaWidget;
+use Drupal\os_widgets\Plugin\OsWidgets\EmbedMediaWidget;
 use Drupal\Tests\UnitTestCase;
 
 /**
  * Class EmbedMediaWidget.
  *
  * @group unit
- * @covers \Drupal\os_widgets\BlockContentType\EmbedMediaWidget
+ * @covers \Drupal\os_widgets\Plugin\OsWidgets\EmbedMediaWidget
  */
 class EmbedMediaBlockRenderTest extends UnitTestCase {
 
   /**
    * The object we're testing.
    *
-   * @var \Drupal\os_widgets\BlockContentType\EmbedMediaWidget
+   * @var \Drupal\os_widgets\Plugin\OsWidgets\EmbedMediaWidget
    */
   protected $embedMediaWidget;
 
@@ -33,7 +34,7 @@ class EmbedMediaBlockRenderTest extends UnitTestCase {
   public function setUp() {
     parent::setUp();
     $entity_type_manager = $this->createMock(EntityTypeManager::class);
-    $this->embedMediaWidget = new EmbedMediaWidget($entity_type_manager);
+    $this->embedMediaWidget = new EmbedMediaWidget();
   }
 
   /**
@@ -106,7 +107,11 @@ class EmbedMediaBlockRenderTest extends UnitTestCase {
     $entity_type_manager = $this->createMock(EntityTypeManager::class);
     $entity_type_manager->method('getViewBuilder')
       ->willReturn($entity_view_builder);
-    $this->embedMediaWidget->setEntityTypeManager($entity_type_manager);
+
+    $container = new ContainerBuilder();
+    $container->set('entity_type.manager', $entity_type_manager);
+    \Drupal::setContainer($container);
+
     $block_content = $this->createBlockContentVideoMock($field_values['field_max_width']);
     $variables = $this->embedMediaWidget->buildBlock([], $block_content);
     $this->assertSame('default', $variables['content']['embed_media'][0]['#view_mode']);
