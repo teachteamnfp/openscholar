@@ -6,9 +6,7 @@
  */
 
 use Drupal\block\Entity\Block;
-use Drupal\os_widgets\BlockContentType\BlockContentTypeInterface;
-use Drupal\os_widgets\BlockContentType\EmbedMediaWidget;
-use Drupal\os_widgets\BlockContentType\FeaturedPostsWidget;
+use Drupal\os_widgets\OsWidgetsInterface;
 
 /**
  * Return block content type definitions.
@@ -18,10 +16,10 @@ use Drupal\os_widgets\BlockContentType\FeaturedPostsWidget;
  */
 function _os_widgets_block_content_type_definitions() {
   // key: block_content bundle
-  // value: handled object.
+  // value: annotation id.
   return [
-    'featured_posts' => FeaturedPostsWidget::class,
-    'embed_media' => EmbedMediaWidget::class,
+    'featured_posts' => 'featured_posts_widget',
+    'embed_media' => 'embed_media_widget',
   ];
 }
 
@@ -42,13 +40,14 @@ function os_widgets_preprocess_block(&$variables) {
   if (empty($blockContentTypeDefinitions[$currentBlockContentBundle])) {
     return;
   }
-  $className = $blockContentTypeDefinitions[$currentBlockContentBundle];
-  $blockContentTypeWidget = new $className();
-  if (!$blockContentTypeWidget instanceof BlockContentTypeInterface) {
+  $widget_id = $blockContentTypeDefinitions[$currentBlockContentBundle];
+  $type = \Drupal::service('plugin.manager.os_widgets');
+  $plugin = $type->createInstance($widget_id);
+  if (!($plugin instanceof OsWidgetsInterface)) {
     return;
   }
 
-  $variables = $blockContentTypeWidget->buildBlock($variables, $blockContent);
+  $variables = $plugin->buildBlock($variables, $blockContent);
 }
 
 /**

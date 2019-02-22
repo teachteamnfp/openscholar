@@ -1,11 +1,19 @@
 <?php
 
-namespace Drupal\os_widgets\BlockContentType;
+namespace Drupal\os_widgets\Plugin\OsWidgets;
+
+use Drupal\Core\Plugin\PluginBase;
+use Drupal\os_widgets\OsWidgetsInterface;
 
 /**
  * Class FeaturedPostsWidget.
+ *
+ * @OsWidget(
+ *   id = "featured_posts_widget",
+ *   title = @Translation("Featured Posts")
+ * )
  */
-class FeaturedPostsWidget implements BlockContentTypeInterface {
+class FeaturedPostsWidget extends PluginBase implements OsWidgetsInterface {
 
   /**
    * {@inheritdoc}

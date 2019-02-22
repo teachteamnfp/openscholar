@@ -1,37 +1,42 @@
 <?php
 
-namespace Drupal\os_widgets\BlockContentType;
+namespace Drupal\os_widgets\Plugin\OsWidgets;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Plugin\PluginBase;
+use Drupal\os_widgets\OsWidgetsInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class EmbedMediaWidget.
+ *
+ * @OsWidget(
+ *   id = "embed_media_widget",
+ *   title = @Translation("Embed Media")
+ * )
  */
-class EmbedMediaWidget implements BlockContentTypeInterface {
+class EmbedMediaWidget extends PluginBase implements OsWidgetsInterface {
 
-  /**
-   * Entity Type Manager.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   *   EntityTypeManagerInterface.
-   */
   protected $entityTypeManager;
 
   /**
-   * Class constructor.
+   * {@inheritdoc}
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager = NULL) {
-    $this->entityTypeManager = is_null($entity_type_manager) ? \Drupal::entityTypeManager() : $entity_type_manager;
+  public function __construct($configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->entityTypeManager = $entity_type_manager;
   }
 
   /**
-   * Set Entity Type Manager.
-   *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   New entity type manager.
+   * {@inheritdoc}
    */
-  public function setEntityTypeManager(EntityTypeManagerInterface $entity_type_manager) {
-    $this->entityTypeManager = $entity_type_manager;
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('entity_type_manager')
+    );
   }
 
   /**
@@ -67,7 +72,7 @@ class EmbedMediaWidget implements BlockContentTypeInterface {
           $variables['content']['embed_media'][$delta] = $embed_media;
           break;
 
-        case 'video_embed':
+        case 'remote':
           $view_builder = $this->entityTypeManager->getViewBuilder('media');
           $embed_media = $view_builder->view($media, 'default');
           $variables['content']['embed_media'][$delta] = $embed_media;
