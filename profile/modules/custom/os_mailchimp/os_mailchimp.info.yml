@@ -1,0 +1,7 @@
+name: 'Mailchimp settings'
+description: 'Define mailchimp control panel settings.'
+type: module
+core: 8.x
+dependencies:
+  - "cp:cp_settings"
+  - "drupal:mailchimp"

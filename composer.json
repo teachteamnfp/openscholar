@@ -62,6 +62,10 @@
             }
         },
         {
+            "type": "composer",
+            "url": "https://packages.drupal.org/8"
+        },
+        {
             "type": "package",
             "package": {
                 "name": "swordapp/swordappv2-php-library",
@@ -94,10 +98,6 @@
                     "reference": "master"
                 }
             }
-        },
-        {
-            "type": "composer",
-            "url": "https://packages.drupal.org/8"
         }
     ],
     "require": {
@@ -138,6 +138,7 @@
         "drupal/bootstrap": "^3.17",
         "drupal/styleguide": "^1.0@alpha",
         "drupal/config_split": "^1.4",
+        "drupal/mailchimp": "^1.8",
         "drupal/bibcite": "1.x-dev",
         "drupal/field_tools": "^1.0@alpha",
         "ext-json": "*",
@@ -238,6 +239,9 @@
             },
             "drupal/bootstrap": {
                 "Unsupported operand types during providers JSON discovery #8": "https://www.drupal.org/files/issues/2019-01-24/3027569-8.x-3.x-8.patch"
+            },
+            "drupal/mailchimp": {
+                "Cache read problem in mailchimp_get_mergevars()": "https://www.drupal.org/files/issues/2019-02-13/3032674-cache-fix-for-mailchimp_get_mergevars-3.patch"
             }
         }
     }
