@@ -8,14 +8,14 @@ use Drupal\os_widgets\Plugin\OsWidgets\FeaturedPostsWidget;
  * Class FeaturedPosts.
  *
  * @group kernel
- * @covers \Drupal\os_widgets\BlockContentType\FeaturedPostsWidget
+ * @covers \Drupal\os_widgets\Plugin\OsWidgets\FeaturedPostsWidget
  */
 class FeaturedPostsBlockRenderTest extends OsWidgetsExistingSiteTestBase {
 
   /**
    * The object we're testing.
    *
-   * @var \Drupal\os_widgets\BlockContentType\FeaturedPostsWidget
+   * @var \Drupal\os_widgets\Plugin\OsWidgets\FeaturedPostsWidget
    */
   protected $featuredPostsWidget;
 
