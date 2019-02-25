@@ -76,7 +76,9 @@
 <article{{ attributes.addClass("node--teaser news") }}>
 
   {% block image %}
-    <div class="teaser--image">{{ content.field_photo }}</div>
+    {% if content.field_photo|render %}
+      <div class="teaser--image">{{ content.field_photo }}</div>
+    {% endif %}
   {% endblock %}
   <div class="teaser--content">
     {{ title_prefix }}
