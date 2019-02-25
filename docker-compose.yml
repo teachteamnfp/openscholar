@@ -40,6 +40,7 @@ services:
       APACHE_SERVER_ROOT: /var/www/html/web
       APACHE_TIMEOUT: $APACHE_TIMEOUT
       APACHE_VHOST_PRESET: php
+      APACHE_FCGI_PROXY_TIMEOUT: $APACHE_FCGI_PROXY_TIMEOUT
     volumes:
       - ./:/var/www/html:cached
     labels:
