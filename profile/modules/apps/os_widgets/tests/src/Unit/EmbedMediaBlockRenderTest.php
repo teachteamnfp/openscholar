@@ -3,7 +3,6 @@
 namespace Drupal\Tests\os_widgets\Unit;
 
 use Drupal\block_content\Entity\BlockContent;
-use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Entity\EntityViewBuilder;
 use Drupal\Core\Field\EntityReferenceFieldItemList;
@@ -34,7 +33,7 @@ class EmbedMediaBlockRenderTest extends UnitTestCase {
   public function setUp() {
     parent::setUp();
     $entity_type_manager = $this->createMock(EntityTypeManager::class);
-    $this->embedMediaWidget = new EmbedMediaWidget();
+    $this->embedMediaWidget = new EmbedMediaWidget([], '', [], $entity_type_manager);
   }
 
   /**
@@ -108,12 +107,9 @@ class EmbedMediaBlockRenderTest extends UnitTestCase {
     $entity_type_manager->method('getViewBuilder')
       ->willReturn($entity_view_builder);
 
-    $container = new ContainerBuilder();
-    $container->set('entity_type.manager', $entity_type_manager);
-    \Drupal::setContainer($container);
-
     $block_content = $this->createBlockContentVideoMock($field_values['field_max_width']);
-    $variables = $this->embedMediaWidget->buildBlock([], $block_content);
+    $embed_media_widget = new EmbedMediaWidget([], '', [], $entity_type_manager);
+    $variables = $embed_media_widget->buildBlock([], $block_content);
     $this->assertSame('default', $variables['content']['embed_media'][0]['#view_mode']);
   }
 
@@ -172,7 +168,7 @@ class EmbedMediaBlockRenderTest extends UnitTestCase {
     $field_media_select = $this->createMock(EntityReferenceFieldItemList::class);
     $media = $this->createMock(Media::class);
     $media->method('bundle')
-      ->willReturn('video_embed');
+      ->willReturn('remote');
     $field_media_select->method('referencedEntities')
       ->willReturn([$media]);
 
