@@ -2,7 +2,7 @@
 
 namespace Drupal\Tests\os_widgets\ExistingSite;
 
-use Drupal\os_widgets\BlockContentType\FeaturedPostsWidget;
+use Drupal\os_widgets\Plugin\OsWidgets\FeaturedPostsWidget;
 
 /**
  * Class FeaturedPosts.
@@ -24,7 +24,7 @@ class FeaturedPostsBlockRenderTest extends OsWidgetsExistingSiteTestBase {
    */
   public function setUp() {
     parent::setUp();
-    $this->featuredPostsWidget = new FeaturedPostsWidget();
+    $this->featuredPostsWidget = new FeaturedPostsWidget([], '', [], $this->entityTypeManager);
   }
 
   /**
@@ -134,14 +134,16 @@ class FeaturedPostsBlockRenderTest extends OsWidgetsExistingSiteTestBase {
         1,
       ],
     ]);
+    $randomDeltaId = 1;
     $featured_posts_widget = $this->getMockBuilder(FeaturedPostsWidget::class)
+      ->disableOriginalConstructor()
       ->setMethods(['shortRandom'])
       ->getMock();
     $featured_posts_widget->method('shortRandom')
-      ->willReturn(1);
+      ->willReturn($randomDeltaId);
     $variables = $featured_posts_widget->buildBlock([], $block_content);
     $this->assertSame(FALSE, $variables['content']['field_featured_posts'][0]['#access']);
-    $this->assertFalse(array_key_exists('#access', $variables['content']['field_featured_posts'][1]));
+    $this->assertFalse(array_key_exists('#access', $variables['content']['field_featured_posts'][$randomDeltaId]));
   }
 
 }
