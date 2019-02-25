@@ -1,0 +1,26 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - block_visibility_groups
+    - os_mailchimp
+  theme:
+    - os_base
+id: mailchimpsubscribe
+theme: os_base
+region: content
+weight: 0
+provider: null
+plugin: os_mailchimp_subscribe
+settings:
+  id: os_mailchimp_subscribe
+  label: 'Mailchimp subscribe'
+  provider: os_mailchimp
+  label_display: visible
+  list_id: c733b01dfd
+visibility:
+  condition_group:
+    id: condition_group
+    negate: false
+    block_visibility_group: ''
+    context_mapping: {  }

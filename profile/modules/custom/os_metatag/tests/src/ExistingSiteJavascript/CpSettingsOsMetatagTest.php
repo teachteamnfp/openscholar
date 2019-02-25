@@ -38,9 +38,6 @@ class CpSettingsOsMetatagTest extends ExistingSiteWebDriverTestBase {
     $this->drupalLogin($this->adminUser);
 
     $this->visit("/cp/settings/seo");
-    $web_assert->statusCodeEquals(403);
-    drupal_flush_all_caches();
-    $this->visit("/cp/settings/seo");
     $web_assert->statusCodeEquals(200);
 
     $edit = [
@@ -90,6 +87,7 @@ class CpSettingsOsMetatagTest extends ExistingSiteWebDriverTestBase {
     $web_assert->statusCodeEquals(200);
 
     $this->drupalLogout();
+    drupal_flush_all_caches();
     $this->visit("/");
     $expectedHtmlValue = '<link rel="publisher" href="http://example-publisher.com/&amp;quot;&amp;#039;quote-test&amp;lt;&amp;gt;">';
     $this->assertContains($expectedHtmlValue, $this->getCurrentPageContent(), 'HTML head not contains publisher link.');

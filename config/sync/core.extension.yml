@@ -53,6 +53,7 @@ module:
   layout_discovery: 0
   link: 0
   locale: 0
+  mailchimp: 0
   media: 0
   menu_ui: 0
   metatag: 0
@@ -66,6 +67,7 @@ module:
   os_classes: 0
   os_fullcalendar: 0
   os_links: 0
+  os_mailchimp: 0
   os_media_gallery: 0
   os_metatag: 0
   os_office_embed: 0

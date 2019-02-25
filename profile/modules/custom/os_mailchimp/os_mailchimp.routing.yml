@@ -1,0 +1,7 @@
+os_mailchimp.modal.subscribe:
+  path: '/os-mailchimp/subscribe/{list_id}'
+  defaults:
+    _title: 'Mailchimp subscribe'
+    _controller: '\Drupal\os_mailchimp\Controller\OsMailChimpModalController::modal'
+  requirements:
+    _permission: 'access content'
