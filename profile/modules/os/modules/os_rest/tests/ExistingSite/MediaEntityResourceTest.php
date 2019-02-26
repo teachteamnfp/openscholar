@@ -12,6 +12,7 @@ use Drupal\Tests\rest\Functional\CookieResourceTestTrait;
  * Class MediaEntityResourceTest
  * @package Drupal\Tests\os_rest\ExistingSite
  * @group media_browser
+ * @group functional
  */
 class MediaEntityResourceTest extends MediaResourceTestBase {
 
