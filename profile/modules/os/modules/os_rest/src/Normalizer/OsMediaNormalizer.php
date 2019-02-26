@@ -2,8 +2,13 @@
 
 namespace Drupal\os_rest\Normalizer;
 
+use Drupal\Core\Entity\EntityManagerInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\File\FileSystemInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\serialization\Normalizer\ContentEntityNormalizer;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Converts Media to more usable format.
@@ -13,11 +18,46 @@ use Drupal\serialization\Normalizer\ContentEntityNormalizer;
 class OsMediaNormalizer extends ContentEntityNormalizer {
 
   /**
+   * Entity Type Manager interface
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * Current route match
+   *
+   * @var \Drupal\Core\Routing\RouteMatchInterface
+   */
+  protected $routeMatch;
+
+  /**
+   * @var \Drupal\Core\File\FileSystemInterface
+   */
+  protected $fileSystem;
+
+  /**
    * The interface or class that this Normalizer supports.
    *
    * @var string
    */
   protected $supportedInterfaceOrClass = 'Drupal\media\MediaInterface';
+
+  /**
+   * OsMediaNormalizer constructor.
+   * @param EntityManagerInterface $entity_manager
+   *   deprecated, from parent class
+   * @param EntityTypeManagerInterface $entityTypeManager
+   *   Entity Type Manager
+   * @param RouteMatchInterface $routeMatch
+   *   Current Route match
+   */
+  public function __construct(EntityManagerInterface $entity_manager, EntityTypeManagerInterface $entityTypeManager, RouteMatchInterface $routeMatch, FileSystemInterface $fileSystem) {
+    parent::__construct($entity_manager);
+    $this->entityTypeManager = $entityTypeManager;
+    $this->routeMatch = $routeMatch;
+    $this->fileSystem = $fileSystem;
+  }
 
   /**
    * {@inheritdoc}
@@ -37,12 +77,12 @@ class OsMediaNormalizer extends ContentEntityNormalizer {
     $file = $source->getSourceFieldValue($media);
     if (is_numeric($file)) {
       /** @var \Drupal\file\FileInterface $file */
-      $file = \Drupal::entityTypeManager()->getStorage('file')->load($file);
+      $file = $this->entityTypeManager->getStorage('file')->load($file);
       $output['fid'] = $file->id();
       $output['url'] = file_create_url($file->getFileUri());
       $output['size'] = $file->getSize();
       $output['filename'] = $file->getFilename();
-      $output['schema'] = \Drupal::service('file_system')->uriScheme($file->getFileUri());
+      $output['schema'] = $this->fileSystem->uriScheme($file->getFileUri());
 
       if (!empty($temp['field_media_image'])) {
         $output['alt'] = $temp['field_media_image'][0]['alt'];
@@ -78,7 +118,7 @@ class OsMediaNormalizer extends ContentEntityNormalizer {
    * {@inheritdoc}
    */
   public function denormalizeFieldData(array $data, FieldableEntityInterface $entity, $format, array $context) {
-    $original = \Drupal::routeMatch()->getParameter('media');
+    $original = $this->routeMatch->getParameter('media');
 
     if (!empty($data['name'])) {
       $input = [
