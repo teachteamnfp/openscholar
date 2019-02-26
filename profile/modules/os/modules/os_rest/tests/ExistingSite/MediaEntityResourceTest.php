@@ -49,6 +49,8 @@ class MediaEntityResourceTest extends MediaResourceTestBase {
         'target_id' => $file->id(),
       ],
     ]);
+    echo get_class($media->bundle);
+    echo get_class($media->bundle->entity);
     $media
       ->setName('Llama')
       ->setPublished()
@@ -72,7 +74,7 @@ class MediaEntityResourceTest extends MediaResourceTestBase {
       'fid' => $file->id(),
       'filename' => $file->getFilename(),
       'mid' => 1,
-      'name' => '',
+      'name' => 'Llama',
       'thumbnail' => file_create_url($thumbnail->getFileUri()),
       'schema' => 'public',
       'size' => $file->getSize(),
