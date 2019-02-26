@@ -5,4 +5,4 @@ dependencies: {  }
 id: os_date_format
 label: 'OS date format'
 locked: false
-pattern: 'l, F d, Y'
+pattern: 'F d, Y'

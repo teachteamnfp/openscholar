@@ -80,12 +80,15 @@
       <div class="teaser--image">{{ content.field_photo }}</div>
     {% endif %}
   {% endblock %}
+
   <div class="teaser--content">
-    {{ title_prefix }}
-      <h2{{ title_attributes }} class="node--title">
-        <a href="{{ url }}" rel="bookmark">{{ label }}</a>
-      </h2>
-    {{ title_suffix }}
+    {% block title %}
+      {{ title_prefix }}
+        <h2{{ title_attributes }} class="node--title">
+          <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+        </h2>
+      {{ title_suffix }}
+    {% endblock %}
     
     {% block content %}
     <div{{ content_attributes }}>

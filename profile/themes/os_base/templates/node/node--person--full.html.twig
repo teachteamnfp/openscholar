@@ -72,6 +72,11 @@
  * @ingroup themeable
  */
 #}
+<div class="person--title">
+  <h1>{{ content.field_first_name.0['#context'].value }} {{ content.field_last_name.0['#context'].value }}</h1>
+  {{content.field_professional_titles}}
+</div>
+
 <article{{ attributes }}>
 
   {{ title_prefix }}
@@ -97,7 +102,7 @@
       {{ content.field_photo_person }}
       {{ content.body }}
     </div> 
-    <div class="content--main--area">{{ content|without('field_photo_person', 'body') }}</div>
+    <div class="content--main--area">{{ content|without('field_photo_person', 'body', "field_last_name", "field_first_name", "field_professional_titles") }}</div>
   </div>
 
 </article>
