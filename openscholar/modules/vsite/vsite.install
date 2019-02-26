@@ -979,8 +979,8 @@ function vsite_update_7040(&$sandbox) {
     $query_count->addExpression('COUNT(nid)');
     $sandbox['max'] = $query_count->execute()->fetchField();
 
-    // A place to store messages during the run.
-    $sandbox['messages'] = array();
+    // A place to store deleted node types during the run.
+    $sandbox['deleted_types'] = array();
 
     // Last node read via the query.
     $sandbox['current_node'] = -1;
@@ -990,6 +990,7 @@ function vsite_update_7040(&$sandbox) {
   // Retrieve the next group of nids.
   $query->fields('n', array(
     'nid',
+    'type',
   ));
   $query->orderBy('n.nid', 'ASC');
   $query->where('n.nid > :nid', array(
@@ -997,26 +998,39 @@ function vsite_update_7040(&$sandbox) {
     ));
   $query->range(0, $limit);
   $result = $query->execute();
+  $nids = array();
   foreach ($result as $row) {
-
-    $node = node_load($row->nid);
-    // Delete placeholder, dryrun
+    $nids[] = $row->nid;
 
     // Update our progress information.
     $sandbox['progress']++;
     $sandbox['current_node'] = $row->nid;
-    $sandbox['messages'][] = $node->title . ' [type:' . $node->type . '] [nid:' . $node->nid . ']';
+    if (isset($sandbox['deleted_types'][$row->type])) {
+      $sandbox['deleted_types'][$row->type]++;
+    }
+    else {
+      $sandbox['deleted_types'][$row->type] = 1;
+    }
   }
+  node_delete_multiple($nids);
 
   // Set the "finished" status, to tell batch engine whether this function
   // needs to run again. If you set a float, this will indicate the progress
   // of the batch so the progress bar will update.
-  $sandbox['#finished'] = $sandbox['progress'] >= $sandbox['max'] ? TRUE : $sandbox['progress'] / $sandbox['max'];
+  $sandbox['#finished'] = floor($sandbox['progress'] / $sandbox['max']);
 
   if ($sandbox['#finished']) {
-    $final_message = '<ul><li>' . implode('</li><li>', $sandbox['messages']) . "</li></ul>";
-    return t('List of deleted content: @message', array(
+    $final_message = '';
+    foreach ($sandbox['deleted_types'] as $type => $count) {
+      $final_message .= $type . ': ' . $count . "\n";
+    }
+    return t("List of deleted content types and count:\n @message", array(
       '@message' => $final_message,
     ));
   }
+  return t("Processed elements: @progress/@max (@percent)", array(
+    '@max' => $sandbox['max'],
+    '@progress' => $sandbox['progress'],
+    '@percent' => round(100 * $sandbox['progress'] / $sandbox['max'], 2) .'%',
+  ));
 }
