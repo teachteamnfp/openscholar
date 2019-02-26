@@ -5,7 +5,7 @@ namespace Drupal\os_widgets;
 use Drupal\block_content\Entity\BlockContent;
 
 /**
- * Interface CpSettingsManagerInterface.
+ * Interface OsWidgetsInterface.
  */
 interface OsWidgetsInterface {
 
