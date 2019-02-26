@@ -94,7 +94,6 @@ class OsMediaNormalizer extends ContentEntityNormalizer {
     }
     $output['description'] = !empty($temp['field_description']) ? $temp['field_description'][0]['value'] : '';
     $output['thumbnail'] = $temp['thumbnail'][0]['url'];
-    $output['reference'] = $temp;
 
     return $output;
   }
