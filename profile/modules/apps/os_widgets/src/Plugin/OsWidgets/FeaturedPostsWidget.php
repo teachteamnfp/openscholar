@@ -2,7 +2,7 @@
 
 namespace Drupal\os_widgets\Plugin\OsWidgets;
 
-use Drupal\Core\Plugin\PluginBase;
+use Drupal\os_widgets\OsWidgetsBase;
 use Drupal\os_widgets\OsWidgetsInterface;
 
 /**
@@ -13,7 +13,7 @@ use Drupal\os_widgets\OsWidgetsInterface;
  *   title = @Translation("Featured Posts")
  * )
  */
-class FeaturedPostsWidget extends PluginBase implements OsWidgetsInterface {
+class FeaturedPostsWidget extends OsWidgetsBase implements OsWidgetsInterface {
 
   /**
    * {@inheritdoc}
@@ -24,7 +24,7 @@ class FeaturedPostsWidget extends PluginBase implements OsWidgetsInterface {
     }
     $displayStyleValues = $block_content->get('field_display_style')->getValue();
     $displayStyle = $displayStyleValues[0]['value'];
-    $view_builder = \Drupal::entityTypeManager()->getViewBuilder('node');
+    $view_builder = $this->entityTypeManager->getViewBuilder('node');
     /** @var \Drupal\Core\Field\FieldItemList $media_select_list */
     $featured_posts_list = $block_content->get('field_featured_posts');
     if (empty($featured_posts_list)) {
