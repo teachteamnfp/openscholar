@@ -44,14 +44,13 @@ export PATH="$HOME/.composer/vendor/bin:$PATH"
 cd $BUILD_ROOT
 
 #Backup the make files
-mv -f openscholar/vendor /tmp/
-mv -f openscholar/composer.json /tmp/
-mv -f openscholar/composer.lock /tmp/
+cp -f openscholar/composer.json /tmp/
+cp -f openscholar/composer.lock /tmp/
 
 git subtree pull -q -m "$CI_MESSAGE" --prefix=openscholar git://github.com/openscholar/openscholar.git $CI_BRANCH --squash
 
 #Only build if no build has ever happened, or if the make files have changed
-if [[ $FORCE_REBUILD == "1" ]] ; then
+if [ ! -d openscholar/vendor ] || [ $FORCE_REBUILD == "1" ] || [ "$(cmp -b 'openscholar/composer.json' '/tmp/composer.json')" != "" ] || [ "$(cmp -b 'openscholar/composer.lock' '/tmp/composer.lock')" != "" ] ]; then
 
 # Chores.
 echo "Rebuilding..."
