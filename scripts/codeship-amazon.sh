@@ -5,7 +5,6 @@
 mkdir -p ~/src/amazon/
 git config --global user.email "openscholar@swap.lists.harvard.edu"
 git config --global user.name "OpenScholar Auto Push Bot"
-phpenv local 7.2
 
 BUILD_ROOT='/home/rof/src/amazon'
 DOCROOT='web';
@@ -42,6 +41,7 @@ mkdir -p ~/.drush
 printf "disable_functions =\nmemory_limit = 256M\ndate.timezone = \"America/New_York\"" > ~/.drush/php.ini
 export PATH="$HOME/.composer/vendor/bin:$PATH"
 drush --version || exit 1
+phpenv local 7.2
 php -v || exit 1
 
 # Drush executable.
@@ -60,6 +60,9 @@ if [ ! -d openscholar/vendor ] || [ $FORCE_REBUILD == "1" ] || [ "$(cmp -b 'open
 # Chores.
 echo "Rebuilding..."
 cd openscholar
+
+phpenv local 7.2
+php -v || exit 1
 
 # Download composer components
 composer install --ignore-platform-reqs
