@@ -103,23 +103,24 @@ function os_publications_page_attachments(array &$page) {
 
   if ($entities->has('bibcite_reference') && !strpos($current_route->getRouteName(), 'edit_form')) {
     foreach ($entities as $entity => $value) {
+      $repos = $value->distribution->getString();
+      $repos = explode(',', $repos);
       $types[] = $entity;
       $entity_id[$entity] = $value->id();
-    }
-    // @todo Implement checks if the entity is to be made available to GoogleScholar and if googlescholar is enabled
-    $type = \Drupal::service('os_publications.manager_citation_distribute');
+      $type = \Drupal::service('os_publications.manager_citation_distribute');
 
-    foreach (_citation_distribute_plugins() as $plugin) {
-      if (in_array('bibcite_reference', $types)) {
-        if (isset($plugin['type']) && $plugin['type'] == 'metadata') {
-          $service = $type->createInstance($plugin['id']);
-          if ($service && method_exists($service, 'render')) {
-            $meta = $service->render($entity_id['bibcite_reference']);
+      foreach (_citation_distribute_plugins() as $plugin) {
+        if (in_array('bibcite_reference', $types)) {
+          if (isset($plugin['type']) && in_array($plugin['id'], $repos) && $plugin['type'] == 'metadata') {
+            $service = $type->createInstance($plugin['id']);
+            if ($service && method_exists($service, 'render')) {
+              $meta = $service->render($entity_id['bibcite_reference']);
+            }
           }
         }
-      }
-      foreach ($meta as $key => $item) {
-        $page['#attached']['html_head'][] = [$item, $key];
+        foreach ($meta as $key => $item) {
+          $page['#attached']['html_head'][] = [$item, $key];
+        }
       }
     }
   }
