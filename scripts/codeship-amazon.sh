@@ -62,7 +62,10 @@ cd openscholar
 # Download composer components
 composer install --ignore-platform-reqs
 
-cd ..
+# Build CSS
+cd profile/themes/os_base && npm install && ./node_modules/.bin/gulp sass
+
+cd ../../../..
 
 #remove install.php
 rm -Rf web/install.php || true
