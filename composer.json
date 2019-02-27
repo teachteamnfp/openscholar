@@ -142,6 +142,7 @@
             "DrupalProject\\composer\\ScriptHandler::createRequiredFiles",
             "DrupalProject\\composer\\ScriptHandler::placeProfile",
             "DrupalProject\\composer\\ScriptHandler::installFullcalendarLibrary",
+            "DrupalProject\\composer\\ScriptHandler::installBootstrapLibrary",
             "./scripts/register-cs.sh",
             "./scripts/install-hooks.sh"
         ],
@@ -149,7 +150,8 @@
             "@composer drupal:scaffold",
             "DrupalProject\\composer\\ScriptHandler::createRequiredFiles",
             "DrupalProject\\composer\\ScriptHandler::placeProfile",
-            "DrupalProject\\composer\\ScriptHandler::installFullcalendarLibrary"
+            "DrupalProject\\composer\\ScriptHandler::installFullcalendarLibrary",
+            "DrupalProject\\composer\\ScriptHandler::installBootstrapLibrary"
         ],
         "code-standard": [
             "./vendor/bin/phpcs --standard=Drupal",
