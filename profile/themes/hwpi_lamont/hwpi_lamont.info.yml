@@ -1,0 +1,9 @@
+name: 'Lamont'
+description: A stark looking theme for use by departments at Harvard.
+
+base theme: os_base
+core: 8.x
+type: theme
+
+libraries:
+  - hwpi_lamont/global-styling
