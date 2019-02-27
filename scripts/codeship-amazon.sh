@@ -34,6 +34,9 @@ else
   git checkout -b $CI_BRANCH;
 fi
 
+phpenv local 7.2
+php -v || exit 1
+
 # Build this branch and push it to Amazon
 # Set up global configuration and install tools needed to build
 composer global require drush/drush
@@ -41,8 +44,6 @@ mkdir -p ~/.drush
 printf "disable_functions =\nmemory_limit = 256M\ndate.timezone = \"America/New_York\"" > ~/.drush/php.ini
 export PATH="$HOME/.composer/vendor/bin:$PATH"
 drush --version || exit 1
-phpenv local 7.2
-php -v || exit 1
 
 # Drush executable.
 [[ $DRUSH && ${DRUSH-x} ]] || DRUSH=drush
@@ -60,9 +61,6 @@ if [ ! -d openscholar/vendor ] || [ $FORCE_REBUILD == "1" ] || [ "$(cmp -b 'open
 # Chores.
 echo "Rebuilding..."
 cd openscholar
-
-phpenv local 7.2
-php -v || exit 1
 
 # Download composer components
 composer install --ignore-platform-reqs
