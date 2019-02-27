@@ -59,8 +59,8 @@ if [ ! -d openscholar/vendor ] || [ $FORCE_REBUILD == "1" ] || [ "$(cmp -b 'open
 echo "Rebuilding..."
 cd openscholar
 
-# Download composer components
-composer install --ignore-platform-reqs
+# Download components
+make
 
 cd ..
 
