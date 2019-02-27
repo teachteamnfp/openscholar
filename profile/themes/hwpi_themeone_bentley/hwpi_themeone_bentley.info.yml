@@ -6,4 +6,4 @@ core: 8.x
 type: theme
 
 libraries:
-  - modern/global-styling
+  - hwpi_themeone_bentley/global-styling
