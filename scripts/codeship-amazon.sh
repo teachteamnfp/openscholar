@@ -41,6 +41,7 @@ mkdir -p ~/.drush
 printf "disable_functions =\nmemory_limit = 256M\ndate.timezone = \"America/New_York\"" > ~/.drush/php.ini
 export PATH="$HOME/.composer/vendor/bin:$PATH"
 drush --version || exit 1
+php -v || exit 1
 
 # Drush executable.
 [[ $DRUSH && ${DRUSH-x} ]] || DRUSH=drush
