@@ -43,8 +43,6 @@ export PATH="$HOME/.composer/vendor/bin:$PATH"
 
 cd $BUILD_ROOT
 
-touch openscholar/composer.json openscholar/composer.lock
-
 #Backup the make files
 cp -f openscholar/composer.json /tmp/
 cp -f openscholar/composer.lock /tmp/
