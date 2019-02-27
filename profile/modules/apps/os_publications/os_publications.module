@@ -6,6 +6,10 @@
  */
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Link;
+use Drupal\Core\Url;
 use Drupal\views\Plugin\views\query\QueryPluginBase;
 use Drupal\views\ViewExecutable;
 use Ds\Map;
@@ -189,4 +193,31 @@ function _citation_distribute_is_service_configured(array $plugin) {
     }
   }
   return TRUE;
+}
+
+/**
+ * Implements hook_entity_base_field_info().
+ */
+function os_publications_entity_base_field_info(EntityTypeInterface $entity_type) {
+  if ($entity_type->id() == 'bibcite_reference') {
+    foreach (_citation_distribute_plugins() as $plugin) {
+      $link = Link::fromTextAndUrl($plugin['name'], Url::fromUri($plugin['href']))->toString();
+      $options[$plugin['id']] = $link;
+    }
+
+    $fields['distribution'] = BaseFieldDefinition::create('list_string')
+      ->setLabel(t("Distribute to Repositories"))
+      ->setSetting('allowed_values', $options)
+      ->setCardinality(-1)
+      ->setDisplayOptions('form', [
+        'type' => 'options_buttons',
+        'settings' => [
+          'display_label' => TRUE,
+        ],
+        'weight' => '10',
+      ])
+      ->setDisplayConfigurable('form', TRUE);
+
+    return $fields;
+  }
 }
