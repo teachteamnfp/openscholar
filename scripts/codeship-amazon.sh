@@ -5,6 +5,7 @@
 mkdir -p ~/src/amazon/
 git config --global user.email "openscholar@swap.lists.harvard.edu"
 git config --global user.name "OpenScholar Auto Push Bot"
+phpenv local 7.2
 
 BUILD_ROOT='/home/rof/src/amazon'
 DOCROOT='web';
