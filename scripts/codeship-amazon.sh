@@ -39,14 +39,8 @@ php -v || exit 1
 
 # Build this branch and push it to Amazon
 # Set up global configuration and install tools needed to build
-composer global require drush/drush
-mkdir -p ~/.drush
-printf "disable_functions =\nmemory_limit = 256M\ndate.timezone = \"America/New_York\"" > ~/.drush/php.ini
 export PATH="$HOME/.composer/vendor/bin:$PATH"
-drush --version || exit 1
 
-# Drush executable.
-[[ $DRUSH && ${DRUSH-x} ]] || DRUSH=drush
 cd $BUILD_ROOT
 
 #Backup the make files
