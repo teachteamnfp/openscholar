@@ -211,7 +211,6 @@ projects[libraries][subdir] = "contrib"
 projects[libraries][version] = 2.1
 projects[libraries][patch][] = "http://drupal.org/files/0001-Fix-1938638-by-coredumperror-Fix-typo.patch"
 
-projects[link][patch][] = "https://raw.githubusercontent.com/openscholar/openscholar/831d1d024dfecafbfeeb410ac8c841f27175d912/patches/link-updated-tld-list-7947.patch"
 projects[link][version] = 1.6
 projects[link][subdir] = "contrib"
 
