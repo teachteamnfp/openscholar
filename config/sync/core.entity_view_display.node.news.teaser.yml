@@ -14,8 +14,12 @@ dependencies:
   module:
     - datetime
     - image
+    - layout_builder
     - text
     - user
+third_party_settings:
+  layout_builder:
+    sections: {  }
 id: node.news.teaser
 targetEntityType: node
 bundle: news
@@ -33,10 +37,10 @@ content:
     type: datetime_default
     weight: 1
     region: content
-    label: inline
+    label: hidden
     settings:
-      format_type: medium
       timezone_override: ''
+      format_type: os_date_format
     third_party_settings: {  }
   field_photo:
     type: image

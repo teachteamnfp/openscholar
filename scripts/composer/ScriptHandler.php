@@ -16,6 +16,8 @@ use Webmozart\PathUtil\Path;
 use Composer\Util\Platform;
 use Composer\Util\ProcessExecutor;
 use Composer\Util\Filesystem as ComposerFilesystem;
+use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class ScriptHandler {
 
@@ -205,6 +207,55 @@ class ScriptHandler {
     }
     catch (\Exception $e) {
       throw new \RuntimeException($e->getMessage());
+    }
+  }
+
+  /**
+   * Installs bootstrap library.
+   *
+   * Installed via Composer packages.
+   *
+   * @param \Composer\Script\Event $event
+   *   Composer event.
+   */
+  public static function installBootstrapLibrary(Event $event) {
+    $fs = new ComposerFilesystem();
+    $io = $event->getIO();
+    $fileList = array(
+      'vendor' . DIRECTORY_SEPARATOR . 'twbs' . DIRECTORY_SEPARATOR . 'bootstrap-sass' => 'bootstrap'
+    );
+    $root = realpath($event->getComposer()->getPackage()->getDistUrl());
+    $path = $root.'/profile/themes/os_base/';
+
+    try {
+      foreach ($fileList as $orig_file => $file) {
+        $orig = $root . DIRECTORY_SEPARATOR . $orig_file;
+        $link = $path.DIRECTORY_SEPARATOR.$file;
+        if (Platform::isWindows () && is_dir($orig)) {
+          if (file_exists($link)) {
+            if ($fs->isJunction ($link)) {
+              $io->writeError(sprintf("Removing junction from %s\n", $file));
+              $fs->removeJunction ($link);
+            }
+            elseif (is_dir($link)) {
+              $fs->removeDirectory($link);
+            }
+            else {
+              $fs->unlink($link);
+            }
+          }
+
+          $io->writeError (sprintf ("Junctioning from %s\n", $file), false);
+          $fs->junction ($orig, $link);
+        } else {
+          $path = rtrim ($path, DIRECTORY_SEPARATOR);
+          $io->writeError (sprintf ("Symlinking from %s\n", $file), false);
+          $fs->ensureDirectoryExists(dirname($link));
+          $fs->relativeSymlink ($orig, $link);
+        }
+      }
+    } catch (IOException $e) {
+        throw new \RuntimeException(sprintf('Symlink from "%s" to "%s" failed!', $root, $path));
     }
   }
 

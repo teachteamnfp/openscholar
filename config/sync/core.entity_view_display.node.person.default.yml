@@ -16,15 +16,18 @@ dependencies:
     - field.field.node.person.field_professional_titles
     - field.field.node.person.field_redirect_to_source
     - field.field.node.person.field_website
-    - image.style.crop_photo_person
+    - image.style.os_news_full
     - node.type.person
   module:
     - image
+    - layout_builder
     - link
-    - options
     - telephone
     - text
     - user
+third_party_settings:
+  layout_builder:
+    sections: {  }
 id: node.person.default
 targetEntityType: node
 bundle: person
@@ -33,12 +36,12 @@ content:
   body:
     label: hidden
     type: text_default
-    weight: 2
+    weight: 1
     settings: {  }
     third_party_settings: {  }
     region: content
   field_address:
-    weight: 8
+    weight: 5
     label: above
     settings:
       link_to_entity: false
@@ -46,38 +49,23 @@ content:
     type: string
     region: content
   field_email:
-    weight: 11
-    label: above
+    weight: 7
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     type: basic_string
     region: content
   field_first_name:
-    weight: 4
-    label: above
+    weight: 2
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
-    region: content
-  field_honorific:
-    weight: 3
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: list_default
     region: content
   field_last_name:
-    weight: 6
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
-  field_middle_name:
-    weight: 5
-    label: above
+    weight: 3
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
@@ -93,8 +81,8 @@ content:
     type: number_integer
     region: content
   field_phone:
-    weight: 10
-    label: above
+    weight: 6
+    label: hidden
     settings:
       title: ''
     third_party_settings: {  }
@@ -106,19 +94,19 @@ content:
     region: content
     label: hidden
     settings:
-      image_style: crop_photo_person
+      image_style: os_news_full
       image_link: ''
     third_party_settings: {  }
   field_professional_titles:
-    weight: 7
-    label: above
+    weight: 4
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
     region: content
   field_website:
-    weight: 12
+    weight: 8
     label: above
     settings:
       trim_length: 80
@@ -130,10 +118,12 @@ content:
     type: link
     region: content
   links:
-    weight: 1
+    weight: 10
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_honorific: true
+  field_middle_name: true
   field_redirect_to_source: true
   langcode: true

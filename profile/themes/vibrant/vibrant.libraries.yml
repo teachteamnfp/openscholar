@@ -1,0 +1,4 @@
+global-styling:
+  version: VERSION
+  css:
+    css/vibrant.css: {}
