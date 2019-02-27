@@ -53,7 +53,7 @@ cp -f openscholar/composer.lock /tmp/
 git subtree pull -q -m "$CI_MESSAGE" --prefix=openscholar git://github.com/openscholar/openscholar.git $CI_BRANCH --squash
 
 #Only build if no build has ever happened, or if the make files have changed
-if [[ [[ ! -d openscholar/vendor ]] || [[ $FORCE_REBUILD == "1" ]] || [[ "$(cmp -b 'openscholar/composer.json' '/tmp/composer.json')" != "" ]] || [[ "$(cmp -b 'openscholar/composer.lock' '/tmp/composer.lock')" != "" ]] ]]; then
+if [[ ! -d openscholar/vendor ]] || [[ $FORCE_REBUILD == "1" ]] || [[ "$(cmp -b 'openscholar/composer.json' '/tmp/composer.json')" != "" ]] || [[ "$(cmp -b 'openscholar/composer.lock' '/tmp/composer.lock')" != "" ]] ]; then
 
 # Chores.
 echo "Rebuilding..."
