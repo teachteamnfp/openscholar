@@ -1,0 +1,9 @@
+name: 'Onepage'
+description: A one page (homepage) theme.
+
+base theme: os_base
+core: 8.x
+type: theme
+
+libraries:
+  - hwpi_college/global-styling
