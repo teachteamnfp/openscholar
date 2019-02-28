@@ -9,7 +9,7 @@ _core:
 id: os_base_page_title
 theme: os_base
 region: content
-weight: -6
+weight: -7
 provider: null
 plugin: page_title_block
 settings:

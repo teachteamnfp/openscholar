@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.node.teaser
     - field.storage.node.field_url_web_address
     - node.type.link
     - system.menu.main
@@ -77,12 +78,10 @@ display:
       style:
         type: default
       row:
-        type: fields
+        type: 'entity:node'
         options:
-          default_field_elements: true
-          inline: {  }
-          separator: ''
-          hide_empty: false
+          relationship: none
+          view_mode: teaser
       fields:
         field_url_web_address:
           id: field_url_web_address
