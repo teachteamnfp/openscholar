@@ -43,7 +43,7 @@ projects[comment_sources][patch][] = "https://drupal.org/files/issues/change-sub
 projects[comment_sources][patch][] = "https://raw.github.com/openscholar/openscholar/bb0856af84a58881a0438cd32d9b6a21dcfd15ea/patches/comment_sources.9139.comment_settings.patch"
 
 projects[context][subdir] = "contrib"
-projects[context][version] = 3.6
+projects[context][version] = 3.10
 projects[context][patch][] = "http://drupal.org/files/os-custom-beta4.patch"
 projects[context][patch][] = "http://drupal.org/files/1855004.context.float_block_weights.patch"
 projects[context][patch][] = "https://raw.githubusercontent.com/openscholar/openscholar/7c018f93a3f6c663fd3b91ccda6561dade707127/patches/context-10085-breadcrumb_menu_context.patch"
@@ -211,15 +211,8 @@ projects[libraries][subdir] = "contrib"
 projects[libraries][version] = 2.1
 projects[libraries][patch][] = "http://drupal.org/files/0001-Fix-1938638-by-coredumperror-Fix-typo.patch"
 
-; projects[link][patch][] = "http://drupal.org/files/link-MigrateLinkFieldHandler-1010850-54.patch"
-projects[link][patch][] = "http://drupal.org/files/link-MigrateLinkFieldHandler-1010850-61.patch"
-projects[link][patch][] = "http://drupal.org/files/link-7.x-1.x-required_fields-1368616-11.patch"
-projects[link][patch][] = "https://raw.githubusercontent.com/openscholar/openscholar/831d1d024dfecafbfeeb410ac8c841f27175d912/patches/link-updated-tld-list-7947.patch"
+projects[link][version] = 1.6
 projects[link][subdir] = "contrib"
-projects[link][download][branch] = 7.x-1.x
-projects[link][download][type] = git
-; projects[link][revision] = "799bca2"
-projects[link][download][revision] = "ff518b60113f29885a8f358e8b0fa4499b0c608d"
 
 projects[linkchecker][subdir] = "contrib"
 projects[linkchecker][version] = 1.0-beta1
@@ -383,9 +376,7 @@ projects[robotstxt][version] = "1.1"
 projects[robotstxt][patch][] = "http://drupal.org/files/issues/send_cache_headers-1923838-5.patch"
 
 projects[restws][subdir] = "contrib"
-projects[restws][version] = "2.0-alpha3"
-projects[restws][patch][] = "http://drupal.org/files/1806142-restws-property-exception.patch"
-projects[restws][patch][] = "https://raw.githubusercontent.com/openscholar/openscholar/6c679219a3259d682abb87e9b9f0f1834bc08ee9/patches/restws.security_fix.patch"
+projects[restws][version] = "2.8"
 
 projects[shorten][subdir] = "contrib"
 projects[shorten][version] = 1.2
