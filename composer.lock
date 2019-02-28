@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "202ae772bc56a2d5bf983365ad20dcd8",
+    "content-hash": "32523e8082b38e1f1b964c5421997cd7",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -4564,13 +4564,19 @@
         {
             "name": "drupal/repec",
             "version": "master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/subhojit777/repec.git",
+                "reference": "all_template_support"
+            },
             "dist": {
                 "type": "zip",
                 "url": "https://github.com/subhojit777/repec/archive/all_template_support.zip",
-                "reference": null,
+                "reference": "all_template_support",
                 "shasum": null
             },
-            "type": "drupal-module"
+            "type": "drupal-module",
+            "time": "2019-02-28T08:03:47+00:00"
         },
         {
             "name": "drupal/search_api",
