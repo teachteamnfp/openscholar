@@ -71,7 +71,7 @@ class RepecIntegrationTest extends TestBase {
    * Tests entity shareable setting for repec.
    *
    * @covers \Drupal\repec\Repec::isEntityShareable
-   * @covers \Drupal\repec\Repec::createPaperTemplate
+   * @covers \Drupal\repec\Repec::createEntityTemplate
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
