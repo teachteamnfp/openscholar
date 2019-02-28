@@ -1001,6 +1001,9 @@ function vsite_update_7041(&$sandbox) {
 
     $sandbox['start_time'] = REQUEST_TIME;
   }
+  if ($sandbox['max'] == 0) {
+    return t('There is no record to be deleted.');
+  }
   $limit = 50;
 
   // Retrieve the next group of nids.
