@@ -61,7 +61,7 @@ class CitationDistributeConfigForm extends ConfigFormBase {
         'per_submission' => 'Per Submission Mode',
       ],
       '#required' => TRUE,
-      '#default_value' => $config->get('module_mode'),
+      '#default_value' => $config->get('citation_distribute_module_mode'),
       '#description' => $this->t('<strong>API mode</strong> does nothing by default, but allows developers to call Citation Distribute manually.
 	      <br><strong>Batch mode</strong> is intended to be run by cron will update all meta files at once in a batch process.
 	      <br><strong>Per Submission mode</strong> (<em>default</em>) will update or create a meta file whenever content submitted or updated.'),
@@ -73,7 +73,7 @@ class CitationDistributeConfigForm extends ConfigFormBase {
       '#title' => 'Batch Size Limit',
       '#description' => $this->t('(Batch mode only) Limit how many publications can be submitted per cron run.'),
       '#required' => FALSE,
-      '#default_value' => $config->get('cron_limit'),
+      '#default_value' => $config->get('citation_distribute_cron_limit'),
     ];
 
     // List all our plugins, include autoflag checkboxes.
@@ -86,14 +86,12 @@ class CitationDistributeConfigForm extends ConfigFormBase {
     ];
 
     foreach (_citation_distribute_plugins() as $plugin) {
-      if (isset($plugin['name'])) {
-        $name = $plugin['id'];
-        $form['citation_distribute']['autoflag'][$name . '_auto_flag'] = [
-          '#type' => 'checkbox',
-          '#default_value' => $config->get($name . '_auto_flag'),
-          '#title' => $plugin['name'] . '  (' . $name . ')',
-        ];
-      }
+      $name = $plugin['id'];
+      $form['citation_distribute']['autoflag'][$name . '_auto_flag'] = [
+        '#type' => 'checkbox',
+        '#default_value' => $config->get($name . '_auto_flag'),
+        '#title' => $plugin['name'] . '  (' . $name . ')',
+      ];
     }
     return parent::buildForm($form, $form_state);
   }
@@ -112,10 +110,15 @@ class CitationDistributeConfigForm extends ConfigFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
-    $this->config('dash.settings')
-      ->set('dash_username', $form_state->getValue('username'))
-      ->set('dash_password', $form_state->getValue('password'))
+    $this->config('citation_distribute.settings')
+      ->set('citation_distribute_module_mode', $form_state->getValue('citation_distribute_module_mode'))
+      ->set('citation_distribute_cron_limit', $form_state->getValue('citation_distribute_cron_limit'))
       ->save();
+    foreach (_citation_distribute_plugins() as $plugin) {
+      $this->config('citation_distribute.settings')
+        ->set($plugin['id'] . '_auto_flag', $form_state->getValue($plugin['id'] . '_auto_flag'))
+        ->save();
+    }
   }
 
 }

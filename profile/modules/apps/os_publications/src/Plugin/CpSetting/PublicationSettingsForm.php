@@ -218,7 +218,7 @@ class PublicationSettingsForm extends PluginBase implements CpSettingInterface, 
     $form['citation_distribute_autoflags'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Distribute to repositories'),
-      '#default_value' => $publication_config->get('distribution_repositories'),
+      '#default_value' => $publication_config->get('citation_distribute_autoflags'),
       '#options' => $distribution_options,
     ];
 
@@ -242,7 +242,7 @@ class PublicationSettingsForm extends PluginBase implements CpSettingInterface, 
       ->set('biblio_order', $formState->getValue('biblio_order'))
       ->set('shorten_citations', $formState->getValue('os_publications_shorten_citations'))
       ->set('export_format', $formState->getValue('os_publications_export_format'))
-      ->set('distribution_repositories', $formState->getValue('citation_distribute_autoflags'))
+      ->set('citation_distribute_autoflags', $formState->getValue('citation_distribute_autoflags'))
       ->save();
 
     $this->publicationsListingHelper->setRedirect('publications', $formState->getValue('biblio_sort'));
