@@ -22,44 +22,11 @@ function vsite_modules_installed(array $modules) {
 
 /**
  * Sets up associations between app content and group types.
+ *
  * @todo this needs work
  */
 function vsite_setup_new_apps() {
   // TODO: Fix this so it doesn't block installs.
-  return;
-  \Drupal::service('vsite.app.manager')->clearCachedDefinitions();
-  $defs = \Drupal::service('vsite.app.manager')->getDefinitions();
-
-  /** @var \Drupal\group\Entity\Storage\GroupContentTypeStorageInterface $groupContentStorage */
-  $groupContentStorage = \Drupal::entityTypeManager()->getStorage('group_content_type');
-  /** @var \Drupal\group\Plugin\GroupContentEnablerCollection $allPlugins */
-  $allPlugins = \Drupal::service('plugin.manager.group_content_enabler')->getAll();
-  $group_types = \Drupal::entityTypeManager()->getStorage('group_type')->loadMultiple();
-  $map = [];
-  foreach ($allPlugins as $p) {
-    if ($p->getEntityTypeId() == 'node') {
-      $map[$p->getEntityBundle()] = $p->getPluginId();
-    }
-  }
-  $existing = $groupContentStorage->loadByEntityTypeId('node');
-  $config = [
-    'group_cardinality' => 1,
-    'use_creation_wizard' => 0,
-  ];
-
-  foreach ($defs as $d) {
-    if ($d['entityType'] != 'node') {
-      continue;
-    }
-
-    foreach ($group_types as $type => $gt) {
-      $k = $type . '-group_node-' . $d['bundle'];
-      error_log($k);
-      if (empty($existing[$k])) {
-        $groupContentStorage->createFromPlugin($gt, $map[$d['bundle']], $config)->save();
-      }
-    }
-  }
 }
 
 /**
@@ -93,8 +60,7 @@ function vsite_pathauto_alias_alter(&$alias, array &$context) {
   /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContext */
   $vsiteContext = \Drupal::service('vsite.context_manager');
 
-  /** @var \Drupal\group\Entity\GroupInterface $group */
-  if ($group = $vsiteContext->getActiveVsite()) {
+  if ($vsiteContext->getActiveVsite()) {
     $purl = $vsiteContext->getActivePurl();
     $trimmed_alias = ltrim($alias, '/');
     $alias = '/' . $purl . '/' . $trimmed_alias;
@@ -191,7 +157,7 @@ function vsite_views_pre_build(ViewExecutable $view) {
   if (!empty($view->filter['current_vsite_filter'])) {
     /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContext */
     $vsiteContext = \Drupal::service('vsite.context_manager');
-    if ($group = $vsiteContext->getActiveVsite()) {
+    if ($vsiteContext->getActiveVsite()) {
       $view->element['#cache']['contexts'][] = 'vsite:' . $vsiteContext->getActiveVsite()->id();
     }
     else {
@@ -220,7 +186,7 @@ function _vsite_prerender_control_panel_links(array $element) {
   /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContext */
   $vsiteContext = \Drupal::service('vsite.context_manager');
   $metadata = CacheableMetadata::createFromRenderArray($element['toolbar_menu_control-panel']);
-  if ($group = $vsiteContext->getActiveVsite()) {
+  if ($vsiteContext->getActiveVsite()) {
     $metadata->addCacheContexts(['vsite:' . $vsiteContext->getActiveVsite()->id()]);
   }
   else {
