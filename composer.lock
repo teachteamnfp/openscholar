@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5bf44d95d043b8dfa8726b524d1ab4c4",
+    "content-hash": "202ae772bc56a2d5bf983365ad20dcd8",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -3542,8 +3542,8 @@
                     "merge-extra": false
                 },
                 "patches_applied": {
-                    "Make sure TestSitePath exist before creating .htkey": "https://www.drupal.org/files/issues/2246725-24.patch",
-                    "Views Date Filter Datetime Granularity Option": "https://www.drupal.org/files/issues/2018-12-11/views_date_filter_granularity_2868014-60.patch"
+                    "Views Date Filter Datetime Granularity Option": "https://www.drupal.org/files/issues/2018-12-11/views_date_filter_granularity_2868014-60.patch",
+                    "Test runs can throw exceptions due to missing .htkey file (https://www.drupal.org/project/drupal/issues/2246725#comment-12160940)": "https://www.drupal.org/files/issues/2246725-24.patch"
                 }
             },
             "autoload": {
@@ -8256,6 +8256,59 @@
                 "mailchimp"
             ],
             "time": "2018-02-27T17:52:03+00:00"
+        },
+        {
+            "name": "twbs/bootstrap-sass",
+            "version": "v3.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/twbs/bootstrap-sass.git",
+                "reference": "bb7dbf8af72b455b51936bc07e51efcaf6220bcc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/twbs/bootstrap-sass/zipball/bb7dbf8af72b455b51936bc07e51efcaf6220bcc",
+                "reference": "bb7dbf8af72b455b51936bc07e51efcaf6220bcc",
+                "shasum": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.4.x-dev"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mark Otto"
+                },
+                {
+                    "name": "Thomas McDonald"
+                },
+                {
+                    "name": "Tristan Harward"
+                },
+                {
+                    "name": "Peter Gumeson"
+                },
+                {
+                    "name": "Gleb Mazovetskiy"
+                },
+                {
+                    "name": "Jacob Thornton"
+                }
+            ],
+            "description": "bootstrap-sass is a Sass-powered version of Bootstrap 3, ready to drop right into your Sass powered applications.",
+            "homepage": "http://github.com/twbs/bootstrap-sass",
+            "keywords": [
+                "bootstrap",
+                "css",
+                "sass"
+            ],
+            "time": "2018-12-14T12:16:04+00:00"
         },
         {
             "name": "twig/twig",

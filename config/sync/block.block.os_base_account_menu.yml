@@ -12,8 +12,8 @@ _core:
   default_config_hash: DweBpscQZdG0-fHkSpUzdYucrNH45G_KF7Z82V-oyQM
 id: os_base_account_menu
 theme: os_base
-region: navigation
-weight: 0
+region: navigation_collapsible
+weight: -5
 provider: null
 plugin: 'system_menu_block:account'
 settings:

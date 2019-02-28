@@ -62,10 +62,6 @@
             }
         },
         {
-            "type": "composer",
-            "url": "https://packages.drupal.org/8"
-        },
-        {
             "type": "package",
             "package": {
                 "name": "swordapp/swordappv2-php-library",
@@ -93,6 +89,10 @@
                     "type": "zip"
                 }
             }
+        },
+        {
+            "type": "composer",
+            "url": "https://packages.drupal.org/8"
         }
     ],
     "require": {
@@ -133,6 +133,7 @@
         "drupal/bootstrap": "^3.17",
         "drupal/styleguide": "^1.0@alpha",
         "drupal/config_split": "^1.4",
+        "twbs/bootstrap-sass": "^3.3.7",
         "drupal/mailchimp": "^1.8",
         "drupal/bibcite": "1.x-dev",
         "drupal/field_tools": "^1.0@alpha",
@@ -178,6 +179,7 @@
             "DrupalProject\\composer\\ScriptHandler::createRequiredFiles",
             "DrupalProject\\composer\\ScriptHandler::placeProfile",
             "DrupalProject\\composer\\ScriptHandler::installFullcalendarLibrary",
+            "DrupalProject\\composer\\ScriptHandler::installBootstrapLibrary",
             "./scripts/register-cs.sh",
             "./scripts/install-hooks.sh"
         ],
@@ -185,7 +187,8 @@
             "@composer drupal:scaffold",
             "DrupalProject\\composer\\ScriptHandler::createRequiredFiles",
             "DrupalProject\\composer\\ScriptHandler::placeProfile",
-            "DrupalProject\\composer\\ScriptHandler::installFullcalendarLibrary"
+            "DrupalProject\\composer\\ScriptHandler::installFullcalendarLibrary",
+            "DrupalProject\\composer\\ScriptHandler::installBootstrapLibrary"
         ],
         "code-standard": [
             "./vendor/bin/phpcs --standard=Drupal",

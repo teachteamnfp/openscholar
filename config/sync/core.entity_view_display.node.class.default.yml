@@ -28,12 +28,12 @@ content:
   body:
     label: hidden
     type: text_default
-    weight: 101
+    weight: 4
     settings: {  }
     third_party_settings: {  }
     region: content
   field_attached_media:
-    weight: 107
+    weight: 6
     label: above
     settings:
       link: true
@@ -41,8 +41,8 @@ content:
     type: entity_reference_label
     region: content
   field_class_link:
-    weight: 104
-    label: above
+    weight: 3
+    label: inline
     settings:
       trim_length: 80
       url_only: false
@@ -54,7 +54,7 @@ content:
     region: content
   field_class_materials:
     type: entity_reference_revisions_entity_view
-    weight: 106
+    weight: 5
     label: above
     settings:
       view_mode: default
@@ -62,22 +62,22 @@ content:
     third_party_settings: {  }
     region: content
   field_semester:
-    weight: 102
-    label: above
+    weight: 1
+    label: inline
     settings: {  }
     third_party_settings: {  }
     type: list_default
     region: content
   field_year_offered:
-    weight: 105
-    label: above
+    weight: 2
+    label: inline
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
     region: content
   links:
-    weight: 100
+    weight: 0
     region: content
     settings: {  }
     third_party_settings: {  }

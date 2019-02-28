@@ -1,6 +1,6 @@
 uuid: 85a74454-2802-46d4-92a9-5a5955960222
 langcode: en
-status: true
+status: false
 dependencies:
   module:
     - system
@@ -10,7 +10,7 @@ _core:
   default_config_hash: KHQIJ7Vfl25lTjzIc7qIvnuistt-Mw2O0kG4jCofmkI
 id: os_base_messages
 theme: os_base
-region: highlighted
+region: navigation
 weight: 0
 provider: null
 plugin: system_messages_block

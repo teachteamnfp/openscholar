@@ -22,10 +22,10 @@ fi
 
 if [[ ${IS_DOCKER_CONTAINER_AVAILABLE} = true ]] ; then
   echo "Docker container is available. Checking code standards now..."
-  git diff --cached --name-only | xargs docker-compose exec -T php composer code-standard $1
+  git diff --diff-filter=ACMRTUXB --cached --name-only | xargs docker-compose exec -T php composer code-standard $1
 else
   echo "Docker is not available. Checking code standards now..."
-  git diff --cached --name-only | xargs composer code-standard $1
+  git diff --diff-filter=ACMRTUXB --cached --name-only | xargs composer code-standard $1
 fi
 
 if [[ $? -eq 0 ]]; then
@@ -35,9 +35,9 @@ fi
 echo "There are code standard issues. Trying to fix them automatically with phpcbf..."
 
 if [[ ${IS_DOCKER_CONTAINER_AVAILABLE} = true ]] ; then
-  git diff --cached --name-only | xargs docker-compose exec -T php composer code-standard-fix $1
+  git diff --diff-filter=ACMRTUXB --cached --name-only | xargs docker-compose exec -T php composer code-standard-fix $1
 else
-  git diff --cached --name-only | xargs composer code-standard-fix $1
+  git diff --diff-filter=ACMRTUXB --cached --name-only | xargs composer code-standard-fix $1
 fi
 
 exit 1
