@@ -89,13 +89,8 @@
                 "version": "master",
                 "type": "drupal-module",
                 "dist": {
-                    "url": "https://github.com/subhojit777/repec/archive/master.zip",
+                    "url": "https://github.com/subhojit777/repec/archive/all_template_support.zip",
                     "type": "zip"
-                },
-                "source": {
-                    "url": "https://github.com/subhojit777/repec.git",
-                    "type": "git",
-                    "reference": "master"
                 }
             }
         }
