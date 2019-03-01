@@ -64,13 +64,6 @@ done
 
 cd $BUILD_ROOT
 
-ls -al
-ls -al /tmp
-echo "check scss"
-echo "$SCSS_PRESENT"
-echo "check diff"
-cat scss.diff
-
 #Only build if no build has ever happened, or if the make files have changed
 if [[ $FORCE_REBUILD == "1" ]] || [[ "$(cmp -b 'openscholar/composer.json' '/tmp/composer.json')" != "" ]] || [[ "$(cmp -b 'openscholar/composer.lock' '/tmp/composer.lock')" != "" ]] || [[ "$(cat scss.diff)" != "" ]] || [[ "$SCSS_PRESENT" -eq 0 ]]; then
 
