@@ -47,9 +47,6 @@ cd $BUILD_ROOT
 cp -f openscholar/composer.json /tmp/
 cp -f openscholar/composer.lock /tmp/
 
-# Make sure vendor directory is up to date
-rm -rf openscholar/vendor
-
 git subtree pull -q -m "$CI_MESSAGE" --prefix=openscholar git://github.com/openscholar/openscholar.git $CI_BRANCH --squash
 
 #Only build if no build has ever happened, or if the make files have changed
