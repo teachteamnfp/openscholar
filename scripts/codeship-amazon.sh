@@ -58,14 +58,6 @@ done
 
 cd $BUILD_ROOT
 
-if [[ "$(cat scss.diff)" != "" ]]; then
-  echo "empty diff"
-fi
-
-if [[ "$SCSS_PRESENT" -eq 0 ]]; then
-    echo "scss $SCSS_PRESENT"
-fi
-
 git subtree pull -q -m "$CI_MESSAGE" --prefix=openscholar git://github.com/openscholar/openscholar.git $CI_BRANCH --squash
 
 #Only build if no build has ever happened, or if the make files have changed
