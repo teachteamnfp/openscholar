@@ -46,11 +46,22 @@ cd $BUILD_ROOT
 #Backup the make files
 cp -f openscholar/composer.json /tmp/
 cp -f openscholar/composer.lock /tmp/
+cd openscholar/profile/themes
+cp -rf . /tmp/
+
+SCSS_PRESENT=1
+for theme in *; do
+  [[ -e "$theme/scss" ]] || continue;
+  [[ (-e "/tmp/$theme/scss") && ("$SCSS_PRESENT" -eq 1) ]] || SCSS_PRESENT=0;
+  diff -r "$theme/scss" "/tmp/$theme/scss" >> scss.diff;
+done
+
+cd $BUILD_ROOT
 
 git subtree pull -q -m "$CI_MESSAGE" --prefix=openscholar git://github.com/openscholar/openscholar.git $CI_BRANCH --squash
 
 #Only build if no build has ever happened, or if the make files have changed
-if [[ $FORCE_REBUILD == "1" ]] || [[ "$(cmp -b 'openscholar/composer.json' '/tmp/composer.json')" != "" ]] || [[ "$(cmp -b 'openscholar/composer.lock' '/tmp/composer.lock')" != "" ]]; then
+if [[ $FORCE_REBUILD == "1" ]] || [[ "$(cmp -b 'openscholar/composer.json' '/tmp/composer.json')" != "" ]] || [[ "$(cmp -b 'openscholar/composer.lock' '/tmp/composer.lock')" != "" ]] || [[ "$(cat scss.diff)" != "" ]] || [[ "$SCSS_PRESENT" -eq 0 ]]; then
 
 # Chores.
 echo "Rebuilding..."
