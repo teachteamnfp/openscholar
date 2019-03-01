@@ -49,6 +49,12 @@ cp -f openscholar/composer.lock /tmp/
 cd openscholar/profile/themes
 cp -rf . /tmp/
 
+cd $BUILD_ROOT
+
+git subtree pull -q -m "$CI_MESSAGE" --prefix=openscholar git://github.com/openscholar/openscholar.git $CI_BRANCH --squash
+
+cd openscholar/profile/themes
+
 SCSS_PRESENT=1
 for theme in *; do
   [[ -e "$theme/scss" ]] || continue;
@@ -57,8 +63,6 @@ for theme in *; do
 done
 
 cd $BUILD_ROOT
-
-git subtree pull -q -m "$CI_MESSAGE" --prefix=openscholar git://github.com/openscholar/openscholar.git $CI_BRANCH --squash
 
 #Only build if no build has ever happened, or if the make files have changed
 if [[ $FORCE_REBUILD == "1" ]] || [[ "$(cmp -b 'openscholar/composer.json' '/tmp/composer.json')" != "" ]] || [[ "$(cmp -b 'openscholar/composer.lock' '/tmp/composer.lock')" != "" ]] || [[ "$(cat scss.diff)" != "" ]] || [[ "$SCSS_PRESENT" -eq 0 ]]; then
