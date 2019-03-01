@@ -57,15 +57,9 @@ for theme in *; do
 done
 
 cd $BUILD_ROOT
-ls -al
-ls -al /tmp
-echo "check scss"
-echo "$SCSS_PRESENT"
-echo "checking diff"
-cat scss.diff
 
 if [[ "$(cat scss.diff)" != "" ]]; then
-  echo "not empty diff"
+  echo "empty diff"
 fi
 
 if [[ "$SCSS_PRESENT" -eq 0 ]]; then
