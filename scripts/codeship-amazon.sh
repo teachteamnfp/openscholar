@@ -53,7 +53,7 @@ SCSS_PRESENT=1
 for theme in *; do
   [[ -e "$theme/scss" ]] || continue;
   [[ (-e "/tmp/$theme/scss") && ("$SCSS_PRESENT" -eq 1) ]] || SCSS_PRESENT=0;
-  diff -r "$theme/scss" "/tmp/$theme/scss" >> scss.diff;
+  diff -r "$theme/scss" "/tmp/$theme/scss" >> "$BUILD_ROOT/scss.diff";
 done
 
 cd $BUILD_ROOT
