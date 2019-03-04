@@ -58,31 +58,31 @@
     {%
       set navbar_classes = [
         'navbar',
-        theme.settings.navbar_inverse ? 'navbar-inverse' : 'navbar-default',
-        theme.settings.navbar_position ? 'navbar-' ~ theme.settings.navbar_position|clean_class : container,
+        theme.settings.navbar_inverse ? 'navbar-inverse' : 'navbar-default'
       ]
     %}
     <header{{ navbar_attributes.addClass(navbar_classes) }} id="navbar" role="banner">
-      {% if not navbar_attributes.hasClass(container) %}
-        <div class="{{ container }}">
+      {% if page.header_left or page.header or page.header_right %}
+        <div class="header-container row">
+          <div class="container">
+            {% if page.header_left %}
+              <div class="header-left col-sm-3">
+                {{ page.header_left }}
+              </div>
+            {% endif %}
+            {% if page.header %}
+              <div class="header-main col-sm-6">
+                {{ page.header }}
+              </div>
+            {% endif %}
+            {% if page.header_right %}
+              <div class="header-right col-sm-3">
+                {{ page.header_right }}
+              </div>
+            {% endif %}
+          </div>
+        </div>
       {% endif %}
-      <div class="header-container row">
-        {% if page.header_left %}
-          <div class="header-left col-sm-3">
-            {{ page.header_left }}
-          </div>
-        {% endif %}
-        {% if page.header %}
-          <div class="header-main col-sm-6">
-            {{ page.header }}
-          </div>
-        {% endif %}
-        {% if page.header_right %}
-          <div class="header-right col-sm-3">
-            {{ page.header_right }}
-          </div>
-        {% endif %}
-      </div>
       <div class="navbar-header">
         {{ page.navigation }}
         {# .btn-navbar is used as the toggle for collapsed navbar content #}
@@ -99,10 +99,7 @@
       {# Navigation (collapsible) #}
       {% if page.navigation_collapsible %}
         <div id="navbar-collapse" class="navbar-collapse collapse">
-          {{ page.navigation_collapsible }}
-        </div>
-      {% endif %}
-      {% if not navbar_attributes.hasClass(container) %}
+          <div class="container">{{ page.navigation_collapsible }}</div>
         </div>
       {% endif %}
     </header>
