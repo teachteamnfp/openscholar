@@ -55,12 +55,27 @@ git subtree pull -q -m "$CI_MESSAGE" --prefix=openscholar git://github.com/opens
 
 cd openscholar/profile/themes
 
+SHOULD_REBUILD_SCSS=0
 for theme in * ; do
-  diff -r "$theme" "/tmp/$theme" >> "$BUILD_ROOT/scss.diff";
+  [[ ! -e "$theme/scss" ]] && [[ ! -e "/tmp/$theme/scss" ]] && continue;
+
+  # If scss directory is present in one, but not in other, that means scss needs
+  # to be rebuilt.
+  if [[ -e "$theme/scss" ]] && [[ ! -e "/tmp/$theme/scss" ]]; then
+    SHOULD_REBUILD_SCSS=1
+    break
+  fi
+  if [[ ! -e "$theme/scss" ]] && [[ -e "/tmp/$theme/scss" ]]; then
+    SHOULD_REBUILD_SCSS=1
+    break
+  fi
+
+  diff -r "$theme/scss" "/tmp/$theme/scss" >> "$BUILD_ROOT/scss.diff";
 done
 
-# Make sure that we only consider scss changes.
-SHOULD_REBUILD_SCSS=$(cat ${BUILD_ROOT}/scss.diff | grep -c 'scss')
+if [[ -e "$BUILD_ROOT/scss.diff" ]] && [[ "$(cat ${BUILD_ROOT}/scss.diff)" != "" ]]; then
+  SHOULD_REBUILD_SCSS=1
+fi
 
 cd ${BUILD_ROOT}
 
