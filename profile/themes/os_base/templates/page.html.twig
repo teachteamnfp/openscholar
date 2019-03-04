@@ -208,11 +208,13 @@
 
 {% if page.footer or page.footer_left or page.footer_right or page.footer_bottom %}
   {% block footer %}
-    <footer class="footer {{ container }}" role="contentinfo">
-      <div class="col-sm-3">{{ page.footer_left }}</div>
-      <div class="col-sm-6">{{ page.footer }}</div>
-      <div class="col-sm-3">{{ page.footer_right }}</div>
-      <div class="col-sm-12">{{ page.footer_bottom }}</div>
+    <footer class="footer" role="contentinfo">
+      <div class="{{ container }}">
+        <div class="col-sm-3">{{ page.footer_left }}</div>
+        <div class="col-sm-6">{{ page.footer }}</div>
+        <div class="col-sm-3">{{ page.footer_right }}</div>
+        <div class="col-sm-12">{{ page.footer_bottom }}</div>
+      </div>
     </footer>
   {% endblock %}
 {% endif %}
