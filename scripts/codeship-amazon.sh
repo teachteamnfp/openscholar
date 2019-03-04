@@ -62,6 +62,7 @@ done
 # Make sure that we only consider scss changes.
 SHOULD_REBUILD_SCSS=$(cat ${BUILD_ROOT}/scss.diff | grep -c 'scss')
 
+
 cd ${BUILD_ROOT}
 
 #Only build if no build has ever happened, or if the make files have changed
