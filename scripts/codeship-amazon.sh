@@ -55,17 +55,17 @@ git subtree pull -q -m "$CI_MESSAGE" --prefix=openscholar git://github.com/opens
 
 cd openscholar/profile/themes
 
-SCSS_PRESENT=1
-for theme in *; do
-  [[ -e "$theme/scss" ]] || continue;
-  [[ (-e "/tmp/$theme/scss") && ("$SCSS_PRESENT" -eq 1) ]] || SCSS_PRESENT=0;
-  diff -r "$theme/scss" "/tmp/$theme/scss" >> "$BUILD_ROOT/scss.diff";
+for theme in * ; do
+  diff -r "$theme" "/tmp/$theme" >> "$BUILD_ROOT/scss.diff";
 done
 
-cd $BUILD_ROOT
+# Make sure that we only consider scss changes.
+SHOULD_REBUILD_SCSS=$(cat ${BUILD_ROOT}/scss.diff | grep -c 'scss')
+
+cd ${BUILD_ROOT}
 
 #Only build if no build has ever happened, or if the make files have changed
-if [[ $FORCE_REBUILD == "1" ]] || [[ "$(cmp -b 'openscholar/composer.json' '/tmp/composer.json')" != "" ]] || [[ "$(cmp -b 'openscholar/composer.lock' '/tmp/composer.lock')" != "" ]] || [[ "$(cat scss.diff)" != "" ]] || [[ "$SCSS_PRESENT" -eq 0 ]]; then
+if [[ $FORCE_REBUILD == "1" ]] || [[ "$(cmp -b 'openscholar/composer.json' '/tmp/composer.json')" != "" ]] || [[ "$(cmp -b 'openscholar/composer.lock' '/tmp/composer.lock')" != "" ]] || [[ ${SHOULD_REBUILD_SCSS} ]]; then
 
 # Chores.
 echo "Rebuilding..."
