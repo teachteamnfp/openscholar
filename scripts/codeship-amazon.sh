@@ -73,6 +73,10 @@ for theme in * ; do
   diff -r "$theme/scss" "/tmp/$theme/scss" >> "$BUILD_ROOT/scss.diff";
 done
 
+echo "testing now..."
+cat "$BUILD_ROOT/scss.diff"
+echo ${SHOULD_REBUILD_SCSS}
+
 if [[ -e "$BUILD_ROOT/scss.diff" ]] && [[ "$(cat ${BUILD_ROOT}/scss.diff)" != "" ]]; then
   SHOULD_REBUILD_SCSS=1
 fi
