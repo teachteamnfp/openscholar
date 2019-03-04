@@ -58,7 +58,7 @@
     {%
       set navbar_classes = [
         'navbar',
-        theme.settings.navbar_inverse ? 'navbar-inverse' : 'navbar-default'
+        theme.settings.navbar_inverse ? 'navbar-inverse' : 'navbar-defaults'
       ]
     %}
     <header{{ navbar_attributes.addClass(navbar_classes) }} id="navbar" role="banner">
@@ -83,7 +83,7 @@
           </div>
         </div>
       {% endif %}
-      <div class="navbar-header">
+      <div class="navbar-header navbar-default">
         {{ page.navigation }}
         {# .btn-navbar is used as the toggle for collapsed navbar content #}
         {% if page.navigation_collapsible %}
