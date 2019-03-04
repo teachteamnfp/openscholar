@@ -80,11 +80,9 @@ class VsiteInfiniteScrollFrontendTest extends VsiteInfiniteScrollExistingSiteJav
     $page = $this->getCurrentPage();
     $checkHtmlValue = $page->hasContent('Load More');
     $this->assertTrue($checkHtmlValue, 'Load More button has not found.');
-    file_put_contents('public://testClickOnLoadMoreButton-screenshot-1.png', $this->getSession()->getScreenshot());
     $load_button = $page->findLink('Load More');
     $load_button->press();
     $result = $web_assert->waitForElementVisible('named', ['link', 'Old Man']);
-    file_put_contents('public://testClickOnLoadMoreButton-screenshot-2.png', $this->getSession()->getScreenshot());
     $this->assertNotNull($result, 'Following node title not found: Old created person');
   }
 
