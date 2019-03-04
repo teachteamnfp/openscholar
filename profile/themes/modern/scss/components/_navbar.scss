@@ -1,0 +1,31 @@
+/******** header, navbar **************/
+header {
+  background: #303030;
+  color: #fff;
+}
+.navbar-collapse {
+  background: #a23338;
+  padding: 0;
+  .navbar-nav {
+    li {
+      a {
+        color: #fff;
+        &:hover, &:active {
+          background: #7B272B;
+        }
+      }
+    }
+  }
+}
+.dropdown-menu {
+  > li {
+    > a {
+      font-family:arial;
+      font-size:13px;
+      font-weight:bold;
+      &:hover, &:active {
+        color:#BAC5C6;
+      }
+    }
+  }
+}
