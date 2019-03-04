@@ -58,6 +58,8 @@ class VsiteInfiniteScrollFrontendTest extends VsiteInfiniteScrollExistingSiteJav
       'status' => 1,
       'changed' => strtotime('-1 Year'),
       'created' => strtotime('-1 Year'),
+      'field_first_name' => 'Old',
+      'field_last_name' => 'Man',
     ]);
     $this->group->addContent($old_person, $plugin->getContentPluginId());
   }
@@ -81,7 +83,7 @@ class VsiteInfiniteScrollFrontendTest extends VsiteInfiniteScrollExistingSiteJav
     file_put_contents('public://testClickOnLoadMoreButton-screenshot-1.png', $this->getSession()->getScreenshot());
     $load_button = $page->findLink('Load More');
     $load_button->press();
-    $result = $web_assert->waitForElementVisible('named', ['link', 'Old created person']);
+    $result = $web_assert->waitForElementVisible('named', ['link', 'Old Man']);
     file_put_contents('public://testClickOnLoadMoreButton-screenshot-2.png', $this->getSession()->getScreenshot());
     $this->assertNotNull($result, 'Following node title not found: Old created person');
   }
