@@ -104,6 +104,7 @@
         "drupal/bootstrap": "^3.17",
         "drupal/styleguide": "^1.0@alpha",
         "drupal/config_split": "^1.4",
+        "drupal/views_infinite_scroll": "^1.5",
         "twbs/bootstrap-sass": "^3.3.7",
         "drupal/mailchimp": "^1.8"
     },
