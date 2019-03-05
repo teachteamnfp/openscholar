@@ -5,11 +5,23 @@ namespace Drupal\Tests\os_publications\ExistingSite;
 /**
  * Class PublicationsFormTest.
  *
- * @group kernel
- *
- * @package Drupal\Tests\os_publications\ExistingSite
+ * @group functional
  */
 class GoogleScholarTest extends TestBase {
+
+  /**
+   * Admin user.
+   *
+   * @var \Drupal\user\UserInterface
+   */
+  protected $admin;
+
+  /**
+   * Normal user.
+   *
+   * @var \Drupal\user\UserInterface
+   */
+  protected $user;
 
   /**
    * {@inheritdoc}
@@ -17,8 +29,8 @@ class GoogleScholarTest extends TestBase {
   public function setUp() {
     parent::setUp();
 
-    $this->user = $this->createUser([], '', TRUE);
-    $this->simpleUser = $this->createUser();
+    $this->admin = $this->createUser([], '', TRUE);
+    $this->user = $this->createUser();
   }
 
   /**
@@ -28,7 +40,7 @@ class GoogleScholarTest extends TestBase {
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function testPublicationSettingsPath() {
-    $this->drupalLogin($this->user);
+    $this->drupalLogin($this->admin);
     $reference = $this->createReference();
 
     $this->drupalGet('bibcite/reference/' . $reference->id());
@@ -39,15 +51,20 @@ class GoogleScholarTest extends TestBase {
 
   /**
    * Test Metadata on entity page.
+   *
+   * @throws \Behat\Mink\Exception\ExpectationException
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  public function testGoogleScholarMetatdata() {
-
-    $this->drupalLogin($this->user);
-    $reference = $this->createReference();
+  public function testGoogleScholarMetadata() {
+    $this->drupalLogin($this->admin);
+    $reference = $this->createReference([
+      'distribution' => [
+        'citation_distribute_googlescholar',
+      ],
+    ]);
     $this->drupalGet('bibcite/reference/' . $reference->id());
-    $html = $this->getCurrentPage()->getHtml();
-    $this->assertContains('citation_title', $html);
-    $this->assertContains('citation_year', $html);
+    $this->assertSession()->responseContains('citation_title');
+    $this->assertSession()->responseContains('citation_year');
   }
 
 }
