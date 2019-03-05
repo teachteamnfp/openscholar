@@ -10,14 +10,24 @@ header {
     li {
       a {
         color: #fff;
-        &:hover, &:active {
+        &:hover, &:active, &:focus {
           background: #7B272B;
+          color: #fff;
+        }
+      }
+      &.open {
+        a {
+          &:hover, &:active, &:focus {
+            background: #7B272B;
+            color: #fff;
+          }
         }
       }
     }
   }
 }
 .dropdown-menu {
+  background: #7B272B;
   > li {
     > a {
       font-family:arial;
