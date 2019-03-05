@@ -1,0 +1,8 @@
+name: Vsite Infinite Scroll
+type: module
+description: Override original views infinite scroll.
+core: 8.x
+dependencies:
+ - drupal:vsite
+ - drupal:views_infinite_scroll
+ - cp:cp_settings
