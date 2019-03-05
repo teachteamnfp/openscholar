@@ -7,8 +7,6 @@ var gulp = require('gulp'),
   sourcemaps = require('gulp-sourcemaps'),
   rename = require('gulp-rename'),
   path = require('path');
-	//autoprefixer = require('gulp-autoprefixer'),
-	//imagemin = require('gulp-imagemin');
 
   gulp.task('sass', function () {
     return gulp
