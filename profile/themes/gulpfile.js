@@ -2,7 +2,7 @@
   'use strict';
 
 var gulp = require('gulp'),
-	eslint = require('gulp-eslint'),
+  eslint = require('gulp-eslint'),
   sass = require('gulp-sass'),
   sourcemaps = require('gulp-sourcemaps'),
   rename = require('gulp-rename'),
