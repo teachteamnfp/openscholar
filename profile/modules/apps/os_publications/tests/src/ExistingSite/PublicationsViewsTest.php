@@ -56,7 +56,7 @@ class PublicationsViewsTest extends TestBase {
   public function testType() {
     $this->createReference([
       'title' => 'Mona Lisa',
-      'field_is_sticky' => [
+      'is_sticky' => [
         'value' => 0,
       ],
     ]);
@@ -67,7 +67,7 @@ class PublicationsViewsTest extends TestBase {
       'bibcite_year' => [
         'value' => 2010,
       ],
-      'field_is_sticky' => [
+      'is_sticky' => [
         'value' => 0,
       ],
     ]);
@@ -95,28 +95,28 @@ class PublicationsViewsTest extends TestBase {
   public function testTitle() {
     $this->createReference([
       'title' => 'The Last Supper',
-      'field_is_sticky' => [
+      'is_sticky' => [
         'value' => 0,
       ],
     ]);
 
     $this->createReference([
       'title' => 'Girl with a Pearl Earring',
-      'field_is_sticky' => [
+      'is_sticky' => [
         'value' => 0,
       ],
     ]);
 
     $this->createReference([
       'title' => 'Mona Lisa',
-      'field_is_sticky' => [
+      'is_sticky' => [
         'value' => 0,
       ],
     ]);
 
     $this->createReference([
       'title' => 'Las Meninas',
-      'field_is_sticky' => [
+      'is_sticky' => [
         'value' => 0,
       ],
     ]);
@@ -171,7 +171,7 @@ class PublicationsViewsTest extends TestBase {
         'category' => 'primary',
         'role' => 'author',
       ],
-      'field_is_sticky' => [
+      'is_sticky' => [
         'value' => 0,
       ],
     ]);
@@ -183,7 +183,7 @@ class PublicationsViewsTest extends TestBase {
         'category' => 'primary',
         'role' => 'author',
       ],
-      'field_is_sticky' => [
+      'is_sticky' => [
         'value' => 0,
       ],
     ]);
@@ -199,14 +199,14 @@ class PublicationsViewsTest extends TestBase {
       'bibcite_publisher' => [
         'value' => 'Bloomsbury',
       ],
-      'field_is_sticky' => [
+      'is_sticky' => [
         'value' => 0,
       ],
     ]);
 
     $reference4 = $this->createReference([
       'title' => 'Unknown',
-      'field_is_sticky' => [
+      'is_sticky' => [
         'value' => 0,
       ],
     ]);
@@ -271,7 +271,7 @@ class PublicationsViewsTest extends TestBase {
       'bibcite_year' => [
         'value' => 1665,
       ],
-      'field_is_sticky' => [
+      'is_sticky' => [
         'value' => 0,
       ],
     ]);
@@ -281,7 +281,7 @@ class PublicationsViewsTest extends TestBase {
       'bibcite_year' => [
         'value' => 1931,
       ],
-      'field_is_sticky' => [
+      'is_sticky' => [
         'value' => 0,
       ],
     ]);
@@ -291,7 +291,7 @@ class PublicationsViewsTest extends TestBase {
       'bibcite_year' => [
         'value' => 1889,
       ],
-      'field_is_sticky' => [
+      'is_sticky' => [
         'value' => 0,
       ],
     ]);
@@ -301,7 +301,7 @@ class PublicationsViewsTest extends TestBase {
       'bibcite_year' => [
         'value' => 1889,
       ],
-      'field_is_sticky' => [
+      'is_sticky' => [
         'value' => 0,
       ],
     ]);
@@ -332,7 +332,7 @@ class PublicationsViewsTest extends TestBase {
   public function testReferenceFilter() {
     $this->createReference([
       'title' => 'Girl with a Pearl Earring',
-      'field_is_sticky' => [
+      'is_sticky' => [
         'value' => 0,
       ],
     ]);
@@ -391,7 +391,7 @@ class PublicationsViewsTest extends TestBase {
       'bibcite_year' => [
         'value' => 1665,
       ],
-      'field_is_sticky' => [
+      'is_sticky' => [
         'value' => 0,
       ],
     ]);
@@ -401,7 +401,7 @@ class PublicationsViewsTest extends TestBase {
       'bibcite_year' => [
         'value' => 1931,
       ],
-      'field_is_sticky' => [
+      'is_sticky' => [
         'value' => 0,
       ],
     ]);
@@ -411,7 +411,7 @@ class PublicationsViewsTest extends TestBase {
       'bibcite_year' => [
         'value' => 1889,
       ],
-      'field_is_sticky' => [
+      'is_sticky' => [
         'value' => 0,
       ],
     ]);
@@ -421,7 +421,7 @@ class PublicationsViewsTest extends TestBase {
       'bibcite_year' => [
         'value' => 1889,
       ],
-      'field_is_sticky' => [
+      'is_sticky' => [
         'value' => 0,
       ],
     ]);
