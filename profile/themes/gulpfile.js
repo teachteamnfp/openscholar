@@ -1,12 +1,12 @@
 (function () {
   'use strict';
 
-var gulp = require('gulp'),
-  eslint = require('gulp-eslint'),
-  sass = require('gulp-sass'),
-  sourcemaps = require('gulp-sourcemaps'),
-  rename = require('gulp-rename'),
-  path = require('path');
+  var gulp = require('gulp'),
+    eslint = require('gulp-eslint'),
+    sass = require('gulp-sass'),
+    sourcemaps = require('gulp-sourcemaps'),
+    rename = require('gulp-rename'),
+    path = require('path');
 
   gulp.task('sass', function () {
     return gulp
