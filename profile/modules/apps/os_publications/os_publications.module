@@ -219,6 +219,16 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
       ])
       ->setDisplayConfigurable('form', TRUE);
 
+    $fields['is_sticky'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Is Sticky'))
+      ->setDisplayOptions('form', [
+        'type' => 'boolean_checkbox',
+        'settings' => [
+          'display_label' => TRUE,
+        ],
+      ])
+      ->setDisplayConfigurable('form', TRUE);
+
     return $fields;
   }
 }
