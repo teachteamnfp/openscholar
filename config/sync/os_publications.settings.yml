@@ -48,3 +48,6 @@ filter_publication_types:
   website: website
 _core:
   default_config_hash: KCwFYpsxpyK6P0j5BJMsNiSkSLHD6YXKKG78CGAFI5Y
+citation_distribute_autoflags:
+  citation_distribute_googlescholar: 0
+  citation_distribute_sword_dash: 0

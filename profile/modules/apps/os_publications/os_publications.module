@@ -201,6 +201,7 @@ function _citation_distribute_is_service_configured(array $plugin) {
  */
 function os_publications_entity_base_field_info(EntityTypeInterface $entity_type) {
   if ($entity_type->id() == 'bibcite_reference') {
+    $options = [];
     foreach (_citation_distribute_plugins() as $plugin) {
       $link = Link::fromTextAndUrl($plugin['name'], Url::fromUri($plugin['href']))->toString();
       $options[$plugin['id']] = $link;
@@ -262,34 +263,36 @@ function os_publications_bibcite_reference_update(EntityInterface $entity) {
 
 /**
  * Applies plugins to reference entity.
+ *
+ * @param \Drupal\Core\Entity\EntityInterface $entity
+ *   The entity.
  */
-function _citation_distribute_node_apply_plugins($entity) {
+function _citation_distribute_node_apply_plugins(EntityInterface $entity) {
   $config_factory = \Drupal::service('config.factory');
 
-  $repos = $entity->distribution ? $entity->distribution->getString() : '';
-  $repos = explode(',', $repos);
+  /** @var \Drupal\options\Plugin\Field\FieldType\ListStringItem $item */
+  foreach ($entity->get('distribution') as $item) {
+    /** @var string $plugin */
+    $plugin = $item->getValue()['value'];
 
-  if ($repos) {
-    foreach ($repos as $plugin) {
-      $type = \Drupal::service('os_publications.manager_citation_distribute');
-      $definition = $type->getDefinition($plugin);
-      $service = $type->createInstance($plugin);
+    $type = \Drupal::service('os_publications.manager_citation_distribute');
+    $definition = $type->getDefinition($plugin);
+    $service = $type->createInstance($plugin);
 
-      $dist_mode = $config_factory->get('citation_distribute.settings')->get('citation_distribute_module_mode');
-      $id = $entity->id();
+    $dist_mode = $config_factory->get('citation_distribute.settings')->get('citation_distribute_module_mode');
+    $id = $entity->id();
 
-      // TODO make sure entity is published first.
-      if ($dist_mode == 'per_submission') {
-        $dist = _citation_distribute_distribute($id, $definition, $service);
-      }
-      else {
-        // Assume batch mode.
-        $dist = TRUE;
-      }
+    // TODO make sure entity is published first.
+    if ($dist_mode == 'per_submission') {
+      $dist = _citation_distribute_distribute($id, $definition, $service);
+    }
+    else {
+      // Assume batch mode.
+      $dist = TRUE;
+    }
 
-      if ($dist) {
-        // TODO Implement Queue Api for adding entity for cron operation.
-      }
+    if ($dist) {
+      // TODO Implement Queue Api for adding entity for cron operation.
     }
   }
 }
