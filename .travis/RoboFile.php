@@ -283,8 +283,8 @@ class RoboFile extends \Robo\Tasks
         $tasks[] = $this->taskExecStack()
             ->stopOnFail()
             ->exec('docker-compose exec -T php ./vendor/bin/phpcs --config-set installed_paths vendor/drupal/coder/coder_sniffer')
-            ->exec('docker-compose exec -T php ./vendor/bin/phpcs --standard=Drupal --warning-severity=0 --ignore=themes/*/css,themes/*/node_modules profile')
-            ->exec('docker-compose exec -T php ./vendor/bin/phpcs --standard=DrupalPractice --warning-severity=0 --ignore=themes/*/css,themes/*/node_modules profile');
+            ->exec('docker-compose exec -T php ./vendor/bin/phpcs --standard=Drupal --warning-severity=0 --ignore=themes/*/css,themes/node_modules profile')
+            ->exec('docker-compose exec -T php ./vendor/bin/phpcs --standard=DrupalPractice --warning-severity=0 --ignore=themes/*/css,themes/node_modules profile');
 
         return $tasks;
     }
