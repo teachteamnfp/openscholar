@@ -6,7 +6,6 @@ dependencies:
     - bibcite_entity.bibcite_reference_type.broadcast
     - core.entity_view_mode.bibcite_reference.citation
     - field.field.bibcite_reference.broadcast.field_files
-    - field.field.bibcite_reference.broadcast.field_is_sticky
     - field.field.bibcite_reference.broadcast.field_title_first_char_excl_prep
   enforced:
     config:
@@ -78,7 +77,6 @@ hidden:
   bibcite_volume: true
   bibcite_year: true
   field_files: true
-  field_is_sticky: true
   field_title_first_char_excl_prep: true
   keywords: true
   langcode: true

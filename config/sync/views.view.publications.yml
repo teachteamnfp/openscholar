@@ -8,6 +8,7 @@ dependencies:
     - system.menu.main
   module:
     - bibcite_entity
+    - os_publications
 id: publications
 label: Publications
 module: views
@@ -255,17 +256,19 @@ display:
           entity_type: bibcite_reference
           entity_field: type
           plugin_id: standard
-        field_is_sticky_value:
-          id: field_is_sticky_value
-          table: bibcite_reference__field_is_sticky
-          field: field_is_sticky_value
+        is_sticky:
+          id: is_sticky
+          table: bibcite_reference
+          field: is_sticky
           relationship: none
           group_type: group
           admin_label: ''
           order: ASC
-          exposed: false
+          exposed: true
           expose:
-            label: Sticky
+            label: 'Is Sticky'
+          entity_type: bibcite_reference
+          entity_field: is_sticky
           plugin_id: standard
       title: 'Publications by Type'
       header: {  }
@@ -280,6 +283,8 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
+        - 'url.query_args:sort_by'
+        - 'url.query_args:sort_order'
       tags: {  }
   page_1:
     display_plugin: page
@@ -306,6 +311,8 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
+        - 'url.query_args:sort_by'
+        - 'url.query_args:sort_order'
       tags: {  }
   page_2:
     display_plugin: page
@@ -469,17 +476,19 @@ display:
           expose:
             label: ''
           plugin_id: standard
-        field_is_sticky_value:
-          id: field_is_sticky_value
-          table: bibcite_reference__field_is_sticky
-          field: field_is_sticky_value
+        is_sticky:
+          id: is_sticky
+          table: bibcite_reference
+          field: is_sticky
           relationship: none
           group_type: group
           admin_label: ''
           order: ASC
-          exposed: false
+          exposed: true
           expose:
-            label: Sticky
+            label: 'Is Sticky'
+          entity_type: bibcite_reference
+          entity_field: is_sticky
           plugin_id: standard
       menu:
         type: none
@@ -496,6 +505,8 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
+        - 'url.query_args:sort_by'
+        - 'url.query_args:sort_order'
       tags:
         - 'config:field.storage.bibcite_reference.field_title_first_char_excl_prep'
   page_3:
@@ -650,17 +661,19 @@ display:
             label: ''
           entity_type: bibcite_contributor
           plugin_id: os_publications_first_letter_last_name_author
-        field_is_sticky_value:
-          id: field_is_sticky_value
-          table: bibcite_reference__field_is_sticky
-          field: field_is_sticky_value
+        is_sticky:
+          id: is_sticky
+          table: bibcite_reference
+          field: is_sticky
           relationship: none
           group_type: group
           admin_label: ''
           order: ASC
-          exposed: false
+          exposed: true
           expose:
-            label: Sticky
+            label: 'Is Sticky'
+          entity_type: bibcite_reference
+          entity_field: is_sticky
           plugin_id: standard
       menu:
         type: none
@@ -688,6 +701,8 @@ display:
       contexts:
         - 'languages:language_interface'
         - url.query_args
+        - 'url.query_args:sort_by'
+        - 'url.query_args:sort_order'
       tags: {  }
   page_4:
     display_plugin: page
@@ -856,17 +871,19 @@ display:
           entity_type: bibcite_reference
           entity_field: bibcite_year
           plugin_id: standard
-        field_is_sticky_value:
-          id: field_is_sticky_value
-          table: bibcite_reference__field_is_sticky
-          field: field_is_sticky_value
+        is_sticky:
+          id: is_sticky
+          table: bibcite_reference
+          field: is_sticky
           relationship: none
           group_type: group
           admin_label: ''
           order: ASC
-          exposed: false
+          exposed: true
           expose:
-            label: Sticky
+            label: 'Is Sticky'
+          entity_type: bibcite_reference
+          entity_field: is_sticky
           plugin_id: standard
       menu:
         type: none
@@ -883,4 +900,6 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
+        - 'url.query_args:sort_by'
+        - 'url.query_args:sort_order'
       tags: {  }

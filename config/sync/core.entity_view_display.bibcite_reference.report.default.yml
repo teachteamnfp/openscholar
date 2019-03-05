@@ -5,7 +5,6 @@ dependencies:
   config:
     - bibcite_entity.bibcite_reference_type.report
     - field.field.bibcite_reference.report.field_files
-    - field.field.bibcite_reference.report.field_is_sticky
     - field.field.bibcite_reference.report.field_title_first_char_excl_prep
   enforced:
     module:
@@ -410,16 +409,6 @@ content:
       use_description_as_link_text: true
     third_party_settings: {  }
     type: file_default
-    region: content
-  field_is_sticky:
-    weight: 101
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    type: boolean
     region: content
   keywords:
     type: entity_reference_label

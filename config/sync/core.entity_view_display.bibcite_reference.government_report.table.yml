@@ -6,7 +6,6 @@ dependencies:
     - bibcite_entity.bibcite_reference_type.government_report
     - core.entity_view_mode.bibcite_reference.table
     - field.field.bibcite_reference.government_report.field_files
-    - field.field.bibcite_reference.government_report.field_is_sticky
     - field.field.bibcite_reference.government_report.field_title_first_char_excl_prep
   enforced:
     config:
@@ -416,7 +415,6 @@ hidden:
   bibcite_type: true
   citation: true
   field_files: true
-  field_is_sticky: true
   field_title_first_char_excl_prep: true
   langcode: true
   uid: true
