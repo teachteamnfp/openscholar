@@ -82,10 +82,10 @@ class CitationDistributeGooglescholar implements CitationDistributionInterface, 
       $metadata[$key] = (isset($entity->get($value)->value)) ? htmlspecialchars(strip_tags($entity->get($value)->value), ENT_COMPAT, 'ISO-8859-1', FALSE) : NULL;
     }
 
-    /** @var object $keywords */
-    $keywords = $entity->get('keywords') ?? [];
-    foreach ($keywords as $reference) {
-      $target_id = $reference->target_id;
+    /** @var \Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem $reference */
+    foreach ($entity->get('keywords') as $reference) {
+      $target_id = $reference->getValue()['target_id'];
+      /** @var \Drupal\bibcite_entity\Entity\KeywordInterface $keyword_obj */
       $keyword_obj = $this->entityTypeManager->getStorage('bibcite_keyword')->load($target_id);
       $keywords_arr[] = $keyword_obj->name->value;
     }
@@ -96,10 +96,10 @@ class CitationDistributeGooglescholar implements CitationDistributionInterface, 
       $metadata['citation_publication_date'] = $this->googleScholarDate($entity->bibcite_year->value, $entity->bibcite_date->value);
     }
 
-    /** @var object $contributors */
-    $contributors = $entity->get('author') ?? [];
-    foreach ($contributors as $reference) {
-      $target_id = $reference->target_id;
+    /** @var \Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem $reference */
+    foreach ($entity->get('author') as $reference) {
+      $target_id = $reference->getValue()['target_id'];
+      /** @var \Drupal\bibcite_entity\Entity\ContributorInterface $contributor_obj */
       $contributor_obj = $this->entityTypeManager->getStorage('bibcite_contributor')->load($target_id);
       $contributors_arr[] = $contributor_obj->name->value;
     }
