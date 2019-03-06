@@ -1,3 +1,7 @@
 administer control panel redirect_maximum:
   title: 'Administer redirect_maximum control panel'
   description: 'Administer redirect_maximum control panel.'
+
+administer control panel redirects:
+  title: 'Administer redirect_maximum control panel'
+  description: 'Administer redirect_maximum control panel.'
