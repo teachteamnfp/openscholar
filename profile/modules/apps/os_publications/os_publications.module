@@ -162,31 +162,6 @@ function os_publications_bibcite_reference_presave(EntityInterface $entity) {
 }
 
 /**
- * Checks if plugin is configured or not.
- *
- * @param array $plugin
- *   Plugin definition.
- *
- * @return bool
- *   If configured or not.
- */
-function _citation_distribute_is_service_configured(array $plugin) {
-  $type = \Drupal::service('os_publications.manager_citation_distribute');
-  if ($plugin['id'] == 'citation_distribute_sword') {
-    return FALSE;
-  }
-  $service = $type->createInstance($plugin['id']);
-
-  $properties = get_object_vars($service);
-  foreach ($properties as $prop) {
-    if ($prop === NULL) {
-      return FALSE;
-    }
-  }
-  return TRUE;
-}
-
-/**
  * Implements hook_entity_base_field_info().
  */
 function os_publications_entity_base_field_info(EntityTypeInterface $entity_type) {

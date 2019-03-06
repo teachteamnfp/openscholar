@@ -65,20 +65,6 @@ class CitationDistributeConfigForm extends ConfigFormBase {
     /** @var array $plugins */
     $plugins = $this->citationDistributePluginManager->getDefinitions();
 
-    $unconfigured = [];
-    foreach ($plugins as $plugin) {
-      if (isset($plugin['name']) && !_citation_distribute_is_service_configured($plugin)) {
-        $unconfigured[] = $plugin['name'];
-      }
-    }
-
-    if (count($unconfigured)) {
-      $form['citation_distribute_config_message'] = [
-        '#type' => 'markup',
-        '#markup' => '<div class="messages warning">' . $this->t('The following plugin(s) need to be configured:') . implode(', ', $unconfigured) . '</div>',
-      ];
-    }
-
     $form['citation_distribute'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Configure Citation Distribute'),
@@ -86,7 +72,6 @@ class CitationDistributeConfigForm extends ConfigFormBase {
       '#collapsed' => FALSE,
     ];
 
-    // Module mode.
     $form['citation_distribute']['citation_distribute_module_mode'] = [
       '#type' => 'select',
       '#title' => $this->t('Select the mode for this module'),
