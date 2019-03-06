@@ -7,9 +7,9 @@ use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Plugin\DefaultPluginManager;
 
 /**
- * Class CitationDistirbutePluginManager.
+ * Class CitationDistributePluginManager.
  */
-class CitationDistirbutePluginManager extends DefaultPluginManager {
+class CitationDistributePluginManager extends DefaultPluginManager {
 
   /**
    * {@inheritdoc}

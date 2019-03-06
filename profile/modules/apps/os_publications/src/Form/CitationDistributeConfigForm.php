@@ -2,13 +2,46 @@
 
 namespace Drupal\os_publications\Form;
 
+use Drupal\Core\Config\ConfigFactory;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * API Configuration form.
  */
 class CitationDistributeConfigForm extends ConfigFormBase {
+
+  /**
+   * Citation distribute plugin manager.
+   *
+   * @var \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager
+   */
+  protected $citationDistributePluginManager;
+
+  /**
+   * CitationDistributeConfigForm constructor.
+   *
+   * @param \Drupal\Core\Config\ConfigFactory $config_factory
+   *   Config factory.
+   * @param \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager $citation_distribute_plugin_manager
+   *   Citation distribute plugin manager.
+   */
+  public function __construct(ConfigFactory $config_factory, CitationDistributePluginManager $citation_distribute_plugin_manager) {
+    parent::__construct($config_factory);
+    $this->citationDistributePluginManager = $citation_distribute_plugin_manager;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('config.factory'),
+      $container->get('os_publications.manager_citation_distribute')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -29,9 +62,11 @@ class CitationDistributeConfigForm extends ConfigFormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = $this->config('citation_distribute.settings');
+    /** @var array $plugins */
+    $plugins = $this->citationDistributePluginManager->getDefinitions();
 
     $unconfigured = [];
-    foreach (_citation_distribute_plugins() as $plugin) {
+    foreach ($plugins as $plugin) {
       if (isset($plugin['name']) && !_citation_distribute_is_service_configured($plugin)) {
         $unconfigured[] = $plugin['name'];
       }
@@ -85,7 +120,7 @@ class CitationDistributeConfigForm extends ConfigFormBase {
       '#collapsed' => FALSE,
     ];
 
-    foreach (_citation_distribute_plugins() as $plugin) {
+    foreach ($plugins as $plugin) {
       $name = $plugin['id'];
       $form['citation_distribute']['autoflag'][$name . '_auto_flag'] = [
         '#type' => 'checkbox',
@@ -114,7 +149,7 @@ class CitationDistributeConfigForm extends ConfigFormBase {
       ->set('citation_distribute_module_mode', $form_state->getValue('citation_distribute_module_mode'))
       ->set('citation_distribute_cron_limit', $form_state->getValue('citation_distribute_cron_limit'))
       ->save();
-    foreach (_citation_distribute_plugins() as $plugin) {
+    foreach ($this->citationDistributePluginManager->getDefinitions() as $plugin) {
       $this->config('citation_distribute.settings')
         ->set($plugin['id'] . '_auto_flag', $form_state->getValue($plugin['id'] . '_auto_flag'))
         ->save();

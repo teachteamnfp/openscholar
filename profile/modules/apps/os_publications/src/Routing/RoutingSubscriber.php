@@ -4,6 +4,7 @@ namespace Drupal\os_publications\Routing;
 
 use Drupal\Core\Routing\RouteSubscriberBase;
 use Drupal\Core\Routing\RoutingEvents;
+use Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
@@ -13,13 +14,30 @@ use Symfony\Component\Routing\RouteCollection;
 class RoutingSubscriber extends RouteSubscriberBase {
 
   /**
+   * Citation distribute plugin manager.
+   *
+   * @var \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager
+   */
+  protected $citationDistributePluginManager;
+
+  /**
+   * RoutingSubscriber constructor.
+   *
+   * @param \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager $citation_distribute_plugin_manager
+   *   Citation distribute plugin manager.
+   */
+  public function __construct(CitationDistributePluginManager $citation_distribute_plugin_manager) {
+    $this->citationDistributePluginManager = $citation_distribute_plugin_manager;
+  }
+
+  /**
    * Alters existing routes for a specific collection.
    *
    * @param \Symfony\Component\Routing\RouteCollection $collection
    *   The route collection for adding routes.
    */
   protected function alterRoutes(RouteCollection $collection) {
-    foreach (_citation_distribute_plugins() as $plugin) {
+    foreach ($this->citationDistributePluginManager->getDefinitions() as $plugin) {
       if (isset($plugin['formclass'])) {
         // Route for bulk copying field display settings.
         $route = new Route(

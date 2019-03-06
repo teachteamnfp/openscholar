@@ -11,7 +11,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\cp_settings\CpSettingInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\os_publications\Plugin\CitationDistribution\CitationDistirbutePluginManager;
+use Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager;
 use Drupal\os_publications\PublicationsListingHelperInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\bibcite\CitationStylerInterface;
@@ -74,15 +74,7 @@ class PublicationSettingsForm extends PluginBase implements CpSettingInterface, 
   /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration,
-    $plugin_id,
-    $plugin_definition,
-    CitationStylerInterface $styler,
-    BibciteFormatManagerInterface $formatManager,
-    EntityTypeManagerInterface $entityTypeManager,
-    SampleCitations $citations,
-    PublicationsListingHelperInterface $redirect_repository,
-                              CitationDistirbutePluginManager $pluginManager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, CitationStylerInterface $styler, BibciteFormatManagerInterface $formatManager, EntityTypeManagerInterface $entityTypeManager, SampleCitations $citations, PublicationsListingHelperInterface $redirect_repository, CitationDistributePluginManager $pluginManager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->styler = $styler;
     $this->formatManager = $formatManager;

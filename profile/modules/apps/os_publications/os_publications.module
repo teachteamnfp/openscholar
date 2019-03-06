@@ -98,7 +98,9 @@ function os_publications_page_attachments(array &$page) {
   $types = [];
   $entity_id = [];
   $meta = [];
+  /** @var \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager $type */
   $type = \Drupal::service('os_publications.manager_citation_distribute');
+  $plugins = $type->getDefinitions();
 
   // Adds metadata to the publications pages.
   $entities = $current_route->getParameters();
@@ -109,7 +111,7 @@ function os_publications_page_attachments(array &$page) {
       $types[] = $entity;
       $entity_id[$entity] = $value->id();
 
-      foreach (_citation_distribute_plugins() as $plugin) {
+      foreach ($plugins as $plugin) {
         if (in_array('bibcite_reference', $types)) {
           if (isset($plugin['type']) && in_array($plugin['id'], $repos) && $plugin['type'] == 'metadata') {
             $service = $type->createInstance($plugin['id']);
@@ -160,18 +162,6 @@ function os_publications_bibcite_reference_presave(EntityInterface $entity) {
 }
 
 /**
- * Returns available plugins.
- *
- * @return mixed
- *   Plugin definitions.
- */
-function _citation_distribute_plugins() {
-  $type = \Drupal::service('os_publications.manager_citation_distribute');
-  $plugins = $type->getDefinitions();
-  return $plugins;
-}
-
-/**
  * Checks if plugin is configured or not.
  *
  * @param array $plugin
@@ -202,7 +192,11 @@ function _citation_distribute_is_service_configured(array $plugin) {
 function os_publications_entity_base_field_info(EntityTypeInterface $entity_type) {
   if ($entity_type->id() == 'bibcite_reference') {
     $options = [];
-    foreach (_citation_distribute_plugins() as $plugin) {
+    /** @var \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager $type */
+    $type = \Drupal::service('os_publications.manager_citation_distribute');
+    /** @var array $plugins */
+    $plugins = $type->getDefinitions();
+    foreach ($plugins as $plugin) {
       $link = Link::fromTextAndUrl($plugin['name'], Url::fromUri($plugin['href']))->toString();
       $options[$plugin['id']] = $link;
     }
