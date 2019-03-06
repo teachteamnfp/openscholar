@@ -12,8 +12,8 @@ dependencies:
     - os_base
 id: os_base_views_block__calendar_block_2
 theme: os_base
-region: sidebar_first
-weight: 0
+region: content
+weight: 1
 provider: null
 plugin: 'views_block:calendar-block_2'
 settings:

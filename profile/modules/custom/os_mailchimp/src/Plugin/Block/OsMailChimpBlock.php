@@ -42,7 +42,7 @@ class OsMailChimpBlock extends BlockBase {
 
     return [
       '#type' => 'markup',
-      '#markup' => Link::fromTextAndUrl(t('Subscribe to list!'), $link_url)->toString(),
+      '#markup' => Link::fromTextAndUrl($this->t('Subscribe to list!'), $link_url)->toString(),
       '#attached' => [
         'library' => [
           'core/drupal.dialog.ajax',

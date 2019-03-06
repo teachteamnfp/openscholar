@@ -11,6 +11,7 @@ dependencies:
     - image
     - options
     - text
+    - vsite_infinite_scroll
 id: os_websites
 label: 'OS Websites'
 module: views
@@ -51,23 +52,26 @@ display:
           sort_asc_label: Asc
           sort_desc_label: Desc
       pager:
-        type: mini
+        type: vsite_infinite_scroll
         options:
           items_per_page: 24
           offset: 0
-          id: 0
-          total_pages: null
-          expose:
-            items_per_page: false
-            items_per_page_label: 'Items per page'
-            items_per_page_options: '5, 10, 25, 50'
-            items_per_page_options_all: false
-            items_per_page_options_all_label: '- All -'
-            offset: false
-            offset_label: Offset
+          id: '0'
+          total_pages: ''
           tags:
             previous: ‹‹
             next: ››
+          expose:
+            items_per_page: 0
+            items_per_page_label: 'Items per page'
+            items_per_page_options: '5, 10, 25, 50'
+            items_per_page_options_all: 0
+            items_per_page_options_all_label: '- All -'
+            offset: 0
+            offset_label: Offset
+          views_infinite_scroll:
+            button_text: 'Load More'
+            automatically_load_content: 0
       style:
         type: default
       row:
@@ -369,6 +373,7 @@ display:
       relationships: {  }
       arguments: {  }
       display_extenders: {  }
+      use_ajax: true
     cache_metadata:
       max-age: -1
       contexts:
@@ -386,7 +391,8 @@ display:
     display_title: Page
     position: 1
     display_options:
-      display_extenders: {  }
+      display_extenders:
+        metatag_display_extender: {  }
       path: websites
     cache_metadata:
       max-age: -1

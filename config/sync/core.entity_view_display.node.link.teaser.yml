@@ -9,53 +9,14 @@ dependencies:
     - node.type.link
   module:
     - layout_builder
-    - layout_discovery
+    - link
     - text
     - user
 third_party_settings:
   layout_builder:
-    sections:
-      -
-        layout_id: layout_onecol
-        layout_settings: {  }
-        components:
-          6c75b31d-34b8-4c96-acec-8241f31451c8:
-            uuid: 6c75b31d-34b8-4c96-acec-8241f31451c8
-            region: content
-            configuration:
-              id: 'field_block:node:link:body'
-              label_display: ''
-              formatter:
-                label: hidden
-                type: text_summary_or_trimmed
-                settings:
-                  trim_length: 600
-                third_party_settings: {  }
-              context_mapping:
-                entity: layout_builder.entity
-            additional: {  }
-            weight: 0
-          5d4fa40e-2d64-4a60-b2b8-0268af8b3e00:
-            uuid: 5d4fa40e-2d64-4a60-b2b8-0268af8b3e00
-            region: content
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'extra_field_block:node:link:links'
-            additional: {  }
-            weight: 1
-          07dc3dd8-5de7-44e3-b0dd-f9c9eaaa38aa:
-            uuid: 07dc3dd8-5de7-44e3-b0dd-f9c9eaaa38aa
-            region: content
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'extra_field_block:node:link:links'
-            additional: {  }
-            weight: 2
-    enabled: true
+    sections: {  }
+    enabled: false
+    allow_custom: false
 _core:
   default_config_hash: XkqCYO3pYYhIFfD3Sl0IwYzkIJ9aheEAP5K_YLhXuZA
 id: node.link.teaser
@@ -66,16 +27,27 @@ content:
   body:
     label: hidden
     type: text_summary_or_trimmed
-    weight: 101
+    weight: 1
     settings:
       trim_length: 600
     third_party_settings: {  }
     region: content
+  field_url_web_address:
+    type: link
+    weight: 2
+    region: content
+    label: above
+    settings:
+      trim_length: 80
+      url_only: true
+      url_plain: true
+      target: _blank
+      rel: '0'
+    third_party_settings: {  }
   links:
-    weight: 100
+    weight: 0
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
-  field_url_web_address: true
   langcode: true

@@ -34,26 +34,53 @@ else
   git checkout -b $CI_BRANCH;
 fi
 
+phpenv local 7.2
+php -v || exit 1
+
 # Build this branch and push it to Amazon
 # Set up global configuration and install tools needed to build
-composer global require drush/drush
-mkdir -p ~/.drush
-printf "disable_functions =\nmemory_limit = 256M\ndate.timezone = \"America/New_York\"" > ~/.drush/php.ini
 export PATH="$HOME/.composer/vendor/bin:$PATH"
-drush --version || exit 1
 
-# Drush executable.
-[[ $DRUSH && ${DRUSH-x} ]] || DRUSH=drush
 cd $BUILD_ROOT
 
 #Backup the make files
 cp -f openscholar/composer.json /tmp/
 cp -f openscholar/composer.lock /tmp/
+cd openscholar/profile/themes
+cp -rf . /tmp/
+
+cd $BUILD_ROOT
 
 git subtree pull -q -m "$CI_MESSAGE" --prefix=openscholar git://github.com/openscholar/openscholar.git $CI_BRANCH --squash
 
+cd openscholar/profile/themes
+
+SHOULD_REBUILD_SCSS=0
+for theme in * ; do
+  [[ ! -e "$theme/scss" ]] && [[ ! -e "/tmp/$theme/scss" ]] && continue;
+
+  # If scss directory is present in one, but not in other, that means scss needs
+  # to be rebuilt.
+  if [[ -e "$theme/scss" ]] && [[ ! -e "/tmp/$theme/scss" ]]; then
+    SHOULD_REBUILD_SCSS=1
+    break
+  fi
+  if [[ ! -e "$theme/scss" ]] && [[ -e "/tmp/$theme/scss" ]]; then
+    SHOULD_REBUILD_SCSS=1
+    break
+  fi
+
+  diff -r "$theme/scss" "/tmp/$theme/scss" >> "$BUILD_ROOT/scss.diff";
+done
+
+if [[ -e "$BUILD_ROOT/scss.diff" ]] && [[ "$(cat ${BUILD_ROOT}/scss.diff)" != "" ]]; then
+  SHOULD_REBUILD_SCSS=1
+fi
+
+cd ${BUILD_ROOT}
+
 #Only build if no build has ever happened, or if the make files have changed
-if [ ! -d openscholar/vendor ] || [ $FORCE_REBUILD == "1" ] || [ "$(cmp -b 'openscholar/composer.json' '/tmp/composer.json')" != "" ] || [ "$(cmp -b 'openscholar/composer.lock' '/tmp/dcomposer.lock')" != "" ] ]; then
+if [[ $FORCE_REBUILD == "1" ]] || [[ "$(cmp -b 'openscholar/composer.json' '/tmp/composer.json')" != "" ]] || [[ "$(cmp -b 'openscholar/composer.lock' '/tmp/composer.lock')" != "" ]] || [[ ${SHOULD_REBUILD_SCSS} -eq 1 ]]; then
 
 # Chores.
 echo "Rebuilding..."
@@ -62,7 +89,10 @@ cd openscholar
 # Download composer components
 composer install --ignore-platform-reqs
 
-cd ..
+# Build CSS
+cd profile/themes/os_base && npm install && ./node_modules/.bin/gulp sass
+
+cd ../../../..
 
 #remove install.php
 rm -Rf web/install.php || true

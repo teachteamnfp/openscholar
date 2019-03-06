@@ -10,8 +10,8 @@ _core:
   default_config_hash: NDwadleLD3YVSbDUaakxyYZyINYtkFtOVGShfq4kWy8
 id: os_base_branding
 theme: os_base
-region: header
-weight: 0
+region: navigation_collapsible
+weight: -7
 provider: null
 plugin: system_branding_block
 settings:

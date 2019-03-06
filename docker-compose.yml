@@ -2,41 +2,38 @@ version: "2"
 
 services:
   mariadb:
-    image: wodby/mariadb:$MARIADB_TAG
+    image: wodby/mariadb:10.1-2.3.3
     container_name: "${PROJECT_NAME}_mariadb"
-    stop_grace_period: 30s
+    ports:
+      - "33208:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: $DB_ROOT_PASSWORD
-      MYSQL_DATABASE: $DB_NAME
-      MYSQL_USER: $DB_USER
-      MYSQL_PASSWORD: $DB_PASSWORD
-    volumes:
-      - ./mariadb-init:/docker-entrypoint-initdb.d # Place init .sql file(s) here.
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: osd8dev
+      MYSQL_USER: osd8dev
+      MYSQL_PASSWORD: drupal
+#    volumes:
+#      - ./mariadb-init:/docker-entrypoint-initdb.d # Place init .sql file(s) here.
+#      - /path/to/mariadb/data/on/host:/var/lib/mysql # I want to manage volumes manually.
 
   php:
-    image: wodby/drupal-php:$PHP_TAG
+    image: wodby/drupal-php:7.2-4.6.3
     container_name: "${PROJECT_NAME}_php"
     environment:
       PHP_SENDMAIL_PATH: /usr/sbin/sendmail -t -i -S mailhog:1025
-      DB_HOST: $DB_HOST
-      DB_USER: $DB_USER
-      DB_PASSWORD: $DB_PASSWORD
-      DB_NAME: $DB_NAME
-      DB_DRIVER: $DB_DRIVER
-      PHP_XDEBUG: $PHP_XDEBUG_ENABLED
+      PHP_MAX_INPUT_VARS: 10000
+      PHP_XDEBUG: 1
+      PHP_XDEBUG_REMOTE_AUTOSTART: "0"
+      PHP_XDEBUG_DEFAULT_ENABLE: 0
+      PHP_XDEBUG_REMOTE_CONNECT_BACK: 0         # Disable this if not on MAC - This is needed to respect remote.host setting below
+      PHP_XDEBUG_REMOTE_HOST: "10.254.254.254"  # Disable this if not on MAC - You will also need to 'sudo ifconfig lo0 alias 10.254.254.254'
+      PHP_MAX_EXECUTION_TIME: $PHP_MAX_EXECUTION_TIME
+      PHP_MAX_INPUT_TIME: $PHP_MAX_INPUT_TIME
+      PHP_IDE_CONFIG: $PHP_IDE_CONFIG # See https://www.jetbrains.com/help/phpstorm/debugging-a-php-cli-script.html
     volumes:
-      - ./:/var/www/html
-
-  mailhog:
-    image: mailhog/mailhog
-    container_name: "${PROJECT_NAME}_mailhog"
-    labels:
-      - 'traefik.backend=mailhog'
-      - 'traefik.port=8025'
-      - 'traefik.frontend.rule=Host:mailhog.${PROJECT_BASE_URL}'
+      - ./:/var/www/html:cached
 
   apache:
-    image: wodby/apache:$APACHE_TAG
+    image: wodby/apache:2.4
     container_name: "${PROJECT_NAME}_apache"
     depends_on:
       - php
@@ -44,45 +41,19 @@ services:
       APACHE_LOG_LEVEL: debug
       APACHE_BACKEND_HOST: php
       APACHE_SERVER_ROOT: /var/www/html/web
+      APACHE_TIMEOUT: $APACHE_TIMEOUT
       APACHE_VHOST_PRESET: php
+      APACHE_FCGI_PROXY_TIMEOUT: $APACHE_FCGI_PROXY_TIMEOUT
     volumes:
-      - ./:/var/www/html
+      - ./:/var/www/html:cached
     labels:
-      - 'traefik.backend=apache'
+      - 'traefik.backend=osd8_apache_1'
       - 'traefik.port=80'
-      - 'traefik.frontend.rule=Host:${PROJECT_BASE_URL}'
-
-  portainer:
-    image: portainer/portainer
-    container_name: "${PROJECT_NAME}_portainer"
-    command: --no-auth -H unix:///var/run/docker.sock
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    labels:
-      - 'traefik.backend=portainer'
-      - 'traefik.port=9000'
-      - 'traefik.frontend.rule=Host:portainer.${PROJECT_BASE_URL}'
-
-  traefik:
-    image: traefik
-    container_name: "${PROJECT_NAME}_traefik"
-    command: -c /dev/null --web --docker --logLevel=INFO
-    ports:
-      - '8000:80'
-#      - '8080:8080' # Dashboard
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-
-  node:
-     image: mhart/alpine-node:11
-     container_name: "${PROJECT_NAME}_drupal_nodejs"
-     command: npm install
-     working_dir: /var/www/html
-     volumes:
-       - ./:/var/www/html
+      - 'traefik.frontend.rule=Host:home.d8.theopenscholar.com'
 
   chrome:
     # Note: chrome 67/68 is giving errors so we pin to 65 for now.
     image: previousnext/chrome-headless:65
+    container_name: "${PROJECT_NAME}_chrome"
     ports:
       - "9222:9222"

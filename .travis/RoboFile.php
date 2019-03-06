@@ -173,8 +173,7 @@ class RoboFile extends \Robo\Tasks
 
         $tasks[] = $this->taskExec('docker-compose --verbose pull --parallel');
         $tasks[] = $this->taskExec('docker-compose up -d');
-        //$tasks[] = $this->taskExec('docker-compose exec -T -u root php apk add --update nodejs nodejs-npm');
-        $tasks[] = $this->taskExec('docker-compose exec -T php composer install');
+        $tasks[] = $this->taskExec('make');
         $tasks[] = $this->taskExec('docker-compose exec -T php cp .travis/config/phpunit.xml web/core/phpunit.xml');
         $tasks[] = $this->taskExec('docker-compose exec -T php cp .travis/config//bootstrap.php web/core/tests/bootstrap.php');
         $tasks[] = $this->taskExec('docker-compose exec -T php mkdir -p web/sites/simpletest');
@@ -254,7 +253,8 @@ class RoboFile extends \Robo\Tasks
             ->exec('docker-compose exec -T php cp -r profile/modules/vsite/tests/modules/vsite_module_test web/modules/test')
             ->exec('docker-compose exec -T php cp -r web/modules/contrib/group/tests/modules/group_test_config web/modules/test')
             ->exec('docker-compose exec -T php cp -r profile/modules/custom/os_mailchimp/tests/modules/os_mailchimp_test web/modules/test')
-            ->exec('docker-compose exec -T php ./vendor/bin/drush en -y vsite_module_test group_test_config os_mailchimp_test');
+            ->exec('docker-compose exec -T php cp -r profile/modules/apps/os_publications/tests/modules/os_publications_test web/modules/test')
+            ->exec('docker-compose exec -T php ./vendor/bin/drush en -y vsite_module_test group_test_config os_mailchimp_test os_publications_test');
         return $tasks;
     }
 
@@ -284,8 +284,8 @@ class RoboFile extends \Robo\Tasks
         $tasks[] = $this->taskExecStack()
             ->stopOnFail()
             ->exec('docker-compose exec -T php ./vendor/bin/phpcs --config-set installed_paths vendor/drupal/coder/coder_sniffer')
-            ->exec('docker-compose exec -T php ./vendor/bin/phpcs --standard=Drupal --warning-severity=0 profile')
-            ->exec('docker-compose exec -T php ./vendor/bin/phpcs --standard=DrupalPractice --warning-severity=0 profile');
+            ->exec('docker-compose exec -T php ./vendor/bin/phpcs --standard=Drupal --warning-severity=0 --ignore=themes/*/css,themes/*/node_modules profile')
+            ->exec('docker-compose exec -T php ./vendor/bin/phpcs --standard=DrupalPractice --warning-severity=0 --ignore=themes/*/css,themes/*/node_modules profile');
 
         return $tasks;
     }
