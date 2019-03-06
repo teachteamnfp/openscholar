@@ -98,8 +98,9 @@ function os_publications_page_attachments(array &$page) {
   $types = [];
   $entity_id = [];
   $meta = [];
+  $type = \Drupal::service('os_publications.manager_citation_distribute');
 
-  // Drupal has fetched the entity for us already.
+  // Adds metadata to the publications pages.
   $entities = $current_route->getParameters();
   if ($entities->has('bibcite_reference') && !strpos($current_route->getRouteName(), 'edit_form')) {
     foreach ($entities as $entity => $value) {
@@ -107,7 +108,6 @@ function os_publications_page_attachments(array &$page) {
       $repos = explode(',', $repos);
       $types[] = $entity;
       $entity_id[$entity] = $value->id();
-      $type = \Drupal::service('os_publications.manager_citation_distribute');
 
       foreach (_citation_distribute_plugins() as $plugin) {
         if (in_array('bibcite_reference', $types)) {
