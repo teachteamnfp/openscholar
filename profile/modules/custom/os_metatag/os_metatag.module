@@ -11,7 +11,7 @@ use Drupal\Component\Utility\Html;
  * Implements hook_page_attachments().
  */
 function os_metatag_page_attachments(array &$attachments) {
-  $config = \Drupal::config('os_metatag.setting');
+  $config = \Drupal::config('os_metatag.settings');
   $publisher_url = $config->get('publisher_url');
   if (!empty($publisher_url)) {
     $publisher_link = [

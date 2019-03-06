@@ -12,7 +12,7 @@ DOCKER_INFO=$(docker info)
 if [[ $? -eq 0 ]]; then
   DOCKER_CONTAINER_STATUS=$(docker ps)
 
-  if ! [[ ${DOCKER_CONTAINER_STATUS} == *"openscholar_php"* ]]; then
+  if ! [[ ${DOCKER_CONTAINER_STATUS} == *"${PROJECT_NAME}_php"* ]]; then
     echo "Docker is installed, but OpenScholar PHP container is not running. Start the container and try committing again."
     exit 1
   fi
