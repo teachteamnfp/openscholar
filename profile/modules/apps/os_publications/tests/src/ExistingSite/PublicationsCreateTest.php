@@ -21,7 +21,7 @@ class PublicationsCreateTest extends TestBase {
       'title' => 'The Velvet Underground',
     ]);
 
-    $this->assertEquals('V', $reference->get('title_first_char_excl_prep')->getValue()['value']);
+    $this->assertEquals('V', $reference->get('title_first_char_excl_prep')->getValue()[0]['value']);
   }
 
 }
