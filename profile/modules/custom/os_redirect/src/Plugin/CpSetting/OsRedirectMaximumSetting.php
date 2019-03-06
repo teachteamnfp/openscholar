@@ -48,10 +48,7 @@ class OsRedirectMaximumSetting extends PluginBase implements CpSettingInterface 
   /**
    * {@inheritdoc}
    */
-  public function submitForm(
-    FormStateInterface $formState,
-    ConfigFactoryInterface $configFactory
-  ) {
+  public function submitForm(FormStateInterface $formState, ConfigFactoryInterface $configFactory) {
     $config = $configFactory->getEditable('os_redirect.settings');
     $config->set('maximum_number', $formState->getValue('maximum_number'));
     $config->save(TRUE);
