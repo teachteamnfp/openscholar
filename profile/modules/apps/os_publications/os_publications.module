@@ -76,7 +76,7 @@ function os_publications_views_query_alter(ViewExecutable $view, QueryPluginBase
   // A mapping of display_id and the field whose sort order will be altered.
   $mapping = new Map();
   $mapping->put('page_1', 'bibcite_reference_type');
-  $mapping->put('page_2', 'bibcite_reference__field_title_first_char_excl_prep_field_ti');
+  $mapping->put('page_2', 'bibcite_reference_title_first_char_excl_prep');
   $mapping->put('page_3', 'first_letter_last_name_author');
   $mapping->put('page_4', 'bibcite_reference_bibcite_year');
 
@@ -154,7 +154,7 @@ function os_publications_bibcite_reference_presave(EntityInterface $entity) {
   /** @var \Drupal\os_publications\PublicationsListingHelperInterface $publications_listing_helper */
   $publications_listing_helper = \Drupal::service('os_publications.listing_helper');
 
-  $entity->set('field_title_first_char_excl_prep', [
+  $entity->set('title_first_char_excl_prep', [
     'value' => $publications_listing_helper->convertLabel($entity->label()),
   ]);
 }
@@ -229,6 +229,9 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
         ],
       ])
       ->setDisplayConfigurable('form', TRUE);
+
+    $fields['title_first_char_excl_prep'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Title first letter excluding prepositions'));
 
     return $fields;
   }

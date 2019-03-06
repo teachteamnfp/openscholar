@@ -15,14 +15,13 @@ class PublicationsCreateTest extends TestBase {
    * @covers ::os_publications_bibcite_reference_presave
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
-   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
   public function testSetTitleFirstLetterExclPrep() {
     $reference = $this->createReference([
       'title' => 'The Velvet Underground',
     ]);
 
-    $this->assertEquals('V', $reference->get('field_title_first_char_excl_prep')->first()->getValue()['value']);
+    $this->assertEquals('V', $reference->get('title_first_char_excl_prep')->getValue()['value']);
   }
 
 }

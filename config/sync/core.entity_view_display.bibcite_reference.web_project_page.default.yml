@@ -5,7 +5,6 @@ dependencies:
   config:
     - bibcite_entity.bibcite_reference_type.web_project_page
     - field.field.bibcite_reference.web_project_page.field_files
-    - field.field.bibcite_reference.web_project_page.field_title_first_char_excl_prep
   enforced:
     module:
       - bibcite_entity
@@ -421,6 +420,5 @@ content:
 hidden:
   bibcite_type: true
   citation: true
-  field_title_first_char_excl_prep: true
   langcode: true
   uid: true
