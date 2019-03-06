@@ -136,7 +136,7 @@ class CitationDistributeGooglescholar implements CitationDistributionInterface, 
    * @return array
    *   Authors List.
    */
-  protected function googleScholarListAuthors(array $contributors = []) {
+  protected function googleScholarListAuthors(array $contributors = []) : array {
     $authors = [];
     foreach ($contributors as $cont) {
       $authors[] = htmlspecialchars(strip_tags($cont), ENT_COMPAT, 'ISO-8859-1', FALSE);
@@ -152,19 +152,19 @@ class CitationDistributeGooglescholar implements CitationDistributionInterface, 
    * @param int $date
    *   Date.
    *
-   * @return bool|false|string
+   * @return string
    *   Date/Year.
    */
-  protected function googleScholarDate($year, $date) {
+  protected function googleScholarDate($year, $date) : string {
     if ($date) {
-      return date('Y/m/d', strtotime($date));
+      return date('Y/m/d', strtotime($date)) ?? '';
     }
 
     if ($year) {
       return $year;
     }
 
-    return FALSE;
+    return '';
   }
 
 }
