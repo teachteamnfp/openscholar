@@ -39,4 +39,41 @@
       }
     }
   }
+  .fc-header-toolbar {
+    .fc-right {
+      display: none;
+    }
+    .fc-center {
+      margin: 20px 0 0 0;
+    }
+  }
+}
+
+/**** calendar prev next ****/
+.fc-header-toolbar {
+  .fc-button-group{
+    .ui-button {
+      background: none;
+      border: 0 none;
+      position: absolute;
+      .ui-icon {
+        background: url(../../../themes/os_base/images/basesprite.png) no-repeat;
+        width: 15px;
+        height: 13px;
+        display: inline-block;
+      }
+      &.fc-prev-button {
+        left: 0;
+        .ui-icon {
+          background-position: 0 -480px;
+        }
+      }
+      &.fc-next-button {
+        right: 0;
+        .ui-icon {
+          background-position: -15px -480px;
+        }
+      }
+    }
+  }
 }
