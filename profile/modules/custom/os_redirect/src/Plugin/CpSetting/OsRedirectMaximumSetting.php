@@ -61,7 +61,7 @@ class OsRedirectMaximumSetting extends PluginBase implements CpSettingInterface 
     if (!$account->hasPermission('access control panel')) {
       return AccessResult::forbidden();
     }
-    if (!$account->hasPermission('manage control panel redirect_maximum')) {
+    if (!$account->hasPermission('administer control panel redirect_maximum')) {
       return AccessResult::forbidden();
     }
     return AccessResult::allowed();
