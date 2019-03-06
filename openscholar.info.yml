@@ -7,13 +7,6 @@ distribution:
 dependencies:
   - drupal:admin_toolbar
   - drupal:admin_toolbar_tools
-  - drupal:bibcite
-  - bibcite:bibcite_bibtex
-  - bibcite:bibcite_endnote
-  - bibcite:bibcite_entity
-  - bibcite:bibcite_export
-  - bibcite:bibcite_marc
-  - bibcite:bibcite_ris
   - drupal:blazy
   - drupal:block
   - drupal:block_content
@@ -46,7 +39,6 @@ dependencies:
   - drupal:entity_reference_revisions
   - drupal:field
   - drupal:field_layout
-  - drupal:field_tools
   - drupal:file
   - drupal:filter
   - drupal:fullcalendar
@@ -81,7 +73,6 @@ dependencies:
   - drupal:os_metatag
   - drupal:os_office_embed
   - drupal:os_pages
-  - drupal:os_publications
   - drupal:os_redirect
   - drupal:os_slideshow
   - drupal:page_cache
@@ -90,7 +81,6 @@ dependencies:
   - drupal:quickedit
   - drupal:rdf
   - drupal:redirect
-  - drupal:repec
   - drupal:responsive_image
   - drupal:rest
   - drupal:search
