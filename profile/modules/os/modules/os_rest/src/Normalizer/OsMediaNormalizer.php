@@ -18,20 +18,22 @@ use Symfony\Component\Serializer\SerializerInterface;
 class OsMediaNormalizer extends ContentEntityNormalizer {
 
   /**
-   * Entity Type Manager interface
+   * Entity Type Manager interface.
    *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
 
   /**
-   * Current route match
+   * Current route match.
    *
    * @var \Drupal\Core\Routing\RouteMatchInterface
    */
   protected $routeMatch;
 
   /**
+   * Local file system.
+   *
    * @var \Drupal\Core\File\FileSystemInterface
    */
   protected $fileSystem;
@@ -45,12 +47,15 @@ class OsMediaNormalizer extends ContentEntityNormalizer {
 
   /**
    * OsMediaNormalizer constructor.
-   * @param EntityManagerInterface $entity_manager
-   *   deprecated, from parent class
-   * @param EntityTypeManagerInterface $entityTypeManager
-   *   Entity Type Manager
-   * @param RouteMatchInterface $routeMatch
-   *   Current Route match
+   *
+   * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
+   *   Deprecated, from parent class.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   Entity Type Manager.
+   * @param \Drupal\Core\Routing\RouteMatchInterface $routeMatch
+   *   Current Route match.
+   * @param \Drupal\Core\File\FileSystemInterface $fileSystem
+   *   The local file system manager.
    */
   public function __construct(EntityManagerInterface $entity_manager, EntityTypeManagerInterface $entityTypeManager, RouteMatchInterface $routeMatch, FileSystemInterface $fileSystem) {
     parent::__construct($entity_manager);

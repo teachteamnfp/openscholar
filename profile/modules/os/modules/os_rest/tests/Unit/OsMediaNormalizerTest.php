@@ -1,8 +1,9 @@
 <?php
 
 namespace Drupal\Tests\os_rest\Unit;
+
 use Drupal\Component\Serialization\Json;
-use \Drupal\Core\Entity\EntityManagerInterface;
+use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Field\ChangedFieldItemList;
 use Drupal\Core\Field\FieldItemListInterface;
@@ -14,7 +15,8 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
- * Class OsMediaNormalizer
+ * Class OsMediaNormalizer.
+ *
  * @package Drupal\Tests\os_rest\Unit
  *
  * @coversDefaultClass Drupal\os_rest\Normalizer\OsMediaNormalizer
@@ -49,10 +51,13 @@ class OsMediaNormalizerTest extends UnitTestCase {
    */
   protected $nextMediaId = 1;
 
+  /**
+   * {@inheritdoc}
+   */
   public function setUp() {
     parent::setUp();
 
-    // needed methods:
+    // Needed methods:
     // 1. id()
     // 2. getFileUri()
     // 3. getSize()
@@ -63,62 +68,64 @@ class OsMediaNormalizerTest extends UnitTestCase {
     $file->method('getSize')->willReturn(2000);
     $file->method('getFilename')->willReturn('test.jpg');
 
-    // needed methods:
+    // Needed methods:
     // 1. create
     // 2. getQuery()
-    //  2a. getQuery has an execute method
-    // 3. load
+    //    2a. getQuery has an execute method
+    // 3. load.
     /** @var \PHPUnit_Framework_MockObject_MockObject $fileStorage */
     $fileStorage = $this->createMock('\Drupal\Core\Entity\EntityStorageInterface');
     $fileStorage->method('load')->willReturnCallback(function ($id) use ($file) {
       if ($id == 1) {
         return $file;
       }
-      return null;
+      return NULL;
     });
     /** @var \PHPUnit_Framework_MockObject_MockObject $mediaStorage */
     $this->mediaStorage = $this->createMock('\Drupal\Core\Entity\EntityStorageInterface');
 
-    // needed methods:
+    // Needed methods:
     // 1. getStorage(string $entity_type): EntityStorageInterface
     //    need 'file' and 'media'
     // 2. getEntityTypeFromClass(string $class): string
-    // 3. getDefinition(string $entity_type, bool): EntityTypeInterface
+    // 3. getDefinition(string $entity_type, bool): EntityTypeInterface.
     /** @var \PHPUnit_Framework_MockObject_MockObject $entityManager */
     $entityManager = $this->createMock('\Drupal\Core\Entity\EntityManagerInterface');
     $entityManager->method('getStorage')->willReturnCallback(function ($type) use ($fileStorage) {
       switch ($type) {
         case 'file':
           return $fileStorage;
+
         case 'media':
           return $this->mediaStorage;
       }
-      return null;
+      return NULL;
     });
 
     $entityType = $this->createMock('\Drupal\Core\Entity\EntityTypeInterface');
-    $entityType->method('entityClassImplements')->willReturn(true);
+    $entityType->method('entityClassImplements')->willReturn(TRUE);
     $entityManager->method('getDefinition')->willReturn($entityType);
 
-    // needed methods:
-    // 1. getStorage(string $entity_type): EntityStorageInterface
+    // Needed methods:
+    // 1. getStorage(string $entity_type): EntityStorageInterface.
     $entityTypeManager = $this->createMock('\Drupal\Core\Entity\EntityTypeManagerInterface');
     $entityTypeManager->method('getStorage')->willReturnCallback(function ($val) use ($fileStorage) {
       switch ($val) {
         case 'file':
           return $fileStorage;
+
         case 'media':
           return $this->mediaStorage;
       }
-      return null;
+      return NULL;
     });
 
-    // needed methods:
+    // Needed methods:
     // 1. getParameter(string $param)
-    //   'media' => original media being editted
+    //    'media' => original media being editted.
     $this->routeMatch = $this->createMock('\Drupal\Core\Routing\RouteMatchInterface');
 
-    // needed methods:
+    // Needed methods:
     // 1. uriScheme(string $uri)
     $filesystem = $this->createMock('\Drupal\Core\File\FileSystemInterface');
     $filesystem->method('uriScheme')->willReturnCallback(function ($uri) {
@@ -130,11 +137,11 @@ class OsMediaNormalizerTest extends UnitTestCase {
     });
 
     $this->normalizer = new OsMediaNormalizer($entityManager, $entityTypeManager, $this->routeMatch, $filesystem);
-    new Serializer(array($this->normalizer), array('json' => new JsonEncoder()));
+    new Serializer([$this->normalizer], ['json' => new JsonEncoder()]);
   }
 
   /**
-   * Test that media which references a local file is normalized correctly
+   * Test that media which references a local file is normalized correctly.
    */
   public function testLocalFileNormalization() {
     $i = 5;
@@ -142,7 +149,7 @@ class OsMediaNormalizerTest extends UnitTestCase {
   }
 
   /**
-   * Test that media which references a remote media object is normalized correctly
+   * Test that media which references a remote media object is normalized correctly.
    */
   public function testRemoteFileNormalization() {
     $i = 5;
@@ -150,7 +157,7 @@ class OsMediaNormalizerTest extends UnitTestCase {
   }
 
   /**
-   * Test that the data we get for denormalization changes the media entity correctly
+   * Test that the data we get for denormalization changes the media entity correctly.
    */
   public function testDenormalization() {
     $newMedia = $this->createMock('\Drupal\media\MediaInterface');
@@ -161,10 +168,11 @@ class OsMediaNormalizerTest extends UnitTestCase {
       switch ($field) {
         case 'name':
           return $name;
+
         case 'changed':
           return $changed;
       }
-      return null;
+      return NULL;
     });
 
     $this->mediaStorage->method('create')->willReturn($newMedia);
