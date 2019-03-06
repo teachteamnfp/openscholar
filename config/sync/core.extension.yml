@@ -1,6 +1,13 @@
 module:
   admin_toolbar: 0
   admin_toolbar_tools: 0
+  bibcite: 0
+  bibcite_bibtex: 0
+  bibcite_endnote: 0
+  bibcite_entity: 0
+  bibcite_export: 0
+  bibcite_marc: 0
+  bibcite_ris: 0
   blazy: 0
   block: 0
   block_content: 0
@@ -35,6 +42,7 @@ module:
   entity_reference_revisions: 0
   field: 0
   field_layout: 0
+  field_tools: 0
   field_ui: 0
   file: 0
   filter: 0
@@ -72,13 +80,16 @@ module:
   os_metatag: 0
   os_office_embed: 0
   os_pages: 0
+  os_publications: 0
   os_redirect: 0
   os_slideshow: 0
   page_cache: 0
   path: 0
   purl: 0
   quickedit: 0
+  rdf: 0
   redirect: 0
+  repec: 0
   responsive_image: 0
   rest: 0
   search: 0

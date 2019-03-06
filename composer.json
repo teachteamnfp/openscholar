@@ -64,6 +64,40 @@
         {
             "type": "composer",
             "url": "https://packages.drupal.org/8"
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "swordapp/swordappv2-php-library",
+                "version": "master",
+                "type": "drupal-library",
+                "dist": {
+                    "url": "https://github.com/swordapp/swordappv2-php-library/archive/master.zip",
+                    "type": "zip"
+                },
+                "source": {
+                    "url": "https://github.com/swordapp/swordappv2-php-library.git",
+                    "type": "git",
+                    "reference": "master"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "drupal/repec",
+                "version": "master",
+                "type": "drupal-module",
+                "dist": {
+                    "url": "https://github.com/openscholar/repec/archive/master.zip",
+                    "type": "zip"
+                },
+                "source": {
+                    "url": "https://github.com/openscholar/repec.git",
+                    "type": "git",
+                    "reference": "master"
+                }
+            }
         }
     ],
     "require": {
@@ -106,7 +140,13 @@
         "drupal/config_split": "^1.4",
         "drupal/views_infinite_scroll": "^1.5",
         "twbs/bootstrap-sass": "^3.3.7",
-        "drupal/mailchimp": "^1.8"
+        "drupal/mailchimp": "^1.8",
+        "drupal/bibcite": "1.x-dev",
+        "drupal/field_tools": "^1.0@alpha",
+        "ext-json": "*",
+        "php-ds/php-ds": "^1.2",
+        "swordapp/swordappv2-php-library": "master",
+        "drupal/repec": "master"
     },
     "require-dev": {
         "drupal/features": "^3.7",
@@ -127,7 +167,9 @@
     },
     "autoload": {
         "classmap": [
-            "scripts/composer/ScriptHandler.php"
+            "scripts/composer/ScriptHandler.php",
+            "web/libraries/swordappv2-php-library/swordappclient.php",
+            "web/libraries/swordappv2-php-library/packager_mets_swap.php"
         ],
         "files": ["load.environment.php"]
     },
