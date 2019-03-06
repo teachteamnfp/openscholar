@@ -1,0 +1,9 @@
+os_publications.citation_distribute:
+  title: 'Citation Distribute Configurations'
+  route_name: os_publications.citation_distribute_settings
+  parent: system.admin_config
+  menu_name: citation_distribute
+os_publications.citation_distribute_settings:
+  class: Drupal\os_publications\Plugin\Menu\CitationDistributeMenuLink
+  deriver: Drupal\os_publications\Plugin\Derivative\CitationDistributeMenuLink
+  menu_name: citation_distribute_settings

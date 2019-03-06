@@ -29,14 +29,14 @@ class OsMetatagSetting extends PluginBase implements CpSettingInterface {
    * {@inheritdoc}
    */
   public function getEditableConfigNames(): array {
-    return ['os_metatag.setting'];
+    return ['os_metatag.settings'];
   }
 
   /**
    * {@inheritdoc}
    */
   public function getForm(array &$form, ConfigFactoryInterface $configFactory) {
-    $config = $configFactory->get('os_metatag.setting');
+    $config = $configFactory->get('os_metatag.settings');
     $form['site_title'] = [
       '#type' => 'textfield',
       '#title' => t('Site Title'),
@@ -66,7 +66,7 @@ class OsMetatagSetting extends PluginBase implements CpSettingInterface {
     FormStateInterface $formState,
     ConfigFactoryInterface $configFactory
   ) {
-    $config = $configFactory->getEditable('os_metatag.setting');
+    $config = $configFactory->getEditable('os_metatag.settings');
     $config->set('site_title', $formState->getValue('site_title'));
     $config->set('meta_description', $formState->getValue('meta_description'));
     $config->set('publisher_url', $formState->getValue('publisher_url'));

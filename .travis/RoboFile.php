@@ -253,7 +253,8 @@ class RoboFile extends \Robo\Tasks
             ->exec('docker-compose exec -T php cp -r profile/modules/vsite/tests/modules/vsite_module_test web/modules/test')
             ->exec('docker-compose exec -T php cp -r web/modules/contrib/group/tests/modules/group_test_config web/modules/test')
             ->exec('docker-compose exec -T php cp -r profile/modules/custom/os_mailchimp/tests/modules/os_mailchimp_test web/modules/test')
-            ->exec('docker-compose exec -T php ./vendor/bin/drush en -y vsite_module_test group_test_config os_mailchimp_test');
+            ->exec('docker-compose exec -T php cp -r profile/modules/apps/os_publications/tests/modules/os_publications_test web/modules/test')
+            ->exec('docker-compose exec -T php ./vendor/bin/drush en -y vsite_module_test group_test_config os_mailchimp_test os_publications_test');
         return $tasks;
     }
 
