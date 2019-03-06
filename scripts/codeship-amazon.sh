@@ -66,7 +66,7 @@ fi
 # Build this branch and push it to Amazon
 
 # Set up global configuration and install tools needed to build
-composer global require drush/drush
+composer global require drush/drush:8.1.18
 mkdir -p ~/.drush
 printf "disable_functions =\nmemory_limit = 256M\ndate.timezone = \"America/New_York\"" > ~/.drush/php.ini
 export PATH="$HOME/.composer/vendor/bin:$PATH"
