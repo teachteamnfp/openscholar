@@ -46,7 +46,7 @@ class CitationDistributeGooglescholar implements CitationDistributionInterface, 
   /**
    * {@inheritdoc}
    */
-  public function save($id, $plugin) {
+  public function save($id, $plugin) : bool {
     /*
      * google_scholar themes a node if it has an entry in {citation_distribute}
      * with type=google_scholar to reach this point that must have happened, so
@@ -58,8 +58,7 @@ class CitationDistributeGooglescholar implements CitationDistributionInterface, 
   /**
    * {@inheritdoc}
    */
-  public function mapMetadata($id) {
-
+  public function mapMetadata($id) : array {
     $entity = $this->entityTypeManager->getStorage('bibcite_reference')->load($id);
     $keywords_arr = [];
     $contributors_arr = [];
@@ -109,40 +108,20 @@ class CitationDistributeGooglescholar implements CitationDistributionInterface, 
   }
 
   /**
-   * Returns themeable html output to include in headers.
-   *
-   * @param mixed $id
-   *   The entity Id.
-   *
-   * @return array
-   *   Header options.
+   * {@inheritdoc}
    */
-  public function render($id) {
-
-    $metadata = $this->mapMetadata($id);
+  public function render($id) : array {
+    $metadata = array_filter($this->mapMetadata($id));
     $output = [];
     foreach ($metadata as $key => $value) {
-      if ($value) {
-        if (is_array($value)) {
-          foreach ($value as $subvalue) {
-            $output[] = [
-              '#tag' => 'meta',
-              '#attributes' => [
-                'name' => $key,
-                'content' => $subvalue,
-              ],
-            ];
-          }
-        }
-        else {
-          $output[] = [
-            '#tag' => 'meta',
-            '#attributes' => [
-              'name' => $key,
-              'content' => $value,
-            ],
-          ];
-        }
+      foreach ($value as $subvalue) {
+        $output[] = [
+          '#tag' => 'meta',
+          '#attributes' => [
+            'name' => $key,
+            'content' => $subvalue,
+          ],
+        ];
       }
     }
     return $output;

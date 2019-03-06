@@ -18,7 +18,7 @@ interface CitationDistributionInterface {
    * @return bool
    *   Status of save/push.
    */
-  public function save($id, array $plugin);
+  public function save($id, array $plugin) : bool;
 
   /**
    * Copies data from bibcite entity data into array labeled for this service.
@@ -28,15 +28,24 @@ interface CitationDistributionInterface {
    *
    * @return array
    *   Mapping of metadata keys and values to distribute.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
-  public function mapMetadata($id);
+  public function mapMetadata($id) : array;
 
   /**
-   * Themes data into format appropriate for this service.
+   * Renders the entity into format appropriate for this service.
    *
-   * @param array $metadata
-   *   Associative array of metadata keys and values to map.
+   * @param int $id
+   *   The entity id.
+   *
+   * @return array
+   *   Render array.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
-  public function render(array $metadata);
+  public function render($id) : array;
 
 }
