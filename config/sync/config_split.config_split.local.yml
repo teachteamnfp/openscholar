@@ -9,13 +9,13 @@ folder: ../local_config
 module: {  }
 theme: {  }
 blacklist:
+  - repec.settings
   - 'block_visibility_groups.block_visibility_group.os_pages_page_*'
   - 'block_visibility_groups.block_visibility_group.os_pages_section_*'
   - 'block.block.booknavigation*'
   - 'block.block.entityviewcontent*'
 graylist:
   - os_publications.settings
-  - repec.settings
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 0
