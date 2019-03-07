@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Vsite tokens.
+ * Hook implementations for the vsite module.
  */
 
 use Drupal\Component\Utility\Html;
@@ -43,7 +43,6 @@ function vsite_token_info() {
  * Implements hook_tokens().
  */
 function vsite_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
-
   $replacements = [];
 
   if ($type == 'vsite') {

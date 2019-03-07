@@ -1,6 +1,8 @@
 module:
   admin_toolbar: 0
   admin_toolbar_tools: 0
+  basic_auth: 0
+  big_pipe: 0
   bibcite: 0
   bibcite_bibtex: 0
   bibcite_endnote: 0
@@ -52,6 +54,7 @@ module:
   group: 0
   group_entity: 0
   group_purl: 0
+  hal: 0
   image: 0
   image_widget_crop: 0
   inline_form_errors: 0
@@ -75,11 +78,16 @@ module:
   os_classes: 0
   os_fullcalendar: 0
   os_links: 0
+  os_media: 0
+  os_rest: 0
   os_mailchimp: 0
   os_media_gallery: 0
   os_metatag: 0
   os_office_embed: 0
   os_pages: 0
+  os_links: 0
+  os_media_gallery: 0
+  os_office_embed: 0
   os_publications: 0
   os_redirect: 0
   os_slideshow: 0
@@ -105,8 +113,11 @@ module:
   toolbar_menu: 0
   update: 0
   user: 0
+  video_embed_field: 0
+  video_embed_media: 0
   views_accordion: 0
   views_ical: 0
+  views_accordion: 0
   views_infinite_scroll: 0
   views_ui: 0
   vsite: 0

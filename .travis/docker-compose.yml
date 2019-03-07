@@ -73,6 +73,14 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
+  node:
+     image: mhart/alpine-node:11
+     container_name: "${PROJECT_NAME}_drupal_nodejs"
+     command: npm install
+     working_dir: /var/www/html
+     volumes:
+       - ./:/var/www/html
+
   chrome:
     # Note: chrome 67/68 is giving errors so we pin to 65 for now.
     image: previousnext/chrome-headless:65
