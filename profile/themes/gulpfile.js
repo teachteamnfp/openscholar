@@ -21,14 +21,11 @@
     }).on('error', sass.logError))
     .pipe(sourcemaps.write('./'))
     .pipe(rename(function (file) {
-      //console.log(path.dirname);
       // file.dirname = current folder, your "scss"
       // then get the parent of the current folder, e.g., "themename1", "themename2", etc.
       let parentFolder = path.dirname(file.dirname)
-      //console.log(parentFolder);
       // Set each file's folder to "themename1/css", "themename2/css", etc.
       file.dirname = path.join(parentFolder, 'css');
-      //console.log(file);
     }))
     .pipe(gulp.dest('.'));
   });
