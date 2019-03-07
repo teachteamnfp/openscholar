@@ -3,7 +3,7 @@
 namespace Drupal\Tests\os_publications\ExistingSite;
 
 /**
- * Class PublicationsFormTest.
+ * Class GoogleScholarMappingTest.
  *
  * @group kernel
  */
