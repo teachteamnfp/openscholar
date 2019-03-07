@@ -78,3 +78,10 @@ services:
     image: previousnext/chrome-headless:65
     ports:
       - "9222:9222"
+
+  node:
+    image: node:$NODE_TAG
+    container_name: "${PROJECT_NAME}_node"
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
