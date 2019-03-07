@@ -5,75 +5,11 @@
  * OS widgets.
  */
 
-use Drupal\block\Entity\Block;
-use Drupal\os_widgets\OsWidgetsInterface;
-
 /**
- * Return block content type definitions.
- *
- * @return array
- *   Definitions.
+ * Implements hook_entity_type_alter().
  */
-function _os_widgets_block_content_type_definitions() {
-  // key: block_content bundle
-  // value: annotation id.
-  return [
-    'featured_posts' => 'featured_posts_widget',
-    'embed_media' => 'embed_media_widget',
-  ];
-}
-
-/**
- * Implements hook_preprocess_HOOK().
- */
-function os_widgets_preprocess_block(&$variables) {
-  // Blocks coming from page manager widget does not have id.
-  if (empty($variables['elements']['#id'])) {
-    return;
-  }
-  /** @var \Drupal\block\Entity\Block $block */
-  $block = Block::load($variables['elements']['#id']);
-
-  $blockContentTypeDefinitions = _os_widgets_block_content_type_definitions();
-  /** @var \Drupal\block_content\Entity\BlockContent $blockContent */
-  list($currentBlockContentBundle, $blockContent) = _os_widgets_get_block_content_by_block($block);
-  if (empty($blockContentTypeDefinitions[$currentBlockContentBundle])) {
-    return;
-  }
-  $widget_id = $blockContentTypeDefinitions[$currentBlockContentBundle];
-  $type = \Drupal::service('plugin.manager.os_widgets');
-  $plugin = $type->createInstance($widget_id);
-  if (!($plugin instanceof OsWidgetsInterface)) {
-    return;
-  }
-
-  $variables = $plugin->buildBlock($variables, $blockContent);
-}
-
-/**
- * Get block content by block.
- *
- * @param \Drupal\block\Entity\Block $block
- *   The block.
- *
- * @return array|bool
- *   Renderable array.
- */
-function _os_widgets_get_block_content_by_block(Block $block) {
-  $blockContentId = $block->getPlugin()->getDerivativeId();
-  if (empty($blockContentId)) {
-    return FALSE;
-  }
-  $blockContent = \Drupal::entityTypeManager()->getStorage('block_content')->loadByProperties(['uuid' => $blockContentId]);
-  if (empty($blockContent)) {
-    return FALSE;
-  }
-  $blockContent = reset($blockContent);
-  $currentBlockContentBundle = $blockContent->bundle();
-  return [
-    $currentBlockContentBundle,
-    $blockContent,
-  ];
+function os_widgets_entity_type_alter(array &$entity_types) {
+  $entity_types['block_content']->setHandlerClass('view_builder', 'Drupal\os_widgets\OsBlockContentViewBuilder');
 }
 
 /**

@@ -12,14 +12,14 @@ interface OsWidgetsInterface {
   /**
    * Builds block.
    *
-   * @param array $variables
-   *   Variables.
+   * @param array &$build
+   *   Build Items.
    * @param \Drupal\block_content\Entity\BlockContent $blockContent
    *   Content.
    *
    * @return array
    *   Renderable array.
    */
-  public function buildBlock(array $variables, BlockContent $blockContent);
+  public function buildBlock(array &$build, BlockContent $blockContent);
 
 }

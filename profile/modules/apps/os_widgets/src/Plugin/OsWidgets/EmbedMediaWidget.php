@@ -18,9 +18,9 @@ class EmbedMediaWidget extends OsWidgetsBase implements OsWidgetsInterface {
   /**
    * {@inheritdoc}
    */
-  public function buildBlock($variables, $block_content) {
+  public function buildBlock(&$build, $block_content) {
     if (empty($block_content)) {
-      return $variables;
+      return;
     }
     $field_max_width_values = $block_content->get('field_max_width')->getValue();
     $max_width = $field_max_width_values[0]['value'] ?? 0;
@@ -45,17 +45,16 @@ class EmbedMediaWidget extends OsWidgetsBase implements OsWidgetsInterface {
             '#title' => $field_media_image_values[0]['title'],
             '#width' => $max_width,
           ];
-          $variables['content']['embed_media'][$delta] = $embed_media;
+          $build['embed_media'][$delta] = $embed_media;
           break;
 
         case 'remote':
           $view_builder = $this->entityTypeManager->getViewBuilder('media');
           $embed_media = $view_builder->view($media, 'default');
-          $variables['content']['embed_media'][$delta] = $embed_media;
+          $build['embed_media'][$delta] = $embed_media;
           break;
       }
     }
-    return $variables;
   }
 
 }
