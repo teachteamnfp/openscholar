@@ -1,0 +1,7 @@
+os_publications.citation_distribute_settings:
+  path: '/admin/config/openscholar/citation_distribute'
+  defaults:
+    _form: '\Drupal\os_publications\Form\CitationDistributeConfigForm'
+    _title: 'Common Settings'
+  requirements:
+    _permission: 'administer site configuration'

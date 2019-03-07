@@ -43,7 +43,7 @@ function os_metatag_tokens($type, $tokens, array $data, array $options, Bubbleab
     foreach ($tokens as $name => $original) {
       switch ($name) {
         case 'site_title':
-          $config = \Drupal::config('os_metatag.setting');
+          $config = \Drupal::config('os_metatag.settings');
           $bubbleable_metadata->addCacheableDependency($config);
           $site_title = $config->get('site_title');
           // If empty, load original site name.
@@ -55,7 +55,7 @@ function os_metatag_tokens($type, $tokens, array $data, array $options, Bubbleab
           break;
 
         case 'meta_description':
-          $config = \Drupal::config('os_metatag.setting');
+          $config = \Drupal::config('os_metatag.settings');
           $bubbleable_metadata->addCacheableDependency($config);
           $meta_description = $config->get('meta_description');
           $replacements[$original] = !empty($meta_description) ? Html::escape($meta_description) : '';

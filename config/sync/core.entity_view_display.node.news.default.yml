@@ -8,13 +8,17 @@ dependencies:
     - field.field.node.news.field_date
     - field.field.node.news.field_photo
     - field.field.node.news.field_redirect_to_source
-    - image.style.news_photo_icon
+    - image.style.os_news_full
     - node.type.news
   module:
     - datetime
     - image
+    - layout_builder
     - text
     - user
+third_party_settings:
+  layout_builder:
+    sections: {  }
 id: node.news.default
 targetEntityType: node
 bundle: news
@@ -23,13 +27,13 @@ content:
   body:
     label: hidden
     type: text_default
-    weight: 1
+    weight: 2
     settings: {  }
     third_party_settings: {  }
     region: content
   field_attached_media:
     type: entity_reference_entity_view
-    weight: 4
+    weight: 3
     label: above
     settings:
       view_mode: default
@@ -37,25 +41,25 @@ content:
     third_party_settings: {  }
     region: content
   field_date:
-    weight: 2
-    label: inline
+    weight: 1
+    label: hidden
     settings:
       timezone_override: ''
-      format_type: long
+      format_type: os_date_format
     third_party_settings: {  }
     type: datetime_default
     region: content
   field_photo:
-    weight: 3
+    weight: 0
     label: hidden
     settings:
-      image_style: news_photo_icon
+      image_style: os_news_full
       image_link: ''
     third_party_settings: {  }
     type: image
     region: content
   links:
-    weight: 0
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }

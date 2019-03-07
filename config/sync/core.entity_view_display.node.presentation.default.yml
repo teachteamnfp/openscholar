@@ -11,8 +11,12 @@ dependencies:
     - node.type.presentation
   module:
     - datetime
+    - layout_builder
     - text
     - user
+third_party_settings:
+  layout_builder:
+    sections: {  }
 id: node.presentation.default
 targetEntityType: node
 bundle: presentation
@@ -21,13 +25,13 @@ content:
   body:
     label: hidden
     type: text_default
-    weight: 101
+    weight: 4
     settings: {  }
     third_party_settings: {  }
     region: content
   field_additional_media:
     type: entity_reference_entity_view
-    weight: 105
+    weight: 5
     label: above
     settings:
       view_mode: default
@@ -35,8 +39,8 @@ content:
     third_party_settings: {  }
     region: content
   field_presentation_date:
-    weight: 104
-    label: above
+    weight: 1
+    label: inline
     settings:
       format_type: medium
       timezone_override: ''
@@ -44,8 +48,8 @@ content:
     type: datetime_default
     region: content
   field_presentation_location:
-    weight: 103
-    label: above
+    weight: 2
+    label: inline
     settings:
       link_to_entity: false
     third_party_settings: {  }
@@ -53,17 +57,17 @@ content:
     region: content
   field_presentation_slides:
     type: entity_reference_entity_view
-    weight: 102
-    label: above
+    weight: 3
+    label: inline
     settings:
       view_mode: default
       link: false
     third_party_settings: {  }
     region: content
   links:
-    weight: 100
+    weight: 0
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
 hidden:
   langcode: true

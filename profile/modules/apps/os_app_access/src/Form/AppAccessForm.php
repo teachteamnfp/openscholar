@@ -44,7 +44,7 @@ class AppAccessForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   protected function getEditableConfigNames() {
-    return ['app.access'];
+    return ['os_app_access.access'];
   }
 
   /**
@@ -60,7 +60,7 @@ class AppAccessForm extends ConfigFormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildForm($form, $form_state);
 
-    $app_access = $this->config('app.access');
+    $app_access = $this->config('os_app_access.access');
     /** @var \Drupal\vsite\AppInterface[] $apps */
     $apps = $this->appManager->getDefinitions();
 
@@ -147,7 +147,7 @@ class AppAccessForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $app_access = $this->config('app.access');
+    $app_access = $this->config('os_app_access.access');
     $values = $form_state->getValues();
 
     if (is_array($values['enabled'])) {
