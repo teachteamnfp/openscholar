@@ -59,8 +59,9 @@ services:
       - "9222:9222"
 
   node:
-    image: node:$NODE_TAG
-    container_name: "${PROJECT_NAME}_node"
+    image: mhart/alpine-node:11
+    container_name: "${PROJECT_NAME}_drupal_nodejs"
+    command: npm install
     working_dir: /var/www/html
     volumes:
       - ./:/var/www/html:cached
