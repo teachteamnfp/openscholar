@@ -32,8 +32,6 @@ class PublicationJavaScriptTest extends ExistingSiteWebDriverTestBase {
     $web_assert = $this->assertSession();
 
     $this->visit('/cp/settings/publications');
-    drupal_flush_all_caches();
-    $this->visit('/cp/settings/publications');
     $web_assert->statusCodeEquals(200);
     $page = $this->getCurrentPage();
 

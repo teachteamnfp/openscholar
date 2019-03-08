@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Citation Distribute GoogleScholar service.
  *
- * @CitationDistribute(
+ * //@CitationDistribute(
  *   id = "citation_distribute_sword_dash",
  *   title = @Translation("Sword based Dash citation distribute service."),
  *   href = "http://dash.harvard.edu",
@@ -134,10 +134,10 @@ class CitationDistributeSwordDash extends CitationDistributeSword {
     }
     elseif (is_int($id) && $entity = $this->entityTypeManager->getStorage('bibcite_reference')->load($id)) {
       $files = $entity->field_files;
+      $citation_distribute_entity_object = &drupal_static('citation_distribute_entity_object');
       if ($entity->get('field_files')->isEmpty() && isset($citation_distribute_entity_object)) {
         // During entity insert, files may not be availabe.
         // if so, use staticly cached entity object.
-        $citation_distribute_entity_object = &drupal_static('citation_distribute_entity_object');
         $files = $citation_distribute_entity_object->get('field_files');
       }
     }
