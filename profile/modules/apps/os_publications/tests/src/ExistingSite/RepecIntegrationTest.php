@@ -48,6 +48,8 @@ class RepecIntegrationTest extends TestBase {
    * @covers ::repec_entity_update
    * @covers ::repec_entity_delete
    * @covers \Drupal\repec\Form\EntityTypeSettingsForm
+   * @covers \Drupal\repec\Series\Base::create
+   * @covers \Drupal\repec\Series\Base::getDefault
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
