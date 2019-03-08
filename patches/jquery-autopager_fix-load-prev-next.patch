@@ -1,33 +1,18 @@
 diff --git a/jquery.autopager-1.0.0.js b/jquery.autopager-1.0.0.js
-index 18223ef..ffa5e2d 100644
+index 18223ef..28a91ab 100644
 --- a/jquery.autopager-1.0.0.js
 +++ b/jquery.autopager-1.0.0.js
-@@ -7,6 +7,7 @@
- (function($) {
- 	var window = this, options = {},
- 		content, currentUrl, nextUrl, prevUrl,
-+		bottomUrl, bottomPage,
- 		active = false,
- 		defaults = {
- 			autoLoad: true,
-@@ -52,7 +53,8 @@
+@@ -52,7 +52,8 @@
  		}
  
  		setUrl();
 -		
-+		bottomUrl = $(options.link).attr('href');
++		nextUrl = $(options.link).attr('href');
 +
  		if (_options.link_prev) {
  		  prevUrl = $(_options.link_prev).attr('href');
        if (prevUrl && currentUrl.match(_options.page_arg)) {
-@@ -96,13 +98,14 @@
- 			this.autoLoad(false);
- 			options = {};
- 			content = currentUrl = nextUrl = undefined;
-+			bottomUrl = bottomPage = undefined;
- 			return this;
- 		},
- 
+@@ -102,7 +103,7 @@
  		autoLoad: function(value) {
  			return this.option('autoLoad', value);
  		},
@@ -36,19 +21,8 @@ index 18223ef..ffa5e2d 100644
  		urlGetArg: function (arg, url) {
  		  if (url && (url.indexOf('?') > 0)) {
    		  args = url.split('?')[1].split('&');
-@@ -116,16 +119,16 @@
- 		},
- 
- 		load: function() {
--			if (active || !nextUrl || options.disabled) {
-+			if (active || !bottomUrl || options.disabled) {
- 				return;
- 			}
- 			$('#autopager-load-more').remove();
- 			active = true;
- 			options.start(currentHash(), nextHash());
--			$.get(nextUrl, insertContent);
-+			$.get(bottomUrl, insertContent);
+@@ -125,7 +126,7 @@
+ 			$.get(nextUrl, insertContent);
  			return this;
  		},
 -		
@@ -56,7 +30,7 @@ index 18223ef..ffa5e2d 100644
  		load_prev: function() {
  		  if (active || !prevUrl || options.disabled || !options.link_prev) {
          return;
-@@ -153,7 +156,7 @@
+@@ -153,7 +154,7 @@
  				if (value) {
  					options.appendTo = null;
  				}
@@ -65,43 +39,38 @@ index 18223ef..ffa5e2d 100644
  			case 'appendTo':
  				if (value) {
  					options.insertBefore = null;
-@@ -168,8 +171,12 @@
- 		nextUrl = $(options.link, context).attr('href');
+@@ -163,13 +164,12 @@
+ 		options[key] = value;
  	}
  
-+	function movedToBottom(context) {
-+		bottomUrl = $(options.link, context).attr('href');
-+	}
-+
+-	function setUrl(context) {
++	function setUrl() {
+ 		currentUrl = nextUrl || window.location.href;
+-		nextUrl = $(options.link, context).attr('href');
+ 	}
+ 
  	function loadOnScroll() {
 -	  
 +
  		if (content.offset().top + content.height() < $(document).scrollTop() + $(window).height()) {
  	    var page = (typeof(nextUrl) != 'undefined') ? nextUrl.replace(/.*page=(\d+).*/, "$1") : false;
  
-@@ -203,7 +210,6 @@
+@@ -203,8 +203,7 @@
            window.history.replaceState({}, document.title, nextUrl);
      } 
  
 -		set('page', nextNum);
- 		setUrl(nextPage);
+-		setUrl(nextPage);
++		setUrl();
  		
      if (loadingPrevious) {
-@@ -228,6 +234,8 @@
+       var $content= $(_options.content + ':first');
+@@ -228,6 +227,8 @@
        
        options.load(); //dont forget the load callbacks
      } else {
 +			set('page', currentNum);
-+			movedToBottom(nextPage);
++			nextUrl = $(options.link, nextPage).attr('href');
    		if (nextContent.length) {
    			if (_options.insertBefore) {
    				nextContent.insertBefore(_options.insertBefore);
-@@ -251,7 +259,7 @@
- 	function nextHash() {
- 		return {
- 			page: options.page + 1,
--			url: nextUrl
-+			url: bottomUrl
- 		};
- 	}
- })(jQuery);
