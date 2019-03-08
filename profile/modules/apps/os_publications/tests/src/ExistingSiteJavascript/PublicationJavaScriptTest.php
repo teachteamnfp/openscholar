@@ -32,7 +32,6 @@ class PublicationJavaScriptTest extends ExistingSiteWebDriverTestBase {
     $web_assert = $this->assertSession();
 
     $this->visit('/cp/settings/publications');
-    $web_assert->assertWaitOnAjaxRequest('25000');
     $web_assert->statusCodeEquals(200);
     $page = $this->getCurrentPage();
 
