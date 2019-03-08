@@ -185,6 +185,7 @@
             "DrupalProject\\composer\\ScriptHandler::createRequiredFiles",
             "DrupalProject\\composer\\ScriptHandler::placeProfile",
             "DrupalProject\\composer\\ScriptHandler::installFullcalendarLibrary",
+            "command -v npm install || echo \"NPM not installed. Please install it and run composer install again.\"",
             "DrupalProject\\composer\\ScriptHandler::installBootstrapLibrary",
             "./scripts/register-cs.sh",
             "./scripts/install-hooks.sh"
@@ -194,6 +195,7 @@
             "DrupalProject\\composer\\ScriptHandler::createRequiredFiles",
             "DrupalProject\\composer\\ScriptHandler::placeProfile",
             "DrupalProject\\composer\\ScriptHandler::installFullcalendarLibrary",
+            "command -v npm update || echo \"NPM not installed. Please install it and run composer install.\"",
             "DrupalProject\\composer\\ScriptHandler::installBootstrapLibrary"
         ],
         "code-standard": [
@@ -222,7 +224,8 @@
         "patches": {
             "drupal/core": {
                 "Make sure TestSitePath exist before creating .htkey": "https://www.drupal.org/files/issues/2246725-24.patch",
-                "Views Date Filter Datetime Granularity Option": "https://www.drupal.org/files/issues/2018-12-11/views_date_filter_granularity_2868014-60.patch"
+                "Views Date Filter Datetime Granularity Option": "https://www.drupal.org/files/issues/2018-12-11/views_date_filter_granularity_2868014-60.patch",
+                "Add paging info to rest request": "https://www.drupal.org/files/issues/2018-06-30/2982729-viewsRestInfo.patch"
             },
             "drupal/group_purl": {
                 "Prevent base path from interfering with purl detection": "https://www.drupal.org/files/issues/2019-01-17/group_purl.3026646-2.basepath.patch",
@@ -247,6 +250,13 @@
             },
             "drupal/mailchimp": {
                 "Cache read problem in mailchimp_get_mergevars()": "https://www.drupal.org/files/issues/2019-02-13/3032674-cache-fix-for-mailchimp_get_mergevars-3.patch"
+            }
+        },
+        "patches-ignore": {
+            "weitzman/drupal-test-traits": {
+                "drupal/core": {
+                    "Test runs can throw exceptions due to missing .htkey file (https://www.drupal.org/project/drupal/issues/2246725#comment-12160940)": "https://www.drupal.org/files/issues/2246725-24.patch"
+                }
             }
         }
     }
