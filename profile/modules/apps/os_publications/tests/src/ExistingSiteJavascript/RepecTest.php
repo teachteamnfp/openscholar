@@ -55,8 +55,7 @@ class RepecTest extends ExistingSiteWebDriverTestBase {
     $template_fields = $this->repec->getTemplateFields($series_type);
 
     $this->visit('/admin/config/bibcite/settings/reference/types/artwork/repec');
-
-    $this->getCurrentPage()->fillField('select[name="serie_type"]', $series_type);
+    $this->getCurrentPage()->fillField('serie_type', $series_type);
     $this->waitForAjaxToFinish();
 
     foreach ($template_fields as $field_label) {
