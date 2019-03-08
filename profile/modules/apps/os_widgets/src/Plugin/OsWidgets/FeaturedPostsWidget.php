@@ -35,9 +35,9 @@ class FeaturedPostsWidget extends OsWidgetsBase implements OsWidgetsInterface {
     if ($displayStyle != 'title') {
       /** @var \Drupal\node\Entity\Node $node */
       foreach ($referenced_entities as $delta => $node) {
-        $build = $view_builder->view($node, $displayStyle);
-        $build['os_widgets_hide_node_title'] = !empty($hide_title_values[0]['value']) ? TRUE : FALSE;
-        $build['field_featured_posts'][$delta] = $build;
+        $build_referenced_entity = $view_builder->view($node, $displayStyle);
+        $build_referenced_entity['os_widgets_hide_node_title'] = !empty($hide_title_values[0]['value']) ? TRUE : FALSE;
+        $build['field_featured_posts'][$delta] = $build_referenced_entity;
       }
     }
     $is_random_values = $block_content->get('field_is_random')->getValue();
@@ -52,7 +52,7 @@ class FeaturedPostsWidget extends OsWidgetsBase implements OsWidgetsInterface {
     }
     $is_styled_values = $block_content->get('field_is_styled')->getValue();
     if (!empty($is_styled_values[0]['value'])) {
-      // $variables['attributes']['class'][] = 'styled';.
+      $build['#is_styled'] = TRUE;
     }
   }
 
