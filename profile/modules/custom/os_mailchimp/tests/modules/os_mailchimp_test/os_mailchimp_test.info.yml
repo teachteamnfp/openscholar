@@ -4,5 +4,5 @@ description: Testing module for block functionality.
 package: Testing
 core: 8.x
 dependencies:
-  - os_mailchimp
+  - "os_mailchimp:os_mailchimp"
 hidden: TRUE

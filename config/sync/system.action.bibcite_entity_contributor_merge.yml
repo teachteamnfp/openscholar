@@ -1,0 +1,13 @@
+uuid: b70749c5-5895-4a84-a6a9-9faaf1a55840
+langcode: en
+status: true
+dependencies:
+  module:
+    - bibcite_entity
+_core:
+  default_config_hash: GsXHPXqooYsMs8uUKp_ZDHY3wupCDNL-sgyqnO3FGis
+id: bibcite_entity_contributor_merge
+label: 'Merge contributor'
+type: bibcite_contributor
+plugin: bibcite_entity_contributor_merge
+configuration: {  }

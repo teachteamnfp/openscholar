@@ -1,0 +1,12 @@
+name: OS Publications
+core: 8.x
+type: module
+description: Publications customizations for OpenScholar
+dependencies:
+  - drupal:bibcite_entity
+  - drupal:cp_settings
+  - drupal:bibcite_bibtex
+  - drupal:bibcite_endnote
+  - drupal:bibcite_ris
+  - drupal:bibcite_marc
+  - drupal:redirect

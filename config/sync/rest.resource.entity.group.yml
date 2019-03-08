@@ -1,0 +1,25 @@
+uuid: 7d7ed3cb-0d2c-4d79-94d6-2cdadbdb469d
+langcode: en
+status: true
+dependencies:
+  module:
+    - basic_auth
+    - group
+    - hal
+    - serialization
+    - user
+id: entity.group
+plugin_id: 'entity:group'
+granularity: resource
+configuration:
+  methods:
+    - GET
+    - POST
+    - DELETE
+    - PATCH
+  formats:
+    - hal_json
+    - json
+  authentication:
+    - basic_auth
+    - cookie

@@ -199,6 +199,35 @@ function _vsite_prerender_control_panel_links(array $element) {
 }
 
 /**
+ * Implements hook_library_info_alter().
+ */
+function vsite_library_info_alter(&$libraries, $extension) {
+  if ($extension == 'core' && isset($libraries['drupal.ajax'])) {
+    $path = '/' . drupal_get_path('module', 'vsite') . '/js/vsite.ajaxContext.js';
+    $libraries['drupal.ajax']['js'][$path] = [
+      'weight' => 0,
+    ];
+  }
+}
+
+/**
+ * Implements hook_page_attachments().
+ */
+function vsite_page_attachments(array &$attachments) {
+  /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContext */
+  $vsiteContext = \Drupal::service('vsite.context_manager');
+  /** @var \Drupal\group\Entity\GroupInterface $vsite */
+  if ($vsite = $vsiteContext->getActiveVsite()) {
+    $attachments['#attached']['drupalSettings']['spaces'] = [
+      'id' => $vsite->id(),
+      'label' => $vsite->label(),
+      'purl' => $vsiteContext->getActivePurl(),
+      'url' => $vsiteContext->getAbsoluteUrl(),
+    ];
+  }
+}
+
+/**
  * Get all group id that related with field parent site.
  *
  * @param \Drupal\group\Entity\Group $group
