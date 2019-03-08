@@ -54,10 +54,11 @@ class EmbedMediaBlockRenderTest extends UnitTestCase {
       ],
     ];
     $block_content = $this->createBlockContentImageMock($field_values['field_max_width'], $field_values['field_media_select']);
-    $variables = $this->embedMediaWidget->buildBlock([], $block_content);
-    $this->assertSame(333, $variables['content']['embed_media'][0]['#width']);
-    $this->assertSame('Alt test', $variables['content']['embed_media'][0]['#alt']);
-    $this->assertSame('Title test', $variables['content']['embed_media'][0]['#title']);
+    $build = [];
+    $this->embedMediaWidget->buildBlock($build, $block_content);
+    $this->assertSame(333, $build['embed_media'][0]['#width']);
+    $this->assertSame('Alt test', $build['embed_media'][0]['#alt']);
+    $this->assertSame('Title test', $build['embed_media'][0]['#title']);
   }
 
   /**
@@ -78,10 +79,11 @@ class EmbedMediaBlockRenderTest extends UnitTestCase {
       ],
     ];
     $block_content = $this->createBlockContentImageMock($field_values['field_max_width'], $field_values['field_media_select']);
-    $variables = $this->embedMediaWidget->buildBlock([], $block_content);
-    $this->assertSame(0, $variables['content']['embed_media'][0]['#width']);
-    $this->assertSame('Alt test', $variables['content']['embed_media'][0]['#alt']);
-    $this->assertSame('Title test', $variables['content']['embed_media'][0]['#title']);
+    $build = [];
+    $this->embedMediaWidget->buildBlock($build, $block_content);
+    $this->assertSame(0, $build['embed_media'][0]['#width']);
+    $this->assertSame('Alt test', $build['embed_media'][0]['#alt']);
+    $this->assertSame('Title test', $build['embed_media'][0]['#title']);
   }
 
   /**
@@ -89,8 +91,9 @@ class EmbedMediaBlockRenderTest extends UnitTestCase {
    */
   public function testBuildOnEmptyContent() {
     $block_content = NULL;
-    $variables = $this->embedMediaWidget->buildBlock([], $block_content);
-    $this->assertSame([], $variables);
+    $build = [];
+    $this->embedMediaWidget->buildBlock($build, $block_content);
+    $this->assertSame([], $build);
   }
 
   /**
@@ -108,9 +111,10 @@ class EmbedMediaBlockRenderTest extends UnitTestCase {
       ->willReturn($entity_view_builder);
 
     $block_content = $this->createBlockContentVideoMock($field_values['field_max_width']);
+    $build = [];
     $embed_media_widget = new EmbedMediaWidget([], '', [], $entity_type_manager);
-    $variables = $embed_media_widget->buildBlock([], $block_content);
-    $this->assertSame('default', $variables['content']['embed_media'][0]['#view_mode']);
+    $embed_media_widget->buildBlock($build, $block_content);
+    $this->assertSame('default', $build['embed_media'][0]['#view_mode']);
   }
 
   /**
