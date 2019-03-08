@@ -95,20 +95,9 @@ abstract class CitationDistributeSword implements CitationDistributionInterface,
   abstract public function getDepositUrl(array $workspaces, $id);
 
   /**
-   * Distributes a reference entity to chosen service.
-   *
-   * @param int $id
-   *   Entity id to distribute.
-   * @param array $plugin
-   *   CD's definition of this plugin.
-   *
-   * @return bool
-   *   Status of save/push.
-   *
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   * {@inheritdoc}
    */
-  public function save($id, array $plugin) {
+  public function save($id, array $plugin) : bool {
     // Doublecheck the validation for this nid.
     if (!$this->validate((int) $id)) {
       return FALSE;
@@ -122,18 +111,9 @@ abstract class CitationDistributeSword implements CitationDistributionInterface,
   }
 
   /**
-   * Copies data from bibcite entity data into array labeled for this service.
-   *
-   * @param int $id
-   *   Entity id.
-   *
-   * @return array
-   *   Mapping of metadata keys and values to distribute.
-   *
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   * {@inheritdoc}
    */
-  public function mapMetadata($id) {
+  public function mapMetadata($id) : array {
     $entity = $this->entityTypeManager->getStorage('bibcite_reference')->load($id);
 
     /* copy static options and direct mappings first */
@@ -185,18 +165,11 @@ abstract class CitationDistributeSword implements CitationDistributionInterface,
   }
 
   /**
-   * Themes data into format appropriate for this service.
-   *
-   * @param array $metadata
-   *   Associative array of metadata keys and values to map.
-   *
-   * @return bool|string
-   *   Returns false or path to file.
-   *
-   * @throws \Exception
+   * {@inheritdoc}
    */
-  public function render(array $metadata) {
+  public function render($id) : array {
     $id = func_get_arg(1);
+    $metadata = [];
 
     /* ensure we have a working directory or at least print some errors if we don't */
     $root_dir = $this->rootIn . '/' . $this->subdirIn . '/' . $id;
