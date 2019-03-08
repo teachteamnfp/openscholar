@@ -42,8 +42,9 @@ class FeaturedPostsBlockRenderTest extends OsWidgetsExistingSiteTestBase {
         'title',
       ],
     ]);
-    $variables = $this->featuredPostsWidget->buildBlock([], $block_content);
-    $this->assertSame([], $variables, 'Build block should not modify the variables.');
+    $build = [];
+    $this->featuredPostsWidget->buildBlock($build, $block_content);
+    $this->assertSame([], $build, 'Build block should not modify the build.');
   }
 
   /**
@@ -51,8 +52,9 @@ class FeaturedPostsBlockRenderTest extends OsWidgetsExistingSiteTestBase {
    */
   public function testBuildEmptyBlockOrEmptyPosts() {
 
-    $variables = $this->featuredPostsWidget->buildBlock([], NULL);
-    $this->assertSame([], $variables, 'Build empty block should not modify the variables.');
+    $build = [];
+    $this->featuredPostsWidget->buildBlock($build, NULL);
+    $this->assertSame([], $build, 'Build empty block should not modify the build.');
 
     $block_content = $this->createBlockContent([
       'type' => 'featured_posts',
@@ -60,8 +62,9 @@ class FeaturedPostsBlockRenderTest extends OsWidgetsExistingSiteTestBase {
         'title',
       ],
     ]);
-    $variables = $this->featuredPostsWidget->buildBlock([], $block_content);
-    $this->assertSame([], $variables, 'Build block with empty posts should not modify the variables.');
+    $build = [];
+    $this->featuredPostsWidget->buildBlock($build, $block_content);
+    $this->assertSame([], $build, 'Build block with empty posts should not modify the build.');
   }
 
   /**
@@ -85,10 +88,11 @@ class FeaturedPostsBlockRenderTest extends OsWidgetsExistingSiteTestBase {
         1,
       ],
     ]);
-    $variables = $this->featuredPostsWidget->buildBlock([], $block_content);
-    $this->assertSame('teaser', $variables['content']['field_featured_posts'][0]['#view_mode']);
-    $this->assertSame('styled', $variables['attributes']['class'][0]);
-    $this->assertSame(FALSE, $variables['content']['field_featured_posts'][0]['os_widgets_hide_node_title']);
+    $build = [];
+    $this->featuredPostsWidget->buildBlock($build, $block_content);
+    $this->assertSame('teaser', $build['field_featured_posts'][0]['#view_mode']);
+    $this->assertSame(TRUE, $build['#is_styled']);
+    $this->assertSame(FALSE, $build['field_featured_posts'][0]['os_widgets_hide_node_title']);
   }
 
   /**
@@ -109,9 +113,10 @@ class FeaturedPostsBlockRenderTest extends OsWidgetsExistingSiteTestBase {
         1,
       ],
     ]);
-    $variables = $this->featuredPostsWidget->buildBlock([], $block_content);
-    $this->assertSame('teaser', $variables['content']['field_featured_posts'][0]['#view_mode']);
-    $this->assertSame(TRUE, $variables['content']['field_featured_posts'][0]['os_widgets_hide_node_title']);
+    $build = [];
+    $this->featuredPostsWidget->buildBlock($build, $block_content);
+    $this->assertSame('teaser', $build['field_featured_posts'][0]['#view_mode']);
+    $this->assertSame(TRUE, $build['field_featured_posts'][0]['os_widgets_hide_node_title']);
   }
 
   /**
@@ -141,9 +146,10 @@ class FeaturedPostsBlockRenderTest extends OsWidgetsExistingSiteTestBase {
       ->getMock();
     $featured_posts_widget->method('shortRandom')
       ->willReturn($randomDeltaId);
-    $variables = $featured_posts_widget->buildBlock([], $block_content);
-    $this->assertSame(FALSE, $variables['content']['field_featured_posts'][0]['#access']);
-    $this->assertFalse(array_key_exists('#access', $variables['content']['field_featured_posts'][$randomDeltaId]));
+    $build = [];
+    $featured_posts_widget->buildBlock($build, $block_content);
+    $this->assertSame(FALSE, $build['field_featured_posts'][0]['#access']);
+    $this->assertFalse(array_key_exists('#access', $build['field_featured_posts'][$randomDeltaId]));
   }
 
 }
