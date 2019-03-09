@@ -32,7 +32,6 @@ class PublicationJavaScriptTest extends ExistingSiteWebDriverTestBase {
     $web_assert = $this->assertSession();
 
     $this->visit('/cp/settings/publications');
-    $web_assert->statusCodeEquals(200);
     $page = $this->getCurrentPage();
 
     // Test Modern Language hover.
