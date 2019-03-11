@@ -210,10 +210,20 @@
   {% block footer %}
     <footer class="footer" role="contentinfo">
       <div class="{{ container }}">
-        <div class="col-sm-3">{{ page.footer_left }}</div>
-        <div class="col-sm-6">{{ page.footer }}</div>
-        <div class="col-sm-3">{{ page.footer_right }}</div>
-        <div class="col-sm-12">{{ page.footer_bottom }}</div>
+        <div class="row">
+        {% if page.footer or page.footer_left or page.footer_right %}
+          <div class="footer-top">
+            <div class="col-sm-3">{{ page.footer_left }}</div>
+            <div class="col-sm-6">{{ page.footer }}</div>
+            <div class="col-sm-3">{{ page.footer_right }}</div>
+          </div>
+        {% endif %}
+        {% if page.footer_bottom %}
+          <div class="footer-bottom">
+            <div class="col-sm-12">{{ page.footer_bottom }}</div>
+          </div>
+        {% endif %}
+        </div>
       </div>
     </footer>
   {% endblock %}
