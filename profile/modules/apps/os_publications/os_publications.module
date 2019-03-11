@@ -12,6 +12,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
+use Drupal\os_publications\RepecHelper;
 use Drupal\views\Plugin\views\query\QueryPluginBase;
 use Drupal\views\ViewExecutable;
 use Ds\Map;
@@ -242,23 +243,16 @@ function os_publications_bibcite_reference_update(EntityInterface $entity) {
  * Implements hook_repec_SERIES_template_alter().
  */
 function os_publications_repec_journl_template_alter(array &$data, ContentEntityInterface $entity) {
-  // Ignoring all the other authors, and only considering the first.
-  /** @var \Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem|null $item */
-  $item = $entity->get('author')->first();
-  if (!$item) {
-    return;
+  /** @var \Drupal\os_publications\RepecHelperInterface $repec_helper */
+  $repec_helper = new RepecHelper($entity);
+  /** @var \Drupal\bibcite_entity\Entity\ContributorInterface $contributor */
+  $contributor = $repec_helper->getContributor();
+
+  if ($contributor) {
+    array_walk($data, function (&$item, $key, $author_name) {
+      if ($item['attribute'] === 'Author-Name') {
+        $item['value'] = $author_name;
+      }
+    }, $contributor->getName());
   }
-
-  /** @var \Drupal\Core\Entity\Plugin\DataType\EntityReference $entity_reference */
-  $entity_reference = $item->get('entity');
-  /** @var \Drupal\Core\Entity\Plugin\DataType\EntityAdapter $entity_adapter */
-  $entity_adapter = $entity_reference->getTarget();
-  /** @var \Drupal\bibcite_entity\Entity\Contributor $author */
-  $author = $entity_adapter->getValue();
-
-  array_walk($data, function (&$item, $key, $author_name) {
-    if ($item['attribute'] === 'Author-Name') {
-      $item['value'] = $author_name;
-    }
-  }, $author->getName());
 }
