@@ -3,6 +3,7 @@
 namespace Drupal\os_publications;
 
 use Drupal\bibcite_entity\Entity\ContributorInterface;
+use Drupal\bibcite_entity\Entity\Keyword;
 use Drupal\bibcite_entity\Entity\ReferenceInterface;
 
 /**
@@ -48,7 +49,21 @@ final class RepecHelper implements RepecHelperInterface {
    * {@inheritdoc}
    */
   public function getKeywords() : ?array {
-    // TODO: Implement getKeywords() method.
+    /** @var \Drupal\Core\Field\FieldItemListInterface $items */
+    $items = $this->reference->get('keywords');
+
+    if ($items->isEmpty()) {
+      return NULL;
+    }
+
+    $keyword_ids = [];
+    foreach ($items as $item) {
+      $keyword_ids[] = $item->getValue()['target_id'];
+    }
+
+    return array_map(function ($id) {
+      return Keyword::load($id);
+    }, $keyword_ids);
   }
 
 }

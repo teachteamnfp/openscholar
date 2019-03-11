@@ -5,6 +5,7 @@
  * Bibcite customizations for Openscholar.
  */
 
+use Drupal\bibcite_entity\Entity\KeywordInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
@@ -254,5 +255,20 @@ function os_publications_repec_journl_template_alter(array &$data, ContentEntity
         $item['value'] = $author_name;
       }
     }, $contributor->getName());
+  }
+
+  /** @var \Drupal\bibcite_entity\Entity\KeywordInterface[] $keywords */
+  $keywords = $repec_helper->getKeywords();
+
+  if ($keywords) {
+    $keywords_as_text = array_map(function (KeywordInterface $keyword) {
+      return $keyword->getName();
+    }, $keywords);
+
+    array_walk($data, function (&$item, $key, $keywords_as_text) {
+      if ($item['attribute'] === 'Keywords') {
+        $item['value'] = implode(', ', $keywords_as_text);
+      }
+    }, $keywords_as_text);
   }
 }
