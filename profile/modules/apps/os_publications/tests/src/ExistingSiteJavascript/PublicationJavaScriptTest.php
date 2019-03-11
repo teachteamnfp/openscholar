@@ -17,8 +17,8 @@ class PublicationJavaScriptTest extends ExistingSiteWebDriverTestBase {
   public function setUp() {
     parent::setUp();
 
-    $this->user = $this->createUser([], '', TRUE);
-    $this->simpleUser = $this->createUser();
+    $this->user = $this->createUser(['access control panel']);
+
   }
 
   /**
@@ -28,13 +28,13 @@ class PublicationJavaScriptTest extends ExistingSiteWebDriverTestBase {
    * @throws \Behat\Mink\Exception\ResponseTextException
    */
   public function testPreviewToggle() {
-    $this->drupalLogin($this->user);
-    $web_assert = $this->assertSession();
 
+    $this->drupalLogin($this->user);
     $this->visit('/cp/settings/publications');
-    drupal_flush_all_caches();
-    $this->visit('/cp/settings/publications');
+
+    $web_assert = $this->assertSession();
     $web_assert->statusCodeEquals(200);
+
     $page = $this->getCurrentPage();
 
     // Test Modern Language hover.
