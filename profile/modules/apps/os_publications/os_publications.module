@@ -5,6 +5,7 @@
  * Bibcite customizations for Openscholar.
  */
 
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
@@ -235,4 +236,29 @@ function os_publications_bibcite_reference_update(EntityInterface $entity) {
   /** @var \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager $type */
   $type = \Drupal::service('os_publications.manager_citation_distribute');
   $type->distribute($entity);
+}
+
+/**
+ * Implements hook_repec_SERIES_template_alter().
+ */
+function os_publications_repec_journl_template_alter(array &$data, ContentEntityInterface $entity) {
+  // Ignoring all the other authors, and only considering the first.
+  /** @var \Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem|null $item */
+  $item = $entity->get('author')->first();
+  if (!$item) {
+    return;
+  }
+
+  /** @var \Drupal\Core\Entity\Plugin\DataType\EntityReference $entity_reference */
+  $entity_reference = $item->get('entity');
+  /** @var \Drupal\Core\Entity\Plugin\DataType\EntityAdapter $entity_adapter */
+  $entity_adapter = $entity_reference->getTarget();
+  /** @var \Drupal\bibcite_entity\Entity\Contributor $author */
+  $author = $entity_adapter->getValue();
+
+  array_walk($data, function (&$item, $key, $author_name) {
+    if ($item['attribute'] === 'Author-Name') {
+      $item['value'] = $author_name;
+    }
+  }, $author->getName());
 }
