@@ -513,7 +513,7 @@ libraries[twitter-api-php][download][url] = "https://github.com/J7mbo/twitter-ap
 libraries[autopager][type] = "libraries"
 libraries[autopager][download][type] = "file"
 libraries[autopager][download][url] = "https://github.com/sagotsky/jquery-autopager/archive/v1.2.zip"
-libraries[autopager][patch][] = "https://raw.githubusercontent.com/openscholar/openscholar/11111-pagination-autopager/patches/jquery-autopager_fix-load-prev-next.patch"
+libraries[autopager][patch][] = "https://raw.githubusercontent.com/openscholar/openscholar/8a4e0a80b2db7b66edc4f83f7470a4758e4aa913/patches/jquery-autopager_fix-load-prev-next.patch"
 
 libraries[html5shiv][type] = "libraries"
 libraries[html5shiv][download][type] = "file"
