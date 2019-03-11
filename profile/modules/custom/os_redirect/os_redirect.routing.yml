@@ -1,7 +1,15 @@
 os_redirect.list:
-  path: '/cp/list/redirects'
+  path: '/cp/redirects/list'
   defaults:
     _controller: '\Drupal\os_redirect\Controller\RedirectListController::listing'
     _title: 'URL redirects'
+  requirements:
+    _permission: 'administer control panel redirects'
+
+os_redirect.add:
+  path: '/cp/redirects/add'
+  defaults:
+    _form: '\Drupal\os_redirect\Form\OsRedirectForm'
+    _title: 'Add URL redirect'
   requirements:
     _permission: 'administer control panel redirects'
