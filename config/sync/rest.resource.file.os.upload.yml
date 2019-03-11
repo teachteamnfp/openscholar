@@ -1,0 +1,21 @@
+uuid: 725acc14-8a05-4d4b-8b8e-fc4b45f3540f
+langcode: en
+status: true
+dependencies:
+  module:
+    - basic_auth
+    - os_rest
+    - serialization
+    - user
+id: file.os.upload
+plugin_id: 'file:os:upload'
+granularity: resource
+configuration:
+  methods:
+    - POST
+    - PUT
+  formats:
+    - json
+  authentication:
+    - basic_auth
+    - cookie

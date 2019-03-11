@@ -119,7 +119,7 @@ class AppAccess extends AccessPluginBase {
    * {@inheritdoc}
    */
   public function access(AccountInterface $account) {
-    $app_levels = $this->configFactory->get('app.access');
+    $app_levels = $this->configFactory->get('os_app_access.access');
     $app = $this->options['app'];
     $level = $app_levels->get($app);
     if (!isset($level)) {
