@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \DrupalProject\composer\ScriptHandler.
- */
-
 namespace DrupalProject\composer;
 
 use Alchemy\Zippy\Exception\IOException;
@@ -14,13 +9,16 @@ use DrupalFinder\DrupalFinder;
 use Symfony\Component\Filesystem\Filesystem;
 use Webmozart\PathUtil\Path;
 use Composer\Util\Platform;
-use Composer\Util\ProcessExecutor;
 use Composer\Util\Filesystem as ComposerFilesystem;
-use Symfony\Component\Process\Process;
-use Symfony\Component\Process\Exception\ProcessFailedException;
 
+/**
+ * Custom composer scripts.
+ */
 class ScriptHandler {
 
+  /**
+   * Creates required files for Drupal.
+   */
   public static function createRequiredFiles(Event $event) {
     $fs = new Filesystem();
     $drupalFinder = new DrupalFinder();
@@ -33,15 +31,15 @@ class ScriptHandler {
       'themes',
     ];
 
-    // Required for unit testing
+    // Required for unit testing.
     foreach ($dirs as $dir) {
-      if (!$fs->exists($drupalRoot . '/'. $dir)) {
-        $fs->mkdir($drupalRoot . '/'. $dir);
-        $fs->touch($drupalRoot . '/'. $dir . '/.gitkeep');
+      if (!$fs->exists($drupalRoot . '/' . $dir)) {
+        $fs->mkdir($drupalRoot . '/' . $dir);
+        $fs->touch($drupalRoot . '/' . $dir . '/.gitkeep');
       }
     }
 
-    // Prepare the settings file for installation
+    // Prepare the settings file for installation.
     if (!$fs->exists($drupalRoot . '/sites/default/settings.php') and $fs->exists($drupalRoot . '/sites/default/default.settings.php')) {
       $fs->copy($drupalRoot . '/sites/default/default.settings.php', $drupalRoot . '/sites/default/settings.php');
       require_once $drupalRoot . '/core/includes/bootstrap.inc';
@@ -57,7 +55,7 @@ class ScriptHandler {
       $event->getIO()->write("Create a sites/default/settings.php file with chmod 0666");
     }
 
-    // Create the files directory with chmod 0777
+    // Create the files directory with chmod 0777.
     if (!$fs->exists($drupalRoot . '/sites/default/files')) {
       $oldmask = umask(0);
       $fs->mkdir($drupalRoot . '/sites/default/files', 0777);
@@ -103,29 +101,33 @@ class ScriptHandler {
     }
   }
 
+  /**
+   * Places openscholar profile in correct location.
+   */
   public static function placeProfile(Event $event) {
     $fs = new ComposerFilesystem();
     $io = $event->getIO();
-    $fileList = array(
+    $fileList = [
       'openscholar.info.yml' => 'openscholar.info.yml',
       'openscholar.profile' => 'openscholar.profile',
       'config' => 'config',
       'profile' . DIRECTORY_SEPARATOR . 'modules' => 'modules',
       'node_modules' => 'libraries',
       'profile' . DIRECTORY_SEPARATOR . 'themes' => 'themes',
-    );
+      'profile' . DIRECTORY_SEPARATOR . 'tests' => 'tests',
+    ];
     $root = realpath($event->getComposer()->getPackage()->getDistUrl());
-    $path = $root.'/web/profiles/contrib/openscholar';
+    $path = $root . '/web/profiles/contrib/openscholar';
 
     try {
       foreach ($fileList as $orig_file => $file) {
         $orig = $root . DIRECTORY_SEPARATOR . $orig_file;
-        $link = $path.DIRECTORY_SEPARATOR.$file;
-        if (Platform::isWindows () && is_dir($orig)) {
+        $link = $path . DIRECTORY_SEPARATOR . $file;
+        if (Platform::isWindows() && is_dir($orig)) {
           if (file_exists($link)) {
-            if ($fs->isJunction ($link)) {
+            if ($fs->isJunction($link)) {
               $io->writeError(sprintf("Removing junction from %s\n", $file));
-              $fs->removeJunction ($link);
+              $fs->removeJunction($link);
             }
             elseif (is_dir($link)) {
               $fs->removeDirectory($link);
@@ -135,17 +137,19 @@ class ScriptHandler {
             }
           }
 
-          $io->writeError (sprintf ("Junctioning from %s\n", $file), false);
-          $fs->junction ($orig, $link);
-        } else {
-          $path = rtrim ($path, DIRECTORY_SEPARATOR);
-          $io->writeError (sprintf ("Symlinking from %s\n", $file), false);
+          $io->writeError(sprintf("Junctioning from %s\n", $file), FALSE);
+          $fs->junction($orig, $link);
+        }
+        else {
+          $path = rtrim($path, DIRECTORY_SEPARATOR);
+          $io->writeError(sprintf("Symlinking from %s\n", $file), FALSE);
           $fs->ensureDirectoryExists(dirname($link));
-          $fs->relativeSymlink ($orig, $link);
+          $fs->relativeSymlink($orig, $link);
         }
       }
-    } catch (IOException $e) {
-        throw new \RuntimeException(sprintf('Symlink from "%s" to "%s" failed!', $root, $path));
+    }
+    catch (IOException $e) {
+      throw new \RuntimeException(sprintf('Symlink from "%s" to "%s" failed!', $root, $path));
     }
   }
 
@@ -221,21 +225,21 @@ class ScriptHandler {
   public static function installBootstrapLibrary(Event $event) {
     $fs = new ComposerFilesystem();
     $io = $event->getIO();
-    $fileList = array(
-      'vendor' . DIRECTORY_SEPARATOR . 'twbs' . DIRECTORY_SEPARATOR . 'bootstrap-sass' => 'bootstrap'
-    );
+    $fileList = [
+      'vendor' . DIRECTORY_SEPARATOR . 'twbs' . DIRECTORY_SEPARATOR . 'bootstrap-sass' => 'bootstrap',
+    ];
     $root = realpath($event->getComposer()->getPackage()->getDistUrl());
-    $path = $root.'/profile/themes/os_base/';
+    $path = $root . '/profile/themes/os_base/';
 
     try {
       foreach ($fileList as $orig_file => $file) {
         $orig = $root . DIRECTORY_SEPARATOR . $orig_file;
-        $link = $path.DIRECTORY_SEPARATOR.$file;
-        if (Platform::isWindows () && is_dir($orig)) {
+        $link = $path . DIRECTORY_SEPARATOR . $file;
+        if (Platform::isWindows() && is_dir($orig)) {
           if (file_exists($link)) {
-            if ($fs->isJunction ($link)) {
+            if ($fs->isJunction($link)) {
               $io->writeError(sprintf("Removing junction from %s\n", $file));
-              $fs->removeJunction ($link);
+              $fs->removeJunction($link);
             }
             elseif (is_dir($link)) {
               $fs->removeDirectory($link);
@@ -245,17 +249,19 @@ class ScriptHandler {
             }
           }
 
-          $io->writeError (sprintf ("Junctioning from %s\n", $file), false);
-          $fs->junction ($orig, $link);
-        } else {
-          $path = rtrim ($path, DIRECTORY_SEPARATOR);
-          $io->writeError (sprintf ("Symlinking from %s\n", $file), false);
+          $io->writeError(sprintf("Junctioning from %s\n", $file), FALSE);
+          $fs->junction($orig, $link);
+        }
+        else {
+          $path = rtrim($path, DIRECTORY_SEPARATOR);
+          $io->writeError(sprintf("Symlinking from %s\n", $file), FALSE);
           $fs->ensureDirectoryExists(dirname($link));
-          $fs->relativeSymlink ($orig, $link);
+          $fs->relativeSymlink($orig, $link);
         }
       }
-    } catch (IOException $e) {
-        throw new \RuntimeException(sprintf('Symlink from "%s" to "%s" failed!', $root, $path));
+    }
+    catch (IOException $e) {
+      throw new \RuntimeException(sprintf('Symlink from "%s" to "%s" failed!', $root, $path));
     }
   }
 
