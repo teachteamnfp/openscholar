@@ -12,12 +12,12 @@ use Composer\Util\Platform;
 use Composer\Util\Filesystem as ComposerFilesystem;
 
 /**
- * Custom composer scripts.
+ * Composer custom scripts.
  */
 class ScriptHandler {
 
   /**
-   * Creates required files for Drupal.
+   * Creates required files for building Drupal instance.
    */
   public static function createRequiredFiles(Event $event) {
     $fs = new Filesystem();

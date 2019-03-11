@@ -82,26 +82,26 @@ class AppAccessForm extends ConfigFormBase {
     }
 
     $header_en = [
-      'name' => t('Name'),
-      'privacy' => t('Visibility'),
-      'disable' => t('Disable'),
+      'name' => $this->t('Name'),
+      'privacy' => $this->t('Visibility'),
+      'disable' => $this->t('Disable'),
     ];
 
     $header_dis = [
-      'name' => t('Name'),
-      'enable' => t('Enable'),
+      'name' => $this->t('Name'),
+      'enable' => $this->t('Enable'),
     ];
 
     $form['enabled'] = [
       '#type' => 'table',
       '#header' => $header_en,
-      '#empty' => t('No Apps Enabled'),
+      '#empty' => $this->t('No Apps Enabled'),
     ];
 
     $form['disabled'] = [
       '#type' => 'table',
       '#header' => $header_dis,
-      '#empty' => t('No Apps Disabled'),
+      '#empty' => $this->t('No Apps Disabled'),
     ];
 
     foreach ($enabled as $k) {
@@ -114,8 +114,8 @@ class AppAccessForm extends ConfigFormBase {
         'privacy' => [
           '#type' => 'select',
           '#options' => [
-            AppAccessLevels::PUBLIC => t('Everyone'),
-            AppAccessLevels::PRIVATE => t('Site Members Only'),
+            AppAccessLevels::PUBLIC => $this->t('Everyone'),
+            AppAccessLevels::PRIVATE => $this->t('Site Members Only'),
           ],
           '#default_value' => $app_access->get($name),
         ],

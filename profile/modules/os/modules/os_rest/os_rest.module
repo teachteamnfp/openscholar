@@ -35,6 +35,5 @@ function os_rest_rest_resource_alter(&$resources) {
 
   if (isset($resources['entity:taxonomy_vocabulary'])) {
     $resources['entity:taxonomy_vocabulary']['uri_paths']['canonical'] = '/api/vocabulary/{taxonomy_vocabulary}';
-    // $resources['entity:taxonomy_vocabulary']['uri_paths']['create'] = '/api/vocabulary';.
   }
 }

@@ -90,7 +90,7 @@ cd openscholar
 composer install --ignore-platform-reqs
 
 # Build CSS
-cd profile/themes/os_base && npm install && ./node_modules/.bin/gulp sass
+npm install && cd profile/themes/os_base && ./../../../node_modules/.bin/gulp sass
 
 cd ../../../..
 
