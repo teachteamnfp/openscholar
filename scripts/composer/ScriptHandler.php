@@ -102,7 +102,7 @@ class ScriptHandler {
   }
 
   /**
-   * Places the profile in correct location.
+   * Places openscholar profile in correct location.
    */
   public static function placeProfile(Event $event) {
     $fs = new ComposerFilesystem();
@@ -114,6 +114,7 @@ class ScriptHandler {
       'profile' . DIRECTORY_SEPARATOR . 'modules' => 'modules',
       'node_modules' => 'libraries',
       'profile' . DIRECTORY_SEPARATOR . 'themes' => 'themes',
+      'profile' . DIRECTORY_SEPARATOR . 'tests' => 'tests',
     ];
     $root = realpath($event->getComposer()->getPackage()->getDistUrl());
     $path = $root . '/web/profiles/contrib/openscholar';
