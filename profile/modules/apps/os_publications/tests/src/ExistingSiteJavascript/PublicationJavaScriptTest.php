@@ -33,6 +33,9 @@ class PublicationJavaScriptTest extends ExistingSiteWebDriverTestBase {
 
     $url = $this->buildUrl('/cp/settings/publications');
     $this->visit($url);
+    file_put_contents('public://screenshot.jpg', $this->getSession()->getScreenshot());
+    file_put_contents('public://test.html', $this->getCurrentPageContent());
+
     $page = $this->getCurrentPage();
 
     // Test Modern Language hover.
