@@ -62,3 +62,19 @@
     display: inline-block;
   }
 }
+/***** full caldenar *****/
+.fc-day-grid-event {
+  .fc-content {
+    display: flex;
+  }
+  .fc-title {
+    white-space: nowrap;
+    overflow: hidden;
+    flex: 1;
+    text-overflow: ellipsis;
+    order: 1;
+  }
+  .fc-time {
+    order: 2;
+  }
+}
