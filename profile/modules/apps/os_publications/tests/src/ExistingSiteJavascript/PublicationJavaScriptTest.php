@@ -31,7 +31,8 @@ class PublicationJavaScriptTest extends ExistingSiteWebDriverTestBase {
     $this->drupalLogin($this->user);
     $web_assert = $this->assertSession();
 
-    $this->visit('/cp/settings/publications');
+    $url = $this->buildUrl('/cp/settings/publications');
+    $this->visit($url);
     $page = $this->getCurrentPage();
 
     // Test Modern Language hover.
