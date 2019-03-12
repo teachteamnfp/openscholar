@@ -9,6 +9,7 @@ dependencies:
     - field.field.node.events.field_location
     - field.field.node.events.field_media
     - field.field.node.events.field_recurring_date
+    - field.field.node.events.field_signup
     - node.type.events
   module:
     - date_recur
@@ -62,6 +63,16 @@ content:
       count_per_item: true
     third_party_settings: {  }
     type: date_recur_basic_formatter
+    region: content
+  field_signup:
+    weight: 106
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
     region: content
   links:
     weight: 100
