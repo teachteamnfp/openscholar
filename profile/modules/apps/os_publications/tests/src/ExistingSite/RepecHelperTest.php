@@ -33,10 +33,13 @@ class RepecHelperTest extends TestBase {
     ]);
 
     $repec_helper = new RepecHelper($reference_wo_contributor);
-    $this->assertNull($repec_helper->getContributor());
+    $this->assertCount(0, $repec_helper->getContributor());
 
     $repec_helper = new RepecHelper($reference_with_contributor);
-    $this->assertEquals($contributor->id(), $repec_helper->getContributor()->id());
+    /** @var \Drupal\bibcite_entity\Entity\ContributorInterface $item */
+    foreach ($repec_helper->getContributor() as $item) {
+      $this->assertEquals($contributor->id(), $item->id());
+    }
   }
 
   /**
@@ -63,7 +66,7 @@ class RepecHelperTest extends TestBase {
     ]);
 
     $repec_helper = new RepecHelper($reference_wo_keywords);
-    $this->assertNull($repec_helper->getKeywords());
+    $this->assertCount(0, $repec_helper->getKeywords());
 
     $repec_helper = new RepecHelper($reference_with_keywords);
     $this->assertCount(2, $repec_helper->getKeywords());
