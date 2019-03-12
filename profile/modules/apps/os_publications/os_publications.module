@@ -241,9 +241,9 @@ function os_publications_bibcite_reference_update(EntityInterface $entity) {
 }
 
 /**
- * Implements hook_repec_SERIES_template_alter().
+ * Implements hook_repec_template_alter().
  */
-function os_publications_repec_journl_template_alter(array &$data, ContentEntityInterface $entity) {
+function os_publications_repec_template_alter(array &$data, ContentEntityInterface $entity) {
   /** @var \Drupal\os_publications\RepecHelperInterface $repec_helper */
   $repec_helper = new RepecHelper($entity);
   /** @var \Drupal\bibcite_entity\Entity\ContributorInterface $contributor */
