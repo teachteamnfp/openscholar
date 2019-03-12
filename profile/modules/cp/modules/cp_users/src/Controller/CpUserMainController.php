@@ -64,8 +64,10 @@ class CpUserMainController extends ControllerBase {
       $row = [
         $u->label(),
         $u->label(),
-        'Site Owner'
-      ]
+        $this->t('Site Owner'),
+        $this->t('Active')
+      ];
+      $userRows[] = $row;
     }
 
     $build['cp_user'] = [
