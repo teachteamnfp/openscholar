@@ -5,7 +5,6 @@
  * Hook implementations for the vsite module.
  */
 
-use Drupal\Component\Utility\Html;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\image\Entity\ImageStyle;
 

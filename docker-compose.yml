@@ -57,3 +57,11 @@ services:
     container_name: "${PROJECT_NAME}_chrome"
     ports:
       - "9222:9222"
+
+  node:
+    image: mhart/alpine-node:11
+    container_name: "${PROJECT_NAME}_drupal_nodejs"
+    command: npm install
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html:cached
