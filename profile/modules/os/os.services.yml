@@ -1,0 +1,3 @@
+services:
+  angular.module_manager:
+    class: Drupal\os\OsAngularModuleManager

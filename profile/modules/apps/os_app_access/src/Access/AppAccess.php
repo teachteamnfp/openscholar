@@ -55,7 +55,7 @@ class AppAccess implements AccessInterface {
     /** @var \Drupal\Core\Config\ConfigFactoryInterface $config_factory */
     // TODO: Dependency Inject in constructor.
     $config_factory = \Drupal::service('config.factory');
-    $levels = $config_factory->get('app.access');
+    $levels = $config_factory->get('os_app_access.access');
     $access_level = $levels->get($app_name);
     /** @var \Drupal\Core\Access\AccessResult $result */
     $result = AccessResult::neutral();
