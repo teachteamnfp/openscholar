@@ -72,11 +72,21 @@ class OsRedirectForm extends RedirectForm {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-
     // $this->vsiteContextManager is NULL?
     /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContext */
-    $vsiteContext = \Drupal::service('vsite.context_manager');
-    if ($purl = $vsiteContext->getActivePurl()) {
+    $vsite_context = \Drupal::service('vsite.context_manager');
+
+    /** @var \Drupal\group\Entity\GroupInterface $group */
+    if ($group = $vsite_context->getActiveVsite()) {
+      $config = $this->config('os_redirect.settings');
+      $maximum_number = $config->get('maximum_number');
+      $redirects = $group->getContentEntities('group_entity:redirect');
+      if (count($redirects) >= $maximum_number) {
+        $this->messenger()->addError($this->t('Maximum number of redirects (@count) is reached.', ['@count' => $maximum_number]));
+      }
+    }
+
+    if ($purl = $vsite_context->getActivePurl()) {
       $source = $form_state->getValue(['redirect_source', 0]);
       $form_state->setValue('redirect_source', [['path' => $purl . '/' . $source['path']]]);
     }
