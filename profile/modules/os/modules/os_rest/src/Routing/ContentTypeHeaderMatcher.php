@@ -10,7 +10,8 @@ use Symfony\Component\Routing\RouteCollection;
 /**
  * Replaces the core Filter to allow a wildcard on routes.
  *
- * We need this so we can PUT files of any content type directly to the server and have it work.
+ * We need this so we can PUT files of any content type directly to the server
+ * and have it work.
  */
 class ContentTypeHeaderMatcher implements FilterInterface {
 

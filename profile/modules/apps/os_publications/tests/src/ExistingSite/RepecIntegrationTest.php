@@ -48,6 +48,8 @@ class RepecIntegrationTest extends TestBase {
    * @covers ::repec_entity_update
    * @covers ::repec_entity_delete
    * @covers \Drupal\repec\Form\EntityTypeSettingsForm
+   * @covers \Drupal\repec\Series\Base::create
+   * @covers \Drupal\repec\Series\Base::getDefault
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
@@ -60,6 +62,11 @@ class RepecIntegrationTest extends TestBase {
 
     $reference->save();
     $this->assertFileExists("$directory/$file_name");
+
+    $content = file_get_contents("$directory/$file_name");
+    $this->assertContains("Title: {$reference->label()}", $content);
+    $this->assertContains("Number: {$reference->uuid()}", $content);
+    $this->assertContains("Handle: RePEc:{$this->defaultRepecSettings['archive_code']}:{$this->repec->getEntityBundleSettings('serie_type', $reference->getEntityTypeId(), $reference->bundle())}:{$reference->id()}", $content);
 
     $reference->delete();
     $this->assertFileNotExists("$directory/$file_name");

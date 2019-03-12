@@ -1,0 +1,67 @@
+/******** header, navbar **************/
+header {
+  background: #303030;
+  color: #fff;
+}
+.navbar-collapse {
+  background: #a23338;
+  padding: 0;
+  .navbar-nav {
+    > li {
+      > a {
+        color: #fff;
+        padding: 16px 15px;
+        font-size: 20px;
+        font-family: Georgia,Baskerville,Palatino,'Palatino Linotype','Book Antiqua','Times New Roman',serif;
+        &:hover, &:active, &:focus, &.is-active {
+          background: #7B272B;
+          color: #fff;
+        }
+        &.is-active {
+          &:hover {
+            background: #7B272B;
+            color: #fff;
+          }
+        }
+      }
+      &.open {
+        a {
+          color: #fff;
+          &:hover, &:active, &:focus {
+            background: #7B272B;
+            color: #fff;
+          }
+        }
+      }
+    }
+  }
+}
+.dropdown-menu {
+  background: #7B272B;
+  > li {
+    > a {
+      font-family:arial;
+      font-size:13px;
+      font-weight:bold;
+      &:hover, &:active {
+        color:#BAC5C6;
+      }
+    }
+  }
+}
+.header-container {
+  .nav {
+    li {
+      a {
+        font: bold 13px arial,sans-serif;
+        text-decoration: none;
+        text-transform: uppercase;
+        color: #ACB9BA;
+        padding: 0.3em 0 0.3em 10px;
+        &:hover {
+          background: none;
+        }
+      }
+    }
+  }
+}

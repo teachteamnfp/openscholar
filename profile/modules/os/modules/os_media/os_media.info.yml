@@ -3,4 +3,4 @@ core: 8.x
 type: module
 description: "Custom file handling for OpenScholar"
 dependencies:
-  - media
+  - drupal:media

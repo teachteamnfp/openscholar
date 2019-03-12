@@ -16,7 +16,8 @@ class OsMediaResource extends OsEntityResource {
    * Switch between paths based on argument type.
    *
    * Every GET call to this resource goes through this method,
-   * and PHP doesn't support method overloading, so this kind of thing is necessary.
+   * and PHP doesn't support method overloading, so this kind of thing is
+   * necessary.
    *
    * @param \Drupal\Core\Entity\EntityInterface|string $arg1
    *   The argument from the path.
@@ -93,7 +94,6 @@ class OsMediaResource extends OsEntityResource {
 
     $path = '/api/media/filename/{filename}';
     $route = $this->getBaseRoute($path, 'get');
-    $params['filename'] = 'filename';
 
     $route_name = strtr($this->pluginId, ':', '.');
     $routeCollection->add("$route_name.get.filename", $route);
