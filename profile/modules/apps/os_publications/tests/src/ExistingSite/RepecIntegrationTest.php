@@ -10,7 +10,7 @@ use Drupal\file\Entity\File;
 /**
  * RepecIntegrationTest.
  *
- * @group kernel
+ * @group kernel-only
  */
 class RepecIntegrationTest extends TestBase {
 
