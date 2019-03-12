@@ -250,11 +250,10 @@ function os_publications_repec_template_alter(array &$data, ContentEntityInterfa
   $contributor = $repec_helper->getContributor();
 
   if ($contributor) {
-    array_walk($data, function (&$item, $key, $author_name) {
-      if ($item['attribute'] === 'Author-Name') {
-        $item['value'] = $author_name;
-      }
-    }, $contributor->getName());
+    $data[] = [
+      'attribute' => 'Author-Name',
+      'value' => $contributor->getName(),
+    ];
   }
 
   /** @var \Drupal\bibcite_entity\Entity\KeywordInterface[] $keywords */
