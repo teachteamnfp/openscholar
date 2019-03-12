@@ -1,0 +1,72 @@
+/******** header, navbar **************/
+.header-container {
+  background: #e6e6e3;
+	color: #303030;
+}
+.navbar-collapse {
+  background: #f3f3f1;
+  padding: 8px 0 !important;
+  .navbar-nav {
+    > li {
+      margin-right: 15px;
+      > a {
+        font-family: Georgia,Baskerville,Palatino,'Palatino Linotype','Book Antiqua','Times New Roman',serif;
+        font-size: 20px;
+        color: #303030;
+        padding: 8px;
+        &:hover, &:active, &:focus, &.is-active {
+          background: #1E2540;
+          color: #FFF;
+        }
+        &.is-active {
+          &:hover {
+            background: #1E2540;
+            color: #FFF;
+          }
+        }
+      }
+      &.open {
+        > a {
+          color: #fff;
+           background: #1E2540;
+          &:hover, &:active, &:focus {
+            background: #1E2540;
+            color: #FFF;
+          }
+        }
+      }
+    }
+  }
+}
+.dropdown-menu {
+  background: #F0F0EE;
+  box-shadow: none;
+  border: 0 none;
+  > li {
+    > a {
+      color: #303030;
+      background: none;
+      padding: 8px;
+      font-size: 15px;
+      &:hover, &:active {
+        color:#666;
+      }
+    }
+  }
+}
+.header-container {
+  .nav {
+    li {
+      a {
+        font: bold 13px arial,sans-serif;
+        text-decoration: none;
+        text-transform: uppercase;
+        color: #666;
+        padding: 0.3em 0 0.3em 10px;
+        &:hover {
+          background: none;
+        }
+      }
+    }
+  }
+}
