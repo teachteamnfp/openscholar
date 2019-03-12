@@ -147,6 +147,7 @@ class RepecIntegrationTest extends TestBase {
     $abstract = $this->randomString();
 
     $reference = $this->createReference([
+      'type' => 'journal',
       'keywords' => [
         [
           'target_id' => $keyword1->id(),
