@@ -1,0 +1,8 @@
+name: 'OS publications tests'
+description: 'Support module for os_publications tests.'
+package: 'Testing'
+core: '8.x'
+type: 'module'
+dependencies:
+  - 'drupal:repec'
+  - 'drupal:os_publications'

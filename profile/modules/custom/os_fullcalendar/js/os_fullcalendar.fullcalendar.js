@@ -8,6 +8,7 @@
 
   Drupal.fullcalendar.plugins.os_fullcalendar = {
     options: function (fullcalendar, settings) {
+
       if (!settings.os_fullcalendar) {
         return;
       }
@@ -39,4 +40,22 @@
     }
   };
 
+  Drupal.behaviors.events = {
+    attach: function (context, settings) {
+      const $checkbox = $('.form-item-field-recurring-date-0-rrule .form-textarea-wrapper');
+      const $message = $('#event-change-notify');
+      $checkbox.find('input').on('change', function () {
+        if ($(this).is(':checked')) {
+          $message.removeClass('visually-hidden');
+          $message.show();
+          $message.appendTo($(this).parent());
+        }
+        else {
+          $message.hide();
+        }
+      });
+    }
+  };
+
 })(jQuery, Drupal);
+

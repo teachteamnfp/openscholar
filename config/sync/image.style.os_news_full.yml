@@ -1,0 +1,15 @@
+uuid: e522f5cc-8461-4236-932f-ddbc0fc0601e
+langcode: en
+status: true
+dependencies: {  }
+name: os_news_full
+label: 'Os news full'
+effects:
+  0023a446-dfee-4e8d-abc0-c11901b6e812:
+    uuid: 0023a446-dfee-4e8d-abc0-c11901b6e812
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 180
+      height: 180
+      anchor: center-center
