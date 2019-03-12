@@ -58,8 +58,10 @@ class OsFileResource extends FileUploadResource {
       $file_raw = new UploadedFile($file_raw->getPathname(), $newName, $file_raw->getMimeType(), $file_raw->getSize(), $file_raw->getError(), TRUE);
     }
 
-    // Can't use file_save_upload() because it expects all files to be in the files array in the files parameter of the request
-    // $request->files->get('files'), which is weird and going to be empty when coming from js.
+    // Can't use file_save_upload() because it expects all files to be in the
+    // files array in the files parameter of the request
+    // $request->files->get('files'), which is weird and going to be empty when
+    // coming from js.
     $file = _file_save_upload_single($file_raw, 'upload', $validators, $destination, FILE_EXISTS_REPLACE);
 
     if (!$file) {
@@ -78,7 +80,8 @@ class OsFileResource extends FileUploadResource {
     }
     else {
 
-      // This next big figures out what type of Media bundle to create around the file.
+      // This next big figures out what type of Media bundle to create around
+      // the file.
       /** @var \Drupal\media\Entity\MediaTypeInterface[] $mediaTypes */
       $mediaTypes = \Drupal::entityTypeManager()->getStorage('media_type')->loadMultiple();
       foreach ($mediaTypes as $mediaType) {

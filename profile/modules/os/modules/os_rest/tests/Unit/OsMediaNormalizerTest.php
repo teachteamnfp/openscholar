@@ -2,17 +2,10 @@
 
 namespace Drupal\Tests\os_rest\Unit;
 
-use Drupal\Component\Serialization\Json;
-use Drupal\Core\Entity\EntityManagerInterface;
-use Drupal\Core\Entity\EntityStorageInterface;
-use Drupal\Core\Field\ChangedFieldItemList;
-use Drupal\Core\Field\FieldItemListInterface;
-use Drupal\file\FileInterface;
 use Drupal\os_rest\Normalizer\OsMediaNormalizer;
 use Drupal\serialization\Encoder\JsonEncoder;
 use Drupal\Tests\UnitTestCase;
 use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Class OsMediaNormalizer.
@@ -149,7 +142,7 @@ class OsMediaNormalizerTest extends UnitTestCase {
   }
 
   /**
-   * Test that media which references a remote media object is normalized correctly.
+   * Tests normalization of a remote media object.
    */
   public function testRemoteFileNormalization() {
     $i = 5;
@@ -157,7 +150,7 @@ class OsMediaNormalizerTest extends UnitTestCase {
   }
 
   /**
-   * Test that the data we get for denormalization changes the media entity correctly.
+   * Tests the data in denormalization changes in the media entity correctly.
    */
   public function testDenormalization() {
     $newMedia = $this->createMock('\Drupal\media\MediaInterface');
@@ -184,10 +177,10 @@ class OsMediaNormalizerTest extends UnitTestCase {
       ->willReturn($oldMedia);
 
     $data = [
-      'name' => 'test1'
+      'name' => 'test1',
     ];
     $context = [
-      'entity_type' => 'media'
+      'entity_type' => 'media',
     ];
     $entity = $this->normalizer->denormalize($data, '\Drupal\media\Entity\Media', 'json', $context);
     $this->assertEquals('test1', $entity->label(), 'test1');

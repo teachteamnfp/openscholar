@@ -139,7 +139,7 @@ class MediaEntityResourceTest extends MediaResourceTestBase {
       'size' => $file->getSize(),
       'title' => NULL,
       'type' => 'image',
-      'url' => file_create_url($file->getFileUri())
+      'url' => file_create_url($file->getFileUri()),
     ];
 
     return $real;
@@ -150,15 +150,6 @@ class MediaEntityResourceTest extends MediaResourceTestBase {
    */
   protected function getEntityResourceUrl() {
     return Url::fromUri('/api/media/' . $this->entity->id());
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function testGet() {
-    parent::testGet();
-
-    // Add filename checking.
   }
 
 }

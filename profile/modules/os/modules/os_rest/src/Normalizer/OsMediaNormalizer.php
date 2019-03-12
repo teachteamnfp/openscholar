@@ -8,7 +8,6 @@ use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\serialization\Normalizer\ContentEntityNormalizer;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Converts Media to more usable format.

@@ -114,12 +114,23 @@ class CitationDistributeGooglescholar implements CitationDistributionInterface, 
     $metadata = array_filter($this->mapMetadata($id));
     $output = [];
     foreach ($metadata as $key => $value) {
-      foreach ($value as $subvalue) {
+      if (is_array($value)) {
+        foreach ($value as $subvalue) {
+          $output[] = [
+            '#tag' => 'meta',
+            '#attributes' => [
+              'name' => $key,
+              'content' => $subvalue,
+            ],
+          ];
+        }
+      }
+      else {
         $output[] = [
           '#tag' => 'meta',
           '#attributes' => [
             'name' => $key,
-            'content' => $subvalue,
+            'content' => $value,
           ],
         ];
       }

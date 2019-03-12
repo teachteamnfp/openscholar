@@ -7,7 +7,7 @@ namespace Drupal\Tests\os_publications\ExistingSite;
  *
  * @group functional
  */
-class GoogleScholarTest extends TestBase {
+class GoogleScholarMetadataTest extends TestBase {
 
   /**
    * Admin user.
