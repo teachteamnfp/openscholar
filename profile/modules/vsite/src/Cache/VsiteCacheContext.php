@@ -5,6 +5,8 @@ namespace Drupal\vsite\Cache;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Cache\Context\CalculatedCacheContextInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\group\Entity\GroupInterface;
+use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 
 /**
  * Provides a cache context for an arbitrary vsite.
@@ -16,17 +18,17 @@ class VsiteCacheContext implements CalculatedCacheContextInterface {
   const VSITE_CACHE_CONTEXTS_NONE = 'vsite:none';
 
   /**
-   * Entity Type Manager.
+   * Vsite Context Manager.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   * @var VsiteContextManagerInterface
    */
-  protected $entityTypeManager;
+  protected $vsiteContextManager;
 
   /**
    * Constructor.
    */
-  public function __construct(EntityTypeManagerInterface $entityTypeManager) {
-    $this->entityTypeManager = $entityTypeManager;
+  public function __construct(VsiteContextManagerInterface $vsiteContextManager) {
+    $this->vsiteContextManager = $vsiteContextManager;
   }
 
   /**
@@ -40,12 +42,12 @@ class VsiteCacheContext implements CalculatedCacheContextInterface {
    * {@inheritdoc}
    */
   public function getContext($parameter = NULL) {
-    if ($parameter) {
-      if ($group = $this->entityTypeManager->getStorage('group')->load($parameter)) {
-        return 'vsite:' . $group->id();
-      }
+    if ($group = $this->vsiteContextManager->getActiveVsite()) {
+      return $group->id();
     }
-    return NULL;
+    else {
+      return 'none';
+    }
   }
 
   /**
