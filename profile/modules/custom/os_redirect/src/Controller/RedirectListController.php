@@ -2,32 +2,28 @@
 
 namespace Drupal\os_redirect\Controller;
 
-use Drupal\Core\Entity\Controller\EntityListController;
-use Drupal\Core\Extension\ThemeHandlerInterface;
+use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Link;
+use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Defines a controller to list vsite redirects.
  */
-class RedirectListController extends EntityListController {
+class RedirectListController extends ControllerBase {
 
   /**
-   * The theme handler.
+   * Vsite Context Manager.
    *
-   * @var \Drupal\Core\Extension\ThemeHandlerInterface
+   * @var \Drupal\vsite\Plugin\VsiteContextManagerInterface
    */
-  protected $themeHandler;
+  private $vsiteContextManager;
 
   /**
-   * Constructs the BlockListController.
-   *
-   * @param \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler
-   *   The theme handler.
+   * {@inheritdoc}
    */
-  public function __construct(ThemeHandlerInterface $theme_handler) {
-    $this->themeHandler = $theme_handler;
+  public function __construct(VsiteContextManagerInterface $vsite_context_manager) {
+    $this->vsiteContextManager = $vsite_context_manager;
   }
 
   /**
@@ -35,31 +31,48 @@ class RedirectListController extends EntityListController {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('theme_handler')
+      $container->get('vsite.context_manager')
     );
   }
 
   /**
    * Shows redirect administration page.
    *
-   * @param string|null $theme
-   *   Theme key of block list.
-   * @param \Symfony\Component\HttpFoundation\Request $request
-   *   The current request.
-   *
    * @return array
    *   A render array as expected by
    *   \Drupal\Core\Render\RendererInterface::render().
    */
-  public function listing($theme = NULL, Request $request = NULL) {
-    $theme = $theme ?: $this->config('system.theme')->get('default');
-    if (!$this->themeHandler->hasUi($theme)) {
-      throw new NotFoundHttpException();
+  public function listing() {
+    $redirects = [];
+    /** @var \Drupal\group\Entity\GroupInterface $group */
+    if ($group = $this->vsiteContextManager->getActiveVsite()) {
+      $redirects = $group->getContentEntities('group_entity:redirect');
     }
 
-    $builder = $this->entityManager()->getListBuilder('redirect');
+    $header = [
+      'source' => $this->t('Source'),
+      'path' => $this->t('Redirect'),
+      'delete' => $this->t('Actions'),
+    ];
 
-    return $builder->render($theme, $request);
+    $rows = [];
+    foreach ($redirects as $redirect) {
+      if (empty($redirect)) {
+        continue;
+      }
+      $rows[] = [
+        'data' => [
+          $redirect->get('redirect_source')->getValue()[0]['path'],
+          $redirect->get('redirect_redirect')->getValue()[0]['uri'],
+          Link::createFromRoute($this->t('Delete'), 'os_redirect.delete', ['redirect' => $redirect->id()])->toString(),
+        ],
+      ];
+    }
+    return [
+      '#type' => 'table',
+      '#header' => $header,
+      '#rows' => $rows,
+    ];
   }
 
 }

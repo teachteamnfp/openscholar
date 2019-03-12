@@ -9,7 +9,9 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\redirect\Form\RedirectForm;
+use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Class OsRedirectForm.
@@ -19,11 +21,24 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class OsRedirectForm extends RedirectForm {
 
   /**
+   * Vsite Context Manager.
+   *
+   * @var \Drupal\vsite\Plugin\VsiteContextManagerInterface
+   */
+  private $vsiteContextManager;
+
+  /**
    * {@inheritdoc}
    */
-  public function __construct(EntityRepositoryInterface $entity_repository, EntityTypeBundleInfoInterface $entity_type_bundle_info, TimeInterface $time, ModuleHandlerInterface $moduleHandler, EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(EntityRepositoryInterface $entity_repository, EntityTypeBundleInfoInterface $entity_type_bundle_info, TimeInterface $time, ModuleHandlerInterface $moduleHandler, EntityTypeManagerInterface $entity_type_manager, VsiteContextManagerInterface $vsite_context_manager) {
     $this->setEntity($entity_type_manager->getStorage('redirect')->create());
     $this->setModuleHandler($moduleHandler);
+    $this->vsiteContextManager = $vsite_context_manager;
+    if (!$this->vsiteContextManager->getActivePurl() && !$this->currentUser()->hasPermission('administer redirects')) {
+      // User without 'administer redirects' permission on global site
+      // can't create redirects.
+      throw new AccessDeniedHttpException();
+    }
     parent::__construct($entity_repository, $entity_type_bundle_info, $time);
   }
 
@@ -36,7 +51,8 @@ class OsRedirectForm extends RedirectForm {
       $container->get('entity_type.bundle.info'),
       $container->get('datetime.time'),
       $container->get('module_handler'),
-      $container->get('entity_type.manager')
+      $container->get('entity_type.manager'),
+      $container->get('vsite.context_manager')
     );
   }
 
@@ -56,6 +72,8 @@ class OsRedirectForm extends RedirectForm {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
+
+    // $this->vsiteContextManager is NULL?
     /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContext */
     $vsiteContext = \Drupal::service('vsite.context_manager');
     if ($purl = $vsiteContext->getActivePurl()) {

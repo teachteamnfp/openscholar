@@ -13,3 +13,11 @@ os_redirect.add:
     _title: 'Add URL redirect'
   requirements:
     _permission: 'administer control panel redirects'
+
+os_redirect.delete:
+  path: '/cp/redirects/delete/{redirect}'
+  defaults:
+    _form: '\Drupal\os_redirect\Form\OsRedirectDeleteForm'
+    _title: 'Delete URL redirect'
+  requirements:
+    _permission: 'administer control panel redirects'
