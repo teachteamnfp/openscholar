@@ -1,0 +1,4 @@
+manage cp users:
+  title: 'Manage CP Users'
+  description: 'Allow users to access the CP Users tool suite'
+  restrict access: false
