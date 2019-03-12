@@ -20,9 +20,9 @@ interface RepecHelperInterface {
   /**
    * Gets the keywords attached to a reference.
    *
-   * @return \Drupal\bibcite_entity\Entity\KeywordInterface[]|null
-   *   The keyword entities if present. Otherwise NULL.
+   * @return \Drupal\bibcite_entity\Entity\KeywordInterface[]
+   *   The keyword entities.
    */
-  public function getKeywords() : ?array;
+  public function getKeywords() : array;
 
 }

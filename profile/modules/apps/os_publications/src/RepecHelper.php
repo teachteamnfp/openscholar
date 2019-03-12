@@ -51,12 +51,12 @@ final class RepecHelper implements RepecHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function getKeywords() : ?array {
+  public function getKeywords() : array {
     /** @var \Drupal\Core\Field\FieldItemListInterface $items */
     $items = $this->reference->get('keywords');
 
     if ($items->isEmpty()) {
-      return NULL;
+      return [];
     }
 
     $keyword_ids = [];

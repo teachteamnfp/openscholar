@@ -264,10 +264,9 @@ function os_publications_repec_template_alter(array &$data, ContentEntityInterfa
       return $keyword->getName();
     }, $keywords);
 
-    array_walk($data, function (&$item, $key, $keywords_as_text) {
-      if ($item['attribute'] === 'Keywords') {
-        $item['value'] = implode(', ', $keywords_as_text);
-      }
-    }, $keywords_as_text);
+    $data[] = [
+      'attribute' => 'Keywords',
+      'value' => implode(', ', $keywords_as_text),
+    ];
   }
 }
