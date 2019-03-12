@@ -2,24 +2,20 @@
 
 namespace Drupal\os_publications;
 
-use Drupal\bibcite_entity\Entity\ContributorInterface;
-
 /**
  * Contract for RepecHelper.
  */
 interface RepecHelperInterface {
 
   /**
-   * Gets the contributor of a reference.
+   * Gets the contributors attache to a reference.
    *
-   * Only returns the first author, and ignores the rest.
-   *
-   * @return \Drupal\bibcite_entity\Entity\ContributorInterface|null
-   *   The contributor entity if present. Otherwise NULL.
+   * @return \Drupal\bibcite_entity\Entity\ContributorInterface[]
+   *   The contributor entities..
    *
    * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
-  public function getContributor() : ?ContributorInterface;
+  public function getContributor() : array;
 
   /**
    * Gets the keywords attached to a reference.

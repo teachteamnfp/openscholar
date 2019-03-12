@@ -147,7 +147,8 @@ class RepecIntegrationTest extends TestBase {
     }, [$keyword1, $keyword2]);
     $keyword_names_in_template = implode(', ', $keyword_names);
 
-    $contributor = $this->createContributor();
+    $contributor_1 = $this->createContributor();
+    $contributor_2 = $this->createContributor();
 
     $abstract = $this->randomString();
 
@@ -170,7 +171,10 @@ class RepecIntegrationTest extends TestBase {
       ],
       'author' => [
         [
-          'target_id' => $contributor->id(),
+          'target_id' => $contributor_1->id(),
+        ],
+        [
+          'target_id' => $contributor_2->id(),
         ],
       ],
       'bibcite_abst_e' => [
@@ -194,7 +198,8 @@ class RepecIntegrationTest extends TestBase {
     $this->assertContains("File-Format: {$file_1_type_in_template}", $content);
     $this->assertContains("File-URL: {$file_2_url}", $content);
     $this->assertContains("File-Format: {$file_2_type_in_template}", $content);
-    $this->assertContains("Author-Name: {$contributor->getName()}", $content);
+    $this->assertContains("Author-Name: {$contributor_1->getName()}", $content);
+    $this->assertContains("Author-Name: {$contributor_2->getName()}", $content);
     $this->assertContains("Abstract: {$abstract}", $content);
   }
 

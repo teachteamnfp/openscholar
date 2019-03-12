@@ -246,10 +246,10 @@ function os_publications_bibcite_reference_update(EntityInterface $entity) {
 function os_publications_repec_template_alter(array &$data, ContentEntityInterface $entity) {
   /** @var \Drupal\os_publications\RepecHelperInterface $repec_helper */
   $repec_helper = new RepecHelper($entity);
-  /** @var \Drupal\bibcite_entity\Entity\ContributorInterface $contributor */
-  $contributor = $repec_helper->getContributor();
+  /** @var \Drupal\bibcite_entity\Entity\ContributorInterface[] $contributors */
+  $contributors = $repec_helper->getContributor();
 
-  if ($contributor) {
+  foreach ($contributors as $contributor) {
     $data[] = [
       'attribute' => 'Author-Name',
       'value' => $contributor->getName(),

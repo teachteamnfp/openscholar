@@ -2,7 +2,7 @@
 
 namespace Drupal\os_publications;
 
-use Drupal\bibcite_entity\Entity\ContributorInterface;
+use Drupal\bibcite_entity\Entity\Contributor;
 use Drupal\bibcite_entity\Entity\Keyword;
 use Drupal\bibcite_entity\Entity\ReferenceInterface;
 
@@ -31,18 +31,21 @@ final class RepecHelper implements RepecHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function getContributor() : ?ContributorInterface {
-    /** @var \Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem|null $item */
-    $item = $this->reference->get('author')->first();
-    if (!$item) {
-      return NULL;
+  public function getContributor() : array {
+    /** @var \Drupal\Core\Field\FieldItemListInterface $items */
+    $items = $this->reference->get('author');
+    if ($items->isEmpty()) {
+      return [];
     }
 
-    /** @var \Drupal\Core\Entity\Plugin\DataType\EntityReference $entity_reference */
-    $entity_reference = $item->get('entity');
-    /** @var \Drupal\Core\Entity\Plugin\DataType\EntityAdapter $entity_adapter */
-    $entity_adapter = $entity_reference->getTarget();
-    return $entity_adapter->getValue();
+    $contributor_ids = [];
+    foreach ($items as $item) {
+      $contributor_ids[] = $item->getValue()['target_id'];
+    }
+
+    return array_map(function ($id) {
+      return Contributor::load($id);
+    }, $contributor_ids);
   }
 
   /**
