@@ -46,14 +46,41 @@ cd $BUILD_ROOT
 #Backup the make files
 cp -f openscholar/composer.json /tmp/
 cp -f openscholar/composer.lock /tmp/
+cd openscholar/profile/themes
+cp -rf . /tmp/
 
-# Make sure vendor directory is up to date
-rm -rf openscholar/vendor
+cd $BUILD_ROOT
 
 git subtree pull -q -m "$CI_MESSAGE" --prefix=openscholar git://github.com/openscholar/openscholar.git $CI_BRANCH --squash
 
+cd openscholar/profile/themes
+
+SHOULD_REBUILD_SCSS=0
+for theme in * ; do
+  [[ ! -e "$theme/scss" ]] && [[ ! -e "/tmp/$theme/scss" ]] && continue;
+
+  # If scss directory is present in one, but not in other, that means scss needs
+  # to be rebuilt.
+  if [[ -e "$theme/scss" ]] && [[ ! -e "/tmp/$theme/scss" ]]; then
+    SHOULD_REBUILD_SCSS=1
+    break
+  fi
+  if [[ ! -e "$theme/scss" ]] && [[ -e "/tmp/$theme/scss" ]]; then
+    SHOULD_REBUILD_SCSS=1
+    break
+  fi
+
+  diff -r "$theme/scss" "/tmp/$theme/scss" >> "$BUILD_ROOT/scss.diff";
+done
+
+if [[ -e "$BUILD_ROOT/scss.diff" ]] && [[ "$(cat ${BUILD_ROOT}/scss.diff)" != "" ]]; then
+  SHOULD_REBUILD_SCSS=1
+fi
+
+cd ${BUILD_ROOT}
+
 #Only build if no build has ever happened, or if the make files have changed
-if [[ $FORCE_REBUILD == "1" ]] || [[ "$(cmp -b 'openscholar/composer.json' '/tmp/composer.json')" != "" ]] || [[ "$(cmp -b 'openscholar/composer.lock' '/tmp/composer.lock')" != "" ]]; then
+if [[ $FORCE_REBUILD == "1" ]] || [[ "$(cmp -b 'openscholar/composer.json' '/tmp/composer.json')" != "" ]] || [[ "$(cmp -b 'openscholar/composer.lock' '/tmp/composer.lock')" != "" ]] || [[ ${SHOULD_REBUILD_SCSS} -eq 1 ]]; then
 
 # Chores.
 echo "Rebuilding..."
@@ -63,7 +90,7 @@ cd openscholar
 composer install --ignore-platform-reqs
 
 # Build CSS
-cd profile/themes/os_base && npm install && ./node_modules/.bin/gulp sass
+npm install && cd profile/themes/os_base && ./../../../node_modules/.bin/gulp sass
 
 cd ../../../..
 

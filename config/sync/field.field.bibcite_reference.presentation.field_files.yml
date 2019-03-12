@@ -1,0 +1,27 @@
+uuid: 864bba65-160e-4e9e-94c9-1e5899d038d5
+langcode: en
+status: true
+dependencies:
+  config:
+    - bibcite_entity.bibcite_reference_type.presentation
+    - field.storage.bibcite_reference.field_files
+  module:
+    - file
+id: bibcite_reference.presentation.field_files
+field_name: field_files
+entity_type: bibcite_reference
+bundle: presentation
+label: 'Attach Files'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: '[date:custom:Y]-[date:custom:m]'
+  file_extensions: 'txt pdf svg png docx pptx jpeg jpg'
+  max_filesize: ''
+  description_field: false
+  handler: 'default:file'
+  handler_settings: {  }
+field_type: file

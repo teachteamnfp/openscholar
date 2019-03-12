@@ -64,6 +64,40 @@
         {
             "type": "composer",
             "url": "https://packages.drupal.org/8"
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "swordapp/swordappv2-php-library",
+                "version": "master",
+                "type": "drupal-library",
+                "dist": {
+                    "url": "https://github.com/swordapp/swordappv2-php-library/archive/master.zip",
+                    "type": "zip"
+                },
+                "source": {
+                    "url": "https://github.com/swordapp/swordappv2-php-library.git",
+                    "type": "git",
+                    "reference": "master"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "drupal/repec",
+                "version": "master",
+                "type": "drupal-module",
+                "dist": {
+                    "url": "https://github.com/openscholar/repec/archive/master.zip",
+                    "type": "zip"
+                },
+                "source": {
+                    "url": "https://github.com/openscholar/repec.git",
+                    "type": "git",
+                    "reference": "master"
+                }
+            }
         }
     ],
     "require": {
@@ -104,8 +138,15 @@
         "drupal/bootstrap": "^3.17",
         "drupal/styleguide": "^1.0@alpha",
         "drupal/config_split": "^1.4",
+        "drupal/views_infinite_scroll": "^1.5",
         "twbs/bootstrap-sass": "^3.3.7",
-        "drupal/mailchimp": "^1.8"
+        "drupal/mailchimp": "^1.8",
+        "drupal/bibcite": "1.x-dev",
+        "drupal/field_tools": "^1.0@alpha",
+        "ext-json": "*",
+        "php-ds/php-ds": "^1.2",
+        "swordapp/swordappv2-php-library": "master",
+        "drupal/repec": "master"
     },
     "require-dev": {
         "drupal/features": "^3.7",
@@ -126,7 +167,9 @@
     },
     "autoload": {
         "classmap": [
-            "scripts/composer/ScriptHandler.php"
+            "scripts/composer/ScriptHandler.php",
+            "web/libraries/swordappv2-php-library/swordappclient.php",
+            "web/libraries/swordappv2-php-library/packager_mets_swap.php"
         ],
         "files": ["load.environment.php"]
     },
@@ -142,6 +185,7 @@
             "DrupalProject\\composer\\ScriptHandler::createRequiredFiles",
             "DrupalProject\\composer\\ScriptHandler::placeProfile",
             "DrupalProject\\composer\\ScriptHandler::installFullcalendarLibrary",
+            "command -v npm install || echo \"NPM not installed. Please install it and run composer install again.\"",
             "DrupalProject\\composer\\ScriptHandler::installBootstrapLibrary",
             "./scripts/register-cs.sh",
             "./scripts/install-hooks.sh"
@@ -151,6 +195,7 @@
             "DrupalProject\\composer\\ScriptHandler::createRequiredFiles",
             "DrupalProject\\composer\\ScriptHandler::placeProfile",
             "DrupalProject\\composer\\ScriptHandler::installFullcalendarLibrary",
+            "command -v npm update || echo \"NPM not installed. Please install it and run composer install.\"",
             "DrupalProject\\composer\\ScriptHandler::installBootstrapLibrary"
         ],
         "code-standard": [
@@ -179,10 +224,12 @@
         "patches": {
             "drupal/core": {
                 "Make sure TestSitePath exist before creating .htkey": "https://www.drupal.org/files/issues/2246725-24.patch",
-                "Views Date Filter Datetime Granularity Option": "https://www.drupal.org/files/issues/2018-12-11/views_date_filter_granularity_2868014-60.patch"
+                "Views Date Filter Datetime Granularity Option": "https://www.drupal.org/files/issues/2018-12-11/views_date_filter_granularity_2868014-60.patch",
+                "Add paging info to rest request": "https://www.drupal.org/files/issues/2018-06-30/2982729-viewsRestInfo.patch"
             },
             "drupal/group_purl": {
-                "Prevent base path from interfering with purl detection": "https://www.drupal.org/files/issues/2019-01-17/group_purl.3026646-2.basepath.patch"
+                "Prevent base path from interfering with purl detection": "https://www.drupal.org/files/issues/2019-01-17/group_purl.3026646-2.basepath.patch",
+                "Don't attempt to redirect to subdomains by default": "https://www.drupal.org/files/issues/2019-03-05/group_purl.3036879-4.subdomain_disable.patch"
             },
             "drupal/fullcalendar": {
                 "Fullcalendar incompatible with Date Recur 2.x": "https://www.drupal.org/files/issues/2019-01-09/3023612-5.patch"
@@ -203,6 +250,13 @@
             },
             "drupal/mailchimp": {
                 "Cache read problem in mailchimp_get_mergevars()": "https://www.drupal.org/files/issues/2019-02-13/3032674-cache-fix-for-mailchimp_get_mergevars-3.patch"
+            }
+        },
+        "patches-ignore": {
+            "weitzman/drupal-test-traits": {
+                "drupal/core": {
+                    "Test runs can throw exceptions due to missing .htkey file (https://www.drupal.org/project/drupal/issues/2246725#comment-12160940)": "https://www.drupal.org/files/issues/2246725-24.patch"
+                }
             }
         }
     }

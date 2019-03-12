@@ -171,12 +171,12 @@ class RoboFile extends \Robo\Tasks
             ->copy('.travis/.env', '.env', $force)
             ->copy('.travis/config/behat.yml', 'tests/behat.yml', $force);
 
-        $tasks[] = $this->taskExec('docker-compose pull --parallel');
+        $tasks[] = $this->taskExec('docker-compose --verbose pull --parallel');
         $tasks[] = $this->taskExec('docker-compose up -d');
         $tasks[] = $this->taskExec('make');
         $tasks[] = $this->taskExec('docker-compose exec -T php cp .travis/config/phpunit.xml web/core/phpunit.xml');
-        $tasks[] = $this->taskExec('docker-compose exec -T php cp .travis/config/bootstrap.php web/core/tests/bootstrap.php');
-        $tasks[] = $this->taskExec('docker-compose exec -T php mkdir web/sites/simpletest');
+        $tasks[] = $this->taskExec('docker-compose exec -T php cp .travis/config//bootstrap.php web/core/tests/bootstrap.php');
+        $tasks[] = $this->taskExec('docker-compose exec -T php mkdir -p web/sites/simpletest');
         return $tasks;
     }
 
@@ -249,11 +249,12 @@ class RoboFile extends \Robo\Tasks
     protected function installTestConfigs()
     {
         $tasks[] = $this->taskExecStack()
-            ->exec('docker-compose exec -T php mkdir web/modules/test')
+            ->exec('docker-compose exec -T php mkdir -p web/modules/test')
             ->exec('docker-compose exec -T php cp -r profile/modules/vsite/tests/modules/vsite_module_test web/modules/test')
             ->exec('docker-compose exec -T php cp -r web/modules/contrib/group/tests/modules/group_test_config web/modules/test')
             ->exec('docker-compose exec -T php cp -r profile/modules/custom/os_mailchimp/tests/modules/os_mailchimp_test web/modules/test')
-            ->exec('docker-compose exec -T php ./vendor/bin/drush en -y vsite_module_test group_test_config os_mailchimp_test');
+            ->exec('docker-compose exec -T php cp -r profile/modules/apps/os_publications/tests/modules/os_publications_test web/modules/test')
+            ->exec('docker-compose exec -T php ./vendor/bin/drush en -y vsite_module_test group_test_config os_mailchimp_test os_publications_test');
         return $tasks;
     }
 
@@ -266,7 +267,7 @@ class RoboFile extends \Robo\Tasks
     protected function startWebServer()
     {
         $tasks = [];
-        $tasks[] = $this->taskExec('vendor/bin/drush --root=' . $this->getDocroot() . '/web runserver ' . static::DRUPAL_URL . ' &')
+        $tasks[] = $this->taskExec('vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'drush --root=' . $this->getDocroot() . '/web runserver ' . static::DRUPAL_URL . ' &')
             ->silent(true);
         $tasks[] = $this->taskExec('until curl -s ' . static::DRUPAL_URL . '; do true; done > /dev/null');
         return $tasks;
@@ -283,8 +284,8 @@ class RoboFile extends \Robo\Tasks
         $tasks[] = $this->taskExecStack()
             ->stopOnFail()
             ->exec('docker-compose exec -T php ./vendor/bin/phpcs --config-set installed_paths vendor/drupal/coder/coder_sniffer')
-            ->exec('docker-compose exec -T php ./vendor/bin/phpcs --standard=Drupal --warning-severity=0 --ignore=themes/*/css,themes/*/node_modules profile')
-            ->exec('docker-compose exec -T php ./vendor/bin/phpcs --standard=DrupalPractice --warning-severity=0 --ignore=themes/*/css,themes/*/node_modules profile');
+            ->exec('docker-compose exec -T php ./vendor/bin/phpcs --standard=Drupal --warning-severity=0 --ignore=themes/*/css profile')
+            ->exec('docker-compose exec -T php ./vendor/bin/phpcs --standard=DrupalPractice --warning-severity=0 --ignore=themes/*/css profile');
 
         return $tasks;
     }
