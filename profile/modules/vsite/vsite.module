@@ -201,7 +201,7 @@ function _vsite_prerender_control_panel_links(array $element) {
 /**
  * Get all group id that related with field parent site.
  *
- * @param \Drupal\group\Entity\Group $group
+ * @param \Drupal\group\Entity\GroupInterface $group
  *   Parent group entity.
  *
  * @return array|int

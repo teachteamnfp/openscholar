@@ -4,8 +4,6 @@ namespace Drupal\vsite\Cache;
 
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Cache\Context\CalculatedCacheContextInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\group\Entity\GroupInterface;
 use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 
 /**
@@ -20,7 +18,7 @@ class VsiteCacheContext implements CalculatedCacheContextInterface {
   /**
    * Vsite Context Manager.
    *
-   * @var VsiteContextManagerInterface
+   * @var \Drupal\vsite\Plugin\VsiteContextManagerInterface
    */
   protected $vsiteContextManager;
 
