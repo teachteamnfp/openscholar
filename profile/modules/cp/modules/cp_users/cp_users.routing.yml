@@ -1,0 +1,7 @@
+cp.users:
+  path: '/cp/users'
+  defaults:
+    _controller: '\Drupal\cp_user\Controller\CpUserMainController::main'
+    _title: 'Manage Users'
+  requirements:
+    _permission: 'manage cp users'
