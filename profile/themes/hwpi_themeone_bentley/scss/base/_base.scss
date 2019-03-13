@@ -1,11 +1,10 @@
 @import url('https://fonts.googleapis.com/css?family=Arvo:400,400i,700');
 
-html,
- body {
-	background: #fff;
-	color: #1e1e1e;
+html, body {
+	background: $color-white;
+	color: $color-gray;
 	font-family:  Helvetica, sans-serif;
 }
 a, a:visited {
-  color: #0075BE;
+  color: $color-link;
 }

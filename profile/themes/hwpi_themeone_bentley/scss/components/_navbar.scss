@@ -1,10 +1,10 @@
 /******** header, navbar **************/
 .header-container {
-  background: #e6e6e3;
-	color: #303030;
+  background: $color-light-gray;
+	color: $color-text;
 }
 .navbar-collapse {
-  background: #f3f3f1;
+  background: $color-light-gray;
   padding: 8px 0 !important;
   .navbar-nav {
     > li {
@@ -12,26 +12,26 @@
       > a {
         font-family: Georgia,Baskerville,Palatino,'Palatino Linotype','Book Antiqua','Times New Roman',serif;
         font-size: 20px;
-        color: #303030;
+        color: $color-text;
         padding: 8px;
         &:hover, &:active, &:focus, &.is-active {
-          background: #1E2540;
-          color: #FFF;
+          background: $color-blue1;
+          color: $color-white;
         }
         &.is-active {
           &:hover {
-            background: #1E2540;
-            color: #FFF;
+            background: $color-blue1;
+            color: $color-white;
           }
         }
       }
       &.open {
         > a {
-          color: #fff;
-           background: #1E2540;
+          color: $color-white;
+           background: $color-blue1;
           &:hover, &:active, &:focus {
-            background: #1E2540;
-            color: #FFF;
+            background: $color-blue1;
+            color: $color-white;
           }
         }
       }
@@ -39,17 +39,17 @@
   }
 }
 .dropdown-menu {
-  background: #F0F0EE;
+  background: $color-light-gray2;
   box-shadow: none;
   border: 0 none;
   > li {
     > a {
-      color: #303030;
+      color: $color-text;
       background: none;
       padding: 8px;
       font-size: 15px;
       &:hover, &:active {
-        color:#666;
+        color: $color-gray1;
       }
     }
   }
@@ -61,7 +61,7 @@
         font: bold 13px arial,sans-serif;
         text-decoration: none;
         text-transform: uppercase;
-        color: #666;
+        color: $color-gray1;
         padding: 0.3em 0 0.3em 10px;
         &:hover {
           background: none;

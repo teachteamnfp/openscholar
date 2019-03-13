@@ -2,7 +2,7 @@
 aside {
   .block {
     margin-bottom: 20px;
-    border-top: 3px solid #4384C4;
+    border-top: 3px solid $color-blue;
     margin-top: 12px;
     h2.block-title {
       text-transform: uppercase;
@@ -14,5 +14,4 @@ aside {
       margin-bottom: 8px;
     }
   }
-
 }
