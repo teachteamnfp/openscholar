@@ -5,3 +5,4 @@ core: 8.x
 dependencies:
   - "os:cp_settings"
   - "drupal:redirect"
+  - "os:vsite"
