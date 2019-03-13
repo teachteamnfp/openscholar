@@ -114,6 +114,7 @@ class RepecIntegrationTest extends TestBase {
    * Tests ecbook template.
    *
    * @covers ::os_publications_repec_template_alter
+   * @covers ::os_publications_repec_template_ecbook_alter
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
