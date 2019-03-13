@@ -1,0 +1,7 @@
+name: "OpenScholar: Restful"
+core: 8.x
+type: module
+dependencies:
+  - drupal:rest
+  - drupal:serialization
+  - drupal:hal

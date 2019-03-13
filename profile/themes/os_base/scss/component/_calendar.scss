@@ -1,0 +1,80 @@
+/**** mini calendar ****/
+.block {
+  .fc-row {
+    &.ui-widget-header {
+      th {
+        background: white;
+        font-size: 12px;
+      }
+    }
+  }
+  .fc {
+    .fc-body {
+      border: 1px solid #cacaca;
+      font-size: 14px;
+      .fc-row {
+        height: auto !important;
+        min-height: unset;
+        .fc-content-skeleton {
+          td {
+            vertical-align: middle;
+            text-align: center;
+            .fc-day-number{
+              float: none;
+            }
+          }
+        }
+      }
+      .fc-scroller.fc-day-grid-container {
+        height: auto !important;
+      }
+    }
+  }
+}
+
+/**** calendar prev next ****/
+.fc-header-toolbar {
+  .ui-button {
+    &.fc-prev-button {
+      background: none;
+      border: 0 none;
+      .ui-icon {
+        background-position: 0 -480px;
+      }
+    }
+    &.fc-next-button {
+      background: none;
+      border: 0 none;
+      .ui-icon {
+        background-position: -15px -480px;
+      }
+    }
+    &:hover, &:focus {
+      .ui-icon {
+        background-image: url(../../../themes/os_base/images/basesprite.png);
+      }
+    }
+  }
+  .ui-icon {
+    background: url(../../../themes/os_base/images/basesprite.png) no-repeat;
+    width: 15px;
+    height: 13px;
+    display: inline-block;
+  }
+}
+/***** full caldenar *****/
+.fc-day-grid-event {
+  .fc-content {
+    display: flex;
+  }
+  .fc-title {
+    white-space: nowrap;
+    overflow: hidden;
+    flex: 1;
+    text-overflow: ellipsis;
+    order: 1;
+  }
+  .fc-time {
+    order: 2;
+  }
+}

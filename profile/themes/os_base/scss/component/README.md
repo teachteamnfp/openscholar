@@ -1,0 +1,1 @@
+#Components: have a single scss file for each individual component

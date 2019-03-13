@@ -1,0 +1,9 @@
+uuid: 8607b3ec-36be-49e8-bfd3-3aee337b4b31
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: PkldvsTZe0jcn2Nb-2cR0KjG3hflOcm1d8v3abY05IY
+id: series_editor
+label: 'Series Editor'
+weight: -5

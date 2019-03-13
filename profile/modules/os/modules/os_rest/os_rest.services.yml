@@ -1,0 +1,11 @@
+services:
+  os_rest.media:
+    class: Drupal\os_rest\Normalizer\OsMediaNormalizer
+    tags:
+      - { name: normalizer, priority: 2 }
+    arguments: ['@entity.manager', '@entity_type.manager', '@current_route_match', '@file_system']
+  os_rest.content_type_header_matcher:
+    class: Drupal\os_rest\Routing\ContentTypeHeaderMatcher
+    public: false
+    decorates: content_type_header_matcher
+    decoration_priority: 1
