@@ -62,5 +62,6 @@ hidden:
   field_groups: true
   field_media: true
   field_signup: true
+  field_singup_multiple: true
   langcode: true
   links: true
