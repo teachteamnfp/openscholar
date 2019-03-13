@@ -8,7 +8,7 @@ use Drupal\Tests\openscholar\ExistingSiteJavascript\TestBase;
  * Tests os_mailchimp module.
  *
  * @group mailchimp
- * @group functional-javascript-unique
+ * @group functional-javascript
  */
 class CpSettingsOsMailChimpTest extends TestBase {
 
