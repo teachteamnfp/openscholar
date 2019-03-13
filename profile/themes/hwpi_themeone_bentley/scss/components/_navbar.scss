@@ -25,7 +25,7 @@
           }
         }
       }
-      &.open {
+      &.open, &.active {
         > a {
           color: $color-white;
            background: $color-blue1;
@@ -50,6 +50,15 @@
       font-size: 15px;
       &:hover, &:active {
         color: $color-gray1;
+      }
+    }
+    &.active {
+      a, a:hover {
+        background: $color-light-gray2;
+        color: $color-text;
+        &:hover {
+          color: $color-gray1;
+        }
       }
     }
   }
