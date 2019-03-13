@@ -37,8 +37,6 @@ class PublicationsRedirectTest extends TestBase {
     $this->drupalLogin($this->adminUser);
 
     $this->visit('/cp/settings/publications');
-    drupal_flush_all_caches();
-    $this->visit('/cp/settings/publications');
     $this->assertSession()->statusCodeEquals(200);
 
     $this->drupalPostForm(NULL, [

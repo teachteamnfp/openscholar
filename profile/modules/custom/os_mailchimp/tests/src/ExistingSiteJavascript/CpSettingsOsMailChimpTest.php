@@ -2,7 +2,7 @@
 
 namespace Drupal\Tests\os_mailchimp\ExistingSiteJavascript;
 
-use weitzman\DrupalTestTraits\ExistingSiteWebDriverTestBase;
+use Drupal\Tests\openscholar\ExistingSiteJavascript\TestBase;
 
 /**
  * Tests os_mailchimp module.
@@ -10,7 +10,7 @@ use weitzman\DrupalTestTraits\ExistingSiteWebDriverTestBase;
  * @group mailchimp
  * @group functional-javascript
  */
-class CpSettingsOsMailChimpTest extends ExistingSiteWebDriverTestBase {
+class CpSettingsOsMailChimpTest extends TestBase {
 
   /**
    * Admin user.
@@ -38,9 +38,6 @@ class CpSettingsOsMailChimpTest extends ExistingSiteWebDriverTestBase {
     $this->drupalLogin($this->adminUser);
 
     $this->visit("/cp/settings/mailchimp");
-    $web_assert->statusCodeEquals(403);
-    drupal_flush_all_caches();
-    $this->visit("/cp/settings/mailchimp");
     $web_assert->statusCodeEquals(200);
 
     $edit = [
@@ -61,6 +58,9 @@ class CpSettingsOsMailChimpTest extends ExistingSiteWebDriverTestBase {
 
   /**
    * Tests block visibility and modal popup.
+   *
+   * @throws \Behat\Mink\Exception\DriverException
+   * @throws \Behat\Mink\Exception\ExpectationException
    */
   public function testBlockVisibilityInContentRegion() {
     $web_assert = $this->assertSession();
@@ -75,6 +75,7 @@ class CpSettingsOsMailChimpTest extends ExistingSiteWebDriverTestBase {
     $submit_button->press();
 
     // Check modal is appeared.
+    $this->waitForAjaxToFinish();
     $result = $web_assert->waitForElementVisible('css', '.ui-dialog');
     $this->assertNotNull($result);
   }

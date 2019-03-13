@@ -27,12 +27,9 @@ class VsiteCurrentFilter extends FilterPluginBase {
     if ($group = \Drupal::service('vsite.context_manager')->getActiveVsite()) {
       $gids = _vsite_get_group_and_subsite_ids($group);
       $this->query->addWhere('vsite', 'gid', $gids, 'IN');
+    }
 
-      $this->displayHandler->display['cache_metadata']['contexts'][] = 'vsite:' . $group->id();
-    }
-    else {
-      $this->displayHandler->display['cache_metadata']['contexts'][] = 'vsite:none';
-    }
+    $this->displayHandler->display['cache_metadata']['contexts'][] = 'vsite';
   }
 
 }
