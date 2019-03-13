@@ -14,9 +14,8 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
  * Activates a vsite based on the path.
  */
 class VsitePathActivator implements EventSubscriberInterface {
-  use GroupRouteContextTrait {
-    getGroupFromRoute as traitGetGroupFromRoute;
-  }
+
+  use GroupRouteContextTrait;
 
   /**
    * Manager for Vsites.
@@ -89,12 +88,6 @@ class VsitePathActivator implements EventSubscriberInterface {
    * @throws InvalidPluginDefinitionException
    */
   public function getGroupFromRoute() {
-    // Gets everything except groupContent alone.
-    $group = $this->traitGetGroupFromRoute();
-    if ($group) {
-      return $group;
-    }
-
     $route_match = $this->getCurrentRouteMatch();
 
     if ($node = $route_match->getParameter('node')) {
