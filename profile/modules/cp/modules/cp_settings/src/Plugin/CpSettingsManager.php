@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\cp_settings;
+namespace Drupal\cp_settings\Plugin;
 
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
@@ -19,7 +19,7 @@ class CpSettingsManager extends DefaultPluginManager implements CpSettingsManage
       'Plugin/CpSetting',
       $namespaces,
       $module_handler,
-      'Drupal\cp_settings\Plugin\CpSetting\CpSettingInterface',
+      'Drupal\cp_settings\CpSettingInterface',
       'Drupal\cp_settings\Annotation\CpSetting'
     );
 

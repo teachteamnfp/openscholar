@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\cp_settings\Plugin\CpSetting;
+namespace Drupal\cp_settings;
 
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
@@ -37,10 +37,6 @@ interface CpSettingInterface {
    *   The form state.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The configuration factory.
-   *
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
-   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function submitForm(FormStateInterface $formState, ConfigFactoryInterface $configFactory);
 

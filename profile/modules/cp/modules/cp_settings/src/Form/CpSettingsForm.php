@@ -7,7 +7,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\cp_settings\CpSettingsManagerInterface;
+use Drupal\cp_settings\Plugin\CpSettingsManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -18,7 +18,7 @@ class CpSettingsForm extends ConfigFormBase {
   /**
    * CP settings manager.
    *
-   * @var \Drupal\cp_settings\CpSettingsManagerInterface
+   * @var \Drupal\cp_settings\Plugin\CpSettingsManagerInterface
    */
   protected $cpSettingsManager;
 
@@ -34,7 +34,7 @@ class CpSettingsForm extends ConfigFormBase {
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   Config factory.
-   * @param \Drupal\cp_settings\CpSettingsManagerInterface $cpSettingsManager
+   * @param \Drupal\cp_settings\Plugin\CpSettingsManagerInterface $cpSettingsManager
    *   CP settings manager.
    */
   public function __construct(ConfigFactoryInterface $config_factory, CpSettingsManagerInterface $cpSettingsManager) {
@@ -64,7 +64,7 @@ class CpSettingsForm extends ConfigFormBase {
   public function access(AccountInterface $account) {
     /** @var \Drupal\Core\Access\AccessResultInterface $access */
     $access = AccessResult::neutral();
-    /** @var \Drupal\cp_settings\Plugin\CpSetting\CpSettingInterface $cp */
+    /** @var \Drupal\cp_settings\CpSettingInterface $cp */
     foreach ($this->getPlugins() as $group => $cp) {
       $access = $access->orIf($cp->access($account));
     }
@@ -97,7 +97,7 @@ class CpSettingsForm extends ConfigFormBase {
   protected function getEditableConfigNames() {
     $plugins = $this->getPlugins();
     $config = [];
-    /** @var \Drupal\cp_settings\Plugin\CpSetting\CpSettingInterface $p */
+    /** @var \Drupal\cp_settings\CpSettingInterface $p */
     foreach ($plugins as $p) {
       $config = array_merge($p->getEditableConfigNames());
     }
@@ -110,7 +110,7 @@ class CpSettingsForm extends ConfigFormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildForm($form, $form_state);
 
-    /** @var \Drupal\cp_settings\Plugin\CpSetting\CpSettingInterface[] $plugins */
+    /** @var \Drupal\cp_settings\CpSettingInterface[] $plugins */
     $plugins = $this->getPlugins();
     foreach ($plugins as $p) {
       $p->getForm($form, $this->configFactory);
@@ -123,7 +123,7 @@ class CpSettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    /** @var \Drupal\cp_settings\Plugin\CpSetting\CpSettingInterface[] $plugins */
+    /** @var \Drupal\cp_settings\CpSettingInterface[] $plugins */
     $plugins = $this->getPlugins();
     foreach ($plugins as $p) {
       $p->submitForm($form_state, $this->configFactory);

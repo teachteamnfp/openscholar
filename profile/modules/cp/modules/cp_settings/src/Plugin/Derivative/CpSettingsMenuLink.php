@@ -4,7 +4,7 @@ namespace Drupal\cp_settings\Plugin\Derivative;
 
 use Drupal\Component\Plugin\Derivative\DeriverBase;
 use Drupal\Core\Plugin\Discovery\ContainerDeriverInterface;
-use Drupal\cp_settings\CpSettingsManagerInterface;
+use Drupal\cp_settings\Plugin\CpSettingsManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -15,7 +15,7 @@ class CpSettingsMenuLink extends DeriverBase implements ContainerDeriverInterfac
   /**
    * CP setting manager.
    *
-   * @var \Drupal\cp_settings\CpSettingsManagerInterface
+   * @var \Drupal\cp_settings\Plugin\CpSettingsManagerInterface
    */
   protected $cpSettingsManager;
 
@@ -24,7 +24,7 @@ class CpSettingsMenuLink extends DeriverBase implements ContainerDeriverInterfac
    *
    * @param string $base_plugin_id
    *   Base plugin id.
-   * @param \Drupal\cp_settings\CpSettingsManagerInterface $cpSettingsManager
+   * @param \Drupal\cp_settings\Plugin\CpSettingsManagerInterface $cpSettingsManager
    *   CP setting manager.
    */
   public function __construct($base_plugin_id, CpSettingsManagerInterface $cpSettingsManager) {
