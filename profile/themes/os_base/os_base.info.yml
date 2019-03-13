@@ -32,3 +32,6 @@ regions:
 libraries-extend:
   bootstrap/framework:
     - os_base/framework
+
+libraries:
+  - os_base/modal
