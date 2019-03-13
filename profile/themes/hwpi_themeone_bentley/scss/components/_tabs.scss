@@ -5,15 +5,11 @@
   font-size: 14px;
 }
 
-.ui-tabs ul.ui-tabs-nav li.ui-tabs-active {
-  background: #a41b2f !important;
-}
-
 .ui-tabs ul.ui-tabs-nav li.ui-tabs-active a {
   border-bottom-width: 1px;
-  color: #fff;
+  color: $color-white;
 }
 
 .block-boxes-os_boxes_tabs .links li a {
-    background-image: none !important;
+  background-image: none;
  }
