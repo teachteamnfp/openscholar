@@ -10,7 +10,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\cp_settings\Plugin\CpSetting\CpSettingInterface;
+use Drupal\cp_settings\CpSettingInterface;
 use Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager;
 use Drupal\os_publications\PublicationsListingHelperInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;

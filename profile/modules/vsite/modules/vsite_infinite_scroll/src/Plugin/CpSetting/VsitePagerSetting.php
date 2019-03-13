@@ -9,7 +9,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\PluginBase;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\cp_settings\Plugin\CpSetting\CpSettingInterface;
+use Drupal\cp_settings\CpSettingInterface;
 
 /**
  * CP metatag setting.
