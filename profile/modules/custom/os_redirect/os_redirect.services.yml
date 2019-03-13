@@ -1,0 +1,6 @@
+services:
+  os_redirect.request_subscriber:
+    class: Drupal\os_redirect\EventSubscriber\OsRedirectRequestSubscriber
+    arguments: ['@redirect.repository', '@language_manager', '@config.factory', '@path.alias_manager', '@module_handler', '@entity.manager', '@redirect.checker', '@router.request_context', '@path_processor_manager', '@vsite.context_manager', '@logger.factory', '@current_user', '@messenger']
+    tags:
+      - { name: event_subscriber }

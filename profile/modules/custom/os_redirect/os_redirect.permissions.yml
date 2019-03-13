@@ -5,3 +5,7 @@ administer control panel redirect_maximum:
 administer control panel redirects:
   title: 'Administer redirect_maximum control panel'
   description: 'Administer redirect_maximum control panel.'
+
+ignore redirects:
+  title: 'Ignore redirects'
+  description: 'Users with a given permission should not be redirected, instead given a message that the page they are on redirects elsewhere.'
