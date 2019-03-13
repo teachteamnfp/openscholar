@@ -1,35 +1,36 @@
 /******** header, navbar **************/
 header {
-  background: #303030;
-  color: #fff;
+  background: $color-gray;
+  color: $color-white;
 }
 .navbar-collapse {
-  background: #a23338;
+  background: $color-menu;
   padding: 0;
   .navbar-nav {
     > li {
       > a {
-        color: #fff;
+        color: $color-white;
         padding: 16px 15px;
         font-size: 20px;
         font-family: Georgia,Baskerville,Palatino,'Palatino Linotype','Book Antiqua','Times New Roman',serif;
         &:hover, &:active, &:focus, &.is-active {
-          background: #7B272B;
-          color: #fff;
+          background: $color-menu-hover;
+          color: $color-white;
         }
         &.is-active {
           &:hover {
-            background: #7B272B;
-            color: #fff;
+            background: $color-menu-hover;
+            color: $color-white;
           }
         }
       }
-      &.open {
-        a {
-          color: #fff;
+      &.open, &.active {
+        > a {
+          background: $color-menu-hover;
+          color: $color-white;
           &:hover, &:active, &:focus {
-            background: #7B272B;
-            color: #fff;
+            background: $color-menu-hover;
+            color: $color-white;
           }
         }
       }
@@ -37,14 +38,24 @@ header {
   }
 }
 .dropdown-menu {
-  background: #7B272B;
+  background: $color-menu-hover;
   > li {
     > a {
-      font-family:arial;
-      font-size:13px;
-      font-weight:bold;
+      color: $color-white;
+      font-family: arial;
+      font-size: 13px;
+      font-weight: bold;
+      padding: 10px 15px;
       &:hover, &:active {
-        color:#BAC5C6;
+        color: $color-white;
+        background: $color-menu-hover;
+      }
+    }
+    &.active {
+      a, a:hover {
+        color: $color-white;
+        background: $color-menu-hover;
+
       }
     }
   }
@@ -56,7 +67,7 @@ header {
         font: bold 13px arial,sans-serif;
         text-decoration: none;
         text-transform: uppercase;
-        color: #ACB9BA;
+        color: $color-light-gray2;
         padding: 0.3em 0 0.3em 10px;
         &:hover {
           background: none;
