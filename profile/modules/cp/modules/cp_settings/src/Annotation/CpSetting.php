@@ -5,7 +5,7 @@ namespace Drupal\cp_settings\Annotation;
 use Drupal\Component\Annotation\Plugin;
 
 /**
- * CP settings annotion.
+ * CP settings annotation.
  *
  * @Annotation
  */

@@ -32,8 +32,6 @@ class PublicationsFormTest extends ExistingSiteBase {
     $this->drupalLogin($this->user);
 
     $this->drupalGet('cp/settings/publications');
-    drupal_flush_all_caches();
-    $this->drupalGet('cp/settings/publications');
     $this->assertSession()->statusCodeEquals(200);
   }
 
@@ -44,8 +42,6 @@ class PublicationsFormTest extends ExistingSiteBase {
    */
   public function testPublicationSettingsForm() {
     $this->drupalLogin($this->user);
-    $this->drupalGet('cp/settings/publications');
-    drupal_flush_all_caches();
     $this->drupalGet('cp/settings/publications');
     // Testing multiple form fields.
     $edit = [
