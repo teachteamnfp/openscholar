@@ -10,6 +10,7 @@ dependencies:
     - field.field.node.events.field_media
     - field.field.node.events.field_recurring_date
     - field.field.node.events.field_signup
+    - field.field.node.events.field_singup_multiple
     - node.type.events
   module:
     - date_recur
@@ -72,4 +73,5 @@ content:
     third_party_settings: {  }
 hidden:
   field_signup: true
+  field_singup_multiple: true
   langcode: true
