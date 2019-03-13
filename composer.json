@@ -199,7 +199,7 @@
             "DrupalProject\\composer\\ScriptHandler::installBootstrapLibrary"
         ],
         "code-standard": [
-            "./vendor/bin/phpcs --standard=Drupal",
+            "./vendor/bin/phpcs --standard=Drupal --ignore=*.yml",
             "./vendor/bin/phpcs --standard=DrupalPractice"
         ],
         "code-standard-fix": [
