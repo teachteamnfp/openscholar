@@ -17,9 +17,9 @@ use Drupal\cp_settings\Plugin\CpSetting\CpSettingInterface;
  *   id = "os_metatag_setting",
  *   title = @Translation("OS Metatag"),
  *   group = {
- *     "id" = "seo",
- *     "title" = @Translation("SEO"),
- *     "parent" = "cp.settings",
+ *    "id" = "seo",
+ *    "title" = @Translation("SEO"),
+ *    "parent" = "cp.settings"
  *   }
  * )
  */
