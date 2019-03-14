@@ -5,14 +5,10 @@ dependencies:
   config:
     - field.field.node.software_project.body
     - field.field.node.software_project.field_attached_media
-    - field.field.node.software_project.field_packaging_method
-    - field.field.node.software_project.field_rbuild_short_name
-    - field.field.node.software_project.field_repository_url
+    - field.field.node.software_project.field_packaging
     - node.type.software_project
   module:
     - layout_builder
-    - link
-    - options
     - text
     - user
 third_party_settings:
@@ -26,50 +22,24 @@ content:
   body:
     label: hidden
     type: text_default
-    weight: 101
+    weight: 1
     settings: {  }
     third_party_settings: {  }
     region: content
   field_attached_media:
     type: entity_reference_entity_view
-    weight: 105
+    weight: 2
     label: above
     settings:
       view_mode: default
       link: false
     third_party_settings: {  }
     region: content
-  field_packaging_method:
-    weight: 102
-    label: inline
-    settings: {  }
-    third_party_settings: {  }
-    type: list_default
-    region: content
-  field_rbuild_short_name:
-    weight: 104
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
-  field_repository_url:
-    weight: 103
-    label: above
-    settings:
-      trim_length: 80
-      url_only: false
-      url_plain: false
-      rel: ''
-      target: ''
-    third_party_settings: {  }
-    type: link
-    region: content
   links:
-    weight: 100
+    weight: 0
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_packaging: true
   langcode: true
