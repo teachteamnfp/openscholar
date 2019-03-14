@@ -182,7 +182,9 @@ class RepecIntegrationTest extends TestBase {
     $file_name = "{$serie_directory_config}_{$reference->getEntityTypeId()}_{$reference->id()}.rdf";
     $this->assertFileExists("$directory/$file_name");
 
-    $this->assertTemplateContent($reference, file_get_contents("$directory/$file_name"));
+    $content = file_get_contents("$directory/$file_name");
+    $this->assertContains('Template-Type: ReDIF-Paper 1.0', $content);
+    $this->assertTemplateContent($reference, $content);
   }
 
   /**
@@ -273,7 +275,6 @@ class RepecIntegrationTest extends TestBase {
     $this->assertContains("Title: {$reference->label()}", $content);
     $this->assertContains("Number: {$reference->uuid()}", $content);
     $this->assertContains("Handle: RePEc:{$this->defaultRepecSettings['archive_code']}:{$this->repec->getEntityBundleSettings('serie_type', $reference->getEntityTypeId(), $reference->bundle())}:{$reference->id()}", $content);
-    $this->assertContains('Template-Type: ReDIF-Paper 1.0', $content);
 
     // Assert keywords.
     $keyword_names = [];
