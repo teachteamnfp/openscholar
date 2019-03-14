@@ -92,6 +92,7 @@ module:
   os_redirect: 0
   os_slideshow: 0
   os_widgets: 0
+  os_software: 0
   page_cache: 0
   path: 0
   purl: 0

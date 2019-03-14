@@ -14,6 +14,16 @@
       }
 
       return $.extend({
+        eventRender: function(event, element) {
+          if (element.hasClass('fc-event-future') && !element.hasClass('fc-day-grid-event')) {
+            let nid = event.eid;
+            element.html(drupalSettings[nid]);
+          }
+          else if (element.hasClass('fc-event-past') && !element.hasClass('fc-day-grid-event')) {
+            let nid = event.eid;
+            element.html(drupalSettings[nid]);
+          }
+        },
         views: {
           listUpcoming: {
             type: 'list',
@@ -42,6 +52,9 @@
 
   Drupal.behaviors.events = {
     attach: function (context, settings) {
+
+      const $multicheck = $('#edit-field-singup-multiple-wrapper');
+      $multicheck.hide();
       const $checkbox = $('.form-item-field-recurring-date-0-rrule .form-textarea-wrapper');
       const $message = $('#event-change-notify');
       $checkbox.find('input').on('change', function () {
@@ -49,9 +62,11 @@
           $message.removeClass('visually-hidden');
           $message.show();
           $message.appendTo($(this).parent());
+          $multicheck.show();
         }
         else {
           $message.hide();
+          $multicheck.hide();
         }
       });
     }

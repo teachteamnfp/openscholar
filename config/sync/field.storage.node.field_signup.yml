@@ -1,16 +1,15 @@
-uuid: b8ce910b-7097-4264-a50c-ff5e0f218fa2
+uuid: e73bac09-31cd-465a-b39b-fe2877e85b75
 langcode: en
 status: true
 dependencies:
   module:
-    - link
     - node
-id: node.field_repository_url
-field_name: field_repository_url
+id: node.field_signup
+field_name: field_signup
 entity_type: node
-type: link
+type: boolean
 settings: {  }
-module: link
+module: core
 locked: false
 cardinality: 1
 translatable: true
