@@ -274,7 +274,7 @@ class RepecIntegrationTest extends TestBase {
     $this->assertContains("Title: {$reference->label()}", $content);
     $this->assertContains("Number: {$reference->uuid()}", $content);
     $this->assertContains("Handle: RePEc:{$this->defaultRepecSettings['archive_code']}:{$this->repec->getEntityBundleSettings('serie_type', $reference->getEntityTypeId(), $reference->bundle())}:{$reference->id()}", $content);
-    $this->assertContains('Template-Type: ReDIF-Paper 1.0', $content);
+
     // Assert keywords.
     $keyword_names = [];
     foreach ($reference->get('keywords') as $item) {
@@ -283,6 +283,7 @@ class RepecIntegrationTest extends TestBase {
     }
     $keyword_names_in_template = implode(', ', $keyword_names);
     $this->assertContains("Keywords: {$keyword_names_in_template}", $content);
+
     // Assert files.
     $files_data = [];
     foreach ($reference->get('field_files') as $item) {
@@ -292,15 +293,18 @@ class RepecIntegrationTest extends TestBase {
         'type' => ucfirst($file->getMimeType()),
       ];
     }
+
     foreach ($files_data as $datum) {
       $this->assertContains("File-URL: {$datum['url']}", $content);
       $this->assertContains("File-Format: {$datum['type']}", $content);
     }
+
     // Assert authors.
     foreach ($reference->get('author') as $item) {
       $contributor = Contributor::load($item->getValue()['target_id']);
       $this->assertContains("Author-Name: {$contributor->getName()}", $content);
     }
+
     $this->assertContains("Abstract: {$reference->get('bibcite_abst_e')->getValue()[0]['value']}", $content);
   }
 
