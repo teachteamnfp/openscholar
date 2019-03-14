@@ -82,8 +82,11 @@ abstract class TestBase extends ExistingSiteBase {
     $keyword = Keyword::create($values + [
       'name' => $this->randomString(),
     ]);
+
     $keyword->save();
+
     $this->markEntityForCleanup($keyword);
+
     return $keyword;
   }
 
