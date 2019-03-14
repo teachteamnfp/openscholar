@@ -13,13 +13,6 @@ class ControllerTest extends OsRedirectTestBase {
   protected $siteUser;
 
   /**
-   * Vsite Context Manager.
-   *
-   * @var \Drupal\vsite\Plugin\VsiteContextManagerInterface
-   */
-  protected $vsiteContextManager;
-
-  /**
    * {@inheritdoc}
    */
   public function setUp() {
@@ -41,15 +34,14 @@ class ControllerTest extends OsRedirectTestBase {
     $plugin = reset($plugins);
 
     $redirect = $this->createRedirect([
-      'source' => [
+      'redirect_source' => [
         'path' => 'lorem1',
       ],
-      'redirect' => 'http://example.com',
+      'redirect_redirect' => [
+        'uri' => 'http://example.com',
+      ],
     ]);
     $this->group->addContent($redirect, $plugin->getContentPluginId());
-
-    $this->vsiteContextManager = $this->container->get('vsite.context_manager');
-    $this->vsiteContextManager->activateVsite($this->group);
   }
 
   /**
@@ -59,10 +51,16 @@ class ControllerTest extends OsRedirectTestBase {
     $web_assert = $this->assertSession();
     $this->drupalLogin($this->siteUser);
 
+    $this->visit($this->group->get('path')->getValue()[0]['alias'] . "/cp/redirects/list");
+    $web_assert->statusCodeEquals(200);
+    $this->assertContains('lorem1', $this->getCurrentPageContent(), 'Test redirect is source not visible.');
+    $this->assertContains('http://example.com', $this->getCurrentPageContent(), 'Test redirect uri is not visible.');
+
+    // Check global list visibility.
     $this->visit("/cp/redirects/list");
     $web_assert->statusCodeEquals(200);
-    $expectedHtmlValue = 'lorem1';
-    $this->assertNotContains($expectedHtmlValue, $this->getCurrentPageContent(), 'Test redirect entity not visible.');
+    $this->assertNotContains('lorem1', $this->getCurrentPageContent(), 'Test redirect is source visible.');
+    $this->assertNotContains('http://example.com', $this->getCurrentPageContent(), 'Test redirect uri is visible.');
   }
 
 }
