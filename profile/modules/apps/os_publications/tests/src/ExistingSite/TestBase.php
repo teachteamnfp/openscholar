@@ -4,6 +4,8 @@ namespace Drupal\Tests\os_publications\ExistingSite;
 
 use Drupal\bibcite_entity\Entity\Contributor;
 use Drupal\bibcite_entity\Entity\ContributorInterface;
+use Drupal\bibcite_entity\Entity\Keyword;
+use Drupal\bibcite_entity\Entity\KeywordInterface;
 use Drupal\bibcite_entity\Entity\Reference;
 use Drupal\bibcite_entity\Entity\ReferenceInterface;
 use weitzman\DrupalTestTraits\ExistingSiteBase;
@@ -63,6 +65,26 @@ abstract class TestBase extends ExistingSiteBase {
     $this->markEntityForCleanup($contributor);
 
     return $contributor;
+  }
+
+  /**
+   * Creates a keyword.
+   *
+   * @param array $values
+   *   (Optional) Default values for the keyword.
+   *
+   * @return \Drupal\bibcite_entity\Entity\KeywordInterface
+   *   The new keyword entity.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public function createKeyword(array $values = []) : KeywordInterface {
+    $keyword = Keyword::create($values + [
+      'name' => $this->randomString(),
+    ]);
+    $keyword->save();
+    $this->markEntityForCleanup($keyword);
+    return $keyword;
   }
 
 }
