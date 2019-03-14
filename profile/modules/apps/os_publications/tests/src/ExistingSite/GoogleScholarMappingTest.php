@@ -44,8 +44,6 @@ class GoogleScholarMappingTest extends TestBase {
     $reference = $this->createReference();
 
     $this->drupalGet('bibcite/reference/' . $reference->id());
-    drupal_flush_all_caches();
-    $this->drupalGet('bibcite/reference/' . $reference->id());
     $this->assertSession()->statusCodeEquals(200);
   }
 

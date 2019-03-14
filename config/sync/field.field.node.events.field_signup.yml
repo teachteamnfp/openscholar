@@ -1,0 +1,23 @@
+uuid: 52495a80-a9cf-45fc-a840-a5e554b49749
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_signup
+    - node.type.events
+id: node.events.field_signup
+field_name: field_signup
+entity_type: node
+bundle: events
+label: Signup
+description: 'If checked, users will be able to sign up for <b>future</b> occurrences of this repeating event. Users will not have the ability to register for past occurrences of repeating events.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

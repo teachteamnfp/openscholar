@@ -36,8 +36,7 @@ class VsiteCpSettingsTest extends VsiteInfiniteScrollExistingSiteTestBase {
   public function testCpSettingsPageFormSave() {
     $this->drupalLogin($this->adminUser);
     $this->visit("/cp/settings/vsite");
-    drupal_flush_all_caches();
-    $this->visit("/cp/settings/vsite");
+    $this->assertSession()->statusCodeEquals(200);
     $html = $this->getSession()->getPage()->getContent();
     $this->assertContains('Choose how long lists of content will display', $html);
     $this->drupalPostForm('/cp/settings/vsite', [
