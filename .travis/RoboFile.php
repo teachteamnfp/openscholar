@@ -235,7 +235,8 @@ class RoboFile extends \Robo\Tasks
     {
         $tasks[] = $this->taskExecStack()
             ->exec('docker-compose exec -T php cp .travis/config/default.settings.php web/sites/default/default.settings.php')
-            ->exec('docker-compose exec -T php ./vendor/bin/drush site-install openscholar -vvv -y --db-url=' . static::DB_URL . ' --existing-config');
+            ->exec('docker-compose exec -T php ./vendor/bin/drush site-install openscholar -vvv -y --db-url=' . static::DB_URL . ' --existing-config')
+            ->exec('docker-compose exec -T php ./vendor/bin/drush cr');
 
         return $tasks;
     }

@@ -46,6 +46,6 @@ services:
     - { name: 'access_check', applies_to: '_group_permission' }
   cache_context.vsite:
     class: Drupal\vsite\Cache\VsiteCacheContext
-    arguments: ['@entity_type.manager']
+    arguments: ['@vsite.context_manager']
     tags:
       - { name: cache.context }
