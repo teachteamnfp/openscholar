@@ -82,7 +82,7 @@ class OsRedirectForm extends RedirectForm {
       $maximum_number = $config->get('maximum_number');
       $redirects = $group->getContentEntities('group_entity:redirect');
       if (count($redirects) >= $maximum_number) {
-        $this->messenger()->addError($this->t('Maximum number of redirects (@count) is reached.', ['@count' => $maximum_number]));
+        $form_state->setErrorByName('redirect_source', $this->t('Maximum number of redirects (@count) is reached.', ['@count' => $maximum_number]));
       }
     }
 
