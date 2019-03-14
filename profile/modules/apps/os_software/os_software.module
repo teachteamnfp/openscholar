@@ -1,0 +1,20 @@
+<?php
+
+/**
+ * @file
+ * Software project customizations for Openscholar.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_alter().
+ */
+function os_software_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form_id == 'node_software_project_form' || $form_id == 'node_software_project_edit_form') {
+    $form['field_packaging']['widget'] = [
+      '#markup' => '<div class="form-item form-type-textfield form-item-title"><label> ' . t("Packaging Method") . '<span class="form-required" title="This field is required."></span></lable><div class="no-bold">' . t("Manual upload") . '</div></div>',
+      '#weight' => 1,
+    ];
+  }
+}
