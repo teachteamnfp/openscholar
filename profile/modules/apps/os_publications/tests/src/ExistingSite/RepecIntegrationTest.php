@@ -283,6 +283,7 @@ class RepecIntegrationTest extends TestBase {
     }
     $keyword_names_in_template = implode(', ', $keyword_names);
     $this->assertContains("Keywords: {$keyword_names_in_template}", $content);
+
     // Assert files.
     $files_data = [];
     foreach ($reference->get('field_files') as $item) {
@@ -292,15 +293,18 @@ class RepecIntegrationTest extends TestBase {
         'type' => ucfirst($file->getMimeType()),
       ];
     }
+
     foreach ($files_data as $datum) {
       $this->assertContains("File-URL: {$datum['url']}", $content);
       $this->assertContains("File-Format: {$datum['type']}", $content);
     }
+
     // Assert authors.
     foreach ($reference->get('author') as $item) {
       $contributor = Contributor::load($item->getValue()['target_id']);
       $this->assertContains("Author-Name: {$contributor->getName()}", $content);
     }
+
     $this->assertContains("Abstract: {$reference->get('bibcite_abst_e')->getValue()[0]['value']}", $content);
   }
 
