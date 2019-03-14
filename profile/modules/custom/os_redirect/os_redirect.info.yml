@@ -3,6 +3,6 @@ description: 'Create custom vsite specific redirects.'
 type: module
 core: 8.x
 dependencies:
-  - "os:cp_settings"
+  - "cp:cp_settings"
   - "drupal:redirect"
-  - "os:vsite"
+  - "drupal:vsite"
