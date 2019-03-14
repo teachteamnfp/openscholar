@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "72de86dfdb91ebfa90f911f7ef08399a",
+    "content-hash": "eb4f956bc9145f864451dc949d99e482",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -2227,10 +2227,10 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-rc3",
-                    "datestamp": "1538045580",
+                    "datestamp": "1545235980",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Project has not opted into security advisory coverage!"
+                        "message": "RC releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -3543,8 +3543,7 @@
                 },
                 "patches_applied": {
                     "Make sure TestSitePath exist before creating .htkey": "https://www.drupal.org/files/issues/2246725-24.patch",
-                    "Views Date Filter Datetime Granularity Option": "https://www.drupal.org/files/issues/2018-12-11/views_date_filter_granularity_2868014-60.patch",
-                    "Add paging info to rest request": "https://www.drupal.org/files/issues/2018-06-30/2982729-viewsRestInfo.patch"
+                    "Views Date Filter Datetime Granularity Option": "https://www.drupal.org/files/issues/2018-12-11/views_date_filter_granularity_2868014-60.patch"
                 }
             },
             "autoload": {
@@ -4046,6 +4045,10 @@
                 {
                     "name": "kristiaanvandeneynde",
                     "homepage": "https://www.drupal.org/user/1345130"
+                },
+                {
+                    "name": "ronaldtebrake",
+                    "homepage": "https://www.drupal.org/user/2314038"
                 }
             ],
             "description": "This module allows you to group users, content and other entities",
@@ -4087,8 +4090,7 @@
                     }
                 },
                 "patches_applied": {
-                    "Prevent base path from interfering with purl detection": "https://www.drupal.org/files/issues/2019-01-17/group_purl.3026646-2.basepath.patch",
-                    "Don't attempt to redirect to subdomains by default": "https://www.drupal.org/files/issues/2019-03-05/group_purl.3036879-4.subdomain_disable.patch"
+                    "Prevent base path from interfering with purl detection": "https://www.drupal.org/files/issues/2019-01-17/group_purl.3026646-2.basepath.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4564,17 +4566,17 @@
             "version": "master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/subhojit777/repec.git",
-                "reference": "all_template_support"
+                "url": "https://github.com/openscholar/repec.git",
+                "reference": "master"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/subhojit777/repec/archive/all_template_support.zip",
-                "reference": "all_template_support",
+                "url": "https://github.com/openscholar/repec/archive/master.zip",
+                "reference": "master",
                 "shasum": null
             },
             "type": "drupal-module",
-            "time": "2019-03-14T09:17:33+00:00"
+            "time": "2019-02-25T14:33:10+00:00"
         },
         {
             "name": "drupal/search_api",
@@ -4672,7 +4674,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0",
-                    "datestamp": "1495746183",
+                    "datestamp": "1545236281",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
