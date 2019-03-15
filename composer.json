@@ -158,6 +158,18 @@
                     "type": "zip"
                 }
             }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "ckeditor/mathjax",
+                "version": "4.11.3",
+                "type": "drupal-library",
+                "dist": {
+                    "url": "https://download.ckeditor.com/mathjax/releases/mathjax_4.11.3.zip",
+                    "type": "zip"
+                }
+            }
         }
     ],
     "require": {
@@ -215,7 +227,8 @@
         "drupal/colorbutton": "1.1",
         "drupal/pagebreak": "^1.0",
         "drupal/ckeditor_bidi": "^2.1",
-        "drupal/anchor_link": "^2.0"
+        "drupal/anchor_link": "^2.0",
+        "ckeditor/mathjax": "4.11.3"
     },
     "require-dev": {
         "drupal/features": "^3.7",
@@ -322,6 +335,9 @@
             },
             "drupal/ckeditor_bidi": {
                 "Update Bidi plugin.js to latest version": "https://www.drupal.org/files/issues/2019-03-15/update_bidi_plugin_3040454_4.patch"
+            },
+            "ckeditor/mathjax": {
+                "Mathjax cdn url config patch" : "patches/mathjax_cdnjs_config.patch"
             }
         },
         "patches-ignore": {

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b790b8fd53b7e14f3e68f8e099786ae0",
+    "content-hash": "4b1a5f9eac3306b394cddbf3c98ecd5a",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -460,6 +460,22 @@
                 "shasum": null
             },
             "type": "drupal-library"
+        },
+        {
+            "name": "ckeditor/mathjax",
+            "version": "4.11.3",
+            "dist": {
+                "type": "zip",
+                "url": "https://download.ckeditor.com/mathjax/releases/mathjax_4.11.3.zip",
+                "reference": null,
+                "shasum": null
+            },
+            "type": "drupal-library",
+            "extra": {
+                "patches_applied": {
+                    "Mathjax cdn url config patch": "patches/mathjax_cdnjs_config.patch"
+                }
+            }
         },
         {
             "name": "ckeditor/pagebreak",
