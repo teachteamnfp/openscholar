@@ -30,6 +30,13 @@ class VsiteContextManager implements VsiteContextManagerInterface {
   protected $dispatcher;
 
   /**
+   * Alias manager.
+   *
+   * @var \Drupal\Core\Path\AliasManagerInterface
+   */
+  protected $aliasManager;
+
+  /**
    * Constructor.
    *
    * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
@@ -43,6 +50,10 @@ class VsiteContextManager implements VsiteContextManagerInterface {
    * {@inheritdoc}
    */
   public function activateVsite(GroupInterface $group) {
+    if (!$group->id()) {
+      return;
+    }
+
     $this->activeGroup = $group;
     $this->activateRoles();
 
@@ -69,7 +80,7 @@ class VsiteContextManager implements VsiteContextManagerInterface {
    */
   public function getActivePurl() {
     if (!empty($this->activeGroup)) {
-      return trim(\Drupal::service('path.alias_manager')->getAliasByPath('/group/' . $this->activeGroup->id()), '/');
+      return trim($this->aliasManager->getAliasByPath('/group/' . $this->activeGroup->id()), '/');
     }
     return '';
   }
