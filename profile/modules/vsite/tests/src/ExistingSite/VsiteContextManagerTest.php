@@ -50,4 +50,39 @@ class VsiteContextManagerTest extends VsiteExistingSiteTestBase {
     $this->assertEquals($saved_group->id(), $this->vsiteContextManager->getActiveVsite()->id());
   }
 
+  /**
+   * Tests getActivePurl.
+   *
+   * @covers \Drupal\vsite\Plugin\VsiteContextManager::getActivePurl
+   */
+  public function testGetActivePurl() {
+    // Negative tests.
+    $this->createGroup([
+      'type' => 'personal',
+      'path' => [
+        'alias' => '/no-active-test-alias',
+      ],
+    ]);
+
+    $this->assertEquals('', $this->vsiteContextManager->getActivePurl());
+
+    $group = $this->createGroup([
+      'type' => 'personal',
+    ]);
+    $this->vsiteContextManager->activateVsite($group);
+
+    $this->assertEquals('', $this->vsiteContextManager->getActivePurl());
+
+    // Positive test.
+    $group = $this->createGroup([
+      'type' => 'personal',
+      'path' => [
+        'alias' => '/test-alias',
+      ],
+    ]);
+    $this->vsiteContextManager->activateVsite($group);
+
+    $this->assertEquals('test-alias', $this->vsiteContextManager->getActivePurl());
+  }
+
 }

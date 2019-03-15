@@ -48,6 +48,8 @@ class VsitePageAttachmentTest extends VsiteExistingSiteTestBase {
   /**
    * Tests vsite page attachments.
    *
+   * @covers ::vsite_page_attachments
+   *
    * @throws \Behat\Mink\Exception\ExpectationException
    */
   public function testAttachments() {
