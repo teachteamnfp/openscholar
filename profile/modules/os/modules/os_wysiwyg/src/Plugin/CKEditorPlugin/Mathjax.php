@@ -11,7 +11,7 @@ use Drupal\ckeditor\CKEditorPluginBase;
  * @CKEditorPlugin(
  *   id = "mathjax",
  *   label = @Translation("CKEditor MathJax formulae"),
- *   module = "os_software"
+ *   module = "os_wysiwyg"
  * )
  */
 class Mathjax extends CKEditorPluginBase {
