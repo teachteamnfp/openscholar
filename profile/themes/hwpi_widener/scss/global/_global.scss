@@ -1,0 +1,38 @@
+/****gloabl font styles ****/
+h2.block-title {
+  text-transform: uppercase;
+}
+/***** overriding node type person title ****/
+.node-type-person {
+  .main-container {
+    section {
+      h2.block-title {
+        color: $color-black;
+        background: transparent;
+        margin-bottom: 17px;
+      }
+    }
+  }
+}
+/**** block title ****/
+h2.block-title {
+  font-size: 1.2em;
+  padding: 0;
+  letter-spacing: 0;
+  font-weight: 500;
+  background: $color-white;
+}
+/**** frontpage ****/
+.path-frontpage {
+  h2.block-title {
+    margin-bottom: 17px;
+  }
+}
+/**** block title containrt ****/
+.main-container {
+  section {
+    h2.block-title {
+      margin-bottom: 17px;
+    }
+  }
+}
