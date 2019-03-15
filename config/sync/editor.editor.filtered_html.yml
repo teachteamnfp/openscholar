@@ -58,6 +58,7 @@ settings:
           name: Media
           items:
             - DrupalImage
+            - Mathjax
             - PageBreak
         -
           name: Links
