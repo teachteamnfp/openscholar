@@ -2,10 +2,8 @@
 
 namespace Drupal\cp_users\Form;
 
-
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\CloseModalDialogCommand;
-use Drupal\Core\Ajax\RedirectCommand;
 use Drupal\Core\Ajax\RemoveCommand;
 use Drupal\Core\Ajax\RestripeCommand;
 use Drupal\Core\Form\ConfirmFormBase;
@@ -15,28 +13,37 @@ use Drupal\user\UserInterface;
 use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * Handles the form to confirm to remove a user from a site.
+ */
 class CpUsersRemoveForm extends ConfirmFormBase {
 
   /**
    * Vsite Context Manager.
    *
-   * @var VsiteContextManagerInterface
+   * @var \Drupal\vsite\Plugin\VsiteContextManagerInterface
    */
   protected $vsiteContextManager;
 
   /**
    * The user being removed from the site.
    *
-   * @var UserInterface
+   * @var \Drupal\user\UserInterface
    */
   protected $user;
 
+  /**
+   * {@inheritdoc}
+   */
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('vsite.context_manager')
     );
   }
 
+  /**
+   * Constructor.
+   */
   public function __construct(VsiteContextManagerInterface $vsiteContextManager) {
     $this->vsiteContextManager = $vsiteContextManager;
   }
@@ -45,7 +52,7 @@ class CpUsersRemoveForm extends ConfirmFormBase {
    * {@inheritdoc}
    */
   public function getQuestion() {
-    return t('Are you sure you want to remove this user from your site? This will not delete the user\'s account.');
+    return t("Are you sure you want to remove this user from your site? This will not delete the user's account.");
   }
 
   /**
@@ -65,7 +72,7 @@ class CpUsersRemoveForm extends ConfirmFormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, UserInterface $user = null) {
+  public function buildForm(array $form, FormStateInterface $form_state, UserInterface $user = NULL) {
     $this->user = $user;
 
     $form = parent::buildForm($form, $form_state);
@@ -74,18 +81,17 @@ class CpUsersRemoveForm extends ConfirmFormBase {
     unset($form['actions']['submit']['#submit']);
     $form['actions']['submit']['#ajax'] = [
       'callback' => [$this, 'submitForm'],
-      'event' => 'click'
+      'event' => 'click',
     ];
     $form['actions']['cancel']['#attributes']['class'][] = 'use-ajax';
     unset($form['actions']['cancel']['#submit']);
     $form['actions']['cancel']['#ajax'] = [
       'callback' => [$this, 'closeModal'],
-      'event' => 'click'
+      'event' => 'click',
     ];
 
     return $form;
   }
-  
 
   /**
    * {@inheritdoc}
@@ -98,9 +104,8 @@ class CpUsersRemoveForm extends ConfirmFormBase {
     }
     else {
       $response->addCommand(new CloseModalDialogCommand());
-      $response->addCommand(new RemoveCommand('[data-user-id="'.$this->user->id().'"]'));
+      $response->addCommand(new RemoveCommand('[data-user-id="' . $this->user->id() . '"]'));
       $response->addCommand(new RestripeCommand('.cp-manager-user-content'));
-      //$response->addCommand(new RedirectCommand(Url::fromRoute('cp.users')->toString()));
 
       if ($group = $this->vsiteContextManager->getActiveVsite()) {
         $group->removeMember($this->user);

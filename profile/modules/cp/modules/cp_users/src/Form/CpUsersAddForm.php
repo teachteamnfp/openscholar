@@ -111,8 +111,8 @@ class CpUsersAddForm extends FormBase {
         ],
         '#ajax' => [
           'callback' => [$this, 'submitForm'],
-          'event' => 'click'
-        ]
+          'event' => 'click',
+        ],
       ],
       'cancel' => [
         '#type' => 'button',
@@ -122,8 +122,8 @@ class CpUsersAddForm extends FormBase {
         ],
         '#ajax' => [
           'callback' => [$this, 'closeModal'],
-          'event' => 'click'
-        ]
+          'event' => 'click',
+        ],
       ],
     ];
 

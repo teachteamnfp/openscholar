@@ -71,7 +71,7 @@ class CpUserMainController extends ControllerBase {
     $build = [];
 
     $userRows = [];
-    /** @var \Drupal\user\UserInterface $u */
+    /* @var \Drupal\user\UserInterface $u */
     foreach ($users as $u) {
       $roles = $group->getMember($u)->getRoles();
       $remove_link = Link::createFromRoute('Remove', 'cp.users.remove', ['user' => $u->id()], ['attributes' => ['class' => ['use-ajax']]])->toString();
@@ -82,11 +82,9 @@ class CpUserMainController extends ControllerBase {
           $u->label(),
           $group->getOwnerId() == $u->id() ? $this->t('Site Owner') : current($roles)->label(),
           $this->t('Active'),
-          $remove_link
-        ]
+          $remove_link,
+        ],
       ];
-//      $row = [
-//      ];
       $userRows[] = $row;
     }
 
@@ -120,7 +118,7 @@ class CpUserMainController extends ControllerBase {
           $this->t('Username'),
           $this->t('Role'),
           $this->t('Status'),
-          $this->t('Remove')
+          $this->t('Remove'),
         ],
         '#rows' => $userRows,
         '#empty' => $this->t('There are no users in your site. This is very not right, please contact the support team immediately.'),
@@ -155,12 +153,13 @@ class CpUserMainController extends ControllerBase {
   }
 
   /**
-   * Open a modal with the Remove User
+   * Open a modal with the Remove User.
    *
-   * @param UserInterface $user
-   *    The user being removed from the site
-   * @return AjaxResponse
-   *    The response to open the modal
+   * @param \Drupal\user\UserInterface $user
+   *   The user being removed from the site.
+   *
+   * @return \Drupal\Core\Ajax\AjaxResponse
+   *   The response to open the modal
    */
   public function removeUserForm(UserInterface $user) {
     $group = $this->vsiteContextManager->getActiveVsite();
@@ -180,8 +179,11 @@ class CpUserMainController extends ControllerBase {
   /**
    * Customize the title to have the target user's name.
    *
-   * @param UserInterface $user
+   * @param \Drupal\user\UserInterface $user
+   *   The user being removed from the site.
+   *
    * @return \Drupal\Core\StringTranslation\TranslatableMarkup
+   *   The title of the modal.
    */
   public function removeUserFormTitle(UserInterface $user) {
     return $this->t('Remove Member @name', ['@name' => $user->label()]);
