@@ -1,0 +1,1 @@
+#Pages: Have a single scss for each specific page/content type

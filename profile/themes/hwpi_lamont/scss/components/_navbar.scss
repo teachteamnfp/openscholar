@@ -1,0 +1,55 @@
+/**** navbar background ****/
+.navbar-collapse {
+  background: $color-blue2;
+  padding: 0;
+  border-bottom: 9px solid $color-light-gray2;
+}
+/***** navbar nav *****/
+.navbar-nav {
+  > li {
+    > a {
+      color: $color-white;
+      padding: 16px 14px;
+      font-size: 20px;
+      text-transform: uppercase;
+      &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
+        background: $color-blue1;
+        color: $color-white;
+      }
+    }
+    &.open, &.active {
+      > a, a:hover, a:active, a:focus {
+        background: $color-blue1;
+        color: $color-white;
+      }
+    }
+  }
+}
+/**** dropdown menu ****/
+.dropdown-menu {
+  background: $color-blue1;
+  > li {
+    > a {
+      color: $color-white;
+      font-family: arial;
+      font-size: 13px;
+      font-weight: bold;
+      padding: 10px 15px;
+      text-transform: uppercase;
+      &:hover, &:active {
+        color: $color-gray1;
+        background: $color-blue1;
+      }
+    }
+    &.active {
+      a {
+        color: $color-white;
+        background: $color-blue1;
+        &:hover {
+          color: $color-gray1;
+          background: $color-blue1;
+        }
+      }
+    }
+  }
+}

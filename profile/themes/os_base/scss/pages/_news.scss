@@ -1,0 +1,19 @@
+.node--teaser {
+  &.news {
+    .teaser--image {
+      float: left;
+      margin: 0 1.5em .5em 0;
+    }
+    .teaser--content {
+      overflow: hidden;
+      margin-top: 0;
+    }
+  }
+}
+.path-node {
+  .field--name-field-photo {
+    float: right;
+    margin-left: 1em;
+    margin-bottom: 1em;
+  }
+}

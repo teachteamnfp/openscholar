@@ -72,9 +72,6 @@ class CpSettingsOsMetatagTest extends ExistingSiteWebDriverTestBase {
     $web_assert = $this->assertSession();
     $this->drupalLogin($this->adminUser);
     $this->visit("/cp/settings/seo");
-    $this->getSession()->resizeWindow(1440, 900, 'current');
-    $this->getSession()->executeScript("window.scrollBy(0,1000)");
-    file_put_contents('public://screenshot-2.jpg', $this->getSession()->getScreenshot());
     $web_assert->statusCodeEquals(200);
 
     $edit = [

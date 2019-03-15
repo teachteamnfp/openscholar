@@ -1,0 +1,23 @@
+uuid: 2c5ce1e3-d7e5-4b1a-a637-6585ecf0b7cf
+langcode: en
+status: true
+dependencies:
+  module:
+    - bibcite_entity
+    - file
+id: bibcite_reference.field_files
+field_name: field_files
+entity_type: bibcite_reference
+type: file
+settings:
+  display_field: false
+  display_default: false
+  uri_scheme: public
+  target_type: file
+module: file
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

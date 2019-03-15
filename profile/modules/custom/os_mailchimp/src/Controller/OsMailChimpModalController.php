@@ -11,7 +11,6 @@ use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\OpenModalDialogCommand;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Form\FormBuilder;
-use Drupal\os_mailchimp\Form\OsMailChimpSignupForm;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -67,7 +66,7 @@ class OsMailChimpModalController extends ControllerBase {
       'width' => 300,
     ];
     $response = new AjaxResponse();
-    $response->addCommand(new OpenModalDialogCommand(t('Mailchimp subscribe'), $content, $options));
+    $response->addCommand(new OpenModalDialogCommand($this->t('Mailchimp subscribe'), $content, $options));
 
     return $response;
   }

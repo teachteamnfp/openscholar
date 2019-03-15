@@ -1,0 +1,272 @@
+<?php
+
+/**
+ * @file
+ * Bibcite customizations for Openscholar.
+ */
+
+use Drupal\bibcite_entity\Entity\KeywordInterface;
+use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
+use Drupal\Core\Url;
+use Drupal\os_publications\RepecHelper;
+use Drupal\views\Plugin\views\query\QueryPluginBase;
+use Drupal\views\ViewExecutable;
+use Ds\Map;
+
+/**
+ * Implements hook_views_data_alter().
+ */
+function os_publications_views_data_alter(array &$data) {
+  $data['bibcite_reference']['first_letter_last_name_author'] = [
+    'title' => t("First letter of Author's last name"),
+    'field' => [
+      'id' => 'os_publications_first_letter_last_name_author',
+    ],
+  ];
+
+  $data['bibcite_contributor']['first_letter_last_name_author'] = [
+    'title' => t("First letter of Author's last name"),
+    'sort' => [
+      'id' => 'os_publications_first_letter_last_name_author',
+      'field' => 'last_name',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_views_query_alter().
+ */
+function os_publications_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
+  if ($view->id() !== 'publications') {
+    return;
+  }
+  /** @var \Drupal\Core\Config\ImmutableConfig $os_publication_settings */
+  $os_publication_settings = \Drupal::config('os_publications.settings');
+
+  // Alter "publication type" filter.
+  foreach ($query->where as &$condition_group) {
+    foreach ($condition_group['conditions'] as &$condition) {
+      if ($condition['field'] !== 'bibcite_reference.type') {
+        continue;
+      }
+
+      // Alter values passed to reference_type condition.
+      /** @var array $allowed_publication_types */
+      $allowed_publication_types = $os_publication_settings->get('filter_publication_types');
+
+      // Convert the array structure into views suitable format.
+      // Array structure obtained from config is:
+      // [
+      // 'artwork' => 'artwork',
+      // 'journal' => 'journal',
+      // 'software' => 0,
+      // ]
+      // While views expects it to be like:
+      // [
+      // 0 => 'artwork',
+      // 1 => 'journal',
+      // ].
+      $condition['value'] = array_filter(array_values($allowed_publication_types));
+    }
+  }
+
+  // Alter sorting order.
+  // A mapping of display_id and the field whose sort order will be altered.
+  $mapping = new Map();
+  $mapping->put('page_1', 'bibcite_reference_type');
+  $mapping->put('page_2', 'bibcite_reference_title_first_char_excl_prep');
+  $mapping->put('page_3', 'first_letter_last_name_author');
+  $mapping->put('page_4', 'bibcite_reference_bibcite_year');
+
+  /** @var string $sort_order */
+  $sort_order = $os_publication_settings->get('biblio_order');
+
+  foreach ($query->orderby as &$group) {
+    if ($group['field'] === $mapping->get($view->current_display, NULL)) {
+      $group['direction'] = $sort_order;
+    }
+  }
+}
+
+/**
+ * Implements hook_page_attachments().
+ */
+function os_publications_page_attachments(array &$page) {
+  $current_route = \Drupal::routeMatch();
+  $types = [];
+  $entity_id = [];
+  $meta = [];
+  /** @var \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager $type */
+  $type = \Drupal::service('os_publications.manager_citation_distribute');
+  $plugins = $type->getDefinitions();
+
+  // Adds metadata to the publications pages.
+  $entities = $current_route->getParameters();
+  if ($entities->has('bibcite_reference') && !strpos($current_route->getRouteName(), 'edit_form')) {
+    foreach ($entities as $entity => $value) {
+      $repos = $value->distribution->getString();
+      $repos = explode(',', $repos);
+      $types[] = $entity;
+      $entity_id[$entity] = $value->id();
+
+      foreach ($plugins as $plugin) {
+        if (in_array('bibcite_reference', $types)) {
+          if (isset($plugin['type']) && in_array($plugin['id'], $repos) && $plugin['type'] == 'metadata') {
+            $service = $type->createInstance($plugin['id']);
+            if ($service && method_exists($service, 'render')) {
+              $meta = $service->render($entity_id['bibcite_reference']);
+            }
+          }
+        }
+        foreach ($meta as $key => $item) {
+          $page['#attached']['html_head'][] = [$item, $key];
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function os_publications_views_pre_render(ViewExecutable $view) {
+  if ($view->id() !== 'publications') {
+    return;
+  }
+
+  foreach ($view->field as $field_name => $field) {
+    // Alter the citation style as per settings.
+    if ($field_name === 'citation') {
+      /** @var \Drupal\Core\Config\ImmutableConfig $bibcite_settings */
+      $bibcite_settings = \Drupal::config('bibcite.settings');
+      /** @var string $publication_style */
+      $publication_style = $bibcite_settings->get('default_style');
+
+      $field->options['csl_style'] = $publication_style;
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ */
+function os_publications_bibcite_reference_presave(EntityInterface $entity) {
+  /** @var \Drupal\os_publications\PublicationsListingHelperInterface $publications_listing_helper */
+  $publications_listing_helper = \Drupal::service('os_publications.listing_helper');
+
+  $entity->set('title_first_char_excl_prep', [
+    'value' => $publications_listing_helper->convertLabel($entity->label()),
+  ]);
+}
+
+/**
+ * Implements hook_entity_base_field_info().
+ */
+function os_publications_entity_base_field_info(EntityTypeInterface $entity_type) {
+  if ($entity_type->id() == 'bibcite_reference') {
+    $options = [];
+    /** @var \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager $type */
+    $type = \Drupal::service('os_publications.manager_citation_distribute');
+    /** @var array $plugins */
+    $plugins = $type->getDefinitions();
+    foreach ($plugins as $plugin) {
+      $link = Link::fromTextAndUrl($plugin['name'], Url::fromUri($plugin['href']))->toString();
+      $options[$plugin['id']] = $link;
+    }
+
+    $fields['distribution'] = BaseFieldDefinition::create('list_string')
+      ->setLabel(t("Distribute to Repositories"))
+      ->setSetting('allowed_values', $options)
+      ->setCardinality(-1)
+      ->setDisplayOptions('form', [
+        'type' => 'options_buttons',
+        'settings' => [
+          'display_label' => TRUE,
+        ],
+        'weight' => '10',
+      ])
+      ->setDisplayConfigurable('form', TRUE);
+
+    $fields['is_sticky'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Is Sticky'))
+      ->setDisplayOptions('form', [
+        'type' => 'boolean_checkbox',
+        'settings' => [
+          'display_label' => TRUE,
+        ],
+      ])
+      ->setDisplayConfigurable('form', TRUE);
+
+    $fields['title_first_char_excl_prep'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Title first letter excluding prepositions'));
+
+    return $fields;
+  }
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $config_factory = \Drupal::service('config.factory');
+  $autoflags = $config_factory->get('os_publications.settings')->get('citation_distribute_autoflags');
+  $entity_id = $form_state->getFormObject()->getEntity()->id();
+
+  if (is_null($entity_id)) {
+    $form['distribution']['widget']['#default_value'] = $autoflags;
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ */
+function os_publications_bibcite_reference_insert(EntityInterface $entity) {
+  /** @var \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager $type */
+  $type = \Drupal::service('os_publications.manager_citation_distribute');
+  $type->distribute($entity);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ */
+function os_publications_bibcite_reference_update(EntityInterface $entity) {
+  /** @var \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager $type */
+  $type = \Drupal::service('os_publications.manager_citation_distribute');
+  $type->distribute($entity);
+}
+
+/**
+ * Implements hook_repec_template_alter().
+ */
+function os_publications_repec_template_alter(array &$data, ContentEntityInterface $entity) {
+  /** @var \Drupal\os_publications\RepecHelperInterface $repec_helper */
+  $repec_helper = new RepecHelper($entity);
+  /** @var \Drupal\bibcite_entity\Entity\ContributorInterface[] $contributors */
+  $contributors = $repec_helper->getContributor();
+
+  foreach ($contributors as $contributor) {
+    $data[] = [
+      'attribute' => 'Author-Name',
+      'value' => $contributor->getName(),
+    ];
+  }
+
+  /** @var \Drupal\bibcite_entity\Entity\KeywordInterface[] $keywords */
+  $keywords = $repec_helper->getKeywords();
+
+  if ($keywords) {
+    $keywords_as_text = array_map(function (KeywordInterface $keyword) {
+      return $keyword->getName();
+    }, $keywords);
+
+    $data[] = [
+      'attribute' => 'Keywords',
+      'value' => implode(', ', $keywords_as_text),
+    ];
+  }
+}
