@@ -1,32 +1,37 @@
 /**** mini calendar ****/
-.block {
-  .fc-row {
-    &.ui-widget-header {
-      th {
-        background: white;
-        font-size: 12px;
+aside {
+  .block {
+    .fc-row {
+      &.ui-widget-header {
+        th {
+          background: white;
+          font-size: 12px;
+        }
       }
     }
-  }
-  .fc {
-    .fc-body {
-      border: 1px solid #cacaca;
-      font-size: 14px;
-      .fc-row {
-        height: auto !important;
-        min-height: unset;
-        .fc-content-skeleton {
-          td {
-            vertical-align: middle;
-            text-align: center;
-            .fc-day-number{
-              float: none;
+    .fc {
+      .fc-body {
+        border: 1px solid #cacaca;
+        font-size: 14px;
+        td {
+          border: 0 none;
+        }
+        .fc-row {
+          height: auto !important;
+          min-height: unset;
+          .fc-content-skeleton {
+            td {
+              vertical-align: middle;
+              text-align: center;
+              .fc-day-number {
+                float: none;
+              }
             }
           }
         }
-      }
-      .fc-scroller.fc-day-grid-container {
-        height: auto !important;
+        .fc-scroller.fc-day-grid-container {
+          height: auto !important;
+        }
       }
     }
   }
@@ -49,7 +54,8 @@
         background-position: -15px -480px;
       }
     }
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
       .ui-icon {
         background-image: url(../../../themes/os_base/images/basesprite.png);
       }
@@ -62,6 +68,7 @@
     display: inline-block;
   }
 }
+
 /***** full caldenar *****/
 .fc-day-grid-event {
   .fc-content {

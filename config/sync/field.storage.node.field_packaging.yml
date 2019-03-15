@@ -1,11 +1,11 @@
-uuid: 431bab03-5ec0-46c8-b249-eef9f7962344
+uuid: 253bf342-2138-4c06-89b5-87db6437429e
 langcode: en
 status: true
 dependencies:
   module:
     - node
-id: node.field_rbuild_short_name
-field_name: field_rbuild_short_name
+id: node.field_packaging
+field_name: field_packaging
 entity_type: node
 type: string
 settings:

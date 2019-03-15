@@ -3,12 +3,23 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.date_format.html_date
+    - core.date_format.medium
     - core.entity_view_mode.node.teaser
     - field.field.node.events.body
+    - field.field.node.events.field_location
+    - field.field.node.events.field_media
+    - field.field.node.events.field_recurring_date
+    - field.field.node.events.field_signup
     - node.type.events
   module:
+    - date_recur
+    - layout_builder
     - text
     - user
+third_party_settings:
+  layout_builder:
+    sections: {  }
 id: node.events.teaser
 targetEntityType: node
 bundle: events
@@ -17,19 +28,40 @@ content:
   body:
     label: hidden
     type: text_summary_or_trimmed
-    weight: 101
+    weight: 2
     settings:
       trim_length: 600
     third_party_settings: {  }
     region: content
-  links:
-    weight: 100
-    settings: {  }
-    third_party_settings: {  }
+  field_location:
+    type: string
+    weight: 1
     region: content
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_recurring_date:
+    type: date_recur_basic_formatter
+    weight: 0
+    region: content
+    label: above
+    settings:
+      show_next: 5
+      count_per_item: true
+      occurrence_format_type: medium
+      same_end_date_format_type: medium
+      allow_all_day: false
+      all_day_format_type: html_date
+      interpreter: null
+      separator: '-'
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
 hidden:
   field_groups: true
-  field_location: true
   field_media: true
-  field_recurring_date: true
+  field_signup: true
+  field_singup_multiple: true
   langcode: true
+  links: true
