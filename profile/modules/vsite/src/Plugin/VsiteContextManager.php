@@ -2,6 +2,7 @@
 
 namespace Drupal\vsite\Plugin;
 
+use Drupal\Core\Database\Connection;
 use Drupal\group\Entity\GroupInterface;
 use Drupal\vsite\Event\VsiteActivatedEvent;
 use Drupal\vsite\VsiteEvents;
@@ -30,20 +31,23 @@ class VsiteContextManager implements VsiteContextManagerInterface {
   protected $dispatcher;
 
   /**
-   * Alias manager.
+   * Database connection.
    *
-   * @var \Drupal\Core\Path\AliasManagerInterface
+   * @var \Drupal\Core\Database\Connection
    */
-  protected $aliasManager;
+  protected $dbConnection;
 
   /**
    * Constructor.
    *
    * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
    *   The event dispatcher.
+   * @param \Drupal\Core\Database\Connection $connection
+   *   Database connection.
    */
-  public function __construct(EventDispatcherInterface $dispatcher) {
+  public function __construct(EventDispatcherInterface $dispatcher, Connection $connection) {
     $this->dispatcher = $dispatcher;
+    $this->dbConnection = $connection;
   }
 
   /**
@@ -79,10 +83,28 @@ class VsiteContextManager implements VsiteContextManagerInterface {
    * {@inheritdoc}
    */
   public function getActivePurl() {
-    if (!empty($this->activeGroup)) {
-      return trim($this->aliasManager->getAliasByPath('/group/' . $this->activeGroup->id()), '/');
+    /** @var \Drupal\group\Entity\GroupInterface|null $group */
+    $group = $this->getActiveVsite();
+
+    if (!$group) {
+      return '';
     }
-    return '';
+
+    /** @var \Drupal\Core\Entity\Query\QueryInterface $query */
+    $query = $this->dbConnection->select('url_alias', 'ua')
+      ->fields('ua', ['alias'])
+      ->condition('ua.source', "/group/{$group->id()}")
+      ->range(0, 1);
+    /** @var \Drupal\Core\Database\StatementInterface|null $result */
+    $result = $query->execute();
+
+    if (!$result) {
+      return '';
+    }
+
+    $item = $result->fetchAssoc();
+
+    return trim($item['alias'], '/');
   }
 
   /**
