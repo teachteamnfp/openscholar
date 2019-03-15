@@ -6,7 +6,9 @@ use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\OpenModalDialogCommand;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Link;
 use Drupal\Core\Url;
+use Drupal\user\UserInterface;
 use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -72,12 +74,19 @@ class CpUserMainController extends ControllerBase {
     /** @var \Drupal\user\UserInterface $u */
     foreach ($users as $u) {
       $roles = $group->getMember($u)->getRoles();
+      $remove_link = Link::createFromRoute('Remove', 'cp.users.remove', ['user' => $u->id()], ['attributes' => ['class' => ['use-ajax']]])->toString();
       $row = [
-        $u->label(),
-        $u->label(),
-        $group->getOwnerId() == $u->id() ? $this->t('Site Owner') : current($roles)->label(),
-        $this->t('Active'),
+        'data-user-id' => $u->id(),
+        'data' => [
+          $u->label(),
+          $u->label(),
+          $group->getOwnerId() == $u->id() ? $this->t('Site Owner') : current($roles)->label(),
+          $this->t('Active'),
+          $remove_link
+        ]
       ];
+//      $row = [
+//      ];
       $userRows[] = $row;
     }
 
@@ -111,6 +120,7 @@ class CpUserMainController extends ControllerBase {
           $this->t('Username'),
           $this->t('Role'),
           $this->t('Status'),
+          $this->t('Remove')
         ],
         '#rows' => $userRows,
         '#empty' => $this->t('There are no users in your site. This is very not right, please contact the support team immediately.'),
@@ -142,6 +152,39 @@ class CpUserMainController extends ControllerBase {
     $response->addCommand(new OpenModalDialogCommand('Add Member', $modal_form, ['width' => '800']));
 
     return $response;
+  }
+
+  /**
+   * Open a modal with the Remove User
+   *
+   * @param UserInterface $user
+   *    The user being removed from the site
+   * @return AjaxResponse
+   *    The response to open the modal
+   */
+  public function removeUserForm(UserInterface $user) {
+    $group = $this->vsiteContextManager->getActiveVsite();
+    if (!$group) {
+      throw new AccessDeniedHttpException();
+    }
+
+    $response = new AjaxResponse();
+
+    $modal_form = $this->formBuilder()->getForm('Drupal\cp_users\Form\CpUsersRemoveForm', $user);
+
+    $response->addCommand(new OpenModalDialogCommand($this->removeUserFormTitle($user), $modal_form, ['width' => '800']));
+
+    return $response;
+  }
+
+  /**
+   * Customize the title to have the target user's name.
+   *
+   * @param UserInterface $user
+   * @return \Drupal\Core\StringTranslation\TranslatableMarkup
+   */
+  public function removeUserFormTitle(UserInterface $user) {
+    return $this->t('Remove Member @name', ['@name' => $user->label()]);
   }
 
 }

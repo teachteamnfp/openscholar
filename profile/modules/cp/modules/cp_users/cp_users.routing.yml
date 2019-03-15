@@ -12,3 +12,10 @@ cp.users.add:
     _title: 'Add User'
   requirements:
     _permission: 'manage cp users'
+cp.users.remove:
+  path: '/cp/users/remove/{user}'
+  defaults:
+    _controller: '\Drupal\cp_users\Controller\CpUserMainController::removeUserForm'
+    _title_callback: '\Drupal\cp_users\Controller\CpUserMainController::removeUserFormTitle'
+  requirements:
+    _permission: 'manage cp users'

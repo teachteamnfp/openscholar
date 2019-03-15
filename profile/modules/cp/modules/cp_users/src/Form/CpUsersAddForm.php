@@ -106,22 +106,24 @@ class CpUsersAddForm extends FormBase {
       'submit' => [
         '#type' => 'submit',
         '#value' => $this->t('Save'),
-        '#submit' => [
-          '::submitForm',
-        ],
         '#attributes' => [
-          'class' => 'use-ajax-submit',
+          'class' => 'use-ajax',
         ],
+        '#ajax' => [
+          'callback' => [$this, 'submitForm'],
+          'event' => 'click'
+        ]
       ],
       'cancel' => [
         '#type' => 'button',
         '#value' => $this->t('Cancel'),
-        '#submit' => [
-          '::closeModal',
-        ],
         '#attributes' => [
-          'class' => 'use-ajax-submit',
+          'class' => 'use-ajax',
         ],
+        '#ajax' => [
+          'callback' => [$this, 'closeModal'],
+          'event' => 'click'
+        ]
       ],
     ];
 
