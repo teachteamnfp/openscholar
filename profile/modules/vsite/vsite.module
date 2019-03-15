@@ -216,9 +216,8 @@ function vsite_library_info_alter(&$libraries, $extension) {
 function vsite_page_attachments(array &$attachments) {
   /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContext */
   $vsiteContext = \Drupal::service('vsite.context_manager');
-  /** @var \Drupal\group\Entity\GroupInterface|null $vsite */
-  $vsite = $vsiteContext->getActiveVsite();
-  if ($vsite && $vsite->id()) {
+  /** @var \Drupal\group\Entity\GroupInterface $vsite */
+  if ($vsite = $vsiteContext->getActiveVsite()) {
     $attachments['#attached']['drupalSettings']['spaces'] = [
       'id' => $vsite->id(),
       'label' => $vsite->label(),
