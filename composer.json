@@ -98,6 +98,78 @@
                     "reference": "master"
                 }
             }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "ckeditor/panelbutton",
+                "version": "4.11.3",
+                "type": "drupal-library",
+                "dist": {
+                    "url": "https://download.ckeditor.com/panelbutton/releases/panelbutton_4.11.3.zip",
+                    "type": "zip"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "ckeditor/colorbutton",
+                "version": "4.11.3",
+                "type": "drupal-library",
+                "dist": {
+                    "url": "https://download.ckeditor.com/colorbutton/releases/colorbutton_4.11.3.zip",
+                    "type": "zip"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "ckeditor/fakeobjects",
+                "version": "4.11.3",
+                "type": "drupal-library",
+                "dist": {
+                    "url": "https://download.ckeditor.com/fakeobjects/releases/fakeobjects_4.11.3.zip",
+                    "type": "zip"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "ckeditor/pagebreak",
+                "version": "4.11.3",
+                "type": "drupal-library",
+                "dist": {
+                    "url": "https://download.ckeditor.com/pagebreak/releases/pagebreak_4.11.3.zip",
+                    "type": "zip"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "ckeditor/link",
+                "version": "4.11.3",
+                "type": "drupal-library",
+                "dist": {
+                    "url": "https://download.ckeditor.com/link/releases/link_4.11.3.zip",
+                    "type": "zip"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "ckeditor/mathjax",
+                "version": "4.11.3",
+                "type": "drupal-library",
+                "dist": {
+                    "url": "https://download.ckeditor.com/mathjax/releases/mathjax_4.11.3.zip",
+                    "type": "zip"
+                }
+            }
         }
     ],
     "require": {
@@ -146,7 +218,17 @@
         "ext-json": "*",
         "php-ds/php-ds": "^1.2",
         "swordapp/swordappv2-php-library": "master",
-        "drupal/repec": "master"
+        "drupal/repec": "master",
+        "ckeditor/panelbutton": "4.11.3",
+        "ckeditor/colorbutton": "4.11.3",
+        "ckeditor/fakeobjects": "4.11.3",
+        "ckeditor/pagebreak": "4.11.3",
+        "ckeditor/link": "4.11.3",
+        "drupal/colorbutton": "1.1",
+        "drupal/pagebreak": "^1.0",
+        "drupal/ckeditor_bidi": "^2.1",
+        "drupal/anchor_link": "^2.0",
+        "ckeditor/mathjax": "4.11.3"
     },
     "require-dev": {
         "drupal/features": "^3.7",
@@ -250,6 +332,12 @@
             },
             "drupal/mailchimp": {
                 "Cache read problem in mailchimp_get_mergevars()": "https://www.drupal.org/files/issues/2019-02-13/3032674-cache-fix-for-mailchimp_get_mergevars-3.patch"
+            },
+            "drupal/ckeditor_bidi": {
+                "Update Bidi plugin.js to latest version": "https://www.drupal.org/files/issues/2019-03-15/update_bidi_plugin_3040454_4.patch"
+            },
+            "ckeditor/mathjax": {
+                "Mathjax cdn url config patch" : "patches/mathjax_cdnjs_config.patch"
             }
         },
         "patches-ignore": {
