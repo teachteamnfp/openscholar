@@ -28,6 +28,13 @@ class CreateRedirectTest extends OsRedirectTestBase {
    */
   public function testAddRedirectInVsiteSuccess() {
     $web_assert = $this->assertSession();
+
+    // Set global maximum number.
+    $configFactory = $this->container->get('config.factory');
+    $config = $configFactory->getEditable('os_redirect.settings');
+    $config->set('maximum_number', 10);
+    $config->save(TRUE);
+
     $this->drupalLogin($this->siteUser);
 
     $this->visit($this->group->get('path')->getValue()[0]['alias'] . "/cp/redirects/add");
