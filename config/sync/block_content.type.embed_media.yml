@@ -1,0 +1,8 @@
+uuid: 9efbd646-2054-4046-b33e-ecfe972e11ab
+langcode: en
+status: true
+dependencies: {  }
+id: embed_media
+label: 'Embed media'
+revision: 1
+description: ''

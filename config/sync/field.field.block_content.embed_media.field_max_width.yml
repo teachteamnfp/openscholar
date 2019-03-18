@@ -1,0 +1,23 @@
+uuid: 1bc7892c-28cc-4422-b464-a94898bc1633
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.embed_media
+    - field.storage.block_content.field_max_width
+id: block_content.embed_media.field_max_width
+field_name: field_max_width
+entity_type: block_content
+bundle: embed_media
+label: 'Max width'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer
