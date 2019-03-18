@@ -5,10 +5,15 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.faq.body
+    - field.field.node.faq.field_attached_media
     - node.type.faq
   module:
+    - layout_builder
     - text
     - user
+third_party_settings:
+  layout_builder:
+    sections: {  }
 _core:
   default_config_hash: rI6HbVsnup-jxCtbPt_1FNAIXQpJ99cAAxjber82-Z0
 id: node.faq.teaser
@@ -19,14 +24,12 @@ content:
   body:
     label: hidden
     type: text_summary_or_trimmed
-    weight: 101
+    weight: 0
     settings:
       trim_length: 600
     third_party_settings: {  }
     region: content
-  links:
-    weight: 100
-    region: content
 hidden:
   field_attached_media: true
   langcode: true
+  links: true

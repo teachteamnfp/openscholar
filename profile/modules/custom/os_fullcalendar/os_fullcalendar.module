@@ -5,6 +5,7 @@
  * Fullcalendar customizations for OpenScholar.
  */
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\views\ViewExecutable;
 
 /**
@@ -12,6 +13,36 @@ use Drupal\views\ViewExecutable;
  */
 function os_fullcalendar_views_pre_render(ViewExecutable $view) {
   if ($view->storage->id() == 'calendar') {
+
     $view->element['#attached']['library'][] = 'os_fullcalendar/drupal.os_fullcalendar';
+    foreach ($view->result as $value) {
+
+      $nid = $value->_entity->nid->value;
+      $entity_type = 'node';
+      $view_mode = 'teaser';
+      $view_builder = \Drupal::entityTypeManager()->getViewBuilder($entity_type);
+      $storage = \Drupal::entityTypeManager()->getStorage($entity_type);
+      $node = $storage->load($nid);
+      $build = $view_builder->view($node, $view_mode);
+      $output = render($build);
+
+      $view->element['#attached']['drupalSettings'][$nid] = $output;
+    }
   }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function os_fullcalendar_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form_id == 'node_events_edit_form' || $form_id == 'node_events_form') {
+    // Markup for repeating event warning message.
+    $form['field_recurring_date']['widget'][0]['repeat_event_change_message'] = [
+      '#markup' => '<div id="event-change-notify" class="messages messages--warning visually-hidden">' . t("You will need to inform the registrants if you make any changes to this event. If you change the date, registrants will be removed and will have to re-register.") . '</div>',
+      '#weight' => 1,
+    ];
+
+    $form['#attached']['library'][] = 'os_fullcalendar/drupal.os_fullcalendar';
+  }
+
 }

@@ -1,0 +1,21 @@
+uuid: 3df6d8f8-7660-499a-95ea-c8d682bbcfcc
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_packaging
+    - node.type.software_project
+id: node.software_project.field_packaging
+field_name: field_packaging
+entity_type: node
+bundle: software_project
+label: Packaging
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 'Manual Upload'
+default_value_callback: ''
+settings: {  }
+field_type: string

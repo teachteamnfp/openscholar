@@ -131,7 +131,7 @@ class OsMailChimpSignupForm extends FormBase {
     $result = mailchimp_subscribe($this->list->id, $email, $mergevars, $interests);
 
     if (empty($result)) {
-      $this->messenger->addMessage(t('There was a problem with your newsletter signup to %list.', [
+      $this->messenger->addMessage($this->t('There was a problem with your newsletter signup to %list.', [
         '%list' => $this->list->name,
       ]), 'warning');
     }

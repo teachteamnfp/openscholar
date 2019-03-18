@@ -1,0 +1,22 @@
+/**** footer ****/
+footer {
+  background: url(../images/footer-top-gradient.png) repeat-x 0 0 $color-light-gray2;
+  ul.menu {
+    li {
+      font-size: 12px;
+      font-weight: bold;
+      a {
+        font-family: arial;
+        text-transform: uppercase;
+        font-size: 13px;
+      }
+      ul {
+        a {
+          font-family: arial;
+          text-transform: none;
+          font-size: 14px;
+        }
+      }
+    }
+  }  
+}

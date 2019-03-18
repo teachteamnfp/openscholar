@@ -1,0 +1,35 @@
+/****gloabl font styles ****/
+body,
+.node-title,
+.page-search .title a,
+.more-link,
+.links a,
+footer ul.navbar-nav a,
+.region-header-right ul.navbar a,
+.navbar a {
+  font-family: 'Droid Sans', sans-serif;
+}
+.page-header,
+.main-container section h2,
+.main-container section h3,
+.main-container section h4,
+h2.block-title {
+  font-family: 'Volkhov', sans-serif;
+}
+h1, h2, h3 {
+  font-weight: normal;
+}
+h1.page-header {
+  font-size: 2em;
+  line-height: 1.2;
+}
+h2.block-title {
+  font-size: 1.4em;
+  padding: 15px 0 10px;
+  border-top: 1px solid orange;
+}
+.header-container {
+  a {
+    color: $color-white;
+  }
+}

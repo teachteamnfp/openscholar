@@ -1,0 +1,13 @@
+/**** tabs widget ****/
+/**** code needs to be replaced with d8 structure ****/
+.ui-tabs .ui-tabs-nav li a {
+  text-transform: capitalize;
+  font-size: 14px;
+}
+.ui-tabs ul.ui-tabs-nav li.ui-tabs-active a {
+  border-bottom-width: 1px;
+  color: $color-white;
+}
+.block-boxes-os_boxes_tabs .links li a {
+    background-image: none !important;
+ }

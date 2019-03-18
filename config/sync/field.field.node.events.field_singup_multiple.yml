@@ -1,0 +1,23 @@
+uuid: cdaef7d0-9035-45c0-bda9-cc6d5d53f976
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_singup_multiple
+    - node.type.events
+id: node.events.field_singup_multiple
+field_name: field_singup_multiple
+entity_type: node
+bundle: events
+label: 'Allow a user to sign up for multiple occurrences'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

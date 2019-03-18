@@ -1,0 +1,4 @@
+name: OS Software
+core: 8.x
+type: module
+description: Software customizations for OpenScholar
