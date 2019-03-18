@@ -8,7 +8,11 @@ use Drupal\Core\Ajax\RedirectCommand;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Language\LanguageInterface;
+use Drupal\Core\Mail\MailManagerInterface;
 use Drupal\Core\Url;
+use Drupal\user\Entity\User;
+use Drupal\user\UserInterface;
 use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -77,6 +81,9 @@ class CpUsersAddForm extends FormBase {
     $form['existing-member'] = [
       '#type' => 'details',
       '#title' => $this->t('Add an Existing User'),
+      '#attributes' => [
+        'id' => 'existing-member-fieldset'
+      ],
       'member-entity' => [
         '#type' => 'entity_autocomplete',
         '#target_type' => 'user',
@@ -95,9 +102,39 @@ class CpUsersAddForm extends FormBase {
     $form['new-user'] = [
       '#type' => 'details',
       '#title' => $this->t('Add New User'),
-      'todo' => [
-        '#type' => 'markup',
-        '#markup' => '//TODO: This',
+      '#attributes' => [
+        'id' => 'new-user-fieldset',
+      ],
+      'first_name' => [
+        '#type' => 'textfield',
+        '#title' => $this->t('First Name'),
+        '#maxlength' => 255,
+        '#size' => 60,
+      ],
+      'last_name' => [
+        '#type' => 'textfield',
+        '#title' => $this->t('Last Name'),
+        '#maxlength' => 255,
+        '#size' => 60,
+      ],
+      'username' => [
+        '#type' => 'textfield',
+        '#title' => $this->t('Username'),
+        '#maxlength' => 255,
+        '#size' => 60,
+        '#required' => TRUE,
+      ],
+      'email' => [
+        '#type' => 'textfield',
+        '#title' => $this->t('E-mail Address'),
+        '#maxlength' => 255,
+        '#size' => 60,
+        '#required' => TRUE,
+      ],
+      'role' => [
+        '#type' => 'radios',
+        '#title' => $this->t('Role'),
+        '#options' => $roleData,
       ],
     ];
 
@@ -134,6 +171,12 @@ class CpUsersAddForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    static $response = null;
+    // for some reason this function gets run twice? Not sure exactly why.
+    // This is a workaround to return the response we've already created.
+    if ($response) {
+      return $response;
+    }
     $response = new AjaxResponse();
     $group = $this->vsiteContextManager->getActiveVsite();
     if (!$group) {
@@ -143,9 +186,22 @@ class CpUsersAddForm extends FormBase {
       $response->addCommand(new CloseModalDialogCommand());
       $response->addCommand(new RedirectCommand(Url::fromRoute('cp.users')->toString()));
       /** @var string $entity */
-      $entity = $form_state->getValue('member-entity');
-      /** @var \Drupal\user\UserInterface $account */
-      $account = $this->entityTypeManager->getStorage('user')->load($entity);
+      if ($entity = $form_state->getValue('member-entity')) {
+        /** @var \Drupal\user\UserInterface $account */
+        $account = $this->entityTypeManager->getStorage('user')->load($entity);
+        $email_key = CP_USERS_ADD_TO_GROUP;
+      }
+      else {
+        $account = User::create([
+          'field_first_name' => $form_state->getValue('first_name'),
+          'field_last_name' => $form_state->getValue('last_name'),
+          'name' => $form_state->getValue('username'),
+          'mail' => $form_state->getValue('email')
+        ]);
+        $account->save();
+        $email_key = CP_USERS_NEW_USER;
+      }
+
       /** @var string $role */
       $role = $form_state->getValue('role');
 
@@ -155,6 +211,16 @@ class CpUsersAddForm extends FormBase {
         ],
       ];
       $group->addMember($account, $values);
+
+      $params = [
+        'user' => $account,
+        'role' => $role,
+        'creator' => \Drupal::currentUser(),
+        'group' => $group
+      ];
+      /** @var MailManagerInterface $mailManager */
+      $mailManager = \Drupal::service('plugin.manager.mail');
+      $mailManager->mail('cp_users', $email_key, $form_state->getValue('email'), LanguageInterface::LANGCODE_DEFAULT, $params);
     }
     return $response;
   }
