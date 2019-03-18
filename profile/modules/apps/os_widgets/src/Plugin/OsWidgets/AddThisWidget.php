@@ -18,9 +18,9 @@ class AddThisWidget extends OsWidgetsBase implements OsWidgetsInterface {
   /**
    * {@inheritdoc}
    */
-  public function buildBlock($variables, $block_content) {
+  public function buildBlock(&$build, $block_content) {
     if (empty($block_content)) {
-      return $variables;
+      return;
     }
     $field_addthis_display_style_values = $block_content->get('field_addthis_display_style')->getValue();
     $display_style = $field_addthis_display_style_values[0]['value'];
@@ -63,11 +63,8 @@ class AddThisWidget extends OsWidgetsBase implements OsWidgetsInterface {
         $html = '<div class="addthis_toolbox addthis_default_style "><a class="addthis_counter"></a></div>';
         break;
     }
-    $variables['#attached']['library'][] = 'os_widgets/addthis';
-    $variables['content']['addthis'] = [
-      '#markup' => $html,
-    ];
-    return $variables;
+    $build['addthis']['#attached']['library'][] = 'os_widgets/addthis';
+    $build['addthis']['#markup'] = $html;
   }
 
   /**
