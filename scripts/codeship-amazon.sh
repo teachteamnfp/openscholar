@@ -99,8 +99,8 @@ if [[ $FORCE_REBUILD == "1" ]] || [[ "$(cmp -b 'openscholar/composer.json' '/tmp
   #remove the ignore file to checkin drupal core
   rm -f openscholar/.gitignore
 
-  find openscholar/web openscholar/vendor -name '.git' | xargs rm -rf
-  find openscholar/web openscholar/vendor -name '.gitignore' | xargs rm -rf
+  find openscholar/web openscholar/vendor openscholar/node_modules -name '.git' | xargs rm -rf
+  find openscholar/web openscholar/vendor openscholar/node_modules -name '.gitignore' | xargs rm -rf
 
   # Add New Files to repo and commit changes
   git add $BUILD_ROOT/openscholar
