@@ -50,7 +50,7 @@ class AddThisBlockRenderTest extends UnitTestCase {
     $build = [];
     $this->addThisMediaWidget->buildBlock($build, $block_content);
     $this->assertSame('os_widgets/addthis', $build['addthis']['#attached']['library'][0]);
-    $this->assertContains('images/addthis/addthis_smallbar.png', $build['addthis']['#markup']);
+    $this->assertEquals('os_widgets_addthis_buttons', $build['addthis']['#theme']);
   }
 
   /**
@@ -67,7 +67,7 @@ class AddThisBlockRenderTest extends UnitTestCase {
     $block_content = $this->createBlockContentMock($field_values);
     $build = [];
     $this->addThisMediaWidget->buildBlock($build, $block_content);
-    $this->assertContains('<div class="addthis_toolbox addthis_default_style">', $build['addthis']['#markup']);
+    $this->assertEquals('os_widgets_addthis_toolbox_small', $build['addthis']['#theme']);
   }
 
   /**
@@ -84,7 +84,7 @@ class AddThisBlockRenderTest extends UnitTestCase {
     $block_content = $this->createBlockContentMock($field_values);
     $build = [];
     $this->addThisMediaWidget->buildBlock($build, $block_content);
-    $this->assertContains('<div class="addthis_toolbox addthis_default_style addthis_32x32_style">', $build['addthis']['#markup']);
+    $this->assertEquals('os_widgets_addthis_toolbox_large', $build['addthis']['#theme']);
   }
 
   /**
@@ -101,10 +101,7 @@ class AddThisBlockRenderTest extends UnitTestCase {
     $block_content = $this->createBlockContentMock($field_values);
     $build = [];
     $this->addThisMediaWidget->buildBlock($build, $block_content);
-    $this->assertContains('<a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>', $build['addthis']['#markup'], 'Facebook like not found');
-    $this->assertContains('<a class="addthis_button_tweet"></a>', $build['addthis']['#markup'], 'Tweet button not found');
-    $this->assertContains('<a class="addthis_button_google_plusone" g:plusone:size="medium"></a>', $build['addthis']['#markup'], 'Google plus one button not found');
-    $this->assertContains('<a class="addthis_counter addthis_pill_style"></a></div>', $build['addthis']['#markup'], 'Pill style not found');
+    $this->assertEquals('os_widgets_addthis_numeric', $build['addthis']['#theme']);
   }
 
   /**
@@ -121,7 +118,7 @@ class AddThisBlockRenderTest extends UnitTestCase {
     $block_content = $this->createBlockContentMock($field_values);
     $build = [];
     $this->addThisMediaWidget->buildBlock($build, $block_content);
-    $this->assertContains('<a class="addthis_counter"></a>', $build['addthis']['#markup'], 'Counter not found');
+    $this->assertEquals('os_widgets_addthis_counter', $build['addthis']['#theme']);
   }
 
   /**

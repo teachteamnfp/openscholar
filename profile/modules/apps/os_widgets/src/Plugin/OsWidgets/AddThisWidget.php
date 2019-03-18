@@ -28,7 +28,7 @@ class AddThisWidget extends OsWidgetsBase implements OsWidgetsInterface {
       case 'buttons':
         $image_path = '/' . $this->getModulePath() . '/images/addthis/addthis_smallbar.png';
         $build['addthis'] = [
-          '#theme' => 'os_widget_addthis_buttons',
+          '#theme' => 'os_widgets_addthis_buttons',
           '#image_path' => $image_path,
         ];
         break;
