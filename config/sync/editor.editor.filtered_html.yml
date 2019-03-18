@@ -19,7 +19,6 @@ settings:
             - Italic
             - Underline
             - Strike
-            - Format
         -
           name: Justify
           items:
@@ -27,33 +26,52 @@ settings:
             - JustifyCenter
             - JustifyRight
             - JustifyBlock
-            - Outdent
-            - Indent
-        -
-          name: Links
-          items:
-            - DrupalLink
-            - DrupalUnlink
         -
           name: Lists
           items:
             - BulletedList
             - NumberedList
-        -
-          name: Media
-          items:
-            - Blockquote
-            - DrupalImage
+            - BidiLtr
+            - BidiRtl
+            - Outdent
+            - Indent
+            - HorizontalRule
         -
           name: Tools
           items:
-            - Table
+            - Anchor
+            - TextColor
+            - BGColor
+            - Superscript
+            - Subscript
+            - Blockquote
             - Source
+            - PasteFromWord
+            - RemoveFormat
+      -
+        -
+          name: Tools
+          items:
+            - Format
+            - Table
+        -
+          name: Media
+          items:
+            - DrupalImage
+            - Mathjax
+            - PageBreak
+        -
+          name: Links
+          items:
+            - DrupalLink
+            - DrupalUnlink
   plugins:
-    language:
-      language_list: un
     stylescombo:
       styles: ''
+    language:
+      language_list: un
+    colorbutton:
+      colors: ''
 image_upload:
   status: false
   scheme: public
