@@ -7,6 +7,8 @@ namespace Drupal\Tests\os_redirect\ExistingSite;
  *
  * @group redirect
  * @group kernel
+ *
+ * @coversDefaultClass \Drupal\os_redirect\Form\OsRedirectDeleteForm
  */
 class DeleteRedirectTest extends OsRedirectTestBase {
 

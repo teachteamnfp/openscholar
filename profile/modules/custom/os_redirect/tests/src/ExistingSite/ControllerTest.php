@@ -7,6 +7,8 @@ namespace Drupal\Tests\os_redirect\ExistingSite;
  *
  * @group redirect
  * @group kernel
+ *
+ * @coversDefaultClass \Drupal\os_redirect\Controller\RedirectListController
  */
 class ControllerTest extends OsRedirectTestBase {
 
