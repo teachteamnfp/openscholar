@@ -105,6 +105,7 @@ class CpUsersAddForm extends FormBase {
       '#attributes' => [
         'id' => 'new-user-fieldset',
       ],
+      '#access' => !$this->config('cp_users.settings')->get('disable_user_creation'),
       'first_name' => [
         '#type' => 'textfield',
         '#title' => $this->t('First Name'),
