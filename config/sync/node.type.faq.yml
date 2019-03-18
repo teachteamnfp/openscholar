@@ -4,16 +4,19 @@ status: true
 dependencies:
   module:
     - menu_ui
+    - purl
 third_party_settings:
   menu_ui:
     available_menus: {  }
     parent: ''
+  purl:
+    keep_context: 1
 _core:
   default_config_hash: QTVQa8hOxSq68hCr1fS7pW8gIIVuk4QbdLJu-HLwWMM
 name: FAQ
 type: faq
 description: ''
 help: ''
-new_revision: false
+new_revision: true
 preview_mode: 1
 display_submitted: false
