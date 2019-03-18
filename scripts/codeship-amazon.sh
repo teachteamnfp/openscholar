@@ -85,16 +85,22 @@ if [[ $FORCE_REBUILD == "1" ]] || [[ "$(cmp -b 'openscholar/composer.json' '/tmp
   # Chores.
   echo "Rebuilding..."
   cd openscholar
-
+  ls -al
+  ls -al node_modules
+  ls -al ../../../../node_modules
   rm -rf node_modules
+  ls -al
 
   # Download composer components
   composer install --ignore-platform-reqs
-
+  ls -al
+  ls -al node_modules
+  ls -al ../../../../node_modules
   # Build CSS
   npm install
   ls -al
   ls -al node_modules
+  ls -al ../../../../node_modules
   cd profile/themes/os_base && ./../../../node_modules/.bin/gulp sass
 
   cd ../../../..
