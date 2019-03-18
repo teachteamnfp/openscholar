@@ -29,3 +29,28 @@ function os_widgets_preprocess_block(&$variables) {
     $variables['attributes']['class'][] = 'styled';
   }
 }
+
+/**
+ * Implements hook_theme().
+ */
+function os_widgets_theme($existing, $type, $theme, $path) {
+  return [
+    'os_widgets_addthis_buttons' => [
+      'variables' => [
+        'image_path' => NULL,
+      ],
+    ],
+    'os_widgets_addthis_toolbox_small' => [
+      'variables' => [],
+    ],
+    'os_widgets_addthis_toolbox_large' => [
+      'variables' => [],
+    ],
+    'os_widgets_addthis_numeric' => [
+      'variables' => [],
+    ],
+    'os_widgets_addthis_counter' => [
+      'variables' => [],
+    ],
+  ];
+}
