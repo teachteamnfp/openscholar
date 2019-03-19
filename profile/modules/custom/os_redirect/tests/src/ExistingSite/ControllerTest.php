@@ -2,6 +2,8 @@
 
 namespace Drupal\Tests\os_redirect\ExistingSite;
 
+use Drupal\os_redirect\Controller\RedirectListController;
+
 /**
  * Tests os_redirect module.
  *
@@ -13,6 +15,18 @@ namespace Drupal\Tests\os_redirect\ExistingSite;
 class ControllerTest extends OsRedirectTestBase {
 
   protected $siteUser;
+  /**
+   * Redirect List Controller.
+   *
+   * @var \Drupal\os_redirect\Controller\RedirectListController
+   */
+  protected $controller;
+  /**
+   * Vsite Context Manager Interface.
+   *
+   * @var \Drupal\vsite\Plugin\VsiteContextManagerInterface
+   */
+  protected $vsiteContextManager;
 
   /**
    * {@inheritdoc}
@@ -44,25 +58,29 @@ class ControllerTest extends OsRedirectTestBase {
       ],
     ]);
     $this->group->addContent($redirect, $plugin->getContentPluginId());
+    $container = \Drupal::getContainer();
+    $this->controller = RedirectListController::create($container);
+    /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
+    $this->vsiteContextManager = $container->get('vsite.context_manager');
   }
 
   /**
    * Tests cp redirects listing.
    */
   public function testCpRedirectListing() {
-    $web_assert = $this->assertSession();
     $this->drupalLogin($this->siteUser);
 
-    $this->visit($this->group->get('path')->getValue()[0]['alias'] . "/cp/redirects/list");
-    $web_assert->statusCodeEquals(200);
-    $this->assertContains('lorem1', $this->getCurrentPageContent(), 'Test redirect is source not visible.');
-    $this->assertContains('http://example.com', $this->getCurrentPageContent(), 'Test redirect uri is not visible.');
-
     // Check global list visibility.
-    $this->visit("/cp/redirects/list");
-    $web_assert->statusCodeEquals(200);
-    $this->assertNotContains('lorem1', $this->getCurrentPageContent(), 'Test redirect is source visible.');
-    $this->assertNotContains('http://example.com', $this->getCurrentPageContent(), 'Test redirect uri is visible.');
+    $build = $this->controller->listing();
+    $this->assertEmpty($build['#rows']);
+
+    $this->vsiteContextManager->activateVsite($this->group);
+    $build = $this->controller->listing();
+
+    $this->assertNotEmpty($build['#rows']);
+    $this->assertCount(1, $build['#rows']);
+    $this->assertSame('lorem1', $build['#rows'][0]['data'][0], 'Test redirect is source not visible.');
+    $this->assertSame('http://example.com', $build['#rows'][0]['data'][1], 'Test redirect uri is not visible.');
   }
 
 }
