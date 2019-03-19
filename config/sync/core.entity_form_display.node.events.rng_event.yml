@@ -1,10 +1,9 @@
-uuid: b1411ce9-0662-4ad6-b6a5-49462c1a1930
+uuid: 12d2a0a7-7b03-47df-9a79-185a97837369
 langcode: en
 status: true
 dependencies:
   config:
-    - core.date_format.html_date
-    - core.date_format.medium
+    - core.entity_form_mode.node.rng_event
     - field.field.node.events.body
     - field.field.node.events.field_close_
     - field.field.node.events.field_location
@@ -23,75 +22,77 @@ dependencies:
     - field.field.node.events.rng_status
     - node.type.events
   module:
-    - date_recur
-    - layout_builder
-    - text
-    - user
+    - datetime
+    - field_layout
+    - layout_discovery
 third_party_settings:
-  layout_builder:
-    sections: {  }
-id: node.events.default
+  field_layout:
+    id: layout_onecol
+    settings: {  }
+id: node.events.rng_event
 targetEntityType: node
 bundle: events
-mode: default
+mode: rng_event
 content:
-  body:
-    label: hidden
-    type: text_default
-    weight: 1
+  field_close_:
+    type: datetime_default
+    weight: 5
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
-  field_location:
-    weight: 2
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
-  field_media:
-    type: entity_reference_entity_view
-    weight: 3
-    label: above
-    settings:
-      view_mode: default
-      link: false
-    third_party_settings: {  }
-    region: content
-  field_recurring_date:
+  field_open_date:
+    type: datetime_default
     weight: 4
-    label: above
-    settings:
-      format_type: medium
-      occurrence_format_type: medium
-      same_end_date_format_type: medium
-      all_day_format_type: html_date
-      separator: '-'
-      timezone_override: ''
-      interpreter: ''
-      show_next: 5
-      count_per_item: true
-      allow_all_day: false
-    third_party_settings: {  }
-    type: date_recur_basic_formatter
-    region: content
-  links:
-    weight: 0
     region: content
     settings: {  }
     third_party_settings: {  }
+  rng_capacity:
+    type: number
+    weight: 2
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    region: content
+  rng_registrants_duplicate:
+    type: boolean_checkbox
+    weight: 1
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    region: content
+  rng_reply_to:
+    type: email_default
+    settings:
+      placeholder: 'Leave empty to use site default.'
+      size: 60
+    weight: 3
+    third_party_settings: {  }
+    region: content
+  rng_status:
+    type: boolean_checkbox
+    weight: 0
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    region: content
 hidden:
-  field_close_: true
-  field_open_date: true
+  body: true
+  created: true
+  field_location: true
+  field_media: true
+  field_recurring_date: true
   field_signup: true
   field_singup_multiple: true
   langcode: true
-  rng_capacity: true
-  rng_registrants_duplicate: true
+  moderation_state: true
+  path: true
+  promote: true
   rng_registrants_maximum: true
   rng_registrants_minimum: true
   rng_registration_groups: true
   rng_registration_type: true
-  rng_reply_to: true
-  rng_status: true
+  status: true
+  sticky: true
+  title: true
+  uid: true
+  url_redirects: true

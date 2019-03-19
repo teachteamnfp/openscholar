@@ -1,0 +1,19 @@
+uuid: 5083be60-c610-491e-a60c-62debff99813
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.registration.field_email
+    - rng.registration_type.signup
+id: registration.signup.field_email
+field_name: field_email
+entity_type: registration
+bundle: signup
+label: Email
+description: 'The email to associate with this registration.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: email
