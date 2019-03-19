@@ -101,7 +101,7 @@ if [[ $FORCE_REBUILD == "1" ]] || [[ "$(cmp -b 'openscholar/composer.json' '/tmp
   ls -al
   ls -al node_modules
   ls -al ../../../../node_modules
-  npm install --verbose && cd profile/themes/os_base && ./../../../node_modules/.bin/gulp sass
+  cd profile/themes/os_base && ./../../../node_modules/.bin/gulp sass
 
   cd ../../../..
 
