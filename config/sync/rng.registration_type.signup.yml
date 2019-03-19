@@ -1,0 +1,7 @@
+uuid: 7dd37b55-cadd-4fae-8b52-a4eaa057aab3
+langcode: en
+status: true
+dependencies: {  }
+label: Signup
+id: signup
+description: 'Signup for an event'

@@ -1,7 +1,12 @@
 uuid: 7bbb432b-f714-4a3f-b587-9d08d3107132
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - rng
+third_party_settings:
+  rng:
+    condition_rng_role: true
 _core:
   default_config_hash: 2EL4nOaSWrCYL11npXSGwLjX_DJoj2riIUqGaNyZFWU
 id: administrator

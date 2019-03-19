@@ -1,0 +1,9 @@
+name: 'OS Events'
+description: 'Managing events in OpenScholar'
+package: OpenScholar
+core: 8.x
+
+type: module
+
+dependencies:
+  - drupal:rng

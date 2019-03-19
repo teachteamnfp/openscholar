@@ -1,0 +1,19 @@
+uuid: 3838fbea-61b4-492c-9ffc-725cab16f3b1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.registration.field_department
+    - rng.registration_type.signup
+id: registration.signup.field_department
+field_name: field_department
+entity_type: registration
+bundle: signup
+label: Department
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
