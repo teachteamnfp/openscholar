@@ -1,0 +1,25 @@
+/****gloabl font styles ****/
+.main-container {
+  font-size: 1.1em;
+}
+h1.page-title {
+  line-height: 1.2;
+}
+.node-type-page {
+  .breadcrumb {
+    margin-bottom: 10px;
+  }
+  .main-container {
+    section {
+      .node-title {
+        margin-bottom: 10px;
+        font-size: 2.1em;
+      }
+    }
+  }
+}
+/***** block title ****/
+.block-title {
+  margin-bottom: 15px;
+  font-size: 1.2em;
+}
