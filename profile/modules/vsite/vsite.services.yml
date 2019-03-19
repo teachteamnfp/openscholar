@@ -22,6 +22,7 @@ services:
     class: Drupal\vsite\Plugin\VsiteContextManager
     arguments:
       - '@event_dispatcher'
+      - '@database'
   vsite.path_activator:
     class: Drupal\vsite\Plugin\VsitePathActivator
     arguments:
