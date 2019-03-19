@@ -1,0 +1,28 @@
+cp.users:
+  path: '/cp/users'
+  defaults:
+    _controller: '\Drupal\cp_users\Controller\CpUserMainController::main'
+    _title: 'Manage Users'
+  requirements:
+    _permission: 'manage cp users'
+cp.users.add:
+  path: '/cp/users/add'
+  defaults:
+    _controller: '\Drupal\cp_users\Controller\CpUserMainController::addUserForm'
+    _title: 'Add User'
+  requirements:
+    _permission: 'manage cp users'
+cp.users.remove:
+  path: '/cp/users/remove/{user}'
+  defaults:
+    _controller: '\Drupal\cp_users\Controller\CpUserMainController::removeUserForm'
+    _title_callback: '\Drupal\cp_users\Controller\CpUserMainController::removeUserFormTitle'
+  requirements:
+    _permission: 'manage cp users'
+cp.users.owner:
+  path: '/cp/users/owner/{user}'
+  defaults:
+    _controller: '\Drupal\cp_users\Controller\CpUserMainController::changeOwnershipForm'
+    _title: 'Change Ownership'
+  requirements:
+    _permission: 'manage cp users'
