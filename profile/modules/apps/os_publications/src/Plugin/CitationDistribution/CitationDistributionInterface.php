@@ -2,6 +2,8 @@
 
 namespace Drupal\os_publications\Plugin\CitationDistribution;
 
+use Drupal\Core\Entity\EntityInterface;
+
 /**
  * Interface defining a server for citation distribution.
  */
@@ -10,13 +12,13 @@ interface CitationDistributionInterface {
   /**
    * Distributes a reference entity to chosen service.
    *
-   * @param int $id
-   *   Entity id to distribute.
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity to distribute.
    *
    * @return bool
    *   Status of save/push.
    */
-  public function save($id) : bool;
+  public function save(EntityInterface $entity) : bool;
 
   /**
    * Copies data from bibcite entity data into array labeled for this service.

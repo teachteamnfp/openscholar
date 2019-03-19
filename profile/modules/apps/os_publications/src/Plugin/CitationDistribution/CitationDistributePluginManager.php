@@ -52,7 +52,7 @@ class CitationDistributePluginManager extends DefaultPluginManager {
       $plugin = $this->createInstance($item->getValue()['value']);
 
       if ($dist_mode === 'per_submission') {
-        $plugin->save($entity->id());
+        $plugin->save($entity);
       }
       else {
         // TODO: Implement Queue Api for adding entity for cron operation.

@@ -2,6 +2,7 @@
 
 namespace Drupal\os_publications\Plugin\CitationDistribution;
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\PluginBase;
 use Drupal\repec\RepecInterface;
@@ -71,7 +72,7 @@ class CitationDistributeRepec extends PluginBase implements CitationDistribution
   /**
    * {@inheritdoc}
    */
-  public function save($id): bool {
+  public function save(EntityInterface $entity): bool {
     return TRUE;
   }
 
