@@ -1,0 +1,13 @@
+/**** footer ****/
+footer {
+  background: $color-gray;
+  .nav {
+    a {
+      font-family: 'Roboto', sans-serif;
+      color: $color-white;
+    }
+  }
+  a {
+    color: $color-white;
+  }
+}
