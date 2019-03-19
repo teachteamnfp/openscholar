@@ -84,12 +84,10 @@ class OsRedirectForm extends RedirectForm {
       if (count($redirects) >= $maximum_number) {
         $form_state->setErrorByName('redirect_source', $this->t('Maximum number of redirects (@count) is reached.', ['@count' => $maximum_number]));
       }
+      $source = $form_state->getValue(['redirect_source', 0]);
+      $form_state->setValue('redirect_source', [['path' => '[vsite:' . $group->id() . ']/' . $source['path']]]);
     }
 
-    if ($purl = $vsite_context->getActivePurl()) {
-      $source = $form_state->getValue(['redirect_source', 0]);
-      $form_state->setValue('redirect_source', [['path' => $purl . '/' . $source['path']]]);
-    }
     parent::validateForm($form, $form_state);
 
   }

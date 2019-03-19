@@ -7,8 +7,6 @@ namespace Drupal\Tests\os_redirect\ExistingSite;
  *
  * @group redirect
  * @group kernel
- *
- * @coversDefaultClass \Drupal\os_redirect\EventSubscriber\OsRedirectRequestSubscriber
  */
 class RedirectOnVsiteTest extends OsRedirectTestBase {
 
@@ -33,7 +31,7 @@ class RedirectOnVsiteTest extends OsRedirectTestBase {
 
     $redirect = $this->createRedirect([
       'redirect_source' => [
-        'path' => 'working-redirect',
+        'path' => '[vsite:' . $this->group->id() . ']/working-redirect',
       ],
       'redirect_redirect' => [
         // TODO: find a better way, <front> does not working.
@@ -52,6 +50,7 @@ class RedirectOnVsiteTest extends OsRedirectTestBase {
 
     $this->visit($this->group->get('path')->getValue()[0]['alias'] . "/working-redirect");
     $web_assert->statusCodeEquals(200);
+    $web_assert->addressEquals('/');
     $this->assertContains('Google', $this->getCurrentPageContent());
 
   }

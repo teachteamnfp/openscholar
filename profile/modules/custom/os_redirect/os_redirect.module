@@ -22,4 +22,20 @@ function os_redirect_redirect_matched_redirect_alter(&$redirect) {
       $redirect = NULL;
     }
   }
+
+  if (Drupal::currentUser()->hasPermission('ignore redirects')) {
+    Drupal::messenger()->addWarning(t('You are redirected to: @uri', ['@uri' => $redirect->getRedirectUrl()->getUri()]));
+    $redirect = NULL;
+  }
+}
+
+/**
+ * Implements hook_redirect_path_alter().
+ */
+function os_redirect_redirect_path_alter(&$path) {
+  $vsite_context_manager = Drupal::getContainer()->get('vsite.context_manager');
+  /** @var \Drupal\group\Entity\GroupInterface $group */
+  if ($group = $vsite_context_manager->getActiveVsite()) {
+    $path = '[vsite:' . $group->id() . ']/' . $path;
+  }
 }
