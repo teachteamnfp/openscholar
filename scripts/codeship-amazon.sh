@@ -95,11 +95,11 @@ if [[ $FORCE_REBUILD == "1" ]] || [[ "$(cmp -b 'openscholar/composer.json' '/tmp
   # Build CSS
   cd profile/themes
   ls -al
-  ls -al ./../../..
+  ls -al ./../..
   gulp -v
   gulp sass
 
-  cd ../../../..
+  cd ../../..
 
   #remove install.php
   rm -Rf web/install.php || true
