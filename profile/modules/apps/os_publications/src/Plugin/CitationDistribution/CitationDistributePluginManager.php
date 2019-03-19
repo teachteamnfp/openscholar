@@ -44,10 +44,11 @@ class CitationDistributePluginManager extends DefaultPluginManager {
    *   The entity.
    */
   public function distribute(EntityInterface $entity) {
+    /** @var string $dist_mode */
+    $dist_mode = $this->configFactory->get('citation_distribute.settings')->get('citation_distribute_module_mode');
+
     /** @var \Drupal\options\Plugin\Field\FieldType\ListStringItem $item */
     foreach ($entity->get('distribution') as $item) {
-      /** @var string $dist_mode */
-      $dist_mode = $this->configFactory->get('citation_distribute.settings')->get('citation_distribute_module_mode');
       /** @var \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributionInterface $plugin */
       $plugin = $this->createInstance($item->getValue()['value']);
 
