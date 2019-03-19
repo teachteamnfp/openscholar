@@ -5,7 +5,6 @@ dependencies:
   config:
     - core.entity_view_mode.media.teaser
     - field.field.media.video.field_height
-    - field.field.media.video.field_media_oembed_video
     - field.field.media.video.field_media_video_file
     - field.field.media.video.field_width
     - image.style.thumbnail
@@ -29,7 +28,6 @@ content:
 hidden:
   created: true
   field_height: true
-  field_media_oembed_video: true
   field_media_video_file: true
   field_width: true
   langcode: true

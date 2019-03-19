@@ -1,0 +1,12 @@
+/**** footer ****/
+footer {
+  background-color: $color-light-gray1;
+  color: $color-gray;
+  .block-title {
+    padding: 0 0 10px;
+    border-top: none;
+  }
+  a {
+    color: $color-blue;
+  }
+}
