@@ -49,8 +49,12 @@ class CitationDistributePluginManager extends DefaultPluginManager {
       $dist = FALSE;
       $dist_mode = $this->configFactory->get('citation_distribute.settings')->get('citation_distribute_module_mode');
       $item->getValue()['value'];
+      /** @var \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributionInterface[] $definitions */
+      $definitions = $this->getDefinitions();
+      $plugin_definition = $definitions[$item->getValue()['value']];
 
-      // TODO make sure entity is published first.
+      $plugin_definition->save($entity->id(), $plugin_definition);
+
       if ($dist_mode == 'per_submission') {
         // TODO: Implement.
       }
