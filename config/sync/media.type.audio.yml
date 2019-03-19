@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: audio
-label: Video/Audio
+label: Audio
 description: ''
 source: audio_file
 queue_thumbnail_downloads: false
