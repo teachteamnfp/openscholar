@@ -48,11 +48,11 @@ class CitationDistributePluginManager extends DefaultPluginManager {
     foreach ($entity->get('distribution') as $item) {
       /** @var string $dist_mode */
       $dist_mode = $this->configFactory->get('citation_distribute.settings')->get('citation_distribute_module_mode');
-      /** @var \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributionInterface[] $definitions */
-      $definitions = $this->getDefinitions();
+      /** @var \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributionInterface $plugin */
+      $plugin = $this->createInstance($item->getValue()['value']);
 
       if ($dist_mode === 'per_submission') {
-        $definitions[$item->getValue()['value']]->save($entity->id());
+        $plugin->save($entity->id());
       }
       else {
         // TODO: Implement Queue Api for adding entity for cron operation.
