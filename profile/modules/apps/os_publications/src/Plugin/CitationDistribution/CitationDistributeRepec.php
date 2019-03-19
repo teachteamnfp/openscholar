@@ -2,6 +2,7 @@
 
 namespace Drupal\os_publications\Plugin\CitationDistribution;
 
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\PluginBase;
@@ -73,6 +74,14 @@ class CitationDistributeRepec extends PluginBase implements CitationDistribution
    * {@inheritdoc}
    */
   public function save(EntityInterface $entity): bool {
+    if (!$entity instanceof ContentEntityInterface) {
+      return TRUE;
+    }
+
+    if ($this->repec->isBundleEnabled($entity) && $this->repec->isEntityShareable($entity)) {
+      $this->repec->createEntityTemplate($entity);
+    }
+
     return TRUE;
   }
 
