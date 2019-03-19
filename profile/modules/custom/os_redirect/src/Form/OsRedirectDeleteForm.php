@@ -8,6 +8,7 @@ use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 use Drupal\redirect\Form\RedirectDeleteForm;
 use Drupal\vsite\Plugin\VsiteContextManagerInterface;
@@ -25,8 +26,8 @@ class OsRedirectDeleteForm extends RedirectDeleteForm {
   /**
    * {@inheritdoc}
    */
-  public function __construct(EntityRepositoryInterface $entity_repository, EntityTypeBundleInfoInterface $entity_type_bundle_info, TimeInterface $time, ModuleHandlerInterface $moduleHandler, EntityTypeManagerInterface $entity_type_manager, VsiteContextManagerInterface $vsite_context_manager) {
-    $redirect_id = \Drupal::routeMatch()->getParameter('redirect');
+  public function __construct(EntityRepositoryInterface $entity_repository, EntityTypeBundleInfoInterface $entity_type_bundle_info, TimeInterface $time, ModuleHandlerInterface $moduleHandler, EntityTypeManagerInterface $entity_type_manager, VsiteContextManagerInterface $vsite_context_manager, RouteMatchInterface $route_match) {
+    $redirect_id = $route_match->getParameter('redirect');
     $redirect = $entity_type_manager->getStorage('redirect')->load($redirect_id);
     if (empty($redirect)) {
       throw new NotFoundHttpException($this->t('Redirect entity is not found.'));
@@ -55,7 +56,8 @@ class OsRedirectDeleteForm extends RedirectDeleteForm {
       $container->get('datetime.time'),
       $container->get('module_handler'),
       $container->get('entity_type.manager'),
-      $container->get('vsite.context_manager')
+      $container->get('vsite.context_manager'),
+      $container->get('current_route_match')
     );
   }
 
