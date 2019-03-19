@@ -1,0 +1,59 @@
+uuid: ea277b24-a2ba-4902-a4cd-16cfa46348f2
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.embed_media
+    - field.field.block_content.embed_media.field_max_width
+    - field.field.block_content.embed_media.field_media_select
+  module:
+    - content_moderation
+    - field_layout
+    - layout_discovery
+third_party_settings:
+  field_layout:
+    id: layout_onecol
+    settings: {  }
+id: block_content.embed_media.default
+targetEntityType: block_content
+bundle: embed_media
+mode: default
+content:
+  field_max_width:
+    weight: 102
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_media_select:
+    weight: 101
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  info:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  langcode:
+    type: language_select
+    weight: 2
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+  moderation_state:
+    type: moderation_state_default
+    weight: 100
+    settings: {  }
+    region: content
+    third_party_settings: {  }
+hidden: {  }

@@ -228,7 +228,12 @@
         "drupal/pagebreak": "^1.0",
         "drupal/ckeditor_bidi": "^2.1",
         "drupal/anchor_link": "^2.0",
-        "ckeditor/mathjax": "4.11.3"
+        "ckeditor/mathjax": "4.11.3",
+        "drupal/rng": "^1.5",
+        "drupal/rng_contact": "^1.0",
+        "drupal/rng_quick": "^1.1",
+        "drupal/rng_date_scheduler": "^1.0",
+        "drupal/rng_views": "^1.5"
     },
     "require-dev": {
         "drupal/features": "^3.7",
@@ -341,6 +346,9 @@
             },
             "drupal/redirect": {
                 "Handle matched redirect alter" : "patches/redirect-subscriber-hook-alter.patch"
+            },
+            "drupal/rng": {
+                "Remove warnings and errors." : "patches/rng_warnings_errors_fix.patch"
             }
         },
         "patches-ignore": {

@@ -6,11 +6,21 @@ dependencies:
     - core.date_format.html_date
     - core.date_format.medium
     - field.field.node.events.body
+    - field.field.node.events.field_close_
     - field.field.node.events.field_location
     - field.field.node.events.field_media
+    - field.field.node.events.field_open_date
     - field.field.node.events.field_recurring_date
     - field.field.node.events.field_signup
     - field.field.node.events.field_singup_multiple
+    - field.field.node.events.rng_capacity
+    - field.field.node.events.rng_registrants_duplicate
+    - field.field.node.events.rng_registrants_maximum
+    - field.field.node.events.rng_registrants_minimum
+    - field.field.node.events.rng_registration_groups
+    - field.field.node.events.rng_registration_type
+    - field.field.node.events.rng_reply_to
+    - field.field.node.events.rng_status
     - node.type.events
   module:
     - date_recur
@@ -72,6 +82,16 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_close_: true
+  field_open_date: true
   field_signup: true
   field_singup_multiple: true
   langcode: true
+  rng_capacity: true
+  rng_registrants_duplicate: true
+  rng_registrants_maximum: true
+  rng_registrants_minimum: true
+  rng_registration_groups: true
+  rng_registration_type: true
+  rng_reply_to: true
+  rng_status: true

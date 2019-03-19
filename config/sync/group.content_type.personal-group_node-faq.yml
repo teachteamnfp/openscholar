@@ -1,0 +1,19 @@
+uuid: 3aa288f2-2330-4b62-a327-ab95d29d9d9d
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.personal
+    - node.type.faq
+  module:
+    - gnode
+    - node
+id: personal-group_node-faq
+label: 'Personal: Group node (FAQ)'
+description: 'Adds <em class="placeholder">FAQ</em> content to groups both publicly and privately.'
+group_type: personal
+content_plugin: 'group_node:faq'
+plugin_config:
+  group_cardinality: 0
+  entity_cardinality: 1
+  use_creation_wizard: true
