@@ -91,4 +91,11 @@ class CitationDistributeRepec extends PluginBase implements CitationDistribution
     return TRUE;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function delete(EntityInterface $entity) {
+    // TODO: Implement delete() method.
+  }
+
 }

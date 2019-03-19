@@ -179,4 +179,11 @@ class CitationDistributeGooglescholar implements CitationDistributionInterface, 
     return '';
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function delete(EntityInterface $entity) {
+    // Handled inside \os_publications_page_attachments.
+  }
+
 }

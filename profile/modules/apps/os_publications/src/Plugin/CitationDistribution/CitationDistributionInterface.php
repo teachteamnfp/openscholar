@@ -50,4 +50,14 @@ interface CitationDistributionInterface {
    */
   public function render($id) : array;
 
+  /**
+   * Removes a citation.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The citation entity.
+   *
+   * @throws \Drupal\os_publications\CitationDistributionException
+   */
+  public function delete(EntityInterface $entity);
+
 }
