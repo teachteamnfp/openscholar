@@ -1,0 +1,24 @@
+/****gloabl font styles ****/
+.page-title,
+.node-title,
+.page-search .title a,
+.more-link,
+.links a {
+  font-family: 'Roboto', sans-serif;
+}
+/**** block title ****/
+h2.block-title {
+  background: $color-light-gray2;
+  font-size: 15px;
+  text-transform: none;
+  padding: 3px 7px;
+  margin-bottom: 10px;
+  font-weight: normal;
+}
+.path-front {
+  section {
+    .block {
+      border-top: 0;
+    }
+  }
+}
