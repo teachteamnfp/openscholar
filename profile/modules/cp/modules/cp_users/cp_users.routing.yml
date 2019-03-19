@@ -19,3 +19,10 @@ cp.users.remove:
     _title_callback: '\Drupal\cp_users\Controller\CpUserMainController::removeUserFormTitle'
   requirements:
     _permission: 'manage cp users'
+cp.users.owner:
+  path: '/cp/users/owner/{user}'
+  defaults:
+    _controller: '\Drupal\cp_users\Controller\CpUserMainController::changeOwnershipForm'
+    _title: 'Change Ownership'
+  requirements:
+    _permission: 'manage cp users'
