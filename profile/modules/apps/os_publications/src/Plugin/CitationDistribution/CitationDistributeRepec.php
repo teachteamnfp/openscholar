@@ -6,6 +6,7 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\PluginBase;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\os_publications\CitationDistributionException;
 use Drupal\repec\RepecInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -22,6 +23,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * )
  */
 class CitationDistributeRepec extends PluginBase implements CitationDistributionInterface, ContainerFactoryPluginInterface {
+
+  use StringTranslationTrait;
 
   /**
    * Repec service.
@@ -95,7 +98,21 @@ class CitationDistributeRepec extends PluginBase implements CitationDistribution
    * {@inheritdoc}
    */
   public function delete(EntityInterface $entity) {
-    // TODO: Implement delete() method.
+    if (!$entity instanceof ContentEntityInterface) {
+      return;
+    }
+
+    try {
+      if ($this->repec->isBundleEnabled($entity)) {
+        $this->repec->deleteEntityTemplate($entity);
+      }
+    }
+    catch (\Exception $e) {
+      throw new CitationDistributionException($this->t('Could not delete citation. Error: %message. Backtrace: @trace', [
+        '%message' => $e->getMessage(),
+        '@trace' => print_r($e->getTrace(), TRUE),
+      ]));
+    }
   }
 
 }
