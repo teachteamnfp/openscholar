@@ -17,6 +17,8 @@ interface CitationDistributionInterface {
    *
    * @return bool
    *   Status of save/push.
+   *
+   * @throws \Drupal\os_publications\CitationDistributionException
    */
   public function save(EntityInterface $entity) : bool;
 

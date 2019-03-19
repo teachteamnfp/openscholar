@@ -6,6 +6,7 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\PluginBase;
+use Drupal\os_publications\CitationDistributionException;
 use Drupal\repec\RepecInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -78,8 +79,13 @@ class CitationDistributeRepec extends PluginBase implements CitationDistribution
       return TRUE;
     }
 
-    if ($this->repec->isBundleEnabled($entity) && $this->repec->isEntityShareable($entity)) {
-      $this->repec->createEntityTemplate($entity);
+    try {
+      if ($this->repec->isBundleEnabled($entity) && $this->repec->isEntityShareable($entity)) {
+        $this->repec->createEntityTemplate($entity);
+      }
+    }
+    catch (\Exception $e) {
+      throw new CitationDistributionException();
     }
 
     return TRUE;
