@@ -9,10 +9,8 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageInterface;
-use Drupal\Core\Mail\MailManagerInterface;
 use Drupal\Core\Url;
 use Drupal\user\Entity\User;
-use Drupal\user\UserInterface;
 use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -29,6 +27,11 @@ class CpUsersAddForm extends FormBase {
    */
   protected $vsiteContextManager;
 
+  /**
+   * Entity Type Manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
   protected $entityTypeManager;
 
   /**
@@ -82,7 +85,7 @@ class CpUsersAddForm extends FormBase {
       '#type' => 'details',
       '#title' => $this->t('Add an Existing User'),
       '#attributes' => [
-        'id' => 'existing-member-fieldset'
+        'id' => 'existing-member-fieldset',
       ],
       'member-entity' => [
         '#type' => 'entity_autocomplete',
@@ -172,8 +175,8 @@ class CpUsersAddForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    static $response = null;
-    // for some reason this function gets run twice? Not sure exactly why.
+    static $response = NULL;
+    // For some reason this function gets run twice? Not sure exactly why.
     // This is a workaround to return the response we've already created.
     if ($response) {
       return $response;
@@ -197,7 +200,7 @@ class CpUsersAddForm extends FormBase {
           'field_first_name' => $form_state->getValue('first_name'),
           'field_last_name' => $form_state->getValue('last_name'),
           'name' => $form_state->getValue('username'),
-          'mail' => $form_state->getValue('email')
+          'mail' => $form_state->getValue('email'),
         ]);
         $account->save();
         $email_key = CP_USERS_NEW_USER;
@@ -217,9 +220,9 @@ class CpUsersAddForm extends FormBase {
         'user' => $account,
         'role' => $role,
         'creator' => \Drupal::currentUser(),
-        'group' => $group
+        'group' => $group,
       ];
-      /** @var MailManagerInterface $mailManager */
+      /** @var \Drupal\Core\Mail\MailManagerInterface $mailManager */
       $mailManager = \Drupal::service('plugin.manager.mail');
       $mailManager->mail('cp_users', $email_key, $form_state->getValue('email'), LanguageInterface::LANGCODE_DEFAULT, $params);
     }

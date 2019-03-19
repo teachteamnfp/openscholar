@@ -74,6 +74,7 @@ class CpUserMainController extends ControllerBase {
     /* @var \Drupal\user\UserInterface $u */
     foreach ($users as $u) {
       $roles = $group->getMember($u)->getRoles();
+      $ownership_link = Link::createfromRoute('Make Owner', 'cp.users.owner', ['user' => $u->id()], ['attributes' => ['class' => ['use-ajax']]])->toString();
       $remove_link = Link::createFromRoute('Remove', 'cp.users.remove', ['user' => $u->id()], ['attributes' => ['class' => ['use-ajax']]])->toString();
       $row = [
         'data-user-id' => $u->id(),
@@ -81,6 +82,7 @@ class CpUserMainController extends ControllerBase {
           $u->label(),
           $u->label(),
           $group->getOwnerId() == $u->id() ? $this->t('Site Owner') : current($roles)->label(),
+          $ownership_link,
           $this->t('Active'),
           $remove_link,
         ],
@@ -117,6 +119,7 @@ class CpUserMainController extends ControllerBase {
           $this->t('Name'),
           $this->t('Username'),
           $this->t('Role'),
+          $this->t('Give Ownership'),
           $this->t('Status'),
           $this->t('Remove'),
         ],
@@ -187,6 +190,30 @@ class CpUserMainController extends ControllerBase {
    */
   public function removeUserFormTitle(UserInterface $user) {
     return $this->t('Remove Member @name', ['@name' => $user->label()]);
+  }
+
+  /**
+   * Modal for changing the owner of a Vsite.
+   *
+   * @param \Drupal\user\UserInterface $user
+   *   The user who will be the new owner.
+   *
+   * @return \Drupal\Core\Ajax\AjaxResponse
+   *   The response to open the modal.
+   */
+  public function changeOwnershipForm(UserInterface $user) {
+    $group = $this->vsiteContextManager->getActiveVsite();
+    if (!$group) {
+      throw new AccessDeniedHttpException();
+    }
+
+    $response = new AjaxResponse();
+
+    $modal_form = $this->formBuilder()->getForm('Drupal\cp_users\Form\CpUsersOwnershipForm', $user);
+
+    $response->addCommand(new OpenModalDialogCommand($this->removeUserFormTitle($user), $modal_form, ['width' => '800']));
+
+    return $response;
   }
 
 }
