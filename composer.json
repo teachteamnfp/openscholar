@@ -338,6 +338,9 @@
             },
             "ckeditor/mathjax": {
                 "Mathjax cdn url config patch" : "patches/mathjax_cdnjs_config.patch"
+            },
+            "drupal/redirect": {
+                "Handle matched redirect alter" : "patches/redirect-subscriber-hook-alter.patch"
             }
         },
         "patches-ignore": {

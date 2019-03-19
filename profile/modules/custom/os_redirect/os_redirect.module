@@ -1,0 +1,25 @@
+<?php
+
+/**
+ * @file
+ * Hook implementations for the os_redirect module.
+ */
+
+/**
+ * Implements hook_redirect_matched_redirect_alter().
+ */
+function os_redirect_redirect_matched_redirect_alter(&$redirect) {
+  if (empty($redirect)) {
+    return;
+  }
+  $vsite_context_manager = Drupal::getContainer()->get('vsite.context_manager');
+  /** @var \Drupal\group\Entity\GroupInterface $group */
+  if ($group = $vsite_context_manager->getActiveVsite()) {
+    $exist_redirect = $group->getContentEntities('group_entity:redirect', ['entity_id' => $redirect->id()]);
+    // If current redirect is not in vsite, set to NULL
+    // (prevent global redirect in all vsite).
+    if (empty($exist_redirect)) {
+      $redirect = NULL;
+    }
+  }
+}
