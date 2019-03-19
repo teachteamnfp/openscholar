@@ -34,7 +34,7 @@ class CitationDistributeRepec implements CitationDistributionInterface {
   /**
    * {@inheritdoc}
    */
-  public function save($id, array $plugin): bool {
+  public function save($id): bool {
     // TODO: Not yet implemented.
     return TRUE;
   }

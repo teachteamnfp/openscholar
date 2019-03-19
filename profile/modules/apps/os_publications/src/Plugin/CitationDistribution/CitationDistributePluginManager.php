@@ -53,7 +53,7 @@ class CitationDistributePluginManager extends DefaultPluginManager {
       $definitions = $this->getDefinitions();
       $plugin_definition = $definitions[$item->getValue()['value']];
 
-      $plugin_definition->save($entity->id(), $plugin_definition);
+      $plugin_definition->save($entity->id());
 
       if ($dist_mode == 'per_submission') {
         // TODO: Implement.

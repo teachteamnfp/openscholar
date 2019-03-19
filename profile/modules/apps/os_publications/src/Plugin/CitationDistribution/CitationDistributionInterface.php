@@ -12,13 +12,11 @@ interface CitationDistributionInterface {
    *
    * @param int $id
    *   Entity id to distribute.
-   * @param array $plugin
-   *   CD's definition of this plugin.
    *
    * @return bool
    *   Status of save/push.
    */
-  public function save($id, array $plugin) : bool;
+  public function save($id) : bool;
 
   /**
    * Copies data from bibcite entity data into array labeled for this service.

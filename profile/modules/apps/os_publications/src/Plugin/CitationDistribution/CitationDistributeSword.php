@@ -97,7 +97,7 @@ abstract class CitationDistributeSword implements CitationDistributionInterface,
   /**
    * {@inheritdoc}
    */
-  public function save($id, array $plugin) : bool {
+  public function save($id) : bool {
     // Doublecheck the validation for this nid.
     if (!$this->validate((int) $id)) {
       return FALSE;
