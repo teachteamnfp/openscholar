@@ -52,5 +52,10 @@ function os_widgets_theme($existing, $type, $theme, $path) {
     'os_widgets_addthis_counter' => [
       'variables' => [],
     ],
+    'os_widgets_addthis_field_description' => [
+      'variables' => [
+        'image_base_path' => NULL,
+      ],
+    ],
   ];
 }

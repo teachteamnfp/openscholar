@@ -40,11 +40,11 @@ function os_widgets_tokens($type, $tokens, array $data, array $options, Bubbleab
       switch ($name) {
         case 'addthis_display_style_description':
           $image_base_path = drupal_get_path('module', 'os_widgets') . '/images/addthis';
-          $output = Markup::create('<p>Buttons</p><img src="/' . $image_base_path . '/addthis_button.png" />
-          <p>Toolbox small</p><img src="/' . $image_base_path . '/addthis_sm.png" />
-          <p>Toolbox large</p><img src="/' . $image_base_path . '/addthis_lg.png" />
-          <p>Numeric</p><img src="/' . $image_base_path . '/addthis_numbers.gif" />
-          <p>Counter</p><img src="/' . $image_base_path . '/addthis_counter.png" />');
+          $element = [
+            '#theme' => 'os_widgets_addthis_field_description',
+            '#image_base_path' => $image_base_path,
+          ];
+          $output = \Drupal::service('renderer')->render($element);
           $replacements[$original] = $output;
           break;
       }
