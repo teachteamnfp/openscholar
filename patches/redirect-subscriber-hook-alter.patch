@@ -1,0 +1,38 @@
+diff --git a/redirect.api.php b/redirect.api.php
+index 9ec1bdf..5dee890 100644
+--- a/redirect.api.php
++++ b/redirect.api.php
+@@ -137,6 +137,20 @@ function hook_redirect_prepare($redirect) {
+ function hook_redirect_alter($redirect) {
+ }
+ 
++/**
++ * Act on a redirect matched in onKernelRequestCheckRedirect.
++ *
++ * This hook is invoked from onKernelRequestCheckRedirect() before the redirect callback
++ * is invoked.
++ *
++ * @param $redirect
++ *   The redirect that is being used for the redirect.
++ *
++ * @ingroup redirect_api_hooks
++ */
++function hook_redirect_matched_redirect_alter(&$redirect) {
++}
++
+ /**
+  * @} End of "addtogroup hooks".
+  */
+diff --git a/src/EventSubscriber/RedirectRequestSubscriber.php b/src/EventSubscriber/RedirectRequestSubscriber.php
+index cca4ac0..6414fa9 100644
+--- a/src/EventSubscriber/RedirectRequestSubscriber.php
++++ b/src/EventSubscriber/RedirectRequestSubscriber.php
+@@ -155,6 +155,8 @@ class RedirectRequestSubscriber implements EventSubscriberInterface {
+       return;
+     }
+ 
++    \Drupal::service('module_handler')->alter('redirect_matched_redirect', $redirect);
++
+     if (!empty($redirect)) {
+ 
+       // Handle internal path.
