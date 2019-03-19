@@ -46,25 +46,16 @@ class CitationDistributePluginManager extends DefaultPluginManager {
   public function distribute(EntityInterface $entity) {
     /** @var \Drupal\options\Plugin\Field\FieldType\ListStringItem $item */
     foreach ($entity->get('distribution') as $item) {
-      $dist = FALSE;
+      /** @var string $dist_mode */
       $dist_mode = $this->configFactory->get('citation_distribute.settings')->get('citation_distribute_module_mode');
-      $item->getValue()['value'];
       /** @var \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributionInterface[] $definitions */
       $definitions = $this->getDefinitions();
-      $plugin_definition = $definitions[$item->getValue()['value']];
 
-      $plugin_definition->save($entity->id());
-
-      if ($dist_mode == 'per_submission') {
-        // TODO: Implement.
+      if ($dist_mode === 'per_submission') {
+        $definitions[$item->getValue()['value']]->save($entity->id());
       }
       else {
-        // Assume batch mode.
-        $dist = TRUE;
-      }
-
-      if ($dist) {
-        // TODO Implement Queue Api for adding entity for cron operation.
+        // TODO: Implement Queue Api for adding entity for cron operation.
       }
     }
   }
