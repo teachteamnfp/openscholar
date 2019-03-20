@@ -6,7 +6,7 @@ services:
     class: Drupal\os_twitter_pull\TwitterPull
   os_twitter_pull.handler:
     class: Drupal\os_twitter_pull\TwitterPullHandler
-    arguments: ['@os_twitter_pull.config', '@cache.os_twitter_pull', '@logger.factory']
+    arguments: ['@os_twitter_pull.config', '@cache.os_twitter_pull', '@logger.factory', '@datetime.time']
   cache.os_twitter_pull:
     class: Drupal\Core\Cache\CacheBackendInterface
     tags:
