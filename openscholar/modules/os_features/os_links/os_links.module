@@ -50,12 +50,10 @@ function os_links_process_node(&$vars) {
   if ($vars['type'] !== 'link' || (!in_array($vars['view_mode'], array('links', 'full')) && !$vars['teaser'])) {
     return;
   }
-error_log(__FUNCTION__);
+
   // Changes the title URL destination from node alias to link field URL.
   $items = field_get_items('node', $vars['node'], 'field_links_link');
   // Build the URL, including any url queries & fragments.
-  error_log($items[0]['url']);
-  error_log(rawurldecode(($items[0]['url'])));
   $vars['node_url'] = url(rawurldecode($items[0]['url']), array('query' => isset($items[0]['query']) ? $items[0]['query'] : NULL,
     'fragment' => isset($items[0]['fragment']) ? $items[0]['fragment'] : NULL
     )
@@ -164,8 +162,15 @@ function os_links_preprocess_field(&$variables, $hook) {
   $element = $variables['element'];
   if ($element['#bundle'] == 'link' && isset($element['#field_name']) && $element['#field_name'] == 'field_links_link') {
     // Decoding URL, otherwise it would display the link as URL encoded format in title.
-    $url = l(rawurldecode($element['#items'][0]['title']), rawurldecode($element['#items'][0]['url']), $element['#items'][0]['attributes']);
-    $variables['items'][0]['#markup'] = $url;
+    if (isset($variables['#items'][0]['#theme'])) {
+      $variables['#items'][0]['#element']['url'] = rawurldecode($variables['#items'][0]['#element']['url']);
+      $variables['#items'][0]['#element']['title'] = rawurldecode($variables['#items'][0]['#element']['title']);
+      $variables['#items'][0]['#element']['display_url'] = rawurldecode($variables['#items'][0]['#element']['display_url']);
+    }
+    else {
+      $url = l(rawurldecode($element['#items'][0]['title']), rawurldecode($element['#items'][0]['url']), $element['#items'][0]['attributes']);
+      $variables['items'][0]['#markup'] = $url;
+    }
   }
 }
 
