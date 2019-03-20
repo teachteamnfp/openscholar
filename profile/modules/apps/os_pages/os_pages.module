@@ -94,7 +94,6 @@ function os_pages_entity_insert(EntityInterface $entity) {
   else {
     // Update the path condition for section visibility group.
     // Making sure that it appears for the newly created page as well.
-
     /** @var array $conditions */
     $conditions = $section_visibility_group->getConditions()->getConfiguration();
 
@@ -160,4 +159,14 @@ function os_pages_node_page_form_set_book(&$form, FormStateInterface $form_state
     'nid' => $form_state->getValue('nid'),
     'weight' => 0,
   ], TRUE);
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function os_pages_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $flag = $form_id == 'node_page_form' ? TRUE : $form_id == 'node_page_edit_form' ? TRUE : FALSE;
+  if (!$flag) {
+    unset($form['book']);
+  }
 }
