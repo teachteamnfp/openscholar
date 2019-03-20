@@ -52,6 +52,8 @@ class RepecIntegrationTest extends TestBase {
     $this->configFactory = $this->container->get('config.factory');
     $this->defaultRepecSettings = $this->configFactory->get('repec.settings')->getRawData();
     $this->defaultCitationDistributionSettings = $this->configFactory->get('citation_distribute.settings')->getRawData();
+
+    $this->changeCitationDistributionMode('per_submission');
   }
 
   /**
@@ -67,8 +69,6 @@ class RepecIntegrationTest extends TestBase {
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function testReference() {
-    $this->changeCitationDistributionMode('per_submission');
-
     $reference = $this->createReference();
     $serie_directory_config = $this->repec->getEntityBundleSettings('serie_directory', $reference->getEntityTypeId(), $reference->bundle());
     $directory = "{$this->repec->getArchiveDirectory()}{$serie_directory_config}/";
