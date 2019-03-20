@@ -81,10 +81,8 @@ class CitationDistributePluginManager extends DefaultPluginManager {
       }
     }
     catch (\Exception $e) {
-      $this->messenger->addError($this->t("Could not create citation distribution. Error: %error_message. Backtrace: %backtrace", [
-        '%error_message' => $e->getMessage(),
-        '%backtrace' => print_r($e->getTrace(), TRUE),
-      ]));
+      $this->messenger->addError($this->t('Could not create citation. Check logs for more information.'));
+      $this->loggerFactory->get('os_publications')->error($e->getMessage());
     }
   }
 
@@ -113,6 +111,7 @@ class CitationDistributePluginManager extends DefaultPluginManager {
       }
     }
     catch (\Exception $e) {
+      $this->messenger->addError($this->t('Could not delete citation. Check logs for more information.'));
       $this->loggerFactory->get('os_publications')->error($e->getMessage());
     }
   }

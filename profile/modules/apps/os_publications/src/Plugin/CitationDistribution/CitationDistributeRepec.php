@@ -88,7 +88,10 @@ class CitationDistributeRepec extends PluginBase implements CitationDistribution
       }
     }
     catch (\Exception $e) {
-      throw new CitationDistributionException();
+      throw new CitationDistributionException($this->t('Could not create citation. Error: %message. Backtrace: @trace', [
+        '%message' => $e->getMessage(),
+        '@trace' => print_r($e->getTrace(), TRUE),
+      ]));
     }
 
     return TRUE;
