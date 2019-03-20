@@ -102,8 +102,8 @@ if [[ $FORCE_REBUILD == "1" ]] || [[ "$(cmp -b 'openscholar/composer.json' '/tmp
   cd profile/themes
   ls -al
   ls -al ./../..
-  ./node_modules/.bin/gulp -v
-  ./node_modules/.bin/gulp sass
+  ./../../node_modules/.bin/gulp -v
+  ./../../node_modules/.bin/gulp sass
 
   cd ../../..
 
