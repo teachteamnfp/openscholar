@@ -6,9 +6,12 @@ body {
 body.path-front {
   overflow-x: hidden;
 }
-:not(path-front) {
+.not-front {
   .main-container {
     font-size: 15px;
+  }
+  .field-name-body {
+    font-family: georgia;
   }
 }
 a,
@@ -18,4 +21,37 @@ a:visited {
   -ms-transition: all 0.25s linear;
   -o-transition: all 0.25s linear;
   transition: all 0.25s linear;
+}
+.page-header,
+.node-title,
+.path-search .title,
+.more-link,
+.links a,
+.page-search .main-container p,
+.field-name-body h2,
+.field-name-body h3,
+.field-name-body h4 {
+  font-family: Arial,Helvetica,sans-serif;
+}
+.main-container {
+  p, li {
+    font-family: georgia;
+  }
+}
+.node-title,
+.path-search .title a {
+  font-weight: normal;
+  font-size: 18px;
+  margin-bottom: 18px;
+}
+.node-title {
+  font-weight: bold;
+}
+.page-header {
+  font-size: 30px;
+  margin: 0;
+  padding: 15px 0 30px;
+}
+.page-header {
+  margin-top: 15px;
 }

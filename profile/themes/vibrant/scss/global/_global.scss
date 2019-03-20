@@ -1,16 +1,39 @@
 .main-container {
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 0;
-  width: auto;
-  background-image: url(../images/standard-body-gradient.png);
-  background-repeat: repeat-x;
-  background-position: 0 0;
-  .path-front & {
-    background-position: 0 -252px;
+  &:before {
+    content: "";
+    background-image: url(../images/standard-body-gradient.png);
+    background-repeat: repeat-x;
+    position: absolute;
+    width: 100vw;
+    display: block;
+    height: 100%;
+    margin-left: -50vw;
+    left: 50%;
+    .path-front & {
+      background-position: 0 -252px;
+    }
+  }
+  .field-name-body {
+    h2,
+    h3,
+    h4 {
+      margin-bottom: 16px;
+    }
+    h2 {
+      font-size: 1.7em;
+    }
+    h3 {
+      font-size: 1.4em;
+    }
+    h4 {
+      font-size: 1.2em;
+    }
+  }
+  .row {
+    padding-top: 40px;
   }
 }
-:not(path-front) {
+.not-front {
   .main-container {
     section {
       .content-inner {
@@ -19,6 +42,20 @@
         background: $color-white;
         box-shadow: 0 1px 2px 0 $color-light-gray1;
         border-radius: 3px;
+        .block-title {
+          color: $color-black;
+          font-size: 16px;
+          line-height: 20px;
+          font-weight: bold;
+          overflow: auto;
+        }
+      }
+    }
+  }
+  &.two-sidebars {
+    .main-container {
+      section {
+        border-right: 1px solid $color-light-gray4;
       }
     }
   }
@@ -34,6 +71,33 @@
     ol {
       list-style-type: decimal;
       margin: 0 0 1.5em 25px;
+    }
+  }
+}
+.front {
+  .main-container {
+    section {
+      .block {
+        border: 1px solid $color-light-gray1;
+        background: $color-white;
+        box-shadow: 0 1px 2px 0 $color-light-gray1;
+        -webkit-border-radius: 3px;
+        border-radius: 3px;
+        .block-title {
+          background: $color-light-gray6;
+          color: $color-black;
+          border-bottom: 1px solid $color-light-gray1;
+          font-size: 16px;
+          line-height: 20px;
+          min-height: 20px;
+          padding: 7px 15px;
+          font-weight: bold;
+        }
+        .block-content {
+          padding: 15px;
+          border-top: 1px solid $color-light-gray7;
+        }
+      }
     }
   }
 }
