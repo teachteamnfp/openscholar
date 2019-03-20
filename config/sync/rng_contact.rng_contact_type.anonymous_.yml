@@ -1,0 +1,8 @@
+uuid: bba2fe0f-80b8-42dc-97db-3c84e1bc8834
+langcode: en
+status: true
+dependencies: {  }
+label: 'Anonymous Users'
+id: anonymous_
+description: ''
+courier_email_field: null
