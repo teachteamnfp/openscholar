@@ -163,9 +163,9 @@ function os_links_preprocess_field(&$variables, $hook) {
   if ($element['#bundle'] == 'link' && isset($element['#field_name']) && $element['#field_name'] == 'field_links_link') {
     // Decoding URL, otherwise it would display the link as URL encoded format in title.
     if (isset($element[0]['#theme'])) {
-      $variables['#element'][0]['#element']['url'] = rawurldecode($variables['#items'][0]['#element']['url']);
-      $variables['#element'][0]['#element']['title'] = rawurldecode($variables['#items'][0]['#element']['title']);
-      $variables['#element'][0]['#element']['display_url'] = rawurldecode($variables['#items'][0]['#element']['display_url']);
+      $variables['element'][0]['#element']['url'] = rawurldecode($variables['element'][0]['#element']['url']);
+      $variables['element'][0]['#element']['title'] = rawurldecode($variables['element'][0]['#element']['title']);
+      $variables['element'][0]['#element']['display_url'] = rawurldecode($variables['element'][0]['#element']['display_url']);
     }
     else {
       $url = l(rawurldecode($element['#items'][0]['title']), rawurldecode($element['#items'][0]['url']), $element['#items'][0]['attributes']);
