@@ -1,0 +1,38 @@
+uuid: ed47557c-4acc-4a92-9159-83243962aca0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.registration.signup.field_department
+    - field.field.registration.signup.field_email
+    - field.field.registration.signup.field_full
+    - rng.registration_type.signup
+id: registration.signup.default
+targetEntityType: registration
+bundle: signup
+mode: default
+content:
+  field_department:
+    weight: 2
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_email:
+    weight: 0
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  field_full:
+    weight: 1
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden: {  }

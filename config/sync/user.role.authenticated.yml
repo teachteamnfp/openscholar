@@ -11,8 +11,9 @@ is_admin: false
 permissions:
   - 'access content'
   - 'access toolbar'
-  - 'create personal group'
   - 'create page content'
+  - 'create personal group'
+  - 'rng register self'
   - 'use text format filtered_html'
   - 'view control_panel in toolbar'
   - 'view media'

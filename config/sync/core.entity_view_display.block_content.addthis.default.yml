@@ -1,0 +1,20 @@
+uuid: dee827da-7d91-4c1b-9e9b-aafb0f3b4385
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.addthis
+    - field.field.block_content.addthis.field_addthis_display_style
+  module:
+    - layout_builder
+third_party_settings:
+  layout_builder:
+    sections: {  }
+id: block_content.addthis.default
+targetEntityType: block_content
+bundle: addthis
+mode: default
+content: {  }
+hidden:
+  field_addthis_display_style: true
+  langcode: true

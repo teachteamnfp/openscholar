@@ -279,3 +279,18 @@ function os_publications_repec_template_alter(array &$data, ContentEntityInterfa
     ];
   }
 }
+
+/**
+ * Implements hook_repec_template_SERIES_alter().
+ */
+function os_publications_repec_template_ecbook_alter(array &$data, ContentEntityInterface $entity) {
+  /** @var array $publisher */
+  $publisher = $entity->get('bibcite_publisher')->getValue();
+
+  if ($publisher) {
+    $data[] = [
+      'attribute' => 'Provider-Name',
+      'value' => $publisher[0]['value'],
+    ];
+  }
+}

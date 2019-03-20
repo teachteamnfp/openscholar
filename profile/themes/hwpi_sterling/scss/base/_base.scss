@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css?family=Lora');
+
+%font-family {
+  font-family: 'Lora';
+}
+body * {
+  @extend %font-family;
+}
+h1,
+h2,
+h1 a,
+h2 a {
+  font-weight: normal;
+}

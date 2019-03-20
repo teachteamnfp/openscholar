@@ -1,0 +1,23 @@
+uuid: 6b7f81fe-1d53-4c39-91fa-5963e20705c2
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.addthis
+    - field.storage.block_content.field_addthis_display_style
+  module:
+    - options
+id: block_content.addthis.field_addthis_display_style
+field_name: field_addthis_display_style
+entity_type: block_content
+bundle: addthis
+label: 'Display style'
+description: '[os_widgets:addthis_display_style_description]'
+required: true
+translatable: false
+default_value:
+  -
+    value: toolbox_small
+default_value_callback: ''
+settings: {  }
+field_type: list_string

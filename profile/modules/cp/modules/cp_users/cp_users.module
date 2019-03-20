@@ -1,0 +1,75 @@
+<?php
+
+/**
+ * @file
+ * Hook implementations for cp_users.
+ */
+
+use Drupal\Core\Url;
+
+define('CP_USERS_NEW_USER', 'cp_users_new_user');
+define('CP_USERS_ADD_TO_GROUP', 'cp_users_add_to_group');
+define('CP_USERS_DELETE_FROM_GROUP', 'cp_users_delete_from_group');
+
+/**
+ * Defines new mail templates that can be sent.
+ *
+ * @throws \Drupal\Core\TypedData\Exception\MissingDataException
+ */
+function cp_users_mail($key, &$message, $params) {
+  $options = [
+    'langcode' => $message['langcode'],
+  ];
+
+  /** @var \Drupal\Core\Config\ImmutableConfig $config */
+  $config = Drupal::config('cp_users.settings');
+
+  /** @var \Drupal\group\Entity\GroupInterface $group */
+  $group = $params['group'];
+
+  /** @var \Drupal\user\UserInterface $user */
+  $user = $params['user'];
+
+  /** @var \Drupal\user\UserInterface $creator */
+  $creator = $params['creator'];
+
+  $variables = [
+    '@user-role' => reset($group->getMember($user)->getRoles())->label(),
+    '@site-url' => Url::fromRoute('entity.group.canonical', ['group' => $group->id()], ['absolute' => TRUE])->toString(),
+    '@user-firstname' => $user->get('field_first_name') ? $user->get('field_first_name')->get(0)->getValue()['value'] : render($user->getDisplayName()),
+    '@account-modifier' => render($creator->getDisplayName()),
+    '@account-modifier-email' => $creator->getEmail(),
+    '@sitewide-name' => $config->get('sitewide_name'),
+  ];
+
+  switch ($key) {
+    case CP_USERS_NEW_USER:
+      $message['subject'] = t('You have been added as a member to the @site-url website', $variables);
+      $message['body'] = [];
+      $message['body'][] = t('Hi @user-firstname,', $variables);
+      $message['body'][] = t('@account-modifier has added you as a member with the role of @user-role to the website @site-url. If you feel this was in error or have any questions, please contact them at @account-modifier-email', $variables);
+      $message['body'][] = t("Don't forget to bookmark the site and save this email for future reference.");
+      $message['body'][] = t("Here are some handy links for you:");
+      $links = [];
+      if ($training = $config->get('training_signup_url')) {
+        $links[] = " * Sign up for training: $training\n";
+      }@
+      $links[] = " * OpenScholar documentation: https://help.theopenscholar.com\n";
+      if ($contact = $config->get('contact_url')) {
+        $links[] = " * Need help with your project? $contact";
+      }
+      $message['body'][] = implode("", $links);
+      $message['body'][] = t("Sincerely,\n@sitewide-name", $variables);
+      $message['headers'] += is_array($params['headers']) ? $params['headers'] : [];
+      break;
+
+    case CP_USERS_DELETE_FROM_GROUP:
+      $message['subject'] = t("You have been removed from the @site-url website", $variables);
+      $message['body'] = [];
+      $message['body'][] = t("Hi @user-firstname,", $variables);
+      $message['body'][] = t("@account-modifier has removed you as a member with the role of @user-role from the website @site-url. If you feel this was in error or have any questions, please contact them at @account-modifier-email", $variables);
+      $message['body'][] = t("Sincerely,\n@sitewide-name", $variables);
+      $message['headers'] += $params['headers'];
+      break;
+  }
+}

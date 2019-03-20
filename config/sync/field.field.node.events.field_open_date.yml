@@ -1,0 +1,21 @@
+uuid: 61808594-60ee-4ec3-8f59-e2b663693b92
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_open_date
+    - node.type.events
+  module:
+    - datetime
+id: node.events.field_open_date
+field_name: field_open_date
+entity_type: node
+bundle: events
+label: 'Open Date'
+description: 'When to automatically open registrations'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime
