@@ -1,0 +1,22 @@
+uuid: 14b25c2a-145f-4411-a819-e5600877520f
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: software_release
+label: 'Software Release'
+type: 'canonical_entities:node'
+pattern: 'software/[node:field_software_project]/[node:title]'
+selection_criteria:
+  a5bc4305-beb5-4945-b0df-42076ae81e62:
+    id: node_type
+    bundles:
+      software_release: software_release
+    negate: false
+    context_mapping:
+      node: node
+    uuid: a5bc4305-beb5-4945-b0df-42076ae81e62
+selection_logic: and
+weight: -5
+relationships: {  }
