@@ -36,6 +36,13 @@ class RepecIntegrationTest extends TestBase {
   protected $defaultRepecSettings;
 
   /**
+   * Default citation distribution settings.
+   *
+   * @var array
+   */
+  protected $defaultCitationDistributionSettings;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
@@ -44,14 +51,15 @@ class RepecIntegrationTest extends TestBase {
     $this->repec = $this->container->get('repec');
     $this->configFactory = $this->container->get('config.factory');
     $this->defaultRepecSettings = $this->configFactory->get('repec.settings')->getRawData();
+    $this->defaultCitationDistributionSettings = $this->configFactory->get('citation_distribute.settings')->getRawData();
   }
 
   /**
    * Tests repec integration for reference entity.
    *
-   * @covers ::repec_entity_insert
-   * @covers ::repec_entity_update
-   * @covers ::repec_entity_delete
+   * @covers ::os_publications_bibcite_reference_insert
+   * @covers ::os_publications_bibcite_reference_update
+   * @covers ::os_publications_bibcite_reference_delete
    * @covers \Drupal\repec\Form\EntityTypeSettingsForm
    * @covers \Drupal\repec\Series\Base::create
    * @covers \Drupal\repec\Series\Base::getDefault
@@ -59,6 +67,8 @@ class RepecIntegrationTest extends TestBase {
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function testReference() {
+    $this->changeCitationDistributionMode('per_submission');
+
     $reference = $this->createReference();
     $serie_directory_config = $this->repec->getEntityBundleSettings('serie_directory', $reference->getEntityTypeId(), $reference->bundle());
     $directory = "{$this->repec->getArchiveDirectory()}{$serie_directory_config}/";
@@ -256,10 +266,10 @@ class RepecIntegrationTest extends TestBase {
     $serie_directory_config = $this->repec->getEntityBundleSettings('serie_directory', $reference->getEntityTypeId(), $reference->bundle());
     $directory = "{$this->repec->getArchiveDirectory()}{$serie_directory_config}/";
     $file_name = "{$serie_directory_config}_{$reference->getEntityTypeId()}_{$reference->id()}.rdf";
+    $this->assertFileExists("$directory/$file_name");
 
     $content = file_get_contents("$directory/$file_name");
     $this->assertContains('Template-Type: ReDIF-Paper 1.0', $content);
-    $this->assertFileExists("$directory/$file_name");
     $this->assertTemplateContent($reference, $content);
   }
 
@@ -333,10 +343,10 @@ class RepecIntegrationTest extends TestBase {
     $serie_directory_config = $this->repec->getEntityBundleSettings('serie_directory', $reference->getEntityTypeId(), $reference->bundle());
     $directory = "{$this->repec->getArchiveDirectory()}{$serie_directory_config}/";
     $file_name = "{$serie_directory_config}_{$reference->getEntityTypeId()}_{$reference->id()}.rdf";
+    $this->assertFileExists("$directory/$file_name");
 
     $content = file_get_contents("$directory/$file_name");
     $this->assertContains('Template-Type: ReDIF-Chapter 1.0', $content);
-    $this->assertFileExists("$directory/$file_name");
     $this->assertTemplateContent($reference, $content);
   }
 
@@ -410,10 +420,10 @@ class RepecIntegrationTest extends TestBase {
     $serie_directory_config = $this->repec->getEntityBundleSettings('serie_directory', $reference->getEntityTypeId(), $reference->bundle());
     $directory = "{$this->repec->getArchiveDirectory()}{$serie_directory_config}/";
     $file_name = "{$serie_directory_config}_{$reference->getEntityTypeId()}_{$reference->id()}.rdf";
+    $this->assertFileExists("$directory/$file_name");
 
     $content = file_get_contents("$directory/$file_name");
     $this->assertContains('Template-Type: ReDIF-Software 1.0', $content);
-    $this->assertFileExists("$directory/$file_name");
     $this->assertTemplateContent($reference, $content);
   }
 
@@ -548,6 +558,19 @@ class RepecIntegrationTest extends TestBase {
   }
 
   /**
+   * Changes the citation distribution mode in the setting.
+   *
+   * @param string $mode
+   *   The mode.
+   */
+  protected function changeCitationDistributionMode($mode) {
+    /** @var \Drupal\Core\Config\Config $citation_distribution_settings_mut */
+    $citation_distribution_settings_mut = $this->configFactory->getEditable('citation_distribute.settings');
+    $citation_distribution_settings_mut->set('citation_distribute_module_mode', $mode);
+    $citation_distribution_settings_mut->save();
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function tearDown() {
@@ -555,6 +578,11 @@ class RepecIntegrationTest extends TestBase {
     $repec_settings_mut = $this->configFactory->getEditable('repec.settings');
     $repec_settings_mut->setData($this->defaultRepecSettings);
     $repec_settings_mut->save(TRUE);
+
+    /** @var \Drupal\Core\Config\Config $citation_distribution_settings_mut */
+    $citation_distribution_settings_mut = $this->configFactory->getEditable('citation_distribute.settings');
+    $citation_distribution_settings_mut->setData($this->defaultCitationDistributionSettings);
+    $citation_distribution_settings_mut->save(TRUE);
 
     parent::tearDown();
   }

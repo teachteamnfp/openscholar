@@ -33,6 +33,11 @@ abstract class TestBase extends ExistingSiteBase {
       'bibcite_year' => [
         'value' => 1980,
       ],
+      'distribution' => [
+        [
+          'value' => 'citation_distribute_repec',
+        ],
+      ],
     ]);
 
     $reference->save();
