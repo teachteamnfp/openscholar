@@ -89,6 +89,7 @@ if [[ $FORCE_REBUILD == "1" ]] || [[ "$(cmp -b 'openscholar/composer.json' '/tmp
   # Download composer components
   composer install --ignore-platform-reqs
 
+  ls -al "$HOME/clone/node_modules"
   # Do not use codeship cache, and reinstall node modules
   rm -rf node_modules
   npm install
