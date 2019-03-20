@@ -8,8 +8,8 @@ use Drupal\Core\Ajax\RedirectCommand;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
-use Drupal\user\UserInterface;
 use Drupal\vsite\Plugin\VsiteContextManagerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
@@ -18,6 +18,29 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
  * @package Drupal\cp_users\Form
  */
 class CpUsersOwnershipForm extends FormBase {
+
+  /**
+   * Vsite Context Manager.
+   *
+   * @var \Drupal\vsite\Plugin\VsiteContextManagerInterface
+   */
+  protected $vsiteContextManager;
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('vsite.context_manager')
+    );
+  }
+
+  /**
+   * CpUsersOwnershipForm constructor.
+   */
+  public function __construct(VsiteContextManagerInterface $vsiteContextManager) {
+    $this->vsiteContextManager = $vsiteContextManager;
+  }
 
   /**
    * {@inheritdoc}
@@ -31,8 +54,7 @@ class CpUsersOwnershipForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     /* @var VsiteContextManagerInterface $vsiteContextManager */
-    $vsiteContextManager = \Drupal::service('vsite.context_manager');
-    if ($group = $vsiteContextManager->getActiveVsite()) {
+    if ($group = $this->vsiteContextManager->getActiveVsite()) {
       $role = 'personal-member';
       $users = [];
       $memberships = $group->getMembers($role);
@@ -45,7 +67,7 @@ class CpUsersOwnershipForm extends FormBase {
         '#type' => 'container',
         'title' => [
           '#type' => 'markup',
-          '#markup' => '<h2>'.$this->t('Choose a new site owner for the @site site', array('@site' => $group->label())).'</h2>'
+          '#markup' => '<h2>' . $this->t('Choose a new site owner for the @site site', ['@site' => $group->label()]) . '</h2>',
         ],
         'new_owner' => [
           '#type' => 'select',
@@ -77,7 +99,7 @@ class CpUsersOwnershipForm extends FormBase {
               'event' => 'click',
             ],
           ],
-        ]
+        ],
       ];
 
       return $form;
@@ -92,10 +114,8 @@ class CpUsersOwnershipForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $response = new AjaxResponse();
-    /** @var VsiteContextManagerInterface $vsite */
-    $vsite = \Drupal::service('vsite.context_manager');
 
-    if ($group = $vsite->getActiveVsite()) {
+    if ($group = $this->vsiteContextManager->getActiveVsite()) {
       $new_owner_id = $form_state->getValue('new_owner');
       $group->setOwnerId($new_owner_id);
       $group->save();
@@ -110,6 +130,9 @@ class CpUsersOwnershipForm extends FormBase {
     return $response;
   }
 
+  /**
+   * Close the modal.
+   */
   public function closeModal(array &$form, FormStateInterface $form_state) {
     $response = new AjaxResponse();
     $response->addCommand(new CloseModalDialogCommand());
