@@ -50,7 +50,7 @@ function os_links_process_node(&$vars) {
   if ($vars['type'] !== 'link' || (!in_array($vars['view_mode'], array('links', 'full')) && !$vars['teaser'])) {
     return;
   }
-
+error_log(__FUNCTION__);
   // Changes the title URL destination from node alias to link field URL.
   $items = field_get_items('node', $vars['node'], 'field_links_link');
   // Build the URL, including any url queries & fragments.
