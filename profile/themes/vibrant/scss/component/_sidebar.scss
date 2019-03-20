@@ -1,0 +1,31 @@
+aside {
+  .block {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid $color-light-gray1;
+    background: $color-white;
+    box-shadow: 0 1px 2px 0 $color-light-gray1;
+    border-radius: 3px;
+  }
+  .well {
+    background: none;
+    padding: 0;
+    box-shadow: none;
+    border: 0 none;
+    border-radius: 0;
+  }
+  .block-title {
+    background: $color-light-gray6;
+    color:$color-black;
+    border-bottom: 1px solid $color-light-gray1;
+    font-size: 16px;
+    line-height: 20px;
+    min-height: 20px;
+    padding: 7px 15px;
+    font-weight: bold;
+  }
+  .block-content {
+    padding: 15px;
+    border-top: 1px solid $color-light-gray7;
+  }
+}
