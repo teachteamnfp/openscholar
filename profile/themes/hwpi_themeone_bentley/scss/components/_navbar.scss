@@ -1,8 +1,4 @@
-/******** header, navbar **************/
-.header-container {
-  background: $color-light-gray;
-	color: $color-text;
-}
+/**** navbar ****/
 .navbar-collapse {
   background: $color-light-gray;
   padding: 8px 0 !important;
@@ -26,18 +22,15 @@
         }
       }
       &.open, &.active {
-        > a {
+        > a, a:hover, a:active, a:focus {
+          background: $color-blue1;
           color: $color-white;
-           background: $color-blue1;
-          &:hover, &:active, &:focus {
-            background: $color-blue1;
-            color: $color-white;
-          }
         }
       }
     }
   }
 }
+/**** dropdown ****/
 .dropdown-menu {
   background: $color-light-gray2;
   box-shadow: none;
@@ -58,22 +51,7 @@
         color: $color-text;
         &:hover {
           color: $color-gray1;
-        }
-      }
-    }
-  }
-}
-.header-container {
-  .nav {
-    li {
-      a {
-        font: bold 13px arial,sans-serif;
-        text-decoration: none;
-        text-transform: uppercase;
-        color: $color-gray1;
-        padding: 0.3em 0 0.3em 10px;
-        &:hover {
-          background: none;
+          background: $color-light-gray2;
         }
       }
     }
