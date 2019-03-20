@@ -86,23 +86,15 @@ if [[ $FORCE_REBUILD == "1" ]] || [[ "$(cmp -b 'openscholar/composer.json' '/tmp
   echo "Rebuilding..."
   cd openscholar
 
-
   # Download composer components
   composer install --ignore-platform-reqs
+
+  # Do not use codeship cache, and reinstall node modules
   rm -rf node_modules
-  ls -al
   npm install
-  ls -al
-  realpath node_modules
-  ls -al /home/node_modules
-  ls -al /home/node_modules/gulp
-  ls -al /home/node_modules/.bin
 
   # Build CSS
   cd profile/themes
-  ls -al
-  ls -al ./../..
-  ./../../node_modules/.bin/gulp -v
   ./../../node_modules/.bin/gulp sass
 
   cd ../../..
