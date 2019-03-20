@@ -1,0 +1,22 @@
+uuid: 0cb75ccf-d80a-4183-adb3-df991cef095f
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: presentations
+label: Presentations
+type: 'canonical_entities:node'
+pattern: 'presentations/[node:title]'
+selection_criteria:
+  3fdf4184-36c7-46de-83e8-618bf3c4dd1e:
+    id: node_type
+    bundles:
+      presentation: presentation
+    negate: false
+    context_mapping:
+      node: node
+    uuid: 3fdf4184-36c7-46de-83e8-618bf3c4dd1e
+selection_logic: and
+weight: -5
+relationships: {  }
