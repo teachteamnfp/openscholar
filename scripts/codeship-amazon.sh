@@ -91,6 +91,7 @@ if [[ $FORCE_REBUILD == "1" ]] || [[ "$(cmp -b 'openscholar/composer.json' '/tmp
   # Download composer components
   composer install --ignore-platform-reqs
   ls -al
+  realpath node_modules
 
   # Build CSS
   cd profile/themes
