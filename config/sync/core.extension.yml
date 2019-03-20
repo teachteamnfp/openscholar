@@ -34,6 +34,7 @@ module:
   courier: 0
   cp: 0
   cp_settings: 0
+  cp_users: 0
   crop: 0
   ctools: 0
   date_recur: 0
@@ -97,6 +98,7 @@ module:
   os_rest: 0
   os_slideshow: 0
   os_software: 0
+  os_widgets: 0
   os_wysiwyg: 0
   page_cache: 0
   pagebreak: 0

@@ -57,7 +57,7 @@
   {% block navbar %}
     {%
       set navbar_classes = [
-        'navbar',
+        'nav-bar',
         theme.settings.navbar_inverse ? 'navbar-inverse' : 'navbar-defaults'
       ]
     %}
@@ -84,7 +84,7 @@
         </div>
       {% endif %}
       <div class="navbar-header navbar-default">
-        {{ page.navigation }}
+        {#{ page.navigation }#}
         {# .btn-navbar is used as the toggle for collapsed navbar content #}
         {% if page.navigation_collapsible %}
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
@@ -111,16 +111,6 @@
   <main role="main" class="main-container {{ container }} js-quickedit-main-content">
     <div class="row">
 
-      {# Header #}
-      {#% if page.header %}
-        {% block header %}
-          <div class="col-sm-12" role="heading">
-            {{ page.header }}
-          </div>
-        {% endblock %}
-      {% endif %#}
-
-      {# Content #}
       {%
         set content_classes = [
           page.sidebar_first and page.sidebar_second ? 'col-sm-6 col-sm-push-3',
@@ -129,53 +119,40 @@
           page.sidebar_first is empty and page.sidebar_second is empty ? 'col-sm-12'
         ]
       %}
-      
+
       <section{{ content_attributes.addClass(content_classes) }}>
-
-        {# Highlighted #}
-        {#% if page.highlighted %}
-          {% block highlighted %}
-            <div class="highlighted">{{ page.highlighted }}</div>
-          {% endblock %}
-        {% endif %#}
-
-        {# Help #}
-        {#% if page.help %}
-          {% block help %}
-            {{ page.help }}
-          {% endblock %}
-        {% endif %#}
-
+        <div class="content-inner">
         {# Content #}
-        {% block content %}
-          <a id="main-content"></a>
-          {{ page.content }}
-          {% if page.content_first or page.content_second%}
-            <div class="row">
-              <div class="content-first col-sm-6">
-                {{ page.content_first }}
+          {% block content %}
+            <a id="main-content"></a>
+            {{ page.content }}
+            {% if page.content_first or page.content_second%}
+              <div class="row">
+                <div class="content-first col-sm-6">
+                  {{ page.content_first }}
+                </div>
+                <div class="content-second col-sm-6">
+                  {{ page.content_second }}
+                </div>
               </div>
-              <div class="content-second col-sm-6">
-                {{ page.content_second }}
+            {% endif %}
+            {% if page.content_bottom %}
+              <div class="content-bottom">
+                {{ page.content_bottom }}
               </div>
-            </div>
-          {% endif %}
-          {% if page.content_bottom %}
-            <div class="content-bottom">
-              {{ page.content_bottom }}
-            </div>
-          {% endif %}
-          {% if page.content_bottom_first %}
-            <div class="content-bottom-first">
-              {{ page.content_bottom_first }}
-            </div>
-          {% endif %}
-          {% if page.content_bottom_second %}
-            <div class="content-bottom-second">
-              {{ page.content_bottom_second }}
-            </div>
-          {% endif %}
-        {% endblock %}
+            {% endif %}
+            {% if page.content_bottom_first %}
+              <div class="content-bottom-first">
+                {{ page.content_bottom_first }}
+              </div>
+            {% endif %}
+            {% if page.content_bottom_second %}
+              <div class="content-bottom-second">
+                {{ page.content_bottom_second }}
+              </div>
+            {% endif %}
+          {% endblock %}
+        </div>
       </section>
       {%
         set sidebar_classes = [

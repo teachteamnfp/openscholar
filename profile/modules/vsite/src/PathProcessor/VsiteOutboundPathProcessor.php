@@ -38,7 +38,7 @@ class VsiteOutboundPathProcessor implements OutboundPathProcessorInterface {
    */
   public function processOutbound($path, &$options = [], Request $request = NULL, BubbleableMetadata $bubbleable_metadata = NULL) {
     foreach ($this->nonVsitePaths as $p) {
-      $pattern = '|' . str_replace('*', '.+?', $p) . '|';
+      $pattern = '|^/' . str_replace('*', '.+?', $p) . '|';
       if (preg_match($pattern, $path)) {
         $options['purl_context'] = FALSE;
       }
