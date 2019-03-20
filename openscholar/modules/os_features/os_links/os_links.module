@@ -54,6 +54,8 @@ error_log(__FUNCTION__);
   // Changes the title URL destination from node alias to link field URL.
   $items = field_get_items('node', $vars['node'], 'field_links_link');
   // Build the URL, including any url queries & fragments.
+  error_log($items[0]['url']);
+  error_log(rawurldecode(($items[0]['url'])));
   $vars['node_url'] = url(rawurldecode($items[0]['url']), array('query' => isset($items[0]['query']) ? $items[0]['query'] : NULL,
     'fragment' => isset($items[0]['fragment']) ? $items[0]['fragment'] : NULL
     )
