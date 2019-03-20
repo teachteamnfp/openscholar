@@ -7,8 +7,9 @@ dependencies:
     - purl
 third_party_settings:
   menu_ui:
-    available_menus: {  }
-    parent: ''
+    available_menus:
+      - main
+    parent: 'main:'
   purl:
     keep_context: 1
 name: Class
