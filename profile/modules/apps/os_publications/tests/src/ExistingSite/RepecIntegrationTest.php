@@ -59,12 +59,11 @@ class RepecIntegrationTest extends TestBase {
   /**
    * Tests repec integration for reference entity.
    *
-   * @covers ::os_publications_bibcite_reference_insert
-   * @covers ::os_publications_bibcite_reference_update
-   * @covers ::os_publications_bibcite_reference_delete
    * @covers \Drupal\repec\Form\EntityTypeSettingsForm
    * @covers \Drupal\repec\Series\Base::create
    * @covers \Drupal\repec\Series\Base::getDefault
+   * @covers \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributeRepec::save
+   * @covers \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributeRepec::delete
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
@@ -90,6 +89,34 @@ class RepecIntegrationTest extends TestBase {
 
     // Tests rdf file deletion.
     $reference->delete();
+    $this->assertFileNotExists("$directory/$file_name");
+  }
+
+  /**
+   * Tests repec as citation distribution plugin.
+   *
+   * @covers \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributeRepec::save
+   * @covers \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributeRepec::delete
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public function testPluginIntegration() {
+    // Positive test.
+    $reference = $this->createReference();
+    $serie_directory_config = $this->repec->getEntityBundleSettings('serie_directory', $reference->getEntityTypeId(), $reference->bundle());
+    $directory = "{$this->repec->getArchiveDirectory()}{$serie_directory_config}/";
+    $file_name = "{$serie_directory_config}_{$reference->getEntityTypeId()}_{$reference->id()}.rdf";
+
+    $this->assertFileExists("$directory/$file_name");
+
+    // Negative test.
+    $reference = $this->createReference([
+      'distribution' => [],
+    ]);
+    $serie_directory_config = $this->repec->getEntityBundleSettings('serie_directory', $reference->getEntityTypeId(), $reference->bundle());
+    $directory = "{$this->repec->getArchiveDirectory()}{$serie_directory_config}/";
+    $file_name = "{$serie_directory_config}_{$reference->getEntityTypeId()}_{$reference->id()}.rdf";
+
     $this->assertFileNotExists("$directory/$file_name");
   }
 
