@@ -69,18 +69,15 @@ class RepecIntegrationTest extends TestBase {
   public function testReference() {
     $this->changeCitationDistributionMode('per_submission');
 
-    // Tests rdf file creation.
     $reference = $this->createReference();
     $serie_directory_config = $this->repec->getEntityBundleSettings('serie_directory', $reference->getEntityTypeId(), $reference->bundle());
     $directory = "{$this->repec->getArchiveDirectory()}{$serie_directory_config}/";
     $file_name = "{$serie_directory_config}_{$reference->getEntityTypeId()}_{$reference->id()}.rdf";
-    $this->assertFileExists("$directory/$file_name");
 
+    // Tests rdf file creation.
+    $this->assertFileExists("$directory/$file_name");
     $content = file_get_contents("$directory/$file_name");
-    $this->assertContains("Title: {$reference->label()}", $content);
-    $this->assertContains("Number: {$reference->uuid()}", $content);
-    $this->assertContains("Handle: RePEc:{$this->defaultRepecSettings['archive_code']}:{$this->repec->getEntityBundleSettings('serie_type', $reference->getEntityTypeId(), $reference->bundle())}:{$reference->id()}", $content);
-    $this->assertContains('Template-Type: ReDIF-Paper 1.0', $content);
+    $this->assertTemplateContent($reference, $content);
 
     // Tests rdf file updation.
     $reference->set('bibcite_abst_e', [
@@ -565,9 +562,9 @@ class RepecIntegrationTest extends TestBase {
       $this->assertContains("Author-Name: {$contributor->getName()}", $content);
     }
 
-    /** @var \Drupal\Core\Field\FieldItemListInterface $abstract */
-    if ($abstract = $reference->get('bibcite_abst_e')) {
-      $this->assertContains("Abstract: {$abstract->getValue()[0]['value']}", $content);
+    /** @var array $abstract */
+    if ($abstract = $reference->get('bibcite_abst_e')->getValue()) {
+      $this->assertContains("Abstract: {$abstract[0]['value']}", $content);
     }
   }
 
