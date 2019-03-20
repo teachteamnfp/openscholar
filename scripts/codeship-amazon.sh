@@ -86,10 +86,12 @@ if [[ $FORCE_REBUILD == "1" ]] || [[ "$(cmp -b 'openscholar/composer.json' '/tmp
   echo "Rebuilding..."
   cd openscholar
 
-  rm -rf node_modules
 
   # Download composer components
   composer install --ignore-platform-reqs
+  cs clear-cache
+  ls -al
+  npm install
   ls -al
   realpath node_modules
   ls -al /home/node_modules
