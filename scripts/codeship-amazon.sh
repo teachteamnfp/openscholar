@@ -38,6 +38,7 @@ fi
 phpenv local 7.2
 php -v || exit 1
 npm config set cache "${HOME}/cache/npm/"
+npm config list
 
 # Build this branch and push it to Amazon
 # Set up global configuration and install tools needed to build
@@ -91,6 +92,7 @@ if [[ $FORCE_REBUILD == "1" ]] || [[ "$(cmp -b 'openscholar/composer.json' '/tmp
   # Download composer components
   composer install --ignore-platform-reqs || exit 1
 
+  ls -al
   ls -al "$HOME/cache"
   # Do not use codeship cache, and reinstall node modules
   rm -rf node_modules
