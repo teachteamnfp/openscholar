@@ -69,13 +69,11 @@ class RepecIntegrationTest extends TestBase {
   public function testReference() {
     $this->changeCitationDistributionMode('per_submission');
 
+    // Tests rdf file creation.
     $reference = $this->createReference();
     $serie_directory_config = $this->repec->getEntityBundleSettings('serie_directory', $reference->getEntityTypeId(), $reference->bundle());
     $directory = "{$this->repec->getArchiveDirectory()}{$serie_directory_config}/";
     $file_name = "{$serie_directory_config}_{$reference->getEntityTypeId()}_{$reference->id()}.rdf";
-    $this->assertFileExists("$directory/$file_name");
-
-    $reference->save();
     $this->assertFileExists("$directory/$file_name");
 
     $content = file_get_contents("$directory/$file_name");
@@ -84,6 +82,16 @@ class RepecIntegrationTest extends TestBase {
     $this->assertContains("Handle: RePEc:{$this->defaultRepecSettings['archive_code']}:{$this->repec->getEntityBundleSettings('serie_type', $reference->getEntityTypeId(), $reference->bundle())}:{$reference->id()}", $content);
     $this->assertContains('Template-Type: ReDIF-Paper 1.0', $content);
 
+    // Tests rdf file updation.
+    $reference->set('bibcite_abst_e', [
+      'value' => 'Test abstract',
+    ]);
+    $reference->save();
+    $this->assertFileExists("$directory/$file_name");
+    $content = file_get_contents("$directory/$file_name");
+    $this->assertTemplateContent($reference, $content);
+
+    // Tests rdf file deletion.
     $reference->delete();
     $this->assertFileNotExists("$directory/$file_name");
   }
@@ -530,8 +538,11 @@ class RepecIntegrationTest extends TestBase {
       $keyword = Keyword::load($item->getValue()['target_id']);
       $keyword_names[] = $keyword->getName();
     }
-    $keyword_names_in_template = implode(', ', $keyword_names);
-    $this->assertContains("Keywords: {$keyword_names_in_template}", $content);
+
+    if ($keyword_names) {
+      $keyword_names_in_template = implode(', ', $keyword_names);
+      $this->assertContains("Keywords: {$keyword_names_in_template}", $content);
+    }
 
     // Assert files.
     $files_data = [];
@@ -554,7 +565,10 @@ class RepecIntegrationTest extends TestBase {
       $this->assertContains("Author-Name: {$contributor->getName()}", $content);
     }
 
-    $this->assertContains("Abstract: {$reference->get('bibcite_abst_e')->getValue()[0]['value']}", $content);
+    /** @var \Drupal\Core\Field\FieldItemListInterface $abstract */
+    if ($abstract = $reference->get('bibcite_abst_e')) {
+      $this->assertContains("Abstract: {$abstract->getValue()[0]['value']}", $content);
+    }
   }
 
   /**
