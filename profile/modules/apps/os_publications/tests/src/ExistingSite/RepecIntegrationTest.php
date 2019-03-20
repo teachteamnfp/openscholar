@@ -53,7 +53,10 @@ class RepecIntegrationTest extends TestBase {
     $this->defaultRepecSettings = $this->configFactory->get('repec.settings')->getRawData();
     $this->defaultCitationDistributionSettings = $this->configFactory->get('citation_distribute.settings')->getRawData();
 
-    $this->changeCitationDistributionMode('per_submission');
+    /** @var \Drupal\Core\Config\Config $citation_distribution_settings_mut */
+    $citation_distribution_settings_mut = $this->configFactory->getEditable('citation_distribute.settings');
+    $citation_distribution_settings_mut->set('citation_distribute_module_mode', 'per_submission');
+    $citation_distribution_settings_mut->save();
   }
 
   /**
@@ -593,19 +596,6 @@ class RepecIntegrationTest extends TestBase {
     if ($abstract = $reference->get('bibcite_abst_e')->getValue()) {
       $this->assertContains("Abstract: {$abstract[0]['value']}", $content);
     }
-  }
-
-  /**
-   * Changes the citation distribution mode in the setting.
-   *
-   * @param string $mode
-   *   The mode.
-   */
-  protected function changeCitationDistributionMode($mode) {
-    /** @var \Drupal\Core\Config\Config $citation_distribution_settings_mut */
-    $citation_distribution_settings_mut = $this->configFactory->getEditable('citation_distribute.settings');
-    $citation_distribution_settings_mut->set('citation_distribute_module_mode', $mode);
-    $citation_distribution_settings_mut->save();
   }
 
   /**
