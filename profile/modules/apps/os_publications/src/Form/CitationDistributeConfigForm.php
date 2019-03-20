@@ -5,6 +5,7 @@ namespace Drupal\os_publications\Form;
 use Drupal\Core\Config\ConfigFactory;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\os_publications\CitationDistributionModes;
 use Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -76,8 +77,8 @@ class CitationDistributeConfigForm extends ConfigFormBase {
       '#type' => 'select',
       '#title' => $this->t('Select the mode for this module'),
       '#options' => [
-        'batch' => 'Batch Process Mode',
-        'per_submission' => 'Per Submission Mode',
+        CitationDistributionModes::BATCH => 'Batch Process Mode',
+        CitationDistributionModes::PER_SUBMISSION => 'Per Submission Mode',
       ],
       '#required' => TRUE,
       '#default_value' => $config->get('citation_distribute_module_mode'),

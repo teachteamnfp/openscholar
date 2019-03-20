@@ -9,6 +9,7 @@ use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Plugin\DefaultPluginManager;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\os_publications\CitationDistributionModes;
 
 /**
  * Class CitationDistributePluginManager.
@@ -72,7 +73,7 @@ class CitationDistributePluginManager extends DefaultPluginManager {
         /** @var \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributionInterface $plugin */
         $plugin = $this->createInstance($item->getValue()['value']);
 
-        if ($dist_mode === 'per_submission') {
+        if ($dist_mode === CitationDistributionModes::PER_SUBMISSION) {
           $plugin->save($entity);
         }
         else {
@@ -102,7 +103,7 @@ class CitationDistributePluginManager extends DefaultPluginManager {
         /** @var \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributionInterface $plugin */
         $plugin = $this->createInstance($item->getValue()['value']);
 
-        if ($dist_mode === 'per_submission') {
+        if ($dist_mode === CitationDistributionModes::PER_SUBMISSION) {
           $plugin->delete($entity);
         }
         else {

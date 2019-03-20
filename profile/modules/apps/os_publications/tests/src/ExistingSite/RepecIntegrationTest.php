@@ -6,6 +6,7 @@ use Drupal\bibcite_entity\Entity\Contributor;
 use Drupal\bibcite_entity\Entity\Keyword;
 use Drupal\bibcite_entity\Entity\ReferenceInterface;
 use Drupal\file\Entity\File;
+use Drupal\os_publications\CitationDistributionModes;
 
 /**
  * RepecIntegrationTest.
@@ -55,7 +56,7 @@ class RepecIntegrationTest extends TestBase {
 
     /** @var \Drupal\Core\Config\Config $citation_distribution_settings_mut */
     $citation_distribution_settings_mut = $this->configFactory->getEditable('citation_distribute.settings');
-    $citation_distribution_settings_mut->set('citation_distribute_module_mode', 'per_submission');
+    $citation_distribution_settings_mut->set('citation_distribute_module_mode', CitationDistributionModes::PER_SUBMISSION);
     $citation_distribution_settings_mut->save();
   }
 

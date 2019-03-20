@@ -2,6 +2,8 @@
 
 namespace Drupal\Tests\os_publications\ExistingSite;
 
+use Drupal\os_publications\CitationDistributionModes;
+
 /**
  * CitationDistributionBatchModeTest.
  *
@@ -42,7 +44,7 @@ class CitationDistributionBatchModeTest extends TestBase {
 
     /** @var \Drupal\Core\Config\Config $citation_distribution_settings_mut */
     $citation_distribution_settings_mut = $this->configFactory->getEditable('citation_distribute.settings');
-    $citation_distribution_settings_mut->set('citation_distribute_module_mode', 'batch');
+    $citation_distribution_settings_mut->set('citation_distribute_module_mode', CitationDistributionModes::BATCH);
     $citation_distribution_settings_mut->save();
   }
 
