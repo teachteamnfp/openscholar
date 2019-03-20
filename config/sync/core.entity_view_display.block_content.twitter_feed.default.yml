@@ -1,0 +1,30 @@
+uuid: b14d67c6-5336-4e61-b4bd-cdf8232b55c2
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.twitter_feed
+    - field.field.block_content.twitter_feed.field_twitter_exclude_retweets
+    - field.field.block_content.twitter_feed.field_twitter_followme_link
+    - field.field.block_content.twitter_feed.field_twitter_make_embeddable
+    - field.field.block_content.twitter_feed.field_twitter_num_items
+    - field.field.block_content.twitter_feed.field_twitter_type
+    - field.field.block_content.twitter_feed.field_twitter_username
+  module:
+    - layout_builder
+third_party_settings:
+  layout_builder:
+    sections: {  }
+id: block_content.twitter_feed.default
+targetEntityType: block_content
+bundle: twitter_feed
+mode: default
+content: {  }
+hidden:
+  field_twitter_exclude_retweets: true
+  field_twitter_followme_link: true
+  field_twitter_make_embeddable: true
+  field_twitter_num_items: true
+  field_twitter_type: true
+  field_twitter_username: true
+  langcode: true

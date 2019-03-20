@@ -1,0 +1,19 @@
+uuid: 06a6b369-4f41-4806-9ec6-0c03721880e1
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.twitter_feed
+    - field.storage.block_content.field_twitter_username
+id: block_content.twitter_feed.field_twitter_username
+field_name: field_twitter_username
+entity_type: block_content
+bundle: twitter_feed
+label: 'Query string'
+description: 'Show tweets coming from a single user, a specific hashtag, or a search term.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

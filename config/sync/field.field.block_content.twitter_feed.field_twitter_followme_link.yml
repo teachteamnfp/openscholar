@@ -1,0 +1,23 @@
+uuid: 005c1603-8ccf-4732-9023-6925a613a8e5
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.twitter_feed
+    - field.storage.block_content.field_twitter_followme_link
+id: block_content.twitter_feed.field_twitter_followme_link
+field_name: field_twitter_followme_link
+entity_type: block_content
+bundle: twitter_feed
+label: 'Include a "follow me link"'
+description: 'This will add a more link to the bottom of this widget, which will link to your twitter page'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

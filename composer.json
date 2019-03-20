@@ -233,7 +233,8 @@
         "drupal/rng_contact": "^1.0",
         "drupal/rng_quick": "^1.1",
         "drupal/rng_date_scheduler": "^1.0",
-        "drupal/rng_views": "^1.5"
+        "drupal/rng_views": "^1.5",
+        "j7mbo/twitter-api-php": "^1.0"
     },
     "require-dev": {
         "drupal/features": "^3.7",

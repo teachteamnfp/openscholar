@@ -1,0 +1,5 @@
+name: 'OS Twitter pull'
+description: 'Connect widget and twitter API.'
+type: module
+core: 8.x
+version: 1.0

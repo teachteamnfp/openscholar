@@ -1,0 +1,7 @@
+os_twitter_pull.settings:
+  path: '/admin/config/services/os-twitter-pull'
+  defaults:
+    _title: 'Twitter config'
+    _form: '\Drupal\os_twitter_pull\Form\OsTwitterPullAdminSettingsForm'
+  requirements:
+    _permission: 'administer twitter pull settings'

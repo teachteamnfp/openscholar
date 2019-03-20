@@ -1,0 +1,6 @@
+{% for tweet in tweets %}
+  <h3>{{ tweet.username }}</h3>
+{% endfor %}
+{% if is_follow_me %}
+  <div class="twitter-followme">Followme...</div>
+{% endif %}

@@ -1,0 +1,11 @@
+uuid: b4b25769-8012-43cc-9f5f-eef38b5782e7
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.twitter_feed
+id: block_content.twitter_feed
+target_entity_type_id: block_content
+target_bundle: twitter_feed
+default_langcode: site_default
+language_alterable: false

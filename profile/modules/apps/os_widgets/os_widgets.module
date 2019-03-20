@@ -57,5 +57,11 @@ function os_widgets_theme($existing, $type, $theme, $path) {
         'image_base_path' => NULL,
       ],
     ],
+    'os_widgets_twitter_pull' => [
+      'variables' => [
+        'tweets' => [],
+        'is_follow_me' => FALSE,
+      ],
+    ],
   ];
 }
