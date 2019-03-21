@@ -1,0 +1,13 @@
+/* Search box */
+.search-block-form {
+  padding-bottom: 5px;
+  .form-search {
+    border-radius: 0;
+    border-color: $color-light-gray1;
+    height: 33px;
+  }
+  .form-submit {
+    border-radius: 0;
+  }
+}
+
