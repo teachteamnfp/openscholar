@@ -1,4 +1,5 @@
 global-styling:
   version: VERSION
-  css:
-    css/style.css: {}
+  theme:
+    css:
+      css/style.css: {}
