@@ -1,6 +1,16 @@
 module:
   admin_toolbar: 0
   admin_toolbar_tools: 0
+  anchor_link: 0
+  basic_auth: 0
+  bibcite: 0
+  bibcite_bibtex: 0
+  bibcite_endnote: 0
+  bibcite_entity: 0
+  bibcite_export: 0
+  bibcite_marc: 0
+  bibcite_ris: 0
+  big_pipe: 0
   blazy: 0
   block: 0
   block_content: 0
@@ -9,6 +19,8 @@ module:
   book: 0
   breakpoint: 0
   ckeditor: 0
+  ckeditor_bidi: 0
+  colorbutton: 0
   comment: 0
   config: 0
   config_filter: 0
@@ -19,8 +31,10 @@ module:
   context: 0
   context_ui: 0
   contextual: 0
+  courier: 0
   cp: 0
   cp_settings: 0
+  cp_users: 0
   crop: 0
   ctools: 0
   date_recur: 0
@@ -29,12 +43,15 @@ module:
   datetime_range: 0
   dblog: 0
   devel: 0
+  dynamic_entity_reference: 0
   dynamic_page_cache: 0
   editor: 0
   entity_reference: 0
   entity_reference_revisions: 0
+  fakeobjects: 0
   field: 0
   field_layout: 0
+  field_tools: 0
   field_ui: 0
   file: 0
   filter: 0
@@ -44,6 +61,7 @@ module:
   group: 0
   group_entity: 0
   group_purl: 0
+  hal: 0
   image: 0
   image_widget_crop: 0
   inline_form_errors: 0
@@ -65,22 +83,38 @@ module:
   options: 0
   os_app_access: 0
   os_classes: 0
+  os_events: 0
   os_fullcalendar: 0
   os_links: 0
   os_mailchimp: 0
+  os_media: 0
   os_media_gallery: 0
   os_metatag: 0
   os_office_embed: 0
   os_pages: 0
+  os_publications: 0
   os_redirect: 0
+  os_rest: 0
   os_slideshow: 0
+  os_software: 0
+  os_widgets: 0
+  os_wysiwyg: 0
   page_cache: 0
+  pagebreak: 0
+  panelbutton: 0
   path: 0
   purl: 0
   quickedit: 0
+  rdf: 0
   redirect: 0
+  repec: 0
   responsive_image: 0
   rest: 0
+  rng: 0
+  rng_contact: 0
+  rng_date_scheduler: 0
+  rng_quick: 0
+  rng_views: 0
   search: 0
   serialization: 0
   slick: 0
@@ -92,12 +126,19 @@ module:
   token: 0
   toolbar: 0
   toolbar_menu: 0
+  unlimited_number: 0
   update: 0
   user: 0
+  veoa: 0
+  video_embed_field: 0
+  video_embed_media: 0
   views_accordion: 0
+  views_advanced_routing: 0
   views_ical: 0
+  views_infinite_scroll: 0
   views_ui: 0
   vsite: 0
+  vsite_infinite_scroll: 0
   vsite_privacy: 0
   workflows: 0
   menu_link_content: 1

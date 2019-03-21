@@ -7,18 +7,31 @@ description: 'Uses the Bootstrap framework Sass source files and must be compile
 package: 'Bootstrap'
 
 regions:
-  navigation: 'Navigation'
+  #navigation: 'Navigation'
   navigation_collapsible: 'Navigation (Collapsible)'
-  header: 'Top Bar'
-  highlighted: 'Highlighted'
-  help: 'Help'
+  header: 'Header'
+  header_left: 'Header Left'
+  header_right: 'Header Right'
+  #highlighted: 'Highlighted'
+  #help: 'Help'
   content: 'Content'
+  content_first: 'Content First'
+  content_second: 'Content Second'
   sidebar_first: 'Primary'
   sidebar_second: 'Secondary'
+  content_bottom: 'Content bottom'
+  content_bottom_first: 'Content bottom first'
+  content_bottom_second: 'Content bottom second'
   footer: 'Footer'
+  footer_left: 'Footer left'
+  footer_right: 'Footer right'
+  footer_bottom: 'Footer bottom'
   page_top: 'Page top'
   page_bottom: 'Page bottom'
 
 libraries-extend:
   bootstrap/framework:
     - os_base/framework
+
+libraries:
+  - os_base/modal

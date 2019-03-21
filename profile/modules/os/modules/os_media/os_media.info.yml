@@ -1,0 +1,6 @@
+name: "OS: Media"
+core: 8.x
+type: module
+description: "Custom file handling for OpenScholar"
+dependencies:
+  - drupal:media

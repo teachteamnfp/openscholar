@@ -16,3 +16,45 @@ $theme-root: '..';
 // Set other directories relative to theme root.
 $image-path: '#{$theme-root}/images';
 $icon-font-path: '#{$theme-root}/bootstrap/assets/fonts/bootstrap/';
+
+
+//** Background color for `<body>`.
+$body-bg: #fff;
+//** Global text color on `<body>`.
+$text-color: #1e1e1e;
+
+// //** Global textual link color.
+$link-color: #215990;
+// //** Link hover color set via `darken()` function.
+$link-hover-color: darken($link-color, 15%) !default;
+// //** Link hover decoration.
+$link-hover-decoration: underline;
+//font family
+$font-family-sans-serif:  helvetica, arial, verdana, sans-serif;
+
+//== Dropdowns
+//## Dropdown menu container and contents.
+//** Background for the dropdown menu.
+$dropdown-bg: #fff !default;
+//** Dropdown menu `border-color`.
+$dropdown-border: transparent;
+//** Dropdown link text color.
+$dropdown-link-color: $link-color;
+//** Hover color for dropdown links.
+$dropdown-link-hover-color: darken($link-color, 5%) !default;
+//** Hover background for dropdown links.
+$dropdown-link-hover-bg: transparent;
+
+//** Active dropdown menu item text color.
+$dropdown-link-active-color: $link-color;
+//** Active dropdown menu item background color.
+$dropdown-link-active-bg: transparent;
+//nav padding
+$nav-link-padding: 16px 15px;
+
+//color variables
+$color-black: #000;
+$color-white: #fff;
+$color-light-gray1: #f3f3f1;
+$color-light-gray2: #E6E6E3;
+$color-link1: #215990;

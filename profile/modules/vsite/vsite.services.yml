@@ -22,6 +22,7 @@ services:
     class: Drupal\vsite\Plugin\VsiteContextManager
     arguments:
       - '@event_dispatcher'
+      - '@database'
   vsite.path_activator:
     class: Drupal\vsite\Plugin\VsitePathActivator
     arguments:
@@ -46,6 +47,6 @@ services:
     - { name: 'access_check', applies_to: '_group_permission' }
   cache_context.vsite:
     class: Drupal\vsite\Cache\VsiteCacheContext
-    arguments: ['@entity_type.manager']
+    arguments: ['@vsite.context_manager']
     tags:
       - { name: cache.context }

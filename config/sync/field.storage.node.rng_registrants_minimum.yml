@@ -1,0 +1,20 @@
+uuid: ea0c5120-29f9-4c2d-953e-fbf9c455c768
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.rng_registrants_minimum
+field_name: rng_registrants_minimum
+entity_type: node
+type: integer
+settings:
+  unsigned: false
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

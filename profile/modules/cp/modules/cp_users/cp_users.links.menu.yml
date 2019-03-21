@@ -1,0 +1,5 @@
+cp.users:
+  title: 'Members & Roles'
+  route_name: cp.users
+  weight: 5
+  menu_name: control-panel

@@ -1,0 +1,50 @@
+/**** navbar background ****/
+.navbar-collapse {
+  background: $color-menu;
+  padding: 0;
+}
+/***** navbar nav *****/
+.navbar-nav {
+  > li {
+    > a {
+      color: $color-white;
+      padding: 16px 15px;
+      font-size: 20px;
+      font-family: Georgia,Baskerville,Palatino,'Palatino Linotype','Book Antiqua','Times New Roman',serif;
+      &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
+        background: $color-menu-hover;
+        color: $color-white;
+      }
+    }
+    &.open, &.active {
+      > a, a:hover, a:active, a:focus {
+        background: $color-menu-hover;
+        color: $color-white;
+      }
+    }
+  }
+}
+/**** dropdown menu ****/
+.dropdown-menu {
+  background: $color-menu-hover;
+  > li {
+    > a {
+      color: $color-white;
+      font-family: arial;
+      font-size: 13px;
+      font-weight: bold;
+      padding: 10px 15px;
+      &:hover, &:active {
+        color: $color-white;
+        background: $color-menu-hover;
+      }
+    }
+    &.active {
+      a, a:hover {
+        color: $color-white;
+        background: $color-menu-hover;
+
+      }
+    }
+  }
+}

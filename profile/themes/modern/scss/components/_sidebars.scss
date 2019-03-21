@@ -1,0 +1,54 @@
+/**** sidebars ****/
+aside {
+  .block {
+    margin-bottom: 20px;
+    h2.block-title {
+      background: none repeat scroll 0 0 $color-gray1;
+      color: $color-white;
+      font-size: 14px;
+      line-height: 16px;
+      padding: 7px 10px;
+      font-weight: normal;
+    }
+  }
+  .navbar-nav {
+    float: none;
+    li {
+      float: none;
+      list-style: none;
+      background: #F3F3F1;
+      text-align: left;
+      a {
+        display: block;
+        text-decoration: none !important;
+        padding: 8px 15px;
+        border-bottom: 2px solid #fff !important;
+        font-size: 15px;
+        font-weight: normal;
+        &.is-active {
+          color: #000;
+        }
+        .caret {
+          display: none;
+        }
+      }
+      &:hover {
+        background: #E6E6E3;
+      }
+      .dropdown-menu {
+        display: block;
+        width: 100%;
+        padding: 0;
+        border: 0;
+        box-shadow: none;
+        background: none;
+        position: inherit;
+        float: none;
+        a {
+          padding: 8px 25px;
+          color: #215990;
+        }
+      }
+    }
+  }
+}

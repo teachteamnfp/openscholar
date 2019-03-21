@@ -8,73 +8,14 @@ dependencies:
     - node.type.link
   module:
     - layout_builder
-    - layout_discovery
     - link
     - text
     - user
 third_party_settings:
   layout_builder:
-    sections:
-      -
-        layout_id: layout_onecol
-        layout_settings: {  }
-        components:
-          b8ce748a-ac9a-454c-8fa9-af9d1accac22:
-            uuid: b8ce748a-ac9a-454c-8fa9-af9d1accac22
-            region: content
-            configuration:
-              id: 'field_block:node:link:body'
-              label_display: ''
-              formatter:
-                label: hidden
-                type: text_default
-                settings: {  }
-                third_party_settings: {  }
-              context_mapping:
-                entity: layout_builder.entity
-            additional: {  }
-            weight: 0
-          23dc2680-2336-4274-bd0b-c7770e0e1eb7:
-            uuid: 23dc2680-2336-4274-bd0b-c7770e0e1eb7
-            region: content
-            configuration:
-              id: 'field_block:node:link:field_url_web_address'
-              label_display: ''
-              formatter:
-                label: above
-                settings:
-                  trim_length: 80
-                  url_only: false
-                  url_plain: false
-                  rel: ''
-                  target: ''
-                third_party_settings: {  }
-                type: link
-              context_mapping:
-                entity: layout_builder.entity
-            additional: {  }
-            weight: 1
-          0153400c-0eec-4903-8d90-d5d7667dfbe1:
-            uuid: 0153400c-0eec-4903-8d90-d5d7667dfbe1
-            region: content
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'extra_field_block:node:link:links'
-            additional: {  }
-            weight: 2
-          65f67ffd-2338-4b24-9d25-3189c68848eb:
-            uuid: 65f67ffd-2338-4b24-9d25-3189c68848eb
-            region: content
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'extra_field_block:node:link:links'
-            additional: {  }
-            weight: 3
-    enabled: true
+    sections: {  }
+    enabled: false
+    allow_custom: false
 _core:
   default_config_hash: WvLTljy8YOdxVaKYdIa_ERfecF1CCUh0oSvboTROdu4
 id: node.link.default
@@ -84,20 +25,21 @@ mode: default
 content:
   body:
     label: hidden
-    type: text_default
+    type: text_trimmed
     weight: 101
-    settings: {  }
+    settings:
+      trim_length: 300
     third_party_settings: {  }
     region: content
   field_url_web_address:
     weight: 102
-    label: above
+    label: hidden
     settings:
       trim_length: 80
+      target: _blank
       url_only: false
       url_plain: false
-      rel: ''
-      target: ''
+      rel: '0'
     third_party_settings: {  }
     type: link
     region: content

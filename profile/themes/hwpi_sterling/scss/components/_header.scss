@@ -1,0 +1,21 @@
+/******** header, navbar **************/
+header {
+  background: $color-white;
+}
+.header-container {
+  .nav {
+    li {
+      a {
+        font-size: 13px;
+        @extend %font-family;
+        text-decoration: none;
+        text-transform: uppercase;
+        color: $color-black;
+        padding: 0.3em 0 0.3em 10px;
+        &:hover {
+          background: none;
+        }
+      }
+    }
+  }
+}

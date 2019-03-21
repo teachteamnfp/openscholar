@@ -1,0 +1,5 @@
+name: Control Panel User Management
+description: Management of a vsite's users
+type: module
+core: 8.x
+version: 1.0

@@ -1,0 +1,8 @@
+uuid: 683f19fd-f6d9-4c80-824b-d4091b55123c
+langcode: en
+status: true
+dependencies: {  }
+id: os_date_format
+label: 'OS date format'
+locked: false
+pattern: 'F d, Y'

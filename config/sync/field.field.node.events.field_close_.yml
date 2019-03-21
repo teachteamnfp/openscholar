@@ -1,0 +1,21 @@
+uuid: 5cb1aa5c-5e98-4ae9-895e-1f1bc0ef01a6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_close_
+    - node.type.events
+  module:
+    - datetime
+id: node.events.field_close_
+field_name: field_close_
+entity_type: node
+bundle: events
+label: 'Close Date'
+description: 'When to automatically close registrations.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

@@ -13,6 +13,8 @@ dependencies:
     - node.type.class
   module:
     - layout_builder
+    - link
+    - options
     - text
     - user
 third_party_settings:
@@ -24,22 +26,46 @@ bundle: class
 mode: teaser
 content:
   body:
-    label: hidden
     type: text_summary_or_trimmed
-    weight: 101
+    weight: 4
+    region: content
+    label: hidden
     settings:
       trim_length: 600
     third_party_settings: {  }
+  field_class_link:
+    type: link
+    weight: 3
     region: content
+    label: inline
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+  field_semester:
+    type: list_default
+    weight: 1
+    region: content
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+  field_year_offered:
+    type: string
+    weight: 2
+    region: content
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
   links:
-    weight: 100
+    weight: 0
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
   field_attached_media: true
-  field_class_link: true
   field_class_materials: true
-  field_semester: true
-  field_year_offered: true
   langcode: true

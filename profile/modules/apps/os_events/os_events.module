@@ -1,0 +1,33 @@
+<?php
+
+/**
+ * @file
+ * Customisations for Os Events.
+ */
+
+use Drupal\node\NodeInterface;
+use Drupal\Core\Cache\RefinableCacheableDependencyInterface;
+
+/**
+ * Implemets hook_preprocess_page().
+ */
+function os_events_preprocess_page(&$variables) {
+  $node = $variables['node'] ?? NULL;
+  if ($node && $node->bundle() == 'events' && !$node->field_signup->value) {
+    unset($variables['page']['content']['registration']);
+  }
+}
+
+/**
+ * Implements hook_menu_local_tasks_alter().
+ */
+function os_events_menu_local_tasks_alter(&$data, $route_name, RefinableCacheableDependencyInterface &$cacheability) {
+  $node = \Drupal::routeMatch()->getParameter('node');
+  if ($node instanceof NodeInterface && $node->bundle() == 'events' && !$node->field_signup->value) {
+    foreach ($data['tabs'][0] as $task => $tab) {
+      if (strpos($task, 'rng') !== FALSE) {
+        unset($data['tabs'][0][$task]);
+      }
+    }
+  }
+}
