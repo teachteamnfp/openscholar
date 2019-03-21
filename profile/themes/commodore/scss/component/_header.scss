@@ -1,0 +1,22 @@
+.header-container {
+  h1 {
+    a {
+      color: $color-emperor;
+      font-family: georgia, arial;
+      font-size: 1.55em;
+    }
+  }
+  h2 {
+    color: $color-gray2;
+  }
+  .nav {
+    li {
+      border-right: 1px solid #293352;
+      color: #293352;
+      font-size: 12px;
+      font-weight: normal;
+      padding: 1px 8px;
+      text-decoration: underline;
+    }
+  }
+}

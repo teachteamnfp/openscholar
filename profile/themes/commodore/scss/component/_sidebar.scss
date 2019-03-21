@@ -1,0 +1,17 @@
+aside {
+  .content {
+    background: none repeat scroll 0% 0% $color-light-gray2;
+    padding: 0 7px;
+  }
+  .links {
+    margin-left: 3px;
+  }
+  h2.block-title {
+    background: url("../images/h3bg.png") repeat-x scroll left top transparent;
+    font-size: 1.3em;
+    font-weight: normal;
+    height: 28px;
+    margin-bottom: 0;
+    padding: 3px 0 0 8px;
+  }
+}

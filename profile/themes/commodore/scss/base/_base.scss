@@ -1,0 +1,39 @@
+@import url("https://fonts.googleapis.com/css?family=Ovo");
+html,
+body {
+  background: url("../images/bodyBg.gif") 0 23px repeat-x;
+  color: $color-emperor;
+  font: 0.93em/22px Arial, Verdana, sans-serif;
+}
+body.user-logged-in {
+  background: url("../images/bodyBg.gif") 0 68px repeat-x;
+}
+h6 {
+  font-family: georgia;
+  font-size: 1.4em;
+  line-height: 32px;
+  font-weight: normal;
+}
+h1,
+h2,
+h3,
+h4 {
+  font-family: 'Ovo', georgia;
+  font-weight: normal;
+}
+h1#page-title {
+  font-size: 2.2em;
+  margin-bottom: 0.5em;
+  line-height: 30px;
+}
+h4 {
+  font-size: 1.35em;
+  margin: 0.15em 0;
+}
+
+.front {
+  h4 {
+    font-size: 1.35em;
+    margin: 0.42em 0 0.15em;
+  }
+}
