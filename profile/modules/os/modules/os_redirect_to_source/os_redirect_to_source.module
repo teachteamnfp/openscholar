@@ -2,7 +2,7 @@
 
 /**
  * @file
- * OS redirect module.
+ * OS redirect to source module.
  */
 
 use Drupal\Core\Entity\EntityInterface;
@@ -12,15 +12,15 @@ use Drupal\redirect\Entity\Redirect;
 /**
  * Implements hook_ENTITY_TYPE_insert().
  */
-function os_redirect_node_insert(EntityInterface $entity) {
-  _os_redirect_update_node_redirect($entity);
+function os_redirect_to_source_node_insert(EntityInterface $entity) {
+  _os_redirect_to_source_update_node_redirect($entity);
 }
 
 /**
  * Implements hook_ENTITY_TYPE_update().
  */
 function os_redirect_node_update(EntityInterface $entity) {
-  _os_redirect_update_node_redirect($entity);
+  _os_redirect_to_source_update_node_redirect($entity);
 }
 
 /**
@@ -33,12 +33,12 @@ function os_redirect_node_update(EntityInterface $entity) {
  * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
  * @throws \Drupal\Core\Entity\EntityStorageException
  */
-function _os_redirect_update_node_redirect(EntityInterface $entity) {
+function _os_redirect_to_source_update_node_redirect(EntityInterface $entity) {
   if (!$entity->hasField('field_redirect_to_source')) {
     return;
   }
-  $redirectUri = _os_redirect_get_node_redirect_uri($entity);
-  $redirect = _os_redirect_get_node_redirect_entity($entity);
+  $redirectUri = _os_redirect_to_source_get_node_redirect_uri($entity);
+  $redirect = _os_redirect_to_source_get_node_redirect_entity($entity);
   if (!empty($redirect)) {
     $redirectUrl = $redirect->getRedirectUrl();
     // Delete exists redirect.
@@ -78,7 +78,7 @@ function _os_redirect_update_node_redirect(EntityInterface $entity) {
  * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
  * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
  */
-function _os_redirect_get_node_redirect_entity(EntityInterface $entity) {
+function _os_redirect_to_source_get_node_redirect_entity(EntityInterface $entity) {
   $language = Language::LANGCODE_NOT_SPECIFIED;
   $hash = Redirect::generateHash('node/' . $entity->id(), [], $language);
 
@@ -105,7 +105,7 @@ function _os_redirect_get_node_redirect_entity(EntityInterface $entity) {
  * @return string
  *   The URI.
  */
-function _os_redirect_get_node_redirect_uri(EntityInterface $entity) {
+function _os_redirect_to_source_get_node_redirect_uri(EntityInterface $entity) {
   if (!$entity->hasField('field_redirect_to_source')) {
     return '';
   }
@@ -121,10 +121,10 @@ function _os_redirect_get_node_redirect_uri(EntityInterface $entity) {
 /**
  * Implements hook_ENTITY_TYPE_delete().
  */
-function os_redirect_node_delete(EntityInterface $entity) {
-  $redirectUri = _os_redirect_get_node_redirect_uri($entity);
+function os_redirect_to_source_node_delete(EntityInterface $entity) {
+  $redirectUri = _os_redirect_to_source_get_node_redirect_uri($entity);
   if (!empty($redirectUri)) {
-    $redirect = _os_redirect_get_node_redirect_entity($entity);
+    $redirect = _os_redirect_to_source_get_node_redirect_entity($entity);
     if (!empty($redirect)) {
       $redirect->delete();
     }

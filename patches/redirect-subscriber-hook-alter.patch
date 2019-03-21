@@ -1,0 +1,68 @@
+diff --git a/redirect.api.php b/redirect.api.php
+index 9ec1bdf..a720fe6 100644
+--- a/redirect.api.php
++++ b/redirect.api.php
+@@ -137,6 +137,33 @@ function hook_redirect_prepare($redirect) {
+ function hook_redirect_alter($redirect) {
+ }
+ 
++/**
++ * Act on a redirect matched in RedirectRepository::findMatchingRedirect().
++ *
++ * This hook is invoked from findMatchingRedirect() when redirect is found.
++ * is invoked.
++ *
++ * @param $redirect
++ *   The redirect that is being used for the redirect.
++ *
++ * @ingroup redirect_api_hooks
++ */
++function hook_redirect_matched_redirect_alter(&$redirect) {
++}
++
++/**
++ * onKernelRequestCheckRedirect is called.
++ *
++ * This hook is invoked from onKernelRequestCheckRedirect() before the is getting found.
++ *
++ * @param $path
++ *   Current trimmed path from request.
++ *
++ * @ingroup redirect_api_hooks
++ */
++function hook_redirect_path_alter(&$path) {
++}
++
+ /**
+  * @} End of "addtogroup hooks".
+  */
+diff --git a/src/EventSubscriber/RedirectRequestSubscriber.php b/src/EventSubscriber/RedirectRequestSubscriber.php
+index cca4ac0..a9cadaa 100644
+--- a/src/EventSubscriber/RedirectRequestSubscriber.php
++++ b/src/EventSubscriber/RedirectRequestSubscriber.php
+@@ -141,6 +141,8 @@ class RedirectRequestSubscriber implements EventSubscriberInterface {
+     }
+     $path = trim($path, '/');
+ 
++    \Drupal::service('module_handler')->alter('redirect_path', $path);
++
+     $this->context->fromRequest($request);
+ 
+     try {
+diff --git a/src/RedirectRepository.php b/src/RedirectRepository.php
+index 236c927..142ac81 100644
+--- a/src/RedirectRepository.php
++++ b/src/RedirectRepository.php
+@@ -93,9 +93,12 @@ class RedirectRepository {
+       if ($recursive = $this->findByRedirect($redirect, $language)) {
+         // Reset found redirects.
+         $this->foundRedirects = [];
++        \Drupal::service('module_handler')->alter('redirect_matched_redirect', $recursive);
+         return $recursive;
+       }
+ 
++      \Drupal::service('module_handler')->alter('redirect_matched_redirect', $redirect);
++
+       return $redirect;
+     }
+ 

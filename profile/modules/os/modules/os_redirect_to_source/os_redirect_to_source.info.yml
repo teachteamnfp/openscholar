@@ -1,0 +1,9 @@
+name: OS Redirect
+description: 'Handle field_redirect_to_source value on any node entity and perform redirect to target.'
+type: module
+core: 8.x
+dependencies:
+  - "drupal:field"
+  - "drupal:link"
+  - "drupal:node"
+  - "drupal:redirect"
