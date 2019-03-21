@@ -29,31 +29,32 @@
       }
     }
   }
-}
-/**** dropdown ****/
-.dropdown-menu {
-  background: $color-light-gray2;
-  box-shadow: none;
-  border: 0 none;
-  > li {
-    > a {
-      color: $color-text;
-      background: none;
-      padding: 8px;
-      font-size: 15px;
-      &:hover, &:active {
-        color: $color-gray1;
-      }
-    }
-    &.active {
-      a, a:hover {
-        background: $color-light-gray2;
+  /**** dropdown ****/
+  .dropdown-menu {
+    background: $color-light-gray2;
+    box-shadow: none;
+    border: 0 none;
+    > li {
+      > a {
         color: $color-text;
-        &:hover {
+        background: none;
+        padding: 8px;
+        font-size: 15px;
+        &:hover, &:active {
           color: $color-gray1;
+        }
+      }
+      &.active {
+        a, a:hover {
           background: $color-light-gray2;
+          color: $color-text;
+          &:hover {
+            color: $color-gray1;
+            background: $color-light-gray2;
+          }
         }
       }
     }
   }
 }
+
