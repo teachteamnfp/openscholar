@@ -66,4 +66,10 @@ body {
     padding-left: 0;
   }
 }
-
+nav {
+  &:before, &:after {
+    content: "";
+    display: table;
+    width: 100%;
+  }
+}
