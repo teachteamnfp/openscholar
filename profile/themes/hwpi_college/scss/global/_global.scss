@@ -54,3 +54,11 @@ h2.block-title {
   padding-bottom: 1em;
   margin-bottom: 0;
 }
+.front {
+  .content-inner {
+    .block {
+      border-top: 4px solid $color-regent-gray;
+      margin-bottom: 20px;
+    }
+  }
+}
