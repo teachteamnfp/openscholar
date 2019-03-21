@@ -4,5 +4,19 @@ footer {
 			font-size: 12px;
 			font-weight: bold;
 		}
+		a {
+			text-transform: uppercase;
+			font-size: 13px;
+			font-family:arial
+		}
+		li {
+			ul {
+				a {
+					font-family:arial;
+					text-transform: none;
+					font-size: 14px;
+				}
+			}
+		}
 	}
 }
