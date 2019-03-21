@@ -63,23 +63,25 @@
     %}
     <header{{ navbar_attributes.addClass(navbar_classes) }} id="navbar" role="banner">
       {% if page.header_left or page.header or page.header_right %}
-        <div class="header-container row">
+        <div class="header-container">
           <div class="container">
-            {% if page.header_left %}
-              <div class="header-left col-sm-3">
-                {{ page.header_left }}
-              </div>
-            {% endif %}
-            {% if page.header %}
-              <div class="header-main col-sm-6">
-                {{ page.header }}
-              </div>
-            {% endif %}
-            {% if page.header_right %}
-              <div class="header-right col-sm-3">
-                {{ page.header_right }}
-              </div>
-            {% endif %}
+            <div class="row">
+              {% if page.header_left %}
+                <div class="header-left col-sm-3">
+                  {{ page.header_left }}
+                </div>
+              {% endif %}
+              {% if page.header %}
+                <div class="header-main col-sm-6">
+                  {{ page.header }}
+                </div>
+              {% endif %}
+              {% if page.header_right %}
+                <div class="header-right col-sm-3">
+                  {{ page.header_right }}
+                </div>
+              {% endif %}
+            </div>
           </div>
         </div>
       {% endif %}
@@ -99,7 +101,9 @@
       {# Navigation (collapsible) #}
       {% if page.navigation_collapsible %}
         <div id="navbar-collapse" class="navbar-collapse collapse">
-          <div class="container">{{ page.navigation_collapsible }}</div>
+          <div class="container">
+            <div class="row">{{ page.navigation_collapsible }}</div>
+          </div>
         </div>
       {% endif %}
     </header>

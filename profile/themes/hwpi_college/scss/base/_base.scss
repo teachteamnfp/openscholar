@@ -30,3 +30,12 @@ blockquote {
   margin: 1em 0 1em 1em;
   padding-left: 1em;
 }
+a:link {
+  color: $color-blue;
+  text-decoration: none;
+}
+.page-header {
+  color: $color-gray4;
+  font-size: 1.75em;
+  padding: 0.35em 0;
+}
