@@ -2,4 +2,15 @@
   background: none repeat scroll 0 0 $color-light-gray1;
   color: $color-black;
   min-height: 130px;
+  ul.nav {
+    li {
+      a {
+        color: $color-gray1;
+        font: bold 13px arial,sans-serif;
+        padding: 0.3em 0 0.3em 10px;
+        text-decoration: none;
+        text-transform: capitalize;
+      }
+    }
+  }
 }

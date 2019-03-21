@@ -2,50 +2,50 @@
 .navbar-collapse {
   background: $color-red;
   padding: 0 !important;
-  border-bottom: 6px solid $color-black;;
-}
-/***** navbar nav *****/
-.navbar-nav {
-  > li {
-    > a {
-      color: $color-white;
-      padding: 16px 15px;
-      font-size: 19px;
-      font-family: Arial, Helvetica, sans-serif;
-      &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
-        background: $color-red2;
+  border-bottom: 6px solid $color-black;
+  /***** navbar nav *****/
+  .navbar-nav {
+    > li {
+      > a {
         color: $color-white;
+        padding: 16px 15px;
+        font-size: 19px;
+        font-family: Arial, Helvetica, sans-serif;
+        &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
+          background: $color-red2;
+          color: $color-white;
+        }
       }
-    }
-    &.open, &.active {
-      > a, > a:hover, a:active, a:focus {
-        background: $color-red3;
-        color: $color-white;
+      &.open, &.active {
+        > a, > a:hover, a:active, a:focus {
+          background: $color-red3;
+          color: $color-white;
+        }
       }
     }
   }
-}
-/**** dropdown menu ****/
-.dropdown-menu {
-  background: $color-red1;
-  > li {
-    > a {
-      color: $color-white;
-      font-family: arial;
-      font-size: 13px;
-      font-weight: bold;
-      padding: 10px 15px;
-      &:hover, &:active {
-        color: $color-submarine;
-        background: $color-red1;
-      }
-    }
-    &.active {
-      a {
+  /**** dropdown menu ****/
+  .dropdown-menu {
+    background: $color-red1;
+    > li {
+      > a {
         color: $color-white;
-        background: $color-red1;
-        &:hover {
+        font-family: arial;
+        font-size: 13px;
+        font-weight: bold;
+        padding: 10px 15px;
+        &:hover, &:active {
           color: $color-submarine;
+          background: $color-red1;
+        }
+      }
+      &.active {
+        a {
+          color: $color-white;
+          background: $color-red1;
+          &:hover {
+            color: $color-submarine;
+          }
         }
       }
     }
