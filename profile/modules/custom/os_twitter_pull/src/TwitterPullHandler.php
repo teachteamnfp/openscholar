@@ -5,6 +5,7 @@ namespace Drupal\os_twitter_pull;
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
+use Drupal\Core\Extension\ModuleHandler;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,6 +23,7 @@ class TwitterPullHandler implements ContainerInjectionInterface {
   private $logger;
   private $time;
   private $currentRequest;
+  private $moduleHandler;
 
   /**
    * TwitterPullHandler constructor.
@@ -36,14 +38,17 @@ class TwitterPullHandler implements ContainerInjectionInterface {
    *   Helper for get current time.
    * @param \Symfony\Component\HttpFoundation\Request $request
    *   Current request.
+   * @param \Drupal\Core\Extension\ModuleHandler $module_handler
+   *   Module handler.
    */
-  public function __construct(TwitterPullConfig $twitter_pull_config, CacheBackendInterface $cache, LoggerChannelFactoryInterface $logger_factory, TimeInterface $time, Request $request) {
+  public function __construct(TwitterPullConfig $twitter_pull_config, CacheBackendInterface $cache, LoggerChannelFactoryInterface $logger_factory, TimeInterface $time, Request $request, ModuleHandler $module_handler) {
     $this->puller = new TwitterPull($twitter_pull_config);
     $this->config = $twitter_pull_config;
     $this->cache = $cache;
     $this->time = $time;
     $this->logger = $logger_factory->get('os_twitter_pull');
     $this->currentRequest = $request;
+    $this->moduleHandler = $module_handler;
   }
 
   /**
@@ -55,7 +60,8 @@ class TwitterPullHandler implements ContainerInjectionInterface {
       $container->get('cache.os_twitter_pull'),
       $container->get('logger.factory'),
       $container->get('datetime.time'),
-      $container->get('request_stack')->getCurrentRequest()
+      $container->get('request_stack')->getCurrentRequest(),
+      $container->get('module_handler')
     );
   }
 
@@ -126,6 +132,8 @@ class TwitterPullHandler implements ContainerInjectionInterface {
         $tweets[$i]->userphoto = $tweet->userphoto_https;
       }
     }
+
+    $this->moduleHandler->alter('os_twitter_pull_retrieve', $tweets);
 
     return $tweets;
   }
