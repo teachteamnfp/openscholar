@@ -39,7 +39,7 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
 
     /** @var ConfigFactoryInterface $configFactory */
     $configFactory = $this->container->get('config.factory');
-    $config = $configFactory->get('system.mail');
+    $config = $configFactory->getEditable('system.mail');
     $this->oldMailHandler = $config->get('interface.default');
     $config->set('interface.default', 'test_mail_collector')->save();
 
@@ -58,7 +58,7 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
   public function tearDown() {
     /** @var ConfigFactoryInterface $configFactory */
     $configFactory = $this->container->get('config.factory');
-    $config = $configFactory->get('system.mail');
+    $config = $configFactory->getEditable('system.mail');
     $config->set('interface.default', $this->oldMailHandler)->save();
 
     parent::tearDown();
@@ -89,9 +89,10 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
       $page->selectFieldOption('role', 'personal-member');
       $page->pressButton("Save");
       $this->assertSession()->assertWaitOnAjaxRequest();
-      $this->assertContains('/site01/cp/users', $this->getSession()->getCurrentUrl());
+      $this->assertContains('/site01/cp/users', $this->getSession()->getCurrentUrl(), "Not on the correct page, on ".$this->getSession()->getCurrentUrl());
       $this->assertTrue($page->hasContent($username), "Username $username not found on page.");
 
+      //$this->assertMail('id', '');
 
       $remove = $page->find('xpath', '//tr/td[contains(.,"' . $username . '")]/following-sibling::td/a[contains(.,"Remove")]');
       $this->assertNotNull($remove, "Remove link for $username not found.");
@@ -99,7 +100,10 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
       $this->assertSession()->waitForElement('css', '#drupal-modal--content');
       $page->pressButton('Confirm');
       $this->assertSession()->assertWaitOnAjaxRequest();
+      $this->verbose('closed remove modal');
       $this->assertFalse($page->hasContent($username), "Username $username still found on page.");
+
+      //$this->assertMail('id', CP_USERS_DELETE_FROM_GROUP, "Mail " . CP_USERS_DELETE_FROM_GROUP . " not sent.");
     }
     catch (\Exception $e) {
       \file_put_contents(REQUEST_TIME . '.jpg', $this->getSession()->getScreenshot());
