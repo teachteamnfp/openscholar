@@ -214,11 +214,12 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
  */
 function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $config_factory = \Drupal::service('config.factory');
-  $autoflags = $config_factory->get('os_publications.settings')->get('citation_distribute_autoflags');
+  /** @var array $auto_flags */
+  $auto_flags = $config_factory->get('os_publications.settings')->get('citation_distribute_autoflags');
   $entity_id = $form_state->getFormObject()->getEntity()->id();
 
   if (is_null($entity_id)) {
-    $form['distribution']['widget']['#default_value'] = $autoflags;
+    $form['distribution']['widget']['#default_value'] = array_keys(array_filter($auto_flags));
   }
 }
 

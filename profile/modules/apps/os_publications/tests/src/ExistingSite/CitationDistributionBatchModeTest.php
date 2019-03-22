@@ -26,11 +26,11 @@ class CitationDistributionBatchModeTest extends TestBase {
   protected $configFactory;
 
   /**
-   * Default citation distribution settings.
+   * Default publications settings.
    *
    * @var array
    */
-  protected $defaultCitationDistributionSettings;
+  protected $defaultPublicationsSettings;
 
   /**
    * {@inheritdoc}
@@ -40,12 +40,12 @@ class CitationDistributionBatchModeTest extends TestBase {
 
     $this->configFactory = $this->container->get('config.factory');
     $this->repec = $this->container->get('repec');
-    $this->defaultCitationDistributionSettings = $this->configFactory->get('citation_distribute.settings')->getRawData();
+    $this->defaultPublicationsSettings = $this->configFactory->get('os_publications.settings')->getRawData();
 
-    /** @var \Drupal\Core\Config\Config $citation_distribution_settings_mut */
-    $citation_distribution_settings_mut = $this->configFactory->getEditable('citation_distribute.settings');
-    $citation_distribution_settings_mut->set('citation_distribute_module_mode', CitationDistributionModes::BATCH);
-    $citation_distribution_settings_mut->save();
+    /** @var \Drupal\Core\Config\Config $publications_settings_mut */
+    $publications_settings_mut = $this->configFactory->getEditable('os_publications.settings');
+    $publications_settings_mut->set('citation_distribute_module_mode', CitationDistributionModes::BATCH);
+    $publications_settings_mut->save();
   }
 
   /**
@@ -66,10 +66,10 @@ class CitationDistributionBatchModeTest extends TestBase {
    * {@inheritdoc}
    */
   public function tearDown() {
-    /** @var \Drupal\Core\Config\Config $citation_distribution_settings_mut */
-    $citation_distribution_settings_mut = $this->configFactory->getEditable('citation_distribute.settings');
-    $citation_distribution_settings_mut->setData($this->defaultCitationDistributionSettings);
-    $citation_distribution_settings_mut->save(TRUE);
+    /** @var \Drupal\Core\Config\Config $publications_settings_mut */
+    $publications_settings_mut = $this->configFactory->getEditable('os_publications.settings');
+    $publications_settings_mut->setData($this->defaultPublicationsSettings);
+    $publications_settings_mut->save(TRUE);
 
     parent::tearDown();
   }

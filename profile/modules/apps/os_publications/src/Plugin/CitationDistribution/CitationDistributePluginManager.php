@@ -65,7 +65,7 @@ class CitationDistributePluginManager extends DefaultPluginManager {
    */
   public function distribute(EntityInterface $entity) {
     /** @var string $dist_mode */
-    $dist_mode = $this->configFactory->get('citation_distribute.settings')->get('citation_distribute_module_mode');
+    $dist_mode = $this->configFactory->get('os_publications.settings')->get('citation_distribute_module_mode');
 
     try {
       /** @var \Drupal\options\Plugin\Field\FieldType\ListStringItem $item */
@@ -95,7 +95,7 @@ class CitationDistributePluginManager extends DefaultPluginManager {
    */
   public function conceal(EntityInterface $entity) {
     /** @var string $dist_mode */
-    $dist_mode = $this->configFactory->get('citation_distribute.settings')->get('citation_distribute_module_mode');
+    $dist_mode = $this->configFactory->get('os_publications.settings')->get('citation_distribute_module_mode');
 
     try {
       /** @var \Drupal\options\Plugin\Field\FieldType\ListStringItem $item */

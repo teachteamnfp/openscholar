@@ -37,11 +37,11 @@ class RepecIntegrationTest extends TestBase {
   protected $defaultRepecSettings;
 
   /**
-   * Default citation distribution settings.
+   * Default publications settings.
    *
    * @var array
    */
-  protected $defaultCitationDistributionSettings;
+  protected $defaultPublicationSettings;
 
   /**
    * {@inheritdoc}
@@ -52,12 +52,12 @@ class RepecIntegrationTest extends TestBase {
     $this->repec = $this->container->get('repec');
     $this->configFactory = $this->container->get('config.factory');
     $this->defaultRepecSettings = $this->configFactory->get('repec.settings')->getRawData();
-    $this->defaultCitationDistributionSettings = $this->configFactory->get('citation_distribute.settings')->getRawData();
+    $this->defaultPublicationSettings = $this->configFactory->get('os_publications.settings')->getRawData();
 
-    /** @var \Drupal\Core\Config\Config $citation_distribution_settings_mut */
-    $citation_distribution_settings_mut = $this->configFactory->getEditable('citation_distribute.settings');
-    $citation_distribution_settings_mut->set('citation_distribute_module_mode', CitationDistributionModes::PER_SUBMISSION);
-    $citation_distribution_settings_mut->save();
+    /** @var \Drupal\Core\Config\Config $publications_settings_mut */
+    $publications_settings_mut = $this->configFactory->getEditable('os_publications.settings');
+    $publications_settings_mut->set('citation_distribute_module_mode', CitationDistributionModes::PER_SUBMISSION);
+    $publications_settings_mut->save();
   }
 
   /**
@@ -608,10 +608,10 @@ class RepecIntegrationTest extends TestBase {
     $repec_settings_mut->setData($this->defaultRepecSettings);
     $repec_settings_mut->save(TRUE);
 
-    /** @var \Drupal\Core\Config\Config $citation_distribution_settings_mut */
-    $citation_distribution_settings_mut = $this->configFactory->getEditable('citation_distribute.settings');
-    $citation_distribution_settings_mut->setData($this->defaultCitationDistributionSettings);
-    $citation_distribution_settings_mut->save(TRUE);
+    /** @var \Drupal\Core\Config\Config $publications_settings_mut */
+    $publications_settings_mut = $this->configFactory->getEditable('os_publications.settings');
+    $publications_settings_mut->setData($this->defaultPublicationSettings);
+    $publications_settings_mut->save(TRUE);
 
     parent::tearDown();
   }
