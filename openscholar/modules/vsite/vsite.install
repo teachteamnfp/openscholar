@@ -1037,6 +1037,10 @@ function vsite_update_7041(&$sandbox) {
   // needs to run again. If you set a float, this will indicate the progress
   // of the batch so the progress bar will update.
   $sandbox['#finished'] = floor($sandbox['progress'] / $sandbox['max']);
+  // Some reason possible to reach the end before pre-calculated max.
+  if (empty($nids)) {
+    $sandbox['#finished'] = 1;
+  }
 
   if ($sandbox['#finished']) {
     $final_message = '';
