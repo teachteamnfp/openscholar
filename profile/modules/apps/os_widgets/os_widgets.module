@@ -63,6 +63,7 @@ function os_widgets_theme($existing, $type, $theme, $path) {
       'variables' => [
         'tweets' => [],
         'is_follow_me' => FALSE,
+        'follow_me_link' => '',
       ],
     ],
   ];

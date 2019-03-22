@@ -67,7 +67,7 @@ class TwitterFeedWidget extends OsWidgetsBase implements OsWidgetsInterface {
 
     $field_twitter_num_items_values = $block_content->get('field_twitter_num_items')->getValue();
     $field_twitter_exclude_retweets_values = $block_content->get('field_twitter_exclude_retweets')->getValue();
-    $field_twitter_followme_link_values = $block_content->get('field_twitter_followme_link')->getValue();
+    $field_twitter_is_followme_link_values = $block_content->get('field_twitter_is_followme_link')->getValue();
     $tweets = $this->twitterPullHandler->twitterPullRetrieve($twitkey, $field_twitter_num_items_values[0]['value'], !empty($field_twitter_exclude_retweets_values[0]['value']));
 
     foreach ($tweets as &$tweet) {
@@ -76,7 +76,10 @@ class TwitterFeedWidget extends OsWidgetsBase implements OsWidgetsInterface {
 
     $build['twitter']['#theme'] = 'os_widgets_twitter_pull';
     $build['twitter']['#tweets'] = $tweets;
-    $build['twitter']['#is_follow_me'] = !empty($field_twitter_followme_link_values[0]['value']);
+    $build['twitter']['#is_follow_me'] = !empty($field_twitter_is_followme_link_values[0]['value']);
+    $build['twitter']['#follow_me_link'] = $block_content->get('field_twitter_followme_link')->view([
+      'label' => 'hidden',
+    ]);
   }
 
   /**
