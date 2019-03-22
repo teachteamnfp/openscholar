@@ -327,11 +327,15 @@ class RoboFile extends \Robo\Tasks
         $groups = implode(',', $groups);
         $tasks[] = $this->taskExecStack()
             ->exec('docker-compose exec -T php ./vendor/bin/paratest ' .
-                '-c web/core '.
-                '--debug '.
-                ($groups ? '--group ' . $groups . ' ': ' ')  .
-                '--exclude-group=unit,functional,functional-javascript '.
-                '--verbose web/profiles/contrib/openscholar');
+                '--configuration web/core '.
+                '--bootstrap web/core/tests/bootstrap.php ' .
+                '--runner WrapperRunner ' .
+                '--processes half ' .
+                '--functional ' .
+                '--max-batch-size 4 ' .
+                ($groups ? '--group ' . $groups . ' ': ' ') .
+                '--exclude-group=unit,functional,functional-javascript ' .
+                'web/profiles/contrib/openscholar');
         return $tasks;
     }
 
