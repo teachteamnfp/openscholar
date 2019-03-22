@@ -6,9 +6,8 @@ core: 8.x
 type: theme
 
 regions:
-  navigation: 'Navigation'
   navigation_collapsible: 'Navigation (Collapsible)'
-  header: 'Top Bar'
+  header: 'Header'
   header_left: 'Header Left'
   header_right: 'Header Right'
   content: 'Content'

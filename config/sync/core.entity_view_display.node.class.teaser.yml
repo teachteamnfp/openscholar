@@ -12,10 +12,10 @@ dependencies:
     - field.field.node.class.field_year_offered
     - node.type.class
   module:
-    - entity_reference_revisions
     - layout_builder
     - link
     - options
+    - text
     - user
 third_party_settings:
   layout_builder:
@@ -25,6 +25,14 @@ targetEntityType: node
 bundle: class
 mode: teaser
 content:
+  body:
+    type: text_summary_or_trimmed
+    weight: 4
+    region: content
+    label: hidden
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
   field_class_link:
     type: link
     weight: 3
@@ -36,15 +44,6 @@ content:
       url_plain: false
       rel: ''
       target: ''
-    third_party_settings: {  }
-  field_class_materials:
-    type: entity_reference_revisions_entity_view
-    weight: 4
-    region: content
-    label: above
-    settings:
-      view_mode: default
-      link: ''
     third_party_settings: {  }
   field_semester:
     type: list_default
@@ -67,6 +66,6 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
-  body: true
   field_attached_media: true
+  field_class_materials: true
   langcode: true

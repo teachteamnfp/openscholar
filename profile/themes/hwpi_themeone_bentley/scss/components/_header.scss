@@ -1,0 +1,22 @@
+/******** header, navbar **************/
+.header-container {
+  background: $color-light-gray1;
+	color: $color-text;
+}
+/**** header container ****/
+.header-container {
+  .nav {
+    li {
+      a {
+        font: bold 13px arial,sans-serif;
+        text-decoration: none;
+        text-transform: uppercase;
+        color: $color-gray1;
+        padding: 0.3em 0 0.3em 10px;
+        &:hover {
+          background: none;
+        }
+      }
+    }
+  }
+}

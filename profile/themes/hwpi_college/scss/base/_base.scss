@@ -1,0 +1,43 @@
+/**** base styles ****/
+html,
+body {
+  background: $color-white;
+  color: $color-gray4;
+}
+body {
+  color: $color-gray;
+  line-height: 24px;
+}
+body.front {
+  overflow-x: hidden;
+}
+.dialog-off-canvas-main-canvas {
+  background: $color-light-gray1;
+	font-size: 16px;
+}
+/* Elements */
+h2 {
+  color: #1F1F1F;
+  font-family: Georgia,serif;
+  font-size: 1.45em;
+  font-weight: normal;
+  line-height: 36px;
+  padding-bottom: 0.75em;
+}
+blockquote {
+  border-left: 1px solid $color-light-gray2;
+  color: $color-dove-gray;
+  margin: 1em 0 1em 1em;
+  padding-left: 1em;
+}
+a:link {
+  color: $color-blue;
+  text-decoration: none;
+}
+.page-header {
+  color: $color-gray4;
+  font-size: 1.75em;
+  padding: 0.35em 0;
+  font-family: georgia,sans-serif;
+  font-weight: normal;
+}

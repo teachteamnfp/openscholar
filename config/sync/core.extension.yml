@@ -94,6 +94,7 @@ module:
   os_pages: 0
   os_publications: 0
   os_redirect: 0
+  os_redirect_to_source: 0
   os_rest: 0
   os_slideshow: 0
   os_software: 0

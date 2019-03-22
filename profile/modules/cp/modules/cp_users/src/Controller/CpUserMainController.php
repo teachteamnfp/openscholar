@@ -70,11 +70,21 @@ class CpUserMainController extends ControllerBase {
 
     $build = [];
 
+    $can_change_ownership = (($group->getOwnerId() == \Drupal::currentUser()->id()) || $group->getMember(\Drupal::currentUser())->hasPermission('administer group'));
+
     $userRows = [];
     /* @var \Drupal\user\UserInterface $u */
     foreach ($users as $u) {
       $roles = $group->getMember($u)->getRoles();
-      $ownership_link = Link::createfromRoute('Make Owner', 'cp.users.owner', ['user' => $u->id()], ['attributes' => ['class' => ['use-ajax']]])->toString();
+      if ($can_change_ownership && $group->getOwnerId() == $u->id()) {
+        $role_link = Link::createfromRoute('Change Owner', 'cp.users.owner', ['user' => $u->id()], ['attributes' => ['class' => ['use-ajax']]])->toString();
+      }
+      elseif ($group->getMember($u)->hasPermission('change user roles') || \Drupal::currentUser()->hasPermission('change user roles')) {
+        $role_link = 'Change Role Placeholder';
+      }
+      else {
+        $role_link = '';
+      }
       $remove_link = Link::createFromRoute('Remove', 'cp.users.remove', ['user' => $u->id()], ['attributes' => ['class' => ['use-ajax']]])->toString();
       $row = [
         'data-user-id' => $u->id(),
@@ -82,9 +92,9 @@ class CpUserMainController extends ControllerBase {
           $u->label(),
           $u->label(),
           $group->getOwnerId() == $u->id() ? $this->t('Site Owner') : current($roles)->label(),
-          $ownership_link,
+          $role_link,
           $this->t('Active'),
-          $remove_link,
+          ($group->getOwnerId() == $u->id()) ? '' : $remove_link,
         ],
       ];
       $userRows[] = $row;
@@ -119,7 +129,7 @@ class CpUserMainController extends ControllerBase {
           $this->t('Name'),
           $this->t('Username'),
           $this->t('Role'),
-          $this->t('Give Ownership'),
+          $this->t('Change Role'),
           $this->t('Status'),
           $this->t('Remove'),
         ],
@@ -172,7 +182,7 @@ class CpUserMainController extends ControllerBase {
 
     $response = new AjaxResponse();
 
-    $modal_form = $this->formBuilder()->getForm('Drupal\cp_users\Form\CpUsersRemoveForm', $user);
+    $modal_form = $this->formBuilder()->getForm('Drupal\cp_users\Form\CpUsersRemoveForm');
 
     $response->addCommand(new OpenModalDialogCommand($this->removeUserFormTitle($user), $modal_form, ['width' => '800']));
 
@@ -195,13 +205,10 @@ class CpUserMainController extends ControllerBase {
   /**
    * Modal for changing the owner of a Vsite.
    *
-   * @param \Drupal\user\UserInterface $user
-   *   The user who will be the new owner.
-   *
    * @return \Drupal\Core\Ajax\AjaxResponse
    *   The response to open the modal.
    */
-  public function changeOwnershipForm(UserInterface $user) {
+  public function changeOwnershipForm() {
     $group = $this->vsiteContextManager->getActiveVsite();
     if (!$group) {
       throw new AccessDeniedHttpException();
@@ -209,9 +216,9 @@ class CpUserMainController extends ControllerBase {
 
     $response = new AjaxResponse();
 
-    $modal_form = $this->formBuilder()->getForm('Drupal\cp_users\Form\CpUsersOwnershipForm', $user);
+    $modal_form = $this->formBuilder()->getForm('Drupal\cp_users\Form\CpUsersOwnershipForm');
 
-    $response->addCommand(new OpenModalDialogCommand($this->removeUserFormTitle($user), $modal_form, ['width' => '800']));
+    $response->addCommand(new OpenModalDialogCommand('Change Site Ownership', $modal_form, ['width' => '800']));
 
     return $response;
   }
