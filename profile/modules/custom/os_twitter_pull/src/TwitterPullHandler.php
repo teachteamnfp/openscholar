@@ -8,7 +8,7 @@ use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Extension\ModuleHandler;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Class TwitterPullHandler.
@@ -36,18 +36,18 @@ class TwitterPullHandler implements ContainerInjectionInterface {
    *   Logger channel factory.
    * @param \Drupal\Component\Datetime\TimeInterface $time
    *   Helper for get current time.
-   * @param \Symfony\Component\HttpFoundation\Request $request
-   *   Current request.
+   * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
+   *   Request stack.
    * @param \Drupal\Core\Extension\ModuleHandler $module_handler
    *   Module handler.
    */
-  public function __construct(TwitterPullConfig $twitter_pull_config, CacheBackendInterface $cache, LoggerChannelFactoryInterface $logger_factory, TimeInterface $time, Request $request, ModuleHandler $module_handler) {
+  public function __construct(TwitterPullConfig $twitter_pull_config, CacheBackendInterface $cache, LoggerChannelFactoryInterface $logger_factory, TimeInterface $time, RequestStack $request_stack, ModuleHandler $module_handler) {
     $this->puller = new TwitterPull($twitter_pull_config);
     $this->config = $twitter_pull_config;
     $this->cache = $cache;
     $this->time = $time;
     $this->logger = $logger_factory->get('os_twitter_pull');
-    $this->currentRequest = $request;
+    $this->currentRequest = $request_stack->getCurrentRequest();
     $this->moduleHandler = $module_handler;
   }
 
@@ -60,7 +60,7 @@ class TwitterPullHandler implements ContainerInjectionInterface {
       $container->get('cache.os_twitter_pull'),
       $container->get('logger.factory'),
       $container->get('datetime.time'),
-      $container->get('request_stack')->getCurrentRequest(),
+      $container->get('request_stack'),
       $container->get('module_handler')
     );
   }
