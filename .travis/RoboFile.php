@@ -304,7 +304,7 @@ class RoboFile extends \Robo\Tasks
         $groups[] = 'unit';
         $groups = implode(',', $groups);
         $tasks[] = $this->taskExecStack()
-          ->exec('docker-compose exec -T php ./vendor/bin/paratest ' .
+          ->exec('docker-compose exec -T php ./vendor/bin/phpunit ' .
               '-c web/core '.
               '--debug '.
               ($groups ? '--group ' . $groups . ' ': ' ')  .
@@ -355,7 +355,7 @@ class RoboFile extends \Robo\Tasks
         $groups[] = 'functional';
         $groups = implode(',', $groups);
         $tasks[] = $this->taskExecStack()
-            ->exec('docker-compose exec -T php ./vendor/bin/paratest ' .
+            ->exec('docker-compose exec -T php ./vendor/bin/phpunit ' .
                 '-c web/core '.
                 '--debug '.
                 ($groups ? '--group ' . $groups . ' ': ' ')  .
@@ -379,7 +379,7 @@ class RoboFile extends \Robo\Tasks
         $groups[] = 'functional-javascript';
         $groups = implode(',', $groups);
         $tasks[] = $this->taskExecStack()
-            ->exec('docker-compose exec -T php ./vendor/bin/paratest ' .
+            ->exec('docker-compose exec -T php ./vendor/bin/phpunit ' .
                 '-c web/core '.
                 '--debug '.
                 ($groups ? '--group ' . $groups . ' ': ' ')  .
