@@ -7,6 +7,7 @@ use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class TwitterPullHandler.
@@ -20,6 +21,7 @@ class TwitterPullHandler implements ContainerInjectionInterface {
   private $cache;
   private $logger;
   private $time;
+  private $currentRequest;
 
   /**
    * TwitterPullHandler constructor.
@@ -32,13 +34,16 @@ class TwitterPullHandler implements ContainerInjectionInterface {
    *   Logger channel factory.
    * @param \Drupal\Component\Datetime\TimeInterface $time
    *   Helper for get current time.
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *   Current request.
    */
-  public function __construct(TwitterPullConfig $twitter_pull_config, CacheBackendInterface $cache, LoggerChannelFactoryInterface $logger_factory, TimeInterface $time) {
+  public function __construct(TwitterPullConfig $twitter_pull_config, CacheBackendInterface $cache, LoggerChannelFactoryInterface $logger_factory, TimeInterface $time, Request $request) {
     $this->puller = new TwitterPull($twitter_pull_config);
     $this->config = $twitter_pull_config;
     $this->cache = $cache;
     $this->time = $time;
     $this->logger = $logger_factory->get('os_twitter_pull');
+    $this->currentRequest = $request;
   }
 
   /**
@@ -49,7 +54,8 @@ class TwitterPullHandler implements ContainerInjectionInterface {
       $container->get('os_twitter_pull.config'),
       $container->get('cache.os_twitter_pull'),
       $container->get('logger.factory'),
-      $container->get('datetime.time')
+      $container->get('datetime.time'),
+      $container->get('request_stack')->getCurrentRequest()
     );
   }
 
@@ -68,7 +74,6 @@ class TwitterPullHandler implements ContainerInjectionInterface {
    *   Return an array of objects what are store filtered tweet properties.
    */
   public function twitterPullRetrieve($twitkey, $num_items, $exclude_retweets) {
-    global $is_https;
 
     $this->puller->setTwitkey($twitkey);
     $this->puller->setNumItems($num_items);
@@ -116,7 +121,7 @@ class TwitterPullHandler implements ContainerInjectionInterface {
 
     // If we have tweets and are viewing a secure site, we want to set the url
     // to the userphoto to use the secure image to avoid insecure errors.
-    if (!empty($tweets) && is_array($tweets) && $is_https) {
+    if (!empty($tweets) && is_array($tweets) && $this->currentRequest->isSecure()) {
       foreach ($tweets as $i => $tweet) {
         $tweets[$i]->userphoto = $tweet->userphoto_https;
       }
