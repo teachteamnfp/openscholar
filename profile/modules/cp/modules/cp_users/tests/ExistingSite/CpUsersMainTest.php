@@ -75,6 +75,7 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
       $user = $this->createUser([], $username, FALSE);
 
       $this->visit('/site01/cp/users');
+      $this->assertContains('/site01/cp/users', $this->getSession()->getCurrentUrl());
       $page = $this->getCurrentPage();
       $page->clickLink('+ Add a member');
       $this->assertSession()->waitForElement('css', '#drupal-modal--content');
