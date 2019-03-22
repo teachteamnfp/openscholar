@@ -2,6 +2,8 @@
 
 namespace Drupal\Tests\cp_users\ExistingSite;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Test\AssertMailTrait;
 use Drupal\Tests\vsite\ExistingSiteJavascript\VsiteExistingSiteJavascriptTestBase;
 
 /**
@@ -13,6 +15,8 @@ use Drupal\Tests\vsite\ExistingSiteJavascript\VsiteExistingSiteJavascriptTestBas
  */
 class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
 
+  use AssertMailTrait;
+
   /**
    * The group tests are being run in.
    *
@@ -21,10 +25,23 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
   protected $group;
 
   /**
+   * The mail interface we're replacing. We need to put it back when we're done.
+   *
+   * @var string
+   */
+  protected $oldMailHandler;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
     parent::setUp();
+
+    /** @var ConfigFactoryInterface $configFactory */
+    $configFactory = $this->container->get('config.factory');
+    $config = $configFactory->get('system.mail');
+    $this->oldMailHandler = $config->get('interface.default');
+    $config->set('interface.default', 'test_mail_collector')->save();
 
     $this->group = $this->createGroup([
       'type' => 'personal',
@@ -33,6 +50,18 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
         'alias' => '/site01',
       ],
     ]);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function tearDown() {
+    /** @var ConfigFactoryInterface $configFactory */
+    $configFactory = $this->container->get('config.factory');
+    $config = $configFactory->get('system.mail');
+    $config->set('interface.default', $this->oldMailHandler)->save();
+
+    parent::tearDown();
   }
 
   /**
@@ -45,6 +74,7 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
       $this->drupalLogin($account);
       $username = $this->randomString();
       $user = $this->createUser([], $username, FALSE);
+
       $this->visit('/site01/cp/users');
       $page = $this->getCurrentPage();
       $page->clickLink('+ Add a member');
@@ -59,7 +89,9 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
       $page->selectFieldOption('role', 'personal-member');
       $page->pressButton("Save");
       $this->assertSession()->assertWaitOnAjaxRequest();
+      $this->assertContains('/site01/cp/users', $this->getSession()->getCurrentUrl());
       $this->assertTrue($page->hasContent($username), "Username $username not found on page.");
+
 
       $remove = $page->find('xpath', '//tr/td[contains(.,"' . $username . '")]/following-sibling::td/a[contains(.,"Remove")]');
       $this->assertNotNull($remove, "Remove link for $username not found.");
