@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ad74aec82108a1f69d6a88f80f193c2b",
+    "content-hash": "ae34afb0ab1ed4b3d8ed8d2b4ee21809",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -4700,6 +4700,57 @@
             }
         },
         {
+            "name": "drupal/mathjax",
+            "version": "2.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/mathjax",
+                "reference": "8.x-2.7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/mathjax-8.x-2.7.zip",
+                "reference": "8.x-2.7",
+                "shasum": "87f3772aab6a21d79168d00d48c4e41010522fec"
+            },
+            "require": {
+                "drupal/core": "~8.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-2.x": "2.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-2.7",
+                    "datestamp": "1492196642",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "cilefen",
+                    "homepage": "https://www.drupal.org/user/1850070"
+                },
+                {
+                    "name": "julou",
+                    "homepage": "https://www.drupal.org/user/273952"
+                }
+            ],
+            "description": "Javascript-based LaTeX rendering solution for your Drupal website.",
+            "homepage": "https://www.drupal.org/project/mathjax",
+            "support": {
+                "source": "http://cgit.drupalcode.org/mathjax"
+            }
+        },
+        {
             "name": "drupal/metatag",
             "version": "1.7.0",
             "source": {
@@ -5063,6 +5114,9 @@
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
+                },
+                "patches_applied": {
+                    "Handle matched redirect alter": "patches/redirect-subscriber-hook-alter.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -5149,6 +5203,9 @@
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
+                },
+                "patches_applied": {
+                    "Remove warnings and errors.": "patches/rng_warnings_errors_fix.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
