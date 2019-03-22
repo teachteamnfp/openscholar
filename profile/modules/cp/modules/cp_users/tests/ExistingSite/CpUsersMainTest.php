@@ -2,11 +2,11 @@
 
 namespace Drupal\Tests\cp_users\ExistingSite;
 
-use Drupal\group\Entity\GroupInterface;
 use Drupal\Tests\vsite\ExistingSiteJavascript\VsiteExistingSiteJavascriptTestBase;
 
 /**
- * Class CpUsersMainTests
+ * Class CpUsersMainTests.
+ *
  * @group functional-javascript
  * @group wip
  * @package Drupal\Tests\cp_users\ExistingSite
@@ -14,7 +14,9 @@ use Drupal\Tests\vsite\ExistingSiteJavascript\VsiteExistingSiteJavascriptTestBas
 class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
 
   /**
-   * @var GroupInterface
+   * The group tests are being run in.
+   *
+   * @var \Drupal\group\Entity\GroupInterface
    */
   protected $group;
 
@@ -33,13 +35,16 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
     ]);
   }
 
+  /**
+   * Tests for adding and removing users.
+   */
   public function testAddExistingUser() {
     try {
       $account = $this->entityTypeManager->getStorage('user')->load(1);
       $account->passRaw = 'admin';
       $this->drupalLogin($account);
       $username = $this->randomString();
-      $user = $this->createUser([], $username, false);
+      $user = $this->createUser([], $username, FALSE);
       $this->visit('/site01/cp/users');
       $page = $this->getCurrentPage();
       $page->clickLink('+ Add a member');
@@ -57,10 +62,10 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
       $this->assertTrue($page->hasContent($username), "Username $username not found on page.");
     }
     catch (\Exception $e) {
-      \file_put_contents(REQUEST_TIME.'.jpg', $this->getSession()->getScreenshot());
+      \file_put_contents(REQUEST_TIME . '.jpg', $this->getSession()->getScreenshot());
       $page = $this->getCurrentPage();
-      \file_put_contents(REQUEST_TIME.'.txt', $page->getContent());
-      $this->fail(\get_class($e).' in test: '.$e->getMessage()."\n".$e->getFile().':'.$e->getLine());
+      \file_put_contents(REQUEST_TIME . '.txt', $page->getContent());
+      $this->fail(\get_class($e) . ' in test: ' . $e->getMessage() . "\n" . $e->getFile() . ':' . $e->getLine());
     }
   }
 
