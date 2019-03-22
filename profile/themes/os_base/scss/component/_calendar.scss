@@ -85,3 +85,36 @@ aside {
     order: 2;
   }
 }
+/**** full calender ****/
+.full-calendar-view  {
+  .fc-header-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    h2 {
+      padding-bottom: 0;
+    }
+    .fc-center {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      margin-top: 17px;
+    }
+    button {
+      margin: 0;
+      background: $color-light-gray4;
+      border: 1px solid $color-light-gray5;
+      border-radius: 0;
+      &.ui-state-active {
+        background: $color-white;
+        color: $color-black;
+      }
+      &:first-child {
+        border-radius: 4px 0px 0px 4px;
+      }
+      &:last-child {
+        border-radius: 0px 4px 4px 0px;
+      }
+    }
+  }
+}
