@@ -104,11 +104,7 @@ class TwitterPull {
 
     $query .= '&tweet_mode=extended';
 
-    $twitter = new \TwitterAPIExchange($this->settings);
-    $req = $twitter->setGetfield($query)
-      ->buildOauth($url, 'GET')
-      ->performRequest();
-    $items = json_decode($req);
+    $items = $this->getItemsFromExchange($query, $url);
 
     $this->parseItems($items);
 
@@ -168,6 +164,28 @@ class TwitterPull {
     }
 
     $this->tweets = $tweets;
+  }
+
+  /**
+   * Get items from exchange.
+   *
+   * @param string $query
+   *   Query with filters and parameters.
+   * @param string $url
+   *   Twitter API url.
+   *
+   * @return mixed
+   *   List of returned object or null on decode error.
+   *
+   * @throws \Exception
+   */
+  public function getItemsFromExchange(string $query, string $url) {
+    $twitter = new \TwitterAPIExchange($this->settings);
+    $req = $twitter->setGetfield($query)
+      ->buildOauth($url, 'GET')
+      ->performRequest();
+    $items = json_decode($req);
+    return $items;
   }
 
 }
