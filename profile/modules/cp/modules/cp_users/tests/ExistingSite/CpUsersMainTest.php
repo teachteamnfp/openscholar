@@ -60,6 +60,14 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
       $page->pressButton("Save");
       $this->assertSession()->assertWaitOnAjaxRequest();
       $this->assertTrue($page->hasContent($username), "Username $username not found on page.");
+
+      $remove = $page->find('xpath', '//tr/td[contains(.,"'.$username.'")]/following-sibling::td/a[contains(.,"Remove")]');
+      $this->assertNotNull($remove, "Remove link for $username not found.");
+      $remove->click();
+      $this->assertSession()->waitForElement('css', '#drupal-modal--content');
+      $page->pressButton('Confirm');
+      $this->assertSession()->assertWaitOnAjaxRequest();
+      $this->assertFalse($page->hasContent($username), "Username $username still found on page.");
     }
     catch (\Exception $e) {
       \file_put_contents(REQUEST_TIME . '.jpg', $this->getSession()->getScreenshot());
