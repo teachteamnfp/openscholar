@@ -97,6 +97,8 @@ module:
   os_rest: 0
   os_slideshow: 0
   os_software: 0
+  os_twitter_pull: 0
+  os_widgets: 0
   os_wysiwyg: 0
   page_cache: 0
   pagebreak: 0
@@ -125,6 +127,7 @@ module:
   token: 0
   toolbar: 0
   toolbar_menu: 0
+  twig_extensions: 0
   unlimited_number: 0
   update: 0
   user: 0

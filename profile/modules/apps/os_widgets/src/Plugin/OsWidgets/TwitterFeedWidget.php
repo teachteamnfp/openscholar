@@ -2,6 +2,7 @@
 
 namespace Drupal\os_widgets\Plugin\OsWidgets;
 
+use Drupal\Component\Utility\Xss;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\os_twitter_pull\TwitterPullHandler;
 use Drupal\os_widgets\OsWidgetsBase;
@@ -69,9 +70,32 @@ class TwitterFeedWidget extends OsWidgetsBase implements OsWidgetsInterface {
     $field_twitter_followme_link_values = $block_content->get('field_twitter_followme_link')->getValue();
     $tweets = $this->twitterPullHandler->twitterPullRetrieve($twitkey, $field_twitter_num_items_values[0]['value'], !empty($field_twitter_exclude_retweets_values[0]['value']));
 
+    foreach ($tweets as &$tweet) {
+      $tweet->text = $this->addLinks($tweet->text);
+    }
+
     $build['twitter']['#theme'] = 'os_widgets_twitter_pull';
     $build['twitter']['#tweets'] = $tweets;
     $build['twitter']['#is_follow_me'] = !empty($field_twitter_followme_link_values[0]['value']);
+  }
+
+  /**
+   * Automatically add links to URLs and Twitter usernames in a tweet.
+   */
+  private function addLinks($text) {
+    $pattern = '#(https?)://([^\s\(\)\,]+)#ims';
+    $repl = '<a href="$1://$2" rel="nofollow" title="$1://$2">$2</a>';
+    $text = preg_replace($pattern, $repl, $text);
+
+    $pattern = '#@(\w+)#ims';
+    $repl = '<a href="http://twitter.com/$1" rel="nofollow" title="@$1">@$1</a>';
+    $text = preg_replace($pattern, $repl, $text);
+
+    $pattern = '/[#]+([A-Za-z0-9-_]+)/';
+    $repl = '<a href="http://twitter.com/#!/search?q=%23$1" title="#$1" rel="nofollow">#$1</a>';
+    $text = preg_replace($pattern, $repl, $text);
+
+    return Xss::filter($text);
   }
 
 }
