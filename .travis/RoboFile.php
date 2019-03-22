@@ -329,10 +329,11 @@ class RoboFile extends \Robo\Tasks
             ->exec('docker-compose exec -T php ./vendor/bin/paratest ' .
                 '--configuration web/core '.
                 '--bootstrap web/core/tests/bootstrap.php ' .
-                '--runner WrapperRunner ' .
-                '--processes half ' .
+                '--runner SqliteRunner ' .
+                '--processes 2 ' .
                 '--functional ' .
                 '--max-batch-size 4 ' .
+                '--stop-on-failure ' .
                 ($groups ? '--group ' . $groups . ' ': ' ') .
                 '--exclude-group=unit,functional,functional-javascript ' .
                 'web/profiles/contrib/openscholar');
