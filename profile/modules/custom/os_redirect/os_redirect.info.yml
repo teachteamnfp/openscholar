@@ -1,0 +1,8 @@
+name: 'OS Redirect'
+description: 'Create custom vsite specific redirects.'
+type: module
+core: 8.x
+dependencies:
+  - "cp:cp_settings"
+  - "drupal:redirect"
+  - "drupal:vsite"

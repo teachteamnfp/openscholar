@@ -34,6 +34,7 @@ else
   git checkout -b $CI_BRANCH;
 fi
 
+# Basic setups
 phpenv local 7.2
 php -v || exit 1
 
@@ -82,35 +83,39 @@ cd ${BUILD_ROOT}
 #Only build if no build has ever happened, or if the make files have changed
 if [[ $FORCE_REBUILD == "1" ]] || [[ "$(cmp -b 'openscholar/composer.json' '/tmp/composer.json')" != "" ]] || [[ "$(cmp -b 'openscholar/composer.lock' '/tmp/composer.lock')" != "" ]] || [[ ${SHOULD_REBUILD_SCSS} -eq 1 ]]; then
 
-# Chores.
-echo "Rebuilding..."
-cd openscholar
+  # Chores.
+  echo "Rebuilding..."
+  cd openscholar
 
-# Download composer components
-composer install --ignore-platform-reqs
+  # Download composer components
+  composer install --ignore-platform-reqs || exit 1
 
-# Build CSS
-npm install && cd profile/themes/os_base && ./../../../node_modules/.bin/gulp sass
+  # Do not use the node_modules symlink, and reinstall node modules
+  rm -rf node_modules
+  npm install || exit 1
 
-cd ../../../..
+  # Build CSS
+  cd profile/themes
+  ./../../node_modules/.bin/gulp sass || exit 1
 
-#remove install.php
-rm -Rf web/install.php || true
-#remove the ignore file to checkin drupal core
-rm -f openscholar/.gitignore
+  cd ../../..
 
-find openscholar/web openscholar/vendor -name '.git' | xargs rm -rf
-find openscholar/web openscholar/vendor -name '.gitignore' | xargs rm -rf
+  #remove install.php
+  rm -Rf web/install.php || true
+  #remove the ignore file to checkin drupal core
+  rm -f openscholar/.gitignore
 
-# Add New Files to repo and commit changes
-git add $BUILD_ROOT/openscholar
+  find openscholar/web openscholar/vendor openscholar/node_modules -name '.git' | xargs rm -rf
+  find openscholar/web openscholar/vendor openscholar/node_modules -name '.gitignore' | xargs rm -rf
 
-git commit -a -m "$CI_MESSAGE" -m "" -m "git-subtree-split: $CI_COMMIT_ID"
-#END BUILD PROCESS
+  # Add New Files to repo and commit changes
+  git add $BUILD_ROOT/openscholar
+
+  git commit -a -m "$CI_MESSAGE" -m "" -m "git-subtree-split: $CI_COMMIT_ID"
 else
-git commit -a -m "$CI_MESSAGE" -m "" -m "git-subtree-split: $CI_COMMIT_ID" || git commit --amend -m "$CI_MESSAGE" -m "" -m "git-subtree-split: $CI_COMMIT_ID"
+  #END BUILD PROCESS
+  git commit -a -m "$CI_MESSAGE" -m "" -m "git-subtree-split: $CI_COMMIT_ID" || git commit --amend -m "$CI_MESSAGE" -m "" -m "git-subtree-split: $CI_COMMIT_ID"
 fi
-
 
 git push origin $CI_BRANCH
 echo -e "FINISHED BUILDING $CI_BRANCH ON BITBUCKET"
