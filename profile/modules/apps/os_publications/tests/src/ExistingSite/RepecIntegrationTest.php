@@ -11,7 +11,7 @@ use Drupal\os_publications\CitationDistributionModes;
 /**
  * RepecIntegrationTest.
  *
- * @group kernel-unique
+ * @group kernel
  */
 class RepecIntegrationTest extends TestBase {
 
