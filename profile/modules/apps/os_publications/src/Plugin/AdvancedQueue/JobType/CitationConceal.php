@@ -3,7 +3,9 @@
 namespace Drupal\os_publications\Plugin\AdvancedQueue\JobType;
 
 use Drupal\advancedqueue\Job;
+use Drupal\advancedqueue\JobResult;
 use Drupal\advancedqueue\Plugin\AdvancedQueue\JobType\JobTypeBase;
+use Drupal\Core\Messenger\MessengerTrait;
 
 /**
  * The job type for concealing citations.
@@ -17,11 +19,14 @@ use Drupal\advancedqueue\Plugin\AdvancedQueue\JobType\JobTypeBase;
  */
 class CitationConceal extends JobTypeBase {
 
+  use MessengerTrait;
+
   /**
    * {@inheritdoc}
    */
   public function process(Job $job) {
-    // TODO: Implement process() method.
+    $this->messenger()->addMessage('Citation concealed.');
+    return JobResult::success();
   }
 
 }
