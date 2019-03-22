@@ -175,7 +175,7 @@ class RoboFile extends \Robo\Tasks
         $tasks[] = $this->taskExec('docker-compose up -d');
         $tasks[] = $this->taskExec('make');
         $tasks[] = $this->taskExec('docker-compose exec -T php cp .travis/config/phpunit.xml web/core/phpunit.xml');
-        $tasks[] = $this->taskExec('docker-compose exec -T php cp .travis/config//bootstrap.php web/core/tests/bootstrap.php');
+        $tasks[] = $this->taskExec('docker-compose exec -T php cp .travis/config/bootstrap.php web/core/tests/bootstrap.php');
         $tasks[] = $this->taskExec('docker-compose exec -T php mkdir -p web/sites/simpletest');
         return $tasks;
     }
@@ -304,7 +304,7 @@ class RoboFile extends \Robo\Tasks
         $groups[] = 'unit';
         $groups = implode(',', $groups);
         $tasks[] = $this->taskExecStack()
-          ->exec('docker-compose exec -T php ./vendor/bin/phpunit ' .
+          ->exec('docker-compose exec -T php ./vendor/bin/paratest ' .
               '-c web/core '.
               '--debug '.
               ($groups ? '--group ' . $groups . ' ': ' ')  .
@@ -326,7 +326,7 @@ class RoboFile extends \Robo\Tasks
         $groups[] = 'kernel';
         $groups = implode(',', $groups);
         $tasks[] = $this->taskExecStack()
-            ->exec('docker-compose exec -T php ./vendor/bin/phpunit ' .
+            ->exec('docker-compose exec -T php ./vendor/bin/paratest ' .
                 '-c web/core '.
                 '--debug '.
                 ($groups ? '--group ' . $groups . ' ': ' ')  .
@@ -350,7 +350,7 @@ class RoboFile extends \Robo\Tasks
         $groups[] = 'functional';
         $groups = implode(',', $groups);
         $tasks[] = $this->taskExecStack()
-            ->exec('docker-compose exec -T php ./vendor/bin/phpunit ' .
+            ->exec('docker-compose exec -T php ./vendor/bin/paratest ' .
                 '-c web/core '.
                 '--debug '.
                 ($groups ? '--group ' . $groups . ' ': ' ')  .
@@ -374,7 +374,7 @@ class RoboFile extends \Robo\Tasks
         $groups[] = 'functional-javascript';
         $groups = implode(',', $groups);
         $tasks[] = $this->taskExecStack()
-            ->exec('docker-compose exec -T php ./vendor/bin/phpunit ' .
+            ->exec('docker-compose exec -T php ./vendor/bin/paratest ' .
                 '-c web/core '.
                 '--debug '.
                 ($groups ? '--group ' . $groups . ' ': ' ')  .

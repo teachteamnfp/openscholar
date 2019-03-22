@@ -240,7 +240,8 @@
         "webflo/drupal-core-require-dev": "^8.6.11",
         "drupal/devel": "^1.2",
         "weitzman/drupal-test-traits": "^1.0@beta",
-        "dmore/chrome-mink-driver": "^2.6"
+        "dmore/chrome-mink-driver": "^2.6",
+        "brianium/paratest": "^1.1"
     },
     "conflict": {
         "drupal/drupal": "*"
