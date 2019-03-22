@@ -1,16 +1,15 @@
-uuid: 6ba09d2c-da4d-4cd7-887d-50d51e1250c7
+uuid: fa55d3a8-d81b-4b66-8dbb-6b8485a9002d
 langcode: en
 status: true
 dependencies:
   module:
     - block_content
-    - link
-id: block_content.field_twitter_followme_link
-field_name: field_twitter_followme_link
+id: block_content.field_twitter_is_followme_link
+field_name: field_twitter_is_followme_link
 entity_type: block_content
-type: link
+type: boolean
 settings: {  }
-module: link
+module: core
 locked: false
 cardinality: 1
 translatable: true
