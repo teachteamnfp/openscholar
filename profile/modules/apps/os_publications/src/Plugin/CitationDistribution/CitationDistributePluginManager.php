@@ -2,6 +2,8 @@
 
 namespace Drupal\os_publications\Plugin\CitationDistribution;
 
+use Drupal\advancedqueue\Entity\Queue;
+use Drupal\advancedqueue\Job;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Config\ConfigFactory;
 use Drupal\Core\Entity\EntityInterface;
@@ -73,11 +75,23 @@ class CitationDistributePluginManager extends DefaultPluginManager {
         /** @var \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributionInterface $plugin */
         $plugin = $this->createInstance($item->getValue()['value']);
 
-        if ($dist_mode === CitationDistributionModes::PER_SUBMISSION) {
-          $plugin->save($entity);
-        }
-        else {
-          // TODO: Implement Queue Api for adding entity for cron operation.
+        switch ($dist_mode) {
+          case CitationDistributionModes::PER_SUBMISSION:
+            $plugin->save($entity);
+
+            continue;
+
+          case CitationDistributionModes::BATCH:
+            $job = Job::create('os_publications_citation_distribute', [
+              'id' => $entity->id(),
+            ]);
+            $queue = Queue::load('publications');
+            $queue->enqueueJob($job);
+
+            continue;
+
+          default:
+            continue;
         }
       }
     }
@@ -103,11 +117,23 @@ class CitationDistributePluginManager extends DefaultPluginManager {
         /** @var \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributionInterface $plugin */
         $plugin = $this->createInstance($item->getValue()['value']);
 
-        if ($dist_mode === CitationDistributionModes::PER_SUBMISSION) {
-          $plugin->delete($entity);
-        }
-        else {
-          // TODO: Implement Queue Api for adding entity for cron operation.
+        switch ($dist_mode) {
+          case CitationDistributionModes::PER_SUBMISSION:
+            $plugin->delete($entity);
+
+            continue;
+
+          case CitationDistributionModes::BATCH:
+            $job = Job::create('os_publications_citation_conceal', [
+              'id' => $entity->id(),
+            ]);
+            $queue = Queue::load('publications');
+            $queue->enqueueJob($job);
+
+            continue;
+
+          default:
+            continue;
         }
       }
     }
