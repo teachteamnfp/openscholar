@@ -36,7 +36,7 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
   public function testAddExistingUser() {
     try {
       $account = $this->entityTypeManager->getStorage('user')->load(1);
-      $account->passRaw = 'DgNApAnKAv';
+      $account->passRaw = 'admin';
       $this->drupalLogin($account);
       $username = $this->randomString();
       $user = $this->createUser([], $username, false);
