@@ -9,6 +9,11 @@ use weitzman\DrupalTestTraits\ExistingSiteBase;
 
 /**
  * Test base for os_twitter_pull.handler service tests.
+ *
+ * @group twitter
+ * @group kernel
+ *
+ * @coversDefaultClass \Drupal\os_twitter_pull\TwitterPullHandler
  */
 class OsTwitterPullServiceTest extends ExistingSiteBase {
 
