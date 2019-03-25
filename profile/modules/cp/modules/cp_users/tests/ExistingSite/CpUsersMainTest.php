@@ -54,7 +54,9 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
     $this->group = $this->createGroup([
       'type' => 'personal',
       'uid' => 1,
-      'path' => '/site01',
+      'path' => [
+        'alias' => '/site01'
+      ],
     ]);
   }
 
