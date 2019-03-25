@@ -4,6 +4,7 @@ namespace Drupal\Tests\os_publications\ExistingSite;
 
 use Drupal\advancedqueue\Entity\Queue;
 use Drupal\advancedqueue\Job;
+use Drupal\bibcite_entity\Entity\ReferenceInterface;
 use Drupal\Component\Serialization\Json;
 use Drupal\os_publications\CitationDistributionModes;
 
@@ -52,6 +53,13 @@ class CitationDistributionBatchModeTest extends TestBase {
   protected $queue;
 
   /**
+   * The processor being tested.
+   *
+   * @var \Drupal\advancedqueue\ProcessorInterface
+   */
+  protected $processor;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
@@ -62,6 +70,7 @@ class CitationDistributionBatchModeTest extends TestBase {
     $this->defaultPublicationsSettings = $this->configFactory->get('os_publications.settings')->getRawData();
     $this->databaseConnection = $this->container->get('database');
     $this->queue = Queue::load('publications');
+    $this->processor = $this->container->get('advancedqueue.processor');
 
     /** @var \Drupal\Core\Config\Config $publications_settings_mut */
     $publications_settings_mut = $this->configFactory->getEditable('os_publications.settings');
@@ -74,6 +83,7 @@ class CitationDistributionBatchModeTest extends TestBase {
    *
    * @covers \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager::distribute
    * @covers \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager::conceal
+   * @covers \Drupal\os_publications\Plugin\AdvancedQueue\JobType\CitationDistribute::process
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
@@ -85,19 +95,27 @@ class CitationDistributionBatchModeTest extends TestBase {
     $file_name = "{$serie_directory_config}_{$reference->getEntityTypeId()}_{$reference->id()}.rdf";
 
     $this->assertFileNotExists("$directory/$file_name");
+    $this->assertItemExistsInQueue($reference);
 
-    $raw_jobs = $this->databaseConnection->query('SELECT * FROM {advancedqueue} WHERE {queue_id} = :queue_id AND {type} = :type AND {state} = :state', [
-      ':queue_id' => 'publications',
-      ':type' => 'os_publications_citation_distribute',
-      ':state' => Job::STATE_QUEUED,
-    ])->fetchAllAssoc('job_id', \PDO::FETCH_ASSOC);
+    $this->processor->processQueue($this->queue);
 
-    $this->assertCount(1, $raw_jobs);
+    $this->assertFileExists("$directory/$file_name");
+    $content = file_get_contents("$directory/$file_name");
+    $this->assertTemplateContent($reference, $content);
 
-    $job = reset($raw_jobs);
-    $payload = Json::decode($job['payload']);
+    // Test updation.
+    $reference->set('bibcite_abst_e', [
+      'value' => 'Test abstract',
+    ]);
+    $reference->save();
 
-    $this->assertEquals($reference->id(), $payload['id']);
+    $this->assertItemExistsInQueue($reference);
+
+    $this->processor->processQueue($this->queue);
+
+    $this->assertFileExists("$directory/$file_name");
+    $content = file_get_contents("$directory/$file_name");
+    $this->assertTemplateContent($reference, $content);
 
     // Test deletion.
     $reference->delete();
@@ -114,6 +132,27 @@ class CitationDistributionBatchModeTest extends TestBase {
     $payload = Json::decode($job['payload']);
 
     $this->assertEquals($reference->id(), $payload['id']);
+  }
+
+  /**
+   * Asserts presence of item in queue.
+   *
+   * @param \Drupal\bibcite_entity\Entity\ReferenceInterface $item
+   *   The item.
+   */
+  protected function assertItemExistsInQueue(ReferenceInterface $item) {
+    $raw_jobs = $this->databaseConnection->query('SELECT * FROM {advancedqueue} WHERE {queue_id} = :queue_id AND {type} = :type AND {state} = :state', [
+      ':queue_id' => 'publications',
+      ':type' => 'os_publications_citation_distribute',
+      ':state' => Job::STATE_QUEUED,
+    ])->fetchAllAssoc('job_id', \PDO::FETCH_ASSOC);
+
+    $this->assertCount(1, $raw_jobs);
+
+    $job = reset($raw_jobs);
+    $payload = Json::decode($job['payload']);
+
+    $this->assertEquals($item->id(), $payload['id']);
   }
 
   /**
