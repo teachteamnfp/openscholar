@@ -73,3 +73,32 @@ nav {
     width: 100%;
   }
 }
+@media #{$mobile} {
+  .navbar-collapse {
+    .nav.navbar-nav {
+      margin-top: 0;
+      margin-bottom: 0;
+      > li {
+        > a {
+          padding: 8px 20px;
+          font-size: 20px;
+        }
+      }
+      .dropdown-menu {
+        display: block;
+        position: inherit;
+        background: none;
+        padding: 0;
+        margin: 0;
+        float: none;
+        li {
+          a {
+            font-size: 19px;
+            font-weight: normal;
+            padding: 8px 20px;
+          }
+        }
+      }
+    }
+  }
+}
