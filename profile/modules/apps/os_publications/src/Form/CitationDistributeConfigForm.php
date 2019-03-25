@@ -95,15 +95,6 @@ class CitationDistributeConfigForm extends ConfigFormBase {
 	      <br><strong>Per Submission mode</strong> (<em>default</em>) will update or create a meta file whenever content submitted or updated.'),
     ];
 
-    // Cron limit.
-    $form['citation_distribute']['citation_distribute_cron_limit'] = [
-      '#type' => 'textfield',
-      '#title' => 'Batch Size Limit',
-      '#description' => $this->t('(Batch mode only) Limit how many publications can be submitted per cron run.'),
-      '#required' => FALSE,
-      '#default_value' => $config->get('citation_distribute_cron_limit'),
-    ];
-
     // List all our plugins, include autoflag checkboxes.
     $form['citation_distribute']['autoflag'] = [
       '#type' => 'fieldset',
@@ -130,15 +121,6 @@ class CitationDistributeConfigForm extends ConfigFormBase {
   }
 
   /**
-   * Validate batch size limit.
-   */
-  public function validate($form, &$form_state) {
-    if ((int) $form_state['values']['citation_distribute_cron_limit'] <= 0) {
-      $form_state->setErrorByName('citation_distribute_cron_limit', $this->t('Batch size limit must be a positive integer.'));
-    }
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
@@ -147,7 +129,6 @@ class CitationDistributeConfigForm extends ConfigFormBase {
 
     $this->config(self::SETTINGS)
       ->set('citation_distribute_module_mode', $form_state->getValue('citation_distribute_module_mode'))
-      ->set('citation_distribute_cron_limit', $form_state->getValue('citation_distribute_cron_limit'))
       ->save();
 
     foreach ($this->citationDistributePluginManager->getDefinitions() as $plugin) {

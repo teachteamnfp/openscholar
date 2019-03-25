@@ -1,6 +1,7 @@
 module:
   admin_toolbar: 0
   admin_toolbar_tools: 0
+  advancedqueue: 0
   anchor_link: 0
   basic_auth: 0
   bibcite: 0
