@@ -1,0 +1,23 @@
+uuid: ea9a0b2f-123a-41aa-b693-8db0960d6258
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.twitter_feed
+    - field.storage.block_content.field_twitter_followme_link
+  module:
+    - link
+id: block_content.twitter_feed.field_twitter_followme_link
+field_name: field_twitter_followme_link
+entity_type: block_content
+bundle: twitter_feed
+label: 'Follow me link'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 17
+  title: 1
+field_type: link

@@ -1,0 +1,15 @@
+services:
+  os_twitter_pull.config:
+    class: Drupal\os_twitter_pull\TwitterPullConfig
+    arguments: ['@config.factory']
+  os_twitter_pull.puller:
+    class: Drupal\os_twitter_pull\TwitterPull
+  os_twitter_pull.handler:
+    class: Drupal\os_twitter_pull\TwitterPullHandler
+    arguments: ['@os_twitter_pull.config', '@os_twitter_pull.puller', '@cache.os_twitter_pull', '@logger.factory', '@datetime.time', '@request_stack', '@module_handler']
+  cache.os_twitter_pull:
+    class: Drupal\Core\Cache\CacheBackendInterface
+    tags:
+      - { name: cache.bin }
+    factory: cache_factory:get
+    arguments: [os_twitter_pull]
