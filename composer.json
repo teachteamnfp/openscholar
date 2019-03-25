@@ -237,7 +237,8 @@
         "j7mbo/twitter-api-php": "^1.0",
         "twig/extensions": "^1.5",
         "drupal/twig_extensions": "^2.0",
-        "drupal/mathjax": "^2.7"
+        "drupal/mathjax": "^2.7",
+        "drupal/advancedqueue": "^1.0@beta"
     },
     "require-dev": {
         "drupal/features": "^3.7",

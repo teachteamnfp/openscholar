@@ -1,0 +1,54 @@
+/**** navbar background ****/
+.navbar-collapse {
+  background: $color-light-gray1;
+  padding: 8px 0 !important;
+  /***** navbar nav *****/
+  .navbar-nav {
+    > li {
+      > a {
+        color: #303030;
+        padding: 8px;;
+        font-size: 18px;
+        text-transform: uppercase;
+        &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
+          background: #1E2540;
+          color: $color-white;
+        }
+      }
+      &.open, &.active {
+        > a, > a:hover, > a:active, > a:focus {
+          background: #1E2540;
+          color: $color-white;
+        }
+      }
+    }
+  }
+  /**** dropdown menu ****/
+  .dropdown-menu {
+    background: #F0F0EE;
+    > li {
+      > a {
+        color: #303030;
+        font-family: arial;
+        font-size: 13px;
+        font-weight: bold;
+        padding: 10px 15px;
+        text-transform: uppercase;
+        &:hover, &:active {
+          color: #303030;
+          background: #F0F0EE;
+        }
+      }
+      &.active {
+        a {
+          color: $color-gray1;
+          background: #F0F0EE;
+          &:hover {
+            color: #666;
+            background: #F0F0EE;
+          }
+        }
+      }
+    }
+  }
+}

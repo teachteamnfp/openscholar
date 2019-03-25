@@ -12,3 +12,17 @@ os_classes.settings.semester_field_options_form:
     _title: 'Semester allowed values'
   requirements:
     _permission: 'administer site configuration'
+os_classes.paragraph_add_form:
+  path: 'node/{nid}/add/paragraph/{type}'
+  defaults:
+    _controller: '\Drupal\os_classes\Controller\ParagraphAddController::buildAddForm'
+    _title: 'Add Class Material'
+  requirements:
+    _permission: 'administer site configuration'
+os_classes.paragraphs_class_material:
+  path: 'classes/{class}/materials/{material}'
+  defaults:
+    _controller: '\Drupal\os_classes\Controller\ParagraphAddController::buildMaterialView'
+    _title_callback: '\Drupal\os_classes\Controller\ParagraphAddController::getTitle'
+  requirements:
+    _permission: 'access content'
