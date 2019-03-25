@@ -12,8 +12,12 @@ dependencies:
     - node.type.presentation
   module:
     - datetime
+    - layout_builder
     - text
     - user
+third_party_settings:
+  layout_builder:
+    sections: {  }
 id: node.presentation.teaser
 targetEntityType: node
 bundle: presentation
@@ -22,14 +26,14 @@ content:
   body:
     label: hidden
     type: text_summary_or_trimmed
-    weight: 3
+    weight: 2
     settings:
       trim_length: 600
     third_party_settings: {  }
     region: content
   field_presentation_date:
     type: datetime_default
-    weight: 1
+    weight: 0
     region: content
     label: inline
     settings:
@@ -38,14 +42,14 @@ content:
     third_party_settings: {  }
   field_presentation_location:
     type: string
-    weight: 2
+    weight: 1
     region: content
     label: inline
     settings:
       link_to_entity: false
     third_party_settings: {  }
   links:
-    weight: 0
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }

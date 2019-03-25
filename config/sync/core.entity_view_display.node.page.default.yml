@@ -23,12 +23,12 @@ content:
   body:
     label: hidden
     type: text_default
-    weight: 101
+    weight: 0
     settings: {  }
     third_party_settings: {  }
     region: content
   field_media:
-    weight: 103
+    weight: 2
     label: above
     settings:
       link: true
@@ -37,7 +37,7 @@ content:
     region: content
   field_slideshow:
     type: entity_reference_revisions_entity_view
-    weight: 102
+    weight: 1
     label: above
     settings:
       view_mode: default
@@ -45,7 +45,7 @@ content:
     third_party_settings: {  }
     region: content
   links:
-    weight: 100
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }

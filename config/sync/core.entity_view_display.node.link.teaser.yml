@@ -27,14 +27,14 @@ content:
   body:
     label: hidden
     type: text_summary_or_trimmed
-    weight: 1
+    weight: 0
     settings:
       trim_length: 600
     third_party_settings: {  }
     region: content
   field_url_web_address:
     type: link
-    weight: 2
+    weight: 1
     region: content
     label: above
     settings:
@@ -44,10 +44,6 @@ content:
       target: _blank
       rel: '0'
     third_party_settings: {  }
-  links:
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
 hidden:
   langcode: true
+  links: true
