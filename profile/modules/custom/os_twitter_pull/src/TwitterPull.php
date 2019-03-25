@@ -24,12 +24,12 @@ class TwitterPull {
   private $settings;
 
   /**
-   * Construct.
+   * Set settings array.
    *
    * @param TwitterPullConfig $config
    *   Twitter pull config.
    */
-  public function __construct(TwitterPullConfig $config) {
+  public function setSettings(TwitterPullConfig $config): void {
     $this->settings = $config->getSettings();
   }
 

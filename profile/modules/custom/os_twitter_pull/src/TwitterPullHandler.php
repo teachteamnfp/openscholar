@@ -30,6 +30,8 @@ class TwitterPullHandler implements ContainerInjectionInterface {
    *
    * @param TwitterPullConfig $twitter_pull_config
    *   Twitter pull config.
+   * @param \Drupal\os_twitter_pull\TwitterPull $twitter_pull
+   *   Twitter pull.
    * @param \Drupal\Core\Cache\CacheBackendInterface $cache
    *   Cache backend for os_twitter_pull.
    * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $logger_factory
@@ -41,8 +43,9 @@ class TwitterPullHandler implements ContainerInjectionInterface {
    * @param \Drupal\Core\Extension\ModuleHandler $module_handler
    *   Module handler.
    */
-  public function __construct(TwitterPullConfig $twitter_pull_config, CacheBackendInterface $cache, LoggerChannelFactoryInterface $logger_factory, TimeInterface $time, RequestStack $request_stack, ModuleHandler $module_handler) {
-    $this->puller = new TwitterPull($twitter_pull_config);
+  public function __construct(TwitterPullConfig $twitter_pull_config, TwitterPull $twitter_pull, CacheBackendInterface $cache, LoggerChannelFactoryInterface $logger_factory, TimeInterface $time, RequestStack $request_stack, ModuleHandler $module_handler) {
+    $this->puller = $twitter_pull;
+    $this->puller->setSettings($twitter_pull_config);
     $this->config = $twitter_pull_config;
     $this->cache = $cache;
     $this->time = $time;
@@ -57,6 +60,7 @@ class TwitterPullHandler implements ContainerInjectionInterface {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('os_twitter_pull.config'),
+      $container->get('os_twitter_pull.puller'),
       $container->get('cache.os_twitter_pull'),
       $container->get('logger.factory'),
       $container->get('datetime.time'),
