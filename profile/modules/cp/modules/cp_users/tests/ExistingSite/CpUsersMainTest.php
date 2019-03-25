@@ -2,8 +2,11 @@
 
 namespace Drupal\Tests\cp_users\ExistingSite;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Test\AssertMailTrait;
 use Drupal\Tests\vsite\ExistingSiteJavascript\VsiteExistingSiteJavascriptTestBase;
+use Drupal\user\Entity\User;
+use Drupal\user\UserStorageInterface;
 
 /**
  * Class CpUsersMainTests.
@@ -31,14 +34,21 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
   protected $oldMailHandler;
 
   /**
+   * Config Factory
+   *
+   * @var ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
     parent::setUp();
 
     /** @var \Drupal\Core\Config\ConfigFactoryInterface $configFactory */
-    $configFactory = $this->container->get('config.factory');
-    $config = $configFactory->getEditable('system.mail');
+    $this->configFactory = $this->container->get('config.factory');
+    $config = $this->configFactory->getEditable('system.mail');
     $this->oldMailHandler = $config->get('interface.default');
     $config->set('interface.default', 'test_mail_collector')->save();
 
@@ -75,7 +85,7 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
       $user = $this->createUser([], $username, FALSE);
 
       $this->visit('/site01/cp/users');
-      $this->assertContains('/site01/cp/users', $this->getSession()->getCurrentUrl());
+      $this->assertContains('/site01/cp/users', $this->getSession()->getCurrentUrl(), "First url check, on " . $this->getSession()->getCurrentUrl());
       $page = $this->getCurrentPage();
       $link = $page->findLink('+ Add a member');
       $this->assertContains('/site01/cp/users/add', $link->getAttribute('href'));
@@ -91,6 +101,7 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
       $page->selectFieldOption('role', 'personal-member');
       $page->pressButton("Save");
       $this->assertSession()->assertWaitOnAjaxRequest();
+      $this->visit('/site01/cp/users');
       $this->assertContains('/site01/cp/users', $this->getSession()->getCurrentUrl(), "Not on the correct page, on " . $this->getSession()->getCurrentUrl());
       $this->assertTrue($page->hasContent($username), "Username $username not found on page.");
 
@@ -110,6 +121,55 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
       $page = $this->getCurrentPage();
       \file_put_contents(REQUEST_TIME . '.txt', $page->getContent());
       $this->fail(\get_class($e) . ' in test: ' . $e->getMessage() . "\n" . $e->getFile() . ':' . $e->getLine());
+    }
+  }
+
+  /**
+   * Tests for adding a user new to the site.
+   */
+  public function wiptestNewUser() {
+    try {
+      $settings = $this->configFactory->getEditable('cp_users.settings');
+      $this->assertFalse($settings->get('disable_user_creation'));
+
+      $account = $this->entityTypeManager->getStorage('user')->load(1);
+      $account->passRaw = 'admin';
+      $this->drupalLogin($account);
+
+      $this->visit('/site01/cp/users');
+      $this->assertContains('/site01/cp/users', $this->getSession()->getCurrentUrl());
+      $page = $this->getCurrentPage();
+      $page->clickLink('+ Add a member');
+      $this->assertSession()->waitForElement('css', '#drupal-modal--content');
+      $page->clickLink('Add New User');
+      $page->fillField('First Name', 'test');
+      $page->fillField('Last Name', 'user');
+      $page->fillField('Username', 'test-user');
+      $page->fillField('E-mail Address', 'test-user@localhost.com');
+      $page->selectFieldOption('role', 'personal-member');
+      $page->pressButton('Save');
+      $this->assertSession()->assertWaitOnAjaxRequest();
+      $this->assertContains('/site01/cp/users', $this->getSession()->getCurrentUrl(), "Not on correct page after redirect.");
+      $this->assertTrue($page->hasContent('test-user'));
+
+      $settings->set('disable_user_creation', 1);
+      $settings->save();
+
+      $page->clickLink('+ Add a member');
+      $this->assertSession()->waitForElement('css', '#drupal-modal--content');
+      $this->assertSession()->linkNotExists('Add New User');
+
+    }
+    catch (\Exception $e) {
+      \file_put_contents(REQUEST_TIME . '.jpg', $this->getSession()->getScreenshot());
+      $page = $this->getCurrentPage();
+      \file_put_contents(REQUEST_TIME . '.txt', $page->getContent());
+      throw $e;
+    }
+    finally {
+      if ($user = \user_load_by_name('test-user')) {
+        $this->markEntityForCleanup($user);
+      }
     }
   }
 
