@@ -4,9 +4,8 @@ namespace Drupal\Tests\cp_users\ExistingSite;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Test\AssertMailTrait;
+use Drupal\purl\Plugin\ModifierIndex;
 use Drupal\Tests\vsite\ExistingSiteJavascript\VsiteExistingSiteJavascriptTestBase;
-use Drupal\user\Entity\User;
-use Drupal\user\UserStorageInterface;
 
 /**
  * Class CpUsersMainTests.
@@ -77,6 +76,17 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
    * Tests for adding and removing users.
    */
   public function testAddExistingUser() {
+    $modifierIndex = new ModifierIndex();
+    $modifiers = $modifierIndex->findAll();
+    $found = false;
+    foreach ($modifiers as $m) {
+      $modifier = $m->getModifierKey();
+      if ($modifier == 'site01') {
+        $found = true;
+      }
+    }
+    $this->assertTrue($found, "Modifier site01 not found.");
+
     try {
       $account = $this->entityTypeManager->getStorage('user')->load(1);
       $account->passRaw = 'admin';
@@ -88,7 +98,7 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
       $this->assertContains('/site01/cp/users', $this->getSession()->getCurrentUrl(), "First url check, on " . $this->getSession()->getCurrentUrl());
       $page = $this->getCurrentPage();
       $link = $page->findLink('+ Add a member');
-      $this->assertContains('/site01/cp/users/add', $link->getAttribute('href'));
+      $this->assertContains('/site01/cp/users/add', $link->getAttribute('href'), "Add link is not in the vsite.");
       $page->clickLink('+ Add a member');
       $this->assertSession()->waitForElement('css', '#drupal-modal--content');
       $page->clickLink('Add an Existing User');
