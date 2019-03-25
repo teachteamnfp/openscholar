@@ -101,3 +101,31 @@
     }
   }
 }
+
+/**** own custom selectors for all forms ****/
+.form-control:focus,
+.form-checkbox:focus,
+.form-radio:focus,
+.form-select:focus {
+  border: 1px solid $color-blue;
+  background: $color-white;
+}
+textarea:focus {
+  border: 1px solid $color-yellow;
+  background: $color-white;
+}
+fieldset {
+  background: $color-light-gray2;
+  border: 1px solid $color-light-gray3;
+  margin: 10px 0;
+  padding: 10px;
+  legend {
+    border: 0;
+    display: block;
+    font-weight: bold;
+    padding: 0 10px 0 0;
+    white-space: normal;
+    color: $color-gray1;
+    font-size: 1.1em;
+  }
+}

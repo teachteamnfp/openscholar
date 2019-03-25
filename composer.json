@@ -177,7 +177,7 @@
         "cweagans/composer-patches": "^1.6",
         "drupal-composer/drupal-scaffold": "^2.5",
         "drupal/console": "^1.0.2",
-        "drupal/core": "^8.6.11",
+        "drupal/core": "^8.6.13",
         "drupal/purl": "master@dev",
         "drupal/group_purl": "1.0-alpha1",
         "drupal/search_api": "^1.9",
@@ -233,15 +233,16 @@
         "drupal/rng_contact": "^1.0",
         "drupal/rng_quick": "^1.1",
         "drupal/rng_date_scheduler": "^1.0",
-        "drupal/rng_views": "^1.5"
+        "drupal/rng_views": "^1.5",
+        "drupal/mathjax": "^2.7",
+        "drupal/advancedqueue": "^1.0@beta"
     },
     "require-dev": {
         "drupal/features": "^3.7",
-        "webflo/drupal-core-require-dev": "^8.6.11",
+        "webflo/drupal-core-require-dev": "^8.6.13",
         "drupal/devel": "^1.2",
         "weitzman/drupal-test-traits": "^1.0@beta",
-        "dmore/chrome-mink-driver": "^2.6",
-        "drupal/advancedqueue": "^1.0@beta"
+        "dmore/chrome-mink-driver": "^2.6"
     },
     "conflict": {
         "drupal/drupal": "*"

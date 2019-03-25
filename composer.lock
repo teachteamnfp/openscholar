@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1e1700d0674a93af60a99744be5a7d3b",
+    "content-hash": "9f70f482e89816fe4f9e5658f02ca080",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -663,16 +663,16 @@
         },
         {
             "name": "composer/semver",
-            "version": "1.4.2",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/semver.git",
-                "reference": "c7cb9a2095a074d131b65a8a0cd294479d785573"
+                "reference": "46d9139568ccb8d9e7cdd4539cab7347568a5e2e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/semver/zipball/c7cb9a2095a074d131b65a8a0cd294479d785573",
-                "reference": "c7cb9a2095a074d131b65a8a0cd294479d785573",
+                "url": "https://api.github.com/repos/composer/semver/zipball/46d9139568ccb8d9e7cdd4539cab7347568a5e2e",
+                "reference": "46d9139568ccb8d9e7cdd4539cab7347568a5e2e",
                 "shasum": ""
             },
             "require": {
@@ -721,7 +721,7 @@
                 "validation",
                 "versioning"
             ],
-            "time": "2016-08-30T16:08:34+00:00"
+            "time": "2019-03-19T17:25:45+00:00"
         },
         {
             "name": "consolidation/annotated-command",
@@ -2240,6 +2240,89 @@
             }
         },
         {
+            "name": "drupal/advancedqueue",
+            "version": "1.0.0-beta3",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/advancedqueue",
+                "reference": "8.x-1.0-beta3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/advancedqueue-8.x-1.0-beta3.zip",
+                "reference": "8.x-1.0-beta3",
+                "shasum": "6b5495416fd99c07867263204b189204256e616c"
+            },
+            "require": {
+                "drupal/core": "~8.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0-beta3",
+                    "datestamp": "1512047585",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Beta releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Damien Tournoud",
+                    "homepage": "https://www.drupal.org/user/22211"
+                },
+                {
+                    "name": "Kazanir",
+                    "homepage": "https://www.drupal.org/user/2279698"
+                },
+                {
+                    "name": "amitaibu",
+                    "homepage": "https://www.drupal.org/user/57511"
+                },
+                {
+                    "name": "bojanz",
+                    "homepage": "https://www.drupal.org/user/86106"
+                },
+                {
+                    "name": "dawehner",
+                    "homepage": "https://www.drupal.org/user/99340"
+                },
+                {
+                    "name": "jsacksick",
+                    "homepage": "https://www.drupal.org/user/972218"
+                },
+                {
+                    "name": "laurentchardin",
+                    "homepage": "https://www.drupal.org/user/87775"
+                },
+                {
+                    "name": "pjcdawkins",
+                    "homepage": "https://www.drupal.org/user/1025236"
+                },
+                {
+                    "name": "rszrama",
+                    "homepage": "https://www.drupal.org/user/49344"
+                },
+                {
+                    "name": "skipyT",
+                    "homepage": "https://www.drupal.org/user/350126"
+                }
+            ],
+            "description": "Provides a better Queue API.",
+            "homepage": "https://www.drupal.org/project/advancedqueue",
+            "support": {
+                "source": "http://cgit.drupalcode.org/advancedqueue"
+            }
+        },
+        {
             "name": "drupal/anchor_link",
             "version": "2.0.0-alpha2",
             "source": {
@@ -3598,16 +3681,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "8.6.11",
+            "version": "8.6.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
-                "reference": "95233343dca7d0276b800ec2a1d9a3e7d0fc622d"
+                "reference": "8d5b80030ac3f13df2d66aeef0ea388fd9a90632"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core/zipball/95233343dca7d0276b800ec2a1d9a3e7d0fc622d",
-                "reference": "95233343dca7d0276b800ec2a1d9a3e7d0fc622d",
+                "url": "https://api.github.com/repos/drupal/core/zipball/8d5b80030ac3f13df2d66aeef0ea388fd9a90632",
+                "reference": "8d5b80030ac3f13df2d66aeef0ea388fd9a90632",
                 "shasum": ""
             },
             "require": {
@@ -3838,7 +3921,7 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2019-03-13T20:52:10+00:00"
+            "time": "2019-03-20T06:01:19+00:00"
         },
         {
             "name": "drupal/courier",
@@ -4705,6 +4788,57 @@
             "homepage": "http://drupal.org/project/mailchimp",
             "support": {
                 "source": "http://cgit.drupalcode.org/mailchimp"
+            }
+        },
+        {
+            "name": "drupal/mathjax",
+            "version": "2.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/mathjax",
+                "reference": "8.x-2.7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/mathjax-8.x-2.7.zip",
+                "reference": "8.x-2.7",
+                "shasum": "87f3772aab6a21d79168d00d48c4e41010522fec"
+            },
+            "require": {
+                "drupal/core": "~8.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-2.x": "2.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-2.7",
+                    "datestamp": "1492196642",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "cilefen",
+                    "homepage": "https://www.drupal.org/user/1850070"
+                },
+                {
+                    "name": "julou",
+                    "homepage": "https://www.drupal.org/user/273952"
+                }
+            ],
+            "description": "Javascript-based LaTeX rendering solution for your Drupal website.",
+            "homepage": "https://www.drupal.org/project/mathjax",
+            "support": {
+                "source": "http://cgit.drupalcode.org/mathjax"
             }
         },
         {
@@ -6863,16 +6997,16 @@
         },
         {
             "name": "masterminds/html5",
-            "version": "2.5.0",
+            "version": "2.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Masterminds/html5-php.git",
-                "reference": "b5d892a4bd058d61f736935d32a9c248f11ccc93"
+                "reference": "c961ca6a0a81dc6b55b6859b3f9ea7f402edf9ad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Masterminds/html5-php/zipball/b5d892a4bd058d61f736935d32a9c248f11ccc93",
-                "reference": "b5d892a4bd058d61f736935d32a9c248f11ccc93",
+                "url": "https://api.github.com/repos/Masterminds/html5-php/zipball/c961ca6a0a81dc6b55b6859b3f9ea7f402edf9ad",
+                "reference": "c961ca6a0a81dc6b55b6859b3f9ea7f402edf9ad",
                 "shasum": ""
             },
             "require": {
@@ -6889,7 +7023,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.4-dev"
+                    "dev-master": "2.6-dev"
                 }
             },
             "autoload": {
@@ -6926,7 +7060,7 @@
                 "serializer",
                 "xml"
             ],
-            "time": "2018-12-27T22:03:43+00:00"
+            "time": "2019-03-10T11:41:28+00:00"
         },
         {
             "name": "moment/moment",
@@ -9324,16 +9458,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.38.2",
+            "version": "v1.38.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "874adbd9222f928f6998732b25b01b41dff15b0c"
+                "reference": "5df0ef0ca2d08a6f087384c7f31530fb84889f28"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/874adbd9222f928f6998732b25b01b41dff15b0c",
-                "reference": "874adbd9222f928f6998732b25b01b41dff15b0c",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/5df0ef0ca2d08a6f087384c7f31530fb84889f28",
+                "reference": "5df0ef0ca2d08a6f087384c7f31530fb84889f28",
                 "shasum": ""
             },
             "require": {
@@ -9386,7 +9520,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2019-03-12T18:45:24+00:00"
+            "time": "2019-03-21T14:50:13+00:00"
         },
         {
             "name": "typo3/phar-stream-wrapper",
@@ -10209,89 +10343,6 @@
                 "instantiate"
             ],
             "time": "2017-07-22T11:58:36+00:00"
-        },
-        {
-            "name": "drupal/advancedqueue",
-            "version": "1.0.0-beta3",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupal.org/project/advancedqueue",
-                "reference": "8.x-1.0-beta3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/advancedqueue-8.x-1.0-beta3.zip",
-                "reference": "8.x-1.0-beta3",
-                "shasum": "6b5495416fd99c07867263204b189204256e616c"
-            },
-            "require": {
-                "drupal/core": "~8.0"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
-                "drupal": {
-                    "version": "8.x-1.0-beta3",
-                    "datestamp": "1512047585",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Beta releases are not covered by Drupal security advisories."
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "Damien Tournoud",
-                    "homepage": "https://www.drupal.org/user/22211"
-                },
-                {
-                    "name": "Kazanir",
-                    "homepage": "https://www.drupal.org/user/2279698"
-                },
-                {
-                    "name": "amitaibu",
-                    "homepage": "https://www.drupal.org/user/57511"
-                },
-                {
-                    "name": "bojanz",
-                    "homepage": "https://www.drupal.org/user/86106"
-                },
-                {
-                    "name": "dawehner",
-                    "homepage": "https://www.drupal.org/user/99340"
-                },
-                {
-                    "name": "jsacksick",
-                    "homepage": "https://www.drupal.org/user/972218"
-                },
-                {
-                    "name": "laurentchardin",
-                    "homepage": "https://www.drupal.org/user/87775"
-                },
-                {
-                    "name": "pjcdawkins",
-                    "homepage": "https://www.drupal.org/user/1025236"
-                },
-                {
-                    "name": "rszrama",
-                    "homepage": "https://www.drupal.org/user/49344"
-                },
-                {
-                    "name": "skipyT",
-                    "homepage": "https://www.drupal.org/user/350126"
-                }
-            ],
-            "description": "Provides a better Queue API.",
-            "homepage": "https://www.drupal.org/project/advancedqueue",
-            "support": {
-                "source": "http://cgit.drupalcode.org/advancedqueue"
-            }
         },
         {
             "name": "drupal/coder",
@@ -12623,16 +12674,16 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "3.4.0",
+            "version": "3.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "379deb987e26c7cd103a7b387aea178baec96e48"
+                "reference": "5b4333b4010625d29580eb4a41f1e53251be6baa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/379deb987e26c7cd103a7b387aea178baec96e48",
-                "reference": "379deb987e26c7cd103a7b387aea178baec96e48",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/5b4333b4010625d29580eb4a41f1e53251be6baa",
+                "reference": "5b4333b4010625d29580eb4a41f1e53251be6baa",
                 "shasum": ""
             },
             "require": {
@@ -12665,12 +12716,12 @@
                 }
             ],
             "description": "PHP_CodeSniffer tokenizes PHP, JavaScript and CSS files and detects violations of a defined set of coding standards.",
-            "homepage": "http://www.squizlabs.com/php-codesniffer",
+            "homepage": "https://github.com/squizlabs/PHP_CodeSniffer",
             "keywords": [
                 "phpcs",
                 "standards"
             ],
-            "time": "2018-12-19T23:57:18+00:00"
+            "time": "2019-03-19T03:22:27+00:00"
         },
         {
             "name": "symfony/browser-kit",
@@ -12930,13 +12981,13 @@
         },
         {
             "name": "webflo/drupal-core-require-dev",
-            "version": "8.6.11",
+            "version": "8.6.13",
             "require": {
                 "behat/mink": "1.7.x-dev",
                 "behat/mink-goutte-driver": "^1.2",
                 "behat/mink-selenium2-driver": "1.3.x-dev",
                 "drupal/coder": "^8.2.12",
-                "drupal/core": "8.6.11",
+                "drupal/core": "8.6.13",
                 "jcalderonzumba/gastonjs": "^1.0.2",
                 "jcalderonzumba/mink-phantomjs-driver": "^0.3.1",
                 "mikey179/vfsstream": "^1.2",
@@ -12952,7 +13003,7 @@
                 "GPL-2.0-or-later"
             ],
             "description": "require-dev dependencies from drupal/core",
-            "time": "2019-03-13T21:01:38+00:00"
+            "time": "2019-03-20T16:31:35+00:00"
         },
         {
             "name": "weitzman/drupal-test-traits",
@@ -13030,8 +13081,8 @@
         "drupal/styleguide": 15,
         "drupal/bibcite": 20,
         "drupal/field_tools": 15,
-        "weitzman/drupal-test-traits": 10,
-        "drupal/advancedqueue": 10
+        "drupal/advancedqueue": 10,
+        "weitzman/drupal-test-traits": 10
     },
     "prefer-stable": true,
     "prefer-lowest": false,

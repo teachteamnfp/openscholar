@@ -1,8 +1,10 @@
 aside {
-  .block {
-    padding-top: 12px;
-    border-top: 4px solid $color-regent-gray;
-    margin-bottom: 20px;
+  .region {
+    > .block {
+      padding-top: 12px;
+      border-top: 4px solid $color-regent-gray;
+      margin-bottom: 20px;
+    }
     h2.block-title {
       font-family: arial,sans-serif;
     }
