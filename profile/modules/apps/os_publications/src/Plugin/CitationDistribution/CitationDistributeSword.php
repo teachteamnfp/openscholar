@@ -2,6 +2,7 @@
 
 namespace Drupal\os_publications\Plugin\CitationDistribution;
 
+use Drupal\Core\Entity\EntityInterface;
 use Exception;
 use PackagerMetsSwap;
 use SWORDAPPClient;
@@ -97,7 +98,8 @@ abstract class CitationDistributeSword implements CitationDistributionInterface,
   /**
    * {@inheritdoc}
    */
-  public function save($id, array $plugin) : bool {
+  public function save(EntityInterface $entity) : bool {
+    $id = $entity->id();
     // Doublecheck the validation for this nid.
     if (!$this->validate((int) $id)) {
       return FALSE;

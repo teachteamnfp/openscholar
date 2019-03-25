@@ -8,7 +8,7 @@ services:
   os_publications.manager_citation_distribute:
     class: Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager
     parent: default_plugin_manager
-    arguments: ['@config.factory']
+    arguments: ['@config.factory', '@messenger', '@logger.factory']
   os_publications.subscriber:
     class: Drupal\os_publications\Routing\RoutingSubscriber
     arguments: ['@os_publications.manager_citation_distribute']

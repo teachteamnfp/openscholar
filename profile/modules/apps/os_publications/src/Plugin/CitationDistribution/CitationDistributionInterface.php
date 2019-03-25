@@ -2,6 +2,8 @@
 
 namespace Drupal\os_publications\Plugin\CitationDistribution;
 
+use Drupal\Core\Entity\EntityInterface;
+
 /**
  * Interface defining a server for citation distribution.
  */
@@ -10,15 +12,15 @@ interface CitationDistributionInterface {
   /**
    * Distributes a reference entity to chosen service.
    *
-   * @param int $id
-   *   Entity id to distribute.
-   * @param array $plugin
-   *   CD's definition of this plugin.
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity to distribute.
    *
    * @return bool
    *   Status of save/push.
+   *
+   * @throws \Drupal\os_publications\CitationDistributionException
    */
-  public function save($id, array $plugin) : bool;
+  public function save(EntityInterface $entity) : bool;
 
   /**
    * Copies data from bibcite entity data into array labeled for this service.
@@ -47,5 +49,15 @@ interface CitationDistributionInterface {
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
   public function render($id) : array;
+
+  /**
+   * Removes a citation.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The citation entity.
+   *
+   * @throws \Drupal\os_publications\CitationDistributionException
+   */
+  public function delete(EntityInterface $entity);
 
 }
