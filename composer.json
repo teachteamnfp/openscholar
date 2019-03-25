@@ -236,7 +236,8 @@
         "drupal/rng_views": "^1.5",
         "j7mbo/twitter-api-php": "^1.0",
         "twig/extensions": "^1.5",
-        "drupal/twig_extensions": "^2.0"
+        "drupal/twig_extensions": "^2.0",
+        "drupal/mathjax": "^2.7"
     },
     "require-dev": {
         "drupal/features": "^3.7",
