@@ -2,10 +2,10 @@
 
 namespace Drupal\Tests\cp_users\ExistingSite;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Test\AssertMailTrait;
 use Drupal\purl\Plugin\ModifierIndex;
 use Drupal\Tests\vsite\ExistingSiteJavascript\VsiteExistingSiteJavascriptTestBase;
+use Drupal\user\UserInterface;
 
 /**
  * Class CpUsersMainTests.
@@ -33,9 +33,9 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
   protected $oldMailHandler;
 
   /**
-   * Config Factory
+   * Config Factory.
    *
-   * @var ConfigFactoryInterface
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
   protected $configFactory;
 
@@ -54,9 +54,7 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
     $this->group = $this->createGroup([
       'type' => 'personal',
       'uid' => 1,
-      'path' => [
-        'alias' => '/site01',
-      ],
+      'path' => '/site01',
     ]);
   }
 
@@ -78,11 +76,11 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
   public function testAddExistingUser() {
     $modifierIndex = new ModifierIndex();
     $modifiers = $modifierIndex->findAll();
-    $found = false;
+    $found = FALSE;
     foreach ($modifiers as $m) {
       $modifier = $m->getModifierKey();
       if ($modifier == 'site01') {
-        $found = true;
+        $found = TRUE;
       }
     }
     $this->assertTrue($found, "Modifier site01 not found.");
@@ -137,10 +135,10 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
   /**
    * Tests for adding a user new to the site.
    */
-  public function wiptestNewUser() {
+  public function testNewUser() {
+    $settings = $this->configFactory->getEditable('cp_users.settings');
     try {
-      $settings = $this->configFactory->getEditable('cp_users.settings');
-      $this->assertFalse($settings->get('disable_user_creation'));
+      $this->assertFalse($settings->get('disable_user_creation'), "User creation setting is wrong.");
 
       $account = $this->entityTypeManager->getStorage('user')->load(1);
       $account->passRaw = 'admin';
@@ -160,15 +158,23 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
       $page->pressButton('Save');
       $this->assertSession()->assertWaitOnAjaxRequest();
       $this->assertContains('/site01/cp/users', $this->getSession()->getCurrentUrl(), "Not on correct page after redirect.");
-      $this->assertTrue($page->hasContent('test-user'));
+      $this->assertTrue($page->hasContent('test-user'), "Test-user not added to site.");
 
       $settings->set('disable_user_creation', 1);
       $settings->save();
 
       $page->clickLink('+ Add a member');
       $this->assertSession()->waitForElement('css', '#drupal-modal--content');
-      $this->assertSession()->linkNotExists('Add New User');
+      $this->assertSession()->linkNotExists('Add New User', "Add New User is still on page.");
 
+      $page->clickLink('Change Owner');
+      $this->assertSession()->waitForElement('css', '#drupal-modal--content');
+      $page->selectFieldOption('new_owner', 'test-user');
+      $page->pressButton('Save');
+      $this->assertSession()->assertWaitOnAjaxRequest();
+      /** @var UserInterface $user */
+      $user = user_load_by_name('test-user');
+      $this->assertEquals($user->id(), $this->group->getOwnerId(), "Owner did not change.");
     }
     catch (\Exception $e) {
       \file_put_contents(REQUEST_TIME . '.jpg', $this->getSession()->getScreenshot());
@@ -180,6 +186,9 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
       if ($user = \user_load_by_name('test-user')) {
         $this->markEntityForCleanup($user);
       }
+
+      $settings->set('disable_user_creation', 0);
+      $settings->save();
     }
   }
 
