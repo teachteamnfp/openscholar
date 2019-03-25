@@ -5,10 +5,16 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.software_project.body
+    - field.field.node.software_project.field_attached_media
+    - field.field.node.software_project.field_packaging
     - node.type.software_project
   module:
+    - layout_builder
     - text
     - user
+third_party_settings:
+  layout_builder:
+    sections: {  }
 id: node.software_project.teaser
 targetEntityType: node
 bundle: software_project
@@ -17,18 +23,19 @@ content:
   body:
     label: hidden
     type: text_summary_or_trimmed
-    weight: 101
+    weight: 0
     settings:
       trim_length: 600
     third_party_settings: {  }
     region: content
   links:
-    weight: 100
+    weight: 1
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
 hidden:
   field_attached_media: true
+  field_packaging: true
   field_packaging_method: true
   field_rbuild_short_name: true
   field_repository_url: true
