@@ -55,7 +55,7 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
       'type' => 'personal',
       'uid' => 1,
       'path' => [
-        'alias' => '/site01'
+        'alias' => '/' . $this->randomMachineName()
       ],
     ]);
   }
@@ -85,6 +85,7 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
         $found = TRUE;
       }
     }
+    $this->assertGreaterThan(0, count($modifiers), "There are 0 PURL modifiers.");
     $this->assertTrue($found, "Modifier site01 not found.");
 
     try {
