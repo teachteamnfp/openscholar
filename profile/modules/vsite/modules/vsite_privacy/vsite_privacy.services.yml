@@ -2,8 +2,8 @@ services:
   vsite.privacy.manager:
     class: Drupal\vsite_privacy\Plugin\VsitePrivacyLevelManager
     parent: default_plugin_manager
-  vsite.privacy.accessCheck:
-    class: Drupal\vsite_privacy\VsitePrivacyAccessCheck
-    arguments: ['@config.factory', '@vsite.privacy.manager']
+  vsite.privacy.vsite_activated_subscriber:
+    class: Drupal\vsite_privacy\EventSubscriber\VsiteActivatedSubscriber
+    arguments: ['@config.factory', '@vsite.privacy.manager', '@current_user']
     tags:
       - { name: event_subscriber }

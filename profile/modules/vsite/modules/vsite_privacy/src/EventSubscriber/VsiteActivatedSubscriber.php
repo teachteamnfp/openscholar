@@ -1,8 +1,9 @@
 <?php
 
-namespace Drupal\vsite_privacy;
+namespace Drupal\vsite_privacy\EventSubscriber;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\vsite\Event\VsiteActivatedEvent;
 use Drupal\vsite\VsiteEvents;
 use Drupal\vsite_privacy\Plugin\VsitePrivacyLevelManagerInterface;
@@ -10,9 +11,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
- * Class VsitePrivacyAccessCheck.
+ * Class VsiteActivatedSubscriber.
  */
-class VsitePrivacyAccessCheck implements EventSubscriberInterface {
+class VsiteActivatedSubscriber implements EventSubscriberInterface {
 
   /**
    * Config factory.
@@ -29,6 +30,13 @@ class VsitePrivacyAccessCheck implements EventSubscriberInterface {
   protected $vsitePrivacyLevelManager;
 
   /**
+   * Account proxy.
+   *
+   * @var \Drupal\Core\Session\AccountProxyInterface
+   */
+  protected $accountProxy;
+
+  /**
    * Checked.
    *
    * @var bool
@@ -42,10 +50,13 @@ class VsitePrivacyAccessCheck implements EventSubscriberInterface {
    *   Config factory.
    * @param \Drupal\vsite_privacy\Plugin\VsitePrivacyLevelManagerInterface $vsitePrivacyLevelManager
    *   Vsite privacy level manager.
+   * @param \Drupal\Core\Session\AccountProxyInterface $account_proxy
+   *   Account proxy.
    */
-  public function __construct(ConfigFactoryInterface $configFactory, VsitePrivacyLevelManagerInterface $vsitePrivacyLevelManager) {
+  public function __construct(ConfigFactoryInterface $configFactory, VsitePrivacyLevelManagerInterface $vsitePrivacyLevelManager, AccountProxyInterface $account_proxy) {
     $this->configFactory = $configFactory;
     $this->vsitePrivacyLevelManager = $vsitePrivacyLevelManager;
+    $this->accountProxy = $account_proxy;
   }
 
   /**
@@ -76,7 +87,7 @@ class VsitePrivacyAccessCheck implements EventSubscriberInterface {
         $level = $privacy[0]['value'];
       }
     }
-    if (!$this->vsitePrivacyLevelManager->checkAccessForPlugin(\Drupal::currentUser(), $level)) {
+    if (!$this->vsitePrivacyLevelManager->checkAccessForPlugin($this->accountProxy->getAccount(), $level)) {
       throw new AccessDeniedHttpException();
     }
   }
