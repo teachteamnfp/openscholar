@@ -79,14 +79,13 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
     $modifierIndex = new ModifierIndex();
     $modifiers = $modifierIndex->findAll();
     $found = FALSE;
+    $modifier = '';
     foreach ($modifiers as $m) {
       $modifier = $m->getModifierKey();
-      if ($modifier == 'site01') {
-        $found = TRUE;
+      if ($modifier) {
+        break;
       }
     }
-    $this->assertGreaterThan(0, count($modifiers), "There are 0 PURL modifiers.");
-    $this->assertTrue($found, "Modifier site01 not found.");
 
     try {
       $account = $this->entityTypeManager->getStorage('user')->load(1);
@@ -95,11 +94,11 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
       $username = $this->randomString();
       $user = $this->createUser([], $username, FALSE);
 
-      $this->visit('/site01/cp/users');
-      $this->assertContains('/site01/cp/users', $this->getSession()->getCurrentUrl(), "First url check, on " . $this->getSession()->getCurrentUrl());
+      $this->visit('/'.$modifier.'/site01/cp/users');
+      $this->assertContains('/'.$modifier.'/cp/users', $this->getSession()->getCurrentUrl(), "First url check, on " . $this->getSession()->getCurrentUrl());
       $page = $this->getCurrentPage();
       $link = $page->findLink('+ Add a member');
-      $this->assertContains('/site01/cp/users/add', $link->getAttribute('href'), "Add link is not in the vsite.");
+      $this->assertContains('/'.$modifier.'/cp/users/add', $link->getAttribute('href'), "Add link is not in the vsite.");
       $page->clickLink('+ Add a member');
       $this->assertSession()->waitForElement('css', '#drupal-modal--content');
       $page->clickLink('Add an Existing User');
@@ -112,8 +111,8 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
       $page->selectFieldOption('role', 'personal-member');
       $page->pressButton("Save");
       $this->assertSession()->assertWaitOnAjaxRequest();
-      $this->visit('/site01/cp/users');
-      $this->assertContains('/site01/cp/users', $this->getSession()->getCurrentUrl(), "Not on the correct page, on " . $this->getSession()->getCurrentUrl());
+      //$this->visit('/site01/cp/users');
+      $this->assertContains('/'.$modifier.'/cp/users', $this->getSession()->getCurrentUrl(), "Not on the correct page, on " . $this->getSession()->getCurrentUrl());
       $this->assertTrue($page->hasContent($username), "Username $username not found on page.");
 
       // $this->assertMail('id', '');.
