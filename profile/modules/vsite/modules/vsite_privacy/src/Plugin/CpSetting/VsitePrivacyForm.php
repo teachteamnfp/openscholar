@@ -87,7 +87,7 @@ class VsitePrivacyForm extends PluginBase implements CpSettingInterface, Contain
   /**
    * {@inheritdoc}
    */
-  public function getEditableConfigNames(): array {
+  public function getEditableConfigNames() : array {
     return [];
   }
 
