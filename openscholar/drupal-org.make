@@ -362,7 +362,7 @@ projects[respondjs][subdir] = "contrib"
 projects[respondjs][version] = 1.1
 
 projects[restful][subdir] = "contrib"
-projects[restful][version] = "1.7"
+projects[restful][version] = "1.10"
 # Patch to be able to update a taxonomy term.
 projects[restful][patch][] = "https://patch-diff.githubusercontent.com/raw/RESTful-Drupal/restful/pull/445.diff"
 projects[restful][patch][] = "https://raw.githubusercontent.com/openscholar/openscholar/839d0cc214f2422e924e35d33133d1268b8cc1cd/patches/restful.put_file.patch"
@@ -421,8 +421,7 @@ projects[twitter_pull][patch][] = "https://raw.githubusercontent.com/openscholar
 projects[twitter_pull][patch][] = "https://raw.githubusercontent.com/openscholar/openscholar/1811fd556f5ef60be92a5b5249a81f652a73681c/patches/twitter_pull.class.inc-tweet-mode-extended.patch"
 
 projects[views][subdir] = "contrib"
-projects[views][version] = 3.20
-; projects[views][patch][] = "https://drupal.org/files/issues/views-jquery_dialog-2125261-1.patch"
+projects[views][version] = 3.21
 
 projects[views_bulk_operations][subdir] = "contrib"
 projects[views_bulk_operations][version] = 3.4
@@ -513,6 +512,7 @@ libraries[twitter-api-php][download][url] = "https://github.com/J7mbo/twitter-ap
 libraries[autopager][type] = "libraries"
 libraries[autopager][download][type] = "file"
 libraries[autopager][download][url] = "https://github.com/sagotsky/jquery-autopager/archive/v1.2.zip"
+libraries[autopager][patch][] = "https://raw.githubusercontent.com/openscholar/openscholar/8a4e0a80b2db7b66edc4f83f7470a4758e4aa913/patches/jquery-autopager_fix-load-prev-next.patch"
 
 libraries[html5shiv][type] = "libraries"
 libraries[html5shiv][download][type] = "file"
