@@ -1,32 +1,37 @@
 /**** mini calendar ****/
-.block {
-  .fc-row {
-    &.ui-widget-header {
-      th {
-        background: white;
-        font-size: 12px;
+aside {
+  .block {
+    .fc-row {
+      &.ui-widget-header {
+        th {
+          background: white;
+          font-size: 12px;
+        }
       }
     }
-  }
-  .fc {
-    .fc-body {
-      border: 1px solid #cacaca;
-      font-size: 14px;
-      .fc-row {
-        height: auto !important;
-        min-height: unset;
-        .fc-content-skeleton {
-          td {
-            vertical-align: middle;
-            text-align: center;
-            .fc-day-number{
-              float: none;
+    .fc {
+      .fc-body {
+        border: 1px solid #cacaca;
+        font-size: 14px;
+        td {
+          border: 0 none;
+        }
+        .fc-row {
+          height: auto !important;
+          min-height: unset;
+          .fc-content-skeleton {
+            td {
+              vertical-align: middle;
+              text-align: center;
+              .fc-day-number {
+                float: none;
+              }
             }
           }
         }
-      }
-      .fc-scroller.fc-day-grid-container {
-        height: auto !important;
+        .fc-scroller.fc-day-grid-container {
+          height: auto !important;
+        }
       }
     }
   }
@@ -49,7 +54,8 @@
         background-position: -15px -480px;
       }
     }
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
       .ui-icon {
         background-image: url(../../../themes/os_base/images/basesprite.png);
       }
@@ -62,6 +68,7 @@
     display: inline-block;
   }
 }
+
 /***** full caldenar *****/
 .fc-day-grid-event {
   .fc-content {
@@ -70,11 +77,44 @@
   .fc-title {
     white-space: nowrap;
     overflow: hidden;
-    flex: 1;
+    flex: 1 0 70%;
     text-overflow: ellipsis;
     order: 1;
   }
   .fc-time {
     order: 2;
+  }
+}
+/**** full calender ****/
+.full-calendar-view  {
+  .fc-header-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    h2 {
+      padding-bottom: 0;
+    }
+    .fc-center {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      margin-top: 17px;
+    }
+    button {
+      margin: 0;
+      background: $color-light-gray4;
+      border: 1px solid $color-light-gray5;
+      border-radius: 0;
+      &.ui-state-active {
+        background: $color-white;
+        color: $color-black;
+      }
+      &:first-child {
+        border-radius: 4px 0px 0px 4px;
+      }
+      &:last-child {
+        border-radius: 0px 4px 4px 0px;
+      }
+    }
   }
 }

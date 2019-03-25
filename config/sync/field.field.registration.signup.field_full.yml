@@ -1,0 +1,19 @@
+uuid: d7750732-eebf-418a-9ea9-988f708d680c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.registration.field_full
+    - rng.registration_type.signup
+id: registration.signup.field_full
+field_name: field_full
+entity_type: registration
+bundle: signup
+label: 'Full Name'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

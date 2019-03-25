@@ -1,0 +1,16 @@
+cp_users.settings:
+  type: config_object
+  label: 'CP User Settings'
+  mapping:
+    disable_user_creation:
+      type: boolean
+      label: 'Disable User Creation'
+    training_signup_url:
+      type: string
+      label: 'Training Sign Up URL'
+    contact_url:
+      type: string
+      label: 'Sitewide Contact URL'
+    sitewide_name:
+      type: string
+      label: 'Sitewide Name'

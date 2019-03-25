@@ -1,0 +1,98 @@
+uuid: 12d2a0a7-7b03-47df-9a79-185a97837369
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.node.rng_event
+    - field.field.node.events.body
+    - field.field.node.events.field_close_
+    - field.field.node.events.field_location
+    - field.field.node.events.field_media
+    - field.field.node.events.field_open_date
+    - field.field.node.events.field_recurring_date
+    - field.field.node.events.field_signup
+    - field.field.node.events.field_singup_multiple
+    - field.field.node.events.rng_capacity
+    - field.field.node.events.rng_registrants_duplicate
+    - field.field.node.events.rng_registrants_maximum
+    - field.field.node.events.rng_registrants_minimum
+    - field.field.node.events.rng_registration_groups
+    - field.field.node.events.rng_registration_type
+    - field.field.node.events.rng_reply_to
+    - field.field.node.events.rng_status
+    - node.type.events
+  module:
+    - datetime
+    - field_layout
+    - layout_discovery
+third_party_settings:
+  field_layout:
+    id: layout_onecol
+    settings: {  }
+id: node.events.rng_event
+targetEntityType: node
+bundle: events
+mode: rng_event
+content:
+  field_close_:
+    type: datetime_default
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_open_date:
+    type: datetime_default
+    weight: 4
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  rng_capacity:
+    type: number
+    weight: 2
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    region: content
+  rng_registrants_duplicate:
+    type: boolean_checkbox
+    weight: 1
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    region: content
+  rng_reply_to:
+    type: email_default
+    settings:
+      placeholder: 'Leave empty to use site default.'
+      size: 60
+    weight: 3
+    third_party_settings: {  }
+    region: content
+  rng_status:
+    type: boolean_checkbox
+    weight: 0
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    region: content
+hidden:
+  body: true
+  created: true
+  field_location: true
+  field_media: true
+  field_recurring_date: true
+  field_signup: true
+  field_singup_multiple: true
+  langcode: true
+  moderation_state: true
+  path: true
+  promote: true
+  rng_registrants_maximum: true
+  rng_registrants_minimum: true
+  rng_registration_groups: true
+  rng_registration_type: true
+  status: true
+  sticky: true
+  title: true
+  uid: true
+  url_redirects: true

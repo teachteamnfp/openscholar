@@ -16,3 +16,10 @@ framework:
     bootstrap/assets/javascripts/bootstrap/tab.js: {}
     bootstrap/assets/javascripts/bootstrap/transition.js: {}
     js/custom.js: {}
+
+modal:
+  css: {}
+  js: {}
+  dependencies: 
+    - core/jquery
+    - core/drupal.dialog.ajax

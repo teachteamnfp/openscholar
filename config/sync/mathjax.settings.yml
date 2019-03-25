@@ -1,0 +1,7 @@
+use_cdn: 1
+cdn_url: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+config_type: 1
+default_config_string: '{"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"processEscapes":"true"},"showProcessingMessages":"false","messageStyle":"none"}'
+_core:
+  default_config_hash: 6uMZAUWR1uB-iKjE2S5MiVK3R8lCU2u2Iwl1PzEnORE
+config_string: '{"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"processEscapes":"true"},"showProcessingMessages":"false","messageStyle":"none"}'

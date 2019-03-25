@@ -2,6 +2,7 @@
 
 namespace Drupal\os_publications\Plugin\CitationDistribution;
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -46,7 +47,7 @@ class CitationDistributeGooglescholar implements CitationDistributionInterface, 
   /**
    * {@inheritdoc}
    */
-  public function save($id, $plugin) : bool {
+  public function save(EntityInterface $entity) : bool {
     /*
      * google_scholar themes a node if it has an entry in {citation_distribute}
      * with type=google_scholar to reach this point that must have happened, so
@@ -176,6 +177,13 @@ class CitationDistributeGooglescholar implements CitationDistributionInterface, 
     }
 
     return '';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function delete(EntityInterface $entity) {
+    // Handled inside \os_publications_page_attachments.
   }
 
 }

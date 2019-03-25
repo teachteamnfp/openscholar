@@ -1,10 +1,9 @@
 /** all base style goes here **/
 body {
-  font-family: Arial,Helvetica,sans-serif;
-  font-size: 14px;
-  line-height: 23px;
   min-height: inherit;
-  color: $color-black1;
+  line-height: 23px;
+  margin: 0;
+  padding: 0;
 }
 h1 {
   font-size: 30px;
@@ -13,7 +12,7 @@ h2 {
   font-size: 1.3em;
 }
 a, a:visited {
-  color: $color-link;
+  color: $color-link1;
 }
 p {
   margin: 0px 0px 1.5em;
@@ -21,4 +20,188 @@ p {
 }
 .date, time {
   color: $color-gray;
+}
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  padding: 0;
+}
+.node--teaser {
+  .field-name-body {
+    h2, h3, h4 {
+      font-size: 1em;
+    }
+  }
+}
+.content-inner {
+  .field-name-body {
+    h2, h3, h4 {
+      line-height: 1.2em;
+    }
+  }
+}
+em,
+dfn {
+  font-style: italic;
+}
+ins {
+  border-bottom: none;
+  text-decoration: none;
+}
+dt {
+  font-weight: 700;
+}
+dd {
+  margin: 0 0 1.5em 40px;
+}
+pre,
+code,
+tt,
+samp,
+kbd,
+var {
+  font-size: 1em;
+  font-family: Consolas, "Lucida Console", Menlo, Monaco, "DejaVu Sans Mono", monospace, sans-serif;
+}
+blockquote,
+q {
+  font-style: italic;
+  quotes: "" "";
+}
+blockquote {
+  border-left: 2px solid #807E6D;
+  font-style: italic;
+  margin: 1em 3em;
+  padding-left: 1em;
+  &:before, &:after {
+    content: "";
+  }
+}
+strong,
+dfn,
+caption,
+th {
+  font-weight: 700;
+}
+ul,
+ol {
+  margin: 0 0 1.5em 17px;
+  padding: 0;
+}
+.field--name-body {
+  ol ul {
+    display: table;
+    margin-left: 0;
+    padding-left: 0;
+    list-style: none;
+    counter-reset: table-ul;
+  }
+  ul {
+    display: table;
+    margin-left: 0;
+    padding-left: 0;
+    list-style: none;
+    counter-reset: table-ul;
+    li {
+      display: table-row;
+      counter-increment: table-ul;
+      &:before {
+        content: counter(table-ul) ".";
+        display: table-cell;
+        padding-right: 0.4em;
+        text-align: right;
+      }
+    }
+  }
+  ol {
+    ol ul li:before, ul li:before {
+      content: counter(table-ul, disc);
+    }
+  }
+  ul li:before {
+    content: counter(table-ul, disc);
+  }
+  ol {
+    ol ul ul li:before, ul ul li:before {
+      content: counter(table-ul, circle);
+    }
+  }
+  ul ul li:before {
+    content: counter(table-ul, circle);
+  }
+  ol {
+    ol ul ul ul li:before, ul ul ul li:before {
+      content: counter(table-ul, square);
+    }
+  }
+  ul ul ul li:before {
+    content: counter(table-ul, square);
+  }
+  ol {
+    ul {
+      display: table;
+      margin-left: 0;
+      padding-left: 0;
+      list-style: none;
+      counter-reset: table-ol;
+    }
+    display: table;
+    margin-left: 0;
+    padding-left: 0;
+    list-style: none;
+    counter-reset: table-ol;
+    li {
+      display: table-row;
+      counter-increment: table-ol;
+      &:before {
+        content: counter(table-ol) ".";
+        display: table-cell;
+        padding-right: 0.4em;
+        text-align: right;
+      }
+    }
+    ol {
+      li:before {
+        content: counter(table-ol, upper-alpha) ".";
+      }
+      ol li:before {
+        content: counter(table-ol, lower-alpha) ".";
+      }
+    }
+  }
+}
+.block {
+  ul {
+    padding-left: 0;
+    list-style: none;
+  }
+}
+ul ul,
+ul ol,
+ol ol,
+ol ul,
+.block ul ul,
+.block ul ol,
+.block ol ol,
+.block ol ul,
+.item-list ul ul,
+.item-list ul ol,
+.item-list ol ol,
+.item-list ol ul {
+  margin-bottom: 0;
+}
+ul ul ul {
+  list-style-type: square;
+}
+ol {
+  list-style-type: decimal;
+}
+ol ol {
+  list-style-type: lower-alpha;
+}
+ol ol ol {
+  list-style-type: lower-roman;
+}
+ul ul,
+ul ul ul ul {
+  list-style-type: circle;
 }

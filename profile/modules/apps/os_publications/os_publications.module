@@ -5,12 +5,15 @@
  * Bibcite customizations for Openscholar.
  */
 
+use Drupal\bibcite_entity\Entity\KeywordInterface;
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
+use Drupal\os_publications\RepecHelper;
 use Drupal\views\Plugin\views\query\QueryPluginBase;
 use Drupal\views\ViewExecutable;
 use Ds\Map;
@@ -211,11 +214,12 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
  */
 function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $config_factory = \Drupal::service('config.factory');
-  $autoflags = $config_factory->get('os_publications.settings')->get('citation_distribute_autoflags');
+  /** @var array $auto_flags */
+  $auto_flags = $config_factory->get('os_publications.settings')->get('citation_distribute_autoflags');
   $entity_id = $form_state->getFormObject()->getEntity()->id();
 
   if (is_null($entity_id)) {
-    $form['distribution']['widget']['#default_value'] = $autoflags;
+    $form['distribution']['widget']['#default_value'] = array_keys(array_filter($auto_flags));
   }
 }
 
@@ -235,4 +239,59 @@ function os_publications_bibcite_reference_update(EntityInterface $entity) {
   /** @var \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager $type */
   $type = \Drupal::service('os_publications.manager_citation_distribute');
   $type->distribute($entity);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete().
+ */
+function os_publications_bibcite_reference_delete(EntityInterface $entity) {
+  /** @var \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager $type */
+  $type = \Drupal::service('os_publications.manager_citation_distribute');
+  $type->conceal($entity);
+}
+
+/**
+ * Implements hook_repec_template_alter().
+ */
+function os_publications_repec_template_alter(array &$data, ContentEntityInterface $entity) {
+  /** @var \Drupal\os_publications\RepecHelperInterface $repec_helper */
+  $repec_helper = new RepecHelper($entity);
+  /** @var \Drupal\bibcite_entity\Entity\ContributorInterface[] $contributors */
+  $contributors = $repec_helper->getContributor();
+
+  foreach ($contributors as $contributor) {
+    $data[] = [
+      'attribute' => 'Author-Name',
+      'value' => $contributor->getName(),
+    ];
+  }
+
+  /** @var \Drupal\bibcite_entity\Entity\KeywordInterface[] $keywords */
+  $keywords = $repec_helper->getKeywords();
+
+  if ($keywords) {
+    $keywords_as_text = array_map(function (KeywordInterface $keyword) {
+      return $keyword->getName();
+    }, $keywords);
+
+    $data[] = [
+      'attribute' => 'Keywords',
+      'value' => implode(', ', $keywords_as_text),
+    ];
+  }
+}
+
+/**
+ * Implements hook_repec_template_SERIES_alter().
+ */
+function os_publications_repec_template_ecbook_alter(array &$data, ContentEntityInterface $entity) {
+  /** @var array $publisher */
+  $publisher = $entity->get('bibcite_publisher')->getValue();
+
+  if ($publisher) {
+    $data[] = [
+      'attribute' => 'Provider-Name',
+      'value' => $publisher[0]['value'],
+    ];
+  }
 }

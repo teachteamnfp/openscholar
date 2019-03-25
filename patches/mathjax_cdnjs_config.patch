@@ -1,0 +1,13 @@
+diff --git a/plugin.js b/plugin.js
+index 27d94a3..43e4442 100644
+--- a/plugin.js
++++ b/plugin.js
+@@ -21,6 +21,8 @@
+ 		init: function( editor ) {
+ 			var cls = editor.config.mathJaxClass || 'math-tex';
+ 
++			editor.config.mathJaxLib = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_HTML';
++
+ 			if ( !editor.config.mathJaxLib ) {
+ 				CKEDITOR.error( 'mathjax-no-config' );
+ 			}

@@ -5,6 +5,7 @@ namespace Drupal\os_publications\Form;
 use Drupal\Core\Config\ConfigFactory;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\os_publications\CitationDistributionModes;
 use Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -12,6 +13,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * API Configuration form.
  */
 class CitationDistributeConfigForm extends ConfigFormBase {
+
+  /**
+   * The config setting which this form is supposed to alter.
+   */
+  const SETTINGS = 'os_publications.settings';
 
   /**
    * Citation distribute plugin manager.
@@ -47,7 +53,9 @@ class CitationDistributeConfigForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function getEditableConfigNames() {
-    return ['citation_distribute.settings'];
+    return [
+      self::SETTINGS,
+    ];
   }
 
   /**
@@ -61,7 +69,9 @@ class CitationDistributeConfigForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $config = $this->config('citation_distribute.settings');
+    /** @var \Drupal\Core\Config\ImmutableConfig $config */
+    $config = $this->config(self::SETTINGS);
+
     /** @var array $plugins */
     $plugins = $this->citationDistributePluginManager->getDefinitions();
 
@@ -76,14 +86,12 @@ class CitationDistributeConfigForm extends ConfigFormBase {
       '#type' => 'select',
       '#title' => $this->t('Select the mode for this module'),
       '#options' => [
-        'api' => 'API Mode',
-        'batch' => 'Batch Process Mode',
-        'per_submission' => 'Per Submission Mode',
+        CitationDistributionModes::BATCH => 'Batch Process Mode',
+        CitationDistributionModes::PER_SUBMISSION => 'Per Submission Mode',
       ],
       '#required' => TRUE,
       '#default_value' => $config->get('citation_distribute_module_mode'),
-      '#description' => $this->t('<strong>API mode</strong> does nothing by default, but allows developers to call Citation Distribute manually.
-	      <br><strong>Batch mode</strong> is intended to be run by cron will update all meta files at once in a batch process.
+      '#description' => $this->t('<strong>Batch mode</strong> is intended to be run by cron will update all meta files at once in a batch process.
 	      <br><strong>Per Submission mode</strong> (<em>default</em>) will update or create a meta file whenever content submitted or updated.'),
     ];
 
@@ -105,14 +113,19 @@ class CitationDistributeConfigForm extends ConfigFormBase {
       '#collapsed' => FALSE,
     ];
 
+    /** @var array $default_auto_flag_settings */
+    $default_auto_flag_settings = $config->get('citation_distribute_autoflags');
+
     foreach ($plugins as $plugin) {
-      $name = $plugin['id'];
-      $form['citation_distribute']['autoflag'][$name . '_auto_flag'] = [
+      /** @var string $id */
+      $id = $plugin['id'];
+      $form['citation_distribute']['autoflag'][$id] = [
         '#type' => 'checkbox',
-        '#default_value' => $config->get($name . '_auto_flag'),
-        '#title' => $plugin['name'] . '  (' . $name . ')',
+        '#default_value' => $default_auto_flag_settings[$id] ?? FALSE,
+        '#title' => "{$plugin['name']} ($id)",
       ];
     }
+
     return parent::buildForm($form, $form_state);
   }
 
@@ -130,15 +143,20 @@ class CitationDistributeConfigForm extends ConfigFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
-    $this->config('citation_distribute.settings')
+    $auto_flag_settings = [];
+
+    $this->config(self::SETTINGS)
       ->set('citation_distribute_module_mode', $form_state->getValue('citation_distribute_module_mode'))
       ->set('citation_distribute_cron_limit', $form_state->getValue('citation_distribute_cron_limit'))
       ->save();
+
     foreach ($this->citationDistributePluginManager->getDefinitions() as $plugin) {
-      $this->config('citation_distribute.settings')
-        ->set($plugin['id'] . '_auto_flag', $form_state->getValue($plugin['id'] . '_auto_flag'))
-        ->save();
+      $auto_flag_settings[$plugin['id']] = $form_state->getValue($plugin['id']);
     }
+
+    $this->config(self::SETTINGS)
+      ->set('citation_distribute_autoflags', $auto_flag_settings)
+      ->save();
   }
 
 }

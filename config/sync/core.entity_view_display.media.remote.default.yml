@@ -1,0 +1,35 @@
+uuid: 2a521234-a9d2-4a87-82f8-ca6e749aecca
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.media.remote.field_media_video_embed_field
+    - media.type.remote
+  module:
+    - layout_builder
+    - video_embed_field
+third_party_settings:
+  layout_builder:
+    sections: {  }
+id: media.remote.default
+targetEntityType: media
+bundle: remote
+mode: default
+content:
+  field_media_video_embed_field:
+    weight: 0
+    label: hidden
+    settings:
+      responsive: true
+      width: 854
+      height: 480
+      autoplay: false
+    third_party_settings: {  }
+    type: video_embed_field_video
+    region: content
+hidden:
+  created: true
+  langcode: true
+  name: true
+  thumbnail: true
+  uid: true

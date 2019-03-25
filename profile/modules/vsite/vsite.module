@@ -5,7 +5,7 @@
  * Hook implementations for the vsite module.
  */
 
-use Drupal\group\Entity\Group;
+use Drupal\group\Entity\GroupInterface;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\Core\Render\Element;
@@ -230,13 +230,13 @@ function vsite_page_attachments(array &$attachments) {
 /**
  * Get all group id that related with field parent site.
  *
- * @param \Drupal\group\Entity\Group $group
+ * @param \Drupal\group\Entity\GroupInterface $group
  *   Parent group entity.
  *
  * @return array|int
  *   List of the related and parent gids.
  */
-function _vsite_get_group_and_subsite_ids(Group $group) {
+function _vsite_get_group_and_subsite_ids(GroupInterface $group) {
   $query = \Drupal::entityQuery('group')
     ->condition('field_parent_site', $group->id());
 
