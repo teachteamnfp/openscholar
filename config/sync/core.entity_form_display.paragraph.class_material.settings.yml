@@ -1,45 +1,52 @@
-uuid: 21b9a8bb-96df-4085-87ff-2fae2dd45832
+uuid: c723be6d-5147-4799-b45a-105d2b650f79
 langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_form_mode.paragraph.settings
     - field.field.paragraph.class_material.field_attached_files
     - field.field.paragraph.class_material.field_body
     - field.field.paragraph.class_material.field_title
     - paragraphs.paragraphs_type.class_material
   module:
-    - layout_builder
+    - field_layout
+    - layout_discovery
     - text
 third_party_settings:
-  layout_builder:
-    sections: {  }
-id: paragraph.class_material.default
+  field_layout:
+    id: layout_onecol
+    settings: {  }
+id: paragraph.class_material.settings
 targetEntityType: paragraph
 bundle: class_material
-mode: default
+mode: settings
 content:
   field_attached_files:
-    type: entity_reference_entity_view
     weight: 2
-    label: above
     settings:
-      view_mode: teaser
-      link: false
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
+    type: entity_reference_autocomplete
     region: content
   field_body:
     weight: 1
-    label: hidden
-    settings: {  }
+    settings:
+      rows: 5
+      placeholder: ''
     third_party_settings: {  }
-    type: text_default
+    type: text_textarea
     region: content
   field_title:
-    type: string
     weight: 0
-    region: content
-    label: hidden
     settings:
-      link_to_entity: false
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
-hidden: {  }
+    type: string_textfield
+    region: content
+hidden:
+  created: true
+  status: true
+  uid: true
