@@ -7,8 +7,8 @@
   .navbar-nav {
     > li {
       @media #{$mobile} {
-        border-bottom: 1px solid #344254;
-        border-top: 1px solid #4d5d71
+        border-bottom: 1px solid $color-oxford-blue;
+        border-top: 1px solid $color-blue1;
       }
       > a {
         color: $color-white;
