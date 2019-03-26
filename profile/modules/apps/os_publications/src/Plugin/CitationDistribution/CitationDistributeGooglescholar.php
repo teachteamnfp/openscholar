@@ -5,6 +5,7 @@ namespace Drupal\os_publications\Plugin\CitationDistribution;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\os_publications\GhostEntityInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -182,7 +183,7 @@ class CitationDistributeGooglescholar implements CitationDistributionInterface, 
   /**
    * {@inheritdoc}
    */
-  public function delete(EntityInterface $entity) {
+  public function delete(GhostEntityInterface $entity) {
     // Handled inside \os_publications_page_attachments.
   }
 

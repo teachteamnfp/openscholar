@@ -3,6 +3,7 @@
 namespace Drupal\os_publications\Plugin\CitationDistribution;
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\os_publications\GhostEntityInterface;
 
 /**
  * Interface defining a server for citation distribution.
@@ -53,11 +54,13 @@ interface CitationDistributionInterface {
   /**
    * Removes a citation.
    *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
+   * @param \Drupal\os_publications\GhostEntityInterface $entity
    *   The citation entity.
+   *   Since the actual entity might not be present at this point, therefore its
+   *   ghost entity is going to be used.
    *
    * @throws \Drupal\os_publications\CitationDistributionException
    */
-  public function delete(EntityInterface $entity);
+  public function delete(GhostEntityInterface $entity);
 
 }
