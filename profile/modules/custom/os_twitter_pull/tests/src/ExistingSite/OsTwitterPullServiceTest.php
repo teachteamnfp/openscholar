@@ -18,6 +18,14 @@ use weitzman\DrupalTestTraits\ExistingSiteBase;
 class OsTwitterPullServiceTest extends ExistingSiteBase {
 
   /**
+   * {@inheritdoc}
+   */
+  public function setUp() {
+    parent::setUp();
+    \Drupal::cache('os_twitter_pull')->deleteAll();
+  }
+
+  /**
    * Test os_twitter_pull.handler service.
    */
   public function testServiceDataParser() {
@@ -55,6 +63,37 @@ https://t.co/HHcBmhyrOE';
 https://t.co/HHcBmhyrOE', $test_items[0]->text);
     $this->assertSame(1553497543, $test_items[0]->timestamp);
     $this->assertNull($test_items[0]->media_url);
+  }
+
+  /**
+   * Test suspicious data filter.
+   */
+  public function testServiceSuspiciousDataParser() {
+    $item_obj = new \stdClass();
+    $item_obj->id_str = '1110075269652664321';
+    $item_obj->from_user = 'user test 1';
+    $item_obj->profile_image_url = 'http://example.com/image.png';
+    $item_obj->profile_image_url_https = 'https://example.com/image.png';
+    $item_obj->full_text = '<script type="application/javascript">var bad_code;</script>';
+    $item_obj->created_at = 'Mon Mar 25 07:05:43 +0000 2019';
+    $data_from_exchange = [
+      $item_obj,
+    ];
+    $pullerMock = $this->getPullerMock($data_from_exchange);
+
+    $service = new TwitterPullHandler(
+      $this->container->get('os_twitter_pull.config'),
+      $pullerMock,
+      $this->container->get('cache.os_twitter_pull'),
+      $this->container->get('logger.factory'),
+      $this->container->get('datetime.time'),
+      $this->container->get('request_stack'),
+      $this->container->get('module_handler'),
+      $this->container->get('messenger')
+    );
+    $test_items = $service->twitterPullRetrieve('Harvard', 3, 0);
+    $this->assertSame('https://example.com/image.png', $test_items[0]->userphoto_https);
+    $this->assertSame('var bad_code;', $test_items[0]->text);
   }
 
   /**
