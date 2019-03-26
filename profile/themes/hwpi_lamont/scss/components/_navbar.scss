@@ -6,11 +6,16 @@
   /***** navbar nav *****/
   .navbar-nav {
     > li {
+      @media #{$mobile} {
+        border-bottom: 1px solid #344254;
+        border-top: 1px solid #4d5d71
+      }
       > a {
         color: $color-white;
         padding: 16px 14px;
         font-size: 20px;
         text-transform: uppercase;
+        font-family: 'Droid Sans',sans-serif;
         &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
           background: $color-blue1;
           color: $color-white;
@@ -27,13 +32,12 @@
   /**** dropdown menu ****/
   .dropdown-menu {
     background: $color-blue1;
+    @media #{$mobile} {
+      background: none;
+    }
     > li {
       > a {
         color: $color-white;
-        font-family: arial;
-        font-size: 13px;
-        font-weight: bold;
-        padding: 10px 15px;
         text-transform: uppercase;
         &:hover, &:active {
           color: $color-gray1;

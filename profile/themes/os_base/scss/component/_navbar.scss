@@ -91,8 +91,13 @@ nav {
       margin-bottom: 0;
       > li {
         > a {
-          padding: 8px 20px;
+          padding: 8px 16px;
           font-size: 20px;
+        }
+        &.active {
+          a {
+            margin-top: 1px;
+          }
         }
       }
     }
