@@ -11,6 +11,7 @@ use Drupal\views\Views;
  * Tests publication views.
  *
  * @group kernel
+ * @group publications
  */
 class PublicationsViewsTest extends TestBase {
 
