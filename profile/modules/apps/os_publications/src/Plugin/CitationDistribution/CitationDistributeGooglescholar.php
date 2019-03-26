@@ -5,6 +5,8 @@ namespace Drupal\os_publications\Plugin\CitationDistribution;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\os_publications\GhostEntity\GoogleScholar;
+use Drupal\os_publications\GhostEntityInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -182,8 +184,22 @@ class CitationDistributeGooglescholar implements CitationDistributionInterface, 
   /**
    * {@inheritdoc}
    */
-  public function delete(EntityInterface $entity) {
+  public function delete(GhostEntityInterface $entity) {
     // Handled inside \os_publications_page_attachments.
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function killEntity(EntityInterface $entity): GhostEntityInterface {
+    return new GoogleScholar($entity->id(), $entity->getEntityTypeId(), $entity->bundle());
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function createGhostEntityFromPayload(array $payload): GhostEntityInterface {
+    return new GoogleScholar($payload['id'], $payload['type'], $payload['bundle']);
   }
 
 }
