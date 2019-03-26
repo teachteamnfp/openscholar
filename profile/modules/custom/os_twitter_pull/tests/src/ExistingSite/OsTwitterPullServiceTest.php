@@ -70,10 +70,10 @@ https://t.co/HHcBmhyrOE', $test_items[0]->text);
    */
   public function testServiceSuspiciousDataParser() {
     $item_obj = new \stdClass();
-    $item_obj->id_str = '1110075269652664321';
-    $item_obj->from_user = 'user test 1';
-    $item_obj->profile_image_url = 'http://example.com/image.png';
-    $item_obj->profile_image_url_https = 'https://example.com/image.png';
+    $item_obj->id_str = '1110075269652664321_"+!%/';
+    $item_obj->from_user = 'user test 1_"+!%/';
+    $item_obj->profile_image_url = 'http://example.com/image.png_"+!%/';
+    $item_obj->profile_image_url_https = 'https://example.com/image.png_"+!%/';
     $item_obj->full_text = '<script type="application/javascript">var bad_code;</script>';
     $item_obj->created_at = 'Mon Mar 25 07:05:43 +0000 2019';
     $data_from_exchange = [
@@ -92,8 +92,11 @@ https://t.co/HHcBmhyrOE', $test_items[0]->text);
       $this->container->get('messenger')
     );
     $test_items = $service->twitterPullRetrieve('Harvard', 3, 0);
-    $this->assertSame('https://example.com/image.png', $test_items[0]->userphoto_https);
     $this->assertSame('var bad_code;', $test_items[0]->text);
+    $this->assertSame('1110075269652664321_&quot;+!%/', $test_items[0]->id);
+    $this->assertSame('user test 1_&quot;+!%/', $test_items[0]->username);
+    $this->assertSame('http://example.com/image.png_&quot;+!%/', $test_items[0]->userphoto);
+    $this->assertSame('https://example.com/image.png_&quot;+!%/', $test_items[0]->userphoto_https);
   }
 
   /**
