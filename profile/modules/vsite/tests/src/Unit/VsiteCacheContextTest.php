@@ -13,6 +13,7 @@ use Drupal\vsite\Cache\VsiteCacheContext;
  * Tests vsite cache context.
  *
  * @group vsite
+ * @group unit
  * @coversDefaultClass \Drupal\vsite\Cache\VsiteCacheContext
  */
 class VsiteCacheContextTest extends UnitTestCase {

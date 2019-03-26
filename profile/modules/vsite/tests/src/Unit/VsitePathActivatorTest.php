@@ -10,6 +10,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  * Tests for the VsitePathActivator class.
  *
  * @group vsite
+ * @group unit
  * @coversDefaultClass \Drupal\vsite\Plugin\VsitePathActivator
  */
 class VsitePathActivatorTest extends UnitTestCase {
