@@ -1,0 +1,19 @@
+uuid: 404e0d32-0d8d-4178-b44d-31705779e21a
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.custom_text_html
+    - field.storage.block_content.field_css_classes
+id: block_content.custom_text_html.field_css_classes
+field_name: field_css_classes
+entity_type: block_content
+bundle: custom_text_html
+label: 'Add css class'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

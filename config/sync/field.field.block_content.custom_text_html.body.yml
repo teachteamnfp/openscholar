@@ -1,0 +1,22 @@
+uuid: 7dcaaded-4c60-49c9-9349-ce427c603cd5
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.custom_text_html
+    - field.storage.block_content.body
+  module:
+    - text
+id: block_content.custom_text_html.body
+field_name: body
+entity_type: block_content
+bundle: custom_text_html
+label: Content
+description: 'You can put almost anything into here to place it in a widget. Text, HTML, Images, Video, whatever works in the editor.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: false
+field_type: text_with_summary
