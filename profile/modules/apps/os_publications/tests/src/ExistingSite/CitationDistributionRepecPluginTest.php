@@ -58,4 +58,22 @@ class CitationDistributionRepecPluginTest extends TestBase {
     $this->assertFileNotExists($file_path);
   }
 
+  /**
+   * Tests killEntity().
+   *
+   * @covers ::killEntity
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public function testKillEntity() {
+    $reference = $this->createReference();
+
+    $actual_ghost_entity = $this->repecPlugin->killEntity($reference);
+    $expected_ghost_entity = new Repec($reference->id(), $reference->getEntityTypeId(), $reference->bundle());
+
+    $this->assertSame($expected_ghost_entity->id(), $actual_ghost_entity->id());
+    $this->assertSame($expected_ghost_entity->type(), $actual_ghost_entity->type());
+    $this->assertSame($expected_ghost_entity->bundle(), $actual_ghost_entity->bundle());
+  }
+
 }
