@@ -23,6 +23,12 @@ class CustomTextHtmlWidget extends OsWidgetsBase implements OsWidgetsInterface {
     if (empty($block_content)) {
       return;
     }
+    $body_values = $block_content->get('body')->getValue();
+    // Force to filtered_html.
+    $body_values[0]['format'] = 'filtered_html';
+    $block_content->set('body', $body_values);
+    $build['custom_text_html']['body'] = $block_content->get('body')->view();
+
     $field_css_classes_values = $block_content->get('field_css_classes')->getValue();
     if (!empty($field_css_classes_values[0]['value'])) {
       $build['#extra_classes'] = $this->parseCssClasses($field_css_classes_values[0]['value']);

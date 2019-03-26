@@ -8,7 +8,6 @@ dependencies:
     - field.field.block_content.custom_text_html.field_css_classes
   module:
     - layout_builder
-    - text
 third_party_settings:
   layout_builder:
     sections: {  }
@@ -16,14 +15,8 @@ id: block_content.custom_text_html.default
 targetEntityType: block_content
 bundle: custom_text_html
 mode: default
-content:
-  body:
-    label: hidden
-    type: text_default
-    weight: 0
-    settings: {  }
-    third_party_settings: {  }
-    region: content
+content: {  }
 hidden:
+  body: true
   field_css_classes: true
   langcode: true
