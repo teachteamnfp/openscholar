@@ -30,6 +30,11 @@ function os_widgets_preprocess_block(&$variables) {
   if (!empty($variables['content']['#is_styled'])) {
     $variables['attributes']['class'][] = 'styled';
   }
+  if (!empty($variables['content']['#extra_classes'])) {
+    foreach ($variables['content']['#extra_classes'] as $class) {
+      $variables['attributes']['class'][] = $class;
+    }
+  }
 }
 
 /**
