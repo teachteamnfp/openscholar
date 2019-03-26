@@ -5,7 +5,7 @@ namespace Drupal\os_publications;
 /**
  * Contract for ghost entities.
  */
-interface GhostEntityInterface extends \Traversable {
+interface GhostEntityInterface {
 
   /**
    * Returns the id of the entity.

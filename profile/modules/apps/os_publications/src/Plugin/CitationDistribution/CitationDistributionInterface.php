@@ -63,4 +63,32 @@ interface CitationDistributionInterface {
    */
   public function delete(GhostEntityInterface $entity);
 
+  /**
+   * Prepares a ghost entity from the actual entity.
+   *
+   * Required because every plugin might need a different set of data for
+   * deletion.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The actual entity.
+   *
+   * @return \Drupal\os_publications\GhostEntityInterface
+   *   The ghost entity containing relevant information for deletion.
+   */
+  public function killEntity(EntityInterface $entity): GhostEntityInterface;
+
+  /**
+   * Creates new ghost entity from advancedqueue job payload.
+   *
+   * Required because every plugin might need a different set of data for
+   * deletion.
+   *
+   * @param array $payload
+   *   The payload.
+   *
+   * @return \Drupal\os_publications\GhostEntityInterface
+   *   The newly created ghost entity.
+   */
+  public function createGhostEntityFromPayload(array $payload): GhostEntityInterface;
+
 }
