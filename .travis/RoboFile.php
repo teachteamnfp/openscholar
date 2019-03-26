@@ -323,7 +323,6 @@ class RoboFile extends \Robo\Tasks
     {
         $groups = explode(',', $groups);
         $groups = array_filter($groups, 'trim');  // strip out empty lines
-        $groups[] = 'kernel';
         $groups = implode(',', $groups);
         $tasks[] = $this->taskExecStack()
             ->exec('docker-compose exec -T php ./vendor/bin/phpunit ' .
