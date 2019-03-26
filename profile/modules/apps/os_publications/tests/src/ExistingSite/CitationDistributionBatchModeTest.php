@@ -84,6 +84,7 @@ class CitationDistributionBatchModeTest extends TestBase {
    * @covers \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager::distribute
    * @covers \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager::conceal
    * @covers \Drupal\os_publications\Plugin\AdvancedQueue\JobType\CitationDistribute::process
+   * @covers \Drupal\os_publications\Plugin\AdvancedQueue\JobType\CitationConceal::process
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
