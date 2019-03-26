@@ -16,6 +16,9 @@
   /***** navbar nav *****/
   .navbar-nav {
     > li {
+      @media #{$mobile} {
+        border-bottom: 1px solid $color-light-gray8;
+      }
       > a {
         color: $color-gray1;
         font-family: Georgia,Baskerville,Palatino,'Palatino Linotype','Book Antiqua','Times New Roman',serif;
@@ -48,28 +51,43 @@
   /**** dropdown menu ****/
   .dropdown-menu {
     background: $color-gray2;
+    @media #{$mobile} {
+      background: $color-white;
+    }
     >li {
       >a {
         color: $color-blue1;
-        font-family: Arial,
-        Helvetica,
-        sans-serif;
-        font-weight: bold;
-        padding: 10px 15px;
-        text-transform: uppercase;
+        text-transform: capitalize;
+        @media #{$mobile} {
+          color: $color-gray1;
+          font-size: 20px;
+          font-family: Georgia,Baskerville,Palatino,'Palatino Linotype','Book Antiqua','Times New Roman',serif;
+        }
         &:hover,
         &:active {
           color: $color-white;
           background: $color-gray2;
+          @media #{$mobile} {
+            color: $color-gray1;
+            background: $color-white;
+          }
         }
       }
       &.active {
         a {
           color: $color-blue1;
           background: $color-gray2;
+          @media #{$mobile} {
+            background: $color-white;
+            color: $color-gray1;
+          }
           &:hover {
             color: $color-white;
             background: $color-gray2;
+            @media #{$mobile} {
+              background: $color-white;
+              color: $color-gray1;
+            }
           }
         }
       }
