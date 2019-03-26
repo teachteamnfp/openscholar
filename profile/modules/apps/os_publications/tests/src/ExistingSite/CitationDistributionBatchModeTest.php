@@ -95,7 +95,7 @@ class CitationDistributionBatchModeTest extends TestBase {
     $file_name = "{$serie_directory_config}_{$reference->getEntityTypeId()}_{$reference->id()}.rdf";
 
     $this->assertFileNotExists("$directory/$file_name");
-    $this->assertItemExistsInQueue($reference);
+    $this->assertItemAsDistributionJob($reference);
 
     $this->processor->processQueue($this->queue);
 
@@ -109,7 +109,7 @@ class CitationDistributionBatchModeTest extends TestBase {
     ]);
     $reference->save();
 
-    $this->assertItemExistsInQueue($reference);
+    $this->assertItemAsDistributionJob($reference);
 
     $this->processor->processQueue($this->queue);
 
@@ -120,29 +120,23 @@ class CitationDistributionBatchModeTest extends TestBase {
     // Test deletion.
     $reference->delete();
 
-    $raw_jobs = $this->databaseConnection->query('SELECT * FROM {advancedqueue} WHERE {queue_id} = :queue_id AND {type} = :type AND {state} = :state', [
-      ':queue_id' => 'publications',
-      ':type' => 'os_publications_citation_conceal',
-      ':state' => Job::STATE_QUEUED,
-    ])->fetchAllAssoc('job_id', \PDO::FETCH_ASSOC);
+    $this->assertFileExists("$directory/$file_name");
+    $this->assertItemAsConcealmentJob($reference);
 
-    $this->assertCount(1, $raw_jobs);
+    $this->processor->processQueue($this->queue);
 
-    $job = reset($raw_jobs);
-    $payload = Json::decode($job['payload']);
-
-    $this->assertEquals($reference->id(), $payload['id']);
+    $this->assertFileNotExists("$directory/$file_name");
   }
 
   /**
-   * Asserts presence of item in queue.
+   * Asserts whether the item has been converted to a distribution job.
    *
    * @param \Drupal\bibcite_entity\Entity\ReferenceInterface $item
    *   The item.
    */
-  protected function assertItemExistsInQueue(ReferenceInterface $item) {
+  protected function assertItemAsDistributionJob(ReferenceInterface $item) {
     $raw_jobs = $this->databaseConnection->query('SELECT * FROM {advancedqueue} WHERE {queue_id} = :queue_id AND {type} = :type AND {state} = :state', [
-      ':queue_id' => 'publications',
+      ':queue_id' => $this->queue->id(),
       ':type' => 'os_publications_citation_distribute',
       ':state' => Job::STATE_QUEUED,
     ])->fetchAllAssoc('job_id', \PDO::FETCH_ASSOC);
@@ -153,6 +147,29 @@ class CitationDistributionBatchModeTest extends TestBase {
     $payload = Json::decode($job['payload']);
 
     $this->assertEquals($item->id(), $payload['id']);
+  }
+
+  /**
+   * Asserts whether the item has been converted to a concealment job.
+   *
+   * @param \Drupal\bibcite_entity\Entity\ReferenceInterface $item
+   *   The item.
+   */
+  protected function assertItemAsConcealmentJob(ReferenceInterface $item) {
+    $raw_jobs = $this->databaseConnection->query('SELECT * FROM {advancedqueue} WHERE {queue_id} = :queue_id AND {type} = :type AND {state} = :state', [
+      ':queue_id' => $this->queue->id(),
+      ':type' => 'os_publications_citation_conceal',
+      ':state' => Job::STATE_QUEUED,
+    ])->fetchAllAssoc('job_id', \PDO::FETCH_ASSOC);
+
+    $this->assertCount(1, $raw_jobs);
+
+    $job = reset($raw_jobs);
+    $payload = Json::decode($job['payload']);
+
+    $this->assertEquals($item->id(), $payload['id']);
+    $this->assertEquals($item->getEntityTypeId(), $payload['type']);
+    $this->assertEquals($item->bundle(), $payload['bundle']);
   }
 
   /**
