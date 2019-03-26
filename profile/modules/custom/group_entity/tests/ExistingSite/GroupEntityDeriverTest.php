@@ -13,6 +13,7 @@ use weitzman\DrupalTestTraits\ExistingSiteBase;
  *
  * @package Drupal\Tests\group_entity\Kernel
  * @group kernel
+ * @group other
  * @coversDefaultClass \Drupal\group_entity\Plugin\GroupContentEnabler\GroupEntityDeriver
  */
 class GroupEntityDeriverTest extends ExistingSiteBase {

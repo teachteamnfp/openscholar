@@ -9,6 +9,7 @@ use weitzman\DrupalTestTraits\ExistingSiteBase;
  *
  * @group metatag
  * @group kernel
+ * @group other
  */
 class HtmlHeadOsMetatagTest extends ExistingSiteBase {
 
