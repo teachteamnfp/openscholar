@@ -205,6 +205,16 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
     $fields['title_first_char_excl_prep'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Title first letter excluding prepositions'));
 
+    $fields['status'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Published'))
+      ->setDisplayOptions('form', [
+        'type' => 'boolean_checkbox',
+        'settings' => [
+          'display_label' => TRUE,
+        ],
+      ])
+      ->setDisplayConfigurable('form', TRUE);
+
     return $fields;
   }
 }
