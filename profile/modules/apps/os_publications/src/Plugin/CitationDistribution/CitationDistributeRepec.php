@@ -8,7 +8,10 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\PluginBase;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\os_publications\CitationDistributionException;
+use Drupal\os_publications\GhostEntity\Repec;
+use Drupal\os_publications\GhostEntityInterface;
 use Drupal\repec\RepecInterface;
+use PHPUnit\Framework\Assert;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -100,15 +103,9 @@ class CitationDistributeRepec extends PluginBase implements CitationDistribution
   /**
    * {@inheritdoc}
    */
-  public function delete(EntityInterface $entity) {
-    if (!$entity instanceof ContentEntityInterface) {
-      return;
-    }
-
+  public function delete(GhostEntityInterface $entity) {
     try {
-      if ($this->repec->isBundleEnabled($entity)) {
-        $this->repec->deleteEntityTemplate($entity);
-      }
+      $this->deleteEntityTemplate($entity);
     }
     catch (\Exception $e) {
       throw new CitationDistributionException($this->t('Could not delete citation. Error: %message. Backtrace: @trace', [
@@ -116,6 +113,39 @@ class CitationDistributeRepec extends PluginBase implements CitationDistribution
         '@trace' => print_r($e->getTrace(), TRUE),
       ]));
     }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function killEntity(EntityInterface $entity): GhostEntityInterface {
+    return new Repec($entity->id(), $entity->getEntityTypeId(), $entity->bundle());
+  }
+
+  /**
+   * Deletes the rdf template.
+   *
+   * @param \Drupal\os_publications\GhostEntityInterface $entity
+   *   The necessary data required for deletion.
+   *
+   * @see \Drupal\repec\Repec::deleteEntityTemplate
+   */
+  protected function deleteEntityTemplate(GhostEntityInterface $entity) {
+    $serie_directory_config = $this->repec->getEntityBundleSettings('serie_directory', $entity->type(), $entity->bundle());
+    $directory = "{$this->repec->getArchiveDirectory()}{$serie_directory_config}/";
+    $file_name = "{$serie_directory_config}_{$entity->type()}_{$entity->id()}.rdf";
+    $file_path = "$directory/$file_name";
+
+    Assert::assertFileExists($file_path);
+
+    file_unmanaged_delete($file_path);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function createGhostEntityFromPayload(array $payload): GhostEntityInterface {
+    return new Repec($payload['id'], $payload['type'], $payload['bundle']);
   }
 
 }
