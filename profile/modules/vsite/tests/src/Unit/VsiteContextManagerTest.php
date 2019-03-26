@@ -14,6 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  *
  * @group vsite
  * @group unit
+ * @group wip
  * @coversDefaultClass \Drupal\vsite\Plugin\VsiteContextManager
  */
 class VsiteContextManagerTest extends UnitTestCase {
