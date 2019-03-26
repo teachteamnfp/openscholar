@@ -1,0 +1,23 @@
+uuid: fc2555ab-76d4-4c86-b11d-6846a3e507a6
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.twitter_feed
+    - field.storage.block_content.field_twitter_is_followme_link
+id: block_content.twitter_feed.field_twitter_is_followme_link
+field_name: field_twitter_is_followme_link
+entity_type: block_content
+bundle: twitter_feed
+label: 'Include a "follow me link"'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

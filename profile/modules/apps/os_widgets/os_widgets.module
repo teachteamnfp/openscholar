@@ -5,6 +5,8 @@
  * OS widgets.
  */
 
+use Drupal\Core\Form\FormStateInterface;
+
 /**
  * Implements hook_entity_type_alter().
  */
@@ -57,5 +59,30 @@ function os_widgets_theme($existing, $type, $theme, $path) {
         'image_base_path' => NULL,
       ],
     ],
+    'os_widgets_twitter_pull' => [
+      'variables' => [
+        'tweets' => [],
+        'is_follow_me' => FALSE,
+        'follow_me_link' => '',
+      ],
+    ],
   ];
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function os_widgets_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    case 'block_content_twitter_feed_form':
+    case 'block_content_twitter_feed_edit_form':
+      $form['field_twitter_followme_link']['#states'] = [
+        'visible' => [
+          ':input[name="field_twitter_is_followme_link[value]"]' => [
+            'checked' => TRUE,
+          ],
+        ],
+      ];
+      break;
+  }
 }

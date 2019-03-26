@@ -1,0 +1,12 @@
+uuid: 6c9df126-654e-4783-8a72-4b02a1a4fe3e
+langcode: en
+status: true
+dependencies: {  }
+id: publications
+label: Publications
+backend: database
+backend_configuration:
+  lease_time: 300
+processor: cron
+processing_time: 90
+locked: false

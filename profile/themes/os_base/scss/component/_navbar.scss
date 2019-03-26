@@ -80,7 +80,7 @@ nav {
       margin-bottom: 0;
       > li {
         > a {
-          padding: 8px 20px;
+          padding: 8px 16px;
           font-size: 20px;
         }
       }
@@ -88,7 +88,7 @@ nav {
         display: block;
         position: inherit;
         background: none;
-        padding: 0;
+        padding: 0 0 0 10px;
         margin: 0;
         float: none;
         li {
@@ -99,6 +99,9 @@ nav {
           }
         }
       }
+    }
+    .row {
+      margin: 0;
     }
   }
 }

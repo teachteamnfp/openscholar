@@ -1,0 +1,13 @@
+<ul class="twitter-pull-items">
+  {% for tweet in tweets %}
+    <li class="twitter-pull-item">
+      <div class="tweet-authorphoto"><img src="{{ tweet.userphoto_https }}" alt="{{ tweet.username }}"></div>
+      <span class="tweet-author"><a href="//twitter.com/{{ tweet.username }}" target="_blank">{{ tweet.username }}</a></span>
+      <span class="tweet-text">{{ tweet.text|raw }}</span>
+      <div class="tweet-time"><a href="//twitter.com/{{ tweet.username }}/status/{{ tweet.id }}" target="_blank">{{ tweet.timestamp|time_diff }}</a></div>
+    </li>
+  {% endfor %}
+</ul>
+{% if is_follow_me %}
+  <div class="twitter-followme">{{ follow_me_link }}</div>
+{% endif %}

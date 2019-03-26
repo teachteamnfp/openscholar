@@ -1,0 +1,23 @@
+uuid: 3593255f-a25a-4fb5-b169-dc11a0966b2a
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.twitter_feed
+    - field.storage.block_content.field_twitter_make_embeddable
+id: block_content.twitter_feed.field_twitter_make_embeddable
+field_name: field_twitter_make_embeddable
+entity_type: block_content
+bundle: twitter_feed
+label: 'Make Embeddable'
+description: 'Allow this widget to be embedded on other websites.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean
