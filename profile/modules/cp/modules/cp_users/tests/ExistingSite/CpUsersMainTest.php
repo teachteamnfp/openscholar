@@ -200,6 +200,6 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
       $settings->set('disable_user_creation', 0);
       $settings->save();
     }
-  }``
+  }
 
 }
