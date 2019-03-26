@@ -12,7 +12,7 @@ id: node.class.field_class_materials
 field_name: field_class_materials
 entity_type: node
 bundle: class
-label: 'Class Materials'
+label: 'Related Materials'
 description: ''
 required: false
 translatable: false

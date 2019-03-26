@@ -1,0 +1,23 @@
+uuid: ec9d3e5b-32e0-455d-91b2-8b5ca8bd9433
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.twitter_feed
+    - field.storage.block_content.field_twitter_exclude_retweets
+id: block_content.twitter_feed.field_twitter_exclude_retweets
+field_name: field_twitter_exclude_retweets
+entity_type: block_content
+bundle: twitter_feed
+label: 'Exclude retweets'
+description: 'This will remove re-tweets from the tweet list and might result in fewer being displayed'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

@@ -1,7 +1,0 @@
-cp.settings.privacy:
-  path: '/cp/settings/privacy'
-  defaults:
-    _form: '\Drupal\vsite_privacy\Form\VsitePrivacyForm'
-    _title: 'Site Privacy Level'
-  requirements:
-    _permission: 'change site privacy level'

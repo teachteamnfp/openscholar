@@ -7,8 +7,12 @@ dependencies:
     - field.field.node.faq.field_attached_media
     - node.type.faq
   module:
+    - layout_builder
     - text
     - user
+third_party_settings:
+  layout_builder:
+    sections: {  }
 _core:
   default_config_hash: J5yyMXb6MQffgZFjqX45auhhW1Dh2ehyHs5RIaQFvRc
 id: node.faq.default
@@ -19,12 +23,12 @@ content:
   body:
     label: hidden
     type: text_default
-    weight: 101
+    weight: 0
     settings: {  }
     third_party_settings: {  }
     region: content
   field_attached_media:
-    weight: 102
+    weight: 1
     label: above
     settings:
       link: true
@@ -32,7 +36,9 @@ content:
     type: entity_reference_label
     region: content
   links:
-    weight: 100
+    weight: 2
     region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   langcode: true

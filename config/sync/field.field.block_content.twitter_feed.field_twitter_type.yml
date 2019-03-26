@@ -1,0 +1,21 @@
+uuid: e6aa49f2-7172-4f82-abe0-efda9c749f50
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.twitter_feed
+    - field.storage.block_content.field_twitter_type
+  module:
+    - options
+id: block_content.twitter_feed.field_twitter_type
+field_name: field_twitter_type
+entity_type: block_content
+bundle: twitter_feed
+label: 'Display tweets from'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

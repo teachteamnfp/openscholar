@@ -1,0 +1,25 @@
+uuid: cff1c9a5-4e47-4219-9767-3293628e9b3f
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.twitter_feed
+    - field.storage.block_content.field_twitter_num_items
+id: block_content.twitter_feed.field_twitter_num_items
+field_name: field_twitter_num_items
+entity_type: block_content
+bundle: twitter_feed
+label: 'Number of tweets'
+description: 'Number of tweets to display'
+required: false
+translatable: false
+default_value:
+  -
+    value: 5
+default_value_callback: ''
+settings:
+  min: 0
+  max: 200
+  prefix: ''
+  suffix: ''
+field_type: integer

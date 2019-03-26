@@ -1,0 +1,30 @@
+uuid: ab3223be-2848-499f-a050-4094eeec7484
+langcode: en
+status: true
+dependencies:
+  module:
+    - block_content
+    - options
+id: block_content.field_twitter_type
+field_name: field_twitter_type
+entity_type: block_content
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: user
+      label: Username
+    -
+      value: hashtag
+      label: Hashtag
+    -
+      value: search
+      label: Search
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
