@@ -3,7 +3,7 @@
   background: $color-light-gray1;
   padding: 8px 0 !important;
   @media #{$mobile} {
-    background: #3A72AB;
+    background: $color-blue1;
     padding: 0 !important;
   }
   /***** navbar nav *****/
@@ -12,8 +12,8 @@
       margin-right: 20px;
       @media #{$mobile} {
         margin-right: 0;
-        border-bottom: 1px solid #34679A;
-        border-top: 1px solid #407EB4;
+        border-bottom: 1px solid $color-blue2;
+        border-top: 1px solid $color-blue3;
       }
       > a {
         color: $color-gray1;
