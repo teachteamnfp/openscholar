@@ -42,7 +42,8 @@ https://t.co/HHcBmhyrOE';
       $this->container->get('logger.factory'),
       $this->container->get('datetime.time'),
       $this->container->get('request_stack'),
-      $this->container->get('module_handler')
+      $this->container->get('module_handler'),
+      $this->container->get('messenger')
     );
     $test_items = $service->twitterPullRetrieve('Harvard', 3, 0);
     $this->assertSame('1110075269652664321', $test_items[0]->id);
