@@ -76,4 +76,24 @@ class CitationDistributionRepecPluginTest extends TestBase {
     $this->assertSame($expected_ghost_entity->bundle(), $actual_ghost_entity->bundle());
   }
 
+  /**
+   * Tests createGhostEntityFromPayload().
+   *
+   * @covers ::createGhostEntityFromPayload
+   */
+  public function testCreateGhostEntityFromPayload() {
+    $payload = [
+      'id' => 47,
+      'type' => 'bibcite_reference',
+      'bundle' => 'artwork',
+    ];
+
+    $actual_entity = $this->repecPlugin->createGhostEntityFromPayload($payload);
+    $expected_entity = new Repec($payload['id'], $payload['type'], $payload['bundle']);
+
+    $this->assertSame($expected_entity->id(), $actual_entity->id());
+    $this->assertSame($expected_entity->type(), $actual_entity->type());
+    $this->assertSame($expected_entity->bundle(), $actual_entity->bundle());
+  }
+
 }
