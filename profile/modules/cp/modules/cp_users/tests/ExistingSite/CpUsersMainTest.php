@@ -40,6 +40,13 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
   protected $configFactory;
 
   /**
+   * The group modifier in use.
+   *
+   * @var string
+   */
+  protected $modifier;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
@@ -51,11 +58,12 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
     $this->oldMailHandler = $config->get('interface.default');
     $config->set('interface.default', 'test_mail_collector')->save();
 
+    $this->modifier = $this->randomMachineName();
     $this->group = $this->createGroup([
       'type' => 'personal',
       'uid' => 1,
       'path' => [
-        'alias' => '/' . $this->randomMachineName()
+        'alias' => '/' . $this->modifier
       ],
     ]);
   }
@@ -76,15 +84,6 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
    * Tests for adding and removing users.
    */
   public function testAddExistingUser() {
-    $modifierIndex = new ModifierIndex();
-    $modifiers = $modifierIndex->findAll();
-    $modifier = '';
-    foreach ($modifiers as $m) {
-      $modifier = $m->getModifierKey();
-      if ($modifier) {
-        break;
-      }
-    }
 
     try {
       $account = $this->entityTypeManager->getStorage('user')->load(1);
@@ -93,11 +92,11 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
       $username = $this->randomString();
       $user = $this->createUser([], $username, FALSE);
 
-      $this->visit('/'.$modifier.'/cp/users');
-      $this->assertContains('/'.$modifier.'/cp/users', $this->getSession()->getCurrentUrl(), "First url check, on " . $this->getSession()->getCurrentUrl());
+      $this->visit('/'.$this->modifier.'/cp/users');
+      $this->assertContains('/'.$this->modifier.'/cp/users', $this->getSession()->getCurrentUrl(), "First url check, on " . $this->getSession()->getCurrentUrl());
       $page = $this->getCurrentPage();
       $link = $page->findLink('+ Add a member');
-      $this->assertContains('/'.$modifier.'/cp/users/add', $link->getAttribute('href'), "Add link is not in the vsite.");
+      $this->assertContains('/'.$this->modifier.'/cp/users/add', $link->getAttribute('href'), "Add link is not in the vsite.");
       $page->clickLink('+ Add a member');
       $this->assertSession()->waitForElement('css', '#drupal-modal--content');
       $page->clickLink('Add an Existing User');
@@ -111,7 +110,7 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
       $page->pressButton("Save");
       $this->assertSession()->assertWaitOnAjaxRequest();
       //$this->visit('/site01/cp/users');
-      $this->assertContains('/'.$modifier.'/cp/users', $this->getSession()->getCurrentUrl(), "Not on the correct page, on " . $this->getSession()->getCurrentUrl());
+      $this->assertContains('/'.$this->modifier.'/cp/users', $this->getSession()->getCurrentUrl(), "Not on the correct page, on " . $this->getSession()->getCurrentUrl());
       $this->assertTrue($page->hasContent($username), "Username $username not found on page.");
 
       // $this->assertMail('id', '');.
@@ -137,15 +136,6 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
    * Tests for adding a user new to the site.
    */
   public function testNewUser() {
-    $modifierIndex = new ModifierIndex();
-    $modifiers = $modifierIndex->findAll();
-    $modifier = '';
-    foreach ($modifiers as $m) {
-      $modifier = $m->getModifierKey();
-      if ($modifier) {
-        break;
-      }
-    }
     $settings = $this->configFactory->getEditable('cp_users.settings');
     try {
       $this->assertFalse($settings->get('disable_user_creation'), "User creation setting is wrong.");
@@ -154,8 +144,8 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
       $account->passRaw = 'admin';
       $this->drupalLogin($account);
 
-      $this->visit('/'.$modifier.'/cp/users');
-      $this->assertContains('/'.$modifier.'/cp/users', $this->getSession()->getCurrentUrl());
+      $this->visit('/'.$this->modifier.'/cp/users');
+      $this->assertContains('/'.$this->modifier.'/cp/users', $this->getSession()->getCurrentUrl());
       $page = $this->getCurrentPage();
       $page->clickLink('+ Add a member');
       $this->assertSession()->waitForElement('css', '#drupal-modal--content');
@@ -167,7 +157,7 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
       $page->selectFieldOption('role', 'personal-member');
       $page->pressButton('Save');
       $this->assertSession()->assertWaitOnAjaxRequest();
-      $this->assertContains('/'.$modifier.'/cp/users', $this->getSession()->getCurrentUrl(), "Not on correct page after redirect.");
+      $this->assertContains('/'.$this->modifier.'/cp/users', $this->getSession()->getCurrentUrl(), "Not on correct page after redirect.");
       $this->assertTrue($page->hasContent('test-user'), "Test-user not added to site.");
 
       $settings->set('disable_user_creation', 1);
