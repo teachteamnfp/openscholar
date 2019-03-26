@@ -7,7 +7,6 @@ dependencies:
     - field.field.block_content.twitter_feed.field_twitter_exclude_retweets
     - field.field.block_content.twitter_feed.field_twitter_followme_link
     - field.field.block_content.twitter_feed.field_twitter_is_followme_link
-    - field.field.block_content.twitter_feed.field_twitter_make_embeddable
     - field.field.block_content.twitter_feed.field_twitter_num_items
     - field.field.block_content.twitter_feed.field_twitter_type
     - field.field.block_content.twitter_feed.field_twitter_username
@@ -42,13 +41,6 @@ content:
     region: content
   field_twitter_is_followme_link:
     weight: 107
-    settings:
-      display_label: true
-    third_party_settings: {  }
-    type: boolean_checkbox
-    region: content
-  field_twitter_make_embeddable:
-    weight: 106
     settings:
       display_label: true
     third_party_settings: {  }
