@@ -114,7 +114,7 @@ function os_classes_form_paragraph_class_material_form_alter(
     FormStateInterface $form_state,
     $form_id
 ) {
-  $form['actions']['submit']['#submit'][] = '_save_entity_to_node';
+  $form['actions']['submit']['#submit'][] = 'os_classes_save_entity_to_node';
 }
 
 /**
@@ -130,7 +130,7 @@ function os_classes_form_paragraph_class_material_form_alter(
  * @throws \Drupal\Core\Entity\EntityMalformedException
  * @throws \Drupal\Core\Entity\EntityStorageException
  */
-function _save_entity_to_node(array $form, FormStateInterface $form_state) {
+function os_classes_save_entity_to_node(array $form, FormStateInterface $form_state) {
   $nid = \Drupal::routeMatch()->getParameter('nid');
   $values = $form_state->getValues();
   $media = [];

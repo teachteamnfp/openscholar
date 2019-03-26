@@ -19,7 +19,7 @@ class AddClassMaterialFormTest extends ExistingSiteBase {
   public function setUp() {
     parent::setUp();
 
-    $this->user = $this->createUser([], '', TRUE);
+    $this->adminUser = $this->createUser([], '', TRUE);
     $this->simpleUser = $this->createUser();
 
     $this->class = $this->createNode([
@@ -37,7 +37,7 @@ class AddClassMaterialFormTest extends ExistingSiteBase {
    * @throws \Behat\Mink\Exception\ExpectationException
    */
   public function testClassMaterialPage() {
-    $this->drupalLogin($this->user);
+    $this->drupalLogin($this->adminUser);
 
     $this->drupalGet('node/' . $this->class->id());
     $this->assertSession()->statusCodeEquals(200);

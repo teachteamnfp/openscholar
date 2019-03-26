@@ -3,6 +3,7 @@
 namespace Drupal\os_classes\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\paragraphs\Entity\Paragraph;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -91,12 +92,32 @@ class ParagraphAddController extends ControllerBase {
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   public function getTitle() {
+    $paragraph = $this->getParagraph();
+    return $paragraph->field_title->value;
+  }
 
-    $mid = $this->request->getCurrentRequest()->query->get('mid');
-    $entity = $this->entityTypeManager()->getStorage('paragraph')->load($mid);
-    $title = $entity->field_title->value;
+  /**
+   * Cached paragraph instance.
+   *
+   * @var \Drupal\Core\Entity\EntityInterface
+   */
+  protected $paragraph = NULL;
 
-    return $title;
+  /**
+   * Loads the paragraph.
+   *
+   * @return \Drupal\Core\Entity\EntityInterface
+   *   The paragraph itself.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   */
+  public function getParagraph() : EntityInterface {
+    if (!$this->paragraph) {
+      $mid = $this->request->getCurrentRequest()->query->get('mid');
+      $this->paragraph = $this->entityTypeManager()->getStorage('paragraph')->load($mid);
+    }
+    return $this->paragraph;
   }
 
 }

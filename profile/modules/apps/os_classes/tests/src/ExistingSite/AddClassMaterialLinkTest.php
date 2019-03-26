@@ -19,7 +19,7 @@ class AddClassMaterialLinkTest extends ExistingSiteBase {
   public function setUp() {
     parent::setUp();
 
-    $this->user = $this->createUser([], '', TRUE);
+    $this->adminUser = $this->createUser([], '', TRUE);
     $this->simpleUser = $this->createUser();
 
     $this->class = $this->createNode([
@@ -37,7 +37,7 @@ class AddClassMaterialLinkTest extends ExistingSiteBase {
    * @throws \Behat\Mink\Exception\ExpectationException
    */
   public function testAddMaterialLinkAsAdmin() {
-    $this->drupalLogin($this->user);
+    $this->drupalLogin($this->adminUser);
 
     $this->drupalGet('node/' . $this->class->id());
     $this->assertSession()->statusCodeEquals(200);
@@ -63,7 +63,7 @@ class AddClassMaterialLinkTest extends ExistingSiteBase {
    * @throws \Behat\Mink\Exception\ExpectationException
    */
   public function testAddLinkOnClassesViewAsAdmin() {
-    $this->drupalLogin($this->user);
+    $this->drupalLogin($this->adminUser);
 
     $this->drupalGet('classes');
     $this->assertSession()->statusCodeEquals(200);
