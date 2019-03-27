@@ -1,0 +1,26 @@
+<?php
+
+/**
+ * @file
+ * Theme preview hooks.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function os_theme_preview_form_system_themes_admin_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['preview'] = [
+    '#type' => 'submit',
+    '#value' => t('Preview'),
+    '#submit' => ['os_theme_preview_theme_preview_init'],
+  ];
+}
+
+/**
+ * Starts the theme preview.
+ */
+function os_theme_preview_theme_preview_init(&$form, FormStateInterface $form_state) {
+  // TODO: Set the unique key-value pair in session here.
+}
