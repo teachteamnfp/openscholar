@@ -12,6 +12,7 @@ use Drupal\os_publications\CitationDistributionModes;
  * CitationDistributionBatchModeTest.
  *
  * @group kernel
+ * @group publications
  */
 class CitationDistributionBatchModeTest extends TestBase {
 

@@ -8,6 +8,7 @@ use Drupal\os_widgets\Plugin\OsWidgets\FeaturedPostsWidget;
  * Class FeaturedPosts.
  *
  * @group kernel
+ * @group widgets
  * @covers \Drupal\os_widgets\Plugin\OsWidgets\FeaturedPostsWidget
  */
 class FeaturedPostsBlockRenderTest extends OsWidgetsExistingSiteTestBase {

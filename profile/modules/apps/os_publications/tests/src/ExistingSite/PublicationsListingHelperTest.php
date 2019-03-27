@@ -8,6 +8,7 @@ use Drupal\redirect\Entity\Redirect;
  * LabelHelperTest.
  *
  * @group kernel
+ * @group publications
  * @coversDefaultClass \Drupal\os_publications\PublicationsListingHelper
  */
 class PublicationsListingHelperTest extends TestBase {
