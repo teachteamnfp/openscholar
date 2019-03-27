@@ -310,9 +310,9 @@ display:
           times:
             default_date: false
             date: ''
-          left: 'prev,next'
-          center: title
-          right: month
+          left: ''
+          center: 'prev title next'
+          right: ''
           timeformat: 'h:mm'
           advanced: false
           slotLabelFormat: 'h(:mm)a'
@@ -357,6 +357,7 @@ display:
         title: false
         filters: false
         filter_groups: false
+        css_class: false
       row:
         type: fields
         options: {  }
@@ -470,6 +471,7 @@ display:
         operator: AND
         groups:
           1: AND
+      css_class: mini-calendar
     cache_metadata:
       max-age: -1
       contexts:

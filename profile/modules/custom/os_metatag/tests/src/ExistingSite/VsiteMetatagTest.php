@@ -7,6 +7,7 @@ namespace Drupal\Tests\os_metatag\ExistingSite;
  *
  * @group metatag
  * @group kernel
+ * @group other
  */
 class VsiteMetatagTest extends OsMetatagTestBase {
 
