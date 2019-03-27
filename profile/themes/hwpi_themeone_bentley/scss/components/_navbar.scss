@@ -1,15 +1,27 @@
 /**** navbar ****/
 .navbar-collapse {
   background: $color-light-gray;
+  @media #{$mobile} {
+    background: $color-blue2;
+    padding: 0px 0 !important;
+  }
   padding: 8px 0 !important;
   .navbar-nav {
     > li {
       margin-right: 15px;
+      @media #{$mobile} {
+        margin-right: 0;
+        border-bottom: 1px solid $color-blue3;
+        border-top: 1px solid $color-blue4;
+      }
       > a {
         font-family: Georgia,Baskerville,Palatino,'Palatino Linotype','Book Antiqua','Times New Roman',serif;
         font-size: 20px;
         color: $color-text;
         padding: 8px;
+        @media #{$mobile} {
+          color: $color-white;
+        }
         &:hover, &:active, &:focus, &.is-active {
           background: $color-blue1;
           color: $color-white;
@@ -22,7 +34,7 @@
         }
       }
       &.open, &.active {
-        > a, a:hover, a:active, a:focus {
+        > a, > a:hover, > a:active, > a:focus {
           background: $color-blue1;
           color: $color-white;
         }
@@ -32,14 +44,20 @@
   /**** dropdown ****/
   .dropdown-menu {
     background: $color-light-gray2;
-    box-shadow: none;
-    border: 0 none;
+    @media #{$mobile} {
+      background: none;
+    }
     > li {
       > a {
         color: $color-text;
         background: none;
         padding: 8px;
         font-size: 15px;
+        @media #{$mobile} {
+          font-size: 20px;
+          color: $color-white;
+          font-family: Georgia,Baskerville,Palatino,'Palatino Linotype','Book Antiqua','Times New Roman',serif;
+        }
         &:hover, &:active {
           color: $color-gray1;
         }
