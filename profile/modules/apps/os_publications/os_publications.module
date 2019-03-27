@@ -237,27 +237,39 @@ function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInte
  * Implements hook_ENTITY_TYPE_insert().
  */
 function os_publications_bibcite_reference_insert(EntityInterface $entity) {
-  /** @var \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager $type */
-  $type = \Drupal::service('os_publications.manager_citation_distribute');
-  $type->distribute($entity);
+  $is_published = $entity->get('status')->getValue();
+
+  if ($is_published[0]['value']) {
+    /** @var \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager $type */
+    $type = \Drupal::service('os_publications.manager_citation_distribute');
+    $type->distribute($entity);
+  }
 }
 
 /**
  * Implements hook_ENTITY_TYPE_update().
  */
 function os_publications_bibcite_reference_update(EntityInterface $entity) {
-  /** @var \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager $type */
-  $type = \Drupal::service('os_publications.manager_citation_distribute');
-  $type->distribute($entity);
+  $is_published = $entity->get('status')->getValue();
+
+  if ($is_published[0]['value']) {
+    /** @var \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager $type */
+    $type = \Drupal::service('os_publications.manager_citation_distribute');
+    $type->distribute($entity);
+  }
 }
 
 /**
  * Implements hook_ENTITY_TYPE_delete().
  */
 function os_publications_bibcite_reference_delete(EntityInterface $entity) {
-  /** @var \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager $type */
-  $type = \Drupal::service('os_publications.manager_citation_distribute');
-  $type->conceal($entity);
+  $is_published = $entity->get('status')->getValue();
+
+  if ($is_published[0]['value']) {
+    /** @var \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager $type */
+    $type = \Drupal::service('os_publications.manager_citation_distribute');
+    $type->conceal($entity);
+  }
 }
 
 /**
