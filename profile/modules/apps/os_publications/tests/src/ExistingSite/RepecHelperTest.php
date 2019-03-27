@@ -9,6 +9,7 @@ use Drupal\os_publications\RepecHelper;
  * Class RepecHelperTest.
  *
  * @group kernel
+ * @group publications
  * @coversDefaultClass \Drupal\os_publications\RepecHelper
  */
 class RepecHelperTest extends TestBase {

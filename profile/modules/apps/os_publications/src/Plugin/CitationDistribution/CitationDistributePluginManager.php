@@ -119,13 +119,17 @@ class CitationDistributePluginManager extends DefaultPluginManager {
 
         switch ($dist_mode) {
           case CitationDistributionModes::PER_SUBMISSION:
-            $plugin->delete($entity);
+            /** @var \Drupal\os_publications\GhostEntityInterface $ghost_entity */
+            $ghost_entity = $plugin->killEntity($entity);
+            $plugin->delete($ghost_entity);
 
             continue;
 
           case CitationDistributionModes::BATCH:
             $job = Job::create('os_publications_citation_conceal', [
               'id' => $entity->id(),
+              'type' => $entity->getEntityTypeId(),
+              'bundle' => $entity->bundle(),
             ]);
             $queue = Queue::load('publications');
             $queue->enqueueJob($job);
