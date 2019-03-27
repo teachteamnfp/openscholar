@@ -17,6 +17,8 @@ class CitationDistributionPluginManagerTest extends TestBase {
    * @covers \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager::distribute
    * @covers ::os_publications_bibcite_reference_insert
    * @covers ::os_publications_bibcite_reference_update
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function testDistribute() {
     // Assert positive insert.
@@ -50,6 +52,36 @@ class CitationDistributionPluginManagerTest extends TestBase {
       'value' => 'Test abstract',
     ]);
     $unpublished_reference->save();
+
+    $this->assertFileNotExists($template_path);
+  }
+
+  /**
+   * Test citation concealing.
+   *
+   * Relying on repec plugin to carry out the tests.
+   *
+   * @covers \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager::conceal
+   * @covers ::os_publications_bibcite_reference_delete
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public function testConceal() {
+    // Assert positive conceal.
+    $published_reference = $this->createReference();
+    $published_reference->delete();
+    $template_path = $this->getRepecTemplatePath($published_reference);
+
+    $this->assertFileNotExists($template_path);
+
+    // Assert negative conceal.
+    $unpublished_reference = $this->createReference([
+      'status' => [
+        'value' => 0,
+      ],
+    ]);
+    $unpublished_reference->delete();
+    $template_path = $this->getRepecTemplatePath($unpublished_reference);
 
     $this->assertFileNotExists($template_path);
   }
