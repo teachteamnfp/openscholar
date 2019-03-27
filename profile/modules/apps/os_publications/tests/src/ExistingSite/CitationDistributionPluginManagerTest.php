@@ -69,8 +69,8 @@ class CitationDistributionPluginManagerTest extends TestBase {
   public function testConceal() {
     // Assert positive conceal.
     $published_reference = $this->createReference();
-    $published_reference->delete();
     $template_path = $this->getRepecTemplatePath($published_reference);
+    $published_reference->delete();
 
     $this->assertFileNotExists($template_path);
 
@@ -80,8 +80,8 @@ class CitationDistributionPluginManagerTest extends TestBase {
         'value' => 0,
       ],
     ]);
-    $unpublished_reference->delete();
     $template_path = $this->getRepecTemplatePath($unpublished_reference);
+    $unpublished_reference->delete();
 
     $this->assertFileNotExists($template_path);
   }
