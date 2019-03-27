@@ -36,7 +36,23 @@ aside {
     }
   }
 }
-
+.mini-calendar {
+  .fc-header-toolbar {
+    margin-bottom: 5px;
+  }
+  .fc-left {
+    display: none;
+  }
+  .fc-center {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    h2 {
+      margin-left: 0;
+    }
+  }
+}
 /**** calendar prev next ****/
 .fc-header-toolbar {
   .ui-button {

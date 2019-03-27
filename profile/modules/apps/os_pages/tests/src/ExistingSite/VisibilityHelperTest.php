@@ -9,6 +9,7 @@ use Drupal\block_visibility_groups\Entity\BlockVisibilityGroup;
  *
  * @group openscholar
  * @group kernel
+ * @group other
  * @coversDefaultClass \Drupal\os_pages\VisibilityHelper
  */
 class VisibilityHelperTest extends TestBase {

@@ -6,6 +6,7 @@ namespace Drupal\Tests\os_widgets\ExistingSite;
  * Class AddThisBlockRenderTest.
  *
  * @group kernel
+ * @group widgets
  * @covers \Drupal\os_widgets\Plugin\OsWidgets\AddThisWidget
  */
 class AddThisBlockRenderTest extends OsWidgetsExistingSiteTestBase {

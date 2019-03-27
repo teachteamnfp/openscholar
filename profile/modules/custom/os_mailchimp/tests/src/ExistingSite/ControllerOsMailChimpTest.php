@@ -9,6 +9,7 @@ use weitzman\DrupalTestTraits\ExistingSiteBase;
  *
  * @group mailchimp
  * @group kernel
+ * @group other
  */
 class ControllerOsMailChimpTest extends ExistingSiteBase {
 

@@ -8,6 +8,7 @@ use Drupal\os_publications\GhostEntity\Repec;
  * CitationDistributionRepecPluginTest.
  *
  * @group kernel
+ * @group publications
  * @coversDefaultClass \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributeRepec
  */
 class CitationDistributionRepecPluginTest extends TestBase {
