@@ -22,11 +22,9 @@ class CitationDistributionPluginManagerTest extends TestBase {
     // Assert positive insert.
     $published_reference = $this->createReference();
 
-    $serie_directory_config = $this->repec->getEntityBundleSettings('serie_directory', $published_reference->getEntityTypeId(), $published_reference->bundle());
-    $directory = "{$this->repec->getArchiveDirectory()}{$serie_directory_config}/";
-    $file_name = "{$serie_directory_config}_{$published_reference->getEntityTypeId()}_{$published_reference->id()}.rdf";
+    $template_path = $this->getRepecTemplatePath($published_reference);
 
-    $this->assertFileExists("$directory/$file_name");
+    $this->assertFileExists($template_path);
 
     // Assert positive update.
     $published_reference->set('bibcite_abst_e', [
@@ -34,7 +32,7 @@ class CitationDistributionPluginManagerTest extends TestBase {
     ]);
     $published_reference->save();
 
-    $this->assertFileExists("$directory/$file_name");
+    $this->assertFileExists($template_path);
 
     // Assert negative insert.
     $unpublished_reference = $this->createReference([
@@ -43,11 +41,9 @@ class CitationDistributionPluginManagerTest extends TestBase {
       ],
     ]);
 
-    $serie_directory_config = $this->repec->getEntityBundleSettings('serie_directory', $unpublished_reference->getEntityTypeId(), $unpublished_reference->bundle());
-    $directory = "{$this->repec->getArchiveDirectory()}{$serie_directory_config}/";
-    $file_name = "{$serie_directory_config}_{$unpublished_reference->getEntityTypeId()}_{$unpublished_reference->id()}.rdf";
+    $template_path = $this->getRepecTemplatePath($unpublished_reference);
 
-    $this->assertFileNotExists("$directory/$file_name");
+    $this->assertFileNotExists($template_path);
 
     // Assert negative update.
     $unpublished_reference->set('bibcite_abst_e', [
@@ -55,7 +51,7 @@ class CitationDistributionPluginManagerTest extends TestBase {
     ]);
     $unpublished_reference->save();
 
-    $this->assertFileNotExists("$directory/$file_name");
+    $this->assertFileNotExists($template_path);
   }
 
 }

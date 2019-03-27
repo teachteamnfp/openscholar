@@ -183,4 +183,23 @@ abstract class TestBase extends ExistingSiteBase {
     }
   }
 
+  /**
+   * Returns the rdf file template path.
+   *
+   * The path is already URI prefixed, i.e. prefixed with `public://`.
+   *
+   * @param \Drupal\bibcite_entity\Entity\ReferenceInterface $reference
+   *   The reference whose template path to be obtained.
+   *
+   * @return string
+   *   The template path.
+   */
+  protected function getRepecTemplatePath(ReferenceInterface $reference): string {
+    $serie_directory_config = $this->repec->getEntityBundleSettings('serie_directory', $reference->getEntityTypeId(), $reference->bundle());
+    $directory = "{$this->repec->getArchiveDirectory()}{$serie_directory_config}/";
+    $file_name = "{$serie_directory_config}_{$reference->getEntityTypeId()}_{$reference->id()}.rdf";
+
+    return "$directory/$file_name";
+  }
+
 }

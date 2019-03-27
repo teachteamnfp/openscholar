@@ -91,17 +91,15 @@ class CitationDistributionBatchModeTest extends TestBase {
   public function testRepec() {
     // Test creation.
     $reference = $this->createReference();
-    $serie_directory_config = $this->repec->getEntityBundleSettings('serie_directory', $reference->getEntityTypeId(), $reference->bundle());
-    $directory = "{$this->repec->getArchiveDirectory()}{$serie_directory_config}/";
-    $file_name = "{$serie_directory_config}_{$reference->getEntityTypeId()}_{$reference->id()}.rdf";
+    $template_path = $this->getRepecTemplatePath($reference);
 
-    $this->assertFileNotExists("$directory/$file_name");
+    $this->assertFileNotExists($template_path);
     $this->assertItemAsDistributionJob($reference);
 
     $this->processor->processQueue($this->queue);
 
-    $this->assertFileExists("$directory/$file_name");
-    $content = file_get_contents("$directory/$file_name");
+    $this->assertFileExists($template_path);
+    $content = file_get_contents($template_path);
     $this->assertTemplateContent($reference, $content);
 
     // Test updation.
@@ -114,19 +112,19 @@ class CitationDistributionBatchModeTest extends TestBase {
 
     $this->processor->processQueue($this->queue);
 
-    $this->assertFileExists("$directory/$file_name");
-    $content = file_get_contents("$directory/$file_name");
+    $this->assertFileExists($template_path);
+    $content = file_get_contents($template_path);
     $this->assertTemplateContent($reference, $content);
 
     // Test deletion.
     $reference->delete();
 
-    $this->assertFileExists("$directory/$file_name");
+    $this->assertFileExists($template_path);
     $this->assertItemAsConcealmentJob($reference);
 
     $this->processor->processQueue($this->queue);
 
-    $this->assertFileNotExists("$directory/$file_name");
+    $this->assertFileNotExists($template_path);
   }
 
   /**
