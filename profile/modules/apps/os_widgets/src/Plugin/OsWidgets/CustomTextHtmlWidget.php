@@ -27,7 +27,9 @@ class CustomTextHtmlWidget extends OsWidgetsBase implements OsWidgetsInterface {
     // Force to filtered_html.
     $body_values[0]['format'] = 'filtered_html';
     $block_content->set('body', $body_values);
-    $build['custom_text_html']['body'] = $block_content->get('body')->view();
+    $build['custom_text_html']['body'] = $block_content->get('body')->view([
+      'label' => 'hidden',
+    ]);
 
     $field_css_classes_values = $block_content->get('field_css_classes')->getValue();
     if (!empty($field_css_classes_values[0]['value'])) {
