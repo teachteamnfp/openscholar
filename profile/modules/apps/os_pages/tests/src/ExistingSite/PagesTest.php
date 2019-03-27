@@ -7,6 +7,7 @@ namespace Drupal\Tests\os_pages\ExistingSite;
  *
  * @group openscholar
  * @group kernel
+ * @group other
  */
 class PagesTest extends TestBase {
 
