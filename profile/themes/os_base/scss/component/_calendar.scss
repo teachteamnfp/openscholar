@@ -143,5 +143,9 @@ aside {
     border-style: solid;
     background-color: transparent;
     color: initial;
+    a {
+      background: none;
+      border: 0 none;
+    }
   }
 }
