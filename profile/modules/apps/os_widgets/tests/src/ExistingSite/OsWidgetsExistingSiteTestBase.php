@@ -19,8 +19,8 @@ class OsWidgetsExistingSiteTestBase extends ExistingSiteBase {
   /**
    * Handle all widgets with plugin manager.
    *
-   * @var \Drupal\os_widgets\OsWidgetsInterface
-   *   Os Widgets Interface.
+   * @var \Drupal\os_widgets\OsWidgetsManager
+   *   Os Widgets Manager.
    */
   protected $osWidgets;
 
