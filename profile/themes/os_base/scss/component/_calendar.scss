@@ -134,3 +134,12 @@ aside {
     }
   }
 }
+/**** code for day event ****/
+.fc-event-default,
+.fc-event-default .fc-event-skin,
+.fc-event-default .fc-event-time,
+.fc-event-default a {
+  border-color: transparent;
+  border-style: solid;
+  background-color: transparent;
+}
