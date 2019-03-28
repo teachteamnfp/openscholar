@@ -2,8 +2,6 @@
 
 namespace Drupal\Tests\os_widgets\ExistingSite;
 
-use Drupal\os_widgets\Plugin\OsWidgets\CustomTextHtmlWidget;
-
 /**
  * Class CustomTextHtmlBlockRenderTest.
  *
@@ -24,7 +22,8 @@ class CustomTextHtmlBlockRenderTest extends OsWidgetsExistingSiteTestBase {
    */
   public function setUp() {
     parent::setUp();
-    $this->customTextHtmlWidget = new CustomTextHtmlWidget([], '', [], $this->entityTypeManager);
+
+    $this->customTextHtmlWidget = $this->osWidgets->createInstance('custom_text_html_widget');
   }
 
   /**
@@ -56,14 +55,16 @@ class CustomTextHtmlBlockRenderTest extends OsWidgetsExistingSiteTestBase {
     $block_content = $this->createBlockContent([
       'type' => 'custom_text_html',
       'field_css_classes' => [
-        'text-_\'"+!%/=$ß¤×÷;css second-class  third-with-extra-space',
+        'text-_\'"+!%/=$ß¤×÷;css second-class  third-with-extra-space 123456',
       ],
     ]);
     $build = [];
     $this->customTextHtmlWidget->buildBlock($build, $block_content);
     $this->assertSame('text---ß¤×÷css', $build['#extra_classes'][0]);
     $this->assertSame('second-class', $build['#extra_classes'][1]);
-    $this->assertSame('third-with-extra-space', $build['#extra_classes'][2]);
+    $this->assertSame('', $build['#extra_classes'][2]);
+    $this->assertSame('third-with-extra-space', $build['#extra_classes'][3]);
+    $this->assertSame('_23456', $build['#extra_classes'][4]);
   }
 
 }
