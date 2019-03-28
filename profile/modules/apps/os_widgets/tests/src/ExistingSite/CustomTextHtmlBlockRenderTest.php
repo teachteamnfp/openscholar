@@ -6,6 +6,7 @@ namespace Drupal\Tests\os_widgets\ExistingSite;
  * Class CustomTextHtmlBlockRenderTest.
  *
  * @group kernel
+ * @group widgets
  * @covers \Drupal\os_widgets\Plugin\OsWidgets\CustomTextHtmlWidget
  */
 class CustomTextHtmlBlockRenderTest extends OsWidgetsExistingSiteTestBase {
