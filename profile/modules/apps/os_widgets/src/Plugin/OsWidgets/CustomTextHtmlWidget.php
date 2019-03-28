@@ -50,10 +50,7 @@ class CustomTextHtmlWidget extends OsWidgetsBase implements OsWidgetsInterface {
     $classes = [];
     $user_classes = explode(' ', $css_string);
     foreach ($user_classes as $user_class) {
-      $user_class = Html::cleanCssIdentifier($user_class);
-      if (!empty($user_class)) {
-        $classes[] = $user_class;
-      }
+      $classes[] = Html::cleanCssIdentifier($user_class);
     }
     return $classes;
   }
