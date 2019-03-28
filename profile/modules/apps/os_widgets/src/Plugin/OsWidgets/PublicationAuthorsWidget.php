@@ -26,6 +26,11 @@ class PublicationAuthorsWidget extends OsWidgetsBase implements OsWidgetsInterfa
     $view = Views::getView('publication_contributors');
     if (is_object($view)) {
       $view->setDisplay('default');
+      $field_display_count_values = $block_content->get('field_display_count')->getValue();
+      // Hide count field if display count is disabled.
+      if (empty($field_display_count_values[0]['value'])) {
+        $view->removeHandler('default', 'field', 'id_1');
+      }
       $view->preExecute();
       $view->execute();
       $build['authors_list'] = $view->buildRenderable('default');
