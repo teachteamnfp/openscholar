@@ -25,7 +25,7 @@ class FeaturedPostsBlockRenderTest extends OsWidgetsExistingSiteTestBase {
    */
   public function setUp() {
     parent::setUp();
-    $this->featuredPostsWidget = new FeaturedPostsWidget([], '', [], $this->entityTypeManager);
+    $this->featuredPostsWidget = $this->osWidgets->createInstance('featured_posts_widget');
   }
 
   /**
