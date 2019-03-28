@@ -22,5 +22,16 @@ function os_theme_preview_form_system_themes_admin_form_alter(&$form, FormStateI
  * Starts the theme preview.
  */
 function os_theme_preview_theme_preview_init(&$form, FormStateInterface $form_state) {
-  // TODO: Set the unique key-value pair in session here.
+  /** @var \Drupal\os_theme_preview\HelperInterface $helper */
+  $helper = \Drupal::service('os_theme_preview.helper');
+  $theme = 'hwpi_themeone_bentley';
+
+  try {
+    $helper->startPreviewMode($theme);
+  }
+  catch (\Exception $e) {
+    /** @var \Drupal\Core\Messenger\MessengerInterface $messenger */
+    $messenger = \Drupal::messenger();
+    $messenger->addError($e->getMessage());
+  }
 }
