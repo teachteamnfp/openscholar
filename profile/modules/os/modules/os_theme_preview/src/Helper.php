@@ -17,6 +17,11 @@ final class Helper implements HelperInterface {
   use StringTranslationTrait;
 
   /**
+   * Session key.
+   */
+  const SESSION_KEY = 'os_theme_preview';
+
+  /**
    * Current request.
    *
    * @var \Symfony\Component\HttpFoundation\Request
@@ -44,7 +49,24 @@ final class Helper implements HelperInterface {
       throw new ThemePreviewException($this->t('Preview could not be started.'));
     }
 
-    $session->set('os_theme_preview', $theme);
+    $session->set(self::SESSION_KEY, $theme);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getPreviewedTheme(): ?string {
+    /** @var \Symfony\Component\HttpFoundation\Session\SessionInterface|null $session */
+    $session = $this->request->getSession();
+
+    if (!$session) {
+      return NULL;
+    }
+
+    /** @var string|null $current_preview_theme */
+    $current_preview_theme = $session->get(self::SESSION_KEY);
+
+    return $current_preview_theme;
   }
 
 }

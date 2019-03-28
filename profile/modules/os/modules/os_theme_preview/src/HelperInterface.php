@@ -20,4 +20,12 @@ interface HelperInterface {
    */
   public function startPreviewMode($theme);
 
+  /**
+   * Returns the theme name currently being previewed.
+   *
+   * @return string|null
+   *   The theme name being previewed, otherwise NULL.
+   */
+  public function getPreviewedTheme(): ?string;
+
 }

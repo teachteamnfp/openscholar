@@ -16,6 +16,14 @@ function os_theme_preview_form_system_themes_admin_form_alter(&$form, FormStateI
     '#value' => t('Preview'),
     '#submit' => ['os_theme_preview_theme_preview_init'],
   ];
+
+  /** @var \Drupal\os_theme_preview\HelperInterface $helper */
+  $helper = \Drupal::service('os_theme_preview.helper');
+
+  /** @var string|null $current_preview_theme */
+  if ($current_preview_theme = $helper->getPreviewedTheme()) {
+    \Drupal::messenger()->addStatus($current_preview_theme);
+  }
 }
 
 /**
