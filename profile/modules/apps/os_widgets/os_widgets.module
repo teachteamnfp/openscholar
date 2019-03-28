@@ -5,6 +5,8 @@
  * OS widgets.
  */
 
+use Drupal\Core\Cache\Cache;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
@@ -69,6 +71,13 @@ function os_widgets_theme($existing, $type, $theme, $path) {
       ],
     ],
   ];
+}
+
+/**
+ * Implements hook_block_content_presave().
+ */
+function os_widgets_block_content_presave(EntityInterface $entity) {
+  Cache::invalidateTags(['block_content_entity']);
 }
 
 /**
