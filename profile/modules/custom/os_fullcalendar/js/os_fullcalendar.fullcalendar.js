@@ -44,8 +44,12 @@
               }
             },
             buttonText: Drupal.t('Past Events'),
-          }
-        }
+          },
+        },
+        'buttonText': {
+          listWeek: Drupal.t('Week'),
+          listDay: Drupal.t('Day'),
+        },
       }, settings.os_fullcalendar);
     }
   };
