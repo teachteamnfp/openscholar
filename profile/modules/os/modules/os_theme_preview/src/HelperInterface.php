@@ -28,4 +28,11 @@ interface HelperInterface {
    */
   public function getPreviewedTheme(): ?string;
 
+  /**
+   * Stops preview mode.
+   *
+   * @throws \Drupal\os_theme_preview\ThemePreviewException
+   */
+  public function stopPreviewMode();
+
 }

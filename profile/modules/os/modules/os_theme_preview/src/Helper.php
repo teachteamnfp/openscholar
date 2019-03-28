@@ -69,4 +69,18 @@ final class Helper implements HelperInterface {
     return $current_preview_theme;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function stopPreviewMode() {
+    /** @var \Symfony\Component\HttpFoundation\Session\SessionInterface|null $session */
+    $session = $this->request->getSession();
+
+    if (!$session) {
+      throw new ThemePreviewException($this->t('Could not stop preview mode.'));
+    }
+
+    $session->remove(self::SESSION_KEY);
+  }
+
 }

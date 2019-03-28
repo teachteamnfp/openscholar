@@ -6,38 +6,50 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\os_theme_preview\ThemePreviewException;
 
 /**
  * Implements hook_form_FORM_ID_alter().
  */
 function os_theme_preview_form_system_themes_admin_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['preview'] = [
-    '#type' => 'submit',
+    '#type' => 'button',
     '#value' => t('Preview'),
-    '#submit' => ['os_theme_preview_theme_preview_init'],
+    '#executes_submit_callback' => TRUE,
   ];
+  $form['#submit'][] = 'os_theme_preview_theme_preview_action';
 
   /** @var \Drupal\os_theme_preview\HelperInterface $helper */
   $helper = \Drupal::service('os_theme_preview.helper');
 
-  /** @var string|null $current_preview_theme */
-  if ($current_preview_theme = $helper->getPreviewedTheme()) {
-    \Drupal::messenger()->addStatus($current_preview_theme);
+  if ($helper->getPreviewedTheme()) {
+    $form['cancel_preview'] = [
+      '#type' => 'button',
+      '#value' => t('Cancel Preview'),
+      '#executes_submit_callback' => TRUE,
+    ];
   }
 }
 
 /**
  * Starts the theme preview.
  */
-function os_theme_preview_theme_preview_init(&$form, FormStateInterface $form_state) {
+function os_theme_preview_theme_preview_action(&$form, FormStateInterface $form_state) {
   /** @var \Drupal\os_theme_preview\HelperInterface $helper */
   $helper = \Drupal::service('os_theme_preview.helper');
-  $theme = 'hwpi_themeone_bentley';
 
   try {
-    $helper->startPreviewMode($theme);
+    $op = $form_state->getValue('op')->__toString();
+
+    if ($op === 'Preview') {
+      $theme = 'hwpi_themeone_bentley';
+      $helper->startPreviewMode($theme);
+    }
+    elseif ($op === 'Cancel Preview') {
+      $helper->stopPreviewMode();
+    }
   }
-  catch (\Exception $e) {
+  catch (ThemePreviewException $e) {
     /** @var \Drupal\Core\Messenger\MessengerInterface $messenger */
     $messenger = \Drupal::messenger();
     $messenger->addError($e->getMessage());
