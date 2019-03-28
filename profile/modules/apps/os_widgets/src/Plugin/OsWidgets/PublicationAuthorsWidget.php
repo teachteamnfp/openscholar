@@ -25,7 +25,7 @@ class PublicationAuthorsWidget extends OsWidgetsBase implements OsWidgetsInterfa
     }
     $view = Views::getView('publication_contributors');
     if (is_object($view)) {
-      $view->storage->addCacheTags(['block_content_entity']);
+      $view->storage->addCacheTags([_os_widgets_get_block_content_cache_tag()]);
       $view->setDisplay('default');
       $field_display_count_values = $block_content->get('field_display_count')->getValue();
       // Hide count field if display count is disabled.

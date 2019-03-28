@@ -77,7 +77,7 @@ function os_widgets_theme($existing, $type, $theme, $path) {
  * Implements hook_block_content_presave().
  */
 function os_widgets_block_content_presave(EntityInterface $entity) {
-  Cache::invalidateTags(['block_content_entity']);
+  Cache::invalidateTags([_os_widgets_get_block_content_cache_tag()]);
 }
 
 /**
@@ -96,4 +96,19 @@ function os_widgets_form_alter(&$form, FormStateInterface $form_state, $form_id)
       ];
       break;
   }
+}
+
+/**
+ * Get current vsite id or none string.
+ *
+ * @return string
+ *   Vsite id.
+ */
+function _os_widgets_get_block_content_cache_tag() {
+  $prefix = 'block_content_entity:';
+  $vsite_context = \Drupal::service('vsite.context_manager');
+  if ($vsite_context->getActiveVsite()) {
+    return $prefix . $vsite_context->getActiveVsite()->id();
+  }
+  return $prefix . 'none';
 }
