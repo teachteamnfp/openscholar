@@ -3,7 +3,6 @@
 namespace Drupal\os_theme_preview;
 
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
