@@ -99,3 +99,15 @@ function os_widgets_form_alter(&$form, FormStateInterface $form_state, $form_id)
       break;
   }
 }
+
+/**
+ * Collect all bibcite reference types in array.
+ *
+ * @return array
+ *   Collected array used by checkboxes in field.
+ */
+function os_widgets_field_types_whitelist_allowed_values() {
+  return [
+    'key' => 'Value',
+  ];
+}

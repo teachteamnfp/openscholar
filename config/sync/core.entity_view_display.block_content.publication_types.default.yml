@@ -1,0 +1,34 @@
+uuid: 5964c79a-07ca-48c4-aa92-9f5c6645a00c
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.publication_types
+    - field.field.block_content.publication_types.field_display_count
+    - field.field.block_content.publication_types.field_types_whitelist
+  module:
+    - options
+id: block_content.publication_types.default
+targetEntityType: block_content
+bundle: publication_types
+mode: default
+content:
+  field_display_count:
+    weight: 1
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  field_types_whitelist:
+    weight: 0
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+hidden:
+  langcode: true
