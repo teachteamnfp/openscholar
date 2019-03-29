@@ -129,12 +129,26 @@ class TwitterPull {
 
         if (isset($item->retweeted_status)) {
           $obj->id = Html::escape($item->retweeted_status->id_str);
-          $obj->username = (isset($item->retweeted_status->user) && !empty($item->retweeted_status->user->screen_name)) ? $item->retweeted_status->user->screen_name : $item->retweeted_status->from_user;
+          $obj->username = $item->retweeted_status->from_user;
+          $obj->userphoto = $item->retweeted_status->profile_image_url;
+          $obj->userphoto_https = $item->retweeted_status->profile_image_url_https;
+
+          if (isset($item->retweeted_status->user)) {
+            if (!empty($item->retweeted_status->user->screen_name)) {
+              $obj->username = $item->retweeted_status->user->screen_name;
+            }
+
+            if (!empty($item->retweeted_status->user->profile_image_url)) {
+              $obj->userphoto = $item->retweeted_status->user->profile_image_url;
+            }
+
+            if (!empty($item->retweeted_status->user->profile_image_url_https)) {
+              $obj->userphoto_https = $item->retweeted_status->user->profile_image_url_https;
+            }
+          }
+
           $obj->username = Html::escape($obj->username);
-          // Get the user photo for the retweet.
-          $obj->userphoto = (isset($item->retweeted_status->user) && !empty($item->retweeted_status->user->profile_image_url)) ? $item->retweeted_status->user->profile_image_url : $item->retweeted_status->profile_image_url;
           $obj->userphoto = Html::escape($obj->userphoto);
-          $obj->userphoto_https = (isset($item->retweeted_status->user) && !empty($item->retweeted_status->user->profile_image_url_https)) ? $item->retweeted_status->user->profile_image_url_https : $item->retweeted_status->profile_image_url_https;
           $obj->userphoto_https = Html::escape($obj->userphoto_https);
 
           $obj->text = Xss::filter($item->retweeted_status->full_text);
@@ -145,12 +159,27 @@ class TwitterPull {
         }
         else {
           $obj->id = Html::escape($item->id_str);
-          $obj->username = (isset($item->user) && !empty($item->user->screen_name)) ? $item->user->screen_name : $item->from_user;
+
+          $obj->username = $item->from_user;
+          $obj->userphoto = $item->profile_image_url;
+          $obj->userphoto_https = $item->profile_image_url_https;
+
+          if (isset($item->user)) {
+            if (!empty($item->user->screen_name)) {
+              $obj->username = $item->user->screen_name;
+            }
+
+            if (!empty($item->user->profile_image_url)) {
+              $obj->userphoto = $item->user->profile_image_url;
+            }
+
+            if (!empty($item->user->profile_image_url_https)) {
+              $obj->userphoto_https = $item->user->profile_image_url_https;
+            }
+          }
+
           $obj->username = Html::escape($obj->username);
-          // Retrieve the user photo.
-          $obj->userphoto = (isset($item->user) && !empty($item->user->profile_image_url)) ? $item->user->profile_image_url : $item->profile_image_url;
           $obj->userphoto = Html::escape($obj->userphoto);
-          $obj->userphoto_https = (isset($item->user) && !empty($item->user->profile_image_url_https)) ? $item->user->profile_image_url_https : $item->profile_image_url_https;
           $obj->userphoto_https = Html::escape($obj->userphoto_https);
 
           $obj->text = Xss::filter($item->full_text);
