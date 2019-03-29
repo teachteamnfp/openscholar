@@ -142,7 +142,13 @@ class FeaturedPostsBlockRenderTest extends OsWidgetsExistingSiteTestBase {
     ]);
     $randomDeltaId = 1;
     $featured_posts_widget = $this->getMockBuilder(FeaturedPostsWidget::class)
-      ->setConstructorArgs([[], 'test', [], $this->entityTypeManager])
+      ->setConstructorArgs([
+        [],
+        'test',
+        [],
+        $this->entityTypeManager,
+        $this->container->get('database'),
+      ])
       ->setMethods(['shortRandom'])
       ->getMock();
     $featured_posts_widget->method('shortRandom')

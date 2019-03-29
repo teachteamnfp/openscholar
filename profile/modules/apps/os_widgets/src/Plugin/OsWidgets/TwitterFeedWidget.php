@@ -3,6 +3,7 @@
 namespace Drupal\os_widgets\Plugin\OsWidgets;
 
 use Drupal\Component\Utility\Xss;
+use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\os_twitter_pull\TwitterPullHandler;
 use Drupal\os_widgets\OsWidgetsBase;
@@ -24,8 +25,8 @@ class TwitterFeedWidget extends OsWidgetsBase implements OsWidgetsInterface {
   /**
    * {@inheritdoc}
    */
-  public function __construct($configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, TwitterPullHandler $twitter_pull_handler) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $entity_type_manager);
+  public function __construct($configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, Connection $connection, TwitterPullHandler $twitter_pull_handler) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $entity_type_manager, $connection);
     $this->twitterPullHandler = $twitter_pull_handler;
   }
 
@@ -38,6 +39,7 @@ class TwitterFeedWidget extends OsWidgetsBase implements OsWidgetsInterface {
       $plugin_id,
       $plugin_definition,
       $container->get('entity_type.manager'),
+      $container->get('database'),
       $container->get('os_twitter_pull.handler')
     );
   }
