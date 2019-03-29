@@ -48,11 +48,6 @@ cp.appearance:
   url: 'internal:##'
   weight: 2
   menu_name: control-panel
-cp.taxonomy:
-  title: 'Taxonomy'
-  url: 'internal:##'
-  weight: 3
-  menu_name: control-panel
 cp.settings:
   title: 'Settings'
   url: 'internal:##'
