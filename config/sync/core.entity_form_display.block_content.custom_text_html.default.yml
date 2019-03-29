@@ -1,10 +1,11 @@
-uuid: 120544ca-a96a-4bda-88bc-8f05473e1def
+uuid: d1c1524a-2e06-4756-ba7e-22bd6d547108
 langcode: en
 status: true
 dependencies:
   config:
-    - block_content.type.custom_text
-    - field.field.block_content.custom_text.body
+    - block_content.type.custom_text_html
+    - field.field.block_content.custom_text_html.body
+    - field.field.block_content.custom_text_html.field_css_classes
   module:
     - content_moderation
     - field_layout
@@ -14,9 +15,9 @@ third_party_settings:
   field_layout:
     id: layout_onecol
     settings: {  }
-id: block_content.custom_text.default
+id: block_content.custom_text_html.default
 targetEntityType: block_content
-bundle: custom_text
+bundle: custom_text_html
 mode: default
 content:
   body:
@@ -27,6 +28,14 @@ content:
       summary_rows: 3
       placeholder: ''
     third_party_settings: {  }
+    region: content
+  field_css_classes:
+    weight: 102
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
     region: content
   info:
     type: string_textfield

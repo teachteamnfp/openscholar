@@ -17,12 +17,21 @@ class OsWidgetsExistingSiteTestBase extends ExistingSiteBase {
   protected $entityTypeManager;
 
   /**
+   * Handle all widgets with plugin manager.
+   *
+   * @var \Drupal\os_widgets\OsWidgetsManager
+   *   Os Widgets Manager.
+   */
+  protected $osWidgets;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
     parent::setUp();
 
     $this->entityTypeManager = $this->container->get('entity_type.manager');
+    $this->osWidgets = $this->container->get('plugin.manager.os_widgets');
   }
 
   /**

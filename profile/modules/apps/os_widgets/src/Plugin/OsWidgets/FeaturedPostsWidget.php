@@ -52,7 +52,7 @@ class FeaturedPostsWidget extends OsWidgetsBase implements OsWidgetsInterface {
     }
     $is_styled_values = $block_content->get('field_is_styled')->getValue();
     if (!empty($is_styled_values[0]['value'])) {
-      $build['#is_styled'] = TRUE;
+      $build['#extra_classes'][] = 'styled';
     }
   }
 

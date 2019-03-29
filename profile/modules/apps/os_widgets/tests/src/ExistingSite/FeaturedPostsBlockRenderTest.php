@@ -25,7 +25,7 @@ class FeaturedPostsBlockRenderTest extends OsWidgetsExistingSiteTestBase {
    */
   public function setUp() {
     parent::setUp();
-    $this->featuredPostsWidget = new FeaturedPostsWidget([], '', [], $this->entityTypeManager);
+    $this->featuredPostsWidget = $this->osWidgets->createInstance('featured_posts_widget');
   }
 
   /**
@@ -92,7 +92,7 @@ class FeaturedPostsBlockRenderTest extends OsWidgetsExistingSiteTestBase {
     $build = [];
     $this->featuredPostsWidget->buildBlock($build, $block_content);
     $this->assertSame('teaser', $build['field_featured_posts'][0]['#view_mode']);
-    $this->assertSame(TRUE, $build['#is_styled']);
+    $this->assertSame('styled', $build['#extra_classes'][0]);
     $this->assertSame(FALSE, $build['field_featured_posts'][0]['os_widgets_hide_node_title']);
   }
 
