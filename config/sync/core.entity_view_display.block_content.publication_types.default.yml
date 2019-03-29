@@ -7,28 +7,16 @@ dependencies:
     - field.field.block_content.publication_types.field_display_count
     - field.field.block_content.publication_types.field_types_whitelist
   module:
-    - options
+    - layout_builder
+third_party_settings:
+  layout_builder:
+    sections: {  }
 id: block_content.publication_types.default
 targetEntityType: block_content
 bundle: publication_types
 mode: default
-content:
-  field_display_count:
-    weight: 1
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    type: boolean
-    region: content
-  field_types_whitelist:
-    weight: 0
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: list_default
-    region: content
+content: {  }
 hidden:
+  field_display_count: true
+  field_types_whitelist: true
   langcode: true

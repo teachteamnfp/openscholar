@@ -72,6 +72,12 @@ function os_widgets_theme($existing, $type, $theme, $path) {
         'follow_me_link' => '',
       ],
     ],
+    'os_widgets_publication_types' => [
+      'variables' => [
+        'types' => [],
+        'is_display_count' => FALSE,
+      ],
+    ],
   ];
 }
 
