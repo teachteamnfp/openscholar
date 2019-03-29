@@ -107,7 +107,13 @@ function os_widgets_form_alter(&$form, FormStateInterface $form_state, $form_id)
  *   Collected array used by checkboxes in field.
  */
 function os_widgets_field_types_whitelist_allowed_values() {
-  return [
-    'key' => 'Value',
-  ];
+  $bundle_info = Drupal::service('entity_type.bundle.info')->getBundleInfo('bibcite_reference');
+  if (empty($bundle_info)) {
+    return [];
+  }
+  $reference_types = [];
+  foreach ($bundle_info as $machine_name => $bundle) {
+    $reference_types[$machine_name] = $bundle['label'];
+  }
+  return $reference_types;
 }
