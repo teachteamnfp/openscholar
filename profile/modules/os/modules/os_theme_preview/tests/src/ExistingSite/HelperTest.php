@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\os_theme_preview\ExistingSite;
 
+use Drupal\os_theme_preview\ThemePreviewException;
 use weitzman\DrupalTestTraits\ExistingSiteBase;
 
 /**
@@ -36,7 +37,7 @@ class HelperTest extends ExistingSiteBase {
    * @throws \Drupal\os_theme_preview\ThemePreviewException
    */
   public function testStartPreviewMode() {
-    $this->expectException('\Drupal\os_theme_preview\ThemePreviewException');
+    $this->expectException(ThemePreviewException::class);
     $this->helper->startPreviewMode('hwpi_themeone_bentley');
   }
 
@@ -58,7 +59,7 @@ class HelperTest extends ExistingSiteBase {
    * @throws \Drupal\os_theme_preview\ThemePreviewException
    */
   public function testStopPreviewMode() {
-    $this->expectException('\Drupal\os_theme_preview\ThemePreviewException');
+    $this->expectException(ThemePreviewException::class);
     $this->helper->stopPreviewMode();
   }
 
