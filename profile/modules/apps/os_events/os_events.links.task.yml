@@ -1,0 +1,3 @@
+os_events.local_tasks:
+  class: \Drupal\Core\Menu\LocalTaskDefault
+  deriver: \Drupal\os_events\Plugin\Derivative\LocalTasks
