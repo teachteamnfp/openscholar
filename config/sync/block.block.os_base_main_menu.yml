@@ -5,6 +5,8 @@ dependencies:
   config:
     - system.menu.main
   module:
+    - block_visibility_groups
+    - rng
     - system
   theme:
     - os_base
@@ -22,5 +24,22 @@ settings:
   provider: system
   label_display: '0'
   level: 1
-  depth: 1
-visibility: {  }
+  depth: 2
+visibility:
+  condition_group:
+    id: condition_group
+    negate: false
+    block_visibility_group: ''
+    context_mapping: {  }
+  rng_rule_scheduler:
+    id: rng_rule_scheduler
+    rng_rule_component: null
+    rng_rule_scheduler: null
+    date: '1553764526'
+    negate: false
+    context_mapping: {  }
+  rng_current_time:
+    id: rng_current_time
+    date: '1553764526'
+    negate: false
+    context_mapping: {  }
