@@ -1,0 +1,13 @@
+<?php
+
+use Drupal\Core\Entity\EntityInterface;
+
+function cp_taxonomy_entity_operation_alter(&$operations, EntityInterface $entity) {
+  /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContextManager */
+  $vsiteContextManager = \Drupal::service('vsite.context_manager');
+  if ($vsiteContextManager->getActiveVsite()) {
+    if ($entity->getEntityTypeId() == 'taxonomy_vocabulary') {
+      $operations = array_intersect_key($operations, ['edit' => '', 'list' => '', 'add' => '']);
+    }
+  }
+}

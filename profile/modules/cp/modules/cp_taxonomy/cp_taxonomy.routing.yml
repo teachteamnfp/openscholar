@@ -1,0 +1,8 @@
+cp.taxonomy:
+  path: '/cp/taxonomy'
+  defaults:
+    _entity_list: taxonomy_vocabulary
+    #_route: 'entity.taxonomy_vocabulary.collection'
+  requirements:
+    _group_permission: 'manage taxonomy'
+    _group_member: 'TRUE'
