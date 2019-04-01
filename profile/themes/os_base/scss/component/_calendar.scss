@@ -133,12 +133,6 @@ aside {
       }
     }
   }
-  .field--name-field-location, .field--name-field-recurring-date {
-    display: flex;
-    .field--label {
-      margin-right: 4px;
-    }
-  }
 }
 /**** code for day event ****/
 .fc-listUpcoming-view, .fc-listWeek-view, .fc-listDay-view, .fc-listPast-view {
@@ -195,6 +189,15 @@ aside {
       .field--label {
         margin-right: 4px;
       }
+    }
+  }
+}
+/**** code for all calendar ****/
+.events {
+  .field--name-field-location, .field--name-field-recurring-date {
+    display: flex;
+    .field--label {
+      margin-right: 4px;
     }
   }
 }
