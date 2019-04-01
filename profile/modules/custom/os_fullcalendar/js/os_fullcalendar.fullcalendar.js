@@ -14,7 +14,7 @@
       }
 
       return $.extend({
-        eventRender: function(event, element) {
+        eventRender: function (event, element) {
           if (element.hasClass('fc-event-future') && !element.hasClass('fc-day-grid-event')) {
             let nid = event.eid;
             element.html(drupalSettings[nid]);
@@ -62,6 +62,22 @@
     }
   };
 
+  /**
+   * Alters modal title.
+   *
+   * The title is displayed as plain text. It is enforced to be rendered as HTML
+   * here.
+   */
+  function showModalEventRegisterHandler() {
+    $('#drupal-modal').once().on('show.bs.modal', function () {
+      let $modalTitleElement = $(this).find('.modal-title');
+      let eventUrl = $(this).find('.modal-body article').attr('about');
+      let modalTitleText = $modalTitleElement.text();
+
+      $modalTitleElement.html('<a href="' + eventUrl + '">' + modalTitleText + '</a>');
+    });
+  }
+
   Drupal.behaviors.events = {
     attach: function (context, settings) {
 
@@ -81,8 +97,9 @@
           $multicheck.hide();
         }
       });
+
+      showModalEventRegisterHandler();
     }
   };
 
 })(jQuery, Drupal);
-
