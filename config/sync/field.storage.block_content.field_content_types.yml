@@ -1,0 +1,21 @@
+uuid: c92f33f5-810a-4ba6-856c-87c6a5a188af
+langcode: en
+status: true
+dependencies:
+  module:
+    - block_content
+    - options
+id: block_content.field_content_types
+field_name: field_content_types
+entity_type: block_content
+type: list_string
+settings:
+  allowed_values: {  }
+  allowed_values_function: os_widgets_field_content_types_allowed_values
+module: options
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

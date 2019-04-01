@@ -1,0 +1,22 @@
+uuid: 4004739f-6c57-4270-a13a-b13fe4f2e47a
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.rss_feed
+    - field.field.block_content.rss_feed.field_content_types
+    - field.field.block_content.rss_feed.field_is_show_all_content
+  module:
+    - layout_builder
+third_party_settings:
+  layout_builder:
+    sections: {  }
+id: block_content.rss_feed.default
+targetEntityType: block_content
+bundle: rss_feed
+mode: default
+content: {  }
+hidden:
+  field_content_types: true
+  field_is_show_all_content: true
+  langcode: true

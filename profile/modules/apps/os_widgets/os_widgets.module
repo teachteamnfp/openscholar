@@ -86,5 +86,30 @@ function os_widgets_form_alter(&$form, FormStateInterface $form_state, $form_id)
         ],
       ];
       break;
+
+    case 'block_content_rss_feed_form':
+    case 'block_content_rss_feed_edit_form':
+      $form['field_content_types']['#states'] = [
+        'visible' => [
+          ':input[name="field_is_show_all_content[value]"]' => [
+            'checked' => FALSE,
+          ],
+        ],
+      ];
+      break;
   }
+}
+
+/**
+ * Return options of field content types checkboxes.
+ */
+function os_widgets_field_content_types_allowed_values() {
+  $types = Drupal::entityTypeManager()
+    ->getStorage('node_type')
+    ->loadMultiple();
+  $options = [];
+  foreach ($types as $machine_name => $type) {
+    $options[$machine_name] = $type->label();
+  }
+  return $options;
 }

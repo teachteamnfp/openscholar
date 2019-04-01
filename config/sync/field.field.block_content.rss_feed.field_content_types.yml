@@ -1,0 +1,21 @@
+uuid: 7f146578-a748-40ec-92e6-73e8080d12c9
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.rss_feed
+    - field.storage.block_content.field_content_types
+  module:
+    - options
+id: block_content.rss_feed.field_content_types
+field_name: field_content_types
+entity_type: block_content
+bundle: rss_feed
+label: 'Content Types to Display'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string
