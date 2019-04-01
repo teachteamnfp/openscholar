@@ -2,12 +2,57 @@
 
 use Drupal\Core\Entity\EntityInterface;
 
+/**
+ * Remove operations we don't care about.
+ *
+ * @param array $operations
+ * @param EntityInterface $entity
+ */
 function cp_taxonomy_entity_operation_alter(&$operations, EntityInterface $entity) {
   /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContextManager */
   $vsiteContextManager = \Drupal::service('vsite.context_manager');
   if ($vsiteContextManager->getActiveVsite()) {
     if ($entity->getEntityTypeId() == 'taxonomy_vocabulary') {
       $operations = array_intersect_key($operations, ['edit' => '', 'list' => '', 'add' => '']);
+      /** @var \Drupal\Core\Url $url */
+      $url = $operations['list']['url'];
+      $operations['list']['url'] = \Drupal\Core\Url::fromRoute('cp.taxonomy.list', $url->getRouteParameters());
+      $operations['edit']['url'] = \Drupal\Core\Url::fromRoute('cp.taxonomy.edit', $url->getRouteParameters());
+      $operations['add']['url'] = \Drupal\Core\Url::fromRoute('cp.taxonomy.term.add', $url->getRouteParameters());
     }
   }
+}
+
+/**
+ * Add our submit handler to the form.
+ *
+ * @param array $form
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ */
+function cp_taxonomy_form_taxonomy_vocabulary_form_alter(&$form, &$form_state) {
+  if (\Drupal::routeMatch()->getRouteName() == 'cp.taxonomy.add') {
+    $form['actions']['submit']['#submit'][] = 'cp_taxonomy_form_add_vocab_submit';
+  }
+  elseif (\Drupal::routeMatch()->getRouteName() == 'cp.taxonomy.edit') {
+    /** @var \Drupal\Core\Url $url */
+    $url = $form['actions']['delete']['#url'];
+    $form['actions']['delete']['#url'] = \Drupal\Core\Url::fromRoute('cp.taxonomy.delete', $url->getRouteParameters());
+  }
+}
+
+
+function cp_taxonomy_form_taxonomy_vocabulary_confirm_delete_alter(&$form, &$form_state) {
+  if (\Drupal::routeMatch()->getRouteName() == 'cp.taxonomy.delete') {
+    $form['actions']['cancel']['#url'] = \Drupal\Core\Url::fromRoute('cp.taxonomy');
+  }
+}
+
+/**
+ * Redirect to the right place when done.
+ *
+ * @param array $form
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ */
+function cp_taxonomy_form_add_vocab_submit(array &$form, \Drupal\Core\Form\FormStateInterface &$form_state) {
+  $form_state->setRedirect('cp.taxonomy');
 }
