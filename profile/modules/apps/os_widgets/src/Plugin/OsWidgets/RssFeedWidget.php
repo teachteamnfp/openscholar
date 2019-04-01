@@ -39,7 +39,13 @@ class RssFeedWidget extends OsWidgetsBase implements OsWidgetsInterface {
       '#title' => t('RSS feed link!'),
       '#type' => 'link',
       '#url' => Url::fromUri('https://www.drupal.org/feed' . $arg),
+      '#attributes' => [
+        'class' => [
+          'rss-feed-link',
+        ],
+      ],
     ];
+    $build['rss_feed']['#attached']['library'][] = 'os_widgets/rss_feed_copy';
   }
 
 }
