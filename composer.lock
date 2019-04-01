@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5523f4584802279b8e277a29e4cfb8c5",
+    "content-hash": "7ff2b559365a214bd44281c7a56be5bc",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -5178,7 +5178,7 @@
                 "shasum": null
             },
             "type": "drupal-module",
-            "time": "2018-12-10T20:05:46+00:00"
+            "time": "2019-03-12T17:03:38+00:00"
         },
         {
             "name": "drupal/redirect",
@@ -5253,21 +5253,21 @@
                 "shasum": null
             },
             "type": "drupal-module",
-            "time": "2019-03-08T16:18:54+00:00"
+            "time": "2019-03-22T17:35:09+00:00"
         },
         {
             "name": "drupal/rng",
-            "version": "1.5.0",
+            "version": "1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/rng",
-                "reference": "8.x-1.5"
+                "reference": "8.x-1.7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/rng-8.x-1.5.zip",
-                "reference": "8.x-1.5",
-                "shasum": "e6f0008958294941b057474d883e7ff66f62ba39"
+                "url": "https://ftp.drupal.org/files/projects/rng-8.x-1.7.zip",
+                "reference": "8.x-1.7",
+                "shasum": "928e2c2bc0642dd3fd1f7bf4bd47d421169e7b4c"
             },
             "require": {
                 "drupal/core": "^8.1",
@@ -5292,8 +5292,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.5",
-                    "datestamp": "1488501184",
+                    "version": "8.x-1.7",
+                    "datestamp": "1553362685",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5470,7 +5470,7 @@
         },
         {
             "name": "drupal/rng_views",
-            "version": "1.5.0",
+            "version": "1.7.0",
             "require": {
                 "drupal/core": "*",
                 "drupal/rng": "self.version",
@@ -5483,8 +5483,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.5",
-                    "datestamp": "1488501184",
+                    "version": "8.x-1.7",
+                    "datestamp": "1553362685",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5887,17 +5887,17 @@
         },
         {
             "name": "drupal/unlimited_number",
-            "version": "1.0.0-beta2",
+            "version": "1.0.0-beta4",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/unlimited_number",
-                "reference": "8.x-1.0-beta2"
+                "reference": "8.x-1.0-beta4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/unlimited_number-8.x-1.0-beta2.zip",
-                "reference": "8.x-1.0-beta2",
-                "shasum": "2976624472cfaa55591d3d4b6bbed8e0d1b9dcf9"
+                "url": "https://ftp.drupal.org/files/projects/unlimited_number-8.x-1.0-beta4.zip",
+                "reference": "8.x-1.0-beta4",
+                "shasum": "d94afa0f3d0412ad4bc7b1d9ae06bf21babb6a07"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -5908,8 +5908,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta2",
-                    "datestamp": "1483409343",
+                    "version": "8.x-1.0-beta4",
+                    "datestamp": "1553362685",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"

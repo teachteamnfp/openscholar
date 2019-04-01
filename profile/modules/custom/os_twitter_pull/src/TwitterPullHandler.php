@@ -7,6 +7,8 @@ use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Extension\ModuleHandler;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
+use Drupal\Core\Messenger\MessengerInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -17,6 +19,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
  */
 class TwitterPullHandler implements ContainerInjectionInterface {
 
+  use StringTranslationTrait;
+
   private $puller;
   private $config;
   private $cache;
@@ -24,6 +28,7 @@ class TwitterPullHandler implements ContainerInjectionInterface {
   private $time;
   private $currentRequest;
   private $moduleHandler;
+  private $messenger;
 
   /**
    * TwitterPullHandler constructor.
@@ -42,8 +47,10 @@ class TwitterPullHandler implements ContainerInjectionInterface {
    *   Request stack.
    * @param \Drupal\Core\Extension\ModuleHandler $module_handler
    *   Module handler.
+   * @param \Drupal\Core\Messenger\MessengerInterface $messenger
+   *   Core Messenger.
    */
-  public function __construct(TwitterPullConfig $twitter_pull_config, TwitterPull $twitter_pull, CacheBackendInterface $cache, LoggerChannelFactoryInterface $logger_factory, TimeInterface $time, RequestStack $request_stack, ModuleHandler $module_handler) {
+  public function __construct(TwitterPullConfig $twitter_pull_config, TwitterPull $twitter_pull, CacheBackendInterface $cache, LoggerChannelFactoryInterface $logger_factory, TimeInterface $time, RequestStack $request_stack, ModuleHandler $module_handler, MessengerInterface $messenger) {
     $this->puller = $twitter_pull;
     $this->puller->setSettings($twitter_pull_config);
     $this->config = $twitter_pull_config;
@@ -52,6 +59,7 @@ class TwitterPullHandler implements ContainerInjectionInterface {
     $this->logger = $logger_factory->get('os_twitter_pull');
     $this->currentRequest = $request_stack->getCurrentRequest();
     $this->moduleHandler = $module_handler;
+    $this->messenger = $messenger;
   }
 
   /**
@@ -65,7 +73,8 @@ class TwitterPullHandler implements ContainerInjectionInterface {
       $container->get('logger.factory'),
       $container->get('datetime.time'),
       $container->get('request_stack'),
-      $container->get('module_handler')
+      $container->get('module_handler'),
+      $container->get('messenger')
     );
   }
 
@@ -94,6 +103,7 @@ class TwitterPullHandler implements ContainerInjectionInterface {
     $cache_key = $twitkey . '::' . $num_items . '::' . (int) $exclude_retweets;
     $cache = $this->cache->get($cache_key);
 
+    $tweets = [];
     if (!empty($cache) && !empty($cache->data)) {
       $tweets = $cache->data;
     }
@@ -103,6 +113,7 @@ class TwitterPullHandler implements ContainerInjectionInterface {
       }
       catch (\Exception $e) {
         $this->logger->warning($e->getMessage());
+        $this->messenger->addError($this->t('Unable to retrieve the tweets.'));
         if (!empty($cache) && !empty($cache->data)) {
           return $cache->data;
         }
