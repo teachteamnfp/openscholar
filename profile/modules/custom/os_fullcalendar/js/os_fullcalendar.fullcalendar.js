@@ -28,7 +28,7 @@
           if (view.name == 'listUpcoming' || view.name == 'listPast') {
             let tableSubHeaders = $(".fc-list-heading");
             tableSubHeaders.each(function () {
-              jQuery(this).nextUntil(".fc-list-heading").wrapAll("<tr class='fc-list-item-parent'></tr>");
+              $(this).nextUntil(".fc-list-heading").wrapAll("<tr class='fc-list-item-parent'></tr>");
             });
           }
         },
