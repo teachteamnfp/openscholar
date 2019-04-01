@@ -1,8 +1,56 @@
+# We have to use the admin theme because bootstrap's dropbutton implementation is broken.
 cp.taxonomy:
   path: '/cp/taxonomy'
   defaults:
     _entity_list: taxonomy_vocabulary
-    #_route: 'entity.taxonomy_vocabulary.collection'
   requirements:
     _group_permission: 'manage taxonomy'
     _group_member: 'TRUE'
+  options:
+    _admin_route: 'TRUE'
+cp.taxonomy.add:
+  path: '/cp/taxonomy/add'
+  defaults:
+    _entity_form: 'taxonomy_vocabulary.default'
+    _entity_type_id: 'taxonomy_vocabulary'
+  requirements:
+    _group_permission: 'manage taxonomy'
+    _group_member: 'TRUE'
+  options:
+    _admin_route: 'TRUE'
+cp.taxonomy.edit:
+  path: '/cp/taxonomy/{taxonomy_vocabulary}/edit'
+  defaults:
+    _entity_form: 'taxonomy_vocabulary.default'
+  requirements:
+    _group_permission: 'manage taxonomy'
+    _group_member: 'TRUE'
+  options:
+    _admin_route: 'TRUE'
+cp.taxonomy.delete:
+  path: '/cp/taxonomy/{taxonomy_vocabulary}/delete'
+  defaults:
+    _entity_form: 'taxonomy_vocabulary.delete'
+  requirements:
+    _group_permission: 'manage taxonomy'
+    _group_member: 'TRUE'
+  options:
+    _admin_route: 'TRUE'
+cp.taxonomy.list:
+  path: '/cp/taxonomy/{taxonomy_vocabulary}'
+  defaults:
+    _form: '\Drupal\taxonomy\Form\OverviewTerms'
+  requirements:
+    _group_permission: 'manage taxonomy'
+    _group_member: 'TRUE'
+  options:
+    _admin_route: 'TRUE'
+cp.taxonomy.term.add:
+  path: '/cp/taxonomy/{taxonomy_vocabulary}/add'
+  defaults:
+    _controller: '\Drupal\taxonomy\Controller\TaxonomyController::addForm'
+  requirements:
+    _group_permission: 'manage taxonomy'
+    _group_member: 'TRUE'
+  options:
+    _admin_route: 'TRUE'

@@ -1,0 +1,5 @@
+entity.taxonomy_vocabulary.cp.add_form:
+  route_name: cp.taxonomy.add
+  title: 'Add vocabulary'
+  appears_on:
+    - cp.taxonomy
