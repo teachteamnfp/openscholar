@@ -2,6 +2,11 @@
   margin: 0 0 20px;
   padding: 20px 0 40px;
   border-bottom: 1px solid $color-light-gray;
+  &.events {
+    margin: 0;
+    padding: 0;
+    border: 0 none;
+  }
   .node--title, h2 {
     margin-top: 0;
   }
