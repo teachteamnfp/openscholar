@@ -3,7 +3,7 @@
 namespace Drupal\os_widgets\Entity;
 
 use Drupal\block_content\Entity\BlockContent;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 
 /**
  * Extend original BlockContent entity with extra method.
@@ -32,16 +32,18 @@ class OsBlockContent extends BlockContent {
    */
   public function getVsiteContextManager() {
     if (empty($this->vsiteContextManager)) {
-      $this->setVsiteContextManager(\Drupal::getContainer());
+      /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
+      $vsite_context_manager = \Drupal::getContainer()->get('vsite.context_manager');
+      $this->setVsiteContextManager($vsite_context_manager);
     }
     return $this->vsiteContextManager;
   }
 
   /**
-   * Setter function for vsiteContextManager from container.
+   * Setter function for vsiteContextManager.
    */
-  public function setVsiteContextManager(ContainerInterface $container) {
-    $this->vsiteContextManager = $container->get('vsite.context_manager');
+  public function setVsiteContextManager(VsiteContextManagerInterface $vsite_context_manager) {
+    $this->vsiteContextManager = $vsite_context_manager;
   }
 
 }
