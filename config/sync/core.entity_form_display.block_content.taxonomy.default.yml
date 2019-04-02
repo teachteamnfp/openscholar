@@ -5,6 +5,7 @@ dependencies:
   config:
     - block_content.type.taxonomy
     - field.field.block_content.taxonomy.field_taxonomy_behavior
+    - field.field.block_content.taxonomy.field_taxonomy_bundles
     - field.field.block_content.taxonomy.field_taxonomy_vocabulary
   module:
     - content_moderation
@@ -21,6 +22,12 @@ mode: default
 content:
   field_taxonomy_behavior:
     weight: 102
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_taxonomy_bundles:
+    weight: 103
     settings: {  }
     third_party_settings: {  }
     type: options_select

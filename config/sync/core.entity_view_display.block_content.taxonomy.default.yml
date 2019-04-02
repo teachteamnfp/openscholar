@@ -5,6 +5,7 @@ dependencies:
   config:
     - block_content.type.taxonomy
     - field.field.block_content.taxonomy.field_taxonomy_behavior
+    - field.field.block_content.taxonomy.field_taxonomy_bundles
     - field.field.block_content.taxonomy.field_taxonomy_vocabulary
   module:
     - options
@@ -15,6 +16,13 @@ mode: default
 content:
   field_taxonomy_behavior:
     weight: 1
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+  field_taxonomy_bundles:
+    weight: 2
     label: above
     settings: {  }
     third_party_settings: {  }

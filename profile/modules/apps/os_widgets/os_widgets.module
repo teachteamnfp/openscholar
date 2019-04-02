@@ -86,5 +86,34 @@ function os_widgets_form_alter(&$form, FormStateInterface $form_state, $form_id)
         ],
       ];
       break;
+
+    case 'block_content_taxonomy_form':
+    case 'block_content_taxonomy_edit_form':
+      $form['field_taxonomy_bundles']['#states'] = [
+        'visible' => [
+          ':input[name="field_taxonomy_behavior"]' => [
+            'value' => 'select',
+          ],
+        ],
+      ];
+      break;
   }
+}
+
+/**
+ * Collect all content types in array.
+ *
+ * @return array
+ *   Collected array used by checkboxes in field.
+ */
+function os_widgets_field_taxonomy_bundles_allowed_values() {
+  $bundle_info = Drupal::service('entity_type.bundle.info')->getBundleInfo('node');
+  if (empty($bundle_info)) {
+    return [];
+  }
+  $bundles = [];
+  foreach ($bundle_info as $machine_name => $bundle) {
+    $bundles[$machine_name] = $bundle['label'];
+  }
+  return $bundles;
 }
