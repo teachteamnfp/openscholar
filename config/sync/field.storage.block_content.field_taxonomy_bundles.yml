@@ -10,8 +10,8 @@ field_name: field_taxonomy_bundles
 entity_type: block_content
 type: list_string
 settings:
-  allowed_values: { }
-  allowed_values_function: 'os_widgets_field_taxonomy_bundles_allowed_values'
+  allowed_values: {  }
+  allowed_values_function: os_widgets_field_taxonomy_bundles_allowed_values
 module: options
 locked: false
 cardinality: -1

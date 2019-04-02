@@ -96,6 +96,13 @@ function os_widgets_form_alter(&$form, FormStateInterface $form_state, $form_id)
           ],
         ],
       ];
+      $form['field_taxonomy_tree_depth']['#states'] = [
+        'visible' => [
+          ':input[name="field_taxonomy_show_children[value]"]' => [
+            'checked' => TRUE,
+          ],
+        ],
+      ];
       break;
   }
 }

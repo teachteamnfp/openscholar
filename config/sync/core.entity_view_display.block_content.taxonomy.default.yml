@@ -6,6 +6,14 @@ dependencies:
     - block_content.type.taxonomy
     - field.field.block_content.taxonomy.field_taxonomy_behavior
     - field.field.block_content.taxonomy.field_taxonomy_bundles
+    - field.field.block_content.taxonomy.field_taxonomy_display_type
+    - field.field.block_content.taxonomy.field_taxonomy_offset
+    - field.field.block_content.taxonomy.field_taxonomy_range
+    - field.field.block_content.taxonomy.field_taxonomy_show_children
+    - field.field.block_content.taxonomy.field_taxonomy_show_count
+    - field.field.block_content.taxonomy.field_taxonomy_show_empty_terms
+    - field.field.block_content.taxonomy.field_taxonomy_show_term_desc
+    - field.field.block_content.taxonomy.field_taxonomy_tree_depth
     - field.field.block_content.taxonomy.field_taxonomy_vocabulary
   module:
     - options
@@ -23,6 +31,78 @@ content:
     region: content
   field_taxonomy_bundles:
     weight: 2
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+  field_taxonomy_display_type:
+    weight: 10
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+  field_taxonomy_offset:
+    weight: 4
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+  field_taxonomy_range:
+    weight: 3
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+  field_taxonomy_show_children:
+    weight: 7
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  field_taxonomy_show_count:
+    weight: 9
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  field_taxonomy_show_empty_terms:
+    weight: 5
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  field_taxonomy_show_term_desc:
+    weight: 6
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  field_taxonomy_tree_depth:
+    weight: 8
     label: above
     settings: {  }
     third_party_settings: {  }

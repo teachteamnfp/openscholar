@@ -6,6 +6,14 @@ dependencies:
     - block_content.type.taxonomy
     - field.field.block_content.taxonomy.field_taxonomy_behavior
     - field.field.block_content.taxonomy.field_taxonomy_bundles
+    - field.field.block_content.taxonomy.field_taxonomy_display_type
+    - field.field.block_content.taxonomy.field_taxonomy_offset
+    - field.field.block_content.taxonomy.field_taxonomy_range
+    - field.field.block_content.taxonomy.field_taxonomy_show_children
+    - field.field.block_content.taxonomy.field_taxonomy_show_count
+    - field.field.block_content.taxonomy.field_taxonomy_show_empty_terms
+    - field.field.block_content.taxonomy.field_taxonomy_show_term_desc
+    - field.field.block_content.taxonomy.field_taxonomy_tree_depth
     - field.field.block_content.taxonomy.field_taxonomy_vocabulary
   module:
     - content_moderation
@@ -28,6 +36,60 @@ content:
     region: content
   field_taxonomy_bundles:
     weight: 103
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_taxonomy_display_type:
+    weight: 111
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
+    region: content
+  field_taxonomy_offset:
+    weight: 105
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_taxonomy_range:
+    weight: 104
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_taxonomy_show_children:
+    weight: 108
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_taxonomy_show_count:
+    weight: 110
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_taxonomy_show_empty_terms:
+    weight: 106
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_taxonomy_show_term_desc:
+    weight: 107
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_taxonomy_tree_depth:
+    weight: 109
     settings: {  }
     third_party_settings: {  }
     type: options_select
