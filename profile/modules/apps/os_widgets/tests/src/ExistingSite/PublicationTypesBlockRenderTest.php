@@ -2,9 +2,6 @@
 
 namespace Drupal\Tests\os_widgets\ExistingSite;
 
-use Drupal\bibcite_entity\Entity\Reference;
-use Drupal\bibcite_entity\Entity\ReferenceInterface;
-
 /**
  * Class PublicationTypesWidget.
  *
@@ -93,38 +90,6 @@ class PublicationTypesBlockRenderTest extends OsWidgetsExistingSiteTestBase {
     $this->assertContains('<a href="/publications?type=book">Book
                       <span class="count">(0)</span>
                 </a>', $markup->__toString());
-  }
-
-  /**
-   * Creates a reference.
-   *
-   * @param array $values
-   *   (Optional) Default values for the reference.
-   *
-   * @return \Drupal\bibcite_entity\Entity\ReferenceInterface
-   *   The new reference entity.
-   *
-   * @throws \Drupal\Core\Entity\EntityStorageException
-   */
-  public function createReference(array $values = []) : ReferenceInterface {
-    $reference = Reference::create($values + [
-      'title' => $this->randomString(),
-      'type' => 'artwork',
-      'bibcite_year' => [
-        'value' => 1980,
-      ],
-      'distribution' => [
-          [
-            'value' => 'citation_distribute_repec',
-          ],
-      ],
-    ]);
-
-    $reference->save();
-
-    $this->markEntityForCleanup($reference);
-
-    return $reference;
   }
 
 }

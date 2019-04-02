@@ -2,10 +2,6 @@
 
 namespace Drupal\Tests\os_widgets\ExistingSite;
 
-use Drupal\bibcite_entity\Entity\Contributor;
-use Drupal\bibcite_entity\Entity\ContributorInterface;
-use Drupal\bibcite_entity\Entity\Reference;
-use Drupal\bibcite_entity\Entity\ReferenceInterface;
 use Drupal\Core\Cache\Cache;
 use Drupal\group\Entity\Group;
 
@@ -179,63 +175,6 @@ class PublicationAuthorsBlockRenderTest extends OsWidgetsExistingSiteTestBase {
     $this->vsiteContextManager->activateVsite($group);
     $tag = $block_content->getVsiteCacheTag();
     $this->assertSame('block_content_entity_vsite:' . $group->id(), $tag);
-  }
-
-  /**
-   * Creates a reference.
-   *
-   * @param array $values
-   *   (Optional) Default values for the reference.
-   *
-   * @return \Drupal\bibcite_entity\Entity\ReferenceInterface
-   *   The new reference entity.
-   *
-   * @throws \Drupal\Core\Entity\EntityStorageException
-   */
-  public function createReference(array $values = []) : ReferenceInterface {
-    $reference = Reference::create($values + [
-      'title' => $this->randomString(),
-      'type' => 'artwork',
-      'bibcite_year' => [
-        'value' => 1980,
-      ],
-      'distribution' => [
-          [
-            'value' => 'citation_distribute_repec',
-          ],
-      ],
-    ]);
-
-    $reference->save();
-
-    $this->markEntityForCleanup($reference);
-
-    return $reference;
-  }
-
-  /**
-   * Creates a contributor.
-   *
-   * @param array $values
-   *   (Optional) Default values for the contributor.
-   *
-   * @return \Drupal\bibcite_entity\Entity\ContributorInterface
-   *   The new contributor entity.
-   *
-   * @throws \Drupal\Core\Entity\EntityStorageException
-   */
-  public function createContributor(array $values = []) : ContributorInterface {
-    $contributor = Contributor::create($values + [
-      'first_name' => $this->randomString(),
-      'middle_name' => $this->randomString(),
-      'last_name' => $this->randomString(),
-    ]);
-
-    $contributor->save();
-
-    $this->markEntityForCleanup($contributor);
-
-    return $contributor;
   }
 
 }

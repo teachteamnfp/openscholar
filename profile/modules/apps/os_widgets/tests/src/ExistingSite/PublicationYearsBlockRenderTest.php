@@ -2,8 +2,6 @@
 
 namespace Drupal\Tests\os_widgets\ExistingSite;
 
-use Drupal\bibcite_entity\Entity\Reference;
-use Drupal\bibcite_entity\Entity\ReferenceInterface;
 use Drupal\Core\Cache\Cache;
 
 /**
@@ -104,38 +102,6 @@ class PublicationYearsBlockRenderTest extends OsWidgetsExistingSiteTestBase {
     $markup = $renderer->renderRoot($render);
     $this->assertContains('<div class="views-row"><div class="views-field views-field-bibcite-year"><span class="field-content"><a href="/publications/year/2001">2001</a></span></div><div class="views-field views-field-id"><span class="field-content views-field-display-count">(2)</span></div></div>', $markup->__toString());
     $this->assertContains('<div class="views-row"><div class="views-field views-field-bibcite-year"><span class="field-content"><a href="/publications/year/2010">2010</a></span></div><div class="views-field views-field-id"><span class="field-content views-field-display-count">(1)</span></div></div>', $markup->__toString());
-  }
-
-  /**
-   * Creates a reference.
-   *
-   * @param array $values
-   *   (Optional) Default values for the reference.
-   *
-   * @return \Drupal\bibcite_entity\Entity\ReferenceInterface
-   *   The new reference entity.
-   *
-   * @throws \Drupal\Core\Entity\EntityStorageException
-   */
-  public function createReference(array $values = []) : ReferenceInterface {
-    $reference = Reference::create($values + [
-      'title' => $this->randomString(),
-      'type' => 'artwork',
-      'bibcite_year' => [
-        'value' => 1980,
-      ],
-      'distribution' => [
-          [
-            'value' => 'citation_distribute_repec',
-          ],
-      ],
-    ]);
-
-    $reference->save();
-
-    $this->markEntityForCleanup($reference);
-
-    return $reference;
   }
 
 }
