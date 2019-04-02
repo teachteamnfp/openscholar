@@ -83,6 +83,9 @@ nav {
       }
     }
   }
+  .row {
+    margin: 0;
+  }
 }
 @media #{$mobile} {
   .navbar-collapse {
