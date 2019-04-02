@@ -58,7 +58,7 @@ class PublicationTypesWidget extends OsWidgetsBase implements OsWidgetsInterface
     $build['types_list'] = [
       '#theme' => 'os_widgets_publication_types',
       '#types' => $types_count_list,
-      '#is_display_count' => !empty($field_display_count_values[0]['value']) ? TRUE : FALSE,
+      '#is_display_count' => !empty($field_display_count_values[0]['value']),
     ];
   }
 
