@@ -95,7 +95,7 @@ class CitationDistributePluginManager extends DefaultPluginManager {
           case CitationDistributionModes::PER_SUBMISSION:
             $plugin->save($entity);
 
-            continue 2;
+            break;
 
           case CitationDistributionModes::BATCH:
             $job = Job::create('os_publications_citation_distribute', [
@@ -105,10 +105,7 @@ class CitationDistributePluginManager extends DefaultPluginManager {
             $queue = Queue::load('publications');
             $queue->enqueueJob($job);
 
-            continue 2;
-
-          default:
-            continue 2;
+            break;
         }
       }
     }
@@ -140,7 +137,7 @@ class CitationDistributePluginManager extends DefaultPluginManager {
             $ghost_entity = $plugin->killEntity($entity);
             $plugin->delete($ghost_entity);
 
-            continue 2;
+            break;
 
           case CitationDistributionModes::BATCH:
             $job = Job::create('os_publications_citation_conceal', [
@@ -152,10 +149,7 @@ class CitationDistributePluginManager extends DefaultPluginManager {
             $queue = Queue::load('publications');
             $queue->enqueueJob($job);
 
-            continue 2;
-
-          default:
-            continue 2;
+            break;
         }
       }
     }
