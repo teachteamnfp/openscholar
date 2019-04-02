@@ -179,6 +179,16 @@ aside {
       }
     }
   }
+  .fc-list-heading {
+    .fc-list-heading-main {
+      width: 55px;
+      height: 67px;
+      background: url(../images/event-shield.png) no-repeat 0 0 transparent;
+      font-weight: normal;
+      text-align: center;
+      padding-top: 4px;
+    }
+  }
 }
 
 /**** modal body ****/
@@ -201,3 +211,5 @@ aside {
     }
   }
 }
+
+/**** event shield ****/
