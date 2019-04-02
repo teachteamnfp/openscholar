@@ -24,6 +24,7 @@ class PublicationTypesWidget extends OsWidgetsBase implements OsWidgetsInterface
       return;
     }
 
+    // Collect all reference types with original allowed values function.
     /** @var \Drupal\field\Entity\FieldConfig $field_types_whitelist_definition */
     $field_types_whitelist_definition = $block_content->getFieldDefinition('field_types_whitelist');
     $allowed_values_function = $field_types_whitelist_definition->getSetting('allowed_values_function');
@@ -31,6 +32,9 @@ class PublicationTypesWidget extends OsWidgetsBase implements OsWidgetsInterface
     if (function_exists($allowed_values_function)) {
       $allowed_values = $allowed_values_function();
     }
+
+    // Fill an array with whitelisted reference types and create links.
+    // Init count with default zero.
     $field_types_whitelist_values = $block_content->get('field_types_whitelist')->getValue();
     $types_list = [];
     $types_count_list = [];
@@ -44,6 +48,7 @@ class PublicationTypesWidget extends OsWidgetsBase implements OsWidgetsInterface
       ];
     }
 
+    // Collect count of references with related reference types.
     $query = $this->connection->select('bibcite_reference', 'br');
     $query->fields('br', ['type']);
     $query->condition('br.type', $types_list, 'IN');
