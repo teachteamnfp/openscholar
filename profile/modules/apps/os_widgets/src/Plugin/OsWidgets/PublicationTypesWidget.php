@@ -38,7 +38,7 @@ class PublicationTypesWidget extends OsWidgetsBase implements OsWidgetsInterface
       $type_machine_name = $field_types_whitelist_value['value'];
       $types_list[] = $type_machine_name;
       $types_count_list[$type_machine_name] = [
-        'label' => $allowed_values[$type_machine_name] ?? 'NoLabel',
+        'label' => $allowed_values[$type_machine_name] ?? $this->t('NoLabel'),
         'href' => Url::fromRoute('view.publications.page_1', ['type' => $type_machine_name])->toString(),
         'count' => '0',
       ];
