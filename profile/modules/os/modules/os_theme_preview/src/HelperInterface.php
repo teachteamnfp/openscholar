@@ -15,10 +15,8 @@ interface HelperInterface {
    *
    * @param string $theme
    *   The name of the theme to preview.
-   *
-   * @throws \Drupal\os_theme_preview\ThemePreviewException
    */
-  public function startPreviewMode($theme);
+  public function startPreviewMode($theme): void;
 
   /**
    * Returns the theme name currently being previewed.
@@ -30,9 +28,7 @@ interface HelperInterface {
 
   /**
    * Stops preview mode.
-   *
-   * @throws \Drupal\os_theme_preview\ThemePreviewException
    */
-  public function stopPreviewMode();
+  public function stopPreviewMode(): void;
 
 }

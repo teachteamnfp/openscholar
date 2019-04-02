@@ -15,25 +15,11 @@ use Drupal\os_theme_preview\ThemePreviewException;
 class HelperTest extends TestBase {
 
   /**
-   * Negative test for startPreviewMode.
-   *
-   * @covers ::startPreviewMode
-   *
-   * @throws \Drupal\os_theme_preview\ThemePreviewException
-   */
-  public function testFalseStartPreviewMode() {
-    $this->expectException(ThemePreviewException::class);
-    $this->helper->startPreviewMode('hwpi_themeone_bentley');
-  }
-
-  /**
    * Positive test for startPreviewMode.
    *
    * @covers ::startPreviewMode
-   *
-   * @throws \Drupal\os_theme_preview\ThemePreviewException
    */
-  public function testTrueStartPreviewMode() {
+  public function testTrueStartPreviewMode(): void {
     $this->setSession($this->requestStack->getCurrentRequest());
 
     $this->helper->startPreviewMode('hwpi_themeone_bentley');
@@ -47,7 +33,7 @@ class HelperTest extends TestBase {
    *
    * @covers ::getPreviewedTheme
    */
-  public function testGetPreviewedTheme() {
+  public function testGetPreviewedTheme(): void {
     // Negative test.
     $previewed_theme = $this->helper->getPreviewedTheme();
     $this->assertNull($previewed_theme);
@@ -63,10 +49,8 @@ class HelperTest extends TestBase {
    * Negative test for stopPreviewMode.
    *
    * @covers ::stopPreviewMode
-   *
-   * @throws \Drupal\os_theme_preview\ThemePreviewException
    */
-  public function testFalseStopPreviewMode() {
+  public function testFalseStopPreviewMode(): void {
     $this->expectException(ThemePreviewException::class);
     $this->helper->stopPreviewMode();
   }
@@ -75,10 +59,8 @@ class HelperTest extends TestBase {
    * Positive test for stopPreviewMode.
    *
    * @covers ::stopPreviewMode
-   *
-   * @throws \Drupal\os_theme_preview\ThemePreviewException
    */
-  public function testTrueStopPreviewMode() {
+  public function testTrueStopPreviewMode(): void {
     $this->setSession($this->requestStack->getCurrentRequest());
 
     $this->helper->startPreviewMode('hwpi_themeone_bentley');

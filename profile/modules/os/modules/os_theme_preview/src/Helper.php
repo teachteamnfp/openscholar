@@ -2,6 +2,7 @@
 
 namespace Drupal\os_theme_preview;
 
+use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -18,7 +19,12 @@ final class Helper implements HelperInterface {
   /**
    * Session key.
    */
-  const SESSION_KEY = 'os_theme_preview';
+  public const SESSION_KEY = 'os_theme_preview';
+
+  /**
+   * Default preview duration - in minutes.
+   */
+  public const PREVIEW_DURATION = 5;
 
   /**
    * Current request.
@@ -28,58 +34,44 @@ final class Helper implements HelperInterface {
   protected $request;
 
   /**
+   * Date time service.
+   *
+   * @var \Drupal\Component\Datetime\TimeInterface
+   */
+  protected $dateTime;
+
+  /**
    * Helper constructor.
    *
    * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
    *   Request stack.
+   * @param \Drupal\Component\Datetime\TimeInterface $date_time
+   *   Date time service.
    */
-  public function __construct(RequestStack $request_stack) {
+  public function __construct(RequestStack $request_stack, TimeInterface $date_time) {
     $this->request = $request_stack->getCurrentRequest();
+    $this->dateTime = $date_time;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function startPreviewMode($theme) {
-    /** @var \Symfony\Component\HttpFoundation\Session\SessionInterface|null $session */
-    $session = $this->request->getSession();
-
-    if (!$session) {
-      throw new ThemePreviewException($this->t('Preview could not be started.'));
-    }
-
-    $session->set(self::SESSION_KEY, $theme);
+  public function startPreviewMode($theme): void {
+    \setrawcookie(self::SESSION_KEY, \rawurlencode($theme), $this->dateTime->getRequestTime() + self::PREVIEW_DURATION * 60, '/site01');
   }
 
   /**
    * {@inheritdoc}
    */
   public function getPreviewedTheme(): ?string {
-    /** @var \Symfony\Component\HttpFoundation\Session\SessionInterface|null $session */
-    $session = $this->request->getSession();
-
-    if (!$session) {
-      return NULL;
-    }
-
-    /** @var string|null $current_preview_theme */
-    $current_preview_theme = $session->get(self::SESSION_KEY);
-
-    return $current_preview_theme;
+    return $this->request->cookies->get(self::SESSION_KEY);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function stopPreviewMode() {
-    /** @var \Symfony\Component\HttpFoundation\Session\SessionInterface|null $session */
-    $session = $this->request->getSession();
-
-    if (!$session) {
-      throw new ThemePreviewException($this->t('Could not stop preview mode.'));
-    }
-
-    $session->remove(self::SESSION_KEY);
+  public function stopPreviewMode(): void {
+    $this->request->cookies->remove(self::SESSION_KEY);
   }
 
 }
