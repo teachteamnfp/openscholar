@@ -43,13 +43,20 @@ class HelperTest extends TestBase {
   }
 
   /**
-   * Negative test for getPreviewedTheme.
+   * Test getPreviewedTheme.
    *
    * @covers ::getPreviewedTheme
    */
   public function testGetPreviewedTheme() {
+    // Negative test.
     $previewed_theme = $this->helper->getPreviewedTheme();
     $this->assertNull($previewed_theme);
+
+    // Positive test.
+    $this->setSession($this->requestStack->getCurrentRequest());
+    $this->requestStack->getCurrentRequest()->getSession()->set(Helper::SESSION_KEY, 'hwpi_themeone_bentley');
+    $previewed_theme = $this->helper->getPreviewedTheme();
+    $this->assertEquals('hwpi_themeone_bentley', $previewed_theme);
   }
 
   /**
