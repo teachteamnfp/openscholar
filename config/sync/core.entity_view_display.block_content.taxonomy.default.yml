@@ -1,0 +1,22 @@
+uuid: 7a51ce87-0d2e-4a7d-b813-58312e84b477
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.taxonomy
+    - field.field.block_content.taxonomy.field_taxonomy_vocabulary
+id: block_content.taxonomy.default
+targetEntityType: block_content
+bundle: taxonomy
+mode: default
+content:
+  field_taxonomy_vocabulary:
+    weight: 0
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+hidden:
+  langcode: true
