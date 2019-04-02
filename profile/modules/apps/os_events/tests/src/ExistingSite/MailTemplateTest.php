@@ -9,7 +9,7 @@ use weitzman\DrupalTestTraits\ExistingSiteBase;
  * MailTemplateTest.
  *
  * @group kernel
- * @group others
+ * @group other
  */
 class MailTemplateTest extends ExistingSiteBase {
 
