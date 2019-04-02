@@ -33,19 +33,22 @@ class NegotiatorTest extends TestBase {
    * Tests applies().
    *
    * @covers ::applies
+   * @covers ::determineActiveTheme
    */
-  public function testApplies(): void {
-    /** @var \Symfony\Component\HttpFoundation\Request $current_request */
-    $current_request = $this->requestStack->getCurrentRequest();
-    $route_match = RouteMatch::createFromRequest($current_request);
+  public function test(): void {
+    // Negative test.
+    $route_match = RouteMatch::createFromRequest($this->requestStack->getCurrentRequest());
 
     $this->assertFalse($this->themeNegotiator->applies($route_match));
+    $this->assertNull($this->themeNegotiator->determineActiveTheme($route_match));
 
+    // Positive test.
     $current_request = $this->setSession($this->requestStack->getCurrentRequest());
     $this->requestStack->getCurrentRequest()->getSession()->set(Helper::SESSION_KEY, 'hwpi_themeone_bentley');
     $route_match = RouteMatch::createFromRequest($current_request);
 
     $this->assertTrue($this->themeNegotiator->applies($route_match));
+    $this->assertSame('hwpi_themeone_bentley', $this->themeNegotiator->determineActiveTheme($route_match));
   }
 
 }
