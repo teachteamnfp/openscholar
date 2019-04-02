@@ -7,6 +7,7 @@ use Drupal\bibcite_entity\Entity\ContributorInterface;
 use Drupal\bibcite_entity\Entity\Reference;
 use Drupal\bibcite_entity\Entity\ReferenceInterface;
 use Drupal\Core\Cache\Cache;
+use Drupal\group\Entity\Group;
 
 /**
  * Class PublicationAuthorsWidget.
@@ -25,12 +26,20 @@ class PublicationAuthorsBlockRenderTest extends OsWidgetsExistingSiteTestBase {
   protected $publicationAuthorsWidget;
 
   /**
+   * Vsite Context Manager.
+   *
+   * @var \Drupal\vsite\Plugin\VsiteContextManagerInterface
+   */
+  protected $vsiteContextManager;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
     parent::setUp();
     Cache::invalidateTags(['config:views.view.publication_contributors']);
     $this->publicationAuthorsWidget = $this->osWidgets->createInstance('publication_authors_widget');
+    $this->vsiteContextManager = $this->container->get('vsite.context_manager');
   }
 
   /**
@@ -119,6 +128,57 @@ class PublicationAuthorsBlockRenderTest extends OsWidgetsExistingSiteTestBase {
     $markup = $renderer->renderRoot($render);
     $this->assertContains('<div class="views-row"><div class="views-field views-field-nothing"><span class="field-content"><a href="/publications/author/' . $contributor1->id() . '">Lorem1 Ipsum1 Dolor1</a></span></div><div class="views-field views-field-id-1"><span class="field-content views-field-display-count">(1)</span></div></div>', $markup->__toString());
     $this->assertContains('<div class="views-row"><div class="views-field views-field-nothing"><span class="field-content"><a href="/publications/author/' . $contributor2->id() . '">Lorem2 Ipsum2 Dolor2</a></span></div><div class="views-field views-field-id-1"><span class="field-content views-field-display-count">(2)</span></div></div>', $markup->__toString());
+  }
+
+  /**
+   * Test caching vsite tags none.
+   */
+  public function testBlockContentVsiteCacheTagsNone() {
+
+    $block_content = $this->createBlockContent([
+      'type' => 'publication_authors',
+      'field_display_count' => [
+        TRUE,
+      ],
+    ]);
+
+    $tag = $block_content->getVsiteCacheTag();
+    $this->assertSame('block_content_entity_vsite:none', $tag);
+  }
+
+  /**
+   * Test caching vsite tags with group.
+   */
+  public function testBlockContentVsiteCacheTagsWithGroup() {
+
+    $block_content = $this->createBlockContent([
+      'type' => 'publication_authors',
+      'field_display_count' => [
+        TRUE,
+      ],
+    ]);
+
+    // Set the current user so group creation can rely on it.
+    $this->container->get('current_user')->setAccount($this->createUser());
+    // Enable the user_as_content plugin on the default group type.
+    /** @var \Drupal\group\Entity\Storage\GroupContentTypeStorageInterface $storage */
+    $storage = $this->entityTypeManager->getStorage('group_content_type');
+    /** @var \Drupal\group\Entity\GroupContentTypeInterface[] $plugin */
+    $plugins = $storage->loadByContentPluginId('group_entity:block_content');
+    /** @var \Drupal\group\Entity\GroupContentTypeInterface $plugin */
+    $plugin = reset($plugins);
+
+    $group = Group::create([
+      'type' => 'personal',
+      'title' => 'Site01',
+    ]);
+    $group->save();
+    $this->markEntityForCleanup($group);
+    $group->addContent($block_content, $plugin->getContentPluginId());
+
+    $this->vsiteContextManager->activateVsite($group);
+    $tag = $block_content->getVsiteCacheTag();
+    $this->assertSame('block_content_entity_vsite:' . $group->id(), $tag);
   }
 
   /**
