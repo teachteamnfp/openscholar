@@ -1,0 +1,21 @@
+uuid: 3a14fe9b-f60a-4ebb-8894-8da562339b77
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.taxonomy
+    - field.storage.block_content.field_taxonomy_behavior
+  module:
+    - options
+id: block_content.taxonomy.field_taxonomy_behavior
+field_name: field_taxonomy_behavior
+entity_type: block_content
+bundle: taxonomy
+label: 'Post Types'
+description: 'The post types that will included in the count. Determine for me will filter the content on the "current page".'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

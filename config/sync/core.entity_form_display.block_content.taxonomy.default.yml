@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - block_content.type.taxonomy
+    - field.field.block_content.taxonomy.field_taxonomy_behavior
     - field.field.block_content.taxonomy.field_taxonomy_vocabulary
   module:
     - content_moderation
@@ -18,14 +19,17 @@ targetEntityType: block_content
 bundle: taxonomy
 mode: default
 content:
+  field_taxonomy_behavior:
+    weight: 102
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
   field_taxonomy_vocabulary:
     weight: 101
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: options_select
     region: content
   info:
     type: string_textfield
