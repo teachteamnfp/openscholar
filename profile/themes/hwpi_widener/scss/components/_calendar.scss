@@ -2,7 +2,10 @@
 .fc-listUpcoming-view, .fc-listPast-view  {
   .fc-list-heading {
     .fc-list-heading-main {
-      background: $color-light-gray1;
+      background: $color-white;
+      border: 1px solid $color-gray2;
+      border-radius: 7px;
+      width: 60px;
     }
   }
 }
