@@ -178,7 +178,7 @@ function os_pages_form_alter(&$form, FormStateInterface $form_state, $form_id) {
  */
 function os_pages_menu_local_tasks_alter(&$data, $route_name, RefinableCacheableDependencyInterface &$cacheability) {
   $node = \Drupal::routeMatch()->getParameter('node');
-  if ($node instanceof NodeInterface && $node->bundle() !== 'page') {
+  if ($node instanceof NodeInterface && $node->bundle() !== 'page' && isset($data['tabs'][0])) {
     foreach ($data['tabs'][0] as $task => $tab) {
       if (strpos($task, 'book_outline') !== FALSE) {
         unset($data['tabs'][0][$task]);
