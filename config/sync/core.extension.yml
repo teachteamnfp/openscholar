@@ -100,6 +100,7 @@ module:
   os_rest: 0
   os_slideshow: 0
   os_software: 0
+  os_theme_preview: 0
   os_twitter_pull: 0
   os_widgets: 0
   os_wysiwyg: 0

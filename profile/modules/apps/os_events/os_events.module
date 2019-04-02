@@ -22,12 +22,35 @@ function os_events_preprocess_page(&$variables) {
  * Implements hook_menu_local_tasks_alter().
  */
 function os_events_menu_local_tasks_alter(&$data, $route_name, RefinableCacheableDependencyInterface &$cacheability) {
+
   $node = \Drupal::routeMatch()->getParameter('node');
-  if ($node instanceof NodeInterface && $node->bundle() == 'events' && !$node->field_signup->value) {
-    foreach ($data['tabs'][0] as $task => $tab) {
-      if (strpos($task, 'rng') !== FALSE) {
-        unset($data['tabs'][0][$task]);
+
+  if ($node && $node->access('update') !== TRUE) {
+    return;
+  }
+
+  if ($node instanceof NodeInterface && $node->bundle() == 'events') {
+    if ($data['tabs'][0]) {
+      foreach ($data['tabs'][0] as $task => $tab) {
+        if (strpos($task, 'rng') !== FALSE && !$node->field_signup->value) {
+          unset($data['tabs'][0][$task]);
+        }
+        unset($data['tabs'][0]['rng.local_tasks:rng.event.node.register.type_list']);
+        if (strpos($task, 'rng.event.node.event') !== FALSE) {
+          $data['tabs'][0][$task]['#link']['title'] = t("Manage Registrations");
+        }
+        if ($task == 'views_view:view.rng_registrations_node.page_1') {
+          unset($data['tabs'][0][$task]);
+        }
       }
+    }
+    if (isset($data['tabs'][1])) {
+      unset(
+        $data['tabs'][1]['rng.local_tasks:rng.event.node.event.access'],
+        $data['tabs'][1]['rng.local_tasks:rng.event.node.event.group.list'],
+        $data['tabs'][1]['rng_date_scheduler.local_tasks:rng.event.node.event.date_scheduler']
+      );
+      $data['tabs'][1]['rng.local_tasks:rng.event.node.event.messages']['#link']['title'] = t("Email Registrants");
     }
   }
 }
