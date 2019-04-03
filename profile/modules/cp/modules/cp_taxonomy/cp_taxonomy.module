@@ -1,12 +1,18 @@
 <?php
 
+/**
+ * @file
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 use Drupal\Core\Entity\EntityInterface;
 
 /**
  * Remove operations we don't care about.
  *
  * @param array $operations
- * @param EntityInterface $entity
+ * @param \Drupal\Core\Entity\EntityInterface $entity
  */
 function cp_taxonomy_entity_operation_alter(&$operations, EntityInterface $entity) {
   /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContextManager */
@@ -16,9 +22,9 @@ function cp_taxonomy_entity_operation_alter(&$operations, EntityInterface $entit
       $operations = array_intersect_key($operations, ['edit' => '', 'list' => '', 'add' => '']);
       /** @var \Drupal\Core\Url $url */
       $url = $operations['list']['url'];
-      $operations['list']['url'] = \Drupal\Core\Url::fromRoute('cp.taxonomy.list', $url->getRouteParameters());
-      $operations['edit']['url'] = \Drupal\Core\Url::fromRoute('cp.taxonomy.edit', $url->getRouteParameters());
-      $operations['add']['url'] = \Drupal\Core\Url::fromRoute('cp.taxonomy.term.add', $url->getRouteParameters());
+      $operations['list']['url'] = Url::fromRoute('cp.taxonomy.list', $url->getRouteParameters());
+      $operations['edit']['url'] = Url::fromRoute('cp.taxonomy.edit', $url->getRouteParameters());
+      $operations['add']['url'] = Url::fromRoute('cp.taxonomy.term.add', $url->getRouteParameters());
     }
   }
 }
@@ -36,18 +42,21 @@ function cp_taxonomy_form_taxonomy_vocabulary_form_alter(&$form, &$form_state) {
   elseif (\Drupal::routeMatch()->getRouteName() == 'cp.taxonomy.edit') {
     /** @var \Drupal\Core\Url $url */
     $url = $form['actions']['delete']['#url'];
-    $form['actions']['delete']['#url'] = \Drupal\Core\Url::fromRoute('cp.taxonomy.delete', $url->getRouteParameters());
+    $form['actions']['delete']['#url'] = Url::fromRoute('cp.taxonomy.delete', $url->getRouteParameters());
     $form['actions']['submit']['#submit'][] = 'cp_taxonomy_form_add_vocab_submit';
   }
 }
 
-function cp_taxonomy_form_taxonomy_overview_terms_alter(&$form, \Drupal\Core\Form\FormStateInterface &$form_state) {
+/**
+ *
+ */
+function cp_taxonomy_form_taxonomy_overview_terms_alter(&$form, FormStateInterface &$form_state) {
   /** @var \Drupal\Core\StringTranslation\TranslatableMarkup $oldMarkup */
   $oldMarkup = $form['terms']['#empty'];
   /** @var \Drupal\taxonomy\VocabularyInterface $vocab */
   $vocab = $form_state->getStorage()['taxonomy']['vocabulary'];
   $arguments = [
-    ':link' => \Drupal\Core\Url::fromRoute('cp.taxonomy.term.add', ['taxonomy_vocabulary' => $vocab->id()])->toString()
+    ':link' => Url::fromRoute('cp.taxonomy.term.add', ['taxonomy_vocabulary' => $vocab->id()])->toString(),
   ] + $oldMarkup->getArguments();
   $form['terms']['#empty'] = t($oldMarkup->getUntranslatedString(), $arguments);
 }
@@ -60,7 +69,8 @@ function cp_taxonomy_form_taxonomy_overview_terms_alter(&$form, \Drupal\Core\For
  */
 function cp_taxonomy_form_taxonomy_vocabulary_confirm_delete_alter(&$form, &$form_state) {
   if (\Drupal::routeMatch()->getRouteName() == 'cp.taxonomy.delete') {
-    $form['actions']['cancel']['#url'] = \Drupal\Core\Url::fromRoute('cp.taxonomy');
+    $form['actions']['cancel']['#url'] = Url::fromRoute('cp.taxonomy');
+    $form['actions']['submit']['#submit'][] = 'cp_taxonomy_form_add_vocab_submit';
   }
 }
 
@@ -70,6 +80,6 @@ function cp_taxonomy_form_taxonomy_vocabulary_confirm_delete_alter(&$form, &$for
  * @param array $form
  * @param \Drupal\Core\Form\FormStateInterface $form_state
  */
-function cp_taxonomy_form_add_vocab_submit(array &$form, \Drupal\Core\Form\FormStateInterface &$form_state) {
+function cp_taxonomy_form_add_vocab_submit(array &$form, FormStateInterface &$form_state) {
   $form_state->setRedirect('cp.taxonomy');
 }
