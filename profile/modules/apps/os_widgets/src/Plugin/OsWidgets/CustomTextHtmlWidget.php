@@ -20,9 +20,6 @@ class CustomTextHtmlWidget extends OsWidgetsBase implements OsWidgetsInterface {
    * {@inheritdoc}
    */
   public function buildBlock(&$build, $block_content) {
-    if (empty($block_content)) {
-      return;
-    }
     $body_values = $block_content->get('body')->getValue();
     // Force to filtered_html.
     $body_values[0]['format'] = 'filtered_html';

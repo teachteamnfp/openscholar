@@ -20,9 +20,6 @@ class PublicationAuthorsWidget extends OsWidgetsBase implements OsWidgetsInterfa
    * {@inheritdoc}
    */
   public function buildBlock(&$build, $block_content) {
-    if (empty($block_content)) {
-      return;
-    }
     $view = Views::getView('publication_contributors');
     if (is_object($view)) {
       $view->storage->addCacheTags([$block_content->getVsiteCacheTag()]);

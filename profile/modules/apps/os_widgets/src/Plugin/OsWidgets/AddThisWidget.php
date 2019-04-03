@@ -19,9 +19,6 @@ class AddThisWidget extends OsWidgetsBase implements OsWidgetsInterface {
    * {@inheritdoc}
    */
   public function buildBlock(&$build, $block_content) {
-    if (empty($block_content)) {
-      return;
-    }
     $field_addthis_display_style_values = $block_content->get('field_addthis_display_style')->getValue();
     $display_style = $field_addthis_display_style_values[0]['value'];
     switch ($display_style) {
