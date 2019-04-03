@@ -39,6 +39,13 @@ services:
       - '@purl.modifier_index'
       - '@entity_type.manager'
       - '@vsite.context_manager'
+  vsite.typed_data_manager:
+    class: Drupal\vsite\Plugin\VsiteTypedDataManager
+    decorates: typed_data_manager
+    decoration_priority: 4
+    arguments: ['@container.namespaces', '@cache.discovery', '@module_handler', '@class_resolver']
+    tags:
+      - { name: event_subscriber }
   access_check.group.permission:
     class: 'Drupal\vsite\Access\VsiteGroupPermissionAccessCheck'
     arguments:
