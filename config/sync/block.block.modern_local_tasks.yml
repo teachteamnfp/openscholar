@@ -1,0 +1,22 @@
+uuid: 851cf8d8-8290-4ad9-a25f-838bacd91bdc
+langcode: en
+status: true
+dependencies:
+  theme:
+    - modern
+_core:
+  default_config_hash: X9I1OB0W3WlWtrK-CNcg6hNWwa8wficanpH8pYnDZDE
+id: modern_local_tasks
+theme: modern
+region: content
+weight: -6
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: Tabs
+  provider: core
+  label_display: '0'
+  primary: true
+  secondary: true
+visibility: {  }

@@ -1,0 +1,22 @@
+uuid: 59f33a5e-cc3f-419d-aaa3-a936f6bebff0
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - hwpi_college
+_core:
+  default_config_hash: jQQUUWN2Uxr5qZtc9zcJKBCxpKY8orN1u2HPqYYRQDI
+id: hwpi_college_powered
+theme: hwpi_college
+region: footer
+weight: -6
+provider: null
+plugin: system_powered_by_block
+settings:
+  id: system_powered_by_block
+  label: 'Powered by Drupal'
+  provider: system
+  label_display: '0'
+visibility: {  }
