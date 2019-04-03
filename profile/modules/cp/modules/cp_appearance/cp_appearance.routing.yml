@@ -1,0 +1,17 @@
+cp.appearance:
+  path: '/cp/appearance'
+  defaults:
+    _controller: '\Drupal\cp_appearance\Controller\CpAppearanceMainController::main'
+    _title: 'Manage Appearance'
+  requirements:
+    _group_permission: 'manage cp appearance'
+    _group_member: 'TRUE'
+
+cp_appearance.cp_select_theme:
+  path: '/cp/appearance/set'
+  defaults:
+    _controller: '\Drupal\cp_appearance\Controller\CpAppearanceMainController::setTheme'
+    _title: 'Manage Appearance'
+  requirements:
+    _group_permission: 'manage cp appearance'
+    _group_member: 'TRUE'
