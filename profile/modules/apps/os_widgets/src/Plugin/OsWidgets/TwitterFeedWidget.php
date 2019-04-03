@@ -46,9 +46,6 @@ class TwitterFeedWidget extends OsWidgetsBase implements OsWidgetsInterface {
    * {@inheritdoc}
    */
   public function buildBlock(&$build, $block_content) {
-    if (empty($block_content)) {
-      return;
-    }
     $field_twitter_username_values = $block_content->get('field_twitter_username')->getValue();
     $twitkey = $field_twitter_username_values[0]['value'];
 
