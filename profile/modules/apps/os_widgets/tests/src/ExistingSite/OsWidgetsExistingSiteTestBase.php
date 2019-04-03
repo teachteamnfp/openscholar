@@ -29,6 +29,13 @@ class OsWidgetsExistingSiteTestBase extends ExistingSiteBase {
   protected $osWidgets;
 
   /**
+   * Vsite Context Manager.
+   *
+   * @var \Drupal\vsite\Plugin\VsiteContextManagerInterface
+   */
+  protected $vsiteContextManager;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
@@ -36,6 +43,7 @@ class OsWidgetsExistingSiteTestBase extends ExistingSiteBase {
 
     $this->entityTypeManager = $this->container->get('entity_type.manager');
     $this->osWidgets = $this->container->get('plugin.manager.os_widgets');
+    $this->vsiteContextManager = $this->container->get('vsite.context_manager');
   }
 
   /**
