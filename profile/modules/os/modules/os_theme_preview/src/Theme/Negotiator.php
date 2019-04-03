@@ -5,6 +5,7 @@ namespace Drupal\os_theme_preview\Theme;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Theme\ThemeNegotiatorInterface;
 use Drupal\os_theme_preview\HelperInterface;
+use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 
 /**
  * Sets the preview theme.
@@ -14,7 +15,7 @@ class Negotiator implements ThemeNegotiatorInterface {
   /**
    * Preview theme name.
    *
-   * @var string|null
+   * @var array|null
    */
   protected $previewedTheme;
 
@@ -26,29 +27,44 @@ class Negotiator implements ThemeNegotiatorInterface {
   protected $helper;
 
   /**
+   * Vsite context manager service.
+   *
+   * @var \Drupal\vsite\Plugin\VsiteContextManagerInterface
+   */
+  protected $vsiteContextManager;
+
+  /**
    * Negotiator constructor.
    *
    * @param \Drupal\os_theme_preview\HelperInterface $helper
    *   Helper service.
+   * @param \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager
+   *   Vsite context manager service.
    */
-  public function __construct(HelperInterface $helper) {
+  public function __construct(HelperInterface $helper, VsiteContextManagerInterface $vsite_context_manager) {
     $this->helper = $helper;
+    $this->vsiteContextManager = $vsite_context_manager;
   }
 
   /**
    * {@inheritdoc}
    */
   public function applies(RouteMatchInterface $route_match): bool {
-    $this->previewedTheme = $this->helper->getPreviewedTheme();
+    $this->previewedTheme = $this->helper->getPreviewedThemeData();
+    $absolute_url = $this->vsiteContextManager->getAbsoluteUrl('/');
 
-    return (bool) $this->previewedTheme;
+    if (!$this->previewedTheme) {
+      return FALSE;
+    }
+
+    return ($this->previewedTheme['path'] === $absolute_url);
   }
 
   /**
    * {@inheritdoc}
    */
   public function determineActiveTheme(RouteMatchInterface $route_match): ?string {
-    return $this->previewedTheme;
+    return $this->previewedTheme['name'] ?? NULL;
   }
 
 }

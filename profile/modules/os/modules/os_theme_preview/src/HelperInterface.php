@@ -24,12 +24,12 @@ interface HelperInterface {
   public function startPreviewMode($theme, $base_path): void;
 
   /**
-   * Returns the theme name currently being previewed.
+   * Returns the data of the theme being previewed.
    *
-   * @return string|null
-   *   The theme name being previewed, otherwise NULL.
+   * @return array|null
+   *   The data if currently in preview mode, otherwise NULL.
    */
-  public function getPreviewedTheme(): ?string;
+  public function getPreviewedThemeData(): ?array;
 
   /**
    * Stops preview mode.

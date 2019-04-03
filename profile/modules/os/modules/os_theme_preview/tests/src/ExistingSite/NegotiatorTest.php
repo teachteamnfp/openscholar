@@ -30,22 +30,54 @@ class NegotiatorTest extends TestBase {
   }
 
   /**
-   * Tests applies().
+   * Tests - without vsites.
    *
    * @covers ::applies
    * @covers ::determineActiveTheme
+   *
+   * @throws \Drupal\os_theme_preview\ThemePreviewException
    */
-  public function test(): void {
+  public function testNoVsite(): void {
     // Negative test.
     $route_match = RouteMatch::createFromRequest($this->requestStack->getCurrentRequest());
 
     $this->assertFalse($this->themeNegotiator->applies($route_match));
     $this->assertNull($this->themeNegotiator->determineActiveTheme($route_match));
 
-    // Positive test.
+    // Positive tests.
     $current_request = $this->setSession($this->requestStack->getCurrentRequest());
-    $this->requestStack->getCurrentRequest()->getSession()->set(Helper::SESSION_KEY, 'hwpi_themeone_bentley');
+    $this->helper->startPreviewMode('hwpi_themeone_bentley', '/');
     $route_match = RouteMatch::createFromRequest($current_request);
+
+    $this->assertTrue($this->themeNegotiator->applies($route_match));
+    $this->assertSame('hwpi_themeone_bentley', $this->themeNegotiator->determineActiveTheme($route_match));
+  }
+
+  /**
+   * Asserts that preview respects the base path where it was activated.
+   *
+   * @covers ::applies
+   * @covers ::determineActiveTheme
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\os_theme_preview\ThemePreviewException
+   */
+  public function testVsite(): void {
+    $group = $this->createGroup([
+      'path' => [
+        'alias' => '/test-vsite',
+      ],
+    ]);
+
+    $current_request = $this->setSession($this->requestStack->getCurrentRequest());
+    $route_match = RouteMatch::createFromRequest($current_request);
+    $this->helper->startPreviewMode('hwpi_themeone_bentley', '/test-vsite/');
+
+    $this->assertFalse($this->themeNegotiator->applies($route_match));
+
+    $this->vsiteContextManager->activateVsite($group);
 
     $this->assertTrue($this->themeNegotiator->applies($route_match));
     $this->assertSame('hwpi_themeone_bentley', $this->themeNegotiator->determineActiveTheme($route_match));

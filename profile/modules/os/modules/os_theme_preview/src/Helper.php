@@ -57,7 +57,7 @@ final class Helper implements HelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function getPreviewedTheme(): ?string {
+  public function getPreviewedThemeData(): ?array {
     /** @var \Symfony\Component\HttpFoundation\Session\SessionInterface|null $session */
     $session = $this->request->getSession();
 
@@ -68,7 +68,7 @@ final class Helper implements HelperInterface {
     /** @var array|null $current_preview_theme */
     $current_preview_theme = $session->get(self::SESSION_KEY);
 
-    return $current_preview_theme['name'] ?? NULL;
+    return $current_preview_theme;
   }
 
   /**

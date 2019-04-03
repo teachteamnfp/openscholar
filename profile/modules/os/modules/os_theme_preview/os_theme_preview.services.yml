@@ -4,6 +4,6 @@ services:
     arguments: ['@request_stack']
   os_theme_preview.theme_negotiator:
     class: \Drupal\os_theme_preview\Theme\Negotiator
-    arguments: ['@os_theme_preview.helper']
+    arguments: ['@os_theme_preview.helper', '@vsite.context_manager']
     tags:
       - { name: theme_negotiator, priority: 100 }

@@ -55,7 +55,7 @@ class HelperTest extends TestBase {
 
     // When vsite is activated.
     $this->vsiteContextManager->activateVsite($group);
-    $this->helper->startPreviewMode('hwpi_themeone_bentley', $this->vsiteContextManager->getAbsoluteUrl());
+    $this->helper->startPreviewMode('hwpi_themeone_bentley', '/start-preview/');
 
     $previewed_theme = $this->requestStack->getCurrentRequest()->getSession()->get(Helper::SESSION_KEY);
     $this->assertSame([
@@ -67,11 +67,11 @@ class HelperTest extends TestBase {
   /**
    * Test getPreviewedTheme.
    *
-   * @covers ::getPreviewedTheme
+   * @covers ::getPreviewedThemeData
    */
   public function testGetPreviewedTheme(): void {
     // Negative test.
-    $previewed_theme = $this->helper->getPreviewedTheme();
+    $previewed_theme = $this->helper->getPreviewedThemeData();
     $this->assertNull($previewed_theme);
 
     // Positive test.
@@ -80,8 +80,11 @@ class HelperTest extends TestBase {
       'name' => 'hwpi_themeone_bentley',
       'path' => '/',
     ]);
-    $previewed_theme = $this->helper->getPreviewedTheme();
-    $this->assertEquals('hwpi_themeone_bentley', $previewed_theme);
+    $previewed_theme = $this->helper->getPreviewedThemeData();
+    $this->assertEquals([
+      'name' => 'hwpi_themeone_bentley',
+      'path' => '/',
+    ], $previewed_theme);
   }
 
   /**

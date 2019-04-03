@@ -22,7 +22,8 @@ function os_theme_preview_form_system_themes_admin_form_alter(&$form, FormStateI
   /** @var \Drupal\os_theme_preview\HelperInterface $helper */
   $helper = \Drupal::service('os_theme_preview.helper');
 
-  if ($helper->getPreviewedTheme()) {
+  // TODO: Validate base url.
+  if ($helper->getPreviewedThemeData()) {
     $form['cancel_preview'] = [
       '#type' => 'button',
       '#value' => t('Cancel Preview'),
