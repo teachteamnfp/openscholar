@@ -95,7 +95,7 @@ class CpAppearanceMainController extends ControllerBase {
 
     $config = $this->config('system.theme');
     // Get all available themes.
-    $themes = $this->themeHandler->rebuildThemeData();
+    $themes = $this->themeHandler->listInfo();
     uasort($themes, 'system_sort_modules_by_info_name');
 
     $theme_default = $config->get('default');
