@@ -22,14 +22,23 @@ function os_theme_preview_form_system_themes_admin_form_alter(&$form, FormStateI
   /** @var \Drupal\os_theme_preview\HelperInterface $helper */
   $helper = \Drupal::service('os_theme_preview.helper');
 
-  // TODO: Validate base url.
-  if ($helper->getPreviewedThemeData()) {
-    $form['cancel_preview'] = [
-      '#type' => 'button',
-      '#value' => t('Cancel Preview'),
-      '#executes_submit_callback' => TRUE,
-    ];
+  /** @var array|null $previewed_theme_data */
+  $previewed_theme_data = $helper->getPreviewedThemeData();
+  if (!$previewed_theme_data) {
+    return;
   }
+
+  /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
+  $vsite_context_manager = \Drupal::service('vsite.context_manager');
+  if ($vsite_context_manager->getAbsoluteUrl('/') !== $previewed_theme_data['path']) {
+    return;
+  }
+
+  $form['cancel_preview'] = [
+    '#type' => 'button',
+    '#value' => t('Cancel Preview'),
+    '#executes_submit_callback' => TRUE,
+  ];
 }
 
 /**
