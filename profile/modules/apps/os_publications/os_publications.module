@@ -59,6 +59,14 @@ function os_publications_views_query_alter(ViewExecutable $view, QueryPluginBase
       /** @var array $allowed_publication_types */
       $allowed_publication_types = $os_publication_settings->get('filter_publication_types');
 
+      // If type query parameter exists we will override allowed array.
+      $request_query = Drupal::request()->query;
+      if ($type = $request_query->get('type')) {
+        // Override filtering by request query.
+        $allowed_publication_types = [
+          $type => $type,
+        ];
+      }
       // Convert the array structure into views suitable format.
       // Array structure obtained from config is:
       // [

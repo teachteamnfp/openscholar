@@ -1,0 +1,11 @@
+<ul class="publication-types">
+  {% for type in types %}
+    <li class="publication-type">
+      <a href="{{ type.href }}">{{ type.label }}
+          {% if is_display_count %}
+            <span class="count">({{ type.count }})</span>
+          {% endif %}
+      </a>
+    </li>
+  {% endfor %}
+</ul>

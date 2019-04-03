@@ -1,0 +1,23 @@
+uuid: df9442cb-1bff-4a51-8cf3-70b0ff92e158
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.publication_years
+    - field.storage.block_content.field_display_count
+id: block_content.publication_years.field_display_count
+field_name: field_display_count
+entity_type: block_content
+bundle: publication_years
+label: 'Display number of items in category'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean
