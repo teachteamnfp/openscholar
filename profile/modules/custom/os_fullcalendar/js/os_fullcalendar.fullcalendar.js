@@ -30,6 +30,13 @@
             tableSubHeaders.each(function () {
               $(this).nextUntil(".fc-list-heading").wrapAll("<tr class='fc-list-item-parent'></tr>");
             });
+            $('.fc-list-heading-main').each(function () {
+              let eventdata = $(this).text().split(' ');
+              $(this).empty();
+              $(this).append($("<span class='event-year'>").text(eventdata[0]));
+              $(this).append($("<span class='event-start-month'>").text(eventdata[1]));
+              $(this).append($("<span class='event-start-day'>").text(eventdata[2]));
+            });
           }
         },
         views: {
@@ -42,6 +49,7 @@
               }
             },
             buttonText: Drupal.t('Upcoming Events'),
+            listDayFormat:'YYYY MMM DD',
           },
           listPast: {
             type: 'list',
@@ -52,6 +60,7 @@
               }
             },
             buttonText: Drupal.t('Past Events'),
+            listDayFormat: 'YYYY MMM DD',
           },
         },
         'buttonText': {

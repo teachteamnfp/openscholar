@@ -186,7 +186,24 @@ aside {
       background: url(../images/event-shield.png) no-repeat 0 0 transparent;
       font-weight: normal;
       text-align: center;
-      padding-top: 4px;
+      span {
+        display: block;
+        font-weight: bold;
+        line-height: 1;
+        &.event-year {
+          padding: 11px 0 0;
+          font-size: 11px;
+        }
+        &.event-start-month {
+          color: $color-gray;
+          font-size: 12px;
+          text-transform: uppercase;
+        }
+        &.event-start-day {
+          color: $color-black;
+          font-size: 18px;
+        }
+      }
     }
   }
 }
