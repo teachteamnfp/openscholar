@@ -1,0 +1,20 @@
+uuid: f55cc7cd-b6c5-4246-8da1-492b56b2ac7d
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.publication_authors
+    - field.field.block_content.publication_authors.field_display_count
+  module:
+    - layout_builder
+third_party_settings:
+  layout_builder:
+    sections: {  }
+id: block_content.publication_authors.default
+targetEntityType: block_content
+bundle: publication_authors
+mode: default
+content: {  }
+hidden:
+  field_display_count: true
+  langcode: true
