@@ -5,6 +5,8 @@
  * Customisations for Os Events.
  */
 
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Cache\RefinableCacheableDependencyInterface;
 
@@ -53,4 +55,25 @@ function os_events_menu_local_tasks_alter(&$data, $route_name, RefinableCacheabl
       $data['tabs'][1]['rng.local_tasks:rng.event.node.event.messages']['#link']['title'] = t("Email Registrants");
     }
   }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function os_events_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  if ($entity->bundle() != 'events') {
+    return;
+  }
+  if ($entity) {
+    $build['registration_signup']['#markup'] = os_events_generate_modal_register_link();
+    $build['registration_signup']['#weight'] = 20;
+  }
+}
+
+/**
+ * Generate Registration link.
+ */
+function os_events_generate_modal_register_link() {
+  $link = '<a href="#" class="registration-modal-link" data-toggle="modal" data-target="#registration-signup-block">Sign Up for this event</a>';
+  return $link;
 }
