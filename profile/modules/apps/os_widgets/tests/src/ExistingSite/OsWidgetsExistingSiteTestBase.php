@@ -90,6 +90,9 @@ class OsWidgetsExistingSiteTestBase extends ExistingSiteBase {
             'value' => 'citation_distribute_repec',
           ],
       ],
+      'status' => [
+        'value' => 1,
+      ],
     ]);
 
     $reference->save();
