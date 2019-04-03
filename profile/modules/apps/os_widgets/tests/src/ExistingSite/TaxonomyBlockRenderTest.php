@@ -59,7 +59,7 @@ class TaxonomyBlockRenderTest extends OsWidgetsExistingSiteTestBase {
   }
 
   /**
-   * Test basic listing test with depth.
+   * Test listing test with depth.
    */
   public function testBuildListingTaxonomyTermsWithDepth() {
     $term1 = $this->createTerm($this->vocabulary, ['name' => 'Lorem1']);
@@ -102,6 +102,36 @@ class TaxonomyBlockRenderTest extends OsWidgetsExistingSiteTestBase {
     $markup = $renderer->renderRoot($render);
     $this->assertContains($term1->label(), $markup->__toString());
     $this->assertContains($term2->label(), $markup->__toString());
+  }
+
+  /**
+   * Test listing test unchecked show children.
+   */
+  public function testBuildListingTaxonomyTermsUncheckedShowChildren() {
+    $term1 = $this->createTerm($this->vocabulary, ['name' => 'Lorem1']);
+    $term2 = $this->createTerm($this->vocabulary, ['name' => 'Lorem2', 'parent' => $term1->id()]);
+
+    $block_content = $this->createBlockContent([
+      'type' => 'taxonomy',
+      'field_taxonomy_vocabulary' => [
+        $this->vocabulary->id(),
+      ],
+      'field_taxonomy_tree_depth' => [
+        2,
+      ],
+      'field_taxonomy_show_children' => [
+        0,
+      ],
+    ]);
+    $view_builder = $this->entityTypeManager
+      ->getViewBuilder('block_content');
+    $render = $view_builder->view($block_content);
+    $renderer = $this->container->get('renderer');
+
+    /** @var \Drupal\Core\Render\Markup $markup_array */
+    $markup = $renderer->renderRoot($render);
+    $this->assertContains($term1->label(), $markup->__toString());
+    $this->assertNotContains($term2->label(), $markup->__toString());
   }
 
 }
