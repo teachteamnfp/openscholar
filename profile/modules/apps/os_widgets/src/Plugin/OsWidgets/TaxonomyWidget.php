@@ -20,8 +20,10 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
    */
   public function buildBlock(&$build, $block_content) {
     $field_taxonomy_vocabulary_values = $block_content->get('field_taxonomy_vocabulary')->getValue();
+    $field_taxonomy_tree_depth_values = $block_content->get('field_taxonomy_tree_depth')->getValue();
     $vid = $field_taxonomy_vocabulary_values[0]['target_id'];
-    $terms = $this->entityTypeManager->getStorage('taxonomy_term')->loadTree($vid);
+    $depth = empty($field_taxonomy_tree_depth_values[0]['value']) ? NULL : $field_taxonomy_tree_depth_values[0]['value'];
+    $terms = $this->entityTypeManager->getStorage('taxonomy_term')->loadTree($vid, 0, $depth);
     $term_data = [];
     foreach ($terms as $term) {
       $term_data[] = $term->name;
