@@ -1,0 +1,22 @@
+uuid: 2867afde-0733-4ec1-ba4e-3bccfa4c6b80
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - hwpi_themeone_bentley
+_core:
+  default_config_hash: oXUb3JZR2WW5VOdw4HrhRicCsq51mCgLfRyvheG68ck
+id: hwpi_themeone_bentley_breadcrumbs
+theme: hwpi_themeone_bentley
+region: content
+weight: -8
+provider: null
+plugin: system_breadcrumb_block
+settings:
+  id: system_breadcrumb_block
+  label: Breadcrumbs
+  provider: system
+  label_display: '0'
+visibility: {  }
