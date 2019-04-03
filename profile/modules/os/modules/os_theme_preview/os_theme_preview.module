@@ -42,8 +42,10 @@ function os_theme_preview_theme_preview_action(&$form, FormStateInterface $form_
     $op = $form_state->getValue('op')->__toString();
 
     if ($op === 'Preview') {
+      /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
+      $vsite_context_manager = \Drupal::service('vsite.context_manager');
       $theme = 'hwpi_themeone_bentley';
-      $helper->startPreviewMode($theme);
+      $helper->startPreviewMode($theme, $vsite_context_manager->getAbsoluteUrl('/'));
     }
     elseif ($op === 'Cancel Preview') {
       $helper->stopPreviewMode();

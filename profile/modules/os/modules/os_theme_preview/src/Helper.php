@@ -3,7 +3,6 @@
 namespace Drupal\os_theme_preview;
 
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
@@ -29,29 +28,19 @@ final class Helper implements HelperInterface {
   protected $request;
 
   /**
-   * Vsite context manager service.
-   *
-   * @var \Drupal\vsite\Plugin\VsiteContextManagerInterface
-   */
-  protected $vsiteContextManager;
-
-  /**
    * Helper constructor.
    *
    * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
    *   Request stack.
-   * @param \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager
-   *   Vsite context manager service.
    */
-  public function __construct(RequestStack $request_stack, VsiteContextManagerInterface $vsite_context_manager) {
+  public function __construct(RequestStack $request_stack) {
     $this->request = $request_stack->getCurrentRequest();
-    $this->vsiteContextManager = $vsite_context_manager;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function startPreviewMode($theme): void {
+  public function startPreviewMode($theme, $base_path): void {
     /** @var \Symfony\Component\HttpFoundation\Session\SessionInterface|null $session */
     $session = $this->request->getSession();
 
@@ -61,7 +50,7 @@ final class Helper implements HelperInterface {
 
     $session->set(self::SESSION_KEY, [
       'name' => $theme,
-      'path' => $this->vsiteContextManager->getAbsoluteUrl('/'),
+      'path' => $base_path,
     ]);
   }
 

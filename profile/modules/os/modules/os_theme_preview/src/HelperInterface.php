@@ -15,10 +15,13 @@ interface HelperInterface {
    *
    * @param string $theme
    *   The name of the theme to preview.
+   * @param string $base_path
+   *   The base path where the preview would be activated.
+   *   This is to identify which virtual site has invoked the preview.
    *
    * @throws \Drupal\os_theme_preview\ThemePreviewException
    */
-  public function startPreviewMode($theme): void;
+  public function startPreviewMode($theme, $base_path): void;
 
   /**
    * Returns the theme name currently being previewed.
