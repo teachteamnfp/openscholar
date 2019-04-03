@@ -13,7 +13,7 @@ entity_type: block_content
 bundle: taxonomy
 label: 'Post Types'
 description: 'The post types that will included in the count. Determine for me will filter the content on the "current page".'
-required: false
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''
