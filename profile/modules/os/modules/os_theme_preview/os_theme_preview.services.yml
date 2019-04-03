@@ -1,7 +1,7 @@
 services:
   os_theme_preview.helper:
     class: \Drupal\os_theme_preview\Helper
-    arguments: ['@request_stack']
+    arguments: ['@request_stack', '@vsite.context_manager']
   os_theme_preview.theme_negotiator:
     class: \Drupal\os_theme_preview\Theme\Negotiator
     arguments: ['@os_theme_preview.helper']

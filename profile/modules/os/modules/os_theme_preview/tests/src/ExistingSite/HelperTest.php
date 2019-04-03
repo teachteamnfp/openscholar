@@ -32,16 +32,35 @@ class HelperTest extends TestBase {
    * @covers ::startPreviewMode
    *
    * @throws \Drupal\os_theme_preview\ThemePreviewException
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
   public function testTrueStartPreviewMode(): void {
     $this->setSession($this->requestStack->getCurrentRequest());
+    $group = $this->createGroup([
+      'path' => [
+        'alias' => '/start-preview',
+      ],
+    ]);
 
+    // When vsite is not activated.
     $this->helper->startPreviewMode('hwpi_themeone_bentley');
 
     $previewed_theme = $this->requestStack->getCurrentRequest()->getSession()->get(Helper::SESSION_KEY);
     $this->assertSame([
       'name' => 'hwpi_themeone_bentley',
-      'path' => '/site01',
+      'path' => '/',
+    ], $previewed_theme);
+
+    // When vsite is activated.
+    $this->vsiteContextManager->activateVsite($group);
+    $this->helper->startPreviewMode('hwpi_themeone_bentley');
+
+    $previewed_theme = $this->requestStack->getCurrentRequest()->getSession()->get(Helper::SESSION_KEY);
+    $this->assertSame([
+      'name' => 'hwpi_themeone_bentley',
+      'path' => '/start-preview/',
     ], $previewed_theme);
   }
 
@@ -59,7 +78,7 @@ class HelperTest extends TestBase {
     $this->setSession($this->requestStack->getCurrentRequest());
     $this->requestStack->getCurrentRequest()->getSession()->set(Helper::SESSION_KEY, [
       'name' => 'hwpi_themeone_bentley',
-      'path' => '/site01',
+      'path' => '/',
     ]);
     $previewed_theme = $this->helper->getPreviewedTheme();
     $this->assertEquals('hwpi_themeone_bentley', $previewed_theme);
