@@ -12,19 +12,19 @@ type: list_integer
 settings:
   allowed_values:
     -
-      value: -1
+      value: 0
       label: 'Show all children'
     -
-      value: 0
+      value: 1
       label: 'Show only first level'
     -
-      value: 1
+      value: 2
       label: '2nd Level'
     -
-      value: 2
+      value: 3
       label: '3rd Level'
     -
-      value: 3
+      value: 4
       label: '4th Level'
   allowed_values_function: ''
 module: options
