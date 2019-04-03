@@ -1,0 +1,49 @@
+uuid: 058020a0-b832-4649-bced-b080457fabcd
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.publication_authors
+    - field.field.block_content.publication_authors.field_display_count
+  module:
+    - content_moderation
+    - field_layout
+    - layout_discovery
+third_party_settings:
+  field_layout:
+    id: layout_onecol
+    settings: {  }
+id: block_content.publication_authors.default
+targetEntityType: block_content
+bundle: publication_authors
+mode: default
+content:
+  field_display_count:
+    weight: 101
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  info:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  langcode:
+    type: language_select
+    weight: 2
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+  moderation_state:
+    type: moderation_state_default
+    weight: 100
+    settings: {  }
+    region: content
+    third_party_settings: {  }
+hidden: {  }
