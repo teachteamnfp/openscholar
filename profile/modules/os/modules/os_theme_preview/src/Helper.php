@@ -18,7 +18,7 @@ final class Helper implements HelperInterface {
   /**
    * Session key.
    */
-  const SESSION_KEY = 'os_theme_preview';
+  public const SESSION_KEY = 'os_theme_preview';
 
   /**
    * Current request.
@@ -40,7 +40,7 @@ final class Helper implements HelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function startPreviewMode($theme) {
+  public function startPreviewMode($theme): void {
     /** @var \Symfony\Component\HttpFoundation\Session\SessionInterface|null $session */
     $session = $this->request->getSession();
 
@@ -48,7 +48,10 @@ final class Helper implements HelperInterface {
       throw new ThemePreviewException($this->t('Preview could not be started.'));
     }
 
-    $session->set(self::SESSION_KEY, $theme);
+    $session->set(self::SESSION_KEY, [
+      'name' => $theme,
+      'path' => '/site01',
+    ]);
   }
 
   /**
@@ -62,16 +65,16 @@ final class Helper implements HelperInterface {
       return NULL;
     }
 
-    /** @var string|null $current_preview_theme */
+    /** @var array|null $current_preview_theme */
     $current_preview_theme = $session->get(self::SESSION_KEY);
 
-    return $current_preview_theme;
+    return $current_preview_theme['name'] ?? NULL;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function stopPreviewMode() {
+  public function stopPreviewMode(): void {
     /** @var \Symfony\Component\HttpFoundation\Session\SessionInterface|null $session */
     $session = $this->request->getSession();
 

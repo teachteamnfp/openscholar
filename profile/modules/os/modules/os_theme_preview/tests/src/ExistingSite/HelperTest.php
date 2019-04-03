@@ -21,7 +21,7 @@ class HelperTest extends TestBase {
    *
    * @throws \Drupal\os_theme_preview\ThemePreviewException
    */
-  public function testFalseStartPreviewMode() {
+  public function testFalseStartPreviewMode(): void {
     $this->expectException(ThemePreviewException::class);
     $this->helper->startPreviewMode('hwpi_themeone_bentley');
   }
@@ -33,13 +33,16 @@ class HelperTest extends TestBase {
    *
    * @throws \Drupal\os_theme_preview\ThemePreviewException
    */
-  public function testTrueStartPreviewMode() {
+  public function testTrueStartPreviewMode(): void {
     $this->setSession($this->requestStack->getCurrentRequest());
 
     $this->helper->startPreviewMode('hwpi_themeone_bentley');
 
     $previewed_theme = $this->requestStack->getCurrentRequest()->getSession()->get(Helper::SESSION_KEY);
-    $this->assertEquals('hwpi_themeone_bentley', $previewed_theme);
+    $this->assertSame([
+      'name' => 'hwpi_themeone_bentley',
+      'path' => '/site01',
+    ], $previewed_theme);
   }
 
   /**
@@ -47,14 +50,17 @@ class HelperTest extends TestBase {
    *
    * @covers ::getPreviewedTheme
    */
-  public function testGetPreviewedTheme() {
+  public function testGetPreviewedTheme(): void {
     // Negative test.
     $previewed_theme = $this->helper->getPreviewedTheme();
     $this->assertNull($previewed_theme);
 
     // Positive test.
     $this->setSession($this->requestStack->getCurrentRequest());
-    $this->requestStack->getCurrentRequest()->getSession()->set(Helper::SESSION_KEY, 'hwpi_themeone_bentley');
+    $this->requestStack->getCurrentRequest()->getSession()->set(Helper::SESSION_KEY, [
+      'name' => 'hwpi_themeone_bentley',
+      'path' => '/site01',
+    ]);
     $previewed_theme = $this->helper->getPreviewedTheme();
     $this->assertEquals('hwpi_themeone_bentley', $previewed_theme);
   }
@@ -66,7 +72,7 @@ class HelperTest extends TestBase {
    *
    * @throws \Drupal\os_theme_preview\ThemePreviewException
    */
-  public function testFalseStopPreviewMode() {
+  public function testFalseStopPreviewMode(): void {
     $this->expectException(ThemePreviewException::class);
     $this->helper->stopPreviewMode();
   }
@@ -78,7 +84,7 @@ class HelperTest extends TestBase {
    *
    * @throws \Drupal\os_theme_preview\ThemePreviewException
    */
-  public function testTrueStopPreviewMode() {
+  public function testTrueStopPreviewMode(): void {
     $this->setSession($this->requestStack->getCurrentRequest());
 
     $this->helper->startPreviewMode('hwpi_themeone_bentley');
