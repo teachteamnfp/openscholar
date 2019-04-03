@@ -8,6 +8,7 @@ use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Config\ConfigFactory;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Plugin\DefaultPluginManager;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
@@ -42,9 +43,23 @@ class CitationDistributePluginManager extends DefaultPluginManager {
   protected $loggerFactory;
 
   /**
-   * {@inheritdoc}
+   * CitationDistributePluginManager constructor.
+   *
+   * @param \Traversable $namespaces
+   *   An object that implements \Traversable which contains the root paths
+   *   keyed by the corresponding namespace to look for plugin implementations.
+   * @param \Drupal\Core\Cache\CacheBackendInterface $cacheBackend
+   *   Cache backend instance to use.
+   * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
+   *   The module handler to invoke the alter hook with.
+   * @param \Drupal\Core\Config\ConfigFactory $config_factory
+   *   Config factory.
+   * @param \Drupal\Core\Messenger\MessengerInterface $messenger
+   *   Messenger service.
+   * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $logger_channel_factory
+   *   Logger factory.
    */
-  public function __construct(\Traversable $namespaces, CacheBackendInterface $cacheBackend, ModuleHandlerInterface $module_handler, ConfigFactory $config_factory, MessengerInterface $messenger) {
+  public function __construct(\Traversable $namespaces, CacheBackendInterface $cacheBackend, ModuleHandlerInterface $module_handler, ConfigFactory $config_factory, MessengerInterface $messenger, LoggerChannelFactoryInterface $logger_channel_factory) {
     parent::__construct(
       'Plugin/CitationDistribution',
       $namespaces,
@@ -57,6 +72,7 @@ class CitationDistributePluginManager extends DefaultPluginManager {
     $this->setCacheBackend($cacheBackend, 'citation_distribute_plugins');
     $this->configFactory = $config_factory;
     $this->messenger = $messenger;
+    $this->loggerFactory = $logger_channel_factory;
   }
 
   /**
@@ -79,19 +95,17 @@ class CitationDistributePluginManager extends DefaultPluginManager {
           case CitationDistributionModes::PER_SUBMISSION:
             $plugin->save($entity);
 
-            continue;
+            break;
 
           case CitationDistributionModes::BATCH:
             $job = Job::create('os_publications_citation_distribute', [
               'id' => $entity->id(),
             ]);
+            /** @var \Drupal\advancedqueue\Entity\QueueInterface $queue */
             $queue = Queue::load('publications');
             $queue->enqueueJob($job);
 
-            continue;
-
-          default:
-            continue;
+            break;
         }
       }
     }
@@ -123,7 +137,7 @@ class CitationDistributePluginManager extends DefaultPluginManager {
             $ghost_entity = $plugin->killEntity($entity);
             $plugin->delete($ghost_entity);
 
-            continue;
+            break;
 
           case CitationDistributionModes::BATCH:
             $job = Job::create('os_publications_citation_conceal', [
@@ -131,13 +145,11 @@ class CitationDistributePluginManager extends DefaultPluginManager {
               'type' => $entity->getEntityTypeId(),
               'bundle' => $entity->bundle(),
             ]);
+            /** @var \Drupal\advancedqueue\Entity\QueueInterface $queue */
             $queue = Queue::load('publications');
             $queue->enqueueJob($job);
 
-            continue;
-
-          default:
-            continue;
+            break;
         }
       }
     }

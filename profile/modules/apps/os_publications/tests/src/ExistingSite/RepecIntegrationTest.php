@@ -47,13 +47,11 @@ class RepecIntegrationTest extends TestBase {
    */
   public function testReference() {
     $reference = $this->createReference();
-    $serie_directory_config = $this->repec->getEntityBundleSettings('serie_directory', $reference->getEntityTypeId(), $reference->bundle());
-    $directory = "{$this->repec->getArchiveDirectory()}{$serie_directory_config}/";
-    $file_name = "{$serie_directory_config}_{$reference->getEntityTypeId()}_{$reference->id()}.rdf";
+    $template_path = $this->getRepecTemplatePath($reference);
 
     // Tests rdf file creation.
-    $this->assertFileExists("$directory/$file_name");
-    $content = file_get_contents("$directory/$file_name");
+    $this->assertFileExists($template_path);
+    $content = file_get_contents($template_path);
     $this->assertTemplateContent($reference, $content);
 
     // Tests rdf file updation.
@@ -61,13 +59,13 @@ class RepecIntegrationTest extends TestBase {
       'value' => 'Test abstract',
     ]);
     $reference->save();
-    $this->assertFileExists("$directory/$file_name");
-    $content = file_get_contents("$directory/$file_name");
+    $this->assertFileExists($template_path);
+    $content = file_get_contents($template_path);
     $this->assertTemplateContent($reference, $content);
 
     // Tests rdf file deletion.
     $reference->delete();
-    $this->assertFileNotExists("$directory/$file_name");
+    $this->assertFileNotExists($template_path);
   }
 
   /**
@@ -81,21 +79,17 @@ class RepecIntegrationTest extends TestBase {
   public function testPluginIntegration() {
     // Positive test.
     $reference = $this->createReference();
-    $serie_directory_config = $this->repec->getEntityBundleSettings('serie_directory', $reference->getEntityTypeId(), $reference->bundle());
-    $directory = "{$this->repec->getArchiveDirectory()}{$serie_directory_config}/";
-    $file_name = "{$serie_directory_config}_{$reference->getEntityTypeId()}_{$reference->id()}.rdf";
+    $template_path = $this->getRepecTemplatePath($reference);
 
-    $this->assertFileExists("$directory/$file_name");
+    $this->assertFileExists($template_path);
 
     // Negative test.
     $reference = $this->createReference([
       'distribution' => [],
     ]);
-    $serie_directory_config = $this->repec->getEntityBundleSettings('serie_directory', $reference->getEntityTypeId(), $reference->bundle());
-    $directory = "{$this->repec->getArchiveDirectory()}{$serie_directory_config}/";
-    $file_name = "{$serie_directory_config}_{$reference->getEntityTypeId()}_{$reference->id()}.rdf";
+    $template_path = $this->getRepecTemplatePath($reference);
 
-    $this->assertFileNotExists("$directory/$file_name");
+    $this->assertFileNotExists($template_path);
   }
 
   /**
@@ -108,10 +102,8 @@ class RepecIntegrationTest extends TestBase {
    */
   public function testEntityShareable() {
     $reference = $this->createReference();
-    $serie_directory_config = $this->repec->getEntityBundleSettings('serie_directory', $reference->getEntityTypeId(), $reference->bundle());
-    $directory = "{$this->repec->getArchiveDirectory()}{$serie_directory_config}/";
-    $file_name = "{$serie_directory_config}_{$reference->getEntityTypeId()}_{$reference->id()}.rdf";
-    $this->assertFileExists("$directory/$file_name");
+    $template_path = $this->getRepecTemplatePath($reference);
+    $this->assertFileExists($template_path);
 
     /** @var \Drupal\Core\Config\Config $repec_settings_mut */
     $repec_settings_mut = $this->configFactory->getEditable('repec.settings');
@@ -126,8 +118,8 @@ class RepecIntegrationTest extends TestBase {
         'value' => FALSE,
       ],
     ]);
-    $file_name = "{$serie_directory_config}_{$reference->getEntityTypeId()}_{$reference->id()}.rdf";
-    $this->assertFileNotExists("$directory/$file_name");
+    $template_path = $this->getRepecTemplatePath($reference);
+    $this->assertFileNotExists($template_path);
   }
 
   /**
@@ -197,12 +189,10 @@ class RepecIntegrationTest extends TestBase {
       ],
     ]);
 
-    $serie_directory_config = $this->repec->getEntityBundleSettings('serie_directory', $reference->getEntityTypeId(), $reference->bundle());
-    $directory = "{$this->repec->getArchiveDirectory()}{$serie_directory_config}/";
-    $file_name = "{$serie_directory_config}_{$reference->getEntityTypeId()}_{$reference->id()}.rdf";
-    $this->assertFileExists("$directory/$file_name");
+    $template_path = $this->getRepecTemplatePath($reference);
+    $this->assertFileExists($template_path);
 
-    $content = file_get_contents("$directory/$file_name");
+    $content = file_get_contents($template_path);
     $this->assertContains('Template-Type: ReDIF-Paper 1.0', $content);
     $this->assertTemplateContent($reference, $content);
   }
@@ -273,12 +263,10 @@ class RepecIntegrationTest extends TestBase {
       ],
     ]);
 
-    $serie_directory_config = $this->repec->getEntityBundleSettings('serie_directory', $reference->getEntityTypeId(), $reference->bundle());
-    $directory = "{$this->repec->getArchiveDirectory()}{$serie_directory_config}/";
-    $file_name = "{$serie_directory_config}_{$reference->getEntityTypeId()}_{$reference->id()}.rdf";
-    $this->assertFileExists("$directory/$file_name");
+    $template_path = $this->getRepecTemplatePath($reference);
+    $this->assertFileExists($template_path);
 
-    $content = file_get_contents("$directory/$file_name");
+    $content = file_get_contents($template_path);
     $this->assertContains('Template-Type: ReDIF-Paper 1.0', $content);
     $this->assertTemplateContent($reference, $content);
   }
@@ -350,12 +338,10 @@ class RepecIntegrationTest extends TestBase {
       ],
     ]);
 
-    $serie_directory_config = $this->repec->getEntityBundleSettings('serie_directory', $reference->getEntityTypeId(), $reference->bundle());
-    $directory = "{$this->repec->getArchiveDirectory()}{$serie_directory_config}/";
-    $file_name = "{$serie_directory_config}_{$reference->getEntityTypeId()}_{$reference->id()}.rdf";
-    $this->assertFileExists("$directory/$file_name");
+    $template_path = $this->getRepecTemplatePath($reference);
+    $this->assertFileExists($template_path);
 
-    $content = file_get_contents("$directory/$file_name");
+    $content = file_get_contents($template_path);
     $this->assertContains('Template-Type: ReDIF-Chapter 1.0', $content);
     $this->assertTemplateContent($reference, $content);
   }
@@ -427,12 +413,10 @@ class RepecIntegrationTest extends TestBase {
       ],
     ]);
 
-    $serie_directory_config = $this->repec->getEntityBundleSettings('serie_directory', $reference->getEntityTypeId(), $reference->bundle());
-    $directory = "{$this->repec->getArchiveDirectory()}{$serie_directory_config}/";
-    $file_name = "{$serie_directory_config}_{$reference->getEntityTypeId()}_{$reference->id()}.rdf";
-    $this->assertFileExists("$directory/$file_name");
+    $template_path = $this->getRepecTemplatePath($reference);
+    $this->assertFileExists($template_path);
 
-    $content = file_get_contents("$directory/$file_name");
+    $content = file_get_contents($template_path);
     $this->assertContains('Template-Type: ReDIF-Software 1.0', $content);
     $this->assertTemplateContent($reference, $content);
   }
@@ -510,12 +494,10 @@ class RepecIntegrationTest extends TestBase {
       ],
     ]);
 
-    $serie_directory_config = $this->repec->getEntityBundleSettings('serie_directory', $reference->getEntityTypeId(), $reference->bundle());
-    $directory = "{$this->repec->getArchiveDirectory()}{$serie_directory_config}/";
-    $file_name = "{$serie_directory_config}_{$reference->getEntityTypeId()}_{$reference->id()}.rdf";
-    $this->assertFileExists("$directory/$file_name");
+    $template_path = $this->getRepecTemplatePath($reference);
+    $this->assertFileExists($template_path);
 
-    $content = file_get_contents("$directory/$file_name");
+    $content = file_get_contents($template_path);
     $this->assertContains('Template-Type: ReDIF-Book 1.0', $content);
     $this->assertContains("Provider-Name: {$publisher}", $content);
     $this->assertTemplateContent($reference, $content);
