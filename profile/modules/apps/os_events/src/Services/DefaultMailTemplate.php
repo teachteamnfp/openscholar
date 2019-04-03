@@ -6,6 +6,7 @@ use Drupal\Core\Action\ActionManager;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Form\FormState;
+use Drupal\os_events\DefaultMailTemplateInterface;
 use Drupal\rng\Entity\Rule;
 use Drupal\rng\Entity\RuleComponent;
 use Exception;
@@ -15,7 +16,7 @@ use Exception;
  *
  * @package Drupal\os_events\Services
  */
-class DefaultMailTemplate {
+class DefaultMailTemplate implements DefaultMailTemplateInterface {
 
 
   /**
@@ -46,16 +47,7 @@ class DefaultMailTemplate {
   }
 
   /**
-   * Creates and enables default mail template when Event node is created.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $node
-   *   Then Node object.
-   *
-   * @throws PluginException
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
-   * @throws \Drupal\Core\Entity\EntityStorageException
-   * @throws Exception
+   * {@inheritdoc}
    */
   public function createDefaultTemplate(EntityInterface $node) {
     /** @var \Drupal\rng\Plugin\Action\CourierTemplateCollection $actionPlugin */

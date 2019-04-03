@@ -78,5 +78,4 @@ function os_events_rng_rule_insert(EntityInterface $rule) {
   // Make newly created rule active by default.
   $rule->setIsActive(TRUE)
     ->save();
-  Drupal::messenger()->addMessage('Please add Email Subject and Body to the newly created template.');
 }
