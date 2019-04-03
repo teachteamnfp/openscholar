@@ -71,6 +71,9 @@ abstract class TestBase extends ExistingSiteBase {
           'value' => 'citation_distribute_repec',
         ],
       ],
+      'status' => [
+        'value' => 1,
+      ],
     ]);
 
     $reference->save();
@@ -178,6 +181,25 @@ abstract class TestBase extends ExistingSiteBase {
     if ($abstract = $reference->get('bibcite_abst_e')->getValue()) {
       $this->assertContains("Abstract: {$abstract[0]['value']}", $content);
     }
+  }
+
+  /**
+   * Returns the rdf file template path.
+   *
+   * The path is already URI prefixed, i.e. prefixed with `public://`.
+   *
+   * @param \Drupal\bibcite_entity\Entity\ReferenceInterface $reference
+   *   The reference whose template path to be obtained.
+   *
+   * @return string
+   *   The template path.
+   */
+  protected function getRepecTemplatePath(ReferenceInterface $reference): string {
+    $serie_directory_config = $this->repec->getEntityBundleSettings('serie_directory', $reference->getEntityTypeId(), $reference->bundle());
+    $directory = "{$this->repec->getArchiveDirectory()}{$serie_directory_config}/";
+    $file_name = "{$serie_directory_config}_{$reference->getEntityTypeId()}_{$reference->id()}.rdf";
+
+    return "$directory/$file_name";
   }
 
 }
