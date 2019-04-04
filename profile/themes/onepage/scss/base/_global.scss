@@ -3,3 +3,66 @@
     padding: 0;
   }
 }
+.path-front {
+  .block {
+    h2.block-title {
+      text-align: center;
+    }
+  }
+  footer {
+    .block {
+      h2.block-title {
+        text-align: left;
+      }
+    }
+  }
+  .main-container {
+    margin: 0;
+  }
+}
+/* Titles & Type */
+.path-search {
+  .title {
+    a {
+      font-size: 15px;
+      font-weight: bold;
+      margin-bottom: 18px;
+    }
+  }
+}
+h1.page-title {
+  font-size: 25px;
+  margin: 0 0 10px;
+}
+.path-page h1.page-title {
+  margin: 1% 0 2%;
+}
+h2.block-title {
+  padding: 20px 0 25px;
+  font-size: 1.3em;
+}
+.not-front.two-sidebars {
+  .main-container {
+    .row {
+      > section {
+        border-right: 1px solid $color-light-gray1;
+      }
+    }
+  }
+}
+.main-container {
+  margin-top: 40px;
+  margin-bottom: 20px;
+  .row {
+    > section {
+      .block {
+        margin-bottom: 15px;
+      }
+    }
+  }
+}
+.path-news {
+  .node--teaser {
+    padding: 10px 0 30px;
+  }
+}
