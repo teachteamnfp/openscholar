@@ -78,6 +78,12 @@ function os_widgets_theme($existing, $type, $theme, $path) {
         'is_display_count' => FALSE,
       ],
     ],
+    'os_widgets_taxonomy_term_item' => [
+      'variables' => [
+        'term' => NULL,
+        'label' => '',
+      ],
+    ],
   ];
 }
 

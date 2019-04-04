@@ -31,7 +31,11 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
     $terms = $this->entityTypeManager->getStorage('taxonomy_term')->loadTree($vid, 0, $depth);
     $term_data = [];
     foreach ($terms as $term) {
-      $term_data[] = $term->name;
+      $term_data[] = [
+        '#theme' => 'os_widgets_taxonomy_term_item',
+        '#term' => $term,
+        '#label' => str_repeat('-', $term->depth) . $term->name,
+      ];
     }
     $build['taxonomy']['terms'] = [
       '#theme' => 'item_list',
