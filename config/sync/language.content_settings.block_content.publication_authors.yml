@@ -1,0 +1,11 @@
+uuid: 59951f00-610a-47d2-9d8c-b6af34f103c0
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.publication_authors
+id: block_content.publication_authors
+target_entity_type_id: block_content
+target_bundle: publication_authors
+default_langcode: site_default
+language_alterable: false

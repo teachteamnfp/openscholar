@@ -34,7 +34,7 @@ function os_events_menu_local_tasks_alter(&$data, $route_name, RefinableCacheabl
   }
 
   if ($node instanceof NodeInterface && $node->bundle() == 'events') {
-    if ($data['tabs'][0]) {
+    if (isset($data['tabs'][0])) {
       foreach ($data['tabs'][0] as $task => $tab) {
         if (strpos($task, 'rng') !== FALSE && !$node->field_signup->value) {
           unset($data['tabs'][0][$task]);
@@ -57,6 +57,29 @@ function os_events_menu_local_tasks_alter(&$data, $route_name, RefinableCacheabl
       $data['tabs'][1]['rng.local_tasks:rng.event.node.event.messages']['#link']['title'] = t("Email Registrants");
     }
   }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ */
+function os_events_node_insert(EntityInterface $node) {
+  if ($node->bundle() != 'events') {
+    // Bail out if not an event node.
+    return;
+  }
+  // Set up services that we need.
+  $container = Drupal::getContainer();
+  $default_template = $container->get('os_events.default_mail_template');
+  $default_template->createDefaultTemplate($node);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ */
+function os_events_rng_rule_insert(EntityInterface $rule) {
+  // Make newly created rule active by default.
+  $rule->setIsActive(TRUE)
+    ->save();
 }
 
 /**
@@ -95,7 +118,6 @@ function check_registrations_status($entity) {
  *   The Signup link.
  */
 function os_events_generate_modal_register_link(EntityInterface $node) {
-
   $url = Url::fromRoute('os_events.signup_modal_form', ['nid' => $node->id()], [
     'attributes' => [
       'class' => ['use-ajax'],

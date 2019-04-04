@@ -1,0 +1,22 @@
+uuid: e97256ba-2702-499b-9acf-75531bf76a44
+langcode: en
+status: true
+dependencies:
+  theme:
+    - hwpi_themeone_bentley
+_core:
+  default_config_hash: X9I1OB0W3WlWtrK-CNcg6hNWwa8wficanpH8pYnDZDE
+id: hwpi_themeone_bentley_local_tasks
+theme: hwpi_themeone_bentley
+region: content
+weight: -6
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: Tabs
+  provider: core
+  label_display: '0'
+  primary: true
+  secondary: true
+visibility: {  }

@@ -9,7 +9,7 @@ use Drupal\os_theme_preview\ThemePreviewException;
  * HelperTest.
  *
  * @group kernel
- * @group other
+ * @group os-theme-preview
  * @coversDefaultClass \Drupal\os_theme_preview\Helper
  */
 class HelperTest extends TestBase {
