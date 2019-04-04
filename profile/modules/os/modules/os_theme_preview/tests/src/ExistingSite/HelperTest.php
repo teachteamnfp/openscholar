@@ -3,6 +3,7 @@
 namespace Drupal\Tests\os_theme_preview\ExistingSite;
 
 use Drupal\os_theme_preview\Helper;
+use Drupal\os_theme_preview\ThemePreview;
 use Drupal\os_theme_preview\ThemePreviewException;
 
 /**
@@ -48,20 +49,14 @@ class HelperTest extends TestBase {
     $this->helper->startPreviewMode('hwpi_themeone_bentley', '/');
 
     $previewed_theme = $this->requestStack->getCurrentRequest()->getSession()->get(Helper::SESSION_KEY);
-    $this->assertSame([
-      'name' => 'hwpi_themeone_bentley',
-      'path' => '/',
-    ], $previewed_theme);
+    $this->assertEquals(new ThemePreview('hwpi_themeone_bentley', '/'), $previewed_theme);
 
     // When vsite is activated.
     $this->vsiteContextManager->activateVsite($group);
     $this->helper->startPreviewMode('hwpi_themeone_bentley', '/start-preview/');
 
     $previewed_theme = $this->requestStack->getCurrentRequest()->getSession()->get(Helper::SESSION_KEY);
-    $this->assertSame([
-      'name' => 'hwpi_themeone_bentley',
-      'path' => '/start-preview/',
-    ], $previewed_theme);
+    $this->assertEquals(new ThemePreview('hwpi_themeone_bentley', '/start-preview/'), $previewed_theme);
   }
 
   /**
@@ -76,15 +71,9 @@ class HelperTest extends TestBase {
 
     // Positive test.
     $this->setSession($this->requestStack->getCurrentRequest());
-    $this->requestStack->getCurrentRequest()->getSession()->set(Helper::SESSION_KEY, [
-      'name' => 'hwpi_themeone_bentley',
-      'path' => '/',
-    ]);
+    $this->requestStack->getCurrentRequest()->getSession()->set(Helper::SESSION_KEY, new ThemePreview('hwpi_themeone_bentley', '/'));
     $previewed_theme = $this->helper->getPreviewedThemeData();
-    $this->assertEquals([
-      'name' => 'hwpi_themeone_bentley',
-      'path' => '/',
-    ], $previewed_theme);
+    $this->assertEquals(new ThemePreview('hwpi_themeone_bentley', '/'), $previewed_theme);
   }
 
   /**

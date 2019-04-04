@@ -3,7 +3,6 @@
 namespace Drupal\Tests\os_theme_preview\ExistingSite;
 
 use Drupal\Core\Routing\RouteMatch;
-use Drupal\os_theme_preview\Helper;
 
 /**
  * Theme negotiator test.
@@ -42,7 +41,6 @@ class NegotiatorTest extends TestBase {
     $route_match = RouteMatch::createFromRequest($this->requestStack->getCurrentRequest());
 
     $this->assertFalse($this->themeNegotiator->applies($route_match));
-    $this->assertNull($this->themeNegotiator->determineActiveTheme($route_match));
 
     // Positive tests.
     $current_request = $this->setSession($this->requestStack->getCurrentRequest());

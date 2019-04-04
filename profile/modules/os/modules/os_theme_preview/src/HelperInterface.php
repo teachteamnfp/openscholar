@@ -26,10 +26,10 @@ interface HelperInterface {
   /**
    * Returns the data of the theme being previewed.
    *
-   * @return array|null
+   * @return \Drupal\os_theme_preview\ThemePreview|null
    *   The data if currently in preview mode, otherwise NULL.
    */
-  public function getPreviewedThemeData(): ?array;
+  public function getPreviewedThemeData(): ?ThemePreview;
 
   /**
    * Stops preview mode.

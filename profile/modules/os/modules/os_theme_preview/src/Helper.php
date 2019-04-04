@@ -48,16 +48,13 @@ final class Helper implements HelperInterface {
       throw new ThemePreviewException($this->t('Preview could not be started.'));
     }
 
-    $session->set(self::SESSION_KEY, [
-      'name' => $theme,
-      'path' => $base_path,
-    ]);
+    $session->set(self::SESSION_KEY, new ThemePreview($theme, $base_path));
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getPreviewedThemeData(): ?array {
+  public function getPreviewedThemeData(): ?ThemePreview {
     /** @var \Symfony\Component\HttpFoundation\Session\SessionInterface|null $session */
     $session = $this->request->getSession();
 
@@ -65,7 +62,7 @@ final class Helper implements HelperInterface {
       return NULL;
     }
 
-    /** @var array|null $current_preview_theme */
+    /** @var \Drupal\os_theme_preview\ThemePreview|null $current_preview_theme */
     $current_preview_theme = $session->get(self::SESSION_KEY);
 
     return $current_preview_theme;

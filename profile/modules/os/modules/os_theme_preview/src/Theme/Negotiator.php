@@ -15,7 +15,7 @@ class Negotiator implements ThemeNegotiatorInterface {
   /**
    * Preview theme name.
    *
-   * @var array|null
+   * @var \Drupal\os_theme_preview\ThemePreview|null
    */
   protected $previewedTheme;
 
@@ -58,14 +58,14 @@ class Negotiator implements ThemeNegotiatorInterface {
       return FALSE;
     }
 
-    return ($this->previewedTheme['path'] === $absolute_url);
+    return ($this->previewedTheme->getBasePath() === $absolute_url);
   }
 
   /**
    * {@inheritdoc}
    */
   public function determineActiveTheme(RouteMatchInterface $route_match): ?string {
-    return $this->previewedTheme['name'] ?? NULL;
+    return $this->previewedTheme->getName();
   }
 
 }
