@@ -10,6 +10,15 @@
       border-bottom-left-radius: 5px;
       border-top-color: orange;
       border-top-width: 3px;
+      span {
+        font-weight: normal;
+        &.event-year {
+          padding: 6px 0 0;
+        }
+        &.event-start-month {
+          color: $color-black;
+        }
+      }
     }
   }
 }

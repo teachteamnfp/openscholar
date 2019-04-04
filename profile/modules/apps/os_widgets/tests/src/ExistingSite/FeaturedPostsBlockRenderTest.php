@@ -49,26 +49,6 @@ class FeaturedPostsBlockRenderTest extends OsWidgetsExistingSiteTestBase {
   }
 
   /**
-   * Test empty input parameters.
-   */
-  public function testBuildEmptyBlockOrEmptyPosts() {
-
-    $build = [];
-    $this->featuredPostsWidget->buildBlock($build, NULL);
-    $this->assertSame([], $build, 'Build empty block should not modify the build.');
-
-    $block_content = $this->createBlockContent([
-      'type' => 'featured_posts',
-      'field_display_style' => [
-        'title',
-      ],
-    ]);
-    $build = [];
-    $this->featuredPostsWidget->buildBlock($build, $block_content);
-    $this->assertSame([], $build, 'Build block with empty posts should not modify the build.');
-  }
-
-  /**
    * Test teaser and styled output.
    */
   public function testBuildTeaserStyledPosts() {
@@ -142,7 +122,13 @@ class FeaturedPostsBlockRenderTest extends OsWidgetsExistingSiteTestBase {
     ]);
     $randomDeltaId = 1;
     $featured_posts_widget = $this->getMockBuilder(FeaturedPostsWidget::class)
-      ->setConstructorArgs([[], 'test', [], $this->entityTypeManager])
+      ->setConstructorArgs([
+        [],
+        'test',
+        [],
+        $this->entityTypeManager,
+        $this->container->get('database'),
+      ])
       ->setMethods(['shortRandom'])
       ->getMock();
     $featured_posts_widget->method('shortRandom')

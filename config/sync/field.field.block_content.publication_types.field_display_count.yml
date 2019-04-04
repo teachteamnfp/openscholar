@@ -1,0 +1,23 @@
+uuid: 6f703c49-4ee4-43e0-8533-accddca412b5
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.publication_types
+    - field.storage.block_content.field_display_count
+id: block_content.publication_types.field_display_count
+field_name: field_display_count
+entity_type: block_content
+bundle: publication_types
+label: 'Display number of items in category'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

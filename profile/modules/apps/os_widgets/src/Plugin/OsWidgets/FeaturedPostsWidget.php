@@ -19,9 +19,6 @@ class FeaturedPostsWidget extends OsWidgetsBase implements OsWidgetsInterface {
    * {@inheritdoc}
    */
   public function buildBlock(&$build, $block_content) {
-    if (empty($block_content)) {
-      return;
-    }
     $displayStyleValues = $block_content->get('field_display_style')->getValue();
     $displayStyle = $displayStyleValues[0]['value'];
     $view_builder = $this->entityTypeManager->getViewBuilder('node');

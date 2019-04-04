@@ -1,0 +1,20 @@
+uuid: 2144727f-624b-4610-bcc6-6a9bc5be7756
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.publication_years
+    - field.field.block_content.publication_years.field_display_count
+  module:
+    - layout_builder
+third_party_settings:
+  layout_builder:
+    sections: {  }
+id: block_content.publication_years.default
+targetEntityType: block_content
+bundle: publication_years
+mode: default
+content: {  }
+hidden:
+  field_display_count: true
+  langcode: true
