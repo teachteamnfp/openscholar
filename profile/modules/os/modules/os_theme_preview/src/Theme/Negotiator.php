@@ -50,6 +50,7 @@ class Negotiator implements ThemeNegotiatorInterface {
    * {@inheritdoc}
    */
   public function applies(RouteMatchInterface $route_match): bool {
+    // Also consider current active vsite while applying the theme.
     $this->previewedTheme = $this->helper->getPreviewedThemeData();
     $absolute_url = $this->vsiteContextManager->getAbsoluteUrl('/');
 
