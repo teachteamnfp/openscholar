@@ -7,6 +7,8 @@
 
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Link;
+use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Cache\RefinableCacheableDependencyInterface;
 
@@ -64,16 +66,44 @@ function os_events_node_view(array &$build, EntityInterface $entity, EntityViewD
   if ($entity->bundle() != 'events') {
     return;
   }
-  if ($entity) {
-    $build['registration_signup']['#markup'] = os_events_generate_modal_register_link();
+  if (check_registrations_status($entity)) {
+    $build['registration_signup']['#markup'] = os_events_generate_modal_register_link($entity);
     $build['registration_signup']['#weight'] = 20;
   }
 }
 
 /**
- * Generate Registration link.
+ * Checks if new registrations are allowed based on different settings status.
  */
-function os_events_generate_modal_register_link() {
-  $link = '<a href="#" class="registration-modal-link" data-toggle="modal" data-target="#registration-signup-block">Sign Up for this event</a>';
+function check_registrations_status($entity) {
+  $eventManager = \Drupal::service('rng.event_manager');
+  $eventMeta = $eventManager->getMeta($entity);
+
+  $eventMeta->isAcceptingRegistrations() ? $flag = TRUE : $flag = FALSE;
+  $eventMeta->remainingCapacity() > 0 ? $flag = TRUE : $flag = FALSE;
+
+  return $flag;
+}
+
+/**
+ * Generate Registration link.
+ *
+ * @param \Drupal\Core\Entity\EntityInterface $node
+ *   The node entity.
+ *
+ * @return string
+ *   The Signup link.
+ */
+function os_events_generate_modal_register_link(EntityInterface $node) {
+
+  $url = Url::fromRoute('os_events.signup_modal_form', ['nid' => $node->id()], [
+    'attributes' => [
+      'class' => ['use-ajax'],
+      'data-dialog-type' => 'modal',
+      'data-dialog-options' => json_encode(['width' => '100%']),
+      'id' => 'events_signup_modal_form',
+    ],
+  ]);
+  $link = Link::fromTextAndUrl('Signup for this event', $url)->toString();
   return $link;
 }
