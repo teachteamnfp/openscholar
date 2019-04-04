@@ -231,6 +231,13 @@ class PublicationsViewsTest extends TestBase {
       ],
     ];
 
+    /** @var \Drupal\Core\Config\ConfigFactoryInterface $config_factory */
+    $config_factory = $this->container->get('config.factory');
+    /** @var \Drupal\Core\Config\Config $os_publications_settings_mut */
+    $os_publications_settings_mut = $config_factory->getEditable('os_publications.settings');
+    $os_publications_settings_mut->set('biblio_order', 'DESC');
+    $os_publications_settings_mut->save();
+
     $view = Views::getView('publications');
     $view->setDisplay('page_3');
     $view->preExecute();
