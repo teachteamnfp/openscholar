@@ -23,4 +23,13 @@ interface HierarchicalStorageInterface extends StorageInterface {
    */
   public function addStorage(StorageInterface $storage, $weight);
 
+  /**
+   * List all results from a certain level.
+   *
+   * @param string $prefix
+   * @param int $level
+   * @return string[]
+   */
+  public function listAllFromLevel($prefix = '', $level);
+
 }
