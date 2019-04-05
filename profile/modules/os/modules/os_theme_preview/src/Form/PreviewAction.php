@@ -5,7 +5,7 @@ namespace Drupal\os_theme_preview\Form;
 use Drupal\Core\Extension\ThemeHandlerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\os_theme_preview\HelperInterface;
+use Drupal\os_theme_preview\HandlerInterface;
 use Drupal\os_theme_preview\ThemePreviewException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -15,11 +15,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class PreviewAction extends FormBase {
 
   /**
-   * Theme preview helper.
+   * Theme preview handler.
    *
-   * @var \Drupal\os_theme_preview\HelperInterface
+   * @var \Drupal\os_theme_preview\HandlerInterface
    */
-  protected $helper;
+  protected $handler;
 
   /**
    * Data related to theme being previewed.
@@ -43,15 +43,15 @@ class PreviewAction extends FormBase {
   /**
    * PreviewAction constructor.
    *
-   * @param \Drupal\os_theme_preview\HelperInterface $helper
-   *   Theme preview helper service.
+   * @param \Drupal\os_theme_preview\HandlerInterface $handler
+   *   Theme preview handler.
    * @param \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler
    *   Theme handler service.
    */
-  public function __construct(HelperInterface $helper, ThemeHandlerInterface $theme_handler) {
-    $this->helper = $helper;
+  public function __construct(HandlerInterface $handler, ThemeHandlerInterface $theme_handler) {
+    $this->handler = $handler;
     $this->themeHandler = $theme_handler;
-    $this->previewedThemeData = $this->helper->getPreviewedThemeData();
+    $this->previewedThemeData = $this->handler->getPreviewedThemeData();
     $this->configFactory = $this->configFactory();
   }
 
@@ -59,7 +59,7 @@ class PreviewAction extends FormBase {
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    return new static($container->get('os_theme_preview.helper'), $container->get('theme_handler'));
+    return new static($container->get('os_theme_preview.handler'), $container->get('theme_handler'));
   }
 
   /**
@@ -111,7 +111,7 @@ class PreviewAction extends FormBase {
       ->save();
 
     try {
-      $this->helper->stopPreviewMode();
+      $this->handler->stopPreviewMode();
     }
     catch (ThemePreviewException $exception) {
       $this->loggerFactory->get('os_theme_preview')->error($exception->getMessage());
