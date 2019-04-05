@@ -9,8 +9,8 @@ id: block_content.taxonomy.field_taxonomy_range
 field_name: field_taxonomy_range
 entity_type: block_content
 bundle: taxonomy
-label: 'Maximum number of parent terms to display'
-description: ''
+label: 'Max number'
+description: 'Maximum number of top level terms to display'
 required: false
 translatable: false
 default_value:
@@ -18,7 +18,7 @@ default_value:
     value: 10
 default_value_callback: ''
 settings:
-  min: null
+  min: 0
   max: null
   prefix: ''
   suffix: ''

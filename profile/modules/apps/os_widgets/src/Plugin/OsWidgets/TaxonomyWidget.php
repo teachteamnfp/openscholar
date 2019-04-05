@@ -51,6 +51,7 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
     $field_taxonomy_vocabulary_values = $block_content->get('field_taxonomy_vocabulary')->getValue();
     $field_taxonomy_tree_depth_values = $block_content->get('field_taxonomy_tree_depth')->getValue();
     $field_taxonomy_show_children_values = $block_content->get('field_taxonomy_show_children')->getValue();
+    $field_taxonomy_range_values = $block_content->get('field_taxonomy_range')->getValue();
     $vid = $field_taxonomy_vocabulary_values[0]['target_id'];
     $depth = empty($field_taxonomy_tree_depth_values[0]['value']) ? NULL : $field_taxonomy_tree_depth_values[0]['value'];
     // When unchecked, only show top level terms.
@@ -62,12 +63,19 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
     $settings['bundles'] = $this->getFilteredBundles($block_content);
     $terms = $this->getTerms($settings);
     $term_items = [];
+    $count = 0;
     foreach ($terms as $term) {
       $term_items[] = [
         '#theme' => 'os_widgets_taxonomy_term_item',
         '#term' => $term,
         '#label' => str_repeat('-', $term->depth) . $term->name,
       ];
+      if (!empty($field_taxonomy_range_values[0]['value']) && $term->depth == 0) {
+        $count++;
+        if ($count >= $field_taxonomy_range_values[0]['value']) {
+          break;
+        }
+      }
     }
     $build['taxonomy']['terms'] = [
       '#theme' => 'item_list',
@@ -77,8 +85,17 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
 
   /**
    * Collect terms by field values.
+   *
+   * @param array $settings
+   *   Parameters to select terms.
+   *
+   * @return array
+   *   List of filtered terms.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  private function getTerms($settings) {
+  protected function getTerms(array $settings) {
     $terms = $this->entityTypeManager->getStorage('taxonomy_term')->loadTree($settings['vid'], 0, $settings['depth']);
     return $terms;
   }

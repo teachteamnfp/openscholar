@@ -134,4 +134,47 @@ class TaxonomyBlockRenderTest extends OsWidgetsExistingSiteTestBase {
     $this->assertNotContains($term2->label(), $markup->__toString());
   }
 
+  /**
+   * Test listing with max number.
+   */
+  public function testBuildListingWithMaxNumber() {
+    $term1 = $this->createTerm($this->vocabulary, ['name' => 'Lorem1']);
+    $term2 = $this->createTerm($this->vocabulary, ['name' => 'Lorem2']);
+    $term3 = $this->createTerm($this->vocabulary, ['name' => 'Lorem3']);
+
+    $block_content = $this->createBlockContent([
+      'type' => 'taxonomy',
+      'field_taxonomy_vocabulary' => [
+        $this->vocabulary->id(),
+      ],
+      'field_taxonomy_range' => [
+        2,
+      ],
+    ]);
+    $view_builder = $this->entityTypeManager
+      ->getViewBuilder('block_content');
+    $render = $view_builder->view($block_content);
+    $renderer = $this->container->get('renderer');
+
+    /** @var \Drupal\Core\Render\Markup $markup_array */
+    $markup = $renderer->renderRoot($render);
+    $this->assertContains($term1->label(), $markup->__toString());
+    $this->assertContains($term2->label(), $markup->__toString());
+    $this->assertNotContains($term3->label(), $markup->__toString());
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function createBlockContent(array $values = []) {
+    // Add default required fields.
+    $values += [
+      'field_taxonomy_behavior' => ['--all--'],
+      'field_taxonomy_vocabulary' => [$this->vocabulary->id()],
+      'field_taxonomy_tree_depth' => [0],
+      'field_taxonomy_display_type' => ['classic'],
+    ];
+    return parent::createBlockContent($values);
+  }
+
 }
