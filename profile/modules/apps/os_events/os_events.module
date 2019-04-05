@@ -172,14 +172,20 @@ function os_events_signup_settings_validate(array &$form, FormStateInterface &$f
  */
 function os_events_check_registrations_status(EntityInterface $node) {
   $message = '';
+  $is_past_date = '';
   $full = t("Sorry, the event is full");
   $closed = t("Registration closed");
   $eventManager = \Drupal::service('rng.event_manager');
   $dates = \Drupal::service('rng_date_scheduler.event_dates')->getDates($node);
   $eventMeta = $eventManager->getMeta($node);
   $event_start_date = $node->field_recurring_date->value;
-  if ($event_start_date) {
-    $event_start_date = DrupalDateTime::createFromTimestamp(strtotime($event_start_date));
+  $event_end_date = $node->field_recurring_date->end_value;
+
+  if (!$event_end_date && $event_start_date) {
+    $is_past_date = DrupalDateTime::createFromTimestamp(strtotime($event_start_date));
+  }
+  elseif ($event_end_date) {
+    $is_past_date = DrupalDateTime::createFromTimestamp(strtotime($event_end_date));
   }
 
   if (!$eventMeta->isAcceptingRegistrations()) {
@@ -192,7 +198,7 @@ function os_events_check_registrations_status(EntityInterface $node) {
   $now = DrupalDateTime::createFromTimestamp(\Drupal::requestStack()->getCurrentRequest()->server->get('REQUEST_TIME'));
 
   // Check if it is a past event.
-  if ($event_start_date < $now) {
+  if ($is_past_date < $now) {
     $message = $closed;
     return $message;
   }
