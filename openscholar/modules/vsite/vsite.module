@@ -622,7 +622,7 @@ function vsite_group_default_homepage_value($entity_type, $entity, $field, $inst
     return array(
       0 => array(
         'title' => '',
-        'url' => '[site:url]' . $entity->purl['value'],
+        'url' => '[site:url]' . $entity->purl,
       )
     );
   }
