@@ -172,7 +172,7 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   /**
    * {@inheritdoc}
    */
-  public function listAllFromLevel($prefix = '', $level) {
+  public function listAllFromLevel($prefix = '', $level = self::GLOBAL_STORAGE) {
     foreach ($this->storages as $s) {
       if ($s['weight'] == $level) {
         /** @var \Drupal\Core\Config\StorageInterface $store */

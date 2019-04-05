@@ -27,9 +27,13 @@ interface HierarchicalStorageInterface extends StorageInterface {
    * List all results from a certain level.
    *
    * @param string $prefix
+   *   Config name prefix to search for.
    * @param int $level
+   *   The level of storage we want to pull from.
+   *
    * @return string[]
+   *   All matching config names from the given storage level.
    */
-  public function listAllFromLevel($prefix = '', $level);
+  public function listAllFromLevel($prefix = '', $level = INF);
 
 }

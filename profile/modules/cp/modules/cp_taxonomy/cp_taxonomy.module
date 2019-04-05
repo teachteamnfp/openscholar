@@ -2,8 +2,10 @@
 
 /**
  * @file
+ * Hook implementations for the cp_taxonomy module.
  */
 
+use Drupal\vsite\Config\HierarchicalStorage;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\Core\Entity\EntityInterface;
@@ -12,14 +14,20 @@ use Drupal\Core\Entity\EntityInterface;
  * Remove operations we don't care about.
  *
  * @param array $operations
+ *   List of operations.
  * @param \Drupal\Core\Entity\EntityInterface $entity
+ *   The entity these operations will act on.
  */
-function cp_taxonomy_entity_operation_alter(&$operations, EntityInterface $entity) {
+function cp_taxonomy_entity_operation_alter(array &$operations, EntityInterface $entity) {
   /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContextManager */
   $vsiteContextManager = \Drupal::service('vsite.context_manager');
   if ($vsiteContextManager->getActiveVsite()) {
     if ($entity->getEntityTypeId() == 'taxonomy_vocabulary') {
-      $operations = array_intersect_key($operations, ['edit' => '', 'list' => '', 'add' => '']);
+      $operations = array_intersect_key($operations, [
+        'edit' => '',
+        'list' => '',
+        'add' => '',
+      ]);
       /** @var \Drupal\Core\Url $url */
       $url = $operations['list']['url'];
       $operations['list']['url'] = Url::fromRoute('cp.taxonomy.list', $url->getRouteParameters());
@@ -32,14 +40,16 @@ function cp_taxonomy_entity_operation_alter(&$operations, EntityInterface $entit
 /**
  * Remove global vocabularies from the list.
  *
- * @param $form
- * @param FormStateInterface $form_state
+ * @param array $form
+ *   The form.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state.
  */
-function cp_taxonomy_form_taxonomy_overview_vocabularies_alter(&$form, FormStateInterface $form_state) {
+function cp_taxonomy_form_taxonomy_overview_vocabularies_alter(array &$form, FormStateInterface $form_state) {
   if (\Drupal::routeMatch()->getRouteName() == 'cp.taxonomy') {
     /** @var \Drupal\vsite\Config\HierarchicalStorageInterface $storage */
     $storage = \Drupal::service('hierarchical.storage');
-    $globalVocabs = $storage->listAllFromLevel('taxonomy.vocabulary.', \Drupal\vsite\Config\HierarchicalStorage::GLOBAL_STORAGE);
+    $globalVocabs = $storage->listAllFromLevel('taxonomy.vocabulary.', HierarchicalStorage::GLOBAL_STORAGE);
     $globalVocabs = str_replace('taxonomy.vocabulary.', '', $globalVocabs);
     $keyed = array_flip($globalVocabs);
     $form['vocabularies'] = array_diff_key($form['vocabularies'], $keyed);
@@ -50,9 +60,11 @@ function cp_taxonomy_form_taxonomy_overview_vocabularies_alter(&$form, FormState
  * Add our submit handler to the form.
  *
  * @param array $form
+ *   The form.
  * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state.
  */
-function cp_taxonomy_form_taxonomy_vocabulary_form_alter(&$form, &$form_state) {
+function cp_taxonomy_form_taxonomy_vocabulary_form_alter(array &$form, FormStateInterface &$form_state) {
   if (\Drupal::routeMatch()->getRouteName() == 'cp.taxonomy.add') {
     $form['actions']['submit']['#submit'][] = 'cp_taxonomy_form_add_vocab_submit';
   }
@@ -65,9 +77,14 @@ function cp_taxonomy_form_taxonomy_vocabulary_form_alter(&$form, &$form_state) {
 }
 
 /**
+ * Alter the terms overview page to fix links and redirects.
  *
+ * @param array $form
+ *   The form.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state.
  */
-function cp_taxonomy_form_taxonomy_overview_terms_alter(&$form, FormStateInterface &$form_state) {
+function cp_taxonomy_form_taxonomy_overview_terms_alter(array &$form, FormStateInterface &$form_state) {
   /** @var \Drupal\Core\StringTranslation\TranslatableMarkup $oldMarkup */
   $oldMarkup = $form['terms']['#empty'];
   /** @var \Drupal\taxonomy\VocabularyInterface $vocab */
@@ -79,7 +96,15 @@ function cp_taxonomy_form_taxonomy_overview_terms_alter(&$form, FormStateInterfa
   $form['actions']['reset_alphabetical']['#submit'][] = 'cp_taxonomy_reset_redirect';
 }
 
-function cp_taxonomy_reset_redirect(&$form, FormStateInterface &$form_state) {
+/**
+ * Redirect back to the page we were on previously.
+ *
+ * @param array $form
+ *   The form.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state.
+ */
+function cp_taxonomy_reset_redirect(array &$form, FormStateInterface &$form_state) {
   /** @var \Drupal\taxonomy\VocabularyInterface $vocab */
   $vocab = $form_state->getStorage()['taxonomy']['vocabulary'];
   $form_state->setRedirect('cp.taxonomy.list', ['taxonomy_vocabulary' => $vocab->id()]);
@@ -88,10 +113,12 @@ function cp_taxonomy_reset_redirect(&$form, FormStateInterface &$form_state) {
 /**
  * Change the link for the Cancel button to stay in the cp namespace.
  *
- * @param $form
- * @param $form_state
+ * @param array $form
+ *   The form.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state.
  */
-function cp_taxonomy_form_taxonomy_vocabulary_confirm_delete_alter(&$form, &$form_state) {
+function cp_taxonomy_form_taxonomy_vocabulary_confirm_delete_alter(array &$form, FormStateInterface &$form_state) {
   if (\Drupal::routeMatch()->getRouteName() == 'cp.taxonomy.delete') {
     $form['actions']['cancel']['#url'] = Url::fromRoute('cp.taxonomy');
     $form['actions']['submit']['#submit'][] = 'cp_taxonomy_form_add_vocab_submit';
@@ -102,7 +129,9 @@ function cp_taxonomy_form_taxonomy_vocabulary_confirm_delete_alter(&$form, &$for
  * Redirect to the right place when done.
  *
  * @param array $form
+ *   The form.
  * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state.
  */
 function cp_taxonomy_form_add_vocab_submit(array &$form, FormStateInterface &$form_state) {
   $form_state->setRedirect('cp.taxonomy');
