@@ -30,6 +30,23 @@ function cp_taxonomy_entity_operation_alter(&$operations, EntityInterface $entit
 }
 
 /**
+ * Remove global vocabularies from the list.
+ *
+ * @param $form
+ * @param FormStateInterface $form_state
+ */
+function cp_taxonomy_form_taxonomy_overview_vocabularies_alter(&$form, FormStateInterface $form_state) {
+  if (\Drupal::routeMatch()->getRouteName() == 'cp.taxonomy') {
+    /** @var \Drupal\vsite\Config\HierarchicalStorageInterface $storage */
+    $storage = \Drupal::service('hierarchical.storage');
+    $globalVocabs = $storage->listAllFromLevel('taxonomy.vocabulary.', \Drupal\vsite\Config\HierarchicalStorage::GLOBAL_STORAGE);
+    $globalVocabs = str_replace('taxonomy.vocabulary.', '', $globalVocabs);
+    $keyed = array_flip($globalVocabs);
+    $form['vocabularies'] = array_diff_key($form['vocabularies'], $keyed);
+  }
+}
+
+/**
  * Add our submit handler to the form.
  *
  * @param array $form
@@ -59,6 +76,13 @@ function cp_taxonomy_form_taxonomy_overview_terms_alter(&$form, FormStateInterfa
     ':link' => Url::fromRoute('cp.taxonomy.term.add', ['taxonomy_vocabulary' => $vocab->id()])->toString(),
   ] + $oldMarkup->getArguments();
   $form['terms']['#empty'] = t($oldMarkup->getUntranslatedString(), $arguments);
+  $form['actions']['reset_alphabetical']['#submit'][] = 'cp_taxonomy_reset_redirect';
+}
+
+function cp_taxonomy_reset_redirect(&$form, FormStateInterface &$form_state) {
+  /** @var \Drupal\taxonomy\VocabularyInterface $vocab */
+  $vocab = $form_state->getStorage()['taxonomy']['vocabulary'];
+  $form_state->setRedirect('cp.taxonomy.list', ['taxonomy_vocabulary' => $vocab->id()]);
 }
 
 /**
