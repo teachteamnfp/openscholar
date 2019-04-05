@@ -24,7 +24,7 @@ class HelperTest extends TestBase {
    */
   public function testFalseStartPreviewMode(): void {
     $this->expectException(ThemePreviewException::class);
-    $this->helper->startPreviewMode('hwpi_themeone_bentley', '/');
+    $this->helper->startPreviewMode('hwpi_themeone_bentley', 47);
   }
 
   /**
@@ -46,17 +46,17 @@ class HelperTest extends TestBase {
     ]);
 
     // When vsite is not activated.
-    $this->helper->startPreviewMode('hwpi_themeone_bentley', '/');
+    $this->helper->startPreviewMode('hwpi_themeone_bentley', 0);
 
     $previewed_theme = $this->requestStack->getCurrentRequest()->getSession()->get(Helper::SESSION_KEY);
-    $this->assertEquals(new ThemePreview('hwpi_themeone_bentley', '/'), $previewed_theme);
+    $this->assertEquals(new ThemePreview('hwpi_themeone_bentley', 0), $previewed_theme);
 
     // When vsite is activated.
     $this->vsiteContextManager->activateVsite($group);
-    $this->helper->startPreviewMode('hwpi_themeone_bentley', '/start-preview/');
+    $this->helper->startPreviewMode('hwpi_themeone_bentley', $group->id());
 
     $previewed_theme = $this->requestStack->getCurrentRequest()->getSession()->get(Helper::SESSION_KEY);
-    $this->assertEquals(new ThemePreview('hwpi_themeone_bentley', '/start-preview/'), $previewed_theme);
+    $this->assertEquals(new ThemePreview('hwpi_themeone_bentley', (int) $group->id()), $previewed_theme);
   }
 
   /**
@@ -71,9 +71,9 @@ class HelperTest extends TestBase {
 
     // Positive test.
     $this->setSession($this->requestStack->getCurrentRequest());
-    $this->requestStack->getCurrentRequest()->getSession()->set(Helper::SESSION_KEY, new ThemePreview('hwpi_themeone_bentley', '/'));
+    $this->requestStack->getCurrentRequest()->getSession()->set(Helper::SESSION_KEY, new ThemePreview('hwpi_themeone_bentley', 0));
     $previewed_theme = $this->helper->getPreviewedThemeData();
-    $this->assertEquals(new ThemePreview('hwpi_themeone_bentley', '/'), $previewed_theme);
+    $this->assertEquals(new ThemePreview('hwpi_themeone_bentley', 0), $previewed_theme);
   }
 
   /**
@@ -98,7 +98,7 @@ class HelperTest extends TestBase {
   public function testTrueStopPreviewMode(): void {
     $this->setSession($this->requestStack->getCurrentRequest());
 
-    $this->helper->startPreviewMode('hwpi_themeone_bentley', '/');
+    $this->helper->startPreviewMode('hwpi_themeone_bentley', 0);
     $this->helper->stopPreviewMode();
 
     $previewed_theme = $this->requestStack->getCurrentRequest()->getSession()->get(Helper::SESSION_KEY);

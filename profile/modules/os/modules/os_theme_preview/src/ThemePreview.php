@@ -15,23 +15,23 @@ class ThemePreview implements ThemePreviewInterface {
   protected $name;
 
   /**
-   * The base path where preview was initiated.
+   * The id of vsite where preview was initiated.
    *
-   * @var string
+   * @var int
    */
-  protected $basePath;
+  protected $vsiteId;
 
   /**
    * ThemePreview constructor.
    *
    * @param string $name
    *   Name of the theme which is going to be previewed.
-   * @param string $base_path
-   *   The base path where the preview would be activated.
+   * @param int $vsite_id
+   *   The id of vsite where preview would be activated.
    */
-  public function __construct(string $name, string $base_path) {
+  public function __construct(string $name, int $vsite_id) {
     $this->name = $name;
-    $this->basePath = $base_path;
+    $this->vsiteId = $vsite_id;
   }
 
   /**
@@ -44,8 +44,8 @@ class ThemePreview implements ThemePreviewInterface {
   /**
    * {@inheritdoc}
    */
-  public function getBasePath(): string {
-    return $this->basePath;
+  public function getVsiteId(): int {
+    return $this->vsiteId;
   }
 
 }

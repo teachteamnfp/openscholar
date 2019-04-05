@@ -16,9 +16,9 @@ class ThemePreviewTest extends UnitTestCase {
    * Test.
    */
   public function test(): void {
-    $theme_preview = new ThemePreview('test', '/vsite1');
+    $theme_preview = new ThemePreview('test', 47);
     $this->assertSame('test', $theme_preview->getName());
-    $this->assertSame('/vsite1', $theme_preview->getBasePath());
+    $this->assertSame(47, $theme_preview->getVsiteId());
   }
 
 }

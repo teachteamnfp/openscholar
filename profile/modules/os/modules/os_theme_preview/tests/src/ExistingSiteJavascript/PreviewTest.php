@@ -53,7 +53,7 @@ class PreviewTest extends TestBase {
     ]);
     $this->setSession($this->requestStack->getCurrentRequest());
 
-    $this->helper->startPreviewMode('hwpi_themeone_bentley', '/test-multiple-vsite-one/');
+    $this->helper->startPreviewMode('hwpi_themeone_bentley', $group1->id());
 
     // Make sure the preview is enabled in the vsite where it was activated.
     $this->visitGroupPage($group1, '/');

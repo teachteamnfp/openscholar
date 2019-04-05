@@ -16,11 +16,11 @@ interface ThemePreviewInterface {
   public function getName(): string;
 
   /**
-   * Returns the base path where the preview was initiated.
+   * Returns the id of the vsite where the preview was initiated.
    *
-   * @return string
-   *   The base path.
+   * @return int
+   *   The id.
    */
-  public function getBasePath(): string;
+  public function getVsiteId(): int;
 
 }

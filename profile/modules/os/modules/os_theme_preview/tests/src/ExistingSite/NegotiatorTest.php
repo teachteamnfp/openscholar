@@ -44,7 +44,7 @@ class NegotiatorTest extends TestBase {
 
     // Positive tests.
     $current_request = $this->setSession($this->requestStack->getCurrentRequest());
-    $this->helper->startPreviewMode('hwpi_themeone_bentley', '/');
+    $this->helper->startPreviewMode('hwpi_themeone_bentley', 0);
     $route_match = RouteMatch::createFromRequest($current_request);
 
     $this->assertTrue($this->themeNegotiator->applies($route_match));
@@ -71,7 +71,7 @@ class NegotiatorTest extends TestBase {
 
     $current_request = $this->setSession($this->requestStack->getCurrentRequest());
     $route_match = RouteMatch::createFromRequest($current_request);
-    $this->helper->startPreviewMode('hwpi_themeone_bentley', '/test-vsite/');
+    $this->helper->startPreviewMode('hwpi_themeone_bentley', $group->id());
 
     $this->assertFalse($this->themeNegotiator->applies($route_match));
 

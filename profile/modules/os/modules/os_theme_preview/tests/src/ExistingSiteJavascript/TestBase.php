@@ -11,7 +11,7 @@ use weitzman\DrupalTestTraits\ExistingSiteWebDriverTestBase;
 /**
  * TestBase for functional javascript tests.
  */
-class TestBase extends ExistingSiteWebDriverTestBase {
+abstract class TestBase extends ExistingSiteWebDriverTestBase {
 
   /**
    * Helper Service.

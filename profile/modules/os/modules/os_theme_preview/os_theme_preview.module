@@ -30,7 +30,17 @@ function os_theme_preview_form_system_themes_admin_form_alter(&$form, FormStateI
 
   /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
   $vsite_context_manager = \Drupal::service('vsite.context_manager');
-  if ($vsite_context_manager->getAbsoluteUrl('/') !== $previewed_theme_data->getBasePath()) {
+  /** @var \Drupal\group\Entity\GroupInterface|null $group */
+  $group = $vsite_context_manager->getActiveVsite();
+
+  if ($group) {
+    $is_preview_enabled = ($previewed_theme_data->getVsiteId() === (int) $group->id());
+  }
+  else {
+    $is_preview_enabled = ($previewed_theme_data->getVsiteId() === 0);
+  }
+
+  if (!$is_preview_enabled) {
     return;
   }
 
@@ -54,8 +64,16 @@ function os_theme_preview_theme_preview_action(&$form, FormStateInterface $form_
     if ($op === 'Preview') {
       /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
       $vsite_context_manager = \Drupal::service('vsite.context_manager');
+      /** @var \Drupal\group\Entity\GroupInterface|null $group */
+      $group = $vsite_context_manager->getActiveVsite();
       $theme = 'hwpi_themeone_bentley';
-      $helper->startPreviewMode($theme, $vsite_context_manager->getAbsoluteUrl('/'));
+
+      if ($group) {
+        $helper->startPreviewMode($theme, $group->id());
+      }
+      else {
+        $helper->startPreviewMode($theme, 0);
+      }
     }
     elseif ($op === 'Cancel Preview') {
       $helper->stopPreviewMode();

@@ -52,13 +52,18 @@ class Negotiator implements ThemeNegotiatorInterface {
   public function applies(RouteMatchInterface $route_match): bool {
     // Also consider current active vsite while applying the theme.
     $this->previewedTheme = $this->helper->getPreviewedThemeData();
-    $absolute_url = $this->vsiteContextManager->getAbsoluteUrl('/');
+    /** @var \Drupal\group\Entity\GroupInterface|null $group */
+    $group = $this->vsiteContextManager->getActiveVsite();
 
     if (!$this->previewedTheme) {
       return FALSE;
     }
 
-    return ($this->previewedTheme->getBasePath() === $absolute_url);
+    if (!$group) {
+      return ($this->previewedTheme->getVsiteId() === 0);
+    }
+
+    return ($this->previewedTheme->getVsiteId() === (int) $group->id());
   }
 
   /**

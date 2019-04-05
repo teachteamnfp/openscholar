@@ -40,7 +40,7 @@ final class Helper implements HelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function startPreviewMode($theme, $base_path): void {
+  public function startPreviewMode($theme, $vsite_id): void {
     /** @var \Symfony\Component\HttpFoundation\Session\SessionInterface|null $session */
     $session = $this->request->getSession();
 
@@ -48,7 +48,7 @@ final class Helper implements HelperInterface {
       throw new ThemePreviewException($this->t('Preview could not be started.'));
     }
 
-    $session->set(self::SESSION_KEY, new ThemePreview($theme, $base_path));
+    $session->set(self::SESSION_KEY, new ThemePreview($theme, (int) $vsite_id));
   }
 
   /**
