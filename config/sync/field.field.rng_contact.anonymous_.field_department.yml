@@ -1,14 +1,14 @@
-uuid: 3838fbea-61b4-492c-9ffc-725cab16f3b1
+uuid: a4622afa-27fd-49e6-9b5d-a38b3506c08b
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.registration.field_department
-    - rng.registration_type.signup
-id: registration.signup.field_department
+    - field.storage.rng_contact.field_department
+    - rng_contact.rng_contact_type.anonymous_
+id: rng_contact.anonymous_.field_department
 field_name: field_department
-entity_type: registration
-bundle: signup
+entity_type: rng_contact
+bundle: anonymous_
 label: Department
 description: ''
 required: false

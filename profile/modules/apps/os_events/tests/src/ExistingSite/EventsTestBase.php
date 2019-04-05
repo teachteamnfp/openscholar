@@ -42,7 +42,7 @@ class EventsTestBase extends ExistingSiteBase {
    *   If Signup is checked or not.
    */
   protected function createEvent(bool $signupChecked) {
-    $date = new DateTimePlus('tomorrow midnight', $this->config->get('system.date')->get('timezone.default'));
+    $date = new DateTimePlus('+5 days', $this->config->get('system.date')->get('timezone.default'));
 
     $this->drupalLogin($this->adminUser);
     $this->drupalGet('node/add/events');
