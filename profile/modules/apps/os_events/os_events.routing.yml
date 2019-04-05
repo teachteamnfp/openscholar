@@ -2,6 +2,6 @@ os_events.signup_modal_form:
   path: '/events/signup/{nid}'
   defaults:
     _form:  '\Drupal\os_events\Form\EventSignupForm'
-    _title: 'Register to'
+    _title: 'Register for this Event'
   requirements:
     _permission: 'access content'

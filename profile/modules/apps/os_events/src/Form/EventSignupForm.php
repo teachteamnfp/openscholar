@@ -82,7 +82,7 @@ class EventSignupForm extends FormBase {
 
     // Add the core AJAX library.
     $form['#attached']['library'][] = 'core/drupal.ajax';
-    $form['#prefix'] = '<div id = "singup-modal-form">';
+    $form['#prefix'] = '<div id = "signup-modal-form">';
     $form['#suffix'] = '</div>';
 
     $form['email'] = [
@@ -170,7 +170,7 @@ class EventSignupForm extends FormBase {
   public function ajaxSubmitForm(array &$form, FormStateInterface $form_state) {
     $response = new AjaxResponse();
     if ($form_state->getErrors()) {
-      $response->addCommand(new ReplaceCommand('#singup-modal-form', $form));
+      $response->addCommand(new ReplaceCommand('#signup-modal-form', $form));
       $this->messenger()->deleteAll();
     }
 
@@ -191,8 +191,6 @@ class EventSignupForm extends FormBase {
         $message = '<div id="' . $id . '">' . $this->t("Sorry, the event is full") . '</div>';
         $response->addCommand(new ReplaceCommand('#' . $id, $message));
       }
-
-      $this->createRegistration($values, $node);
       $response->addCommand(new CloseModalDialogCommand());
     }
     // Finally return our response.
