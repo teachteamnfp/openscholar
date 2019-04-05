@@ -19,11 +19,11 @@ function os_theme_preview_form_system_themes_admin_form_alter(&$form, FormStateI
   ];
   $form['#submit'][] = 'os_theme_preview_theme_preview_action';
 
-  /** @var \Drupal\os_theme_preview\HelperInterface $helper */
-  $helper = \Drupal::service('os_theme_preview.helper');
+  /** @var \Drupal\os_theme_preview\HandlerInterface $handler */
+  $handler = \Drupal::service('os_theme_preview.handler');
 
   /** @var \Drupal\os_theme_preview\ThemePreview|null $previewed_theme_data */
-  $previewed_theme_data = $helper->getPreviewedThemeData();
+  $previewed_theme_data = $handler->getPreviewedThemeData();
   if (!$previewed_theme_data) {
     return;
   }
@@ -55,8 +55,8 @@ function os_theme_preview_form_system_themes_admin_form_alter(&$form, FormStateI
  * Starts the theme preview.
  */
 function os_theme_preview_theme_preview_action(&$form, FormStateInterface $form_state) {
-  /** @var \Drupal\os_theme_preview\HelperInterface $helper */
-  $helper = \Drupal::service('os_theme_preview.helper');
+  /** @var \Drupal\os_theme_preview\HandlerInterface $handler */
+  $handler = \Drupal::service('os_theme_preview.handler');
 
   try {
     $op = $form_state->getValue('op')->__toString();
@@ -69,14 +69,14 @@ function os_theme_preview_theme_preview_action(&$form, FormStateInterface $form_
       $theme = 'hwpi_themeone_bentley';
 
       if ($group) {
-        $helper->startPreviewMode($theme, $group->id());
+        $handler->startPreviewMode($theme, $group->id());
       }
       else {
-        $helper->startPreviewMode($theme, 0);
+        $handler->startPreviewMode($theme, 0);
       }
     }
     elseif ($op === 'Cancel Preview') {
-      $helper->stopPreviewMode();
+      $handler->stopPreviewMode();
     }
   }
   catch (ThemePreviewException $e) {

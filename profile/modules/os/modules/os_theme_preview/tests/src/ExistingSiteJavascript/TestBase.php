@@ -14,11 +14,11 @@ use weitzman\DrupalTestTraits\ExistingSiteWebDriverTestBase;
 abstract class TestBase extends ExistingSiteWebDriverTestBase {
 
   /**
-   * Helper Service.
+   * Theme preview handler.
    *
-   * @var \Drupal\os_theme_preview\HelperInterface
+   * @var \Drupal\os_theme_preview\HandlerInterface
    */
-  protected $helper;
+  protected $handler;
 
   /**
    * Request stack.
@@ -60,7 +60,7 @@ abstract class TestBase extends ExistingSiteWebDriverTestBase {
    */
   public function setUp() {
     parent::setUp();
-    $this->helper = $this->container->get('os_theme_preview.helper');
+    $this->handler = $this->container->get('os_theme_preview.handler');
     $this->requestStack = $this->container->get('request_stack');
     $this->entityTypeManager = $this->container->get('entity_type.manager');
     $this->vsiteContextManager = $this->container->get('vsite.context_manager');

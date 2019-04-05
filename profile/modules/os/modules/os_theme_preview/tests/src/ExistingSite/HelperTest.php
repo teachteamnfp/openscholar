@@ -2,7 +2,7 @@
 
 namespace Drupal\Tests\os_theme_preview\ExistingSite;
 
-use Drupal\os_theme_preview\Helper;
+use Drupal\os_theme_preview\Handler;
 use Drupal\os_theme_preview\ThemePreview;
 use Drupal\os_theme_preview\ThemePreviewException;
 
@@ -11,7 +11,7 @@ use Drupal\os_theme_preview\ThemePreviewException;
  *
  * @group kernel
  * @group os-theme-preview
- * @coversDefaultClass \Drupal\os_theme_preview\Helper
+ * @coversDefaultClass \Drupal\os_theme_preview\Handler
  */
 class HelperTest extends TestBase {
 
@@ -24,7 +24,7 @@ class HelperTest extends TestBase {
    */
   public function testFalseStartPreviewMode(): void {
     $this->expectException(ThemePreviewException::class);
-    $this->helper->startPreviewMode('hwpi_themeone_bentley', 47);
+    $this->handler->startPreviewMode('hwpi_themeone_bentley', 47);
   }
 
   /**
@@ -46,16 +46,16 @@ class HelperTest extends TestBase {
     ]);
 
     // When vsite is not activated.
-    $this->helper->startPreviewMode('hwpi_themeone_bentley', 0);
+    $this->handler->startPreviewMode('hwpi_themeone_bentley', 0);
 
-    $previewed_theme = $this->requestStack->getCurrentRequest()->getSession()->get(Helper::SESSION_KEY);
+    $previewed_theme = $this->requestStack->getCurrentRequest()->getSession()->get(Handler::SESSION_KEY);
     $this->assertEquals(new ThemePreview('hwpi_themeone_bentley', 0), $previewed_theme);
 
     // When vsite is activated.
     $this->vsiteContextManager->activateVsite($group);
-    $this->helper->startPreviewMode('hwpi_themeone_bentley', $group->id());
+    $this->handler->startPreviewMode('hwpi_themeone_bentley', $group->id());
 
-    $previewed_theme = $this->requestStack->getCurrentRequest()->getSession()->get(Helper::SESSION_KEY);
+    $previewed_theme = $this->requestStack->getCurrentRequest()->getSession()->get(Handler::SESSION_KEY);
     $this->assertEquals(new ThemePreview('hwpi_themeone_bentley', (int) $group->id()), $previewed_theme);
   }
 
@@ -66,13 +66,13 @@ class HelperTest extends TestBase {
    */
   public function testGetPreviewedTheme(): void {
     // Negative test.
-    $previewed_theme = $this->helper->getPreviewedThemeData();
+    $previewed_theme = $this->handler->getPreviewedThemeData();
     $this->assertNull($previewed_theme);
 
     // Positive test.
     $this->setSession($this->requestStack->getCurrentRequest());
-    $this->requestStack->getCurrentRequest()->getSession()->set(Helper::SESSION_KEY, new ThemePreview('hwpi_themeone_bentley', 0));
-    $previewed_theme = $this->helper->getPreviewedThemeData();
+    $this->requestStack->getCurrentRequest()->getSession()->set(Handler::SESSION_KEY, new ThemePreview('hwpi_themeone_bentley', 0));
+    $previewed_theme = $this->handler->getPreviewedThemeData();
     $this->assertEquals(new ThemePreview('hwpi_themeone_bentley', 0), $previewed_theme);
   }
 
@@ -85,7 +85,7 @@ class HelperTest extends TestBase {
    */
   public function testFalseStopPreviewMode(): void {
     $this->expectException(ThemePreviewException::class);
-    $this->helper->stopPreviewMode();
+    $this->handler->stopPreviewMode();
   }
 
   /**
@@ -98,10 +98,10 @@ class HelperTest extends TestBase {
   public function testTrueStopPreviewMode(): void {
     $this->setSession($this->requestStack->getCurrentRequest());
 
-    $this->helper->startPreviewMode('hwpi_themeone_bentley', 0);
-    $this->helper->stopPreviewMode();
+    $this->handler->startPreviewMode('hwpi_themeone_bentley', 0);
+    $this->handler->stopPreviewMode();
 
-    $previewed_theme = $this->requestStack->getCurrentRequest()->getSession()->get(Helper::SESSION_KEY);
+    $previewed_theme = $this->requestStack->getCurrentRequest()->getSession()->get(Handler::SESSION_KEY);
     $this->assertNull($previewed_theme);
   }
 

@@ -1,9 +1,9 @@
 services:
-  os_theme_preview.helper:
-    class: \Drupal\os_theme_preview\Helper
+  os_theme_preview.handler:
+    class: \Drupal\os_theme_preview\Handler
     arguments: ['@request_stack']
   os_theme_preview.theme_negotiator:
     class: \Drupal\os_theme_preview\Theme\Negotiator
-    arguments: ['@os_theme_preview.helper', '@vsite.context_manager']
+    arguments: ['@os_theme_preview.handler', '@vsite.context_manager']
     tags:
       - { name: theme_negotiator, priority: 100 }

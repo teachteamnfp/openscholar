@@ -3,12 +3,9 @@
 namespace Drupal\os_theme_preview;
 
 /**
- * The contract for theme preview helper.
- *
- * Most probably this is going to be renamed to something better, once the scope
- * becomes more clear.
+ * Contract for theme preview handler.
  */
-interface HelperInterface {
+interface HandlerInterface {
 
   /**
    * Starts the preview mode.

@@ -6,18 +6,12 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
- * Contains helpers for theme preview.
- *
- * Most probably this would be renamed to be something better, once the scope
- * becomes more clear.
+ * Handles theme preview operations.
  */
-final class Helper implements HelperInterface {
+final class Handler implements HandlerInterface {
 
   use StringTranslationTrait;
 
-  /**
-   * Session key.
-   */
   public const SESSION_KEY = 'os_theme_preview';
 
   /**
