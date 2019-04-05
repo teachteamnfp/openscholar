@@ -28,19 +28,10 @@ function os_theme_preview_form_system_themes_admin_form_alter(&$form, FormStateI
     return;
   }
 
-  /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
-  $vsite_context_manager = \Drupal::service('vsite.context_manager');
-  /** @var \Drupal\group\Entity\GroupInterface|null $group */
-  $group = $vsite_context_manager->getActiveVsite();
+  /** @var \Drupal\os_theme_preview\VsiteWrapperInterface $theme_preview_vsite_wrapper */
+  $theme_preview_vsite_wrapper = \Drupal::service('os_theme_preview.vsite_wrapper');
 
-  if ($group) {
-    $is_preview_enabled = ($previewed_theme_data->getVsiteId() === (int) $group->id());
-  }
-  else {
-    $is_preview_enabled = ($previewed_theme_data->getVsiteId() === 0);
-  }
-
-  if (!$is_preview_enabled) {
+  if ($previewed_theme_data->getVsiteId() !== $theme_preview_vsite_wrapper->getActiveVsiteId()) {
     return;
   }
 
@@ -62,18 +53,10 @@ function os_theme_preview_theme_preview_action(&$form, FormStateInterface $form_
     $op = $form_state->getValue('op')->__toString();
 
     if ($op === 'Preview') {
-      /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
-      $vsite_context_manager = \Drupal::service('vsite.context_manager');
-      /** @var \Drupal\group\Entity\GroupInterface|null $group */
-      $group = $vsite_context_manager->getActiveVsite();
-      $theme = 'hwpi_themeone_bentley';
+      /** @var \Drupal\os_theme_preview\VsiteWrapperInterface $theme_preview_vsite_wrapper */
+      $theme_preview_vsite_wrapper = \Drupal::service('os_theme_preview.vsite_wrapper');
 
-      if ($group) {
-        $handler->startPreviewMode($theme, $group->id());
-      }
-      else {
-        $handler->startPreviewMode($theme, 0);
-      }
+      $handler->startPreviewMode('hwpi_themeone_bentley', $theme_preview_vsite_wrapper->getActiveVsiteId());
     }
     elseif ($op === 'Cancel Preview') {
       $handler->stopPreviewMode();
