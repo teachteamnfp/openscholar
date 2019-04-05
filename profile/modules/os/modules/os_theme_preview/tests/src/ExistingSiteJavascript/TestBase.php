@@ -1,17 +1,17 @@
 <?php
 
-namespace Drupal\Tests\os_theme_preview\ExistingSite;
+namespace Drupal\Tests\os_theme_preview\ExistingSiteJavascript;
 
 use Drupal\group\Entity\GroupInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
-use weitzman\DrupalTestTraits\ExistingSiteBase;
+use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
+use weitzman\DrupalTestTraits\ExistingSiteWebDriverTestBase;
 
 /**
- * TestBase.
+ * TestBase for functional javascript tests.
  */
-abstract class TestBase extends ExistingSiteBase {
+abstract class TestBase extends ExistingSiteWebDriverTestBase {
 
   /**
    * Theme preview handler.
@@ -42,11 +42,18 @@ abstract class TestBase extends ExistingSiteBase {
   protected $vsiteContextManager;
 
   /**
-   * Theme preview manager.
+   * Theme manager service.
    *
-   * @var \Drupal\os_theme_preview\PreviewManagerInterface
+   * @var \Drupal\Core\Theme\ThemeManagerInterface
    */
-  protected $themePreviewManager;
+  protected $themeManager;
+
+  /**
+   * Alias manager service.
+   *
+   * @var \Drupal\Core\Path\AliasManagerInterface
+   */
+  protected $aliasManager;
 
   /**
    * {@inheritdoc}
@@ -57,7 +64,8 @@ abstract class TestBase extends ExistingSiteBase {
     $this->requestStack = $this->container->get('request_stack');
     $this->entityTypeManager = $this->container->get('entity_type.manager');
     $this->vsiteContextManager = $this->container->get('vsite.context_manager');
-    $this->themePreviewManager = $this->container->get('os_theme_preview.manager');
+    $this->themeManager = $this->container->get('theme.manager');
+    $this->aliasManager = $this->container->get('path.alias_manager');
   }
 
   /**
@@ -70,8 +78,9 @@ abstract class TestBase extends ExistingSiteBase {
    *   The updated request with session data.
    */
   protected function setSession(Request $request): Request {
-    $session = new Session(new MockArraySessionStorage());
+    $session = new Session(new MockFileSessionStorage());
     $request->setSession($session);
+
     return $request;
   }
 
@@ -99,6 +108,26 @@ abstract class TestBase extends ExistingSiteBase {
     $this->markEntityForCleanup($group);
 
     return $group;
+  }
+
+  /**
+   * Visit a group page.
+   *
+   * @param \Drupal\group\Entity\GroupInterface $group
+   *   The group.
+   * @param string $url
+   *   The url to visit inside group.
+   */
+  protected function visitGroupPage(GroupInterface $group, $url): void {
+    /** @var string $group_alias */
+    $group_alias = $this->aliasManager->getAliasByPath("/group/{$group->id()}");
+
+    // Unlike in actual browser requests, requests made via test does not
+    // activates the group and does not considers theme negotiators.
+    $this->themeManager->resetActiveTheme();
+    $this->vsiteContextManager->activateVsite($group);
+
+    $this->visit($group_alias . $url);
   }
 
 }

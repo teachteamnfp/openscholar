@@ -6,19 +6,13 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
- * Contains helpers for theme preview.
- *
- * Most probably this would be renamed to be something better, once the scope
- * becomes more clear.
+ * Handles theme preview operations.
  */
-final class Helper implements HelperInterface {
+final class Handler implements HandlerInterface {
 
   use StringTranslationTrait;
 
-  /**
-   * Session key.
-   */
-  const SESSION_KEY = 'os_theme_preview';
+  public const SESSION_KEY = 'os_theme_preview';
 
   /**
    * Current request.
@@ -40,7 +34,7 @@ final class Helper implements HelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function startPreviewMode($theme) {
+  public function startPreviewMode($theme, $vsite_id): void {
     /** @var \Symfony\Component\HttpFoundation\Session\SessionInterface|null $session */
     $session = $this->request->getSession();
 
@@ -48,13 +42,13 @@ final class Helper implements HelperInterface {
       throw new ThemePreviewException($this->t('Preview could not be started.'));
     }
 
-    $session->set(self::SESSION_KEY, $theme);
+    $session->set(self::SESSION_KEY, new ThemePreview($theme, (int) $vsite_id));
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getPreviewedTheme(): ?string {
+  public function getPreviewedThemeData(): ?ThemePreview {
     /** @var \Symfony\Component\HttpFoundation\Session\SessionInterface|null $session */
     $session = $this->request->getSession();
 
@@ -62,7 +56,7 @@ final class Helper implements HelperInterface {
       return NULL;
     }
 
-    /** @var string|null $current_preview_theme */
+    /** @var \Drupal\os_theme_preview\ThemePreview|null $current_preview_theme */
     $current_preview_theme = $session->get(self::SESSION_KEY);
 
     return $current_preview_theme;
@@ -71,7 +65,7 @@ final class Helper implements HelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function stopPreviewMode() {
+  public function stopPreviewMode(): void {
     /** @var \Symfony\Component\HttpFoundation\Session\SessionInterface|null $session */
     $session = $this->request->getSession();
 
