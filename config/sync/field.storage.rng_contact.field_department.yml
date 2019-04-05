@@ -1,12 +1,12 @@
-uuid: be9337ef-135c-454a-9022-ad02e358eae0
+uuid: 337c768a-e638-40f0-aafb-a6ddae3f1aef
 langcode: en
 status: true
 dependencies:
   module:
-    - rng
-id: registration.field_department
+    - rng_contact
+id: rng_contact.field_department
 field_name: field_department
-entity_type: registration
+entity_type: rng_contact
 type: string
 settings:
   max_length: 255

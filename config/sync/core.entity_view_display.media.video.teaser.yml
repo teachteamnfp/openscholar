@@ -28,6 +28,7 @@ content:
 hidden:
   created: true
   field_height: true
+  field_media_oembed_video: true
   field_media_video_file: true
   field_width: true
   langcode: true
