@@ -42,6 +42,13 @@ abstract class TestBase extends ExistingSiteBase {
   protected $vsiteContextManager;
 
   /**
+   * Theme preview manager.
+   *
+   * @var \Drupal\os_theme_preview\PreviewManagerInterface
+   */
+  protected $themePreviewManager;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
@@ -50,6 +57,7 @@ abstract class TestBase extends ExistingSiteBase {
     $this->requestStack = $this->container->get('request_stack');
     $this->entityTypeManager = $this->container->get('entity_type.manager');
     $this->vsiteContextManager = $this->container->get('vsite.context_manager');
+    $this->themePreviewManager = $this->container->get('os_theme_preview.manager');
   }
 
   /**

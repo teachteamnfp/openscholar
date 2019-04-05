@@ -7,13 +7,13 @@ use Drupal\os_theme_preview\ThemePreview;
 use Drupal\os_theme_preview\ThemePreviewException;
 
 /**
- * HelperTest.
+ * Theme preview handler test.
  *
  * @group kernel
  * @group os-theme-preview
  * @coversDefaultClass \Drupal\os_theme_preview\Handler
  */
-class HelperTest extends TestBase {
+class HandlerTest extends TestBase {
 
   /**
    * Negative test for startPreviewMode.

@@ -5,19 +5,12 @@ namespace Drupal\os_theme_preview\Theme;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Theme\ThemeNegotiatorInterface;
 use Drupal\os_theme_preview\HandlerInterface;
-use Drupal\os_theme_preview\VsiteWrapperInterface;
+use Drupal\os_theme_preview\PreviewManagerInterface;
 
 /**
  * Sets the preview theme.
  */
 class Negotiator implements ThemeNegotiatorInterface {
-
-  /**
-   * Preview theme name.
-   *
-   * @var \Drupal\os_theme_preview\ThemePreview|null
-   */
-  protected $previewedTheme;
 
   /**
    * Theme preview handler.
@@ -27,44 +20,44 @@ class Negotiator implements ThemeNegotiatorInterface {
   protected $handler;
 
   /**
-   * Theme preview vsite wrapper.
+   * Theme preview manager.
    *
-   * @var \Drupal\os_theme_preview\VsiteWrapperInterface
+   * @var \Drupal\os_theme_preview\PreviewManagerInterface
    */
-  protected $themePreviewVsiteWrapper;
+  protected $themePreviewManager;
 
   /**
    * Negotiator constructor.
    *
    * @param \Drupal\os_theme_preview\HandlerInterface $handler
    *   Theme preview handler service.
-   * @param \Drupal\os_theme_preview\VsiteWrapperInterface $vsite_wrapper
-   *   Theme preview vsite wrapper.
+   * @param \Drupal\os_theme_preview\PreviewManagerInterface $preview_manager
+   *   Theme preview manager.
    */
-  public function __construct(HandlerInterface $handler, VsiteWrapperInterface $vsite_wrapper) {
+  public function __construct(HandlerInterface $handler, PreviewManagerInterface $preview_manager) {
     $this->handler = $handler;
-    $this->themePreviewVsiteWrapper = $vsite_wrapper;
+    $this->themePreviewManager = $preview_manager;
   }
 
   /**
    * {@inheritdoc}
    */
   public function applies(RouteMatchInterface $route_match): bool {
-    // Also consider current active vsite while applying the theme.
-    $this->previewedTheme = $this->handler->getPreviewedThemeData();
-
-    if (!$this->previewedTheme) {
-      return FALSE;
-    }
-
-    return ($this->previewedTheme->getVsiteId() === $this->themePreviewVsiteWrapper->getActiveVsiteId());
+    return $this->themePreviewManager->isPreviewModeEnabled();
   }
 
   /**
    * {@inheritdoc}
    */
   public function determineActiveTheme(RouteMatchInterface $route_match): ?string {
-    return $this->previewedTheme->getName();
+    /** @var \Drupal\os_theme_preview\ThemePreviewInterface|null $theme_preview */
+    $theme_preview = $this->handler->getPreviewedThemeData();
+
+    if ($theme_preview) {
+      return $theme_preview->getName();
+    }
+
+    return NULL;
   }
 
 }
