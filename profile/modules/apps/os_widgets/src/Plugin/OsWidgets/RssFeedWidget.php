@@ -20,9 +20,6 @@ class RssFeedWidget extends OsWidgetsBase implements OsWidgetsInterface {
    * {@inheritdoc}
    */
   public function buildBlock(&$build, $block_content) {
-    if (empty($block_content)) {
-      return;
-    }
     $field_is_show_all_content_values = $block_content->get('field_is_show_all_content')->getValue();
 
     $types = [];
