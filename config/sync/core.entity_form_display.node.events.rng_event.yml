@@ -25,6 +25,7 @@ dependencies:
     - datetime
     - field_layout
     - layout_discovery
+    - unlimited_number
 third_party_settings:
   field_layout:
     id: layout_onecol
@@ -36,28 +37,24 @@ mode: rng_event
 content:
   field_close_:
     type: datetime_default
-    weight: 5
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
   field_open_date:
     type: datetime_default
-    weight: 4
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
   rng_capacity:
-    type: number
-    weight: 2
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    region: content
-  rng_registrants_duplicate:
-    type: boolean_checkbox
+    type: unlimited_number
     weight: 1
     settings:
-      display_label: true
+      placeholder: ''
+      value_unlimited: 0
+      label_unlimited: Unlimited
+      label_number: Limited
     third_party_settings: {  }
     region: content
   rng_reply_to:
@@ -65,7 +62,7 @@ content:
     settings:
       placeholder: 'Leave empty to use site default.'
       size: 60
-    weight: 3
+    weight: 2
     third_party_settings: {  }
     region: content
   rng_status:
@@ -87,6 +84,7 @@ hidden:
   moderation_state: true
   path: true
   promote: true
+  rng_registrants_duplicate: true
   rng_registrants_maximum: true
   rng_registrants_minimum: true
   rng_registration_groups: true

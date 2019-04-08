@@ -3,9 +3,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.registration.signup.field_department
-    - field.field.registration.signup.field_email
-    - field.field.registration.signup.field_full
     - rng.registration_type.signup
   module:
     - content_moderation
@@ -20,30 +17,6 @@ targetEntityType: registration
 bundle: signup
 mode: default
 content:
-  field_department:
-    weight: 103
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
-  field_email:
-    weight: 101
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: email_default
-    region: content
-  field_full:
-    weight: 102
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
   moderation_state:
     type: moderation_state_default
     weight: 100

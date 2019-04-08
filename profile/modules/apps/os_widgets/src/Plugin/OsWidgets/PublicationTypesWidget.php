@@ -20,10 +20,6 @@ class PublicationTypesWidget extends OsWidgetsBase implements OsWidgetsInterface
    * {@inheritdoc}
    */
   public function buildBlock(&$build, $block_content) {
-    if (empty($block_content)) {
-      return;
-    }
-
     // Collect all reference types with original allowed values function.
     /** @var \Drupal\field\Entity\FieldConfig $field_types_whitelist_definition */
     $field_types_whitelist_definition = $block_content->getFieldDefinition('field_types_whitelist');

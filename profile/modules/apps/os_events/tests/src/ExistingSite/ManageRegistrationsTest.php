@@ -49,15 +49,7 @@ class ManageRegistrationsTest extends EventsTestBase {
    */
   public function testEventsPage() {
     $this->createEvent(TRUE);
-    $this->assertSession()->elementNotExists('css', '.block-rng-registration');
-    $url = $this->getUrl();
-    $this->clickLink('Manage Registrations');
-    $edit = [
-      'edit-rng-status-value' => TRUE,
-    ];
-    $this->submitForm($edit, 'edit-submit');
-    $this->drupalGet($url);
-    $this->assertSession()->elementExists('css', '.block-rng-registration');
+    $this->assertSession()->elementExists('css', '#events_signup_modal_form');
   }
 
   /**
@@ -70,23 +62,16 @@ class ManageRegistrationsTest extends EventsTestBase {
 
     $this->createEvent(TRUE);
     $node_url = $this->getUrl();
-    $this->clickLink('Manage Registrations');
-    $node_edit_url = $this->getUrl();
-    $edit = [
-      'edit-rng-status-value' => TRUE,
-    ];
-    $this->submitForm($edit, 'edit-submit');
-    $this->drupalGet($node_url);
-    $this->assertSession()->elementExists('css', '.block-rng-registration');
+    $this->assertSession()->elementExists('css', '#events_signup_modal_form');
     // Set a future open date.
-    $future_date = new DateTimePlus('tomorrow midnight');
-    $this->drupalGet($node_edit_url);
+    $future_date = new DateTimePlus('+2 day');
+    $this->clickLink('Manage Registrations');
     $edit = [
-      'field_open_date[0][value][date]' => $future_date->format("Y-m-d H:i:s"),
+      'field_open_date[0][value][date]' => $future_date->format("Y-m-d"),
     ];
     $this->submitForm($edit, 'edit-submit');
     $this->drupalGet($node_url);
-    $this->assertSession()->elementNotExists('css', '.block-rng-registration');
+    $this->assertSession()->elementNotExists('css', '#events_signup_modal_form');
   }
 
   /**
@@ -99,23 +84,18 @@ class ManageRegistrationsTest extends EventsTestBase {
 
     $this->createEvent(TRUE);
     $node_url = $this->getUrl();
-    $this->clickLink('Manage Registrations');
-    $node_edit_url = $this->getUrl();
-    $edit = [
-      'edit-rng-status-value' => TRUE,
-    ];
-    $this->submitForm($edit, 'edit-submit');
-    $this->drupalGet($node_url);
-    $this->assertSession()->elementExists('css', '.block-rng-registration');
-    // Set a future open date.
+    $this->assertSession()->elementExists('css', '#events_signup_modal_form');
+    // Set a past close date.
+    $future_date = new DateTimePlus('-2 day');
     $past_date = new DateTimePlus('yesterday midnight');
-    $this->drupalGet($node_edit_url);
+    $this->clickLink('Manage Registrations');
     $edit = [
+      'field_open_date[0][value][date]' => $future_date->format('Y-m-d'),
       'field_close_[0][value][date]' => $past_date->format("Y-m-d H:i:s"),
     ];
     $this->submitForm($edit, 'edit-submit');
     $this->drupalGet($node_url);
-    $this->assertSession()->elementNotExists('css', '.block-rng-registration');
+    $this->assertSession()->elementNotExists('css', '#events_signup_modal_form');
   }
 
   /**

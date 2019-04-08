@@ -3,10 +3,11 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.registration.field_email
+    - field.storage.rng_contact.field_email
   module:
     - node
     - rng
+    - rng_contact
     - veoa
 id: rng_registrations_node
 label: 'RNG: Content: Registrations'
@@ -61,9 +62,9 @@ display:
       fields:
         field_email:
           id: field_email
-          table: registration__field_email
+          table: rng_contact__field_email
           field: field_email
-          relationship: none
+          relationship: rng_contact__identity
           group_type: group
           admin_label: ''
           label: Email
@@ -267,6 +268,16 @@ display:
           required: true
           entity_type: registration
           plugin_id: standard
+        rng_contact__identity:
+          id: rng_contact__identity
+          table: registrant
+          field: rng_contact__identity
+          relationship: none
+          group_type: group
+          admin_label: 'Identity: Contact'
+          required: true
+          entity_type: registrant
+          plugin_id: standard
       arguments:
         nid:
           id: nid
@@ -314,7 +325,7 @@ display:
       cacheable: false
       max-age: -1
       tags:
-        - 'config:field.storage.registration.field_email'
+        - 'config:field.storage.rng_contact.field_email'
   page_1:
     display_plugin: page
     id: page_1
@@ -351,4 +362,4 @@ display:
       cacheable: false
       max-age: -1
       tags:
-        - 'config:field.storage.registration.field_email'
+        - 'config:field.storage.rng_contact.field_email'

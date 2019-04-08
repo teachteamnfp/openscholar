@@ -10,10 +10,12 @@ field_name: rng_status
 entity_type: node
 bundle: events
 label: 'Accept new registrations'
-description: ''
+description: 'Users must register their attendance in advance.'
 required: false
 translatable: true
-default_value: {  }
+default_value:
+  -
+    value: 1
 default_value_callback: ''
 settings:
   on_label: 'Accepting new registrations'

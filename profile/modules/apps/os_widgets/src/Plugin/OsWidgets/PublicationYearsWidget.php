@@ -20,9 +20,6 @@ class PublicationYearsWidget extends OsWidgetsBase implements OsWidgetsInterface
    * {@inheritdoc}
    */
   public function buildBlock(&$build, $block_content) {
-    if (empty($block_content)) {
-      return;
-    }
     $view = Views::getView('publication_years');
     if (is_object($view)) {
       $view->storage->addCacheTags([$block_content->getVsiteCacheTag()]);
