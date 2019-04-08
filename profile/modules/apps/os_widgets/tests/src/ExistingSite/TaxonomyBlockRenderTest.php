@@ -135,12 +135,14 @@ class TaxonomyBlockRenderTest extends OsWidgetsExistingSiteTestBase {
   }
 
   /**
-   * Test listing with max number.
+   * Test listing with max number on top level.
    */
-  public function testBuildListingWithMaxNumber() {
+  public function testBuildListingWithMaxNumberTopLevel() {
     $term1 = $this->createTerm($this->vocabulary, ['name' => 'Lorem1']);
     $term2 = $this->createTerm($this->vocabulary, ['name' => 'Lorem2']);
-    $term3 = $this->createTerm($this->vocabulary, ['name' => 'Lorem3']);
+    $term3 = $this->createTerm($this->vocabulary, ['name' => 'Lorem3', 'parent' => $term2->id()]);
+    $term4 = $this->createTerm($this->vocabulary, ['name' => 'Lorem4', 'parent' => $term2->id()]);
+    $term5 = $this->createTerm($this->vocabulary, ['name' => 'Lorem5']);
 
     $block_content = $this->createBlockContent([
       'type' => 'taxonomy',
@@ -160,7 +162,47 @@ class TaxonomyBlockRenderTest extends OsWidgetsExistingSiteTestBase {
     $markup = $renderer->renderRoot($render);
     $this->assertContains($term1->label(), $markup->__toString());
     $this->assertContains($term2->label(), $markup->__toString());
-    $this->assertNotContains($term3->label(), $markup->__toString());
+    $this->assertContains($term3->label(), $markup->__toString());
+    $this->assertContains($term4->label(), $markup->__toString());
+    $this->assertNotContains($term5->label(), $markup->__toString());
+  }
+
+  /**
+   * Test listing with max number and offset on top level.
+   */
+  public function testBuildListingWithMaxNumberAndOffsetTopLevel() {
+    $term1 = $this->createTerm($this->vocabulary, ['name' => 'Lorem1']);
+    $term2 = $this->createTerm($this->vocabulary, ['name' => 'Lorem2', 'parent' => $term1->id()]);
+    $term3 = $this->createTerm($this->vocabulary, ['name' => 'Lorem3']);
+    $term4 = $this->createTerm($this->vocabulary, ['name' => 'Lorem4', 'parent' => $term3->id()]);
+    $term5 = $this->createTerm($this->vocabulary, ['name' => 'Lorem5']);
+    $term6 = $this->createTerm($this->vocabulary, ['name' => 'Lorem6']);
+
+    $block_content = $this->createBlockContent([
+      'type' => 'taxonomy',
+      'field_taxonomy_vocabulary' => [
+        $this->vocabulary->id(),
+      ],
+      'field_taxonomy_offset' => [
+        1,
+      ],
+      'field_taxonomy_range' => [
+        2,
+      ],
+    ]);
+    $view_builder = $this->entityTypeManager
+      ->getViewBuilder('block_content');
+    $render = $view_builder->view($block_content);
+    $renderer = $this->container->get('renderer');
+
+    /** @var \Drupal\Core\Render\Markup $markup_array */
+    $markup = $renderer->renderRoot($render);
+    $this->assertNotContains($term1->label(), $markup->__toString());
+    $this->assertNotContains($term2->label(), $markup->__toString());
+    $this->assertContains($term3->label(), $markup->__toString());
+    $this->assertContains($term4->label(), $markup->__toString());
+    $this->assertContains($term5->label(), $markup->__toString());
+    $this->assertNotContains($term6->label(), $markup->__toString());
   }
 
   /**

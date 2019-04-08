@@ -52,6 +52,7 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
     $field_taxonomy_tree_depth_values = $block_content->get('field_taxonomy_tree_depth')->getValue();
     $field_taxonomy_show_children_values = $block_content->get('field_taxonomy_show_children')->getValue();
     $field_taxonomy_range_values = $block_content->get('field_taxonomy_range')->getValue();
+    $field_taxonomy_offset_values = $block_content->get('field_taxonomy_offset')->getValue();
     $vid = $field_taxonomy_vocabulary_values[0]['target_id'];
     $depth = empty($field_taxonomy_tree_depth_values[0]['value']) ? NULL : $field_taxonomy_tree_depth_values[0]['value'];
     // When unchecked, only show top level terms.
@@ -64,18 +65,39 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
     $terms = $this->getTerms($settings);
     $term_items = [];
     $count = 0;
+    $offset = 0;
+    $skip_child_terms = FALSE;
     foreach ($terms as $term) {
+      // Offset only top level.
+      if (!empty($field_taxonomy_offset_values[0]['value']) && $offset < $field_taxonomy_offset_values[0]['value']) {
+        if ($term->depth == 0) {
+          $offset++;
+        }
+        if ($offset == $field_taxonomy_offset_values[0]['value']) {
+          $skip_child_terms = TRUE;
+        }
+        continue;
+      }
+      // When offset is reached,
+      // then we skip all children what are under last term.
+      if ($skip_child_terms && $term->depth > 0) {
+        continue;
+      }
+      else {
+        $skip_child_terms = FALSE;
+      }
+      // We must count only top level terms.
+      if (!empty($field_taxonomy_range_values[0]['value']) && $term->depth == 0) {
+        $count++;
+        if ($count > $field_taxonomy_range_values[0]['value']) {
+          break;
+        }
+      }
       $term_items[] = [
         '#theme' => 'os_widgets_taxonomy_term_item',
         '#term' => $term,
         '#label' => str_repeat('-', $term->depth) . $term->name,
       ];
-      if (!empty($field_taxonomy_range_values[0]['value']) && $term->depth == 0) {
-        $count++;
-        if ($count >= $field_taxonomy_range_values[0]['value']) {
-          break;
-        }
-      }
     }
     $build['taxonomy']['terms'] = [
       '#theme' => 'item_list',
