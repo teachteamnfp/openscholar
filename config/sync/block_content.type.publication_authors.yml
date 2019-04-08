@@ -1,0 +1,8 @@
+uuid: 66d091ee-7f96-4879-921b-7d20c3aa6940
+langcode: en
+status: true
+dependencies: {  }
+id: publication_authors
+label: 'Publication authors'
+revision: 1
+description: ''

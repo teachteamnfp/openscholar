@@ -1,4 +1,4 @@
-uuid: add4e6a6-463f-4cbf-95e6-f2e8bbc21f0b
+uuid: 21315c0e-19c7-43fe-8db2-ef4519d907bd
 langcode: en
 status: true
 dependencies:
@@ -10,9 +10,9 @@ dependencies:
     - rng
     - rng_quick
   theme:
-    - os_base
-id: registration
-theme: os_base
+    - hwpi_themeone_bentley
+id: hwpi_themeone_bentley_registration
+theme: hwpi_themeone_bentley
 region: content
 weight: 0
 provider: null

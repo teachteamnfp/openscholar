@@ -82,6 +82,7 @@ https://t.co/HHcBmhyrOE';
         'test',
         [],
         $this->entityTypeManager,
+        $this->container->get('database'),
         $pull_handler_mock,
       ])
       ->setMethods(NULL)

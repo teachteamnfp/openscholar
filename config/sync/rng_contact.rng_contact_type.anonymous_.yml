@@ -1,8 +1,10 @@
 uuid: bba2fe0f-80b8-42dc-97db-3c84e1bc8834
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - field.field.rng_contact.anonymous_.field_email
 label: 'Anonymous Users'
 id: anonymous_
 description: ''
-courier_email_field: null
+courier_email_field: field_email

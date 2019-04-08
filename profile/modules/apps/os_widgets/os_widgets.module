@@ -5,6 +5,9 @@
  * OS widgets.
  */
 
+use Drupal\os_widgets\Entity\OsBlockContent;
+use Drupal\Core\Cache\Cache;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
@@ -12,6 +15,7 @@ use Drupal\Core\Form\FormStateInterface;
  */
 function os_widgets_entity_type_alter(array &$entity_types) {
   $entity_types['block_content']->setHandlerClass('view_builder', 'Drupal\os_widgets\OsBlockContentViewBuilder');
+  $entity_types['block_content']->setClass(OsBlockContent::class);
 }
 
 /**
@@ -68,7 +72,20 @@ function os_widgets_theme($existing, $type, $theme, $path) {
         'follow_me_link' => '',
       ],
     ],
+    'os_widgets_publication_types' => [
+      'variables' => [
+        'types' => [],
+        'is_display_count' => FALSE,
+      ],
+    ],
   ];
+}
+
+/**
+ * Implements hook_block_content_presave().
+ */
+function os_widgets_block_content_presave(EntityInterface $entity) {
+  Cache::invalidateTags([$entity->getVsiteCacheTag()]);
 }
 
 /**
@@ -112,4 +129,22 @@ function os_widgets_field_content_types_allowed_values() {
     $options[$machine_name] = $type->label();
   }
   return $options;
+}
+
+/**
+ * Collect all bibcite reference types in array.
+ *
+ * @return array
+ *   Collected array used by checkboxes in field.
+ */
+function os_widgets_field_types_whitelist_allowed_values() {
+  $bundle_info = Drupal::service('entity_type.bundle.info')->getBundleInfo('bibcite_reference');
+  if (empty($bundle_info)) {
+    return [];
+  }
+  $reference_types = [];
+  foreach ($bundle_info as $machine_name => $bundle) {
+    $reference_types[$machine_name] = $bundle['label'];
+  }
+  return $reference_types;
 }

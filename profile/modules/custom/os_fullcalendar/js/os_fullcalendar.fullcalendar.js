@@ -14,7 +14,7 @@
       }
 
       return $.extend({
-        eventRender: function(event, element) {
+        eventRender: function (event, element) {
           if (element.hasClass('fc-event-future') && !element.hasClass('fc-day-grid-event')) {
             let nid = event.eid;
             element.html(drupalSettings[nid]);
@@ -22,6 +22,21 @@
           else if (element.hasClass('fc-event-past') && !element.hasClass('fc-day-grid-event')) {
             let nid = event.eid;
             element.html(drupalSettings[nid]);
+          }
+        },
+        eventAfterAllRender: function (view) {
+          if (view.name == 'listUpcoming' || view.name == 'listPast') {
+            let tableSubHeaders = $(".fc-list-heading");
+            tableSubHeaders.each(function () {
+              $(this).nextUntil(".fc-list-heading").wrapAll("<tr class='fc-list-item-parent'></tr>");
+            });
+            $('.fc-list-heading-main').each(function () {
+              let eventdata = $(this).text().split(' ');
+              $(this).empty();
+              $(this).append($("<span class='event-year'>").text(eventdata[0]));
+              $(this).append($("<span class='event-start-month'>").text(eventdata[1]));
+              $(this).append($("<span class='event-start-day'>").text(eventdata[2]));
+            });
           }
         },
         views: {
@@ -34,6 +49,7 @@
               }
             },
             buttonText: Drupal.t('Upcoming Events'),
+            listDayFormat:'YYYY MMM DD',
           },
           listPast: {
             type: 'list',
@@ -44,11 +60,32 @@
               }
             },
             buttonText: Drupal.t('Past Events'),
-          }
-        }
+            listDayFormat: 'YYYY MMM DD',
+          },
+        },
+        'buttonText': {
+          listWeek: Drupal.t('Week'),
+          listDay: Drupal.t('Day'),
+        },
       }, settings.os_fullcalendar);
     }
   };
+
+  /**
+   * Alters modal title.
+   *
+   * The title is displayed as plain text. It is enforced to be rendered as HTML
+   * here.
+   */
+  function showModalEventRegisterHandler() {
+    $('#drupal-modal').once().on('show.bs.modal', function () {
+      let $modalTitleElement = $(this).find('.modal-title');
+      let eventUrl = $(this).find('.modal-body article').attr('about');
+      let modalTitleText = $modalTitleElement.text();
+
+      $modalTitleElement.html('<a href="' + eventUrl + '">' + modalTitleText + '</a>');
+    });
+  }
 
   Drupal.behaviors.events = {
     attach: function (context, settings) {
@@ -69,8 +106,9 @@
           $multicheck.hide();
         }
       });
+
+      showModalEventRegisterHandler();
     }
   };
 
 })(jQuery, Drupal);
-
