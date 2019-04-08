@@ -231,6 +231,8 @@ class HierarchicalStorageTest extends UnitTestCase {
     $expects = ['long.test'];
     $this->assertArrayEquals($expects, $this->hierarchicalStorage->listAll('long'));
     $this->assertEquals('def', $this->hierarchicalStorage->read('long.test'));
+
+    $this->assertArrayEquals([], $this->hierarchicalStorage->listAllFromLevel('long', -999));
   }
 
   /**
