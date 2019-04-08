@@ -90,14 +90,9 @@ class VsiteTypedDataManager extends TypedDataManager implements EventSubscriberI
 
       foreach ($configs as $config_name) {
         $definitionName = str_replace('taxonomy.vocabulary.', 'entity:taxonomy_term:', $config_name);
-        if (isset($definitions[$definitionName])) {
-          unset($definitions[$definitionName]);
-        }
-        else {
-          $definitions[$definitionName] = [
-            'label' => $config_name,
-          ] + $template;
-        }
+        $definitions[$definitionName] = [
+          'label' => $config_name,
+        ] + $template;
       }
     }
 

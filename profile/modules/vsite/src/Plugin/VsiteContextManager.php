@@ -58,11 +58,13 @@ class VsiteContextManager implements VsiteContextManagerInterface {
       return;
     }
 
-    $this->activeGroup = $group;
-    $this->activateRoles();
+    if (is_null($this->activeGroup) || $this->activeGroup->id() !== $group->id()) {
+      $this->activeGroup = $group;
+      $this->activateRoles();
 
-    $event = new VsiteActivatedEvent($group);
-    $this->dispatcher->dispatch(VsiteEvents::VSITE_ACTIVATED, $event);
+      $event = new VsiteActivatedEvent($group);
+      $this->dispatcher->dispatch(VsiteEvents::VSITE_ACTIVATED, $event);
+    }
   }
 
   /**
