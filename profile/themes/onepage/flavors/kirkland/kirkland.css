@@ -1,0 +1,204 @@
+@import url('https://fonts.googleapis.com/css?family=Quattrocento|Oswald:400,700'); body,
+body.not-front {
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 16px;
+  color: #222;
+}
+
+body,
+.path-search .title a,
+.more-link,
+.links a,
+footer ul.nav a,
+aside nav a,
+footer ul.nav li ul li a,
+.fc-header-toolbar h2,
+.node--title {
+  font-family: 'Quattrocento', sans-serif !important;
+}
+.path-page .breadcrumb,
+.breadcrumb,
+.breadcrumb a,
+.header-container ul.nav a,
+.navbar-collapse ul.nav a,
+footer ul.menu li a,
+h2.block-title,
+.content-inner h2,
+.content-inner h3,
+.content-inner h4,
+.page-title {
+  font-family: 'Oswald', sans-serif !important;
+}
+.pager.mini-pager {
+  font-size: .8em;
+}
+footer h2.block-title,
+footer .footer-login {
+  color: #ffffff;
+}
+.header-container ul.nav a {
+  color: #215990;
+}
+h1.page-title,
+h2.block-title {
+  color: #545454;
+}
+a,
+a:visited {
+  color: #065db2;
+}
+.search-block-form .form-submit {
+  background: #065db2;
+}
+header {
+  background: url('images/menu-bg.png') left bottom repeat-x #fff;
+  padding-top: 6px;
+}
+.breadcrumb,
+.breadcrumb a,
+.aside h2.block-title,
+.header-container ul.nav a,
+.content-inner h2,
+.content-inner h3,
+.content-inner h4 {
+  font-weight: 300;
+}
+.content-inner h2.block-title {
+  font-weight: 400;
+}
+.more-link:after {
+  background-image: url('images/sprite.png?456');
+  background-position: 0 -126px;
+  background-size: 60px auto;
+  height: 12px;
+  width: 20px;
+  right: -12px;
+}
+aside .row > .block {
+  border-top-style: solid;
+  border-width: 3px;
+  padding: 15px 0 0 0;
+}
+
+aside h2.block-title {
+  padding: 0 0 15px 0;
+}
+.navbar-collapse .navbar-nav > li > a.is-active,
+.navbar-collapse .navbar-nav > li > a:hover {
+  background: #f6f6f6;
+}
+footer ul.nav li a {
+  font-weight: normal;
+}
+/* fontpage blocks*/
+h1.page-title {
+  font-size: 1.75em;
+  line-height: 1.2em;
+}
+h3 {
+  margin-bottom: 7px;
+  font-weight: 300;
+}
+footer .footer-login:after,
+footer .footer-login {
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  background-image: none;
+  text-shadow: none;
+}
+aside .block:nth-child(2) {
+  border-color: #81b9c3;
+}
+aside .block:nth-child(3) {
+  border-color: #e67939;
+}
+aside .block:nth-child(1),
+aside .block:nth-child(4) {
+  border-color: #3a4b68;
+}
+.path-front .region-content-second {
+  border-top: none;
+  border-right: none;
+  border-bottom: none;
+  border: none;
+}
+.navbar-collapse {
+  background-color: #fff;
+}
+.not-front .navbar-collapse {
+  padding-bottom: 25px;
+}
+.bg-one .navbar-collapse {
+  background: url('images/bg1.jpg?457') center bottom -180px no-repeat #fff;
+}
+.bg-two .navbar-collapse {
+  background: url('images/bg2.jpg') center bottom -180px no-repeat #fff;
+}
+.bg-three .navbar-collapse {
+  background: url('images/bg3.jpg') center bottom -180px no-repeat #fff;
+}
+.bg-four .navbar-collapse {
+  background: url('images/bg4.jpg') center bottom -180px no-repeat #fff;
+}
+.bg-five .navbar-collapse {
+  background: url('images/bg5.jpg') center bottom -180px no-repeat #fff;
+}
+.bg-six .navbar-collapse {
+  background: url('images/bg6.jpg') center bottom -180px no-repeat #fff;
+}
+.bg-seven .navbar-collapse {
+  background: url('images/bg7.jpg') center bottom -180px no-repeat #fff;
+}
+.bg-eight .navbar-collapse {
+  background: url('images/bg8.jpg') center bottom -180px no-repeat #fff;
+}
+.navbar-collapse ul.nav ul,
+.navbar-collapse ul.nav ul a:hover {
+  background: #32526e;
+}
+.navbar-collapse ul.nav ul a:hover {
+  color: #fff;
+  padding: 10px 20px;
+}
+.navbar-collapse.fixed {
+  border-bottom: 1px solid #32526e;
+}
+.navbar-collapse ul.nav > li > a {
+  color: #444;
+  border-bottom: 3px solid #fff;
+  padding: 16px 14px 13px 14px;
+  transition: all .125s linear .125s;
+  -webkit-transition: all .125s linear .125s;
+  font-size: 19px;
+}
+.navbar-collapse ul.nav a.is-active,
+.navbar-collapse ul.nav a:hover,
+.navbar-collapse ul.nav > .dropdown.open > a,
+.navbar-collapse ul.nav > .dropdown > a:hover,
+.navbar-collapse ul.nav > .dropdown > a.active {
+  border-bottom: 3px solid #32526e;
+  color: #444;
+}
+.navbar-collapse ul.nav > .dropdown.open > a:hover {
+  background: #f6f6f6;
+}
+.navbar-collapse ul.nav > li > a:hover,
+.navbar-collapse ul.nav > .dropdown.open > a,
+.navbar-collapse ul.nav > .dropdown > a:hover {
+  padding: 13px 14px 16px 14px;
+}
+.navbar-collapse ul.nav .dropdown {
+  padding-right: 0;
+}
+footer {
+  background-color: #3e464d;
+  border-top: 4px solid #999;
+}
+footer ul.nav li a {
+  border-right: 1px solid #fff;
+  padding-right: 8px;
+}
+footer ul.menu {
+  text-align: right;
+}

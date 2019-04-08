@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css?family=Cardo'); html,
+body {
+  color: #000;
+}
+.front #content-column {
+  font-size: 16px;
+}
+body,
+.page-title,
+.node--title,
+.path-search .title a,
+.more-link,
+.links a,
+footer ul.nav a,
+.content-inner h2,
+.content-inner h3,
+.content-inner h4,
+footer ul.nav li ul li a,
+h2.block-title,
+.fc-header-toolbar h3 {
+  font-family: 'Cardo', sans-serif !important;
+}
+.breadcrumb,
+.breadcrumb,
+.breadcrumb a,
+footer ul.nav a,
+aside .nav a {
+  font-family: 'Montserrat', sans-serif !important;
+}
+h1.page-title {
+  font-size: 2em;
+}
+.navbar-collapse {
+  border-top: 3px solid #333;
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+}
+.region-content-top,
+.region-content-second {
+  background-color: #fff;
+}
+.navbar-collapse ul.nav ul,
+.search-block-form .form-submit,
+.navbar-collapse ul.nav a.active,
+.navbar-collapse ul.nav a:hover,
+.navbar-collapse ul.nav .menuparent.over > a,
+.navbar-collapse ul.nav .menuparent a:hover,
+.navbar-collapse ul.nav .menuparent a.active {
+  background-color: #333;
+}
+.navbar-collapse ul.nav a {
+  font-size: 1.1em;
+}
+.navbar-collapse ul.nav a,
+footer .footer-login,
+footer,
+footer a,
+footer ul.nav a {
+  color: #333;
+}
+footer,
+header {
+  background: #fbfbf1;
+}
+.front .region-content-bottom,
+.front .region-content-first {
+  background-color: #eee;
+}
+.fc-listUpcoming-view .fc-list-heading .fc-list-heading-main span.event-year,
+.fc-listPast-view .fc-list-heading .fc-list-heading-main span.event-year {
+  font-size: 13px;
+}
+.fc-listUpcoming-view .fc-list-heading span.fc-list-heading-main span,
+.fc-listPast-view .fc-list-heading span.fc-list-heading-main span {
+  color: #fff;
+}
+.fc-listPast-view .fc-list-heading .fc-list-heading-main .event-year,
+.fc-listUpcoming-view .fc-list-heading .fc-list-heading-main .event-year {
+  padding: 8px 0 0;
+}
+.fc-listUpcoming-view .fc-list-heading .fc-list-heading-main,
+.fc-listPast-view .fc-list-heading .fc-list-heading-main {
+  background: #000;
+  border: none;
+  border-top: none;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+aside .nav > a {
+  background-color: #333 !important;
+  color: #fff !important;
+  border-bottom: 1px solid #999 !important;
+}
+.path-person .field--name-field-professional-title {
+  font-style: italic;
+}
+footer .footer-login {
+  text-shadow: none;
+}
+footer {
+  border-top: 1px solid #ddd;
+}
+footer .footer-login:after {
+  background-image: none;
+}
