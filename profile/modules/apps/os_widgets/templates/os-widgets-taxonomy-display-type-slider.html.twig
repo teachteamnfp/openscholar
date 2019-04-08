@@ -1,0 +1,11 @@
+{% if items or empty %}
+  {%- if items -%}
+    <div class="os-widgets-taxonomy-display-type-slider">
+    {%- for item in items -%}
+      <div class="os-widgets-taxonomy-display-type-slider-item">{{ item.value }}</div>
+    {%- endfor -%}
+    </div>
+  {%- else -%}
+    {{- empty -}}
+  {%- endif -%}
+{%- endif %}

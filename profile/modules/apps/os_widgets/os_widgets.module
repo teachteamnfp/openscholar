@@ -85,7 +85,43 @@ function os_widgets_theme($existing, $type, $theme, $path) {
         'description' => '',
       ],
     ],
+    'os_widgets_taxonomy_display_type_menu' => [
+      'variables' => [
+        'items' => [],
+        'title' => '',
+        'list_type' => NULL,
+        'wrapper_attributes' => [],
+        'attributes' => [],
+        'empty' => NULL,
+        'context' => [],
+      ],
+    ],
+    'os_widgets_taxonomy_display_type_slider' => [
+      'variables' => [
+        'items' => [],
+        'title' => '',
+        'list_type' => NULL,
+        'wrapper_attributes' => [],
+        'attributes' => [],
+        'empty' => NULL,
+        'context' => [],
+      ],
+    ],
   ];
+}
+
+/**
+ * Implements template_preprocess_HOOK().
+ */
+function template_preprocess_os_widgets_taxonomy_display_type_menu(&$variables) {
+  template_preprocess_item_list($variables);
+}
+
+/**
+ * Implements template_preprocess_HOOK().
+ */
+function template_preprocess_os_widgets_taxonomy_display_type_slider(&$variables) {
+  template_preprocess_item_list($variables);
 }
 
 /**

@@ -54,6 +54,7 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
     $field_taxonomy_range_values = $block_content->get('field_taxonomy_range')->getValue();
     $field_taxonomy_offset_values = $block_content->get('field_taxonomy_offset')->getValue();
     $field_taxonomy_show_term_desc_values = $block_content->get('field_taxonomy_show_term_desc')->getValue();
+    $field_taxonomy_display_type_values = $block_content->get('field_taxonomy_display_type')->getValue();
     $vid = $field_taxonomy_vocabulary_values[0]['target_id'];
     $depth = empty($field_taxonomy_tree_depth_values[0]['value']) ? NULL : $field_taxonomy_tree_depth_values[0]['value'];
     // When unchecked, only show top level terms.
@@ -105,8 +106,21 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
         '#description' => $description,
       ];
     }
+    switch ($field_taxonomy_display_type_values[0]['value']) {
+      case 'menu':
+        $theme = 'os_widgets_taxonomy_display_type_menu';
+        break;
+
+      case 'slider':
+        $theme = 'os_widgets_taxonomy_display_type_slider';
+        break;
+
+      default:
+        $theme = 'item_list';
+        break;
+    }
     $build['taxonomy']['terms'] = [
-      '#theme' => 'item_list',
+      '#theme' => $theme,
       '#items' => $term_items,
     ];
   }
