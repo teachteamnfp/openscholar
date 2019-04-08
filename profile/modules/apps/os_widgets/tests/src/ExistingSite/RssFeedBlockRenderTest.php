@@ -30,7 +30,7 @@ class RssFeedBlockRenderTest extends OsWidgetsExistingSiteTestBase {
     $this->assertSame('os_widgets/rss_feed_copy', $render['rss_feed']['#attached']['library'][0]);
     $this->assertSame('link', $render['rss_feed']['#type']);
     $this->assertSame('rss-feed-link', $render['rss_feed']['#attributes']['class'][0]);
-    $this->assertSame('https://www.drupal.org/feed', $render['rss_feed']['#url']->getUri());
+    $this->assertSame('route:view.os_feeds.feed_1;arg_0=', $render['rss_feed']['#url']->toUriString());
   }
 
   /**
@@ -53,7 +53,17 @@ class RssFeedBlockRenderTest extends OsWidgetsExistingSiteTestBase {
       ->getViewBuilder('block_content');
     $render = $view_builder->view($block_content);
 
-    $this->assertSame('https://www.drupal.org/feed/class+link+news', $render['rss_feed']['#url']->getUri());
+    $this->assertSame('route:view.os_feeds.feed_1;arg_0=class%2Blink%2Bnews', $render['rss_feed']['#url']->toUriString());
+  }
+
+  /**
+   * Test feed URL serving view access.
+   */
+  public function testFeedUrlViewAccess() {
+    $this->visit('/feed');
+    $this->assertSession()->statusCodeEquals(200);
+    $this->visit('/feed/events%2Bfaq');
+    $this->assertSession()->statusCodeEquals(200);
   }
 
   /**

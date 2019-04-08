@@ -28,14 +28,14 @@ class RssFeedWidget extends OsWidgetsBase implements OsWidgetsInterface {
         $types[] = $item->value;
       }
     }
-    $arg = '';
+    $argument_types = '';
     if (empty($field_is_show_all_content_values[0]['value']) && count($types)) {
-      $arg = '/' . implode("+", $types);
+      $argument_types = implode("+", $types);
     }
     $build['rss_feed'] = [
       '#title' => t('RSS feed link!'),
       '#type' => 'link',
-      '#url' => Url::fromUri('https://www.drupal.org/feed' . $arg),
+      '#url' => Url::fromRoute('view.os_feeds.feed_1', ['arg_0' => $argument_types], ['absolute' => TRUE]),
       '#attributes' => [
         'class' => [
           'rss-feed-link',
