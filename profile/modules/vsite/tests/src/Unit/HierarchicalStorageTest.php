@@ -208,10 +208,14 @@ class HierarchicalStorageTest extends UnitTestCase {
       ->willReturn(['long.test']);
 
     $this->overrideStorage->expects($this->at(1))
+      ->method('listAll')
+      ->willReturn(['long.test', 'long.override']);
+
+    $this->overrideStorage->expects($this->at(2))
       ->method('deleteAll')
       ->with('long');
 
-    $this->overrideStorage->expects($this->at(2))
+    $this->overrideStorage->expects($this->at(3))
       ->method('listAll')
       ->with('long')
       ->willReturn(['long.test']);
@@ -219,13 +223,14 @@ class HierarchicalStorageTest extends UnitTestCase {
     $expects = ['long.test', 'long.override'];
     $this->assertArrayEquals($expects, $this->hierarchicalStorage->listAll('long'));
 
+    $this->assertArrayEquals(['long.test'], $this->hierarchicalStorage->listAllFromLevel('long'));
+    $this->assertArrayEquals(['long.test', 'long.override'], $this->hierarchicalStorage->listAllFromLevel('long', 0));
+
     $this->hierarchicalStorage->deleteAll('long');
 
     $expects = ['long.test'];
     $this->assertArrayEquals($expects, $this->hierarchicalStorage->listAll('long'));
     $this->assertEquals('def', $this->hierarchicalStorage->read('long.test'));
-
-    $this->assertArrayEquals($expects, $this->hierarchicalStorage->listAllFromLevel('long'));
   }
 
   /**
