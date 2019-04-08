@@ -29,7 +29,7 @@ class VsiteTypedDataManager extends TypedDataManager implements EventSubscriberI
   /**
    * Config Factory.
    *
-   * @var ConfigFactoryInterface
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
   protected $configFactory;
 
