@@ -206,6 +206,53 @@ class TaxonomyBlockRenderTest extends OsWidgetsExistingSiteTestBase {
   }
 
   /**
+   * Test listing description visibility.
+   */
+  public function testBuildListingDescriptionVisibility() {
+    $term1 = $this->createTerm($this->vocabulary, ['name' => 'Lorem1']);
+
+    // Hide description.
+    $block_content = $this->createBlockContent([
+      'type' => 'taxonomy',
+      'field_taxonomy_vocabulary' => [
+        $this->vocabulary->id(),
+      ],
+      'field_taxonomy_show_term_desc' => [
+        0,
+      ],
+    ]);
+    $view_builder = $this->entityTypeManager
+      ->getViewBuilder('block_content');
+    $render = $view_builder->view($block_content);
+    $renderer = $this->container->get('renderer');
+
+    $description = $term1->getDescription();
+    /** @var \Drupal\Core\Render\Markup $markup_array */
+    $markup = $renderer->renderRoot($render);
+    $this->assertNotContains($description, $markup->__toString());
+
+    // Show description.
+    $block_content = $this->createBlockContent([
+      'type' => 'taxonomy',
+      'field_taxonomy_vocabulary' => [
+        $this->vocabulary->id(),
+      ],
+      'field_taxonomy_show_term_desc' => [
+        1,
+      ],
+    ]);
+    $view_builder = $this->entityTypeManager
+      ->getViewBuilder('block_content');
+    $render = $view_builder->view($block_content);
+    $renderer = $this->container->get('renderer');
+
+    $description = $term1->getDescription();
+    /** @var \Drupal\Core\Render\Markup $markup_array */
+    $markup = $renderer->renderRoot($render);
+    $this->assertContains($description, $markup->__toString());
+  }
+
+  /**
    * {@inheritdoc}
    */
   protected function createBlockContent(array $values = []) {

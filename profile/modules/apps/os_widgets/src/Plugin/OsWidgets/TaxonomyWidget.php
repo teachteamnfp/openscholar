@@ -53,6 +53,7 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
     $field_taxonomy_show_children_values = $block_content->get('field_taxonomy_show_children')->getValue();
     $field_taxonomy_range_values = $block_content->get('field_taxonomy_range')->getValue();
     $field_taxonomy_offset_values = $block_content->get('field_taxonomy_offset')->getValue();
+    $field_taxonomy_show_term_desc_values = $block_content->get('field_taxonomy_show_term_desc')->getValue();
     $vid = $field_taxonomy_vocabulary_values[0]['target_id'];
     $depth = empty($field_taxonomy_tree_depth_values[0]['value']) ? NULL : $field_taxonomy_tree_depth_values[0]['value'];
     // When unchecked, only show top level terms.
@@ -93,10 +94,15 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
           break;
         }
       }
+      $description = '';
+      if (!empty($field_taxonomy_show_term_desc_values[0]['value'])) {
+        $description = check_markup($term->description__value, $term->description__format);
+      }
       $term_items[] = [
         '#theme' => 'os_widgets_taxonomy_term_item',
         '#term' => $term,
         '#label' => str_repeat('-', $term->depth) . $term->name,
+        '#description' => $description,
       ];
     }
     $build['taxonomy']['terms'] = [

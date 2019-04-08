@@ -82,6 +82,7 @@ function os_widgets_theme($existing, $type, $theme, $path) {
       'variables' => [
         'term' => NULL,
         'label' => '',
+        'description' => '',
       ],
     ],
   ];
