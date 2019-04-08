@@ -5,7 +5,12 @@
  * Customisations for Os Events.
  */
 
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Link;
+use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Cache\RefinableCacheableDependencyInterface;
 
@@ -64,7 +69,6 @@ function os_events_node_insert(EntityInterface $node) {
     // Bail out if not an event node.
     return;
   }
-
   // Set up services that we need.
   $container = Drupal::getContainer();
   $default_template = $container->get('os_events.default_mail_template');
@@ -78,4 +82,137 @@ function os_events_rng_rule_insert(EntityInterface $rule) {
   // Make newly created rule active by default.
   $rule->setIsActive(TRUE)
     ->save();
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function os_events_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  if ($entity->bundle() != 'events' || !$entity->field_signup->value) {
+    return;
+  }
+  $id = $entity->id();
+  $build['registration_signup']['#markup'] = '<div id="registration-link-' . $id . '">' . t("Registration:@s", ['@s' => ' ']) .
+      os_events_generate_modal_register_link($entity) . '</div>';
+  $build['registration_signup']['#weight'] = 20;
+}
+
+/**
+ * Generate Registration link.
+ *
+ * @param \Drupal\Core\Entity\EntityInterface $node
+ *   The node entity.
+ *
+ * @return string
+ *   The Signup link.
+ */
+function os_events_generate_modal_register_link(EntityInterface $node) {
+  $message = os_events_check_registrations_status($node);
+  if (!$message) {
+    $url = Url::fromRoute('os_events.signup_modal_form', ['nid' => $node->id()], [
+      'attributes' => [
+        'class' => ['use-ajax'],
+        'data-dialog-type' => 'modal',
+        'data-dialog-options' => json_encode(['width' => '100%']),
+        'id' => 'events_signup_modal_form',
+      ],
+    ]);
+    $link = Link::fromTextAndUrl('Signup for this event', $url)->toString();
+    return $link;
+  }
+  return $message;
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function os_events_form_rng_event_settings_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Set registration capacity to unlimited by default.
+  if (!$form['event']['rng_capacity']['widget'][0]['unlimited_number']['#default_value']) {
+    $form['event']['rng_capacity']['widget'][0]['unlimited_number']['#default_value'] = "unlimited";
+  }
+  $form['#validate'][] = 'os_events_signup_settings_validate';
+}
+
+/**
+ * Validates Event rng settings form.
+ *
+ * @param array $form
+ *   The rng event settings form.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The rng event settings form state.
+ */
+function os_events_signup_settings_validate(array &$form, FormStateInterface &$form_state) {
+
+  $open_date = $form_state->getValue('field_open_date');
+  $close_date = $form_state->getValue('field_close_');
+  $open_date = array_shift($open_date);
+  $close_date = array_shift($close_date);
+  $node = \Drupal::routeMatch()->getCurrentRouteMatch()->getParameter('node');
+  $event_start_date = $node->field_recurring_date->value;
+  $event_start_date = DrupalDateTime::createFromTimestamp(strtotime($event_start_date));
+
+  if ($open_date['value'] > $event_start_date) {
+    $form_state->setErrorByName('field_open_date', t("The Open date must be lesser than the Event Start date: @sd",
+        ['@sd' => $event_start_date]));
+  }
+  if ($close_date['value'] && $close_date['value'] < $open_date['value']) {
+    $form_state->setErrorByName('field_close_', t("The Close date must be greater than the Open date"));
+  }
+}
+
+/**
+ * Checks if new registrations are allowed based on different settings status.
+ *
+ * @param \Drupal\Core\Entity\EntityInterface $node
+ *   The node object.
+ *
+ * @return \Drupal\Core\StringTranslation\TranslatableMarkup|string
+ *   Message to return.
+ */
+function os_events_check_registrations_status(EntityInterface $node) {
+  $message = '';
+  $is_past_date = '';
+  $full = t("Sorry, the event is full");
+  $closed = t("Registration closed");
+  $eventManager = \Drupal::service('rng.event_manager');
+  $dates = \Drupal::service('rng_date_scheduler.event_dates')->getDates($node);
+  $eventMeta = $eventManager->getMeta($node);
+  $event_start_date = $node->field_recurring_date->value;
+  $event_end_date = $node->field_recurring_date->end_value;
+
+  if (!$event_end_date && $event_start_date) {
+    $is_past_date = DrupalDateTime::createFromTimestamp(strtotime($event_start_date));
+  }
+  elseif ($event_end_date) {
+    $is_past_date = DrupalDateTime::createFromTimestamp(strtotime($event_end_date));
+  }
+
+  if (!$eventMeta->isAcceptingRegistrations()) {
+    $message = $full;
+  }
+  $capacity = $eventMeta->remainingCapacity();
+  ($capacity == -1) ? $slot_available = TRUE : ($capacity > 0) ? $slot_available = TRUE : $slot_available = FALSE;
+  (!$slot_available) ? $message = $full : NULL;
+
+  $now = DrupalDateTime::createFromTimestamp(\Drupal::requestStack()->getCurrentRequest()->server->get('REQUEST_TIME'));
+
+  // Check if it is a past event.
+  if ($is_past_date < $now) {
+    $message = $closed;
+    return $message;
+  }
+
+  foreach ($dates as $date) {
+    ($date->getFieldName() == 'field_open_date') ? $open_date = $date->getDate() : $open_date = NULL;
+    ($date->getFieldName() == 'field_close_') ? $close_date = $date->getDate() : $close_date = NULL;
+
+    if ($open_date && $now < $open_date) {
+      $message = $closed;
+    }
+    if ($close_date && $now > $close_date) {
+      $message = $closed;
+    }
+  }
+  return $message;
 }

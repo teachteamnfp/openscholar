@@ -9,9 +9,9 @@ id: node.events.rng_capacity
 field_name: rng_capacity
 entity_type: node
 bundle: events
-label: 'Maximum registrations'
+label: Capacity
 description: 'Maximum amount of registrations for this event.'
-required: false
+required: true
 translatable: true
 default_value: {  }
 default_value_callback: ''

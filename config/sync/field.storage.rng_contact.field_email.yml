@@ -1,12 +1,12 @@
-uuid: d08c0342-9839-4ca9-8200-2d01a26f9dc8
+uuid: 1a2b2754-57ec-4d30-be2a-a3bdd44d3ecd
 langcode: en
 status: true
 dependencies:
   module:
-    - rng
-id: registration.field_email
+    - rng_contact
+id: rng_contact.field_email
 field_name: field_email
-entity_type: registration
+entity_type: rng_contact
 type: email
 settings: {  }
 module: core
