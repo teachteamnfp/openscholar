@@ -43,7 +43,7 @@ services:
     class: Drupal\vsite\Plugin\VsiteTypedDataManager
     decorates: typed_data_manager
     decoration_priority: 4
-    arguments: ['@container.namespaces', '@cache.discovery', '@module_handler', '@class_resolver']
+    arguments: ['@container.namespaces', '@cache.discovery', '@module_handler', '@class_resolver', '@config.factory']
     tags:
       - { name: event_subscriber }
   access_check.group.permission:
