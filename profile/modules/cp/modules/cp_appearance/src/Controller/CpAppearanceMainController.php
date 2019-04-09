@@ -7,7 +7,8 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ThemeHandlerInterface;
 use Drupal\Core\Form\FormBuilderInterface;
-use Drupal\Core\Url;
+use Drupal\cp_appearance\AppearanceHelperInterface;
+use Drupal\cp_appearance\Form\ThemeForm;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,6 +42,13 @@ class CpAppearanceMainController extends ControllerBase {
   protected $themeHandler;
 
   /**
+   * Theme appearance helper.
+   *
+   * @var \Drupal\cp_appearance\AppearanceHelperInterface
+   */
+  protected $appearanceHelper;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
@@ -48,12 +56,13 @@ class CpAppearanceMainController extends ControllerBase {
       $container->get('entity_type.manager'),
       $container->get('form_builder'),
       $container->get('theme_handler'),
-      $container->get('config.factory')
+      $container->get('config.factory'),
+      $container->get('cp_appearance.appearance_helper')
     );
   }
 
   /**
-   * CpUserMainController constructor.
+   * CpAppearanceMainController constructor.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   Entity Type Manager.
@@ -63,97 +72,32 @@ class CpAppearanceMainController extends ControllerBase {
    *   The theme handler.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The config factory.
+   * @param \Drupal\cp_appearance\AppearanceHelperInterface $appearance_helper
+   *   Theme appearance helper service.
    */
-  public function __construct(EntityTypeManagerInterface $entityTypeManager, FormBuilderInterface $form_builder, ThemeHandlerInterface $theme_handler, ConfigFactoryInterface $config_factory) {
+  public function __construct(EntityTypeManagerInterface $entityTypeManager, FormBuilderInterface $form_builder, ThemeHandlerInterface $theme_handler, ConfigFactoryInterface $config_factory, AppearanceHelperInterface $appearance_helper) {
     $this->entityTypeManager = $entityTypeManager;
     $this->formBuilder = $form_builder;
     $this->themeHandler = $theme_handler;
     $this->configFactory = $config_factory;
-
+    $this->appearanceHelper = $appearance_helper;
   }
 
   /**
    * Entry point for cp/users.
    */
   public function main(): array {
-    $config = $this->config('system.theme');
-    // Get all available themes.
-    $themes = $this->themeHandler->listInfo();
-    uasort($themes, 'system_sort_modules_by_info_name');
-
-    $theme_default = $config->get('default');
-    $theme_groups = ['featured' => [], 'basic' => []];
+    /** @var \Drupal\Core\Extension\Extension[] $themes */
+    $themes = $this->appearanceHelper->getThemes();
 
     // Use for simple dropdown for now.
     $basic_theme_options = [];
-
-    // TODO: write a method that should:
-    foreach ($themes as &$theme) {
-      // TODO: return not-hidden, enabled, non-base themes.
-      if (!empty($theme->info['hidden']) || empty($theme->status) || empty($theme->info['base theme'])) {
-        continue;
-      }
-
-      // TODO: return theme derived from os_base.
-      // Only show themes derived from os_base for now,
-      // we should add a custom param in the info.
-      if ($theme->info['base theme'] != 'os_base') {
-        continue;
-      }
-
-      // TODO: This should be set inside the method.
-      $theme->is_default = ($theme->getName() == $theme_default);
-
-      // Identify theme screenshot.
-      $theme->screenshot = NULL;
-      // Create a list which includes the current theme and all its base themes.
-      if (isset($themes[$theme->getName()]->base_themes)) {
-        $theme_keys = array_keys($themes[$theme->getName()]->base_themes);
-        $theme_keys[] = $theme->getName();
-      }
-      else {
-        $theme_keys = [$theme->getName()];
-      }
-      // Look for a screenshot in the current theme or in its closest ancestor.
-      foreach (array_reverse($theme_keys) as $theme_key) {
-        if (isset($themes[$theme_key]) && file_exists($themes[$theme_key]->info['screenshot'])) {
-          $theme->screenshot = [
-            'uri' => $themes[$theme_key]->info['screenshot'],
-            'alt' => $this->t('Screenshot for @theme theme', ['@theme' => $theme->info['name']]),
-            'title' => $this->t('Screenshot for @theme theme', ['@theme' => $theme->info['name']]),
-            'attributes' => ['class' => ['screenshot']],
-          ];
-          break;
-        }
-      }
-
-      $theme->operations = [];
-      if (!empty($theme->status)) {
-        // Create the operations links.
-        $query['theme'] = $theme->getName();
-
-        if (!$theme->is_default) {
-          $theme->operations[] = [
-            'title' => $this->t('Set as theme.'),
-            'url' => Url::fromRoute('cp_appearance.cp_select_theme'),
-            'query' => $query,
-            'attributes' => ['title' => $this->t('Set @theme as your theme', ['@theme' => $theme->info['name']])],
-          ];
-        }
-        $basic_theme_options[$theme->getName()] = $theme->info['name'];
-      }
-
-      // Add notes to default and administration theme.
-      $theme->notes = [];
-      if ($theme->is_default) {
-        $theme->notes[] = $this->t('current theme');
-      }
-
-      // Sort installed and uninstalled themes into their own groups.
-      $theme_groups['featured'][] = $theme;
+    foreach ($themes as $theme) {
+      $basic_theme_options[$theme->getName()] = $theme->info['name'];
     }
 
     // There are two possible theme groups.
+    $theme_groups = ['featured' => $themes, 'basic' => []];
     $theme_group_titles = [
       'featured' => $this->formatPlural(count($theme_groups['featured']), 'Featured theme', 'Featured themes'),
     ];
@@ -161,15 +105,13 @@ class CpAppearanceMainController extends ControllerBase {
     uasort($theme_groups['featured'], 'system_sort_themes');
     $this->moduleHandler()->alter('cp_appearance_themes_page', $theme_groups);
 
-    $build = [];
-
-    $build[] = [
+    $build = [
       '#theme' => 'system_themes_page',
       '#theme_groups' => $theme_groups,
       '#theme_group_titles' => $theme_group_titles,
     ];
 
-    $build[] = $this->formBuilder->getForm('Drupal\cp_appearance\Form\ThemeForm', $basic_theme_options);
+    $build[] = $this->formBuilder->getForm(ThemeForm::class, $basic_theme_options);
 
     return $build;
   }
