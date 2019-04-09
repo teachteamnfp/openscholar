@@ -10,7 +10,7 @@
 .navbar-collapse ul.nav .dropdown a.is-active {
   background: #7b272b;
 }
-.navbar-collapse ul.nav a {
+.navbar-collapse ul.nav > li > a {
   color: #fff;
   font-size: 19px;
 }
