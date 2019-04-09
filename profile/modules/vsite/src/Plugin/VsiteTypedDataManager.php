@@ -15,6 +15,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 /**
  * Class VsiteTypedDataManager.
  *
+ * Vocabularies are considered a DataType plugin.
+ * Because we have vocabularies separated by vsite, the cache for DataType plugins
+ *   needs to also be separated by vsite.
+ * This class separates the caches by vsite, and pulls in taxonomies from the vsite when needed.
+ *
  * @package Drupal\vsite\Plugin
  */
 class VsiteTypedDataManager extends TypedDataManager implements EventSubscriberInterface {

@@ -11,7 +11,9 @@ use Drupal\Core\Url;
 use Drupal\Core\Entity\EntityInterface;
 
 /**
- * Remove operations we don't care about.
+ * Implements hook_entity_operation_alter().
+ *
+ * Remove operations from taxonomy vocabs we don't care about.
  *
  * @param array $operations
  *   List of operations.
@@ -38,6 +40,8 @@ function cp_taxonomy_entity_operation_alter(array &$operations, EntityInterface 
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter().
+ *
  * Remove global vocabularies from the list.
  *
  * @param array $form
@@ -57,6 +61,8 @@ function cp_taxonomy_form_taxonomy_overview_vocabularies_alter(array &$form, For
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter().
+ *
  * Add our submit handler to the form.
  *
  * @param array $form
@@ -77,6 +83,8 @@ function cp_taxonomy_form_taxonomy_vocabulary_form_alter(array &$form, FormState
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter().
+ *
  * Alter the terms overview page to fix links and redirects.
  *
  * @param array $form
@@ -111,6 +119,8 @@ function cp_taxonomy_reset_redirect(array &$form, FormStateInterface &$form_stat
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter().
+ *
  * Change the link for the Cancel button to stay in the cp namespace.
  *
  * @param array $form
