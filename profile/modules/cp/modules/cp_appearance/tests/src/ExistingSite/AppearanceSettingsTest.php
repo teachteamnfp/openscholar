@@ -41,6 +41,7 @@ class AppearanceSettingsTest extends TestBase {
         'alias' => '/appearance-test-save',
       ],
     ]);
+    $group->addMember($this->admin);
     $this->drupalLogin($this->admin);
 
     $this->vsiteContextManager->activateVsite($group);
