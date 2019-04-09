@@ -6,7 +6,6 @@ namespace Drupal\Tests\cp_appearance\ExistingSite;
  * AppearanceSettingsTest.
  *
  * @group functional
- * @coversDefaultClass \Drupal\cp_appearance\Form\ThemeForm
  * @coversDefaultClass \Drupal\cp_appearance\Controller\CpAppearanceMainController
  */
 class AppearanceSettingsTest extends TestBase {
