@@ -9,21 +9,29 @@ coverage:
         threshold: null
       apps:
         paths:
-          - profile/modules/apps
+          - profiles/contrib/openscholar/modules/apps
+        target: 30%
+        threshold: null
       cp:
         paths:
-          - profile/modules/cp
+          - profiles/contrib/openscholar/modules/cp
+        target: 30%
+        threshold: null
       custom:
         paths:
-          - profile/modules/custom
+          - profiles/contrib/openscholar/modules/custom
+        target: 30%
+        threshold: null
       os:
         paths:
-          - profile/modules/os
+          - profiles/contrib/openscholar/modules/os
+        target: 30%
+        threshold: null
       vsite:
         paths:
-          - profile/modules/vsite
+          - profiles/contrib/openscholar/modules/vsite
+        target: 30%
+        threshold: null
     # It is always not possible to write tests
     # for Drupal code (Plugins, Interfaces, etc.)
     patch: false
-ignore:
-  - "**/*.yml"  # keep yml from showing in small report

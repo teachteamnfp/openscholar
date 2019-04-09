@@ -80,4 +80,23 @@ class VsiteMetatagTest extends OsMetatagTestBase {
 
   }
 
+  /**
+   * Test metatags is changed when you save cp/setting.
+   *
+   * @throws \Behat\Mink\Exception\ExpectationException
+   */
+  public function testMetatagChangeOnVsiteFrontPage() {
+
+    $this->visit("/test-alias/cp/settings/seo");
+    $this->assertSession()->statusCodeEquals(200);
+    $this->getCurrentPage()->findField('meta_description')->setValue('Find the Door');
+    $this->getCurrentPage()->pressButton('Save configuration');
+
+    $this->visit("/test-alias/");
+    $this->assertSession()->statusCodeEquals(200);
+    $expectedHtmlValue = '<meta name="twitter:description" content="Find the Door" />';
+    $this->assertContains($expectedHtmlValue, $this->getCurrentPageContent(), 'HTML head not contains twitter description.');
+
+  }
+
 }
