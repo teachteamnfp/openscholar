@@ -8,7 +8,6 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ThemeHandlerInterface;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Url;
-use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,13 +18,6 @@ use Symfony\Component\HttpFoundation\Request;
  * Also invokes the modals.
  */
 class CpAppearanceMainController extends ControllerBase {
-
-  /**
-   * Vsite Context Manager.
-   *
-   * @var \Drupal\vsite\Plugin\VsiteContextManagerInterface
-   */
-  protected $vsiteContextManager;
 
   /**
    * Entity Type Manager.
@@ -53,7 +45,6 @@ class CpAppearanceMainController extends ControllerBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('vsite.context_manager'),
       $container->get('entity_type.manager'),
       $container->get('form_builder'),
       $container->get('theme_handler'),
@@ -64,8 +55,6 @@ class CpAppearanceMainController extends ControllerBase {
   /**
    * CpUserMainController constructor.
    *
-   * @param \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContextManager
-   *   Vsite Context Manager.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   Entity Type Manager.
    * @param \Drupal\Core\Form\FormBuilderInterface $form_builder
@@ -75,8 +64,7 @@ class CpAppearanceMainController extends ControllerBase {
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The config factory.
    */
-  public function __construct(VsiteContextManagerInterface $vsiteContextManager, EntityTypeManagerInterface $entityTypeManager, FormBuilderInterface $form_builder, ThemeHandlerInterface $theme_handler, ConfigFactoryInterface $config_factory) {
-    $this->vsiteContextManager = $vsiteContextManager;
+  public function __construct(EntityTypeManagerInterface $entityTypeManager, FormBuilderInterface $form_builder, ThemeHandlerInterface $theme_handler, ConfigFactoryInterface $config_factory) {
     $this->entityTypeManager = $entityTypeManager;
     $this->formBuilder = $form_builder;
     $this->themeHandler = $theme_handler;
@@ -87,12 +75,7 @@ class CpAppearanceMainController extends ControllerBase {
   /**
    * Entry point for cp/users.
    */
-  public function main() {
-    $group = $this->vsiteContextManager->getActiveVsite();
-    if (!$group) {
-      throw new AccessDeniedHttpException();
-    }
-
+  public function main(): array {
     $config = $this->config('system.theme');
     // Get all available themes.
     $themes = $this->themeHandler->listInfo();
@@ -104,17 +87,21 @@ class CpAppearanceMainController extends ControllerBase {
     // Use for simple dropdown for now.
     $basic_theme_options = [];
 
+    // TODO: write a method that should:
     foreach ($themes as &$theme) {
+      // TODO: return not-hidden, enabled, non-base themes.
       if (!empty($theme->info['hidden']) || empty($theme->status) || empty($theme->info['base theme'])) {
         continue;
       }
 
+      // TODO: return theme derived from os_base.
       // Only show themes derived from os_base for now,
       // we should add a custom param in the info.
       if ($theme->info['base theme'] != 'os_base') {
         continue;
       }
 
+      // TODO: This should be set inside the method.
       $theme->is_default = ($theme->getName() == $theme_default);
 
       // Identify theme screenshot.
