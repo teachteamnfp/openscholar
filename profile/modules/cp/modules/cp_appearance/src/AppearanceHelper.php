@@ -122,10 +122,9 @@ final class AppearanceHelper implements AppearanceHelperInterface {
     if (!$theme->is_default) {
       $operations[] = [
         'title' => $this->t('Set as default'),
-        'url' => Url::fromRoute('cp_appearance.cp_select_theme'),
-        'query' => [
+        'url' => Url::fromRoute('cp_appearance.cp_select_theme', [
           'theme' => $theme->getName(),
-        ],
+        ]),
         'attributes' => ['title' => $this->t('Set @theme as your theme', ['@theme' => $theme->info['name']])],
       ];
     }

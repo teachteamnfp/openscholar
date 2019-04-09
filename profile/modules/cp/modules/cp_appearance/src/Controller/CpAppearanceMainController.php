@@ -10,7 +10,7 @@ use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\cp_appearance\AppearanceHelperInterface;
 use Drupal\cp_appearance\Form\ThemeForm;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -117,42 +117,32 @@ class CpAppearanceMainController extends ControllerBase {
   }
 
   /**
-   * Set the theme.
+   * Set a theme as default.
    *
+   * @param string $theme
+   *   The theme name.
    * @param \Symfony\Component\HttpFoundation\Request $request
    *   A request object containing a theme name.
    *
    * @return \Symfony\Component\HttpFoundation\RedirectResponse
    *   Redirects back to the appearance admin page.
-   *
-   * @throws \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException
-   *   Throws access denied when no theme is set in the request.
    */
-  public function setTheme(Request $request) {
+  public function setTheme($theme, Request $request): RedirectResponse {
     $config = $this->configFactory->getEditable('system.theme');
-    $theme = $request->query->get('theme');
+    $themes = $this->themeHandler->listInfo();
 
-    if (isset($theme)) {
-      // Get current list of themes.
-      $themes = $this->themeHandler->listInfo();
+    // Check if the specified theme is one recognized by the system.
+    // Or try to install the theme.
+    if (isset($themes[$theme])) {
+      $config->set('default', $theme)->save();
 
-      // Check if the specified theme is one recognized by the system.
-      // Or try to install the theme.
-      if (isset($themes[$theme])) {
-
-        // Set the default theme.
-        $config->set('default', $theme)->save();
-
-        $this->messenger()->addStatus($this->t('%theme is now your theme.', ['%theme' => $themes[$theme]->info['name']]));
-      }
-      else {
-        $this->messenger()->addError($this->t('The %theme theme was not found.', ['%theme' => $theme]));
-      }
-
-      return $this->redirect('cp.appearance');
-
+      $this->messenger()->addStatus($this->t('%theme is now your theme.', ['%theme' => $themes[$theme]->info['name']]));
     }
-    throw new AccessDeniedHttpException();
+    else {
+      $this->messenger()->addError($this->t('The %theme theme was not found.', ['%theme' => $theme]));
+    }
+
+    return $this->redirect('cp.appearance');
   }
 
 }

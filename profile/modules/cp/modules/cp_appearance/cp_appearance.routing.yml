@@ -8,7 +8,7 @@ cp.appearance:
     _group_member: 'TRUE'
 
 cp_appearance.cp_select_theme:
-  path: '/cp/appearance/set'
+  path: '/cp/appearance/set/{theme}'
   defaults:
     _controller: '\Drupal\cp_appearance\Controller\CpAppearanceMainController::setTheme'
     _title: 'Manage Appearance'
