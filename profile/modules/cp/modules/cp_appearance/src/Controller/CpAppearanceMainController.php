@@ -105,7 +105,8 @@ class CpAppearanceMainController extends ControllerBase {
     uasort($theme_groups['featured'], 'system_sort_themes');
     $this->moduleHandler()->alter('cp_appearance_themes_page', $theme_groups);
 
-    $build = [
+    $build = [];
+    $build[] = [
       '#theme' => 'system_themes_page',
       '#theme_groups' => $theme_groups,
       '#theme_group_titles' => $theme_group_titles,
