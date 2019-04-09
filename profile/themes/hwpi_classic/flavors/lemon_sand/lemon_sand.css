@@ -1,0 +1,90 @@
+@import url(https://fonts.googleapis.com/css?family=Playfair+Display);
+@import url(https://fonts.googleapis.com/css?family=Vidaloka);
+@import url(https://fonts.googleapis.com/css?family=Oxygen);
+
+/*
+All Nav: Oxygen
+All Body Copy: Playfair
+Site title and page titles: Vidaloka
+*/
+#page,
+body {
+  background:#fdfaee;
+}
+body,
+.node--title,
+.path-search .title a,
+.content-inner .block.block-boxes-os_boxes_manual_list .links.inline a,
+.more-link,
+.links a,
+.boxes-box-content h2,
+aside .nav a,
+.content-inner h2,
+.content-inner h3,
+.content-inner h4,
+.block-boxes-os_boxes_facetapi_vocabulary.navigation,
+.block-boxes-os_taxonomy_fbt.navigation,
+h2.block-title,
+.header-container ul.nav a,
+.navbar-collapse ul.nav a,
+.cke_editable * {
+  font-family: 'Playfair Display', sans-serif, Georgia, serif !important;
+}
+footer ul.nav a,
+footer ul.menu li ul li a,
+.header-container ul.nav a,
+.navbar-collapse ul.nav a,
+.content-inner .accordion ul.nav li a,
+.content-inner .os-custom-menu ul.nav li a,
+.content-inner #block-os-primary-menu ul.nav li a,
+.content-inner #block-os-secondary-menu ul.nav li a,
+.content-inner .os-custom-menu ul.menu li a,
+.content-inner #block-os-primary-menu ul.menu li a,
+.content-inner #block-os-secondary-menu ul.menu li a {
+  font-family: 'Oxygen', helvetica !important;
+}
+.page-title,
+#boxes-box-site_info,
+#boxes-box-site_info a {
+  font-family: 'Vidaloka', helvetica !important;
+}
+.navbar-collapse ul.nav ul,
+.navbar-collapse {
+  background: #ffdb6d;
+}
+footer,
+.header-container {
+  background: #fff;
+}
+.navbar-collapse ul.nav a.active,
+.navbar-collapse ul.nav a:hover,
+.navbar-collapse ul.nav .dropdown.open > a,
+.navbar-collapse ul.nav .dropdown a:hover,
+.navbar-collapse ul.nav .dropdown a.is-active {
+  background: #3a8bd9;
+}
+.navbar-collapse ul.nav .dropdown li a:hover {
+  background: none;
+}
+aside .nav > a {
+  background: #ffdb6d !important;
+  color: #222 !important;
+}
+aside .block,
+.path-front .content-inner .block,
+.content-inner .block.block-boxes-os_boxes_columns .block,
+.path-person .block-inner,
+.comment-wrapper {
+  border-top: none;
+}
+.navbar-collapse ul.nav a,
+#boxes-box-site_info,
+#boxes-box-site_info a {
+  text-decoration: none;
+}
+a.rslides_nav {
+  background-color: #ffdb6d;
+}
+.search-block-form .form-submit {
+  background: #ffdb6d;
+}
