@@ -7,6 +7,23 @@ coverage:
         # for Drupal code (Plugins, Interfaces, etc.)
         target: 30%
         threshold: null
+      apps:
+        paths:
+          - profile/modules/apps
+      cp:
+        paths:
+          - profile/modules/cp
+      custom:
+        paths:
+          - profile/modules/custom
+      os:
+        paths:
+          - profile/modules/os
+      vsite:
+        paths:
+          - profile/modules/vsite
     # It is always not possible to write tests
     # for Drupal code (Plugins, Interfaces, etc.)
     patch: false
+ignore:
+  - "**/*.yml"  # keep yml from showing in small report
