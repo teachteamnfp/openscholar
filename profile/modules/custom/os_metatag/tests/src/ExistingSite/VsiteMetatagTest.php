@@ -86,6 +86,7 @@ class VsiteMetatagTest extends OsMetatagTestBase {
    * @throws \Behat\Mink\Exception\ExpectationException
    */
   public function testMetatagChangeOnVsiteFrontPage() {
+    $this->group->addMember($this->groupCreator);
 
     $this->visit("/test-alias/cp/settings/seo");
     $this->assertSession()->statusCodeEquals(200);
