@@ -87,10 +87,10 @@ class PreviewActionTest extends TestBase {
     $this->getCurrentPage()->pressButton('Preview');
     $this->getCurrentPage()->pressButton('Cancel');
 
-    /** @var \Drupal\Core\Config\ImmutableConfig $theme_config */
-    $theme_config = $this->configFactory->get('system.theme');
+    /** @var \Drupal\Core\Config\ImmutableConfig $actual_theme_config */
+    $actual_theme_config = $this->configFactory->get('system.theme');
 
-    $this->assertSame($this->themeConfig->get('default'), $theme_config->get('default'));
+    $this->assertSame($this->themeConfig->get('default'), $actual_theme_config->get('default'));
   }
 
   /**

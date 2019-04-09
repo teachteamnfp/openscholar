@@ -5,8 +5,10 @@ namespace Drupal\os_theme_preview\Form;
 use Drupal\Core\Extension\ThemeHandlerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Path\AliasManagerInterface;
 use Drupal\os_theme_preview\HandlerInterface;
 use Drupal\os_theme_preview\ThemePreviewException;
+use Drupal\purl\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -41,16 +43,26 @@ class PreviewAction extends FormBase {
   protected $configFactory;
 
   /**
+   * Alias manager.
+   *
+   * @var \Drupal\Core\Path\AliasManagerInterface
+   */
+  protected $aliasManager;
+
+  /**
    * PreviewAction constructor.
    *
    * @param \Drupal\os_theme_preview\HandlerInterface $handler
    *   Theme preview handler.
    * @param \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler
    *   Theme handler service.
+   * @param \Drupal\Core\Path\AliasManagerInterface $alias_manager
+   *   Alias manager.
    */
-  public function __construct(HandlerInterface $handler, ThemeHandlerInterface $theme_handler) {
+  public function __construct(HandlerInterface $handler, ThemeHandlerInterface $theme_handler, AliasManagerInterface $alias_manager) {
     $this->handler = $handler;
     $this->themeHandler = $theme_handler;
+    $this->aliasManager = $alias_manager;
     $this->previewedThemeData = $this->handler->getPreviewedThemeData();
     $this->configFactory = $this->configFactory();
   }
@@ -59,7 +71,7 @@ class PreviewAction extends FormBase {
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    return new static($container->get('os_theme_preview.handler'), $container->get('theme_handler'));
+    return new static($container->get('os_theme_preview.handler'), $container->get('theme_handler'), $container->get('path.alias_manager'));
   }
 
   /**
@@ -140,6 +152,8 @@ class PreviewAction extends FormBase {
       $this->loggerFactory->get('os_theme_preview')->error($exception->getMessage());
       $this->messenger->addError($this->t('Preview could not be stopped. Check logs for more details.'));
     }
+
+    $form_state->setRedirectUrl(Url::fromRoute('system.themes_page'));
   }
 
 }
