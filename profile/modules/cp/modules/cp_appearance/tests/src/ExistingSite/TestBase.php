@@ -32,6 +32,13 @@ abstract class TestBase extends ExistingSiteBase {
   protected $configFactory;
 
   /**
+   * Theme appearance helper service.
+   *
+   * @var \Drupal\cp_appearance\AppearanceHelperInterface
+   */
+  protected $appearanceHelper;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
@@ -39,6 +46,7 @@ abstract class TestBase extends ExistingSiteBase {
     $this->entityTypeManager = $this->container->get('entity_type.manager');
     $this->vsiteContextManager = $this->container->get('vsite.context_manager');
     $this->configFactory = $this->container->get('config.factory');
+    $this->appearanceHelper = $this->container->get('cp_appearance.appearance_helper');
   }
 
   /**
