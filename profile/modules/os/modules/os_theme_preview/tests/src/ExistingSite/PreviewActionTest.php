@@ -25,6 +25,13 @@ class PreviewActionTest extends TestBase {
   protected $configFactory;
 
   /**
+   * Theme configuration.
+   *
+   * @var \Drupal\Core\Config\ImmutableConfig
+   */
+  protected $themeConfig;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
@@ -32,6 +39,7 @@ class PreviewActionTest extends TestBase {
 
     $this->admin = $this->createUser([], NULL, TRUE);
     $this->configFactory = $this->container->get('config.factory');
+    $this->themeConfig = $this->configFactory->get('system.theme');
   }
 
   /**
@@ -40,7 +48,7 @@ class PreviewActionTest extends TestBase {
    * @throws \Behat\Mink\Exception\ElementNotFoundException
    * @throws \Behat\Mink\Exception\ResponseTextException
    */
-  public function testVisibility() {
+  public function testVisibility(): void {
     $this->drupalLogin($this->admin);
 
     $this->visit('/admin/appearance');
@@ -54,7 +62,7 @@ class PreviewActionTest extends TestBase {
    *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
    */
-  public function testSave() {
+  public function testSave(): void {
     $this->drupalLogin($this->admin);
 
     $this->visit('/admin/appearance');
@@ -65,6 +73,34 @@ class PreviewActionTest extends TestBase {
     $theme_config = $this->configFactory->get('system.theme');
 
     $this->assertSame('hwpi_themeone_bentley', $theme_config->get('default'));
+  }
+
+  /**
+   * Test cancel action.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   */
+  public function testCancel(): void {
+    $this->drupalLogin($this->admin);
+
+    $this->visit('/admin/appearance');
+    $this->getCurrentPage()->pressButton('Preview');
+    $this->getCurrentPage()->pressButton('Cancel');
+
+    /** @var \Drupal\Core\Config\ImmutableConfig $theme_config */
+    $theme_config = $this->configFactory->get('system.theme');
+
+    $this->assertSame($this->themeConfig->get('default'), $theme_config->get('default'));
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function tearDown() {
+    /** @var \Drupal\Core\Config\Config $theme_config_mut */
+    $theme_config_mut = $this->configFactory->getEditable('system.theme');
+    $theme_config_mut->set('default', $this->themeConfig->get('default'));
+    parent::tearDown();
   }
 
 }

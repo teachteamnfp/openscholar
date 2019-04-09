@@ -93,7 +93,15 @@ class PreviewAction extends FormBase {
 
     $form['actions']['save'] = [
       '#type' => 'submit',
+      '#name' => 'save',
       '#value' => $this->t('Save'),
+    ];
+
+    $form['actions']['cancel'] = [
+      '#type' => 'submit',
+      '#name' => 'cancel',
+      '#value' => $this->t('Cancel'),
+      '#submit' => ['::cancelPreview'],
     ];
 
     return $form;
@@ -110,6 +118,21 @@ class PreviewAction extends FormBase {
       ->set('default', $form_state->getValue('name'))
       ->save();
 
+    try {
+      $this->handler->stopPreviewMode();
+    }
+    catch (ThemePreviewException $exception) {
+      $this->loggerFactory->get('os_theme_preview')->error($exception->getMessage());
+      $this->messenger->addError($this->t('Preview could not be stopped. Check logs for more details.'));
+    }
+  }
+
+  /**
+   * Submit handler for exiting preview mode.
+   *
+   * @ingroup forms
+   */
+  public function cancelPreview(array &$form, FormStateInterface $form_state): void {
     try {
       $this->handler->stopPreviewMode();
     }
