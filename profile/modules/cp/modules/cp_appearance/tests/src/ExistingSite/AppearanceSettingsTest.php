@@ -78,4 +78,22 @@ class AppearanceSettingsTest extends TestBase {
     $this->assertEquals('hwpi_college', $theme_setting->get('default'));
   }
 
+  /**
+   * @covers ::previewTheme
+   *
+   * @throws \Behat\Mink\Exception\ExpectationException
+   * @throws \Behat\Mink\Exception\ResponseTextException
+   */
+  public function testStartPreview(): void {
+    $this->visit('/cp-appearance/cp/appearance/preview/vibrant');
+
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->pageTextContains('Previewing: Vibrant');
+
+    $this->visit('/cp-appearance/cp/appearance/preview/hwpi_sterling');
+
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->pageTextContains('Previewing: Sterling');
+  }
+
 }
