@@ -5,8 +5,9 @@
 .content-inner li {
   font-family: 'Cabin', helvetica;
 }
-body.front #columns,
-.main-container {
+body.front .main-container,
+.main-container,
+.main-container:before {
   background: #fff;
 }
 .path-front .content-inner .block-title,
