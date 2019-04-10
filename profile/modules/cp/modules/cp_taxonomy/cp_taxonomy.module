@@ -180,7 +180,7 @@ function cp_taxonomy_form_add_vocab_submit(array &$form, FormStateInterface &$fo
   $allowed_entity_types = $form_state->getValue('allowed_entity_types');
   $filtered_entity_types = array_values(array_filter($allowed_entity_types));
   $config = $config_factory->getEditable('cp_taxonomy.settings.allowed_vocabulary_reference_types');
-  $config->set($vid, $filtered_entity_types)->save();
+  $config->set($vid, $filtered_entity_types)->save(TRUE);
   $form_state->setRedirect('cp.taxonomy');
 }
 
@@ -197,4 +197,14 @@ function cp_taxonomy_views_data_alter(&$data) {
       'id' => 'allowed_vocabulary_filter',
     ],
   ];
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function cp_taxonomy_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  /** @var \Drupal\node\NodeForm $node_form */
+  $node_form = $form_state->getBuildInfo()['callback_object'];
+  $bundle = $node_form->getEntity()->bundle();
+  $form['field_taxonomy_terms']['widget'][0]['target_id']['#selection_settings']['bundle_key'] = 'node:' . $bundle;
 }

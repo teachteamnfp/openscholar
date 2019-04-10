@@ -2,7 +2,7 @@
 
 namespace Drupal\cp_taxonomy\Plugin\views\filter;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\cp_taxonomy\CpTaxonomyHelperInterface;
 use Drupal\views\Plugin\views\filter\FilterPluginBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -15,15 +15,15 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class AllowedVocabularyFilter extends FilterPluginBase {
 
-  private $configFactory;
+  private $cpTaxonomyHelper;
 
   /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, ConfigFactoryInterface $config_factory) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, CpTaxonomyHelperInterface $cp_taxonomy_helper) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
 
-    $this->configFactory = $config_factory;
+    $this->cpTaxonomyHelper = $cp_taxonomy_helper;
   }
 
   /**
@@ -34,7 +34,7 @@ class AllowedVocabularyFilter extends FilterPluginBase {
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('config.factory')
+      $container->get('cp_taxonomy.helper')
     );
   }
 
@@ -42,10 +42,13 @@ class AllowedVocabularyFilter extends FilterPluginBase {
    * Alter the query.
    */
   public function query() {
-
-    // $this->query->addWhere('vsite', 'gid', $gids, 'IN');.
-    $config_allowed_vocabulary_reference = $this->configFactory->get('cp_taxonomy.settings.allowed_vocabulary_reference_types')->get();
-    $this->displayHandler->display['cache_metadata']['contexts'][] = 'vsite';
+    $settings = $this->cpTaxonomyHelper->getTaxonomyTermSettingsFromRequest();
+    if (!empty($settings)) {
+      $vocabularies = $this->cpTaxonomyHelper->searchAllowedVocabulariesByType($settings['bundle_key']);
+      if (!empty($vocabularies)) {
+        $this->query->addWhere('cp_taxonomy', 'vid', array_values($vocabularies), 'IN');
+      }
+    }
   }
 
 }
