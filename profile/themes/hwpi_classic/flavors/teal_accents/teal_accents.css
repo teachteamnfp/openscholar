@@ -1,0 +1,111 @@
+@import url(https://fonts.googleapis.com/css?family=Montserrat);
+@import url(https://fonts.googleapis.com/css?family=Cardo);
+/*
+All Nav: Montserrat
+All Body Copy: Cardo
+*/
+body {
+  font-size: 15px;
+}
+body {
+  background: #f9f9f9;
+}
+h1.page-title {
+  line-height: 1.3;
+}
+.main-container a,
+.main-container a:visited {
+  color: #222;
+  text-decoration: underline;
+}
+a.os-swipe-large,
+a.os-swipe-small {
+  background-color: #222;
+  text-decoration: none;
+}
+.main-container .slide-copy a,
+.main-container .block-boxes-os_taxonomy_fbt a,
+.main-container aside .nav a:link,
+.main-container aside .nav a:visited {
+  text-decoration: none;
+}
+body,
+.page-title,
+.node--title,
+.path-search .title a,
+.more-link,
+.links a,
+.boxes-box-content h2,
+.section-nav a,
+.content-inner h2,
+.content-inner h3,
+.content-inner h4,
+h2.block-title,
+.header-container ul.nav.nav a,
+.navbar-collapse ul.nav a,
+.cke_editable * {
+  font-family: 'Cardo', sans-serif, Georgia, serif !important;
+}
+footer ul.nav a,
+footer ul.nav li ul li a,
+aside .nav a:link,
+aside .nav a:visited,
+.header-container ul.nav a,
+.navbar-collapse ul.nav a {
+  font-family: 'Montserrat', helvetica !important;
+}
+.navbar-collapse,
+.header-container ul.nav a {
+  color: #fff;
+}
+.navbar-collapse,
+.navbar-collapse ul.nav ul,
+.navbar-collapse ul.nav ul li a:hover {
+  background: #444;
+}
+.navbar-collapse ul.nav a.active,
+.navbar-collapse ul.nav a:hover,
+.navbar-collapse ul.nav .menuparent.over > a,
+.navbar-collapse ul.nav .menuparent a:hover,
+.navbar-collapse ul.nav .menuparent a.active {
+  background: #343434;
+}
+aside .row > .block,
+.path-front .content-inner .block,
+.content-inner .block.block-boxes-os_boxes_columns .block,
+.path-person .block-inner,
+.comment-wrapper {
+  border-top: 3px solid #1ebfb3;
+}
+.navbar-collapse ul.nav a,
+#boxes-box-site_info,
+#boxes-box-site_info a {
+  color: #fff;
+  text-decoration: none;
+}
+a.rslides_nav {
+  background-color: #75c5bc;
+}
+footer {
+  background: #fff;
+  border-top: 3px solid #75c5bc;
+}
+.search-block-form .form-submit {
+  background: #1ebfb3;
+  border-color: #1ebfb3;
+}
+.main-container .accordion ul.nav li,
+.main-container aside ul.nav li a {
+  background: #fff;
+}
+.main-container .accordion ul.nav li a,
+.main-container aside ul.nav li a {
+  border-bottom: 1px solid #ebe3df;
+  font-family: 'Montserrat', helvetica;
+}
+.fc-listUpcoming-view .fc-list-heading .fc-list-heading-main,
+.fc-listPast-view .fc-list-heading .fc-list-heading-main {
+  background-image: none;
+  background-color: #fff;
+  border-top: 3px solid #ccc;
+}
