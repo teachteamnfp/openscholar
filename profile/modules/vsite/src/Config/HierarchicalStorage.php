@@ -86,13 +86,14 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
    * {@inheritdoc}
    */
   public function read($name) {
-    $output = $this->iterate(function (StorageInterface $store) use ($name) {
-      $output = $store->read($name);
-      if (!is_null($output)) {
-        return $output;
+    foreach ($this->storages as $s) {
+      /** @var \Drupal\Core\Config\StorageInterface $store */
+      $store = $s['storage'];
+      if ($store->exists($name)) {
+        return $store->read($name);
       }
-    });
-    return $output;
+    }
+    return FALSE;
   }
 
   /**
@@ -166,6 +167,20 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
     }
 
     return $output;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function listAllFromLevel($prefix = '', $level = self::GLOBAL_STORAGE) {
+    foreach ($this->storages as $s) {
+      if ($s['weight'] == $level) {
+        /** @var \Drupal\Core\Config\StorageInterface $store */
+        $store = $s['storage'];
+        return $store->listAll($prefix);
+      }
+    }
+    return [];
   }
 
   /**

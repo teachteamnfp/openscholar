@@ -1,0 +1,5 @@
+cp.taxonomy:
+  title: 'Taxonomy'
+  route_name: cp.taxonomy
+  weight: 3
+  menu_name: control-panel
