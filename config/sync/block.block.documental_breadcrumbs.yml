@@ -1,0 +1,22 @@
+uuid: dd5632eb-37b7-4c88-ac4a-7173c0699ca2
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - documental
+_core:
+  default_config_hash: oXUb3JZR2WW5VOdw4HrhRicCsq51mCgLfRyvheG68ck
+id: documental_breadcrumbs
+theme: documental
+region: content
+weight: -8
+provider: null
+plugin: system_breadcrumb_block
+settings:
+  id: system_breadcrumb_block
+  label: Breadcrumbs
+  provider: system
+  label_display: '0'
+visibility: {  }

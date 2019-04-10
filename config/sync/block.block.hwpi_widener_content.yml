@@ -1,0 +1,22 @@
+uuid: 918058d8-5698-4022-8382-4042d5ca1d26
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - hwpi_widener
+_core:
+  default_config_hash: 9EoWV2Lot6FVSr50t4hoKgiz1LIXYWNG-IIPYsWxBqo
+id: hwpi_widener_content
+theme: hwpi_widener
+region: content
+weight: -4
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  provider: system
+  label_display: '0'
+visibility: {  }

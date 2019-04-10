@@ -36,7 +36,7 @@ cp.content.import:
   parent: cp.content
 cp.content.browse:
   title: 'Browse'
-  url: 'internal:##'
+  route_name: view.site_content.page_1
   parent: cp.content
 cp.menu:
   title: 'Menus'

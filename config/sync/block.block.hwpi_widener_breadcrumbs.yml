@@ -1,0 +1,22 @@
+uuid: 78fb043d-602d-4cb0-a96d-0e159b136cb5
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - hwpi_widener
+_core:
+  default_config_hash: oXUb3JZR2WW5VOdw4HrhRicCsq51mCgLfRyvheG68ck
+id: hwpi_widener_breadcrumbs
+theme: hwpi_widener
+region: content
+weight: -8
+provider: null
+plugin: system_breadcrumb_block
+settings:
+  id: system_breadcrumb_block
+  label: Breadcrumbs
+  provider: system
+  label_display: '0'
+visibility: {  }

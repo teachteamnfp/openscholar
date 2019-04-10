@@ -41,6 +41,9 @@
 # Ignore local configs
 local_config/
 
+# Ignore vsite specific configurations
+config/sync/vsite*
+
 # Ignore drupal core (if not versioning drupal sources)
 .editorconfig
 .gitattributes
