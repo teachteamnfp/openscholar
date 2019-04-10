@@ -4,9 +4,7 @@ namespace Drupal\cp_appearance\Controller;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ThemeHandlerInterface;
-use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\cp_appearance\AppearanceHelperInterface;
 use Drupal\cp_appearance\Form\ThemeForm;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -19,20 +17,6 @@ use Symfony\Component\HttpFoundation\Request;
  * Also invokes the modals.
  */
 class CpAppearanceMainController extends ControllerBase {
-
-  /**
-   * Entity Type Manager.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
-
-  /**
-   * The form builder service.
-   *
-   * @var \Drupal\Core\Form\FormBuilderInterface
-   */
-  protected $formBuilder;
 
   /**
    * The theme handler service.
@@ -53,8 +37,6 @@ class CpAppearanceMainController extends ControllerBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('entity_type.manager'),
-      $container->get('form_builder'),
       $container->get('theme_handler'),
       $container->get('config.factory'),
       $container->get('cp_appearance.appearance_helper')
@@ -64,10 +46,6 @@ class CpAppearanceMainController extends ControllerBase {
   /**
    * CpAppearanceMainController constructor.
    *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
-   *   Entity Type Manager.
-   * @param \Drupal\Core\Form\FormBuilderInterface $form_builder
-   *   The form builder.
    * @param \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler
    *   The theme handler.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
@@ -75,9 +53,7 @@ class CpAppearanceMainController extends ControllerBase {
    * @param \Drupal\cp_appearance\AppearanceHelperInterface $appearance_helper
    *   Theme appearance helper service.
    */
-  public function __construct(EntityTypeManagerInterface $entityTypeManager, FormBuilderInterface $form_builder, ThemeHandlerInterface $theme_handler, ConfigFactoryInterface $config_factory, AppearanceHelperInterface $appearance_helper) {
-    $this->entityTypeManager = $entityTypeManager;
-    $this->formBuilder = $form_builder;
+  public function __construct(ThemeHandlerInterface $theme_handler, ConfigFactoryInterface $config_factory, AppearanceHelperInterface $appearance_helper) {
     $this->themeHandler = $theme_handler;
     $this->configFactory = $config_factory;
     $this->appearanceHelper = $appearance_helper;
@@ -112,7 +88,7 @@ class CpAppearanceMainController extends ControllerBase {
       '#theme_group_titles' => $theme_group_titles,
     ];
 
-    $build[] = $this->formBuilder->getForm(ThemeForm::class, $basic_theme_options);
+    $build[] = $this->formBuilder()->getForm(ThemeForm::class, $basic_theme_options);
 
     return $build;
   }
