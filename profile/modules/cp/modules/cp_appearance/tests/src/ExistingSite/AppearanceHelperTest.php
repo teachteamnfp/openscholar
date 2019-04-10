@@ -19,21 +19,11 @@ class AppearanceHelperTest extends TestBase {
   protected $themeHandler;
 
   /**
-   * Default theme.
-   *
-   * @var string
-   */
-  protected $defaultTheme;
-
-  /**
    * {@inheritdoc}
    */
   public function setUp() {
     parent::setUp();
     $this->themeHandler = $this->container->get('theme_handler');
-    /** @var \Drupal\Core\Config\ImmutableConfig $theme_config */
-    $theme_config = $this->configFactory->get('system.theme');
-    $this->defaultTheme = $theme_config->get('default');
   }
 
   /**
@@ -92,16 +82,6 @@ class AppearanceHelperTest extends TestBase {
     $this->assertCount(1, $active_theme->notes);
     $notes = $active_theme->notes[0];
     $this->assertEquals('current theme', $notes);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function tearDown() {
-    parent::tearDown();
-    /** @var \Drupal\Core\Config\Config $theme_config_mut */
-    $theme_config_mut = $this->configFactory->getEditable('system.theme');
-    $theme_config_mut->set('default', $this->defaultTheme)->save();
   }
 
 }

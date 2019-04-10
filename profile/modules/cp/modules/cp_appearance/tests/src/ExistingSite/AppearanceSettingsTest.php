@@ -18,34 +18,41 @@ class AppearanceSettingsTest extends TestBase {
   protected $admin;
 
   /**
+   * Test group.
+   *
+   * @var \Drupal\group\Entity\GroupInterface
+   */
+  protected $group;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
     parent::setUp();
+
     $this->admin = $this->createUser([], NULL, TRUE);
+    $this->group = $this->createGroup([
+      'path' => [
+        'alias' => '/cp-appearance',
+      ],
+    ]);
+    $this->group->addMember($this->admin);
+
+    $this->drupalLogin($this->admin);
+    $this->vsiteContextManager->activateVsite($this->group);
   }
 
   /**
    * Tests appearance change.
    *
+   * @covers ::main
+   *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
    * @throws \Behat\Mink\Exception\ExpectationException
    * @throws \Behat\Mink\Exception\ResponseTextException
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
-   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function testSave(): void {
-    $group = $this->createGroup([
-      'path' => [
-        'alias' => '/appearance-test-save',
-      ],
-    ]);
-    $group->addMember($this->admin);
-    $this->drupalLogin($this->admin);
-
-    $this->vsiteContextManager->activateVsite($group);
-    $this->visit('/appearance-test-save/cp/appearance');
+    $this->visit('/cp-appearance/cp/appearance');
 
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->pageTextContains('Select Theme');
@@ -55,6 +62,20 @@ class AppearanceSettingsTest extends TestBase {
 
     $theme_setting = $this->configFactory->get('system.theme');
     $this->assertEquals('hwpi_lamont', $theme_setting->get('default'));
+  }
+
+  /**
+   * @covers ::setTheme
+   *
+   * @throws \Behat\Mink\Exception\ExpectationException
+   */
+  public function testSetDefault(): void {
+    $this->visit('/cp-appearance/cp/appearance/set/hwpi_college');
+
+    $this->assertSession()->statusCodeEquals(200);
+
+    $theme_setting = $this->configFactory->get('system.theme');
+    $this->assertEquals('hwpi_college', $theme_setting->get('default'));
   }
 
 }
