@@ -141,7 +141,7 @@ aside .block h2.block-title aside .block h2.block-title {
 .section-nav .leaf.menu-depth-4 > a.active,
 .section-nav .leaf.menu-depth-5 > a.active,
 .section-nav .leaf.menu-depth-6 > a.active {
-  background-color: #f3f2f1
+  background-color: #f3f2f1;
 }
 #branding_footer,
 #branding_header {
