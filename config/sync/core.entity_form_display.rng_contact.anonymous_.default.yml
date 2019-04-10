@@ -1,0 +1,37 @@
+uuid: 09a4c933-c1f5-418e-899b-2d1763dcb8f6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.rng_contact.anonymous_.field_department
+    - field.field.rng_contact.anonymous_.field_email
+    - rng_contact.rng_contact_type.anonymous_
+  module:
+    - field_layout
+    - layout_discovery
+third_party_settings:
+  field_layout:
+    id: layout_onecol
+    settings: {  }
+id: rng_contact.anonymous_.default
+targetEntityType: rng_contact
+bundle: anonymous_
+mode: default
+content:
+  field_department:
+    weight: 2
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_email:
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: email_default
+    region: content
+hidden: {  }

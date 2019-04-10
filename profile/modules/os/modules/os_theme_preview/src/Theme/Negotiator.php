@@ -4,7 +4,8 @@ namespace Drupal\os_theme_preview\Theme;
 
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Theme\ThemeNegotiatorInterface;
-use Drupal\os_theme_preview\HelperInterface;
+use Drupal\os_theme_preview\HandlerInterface;
+use Drupal\os_theme_preview\PreviewManagerInterface;
 
 /**
  * Sets the preview theme.
@@ -12,43 +13,51 @@ use Drupal\os_theme_preview\HelperInterface;
 class Negotiator implements ThemeNegotiatorInterface {
 
   /**
-   * Preview theme name.
+   * Theme preview handler.
    *
-   * @var string|null
+   * @var \Drupal\os_theme_preview\HandlerInterface
    */
-  protected $previewedTheme;
+  protected $handler;
 
   /**
-   * Helper service.
+   * Theme preview manager.
    *
-   * @var \Drupal\os_theme_preview\HelperInterface
+   * @var \Drupal\os_theme_preview\PreviewManagerInterface
    */
-  protected $helper;
+  protected $themePreviewManager;
 
   /**
    * Negotiator constructor.
    *
-   * @param \Drupal\os_theme_preview\HelperInterface $helper
-   *   Helper service.
+   * @param \Drupal\os_theme_preview\HandlerInterface $handler
+   *   Theme preview handler service.
+   * @param \Drupal\os_theme_preview\PreviewManagerInterface $preview_manager
+   *   Theme preview manager.
    */
-  public function __construct(HelperInterface $helper) {
-    $this->helper = $helper;
+  public function __construct(HandlerInterface $handler, PreviewManagerInterface $preview_manager) {
+    $this->handler = $handler;
+    $this->themePreviewManager = $preview_manager;
   }
 
   /**
    * {@inheritdoc}
    */
   public function applies(RouteMatchInterface $route_match): bool {
-    $this->previewedTheme = $this->helper->getPreviewedTheme();
-
-    return (bool) $this->previewedTheme;
+    return $this->themePreviewManager->isPreviewModeEnabled();
   }
 
   /**
    * {@inheritdoc}
    */
   public function determineActiveTheme(RouteMatchInterface $route_match): ?string {
-    return $this->previewedTheme;
+    /** @var \Drupal\os_theme_preview\ThemePreviewInterface|null $theme_preview */
+    $theme_preview = $this->handler->getPreviewedThemeData();
+
+    if ($theme_preview) {
+      return $theme_preview->getName();
+    }
+
+    return NULL;
   }
 
 }

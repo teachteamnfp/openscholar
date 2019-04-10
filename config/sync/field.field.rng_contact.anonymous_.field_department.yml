@@ -1,0 +1,19 @@
+uuid: a4622afa-27fd-49e6-9b5d-a38b3506c08b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rng_contact.field_department
+    - rng_contact.rng_contact_type.anonymous_
+id: rng_contact.anonymous_.field_department
+field_name: field_department
+entity_type: rng_contact
+bundle: anonymous_
+label: Department
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

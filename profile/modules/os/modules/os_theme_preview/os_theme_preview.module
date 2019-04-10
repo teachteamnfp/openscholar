@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\os_theme_preview\Form\PreviewAction;
 use Drupal\os_theme_preview\ThemePreviewException;
 
 /**
@@ -19,10 +20,19 @@ function os_theme_preview_form_system_themes_admin_form_alter(&$form, FormStateI
   ];
   $form['#submit'][] = 'os_theme_preview_theme_preview_action';
 
-  /** @var \Drupal\os_theme_preview\HelperInterface $helper */
-  $helper = \Drupal::service('os_theme_preview.helper');
+  /** @var \Drupal\os_theme_preview\HandlerInterface $handler */
+  $handler = \Drupal::service('os_theme_preview.handler');
 
-  if ($helper->getPreviewedTheme()) {
+  /** @var \Drupal\os_theme_preview\ThemePreview|null $previewed_theme_data */
+  $previewed_theme_data = $handler->getPreviewedThemeData();
+  if (!$previewed_theme_data) {
+    return;
+  }
+
+  /** @var \Drupal\os_theme_preview\PreviewManagerInterface $theme_preview_manager */
+  $theme_preview_manager = \Drupal::service('os_theme_preview.manager');
+
+  if ($theme_preview_manager->isPreviewModeEnabled()) {
     $form['cancel_preview'] = [
       '#type' => 'button',
       '#value' => t('Cancel Preview'),
@@ -35,18 +45,20 @@ function os_theme_preview_form_system_themes_admin_form_alter(&$form, FormStateI
  * Starts the theme preview.
  */
 function os_theme_preview_theme_preview_action(&$form, FormStateInterface $form_state) {
-  /** @var \Drupal\os_theme_preview\HelperInterface $helper */
-  $helper = \Drupal::service('os_theme_preview.helper');
+  /** @var \Drupal\os_theme_preview\HandlerInterface $handler */
+  $handler = \Drupal::service('os_theme_preview.handler');
 
   try {
     $op = $form_state->getValue('op')->__toString();
 
     if ($op === 'Preview') {
-      $theme = 'hwpi_themeone_bentley';
-      $helper->startPreviewMode($theme);
+      /** @var \Drupal\os_theme_preview\PreviewManagerInterface $theme_preview_manager */
+      $theme_preview_manager = \Drupal::service('os_theme_preview.manager');
+
+      $handler->startPreviewMode('hwpi_themeone_bentley', $theme_preview_manager->getActiveVsiteId());
     }
     elseif ($op === 'Cancel Preview') {
-      $helper->stopPreviewMode();
+      $handler->stopPreviewMode();
     }
   }
   catch (ThemePreviewException $e) {
@@ -54,4 +66,21 @@ function os_theme_preview_theme_preview_action(&$form, FormStateInterface $form_
     $messenger = \Drupal::messenger();
     $messenger->addError($e->getMessage());
   }
+}
+
+/**
+ * Implements hook_page_bottom().
+ */
+function os_theme_preview_page_bottom(array &$page_bottom) {
+  /** @var \Drupal\os_theme_preview\PreviewManagerInterface $preview_manager */
+  $preview_manager = \Drupal::service('os_theme_preview.manager');
+
+  if (!$preview_manager->isPreviewModeEnabled()) {
+    return;
+  }
+
+  /** @var array $preview_action_form */
+  $preview_action_form = \Drupal::formBuilder()->getForm(PreviewAction::class);
+
+  $page_bottom['preview_action_form'] = $preview_action_form;
 }
