@@ -1,0 +1,6 @@
+name: "OpenScholar: Theme Preview"
+description: Allows theme preview
+core: 8.x
+type: module
+dependencies:
+  - drupal:vsite

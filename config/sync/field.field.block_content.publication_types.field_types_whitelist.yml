@@ -1,0 +1,21 @@
+uuid: 9920c2b4-e326-4d83-8b10-39db96bbd55e
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.publication_types
+    - field.storage.block_content.field_types_whitelist
+  module:
+    - options
+id: block_content.publication_types.field_types_whitelist
+field_name: field_types_whitelist
+entity_type: block_content
+bundle: publication_types
+label: 'Show the following types'
+description: 'Select the types you want to appear in the widget.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

@@ -1,0 +1,18 @@
+uuid: 1a2b2754-57ec-4d30-be2a-a3bdd44d3ecd
+langcode: en
+status: true
+dependencies:
+  module:
+    - rng_contact
+id: rng_contact.field_email
+field_name: field_email
+entity_type: rng_contact
+type: email
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,19 @@
+uuid: ddd39634-3f14-4fc0-97bd-0704e3ec3596
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rng_contact.field_email
+    - rng_contact.rng_contact_type.anonymous_
+id: rng_contact.anonymous_.field_email
+field_name: field_email
+entity_type: rng_contact
+bundle: anonymous_
+label: Email
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: email

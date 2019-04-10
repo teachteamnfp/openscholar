@@ -91,9 +91,8 @@ class CitationDistributeRepec extends PluginBase implements CitationDistribution
       }
     }
     catch (\Exception $e) {
-      throw new CitationDistributionException($this->t('Could not create citation. Error: %message. Backtrace: @trace', [
+      throw new CitationDistributionException($this->t('Could not create citation. Error: %message.', [
         '%message' => $e->getMessage(),
-        '@trace' => print_r($e->getTrace(), TRUE),
       ]));
     }
 
@@ -108,9 +107,8 @@ class CitationDistributeRepec extends PluginBase implements CitationDistribution
       $this->deleteEntityTemplate($entity);
     }
     catch (\Exception $e) {
-      throw new CitationDistributionException($this->t('Could not delete citation. Error: %message. Backtrace: @trace', [
+      throw new CitationDistributionException($this->t('Could not delete citation. Error: %message.', [
         '%message' => $e->getMessage(),
-        '@trace' => print_r($e->getTrace(), TRUE),
       ]));
     }
   }

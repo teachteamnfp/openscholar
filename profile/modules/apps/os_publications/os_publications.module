@@ -59,6 +59,14 @@ function os_publications_views_query_alter(ViewExecutable $view, QueryPluginBase
       /** @var array $allowed_publication_types */
       $allowed_publication_types = $os_publication_settings->get('filter_publication_types');
 
+      // If type query parameter exists we will override allowed array.
+      $request_query = Drupal::request()->query;
+      if ($type = $request_query->get('type')) {
+        // Override filtering by request query.
+        $allowed_publication_types = [
+          $type => $type,
+        ];
+      }
       // Convert the array structure into views suitable format.
       // Array structure obtained from config is:
       // [
@@ -205,6 +213,16 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
     $fields['title_first_char_excl_prep'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Title first letter excluding prepositions'));
 
+    $fields['status'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Published'))
+      ->setDisplayOptions('form', [
+        'type' => 'boolean_checkbox',
+        'settings' => [
+          'display_label' => TRUE,
+        ],
+      ])
+      ->setDisplayConfigurable('form', TRUE);
+
     return $fields;
   }
 }
@@ -227,27 +245,39 @@ function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInte
  * Implements hook_ENTITY_TYPE_insert().
  */
 function os_publications_bibcite_reference_insert(EntityInterface $entity) {
-  /** @var \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager $type */
-  $type = \Drupal::service('os_publications.manager_citation_distribute');
-  $type->distribute($entity);
+  $is_published = $entity->get('status')->getValue();
+
+  if ($is_published[0]['value']) {
+    /** @var \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager $type */
+    $type = \Drupal::service('os_publications.manager_citation_distribute');
+    $type->distribute($entity);
+  }
 }
 
 /**
  * Implements hook_ENTITY_TYPE_update().
  */
 function os_publications_bibcite_reference_update(EntityInterface $entity) {
-  /** @var \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager $type */
-  $type = \Drupal::service('os_publications.manager_citation_distribute');
-  $type->distribute($entity);
+  $is_published = $entity->get('status')->getValue();
+
+  if ($is_published[0]['value']) {
+    /** @var \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager $type */
+    $type = \Drupal::service('os_publications.manager_citation_distribute');
+    $type->distribute($entity);
+  }
 }
 
 /**
  * Implements hook_ENTITY_TYPE_delete().
  */
 function os_publications_bibcite_reference_delete(EntityInterface $entity) {
-  /** @var \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager $type */
-  $type = \Drupal::service('os_publications.manager_citation_distribute');
-  $type->conceal($entity);
+  $is_published = $entity->get('status')->getValue();
+
+  if ($is_published[0]['value']) {
+    /** @var \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager $type */
+    $type = \Drupal::service('os_publications.manager_citation_distribute');
+    $type->conceal($entity);
+  }
 }
 
 /**

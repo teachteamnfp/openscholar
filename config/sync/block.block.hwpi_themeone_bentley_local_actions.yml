@@ -1,0 +1,20 @@
+uuid: c09fc590-8eae-435b-8e86-eaca3b7dc5ed
+langcode: en
+status: true
+dependencies:
+  theme:
+    - hwpi_themeone_bentley
+_core:
+  default_config_hash: 13GQpeITIJsp1kyPniXtWZfyFH87vb1xxJCHifL4UeE
+id: hwpi_themeone_bentley_local_actions
+theme: hwpi_themeone_bentley
+region: content
+weight: -5
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Primary admin actions'
+  provider: core
+  label_display: '0'
+visibility: {  }

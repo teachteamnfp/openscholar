@@ -231,6 +231,13 @@ class PublicationsViewsTest extends TestBase {
       ],
     ];
 
+    /** @var \Drupal\Core\Config\ConfigFactoryInterface $config_factory */
+    $config_factory = $this->container->get('config.factory');
+    /** @var \Drupal\Core\Config\Config $os_publications_settings_mut */
+    $os_publications_settings_mut = $config_factory->getEditable('os_publications.settings');
+    $os_publications_settings_mut->set('biblio_order', 'DESC');
+    $os_publications_settings_mut->save();
+
     $view = Views::getView('publications');
     $view->setDisplay('page_3');
     $view->preExecute();
@@ -240,10 +247,10 @@ class PublicationsViewsTest extends TestBase {
     $result = $view->result;
 
     // Assert sorting by "first letter of author's last name".
-    $ordered_dataset = $this->orderResultSet($dataset, 'author_last_name', TRUE);
+    $this->orderResultSet($dataset, 'author_last_name', TRUE);
 
     $this->assertCount(4, $result);
-    $this->assertIdenticalResultset($view, $ordered_dataset, [
+    $this->assertIdenticalResultset($view, $dataset, [
       '_entity' => 'title',
     ]);
 
@@ -420,7 +427,7 @@ class PublicationsViewsTest extends TestBase {
     $reference4 = $this->createReference([
       'title' => 'Foobar',
       'bibcite_year' => [
-        'value' => 1889,
+        'value' => 1989,
       ],
       'is_sticky' => [
         'value' => 0,
@@ -454,10 +461,10 @@ class PublicationsViewsTest extends TestBase {
     /** @var array $result */
     $result = $view->result;
 
-    $ordered_dataset = $this->orderResultSet($dataset, 'year', TRUE);
+    $this->orderResultSet($dataset, 'year', TRUE);
 
     $this->assertCount(4, $result);
-    $this->assertIdenticalResultset($view, $ordered_dataset, [
+    $this->assertIdenticalResultset($view, $dataset, [
       '_entity' => 'title',
     ]);
 
@@ -476,10 +483,10 @@ class PublicationsViewsTest extends TestBase {
     /** @var array $result */
     $result = $view->result;
 
-    $ordered_dataset = $this->orderResultSet($dataset, 'year');
+    $this->orderResultSet($dataset, 'year');
 
     $this->assertCount(4, $result);
-    $this->assertIdenticalResultset($view, $ordered_dataset, [
+    $this->assertIdenticalResultset($view, $dataset, [
       '_entity' => 'title',
     ]);
   }
@@ -498,20 +505,16 @@ class PublicationsViewsTest extends TestBase {
    *   (optional) Boolean indicating whether to sort the result set in reverse
    *   order. Defaults to FALSE.
    *
-   * @return array
-   *   The sorted result set.
-   *
    * @see \Drupal\Tests\views\Kernel\ViewsKernelTestBase::orderResultSet
    */
-  protected function orderResultSet(array $result_set, $column, $reverse = FALSE) {
+  protected function orderResultSet(array &$result_set, $column, $reverse = FALSE) {
     $order = $reverse ? -1 : 1;
     usort($result_set, function ($a, $b) use ($column, $order) {
-      if ($a[$column] == $b[$column]) {
+      if ($a[$column] === $b[$column]) {
         return 0;
       }
       return $order * (($a[$column] < $b[$column]) ? -1 : 1);
     });
-    return $result_set;
   }
 
   /**

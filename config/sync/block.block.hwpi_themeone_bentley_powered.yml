@@ -1,0 +1,22 @@
+uuid: c5e9f825-ead8-46a9-af47-bad37e4cfa3c
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - hwpi_themeone_bentley
+_core:
+  default_config_hash: jQQUUWN2Uxr5qZtc9zcJKBCxpKY8orN1u2HPqYYRQDI
+id: hwpi_themeone_bentley_powered
+theme: hwpi_themeone_bentley
+region: footer
+weight: -6
+provider: null
+plugin: system_powered_by_block
+settings:
+  id: system_powered_by_block
+  label: 'Powered by Drupal'
+  provider: system
+  label_display: '0'
+visibility: {  }

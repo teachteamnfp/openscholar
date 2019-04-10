@@ -1,0 +1,9 @@
+services:
+  os_events.route_subscriber:
+    class: Drupal\os_events\Routing\RouteSubscriber
+    arguments: ['@entity_type.manager', '@rng.event_manager']
+    tags:
+      - { name: event_subscriber }
+  os_events.default_mail_template:
+    class: Drupal\os_events\Services\DefaultMailTemplate
+    arguments: ['@plugin.manager.action', '@entity_type.manager']

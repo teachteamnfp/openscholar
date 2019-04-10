@@ -1,0 +1,22 @@
+uuid: 05e59ee9-da75-44ad-b42f-973bb84e53a0
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - hwpi_college
+_core:
+  default_config_hash: oXUb3JZR2WW5VOdw4HrhRicCsq51mCgLfRyvheG68ck
+id: hwpi_college_breadcrumbs
+theme: hwpi_college
+region: content
+weight: -8
+provider: null
+plugin: system_breadcrumb_block
+settings:
+  id: system_breadcrumb_block
+  label: Breadcrumbs
+  provider: system
+  label_display: '0'
+visibility: {  }

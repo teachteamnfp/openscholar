@@ -1,0 +1,20 @@
+uuid: 7db5af20-388f-4293-9408-9655ed928d69
+langcode: en
+status: true
+dependencies:
+  theme:
+    - hwpi_college
+_core:
+  default_config_hash: 13GQpeITIJsp1kyPniXtWZfyFH87vb1xxJCHifL4UeE
+id: hwpi_college_local_actions
+theme: hwpi_college
+region: content
+weight: -5
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Primary admin actions'
+  provider: core
+  label_display: '0'
+visibility: {  }

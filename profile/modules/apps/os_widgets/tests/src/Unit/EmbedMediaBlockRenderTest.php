@@ -3,6 +3,7 @@
 namespace Drupal\Tests\os_widgets\Unit;
 
 use Drupal\block_content\Entity\BlockContent;
+use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Entity\EntityViewBuilder;
 use Drupal\Core\Field\EntityReferenceFieldItemList;
@@ -26,6 +27,7 @@ class EmbedMediaBlockRenderTest extends UnitTestCase {
    * @var \Drupal\os_widgets\Plugin\OsWidgets\EmbedMediaWidget
    */
   protected $embedMediaWidget;
+  protected $connectionMock;
 
   /**
    * {@inheritdoc}
@@ -33,7 +35,8 @@ class EmbedMediaBlockRenderTest extends UnitTestCase {
   public function setUp() {
     parent::setUp();
     $entity_type_manager = $this->createMock(EntityTypeManager::class);
-    $this->embedMediaWidget = new EmbedMediaWidget([], '', [], $entity_type_manager);
+    $this->connectionMock = $this->createMock(Connection::class);
+    $this->embedMediaWidget = new EmbedMediaWidget([], '', [], $entity_type_manager, $this->connectionMock);
   }
 
   /**
@@ -87,16 +90,6 @@ class EmbedMediaBlockRenderTest extends UnitTestCase {
   }
 
   /**
-   * Test build function on empty content.
-   */
-  public function testBuildOnEmptyContent() {
-    $block_content = NULL;
-    $build = [];
-    $this->embedMediaWidget->buildBlock($build, $block_content);
-    $this->assertSame([], $build);
-  }
-
-  /**
    * Test build function with Video embed media type.
    */
   public function testBuildWithVideoEmbed() {
@@ -112,7 +105,7 @@ class EmbedMediaBlockRenderTest extends UnitTestCase {
 
     $block_content = $this->createBlockContentVideoMock($field_values['field_max_width']);
     $build = [];
-    $embed_media_widget = new EmbedMediaWidget([], '', [], $entity_type_manager);
+    $embed_media_widget = new EmbedMediaWidget([], '', [], $entity_type_manager, $this->connectionMock);
     $embed_media_widget->buildBlock($build, $block_content);
     $this->assertSame('default', $build['embed_media'][0]['#view_mode']);
   }
