@@ -1,0 +1,136 @@
+@import url(https://fonts.googleapis.com/css?family=News+Cycle); body {
+  font-family:arial;color: #444;
+}
+h1,
+h2,
+h3,
+h4,
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+#boxes-box-site_info a,
+h1.page-header {
+  font-family: 'News Cycle',arial !important;
+}
+.not-front .content-inner p,
+.content-inner p,
+.content-inner li,
+.cke_editable * {
+  font-family: georgia;
+}
+#boxes-box-site_info {
+  color: #777;
+}
+#boxes-box-site_info h1 a {
+  font-weight: bold;
+  font-size: 30px;
+  color: #d16103;
+}
+#boxes-box-site_info h1 + h2 {
+  margin-bottom: 0;
+}
+#boxes-box-site_info p {
+  margin-bottom: 20px;
+  font-family: arial;
+  font-size: 15px;
+}
+#boxes-box-site_info p a {
+  color: #215990;
+}
+h1.page-header {
+  color: #d16103;
+  font-size: 27px;
+}
+.navbar-collapse {
+  background: #d16103;
+}
+.navbar-collapse ul.nav a.is-active,
+.navbar-collapse ul.nav a:hover {
+  background: #f3f3f1;
+}
+.navbar-collapse ul.nav .dropdown.open > a,
+.navbar-collapse ul.nav .dropdown a:hover,
+.navbar-collapse ul.nav .dropdown a.is-active {
+  background-color: #f3f3f1;
+}
+.navbar-collapse ul.nav ul {
+  background: #f3f3f1;
+}
+.navbar-collapse ul.nav .dropdown ul li a.is-active,
+.navbar-collapse ul.nav a.is-active,
+.navbar-collapse ul.nav a:hover,
+.navbar-collapse ul.nav .dropdown ul li a,
+.navbar-collapse ul.nav .dropdown.open > a,
+.navbar-collapse ul.nav .dropdown a:hover,
+.navbar-collapse ul.nav .dropdown a.is-active {
+  color: #215990;
+}
+.navbar-collapse ul.nav .dropdown ul li a:hover {
+  color: #4e84c4;
+}
+.header-container {
+  background: #f3f3f1;
+}
+.header-container ul.nav li a {
+  color: #215990;
+}
+footer {
+  background: #434343;
+  color: #fff;
+  border-top: 6px solid #777;
+}
+footer a {
+  color: #fff;
+}
+.section-nav .menu-depth-1 > a {
+  background-color: #8996a0;
+}
+.section-nav .expanded.menu-depth-2 > a {
+  background-color: #999;
+}
+.section-nav .expanded.menu-depth-2 > a:hover {
+  background-color: #777;
+}
+div.tweets-pulled-listing div.tweet-divider,
+.path-front .content-inner .block,
+.path-person .block-inner,
+.comment-wrapper,
+.content-inner .block.block-boxes-os_boxes_manual_list {
+  border-top: 1px dotted #999;
+}
+footer ul.menu li a.menu-heading,
+h2.block-title {
+  font-size: 1.14em;
+}
+.path-node-type-person .content-inner h2.block-title,
+.sidebar .block h2.block-title {
+  background: #f3f3f1;
+  color: #000;
+  font-size: 1.14em;
+  line-height: 18px;
+}
+.search-block-form label {
+  color: #3d3d3d;
+}
+a.rslides_nav {
+  background-color: #d16103;
+}
+.node-readmore a {
+  font-weight: normal;
+}
+footer .footer-login {
+  background: none;
+  border-left: none;
+  color: #57acff;
+  text-shadow: none;
+  padding: 0;
+  font-size: 13px;
+}
+.ui-tabs ul.ui-tabs-nav li.ui-tabs-active {
+  background: #d16103;
+}
+.search-block-form .form-submit {
+  background: #d16103;
+  border-color: #d16103;
+}
