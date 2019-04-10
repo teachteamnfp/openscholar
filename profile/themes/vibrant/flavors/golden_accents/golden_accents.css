@@ -1,0 +1,114 @@
+@import url(https://fonts.googleapis.com/css?family=Cabin); body,
+.not-front .field--name-body,
+.content-inner p,
+.cke_editable *,
+.content-inner li {
+  font-family: 'Cabin', helvetica;
+}
+body.front #columns,
+.main-container {
+  background: #fff;
+}
+.path-front .content-inner .block-title,
+aside .block-title {
+  background: #fff;
+  color: #c4961a;
+}
+h1.page-header {
+  color: #c4961a;
+}
+#boxes-box-site_info,
+#boxes-box-site_info a {
+  color: #fff;
+  font-family: 'Palatino Linotype', 'Book Antiqua', 'Times New Roman', serif;
+}
+.path-front .content-inner .block,
+aside .row > .block,
+.path-node .content-inner,
+.not-front .content-inner {
+  border: 1px solid #dededc;
+  background: #fff;
+  box-shadow: none;
+  -webkit-border-radius: 0;
+  border-radius: 0;
+  -moz-box-sizing: none;
+  -webkit-box-sizing: none;
+  box-sizing: none;
+}
+.search-block-form .form-submit {
+  background: #c4961a;
+  border-color: #c4961a;
+}
+footer a,
+footer,
+.header-container ul.nav li a {
+  color: #fff;
+}
+.navbar-collapse {
+  padding: 0 !important;
+}
+.navbar-collapse .region-navigation-collapsible {
+  -webkit-border-radius: 0;
+  border-radius: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+.header-container,
+.navbar-collapse,
+.navbar-collapse .region-navigation-collapsible,
+.navbar-collapse ul.nav li a,
+footer {
+  background: #262829;
+  filter: none;
+  color: #fff;
+}
+.navbar-collapse ul > li > a:hover,
+.navbar-collapse ul > li > a.is-active,
+.navbar-collapse ul.nav a:hover,
+.navbar-collapse ul.nav li.dropdown:hover a,
+.navbar-collapse ul.nav .dropdown a.is-active {
+  background: #c4961a; /* Old browsers */
+}
+.navbar-collapse ul a,
+.navbar-collapse ul.nav a,
+.navbar-collapse ul.nav .dropdown a {
+  color: #fff;
+  font-family: helvetica;
+}
+.navbar-collapse ul.nav ul {
+  background: #c4961a;
+}
+.navbar-collapse ul.nav .dropdown ul li a.is-active,
+.navbar-collapse ul.nav .dropdown ul li a,
+.navbar-collapse ul.nav .dropdown ul li a:hover,
+.navbar-collapse ul.nav a.active,
+.section-nav .menu-depth-1 > a {
+  background: #c4961a;
+}
+.navbar-collapse ul.nav .dropdown ul li a {
+  color: #fff;
+}
+.front.no-sidebars .region-content-top .block-boxes-os_slideshow_box:after {
+  background: #f4f4f4;
+}
+.header-container .search-block-form label {
+  color: #bac5c6;
+}
+.breadcrumb a,
+.breadcrumb {
+  color: #215990;
+}
+.block-boxes-os_slideshow_box .add_new {
+  top: 0;
+  z-index: 5;
+  background-color: #215990;
+  color: #fff;
+  padding: 0 5px;
+  font-size: .9em;
+}
+.block-boxes-os_slideshow_box .slide {
+  background: #c39936;
+}
+a.rslides_nav {
+  background-color: #444;
+}
