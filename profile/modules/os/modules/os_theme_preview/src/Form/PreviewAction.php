@@ -116,6 +116,13 @@ class PreviewAction extends FormBase {
       '#submit' => ['::cancelPreview'],
     ];
 
+    $form['actions']['back'] = [
+      '#type' => 'submit',
+      '#name' => 'back',
+      '#value' => $this->t('Back to themes'),
+      '#submit' => ['::cancelPreview'],
+    ];
+
     return $form;
   }
 
