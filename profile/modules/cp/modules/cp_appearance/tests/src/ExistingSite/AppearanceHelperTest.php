@@ -68,7 +68,7 @@ class AppearanceHelperTest extends TestBase {
     // Test operations.
     $inactive_theme = $themes['hwpi_college'];
 
-    $this->assertCount(1, $inactive_theme->operations);
+    $this->assertCount(2, $inactive_theme->operations);
     $operations = $inactive_theme->operations[0];
     $this->assertTrue(isset($operations['title']));
     $this->assertTrue(isset($operations['url']));
