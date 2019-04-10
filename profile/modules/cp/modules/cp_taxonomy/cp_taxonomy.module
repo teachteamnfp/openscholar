@@ -80,6 +80,37 @@ function cp_taxonomy_form_taxonomy_vocabulary_form_alter(array &$form, FormState
     $form['actions']['delete']['#url'] = Url::fromRoute('cp.taxonomy.delete', $url->getRouteParameters());
     $form['actions']['submit']['#submit'][] = 'cp_taxonomy_form_add_vocab_submit';
   }
+  $definitions = \Drupal::entityTypeManager()->getDefinitions();
+  $allowed_entity_types = [
+    'node',
+    'media',
+    'bibcite_reference',
+  ];
+  $options = [];
+  foreach ($definitions as $definition) {
+    if (!in_array($definition->id(), $allowed_entity_types)) {
+      continue;
+    }
+    $bundles = \Drupal::getContainer()->get('entity.manager')->getBundleInfo($definition->id());
+    foreach ($bundles as $machine_name => $bundle) {
+      $options[$definition->id() . ':' . $machine_name] = $definition->getLabel() . ' - ' . $bundle['label'];
+    }
+  }
+  $saved_entity_types = [];
+  if (!empty($form['vid']['#default_value'])) {
+    $vid = $form['vid']['#default_value'];
+    $config_factory = Drupal::configFactory();
+    $config_allowed_vocabulary_reference = $config_factory->get('cp_taxonomy.settings.allowed_vocabulary_reference_types')->get();
+    if (!empty($config_allowed_vocabulary_reference[$vid])) {
+      $saved_entity_types = $config_allowed_vocabulary_reference[$vid];
+    }
+  }
+  $form['allowed_entity_types'] = [
+    '#type' => 'checkboxes',
+    '#options' => $options,
+    '#title' => t('Allowed entity types'),
+    '#default_value' => $saved_entity_types,
+  ];
 }
 
 /**
@@ -144,5 +175,26 @@ function cp_taxonomy_form_taxonomy_vocabulary_confirm_delete_alter(array &$form,
  *   The form state.
  */
 function cp_taxonomy_form_add_vocab_submit(array &$form, FormStateInterface &$form_state) {
+  $config_factory = Drupal::configFactory();
+  $vid = $form_state->getValue('vid');
+  $allowed_entity_types = $form_state->getValue('allowed_entity_types');
+  $filtered_entity_types = array_values(array_filter($allowed_entity_types));
+  $config = $config_factory->getEditable('cp_taxonomy.settings.allowed_vocabulary_reference_types');
+  $config->set($vid, $filtered_entity_types)->save();
   $form_state->setRedirect('cp.taxonomy');
+}
+
+/**
+ * Implements hook_views_data_alter().
+ */
+function cp_taxonomy_views_data_alter(&$data) {
+  $data['group_content']['allowed_vocabulary_filter'] = [
+    'title' => t('Allowed vocabulary filter'),
+    'filter' => [
+      'title' => t('Allowed vocabulary filter'),
+      'help' => 'Filters terms with selected vocabularies in config',
+      'field' => 'gid',
+      'id' => 'allowed_vocabulary_filter',
+    ],
+  ];
 }
