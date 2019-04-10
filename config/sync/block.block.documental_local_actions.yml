@@ -1,0 +1,20 @@
+uuid: fa1017ee-0704-4891-b087-355f5223b263
+langcode: en
+status: true
+dependencies:
+  theme:
+    - documental
+_core:
+  default_config_hash: 13GQpeITIJsp1kyPniXtWZfyFH87vb1xxJCHifL4UeE
+id: documental_local_actions
+theme: documental
+region: content
+weight: -5
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Primary admin actions'
+  provider: core
+  label_display: '0'
+visibility: {  }

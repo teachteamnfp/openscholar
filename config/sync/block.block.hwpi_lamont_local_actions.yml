@@ -1,0 +1,20 @@
+uuid: 77310704-c91b-4d0e-ab2f-db670c33dafc
+langcode: en
+status: true
+dependencies:
+  theme:
+    - hwpi_lamont
+_core:
+  default_config_hash: 13GQpeITIJsp1kyPniXtWZfyFH87vb1xxJCHifL4UeE
+id: hwpi_lamont_local_actions
+theme: hwpi_lamont
+region: content
+weight: -5
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Primary admin actions'
+  provider: core
+  label_display: '0'
+visibility: {  }
