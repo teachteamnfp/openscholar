@@ -34,6 +34,7 @@ module:
   contextual: 0
   courier: 0
   cp: 0
+  cp_appearance: 0
   cp_settings: 0
   cp_users: 0
   crop: 0
@@ -154,11 +155,18 @@ module:
 theme:
   stable: 0
   classy: 0
-  bartik: 0
   seven: 0
   bootstrap: 0
   os_base: 0
   hwpi_themeone_bentley: 0
+  vibrant: 0
+  hwpi_college: 0
+  hwpi_classic: 0
+  documental: 0
+  hwpi_lamont: 0
+  modern: 0
+  hwpi_sterling: 0
+  hwpi_widener: 0
 profile: openscholar
 _core:
   default_config_hash: R4IF-ClDHXxblLcG0L7MgsLvfBIMAvi_skumNFQwkDc

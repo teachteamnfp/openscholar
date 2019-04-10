@@ -1,0 +1,22 @@
+uuid: 1343eff8-8a45-4da6-a758-9c620cfcfdc6
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - hwpi_lamont
+_core:
+  default_config_hash: jQQUUWN2Uxr5qZtc9zcJKBCxpKY8orN1u2HPqYYRQDI
+id: hwpi_lamont_powered
+theme: hwpi_lamont
+region: footer
+weight: -6
+provider: null
+plugin: system_powered_by_block
+settings:
+  id: system_powered_by_block
+  label: 'Powered by Drupal'
+  provider: system
+  label_display: '0'
+visibility: {  }

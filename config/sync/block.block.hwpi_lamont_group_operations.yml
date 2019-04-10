@@ -1,0 +1,24 @@
+uuid: b47c2316-6862-4872-bd65-227acfe126f0
+langcode: en
+status: true
+dependencies:
+  module:
+    - group
+  theme:
+    - hwpi_lamont
+_core:
+  default_config_hash: MjMChFykEa-4UxdnGstVk1FcXqwUF3p_GBJLIFT3_XI
+id: hwpi_lamont_group_operations
+theme: hwpi_lamont
+region: content
+weight: -1
+provider: null
+plugin: group_operations
+settings:
+  id: group_operations
+  label: 'Group operations'
+  provider: group
+  label_display: visible
+  context_mapping:
+    group: '@group.group_route_context:group'
+visibility: {  }
