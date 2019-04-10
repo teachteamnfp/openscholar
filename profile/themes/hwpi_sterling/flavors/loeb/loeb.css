@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans'); body *,
+.header-container ul.nice-menu a,
+.navbar-collapse ul.nav li a,
+#boxes-box-site_info,
+#boxes-box-site_info a,
+.date-nav h3,
+.slide-copy h2 {
+  font-family: 'Open Sans';
+}
+.accordion .ui-state-default,
+.ui-tabs ul.ui-tabs-nav li,
+.fc-listUpcoming-view .fc-list-heading .fc-list-heading-main,
+.fc-listPast-view .fc-list-heading .fc-list-heading-main,
+.navbar-collapse {
+  background-color: #f1f1f1;
+}
+.main-container .accordion ul.nice-menu li,
+.main-container aside ul.nav li,
+.section-nav .expanded.menu-depth-2 > a:hover,
+.section-nav .expanded.menu-depth-2 > a,
+.section-nav .menu-depth-1 > a,
+.section-nav a:hover {
+  background-color: #f1f1f1;
+}
+.header-container {
+  background-color: #fff;
+}
+body {
+  background-color: #f9f9f9;
+}
+#boxes-box-site_info h1 a {
+  font-family: Georgia;
+  font-size: 1.1em;
+}
+.navbar-collapse {
+  border-top: none;
+  border-bottom: none;
+}
+.header-container,
+.header-container a,
+body {
+  color: #222;
+}
+.header-container {
+  border-top: 7px solid #457141;
+}
+.biblio-title a,
+.breadcrumb a,
+a,
+a:visited {
+  color: #457141;
+}
+
+a.os-swipe-large,
+a.os-swipe-small {
+  background-color: #457141;
+}
+.section-nav .expanded.menu-depth-2 > a,
+.section-nav .menu-depth-1 > a {
+  color: #457141 !important;
+}
+.navbar-collapse ul.nav .dropdown ul li a.is-active,
+footer .footer-login,
+.navbar-collapse ul.nav .dropdown ul li a,
+.navbar-collapse ul.nav .dropdown ul li a:hover,
+footer a,
+footer {
+  color: #fff;
+}
+/* a.rslides_nav {
+  background: url(/profiles/openscholar/themes/os_basetheme/images/scholarbase-sprite.png) repeat scroll 0 0 #457141;
+} */
+.search-block-form .form-submit {
+  background: #457141;
+}
+h2.block-title {
+  border-left: 3px solid #d16103;
+  padding-left: 8px;
+  text-transform: uppercase;
+  font-size: 1.1em;
+  font-weight: bold;
+}
+footer {
+  background-color: #414141;
+}
+.navbar-collapse ul.nav a.is-active,
+.navbar-collapse ul.nav a:hover,
+.navbar-collapse ul.nav .dropdown.open > a,
+.navbar-collapse ul.nav .dropdown a:hover,
+.navbar-collapse ul.nav .dropdown a.is-active,
+.navbar-collapse ul.nav ul {
+  background-color: #457141;
+  color: #fff;
+  border-radius: 3px;
+}
+footer .footer-login:after,
+footer .footer-login {
+  background: none;
+  box-shadow: none;
+  text-shadow: none;
+}
+#powered-by a {
+  background-position: -14px -548px;
+}
