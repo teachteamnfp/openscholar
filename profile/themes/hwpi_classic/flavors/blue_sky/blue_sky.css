@@ -23,7 +23,6 @@ aside .nav a,
 .navbar-collapse ul.nav a {
   font-family: 'Raleway', Georgia, Baskerville, Palatino, 'Palatino Linotype', 'Book Antiqua', 'Times New Roman', serif;
 }
-
 h2.block-title {
   text-transform: none;
   font-size: 14px;
@@ -37,7 +36,7 @@ h2.block-title {
 }
 .header-container ul.nav a,
 .search-block-form label,
-#menu-bar,
+.navbar-collapse,
 header,
 #boxes-box-site_info,
 #boxes-box-site_info a,
@@ -75,6 +74,7 @@ header {
 }
 .search-block-form .form-submit {
   background: #8996a0;
+  border-color: #8996a0;
 }
 a.rslides_nav {
   background: #8996a0;
@@ -82,9 +82,6 @@ a.rslides_nav {
 footer {
   background: #e9e9e9;
   border-top: 1px solid #999;
-}
-aside .nav > a {
-  background: #8996a0;
 }
 .events .field--name-field-recurring-date ,
 .events .field--name-field-location {

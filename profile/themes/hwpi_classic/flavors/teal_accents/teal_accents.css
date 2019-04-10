@@ -63,11 +63,11 @@ aside .nav a:visited,
 .navbar-collapse ul.nav ul li a:hover {
   background: #444;
 }
-.navbar-collapse ul.nav a.active,
+.navbar-collapse ul.nav a.is-active,
 .navbar-collapse ul.nav a:hover,
 .navbar-collapse ul.nav .menuparent.over > a,
 .navbar-collapse ul.nav .menuparent a:hover,
-.navbar-collapse ul.nav .menuparent a.active {
+.navbar-collapse ul.nav .menuparent a.is-active {
   background: #343434;
 }
 aside .row > .block,

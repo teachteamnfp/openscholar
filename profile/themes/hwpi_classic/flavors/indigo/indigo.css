@@ -29,7 +29,7 @@ footer {
 .navbar-collapse ul.nav ul .dropdown a.is-active {
   color: #fff;
 }
-.sidebar .block,
+aside .block,
 .front #content-column .block,
 .node-person .block-inner,
 .comment-wrapper {
@@ -38,7 +38,7 @@ footer {
 .front .region-content-top .block.block-boxes-os_slideshow_box {
   border-top: 3px solid #d16103;
 }
-.content-inner h2.block-title {
+.main-container h2.block-title {
   background: #efefef;
   font-size: 14px;
   text-transform: none;
@@ -47,4 +47,8 @@ footer {
 }
 a.rslides_nav {
   background-color: #d16103;
+}
+.search-block-form .form-submit {
+  background: #444;
+  border-color: #444;
 }

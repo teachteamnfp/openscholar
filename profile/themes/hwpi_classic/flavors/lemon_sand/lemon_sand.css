@@ -34,13 +34,8 @@ footer ul.nav a,
 footer ul.menu li ul li a,
 .header-container ul.nav a,
 .navbar-collapse ul.nav a,
-.content-inner .accordion ul.nav li a,
-.content-inner .os-custom-menu ul.nav li a,
-.content-inner #block-os-primary-menu ul.nav li a,
-.content-inner #block-os-secondary-menu ul.nav li a,
-.content-inner .os-custom-menu ul.menu li a,
-.content-inner #block-os-primary-menu ul.menu li a,
-.content-inner #block-os-secondary-menu ul.menu li a {
+.main-container .accordion ul.nav li a,
+.main-container aside ul.nav li a {
   font-family: 'Oxygen', helvetica !important;
 }
 .page-title,
@@ -66,10 +61,6 @@ footer,
 .navbar-collapse ul.nav .dropdown li a:hover {
   background: none;
 }
-aside .nav > a {
-  background: #ffdb6d !important;
-  color: #222 !important;
-}
 aside .block,
 .path-front .content-inner .block,
 .content-inner .block.block-boxes-os_boxes_columns .block,
@@ -87,4 +78,5 @@ a.rslides_nav {
 }
 .search-block-form .form-submit {
   background: #ffdb6d;
+  border-color: #ffdb6d;
 }

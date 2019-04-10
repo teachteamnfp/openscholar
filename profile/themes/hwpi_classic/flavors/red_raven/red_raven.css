@@ -32,7 +32,7 @@
   color: #a51c30;
   font-size: 12px;
 }
-aside .block,
+aside .row >.block,
 .path-front .content-inner .block,
 .content-inner .block.block-boxes-os_boxes_columns .block,
 .path-person .block-inner,
@@ -42,13 +42,7 @@ aside .block,
 .cke_editable h2,
 .cke_editable h3,
 .cke_editable h4,
-.content-inner .field-name-body h2,
+.content-inner .field--name-body h2,
 h2.block-title {
   color: #a51c30;
-}
-aside .nav > a {
-  background: #a51c30 !important;
-}
-aside .nav > a {
-  background-color: #d16103;
 }

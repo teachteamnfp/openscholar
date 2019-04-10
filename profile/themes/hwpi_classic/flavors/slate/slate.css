@@ -8,10 +8,12 @@ body {
 .ui-tabs .ui-widget-content a,
 a,
 a:visited,
-.biblio-title a {
+.biblio-title a,
+.fc-header-toolbar button {
   color: #c2230e;
 }
-a:hover {
+a:hover,
+.fc-header-toolbar button:hover {
   color: #8996a0;
 }
 a.os-swipe-large,
@@ -93,6 +95,7 @@ aside .row > .block,
 }
 .search-block-form .form-submit {
   background: #8996a0;
+  border-color: #8996a0;
 }
 .more-link:after {
   background-image: none;
@@ -114,13 +117,6 @@ footer .footer-login:after {
 }
 footer ul.nav a.menu-heading {
   font-size: .99em;
-}
-#powered-by a {
-  background-position: -14px -545px;
-}
-aside .nav > a {
-  background: #bac5c6;
-  color: #fff;
 }
 .events .field--name-field-recurring-date,
 .events .field--name-field-location {

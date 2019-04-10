@@ -46,9 +46,6 @@ h1.page-title {
   background: none;
   color: #666;
 }
-aside .nav > a {
-  background: #52854c;
-}
 .block-boxes-os_boxes_facetapi_vocabulary.navigation a,
 .block-boxes-os_taxonomy_fbt.navigation a {
   font-family: georgia;
@@ -84,7 +81,10 @@ aside .nav > a {
 #boxes-box-site_info a {
   font-family: 'Roboto',helvetica,arial;
 }
-
+.search-block-form .form-submit {
+  background: #52854c;
+  border-color: #52854c;
+}
 .page-title,
 .node--title,
 .page-search .title a,

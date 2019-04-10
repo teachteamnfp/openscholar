@@ -15,13 +15,9 @@ h2.block-title,
 .header-container ul.nav a {
   font-family: 'Noto Serif', Georgia, serif;
 }
-aside .nav a,
 footer,
 .header-container {
   background: #ffdb6d;
-}
-aside .nav a {
-  color: #000;
 }
 .navbar-collapse {
   background: #4e84c4;
@@ -37,9 +33,10 @@ aside .nav a {
 .navbar-collapse ul.nav a {
   color: #fff;
 }
-.search-block-form .form-submi t {
+.search-block-form .form-submit {
   background: #4e84c4;
   border-radius: 44px;
+  border-color: #4e84c4;
 }
 .fc-listUpcoming-view .fc-list-heading .fc-list-heading-main,
 .fc-listPast-view .fc-list-heading .fc-list-heading-main {
@@ -79,9 +76,6 @@ aside .row > .block,
 .path-person .block-inner,
 .comment-wrapper {
   border-top: none;
-}
-aside ul.nav li a {
-  border-bottom: 1px solid #ffdb6d;
 }
 #boxes-box-os_pages_section_nav {
   border: 1px solid #ffdb6d;

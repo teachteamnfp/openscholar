@@ -24,7 +24,9 @@ h2.block-title,
 }
 .breadcrumb a,
 a,
-a:visited {
+a:visited,
+.fc-header-toolbar button,
+.fc-header-toolbar button:hover {
   color: #a51c30;
 }
 a.os-swipe-large,
@@ -32,11 +34,10 @@ a.os-swipe-small {
   background-color: #a51c30;
 }
 .biblio-title a {
-  font-weight: normal !important;
+  font-weight: normal;
 }
-aside .nav > a,
 .header-container {
-  background: #8c8179 !important;
+  background: #8c8179;
 }
 footer,
 .navbar-collapse {
@@ -82,49 +83,36 @@ footer strong,
   padding: 8px 0 0;
   font-size: 11px;
 }
-.search-block-form .from-submit {
+.search-block-form .form-submit {
   background: #a51c30;
-  height: 34px;
+  border-color: #a51c30;
 }
 .search-block-form .container-inline .form-item .form-text,
 #search-block-form .container-inline .form-item .form-text {
   background: #dedede;
 }
-aside .block,
+aside .row > .block,
 .path-front .content-inner .block,
 .content-inner .block.block-boxes-os_boxes_columns .block,
 .path-person .block-inner,
 .comment-wrapper {
   border-top: 1px solid #a51c30;
 }
-aside .block,
+aside .row > .block,
 .path-front .content-inner .block.block-boxes-os_slideshow_box,
 .content-inner .block.block-boxes-os_boxes_columns .block,
 .path-person .block-inner,
 .comment-wrapper {
   border-top: none;
 }
-aside ul.nav li a {
-  border-bottom: none;
-}
 #boxes-box-os_pages_section_nav {
   border: 1px solid #bf7d86;
-}
-aside .nav a:hover,
-aside .nav > a {
-  background-color: #bac5c6;
-  color: #222;
 }
 .header-container ul.nav a {
   text-transform: none;
 }
-.content-inner .accordion ul.nav li,
-.content-inner .os-custom-menu ul.nav li,
-.content-inner #block-os-primary-menu ul.nav li,
-.content-inner #block-os-secondary-menu ul.nav li,
-.content-inner .os-custom-menu ul.menu li,
-.content-inner #block-os-primary-menu ul.menu li,
-.content-inner #block-os-secondary-menu ul.menu li {
+.main-container .accordion ul.nav li,
+.main-container aside ul.nav li {
   background-color: #ededed;
 }
 a.rslides_nav {
