@@ -1,0 +1,186 @@
+//colors
+$seashell: #f1f1f1;
+$white: #fff;
+$color_alabaster_approx: #f9f9f9;
+$color_log_cabin_approx: #222;
+$color_fern_green_approx: #457141;
+$color_red_stage_approx: #d16103;
+$color_cape_cod_approx: #414141;
+
+//fonts
+$font_0: Open Sans;
+$font_1: Georgia;
+
+//@extend-elements
+%extend_1 {
+  background-color: $color_fern_green_approx;
+  color: $white;
+  border-radius: 3px;
+}
+
+%extend_2 {
+  background: none;
+  box-shadow: none;
+  text-shadow: none;
+}
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+body {
+  background-color: $color_alabaster_approx;
+  color: $color_log_cabin_approx;
+  * {
+    font-family: $font_0;
+  }
+}
+.header-container {
+  background-color: $white;
+  border-top: 7px solid $color_fern_green_approx;
+  color: $color_log_cabin_approx;
+  a {
+    color: $color_log_cabin_approx;
+  }
+  ul.nice-menu a {
+    font-family: $font_0;
+  }
+}
+.navbar-collapse {
+  background-color: $seashell;
+  border-top: none;
+  border-bottom: none;
+  ul.nav {
+    .dropdown {
+      a {
+        &:hover {
+          @extend %extend_1;
+        }
+
+        &.is-active {
+          @extend %extend_1;
+        }
+      }
+      ul li a {
+        color: $white;
+        &.is-active {
+          color: $white;
+        }
+        &:hover {
+          color: $white;
+        }
+      }
+      &.open>a {
+        @extend %extend_1;
+      }
+    }
+    a {
+      &.is-active {
+        @extend %extend_1;
+      }
+      &:hover {
+        @extend %extend_1;
+      }
+    }
+    ul {
+      @extend %extend_1;
+    }
+    li a {
+      font-family: $font_0;
+    }
+  }
+}
+#boxes-box-site_info {
+  font-family: $font_0;
+  a {
+    font-family: $font_0;
+  }
+  h1 a {
+    font-family: $font_1;
+    font-size: 1.1em;
+  }
+}
+.main-container {
+  .accordion ul.nice-menu li {
+    background-color: $seashell;
+  }
+  aside ul.nav li {
+    background-color: $seashell;
+  }
+}
+.section-nav {
+  .expanded.menu-depth-2>a {
+    background-color: $seashell;
+    color: $color_fern_green_approx !important;
+    &:hover {
+      background-color: $seashell;
+    }
+  }
+  .menu-depth-1>a {
+    background-color: $seashell;
+    color: $color_fern_green_approx !important;
+  }
+  a:hover {
+    background-color: $seashell;
+  }
+}
+a {
+  color: $color_fern_green_approx;
+  &:visited {
+    color: $color_fern_green_approx;
+  }
+  &.os-swipe-large {
+    background-color: $color_fern_green_approx;
+  }
+  &.os-swipe-small {
+    background-color: $color_fern_green_approx;
+  }
+}
+footer {
+  color: $white;
+  background-color: $color_cape_cod_approx;
+  .footer-login {
+    color: $white;
+    @extend %extend_2;
+    &:after {
+      @extend %extend_2;
+    }
+  }
+  a {
+    color: $white;
+  }
+}
+.fc-header-toolbar h2 {
+  font-family: $font_0;
+}
+.slide-copy h2 {
+  font-family: $font_0;
+}
+.accordion .ui-state-default {
+  background-color: $seashell;
+}
+.ui-tabs ul.ui-tabs-nav li {
+  background-color: $seashell;
+}
+.fc-listUpcoming-view .fc-list-heading .fc-list-heading-main {
+  background-color: $seashell;
+}
+.fc-listPast-view .fc-list-heading .fc-list-heading-main {
+  background-color: $seashell;
+}
+.biblio-title a {
+  color: $color_fern_green_approx;
+}
+.breadcrumb a {
+  color: $color_fern_green_approx;
+}
+.search-block-form .form-submit {
+  background: $color_fern_green_approx;
+  border-color: $color_fern_green_approx;
+}
+h2.block-title {
+  border-left: 3px solid $color_red_stage_approx;
+  padding-left: 8px;
+  text-transform: uppercase;
+  font-size: 1.1em;
+  font-weight: bold;
+}
+#powered-by a {
+  background-position: -14px -548px;
+}
