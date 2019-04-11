@@ -1,0 +1,206 @@
+//colors
+$color_log_cabin_approx: #222;
+$white: #fff;
+$color_cloud_burst_approx: #293352;
+$color_sprout_approx: #c3d7a4;
+$color_steel_blue_approx: #4e84c4;
+$color_concrete_approx: #f3f3f1;
+$color_mexican_red_approx: #a51c30;
+$color_iron_approx: #d7d7d7;
+
+//fonts
+$font_0: Merriweather;
+$font_1: Georgia;
+$font_2: serif !important;
+$font_3: Merriweather Sans;
+$font_4: sans-serif !important;
+
+//@extend-elements
+%extend_1 {
+  color: $color_mexican_red_approx;
+  text-transform: none;
+  font-weight: bold;
+  font-size: 1.25em;
+}
+%extend_2 {
+  background-color: $white;
+  border-top: 4px solid $color_mexican_red_approx;
+  color: $color_mexican_red_approx;
+  padding: 12px 15px 16px;
+}
+
+@import url(https://fonts.googleapis.com/css?family=Merriweather:300);
+@import url(https://fonts.googleapis.com/css?family=Merriweather+Sans);
+
+html {
+  color: $color_log_cabin_approx;
+}
+body {
+  color: $color_log_cabin_approx;
+  font-family: $font_0, $font_1, $font_2;
+}
+.page-header {
+  font-family: $font_0, $font_1, $font_2;
+}
+.node--title {
+  font-family: $font_0, $font_1, $font_2;
+}
+.more-link {
+  font-family: $font_0, $font_1, $font_2;
+}
+.content-inner {
+  h2 {
+    font-family: $font_0, $font_1, $font_2;
+  }
+  h3 {
+    font-family: $font_0, $font_1, $font_2;
+  }
+  h4 {
+    font-family: $font_0, $font_1, $font_2;
+  }
+}
+footer {
+  color: $white;
+  background-color: $color_steel_blue_approx;
+  a {
+    font-family: $font_3, $font_4;
+    color: $white;
+  }
+  .footer-login {
+    color: $white;
+    //Instead of the line below you could use @include text-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+    text-shadow: none;
+    &:after {
+      background-image: none;
+    }
+  }
+  ul.nav {
+    a {
+      font-family: $font_3, $font_4;
+    }
+    li ul li a {
+      font-family: $font_0, $font_1, $font_2;
+    }
+  }
+}
+.navbar-collapse {
+  background: $color_concrete_approx;
+  ul.nav {
+    a {
+      font-family: $font_0, $font_1, $font_2;
+      padding: 16px 15px;
+      @extend %extend_1;
+      &.is-active {
+        @extend %extend_1;
+        @extend %extend_2;
+      }
+      &:hover {
+        @extend %extend_1;
+        @extend %extend_2;
+      }
+    }
+    .dropdown {
+      a {
+        &:hover {
+          @extend %extend_2;
+          color: $color_mexican_red_approx;
+          padding: 10px 15px;
+        }
+        &.is-active {
+          @extend %extend_2;
+        }
+        &.is-active {
+          color: $color_mexican_red_approx;
+          padding: 10px 15px;
+        }
+      }
+      ul li a {
+        @extend %extend_1;
+        font-size: 1em;
+        &.is-active {
+          @extend %extend_1;
+          font-size: 1em;
+        }
+        &:hover {
+          color: $color_mexican_red_approx;
+          padding: 10px 15px;
+        }
+      }
+      &.open>a {
+        @extend %extend_2;
+        color: $color_mexican_red_approx;
+        padding: 10px 15px;
+      }
+    }
+    ul {
+      background: $white;
+      border-left: 1px solid $color_concrete_approx;
+      border-right: 1px solid $color_concrete_approx;
+      border-bottom: 1px solid $color_concrete_approx;
+    }
+  }
+}
+.path-front {
+  .region-content-first {
+    background: $white;
+  }
+  .region-content-second {
+    background-color: $color_cloud_burst_approx;
+    color: $white;
+    span {
+      background-color: $color_cloud_burst_approx;
+      color: $white;
+    }
+    a {
+      color: $white;
+    }
+  }
+  .region-content-bottom {
+    background-color: $color_sprout_approx;
+  }
+  .block-boxes-os_boxes_html {
+    font-size: 1em;
+  }
+}
+
+.header-container {
+  background: $color_concrete_approx;
+}
+.block-os-search-solr {
+  font-size: .97em;
+}
+.field--item span {
+  color: $color_log_cabin_approx;
+}
+.path-search .title a {
+  font-family: $font_0, $font_1, $font_2;
+}
+.links a {
+  font-family: $font_0, $font_1, $font_2;
+}
+.section-nav a {
+  font-family: $font_0, $font_1, $font_2;
+}
+h2.block-title {
+  font-family: $font_0, $font_1, $font_2;
+}
+.header-container ul.nav a {
+  font-family: $font_0, $font_1, $font_2;
+  font-family: $font_3, $font_4;
+}
+.fc-header-toolbar h2 {
+  font-family: $font_0, $font_1, $font_2;
+}
+.field--name-body h2 {
+  font-weight: normal;
+  margin-bottom: 8px;
+}
+h1.page-title {
+  font-weight: normal;
+}
+.aside h2.block-title {
+  font-weight: normal;
+}
+.attachment.attachment-before ul li {
+  font-size: 14px;
+}

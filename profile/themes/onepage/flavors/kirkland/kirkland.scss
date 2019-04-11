@@ -1,0 +1,294 @@
+//colors
+$color_log_cabin_approx: #222;
+$white: #ffffff;
+$color_st_tropaz_approx: #215990;
+$color_fuscous_gray_approx: #545454;
+$color_endeavour_approx: #065db2;
+$color_black_haze_approx: #f6f6f6;
+$color_glacier_approx: #81b9c3;
+$color_jaffa_approx: #e67939;
+$color_fiord_approx: #3a4b68;
+$color_san_juan_approx: #32526e;
+$color_tundora_approx: #444;
+$color_limed_spruce_approx: #3e464d;
+$color_mountain_mist_approx: #999;
+
+//fonts
+$font_0: Quattrocento;
+$font_1: sans-serif !important;
+$font_2: Oswald;
+
+%extend_1 {
+  box-shadow: none;
+  background-image: none;
+  text-shadow: none;
+}
+@import url(https://fonts.googleapis.com/css?family=Quattrocento|Oswald:400,700);
+
+body {
+  font-size: 16px;
+  color: $color_log_cabin_approx;
+  font-family: $font_0, $font_1;
+  &.not-front {
+    font-size: 16px;
+    color: $color_log_cabin_approx;
+  }
+}
+.more-link {
+  font-family: $font_0, $font_1;
+  &:after {
+    background-image: url(images/sprite.png?456);
+    background-position: 0 -126px;
+    background-size: 60px auto;
+    height: 12px;
+    width: 20px;
+    right: -12px;
+  }
+}
+footer {
+  background-color: $color_limed_spruce_approx;
+  border-top: 4px solid $color_mountain_mist_approx;
+  ul {
+    &.nav {
+      a {
+        font-family: $font_0, $font_1;
+      }
+      li {
+        a {
+          font-weight: normal;
+          border-right: 1px solid $white;
+          padding-right: 8px;
+        }
+        ul li a {
+          font-family: $font_0, $font_1;
+        }
+      }
+    }
+    &.nav {
+      text-align: right;
+      li a {
+        font-family: $font_2, $font_1;
+      }
+    }
+  }
+  .footer-login {
+    color: $white;
+    @extend %extend_1;
+    &:after {
+      @extend %extend_1;
+    }
+  }
+  h2.block-title {
+    color: $white;
+  }
+}
+aside {
+  .block {
+    &:nth-child(2) {
+      border-color: $color_glacier_approx;
+    }
+    &:nth-child(3) {
+      border-color: $color_jaffa_approx;
+    }
+    &:nth-child(1) {
+      border-color: $color_fiord_approx;
+    }
+    &:nth-child(4) {
+      border-color: $color_fiord_approx;
+    }
+  }
+  .nav a {
+    font-family: $font_0, $font_1;
+  }
+  .row>.block {
+    border-top-style: solid;
+    border-width: 3px;
+    padding: 15px 0 0;
+  }
+  h2.block-title {
+    padding: 0 0 15px 0;
+  }
+}
+.node--title {
+  font-family: $font_0, $font_1;
+}
+.breadcrumb {
+  font-family: $font_2, $font_1;
+  font-weight: 300;
+  a {
+    font-family: $font_2, $font_1;
+    font-weight: 300;
+  }
+}
+.navbar-collapse {
+  background-color: $white;
+  &.fixed {
+    border-bottom: 1px solid $color_san_juan_approx;
+  }
+  ul.nav {
+    a {
+      font-family: $font_2, $font_1;
+      &.is-active {
+        border-bottom: 3px solid $color_san_juan_approx;
+        color: $color_tundora_approx;
+      }
+      &:hover {
+        border-bottom: 3px solid $color_san_juan_approx;
+        color: $color_tundora_approx;
+      }
+    }
+    ul {
+      background: $color_san_juan_approx;
+      a:hover {
+        background: $color_san_juan_approx;
+        color: $white;
+        padding: 10px 20px;
+      }
+    }
+    .dropdown {
+      padding-right: 0;
+    }
+    >li>a {
+      color: $color_tundora_approx;
+      border-bottom: 3px solid $white;
+      padding: 16px 14px 13px;
+      //Instead of the line below you could use @include transition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
+      transition: all .125s linear .125s;
+      font-size: 19px;
+      &:hover {
+        padding: 13px 14px 16px;
+      }
+    }
+    >.dropdown {
+      >a {
+        &:hover {
+          border-bottom: 3px solid $color_san_juan_approx;
+          color: $color_tundora_approx;
+          padding: 13px 14px 16px;
+        }
+        &.is-active {
+          border-bottom: 3px solid $color_san_juan_approx;
+          color: $color_tundora_approx;
+        }
+      }
+      &.open > a {
+        border-bottom: 3px solid $color_san_juan_approx;
+        color: $color_tundora_approx;
+        padding: 13px 14px 16px;
+        &:hover {
+          background: $color_black_haze_approx;
+        }
+      }
+    }
+  }
+  .navbar-nav>li>a {
+    &.is-active {
+      background: $color_black_haze_approx;
+    }
+    &:hover {
+      background: $color_black_haze_approx;
+    }
+  }
+}
+.content-inner {
+  h2 {
+    font-family: $font_2, $font_1;
+    font-weight: 300;
+    &.block-title {
+      font-weight: 400;
+    }
+  }
+  h3 {
+    font-family: $font_2, $font_1;
+    font-weight: 300;
+  }
+  h4 {
+    font-family: $font_2, $font_1;
+    font-weight: 300;
+  }
+}
+.page-header {
+  font-family: $font_2, $font_1;
+}
+a {
+  color: $color_endeavour_approx;
+  &:visited {
+    color: $color_endeavour_approx;
+  }
+}
+.header-container {
+  background: url(images/menu-bg.png) left bottom repeat-x $white;
+  padding-top: 6px;
+}
+h3 {
+  margin-bottom: 7px;
+  font-weight: 300;
+}
+.path-search .title a {
+  font-family: $font_0, $font_1;
+}
+.links a {
+  font-family: $font_0, $font_1;
+}
+.fc-header-toolbar h2 {
+  font-family: $font_0, $font_1;
+}
+.path-page .breadcrumb {
+  font-family: $font_2, $font_1;
+}
+.header-container ul.nav a {
+  font-family: $font_2, $font_1;
+  color: $color_st_tropaz_approx;
+  font-weight: 300;
+}
+h2.block-title {
+  font-family: $font_2, $font_1;
+  color: $color_fuscous_gray_approx;
+}
+.pager.mini-pager {
+  font-size: .8em;
+}
+h1.page-title {
+  color: $color_fuscous_gray_approx;
+  font-size: 1.75em;
+  line-height: 1.2em;
+}
+.search-block-form .form-submit {
+  background: $color_endeavour_approx;
+}
+.aside h2.block-title {
+  font-weight: 300;
+}
+.path-front .region-content-second {
+  border-top: none;
+  border-right: none;
+  border-bottom: none;
+  border: none;
+}
+.not-front .navbar-collapse {
+  padding-bottom: 25px;
+}
+.bg-one .navbar-collapse {
+  background: url(images/bg1.jpg?457) center bottom -180px no-repeat $white;
+}
+.bg-two .navbar-collapse {
+  background: url(images/bg2.jpg) center bottom -180px no-repeat $white;
+}
+.bg-three .navbar-collapse {
+  background: url(images/bg3.jpg) center bottom -180px no-repeat $white;
+}
+.bg-four .navbar-collapse {
+  background: url(images/bg4.jpg) center bottom -180px no-repeat $white;
+}
+.bg-five .navbar-collapse {
+  background: url(images/bg5.jpg) center bottom -180px no-repeat $white;
+}
+.bg-six .navbar-collapse {
+  background: url(images/bg6.jpg) center bottom -180px no-repeat $white;
+}
+.bg-seven .navbar-collapse {
+  background: url(images/bg7.jpg) center bottom -180px no-repeat $white;
+}
+.bg-eight .navbar-collapse {
+  background: url(images/bg8.jpg) center bottom -180px no-repeat $white;
+}
