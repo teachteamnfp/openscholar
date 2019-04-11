@@ -36,6 +36,7 @@ module:
   cp: 0
   cp_appearance: 0
   cp_settings: 0
+  cp_taxonomy: 0
   cp_users: 0
   crop: 0
   ctools: 0
