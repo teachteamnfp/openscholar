@@ -1,0 +1,22 @@
+uuid: c0f35d93-0a2c-4c6d-9bd0-653530975167
+langcode: en
+status: true
+dependencies:
+  theme:
+    - documental
+_core:
+  default_config_hash: X9I1OB0W3WlWtrK-CNcg6hNWwa8wficanpH8pYnDZDE
+id: documental_local_tasks
+theme: documental
+region: content
+weight: -6
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: Tabs
+  provider: core
+  label_display: '0'
+  primary: true
+  secondary: true
+visibility: {  }
