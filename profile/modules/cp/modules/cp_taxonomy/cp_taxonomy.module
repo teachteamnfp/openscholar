@@ -100,9 +100,10 @@ function cp_taxonomy_form_taxonomy_vocabulary_form_alter(array &$form, FormState
   if (!empty($form['vid']['#default_value'])) {
     $vid = $form['vid']['#default_value'];
     $config_factory = Drupal::configFactory();
-    $config_allowed_vocabulary_reference = $config_factory->get('cp_taxonomy.settings.allowed_vocabulary_reference_types')->get();
-    if (!empty($config_allowed_vocabulary_reference[$vid])) {
-      $saved_entity_types = $config_allowed_vocabulary_reference[$vid];
+    $config_vocab = $config_factory->getEditable('taxonomy.vocabulary.' . $vid);
+    $config_allowed_vocabulary_reference = $config_vocab->get('allowed_vocabulary_reference_types');
+    if (!empty($config_allowed_vocabulary_reference)) {
+      $saved_entity_types = $config_allowed_vocabulary_reference;
     }
   }
   $form['allowed_entity_types'] = [
@@ -179,8 +180,8 @@ function cp_taxonomy_form_add_vocab_submit(array &$form, FormStateInterface &$fo
   $vid = $form_state->getValue('vid');
   $allowed_entity_types = $form_state->getValue('allowed_entity_types');
   $filtered_entity_types = array_values(array_filter($allowed_entity_types));
-  $config = $config_factory->getEditable('cp_taxonomy.settings.allowed_vocabulary_reference_types');
-  $config->set($vid, $filtered_entity_types)->save(TRUE);
+  $config_vocab = $config_factory->getEditable('taxonomy.vocabulary.' . $vid);
+  $config_vocab->set('allowed_vocabulary_reference_types', $filtered_entity_types)->save(TRUE);
   $form_state->setRedirect('cp.taxonomy');
 }
 
@@ -193,7 +194,7 @@ function cp_taxonomy_views_data_alter(&$data) {
     'filter' => [
       'title' => t('Allowed vocabulary filter'),
       'help' => 'Filters terms with selected vocabularies in config',
-      'field' => 'gid',
+      'field' => 'vid',
       'id' => 'allowed_vocabulary_filter',
     ],
   ];

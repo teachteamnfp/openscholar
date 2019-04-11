@@ -3,6 +3,7 @@
 namespace Drupal\cp_taxonomy;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\taxonomy\Entity\Vocabulary;
 
 /**
  * Helper functions to handle vocabularies and related entities.
@@ -37,16 +38,19 @@ class CpTaxonomyHelper implements CpTaxonomyHelperInterface {
    * {@inheritdoc}
    */
   public function searchAllowedVocabulariesByType(string $bundle_key): array {
-    $config_allowed_vocabulary_reference = $this->configFactory->get('cp_taxonomy.settings.allowed_vocabulary_reference_types')->get();
-    $vocabularies = [];
-    if (!empty($config_allowed_vocabulary_reference)) {
-      foreach ($config_allowed_vocabulary_reference as $vid => $bundle_keys) {
-        if (in_array($bundle_key, $bundle_keys)) {
-          $vocabularies[$vid] = $vid;
-        }
+    $vsite_vocabularies = Vocabulary::loadMultiple();
+    $filter_vocabularies = [];
+    foreach ($vsite_vocabularies as $vid => $vocabulary) {
+      $config_vocab = $this->configFactory->getEditable('taxonomy.vocabulary.' . $vid);
+      $bundle_keys = $config_vocab->get('allowed_vocabulary_reference_types');
+      if (empty($bundle_keys)) {
+        continue;
+      }
+      if (in_array($bundle_key, $bundle_keys)) {
+        $filter_vocabularies[$vid] = $vid;
       }
     }
-    return $vocabularies;
+    return $filter_vocabularies;
   }
 
 }
