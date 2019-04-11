@@ -5,6 +5,7 @@ namespace Drupal\cp_appearance\Controller;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Extension\ThemeHandlerInterface;
+use Drupal\Core\Path\AliasManagerInterface;
 use Drupal\cp_appearance\AppearanceHelperInterface;
 use Drupal\cp_appearance\Form\ThemeForm;
 use Drupal\os_theme_preview\HandlerInterface;
@@ -50,6 +51,13 @@ class CpAppearanceMainController extends ControllerBase {
   protected $previewManager;
 
   /**
+   * Alias manager.
+   *
+   * @var \Drupal\Core\Path\AliasManagerInterface
+   */
+  protected $aliasManager;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
@@ -58,12 +66,13 @@ class CpAppearanceMainController extends ControllerBase {
       $container->get('config.factory'),
       $container->get('cp_appearance.appearance_helper'),
       $container->get('os_theme_preview.handler'),
-      $container->get('os_theme_preview.manager')
+      $container->get('os_theme_preview.manager'),
+      $container->get('path.alias_manager')
     );
   }
 
   /**
-   * CpAppearanceMainController constructor.
+   * Creates a new CpAppearanceMainController object.
    *
    * @param \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler
    *   The theme handler.
@@ -75,13 +84,16 @@ class CpAppearanceMainController extends ControllerBase {
    *   Theme preview handler.
    * @param \Drupal\os_theme_preview\PreviewManagerInterface $preview_manager
    *   Theme preview manager.
+   * @param \Drupal\Core\Path\AliasManagerInterface $alias_manager
+   *   Alias manager.
    */
-  public function __construct(ThemeHandlerInterface $theme_handler, ConfigFactoryInterface $config_factory, AppearanceHelperInterface $appearance_helper, HandlerInterface $handler, PreviewManagerInterface $preview_manager) {
+  public function __construct(ThemeHandlerInterface $theme_handler, ConfigFactoryInterface $config_factory, AppearanceHelperInterface $appearance_helper, HandlerInterface $handler, PreviewManagerInterface $preview_manager, AliasManagerInterface $alias_manager) {
     $this->themeHandler = $theme_handler;
     $this->configFactory = $config_factory;
     $this->appearanceHelper = $appearance_helper;
     $this->previewHandler = $handler;
     $this->previewManager = $preview_manager;
+    $this->aliasManager = $alias_manager;
   }
 
   /**
@@ -144,7 +156,7 @@ class CpAppearanceMainController extends ControllerBase {
       $this->messenger()->addError($this->t('The %theme theme was not found.', ['%theme' => $theme]));
     }
 
-    return $this->redirect('cp.appearance');
+    return $this->redirectToAppearanceSettings();
   }
 
   /**
@@ -167,7 +179,25 @@ class CpAppearanceMainController extends ControllerBase {
       $this->getLogger('cp_appearance')->error($e->getMessage());
     }
 
-    return $this->redirect('cp.appearance');
+    return $this->redirectToAppearanceSettings();
+  }
+
+  /**
+   * Redirect to vsite appearance settings page.
+   *
+   * This makes sure that the redirect is to `/vsite-alias/cp/appearance`,
+   * otherwise, the system loses the vsite alias and redirects to
+   * `/cp/appearance`.
+   *
+   * @return \Symfony\Component\HttpFoundation\RedirectResponse
+   *   Redirect response.
+   */
+  protected function redirectToAppearanceSettings(): RedirectResponse {
+    /** @var int $group_id */
+    $group_id = $this->previewManager->getActiveVsiteId();
+    /** @var string $vsite_alias */
+    $vsite_alias = $this->aliasManager->getAliasByPath("/group/{$group_id}");
+    return new RedirectResponse("$vsite_alias/cp/appearance");
   }
 
 }
