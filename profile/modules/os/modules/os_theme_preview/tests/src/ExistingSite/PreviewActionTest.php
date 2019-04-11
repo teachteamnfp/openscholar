@@ -94,6 +94,24 @@ class PreviewActionTest extends TestBase {
   }
 
   /**
+   * Tests back button.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   */
+  public function testBack(): void {
+    $this->drupalLogin($this->admin);
+
+    $this->visit('/admin/appearance');
+    $this->getCurrentPage()->pressButton('Preview');
+    $this->getCurrentPage()->pressButton('Back to themes');
+
+    /** @var \Drupal\Core\Config\ImmutableConfig $actual_theme_config */
+    $actual_theme_config = $this->configFactory->get('system.theme');
+
+    $this->assertSame($this->themeConfig->get('default'), $actual_theme_config->get('default'));
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function tearDown() {
