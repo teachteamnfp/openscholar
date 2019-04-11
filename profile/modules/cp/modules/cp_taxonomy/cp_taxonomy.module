@@ -189,13 +189,13 @@ function cp_taxonomy_form_add_vocab_submit(array &$form, FormStateInterface &$fo
  * Implements hook_views_data_alter().
  */
 function cp_taxonomy_views_data_alter(&$data) {
-  $data['group_content']['allowed_vocabulary_filter'] = [
-    'title' => t('Allowed vocabulary filter'),
-    'filter' => [
+  $data['taxonomy_term_field_data']['entity_bundle_to_vocabulary_vid'] = [
+    'title' => t('Entity bundle to vocabulary vid'),
+    'argument' => [
       'title' => t('Allowed vocabulary filter'),
-      'help' => 'Filters terms with selected vocabularies in config',
+      'help' => 'Convert entity bundle to vids',
       'field' => 'vid',
-      'id' => 'allowed_vocabulary_filter',
+      'id' => 'entity_bundle_to_vocabulary_vid',
     ],
   ];
 }
@@ -203,18 +203,12 @@ function cp_taxonomy_views_data_alter(&$data) {
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function cp_taxonomy_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+function cp_taxonomy_form_node_form_alter(&$form, FormStateInterface $form_state) {
   if (!empty($form['field_taxonomy_terms']['widget'])) {
     /** @var \Drupal\node\NodeForm $node_form */
     $node_form = $form_state->getBuildInfo()['callback_object'];
     $bundle = $node_form->getEntity()->bundle();
     $bundle_key = 'node:' . $bundle;
-    foreach (Element::children($form['field_taxonomy_terms']['widget']) as $delta) {
-      $element = &$form['field_taxonomy_terms']['widget'][$delta];
-      if (!empty($element['target_id'])) {
-        $element['target_id']['#selection_settings']['bundle_key'] = $bundle_key;
-      }
-    }
 
     $vocabularies = Drupal::service('cp_taxonomy.helper')->searchAllowedVocabulariesByType($bundle_key);
     // If the current node type has no related vocabularies, then hide it.

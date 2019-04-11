@@ -21,5 +21,6 @@ settings:
     view:
       view_name: reference_taxonomy_term
       display_name: entity_reference_1
-      arguments: {  }
+      arguments:
+        - 'node:news'
 field_type: entity_reference
