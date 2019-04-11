@@ -43,7 +43,7 @@ class AllowedVocabularyFilter extends FilterPluginBase {
    */
   public function query() {
     $settings = $this->cpTaxonomyHelper->getTaxonomyTermSettingsFromRequest();
-    if (!empty($settings)) {
+    if (!empty($settings['bundle_key'])) {
       $vocabularies = $this->cpTaxonomyHelper->searchAllowedVocabulariesByType($settings['bundle_key']);
       if (!empty($vocabularies)) {
         $this->query->addWhere('cp_taxonomy', 'vid', array_values($vocabularies), 'IN');

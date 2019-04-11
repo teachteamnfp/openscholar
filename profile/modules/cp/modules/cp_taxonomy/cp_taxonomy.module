@@ -9,6 +9,7 @@ use Drupal\vsite\Config\HierarchicalStorage;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Render\Element;
 
 /**
  * Implements hook_entity_operation_alter().
@@ -202,12 +203,17 @@ function cp_taxonomy_views_data_alter(&$data) {
  * Implements hook_form_FORM_ID_alter().
  */
 function cp_taxonomy_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  if (!empty($form['field_taxonomy_terms']['widget'][0]['target_id'])) {
+  if (!empty($form['field_taxonomy_terms']['widget'])) {
     /** @var \Drupal\node\NodeForm $node_form */
     $node_form = $form_state->getBuildInfo()['callback_object'];
     $bundle = $node_form->getEntity()->bundle();
     $bundle_key = 'node:' . $bundle;
-    $form['field_taxonomy_terms']['widget'][0]['target_id']['#selection_settings']['bundle_key'] = $bundle_key;
+    foreach (Element::children($form['field_taxonomy_terms']['widget']) as $delta) {
+      $element = &$form['field_taxonomy_terms']['widget'][$delta];
+      if (!empty($element['target_id'])) {
+        $element['target_id']['#selection_settings']['bundle_key'] = $bundle_key;
+      }
+    }
 
     $vocabularies = Drupal::service('cp_taxonomy.helper')->searchAllowedVocabulariesByType($bundle_key);
     // If the current node type has no related vocabularies, then hide it.
