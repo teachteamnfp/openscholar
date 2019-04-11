@@ -1,0 +1,120 @@
+//colors
+$white: #fff;
+$color_woodsmoke_approx: #111111;
+$color_masala_approx: #3d3d3d;
+$color_tundora_approx: #444;
+$color_mine_shaft_approx: #333333;
+$color_st_tropaz_approx: #215990;
+
+//fonts
+$font_0: Open Sans;
+$font_1: Helvetica;
+$font_2: sans-serif;
+
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+body {
+  font-family: $font_0, $font_1, $font_2;
+}
+.header-container {
+  background: $white;
+  ul.nav li a {
+    color: $color_st_tropaz_approx;
+  }
+}
+#boxes-box-site_info {
+  color: $color_woodsmoke_approx;
+  a {
+    color: $color_woodsmoke_approx;
+  }
+}
+.search-block-form {
+  label {
+    color: $color_masala_approx;
+  }
+  .form-submit {
+    background: $color_tundora_approx;
+    border-color: $color_tundora_approx;
+  }
+}
+.page-header {
+  font-family: $font_0, $font_1, $font_2;
+}
+.node--title {
+  font-family: $font_0, $font_1, $font_2;
+}
+.path-search {
+  .title a {
+    font-family: $font_0, $font_1, $font_2;
+  }
+  .content-inner p {
+    font-family: $font_0, $font_1, $font_2;
+  }
+}
+.more-link {
+  font-family: $font_0, $font_1, $font_2;
+}
+.navbar-collapse {
+  background: $white;
+  ul.nav {
+    .dropdown {
+      a {
+        &:hover {
+          background-color: $color_woodsmoke_approx;
+        }
+        &.is-active {
+          background-color: $color_woodsmoke_approx;
+        }
+      }
+      &.open > a {
+        background-color: $color_woodsmoke_approx;
+      }
+    }
+    a {
+      &.is-active {
+        background: $color_woodsmoke_approx;
+      }
+      &:hover {
+        background: $color_woodsmoke_approx;
+      }
+    }
+    ul {
+      background: $color_woodsmoke_approx;
+    }
+    >li>a {
+      color: $color_woodsmoke_approx;
+    }
+  }
+}
+.cke_editable * {
+  font-family: $font_0, $font_1, $font_2;
+}
+.path-node-type-person .content-inner h2.block-title {
+  padding: 7px 10px;
+}
+aside .block h2.block-title {
+  padding: 7px 10px;
+}
+h2.block-title {
+  color: $color_mine_shaft_approx;
+  font-size: 16px;
+  margin-bottom: 10px;
+  text-transform: none;
+}
+.content-inner .block.block-boxes-os_boxes_manual_list .links.inline a {
+  font-family: $font_0, $font_1, $font_2;
+}
+.not-front .content-inner p {
+  font-family: $font_0, $font_1, $font_2;
+}
+.links a {
+  font-family: $font_0, $font_1, $font_2;
+}
+footer ul.nav li a {
+  font-family: $font_0, $font_1, $font_2;
+}
+.boxes-box-content h2 {
+  font-family: $font_0, $font_1, $font_2;
+}
+.view-os-events .views-field-colorbox {
+  font-family: $font_0, $font_1, $font_2;
+}
