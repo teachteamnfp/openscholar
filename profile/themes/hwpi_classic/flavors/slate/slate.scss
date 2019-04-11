@@ -1,0 +1,235 @@
+//colors
+$color_gravel_approx: #4c4c4c;
+$color_pampas_approx: #f6f5ee;
+$color_thunderbird_approx: #c2230e;
+$color_regent_gray_approx: #8996a0;
+$white: #fff;
+$color_gallery_approx: #f0f0ee;
+$color_bon_jour_approx: #e4e0e0;
+$color_fuscous_gray_approx: #555;
+$color_rangoon_green_approx: #1e1e1e;
+
+//fonts
+$font_0: helvetica;
+$font_1: Georgia;
+$font_2: Baskerville;
+$font_3: Palatino;
+$font_4: Palatino Linotype;
+$font_5: Book Antiqua;
+$font_6: Times New Roman;
+$font_7: serif;
+$font_8: arial !important;
+
+html {
+  color: $color_gravel_approx;
+}
+body {
+  color: $color_gravel_approx;
+  background: $color_pampas_approx;
+  font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+}
+a {
+  color: $color_thunderbird_approx;
+  &:visited {
+    color: $color_thunderbird_approx;
+  }
+  &:hover {
+    color: $color_regent_gray_approx;
+  }
+  &.os-swipe-large {
+    background-color: $color_thunderbird_approx;
+  }
+  &.os-swipe-small {
+    background-color: $color_thunderbird_approx;
+  }
+  &.rslides_nav {
+    background: $color_regent_gray_approx;
+  }
+}
+.fc-header-toolbar {
+  button {
+    color: $color_thunderbird_approx;
+    &:hover {
+      color: $color_regent_gray_approx;
+    }
+  }
+  h2 {
+    font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+  }
+}
+.page-header {
+  font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+}
+.node--title {
+  font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+}
+.more-link {
+  font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+  &:after {
+    background-image: none;
+  }
+}
+footer {
+  background: $color_fuscous_gray_approx;
+  color: $white;
+  //Instead of the line below you could use @include text-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+  text-shadow: none;
+  .footer-login {
+    color: $white;
+    //Instead of the line below you could use @include text-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+    text-shadow: none;
+    &:after {
+      background-image: none;
+    }
+  }
+  a {
+    color: $white;
+    //Instead of the line below you could use @include text-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+    text-shadow: none;
+  }
+  ul.nav a {
+    font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+    &.menu-heading {
+      font-size: .99em;
+    }
+  }
+}
+aside {
+  .nav a {
+    font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+  }
+  .region > .block {
+    border-top: 1px solid $color_bon_jour_approx;
+  }
+}
+.content-inner {
+  h2 {
+    font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+  }
+  h3 {
+    font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+  }
+  h4 {
+    font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+  }
+  .block.block-boxes-os_boxes_columns .block {
+    border-top: 1px solid $color_bon_jour_approx;
+  }
+}
+.navbar-collapse {
+  color: $color_gravel_approx;
+  background: $white !important;
+  border-bottom: 1px solid $color_bon_jour_approx;
+  ul.nav {
+    a {
+      font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+      color: $color_gravel_approx;
+      &:hover {
+        color: $white;
+        background: $color_regent_gray_approx;
+      }
+      &.is-active {
+        background: $color_regent_gray_approx;
+      }
+    }
+    .dropdown {
+      a {
+        &:hover {
+          background: $color_regent_gray_approx;
+          color: $white;
+        }
+        &.is-active {
+          background: $color_regent_gray_approx;
+          color: $white;
+        }
+      }
+      &.open>a {
+        background: $color_regent_gray_approx;
+        color: $white;
+      }
+      ul li a {
+        color: $white;
+        &:hover {
+          color: $white;
+        }
+        &.is-active {
+          color: $white;
+        }
+      }
+    }
+    ul {
+      background: $color_regent_gray_approx;
+      li a {
+        color: $white;
+      }
+    }
+  }
+}
+.breadcrumb {
+  font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+  letter-spacing: 0;
+  color: $color_thunderbird_approx;
+  a {
+    font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+    letter-spacing: 0;
+    color: $color_thunderbird_approx;
+  }
+}
+.search-block-form {
+  label {
+    color: $color_gravel_approx;
+  }
+  .form-submit {
+    background: $color_regent_gray_approx;
+    border-color: $color_regent_gray_approx;
+  }
+}
+.header-container {
+  color: $color_gravel_approx;
+  background: $color_gallery_approx;
+}
+.comment-wrapper {
+  border-top: 1px solid $color_bon_jour_approx;
+}
+.events {
+  .field--name-field-recurring-date {
+    color: $color_rangoon_green_approx;
+  }
+  .field--name-field-location {
+    color: $color_rangoon_green_approx;
+  }
+}
+.ui-tabs .ui-widget-content a {
+  color: $color_thunderbird_approx;
+}
+.biblio-title a {
+  color: $color_thunderbird_approx;
+}
+.path-search .title a {
+  font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+}
+.links a {
+  font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+}
+.cke_editable * {
+  font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+}
+h2.block-title {
+  text-transform: none;
+  font-size: 14px;
+  letter-spacing: 0;
+  font-weight: 900;
+  font-family: $font_0, $font_8;
+}
+.header-conatainer ul.nav a {
+  color: $color_gravel_approx;
+}
+.path-front .content-inner .block {
+  border-top: 1px solid $color_bon_jour_approx;
+}
+.path-person .block-inner {
+  border-top: 1px solid $color_bon_jour_approx;
+}
+.accordion .ui-widget-content {
+  background: $white;
+}

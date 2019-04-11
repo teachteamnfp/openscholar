@@ -1,0 +1,183 @@
+//colors
+$color_alabaster_approx: #f9f9f9;
+$color_chathams_blue_approx: #1b4977;
+$color_regent_gray_approx: #8996a0;
+$white: #fff;
+$color_steel_blue_approx: #4e84c4;
+$gallery: #efefef;
+$color_mountain_mist_approx: #999;
+$color_gray_nurse_approx: #e9e9e9;
+$color_rangoon_green_approx: #1e1e1e;
+
+//fonts
+$font_0: Raleway;
+$font_1: Georgia;
+$font_2: Baskerville;
+$font_3: Palatino;
+$font_4: Palatino Linotype;
+$font_5: Book Antiqua;
+$font_6: Times New Roman;
+$font_7: serif;
+$font_8: arial;
+
+@import url(https://fonts.googleapis.com/css?family=Raleway);
+body {
+  background: $color_alabaster_approx;
+  font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+}
+a {
+  color: $color_chathams_blue_approx;
+  &:visited {
+    color: $color_chathams_blue_approx;
+  }
+  &:hover {
+    color: $color_regent_gray_approx;
+  }
+  &.rslides_nav {
+    background: $color_regent_gray_approx;
+  }
+}
+.page-header {
+  font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+}
+.node--title {
+  font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+}
+.more-link {
+  font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+}
+footer {
+  background: $color_gray_nurse_approx;
+  border-top: 1px solid $color_mountain_mist_approx;
+  ul.nav a {
+    font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+  }
+}
+.content-inner {
+  h2 {
+    font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+  }
+  h3 {
+    font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+  }
+  h4 {
+    font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+  }
+}
+.navbar-collapse {
+  color: $white;
+  background: $color_steel_blue_approx;
+  border-top: 1px solid $gallery;
+  ul.nav {
+    a {
+      font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+      color: $white;
+      &.is-active {
+        background: $color_regent_gray_approx;
+      }
+      &:hover {
+        background: $color_regent_gray_approx;
+      }
+    }
+    .dropdown {
+      a {
+        &:hover {
+          background: $color_regent_gray_approx;
+        }
+        &.is-active {
+          background: $color_regent_gray_approx;
+        }
+      }
+      &.open>a {
+        background: $color_regent_gray_approx;
+      }
+      ul li a {
+        &:hover {
+          text-decoration: underline;
+          color: $white;
+        }
+        &.is-active {
+          text-decoration: underline;
+          color: $white;
+        }
+      }
+    }
+    ul {
+      background: $color_regent_gray_approx;
+    }
+  }
+}
+#boxes-box-site_info {
+  color: $white;
+  h1 {
+    font-size: 1.96em;
+    font-weight: 700;
+  }
+  a {
+    color: $white;
+  }
+}
+.search-block-form {
+  label {
+    color: $white;
+  }
+  .form-submit {
+    background: $color_regent_gray_approx;
+    border-color: $color_regent_gray_approx;
+  }
+}
+.header-container {
+  color: $white;
+  background: $color_steel_blue_approx;
+}
+.comment-wrapper {
+  border-top: 1px solid $color_mountain_mist_approx;
+}
+.events {
+  .field--name-field-recurring-date {
+    color: $color_rangoon_green_approx;
+  }
+  .field--name-field-location {
+    color: $color_rangoon_green_approx;
+  }
+}
+.breadcrumb {
+  letter-spacing: 0;
+  a {
+    letter-spacing: 0;
+  }
+}
+.fc-header-toolbar h2 {
+  font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+}
+.path-search .title a {
+  font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+}
+.links a {
+  font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+}
+aside .nav a {
+  font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+}
+h2.block-title {
+  text-transform: none;
+  font-size: 14px;
+  letter-spacing: 0;
+  font-weight: 900;
+  font-family: $font_0, $font_8;
+}
+.header-container ul.nav a {
+  color: $white;
+}
+.aside .region > .block {
+  border-top: 1px solid $color_mountain_mist_approx;
+}
+.path-front .content-inner .block {
+  border-top: 1px solid $color_mountain_mist_approx;
+}
+.content-iiner .block.block-boxes-os_boxes_columns .block {
+  border-top: 1px solid $color_mountain_mist_approx;
+}
+.path-person .block-inner {
+  border-top: 1px solid $color_mountain_mist_approx;
+}

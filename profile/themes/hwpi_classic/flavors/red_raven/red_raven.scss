@@ -1,0 +1,94 @@
+//colors
+$color_mexican_red_approx: #a51c30;
+$color_crown_of_thorns_approx: #7b272b;
+$white: #fff;
+$color_concrete_approx: #f3f3f1;
+$color_boulder_approx: #78777b;
+.navbar-collapse {
+  background: $color_mexican_red_approx;
+  padding: 0 !important;
+  ul.nav {
+    ul {
+      background: $color_crown_of_thorns_approx;
+    }
+    a {
+      &.is-active {
+        background: $color_crown_of_thorns_approx;
+      }
+      &:hover {
+        background: $color_crown_of_thorns_approx;
+      }
+    }
+    .dropdown {
+      a {
+        &:hover {
+          background: $color_crown_of_thorns_approx;
+        }
+        &.is-active {
+          background: $color_crown_of_thorns_approx;
+        }
+      }
+      &.open>a {
+        background: $color_crown_of_thorns_approx;
+      }
+      ul li a {
+        color: $white;
+        &.is-active {
+          color: $white;
+        }
+        &:hover {
+          color: $white;
+          text-decoration: underline !important;
+        }
+      }
+    }
+    li {
+      margin-right: 15px;
+    }
+    >li>a {
+      color: $white;
+      font-size: 19px;
+    }
+  }
+}
+.header-container {
+  background: $color_concrete_approx;
+  ul.nav a {
+    color: $color_mexican_red_approx;
+    font-size: 12px;
+  }
+}
+.content-inner {
+  .block.block-boxes-os_boxes_columns .block {
+    border-top: 3px solid $color_boulder_approx;
+  }
+  .field--name-body h2 {
+    color: $color_mexican_red_approx;
+  }
+}
+.comment-wrapper {
+  border-top: 3px solid $color_boulder_approx;
+}
+.cke_editable {
+  h2 {
+    color: $color_mexican_red_approx;
+  }
+  h3 {
+    color: $color_mexican_red_approx;
+  }
+  h4 {
+    color: $color_mexican_red_approx;
+  }
+}
+aside .region >.block {
+  border-top: 3px solid $color_boulder_approx;
+}
+.path-front .content-inner .block {
+  border-top: 3px solid $color_boulder_approx;
+}
+.path-person .block-inner {
+  border-top: 3px solid $color_boulder_approx;
+}
+h2.block-title {
+  color: $color_mexican_red_approx;
+}
