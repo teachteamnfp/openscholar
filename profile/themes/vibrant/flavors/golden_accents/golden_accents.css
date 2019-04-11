@@ -7,7 +7,7 @@
 }
 body.front .main-container,
 .main-container,
-.main-container:before {
+.main-container {
   background: #fff;
 }
 .path-front .content-inner .block-title,
@@ -89,7 +89,7 @@ footer {
 .navbar-collapse ul.nav .dropdown ul li a {
   color: #fff;
 }
-.front.no-sidebars .region-content-top .block-boxes-os_slideshow_box:after {
+.path-front.no-sidebars .region-content-top .block-boxes-os_slideshow_box:after {
   background: #f4f4f4;
 }
 .header-container .search-block-form label {
