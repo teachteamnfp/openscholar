@@ -15,6 +15,10 @@ aside {
         font-size: 14px;
         td {
           border: 0 none;
+          &.fc-today {
+            color: #215990;
+            font-weight: bold;
+          }
         }
         .fc-row {
           height: auto !important;
@@ -31,6 +35,12 @@ aside {
         }
         .fc-scroller.fc-day-grid-container {
           height: auto !important;
+        }
+        .fc-bg {
+          td.fc-today {
+            background: none;
+            border: 1px solid $color-light-gray;
+          }
         }
       }
     }
@@ -56,6 +66,7 @@ aside {
 /**** calendar prev next ****/
 .fc-header-toolbar {
   .ui-button {
+    color: #215990;
     &.fc-prev-button {
       background: none;
       border: 0 none;
@@ -75,6 +86,9 @@ aside {
       .ui-icon {
         background-image: url(../../../themes/os_base/images/basesprite.png);
       }
+    }
+    &:hover {
+      border-color: $color-gray2;
     }
   }
   .ui-icon {
@@ -132,6 +146,11 @@ aside {
         border-radius: 0px 4px 4px 0px;
       }
     }
+  }
+  td.fc-today {
+    background: none;
+    border-color: $color-light-gray6;
+    border-width: 2px;
   }
 }
 /**** code for day event ****/
@@ -207,7 +226,6 @@ aside {
     }
   }
 }
-
 /**** modal body ****/
 .modal-body {
   .events.full {
@@ -229,4 +247,11 @@ aside {
   }
 }
 
-/**** event shield ****/
+/**** fc event default bg color ****/
+.fc-event-default {
+  border-color: $color-link2;
+  background-color: $color-link2;
+  a {
+    color: $color-link1;
+  }
+}
