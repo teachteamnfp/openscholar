@@ -29,6 +29,8 @@ class EntityBundleToVocabularyVid extends VocabularyVid {
    *   The plugin implementation definition.
    * @param \Drupal\taxonomy\VocabularyStorageInterface $vocabulary_storage
    *   The vocabulary storage.
+   * @param \Drupal\cp_taxonomy\CpTaxonomyHelperInterface $cp_taxonomy_helper
+   *   Cp taxonomy helper.
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, VocabularyStorageInterface $vocabulary_storage, CpTaxonomyHelperInterface $cp_taxonomy_helper) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $vocabulary_storage);
@@ -48,6 +50,9 @@ class EntityBundleToVocabularyVid extends VocabularyVid {
     );
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function query($group_by = FALSE) {
     $vocabularies = $this->cpTaxonomyHelper->searchAllowedVocabulariesByType($this->argument);
     $this->argument = implode(',', array_values($vocabularies));
