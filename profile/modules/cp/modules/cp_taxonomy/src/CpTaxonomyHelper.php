@@ -25,18 +25,6 @@ class CpTaxonomyHelper implements CpTaxonomyHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function getTaxonomyTermSettingsFromRequest(): array {
-    $selection_settings_key = \Drupal::routeMatch()->getParameter('selection_settings_key');
-    $key_value_storage = \Drupal::keyValue('entity_autocomplete');
-    if ($key_value_storage->has($selection_settings_key)) {
-      return $key_value_storage->get($selection_settings_key);
-    }
-    return [];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function searchAllowedVocabulariesByType(string $bundle_key): array {
     $vsite_vocabularies = Vocabulary::loadMultiple();
     $filter_vocabularies = [];
