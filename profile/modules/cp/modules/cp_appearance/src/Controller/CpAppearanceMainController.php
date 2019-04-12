@@ -156,7 +156,7 @@ class CpAppearanceMainController extends ControllerBase {
       $this->messenger()->addError($this->t('The %theme theme was not found.', ['%theme' => $theme]));
     }
 
-    return $this->redirectToAppearanceSettings();
+    return $this->redirect('cp.appearance', [], ['absolute' => TRUE]);
   }
 
   /**
@@ -179,25 +179,7 @@ class CpAppearanceMainController extends ControllerBase {
       $this->getLogger('cp_appearance')->error($e->getMessage());
     }
 
-    return $this->redirectToAppearanceSettings();
-  }
-
-  /**
-   * Redirect to vsite appearance settings page.
-   *
-   * This makes sure that the redirect is to `/vsite-alias/cp/appearance`,
-   * otherwise, the system loses the vsite alias and redirects to
-   * `/cp/appearance`.
-   *
-   * @return \Symfony\Component\HttpFoundation\RedirectResponse
-   *   Redirect response.
-   */
-  protected function redirectToAppearanceSettings(): RedirectResponse {
-    /** @var int $group_id */
-    $group_id = $this->previewManager->getActiveVsiteId();
-    /** @var string $vsite_alias */
-    $vsite_alias = $this->aliasManager->getAliasByPath("/group/{$group_id}");
-    return new RedirectResponse("$vsite_alias/cp/appearance");
+    return $this->redirect('cp.appearance', [], ['absolute' => TRUE]);
   }
 
 }
