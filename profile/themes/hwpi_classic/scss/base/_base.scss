@@ -10,7 +10,6 @@ body {
 .more-link,
 .links a,
 footer ul.nav a,
-aside ul.nav a,
 .content-inner h2,
 .content-inner h3,
 .content-inner h4,
@@ -72,6 +71,9 @@ aside {
     > .block {
       @extend %border-top;
       margin-bottom: 12px;
+      &:before {
+        margin-top: 12px;
+      }
     }
   }
   nav {
