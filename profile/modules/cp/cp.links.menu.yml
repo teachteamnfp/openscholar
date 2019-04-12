@@ -43,10 +43,10 @@ cp.menu:
   url: 'internal:##'
   weight: 1
   menu_name: control-panel
-cp.taxonomy:
-  title: 'Taxonomy'
+cp.appearance:
+  title: 'Appearance'
   url: 'internal:##'
-  weight: 3
+  weight: 2
   menu_name: control-panel
 cp.settings:
   title: 'Settings'

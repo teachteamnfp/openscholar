@@ -120,7 +120,7 @@ class PreviewAction extends FormBase {
       '#type' => 'submit',
       '#name' => 'back',
       '#value' => $this->t('Back to themes'),
-      '#submit' => ['::cancelPreview'],
+      '#submit' => ['::backHandler'],
     ];
 
     return $form;
@@ -152,6 +152,21 @@ class PreviewAction extends FormBase {
    * @ingroup forms
    */
   public function cancelPreview(array &$form, FormStateInterface $form_state): void {
+    try {
+      $this->handler->stopPreviewMode();
+    }
+    catch (ThemePreviewException $exception) {
+      $this->loggerFactory->get('os_theme_preview')->error($exception->getMessage());
+      $this->messenger->addError($this->t('Preview could not be stopped. Check logs for more details.'));
+    }
+  }
+
+  /**
+   * Submit handler for the back button.
+   *
+   * @ingroup forms
+   */
+  public function backHandler(array &$form, FormStateInterface $form_state): void {
     try {
       $this->handler->stopPreviewMode();
     }
