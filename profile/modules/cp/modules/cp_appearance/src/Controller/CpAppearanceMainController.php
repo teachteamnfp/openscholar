@@ -83,7 +83,7 @@ class CpAppearanceMainController extends ControllerBase {
 
     $build = [];
     $build[] = [
-      '#theme' => 'system_themes_page',
+      '#theme' => 'cp_appearance_themes_page',
       '#theme_groups' => $theme_groups,
       '#theme_group_titles' => $theme_group_titles,
     ];

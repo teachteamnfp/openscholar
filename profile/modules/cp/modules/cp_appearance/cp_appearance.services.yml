@@ -1,4 +1,4 @@
 services:
   cp_appearance.appearance_helper:
     class: \Drupal\cp_appearance\AppearanceHelper
-    arguments: ['@theme_handler', '@config.factory']
+    arguments: ['@theme_handler', '@config.factory', '@form_builder']

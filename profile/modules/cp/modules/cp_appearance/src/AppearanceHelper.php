@@ -5,8 +5,10 @@ namespace Drupal\cp_appearance;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Extension\Extension;
 use Drupal\Core\Extension\ThemeHandlerInterface;
+use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
+use Drupal\cp_appearance\Form\FlavorForm;
 
 /**
  * Helper methods for theme appearance settings.
@@ -37,16 +39,26 @@ final class AppearanceHelper implements AppearanceHelperInterface {
   protected $themeConfig;
 
   /**
+   * Form builder.
+   *
+   * @var \Drupal\Core\Form\FormBuilderInterface
+   */
+  protected $formBuilder;
+
+  /**
    * AppearanceHelper constructor.
    *
    * @param \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler
    *   Theme handler.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   Config factory.
+   * @param \Drupal\Core\Form\FormBuilderInterface $form_builder
+   *   Form builder.
    */
-  public function __construct(ThemeHandlerInterface $theme_handler, ConfigFactoryInterface $config_factory) {
+  public function __construct(ThemeHandlerInterface $theme_handler, ConfigFactoryInterface $config_factory, FormBuilderInterface $form_builder) {
     $this->themeHandler = $theme_handler;
     $this->configFactory = $config_factory;
+    $this->formBuilder = $form_builder;
     $this->themeConfig = $this->configFactory->get('system.theme');
   }
 
@@ -72,6 +84,7 @@ final class AppearanceHelper implements AppearanceHelperInterface {
       $theme->is_admin = FALSE;
       $theme->screenshot = $this->addScreenshotInfo($theme, $themes);
       $theme->operations = $this->addOperations($theme);
+      $theme->more_operations = $this->addMoreOperations($theme);
       $theme->notes = $this->addNotes($theme);
     }
 
@@ -149,6 +162,29 @@ final class AppearanceHelper implements AppearanceHelperInterface {
     }
 
     return $notes;
+  }
+
+  /**
+   * Adds more allowed operations to a theme.
+   *
+   * These are the operations which cannot be rendered as links.
+   *
+   * @param \Drupal\Core\Extension\Extension $theme
+   *   The theme.
+   *
+   * @return array
+   *   Renderable form structure.
+   *
+   * @see \template_preprocess_cp_appearance_themes_page
+   */
+  protected function addMoreOperations(Extension $theme): array {
+    $operations = [];
+    /** @var \Drupal\Core\Form\FormInterface $flavor_form */
+    $flavor_form = new FlavorForm($theme->getName());
+
+    $operations[] = $this->formBuilder->getForm($flavor_form);
+
+    return $operations;
   }
 
 }
