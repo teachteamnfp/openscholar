@@ -8,6 +8,7 @@ dependencies:
     - field.field.node.presentation.field_presentation_date
     - field.field.node.presentation.field_presentation_location
     - field.field.node.presentation.field_presentation_slides
+    - field.field.node.presentation.field_taxonomy_terms
     - node.type.presentation
   module:
     - content_moderation
@@ -65,6 +66,15 @@ content:
     region: content
   field_presentation_slides:
     weight: 13
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_taxonomy_terms:
+    weight: 26
     settings:
       match_operator: CONTAINS
       size: 60

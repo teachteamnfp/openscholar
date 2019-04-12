@@ -8,6 +8,7 @@ dependencies:
     - field.field.node.software_release.field_software_package
     - field.field.node.software_release.field_software_project
     - field.field.node.software_release.field_software_version
+    - field.field.node.software_release.field_taxonomy_terms
     - node.type.software_release
   module:
     - content_moderation
@@ -71,6 +72,15 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
+  field_taxonomy_terms:
+    weight: 126
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
     region: content
   langcode:
     type: language_select

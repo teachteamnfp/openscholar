@@ -8,6 +8,7 @@ dependencies:
     - field.field.node.software_release.field_software_package
     - field.field.node.software_release.field_software_project
     - field.field.node.software_release.field_software_version
+    - field.field.node.software_release.field_taxonomy_terms
     - node.type.software_release
   module:
     - text
@@ -48,6 +49,14 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
+  field_taxonomy_terms:
+    weight: 5
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
     region: content
   links:
     weight: 4
