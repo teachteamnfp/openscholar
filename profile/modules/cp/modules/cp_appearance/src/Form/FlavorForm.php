@@ -2,6 +2,9 @@
 
 namespace Drupal\cp_appearance\Form;
 
+use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\OpenModalDialogCommand;
+use Drupal\Core\DependencyInjection\DependencySerializationTrait;
 use Drupal\Core\Form\FormInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
@@ -13,6 +16,7 @@ use PHPUnit\Framework\Assert;
 class FlavorForm implements FormInterface {
 
   use StringTranslationTrait;
+  use DependencySerializationTrait;
 
   /**
    * The theme for which the form will be created.
@@ -60,7 +64,10 @@ class FlavorForm implements FormInterface {
     $form['options'] = [
       '#type' => 'select',
       '#title' => $this->t('Flavors'),
-      '#options' => $this->flavors,
+      '#options' => ['_none' => $this->t('None')] + $this->flavors,
+      '#ajax' => [
+        'callback' => '::feedbackMessage',
+      ],
     ];
 
     return $form;
@@ -75,5 +82,19 @@ class FlavorForm implements FormInterface {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state): void {}
+
+  /**
+   * Flavor option change handler.
+   *
+   * @ingroup forms
+   */
+  public function feedbackMessage(array &$form, FormStateInterface $form_state): AjaxResponse {
+    $response = new AjaxResponse();
+    $test['#markup'] = $form_state->getValue('options');
+
+    $response->addCommand(new OpenModalDialogCommand('Flavor selected', $test));
+
+    return $response;
+  }
 
 }
