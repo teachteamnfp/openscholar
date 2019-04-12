@@ -37,6 +37,12 @@
               $(this).append($("<span class='event-start-month'>").text(eventdata[1]));
               $(this).append($("<span class='event-start-day'>").text(eventdata[2]));
             });
+            var elems = jQuery(".fc-listUpcoming-view tbody > tr, .fc-listPast-view tbody > tr");
+            var wrapper = jQuery('<tr class="fc-wrapper" />');
+            var pArrLen = elems.length;
+            for (var i = 0; i < pArrLen; i += 2) {
+              elems.filter(':eq(' + i + '),:eq(' + (i + 1) + ')').wrapAll(wrapper);
+            };
           }
         },
         views: {
