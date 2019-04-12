@@ -179,10 +179,13 @@ final class AppearanceHelper implements AppearanceHelperInterface {
    */
   protected function addMoreOperations(Extension $theme): array {
     $operations = [];
-    /** @var \Drupal\Core\Form\FormInterface $flavor_form */
-    $flavor_form = new FlavorForm($theme->getName());
 
-    $operations[] = $this->formBuilder->getForm($flavor_form);
+    if (\property_exists($theme, 'sub_themes')) {
+      /** @var \Drupal\Core\Form\FormInterface $flavor_form */
+      $flavor_form = new FlavorForm($theme->getName(), $theme->sub_themes);
+
+      $operations[] = $this->formBuilder->getForm($flavor_form);
+    }
 
     return $operations;
   }

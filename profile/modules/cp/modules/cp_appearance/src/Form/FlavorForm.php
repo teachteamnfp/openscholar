@@ -5,6 +5,7 @@ namespace Drupal\cp_appearance\Form;
 use Drupal\Core\Form\FormInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use PHPUnit\Framework\Assert;
 
 /**
  * Flavor selection form.
@@ -21,13 +22,28 @@ class FlavorForm implements FormInterface {
   protected $theme;
 
   /**
+   * Available flavors of the theme.
+   *
+   * An associative array of flavor machine name and human readable name.
+   *
+   * @var array
+   */
+  protected $flavors;
+
+  /**
    * Creates a new FlavorForm object.
    *
    * @param string $theme
    *   The theme for which the form will be created.
+   * @param array $flavors
+   *   Available flavors of the theme.
    */
-  public function __construct($theme) {
+  public function __construct($theme, array $flavors) {
+    Assert::assertNotEquals('', $theme);
+    Assert::assertNotEmpty($flavors);
+
     $this->theme = $theme;
+    $this->flavors = $flavors;
   }
 
   /**
@@ -44,10 +60,7 @@ class FlavorForm implements FormInterface {
     $form['options'] = [
       '#type' => 'select',
       '#title' => $this->t('Flavors'),
-      '#options' => [
-        'golden_accents' => 'Golden Accents',
-        'shade' => 'shade',
-      ],
+      '#options' => $this->flavors,
     ];
 
     return $form;
