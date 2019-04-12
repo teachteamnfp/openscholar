@@ -86,6 +86,10 @@ class AppearanceHelperTest extends TestBase {
 
     $this->assertCount(0, $active_theme->operations);
 
+    // Test more operations.
+    $theme = $themes['vibrant'];
+    $this->assertGreaterThan(0, \count($theme->more_operations));
+
     // Test notes.
     $this->assertCount(0, $inactive_theme->notes);
 
