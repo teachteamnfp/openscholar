@@ -1,13 +1,10 @@
-uuid: f081b601-d2f6-4ef7-9e97-569850848726
 langcode: en
 status: true
 dependencies:
   theme:
-    - golden_accents
-_core:
-  default_config_hash: 13GQpeITIJsp1kyPniXtWZfyFH87vb1xxJCHifL4UeE
-id: golden_accents_local_actions
-theme: golden_accents
+    - vibrant
+id: vibrant_local_actions
+theme: vibrant
 region: content
 weight: -5
 provider: null

@@ -1,4 +1,3 @@
-uuid: 0c2dbf41-96c2-46f8-8be0-c601fc868b53
 langcode: en
 status: true
 dependencies:
@@ -9,15 +8,15 @@ dependencies:
     - node
     - views
   theme:
-    - shade
-id: shade_views_block__os_software_releases_recent_block
-theme: shade
+    - vibrant
+id: vibrant_views_block__os_software_releases_recommended_block
+theme: vibrant
 region: content
-weight: -2
+weight: -3
 provider: null
-plugin: 'views_block:os_software_releases-recent_block'
+plugin: 'views_block:os_software_releases-recommended_block'
 settings:
-  id: 'views_block:os_software_releases-recent_block'
+  id: 'views_block:os_software_releases-recommended_block'
   label: ''
   provider: views
   label_display: visible

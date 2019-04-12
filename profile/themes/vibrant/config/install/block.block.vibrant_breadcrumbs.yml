@@ -1,15 +1,12 @@
-uuid: 636bdc6f-e01a-48f8-ae6b-243fc7077e9b
 langcode: en
 status: true
 dependencies:
   module:
     - system
   theme:
-    - shade
-_core:
-  default_config_hash: oXUb3JZR2WW5VOdw4HrhRicCsq51mCgLfRyvheG68ck
-id: shade_breadcrumbs
-theme: shade
+    - vibrant
+id: vibrant_breadcrumbs
+theme: vibrant
 region: content
 weight: -8
 provider: null

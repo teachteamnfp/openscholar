@@ -1,15 +1,12 @@
-uuid: 02710a9b-0892-4332-82b7-360ce8228ef7
 langcode: en
 status: true
 dependencies:
   module:
     - group
   theme:
-    - shade
-_core:
-  default_config_hash: MjMChFykEa-4UxdnGstVk1FcXqwUF3p_GBJLIFT3_XI
-id: shade_group_operations
-theme: shade
+    - vibrant
+id: vibrant_group_operations
+theme: vibrant
 region: content
 weight: -1
 provider: null

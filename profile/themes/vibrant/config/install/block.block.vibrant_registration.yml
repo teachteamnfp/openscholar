@@ -1,4 +1,3 @@
-uuid: cda4fb59-2c32-4604-b4fe-6c5ef2b5df45
 langcode: en
 status: true
 dependencies:
@@ -10,9 +9,9 @@ dependencies:
     - rng
     - rng_quick
   theme:
-    - golden_accents
-id: golden_accents_registration
-theme: golden_accents
+    - vibrant
+id: vibrant_registration
+theme: vibrant
 region: content
 weight: 0
 provider: null

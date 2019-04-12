@@ -1,4 +1,3 @@
-uuid: f6cf68d6-e342-4711-8697-48589daf9f3b
 langcode: en
 status: true
 dependencies:
@@ -9,9 +8,9 @@ dependencies:
     - block_visibility_groups
     - views
   theme:
-    - golden_accents
-id: golden_accents_views_block__calendar_block_1
-theme: golden_accents
+    - vibrant
+id: vibrant_views_block__calendar_block_1
+theme: vibrant
 region: content
 weight: 0
 provider: null

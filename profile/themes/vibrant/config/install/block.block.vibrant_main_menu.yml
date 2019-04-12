@@ -1,4 +1,3 @@
-uuid: 596495bc-67be-4cbb-9edb-04f407e24362
 langcode: en
 status: true
 dependencies:
@@ -9,11 +8,9 @@ dependencies:
     - rng
     - system
   theme:
-    - shade
-_core:
-  default_config_hash: rx9IrdDv7Ldc4kpalZAxdhIPZfYIeOMh1N-qKoQZwHo
-id: shade_main_menu
-theme: shade
+    - vibrant
+id: vibrant_main_menu
+theme: vibrant
 region: navigation_collapsible
 weight: -6
 provider: null
