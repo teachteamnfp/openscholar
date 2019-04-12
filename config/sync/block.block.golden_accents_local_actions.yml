@@ -1,0 +1,20 @@
+uuid: 755b8ec6-9e58-402e-a8f5-a9884ff17c73
+langcode: en
+status: true
+dependencies:
+  theme:
+    - golden_accents
+_core:
+  default_config_hash: 13GQpeITIJsp1kyPniXtWZfyFH87vb1xxJCHifL4UeE
+id: golden_accents_local_actions
+theme: golden_accents
+region: content
+weight: -5
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Primary admin actions'
+  provider: core
+  label_display: '0'
+visibility: {  }

@@ -1,0 +1,22 @@
+uuid: a3e7a45b-04b5-48aa-a289-0a44209cce93
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - golden_accents
+_core:
+  default_config_hash: 9EoWV2Lot6FVSr50t4hoKgiz1LIXYWNG-IIPYsWxBqo
+id: golden_accents_content
+theme: golden_accents
+region: content
+weight: -4
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  provider: system
+  label_display: '0'
+visibility: {  }

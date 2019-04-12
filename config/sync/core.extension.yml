@@ -168,6 +168,8 @@ theme:
   modern: 0
   hwpi_sterling: 0
   hwpi_widener: 0
+  shade: 0
+  golden_accents: 0
 profile: openscholar
 _core:
   default_config_hash: R4IF-ClDHXxblLcG0L7MgsLvfBIMAvi_skumNFQwkDc

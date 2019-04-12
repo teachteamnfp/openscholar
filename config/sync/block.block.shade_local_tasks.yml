@@ -1,0 +1,22 @@
+uuid: 549d3c2c-77bc-4735-ad0a-9cd5e3e4a94f
+langcode: en
+status: true
+dependencies:
+  theme:
+    - shade
+_core:
+  default_config_hash: X9I1OB0W3WlWtrK-CNcg6hNWwa8wficanpH8pYnDZDE
+id: shade_local_tasks
+theme: shade
+region: content
+weight: -6
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: Tabs
+  provider: core
+  label_display: '0'
+  primary: true
+  secondary: true
+visibility: {  }
