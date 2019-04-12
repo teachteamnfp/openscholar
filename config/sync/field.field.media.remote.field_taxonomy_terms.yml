@@ -1,0 +1,26 @@
+uuid: e0cabaa4-e3eb-4af3-aab1-e3d8de05806f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_taxonomy_terms
+    - media.type.remote
+id: media.remote.field_taxonomy_terms
+field_name: field_taxonomy_terms
+entity_type: media
+bundle: remote
+label: 'Tag with Terms'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: views
+  handler_settings:
+    view:
+      view_name: reference_taxonomy_term
+      display_name: entity_reference_1
+      arguments:
+        - 'media:remote'
+field_type: entity_reference

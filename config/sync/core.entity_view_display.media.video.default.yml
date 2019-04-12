@@ -1,42 +1,35 @@
-uuid: 212947fa-d19c-4f95-91ce-d0b39e738e4b
+uuid: 0777d9de-5162-4de7-9ec8-0b6dfcb80108
 langcode: en
 status: true
 dependencies:
   config:
-    - field.field.media.presentation_materials.field_media_file
-    - field.field.media.presentation_materials.field_taxonomy_terms
+    - field.field.media.video.field_height
+    - field.field.media.video.field_media_oembed_video
+    - field.field.media.video.field_media_video_file
+    - field.field.media.video.field_taxonomy_terms
+    - field.field.media.video.field_width
     - image.style.thumbnail
-    - media.type.presentation_materials
+    - media.type.video
   module:
     - image
-    - os_office_embed
     - user
-id: media.presentation_materials.default
+id: media.video.default
 targetEntityType: media
-bundle: presentation_materials
+bundle: video
 mode: default
 content:
   created:
     label: hidden
     type: timestamp
-    weight: 1
+    weight: 0
     region: content
     settings:
       date_format: medium
       custom_date_format: ''
       timezone: ''
     third_party_settings: {  }
-  field_media_file:
-    type: os_office_embed
-    weight: 0
-    region: content
-    label: above
-    settings:
-      width: 500
-      height: 400
-    third_party_settings: {  }
   field_taxonomy_terms:
-    weight: 4
+    weight: 6
     label: above
     settings:
       link: true
@@ -45,7 +38,7 @@ content:
     region: content
   thumbnail:
     type: image
-    weight: 3
+    weight: 5
     label: hidden
     settings:
       image_style: thumbnail
@@ -55,10 +48,14 @@ content:
   uid:
     label: hidden
     type: author
-    weight: 2
+    weight: 0
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_height: true
+  field_media_oembed_video: true
+  field_media_video_file: true
+  field_width: true
   langcode: true
   name: true

@@ -1,42 +1,32 @@
-uuid: 212947fa-d19c-4f95-91ce-d0b39e738e4b
+uuid: 4cd1d8e9-d990-4f72-b24d-d179e953fec9
 langcode: en
 status: true
 dependencies:
   config:
-    - field.field.media.presentation_materials.field_media_file
-    - field.field.media.presentation_materials.field_taxonomy_terms
+    - field.field.media.document.field_media_file
+    - field.field.media.document.field_taxonomy_terms
     - image.style.thumbnail
-    - media.type.presentation_materials
+    - media.type.document
   module:
     - image
-    - os_office_embed
     - user
-id: media.presentation_materials.default
+id: media.document.default
 targetEntityType: media
-bundle: presentation_materials
+bundle: document
 mode: default
 content:
   created:
     label: hidden
     type: timestamp
-    weight: 1
+    weight: 0
     region: content
     settings:
       date_format: medium
       custom_date_format: ''
       timezone: ''
     third_party_settings: {  }
-  field_media_file:
-    type: os_office_embed
-    weight: 0
-    region: content
-    label: above
-    settings:
-      width: 500
-      height: 400
-    third_party_settings: {  }
   field_taxonomy_terms:
-    weight: 4
+    weight: 6
     label: above
     settings:
       link: true
@@ -45,7 +35,7 @@ content:
     region: content
   thumbnail:
     type: image
-    weight: 3
+    weight: 5
     label: hidden
     settings:
       image_style: thumbnail
@@ -55,10 +45,11 @@ content:
   uid:
     label: hidden
     type: author
-    weight: 2
+    weight: 0
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_media_file: true
   langcode: true
   name: true

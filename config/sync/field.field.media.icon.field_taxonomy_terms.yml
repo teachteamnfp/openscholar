@@ -1,0 +1,26 @@
+uuid: 8074a07b-cda6-4124-a517-58ac263d97ee
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_taxonomy_terms
+    - media.type.icon
+id: media.icon.field_taxonomy_terms
+field_name: field_taxonomy_terms
+entity_type: media
+bundle: icon
+label: 'Tag with Terms'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: views
+  handler_settings:
+    view:
+      view_name: reference_taxonomy_term
+      display_name: entity_reference_1
+      arguments:
+        - 'media:icon'
+field_type: entity_reference
