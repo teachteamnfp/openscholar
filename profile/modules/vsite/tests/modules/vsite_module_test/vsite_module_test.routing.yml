@@ -1,0 +1,6 @@
+vsite.link_test:
+  path: '/link-test'
+  defaults:
+    _controller: '\Drupal\vsite_module_test\Controller\LinkTestController::linkTest'
+  requirements:
+    _access: 'TRUE'
