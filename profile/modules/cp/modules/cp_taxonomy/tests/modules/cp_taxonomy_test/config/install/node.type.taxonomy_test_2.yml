@@ -1,0 +1,17 @@
+uuid: cd3699a4-1789-458e-9283-56904ec9167a
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus: {  }
+    parent: ''
+name: 'Taxonomy Test 2'
+type: taxonomy_test_2
+description: ''
+help: ''
+new_revision: true
+preview_mode: 1
+display_submitted: true
