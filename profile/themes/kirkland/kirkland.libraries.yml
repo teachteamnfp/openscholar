@@ -1,0 +1,10 @@
+global-styling:
+  version: VERSION
+  css:
+    theme:
+      css/style.css: {}
+  js:
+    js/kirkland.js: {}
+    dependencies:
+    - core/jquery
+
