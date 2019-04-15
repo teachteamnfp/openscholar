@@ -1,0 +1,22 @@
+uuid: df6eeec2-9794-46d9-88f1-b0aaaa2c00c7
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - loeb
+_core:
+  default_config_hash: jQQUUWN2Uxr5qZtc9zcJKBCxpKY8orN1u2HPqYYRQDI
+id: loeb_powered
+theme: loeb
+region: footer
+weight: -6
+provider: null
+plugin: system_powered_by_block
+settings:
+  id: system_powered_by_block
+  label: 'Powered by Drupal'
+  provider: system
+  label_display: '0'
+visibility: {  }

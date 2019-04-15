@@ -1,0 +1,32 @@
+uuid: 17cb8508-e092-4177-abb4-c0934fc70457
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_visibility_groups.block_visibility_group.event_section
+    - views.view.calendar
+  module:
+    - block_visibility_groups
+    - views
+  theme:
+    - white
+id: white_views_block__calendar_block_2
+theme: white
+region: content
+weight: 1
+provider: null
+plugin: 'views_block:calendar-block_2'
+settings:
+  id: 'views_block:calendar-block_2'
+  label: ''
+  provider: views
+  label_display: visible
+  views_label: ''
+  items_per_page: none
+  context_mapping: {  }
+visibility:
+  condition_group:
+    id: condition_group
+    negate: false
+    block_visibility_group: event_section
+    context_mapping: {  }
