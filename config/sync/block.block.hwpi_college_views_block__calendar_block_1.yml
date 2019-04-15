@@ -1,4 +1,4 @@
-uuid: 63ff12a4-2088-4645-8e69-9e5b6d72e4e4
+uuid: 0eb6fce5-5881-4d0d-b96f-60e6bf6e1c82
 langcode: en
 status: true
 dependencies:
@@ -10,6 +10,8 @@ dependencies:
     - views
   theme:
     - hwpi_college
+_core:
+  default_config_hash: uC_YDu9Uiyk4ARMVKhSOeLNjbyzMpNGqFZgtDtSYB4M
 id: hwpi_college_views_block__calendar_block_1
 theme: hwpi_college
 region: content

@@ -72,6 +72,10 @@ body {
     font-family: $font_0, $font_1;
   }
 }
+.full-calendar-view .fc-header-toolbar h2,
+.mini-calendar .fc-center h2 {
+  font-family: $font_0, $font_1 !important;
+}
 .more-link {
   font-family: $font_0, $font_1;
 }
