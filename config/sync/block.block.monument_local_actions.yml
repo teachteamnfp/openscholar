@@ -1,0 +1,20 @@
+uuid: 1a5d677c-2d14-43d1-a82b-ca7f86ff185f
+langcode: en
+status: true
+dependencies:
+  theme:
+    - monument
+_core:
+  default_config_hash: 13GQpeITIJsp1kyPniXtWZfyFH87vb1xxJCHifL4UeE
+id: monument_local_actions
+theme: monument
+region: content
+weight: -5
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Primary admin actions'
+  provider: core
+  label_display: '0'
+visibility: {  }

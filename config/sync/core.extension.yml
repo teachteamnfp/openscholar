@@ -165,10 +165,13 @@ theme:
   hwpi_classic: 0
   documental: 0
   hwpi_lamont: 0
-  modern: 0
-  hwpi_widener: 0
   hwpi_sterling: 0
+  hwpi_widener: 0
+  modern: 0
   loeb: 0
+  white: 0
+  saffron_accents: 0
+  monument: 0
 profile: openscholar
 _core:
   default_config_hash: R4IF-ClDHXxblLcG0L7MgsLvfBIMAvi_skumNFQwkDc
