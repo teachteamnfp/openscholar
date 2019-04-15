@@ -1,4 +1,4 @@
-uuid: 504b7ac2-5aea-45c2-8007-f8bd5a71eda8
+uuid: 17cb8508-e092-4177-abb4-c0934fc70457
 langcode: en
 status: true
 dependencies:
@@ -9,11 +9,9 @@ dependencies:
     - block_visibility_groups
     - views
   theme:
-    - modern
-_core:
-  default_config_hash: H85GNjSIcer7Ci11vxhj3-P2GWc_OO-KvE0Nl5xESQw
-id: modern_views_block__calendar_block_2
-theme: modern
+    - white
+id: white_views_block__calendar_block_2
+theme: white
 region: content
 weight: 1
 provider: null

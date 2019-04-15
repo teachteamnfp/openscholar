@@ -1,4 +1,4 @@
-uuid: 01e25405-0ccb-4116-98de-8cebbf7b75ab
+uuid: 32f14c4f-e249-49bb-9f78-a1b5d7745eab
 langcode: en
 status: true
 dependencies:
@@ -9,17 +9,15 @@ dependencies:
     - node
     - views
   theme:
-    - modern
-_core:
-  default_config_hash: AkdfEnRn4aYayZSqhHb9QuzpPFx6IU-Gb3suvxTR5iA
-id: modern_views_block__os_software_releases_recent_block
-theme: modern
+    - saffron_accents
+id: saffron_accents_views_block__os_software_releases_recommended_block
+theme: saffron_accents
 region: content
-weight: -2
+weight: -3
 provider: null
-plugin: 'views_block:os_software_releases-recent_block'
+plugin: 'views_block:os_software_releases-recommended_block'
 settings:
-  id: 'views_block:os_software_releases-recent_block'
+  id: 'views_block:os_software_releases-recommended_block'
   label: ''
   provider: views
   label_display: visible

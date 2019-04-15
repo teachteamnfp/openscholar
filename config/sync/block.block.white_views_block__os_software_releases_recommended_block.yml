@@ -1,4 +1,4 @@
-uuid: 01e25405-0ccb-4116-98de-8cebbf7b75ab
+uuid: a7b334f7-10ed-405f-ae85-6d41dcbb6543
 langcode: en
 status: true
 dependencies:
@@ -9,17 +9,15 @@ dependencies:
     - node
     - views
   theme:
-    - modern
-_core:
-  default_config_hash: AkdfEnRn4aYayZSqhHb9QuzpPFx6IU-Gb3suvxTR5iA
-id: modern_views_block__os_software_releases_recent_block
-theme: modern
+    - white
+id: white_views_block__os_software_releases_recommended_block
+theme: white
 region: content
-weight: -2
+weight: -3
 provider: null
-plugin: 'views_block:os_software_releases-recent_block'
+plugin: 'views_block:os_software_releases-recommended_block'
 settings:
-  id: 'views_block:os_software_releases-recent_block'
+  id: 'views_block:os_software_releases-recommended_block'
   label: ''
   provider: views
   label_display: visible

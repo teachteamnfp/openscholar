@@ -1,4 +1,4 @@
-uuid: 49842771-3e5b-4314-b364-ee3968396071
+uuid: bc16ca05-9740-4b3a-a5ff-ac921313a3cc
 langcode: en
 status: true
 dependencies:
@@ -7,11 +7,11 @@ dependencies:
   module:
     - system
   theme:
-    - modern
+    - saffron_accents
 _core:
-  default_config_hash: BYyaqehDt_sPya7cKSPRCXM_SdUhvVDYAXH9G1K_2cM
-id: modern_footer
-theme: modern
+  default_config_hash: kkISXE1LT2FJEoYnqCrCpeFB-2pmGmMxMklVk7rQcfg
+id: saffron_accents_footer
+theme: saffron_accents
 region: footer
 weight: -7
 provider: null

@@ -1,4 +1,4 @@
-uuid: 01e25405-0ccb-4116-98de-8cebbf7b75ab
+uuid: 4e4a78e2-ac64-418d-bebc-e766f6e2e7b5
 langcode: en
 status: true
 dependencies:
@@ -9,11 +9,9 @@ dependencies:
     - node
     - views
   theme:
-    - modern
-_core:
-  default_config_hash: AkdfEnRn4aYayZSqhHb9QuzpPFx6IU-Gb3suvxTR5iA
-id: modern_views_block__os_software_releases_recent_block
-theme: modern
+    - white
+id: white_views_block__os_software_releases_recent_block
+theme: white
 region: content
 weight: -2
 provider: null

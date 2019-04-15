@@ -1,13 +1,13 @@
-uuid: 5caebd1b-f673-4704-9aff-19302507342c
+uuid: 82c2ea3b-29c7-40ec-8439-53e3db1cd55a
 langcode: en
 status: true
 dependencies:
   theme:
-    - modern
+    - white
 _core:
-  default_config_hash: rBY5Z0394DT1LOSjcMhHmikFzpgJs7HxVW2GMEHEzRQ
-id: modern_page_title
-theme: modern
+  default_config_hash: 7rR9chwXvdM2H8OYMAYx9Zj3GGlPMrZp_M3ZA4thYTk
+id: white_page_title
+theme: white
 region: content
 weight: -7
 provider: null

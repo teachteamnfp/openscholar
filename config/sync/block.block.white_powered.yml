@@ -1,15 +1,15 @@
-uuid: 25ab1891-1831-4491-9d7f-46f363453a26
+uuid: 7d7d6f18-7da9-4218-8022-8ab1798088b2
 langcode: en
 status: true
 dependencies:
   module:
     - system
   theme:
-    - modern
+    - white
 _core:
-  default_config_hash: _Rn2O1zYPcAqoC9OZ3i3FKflBCe0GhD_qYZM_SH_-Mw
-id: modern_powered
-theme: modern
+  default_config_hash: jQQUUWN2Uxr5qZtc9zcJKBCxpKY8orN1u2HPqYYRQDI
+id: white_powered
+theme: white
 region: footer
 weight: -6
 provider: null

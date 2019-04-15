@@ -1,13 +1,13 @@
-uuid: bc659fbc-9c6d-4cc4-be9f-167dfcf7716d
+uuid: f8498a40-ecbd-49da-9906-5532470978f6
 langcode: en
 status: true
 dependencies:
   theme:
-    - modern
+    - white
 _core:
-  default_config_hash: bWKNaW7LVbt2WSohqjBXvVOjGDK3N3VCcbLF5DUdkok
-id: modern_local_actions
-theme: modern
+  default_config_hash: 13GQpeITIJsp1kyPniXtWZfyFH87vb1xxJCHifL4UeE
+id: white_local_actions
+theme: white
 region: content
 weight: -5
 provider: null

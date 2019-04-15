@@ -1,15 +1,15 @@
-uuid: 4ca630bb-1a61-4394-bf5f-24b42df1120e
+uuid: 549cdb29-e2cb-4024-b447-6adfdb6724b8
 langcode: en
 status: true
 dependencies:
   module:
     - group
   theme:
-    - modern
+    - white
 _core:
-  default_config_hash: 747R8Wg3N-Q5Jr6vNiOGEDpk6NRn0UC9VLrNKGcWZJE
-id: modern_group_operations
-theme: modern
+  default_config_hash: MjMChFykEa-4UxdnGstVk1FcXqwUF3p_GBJLIFT3_XI
+id: white_group_operations
+theme: white
 region: content
 weight: -1
 provider: null

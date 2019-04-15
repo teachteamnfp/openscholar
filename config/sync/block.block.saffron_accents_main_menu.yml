@@ -1,4 +1,4 @@
-uuid: 5d448618-c318-4ade-b99b-968441aacc24
+uuid: be8f26e0-25f7-4584-b8df-4a9babfcf91c
 langcode: en
 status: true
 dependencies:
@@ -9,11 +9,11 @@ dependencies:
     - rng
     - system
   theme:
-    - modern
+    - saffron_accents
 _core:
-  default_config_hash: fhmHva5Iv7xY6Md7ldYB0K8jsOrLKWSCLdAHPYg-JRw
-id: modern_main_menu
-theme: modern
+  default_config_hash: rx9IrdDv7Ldc4kpalZAxdhIPZfYIeOMh1N-qKoQZwHo
+id: saffron_accents_main_menu
+theme: saffron_accents
 region: navigation_collapsible
 weight: -6
 provider: null

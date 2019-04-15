@@ -1,13 +1,13 @@
-uuid: bc659fbc-9c6d-4cc4-be9f-167dfcf7716d
+uuid: 1a5d677c-2d14-43d1-a82b-ca7f86ff185f
 langcode: en
 status: true
 dependencies:
   theme:
-    - modern
+    - monument
 _core:
-  default_config_hash: bWKNaW7LVbt2WSohqjBXvVOjGDK3N3VCcbLF5DUdkok
-id: modern_local_actions
-theme: modern
+  default_config_hash: 13GQpeITIJsp1kyPniXtWZfyFH87vb1xxJCHifL4UeE
+id: monument_local_actions
+theme: monument
 region: content
 weight: -5
 provider: null

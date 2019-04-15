@@ -1,15 +1,15 @@
-uuid: 597eb2bd-b298-40e7-a4f9-f7a44c6bf9a0
+uuid: 6961a7ef-a2ae-4725-839f-a02ac40a897d
 langcode: en
 status: true
 dependencies:
   module:
     - system
   theme:
-    - modern
+    - saffron_accents
 _core:
-  default_config_hash: ofbHto_p3VasFX-78MjseL8qHbcCdRdmQuNqz4488Og
-id: modern_breadcrumbs
-theme: modern
+  default_config_hash: oXUb3JZR2WW5VOdw4HrhRicCsq51mCgLfRyvheG68ck
+id: saffron_accents_breadcrumbs
+theme: saffron_accents
 region: content
 weight: -8
 provider: null

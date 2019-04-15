@@ -1,13 +1,13 @@
-uuid: b091138c-0c68-49cd-8f29-fab065e2997a
+uuid: cfe3fc95-d063-4776-95ce-7ed3b0732366
 langcode: en
 status: true
 dependencies:
   theme:
-    - modern
+    - saffron_accents
 _core:
-  default_config_hash: qyWGd55nulll9pogKawmpLZpBIIVJYjg6u90y5MbPm4
-id: modern_local_tasks
-theme: modern
+  default_config_hash: X9I1OB0W3WlWtrK-CNcg6hNWwa8wficanpH8pYnDZDE
+id: saffron_accents_local_tasks
+theme: saffron_accents
 region: content
 weight: -6
 provider: null
