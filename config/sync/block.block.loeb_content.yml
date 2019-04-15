@@ -1,0 +1,22 @@
+uuid: 0e3a790e-d1bc-43a8-8282-1568bf0943ee
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - loeb
+_core:
+  default_config_hash: 9EoWV2Lot6FVSr50t4hoKgiz1LIXYWNG-IIPYsWxBqo
+id: loeb_content
+theme: loeb
+region: content
+weight: -4
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  provider: system
+  label_display: '0'
+visibility: {  }
