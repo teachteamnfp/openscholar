@@ -269,7 +269,6 @@ display:
           field_api_classes: false
           plugin_id: field
       filters:
-        filters:
         field_privacy_level_value:
           id: field_privacy_level_value
           table: group__field_privacy_level
