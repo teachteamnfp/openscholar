@@ -39,14 +39,34 @@ abstract class TestBase extends ExistingSiteBase {
   protected $appearanceHelper;
 
   /**
+   * Default theme.
+   *
+   * @var string
+   */
+  protected $defaultTheme;
+
+  /**
+   * Administrator.
+   *
+   * @var \Drupal\user\UserInterface
+   */
+  protected $admin;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
     parent::setUp();
+
+    $this->admin = $this->createUser([], NULL, TRUE);
+
     $this->entityTypeManager = $this->container->get('entity_type.manager');
     $this->vsiteContextManager = $this->container->get('vsite.context_manager');
     $this->configFactory = $this->container->get('config.factory');
     $this->appearanceHelper = $this->container->get('cp_appearance.appearance_helper');
+    /** @var \Drupal\Core\Config\ImmutableConfig $theme_config */
+    $theme_config = $this->configFactory->get('system.theme');
+    $this->defaultTheme = $theme_config->get('default');
   }
 
   /**
@@ -73,6 +93,16 @@ abstract class TestBase extends ExistingSiteBase {
     $this->markEntityForCleanup($group);
 
     return $group;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function tearDown() {
+    parent::tearDown();
+    /** @var \Drupal\Core\Config\Config $theme_config_mut */
+    $theme_config_mut = $this->configFactory->getEditable('system.theme');
+    $theme_config_mut->set('default', $this->defaultTheme)->save();
   }
 
 }
