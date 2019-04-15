@@ -9,6 +9,7 @@ use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\cp_appearance\Form\FlavorForm;
+use Ds\Map;
 
 /**
  * Helper methods for theme appearance settings.
@@ -46,6 +47,13 @@ final class AppearanceHelper implements AppearanceHelperInterface {
   protected $formBuilder;
 
   /**
+   * List of currently installed themes.
+   *
+   * @var \Drupal\Core\Extension\Extension[]
+   */
+  protected $installedThemes;
+
+  /**
    * AppearanceHelper constructor.
    *
    * @param \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler
@@ -60,14 +68,16 @@ final class AppearanceHelper implements AppearanceHelperInterface {
     $this->configFactory = $config_factory;
     $this->formBuilder = $form_builder;
     $this->themeConfig = $this->configFactory->get('system.theme');
+    $this->installedThemes = $this->themeHandler->listInfo();
   }
 
   /**
    * {@inheritdoc}
    */
   public function getThemes(): array {
-    /** @var \Drupal\Core\Extension\Extension[] $themes */
-    $themes = $this->themeHandler->listInfo();
+    // We do not want to make any unwanted changes to installedThemes by
+    // mistake.
+    $themes = $this->installedThemes;
 
     uasort($themes, 'system_sort_modules_by_info_name');
 
@@ -181,8 +191,14 @@ final class AppearanceHelper implements AppearanceHelperInterface {
     $operations = [];
 
     if (\property_exists($theme, 'sub_themes')) {
+      // Create a key-extension_info mapping.
+      $sub_themes = new Map();
+      foreach ($theme->sub_themes as $key => $name) {
+        $sub_themes->put($key, $this->installedThemes[$key]);
+      }
+
       /** @var \Drupal\Core\Form\FormInterface $flavor_form */
-      $flavor_form = new FlavorForm($theme->getName(), $theme->sub_themes);
+      $flavor_form = new FlavorForm($theme->getName(), $sub_themes);
 
       $operations[] = $this->formBuilder->getForm($flavor_form);
     }

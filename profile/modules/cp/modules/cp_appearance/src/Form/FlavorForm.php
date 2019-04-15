@@ -8,6 +8,7 @@ use Drupal\Core\DependencyInjection\DependencySerializationTrait;
 use Drupal\Core\Form\FormInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Ds\Map;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -28,9 +29,9 @@ class FlavorForm implements FormInterface {
   /**
    * Available flavors of the theme.
    *
-   * An associative array of flavor machine name and human readable name.
+   * Flavor name and its information mapping.
    *
-   * @var array
+   * @var \Ds\Map
    */
   protected $flavors;
 
@@ -39,10 +40,10 @@ class FlavorForm implements FormInterface {
    *
    * @param string $theme
    *   The theme for which the form will be created.
-   * @param array $flavors
+   * @param \Ds\Map $flavors
    *   Available flavors of the theme.
    */
-  public function __construct($theme, array $flavors) {
+  public function __construct($theme, Map $flavors) {
     Assert::assertNotEquals('', $theme);
     Assert::assertNotEmpty($flavors);
 
@@ -61,10 +62,19 @@ class FlavorForm implements FormInterface {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state): array {
+    $options = [
+      '_none' => $this->t('None'),
+    ];
+
+    /** @var \Drupal\Core\Extension\Extension $flavor */
+    foreach ($this->flavors->values() as $flavor) {
+      $options[$flavor->getName()] = $flavor->info['name'];
+    }
+
     $form['options'] = [
       '#type' => 'select',
       '#title' => $this->t('Flavors'),
-      '#options' => ['_none' => $this->t('None')] + $this->flavors,
+      '#options' => $options,
       '#ajax' => [
         'callback' => '::feedbackMessage',
       ],
