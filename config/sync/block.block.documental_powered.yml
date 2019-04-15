@@ -1,0 +1,22 @@
+uuid: a0ff5d8c-35e2-4955-9eed-e8d68a79fbb8
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - documental
+_core:
+  default_config_hash: jQQUUWN2Uxr5qZtc9zcJKBCxpKY8orN1u2HPqYYRQDI
+id: documental_powered
+theme: documental
+region: footer
+weight: -6
+provider: null
+plugin: system_powered_by_block
+settings:
+  id: system_powered_by_block
+  label: 'Powered by Drupal'
+  provider: system
+  label_display: '0'
+visibility: {  }

@@ -1,12 +1,15 @@
 aside {
   margin-top: 18px;
+
   .navbar-nav {
     float: none;
+
     li {
       float: none;
       list-style: none;
       background: $color-light-gray4;
       text-align: left;
+
       a {
         display: block;
         text-decoration: none;
@@ -14,15 +17,18 @@ aside {
         border-bottom: 2px solid $color-white;
         font-size: 15px;
         font-weight: normal;
-        &.is-active {
-        }
+        line-height: inherit;
+        &.is-active {}
+
         .caret {
           display: none;
         }
       }
+
       &:hover {
         background: $color-light-gray2;
       }
+
       .dropdown-menu {
         display: block;
         width: 100%;
@@ -32,16 +38,20 @@ aside {
         background: none;
         position: inherit;
         float: none;
+
         a {
           padding: 8px 25px;
           color: $color-link1;
         }
       }
+
       &.open {
         a {
           background: $color-light-gray4;
           border-bottom: 2px solid $color-white;
-          &:hover, &:focus {
+
+          &:hover,
+          &:focus {
             background: $color-light-gray2;
             border-color: $color-white;
           }
@@ -49,6 +59,7 @@ aside {
       }
     }
   }
+
   .well {
     background: none;
     border: 0;
@@ -57,11 +68,14 @@ aside {
     padding: 0;
     margin: 0;
   }
+
   .block-title {
     margin-top: 0;
     margin-bottom: 15px;
   }
-  .block, nav {
+
+  .block,
+  nav {
     margin-bottom: 20px;
   }
 }
