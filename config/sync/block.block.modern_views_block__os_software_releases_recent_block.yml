@@ -1,4 +1,4 @@
-uuid: d8edd1d8-5226-4820-bf88-786a6ac0e645
+uuid: 01e25405-0ccb-4116-98de-8cebbf7b75ab
 langcode: en
 status: true
 dependencies:
@@ -10,6 +10,8 @@ dependencies:
     - views
   theme:
     - modern
+_core:
+  default_config_hash: AkdfEnRn4aYayZSqhHb9QuzpPFx6IU-Gb3suvxTR5iA
 id: modern_views_block__os_software_releases_recent_block
 theme: modern
 region: content
