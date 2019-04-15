@@ -4,7 +4,7 @@ status: true
 dependencies:
   config:
     - block_content.type.rss_feed
-    - field.field.block_content.rss_feed.field_content_types
+    - field.field.block_content.rss_feed.field_content_to_display
     - field.field.block_content.rss_feed.field_is_show_all_content
   module:
     - content_moderation
@@ -19,11 +19,11 @@ targetEntityType: block_content
 bundle: rss_feed
 mode: default
 content:
-  field_content_types:
+  field_content_to_display:
     weight: 102
     settings: {  }
     third_party_settings: {  }
-    type: options_buttons
+    type: options_select
     region: content
   field_is_show_all_content:
     weight: 101
