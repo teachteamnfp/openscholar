@@ -1,13 +1,22 @@
 aside {
   margin-top: 0;
-  .region {
-    > .block {
+  > .region {
+    > .block, nav {
       margin-bottom: 20px;
-      padding: 15px;
       border: 1px solid $color-light-gray1;
       background: $color-white;
       box-shadow: 0 1px 2px 0 $color-light-gray1;
       border-radius: 3px;
+      margin-top: 0;
+    }
+    nav {
+      margin-top: 0;
+      padding: 15px;
+    }
+    >.block {
+      > div {
+        padding: 15px;
+      }
     }
   }
   .block-title {
@@ -19,6 +28,7 @@ aside {
     min-height: 20px;
     padding: 7px 15px;
     font-weight: bold;
+    margin-bottom: 0;
   }
   .block-content {
     padding: 15px;
