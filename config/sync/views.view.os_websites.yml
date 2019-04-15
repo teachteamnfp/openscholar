@@ -268,7 +268,88 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-      filters: {  }
+      filters:
+        filters:
+        field_privacy_level_value:
+          id: field_privacy_level_value
+          table: group__field_privacy_level
+          field: field_privacy_level_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value:
+            public: public
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          plugin_id: list_field
+        label:
+          id: label
+          table: groups_field_data
+          field: label
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: contains
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: label_op
+            label: Search
+            description: ''
+            use_operator: false
+            operator: label_op
+            identifier: label
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: group
+          entity_field: label
+          plugin_id: string
       sorts:
         created:
           id: created
