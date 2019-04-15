@@ -3,7 +3,7 @@ version: "2.2"
 services:
   mariadb:
     image: wodby/mariadb:10.1-2.3.3
-    container_name: "${PROJECT_NAME}_mariadb"
+    #container_name: "${PROJECT_NAME}_mariadb"
     ports:
       - "33208:3306"
     environment:
@@ -17,7 +17,7 @@ services:
 
   php:
     image: wodby/drupal-php:7.2-4.6.3
-    container_name: "${PROJECT_NAME}_php"
+    #container_name: "${PROJECT_NAME}_php"
     environment:
       PHP_SENDMAIL_PATH: /usr/sbin/sendmail -t -i -S mailhog:1025
       PHP_MAX_INPUT_VARS: 10000
@@ -34,7 +34,7 @@ services:
 
   apache:
     image: wodby/apache:2.4
-    container_name: "${PROJECT_NAME}_apache"
+    #container_name: "${PROJECT_NAME}_apache"
     depends_on:
       - php
     environment:
@@ -54,13 +54,13 @@ services:
   chrome:
     # Note: chrome 67/68 is giving errors so we pin to 65 for now.
     image: previousnext/chrome-headless:65
-    container_name: "${PROJECT_NAME}_chrome"
+    #container_name: "${PROJECT_NAME}_chrome"
     ports:
       - "9222:9222"
 
   node:
     image: mhart/alpine-node:11
-    container_name: "${PROJECT_NAME}_drupal_nodejs"
+    #container_name: "${PROJECT_NAME}_drupal_nodejs"
     command: npm install
     working_dir: /var/www/html
     volumes:
