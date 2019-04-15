@@ -1,0 +1,4 @@
+name: "Control Panel: Taxonomy"
+core: 8.x
+type: module
+description: Taxonomy Management from the Control Panel

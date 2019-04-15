@@ -83,7 +83,7 @@ class VsiteAliasStorage implements AliasStorageInterface {
     list($site,) = explode('/', trim($path, '/'));
     foreach ($modifiers as $m) {
       if ($m->getModifierKey() == $site) {
-        return str_replace($site, '[vsite:' . $m->getValue() . ']', $path);
+        return preg_replace('|^/' . $site . '|', '/[vsite:' . $m->getValue() . ']', $path);
       }
     }
 
