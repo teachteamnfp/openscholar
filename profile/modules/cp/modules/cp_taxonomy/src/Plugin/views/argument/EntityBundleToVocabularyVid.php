@@ -19,7 +19,7 @@ class EntityBundleToVocabularyVid extends VocabularyVid {
   private $cpTaxonomyHelper;
 
   /**
-   * Constructs the VocabularyVid object.
+   * Constructs the EntityBundleToVocabularyVid object.
    *
    * @param array $configuration
    *   A configuration array containing information about the plugin instance.

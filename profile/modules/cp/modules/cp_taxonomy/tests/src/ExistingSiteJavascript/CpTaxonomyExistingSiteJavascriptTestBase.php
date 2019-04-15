@@ -63,18 +63,6 @@ abstract class CpTaxonomyExistingSiteJavascriptTestBase extends TestBase {
         'alias' => '/group2',
       ],
     ]);
-    /*$this->event = $this->createTaxonomyTest1([
-    'title' => 'Test Event',
-    'field_recurring_date' => [
-    'value' => $start->format("Y-m-d\TH:i:s"),
-    'end_value' => $end->format("Y-m-d\TH:i:s"),
-    'rrule' => '',
-    'timezone' => $this->config->get('system.date')->get('timezone.default'),
-    'infinite' => FALSE,
-    ],
-    'status' => TRUE,
-    ]);
-    $this->group->addContent($this->event, "group_node:{$this->event->bundle()}");*/
   }
 
   /**
