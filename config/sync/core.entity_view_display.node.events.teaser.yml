@@ -59,9 +59,19 @@ content:
       timezone_override: ''
     third_party_settings: {  }
 hidden:
+  field_close_: true
   field_groups: true
   field_media: true
+  field_open_date: true
   field_signup: true
   field_singup_multiple: true
   langcode: true
   links: true
+  rng_capacity: true
+  rng_registrants_duplicate: true
+  rng_registrants_maximum: true
+  rng_registrants_minimum: true
+  rng_registration_groups: true
+  rng_registration_type: true
+  rng_reply_to: true
+  rng_status: true
