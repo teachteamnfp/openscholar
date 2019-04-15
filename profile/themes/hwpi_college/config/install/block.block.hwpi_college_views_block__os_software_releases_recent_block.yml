@@ -1,4 +1,3 @@
-uuid: 636ff03b-ca5d-4487-bcba-fe8fcf24f718
 langcode: en
 status: true
 dependencies:
@@ -10,16 +9,14 @@ dependencies:
     - views
   theme:
     - hwpi_college
-_core:
-  default_config_hash: 61E5xdzGSfhef3uDj_FQGadzI9Tcy6xyTQ-Su4GyxV8
-id: hwpi_college_views_block__os_software_releases_recommended_block
+id: hwpi_college_views_block__os_software_releases_recent_block
 theme: hwpi_college
 region: content
-weight: -3
+weight: -2
 provider: null
-plugin: 'views_block:os_software_releases-recommended_block'
+plugin: 'views_block:os_software_releases-recent_block'
 settings:
-  id: 'views_block:os_software_releases-recommended_block'
+  id: 'views_block:os_software_releases-recent_block'
   label: ''
   provider: views
   label_display: visible

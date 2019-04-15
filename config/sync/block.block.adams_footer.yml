@@ -1,4 +1,4 @@
-uuid: 0234aec2-caa9-4a0b-ac49-2f9069e671ef
+uuid: 3395c61f-d855-45f5-837a-83f1e2f709c1
 langcode: en
 status: true
 dependencies:
@@ -7,11 +7,11 @@ dependencies:
   module:
     - system
   theme:
-    - hwpi_college
+    - adams
 _core:
-  default_config_hash: DwRL-Gt84NZEUHAZASFPi-UL25dBPEdnhlrllkSKkCQ
-id: hwpi_college_footer
-theme: hwpi_college
+  default_config_hash: kkISXE1LT2FJEoYnqCrCpeFB-2pmGmMxMklVk7rQcfg
+id: adams_footer
+theme: adams
 region: footer
 weight: -7
 provider: null

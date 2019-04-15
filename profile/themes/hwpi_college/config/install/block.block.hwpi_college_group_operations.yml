@@ -1,4 +1,3 @@
-uuid: 8212b98b-876d-49b2-aa71-dbca8339ce8a
 langcode: en
 status: true
 dependencies:
@@ -6,8 +5,6 @@ dependencies:
     - group
   theme:
     - hwpi_college
-_core:
-  default_config_hash: '-SSaBkXfxzTPPy4Uq3GTzQt09c9TaPs0v4gCST7RnXo'
 id: hwpi_college_group_operations
 theme: hwpi_college
 region: content

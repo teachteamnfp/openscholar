@@ -161,12 +161,13 @@ theme:
   os_base: 0
   hwpi_themeone_bentley: 0
   vibrant: 0
-  hwpi_college: 0
   hwpi_classic: 0
   documental: 0
   hwpi_lamont: 0
   hwpi_sterling: 0
   hwpi_widener: 0
+  hwpi_college: 0
+  adams: 0
   modern: 0
   loeb: 0
   white: 0

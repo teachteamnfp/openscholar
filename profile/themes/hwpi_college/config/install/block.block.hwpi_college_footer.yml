@@ -1,4 +1,3 @@
-uuid: 0234aec2-caa9-4a0b-ac49-2f9069e671ef
 langcode: en
 status: true
 dependencies:
@@ -8,8 +7,6 @@ dependencies:
     - system
   theme:
     - hwpi_college
-_core:
-  default_config_hash: DwRL-Gt84NZEUHAZASFPi-UL25dBPEdnhlrllkSKkCQ
 id: hwpi_college_footer
 theme: hwpi_college
 region: footer

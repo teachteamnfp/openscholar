@@ -1,15 +1,15 @@
-uuid: ceda4f6e-f97e-4dc3-971e-c4e413b5d3ae
+uuid: e7bfe59c-bc59-400a-8ae8-e3d216f2dcf1
 langcode: en
 status: true
 dependencies:
   module:
     - system
   theme:
-    - hwpi_college
+    - adams
 _core:
-  default_config_hash: PM3UuyDj6v7OcFr-qgF_VbyTP_mr15X7oSmWpXlew50
-id: hwpi_college_breadcrumbs
-theme: hwpi_college
+  default_config_hash: oXUb3JZR2WW5VOdw4HrhRicCsq51mCgLfRyvheG68ck
+id: adams_breadcrumbs
+theme: adams
 region: content
 weight: -8
 provider: null

@@ -1,4 +1,3 @@
-uuid: 7aa0fa46-a880-423a-8872-05a4042c235d
 langcode: en
 status: true
 dependencies:
@@ -11,8 +10,6 @@ dependencies:
     - rng_quick
   theme:
     - hwpi_college
-_core:
-  default_config_hash: vWcS9A0DVhNnvU8IRvjzyi8gN_bXBP9z8BPoJ7tOkiQ
 id: hwpi_college_registration
 theme: hwpi_college
 region: content

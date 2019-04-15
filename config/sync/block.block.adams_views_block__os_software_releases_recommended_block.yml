@@ -1,4 +1,4 @@
-uuid: 636ff03b-ca5d-4487-bcba-fe8fcf24f718
+uuid: ef7f2455-95ab-4a12-9c2e-e9a452753312
 langcode: en
 status: true
 dependencies:
@@ -9,11 +9,9 @@ dependencies:
     - node
     - views
   theme:
-    - hwpi_college
-_core:
-  default_config_hash: 61E5xdzGSfhef3uDj_FQGadzI9Tcy6xyTQ-Su4GyxV8
-id: hwpi_college_views_block__os_software_releases_recommended_block
-theme: hwpi_college
+    - adams
+id: adams_views_block__os_software_releases_recommended_block
+theme: adams
 region: content
 weight: -3
 provider: null

@@ -1,4 +1,4 @@
-uuid: fe3da2ef-eddb-455d-a037-aeffed0d02c8
+uuid: c9884f29-9725-440b-bf2d-972beed9c685
 langcode: en
 status: true
 dependencies:
@@ -9,11 +9,9 @@ dependencies:
     - block_visibility_groups
     - views
   theme:
-    - hwpi_college
-_core:
-  default_config_hash: aC2ukNfHWyeY-T8OMGHMneBwdDStSLOozx04f_SijP0
-id: hwpi_college_views_block__calendar_block_2
-theme: hwpi_college
+    - adams
+id: adams_views_block__calendar_block_2
+theme: adams
 region: content
 weight: 1
 provider: null
