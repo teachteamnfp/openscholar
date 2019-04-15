@@ -3,7 +3,6 @@
 namespace Drupal\cp_appearance\Form;
 
 use Drupal\Core\Ajax\AjaxResponse;
-use Drupal\Core\Ajax\OpenModalDialogCommand;
 use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\DependencyInjection\DependencySerializationTrait;
 use Drupal\Core\Form\FormInterface;
@@ -93,20 +92,6 @@ class FlavorForm implements FormInterface {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state): void {}
-
-  /**
-   * Flavor option change handler.
-   *
-   * @ingroup forms
-   */
-  public function feedbackMessage(array &$form, FormStateInterface $form_state): AjaxResponse {
-    $response = new AjaxResponse();
-    $test['#markup'] = $form_state->getValue('options');
-
-    $response->addCommand(new OpenModalDialogCommand('Flavor selected', $test));
-
-    return $response;
-  }
 
   /**
    * Flavor option change handler.
