@@ -4,6 +4,7 @@ namespace Drupal\cp_appearance\Form;
 
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\OpenModalDialogCommand;
+use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\DependencyInjection\DependencySerializationTrait;
 use Drupal\Core\Form\FormInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -76,7 +77,7 @@ class FlavorForm implements FormInterface {
       '#title' => $this->t('Flavors'),
       '#options' => $options,
       '#ajax' => [
-        'callback' => '::feedbackMessage',
+        'callback' => '::updatePreview',
       ],
     ];
 
@@ -103,6 +104,38 @@ class FlavorForm implements FormInterface {
     $test['#markup'] = $form_state->getValue('options');
 
     $response->addCommand(new OpenModalDialogCommand('Flavor selected', $test));
+
+    return $response;
+  }
+
+  /**
+   * Flavor option change handler.
+   *
+   * Updates preview based on the selection.
+   *
+   * @ingroup forms
+   */
+  public function updatePreview(array &$form, FormStateInterface $form_state): AjaxResponse {
+    $response = new AjaxResponse();
+    /** @var string $selection */
+    $selection = $form_state->getValue('options');
+
+    if ($selection !== '_none') {
+      /** @var \Drupal\Core\Extension\Extension $flavor */
+      $flavor = $this->flavors->get($selection);
+      /** @var array $info */
+      $info = $flavor->info;
+
+      if (isset($info['screenshot'])) {
+        $response->addCommand(new ReplaceCommand('#theme-selector-vibrant .theme-screenshot img', [
+          '#theme' => 'image',
+          '#uri' => $info['screenshot'],
+          '#alt' => $this->t('Screenshot for @theme theme', ['@theme' => $info['name']]),
+          '#title' => $this->t('Screenshot for @theme theme', ['@theme' => $info['name']]),
+          '#attributes' => ['class' => ['screenshot']],
+        ]));
+      }
+    }
 
     return $response;
   }
