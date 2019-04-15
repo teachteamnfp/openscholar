@@ -4,5 +4,3 @@ global-styling:
       '//fonts.googleapis.com/css?family=Open+Sans|Open+Sans+Condensed:700|Oswald': { external: true }
     theme:
       css/style.css: {}
-
-
