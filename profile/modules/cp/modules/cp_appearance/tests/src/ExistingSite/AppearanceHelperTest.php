@@ -90,7 +90,7 @@ class AppearanceHelperTest extends TestBase {
     // Test more operations.
     $theme = $themes['vibrant'];
     $this->assertGreaterThan(0, \count($theme->more_operations));
-    $more_operations = $theme->more_operations;
+    $more_operations = $theme->more_operations[0];
     $this->assertEquals($more_operations['#type'], 'form');
 
     // Test notes.
