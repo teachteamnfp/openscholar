@@ -23,7 +23,7 @@ class RssFeedWidget extends OsWidgetsBase implements OsWidgetsInterface {
     $field_is_show_all_content_values = $block_content->get('field_is_show_all_content')->getValue();
 
     $types = [];
-    foreach ($block_content->field_content_types as $item) {
+    foreach ($block_content->field_content_to_display as $item) {
       if (!empty($item->value)) {
         $types[] = $item->value;
       }

@@ -18,7 +18,7 @@ class RssFeedBlockRenderTest extends OsWidgetsExistingSiteTestBase {
     /** @var \Drupal\block_content\Entity\BlockContent $block_content */
     $block_content = $this->createBlockContent([
       'type' => 'rss_feed',
-      'field_content_types' => [],
+      'field_content_to_display' => [],
       'field_is_show_all_content' => [
         TRUE,
       ],
@@ -40,7 +40,7 @@ class RssFeedBlockRenderTest extends OsWidgetsExistingSiteTestBase {
     /** @var \Drupal\block_content\Entity\BlockContent $block_content */
     $block_content = $this->createBlockContent([
       'type' => 'rss_feed',
-      'field_content_types' => [
+      'field_content_to_display' => [
         'class',
         'link',
         'news',
@@ -70,11 +70,13 @@ class RssFeedBlockRenderTest extends OsWidgetsExistingSiteTestBase {
    * Test field allowed values is valid array.
    */
   public function testFieldAllowedTypesFunction() {
-    $field_allowed_values = os_widgets_field_content_types_allowed_values();
+    $field_allowed_values = os_widgets_field_content_to_display_allowed_values();
 
     $this->assertNotEmpty($field_allowed_values);
     $this->assertArrayHasKey('link', $field_allowed_values);
     $this->assertSame('Link', $field_allowed_values['link']);
+    $this->assertArrayHasKey('all_publications', $field_allowed_values);
+    $this->assertSame('Publications', $field_allowed_values['all_publications']);
   }
 
 }

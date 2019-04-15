@@ -1,17 +1,17 @@
-uuid: 7f146578-a748-40ec-92e6-73e8080d12c9
+uuid: 876f578a-2e9d-4296-b63f-00b01c1a2037
 langcode: en
 status: true
 dependencies:
   config:
     - block_content.type.rss_feed
-    - field.storage.block_content.field_content_types
+    - field.storage.block_content.field_content_to_display
   module:
     - options
-id: block_content.rss_feed.field_content_types
-field_name: field_content_types
+id: block_content.rss_feed.field_content_to_display
+field_name: field_content_to_display
 entity_type: block_content
 bundle: rss_feed
-label: 'Content Types to Display'
+label: 'Content to display'
 description: ''
 required: false
 translatable: false

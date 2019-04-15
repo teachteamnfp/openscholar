@@ -4,10 +4,11 @@ status: true
 dependencies:
   config:
     - block_content.type.rss_feed
-    - field.field.block_content.rss_feed.field_content_types
+    - field.field.block_content.rss_feed.field_content_to_display
     - field.field.block_content.rss_feed.field_is_show_all_content
   module:
     - layout_builder
+    - options
 third_party_settings:
   layout_builder:
     sections: {  }
@@ -15,8 +16,14 @@ id: block_content.rss_feed.default
 targetEntityType: block_content
 bundle: rss_feed
 mode: default
-content: {  }
+content:
+  field_content_to_display:
+    weight: 0
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
 hidden:
-  field_content_types: true
   field_is_show_all_content: true
   langcode: true
