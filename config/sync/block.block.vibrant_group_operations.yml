@@ -1,0 +1,24 @@
+uuid: e161a055-d442-4875-9934-31de02ef4c82
+langcode: en
+status: true
+dependencies:
+  module:
+    - group
+  theme:
+    - vibrant
+_core:
+  default_config_hash: MjMChFykEa-4UxdnGstVk1FcXqwUF3p_GBJLIFT3_XI
+id: vibrant_group_operations
+theme: vibrant
+region: content
+weight: -1
+provider: null
+plugin: group_operations
+settings:
+  id: group_operations
+  label: 'Group operations'
+  provider: group
+  label_display: visible
+  context_mapping:
+    group: '@group.group_route_context:group'
+visibility: {  }

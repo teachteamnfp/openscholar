@@ -1,0 +1,22 @@
+uuid: ff6b328e-18ec-4268-b7c9-a55d7609fa8d
+langcode: en
+status: true
+dependencies:
+  theme:
+    - hwpi_college
+_core:
+  default_config_hash: X9I1OB0W3WlWtrK-CNcg6hNWwa8wficanpH8pYnDZDE
+id: hwpi_college_local_tasks
+theme: hwpi_college
+region: content
+weight: -6
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: Tabs
+  provider: core
+  label_display: '0'
+  primary: true
+  secondary: true
+visibility: {  }

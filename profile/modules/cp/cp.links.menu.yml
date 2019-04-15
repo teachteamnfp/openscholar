@@ -36,7 +36,7 @@ cp.content.import:
   parent: cp.content
 cp.content.browse:
   title: 'Browse'
-  url: 'internal:##'
+  route_name: view.site_content.page_1
   parent: cp.content
 cp.menu:
   title: 'Menus'
@@ -47,11 +47,6 @@ cp.appearance:
   title: 'Appearance'
   url: 'internal:##'
   weight: 2
-  menu_name: control-panel
-cp.taxonomy:
-  title: 'Taxonomy'
-  url: 'internal:##'
-  weight: 3
   menu_name: control-panel
 cp.settings:
   title: 'Settings'
