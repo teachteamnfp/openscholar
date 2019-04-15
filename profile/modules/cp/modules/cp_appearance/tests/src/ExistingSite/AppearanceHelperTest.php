@@ -102,6 +102,20 @@ class AppearanceHelperTest extends TestBase {
   }
 
   /**
+   * Flavors should not appear in the list.
+   */
+  public function testNoFlavors(): void {
+    /** @var \Drupal\Core\Extension\Extension[] $themes */
+    $themes = $this->appearanceHelper->getThemes();
+    /** @var array $sub_themes */
+    $sub_themes = $themes['vibrant']->sub_themes;
+
+    foreach ($sub_themes as $key => $value) {
+      $this->assertFalse(isset($themes[$key]));
+    }
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function tearDown() {
