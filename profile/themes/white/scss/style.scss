@@ -70,7 +70,7 @@ body {
       }
     }
     a {
-      &.is-active {
+      &.is-active, &.is-active:hover {
         background: $color_woodsmoke_approx;
       }
       &:hover {

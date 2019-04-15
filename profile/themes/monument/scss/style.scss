@@ -48,7 +48,7 @@ body {
 }
 
 .header-container {
-  background: url(header_background.png) left top no-repeat $color_cape_cod_approx;
+  background: url(../images/header_background.png) left top no-repeat $color_cape_cod_approx;
   border-top: 1px solid $color_fuscous_gray_approx;
 }
 
@@ -70,12 +70,12 @@ body {
   }
 }
 .navbar-collapse {
-  background: url(menu2Back.png) 0 0 repeat $color_celeste_approx;
+  background: url(../images/menu2Back.png) 0 0 repeat $color_celeste_approx;
   border-bottom: 1px solid $color_celeste_approx;
   ul.nav {
     a {
       color: $color_nevada_approx;
-      &.is-active {
+      &.is-active, &.is-active:hover {
         background: $color_ironside_gray_approx;
       }
       &:hover {
