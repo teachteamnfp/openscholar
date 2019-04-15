@@ -1,4 +1,4 @@
-uuid: dccd3995-f079-48d3-886b-6b84e840e894
+uuid: dd6e0231-2627-4197-b95f-8348379a79e1
 langcode: en
 status: true
 dependencies:
@@ -9,17 +9,15 @@ dependencies:
     - node
     - views
   theme:
-    - hwpi_sterling
-_core:
-  default_config_hash: cQMCTnTPfS3jKVyjhuRrr2qJaRqagTWUGjAbkJvLzFA
-id: hwpi_sterling_views_block__os_software_releases_recommended_block
-theme: hwpi_sterling
+    - loeb
+id: loeb_views_block__os_software_releases_recent_block
+theme: loeb
 region: content
-weight: -3
+weight: -2
 provider: null
-plugin: 'views_block:os_software_releases-recommended_block'
+plugin: 'views_block:os_software_releases-recent_block'
 settings:
-  id: 'views_block:os_software_releases-recommended_block'
+  id: 'views_block:os_software_releases-recent_block'
   label: ''
   provider: views
   label_display: visible

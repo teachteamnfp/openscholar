@@ -1,4 +1,3 @@
-uuid: 09d63b7c-3ce5-4abc-9fa2-d5b3aed1ca9b
 langcode: en
 status: true
 dependencies:
@@ -11,8 +10,6 @@ dependencies:
     - rng_quick
   theme:
     - hwpi_sterling
-_core:
-  default_config_hash: Ck_mkd9XaLmYEkawLnOKoRwq1V-zNBCOOdcGCE0S3uk
 id: hwpi_sterling_registration
 theme: hwpi_sterling
 region: content

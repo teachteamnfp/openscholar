@@ -1,4 +1,4 @@
-uuid: dccd3995-f079-48d3-886b-6b84e840e894
+uuid: 5939f8eb-025b-46a8-88b4-0904fa05a090
 langcode: en
 status: true
 dependencies:
@@ -9,11 +9,9 @@ dependencies:
     - node
     - views
   theme:
-    - hwpi_sterling
-_core:
-  default_config_hash: cQMCTnTPfS3jKVyjhuRrr2qJaRqagTWUGjAbkJvLzFA
-id: hwpi_sterling_views_block__os_software_releases_recommended_block
-theme: hwpi_sterling
+    - loeb
+id: loeb_views_block__os_software_releases_recommended_block
+theme: loeb
 region: content
 weight: -3
 provider: null

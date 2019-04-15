@@ -1,15 +1,15 @@
-uuid: 3c6b918c-6e2d-42cd-8b43-149de7b1af44
+uuid: 4b96d178-18da-4d66-aaec-456065622047
 langcode: en
 status: true
 dependencies:
   module:
     - system
   theme:
-    - hwpi_sterling
+    - loeb
 _core:
-  default_config_hash: STTu_AJcd7j8It5zywq9RXkdHUwvcDFJ02QTM891TVw
-id: hwpi_sterling_breadcrumbs
-theme: hwpi_sterling
+  default_config_hash: oXUb3JZR2WW5VOdw4HrhRicCsq51mCgLfRyvheG68ck
+id: loeb_breadcrumbs
+theme: loeb
 region: content
 weight: -8
 provider: null

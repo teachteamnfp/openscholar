@@ -1,4 +1,3 @@
-uuid: dccd3995-f079-48d3-886b-6b84e840e894
 langcode: en
 status: true
 dependencies:
@@ -10,8 +9,6 @@ dependencies:
     - views
   theme:
     - hwpi_sterling
-_core:
-  default_config_hash: cQMCTnTPfS3jKVyjhuRrr2qJaRqagTWUGjAbkJvLzFA
 id: hwpi_sterling_views_block__os_software_releases_recommended_block
 theme: hwpi_sterling
 region: content
