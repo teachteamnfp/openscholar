@@ -71,7 +71,7 @@ body {
       }
     }
     a {
-      &.is-active {
+      &.is-active, &.is-active:hover {
         @extend %extend_1;
       }
       &:hover {
@@ -183,4 +183,7 @@ h2.block-title {
 }
 #powered-by a {
   background-position: -14px -548px;
+}
+.full-calendar-view .fc-header-toolbar button {
+  color: $color_fern_green_approx
 }
