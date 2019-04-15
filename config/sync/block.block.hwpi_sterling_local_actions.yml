@@ -1,11 +1,11 @@
-uuid: d7117218-cdd3-4ab9-8b83-468f985acd5f
+uuid: 04310cc2-c235-48d4-8db5-f3b732cc1e4e
 langcode: en
 status: true
 dependencies:
   theme:
     - hwpi_sterling
 _core:
-  default_config_hash: 13GQpeITIJsp1kyPniXtWZfyFH87vb1xxJCHifL4UeE
+  default_config_hash: gWzLZMmpSfzPQlo2ZI1q7GJq3xJc4LV5QSY6w-6Nec0
 id: hwpi_sterling_local_actions
 theme: hwpi_sterling
 region: content
