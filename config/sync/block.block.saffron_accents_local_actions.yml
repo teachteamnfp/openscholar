@@ -1,0 +1,20 @@
+uuid: 4bd29115-df11-421c-ad85-3f24ec490c9a
+langcode: en
+status: true
+dependencies:
+  theme:
+    - saffron_accents
+_core:
+  default_config_hash: 13GQpeITIJsp1kyPniXtWZfyFH87vb1xxJCHifL4UeE
+id: saffron_accents_local_actions
+theme: saffron_accents
+region: content
+weight: -5
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Primary admin actions'
+  provider: core
+  label_display: '0'
+visibility: {  }
