@@ -7,7 +7,7 @@ namespace Drupal\Tests\vsite\ExistingSiteJavascript;
  *
  * @package Drupal\Tests\vsite\ExistingSite
  * @group link
- * @group existing-javascript
+ * @group functional-javascript
  */
 class VsiteLinkTest extends VsiteExistingSiteJavascriptTestBase {
 
