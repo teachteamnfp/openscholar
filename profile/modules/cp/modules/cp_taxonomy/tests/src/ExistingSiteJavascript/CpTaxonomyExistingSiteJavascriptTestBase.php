@@ -164,8 +164,8 @@ abstract class CpTaxonomyExistingSiteJavascriptTestBase extends TestBase {
    */
   protected function createGroupVocabulary(GroupInterface $group, string $vid, array $allowed_types = []) {
     $this->vsiteContextManager->activateVsite($group);
-    file_put_contents('public://createGroupVocabulary.png', $this->getSession()->getScreenshot());
     $this->visit($group->get('path')->getValue()[0]['alias'] . '/cp/taxonomy/add');
+    file_put_contents('public://createGroupVocabulary.png', $this->getSession()->getScreenshot());
     $web_assert = $this->assertSession();
     $web_assert->statusCodeEquals(200);
     $page = $this->getCurrentPage();
