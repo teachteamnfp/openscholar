@@ -54,6 +54,13 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
   protected $installedThemes;
 
   /**
+   * Theme selector builder service.
+   *
+   * @var \Drupal\cp_appearance\ThemeSelectorBuilderInterface
+   */
+  protected $themeSelectorBuilder;
+
+  /**
    * AppearanceBuilder constructor.
    *
    * @param \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler
@@ -62,11 +69,14 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
    *   Config factory.
    * @param \Drupal\Core\Form\FormBuilderInterface $form_builder
    *   Form builder.
+   * @param \Drupal\cp_appearance\ThemeSelectorBuilderInterface $theme_selector_builder
+   *   Theme selector builder service.
    */
-  public function __construct(ThemeHandlerInterface $theme_handler, ConfigFactoryInterface $config_factory, FormBuilderInterface $form_builder) {
+  public function __construct(ThemeHandlerInterface $theme_handler, ConfigFactoryInterface $config_factory, FormBuilderInterface $form_builder, ThemeSelectorBuilderInterface $theme_selector_builder) {
     $this->themeHandler = $theme_handler;
     $this->configFactory = $config_factory;
     $this->formBuilder = $form_builder;
+    $this->themeSelectorBuilder = $theme_selector_builder;
     $this->themeConfig = $this->configFactory->get('system.theme');
     $this->installedThemes = $this->themeHandler->listInfo();
   }
@@ -197,10 +207,7 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
         $sub_themes->put($key, $this->installedThemes[$key]);
       }
 
-      /** @var \Drupal\Core\Form\FormInterface $flavor_form */
-      $flavor_form = new FlavorForm($theme->getName(), $sub_themes);
-
-      $operations[] = $this->formBuilder->getForm($flavor_form);
+      $operations[] = $this->formBuilder->getForm(new FlavorForm($theme, $sub_themes, $this->themeSelectorBuilder));
     }
 
     return $operations;

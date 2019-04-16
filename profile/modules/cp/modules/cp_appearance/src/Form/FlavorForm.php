@@ -5,11 +5,12 @@ namespace Drupal\cp_appearance\Form;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\DependencyInjection\DependencySerializationTrait;
+use Drupal\Core\Extension\Extension;
 use Drupal\Core\Form\FormInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\cp_appearance\ThemeSelectorBuilderInterface;
 use Ds\Map;
-use PHPUnit\Framework\Assert;
 
 /**
  * Flavor selection form.
@@ -22,7 +23,7 @@ class FlavorForm implements FormInterface {
   /**
    * The theme for which the form will be created.
    *
-   * @var string
+   * @var \Drupal\Core\Extension\Extension
    */
   protected $theme;
 
@@ -36,26 +37,33 @@ class FlavorForm implements FormInterface {
   protected $flavors;
 
   /**
+   * Theme selector builder service.
+   *
+   * @var \Drupal\cp_appearance\ThemeSelectorBuilderInterface
+   */
+  protected $themeSelectorBuilder;
+
+  /**
    * Creates a new FlavorForm object.
    *
-   * @param string $theme
+   * @param \Drupal\Core\Extension\Extension $theme
    *   The theme for which the form will be created.
    * @param \Ds\Map $flavors
    *   Available flavors of the theme.
+   * @param \Drupal\cp_appearance\ThemeSelectorBuilderInterface $theme_selector_builder
+   *   Theme selector builder service.
    */
-  public function __construct($theme, Map $flavors) {
-    Assert::assertNotEquals('', $theme);
-    Assert::assertNotEmpty($flavors);
-
+  public function __construct(Extension $theme, Map $flavors, ThemeSelectorBuilderInterface $theme_selector_builder) {
     $this->theme = $theme;
     $this->flavors = $flavors;
+    $this->themeSelectorBuilder = $theme_selector_builder;
   }
 
   /**
    * {@inheritdoc}
    */
   public function getFormId(): string {
-    return "cp_appearance_{$this->theme}_flavor_form";
+    return "cp_appearance_{$this->theme->getName()}_flavor_form";
   }
 
   /**
@@ -71,7 +79,7 @@ class FlavorForm implements FormInterface {
       $options[$flavor->getName()] = $flavor->info['name'];
     }
 
-    $form['options'] = [
+    $form["options_{$this->theme->getName()}"] = [
       '#type' => 'select',
       '#title' => $this->t('Flavors'),
       '#options' => $options,
@@ -103,24 +111,30 @@ class FlavorForm implements FormInterface {
   public function updatePreview(array &$form, FormStateInterface $form_state): AjaxResponse {
     $response = new AjaxResponse();
     /** @var string $selection */
-    $selection = $form_state->getValue('options');
+    $selection = $form_state->getValue("options_{$this->theme->getName()}");
 
     if ($selection !== '_none') {
       /** @var \Drupal\Core\Extension\Extension $flavor */
       $flavor = $this->flavors->get($selection);
       /** @var array $info */
       $info = $flavor->info;
-
-      if (isset($info['screenshot'])) {
-        $response->addCommand(new ReplaceCommand('#theme-selector-vibrant .theme-screenshot img', [
-          '#theme' => 'image',
-          '#uri' => $info['screenshot'],
-          '#alt' => $this->t('Screenshot for @theme theme', ['@theme' => $info['name']]),
-          '#title' => $this->t('Screenshot for @theme theme', ['@theme' => $info['name']]),
-          '#attributes' => ['class' => ['screenshot']],
-        ]));
-      }
+      /** @var string|null $screenshot_uri */
+      $screenshot_uri = $this->themeSelectorBuilder->getScreenshotUri($flavor);
     }
+    else {
+      /** @var array $info */
+      $info = $this->theme->info;
+      /** @var string|null $screenshot_uri */
+      $screenshot_uri = $this->themeSelectorBuilder->getScreenshotUri($this->theme);
+    }
+
+    $response->addCommand(new ReplaceCommand("#theme-selector-{$this->theme->getName()} .theme-screenshot img", [
+      '#theme' => 'image',
+      '#uri' => $screenshot_uri ?? '',
+      '#alt' => $this->t('Screenshot for @theme theme', ['@theme' => $info['name']]),
+      '#title' => $this->t('Screenshot for @theme theme', ['@theme' => $info['name']]),
+      '#attributes' => ['class' => ['screenshot']],
+    ]));
 
     return $response;
   }
