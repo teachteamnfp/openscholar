@@ -38,7 +38,6 @@ class TaxonomyTermsFieldTest extends CpTaxonomyExistingSiteJavascriptTestBase {
 
     $this->visit($this->group1->get('path')->getValue()[0]['alias'] . "/node/add/taxonomy_test_1");
     $web_assert = $this->assertSession();
-    file_put_contents('public://testNodeTaxonomyTermsFieldAutocompleteSuccess1.png', $this->getSession()->getScreenshot());
     $web_assert->statusCodeEquals(200);
     $page = $this->getCurrentPage();
     $is_exists = $page->hasContent('Tag with Terms');
@@ -61,7 +60,6 @@ class TaxonomyTermsFieldTest extends CpTaxonomyExistingSiteJavascriptTestBase {
   public function testNodeTaxonomyHiddenField() {
     $this->visit($this->group1->get('path')->getValue()[0]['alias'] . "/node/add/taxonomy_test_2");
     $web_assert = $this->assertSession();
-    file_put_contents('public://testNodeTaxonomyHiddenField.png', $this->getSession()->getScreenshot());
     $web_assert->statusCodeEquals(200);
     $page = $this->getCurrentPage();
     $is_exists = $page->hasContent('Tag with Terms');
