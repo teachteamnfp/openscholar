@@ -1,0 +1,20 @@
+uuid: 52358474-8958-4e23-82c0-ea14fe8180ea
+langcode: en
+status: true
+dependencies:
+  theme:
+    - peabody
+_core:
+  default_config_hash: 13GQpeITIJsp1kyPniXtWZfyFH87vb1xxJCHifL4UeE
+id: peabody_local_actions
+theme: peabody
+region: content
+weight: -5
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Primary admin actions'
+  provider: core
+  label_display: '0'
+visibility: {  }

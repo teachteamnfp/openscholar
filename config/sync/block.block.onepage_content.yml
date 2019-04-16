@@ -1,0 +1,22 @@
+uuid: 50cd554c-464b-48b9-9fa6-5bfb851e85e8
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - onepage
+_core:
+  default_config_hash: 1IlF3-pVL-yHlSQhVIrE7U-b8L3MPVjZiJpomptH2dY
+id: onepage_content
+theme: onepage
+region: content
+weight: -4
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  provider: system
+  label_display: '0'
+visibility: {  }
