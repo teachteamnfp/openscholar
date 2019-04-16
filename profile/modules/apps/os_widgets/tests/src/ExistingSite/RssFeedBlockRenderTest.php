@@ -76,7 +76,7 @@ class RssFeedBlockRenderTest extends OsWidgetsExistingSiteTestBase {
     $this->assertArrayHasKey('link', $field_allowed_values);
     $this->assertSame('Link', $field_allowed_values['link']);
     $this->assertArrayHasKey('all_publications', $field_allowed_values);
-    $this->assertSame('Publications', $field_allowed_values['all_publications']);
+    $this->assertSame('Publications', $field_allowed_values['all_publications']->__tostring());
   }
 
 }
