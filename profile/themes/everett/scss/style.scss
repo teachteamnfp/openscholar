@@ -36,15 +36,15 @@ body {
   color: $black;
   font-family: $font_0, $font_1;
 }
-a {
+a, .full-calendar-view .fc-header-toolbar button {
   color: $color_hippie_green_approx;
   &:visited {
     color: $color_hippie_green_approx;
   }
-  &.node-readmore a:after {
-    background: none;
-    background-image: none;
-  }
+}
+.node-readmore a:after {
+  background: none;
+  background-image: none;
 }
 .page-header {
   font-family: $font_0, $font_1;
@@ -121,7 +121,7 @@ footer {
     }
     li {
       >a {
-        &.is-active {
+        &.is-active, &.is-active:hover {
           @extend %extend_2;
         }
         &:hover {

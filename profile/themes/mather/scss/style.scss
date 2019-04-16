@@ -105,6 +105,7 @@ footer {
     a {
       font-size: 1.1em;
       color: $color_mine_shaft_approx;
+      font-family: 'Montserrat',sans-serif;
       &.is-active {
         background-color: $color_mine_shaft_approx;
       }
@@ -125,6 +126,11 @@ footer {
         background-color: $color_mine_shaft_approx;
       }
     }
+    a {
+      &.is-active, &.is-active:hover{
+          background-color: $color_mine_shaft_approx;
+        }
+    }
   }
 }
 .region-content-top {
@@ -135,6 +141,13 @@ footer {
 }
 .header-container {
   background: $color_bianca_approx;
+  ul.nav {
+    li {
+      a {
+        font-family: 'Montserrat',sans-serif;
+      }
+    }
+  }
 }
 .path-search .title a {
   font-family: $font_0, $font_1;

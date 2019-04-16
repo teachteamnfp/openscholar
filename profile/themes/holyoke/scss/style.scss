@@ -64,7 +64,7 @@ footer {
   .navbar-nav>li {
     >a {
       font-family: $font_0, $font_1;
-      &.is-active {
+      &.is-active, &.is-active:hover {
         background: $color_pizza_approx;
         color: $white;
       }

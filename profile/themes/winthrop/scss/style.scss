@@ -90,7 +90,7 @@ footer {
       font-family: $font_0, $font_1, $font_2;
       padding: 16px 15px;
       @extend %extend_1;
-      &.is-active {
+      &.is-active, &.is-active:hover {
         @extend %extend_1;
         @extend %extend_2;
       }
@@ -184,9 +184,9 @@ footer {
 h2.block-title {
   font-family: $font_0, $font_1, $font_2;
 }
-.header-container ul.nav a {
-  font-family: $font_0, $font_1, $font_2;
+.header-container ul.nav li a {
   font-family: $font_3, $font_4;
+  text-transform: uppercase;
 }
 .fc-header-toolbar h2 {
   font-family: $font_0, $font_1, $font_2;
