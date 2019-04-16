@@ -1,0 +1,325 @@
+//colors
+$color_cararra_approx: #ebebeb;
+$color_alto_approx: #dddddd;
+$color_mine_shaft_approx: #303030;
+$white: #ffffff;
+$color_storm_dust_approx: #666666;
+$color_hippie_green_approx: #52854c;
+$color_alabaster_approx: #f9f9f9;
+
+//fonts
+$font_0: Roboto;
+$font_1: Baskerville;
+$font_2: Palatino;
+$font_3: Palatino Linotype;
+$font_4: Book Antiqua;
+$font_5: Times New Roman;
+$font_6: serif;
+$font_7: georgia;
+$font_8: arial;
+$font_9: helvetica;
+
+//@extend-elements
+%extend_1 {
+  background: $color_storm_dust_approx;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+%extend_2 {
+  border-bottom: none;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+}
+%extend_3 {
+  background: $white;
+  border: 1px solid $color_alto_approx;
+  margin-bottom: 15px;
+}
+%extend_4 {
+  background: none repeat scroll 0 0 $color_cararra_approx;
+  border-bottom: 1px solid $color_alto_approx;
+  color: $color_mine_shaft_approx;
+  font-family: $font_0, $font_9;
+  font-size: 12px;
+  line-height: 20px;
+  min-height: 20px;
+  padding: 7px 15px !important;
+}
+@import url(https://fonts.googleapis.com/css?family=Roboto);
+body {
+  font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6;
+  font-size: 14px;
+}
+.not-front {
+  .content-inner {
+    font-size: 14px;
+    p {
+      font-family: $font_0, $font_6;
+    }
+    ul li {
+      font-family: $font_0, $font_6;
+    }
+    ol li {
+      font-family: $font_0, $font_6;
+    }
+  }
+  &.two-sidebars .content-inner {
+    border-right: none;
+  }
+}
+.header-container {
+  background: none repeat scroll 0 0 $color_cararra_approx;
+  border-bottom: 2px solid $color_alto_approx;
+  color: $color_mine_shaft_approx;
+}
+.navbar-collapse {
+  background: none repeat scroll 0 0 $white;
+  border-bottom: 1px solid $color_alto_approx;
+  ul.nav {
+    a {
+      &.is-active, &.is-active:hover {
+        @extend %extend_1;
+      }
+      &:hover {
+        @extend %extend_1;
+      }
+    }
+    ul {
+      background: $color_cararra_approx;
+    }
+    .dropdown {
+      a {
+        &:hover {
+          background: $color_storm_dust_approx;
+          color: $white;
+        }
+        &.is-active {
+          background: $color_storm_dust_approx;
+          color: $white;
+        }
+      }
+      &.open>a {
+        background: $color_storm_dust_approx;
+        color: $white;
+      }
+      li a:hover {
+        background: none;
+        color: $color_storm_dust_approx;
+      }
+    }
+  }
+}
+.block-boxes-os_boxes_accordion {
+  border: 0 !important;
+  .block-content {
+    padding: 0;
+  }
+}
+.path-front {
+  #content-panels {
+    .block {
+      &.block-boxes-os_boxes_columns {
+        border: 0 !important;
+      }
+      &.block-boxes-os_slideshow_box .block-content {
+        padding: 0;
+      }
+    }
+    .block-boxes-os_boxes_columns .region .block-content {
+      padding: 15px;
+    }
+  }
+  .content-inner {
+    .block {
+      @extend %extend_3;
+      &.block-boxes-os_slideshow_box {
+        background: $white;
+        //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+        border-radius: 0 0 0 0;
+        border: none;
+      }
+    }
+    .block-content {
+      padding: 15px;
+    }
+  }
+}
+#boxes-box-site_info {
+  font-family: $font_0, $font_9, $font_8;
+  a {
+    font-family: $font_0, $font_9, $font_8;
+  }
+}
+.page-header {
+  font-family: $font_0, $font_6;
+}
+.node--title {
+  font-family: $font_0, $font_6;
+}
+.more-link {
+  font-family: $font_0, $font_6;
+}
+footer {
+  background: none repeat scroll 0 0 $color_alabaster_approx;
+  border-top: 2px solid $color_alto_approx;
+  ul.nav a {
+    font-family: $font_0, $font_6;
+  }
+}
+aside {
+  .block-content {
+    padding: 15px;
+  }
+  .block-title {
+    @extend %extend_4;
+  }
+  .block-inner {
+    margin-top: 0;
+  }
+  .nav a {
+    font-family: $font_0, $font_6;
+  }
+  .region > .block {
+    @extend %extend_3;
+  }
+  .block-boxes-os_boxes_sectionnav .block-content {
+    padding: 15px 0;
+  }
+  .block-boxes-os-pages-section-nav .block-content {
+    padding: 15px 0;
+  }
+  .block.section-nav {
+    border: none;
+  }
+}
+.content-inner {
+  h2 {
+    font-family: $font_0, $font_6;
+  }
+  h3 {
+    font-family: $font_0, $font_6;
+  }
+  h4 {
+    font-family: $font_0, $font_6;
+  }
+  .field--name-body {
+    font-family: $font_0, $font_6;
+  }
+  .block {
+    &.section-nav {
+      border: none;
+    }
+    &.block-boxes-os_boxes_columns .block {
+      border-top: none;
+      margin-top: 0;
+      @extend %extend_3;
+    }
+    &.block-boxes-os_boxes_manual_list.styled h2.block-title {
+      padding: 7px 0;
+    }
+  }
+  .block-inner {
+    margin-top: 0;
+  }
+}
+.comment-wrapper {
+  border-top: none;
+  margin-top: 0;
+}
+.content-left {
+  &.content-right {
+    .region-content-first .region-inner {
+      border-right: none;
+    }
+    &.content-bottom .region-content-second .region-inner {
+      border-right: none;
+    }
+  }
+  &.content-bottom .region-content-first .region-inner {
+    border-right: none;
+  }
+}
+.cke_editable * {
+  font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6;
+  font-size: 14px;
+}
+
+h1.page-header {
+  font-size: 32px;
+}
+.block-boxes-os_boxes_facetapi_vocabulary.navigation {
+  a {
+    font-family: $font_7;
+    font-family: $font_0, $font_1, $font_8;
+  }
+  .block-content {
+    padding: 0;
+  }
+  ul {
+    @extend %extend_2;
+  }
+  h2.block-title {
+    margin-bottom: 0;
+  }
+}
+.block-boxes-os_taxonomy_fbt.navigation {
+  a {
+    font-family: $font_7;
+    font-family: $font_0, $font_1, $font_8;
+  }
+  .block-content {
+    padding: 0;
+  }
+  ul {
+    @extend %extend_2;
+  }
+  h2.block-title {
+    margin-bottom: 0;
+  }
+}
+#content-panels .block-boxes-os_boxes_columns .block-content:nth-child(1) {
+  padding: 0;
+}
+.search-block-form .form-submit {
+  background: $color_hippie_green_approx;
+  border-color: $color_hippie_green_approx;
+}
+.path-search .title a {
+  font-family: $font_0, $font_6;
+}
+.path-search .content-inner p {
+  font-family: $font_0, $font_6;
+}
+.links a {
+  font-family: $font_0, $font_6;
+}
+.boxes-box-content h2 {
+  font-family: $font_0, $font_6;
+}
+.aside .block {
+  border-top: none;
+  margin-top: 0;
+}
+.path-front .content-inner {
+  .block {
+    border-top: none;
+    margin-top: 0;
+  }
+  .block-title {
+    @extend %extend_4;
+  }
+}
+.path-person .block-inner {
+  border-top: none;
+  margin-top: 0;
+}
+.content-right.content-bottom .region-content-second .region-inner {
+  border-right: none;
+}
+.aside .node-teaser.node-person {
+  padding: 0;
+}
+a.rslides_nav {
+  background-color: $color_hippie_green_approx;
+}
