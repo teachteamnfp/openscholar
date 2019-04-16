@@ -1,11 +1,11 @@
-uuid: 7db5af20-388f-4293-9408-9655ed928d69
+uuid: 1682bc95-9010-446d-bc71-1df50939be0b
 langcode: en
 status: true
 dependencies:
   theme:
     - hwpi_college
 _core:
-  default_config_hash: 13GQpeITIJsp1kyPniXtWZfyFH87vb1xxJCHifL4UeE
+  default_config_hash: h3z1SJuLWFbD5xnTDNmRcXh1jnF-iWsnuUROyyunv94
 id: hwpi_college_local_actions
 theme: hwpi_college
 region: content

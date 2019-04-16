@@ -1,0 +1,22 @@
+uuid: bcb6a820-9dea-417b-82e8-e4cef4238b47
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - saffron_accents
+_core:
+  default_config_hash: 9EoWV2Lot6FVSr50t4hoKgiz1LIXYWNG-IIPYsWxBqo
+id: saffron_accents_content
+theme: saffron_accents
+region: content
+weight: -4
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  provider: system
+  label_display: '0'
+visibility: {  }

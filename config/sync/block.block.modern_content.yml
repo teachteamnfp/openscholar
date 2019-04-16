@@ -1,4 +1,4 @@
-uuid: 72c62c0d-95b1-492b-99d8-4516a24a645a
+uuid: 781fbaaf-e443-4076-954e-9c8be71b6a2e
 langcode: en
 status: true
 dependencies:
@@ -7,7 +7,7 @@ dependencies:
   theme:
     - modern
 _core:
-  default_config_hash: 9EoWV2Lot6FVSr50t4hoKgiz1LIXYWNG-IIPYsWxBqo
+  default_config_hash: f2ssumT3hbitSS-TMQNwbBMK0oyAW4GayWqw2LB0hwA
 id: modern_content
 theme: modern
 region: content
