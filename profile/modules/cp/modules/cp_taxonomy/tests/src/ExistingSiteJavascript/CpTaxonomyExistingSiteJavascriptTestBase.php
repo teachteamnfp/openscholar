@@ -165,7 +165,6 @@ abstract class CpTaxonomyExistingSiteJavascriptTestBase extends TestBase {
   protected function createGroupVocabulary(GroupInterface $group, string $vid, array $allowed_types = []) {
     $this->vsiteContextManager->activateVsite($group);
     $this->visit($group->get('path')->getValue()[0]['alias'] . '/cp/taxonomy/add');
-    file_put_contents('public://createGroupVocabulary.png', $this->getSession()->getScreenshot());
     $web_assert = $this->assertSession();
     $web_assert->statusCodeEquals(200);
     $page = $this->getCurrentPage();
@@ -176,6 +175,7 @@ abstract class CpTaxonomyExistingSiteJavascriptTestBase extends TestBase {
     }
     $submit_button = $page->findButton('Save');
     $submit_button->press();
+    file_put_contents('public://createGroupVocabulary' . $group->id() . $vid . $this->getSession()->getStatusCode() . '.png', $this->getSession()->getScreenshot());
     $web_assert->statusCodeEquals(200);
   }
 

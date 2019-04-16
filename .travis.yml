@@ -25,15 +25,15 @@ env:
     - PATH="$PATH:$HOME/.composer/vendor/bin"
     - TRAVIS_NODE_VERSION="4"
   matrix:
-    - JOB=job:check-coding-standards
-    - JOB=job:run-unit-tests
-    - JOB="job:run-kernel-tests widgets"
-    - JOB="job:run-kernel-tests redirect"
-    - JOB="job:run-kernel-tests publications"
-    - JOB="job:run-kernel-tests vsite"
-    - JOB="job:run-kernel-tests other"
-    - JOB="job:run-kernel-tests os-theme-preview"
-    - JOB=job:run-functional-tests
+#    - JOB=job:check-coding-standards
+#    - JOB=job:run-unit-tests
+#    - JOB="job:run-kernel-tests widgets"
+#    - JOB="job:run-kernel-tests redirect"
+#    - JOB="job:run-kernel-tests publications"
+#    - JOB="job:run-kernel-tests vsite"
+#    - JOB="job:run-kernel-tests other"
+#    - JOB="job:run-kernel-tests os-theme-preview"
+#    - JOB=job:run-functional-tests
     - JOB=job:run-functional-javascript-tests
 #    - JOB=job:run-behat-tests
 
