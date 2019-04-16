@@ -247,8 +247,8 @@ display:
         title: Classes
         description: ''
         expanded: false
-        parent: 'views_view:views.calendar.page_1'
-        weight: -50
+        parent: ''
+        weight: 0
         context: '0'
         menu_name: main
     cache_metadata:
