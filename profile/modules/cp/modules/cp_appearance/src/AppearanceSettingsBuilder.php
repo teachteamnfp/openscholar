@@ -12,9 +12,9 @@ use Drupal\cp_appearance\Form\FlavorForm;
 use Ds\Map;
 
 /**
- * Helper methods for theme appearance settings.
+ * Helper methods for appearance settings.
  */
-final class AppearanceHelper implements AppearanceHelperInterface {
+final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterface {
 
   use StringTranslationTrait;
 
@@ -54,7 +54,7 @@ final class AppearanceHelper implements AppearanceHelperInterface {
   protected $installedThemes;
 
   /**
-   * AppearanceHelper constructor.
+   * AppearanceBuilder constructor.
    *
    * @param \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler
    *   Theme handler.

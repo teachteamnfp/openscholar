@@ -3,13 +3,13 @@
 namespace Drupal\Tests\cp_appearance\ExistingSite;
 
 /**
- * AppearanceHelper service test.
+ * AppearanceSettingsBuilder service test.
  *
  * @group kernel
  * @group other
- * @coversDefaultClass \Drupal\cp_appearance\AppearanceHelper
+ * @coversDefaultClass \Drupal\cp_appearance\AppearanceSettingsBuilder
  */
-class AppearanceHelperTest extends TestBase {
+class AppearanceSettingsBuilderTest extends TestBase {
 
   /**
    * Theme handler.
@@ -49,7 +49,7 @@ class AppearanceHelperTest extends TestBase {
     $theme_config_mut->set('default', 'hwpi_classic')->save();
 
     /** @var \Drupal\Core\Extension\Extension[] $themes */
-    $themes = $this->appearanceHelper->getThemes();
+    $themes = $this->appearanceSettingsBuilder->getThemes();
 
     $this->assertFalse(isset($themes['stark']));
     $this->assertFalse(isset($themes['seven']));
@@ -106,7 +106,7 @@ class AppearanceHelperTest extends TestBase {
    */
   public function testNoFlavors(): void {
     /** @var \Drupal\Core\Extension\Extension[] $themes */
-    $themes = $this->appearanceHelper->getThemes();
+    $themes = $this->appearanceSettingsBuilder->getThemes();
     /** @var array $sub_themes */
     $sub_themes = $themes['vibrant']->sub_themes;
 
