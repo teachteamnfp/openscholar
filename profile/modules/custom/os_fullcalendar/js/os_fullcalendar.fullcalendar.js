@@ -16,8 +16,13 @@
       return $.extend({
         eventRender: function (event, element) {
           if (element.hasClass('fc-event-future') && !element.hasClass('fc-day-grid-event')) {
+            let date = new Date(event['start']['_i']);
+            let offset = date.getTimezoneOffset() * 60000;
+            let dateInMs = date.valueOf();
+            let eventDate = (dateInMs + offset)/1000;
             let nid = event.eid;
             element.html(drupalSettings[nid]);
+            element.find('#events_signup_modal_form').attr('href', '/events/signup/' + nid + '/' + eventDate);
           }
           else if (element.hasClass('fc-event-past') && !element.hasClass('fc-day-grid-event')) {
             let nid = event.eid;
@@ -99,9 +104,13 @@
     attach: function (context, settings) {
 
       const $multicheck = $('#edit-field-singup-multiple-wrapper');
-      $multicheck.hide();
       const $checkbox = $('.form-item-field-recurring-date-0-rrule .form-textarea-wrapper');
       const $message = $('#event-change-notify');
+      $(window).bind("load", function() {
+        if (!$checkbox.find('input').is(':checked')) {
+          $multicheck.hide();
+        }
+      });
       $checkbox.find('input').on('change', function () {
         if ($(this).is(':checked')) {
           $message.removeClass('visually-hidden');

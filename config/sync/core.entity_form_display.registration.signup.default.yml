@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.registration.signup.field_for_date
     - rng.registration_type.signup
   module:
     - content_moderation
@@ -17,6 +18,14 @@ targetEntityType: registration
 bundle: signup
 mode: default
 content:
+  field_for_date:
+    weight: 101
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
   moderation_state:
     type: moderation_state_default
     weight: 100
