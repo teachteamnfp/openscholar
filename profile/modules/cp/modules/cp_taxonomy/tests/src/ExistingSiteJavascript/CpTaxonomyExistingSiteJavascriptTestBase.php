@@ -176,7 +176,7 @@ abstract class CpTaxonomyExistingSiteJavascriptTestBase extends TestBase {
     $submit_button = $page->findButton('Save');
     $submit_button->press();
     file_put_contents('public://createGroupVocabulary' . $group->id() . $vid . $this->getSession()->getStatusCode() . '.png', $this->getSession()->getScreenshot());
-    $web_assert->statusCodeEquals(200);
+    $web_assert->pageTextContains('Created new vocabulary');
   }
 
   /**
