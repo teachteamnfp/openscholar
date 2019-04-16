@@ -21,11 +21,35 @@ class RssFeedBlockJavascriptTest extends ExistingSiteWebDriverTestBase {
   protected $entityTypeManager;
 
   /**
+   * Config factory.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
+   * The theme handler service.
+   *
+   * @var \Drupal\Core\Extension\ThemeHandlerInterface
+   */
+  protected $themeHandler;
+
+  /**
+   * The default theme.
+   *
+   * @var string
+   */
+  protected $defaultTheme;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
     parent::setUp();
     $this->entityTypeManager = $this->container->get('entity_type.manager');
+    $this->configFactory = $this->container->get('config.factory');
+    $this->themeHandler = $this->container->get('theme_handler');
+    $this->defaultTheme = $this->themeHandler->getDefault();
   }
 
   /**
@@ -87,6 +111,12 @@ class RssFeedBlockJavascriptTest extends ExistingSiteWebDriverTestBase {
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   protected function placeBlockContentToContentRegion(BlockContent $block_content): void {
+    // This test relies on a test block that is only enabled for os_base.
+    /** @var \Drupal\Core\Config\Config $theme_setting */
+    $theme_setting = $this->configFactory->getEditable('system.theme');
+    $theme_setting->set('default', 'os_base');
+    $theme_setting->save();
+
     $values = [
       'id' => 'block_content_rss_feed_test',
       'plugin' => 'block_content:' . $block_content->uuid(),
@@ -107,6 +137,18 @@ class RssFeedBlockJavascriptTest extends ExistingSiteWebDriverTestBase {
     $block = Block::create($values);
     $block->save();
     $this->markEntityForCleanup($block);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function tearDown() {
+    parent::tearDown();
+
+    /** @var \Drupal\Core\Config\Config $theme_setting */
+    $theme_setting = $this->configFactory->getEditable('system.theme');
+    $theme_setting->set('default', $this->defaultTheme);
+    $theme_setting->save();
   }
 
 }
