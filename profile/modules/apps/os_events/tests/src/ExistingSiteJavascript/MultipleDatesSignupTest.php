@@ -7,6 +7,7 @@ use Drupal\Component\Datetime\DateTimePlus;
 /**
  * Class MultipleDatesSignupTest.
  *
+ * @group functional-javascript
  * @package Drupal\Tests\os_events\ExistingSiteJavascript
  */
 class MultipleDatesSignupTest extends EventsJavascriptTestBase {
