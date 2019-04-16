@@ -1,0 +1,24 @@
+uuid: 8212b98b-876d-49b2-aa71-dbca8339ce8a
+langcode: en
+status: true
+dependencies:
+  module:
+    - group
+  theme:
+    - hwpi_college
+_core:
+  default_config_hash: '-SSaBkXfxzTPPy4Uq3GTzQt09c9TaPs0v4gCST7RnXo'
+id: hwpi_college_group_operations
+theme: hwpi_college
+region: content
+weight: -1
+provider: null
+plugin: group_operations
+settings:
+  id: group_operations
+  label: 'Group operations'
+  provider: group
+  label_display: visible
+  context_mapping:
+    group: '@group.group_route_context:group'
+visibility: {  }

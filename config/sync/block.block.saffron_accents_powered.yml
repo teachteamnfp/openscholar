@@ -1,0 +1,22 @@
+uuid: 138f0dac-075e-4e30-b149-bb772ca5809f
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - saffron_accents
+_core:
+  default_config_hash: jQQUUWN2Uxr5qZtc9zcJKBCxpKY8orN1u2HPqYYRQDI
+id: saffron_accents_powered
+theme: saffron_accents
+region: footer
+weight: -6
+provider: null
+plugin: system_powered_by_block
+settings:
+  id: system_powered_by_block
+  label: 'Powered by Drupal'
+  provider: system
+  label_display: '0'
+visibility: {  }

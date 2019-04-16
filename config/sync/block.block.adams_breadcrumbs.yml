@@ -1,0 +1,22 @@
+uuid: e7bfe59c-bc59-400a-8ae8-e3d216f2dcf1
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - adams
+_core:
+  default_config_hash: oXUb3JZR2WW5VOdw4HrhRicCsq51mCgLfRyvheG68ck
+id: adams_breadcrumbs
+theme: adams
+region: content
+weight: -8
+provider: null
+plugin: system_breadcrumb_block
+settings:
+  id: system_breadcrumb_block
+  label: Breadcrumbs
+  provider: system
+  label_display: '0'
+visibility: {  }

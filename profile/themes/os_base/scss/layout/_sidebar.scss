@@ -1,5 +1,4 @@
 aside {
-  margin-top: 18px;
   .navbar-nav {
     float: none;
     li {
@@ -14,8 +13,8 @@ aside {
         border-bottom: 2px solid $color-white;
         font-size: 15px;
         font-weight: normal;
-        &.is-active {
-        }
+        line-height: inherit;
+        &.is-active {}
         .caret {
           display: none;
         }
@@ -41,7 +40,8 @@ aside {
         a {
           background: $color-light-gray4;
           border-bottom: 2px solid $color-white;
-          &:hover, &:focus {
+          &:hover,
+          &:focus {
             background: $color-light-gray2;
             border-color: $color-white;
           }
@@ -61,7 +61,9 @@ aside {
     margin-top: 0;
     margin-bottom: 15px;
   }
-  .block, nav {
+  .region > .block,
+  nav {
     margin-bottom: 20px;
+    margin-top: 12px
   }
 }

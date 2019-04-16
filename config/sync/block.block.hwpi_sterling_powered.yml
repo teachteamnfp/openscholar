@@ -1,0 +1,22 @@
+uuid: 762fc971-5a8c-4399-b8e6-8b604b9deca4
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - hwpi_sterling
+_core:
+  default_config_hash: RLz3JbdpXBbrgLvqQApObEp0PCe_A4MMIsCZ6yCJCto
+id: hwpi_sterling_powered
+theme: hwpi_sterling
+region: footer
+weight: -6
+provider: null
+plugin: system_powered_by_block
+settings:
+  id: system_powered_by_block
+  label: 'Powered by Drupal'
+  provider: system
+  label_display: '0'
+visibility: {  }

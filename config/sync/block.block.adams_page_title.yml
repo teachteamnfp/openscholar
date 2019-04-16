@@ -1,0 +1,20 @@
+uuid: 935cb509-02db-4323-b83a-e05dd7d0eb96
+langcode: en
+status: true
+dependencies:
+  theme:
+    - adams
+_core:
+  default_config_hash: 7rR9chwXvdM2H8OYMAYx9Zj3GGlPMrZp_M3ZA4thYTk
+id: adams_page_title
+theme: adams
+region: content
+weight: -7
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  provider: core
+  label_display: '0'
+visibility: {  }

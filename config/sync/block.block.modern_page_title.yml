@@ -1,0 +1,20 @@
+uuid: 5caebd1b-f673-4704-9aff-19302507342c
+langcode: en
+status: true
+dependencies:
+  theme:
+    - modern
+_core:
+  default_config_hash: rBY5Z0394DT1LOSjcMhHmikFzpgJs7HxVW2GMEHEzRQ
+id: modern_page_title
+theme: modern
+region: content
+weight: -7
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  provider: core
+  label_display: '0'
+visibility: {  }

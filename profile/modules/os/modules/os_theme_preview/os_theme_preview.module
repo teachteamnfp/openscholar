@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\os_theme_preview\Form\PreviewAction;
 use Drupal\os_theme_preview\ThemePreviewException;
 
 /**
@@ -65,4 +66,21 @@ function os_theme_preview_theme_preview_action(&$form, FormStateInterface $form_
     $messenger = \Drupal::messenger();
     $messenger->addError($e->getMessage());
   }
+}
+
+/**
+ * Implements hook_page_bottom().
+ */
+function os_theme_preview_page_bottom(array &$page_bottom) {
+  /** @var \Drupal\os_theme_preview\PreviewManagerInterface $preview_manager */
+  $preview_manager = \Drupal::service('os_theme_preview.manager');
+
+  if (!$preview_manager->isPreviewModeEnabled()) {
+    return;
+  }
+
+  /** @var array $preview_action_form */
+  $preview_action_form = \Drupal::formBuilder()->getForm(PreviewAction::class);
+
+  $page_bottom['preview_action_form'] = $preview_action_form;
 }

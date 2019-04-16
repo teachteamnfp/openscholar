@@ -1,0 +1,5 @@
+cp.appearance:
+  title: 'Appearance'
+  route_name: cp.appearance
+  weight: 2
+  menu_name: control-panel
