@@ -3,6 +3,11 @@
   background: $color-red;
   padding: 0 !important;
   border-bottom: 6px solid $color-black;
+  @media #{$normal} {
+    .container {
+      padding: 0;
+    }
+  }
   /***** navbar nav *****/
   .navbar-nav {
     > li {

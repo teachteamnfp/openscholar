@@ -1,11 +1,11 @@
-uuid: 851cf8d8-8290-4ad9-a25f-838bacd91bdc
+uuid: b091138c-0c68-49cd-8f29-fab065e2997a
 langcode: en
 status: true
 dependencies:
   theme:
     - modern
 _core:
-  default_config_hash: X9I1OB0W3WlWtrK-CNcg6hNWwa8wficanpH8pYnDZDE
+  default_config_hash: qyWGd55nulll9pogKawmpLZpBIIVJYjg6u90y5MbPm4
 id: modern_local_tasks
 theme: modern
 region: content

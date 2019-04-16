@@ -1,0 +1,22 @@
+uuid: 9b6318d0-e2f1-4064-bba1-419a3f3109b9
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - monument
+_core:
+  default_config_hash: 9EoWV2Lot6FVSr50t4hoKgiz1LIXYWNG-IIPYsWxBqo
+id: monument_content
+theme: monument
+region: content
+weight: -4
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  provider: system
+  label_display: '0'
+visibility: {  }

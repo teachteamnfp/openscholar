@@ -1,4 +1,4 @@
-uuid: add11cc1-fa25-41db-a482-6a93156f50a6
+uuid: 597eb2bd-b298-40e7-a4f9-f7a44c6bf9a0
 langcode: en
 status: true
 dependencies:
@@ -7,7 +7,7 @@ dependencies:
   theme:
     - modern
 _core:
-  default_config_hash: oXUb3JZR2WW5VOdw4HrhRicCsq51mCgLfRyvheG68ck
+  default_config_hash: ofbHto_p3VasFX-78MjseL8qHbcCdRdmQuNqz4488Og
 id: modern_breadcrumbs
 theme: modern
 region: content
