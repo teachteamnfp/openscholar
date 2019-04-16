@@ -36,7 +36,7 @@ abstract class VsiteExistingSiteTestBase extends ExistingSiteBase {
    */
   protected function createGroup(array $values = []) {
     $group = $this->entityTypeManager->getStorage('group')->create($values + [
-      'type' => 'default',
+      'type' => 'personal',
       'label' => $this->randomMachineName(),
     ]);
     $group->enforceIsNew();
