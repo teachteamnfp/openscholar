@@ -53,6 +53,13 @@ abstract class TestBase extends ExistingSiteBase {
   protected $admin;
 
   /**
+   * Theme handler.
+   *
+   * @var \Drupal\Core\Extension\ThemeHandlerInterface
+   */
+  protected $themeHandler;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
@@ -67,6 +74,7 @@ abstract class TestBase extends ExistingSiteBase {
     /** @var \Drupal\Core\Config\ImmutableConfig $theme_config */
     $theme_config = $this->configFactory->get('system.theme');
     $this->defaultTheme = $theme_config->get('default');
+    $this->themeHandler = $this->container->get('theme_handler');
   }
 
   /**

@@ -12,13 +12,6 @@ namespace Drupal\Tests\cp_appearance\ExistingSite;
 class AppearanceSettingsBuilderTest extends TestBase {
 
   /**
-   * Theme handler.
-   *
-   * @var \Drupal\Core\Extension\ThemeHandlerInterface
-   */
-  protected $themeHandler;
-
-  /**
    * Default theme.
    *
    * @var string
@@ -30,7 +23,6 @@ class AppearanceSettingsBuilderTest extends TestBase {
    */
   public function setUp() {
     parent::setUp();
-    $this->themeHandler = $this->container->get('theme_handler');
     /** @var \Drupal\Core\Config\ImmutableConfig $theme_config */
     $theme_config = $this->configFactory->get('system.theme');
     $this->defaultTheme = $theme_config->get('default');
