@@ -12,7 +12,7 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\os_events\RegistrationsHelperInterface;
 use Drupal\rng\EventManagerInterface;
-use Drupal\rng_date_scheduler\EventDateProvider;
+use Drupal\rng_date_scheduler\EventDateProviderInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
@@ -52,7 +52,7 @@ class RegistrationsHelper implements RegistrationsHelperInterface {
    * Constructs a new DefaultMailTemplate object.
    */
   public function __construct(EventManagerInterface $eventManager,
-  EventDateProvider $dateProvider,
+  EventDateProviderInterface $dateProvider,
                               RequestStack $requestStack,
                               FormBuilder $formBuilder,
                               Connection $database,
