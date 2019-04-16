@@ -1,0 +1,20 @@
+uuid: 7d9ec8ac-e47b-4e4c-ba25-30731404169c
+langcode: en
+status: true
+dependencies:
+  theme:
+    - teal_accents
+_core:
+  default_config_hash: 7rR9chwXvdM2H8OYMAYx9Zj3GGlPMrZp_M3ZA4thYTk
+id: teal_accents_page_title
+theme: teal_accents
+region: content
+weight: -7
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  provider: core
+  label_display: '0'
+visibility: {  }

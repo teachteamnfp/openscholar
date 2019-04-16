@@ -1,0 +1,22 @@
+uuid: 614d642a-c9b8-4a6f-9fdb-23cf83ee8e65
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - ivy_accents
+_core:
+  default_config_hash: 9EoWV2Lot6FVSr50t4hoKgiz1LIXYWNG-IIPYsWxBqo
+id: ivy_accents_content
+theme: ivy_accents
+region: content
+weight: -4
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  provider: system
+  label_display: '0'
+visibility: {  }

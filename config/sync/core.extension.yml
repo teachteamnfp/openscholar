@@ -161,7 +161,6 @@ theme:
   os_base: 0
   hwpi_themeone_bentley: 0
   vibrant: 0
-  hwpi_classic: 0
   documental: 0
   hwpi_lamont: 0
   hwpi_sterling: 0
@@ -173,6 +172,16 @@ theme:
   white: 0
   saffron_accents: 0
   monument: 0
+  hwpi_classic: 0
+  teal_accents: 0
+  slate: 0
+  red_raven: 0
+  monochrome: 0
+  lemon_sand: 0
+  blue_sky: 0
+  indigo: 0
+  cabot: 0
+  ivy_accents: 0
 profile: openscholar
 _core:
   default_config_hash: R4IF-ClDHXxblLcG0L7MgsLvfBIMAvi_skumNFQwkDc

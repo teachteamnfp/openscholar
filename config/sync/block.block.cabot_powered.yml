@@ -1,0 +1,22 @@
+uuid: 5869df45-6c04-47d6-96a9-4f38635fb30c
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - cabot
+_core:
+  default_config_hash: jQQUUWN2Uxr5qZtc9zcJKBCxpKY8orN1u2HPqYYRQDI
+id: cabot_powered
+theme: cabot
+region: footer
+weight: -6
+provider: null
+plugin: system_powered_by_block
+settings:
+  id: system_powered_by_block
+  label: 'Powered by Drupal'
+  provider: system
+  label_display: '0'
+visibility: {  }

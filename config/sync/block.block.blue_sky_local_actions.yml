@@ -1,0 +1,20 @@
+uuid: 41331665-22f9-44fe-b25a-6471bbbac80a
+langcode: en
+status: true
+dependencies:
+  theme:
+    - blue_sky
+_core:
+  default_config_hash: 13GQpeITIJsp1kyPniXtWZfyFH87vb1xxJCHifL4UeE
+id: blue_sky_local_actions
+theme: blue_sky
+region: content
+weight: -5
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Primary admin actions'
+  provider: core
+  label_display: '0'
+visibility: {  }

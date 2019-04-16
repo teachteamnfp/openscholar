@@ -1,0 +1,22 @@
+uuid: d8a03dc5-39d1-40ea-8329-3de74c1a5216
+langcode: en
+status: true
+dependencies:
+  theme:
+    - teal_accents
+_core:
+  default_config_hash: X9I1OB0W3WlWtrK-CNcg6hNWwa8wficanpH8pYnDZDE
+id: teal_accents_local_tasks
+theme: teal_accents
+region: content
+weight: -6
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: Tabs
+  provider: core
+  label_display: '0'
+  primary: true
+  secondary: true
+visibility: {  }
