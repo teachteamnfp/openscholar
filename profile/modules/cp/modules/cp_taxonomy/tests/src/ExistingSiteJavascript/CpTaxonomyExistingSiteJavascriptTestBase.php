@@ -55,12 +55,12 @@ abstract class CpTaxonomyExistingSiteJavascriptTestBase extends TestBase {
 
     $this->group1 = $this->createGroup([
       'path' => [
-        'alias' => '/group1',
+        'alias' => '/' . $this->randomMachineName(),
       ],
     ]);
     $this->group2 = $this->createGroup([
       'path' => [
-        'alias' => '/group2',
+        'alias' => '/' . $this->randomMachineName(),
       ],
     ]);
   }
@@ -175,8 +175,8 @@ abstract class CpTaxonomyExistingSiteJavascriptTestBase extends TestBase {
     }
     $submit_button = $page->findButton('Save');
     $submit_button->press();
-    file_put_contents('public://createGroupVocabulary' . $group->id() . $vid . $this->getSession()->getStatusCode() . '.png', $this->getSession()->getScreenshot());
     $web_assert->pageTextContains('Created new vocabulary');
+    $web_assert->statusCodeEquals(200);
   }
 
   /**
