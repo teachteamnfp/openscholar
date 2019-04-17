@@ -86,21 +86,19 @@ class EventSignupForm extends FormBase {
     $form['#prefix'] = '<div id = "signup-modal-form">';
     $form['#suffix'] = '</div>';
 
-    if ($timestamp) {
-      $dateTimeObject = DrupalDateTime::createFromTimestamp($timestamp);
-      $offset = $dateTimeObject->getOffset();
-      $interval = \DateInterval::createFromDateString((string) $offset . 'seconds');
-      $dateTimeObject->add($interval);
-      $form['field_repeating_event_date_text'] = [
-        '#markup' => '<span class="date-display-single">' . $this->t('On @date', ['@date' => $dateTimeObject->format('l, F j, Y H:i:s')]) . "</span>",
-        '#weight' => -10,
-      ];
+    $dateTimeObject = DrupalDateTime::createFromTimestamp($timestamp);
+    $offset = $dateTimeObject->getOffset();
+    $interval = \DateInterval::createFromDateString((string) $offset . 'seconds');
+    $dateTimeObject->add($interval);
+    $form['field_repeating_event_date_text'] = [
+      '#markup' => '<span class="date-display-single">' . $this->t('On @date', ['@date' => $dateTimeObject->format('l, F j, Y H:i:s')]) . "</span>",
+      '#weight' => -10,
+    ];
 
-      $form['registering_for_date'] = [
-        '#type' => 'hidden',
-        '#value' => $timestamp,
-      ];
-    }
+    $form['registering_for_date'] = [
+      '#type' => 'hidden',
+      '#value' => $timestamp,
+    ];
 
     $form['email'] = [
       '#type' => 'email',

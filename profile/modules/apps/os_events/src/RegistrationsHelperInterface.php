@@ -26,7 +26,7 @@ interface RegistrationsHelperInterface {
    * @param array $build
    *   Array of node build.
    *
-   * @return mixed
+   * @return array|bool
    *   The link and date switcher select list.
    *
    * @throws \Drupal\rng\Exception\InvalidEventException
