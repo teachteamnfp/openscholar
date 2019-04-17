@@ -238,7 +238,8 @@
         "drupal/mathjax": "^2.7",
         "drupal/advancedqueue": "^1.0@beta",
         "drupal/rng": "^1.7",
-        "drupal/rng_views": "^1.7"
+        "drupal/rng_views": "^1.7",
+        "drupal/editor_advanced_link": "^1.4"
     },
     "require-dev": {
         "drupal/features": "^3.7",
