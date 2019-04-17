@@ -52,7 +52,7 @@ class RegistrationsHelper implements RegistrationsHelperInterface {
    * Constructs a new DefaultMailTemplate object.
    */
   public function __construct(EventManagerInterface $eventManager,
-  EventDateProviderInterface $dateProvider,
+                              EventDateProviderInterface $dateProvider,
                               RequestStack $requestStack,
                               FormBuilder $formBuilder,
                               Connection $database,
@@ -68,12 +68,13 @@ class RegistrationsHelper implements RegistrationsHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function checkRegistrationStatus(array $build) {
+  public function checkRegistrationStatus(array $build) : array {
     $data = [];
     $validDate = '';
     $full = $this->t("Sorry, the event is full");
     $closed = $this->t("Registration closed");
     $node = $build['#node'];
+    $occurrences = 0;
 
     if (!$node->field_signup->value) {
       $data['message'] = $closed;
@@ -90,16 +91,14 @@ class RegistrationsHelper implements RegistrationsHelperInterface {
     $occurrences = $this->getOccurrences($node->id());
     $now = DrupalDateTime::createFromTimestamp($this->requestStack->getCurrentRequest()->server->get('REQUEST_TIME'));
 
-    if (count($occurrences) > 0) {
-      foreach ($occurrences as $occurrence) {
-        $next = DrupalDateTime::createFromTimestamp(strtotime($occurrence->field_recurring_date_value));
-        if ($next > $now && $event_start_date < $now) {
-          $validDate = $next;
-          $dateTimeObject = new DrupalDateTime($occurrence->field_recurring_date_value);
-          $timestamp = $dateTimeObject->getTimestamp();
-          $data['timestamp'] = $timestamp;
-          break;
-        }
+    foreach ($occurrences as $occurrence) {
+      $next = DrupalDateTime::createFromTimestamp(strtotime($occurrence->field_recurring_date_value));
+      if ($next > $now && $event_start_date < $now) {
+        $validDate = $next;
+        $dateTimeObject = new DrupalDateTime($occurrence->field_recurring_date_value);
+        $timestamp = $dateTimeObject->getTimestamp();
+        $data['timestamp'] = $timestamp;
+        break;
       }
     }
 
@@ -113,8 +112,11 @@ class RegistrationsHelper implements RegistrationsHelperInterface {
       $data['message'] = $full;
     }
     $capacity = $eventMeta->remainingCapacity();
-    ($capacity == -1) ? $slot_available = TRUE : ($capacity > 0) ? $slot_available = TRUE : $slot_available = FALSE;
-    (!$slot_available) ? $data['message'] = $full : NULL;
+    $slot_available = FALSE;
+    if ($capacity == -1 || $capacity > 0) {
+      $slot_available = TRUE;
+    }
+    $data['message'] = (!$slot_available) ? $full : NULL;
 
     foreach ($dates as $date) {
       $open_date = ($date->getFieldName() == 'field_open_date') ? $date->getDate() : NULL;
@@ -172,6 +174,7 @@ class RegistrationsHelper implements RegistrationsHelperInterface {
       $data['another_link'] = Link::fromTextAndUrl(' (another date?)', $url)->toString();
       return $data;
     }
+    return FALSE;
   }
 
   /**
@@ -183,7 +186,7 @@ class RegistrationsHelper implements RegistrationsHelperInterface {
    * @return mixed
    *   All occurrences of the event.
    */
-  protected function getOccurrences($id) {
+  public function getOccurrences($id) {
     $query = $this->database->select('date_recur__node__field_recurring_date', 'dt')
       ->fields('dt', ['field_recurring_date_value'])
       ->condition('entity_id', $id);

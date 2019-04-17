@@ -18,7 +18,7 @@ interface RegistrationsHelperInterface {
    * @return array
    *   The data namely message and timestamp.
    */
-  public function checkRegistrationStatus(array $build);
+  public function checkRegistrationStatus(array $build) : array;
 
   /**
    * Creates Another date link switcher.

@@ -152,7 +152,7 @@ class EventSignupForm extends FormBase {
     $registrations = $eventMeta->getRegistrations();
     $registrants = $eventMeta->getRegistrants('rng_contact');
     $emailEntered = $form_state->getValue('email');
-    $for_date = $form_state->getValue('registering_for_date');
+    $forDate = $form_state->getValue('registering_for_date');
 
     foreach ($registrations as $registration) {
       $date = $registration->field_for_date->value;
@@ -160,7 +160,7 @@ class EventSignupForm extends FormBase {
         $id = $registrant->identity->getValue()[0]['target_id'];
         $identity = $this->entityManager->getStorage('rng_contact')->load($id);
         $email = $identity->field_email->value;
-        if ($email === $emailEntered && $date === $for_date) {
+        if ($email === $emailEntered && $date === $forDate) {
           $form_state->setErrorByName('email', $this->t('User is already registered for this date.'));
         }
       }

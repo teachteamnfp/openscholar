@@ -21,7 +21,7 @@
             let dateInMs = date.valueOf();
             let eventDate = (dateInMs + offset)/1000;
             let nid = event.eid;
-            element.html(drupalSettings[nid]);
+            element.html(drupalSettings['os_events']['node'][nid]);
             element.find('#events_signup_modal_form').attr('href', '/events/signup/' + nid + '/' + eventDate);
           }
           else if (element.hasClass('fc-event-past') && !element.hasClass('fc-day-grid-event')) {

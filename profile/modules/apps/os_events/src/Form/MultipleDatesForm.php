@@ -15,12 +15,6 @@ use Drupal\Core\Url;
 class MultipleDatesForm extends FormBase {
 
   /**
-   * Constructs class object.
-   */
-  public function __construct() {
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function getFormId() {
@@ -42,7 +36,7 @@ class MultipleDatesForm extends FormBase {
 
     $form['rdates'] = [
       '#type' => 'select',
-      '#options' => ['' => '-Select a different occurrence-'] + $data['options'],
+      '#options' => ['' => $this->t('-Select a different occurrence-')] + $data['options'],
       '#ajax' => [
         'callback' => '::ajaxCallback',
       ],

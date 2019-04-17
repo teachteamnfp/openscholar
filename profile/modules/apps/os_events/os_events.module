@@ -107,11 +107,13 @@ function os_events_node_view(array &$build, EntityInterface $entity, EntityViewD
   $build['registration_signup']['#markup'] = '<div id="registration-link-' . $id . '">' . t("Registration:@s", ['@s' => ' ']) .
       os_events_generate_modal_register_link($build) . $another_link . '</div>';
   $build['registration_signup']['#weight'] = 20;
-  $build['registration_signup_dates'] = [
-    '#types' => 'form',
-    'form' => $date_switch,
-    '#weight' => 21,
-  ];
+  if ($date_switch) {
+    $build['registration_signup_dates'] = [
+      '#types' => 'form',
+      'form' => $date_switch,
+      '#weight' => 21,
+    ];
+  }
   $build['#attached']['library'][] = 'os_events/os_events.toggle';
   $build['#attached']['drupalSettings']['nid'] = $id;
 }
@@ -189,6 +191,8 @@ function os_events_views_pre_render(ViewExecutable $view) {
   if ($view->storage->id() == 'calendar') {
 
     $view->element['#attached']['library'][] = 'os_fullcalendar/drupal.os_fullcalendar';
+    // Renders teaser mode of node on upcoming and past tabs
+    // which loads only event node's titles by default.
     foreach ($view->result as $value) {
       $nid = $value->_entity->nid->value;
       $entity_type = 'node';
@@ -199,7 +203,7 @@ function os_events_views_pre_render(ViewExecutable $view) {
       $build = $view_builder->view($node, $view_mode);
       $output = render($build);
 
-      $view->element['#attached']['drupalSettings'][$nid] = $output;
+      $view->element['#attached']['drupalSettings']['os_events']['node'][$nid] = $output;
     }
   }
 }
@@ -218,11 +222,8 @@ function os_events_form_views_exposed_form_alter(&$form, FormStateInterface $for
   $node = Drupal::requestStack()->getCurrentRequest()->get('node');
   $nid = $node->id();
 
-  // Query date recur table.
-  $query = \Drupal::database()->select('date_recur__node__field_recurring_date', 'dt')
-    ->fields('dt', ['field_recurring_date_value'])
-    ->condition('entity_id', $nid);
-  $results = $query->execute()->fetchAll();
+  // Get occurrences.
+  $results = Drupal::service('os_events.registrations_helper')->getOccurrences($nid);
 
   // Start building out the options for our select list.
   $options = [];
