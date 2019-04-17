@@ -7,21 +7,16 @@ use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\CssCommand;
 use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\DependencyInjection\DependencySerializationTrait;
 use Drupal\Core\Extension\Extension;
-use Drupal\Core\Form\FormInterface;
+use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\cp_appearance\ThemeSelectorBuilderInterface;
 use Ds\Map;
 
 /**
  * Flavor selection form.
  */
-class FlavorForm implements FormInterface {
-
-  use StringTranslationTrait;
-  use DependencySerializationTrait;
+class FlavorForm extends FormBase {
 
   /**
    * The theme for which the form will be created.
@@ -116,21 +111,17 @@ class FlavorForm implements FormInterface {
   /**
    * {@inheritdoc}
    */
-  public function validateForm(array &$form, FormStateInterface $form_state): void {}
-
-  /**
-   * {@inheritdoc}
-   */
   public function submitForm(array &$form, FormStateInterface $form_state): void {
     /** @var string $selection */
     $selection = $form_state->getValue("options_{$this->theme->getName()}");
     /** @var \Drupal\Core\Config\Config $theme_settings_mut */
     $theme_settings_mut = $this->configFactory->getEditable('system.theme');
 
-    // TODO: Show a feedback message that settings have been saved.
     $theme_settings_mut
       ->set('default', $selection)
       ->save();
+
+    $this->messenger()->addMessage($this->t('Settings have been saved.'));
   }
 
   /**
