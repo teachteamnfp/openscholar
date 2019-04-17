@@ -1,8 +1,10 @@
+@import '../../os_base/scss/base/breakpoints';
 //colors
 $color_orange_white_approx: #fdfaee;
 $color_goldenrod_approx: #ffdb6d;
 $white: #fff;
 $color_curious_blue_approx: #3a8bd9;
+$color-black1: #222;
 
 //fonts
 $font_0: Playfair Display;
@@ -66,35 +68,65 @@ aside {
 }
 .navbar-collapse {
   background: $color_goldenrod_approx;
-  ul.nav {
-    a {
-      font-family: $font_0, $font_1, $font_2, $font_3;
-      font-family: $font_4, $font_5;
-      text-decoration: none;
-      &.is-active {
-        background: $color_curious_blue_approx;
+  @media #{$mobile} {
+    padding: 0 !important;
+  }
+  /***** navbar nav *****/
+  .navbar-nav {
+    > li {
+      @media #{$mobile} {
+        border-bottom: 1px solid $white;
+        border-top: 0 none;
       }
-      &:hover {
-        background: $color_curious_blue_approx;
-      }
-    }
-    ul {
-      background: $color_goldenrod_approx;
-    }
-    .dropdown {
-      a {
-        &:hover {
-          background: $color_curious_blue_approx;
+      > a {
+        font-family: $font_0, $font_1, $font_2, $font_3;
+        font-family: $font_4, $font_5;
+        color: $color-black1;
+        @media #{$mobile} {
         }
-        &.is-active {
+        &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
           background: $color_curious_blue_approx;
         }
       }
-      &.open>a {
-        background: $color_curious_blue_approx;
+      &.open, &.active {
+        > a, > a:hover, > a:active, > a:focus {
+          background: $color_curious_blue_approx;
+        }
       }
-      li a:hover {
+    }
+  }
+  /**** dropdown menu ****/
+  .dropdown-menu {
+    background: $color_goldenrod_approx;
+    @media #{$mobile} {
+      background: none;
+    }
+    > li {
+      > a {
         background: none;
+        color: $color-black1;
+        @media #{$mobile} {
+          font-size: 19px;
+          padding-left: 20px;
+        }
+        &:hover, &:active {
+          background: none;
+          @media #{$mobile} {
+          }
+        }
+      }
+      &.active {
+        a {
+          background: none;
+          @media #{$mobile} {
+          }
+          &:hover {
+            background: none;
+            @media #{$mobile} {
+              color: $white;
+            }
+          }
+        }
       }
     }
   }
