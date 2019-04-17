@@ -1,3 +1,4 @@
+@import '../../os_base/scss/base/breakpoints';
 //colors
 $color_cararra_approx: #ebebeb;
 $color_alto_approx: #dddddd;
@@ -6,6 +7,7 @@ $white: #ffffff;
 $color_storm_dust_approx: #666666;
 $color_hippie_green_approx: #52854c;
 $color_alabaster_approx: #f9f9f9;
+$color-light-gray: #f4f4f4;
 
 //fonts
 $font_0: Roboto;
@@ -76,36 +78,65 @@ body {
 .navbar-collapse {
   background: none repeat scroll 0 0 $white;
   border-bottom: 1px solid $color_alto_approx;
-  ul.nav {
-    a {
-      &.is-active, &.is-active:hover {
-        @extend %extend_1;
+  @media #{$mobile} {
+    padding: 0 !important;
+  }
+  /***** navbar nav *****/
+  .navbar-nav {
+    > li {
+      @media #{$mobile} {
+        border-bottom: 1px solid $color-light-gray;
+        border-top: 0 none;
       }
-      &:hover {
-        @extend %extend_1;
-      }
-    }
-    ul {
-      background: $color_cararra_approx;
-    }
-    .dropdown {
-      a {
-        &:hover {
-          background: $color_storm_dust_approx;
-          color: $white;
+      > a {
+        @media #{$mobile} {
+          color: $color_mine_shaft_approx;
         }
-        &.is-active {
-          background: $color_storm_dust_approx;
-          color: $white;
+        &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
+          @extend %extend_1;
         }
       }
-      &.open>a {
-        background: $color_storm_dust_approx;
-        color: $white;
+      &.open, &.active {
+        > a, > a:hover, > a:active, > a:focus {
+          @extend %extend_1;
+        }
       }
-      li a:hover {
+    }
+  }
+  /**** dropdown menu ****/
+  .dropdown-menu {
+    background: $color_cararra_approx;
+    @media #{$mobile} {
+      background: none;
+    }
+    > li {
+      > a {
         background: none;
-        color: $color_storm_dust_approx;
+        @media #{$mobile} {
+          font-size: 19px;
+          padding-left: 20px;
+          color: $color_mine_shaft_approx;
+        }
+        &:hover, &:active {
+          background: none;
+          @media #{$mobile} {
+            color: $color_mine_shaft_approx;
+          }
+        }
+      }
+      &.active {
+        a {
+          background: none;
+          @media #{$mobile} {
+            color: $color_mine_shaft_approx;
+          }
+          &:hover {
+            background: none;
+            @media #{$mobile} {
+              color: $color_mine_shaft_approx;
+            }
+          }
+        }
       }
     }
   }
