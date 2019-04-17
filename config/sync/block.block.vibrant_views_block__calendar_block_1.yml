@@ -1,4 +1,4 @@
-uuid: cc9e0d4f-d130-47b9-b301-b89d27cfba00
+uuid: a145edd4-0704-47e2-96f1-183d342f0d44
 langcode: en
 status: true
 dependencies:
@@ -10,6 +10,8 @@ dependencies:
     - views
   theme:
     - vibrant
+_core:
+  default_config_hash: ZDrUL9w9Ooi5ZdEWq_CWAuI0VEXZWOphKGiNuitPtjk
 id: vibrant_views_block__calendar_block_1
 theme: vibrant
 region: content

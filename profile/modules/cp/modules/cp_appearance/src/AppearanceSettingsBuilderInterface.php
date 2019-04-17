@@ -3,9 +3,9 @@
 namespace Drupal\cp_appearance;
 
 /**
- * Contract for AppearanceHelper.
+ * Contract for AppearanceSettingsBuilder.
  */
-interface AppearanceHelperInterface {
+interface AppearanceSettingsBuilderInterface {
 
   /**
    * Returns the themes for vsites.

@@ -1,4 +1,4 @@
-uuid: 712eef2f-50c9-48f0-a448-d78afa71abfc
+uuid: e45ac7c9-9e45-4728-bf8b-3cf3ab1f986c
 langcode: en
 status: true
 dependencies:
@@ -9,7 +9,7 @@ dependencies:
   theme:
     - vibrant
 _core:
-  default_config_hash: kkISXE1LT2FJEoYnqCrCpeFB-2pmGmMxMklVk7rQcfg
+  default_config_hash: mAAULQ1tOyEWcmMdZfooqyURlMR48Ip4Kw5NAxbRu5U
 id: vibrant_footer
 theme: vibrant
 region: footer
