@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\vsite\ExistingSite;
 
+use Symfony\Component\CssSelector\CssSelectorConverter;
 use weitzman\DrupalTestTraits\ExistingSiteBase;
 
 /**
@@ -45,6 +46,28 @@ abstract class VsiteExistingSiteTestBase extends ExistingSiteBase {
     $this->markEntityForCleanup($group);
 
     return $group;
+  }
+
+  /**
+   * Translates a CSS expression to its XPath equivalent.
+   *
+   * The search is relative to the root element (HTML tag normally) of the page.
+   *
+   * UIHelper Trait expects this method to be here.
+   * Copied from BrowserTestBase
+   *
+   * @param string $selector
+   *   CSS selector to use in the search.
+   * @param bool $html
+   *   (optional) Enables HTML support. Disable it for XML documents.
+   * @param string $prefix
+   *   (optional) The prefix for the XPath expression.
+   *
+   * @return string
+   *   The equivalent XPath of a CSS expression.
+   */
+  protected function cssSelectToXpath($selector, $html = TRUE, $prefix = 'descendant-or-self::') {
+    return (new CssSelectorConverter($html))->toXPath($selector, $prefix);
   }
 
 }
