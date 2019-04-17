@@ -207,7 +207,7 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
         $sub_themes->put($key, $this->installedThemes[$key]);
       }
 
-      $operations[] = $this->formBuilder->getForm(new FlavorForm($theme, $sub_themes, $this->themeSelectorBuilder));
+      $operations[] = $this->formBuilder->getForm(new FlavorForm($theme, $sub_themes, $this->themeSelectorBuilder, $this->configFactory));
     }
 
     return $operations;

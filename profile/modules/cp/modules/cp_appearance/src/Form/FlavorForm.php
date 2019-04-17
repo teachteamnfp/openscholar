@@ -3,10 +3,10 @@
 namespace Drupal\cp_appearance\Form;
 
 use Drupal\Component\Utility\Html;
-use Drupal\Core\Ajax\AfterCommand;
 use Drupal\Core\Ajax\AjaxResponse;
-use Drupal\Core\Ajax\RemoveCommand;
+use Drupal\Core\Ajax\CssCommand;
 use Drupal\Core\Ajax\ReplaceCommand;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\DependencyInjection\DependencySerializationTrait;
 use Drupal\Core\Extension\Extension;
 use Drupal\Core\Form\FormInterface;
@@ -47,6 +47,13 @@ class FlavorForm implements FormInterface {
   protected $themeSelectorBuilder;
 
   /**
+   * Config factory.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
    * Creates a new FlavorForm object.
    *
    * @param \Drupal\Core\Extension\Extension $theme
@@ -55,11 +62,14 @@ class FlavorForm implements FormInterface {
    *   Available flavors of the theme.
    * @param \Drupal\cp_appearance\ThemeSelectorBuilderInterface $theme_selector_builder
    *   Theme selector builder service.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   Config factory.
    */
-  public function __construct(Extension $theme, Map $flavors, ThemeSelectorBuilderInterface $theme_selector_builder) {
+  public function __construct(Extension $theme, Map $flavors, ThemeSelectorBuilderInterface $theme_selector_builder, ConfigFactoryInterface $config_factory) {
     $this->theme = $theme;
     $this->flavors = $flavors;
     $this->themeSelectorBuilder = $theme_selector_builder;
+    $this->configFactory = $config_factory;
   }
 
   /**
@@ -91,6 +101,15 @@ class FlavorForm implements FormInterface {
       ],
     ];
 
+    $form["save_{$this->theme->getName()}"] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Save'),
+      '#name' => Html::cleanCssIdentifier("save-{$this->theme->getName()}"),
+      '#attributes' => [
+        'style' => 'display: none',
+      ],
+    ];
+
     return $form;
   }
 
@@ -102,7 +121,17 @@ class FlavorForm implements FormInterface {
   /**
    * {@inheritdoc}
    */
-  public function submitForm(array &$form, FormStateInterface $form_state): void {}
+  public function submitForm(array &$form, FormStateInterface $form_state): void {
+    /** @var string $selection */
+    $selection = $form_state->getValue("options_{$this->theme->getName()}");
+    /** @var \Drupal\Core\Config\Config $theme_settings_mut */
+    $theme_settings_mut = $this->configFactory->getEditable('system.theme');
+
+    // TODO: Show a feedback message that settings have been saved.
+    $theme_settings_mut
+      ->set('default', $selection)
+      ->save();
+  }
 
   /**
    * Flavor option change handler.
@@ -116,11 +145,13 @@ class FlavorForm implements FormInterface {
 
     // It would not make sense if user has not chosen a flavor, and still seeing
     // the option to save settings.
-    // This also prevents adding multiple save buttons everytime option is
+    // This also prevents adding multiple save buttons every time option is
     // changed.
     /** @var string $button_identifier */
     $button_identifier = Html::cleanCssIdentifier("save-{$this->theme->getName()}");
-    $response->addCommand(new RemoveCommand("button[name=$button_identifier]"));
+    $response->addCommand(new CssCommand("button[name=$button_identifier]", [
+      'display' => 'none',
+    ]));
 
     if ($selection !== '_none') {
       /** @var \Drupal\Core\Extension\Extension $flavor */
@@ -130,14 +161,8 @@ class FlavorForm implements FormInterface {
       /** @var string|null $screenshot_uri */
       $screenshot_uri = $this->themeSelectorBuilder->getScreenshotUri($flavor);
 
-      /** @var string $form_identifier */
-      $form_identifier = Html::cleanCssIdentifier("cp-appearance-{$this->theme->getName()}-flavor-form");
-      /** @var string $option_identifier */
-      $option_identifier = Html::cleanCssIdentifier("form-item-options-{$this->theme->getName()}");
-      $response->addCommand(new AfterCommand("form#$form_identifier .$option_identifier", [
-        '#type' => 'submit',
-        '#value' => $this->t('Save'),
-        '#name' => Html::cleanCssIdentifier("save-{$this->theme->getName()}"),
+      $response->addCommand(new CssCommand("button[name=$button_identifier]", [
+        'display' => 'block',
       ]));
     }
     else {
