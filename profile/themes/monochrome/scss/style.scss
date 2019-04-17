@@ -1,3 +1,4 @@
+@import '../../os_base/scss/base/breakpoints';
 //colors
 $color_concrete_approx: #f3f3f1;
 $color_mexican_red_approx: #a51c30;
@@ -89,7 +90,7 @@ footer {
 .header-container {
   background: $color_squirrel_approx;
   color: $white;
-  ul.nav a {
+  ul.nav li a {
     font-family: $font_0, $font_1, $font_2, $font_3;
     color: $white;
     text-transform: none;
@@ -97,38 +98,69 @@ footer {
 }
 .navbar-collapse {
   background: $color_rangoon_green_approx;
-  ul.nav {
-    a {
-      font-family: $font_0, $font_1, $font_2, $font_3;
-      color: $white;
-      &.is-active, &.is-active:hover {
-        background-color: $color_squirrel_approx;
+  @media #{$mobile} {
+    padding: 0 !important;
+  }
+  /***** navbar nav *****/
+  .navbar-nav {
+    > li {
+      @media #{$mobile} {
+        border-bottom: 1px solid $white;
+        border-top: 0 none;
       }
-      &:hover {
-        background-color: $color_squirrel_approx;
-      }
-    }
-    .dropdown {
-      a {
-        &:hover {
-          background-color: $color_squirrel_approx;
-        }
-        &.is-active {
-          background-color: $color_squirrel_approx;
-        }
-      }
-      ul li a:hover {
+      > a {
+        font-family: $font_0, $font_1, $font_2, $font_3;
         color: $white;
+        @media #{$mobile} {
+          color: $white;
+        }
+        &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
+          background-color: $color_squirrel_approx;
+        }
       }
-      &.open>a {
-        background-color: $color_squirrel_approx;
+      &.open, &.active {
+        > a, > a:hover, > a:active, > a:focus {
+          background-color: $color_squirrel_approx;
+        }
       }
     }
-    ul {
-      background: $color_rangoon_green_approx;
+  }
+  /**** dropdown menu ****/
+  .dropdown-menu {
+    background: $color_rangoon_green_approx;
+    @media #{$mobile} {
+      background: none;
     }
-    li.dropdown ul li a:hover {
-      background: $color_rangoon_green_approx;
+    > li {
+      > a {
+        background: none;
+        color: $white;
+        @media #{$mobile} {
+          font-size: 19px;
+          padding-left: 20px;
+        }
+        &:hover, &:active {
+          background: $color_rangoon_green_approx;
+          @media #{$mobile} {
+            color: $white;
+          }
+        }
+      }
+      &.active {
+        a {
+          color: $white;
+          background: none;
+          @media #{$mobile} {
+            color: $white;
+          }
+          &:hover {
+            background: $color_rangoon_green_approx;
+            @media #{$mobile} {
+              color: $white;
+            }
+          }
+        }
+      }
     }
   }
 }
