@@ -115,7 +115,6 @@ function os_events_node_view(array &$build, EntityInterface $entity, EntityViewD
     ];
   }
   $build['#attached']['library'][] = 'os_events/os_events.toggle';
-  $build['#attached']['drupalSettings']['nid'] = $id;
 }
 
 /**

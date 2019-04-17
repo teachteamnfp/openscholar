@@ -33,4 +33,15 @@ interface RegistrationsHelperInterface {
    */
   public function anotherDateLink(array $build);
 
+  /**
+   * Returns occurrences from Database.
+   *
+   * @param string $id
+   *   The node id.
+   *
+   * @return array
+   *   All occurrences of the event.
+   */
+  public function getOccurrences($id);
+
 }

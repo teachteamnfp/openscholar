@@ -5,16 +5,16 @@
 
 (function ($, Drupal) {
     Drupal.behaviors.osToggle = {
-        attach: function (context, settings) {
-            $('.toggle', context).once('.toggle').each(function() {
-              $(this, context).click(function(event) {
-                event.preventDefault();
-                let potentials = $(this).parent().siblings('.os-slider');
-                if (potentials.length) {
-                  $(potentials).toggleClass("visually-hidden");
-                }
-              });
+      attach: function (context, settings) {
+          $('.toggle', context).once('.toggle').each(function() {
+            $(this, context).click(function(event) {
+              event.preventDefault();
+              let potentials = $(this).parent().siblings('.os-slider');
+              if (potentials.length) {
+                $(potentials).toggleClass("visually-hidden");
+              }
             });
-        }
+          });
+      }
     };
 })(jQuery, Drupal);

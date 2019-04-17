@@ -139,6 +139,7 @@ class RegistrationsHelper implements RegistrationsHelperInterface {
     $entity = $build['#node'];
     $id = $entity->id();
     $status = $this->checkRegistrationStatus($build);
+    $occurrences = 0;
 
     // Generate select menu options for other dates available for registration.
     if ($entity->field_recurring_date->rrule &&
@@ -178,13 +179,7 @@ class RegistrationsHelper implements RegistrationsHelperInterface {
   }
 
   /**
-   * Returns occurrences from Database.
-   *
-   * @param string $id
-   *   The node id.
-   *
-   * @return mixed
-   *   All occurrences of the event.
+   * {@inheritdoc}
    */
   public function getOccurrences($id) {
     $query = $this->database->select('date_recur__node__field_recurring_date', 'dt')
