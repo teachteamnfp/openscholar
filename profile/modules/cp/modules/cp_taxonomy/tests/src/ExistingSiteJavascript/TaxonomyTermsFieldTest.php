@@ -59,8 +59,8 @@ class TaxonomyTermsFieldTest extends CpTaxonomyExistingSiteJavascriptTestBase {
    */
   public function testMediaTaxonomyTermsFieldAutocompleteSuccess() {
     $this->createGroupVocabulary($this->group1, 'vocab_media_group_1', ['media:taxonomy_test_file']);
-    $this->createGroupTerm($this->group1, 'vocab_group_1', 'Term 1 group 1 vid1');
-    $this->createGroupTerm($this->group1, 'vocab_group_1', 'Term 2 group 1 vid1');
+    $this->createGroupTerm($this->group1, 'vocab_media_group_1', 'Term 1 group 1 vid1');
+    $this->createGroupTerm($this->group1, 'vocab_media_group_1', 'Term 2 group 1 vid1');
     $this->vsiteContextManager->activateVsite($this->group1);
 
     $this->visit($this->group1->get('path')->getValue()[0]['alias'] . "/media/add/taxonomy_test_file");
@@ -74,6 +74,7 @@ class TaxonomyTermsFieldTest extends CpTaxonomyExistingSiteJavascriptTestBase {
     $tags->keyDown('m');
     /** @var \Behat\Mink\Element\NodeElement $result */
     $result = $web_assert->waitForElementVisible('css', 'ul.ui-autocomplete');
+    file_put_contents('public://testMediaTaxonomyTermsFieldAutocompleteSuccess-autocomplete.png', $this->getSession()->getScreenshot());
     $this->assertNotNull($result, 'Autocomplete is not came up.');
     $list_markup = $result->getHtml();
     $this->assertContains('Term 1 group 1 vid1', $list_markup);
