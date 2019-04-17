@@ -1,3 +1,4 @@
+@import '../../os_base/scss/base/breakpoints';
 //colors
 $gallery: #efefef;
 $color_cloud_burst_approx: #293352;
@@ -13,34 +14,68 @@ $color_tundora_approx: #444;
 }
 .navbar-collapse {
   background: $color_cloud_burst_approx;
-  ul.nav {
-    a {
-      color: $white;
-    }
-    ul {
-      background: $color_cloud_burst_approx;
-      .dropdown {
-        a {
-          &:hover {
-            color: $white;
-          }
-          &.is-active {
-            color: $white;
-          }
-        }
-        &.open>a {
+  @media #{$mobile} {
+    padding: 0 !important;
+  }
+  /***** navbar nav *****/
+  .navbar-nav {
+    > li {
+      @media #{$mobile} {
+        border-bottom: 1px solid $white;
+        border-top: 0 none;
+      }
+      > a {
+        color: $white;
+        @media #{$mobile} {
           color: $white;
         }
+        &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
+        }
+      }
+      &.open, &.active {
+        > a, > a:hover, > a:active, > a:focus {
+        }
       }
     }
-    .dropdown ul li a {
-      &:hover {
+  }
+  /**** dropdown menu ****/
+  .dropdown-menu {
+    background: $color_cloud_burst_approx;
+    @media #{$mobile} {
+      background: none;
+    }
+    > li {
+      > a {
+        background: none;
         color: $white;
-        background: $color_cloud_burst_approx;
+        font-weight: normal;
+        @media #{$mobile} {
+          font-size: 19px;
+          padding-left: 20px;
+        }
+        &:hover, &:active {
+          background: none;
+          color: $white;
+          @media #{$mobile} {
+            color: $white;
+          }
+        }
       }
-      &.is-active {
-        color: $white;
-        background: $color_cloud_burst_approx;
+      &.active {
+        a {
+          color: $white;
+          background: none;
+          @media #{$mobile} {
+            color: $white;
+          }
+          &:hover {
+            background: none;
+            color: $white;
+            @media #{$mobile} {
+              color: $white;
+            }
+          }
+        }
       }
     }
   }
