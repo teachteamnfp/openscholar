@@ -3,14 +3,14 @@
 namespace Drupal\Tests\os_publications\ExistingSiteJavascript;
 
 use Drupal\repec\RepecInterface;
-use Drupal\Tests\openscholar\ExistingSiteJavascript\TestBase;
+use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTestBase;
 
 /**
  * RepecTest.
  *
  * @group functional-javascript
  */
-class RepecTest extends TestBase {
+class RepecTest extends OsExistingSiteJavascriptTestBase {
 
   /**
    * Admin user.
