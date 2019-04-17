@@ -70,9 +70,9 @@ content:
       separator: '-'
       timezone_override: ''
       interpreter: ''
+      allow_all_day: 0
       show_next: 5
       count_per_item: true
-      allow_all_day: false
     third_party_settings: {  }
     type: date_recur_basic_formatter
     region: content
