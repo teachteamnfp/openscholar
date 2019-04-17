@@ -51,12 +51,7 @@ class RegistrationsHelper implements RegistrationsHelperInterface {
   /**
    * Constructs a new DefaultMailTemplate object.
    */
-  public function __construct(EventManagerInterface $eventManager,
-                              EventDateProviderInterface $dateProvider,
-                              RequestStack $requestStack,
-                              FormBuilder $formBuilder,
-                              Connection $database,
-                              Time $dateTime) {
+  public function __construct(EventManagerInterface $eventManager, EventDateProviderInterface $dateProvider, RequestStack $requestStack, FormBuilder $formBuilder, Connection $database, Time $dateTime) {
     $this->eventManager = $eventManager;
     $this->dateProvider = $dateProvider;
     $this->requestStack = $requestStack;

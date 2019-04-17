@@ -113,8 +113,8 @@ function os_events_node_view(array &$build, EntityInterface $entity, EntityViewD
       'form' => $date_switch,
       '#weight' => 21,
     ];
+    $build['#attached']['library'][] = 'os_events/os_events.toggle';
   }
-  $build['#attached']['library'][] = 'os_events/os_events.toggle';
 }
 
 /**
