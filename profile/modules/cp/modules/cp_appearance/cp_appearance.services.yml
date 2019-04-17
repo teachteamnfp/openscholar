@@ -1,4 +1,7 @@
 services:
-  cp_appearance.appearance_helper:
-    class: \Drupal\cp_appearance\AppearanceHelper
-    arguments: ['@theme_handler', '@config.factory']
+  cp_appearance.appearance_settings_builder:
+    class: \Drupal\cp_appearance\AppearanceSettingsBuilder
+    arguments: ['@theme_handler', '@config.factory', '@form_builder', '@cp_appearance.theme_selector_builder']
+  cp_appearance.theme_selector_builder:
+    class: \Drupal\cp_appearance\ThemeSelectorBuilder
+    arguments: ['@theme_handler']

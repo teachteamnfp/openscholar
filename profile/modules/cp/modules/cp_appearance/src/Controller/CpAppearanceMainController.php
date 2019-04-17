@@ -5,7 +5,7 @@ namespace Drupal\cp_appearance\Controller;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Extension\ThemeHandlerInterface;
-use Drupal\cp_appearance\AppearanceHelperInterface;
+use Drupal\cp_appearance\AppearanceSettingsBuilderInterface;
 use Drupal\cp_appearance\Form\ThemeForm;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -26,11 +26,11 @@ class CpAppearanceMainController extends ControllerBase {
   protected $themeHandler;
 
   /**
-   * Theme appearance helper.
+   * Appearance settings builder.
    *
-   * @var \Drupal\cp_appearance\AppearanceHelperInterface
+   * @var \Drupal\cp_appearance\AppearanceSettingsBuilderInterface
    */
-  protected $appearanceHelper;
+  protected $appearanceSettingsBuilder;
 
   /**
    * {@inheritdoc}
@@ -39,7 +39,7 @@ class CpAppearanceMainController extends ControllerBase {
     return new static(
       $container->get('theme_handler'),
       $container->get('config.factory'),
-      $container->get('cp_appearance.appearance_helper')
+      $container->get('cp_appearance.appearance_settings_builder')
     );
   }
 
@@ -50,13 +50,13 @@ class CpAppearanceMainController extends ControllerBase {
    *   The theme handler.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The config factory.
-   * @param \Drupal\cp_appearance\AppearanceHelperInterface $appearance_helper
-   *   Theme appearance helper service.
+   * @param \Drupal\cp_appearance\AppearanceSettingsBuilderInterface $appearance_settings_builder
+   *   Appearance settings builder service.
    */
-  public function __construct(ThemeHandlerInterface $theme_handler, ConfigFactoryInterface $config_factory, AppearanceHelperInterface $appearance_helper) {
+  public function __construct(ThemeHandlerInterface $theme_handler, ConfigFactoryInterface $config_factory, AppearanceSettingsBuilderInterface $appearance_settings_builder) {
     $this->themeHandler = $theme_handler;
     $this->configFactory = $config_factory;
-    $this->appearanceHelper = $appearance_helper;
+    $this->appearanceSettingsBuilder = $appearance_settings_builder;
   }
 
   /**
@@ -64,7 +64,7 @@ class CpAppearanceMainController extends ControllerBase {
    */
   public function main(): array {
     /** @var \Drupal\Core\Extension\Extension[] $themes */
-    $themes = $this->appearanceHelper->getThemes();
+    $themes = $this->appearanceSettingsBuilder->getThemes();
 
     // Use for simple dropdown for now.
     $basic_theme_options = [];
@@ -83,7 +83,7 @@ class CpAppearanceMainController extends ControllerBase {
 
     $build = [];
     $build[] = [
-      '#theme' => 'system_themes_page',
+      '#theme' => 'cp_appearance_themes_page',
       '#theme_groups' => $theme_groups,
       '#theme_group_titles' => $theme_group_titles,
     ];

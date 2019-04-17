@@ -11,41 +11,39 @@ namespace Drupal\Tests\cp_appearance\ExistingSite;
 class AppearanceSettingsTest extends TestBase {
 
   /**
-   * Administrator.
+   * Test group.
    *
-   * @var \Drupal\user\UserInterface
+   * @var \Drupal\group\Entity\GroupInterface
    */
-  protected $admin;
+  protected $group;
 
   /**
    * {@inheritdoc}
    */
   public function setUp() {
     parent::setUp();
-    $this->admin = $this->createUser([], NULL, TRUE);
+    $this->group = $this->createGroup([
+      'path' => [
+        'alias' => '/cp-appearance',
+      ],
+    ]);
+    $this->group->addMember($this->admin);
+
+    $this->drupalLogin($this->admin);
+    $this->vsiteContextManager->activateVsite($this->group);
   }
 
   /**
    * Tests appearance change.
    *
+   * @covers ::main
+   *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
    * @throws \Behat\Mink\Exception\ExpectationException
    * @throws \Behat\Mink\Exception\ResponseTextException
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
-   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function testSave(): void {
-    $group = $this->createGroup([
-      'path' => [
-        'alias' => '/appearance-test-save',
-      ],
-    ]);
-    $group->addMember($this->admin);
-    $this->drupalLogin($this->admin);
-
-    $this->vsiteContextManager->activateVsite($group);
-    $this->visit('/appearance-test-save/cp/appearance');
+    $this->visit('/cp-appearance/cp/appearance');
 
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->pageTextContains('Select Theme');
