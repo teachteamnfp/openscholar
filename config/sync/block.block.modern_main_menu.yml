@@ -1,4 +1,4 @@
-uuid: c29a2b69-32c0-4ed3-af23-4b8655810568
+uuid: 5d448618-c318-4ade-b99b-968441aacc24
 langcode: en
 status: true
 dependencies:
@@ -11,7 +11,7 @@ dependencies:
   theme:
     - modern
 _core:
-  default_config_hash: rx9IrdDv7Ldc4kpalZAxdhIPZfYIeOMh1N-qKoQZwHo
+  default_config_hash: fhmHva5Iv7xY6Md7ldYB0K8jsOrLKWSCLdAHPYg-JRw
 id: modern_main_menu
 theme: modern
 region: navigation_collapsible
