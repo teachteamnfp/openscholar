@@ -1,3 +1,4 @@
+@import '../../os_base/scss/base/breakpoints';
 //colors
 $color_gravel_approx: #4c4c4c;
 $color_pampas_approx: #f6f5ee;
@@ -8,6 +9,8 @@ $color_gallery_approx: #f0f0ee;
 $color_bon_jour_approx: #e4e0e0;
 $color_fuscous_gray_approx: #555;
 $color_rangoon_green_approx: #1e1e1e;
+$color-light-gray: #f4f4f4;
+$color-gray: #666;
 
 //fonts
 $font_0: helvetica;
@@ -102,6 +105,9 @@ aside {
     border-top: 1px solid $color_bon_jour_approx;
   }
 }
+aside .navbar-nav li .dropdown-menu a {
+  color: $color_thunderbird_approx;
+}
 .content-inner {
   h2 {
     font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
@@ -116,51 +122,80 @@ aside {
     border-top: 1px solid $color_bon_jour_approx;
   }
 }
+/**** navbar background ****/
 .navbar-collapse {
   color: $color_gravel_approx;
-  background: $white !important;
+  background: $white;
   border-bottom: 1px solid $color_bon_jour_approx;
-  ul.nav {
-    a {
-      font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
-      color: $color_gravel_approx;
-      &:hover {
-        color: $white;
-        background: $color_regent_gray_approx;
+  @media #{$mobile} {
+    padding: 0 !important;
+  }
+  /***** navbar nav *****/
+  .navbar-nav {
+    > li {
+      @media #{$mobile} {
+        border-bottom: 1px solid $color-light-gray;
+        border-top: 0 none;
       }
-      &.is-active, &.is-active:hover {
-        background: $color_regent_gray_approx;
-      }
-    }
-    .dropdown {
-      a {
-        &:hover {
+      > a {
+        font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+        color: $color_gravel_approx;
+        @media #{$mobile} {
+          color: black;
+        }
+        &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
+          color: $white;
           background: $color_regent_gray_approx;
-          color: $white;
         }
-        &.is-active {
+      }
+      &.open, &.active {
+        > a, > a:hover, > a:active, > a:focus {
+          color: $white;
           background: $color_regent_gray_approx;
-          color: $white;
-        }
-      }
-      &.open>a {
-        background: $color_regent_gray_approx;
-        color: $white;
-      }
-      ul li a {
-        color: $white;
-        &:hover {
-          color: $white;
-        }
-        &.is-active {
-          color: $white;
         }
       }
     }
-    ul {
-      background: $color_regent_gray_approx;
-      li a {
+  }
+  /**** dropdown menu ****/
+  .dropdown-menu {
+    background: $color_regent_gray_approx;
+    @media #{$mobile} {
+      background: none;
+    }
+    > li {
+      > a {
         color: $white;
+        font-weight: normal;
+        font-size: 15px;
+        @media #{$mobile} {
+          color: black;
+          font-size: 19px;
+          font-family: helvetica, Georgia, Baskerville, Palatino, Palatino Linotype, Book Antiqua, Times New Roman, serif;
+          padding-left: 20px;
+        }
+        &:hover, &:active {
+          color: #666;
+          background: none;
+          @media #{$mobile} {
+            color: black;
+          }
+        }
+      }
+      &.active {
+        a {
+          color: $white;
+          background: none;
+          @media #{$mobile} {
+            color: black;
+          }
+          &:hover {
+            color: $color-gray;
+            background: none;
+            @media #{$mobile} {
+              color: black;
+            }
+          }
+        }
       }
     }
   }
@@ -221,7 +256,7 @@ h2.block-title {
   font-weight: 900;
   font-family: $font_0, $font_8;
 }
-.header-conatainer ul.nav li a {
+.header-container ul.nav li a {
   color: $color_gravel_approx;
 }
 .path-front .content-inner .block {
