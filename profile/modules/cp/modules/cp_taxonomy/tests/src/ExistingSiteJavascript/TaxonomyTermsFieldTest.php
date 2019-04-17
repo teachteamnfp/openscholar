@@ -37,6 +37,7 @@ class TaxonomyTermsFieldTest extends CpTaxonomyExistingSiteJavascriptTestBase {
     $this->vsiteContextManager->activateVsite($this->group1);
 
     $this->visit($this->group1->get('path')->getValue()[0]['alias'] . "/node/add/taxonomy_test_1");
+    file_put_contents('public://testNodeTaxonomyTermsFieldAutocompleteSuccess-node-add-' . $this->getSession()->getStatusCode() . '.png', $this->getSession()->getScreenshot());
     $web_assert = $this->assertSession();
     $web_assert->statusCodeEquals(200);
     $page = $this->getCurrentPage();
@@ -47,6 +48,7 @@ class TaxonomyTermsFieldTest extends CpTaxonomyExistingSiteJavascriptTestBase {
     $tags->keyDown('m');
     /** @var \Behat\Mink\Element\NodeElement $result */
     $result = $web_assert->waitForElementVisible('css', 'ul.ui-autocomplete');
+    file_put_contents('public://testNodeTaxonomyTermsFieldAutocompleteSuccess-autocomplete.png', $this->getSession()->getScreenshot());
     $this->assertNotNull($result, 'Autocomplete is not came up.');
     $list_markup = $result->getHtml();
     $this->assertContains('Term 1 group 1 vid1', $list_markup);
