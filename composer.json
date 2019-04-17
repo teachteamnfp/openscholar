@@ -178,7 +178,7 @@
         "drupal-composer/drupal-scaffold": "^2.5",
         "drupal/console": "^1.0.2",
         "drupal/core": "^8.6.13",
-        "drupal/purl": "master@dev",
+        "drupal/purl": "1.0.1",
         "drupal/group_purl": "1.0-alpha1",
         "drupal/search_api": "^1.9",
         "drush/drush": "^9.0.0",
@@ -321,7 +321,7 @@
                 "Getlabel() on null layout builder.": "https://www.drupal.org/files/issues/2018-07-16/2985882-entityfield-2.patch"
             },
             "drupal/group_purl": {
-                "Prevent base path from interfering with purl detection": "https://www.drupal.org/files/issues/2019-01-17/group_purl.3026646-2.basepath.patch",
+                "Prevent base path from interfering with purl detection": "https://www.drupal.org/files/issues/2019-04-12/group_purl.3026646-3.basepath.patch",
                 "Don't attempt to redirect to subdomains by default": "https://www.drupal.org/files/issues/2019-03-05/group_purl.3036879-4.subdomain_disable.patch"
             },
             "drupal/fullcalendar": {
