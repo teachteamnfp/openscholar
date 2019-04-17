@@ -1,3 +1,4 @@
+@import '../../os_base/scss/base/breakpoints';
 //colors
 $color_goldenrod_approx: #ffdb6d;
 $color_steel_blue_approx: #4e84c4;
@@ -100,23 +101,62 @@ aside {
 
 .navbar-collapse {
   background: $color_steel_blue_approx;
-  ul.nav {
-    ul {
-      background: $color_steel_blue_approx;
-    }
-    a {
-      color: $white;
-    }
-    .dropdown ul li a:hover {
-      color: $white;
+  @media #{$mobile} {
+    padding: 0 !important;
+  }
+  /***** navbar nav *****/
+  .navbar-nav {
+    > li {
+      @media #{$mobile} {
+        border-bottom: 1px solid $white;
+        border-top: 0 none;
+      }
+      > a {
+        color: $white;
+        @media #{$mobile} {
+          color: $white;
+        }
+      }
     }
   }
-  .dropdown-menu>li>a {
-    &:hover {
-      background: $color_steel_blue_approx;
+  /**** dropdown menu ****/
+  .dropdown-menu {
+    background: $color_steel_blue_approx;
+    @media #{$mobile} {
+      background: none;
     }
-    &:active {
-      background: $color_steel_blue_approx;
+    > li {
+      > a {
+        background: none;
+        color: $white;
+        font-weight: normal;
+        @media #{$mobile} {
+          font-size: 19px;
+          padding-left: 20px;
+        }
+        &:hover, &:active {
+          color: $white;
+          background: $color_steel_blue_approx;
+          @media #{$mobile} {
+            color: $white;
+          }
+        }
+      }
+      &.active {
+        a {
+          color: $white;
+          background: $color_steel_blue_approx;
+          @media #{$mobile} {
+            color: $white;
+          }
+          &:hover {
+            background: none;
+            @media #{$mobile} {
+              color: $white;
+            }
+          }
+        }
+      }
     }
   }
 }
