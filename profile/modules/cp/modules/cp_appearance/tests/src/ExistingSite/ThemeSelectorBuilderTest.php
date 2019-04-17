@@ -6,7 +6,7 @@ namespace Drupal\Tests\cp_appearance\ExistingSite;
  * ThemeSelectorBuilderTest.
  *
  * @group kernel
- * @group other
+ * @group cp-appearance
  * @coversDefaultClass \Drupal\cp_appearance\ThemeSelectorBuilder
  */
 class ThemeSelectorBuilderTest extends TestBase {

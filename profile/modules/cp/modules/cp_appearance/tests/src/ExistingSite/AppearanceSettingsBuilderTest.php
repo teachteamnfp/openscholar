@@ -6,7 +6,7 @@ namespace Drupal\Tests\cp_appearance\ExistingSite;
  * AppearanceSettingsBuilder service test.
  *
  * @group kernel
- * @group other
+ * @group cp-appearance
  * @coversDefaultClass \Drupal\cp_appearance\AppearanceSettingsBuilder
  */
 class AppearanceSettingsBuilderTest extends TestBase {
