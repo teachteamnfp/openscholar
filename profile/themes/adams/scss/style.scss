@@ -1,3 +1,4 @@
+@import '../../os_base/scss/base/breakpoints';
 //colors
 $color_st_tropaz_approx: #215990;
 $color_squirrel_approx: #8c8179;
@@ -11,6 +12,7 @@ $black: #000;
 $color_steel_blue_approx: #4e84c4;
 $color_celeste_approx: #ccc;
 $color_alto_approx: #ddd;
+$color-light-gray: #f4f4f4;
 
 //fonts
 $font_0: Open Sans;
@@ -124,43 +126,74 @@ footer {
 .navbar-collapse {
   background: $color_tundora_approx;
   border-bottom: 8px solid $color_squirrel_approx;
-  .nav {
-    background: $color_chicago_approx;
+  @media #{$mobile} {
+    padding: 0 !important;
+    border: 0 none;
   }
-  ul.nav {
-    ul {
-      background-color: $color_mexican_red_approx;
+  /***** navbar nav *****/
+  .navbar-nav {
+    background: $color_chicago_approx;
+    @media #{$mobile} {
+      background: $color_merlot_approx;
     }
-    a {
-      &:hover {
-        background-color: $color_mexican_red_approx;
+    > li {
+      @media #{$mobile} {
+        border-bottom: 1px solid $color-light-gray;
+        border-top: 0 none;
       }
-      &.is-active {
-        background-color: $color_mexican_red_approx;
-      }
-    }
-    .dropdown {
-      a {
-        &:hover {
+      > a {
+        font-size: 16px;
+        text-transform: uppercase;
+        font-family: $font_0, $font_1;
+        @media #{$mobile} {
+          color: $white;
+        }
+        &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
           background-color: $color_mexican_red_approx;
         }
-        &.is-active {
+      }
+      &.open, &.active {
+        > a, > a:hover, > a:active, > a:focus {
           background-color: $color_mexican_red_approx;
-          &:hover {
-            background-color: $color_mexican_red_approx;
+        }
+
+      }
+    }
+  }
+  /**** dropdown menu ****/
+  .dropdown-menu {
+    background-color: $color_mexican_red_approx;
+    @media #{$mobile} {
+      background: none;
+    }
+    > li {
+      > a {
+        background: none;
+        color: $white;
+        @media #{$mobile} {
+          font-size: 19px;
+          padding-left: 20px;
+        }
+        &:hover, &:active {
+          background: none;
+          @media #{$mobile} {
+            color: $white;
           }
         }
       }
-      &.over>a {
-        background-color: $color_mexican_red_approx;
+      &.active {
+        a {
+          color: $white;
+          @media #{$mobile} {
+            color: $white;
+          }
+          &:hover {
+            @media #{$mobile} {
+              color: $white;
+            }
+          }
+        }
       }
-    }
-    li a {
-      font-family: $font_0, $font_1;
-    }
-    >li>a {
-      font-size: 16px;
-      text-transform: uppercase;
     }
   }
 }
