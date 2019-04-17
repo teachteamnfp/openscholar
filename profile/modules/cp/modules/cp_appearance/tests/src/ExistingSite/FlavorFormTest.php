@@ -58,22 +58,31 @@ class FlavorFormTest extends OsExistingSiteJavascriptTestBase {
   }
 
   /**
-   * Tests preview update on flavor selection.
+   * Tests the behavior when flavor option is changed.
    *
-   * @covers ::updatePreview
+   * @covers ::flavorChangeHandler
    *
    * @throws \Behat\Mink\Exception\DriverException
    * @throws \Behat\Mink\Exception\ElementNotFoundException
    * @throws \Behat\Mink\Exception\ExpectationException
    * @throws \Behat\Mink\Exception\UnsupportedDriverActionException
    */
-  public function testUpdatePreview(): void {
+  public function testFlavorSelectionChange(): void {
     $this->visit('/cp-appearance-flavor/cp/appearance');
 
+    // Flavor preview should be shown when selected.
     $this->getCurrentPage()->fillField('options_vibrant', 'golden_accents');
     $this->waitForAjaxToFinish();
 
-    $this->assertSession()->responseContains('/profiles/contrib/openscholar/themes/golden_accents/screenshot.png');
+    $this->assertSession()->elementExists('css', 'img[src="/profiles/contrib/openscholar/themes/golden_accents/screenshot.png"]');
+    $this->assertSession()->elementExists('css', 'button[name="save-vibrant"]');
+
+    // Base theme screenshot should be shown when nothing selected.
+    $this->getCurrentPage()->fillField('options_vibrant', '_none');
+    $this->waitForAjaxToFinish();
+
+    $this->assertSession()->elementExists('css', 'img[src="/profiles/contrib/openscholar/themes/vibrant/screenshot.png"]');
+    $this->assertSession()->elementNotExists('css', 'button[name="save-vibrant"]');
   }
 
 }

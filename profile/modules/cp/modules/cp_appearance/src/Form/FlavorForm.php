@@ -2,7 +2,10 @@
 
 namespace Drupal\cp_appearance\Form;
 
+use Drupal\Component\Utility\Html;
+use Drupal\Core\Ajax\AfterCommand;
 use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\RemoveCommand;
 use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\DependencyInjection\DependencySerializationTrait;
 use Drupal\Core\Extension\Extension;
@@ -84,7 +87,7 @@ class FlavorForm implements FormInterface {
       '#title' => $this->t('Flavors'),
       '#options' => $options,
       '#ajax' => [
-        'callback' => '::updatePreview',
+        'callback' => '::flavorChangeHandler',
       ],
     ];
 
@@ -104,14 +107,20 @@ class FlavorForm implements FormInterface {
   /**
    * Flavor option change handler.
    *
-   * Updates preview based on the selection.
-   *
    * @ingroup forms
    */
-  public function updatePreview(array &$form, FormStateInterface $form_state): AjaxResponse {
+  public function flavorChangeHandler(array &$form, FormStateInterface $form_state): AjaxResponse {
     $response = new AjaxResponse();
     /** @var string $selection */
     $selection = $form_state->getValue("options_{$this->theme->getName()}");
+
+    // It would not make sense if user has not chosen a flavor, and still seeing
+    // the option to save settings.
+    // This also prevents adding multiple save buttons everytime option is
+    // changed.
+    /** @var string $button_identifier */
+    $button_identifier = Html::cleanCssIdentifier("save-{$this->theme->getName()}");
+    $response->addCommand(new RemoveCommand("button[name=$button_identifier]"));
 
     if ($selection !== '_none') {
       /** @var \Drupal\Core\Extension\Extension $flavor */
@@ -120,15 +129,28 @@ class FlavorForm implements FormInterface {
       $info = $flavor->info;
       /** @var string|null $screenshot_uri */
       $screenshot_uri = $this->themeSelectorBuilder->getScreenshotUri($flavor);
+
+      /** @var string $form_identifier */
+      $form_identifier = Html::cleanCssIdentifier("cp-appearance-{$this->theme->getName()}-flavor-form");
+      /** @var string $option_identifier */
+      $option_identifier = Html::cleanCssIdentifier("form-item-options-{$this->theme->getName()}");
+      $response->addCommand(new AfterCommand("form#$form_identifier .$option_identifier", [
+        '#type' => 'submit',
+        '#value' => $this->t('Save'),
+        '#name' => Html::cleanCssIdentifier("save-{$this->theme->getName()}"),
+      ]));
     }
     else {
+      // Revert everything to normal is user has not chosen a flavor.
       /** @var array $info */
       $info = $this->theme->info;
       /** @var string|null $screenshot_uri */
       $screenshot_uri = $this->themeSelectorBuilder->getScreenshotUri($this->theme);
     }
 
-    $response->addCommand(new ReplaceCommand("#theme-selector-{$this->theme->getName()} .theme-screenshot img", [
+    /** @var string $theme_selector_identifier */
+    $theme_selector_identifier = Html::cleanCssIdentifier("theme-selector-{$this->theme->getName()}");
+    $response->addCommand(new ReplaceCommand("#$theme_selector_identifier .theme-screenshot img", [
       '#theme' => 'image',
       '#uri' => $screenshot_uri ?? '',
       '#alt' => $this->t('Screenshot for @theme theme', ['@theme' => $info['name']]),
