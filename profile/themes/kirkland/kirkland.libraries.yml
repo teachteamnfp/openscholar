@@ -7,4 +7,3 @@ global-styling:
     js/kirkland.js: {}
     dependencies:
     - core/jquery
-
