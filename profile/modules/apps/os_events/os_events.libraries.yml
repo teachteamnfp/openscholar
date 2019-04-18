@@ -1,0 +1,6 @@
+os_events.toggle:
+  version: 1.0
+  js:
+    js/os_toggle.js: { }
+  dependencies:
+    - core/jquery

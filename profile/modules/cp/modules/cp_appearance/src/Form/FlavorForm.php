@@ -3,12 +3,14 @@
 namespace Drupal\cp_appearance\Form;
 
 use Drupal\Core\Ajax\AjaxResponse;
-use Drupal\Core\Ajax\OpenModalDialogCommand;
+use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\DependencyInjection\DependencySerializationTrait;
+use Drupal\Core\Extension\Extension;
 use Drupal\Core\Form\FormInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use PHPUnit\Framework\Assert;
+use Drupal\cp_appearance\ThemeSelectorBuilderInterface;
+use Ds\Map;
 
 /**
  * Flavor selection form.
@@ -21,52 +23,68 @@ class FlavorForm implements FormInterface {
   /**
    * The theme for which the form will be created.
    *
-   * @var string
+   * @var \Drupal\Core\Extension\Extension
    */
   protected $theme;
 
   /**
    * Available flavors of the theme.
    *
-   * An associative array of flavor machine name and human readable name.
+   * Flavor name and its information mapping.
    *
-   * @var array
+   * @var \Ds\Map
    */
   protected $flavors;
 
   /**
+   * Theme selector builder service.
+   *
+   * @var \Drupal\cp_appearance\ThemeSelectorBuilderInterface
+   */
+  protected $themeSelectorBuilder;
+
+  /**
    * Creates a new FlavorForm object.
    *
-   * @param string $theme
+   * @param \Drupal\Core\Extension\Extension $theme
    *   The theme for which the form will be created.
-   * @param array $flavors
+   * @param \Ds\Map $flavors
    *   Available flavors of the theme.
+   * @param \Drupal\cp_appearance\ThemeSelectorBuilderInterface $theme_selector_builder
+   *   Theme selector builder service.
    */
-  public function __construct($theme, array $flavors) {
-    Assert::assertNotEquals('', $theme);
-    Assert::assertNotEmpty($flavors);
-
+  public function __construct(Extension $theme, Map $flavors, ThemeSelectorBuilderInterface $theme_selector_builder) {
     $this->theme = $theme;
     $this->flavors = $flavors;
+    $this->themeSelectorBuilder = $theme_selector_builder;
   }
 
   /**
    * {@inheritdoc}
    */
   public function getFormId(): string {
-    return "cp_appearance_{$this->theme}_flavor_form";
+    return "cp_appearance_{$this->theme->getName()}_flavor_form";
   }
 
   /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state): array {
-    $form['options'] = [
+    $options = [
+      '_none' => $this->t('None'),
+    ];
+
+    /** @var \Drupal\Core\Extension\Extension $flavor */
+    foreach ($this->flavors->values() as $flavor) {
+      $options[$flavor->getName()] = $flavor->info['name'];
+    }
+
+    $form["options_{$this->theme->getName()}"] = [
       '#type' => 'select',
       '#title' => $this->t('Flavors'),
-      '#options' => ['_none' => $this->t('None')] + $this->flavors,
+      '#options' => $options,
       '#ajax' => [
-        'callback' => '::feedbackMessage',
+        'callback' => '::updatePreview',
       ],
     ];
 
@@ -86,13 +104,37 @@ class FlavorForm implements FormInterface {
   /**
    * Flavor option change handler.
    *
+   * Updates preview based on the selection.
+   *
    * @ingroup forms
    */
-  public function feedbackMessage(array &$form, FormStateInterface $form_state): AjaxResponse {
+  public function updatePreview(array &$form, FormStateInterface $form_state): AjaxResponse {
     $response = new AjaxResponse();
-    $test['#markup'] = $form_state->getValue('options');
+    /** @var string $selection */
+    $selection = $form_state->getValue("options_{$this->theme->getName()}");
 
-    $response->addCommand(new OpenModalDialogCommand('Flavor selected', $test));
+    if ($selection !== '_none') {
+      /** @var \Drupal\Core\Extension\Extension $flavor */
+      $flavor = $this->flavors->get($selection);
+      /** @var array $info */
+      $info = $flavor->info;
+      /** @var string|null $screenshot_uri */
+      $screenshot_uri = $this->themeSelectorBuilder->getScreenshotUri($flavor);
+    }
+    else {
+      /** @var array $info */
+      $info = $this->theme->info;
+      /** @var string|null $screenshot_uri */
+      $screenshot_uri = $this->themeSelectorBuilder->getScreenshotUri($this->theme);
+    }
+
+    $response->addCommand(new ReplaceCommand("#theme-selector-{$this->theme->getName()} .theme-screenshot img", [
+      '#theme' => 'image',
+      '#uri' => $screenshot_uri ?? '',
+      '#alt' => $this->t('Screenshot for @theme theme', ['@theme' => $info['name']]),
+      '#title' => $this->t('Screenshot for @theme theme', ['@theme' => $info['name']]),
+      '#attributes' => ['class' => ['screenshot']],
+    ]));
 
     return $response;
   }

@@ -33,6 +33,7 @@ env:
     - JOB="job:run-kernel-tests vsite"
     - JOB="job:run-kernel-tests other"
     - JOB="job:run-kernel-tests os-theme-preview"
+    - JOB="job:run-kernel-tests cp-appearance"
     - JOB=job:run-functional-tests
     - JOB=job:run-functional-javascript-tests
 #    - JOB=job:run-behat-tests

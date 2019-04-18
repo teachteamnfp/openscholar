@@ -240,7 +240,46 @@ display:
           destination: true
           entity_type: registration
           plugin_id: entity_operations
-      filters: {  }
+      filters:
+        field_for_date_value:
+          id: field_for_date_value
+          table: registration__field_for_date
+          field: field_for_date_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_for_date_value_op
+            label: 'List Registrations for a specific Date'
+            description: ''
+            use_operator: false
+            operator: field_for_date_value_op
+            identifier: field_for_date_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: string
       sorts: {  }
       title: Registrations
       header: {  }

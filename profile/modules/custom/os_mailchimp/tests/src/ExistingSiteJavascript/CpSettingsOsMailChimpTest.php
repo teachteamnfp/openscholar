@@ -2,7 +2,7 @@
 
 namespace Drupal\Tests\os_mailchimp\ExistingSiteJavascript;
 
-use Drupal\Tests\openscholar\ExistingSiteJavascript\TestBase;
+use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTestBase;
 
 /**
  * Tests os_mailchimp module.
@@ -10,7 +10,7 @@ use Drupal\Tests\openscholar\ExistingSiteJavascript\TestBase;
  * @group mailchimp
  * @group functional-javascript
  */
-class CpSettingsOsMailChimpTest extends TestBase {
+class CpSettingsOsMailChimpTest extends OsExistingSiteJavascriptTestBase {
 
   /**
    * Admin user.
