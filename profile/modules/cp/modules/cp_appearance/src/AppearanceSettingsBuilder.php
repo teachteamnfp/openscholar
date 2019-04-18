@@ -105,7 +105,7 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
     foreach ($themes as $theme) {
       $theme->is_default = $this->themeIsDefault($theme);
       $theme->is_admin = FALSE;
-      $theme->screenshot = $this->addScreenshotInfo($theme, $themes);
+      $theme->screenshot = $this->addScreenshotInfo($theme);
       $theme->operations = $this->addOperations($theme);
       $theme->more_operations = $this->addMoreOperations($theme);
       $theme->notes = $this->addNotes($theme);
@@ -137,25 +137,21 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
    *
    * @param \Drupal\Core\Extension\Extension $theme
    *   The theme.
-   * @param \Drupal\Core\Extension\Extension[] $themes
-   *   If no screenshot is present for the theme, then this list will be used.
    *
    * @return array|null
    *   Renderable theme_image structure. NULL if no screenshot found.
    */
-  protected function addScreenshotInfo(Extension $theme, array $themes): ?array {
-    $candidates = [$theme->getName()];
-    $candidates[] = $theme->base_themes;
+  protected function addScreenshotInfo(Extension $theme): ?array {
+    /** @var string|null $screenshot_uri */
+    $screenshot_uri = $this->themeSelectorBuilder->getScreenshotUri($theme);
 
-    foreach ($candidates as $candidate) {
-      if (file_exists($themes[$candidate]->info['screenshot'])) {
-        return [
-          'uri' => $themes[$candidate]->info['screenshot'],
-          'alt' => $this->t('Screenshot for @theme theme', ['@theme' => $theme->info['name']]),
-          'title' => $this->t('Screenshot for @theme theme', ['@theme' => $theme->info['name']]),
-          'attributes' => ['class' => ['screenshot']],
-        ];
-      }
+    if ($screenshot_uri) {
+      return [
+        'uri' => $screenshot_uri,
+        'alt' => $this->t('Screenshot for @theme theme', ['@theme' => $theme->info['name']]),
+        'title' => $this->t('Screenshot for @theme theme', ['@theme' => $theme->info['name']]),
+        'attributes' => ['class' => ['screenshot']],
+      ];
     }
 
     return NULL;
