@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.storage.rng_contact.field_email
   module:
+    - datetime
     - node
     - rng
     - rng_contact
@@ -249,7 +250,11 @@ display:
           group_type: group
           admin_label: ''
           operator: '='
-          value: ''
+          value:
+            min: ''
+            max: ''
+            value: ''
+            type: date
           group: 1
           exposed: true
           expose:
@@ -266,7 +271,11 @@ display:
               authenticated: authenticated
               anonymous: '0'
               administrator: '0'
+              rwtc1rwx: '0'
+              klq6cvg2: '0'
             placeholder: ''
+            min_placeholder: ''
+            max_placeholder: ''
           is_grouped: false
           group_info:
             label: ''
@@ -279,7 +288,8 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          plugin_id: string
+          granularity: day
+          plugin_id: datetime
       sorts: {  }
       title: Registrations
       header: {  }

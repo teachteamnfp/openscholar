@@ -2,15 +2,18 @@
 
 namespace Drupal\os_events\Form;
 
+use DateInterval;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\CloseModalDialogCommand;
 use Drupal\Core\Ajax\ReplaceCommand;
+use Drupal\Core\Datetime\DateFormatter;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Messenger\Messenger;
+use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\rng\Entity\Registrant;
 use Drupal\rng\Entity\Registration;
 use Drupal\rng\EventManagerInterface;
@@ -34,15 +37,15 @@ class EventSignupForm extends FormBase {
    *   The Event Manager service.
    * @param \Drupal\Core\Messenger\Messenger $messenger
    *   The Messenger service.
+   * @param \Drupal\Core\Datetime\DateFormatter $dateFormatter
+   *   The Date formatter service.
    */
-  public function __construct(RegistrantFactoryInterface $registrantFactory,
-                              EntityTypeManagerInterface $entityManager,
-                              EventManagerInterface $eventManager,
-                              Messenger $messenger) {
+  public function __construct(RegistrantFactoryInterface $registrantFactory, EntityTypeManagerInterface $entityManager, EventManagerInterface $eventManager, Messenger $messenger, DateFormatter $dateFormatter) {
     $this->registrantFactory = $registrantFactory;
     $this->entityManager = $entityManager;
     $this->eventManager = $eventManager;
     $this->messenger = $messenger;
+    $this->dateFormatter = $dateFormatter;
   }
 
   /**
@@ -53,7 +56,8 @@ class EventSignupForm extends FormBase {
       $container->get('rng.registrant.factory'),
       $container->get('entity_type.manager'),
       $container->get('rng.event_manager'),
-      $container->get('messenger')
+      $container->get('messenger'),
+      $container->get('date.formatter')
     );
   }
 
@@ -88,16 +92,20 @@ class EventSignupForm extends FormBase {
 
     $dateTimeObject = DrupalDateTime::createFromTimestamp($timestamp);
     $offset = $dateTimeObject->getOffset();
-    $interval = \DateInterval::createFromDateString((string) $offset . 'seconds');
+    $interval = DateInterval::createFromDateString((string) $offset . 'seconds');
     $dateTimeObject->add($interval);
+    $dateDisplay = $dateTimeObject->format('l, F j, Y H:i:s');
+
     $form['field_repeating_event_date_text'] = [
-      '#markup' => '<span class="date-display-single">' . $this->t('On @date', ['@date' => $dateTimeObject->format('l, F j, Y H:i:s')]) . "</span>",
+      '#markup' => '<span class="date-display-single">' . $this->t('On @date', ['@date' => $dateDisplay]) . "</span>",
       '#weight' => -10,
     ];
 
+    $dateStorage = $this->dateFormatter->format($timestamp, 'custom', DateTimeItemInterface::DATETIME_STORAGE_FORMAT);
+
     $form['registering_for_date'] = [
       '#type' => 'hidden',
-      '#value' => $timestamp,
+      '#value' => $dateStorage,
     ];
 
     $form['email'] = [
@@ -234,7 +242,7 @@ class EventSignupForm extends FormBase {
     $registration = Registration::create([
       'type' => 'signup',
       'event' => $node,
-      'field_for_date' => $date,
+      'field_for_date' => ['value' => $date],
     ]);
     $registration->save();
 
