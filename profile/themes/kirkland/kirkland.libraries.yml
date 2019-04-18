@@ -5,5 +5,4 @@ global-styling:
       css/style.css: {}
   js:
     js/kirkland.js: {}
-    dependencies:
-    - core/jquery
+

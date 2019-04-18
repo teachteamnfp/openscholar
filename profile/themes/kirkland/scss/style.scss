@@ -1,3 +1,4 @@
+@import '../../os_base/scss/base/breakpoints';
 //colors
 $color_log_cabin_approx: #222;
 $white: #ffffff;
@@ -12,7 +13,7 @@ $color_san_juan_approx: #32526e;
 $color_tundora_approx: #444;
 $color_limed_spruce_approx: #3e464d;
 $color_mountain_mist_approx: #999;
-
+$color-light-gray: #f3f3f1;
 //fonts
 $font_0: Quattrocento;
 $font_1: sans-serif !important;
@@ -128,70 +129,86 @@ aside {
   &.fixed {
     border-bottom: 1px solid $color_san_juan_approx;
   }
-  ul.nav {
-    a {
-      font-family: $font_2, $font_1;
-      &.is-active {
-        border-bottom: 3px solid $color_san_juan_approx;
-        color: $color_tundora_approx;
-      }
-      &:hover {
-        border-bottom: 3px solid $color_san_juan_approx;
-        color: $color_tundora_approx;
-      }
-    }
-    ul {
-      background: $color_san_juan_approx;
-      a:hover {
-        background: $color_san_juan_approx;
-        color: $white;
-        padding: 10px 20px;
-      }
-    }
-    .dropdown {
-      padding-right: 0;
-    }
-    >li>a {
-      color: $color_tundora_approx;
-      border-bottom: 3px solid $white;
-      padding: 16px 14px 13px;
-      //Instead of the line below you could use @include transition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
-      transition: all .125s linear .125s;
-      font-size: 19px;
-      text-transform: uppercase;
-      &:hover {
-        padding: 13px 14px 16px;
-      }
+  @media #{$mobile} {
+    padding: 0 !important;
+  }
+  /***** navbar nav *****/
+  .nav.navbar-nav {
+    @media #{$mobile} {
+      background: $color-light-gray;
     }
     > li {
-      >a {
-        &:hover {
+      @media #{$mobile} {
+        border-bottom: 1px solid $white;
+        border-top: 0 none;
+      }
+      > a {
+        font-family: $font_2, $font_1;
+        color: $color_tundora_approx;
+        border-bottom: 3px solid $white;
+        padding: 16px 14px 13px;
+        transition: all .125s linear .125s;
+        font-size: 19px;
+        text-transform: uppercase;
+        @media #{$mobile} {
+          padding: 16px 14px 13px;
+          border: 0;
+        }
+        &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
           border-bottom: 3px solid $color_san_juan_approx;
           color: $color_tundora_approx;
           padding: 13px 14px 16px;
-        }
-        &.is-active {
-          border-bottom: 3px solid $color_san_juan_approx;
-          color: $color_tundora_approx;
-        }
-      }
-      &.open > a {
-        border-bottom: 3px solid $color_san_juan_approx;
-        color: $color_tundora_approx;
-        padding: 13px 14px 16px;
-        &:hover {
           background: $color_black_haze_approx;
         }
       }
+      &.open, &.active {
+        > a, > a:hover, > a:active, > a:focus {
+          border-bottom: 3px solid $color_san_juan_approx;
+          color: $color_tundora_approx;
+          background: $color_black_haze_approx;
+        }
+
+      }
     }
   }
-  .navbar-nav>li>a {
-    &.is-active, &.is-active:hover {
-      background: $color_black_haze_approx;
-      color: $color_tundora_approx;
+  /**** dropdown menu ****/
+  .dropdown-menu {
+    background: $color_san_juan_approx;
+    @media #{$mobile} {
+      background: none;
     }
-    &:hover {
-      background: $color_black_haze_approx;
+    > li {
+      > a {
+        color: $white;
+        background: none;
+        font-family: $font_2, $font_1;
+        @media #{$mobile} {
+          color: $color_tundora_approx;
+          text-transform: uppercase;
+          padding: 16px 14px 13px;
+        }
+        &:hover, &:active {
+          background: $color_san_juan_approx;
+          color: $white;
+          padding: 10px 20px;
+          @media #{$mobile} {
+            color: $color_tundora_approx;
+            background: none;
+          }
+        }
+      }
+      &.active {
+        a {
+          @media #{$mobile} {
+            color: $color_tundora_approx;
+          }
+          &:hover {
+            @media #{$mobile} {
+              color: $color_tundora_approx;
+            }
+          }
+        }
+      }
     }
   }
 }
