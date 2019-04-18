@@ -74,7 +74,7 @@ class RssHelper implements RssHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function getOriginalViewOrder() {
+  public function getOriginalViewOrder(): array {
     // Create an array to order by created (os_feeds).
     $original_view_order = [];
     foreach ($this->originalView->result as $index => $row) {
@@ -88,7 +88,7 @@ class RssHelper implements RssHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function getReferenceViewOrder() {
+  public function getReferenceViewOrder(): array {
     // Create an array to order by created (os_reference_feed).
     $reference_view_order = [];
     foreach ($this->referenceView->display_handler->output['#rows'] as $index => $row) {
