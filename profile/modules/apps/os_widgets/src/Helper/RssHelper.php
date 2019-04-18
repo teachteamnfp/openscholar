@@ -32,7 +32,7 @@ class RssHelper implements RssHelperInterface {
   protected $output;
 
   /**
-   * Set parameter.
+   * Set originalView property.
    *
    * @param \Drupal\views\ViewExecutable $originalView
    *   ViewExecutable.
@@ -42,7 +42,7 @@ class RssHelper implements RssHelperInterface {
   }
 
   /**
-   * Set parameter.
+   * Set referenceView property.
    *
    * @param \Drupal\views\ViewExecutable $referenceView
    *   ViewExecutable.
@@ -52,7 +52,7 @@ class RssHelper implements RssHelperInterface {
   }
 
   /**
-   * Set parameter.
+   * Set output property.
    *
    * @param array $output
    *   Output array.
