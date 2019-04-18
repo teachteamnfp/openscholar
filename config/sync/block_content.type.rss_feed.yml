@@ -1,0 +1,8 @@
+uuid: 606c69ba-3efe-4bcb-b7f7-f1c086239fb1
+langcode: en
+status: true
+dependencies: {  }
+id: rss_feed
+label: 'RSS feed'
+revision: 1
+description: ''
