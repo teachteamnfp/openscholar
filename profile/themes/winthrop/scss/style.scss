@@ -1,3 +1,4 @@
+@import '../../os_base/scss/base/breakpoints';
 //colors
 $color_log_cabin_approx: #222;
 $white: #fff;
@@ -85,61 +86,139 @@ footer {
 }
 .navbar-collapse {
   background: $color_concrete_approx;
-  ul.nav {
-    a {
-      font-family: $font_0, $font_1, $font_2;
-      padding: 16px 15px;
-      @extend %extend_1;
-      &.is-active, &.is-active:hover {
-        @extend %extend_1;
-        @extend %extend_2;
+  @media #{$mobile} {
+    padding: 0 !important;
+  }
+  /***** navbar nav *****/
+  .nav.navbar-nav {
+    > li {
+      @media #{$mobile} {
+        border-bottom: 1px solid $white;
+        border-top: 0 none;
       }
-      &:hover {
+      > a {
+        font-family: $font_0, $font_1, $font_2;
+        padding: 16px 15px;
         @extend %extend_1;
-        @extend %extend_2;
+        @media #{$mobile} {
+        }
+        &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
+          @extend %extend_1;
+          @extend %extend_2;
+        }
+      }
+      &.open, &.active {
+        > a, > a:hover, > a:active, > a:focus {
+          @extend %extend_1;
+          @extend %extend_2;
+        }
+
       }
     }
-    .dropdown {
-      a {
-        &:hover {
-          @extend %extend_2;
-          color: $color_mexican_red_approx;
-          padding: 10px 15px;
-        }
-        &.is-active {
-          @extend %extend_2;
-        }
-        &.is-active {
-          color: $color_mexican_red_approx;
-          padding: 10px 15px;
-        }
-      }
-      ul li a {
+  }
+  /**** dropdown menu ****/
+  .dropdown-menu {
+    background: $white;
+    border-left: 1px solid $color_concrete_approx;
+    border-right: 1px solid $color_concrete_approx;
+    border-bottom: 1px solid $color_concrete_approx;
+    @media #{$mobile} {
+      background: none;
+    }
+    > li {
+      > a {
+        font-family: $font_0, $font_1, $font_2;
         @extend %extend_1;
         font-size: 1em;
-        &.is-active {
-          @extend %extend_1;
-          font-size: 1em;
+        background: none;
+        padding: 10px 15px;
+        @media #{$mobile} {
+          font-size: 19px;
+          font-weight: normal;
         }
-        &:hover {
+        &:hover, &:active {
           color: $color_mexican_red_approx;
           padding: 10px 15px;
+          background: none;
+          @media #{$mobile} {
+          }
         }
       }
-      &.open>a {
-        @extend %extend_2;
-        color: $color_mexican_red_approx;
-        padding: 10px 15px;
+      &.active {
+        a {
+          @extend %extend_1;
+          font-size: 1em;
+          @media #{$mobile} {
+            font-size: 19px;
+          }
+          &:hover {
+            background: none;
+            @media #{$mobile} {
+              font-size: 19px;
+            }
+          }
+        }
       }
-    }
-    ul {
-      background: $white;
-      border-left: 1px solid $color_concrete_approx;
-      border-right: 1px solid $color_concrete_approx;
-      border-bottom: 1px solid $color_concrete_approx;
     }
   }
 }
+// .navbar-collapse {
+//   background: $color_concrete_approx;
+//   ul.nav {
+//     a {
+//       font-family: $font_0, $font_1, $font_2;
+//       padding: 16px 15px;
+//       @extend %extend_1;
+//       &.is-active, &.is-active:hover {
+//         @extend %extend_1;
+//         @extend %extend_2;
+//       }
+//       &:hover {
+//         @extend %extend_1;
+//         @extend %extend_2;
+//       }
+//     }
+//     .dropdown {
+//       a {
+//         &:hover {
+//           @extend %extend_2;
+//           color: $color_mexican_red_approx;
+//           padding: 10px 15px;
+//         }
+//         &.is-active {
+//           @extend %extend_2;
+//         }
+//         &.is-active {
+//           color: $color_mexican_red_approx;
+//           padding: 10px 15px;
+//         }
+//       }
+//       ul li a {
+//         @extend %extend_1;
+//         font-size: 1em;
+//         &.is-active {
+//           @extend %extend_1;
+//           font-size: 1em;
+//         }
+//         &:hover {
+//           color: $color_mexican_red_approx;
+//           padding: 10px 15px;
+//         }
+//       }
+//       &.open>a {
+//         @extend %extend_2;
+//         color: $color_mexican_red_approx;
+//         padding: 10px 15px;
+//       }
+//     }
+//     ul {
+//       background: $white;
+//       border-left: 1px solid $color_concrete_approx;
+//       border-right: 1px solid $color_concrete_approx;
+//       border-bottom: 1px solid $color_concrete_approx;
+//     }
+//   }
+// }
 .path-front {
   .region-content-first {
     background: $white;

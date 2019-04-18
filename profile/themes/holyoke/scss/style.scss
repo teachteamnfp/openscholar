@@ -75,8 +75,6 @@ footer {
       > a {
         font-family: $font_0, $font_1;
         color: $color_spicy_mustard_approx;
-        @media #{$mobile} {
-        }
         &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
           background: $color_pizza_approx;
           color: $white;
@@ -101,24 +99,26 @@ footer {
         font-family: $font_0, $font_1;
         background: none;
         @media #{$mobile} {
+          color: $color_spicy_mustard_approx;
         }
         &:hover, &:active {
           background: none;
           @media #{$mobile} {
-            color: $white;
+            color: $color_spicy_mustard_approx;
           }
         }
       }
       &.active {
         a {
           background: none;
+          color: $white;
           @media #{$mobile} {
-            color: $white;
+            color: $color_spicy_mustard_approx;
           }
           &:hover {
             background: none;
             @media #{$mobile} {
-              color: $white;
+              color: $color_spicy_mustard_approx;
             }
           }
         }
