@@ -456,7 +456,7 @@ class RepecIntegrationTest extends TestBase {
     $contributor_1 = $this->createContributor();
     $contributor_2 = $this->createContributor();
 
-    $abstract = $this->randomString();
+    $abstract = $this->randomMachineName();
 
     $publisher = $this->randomMachineName();
 
