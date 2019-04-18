@@ -108,6 +108,25 @@ class AppearanceSettingsBuilderTest extends TestBase {
   }
 
   /**
+   * @covers ::themeIsDefault
+   */
+  public function testThemeIsDefault(): void {
+    /** @var \Drupal\Core\Extension\Extension[] $installed_themes */
+    $installed_themes = $this->themeHandler->listInfo();
+    /** @var \Drupal\Core\Config\Config $theme_config_mut */
+    $theme_config_mut = $this->configFactory->getEditable('system.theme');
+
+    // When flavor is set as default.
+    $theme_config_mut->set('default', 'adams')->save();
+    $this->assertTrue($this->appearanceSettingsBuilder->themeIsDefault($installed_themes['hwpi_college']));
+
+    // When theme is set as default.
+    $theme_config_mut->set('default', 'vibrant')->save();
+    $this->assertTrue($this->appearanceSettingsBuilder->themeIsDefault($installed_themes['vibrant']));
+    $this->assertFalse($this->appearanceSettingsBuilder->themeIsDefault($installed_themes['hwpi_college']));
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function tearDown() {
