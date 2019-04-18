@@ -9,7 +9,7 @@
         rss.select();
         document.execCommand("copy");
         document.body.removeChild(rss);
-        $(this).html('Feed URL copied to clipboard');
+        $(this).html(Drupal.t('Feed URL copied to clipboard'));
       });
     }
   }
