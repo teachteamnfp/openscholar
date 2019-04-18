@@ -78,8 +78,12 @@ class FlavorForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state): array {
     $options = [
-      '_none' => $this->t('Without Flavor'),
+      $this->theme->getName() => $this->t('Without Flavor'),
     ];
+    /** @var \Drupal\Core\Config\ImmutableConfig $theme_settings */
+    $theme_settings = $this->configFactory->get('system.theme');
+    /** @var string $default_theme */
+    $default_theme = $theme_settings->get('default');
 
     /** @var \Drupal\Core\Extension\Extension $flavor */
     foreach ($this->flavors->values() as $flavor) {
@@ -90,6 +94,7 @@ class FlavorForm extends FormBase {
       '#type' => 'select',
       '#title' => $this->t('Flavors'),
       '#options' => $options,
+      '#default_value' => isset($options[$default_theme]) ? $default_theme : NULL,
       '#ajax' => [
         'callback' => '::flavorChangeHandler',
       ],
@@ -130,7 +135,7 @@ class FlavorForm extends FormBase {
     /** @var string $selection */
     $selection = $form_state->getValue("options_{$this->theme->getName()}");
 
-    if ($selection !== '_none') {
+    if ($selection !== $this->theme->getName()) {
       /** @var \Drupal\Core\Extension\Extension $flavor */
       $flavor = $this->flavors->get($selection);
       /** @var array $info */
