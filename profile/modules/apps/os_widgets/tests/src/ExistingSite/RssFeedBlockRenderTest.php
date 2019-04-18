@@ -2,6 +2,8 @@
 
 namespace Drupal\Tests\os_widgets\ExistingSite;
 
+use Drupal\views\Views;
+
 /**
  * Class RssFeedBlockRenderTest.
  *
@@ -77,6 +79,34 @@ class RssFeedBlockRenderTest extends OsWidgetsExistingSiteTestBase {
     $this->assertSame('Link', $field_allowed_values['link']);
     $this->assertArrayHasKey('all_publications', $field_allowed_values);
     $this->assertSame('Publications', $field_allowed_values['all_publications']->__tostring());
+  }
+
+  /**
+   * Testing os_feeds view to merge publications on proper argument.
+   */
+  public function testMergingViewsWithPublications() {
+    $news1 = $this->createNode([
+      'type' => 'news',
+      'created' => 1555593820,
+    ]);
+    $this->createReference([
+      'title' => 'Reference1',
+      'created' => 1555593821,
+    ]);
+    $this->createReference([
+      'title' => 'Reference2',
+      'created' => 1555593822,
+    ]);
+    $view = Views::getView('os_feeds');
+    $view->setArguments(['news+all_publications']);
+    $view->setDisplay('feed_1');
+    $view->preExecute();
+    $view->execute();
+    $output = $view->preview();
+    $this->assertCount(3, $output['#rows']);
+    $this->assertEquals('Reference2', $output['#rows'][0]['#row']->title->__toString());
+    $this->assertEquals('Reference1', $output['#rows'][1]['#row']->title->__toString());
+    $this->assertEquals($news1->getTitle(), $output['#rows'][2]['#row']->title);
   }
 
 }

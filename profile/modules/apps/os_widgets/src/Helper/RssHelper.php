@@ -136,6 +136,9 @@ class RssHelper implements RssHelperInterface {
    *   Key and read item.
    */
   protected function readItem(array &$array): array {
+    if (empty($array)) {
+      return [NULL, NULL];
+    }
     $key = key($array);
     $item = $array[$key];
     unset($array[$key]);
