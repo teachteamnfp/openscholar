@@ -5,12 +5,12 @@ namespace Drupal\Tests\cp_taxonomy\ExistingSite;
 use Drupal\group\Entity\GroupInterface;
 use Drupal\node\NodeInterface;
 use Drupal\taxonomy\Entity\Vocabulary;
-use weitzman\DrupalTestTraits\ExistingSiteBase;
+use Drupal\Tests\vsite\ExistingSite\VsiteExistingSiteTestBase;
 
 /**
  * TestBase for cp_taxonomy tests.
  */
-abstract class TestBase extends ExistingSiteBase {
+abstract class TestBase extends VsiteExistingSiteTestBase {
 
   /**
    * The entity type manager service.
@@ -49,32 +49,6 @@ abstract class TestBase extends ExistingSiteBase {
     $this->vsiteContextManager = $this->container->get('vsite.context_manager');
     $this->configFactory = $this->container->get('config.factory');
     $this->taxonomyHelper = $this->container->get('cp_taxonomy.helper');
-  }
-
-  /**
-   * Creates a group.
-   *
-   * @param array $values
-   *   (optional) The values used to create the entity.
-   *
-   * @return \Drupal\group\Entity\GroupInterface
-   *   The created group entity.
-   *
-   * @throws \Drupal\Core\Entity\EntityStorageException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   */
-  protected function createGroup(array $values = []): GroupInterface {
-    $group = $this->entityTypeManager->getStorage('group')->create($values + [
-      'type' => 'personal',
-      'label' => $this->randomMachineName(),
-    ]);
-    $group->enforceIsNew();
-    $group->save();
-
-    $this->markEntityForCleanup($group);
-
-    return $group;
   }
 
   /**
