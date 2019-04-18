@@ -12,6 +12,13 @@ namespace Drupal\Tests\cp_appearance\ExistingSite;
 class AppearanceSettingsBuilderTest extends TestBase {
 
   /**
+   * Theme handler.
+   *
+   * @var \Drupal\Core\Extension\ThemeHandlerInterface
+   */
+  protected $themeHandler;
+
+  /**
    * Default theme.
    *
    * @var string
@@ -26,6 +33,7 @@ class AppearanceSettingsBuilderTest extends TestBase {
     /** @var \Drupal\Core\Config\ImmutableConfig $theme_config */
     $theme_config = $this->configFactory->get('system.theme');
     $this->defaultTheme = $theme_config->get('default');
+    $this->themeHandler = $this->container->get('theme_handler');
   }
 
   /**
@@ -71,7 +79,7 @@ class AppearanceSettingsBuilderTest extends TestBase {
     // Test operations.
     $inactive_theme = $themes['hwpi_college'];
 
-    $this->assertCount(1, $inactive_theme->operations);
+    $this->assertCount(2, $inactive_theme->operations);
     $operations = $inactive_theme->operations[0];
     $this->assertTrue(isset($operations['title']));
     $this->assertTrue(isset($operations['url']));
