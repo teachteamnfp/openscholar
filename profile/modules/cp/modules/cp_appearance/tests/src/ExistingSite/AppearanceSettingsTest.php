@@ -31,7 +31,6 @@ class AppearanceSettingsTest extends TestBase {
     $this->group->addMember($this->admin);
 
     $this->drupalLogin($this->admin);
-    $this->vsiteContextManager->activateVsite($this->group);
   }
 
   /**
@@ -52,8 +51,8 @@ class AppearanceSettingsTest extends TestBase {
     $this->getCurrentPage()->selectFieldOption('theme', 'hwpi_lamont');
     $this->getCurrentPage()->pressButton('Save Theme');
 
-    $theme_setting = $this->configFactory->get('system.theme');
-    $this->assertEquals('hwpi_lamont', $theme_setting->get('default'));
+    $this->visit('/cp-appearance');
+    $this->assertSession()->responseContains('/profiles/contrib/openscholar/themes/hwpi_lamont/css/style.css');
   }
 
   /**
