@@ -1,3 +1,5 @@
+@import '../../os_base/scss/base/breakpoints';
+
 //colors
 $color_scarpa_flow_approx: #545a5d;
 $color_cape_cod_approx: #3f3f3f;
@@ -19,6 +21,7 @@ $color_mountain_mist_approx: #909496;
 $color_oslo_gray_approx: #818e94;
 $color_mercury_approx: #e1e4e5;
 $color_abbey_approx: #4d575a;
+$color-gray: #444;
 
 //fonts
 $font_0: Open Sans;
@@ -72,48 +75,76 @@ body {
 .navbar-collapse {
   background: url(../images/menu2Back.png) 0 0 repeat $color_celeste_approx;
   border-bottom: 1px solid $color_celeste_approx;
-  ul.nav {
-    a {
-      color: $color_nevada_approx;
-      &.is-active, &.is-active:hover {
-        background: $color_ironside_gray_approx;
+  @media #{$mobile} {
+    padding: 0 !important;
+    background: #fff;
+  }
+  /***** navbar nav *****/
+  .navbar-nav {
+    > li {
+      @media #{$mobile} {
+        border-bottom: 1px solid $color-gray;
+        border-top: 0 none;
       }
-      &:hover {
-        background: $color_ironside_gray_approx;
+      > a {
+        color: $color_nevada_approx;
+        @media #{$mobile} {
+        }
+        &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
+          background: $color_ironside_gray_approx;
+        }
+      }
+      &.open, &.active {
+        > a, > a:hover, > a:active, > a:focus {
+          background: $color_ironside_gray_approx;
+          margin: 0 !important;
+        }
       }
     }
-    .dropdown {
-      padding-right: 0;
-      ul {
-        border: 1px solid $color_pink_swan_approx;
-        border-top: 0;
-        li a {
-          text-transform: none;
-          color: $white;
-          &.is-active {
-            text-transform: none;
-            box-shadow: none;
+  }
+  /**** dropdown menu ****/
+  .dropdown-menu {
+    background: $color_ironside_gray_approx;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border: 1px solid $color_pink_swan_approx;
+    border-top: 0;
+    @media #{$mobile} {
+      background: none;
+      border: 0 none;
+    }
+    > li {
+      > a {
+        text-transform: none;
+        color: $white;
+        background: none;
+        @media #{$mobile} {
+          font-size: 19px;
+          padding-left: 20px;
+          color: $color_nevada_approx;
+        }
+        &:hover, &:active {
+          background: $color_boulder_80_approx !important;
+          color: $color_chamois_approx !important;
+          box-shadow: none;
+        }
+      }
+      &.active {
+        a {
+          background: none;
+          @media #{$mobile} {
           }
           &:hover {
-            background: $color_boulder_80_approx;
+            background: $color_boulder_80_approx !important;
             color: $color_chamois_approx;
             box-shadow: none;
+            @media #{$mobile} {
+            }
           }
         }
       }
-      a.is-active {
-        background: $color_ironside_gray_approx;
-      }
-      &.open>a {
-        background: $color_ironside_gray_approx;
-      }
-    }
-    ul {
-      background: $color_ironside_gray_approx;
-      border-top-left-radius: 0;
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
-      border-bottom-left-radius: 0;
     }
   }
 }

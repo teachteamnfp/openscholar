@@ -1,0 +1,22 @@
+uuid: c7815f11-3d80-4bf8-a482-613c56705dc9
+langcode: en
+status: true
+dependencies:
+  theme:
+    - golden_accents
+_core:
+  default_config_hash: X9I1OB0W3WlWtrK-CNcg6hNWwa8wficanpH8pYnDZDE
+id: golden_accents_local_tasks
+theme: golden_accents
+region: content
+weight: -6
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: Tabs
+  provider: core
+  label_display: '0'
+  primary: true
+  secondary: true
+visibility: {  }

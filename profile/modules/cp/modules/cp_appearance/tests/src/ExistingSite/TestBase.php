@@ -32,11 +32,11 @@ abstract class TestBase extends ExistingSiteBase {
   protected $configFactory;
 
   /**
-   * Theme appearance helper service.
+   * Appearance settings builder service.
    *
-   * @var \Drupal\cp_appearance\AppearanceHelperInterface
+   * @var \Drupal\cp_appearance\AppearanceSettingsBuilderInterface
    */
-  protected $appearanceHelper;
+  protected $appearanceSettingsBuilder;
 
   /**
    * Default theme.
@@ -46,17 +46,35 @@ abstract class TestBase extends ExistingSiteBase {
   protected $defaultTheme;
 
   /**
+   * Administrator.
+   *
+   * @var \Drupal\user\UserInterface
+   */
+  protected $admin;
+
+  /**
+   * Theme handler.
+   *
+   * @var \Drupal\Core\Extension\ThemeHandlerInterface
+   */
+  protected $themeHandler;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
     parent::setUp();
+
+    $this->admin = $this->createUser([], NULL, TRUE);
+
     $this->entityTypeManager = $this->container->get('entity_type.manager');
     $this->vsiteContextManager = $this->container->get('vsite.context_manager');
     $this->configFactory = $this->container->get('config.factory');
-    $this->appearanceHelper = $this->container->get('cp_appearance.appearance_helper');
+    $this->appearanceSettingsBuilder = $this->container->get('cp_appearance.appearance_settings_builder');
     /** @var \Drupal\Core\Config\ImmutableConfig $theme_config */
     $theme_config = $this->configFactory->get('system.theme');
     $this->defaultTheme = $theme_config->get('default');
+    $this->themeHandler = $this->container->get('theme_handler');
   }
 
   /**

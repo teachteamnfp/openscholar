@@ -11,13 +11,6 @@ namespace Drupal\Tests\cp_appearance\ExistingSite;
 class AppearanceSettingsTest extends TestBase {
 
   /**
-   * Administrator.
-   *
-   * @var \Drupal\user\UserInterface
-   */
-  protected $admin;
-
-  /**
    * Test group.
    *
    * @var \Drupal\group\Entity\GroupInterface
@@ -30,7 +23,6 @@ class AppearanceSettingsTest extends TestBase {
   public function setUp() {
     parent::setUp();
 
-    $this->admin = $this->createUser([], NULL, TRUE);
     $this->group = $this->createGroup([
       'path' => [
         'alias' => '/cp-appearance',

@@ -1,0 +1,22 @@
+uuid: b46e6ca3-d487-4cf7-b19a-3e4e645f4532
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - golden_accents
+_core:
+  default_config_hash: jQQUUWN2Uxr5qZtc9zcJKBCxpKY8orN1u2HPqYYRQDI
+id: golden_accents_powered
+theme: golden_accents
+region: footer
+weight: -6
+provider: null
+plugin: system_powered_by_block
+settings:
+  id: system_powered_by_block
+  label: 'Powered by Drupal'
+  provider: system
+  label_display: '0'
+visibility: {  }

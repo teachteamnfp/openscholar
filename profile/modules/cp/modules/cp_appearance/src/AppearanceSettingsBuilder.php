@@ -5,13 +5,16 @@ namespace Drupal\cp_appearance;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Extension\Extension;
 use Drupal\Core\Extension\ThemeHandlerInterface;
+use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
+use Drupal\cp_appearance\Form\FlavorForm;
+use Ds\Map;
 
 /**
- * Helper methods for theme appearance settings.
+ * Helper methods for appearance settings.
  */
-final class AppearanceHelper implements AppearanceHelperInterface {
+final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterface {
 
   use StringTranslationTrait;
 
@@ -37,25 +40,54 @@ final class AppearanceHelper implements AppearanceHelperInterface {
   protected $themeConfig;
 
   /**
-   * AppearanceHelper constructor.
+   * Form builder.
+   *
+   * @var \Drupal\Core\Form\FormBuilderInterface
+   */
+  protected $formBuilder;
+
+  /**
+   * List of currently installed themes.
+   *
+   * @var \Drupal\Core\Extension\Extension[]
+   */
+  protected $installedThemes;
+
+  /**
+   * Theme selector builder service.
+   *
+   * @var \Drupal\cp_appearance\ThemeSelectorBuilderInterface
+   */
+  protected $themeSelectorBuilder;
+
+  /**
+   * AppearanceBuilder constructor.
    *
    * @param \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler
    *   Theme handler.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   Config factory.
+   * @param \Drupal\Core\Form\FormBuilderInterface $form_builder
+   *   Form builder.
+   * @param \Drupal\cp_appearance\ThemeSelectorBuilderInterface $theme_selector_builder
+   *   Theme selector builder service.
    */
-  public function __construct(ThemeHandlerInterface $theme_handler, ConfigFactoryInterface $config_factory) {
+  public function __construct(ThemeHandlerInterface $theme_handler, ConfigFactoryInterface $config_factory, FormBuilderInterface $form_builder, ThemeSelectorBuilderInterface $theme_selector_builder) {
     $this->themeHandler = $theme_handler;
     $this->configFactory = $config_factory;
+    $this->formBuilder = $form_builder;
+    $this->themeSelectorBuilder = $theme_selector_builder;
     $this->themeConfig = $this->configFactory->get('system.theme');
+    $this->installedThemes = $this->themeHandler->listInfo();
   }
 
   /**
    * {@inheritdoc}
    */
   public function getThemes(): array {
-    /** @var \Drupal\Core\Extension\Extension[] $themes */
-    $themes = $this->themeHandler->listInfo();
+    // We do not want to make any unwanted changes to installedThemes by
+    // mistake.
+    $themes = $this->installedThemes;
 
     uasort($themes, 'system_sort_modules_by_info_name');
 
@@ -72,6 +104,7 @@ final class AppearanceHelper implements AppearanceHelperInterface {
       $theme->is_admin = FALSE;
       $theme->screenshot = $this->addScreenshotInfo($theme, $themes);
       $theme->operations = $this->addOperations($theme);
+      $theme->more_operations = $this->addMoreOperations($theme);
       $theme->notes = $this->addNotes($theme);
     }
 
@@ -157,6 +190,35 @@ final class AppearanceHelper implements AppearanceHelperInterface {
     }
 
     return $notes;
+  }
+
+  /**
+   * Adds more allowed operations to a theme.
+   *
+   * These are the operations which cannot be rendered as links.
+   *
+   * @param \Drupal\Core\Extension\Extension $theme
+   *   The theme.
+   *
+   * @return array
+   *   Renderable form structure.
+   *
+   * @see \template_preprocess_cp_appearance_themes_page
+   */
+  protected function addMoreOperations(Extension $theme): array {
+    $operations = [];
+
+    if (\property_exists($theme, 'sub_themes')) {
+      // Create a key-extension_info mapping.
+      $sub_themes = new Map();
+      foreach ($theme->sub_themes as $key => $name) {
+        $sub_themes->put($key, $this->installedThemes[$key]);
+      }
+
+      $operations[] = $this->formBuilder->getForm(new FlavorForm($theme, $sub_themes, $this->themeSelectorBuilder));
+    }
+
+    return $operations;
   }
 
 }

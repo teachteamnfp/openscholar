@@ -3,13 +3,13 @@
 namespace Drupal\Tests\cp_appearance\ExistingSite;
 
 /**
- * AppearanceHelper service test.
+ * AppearanceSettingsBuilder service test.
  *
  * @group kernel
- * @group other
- * @coversDefaultClass \Drupal\cp_appearance\AppearanceHelper
+ * @group cp-appearance
+ * @coversDefaultClass \Drupal\cp_appearance\AppearanceSettingsBuilder
  */
-class AppearanceHelperTest extends TestBase {
+class AppearanceSettingsBuilderTest extends TestBase {
 
   /**
    * Theme handler.
@@ -19,10 +19,20 @@ class AppearanceHelperTest extends TestBase {
   protected $themeHandler;
 
   /**
+   * Default theme.
+   *
+   * @var string
+   */
+  protected $defaultTheme;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
     parent::setUp();
+    /** @var \Drupal\Core\Config\ImmutableConfig $theme_config */
+    $theme_config = $this->configFactory->get('system.theme');
+    $this->defaultTheme = $theme_config->get('default');
     $this->themeHandler = $this->container->get('theme_handler');
   }
 
@@ -30,6 +40,7 @@ class AppearanceHelperTest extends TestBase {
    * @covers ::getThemes
    * @covers ::addScreenshotInfo
    * @covers ::addOperations
+   * @covers ::addMoreOperations
    * @covers ::addNotes
    */
   public function test(): void {
@@ -38,7 +49,7 @@ class AppearanceHelperTest extends TestBase {
     $theme_config_mut->set('default', 'hwpi_classic')->save();
 
     /** @var \Drupal\Core\Extension\Extension[] $themes */
-    $themes = $this->appearanceHelper->getThemes();
+    $themes = $this->appearanceSettingsBuilder->getThemes();
 
     $this->assertFalse(isset($themes['stark']));
     $this->assertFalse(isset($themes['seven']));
@@ -76,12 +87,42 @@ class AppearanceHelperTest extends TestBase {
 
     $this->assertCount(0, $active_theme->operations);
 
+    // Test more operations.
+    $theme = $themes['vibrant'];
+    $this->assertGreaterThan(0, \count($theme->more_operations));
+    $more_operations = $theme->more_operations[0];
+    $this->assertEquals($more_operations['#type'], 'form');
+
     // Test notes.
     $this->assertCount(0, $inactive_theme->notes);
 
     $this->assertCount(1, $active_theme->notes);
     $notes = $active_theme->notes[0];
     $this->assertEquals('current theme', $notes);
+  }
+
+  /**
+   * Flavors should not appear in the list.
+   */
+  public function testNoFlavors(): void {
+    /** @var \Drupal\Core\Extension\Extension[] $themes */
+    $themes = $this->appearanceSettingsBuilder->getThemes();
+    /** @var array $sub_themes */
+    $sub_themes = $themes['vibrant']->sub_themes;
+
+    foreach ($sub_themes as $key => $value) {
+      $this->assertFalse(isset($themes[$key]));
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function tearDown() {
+    parent::tearDown();
+    /** @var \Drupal\Core\Config\Config $theme_config_mut */
+    $theme_config_mut = $this->configFactory->getEditable('system.theme');
+    $theme_config_mut->set('default', $this->defaultTheme)->save();
   }
 
 }
