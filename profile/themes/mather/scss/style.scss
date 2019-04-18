@@ -1,3 +1,4 @@
+@import '../../os_base/scss/base/breakpoints';
 //colors
 $black: #000;
 $color_mine_shaft_approx: #333;
@@ -6,6 +7,7 @@ $color_alto_approx: #ddd;
 $color_bianca_approx: #fbfbf1;
 $color_gallery_approx: #eee;
 $color_mountain_mist_approx: #999;
+$color-gray: #222;
 
 //fonts
 $font_0: Cardo;
@@ -98,38 +100,75 @@ footer {
   border-top: 3px solid $color_mine_shaft_approx;
   background: $white;
   border-bottom: 1px solid $color_alto_approx;
-  ul.nav {
-    ul {
-      background-color: $color_mine_shaft_approx;
+  @media #{$mobile} {
+    padding: 0 !important;
+  }
+  /***** navbar nav *****/
+  .navbar-nav {
+    @media #{$mobile} {
+      background: #f3f3f1;
     }
-    a {
-      font-size: 1.1em;
-      color: $color_mine_shaft_approx;
-      font-family: 'Montserrat',sans-serif;
-      &.is-active {
-        background-color: $color_mine_shaft_approx;
+    > li {
+      @media #{$mobile} {
+        border-bottom: 1px solid $white;
+        border-top: 0 none;
       }
-      &:hover {
-        background-color: $color_mine_shaft_approx;
-      }
-    }
-    .dropdown {
-      a {
-        &:hover {
+      > a {
+        font-size: 1.1em;
+        color: $color_mine_shaft_approx;
+        font-family: 'Montserrat',sans-serif;
+        text-transform: uppercase;
+        @media #{$mobile} {
+        }
+        &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
           background-color: $color_mine_shaft_approx;
         }
-        &.is-active {
-          background-color: $color_mine_shaft_approx;
-        }
       }
-      &.open>a {
-        background-color: $color_mine_shaft_approx;
+      &.open, &.active {
+        > a, > a:hover, > a:active, > a:focus {
+          background-color: $color_mine_shaft_approx;
+          @media #{$mobile} {
+            margin-top: 0px !important;
+          }
+        }
+
       }
     }
-    a {
-      &.is-active, &.is-active:hover{
-          background-color: $color_mine_shaft_approx;
+  }
+  /**** dropdown menu ****/
+  .dropdown-menu {
+    background-color: $color_mine_shaft_approx;
+    @media #{$mobile} {
+      background: none;
+    }
+    > li {
+      > a {
+        background: none;
+        @media #{$mobile} {
+          font-size: 20px;
+          padding-left: 20px;
+          color: $color-gray;
+          text-transform: uppercase;
         }
+        &:hover, &:active {
+          background: none;
+          @media #{$mobile} {
+            color: $color-gray;
+          }
+        }
+      }
+      &.active {
+        a {
+          @media #{$mobile} {
+            color: $color-gray;
+          }
+          &:hover {
+            @media #{$mobile} {
+              color: $color-gray;
+            }
+          }
+        }
+      }
     }
   }
 }
