@@ -1,11 +1,11 @@
-uuid: 988721ef-1213-4109-a0fc-ba17bc682908
+uuid: 3721c733-55dc-461b-bb1c-2c2aba75e112
 langcode: en
 status: true
 dependencies:
   theme:
     - vibrant
 _core:
-  default_config_hash: 7rR9chwXvdM2H8OYMAYx9Zj3GGlPMrZp_M3ZA4thYTk
+  default_config_hash: WmwX6Gfyyi27k6DqCyUPzh3cpoIQkIVDYQ1cmxhrYbU
 id: vibrant_page_title
 theme: vibrant
 region: content
