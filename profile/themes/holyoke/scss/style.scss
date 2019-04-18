@@ -1,3 +1,4 @@
+@import '../../os_base/scss/base/breakpoints';
 //colors
 $color_spicy_mustard_approx: #755a0f;
 $color_corn_harvest_approx: #947215;
@@ -61,32 +62,67 @@ footer {
 .navbar-collapse {
   background-color: $color_goldenrod_approx;
   border-bottom: 3px solid $color_pizza_approx;
-  .navbar-nav>li {
-    >a {
-      font-family: $font_0, $font_1;
-      &.is-active, &.is-active:hover {
-        background: $color_pizza_approx;
-        color: $white;
+  @media #{$mobile} {
+    padding: 0 !important;
+  }
+  /***** navbar nav *****/
+  .navbar-nav {
+    > li {
+      @media #{$mobile} {
+        border-bottom: 1px solid $white;
+        border-top: 0 none;
+      }
+      > a {
+        font-family: $font_0, $font_1;
+        color: $color_spicy_mustard_approx;
+        @media #{$mobile} {
+        }
+        &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
+          background: $color_pizza_approx;
+          color: $white;
+        }
+      }
+      &.open, &.active {
+        > a, > a:hover, > a:active, > a:focus {
+          background: $color_pizza_approx;
+        }
+
       }
     }
-    a {
-      color: $color_spicy_mustard_approx;
-      &:active {
-        background: $color_pizza_approx;
-      }
-      &:hover {
-        background: $color_pizza_approx;
-        color: $white;
-      }
+  }
+  /**** dropdown menu ****/
+  .dropdown-menu {
+    background: $color_pizza_approx;
+    @media #{$mobile} {
+      background: none;
     }
-    ul {
-      background: $color_pizza_approx;
-      a {
-        color: $white;
+    > li {
+      > a {
+        font-family: $font_0, $font_1;
+        background: none;
+        @media #{$mobile} {
+        }
+        &:hover, &:active {
+          background: none;
+          @media #{$mobile} {
+            color: $white;
+          }
+        }
       }
-    }
-    &.open a:hover {
-      background: $color_pizza_approx;
+      &.active {
+        a {
+          background: none;
+          @media #{$mobile} {
+            color: $white;
+          }
+          &:hover {
+            background: none;
+            @media #{$mobile} {
+              color: $white;
+            }
+          }
+        }
+      }
     }
   }
 }
