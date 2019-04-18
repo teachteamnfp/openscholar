@@ -1,13 +1,24 @@
 @import url(https://fonts.googleapis.com/css?family=Montserrat);
 
-body{
-  font-family: 'Montserrat', sans-serif;
+body,
+.fc-header-toolbar h2,
+.fc-header-toolbar button {
+  font-family: 'Montserrat', sans-serif !important;
 }
+
 html,
 body {
   color: $color-gray;
 }
+
 /* Elements */
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   font-weight: normal;
+}
+
+.fc-header-toolbar h2 {
+  padding-bottom: 0;
+  font-family: 'Montserrat', sans-serif !important;
 }

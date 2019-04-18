@@ -1,0 +1,156 @@
+@import '../../os_base/scss/base/breakpoints';
+//colors
+$white: #fff;
+$color_woodsmoke_approx: #111111;
+$color_masala_approx: #3d3d3d;
+$color_tundora_approx: #444;
+$color_mine_shaft_approx: #333333;
+$color_st_tropaz_approx: #215990;
+
+//fonts
+$font_0: Open Sans;
+$font_1: Helvetica;
+$font_2: sans-serif;
+
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+body {
+  font-family: $font_0, $font_1, $font_2;
+}
+.header-container {
+  background: $white;
+  ul.nav li a {
+    color: $color_st_tropaz_approx;
+  }
+}
+#boxes-box-site_info {
+  color: $color_woodsmoke_approx;
+  a {
+    color: $color_woodsmoke_approx;
+  }
+}
+.search-block-form {
+  label {
+    color: $color_masala_approx;
+  }
+  .form-submit {
+    background: $color_tundora_approx;
+    border-color: $color_tundora_approx;
+  }
+}
+.page-header {
+  font-family: $font_0, $font_1, $font_2;
+}
+.node--title {
+  font-family: $font_0, $font_1, $font_2;
+}
+.path-search {
+  .title a {
+    font-family: $font_0, $font_1, $font_2;
+  }
+  .content-inner p {
+    font-family: $font_0, $font_1, $font_2;
+  }
+}
+.more-link {
+  font-family: $font_0, $font_1, $font_2;
+}
+.navbar-collapse {
+  background: $white;
+  @media #{$mobile} {
+    padding: 0 !important;
+  }
+  /***** navbar nav *****/
+  .navbar-nav {
+    > li {
+      @media #{$mobile} {
+        border-bottom: 1px solid #f4f4f4;
+        border-top: 0 none;
+      }
+      > a {
+        color: $color_woodsmoke_approx;
+        @media #{$mobile} {
+
+        }
+        &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
+          background-color: $color_woodsmoke_approx;
+        }
+      }
+      &.open, &.active {
+        > a, > a:hover, > a:active, > a:focus {
+          background-color: $color_woodsmoke_approx;
+        }
+
+      }
+    }
+  }
+  /**** dropdown menu ****/
+  .dropdown-menu {
+    background: $color_woodsmoke_approx;
+    @media #{$mobile} {
+      background: none;
+    }
+    > li {
+      > a {
+        color: $white;
+        background: none;
+        @media #{$mobile} {
+          font-size: 19px;
+          padding-left: 20px;
+          color: $color_woodsmoke_approx;
+        }
+        &:hover, &:active {
+          background: none !important;
+          @media #{$mobile} {
+            color: $color_woodsmoke_approx;
+          }
+        }
+      }
+      &.active {
+        a {
+          background: none;
+          @media #{$mobile} {
+            color: $color_woodsmoke_approx;
+          }
+          &:hover {
+            @media #{$mobile} {
+              color: $color_woodsmoke_approx;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+.cke_editable * {
+  font-family: $font_0, $font_1, $font_2;
+}
+.path-node-type-person .content-inner h2.block-title {
+  padding: 7px 10px;
+}
+aside .block h2.block-title {
+  padding: 7px 10px;
+}
+h2.block-title {
+  color: $color_mine_shaft_approx;
+  font-size: 16px;
+  margin-bottom: 10px;
+  text-transform: none;
+}
+.content-inner .block.block-boxes-os_boxes_manual_list .links.inline a {
+  font-family: $font_0, $font_1, $font_2;
+}
+.not-front .content-inner p {
+  font-family: $font_0, $font_1, $font_2;
+}
+.links a {
+  font-family: $font_0, $font_1, $font_2;
+}
+footer ul.nav li a {
+  font-family: $font_0, $font_1, $font_2;
+}
+.boxes-box-content h2 {
+  font-family: $font_0, $font_1, $font_2;
+}
+.view-os-events .views-field-colorbox {
+  font-family: $font_0, $font_1, $font_2;
+}

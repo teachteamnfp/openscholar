@@ -1,0 +1,467 @@
+@import '../../os_base/scss/base/breakpoints';
+//colors
+$color_st_tropaz_approx: #215990;
+$color_squirrel_approx: #8c8179;
+$white: #fff;
+$color_tundora_approx: #444;
+$color_mexican_red_approx: #a51c30;
+$color_chicago_approx: #5a5a5a;
+$color_merlot_approx: #86111e;
+$color_goldenrod_approx: #ffdb6d;
+$black: #000;
+$color_steel_blue_approx: #4e84c4;
+$color_celeste_approx: #ccc;
+$color_alto_approx: #ddd;
+$color-light-gray: #f4f4f4;
+
+//fonts
+$font_0: Open Sans;
+$font_1: sans-serif;
+$font_2: Open Sans Condensed;
+$font_3: sans-serif;
+$font_4: Oswald;
+
+//@extend-elements
+%extend_1 {
+  background-color: $color_squirrel_approx;
+  color: $white;
+  padding: .5em 1em;
+  margin-bottom: 15px;
+  font-size: .9em;
+}
+%extend_2 {
+  background: $color_steel_blue_approx;
+  color: $white;
+  height: 60px;
+}
+
+body {
+  overflow-x: initial;
+  font-family: $font_0, $font_1;
+}
+.dialog-off-canvas-main-canvas {
+  background: $color_tundora_approx;
+}
+.node--title {
+  font-family: $font_0, $font_1;
+}
+.path-search {
+  .title a {
+    font-family: $font_0, $font_1;
+  }
+  .content-inner p {
+    font-family: $font_0, $font_1;
+  }
+}
+.content-inner {
+  h2 {
+    font-family: $font_0, $font_1;
+    &.block-title {
+      font-family: $font_2, $font_3;
+      @extend %extend_1;
+    }
+  }
+  h3 {
+    font-family: $font_0, $font_1;
+  }
+  h4 {
+    font-family: $font_0, $font_1;
+  }
+  .block-inner {
+    padding-top: 0;
+  }
+  .block.block-boxes-os_boxes_manual_list .links.inline a {
+    font-family: $font_0, $font_1;
+  }
+}
+.full-calendar-view .fc-header-toolbar h2,
+.mini-calendar .fc-center h2 {
+  font-family: $font_0, $font_1 !important;
+}
+.more-link {
+  font-family: $font_0, $font_1;
+}
+.not-front {
+  .content-inner {
+    p {
+      font-family: $font_0, $font_1;
+    }
+    h2.block-title {
+      background-color: $white;
+      color: $color_squirrel_approx;
+      padding: 0;
+      font-size: 1.2em;
+    }
+  }
+  .region-content-first .block {
+    border-top: none;
+  }
+  .region-content-second .block {
+    border-top: none;
+  }
+}
+footer {
+  background-color: $black;
+  .at-panel {
+    background: $black;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    color: $white;
+  }
+  a {
+    color: $white;
+  }
+  .footer-login {
+    text-shadow: none;
+    color: $color_alto_approx;
+    &:after {
+      background-image: none;
+    }
+  }
+  ul.nav li a {
+    font-family: $font_0, $font_1;
+  }
+}
+.navbar-collapse {
+  background: $color_tundora_approx;
+  border-bottom: 8px solid $color_squirrel_approx;
+  @media #{$mobile} {
+    padding: 0 !important;
+    border: 0 none;
+  }
+  /***** navbar nav *****/
+  .navbar-nav {
+    background: $color_chicago_approx;
+    @media #{$mobile} {
+      background: $color_merlot_approx;
+    }
+    > li {
+      @media #{$mobile} {
+        border-bottom: 1px solid $color-light-gray;
+        border-top: 0 none;
+      }
+      > a {
+        font-size: 16px;
+        text-transform: uppercase;
+        font-family: $font_0, $font_1;
+        @media #{$mobile} {
+          color: $white;
+        }
+        &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
+          background-color: $color_mexican_red_approx;
+        }
+      }
+      &.open, &.active {
+        > a, > a:hover, > a:active, > a:focus {
+          background-color: $color_mexican_red_approx;
+        }
+
+      }
+    }
+  }
+  /**** dropdown menu ****/
+  .dropdown-menu {
+    background-color: $color_mexican_red_approx;
+    @media #{$mobile} {
+      background: none;
+    }
+    > li {
+      > a {
+        background: none;
+        color: $white;
+        @media #{$mobile} {
+          font-size: 19px;
+          padding-left: 20px;
+        }
+        &:hover, &:active {
+          background: none;
+          @media #{$mobile} {
+            color: $white;
+          }
+        }
+      }
+      &.active {
+        a {
+          color: $white;
+          @media #{$mobile} {
+            color: $white;
+          }
+          &:hover {
+            @media #{$mobile} {
+              color: $white;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+.page-header {
+  font-family: $font_0, $font_1;
+}
+.ui-tabs {
+  font-family: $font_0, $font_1;
+  ul.ui-tabs-nav {
+    border-left: 1px solid $color_celeste_approx;
+    border-right: 1px solid $color_celeste_approx;
+    border-top: 1px solid $color_celeste_approx;
+    li.ui-tabs-active a {
+      background: $color_mexican_red_approx;
+      border: none;
+      border-bottom-width: 0;
+      color: $white;
+    }
+  }
+  .ui-tabs-nav li a {
+    text-transform: none;
+    font-weight: normal;
+  }
+}
+.breadcrumb {
+  font-family: $font_2, $font_3;
+  font-size: .95em;
+  text-transform: none;
+  a {
+    font-family: $font_2, $font_3;
+    font-size: .95em;
+    text-transform: none;
+  }
+}
+a {
+  color: $color_st_tropaz_approx;
+  &:visited {
+    color: $color_st_tropaz_approx;
+  }
+  &.rslides_nav {
+    background-color: $color_mexican_red_approx;
+  }
+}
+.header-container {
+  color: $white;
+  background: $color_tundora_approx;
+  ul.nav li a {
+    color: $white;
+    text-transform: uppercase;
+  }
+}
+.section-nav {
+  ul {
+    &.nav li a {
+      color: $white;
+    }
+    &.menu li {
+      background-color: $color_mexican_red_approx;
+      color: $color_goldenrod_approx;
+      a {
+        border-bottom: 1px solid $color_mexican_red_approx;
+      }
+    }
+  }
+  .leaf {
+    &.menu-depth-3>a {
+      background-color: $color_mexican_red_approx;
+    }
+    &.menu-depth-4>a {
+      background-color: $color_mexican_red_approx;
+    }
+    &.menu-depth-5>a {
+      background-color: $color_mexican_red_approx;
+    }
+    &.menu-depth-6>a {
+      background-color: $color_mexican_red_approx;
+    }
+  }
+  a[class="active-trail active active"] {
+    background-color: $color_mexican_red_approx;
+    color: $color_goldenrod_approx;
+  }
+  .menu-depth-1 {
+    >a {
+      background-color: $color_merlot_approx;
+      color: $color_goldenrod_approx;
+      &:hover {
+        background-color: $color_merlot_approx;
+        color: $color_goldenrod_approx;
+      }
+    }
+    > a[class="active-trail active active"] {
+      background-color: $color_merlot_approx;
+      color: $color_goldenrod_approx;
+    }
+  }
+  .expanded.menu-depth-2 {
+    >a {
+      background-color: $color_mexican_red_approx;
+      color: $white;
+      &:hover {
+        background-color: $color_mexican_red_approx;
+        color: $color_goldenrod_approx;
+      }
+    }
+    >a[class="active-trail active active"] {
+      background-color: $color_mexican_red_approx;
+      color: $color_goldenrod_approx;
+    }
+    .menu-depth-3>a {
+      background-color: $color_mexican_red_approx;
+    }
+    .menu-depth-4>a {
+      background-color: $color_mexican_red_approx;
+    }
+    .menu-depth-5>a {
+      background-color: $color_mexican_red_approx;
+    }
+    .menu-depth-6>a {
+      background-color: $color_mexican_red_approx;
+    }
+  }
+  a:hover {
+    background-color: $color_mexican_red_approx;
+    color: $color_goldenrod_approx;
+  }
+}
+#boxes-box-site_info {
+  color: $white;
+  a {
+    color: $white;
+  }
+}
+.rslides_tabs {
+  li {
+    background: $color_chicago_approx;
+  }
+  a {
+    color: $color_mexican_red_approx;
+    &:visited {
+      color: $color_mexican_red_approx;
+    }
+  }
+}
+.search-block-form {
+  .form-search {
+    border-color: $color_chicago_approx;
+  }
+  .form-submit {
+    background: $color_tundora_approx;
+    border-color: $color_tundora_approx;
+  }
+}
+.main-container {
+  border-left: none;
+  border-right: none;
+}
+#branding_footer {
+  background-color: $black;
+}
+#branding_header {
+  background-color: $black;
+}
+#powerby-login {
+  background: $black;
+  border-left: none;
+  border-right: none;
+}
+.comment-wrapper {
+  border-top: none;
+}
+.links a {
+  font-family: $font_0, $font_1;
+}
+.boxes-box-content h2 {
+  font-family: $font_0, $font_1;
+}
+h2.block-title {
+  font-family: $font_0, $font_1;
+}
+.header-container ul.nav li a {
+  font-family: $font_0, $font_1;
+}
+aside .boxes-box-content {
+  font-family: $font_0, $font_1;
+  p {
+    font-family: $font_0, $font_1;
+  }
+}
+.slide-copy h2 {
+  font-family: $font_0, $font_1;
+}
+.cke_editable * {
+  font-family: $font_0, $font_1;
+}
+.aside .region > .block {
+  padding-top: 0;
+  border-top: none;
+  h2.block-title {
+    font-family: $font_2, $font_3;
+    @extend %extend_1;
+  }
+}
+.path-node-type-page .breadcrumb {
+  font-family: $font_2, $font_3;
+}
+h1.page-header {
+  color: $color_squirrel_approx;
+  font-family: $font_4, $font_3;
+  font-size: 2.1em;
+  font-weight: bold;
+  line-height: 1.2;
+}
+.block-boxes-os_boxes_facetapi_vocabulary.navigation h2 {
+  border-top: none;
+}
+.block-boxes-os_taxonomy_fbt.navigation h2 {
+  border-top: none;
+}
+.block-boxes-os_boxes_sectionnav ul {
+  border-top: none;
+}
+.header-container ul.nav li a {
+  color: $white;
+}
+.fc-listUpcoming-view .fc-list-heading .fc-list-heading-main {
+  @extend %extend_2;
+  span {
+    &.event-start-day {
+      color: $white;
+    }
+    &.event-start-month {
+      color: $white;
+    }
+    &.event-year {
+      padding: 8px 0 2px;
+    }
+  }
+}
+.fc-listPast-view .fc-list-heading .fc-list-heading-main {
+  @extend %extend_2;
+  span {
+    &.event-start-day {
+      color: $white;
+    }
+    &.event-start-month {
+      color: $white;
+    }
+    &.event-year {
+      padding: 8px 0 2px;
+    }
+  }
+}
+#powered-by a {
+  background-position: -14px -548px;
+}
+.path-front .content-inner .block {
+  border-top: none;
+  &.styled {
+    border-top: none;
+  }
+}
+.node-person .block-inner {
+  border-top: none;
+}
+.block-boxes-os_boxes_tabs .ui-state-default {
+  border: none;
+}
+.path-front.no-sidebars .region-content-top .block-boxes-os_slideshow_box:after {
+  position: relative;
+}

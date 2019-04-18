@@ -1,0 +1,22 @@
+<?php
+
+/**
+ * @file
+ * Management of a vsite's themes.
+ */
+
+/**
+ * Implements hook_theme().
+ */
+function cp_appearance_theme() {
+  return [
+    'cp_appearance_themes_page' => [
+      'variables' => [
+        'theme_groups' => [],
+        'theme_group_titles' => [],
+      ],
+      'file' => 'cp_appearance.theme.inc',
+      'template' => 'cp-appearance-themes-page',
+    ],
+  ];
+}

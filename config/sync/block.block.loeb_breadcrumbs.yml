@@ -1,0 +1,22 @@
+uuid: 4b96d178-18da-4d66-aaec-456065622047
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - loeb
+_core:
+  default_config_hash: oXUb3JZR2WW5VOdw4HrhRicCsq51mCgLfRyvheG68ck
+id: loeb_breadcrumbs
+theme: loeb
+region: content
+weight: -8
+provider: null
+plugin: system_breadcrumb_block
+settings:
+  id: system_breadcrumb_block
+  label: Breadcrumbs
+  provider: system
+  label_display: '0'
+visibility: {  }

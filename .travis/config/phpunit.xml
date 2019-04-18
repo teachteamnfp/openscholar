@@ -83,6 +83,7 @@
         <directory suffix="Interface.php">../*</directory>
         <directory suffix="Test.php">../*</directory>
         <directory suffix="TestBase.php">../*</directory>
+        <directory suffix="TestTrait.php">../*</directory>
       </exclude>
     </whitelist>
   </filter>

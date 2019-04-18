@@ -1,0 +1,22 @@
+uuid: 032e0b2d-b372-4b69-85fd-024dfe1906bb
+langcode: en
+status: true
+dependencies:
+  theme:
+    - loeb
+_core:
+  default_config_hash: X9I1OB0W3WlWtrK-CNcg6hNWwa8wficanpH8pYnDZDE
+id: loeb_local_tasks
+theme: loeb
+region: content
+weight: -6
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: Tabs
+  provider: core
+  label_display: '0'
+  primary: true
+  secondary: true
+visibility: {  }

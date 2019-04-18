@@ -2,12 +2,15 @@
 
 namespace Drupal\Tests\openscholar\ExistingSiteJavascript;
 
+use Drupal\Tests\openscholar\Traits\ExistingSiteTestTrait;
 use weitzman\DrupalTestTraits\ExistingSiteWebDriverTestBase;
 
 /**
  * OS functional javascript test base.
  */
-abstract class TestBase extends ExistingSiteWebDriverTestBase {
+abstract class OsExistingSiteJavascriptTestBase extends ExistingSiteWebDriverTestBase {
+
+  use ExistingSiteTestTrait;
 
   /**
    * Waits for the given time or until the given JS condition becomes TRUE.
@@ -27,7 +30,7 @@ abstract class TestBase extends ExistingSiteWebDriverTestBase {
    * @throws \Behat\Mink\Exception\UnsupportedDriverActionException
    * @throws \Behat\Mink\Exception\DriverException
    */
-  protected function assertJsCondition($condition, $timeout = 1000, $message = '') {
+  protected function assertJsCondition($condition, $timeout = 1000, $message = ''): void {
     $message = $message ?: "Javascript condition met:\n" . $condition;
     $result = $this->getSession()->getDriver()->wait($timeout, $condition);
     $this->assertNotEmpty($result, $message);
@@ -41,7 +44,7 @@ abstract class TestBase extends ExistingSiteWebDriverTestBase {
    * @throws \Behat\Mink\Exception\UnsupportedDriverActionException
    * @throws \Behat\Mink\Exception\DriverException
    */
-  protected function waitForAjaxToFinish() {
+  protected function waitForAjaxToFinish(): void {
     $condition = "(0 === jQuery.active && 0 === jQuery(':animated').length)";
     $this->assertJsCondition($condition, 10000);
   }
