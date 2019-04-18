@@ -47,11 +47,18 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
   protected $formBuilder;
 
   /**
-   * List of currently installed themes.
+   * List of currently installed themes in the site.
    *
    * @var \Drupal\Core\Extension\Extension[]
    */
-  protected $installedThemes;
+  protected $drupalInstalledThemes;
+
+  /**
+   * List of installed themes made from os_base.
+   *
+   * @var \Drupal\Core\Extension\Extension[]
+   */
+  protected $osInstalledThemes;
 
   /**
    * Theme selector builder service.
@@ -78,29 +85,25 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
     $this->formBuilder = $form_builder;
     $this->themeSelectorBuilder = $theme_selector_builder;
     $this->themeConfig = $this->configFactory->get('system.theme');
-    $this->installedThemes = $this->themeHandler->listInfo();
+    $this->drupalInstalledThemes = $this->themeHandler->listInfo();
+    $this->osInstalledThemes = array_filter($this->drupalInstalledThemes, function (Extension $theme) {
+      return (isset($theme->base_themes) && $theme->base_theme === 'os_base' && $theme->status);
+    });
   }
 
   /**
    * {@inheritdoc}
    */
   public function getThemes(): array {
-    // We do not want to make any unwanted changes to installedThemes by
+    // We do not want to make any unwanted changes to osInstalledThemes by
     // mistake.
-    $themes = $this->installedThemes;
+    $themes = $this->osInstalledThemes;
 
     uasort($themes, 'system_sort_modules_by_info_name');
 
-    $theme_default = $this->themeConfig->get('default');
-
-    // Only show installed themes made from os_base.
-    $themes = array_filter($themes, function ($theme) {
-      return (isset($theme->base_themes) && $theme->base_theme === 'os_base' && $theme->status);
-    });
-
     // Attach additional information in the themes.
     foreach ($themes as $theme) {
-      $theme->is_default = ($theme->getName() === $theme_default);
+      $theme->is_default = $this->themeIsDefault($theme);
       $theme->is_admin = FALSE;
       $theme->screenshot = $this->addScreenshotInfo($theme, $themes);
       $theme->operations = $this->addOperations($theme);
@@ -109,6 +112,24 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
     }
 
     return $themes;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function themeIsDefault(Extension $theme): bool {
+    /** @var string $theme_default */
+    $theme_default = $this->themeConfig->get('default');
+
+    if ($theme_default === $theme->getName()) {
+      return TRUE;
+    }
+
+    if (isset($theme->sub_themes[$theme_default])) {
+      return TRUE;
+    }
+
+    return FALSE;
   }
 
   /**
@@ -204,7 +225,7 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
       // Create a key-extension_info mapping.
       $sub_themes = new Map();
       foreach ($theme->sub_themes as $key => $name) {
-        $sub_themes->put($key, $this->installedThemes[$key]);
+        $sub_themes->put($key, $this->drupalInstalledThemes[$key]);
       }
 
       $operations[] = $this->formBuilder->getForm(new FlavorForm($theme, $sub_themes, $this->themeSelectorBuilder, $this->configFactory));
