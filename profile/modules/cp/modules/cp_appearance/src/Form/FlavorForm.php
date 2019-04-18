@@ -4,7 +4,6 @@ namespace Drupal\cp_appearance\Form;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Ajax\AjaxResponse;
-use Drupal\Core\Ajax\CssCommand;
 use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Extension\Extension;
@@ -79,7 +78,7 @@ class FlavorForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state): array {
     $options = [
-      '_none' => $this->t('None'),
+      '_none' => $this->t('Without Flavor'),
     ];
 
     /** @var \Drupal\Core\Extension\Extension $flavor */
@@ -100,9 +99,6 @@ class FlavorForm extends FormBase {
       '#type' => 'submit',
       '#value' => $this->t('Save'),
       '#name' => Html::cleanCssIdentifier("save-{$this->theme->getName()}"),
-      '#attributes' => [
-        'style' => 'display: none',
-      ],
     ];
 
     return $form;
@@ -134,16 +130,6 @@ class FlavorForm extends FormBase {
     /** @var string $selection */
     $selection = $form_state->getValue("options_{$this->theme->getName()}");
 
-    // It would not make sense if user has not chosen a flavor, and still seeing
-    // the option to save settings.
-    // This also prevents adding multiple save buttons every time option is
-    // changed.
-    /** @var string $button_identifier */
-    $button_identifier = Html::cleanCssIdentifier("save-{$this->theme->getName()}");
-    $response->addCommand(new CssCommand("button[name=$button_identifier]", [
-      'display' => 'none',
-    ]));
-
     if ($selection !== '_none') {
       /** @var \Drupal\Core\Extension\Extension $flavor */
       $flavor = $this->flavors->get($selection);
@@ -151,10 +137,6 @@ class FlavorForm extends FormBase {
       $info = $flavor->info;
       /** @var string|null $screenshot_uri */
       $screenshot_uri = $this->themeSelectorBuilder->getScreenshotUri($flavor);
-
-      $response->addCommand(new CssCommand("button[name=$button_identifier]", [
-        'display' => 'block',
-      ]));
     }
     else {
       // Revert everything to normal is user has not chosen a flavor.
