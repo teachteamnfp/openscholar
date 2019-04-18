@@ -1,0 +1,20 @@
+uuid: 9e215e7a-89df-4374-b5a8-4f1e65a30894
+langcode: en
+status: true
+dependencies:
+  theme:
+    - red_raven
+_core:
+  default_config_hash: 13GQpeITIJsp1kyPniXtWZfyFH87vb1xxJCHifL4UeE
+id: red_raven_local_actions
+theme: red_raven
+region: content
+weight: -5
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Primary admin actions'
+  provider: core
+  label_display: '0'
+visibility: {  }

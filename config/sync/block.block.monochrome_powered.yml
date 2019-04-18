@@ -1,0 +1,22 @@
+uuid: f6697f0a-b227-49a4-8748-2b08b9bfdbd2
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - monochrome
+_core:
+  default_config_hash: jQQUUWN2Uxr5qZtc9zcJKBCxpKY8orN1u2HPqYYRQDI
+id: monochrome_powered
+theme: monochrome
+region: footer
+weight: -6
+provider: null
+plugin: system_powered_by_block
+settings:
+  id: system_powered_by_block
+  label: 'Powered by Drupal'
+  provider: system
+  label_display: '0'
+visibility: {  }
