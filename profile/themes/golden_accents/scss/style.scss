@@ -1,3 +1,5 @@
+@import '../../os_base/scss/base/breakpoints';
+
 //colors
 $white: #fff;
 $color_pizza_approx: #c4961a;
@@ -46,7 +48,7 @@ body {
     font-family: $font_0, $font_1;
   }
 
-  .content-inner {
+  .main-container section .content-inner {
     @extend %extend_1;
   }
 }
@@ -63,7 +65,10 @@ body {
 
 .main-container {
   background: $white;
-  background: $white;
+  &:before {
+    background: none;
+    position: unset;
+  }
 }
 
 .path-front {
@@ -119,93 +124,80 @@ footer {
   ul.nav li a {
     color: $white;
   }
-
   .search-block-form label {
     color: $color_submarine_approx;
   }
 }
-
 .navbar-collapse {
   padding: 0 !important;
   @extend %extend_2;
-
   .region-navigation-collapsible {
     border-radius: 0;
     box-shadow: none;
     @extend %extend_2;
   }
-
-  ul {
-    &.nav {
-      li {
-        a {
-          @extend %extend_2;
-        }
-
-        &.dropdown:hover a {
-          background: $color_pizza_approx;
-        }
+  /***** navbar nav *****/
+  .navbar-nav {
+    > li {
+      @media #{$mobile} {
+        border-bottom: 1px solid $white;
+        border-top: 0 none;
       }
-
-      a {
+      > a {
+        @extend %extend_2;
         color: $white;
         font-family: $font_1;
-
-        &:hover {
-          background: $color_pizza_approx;
-        }
-
-        &.active {
+        &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
           background: $color_pizza_approx;
         }
       }
+      &.open, &.active {
+        > a, > a:hover, > a:active, > a:focus {
+          background: $color_pizza_approx;
+        }
 
-      .dropdown {
+      }
+    }
+  }
+  /**** dropdown menu ****/
+  .dropdown-menu {
+    background: $color_pizza_approx;
+    @media #{$mobile} {
+      background: none;
+    }
+    > li {
+      > a {
+        background: $color_pizza_approx;
+        color: $white;
+        @media #{$mobile} {
+          background: none;
+        }
+        &:hover, &:active {
+          background: $color_pizza_approx;
+          @media #{$mobile} {
+            color: $white;
+          }
+        }
+      }
+      &.active {
         a {
-          color: $white;
-          font-family: $font_1;
-
-          &.is-active {
-            background: $color_pizza_approx;
-          }
-        }
-
-        ul li a {
           background: $color_pizza_approx;
           color: $white;
-
-          &.is-active {
-            background: $color_pizza_approx;
+          @media #{$mobile} {
+            color: $white;
+            background: none;
           }
-
           &:hover {
-            background: $color_pizza_approx;
+            @media #{$mobile} {
+              color: $white;
+              background: none;
+            }
           }
         }
-      }
-
-      ul {
-        background: $color_pizza_approx;
-      }
-    }
-
-    a {
-      color: $white;
-      font-family: $font_1;
-    }
-
-    >li>a {
-      &:hover {
-        background: $color_pizza_approx;
-      }
-
-      &.is-active {
-        background: $color_pizza_approx;
       }
     }
   }
 }
-
 .breadcrumb {
   color: $color_st_tropaz_approx;
 
