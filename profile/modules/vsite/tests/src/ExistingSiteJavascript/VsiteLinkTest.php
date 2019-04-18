@@ -2,6 +2,8 @@
 
 namespace Drupal\Tests\vsite\ExistingSiteJavascript;
 
+use Behat\Mink\Exception\Exception;
+
 /**
  * Class LinkTest.
  *
@@ -12,22 +14,28 @@ namespace Drupal\Tests\vsite\ExistingSiteJavascript;
 class VsiteLinkTest extends VsiteExistingSiteJavascriptTestBase {
 
   /**
+   * The group we're testing on.
+   *
    * @var \Drupal\group\Entity\GroupInterface
    */
   protected $group;
 
   /**
+   * The PURL alias of the group.
+   *
    * @var string
    */
   protected $groupAlias;
 
   /**
+   * Vsite Context Manager.
+   *
    * @var \Drupal\vsite\Plugin\VsiteContextManagerInterface
    */
   protected $vsiteContextManager;
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function setUp() {
     parent::setUp();
@@ -42,17 +50,22 @@ class VsiteLinkTest extends VsiteExistingSiteJavascriptTestBase {
   }
 
   /**
-   * @throws \Behat\Mink\Exception\ResponseTextException
+   * Load the custom testing page and check its strings are correct.
    */
   public function testLinks() {
-    $this->visit('/' . $this->groupAlias);
-    $this->assertSession()->statusCodeNotEquals(404);
-    $this->visit('/' . $this->groupAlias . '/link-test');
-    $this->assertSession()->statusCodeEquals(200);
-    $page = $this->getCurrentPage();
-    $this->assertSession()->pageTextContains('vsite active');
+    try {
+      $this->visit('/' . $this->groupAlias);
+      $this->assertSession()->statusCodeNotEquals(404);
+      $this->visit('/' . $this->groupAlias . '/link-test');
+      $this->assertSession()->statusCodeEquals(200);
+      $page = $this->getCurrentPage();
+      $this->assertSession()->pageTextContains('vsite active');
 
-    $this->assertSession()->pageTextContains($this->groupAlias . '/link-test');
+      $this->assertSession()->pageTextContains($this->groupAlias . '/link-test');
+    }
+    catch (Exception $e) {
+      $this->fail($e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
+    }
   }
 
 }
