@@ -83,7 +83,6 @@ class TaxonomyTermsFieldTest extends OsExistingSiteJavascriptTestBase {
     $this->createGroupTerm($this->group1, 'vocab_group_1', 'Term 1 group 1 vid1');
     $this->createGroupTerm($this->group1, 'vocab_group_1', 'Term 2 group 1 vid1');
     $this->createGroupTerm($this->group2, 'vocab_group_2', 'Term 1 group 2 vid2');
-    $this->vsiteContextManager->activateVsite($this->group1);
 
     $this->visit($this->group1->get('path')->getValue()[0]['alias'] . "/node/add/taxonomy_test_1");
     $web_assert = $this->assertSession();
@@ -110,7 +109,6 @@ class TaxonomyTermsFieldTest extends OsExistingSiteJavascriptTestBase {
     $this->createGroupVocabulary($this->group1, 'vocab_media_group_1', ['media:taxonomy_test_file']);
     $this->createGroupTerm($this->group1, 'vocab_media_group_1', 'Term 1 group 1 vid1');
     $this->createGroupTerm($this->group1, 'vocab_media_group_1', 'Term 2 group 1 vid1');
-    $this->vsiteContextManager->activateVsite($this->group1);
 
     $this->visit($this->group1->get('path')->getValue()[0]['alias'] . "/media/add/taxonomy_test_file");
     $web_assert = $this->assertSession();
@@ -214,7 +212,6 @@ class TaxonomyTermsFieldTest extends OsExistingSiteJavascriptTestBase {
    * @throws \Behat\Mink\Exception\ExpectationException
    */
   protected function createGroupVocabulary(GroupInterface $group, string $vid, array $allowed_types = []) {
-    $this->vsiteContextManager->activateVsite($group);
     $this->visit($group->get('path')->getValue()[0]['alias'] . '/cp/taxonomy/add');
     $web_assert = $this->assertSession();
     $web_assert->statusCodeEquals(200);
@@ -244,7 +241,6 @@ class TaxonomyTermsFieldTest extends OsExistingSiteJavascriptTestBase {
    * @throws \Behat\Mink\Exception\ExpectationException
    */
   protected function createGroupTerm(GroupInterface $group, string $vid, string $name) {
-    $this->vsiteContextManager->activateVsite($group);
     $this->visit($group->get('path')->getValue()[0]['alias'] . '/cp/taxonomy/' . $vid . '/add');
     $web_assert = $this->assertSession();
     $web_assert->statusCodeEquals(200);
