@@ -122,7 +122,7 @@ class RssHelper implements RssHelperInterface {
   /**
    * Reset output rows.
    */
-  protected function resetRows() {
+  protected function resetRows(): void {
     $this->output['#rows'] = [];
   }
 
@@ -135,7 +135,7 @@ class RssHelper implements RssHelperInterface {
    * @return array
    *   Key and read item.
    */
-  protected function readItem(array &$array) {
+  protected function readItem(array &$array): array {
     $key = key($array);
     $item = $array[$key];
     unset($array[$key]);
@@ -148,7 +148,7 @@ class RssHelper implements RssHelperInterface {
    * @param array $items
    *   Array input.
    */
-  protected function addSameCreatedItems(array $items) {
+  protected function addSameCreatedItems(array $items): void {
     foreach ($items as $item) {
       if ($this->originalView->pager->getItemsPerPage() <= count($this->output['#rows'])) {
         continue;

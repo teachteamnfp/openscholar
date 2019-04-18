@@ -13,7 +13,7 @@ interface RssHelperInterface {
    * @return array
    *   Ordered multidimensional array.
    */
-  public function getOriginalViewOrder();
+  public function getOriginalViewOrder(): array;
 
   /**
    * Created ordered array from reference feed view.
@@ -21,7 +21,7 @@ interface RssHelperInterface {
    * @return array
    *   Ordered multidimensional array.
    */
-  public function getReferenceViewOrder();
+  public function getReferenceViewOrder(): array;
 
   /**
    * Merge two ordered view result.
