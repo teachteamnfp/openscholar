@@ -19,9 +19,6 @@ class EmbedMediaWidget extends OsWidgetsBase implements OsWidgetsInterface {
    * {@inheritdoc}
    */
   public function buildBlock(&$build, $block_content) {
-    if (empty($block_content)) {
-      return;
-    }
     $field_max_width_values = $block_content->get('field_max_width')->getValue();
     $max_width = $field_max_width_values[0]['value'] ?? 0;
     /** @var \Drupal\Core\Field\FieldItemList $media_select_list */

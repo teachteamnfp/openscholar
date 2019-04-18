@@ -1,0 +1,22 @@
+uuid: 7ff6e551-48d1-4414-a166-4f01c34cf345
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - hwpi_college
+_core:
+  default_config_hash: u819ZJFYfRKyo706nyx6mnv-ZE9y2cjftPBd7Xhn-90
+id: hwpi_college_content
+theme: hwpi_college
+region: content
+weight: -4
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  provider: system
+  label_display: '0'
+visibility: {  }

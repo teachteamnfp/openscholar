@@ -1,0 +1,22 @@
+uuid: 0f21469f-c10d-4b8b-969b-6b9fd16b872b
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - hwpi_classic
+_core:
+  default_config_hash: y4Ps6URdyuVJCVQTILrG_l0DeQErsla-81qHnHqCEu0
+id: hwpi_classic_breadcrumbs
+theme: hwpi_classic
+region: content
+weight: -8
+provider: null
+plugin: system_breadcrumb_block
+settings:
+  id: system_breadcrumb_block
+  label: Breadcrumbs
+  provider: system
+  label_display: '0'
+visibility: {  }

@@ -3,7 +3,10 @@
 namespace Drupal\os_publications\Plugin\CitationDistribution;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\os_publications\GhostEntity\SwordDash;
+use Drupal\os_publications\GhostEntityInterface;
 use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -216,5 +219,26 @@ class CitationDistributeSwordDash extends CitationDistributeSword {
 
     'gsd.harvard.edu' => 'GSD Scholarly Articles',
   ];
+
+  /**
+   * {@inheritdoc}
+   */
+  public function delete(GhostEntityInterface $entity) {
+    // TODO: Implement delete() method.
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function killEntity(EntityInterface $entity): GhostEntityInterface {
+    return new SwordDash($entity->id(), $entity->getEntityTypeId(), $entity->bundle());
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function createGhostEntityFromPayload(array $payload): GhostEntityInterface {
+    return new SwordDash($payload['id'], $payload['type'], $payload['bundle']);
+  }
 
 }

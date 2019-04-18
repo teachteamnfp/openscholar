@@ -1,0 +1,34 @@
+uuid: 504b7ac2-5aea-45c2-8007-f8bd5a71eda8
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_visibility_groups.block_visibility_group.event_section
+    - views.view.calendar
+  module:
+    - block_visibility_groups
+    - views
+  theme:
+    - modern
+_core:
+  default_config_hash: H85GNjSIcer7Ci11vxhj3-P2GWc_OO-KvE0Nl5xESQw
+id: modern_views_block__calendar_block_2
+theme: modern
+region: content
+weight: 1
+provider: null
+plugin: 'views_block:calendar-block_2'
+settings:
+  id: 'views_block:calendar-block_2'
+  label: ''
+  provider: views
+  label_display: visible
+  views_label: ''
+  items_per_page: none
+  context_mapping: {  }
+visibility:
+  condition_group:
+    id: condition_group
+    negate: false
+    block_visibility_group: event_section
+    context_mapping: {  }

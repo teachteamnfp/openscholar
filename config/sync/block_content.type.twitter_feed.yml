@@ -1,0 +1,8 @@
+uuid: 6ddb7812-d530-4129-bce3-d8d1559f3c8b
+langcode: en
+status: true
+dependencies: {  }
+id: twitter_feed
+label: 'Twitter feed'
+revision: 1
+description: ''

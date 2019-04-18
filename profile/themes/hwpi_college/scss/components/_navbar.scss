@@ -1,0 +1,58 @@
+/**** navbar background ****/
+.navbar-collapse {
+  background: $color-red;
+  padding: 0 !important;
+  border-bottom: 6px solid $color-black;
+  @media #{$normal} {
+    .container {
+      padding: 0;
+    }
+  }
+  /***** navbar nav *****/
+  .navbar-nav {
+    > li {
+      @media #{$mobile} {
+        border-bottom: 1px solid $color-red4;
+        border-top: 1px solid $color-red5;
+      }
+      > a {
+        color: $color-white;
+        &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
+          background: $color-red2;
+          color: $color-white;
+        }
+      }
+      &.open, &.active {
+        > a, > a:hover, a:active, a:focus {
+          background: $color-red3;
+          color: $color-white;
+        }
+      }
+    }
+  }
+  /**** dropdown menu ****/
+  .dropdown-menu {
+    background: $color-red1;
+    @media #{$mobile} {
+      background: none;
+    }
+    > li {
+      > a {
+        color: $color-white;
+        &:hover, &:active {
+          color: $color-submarine;
+          background: $color-red1;
+        }
+      }
+      &.active {
+        a {
+          color: $color-white;
+          background: $color-red1;
+          &:hover {
+            color: $color-submarine;
+          }
+        }
+      }
+    }
+  }
+}

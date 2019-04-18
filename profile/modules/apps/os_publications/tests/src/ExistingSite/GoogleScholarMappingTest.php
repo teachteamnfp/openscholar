@@ -6,6 +6,7 @@ namespace Drupal\Tests\os_publications\ExistingSite;
  * Class GoogleScholarMappingTest.
  *
  * @group kernel
+ * @group publications
  */
 class GoogleScholarMappingTest extends TestBase {
 

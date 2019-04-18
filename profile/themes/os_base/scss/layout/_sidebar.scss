@@ -4,7 +4,7 @@ aside {
     li {
       float: none;
       list-style: none;
-      background: $color-light-gray1;
+      background: $color-light-gray4;
       text-align: left;
       a {
         display: block;
@@ -13,8 +13,8 @@ aside {
         border-bottom: 2px solid $color-white;
         font-size: 15px;
         font-weight: normal;
-        &.is-active {
-        }
+        line-height: inherit;
+        &.is-active {}
         .caret {
           display: none;
         }
@@ -38,14 +38,32 @@ aside {
       }
       &.open {
         a {
-          background: $color-light-gray1;
+          background: $color-light-gray4;
           border-bottom: 2px solid $color-white;
-          &:hover, &:focus {
+          &:hover,
+          &:focus {
             background: $color-light-gray2;
             border-color: $color-white;
           }
         }
       }
     }
+  }
+  .well {
+    background: none;
+    border: 0;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0;
+    margin: 0;
+  }
+  .block-title {
+    margin-top: 0;
+    margin-bottom: 15px;
+  }
+  .region > .block,
+  nav {
+    margin-bottom: 20px;
+    margin-top: 12px
   }
 }

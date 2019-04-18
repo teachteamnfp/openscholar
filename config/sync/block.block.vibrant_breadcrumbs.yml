@@ -1,0 +1,22 @@
+uuid: a6aa427c-c4e8-4d07-9740-fc0ffdbb7c8a
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - vibrant
+_core:
+  default_config_hash: gQvH1i81G4vZrLNJjxAM4vmjOygQp8A-FqetG2_Mvbs
+id: vibrant_breadcrumbs
+theme: vibrant
+region: content
+weight: -8
+provider: null
+plugin: system_breadcrumb_block
+settings:
+  id: system_breadcrumb_block
+  label: Breadcrumbs
+  provider: system
+  label_display: '0'
+visibility: {  }

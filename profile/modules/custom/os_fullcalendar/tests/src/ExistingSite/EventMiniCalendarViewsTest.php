@@ -7,7 +7,7 @@ use Drupal\Component\Datetime\DateTimePlus;
 /**
  * Tests mini calendar views.
  *
- * @group vsite
+ * @group other
  * @group kernel
  */
 class EventMiniCalendarViewsTest extends EventTestBase {
@@ -16,8 +16,8 @@ class EventMiniCalendarViewsTest extends EventTestBase {
    * Tests monthly calendar view.
    */
   public function testMonthlyCalendarView() {
-    $start = new DateTimePlus('+1 month midnight', $this->config->get('system.date')->get('timezone.default'));
-    $end = new DateTimePlus('+1 day +1 month midnight', $this->config->get('system.date')->get('timezone.default'));
+    $start = new DateTimePlus('+1 month midnight +5 hours', $this->config->get('system.date')->get('timezone.default'));
+    $end = new DateTimePlus('+1 day +1 month midnight +5 hours', $this->config->get('system.date')->get('timezone.default'));
     /** @var \Drupal\node\NodeInterface $next_month_event */
     $next_month_event = $this->createEvent([
       'title' => 'Next Month Event',

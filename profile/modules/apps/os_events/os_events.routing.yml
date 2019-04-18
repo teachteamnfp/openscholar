@@ -1,0 +1,15 @@
+os_events.signup_modal_form:
+  path: '/events/signup/{nid}/{timestamp}'
+  defaults:
+    _form:  '\Drupal\os_events\Form\EventSignupForm'
+    _title: 'Register for this Event'
+  requirements:
+    _permission: 'access content'
+  options:
+    no_cache: 'TRUE'
+os_events.multiple_dates_form:
+  path: '/events/signup/multiple/{options}'
+  defaults:
+    _form:  '\Drupal\os_events\Form\MultipleDatesFrom'
+  requirements:
+    _permission: 'access content'

@@ -1,0 +1,22 @@
+uuid: a6796af9-f7c6-488d-9add-1acb93950f8c
+langcode: en
+status: true
+dependencies:
+  theme:
+    - vibrant
+_core:
+  default_config_hash: a3IKVmmG2sy5vnWi_F_MkybuUWIh5_873ykmqe1M4a0
+id: vibrant_local_tasks
+theme: vibrant
+region: content
+weight: -6
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: Tabs
+  provider: core
+  label_display: '0'
+  primary: true
+  secondary: true
+visibility: {  }

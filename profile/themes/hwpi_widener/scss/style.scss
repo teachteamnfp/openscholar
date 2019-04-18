@@ -1,3 +1,5 @@
+@import '../../os_base/scss/base/breakpoints';
+
 @import 'base/variables';
 @import 'base/base';
 
@@ -6,6 +8,8 @@
 @import 'components/header';
 @import 'components/breadcrumb';
 @import 'components/sidebar';
+@import 'components/search';
+@import 'components/calendar';
 
 @import 'global/global';
 

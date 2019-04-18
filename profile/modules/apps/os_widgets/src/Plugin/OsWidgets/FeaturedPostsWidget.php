@@ -19,9 +19,6 @@ class FeaturedPostsWidget extends OsWidgetsBase implements OsWidgetsInterface {
    * {@inheritdoc}
    */
   public function buildBlock(&$build, $block_content) {
-    if (empty($block_content)) {
-      return;
-    }
     $displayStyleValues = $block_content->get('field_display_style')->getValue();
     $displayStyle = $displayStyleValues[0]['value'];
     $view_builder = $this->entityTypeManager->getViewBuilder('node');
@@ -52,7 +49,7 @@ class FeaturedPostsWidget extends OsWidgetsBase implements OsWidgetsInterface {
     }
     $is_styled_values = $block_content->get('field_is_styled')->getValue();
     if (!empty($is_styled_values[0]['value'])) {
-      $build['#is_styled'] = TRUE;
+      $build['#extra_classes'][] = 'styled';
     }
   }
 

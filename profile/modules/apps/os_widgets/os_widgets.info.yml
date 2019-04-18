@@ -3,5 +3,6 @@ description: 'Contains all develop which related to any widget.'
 type: module
 core: 8.x
 dependencies:
-  - block
-  - node
+  - "drupal:block"
+  - "drupal:node"
+  - "drupal:os_twitter_pull"

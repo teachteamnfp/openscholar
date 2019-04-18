@@ -1,0 +1,7 @@
+name: Control Panel Theme and Appearance Management
+description: Management of a vsite's themes
+type: module
+core: 8.x
+version: 1.0
+dependencies:
+  - drupal:os_theme_preview

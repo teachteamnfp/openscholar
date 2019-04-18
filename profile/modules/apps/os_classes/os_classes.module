@@ -9,7 +9,10 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
+use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\paragraphs\Entity\Paragraph;
 
 /**
  * Return field semester allowed values.
@@ -84,5 +87,94 @@ function os_classes_node_class_form_validate(array &$form, FormStateInterface $f
 function os_classes_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
   if ($entity->bundle() == 'class') {
     $build['#attached']['library'][] = 'os_classes/os-classes-theme';
+  }
+  if ($entity->access('update') !== TRUE) {
+    return;
+  }
+  if ($entity->bundle() != 'class') {
+    return;
+  }
+
+  $nid = $entity->id();
+  $url = Url::fromRoute('os_classes.paragraph_add_form', [
+    'nid' => $nid,
+    'type' => 'class_material',
+  ], ['attributes' => ['class' => 'class_material_field_class_anchor']]);
+
+  $link = Link::fromTextAndUrl('Add class material', $url)->toString();
+  $build['add_class_material']['#markup'] = $link;
+  $build['add_class_material']['#weight'] = 20;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function os_classes_form_paragraph_class_material_form_alter(
+    &$form,
+    FormStateInterface $form_state,
+    $form_id
+) {
+  $form['actions']['submit']['#submit'][] = 'os_classes_save_entity_to_node';
+}
+
+/**
+ * Save Paragraph to node class.
+ *
+ * @param array $form
+ *   The entity form.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state.
+ *
+ * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+ * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+ * @throws \Drupal\Core\Entity\EntityMalformedException
+ * @throws \Drupal\Core\Entity\EntityStorageException
+ */
+function os_classes_save_entity_to_node(array $form, FormStateInterface $form_state) {
+  $nid = \Drupal::routeMatch()->getParameter('nid');
+  $values = $form_state->getValues();
+  $media = [];
+  foreach ($values['field_attached_files'] as $value) {
+    $media[] = [
+      'target_id' => $value['target_id'],
+      '_weight' => $value['_weight'],
+    ];
+  }
+  $paragraph = Paragraph::create([
+    'type' => 'class_material',
+    'field_title' => $values['field_title'][0]['value'],
+    'field_body' => [
+      'value' => $values['field_body'][0]['value'],
+      'format' => $values['field_body'][0]['format'],
+    ],
+    'field_attached_files' => $media,
+  ]);
+  $destination_entity = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
+  $destination_entity->get('field_class_materials')->appendItem($paragraph);
+  $destination_entity->save();
+  $form_state->setRedirectUrl($destination_entity->toUrl());
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function os_classes_preprocess_paragraph__class_material(&$variables) {
+  $route_name = \Drupal::routeMatch()->getRouteName();
+  if ($route_name == 'entity.node.canonical') {
+    $nid = $variables['paragraph']->parent_id->value;
+    $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
+    $node_title = strtolower($node->title->value);
+    $node_title = str_replace(' ', '', $node_title);
+    $material_title = strtolower($variables['paragraph']->field_title->value);
+    $material_title = str_replace(' ', '', $material_title);
+    $mid = $variables['paragraph']->id->value;
+
+    $url = Url::fromRoute('os_classes.paragraphs_class_material', [
+      'class' => $node_title,
+      'material' => $material_title,
+      'mid' => $mid,
+    ]);
+    $link = Link::fromTextAndUrl($variables['paragraph']->field_title->value, $url)->toString();
+    $variables['content'] = $link;
   }
 }

@@ -23,7 +23,7 @@ body {
   }
 
   @media #{$tablet} {
-    margin-top: ($grid-gutter-width / 2);
+    //margin-top: ($grid-gutter-width / 2);
   }
   @media #{$mobile} {
     &.toolbar-vertical {
@@ -66,4 +66,46 @@ body {
     padding-left: 0;
   }
 }
-
+nav {
+  &:before, &:after {
+    content: "";
+    display: table;
+    width: 100%;
+  }
+}
+.navbar-collapse {
+  .navbar-nav {
+    > li {
+      > a {
+        padding: 16px 15px;
+        font-size: 19px;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+    }
+  }
+  .row {
+    margin: 0;
+  }
+}
+@media #{$mobile} {
+  .navbar-collapse {
+    .nav.navbar-nav {
+      margin-top: 0;
+      margin-bottom: 0;
+      > li {
+        > a {
+          padding: 8px 16px;
+          font-size: 20px;
+        }
+        &.active {
+          a {
+            margin-top: 1px;
+          }
+        }
+      }
+    }
+    .row {
+      margin: 0;
+    }
+  }
+}

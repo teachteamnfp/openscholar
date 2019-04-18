@@ -1,0 +1,22 @@
+uuid: 1ee7d3bc-22b0-48ef-978c-0a8a64051c4d
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - red_raven
+_core:
+  default_config_hash: oXUb3JZR2WW5VOdw4HrhRicCsq51mCgLfRyvheG68ck
+id: red_raven_breadcrumbs
+theme: red_raven
+region: content
+weight: -8
+provider: null
+plugin: system_breadcrumb_block
+settings:
+  id: system_breadcrumb_block
+  label: Breadcrumbs
+  provider: system
+  label_display: '0'
+visibility: {  }

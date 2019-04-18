@@ -2,51 +2,62 @@
 .navbar-collapse {
   background: $color-white;
   padding: 0;
-}
-/***** navbar nav *****/
-.navbar-nav {
-  > li {
-    > a {
-      color: $color-black;
-      padding: 16px 14px;
-      font-size: 18px;
-      text-transform: uppercase;
-      &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
-        background: $color-white;
+  /***** navbar nav *****/
+  .navbar-nav {
+    > li {
+      > a {
         color: $color-black;
+        padding: 16px 14px;
+        font-size: 18px;
+        text-transform: capitalize;
+        font-family: 'Montserrat', sans-serif;
+        &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
+          background: $color-white;
+          color: $color-black;
+        }
       }
-    }
-    &.open, &.active {
-      > a, > a:hover, > a:active, > a:focus {
-        background: $color-white;
-        color: $color-black;
+      &.open, &.active {
+        > a, > a:hover, > a:active, > a:focus {
+          background: $color-white;
+          color: $color-black;
+        }
       }
     }
   }
-}
-/**** dropdown menu ****/
-.dropdown-menu {
-  background: $color-menu;
-  > li {
-    > a {
-      color: $color-white;
-      font-family: arial;
-      font-size: 13px;
-      font-weight: bold;
-      padding: 10px 15px;
-      text-transform: uppercase;
-      &:hover, &:active {
-        color: $color-menu-hover;
-        background: $color-menu;
-      }
+  /**** dropdown menu ****/
+  .dropdown-menu {
+    background: $color-menu;
+    @media #{$mobile} {
+      background: none;
     }
-    &.active {
-      a {
+    > li {
+      > a {
         color: $color-white;
-        background: $color-menu;
-        &:hover {
+        font-family: 'Montserrat', sans-serif;
+        text-transform: capitalize;
+        @media #{$mobile} {
+          color: $color-black;
+        }
+        &:hover, &:active {
           color: $color-menu-hover;
           background: $color-menu;
+          @media #{$mobile} {
+            color: $color-black;
+            background: none;
+          }
+        }
+      }
+      &.active {
+        a {
+          color: $color-white;
+          background: $color-menu;
+          @media #{$mobile} {
+            color: $color-black;
+          }
+          &:hover {
+            color: $color-menu-hover;
+            background: $color-menu;
+          }
         }
       }
     }

@@ -308,7 +308,7 @@ class RoboFile extends \Robo\Tasks
               '-c web/core '.
               '--debug '.
               ($groups ? '--group ' . $groups . ' ': ' ')  .
-              '--exclude-group=kernel,functional,functional-javascript '.
+              '--exclude-group=kernel,functional,functional-javascript,wip '.
               '--verbose web/profiles/contrib/openscholar');
         return $tasks;
     }
@@ -323,14 +323,13 @@ class RoboFile extends \Robo\Tasks
     {
         $groups = explode(',', $groups);
         $groups = array_filter($groups, 'trim');  // strip out empty lines
-        $groups[] = 'kernel';
         $groups = implode(',', $groups);
         $tasks[] = $this->taskExecStack()
             ->exec('docker-compose exec -T php ./vendor/bin/phpunit ' .
                 '-c web/core '.
                 '--debug '.
                 ($groups ? '--group ' . $groups . ' ': ' ')  .
-                '--exclude-group=unit,functional,functional-javascript '.
+                '--exclude-group=unit,functional,functional-javascript,wip '.
                 '--verbose web/profiles/contrib/openscholar');
         return $tasks;
     }
@@ -354,7 +353,7 @@ class RoboFile extends \Robo\Tasks
                 '-c web/core '.
                 '--debug '.
                 ($groups ? '--group ' . $groups . ' ': ' ')  .
-                '--exclude-group=unit,kernel,functional-javascript '.
+                '--exclude-group=unit,kernel,functional-javascript,wip '.
                 '--verbose web/profiles/contrib/openscholar');
         return $tasks;
     }
@@ -378,7 +377,7 @@ class RoboFile extends \Robo\Tasks
                 '-c web/core '.
                 '--debug '.
                 ($groups ? '--group ' . $groups . ' ': ' ')  .
-                '--exclude-group=unit,kernel,functional '.
+                '--exclude-group=unit,kernel,functional,wip '.
                 '--verbose web/profiles/contrib/openscholar');
         return $tasks;
     }

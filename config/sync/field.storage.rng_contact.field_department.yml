@@ -1,0 +1,21 @@
+uuid: 337c768a-e638-40f0-aafb-a6ddae3f1aef
+langcode: en
+status: true
+dependencies:
+  module:
+    - rng_contact
+id: rng_contact.field_department
+field_name: field_department
+entity_type: rng_contact
+type: string
+settings:
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

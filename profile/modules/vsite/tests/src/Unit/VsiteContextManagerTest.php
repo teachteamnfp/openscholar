@@ -13,6 +13,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  * Tests for the VsiteContextManager class.
  *
  * @group vsite
+ * @group unit
+ * @group wip
  * @coversDefaultClass \Drupal\vsite\Plugin\VsiteContextManager
  */
 class VsiteContextManagerTest extends UnitTestCase {

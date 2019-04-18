@@ -5,11 +5,20 @@
  * OS widgets.
  */
 
+use Drupal\os_widgets\Entity\OsBlockContent;
+use Drupal\Core\Cache\Cache;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\views\Views;
+use Drupal\views\ViewExecutable;
+use Drupal\views\Plugin\views\cache\CachePluginBase;
+
 /**
  * Implements hook_entity_type_alter().
  */
 function os_widgets_entity_type_alter(array &$entity_types) {
   $entity_types['block_content']->setHandlerClass('view_builder', 'Drupal\os_widgets\OsBlockContentViewBuilder');
+  $entity_types['block_content']->setClass(OsBlockContent::class);
 }
 
 /**
@@ -25,8 +34,10 @@ function os_widgets_preprocess_node(&$variables) {
  * Implements hook_preprocess_block().
  */
 function os_widgets_preprocess_block(&$variables) {
-  if (!empty($variables['content']['#is_styled'])) {
-    $variables['attributes']['class'][] = 'styled';
+  if (!empty($variables['content']['#extra_classes'])) {
+    foreach ($variables['content']['#extra_classes'] as $class) {
+      $variables['attributes']['class'][] = $class;
+    }
   }
 }
 
@@ -57,5 +68,120 @@ function os_widgets_theme($existing, $type, $theme, $path) {
         'image_base_path' => NULL,
       ],
     ],
+    'os_widgets_twitter_pull' => [
+      'variables' => [
+        'tweets' => [],
+        'is_follow_me' => FALSE,
+        'follow_me_link' => '',
+      ],
+    ],
+    'os_widgets_publication_types' => [
+      'variables' => [
+        'types' => [],
+        'is_display_count' => FALSE,
+      ],
+    ],
   ];
+}
+
+/**
+ * Implements hook_block_content_presave().
+ */
+function os_widgets_block_content_presave(EntityInterface $entity) {
+  Cache::invalidateTags([$entity->getVsiteCacheTag()]);
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function os_widgets_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    case 'block_content_twitter_feed_form':
+    case 'block_content_twitter_feed_edit_form':
+      $form['field_twitter_followme_link']['#states'] = [
+        'visible' => [
+          ':input[name="field_twitter_is_followme_link[value]"]' => [
+            'checked' => TRUE,
+          ],
+        ],
+      ];
+      break;
+
+    case 'block_content_rss_feed_form':
+    case 'block_content_rss_feed_edit_form':
+      $form['field_content_to_display']['#states'] = [
+        'visible' => [
+          ':input[name="field_is_show_all_content[value]"]' => [
+            'checked' => FALSE,
+          ],
+        ],
+      ];
+      break;
+  }
+}
+
+/**
+ * Return options of field content to display checkboxes.
+ */
+function os_widgets_field_content_to_display_allowed_values() {
+  $types = Drupal::entityTypeManager()
+    ->getStorage('node_type')
+    ->loadMultiple();
+  $options = [];
+  foreach ($types as $machine_name => $type) {
+    $options[$machine_name] = $type->label();
+  }
+  // Add extra key to merge os_reference_feed into feeds.
+  $options['all_publications'] = t('Publications');
+  asort($options);
+  return $options;
+}
+
+/**
+ * Collect all bibcite reference types in array.
+ *
+ * @return array
+ *   Collected array used by checkboxes in field.
+ */
+function os_widgets_field_types_whitelist_allowed_values() {
+  $bundle_info = Drupal::service('entity_type.bundle.info')->getBundleInfo('bibcite_reference');
+  if (empty($bundle_info)) {
+    return [];
+  }
+  $reference_types = [];
+  foreach ($bundle_info as $machine_name => $bundle) {
+    $reference_types[$machine_name] = $bundle['label'];
+  }
+  return $reference_types;
+}
+
+/**
+ * Implements hook_views_post_render().
+ */
+function os_widgets_views_post_render(ViewExecutable $view, &$output, CachePluginBase $cache) {
+  if ($view->id() == 'os_feeds') {
+    $type_arg = $view->args[0] ?? '';
+    $type_arg_array = explode('+', $type_arg);
+    if (in_array('all_publications', $type_arg_array)) {
+      $view_reference_feed = Views::getView('os_reference_feed');
+      $view_reference_feed->execute('feed_1');
+      $view_reference_feed->preview();
+
+      // Nothing to merge.
+      if (empty($view_reference_feed->result)) {
+        return;
+      }
+
+      /** @var \Drupal\os_widgets\Helper\RssHelper $rss_helper */
+      $rss_helper = Drupal::service('os_widgets.rss_helper');
+      $rss_helper->setOriginalView($view);
+      $rss_helper->setReferenceView($view_reference_feed);
+      $rss_helper->setOutput($output);
+      $original_view_order = $rss_helper->getOriginalViewOrder();
+      $reference_view_order = $rss_helper->getReferenceViewOrder();
+
+      $rss_helper->mergeRows($original_view_order, $reference_view_order);
+      $output = $rss_helper->getOutput();
+    }
+  }
 }

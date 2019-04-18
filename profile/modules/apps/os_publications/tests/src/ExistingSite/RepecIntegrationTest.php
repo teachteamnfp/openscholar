@@ -2,38 +2,23 @@
 
 namespace Drupal\Tests\os_publications\ExistingSite;
 
-use Drupal\bibcite_entity\Entity\Contributor;
-use Drupal\bibcite_entity\Entity\Keyword;
-use Drupal\bibcite_entity\Entity\ReferenceInterface;
 use Drupal\file\Entity\File;
+use Drupal\os_publications\CitationDistributionModes;
 
 /**
  * RepecIntegrationTest.
  *
  * @group kernel
+ * @group publications
  */
 class RepecIntegrationTest extends TestBase {
 
   /**
-   * Repec service.
-   *
-   * @var \Drupal\repec\Repec
-   */
-  protected $repec;
-
-  /**
-   * Config service.
-   *
-   * @var \Drupal\Core\Config\ConfigFactory
-   */
-  protected $configFactory;
-
-  /**
-   * Default repec settings.
+   * Default publications settings.
    *
    * @var array
    */
-  protected $defaultRepecSettings;
+  protected $defaultPublicationSettings;
 
   /**
    * {@inheritdoc}
@@ -41,41 +26,70 @@ class RepecIntegrationTest extends TestBase {
   public function setUp() {
     parent::setUp();
 
-    $this->repec = $this->container->get('repec');
-    $this->configFactory = $this->container->get('config.factory');
-    $this->defaultRepecSettings = $this->configFactory->get('repec.settings')->getRawData();
+    $this->defaultPublicationSettings = $this->configFactory->get('os_publications.settings')->getRawData();
+
+    /** @var \Drupal\Core\Config\Config $publications_settings_mut */
+    $publications_settings_mut = $this->configFactory->getEditable('os_publications.settings');
+    $publications_settings_mut->set('citation_distribute_module_mode', CitationDistributionModes::PER_SUBMISSION);
+    $publications_settings_mut->save();
   }
 
   /**
    * Tests repec integration for reference entity.
    *
-   * @covers ::repec_entity_insert
-   * @covers ::repec_entity_update
-   * @covers ::repec_entity_delete
    * @covers \Drupal\repec\Form\EntityTypeSettingsForm
    * @covers \Drupal\repec\Series\Base::create
    * @covers \Drupal\repec\Series\Base::getDefault
+   * @covers \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributeRepec::save
+   * @covers \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributeRepec::delete
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function testReference() {
     $reference = $this->createReference();
-    $serie_directory_config = $this->repec->getEntityBundleSettings('serie_directory', $reference->getEntityTypeId(), $reference->bundle());
-    $directory = "{$this->repec->getArchiveDirectory()}{$serie_directory_config}/";
-    $file_name = "{$serie_directory_config}_{$reference->getEntityTypeId()}_{$reference->id()}.rdf";
-    $this->assertFileExists("$directory/$file_name");
+    $template_path = $this->getRepecTemplatePath($reference);
 
+    // Tests rdf file creation.
+    $this->assertFileExists($template_path);
+    $content = file_get_contents($template_path);
+    $this->assertTemplateContent($reference, $content);
+
+    // Tests rdf file updation.
+    $reference->set('bibcite_abst_e', [
+      'value' => 'Test abstract',
+    ]);
     $reference->save();
-    $this->assertFileExists("$directory/$file_name");
+    $this->assertFileExists($template_path);
+    $content = file_get_contents($template_path);
+    $this->assertTemplateContent($reference, $content);
 
-    $content = file_get_contents("$directory/$file_name");
-    $this->assertContains("Title: {$reference->label()}", $content);
-    $this->assertContains("Number: {$reference->uuid()}", $content);
-    $this->assertContains("Handle: RePEc:{$this->defaultRepecSettings['archive_code']}:{$this->repec->getEntityBundleSettings('serie_type', $reference->getEntityTypeId(), $reference->bundle())}:{$reference->id()}", $content);
-    $this->assertContains('Template-Type: ReDIF-Paper 1.0', $content);
-
+    // Tests rdf file deletion.
     $reference->delete();
-    $this->assertFileNotExists("$directory/$file_name");
+    $this->assertFileNotExists($template_path);
+  }
+
+  /**
+   * Tests repec as citation distribution plugin.
+   *
+   * @covers \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributeRepec::save
+   * @covers \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributeRepec::delete
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public function testPluginIntegration() {
+    // Positive test.
+    $reference = $this->createReference();
+    $template_path = $this->getRepecTemplatePath($reference);
+
+    $this->assertFileExists($template_path);
+
+    // Negative test.
+    $reference = $this->createReference([
+      'distribution' => [],
+    ]);
+    $template_path = $this->getRepecTemplatePath($reference);
+
+    $this->assertFileNotExists($template_path);
   }
 
   /**
@@ -88,10 +102,8 @@ class RepecIntegrationTest extends TestBase {
    */
   public function testEntityShareable() {
     $reference = $this->createReference();
-    $serie_directory_config = $this->repec->getEntityBundleSettings('serie_directory', $reference->getEntityTypeId(), $reference->bundle());
-    $directory = "{$this->repec->getArchiveDirectory()}{$serie_directory_config}/";
-    $file_name = "{$serie_directory_config}_{$reference->getEntityTypeId()}_{$reference->id()}.rdf";
-    $this->assertFileExists("$directory/$file_name");
+    $template_path = $this->getRepecTemplatePath($reference);
+    $this->assertFileExists($template_path);
 
     /** @var \Drupal\Core\Config\Config $repec_settings_mut */
     $repec_settings_mut = $this->configFactory->getEditable('repec.settings');
@@ -106,8 +118,8 @@ class RepecIntegrationTest extends TestBase {
         'value' => FALSE,
       ],
     ]);
-    $file_name = "{$serie_directory_config}_{$reference->getEntityTypeId()}_{$reference->id()}.rdf";
-    $this->assertFileNotExists("$directory/$file_name");
+    $template_path = $this->getRepecTemplatePath($reference);
+    $this->assertFileNotExists($template_path);
   }
 
   /**
@@ -177,12 +189,10 @@ class RepecIntegrationTest extends TestBase {
       ],
     ]);
 
-    $serie_directory_config = $this->repec->getEntityBundleSettings('serie_directory', $reference->getEntityTypeId(), $reference->bundle());
-    $directory = "{$this->repec->getArchiveDirectory()}{$serie_directory_config}/";
-    $file_name = "{$serie_directory_config}_{$reference->getEntityTypeId()}_{$reference->id()}.rdf";
-    $this->assertFileExists("$directory/$file_name");
+    $template_path = $this->getRepecTemplatePath($reference);
+    $this->assertFileExists($template_path);
 
-    $content = file_get_contents("$directory/$file_name");
+    $content = file_get_contents($template_path);
     $this->assertContains('Template-Type: ReDIF-Paper 1.0', $content);
     $this->assertTemplateContent($reference, $content);
   }
@@ -253,13 +263,11 @@ class RepecIntegrationTest extends TestBase {
       ],
     ]);
 
-    $serie_directory_config = $this->repec->getEntityBundleSettings('serie_directory', $reference->getEntityTypeId(), $reference->bundle());
-    $directory = "{$this->repec->getArchiveDirectory()}{$serie_directory_config}/";
-    $file_name = "{$serie_directory_config}_{$reference->getEntityTypeId()}_{$reference->id()}.rdf";
+    $template_path = $this->getRepecTemplatePath($reference);
+    $this->assertFileExists($template_path);
 
-    $content = file_get_contents("$directory/$file_name");
+    $content = file_get_contents($template_path);
     $this->assertContains('Template-Type: ReDIF-Paper 1.0', $content);
-    $this->assertFileExists("$directory/$file_name");
     $this->assertTemplateContent($reference, $content);
   }
 
@@ -330,13 +338,11 @@ class RepecIntegrationTest extends TestBase {
       ],
     ]);
 
-    $serie_directory_config = $this->repec->getEntityBundleSettings('serie_directory', $reference->getEntityTypeId(), $reference->bundle());
-    $directory = "{$this->repec->getArchiveDirectory()}{$serie_directory_config}/";
-    $file_name = "{$serie_directory_config}_{$reference->getEntityTypeId()}_{$reference->id()}.rdf";
+    $template_path = $this->getRepecTemplatePath($reference);
+    $this->assertFileExists($template_path);
 
-    $content = file_get_contents("$directory/$file_name");
+    $content = file_get_contents($template_path);
     $this->assertContains('Template-Type: ReDIF-Chapter 1.0', $content);
-    $this->assertFileExists("$directory/$file_name");
     $this->assertTemplateContent($reference, $content);
   }
 
@@ -407,13 +413,11 @@ class RepecIntegrationTest extends TestBase {
       ],
     ]);
 
-    $serie_directory_config = $this->repec->getEntityBundleSettings('serie_directory', $reference->getEntityTypeId(), $reference->bundle());
-    $directory = "{$this->repec->getArchiveDirectory()}{$serie_directory_config}/";
-    $file_name = "{$serie_directory_config}_{$reference->getEntityTypeId()}_{$reference->id()}.rdf";
+    $template_path = $this->getRepecTemplatePath($reference);
+    $this->assertFileExists($template_path);
 
-    $content = file_get_contents("$directory/$file_name");
+    $content = file_get_contents($template_path);
     $this->assertContains('Template-Type: ReDIF-Software 1.0', $content);
-    $this->assertFileExists("$directory/$file_name");
     $this->assertTemplateContent($reference, $content);
   }
 
@@ -490,61 +494,13 @@ class RepecIntegrationTest extends TestBase {
       ],
     ]);
 
-    $serie_directory_config = $this->repec->getEntityBundleSettings('serie_directory', $reference->getEntityTypeId(), $reference->bundle());
-    $directory = "{$this->repec->getArchiveDirectory()}{$serie_directory_config}/";
-    $file_name = "{$serie_directory_config}_{$reference->getEntityTypeId()}_{$reference->id()}.rdf";
-    $this->assertFileExists("$directory/$file_name");
+    $template_path = $this->getRepecTemplatePath($reference);
+    $this->assertFileExists($template_path);
 
-    $content = file_get_contents("$directory/$file_name");
+    $content = file_get_contents($template_path);
     $this->assertContains('Template-Type: ReDIF-Book 1.0', $content);
     $this->assertContains("Provider-Name: {$publisher}", $content);
     $this->assertTemplateContent($reference, $content);
-  }
-
-  /**
-   * Asserts template content of a reference.
-   *
-   * @param \Drupal\bibcite_entity\Entity\ReferenceInterface $reference
-   *   The reference entity. This is used as the expected data.
-   * @param string $content
-   *   The actual content.
-   */
-  protected function assertTemplateContent(ReferenceInterface $reference, $content) {
-    $this->assertContains("Title: {$reference->label()}", $content);
-    $this->assertContains("Number: {$reference->uuid()}", $content);
-    $this->assertContains("Handle: RePEc:{$this->defaultRepecSettings['archive_code']}:{$this->repec->getEntityBundleSettings('serie_type', $reference->getEntityTypeId(), $reference->bundle())}:{$reference->id()}", $content);
-
-    // Assert keywords.
-    $keyword_names = [];
-    foreach ($reference->get('keywords') as $item) {
-      $keyword = Keyword::load($item->getValue()['target_id']);
-      $keyword_names[] = $keyword->getName();
-    }
-    $keyword_names_in_template = implode(', ', $keyword_names);
-    $this->assertContains("Keywords: {$keyword_names_in_template}", $content);
-
-    // Assert files.
-    $files_data = [];
-    foreach ($reference->get('field_files') as $item) {
-      $file = File::load($item->getValue()['target_id']);
-      $files_data[] = [
-        'url' => file_create_url($file->getFileUri()),
-        'type' => ucfirst($file->getMimeType()),
-      ];
-    }
-
-    foreach ($files_data as $datum) {
-      $this->assertContains("File-URL: {$datum['url']}", $content);
-      $this->assertContains("File-Format: {$datum['type']}", $content);
-    }
-
-    // Assert authors.
-    foreach ($reference->get('author') as $item) {
-      $contributor = Contributor::load($item->getValue()['target_id']);
-      $this->assertContains("Author-Name: {$contributor->getName()}", $content);
-    }
-
-    $this->assertContains("Abstract: {$reference->get('bibcite_abst_e')->getValue()[0]['value']}", $content);
   }
 
   /**
@@ -555,6 +511,11 @@ class RepecIntegrationTest extends TestBase {
     $repec_settings_mut = $this->configFactory->getEditable('repec.settings');
     $repec_settings_mut->setData($this->defaultRepecSettings);
     $repec_settings_mut->save(TRUE);
+
+    /** @var \Drupal\Core\Config\Config $publications_settings_mut */
+    $publications_settings_mut = $this->configFactory->getEditable('os_publications.settings');
+    $publications_settings_mut->setData($this->defaultPublicationSettings);
+    $publications_settings_mut->save(TRUE);
 
     parent::tearDown();
   }

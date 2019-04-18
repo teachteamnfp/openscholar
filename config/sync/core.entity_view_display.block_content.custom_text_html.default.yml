@@ -1,0 +1,22 @@
+uuid: fec06103-19ae-44f3-942a-64e1520a5739
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.custom_text_html
+    - field.field.block_content.custom_text_html.body
+    - field.field.block_content.custom_text_html.field_css_classes
+  module:
+    - layout_builder
+third_party_settings:
+  layout_builder:
+    sections: {  }
+id: block_content.custom_text_html.default
+targetEntityType: block_content
+bundle: custom_text_html
+mode: default
+content: {  }
+hidden:
+  body: true
+  field_css_classes: true
+  langcode: true

@@ -1,0 +1,65 @@
+.main-container {
+  background: $color-white;
+  border-left: 1px solid $color-light-gray3;
+  border-right: 1px solid $color-light-gray3;
+  margin-top: 0;
+  .node-readmore {
+    a {
+      border-bottom: none;
+      font-size: 12px;
+      font-weight: bold;
+      float: none;
+      padding-right: 11px;
+      position: relative;
+      &:after {
+        background: url("../../os_base/images/basesprite.png") no-repeat 3px -572px;
+        padding-right: 11px;
+        content: '';
+      }
+    }
+  }
+  section {
+    .content-inner {
+      h2, h3, h4 {
+        font-family: georgia,sans-serif;
+        font-weight: normal;
+      }
+    }
+    .field-name-body {
+      h2 {
+        font-size: 24px;
+        padding-bottom: 0;
+      }
+      h3 {
+        font-size: 22px;
+      }
+      h4 {
+        font-size: 19px;
+      }
+    }
+  }
+}
+.more-link {
+  font-size: 12px;
+  font-weight: bold;
+}
+h2.block-title {
+  background: none repeat scroll 0 0 transparent;
+  color: $color-gray;
+  font-family: arial,sans-serif;
+  font-size: 0.75em;
+  font-weight: bold;
+  letter-spacing: 0;
+  line-height: 16px;
+  text-transform: uppercase;
+  padding-bottom: 1em;
+  margin-bottom: 0;
+}
+.front {
+  .content-inner {
+    .block {
+      border-top: 4px solid $color-regent-gray;
+      margin-bottom: 20px;
+    }
+  }
+}

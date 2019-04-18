@@ -1,0 +1,22 @@
+uuid: 5964c79a-07ca-48c4-aa92-9f5c6645a00c
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.publication_types
+    - field.field.block_content.publication_types.field_display_count
+    - field.field.block_content.publication_types.field_types_whitelist
+  module:
+    - layout_builder
+third_party_settings:
+  layout_builder:
+    sections: {  }
+id: block_content.publication_types.default
+targetEntityType: block_content
+bundle: publication_types
+mode: default
+content: {  }
+hidden:
+  field_display_count: true
+  field_types_whitelist: true
+  langcode: true

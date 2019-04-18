@@ -49,3 +49,5 @@ filter_publication_types:
 citation_distribute_autoflags:
   citation_distribute_googlescholar: false
   citation_distribute_sword_dash: false
+  citation_distribute_repec: false
+citation_distribute_module_mode: ''

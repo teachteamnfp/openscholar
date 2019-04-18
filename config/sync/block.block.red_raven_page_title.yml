@@ -1,0 +1,20 @@
+uuid: 3682645a-6943-4e56-9027-cae1cfc47dfa
+langcode: en
+status: true
+dependencies:
+  theme:
+    - red_raven
+_core:
+  default_config_hash: 7rR9chwXvdM2H8OYMAYx9Zj3GGlPMrZp_M3ZA4thYTk
+id: red_raven_page_title
+theme: red_raven
+region: content
+weight: -7
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  provider: core
+  label_display: '0'
+visibility: {  }

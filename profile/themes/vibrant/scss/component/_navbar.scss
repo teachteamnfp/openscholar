@@ -13,65 +13,82 @@
       width: 100%;
     }
   }
-}
-/***** navbar nav *****/
-.navbar-nav {
-  > li {
-    > a {
-      color: $color-gray1;
-      font-family: Georgia,Baskerville,Palatino,'Palatino Linotype','Book Antiqua','Times New Roman',serif;
-      font-weight: normal;
-      padding: 12px 15px;
-      background: $color-white;
-      font-size: 20px;
-      transition: color 0.25s linear;
-      &:hover,
-      &:active,
-      &:focus,
-      &.is-active,
-      &.is-active:hover {
-        background: $color-gray1;
-        color: $color-white;
+  /***** navbar nav *****/
+  .navbar-nav {
+    > li {
+      @media #{$mobile} {
+        border-bottom: 1px solid $color-light-gray8;
       }
-    }
-    &.open,
-    &.active {
-      > a,
-      > a:hover,
-      > a:active,
-      > a:focus {
-        background: $color-gray1;
-        color: $color-white;
+      > a {
+        color: $color-gray1;
+        font-family: Georgia,Baskerville,Palatino,'Palatino Linotype','Book Antiqua','Times New Roman',serif;
+        font-weight: normal;
+        padding: 12px 15px;
+        background: $color-white;
+        font-size: 20px;
+        transition: color 0.25s linear;
+        &:hover,
+        &:active,
+        &:focus,
+        &.is-active,
+        &.is-active:hover {
+          background: $color-gray1;
+          color: $color-white;
+        }
+      }
+      &.open,
+      &.active {
+        > a,
+        > a:hover,
+        > a:active,
+        > a:focus {
+          background: $color-gray1;
+          color: $color-white;
+        }
       }
     }
   }
-}
-/**** dropdown menu ****/
-.dropdown-menu {
-  background: $color-gray2;
-  >li {
-    >a {
-      color: #65ACFF;
-      font-family: Arial,
-      Helvetica,
-      sans-serif;
-      font-weight: bold;
-      padding: 10px 15px;
-      text-transform: uppercase;
-      &:hover,
-      &:active {
-        color: $color-white;
-        background: $color-gray2;
-      }
+  /**** dropdown menu ****/
+  .dropdown-menu {
+    background: $color-gray2;
+    @media #{$mobile} {
+      background: $color-white;
     }
-    &.active {
-      a {
-        color: #65ACFF;
-        background: $color-gray2;
-
-        &:hover {
+    >li {
+      >a {
+        color: $color-blue1;
+        text-transform: capitalize;
+        @media #{$mobile} {
+          color: $color-gray1;
+          font-size: 20px;
+          font-family: Georgia,Baskerville,Palatino,'Palatino Linotype','Book Antiqua','Times New Roman',serif;
+        }
+        &:hover,
+        &:active {
           color: $color-white;
           background: $color-gray2;
+          @media #{$mobile} {
+            color: $color-gray1;
+            background: $color-white;
+          }
+        }
+      }
+      &.active {
+        a {
+          color: $color-blue1;
+          background: $color-gray2;
+          @media #{$mobile} {
+            background: $color-white;
+            color: $color-gray1;
+          }
+          &:hover {
+            color: $color-white;
+            background: $color-gray2;
+            @media #{$mobile} {
+              background: $color-white;
+              color: $color-gray1;
+            }
+          }
         }
       }
     }

@@ -1,3 +1,35 @@
 header.navbar {
   border: 0 none;
 }
+.header-container {
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  ul.nav {
+    li {
+      margin-right: 10px;
+      a {
+        font: bold 13px arial,sans-serif;
+        padding: 0.3em 0 0.3em 10px;
+        text-decoration: none;
+        text-transform: capitalize;
+        &:hover, &:focus, &:active, &:visited {
+          background: none;
+        }
+      }
+      &.active, &.open{
+        a {
+          background: none;
+        }
+      }
+    }
+  }
+  .region {
+    > * {
+      margin-bottom: 10px;
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}

@@ -1,0 +1,118 @@
+@import '../../os_base/scss/base/breakpoints';
+//colors
+$color_mexican_red_approx: #a51c30;
+$color_crown_of_thorns_approx: #7b272b;
+$white: #fff;
+$color_concrete_approx: #f3f3f1;
+$color_boulder_approx: #78777b;
+$color-light-gray: #f4f4f4;
+.navbar-collapse {
+  background: $color_mexican_red_approx;
+  padding: 0 !important;
+  @media #{$mobile} {
+  }
+  /***** navbar nav *****/
+  .navbar-nav {
+    > li {
+      @media #{$mobile} {
+        border-bottom: 1px solid $color-light-gray;
+        border-top: 0 none;
+      }
+      > a {
+        color: $white;
+        @media #{$mobile} {
+          color: $white;
+        }
+        &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
+          background: $color_crown_of_thorns_approx;
+        }
+      }
+      &.open, &.active {
+        > a, > a:hover, > a:active, > a:focus {
+          background: $color_crown_of_thorns_approx;
+        }
+      }
+    }
+  }
+  /**** dropdown menu ****/
+  .dropdown-menu {
+    background: $color_crown_of_thorns_approx;
+    @media #{$mobile} {
+      background: none;
+    }
+    > li {
+      > a {
+        background: none;
+        color: $white;
+        @media #{$mobile} {
+          font-size: 19px;
+          padding-left: 20px;
+        }
+        &:hover, &:active {
+          color: $white;
+          background: none;
+          @media #{$mobile} {
+            color: $white;
+          }
+        }
+      }
+      &.active {
+        a {
+          color: $white;
+          background: none;
+          @media #{$mobile} {
+            color: $white;
+          }
+          &:hover {
+            color: $white;
+            background: none;
+            @media #{$mobile} {
+              color: $white;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+.header-container {
+  background: $color_concrete_approx;
+  ul.nav a {
+    color: $color_mexican_red_approx;
+    font-size: 12px;
+  }
+}
+.content-inner {
+  .block.block-boxes-os_boxes_columns .block {
+    border-top: 3px solid $color_boulder_approx;
+  }
+  .field--name-body h2 {
+    color: $color_mexican_red_approx;
+  }
+}
+.comment-wrapper {
+  border-top: 3px solid $color_boulder_approx;
+}
+.cke_editable {
+  h2 {
+    color: $color_mexican_red_approx;
+  }
+  h3 {
+    color: $color_mexican_red_approx;
+  }
+  h4 {
+    color: $color_mexican_red_approx;
+  }
+}
+aside .region >.block {
+  border-top: 3px solid $color_boulder_approx;
+}
+.path-front .content-inner .block {
+  border-top: 3px solid $color_boulder_approx;
+}
+.path-person .block-inner {
+  border-top: 3px solid $color_boulder_approx;
+}
+h2.block-title {
+  color: $color_mexican_red_approx;
+}

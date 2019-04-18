@@ -1,0 +1,20 @@
+uuid: bc659fbc-9c6d-4cc4-be9f-167dfcf7716d
+langcode: en
+status: true
+dependencies:
+  theme:
+    - modern
+_core:
+  default_config_hash: bWKNaW7LVbt2WSohqjBXvVOjGDK3N3VCcbLF5DUdkok
+id: modern_local_actions
+theme: modern
+region: content
+weight: -5
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Primary admin actions'
+  provider: core
+  label_display: '0'
+visibility: {  }

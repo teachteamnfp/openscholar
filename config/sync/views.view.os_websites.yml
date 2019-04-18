@@ -349,7 +349,6 @@ display:
           entity_type: group
           entity_field: label
           plugin_id: string
-      filters: {  }
       sorts:
         created:
           id: created

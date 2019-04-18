@@ -1,8 +1,0 @@
-uuid: 76e031c2-8d1b-4cf2-ba94-bfb59fb80856
-langcode: en
-status: true
-dependencies: {  }
-id: custom_text
-label: 'Custom Text'
-revision: 1
-description: ''

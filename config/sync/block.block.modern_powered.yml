@@ -1,0 +1,22 @@
+uuid: 25ab1891-1831-4491-9d7f-46f363453a26
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - modern
+_core:
+  default_config_hash: _Rn2O1zYPcAqoC9OZ3i3FKflBCe0GhD_qYZM_SH_-Mw
+id: modern_powered
+theme: modern
+region: footer
+weight: -6
+provider: null
+plugin: system_powered_by_block
+settings:
+  id: system_powered_by_block
+  label: 'Powered by Drupal'
+  provider: system
+  label_display: '0'
+visibility: {  }

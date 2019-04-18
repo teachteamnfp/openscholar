@@ -1,0 +1,91 @@
+uuid: f2440914-89a4-4287-a9d0-d49df5b7211d
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.twitter_feed
+    - field.field.block_content.twitter_feed.field_twitter_exclude_retweets
+    - field.field.block_content.twitter_feed.field_twitter_followme_link
+    - field.field.block_content.twitter_feed.field_twitter_is_followme_link
+    - field.field.block_content.twitter_feed.field_twitter_num_items
+    - field.field.block_content.twitter_feed.field_twitter_type
+    - field.field.block_content.twitter_feed.field_twitter_username
+  module:
+    - content_moderation
+    - field_layout
+    - layout_discovery
+    - link
+third_party_settings:
+  field_layout:
+    id: layout_onecol
+    settings: {  }
+id: block_content.twitter_feed.default
+targetEntityType: block_content
+bundle: twitter_feed
+mode: default
+content:
+  field_twitter_exclude_retweets:
+    weight: 104
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_twitter_followme_link:
+    weight: 108
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+    region: content
+  field_twitter_is_followme_link:
+    weight: 107
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_twitter_num_items:
+    weight: 103
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_twitter_type:
+    weight: 101
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_twitter_username:
+    weight: 102
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  info:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  langcode:
+    type: language_select
+    weight: 2
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+  moderation_state:
+    type: moderation_state_default
+    weight: 100
+    settings: {  }
+    region: content
+    third_party_settings: {  }
+hidden: {  }

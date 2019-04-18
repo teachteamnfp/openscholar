@@ -1,0 +1,92 @@
+html,
+body {
+	background: $color-white;
+	color: $color-gray;
+}
+/* Titles & Type */
+.page-header,
+.node--title,
+.page-search .title a,
+.more-link,
+.links a,
+footer ul.nav a,
+.content-inner h2,
+.content-inner h3,
+.content-inner h4,
+.field--name-body h3,
+.field--name-body h4 {
+	font-family: Georgia, Baskerville, Palatino, 'Palatino Linotype', 'Book Antiqua', 'Times New Roman', serif;
+}
+h1#page-header,
+h1.node--title,
+.page-search .title a {
+	font-weight: normal;
+	font-size: 18px;
+	margin-bottom: 18px;
+}
+.content-inner {
+  h2, h3, h4 {
+    margin-bottom: 16px;
+    font-weight: normal;
+  }
+  .field-name-body {
+    h2 {
+	    font-size: 25px;
+    }
+    h3 {
+      font-size: 21px;
+      font-weight: normal;
+    }
+    h4 {
+      font-size: 19px;
+      font-weight: normal;
+    }
+  }
+  h2.field-label {
+    font-family: arial;
+  }
+}
+h1#page-header {
+	font-size: 30px;
+	margin: 15px 0 30px;
+}
+.path-search {
+  h1#page-header {
+    margin-top:10px;
+  }
+}
+.not-front.two-sidebars {
+  .main-container {
+    .content-inner {
+    	border-right: 1px solid $color-light-gray2;
+    }
+  }
+}
+%border-top {
+  border-top: 3px solid $color-blue;
+	margin-top:12px;
+}
+aside {
+  .region {
+    > .block {
+      @extend %border-top;
+      margin-bottom: 12px;
+      &:before {
+        margin-top: 12px;
+      }
+    }
+  }
+  nav {
+    border: 0;
+  }
+}
+.front {
+  .content-inner {
+    .block {
+      @extend %border-top;
+    }
+    nav {
+      border: 0;
+    }
+  }
+}

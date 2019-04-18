@@ -1,0 +1,22 @@
+uuid: 5dbce7a3-3467-418b-b4f4-5653ad6b8891
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - vibrant
+_core:
+  default_config_hash: Ma4mS_iNrxRc6uSgU8lcoVN4YYiEjqEby8xEpb1oBy8
+id: vibrant_content
+theme: vibrant
+region: content
+weight: -4
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  provider: system
+  label_display: '0'
+visibility: {  }

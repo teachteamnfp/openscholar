@@ -1,0 +1,22 @@
+uuid: c1cbe1eb-5f56-4514-9dac-f62af56c115f
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - documental
+_core:
+  default_config_hash: 9EoWV2Lot6FVSr50t4hoKgiz1LIXYWNG-IIPYsWxBqo
+id: documental_content
+theme: documental
+region: content
+weight: -4
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  provider: system
+  label_display: '0'
+visibility: {  }

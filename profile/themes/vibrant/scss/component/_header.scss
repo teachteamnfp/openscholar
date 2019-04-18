@@ -3,3 +3,13 @@ header {
   color: $color-gray1;
   margin-bottom: 0;
 }
+.header-container {
+  ul.nav {
+    li {
+      a {
+        text-transform: uppercase;
+        color: $color-blue2;
+      }
+    }
+  }
+}

@@ -15,6 +15,10 @@ aside {
         font-size: 14px;
         td {
           border: 0 none;
+          &.fc-today {
+            color: #215990;
+            font-weight: bold;
+          }
         }
         .fc-row {
           height: auto !important;
@@ -32,14 +36,37 @@ aside {
         .fc-scroller.fc-day-grid-container {
           height: auto !important;
         }
+        .fc-bg {
+          td.fc-today {
+            background: none;
+            border: 1px solid $color-light-gray;
+          }
+        }
       }
     }
   }
 }
-
+.mini-calendar {
+  .fc-header-toolbar {
+    margin-bottom: 5px;
+  }
+  .fc-left {
+    display: none;
+  }
+  .fc-center {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    h2 {
+      margin-left: 0;
+    }
+  }
+}
 /**** calendar prev next ****/
 .fc-header-toolbar {
   .ui-button {
+    color: #215990;
     &.fc-prev-button {
       background: none;
       border: 0 none;
@@ -60,6 +87,9 @@ aside {
         background-image: url(../../../themes/os_base/images/basesprite.png);
       }
     }
+    &:hover {
+      border-color: $color-gray2;
+    }
   }
   .ui-icon {
     background: url(../../../themes/os_base/images/basesprite.png) no-repeat;
@@ -77,11 +107,154 @@ aside {
   .fc-title {
     white-space: nowrap;
     overflow: hidden;
-    flex: 1;
+    flex: 1 0 70%;
     text-overflow: ellipsis;
     order: 1;
   }
   .fc-time {
     order: 2;
   }
+}
+/**** full calender ****/
+.full-calendar-view  {
+  .fc-header-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    h2 {
+      padding-bottom: 0;
+    }
+    .fc-center {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      margin-top: 17px;
+    }
+    button {
+      margin: 0;
+      background: $color-light-gray4;
+      border: 1px solid $color-light-gray5;
+      border-radius: 0;
+      &.ui-state-active {
+        background: $color-white;
+        color: $color-black;
+      }
+      &:first-child {
+        border-radius: 4px 0px 0px 4px;
+      }
+      &:last-child {
+        border-radius: 0px 4px 4px 0px;
+      }
+    }
+  }
+  td.fc-today {
+    background: none;
+    border-color: $color-light-gray6;
+    border-width: 2px;
+  }
+}
+/**** code for day event ****/
+.fc-listUpcoming-view, .fc-listWeek-view, .fc-listDay-view, .fc-listPast-view {
+  .fc-event-default,
+  .fc-event-default .fc-event-skin,
+  .fc-event-default .fc-event-time {
+    border-color: transparent;
+    border-style: solid;
+    background-color: transparent;
+    color: initial;
+    a {
+      background: none;
+      border: 0 none;
+    }
+  }
+}
+
+/**** code for upcoming/past events ****/
+.fc-listUpcoming-view, .fc-listPast-view  {
+  border: 0;
+  .fc-scroller {
+    height: auto !important;
+  }
+  tbody {
+    display: flex;
+    flex-wrap: wrap;
+    .fc-list-heading {
+      display: flex;
+      flex: 0 0 10%;
+      .ui-widget-header {
+        background: none;
+        border: 0 none;
+      }
+    }
+    .fc-list-item-parent {
+      display: flex;
+      flex: 1 1 90%;
+      flex-wrap: wrap;
+      flex-direction: column;
+      .content {
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+        border-bottom: 1px solid $color-light-gray;
+      }
+    }
+  }
+  .fc-list-heading {
+    .fc-list-heading-main {
+      width: 55px;
+      height: 67px;
+      background: url(../images/event-shield.png) no-repeat 0 0 transparent;
+      font-weight: normal;
+      text-align: center;
+      span {
+        display: block;
+        font-weight: bold;
+        line-height: 1;
+        &.event-year {
+          padding: 11px 0 0;
+          font-size: 11px;
+        }
+        &.event-start-month {
+          color: $color-gray;
+          font-size: 12px;
+          text-transform: uppercase;
+        }
+        &.event-start-day {
+          color: $color-black;
+          font-size: 18px;
+        }
+      }
+    }
+  }
+}
+/**** modal body ****/
+.modal-body {
+  .events.full {
+    .field--name-field-location, .field--name-field-recurring-date {
+      display: flex;
+      .field--label {
+        margin-right: 4px;
+      }
+    }
+  }
+}
+/**** code for all calendar ****/
+.events {
+  .field--name-field-location, .field--name-field-recurring-date {
+    display: flex;
+    .field--label {
+      margin-right: 4px;
+    }
+  }
+}
+
+/**** fc event default bg color ****/
+.fc-event-default {
+  border-color: $color-link2;
+  background-color: $color-link2;
+  a {
+    color: $color-link1;
+  }
+}
+.fc-wrapper {
+  display: flex;
 }

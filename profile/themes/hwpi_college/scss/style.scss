@@ -1,0 +1,15 @@
+@import '../../os_base/scss/base/breakpoints';
+@import 'base/variables';
+@import 'base/base';
+
+@import 'global/global';
+
+@import 'components/header';
+@import 'components/footer';
+@import 'components/sidebar';
+@import 'components/breadcrumb';
+@import 'components/navbar';
+@import 'components/search';
+@import 'components/calendar';
+
+@import 'pages/search'

@@ -1,0 +1,22 @@
+uuid: 1f56c1e9-2ad5-488c-95be-c0d4600b4559
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - slate
+_core:
+  default_config_hash: 9EoWV2Lot6FVSr50t4hoKgiz1LIXYWNG-IIPYsWxBqo
+id: slate_content
+theme: slate
+region: content
+weight: -4
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  provider: system
+  label_display: '0'
+visibility: {  }

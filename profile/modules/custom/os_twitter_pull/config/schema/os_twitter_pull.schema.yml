@@ -1,0 +1,16 @@
+os_twitter_pull.settings:
+  type: config_object
+  label: 'OS twitter settings'
+  mapping:
+    consumer_key:
+      type: string
+      label: 'Consumer key'
+    consumer_secret:
+      type: string
+      label: 'Consumer secret'
+    oauth_access_token:
+      type: string
+      label: 'Oauth access token'
+    oauth_access_token_secret:
+      type: string
+      label: 'Oauth access token secret'

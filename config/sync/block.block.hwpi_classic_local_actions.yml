@@ -1,0 +1,20 @@
+uuid: b9751d43-ee99-471c-8a0f-b1258a767d21
+langcode: en
+status: true
+dependencies:
+  theme:
+    - hwpi_classic
+_core:
+  default_config_hash: 3PBuSD8PMEdNlpJdFH76lfFZVCWydT5-3YjooJC89i8
+id: hwpi_classic_local_actions
+theme: hwpi_classic
+region: content
+weight: -5
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Primary admin actions'
+  provider: core
+  label_display: '0'
+visibility: {  }

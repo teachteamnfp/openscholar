@@ -1,11 +1,34 @@
 /**** overriding dropdown ****/
-.dropdown-menu {
-  box-shadow: none;
-  border: 0 none;
-  border-radius: 0;
-  > li {
-    > a {
-      padding: 10px 20px;
+$mobile:          "screen and (max-width: #{$screen-xs-max})";
+$tablet:          "screen and (min-width: #{$screen-sm-min})";
+$normal:          "screen and (min-width: #{$screen-md-min})";
+$wide:            "screen and (min-width: #{$screen-lg-min})";
+$grid-breakpoint: "screen and (min-width: #{$grid-float-breakpoint})";
+.navbar-collapse {
+  .dropdown-menu {
+    box-shadow: none;
+    border: 0 none;
+    border-radius: 0;
+    @media #{$mobile} {
+      display: block;
+      position: inherit;
+      background: none;
+      padding: 0 0 0 10px;
+      margin: 0;
+      float: none;
+    }
+    > li {
+      > a {
+        font-family: arial;
+        font-size: 13px;
+        font-weight: bold;
+        padding: 10px 20px;
+        @media #{$mobile} {
+          font-weight: normal;
+          padding: 6px 20px;
+          font-size: 20px;
+        }
+      }
     }
   }
 }

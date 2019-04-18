@@ -5,8 +5,15 @@
  * Customisations for Os Events.
  */
 
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Link;
+use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Cache\RefinableCacheableDependencyInterface;
+use Drupal\views\ViewExecutable;
 
 /**
  * Implemets hook_preprocess_page().
@@ -22,12 +29,227 @@ function os_events_preprocess_page(&$variables) {
  * Implements hook_menu_local_tasks_alter().
  */
 function os_events_menu_local_tasks_alter(&$data, $route_name, RefinableCacheableDependencyInterface &$cacheability) {
-  $node = \Drupal::routeMatch()->getParameter('node');
-  if ($node instanceof NodeInterface && $node->bundle() == 'events' && !$node->field_signup->value) {
-    foreach ($data['tabs'][0] as $task => $tab) {
-      if (strpos($task, 'rng') !== FALSE) {
-        unset($data['tabs'][0][$task]);
+
+  $node = Drupal::routeMatch()->getParameter('node');
+
+  if ($node && $node->access('update') !== TRUE) {
+    return;
+  }
+
+  if ($node instanceof NodeInterface && $node->bundle() == 'events') {
+    if (isset($data['tabs'][0])) {
+      foreach ($data['tabs'][0] as $task => $tab) {
+        if (strpos($task, 'rng') !== FALSE && !$node->field_signup->value) {
+          unset($data['tabs'][0][$task]);
+        }
+        unset($data['tabs'][0]['rng.local_tasks:rng.event.node.register.type_list']);
+        if (strpos($task, 'rng.event.node.event') !== FALSE) {
+          $data['tabs'][0][$task]['#link']['title'] = t("Manage Registrations");
+        }
+        if ($task == 'views_view:view.rng_registrations_node.page_1') {
+          unset($data['tabs'][0][$task]);
+        }
       }
     }
+    if (isset($data['tabs'][1])) {
+      unset(
+        $data['tabs'][1]['rng.local_tasks:rng.event.node.event.access'],
+        $data['tabs'][1]['rng.local_tasks:rng.event.node.event.group.list'],
+        $data['tabs'][1]['rng_date_scheduler.local_tasks:rng.event.node.event.date_scheduler']
+      );
+      $data['tabs'][1]['rng.local_tasks:rng.event.node.event.messages']['#link']['title'] = t("Email Registrants");
+    }
   }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ */
+function os_events_node_insert(EntityInterface $node) {
+  if ($node->bundle() != 'events') {
+    // Bail out if not an event node.
+    return;
+  }
+  // Set up services that we need.
+  $container = Drupal::getContainer();
+  $default_template = $container->get('os_events.default_mail_template');
+  $default_template->createDefaultTemplate($node);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ */
+function os_events_rng_rule_insert(EntityInterface $rule) {
+  // Make newly created rule active by default.
+  $rule->setIsActive(TRUE)
+    ->save();
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function os_events_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  if ($entity->bundle() != 'events' || !$entity->field_signup->value) {
+    return;
+  }
+
+  $id = $entity->id();
+  $date_switch = [];
+  $another_link = '';
+  $data = Drupal::service('os_events.registrations_helper')->anotherDateLink($build);
+
+  if ($data) {
+    $date_switch = $data['date_switch'];
+    $another_link = $data['another_link'];
+  }
+
+  // Registration link.
+  $build['registration_signup']['#markup'] = '<div id="registration-link-' . $id . '">' . t("Registration:@s", ['@s' => ' ']) .
+      os_events_generate_modal_register_link($build) . $another_link . '</div>';
+  $build['registration_signup']['#weight'] = 20;
+  if ($date_switch) {
+    $build['registration_signup_dates'] = [
+      '#types' => 'form',
+      'form' => $date_switch,
+      '#weight' => 21,
+    ];
+    $build['#attached']['library'][] = 'os_events/os_events.toggle';
+  }
+}
+
+/**
+ * Generate Registration link.
+ *
+ * @param array $build
+ *   The page build.
+ *
+ * @return string
+ *   The Signup link.
+ */
+function os_events_generate_modal_register_link(array $build) {
+  $data = Drupal::service('os_events.registrations_helper')->checkRegistrationStatus($build);
+  $nid = $build['#node']->id();
+
+  if (!isset($data['message'])) {
+    $url = Url::fromRoute('os_events.signup_modal_form', ['nid' => $nid, 'timestamp' => $data['timestamp']], [
+      'attributes' => [
+        'class' => ['use-ajax'],
+        'data-dialog-type' => 'modal',
+        'data-dialog-options' => json_encode(['width' => '100%']),
+        'id' => 'events_signup_modal_form',
+      ],
+    ]);
+    $link = Link::fromTextAndUrl('Signup for this event', $url)->toString();
+    return $link;
+  }
+  return $data['message'];
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function os_events_form_rng_event_settings_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Set registration capacity to unlimited by default.
+  if (!$form['event']['rng_capacity']['widget'][0]['unlimited_number']['#default_value']) {
+    $form['event']['rng_capacity']['widget'][0]['unlimited_number']['#default_value'] = "unlimited";
+  }
+  $form['#validate'][] = 'os_events_signup_settings_validate';
+}
+
+/**
+ * Validates Event rng settings form.
+ *
+ * @param array $form
+ *   The rng event settings form.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The rng event settings form state.
+ */
+function os_events_signup_settings_validate(array &$form, FormStateInterface &$form_state) {
+
+  $open_date = $form_state->getValue('field_open_date');
+  $close_date = $form_state->getValue('field_close_');
+  $open_date = array_shift($open_date);
+  $close_date = array_shift($close_date);
+  $node = Drupal::routeMatch()->getCurrentRouteMatch()->getParameter('node');
+  $event_start_date = $node->field_recurring_date->value;
+  $event_start_date = DrupalDateTime::createFromTimestamp(strtotime($event_start_date));
+
+  if ($open_date['value'] > $event_start_date) {
+    $form_state->setErrorByName('field_open_date', t("The Open date must be lesser than the Event Start date: @sd",
+        ['@sd' => $event_start_date]));
+  }
+  if ($close_date['value'] && $close_date['value'] < $open_date['value']) {
+    $form_state->setErrorByName('field_close_', t("The Close date must be greater than the Open date"));
+  }
+}
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function os_events_views_pre_render(ViewExecutable $view) {
+  if ($view->storage->id() == 'calendar') {
+
+    $view->element['#attached']['library'][] = 'os_fullcalendar/drupal.os_fullcalendar';
+    // Renders teaser mode of node on upcoming and past tabs
+    // which loads only event node's titles by default.
+    foreach ($view->result as $value) {
+      $nid = $value->_entity->nid->value;
+      $entity_type = 'node';
+      $view_mode = 'teaser';
+      $view_builder = \Drupal::entityTypeManager()->getViewBuilder($entity_type);
+      $storage = \Drupal::entityTypeManager()->getStorage($entity_type);
+      $node = $storage->load($nid);
+      $build = $view_builder->view($node, $view_mode);
+      $output = render($build);
+
+      $view->element['#attached']['drupalSettings']['os_events']['node'][$nid] = $output;
+    }
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Alters the artist options on artwork pages.
+ */
+function os_events_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+
+  // If not the view we are looking, move on.
+  if ($form['#id'] != 'views-exposed-form-rng-registrations-node-page-1') {
+    return FALSE;
+  }
+  $node = Drupal::requestStack()->getCurrentRequest()->get('node');
+  $nid = $node->id();
+
+  // Get occurrences.
+  $results = Drupal::service('os_events.registrations_helper')->getOccurrences($nid);
+
+  // Start building out the options for our select list.
+  $options = [];
+
+  // Push event start date into the results array.
+  $event_start_date = new \stdClass();
+  $event_start_date->field_recurring_date_value = $node->field_recurring_date->value;
+  array_unshift($results, $event_start_date);
+
+  foreach ($results as $date) {
+    $dateTimeObject = new DrupalDateTime($date->field_recurring_date_value);
+    $timestamp = $dateTimeObject->getTimestamp();
+    $offset = $dateTimeObject->getOffset();
+    $interval = DateInterval::createFromDateString((string) $offset . 'seconds');
+    $dateTimeObject->add($interval);
+    $options[$timestamp] = $dateTimeObject->format('l, F j, Y');
+  }
+
+  // Start building out our new form element.
+  $date_field = 'field_for_date_value';
+  $form[$date_field]['#type'] = 'select';
+  $form[$date_field]['#multiple'] = FALSE;
+
+  // Specify the empty option for our select list.
+  $form[$date_field]['#empty_option'] = t('-Select a specific occurrence-');
+
+  // Add the $options from above to our select list.
+  $form[$date_field]['#options'] = $options;
+  unset($form[$date_field]['#size']);
 }

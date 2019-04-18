@@ -1,4 +1,5 @@
 .main-container {
+  margin-top: 0;
   &:before {
     content: "";
     background-image: url(../images/standard-body-gradient.png);
@@ -8,7 +9,7 @@
     display: block;
     height: 100%;
     margin-left: -50vw;
-    left: 50%;
+    left: 49.6%;
     .path-front & {
       background-position: 0 -252px;
     }
@@ -29,15 +30,15 @@
       font-size: 1.2em;
     }
   }
-  .row {
-    padding-top: 40px;
+  > .row {
+    padding-top: 65px;
   }
 }
 .not-front {
   .main-container {
     section {
       .content-inner {
-        padding: 0 30px 20px;
+        padding: 0 20px 20px;
         border: 1px solid $color-light-gray1;
         background: $color-white;
         box-shadow: 0 1px 2px 0 $color-light-gray1;
@@ -54,7 +55,7 @@
   }
   &.two-sidebars {
     .main-container {
-      section {
+      .row > section {
         border-right: 1px solid $color-light-gray4;
       }
     }

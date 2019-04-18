@@ -1,0 +1,22 @@
+uuid: ea80ceea-2c3c-49e8-a6e3-e5c2c3e63cb7
+langcode: en
+status: true
+dependencies:
+  theme:
+    - hwpi_sterling
+_core:
+  default_config_hash: tL5y_mmeFsIx52co0DZuTo0CAFt28YcliTwp4MVdszU
+id: hwpi_sterling_local_tasks
+theme: hwpi_sterling
+region: content
+weight: -6
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: Tabs
+  provider: core
+  label_display: '0'
+  primary: true
+  secondary: true
+visibility: {  }

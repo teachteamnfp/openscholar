@@ -2,3 +2,5 @@ services:
   plugin.manager.os_widgets:
     class: Drupal\os_widgets\OsWidgetsManager
     parent: default_plugin_manager
+  os_widgets.rss_helper:
+    class: Drupal\os_widgets\Helper\RssHelper

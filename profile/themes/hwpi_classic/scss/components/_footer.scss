@@ -1,0 +1,25 @@
+/**** footer ****/
+footer {
+  background: url(../images/footer-top-gradiant.png) repeat-x 0 0 #f3f3f1;
+  ul.nav {
+    a {
+      font-size: 12px;
+      font-family: arial;
+      text-transform: uppercase;
+    }
+    li.dropdown {
+      font-weight: bold;
+      ul {
+        li {
+          font-weight: normal;
+          a {
+            font-family: arial;
+            text-transform: none;
+            font-family: georgia;
+            font-size: 16px;
+          }
+        }
+      }
+    }
+  }
+}

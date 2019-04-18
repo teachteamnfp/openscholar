@@ -1,0 +1,24 @@
+uuid: 202db691-a139-45bb-9ebf-62b082fe00c8
+langcode: en
+status: true
+dependencies:
+  module:
+    - group
+  theme:
+    - hwpi_classic
+_core:
+  default_config_hash: uUqSWw_SQMcgkXO6tMM8zdi-aNH80x4VNgEdcGClWbg
+id: hwpi_classic_group_operations
+theme: hwpi_classic
+region: content
+weight: -1
+provider: null
+plugin: group_operations
+settings:
+  id: group_operations
+  label: 'Group operations'
+  provider: group
+  label_display: visible
+  context_mapping:
+    group: '@group.group_route_context:group'
+visibility: {  }

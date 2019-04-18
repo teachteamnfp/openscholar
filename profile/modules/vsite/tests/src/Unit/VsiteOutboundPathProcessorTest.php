@@ -9,7 +9,9 @@ use Drupal\vsite\Pathprocessor\VsiteOutboundPathProcessor;
  * Class VsiteOutboundPathProcessorTest.
  *
  * @package Drupal\Tests\vsite\Unit
+ * @group unit
  * @group vsite
+ * @group wip
  * @coversDefaultClass \Drupal\vsite\PathProcessor\VsiteOutboundPathProcessor
  */
 class VsiteOutboundPathProcessorTest extends UnitTestCase {

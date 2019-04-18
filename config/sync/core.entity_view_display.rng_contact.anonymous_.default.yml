@@ -1,0 +1,29 @@
+uuid: 25d3bf5e-e75e-47df-b801-9adf6ba455c2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.rng_contact.anonymous_.field_department
+    - field.field.rng_contact.anonymous_.field_email
+    - rng_contact.rng_contact_type.anonymous_
+id: rng_contact.anonymous_.default
+targetEntityType: rng_contact
+bundle: anonymous_
+mode: default
+content:
+  field_department:
+    weight: 1
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_email:
+    weight: 0
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+hidden: {  }

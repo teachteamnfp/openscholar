@@ -1,0 +1,256 @@
+@import '../../os_base/scss/base/breakpoints';
+//colors
+$color_tundora_approx: #444;
+$color_tapa_approx: #777;
+$color_red_stage_approx: #d16103;
+$color_st_tropaz_approx: #215990;
+$color_concrete_approx: #f3f3f1;
+$color_steel_blue_approx: #4e84c4;
+$color_cape_cod_approx: #434343;
+$white: #fff;
+$color_regent_gray_approx: #8996a0;
+$color_mountain_mist_approx: #999;
+$black: #000;
+$color_masala_approx: #3d3d3d;
+$color_picton_blue_approx: #57acff;
+
+//fonts
+$font_0: arial;
+$font_1: News Cycle;
+$font_2: arial !important;
+$font_3: georgia;
+
+//@extend-elements
+%extend_1 {
+  background: $color_concrete_approx;
+  color: $black;
+  font-size: 1.14em;
+  line-height: 18px;
+}
+
+@import url(https://fonts.googleapis.com/css?family=News+Cycle);
+body {
+  font-family: $font_0;
+  color: $color_tundora_approx;
+}
+h1 {
+  font-family: $font_1, $font_2;
+  a {
+    font-family: $font_1, $font_2;
+  }
+  &.page-header {
+    font-family: $font_1, $font_2;
+    color: $color_red_stage_approx;
+    font-size: 27px;
+  }
+}
+h2 {
+  font-family: $font_1, $font_2;
+  a {
+    font-family: $font_1, $font_2;
+  }
+  &.block-title {
+    font-size: 1.14em;
+  }
+}
+h3 {
+  font-family: $font_1, $font_2;
+  a {
+    font-family: $font_1, $font_2;
+  }
+}
+h4 {
+  font-family: $font_1, $font_2;
+  a {
+    font-family: $font_1, $font_2;
+  }
+}
+#boxes-box-site_info {
+  color: $color_tapa_approx;
+  a {
+    font-family: $font_1, $font_2;
+  }
+  h1 {
+    a {
+      font-weight: bold;
+      font-size: 30px;
+      color: $color_red_stage_approx;
+    }
+    + h2 {
+      margin-bottom: 0;
+    }
+  }
+  p {
+    margin-bottom: 20px;
+    font-family: $font_0;
+    font-size: 15px;
+    a {
+      color: $color_st_tropaz_approx;
+    }
+  }
+}
+.content-inner {
+  p {
+    font-family: $font_3;
+  }
+  li {
+    font-family: $font_3;
+  }
+  .block.block-boxes-os_boxes_manual_list {
+    border-top: 1px dotted $color_mountain_mist_approx;
+  }
+}
+.navbar-collapse {
+  background: $color_red_stage_approx;
+  @media #{$mobile} {
+    padding: 0 !important;
+  }
+  /***** navbar nav *****/
+  .navbar-nav {
+    > li {
+      @media #{$mobile} {
+        border-bottom: 1px solid $white;
+        border-top: 0 none;
+      }
+      > a {
+        @media #{$mobile} {
+          color: $white;
+        }
+        &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
+          background: $color_concrete_approx;
+          color: $color_st_tropaz_approx;
+        }
+      }
+      &.open, &.active {
+        > a, > a:hover, > a:active, > a:focus {
+          background: $color_concrete_approx;
+          color: $color_st_tropaz_approx;
+          @media #{$mobile} {
+            margin: 0 !important;
+          }
+        }
+
+      }
+    }
+  }
+  /**** dropdown menu ****/
+  ul.dropdown-menu {
+    background: $color_concrete_approx;
+    @media #{$mobile} {
+      background: none;
+    }
+    > li {
+      > a {
+        color: $color_st_tropaz_approx;
+        background: none;
+        @media #{$mobile} {
+          font-size: 19px;
+          padding-left: 20px;
+          color: $white;
+        }
+        &:hover, &:active {
+          color: $color_st_tropaz_approx !important;
+          background: none !important;
+          @media #{$mobile} {
+            color: $white;
+          }
+        }
+      }
+      &.active {
+        a {
+          color: $color_st_tropaz_approx;
+          background: none;
+          @media #{$mobile} {
+            color: $white;
+          }
+          &:hover {
+            color: $color_st_tropaz_approx;
+            background: none;
+            @media #{$mobile} {
+              color: $white;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+.header-container {
+  background: $color_concrete_approx;
+  ul.nav li a {
+    color: $color_st_tropaz_approx;
+  }
+}
+footer {
+  background: $color_cape_cod_approx;
+  color: $white;
+  border-top: 6px solid $color_tapa_approx;
+  a {
+    color: $white;
+  }
+  .footer-login {
+    background: none;
+    border-left: none;
+    color: $color_picton_blue_approx;
+    //Instead of the line below you could use @include text-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+    text-shadow: none;
+    padding: 0;
+    font-size: 13px;
+  }
+  ul.menu li a.menu-heading {
+    font-size: 1.14em;
+  }
+}
+.section-nav {
+  .menu-depth-1>a {
+    background-color: $color_regent_gray_approx;
+  }
+  .expanded.menu-depth-2>a {
+    background-color: $color_mountain_mist_approx;
+    &:hover {
+      background-color: $color_tapa_approx;
+    }
+  }
+}
+.comment-wrapper {
+  border-top: 1px dotted $color_mountain_mist_approx;
+}
+.search-block-form {
+  label {
+    color: $color_masala_approx;
+  }
+  .form-submit {
+    background: $color_red_stage_approx;
+    border-color: $color_red_stage_approx;
+  }
+}
+.not-front .content-inner p {
+  font-family: $font_3;
+}
+.cke_editable * {
+  font-family: $font_3;
+}
+div.tweets-pulled-listing div.tweet-divider {
+  border-top: 1px dotted $color_mountain_mist_approx;
+}
+.path-front .content-inner .block {
+  border-top: 1px dotted $color_mountain_mist_approx;
+}
+.path-person .block-inner {
+  border-top: 1px dotted $color_mountain_mist_approx;
+}
+.path-node-type-person .content-inner h2.block-title {
+  @extend %extend_1;
+}
+.sidebar .block h2.block-title {
+  @extend %extend_1;
+}
+a.rslides_nav {
+  background-color: $color_red_stage_approx;
+}
+.node-readmore a {
+  font-weight: normal;
+}
+.ui-tabs ul.ui-tabs-nav li.ui-tabs-active {
+  background: $color_red_stage_approx;
+}

@@ -1,0 +1,20 @@
+uuid: 34ddf639-f7be-4a7f-a268-f6dd32c3c65e
+langcode: en
+status: true
+dependencies:
+  theme:
+    - hwpi_classic
+_core:
+  default_config_hash: S3U6Yeod42jr_w5UNQ7qWAxUXdkT0js85oi6YNQeNWM
+id: hwpi_classic_page_title
+theme: hwpi_classic
+region: content
+weight: -7
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  provider: core
+  label_display: '0'
+visibility: {  }

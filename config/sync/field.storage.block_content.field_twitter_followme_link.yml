@@ -1,0 +1,19 @@
+uuid: 6ba09d2c-da4d-4cd7-887d-50d51e1250c7
+langcode: en
+status: true
+dependencies:
+  module:
+    - block_content
+    - link
+id: block_content.field_twitter_followme_link
+field_name: field_twitter_followme_link
+entity_type: block_content
+type: link
+settings: {  }
+module: link
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

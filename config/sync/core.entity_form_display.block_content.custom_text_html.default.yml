@@ -1,0 +1,61 @@
+uuid: d1c1524a-2e06-4756-ba7e-22bd6d547108
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.custom_text_html
+    - field.field.block_content.custom_text_html.body
+    - field.field.block_content.custom_text_html.field_css_classes
+  module:
+    - content_moderation
+    - field_layout
+    - layout_discovery
+    - text
+third_party_settings:
+  field_layout:
+    id: layout_onecol
+    settings: {  }
+id: block_content.custom_text_html.default
+targetEntityType: block_content
+bundle: custom_text_html
+mode: default
+content:
+  body:
+    type: text_textarea_with_summary
+    weight: 101
+    settings:
+      rows: 9
+      summary_rows: 3
+      placeholder: ''
+    third_party_settings: {  }
+    region: content
+  field_css_classes:
+    weight: 102
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  info:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  langcode:
+    type: language_select
+    weight: 2
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+  moderation_state:
+    type: moderation_state_default
+    weight: 100
+    settings: {  }
+    region: content
+    third_party_settings: {  }
+hidden: {  }

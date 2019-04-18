@@ -8,6 +8,7 @@ use Drupal\os_widgets\Plugin\OsWidgets\FeaturedPostsWidget;
  * Class FeaturedPosts.
  *
  * @group kernel
+ * @group widgets
  * @covers \Drupal\os_widgets\Plugin\OsWidgets\FeaturedPostsWidget
  */
 class FeaturedPostsBlockRenderTest extends OsWidgetsExistingSiteTestBase {
@@ -24,7 +25,7 @@ class FeaturedPostsBlockRenderTest extends OsWidgetsExistingSiteTestBase {
    */
   public function setUp() {
     parent::setUp();
-    $this->featuredPostsWidget = new FeaturedPostsWidget([], '', [], $this->entityTypeManager);
+    $this->featuredPostsWidget = $this->osWidgets->createInstance('featured_posts_widget');
   }
 
   /**
@@ -45,26 +46,6 @@ class FeaturedPostsBlockRenderTest extends OsWidgetsExistingSiteTestBase {
     $build = [];
     $this->featuredPostsWidget->buildBlock($build, $block_content);
     $this->assertSame([], $build, 'Build block should not modify the build.');
-  }
-
-  /**
-   * Test empty input parameters.
-   */
-  public function testBuildEmptyBlockOrEmptyPosts() {
-
-    $build = [];
-    $this->featuredPostsWidget->buildBlock($build, NULL);
-    $this->assertSame([], $build, 'Build empty block should not modify the build.');
-
-    $block_content = $this->createBlockContent([
-      'type' => 'featured_posts',
-      'field_display_style' => [
-        'title',
-      ],
-    ]);
-    $build = [];
-    $this->featuredPostsWidget->buildBlock($build, $block_content);
-    $this->assertSame([], $build, 'Build block with empty posts should not modify the build.');
   }
 
   /**
@@ -91,7 +72,7 @@ class FeaturedPostsBlockRenderTest extends OsWidgetsExistingSiteTestBase {
     $build = [];
     $this->featuredPostsWidget->buildBlock($build, $block_content);
     $this->assertSame('teaser', $build['field_featured_posts'][0]['#view_mode']);
-    $this->assertSame(TRUE, $build['#is_styled']);
+    $this->assertSame('styled', $build['#extra_classes'][0]);
     $this->assertSame(FALSE, $build['field_featured_posts'][0]['os_widgets_hide_node_title']);
   }
 
@@ -141,7 +122,13 @@ class FeaturedPostsBlockRenderTest extends OsWidgetsExistingSiteTestBase {
     ]);
     $randomDeltaId = 1;
     $featured_posts_widget = $this->getMockBuilder(FeaturedPostsWidget::class)
-      ->setConstructorArgs([[], 'test', [], $this->entityTypeManager])
+      ->setConstructorArgs([
+        [],
+        'test',
+        [],
+        $this->entityTypeManager,
+        $this->container->get('database'),
+      ])
       ->setMethods(['shortRandom'])
       ->getMock();
     $featured_posts_widget->method('shortRandom')

@@ -1,0 +1,24 @@
+uuid: e28521eb-bf2d-40d2-b267-6fd01a178b82
+langcode: en
+status: true
+dependencies:
+  module:
+    - group
+  theme:
+    - hwpi_sterling
+_core:
+  default_config_hash: 6GR4hHBSj0qfvLFrYnMlx57k2ESawak3ldw97p-It1Y
+id: hwpi_sterling_group_operations
+theme: hwpi_sterling
+region: content
+weight: -1
+provider: null
+plugin: group_operations
+settings:
+  id: group_operations
+  label: 'Group operations'
+  provider: group
+  label_display: visible
+  context_mapping:
+    group: '@group.group_route_context:group'
+visibility: {  }

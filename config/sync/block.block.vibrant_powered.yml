@@ -1,0 +1,22 @@
+uuid: 58781e97-623b-46f8-b107-fe9be6b176da
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - vibrant
+_core:
+  default_config_hash: v39gfbXj8sTfyUiLwNeZUblgcPc-8B5hf7FmjZkIXlc
+id: vibrant_powered
+theme: vibrant
+region: footer
+weight: -6
+provider: null
+plugin: system_powered_by_block
+settings:
+  id: system_powered_by_block
+  label: 'Powered by Drupal'
+  provider: system
+  label_display: '0'
+visibility: {  }

@@ -1,0 +1,22 @@
+uuid: 597eb2bd-b298-40e7-a4f9-f7a44c6bf9a0
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - modern
+_core:
+  default_config_hash: ofbHto_p3VasFX-78MjseL8qHbcCdRdmQuNqz4488Og
+id: modern_breadcrumbs
+theme: modern
+region: content
+weight: -8
+provider: null
+plugin: system_breadcrumb_block
+settings:
+  id: system_breadcrumb_block
+  label: Breadcrumbs
+  provider: system
+  label_display: '0'
+visibility: {  }

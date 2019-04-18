@@ -3,52 +3,60 @@
   border-top: 1px solid $color-light-gray1;
   border-bottom: 1px solid $color-light-gray1;
   padding: 8px 0 !important;
-}
-/***** navbar nav *****/
-.navbar-nav {
-  > li {
-    margin-right: 20px;
-    > a {
-      color: $color-gray;
-      padding: 8px;;
-      font-size: 18px;
-      text-transform: uppercase;
-      &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
-        background: $color-light-gray1;
-        color: $color-link;
+  /***** navbar nav *****/
+  .navbar-nav {
+    > li {
+      margin-right: 20px;
+      @media #{$mobile} {
+        border-bottom: 1px solid $color-light-gray2;
+        margin-right: 0;
+        &.last {
+          border: 0;
+        }
       }
-    }
-    &.open, &.active {
-      > a, > a:hover, > a:active, > a:focus {
-        background: $color-light-gray1;
-        color: $color-link;
+      > a {
+        color: $color-gray;
+        padding: 8px;
+        font-size: 18px;
+        text-transform: uppercase;
+        font-family: 'Lora';
+        &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
+          background: $color-light-gray1;
+          color: $color-link;
+        }
+      }
+      &.open, &.active {
+        > a, > a:hover, > a:active, > a:focus {
+          background: $color-light-gray1;
+          color: $color-link;
+        }
       }
     }
   }
-}
-/**** dropdown menu ****/
-.dropdown-menu {
-  background: $color-light-gray1;
-  > li {
-    > a {
-      color: $color-gray;
-      font-family: arial;
-      font-size: 13px;
-      font-weight: bold;
-      padding: 10px 15px;
-      text-transform: uppercase;
-      &:hover, &:active {
-        color: $color-gray1;
-        background: $color-light-gray1;
-      }
+  /**** dropdown menu ****/
+  .dropdown-menu {
+    background: $color-light-gray1;
+    @media #{$mobile} {
+      background: none;
     }
-    &.active {
-      a {
-        color: $color-gray1;
-        background: $color-light-gray1;
-        &:hover {
+    > li {
+      > a {
+        color: $color-gray;
+        text-transform: uppercase;
+        font-family: 'Lora';
+        &:hover, &:active {
           color: $color-gray1;
           background: $color-light-gray1;
+        }
+      }
+      &.active {
+        a {
+          color: $color-gray1;
+          background: $color-light-gray1;
+          &:hover {
+            color: $color-gray1;
+            background: $color-light-gray1;
+          }
         }
       }
     }
