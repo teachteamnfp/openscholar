@@ -77,12 +77,10 @@ class RssHelper implements RssHelperInterface {
   public function getOriginalViewOrder() {
     // Create an array to order by created (os_feeds).
     $original_view_order = [];
-    if (!empty($this->originalView->result)) {
-      foreach ($this->originalView->result as $index => $row) {
-        $created = $row->_entity->getCreatedTime();
-        // Handle same timestamp rows.
-        $original_view_order[$created][] = $this->output['#rows'][$index];
-      }
+    foreach ($this->originalView->result as $index => $row) {
+      $created = $row->_entity->getCreatedTime();
+      // Handle same timestamp rows.
+      $original_view_order[$created][] = $this->output['#rows'][$index];
     }
     return $original_view_order;
   }
