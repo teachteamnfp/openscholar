@@ -63,9 +63,9 @@ class AppearanceSettingsBuilderTest extends TestBase {
     $screenshot_info = $active_theme->screenshot;
 
     $this->assertNotNull($screenshot_info);
-    $this->assertTrue(isset($screenshot_info['uri']));
-    $this->assertTrue(isset($screenshot_info['alt']));
-    $this->assertTrue(isset($screenshot_info['title']));
+    $this->assertSame('profiles/contrib/openscholar/themes/hwpi_classic/screenshot.png', $screenshot_info['uri']);
+    $this->assertSame('Screenshot for Conservative theme', $screenshot_info['alt']->__toString());
+    $this->assertSame('Screenshot for Conservative theme', $screenshot_info['title']->__toString());
     $this->assertTrue(isset($screenshot_info['attributes']));
 
     // Test operations.
@@ -124,6 +124,29 @@ class AppearanceSettingsBuilderTest extends TestBase {
     $theme_config_mut->set('default', 'vibrant')->save();
     $this->assertTrue($this->appearanceSettingsBuilder->themeIsDefault($installed_themes['vibrant']));
     $this->assertFalse($this->appearanceSettingsBuilder->themeIsDefault($installed_themes['hwpi_college']));
+  }
+
+  /**
+   * Tests the screenshot uri when flavor is set as default.
+   *
+   * @covers ::addScreenshotInfo
+   */
+  public function testFlavorScreenshotInfo(): void {
+    /** @var \Drupal\Core\Config\Config $theme_config_mut */
+    $theme_config_mut = $this->configFactory->getEditable('system.theme');
+    $theme_config_mut->set('default', 'loeb')->save();
+
+    /** @var \Drupal\Core\Extension\Extension[] $themes */
+    $themes = $this->appearanceSettingsBuilder->getThemes();
+
+    $active_theme = $themes['hwpi_sterling'];
+    $screenshot_info = $active_theme->screenshot;
+
+    $this->assertNotNull($screenshot_info);
+    $this->assertSame('profiles/contrib/openscholar/themes/loeb/screenshot.png', $screenshot_info['uri']);
+    $this->assertSame('Screenshot for Loeb theme', $screenshot_info['alt']->__toString());
+    $this->assertSame('Screenshot for Loeb theme', $screenshot_info['title']->__toString());
+    $this->assertTrue(isset($screenshot_info['attributes']));
   }
 
   /**

@@ -142,14 +142,24 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
    *   Renderable theme_image structure. NULL if no screenshot found.
    */
   protected function addScreenshotInfo(Extension $theme): ?array {
+    /** @var string $theme_default */
+    $theme_default = $this->themeConfig->get('default');
+    $preview = $theme;
+
+    // Make sure that if a flavor is set as default, then its preview is being
+    // showed, not its base theme's.
+    if (isset($theme->sub_themes[$theme_default])) {
+      $preview = $this->drupalInstalledThemes[$theme_default];
+    }
+
     /** @var string|null $screenshot_uri */
-    $screenshot_uri = $this->themeSelectorBuilder->getScreenshotUri($theme);
+    $screenshot_uri = $this->themeSelectorBuilder->getScreenshotUri($preview);
 
     if ($screenshot_uri) {
       return [
         'uri' => $screenshot_uri,
-        'alt' => $this->t('Screenshot for @theme theme', ['@theme' => $theme->info['name']]),
-        'title' => $this->t('Screenshot for @theme theme', ['@theme' => $theme->info['name']]),
+        'alt' => $this->t('Screenshot for @theme theme', ['@theme' => $preview->info['name']]),
+        'title' => $this->t('Screenshot for @theme theme', ['@theme' => $preview->info['name']]),
         'attributes' => ['class' => ['screenshot']],
       ];
     }
