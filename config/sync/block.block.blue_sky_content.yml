@@ -1,0 +1,22 @@
+uuid: 6487c578-d470-4eb9-bb39-71a91721f81a
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - blue_sky
+_core:
+  default_config_hash: 9EoWV2Lot6FVSr50t4hoKgiz1LIXYWNG-IIPYsWxBqo
+id: blue_sky_content
+theme: blue_sky
+region: content
+weight: -4
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  provider: system
+  label_display: '0'
+visibility: {  }

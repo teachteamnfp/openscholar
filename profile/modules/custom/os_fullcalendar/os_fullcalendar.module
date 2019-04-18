@@ -6,30 +6,6 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\views\ViewExecutable;
-
-/**
- * Implements hook_views_pre_render().
- */
-function os_fullcalendar_views_pre_render(ViewExecutable $view) {
-  if ($view->storage->id() == 'calendar') {
-
-    $view->element['#attached']['library'][] = 'os_fullcalendar/drupal.os_fullcalendar';
-    foreach ($view->result as $value) {
-
-      $nid = $value->_entity->nid->value;
-      $entity_type = 'node';
-      $view_mode = 'teaser';
-      $view_builder = \Drupal::entityTypeManager()->getViewBuilder($entity_type);
-      $storage = \Drupal::entityTypeManager()->getStorage($entity_type);
-      $node = $storage->load($nid);
-      $build = $view_builder->view($node, $view_mode);
-      $output = render($build);
-
-      $view->element['#attached']['drupalSettings'][$nid] = $output;
-    }
-  }
-}
 
 /**
  * Implements hook_form_alter().

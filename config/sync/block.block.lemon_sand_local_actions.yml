@@ -1,0 +1,20 @@
+uuid: 79da282f-feab-4bf0-8ce4-6e94b97324e3
+langcode: en
+status: true
+dependencies:
+  theme:
+    - lemon_sand
+_core:
+  default_config_hash: 13GQpeITIJsp1kyPniXtWZfyFH87vb1xxJCHifL4UeE
+id: lemon_sand_local_actions
+theme: lemon_sand
+region: content
+weight: -5
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Primary admin actions'
+  provider: core
+  label_display: '0'
+visibility: {  }

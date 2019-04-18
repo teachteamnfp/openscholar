@@ -1,4 +1,4 @@
-uuid: 21eb4948-97a1-4fd6-9d3b-7af5cdc505c2
+uuid: 782589c9-d10e-429a-9833-77b8f6f4c2d1
 langcode: en
 status: true
 dependencies:
@@ -10,6 +10,8 @@ dependencies:
     - views
   theme:
     - vibrant
+_core:
+  default_config_hash: cfuTBTqLwRvvioRDFjAgDCEmvjpTc7S36N3BupeMd78
 id: vibrant_views_block__os_software_releases_recent_block
 theme: vibrant
 region: content

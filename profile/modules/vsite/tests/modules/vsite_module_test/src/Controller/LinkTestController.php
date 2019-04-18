@@ -6,12 +6,15 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Render\BubbleableMetadata;
 
 /**
- * Controller for testing only pages.
+ * A test controller to render various strings to a page so we can assert them.
  */
 class LinkTestController extends ControllerBase {
 
   /**
    * Print testing strings to a page so internal state can be asserted.
+   *
+   * @return array
+   *   Render array
    */
   public function linkTest() {
 

@@ -1,0 +1,22 @@
+uuid: cd7e2e01-89a6-4663-981a-419999a3abd5
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - teal_accents
+_core:
+  default_config_hash: oXUb3JZR2WW5VOdw4HrhRicCsq51mCgLfRyvheG68ck
+id: teal_accents_breadcrumbs
+theme: teal_accents
+region: content
+weight: -8
+provider: null
+plugin: system_breadcrumb_block
+settings:
+  id: system_breadcrumb_block
+  label: Breadcrumbs
+  provider: system
+  label_display: '0'
+visibility: {  }

@@ -1,0 +1,22 @@
+uuid: 120270b4-a551-4c96-89d8-098a4532ddb5
+langcode: en
+status: true
+dependencies:
+  theme:
+    - ivy_accents
+_core:
+  default_config_hash: X9I1OB0W3WlWtrK-CNcg6hNWwa8wficanpH8pYnDZDE
+id: ivy_accents_local_tasks
+theme: ivy_accents
+region: content
+weight: -6
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: Tabs
+  provider: core
+  label_display: '0'
+  primary: true
+  secondary: true
+visibility: {  }

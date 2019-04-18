@@ -1,0 +1,21 @@
+uuid: 5510ca51-baf7-48cd-a306-bf05fbb507f6
+langcode: en
+status: true
+dependencies:
+  module:
+    - rng
+id: registration.field_for_date
+field_name: field_for_date
+entity_type: registration
+type: string
+settings:
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

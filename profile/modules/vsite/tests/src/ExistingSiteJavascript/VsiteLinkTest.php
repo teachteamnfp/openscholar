@@ -9,19 +9,19 @@ use Behat\Mink\Exception\Exception;
  *
  * @package Drupal\Tests\vsite\ExistingSite
  * @group link
- * @group existing-javascript
+ * @group functional-javascript
  */
 class VsiteLinkTest extends VsiteExistingSiteJavascriptTestBase {
 
   /**
-   * The group we're testing on.
+   * The group we're testing against.
    *
    * @var \Drupal\group\Entity\GroupInterface
    */
   protected $group;
 
   /**
-   * The PURL alias of the group.
+   * The generated alias.
    *
    * @var string
    */
@@ -45,12 +45,12 @@ class VsiteLinkTest extends VsiteExistingSiteJavascriptTestBase {
         'alias' => '/' . $this->groupAlias,
       ],
     ]);
-
-    $this->vsiteContextManager = $this->container->get('vsite.context_manager');
   }
 
   /**
-   * Load the custom testing page and check its strings are correct.
+   * Test that our controller outputs the right strings.
+   *
+   * These strings depict underlying request state.
    */
   public function testLinks() {
     try {
@@ -58,7 +58,6 @@ class VsiteLinkTest extends VsiteExistingSiteJavascriptTestBase {
       $this->assertSession()->statusCodeNotEquals(404);
       $this->visit('/' . $this->groupAlias . '/link-test');
       $this->assertSession()->statusCodeEquals(200);
-      $page = $this->getCurrentPage();
       $this->assertSession()->pageTextContains('vsite active');
 
       $this->assertSession()->pageTextContains($this->groupAlias . '/link-test');

@@ -1,4 +1,4 @@
-uuid: aafa6c7d-5195-41ee-8a12-7377ca0c79c2
+uuid: 97206207-159d-4cc2-8ec7-347574250fa8
 langcode: en
 status: true
 dependencies:
@@ -11,6 +11,8 @@ dependencies:
     - rng_quick
   theme:
     - vibrant
+_core:
+  default_config_hash: FHLHtJrka9uM7CzsLTQ7JFUDnqXwyeeEGVtIIgg5P-g
 id: vibrant_registration
 theme: vibrant
 region: content

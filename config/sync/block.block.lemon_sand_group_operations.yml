@@ -1,0 +1,24 @@
+uuid: 641c34a1-6742-41ec-a39c-ac4a6cd27ae5
+langcode: en
+status: true
+dependencies:
+  module:
+    - group
+  theme:
+    - lemon_sand
+_core:
+  default_config_hash: MjMChFykEa-4UxdnGstVk1FcXqwUF3p_GBJLIFT3_XI
+id: lemon_sand_group_operations
+theme: lemon_sand
+region: content
+weight: -1
+provider: null
+plugin: group_operations
+settings:
+  id: group_operations
+  label: 'Group operations'
+  provider: group
+  label_display: visible
+  context_mapping:
+    group: '@group.group_route_context:group'
+visibility: {  }
