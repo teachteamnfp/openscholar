@@ -11,7 +11,6 @@ use Drupal\user\UserInterface;
  * Class CpUsersMainTests.
  *
  * @group functional-javascript
- * @group wip
  * @package Drupal\Tests\cp_users\ExistingSite
  */
 class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
