@@ -3,9 +3,7 @@
 namespace Drupal\Tests\cp_users\ExistingSite;
 
 use Drupal\Core\Test\AssertMailTrait;
-use Drupal\purl\Plugin\ModifierIndex;
 use Drupal\Tests\vsite\ExistingSiteJavascript\VsiteExistingSiteJavascriptTestBase;
-use Drupal\user\UserInterface;
 
 /**
  * Class CpUsersMainTests.
@@ -62,7 +60,7 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
       'type' => 'personal',
       'uid' => 1,
       'path' => [
-        'alias' => '/' . $this->modifier
+        'alias' => '/' . $this->modifier,
       ],
     ]);
   }
@@ -91,11 +89,11 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
       $username = $this->randomString();
       $user = $this->createUser([], $username, FALSE);
 
-      $this->visit('/'.$this->modifier.'/cp/users');
-      $this->assertContains('/'.$this->modifier.'/cp/users', $this->getSession()->getCurrentUrl(), "First url check, on " . $this->getSession()->getCurrentUrl());
+      $this->visit('/' . $this->modifier . '/cp/users');
+      $this->assertContains('/' . $this->modifier . '/cp/users', $this->getSession()->getCurrentUrl(), "First url check, on " . $this->getSession()->getCurrentUrl());
       $page = $this->getCurrentPage();
       $link = $page->findLink('+ Add a member');
-      $this->assertContains('/'.$this->modifier.'/cp/users/add', $link->getAttribute('href'), "Add link is not in the vsite.");
+      $this->assertContains('/' . $this->modifier . '/cp/users/add', $link->getAttribute('href'), "Add link is not in the vsite.");
       $page->clickLink('+ Add a member');
       $this->assertSession()->waitForElement('css', '#drupal-modal--content');
       $page->clickLink('Add an Existing User');
@@ -108,8 +106,8 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
       $page->selectFieldOption('role', 'personal-member');
       $page->pressButton("Save");
       $this->assertSession()->assertWaitOnAjaxRequest();
-      //$this->visit('/site01/cp/users');
-      $this->assertContains('/'.$this->modifier.'/cp/users', $this->getSession()->getCurrentUrl(), "Not on the correct page, on " . $this->getSession()->getCurrentUrl());
+      // $this->visit('/site01/cp/users');.
+      $this->assertContains('/' . $this->modifier . '/cp/users', $this->getSession()->getCurrentUrl(), "Not on the correct page, on " . $this->getSession()->getCurrentUrl());
       $this->assertTrue($page->hasContent($username), "Username $username not found on page.");
 
       // $this->assertMail('id', '');.
@@ -143,8 +141,8 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
       $account->passRaw = 'admin';
       $this->drupalLogin($account);
 
-      $this->visit('/'.$this->modifier.'/cp/users');
-      $this->assertContains('/'.$this->modifier.'/cp/users', $this->getSession()->getCurrentUrl());
+      $this->visit('/' . $this->modifier . '/cp/users');
+      $this->assertContains('/' . $this->modifier . '/cp/users', $this->getSession()->getCurrentUrl());
       $page = $this->getCurrentPage();
       $page->clickLink('+ Add a member');
       $this->assertSession()->waitForElement('css', '#drupal-modal--content');
@@ -156,7 +154,7 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
       $page->selectFieldOption('role', 'personal-member');
       $page->pressButton('Save');
       $this->assertSession()->assertWaitOnAjaxRequest();
-      $this->assertContains('/'.$this->modifier.'/cp/users', $this->getSession()->getCurrentUrl(), "Not on correct page after redirect.");
+      $this->assertContains('/' . $this->modifier . '/cp/users', $this->getSession()->getCurrentUrl(), "Not on correct page after redirect.");
       $this->assertTrue($page->hasContent('test-user'), "Test-user not added to site.");
 
       $settings->set('disable_user_creation', 1);
@@ -171,7 +169,7 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
       $page->selectFieldOption('new_owner', 'test-user');
       $page->pressButton('Save');
       $this->assertSession()->assertWaitOnAjaxRequest();
-      /** @var UserInterface $user */
+      /** @var \Drupal\user\UserInterface $user */
       $user = user_load_by_name('test-user');
       $this->assertEquals($user->id(), $this->group->getOwnerId(), "Owner did not change.");
     }
