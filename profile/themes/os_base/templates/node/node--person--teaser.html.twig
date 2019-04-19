@@ -1,7 +1,9 @@
 {% extends 'node--news--teaser.html.twig' %}
 
 {% block image %}
-  <div class="teaser--image">{{ content.field_photo_person }}</div>
+  {% if content.field_photo_person|render %}
+    <div class="teaser--image">{{ content.field_photo_person }}</div>
+  {% endif %}
 {% endblock %}
 
 {% block title %}
