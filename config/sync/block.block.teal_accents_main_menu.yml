@@ -1,0 +1,45 @@
+uuid: 6cd8025c-7754-4da6-8552-51e572a78615
+langcode: en
+status: true
+dependencies:
+  config:
+    - system.menu.main
+  module:
+    - block_visibility_groups
+    - rng
+    - system
+  theme:
+    - teal_accents
+_core:
+  default_config_hash: rx9IrdDv7Ldc4kpalZAxdhIPZfYIeOMh1N-qKoQZwHo
+id: teal_accents_main_menu
+theme: teal_accents
+region: navigation_collapsible
+weight: -6
+provider: null
+plugin: 'system_menu_block:main'
+settings:
+  id: 'system_menu_block:main'
+  label: 'Main navigation'
+  provider: system
+  label_display: '0'
+  level: 1
+  depth: 2
+visibility:
+  condition_group:
+    id: condition_group
+    negate: false
+    block_visibility_group: ''
+    context_mapping: {  }
+  rng_rule_scheduler:
+    id: rng_rule_scheduler
+    rng_rule_component: null
+    rng_rule_scheduler: null
+    date: '1553764526'
+    negate: false
+    context_mapping: {  }
+  rng_current_time:
+    id: rng_current_time
+    date: '1553764526'
+    negate: false
+    context_mapping: {  }

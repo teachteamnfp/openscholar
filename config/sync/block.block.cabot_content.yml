@@ -1,0 +1,22 @@
+uuid: 278288a9-e801-45c8-94d2-73f0f7b26ccc
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - cabot
+_core:
+  default_config_hash: 9EoWV2Lot6FVSr50t4hoKgiz1LIXYWNG-IIPYsWxBqo
+id: cabot_content
+theme: cabot
+region: content
+weight: -4
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  provider: system
+  label_display: '0'
+visibility: {  }

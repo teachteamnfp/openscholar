@@ -5,68 +5,7 @@
  * Theme preview hooks.
  */
 
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\os_theme_preview\Form\PreviewAction;
-use Drupal\os_theme_preview\ThemePreviewException;
-
-/**
- * Implements hook_form_FORM_ID_alter().
- */
-function os_theme_preview_form_system_themes_admin_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $form['preview'] = [
-    '#type' => 'button',
-    '#value' => t('Preview'),
-    '#executes_submit_callback' => TRUE,
-  ];
-  $form['#submit'][] = 'os_theme_preview_theme_preview_action';
-
-  /** @var \Drupal\os_theme_preview\HandlerInterface $handler */
-  $handler = \Drupal::service('os_theme_preview.handler');
-
-  /** @var \Drupal\os_theme_preview\ThemePreview|null $previewed_theme_data */
-  $previewed_theme_data = $handler->getPreviewedThemeData();
-  if (!$previewed_theme_data) {
-    return;
-  }
-
-  /** @var \Drupal\os_theme_preview\PreviewManagerInterface $theme_preview_manager */
-  $theme_preview_manager = \Drupal::service('os_theme_preview.manager');
-
-  if ($theme_preview_manager->isPreviewModeEnabled()) {
-    $form['cancel_preview'] = [
-      '#type' => 'button',
-      '#value' => t('Cancel Preview'),
-      '#executes_submit_callback' => TRUE,
-    ];
-  }
-}
-
-/**
- * Starts the theme preview.
- */
-function os_theme_preview_theme_preview_action(&$form, FormStateInterface $form_state) {
-  /** @var \Drupal\os_theme_preview\HandlerInterface $handler */
-  $handler = \Drupal::service('os_theme_preview.handler');
-
-  try {
-    $op = $form_state->getValue('op')->__toString();
-
-    if ($op === 'Preview') {
-      /** @var \Drupal\os_theme_preview\PreviewManagerInterface $theme_preview_manager */
-      $theme_preview_manager = \Drupal::service('os_theme_preview.manager');
-
-      $handler->startPreviewMode('hwpi_themeone_bentley', $theme_preview_manager->getActiveVsiteId());
-    }
-    elseif ($op === 'Cancel Preview') {
-      $handler->stopPreviewMode();
-    }
-  }
-  catch (ThemePreviewException $e) {
-    /** @var \Drupal\Core\Messenger\MessengerInterface $messenger */
-    $messenger = \Drupal::messenger();
-    $messenger->addError($e->getMessage());
-  }
-}
 
 /**
  * Implements hook_page_bottom().

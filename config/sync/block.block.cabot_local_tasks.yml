@@ -1,0 +1,22 @@
+uuid: c098da9e-f7a1-4e17-996a-927f79d4fcc7
+langcode: en
+status: true
+dependencies:
+  theme:
+    - cabot
+_core:
+  default_config_hash: X9I1OB0W3WlWtrK-CNcg6hNWwa8wficanpH8pYnDZDE
+id: cabot_local_tasks
+theme: cabot
+region: content
+weight: -6
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: Tabs
+  provider: core
+  label_display: '0'
+  primary: true
+  secondary: true
+visibility: {  }

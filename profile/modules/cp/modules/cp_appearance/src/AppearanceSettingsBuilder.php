@@ -160,6 +160,14 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
         ]),
         'attributes' => ['title' => $this->t('Set @theme as your theme', ['@theme' => $theme->info['name']])],
       ];
+
+      $operations[] = [
+        'title' => $this->t('Preview'),
+        'url' => Url::fromRoute('cp_appearance.preview', [
+          'theme' => $theme->getName(),
+        ]),
+        'attributes' => ['title' => $this->t('Preview @theme', ['@theme' => $theme->info['name']])],
+      ];
     }
 
     return $operations;

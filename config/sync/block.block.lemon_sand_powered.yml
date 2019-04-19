@@ -1,0 +1,22 @@
+uuid: 2e696b9a-a8e2-4ffb-872c-9d90e3caabc2
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - lemon_sand
+_core:
+  default_config_hash: jQQUUWN2Uxr5qZtc9zcJKBCxpKY8orN1u2HPqYYRQDI
+id: lemon_sand_powered
+theme: lemon_sand
+region: footer
+weight: -6
+provider: null
+plugin: system_powered_by_block
+settings:
+  id: system_powered_by_block
+  label: 'Powered by Drupal'
+  provider: system
+  label_display: '0'
+visibility: {  }

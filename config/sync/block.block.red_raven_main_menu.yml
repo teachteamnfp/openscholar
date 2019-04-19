@@ -1,0 +1,45 @@
+uuid: ae450bd2-9bb9-4637-9b44-cc8fb721463d
+langcode: en
+status: true
+dependencies:
+  config:
+    - system.menu.main
+  module:
+    - block_visibility_groups
+    - rng
+    - system
+  theme:
+    - red_raven
+_core:
+  default_config_hash: rx9IrdDv7Ldc4kpalZAxdhIPZfYIeOMh1N-qKoQZwHo
+id: red_raven_main_menu
+theme: red_raven
+region: navigation_collapsible
+weight: -6
+provider: null
+plugin: 'system_menu_block:main'
+settings:
+  id: 'system_menu_block:main'
+  label: 'Main navigation'
+  provider: system
+  label_display: '0'
+  level: 1
+  depth: 2
+visibility:
+  condition_group:
+    id: condition_group
+    negate: false
+    block_visibility_group: ''
+    context_mapping: {  }
+  rng_rule_scheduler:
+    id: rng_rule_scheduler
+    rng_rule_component: null
+    rng_rule_scheduler: null
+    date: '1553764526'
+    negate: false
+    context_mapping: {  }
+  rng_current_time:
+    id: rng_current_time
+    date: '1553764526'
+    negate: false
+    context_mapping: {  }
