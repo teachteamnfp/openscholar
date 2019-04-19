@@ -1,0 +1,23 @@
+uuid: 454d940e-c5e2-4fe9-9658-abc00ac12848
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.rss_feed
+    - field.storage.block_content.field_is_show_all_content
+id: block_content.rss_feed.field_is_show_all_content
+field_name: field_is_show_all_content
+entity_type: block_content
+bundle: rss_feed
+label: 'Show all content'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

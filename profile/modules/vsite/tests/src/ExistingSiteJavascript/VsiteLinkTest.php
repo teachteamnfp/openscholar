@@ -50,7 +50,6 @@ class VsiteLinkTest extends VsiteExistingSiteJavascriptTestBase {
     $this->assertSession()->statusCodeNotEquals(404);
     $this->visit('/' . $this->groupAlias . '/link-test');
     $this->assertSession()->statusCodeEquals(200);
-    $page = $this->getCurrentPage();
     $this->assertSession()->pageTextContains('vsite active');
 
     $this->assertSession()->pageTextContains($this->groupAlias . '/link-test');

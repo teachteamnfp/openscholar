@@ -1,0 +1,32 @@
+uuid: 1fa090a6-938e-4b87-9d6b-8653f4c001f6
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_visibility_groups.block_visibility_group.event_section
+    - views.view.calendar
+  module:
+    - block_visibility_groups
+    - views
+  theme:
+    - red_raven
+id: red_raven_views_block__calendar_block_1
+theme: red_raven
+region: content
+weight: 0
+provider: null
+plugin: 'views_block:calendar-block_1'
+settings:
+  id: 'views_block:calendar-block_1'
+  label: ''
+  provider: views
+  label_display: visible
+  views_label: ''
+  items_per_page: none
+  context_mapping: {  }
+visibility:
+  condition_group:
+    id: condition_group
+    negate: false
+    block_visibility_group: event_section
+    context_mapping: {  }

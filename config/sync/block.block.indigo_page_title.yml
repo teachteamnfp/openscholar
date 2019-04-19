@@ -1,0 +1,20 @@
+uuid: de468ce1-88d3-4d10-825c-70c57dbb2411
+langcode: en
+status: true
+dependencies:
+  theme:
+    - indigo
+_core:
+  default_config_hash: 7rR9chwXvdM2H8OYMAYx9Zj3GGlPMrZp_M3ZA4thYTk
+id: indigo_page_title
+theme: indigo
+region: content
+weight: -7
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  provider: core
+  label_display: '0'
+visibility: {  }

@@ -1,0 +1,22 @@
+uuid: a7c15dc1-12b0-4b9d-9067-fa65f514af06
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - teal_accents
+_core:
+  default_config_hash: jQQUUWN2Uxr5qZtc9zcJKBCxpKY8orN1u2HPqYYRQDI
+id: teal_accents_powered
+theme: teal_accents
+region: footer
+weight: -6
+provider: null
+plugin: system_powered_by_block
+settings:
+  id: system_powered_by_block
+  label: 'Powered by Drupal'
+  provider: system
+  label_display: '0'
+visibility: {  }
