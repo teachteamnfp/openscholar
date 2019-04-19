@@ -102,6 +102,15 @@ nav {
             margin-top: 1px;
           }
         }
+        &.open {
+          .dropdown-menu {
+            > li {
+              > a {
+                padding: 8px 16px 8px 20px;
+              }
+            }
+          }
+        }
       }
     }
     .row {
