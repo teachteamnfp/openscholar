@@ -108,6 +108,29 @@ class FlavorFormTest extends OsExistingSiteJavascriptTestBase {
   }
 
   /**
+   * Tests whether a flavor is selected as default when it is set as default.
+   *
+   * @covers ::buildForm
+   *
+   * @throws \Behat\Mink\Exception\DriverException
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   * @throws \Behat\Mink\Exception\UnsupportedDriverActionException
+   */
+  public function testDefaultFlavor(): void {
+    $this->visit('/cp-appearance-flavor/cp/appearance');
+
+    $this->getCurrentPage()->fillField('options_vibrant', 'golden_accents');
+    $this->waitForAjaxToFinish();
+
+    $this->getCurrentPage()->pressButton('save-vibrant');
+
+    /** @var \Behat\Mink\Element\NodeElement $flavor_options */
+    $flavor_options = $this->getCurrentPage()->findField('options_vibrant');
+
+    $this->assertEquals('golden_accents', $flavor_options->getValue());
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function tearDown() {
