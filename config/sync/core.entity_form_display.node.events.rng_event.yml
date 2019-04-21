@@ -10,6 +10,8 @@ dependencies:
     - field.field.node.events.field_media
     - field.field.node.events.field_open_date
     - field.field.node.events.field_recurring_date
+    - field.field.node.events.field_send_reminder
+    - field.field.node.events.field_send_reminder_checkbox
     - field.field.node.events.field_signup
     - field.field.node.events.field_singup_multiple
     - field.field.node.events.rng_capacity
@@ -37,15 +39,28 @@ mode: rng_event
 content:
   field_close_:
     type: datetime_default
-    weight: 4
+    weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }
   field_open_date:
     type: datetime_default
-    weight: 3
+    weight: 5
     region: content
     settings: {  }
+    third_party_settings: {  }
+  field_send_reminder:
+    type: datetime_default
+    weight: 4
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_send_reminder_checkbox:
+    type: boolean_checkbox
+    weight: 3
+    region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
   rng_capacity:
     type: unlimited_number

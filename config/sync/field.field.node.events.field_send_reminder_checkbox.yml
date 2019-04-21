@@ -1,0 +1,23 @@
+uuid: c41247ad-05c8-4318-9485-925c45dc1d4b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_send_reminder_checkbox
+    - node.type.events
+id: node.events.field_send_reminder_checkbox
+field_name: field_send_reminder_checkbox
+entity_type: node
+bundle: events
+label: 'Send Reminder'
+description: 'If checked, a reminder will be sent to registrants on the following date.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

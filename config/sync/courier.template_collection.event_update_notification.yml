@@ -1,0 +1,13 @@
+uuid: a85cb5ed-a179-4758-bba3-c2060210fd00
+langcode: en
+status: true
+dependencies: {  }
+id: event_update_notification
+provider: null
+contexts: {  }
+templates:
+  courier_email:
+    type: courier_email
+    content:
+      subject: 'Change in [node:title]'
+      body: 'Hello [identity:label] </br></br>You had been registered for [node:title] on [node:original:field_recurring_date:start_date:long] [node:original:field_location]. </br></br>That ​event​ has been changed, and you are now registered for [node:field_recurring_date:start_date:long] [node:field_location].</br></br>Please visit the event page here: </br> [node:url] </br></br>Questions? Email the event organizer <a href="mailto:[node:rng_reply_to]" target="_blank">[node:rng_reply_to]</a></br></br>The [site:name] Team </br></br></br>Harvard University, Cambridge, MA 02138'

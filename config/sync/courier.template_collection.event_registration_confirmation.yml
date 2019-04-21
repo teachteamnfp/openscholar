@@ -1,0 +1,13 @@
+uuid: 32fd98b7-75db-454b-9f30-31ab3f6088ed
+langcode: en
+status: true
+dependencies: {  }
+id: event_registration_confirmation
+provider: null
+contexts: {  }
+templates:
+  courier_email:
+    type: courier_email
+    content:
+      subject: '[node:title] event registration confirmation'
+      body: 'Hello [identity:label] </br></br>You have been registered for [node:title] on [registration:field_for_date:date:long] [node:original:field_location]. </br></br>View the event listing here: </br> [node:url] </br></br>Questions? Email the event organizer <a href="mailto:[node:rng_reply_to]" target="_blank">[node:rng_reply_to]</a></br></br>See you there! </br></br></br>Harvard University, Cambridge, MA 02138'

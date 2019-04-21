@@ -1,0 +1,13 @@
+uuid: 112546cc-0a5e-45ab-aa4e-4390d0030a16
+langcode: en
+status: true
+dependencies: {  }
+id: event_full_notification
+provider: null
+contexts: {  }
+templates:
+  courier_email:
+    type: courier_email
+    content:
+      subject: '[node:title] event registration is full'
+      body: 'Hello [node:author:display-name] </br></br>This email is to let you know that the event you created, [node:title], is now full. </br></br>You can manage your registrations here: [node:url]</br></br>The [site:name] Team </br></br></br>Harvard University, Cambridge, MA 02138'

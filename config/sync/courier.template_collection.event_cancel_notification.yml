@@ -1,0 +1,13 @@
+uuid: 933ff565-876f-4690-b738-073ae1e9f880
+langcode: en
+status: true
+dependencies: {  }
+id: event_cancel_notification
+provider: null
+contexts: {  }
+templates:
+  courier_email:
+    type: courier_email
+    content:
+      subject: '[node:title] has been cancelled'
+      body: 'Hello [identity:label] </br></br>You had been registered for [node:title] on [registration:field_for_date:date:long] [node:field_location]. </br></br>This event has been cancelled. To view our other events, please visit the event page here: [site:url]calendar.</br></br>Questions? Email the event organizer <a href="mailto:[node:rng_reply_to]" target="_blank">[node:rng_reply_to]</a></br></br>The [site:name] Team </br></br></br>Harvard University, Cambridge, MA 02138'

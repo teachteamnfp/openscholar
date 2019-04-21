@@ -14,6 +14,7 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Messenger\Messenger;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
+use Drupal\os_events\MailNotificationsInterface;
 use Drupal\rng\Entity\Registrant;
 use Drupal\rng\Entity\Registration;
 use Drupal\rng\EventManagerInterface;
@@ -39,13 +40,16 @@ class EventSignupForm extends FormBase {
    *   The Messenger service.
    * @param \Drupal\Core\Datetime\DateFormatter $dateFormatter
    *   The Date formatter service.
+   * @param \Drupal\os_events\MailNotificationsInterface $mailNotification
+   *   The mail notification service.
    */
-  public function __construct(RegistrantFactoryInterface $registrantFactory, EntityTypeManagerInterface $entityManager, EventManagerInterface $eventManager, Messenger $messenger, DateFormatter $dateFormatter) {
+  public function __construct(RegistrantFactoryInterface $registrantFactory, EntityTypeManagerInterface $entityManager, EventManagerInterface $eventManager, Messenger $messenger, DateFormatter $dateFormatter, MailNotificationsInterface $mailNotification) {
     $this->registrantFactory = $registrantFactory;
     $this->entityManager = $entityManager;
     $this->eventManager = $eventManager;
     $this->messenger = $messenger;
     $this->dateFormatter = $dateFormatter;
+    $this->mailNotification = $mailNotification;
   }
 
   /**
@@ -57,7 +61,8 @@ class EventSignupForm extends FormBase {
       $container->get('entity_type.manager'),
       $container->get('rng.event_manager'),
       $container->get('messenger'),
-      $container->get('date.formatter')
+      $container->get('date.formatter'),
+      $container->get('os_events.mail_notifications')
     );
   }
 
@@ -214,11 +219,15 @@ class EventSignupForm extends FormBase {
 
       // Check if capacity is full,replace Signup with relevant message.
       $capacity = $eventMeta->remainingCapacity();
-      ($capacity == -1) ? $slot_available = TRUE : ($capacity > 0) ? $slot_available = TRUE : $slot_available = FALSE;
+      $slot_available = FALSE;
+      if ($capacity == -1 || $capacity > 0) {
+        $slot_available = TRUE;
+      }
       if (!$slot_available) {
         $id = 'registration-link-' . $node->id();
         $message = '<div id="' . $id . '">' . $this->t("Sorry, the event is full") . '</div>';
         $response->addCommand(new ReplaceCommand('#' . $id, $message));
+        $this->mailNotification->sendEventFullEmail($node);
       }
       $response->addCommand(new CloseModalDialogCommand());
     }

@@ -60,6 +60,12 @@ class LocalTasks extends DeriverBase implements ContainerDeriverInterface {
           'route_name' => "rng.event.$entity_type.registration_list",
           'parent_id' => 'rng.local_tasks:' . $event_default,
         ];
+
+        $this->derivatives["rng.event.$entity_type.event.registration_broadcast"] = [
+          'title' => t('Email Registrants'),
+          'route_name' => "rng.event.$entity_type.registration_broadcast",
+          'parent_id' => 'rng.local_tasks:' . $event_default,
+        ];
       }
     }
 
