@@ -271,8 +271,6 @@ display:
               authenticated: authenticated
               anonymous: '0'
               administrator: '0'
-              rwtc1rwx: '0'
-              klq6cvg2: '0'
             placeholder: ''
             min_placeholder: ''
             max_placeholder: ''
