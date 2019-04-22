@@ -174,7 +174,7 @@ class RoboFile extends \Robo\Tasks
         $tasks[] = $this->taskExec('docker-compose --verbose pull --parallel');
         $tasks[] = $this->taskExec('docker-compose up -d');
         $tasks[] = $this->taskExec('make');
-        $tasks[] = $this->taskExec('docker ps -aq');
+        $tasks[] = $this->taskExec('docker ps -a');
         $tasks[] = $this->taskExec('docker cp apache:/usr/local/apache2/conf/conf.d .travis/code-coverage.conf');
         $tasks[] = $this->taskExec('docker-compose exec -T php cp .travis/config/phpunit.xml web/core/phpunit.xml');
         $tasks[] = $this->taskExec('docker-compose exec -T php cp .travis/config//bootstrap.php web/core/tests/bootstrap.php');
