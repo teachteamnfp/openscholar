@@ -1,0 +1,22 @@
+uuid: 2986ba47-70e9-48b2-acae-ef3c5341994a
+langcode: en
+status: true
+dependencies:
+  theme:
+    - winthrop
+_core:
+  default_config_hash: X9I1OB0W3WlWtrK-CNcg6hNWwa8wficanpH8pYnDZDE
+id: winthrop_local_tasks
+theme: winthrop
+region: content
+weight: -6
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: Tabs
+  provider: core
+  label_display: '0'
+  primary: true
+  secondary: true
+visibility: {  }

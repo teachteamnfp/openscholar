@@ -1,0 +1,22 @@
+uuid: f76e5c45-4b1e-4621-9c64-8af1b6d6cc63
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - kirkland
+_core:
+  default_config_hash: jQQUUWN2Uxr5qZtc9zcJKBCxpKY8orN1u2HPqYYRQDI
+id: kirkland_powered
+theme: kirkland
+region: footer
+weight: -6
+provider: null
+plugin: system_powered_by_block
+settings:
+  id: system_powered_by_block
+  label: 'Powered by Drupal'
+  provider: system
+  label_display: '0'
+visibility: {  }

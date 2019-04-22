@@ -1,0 +1,24 @@
+uuid: be0e3e99-b1b4-40f1-8444-73c5ba35d3a6
+langcode: en
+status: true
+dependencies:
+  module:
+    - group
+  theme:
+    - onepage
+_core:
+  default_config_hash: sV_YY9rkmC-Q7NHdQAdZaeupUp5yjwFKAnxWw3AhKP8
+id: onepage_group_operations
+theme: onepage
+region: content
+weight: -1
+provider: null
+plugin: group_operations
+settings:
+  id: group_operations
+  label: 'Group operations'
+  provider: group
+  label_display: visible
+  context_mapping:
+    group: '@group.group_route_context:group'
+visibility: {  }
