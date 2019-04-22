@@ -10,6 +10,7 @@ BUILD_ROOT='/home/rof/src/amazon'
 DOCROOT='web';
 
 if git show-ref -q --verify refs/tags/$CI_BRANCH 2>&1 > /dev/null; then
+  echo "Pushing tag $CI_BRANCH to Deploysource."
   # This is just a tag push
   # There's no need to build ever for tags
   # All we need to do it
@@ -26,9 +27,11 @@ if git show-ref -q --verify refs/tags/$CI_BRANCH 2>&1 > /dev/null; then
   git push --tags
   exit 0
 elif git ls-remote --heads git@bitbucket.org:openscholar/deploysource.git | grep -sw $CI_BRANCH 2>&1>/dev/null; then
+  echo "Updating branch $CI_BRANCH"
   git clone -b $CI_BRANCH git@bitbucket.org:openscholar/deploysource.git  ~/src/amazon;
   cd ~/src/amazon
 else
+  echo "Creating new branch $CI_BRANCH on Deploysource."
   git clone -b 8.x-1.x-dev git@bitbucket.org:openscholar/deploysource.git  ~/src/amazon;
   cd ~/src/amazon
   git checkout -b $CI_BRANCH;
@@ -51,7 +54,7 @@ cd openscholar/profile/themes
 cp -rf . /tmp/
 
 cd $BUILD_ROOT
-
+echo "Subtree Pull"
 git subtree pull -q -m "$CI_MESSAGE" --prefix=openscholar git://github.com/openscholar/openscholar.git $CI_BRANCH --squash
 
 cd openscholar/profile/themes
