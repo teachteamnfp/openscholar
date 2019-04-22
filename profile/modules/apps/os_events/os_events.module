@@ -54,20 +54,6 @@ function os_events_menu_local_tasks_alter(&$data, $route_name, RefinableCacheabl
 }
 
 /**
- * Implements hook_ENTITY_TYPE_insert().
- */
-function os_events_node_insert(EntityInterface $node) {
-  if ($node->bundle() != 'events') {
-    // Bail out if not an event node.
-    return;
-  }
-  // Set up services that we need.
-  $container = Drupal::getContainer();
-  $default_template = $container->get('os_events.mail_notifications');
-  $default_template->createDefaultTemplate($node);
-}
-
-/**
  * Implements hook_ENTITY_TYPE_update().
  */
 function os_events_node_update(EntityInterface $node) {
