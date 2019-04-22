@@ -1,0 +1,38 @@
+aside {
+  ul.navbar-nav {
+    li {
+      .dropdown-menu {
+        a {
+          color: $color-link;
+        }
+      }
+    }
+  }
+  .block-title {
+    background: $color-link;
+    color: $color-white;
+    padding: 10px;
+  }
+}
+.page-header {
+  position: relative;
+  &:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 64px;
+    height: 4px;
+    border-radius: 2px;
+    background: $color-link;
+  }
+}
+.header-container {
+  background: $color-light-gray1;
+}
+.caret {
+  color: $color-link;
+}
+.ui-widget, .ui-widget button {
+  font-family: 'Montserrat', sans-serif;
+}
