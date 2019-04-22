@@ -46,6 +46,14 @@ abstract class TestBase extends ExistingSiteBase {
     $this->configFactory = $this->container->get('config.factory');
     $this->repec = $this->container->get('repec');
     $this->defaultRepecSettings = $this->configFactory->get('repec.settings')->getRawData();
+
+    $file_system = $this->container->get('file_system');
+    $template_path = "{$this->repec->getArchiveDirectory()}/{$this->defaultRepecSettings['archive_code']}seri.rdf";
+    $real_path = $file_system->realpath($template_path);
+
+    if (file_exists($real_path)) {
+      unlink($real_path);
+    }
   }
 
   /**
@@ -61,7 +69,7 @@ abstract class TestBase extends ExistingSiteBase {
    */
   public function createReference(array $values = []) : ReferenceInterface {
     $reference = Reference::create($values + [
-      'title' => $this->randomString(),
+      'title' => $this->randomMachineName(),
       'type' => 'artwork',
       'bibcite_year' => [
         'value' => 1980,
@@ -200,6 +208,22 @@ abstract class TestBase extends ExistingSiteBase {
     $file_name = "{$serie_directory_config}_{$reference->getEntityTypeId()}_{$reference->id()}.rdf";
 
     return "$directory/$file_name";
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function tearDown() {
+    /** @var \Drupal\Core\File\FileSystemInterface $file_system */
+    $file_system = $this->container->get('file_system');
+    $template_path = "{$this->repec->getArchiveDirectory()}/{$this->defaultRepecSettings['archive_code']}seri.rdf";
+    $real_path = $file_system->realpath($template_path);
+
+    if (file_exists($real_path)) {
+      unlink($real_path);
+    }
+
+    parent::tearDown();
   }
 
 }

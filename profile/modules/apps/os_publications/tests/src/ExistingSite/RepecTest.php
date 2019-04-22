@@ -11,23 +11,6 @@ namespace Drupal\Tests\os_publications\ExistingSite;
 class RepecTest extends TestBase {
 
   /**
-   * {@inheritdoc}
-   */
-  public function setUp() {
-    parent::setUp();
-
-    // Make sure before every test case, the series template is not present.
-    /** @var \Drupal\Core\File\FileSystemInterface $file_system */
-    $file_system = $this->container->get('file_system');
-    $template_path = "{$this->repec->getArchiveDirectory()}/{$this->defaultRepecSettings['archive_code']}seri.rdf";
-    $real_path = $file_system->realpath($template_path);
-
-    if (file_exists($real_path)) {
-      unlink($real_path);
-    }
-  }
-
-  /**
    * @covers \Drupal\repec\Repec::shouldCreateSeriesTemplate
    */
   public function testShouldCreateSeriesTemplate(): void {
