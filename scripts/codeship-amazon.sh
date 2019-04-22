@@ -46,6 +46,7 @@ php -v || exit 1
 export PATH="$HOME/.composer/vendor/bin:$PATH"
 
 cd $BUILD_ROOT
+ls
 
 #Backup the make files
 cp -f openscholar/composer.json /tmp/
