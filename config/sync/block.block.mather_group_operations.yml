@@ -1,0 +1,24 @@
+uuid: 0c680b93-5fc8-4824-9f09-36bb656b49ea
+langcode: en
+status: true
+dependencies:
+  module:
+    - group
+  theme:
+    - mather
+_core:
+  default_config_hash: MjMChFykEa-4UxdnGstVk1FcXqwUF3p_GBJLIFT3_XI
+id: mather_group_operations
+theme: mather
+region: content
+weight: -1
+provider: null
+plugin: group_operations
+settings:
+  id: group_operations
+  label: 'Group operations'
+  provider: group
+  label_display: visible
+  context_mapping:
+    group: '@group.group_route_context:group'
+visibility: {  }

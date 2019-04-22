@@ -1,0 +1,22 @@
+uuid: 2f7a56be-6a19-4c48-9c3c-501a0e2e80d6
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - everett
+_core:
+  default_config_hash: oXUb3JZR2WW5VOdw4HrhRicCsq51mCgLfRyvheG68ck
+id: everett_breadcrumbs
+theme: everett
+region: content
+weight: -8
+provider: null
+plugin: system_breadcrumb_block
+settings:
+  id: system_breadcrumb_block
+  label: Breadcrumbs
+  provider: system
+  label_display: '0'
+visibility: {  }
