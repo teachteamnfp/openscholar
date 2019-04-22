@@ -79,9 +79,7 @@ function os_events_node_update(EntityInterface $node) {
 
   // Get dates to see if they are changed.
   $originalDate = $node->original->field_recurring_date->value;
-  $originalDate = $container->get('date.formatter')->format(strtotime($originalDate), 'custom', DateTimeItemInterface::DATETIME_STORAGE_FORMAT);
   $newDate = $node->field_recurring_date->value;
-  $newDate = $container->get('date.formatter')->format(strtotime($newDate), 'custom', DateTimeItemInterface::DATETIME_STORAGE_FORMAT);
 
   // Get the location to see if it is changed.
   $originalLocation = $node->original->field_location->value;
@@ -107,6 +105,7 @@ function os_events_node_update(EntityInterface $node) {
     }
     // If date changed, update the registration entity too.
     if ($originalDate !== $newDate) {
+      $newDate = $container->get('date.formatter')->format(strtotime($newDate), 'custom', DateTimeItemInterface::DATETIME_STORAGE_FORMAT);
       foreach ($registrations as $registration) {
         $registration->field_for_date->value = $newDate;
         $registration->save();

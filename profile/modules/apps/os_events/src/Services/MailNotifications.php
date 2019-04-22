@@ -85,7 +85,6 @@ class MailNotifications implements MailNotificationsInterface {
     $collection->setTokenValue('registration', $registration);
     $collection->setTokenOption('clear', TRUE);
     $this->courierManager->sendMessage($collection, $registrant->getIdentity(), $options);
-
   }
 
   /**
