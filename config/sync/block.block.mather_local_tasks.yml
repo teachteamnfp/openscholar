@@ -1,0 +1,22 @@
+uuid: e4e1ab26-5f0b-4ab0-8d07-0e59c00459a3
+langcode: en
+status: true
+dependencies:
+  theme:
+    - mather
+_core:
+  default_config_hash: X9I1OB0W3WlWtrK-CNcg6hNWwa8wficanpH8pYnDZDE
+id: mather_local_tasks
+theme: mather
+region: content
+weight: -6
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: Tabs
+  provider: core
+  label_display: '0'
+  primary: true
+  secondary: true
+visibility: {  }

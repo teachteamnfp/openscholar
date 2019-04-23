@@ -1,0 +1,245 @@
+@import '../../os_base/scss/base/breakpoints';
+//colors
+$black: #000;
+$color_mine_shaft_approx: #333;
+$white: #fff;
+$color_alto_approx: #ddd;
+$color_bianca_approx: #fbfbf1;
+$color_gallery_approx: #eee;
+$color_mountain_mist_approx: #999;
+$color-gray: #222;
+
+//fonts
+$font_0: Cardo;
+$font_1: sans-serif !important;
+$font_2: Montserrat;
+
+//@extend-elements
+%extend_1 {
+  background: $black;
+  border: none;
+  border-top: none;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+@import url(https://fonts.googleapis.com/css?family=Cardo);
+
+html {
+  color: $black;
+}
+body {
+  color: $black;
+  font-family: $font_0, $font_1;
+}
+.front {
+  .content-inner {
+    font-size: 16px;
+  }
+  .region-content-bottom {
+    background-color: $color_gallery_approx;
+  }
+  .region-content-first {
+    background-color: $color_gallery_approx;
+  }
+}
+.page-header {
+  font-family: $font_0, $font_1;
+}
+.node--title {
+  font-family: $font_0, $font_1;
+}
+.more-link {
+  font-family: $font_0, $font_1;
+}
+footer {
+  color: $color_mine_shaft_approx;
+  background: $color_bianca_approx;
+  border-top: 1px solid $color_alto_approx;
+  .footer-login {
+    color: $color_mine_shaft_approx;
+    //Instead of the line below you could use @include text-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+    text-shadow: none;
+    &:after {
+      background-image: none;
+    }
+  }
+  a {
+    color: $color_mine_shaft_approx;
+  }
+  ul.nav {
+    a {
+      font-family: $font_0, $font_1;
+      font-family: $font_2, $font_1;
+      color: $color_mine_shaft_approx;
+    }
+    li ul li a {
+      font-family: $font_0, $font_1;
+    }
+  }
+}
+.content-inner {
+  h2 {
+    font-family: $font_0, $font_1;
+  }
+  h3 {
+    font-family: $font_0, $font_1;
+  }
+  h4 {
+    font-family: $font_0, $font_1;
+  }
+}
+.breadcrumb {
+  font-family: $font_2, $font_1;
+  font-family: $font_2, $font_1;
+  a {
+    font-family: $font_2, $font_1;
+  }
+}
+.navbar-collapse {
+  border-top: 3px solid $color_mine_shaft_approx;
+  background: $white;
+  border-bottom: 1px solid $color_alto_approx;
+  @media #{$mobile} {
+    padding: 0 !important;
+  }
+  /***** navbar nav *****/
+  .navbar-nav {
+    @media #{$mobile} {
+      background: #f3f3f1;
+    }
+    > li {
+      @media #{$mobile} {
+        border-bottom: 1px solid $white;
+        border-top: 0 none;
+      }
+      > a {
+        font-size: 1.1em;
+        color: $color_mine_shaft_approx;
+        font-family: 'Montserrat',sans-serif;
+        text-transform: uppercase;
+        @media #{$mobile} {
+        }
+        &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
+          background-color: $color_mine_shaft_approx;
+        }
+      }
+      &.open, &.active {
+        > a, > a:hover, > a:active, > a:focus {
+          background-color: $color_mine_shaft_approx;
+          @media #{$mobile} {
+            margin-top: 0px !important;
+          }
+        }
+
+      }
+    }
+  }
+  /**** dropdown menu ****/
+  .dropdown-menu {
+    background-color: $color_mine_shaft_approx;
+    @media #{$mobile} {
+      background: none;
+    }
+    > li {
+      > a {
+        background: none;
+        @media #{$mobile} {
+          font-size: 20px;
+          padding-left: 20px;
+          color: $color-gray;
+          text-transform: uppercase;
+        }
+        &:hover, &:active {
+          background: none;
+          @media #{$mobile} {
+            color: $color-gray;
+          }
+        }
+      }
+      &.active {
+        a {
+          @media #{$mobile} {
+            color: $color-gray;
+          }
+          &:hover {
+            @media #{$mobile} {
+              color: $color-gray;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+.region-content-top {
+  background-color: $white;
+}
+.region-content-second {
+  background-color: $white;
+}
+.header-container {
+  background: $color_bianca_approx;
+  ul.nav {
+    li {
+      a {
+        font-family: 'Montserrat',sans-serif;
+      }
+    }
+  }
+}
+.path-search .title a {
+  font-family: $font_0, $font_1;
+}
+.links a {
+  font-family: $font_0, $font_1;
+}
+h2.block-title {
+  font-family: $font_0, $font_1;
+}
+.fc-header-toolbar h3 {
+  font-family: $font_0, $font_1;
+}
+aside .nav {
+  a {
+    font-family: $font_2, $font_1;
+  }
+}
+h1.page-title {
+  font-size: 2em;
+}
+.search-block-form .form-submit {
+  background-color: $color_mine_shaft_approx;
+  border-color: $color_mine_shaft_approx;
+}
+.fc-listUpcoming-view .fc-list-heading {
+  .fc-list-heading-main {
+    @extend %extend_1;
+    .event-year {
+      padding: 8px 0 0;
+    }
+    span.event-year {
+      font-size: 13px;
+    }
+  }
+  span.fc-list-heading-main span {
+    color: $white;
+  }
+}
+.fc-listPast-view .fc-list-heading {
+  .fc-list-heading-main {
+    @extend %extend_1;
+    .event-year {
+      padding: 8px 0 0;
+    }
+    span.event-year {
+      font-size: 13px;
+    }
+  }
+  span.fc-list-heading-main span {
+    color: $white;
+  }
+}
+.path-person .field--name-field-professional-title {
+  font-style: italic;
+}

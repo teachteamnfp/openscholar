@@ -1,0 +1,29 @@
+name: 'Ivy Accents'
+description:  A ivy accent version of the Classic theme
+
+base theme: hwpi_classic
+core: 8.x
+type: theme
+
+regions:
+  navigation_collapsible: 'Navigation (Collapsible)'
+  header: 'Header'
+  header_left: 'Header Left'
+  header_right: 'Header Right'
+  content: 'Content'
+  content_first: 'Content First'
+  content_second: 'Content Second'
+  sidebar_first: 'Primary'
+  sidebar_second: 'Secondary'
+  content_bottom: 'Content bottom'
+  content_bottom_first: 'Content bottom first'
+  content_bottom_second: 'Content bottom second'
+  footer: 'Footer'
+  footer_left: 'Footer left'
+  footer_right: 'Footer right'
+  footer_bottom: 'Footer bottom'
+  page_top: 'Page top'
+  page_bottom: 'Page bottom'
+
+libraries:
+  - ivy_accents/global-styling

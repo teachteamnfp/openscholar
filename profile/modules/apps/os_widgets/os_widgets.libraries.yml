@@ -1,3 +1,6 @@
 addthis:
   js:
     //s7.addthis.com/js/250/addthis_widget.js: { type: external, minified: true }
+rss_feed_copy:
+  js:
+    js/os_widgets_rss_feed_copy.js: { }

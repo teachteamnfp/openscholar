@@ -1,0 +1,22 @@
+uuid: f70303f0-d592-4327-a68d-cabe0fa90c54
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - mather
+_core:
+  default_config_hash: jQQUUWN2Uxr5qZtc9zcJKBCxpKY8orN1u2HPqYYRQDI
+id: mather_powered
+theme: mather
+region: footer
+weight: -6
+provider: null
+plugin: system_powered_by_block
+settings:
+  id: system_powered_by_block
+  label: 'Powered by Drupal'
+  provider: system
+  label_display: '0'
+visibility: {  }

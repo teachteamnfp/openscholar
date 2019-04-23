@@ -1,0 +1,20 @@
+uuid: 09055ad8-424e-42e7-81a4-1dd8cc592ca9
+langcode: en
+status: true
+dependencies:
+  theme:
+    - kirkland
+_core:
+  default_config_hash: 13GQpeITIJsp1kyPniXtWZfyFH87vb1xxJCHifL4UeE
+id: kirkland_local_actions
+theme: kirkland
+region: content
+weight: -5
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Primary admin actions'
+  provider: core
+  label_display: '0'
+visibility: {  }

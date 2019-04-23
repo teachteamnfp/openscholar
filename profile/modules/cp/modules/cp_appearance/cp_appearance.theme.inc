@@ -5,6 +5,7 @@
  * Theme helpers.
  */
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Template\Attribute;
 
 /**
@@ -68,7 +69,7 @@ function template_preprocess_cp_appearance_themes_page(array &$variables) {
       $current_theme['description'] = $theme->info['description'];
 
       $current_theme['attributes'] = new Attribute([
-        'id' => "theme-selector-{$theme->getName()}",
+        'id' => Html::cleanCssIdentifier("theme-selector-{$theme->getName()}"),
       ]);
       $current_theme['name'] = $theme->info['name'];
       $current_theme['version'] = $theme->info['version'] ?? '';

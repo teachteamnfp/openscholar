@@ -1,0 +1,276 @@
+@import '../../os_base/scss/base/breakpoints';
+//colors
+$color_alabaster_approx: #f9f9f9;
+$color_log_cabin_approx: #222;
+$white: #fff;
+$color_tundora_approx: #444;
+$color_tuatara_approx: #343434;
+$color_java_approx: #1ebfb3;
+$color_downy_approx: #75c5bc;
+$color_ebb_approx: #ebe3df;
+$color_celeste_approx: #ccc;
+$color-gray: #666;
+
+//fonts
+$font_0: Cardo;
+$font_1: sans-serif;
+$font_2: Georgia;
+$font_3: serif !important;
+$font_4: Montserrat;
+$font_5: helvetica !important;
+$font_6: helvetica;
+
+//@extend-elements
+%extend_1 {
+  background-image: none;
+  background-color: $white;
+  border-top: 3px solid $color_celeste_approx;
+}
+@import url(https://fonts.googleapis.com/css?family=Montserrat);
+@import url(https://fonts.googleapis.com/css?family=Cardo);
+
+body {
+  font-size: 15px;
+  background: $color_alabaster_approx;
+  font-family: $font_0, $font_1, $font_2, $font_3;
+}
+.main-container {
+  a {
+    color: $color_log_cabin_approx;
+    text-decoration: underline;
+    &:visited {
+      text-decoration: underline;
+    }
+  }
+  aside {
+    .nav a {
+      &:link {
+        text-decoration: none;
+      }
+      &:visited {
+        text-decoration: none;
+      }
+    }
+    ul.nav li a {
+      background: $white;
+      border-bottom: 1px solid $color_ebb_approx;
+      font-family: $font_4, $font_6;
+    }
+  }
+  .slide-copy a {
+    text-decoration: none;
+  }
+  .block-boxes-os_taxonomy_fbt a {
+    text-decoration: none;
+  }
+  .accordion ul.nav li {
+    background: $white;
+    a {
+      border-bottom: 1px solid $color_ebb_approx;
+      font-family: $font_4, $font_6;
+    }
+  }
+}
+a {
+  &.os-swipe-large {
+    background-color: $color_log_cabin_approx;
+    text-decoration: none;
+  }
+  &.os-swipe-small {
+    background-color: $color_log_cabin_approx;
+    text-decoration: none;
+  }
+  &.rslides_nav {
+    background-color: $color_downy_approx;
+  }
+}
+.full-calendar-view .fc-header-toolbar button {
+  color: $color_log_cabin_approx;
+}
+.page-header {
+  font-family: $font_0, $font_1, $font_2, $font_3;
+}
+.node--title {
+  font-family: $font_0, $font_1, $font_2, $font_3;
+}
+.more-link {
+  font-family: $font_0, $font_1, $font_2, $font_3;
+}
+.content-inner {
+  h2 {
+    font-family: $font_0, $font_1, $font_2, $font_3;
+  }
+  h3 {
+    font-family: $font_0, $font_1, $font_2, $font_3;
+  }
+  h4 {
+    font-family: $font_0, $font_1, $font_2, $font_3;
+  }
+  .block.block-boxes-os_boxes_columns .block {
+    border-top: 3px solid $color_java_approx;
+  }
+}
+.navbar-collapse {
+  color: $white;
+  background: $color_tundora_approx;
+  @media #{$mobile} {
+    padding: 0 !important;
+  }
+  /***** navbar nav *****/
+  .navbar-nav {
+    > li {
+      @media #{$mobile} {
+        border-bottom: 1px solid;
+        border-top: 0 none;
+      }
+      > a {
+        font-family: $font_0, $font_1, $font_2, $font_3;
+        font-family: $font_4, $font_5;
+        color: $white;
+        text-decoration: none;
+        @media #{$mobile} {
+          color: $white;
+        }
+        &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
+          color: $white;
+          background: $color_tuatara_approx;
+        }
+      }
+      &.open, &.active {
+        > a, > a:hover, > a:active, > a:focus {
+          color: $white;
+          background: $color_tuatara_approx;
+        }
+      }
+    }
+  }
+  /**** dropdown menu ****/
+  .dropdown-menu {
+    background: $color_tundora_approx;
+    @media #{$mobile} {
+      background: none;
+    }
+    > li {
+      > a {
+        background: none;
+        color: $white;
+        @media #{$mobile} {
+          color: $white;
+          font-size: 19px;
+          padding-left: 20px;
+          font-family: $font_0, $font_1, $font_2, $font_3;
+          font-family: $font_4, $font_5;
+        }
+        &:hover, &:active {
+          color: $color-gray;
+          background: none;
+          @media #{$mobile} {
+            color: $white;
+          }
+        }
+      }
+      &.active {
+        a {
+          color: $white;
+          background: none;
+          @media #{$mobile} {
+            color: $white;
+          }
+          &:hover {
+            color: $white;
+            background: none;
+            @media #{$mobile} {
+              color: $white;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+footer {
+  background: $white;
+  border-top: 3px solid $color_downy_approx;
+  ul.nav {
+    a {
+      font-family: $font_4, $font_5;
+    }
+    li ul li a {
+      font-family: $font_4, $font_5;
+    }
+  }
+}
+aside {
+  .nav a {
+    &:link {
+      font-family: $font_4, $font_5;
+    }
+
+    &:visited {
+      font-family: $font_4, $font_5;
+    }
+  }
+  .region > .block {
+    border-top: 3px solid $color_java_approx;
+  }
+}
+.comment-wrapper {
+  border-top: 3px solid $color_java_approx;
+}
+#boxes-box-site_info {
+  color: $white;
+  text-decoration: none;
+  a {
+    color: $white;
+    text-decoration: none;
+  }
+}
+h1.page-header {
+  line-height: 1.3;
+}
+.path-search .title a {
+  font-family: $font_0, $font_1, $font_2, $font_3;
+}
+.links a {
+  font-family: $font_0, $font_1, $font_2, $font_3;
+}
+.boxes-box-content h2 {
+  font-family: $font_0, $font_1, $font_2, $font_3;
+}
+.section-nav a {
+  font-family: $font_0, $font_1, $font_2, $font_3;
+}
+h2.block-title {
+  font-family: $font_0, $font_1, $font_2, $font_3;
+}
+.header-container {
+  background: $color_tundora_approx;
+  ul.nav li{
+    a {
+      font-family: $font_4, $font_5;
+      color: $white;
+    }
+    &.nav a {
+      font-family: $font_0, $font_1, $font_2, $font_3;
+    }
+  }
+}
+.cke_editable * {
+  font-family: $font_0, $font_1, $font_2, $font_3;
+}
+.path-front .content-inner .block {
+  border-top: 3px solid $color_java_approx;
+}
+.path-person .block-inner {
+  border-top: 3px solid $color_java_approx;
+}
+.search-block-form .form-submit {
+  background: $color_java_approx;
+  border-color: $color_java_approx;
+}
+.fc-listUpcoming-view .fc-list-heading .fc-list-heading-main {
+  @extend %extend_1;
+}
+.fc-listPast-view .fc-list-heading .fc-list-heading-main {
+  @extend %extend_1;
+}
