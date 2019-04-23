@@ -203,4 +203,20 @@ abstract class TestBase extends ExistingSiteBase {
     return "$directory/$file_name";
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function tearDown() {
+    /** @var \Drupal\Core\File\FileSystemInterface $file_system */
+    $file_system = $this->container->get('file_system');
+    $template_path = "{$this->repec->getArchiveDirectory()}/{$this->defaultRepecSettings['archive_code']}seri.rdf";
+    $real_path = $file_system->realpath($template_path);
+
+    if (file_exists($real_path)) {
+      unlink($real_path);
+    }
+
+    parent::tearDown();
+  }
+
 }
