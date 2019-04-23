@@ -97,9 +97,9 @@ abstract class TestBase extends ExistingSiteBase {
    */
   public function createContributor(array $values = []) : ContributorInterface {
     $contributor = Contributor::create($values + [
-      'first_name' => $this->randomString(),
-      'middle_name' => $this->randomString(),
-      'last_name' => $this->randomString(),
+      'first_name' => $this->randomMachineName(),
+      'middle_name' => $this->randomMachineName(),
+      'last_name' => $this->randomMachineName(),
     ]);
 
     $contributor->save();
@@ -122,7 +122,7 @@ abstract class TestBase extends ExistingSiteBase {
    */
   public function createKeyword(array $values = []) : KeywordInterface {
     $keyword = Keyword::create($values + [
-      'name' => $this->randomString(),
+      'name' => $this->randomMachineName(),
     ]);
 
     $keyword->save();
