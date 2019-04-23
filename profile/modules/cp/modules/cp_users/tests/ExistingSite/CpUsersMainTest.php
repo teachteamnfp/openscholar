@@ -174,7 +174,7 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
       $this->assertSession()->assertWaitOnAjaxRequest();
       /** @var \Drupal\user\UserInterface $user */
       $user = user_load_by_name('test-user');
-      $this->assertSession()->elementExists('xpath', '//tr[@data-user-id="'.$user->id().'"]/td[contains(.,"Site Owner")]');
+      $this->assertSession()->elementExists('xpath', '//tr[@data-user-id="' . $user->id() . '"]/td[contains(.,"Site Owner")]');
     }
     catch (\Exception $e) {
       \file_put_contents(REQUEST_TIME . '.jpg', $this->getSession()->getScreenshot());
