@@ -249,6 +249,33 @@ class MailNotifications implements MailNotificationsInterface {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function disableReminderEmail(EntityInterface $event) {
+    $meta = $this->eventManager->getMeta($event);
+    $rules = $meta->getRules('rng:custom:date', FALSE, NULL);
+    foreach ($rules as $rule) {
+      $ruleComponents = $rule->getConditions();
+      if ($ruleComponents) {
+        $ruleComponent = array_shift($ruleComponents);
+        $pluginId = $ruleComponent->getPluginId();
+        if ($pluginId == 'rng_rule_scheduler') {
+          $config = $ruleComponent->getConfiguration();
+          $ruleSchedulerId = $config['rng_rule_scheduler'];
+          $ruleScheduler = $this->entityManager->getStorage('rng_rule_scheduler')->load($ruleSchedulerId);
+          if ($ruleScheduler) {
+            // If schedule exists delete it.
+            $ruleScheduler->delete();
+          }
+        }
+        // Set Rule as inactive.
+        $rule->setIsActive(FALSE)
+          ->save();
+      }
+    }
+  }
+
+  /**
    * Creates Rule Scheduler Entity.
    *
    * @param \Drupal\rng\Entity\RuleComponent $ruleComponent

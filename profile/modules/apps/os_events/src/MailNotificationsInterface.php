@@ -5,7 +5,7 @@ namespace Drupal\os_events;
 use Drupal\Core\Entity\EntityInterface;
 
 /**
- * Adds and enables a default signup email template.
+ * Allows ability to send various emails as per the event.
  */
 interface MailNotificationsInterface {
 
@@ -50,5 +50,18 @@ interface MailNotificationsInterface {
    *   The event node itself.
    */
   public function setUpReminderEmail(array $values, EntityInterface $event);
+
+  /**
+   * Deletes existing email reminder.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $event
+   *   The event node itself.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   * @throws \Drupal\rng\Exception\InvalidEventException
+   */
+  public function disableReminderEmail(EntityInterface $event);
 
 }

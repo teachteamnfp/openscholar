@@ -189,7 +189,7 @@ class MailNotificationsTest extends ExistingSiteBase {
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  protected function createRegisration() {
+  protected function createRegistration() {
     $date = $this->event->field_recurring_date->value;
     $timestamp = strtotime($date);
     $date = $this->formatter->format($timestamp, 'custom', DateTimeItemInterface::DATETIME_STORAGE_FORMAT);

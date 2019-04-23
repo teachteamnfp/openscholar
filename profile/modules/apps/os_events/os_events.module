@@ -72,6 +72,7 @@ function os_events_node_update(EntityInterface $node) {
   // delete registrations and send cancel mail.
   if (!$node->status->value || !$node->field_signup->value) {
     $mailService->sendCancelNotificationEmail($node);
+    $mailService->disableReminderEmail($node);
     foreach ($registrations as $registration) {
       $registration->delete();
     }
@@ -124,8 +125,9 @@ function os_events_node_predelete(EntityInterface $node) {
   }
 
   $container = Drupal::getContainer();
-  $default_template = $container->get('os_events.mail_notifications');
-  $default_template->sendCancelNotificationEmail($node);
+  $service = $container->get('os_events.mail_notifications');
+  $service->sendCancelNotificationEmail($node);
+  $service->disableReminderEmail($node);
 
 }
 
@@ -140,6 +142,11 @@ function os_events_node_presave(EntityInterface $entity) {
   $email = $entity->getOwner()->getEmail();
   $entity->rng_reply_to->value = ($entity->rng_reply_to->value) ?? $email;
   $entity->rng_capacity->value = ($entity->rng_capacity->value) ?? 'unlimited';
+
+  // Make sure reminder checkbox and reminder schedule is in sync.
+  if (!$entity->status->value || !$entity->field_signup->value) {
+    $entity->field_send_reminder_checkbox->value = 0;
+  }
 }
 
 /**
@@ -227,12 +234,15 @@ function os_events_form_rng_event_settings_alter(&$form, FormStateInterface $for
 function os_events_set_reminder($form, FormStateInterface $form_state) {
   $node = $form_state->getStorage()['event'];
   $values = $form_state->getValues();
-  if ($values['field_send_reminder_checkbox']) {
-    $container = Drupal::getContainer();
-    $default_template = $container->get('os_events.mail_notifications');
-    $default_template->setUpReminderEmail($values, $node);
+  $container = Drupal::getContainer();
+  $service = $container->get('os_events.mail_notifications');
+  if ($values['field_send_reminder_checkbox']['value']) {
+    $service->setUpReminderEmail($values, $node);
   }
-
+  elseif (!$values['field_send_reminder_checkbox']['value']) {
+    // Remove reminder if send reminder disabled.
+    $service->disableReminderEmail($node);
+  }
 }
 
 /**
