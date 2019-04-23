@@ -89,13 +89,13 @@
                 "version": "master",
                 "type": "drupal-module",
                 "dist": {
-                    "url": "https://github.com/subhojit777/repec/archive/fix-orphan-templates.zip",
+                    "url": "https://github.com/openscholar/repec/archive/master.zip",
                     "type": "zip"
                 },
                 "source": {
-                    "url": "https://github.com/subhojit777/repec.git",
+                    "url": "https://github.com/openscholar/repec.git",
                     "type": "git",
-                    "reference": "fix-orphan-templates"
+                    "reference": "master"
                 }
             }
         },
@@ -178,7 +178,7 @@
         "drupal-composer/drupal-scaffold": "^2.5",
         "drupal/console": "^1.0.2",
         "drupal/core": "^8.6.13",
-        "drupal/purl": "master",
+        "drupal/purl": "1.0.1",
         "drupal/group_purl": "1.0-alpha1",
         "drupal/search_api": "^1.9",
         "drush/drush": "^9.0.0",
