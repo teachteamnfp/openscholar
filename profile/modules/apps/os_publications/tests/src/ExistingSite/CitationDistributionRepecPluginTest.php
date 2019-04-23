@@ -47,9 +47,6 @@ class CitationDistributionRepecPluginTest extends TestBase {
   public function testDeleteEntityTemplate() {
     $serie_directory_config = $this->repec->getEntityBundleSettings('serie_directory', 'bibcite_reference', 'artwork');
     $directory = "{$this->repec->getArchiveDirectory()}{$serie_directory_config}/";
-
-    mkdir($directory, 0777, TRUE);
-
     $file_name = "{$serie_directory_config}_bibcite_reference_47.rdf";
     $file_path = "$directory/$file_name";
 
