@@ -140,10 +140,14 @@ abstract class TestBase extends ExistingSiteBase {
    * @param string $content
    *   The actual content.
    */
-  protected function assertTemplateContent(ReferenceInterface $reference, $content) {
+  protected function assertTemplateContent(ReferenceInterface $reference, $content): void {
+    $this->assertStringStartsWith('Template-Type', $content);
     $this->assertContains("Title: {$reference->label()}", $content);
     $this->assertContains("Number: {$reference->uuid()}", $content);
     $this->assertContains("Handle: RePEc:{$this->defaultRepecSettings['archive_code']}:{$this->repec->getEntityBundleSettings('serie_type', $reference->getEntityTypeId(), $reference->bundle())}:{$reference->id()}", $content);
+
+    $created_date = date('Y-m-d', $reference->getCreatedTime());
+    $this->assertContains("Creation-Date: {$created_date}", $content);
 
     // Assert keywords.
     $keyword_names = [];

@@ -516,7 +516,7 @@ class RepecIntegrationTest extends TestBase {
     $this->assertFileExists($template_path);
 
     $content = file_get_contents($template_path);
-    $this->assertContains('Template-Type: ReDIF-Archive 1.0', $content);
+    $this->assertStringStartsWith('Template-Type: ReDIF-Archive 1.0', $content);
     $this->assertContains("Handle: RePEc:{$this->defaultRepecSettings['archive_code']}", $content);
     $this->assertContains("Name: {$this->defaultRepecSettings['provider_name']}", $content);
     $this->assertContains("Maintainer-Name: {$this->defaultRepecSettings['maintainer_name']}", $content);
@@ -551,7 +551,7 @@ class RepecIntegrationTest extends TestBase {
     $this->assertFileExists($template_path);
 
     $content = file_get_contents($template_path);
-    $this->assertContains('Template-Type: ReDIF-Series 1.0', $content);
+    $this->assertStringStartsWith('Template-Type: ReDIF-Series 1.0', $content);
     $this->assertContains("Name: {$settings['serie_name']}", $content);
     $this->assertContains("Provider-Name: {$this->defaultRepecSettings['provider_name']}", $content);
     $this->assertContains("Provider-Homepage: {$this->defaultRepecSettings['provider_homepage']}", $content);
