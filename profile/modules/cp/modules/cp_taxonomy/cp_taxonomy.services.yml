@@ -1,0 +1,5 @@
+services:
+  cp.taxonomy.list_subscriber:
+    class: Drupal\cp_taxonomy\EventSubscriber\CpTaxonomyListingSubscriber
+    tags:
+        - { name: event_subscriber }

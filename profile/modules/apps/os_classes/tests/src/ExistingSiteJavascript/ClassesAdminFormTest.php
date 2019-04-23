@@ -67,7 +67,7 @@ class ClassesAdminFormTest extends ClassesExistingSiteJavascriptTestBase {
   public function testExistsDataAdminForm() {
     $user = $this->createUser(['administer site configuration']);
     $this->createClass([
-      'field_semester' => 'fall'
+      'field_semester' => 'fall',
     ]);
     $this->drupalLogin($user);
     $this->visit('/admin/config/openscholar/classes/field-allowed-values');

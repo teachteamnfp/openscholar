@@ -1,0 +1,20 @@
+uuid: 2b7f70c6-869c-4357-9594-f093b87d1c3e
+langcode: en
+status: true
+dependencies:
+  theme:
+    - onepage
+_core:
+  default_config_hash: KtJOUuV-TAcvPvyzGIUBVwseYLTZwcsv5LUnmOldAPA
+id: onepage_page_title
+theme: onepage
+region: content
+weight: -7
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  provider: core
+  label_display: '0'
+visibility: {  }

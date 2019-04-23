@@ -1,0 +1,20 @@
+uuid: aa3bada5-479f-49b4-939e-ae34e6ee58d6
+langcode: en
+status: true
+dependencies:
+  theme:
+    - holyoke
+_core:
+  default_config_hash: 7rR9chwXvdM2H8OYMAYx9Zj3GGlPMrZp_M3ZA4thYTk
+id: holyoke_page_title
+theme: holyoke
+region: content
+weight: -7
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  provider: core
+  label_display: '0'
+visibility: {  }
