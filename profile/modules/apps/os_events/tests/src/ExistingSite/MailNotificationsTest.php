@@ -58,7 +58,7 @@ class MailNotificationsTest extends ExistingSiteBase {
    */
   public function testSignupConfirmationMail() {
 
-    $registrant = $this->createRegisration();
+    $registrant = $this->createRegistration();
     $id = $registrant->getIdentityId();
     $entityStorage = $this->entityTypeManager->getStorage('courier_message_queue_item');
     $result = $entityStorage->getQuery()
@@ -72,7 +72,7 @@ class MailNotificationsTest extends ExistingSiteBase {
    * Tests Event cancellation.
    */
   public function testEventCancellationMail() {
-    $registrant = $this->createRegisration();
+    $registrant = $this->createRegistration();
     $id = $registrant->getIdentityId();
     $this->deleteMqi();
     $this->event->delete();
@@ -90,7 +90,7 @@ class MailNotificationsTest extends ExistingSiteBase {
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function testUpdateMail() {
-    $registrant = $this->createRegisration();
+    $registrant = $this->createRegistration();
     $id = $registrant->getIdentityId();
     $registration = $registrant->getRegistration();
     $oldRegistrationDate = strtotime($registration->field_for_date->value);
@@ -151,8 +151,8 @@ class MailNotificationsTest extends ExistingSiteBase {
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function testRegistrationsBroadcast() {
-    $registrant1 = $this->createRegisration();
-    $registrant2 = $this->createRegisration();
+    $registrant1 = $this->createRegistration();
+    $registrant2 = $this->createRegistration();
     $id1 = $registrant1->getIdentityId();
     $id2 = $registrant2->getIdentityId();
     $this->deleteMqi();
