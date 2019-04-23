@@ -1,0 +1,20 @@
+uuid: c7db97ac-99c0-42a3-a009-24f0e723e57e
+langcode: en
+status: true
+dependencies:
+  theme:
+    - indigo
+_core:
+  default_config_hash: 13GQpeITIJsp1kyPniXtWZfyFH87vb1xxJCHifL4UeE
+id: indigo_local_actions
+theme: indigo
+region: content
+weight: -5
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Primary admin actions'
+  provider: core
+  label_display: '0'
+visibility: {  }

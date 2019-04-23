@@ -12,6 +12,13 @@ namespace Drupal\Tests\cp_appearance\ExistingSite;
 class AppearanceSettingsBuilderTest extends TestBase {
 
   /**
+   * Theme handler.
+   *
+   * @var \Drupal\Core\Extension\ThemeHandlerInterface
+   */
+  protected $themeHandler;
+
+  /**
    * Default theme.
    *
    * @var string
@@ -26,6 +33,7 @@ class AppearanceSettingsBuilderTest extends TestBase {
     /** @var \Drupal\Core\Config\ImmutableConfig $theme_config */
     $theme_config = $this->configFactory->get('system.theme');
     $this->defaultTheme = $theme_config->get('default');
+    $this->themeHandler = $this->container->get('theme_handler');
   }
 
   /**
@@ -63,15 +71,15 @@ class AppearanceSettingsBuilderTest extends TestBase {
     $screenshot_info = $active_theme->screenshot;
 
     $this->assertNotNull($screenshot_info);
-    $this->assertTrue(isset($screenshot_info['uri']));
-    $this->assertTrue(isset($screenshot_info['alt']));
-    $this->assertTrue(isset($screenshot_info['title']));
+    $this->assertSame('profiles/contrib/openscholar/themes/hwpi_classic/screenshot.png', $screenshot_info['uri']);
+    $this->assertSame('Screenshot for Conservative theme', $screenshot_info['alt']->__toString());
+    $this->assertSame('Screenshot for Conservative theme', $screenshot_info['title']->__toString());
     $this->assertTrue(isset($screenshot_info['attributes']));
 
     // Test operations.
     $inactive_theme = $themes['hwpi_college'];
 
-    $this->assertCount(1, $inactive_theme->operations);
+    $this->assertCount(2, $inactive_theme->operations);
     $operations = $inactive_theme->operations[0];
     $this->assertTrue(isset($operations['title']));
     $this->assertTrue(isset($operations['url']));
@@ -105,6 +113,48 @@ class AppearanceSettingsBuilderTest extends TestBase {
     foreach ($sub_themes as $key => $value) {
       $this->assertFalse(isset($themes[$key]));
     }
+  }
+
+  /**
+   * @covers ::themeIsDefault
+   */
+  public function testThemeIsDefault(): void {
+    /** @var \Drupal\Core\Extension\Extension[] $installed_themes */
+    $installed_themes = $this->themeHandler->listInfo();
+    /** @var \Drupal\Core\Config\Config $theme_config_mut */
+    $theme_config_mut = $this->configFactory->getEditable('system.theme');
+
+    // When flavor is set as default.
+    $theme_config_mut->set('default', 'adams')->save();
+    $this->assertTrue($this->appearanceSettingsBuilder->themeIsDefault($installed_themes['hwpi_college']));
+
+    // When theme is set as default.
+    $theme_config_mut->set('default', 'vibrant')->save();
+    $this->assertTrue($this->appearanceSettingsBuilder->themeIsDefault($installed_themes['vibrant']));
+    $this->assertFalse($this->appearanceSettingsBuilder->themeIsDefault($installed_themes['hwpi_college']));
+  }
+
+  /**
+   * Tests the screenshot uri when flavor is set as default.
+   *
+   * @covers ::addScreenshotInfo
+   */
+  public function testFlavorScreenshotInfo(): void {
+    /** @var \Drupal\Core\Config\Config $theme_config_mut */
+    $theme_config_mut = $this->configFactory->getEditable('system.theme');
+    $theme_config_mut->set('default', 'loeb')->save();
+
+    /** @var \Drupal\Core\Extension\Extension[] $themes */
+    $themes = $this->appearanceSettingsBuilder->getThemes();
+
+    $active_theme = $themes['hwpi_sterling'];
+    $screenshot_info = $active_theme->screenshot;
+
+    $this->assertNotNull($screenshot_info);
+    $this->assertSame('profiles/contrib/openscholar/themes/loeb/screenshot.png', $screenshot_info['uri']);
+    $this->assertSame('Screenshot for Loeb theme', $screenshot_info['alt']->__toString());
+    $this->assertSame('Screenshot for Loeb theme', $screenshot_info['title']->__toString());
+    $this->assertTrue(isset($screenshot_info['attributes']));
   }
 
   /**

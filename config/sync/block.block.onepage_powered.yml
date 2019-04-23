@@ -1,0 +1,22 @@
+uuid: 7615393b-84f9-419a-b770-ee495f5b044f
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - onepage
+_core:
+  default_config_hash: LznQqQH69Pi-r5KntY2XQ2O3unLSTI2Gdl7iZqx7Keo
+id: onepage_powered
+theme: onepage
+region: footer
+weight: -6
+provider: null
+plugin: system_powered_by_block
+settings:
+  id: system_powered_by_block
+  label: 'Powered by Drupal'
+  provider: system
+  label_display: '0'
+visibility: {  }

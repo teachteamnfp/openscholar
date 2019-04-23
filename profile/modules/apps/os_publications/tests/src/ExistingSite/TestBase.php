@@ -46,6 +46,7 @@ abstract class TestBase extends ExistingSiteBase {
     $this->configFactory = $this->container->get('config.factory');
     $this->repec = $this->container->get('repec');
     $this->defaultRepecSettings = $this->configFactory->get('repec.settings')->getRawData();
+    $this->repec->initializeTemplates();
   }
 
   /**
@@ -61,7 +62,7 @@ abstract class TestBase extends ExistingSiteBase {
    */
   public function createReference(array $values = []) : ReferenceInterface {
     $reference = Reference::create($values + [
-      'title' => $this->randomString(),
+      'title' => $this->randomMachineName(),
       'type' => 'artwork',
       'bibcite_year' => [
         'value' => 1980,
@@ -96,9 +97,9 @@ abstract class TestBase extends ExistingSiteBase {
    */
   public function createContributor(array $values = []) : ContributorInterface {
     $contributor = Contributor::create($values + [
-      'first_name' => $this->randomString(),
-      'middle_name' => $this->randomString(),
-      'last_name' => $this->randomString(),
+      'first_name' => $this->randomMachineName(),
+      'middle_name' => $this->randomMachineName(),
+      'last_name' => $this->randomMachineName(),
     ]);
 
     $contributor->save();
@@ -121,7 +122,7 @@ abstract class TestBase extends ExistingSiteBase {
    */
   public function createKeyword(array $values = []) : KeywordInterface {
     $keyword = Keyword::create($values + [
-      'name' => $this->randomString(),
+      'name' => $this->randomMachineName(),
     ]);
 
     $keyword->save();
@@ -139,10 +140,14 @@ abstract class TestBase extends ExistingSiteBase {
    * @param string $content
    *   The actual content.
    */
-  protected function assertTemplateContent(ReferenceInterface $reference, $content) {
+  protected function assertTemplateContent(ReferenceInterface $reference, $content): void {
+    $this->assertStringStartsWith('Template-Type', $content);
     $this->assertContains("Title: {$reference->label()}", $content);
     $this->assertContains("Number: {$reference->uuid()}", $content);
     $this->assertContains("Handle: RePEc:{$this->defaultRepecSettings['archive_code']}:{$this->repec->getEntityBundleSettings('serie_type', $reference->getEntityTypeId(), $reference->bundle())}:{$reference->id()}", $content);
+
+    $created_date = date('Y-m-d', $reference->getCreatedTime());
+    $this->assertContains("Creation-Date: {$created_date}", $content);
 
     // Assert keywords.
     $keyword_names = [];
@@ -200,6 +205,22 @@ abstract class TestBase extends ExistingSiteBase {
     $file_name = "{$serie_directory_config}_{$reference->getEntityTypeId()}_{$reference->id()}.rdf";
 
     return "$directory/$file_name";
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function tearDown() {
+    /** @var \Drupal\Core\File\FileSystemInterface $file_system */
+    $file_system = $this->container->get('file_system');
+    $template_path = "{$this->repec->getArchiveDirectory()}/{$this->defaultRepecSettings['archive_code']}seri.rdf";
+    $real_path = $file_system->realpath($template_path);
+
+    if (file_exists($real_path)) {
+      unlink($real_path);
+    }
+
+    parent::tearDown();
   }
 
 }

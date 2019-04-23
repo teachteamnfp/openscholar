@@ -1,3 +1,4 @@
+@import '../../os_base/scss/base/breakpoints';
 //colors
 $color_monarch_approx: #8a101e;
 $color_black_haze_approx: #f6f8f8;
@@ -157,67 +158,80 @@ footer {
     background: none repeat scroll 0 0 $color_mexican_red_approx;
     border-radius: 2px 2px 2px 2px;
     box-shadow: 0 0;
+    @media #{$mobile} {
+      padding: 0 !important;
+      background: none;
+    }
   }
-  ul {
-    a {
-      @extend %extend_1;
-    }
-    &.nav {
-      a {
+  /***** navbar nav *****/
+  .navbar-nav {
+    > li {
+      @media #{$mobile} {
+        border-bottom: 1px solid $white;
+        border-top: 0 none;
+      }
+      > a {
         @extend %extend_1;
-        &.is-active {
-          background: $color_persian_plum_approx;
-          color: $wild_sand;
-          &:hover {
-            background: $color_persian_plum_approx;
-            color: $wild_sand;
-          }
+        @media #{$mobile} {
         }
-        &:hover {
+        &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
           background: $color_persian_plum_approx;
           color: $wild_sand;
-          background: $color_rangoon_green_approx;
         }
       }
-      ul {
-        background: none repeat scroll 0 0 $color_rangoon_green_approx;
-        li a {
-          font-size: 15px;
-        }
-      }
-      .dropdown {
-        &.open>a {
+      &.open, &.active {
+        > a, > a:hover, > a:active, > a:focus {
           background: $color_persian_plum_approx;
           color: $wild_sand;
         }
-        a.is-active {
-          background: $color_persian_plum_approx;
-          color: $wild_sand;
-          background: $color_persian_plum_approx;
-        }
-        ul li a {
-          background: none repeat scroll 0 0 $color_rangoon_green_approx;
-          font-family: $font_0, $font_4, $font_5, $font_2;
-          font-weight: normal;
-          color: $white;
-          &:hover {
-            background: $color_rangoon_green_approx;
-          }
-          &.is-active {
-            background: $color_rangoon_green_approx;
-          }
-        }
-      }
-      li.dropdown:hover a {
-        background: $color_rangoon_green_approx;
+
       }
     }
-    >li>a {
-      &:hover {
+  }
+  /**** dropdown menu ****/
+  .dropdown-menu {
+    background: $color_rangoon_green_approx;
+    @media #{$mobile} {
+      background: none;
+      padding: 0;
+    }
+    > li {
+      > a {
         background: $color_rangoon_green_approx;
+        font-family: $font_0, $font_4, $font_5, $font_2;
+        font-weight: normal;
+        color: $white;
+        font-size: 15px;
+        @media #{$mobile} {
+          background: $color_mexican_red_approx;
+          padding: 8px 16px;
+          padding-left: 20px;
+          font-size: 19px;
+        }
+        &:hover, &:active {
+          background: $color_rangoon_green_approx;
+          @media #{$mobile} {
+            color: $white;
+            background: $color_mexican_red_approx;
+          }
+        }
       }
-      &.is-active {
-        background: $color_persian_plum_approx;
+      &.active {
+        a {
+          background: $color_rangoon_green_approx;
+          color: $white;
+          @media #{$mobile} {
+            color: $white;
+            background: $color_mexican_red_approx;
+          }
+          &:hover {
+            background: $color_rangoon_green_approx;
+            @media #{$mobile} {
+              color: $white;
+              background: $color_mexican_red_approx;
+            }
+          }
+        }
       }
     }
   }

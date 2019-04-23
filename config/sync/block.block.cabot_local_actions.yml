@@ -1,0 +1,20 @@
+uuid: 9e20b7dd-607c-4b7b-ade4-c7f3558b8209
+langcode: en
+status: true
+dependencies:
+  theme:
+    - cabot
+_core:
+  default_config_hash: 13GQpeITIJsp1kyPniXtWZfyFH87vb1xxJCHifL4UeE
+id: cabot_local_actions
+theme: cabot
+region: content
+weight: -5
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Primary admin actions'
+  provider: core
+  label_display: '0'
+visibility: {  }

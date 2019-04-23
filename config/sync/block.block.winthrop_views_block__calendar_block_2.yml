@@ -1,0 +1,32 @@
+uuid: 76160d25-1876-4e2b-b32b-f0343a8a085f
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_visibility_groups.block_visibility_group.event_section
+    - views.view.calendar
+  module:
+    - block_visibility_groups
+    - views
+  theme:
+    - winthrop
+id: winthrop_views_block__calendar_block_2
+theme: winthrop
+region: content
+weight: 1
+provider: null
+plugin: 'views_block:calendar-block_2'
+settings:
+  id: 'views_block:calendar-block_2'
+  label: ''
+  provider: views
+  label_display: visible
+  views_label: ''
+  items_per_page: none
+  context_mapping: {  }
+visibility:
+  condition_group:
+    id: condition_group
+    negate: false
+    block_visibility_group: event_section
+    context_mapping: {  }

@@ -1,0 +1,22 @@
+uuid: 708d26fb-c065-4090-8714-dcfee28e035d
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - holyoke
+_core:
+  default_config_hash: 9EoWV2Lot6FVSr50t4hoKgiz1LIXYWNG-IIPYsWxBqo
+id: holyoke_content
+theme: holyoke
+region: content
+weight: -4
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  provider: system
+  label_display: '0'
+visibility: {  }

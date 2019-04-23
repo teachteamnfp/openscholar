@@ -8,7 +8,7 @@ use Drupal\Core\Extension\ThemeHandlerInterface;
 /**
  * Helper methods for building a theme selector.
  */
-class ThemeSelectorBuilder implements ThemeSelectorBuilderInterface {
+final class ThemeSelectorBuilder implements ThemeSelectorBuilderInterface {
 
   /**
    * Theme handler service.

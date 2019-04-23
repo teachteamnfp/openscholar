@@ -1,4 +1,4 @@
-uuid: 114118cb-abe7-41e3-9c9a-816712350264
+uuid: e2d528c4-e53e-479c-9307-5ab18e8ade00
 langcode: en
 status: true
 dependencies:
@@ -11,6 +11,8 @@ dependencies:
     - rng_quick
   theme:
     - hwpi_classic
+_core:
+  default_config_hash: vjSBbnVZSZ0eOPBXYOXZhTZhmE4pP5GQPR440dcM16Q
 id: hwpi_classic_registration
 theme: hwpi_classic
 region: content
