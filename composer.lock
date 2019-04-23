@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "37c72a6d75b26f3fe58138e2e93101bf",
+    "content-hash": "91af3603b892d3f2fcb2baec248bbaea",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -2472,10 +2472,10 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-rc3",
-                    "datestamp": "1545235980",
+                    "datestamp": "1538045580",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "RC releases are not covered by Drupal security advisories."
+                        "message": "Project has not opted into security advisory coverage!"
                     }
                 }
             },
@@ -4156,14 +4156,14 @@
                 },
                 "drupal": {
                     "version": "8.x-2.0-alpha1",
-                    "datestamp": "1547651280",
+                    "datestamp": "1548047887",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Alpha releases are not covered by Drupal security advisories."
                     }
                 },
                 "patches_applied": {
-                    "Make compatible with Date All Day module (All day occurrences)": "https://www.drupal.org/files/issues/2019-01-17/2982275-29.patch"
+                    "Make compatible with Date All Day module (All day occurrences)": "https://www.drupal.org/files/issues/2019-04-15/2982275-41.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4562,10 +4562,6 @@
                 {
                     "name": "kristiaanvandeneynde",
                     "homepage": "https://www.drupal.org/user/1345130"
-                },
-                {
-                    "name": "ronaldtebrake",
-                    "homepage": "https://www.drupal.org/user/2314038"
                 }
             ],
             "description": "This module allows you to group users, content and other entities",
@@ -4607,7 +4603,7 @@
                     }
                 },
                 "patches_applied": {
-                    "Prevent base path from interfering with purl detection": "https://www.drupal.org/files/issues/2019-01-17/group_purl.3026646-2.basepath.patch",
+                    "Prevent base path from interfering with purl detection": "https://www.drupal.org/files/issues/2019-04-12/group_purl.3026646-3.basepath.patch",
                     "Don't attempt to redirect to subdomains by default": "https://www.drupal.org/files/issues/2019-03-05/group_purl.3036879-4.subdomain_disable.patch"
                 }
             },
@@ -5247,17 +5243,17 @@
             "version": "master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/openscholar/repec.git",
-                "reference": "master"
+                "url": "https://github.com/subhojit777/repec.git",
+                "reference": "fix-orphan-templates"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/openscholar/repec/archive/master.zip",
-                "reference": "master",
+                "url": "https://github.com/subhojit777/repec/archive/fix-orphan-templates.zip",
+                "reference": "fix-orphan-templates",
                 "shasum": null
             },
             "type": "drupal-module",
-            "time": "2019-03-22T17:35:09+00:00"
+            "time": "2019-04-23T08:05:24+00:00"
         },
         {
             "name": "drupal/rng",
@@ -5608,7 +5604,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0",
-                    "datestamp": "1545236281",
+                    "datestamp": "1495746183",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -13238,7 +13234,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "drupal/purl": 20,
         "drupal/config_sync": 15,
         "drupal/context": 10,
         "kenwheeler/slick": 20,
