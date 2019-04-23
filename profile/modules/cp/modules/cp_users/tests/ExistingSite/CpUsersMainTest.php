@@ -3,6 +3,8 @@
 namespace Drupal\Tests\cp_users\ExistingSite;
 
 use Drupal\Core\Test\AssertMailTrait;
+use Drupal\group\Entity\Group;
+use Drupal\group\Entity\GroupInterface;
 use Drupal\Tests\vsite\ExistingSiteJavascript\VsiteExistingSiteJavascriptTestBase;
 
 /**
@@ -163,6 +165,7 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
       $page->clickLink('+ Add a member');
       $this->assertSession()->waitForElement('css', '#drupal-modal--content');
       $this->assertSession()->linkNotExists('Add New User', "Add New User is still on page.");
+      $page->find('css', '#drupal-modal')->click();
 
       $page->clickLink('Change Owner');
       $this->assertSession()->waitForElement('css', '#drupal-modal--content');
@@ -171,7 +174,7 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
       $this->assertSession()->assertWaitOnAjaxRequest();
       /** @var \Drupal\user\UserInterface $user */
       $user = user_load_by_name('test-user');
-      $this->assertEquals($user->id(), $this->group->getOwnerId(), "Owner did not change.");
+      $this->assertSession()->elementExists('xpath', '//tr[@data-user-id="'.$user->id().'"]/td[contains(.,"Site Owner")]');
     }
     catch (\Exception $e) {
       \file_put_contents(REQUEST_TIME . '.jpg', $this->getSession()->getScreenshot());
