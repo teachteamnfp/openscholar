@@ -1,0 +1,18 @@
+.ui-widget-header,
+.ui-widget-content {
+  background: none;
+  color: $color-white;
+}
+aside .block .fc-row.ui-widget-header th {
+  background: none;
+}
+.fc-event-default {
+  border-color: #42494F;
+  background-color: #42494F;
+}
+.fc-header-toolbar {
+  button.ui-button {
+    background: #42494F;
+    color: #fff;
+  }
+}

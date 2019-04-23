@@ -1,0 +1,65 @@
+/**** navbar background ****/
+.navbar-collapse {
+  background: $color-dark;
+  padding: 0 !important;
+  border-top: 3px solid #464D53;
+  border-bottom: 1px solid #464D53;
+  /***** navbar nav *****/
+  .navbar-nav {
+    margin-top: -3px;
+    > li {
+      @media #{$mobile} {
+        // border-bottom: 1px solid $color-red;
+        // border-top: 1px solid $color-red1;
+      }
+      > a {
+        color: $color-white;
+        border-top: 3px solid transparent;
+        &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
+          color: $color-white;
+          border-top-color: #4CA5D9;
+          background: #42494F;
+        }
+      }
+      &.open, &.active {
+        > a, > a:hover, > a:active, > a:focus {
+          color: $color-white;
+          border-top-color: #4CA5D9;
+          background: #42494F;
+        }
+      }
+    }
+  }
+  /**** dropdown menu ****/
+  .dropdown-menu {
+    background: #2D3136;
+    @media #{$mobile} {
+      background: none;
+    }
+    > li {
+      > a {
+        color: $color-white;
+        font-weight: normal;
+        font-size: 14px;
+        @media #{$mobile} {
+          font-size: 19px;
+          font-weight: normal;
+        }
+        &:hover, &:active {
+          color: $color-white;
+          @media #{$mobile} {
+            background: none;
+          }
+        }
+      }
+      &.active {
+        a, a:hover {
+          color: $color-white;
+          @media #{$mobile} {
+            background: none;
+          }
+        }
+      }
+    }
+  }
+}

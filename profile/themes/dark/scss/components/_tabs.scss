@@ -1,0 +1,17 @@
+.nav-tabs {
+  margin-bottom: 15px;
+  >li {
+    >a {
+      &:hover {
+        background: #42494F;
+        color: $color-white
+      }
+    }
+    &.active {
+      a {
+        background: #42494F;
+        color: $color-white
+      }
+    }
+  }
+}
