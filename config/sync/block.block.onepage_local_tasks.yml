@@ -1,0 +1,22 @@
+uuid: 004771ac-287e-4bd5-91e3-0daaa467d882
+langcode: en
+status: true
+dependencies:
+  theme:
+    - onepage
+_core:
+  default_config_hash: OUV6fIpny9g4P11WsMIv3VwfEr3n-SPvK43t6_p8vO0
+id: onepage_local_tasks
+theme: onepage
+region: content
+weight: -6
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: Tabs
+  provider: core
+  label_display: '0'
+  primary: true
+  secondary: true
+visibility: {  }

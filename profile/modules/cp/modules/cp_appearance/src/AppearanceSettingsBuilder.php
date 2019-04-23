@@ -47,11 +47,18 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
   protected $formBuilder;
 
   /**
-   * List of currently installed themes.
+   * List of currently installed themes in the site.
    *
    * @var \Drupal\Core\Extension\Extension[]
    */
-  protected $installedThemes;
+  protected $drupalInstalledThemes;
+
+  /**
+   * List of installed themes made from os_base.
+   *
+   * @var \Drupal\Core\Extension\Extension[]
+   */
+  protected $osInstalledThemes;
 
   /**
    * Theme selector builder service.
@@ -78,31 +85,27 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
     $this->formBuilder = $form_builder;
     $this->themeSelectorBuilder = $theme_selector_builder;
     $this->themeConfig = $this->configFactory->get('system.theme');
-    $this->installedThemes = $this->themeHandler->listInfo();
+    $this->drupalInstalledThemes = $this->themeHandler->listInfo();
+    $this->osInstalledThemes = array_filter($this->drupalInstalledThemes, function (Extension $theme) {
+      return (isset($theme->base_themes) && $theme->base_theme === 'os_base' && $theme->status);
+    });
   }
 
   /**
    * {@inheritdoc}
    */
   public function getThemes(): array {
-    // We do not want to make any unwanted changes to installedThemes by
+    // We do not want to make any unwanted changes to osInstalledThemes by
     // mistake.
-    $themes = $this->installedThemes;
+    $themes = $this->osInstalledThemes;
 
     uasort($themes, 'system_sort_modules_by_info_name');
 
-    $theme_default = $this->themeConfig->get('default');
-
-    // Only show installed themes made from os_base.
-    $themes = array_filter($themes, function ($theme) {
-      return (isset($theme->base_themes) && $theme->base_theme === 'os_base' && $theme->status);
-    });
-
     // Attach additional information in the themes.
     foreach ($themes as $theme) {
-      $theme->is_default = ($theme->getName() === $theme_default);
+      $theme->is_default = $this->themeIsDefault($theme);
       $theme->is_admin = FALSE;
-      $theme->screenshot = $this->addScreenshotInfo($theme, $themes);
+      $theme->screenshot = $this->addScreenshotInfo($theme);
       $theme->operations = $this->addOperations($theme);
       $theme->more_operations = $this->addMoreOperations($theme);
       $theme->notes = $this->addNotes($theme);
@@ -112,29 +115,53 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function themeIsDefault(Extension $theme): bool {
+    /** @var string $theme_default */
+    $theme_default = $this->themeConfig->get('default');
+
+    if ($theme_default === $theme->getName()) {
+      return TRUE;
+    }
+
+    if (isset($theme->sub_themes[$theme_default])) {
+      return TRUE;
+    }
+
+    return FALSE;
+  }
+
+  /**
    * Adds a screenshot information to the theme.
    *
    * @param \Drupal\Core\Extension\Extension $theme
    *   The theme.
-   * @param \Drupal\Core\Extension\Extension[] $themes
-   *   If no screenshot is present for the theme, then this list will be used.
    *
    * @return array|null
    *   Renderable theme_image structure. NULL if no screenshot found.
    */
-  protected function addScreenshotInfo(Extension $theme, array $themes): ?array {
-    $candidates = [$theme->getName()];
-    $candidates[] = $theme->base_themes;
+  protected function addScreenshotInfo(Extension $theme): ?array {
+    /** @var string $theme_default */
+    $theme_default = $this->themeConfig->get('default');
+    $preview = $theme;
 
-    foreach ($candidates as $candidate) {
-      if (file_exists($themes[$candidate]->info['screenshot'])) {
-        return [
-          'uri' => $themes[$candidate]->info['screenshot'],
-          'alt' => $this->t('Screenshot for @theme theme', ['@theme' => $theme->info['name']]),
-          'title' => $this->t('Screenshot for @theme theme', ['@theme' => $theme->info['name']]),
-          'attributes' => ['class' => ['screenshot']],
-        ];
-      }
+    // Make sure that if a flavor is set as default, then its preview is being
+    // showed, not its base theme's.
+    if (isset($theme->sub_themes[$theme_default])) {
+      $preview = $this->drupalInstalledThemes[$theme_default];
+    }
+
+    /** @var string|null $screenshot_uri */
+    $screenshot_uri = $this->themeSelectorBuilder->getScreenshotUri($preview);
+
+    if ($screenshot_uri) {
+      return [
+        'uri' => $screenshot_uri,
+        'alt' => $this->t('Screenshot for @theme theme', ['@theme' => $preview->info['name']]),
+        'title' => $this->t('Screenshot for @theme theme', ['@theme' => $preview->info['name']]),
+        'attributes' => ['class' => ['screenshot']],
+      ];
     }
 
     return NULL;
@@ -212,10 +239,10 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
       // Create a key-extension_info mapping.
       $sub_themes = new Map();
       foreach ($theme->sub_themes as $key => $name) {
-        $sub_themes->put($key, $this->installedThemes[$key]);
+        $sub_themes->put($key, $this->drupalInstalledThemes[$key]);
       }
 
-      $operations[] = $this->formBuilder->getForm(new FlavorForm($theme, $sub_themes, $this->themeSelectorBuilder));
+      $operations[] = $this->formBuilder->getForm(new FlavorForm($theme, $sub_themes, $this->themeSelectorBuilder, $this->configFactory));
     }
 
     return $operations;

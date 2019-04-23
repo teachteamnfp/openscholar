@@ -192,8 +192,8 @@ aside {
       flex-wrap: wrap;
       flex-direction: column;
       .content {
-        padding-bottom: 20px;
-        margin-bottom: 20px;
+        padding-bottom: 30px;
+        margin-bottom: 30px;
         border-bottom: 1px solid $color-light-gray;
       }
     }
@@ -257,4 +257,5 @@ aside {
 }
 .fc-wrapper {
   display: flex;
+  width: 100%;
 }

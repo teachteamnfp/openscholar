@@ -83,10 +83,8 @@ class PreviewActionTest extends TestBase {
     $this->visit('/os-theme-preview/cp/appearance/preview/documental');
     $this->getCurrentPage()->pressButton('Save');
 
-    /** @var \Drupal\Core\Config\ImmutableConfig $theme_config */
-    $theme_config = $this->configFactory->get('system.theme');
-
-    $this->assertSame('documental', $theme_config->get('default'));
+    $this->visit('/os-theme-preview');
+    $this->assertSession()->responseContains('/profiles/contrib/openscholar/themes/documental/css/style.css');
   }
 
   /**
