@@ -46,14 +46,7 @@ abstract class TestBase extends ExistingSiteBase {
     $this->configFactory = $this->container->get('config.factory');
     $this->repec = $this->container->get('repec');
     $this->defaultRepecSettings = $this->configFactory->get('repec.settings')->getRawData();
-
-    $file_system = $this->container->get('file_system');
-    $template_path = "{$this->repec->getArchiveDirectory()}/{$this->defaultRepecSettings['archive_code']}seri.rdf";
-    $real_path = $file_system->realpath($template_path);
-
-    if (file_exists($real_path)) {
-      unlink($real_path);
-    }
+    $this->repec->initializeTemplates();
   }
 
   /**
