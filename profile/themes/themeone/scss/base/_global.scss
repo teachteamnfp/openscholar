@@ -8,11 +8,6 @@ aside {
       }
     }
   }
-  .block-title {
-    background: $color-link;
-    color: $color-white;
-    padding: 10px;
-  }
 }
 .page-header {
   position: relative;
@@ -35,4 +30,10 @@ aside {
 }
 .ui-widget, .ui-widget button {
   font-family: 'Montserrat', sans-serif;
+}
+h2.block-title {
+  background: $color-light-gray1;
+  border-left: 3px solid $color-link;
+  padding: 9px 15px 10px;
+  margin-bottom: 10px;
 }
