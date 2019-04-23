@@ -504,6 +504,65 @@ class RepecIntegrationTest extends TestBase {
   }
 
   /**
+   * Tests archive template.
+   *
+   * @covers \Drupal\repec\Repec::getArchiveTemplate
+   * @covers \Drupal\repec\Repec::createArchiveTemplate
+   */
+  public function testArchiveTemplate(): void {
+    $this->repec->initializeTemplates();
+
+    $template_path = "{$this->repec->getArchiveDirectory()}/{$this->defaultRepecSettings['archive_code']}arch.rdf";
+    $this->assertFileExists($template_path);
+
+    $content = file_get_contents($template_path);
+    $this->assertStringStartsWith('Template-Type: ReDIF-Archive 1.0', $content);
+    $this->assertContains("Handle: RePEc:{$this->defaultRepecSettings['archive_code']}", $content);
+    $this->assertContains("Name: {$this->defaultRepecSettings['provider_name']}", $content);
+    $this->assertContains("Maintainer-Name: {$this->defaultRepecSettings['maintainer_name']}", $content);
+    $this->assertContains("Maintainer-Email: {$this->defaultRepecSettings['maintainer_email']}", $content);
+    $this->assertContains("Description: This archive collects publications from {$this->defaultRepecSettings['provider_name']}", $content);
+    $this->assertContains("URL: {$this->defaultRepecSettings['provider_homepage']}/sites/default/files/{$this->defaultRepecSettings['base_path']}/{$this->defaultRepecSettings['archive_code']}/", $content);
+  }
+
+  /**
+   * Tests series template.
+   *
+   * @covers \Drupal\repec\Repec::getSeriesTemplate
+   * @covers \Drupal\repec\Repec::createSeriesTemplate
+   * @covers \Drupal\repec\Series\Base::getSeriesType
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public function testSeriesTemplate(): void {
+    /** @var \Drupal\repec\TemplateFactory $template_factory */
+    $template_factory = $this->container->get('template_factory');
+    $book_chapter = $this->createReference([
+      'type' => 'book_chapter',
+      'bibcite_publisher' => [
+        'value' => 'Bloomsbury',
+      ],
+    ]);
+    $settings = $this->repec->getEntityBundleSettings('all', 'bibcite_reference', 'book_chapter');
+    /** @var \Drupal\repec\Series\BaseInterface $template_class */
+    $template_class = $template_factory->create($settings['serie_type'], $book_chapter);
+
+    $template_path = "{$this->repec->getArchiveDirectory()}/{$this->defaultRepecSettings['archive_code']}seri.rdf";
+    $this->assertFileExists($template_path);
+
+    $content = file_get_contents($template_path);
+    $this->assertStringStartsWith('Template-Type: ReDIF-Series 1.0', $content);
+    $this->assertContains("Name: {$settings['serie_name']}", $content);
+    $this->assertContains("Provider-Name: {$this->defaultRepecSettings['provider_name']}", $content);
+    $this->assertContains("Provider-Homepage: {$this->defaultRepecSettings['provider_homepage']}", $content);
+    $this->assertContains("Provider-Institution: {$this->defaultRepecSettings['provider_institution']}", $content);
+    $this->assertContains("Maintainer-Name: {$this->defaultRepecSettings['maintainer_name']}", $content);
+    $this->assertContains("Maintainer-Email: {$this->defaultRepecSettings['maintainer_email']}", $content);
+    $this->assertContains("Type: {$template_class->getSeriesType()}", $content);
+    $this->assertContains("Handle: RePEc:{$this->defaultRepecSettings['archive_code']}:{$settings['serie_type']}", $content);
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function tearDown() {
