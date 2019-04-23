@@ -510,8 +510,6 @@ class RepecIntegrationTest extends TestBase {
    * @covers \Drupal\repec\Repec::createArchiveTemplate
    */
   public function testArchiveTemplate(): void {
-    $this->repec->initializeTemplates();
-
     $template_path = "{$this->repec->getArchiveDirectory()}/{$this->defaultRepecSettings['archive_code']}arch.rdf";
     $this->assertFileExists($template_path);
 
