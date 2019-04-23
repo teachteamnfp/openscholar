@@ -80,63 +80,16 @@ function cp_taxonomy_form_taxonomy_vocabulary_form_alter(array &$form, FormState
     $form['actions']['delete']['#url'] = Url::fromRoute('cp.taxonomy.delete', $url->getRouteParameters());
     $form['actions']['submit']['#submit'][] = 'cp_taxonomy_form_add_vocab_submit';
   }
-  $options = _cp_taxonomy_get_selectable_bundles();
-  $saved_entity_types = _cp_taxonomy_get_selected_bundles($form);
+  /** @var \Drupal\cp_taxonomy\CpTaxonomyHelperInterface $taxonomy_helper */
+  $taxonomy_helper = Drupal::service('cp_taxonomy.helper');
+  $options = $taxonomy_helper->getSelectableBundles();
+  $saved_entity_types = $taxonomy_helper->getSelectedBundles($form);
   $form['allowed_entity_types'] = [
     '#type' => 'checkboxes',
     '#options' => $options,
     '#title' => t('Allowed entity types'),
     '#default_value' => $saved_entity_types,
   ];
-}
-
-/**
- * Get selected bundles from stored config.
- *
- * @param array $form
- *   Form array.
- *
- * @return array
- *   Selected bundles in array.
- */
-function _cp_taxonomy_get_selected_bundles(array $form): array {
-  $saved_entity_types = [];
-  if (!empty($form['vid']['#default_value'])) {
-    $vid = $form['vid']['#default_value'];
-    $config_factory = Drupal::configFactory();
-    $config_vocab = $config_factory->getEditable('taxonomy.vocabulary.' . $vid);
-    $config_allowed_vocabulary_reference = $config_vocab->get('allowed_vocabulary_reference_types');
-    if (!empty($config_allowed_vocabulary_reference)) {
-      $saved_entity_types = $config_allowed_vocabulary_reference;
-    }
-  }
-  return $saved_entity_types;
-}
-
-/**
- * Get selectable bundles.
- *
- * @return array
- *   Selectable bundles array, named entity_type:bundle.
- */
-function _cp_taxonomy_get_selectable_bundles(): array {
-  $definitions = \Drupal::entityTypeManager()->getDefinitions();
-  $allowed_entity_types = [
-    'node',
-    'media',
-  ];
-  $options = [];
-  foreach ($definitions as $definition) {
-    if (!in_array($definition->id(), $allowed_entity_types)) {
-      continue;
-    }
-    $bundles = \Drupal::service('entity.manager')
-      ->getBundleInfo($definition->id());
-    foreach ($bundles as $machine_name => $bundle) {
-      $options[$definition->id() . ':' . $machine_name] = $definition->getLabel() . ' - ' . $bundle['label'];
-    }
-  }
-  return $options;
 }
 
 /**
@@ -201,12 +154,9 @@ function cp_taxonomy_form_taxonomy_vocabulary_confirm_delete_alter(array &$form,
  *   The form state.
  */
 function cp_taxonomy_form_add_vocab_submit(array &$form, FormStateInterface &$form_state) {
-  $config_factory = Drupal::configFactory();
   $vid = $form_state->getValue('vid');
   $allowed_entity_types = $form_state->getValue('allowed_entity_types');
-  $filtered_entity_types = array_values(array_filter($allowed_entity_types));
-  $config_vocab = $config_factory->getEditable('taxonomy.vocabulary.' . $vid);
-  $config_vocab->set('allowed_vocabulary_reference_types', $filtered_entity_types)->save(TRUE);
+  Drupal::service('cp_taxonomy.helper')->saveAllowedBundlesToVocabulary($vid, $allowed_entity_types);
   $form_state->setRedirect('cp.taxonomy');
 }
 

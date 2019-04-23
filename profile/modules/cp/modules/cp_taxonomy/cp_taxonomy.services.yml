@@ -1,4 +1,4 @@
 services:
   cp_taxonomy.helper:
     class: Drupal\cp_taxonomy\CpTaxonomyHelper
-    arguments: ['@config.factory']
+    arguments: ['@config.factory', '@entity_type.manager', '@entity_type.bundle.info']

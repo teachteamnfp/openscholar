@@ -23,11 +23,13 @@ class ReferenceViewTest extends TestBase {
   public function setUp() {
     parent::setUp();
     $this->group1 = $this->createGroup([
+      'type' => 'personal',
       'path' => [
         'alias' => '/group1',
       ],
     ]);
     $this->group2 = $this->createGroup([
+      'type' => 'personal',
       'path' => [
         'alias' => '/group2',
       ],
