@@ -5,6 +5,8 @@
  * OS widgets.
  */
 
+use Drupal\Core\Ajax\ReplaceCommand;
+use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\os_widgets\Entity\OsBlockContent;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityInterface;
@@ -152,6 +154,10 @@ function os_widgets_form_alter(&$form, FormStateInterface $form_state, $form_id)
 
     case 'block_content_taxonomy_form':
     case 'block_content_taxonomy_edit_form':
+      $form['field_taxonomy_vocabulary']['widget']['#ajax'] = [
+        'callback' => 'os_widgets_field_taxonomy_vocabulary_ajax',
+        'event' => 'change',
+      ];
       $form['field_taxonomy_bundle']['#states'] = [
         'visible' => [
           ':input[name="field_taxonomy_behavior"]' => [
@@ -179,6 +185,40 @@ function os_widgets_form_alter(&$form, FormStateInterface $form_state, $form_id)
       ];
       break;
   }
+}
+
+/**
+ * Ajax callback handler for field_taxonomy_vocabulary.
+ */
+function os_widgets_field_taxonomy_vocabulary_ajax(array &$form, FormStateInterface $form_state) {
+  $selected_vocabulary = $form_state->getValue('field_taxonomy_vocabulary');
+  /** @var \Drupal\cp_taxonomy\CpTaxonomyHelperInterface $taxonomy_helper */
+  $taxonomy_helper = Drupal::service('cp.taxonomy.helper');
+  $data['vid']['#default_value'] = $selected_vocabulary[0]['target_id'] ?? '';
+  $saved_entity_types = $taxonomy_helper->getSelectedBundles($data);
+
+  if (empty($saved_entity_types)) {
+    return _os_widgets_create_form_taxonomy_bundle_ajax_response($form);
+  }
+  foreach ($form['field_taxonomy_bundle']['widget']['#options'] as $key => $option) {
+    if ($key == '_none') {
+      continue;
+    }
+    if (!in_array($key, $saved_entity_types)) {
+      unset($form['field_taxonomy_bundle']['widget']['#options'][$key]);
+    }
+  }
+  return _os_widgets_create_form_taxonomy_bundle_ajax_response($form);
+}
+
+/**
+ * Create an AjaxResponse and add command to rebuild taxonomy bundle element.
+ */
+function _os_widgets_create_form_taxonomy_bundle_ajax_response($form) {
+  $renderer = \Drupal::service('renderer');
+  $response = new AjaxResponse();
+  $response->addCommand(new ReplaceCommand('.form-item-field-taxonomy-bundle', $renderer->render($form['field_taxonomy_bundle']['widget'])));
+  return $response;
 }
 
 /**
