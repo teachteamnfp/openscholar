@@ -13,9 +13,8 @@ namespace Drupal\Tests\cp_taxonomy\ExistingSite;
 class CheckingFieldsTest extends TestBase {
 
   private $fieldName = 'field_taxonomy_terms';
-  private $entityFieldManager;
-  private $entityTypeManager;
-  private $entityManager;
+  protected $entityFieldManager;
+  protected $entityManager;
 
   /**
    * {@inheritdoc}
@@ -23,7 +22,6 @@ class CheckingFieldsTest extends TestBase {
   public function setUp() {
     parent::setUp();
     $this->entityFieldManager = $this->container->get('entity_field.manager');
-    $this->entityTypeManager = $this->container->get('entity_type.manager');
     $this->entityManager = $this->container->get('entity.manager');
   }
 
