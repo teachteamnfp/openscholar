@@ -2,11 +2,11 @@
 .search-form {
   .form-submit {
     background: $color-link;
-    border-color: $color-link;
+    border-color: $color-white;
     &:focus,
     &:active {
       background: $color-link;
-      border-color: $color-link;
+      border-color: $color-white;
     }
   }
   .form-control {
