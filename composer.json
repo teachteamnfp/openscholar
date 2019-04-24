@@ -11,21 +11,8 @@
     ],
     "repositories": [
         {
-            "type": "package",
-            "package": {
-                "name": "drupal/purl",
-                "version": "master",
-                "type": "drupal-module",
-                "dist": {
-                    "url": "https://github.com/openscholar/purl-d8/archive/master.zip",
-                    "type": "zip"
-                },
-                "source": {
-                    "url": "https://github.com/openscholar/purl-d8.git",
-                    "type": "git",
-                    "reference": "master"
-                }
-            }
+            "type": "vcs",
+            "url": "https://github.com/openscholar/purl-d8"
         },
         {
             "type": "package",

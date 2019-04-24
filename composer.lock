@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7bc395918dac8d8b049470b4a5994f31",
+    "content-hash": "7d183e13ba6d15e57dded64179749d85",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -1962,16 +1962,16 @@
         },
         {
             "name": "doctrine/persistence",
-            "version": "v1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/persistence.git",
-                "reference": "c0f1c17602afc18b4cbd8e1c8125f264c9cf7d38"
+                "reference": "3da7c9d125591ca83944f477e65ed3d7b4617c48"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/persistence/zipball/c0f1c17602afc18b4cbd8e1c8125f264c9cf7d38",
-                "reference": "c0f1c17602afc18b4cbd8e1c8125f264c9cf7d38",
+                "url": "https://api.github.com/repos/doctrine/persistence/zipball/3da7c9d125591ca83944f477e65ed3d7b4617c48",
+                "reference": "3da7c9d125591ca83944f477e65ed3d7b4617c48",
                 "shasum": ""
             },
             "require": {
@@ -2040,7 +2040,7 @@
                 "orm",
                 "persistence"
             ],
-            "time": "2018-11-21T00:33:13+00:00"
+            "time": "2019-04-23T08:28:24+00:00"
         },
         {
             "name": "doctrine/reflection",
@@ -5168,20 +5168,30 @@
         },
         {
             "name": "drupal/purl",
-            "version": "master",
+            "version": "v1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/openscholar/purl-d8.git",
-                "reference": "master"
+                "reference": "3dcb8f8f23220a440c071784b527d1867f50609a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/openscholar/purl-d8/archive/master.zip",
-                "reference": "master",
-                "shasum": null
+                "url": "https://api.github.com/repos/openscholar/purl-d8/zipball/3dcb8f8f23220a440c071784b527d1867f50609a",
+                "reference": "3dcb8f8f23220a440c071784b527d1867f50609a",
+                "shasum": ""
             },
             "type": "drupal-module",
-            "time": "2018-12-10T20:05:46+00:00"
+            "authors": [
+                {
+                    "name": "John Locke",
+                    "email": "john@freelock.com"
+                }
+            ],
+            "description": "Purl module for D8, with patches needed to support group_content",
+            "support": {
+                "source": "https://github.com/openscholar/purl-d8/tree/v1.0.2"
+            },
+            "time": "2019-04-19T18:47:44+00:00"
         },
         {
             "name": "drupal/redirect",
@@ -5256,7 +5266,7 @@
                 "shasum": null
             },
             "type": "drupal-module",
-            "time": "2019-03-22T17:35:09+00:00"
+            "time": "2019-02-25T14:33:10+00:00"
         },
         {
             "name": "drupal/rng",
@@ -8691,7 +8701,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "backendtea@gmail.com"
+                    "email": "BackEndTea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
@@ -10554,7 +10564,7 @@
             "version": "1.2.0",
             "source": {
                 "type": "git",
-                "url": "https://git.drupal.org/project/devel",
+                "url": "https://git.drupalcode.org/project/devel.git",
                 "reference": "8.x-1.2"
             },
             "dist": {
@@ -10636,7 +10646,7 @@
             "version": "2.0.0-alpha3",
             "source": {
                 "type": "git",
-                "url": "https://git.drupal.org/project/dropzonejs",
+                "url": "https://git.drupalcode.org/project/dropzonejs.git",
                 "reference": "8.x-2.0-alpha3"
             },
             "dist": {
@@ -10723,7 +10733,7 @@
             "version": "1.0.0",
             "source": {
                 "type": "git",
-                "url": "https://git.drupal.org/project/embed",
+                "url": "https://git.drupalcode.org/project/embed.git",
                 "reference": "8.x-1.0"
             },
             "dist": {
@@ -10788,7 +10798,7 @@
             "version": "2.0.0",
             "source": {
                 "type": "git",
-                "url": "https://git.drupal.org/project/entity_browser",
+                "url": "https://git.drupalcode.org/project/entity_browser.git",
                 "reference": "8.x-2.0"
             },
             "dist": {
@@ -10933,7 +10943,7 @@
             "version": "1.0.0-beta2",
             "source": {
                 "type": "git",
-                "url": "https://git.drupal.org/project/entity_embed",
+                "url": "https://git.drupalcode.org/project/entity_embed.git",
                 "reference": "8.x-1.0-beta2"
             },
             "dist": {
@@ -11010,7 +11020,7 @@
             "version": "3.8.0",
             "source": {
                 "type": "git",
-                "url": "https://git.drupal.org/project/features",
+                "url": "https://git.drupalcode.org/project/features.git",
                 "reference": "8.x-3.8"
             },
             "dist": {
@@ -11087,7 +11097,7 @@
             "version": "1.0.0-rc1",
             "source": {
                 "type": "git",
-                "url": "https://git.drupal.org/project/inline_entity_form",
+                "url": "https://git.drupalcode.org/project/inline_entity_form.git",
                 "reference": "8.x-1.0-rc1"
             },
             "dist": {
@@ -11153,7 +11163,7 @@
             "version": "dev-2.x",
             "source": {
                 "type": "git",
-                "url": "https://git.drupal.org/project/media_entity_browser",
+                "url": "https://git.drupalcode.org/project/media_entity_browser.git",
                 "reference": "c75921d3af90f1b6dc052cd2edf037116227acf8"
             },
             "require": {
