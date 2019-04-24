@@ -7,6 +7,7 @@ dependencies:
     - system.menu.main
   module:
     - bibcite_entity
+    - group
     - os_publications
 id: publications
 label: Publications
@@ -24,8 +25,9 @@ display:
     position: 0
     display_options:
       access:
-        type: none
-        options: {  }
+        type: group_permission
+        options:
+          group_permission: 'view group_node:class entity'
       cache:
         type: tag
         options: {  }
@@ -279,6 +281,7 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
+        - group_membership.roles.permissions
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
@@ -307,6 +310,7 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
+        - group_membership.roles.permissions
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
@@ -505,6 +509,7 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
+        - group_membership.roles.permissions
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
@@ -740,6 +745,7 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
+        - group_membership.roles.permissions
         - 'languages:language_interface'
         - url
         - url.query_args
@@ -978,6 +984,7 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
+        - group_membership.roles.permissions
         - 'languages:language_content'
         - 'languages:language_interface'
         - url
