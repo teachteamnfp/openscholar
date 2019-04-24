@@ -155,10 +155,10 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
     $field_taxonomy_behavior_values = $block_content->get('field_taxonomy_behavior')->getValue();
     $bundles = [];
     if ($field_taxonomy_behavior_values[0]['value'] == 'select') {
-      $field_taxonomy_bundles_values = $block_content->get('field_taxonomy_bundles')
+      $field_taxonomy_bundle_values = $block_content->get('field_taxonomy_bundle')
         ->getValue();
-      foreach ($field_taxonomy_bundles_values as $field_taxonomy_bundles_value) {
-        $bundles[] = $field_taxonomy_bundles_value['value'];
+      foreach ($field_taxonomy_bundle_values as $field_taxonomy_bundle_value) {
+        $bundles[] = $field_taxonomy_bundle_value['value'];
       }
     }
     if ($field_taxonomy_behavior_values[0]['value'] == 'contextual') {

@@ -187,16 +187,12 @@ function os_widgets_form_alter(&$form, FormStateInterface $form_state, $form_id)
  * @return array
  *   Collected array used by checkboxes in field.
  */
-function os_widgets_field_taxonomy_bundles_allowed_values() {
-  $bundle_info = Drupal::service('entity_type.bundle.info')->getBundleInfo('node');
-  if (empty($bundle_info)) {
+function os_widgets_field_taxonomy_bundle_allowed_values() {
+  if (!Drupal::moduleHandler()->moduleExists('cp_taxonomy')) {
     return [];
   }
-  $bundles = [];
-  foreach ($bundle_info as $machine_name => $bundle) {
-    $bundles[$machine_name] = $bundle['label'];
-  }
-  return $bundles;
+  $taxonomy_helper = Drupal::service('cp.taxonomy.helper');
+  return $taxonomy_helper->getSelectableBundles();
 }
 
 /**

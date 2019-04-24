@@ -1,20 +1,20 @@
-uuid: 985484a0-503a-4c56-b68c-419059bab6e1
+uuid: b2731166-215d-4fd3-b447-302d06024c30
 langcode: en
 status: true
 dependencies:
   module:
     - block_content
     - options
-id: block_content.field_taxonomy_bundles
-field_name: field_taxonomy_bundles
+id: block_content.field_taxonomy_bundle
+field_name: field_taxonomy_bundle
 entity_type: block_content
 type: list_string
 settings:
   allowed_values: {  }
-  allowed_values_function: os_widgets_field_taxonomy_bundles_allowed_values
+  allowed_values_function: os_widgets_field_taxonomy_bundle_allowed_values
 module: options
 locked: false
-cardinality: -1
+cardinality: 1
 translatable: true
 indexes: {  }
 persist_with_no_fields: false

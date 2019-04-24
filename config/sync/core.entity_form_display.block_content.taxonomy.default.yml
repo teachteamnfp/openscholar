@@ -5,7 +5,7 @@ dependencies:
   config:
     - block_content.type.taxonomy
     - field.field.block_content.taxonomy.field_taxonomy_behavior
-    - field.field.block_content.taxonomy.field_taxonomy_bundles
+    - field.field.block_content.taxonomy.field_taxonomy_bundle
     - field.field.block_content.taxonomy.field_taxonomy_display_type
     - field.field.block_content.taxonomy.field_taxonomy_offset
     - field.field.block_content.taxonomy.field_taxonomy_range
@@ -34,8 +34,8 @@ content:
     third_party_settings: {  }
     type: options_select
     region: content
-  field_taxonomy_bundles:
-    weight: 103
+  field_taxonomy_bundle:
+    weight: 112
     settings: {  }
     third_party_settings: {  }
     type: options_select
