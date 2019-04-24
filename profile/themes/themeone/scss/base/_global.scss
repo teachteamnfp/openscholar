@@ -22,8 +22,13 @@ aside {
     background: $color-link;
   }
 }
+header {
+  background: $color-link;
+}
 .header-container {
-  background: $color-light-gray1;
+  a {
+    color: $color-white;
+  }
 }
 .caret {
   color: $color-link;

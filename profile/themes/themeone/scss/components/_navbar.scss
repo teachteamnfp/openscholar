@@ -1,7 +1,12 @@
 /**** navbar background ****/
 .navbar-collapse {
-  background: $color-white;
   padding: 0 !important;
+    .container {
+      background: $color-white;
+      @media #{$normal} {
+        padding: 0;
+    }
+  }
   /***** navbar nav *****/
   .navbar-nav {
     > li {
@@ -14,14 +19,13 @@
         &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
           color: $color-link;
           background: none;
-          border-bottom: 3px solid $color-link;
         }
       }
       &.open, &.active {
         > a, > a:hover, > a:active, > a:focus {
           color: $color-link;
           background: none;
-          border-bottom: 3px solid $color-link;
+
         }
       }
     }
