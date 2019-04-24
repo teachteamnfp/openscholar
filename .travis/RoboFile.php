@@ -171,8 +171,15 @@ class RoboFile extends \Robo\Tasks
             ->copy('.travis/.env', '.env', $force)
             ->copy('.travis/config/behat.yml', 'tests/behat.yml', $force);
 
-        $tasks[] = $this->taskExec('docker-compose --verbose pull --no-parallel');
-        $tasks[] = $this->taskExec('docker-compose up -d');
+        $tasks[] = $this->taskExec('docker-compose --verbose pull --parallel');
+        $tasks[] = $this->taskExec('docker-compose up -d mariadb');
+        $tasks[] = $this->taskExec('docker-compose up -d php');
+        $tasks[] = $this->taskExec('docker-compose up -d mailhog');
+        $tasks[] = $this->taskExec('docker-compose up -d apache');
+        $tasks[] = $this->taskExec('docker-compose up -d portainer');
+        $tasks[] = $this->taskExec('docker-compose up -d traefik');
+        $tasks[] = $this->taskExec('docker-compose up -d node');
+        $tasks[] = $this->taskExec('docker-compose up -d chrome');
         $tasks[] = $this->taskExec('make');
         $tasks[] = $this->taskExec('docker-compose exec -T php cp .travis/config/phpunit.xml web/core/phpunit.xml');
         $tasks[] = $this->taskExec('docker-compose exec -T php cp .travis/config//bootstrap.php web/core/tests/bootstrap.php');
