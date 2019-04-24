@@ -4,5 +4,4 @@ package: 'Testing'
 core: '8.x'
 type: 'module'
 dependencies:
-  - 'drupal:repec'
   - 'drupal:os_publications'
