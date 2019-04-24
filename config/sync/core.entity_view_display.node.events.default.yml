@@ -12,7 +12,7 @@ dependencies:
     - field.field.node.events.field_open_date
     - field.field.node.events.field_recurring_date
     - field.field.node.events.field_send_reminder
-    - field.field.node.events.field_send_reminder_checkbox
+    - field.field.node.events.field_should_send_reminder
     - field.field.node.events.field_signup
     - field.field.node.events.field_singup_multiple
     - field.field.node.events.rng_capacity
@@ -78,6 +78,16 @@ content:
     third_party_settings: {  }
     type: date_recur_basic_formatter
     region: content
+  field_should_send_reminder:
+    weight: 5
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
   links:
     weight: 0
     region: content
@@ -87,7 +97,6 @@ hidden:
   field_close_: true
   field_open_date: true
   field_send_reminder: true
-  field_send_reminder_checkbox: true
   field_signup: true
   field_singup_multiple: true
   langcode: true

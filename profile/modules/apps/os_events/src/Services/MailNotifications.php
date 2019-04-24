@@ -76,15 +76,14 @@ class MailNotifications implements MailNotificationsInterface {
     /** @var \Drupal\rng\RegistrationInterface $registration */
     $registration = $registrant->getRegistration();
     $event = $registration->getEvent();
-    if ($event instanceof EntityInterface) {
+    if ($event) {
       $eventMeta = $this->eventManager->getMeta($event);
       $options['channels']['courier_email']['reply_to'] = $eventMeta->getReplyTo();
       $ltc->setTokenValue($event->getEntityTypeId(), $event);
     }
-    $collection = clone $ltc;
-    $collection->setTokenValue('registration', $registration);
-    $collection->setTokenOption('clear', TRUE);
-    $this->courierManager->sendMessage($collection, $registrant->getIdentity(), $options);
+    $ltc->setTokenValue('registration', $registration);
+    $ltc->setTokenOption('clear', TRUE);
+    $this->courierManager->sendMessage($ltc, $registrant->getIdentity(), $options);
   }
 
   /**
@@ -97,11 +96,10 @@ class MailNotifications implements MailNotificationsInterface {
 
     $options = [];
 
-    if ($event instanceof EntityInterface) {
-      $eventMeta = $this->eventManager->getMeta($event);
-      $options['channels']['courier_email']['reply_to'] = $eventMeta->getReplyTo();
-      $ltc->setTokenValue($event->getEntityTypeId(), $event);
-    }
+    $eventMeta = $this->eventManager->getMeta($event);
+    $options['channels']['courier_email']['reply_to'] = $eventMeta->getReplyTo();
+    $ltc->setTokenValue($event->getEntityTypeId(), $event);
+
     foreach ($eventMeta->getRegistrations() as $registration) {
       $collection = clone $ltc;
       $collection->setTokenValue('registration', $registration);
@@ -122,11 +120,10 @@ class MailNotifications implements MailNotificationsInterface {
 
     $options = [];
 
-    if ($event instanceof EntityInterface) {
-      $eventMeta = $this->eventManager->getMeta($event);
-      $options['channels']['courier_email']['reply_to'] = $eventMeta->getReplyTo();
-      $ltc->setTokenValue($event->getEntityTypeId(), $event);
-    }
+    $eventMeta = $this->eventManager->getMeta($event);
+    $options['channels']['courier_email']['reply_to'] = $eventMeta->getReplyTo();
+    $ltc->setTokenValue($event->getEntityTypeId(), $event);
+
     foreach ($eventMeta->getRegistrations() as $registration) {
       $collection = clone $ltc;
       $collection->setTokenValue('registration', $registration);
@@ -145,13 +142,10 @@ class MailNotifications implements MailNotificationsInterface {
     $gtc = GlobalTemplateCollection::load('event_full_notification');
     $ltc = $this->gtcManager->getLocalCollection($gtc);
 
-    if ($event instanceof EntityInterface) {
-      $ltc->setTokenValue($event->getEntityTypeId(), $event);
-    }
-    $collection = clone $ltc;
-    $collection->setTokenOption('clear', TRUE);
+    $ltc->setTokenValue($event->getEntityTypeId(), $event);
+    $ltc->setTokenOption('clear', TRUE);
     $identity = $event->getOwner();
-    $this->courierManager->sendMessage($collection, $identity);
+    $this->courierManager->sendMessage($ltc, $identity);
 
   }
 

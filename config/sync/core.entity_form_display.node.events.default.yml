@@ -10,7 +10,7 @@ dependencies:
     - field.field.node.events.field_open_date
     - field.field.node.events.field_recurring_date
     - field.field.node.events.field_send_reminder
-    - field.field.node.events.field_send_reminder_checkbox
+    - field.field.node.events.field_should_send_reminder
     - field.field.node.events.field_signup
     - field.field.node.events.field_singup_multiple
     - field.field.node.events.rng_capacity
@@ -158,7 +158,7 @@ hidden:
   field_close_: true
   field_open_date: true
   field_send_reminder: true
-  field_send_reminder_checkbox: true
+  field_should_send_reminder: true
   rng_capacity: true
   rng_registrants_duplicate: true
   rng_registrants_maximum: true

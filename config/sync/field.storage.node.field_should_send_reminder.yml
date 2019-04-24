@@ -1,11 +1,11 @@
-uuid: 2c6504b2-06ea-41e8-a9e9-299c63955ea5
+uuid: d752f3b4-c699-4df0-ac7f-86e56e59fb1c
 langcode: en
 status: true
 dependencies:
   module:
     - node
-id: node.field_send_reminder_checkbox
-field_name: field_send_reminder_checkbox
+id: node.field_should_send_reminder
+field_name: field_should_send_reminder
 entity_type: node
 type: boolean
 settings: {  }
