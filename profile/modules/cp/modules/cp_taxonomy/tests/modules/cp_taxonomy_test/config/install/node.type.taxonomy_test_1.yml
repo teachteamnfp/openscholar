@@ -1,0 +1,17 @@
+uuid: 22eb59e5-a31a-47ae-aab5-e16ee8f4926e
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus: {  }
+    parent: ''
+name: 'Taxonomy Test 1'
+type: taxonomy_test_1
+description: ''
+help: ''
+new_revision: true
+preview_mode: 1
+display_submitted: true

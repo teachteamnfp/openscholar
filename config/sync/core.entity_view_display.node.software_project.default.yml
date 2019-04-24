@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.software_project.body
     - field.field.node.software_project.field_attached_media
     - field.field.node.software_project.field_packaging
+    - field.field.node.software_project.field_taxonomy_terms
     - node.type.software_project
   module:
     - layout_builder
@@ -34,6 +35,14 @@ content:
       view_mode: default
       link: false
     third_party_settings: {  }
+    region: content
+  field_taxonomy_terms:
+    weight: 3
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
     region: content
   links:
     weight: 2

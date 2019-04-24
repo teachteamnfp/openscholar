@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.software_project.body
     - field.field.node.software_project.field_attached_media
     - field.field.node.software_project.field_packaging
+    - field.field.node.software_project.field_taxonomy_terms
     - node.type.software_project
   module:
     - content_moderation
@@ -53,6 +54,15 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
+  field_taxonomy_terms:
+    weight: 26
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
     region: content
   langcode:
     type: language_select
