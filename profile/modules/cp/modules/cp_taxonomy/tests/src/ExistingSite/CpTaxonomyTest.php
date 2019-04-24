@@ -76,7 +76,6 @@ class CpTaxonomyTest extends VsiteExistingSiteTestBase {
       // The form loads on vsites.
       $this->visit('/' . $this->groupAlias . '/cp/taxonomy');
       $this->assertSession()->statusCodeEquals(200);
-      file_put_contents('testTaxonomyFunctionality-listing.txt', $this->getCurrentPage()->getContent());
       $this->assertSession()->pageTextContains('No vocabularies available.');
 
       // Adding a new vocab.
