@@ -54,21 +54,6 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   }
 
   /**
-   * Iterate over every storage and call the function given.
-   */
-  protected function iterate(callable $func) {
-    foreach ($this->storages as $s) {
-      /** @var \Drupal\Core\Config\StorageInterface $store */
-      $store = $s['storage'];
-      $output = $func($store);
-      if (!is_null($output)) {
-        return $output;
-      }
-    }
-    return FALSE;
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function exists($name) {

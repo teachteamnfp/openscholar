@@ -1,11 +1,11 @@
-uuid: 9aebaf18-7e48-459d-b440-de69ecef13da
+uuid: 34ddf639-f7be-4a7f-a268-f6dd32c3c65e
 langcode: en
 status: true
 dependencies:
   theme:
     - hwpi_classic
 _core:
-  default_config_hash: 7rR9chwXvdM2H8OYMAYx9Zj3GGlPMrZp_M3ZA4thYTk
+  default_config_hash: S3U6Yeod42jr_w5UNQ7qWAxUXdkT0js85oi6YNQeNWM
 id: hwpi_classic_page_title
 theme: hwpi_classic
 region: content

@@ -1,0 +1,20 @@
+uuid: 350be817-f9cd-401d-bdc9-7666bde3bd09
+langcode: en
+status: true
+dependencies:
+  theme:
+    - teal_accents
+_core:
+  default_config_hash: 13GQpeITIJsp1kyPniXtWZfyFH87vb1xxJCHifL4UeE
+id: teal_accents_local_actions
+theme: teal_accents
+region: content
+weight: -5
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Primary admin actions'
+  provider: core
+  label_display: '0'
+visibility: {  }

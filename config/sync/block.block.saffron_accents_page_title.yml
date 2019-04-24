@@ -1,0 +1,20 @@
+uuid: 90d4d6d3-4e99-4cb0-88ac-7485945d3a6e
+langcode: en
+status: true
+dependencies:
+  theme:
+    - saffron_accents
+_core:
+  default_config_hash: 7rR9chwXvdM2H8OYMAYx9Zj3GGlPMrZp_M3ZA4thYTk
+id: saffron_accents_page_title
+theme: saffron_accents
+region: content
+weight: -7
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  provider: core
+  label_display: '0'
+visibility: {  }

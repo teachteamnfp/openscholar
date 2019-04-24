@@ -11,41 +11,39 @@ namespace Drupal\Tests\cp_appearance\ExistingSite;
 class AppearanceSettingsTest extends TestBase {
 
   /**
-   * Administrator.
+   * Test group.
    *
-   * @var \Drupal\user\UserInterface
+   * @var \Drupal\group\Entity\GroupInterface
    */
-  protected $admin;
+  protected $group;
 
   /**
    * {@inheritdoc}
    */
   public function setUp() {
     parent::setUp();
-    $this->admin = $this->createUser([], NULL, TRUE);
+
+    $this->group = $this->createGroup([
+      'path' => [
+        'alias' => '/cp-appearance',
+      ],
+    ]);
+    $this->group->addMember($this->admin);
+
+    $this->drupalLogin($this->admin);
   }
 
   /**
    * Tests appearance change.
    *
+   * @covers ::main
+   *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
    * @throws \Behat\Mink\Exception\ExpectationException
    * @throws \Behat\Mink\Exception\ResponseTextException
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
-   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function testSave(): void {
-    $group = $this->createGroup([
-      'path' => [
-        'alias' => '/appearance-test-save',
-      ],
-    ]);
-    $group->addMember($this->admin);
-    $this->drupalLogin($this->admin);
-
-    $this->vsiteContextManager->activateVsite($group);
-    $this->visit('/appearance-test-save/cp/appearance');
+    $this->visit('/cp-appearance/cp/appearance');
 
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->pageTextContains('Select Theme');
@@ -53,8 +51,40 @@ class AppearanceSettingsTest extends TestBase {
     $this->getCurrentPage()->selectFieldOption('theme', 'hwpi_lamont');
     $this->getCurrentPage()->pressButton('Save Theme');
 
-    $theme_setting = $this->configFactory->get('system.theme');
-    $this->assertEquals('hwpi_lamont', $theme_setting->get('default'));
+    $this->visit('/cp-appearance');
+    $this->assertSession()->responseContains('/profiles/contrib/openscholar/themes/hwpi_lamont/css/style.css');
+  }
+
+  /**
+   * @covers ::setTheme
+   *
+   * @throws \Behat\Mink\Exception\ExpectationException
+   */
+  public function testSetDefault(): void {
+    $this->visit('/cp-appearance/cp/appearance/set/hwpi_college');
+
+    $this->assertSession()->statusCodeEquals(200);
+
+    $this->visit('/cp-appearance');
+    $this->assertSession()->responseContains('/profiles/contrib/openscholar/themes/hwpi_college/css/style.css');
+  }
+
+  /**
+   * @covers ::previewTheme
+   *
+   * @throws \Behat\Mink\Exception\ExpectationException
+   * @throws \Behat\Mink\Exception\ResponseTextException
+   */
+  public function testStartPreview(): void {
+    $this->visit('/cp-appearance/cp/appearance/preview/vibrant');
+
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->pageTextContains('Previewing: Vibrant');
+
+    $this->visit('/cp-appearance/cp/appearance/preview/hwpi_sterling');
+
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->pageTextContains('Previewing: Sterling');
   }
 
 }

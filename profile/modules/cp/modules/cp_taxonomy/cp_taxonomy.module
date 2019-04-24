@@ -11,7 +11,9 @@ use Drupal\Core\Url;
 use Drupal\Core\Entity\EntityInterface;
 
 /**
- * Remove operations we don't care about.
+ * Implements hook_entity_operation_alter().
+ *
+ * Remove operations from taxonomy vocabs we don't care about.
  *
  * @param array $operations
  *   List of operations.
@@ -38,6 +40,8 @@ function cp_taxonomy_entity_operation_alter(array &$operations, EntityInterface 
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter().
+ *
  * Remove global vocabularies from the list.
  *
  * @param array $form
@@ -57,6 +61,8 @@ function cp_taxonomy_form_taxonomy_overview_vocabularies_alter(array &$form, For
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter().
+ *
  * Add our submit handler to the form.
  *
  * @param array $form
@@ -74,9 +80,21 @@ function cp_taxonomy_form_taxonomy_vocabulary_form_alter(array &$form, FormState
     $form['actions']['delete']['#url'] = Url::fromRoute('cp.taxonomy.delete', $url->getRouteParameters());
     $form['actions']['submit']['#submit'][] = 'cp_taxonomy_form_add_vocab_submit';
   }
+  /** @var \Drupal\cp_taxonomy\CpTaxonomyHelperInterface $taxonomy_helper */
+  $taxonomy_helper = Drupal::service('cp.taxonomy.helper');
+  $options = $taxonomy_helper->getSelectableBundles();
+  $saved_entity_types = $taxonomy_helper->getSelectedBundles($form);
+  $form['allowed_entity_types'] = [
+    '#type' => 'checkboxes',
+    '#options' => $options,
+    '#title' => t('Allowed entity types'),
+    '#default_value' => $saved_entity_types,
+  ];
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter().
+ *
  * Alter the terms overview page to fix links and redirects.
  *
  * @param array $form
@@ -111,6 +129,8 @@ function cp_taxonomy_reset_redirect(array &$form, FormStateInterface &$form_stat
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter().
+ *
  * Change the link for the Cancel button to stay in the cp namespace.
  *
  * @param array $form
@@ -134,5 +154,43 @@ function cp_taxonomy_form_taxonomy_vocabulary_confirm_delete_alter(array &$form,
  *   The form state.
  */
 function cp_taxonomy_form_add_vocab_submit(array &$form, FormStateInterface &$form_state) {
+  $vid = $form_state->getValue('vid');
+  $allowed_entity_types = $form_state->getValue('allowed_entity_types');
+  if (!is_null($allowed_entity_types)) {
+    Drupal::service('cp.taxonomy.helper')->saveAllowedBundlesToVocabulary($vid, $allowed_entity_types);
+  }
   $form_state->setRedirect('cp.taxonomy');
+}
+
+/**
+ * Implements hook_views_data_alter().
+ */
+function cp_taxonomy_views_data_alter(&$data) {
+  $data['taxonomy_term_field_data']['entity_bundle_to_vocabulary_vid'] = [
+    'title' => t('Entity bundle to vocabulary vid'),
+    'argument' => [
+      'title' => t('Allowed vocabulary filter'),
+      'help' => 'Convert entity bundle to vids',
+      'field' => 'vid',
+      'id' => 'entity_bundle_to_vocabulary_vid',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function cp_taxonomy_form_node_form_alter(&$form, FormStateInterface $form_state) {
+  if (!empty($form['field_taxonomy_terms']['widget'])) {
+    /** @var \Drupal\node\NodeForm $node_form */
+    $node_form = $form_state->getBuildInfo()['callback_object'];
+    $bundle = $node_form->getEntity()->bundle();
+    $bundle_key = 'node:' . $bundle;
+
+    $vocabularies = Drupal::service('cp.taxonomy.helper')->searchAllowedVocabulariesByType($bundle_key);
+    // If the current node type has no related vocabularies, then hide it.
+    if (empty($vocabularies)) {
+      $form['field_taxonomy_terms']['#access'] = FALSE;
+    }
+  }
 }

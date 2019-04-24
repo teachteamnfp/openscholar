@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.blog.body
     - field.field.node.blog.field_attached_media
+    - field.field.node.blog.field_taxonomy_terms
     - node.type.blog
   module:
     - content_moderation
@@ -38,6 +39,15 @@ content:
     third_party_settings: {  }
   field_attached_media:
     weight: 122
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_taxonomy_terms:
+    weight: 123
     settings:
       match_operator: CONTAINS
       size: 60

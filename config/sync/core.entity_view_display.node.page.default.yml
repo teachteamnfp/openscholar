@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.page.body
     - field.field.node.page.field_media
     - field.field.node.page.field_slideshow
+    - field.field.node.page.field_taxonomy_terms
     - node.type.page
   module:
     - entity_reference_revisions
@@ -43,6 +44,14 @@ content:
       view_mode: default
       link: ''
     third_party_settings: {  }
+    region: content
+  field_taxonomy_terms:
+    weight: 4
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
     region: content
   links:
     weight: 3

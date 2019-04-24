@@ -1,0 +1,11 @@
+uuid: 1648ce57-2f3c-4a2a-a649-8711449b4fb8
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.taxonomy_test_1
+id: node.taxonomy_test_1
+target_entity_type_id: node
+target_bundle: taxonomy_test_1
+default_langcode: site_default
+language_alterable: false

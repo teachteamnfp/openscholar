@@ -8,6 +8,7 @@ dependencies:
     - field.field.node.class.field_class_link
     - field.field.node.class.field_class_materials
     - field.field.node.class.field_semester
+    - field.field.node.class.field_taxonomy_terms
     - field.field.node.class.field_year_offered
     - node.type.class
   module:
@@ -76,6 +77,15 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
+    region: content
+  field_taxonomy_terms:
+    weight: 26
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
     region: content
   field_year_offered:
     weight: 11

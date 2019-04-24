@@ -1,0 +1,20 @@
+uuid: f650818d-8eef-4059-8bb3-4a80a2f4cc22
+langcode: en
+status: true
+dependencies:
+  theme:
+    - ivy_accents
+_core:
+  default_config_hash: 7rR9chwXvdM2H8OYMAYx9Zj3GGlPMrZp_M3ZA4thYTk
+id: ivy_accents_page_title
+theme: ivy_accents
+region: content
+weight: -7
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  provider: core
+  label_display: '0'
+visibility: {  }

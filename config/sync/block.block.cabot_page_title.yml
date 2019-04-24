@@ -1,0 +1,20 @@
+uuid: f154de05-de79-4cf4-8ddc-03f8c6f7e2f7
+langcode: en
+status: true
+dependencies:
+  theme:
+    - cabot
+_core:
+  default_config_hash: 7rR9chwXvdM2H8OYMAYx9Zj3GGlPMrZp_M3ZA4thYTk
+id: cabot_page_title
+theme: cabot
+region: content
+weight: -7
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  provider: core
+  label_display: '0'
+visibility: {  }

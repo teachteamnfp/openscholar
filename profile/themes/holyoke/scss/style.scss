@@ -1,0 +1,185 @@
+@import '../../os_base/scss/base/breakpoints';
+//colors
+$color_spicy_mustard_approx: #755a0f;
+$color_corn_harvest_approx: #947215;
+$color_goldenrod_approx: #ffdb6d;
+$color_pizza_approx: #c4961a;
+$color_steel_blue_approx: #4e84c4;
+$white: #fff;
+$color_wheatfield_50_approx: rgba(244, 237, 202, 0.5);
+$color_outer_space_approx: #283645;
+
+//fonts
+$font_0: Arimo;
+$font_1: serif !important;
+
+body {
+  font-family: $font_0, $font_1;
+  font-size: 16px;
+}
+
+.page-header {
+  font-family: $font_0, $font_1;
+}
+.node--title {
+  font-family: $font_0, $font_1;
+}
+.more-link {
+  font-family: $font_0, $font_1;
+}
+aside {
+  .nav {
+    a {
+      font-family: $font_0, $font_1;
+    }
+  }
+}
+footer {
+  background-color: $color_outer_space_approx;
+  a {
+    font-family: $font_0, $font_1;
+  }
+  .footer-login {
+    color: $white;
+    //Instead of the line below you could use @include text-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+    text-shadow: none;
+    &:after {
+      background: none;
+    }
+  }
+  * {
+    color: $white;
+  }
+  ul.nav {
+    a {
+      font-family: $font_0, $font_1;
+    }
+    li ul li a {
+      font-family: $font_0, $font_1;
+    }
+  }
+}
+.navbar-collapse {
+  background-color: $color_goldenrod_approx;
+  border-bottom: 3px solid $color_pizza_approx;
+  @media #{$mobile} {
+    padding: 0 !important;
+  }
+  /***** navbar nav *****/
+  .navbar-nav {
+    > li {
+      @media #{$mobile} {
+        border-bottom: 1px solid $white;
+        border-top: 0 none;
+      }
+      > a {
+        font-family: $font_0, $font_1;
+        color: $color_spicy_mustard_approx;
+        &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
+          background: $color_pizza_approx;
+          color: $white;
+        }
+      }
+      &.open, &.active {
+        > a, > a:hover, > a:active, > a:focus {
+          background: $color_pizza_approx;
+        }
+
+      }
+    }
+  }
+  /**** dropdown menu ****/
+  .dropdown-menu {
+    background: $color_pizza_approx;
+    @media #{$mobile} {
+      background: none;
+    }
+    > li {
+      > a {
+        font-family: $font_0, $font_1;
+        background: none;
+        @media #{$mobile} {
+          color: $color_spicy_mustard_approx;
+        }
+        &:hover, &:active {
+          background: none;
+          @media #{$mobile} {
+            color: $color_spicy_mustard_approx;
+          }
+        }
+      }
+      &.active {
+        a {
+          background: none;
+          color: $white;
+          @media #{$mobile} {
+            color: $color_spicy_mustard_approx;
+          }
+          &:hover {
+            background: none;
+            @media #{$mobile} {
+              color: $color_spicy_mustard_approx;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+.path-front {
+  .region-content-first {
+    background-color: $color_steel_blue_approx;
+    * {
+      color: $white;
+    }
+  }
+  .region-content-bottom {
+    background-color: $color_wheatfield_50_approx !important;
+  }
+}
+.path-search .title a {
+  font-family: $font_0, $font_1;
+}
+.links a {
+  font-family: $font_0, $font_1;
+}
+.main-container .content-inner {
+  h2 {
+    font-family: $font_0, $font_1;
+  }
+  h3 {
+    font-family: $font_0, $font_1;
+  }
+  h4 {
+    font-family: $font_0, $font_1;
+  }
+}
+h2.block-title {
+  font-family: $font_0, $font_1;
+  color: $color_corn_harvest_approx;
+  font-size: 1.5em;
+}
+.path-person .node--title {
+  color: $color_corn_harvest_approx;
+  font-size: 1.5em;
+  font-size: 2.1em;
+}
+h1.page-title {
+  color: $color_corn_harvest_approx;
+  font-size: 1.5em;
+  font-size: 2.1em;
+}
+.fc-listUpcoming-view .fc-list-heading .fc-list-heading-main {
+  border-top: 3px solid $color_pizza_approx;
+  background: none;
+}
+.fc-listPast-view .fc-list-heading .fc-list-heading-main {
+  border-top: 3px solid $color_pizza_approx;
+  background: none;
+}
+.header-container ul.nav a {
+  text-transform: none;
+}
+.node-readmore a:after {
+  background: none;
+}

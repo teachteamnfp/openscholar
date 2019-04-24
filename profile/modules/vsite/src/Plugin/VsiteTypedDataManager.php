@@ -3,6 +3,7 @@
 namespace Drupal\vsite\Plugin;
 
 use Drupal\Core\Cache\CacheBackendInterface;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\DependencyInjection\ClassResolverInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\TypedData\TypedDataManager;
@@ -13,6 +14,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Class VsiteTypedDataManager.
+ *
+ * Vocabularies are considered a DataType plugin.
+ * Because we have vocabularies separated by vsite, the cache for DataType plugins
+ *   needs to also be separated by vsite.
+ * This class separates the caches by vsite, and pulls in taxonomies from the vsite when needed.
  *
  * @package Drupal\vsite\Plugin
  */
@@ -26,11 +32,19 @@ class VsiteTypedDataManager extends TypedDataManager implements EventSubscriberI
   protected $activeVsite;
 
   /**
+   * Config Factory.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
    * {@inheritdoc}
    */
-  public function __construct(\Traversable $namespaces, CacheBackendInterface $cache_backend, ModuleHandlerInterface $module_handler, ClassResolverInterface $class_resolver) {
+  public function __construct(\Traversable $namespaces, CacheBackendInterface $cache_backend, ModuleHandlerInterface $module_handler, ClassResolverInterface $class_resolver, ConfigFactoryInterface $configFactory) {
     parent::__construct($namespaces, $cache_backend, $module_handler, $class_resolver);
     $this->setValidationConstraintManager(new ConstraintManager($namespaces, $cache_backend, $module_handler));
+    $this->configFactory = $configFactory;
   }
 
   /**
@@ -86,7 +100,7 @@ class VsiteTypedDataManager extends TypedDataManager implements EventSubscriberI
         'deriver' => '\Drupal\Core\Entity\Plugin\DataType\Deriver\EntityDeriver',
         'provider' => 'core',
       ];
-      $configs = \Drupal::configFactory()->listAll('taxonomy.vocabulary');
+      $configs = $this->configFactory->listAll('taxonomy.vocabulary');
 
       foreach ($configs as $config_name) {
         $definitionName = str_replace('taxonomy.vocabulary.', 'entity:taxonomy_term:', $config_name);

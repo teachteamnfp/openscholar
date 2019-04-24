@@ -1,0 +1,22 @@
+uuid: 27690114-38d8-45ba-b2f0-f1e77d2c0921
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - indigo
+_core:
+  default_config_hash: jQQUUWN2Uxr5qZtc9zcJKBCxpKY8orN1u2HPqYYRQDI
+id: indigo_powered
+theme: indigo
+region: footer
+weight: -6
+provider: null
+plugin: system_powered_by_block
+settings:
+  id: system_powered_by_block
+  label: 'Powered by Drupal'
+  provider: system
+  label_display: '0'
+visibility: {  }

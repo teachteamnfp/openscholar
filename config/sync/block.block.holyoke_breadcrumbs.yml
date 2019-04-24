@@ -1,0 +1,22 @@
+uuid: 77aaf018-2c1a-4307-a5c3-54ea2d619f95
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - holyoke
+_core:
+  default_config_hash: oXUb3JZR2WW5VOdw4HrhRicCsq51mCgLfRyvheG68ck
+id: holyoke_breadcrumbs
+theme: holyoke
+region: content
+weight: -8
+provider: null
+plugin: system_breadcrumb_block
+settings:
+  id: system_breadcrumb_block
+  label: Breadcrumbs
+  provider: system
+  label_display: '0'
+visibility: {  }

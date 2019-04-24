@@ -36,6 +36,7 @@ module:
   cp: 0
   cp_appearance: 0
   cp_settings: 0
+  cp_taxonomy: 0
   cp_users: 0
   crop: 0
   ctools: 0
@@ -152,6 +153,7 @@ module:
   pathauto: 1
   views: 10
   paragraphs: 11
+  openscholar: 1000
 theme:
   stable: 0
   classy: 0
@@ -160,13 +162,36 @@ theme:
   os_base: 0
   hwpi_themeone_bentley: 0
   vibrant: 0
-  hwpi_college: 0
-  hwpi_classic: 0
+  golden_accents: 0
+  shade: 0
   documental: 0
   hwpi_lamont: 0
-  modern: 0
   hwpi_sterling: 0
   hwpi_widener: 0
+  onepage: 0
+  winthrop: 0
+  peabody: 0
+  holyoke: 0
+  mather: 0
+  kirkland: 0
+  everett: 0
+  hwpi_college: 0
+  adams: 0
+  modern: 0
+  loeb: 0
+  white: 0
+  saffron_accents: 0
+  monument: 0
+  hwpi_classic: 0
+  teal_accents: 0
+  slate: 0
+  red_raven: 0
+  monochrome: 0
+  lemon_sand: 0
+  blue_sky: 0
+  indigo: 0
+  cabot: 0
+  ivy_accents: 0
 profile: openscholar
 _core:
   default_config_hash: R4IF-ClDHXxblLcG0L7MgsLvfBIMAvi_skumNFQwkDc

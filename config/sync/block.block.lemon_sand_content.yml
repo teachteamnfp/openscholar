@@ -1,0 +1,22 @@
+uuid: 95cdbd89-94ec-40fc-a359-a2f39dd0e8cf
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - lemon_sand
+_core:
+  default_config_hash: 9EoWV2Lot6FVSr50t4hoKgiz1LIXYWNG-IIPYsWxBqo
+id: lemon_sand_content
+theme: lemon_sand
+region: content
+weight: -4
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  provider: system
+  label_display: '0'
+visibility: {  }

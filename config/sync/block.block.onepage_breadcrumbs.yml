@@ -1,0 +1,22 @@
+uuid: 154bfb48-cffb-4e93-a62c-09798034d3ba
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - onepage
+_core:
+  default_config_hash: vopezVObloTv9-Vk_bQz7M1-uAUzjBtoXCDa3eWvtGk
+id: onepage_breadcrumbs
+theme: onepage
+region: content
+weight: -8
+provider: null
+plugin: system_breadcrumb_block
+settings:
+  id: system_breadcrumb_block
+  label: Breadcrumbs
+  provider: system
+  label_display: '0'
+visibility: {  }

@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.media.remote.field_media_video_embed_field
+    - field.field.media.remote.field_taxonomy_terms
     - media.type.remote
   module:
     - content_moderation
@@ -31,6 +32,15 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: video_embed_field_textfield
+    region: content
+  field_taxonomy_terms:
+    weight: 101
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
     region: content
   langcode:
     type: language_select

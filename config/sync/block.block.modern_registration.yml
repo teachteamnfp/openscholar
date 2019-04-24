@@ -1,4 +1,4 @@
-uuid: 7138644b-9773-4f03-8437-9a80f66a790b
+uuid: bf1f072a-7585-4c5c-8728-c7cc379d2b6e
 langcode: en
 status: true
 dependencies:
@@ -11,6 +11,8 @@ dependencies:
     - rng_quick
   theme:
     - modern
+_core:
+  default_config_hash: hD_OiXPAqyfka0203jdVfjnjtha98U0Y_MTDmUBVTrw
 id: modern_registration
 theme: modern
 region: content

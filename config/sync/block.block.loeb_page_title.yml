@@ -1,0 +1,20 @@
+uuid: 620e522e-e99c-4e3f-939b-0d22aecb1a14
+langcode: en
+status: true
+dependencies:
+  theme:
+    - loeb
+_core:
+  default_config_hash: 7rR9chwXvdM2H8OYMAYx9Zj3GGlPMrZp_M3ZA4thYTk
+id: loeb_page_title
+theme: loeb
+region: content
+weight: -7
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  provider: core
+  label_display: '0'
+visibility: {  }

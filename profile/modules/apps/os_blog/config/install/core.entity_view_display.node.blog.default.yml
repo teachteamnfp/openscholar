@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.blog.body
     - field.field.node.blog.field_attached_media
+    - field.field.node.blog.field_taxonomy_terms
     - node.type.blog
   module:
     - text
@@ -29,6 +30,14 @@ content:
       view_mode: default
       link: false
     third_party_settings: {  }
+    region: content
+  field_taxonomy_terms:
+    weight: 103
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
     region: content
   links:
     weight: 100
