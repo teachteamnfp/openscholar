@@ -29,7 +29,7 @@ class MailNotificationsTest extends ExistingSiteBase {
    *
    * @var \Drupal\node\Entity\Node
    */
-  protected $node;
+  protected $event;
 
   /**
    * Create Events type node.
@@ -130,7 +130,7 @@ class MailNotificationsTest extends ExistingSiteBase {
    */
   public function testRuleSchedulerEntry() {
     $date = new DateTimePlus('+7 day');
-    $this->event->field_send_reminder_checkbox->value = 1;
+    $this->event->field_should_send_reminder->value = 1;
     $this->event->field_send_reminder->value = $date->format("Y-m-d H:i:s");
     $this->event->save();
 

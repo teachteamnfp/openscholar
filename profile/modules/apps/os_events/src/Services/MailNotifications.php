@@ -69,6 +69,7 @@ class MailNotifications implements MailNotificationsInterface {
    * {@inheritdoc}
    */
   public function sendConfirmationEmail(EntityInterface $registrant) {
+
     $gtc = GlobalTemplateCollection::load('event_registration_confirmation');
     $ltc = $this->gtcManager->getLocalCollection($gtc);
 
@@ -209,7 +210,7 @@ class MailNotifications implements MailNotificationsInterface {
       $message = 'Hello,</br></br>';
       $message .= 'This is only a friendly reminder that you registered the event <a href="[node:url]">[node:title]</a></br>';
       $message .= '</br></br></br>';
-      $message .= 'Harvard University, Cambridge, MA 02138';
+      $message .= '[university:title], [university:address]';
 
       $mailTemplate->setSubject('Reminder for [node:title]');
       $mailTemplate->setBody($message);

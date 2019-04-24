@@ -145,7 +145,7 @@ function os_events_node_presave(EntityInterface $entity) {
 
   // Make sure reminder checkbox and reminder schedule is in sync.
   if (!$entity->status->value || !$entity->field_signup->value) {
-    $entity->field_send_reminder_checkbox->value = 0;
+    $entity->field_should_send_reminder->value = 0;
   }
 }
 
@@ -223,6 +223,13 @@ function os_events_generate_modal_register_link(array $build) {
  */
 function os_events_form_rng_event_settings_alter(&$form, FormStateInterface $form_state, $form_id) {
 
+  $form['event']['field_send_reminder']['#states'] = [
+    'visible' => [
+      ':input[name="field_should_send_reminder[value]"]' => [
+        'checked' => TRUE,
+      ],
+    ],
+  ];
   $form['event']['#attached']['library'][] = 'os_events/os_events.toggle';
   $form['#validate'][] = 'os_events_signup_settings_validate';
   $form['#submit'][] = 'os_events_set_reminder';
@@ -236,10 +243,10 @@ function os_events_set_reminder($form, FormStateInterface $form_state) {
   $values = $form_state->getValues();
   $container = Drupal::getContainer();
   $service = $container->get('os_events.mail_notifications');
-  if ($values['field_send_reminder_checkbox']['value']) {
+  if ($values['field_should_send_reminder']['value']) {
     $service->setUpReminderEmail($values, $node);
   }
-  elseif (!$values['field_send_reminder_checkbox']['value']) {
+  elseif (!$values['field_should_send_reminder']['value']) {
     // Remove reminder if send reminder disabled.
     $service->disableReminderEmail($node);
   }
