@@ -12,6 +12,8 @@ addons:
     paths:
       - ./web/sites/simpletest
       - ./web/sites/default/files
+  hosts:
+    - localunixsocket
 
 services:
   - docker
