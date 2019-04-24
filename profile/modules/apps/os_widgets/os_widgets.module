@@ -152,7 +152,7 @@ function os_widgets_form_alter(&$form, FormStateInterface $form_state, $form_id)
 
     case 'block_content_taxonomy_form':
     case 'block_content_taxonomy_edit_form':
-      $form['field_taxonomy_bundles']['#states'] = [
+      $form['field_taxonomy_bundle']['#states'] = [
         'visible' => [
           ':input[name="field_taxonomy_behavior"]' => [
             'value' => 'select',
