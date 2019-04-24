@@ -1,5 +1,5 @@
 services:
-  cp_taxonomy.helper:
+  cp.taxonomy.helper:
     class: Drupal\cp_taxonomy\CpTaxonomyHelper
     arguments: ['@config.factory', '@entity_type.manager', '@entity_type.bundle.info']
   cp.taxonomy.list_subscriber:

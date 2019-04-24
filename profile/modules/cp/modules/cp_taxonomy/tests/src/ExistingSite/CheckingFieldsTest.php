@@ -13,19 +13,30 @@ namespace Drupal\Tests\cp_taxonomy\ExistingSite;
 class CheckingFieldsTest extends TestBase {
 
   private $fieldName = 'field_taxonomy_terms';
+  private $entityFieldManager;
+  private $entityTypeManager;
+  private $entityManager;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setUp() {
+    parent::setUp();
+    $this->entityFieldManager = $this->container->get('entity_field.manager');
+    $this->entityTypeManager = $this->container->get('entity_type.manager');
+    $this->entityManager = $this->container->get('entity.manager');
+  }
 
   /**
    * Test all node types.
    */
   public function testAllNodeTypesFieldExists() {
-    $definitions = \Drupal::entityTypeManager()->getDefinitions();
-    $entityManager = \Drupal::service('entity_field.manager');
+    $definitions = $this->entityTypeManager->getDefinitions();
     foreach ($definitions as $definition) {
       if ($definition->id() == 'node') {
-        $bundles = \Drupal::service('entity.manager')
-          ->getBundleInfo($definition->id());
+        $bundles = $this->entityManager->getBundleInfo($definition->id());
         foreach ($bundles as $machine_name => $bundle) {
-          $fields = $entityManager->getFieldDefinitions($definition->id(), $machine_name);
+          $fields = $this->entityFieldManager->getFieldDefinitions($definition->id(), $machine_name);
           $this->assertArrayHasKey($this->fieldName, $fields, 'Node bundle ' . $bundle['label'] . ' not contains ' . $this->fieldName . ' field.');
         }
       }
@@ -36,14 +47,12 @@ class CheckingFieldsTest extends TestBase {
    * Test all media types.
    */
   public function testAllMediaTypesFieldExists() {
-    $definitions = \Drupal::entityTypeManager()->getDefinitions();
-    $entityManager = \Drupal::service('entity_field.manager');
+    $definitions = $this->entityTypeManager->getDefinitions();
     foreach ($definitions as $definition) {
       if ($definition->id() == 'media') {
-        $bundles = \Drupal::service('entity.manager')
-          ->getBundleInfo($definition->id());
+        $bundles = $this->entityManager->getBundleInfo($definition->id());
         foreach ($bundles as $machine_name => $bundle) {
-          $fields = $entityManager->getFieldDefinitions($definition->id(), $machine_name);
+          $fields = $this->entityFieldManager->getFieldDefinitions($definition->id(), $machine_name);
           $this->assertArrayHasKey($this->fieldName, $fields, 'Media bundle ' . $bundle['label'] . ' not contains ' . $this->fieldName . ' field.');
         }
       }

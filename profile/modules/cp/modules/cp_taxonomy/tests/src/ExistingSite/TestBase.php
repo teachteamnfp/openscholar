@@ -48,7 +48,7 @@ abstract class TestBase extends VsiteExistingSiteTestBase {
     $this->entityTypeManager = $this->container->get('entity_type.manager');
     $this->vsiteContextManager = $this->container->get('vsite.context_manager');
     $this->configFactory = $this->container->get('config.factory');
-    $this->taxonomyHelper = $this->container->get('cp_taxonomy.helper');
+    $this->taxonomyHelper = $this->container->get('cp.taxonomy.helper');
   }
 
   /**

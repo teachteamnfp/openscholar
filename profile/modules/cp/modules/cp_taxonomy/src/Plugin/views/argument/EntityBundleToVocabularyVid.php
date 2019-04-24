@@ -46,7 +46,7 @@ class EntityBundleToVocabularyVid extends VocabularyVid {
       $plugin_id,
       $plugin_definition,
       $container->get('entity.manager')->getStorage('taxonomy_vocabulary'),
-      $container->get('cp_taxonomy.helper')
+      $container->get('cp.taxonomy.helper')
     );
   }
 
