@@ -17,8 +17,8 @@ aside {
       &.open {
         a {
           background: none;
-          border-bottom: 1px solid #E9E9E9;
-          border-color: #E9E9E9;
+          border-bottom: 1px solid $color-light-gray;
+          border-color: $color-light-gray;
           &:hover {
             background: none;
             color: $color-white;
@@ -26,9 +26,9 @@ aside {
         }
       }
       a {
-        border: 1px solid #E9E9E9;
+        border: 1px solid $color-light-gray;
         margin-bottom: 2px;
-        border-color: #E9E9E9;
+        border-color: $color-light-gray;
         &:hover {
           background: none;
         }
@@ -43,14 +43,14 @@ aside {
   }
 }
 .block-title {
-  background: #42494F;
+  background: $color-dark1;
   border-left: 3px solid $color-blue;
   padding: 9px 15px 10px;
   margin-bottom: 10px;
 }
 .alert {
   p {
-    color: #42494F;
+    color: $color-dark1;
   }
 }
 .close {
@@ -60,5 +60,8 @@ aside {
   }
 }
 .panel, fieldset, .modal-content {
-  background: #42494F;
+  background: $color-dark1;
+}
+.date, time {
+  color: $color-light-gray2;
 }

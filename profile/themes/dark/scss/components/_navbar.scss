@@ -2,8 +2,8 @@
 .navbar-collapse {
   background: $color-dark;
   padding: 0 !important;
-  border-top: 3px solid #464D53;
-  border-bottom: 1px solid #464D53;
+  border-top: 3px solid $color-dark2;
+  border-bottom: 1px solid $color-dark2;
   /***** navbar nav *****/
   .navbar-nav {
     margin-top: -3px;
@@ -17,15 +17,15 @@
         border-top: 3px solid transparent;
         &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
           color: $color-white;
-          border-top-color: #4CA5D9;
-          background: #42494F;
+          border-top-color: $color-blue;
+          background: $color-dark1;
         }
       }
       &.open, &.active {
         > a, > a:hover, > a:active, > a:focus {
           color: $color-white;
-          border-top-color: #4CA5D9;
-          background: #42494F;
+          border-top-color: $color-blue;
+          background: $color-dark1;
         }
       }
     }

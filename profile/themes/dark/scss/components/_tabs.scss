@@ -3,13 +3,13 @@
   >li {
     >a {
       &:hover {
-        background: #42494F;
+        background: $color-dark1;
         color: $color-white
       }
     }
     &.active {
       a {
-        background: #42494F;
+        background: $color-dark1;
         color: $color-white
       }
     }

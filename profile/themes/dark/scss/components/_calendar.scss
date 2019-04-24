@@ -7,12 +7,12 @@ aside .block .fc-row.ui-widget-header th {
   background: none;
 }
 .fc-event-default {
-  border-color: #42494F;
-  background-color: #42494F;
+  border-color: $color-dark1;
+  background-color: $color-dark1;
 }
 .fc-header-toolbar {
   button.ui-button {
-    background: #42494F;
-    color: #fff;
+    background: $color-dark1;
+    color: $color-white;
   }
 }
