@@ -156,7 +156,9 @@ function cp_taxonomy_form_taxonomy_vocabulary_confirm_delete_alter(array &$form,
 function cp_taxonomy_form_add_vocab_submit(array &$form, FormStateInterface &$form_state) {
   $vid = $form_state->getValue('vid');
   $allowed_entity_types = $form_state->getValue('allowed_entity_types');
-  Drupal::service('cp.taxonomy.helper')->saveAllowedBundlesToVocabulary($vid, $allowed_entity_types);
+  if (!is_null($allowed_entity_types)) {
+    Drupal::service('cp.taxonomy.helper')->saveAllowedBundlesToVocabulary($vid, $allowed_entity_types);
+  }
   $form_state->setRedirect('cp.taxonomy');
 }
 
