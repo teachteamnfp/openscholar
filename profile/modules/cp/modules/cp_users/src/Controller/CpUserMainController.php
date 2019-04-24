@@ -182,7 +182,7 @@ class CpUserMainController extends ControllerBase {
 
     $response = new AjaxResponse();
 
-    $modal_form = $this->formBuilder()->getForm('Drupal\cp_users\Form\CpUsersRemoveForm');
+    $modal_form = $this->formBuilder()->getForm('Drupal\cp_users\Form\CpUsersRemoveForm', $user);
 
     $response->addCommand(new OpenModalDialogCommand($this->removeUserFormTitle($user), $modal_form, ['width' => '800']));
 
