@@ -121,7 +121,6 @@ class TaxonomyTermsFieldTest extends OsExistingSiteJavascriptTestBase {
     $tags->keyDown('m');
     /** @var \Behat\Mink\Element\NodeElement $result */
     $result = $web_assert->waitForElementVisible('css', 'ul.ui-autocomplete');
-    file_put_contents('public://testMediaTaxonomyTermsFieldAutocompleteSuccess-autocomplete.png', $this->getSession()->getScreenshot());
     $this->assertNotNull($result, 'Autocomplete is not came up.');
     $list_markup = $result->getHtml();
     $this->assertContains('Term 1 group 1 vid1', $list_markup);
