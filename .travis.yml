@@ -40,6 +40,7 @@ env:
 
 before_install:
   - echo 'sendmail_path = /bin/true' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  - echo '127.0.0.1 localunixsocket' >> /etc/hosts
 
 install:
   - composer global require consolidation/robo
