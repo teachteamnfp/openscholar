@@ -116,7 +116,7 @@ class AddClassMaterialLinkTest extends OsExistingSiteTestBase {
 
     $this->visit("$group_alias/classes");
     $this->assertSession()->statusCodeEquals(200);
-    $this->assertSession()->responseContains('add/paragraph/class_material');
+    $this->assertSession()->linkByHrefExists("$group_alias/node/{$this->class->id()}/add/paragraph/class_material");
   }
 
   /**
