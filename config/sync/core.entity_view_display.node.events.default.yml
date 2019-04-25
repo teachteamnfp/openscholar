@@ -3,7 +3,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.date_format.html_date
     - core.date_format.medium
     - field.field.node.events.body
     - field.field.node.events.field_close_
@@ -68,25 +67,13 @@ content:
       format_type: medium
       occurrence_format_type: medium
       same_end_date_format_type: medium
-      all_day_format_type: html_date
       separator: '-'
       timezone_override: ''
       interpreter: ''
-      allow_all_day: 0
       show_next: 5
       count_per_item: true
     third_party_settings: {  }
     type: date_recur_basic_formatter
-    region: content
-  field_should_send_reminder:
-    weight: 5
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    type: boolean
     region: content
   links:
     weight: 0
@@ -97,6 +84,7 @@ hidden:
   field_close_: true
   field_open_date: true
   field_send_reminder: true
+  field_should_send_reminder: true
   field_signup: true
   field_singup_multiple: true
   langcode: true

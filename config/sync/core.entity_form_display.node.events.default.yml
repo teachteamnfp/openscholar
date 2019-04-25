@@ -24,9 +24,9 @@ dependencies:
     - node.type.events
   module:
     - content_moderation
-    - date_recur_interactive
     - field_layout
     - layout_discovery
+    - os_events
     - path
     - text
 third_party_settings:
@@ -72,11 +72,9 @@ content:
     region: content
   field_recurring_date:
     weight: 1
-    settings:
-      timezone_override: ''
-      allow_all_day: true
+    settings: {  }
     third_party_settings: {  }
-    type: date_recur_interactive_widget
+    type: os_events_date_recur_modular_sierra
     region: content
   field_signup:
     weight: 5
