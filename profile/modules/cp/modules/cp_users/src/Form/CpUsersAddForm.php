@@ -126,14 +126,12 @@ class CpUsersAddForm extends FormBase {
         '#title' => $this->t('Username'),
         '#maxlength' => 255,
         '#size' => 60,
-        '#required' => TRUE,
       ],
       'email' => [
         '#type' => 'textfield',
         '#title' => $this->t('E-mail Address'),
         '#maxlength' => 255,
         '#size' => 60,
-        '#required' => TRUE,
       ],
       'role' => [
         '#type' => 'radios',
