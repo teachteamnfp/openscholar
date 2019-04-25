@@ -43,7 +43,18 @@ env:
     - JOB="job:run-functional-tests media-browser"
     - JOB="job:run-functional-tests os-theme-preview"
     - JOB="job:run-functional-tests vsite"
-    - JOB=job:run-functional-javascript-tests
+    - JOB="job:run-functional-javascript-tests classes"
+    - JOB="job:run-functional-javascript-tests events"
+    - JOB="job:run-functional-javascript-tests pages"
+    - JOB="job:run-functional-javascript-tests publications"
+    - JOB="job:run-functional-javascript-tests widgets"
+    - JOB="job:run-functional-javascript-tests cp-appearance"
+    - JOB="job:run-functional-javascript-tests cp"
+    - JOB="job:run-functional-javascript-tests vsite"
+    - JOB="job:run-functional-javascript-tests mailchimp"
+    - JOB="job:run-functional-javascript-tests metatag"
+    - JOB="job:run-functional-javascript-tests redirect"
+    - JOB="job:run-functional-javascript-tests os-theme-preview"
 #    - JOB=job:run-behat-tests
 
 before_install:

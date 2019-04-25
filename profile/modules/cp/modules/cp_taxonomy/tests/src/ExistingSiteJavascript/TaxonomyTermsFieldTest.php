@@ -11,8 +11,8 @@ use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTest
 /**
  * Tests taxonomy_terms fields functionality.
  *
- * @group other
  * @group functional-javascript
+ * @group cp
  */
 class TaxonomyTermsFieldTest extends OsExistingSiteJavascriptTestBase {
   /**

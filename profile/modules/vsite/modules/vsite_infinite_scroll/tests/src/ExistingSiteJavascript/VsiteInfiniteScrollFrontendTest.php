@@ -5,8 +5,8 @@ namespace Drupal\Tests\vsite_infinite_scroll\ExistingSiteJavascript;
 /**
  * Tests vsite_infinite_scroll module.
  *
- * @group vsite
  * @group functional-javascript
+ * @group vsite
  */
 class VsiteInfiniteScrollFrontendTest extends VsiteInfiniteScrollExistingSiteJavascriptTestBase {
 
