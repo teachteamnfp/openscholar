@@ -11,7 +11,7 @@ use Drupal\group_purl\Plugin\Purl\Method\GroupPrefixMethod;
  * @PurlMethod(
  *   id="vsite_prefix",
  *   title = @Translation("Path prefixed vsite content."),
- *   stage = {
+ *   stages = {
  *      Drupal\purl\Plugin\Purl\Method\MethodInterface::STAGE_PROCESS_OUTBOUND,
  *      Drupal\purl\Plugin\Purl\Method\MethodInterface::STAGE_PRE_GENERATE
  *   }
