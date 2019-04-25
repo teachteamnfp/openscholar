@@ -222,6 +222,7 @@ class TaxonomyTermsFieldTest extends OsExistingSiteJavascriptTestBase {
     }
     $submit_button = $page->findButton('Save');
     $submit_button->press();
+    file_put_contents('public://createGroupVocabulary.' . $vid . '.png', $this->getSession()->getScreenshot());
     $web_assert->statusCodeEquals(200);
     $web_assert->pageTextContains('Created new vocabulary');
   }
