@@ -11,7 +11,7 @@ use Drupal\Core\Render\BubbleableMetadata;
 class LinkTestController extends ControllerBase {
 
   /**
-   * The page with our test strings.
+   * Print testing strings to a page so internal state can be asserted.
    *
    * @return array
    *   Render array

@@ -1,0 +1,22 @@
+uuid: fc7a4ce5-591b-438d-bed6-f1f887853cfc
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - mather
+_core:
+  default_config_hash: 9EoWV2Lot6FVSr50t4hoKgiz1LIXYWNG-IIPYsWxBqo
+id: mather_content
+theme: mather
+region: content
+weight: -4
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  provider: system
+  label_display: '0'
+visibility: {  }

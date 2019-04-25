@@ -65,7 +65,7 @@ class ClassesNodeFormAutocompleteTest extends ClassesExistingSiteJavascriptTestB
   public function testAutocompleteNodeForm() {
     $this->drupalLogin($this->adminUser);
     $node = $this->createClass([
-      'field_year_offered' => '2016'
+      'field_year_offered' => '2016',
     ]);
     $this->group->addContent($node, "group_node:{$node->bundle()}");
 

@@ -1,0 +1,7 @@
+global-styling:
+  version: VERSION
+  css:
+    base:
+      '//fonts.googleapis.com/css?family=Cardo:400,400i,700': { external: true }
+    theme:
+      css/style.css: {}

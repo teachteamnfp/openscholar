@@ -1,0 +1,22 @@
+uuid: b6e454c5-3e51-4645-9dc4-1b5ef8106e22
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - peabody
+_core:
+  default_config_hash: oXUb3JZR2WW5VOdw4HrhRicCsq51mCgLfRyvheG68ck
+id: peabody_breadcrumbs
+theme: peabody
+region: content
+weight: -8
+provider: null
+plugin: system_breadcrumb_block
+settings:
+  id: system_breadcrumb_block
+  label: Breadcrumbs
+  provider: system
+  label_display: '0'
+visibility: {  }

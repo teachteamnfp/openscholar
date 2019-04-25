@@ -1,0 +1,22 @@
+uuid: 20af8dd3-c3b7-44e0-b5fe-a21572d199c9
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - peabody
+_core:
+  default_config_hash: jQQUUWN2Uxr5qZtc9zcJKBCxpKY8orN1u2HPqYYRQDI
+id: peabody_powered
+theme: peabody
+region: footer
+weight: -6
+provider: null
+plugin: system_powered_by_block
+settings:
+  id: system_powered_by_block
+  label: 'Powered by Drupal'
+  provider: system
+  label_display: '0'
+visibility: {  }

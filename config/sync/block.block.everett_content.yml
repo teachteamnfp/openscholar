@@ -1,0 +1,22 @@
+uuid: ed0869ba-26ac-4b1a-8314-8c1e7aba3fbd
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - everett
+_core:
+  default_config_hash: 9EoWV2Lot6FVSr50t4hoKgiz1LIXYWNG-IIPYsWxBqo
+id: everett_content
+theme: everett
+region: content
+weight: -4
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  provider: system
+  label_display: '0'
+visibility: {  }

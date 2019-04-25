@@ -65,8 +65,8 @@ class AppearanceSettingsTest extends TestBase {
 
     $this->assertSession()->statusCodeEquals(200);
 
-    $theme_setting = $this->configFactory->get('system.theme');
-    $this->assertEquals('hwpi_college', $theme_setting->get('default'));
+    $this->visit('/cp-appearance');
+    $this->assertSession()->responseContains('/profiles/contrib/openscholar/themes/hwpi_college/css/style.css');
   }
 
   /**

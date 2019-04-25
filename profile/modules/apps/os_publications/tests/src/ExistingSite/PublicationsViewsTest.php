@@ -144,12 +144,107 @@ class PublicationsViewsTest extends TestBase {
    * Tests author display.
    *
    * @coversDefaultClass \Drupal\os_publications\Plugin\views\field\AuthorLastNameFirstLetter
-   * @coversDefaultClass \Drupal\os_publications\Plugin\views\sort\AuthorLastNameFirstLetter
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
   public function testAuthor() {
+    /** @var \Drupal\os_publications\PublicationsListingHelperInterface $publications_listing_helper */
+    $publications_listing_helper = $this->container->get('os_publications.listing_helper');
+
+    $contributor1 = $this->createContributor([
+      'first_name' => 'Leonardo',
+      'middle_name' => 'Da',
+      'last_name' => 'Vinci',
+    ]);
+
+    $contributor2 = $this->createContributor([
+      'first_name' => 'Joanne',
+      'middle_name' => 'Kathleen',
+      'last_name' => 'Rowling',
+    ]);
+
+    $this->createReference([
+      'title' => 'Mona Lisa',
+      'author' => [
+        'target_id' => $contributor1->id(),
+        'category' => 'primary',
+        'role' => 'author',
+      ],
+      'is_sticky' => [
+        'value' => 0,
+      ],
+    ]);
+
+    $this->createReference([
+      'title' => 'The Last Supper',
+      'author' => [
+        'target_id' => $contributor1->id(),
+        'category' => 'primary',
+        'role' => 'author',
+      ],
+      'is_sticky' => [
+        'value' => 0,
+      ],
+    ]);
+
+    $this->createReference([
+      'title' => 'Harry Potter and the Deathly Hallows',
+      'type' => 'book',
+      'author' => [
+        'target_id' => $contributor2->id(),
+        'category' => 'primary',
+        'role' => 'author',
+      ],
+      'bibcite_publisher' => [
+        'value' => 'Bloomsbury',
+      ],
+      'is_sticky' => [
+        'value' => 0,
+      ],
+    ]);
+
+    $this->createReference([
+      'title' => 'Unknown',
+      'is_sticky' => [
+        'value' => 0,
+      ],
+    ]);
+
+    $view = Views::getView('publications');
+    $view->setDisplay('page_3');
+    $view->preExecute();
+    $view->execute();
+
+    /** @var array $result */
+    $result = $view->result;
+
+    $this->assertCount(4, $result);
+
+    // Assert result grouping.
+    $grouped_result = [];
+
+    foreach ($result as $item) {
+      /** @var \Drupal\bibcite_entity\Entity\ReferenceInterface $reference */
+      $reference = $item->_entity;
+      $grouped_result[$publications_listing_helper->convertAuthorName($reference)][] = $reference->id();
+    }
+
+    $this->assertCount(2, $grouped_result['V']);
+    $this->assertCount(1, $grouped_result['R']);
+    $this->assertCount(1, $grouped_result['']);
+  }
+
+  /**
+   * Tests sorting in author display.
+   *
+   * @coversDefaultClass \Drupal\os_publications\Plugin\views\field\AuthorLastNameFirstLetter
+   * @coversDefaultClass \Drupal\os_publications\Plugin\views\sort\AuthorLastNameFirstLetter
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
+   */
+  public function testAuthorSort(): void {
     /** @var \Drupal\os_publications\PublicationsListingHelperInterface $publications_listing_helper */
     $publications_listing_helper = $this->container->get('os_publications.listing_helper');
 
@@ -178,18 +273,6 @@ class PublicationsViewsTest extends TestBase {
     ]);
 
     $reference2 = $this->createReference([
-      'title' => 'The Last Supper',
-      'author' => [
-        'target_id' => $contributor1->id(),
-        'category' => 'primary',
-        'role' => 'author',
-      ],
-      'is_sticky' => [
-        'value' => 0,
-      ],
-    ]);
-
-    $reference3 = $this->createReference([
       'title' => 'Harry Potter and the Deathly Hallows',
       'type' => 'book',
       'author' => [
@@ -205,13 +288,6 @@ class PublicationsViewsTest extends TestBase {
       ],
     ]);
 
-    $reference4 = $this->createReference([
-      'title' => 'Unknown',
-      'is_sticky' => [
-        'value' => 0,
-      ],
-    ]);
-
     $dataset = [
       [
         'title' => $reference1->label(),
@@ -220,14 +296,6 @@ class PublicationsViewsTest extends TestBase {
       [
         'title' => $reference2->label(),
         'author_last_name' => $publications_listing_helper->convertAuthorName($reference2),
-      ],
-      [
-        'title' => $reference3->label(),
-        'author_last_name' => $publications_listing_helper->convertAuthorName($reference3),
-      ],
-      [
-        'title' => $reference4->label(),
-        'author_last_name' => $publications_listing_helper->convertAuthorName($reference4),
       ],
     ];
 
@@ -246,26 +314,14 @@ class PublicationsViewsTest extends TestBase {
     /** @var array $result */
     $result = $view->result;
 
+    $this->assertCount(2, $result);
+
     // Assert sorting by "first letter of author's last name".
     $this->orderResultSet($dataset, 'author_last_name', TRUE);
 
-    $this->assertCount(4, $result);
     $this->assertIdenticalResultset($view, $dataset, [
       '_entity' => 'title',
     ]);
-
-    // Assert result grouping.
-    $grouped_result = [];
-
-    foreach ($result as $item) {
-      /** @var \Drupal\bibcite_entity\Entity\ReferenceInterface $reference */
-      $reference = $item->_entity;
-      $grouped_result[$publications_listing_helper->convertAuthorName($reference)][] = $reference->id();
-    }
-
-    $this->assertCount(2, $grouped_result['V']);
-    $this->assertCount(1, $grouped_result['R']);
-    $this->assertCount(1, $grouped_result['']);
   }
 
   /**

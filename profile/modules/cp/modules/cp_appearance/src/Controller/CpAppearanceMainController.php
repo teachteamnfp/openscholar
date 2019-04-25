@@ -179,7 +179,7 @@ class CpAppearanceMainController extends ControllerBase {
       $this->getLogger('cp_appearance')->error($e->getMessage());
     }
 
-    return $this->redirect('cp.appearance', [], ['absolute' => TRUE]);
+    return $this->redirect('<front>', [], ['absolute' => TRUE]);
   }
 
 }
