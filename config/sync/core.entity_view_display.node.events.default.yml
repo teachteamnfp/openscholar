@@ -15,6 +15,7 @@ dependencies:
     - field.field.node.events.field_should_send_reminder
     - field.field.node.events.field_signup
     - field.field.node.events.field_singup_multiple
+    - field.field.node.events.field_taxonomy_terms
     - field.field.node.events.rng_capacity
     - field.field.node.events.rng_registrants_duplicate
     - field.field.node.events.rng_registrants_maximum
@@ -78,16 +79,6 @@ content:
     third_party_settings: {  }
     type: date_recur_basic_formatter
     region: content
-  field_should_send_reminder:
-    weight: 5
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    type: boolean
-    region: content
   links:
     weight: 0
     region: content
@@ -97,8 +88,10 @@ hidden:
   field_close_: true
   field_open_date: true
   field_send_reminder: true
+  field_should_send_reminder: true
   field_signup: true
   field_singup_multiple: true
+  field_taxonomy_terms: true
   langcode: true
   rng_capacity: true
   rng_registrants_duplicate: true

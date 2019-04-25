@@ -230,7 +230,6 @@ function os_events_form_rng_event_settings_alter(&$form, FormStateInterface $for
       ],
     ],
   ];
-  $form['event']['#attached']['library'][] = 'os_events/os_events.toggle';
   $form['#validate'][] = 'os_events_signup_settings_validate';
   $form['#submit'][] = 'os_events_set_reminder';
 }
