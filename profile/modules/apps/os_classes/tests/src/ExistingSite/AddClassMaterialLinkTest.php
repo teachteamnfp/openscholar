@@ -35,13 +35,6 @@ class AddClassMaterialLinkTest extends OsExistingSiteTestBase {
   protected $simpleUser;
 
   /**
-   * Group member.
-   *
-   * @var \Drupal\user\UserInterface
-   */
-  protected $groupMember;
-
-  /**
    * Test class.
    *
    * @var \Drupal\node\NodeInterface
@@ -82,23 +75,29 @@ class AddClassMaterialLinkTest extends OsExistingSiteTestBase {
    *
    * @throws \Behat\Mink\Exception\ExpectationException
    */
-  public function testAddMaterialLinkAsAdmin() {
+  public function testAddMaterialLinkAsAdmin(): void {
     $this->drupalLogin($this->adminUser);
+    /** @var \Drupal\Core\Path\AliasManagerInterface $path_alias_manager */
+    $path_alias_manager = $this->container->get('path.alias_manager');
+    $group_alias = $path_alias_manager->getAliasByPath("/group/{$this->group->id()}");
 
-    $this->drupalGet('node/' . $this->class->id());
+    $this->drupalGet("$group_alias/node/{$this->class->id()}");
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->linkByHrefExists('add/paragraph/class_material');
   }
 
   /**
-   * Test Add class material link as anonymous user.
+   * Test Add class material link as a non-member.
    *
    * @throws \Behat\Mink\Exception\ExpectationException
    */
-  public function testAddMaterialLinkAsAnon() {
+  public function testAddMaterialLinkAsOutsider(): void {
     $this->drupalLogin($this->simpleUser);
+    /** @var \Drupal\Core\Path\AliasManagerInterface $path_alias_manager */
+    $path_alias_manager = $this->container->get('path.alias_manager');
+    $group_alias = $path_alias_manager->getAliasByPath("/group/{$this->group->id()}");
 
-    $this->drupalGet('node/' . $this->class->id());
+    $this->drupalGet("$group_alias/node/{$this->class->id()}");
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->linkByHrefNotExists('add/paragraph/class_material');
   }
