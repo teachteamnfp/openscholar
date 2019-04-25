@@ -51,6 +51,12 @@
               elems.filter(':eq(' + i + '),:eq(' + (i + 1) + ')').wrapAll(wrapper);
             };
           }
+          //wrapping content in td for ui
+          if (view.name == 'listWeek' || view.name == 'listDay') {
+            $('.fc-event-future').each(function(){
+              $(this).wrapInner('<td>');
+            });
+          }
         },
         views: {
           listUpcoming: {
