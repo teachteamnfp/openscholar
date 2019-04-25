@@ -1,0 +1,8 @@
+type: module
+name: Cp Taxonomy Module Test
+description: Testing module for term reference functionality.
+package: Testing
+core: 8.x
+dependencies:
+  - "drupal:cp_taxonomy"
+hidden: TRUE

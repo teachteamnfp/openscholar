@@ -36,7 +36,7 @@ function cp_users_mail($key, &$message, $params) {
   $variables = [
     '@user-role' => reset($group->getMember($user)->getRoles())->label(),
     '@site-url' => Url::fromRoute('entity.group.canonical', ['group' => $group->id()], ['absolute' => TRUE])->toString(),
-    '@user-firstname' => $user->get('field_first_name') ? $user->get('field_first_name')->get(0)->getValue()['value'] : render($user->getDisplayName()),
+    '@user-firstname' => $user->get('field_first_name')->count() ? $user->get('field_first_name')->first()->getValue()['value'] : render($user->getDisplayName()),
     '@account-modifier' => render($creator->getDisplayName()),
     '@account-modifier-email' => $creator->getEmail(),
     '@sitewide-name' => $config->get('sitewide_name'),

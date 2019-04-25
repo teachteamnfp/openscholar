@@ -1,0 +1,26 @@
+uuid: 86f0c166-e37b-4bf9-8a8f-dc2b8d388e66
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_taxonomy_terms
+    - node.type.taxonomy_test_1
+id: node.taxonomy_test_1.field_taxonomy_terms
+field_name: field_taxonomy_terms
+entity_type: node
+bundle: taxonomy_test_1
+label: 'Tag with Terms'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: views
+  handler_settings:
+    view:
+      view_name: reference_taxonomy_term
+      display_name: entity_reference_1
+      arguments:
+        - 'node:taxonomy_test_1'
+field_type: entity_reference

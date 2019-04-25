@@ -1,0 +1,21 @@
+uuid: 3f034883-4119-419f-870b-be7b3e1f5dd3
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - node.type.taxonomy_test_1
+  module:
+    - user
+id: node.taxonomy_test_1.teaser
+targetEntityType: node
+bundle: taxonomy_test_1
+mode: teaser
+content:
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  langcode: true

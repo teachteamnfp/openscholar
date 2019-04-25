@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.media.remote.field_media_video_embed_field
+    - field.field.media.remote.field_taxonomy_terms
     - media.type.remote
   module:
     - layout_builder
@@ -26,6 +27,14 @@ content:
       autoplay: false
     third_party_settings: {  }
     type: video_embed_field_video
+    region: content
+  field_taxonomy_terms:
+    weight: 1
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
     region: content
 hidden:
   created: true
