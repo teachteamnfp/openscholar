@@ -120,16 +120,20 @@ class AddClassMaterialLinkTest extends OsExistingSiteTestBase {
   }
 
   /**
-   * Test Add Class material Link on classes view as anonymous user.
+   * Test Add Class material Link on classes view as a non-member.
    *
    * @throws \Behat\Mink\Exception\ExpectationException
    */
-  public function testAddLinkOnClassesViewAsAnon() {
+  public function testAddLinkOnClassesViewAsOutsider(): void {
     $this->drupalLogin($this->simpleUser);
 
-    $this->drupalGet('classes');
-    $this->assertSession()->statusCodeEquals(200);
-    $this->assertSession()->linkByHrefNotExists('add/paragraph/class_material');
+    /** @var \Drupal\Core\Path\AliasManagerInterface $path_alias_manager */
+    $path_alias_manager = $this->container->get('path.alias_manager');
+    $group_alias = $path_alias_manager->getAliasByPath("/group/{$this->group->id()}");
+
+    $this->visit("$group_alias/classes");
+    $this->assertSession()->statusCodeEquals(403);
+    $this->assertSession()->linkByHrefNotExists("$group_alias/node/{$this->class->id()}/add/paragraph/class_material");
   }
 
 }
