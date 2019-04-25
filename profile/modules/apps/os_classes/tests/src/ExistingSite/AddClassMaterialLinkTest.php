@@ -2,7 +2,7 @@
 
 namespace Drupal\Tests\os_classes\ExistingSite;
 
-use weitzman\DrupalTestTraits\ExistingSiteBase;
+use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
 
 /**
  * Class AddClassMaterialLinkTest.
@@ -11,7 +11,42 @@ use weitzman\DrupalTestTraits\ExistingSiteBase;
  *
  * @package Drupal\Tests\os_publications\ExistingSite
  */
-class AddClassMaterialLinkTest extends ExistingSiteBase {
+class AddClassMaterialLinkTest extends OsExistingSiteTestBase {
+
+  /**
+   * Test group.
+   *
+   * @var \Drupal\group\Entity\GroupInterface
+   */
+  protected $group;
+
+  /**
+   * Administrator and group administrator.
+   *
+   * @var \Drupal\user\UserInterface
+   */
+  protected $adminUser;
+
+  /**
+   * Outsider.
+   *
+   * @var \Drupal\user\UserInterface
+   */
+  protected $simpleUser;
+
+  /**
+   * Group member.
+   *
+   * @var \Drupal\user\UserInterface
+   */
+  protected $groupMember;
+
+  /**
+   * Test class.
+   *
+   * @var \Drupal\node\NodeInterface
+   */
+  protected $class;
 
   /**
    * {@inheritdoc}
@@ -29,6 +64,17 @@ class AddClassMaterialLinkTest extends ExistingSiteBase {
       'field_class_materials[0][subform][field_title][0][value]' => $this->randomString(),
       'field_class_materials[0][subform][field_body][0][value]' => $this->randomString(),
     ]);
+    $this->group = $this->createGroup([
+      'path' => [
+        'alias' => "/{$this->randomMachineName()}",
+      ],
+    ]);
+    $this->group->addMember($this->adminUser, [
+      'group_roles' => [
+        'personal-administrator',
+      ],
+    ]);
+    $this->group->addContent($this->class, 'group_node:class');
   }
 
   /**
@@ -62,12 +108,15 @@ class AddClassMaterialLinkTest extends ExistingSiteBase {
    *
    * @throws \Behat\Mink\Exception\ExpectationException
    */
-  public function testAddLinkOnClassesViewAsAdmin() {
+  public function testAddLinkOnClassesViewAsAdmin(): void {
     $this->drupalLogin($this->adminUser);
+    /** @var \Drupal\Core\Path\AliasManagerInterface $path_alias_manager */
+    $path_alias_manager = $this->container->get('path.alias_manager');
+    $group_alias = $path_alias_manager->getAliasByPath("/group/{$this->group->id()}");
 
-    $this->drupalGet('classes');
+    $this->visit("$group_alias/classes");
     $this->assertSession()->statusCodeEquals(200);
-    $this->assertSession()->linkByHrefExists('add/paragraph/class_material');
+    $this->assertSession()->responseContains('add/paragraph/class_material');
   }
 
   /**
