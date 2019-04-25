@@ -1,0 +1,44 @@
+aside {
+  ul.navbar-nav {
+    li {
+      .dropdown-menu {
+        a {
+          color: $color-link;
+        }
+      }
+    }
+  }
+}
+.page-header {
+  position: relative;
+  &:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 64px;
+    height: 4px;
+    border-radius: 2px;
+    background: $color-link;
+  }
+}
+header {
+  background: $color-link;
+}
+.header-container {
+  a {
+    color: $color-white;
+  }
+}
+.caret {
+  color: $color-link;
+}
+.ui-widget, .ui-widget button {
+  font-family: 'Montserrat', sans-serif;
+}
+h2.block-title {
+  background: $color-light-gray1;
+  border-left: 3px solid $color-link;
+  padding: 9px 15px 10px;
+  margin-bottom: 10px;
+}
