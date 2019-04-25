@@ -8,6 +8,7 @@ use weitzman\DrupalTestTraits\ExistingSiteBase;
  * Class AddClassMaterialFormTest.
  *
  * @group functional
+ * @group classes
  *
  * @package Drupal\Tests\os_publications\ExistingSite
  */

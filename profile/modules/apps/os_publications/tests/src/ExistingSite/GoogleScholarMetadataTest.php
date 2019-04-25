@@ -6,6 +6,7 @@ namespace Drupal\Tests\os_publications\ExistingSite;
  * Class PublicationsFormTest.
  *
  * @group functional
+ * @group publications
  */
 class GoogleScholarMetadataTest extends TestBase {
 
