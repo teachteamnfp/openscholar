@@ -11,19 +11,10 @@ use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
+use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Cache\RefinableCacheableDependencyInterface;
 use Drupal\views\ViewExecutable;
-
-/**
- * Implemets hook_preprocess_page().
- */
-function os_events_preprocess_page(&$variables) {
-  $node = $variables['node'] ?? NULL;
-  if ($node && $node->bundle() == 'events' && !$node->field_signup->value) {
-    unset($variables['page']['content']['registration']);
-  }
-}
 
 /**
  * Implements hook_menu_local_tasks_alter().
@@ -55,34 +46,116 @@ function os_events_menu_local_tasks_alter(&$data, $route_name, RefinableCacheabl
       unset(
         $data['tabs'][1]['rng.local_tasks:rng.event.node.event.access'],
         $data['tabs'][1]['rng.local_tasks:rng.event.node.event.group.list'],
-        $data['tabs'][1]['rng_date_scheduler.local_tasks:rng.event.node.event.date_scheduler']
+        $data['tabs'][1]['rng_date_scheduler.local_tasks:rng.event.node.event.date_scheduler'],
+        $data['tabs'][1]['rng.local_tasks:rng.event.node.event.messages']
       );
-      $data['tabs'][1]['rng.local_tasks:rng.event.node.event.messages']['#link']['title'] = t("Email Registrants");
     }
   }
 }
 
 /**
- * Implements hook_ENTITY_TYPE_insert().
+ * Implements hook_ENTITY_TYPE_update().
  */
-function os_events_node_insert(EntityInterface $node) {
+function os_events_node_update(EntityInterface $node) {
   if ($node->bundle() != 'events') {
     // Bail out if not an event node.
     return;
   }
-  // Set up services that we need.
   $container = Drupal::getContainer();
-  $default_template = $container->get('os_events.default_mail_template');
-  $default_template->createDefaultTemplate($node);
+  $mailService = $container->get('os_events.mail_notifications');
+
+  // Get the registrations associated with this event.
+  $eventMeta = $container->get('rng.event_manager')->getMeta($node);
+  $registrations = $eventMeta->getRegistrations();
+
+  // If node is unpublished or Signup disabled,
+  // delete registrations and send cancel mail.
+  if (!$node->status->value || !$node->field_signup->value) {
+    $mailService->sendCancelNotificationEmail($node);
+    $mailService->disableReminderEmail($node);
+    foreach ($registrations as $registration) {
+      $registration->delete();
+    }
+  }
+
+  // Get dates to see if they are changed.
+  $originalDate = $node->original->field_recurring_date->value;
+  $newDate = $node->field_recurring_date->value;
+
+  // Get the location to see if it is changed.
+  $originalLocation = $node->original->field_location->value;
+  $newLocation = $node->field_location->value;
+
+  // If recurring event's date is changed, delete all registrations.
+  if ($node->field_recurring_date->rrule) {
+    if ($originalDate !== $newDate) {
+      foreach ($registrations as $registration) {
+        $registration->delete();
+      }
+      return;
+    }
+    // If only location changed for recurring event send update email.
+    if ($originalLocation !== $newLocation) {
+      $mailService->sendUpdateNotificationEmail($node);
+    }
+  }
+  // If non-recurring event is changed, send update email.
+  if (!$node->field_recurring_date->rrule) {
+    if ($originalLocation !== $newLocation || $originalDate !== $newDate) {
+      $mailService->sendUpdateNotificationEmail($node);
+    }
+    // If date changed, update the registration entity too.
+    if ($originalDate !== $newDate) {
+      $newDate = $container->get('date.formatter')->format(strtotime($newDate), 'custom', DateTimeItemInterface::DATETIME_STORAGE_FORMAT);
+      foreach ($registrations as $registration) {
+        $registration->field_for_date->value = $newDate;
+        $registration->save();
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_predelete().
+ */
+function os_events_node_predelete(EntityInterface $node) {
+  if ($node->bundle() != 'events') {
+    // Bail out if not an event node.
+    return;
+  }
+
+  $container = Drupal::getContainer();
+  $service = $container->get('os_events.mail_notifications');
+  $service->sendCancelNotificationEmail($node);
+  $service->disableReminderEmail($node);
+
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ */
+function os_events_node_presave(EntityInterface $entity) {
+  if ($entity->bundle() != 'events') {
+    // Bail out if not an event node.
+    return;
+  }
+  $email = $entity->getOwner()->getEmail();
+  $entity->rng_reply_to->value = ($entity->rng_reply_to->value) ?? $email;
+  $entity->rng_capacity->value = ($entity->rng_capacity->value) ?? 'unlimited';
+
+  // Make sure reminder checkbox and reminder schedule is in sync.
+  if (!$entity->status->value || !$entity->field_signup->value) {
+    $entity->field_should_send_reminder->value = 0;
+  }
 }
 
 /**
  * Implements hook_ENTITY_TYPE_insert().
  */
-function os_events_rng_rule_insert(EntityInterface $rule) {
-  // Make newly created rule active by default.
-  $rule->setIsActive(TRUE)
-    ->save();
+function os_events_registrant_insert(EntityInterface $registrant) {
+  $container = Drupal::getContainer();
+  $default_template = $container->get('os_events.mail_notifications');
+  $default_template->sendConfirmationEmail($registrant);
 }
 
 /**
@@ -149,11 +222,33 @@ function os_events_generate_modal_register_link(array $build) {
  * Implements hook_form_BASE_FORM_ID_alter().
  */
 function os_events_form_rng_event_settings_alter(&$form, FormStateInterface $form_state, $form_id) {
-  // Set registration capacity to unlimited by default.
-  if (!$form['event']['rng_capacity']['widget'][0]['unlimited_number']['#default_value']) {
-    $form['event']['rng_capacity']['widget'][0]['unlimited_number']['#default_value'] = "unlimited";
-  }
+
+  $form['event']['field_send_reminder']['#states'] = [
+    'visible' => [
+      ':input[name="field_should_send_reminder[value]"]' => [
+        'checked' => TRUE,
+      ],
+    ],
+  ];
   $form['#validate'][] = 'os_events_signup_settings_validate';
+  $form['#submit'][] = 'os_events_set_reminder';
+}
+
+/**
+ * Sets the reminder for a particular date.
+ */
+function os_events_set_reminder($form, FormStateInterface $form_state) {
+  $node = $form_state->getStorage()['event'];
+  $values = $form_state->getValues();
+  $container = Drupal::getContainer();
+  $service = $container->get('os_events.mail_notifications');
+  if ($values['field_should_send_reminder']['value']) {
+    $service->setUpReminderEmail($values, $node);
+  }
+  elseif (!$values['field_should_send_reminder']['value']) {
+    // Remove reminder if send reminder disabled.
+    $service->disableReminderEmail($node);
+  }
 }
 
 /**
@@ -234,11 +329,11 @@ function os_events_form_views_exposed_form_alter(&$form, FormStateInterface $for
 
   foreach ($results as $date) {
     $dateTimeObject = new DrupalDateTime($date->field_recurring_date_value);
-    $timestamp = $dateTimeObject->getTimestamp();
     $offset = $dateTimeObject->getOffset();
     $interval = DateInterval::createFromDateString((string) $offset . 'seconds');
     $dateTimeObject->add($interval);
-    $options[$timestamp] = $dateTimeObject->format('l, F j, Y');
+    $dateString = $dateTimeObject->format('l, F j, Y');
+    $options[$dateString] = $dateTimeObject->format('l, F j, Y');
   }
 
   // Start building out our new form element.

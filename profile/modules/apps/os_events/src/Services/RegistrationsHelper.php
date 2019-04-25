@@ -135,6 +135,7 @@ class RegistrationsHelper implements RegistrationsHelperInterface {
     $id = $entity->id();
     $status = $this->checkRegistrationStatus($build);
     $occurrences = 0;
+    $options = [];
 
     // Generate select menu options for other dates available for registration.
     if ($entity->field_recurring_date->rrule &&

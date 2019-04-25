@@ -1,13 +1,13 @@
-uuid: 3a22faa0-08a8-443f-b6e7-a7c60a1dad13
+uuid: df606a33-3454-4441-9e65-2c915aeb1f39
 langcode: en
 status: true
 dependencies:
   module:
     - datetime
-    - rng
-id: registration.field_for_date
-field_name: field_for_date
-entity_type: registration
+    - node
+id: node.field_send_reminder
+field_name: field_send_reminder
+entity_type: node
 type: datetime
 settings:
   datetime_type: datetime
