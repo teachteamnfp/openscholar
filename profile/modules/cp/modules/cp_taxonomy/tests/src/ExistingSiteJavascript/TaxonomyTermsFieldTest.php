@@ -222,8 +222,8 @@ class TaxonomyTermsFieldTest extends OsExistingSiteJavascriptTestBase {
     }
     $submit_button = $page->findButton('Save');
     $submit_button->press();
-    $web_assert->pageTextContains('Created new vocabulary');
     $web_assert->statusCodeEquals(200);
+    $web_assert->pageTextContains('Created new vocabulary');
   }
 
   /**
