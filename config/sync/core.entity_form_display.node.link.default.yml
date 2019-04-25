@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.link.body
+    - field.field.node.link.field_taxonomy_terms
     - field.field.node.link.field_url_web_address
     - node.type.link
   module:
@@ -39,6 +40,15 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_taxonomy_terms:
+    weight: 123
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
   field_url_web_address:
     weight: 122
     settings:
@@ -103,5 +113,10 @@ content:
       size: 60
       placeholder: ''
     region: content
+    third_party_settings: {  }
+  url_redirects:
+    weight: 50
+    region: content
+    settings: {  }
     third_party_settings: {  }
 hidden: {  }

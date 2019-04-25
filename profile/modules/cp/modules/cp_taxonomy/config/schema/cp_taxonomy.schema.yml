@@ -1,0 +1,7 @@
+taxonomy.vocabulary.*:
+  mapping:
+    allowed_vocabulary_reference_types:
+      type: sequence
+      label: 'List of entity type and bundle concat string'
+      sequence:
+        type: string

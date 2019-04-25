@@ -4,7 +4,9 @@ status: true
 dependencies:
   config:
     - field.field.media.video.field_height
+    - field.field.media.video.field_media_oembed_video
     - field.field.media.video.field_media_video_file
+    - field.field.media.video.field_taxonomy_terms
     - field.field.media.video.field_width
     - media.type.video
   module:
@@ -42,6 +44,15 @@ content:
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
+  field_taxonomy_terms:
+    weight: 26
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
   field_width:
     type: number
     weight: 3

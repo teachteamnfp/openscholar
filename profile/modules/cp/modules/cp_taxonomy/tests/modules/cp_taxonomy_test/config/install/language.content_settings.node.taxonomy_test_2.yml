@@ -1,0 +1,11 @@
+uuid: 7da90d1b-c0ae-487a-96e8-16b8f28de880
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.taxonomy_test_2
+id: node.taxonomy_test_2
+target_entity_type_id: node
+target_bundle: taxonomy_test_2
+default_langcode: site_default
+language_alterable: false

@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.faq.body
     - field.field.node.faq.field_attached_media
+    - field.field.node.faq.field_taxonomy_terms
     - node.type.faq
   module:
     - content_moderation
@@ -40,6 +41,15 @@ content:
     third_party_settings: {  }
   field_attached_media:
     weight: 122
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_taxonomy_terms:
+    weight: 123
     settings:
       match_operator: CONTAINS
       size: 60
@@ -106,7 +116,7 @@ content:
     third_party_settings: {  }
   url_redirects:
     weight: 50
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
 hidden: {  }
