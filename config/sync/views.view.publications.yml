@@ -25,9 +25,8 @@ display:
     position: 0
     display_options:
       access:
-        type: group_permission
-        options:
-          group_permission: 'view group_node:class entity'
+        type: none
+        options: {  }
       cache:
         type: tag
         options: {  }

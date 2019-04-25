@@ -29,7 +29,7 @@ display:
       access:
         type: group_permission
         options:
-          group_permission: 'view group_node:class entity'
+          group_permission: 'view group_node:presentation entity'
       cache:
         type: tag
         options: {  }
