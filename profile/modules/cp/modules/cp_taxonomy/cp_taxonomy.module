@@ -206,3 +206,39 @@ function cp_taxonomy_form_node_form_alter(&$form, FormStateInterface $form_state
     }
   }
 }
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function cp_taxonomy_form_bibcite_reference_form_alter(&$form, FormStateInterface $form_state) {
+  if (!empty($form['field_taxonomy_terms']['widget'])) {
+    /** @var \Drupal\bibcite_entity\Form\ReferenceForm $bibcite_reference_form */
+    $bibcite_reference_form = $form_state->getBuildInfo()['callback_object'];
+    $bundle = $bibcite_reference_form->getEntity()->bundle();
+    $bundle_key = 'bibcite_reference:' . $bundle;
+
+    $vocabularies = Drupal::service('cp.taxonomy.helper')->searchAllowedVocabulariesByType($bundle_key);
+    // If the current node type has no related vocabularies, then hide it.
+    if (empty($vocabularies)) {
+      $form['field_taxonomy_terms']['#access'] = FALSE;
+    }
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function cp_taxonomy_form_media_form_alter(&$form, FormStateInterface $form_state) {
+  if (!empty($form['field_taxonomy_terms']['widget'])) {
+    /** @var \Drupal\media\MediaForm $media_form */
+    $media_form = $form_state->getBuildInfo()['callback_object'];
+    $bundle = $media_form->getEntity()->bundle();
+    $bundle_key = 'media:' . $bundle;
+
+    $vocabularies = Drupal::service('cp.taxonomy.helper')->searchAllowedVocabulariesByType($bundle_key);
+    // If the current node type has no related vocabularies, then hide it.
+    if (empty($vocabularies)) {
+      $form['field_taxonomy_terms']['#access'] = FALSE;
+    }
+  }
+}
