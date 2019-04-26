@@ -125,6 +125,10 @@ class VsitePrivacyForm extends PluginBase implements CpSettingInterface, Contain
       return AccessResult::forbidden();
     }
 
+    if (!$account->hasPermission('access control panel')) {
+      return AccessResult::forbidden();
+    }
+
     return AccessResult::allowed();
   }
 
