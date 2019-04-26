@@ -6,6 +6,7 @@ use Drupal\block_content\Entity\BlockContent;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\cp_taxonomy\CpTaxonomyHelperInterface;
 use Drupal\os_widgets\OsWidgetsBase;
 use Drupal\os_widgets\OsWidgetsInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -24,11 +25,19 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
   protected $requestStack;
 
   /**
+   * Cp Taxonomy Helper.
+   *
+   * @var \Drupal\cp_taxonomy\CpTaxonomyHelperInterface
+   */
+  protected $taxonomyHelper;
+
+  /**
    * {@inheritdoc}
    */
-  public function __construct($configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, Connection $connection, RequestStack $request_stack) {
+  public function __construct($configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, Connection $connection, RequestStack $request_stack, CpTaxonomyHelperInterface $taxonomy_helper) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $entity_type_manager, $connection);
     $this->requestStack = $request_stack;
+    $this->taxonomyHelper = $taxonomy_helper;
   }
 
   /**
@@ -41,7 +50,8 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
       $plugin_definition,
       $container->get('entity_type.manager'),
       $container->get('database'),
-      $container->get('request_stack')
+      $container->get('request_stack'),
+      $container->get('cp.taxonomy.helper')
     );
   }
 
@@ -61,7 +71,7 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
     }
     $settings['vid'] = $vid;
     $settings['depth'] = $depth;
-    $settings['bundles'] = $this->getFilteredBundles($block_content);
+    $settings['bundles'] = $this->getFilteredBundles($block_content, $vid);
     $terms = $this->getTerms($settings);
     $term_items = $this->getRenderableTerms($block_content, $terms);
     switch ($field_taxonomy_display_type_values[0]['value']) {
@@ -104,24 +114,51 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
     foreach ($terms as $term) {
       $tids[] = $term->tid;
     }
-    $query = Database::getConnection()->select('taxonomy_term_data', 'td');
-    $query->fields('td', ['tid']);
-    $query->condition('td.tid', $tids, 'IN');
-    $entities = $this->explodeEntityBundles($settings['bundles']);
+    $entities = $this->taxonomyHelper->explodeEntityBundles($settings['bundles']);
+    $terms_count = [];
     foreach ($entities as $entity_name => $bundles) {
+      $query = Database::getConnection()->select('taxonomy_term_data', 'td');
+      $query->fields('td', ['tid']);
+      $query->condition('td.tid', $tids, 'IN');
       $alias = $entity_name . '_ftt';
       $query->leftJoin($entity_name . '__field_taxonomy_terms', $alias, $alias . '.field_taxonomy_terms_target_id = td.tid');
       $query->condition($alias . '.bundle', $bundles, 'IN');
-      $query->fields($alias, ['entity_id']);
+      $field_data_id = '';
+      switch ($entity_name) {
+        case 'node':
+          $field_data_id = 'nid';
+          break;
+
+        case 'media':
+          $field_data_id = 'mid';
+          break;
+
+        case 'bibcite_reference':
+          $query->leftJoin($entity_name, $entity_name, $entity_name . '.id' . ' = ' . $alias . '.entity_id');
+          $query->condition($entity_name . '.status', 1);
+          $query->addExpression('COUNT(id)', 'count');
+          break;
+      }
+      if (!empty($field_data_id)) {
+        $field_data_alias = $entity_name . 'fd';
+        $query->leftJoin($entity_name . '_field_data', $field_data_alias, $field_data_alias . '.' . $field_data_id . ' = ' . $alias . '.entity_id');
+        $query->condition($field_data_alias . '.status', 1);
+        $query->addExpression('COUNT(' . $field_data_alias . '.' . $field_data_id . ')', 'count');
+      }
+      $query->groupBy('td.tid');
+      $result = $query->execute();
+      while ($row = $result->fetchAssoc()) {
+        if (isset($terms_count[$row['tid']])) {
+          $terms_count[$row['tid']] += $row['count'];
+        }
+        else {
+          $terms_count[$row['tid']] = $row['count'] ?? 0;
+        }
+      }
     }
 
-    $result = $query->execute();
-    $filtered_tids = [];
-    while ($row = $result->fetchAssoc()) {
-      $filtered_tids[] = $row['tid'];
-    }
     foreach ($terms as $i => $term) {
-      if (!in_array($term->tid, $filtered_tids)) {
+      if (!in_array($term->tid, array_keys($terms_count))) {
         unset($terms[$i]);
       }
     }
@@ -129,27 +166,17 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
   }
 
   /**
-   * Explode entity bundles.
-   */
-  private function explodeEntityBundles($bundles) {
-    $entities = [];
-    foreach ($bundles as $bundle) {
-      list($entity_name, $bundle) = explode(':', $bundle);
-      $entities[$entity_name][] = $bundle;
-    }
-    return $entities;
-  }
-
-  /**
    * Collect bundles in array depend on other field selection.
    *
    * @param \Drupal\block_content\Entity\BlockContent $block_content
    *   Block Content entity.
+   * @param string $vid
+   *   Vocabulary id.
    *
    * @return array
    *   Collected bundles array.
    */
-  protected function getFilteredBundles(BlockContent $block_content): array {
+  protected function getFilteredBundles(BlockContent $block_content, string $vid): array {
     $field_taxonomy_behavior_values = $block_content->get('field_taxonomy_behavior')->getValue();
     $bundles = [];
     switch ($field_taxonomy_behavior_values[0]['value']) {
@@ -163,6 +190,11 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
         if ($node = $this->requestStack->getCurrentRequest()->attributes->get('node')) {
           $bundles[] = 'node:' . $node->bundle();
         }
+        break;
+
+      case '--all--':
+        $data['vid']['#default_value'] = $vid;
+        $bundles = $this->taxonomyHelper->getSelectedBundles($data);
         break;
     }
     return $bundles;

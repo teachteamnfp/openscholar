@@ -101,4 +101,16 @@ class CpTaxonomyHelper implements CpTaxonomyHelperInterface {
       ->save(TRUE);
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function explodeEntityBundles(array $bundles): array {
+    $entities = [];
+    foreach ($bundles as $bundle) {
+      list($entity_name, $bundle) = explode(':', $bundle);
+      $entities[$entity_name][] = $bundle;
+    }
+    return $entities;
+  }
+
 }
