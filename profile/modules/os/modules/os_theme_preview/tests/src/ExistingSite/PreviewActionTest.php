@@ -11,11 +11,11 @@ namespace Drupal\Tests\os_theme_preview\ExistingSite;
 class PreviewActionTest extends TestBase {
 
   /**
-   * Administrator.
+   * Group administrator.
    *
    * @var \Drupal\user\UserInterface
    */
-  protected $admin;
+  protected $groupAdmin;
 
   /**
    * Config factory.
@@ -44,7 +44,7 @@ class PreviewActionTest extends TestBase {
   public function setUp() {
     parent::setUp();
 
-    $this->admin = $this->createUser([], NULL, TRUE);
+    $this->groupAdmin = $this->createUser();
     $this->configFactory = $this->container->get('config.factory');
     $this->themeConfig = $this->configFactory->get('system.theme');
     $this->group = $this->createGroup([
@@ -52,10 +52,10 @@ class PreviewActionTest extends TestBase {
         'alias' => '/os-theme-preview',
       ],
     ]);
-    $this->group->addMember($this->admin);
+    $this->addGroupAdmin($this->groupAdmin, $this->group);
 
     $this->vsiteContextManager->activateVsite($this->group);
-    $this->drupalLogin($this->admin);
+    $this->drupalLogin($this->groupAdmin);
   }
 
   /**
@@ -78,6 +78,7 @@ class PreviewActionTest extends TestBase {
    * @covers ::submitForm
    *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
+   * @throws \Behat\Mink\Exception\ExpectationException
    */
   public function testSave(): void {
     $this->visit('/os-theme-preview/cp/appearance/preview/documental');
