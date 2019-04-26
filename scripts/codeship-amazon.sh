@@ -52,6 +52,8 @@ cp -rf . /tmp/
 
 cd $BUILD_ROOT
 
+echo git log --grep="^git-subtree-dir: openscholar/*\$"
+
 git subtree pull -d -m "$CI_MESSAGE" --prefix=openscholar git://github.com/openscholar/openscholar.git $CI_BRANCH --squash
 
 cd openscholar/profile/themes
