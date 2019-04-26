@@ -67,7 +67,7 @@ abstract class CpSettingBase extends PluginBase implements CpSettingInterface, C
       return AccessResult::forbidden();
     }
 
-    if (!$account->hasPermission('access control panel')) {
+    if (!$this->activeVsite->hasPermission('access control panel', $account)) {
       return AccessResult::forbidden();
     }
 

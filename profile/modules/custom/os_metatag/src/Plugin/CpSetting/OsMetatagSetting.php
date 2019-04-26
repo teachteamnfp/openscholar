@@ -2,11 +2,8 @@
 
 namespace Drupal\os_metatag\Plugin\CpSetting;
 
-use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Session\AccountInterface;
 use Drupal\cp_settings\CpSettingBase;
 
 /**
@@ -71,16 +68,6 @@ class OsMetatagSetting extends CpSettingBase {
     $config->set('publisher_url', $formState->getValue('publisher_url'));
     $config->set('author_url', $formState->getValue('author_url'));
     $config->save(TRUE);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function access(AccountInterface $account): AccessResultInterface {
-    if (!$account->hasPermission('access control panel')) {
-      return AccessResult::forbidden();
-    }
-    return AccessResult::allowed();
   }
 
 }

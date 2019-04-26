@@ -60,7 +60,9 @@ trait ExistingSiteTestTrait {
    */
   protected function addGroupAdmin(UserInterface $admin, GroupInterface $group): void {
     $group->addMember($admin, [
-      'group_roles' => 'personal-administrator',
+      'group_roles' => [
+        'personal-administrator',
+      ],
     ]);
   }
 

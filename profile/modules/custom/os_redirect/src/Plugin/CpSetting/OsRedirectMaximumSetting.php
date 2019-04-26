@@ -57,15 +57,14 @@ class OsRedirectMaximumSetting extends CpSettingBase {
    * {@inheritdoc}
    */
   public function access(AccountInterface $account): AccessResultInterface {
-    if (!$this->activeVsite) {
-      return AccessResult::forbidden();
+    /** @var \Drupal\Core\Access\AccessResultInterface $access_result */
+    $access_result = parent::access($account);
+
+    if ($access_result->isForbidden()) {
+      return $access_result;
     }
 
-    if (!$account->hasPermission('access control panel')) {
-      return AccessResult::forbidden();
-    }
-
-    if (!$account->hasPermission('administer control panel redirect_maximum')) {
+    if (!$this->activeVsite->hasPermission('administer control panel redirect_maximum', $account)) {
       return AccessResult::forbidden();
     }
 
