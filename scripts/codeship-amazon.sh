@@ -52,7 +52,7 @@ cp -rf . /tmp/
 
 cd $BUILD_ROOT
 
-echo $(git rev-parse 08fc2130401e608e0c61735abc30f662b35f67d9)
+echo $(git rev-parse 08fc2130401e608e0c61735abc30f662b35f67d9^0)
 
 git subtree pull -d -m "$CI_MESSAGE" --prefix=openscholar git://github.com/openscholar/openscholar.git $CI_BRANCH --squash
 
