@@ -155,6 +155,7 @@ content:
 hidden:
   field_close_: true
   field_open_date: true
+  field_taxonomy_terms: true
   rng_capacity: true
   rng_registrants_duplicate: true
   rng_registrants_maximum: true

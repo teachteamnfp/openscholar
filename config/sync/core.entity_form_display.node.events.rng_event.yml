@@ -80,6 +80,7 @@ hidden:
   field_recurring_date: true
   field_signup: true
   field_singup_multiple: true
+  field_taxonomy_terms: true
   langcode: true
   moderation_state: true
   path: true

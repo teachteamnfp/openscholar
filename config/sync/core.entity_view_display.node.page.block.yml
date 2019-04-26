@@ -37,4 +37,5 @@ content:
 hidden:
   field_media: true
   field_slideshow: true
+  field_taxonomy_terms: true
   langcode: true
