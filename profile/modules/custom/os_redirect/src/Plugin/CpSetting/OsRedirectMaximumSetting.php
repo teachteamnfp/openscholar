@@ -6,9 +6,8 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Plugin\PluginBase;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\cp_settings\CpSettingInterface;
+use Drupal\cp_settings\CpSettingBase;
 
 /**
  * CP redirect setting.
@@ -23,7 +22,7 @@ use Drupal\cp_settings\CpSettingInterface;
  *   }
  * )
  */
-class OsRedirectMaximumSetting extends PluginBase implements CpSettingInterface {
+class OsRedirectMaximumSetting extends CpSettingBase {
 
   /**
    * {@inheritdoc}
@@ -58,12 +57,18 @@ class OsRedirectMaximumSetting extends PluginBase implements CpSettingInterface 
    * {@inheritdoc}
    */
   public function access(AccountInterface $account): AccessResultInterface {
+    if (!$this->activeVsite) {
+      return AccessResult::forbidden();
+    }
+
     if (!$account->hasPermission('access control panel')) {
       return AccessResult::forbidden();
     }
+
     if (!$account->hasPermission('administer control panel redirect_maximum')) {
       return AccessResult::forbidden();
     }
+
     return AccessResult::allowed();
   }
 

@@ -2,21 +2,15 @@
 
 namespace Drupal\os_publications\Plugin\CpSetting;
 
-use Drupal\Component\Plugin\PluginBase;
-use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\cp_settings\CpSettingInterface;
+use Drupal\cp_settings\CpSettingBase;
 use Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager;
 use Drupal\os_publications\PublicationsListingHelperInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\bibcite\CitationStylerInterface;
 use Drupal\bibcite\Plugin\BibciteFormatManagerInterface;
-use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\os_publications\Plugin\SampleCitations;
 
 /**
@@ -32,9 +26,7 @@ use Drupal\os_publications\Plugin\SampleCitations;
  *   }
  * )
  */
-class PublicationSettingsForm extends PluginBase implements CpSettingInterface, ContainerFactoryPluginInterface {
-
-  use StringTranslationTrait;
+class PublicationSettingsForm extends CpSettingBase {
 
   /**
    * The styler service.
@@ -238,17 +230,6 @@ class PublicationSettingsForm extends PluginBase implements CpSettingInterface, 
       ->save();
 
     $this->publicationsListingHelper->setRedirect('publications', $formState->getValue('biblio_sort'));
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function access(AccountInterface $account): AccessResultInterface {
-    if (!$account->hasPermission('access control panel')) {
-      return AccessResult::forbidden();
-    }
-
-    return AccessResult::allowed();
   }
 
 }

@@ -2,14 +2,9 @@
 
 namespace Drupal\vsite_privacy\Plugin\CpSetting;
 
-use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\Plugin\PluginBase;
-use Drupal\Core\Session\AccountInterface;
-use Drupal\cp_settings\CpSettingInterface;
+use Drupal\cp_settings\CpSettingBase;
 use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 use Drupal\vsite_privacy\Plugin\VsitePrivacyLevelManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -27,7 +22,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   }
  * )
  */
-class VsitePrivacyForm extends PluginBase implements CpSettingInterface, ContainerFactoryPluginInterface {
+class VsitePrivacyForm extends CpSettingBase {
 
   /**
    * Vsite privacy level manager.
@@ -35,20 +30,6 @@ class VsitePrivacyForm extends PluginBase implements CpSettingInterface, Contain
    * @var \Drupal\vsite_privacy\Plugin\VsitePrivacyLevelManagerInterface
    */
   protected $vsitePrivacyLevelManager;
-
-  /**
-   * Vsite Context Manager.
-   *
-   * @var \Drupal\vsite\Plugin\VsiteContextManagerInterface
-   */
-  protected $vsiteContextManager;
-
-  /**
-   * Active vsite.
-   *
-   * @var \Drupal\group\Entity\GroupInterface|null
-   */
-  protected $activeVsite = NULL;
 
   /**
    * VsitePrivacyForm constructor.
@@ -65,10 +46,8 @@ class VsitePrivacyForm extends PluginBase implements CpSettingInterface, Contain
    *   Vsite context manager.
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, VsitePrivacyLevelManagerInterface $vsite_privacy_level_manager, VsiteContextManagerInterface $vsite_context_manager) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $vsite_context_manager);
     $this->vsitePrivacyLevelManager = $vsite_privacy_level_manager;
-    $this->vsiteContextManager = $vsite_context_manager;
-    $this->activeVsite = $this->vsiteContextManager->getActiveVsite();
   }
 
   /**
@@ -115,21 +94,6 @@ class VsitePrivacyForm extends PluginBase implements CpSettingInterface, Contain
       'value' => $form_state->getValue('privacy_levels'),
     ]);
     $this->activeVsite->save();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function access(AccountInterface $account) : AccessResultInterface {
-    if (!$this->activeVsite) {
-      return AccessResult::forbidden();
-    }
-
-    if (!$account->hasPermission('access control panel')) {
-      return AccessResult::forbidden();
-    }
-
-    return AccessResult::allowed();
   }
 
 }
