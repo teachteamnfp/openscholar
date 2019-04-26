@@ -24,6 +24,9 @@ trait ExistingSiteTestTrait {
     $group = $storage->create($values + [
       'type' => 'personal',
       'label' => $this->randomMachineName(),
+      'path' => [
+        'alias' => "/{$this->randomMachineName()}",
+      ],
     ]);
     $group->enforceIsNew();
     $group->save();
