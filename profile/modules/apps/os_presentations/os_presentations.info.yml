@@ -1,0 +1,7 @@
+name: 'OS Presentations'
+description: ''
+package: OpenScholar
+core: 8.x
+type: module
+dependencies:
+  - node

@@ -53,4 +53,21 @@ class AppManager extends DefaultPluginManager implements AppManangerInterface {
     return '';
   }
 
+  protected function findDefinitions() {
+    $definitions = $this->getDiscovery()->getDefinitions();
+    foreach ($definitions as $plugin_id => &$definition) {
+      $this->processDefinition($definition, $plugin_id);
+    }
+    $this->alterDefinitions($definitions);
+    // If this plugin was provided by a module that does not exist, remove the
+    // plugin definition.
+    foreach ($definitions as $plugin_id => $plugin_definition) {
+      $provider = $this->extractProviderFromDefinition($plugin_definition);
+      if ($provider && !in_array($provider, ['core', 'component']) && !$this->providerExists($provider)) {
+        unset($definitions[$plugin_id]);
+      }
+    }
+    return $definitions;
+  }
+
 }
