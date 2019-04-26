@@ -3,6 +3,7 @@
 namespace Drupal\Tests\os_events\ExistingSite;
 
 use Drupal\Component\Datetime\DateTimePlus;
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\rng\Entity\Registrant;
 use Drupal\rng\Entity\Registration;
@@ -50,6 +51,7 @@ class MailNotificationsTest extends ExistingSiteBase {
     $this->entityTypeManager = $this->container->get('entity_type.manager');
     $this->configManager = $this->container->get('config.factory');
     $this->formatter = $this->container->get('date.formatter');
+    $this->mailNotifications = $this->container->get('os_events.mail_notifications');
 
   }
 
@@ -96,6 +98,14 @@ class MailNotificationsTest extends ExistingSiteBase {
     $oldRegistrationDate = strtotime($registration->field_for_date->value);
 
     $this->deleteMqi();
+    $this->mailNotifications->sendUpdateNotificationEmail($this->event);
+    $entityStorage = $this->entityTypeManager->getStorage('courier_message_queue_item');
+    $result = $entityStorage->getQuery()
+      ->condition('identity.target_id', $id['entity_id'])
+      ->condition('identity.target_type', $id['entity_type'])
+      ->execute();
+    $this->assertNotNull($result);
+
     $date = new DateTimePlus('+7 day');
     $this->event->field_recurring_date->value = $date->format("Y-m-d H:i:s");
 
@@ -110,14 +120,7 @@ class MailNotificationsTest extends ExistingSiteBase {
 
     $this->submitForm($data, 'edit-submit');
 
-    $entityStorage = $this->entityTypeManager->getStorage('courier_message_queue_item');
-    $result = $entityStorage->getQuery()
-      ->condition('identity.target_id', $id['entity_id'])
-      ->condition('identity.target_type', $id['entity_type'])
-      ->execute();
-    $this->assertNotNull($result);
-
-    // Check if Registration date and event date is in sync.
+    // Check if old Registration date and new Registration date is not same.
     $registration = $registrant->getRegistration();
     $newRegistrationDate = strtotime($registration->field_for_date->value);
     $this->assertNotEquals($oldRegistrationDate, $newRegistrationDate);
@@ -129,20 +132,27 @@ class MailNotificationsTest extends ExistingSiteBase {
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function testRuleSchedulerEntry() {
-    $date = new DateTimePlus('+7 day');
-    $this->event->field_should_send_reminder->value = 1;
-    $this->event->field_send_reminder->value = $date->format("Y-m-d H:i:s");
-    $this->event->save();
+    $date = new DrupalDateTime('+7 day');
+    $values['field_send_reminder'] = [['value' => $date]];
 
-    $date = new DateTimePlus('+7 day');
-    $this->event->field_recurring_date->value = $date->format("Y-m-d H:i:s");
-    $this->event->save();
+    $this->mailNotifications->setUpReminderEmail($values, $this->event);
+
     $entityStorage = $this->entityTypeManager->getStorage('rng_rule');
     $result = $entityStorage->getQuery()
       ->condition('event.target_id', $this->event->id())
       ->condition('event.target_type', 'node')
       ->execute();
     $this->assertNotNull($result);
+
+    // Test Rule Schedule Delete.
+    $this->mailNotifications->disableReminderEmail($this->event);
+    $result = $entityStorage->getQuery()
+      ->condition('event.target_id', $this->event->id())
+      ->condition('event.target_type', 'node')
+      ->condition('status', 0)
+      ->execute();
+    $this->assertNotNull($result);
+
   }
 
   /**

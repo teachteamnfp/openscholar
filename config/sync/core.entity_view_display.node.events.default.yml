@@ -14,6 +14,7 @@ dependencies:
     - field.field.node.events.field_should_send_reminder
     - field.field.node.events.field_signup
     - field.field.node.events.field_singup_multiple
+    - field.field.node.events.field_taxonomy_terms
     - field.field.node.events.rng_capacity
     - field.field.node.events.rng_registrants_duplicate
     - field.field.node.events.rng_registrants_maximum
@@ -87,6 +88,7 @@ hidden:
   field_should_send_reminder: true
   field_signup: true
   field_singup_multiple: true
+  field_taxonomy_terms: true
   langcode: true
   rng_capacity: true
   rng_registrants_duplicate: true

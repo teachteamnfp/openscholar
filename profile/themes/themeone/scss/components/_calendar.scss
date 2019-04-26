@@ -1,0 +1,22 @@
+/**** code for upcoming/past events sheilds ****/
+.fc-event-default {
+  background: $color-link;
+  border-color: $color-link;
+}
+.fc-event-dot {
+  background: $color-link;
+}
+.fc-listUpcoming-view,
+.fc-listPast-view {
+  .fc-list-heading {
+    .fc-list-heading-main {
+      background: none;
+      border: 1px solid $color-link;
+      border-radius: 4px;
+      border-top: 4px solid $color-link;
+      span.event-start-day {
+        color: $color-link;
+      }
+    }
+  }
+}
