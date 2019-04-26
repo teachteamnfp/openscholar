@@ -75,6 +75,7 @@ class CpTaxonomyHelper implements CpTaxonomyHelperInterface {
     $allowed_entity_types = [
       'node',
       'media',
+      'bibcite_reference',
     ];
     $options = [];
     foreach ($definitions as $definition) {
