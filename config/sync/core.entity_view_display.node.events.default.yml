@@ -11,8 +11,11 @@ dependencies:
     - field.field.node.events.field_media
     - field.field.node.events.field_open_date
     - field.field.node.events.field_recurring_date
+    - field.field.node.events.field_send_reminder
+    - field.field.node.events.field_should_send_reminder
     - field.field.node.events.field_signup
     - field.field.node.events.field_singup_multiple
+    - field.field.node.events.field_taxonomy_terms
     - field.field.node.events.rng_capacity
     - field.field.node.events.rng_registrants_duplicate
     - field.field.node.events.rng_registrants_maximum
@@ -38,12 +41,12 @@ content:
   body:
     label: hidden
     type: text_default
-    weight: 3
+    weight: 1
     settings: {  }
     third_party_settings: {  }
     region: content
   field_location:
-    weight: 0
+    weight: 2
     label: above
     settings:
       link_to_entity: false
@@ -52,7 +55,7 @@ content:
     region: content
   field_media:
     type: entity_reference_entity_view
-    weight: 1
+    weight: 3
     label: above
     settings:
       view_mode: default
@@ -60,7 +63,7 @@ content:
     third_party_settings: {  }
     region: content
   field_recurring_date:
-    weight: 2
+    weight: 4
     label: above
     settings:
       format_type: medium
@@ -77,13 +80,15 @@ content:
     type: date_recur_basic_formatter
     region: content
   links:
-    weight: 4
+    weight: 0
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
   field_close_: true
   field_open_date: true
+  field_send_reminder: true
+  field_should_send_reminder: true
   field_signup: true
   field_singup_multiple: true
   field_taxonomy_terms: true

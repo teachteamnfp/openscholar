@@ -1,0 +1,22 @@
+uuid: 42a5301f-5de0-4f55-9519-53e78c3ba85f
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - dark
+_core:
+  default_config_hash: jQQUUWN2Uxr5qZtc9zcJKBCxpKY8orN1u2HPqYYRQDI
+id: dark_powered
+theme: dark
+region: footer
+weight: -6
+provider: null
+plugin: system_powered_by_block
+settings:
+  id: system_powered_by_block
+  label: 'Powered by Drupal'
+  provider: system
+  label_display: '0'
+visibility: {  }

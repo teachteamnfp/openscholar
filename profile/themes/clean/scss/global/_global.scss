@@ -1,0 +1,15 @@
+.card {
+  background: $color-white;
+  border: 1px solid $color-light-gray1;
+  padding: 10px;
+}
+.content-inner {
+  @extend .card;
+  border-top: 5px solid $color-green;
+  h2.block-title {
+    background: $color-light-gray;
+    border-left: 3px solid $color-green;
+    padding: 9px 15px 10px;
+    margin-bottom: 10px;
+  }
+}
