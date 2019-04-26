@@ -1,17 +1,37 @@
 favicon:
   mimetype: image/vnd.microsoft.icon
   path: ''
-  url: 'http://home.d8.theopenscholar.com/themes/contrib/bootstrap/favicon.ico'
-  use_default: true
+  url: 'http://home.d8.theopenscholar.com/profiles/contrib/openscholar/themes/os_base/favicon.ico'
+  use_default: 1
+schemas:
+  bootstrap: 8000
+  os_base: 8000
 features:
   comment_user_picture: true
-  comment_user_verification: true
-  favicon: true
+  comment_user_verification: 1
+  favicon: 1
   node_user_picture: true
 logo:
   path: ''
   url: ''
-  use_default: true
-schemas:
-  bootstrap: 8000
-  os_base: 8000
+  use_default: 1
+cdn_provider: ''
+region_wells:
+  navigation_collapsible: ''
+  header: ''
+  header_left: ''
+  header_right: ''
+  content: ''
+  content_first: ''
+  content_second: ''
+  sidebar_first: ''
+  sidebar_second: well
+  content_bottom: ''
+  content_bottom_first: ''
+  content_bottom_second: ''
+  footer: ''
+  footer_left: ''
+  footer_right: ''
+  footer_bottom: ''
+table_responsive: '-1'
+table: ''
