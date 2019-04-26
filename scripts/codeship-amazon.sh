@@ -52,7 +52,7 @@ cp -rf . /tmp/
 
 cd $BUILD_ROOT
 
-echo $(git log --grep="^git-subtree-dir: openscholar/*\$" --no-show-signature --pretty=format:'START %H%n%s%n%n%b%nEND%n')
+echo $(git rev-parse 08fc2130401e608e0c61735abc30f662b35f67d9)
 
 git subtree pull -d -m "$CI_MESSAGE" --prefix=openscholar git://github.com/openscholar/openscholar.git $CI_BRANCH --squash
 
