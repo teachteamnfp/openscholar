@@ -57,11 +57,7 @@ class AddClassMaterialLinkTest extends OsExistingSiteTestBase {
       'field_class_materials[0][subform][field_title][0][value]' => $this->randomString(),
       'field_class_materials[0][subform][field_body][0][value]' => $this->randomString(),
     ]);
-    $this->group = $this->createGroup([
-      'path' => [
-        'alias' => "/{$this->randomMachineName()}",
-      ],
-    ]);
+    $this->group = $this->createGroup();
     $this->group->addMember($this->adminUser, [
       'group_roles' => [
         'personal-administrator',
