@@ -55,6 +55,7 @@ class RouteSubscriber extends RouteSubscriberBase {
         $options['_admin_route'] = 'TRUE';
         $options['parameters'][$entity_type]['type'] = 'entity:' . $entity_type;
 
+        // Registrations tab.
         $route = new Route(
           $canonical_path . '/event/registrations',
           [
@@ -66,6 +67,19 @@ class RouteSubscriber extends RouteSubscriberBase {
           $options
         );
         $collection->add("rng.event.$entity_type.registration_list", $route);
+
+        // Send a one-off message to all Registrations.
+        $route = new Route(
+            $canonical_path . '/event/registrations/broadcast',
+            [
+              '_form' => '\Drupal\os_events\Form\CustomMessageForm',
+              '_title' => 'Registrations Broadcast',
+              'event' => $entity_type,
+            ],
+            $manage_requirements,
+            $options
+        );
+        $collection->add("rng.event.$entity_type.registration_broadcast", $route);
       }
     }
   }

@@ -7,6 +7,7 @@ dependencies:
     - rng.registration_type.signup
   module:
     - content_moderation
+    - datetime
     - field_layout
     - layout_discovery
 third_party_settings:
@@ -20,11 +21,9 @@ mode: default
 content:
   field_for_date:
     weight: 101
-    settings:
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
-    type: string_textfield
+    type: datetime_default
     region: content
   moderation_state:
     type: moderation_state_default

@@ -1,0 +1,14 @@
+footer {
+  background: $color-dark-gray;
+  color: $color-white;
+  a, p {
+    color: $color-white;
+  }
+  ul.nav {
+    li {
+      a {
+        color: $color-white;
+      }
+    }
+  }
+}

@@ -24,7 +24,10 @@ class MultipleDatesForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, array $data = []) {
+  public function buildForm(array $form, FormStateInterface $form_state, array $data = NULL) {
+    if (!$data['options']) {
+      return;
+    }
 
     $form['#prefix'] = '<div class="repeating_events_select_list os-slider visually-hidden">';
     $form['#suffix'] = '</div>';

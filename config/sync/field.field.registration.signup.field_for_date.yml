@@ -1,10 +1,12 @@
-uuid: 67696eef-99fe-496a-9967-0dc406b67931
+uuid: 8da5acda-6394-46f6-a48e-ec0ccd2c5593
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.registration.field_for_date
     - rng.registration_type.signup
+  module:
+    - datetime
 id: registration.signup.field_for_date
 field_name: field_for_date
 entity_type: registration
@@ -16,4 +18,4 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings: {  }
-field_type: string
+field_type: datetime
