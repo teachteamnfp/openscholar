@@ -162,7 +162,7 @@ function os_events_registrant_insert(EntityInterface $registrant) {
  * Implements hook_ENTITY_TYPE_view().
  */
 function os_events_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
-  if ($entity->bundle() != 'events' || !$entity->field_signup->value) {
+  if ($entity->bundle() != 'events' || !$entity->field_signup->value || !$entity->field_recurring_date->value) {
     return;
   }
 

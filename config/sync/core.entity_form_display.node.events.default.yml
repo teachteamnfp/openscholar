@@ -13,6 +13,7 @@ dependencies:
     - field.field.node.events.field_should_send_reminder
     - field.field.node.events.field_signup
     - field.field.node.events.field_singup_multiple
+    - field.field.node.events.field_taxonomy_terms
     - field.field.node.events.rng_capacity
     - field.field.node.events.rng_registrants_duplicate
     - field.field.node.events.rng_registrants_maximum
@@ -24,9 +25,9 @@ dependencies:
     - node.type.events
   module:
     - content_moderation
+    - date_recur_modular
     - field_layout
     - layout_discovery
-    - os_events
     - path
     - text
 third_party_settings:
@@ -74,7 +75,7 @@ content:
     weight: 1
     settings: {  }
     third_party_settings: {  }
-    type: os_events_date_recur_modular_sierra
+    type: date_recur_modular_sierra
     region: content
   field_signup:
     weight: 5
