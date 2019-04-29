@@ -20,8 +20,20 @@ use Drupal\Core\Access\AccessResultNeutral;
  * @param string $bundle
  *   The bundle.
  */
-function os_app_access_node_create_access(AccountInterface $account, array $context, string $bundle) {
-  return _os_app_access_node_type_access($account, $bundle);
+function os_app_access_entity_create_access(AccountInterface $account, array $context, $bundle) {
+  switch ($context['entity_type_id']) {
+    case 'node':
+      return _os_app_access_node_type_access($account, $bundle);
+    case 'bibcite_reference':
+      /** @var \Drupal\vsite\Plugin\AppManangerInterface $app_manager */
+      $app_manager = Drupal::service('vsite.app.manager');
+      /** @var \Drupal\vsite\AppInterface $app */
+      $app = $app_manager->createInstance('publications');
+      $app_access = new AppAccess();
+      return $app_access->access($account, $app->getPluginId());
+    default:
+      break;
+  }
 }
 
 /**
