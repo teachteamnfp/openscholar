@@ -2,7 +2,7 @@
 
 namespace Drupal\Tests\os_publications\ExistingSite;
 
-use weitzman\DrupalTestTraits\ExistingSiteBase;
+use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
 
 /**
  * Class PublicationsFormTest.
@@ -11,7 +11,14 @@ use weitzman\DrupalTestTraits\ExistingSiteBase;
  *
  * @package Drupal\Tests\os_publications\ExistingSite
  */
-class PublicationsFormTest extends ExistingSiteBase {
+class PublicationsFormTest extends OsExistingSiteTestBase {
+
+  /**
+   * Group administrator.
+   *
+   * @var \Drupal\user\UserInterface
+   */
+  protected $groupAdmin;
 
   /**
    * {@inheritdoc}
@@ -19,19 +26,20 @@ class PublicationsFormTest extends ExistingSiteBase {
   public function setUp() {
     parent::setUp();
 
-    $this->user = $this->createUser([], '', TRUE);
-    $this->simpleUser = $this->createUser();
+    $this->groupAdmin = $this->createUser();
+    $this->addGroupAdmin($this->groupAdmin, $this->group);
   }
 
   /**
    * Test Setting form route.
    *
    * @throws \Behat\Mink\Exception\ExpectationException
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
-  public function testPublicationSettingsPath() {
-    $this->drupalLogin($this->user);
+  public function testPublicationSettingsPath(): void {
+    $this->drupalLogin($this->groupAdmin);
 
-    $this->drupalGet('cp/settings/publications');
+    $this->drupalGet("{$this->group->get('path')->first()->getValue()['alias']}cp/settings/publications");
     $this->assertSession()->statusCodeEquals(200);
   }
 
@@ -39,10 +47,11 @@ class PublicationsFormTest extends ExistingSiteBase {
    * Test Settings form.
    *
    * @throws \Behat\Mink\Exception\ExpectationException
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
   public function testPublicationSettingsForm() {
-    $this->drupalLogin($this->user);
-    $this->drupalGet('cp/settings/publications');
+    $this->drupalLogin($this->groupAdmin);
+    $this->drupalGet("{$this->group->get('path')->first()->getValue()['alias']}cp/settings/publications");
     // Testing multiple form fields.
     $edit = [
       'os_publications_preferred_bibliographic_format' => 'apa',
