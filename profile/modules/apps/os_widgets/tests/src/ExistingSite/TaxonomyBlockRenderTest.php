@@ -40,6 +40,10 @@ class TaxonomyBlockRenderTest extends OsWidgetsExistingSiteTestBase {
     $this->taxonomyWidget = $this->osWidgets->createInstance('taxonomy_widget');
     $this->vocabulary = $this->createVocabulary();
     $this->config = $this->container->get('config.factory');
+    // Reset vocabulary allowed values.
+    $config_vocab = $this->config->getEditable('taxonomy.vocabulary.' . $this->vocabulary->id());
+    $config_vocab->set('allowed_vocabulary_reference_types', [])
+      ->save(TRUE);
   }
 
   /**
@@ -54,6 +58,7 @@ class TaxonomyBlockRenderTest extends OsWidgetsExistingSiteTestBase {
       'field_taxonomy_vocabulary' => [
         $this->vocabulary->id(),
       ],
+      'field_taxonomy_show_count' => 0,
     ]);
     $view_builder = $this->entityTypeManager
       ->getViewBuilder('block_content');
@@ -63,7 +68,33 @@ class TaxonomyBlockRenderTest extends OsWidgetsExistingSiteTestBase {
     /** @var \Drupal\Core\Render\Markup $markup_array */
     $markup = $renderer->renderRoot($render);
     $this->assertContains($term1->label(), $markup->__toString());
+    $this->assertNotContains($term1->label() . ' (0)', $markup->__toString());
     $this->assertContains($term2->label(), $markup->__toString());
+    $this->assertNotContains($term2->label() . ' (0)', $markup->__toString());
+  }
+
+  /**
+   * Test empty term without count if show count is enabled.
+   */
+  public function testBuildTaxonomyTermsWithoutCountEnableShowCount() {
+    $term = $this->createTerm($this->vocabulary, ['name' => 'Lorem1']);
+
+    $block_content = $this->createBlockContent([
+      'type' => 'taxonomy',
+      'field_taxonomy_vocabulary' => [
+        $this->vocabulary->id(),
+      ],
+      'field_taxonomy_show_count' => 1,
+    ]);
+    $view_builder = $this->entityTypeManager
+      ->getViewBuilder('block_content');
+    $render = $view_builder->view($block_content);
+    $renderer = $this->container->get('renderer');
+
+    /** @var \Drupal\Core\Render\Markup $markup_array */
+    $markup = $renderer->renderRoot($render);
+    $this->assertContains($term->label(), $markup->__toString());
+    $this->assertNotContains($term->label() . ' (0)', $markup->__toString());
   }
 
   /**
@@ -393,6 +424,128 @@ class TaxonomyBlockRenderTest extends OsWidgetsExistingSiteTestBase {
     $this->assertContains($term1->label(), $markup->__toString());
     $this->assertContains($term2->label(), $markup->__toString());
     $this->assertNotContains($term3->label(), $markup->__toString());
+  }
+
+  /**
+   * Test entity status published.
+   */
+  public function testBuildEntityStatusPublished() {
+    $config_vocab = $this->config->getEditable('taxonomy.vocabulary.' . $this->vocabulary->id());
+    $config_vocab
+      ->set('allowed_vocabulary_reference_types', [
+        'node:taxonomy_test_1',
+        'media:taxonomy_test_file',
+        'bibcite_reference:artwork',
+      ])
+      ->save(TRUE);
+    $term = $this->createTerm($this->vocabulary, ['name' => 'Lorem1']);
+    // Create nodes.
+    $this->createNode([
+      'type' => 'taxonomy_test_1',
+      'status' => 1,
+      'field_taxonomy_terms' => [
+        $term->id(),
+      ],
+    ]);
+    $this->createNode([
+      'type' => 'taxonomy_test_1',
+      'status' => 0,
+      'field_taxonomy_terms' => [
+        $term->id(),
+      ],
+    ]);
+    // Create media.
+    $this->createMedia([
+      'bundle' => 'taxonomy_test_file',
+      'status' => 1,
+      'field_taxonomy_terms' => [
+        $term->id(),
+      ],
+    ]);
+    $this->createMedia([
+      'bundle' => 'taxonomy_test_file',
+      'status' => 0,
+      'field_taxonomy_terms' => [
+        $term->id(),
+      ],
+    ]);
+    // Create publications.
+    $this->createReference([
+      'status' => 1,
+      'field_taxonomy_terms' => [
+        $term->id(),
+      ],
+    ]);
+    $this->createReference([
+      'status' => 0,
+      'field_taxonomy_terms' => [
+        $term->id(),
+      ],
+    ]);
+
+    // Show count.
+    $block_content = $this->createBlockContent([
+      'type' => 'taxonomy',
+      'field_taxonomy_vocabulary' => [
+        $this->vocabulary->id(),
+      ],
+      'field_taxonomy_show_count' => 1,
+    ]);
+    $view_builder = $this->entityTypeManager
+      ->getViewBuilder('block_content');
+    $render = $view_builder->view($block_content);
+    $renderer = $this->container->get('renderer');
+
+    /** @var \Drupal\Core\Render\Markup $markup_array */
+    $markup = $renderer->renderRoot($render);
+    // Checking only 3 entities related, not 6.
+    $this->assertContains($term->label() . ' (3)', $markup->__toString());
+  }
+
+  /**
+   * Test hidden show count on term.
+   */
+  public function testBuildHiddenShowCount() {
+    $config_vocab = $this->config->getEditable('taxonomy.vocabulary.' . $this->vocabulary->id());
+    $config_vocab
+      ->set('allowed_vocabulary_reference_types', [
+        'node:taxonomy_test_1',
+      ])
+      ->save(TRUE);
+    $term = $this->createTerm($this->vocabulary, ['name' => 'Lorem1']);
+    // Create nodes.
+    $this->createNode([
+      'type' => 'taxonomy_test_1',
+      'status' => 1,
+      'field_taxonomy_terms' => [
+        $term->id(),
+      ],
+    ]);
+    $this->createNode([
+      'type' => 'taxonomy_test_1',
+      'status' => 1,
+      'field_taxonomy_terms' => [
+        $term->id(),
+      ],
+    ]);
+
+    // Show count disabled.
+    $block_content = $this->createBlockContent([
+      'type' => 'taxonomy',
+      'field_taxonomy_vocabulary' => [
+        $this->vocabulary->id(),
+      ],
+      'field_taxonomy_show_count' => 0,
+    ]);
+    $view_builder = $this->entityTypeManager
+      ->getViewBuilder('block_content');
+    $render = $view_builder->view($block_content);
+    $renderer = $this->container->get('renderer');
+
+    /** @var \Drupal\Core\Render\Markup $markup_array */
+    $markup = $renderer->renderRoot($render);
+    $this->assertContains($term->label(), $markup->__toString());
+    $this->assertNotContains($term->label() . ' (2)', $markup->__toString());
   }
 
   /**

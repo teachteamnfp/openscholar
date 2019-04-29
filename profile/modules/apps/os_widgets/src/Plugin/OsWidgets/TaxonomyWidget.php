@@ -213,6 +213,7 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
     $field_taxonomy_show_term_desc_values = $block_content->get('field_taxonomy_show_term_desc')->getValue();
     $field_taxonomy_range_values = $block_content->get('field_taxonomy_range')->getValue();
     $field_taxonomy_offset_values = $block_content->get('field_taxonomy_offset')->getValue();
+    $field_taxonomy_show_count_values = $block_content->get('field_taxonomy_show_count')->getValue();
     $term_items = [];
     $count = 0;
     $offset = 0;
@@ -249,10 +250,14 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
       if (!empty($field_taxonomy_show_term_desc_values[0]['value'])) {
         $description = check_markup($term->description__value, $term->description__format);
       }
+      $label = str_repeat('-', $term->depth) . $term->name;
+      if (!empty($field_taxonomy_show_count_values[0]['value']) && !empty($term->entity_reference_count)) {
+        $label .= ' (' . $term->entity_reference_count . ')';
+      }
       $term_items[] = [
         '#theme' => 'os_widgets_taxonomy_term_item',
         '#term' => $term,
-        '#label' => str_repeat('-', $term->depth) . $term->name,
+        '#label' => $label,
         '#description' => $description,
       ];
     }
