@@ -43,9 +43,19 @@ class TaxonomyTermsFieldTest extends OsExistingSiteJavascriptTestBase {
    */
   protected $config;
 
+  /**
+   * Vsite context manager.
+   *
+   * @var \Drupal\vsite\Plugin\VsiteContextManagerInterface
+   */
   protected $vsiteContextManager;
 
-  protected $groupUser;
+  /**
+   * Group administrator.
+   *
+   * @var \Drupal\user\UserInterface
+   */
+  protected $groupAdmin;
 
   /**
    * {@inheritdoc}
@@ -68,10 +78,10 @@ class TaxonomyTermsFieldTest extends OsExistingSiteJavascriptTestBase {
       ],
     ]);
 
-    $this->groupUser = $this->createUser([], NULL, TRUE);
-    $this->group1->addMember($this->groupUser);
-    $this->group2->addMember($this->groupUser);
-    $this->drupalLogin($this->groupUser);
+    $this->groupAdmin = $this->createUser();
+    $this->addGroupAdmin($this->groupAdmin, $this->group1);
+    $this->addGroupAdmin($this->groupAdmin, $this->group2);
+    $this->drupalLogin($this->groupAdmin);
     $this->createGroupVocabulary($this->group1, 'vocab_group_1', ['node:taxonomy_test_1']);
     $this->createGroupVocabulary($this->group2, 'vocab_group_2', ['node:taxonomy_test_1']);
   }
