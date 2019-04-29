@@ -28,9 +28,9 @@ class AppearanceSettingsTest extends TestBase {
         'alias' => '/cp-appearance',
       ],
     ]);
-    $this->group->addMember($this->admin);
+    $this->addGroupAdmin($this->groupAdmin, $this->group);
 
-    $this->drupalLogin($this->admin);
+    $this->drupalLogin($this->groupAdmin);
   }
 
   /**
