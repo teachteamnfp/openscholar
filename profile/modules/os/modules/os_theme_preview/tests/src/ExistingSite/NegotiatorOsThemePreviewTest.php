@@ -3,6 +3,8 @@
 namespace Drupal\Tests\os_theme_preview\ExistingSite;
 
 use Drupal\Core\Routing\RouteMatch;
+use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
+use Drupal\Tests\os_theme_preview\Traits\ThemePreviewTestTrait;
 
 /**
  * Theme negotiator test.
@@ -11,7 +13,9 @@ use Drupal\Core\Routing\RouteMatch;
  * @group os-theme-preview
  * @coversDefaultClass \Drupal\os_theme_preview\Theme\Negotiator
  */
-class NegotiatorTest extends TestBase {
+class NegotiatorOsThemePreviewTest extends OsExistingSiteTestBase {
+
+  use ThemePreviewTestTrait;
 
   /**
    * Theme preview negotiator.
@@ -33,19 +37,20 @@ class NegotiatorTest extends TestBase {
    *
    * @covers ::applies
    * @covers ::determineActiveTheme
-   *
-   * @throws \Drupal\os_theme_preview\ThemePreviewException
    */
   public function testNoVsite(): void {
+    $request_stack = $this->container->get('request_stack');
+    $handler = $this->container->get('os_theme_preview.handler');
+
     // Negative test.
-    $route_match = RouteMatch::createFromRequest($this->requestStack->getCurrentRequest());
+    $route_match = RouteMatch::createFromRequest($request_stack->getCurrentRequest());
 
     $this->assertFalse($this->themeNegotiator->applies($route_match));
     $this->assertNull($this->themeNegotiator->determineActiveTheme($route_match));
 
     // Positive tests.
-    $current_request = $this->setSession($this->requestStack->getCurrentRequest());
-    $this->handler->startPreviewMode('hwpi_themeone_bentley', 0);
+    $current_request = $this->setSessionKernel($request_stack->getCurrentRequest());
+    $handler->startPreviewMode('hwpi_themeone_bentley', 0);
     $route_match = RouteMatch::createFromRequest($current_request);
 
     $this->assertTrue($this->themeNegotiator->applies($route_match));
@@ -57,26 +62,25 @@ class NegotiatorTest extends TestBase {
    *
    * @covers ::applies
    * @covers ::determineActiveTheme
-   *
-   * @throws \Drupal\Core\Entity\EntityStorageException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\os_theme_preview\ThemePreviewException
    */
   public function testVsite(): void {
+    $request_stack = $this->container->get('request_stack');
+    $handler = $this->container->get('os_theme_preview.handler');
+    $vsite_context_manager = $this->container->get('vsite.context_manager');
+
     $group = $this->createGroup([
       'path' => [
         'alias' => '/test-vsite',
       ],
     ]);
 
-    $current_request = $this->setSession($this->requestStack->getCurrentRequest());
+    $current_request = $this->setSessionKernel($request_stack->getCurrentRequest());
     $route_match = RouteMatch::createFromRequest($current_request);
-    $this->handler->startPreviewMode('hwpi_themeone_bentley', $group->id());
+    $handler->startPreviewMode('hwpi_themeone_bentley', $group->id());
 
     $this->assertFalse($this->themeNegotiator->applies($route_match));
 
-    $this->vsiteContextManager->activateVsite($group);
+    $vsite_context_manager->activateVsite($group);
 
     $this->assertTrue($this->themeNegotiator->applies($route_match));
     $this->assertSame('hwpi_themeone_bentley', $this->themeNegotiator->determineActiveTheme($route_match));

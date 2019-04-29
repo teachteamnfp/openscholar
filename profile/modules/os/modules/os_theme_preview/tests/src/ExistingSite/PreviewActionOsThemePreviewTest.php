@@ -2,13 +2,18 @@
 
 namespace Drupal\Tests\os_theme_preview\ExistingSite;
 
+use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
+use Drupal\Tests\os_theme_preview\Traits\ThemePreviewTestTrait;
+
 /**
  * Tests preview action form.
  *
  * @group functional
  * @coversDefaultClass \Drupal\os_theme_preview\Form\PreviewAction
  */
-class PreviewActionTest extends TestBase {
+class PreviewActionOsThemePreviewTest extends OsExistingSiteTestBase {
+
+  use ThemePreviewTestTrait;
 
   /**
    * Group administrator.
@@ -44,6 +49,7 @@ class PreviewActionTest extends TestBase {
   public function setUp() {
     parent::setUp();
 
+    $vsite_context_manager = $this->container->get('vsite.context_manager');
     $this->groupAdmin = $this->createUser();
     $this->configFactory = $this->container->get('config.factory');
     $this->themeConfig = $this->configFactory->get('system.theme');
@@ -54,7 +60,7 @@ class PreviewActionTest extends TestBase {
     ]);
     $this->addGroupAdmin($this->groupAdmin, $this->group);
 
-    $this->vsiteContextManager->activateVsite($this->group);
+    $vsite_context_manager->activateVsite($this->group);
     $this->drupalLogin($this->groupAdmin);
   }
 
