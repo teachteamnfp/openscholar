@@ -6,6 +6,7 @@ namespace Drupal\Tests\vsite_privacy\ExistingSite;
  * Class PrivacySettingTest.
  *
  * @group functional
+ * @group vsite
  */
 class PrivacySettingTest extends TestBase {
 
