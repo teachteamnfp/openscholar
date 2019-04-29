@@ -7,8 +7,8 @@ use weitzman\DrupalTestTraits\ExistingSiteWebDriverTestBase;
 /**
  * Tests os_redirect module.
  *
- * @group redirect
  * @group functional-javascript
+ * @group redirect
  */
 class CpSettingsOsRedirectTest extends ExistingSiteWebDriverTestBase {
 

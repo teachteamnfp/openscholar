@@ -5,8 +5,8 @@ namespace Drupal\Tests\os_classes\ExistingSiteJavascript;
 /**
  * Tests os_classes module.
  *
- * @group classes
  * @group functional-javascript
+ * @group classes
  * @coversDefaultClass \Drupal\os_classes\Form\SemesterFieldOptionsForm
  */
 class ClassesNodeFormAutocompleteTest extends ClassesExistingSiteJavascriptTestBase {

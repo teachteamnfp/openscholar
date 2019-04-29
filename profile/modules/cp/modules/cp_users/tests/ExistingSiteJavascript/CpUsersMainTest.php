@@ -1,16 +1,15 @@
 <?php
 
-namespace Drupal\Tests\cp_users\ExistingSite;
+namespace Drupal\Tests\cp_users\ExistingSiteJavascript;
 
 use Drupal\Core\Test\AssertMailTrait;
-use Drupal\group\Entity\Group;
-use Drupal\group\Entity\GroupInterface;
 use Drupal\Tests\vsite\ExistingSiteJavascript\VsiteExistingSiteJavascriptTestBase;
 
 /**
  * Class CpUsersMainTests.
  *
  * @group functional-javascript
+ * @group cp
  * @package Drupal\Tests\cp_users\ExistingSite
  */
 class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {

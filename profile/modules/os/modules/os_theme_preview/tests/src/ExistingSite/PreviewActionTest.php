@@ -6,6 +6,7 @@ namespace Drupal\Tests\os_theme_preview\ExistingSite;
  * Tests preview action form.
  *
  * @group functional
+ * @group os-theme-preview
  * @coversDefaultClass \Drupal\os_theme_preview\Form\PreviewAction
  */
 class PreviewActionTest extends TestBase {

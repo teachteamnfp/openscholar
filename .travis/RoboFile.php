@@ -347,7 +347,6 @@ class RoboFile extends \Robo\Tasks
     {
         $groups = explode(',', $groups);
         $groups = array_filter($groups, 'trim');
-        $groups[] = 'functional';
         $groups = implode(',', $groups);
         $tasks[] = $this->taskExecStack()
             ->exec('docker-compose exec -T php ./vendor/bin/phpunit ' .
@@ -371,7 +370,6 @@ class RoboFile extends \Robo\Tasks
     {
         $groups = explode(',', $groups);
         $groups = array_filter($groups, 'trim');
-        $groups[] = 'functional-javascript';
         $groups = implode(',', $groups);
         $tasks[] = $this->taskExecStack()
             ->exec('docker-compose exec -T php ./vendor/bin/phpunit ' .
