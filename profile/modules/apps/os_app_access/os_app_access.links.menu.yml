@@ -3,3 +3,6 @@ app.access:
   route_name: cp.apps
   parent: cp.settings
   weight: -1000
+apps:
+  class: \Drupal\Core\Menu\MenuLinkDefault
+  deriver: \Drupal\os_app_access\Plugin\Deriver\OsAppAccessMenuLink
