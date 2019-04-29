@@ -63,6 +63,7 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
     $field_taxonomy_tree_depth_values = $block_content->get('field_taxonomy_tree_depth')->getValue();
     $field_taxonomy_show_children_values = $block_content->get('field_taxonomy_show_children')->getValue();
     $field_taxonomy_display_type_values = $block_content->get('field_taxonomy_display_type')->getValue();
+    $field_taxonomy_show_empty_terms_values = $block_content->get('field_taxonomy_show_empty_terms')->getValue();
     $vid = $field_taxonomy_vocabulary_values[0]['target_id'];
     $depth = empty($field_taxonomy_tree_depth_values[0]['value']) ? NULL : $field_taxonomy_tree_depth_values[0]['value'];
     // When unchecked, only show top level terms.
@@ -72,6 +73,7 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
     $settings['vid'] = $vid;
     $settings['depth'] = $depth;
     $settings['bundles'] = $this->getFilteredBundles($block_content, $vid);
+    $settings['show_empty_terms'] = !empty($field_taxonomy_show_empty_terms_values[0]['value']);
     $terms = $this->getTerms($settings);
     $term_items = $this->getRenderableTerms($block_content, $terms);
     switch ($field_taxonomy_display_type_values[0]['value']) {
@@ -157,8 +159,24 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
       }
     }
 
+    // Mark tids to handle what term can be deleted.
+    $keep_term_tids = [];
+    foreach ($terms_count as $tid => $count) {
+      // If we set to hide empty terms and count is zero, don't keep in tree.
+      if (!$settings['show_empty_terms'] && $count == 0) {
+        continue;
+      }
+      // Get all parents include current one.
+      $parents = $this->entityTypeManager->getStorage("taxonomy_term")->loadAllParents($tid);
+      if (!empty($parents)) {
+        foreach ($parents as $parent) {
+          // Store current tid and all parent tids.
+          $keep_term_tids[$parent->id()] = $parent->id();
+        }
+      }
+    }
     foreach ($terms as $i => $term) {
-      if (!in_array($term->tid, array_keys($terms_count))) {
+      if (!in_array($term->tid, $keep_term_tids)) {
         unset($terms[$i]);
       }
     }
@@ -222,9 +240,11 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
     foreach ($terms as $term) {
       // Offset only top level.
       if (!empty($field_taxonomy_offset_values[0]['value']) && $offset < $field_taxonomy_offset_values[0]['value']) {
+        // If we are on top level, count.
         if ($term->depth == 0) {
           $offset++;
         }
+        // If we reached offset, mark variable and handle rest of children.
         if ($offset == $field_taxonomy_offset_values[0]['value']) {
           $skip_child_terms = TRUE;
         }
