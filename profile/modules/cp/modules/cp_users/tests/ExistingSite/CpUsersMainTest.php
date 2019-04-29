@@ -3,9 +3,7 @@
 namespace Drupal\Tests\cp_users\ExistingSite;
 
 use Drupal\Core\Test\AssertMailTrait;
-use Drupal\group\Entity\Group;
-use Drupal\group\Entity\GroupInterface;
-use Drupal\Tests\vsite\ExistingSiteJavascript\VsiteExistingSiteJavascriptTestBase;
+use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTestBase;
 
 /**
  * Class CpUsersMainTests.
@@ -13,7 +11,7 @@ use Drupal\Tests\vsite\ExistingSiteJavascript\VsiteExistingSiteJavascriptTestBas
  * @group functional-javascript
  * @package Drupal\Tests\cp_users\ExistingSite
  */
-class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
+class CpUsersMainTest extends OsExistingSiteJavascriptTestBase {
 
   use AssertMailTrait;
 
@@ -46,6 +44,13 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
   protected $modifier;
 
   /**
+   * Group administrator.
+   *
+   * @var \Drupal\user\UserInterface
+   */
+  protected $groupAdmin;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
@@ -60,11 +65,12 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
     $this->modifier = $this->randomMachineName();
     $this->group = $this->createGroup([
       'type' => 'personal',
-      'uid' => 1,
       'path' => [
         'alias' => '/' . $this->modifier,
       ],
     ]);
+    $this->groupAdmin = $this->createUser();
+    $this->addGroupAdmin($this->groupAdmin, $this->group);
   }
 
   /**
@@ -83,13 +89,11 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
    * Tests for adding and removing users.
    */
   public function testAddExistingUser() {
-
     try {
-      $account = $this->entityTypeManager->getStorage('user')->load(1);
-      $account->passRaw = 'admin';
-      $this->drupalLogin($account);
+      $this->drupalLogin($this->groupAdmin);
       $username = $this->randomString();
-      $user = $this->createUser([], $username, FALSE);
+      $group_member = $this->createUser([], $username, FALSE);
+      $this->group->addMember($group_member);
 
       $this->visit('/' . $this->modifier . '/cp/users');
       $this->assertContains('/' . $this->modifier . '/cp/users', $this->getSession()->getCurrentUrl(), "First url check, on " . $this->getSession()->getCurrentUrl());
@@ -108,11 +112,9 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
       $page->selectFieldOption('role', 'personal-member');
       $page->pressButton("Save");
       $this->assertSession()->assertWaitOnAjaxRequest();
-      // $this->visit('/site01/cp/users');.
       $this->assertContains('/' . $this->modifier . '/cp/users', $this->getSession()->getCurrentUrl(), "Not on the correct page, on " . $this->getSession()->getCurrentUrl());
       $this->assertTrue($page->hasContent($username), "Username $username not found on page.");
 
-      // $this->assertMail('id', '');.
       $remove = $page->find('xpath', '//tr/td[contains(.,"' . $username . '")]/following-sibling::td/a[contains(.,"Remove")]');
       $this->assertNotNull($remove, "Remove link for $username not found.");
       $remove->click();
@@ -120,8 +122,6 @@ class CpUsersMainTest extends VsiteExistingSiteJavascriptTestBase {
       $page->pressButton('Confirm');
       $this->assertSession()->assertWaitOnAjaxRequest();
       $this->assertFalse($page->hasContent($username), "Username $username still found on page.");
-
-      // $this->assertMail('id', CP_USERS_DELETE_FROM_GROUP, "Mail " . CP_USERS_DELETE_FROM_GROUP . " not sent.");.
     }
     catch (\Exception $e) {
       \file_put_contents(REQUEST_TIME . '.jpg', $this->getSession()->getScreenshot());
