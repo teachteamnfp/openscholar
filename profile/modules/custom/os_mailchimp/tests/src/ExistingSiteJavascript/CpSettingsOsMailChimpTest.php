@@ -17,7 +17,7 @@ class CpSettingsOsMailChimpTest extends OsExistingSiteJavascriptTestBase {
    *
    * @var \Drupal\user\Entity\User
    */
-  protected $adminUser;
+  protected $groupAdmin;
 
   /**
    * The theme handler service.
@@ -45,10 +45,8 @@ class CpSettingsOsMailChimpTest extends OsExistingSiteJavascriptTestBase {
    */
   public function setUp() {
     parent::setUp();
-    $this->adminUser = $this->createUser([
-      'access administration pages',
-      'access control panel',
-    ]);
+    $this->groupAdmin = $this->createUser();
+    $this->addGroupAdmin($this->groupAdmin, $this->group);
     $this->configFactory = $this->container->get('config.factory');
     $this->themeHandler = $this->container->get('theme_handler');
     $this->defaultTheme = $this->themeHandler->getDefault();
@@ -59,9 +57,9 @@ class CpSettingsOsMailChimpTest extends OsExistingSiteJavascriptTestBase {
    */
   public function testCpSettingsFormSave() {
     $web_assert = $this->assertSession();
-    $this->drupalLogin($this->adminUser);
+    $this->drupalLogin($this->groupAdmin);
 
-    $this->visit("/cp/settings/mailchimp");
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/mailchimp");
     $web_assert->statusCodeEquals(200);
 
     $edit = [
@@ -73,7 +71,7 @@ class CpSettingsOsMailChimpTest extends OsExistingSiteJavascriptTestBase {
     $this->assertTrue($check_html_value, 'The form did not write the correct message.');
 
     // Check form elements load default values.
-    $this->visit("/cp/settings/mailchimp");
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/mailchimp");
     $web_assert->statusCodeEquals(200);
     $page = $this->getCurrentPage();
     $field_value = $page->findField('api_key')->getValue();
