@@ -5,6 +5,7 @@ namespace Drupal\os_widgets\Plugin\OsWidgets;
 use Drupal\block_content\Entity\BlockContent;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Database\Database;
+use Drupal\Core\Database\Query\SelectInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\cp_taxonomy\CpTaxonomyHelperInterface;
 use Drupal\os_widgets\OsWidgetsBase;
@@ -119,35 +120,7 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
     $entities = $this->taxonomyHelper->explodeEntityBundles($settings['bundles']);
     $terms_count = [];
     foreach ($entities as $entity_name => $bundles) {
-      $query = Database::getConnection()->select('taxonomy_term_data', 'td');
-      $query->fields('td', ['tid']);
-      $query->condition('td.tid', $tids, 'IN');
-      $alias = $entity_name . '_ftt';
-      $query->leftJoin($entity_name . '__field_taxonomy_terms', $alias, $alias . '.field_taxonomy_terms_target_id = td.tid');
-      $query->condition($alias . '.bundle', $bundles, 'IN');
-      $field_data_id = '';
-      switch ($entity_name) {
-        case 'node':
-          $field_data_id = 'nid';
-          break;
-
-        case 'media':
-          $field_data_id = 'mid';
-          break;
-
-        case 'bibcite_reference':
-          $query->leftJoin($entity_name, $entity_name, $entity_name . '.id' . ' = ' . $alias . '.entity_id');
-          $query->condition($entity_name . '.status', 1);
-          $query->addExpression('COUNT(id)', 'count');
-          break;
-      }
-      if (!empty($field_data_id)) {
-        $field_data_alias = $entity_name . 'fd';
-        $query->leftJoin($entity_name . '_field_data', $field_data_alias, $field_data_alias . '.' . $field_data_id . ' = ' . $alias . '.entity_id');
-        $query->condition($field_data_alias . '.status', 1);
-        $query->addExpression('COUNT(' . $field_data_alias . '.' . $field_data_id . ')', 'count');
-      }
-      $query->groupBy('td.tid');
+      $query = $this->buildCountQuery($tids, $entity_name, $bundles);
       $result = $query->execute();
       while ($row = $result->fetchAssoc()) {
         if (isset($terms_count[$row['tid']])) {
@@ -159,26 +132,33 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
       }
     }
 
-    // Mark tids to handle what term can be deleted.
     $keep_term_tids = [];
-    foreach ($terms_count as $tid => $count) {
-      // If we set to hide empty terms and count is zero, don't keep in tree.
-      if (!$settings['show_empty_terms'] && $count == 0) {
-        continue;
-      }
-      // Get all parents include current one.
-      $parents = $this->entityTypeManager->getStorage("taxonomy_term")->loadAllParents($tid);
-      if (!empty($parents)) {
-        foreach ($parents as $parent) {
-          // Store current tid and all parent tids.
-          $keep_term_tids[$parent->id()] = $parent->id();
+    // Only show_empty_terms is FALSE case, we need to check parent visibility.
+    if (!$settings['show_empty_terms']) {
+      // Mark tids to handle what term can be deleted.
+      foreach ($terms_count as $tid => $count) {
+        // If we set to hide empty terms and count is zero, don't keep in tree.
+        if (!$settings['show_empty_terms'] && $count == 0) {
+          continue;
+        }
+        // Get all parents include current one.
+        $parents = $this->entityTypeManager->getStorage("taxonomy_term")->loadAllParents($tid);
+        if (!empty($parents)) {
+          foreach ($parents as $parent) {
+            // Store current tid and all parent tids.
+            $keep_term_tids[$parent->id()] = $parent->id();
+          }
         }
       }
     }
+
     foreach ($terms as $i => $term) {
-      if (!in_array($term->tid, $keep_term_tids)) {
+      // If show_empty_terms is TRUE, we don't unset any items.
+      if (!$settings['show_empty_terms'] && !in_array($term->tid, $keep_term_tids)) {
         unset($terms[$i]);
+        continue;
       }
+      $terms[$i]->entity_reference_count = $terms_count[$term->tid] ?? 0;
     }
     return $terms;
   }
@@ -277,6 +257,52 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
       ];
     }
     return $term_items;
+  }
+
+  /**
+   * Build count query.
+   *
+   * @param array $tids
+   *   List of all vocabulary tids.
+   * @param string $entity_name
+   *   Entity name.
+   * @param array $bundles
+   *   Vocabulary allowed bundles.
+   *
+   * @return \Drupal\Core\Database\Query\SelectInterface
+   *   Select Interface.
+   */
+  protected function buildCountQuery(array $tids, string $entity_name, array $bundles): SelectInterface {
+    $query = Database::getConnection()->select('taxonomy_term_data', 'td');
+    $query->fields('td', ['tid']);
+    $query->condition('td.tid', $tids, 'IN');
+    $alias = $entity_name . '_ftt';
+    $query->leftJoin($entity_name . '__field_taxonomy_terms', $alias, $alias . '.field_taxonomy_terms_target_id = td.tid');
+    $query->condition($alias . '.bundle', $bundles, 'IN');
+    $field_data_id = '';
+    switch ($entity_name) {
+      case 'node':
+        $field_data_id = 'nid';
+        break;
+
+      case 'media':
+        $field_data_id = 'mid';
+        break;
+
+      case 'bibcite_reference':
+        $query->leftJoin($entity_name, $entity_name, $entity_name . '.id' . ' = ' . $alias . '.entity_id');
+        $query->condition($entity_name . '.status', 1);
+        $query->addExpression('COUNT(id)', 'count');
+        break;
+    }
+    if (!empty($field_data_id)) {
+      $field_data_alias = $entity_name . 'fd';
+      $query->leftJoin($entity_name . '_field_data', $field_data_alias, $field_data_alias . '.' . $field_data_id . ' = ' . $alias . '.entity_id');
+      $query->condition($field_data_alias . '.status', 1);
+      $query->addExpression('COUNT(' . $field_data_alias . '.' . $field_data_id . ')', 'count');
+    }
+    $query->groupBy('td.tid');
+    return $query;
   }
 
 }
