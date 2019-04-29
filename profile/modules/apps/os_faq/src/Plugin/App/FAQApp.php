@@ -3,6 +3,7 @@
 namespace Drupal\os_faq\Plugin\App;
 
 use Drupal\Component\Plugin\PluginBase;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\vsite\AppInterface;
 
 /**
@@ -32,6 +33,21 @@ class FAQApp extends PluginBase implements AppInterface {
    */
   public function getTitle() {
     return $this->pluginDefinition['title'];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCreateLinks() {
+    return [
+      'faq' => [
+        'menu_name' => 'control-panel',
+        'route_name' => 'node.add',
+        'route_parameters' => ['node_type' => 'faq'],
+        'parent' => 'cp.content.add',
+        'title' => $this->getTitle()->render()
+      ]
+    ];
   }
 
 }

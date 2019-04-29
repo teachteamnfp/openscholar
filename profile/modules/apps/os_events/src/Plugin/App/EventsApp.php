@@ -34,4 +34,19 @@ class EventsApp extends PluginBase implements AppInterface {
     return $this->pluginDefinition['title'];
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getCreateLinks() {
+    return [
+      'event' => [
+        'menu_name' => 'control-panel',
+        'route_name' => 'node.add',
+        'route_parameters' => ['node_type' => 'event'],
+        'parent' => 'cp.content.add',
+        'title' => $this->getTitle()->render()
+      ]
+    ];
+  }
+
 }

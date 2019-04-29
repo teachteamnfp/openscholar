@@ -53,6 +53,9 @@ class AppManager extends DefaultPluginManager implements AppManangerInterface {
     return '';
   }
 
+  /**
+   * {@inheritdoc}
+   */
   protected function findDefinitions() {
     $definitions = $this->getDiscovery()->getDefinitions();
     foreach ($definitions as $plugin_id => &$definition) {

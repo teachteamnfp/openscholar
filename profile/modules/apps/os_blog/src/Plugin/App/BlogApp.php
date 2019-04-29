@@ -34,4 +34,19 @@ class BlogApp extends PluginBase implements AppInterface {
     return $this->pluginDefinition['title'];
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getCreateLinks() {
+    return [
+      'link' => [
+        'menu_name' => 'control-panel',
+        'route_name' => 'node.add',
+        'route_parameters' => ['node_type' => 'blog'],
+        'parent' => 'cp.content.add',
+        'title' => $this->getTitle()->render()
+      ]
+    ];
+  }
+
 }
