@@ -1,0 +1,40 @@
+uuid: d249193d-ace6-49ce-9339-c90bea991ff5
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.os_software_releases
+  module:
+    - block_visibility_groups
+    - node
+    - views
+  theme:
+    - dark
+id: dark_views_block__os_software_releases_recent_block
+theme: dark
+region: content
+weight: -2
+provider: null
+plugin: 'views_block:os_software_releases-recent_block'
+settings:
+  id: 'views_block:os_software_releases-recent_block'
+  label: ''
+  provider: views
+  label_display: visible
+  views_label: ''
+  items_per_page: none
+  context_mapping:
+    nid: '@node.node_route_context:node'
+visibility:
+  condition_group:
+    id: condition_group
+    negate: false
+    block_visibility_group: ''
+    context_mapping: {  }
+  node_type:
+    id: node_type
+    bundles:
+      software_project: software_project
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'

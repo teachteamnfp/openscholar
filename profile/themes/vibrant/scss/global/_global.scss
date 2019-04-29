@@ -7,7 +7,7 @@
     position: absolute;
     width: 100vw;
     display: block;
-    height: 100%;
+    height: calc(100% - 250px);
     margin-left: -50vw;
     left: 49.6%;
     .path-front & {

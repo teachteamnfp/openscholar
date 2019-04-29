@@ -128,7 +128,8 @@
     }
   }
 }
-
-.nav-tabs {
+/**** global tabs ****/
+ul.nav-tabs {
   margin-left: 0;
+  margin-bottom: 10px;
 }
