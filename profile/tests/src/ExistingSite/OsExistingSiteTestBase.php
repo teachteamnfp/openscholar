@@ -12,4 +12,19 @@ abstract class OsExistingSiteTestBase extends ExistingSiteBase {
 
   use ExistingSiteTestTrait;
 
+  /**
+   * Test group.
+   *
+   * @var \Drupal\group\Entity\GroupInterface
+   */
+  protected $group;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setUp() {
+    parent::setUp();
+    $this->group = $this->createGroup();
+  }
+
 }

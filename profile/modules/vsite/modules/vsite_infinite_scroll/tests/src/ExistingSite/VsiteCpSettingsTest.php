@@ -22,19 +22,11 @@ class VsiteCpSettingsTest extends OsExistingSiteTestBase {
   protected $groupAdmin;
 
   /**
-   * Test group.
-   *
-   * @var \Drupal\group\Entity\GroupInterface
-   */
-  protected $group;
-
-  /**
    * {@inheritdoc}
    */
   public function setUp() {
     parent::setUp();
     $this->groupAdmin = $this->createUser();
-    $this->group = $this->createGroup();
     $this->addGroupAdmin($this->groupAdmin, $this->group);
   }
 
