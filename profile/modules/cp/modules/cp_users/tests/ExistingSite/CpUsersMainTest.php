@@ -88,7 +88,7 @@ class CpUsersMainTest extends OsExistingSiteJavascriptTestBase {
   /**
    * Tests for adding and removing users.
    */
-  public function testAddExistingUser() {
+  public function testAddExistingUser(): void {
     try {
       $this->drupalLogin($this->groupAdmin);
       $username = $this->randomString();
@@ -134,14 +134,12 @@ class CpUsersMainTest extends OsExistingSiteJavascriptTestBase {
   /**
    * Tests for adding a user new to the site.
    */
-  public function testNewUser() {
+  public function testNewUser(): void {
     $settings = $this->configFactory->getEditable('cp_users.settings');
     try {
       $this->assertFalse($settings->get('disable_user_creation'), "User creation setting is wrong.");
 
-      $account = $this->entityTypeManager->getStorage('user')->load(1);
-      $account->passRaw = 'admin';
-      $this->drupalLogin($account);
+      $this->drupalLogin($this->groupAdmin);
 
       $this->visit('/' . $this->modifier . '/cp/users');
       $this->assertContains('/' . $this->modifier . '/cp/users', $this->getSession()->getCurrentUrl());
