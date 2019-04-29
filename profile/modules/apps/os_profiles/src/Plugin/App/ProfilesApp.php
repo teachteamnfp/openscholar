@@ -42,7 +42,7 @@ class ProfilesApp extends PluginBase implements AppInterface {
       'person' => [
         'menu_name' => 'control-panel',
         'route_name' => 'node.add',
-        'route_parameters' => ['node_type' => 'people'],
+        'route_parameters' => ['node_type' => 'person'],
         'parent' => 'cp.content.add',
         'title' => $this->getTitle()->render()
       ]

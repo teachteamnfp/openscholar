@@ -12,7 +12,7 @@ use Drupal\vsite\AppInterface;
  *   title = @Translation("Events"),
  *   canDisable = true,
  *   entityType = "node",
- *   bundle = "event",
+ *   bundle = "events",
  *   id = "event"
  * )
  */
@@ -23,7 +23,7 @@ class EventsApp extends PluginBase implements AppInterface {
    */
   public function getGroupContentTypes() {
     return [
-      'event',
+      'events',
     ];
   }
 
@@ -42,7 +42,7 @@ class EventsApp extends PluginBase implements AppInterface {
       'event' => [
         'menu_name' => 'control-panel',
         'route_name' => 'node.add',
-        'route_parameters' => ['node_type' => 'event'],
+        'route_parameters' => ['node_type' => 'events'],
         'parent' => 'cp.content.add',
         'title' => $this->getTitle()->render()
       ]

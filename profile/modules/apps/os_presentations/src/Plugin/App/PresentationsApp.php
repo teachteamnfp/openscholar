@@ -9,7 +9,7 @@ use Drupal\vsite\AppInterface;
  * Presentationss app.
  *
  * @App(
- *   title = @Translation("Presentations"),
+ *   title = @Translation("Presentation"),
  *   canDisable = true,
  *   entityType = "node",
  *   bundle = "presentation",
