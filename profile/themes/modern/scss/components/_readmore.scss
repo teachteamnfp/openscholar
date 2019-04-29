@@ -1,5 +1,6 @@
 /******** read more **********/
-.read-more {
+.read-more,
+.node-readmore a {
   border-bottom: none;
   font-size: 12px;
   font-weight: bold;
@@ -10,5 +11,5 @@
     background: url("../../os_base/images/basesprite.png") no-repeat 3px -572px;
     padding-right: 11px;
     content: '';
-  } 
+  }
 }
