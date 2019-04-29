@@ -2,7 +2,7 @@
 
 namespace Drupal\Tests\os_metatag\ExistingSiteJavascript;
 
-use weitzman\DrupalTestTraits\ExistingSiteWebDriverTestBase;
+use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTestBase;
 
 /**
  * Tests os_metatag module.
@@ -10,34 +10,32 @@ use weitzman\DrupalTestTraits\ExistingSiteWebDriverTestBase;
  * @group metatag
  * @group functional-javascript
  */
-class CpSettingsOsMetatagTest extends ExistingSiteWebDriverTestBase {
+class CpSettingsOsMetatagTest extends OsExistingSiteJavascriptTestBase {
 
   /**
    * Admin user.
    *
    * @var \Drupal\user\Entity\User
    */
-  protected $adminUser;
+  protected $groupAdmin;
 
   /**
    * {@inheritdoc}
    */
   public function setUp() {
     parent::setUp();
-    $this->adminUser = $this->createUser([
-      'access administration pages',
-      'access control panel',
-    ]);
+    $this->groupAdmin = $this->createUser();
+    $this->addGroupAdmin($this->groupAdmin, $this->group);
   }
 
   /**
    * Tests os_metatag cp settings form behavior.
    */
-  public function testCpSettingsFormSave() {
+  public function testCpSettingsFormSave(): void {
     $web_assert = $this->assertSession();
-    $this->drupalLogin($this->adminUser);
+    $this->drupalLogin($this->groupAdmin);
 
-    $this->visit("/cp/settings/seo");
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/seo");
     $web_assert->statusCodeEquals(200);
 
     $edit = [
@@ -52,7 +50,7 @@ class CpSettingsOsMetatagTest extends ExistingSiteWebDriverTestBase {
     $this->assertTrue($checkHtmlValue, 'The form did not write the correct message.');
 
     // Check form elements load default values.
-    $this->visit("/cp/settings/seo");
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/seo");
     $web_assert->statusCodeEquals(200);
     $page = $this->getCurrentPage();
     $fieldValue = $page->findField('site_title')->getValue();
@@ -68,10 +66,10 @@ class CpSettingsOsMetatagTest extends ExistingSiteWebDriverTestBase {
   /**
    * Tests os_metatag cp settings form behavior.
    */
-  public function testHtmlHeadValuesOnFrontPage() {
+  public function testHtmlHeadValuesOnFrontPage(): void {
     $web_assert = $this->assertSession();
-    $this->drupalLogin($this->adminUser);
-    $this->visit("/cp/settings/seo");
+    $this->drupalLogin($this->groupAdmin);
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/seo");
     $web_assert->statusCodeEquals(200);
 
     $edit = [
@@ -85,7 +83,7 @@ class CpSettingsOsMetatagTest extends ExistingSiteWebDriverTestBase {
 
     $this->drupalLogout();
     drupal_flush_all_caches();
-    $this->visit("/");
+    $this->visit('/');
     $expectedHtmlValue = '<link rel="publisher" href="http://example-publisher.com/&amp;quot;&amp;#039;quote-test&amp;lt;&amp;gt;">';
     $this->assertContains($expectedHtmlValue, $this->getCurrentPageContent(), 'HTML head not contains publisher link.');
     $expectedHtmlValue = '<link rel="author" href="http://example-author.com/&amp;quot;&amp;#039;quote-test&amp;lt;&amp;gt;">';
