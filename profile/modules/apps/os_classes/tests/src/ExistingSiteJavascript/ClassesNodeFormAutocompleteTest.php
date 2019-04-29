@@ -2,6 +2,9 @@
 
 namespace Drupal\Tests\os_classes\ExistingSiteJavascript;
 
+use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTestBase;
+use Drupal\Tests\os_classes\Traits\OsClassesTestTrait;
+
 /**
  * Tests os_classes module.
  *
@@ -9,7 +12,9 @@ namespace Drupal\Tests\os_classes\ExistingSiteJavascript;
  * @group functional-javascript
  * @coversDefaultClass \Drupal\os_classes\Form\SemesterFieldOptionsForm
  */
-class ClassesNodeFormAutocompleteTest extends ClassesExistingSiteJavascriptTestBase {
+class ClassesNodeFormAutocompleteTest extends OsExistingSiteJavascriptTestBase {
+
+  use OsClassesTestTrait;
 
   /**
    * Test group.
@@ -19,11 +24,11 @@ class ClassesNodeFormAutocompleteTest extends ClassesExistingSiteJavascriptTestB
   protected $group;
 
   /**
-   * Test admin user.
+   * Group administrator.
    *
    * @var \Drupal\user\Entity\User
    */
-  protected $adminUser;
+  protected $groupAdmin;
 
   /**
    * Config factory.
@@ -45,7 +50,6 @@ class ClassesNodeFormAutocompleteTest extends ClassesExistingSiteJavascriptTestB
   public function setUp() {
     parent::setUp();
 
-    $this->entityTypeManager = $this->container->get('entity_type.manager');
     $this->config = $this->container->get('config.factory');
     $this->aliasManager = $this->container->get('path.alias_manager');
     /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
@@ -56,14 +60,18 @@ class ClassesNodeFormAutocompleteTest extends ClassesExistingSiteJavascriptTestB
       ],
     ]);
     $vsiteContextManager->activateVsite($this->group);
-    $this->adminUser = $this->createUser(['administer nodes', 'bypass node access']);
+    $this->groupAdmin = $this->createUser();
+    $this->addGroupAdmin($this->groupAdmin, $this->group);
   }
 
   /**
    * Tests os_classes autocomplete on node form.
+   *
+   * @throws \Behat\Mink\Exception\ResponseTextException
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
-  public function testAutocompleteNodeForm() {
-    $this->drupalLogin($this->adminUser);
+  public function testAutocompleteNodeForm(): void {
+    $this->drupalLogin($this->groupAdmin);
     $node = $this->createClass([
       'field_year_offered' => '2016',
     ]);
