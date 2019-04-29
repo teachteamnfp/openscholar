@@ -2,14 +2,21 @@
 
 namespace Drupal\Tests\os_publications\ExistingSiteJavascript;
 
-use weitzman\DrupalTestTraits\ExistingSiteWebDriverTestBase;
+use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTestBase;
 
 /**
  * A WebDriver test suitable for testing Ajax and client-side interactions.
  *
  * @group functional-javascript
  */
-class PublicationJavaScriptTest extends ExistingSiteWebDriverTestBase {
+class PublicationJavaScriptTest extends OsExistingSiteJavascriptTestBase {
+
+  /**
+   * Group administrator.
+   *
+   * @var \Drupal\user\UserInterface
+   */
+  protected $groupAdmin;
 
   /**
    * {@inheritdoc}
@@ -17,8 +24,8 @@ class PublicationJavaScriptTest extends ExistingSiteWebDriverTestBase {
   public function setUp() {
     parent::setUp();
 
-    $this->user = $this->createUser(['access control panel']);
-
+    $this->groupAdmin = $this->createUser();
+    $this->addGroupAdmin($this->groupAdmin, $this->group);
   }
 
   /**
@@ -26,11 +33,11 @@ class PublicationJavaScriptTest extends ExistingSiteWebDriverTestBase {
    *
    * @throws \Behat\Mink\Exception\ExpectationException
    * @throws \Behat\Mink\Exception\ResponseTextException
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
-  public function testPreviewToggle() {
-
-    $this->drupalLogin($this->user);
-    $this->visit('/cp/settings/publications');
+  public function testPreviewToggle(): void {
+    $this->drupalLogin($this->groupAdmin);
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/publications");
 
     $web_assert = $this->assertSession();
     $web_assert->statusCodeEquals(200);
@@ -42,7 +49,7 @@ class PublicationJavaScriptTest extends ExistingSiteWebDriverTestBase {
     $format->mouseOver();
     $result = $web_assert->waitForElementVisible('css', '#modern_language_association');
     $this->assertNotNull($result);
-    $value = ucwords(str_replace("_", " ", $result->getValue()));
+    $value = ucwords(str_replace('_', ' ', $result->getValue()));
     // Verify the text on the page.
     $web_assert->pageTextContains($value);
 
@@ -51,7 +58,7 @@ class PublicationJavaScriptTest extends ExistingSiteWebDriverTestBase {
     $format->mouseOver();
     $result = $web_assert->waitForElementVisible('css', '#american_medical_association');
     $this->assertNotNull($result);
-    $value = ucwords(str_replace("_", " ", $result->getValue()));
+    $value = ucwords(str_replace('_', ' ', $result->getValue()));
     // Verify the text on the page.
     $web_assert->pageTextContains($value);
   }
