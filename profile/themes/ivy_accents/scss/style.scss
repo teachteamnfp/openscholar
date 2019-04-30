@@ -334,7 +334,7 @@ h1.page-header {
 }
 .path-front .content-inner {
   .block {
-    border-top: none;
+    padding-top: 0;
     margin-top: 0;
   }
   .block-title {
@@ -353,4 +353,7 @@ h1.page-header {
 }
 a.rslides_nav {
   background-color: $color_hippie_green_approx;
+}
+aside .region > .block:before {
+  margin-top: 0;
 }

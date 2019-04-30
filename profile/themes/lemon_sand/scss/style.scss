@@ -198,3 +198,6 @@ a.rslides_nav {
   background: $color_goldenrod_approx;
   border-color: $color_goldenrod_approx;
 }
+aside .region > .block, .path-front .content-inner .block {
+  border: 0;
+}
