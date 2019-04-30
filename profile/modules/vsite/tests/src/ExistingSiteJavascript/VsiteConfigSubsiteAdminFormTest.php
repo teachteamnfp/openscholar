@@ -5,8 +5,8 @@ namespace Drupal\Tests\vsite\ExistingSiteJavascript;
 /**
  * Tests vsite module.
  *
- * @group vsite
  * @group functional-javascript
+ * @group vsite
  * @coversDefaultClass \Drupal\vsite\Form\ConfigureSubSiteForm
  */
 class VsiteConfigSubsiteAdminFormTest extends VsiteExistingSiteJavascriptTestBase {

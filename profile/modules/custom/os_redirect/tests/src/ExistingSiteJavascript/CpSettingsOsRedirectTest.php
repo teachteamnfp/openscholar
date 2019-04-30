@@ -7,8 +7,8 @@ use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTest
 /**
  * Tests os_redirect module.
  *
- * @group redirect
  * @group functional-javascript
+ * @group redirect
  */
 class CpSettingsOsRedirectTest extends OsExistingSiteJavascriptTestBase {
 

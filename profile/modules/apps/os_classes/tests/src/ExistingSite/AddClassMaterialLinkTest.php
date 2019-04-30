@@ -8,6 +8,7 @@ use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
  * Class AddClassMaterialLinkTest.
  *
  * @group functional
+ * @group classes
  *
  * @package Drupal\Tests\os_publications\ExistingSite
  */

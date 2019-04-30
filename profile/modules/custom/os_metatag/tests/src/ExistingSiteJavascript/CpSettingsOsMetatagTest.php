@@ -7,8 +7,8 @@ use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTest
 /**
  * Tests os_metatag module.
  *
- * @group metatag
  * @group functional-javascript
+ * @group metatag
  */
 class CpSettingsOsMetatagTest extends OsExistingSiteJavascriptTestBase {
 

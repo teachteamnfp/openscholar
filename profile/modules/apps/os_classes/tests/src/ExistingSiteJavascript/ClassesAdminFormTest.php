@@ -8,8 +8,8 @@ use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTest
 /**
  * Tests os_classes module.
  *
- * @group classes
  * @group functional-javascript
+ * @group classes
  * @coversDefaultClass \Drupal\os_classes\Form\SemesterFieldOptionsForm
  */
 class ClassesAdminFormTest extends OsExistingSiteJavascriptTestBase {

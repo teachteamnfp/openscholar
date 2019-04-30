@@ -8,8 +8,8 @@ use Drupal\Tests\os_classes\Traits\OsClassesTestTrait;
 /**
  * Tests os_classes module.
  *
- * @group classes
  * @group functional-javascript
+ * @group classes
  * @coversDefaultClass \Drupal\os_classes\Form\SemesterFieldOptionsForm
  */
 class ClassesNodeFormAutocompleteTest extends OsExistingSiteJavascriptTestBase {

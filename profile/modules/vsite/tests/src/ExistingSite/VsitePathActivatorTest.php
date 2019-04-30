@@ -8,8 +8,8 @@ use Drupal\vsite\VsiteEvents;
 /**
  * Tests VsitePathActivator.
  *
- * @group vsite
  * @group functional
+ * @group vsite
  * @coversDefaultClass \Drupal\vsite\Plugin\VsitePathActivator
  */
 class VsitePathActivatorTest extends VsiteExistingSiteTestBase {

@@ -8,6 +8,7 @@ use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTest
  * FlavorFormTest.
  *
  * @group functional-javascript
+ * @group cp-appearance
  * @coversDefaultClass \Drupal\cp_appearance\Form\FlavorForm
  */
 class FlavorFormTest extends OsExistingSiteJavascriptTestBase {

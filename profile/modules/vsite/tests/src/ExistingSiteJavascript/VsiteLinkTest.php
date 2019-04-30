@@ -8,8 +8,8 @@ use Behat\Mink\Exception\Exception;
  * Class LinkTest.
  *
  * @package Drupal\Tests\vsite\ExistingSite
- * @group link
  * @group functional-javascript
+ * @group vsite
  */
 class VsiteLinkTest extends VsiteExistingSiteJavascriptTestBase {
 

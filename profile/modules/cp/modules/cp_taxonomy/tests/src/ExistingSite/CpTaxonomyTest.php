@@ -10,6 +10,7 @@ use Drupal\Tests\vsite\ExistingSite\VsiteExistingSiteTestBase;
  *
  * @package Drupal\Tests\cp_taxonomy\ExistingSite
  * @group functional
+ * @group cp
  */
 class CpTaxonomyTest extends VsiteExistingSiteTestBase {
 

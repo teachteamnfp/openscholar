@@ -9,8 +9,8 @@ use weitzman\DrupalTestTraits\ExistingSiteWebDriverTestBase;
 /**
  * Tests os_widgets module.
  *
- * @group widgets
  * @group functional-javascript
+ * @group widgets
  */
 class RssFeedBlockJavascriptTest extends ExistingSiteWebDriverTestBase {
   /**

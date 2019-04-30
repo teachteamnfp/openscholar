@@ -8,6 +8,7 @@ use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
  * Class PublicationsFormTest.
  *
  * @group functional
+ * @group publications
  *
  * @package Drupal\Tests\os_publications\ExistingSite
  */

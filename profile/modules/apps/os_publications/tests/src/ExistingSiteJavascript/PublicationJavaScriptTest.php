@@ -8,6 +8,7 @@ use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTest
  * A WebDriver test suitable for testing Ajax and client-side interactions.
  *
  * @group functional-javascript
+ * @group publications
  */
 class PublicationJavaScriptTest extends OsExistingSiteJavascriptTestBase {
 

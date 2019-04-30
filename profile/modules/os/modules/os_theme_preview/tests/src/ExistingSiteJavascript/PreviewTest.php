@@ -9,6 +9,7 @@ use Drupal\Tests\os_theme_preview\Traits\ThemePreviewTestTrait;
  * Theme preview test.
  *
  * @group functional-javascript
+ * @group os-theme-preview
  * @coversDefaultClass \Drupal\os_theme_preview\Theme\Negotiator
  */
 class PreviewTest extends OsExistingSiteJavascriptTestBase {

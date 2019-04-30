@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\cp_users\ExistingSite;
+namespace Drupal\Tests\cp_users\ExistingSiteJavascript;
 
 use Drupal\Core\Test\AssertMailTrait;
 use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTestBase;
@@ -9,6 +9,7 @@ use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTest
  * Class CpUsersMainTests.
  *
  * @group functional-javascript
+ * @group cp
  * @package Drupal\Tests\cp_users\ExistingSite
  */
 class CpUsersMainTest extends OsExistingSiteJavascriptTestBase {

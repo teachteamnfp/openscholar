@@ -8,6 +8,7 @@ use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
  * Class PrivacySettingTest.
  *
  * @group functional
+ * @group vsite
  */
 class PrivacySettingTest extends OsExistingSiteTestBase {
 
