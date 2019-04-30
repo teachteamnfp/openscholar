@@ -10,6 +10,7 @@ use Drupal\block\Entity\Block;
  *
  * @group openscholar
  * @group functional-javascript
+ * @group pages
  */
 class PagesTest extends TestBase {
 
