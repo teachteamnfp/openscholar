@@ -6,6 +6,7 @@ namespace Drupal\Tests\os_theme_preview\ExistingSiteJavascript;
  * Theme preview test.
  *
  * @group functional-javascript
+ * @group os-theme-preview
  * @coversDefaultClass \Drupal\os_theme_preview\Theme\Negotiator
  */
 class PreviewTest extends TestBase {

@@ -6,6 +6,7 @@ namespace Drupal\Tests\os_publications\ExistingSite;
  * PublicationsViewsFunctionalTest.
  *
  * @group functional
+ * @group publications
  */
 class PublicationsViewsFunctionalTest extends TestBase {
 

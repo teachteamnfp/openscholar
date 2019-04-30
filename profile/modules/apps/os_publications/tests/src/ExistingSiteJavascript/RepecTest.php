@@ -9,6 +9,7 @@ use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTest
  * RepecTest.
  *
  * @group functional-javascript
+ * @group publications
  */
 class RepecTest extends OsExistingSiteJavascriptTestBase {
 

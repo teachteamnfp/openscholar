@@ -6,6 +6,7 @@ namespace Drupal\Tests\os_events\ExistingSiteJavascript;
  * Signup Modal Form test.
  *
  * @group functional-javascript
+ * @group events
  */
 class ModalSignupFormTest extends EventsJavascriptTestBase {
   /**
