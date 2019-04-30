@@ -6,6 +6,7 @@ namespace Drupal\Tests\os_publications\ExistingSite;
  * Class PublicationsRedirectTest.
  *
  * @group functional
+ * @group publications
  */
 class PublicationsRedirectTest extends TestBase {
 

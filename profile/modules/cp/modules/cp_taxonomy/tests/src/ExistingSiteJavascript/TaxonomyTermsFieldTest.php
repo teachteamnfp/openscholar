@@ -11,8 +11,8 @@ use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTest
 /**
  * Tests taxonomy_terms fields functionality.
  *
- * @group other
  * @group functional-javascript
+ * @group cp
  */
 class TaxonomyTermsFieldTest extends OsExistingSiteJavascriptTestBase {
   /**
@@ -43,6 +43,11 @@ class TaxonomyTermsFieldTest extends OsExistingSiteJavascriptTestBase {
    */
   protected $config;
 
+  /**
+   * Vsite Context Manager.
+   *
+   * @var \Drupal\vsite\Plugin\VsiteContextManagerInterface
+   */
   protected $vsiteContextManager;
 
   protected $groupUser;
@@ -54,7 +59,6 @@ class TaxonomyTermsFieldTest extends OsExistingSiteJavascriptTestBase {
     parent::setUp();
     $this->entityTypeManager = $this->container->get('entity_type.manager');
     $this->config = $this->container->get('config.factory');
-    /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
     $this->vsiteContextManager = $this->container->get('vsite.context_manager');
 
     $this->group1 = $this->createGroup([
@@ -183,6 +187,10 @@ class TaxonomyTermsFieldTest extends OsExistingSiteJavascriptTestBase {
    *
    * @return \Drupal\media\MediaInterface
    *   The created media entity.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   protected function createTaxonomyTestFile(array $values = []) : MediaInterface {
     $media = $this->entityTypeManager->getStorage('media')->create($values + [
@@ -198,7 +206,7 @@ class TaxonomyTermsFieldTest extends OsExistingSiteJavascriptTestBase {
   }
 
   /**
-   * Create a vocabulary to a group on cp taxonomy pages.
+   * Create a vocabulary to a group.
    *
    * @param \Drupal\group\Entity\GroupInterface $group
    *   Group entity.
@@ -207,23 +215,24 @@ class TaxonomyTermsFieldTest extends OsExistingSiteJavascriptTestBase {
    * @param array $allowed_types
    *   Allowed types for entity bundles.
    *
-   * @throws \Behat\Mink\Exception\ElementNotFoundException
-   * @throws \Behat\Mink\Exception\ExpectationException
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   protected function createGroupVocabulary(GroupInterface $group, string $vid, array $allowed_types = []) {
-    $this->visit($group->get('path')->getValue()[0]['alias'] . '/cp/taxonomy/add');
-    $web_assert = $this->assertSession();
-    $web_assert->statusCodeEquals(200);
-    $page = $this->getCurrentPage();
-    $page->fillField('name', $vid);
-    $page->fillField('vid', $vid);
-    foreach ($allowed_types as $allowed_type) {
-      $page->fillField('allowed_entity_types[' . $allowed_type . ']', $allowed_type);
+    $this->vsiteContextManager->activateVsite($group);
+    $vocab = Vocabulary::create([
+      'name' => $vid,
+      'vid' => $vid,
+    ]);
+    $vocab->enforceIsNew();
+    $vocab->save();
+    if (!empty($allowed_types)) {
+      $config_vocab = $this->config->getEditable('taxonomy.vocabulary.' . $vid);
+      $config_vocab
+        ->set('allowed_vocabulary_reference_types', $allowed_types)
+        ->save(TRUE);
     }
-    $submit_button = $page->findButton('Save');
-    $submit_button->press();
-    $web_assert->pageTextContains('Created new vocabulary');
-    $web_assert->statusCodeEquals(200);
+
+    $this->markEntityForCleanup($vocab);
   }
 
   /**
@@ -235,19 +244,14 @@ class TaxonomyTermsFieldTest extends OsExistingSiteJavascriptTestBase {
    *   Vocabulary id.
    * @param string $name
    *   Taxonomy term name.
-   *
-   * @throws \Behat\Mink\Exception\ElementNotFoundException
-   * @throws \Behat\Mink\Exception\ExpectationException
    */
   protected function createGroupTerm(GroupInterface $group, string $vid, string $name) {
-    $this->visit($group->get('path')->getValue()[0]['alias'] . '/cp/taxonomy/' . $vid . '/add');
-    $web_assert = $this->assertSession();
-    $web_assert->statusCodeEquals(200);
-    $page = $this->getCurrentPage();
-    $page->fillField('name[0][value]', $name);
-    $submit_button = $page->findButton('Save');
-    $submit_button->press();
-    $web_assert->statusCodeEquals(200);
+    $this->vsiteContextManager->activateVsite($group);
+    $vocab = Vocabulary::load($vid);
+    $term = $this->createTerm($vocab, [
+      'name' => $name,
+    ]);
+    $group->addContent($term, 'group_entity:taxonomy_term');
   }
 
   /**
