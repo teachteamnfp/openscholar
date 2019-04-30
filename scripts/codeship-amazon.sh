@@ -29,7 +29,7 @@ elif git ls-remote --heads git@bitbucket.org:openscholar/deploysource.git | grep
   git clone -b $CI_BRANCH git@bitbucket.org:openscholar/deploysource.git  ~/src/amazon;
   cd ~/src/amazon
 else
-  git clone -b 8.x-1.x-dev git@bitbucket.org:openscholar/deploysource.git  ~/src/amazon;
+  git clone -b 8.x-1.x-dev-new git@bitbucket.org:openscholar/deploysource.git  ~/src/amazon;
   cd ~/src/amazon
   git checkout -b $CI_BRANCH;
 fi
@@ -87,7 +87,7 @@ if [[ $FORCE_REBUILD == "1" ]] || [[ "$(cmp -b 'openscholar/composer.json' '/tmp
   echo "Rebuilding..."
   cd openscholar
 
-  # Directories that track via .git need to be removed before they are updated
+  # Directories that track via .git need to be removed before they are updated see https://getcomposer.org/doc/faqs/should-i-commit-the-dependencies-in-my-vendor-directory.md
   rm -rf web/modules/contrib/purl || true
   rm -rf vendor/drupal/coder || true
 
