@@ -51,8 +51,8 @@ cd openscholar/profile/themes
 cp -rf . /tmp/
 
 cd $BUILD_ROOT
-echo "$CI_MESSAGE";
-git subtree pull -q -m "merge commit" --prefix=openscholar git://github.com/openscholar/openscholar.git $CI_BRANCH --squash
+
+git subtree pull -q -m "$CI_MESSAGE" --prefix=openscholar git://github.com/openscholar/openscholar.git $CI_BRANCH 
 
 cd openscholar/profile/themes
 
