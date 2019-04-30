@@ -40,7 +40,7 @@ class PublicationsFormTest extends OsExistingSiteTestBase {
   public function testPublicationSettingsPath(): void {
     $this->drupalLogin($this->groupAdmin);
 
-    $this->drupalGet("{$this->group->get('path')->first()->getValue()['alias']}cp/settings/publications");
+    $this->drupalGet("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/publications");
     $this->assertSession()->statusCodeEquals(200);
   }
 
@@ -50,9 +50,9 @@ class PublicationsFormTest extends OsExistingSiteTestBase {
    * @throws \Behat\Mink\Exception\ExpectationException
    * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
-  public function testPublicationSettingsForm() {
+  public function testPublicationSettingsForm(): void {
     $this->drupalLogin($this->groupAdmin);
-    $this->drupalGet("{$this->group->get('path')->first()->getValue()['alias']}cp/settings/publications");
+    $this->drupalGet("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/publications");
     // Testing multiple form fields.
     $edit = [
       'os_publications_preferred_bibliographic_format' => 'apa',
