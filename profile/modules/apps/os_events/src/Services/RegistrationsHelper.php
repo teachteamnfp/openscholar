@@ -180,7 +180,8 @@ class RegistrationsHelper implements RegistrationsHelperInterface {
   public function getOccurrences($id) {
     $query = $this->database->select('date_recur__node__field_recurring_date', 'dt')
       ->fields('dt', ['field_recurring_date_value'])
-      ->condition('entity_id', $id);
+      ->condition('entity_id', $id)
+      ->range(0, 5);
     $occurrences = $query->execute()->fetchAll();
     return $occurrences;
   }
