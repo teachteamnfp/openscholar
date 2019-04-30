@@ -85,6 +85,7 @@ module:
   metatag_views: 0
   node: 0
   options: 0
+  os: 0
   os_app_access: 0
   os_classes: 0
   os_events: 0
