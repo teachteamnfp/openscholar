@@ -26,8 +26,7 @@ class WidgetHelper implements WidgetHlperInterface {
     $startDate = clone $fieldRecurringDate['start'];
 
     /** @var \Drupal\Core\Datetime\DrupalDateTime|array|null $endsDate */
-    $endsDate = is_object($fieldRecurringDate['ends_date']) ? clone $fieldRecurringDate['ends_date'] : NULL;
-    $endsDate = $endsDate ? array_shift($endsDate) : NULL;
+    $endsDate = array_shift($fieldRecurringDate['ends_date']);
 
     if (stripos($rrule, 'YEARLY')) {
       // If yearly event extend upto 5 years by default.
@@ -44,9 +43,9 @@ class WidgetHelper implements WidgetHlperInterface {
       $count = (int) $fieldRecurringDate['ends_count'];
     }
     elseif ($endsMode === DateRecurModularWidgetOptions::ENDS_MODE_ON_DATE && $endsDate instanceof DrupalDateTime) {
-      $endsDateUtcAdjusted = (clone $endsDate)
-        ->setTimezone(new \DateTimeZone('UTC'));
-      $untilInput = $endsDateUtcAdjusted->format('Ymd\THis\Z');
+      $adjusted = clone $endsDate;
+      // $adjusted->setTimezone(new \DateTimeZone('UTC'));.
+      $untilInput = $adjusted->format('Ymd\THis\Z');
     }
 
     // Append user input to RRule.

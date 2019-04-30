@@ -47,7 +47,7 @@ class WidgetHelperTest extends ExistingSiteBase {
     $fieldRecurringDate['ends_mode'] = "count";
     $fieldRecurringDate['start'] = $dateTime;
     $fieldRecurringDate['ends_count'] = 5;
-    $fieldRecurringDate['ends_date'] = NULL;
+    $fieldRecurringDate['ends_date'] = [];
 
     $result = $this->widgetHelper->alterRrule($rrule, $fieldRecurringDate);
 
