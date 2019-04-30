@@ -24,6 +24,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
 
   protected $requestStack;
+  protected $settings;
 
   /**
    * Cp Taxonomy Helper.
@@ -71,11 +72,11 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
     if (empty($field_taxonomy_show_children_values[0]['value'])) {
       $depth = 1;
     }
-    $settings['vid'] = $vid;
-    $settings['depth'] = $depth;
-    $settings['bundles'] = $this->getFilteredBundles($block_content, $vid);
-    $settings['show_empty_terms'] = !empty($field_taxonomy_show_empty_terms_values[0]['value']);
-    $terms = $this->getTerms($settings);
+    $this->settings['vid'] = $vid;
+    $this->settings['depth'] = $depth;
+    $this->settings['bundles'] = $this->getFilteredBundles($block_content, $vid);
+    $this->settings['show_empty_terms'] = !empty($field_taxonomy_show_empty_terms_values[0]['value']);
+    $terms = $this->getTerms();
     $term_items = $this->getRenderableTerms($block_content, $terms);
     switch ($field_taxonomy_display_type_values[0]['value']) {
       case 'menu':
@@ -99,46 +100,26 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
   /**
    * Collect terms by field values.
    *
-   * @param array $settings
-   *   Parameters to select terms.
-   *
    * @return array
    *   List of filtered terms.
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  protected function getTerms(array $settings) {
-    $terms = $this->entityTypeManager->getStorage('taxonomy_term')->loadTree($settings['vid'], 0, $settings['depth']);
-    if (empty($terms) || empty($settings['bundles'])) {
+  protected function getTerms() {
+    $terms = $this->entityTypeManager->getStorage('taxonomy_term')->loadTree($this->settings['vid'], 0, $this->settings['depth']);
+    if (empty($terms) || empty($this->settings['bundles'])) {
       return $terms;
     }
-    $tids = [];
-    foreach ($terms as $term) {
-      $tids[] = $term->tid;
-    }
-    $entities = $this->taxonomyHelper->explodeEntityBundles($settings['bundles']);
-    $terms_count = [];
-    foreach ($entities as $entity_name => $bundles) {
-      $query = $this->buildCountQuery($tids, $entity_name, $bundles);
-      $result = $query->execute();
-      while ($row = $result->fetchAssoc()) {
-        if (isset($terms_count[$row['tid']])) {
-          $terms_count[$row['tid']] += $row['count'];
-        }
-        else {
-          $terms_count[$row['tid']] = $row['count'] ?? 0;
-        }
-      }
-    }
+    $terms_count = $this->getTermsCount($terms);
 
     $keep_term_tids = [];
     // Only show_empty_terms is FALSE case, we need to check parent visibility.
-    if (!$settings['show_empty_terms']) {
+    if (!$this->settings['show_empty_terms']) {
       // Mark tids to handle what term can be deleted.
       foreach ($terms_count as $tid => $count) {
         // If we set to hide empty terms and count is zero, don't keep in tree.
-        if (!$settings['show_empty_terms'] && $count == 0) {
+        if (!$this->settings['show_empty_terms'] && $count == 0) {
           continue;
         }
         // Get all parents include current one.
@@ -154,7 +135,7 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
 
     foreach ($terms as $i => $term) {
       // If show_empty_terms is TRUE, we don't unset any items.
-      if (!$settings['show_empty_terms'] && !in_array($term->tid, $keep_term_tids)) {
+      if (!$this->settings['show_empty_terms'] && !in_array($term->tid, $keep_term_tids)) {
         unset($terms[$i]);
         continue;
       }
@@ -308,6 +289,37 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
     }
     $query->groupBy('td.tid');
     return $query;
+  }
+
+  /**
+   * Collect all related entities count.
+   *
+   * @param array $terms
+   *   Loaded loadTree() terms array of objects.
+   *
+   * @return array
+   *   Key tid and value count array.
+   */
+  protected function getTermsCount(array $terms): array {
+    $tids = [];
+    foreach ($terms as $term) {
+      $tids[] = $term->tid;
+    }
+    $entities = $this->taxonomyHelper->explodeEntityBundles($this->settings['bundles']);
+    $terms_count = [];
+    foreach ($entities as $entity_name => $bundles) {
+      $query = $this->buildCountQuery($tids, $entity_name, $bundles);
+      $result = $query->execute();
+      while ($row = $result->fetchAssoc()) {
+        if (isset($terms_count[$row['tid']])) {
+          $terms_count[$row['tid']] += $row['count'];
+        }
+        else {
+          $terms_count[$row['tid']] = $row['count'] ?? 0;
+        }
+      }
+    }
+    return $terms_count;
   }
 
 }
