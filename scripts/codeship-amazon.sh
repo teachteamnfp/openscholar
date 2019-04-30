@@ -52,7 +52,7 @@ cp -rf . /tmp/
 
 cd $BUILD_ROOT
 
-git subtree pull -q -m "$CI_MESSAGE" --prefix=openscholar git://github.com/openscholar/openscholar.git $CI_BRANCH 
+git subtree pull -q -m "$CI_MESSAGE" --prefix=openscholar git://github.com/openscholar/openscholar.git $CI_BRANCH --squash
 
 cd openscholar/profile/themes
 
