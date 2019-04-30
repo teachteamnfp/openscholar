@@ -100,15 +100,9 @@ body {
     border-top: none;
   }
 }
-footer {
+footer.footer {
   background-color: $black;
-  .at-panel {
-    background: $black;
-    border-left: none;
-    border-right: none;
-    border-top: none;
-    color: $white;
-  }
+  color: $white;
   a {
     color: $white;
   }
@@ -121,6 +115,7 @@ footer {
   }
   ul.nav li a {
     font-family: $font_0, $font_1;
+    color: $white;
   }
 }
 .navbar-collapse {
@@ -129,6 +124,12 @@ footer {
   @media #{$mobile} {
     padding: 0 !important;
     border: 0 none;
+  }
+  nav {
+    background: $color_chicago_approx;
+    @media #{$mobile} {
+      background: none;
+    }
   }
   /***** navbar nav *****/
   .navbar-nav {
@@ -389,7 +390,7 @@ aside .boxes-box-content {
 .cke_editable * {
   font-family: $font_0, $font_1;
 }
-.aside .region > .block {
+aside .region > .block {
   padding-top: 0;
   border-top: none;
   h2.block-title {
