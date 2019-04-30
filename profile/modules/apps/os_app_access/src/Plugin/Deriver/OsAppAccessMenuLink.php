@@ -17,7 +17,7 @@ class OsAppAccessMenuLink extends DeriverBase implements ContainerDeriverInterfa
   /**
    * Manager for the app plugins.
    *
-   * @var AppManangerInterface
+   * @var \Drupal\vsite\Plugin\AppManangerInterface
    */
   protected $appManager;
 
@@ -32,7 +32,7 @@ class OsAppAccessMenuLink extends DeriverBase implements ContainerDeriverInterfa
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, $base_plugin_id) {
-    return new static (
+    return new static(
       $container->get('vsite.app.manager')
     );
   }

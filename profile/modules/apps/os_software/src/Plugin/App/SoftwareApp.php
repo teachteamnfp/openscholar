@@ -24,7 +24,7 @@ class SoftwareApp extends PluginBase implements AppInterface {
   public function getGroupContentTypes() {
     return [
       'software_project',
-      'software_release'
+      'software_release',
     ];
   }
 
@@ -45,10 +45,9 @@ class SoftwareApp extends PluginBase implements AppInterface {
         'route_name' => 'node.add',
         'route_parameters' => ['node_type' => 'software_project'],
         'parent' => 'cp.content.add',
-        'title' => $this->getTitle()->render()
-      ]
+        'title' => $this->getTitle()->render(),
+      ],
     ];
   }
-
 
 }

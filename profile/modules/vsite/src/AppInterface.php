@@ -3,7 +3,6 @@
 namespace Drupal\vsite;
 
 use Drupal\Component\Plugin\PluginInspectionInterface;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
  * App plugin interface.
@@ -21,8 +20,8 @@ interface AppInterface extends PluginInspectionInterface {
   /**
    * Return the title of the app.
    *
-   * @return TranslatableMarkup
-   *    Title of the app.
+   * @return \Drupal\Core\StringTranslation\TranslatableMarkup
+   *   Title of the app.
    */
   public function getTitle();
 

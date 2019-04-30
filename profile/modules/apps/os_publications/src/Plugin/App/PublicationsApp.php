@@ -40,8 +40,8 @@ class PublicationsApp extends PluginBase implements AppInterface {
         'menu_name' => 'control-panel',
         'route_name' => 'entity.bibcite_reference.add_page',
         'parent' => 'cp.content.add',
-        'title' => $this->getTitle()->render()
-      ]
+        'title' => $this->getTitle()->render(),
+      ],
     ];
   }
 

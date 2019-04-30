@@ -24,6 +24,7 @@ function os_app_access_entity_create_access(AccountInterface $account, array $co
   switch ($context['entity_type_id']) {
     case 'node':
       return _os_app_access_node_type_access($account, $bundle);
+
     case 'bibcite_reference':
       /** @var \Drupal\vsite\Plugin\AppManangerInterface $app_manager */
       $app_manager = Drupal::service('vsite.app.manager');
@@ -31,6 +32,7 @@ function os_app_access_entity_create_access(AccountInterface $account, array $co
       $app = $app_manager->createInstance('publications');
       $app_access = new AppAccess();
       return $app_access->access($account, $app->getPluginId());
+
     default:
       break;
   }

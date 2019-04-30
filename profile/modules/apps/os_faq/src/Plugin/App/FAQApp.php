@@ -3,7 +3,6 @@
 namespace Drupal\os_faq\Plugin\App;
 
 use Drupal\Component\Plugin\PluginBase;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\vsite\AppInterface;
 
 /**
@@ -45,8 +44,8 @@ class FAQApp extends PluginBase implements AppInterface {
         'route_name' => 'node.add',
         'route_parameters' => ['node_type' => 'faq'],
         'parent' => 'cp.content.add',
-        'title' => $this->getTitle()->render()
-      ]
+        'title' => $this->getTitle()->render(),
+      ],
     ];
   }
 
