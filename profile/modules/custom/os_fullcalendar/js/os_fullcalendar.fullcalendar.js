@@ -106,32 +106,4 @@
     });
   }
 
-  Drupal.behaviors.events = {
-    attach: function (context, settings) {
-
-      const $multicheck = $('#edit-field-singup-multiple-wrapper');
-      const $checkbox = $('.form-item-field-recurring-date-0-rrule .form-textarea-wrapper');
-      const $message = $('#event-change-notify');
-      $(window).bind("load", function() {
-        if (!$checkbox.find('input').is(':checked')) {
-          $multicheck.hide();
-        }
-      });
-      $checkbox.find('input').on('change', function () {
-        if ($(this).is(':checked')) {
-          $message.removeClass('visually-hidden');
-          $message.show();
-          $message.appendTo($(this).parent());
-          $multicheck.show();
-        }
-        else {
-          $message.hide();
-          $multicheck.hide();
-        }
-      });
-
-      showModalEventRegisterHandler();
-    }
-  };
-
 })(jQuery, Drupal);

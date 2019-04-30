@@ -114,8 +114,8 @@ class MailNotificationsTest extends ExistingSiteBase {
     $this->drupalGet($url);
 
     $data = [
-      'field_recurring_date[0][value][date]' => $date->format("Y-m-d"),
-      'field_recurring_date[0][value][time]' => '00:00:00',
+      'field_recurring_date[0][day_start]' => $date->format("Y-m-d"),
+      'field_recurring_date[0][time_start]' => '00:00:00',
     ];
 
     $this->submitForm($data, 'edit-submit');
