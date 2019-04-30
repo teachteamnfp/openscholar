@@ -41,7 +41,7 @@ module:
   crop: 0
   ctools: 0
   date_recur: 0
-  date_recur_interactive: 0
+  date_recur_modular: 0
   datetime: 0
   datetime_range: 0
   dblog: 0
@@ -192,6 +192,9 @@ theme:
   indigo: 0
   cabot: 0
   ivy_accents: 0
+  themeone: 0
+  clean: 0
+  dark: 0
 profile: openscholar
 _core:
   default_config_hash: R4IF-ClDHXxblLcG0L7MgsLvfBIMAvi_skumNFQwkDc

@@ -7,6 +7,7 @@ namespace Drupal\Tests\os_pages\ExistingSite;
  *
  * @group vsite
  * @group functional
+ * @group pages
  */
 class PagesFormTest extends TestBase {
 

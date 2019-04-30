@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7d183e13ba6d15e57dded64179749d85",
+    "content-hash": "58964e824c607138903ba39c46b382e1",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -2475,10 +2475,10 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-rc3",
-                    "datestamp": "1538045580",
+                    "datestamp": "1545235980",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Project has not opted into security advisory coverage!"
+                        "message": "RC releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -4129,21 +4129,21 @@
         },
         {
             "name": "drupal/date_recur",
-            "version": "2.0.0-alpha1",
+            "version": "2.0.0-beta3",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/date_recur.git",
-                "reference": "8.x-2.0-alpha1"
+                "reference": "8.x-2.0-beta3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/date_recur-8.x-2.0-alpha1.zip",
-                "reference": "8.x-2.0-alpha1",
-                "shasum": "87eaf04d75e41b3a67a17bd05fb5f65905398da7"
+                "url": "https://ftp.drupal.org/files/projects/date_recur-8.x-2.0-beta3.zip",
+                "reference": "8.x-2.0-beta3",
+                "shasum": "1abfa30157334edafd8dd95219ee466aaa9f0bf6"
             },
             "require": {
                 "drupal/core": "^8.6",
-                "php": "^5.6|^7.1",
+                "php": "^7.1",
                 "rlanvin/php-rrule": "1.*"
             },
             "require-dev": {
@@ -4158,15 +4158,12 @@
                     "dev-2.x": "2.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-2.0-alpha1",
-                    "datestamp": "1548047887",
+                    "version": "8.x-2.0-beta3",
+                    "datestamp": "1549266780",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Alpha releases are not covered by Drupal security advisories."
+                        "message": "Beta releases are not covered by Drupal security advisories."
                     }
-                },
-                "patches_applied": {
-                    "Make compatible with Date All Day module (All day occurrences)": "https://www.drupal.org/files/issues/2019-04-15/2982275-41.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4194,34 +4191,34 @@
             }
         },
         {
-            "name": "drupal/date_recur_interactive",
-            "version": "2.0.0-alpha0",
+            "name": "drupal/date_recur_modular",
+            "version": "1.0.0-alpha1",
             "source": {
                 "type": "git",
-                "url": "https://git.drupalcode.org/project/date_recur_interactive.git",
-                "reference": "8.x-2.0-alpha0"
+                "url": "https://git.drupalcode.org/project/date_recur_modular.git",
+                "reference": "8.x-1.0-alpha1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/date_recur_interactive-8.x-2.0-alpha0.zip",
-                "reference": "8.x-2.0-alpha0",
-                "shasum": "d9de8c0513fc38c1ea504413b0f7ecb8c6d11233"
+                "url": "https://ftp.drupal.org/files/projects/date_recur_modular-8.x-1.0-alpha1.zip",
+                "reference": "8.x-1.0-alpha1",
+                "shasum": "3faaa8cb36e07eebfcb17084bfbe76231706a9ec"
             },
             "require": {
-                "drupal/core": "^8.6",
-                "drupal/date_recur": "2.*"
+                "drupal/core": "~8.0",
+                "drupal/date_recur": "^2.0@beta"
             },
             "type": "drupal-module",
             "extra": {
                 "branch-alias": {
-                    "dev-2.x": "2.x-dev"
+                    "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-2.0-alpha0",
-                    "datestamp": "1545106384",
+                    "version": "8.x-1.0-alpha1",
+                    "datestamp": "1550395684",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Alpha releases are not covered by Drupal security advisories."
+                        "message": "Project has not opted into security advisory coverage!"
                     }
                 }
             },
@@ -4235,14 +4232,14 @@
                     "homepage": "https://www.drupal.org/user/81431"
                 }
             ],
-            "description": "Provides an interactive recurring date widget.",
-            "homepage": "https://www.drupal.org/project/date_recur_interactive",
+            "description": "Recurring Date Fields Modular Widgets",
+            "homepage": "https://www.drupal.org/project/date_recur_modular",
             "keywords": [
                 "Drupal"
             ],
             "support": {
-                "source": "http://cgit.drupalcode.org/date_recur_interactive",
-                "issues": "https://www.drupal.org/project/issues/date_recur_interactive"
+                "source": "http://cgit.drupalcode.org/date_recur_modular",
+                "issues": "https://www.drupal.org/project/issues/date_recur_modular"
             }
         },
         {
@@ -4565,6 +4562,10 @@
                 {
                     "name": "kristiaanvandeneynde",
                     "homepage": "https://www.drupal.org/user/1345130"
+                },
+                {
+                    "name": "ronaldtebrake",
+                    "homepage": "https://www.drupal.org/user/2314038"
                 }
             ],
             "description": "This module allows you to group users, content and other entities",
@@ -5266,7 +5267,7 @@
                 "shasum": null
             },
             "type": "drupal-module",
-            "time": "2019-02-25T14:33:10+00:00"
+            "time": "2019-03-22T17:35:09+00:00"
         },
         {
             "name": "drupal/rng",
@@ -5617,7 +5618,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0",
-                    "datestamp": "1495746183",
+                    "datestamp": "1545236281",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -13259,6 +13260,7 @@
         "drupal/bibcite": 20,
         "drupal/field_tools": 15,
         "drupal/advancedqueue": 10,
+        "drupal/date_recur_modular": 15,
         "weitzman/drupal-test-traits": 10
     },
     "prefer-stable": true,

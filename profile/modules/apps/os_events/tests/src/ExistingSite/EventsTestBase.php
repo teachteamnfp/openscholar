@@ -48,7 +48,9 @@ class EventsTestBase extends ExistingSiteBase {
     $this->drupalGet('node/add/events');
     $edit = [
       'title[0][value]' => $this->randomString(),
-      'field_recurring_date[0][value][date]' => $date->format("Y-m-d H:i:s"),
+      'field_recurring_date[0][day_start]' => $date->format("Y-m-d"),
+      'field_recurring_date[0][is_all_day]' => TRUE,
+      'field_recurring_date[0][day_end]' => $date->format("Y-m-d"),
       'field_signup[value]' => $signupChecked,
     ];
     $this->submitForm($edit, 'edit-submit');

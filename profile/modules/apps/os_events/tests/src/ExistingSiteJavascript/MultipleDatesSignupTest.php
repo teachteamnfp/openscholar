@@ -8,6 +8,7 @@ use Drupal\Component\Datetime\DateTimePlus;
  * Class MultipleDatesSignupTest.
  *
  * @group functional-javascript
+ * @group events
  * @package Drupal\Tests\os_events\ExistingSiteJavascript
  */
 class MultipleDatesSignupTest extends EventsJavascriptTestBase {
@@ -25,6 +26,7 @@ class MultipleDatesSignupTest extends EventsJavascriptTestBase {
     parent::setUp();
 
     $this->simpleUser = $this->createUser();
+    $this->entityTypeManager = $this->container->get('entity_type.manager');
   }
 
   /**
@@ -101,7 +103,6 @@ class MultipleDatesSignupTest extends EventsJavascriptTestBase {
     $web_assert->assertWaitOnAjaxRequest();
     $page->clickLink('Manage Registrations');
     $page->clickLink('Registrations');
-    $page->selectFieldOption('field_for_date_value', $dateString);
     $page->pressButton('Apply');
     $this->assertSession()->pageTextContains('test@example.com');
   }

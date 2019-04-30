@@ -1,0 +1,24 @@
+uuid: 168a393e-d772-476d-8523-8bd6957624af
+langcode: en
+status: true
+dependencies:
+  module:
+    - group
+  theme:
+    - clean
+_core:
+  default_config_hash: MjMChFykEa-4UxdnGstVk1FcXqwUF3p_GBJLIFT3_XI
+id: clean_group_operations
+theme: clean
+region: content
+weight: -1
+provider: null
+plugin: group_operations
+settings:
+  id: group_operations
+  label: 'Group operations'
+  provider: group
+  label_display: visible
+  context_mapping:
+    group: '@group.group_route_context:group'
+visibility: {  }

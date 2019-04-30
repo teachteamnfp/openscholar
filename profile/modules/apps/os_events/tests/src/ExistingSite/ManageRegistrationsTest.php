@@ -8,6 +8,7 @@ use Drupal\Component\Datetime\DateTimePlus;
  * Class ManageRegistrationsTest.
  *
  * @group functional
+ * @group events
  *
  * @covers ::os_events_menu_local_tasks_alter
  *
@@ -123,7 +124,7 @@ class ManageRegistrationsTest extends EventsTestBase {
     $this->clickLink('Manage Registrations');
     $this->clickLink('Email Registrants');
     $this->assertSession()->statusCodeEquals(200);
-    $this->assertSession()->elementExists('css', '.rng-message-list');
+    $this->assertSession()->elementExists('css', '.custom-message-to-registrations');
   }
 
 }

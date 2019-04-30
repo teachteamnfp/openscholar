@@ -2,9 +2,9 @@
 footer {
   background-color: $color-silver-rust;
   color: $color-gray;
-  .block-title {
+  h2.block-title {
     padding: 0 0 10px;
-    border-top: none;
+    background: none;
   }
   a {
     color: $color-blue;

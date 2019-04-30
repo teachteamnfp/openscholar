@@ -9,8 +9,11 @@ dependencies:
     - field.field.node.events.field_media
     - field.field.node.events.field_open_date
     - field.field.node.events.field_recurring_date
+    - field.field.node.events.field_send_reminder
+    - field.field.node.events.field_should_send_reminder
     - field.field.node.events.field_signup
     - field.field.node.events.field_singup_multiple
+    - field.field.node.events.field_taxonomy_terms
     - field.field.node.events.rng_capacity
     - field.field.node.events.rng_registrants_duplicate
     - field.field.node.events.rng_registrants_maximum
@@ -22,7 +25,7 @@ dependencies:
     - node.type.events
   module:
     - content_moderation
-    - date_recur_interactive
+    - date_recur_modular
     - field_layout
     - layout_discovery
     - path
@@ -70,11 +73,9 @@ content:
     region: content
   field_recurring_date:
     weight: 1
-    settings:
-      timezone_override: ''
-      allow_all_day: true
+    settings: {  }
     third_party_settings: {  }
-    type: date_recur_interactive_widget
+    type: date_recur_modular_sierra
     region: content
   field_signup:
     weight: 5
@@ -155,6 +156,9 @@ content:
 hidden:
   field_close_: true
   field_open_date: true
+  field_send_reminder: true
+  field_should_send_reminder: true
+  field_taxonomy_terms: true
   rng_capacity: true
   rng_registrants_duplicate: true
   rng_registrants_maximum: true
