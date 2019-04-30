@@ -118,10 +118,6 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
     if (!$this->settings['show_empty_terms']) {
       // Mark tids to handle what term can be deleted.
       foreach ($terms_count as $tid => $count) {
-        // If we set to hide empty terms and count is zero, don't keep in tree.
-        if (!$this->settings['show_empty_terms'] && $count == 0) {
-          continue;
-        }
         // Get all parents include current one.
         $parents = $this->entityTypeManager->getStorage("taxonomy_term")->loadAllParents($tid);
         if (!empty($parents)) {

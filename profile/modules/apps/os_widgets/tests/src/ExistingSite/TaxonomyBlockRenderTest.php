@@ -549,6 +549,72 @@ class TaxonomyBlockRenderTest extends OsWidgetsExistingSiteTestBase {
   }
 
   /**
+   * Test display type values.
+   */
+  public function testBuildDisplayTypeValuesTheme() {
+    // Display type menu.
+    $block_content = $this->createBlockContent([
+      'type' => 'taxonomy',
+      'field_taxonomy_vocabulary' => [
+        $this->vocabulary->id(),
+      ],
+      'field_taxonomy_display_type' => 'menu',
+    ]);
+    $view_builder = $this->entityTypeManager
+      ->getViewBuilder('block_content');
+    $render = $view_builder->view($block_content);
+
+    $this->assertSame('os_widgets_taxonomy_display_type_menu', $render['taxonomy']['terms']['#theme']);
+
+    // Display type menu.
+    $block_content = $this->createBlockContent([
+      'type' => 'taxonomy',
+      'field_taxonomy_vocabulary' => [
+        $this->vocabulary->id(),
+      ],
+      'field_taxonomy_display_type' => 'slider',
+    ]);
+    $view_builder = $this->entityTypeManager
+      ->getViewBuilder('block_content');
+    $render = $view_builder->view($block_content);
+
+    $this->assertSame('os_widgets_taxonomy_display_type_slider', $render['taxonomy']['terms']['#theme']);
+  }
+
+  /**
+   * Test behavior values.
+   */
+  public function testBuildBehaviorValuesTheme() {
+    $term = $this->createTerm($this->vocabulary, ['name' => 'Lorem1']);
+    // Create node.
+    $this->createNode([
+      'type' => 'taxonomy_test_1',
+      'status' => 1,
+      'field_taxonomy_terms' => [
+        $term->id(),
+      ],
+    ]);
+    // Behavior value select.
+    $block_content = $this->createBlockContent([
+      'type' => 'taxonomy',
+      'field_taxonomy_vocabulary' => [
+        $this->vocabulary->id(),
+      ],
+      'field_taxonomy_bundle' => 'node:taxonomy_test_1',
+      'field_taxonomy_behavior' => 'select',
+    ]);
+    $view_builder = $this->entityTypeManager
+      ->getViewBuilder('block_content');
+    $render = $view_builder->view($block_content);
+    $renderer = $this->container->get('renderer');
+
+    /** @var \Drupal\Core\Render\Markup $markup_array */
+    $markup = $renderer->renderRoot($render);
+    // Checking rendered term.
+    $this->assertContains($term->label(), $markup->__toString());
+  }
+
+  /**
    * {@inheritdoc}
    */
   protected function createBlockContent(array $values = []) {
