@@ -510,11 +510,11 @@ function os_events_form_alter(&$form, FormStateInterface $form_state, $form_id) 
     $visibility = [
       ':input[name="field_recurring_date[0][recurrence_option]"]' =>
       [
-          ['value' => 'daily'],
-          ['value' => 'weekly_oneday'],
-          ['value' => 'monthly_th_weekday'],
-          ['value' => 'yearly_monthday'],
-          ['value' => 'weekdayly'],
+        ['value' => 'daily'],
+        ['value' => 'weekly_oneday'],
+        ['value' => 'monthly_th_weekday'],
+        ['value' => 'yearly_monthday'],
+        ['value' => 'weekdayly'],
       ],
     ];
     $form['field_singup_multiple']['#states']['visible'] = $visibility;

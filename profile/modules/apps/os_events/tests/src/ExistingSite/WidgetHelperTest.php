@@ -14,12 +14,6 @@ use weitzman\DrupalTestTraits\ExistingSiteBase;
 class WidgetHelperTest extends ExistingSiteBase {
 
   /**
-   * The created node.
-   *
-   * @var \Drupal\node\Entity\Node
-   */
-  protected $node;
-  /**
    * The Widget Helper service.
    *
    * @var \Drupal\os_events\Services\WidgetHelper
