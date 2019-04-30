@@ -1,7 +1,7 @@
 favicon:
   mimetype: image/vnd.microsoft.icon
   path: ''
-  url: 'http://home.d8.theopenscholar.com/profiles/contrib/openscholar/themes/os_base/favicon.ico'
+  url: 'profiles/contrib/openscholar/themes/os_base/favicon.ico'
   use_default: 1
 features:
   comment_user_picture: true
