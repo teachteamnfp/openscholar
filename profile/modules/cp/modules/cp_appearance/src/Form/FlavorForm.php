@@ -9,6 +9,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Extension\Extension;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 use Drupal\cp_appearance\ThemeSelectorBuilderInterface;
 use Ds\Map;
 
@@ -159,6 +160,25 @@ class FlavorForm extends FormBase {
       '#alt' => $this->t('Screenshot for @theme theme', ['@theme' => $info['name']]),
       '#title' => $this->t('Screenshot for @theme theme', ['@theme' => $info['name']]),
       '#attributes' => ['class' => ['screenshot']],
+    ]));
+
+    $response->addCommand(new ReplaceCommand("#$theme_selector_identifier .theme-info .operations .preview", [
+      '#type' => 'link',
+      '#title' => $this->t('Preview'),
+      '#url' => Url::fromRoute('cp_appearance.preview', [
+        'theme' => $selection,
+      ]),
+      '#options' => [
+        'attributes' => [
+          'title' => $this->t('Preview @theme', ['@theme' => $info['name']]),
+          'class' => [
+            'btn',
+            'btn-sm',
+            'btn-default',
+            'preview',
+          ],
+        ],
+      ],
     ]));
 
     return $response;
