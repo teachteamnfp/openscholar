@@ -29,7 +29,7 @@ elif git ls-remote --heads git@bitbucket.org:openscholar/deploysource.git | grep
   git clone -b $CI_BRANCH git@bitbucket.org:openscholar/deploysource.git  ~/src/amazon;
   cd ~/src/amazon
 else
-  git clone -b 8.x-1.x-dev-new git@bitbucket.org:openscholar/deploysource.git  ~/src/amazon;
+  git clone -b 8.x-1.x-dev git@bitbucket.org:openscholar/deploysource.git  ~/src/amazon;
   cd ~/src/amazon
   git checkout -b $CI_BRANCH;
 fi
@@ -52,6 +52,7 @@ cp -rf . /tmp/
 
 cd $BUILD_ROOT
 
+git remote update
 git subtree pull -q -m "$CI_MESSAGE" --prefix=openscholar git://github.com/openscholar/openscholar.git $CI_BRANCH --squash
 
 cd openscholar/profile/themes
