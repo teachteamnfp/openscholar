@@ -80,10 +80,11 @@ aside {
     border: 0;
   }
 }
-.front {
+.path-front {
   .content-inner {
     .block {
       @extend %border-top;
+      padding-top: 12px;
     }
     nav {
       border: 0;
