@@ -2,8 +2,7 @@
 
 namespace Drupal\os_publications\Plugin\App;
 
-use Drupal\Component\Plugin\PluginBase;
-use Drupal\vsite\AppInterface;
+use Drupal\vsite\Plugin\AppPluginBase;
 
 /**
  * Publications app.
@@ -11,11 +10,11 @@ use Drupal\vsite\AppInterface;
  * @App(
  *   title = @Translation("Publications"),
  *   canDisable = true,
- *   entityType = "reference",
+ *   entityType = "bibcite_reference",
  *   id = "publications"
  * )
  */
-class PublicationsApp extends PluginBase implements AppInterface {
+class PublicationsApp extends AppPluginBase {
 
   /**
    * {@inheritdoc}
@@ -27,20 +26,13 @@ class PublicationsApp extends PluginBase implements AppInterface {
   /**
    * {@inheritdoc}
    */
-  public function getTitle() {
-    return $this->pluginDefinition['title'];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function getCreateLinks() {
     return [
       'publication' => [
         'menu_name' => 'control-panel',
         'route_name' => 'entity.bibcite_reference.add_page',
         'parent' => 'cp.content.add',
-        'title' => $this->getTitle()->render(),
+        'title' => $this->getTitle(),
       ],
     ];
   }

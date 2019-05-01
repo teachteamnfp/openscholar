@@ -2,51 +2,41 @@
 
 namespace Drupal\os_presentations\Plugin\App;
 
-use Drupal\Component\Plugin\PluginBase;
-use Drupal\vsite\AppInterface;
+use Drupal\vsite\Plugin\AppPluginBase;
 
 /**
- * Presentationss app.
+ * Presentations app.
  *
  * @App(
  *   title = @Translation("Presentation"),
  *   canDisable = true,
  *   entityType = "node",
- *   bundle = "presentation",
+ *   bundle = [
+ *     "presentation"
+ *   ],
  *   id = "presentations"
  * )
  */
-class PresentationsApp extends PluginBase implements AppInterface {
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getGroupContentTypes() {
-    return [
-      'presentation',
-    ];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getTitle() {
-    return $this->pluginDefinition['title'];
-  }
+class PresentationsApp  extends AppPluginBase {
 
   /**
    * {@inheritdoc}
    */
   public function getCreateLinks() {
-    return [
-      'presentation' => [
+    $definition = $this->getPluginDefinition();
+    $links = [];
+
+    foreach ($definition['bundle'] as $b) {
+      $links[$b] = [
         'menu_name' => 'control-panel',
         'route_name' => 'node.add',
-        'route_parameters' => ['node_type' => 'presentation'],
+        'route_parameters' => ['node_type' => $b],
         'parent' => 'cp.content.add',
-        'title' => $this->getTitle()->render(),
-      ],
-    ];
+        'title' => $this->getTitle(),
+      ];
+    }
+
+    return $links;
   }
 
 }

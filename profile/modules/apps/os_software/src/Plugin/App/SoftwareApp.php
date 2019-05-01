@@ -4,6 +4,7 @@ namespace Drupal\os_software\Plugin\App;
 
 use Drupal\Component\Plugin\PluginBase;
 use Drupal\vsite\AppInterface;
+use Drupal\vsite\Plugin\AppPluginBase;
 
 /**
  * Software app.
@@ -12,28 +13,14 @@ use Drupal\vsite\AppInterface;
  *   title = @Translation("Software"),
  *   canDisable = true,
  *   entityType = "node",
- *   bundle = "software_project",
+ *   bundle = [
+ *     "software_project",
+ *     "software_release"
+ *   ],
  *   id = "software"
  * )
  */
-class SoftwareApp extends PluginBase implements AppInterface {
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getGroupContentTypes() {
-    return [
-      'software_project',
-      'software_release',
-    ];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getTitle() {
-    return $this->pluginDefinition['title'];
-  }
+class SoftwareApp extends AppPluginBase {
 
   /**
    * {@inheritdoc}
@@ -45,7 +32,7 @@ class SoftwareApp extends PluginBase implements AppInterface {
         'route_name' => 'node.add',
         'route_parameters' => ['node_type' => 'software_project'],
         'parent' => 'cp.content.add',
-        'title' => $this->getTitle()->render(),
+        'title' => $this->getTitle(),
       ],
     ];
   }

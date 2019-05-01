@@ -2,8 +2,7 @@
 
 namespace Drupal\os_faq\Plugin\App;
 
-use Drupal\Component\Plugin\PluginBase;
-use Drupal\vsite\AppInterface;
+use Drupal\vsite\Plugin\AppPluginBase;
 
 /**
  * FAQ app.
@@ -12,41 +11,32 @@ use Drupal\vsite\AppInterface;
  *   title = @Translation("FAQ"),
  *   canDisable = true,
  *   entityType = "node",
- *   bundle = "faq",
+ *   bundle =
+ *    "faq"
+*    ],
  *   id = "faq"
  * )
  */
-class FAQApp extends PluginBase implements AppInterface {
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getGroupContentTypes() {
-    return [
-      'faq',
-    ];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getTitle() {
-    return $this->pluginDefinition['title'];
-  }
+class FAQApp extends AppPluginBase {
 
   /**
    * {@inheritdoc}
    */
   public function getCreateLinks() {
-    return [
-      'faq' => [
+    $definition = $this->getPluginDefinition();
+    $links = [];
+
+    foreach ($definition['bundle'] as $b) {
+      $links[$b] = [
         'menu_name' => 'control-panel',
         'route_name' => 'node.add',
-        'route_parameters' => ['node_type' => 'faq'],
+        'route_parameters' => ['node_type' => $b],
         'parent' => 'cp.content.add',
-        'title' => $this->getTitle()->render(),
-      ],
-    ];
+        'title' => $this->getTitle(),
+      ];
+    }
+
+    return $links;
   }
 
 }

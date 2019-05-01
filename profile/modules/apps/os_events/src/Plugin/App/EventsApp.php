@@ -4,6 +4,7 @@ namespace Drupal\os_events\Plugin\App;
 
 use Drupal\Component\Plugin\PluginBase;
 use Drupal\vsite\AppInterface;
+use Drupal\vsite\Plugin\AppPluginBase;
 
 /**
  * Events app.
@@ -12,41 +13,32 @@ use Drupal\vsite\AppInterface;
  *   title = @Translation("Events"),
  *   canDisable = true,
  *   entityType = "node",
- *   bundle = "events",
+ *   bundle = [
+ *    "events"
+*    ],
  *   id = "event"
  * )
  */
-class EventsApp extends PluginBase implements AppInterface {
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getGroupContentTypes() {
-    return [
-      'events',
-    ];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getTitle() {
-    return $this->pluginDefinition['title'];
-  }
+class EventsApp extends AppPluginBase {
 
   /**
    * {@inheritdoc}
    */
   public function getCreateLinks() {
-    return [
-      'event' => [
+    $definition = $this->getPluginDefinition();
+    $links = [];
+
+    foreach ($definition['bundle'] as $b) {
+      $links[$b] = [
         'menu_name' => 'control-panel',
         'route_name' => 'node.add',
-        'route_parameters' => ['node_type' => 'events'],
+        'route_parameters' => ['node_type' => $b],
         'parent' => 'cp.content.add',
-        'title' => $this->getTitle()->render(),
-      ],
-    ];
+        'title' => $this->getTitle(),
+      ];
+    }
+
+    return $links;
   }
 
 }

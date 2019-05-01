@@ -2,8 +2,7 @@
 
 namespace Drupal\os_classes\Plugin\App;
 
-use Drupal\Component\Plugin\PluginBase;
-use Drupal\vsite\AppInterface;
+use Drupal\vsite\Plugin\AppPluginBase;
 
 /**
  * Class app.
@@ -12,41 +11,32 @@ use Drupal\vsite\AppInterface;
  *   title = @Translation("Class"),
  *   canDisable = true,
  *   entityType = "node",
- *   bundle = "class",
+ *   bundle = [
+ *    "class"
+ *   ],
  *   id = "class"
  * )
  */
-class ClassApp extends PluginBase implements AppInterface {
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getGroupContentTypes() {
-    return [
-      'class',
-    ];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getTitle() {
-    return $this->pluginDefinition['title'];
-  }
+class ClassApp extends AppPluginBase {
 
   /**
    * {@inheritdoc}
    */
   public function getCreateLinks() {
-    return [
-      'class' => [
+    $definition = $this->getPluginDefinition();
+    $links = [];
+
+    foreach ($definition['bundle'] as $b) {
+      $links[$b] = [
         'menu_name' => 'control-panel',
         'route_name' => 'node.add',
-        'route_parameters' => ['node_type' => 'class'],
+        'route_parameters' => ['node_type' => $b],
         'parent' => 'cp.content.add',
-        'title' => $this->getTitle()->render(),
-      ],
-    ];
+        'title' => $this->getTitle(),
+      ];
+    }
+
+    return $links;
   }
 
 }

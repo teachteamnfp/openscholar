@@ -2,8 +2,7 @@
 
 namespace Drupal\os_pages\Plugin\App;
 
-use Drupal\Component\Plugin\PluginBase;
-use Drupal\vsite\AppInterface;
+use Drupal\vsite\Plugin\AppPluginBase;
 
 /**
  * Pages app.
@@ -12,41 +11,32 @@ use Drupal\vsite\AppInterface;
  *   title = @Translation("Pages"),
  *   canDisable = false,
  *   entityType = "node",
- *   bundle = "page",
+ *   bundle = [
+ *     "page"
+ *   ],
  *   id = "page"
  * )
  */
-class PagesApp extends PluginBase implements AppInterface {
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getGroupContentTypes() {
-    return [
-      'presentation',
-    ];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getTitle() {
-    return $this->pluginDefinition['title'];
-  }
+class PagesApp extends AppPluginBase {
 
   /**
    * {@inheritdoc}
    */
   public function getCreateLinks() {
-    return [
-      'page' => [
+    $definition = $this->getPluginDefinition();
+    $links = [];
+
+    foreach ($definition['bundle'] as $b) {
+      $links[$b] = [
         'menu_name' => 'control-panel',
         'route_name' => 'node.add',
-        'route_parameters' => ['node_type' => 'page'],
+        'route_parameters' => ['node_type' => $b],
         'parent' => 'cp.content.add',
-        'title' => $this->getTitle()->render(),
-      ],
-    ];
+        'title' => $this->getTitle(),
+      ];
+    }
+
+    return $links;
   }
 
 }
