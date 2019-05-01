@@ -6,7 +6,6 @@ use Drupal\group\Entity\GroupInterface;
 use Drupal\media\MediaInterface;
 use Drupal\node\NodeInterface;
 use Drupal\taxonomy\Entity\Vocabulary;
-use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTestBase;
 
 /**
  * Tests taxonomy_terms fields functionality.
@@ -14,7 +13,7 @@ use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTest
  * @group functional-javascript
  * @group cp
  */
-class TaxonomyTermsFieldTest extends OsExistingSiteJavascriptTestBase {
+class TaxonomyTermsFieldTest extends CpTaxonomyExistingSiteJavascriptTestBase {
   /**
    * The entity type manager service.
    *
