@@ -27,7 +27,7 @@ body {
 .more-link {
   font-family: $font_0, $font_1;
 }
-footer {
+footer.footer {
   background-color: $color_gray_nurse_approx;
   color: $color_mine_shaft_approx;
   a {
@@ -149,12 +149,14 @@ footer {
 }
 .path-front {
   .region-content-first {
-    background: url(images/fp-panel-bg.png?m=15079274erererererr) repeat-x $color_wild_sand_approx;
+    background: url(../images/fp-panel-bg.png) repeat-x $color_wild_sand_approx;
     background-position: 50%;
+    padding: 0 10px;
   }
   .region-content-bottom {
-    background: url(images/fp-panel-bg.png?m=15079274erererererr) repeat-x $color_wild_sand_approx;
+    background: url(../images/fp-panel-bg.png) repeat-x $color_wild_sand_approx;
     background-position: 50%;
+    padding: 0 10px;
   }
 }
 .header-container {

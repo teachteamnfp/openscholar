@@ -108,16 +108,6 @@
 {% block main %}
   <main role="main" class="main-container {{ container }} js-quickedit-main-content">
     <div class="row">
-{#
-      {%
-        set content_classes = [
-          page.sidebar_first and page.sidebar_second ? 'col-sm-6 col-sm-push-3',
-          page.sidebar_first and page.sidebar_second is empty ? 'col-sm-9 col-sm-push-3',
-          page.sidebar_second and page.sidebar_first is empty ? 'col-sm-9',
-          page.sidebar_first is empty and page.sidebar_second is empty ? 'col-sm-12'
-        ]
-      %} #}
-
       <section class="col-sm-12">
         <div class="content-inner">
         {# Content #}
@@ -125,13 +115,11 @@
             <a id="main-content"></a>
             {{ page.content }}
             {% if page.content_first or page.content_second%}
-              <div class="row">
-                <div class="content-first col-sm-6">
-                  {{ page.content_first }}
-                </div>
-                <div class="content-second col-sm-6">
-                  {{ page.content_second }}
-                </div>
+              <div class="content-first">
+                {{ page.content_first }}
+              </div>
+              <div class="content-second">
+                {{ page.content_second }}
               </div>
             {% endif %}
             {% if page.content_bottom %}
