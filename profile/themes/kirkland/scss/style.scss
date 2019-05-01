@@ -87,7 +87,7 @@ footer {
   }
 }
 aside {
-  .block {
+  .region > .block {
     &:nth-child(2) {
       border-color: $color_glacier_approx;
     }
@@ -104,7 +104,7 @@ aside {
   .nav a {
     font-family: $font_0, $font_1;
   }
-  .row>.block {
+  .region >.block {
     border-top-style: solid;
     border-width: 3px;
     padding: 15px 0 0;
