@@ -51,7 +51,6 @@ class AddClassMaterialLinkTest extends ExistingSiteBase {
    * @throws \Behat\Mink\Exception\ExpectationException
    */
   public function testAddMaterialLinkAsAnon() {
-    //$this->drupalLogin($this->simpleUser);
     if ($this->loggedInUser) {
       $this->drupalLogout();
     }
@@ -80,7 +79,9 @@ class AddClassMaterialLinkTest extends ExistingSiteBase {
    * @throws \Behat\Mink\Exception\ExpectationException
    */
   public function testAddLinkOnClassesViewAsAnon() {
-    $this->drupalLogin($this->simpleUser);
+    if ($this->loggedInUser) {
+      $this->drupalLogout();
+    }
 
     $this->drupalGet('classes');
     $this->assertSession()->statusCodeEquals(200);
