@@ -13,7 +13,7 @@ use Drupal\vsite\Plugin\AppPluginBase;
  *   entityType = "node",
  *   bundle =
  *    "faq"
-*    ],
+ *    ],
  *   id = "faq"
  * )
  */

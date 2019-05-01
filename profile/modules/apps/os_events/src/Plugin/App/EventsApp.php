@@ -2,8 +2,6 @@
 
 namespace Drupal\os_events\Plugin\App;
 
-use Drupal\Component\Plugin\PluginBase;
-use Drupal\vsite\AppInterface;
 use Drupal\vsite\Plugin\AppPluginBase;
 
 /**
@@ -15,7 +13,7 @@ use Drupal\vsite\Plugin\AppPluginBase;
  *   entityType = "node",
  *   bundle = [
  *    "events"
-*    ],
+ *    ],
  *   id = "event"
  * )
  */

@@ -2,8 +2,6 @@
 
 namespace Drupal\os_software\Plugin\App;
 
-use Drupal\Component\Plugin\PluginBase;
-use Drupal\vsite\AppInterface;
 use Drupal\vsite\Plugin\AppPluginBase;
 
 /**

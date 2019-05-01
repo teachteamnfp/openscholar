@@ -17,7 +17,7 @@ use Drupal\vsite\Plugin\AppPluginBase;
  *   id = "presentations"
  * )
  */
-class PresentationsApp  extends AppPluginBase {
+class PresentationsApp extends AppPluginBase {
 
   /**
    * {@inheritdoc}

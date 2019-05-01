@@ -2,11 +2,12 @@
 
 namespace Drupal\vsite\Plugin;
 
-
 use Drupal\Component\Plugin\PluginBase;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\vsite\AppInterface;
 
+/**
+ * Base class for app plugins.
+ */
 abstract class AppPluginBase extends PluginBase implements AppInterface {
 
   /**
@@ -26,7 +27,7 @@ abstract class AppPluginBase extends PluginBase implements AppInterface {
   public function getTitle() {
     $definition = $this->getPluginDefinition();
     if (isset($definition['title'])) {
-      /** @var TranslatableMarkup $title */
+      /** @var \Drupal\Core\StringTranslation\TranslatableMarkup $title */
       $title = $definition['title'];
       return $title->render();
     }
