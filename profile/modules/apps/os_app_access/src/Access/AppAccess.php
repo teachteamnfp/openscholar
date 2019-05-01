@@ -60,7 +60,7 @@ class AppAccess implements AccessInterface {
     /** @var \Drupal\Core\Access\AccessResult $result */
     $result = AccessResult::neutral();
     if ($access_level == AppAccessLevels::PUBLIC) {
-      $result = AccessResult::allowed();
+      $result = AccessResult::neutral();
     }
     if ($access_level == AppAccessLevels::PRIVATE) {
       $result = AccessResult::allowedIfHasPermission($account, 'access private apps');
