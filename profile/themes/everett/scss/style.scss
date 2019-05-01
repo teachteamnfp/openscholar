@@ -179,61 +179,6 @@ footer {
     }
   }
 }
-// .navbar-collapse {
-//   background: $color_concrete_approx;
-//   .navbar-nav {
-//     >li {
-//       >a {
-//         font-family: $font_0, $font_1;
-//         @extend %extend_1;
-//         &.is-active {
-//           @extend %extend_1;
-//         }
-//         &:hover {
-//           @extend %extend_1;
-//         }
-//         ul li a.is-active {
-//           @extend %extend_1;
-//         }
-//       }
-//       a {
-//         @extend %extend_1;
-//       }
-//     }
-//     li {
-//       >a {
-//         &.is-active, &.is-active:hover {
-//           @extend %extend_2;
-//         }
-//         &:hover {
-//           @extend %extend_2;
-//         }
-//       }
-//       &.dropdown {
-//         >a {
-//           @extend %extend_2;
-//           &:hover {
-//             @extend %extend_2;
-//           }
-//           &.active {
-//             @extend %extend_2;
-//           }
-//         }
-//         ul {
-//           background: $white;
-//           border-left: 1px solid $color_concrete_approx;
-//           border-right: 1px solid $color_concrete_approx;
-//           border-bottom: 1px solid $color_concrete_approx;
-//           li a {
-//             color: $color_hippie_green_approx;
-//             border-top: 0;
-//             padding: 12px 15px 16px;
-//           }
-//         }
-//       }
-//     }
-//   }
-// }
 .path-front {
   .content-inner {
     .region-content-first {
@@ -241,11 +186,13 @@ footer {
     }
     .region-content-bottom {
       background: $color_indian_khaki_22_approx;
+      padding: 0 10px;
     }
   }
   .region-content-second {
     background-color: $color_mountain_mist_approx;
     color: $white;
+    padding: 0 10px;
     span {
       background-color: $color_mountain_mist_approx;
       color: $white;

@@ -11,6 +11,8 @@ use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
+use Drupal\date_recur\DateRecurHelper;
+use Drupal\date_recur_modular\DateRecurModularWidgetOptions;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Cache\RefinableCacheableDependencyInterface;
@@ -162,7 +164,7 @@ function os_events_registrant_insert(EntityInterface $registrant) {
  * Implements hook_ENTITY_TYPE_view().
  */
 function os_events_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
-  if ($entity->bundle() != 'events' || !$entity->field_signup->value) {
+  if ($entity->bundle() != 'events' || !$entity->field_signup->value || !$entity->field_recurring_date->value) {
     return;
   }
 
@@ -347,4 +349,175 @@ function os_events_form_views_exposed_form_alter(&$form, FormStateInterface $for
   // Add the $options from above to our select list.
   $form[$date_field]['#options'] = $options;
   unset($form[$date_field]['#size']);
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ *
+ * HOOK: 'os_events_date_recur_modular_sierra_widget'.
+ */
+function os_events_preprocess_os_events_date_recur_modular_sierra_widget(array &$variables): void {
+  $variables['attributes']['class'][] = 'date-recur-modular-sierra-widget';
+  $variables['#attached']['library'][] = 'date_recur_modular/date_recur_modular_sierra_widget';
+}
+
+/**
+ * Implements hook_theme().
+ */
+function os_events_theme(array $existing, string $type, string $theme, string $path): array {
+  return [
+    'os_events_date_recur_modular_sierra_widget' => [
+      'render element' => 'widget',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_field_widget_form_alter().
+ */
+function os_events_field_widget_form_alter(&$element, FormStateInterface $form_state, $context) {
+  if (($context['items']->getName() != 'field_recurring_date')) {
+    return;
+  }
+  $element['#theme'] = 'os_events_date_recur_modular_sierra_widget';
+
+  $visibility = [
+    ':input[name="field_recurring_date[0][recurrence_option]"]' =>
+    [
+      ['value' => 'daily'],
+      ['value' => 'weekly_oneday'],
+      ['value' => 'monthly_th_weekday'],
+      ['value' => 'yearly_monthday'],
+      ['value' => 'weekdayly'],
+    ],
+  ];
+
+  $parts = [];
+  $rule1 = NULL;
+  $rrule = $element['rrule_in_storage']['#value'] ?? '';
+  if (isset($rrule)) {
+    $startDate = new \DateTime();
+    try {
+      $helper = DateRecurHelper::create($rrule, $startDate);
+      $rules = $helper->getRules();
+      $rule1 = count($rules) > 0 ? reset($rules) : NULL;
+      $parts = $rule1 ? $rule1->getParts() : [];
+      $service = Drupal::getContainer()->get('os_events.widget_helper');
+      $getOption = $service->getRecurrenceOptions($rrule, $startDate);
+      $element['recurrence_option']['#default_value'] = $getOption;
+    }
+    catch (\Exception $e) {
+    }
+  }
+
+  $endsDate = NULL;
+  try {
+    $until = $parts['UNTIL'] ?? NULL;
+    if (is_string($until)) {
+      $endsDate = new \DateTime($until);
+    }
+    elseif ($until instanceof \DateTimeInterface) {
+      $endsDate = $until;
+    }
+  }
+  catch (\Exception $e) {
+  }
+  $count = $parts['COUNT'] ?? NULL;
+
+  $endsModeDefault =
+      $endsDate ? DateRecurModularWidgetOptions::ENDS_MODE_ON_DATE :
+          ($count > 0 ? DateRecurModularWidgetOptions::ENDS_MODE_OCCURRENCES : NULL);
+
+  $element['ends_mode'] = [
+    '#type' => 'radios',
+    '#title' => t('Ends'),
+    '#options' => [
+      DateRecurModularWidgetOptions::ENDS_MODE_ON_DATE => t('End on Date'),
+      DateRecurModularWidgetOptions::ENDS_MODE_OCCURRENCES => t('End after'),
+    ],
+    '#default_value' => $endsModeDefault,
+  ];
+  $element['ends_mode'][DateRecurModularWidgetOptions::ENDS_MODE_ON_DATE]['#states']['visible'] = [$visibility];
+  $element['ends_mode'][DateRecurModularWidgetOptions::ENDS_MODE_OCCURRENCES]['#states']['visible'] = [$visibility];
+
+  $element['ends_count'] = [
+    '#type' => 'number',
+    '#title' => t('End after number of occurrences'),
+    '#title_display' => 'invisible',
+    '#field_suffix' => t('occurrences'),
+    '#default_value' => $count ?? 1,
+    '#min' => 1,
+  ];
+  $element['ends_count']['#states']['visible'][] = [$visibility];
+
+  $element['ends_count']['#states']['enabled'][] = [
+    // This applies correctly but Drupal has no theming for disabled dates.
+    ':input[name="field_recurring_date[0][ends_mode]"]' => ['value' => DateRecurModularWidgetOptions::ENDS_MODE_OCCURRENCES],
+  ];
+
+  $element['ends_date'] = [
+    '#type' => 'container',
+  ];
+  $element['ends_date']['#states']['visible'][] = [$visibility];
+
+  $element['ends_date']['#states']['enabled'][] = [
+    // This applies correctly but Drupal has no theming for disabled dates.
+    ':input[name="field_recurring_date[0][ends_mode]"]' => ['value' => DateRecurModularWidgetOptions::ENDS_MODE_ON_DATE],
+  ];
+  $element['ends_date']['ends_date'] = [
+    '#type' => 'datetime',
+    '#default_value' => $endsDate ? DrupalDateTime::createFromDateTime($endsDate) : NULL,
+  ];
+  $element['#element_validate'][] = 'os_events_date_recur_modular_rrule_edit';
+}
+
+/**
+ * Helps to alter the rrule to add limits or set defaults.
+ *
+ * @param array $element
+ *   Form element.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Form state.
+ *
+ * @throws Exception
+ */
+function os_events_date_recur_modular_rrule_edit(array &$element, FormStateInterface $form_state) {
+  $values = $form_state->getValues();
+  $value_parents = $element['#parents'];
+  $field_recurring_date = $values['field_recurring_date'];
+  $field_recurring_date = array_shift($field_recurring_date);
+
+  $not_applicable = ['', 'custom'];
+  if (in_array($field_recurring_date['recurrence_option'], $not_applicable)) {
+    return;
+  }
+
+  // Get the Rrule set already by this point.
+  $rrule = $form_state->getValue(array_merge($value_parents, ['rrule']));
+  // Service we need to alter the rrule.
+  $service = Drupal::getContainer()->get('os_events.widget_helper');
+  $rrule = $service->alterRrule($rrule, $field_recurring_date);
+
+  // Set the altered rule so that it can be saved in DB.
+  $form_state->setValue(array_merge($value_parents, ['rrule']), $rrule);
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function os_events_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form_id == 'node_events_edit_form' || $form_id == 'node_events_form') {
+    $visibility = [
+      ':input[name="field_recurring_date[0][recurrence_option]"]' =>
+      [
+        ['value' => 'daily'],
+        ['value' => 'weekly_oneday'],
+        ['value' => 'monthly_th_weekday'],
+        ['value' => 'yearly_monthday'],
+        ['value' => 'weekdayly'],
+      ],
+    ];
+    $form['field_singup_multiple']['#states']['visible'] = $visibility;
+  }
+
 }
