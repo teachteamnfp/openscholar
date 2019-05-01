@@ -7,14 +7,14 @@ use DateTime;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\date_recur\DateRecurHelper;
 use Drupal\date_recur_modular\DateRecurModularWidgetOptions;
-use Drupal\os_events\WidgetHlperInterface;
+use Drupal\os_events\WidgetHelperInterface;
 
 /**
  * Class WidgetHelper.
  *
  * @package Drupal\os_events\Services
  */
-class WidgetHelper implements WidgetHlperInterface {
+class WidgetHelper implements WidgetHelperInterface {
 
   /**
    * {@inheritdoc}

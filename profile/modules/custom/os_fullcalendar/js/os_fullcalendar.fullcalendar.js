@@ -106,4 +106,10 @@
     });
   }
 
+  Drupal.behaviors.events = {
+    attach: function () {
+      showModalEventRegisterHandler();
+    }
+  };
+
 })(jQuery, Drupal);

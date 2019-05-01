@@ -7,7 +7,7 @@ use DateTime;
 /**
  * Widget Helper interface.
  */
-interface WidgetHlperInterface {
+interface WidgetHelperInterface {
 
   /**
    * Alters the rrule and returns the result.
