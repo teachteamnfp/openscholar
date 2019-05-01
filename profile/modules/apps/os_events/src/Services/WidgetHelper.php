@@ -17,6 +17,11 @@ use Drupal\os_events\WidgetHelperInterface;
 class WidgetHelper implements WidgetHelperInterface {
 
   /**
+   * The format to save until limit in.
+   */
+  const FORMAT = 'Ymd\THis\Z';
+
+  /**
    * {@inheritdoc}
    */
   public function alterRrule(string $rrule, array $fieldRecurringDate): string {
@@ -36,7 +41,7 @@ class WidgetHelper implements WidgetHelperInterface {
       // Default 1 year limit.
       $until = $startDate->add(new DateInterval('P1Y'));
     }
-    $untilDefault = $until->format('Ymd\THis\Z');
+    $untilDefault = $until->format(WidgetHelper::FORMAT);
 
     // Ends mode.
     if ($endsMode === DateRecurModularWidgetOptions::ENDS_MODE_OCCURRENCES) {
@@ -44,8 +49,7 @@ class WidgetHelper implements WidgetHelperInterface {
     }
     elseif ($endsMode === DateRecurModularWidgetOptions::ENDS_MODE_ON_DATE && $endsDate instanceof DrupalDateTime) {
       $adjusted = clone $endsDate;
-      // $adjusted->setTimezone(new \DateTimeZone('UTC'));.
-      $untilInput = $adjusted->format('Ymd\THis\Z');
+      $untilInput = $adjusted->format(WidgetHelper::FORMAT);
     }
 
     // Append user input to RRule.
