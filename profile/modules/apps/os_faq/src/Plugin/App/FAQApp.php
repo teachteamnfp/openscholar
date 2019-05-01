@@ -11,9 +11,9 @@ use Drupal\vsite\Plugin\AppPluginBase;
  *   title = @Translation("FAQ"),
  *   canDisable = true,
  *   entityType = "node",
- *   bundle =
+ *   bundle = {
  *    "faq"
- *    ],
+ *   },
  *   id = "faq"
  * )
  */

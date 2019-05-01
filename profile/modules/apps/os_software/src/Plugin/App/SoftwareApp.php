@@ -11,10 +11,10 @@ use Drupal\vsite\Plugin\AppPluginBase;
  *   title = @Translation("Software"),
  *   canDisable = true,
  *   entityType = "node",
- *   bundle = [
+ *   bundle = {
  *     "software_project",
  *     "software_release"
- *   ],
+ *   },
  *   id = "software"
  * )
  */

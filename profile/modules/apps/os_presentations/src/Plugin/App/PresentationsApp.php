@@ -11,9 +11,9 @@ use Drupal\vsite\Plugin\AppPluginBase;
  *   title = @Translation("Presentation"),
  *   canDisable = true,
  *   entityType = "node",
- *   bundle = [
+ *   bundle = {
  *     "presentation"
- *   ],
+ *   },
  *   id = "presentations"
  * )
  */

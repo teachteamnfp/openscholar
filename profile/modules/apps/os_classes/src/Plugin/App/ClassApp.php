@@ -11,9 +11,9 @@ use Drupal\vsite\Plugin\AppPluginBase;
  *   title = @Translation("Class"),
  *   canDisable = true,
  *   entityType = "node",
- *   bundle = [
+ *   bundle = {
  *    "class"
- *   ],
+ *   },
  *   id = "class"
  * )
  */

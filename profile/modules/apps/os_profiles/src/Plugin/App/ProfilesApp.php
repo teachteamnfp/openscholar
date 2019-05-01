@@ -11,9 +11,9 @@ use Drupal\vsite\Plugin\AppPluginBase;
  *   title = @Translation("Profiles"),
  *   canDisable = true,
  *   entityType = "node",
- *   bundle = [
+ *   bundle = {
  *     "person"
- *   ],
+ *   },
  *   id = "profiles"
  * )
  */

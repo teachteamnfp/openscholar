@@ -11,9 +11,9 @@ use Drupal\vsite\Plugin\AppPluginBase;
  *   title = @Translation("Events"),
  *   canDisable = true,
  *   entityType = "node",
- *   bundle = [
- *    "events"
- *    ],
+ *   bundle = {
+ *     "events"
+ *   },
  *   id = "event"
  * )
  */

@@ -11,9 +11,9 @@ use Drupal\vsite\Plugin\AppPluginBase;
  *   title = @Translation("Links"),
  *   canDisable = true,
  *   entityType = "node",
- *   bundle = [
+ *   bundle = {
  *     "link",
- *   ]
+ *   },
  *   id = "links"
  * )
  */

@@ -11,9 +11,9 @@ use Drupal\vsite\Plugin\AppPluginBase;
  *   title = @Translation("Pages"),
  *   canDisable = false,
  *   entityType = "node",
- *   bundle = [
+ *   bundle = {
  *     "page"
- *   ],
+ *   },
  *   id = "page"
  * )
  */
