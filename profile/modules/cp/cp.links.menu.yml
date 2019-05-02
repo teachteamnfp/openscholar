@@ -48,3 +48,15 @@ cp.settings:
   url: 'internal:##'
   weight: 4
   menu_name: control-panel
+cp.settings.app:
+  title: 'App Settings'
+  url: 'internal:##'
+  weight: 1
+  menu_name: app-settings
+  parent: cp.settings
+cp.settings.global:
+  title: 'Global Settings'
+  url: 'internal:##'
+  weight: 2
+  menu_name: global-settings
+  parent: cp.settings

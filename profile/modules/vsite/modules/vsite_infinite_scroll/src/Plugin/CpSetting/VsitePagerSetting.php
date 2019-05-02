@@ -20,7 +20,7 @@ use Drupal\cp_settings\CpSettingInterface;
  *   group = {
  *    "id" = "vsite",
  *    "title" = @Translation("Vsite"),
- *    "parent" = "cp.settings"
+ *    "parent" = "cp.settings.global"
  *   }
  * )
  */
