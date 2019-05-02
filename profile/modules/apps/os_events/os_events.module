@@ -300,6 +300,9 @@ function os_events_views_pre_render(ViewExecutable $view) {
       $output = render($build);
 
       $view->element['#attached']['drupalSettings']['os_events']['node'][$nid] = $output;
+      $dateTime = new DrupalDateTime();
+      $view->element['#attached']['drupalSettings']['os_events']['offsetInM'] = $dateTime->getOffset();
+      $view->element['#attached']['drupalSettings']['os_events']['offsetInHm'] = $dateTime->format('P');
     }
   }
 }
@@ -422,11 +425,15 @@ function os_events_field_widget_form_alter(&$element, FormStateInterface $form_s
   }
   catch (\Exception $e) {
   }
-  $count = $parts['COUNT'] ?? NULL;
 
-  $endsModeDefault =
-      $endsDate ? DateRecurModularWidgetOptions::ENDS_MODE_ON_DATE :
-          ($count > 0 ? DateRecurModularWidgetOptions::ENDS_MODE_OCCURRENCES : NULL);
+  $count = $parts['COUNT'] ?? NULL;
+  $endsModeDefault = NULL;
+  if ($endsDate) {
+    $endsModeDefault = DateRecurModularWidgetOptions::ENDS_MODE_ON_DATE;
+  }
+  elseif ($count > 0) {
+    $endsModeDefault = DateRecurModularWidgetOptions::ENDS_MODE_OCCURRENCES;
+  }
 
   $element['ends_mode'] = [
     '#type' => 'radios',
@@ -468,22 +475,42 @@ function os_events_field_widget_form_alter(&$element, FormStateInterface $form_s
     '#type' => 'datetime',
     '#default_value' => $endsDate ? DrupalDateTime::createFromDateTime($endsDate) : NULL,
   ];
-  $element['#element_validate'][] = 'os_events_date_recur_modular_rrule_edit';
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function os_events_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form_id == 'node_events_edit_form' || $form_id == 'node_events_form') {
+    $visibility = [
+      ':input[name="field_recurring_date[0][recurrence_option]"]' =>
+        [
+          ['value' => 'daily'],
+          ['value' => 'weekly_oneday'],
+          ['value' => 'monthly_th_weekday'],
+          ['value' => 'yearly_monthday'],
+          ['value' => 'weekdayly'],
+        ],
+    ];
+    $form['field_singup_multiple']['#states']['visible'] = $visibility;
+    array_unshift($form['actions']['submit']['#submit'], 'os_events_set_rrule');
+  }
 }
 
 /**
  * Helps to alter the rrule to add limits or set defaults.
  *
- * @param array $element
- *   Form element.
+ * @param array $form
+ *   Form.
  * @param \Drupal\Core\Form\FormStateInterface $form_state
  *   Form state.
  *
  * @throws Exception
  */
-function os_events_date_recur_modular_rrule_edit(array &$element, FormStateInterface $form_state) {
+function os_events_set_rrule(array &$form, FormStateInterface $form_state) {
+
   $values = $form_state->getValues();
-  $value_parents = $element['#parents'];
+  $value_parents = $form['field_recurring_date']['widget'][0]['#parents'];
   $field_recurring_date = $values['field_recurring_date'];
   $field_recurring_date = array_shift($field_recurring_date);
 
@@ -500,24 +527,4 @@ function os_events_date_recur_modular_rrule_edit(array &$element, FormStateInter
 
   // Set the altered rule so that it can be saved in DB.
   $form_state->setValue(array_merge($value_parents, ['rrule']), $rrule);
-}
-
-/**
- * Implements hook_form_alter().
- */
-function os_events_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  if ($form_id == 'node_events_edit_form' || $form_id == 'node_events_form') {
-    $visibility = [
-      ':input[name="field_recurring_date[0][recurrence_option]"]' =>
-      [
-        ['value' => 'daily'],
-        ['value' => 'weekly_oneday'],
-        ['value' => 'monthly_th_weekday'],
-        ['value' => 'yearly_monthday'],
-        ['value' => 'weekdayly'],
-      ],
-    ];
-    $form['field_singup_multiple']['#states']['visible'] = $visibility;
-  }
-
 }
