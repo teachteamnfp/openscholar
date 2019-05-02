@@ -50,7 +50,6 @@ class PreviewActionOsThemePreviewTest extends OsExistingSiteTestBase {
   public function setUp() {
     parent::setUp();
 
-    $vsite_context_manager = $this->container->get('vsite.context_manager');
     $this->groupAdmin = $this->createUser();
     $this->configFactory = $this->container->get('config.factory');
     $this->themeConfig = $this->configFactory->get('system.theme');
@@ -61,7 +60,6 @@ class PreviewActionOsThemePreviewTest extends OsExistingSiteTestBase {
     ]);
     $this->addGroupAdmin($this->groupAdmin, $this->group);
 
-    $vsite_context_manager->activateVsite($this->group);
     $this->drupalLogin($this->groupAdmin);
   }
 
