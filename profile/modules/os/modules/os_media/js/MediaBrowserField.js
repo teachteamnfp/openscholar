@@ -47,12 +47,13 @@
         var types = {};
         scope.allowedTypes = scope.types.split(',');
         scope.extensionsFull = [];
+        var extensionMap = settings.fetchSetting('extensionMap');
         for (var i = 0; i < scope.allowedTypes.length; i++) {
           var type = scope.allowedTypes[i];
           types[type] = type;
-          // if (Drupal.settings.extensionMap[type] && Drupal.settings.extensionMap[type].length) {
-          //   scope.extensionsFull = scope.extensionsFull.concat(Drupal.settings.extensionMap[type]);
-          // }
+          if (extensionMap[type] && extensionMap[type].length) {
+            scope.extensionsFull = scope.extensionsFull.concat(extensionMap[type]);
+          }
         }
         scope.extensionsFull.sort();
 

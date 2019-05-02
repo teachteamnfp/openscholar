@@ -75,7 +75,10 @@ class MediaBrowserWidget extends WidgetBase implements ContainerFactoryPluginInt
    * {@inheritdoc}
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
-    $media = $items;
+    $media = [];
+    for ($i = 0, $l = $items->count(); $i < $l; $i++) {
+      $media[] = $items->get($i);
+    }
     $settings = $this->getFieldSettings();
     $bundles = $settings['handler_settings']['target_bundles'];
     $types = [];
@@ -92,10 +95,10 @@ class MediaBrowserWidget extends WidgetBase implements ContainerFactoryPluginInt
       '#attributes' => [
         'media-browser-field' => '',
         'types' => implode(',', $types),
-        'maxFilesize' => '512 MB',
+        'max-filesize' => '512 MB',
         'upload_text' => 'Upload',
         'droppable_text' => 'Drop here.',
-        'cardinality' => -1,
+        'cardinality' => $this->fieldDefinition->getFieldStorageDefinition()->getCardinality(),
         'files' => 'files',
       ],
       '#markup' => $this->t('Loading the Media Browser. Please wait a moment.'),
