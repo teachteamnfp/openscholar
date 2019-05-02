@@ -195,23 +195,23 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
           ],
         ],
       ];
-
-      $operations[] = [
-        'title' => $this->t('Preview'),
-        'url' => Url::fromRoute('cp_appearance.preview', [
-          'theme' => $theme->getName(),
-        ]),
-        'attributes' => [
-          'title' => $this->t('Preview @theme', ['@theme' => $theme->info['name']]),
-          'class' => [
-            'btn',
-            'btn-sm',
-            'btn-default',
-            'preview',
-          ],
-        ],
-      ];
     }
+
+    $operations[] = [
+      'title' => $this->t('Preview'),
+      'url' => Url::fromRoute('cp_appearance.preview', [
+        'theme' => $theme->getName(),
+      ]),
+      'attributes' => [
+        'title' => $this->t('Preview @theme', ['@theme' => $theme->info['name']]),
+        'class' => [
+          'btn',
+          'btn-sm',
+          'btn-default',
+          'preview',
+        ],
+      ],
+    ];
 
     return $operations;
   }
