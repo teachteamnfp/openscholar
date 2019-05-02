@@ -11,7 +11,7 @@ id: node.class.field_class_link
 field_name: field_class_link
 entity_type: node
 bundle: class
-label: 'Link to Class'
+label: Link
 description: ''
 required: false
 translatable: false
@@ -19,5 +19,5 @@ default_value: {  }
 default_value_callback: ''
 settings:
   link_type: 17
-  title: 0
+  title: 1
 field_type: link
