@@ -19,24 +19,4 @@ use Drupal\vsite\Plugin\AppPluginBase;
  */
 class FAQApp extends AppPluginBase {
 
-  /**
-   * {@inheritdoc}
-   */
-  public function getCreateLinks() {
-    $definition = $this->getPluginDefinition();
-    $links = [];
-
-    foreach ($definition['bundle'] as $b) {
-      $links[$b] = [
-        'menu_name' => 'control-panel',
-        'route_name' => 'node.add',
-        'route_parameters' => ['node_type' => $b],
-        'parent' => 'cp.content.add',
-        'title' => $this->getTitle(),
-      ];
-    }
-
-    return $links;
-  }
-
 }
