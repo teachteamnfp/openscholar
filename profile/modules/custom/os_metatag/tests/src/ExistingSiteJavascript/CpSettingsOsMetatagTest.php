@@ -83,7 +83,7 @@ class CpSettingsOsMetatagTest extends OsExistingSiteJavascriptTestBase {
 
     $this->drupalLogout();
     drupal_flush_all_caches();
-    $this->visit('/');
+    $this->visit($this->group->get('path')->first()->getValue()['alias']);
     $expectedHtmlValue = '<link rel="publisher" href="http://example-publisher.com/&amp;quot;&amp;#039;quote-test&amp;lt;&amp;gt;">';
     $this->assertContains($expectedHtmlValue, $this->getCurrentPageContent(), 'HTML head not contains publisher link.');
     $expectedHtmlValue = '<link rel="author" href="http://example-author.com/&amp;quot;&amp;#039;quote-test&amp;lt;&amp;gt;">';
