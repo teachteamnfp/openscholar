@@ -129,12 +129,14 @@ footer {
 .path-front {
   .region-content-first {
     background-color: $color_steel_blue_approx;
+    padding: 0 10px;
     * {
       color: $white;
     }
   }
   .region-content-bottom {
     background-color: $color_wheatfield_50_approx !important;
+    padding: 0 10px;
   }
 }
 .path-search .title a {
@@ -183,3 +185,4 @@ h1.page-title {
 .node-readmore a:after {
   background: none;
 }
+

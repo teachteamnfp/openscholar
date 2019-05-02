@@ -8,6 +8,7 @@ use Drupal\Component\Datetime\DateTimePlus;
  * Class ManageRegistrationsTest.
  *
  * @group functional
+ * @group events
  *
  * @covers ::os_events_menu_local_tasks_alter
  *
