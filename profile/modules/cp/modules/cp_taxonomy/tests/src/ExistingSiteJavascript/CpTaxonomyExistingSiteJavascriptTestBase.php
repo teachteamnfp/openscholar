@@ -3,7 +3,6 @@
 namespace Drupal\Tests\cp_taxonomy\ExistingSiteJavascript;
 
 use Drupal\group\Entity\GroupRole;
-use Drupal\group\Entity\GroupType;
 use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTestBase;
 
 /**
@@ -46,20 +45,8 @@ abstract class CpTaxonomyExistingSiteJavascriptTestBase extends OsExistingSiteJa
   public function setUp() {
     parent::setUp();
 
-    $personal_group_type = GroupType::load('personal');
-    if (!$personal_group_type->hasContentPlugin('group_node:taxonomy_test_1')) {
-      $personal_group_type->installContentPlugin('group_node:taxonomy_test_1');
-      $personal_group_type->save();
-    }
-
-    if (!$personal_group_type->hasContentPlugin('group_node:taxonomy_test_2')) {
-      $personal_group_type->installContentPlugin('group_node:taxonomy_test_2');
-      $personal_group_type->save();
-    }
-
     $group_admin_role = GroupRole::load('personal-administrator');
-    $group_admin_role->grantPermissions(self::PERMISSIONS);
-    $group_admin_role->save();
+    $group_admin_role->grantPermissions(self::PERMISSIONS)->save();
   }
 
   /**
@@ -67,19 +54,7 @@ abstract class CpTaxonomyExistingSiteJavascriptTestBase extends OsExistingSiteJa
    */
   public function tearDown() {
     $group_admin_role = GroupRole::load('personal-administrator');
-    $group_admin_role->revokePermissions(self::PERMISSIONS);
-    $group_admin_role->save();
-
-    $personal_group_type = GroupType::load('personal');
-    if ($personal_group_type->hasContentPlugin('group_node:taxonomy_test_1')) {
-      $personal_group_type->uninstallContentPlugin('group_node:taxonomy_test_1');
-      $personal_group_type->save();
-    }
-
-    if ($personal_group_type->hasContentPlugin('group_node:taxonomy_test_2')) {
-      $personal_group_type->uninstallContentPlugin('group_node:taxonomy_test_2');
-      $personal_group_type->save();
-    }
+    $group_admin_role->revokePermissions(self::PERMISSIONS)->save();
 
     parent::tearDown();
   }
