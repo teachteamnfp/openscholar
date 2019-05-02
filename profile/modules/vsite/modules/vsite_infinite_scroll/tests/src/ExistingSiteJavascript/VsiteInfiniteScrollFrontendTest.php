@@ -41,7 +41,7 @@ class VsiteInfiniteScrollFrontendTest extends OsExistingSiteJavascriptTestBase {
     $this->group->save();
 
     $i = 0;
-    while ($i < 11) {
+    while ($i < 21) {
       $person = $this->createNode([
         'type' => 'person',
         'status' => 1,
@@ -80,8 +80,14 @@ class VsiteInfiniteScrollFrontendTest extends OsExistingSiteJavascriptTestBase {
     $page = $this->getCurrentPage();
     $checkHtmlValue = $page->hasContent('Load More');
     $this->assertTrue($checkHtmlValue, 'Load More button has not found.');
+
     $load_button = $page->findLink('Load More');
     $load_button->press();
+    $this->waitForAjaxToFinish();
+    $load_button = $page->findLink('Load More');
+    $load_button->press();
+    $this->waitForAjaxToFinish();
+
     $result = $web_assert->waitForElementVisible('named', ['link', 'Old Man']);
     $this->assertNotNull($result, 'Following node title not found: Old created person');
   }
