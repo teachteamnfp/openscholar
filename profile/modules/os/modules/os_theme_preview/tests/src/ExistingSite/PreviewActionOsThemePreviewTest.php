@@ -137,7 +137,7 @@ class PreviewActionOsThemePreviewTest extends OsExistingSiteTestBase {
   public function tearDown() {
     /** @var \Drupal\Core\Config\Config $theme_config_mut */
     $theme_config_mut = $this->configFactory->getEditable('system.theme');
-    $theme_config_mut->set('default', $this->themeConfig->get('default'));
+    $theme_config_mut->set('default', $this->themeConfig->get('default'))->save();
     parent::tearDown();
   }
 
