@@ -16,10 +16,11 @@
       return $.extend({
         eventRender: function (event, element) {
           if (element.hasClass('fc-event-future') && !element.hasClass('fc-day-grid-event')) {
-            let date = new Date(event['start']['_i']);
-            let offset = date.getTimezoneOffset() * 60000;
-            let dateInMs = date.valueOf();
-            let eventDate = (dateInMs + offset)/1000;
+            let userOffsetInSeconds = drupalSettings['os_events']['offsetInM']/3600;
+            let userOffsetInHM = drupalSettings['os_events']['offsetInHm'];
+            let dateString = event['start']['_i'] + userOffsetInHM;
+            let date = new Date(dateString).getTime()/1000;
+            let eventDate = (date - (userOffsetInSeconds*3600));
             let nid = event.eid;
             element.html(drupalSettings['os_events']['node'][nid]);
             element.find('#events_signup_modal_form').attr('href', '/events/signup/' + nid + '/' + eventDate);

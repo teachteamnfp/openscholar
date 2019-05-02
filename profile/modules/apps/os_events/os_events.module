@@ -300,6 +300,9 @@ function os_events_views_pre_render(ViewExecutable $view) {
       $output = render($build);
 
       $view->element['#attached']['drupalSettings']['os_events']['node'][$nid] = $output;
+      $dateTime = new DrupalDateTime();
+      $view->element['#attached']['drupalSettings']['os_events']['offsetInM'] = $dateTime->getOffset();
+      $view->element['#attached']['drupalSettings']['os_events']['offsetInHm'] = $dateTime->format('P');
     }
   }
 }
