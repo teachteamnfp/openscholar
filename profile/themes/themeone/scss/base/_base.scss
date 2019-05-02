@@ -5,10 +5,9 @@ body {
   background: $color-white;
   color: $color-text;
   font-size: 16px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Montserrat', sans-serif !important;
   line-height: 1.8;
 }
-
 a,
 a:visited,
 .fc-header-toolbar .ui-button {

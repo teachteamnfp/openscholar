@@ -6,6 +6,12 @@
       @media #{$normal} {
         padding: 0;
     }
+    nav {
+      box-shadow: 0 1px 3px 0 $color-gray3, 0 0 0 1px $color-gray3;
+      @media #{$mobile} {
+        box-shadow: none;
+      }
+    }
   }
   /***** navbar nav *****/
   .navbar-nav {
