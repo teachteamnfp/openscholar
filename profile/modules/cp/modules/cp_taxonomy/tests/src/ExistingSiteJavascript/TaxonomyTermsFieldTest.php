@@ -76,7 +76,11 @@ class TaxonomyTermsFieldTest extends CpTaxonomyExistingSiteJavascriptTestBase {
       ],
     ]);
 
-    $this->groupAdmin = $this->createUser();
+    $this->groupAdmin = $this->createUser([
+      'create taxonomy_test_1 content',
+      'create taxonomy_test_2 content',
+      'create taxonomy_test_file media',
+    ]);
     $this->addGroupAdmin($this->groupAdmin, $this->group1);
     $this->addGroupAdmin($this->groupAdmin, $this->group2);
     $this->drupalLogin($this->groupAdmin);
