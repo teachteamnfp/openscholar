@@ -25,11 +25,6 @@ cp.content.add:
   title: 'Add'
   url: 'internal:##'
   parent: cp.content
-cp.content.add.link:
-  title: 'Link'
-  route_name: node.add
-  route_parameters: { node_type: 'link'}
-  parent: cp.content.add
 cp.content.import:
   title: 'Import'
   url: 'internal:##'
