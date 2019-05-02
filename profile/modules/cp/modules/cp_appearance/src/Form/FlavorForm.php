@@ -177,6 +177,18 @@ class FlavorForm extends FormBase {
             'btn-default',
             'preview',
           ],
+          'data-toggle' => 'tooltip',
+          'data-placement' => 'bottom',
+          'data-original-title' => $this->t('Preview @theme', ['@theme' => $info['name']]),
+        ],
+      ],
+      '#icon' => [
+        '#type' => 'html_tag',
+        '#tag' => 'span',
+        '#value' => '',
+        '#attributes' => [
+          'class' => ['icon', 'glyphicon', 'glyphicon-eye-open'],
+          'aria-hidden' => 'true',
         ],
       ],
     ]));
