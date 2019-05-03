@@ -8,8 +8,6 @@ use Drupal\Core\Ajax\RedirectCommand;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
-use Drupal\group\Entity\Group;
-use Drupal\user\UserInterface;
 use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -59,7 +57,7 @@ class CpUsersOwnershipForm extends FormBase {
     if ($group = $this->vsiteContextManager->getActiveVsite()) {
       $role = 'personal-member';
       $users = [];
-      /** @var UserInterface[] $memberships */
+      /** @var \Drupal\user\UserInterface[] $memberships */
       $memberships = $group->getContentEntities('group_membership');
       foreach ($memberships as $u) {
         $users[$u->id()] = $u->getDisplayName();
