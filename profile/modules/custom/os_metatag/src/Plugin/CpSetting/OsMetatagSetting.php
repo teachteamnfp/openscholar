@@ -19,7 +19,7 @@ use Drupal\cp_settings\CpSettingInterface;
  *   group = {
  *    "id" = "seo",
  *    "title" = @Translation("SEO"),
- *    "parent" = "cp.settings"
+ *    "parent" = "cp.settings.global"
  *   }
  * )
  */

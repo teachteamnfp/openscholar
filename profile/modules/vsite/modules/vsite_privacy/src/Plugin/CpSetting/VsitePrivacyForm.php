@@ -23,7 +23,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   group = {
  *    "id" = "privacy",
  *    "title" = @Translation("Privacy"),
- *    "parent" = "cp.settings"
+ *    "parent" = "cp.settings.global"
  *   }
  * )
  */
