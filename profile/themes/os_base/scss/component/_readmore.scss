@@ -8,8 +8,14 @@
   padding-right: 11px;
   position: relative;
   &:after {
-    background: url("../../os_base/images/basesprite.png") no-repeat 3px -572px;
-    padding-right: 11px;
     content: '';
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: 4px;
+    vertical-align: middle;
+    border-top: 4px solid transparent;
+    border-left: 7px solid;
+    border-bottom: 4px solid transparent;
   }
 }
