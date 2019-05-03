@@ -15,7 +15,7 @@ use Drupal\cp_settings\CpSettingBase;
  *   group = {
  *    "id" = "seo",
  *    "title" = @Translation("SEO"),
- *    "parent" = "cp.settings"
+ *    "parent" = "cp.settings.global"
  *   }
  * )
  */

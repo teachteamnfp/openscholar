@@ -16,7 +16,7 @@ use Drupal\cp_settings\CpSettingBase;
  *   group = {
  *    "id" = "vsite",
  *    "title" = @Translation("Vsite"),
- *    "parent" = "cp.settings"
+ *    "parent" = "cp.settings.global"
  *   }
  * )
  */

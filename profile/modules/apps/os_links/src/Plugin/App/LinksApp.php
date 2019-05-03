@@ -1,9 +1,8 @@
 <?php
 
-namespace Drupal\links\Plugin\App;
+namespace Drupal\os_links\Plugin\App;
 
-use Drupal\Component\Plugin\PluginBase;
-use Drupal\vsite\AppInterface;
+use Drupal\vsite\Plugin\AppPluginBase;
 
 /**
  * Plugin for the Links App.
@@ -12,29 +11,12 @@ use Drupal\vsite\AppInterface;
  *   title = @Translation("Links"),
  *   canDisable = true,
  *   entityType = "node",
- *   bundle = "link",
+ *   bundle = {
+ *     "link",
+ *   },
  *   id = "links"
  * )
  */
-class LinksApp extends PluginBase implements AppInterface {
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getGroupContentTypes() {
-    return [
-      'link',
-    ];
-  }
-
-  /**
-   * Returns title.
-   *
-   * @return string
-   *   The title.
-   */
-  public function getTitle() {
-    return $this->pluginDefinition['title'];
-  }
+class LinksApp extends AppPluginBase {
 
 }

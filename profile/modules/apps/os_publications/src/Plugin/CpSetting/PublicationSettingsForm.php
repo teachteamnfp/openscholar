@@ -23,7 +23,7 @@ use Drupal\os_publications\Plugin\SampleCitations;
  *   group = {
  *    "id" = "publications",
  *    "title" = @Translation("Publications"),
- *    "parent" = "cp.settings"
+ *    "parent" = "cp.settings.app"
  *   }
  * )
  */
