@@ -136,6 +136,12 @@ class FlavorForm extends FormBase {
     /** @var string $selection */
     $selection = $form_state->getValue("options_{$this->theme->getName()}");
 
+    // TODO: Get default_theme.
+    // TODO: Check if the current form is for default_theme.
+    // TODO: If yes, check if selection is same as default_theme.
+    // TODO: If not, show preview option.
+    // TODO: If yes, hide preview option.
+    // TODO: Wrap code below in `else` condition.
     if ($selection !== $this->theme->getName()) {
       /** @var \Drupal\Core\Extension\Extension $flavor */
       $flavor = $this->flavors->get($selection);
@@ -145,7 +151,7 @@ class FlavorForm extends FormBase {
       $screenshot_uri = $this->themeSelectorBuilder->getScreenshotUri($flavor);
     }
     else {
-      // Revert everything to normal is user has not chosen a flavor.
+      // Revert everything to normal if user has not chosen a flavor.
       /** @var array $info */
       $info = $this->theme->info;
       /** @var string|null $screenshot_uri */
