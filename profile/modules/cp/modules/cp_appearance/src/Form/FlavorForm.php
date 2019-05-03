@@ -147,9 +147,33 @@ class FlavorForm extends FormBase {
     $selection = $form_state->getValue("options_{$this->theme->getName()}");
     /** @var string $theme_selector_identifier */
     $theme_selector_identifier = Html::cleanCssIdentifier("theme-selector-{$this->theme->getName()}");
-    /** @var string[] $available_flavors */
     $available_flavors = \array_keys($this->theme->sub_themes);
     $default_theme_options = \array_merge([$this->theme->getName()], $available_flavors);
+
+    // Prepare data for screenshot preview.
+    if ($selection !== $this->theme->getName()) {
+      /** @var \Drupal\Core\Extension\Extension $flavor */
+      $flavor = $this->flavors->get($selection);
+      /** @var array $info */
+      $info = $flavor->info;
+      /** @var string|null $screenshot_uri */
+      $screenshot_uri = $this->themeSelectorBuilder->getScreenshotUri($flavor);
+    }
+    else {
+      // Revert everything to normal if user has not chosen a flavor.
+      /** @var array $info */
+      $info = $this->theme->info;
+      /** @var string|null $screenshot_uri */
+      $screenshot_uri = $this->themeSelectorBuilder->getScreenshotUri($this->theme);
+    }
+
+    $response->addCommand(new ReplaceCommand("#$theme_selector_identifier .theme-screenshot img", [
+      '#theme' => 'image',
+      '#uri' => $screenshot_uri ?? '',
+      '#alt' => $this->t('Screenshot for @theme theme', ['@theme' => $info['name']]),
+      '#title' => $this->t('Screenshot for @theme theme', ['@theme' => $info['name']]),
+      '#attributes' => ['class' => ['screenshot']],
+    ]));
 
     // Theme operations are going to be rendered differently in case of default
     // theme.
@@ -177,30 +201,6 @@ class FlavorForm extends FormBase {
       }
     }
     else {
-      if ($selection !== $this->theme->getName()) {
-        /** @var \Drupal\Core\Extension\Extension $flavor */
-        $flavor = $this->flavors->get($selection);
-        /** @var array $info */
-        $info = $flavor->info;
-        /** @var string|null $screenshot_uri */
-        $screenshot_uri = $this->themeSelectorBuilder->getScreenshotUri($flavor);
-      }
-      else {
-        // Revert everything to normal if user has not chosen a flavor.
-        /** @var array $info */
-        $info = $this->theme->info;
-        /** @var string|null $screenshot_uri */
-        $screenshot_uri = $this->themeSelectorBuilder->getScreenshotUri($this->theme);
-      }
-
-      $response->addCommand(new ReplaceCommand("#$theme_selector_identifier .theme-screenshot img", [
-        '#theme' => 'image',
-        '#uri' => $screenshot_uri ?? '',
-        '#alt' => $this->t('Screenshot for @theme theme', ['@theme' => $info['name']]),
-        '#title' => $this->t('Screenshot for @theme theme', ['@theme' => $info['name']]),
-        '#attributes' => ['class' => ['screenshot']],
-      ]));
-
       $response->addCommand(new ReplaceCommand("#$theme_selector_identifier .theme-info .operations .preview", [
         '#type' => 'link',
         '#title' => $this->t('Preview'),
