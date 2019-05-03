@@ -172,6 +172,14 @@ function os_widgets_form_alter(&$form, FormStateInterface $form_state, $form_id)
           ],
         ],
       ];
+      if (!empty($form['field_taxonomy_vocabulary']['widget']['#default_value'][0])) {
+        /** @var \Drupal\cp_taxonomy\CpTaxonomyHelperInterface $taxonomy_helper */
+        $taxonomy_helper = Drupal::service('cp.taxonomy.helper');
+        $data['vid']['#default_value'] = $form['field_taxonomy_vocabulary']['widget']['#default_value'][0];
+        $saved_entity_types = $taxonomy_helper->getSelectedBundles($data);
+
+        _os_widgets_taxonomy_filter_bundle_options($form, $saved_entity_types);
+      }
       break;
 
     case 'block_content_rss_feed_form':
@@ -200,6 +208,22 @@ function os_widgets_field_taxonomy_vocabulary_ajax(array &$form, FormStateInterf
   if (empty($saved_entity_types)) {
     return _os_widgets_create_form_taxonomy_bundle_ajax_response($form);
   }
+  _os_widgets_taxonomy_filter_bundle_options($form, $saved_entity_types);
+  return _os_widgets_create_form_taxonomy_bundle_ajax_response($form);
+}
+
+/**
+ * Check and remove from bundle options depend on entity bundles.
+ *
+ * @param array $form
+ *   Form array.
+ * @param array $saved_entity_types
+ *   Array of selectable entity bundles.
+ */
+function _os_widgets_taxonomy_filter_bundle_options(array &$form, array $saved_entity_types): void {
+  if (empty($saved_entity_types)) {
+    return;
+  }
   foreach ($form['field_taxonomy_bundle']['widget']['#options'] as $key => $option) {
     if ($key == '_none') {
       continue;
@@ -208,7 +232,6 @@ function os_widgets_field_taxonomy_vocabulary_ajax(array &$form, FormStateInterf
       unset($form['field_taxonomy_bundle']['widget']['#options'][$key]);
     }
   }
-  return _os_widgets_create_form_taxonomy_bundle_ajax_response($form);
 }
 
 /**
