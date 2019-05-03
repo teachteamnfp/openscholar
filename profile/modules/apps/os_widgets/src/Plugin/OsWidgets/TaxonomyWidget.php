@@ -2,9 +2,13 @@
 
 namespace Drupal\os_widgets\Plugin\OsWidgets;
 
+use DateTime;
+use DateTimeZone;
 use Drupal\block_content\Entity\BlockContent;
+use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Database\Database;
+use Drupal\Core\Database\Query\Condition;
 use Drupal\Core\Database\Query\SelectInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\cp_taxonomy\CpTaxonomyHelperInterface;
@@ -25,6 +29,7 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
 
   protected $requestStack;
   protected $settings;
+  protected $time;
 
   /**
    * Cp Taxonomy Helper.
@@ -36,10 +41,11 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
   /**
    * {@inheritdoc}
    */
-  public function __construct($configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, Connection $connection, RequestStack $request_stack, CpTaxonomyHelperInterface $taxonomy_helper) {
+  public function __construct($configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, Connection $connection, RequestStack $request_stack, CpTaxonomyHelperInterface $taxonomy_helper, TimeInterface $time) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $entity_type_manager, $connection);
     $this->requestStack = $request_stack;
     $this->taxonomyHelper = $taxonomy_helper;
+    $this->time = $time;
   }
 
   /**
@@ -53,7 +59,8 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
       $container->get('entity_type.manager'),
       $container->get('database'),
       $container->get('request_stack'),
-      $container->get('cp.taxonomy.helper')
+      $container->get('cp.taxonomy.helper'),
+      $container->get('datetime.time')
     );
   }
 
@@ -253,6 +260,8 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
    *
    * @return \Drupal\Core\Database\Query\SelectInterface
    *   Select Interface.
+   *
+   * @throws \Exception
    */
   protected function buildCountQuery(array $tids, string $entity_name, array $bundles): SelectInterface {
     $query = Database::getConnection()->select('taxonomy_term_data', 'td');
@@ -260,6 +269,40 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
     $query->condition('td.tid', $tids, 'IN');
     $alias = $entity_name . '_ftt';
     $query->leftJoin($entity_name . '__field_taxonomy_terms', $alias, $alias . '.field_taxonomy_terms_target_id = td.tid');
+    $special_event_types = [];
+    foreach ($bundles as $i => $bundle) {
+      if (in_array($bundle, ['past_events', 'upcoming_events'])) {
+        $special_event_types[$bundle] = $bundle;
+        unset($bundles[$i]);
+      }
+      // Fix bundles array if remove everything.
+      if (count($bundles) == 0) {
+        $bundles[] = 'events';
+      }
+    }
+    // If both special type is present, then nothing to do.
+    // If only one selected, then we need to filter.
+    if (count($special_event_types) == 1) {
+      $special_type = reset($special_event_types);
+      $query->leftJoin('node__field_recurring_date', 'frd', $alias . '.entity_id = frd.entity_id');
+      $db_or = new Condition('OR');
+      $db_or->isNull('frd.field_recurring_date_value');
+      $request_time = $this->time->getRequestTime();
+      $new_datetime = new DateTime();
+      $new_datetime->setTimestamp($request_time);
+      $new_datetime->setTimezone(new DateTimeZone('GMT'));
+      if ($special_type == 'past_events') {
+        $date = $new_datetime->format("Y-m-d");
+        $db_or->condition('frd.field_recurring_date_value', $date, '<');
+      }
+      if ($special_type == 'upcoming_events') {
+        // Set current time before 30 minutes.
+        $new_datetime->setTimestamp($request_time - 30 * 60);
+        $date = $new_datetime->format("Y-m-d\TH:i:s");
+        $db_or->condition('frd.field_recurring_date_value', $date, '>=');
+      }
+      $query->condition($db_or);
+    }
     $query->condition($alias . '.bundle', $bundles, 'IN');
     $field_data_id = '';
     switch ($entity_name) {
