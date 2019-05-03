@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\cp_appearance\ExistingSiteJavascript;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTestBase;
 
 /**
@@ -55,7 +56,14 @@ class FlavorFormTest extends OsExistingSiteJavascriptTestBase {
   public function testFlavorForDefaultTheme(): void {
     $this->visit('/cp-appearance-flavor/cp/appearance');
     $this->assertSession()->statusCodeEquals(200);
-    $this->assertSession()->elementExists('css', 'form.cp-appearance-vibrant-flavor-form select');
+    $default_theme = 'hwpi_classic';
+
+    /** @var \Drupal\Core\Config\Config $theme_setting_mut */
+    $theme_setting_mut = $this->container->get('config.factory')->getEditable('system.theme');
+    $theme_setting_mut->set('default', $default_theme)->save();
+
+    $flavor_form_identifier = Html::cleanCssIdentifier("cp-appearance-$default_theme-flavor-form");
+    $this->assertSession()->elementExists('css', "form.$flavor_form_identifier select");
     $this->assertSession()->elementExists('css', 'button[name="save-vibrant"]');
   }
 
