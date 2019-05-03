@@ -1,6 +1,7 @@
 /**** footer ****/
-footer {
+footer.footer {
   background: $color-gray;
+  color: $color-white;
   .nav {
     a {
       font-family: 'Roboto', sans-serif;
@@ -9,5 +10,9 @@ footer {
   }
   a {
     color: $color-white;
+  }
+  h2.block-title {
+    background: none;
+    padding: 0;
   }
 }

@@ -193,7 +193,6 @@
         "drupal/date_recur": "^2.0",
         "drupal/views_ical": "1.x-dev",
         "fullcalendar/fullcalendar": "^3.3",
-        "drupal/date_recur_interactive": "^2.0",
         "drupal/bootstrap": "^3.17",
         "drupal/styleguide": "^1.0@alpha",
         "drupal/config_split": "^1.4",
@@ -225,7 +224,8 @@
         "drupal/mathjax": "^2.7",
         "drupal/advancedqueue": "^1.0@beta",
         "drupal/rng": "^1.7",
-        "drupal/rng_views": "^1.7"
+        "drupal/rng_views": "^1.7",
+        "drupal/date_recur_modular": "^1.0@alpha"
     },
     "require-dev": {
         "drupal/features": "^3.7",
@@ -313,9 +313,6 @@
             },
             "drupal/fullcalendar": {
                 "Fullcalendar incompatible with Date Recur 2.x": "https://www.drupal.org/files/issues/2019-01-09/3023612-5.patch"
-            },
-            "drupal/date_recur": {
-                "Make compatible with Date All Day module (All day occurrences)": "https://www.drupal.org/files/issues/2019-04-15/2982275-41.patch"
             },
             "drupal/views_ical": {
                 "Define missing views methods": "https://www.drupal.org/files/issues/2019-01-10/2982848-2.patch",

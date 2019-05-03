@@ -3,7 +3,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.date_format.html_date
     - core.date_format.medium
     - field.field.node.events.body
     - field.field.node.events.field_close_
@@ -69,11 +68,9 @@ content:
       format_type: medium
       occurrence_format_type: medium
       same_end_date_format_type: medium
-      all_day_format_type: html_date
       separator: '-'
       timezone_override: ''
       interpreter: ''
-      allow_all_day: 0
       show_next: 5
       count_per_item: true
     third_party_settings: {  }

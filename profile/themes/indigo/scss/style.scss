@@ -96,7 +96,7 @@ footer {
 .comment-wrapper {
   border-top: none;
 }
-aside .block {
+aside .region .block {
   border-top: none;
 }
 .path-person .block-inner {
@@ -108,6 +108,7 @@ aside .block {
   text-transform: none;
   padding: 3px 7px;
   margin-bottom: 10px;
+  line-height: 23px;
 }
 a.rslides_nav {
   background-color: $color_red_stage_approx;

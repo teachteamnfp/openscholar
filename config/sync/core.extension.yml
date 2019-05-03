@@ -41,7 +41,7 @@ module:
   crop: 0
   ctools: 0
   date_recur: 0
-  date_recur_interactive: 0
+  date_recur_modular: 0
   datetime: 0
   datetime_range: 0
   dblog: 0
@@ -88,6 +88,7 @@ module:
   os_app_access: 0
   os_classes: 0
   os_events: 0
+  os_faq: 0
   os_fullcalendar: 0
   os_links: 0
   os_mailchimp: 0
@@ -96,6 +97,8 @@ module:
   os_metatag: 0
   os_office_embed: 0
   os_pages: 0
+  os_presentations: 0
+  os_profiles: 0
   os_publications: 0
   os_redirect: 0
   os_redirect_to_source: 0
