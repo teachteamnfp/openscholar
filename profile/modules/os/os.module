@@ -46,3 +46,16 @@ function os_preprocess_html(&$variables) {
     $variables['#attached']['library'][] = 'os/openscholarModule';
   }
 }
+
+/**
+ * Implements hook_preprocess_block().
+ *
+ * Replaces 'Drupal' with 'OpenScholar' in the powered by block.
+ *
+ * @param array $vars
+ */
+function os_preprocess_block(&$vars) {
+  if (isset($vars['plugin_id']) && $vars['plugin_id'] == 'system_powered_by_block') {
+    $vars['content']['#markup'] = t('<span>Powered by <a href=":link">OpenScholar</a></span>', [':link' => 'https://theopenscholar.com/']);
+  }
+}
