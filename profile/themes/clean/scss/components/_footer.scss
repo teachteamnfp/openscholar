@@ -3,4 +3,11 @@ footer.footer {
   a {
     color: $color-green;
   }
+  ul.nav {
+    li {
+      a {
+        color: $color-green;
+      }
+    }
+  }
 }
