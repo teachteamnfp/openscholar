@@ -1,0 +1,22 @@
+uuid: dea00845-ac9a-4c91-8079-42c536e5851c
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - clean_blue
+_core:
+  default_config_hash: oXUb3JZR2WW5VOdw4HrhRicCsq51mCgLfRyvheG68ck
+id: clean_blue_breadcrumbs
+theme: clean_blue
+region: content
+weight: -8
+provider: null
+plugin: system_breadcrumb_block
+settings:
+  id: system_breadcrumb_block
+  label: Breadcrumbs
+  provider: system
+  label_display: '0'
+visibility: {  }
