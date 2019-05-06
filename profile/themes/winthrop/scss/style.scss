@@ -148,6 +148,7 @@ footer {
         a {
           @extend %extend_1;
           font-size: 1em;
+          background: none;
           @media #{$mobile} {
             font-size: 19px;
           }
