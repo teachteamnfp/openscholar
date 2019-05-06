@@ -251,9 +251,6 @@ function _os_widgets_create_form_taxonomy_bundle_ajax_response($form) {
  *   Collected array used by checkboxes in field.
  */
 function os_widgets_field_taxonomy_bundle_allowed_values() {
-  if (!Drupal::moduleHandler()->moduleExists('cp_taxonomy')) {
-    return [];
-  }
   $taxonomy_helper = Drupal::service('cp.taxonomy.helper');
   return $taxonomy_helper->getSelectableBundles();
 }
