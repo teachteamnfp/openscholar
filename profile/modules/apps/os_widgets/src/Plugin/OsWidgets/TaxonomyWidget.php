@@ -28,7 +28,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
 
   /**
-   * Request stack service.
+   * Request stack that controls the lifecycle of requests.
    *
    * @var \Symfony\Component\HttpFoundation\RequestStack
    */
@@ -42,7 +42,7 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
   protected $settings;
 
   /**
-   * Request stack service.
+   * Time interface for obtaining system time.
    *
    * @var \Drupal\Component\Datetime\TimeInterface
    */
