@@ -56,6 +56,10 @@ function os_preprocess_html(&$variables) {
  */
 function os_preprocess_block(&$vars) {
   if (isset($vars['plugin_id']) && $vars['plugin_id'] == 'system_powered_by_block') {
-    $vars['content']['#markup'] = t('<span>Powered by <a href=":link">OpenScholar</a></span>', [':link' => 'https://theopenscholar.com/']);
+    $vars['content']['#markup'] = '';
+    if (\Drupal::currentUser()->isAnonymous()) {
+      $vars['content']['#markup'] .= \Drupal\Core\Link::createFromRoute(t('Admin Login'), 'user.login')->toString();
+    }
+    $vars['content']['#markup'] .= t('<span id="powered-by">Powered by <a href=":link">OpenScholar</a></span>', [':link' => 'https://theopenscholar.com/']);
   }
 }
