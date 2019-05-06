@@ -1,0 +1,27 @@
+.card {
+  background: $color-white;
+  border: 1px solid $color-light-gray1;
+  padding: 10px;
+}
+.content-inner {
+  @extend .card;
+  border-top: 5px solid $color-green;
+  padding: 25px;
+  h2.block-title {
+    background: $color-light-gray;
+    border-left: 3px solid $color-green;
+    padding: 9px 15px 10px;
+    margin-bottom: 10px;
+  }
+}
+.read-more, .node-readmore a {
+  color: $color-green;
+  text-decoration: underline;
+  font-size: 14px;
+  &:after {
+    border: 0 none;
+  }
+}
+.node--title a {
+  color: $color-green;
+}
