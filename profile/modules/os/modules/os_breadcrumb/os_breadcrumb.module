@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * @file
+ * Helper functions for Breadcrumb.
+ */
+
+/**
+ * Implements hook_theme().
+ */
+function os_breadcrumb_theme(array $existing, string $type, string $theme, string $path): array {
+  return [
+    'os_breadcrumb_settings_form' => [
+      'render element' => 'form',
+    ],
+  ];
+}
