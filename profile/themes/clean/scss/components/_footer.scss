@@ -1,3 +1,13 @@
-footer {
+footer.footer {
   background: $color-white;
+  a {
+    color: $color-green;
+  }
+  ul.nav {
+    li {
+      a {
+        color: $color-green;
+      }
+    }
+  }
 }

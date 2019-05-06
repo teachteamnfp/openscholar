@@ -9,21 +9,20 @@
       @media #{$mobile} {
       }
       > a {
-        color: $color-gray1;
+        color: $color-green;
         font-weight: 700;
-        border-left: 1px solid rgba(0, 0, 0, 0.22);
         font-size: 16px;
         transition: all .3s ease;
+        padding: 16px 20px;
         &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
           color: $color-green;
-          background: none;
+          background: $color-light-gray;
         }
       }
       &.open, &.active {
         > a, > a:hover, > a:active, > a:focus {
           color: $color-green;
-          background: none;
-          border-color: rgba(0, 0, 0, 0.22);
+          background: $color-light-gray;
         }
       }
     }
@@ -45,13 +44,16 @@
         transition: all .3s ease;
         @media #{$mobile} {
           font-size: 19px;
-          font-weight: normal;
+          font-weight: 700;
+          color: green;
+          border: 0 none;
         }
         &:hover, &:active {
           color: $color-green;
           padding-left: 20px;
           @media #{$mobile} {
             background: none;
+            color: $color-green;
           }
         }
       }
