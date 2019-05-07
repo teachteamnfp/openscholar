@@ -19,7 +19,7 @@ class BreadCrumbSettingFormTest extends ExistingSiteBase {
    *
    * @var \Drupal\user\Entity\User|false
    */
-  protected $user;
+  protected $adminUser;
 
   /**
    * Simple user.
@@ -34,7 +34,7 @@ class BreadCrumbSettingFormTest extends ExistingSiteBase {
   public function setUp() {
     parent::setUp();
 
-    $this->user = $this->createUser([], '', TRUE);
+    $this->adminUser = $this->createUser([], '', TRUE);
     $this->simpleUser = $this->createUser();
   }
 
@@ -56,7 +56,7 @@ class BreadCrumbSettingFormTest extends ExistingSiteBase {
    * @throws \Behat\Mink\Exception\ExpectationException
    */
   public function testBreadcrumbSettingsForm() {
-    $this->drupalLogin($this->user);
+    $this->drupalLogin($this->adminUser);
     $this->drupalGet('cp/settings/breadcrumb');
     // Testing checked.
     $edit = [
@@ -82,7 +82,7 @@ class BreadCrumbSettingFormTest extends ExistingSiteBase {
    * @throws \Behat\Mink\Exception\ExpectationException
    */
   public function testBreadcrumbSettings() {
-    $this->drupalLogin($this->user);
+    $this->drupalLogin($this->adminUser);
 
     // Test is visible.
     $this->drupalGet('cp/settings/breadcrumb');

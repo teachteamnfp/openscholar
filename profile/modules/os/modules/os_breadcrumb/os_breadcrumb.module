@@ -28,7 +28,6 @@ function os_breadcrumb_theme(array $existing, string $type, string $theme, strin
  * Implements hook_preprocess_HOOK().
  */
 function os_breadcrumb_preprocess_page(&$variables) {
-  // Global settings for displaying/hiding breadcrumbs.
   $show_breadcrumbs = Drupal::config('os_breadcrumb.settings')->get('show_breadcrumbs');
   if (!$show_breadcrumbs) {
     unset($variables['page']['content']['os_base_breadcrumbs']);
@@ -105,6 +104,7 @@ function os_breadcrumb_edit_taxonomy_breadcrumbs(Term $term, Breadcrumb &$breadc
   $parent_chain = array_reverse($parent_chain);
 
   // Skip first two indexes for Home and Vocab name.
+  // Get existing links array and alter the array to include needed breadcrumbs.
   $links = $breadcrumb->getLinks();
   $count = count($links);
   $temp = $links[$count - 1];
@@ -148,6 +148,7 @@ function os_breadcrumb_edit_pages_breadcrumbs(Entity $node, Breadcrumb &$breadcr
   $parent_chain = array_reverse($parent_chain);
 
   // Skip first index for Home.
+  // Get existing links array and alter the array to include needed breadcrumbs.
   $links = $breadcrumb->getLinks();
   foreach ($parent_chain as $k => $parent) {
     $links[$k + 1] = $parent;
