@@ -24,6 +24,11 @@
           color: $color-green;
           background: $color-light-gray;
         }
+        .dropdown-menu a{
+          &:hover {
+            color: $color-white;
+          }
+        }
       }
     }
   }
@@ -45,7 +50,7 @@
         @media #{$mobile} {
           font-size: 19px;
           font-weight: 700;
-          color: green;
+          color: $color-green;
           border: 0 none;
         }
         &:hover, &:active {
