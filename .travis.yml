@@ -46,7 +46,7 @@ before_script:
   - cp .travis/RoboFile.php .
 
 script:
-  - robo $JOB
+  - travis_retry robo $JOB
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
