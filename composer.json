@@ -162,16 +162,16 @@
             "type": "package",
             "package": {
                 "name": "drupal/views_ical",
-                "version": "8.x-1.x-dev",
+                "version": "8.x-2.x-dev",
                 "type": "drupal-module",
                 "dist": {
-                    "url": "https://github.com/subhojit777/views_ical/archive/8.x-1.x.zip",
+                    "url": "https://github.com/subhojit777/views_ical/archive/8.x-2.x.zip",
                     "type": "zip"
                 },
                 "source": {
                     "url": "https://github.com/subhojit777/views_ical.git",
                     "type": "git",
-                    "reference": "8.x-1.x"
+                    "reference": "8.x-2.x"
                 }
             }
         }
@@ -242,7 +242,7 @@
         "drupal/rng": "^1.7",
         "drupal/rng_views": "^1.7",
         "drupal/date_recur_modular": "^1.0@alpha",
-        "drupal/views_ical": "8.x-1.x-dev"
+        "drupal/views_ical": "8.x-2.x-dev"
     },
     "require-dev": {
         "drupal/features": "^3.7",

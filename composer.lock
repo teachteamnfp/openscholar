@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f4385ac7c66ba4a4bda5d244a0742b47",
+    "content-hash": "d16f9bef8be9b7ad12498704f80bb391",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -6176,16 +6176,16 @@
         },
         {
             "name": "drupal/views_ical",
-            "version": "8.x-1.x-dev",
+            "version": "8.x-2.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/subhojit777/views_ical.git",
-                "reference": "8.x-1.x"
+                "reference": "8.x-2.x"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/subhojit777/views_ical/archive/8.x-1.x.zip",
-                "reference": "8.x-1.x",
+                "url": "https://github.com/subhojit777/views_ical/archive/8.x-2.x.zip",
+                "reference": "8.x-2.x",
                 "shasum": null
             },
             "type": "drupal-module",
@@ -6193,8 +6193,7 @@
                 "patches_applied": {
                     "No page title due to undefined variable $config": "https://www.drupal.org/files/issues/2891778-2-undefined-variable-notice-fix.patch"
                 }
-            },
-            "time": "2019-03-04T15:17:05+00:00"
+            }
         },
         {
             "name": "drupal/views_infinite_scroll",
