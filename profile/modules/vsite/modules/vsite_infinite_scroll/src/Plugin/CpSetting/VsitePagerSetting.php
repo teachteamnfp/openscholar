@@ -19,7 +19,7 @@ use Drupal\cp_settings\CpSettingInterface;
  *   title = @Translation("Vsite pager"),
  *   group = {
  *    "id" = "vsite",
- *    "title" = @Translation("Vsite"),
+ *    "title" = @Translation("Long List Display"),
  *    "parent" = "cp.settings.global"
  *   }
  * )
