@@ -31,8 +31,20 @@ cp.content.import:
   parent: cp.content
 cp.content.browse:
   title: 'Browse'
-  route_name: view.site_content.page_1
+  url: 'internal:##'
   parent: cp.content
+cp.content.browse.content:
+  title: 'Content'
+  route_name: view.site_content.page_1
+  parent: cp.content.browse
+cp.content.browser.publications:
+  title: 'Publications'
+  route_name: view.publications.cp
+  parent: cp.content.browse
+cp.content.browse.media:
+  title: 'Files'
+  route_name: view.os_media.page_1
+  parent: cp.content.browse
 cp.menu:
   title: 'Menus'
   url: 'internal:##'
