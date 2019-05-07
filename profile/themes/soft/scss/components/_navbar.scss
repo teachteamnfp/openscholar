@@ -1,0 +1,60 @@
+/**** navbar background ****/
+.navbar-collapse {
+  background: $color-white;
+  padding: 0 !important;
+  /***** navbar nav *****/
+  .navbar-nav {
+    min-height: 80px;
+    align-items: center;
+    display: flex;
+    > li {
+      @media #{$mobile} {
+      }
+      > a {
+        color: $color-oxford-blue;
+        transition: all 200ms ease;
+        font-family: 'Roboto', sans-serif;
+        &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
+          color: $color-blue;
+          background: none;
+        }
+      }
+      &.open, &.active {
+        > a, > a:hover, > a:active, > a:focus {
+          color: $color-blue;
+          background: none;
+        }
+      }
+    }
+  }
+  /**** dropdown menu ****/
+  .dropdown-menu {
+    background: $color-black;
+    @media #{$mobile} {
+      background: none;
+    }
+    > li {
+      > a {
+        color: $color-white;
+        @media #{$mobile} {
+          font-size: 19px;
+          font-weight: normal;
+        }
+        &:hover, &:active {
+
+          @media #{$mobile} {
+            background: none;
+          }
+        }
+      }
+      &.active {
+        a, a:hover {
+
+          @media #{$mobile} {
+            background: none;
+          }
+        }
+      }
+    }
+  }
+}
