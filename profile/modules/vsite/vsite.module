@@ -77,24 +77,27 @@ function vsite_form_node_form_alter(&$form, FormStateInterface $form_state, $for
   if ($group = $vsiteContext->getActiveVsite()) {
     /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
     $entity = $form_state->getFormObject()->getEntity();
-    $form_state->set('group', $group);
-    $form_state->set('group_content_enabler', 'group_node:' . $entity->bundle());
-    foreach (Element::children($form['actions']) as $name) {
+    $plugin_id = 'group_node:' . $entity->bundle();
+    if (!$group->getContentByEntityId($plugin_id, $entity->id())) {
+      $form_state->set('group', $group);
+      $form_state->set('group_content_enabler', 'group_node:' . $entity->bundle());
+      foreach (Element::children($form['actions']) as $name) {
 
-      // Skip buttons without submit handlers.
-      if (empty($form['actions'][$name]['#submit'])) {
-        continue;
+        // Skip buttons without submit handlers.
+        if (empty($form['actions'][$name]['#submit'])) {
+          continue;
+        }
+
+        // Skip buttons that do not properly build and save an entity.
+        $submit = $form['actions'][$name]['#submit'];
+        if (!in_array('::submitForm', $submit) || !in_array('::save', $submit)) {
+          continue;
+        }
+
+        // If we are using the wizard, we need to substitute the entity save
+        // handler in order to add the entity to the private temp store.
+        $form['actions'][$name]['#submit'][] = 'group_content_entity_submit';
       }
-
-      // Skip buttons that do not properly build and save an entity.
-      $submit = $form['actions'][$name]['#submit'];
-      if (!in_array('::submitForm', $submit) || !in_array('::save', $submit)) {
-        continue;
-      }
-
-      // If we are using the wizard, we need to substitute the entity save
-      // handler in order to add the entity to the private temp store.
-      $form['actions'][$name]['#submit'][] = 'group_content_entity_submit';
     }
   }
 }
@@ -121,7 +124,7 @@ function vsite_form_alter(&$form, FormStateInterface $formState, $form_id) {
       $availablePlugins = $plugins[$groupTypeId];
 
       $plugin_id = 'group_entity:' . $entity->getEntityTypeId();
-      if (in_array($plugin_id, $availablePlugins)) {
+      if (in_array($plugin_id, $availablePlugins) && !($existingEntity = $group->getContentByEntityId($plugin_id, $entity->id()))) {
         $formState->set('group', $group);
         $formState->set('group_content_enabler', $plugin_id);
         foreach (Element::children($form['actions']) as $name) {
