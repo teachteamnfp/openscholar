@@ -8,7 +8,7 @@ use weitzman\DrupalTestTraits\ExistingSiteBase;
 /**
  * Test base for event tests.
  */
-class EventsTestBase extends ExistingSiteBase {
+abstract class EventsTestBase extends ExistingSiteBase {
 
   /**
    * Config factory.

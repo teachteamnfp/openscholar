@@ -1,4 +1,5 @@
 field_semester_allowed_values:
-  fall: Fall
   spring: Spring
   summer: Summer
+  fall: Fall
+  winter: Winter

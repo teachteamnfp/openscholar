@@ -44,8 +44,23 @@ class WidgetHelperTest extends ExistingSiteBase {
     $fieldRecurringDate['ends_date'] = [];
 
     $result = $this->widgetHelper->alterRrule($rrule, $fieldRecurringDate);
-
     $this->assertEquals('FREQ=DAILY;COUNT=5', $result);
+
+    $rrule_yearly = 'FREQ=YEARLY';
+    $result = $this->widgetHelper->alterRrule($rrule_yearly, $fieldRecurringDate);
+    $this->assertEquals('FREQ=YEARLY;COUNT=5', $result);
+
+    $fieldRecurringDate['ends_mode'] = [];
+    $fieldRecurringDate['ends_count'] = [];
+    $fieldRecurringDate['ends_date'] = [new DateTime('+7 days')];
+    $result = $this->widgetHelper->alterRrule($rrule, $fieldRecurringDate);
+    $this->assertNotEquals('FREQ=DAILY;', $result);
+
+    $fieldRecurringDate['ends_mode'] = [];
+    $fieldRecurringDate['ends_count'] = [];
+    $fieldRecurringDate['ends_date'] = [];
+    $result = $this->widgetHelper->alterRrule($rrule, $fieldRecurringDate);
+    $this->assertEquals('FREQ=DAILY;COUNT=50', $result);
   }
 
   /**
@@ -57,6 +72,19 @@ class WidgetHelperTest extends ExistingSiteBase {
     $rrule = 'FREQ=YEARLY;BYMONTH=4;BYMONTHDAY=5;COUNT=5';
     $result = $this->widgetHelper->getRecurrenceOptions($rrule, $dateTime);
     $this->assertEquals('yearly_monthday', $result);
+
+    $rrule = 'FREQ=DAILY;COUNT=5';
+    $result = $this->widgetHelper->getRecurrenceOptions($rrule, $dateTime);
+    $this->assertEquals('daily', $result);
+
+    $rrule = 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR;COUNT=5';
+    $result = $this->widgetHelper->getRecurrenceOptions($rrule, $dateTime);
+    $this->assertEquals('weekdayly', $result);
+
+    $rrule = 'FREQ=WEEKLY;BYDAY=MO;COUNT=5';
+    $result = $this->widgetHelper->getRecurrenceOptions($rrule, $dateTime);
+    $this->assertEquals('weekly_oneday', $result);
+
   }
 
 }

@@ -1,0 +1,22 @@
+uuid: 852a887f-33ec-40eb-a3d7-fd4600f7748b
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - clean_blue
+_core:
+  default_config_hash: 9EoWV2Lot6FVSr50t4hoKgiz1LIXYWNG-IIPYsWxBqo
+id: clean_blue_content
+theme: clean_blue
+region: content
+weight: -4
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  provider: system
+  label_display: '0'
+visibility: {  }

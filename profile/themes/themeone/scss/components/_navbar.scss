@@ -22,6 +22,7 @@
       > a {
         color: $color-text;
         font-family: 'Montserrat', sans-serif;
+        padding: 16px 20px;
         &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
           color: $color-link;
           background: none;

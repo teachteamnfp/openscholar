@@ -1,0 +1,20 @@
+uuid: 8977c3f2-1db1-4081-b7de-ed8f2c92d602
+langcode: en
+status: true
+dependencies:
+  theme:
+    - clean_blue
+_core:
+  default_config_hash: 13GQpeITIJsp1kyPniXtWZfyFH87vb1xxJCHifL4UeE
+id: clean_blue_local_actions
+theme: clean_blue
+region: content
+weight: -5
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Primary admin actions'
+  provider: core
+  label_display: '0'
+visibility: {  }

@@ -20,7 +20,7 @@ use Drupal\cp_settings\CpSettingInterface;
  *   group = {
  *    "id" = "mailchimp",
  *    "title" = @Translation("Mailchimp"),
- *    "parent" = "cp.settings"
+ *    "parent" = "cp.settings.global"
  *   }
  * )
  */
