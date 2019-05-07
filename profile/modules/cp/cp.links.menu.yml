@@ -17,7 +17,7 @@
 #  weight: 0
 #  parent: cp.build
 cp.content:
-  title: 'Content'
+  title: 'Site Content'
   url: 'internal:##'
   menu_name: control-panel
   weight: 0
