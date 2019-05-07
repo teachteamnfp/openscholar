@@ -12,6 +12,7 @@ function os_redirect_redirect_matched_redirect_alter(&$redirect) {
   if (empty($redirect)) {
     return;
   }
+
   $vsite_context_manager = Drupal::getContainer()->get('vsite.context_manager');
   /** @var \Drupal\group\Entity\GroupInterface $group */
   if ($group = $vsite_context_manager->getActiveVsite()) {
@@ -23,7 +24,7 @@ function os_redirect_redirect_matched_redirect_alter(&$redirect) {
     }
   }
 
-  if (Drupal::currentUser()->hasPermission('ignore redirects')) {
+  if ($redirect && Drupal::currentUser()->hasPermission('ignore redirects')) {
     Drupal::messenger()->addWarning(t('You are redirected to: @uri', ['@uri' => $redirect->getRedirectUrl()->getUri()]));
     $redirect = NULL;
   }
@@ -35,7 +36,38 @@ function os_redirect_redirect_matched_redirect_alter(&$redirect) {
 function os_redirect_redirect_path_alter(&$path) {
   $vsite_context_manager = Drupal::getContainer()->get('vsite.context_manager');
   /** @var \Drupal\group\Entity\GroupInterface $group */
-  if ($group = $vsite_context_manager->getActiveVsite()) {
-    $path = '[vsite:' . $group->id() . ']/' . $path;
+//  if ($group = $vsite_context_manager->getActiveVsite()) {
+//    $path = '[vsite:' . $group->id() . ']/' . $path;
+//  }
+}
+
+/**
+ * Implements hook_redirect_insert().
+ *
+ * @param \Drupal\redirect\Entity\Redirect $redirect
+ */
+function os_redirect_redirect_insert(\Drupal\redirect\Entity\Redirect $redirect) {
+  os_redirect_assign_to_vsite($redirect);
+}
+
+/**
+ * Implements hook_redirect_update().
+ *
+ * @param \Drupal\redirect\Entity\Redirect $redirect
+ */
+function os_redirect_redirect_update(\Drupal\redirect\Entity\Redirect $redirect) {
+  os_redirect_assign_to_vsite($redirect);
+}
+
+/**
+ * Assign redirects to a group.
+ *
+ * @param \Drupal\redirect\Entity\Redirect $redirect
+ */
+function os_redirect_assign_to_vsite(\Drupal\redirect\Entity\Redirect $redirect) {
+  /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContextManager */
+  $vsiteContextManager = \Drupal::service('vsite.context_manager');
+  if (($group = $vsiteContextManager->getActiveVsite()) && !$vsiteContextManager->getActiveVsite()->getContentByEntityId('group_entity:redirect', $redirect->id())) {
+    $group->addContent($redirect, 'group_entity:redirect');
   }
 }
