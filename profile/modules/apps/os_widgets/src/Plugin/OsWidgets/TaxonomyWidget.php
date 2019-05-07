@@ -11,6 +11,7 @@ use Drupal\Core\Database\Database;
 use Drupal\Core\Database\Query\Condition;
 use Drupal\Core\Database\Query\SelectInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Link;
 use Drupal\cp_taxonomy\CpTaxonomyHelperInterface;
 use Drupal\os_widgets\OsWidgetsBase;
 use Drupal\os_widgets\OsWidgetsInterface;
@@ -40,6 +41,13 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
    * @var array
    */
   protected $settings;
+
+  /**
+   * Selected theme function.
+   *
+   * @var string
+   */
+  protected $themeFunction;
 
   /**
    * Time interface for obtaining system time.
@@ -101,22 +109,22 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
     $this->settings['bundles'] = $this->getFilteredBundles($block_content, $vid);
     $this->settings['show_empty_terms'] = !empty($field_taxonomy_show_empty_terms_values[0]['value']);
     $terms = $this->getTerms();
-    $term_items = $this->getRenderableTerms($block_content, $terms);
     switch ($field_taxonomy_display_type_values[0]['value']) {
       case 'menu':
-        $theme = 'os_widgets_taxonomy_display_type_menu';
+        $this->themeFunction = 'os_widgets_taxonomy_display_type_menu';
         break;
 
       case 'slider':
-        $theme = 'os_widgets_taxonomy_display_type_slider';
+        $this->themeFunction = 'os_widgets_taxonomy_display_type_slider';
         break;
 
       default:
-        $theme = 'item_list';
+        $this->themeFunction = 'item_list';
         break;
     }
+    $term_items = $this->getRenderableTerms($block_content, $terms);
     $build['taxonomy']['terms'] = [
-      '#theme' => $theme,
+      '#theme' => $this->themeFunction,
       '#items' => $term_items,
     ];
   }
@@ -216,53 +224,65 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
     $field_taxonomy_offset_values = $block_content->get('field_taxonomy_offset')->getValue();
     $field_taxonomy_show_count_values = $block_content->get('field_taxonomy_show_count')->getValue();
     $term_items = [];
-    $count = 0;
-    $offset = 0;
-    $skip_child_terms = FALSE;
+    $tree = [];
     foreach ($terms as $term) {
-      // Offset only top level.
-      if (!empty($field_taxonomy_offset_values[0]['value']) && $offset < $field_taxonomy_offset_values[0]['value']) {
-        // If we are on top level, count.
-        if ($term->depth == 0) {
-          $offset++;
-        }
-        // If we reached offset, mark variable and handle rest of children.
-        if ($offset == $field_taxonomy_offset_values[0]['value']) {
-          $skip_child_terms = TRUE;
-        }
-        continue;
-      }
-      // When offset is reached,
-      // then we skip all children what are under last term.
-      if ($skip_child_terms && $term->depth > 0) {
-        continue;
-      }
-      else {
-        $skip_child_terms = FALSE;
-      }
-      // We must count only top level terms.
-      if (!empty($field_taxonomy_range_values[0]['value']) && $term->depth == 0) {
-        $count++;
-        if ($count > $field_taxonomy_range_values[0]['value']) {
-          break;
-        }
-      }
       $description = '';
       if (!empty($field_taxonomy_show_term_desc_values[0]['value'])) {
         $description = check_markup($term->description__value, $term->description__format);
       }
-      $label = str_repeat('-', $term->depth) . $term->name;
+      $label = $term->name;
       if (!empty($field_taxonomy_show_count_values[0]['value']) && !empty($term->entity_reference_count)) {
         $label .= ' (' . $term->entity_reference_count . ')';
       }
-      $term_items[] = [
+      $label = Link::createFromRoute($label, 'entity.taxonomy_term.canonical', ['taxonomy_term' => $term->tid]);
+      $term_items[$term->tid] = [
         '#theme' => 'os_widgets_taxonomy_term_item',
         '#term' => $term,
         '#label' => $label,
         '#description' => $description,
       ];
+      $tree[$term->parents[0]][] = $term->tid;
     }
-    return $term_items;
+    if (empty($tree[0])) {
+      return $term_items;
+    }
+    $root_items = $tree[0];
+    $offset_value = $field_taxonomy_offset_values[0]['value'] ?? 0;
+    $range_value = $field_taxonomy_range_values[0]['value'] ?? 0;
+    if ($range_value) {
+      $root_items = array_slice($root_items, $offset_value, $range_value);
+    }
+    $renderable_terms = [];
+    foreach ($root_items as $tid) {
+      $renderable_terms[] = $this->renderTerm($tid, $tree, $term_items);
+    }
+
+    return $renderable_terms;
+  }
+
+  /**
+   * Recursive function to handle render term and children.
+   *
+   * @param int $tid
+   *   Current term id.
+   * @param array $tree
+   *   Array of all parent/child relation tree.
+   * @param array $term_items
+   *   Key is tid and built array for taxonomy.
+   *
+   * @return array
+   *   Array of built term.
+   */
+  private function renderTerm(int $tid, array $tree, array $term_items) {
+    $build = $term_items[$tid];
+    if (empty($tree[$tid])) {
+      return $build;
+    }
+    foreach ($tree[$tid] as $child_tid) {
+      $build['#children']['#theme'] = $this->themeFunction;
+      $build['#children']['#items'][] = $this->renderTerm($child_tid, $tree, $term_items);
+    }
+    return $build;
   }
 
   /**

@@ -88,6 +88,7 @@ function os_widgets_theme($existing, $type, $theme, $path) {
         'term' => NULL,
         'label' => '',
         'description' => '',
+        'children' => [],
       ],
     ],
     'os_widgets_taxonomy_display_type_menu' => [
@@ -99,6 +100,7 @@ function os_widgets_theme($existing, $type, $theme, $path) {
         'attributes' => [],
         'empty' => NULL,
         'context' => [],
+        'children' => [],
       ],
     ],
     'os_widgets_taxonomy_display_type_slider' => [
@@ -110,6 +112,7 @@ function os_widgets_theme($existing, $type, $theme, $path) {
         'attributes' => [],
         'empty' => NULL,
         'context' => [],
+        'children' => [],
       ],
     ],
   ];
