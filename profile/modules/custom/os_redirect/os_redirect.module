@@ -5,6 +5,8 @@
  * Hook implementations for the os_redirect module.
  */
 
+use Drupal\redirect\Entity\Redirect;
+
 /**
  * Implements hook_redirect_matched_redirect_alter().
  */
@@ -31,31 +33,16 @@ function os_redirect_redirect_matched_redirect_alter(&$redirect) {
 }
 
 /**
- * Implements hook_redirect_path_alter().
- */
-function os_redirect_redirect_path_alter(&$path) {
-  $vsite_context_manager = Drupal::getContainer()->get('vsite.context_manager');
-  /** @var \Drupal\group\Entity\GroupInterface $group */
-//  if ($group = $vsite_context_manager->getActiveVsite()) {
-//    $path = '[vsite:' . $group->id() . ']/' . $path;
-//  }
-}
-
-/**
  * Implements hook_redirect_insert().
- *
- * @param \Drupal\redirect\Entity\Redirect $redirect
  */
-function os_redirect_redirect_insert(\Drupal\redirect\Entity\Redirect $redirect) {
+function os_redirect_redirect_insert(Redirect $redirect) {
   os_redirect_assign_to_vsite($redirect);
 }
 
 /**
  * Implements hook_redirect_update().
- *
- * @param \Drupal\redirect\Entity\Redirect $redirect
  */
-function os_redirect_redirect_update(\Drupal\redirect\Entity\Redirect $redirect) {
+function os_redirect_redirect_update(Redirect $redirect) {
   os_redirect_assign_to_vsite($redirect);
 }
 
@@ -63,8 +50,9 @@ function os_redirect_redirect_update(\Drupal\redirect\Entity\Redirect $redirect)
  * Assign redirects to a group.
  *
  * @param \Drupal\redirect\Entity\Redirect $redirect
+ *   Redirect to assign to the group.
  */
-function os_redirect_assign_to_vsite(\Drupal\redirect\Entity\Redirect $redirect) {
+function os_redirect_assign_to_vsite(Redirect $redirect) {
   /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContextManager */
   $vsiteContextManager = \Drupal::service('vsite.context_manager');
   if (($group = $vsiteContextManager->getActiveVsite()) && !$vsiteContextManager->getActiveVsite()->getContentByEntityId('group_entity:redirect', $redirect->id())) {
