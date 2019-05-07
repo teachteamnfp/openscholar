@@ -2,25 +2,37 @@
 .navbar-collapse {
   background: $color-white;
   padding: 0 !important;
+
   /***** navbar nav *****/
   .navbar-nav {
-    min-height: 80px;
-    align-items: center;
-    display: flex;
-    > li {
+    @media #{$tablet} {
+      min-height: 80px;
+      align-items: center;
+      display: flex;
+    }
+    >li {
       @media #{$mobile} {
+        border-bottom: 1px solid $color-light-gray1;
       }
-      > a {
+      >a {
         color: $color-oxford-blue;
         transition: all 200ms ease;
         font-family: 'Roboto', sans-serif;
-        &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
+        &:hover,
+        &:active,
+        &:focus,
+        &.is-active,
+        &.is-active:hover {
           color: $color-blue;
           background: none;
         }
       }
-      &.open, &.active {
-        > a, > a:hover, > a:active, > a:focus {
+      &.open,
+      &.active {
+        >a,
+        >a:hover,
+        >a:active,
+        >a:focus {
           color: $color-blue;
           background: none;
         }
@@ -33,23 +45,24 @@
     @media #{$mobile} {
       background: none;
     }
-    > li {
-      > a {
+    >li {
+      >a {
         color: $color-white;
         @media #{$mobile} {
           font-size: 19px;
           font-weight: normal;
+          color: $color-oxford-blue;
         }
-        &:hover, &:active {
-
+        &:hover,
+        &:active {
           @media #{$mobile} {
             background: none;
           }
         }
       }
       &.active {
-        a, a:hover {
-
+        a,
+        a:hover {
           @media #{$mobile} {
             background: none;
           }
