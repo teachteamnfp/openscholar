@@ -113,7 +113,7 @@ function os_breadcrumb_edit_taxonomy_breadcrumbs(Term $term, Breadcrumb &$breadc
   }
   count($parent_chain) ? array_push($links, $temp) : NULL;
 
-  // New breadcumb object.
+  // New breadcrumb object.
   $breadcrumb = new Breadcrumb();
   $breadcrumb->setLinks($links);
 
@@ -156,7 +156,7 @@ function os_breadcrumb_edit_pages_breadcrumbs(Entity $node, Breadcrumb &$breadcr
   $temp = $links[$count - 1];
   $links[$count - 1] = $temp->setUrl(Url::fromRoute('<none>'));
 
-  // New breadcumb object.
+  // New breadcrumb object.
   $breadcrumb = new Breadcrumb();
   $breadcrumb->setLinks($links);
 
