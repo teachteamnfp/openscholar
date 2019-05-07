@@ -6,6 +6,9 @@ use DateTime;
 use DateTimeZone;
 use Drupal\block_content\Entity\BlockContent;
 use Drupal\Component\Datetime\TimeInterface;
+use Drupal\Component\Transliteration\PhpTransliteration;
+use Drupal\Component\Utility\Html;
+use Drupal\Component\Utility\Xss;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Database\Query\Condition;
@@ -234,6 +237,7 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
       if (!empty($field_taxonomy_show_count_values[0]['value']) && !empty($term->entity_reference_count)) {
         $label .= ' (' . $term->entity_reference_count . ')';
       }
+      $label = Xss::filter($label);
       $label = Link::createFromRoute($label, 'entity.taxonomy_term.canonical', ['taxonomy_term' => $term->tid]);
       $term_items[$term->tid] = [
         '#theme' => 'os_widgets_taxonomy_term_item',
@@ -274,15 +278,18 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
    *   Array of built term.
    */
   private function renderTerm(int $tid, array $tree, array $term_items) {
-    $build = $term_items[$tid];
+    $item['data'] = $term_items[$tid];
+    $item['#wrapper_attributes'] = [
+      'class' => 'term-' . $this->getTermClassName($term_items[$tid]['#term']->name),
+    ];
     if (empty($tree[$tid])) {
-      return $build;
+      return $item;
     }
     foreach ($tree[$tid] as $child_tid) {
-      $build['#children']['#theme'] = $this->themeFunction;
-      $build['#children']['#items'][] = $this->renderTerm($child_tid, $tree, $term_items);
+      $item['data']['#children']['#theme'] = $this->themeFunction;
+      $item['data']['#children']['#items'][] = $this->renderTerm($child_tid, $tree, $term_items);
     }
-    return $build;
+    return $item;
   }
 
   /**
@@ -396,6 +403,28 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
       }
     }
     return $terms_count;
+  }
+
+  /**
+   * Get term class name.
+   *
+   * @param string $name
+   *   Original term name.
+   *
+   * @return string
+   *   Transliterated and filtered term name.
+   */
+  private function getTermClassName(string $name) {
+    // Clean from special chars.
+    $name = Html::cleanCssIdentifier($name);
+    // Lower case it.
+    $name = strtolower($name);
+    // Sanitizing on output.
+    $name = Xss::filter($name);
+    // Transliterate.
+    $transliteration = new PhpTransliteration();
+    $name = $transliteration->transliterate($name);
+    return $name;
   }
 
 }

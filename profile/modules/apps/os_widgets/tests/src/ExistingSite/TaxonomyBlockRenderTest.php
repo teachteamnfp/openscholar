@@ -615,6 +615,30 @@ class TaxonomyBlockRenderTest extends OsWidgetsExistingSiteTestBase {
   }
 
   /**
+   * Test proper class name is exists.
+   */
+  public function testBuildProperClassNameIsRendered() {
+    $term1 = $this->createTerm($this->vocabulary, ['name' => 'Lorem 1 éáűúőüóö']);
+    $this->createTerm($this->vocabulary, ['name' => 'Lorem 2 "+!%/-<>special-chars', 'parent' => $term1->id()]);
+    $block_content = $this->createBlockContent([
+      'type' => 'taxonomy',
+      'field_taxonomy_vocabulary' => [
+        $this->vocabulary->id(),
+      ],
+    ]);
+    $view_builder = $this->entityTypeManager
+      ->getViewBuilder('block_content');
+    $render = $view_builder->view($block_content);
+    $renderer = $this->container->get('renderer');
+
+    /** @var \Drupal\Core\Render\Markup $markup_array */
+    $markup = $renderer->renderRoot($render);
+    // Checking rendered term.
+    $this->assertContains('<li class="term-lorem-1-eauuouoo">', $markup->__toString());
+    $this->assertContains('<li class="term-lorem-2---special-chars">', $markup->__toString());
+  }
+
+  /**
    * {@inheritdoc}
    */
   protected function createBlockContent(array $values = []) {
