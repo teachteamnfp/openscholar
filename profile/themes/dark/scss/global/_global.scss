@@ -65,3 +65,12 @@ aside {
 .date, time {
   color: $color-light-gray2;
 }
+.table-hover > tbody > tr:hover {
+  background: none;
+}
+.table-striped > tbody > tr:nth-of-type(odd) {
+  background: none;
+}
+a.class_material_field_class_anchor {
+  background: url(../../../themes/os_base/images/scholarbase-sprite.png) 0px -1018px no-repeat;
+}

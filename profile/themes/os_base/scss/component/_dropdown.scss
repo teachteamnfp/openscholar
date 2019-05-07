@@ -23,6 +23,10 @@ $grid-breakpoint: "screen and (min-width: #{$grid-float-breakpoint})";
         font-size: 13px;
         font-weight: bold;
         padding: 10px 20px;
+        color: $link-color;
+        &:hover, &:focus {
+          background: none;
+        }
         @media #{$mobile} {
           font-weight: normal;
           padding: 6px 20px;

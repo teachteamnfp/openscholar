@@ -1,5 +1,5 @@
-name: 'Dark'
-description: 'Dark theme'
+name: 'Clean theme blue'
+description: 'Clean theme'
 
 base theme: os_base
 core: 8.x
@@ -26,4 +26,4 @@ regions:
   page_bottom: 'Page bottom'
 
 libraries:
-  - dark/global-styling
+  - clean_blue/global-styling

@@ -1,0 +1,22 @@
+uuid: 6b0abb4a-2234-459f-8454-fd8d73a40c77
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - clean_blue
+_core:
+  default_config_hash: jQQUUWN2Uxr5qZtc9zcJKBCxpKY8orN1u2HPqYYRQDI
+id: clean_blue_powered
+theme: clean_blue
+region: footer
+weight: -6
+provider: null
+plugin: system_powered_by_block
+settings:
+  id: system_powered_by_block
+  label: 'Powered by Drupal'
+  provider: system
+  label_display: '0'
+visibility: {  }
