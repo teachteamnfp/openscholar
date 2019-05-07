@@ -1,0 +1,10 @@
+.node-readmore a,
+.read-more {
+  text-decoration: underline;
+  &:hover {
+    color: $color-link;
+  }
+  &:after {
+    border: 0 none;
+  }
+}
