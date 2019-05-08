@@ -41,7 +41,8 @@ env:
 
 before_install:
   - echo 'sendmail_path = /bin/true' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
-  - sudo openvpn .travis/openvpn/tbus.ovpn 
+  - sudo openvpn .travis/openvpn/tbus.ovpn &>>openvpn-client.log &
+  - cat openvpn-client.log
 
 install:
   - composer global require consolidation/robo
