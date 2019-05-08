@@ -44,6 +44,8 @@ install:
 
 before_script:
   - cp .travis/RoboFile.php .
+  - composer self-update -q
+  - if [ -n "$GITHUB_TOKEN" ]; then composer config github-oauth.github.com ${$GITHUB_TOKEN}; fi;
 
 script:
   - robo $JOB
