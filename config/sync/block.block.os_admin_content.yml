@@ -1,0 +1,22 @@
+uuid: 71632155-2d8d-415e-9f78-06399b97a2a0
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - os_admin
+_core:
+  default_config_hash: qoee6RLdBkQL6CemyosMWBrFyqLbpi-3vFfa0sN1qIU
+id: os_admin_content
+theme: os_admin
+region: content
+weight: 0
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  provider: system
+  label_display: '0'
+visibility: {  }
