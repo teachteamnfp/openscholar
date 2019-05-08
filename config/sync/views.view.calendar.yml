@@ -3,7 +3,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.date_format.html_date
     - core.date_format.medium
     - core.entity_view_mode.node.rss
     - field.storage.node.body
@@ -41,7 +40,7 @@ display:
         options:
           perm: 'access content'
       cache:
-        type: tag
+        type: none
         options: {  }
       query:
         type: views_query
@@ -722,8 +721,10 @@ display:
       style:
         type: ical
         options:
-          grouping: {  }
-          uses_fields: false
+          date_field: field_recurring_date
+          summary_field: title
+          location_field: field_location
+          description_field: body
       pager:
         type: none
         options:
