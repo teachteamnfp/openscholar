@@ -173,7 +173,6 @@ class RoboFile extends \Robo\Tasks
 
         $tasks[] = $this->taskExec('docker-compose --verbose pull --parallel');
         $tasks[] = $this->taskExec('docker-compose up -d');
-        $tasks[] = $this->taskExec('git config --global --add remote.origin.proxy ""');
         $tasks[] = $this->taskExec('make');
         $tasks[] = $this->taskExec('docker-compose exec -T php cp .travis/config/phpunit.xml web/core/phpunit.xml');
         $tasks[] = $this->taskExec('docker-compose exec -T php cp .travis/config//bootstrap.php web/core/tests/bootstrap.php');
