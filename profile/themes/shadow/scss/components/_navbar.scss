@@ -1,0 +1,80 @@
+/**** navbar background ****/
+.navbar-collapse {
+  background: $color-white;
+  border: 1px solid $color-light-gray1;
+  padding: 0 !important;
+  /***** navbar nav *****/
+  .navbar-nav {
+    > li {
+      @media #{$mobile} {
+        border-bottom: 1px solid $color-green;
+        padding: 6px 0;
+      }
+      > a {
+        color: $color-green;
+        font-weight: 700;
+        font-size: 16px;
+        transition: all .3s ease;
+        padding: 16px 20px;
+        &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
+          color: $color-green;
+          background: $color-light-gray;
+        }
+      }
+      &.open, &.active {
+        > a, > a:hover, > a:active, > a:focus {
+          color: $color-green;
+          background: $color-light-gray;
+        }
+        ul {
+          li {
+            a {
+              background: none;
+            }
+          }
+        }
+      }
+    }
+  }
+  /**** dropdown menu ****/
+  .dropdown-menu {
+    background: $color-gray1;
+    @media #{$mobile} {
+      background: none;
+    }
+    > li {
+      > a {
+        color: $color-white;
+        font-weight: 700;
+        text-transform: uppercase;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.22);
+        font-size: 12px;
+        padding: 8px 15px;
+        transition: all .3s ease;
+        @media #{$mobile} {
+          font-size: 19px;
+          font-weight: 700;
+          color: $color-green;
+          border: 0 none;
+          background: none;
+        }
+        &:hover, &:active {
+          color: $color-green;
+          padding-left: 20px;
+          @media #{$mobile} {
+            background: none;
+            color: $color-green;
+          }
+        }
+      }
+      &.active {
+        a, a:hover {
+          color: $color-green;
+          @media #{$mobile} {
+            background: none;
+          }
+        }
+      }
+    }
+  }
+}

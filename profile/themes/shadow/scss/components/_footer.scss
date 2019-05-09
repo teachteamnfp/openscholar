@@ -1,0 +1,22 @@
+footer.footer {
+  background: $color-dark;
+  color: $color-white;
+  box-shadow: 0 6px 16px 0 rgba(0,0,0,.2);
+  line-height: 1.8;
+  font-size: 15px;
+  a {
+    color: $color-green;
+  }
+  ul.nav {
+    li {
+      a {
+        color: $color-green;
+      }
+    }
+  }
+  .block-title, nav h2 {
+    border-bottom: 1px solid $color-green;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+  }
+}

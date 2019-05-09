@@ -1,0 +1,32 @@
+.card {
+  background: $color-white;
+  padding: 15px;
+}
+.content-inner {
+  @extend .card;
+  padding: 25px;
+  box-shadow: 0 6px 16px 0 rgba(0,0,0,.2);
+  h2.block-title {
+    background: $color-light-gray;
+    border-bottom: 2px solid $color-green;
+    border-left: 2px solid $color-green;
+    padding: 9px 15px 10px;
+    margin-bottom: 10px;
+  }
+}
+.read-more, .node-readmore a {
+  color: $color-green;
+  text-decoration: underline;
+  font-size: 14px;
+  &:after {
+    border: 0 none;
+  }
+}
+.node--title a {
+  color: $color-green;
+}
+.page-header {
+  border-left: 3px solid $color-green;
+  padding: 1rem 0 1rem 2rem;
+  font-weight: 700;
+}
