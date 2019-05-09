@@ -164,7 +164,7 @@
         "cweagans/composer-patches": "^1.6",
         "drupal-composer/drupal-scaffold": "^2.6",
         "drupal/console": "^1.0.2",
-        "drupal/core": "^8.6.15",
+        "drupal/core": "^8.7.1",
         "drupal/purl": "1.0.2",
         "drupal/group_purl": "1.0-alpha1",
         "drupal/search_api": "^1.9",
@@ -229,7 +229,7 @@
     },
     "require-dev": {
         "drupal/features": "^3.7",
-        "webflo/drupal-core-require-dev": "^8.6.15",
+        "webflo/drupal-core-require-dev": "^8.7.1",
         "drupal/devel": "^1.2",
         "weitzman/drupal-test-traits": "^1.0@beta",
         "dmore/chrome-mink-driver": "^2.6"
