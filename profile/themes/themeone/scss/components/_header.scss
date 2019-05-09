@@ -1,0 +1,19 @@
+.header-container {
+  color: $color-white;
+  min-height: 100px;
+  ul.nav {
+    li {
+      a {
+        font-family: 'Montserrat', sans-serif;
+        color: $color-white;
+      }
+      ul {
+        li {
+          a {
+            color: $color-text;
+          }
+        }
+      }
+    }
+  }
+}

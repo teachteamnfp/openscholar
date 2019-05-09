@@ -1,0 +1,49 @@
+aside {
+  ul.navbar-nav {
+    li {
+      .dropdown-menu {
+        a {
+          color: $color-link;
+        }
+      }
+    }
+  }
+}
+.page-header {
+  position: relative;
+  &:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 64px;
+    height: 4px;
+    border-radius: 2px;
+    background: $color-link;
+  }
+}
+header {
+  background: $color-link;
+  a {
+    color: $color-white;
+  }
+}
+.caret {
+  color: $color-link;
+}
+.ui-widget, .ui-widget button {
+  font-family: 'Montserrat', sans-serif;
+}
+h2.block-title {
+  background: $color-light-gray1;
+  border-left: 3px solid $color-link;
+  padding: 9px 15px 10px;
+  margin-bottom: 10px;
+}
+.main-container {
+  box-shadow: 0 1px 3px 0 $color-gray3, 0 0 0 1px $color-gray3;
+  margin-top: 0;
+  padding-top: 40px;
+  margin-bottom: 0;
+  padding-bottom: 20px;
+}

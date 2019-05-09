@@ -7,9 +7,8 @@ use Behat\Mink\Exception\ExpectationException;
 /**
  * Tests os_fullcalendar module.
  *
- * @group vsite
  * @group functional-javascript
- * @covers \os_fullcalendar_views_pre_render
+ * @group events
  */
 class EventOsFullCalendarTest extends EventExistingSiteJavascriptTestBase {
 

@@ -8,6 +8,7 @@ use weitzman\DrupalTestTraits\ExistingSiteBase;
  * Class AddClassMaterialLinkTest.
  *
  * @group functional
+ * @group classes
  *
  * @package Drupal\Tests\os_publications\ExistingSite
  */
@@ -50,7 +51,9 @@ class AddClassMaterialLinkTest extends ExistingSiteBase {
    * @throws \Behat\Mink\Exception\ExpectationException
    */
   public function testAddMaterialLinkAsAnon() {
-    $this->drupalLogin($this->simpleUser);
+    if ($this->loggedInUser) {
+      $this->drupalLogout();
+    }
 
     $this->drupalGet('node/' . $this->class->id());
     $this->assertSession()->statusCodeEquals(200);
@@ -76,7 +79,9 @@ class AddClassMaterialLinkTest extends ExistingSiteBase {
    * @throws \Behat\Mink\Exception\ExpectationException
    */
   public function testAddLinkOnClassesViewAsAnon() {
-    $this->drupalLogin($this->simpleUser);
+    if ($this->loggedInUser) {
+      $this->drupalLogout();
+    }
 
     $this->drupalGet('classes');
     $this->assertSession()->statusCodeEquals(200);

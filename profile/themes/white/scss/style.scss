@@ -1,3 +1,4 @@
+@import '../../os_base/scss/base/breakpoints';
 //colors
 $white: #fff;
 $color_woodsmoke_approx: #111111;
@@ -17,14 +18,9 @@ body {
 }
 .header-container {
   background: $white;
+  color: $color_woodsmoke_approx;
   ul.nav li a {
     color: $color_st_tropaz_approx;
-  }
-}
-#boxes-box-site_info {
-  color: $color_woodsmoke_approx;
-  a {
-    color: $color_woodsmoke_approx;
   }
 }
 .search-block-form {
@@ -55,33 +51,68 @@ body {
 }
 .navbar-collapse {
   background: $white;
-  ul.nav {
-    .dropdown {
-      a {
-        &:hover {
+  @media #{$mobile} {
+    padding: 0 !important;
+  }
+  /***** navbar nav *****/
+  .navbar-nav {
+    > li {
+      @media #{$mobile} {
+        border-bottom: 1px solid #f4f4f4;
+        border-top: 0 none;
+      }
+      > a {
+        color: $color_woodsmoke_approx;
+        @media #{$mobile} {
+
+        }
+        &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
           background-color: $color_woodsmoke_approx;
         }
-        &.is-active {
+      }
+      &.open, &.active {
+        > a, > a:hover, > a:active, > a:focus {
           background-color: $color_woodsmoke_approx;
         }
-      }
-      &.open > a {
-        background-color: $color_woodsmoke_approx;
+
       }
     }
-    a {
-      &.is-active, &.is-active:hover {
-        background: $color_woodsmoke_approx;
-      }
-      &:hover {
-        background: $color_woodsmoke_approx;
-      }
+  }
+  /**** dropdown menu ****/
+  .dropdown-menu {
+    background: $color_woodsmoke_approx;
+    @media #{$mobile} {
+      background: none;
     }
-    ul {
-      background: $color_woodsmoke_approx;
-    }
-    >li>a {
-      color: $color_woodsmoke_approx;
+    > li {
+      > a {
+        color: $white;
+        background: none;
+        @media #{$mobile} {
+          font-size: 19px;
+          padding-left: 20px;
+          color: $color_woodsmoke_approx;
+        }
+        &:hover, &:active {
+          background: none !important;
+          @media #{$mobile} {
+            color: $color_woodsmoke_approx;
+          }
+        }
+      }
+      &.active {
+        a {
+          background: none;
+          @media #{$mobile} {
+            color: $color_woodsmoke_approx;
+          }
+          &:hover {
+            @media #{$mobile} {
+              color: $color_woodsmoke_approx;
+            }
+          }
+        }
+      }
     }
   }
 }

@@ -1,0 +1,76 @@
+aside {
+  nav ul.navbar-nav, .block-content {
+    @extend .card;
+  }
+  h2.block-title {
+    border: 1px solid $color-light-gray1;
+    border-bottom-color: $color-light-gray1;
+    font-size: 18px;
+    padding: 18px 10px;
+    font-weight: normal;
+    letter-spacing: 1px;
+    text-transform: capitalize;
+    margin-bottom: 0;
+    background: $color-white;
+    ~ .block-content {
+      border-top: 0 none;
+    }
+  }
+  nav {
+    > h2 {
+      border-bottom: 1px solid $color-light-gray1;
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+      border: 1px solid $color-light-gray1;
+      border-bottom-color: $color-light-gray1;
+      font-size: 18px;
+      padding: 18px 10px;
+      font-weight: normal;
+      letter-spacing: 1px;
+      text-transform: capitalize;
+      margin-bottom: 0;
+      background: $color-white;
+    }
+    .navbar-nav {
+      li {
+        background: none;
+        &:hover {
+          background: none;
+        }
+        &.open {
+          a {
+            background: none;
+            border-color: $color-light-gray1;
+            border-width: 1px;
+            &:hover {
+              background: none;
+              border-color: $color-light-gray1;
+            }
+          }
+        }
+        a {
+          border-bottom: 1px solid $color-light-gray1;
+          &:hover {
+            background: none;
+          }
+        }
+        .dropdown-menu {
+          li {
+            a {
+              color: $color-gray1;
+              &:hover {
+                color: $color-green;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .region {
+    > .block, nav {
+      margin-top: 0;
+      border-top: 3px solid $color-green;
+    }
+  }
+}

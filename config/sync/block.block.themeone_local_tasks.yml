@@ -1,0 +1,22 @@
+uuid: 4706dd79-8344-43c8-a182-745b1682a5d9
+langcode: en
+status: true
+dependencies:
+  theme:
+    - themeone
+_core:
+  default_config_hash: X9I1OB0W3WlWtrK-CNcg6hNWwa8wficanpH8pYnDZDE
+id: themeone_local_tasks
+theme: themeone
+region: content
+weight: -6
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: Tabs
+  provider: core
+  label_display: '0'
+  primary: true
+  secondary: true
+visibility: {  }

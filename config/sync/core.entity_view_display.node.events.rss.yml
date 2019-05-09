@@ -63,5 +63,20 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_close_: true
   field_media: true
+  field_open_date: true
+  field_send_reminder: true
+  field_should_send_reminder: true
+  field_signup: true
+  field_singup_multiple: true
+  field_taxonomy_terms: true
   langcode: true
+  rng_capacity: true
+  rng_registrants_duplicate: true
+  rng_registrants_maximum: true
+  rng_registrants_minimum: true
+  rng_registration_groups: true
+  rng_registration_type: true
+  rng_reply_to: true
+  rng_status: true

@@ -25,11 +25,6 @@ cp.content.add:
   title: 'Add'
   url: 'internal:##'
   parent: cp.content
-cp.content.add.link:
-  title: 'Link'
-  route_name: node.add
-  route_parameters: { node_type: 'link'}
-  parent: cp.content.add
 cp.content.import:
   title: 'Import'
   url: 'internal:##'
@@ -43,13 +38,20 @@ cp.menu:
   url: 'internal:##'
   weight: 1
   menu_name: control-panel
-cp.appearance:
-  title: 'Appearance'
-  url: 'internal:##'
-  weight: 2
-  menu_name: control-panel
 cp.settings:
   title: 'Settings'
   url: 'internal:##'
   weight: 4
   menu_name: control-panel
+cp.settings.app:
+  title: 'App Settings'
+  url: 'internal:##'
+  weight: 1
+  menu_name: app-settings
+  parent: cp.settings
+cp.settings.global:
+  title: 'Global Settings'
+  url: 'internal:##'
+  weight: 2
+  menu_name: global-settings
+  parent: cp.settings

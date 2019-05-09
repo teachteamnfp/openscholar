@@ -52,6 +52,7 @@ cp -rf . /tmp/
 
 cd $BUILD_ROOT
 
+git remote update
 git subtree pull -q -m "$CI_MESSAGE" --prefix=openscholar git://github.com/openscholar/openscholar.git $CI_BRANCH --squash
 
 cd openscholar/profile/themes
@@ -87,8 +88,13 @@ if [[ $FORCE_REBUILD == "1" ]] || [[ "$(cmp -b 'openscholar/composer.json' '/tmp
   echo "Rebuilding..."
   cd openscholar
 
+  # Directories that track via .git need to be removed before they are updated see https://getcomposer.org/doc/faqs/should-i-commit-the-dependencies-in-my-vendor-directory.md
+  rm -rf web/modules/contrib/purl || true
+  rm -rf vendor/drupal/coder || true
+
+
   # Download composer components
-  composer install --ignore-platform-reqs || exit 1
+  composer install --ignore-platform-reqs --no-interaction || exit 1
 
   # Do not use the node_modules symlink, and reinstall node modules
   rm -rf node_modules

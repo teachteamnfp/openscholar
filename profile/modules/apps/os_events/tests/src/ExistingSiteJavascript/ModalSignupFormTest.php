@@ -2,27 +2,19 @@
 
 namespace Drupal\Tests\os_events\ExistingSiteJavascript;
 
-use Drupal\Component\Datetime\DateTimePlus;
-use weitzman\DrupalTestTraits\ExistingSiteWebDriverTestBase;
-
 /**
  * Signup Modal Form test.
  *
  * @group functional-javascript
+ * @group events
  */
-class ModalSignupFormTest extends ExistingSiteWebDriverTestBase {
+class ModalSignupFormTest extends EventsJavascriptTestBase {
   /**
    * Simple user.
    *
    * @var \Drupal\user\Entity\User|false
    */
   protected $simpleUser;
-  /**
-   * Admin User.
-   *
-   * @var \Drupal\user\Entity\User|false
-   */
-  protected $adminUser;
 
   /**
    * {@inheritdoc}
@@ -31,8 +23,6 @@ class ModalSignupFormTest extends ExistingSiteWebDriverTestBase {
     parent::setUp();
 
     $this->simpleUser = $this->createUser(['access control panel']);
-    $this->adminUser = $this->createUser([], '', TRUE);
-
   }
 
   /**
@@ -96,7 +86,7 @@ class ModalSignupFormTest extends ExistingSiteWebDriverTestBase {
     $this->submitForm($edit, 'Signup');
     $web_assert->assertWaitOnAjaxRequest();
     $web_assert->elementExists('css', '#signup-modal-form');
-    $web_assert->pageTextContains('User is already registered for this event.');
+    $web_assert->pageTextContains('User is already registered for this date.');
   }
 
   /**
@@ -126,28 +116,6 @@ class ModalSignupFormTest extends ExistingSiteWebDriverTestBase {
     $new_page = $this->getCurrentPage();
     $new_page->clickLink('Registrations');
     $this->assertSession()->pageTextContains('test@example.com');
-  }
-
-  /**
-   * Creates an Event entity.
-   *
-   * @return string
-   *   The url to newly created entity.
-   */
-  protected function createEvent() {
-    $date = new DateTimePlus('+5 days');
-
-    $this->drupalLogin($this->adminUser);
-    $this->drupalGet('node/add/events');
-    $edit = [
-      'title[0][value]' => $this->randomString(),
-      'field_recurring_date[0][value][date]' => $date->format("Y-m-d"),
-      'field_recurring_date[0][value_all_day]' => TRUE,
-      'field_signup[value]' => TRUE,
-    ];
-    $this->submitForm($edit, 'edit-submit');
-    $node_url = $this->getUrl();
-    return $node_url;
   }
 
 }

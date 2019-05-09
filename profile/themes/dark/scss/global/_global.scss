@@ -1,0 +1,76 @@
+.header-container {
+  background: $color-dark;
+}
+.main-container {
+  margin-top: 0;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  margin-bottom: 0;
+}
+aside {
+  .nav {
+    li {
+      background: none;
+      &:hover {
+        background: none;
+      }
+      &.open {
+        a {
+          background: none;
+          border-bottom: 1px solid $color-light-gray;
+          border-color: $color-light-gray;
+          &:hover {
+            background: none;
+            color: $color-white;
+          }
+        }
+      }
+      a {
+        border: 1px solid $color-light-gray;
+        margin-bottom: 2px;
+        border-color: $color-light-gray;
+        &:hover {
+          background: none;
+        }
+      }
+      .dropdown-menu {
+        a {
+          color: $color-white;
+          background: none;
+        }
+      }
+    }
+  }
+}
+.block-title {
+  background: $color-dark1;
+  border-left: 3px solid $color-blue;
+  padding: 9px 15px 10px;
+  margin-bottom: 10px;
+}
+.alert {
+  p {
+    color: $color-dark1;
+  }
+}
+.close {
+  opacity: 1;
+  span {
+    color: $color-white;
+  }
+}
+.panel, fieldset, .modal-content {
+  background: $color-dark1;
+}
+.date, time {
+  color: $color-light-gray2;
+}
+.table-hover > tbody > tr:hover {
+  background: none;
+}
+.table-striped > tbody > tr:nth-of-type(odd) {
+  background: none;
+}
+a.class_material_field_class_anchor {
+  background: url(../../../themes/os_base/images/scholarbase-sprite.png) 0px -1018px no-repeat;
+}

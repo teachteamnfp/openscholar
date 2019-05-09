@@ -41,7 +41,7 @@ module:
   crop: 0
   ctools: 0
   date_recur: 0
-  date_recur_interactive: 0
+  date_recur_modular: 0
   datetime: 0
   datetime_range: 0
   dblog: 0
@@ -89,6 +89,7 @@ module:
   os_app_access: 0
   os_classes: 0
   os_events: 0
+  os_faq: 0
   os_fullcalendar: 0
   os_links: 0
   os_mailchimp: 0
@@ -97,6 +98,8 @@ module:
   os_metatag: 0
   os_office_embed: 0
   os_pages: 0
+  os_presentations: 0
+  os_profiles: 0
   os_publications: 0
   os_redirect: 0
   os_redirect_to_source: 0
@@ -154,6 +157,7 @@ module:
   pathauto: 1
   views: 10
   paragraphs: 11
+  openscholar: 1000
 theme:
   stable: 0
   classy: 0
@@ -162,11 +166,19 @@ theme:
   os_base: 0
   hwpi_themeone_bentley: 0
   vibrant: 0
-  hwpi_classic: 0
+  golden_accents: 0
+  shade: 0
   documental: 0
   hwpi_lamont: 0
   hwpi_sterling: 0
   hwpi_widener: 0
+  onepage: 0
+  winthrop: 0
+  peabody: 0
+  holyoke: 0
+  mather: 0
+  kirkland: 0
+  everett: 0
   hwpi_college: 0
   adams: 0
   modern: 0
@@ -174,6 +186,20 @@ theme:
   white: 0
   saffron_accents: 0
   monument: 0
+  hwpi_classic: 0
+  teal_accents: 0
+  slate: 0
+  red_raven: 0
+  monochrome: 0
+  lemon_sand: 0
+  blue_sky: 0
+  indigo: 0
+  cabot: 0
+  ivy_accents: 0
+  themeone: 0
+  clean: 0
+  dark: 0
+  clean_blue: 0
 profile: openscholar
 _core:
   default_config_hash: R4IF-ClDHXxblLcG0L7MgsLvfBIMAvi_skumNFQwkDc

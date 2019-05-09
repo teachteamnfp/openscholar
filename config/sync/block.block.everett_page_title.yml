@@ -1,0 +1,20 @@
+uuid: 35b6ec23-5631-443f-8329-bf19ef3cac4b
+langcode: en
+status: true
+dependencies:
+  theme:
+    - everett
+_core:
+  default_config_hash: 7rR9chwXvdM2H8OYMAYx9Zj3GGlPMrZp_M3ZA4thYTk
+id: everett_page_title
+theme: everett
+region: content
+weight: -7
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  provider: core
+  label_display: '0'
+visibility: {  }

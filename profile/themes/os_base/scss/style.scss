@@ -1,9 +1,6 @@
 // Default variables.
 @import "default-variables";
 
-// Bootstrap Framework.
-@import '../../../../vendor/twbs/bootstrap-sass/assets/stylesheets/bootstrap';
-
 //own styles
 @import 'base/base-main';
 
@@ -17,6 +14,7 @@
 @import 'pages/news';
 @import 'pages/presentation';
 @import 'pages/person';
+@import 'pages/events';
 
 //layout styles
 @import 'layout/footer';

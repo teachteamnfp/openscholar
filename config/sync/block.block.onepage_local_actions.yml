@@ -1,0 +1,20 @@
+uuid: d8ea7aae-18d4-4e91-9a2f-0b6165849151
+langcode: en
+status: true
+dependencies:
+  theme:
+    - onepage
+_core:
+  default_config_hash: 18sVG2GrLoazsgCHNw7SMElxVi9IPt0vrOPAJGVPStA
+id: onepage_local_actions
+theme: onepage
+region: content
+weight: -5
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Primary admin actions'
+  provider: core
+  label_display: '0'
+visibility: {  }

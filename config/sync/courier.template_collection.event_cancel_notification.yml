@@ -1,0 +1,13 @@
+uuid: d5c341cf-767e-42fd-a518-bb3a8b7b8a6f
+langcode: en
+status: true
+dependencies: {  }
+id: event_cancel_notification
+provider: null
+contexts: {  }
+templates:
+  courier_email:
+    type: courier_email
+    content:
+      subject: '[node:title] has been cancelled'
+      body: 'Hello [identity:label] </br></br>You had been registered for [node:title] on [registration:field_for_date:date:long] [node:field_location]. </br></br>This event has been cancelled. To view our other events, please visit the event page here: <a href="[site:url]/calendar">[site:url]/calendar</a></br></br>Questions? Email the event organizer <a href="mailto:[node:rng_reply_to]" target="_blank">[node:rng_reply_to]</a></br></br>The [site:name] Team </br></br></br>[university:title], [university:address]'

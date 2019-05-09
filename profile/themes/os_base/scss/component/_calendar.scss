@@ -192,8 +192,8 @@ aside {
       flex-wrap: wrap;
       flex-direction: column;
       .content {
-        padding-bottom: 20px;
-        margin-bottom: 20px;
+        padding-bottom: 30px;
+        margin-bottom: 30px;
         border-bottom: 1px solid $color-light-gray;
       }
     }
@@ -226,6 +226,9 @@ aside {
     }
   }
 }
+.fc-event-future > td {
+  width: 100%;
+}
 /**** modal body ****/
 .modal-body {
   .events.full {
@@ -246,7 +249,6 @@ aside {
     }
   }
 }
-
 /**** fc event default bg color ****/
 .fc-event-default {
   border-color: $color-link2;
@@ -257,4 +259,5 @@ aside {
 }
 .fc-wrapper {
   display: flex;
+  width: 100%;
 }

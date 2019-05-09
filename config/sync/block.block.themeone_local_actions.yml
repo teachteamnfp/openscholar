@@ -1,0 +1,20 @@
+uuid: 465bbcf8-3548-4e78-b1bf-5cef185df5e1
+langcode: en
+status: true
+dependencies:
+  theme:
+    - themeone
+_core:
+  default_config_hash: 13GQpeITIJsp1kyPniXtWZfyFH87vb1xxJCHifL4UeE
+id: themeone_local_actions
+theme: themeone
+region: content
+weight: -5
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Primary admin actions'
+  provider: core
+  label_display: '0'
+visibility: {  }

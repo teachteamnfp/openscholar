@@ -1,0 +1,21 @@
+/******** read more **********/
+.read-more,
+.node-readmore a {
+  border-bottom: none;
+  font-size: 12px;
+  font-weight: bold;
+  float: none;
+  padding-right: 11px;
+  position: relative;
+  &:after {
+    content: '';
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: 4px;
+    vertical-align: middle;
+    border-top: 4px solid transparent;
+    border-left: 7px solid;
+    border-bottom: 4px solid transparent;
+  }
+}

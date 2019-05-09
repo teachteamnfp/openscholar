@@ -1,0 +1,51 @@
+uuid: bd90c19f-20ea-42d3-8f10-5a4234604cb4
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_visibility_groups.block_visibility_group.event_section
+  module:
+    - block_visibility_groups
+    - ctools
+    - rng
+    - rng_quick
+  theme:
+    - mather
+id: mather_registration
+theme: mather
+region: content
+weight: 0
+provider: null
+plugin: rng_registration
+settings:
+  id: rng_registration
+  label: Registration
+  provider: rng_quick
+  label_display: visible
+  context_mapping:
+    rng_event: '@rng.event_route_context:rng_event'
+visibility:
+  condition_group:
+    id: condition_group
+    negate: false
+    block_visibility_group: event_section
+    context_mapping: {  }
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    bundles:
+      events: events
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+  rng_rule_scheduler:
+    id: rng_rule_scheduler
+    rng_rule_component: null
+    rng_rule_scheduler: null
+    date: '1552913719'
+    negate: false
+    context_mapping: {  }
+  rng_current_time:
+    id: rng_current_time
+    date: '1552913719'
+    negate: false
+    context_mapping: {  }

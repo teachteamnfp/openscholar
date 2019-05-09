@@ -3,9 +3,11 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.registration.signup.field_for_date
     - rng.registration_type.signup
   module:
     - content_moderation
+    - datetime
     - field_layout
     - layout_discovery
 third_party_settings:
@@ -17,6 +19,12 @@ targetEntityType: registration
 bundle: signup
 mode: default
 content:
+  field_for_date:
+    weight: 101
+    settings: {  }
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
   moderation_state:
     type: moderation_state_default
     weight: 100

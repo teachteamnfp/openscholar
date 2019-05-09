@@ -1,0 +1,250 @@
+@import '../../os_base/scss/base/breakpoints';
+//colors
+$color_goldenrod_approx: #ffdb6d;
+$color_steel_blue_approx: #4e84c4;
+$white: #fff;
+$color_submarine_approx: #bac5c6;
+$black: #000;
+$color_alto_approx: #dedede;
+$color_pizza_approx: #c4961a;
+$color_log_cabin_approx: #222;
+$color_chathams_blue_approx: #1b4977;
+
+//fonts
+$font_0: Noto Serif;
+$font_1: Georgia;
+$font_2: serif;
+$font_3: arial;
+$font_4: sans-serif;
+
+//@extend-elements
+%extend_1 {
+  width: 55px;
+  height: 55px;
+  background: $color_submarine_approx;
+  border-radius: 140px;
+}
+
+%extend_2 {
+  font: bold 14px $font_3, $font_4;
+  text-transform: none;
+  color: $color_chathams_blue_approx;
+}
+
+@import url(https://fonts.googleapis.com/css?family=Noto+Serif);
+body {
+  font-family: $font_0, $font_1, $font_2;
+}
+.page-header {
+  font-family: $font_0, $font_1, $font_2;
+}
+.node--title {
+  font-family: $font_0, $font_1, $font_2;
+}
+.more-link {
+  font-family: $font_0, $font_1, $font_2;
+}
+footer {
+  background: $color_goldenrod_approx;
+  a {
+    @extend %extend_2;
+  }
+  ul.nav {
+    a {
+      font-family: $font_0, $font_1, $font_2;
+    }
+    li {
+      a {
+        text-transform: none;
+        &.menu-heading {
+          text-transform: uppercase;
+        }
+      }
+      ul li a {
+        font-family: $font_0, $font_1, $font_2;
+      }
+    }
+  }
+}
+aside {
+  .nav {
+    a {
+      font-family: $font_0, $font_1, $font_2;
+    }
+  }
+  .region > .block {
+    border-top: 2px dotted $color_pizza_approx;
+  }
+}
+.content-inner {
+  h2 {
+    font-family: $font_0, $font_1, $font_2;
+  }
+  h3 {
+    font-family: $font_0, $font_1, $font_2;
+  }
+  h4 {
+    font-family: $font_0, $font_1, $font_2;
+  }
+  .block.block-boxes-os_boxes_columns .block {
+    border-top: none;
+  }
+}
+.header-container {
+  background: $color_goldenrod_approx;
+  ul.nav li a {
+    font-family: $font_0, $font_1, $font_2;
+    @extend %extend_2;
+  }
+}
+
+.navbar-collapse {
+  background: $color_steel_blue_approx;
+  @media #{$mobile} {
+    padding: 0 !important;
+  }
+  /***** navbar nav *****/
+  .navbar-nav {
+    > li {
+      @media #{$mobile} {
+        border-bottom: 1px solid $white;
+        border-top: 0 none;
+      }
+      > a {
+        color: $white;
+        @media #{$mobile} {
+          color: $white;
+        }
+      }
+    }
+  }
+  /**** dropdown menu ****/
+  .dropdown-menu {
+    background: $color_steel_blue_approx;
+    @media #{$mobile} {
+      background: none;
+    }
+    > li {
+      > a {
+        background: none;
+        color: $white;
+        font-weight: normal;
+        @media #{$mobile} {
+          font-size: 19px;
+          padding-left: 20px;
+        }
+        &:hover, &:active {
+          color: $white;
+          background: $color_steel_blue_approx;
+          @media #{$mobile} {
+            color: $white;
+          }
+        }
+      }
+      &.active {
+        a {
+          color: $white;
+          background: $color_steel_blue_approx;
+          @media #{$mobile} {
+            color: $white;
+          }
+          &:hover {
+            background: none;
+            @media #{$mobile} {
+              color: $white;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+.search-block-form {
+  .form-submit {
+    background: $color_steel_blue_approx;
+    border-radius: 44px;
+    border-color: $color_steel_blue_approx;
+  }
+  .form-search {
+    background-color: $color_alto_approx;
+    border-radius: 30px;
+    padding: 0 35px 0 8px;
+  }
+}
+.comment-wrapper {
+  border-top: 2px dotted $color_pizza_approx;
+  border-top: none;
+}
+#boxes-box-os_pages_section_nav {
+  border: 1px solid $color_goldenrod_approx;
+}
+.path-search .title a {
+  font-family: $font_0, $font_1, $font_2;
+}
+.links a {
+  font-family: $font_0, $font_1, $font_2;
+}
+.boxes-box-content h2 {
+  font-family: $font_0, $font_1, $font_2;
+}
+h2.block-title {
+  font-family: $font_0, $font_1, $font_2;
+}
+.fc-listUpcoming-view .fc-list-heading .fc-list-heading-main {
+  @extend %extend_1;
+  span {
+    &.event-start-month {
+      color: $black;
+    }
+    &.event-year {
+      padding: 8px 0 0;
+    }
+    .fc-listPast-view .fc-list-heading .fc-list-heading-main span {
+      font-weight: normal;
+    }
+  }
+}
+.fc-listPast-view .fc-list-heading .fc-list-heading-main {
+  @extend %extend_1;
+  .event-start-month {
+    color: $black;
+  }
+  span.event-year {
+    padding: 8px 0 0;
+  }
+}
+.path-front .content-inner .block {
+  border-top: 2px dotted $color_pizza_approx;
+
+  &.block-boxes-os_slideshow_box {
+    border-top: none;
+  }
+}
+#content-column .block.block-boxes-os_boxes_columns .block {
+  border-top: 2px dotted $color_pizza_approx;
+}
+.path-person .block-inner {
+  border-top: 2px dotted $color_pizza_approx;
+  border-top: none;
+}
+a.rslides_nav {
+  //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+  border-radius: 140px;
+  width: 6px;
+  &.prev {
+    background-position: -19px -25px;
+    margin-right: 8px;
+  }
+  &.next {
+    background-position: -50px -25px;
+    margin-left: 8px;
+  }
+}
+.rslides_tabs li {
+  &:last-child {
+    background: transparent;
+  }
+  &:first-child {
+    background: transparent;
+  }
+}

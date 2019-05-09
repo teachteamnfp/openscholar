@@ -5,8 +5,12 @@ namespace Drupal\cp_appearance\Controller;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Extension\ThemeHandlerInterface;
-use Drupal\cp_appearance\AppearanceHelperInterface;
+use Drupal\Core\Path\AliasManagerInterface;
+use Drupal\cp_appearance\AppearanceSettingsBuilderInterface;
 use Drupal\cp_appearance\Form\ThemeForm;
+use Drupal\os_theme_preview\HandlerInterface;
+use Drupal\os_theme_preview\PreviewManagerInterface;
+use Drupal\os_theme_preview\ThemePreviewException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,11 +30,32 @@ class CpAppearanceMainController extends ControllerBase {
   protected $themeHandler;
 
   /**
-   * Theme appearance helper.
+   * Appearance settings builder.
    *
-   * @var \Drupal\cp_appearance\AppearanceHelperInterface
+   * @var \Drupal\cp_appearance\AppearanceSettingsBuilderInterface
    */
-  protected $appearanceHelper;
+  protected $appearanceSettingsBuilder;
+
+  /**
+   * Theme preview handler.
+   *
+   * @var \Drupal\os_theme_preview\HandlerInterface
+   */
+  protected $previewHandler;
+
+  /**
+   * Theme preview manager.
+   *
+   * @var \Drupal\os_theme_preview\PreviewManagerInterface
+   */
+  protected $previewManager;
+
+  /**
+   * Alias manager.
+   *
+   * @var \Drupal\Core\Path\AliasManagerInterface
+   */
+  protected $aliasManager;
 
   /**
    * {@inheritdoc}
@@ -39,24 +64,36 @@ class CpAppearanceMainController extends ControllerBase {
     return new static(
       $container->get('theme_handler'),
       $container->get('config.factory'),
-      $container->get('cp_appearance.appearance_helper')
+      $container->get('cp_appearance.appearance_settings_builder'),
+      $container->get('os_theme_preview.handler'),
+      $container->get('os_theme_preview.manager'),
+      $container->get('path.alias_manager')
     );
   }
 
   /**
-   * CpAppearanceMainController constructor.
+   * Creates a new CpAppearanceMainController object.
    *
    * @param \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler
    *   The theme handler.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The config factory.
-   * @param \Drupal\cp_appearance\AppearanceHelperInterface $appearance_helper
-   *   Theme appearance helper service.
+   * @param \Drupal\cp_appearance\AppearanceSettingsBuilderInterface $appearance_settings_builder
+   *   Appearance settings builder.
+   * @param \Drupal\os_theme_preview\HandlerInterface $handler
+   *   Theme preview handler.
+   * @param \Drupal\os_theme_preview\PreviewManagerInterface $preview_manager
+   *   Theme preview manager.
+   * @param \Drupal\Core\Path\AliasManagerInterface $alias_manager
+   *   Alias manager.
    */
-  public function __construct(ThemeHandlerInterface $theme_handler, ConfigFactoryInterface $config_factory, AppearanceHelperInterface $appearance_helper) {
+  public function __construct(ThemeHandlerInterface $theme_handler, ConfigFactoryInterface $config_factory, AppearanceSettingsBuilderInterface $appearance_settings_builder, HandlerInterface $handler, PreviewManagerInterface $preview_manager, AliasManagerInterface $alias_manager) {
     $this->themeHandler = $theme_handler;
     $this->configFactory = $config_factory;
-    $this->appearanceHelper = $appearance_helper;
+    $this->appearanceSettingsBuilder = $appearance_settings_builder;
+    $this->previewHandler = $handler;
+    $this->previewManager = $preview_manager;
+    $this->aliasManager = $alias_manager;
   }
 
   /**
@@ -64,7 +101,7 @@ class CpAppearanceMainController extends ControllerBase {
    */
   public function main(): array {
     /** @var \Drupal\Core\Extension\Extension[] $themes */
-    $themes = $this->appearanceHelper->getThemes();
+    $themes = $this->appearanceSettingsBuilder->getThemes();
 
     // Use for simple dropdown for now.
     $basic_theme_options = [];
@@ -83,7 +120,7 @@ class CpAppearanceMainController extends ControllerBase {
 
     $build = [];
     $build[] = [
-      '#theme' => 'system_themes_page',
+      '#theme' => 'cp_appearance_themes_page',
       '#theme_groups' => $theme_groups,
       '#theme_group_titles' => $theme_group_titles,
     ];
@@ -99,10 +136,10 @@ class CpAppearanceMainController extends ControllerBase {
    * @param string $theme
    *   The theme name.
    * @param \Symfony\Component\HttpFoundation\Request $request
-   *   A request object containing a theme name.
+   *   Request object.
    *
    * @return \Symfony\Component\HttpFoundation\RedirectResponse
-   *   Redirects back to the appearance admin page.
+   *   Redirect response.
    */
   public function setTheme($theme, Request $request): RedirectResponse {
     $config = $this->configFactory->getEditable('system.theme');
@@ -119,7 +156,30 @@ class CpAppearanceMainController extends ControllerBase {
       $this->messenger()->addError($this->t('The %theme theme was not found.', ['%theme' => $theme]));
     }
 
-    return $this->redirect('cp.appearance');
+    return $this->redirect('cp.appearance', [], ['absolute' => TRUE]);
+  }
+
+  /**
+   * Starts preview mode for a theme.
+   *
+   * @param string $theme
+   *   The theme name.
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *   Request object.
+   *
+   * @return \Symfony\Component\HttpFoundation\RedirectResponse
+   *   Redirect response.
+   */
+  public function previewTheme($theme, Request $request): RedirectResponse {
+    try {
+      $this->previewHandler->startPreviewMode($theme, $this->previewManager->getActiveVsiteId());
+    }
+    catch (ThemePreviewException $e) {
+      $this->messenger()->addError($this->t('Could not start preview. Please check logs for details.'));
+      $this->getLogger('cp_appearance')->error($e->getMessage());
+    }
+
+    return $this->redirect('<front>', [], ['absolute' => TRUE]);
   }
 
 }

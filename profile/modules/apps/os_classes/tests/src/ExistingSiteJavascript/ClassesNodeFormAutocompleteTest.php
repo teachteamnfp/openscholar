@@ -5,8 +5,8 @@ namespace Drupal\Tests\os_classes\ExistingSiteJavascript;
 /**
  * Tests os_classes module.
  *
- * @group classes
  * @group functional-javascript
+ * @group classes
  * @coversDefaultClass \Drupal\os_classes\Form\SemesterFieldOptionsForm
  */
 class ClassesNodeFormAutocompleteTest extends ClassesExistingSiteJavascriptTestBase {
@@ -65,7 +65,7 @@ class ClassesNodeFormAutocompleteTest extends ClassesExistingSiteJavascriptTestB
   public function testAutocompleteNodeForm() {
     $this->drupalLogin($this->adminUser);
     $node = $this->createClass([
-      'field_year_offered' => '2016'
+      'field_year_offered' => '2016',
     ]);
     $this->group->addContent($node, "group_node:{$node->bundle()}");
 

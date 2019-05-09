@@ -1,3 +1,4 @@
+@import '../../os_base/scss/base/breakpoints';
 //colors
 $color_tundora_approx: #444;
 $color_tapa_approx: #777;
@@ -101,50 +102,82 @@ h4 {
 }
 .navbar-collapse {
   background: $color_red_stage_approx;
-  ul.nav {
-    a {
-      &.is-active {
-        background: $color_concrete_approx;
-        color: $color_st_tropaz_approx;
+  @media #{$mobile} {
+    padding: 0 !important;
+  }
+  /***** navbar nav *****/
+  .navbar-nav {
+    > li {
+      @media #{$mobile} {
+        border-bottom: 1px solid $white;
+        border-top: 0 none;
       }
+      > a {
+        @media #{$mobile} {
+          color: $white;
+        }
+        &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
+          background: $color_concrete_approx;
+          color: $color_st_tropaz_approx;
+        }
+      }
+      &.open, &.active {
+        > a, > a:hover, > a:active, > a:focus {
+          background: $color_concrete_approx;
+          color: $color_st_tropaz_approx;
+          @media #{$mobile} {
+            margin: 0 !important;
+          }
+        }
 
-      &:hover {
-        background: $color_concrete_approx;
-        color: $color_st_tropaz_approx;
       }
     }
-    .dropdown {
-      a {
-        &:hover {
-          background-color: $color_concrete_approx;
-          color: $color_st_tropaz_approx;
-        }
-        &.is-active {
-          background-color: $color_concrete_approx;
-          color: $color_st_tropaz_approx;
-        }
-      }
-      &.open > a {
-        background-color: $color_concrete_approx;
-        color: $color_st_tropaz_approx;
-      }
-      ul li a {
-        color: $color_st_tropaz_approx;
-        &.is-active {
-          color: $color_st_tropaz_approx;
-        }
-        &:hover {
-          color: $color_steel_blue_approx;
-        }
-      }
+  }
+  /**** dropdown menu ****/
+  ul.dropdown-menu {
+    background: $color_concrete_approx;
+    @media #{$mobile} {
+      background: none;
     }
-    ul {
-      background: $color_concrete_approx;
+    > li {
+      > a {
+        color: $color_st_tropaz_approx;
+        background: none;
+        @media #{$mobile} {
+          font-size: 19px;
+          padding-left: 20px;
+          color: $white;
+        }
+        &:hover, &:active {
+          color: $color_st_tropaz_approx !important;
+          background: none !important;
+          @media #{$mobile} {
+            color: $white;
+          }
+        }
+      }
+      &.active {
+        a {
+          color: $color_st_tropaz_approx;
+          background: none;
+          @media #{$mobile} {
+            color: $white;
+          }
+          &:hover {
+            color: $color_st_tropaz_approx;
+            background: none;
+            @media #{$mobile} {
+              color: $white;
+            }
+          }
+        }
+      }
     }
   }
 }
 .header-container {
   background: $color_concrete_approx;
+  color: $black;
   ul.nav li a {
     color: $color_st_tropaz_approx;
   }
@@ -210,7 +243,7 @@ div.tweets-pulled-listing div.tweet-divider {
 .path-node-type-person .content-inner h2.block-title {
   @extend %extend_1;
 }
-.sidebar .block h2.block-title {
+aside .block h2.block-title {
   @extend %extend_1;
 }
 a.rslides_nav {

@@ -16,8 +16,14 @@
       return $.extend({
         eventRender: function (event, element) {
           if (element.hasClass('fc-event-future') && !element.hasClass('fc-day-grid-event')) {
+            let userOffsetInSeconds = drupalSettings['os_events']['offsetInM']/3600;
+            let userOffsetInHM = drupalSettings['os_events']['offsetInHm'];
+            let dateString = event['start']['_i'] + userOffsetInHM;
+            let date = new Date(dateString).getTime()/1000;
+            let eventDate = (date - (userOffsetInSeconds*3600));
             let nid = event.eid;
-            element.html(drupalSettings[nid]);
+            element.html(drupalSettings['os_events']['node'][nid]);
+            element.find('#events_signup_modal_form').attr('href', '/events/signup/' + nid + '/' + eventDate);
           }
           else if (element.hasClass('fc-event-past') && !element.hasClass('fc-day-grid-event')) {
             let nid = event.eid;
@@ -45,6 +51,12 @@
             for (var i = 0; i < pArrLen; i += 2) {
               elems.filter(':eq(' + i + '),:eq(' + (i + 1) + ')').wrapAll(wrapper);
             };
+          }
+          //wrapping content in td for ui
+          if (view.name == 'listWeek' || view.name == 'listDay') {
+            $('.fc-event-future').each(function(){
+              $(this).wrapInner('<td>');
+            });
           }
         },
         views: {
@@ -96,25 +108,7 @@
   }
 
   Drupal.behaviors.events = {
-    attach: function (context, settings) {
-
-      const $multicheck = $('#edit-field-singup-multiple-wrapper');
-      $multicheck.hide();
-      const $checkbox = $('.form-item-field-recurring-date-0-rrule .form-textarea-wrapper');
-      const $message = $('#event-change-notify');
-      $checkbox.find('input').on('change', function () {
-        if ($(this).is(':checked')) {
-          $message.removeClass('visually-hidden');
-          $message.show();
-          $message.appendTo($(this).parent());
-          $multicheck.show();
-        }
-        else {
-          $message.hide();
-          $multicheck.hide();
-        }
-      });
-
+    attach: function () {
       showModalEventRegisterHandler();
     }
   };

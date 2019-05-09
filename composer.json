@@ -11,21 +11,8 @@
     ],
     "repositories": [
         {
-            "type": "package",
-            "package": {
-                "name": "drupal/purl",
-                "version": "master",
-                "type": "drupal-module",
-                "dist": {
-                    "url": "https://github.com/openscholar/purl-d8/archive/master.zip",
-                    "type": "zip"
-                },
-                "source": {
-                    "url": "https://github.com/openscholar/purl-d8.git",
-                    "type": "git",
-                    "reference": "master"
-                }
-            }
+            "type": "vcs",
+            "url": "https://github.com/openscholar/purl-d8"
         },
         {
             "type": "package",
@@ -177,8 +164,8 @@
         "cweagans/composer-patches": "^1.6",
         "drupal-composer/drupal-scaffold": "^2.5",
         "drupal/console": "^1.0.2",
-        "drupal/core": "^8.6.13",
-        "drupal/purl": "master@dev",
+        "drupal/core": "^8.6.15",
+        "drupal/purl": "1.0.2",
         "drupal/group_purl": "1.0-alpha1",
         "drupal/search_api": "^1.9",
         "drush/drush": "^9.0.0",
@@ -206,7 +193,6 @@
         "drupal/date_recur": "^2.0",
         "drupal/views_ical": "1.x-dev",
         "fullcalendar/fullcalendar": "^3.3",
-        "drupal/date_recur_interactive": "^2.0",
         "drupal/bootstrap": "^3.17",
         "drupal/styleguide": "^1.0@alpha",
         "drupal/config_split": "^1.4",
@@ -239,11 +225,12 @@
         "drupal/advancedqueue": "^1.0@beta",
         "drupal/rng": "^1.7",
         "drupal/rng_views": "^1.7",
-        "drupal/editor_advanced_link": "^1.4"
+        "drupal/editor_advanced_link": "^1.4",
+        "drupal/date_recur_modular": "^1.0@alpha"
     },
     "require-dev": {
         "drupal/features": "^3.7",
-        "webflo/drupal-core-require-dev": "^8.6.13",
+        "webflo/drupal-core-require-dev": "^8.6.15",
         "drupal/devel": "^1.2",
         "weitzman/drupal-test-traits": "^1.0@beta",
         "dmore/chrome-mink-driver": "^2.6"
@@ -322,14 +309,11 @@
                 "Getlabel() on null layout builder.": "https://www.drupal.org/files/issues/2018-07-16/2985882-entityfield-2.patch"
             },
             "drupal/group_purl": {
-                "Prevent base path from interfering with purl detection": "https://www.drupal.org/files/issues/2019-01-17/group_purl.3026646-2.basepath.patch",
+                "Prevent base path from interfering with purl detection": "https://www.drupal.org/files/issues/2019-04-12/group_purl.3026646-3.basepath.patch",
                 "Don't attempt to redirect to subdomains by default": "https://www.drupal.org/files/issues/2019-03-05/group_purl.3036879-4.subdomain_disable.patch"
             },
             "drupal/fullcalendar": {
                 "Fullcalendar incompatible with Date Recur 2.x": "https://www.drupal.org/files/issues/2019-01-09/3023612-5.patch"
-            },
-            "drupal/date_recur": {
-                "Make compatible with Date All Day module (All day occurrences)": "https://www.drupal.org/files/issues/2019-01-17/2982275-29.patch"
             },
             "drupal/views_ical": {
                 "Define missing views methods": "https://www.drupal.org/files/issues/2019-01-10/2982848-2.patch",

@@ -1,0 +1,24 @@
+.ui-widget-header,
+.ui-widget-content {
+  background: none;
+  color: $color-white;
+}
+aside .block .fc-row.ui-widget-header th {
+  background: none;
+}
+.fc-event-default {
+  border-color: $color-dark1;
+  background-color: $color-dark1;
+}
+.fc-header-toolbar {
+  button.ui-button {
+    background: $color-dark1;
+    color: $color-white;
+  }
+}
+.full-calendar-view td.fc-today span {
+  color: $color-black;
+}
+.full-calendar-view td.fc-today {
+  background: $color-white;
+}

@@ -7,8 +7,8 @@ use Behat\Mink\Exception\ExpectationException;
 /**
  * Tests os_classes module.
  *
- * @group classes
  * @group functional-javascript
+ * @group classes
  * @coversDefaultClass \Drupal\os_classes\Form\SemesterFieldOptionsForm
  */
 class ClassesAdminFormTest extends ClassesExistingSiteJavascriptTestBase {
@@ -67,7 +67,7 @@ class ClassesAdminFormTest extends ClassesExistingSiteJavascriptTestBase {
   public function testExistsDataAdminForm() {
     $user = $this->createUser(['administer site configuration']);
     $this->createClass([
-      'field_semester' => 'fall'
+      'field_semester' => 'fall',
     ]);
     $this->drupalLogin($user);
     $this->visit('/admin/config/openscholar/classes/field-allowed-values');

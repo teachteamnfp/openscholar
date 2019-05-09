@@ -1,4 +1,4 @@
-footer {
+footer.footer {
   color: $color-white;
   padding: 60px 0 12px;
   position: relative;
@@ -17,7 +17,7 @@ footer {
     }
   }
   a {
-    color: $color-blue;
+    color: $color-white;
   }
   .footer-login {
     background: none;

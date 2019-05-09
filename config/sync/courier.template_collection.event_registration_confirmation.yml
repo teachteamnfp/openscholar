@@ -1,0 +1,13 @@
+uuid: 1377e9c2-0a3d-4e4f-acc2-8c353274c8ac
+langcode: en
+status: true
+dependencies: {  }
+id: event_registration_confirmation
+provider: null
+contexts: {  }
+templates:
+  courier_email:
+    type: courier_email
+    content:
+      subject: '[node:title] event registration confirmation'
+      body: 'Hello [identity:label] </br></br>You have been registered for [node:title] on [registration:field_for_date:date:long] [node:original:field_location]. </br></br>View the event listing here: </br><a href="[node:url]" target="_blank">[node:url]</a></br></br>Questions? Email the event organizer <a href="mailto:[node:rng_reply_to]" target="_blank">[node:rng_reply_to]</a></br></br>See you there! </br></br></br>[university:title], [university:address]'

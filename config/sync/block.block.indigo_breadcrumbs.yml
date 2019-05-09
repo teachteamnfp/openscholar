@@ -1,0 +1,22 @@
+uuid: d870d926-5379-45f8-bba0-737363304589
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - indigo
+_core:
+  default_config_hash: oXUb3JZR2WW5VOdw4HrhRicCsq51mCgLfRyvheG68ck
+id: indigo_breadcrumbs
+theme: indigo
+region: content
+weight: -8
+provider: null
+plugin: system_breadcrumb_block
+settings:
+  id: system_breadcrumb_block
+  label: Breadcrumbs
+  provider: system
+  label_display: '0'
+visibility: {  }

@@ -1,0 +1,22 @@
+uuid: f6b41a22-7eff-47e9-9f5a-a72130eeb09e
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - ivy_accents
+_core:
+  default_config_hash: jQQUUWN2Uxr5qZtc9zcJKBCxpKY8orN1u2HPqYYRQDI
+id: ivy_accents_powered
+theme: ivy_accents
+region: footer
+weight: -6
+provider: null
+plugin: system_powered_by_block
+settings:
+  id: system_powered_by_block
+  label: 'Powered by Drupal'
+  provider: system
+  label_display: '0'
+visibility: {  }

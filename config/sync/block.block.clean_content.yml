@@ -1,0 +1,22 @@
+uuid: 4a6ed66c-9269-449d-83bd-d275dd5ff9d1
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - clean
+_core:
+  default_config_hash: 9EoWV2Lot6FVSr50t4hoKgiz1LIXYWNG-IIPYsWxBqo
+id: clean_content
+theme: clean
+region: content
+weight: -4
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  provider: system
+  label_display: '0'
+visibility: {  }

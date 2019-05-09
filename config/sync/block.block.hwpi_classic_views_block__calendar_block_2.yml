@@ -1,4 +1,4 @@
-uuid: c6fd4828-f847-463d-9343-148bf5448173
+uuid: 8b69ad05-3130-4fd3-b0e9-f88b01048dae
 langcode: en
 status: true
 dependencies:
@@ -10,6 +10,8 @@ dependencies:
     - views
   theme:
     - hwpi_classic
+_core:
+  default_config_hash: 6R_HyHKQRBSCVhURwYuCNLKvoxx2xVm1hWgnZaX7enY
 id: hwpi_classic_views_block__calendar_block_2
 theme: hwpi_classic
 region: content

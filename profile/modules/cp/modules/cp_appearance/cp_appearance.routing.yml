@@ -15,3 +15,11 @@ cp_appearance.cp_select_theme:
   requirements:
     _group_permission: 'manage cp appearance'
     _group_member: 'TRUE'
+
+cp_appearance.preview:
+  path: '/cp/appearance/preview/{theme}'
+  defaults:
+    _controller: '\Drupal\cp_appearance\Controller\CpAppearanceMainController::previewTheme'
+  requirements:
+    _group_permission: 'manage cp appearance'
+    _group_member: 'TRUE'

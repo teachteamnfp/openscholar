@@ -19,7 +19,7 @@ use Drupal\cp_settings\CpSettingInterface;
  *   group = {
  *    "id" = "redirect_maximum",
  *    "title" = @Translation("Redirect maximum"),
- *    "parent" = "cp.settings"
+ *    "parent" = "cp.settings.global"
  *   }
  * )
  */

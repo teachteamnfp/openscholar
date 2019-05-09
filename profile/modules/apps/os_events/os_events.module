@@ -11,25 +11,19 @@ use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
+use Drupal\date_recur\DateRecurHelper;
+use Drupal\date_recur_modular\DateRecurModularWidgetOptions;
+use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Cache\RefinableCacheableDependencyInterface;
-
-/**
- * Implemets hook_preprocess_page().
- */
-function os_events_preprocess_page(&$variables) {
-  $node = $variables['node'] ?? NULL;
-  if ($node && $node->bundle() == 'events' && !$node->field_signup->value) {
-    unset($variables['page']['content']['registration']);
-  }
-}
+use Drupal\views\ViewExecutable;
 
 /**
  * Implements hook_menu_local_tasks_alter().
  */
 function os_events_menu_local_tasks_alter(&$data, $route_name, RefinableCacheableDependencyInterface &$cacheability) {
 
-  $node = \Drupal::routeMatch()->getParameter('node');
+  $node = Drupal::routeMatch()->getParameter('node');
 
   if ($node && $node->access('update') !== TRUE) {
     return;
@@ -54,62 +48,165 @@ function os_events_menu_local_tasks_alter(&$data, $route_name, RefinableCacheabl
       unset(
         $data['tabs'][1]['rng.local_tasks:rng.event.node.event.access'],
         $data['tabs'][1]['rng.local_tasks:rng.event.node.event.group.list'],
-        $data['tabs'][1]['rng_date_scheduler.local_tasks:rng.event.node.event.date_scheduler']
+        $data['tabs'][1]['rng_date_scheduler.local_tasks:rng.event.node.event.date_scheduler'],
+        $data['tabs'][1]['rng.local_tasks:rng.event.node.event.messages']
       );
-      $data['tabs'][1]['rng.local_tasks:rng.event.node.event.messages']['#link']['title'] = t("Email Registrants");
     }
   }
 }
 
 /**
- * Implements hook_ENTITY_TYPE_insert().
+ * Implements hook_ENTITY_TYPE_update().
  */
-function os_events_node_insert(EntityInterface $node) {
+function os_events_node_update(EntityInterface $node) {
   if ($node->bundle() != 'events') {
     // Bail out if not an event node.
     return;
   }
-  // Set up services that we need.
   $container = Drupal::getContainer();
-  $default_template = $container->get('os_events.default_mail_template');
-  $default_template->createDefaultTemplate($node);
+  $mailService = $container->get('os_events.mail_notifications');
+
+  // Get the registrations associated with this event.
+  $eventMeta = $container->get('rng.event_manager')->getMeta($node);
+  $registrations = $eventMeta->getRegistrations();
+
+  // If node is unpublished or Signup disabled,
+  // delete registrations and send cancel mail.
+  if (!$node->status->value || !$node->field_signup->value) {
+    $mailService->sendCancelNotificationEmail($node);
+    $mailService->disableReminderEmail($node);
+    foreach ($registrations as $registration) {
+      $registration->delete();
+    }
+  }
+
+  // Get dates to see if they are changed.
+  $originalDate = $node->original->field_recurring_date->value;
+  $newDate = $node->field_recurring_date->value;
+
+  // Get the location to see if it is changed.
+  $originalLocation = $node->original->field_location->value;
+  $newLocation = $node->field_location->value;
+
+  // If recurring event's date is changed, delete all registrations.
+  if ($node->field_recurring_date->rrule) {
+    if ($originalDate !== $newDate) {
+      foreach ($registrations as $registration) {
+        $registration->delete();
+      }
+      return;
+    }
+    // If only location changed for recurring event send update email.
+    if ($originalLocation !== $newLocation) {
+      $mailService->sendUpdateNotificationEmail($node);
+    }
+  }
+  // If non-recurring event is changed, send update email.
+  if (!$node->field_recurring_date->rrule) {
+    if ($originalLocation !== $newLocation || $originalDate !== $newDate) {
+      $mailService->sendUpdateNotificationEmail($node);
+    }
+    // If date changed, update the registration entity too.
+    if ($originalDate !== $newDate) {
+      $newDate = $container->get('date.formatter')->format(strtotime($newDate), 'custom', DateTimeItemInterface::DATETIME_STORAGE_FORMAT);
+      foreach ($registrations as $registration) {
+        $registration->field_for_date->value = $newDate;
+        $registration->save();
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_predelete().
+ */
+function os_events_node_predelete(EntityInterface $node) {
+  if ($node->bundle() != 'events') {
+    // Bail out if not an event node.
+    return;
+  }
+
+  $container = Drupal::getContainer();
+  $service = $container->get('os_events.mail_notifications');
+  $service->sendCancelNotificationEmail($node);
+  $service->disableReminderEmail($node);
+
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ */
+function os_events_node_presave(EntityInterface $entity) {
+  if ($entity->bundle() != 'events') {
+    // Bail out if not an event node.
+    return;
+  }
+  $email = $entity->getOwner()->getEmail();
+  $entity->rng_reply_to->value = ($entity->rng_reply_to->value) ?? $email;
+  $entity->rng_capacity->value = ($entity->rng_capacity->value) ?? 'unlimited';
+
+  // Make sure reminder checkbox and reminder schedule is in sync.
+  if (!$entity->status->value || !$entity->field_signup->value) {
+    $entity->field_should_send_reminder->value = 0;
+  }
 }
 
 /**
  * Implements hook_ENTITY_TYPE_insert().
  */
-function os_events_rng_rule_insert(EntityInterface $rule) {
-  // Make newly created rule active by default.
-  $rule->setIsActive(TRUE)
-    ->save();
+function os_events_registrant_insert(EntityInterface $registrant) {
+  $container = Drupal::getContainer();
+  $default_template = $container->get('os_events.mail_notifications');
+  $default_template->sendConfirmationEmail($registrant);
 }
 
 /**
  * Implements hook_ENTITY_TYPE_view().
  */
 function os_events_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
-  if ($entity->bundle() != 'events' || !$entity->field_signup->value) {
+  if ($entity->bundle() != 'events' || !$entity->field_signup->value || !$entity->field_recurring_date->value) {
     return;
   }
+
   $id = $entity->id();
+  $date_switch = [];
+  $another_link = '';
+  $data = Drupal::service('os_events.registrations_helper')->anotherDateLink($build);
+
+  if ($data) {
+    $date_switch = $data['date_switch'];
+    $another_link = $data['another_link'];
+  }
+
+  // Registration link.
   $build['registration_signup']['#markup'] = '<div id="registration-link-' . $id . '">' . t("Registration:@s", ['@s' => ' ']) .
-      os_events_generate_modal_register_link($entity) . '</div>';
+      os_events_generate_modal_register_link($build) . $another_link . '</div>';
   $build['registration_signup']['#weight'] = 20;
+  if ($date_switch) {
+    $build['registration_signup_dates'] = [
+      '#types' => 'form',
+      'form' => $date_switch,
+      '#weight' => 21,
+    ];
+    $build['#attached']['library'][] = 'os_events/os_events.toggle';
+  }
 }
 
 /**
  * Generate Registration link.
  *
- * @param \Drupal\Core\Entity\EntityInterface $node
- *   The node entity.
+ * @param array $build
+ *   The page build.
  *
  * @return string
  *   The Signup link.
  */
-function os_events_generate_modal_register_link(EntityInterface $node) {
-  $message = os_events_check_registrations_status($node);
-  if (!$message) {
-    $url = Url::fromRoute('os_events.signup_modal_form', ['nid' => $node->id()], [
+function os_events_generate_modal_register_link(array $build) {
+  $data = Drupal::service('os_events.registrations_helper')->checkRegistrationStatus($build);
+  $nid = $build['#node']->id();
+
+  if (!isset($data['message'])) {
+    $url = Url::fromRoute('os_events.signup_modal_form', ['nid' => $nid, 'timestamp' => $data['timestamp']], [
       'attributes' => [
         'class' => ['use-ajax'],
         'data-dialog-type' => 'modal',
@@ -120,18 +217,40 @@ function os_events_generate_modal_register_link(EntityInterface $node) {
     $link = Link::fromTextAndUrl('Signup for this event', $url)->toString();
     return $link;
   }
-  return $message;
+  return $data['message'];
 }
 
 /**
  * Implements hook_form_BASE_FORM_ID_alter().
  */
 function os_events_form_rng_event_settings_alter(&$form, FormStateInterface $form_state, $form_id) {
-  // Set registration capacity to unlimited by default.
-  if (!$form['event']['rng_capacity']['widget'][0]['unlimited_number']['#default_value']) {
-    $form['event']['rng_capacity']['widget'][0]['unlimited_number']['#default_value'] = "unlimited";
-  }
+
+  $form['event']['field_send_reminder']['#states'] = [
+    'visible' => [
+      ':input[name="field_should_send_reminder[value]"]' => [
+        'checked' => TRUE,
+      ],
+    ],
+  ];
   $form['#validate'][] = 'os_events_signup_settings_validate';
+  $form['#submit'][] = 'os_events_set_reminder';
+}
+
+/**
+ * Sets the reminder for a particular date.
+ */
+function os_events_set_reminder($form, FormStateInterface $form_state) {
+  $node = $form_state->getStorage()['event'];
+  $values = $form_state->getValues();
+  $container = Drupal::getContainer();
+  $service = $container->get('os_events.mail_notifications');
+  if ($values['field_should_send_reminder']['value']) {
+    $service->setUpReminderEmail($values, $node);
+  }
+  elseif (!$values['field_should_send_reminder']['value']) {
+    // Remove reminder if send reminder disabled.
+    $service->disableReminderEmail($node);
+  }
 }
 
 /**
@@ -148,7 +267,7 @@ function os_events_signup_settings_validate(array &$form, FormStateInterface &$f
   $close_date = $form_state->getValue('field_close_');
   $open_date = array_shift($open_date);
   $close_date = array_shift($close_date);
-  $node = \Drupal::routeMatch()->getCurrentRouteMatch()->getParameter('node');
+  $node = Drupal::routeMatch()->getCurrentRouteMatch()->getParameter('node');
   $event_start_date = $node->field_recurring_date->value;
   $event_start_date = DrupalDateTime::createFromTimestamp(strtotime($event_start_date));
 
@@ -162,57 +281,250 @@ function os_events_signup_settings_validate(array &$form, FormStateInterface &$f
 }
 
 /**
- * Checks if new registrations are allowed based on different settings status.
- *
- * @param \Drupal\Core\Entity\EntityInterface $node
- *   The node object.
- *
- * @return \Drupal\Core\StringTranslation\TranslatableMarkup|string
- *   Message to return.
+ * Implements hook_views_pre_render().
  */
-function os_events_check_registrations_status(EntityInterface $node) {
-  $message = '';
-  $is_past_date = '';
-  $full = t("Sorry, the event is full");
-  $closed = t("Registration closed");
-  $eventManager = \Drupal::service('rng.event_manager');
-  $dates = \Drupal::service('rng_date_scheduler.event_dates')->getDates($node);
-  $eventMeta = $eventManager->getMeta($node);
-  $event_start_date = $node->field_recurring_date->value;
-  $event_end_date = $node->field_recurring_date->end_value;
+function os_events_views_pre_render(ViewExecutable $view) {
+  if ($view->storage->id() == 'calendar') {
 
-  if (!$event_end_date && $event_start_date) {
-    $is_past_date = DrupalDateTime::createFromTimestamp(strtotime($event_start_date));
-  }
-  elseif ($event_end_date) {
-    $is_past_date = DrupalDateTime::createFromTimestamp(strtotime($event_end_date));
-  }
+    $view->element['#attached']['library'][] = 'os_fullcalendar/drupal.os_fullcalendar';
+    // Renders teaser mode of node on upcoming and past tabs
+    // which loads only event node's titles by default.
+    foreach ($view->result as $value) {
+      $nid = $value->_entity->nid->value;
+      $entity_type = 'node';
+      $view_mode = 'teaser';
+      $view_builder = \Drupal::entityTypeManager()->getViewBuilder($entity_type);
+      $storage = \Drupal::entityTypeManager()->getStorage($entity_type);
+      $node = $storage->load($nid);
+      $build = $view_builder->view($node, $view_mode);
+      $output = render($build);
 
-  if (!$eventMeta->isAcceptingRegistrations()) {
-    $message = $full;
-  }
-  $capacity = $eventMeta->remainingCapacity();
-  ($capacity == -1) ? $slot_available = TRUE : ($capacity > 0) ? $slot_available = TRUE : $slot_available = FALSE;
-  (!$slot_available) ? $message = $full : NULL;
-
-  $now = DrupalDateTime::createFromTimestamp(\Drupal::requestStack()->getCurrentRequest()->server->get('REQUEST_TIME'));
-
-  // Check if it is a past event.
-  if ($is_past_date < $now) {
-    $message = $closed;
-    return $message;
-  }
-
-  foreach ($dates as $date) {
-    ($date->getFieldName() == 'field_open_date') ? $open_date = $date->getDate() : $open_date = NULL;
-    ($date->getFieldName() == 'field_close_') ? $close_date = $date->getDate() : $close_date = NULL;
-
-    if ($open_date && $now < $open_date) {
-      $message = $closed;
-    }
-    if ($close_date && $now > $close_date) {
-      $message = $closed;
+      $view->element['#attached']['drupalSettings']['os_events']['node'][$nid] = $output;
+      $dateTime = new DrupalDateTime();
+      $view->element['#attached']['drupalSettings']['os_events']['offsetInM'] = $dateTime->getOffset();
+      $view->element['#attached']['drupalSettings']['os_events']['offsetInHm'] = $dateTime->format('P');
     }
   }
-  return $message;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Alters the artist options on artwork pages.
+ */
+function os_events_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+
+  // If not the view we are looking, move on.
+  if ($form['#id'] != 'views-exposed-form-rng-registrations-node-page-1') {
+    return FALSE;
+  }
+  $node = Drupal::requestStack()->getCurrentRequest()->get('node');
+  $nid = $node->id();
+
+  // Get occurrences.
+  $results = Drupal::service('os_events.registrations_helper')->getOccurrences($nid);
+
+  // Start building out the options for our select list.
+  $options = [];
+
+  // Push event start date into the results array.
+  $event_start_date = new \stdClass();
+  $event_start_date->field_recurring_date_value = $node->field_recurring_date->value;
+  array_unshift($results, $event_start_date);
+
+  foreach ($results as $date) {
+    $dateTimeObject = new DrupalDateTime($date->field_recurring_date_value);
+    $offset = $dateTimeObject->getOffset();
+    $interval = DateInterval::createFromDateString((string) $offset . 'seconds');
+    $dateTimeObject->add($interval);
+    $dateString = $dateTimeObject->format('l, F j, Y');
+    $options[$dateString] = $dateTimeObject->format('l, F j, Y');
+  }
+
+  // Start building out our new form element.
+  $date_field = 'field_for_date_value';
+  $form[$date_field]['#type'] = 'select';
+  $form[$date_field]['#multiple'] = FALSE;
+
+  // Specify the empty option for our select list.
+  $form[$date_field]['#empty_option'] = t('-Select a specific occurrence-');
+
+  // Add the $options from above to our select list.
+  $form[$date_field]['#options'] = $options;
+  unset($form[$date_field]['#size']);
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ *
+ * HOOK: 'os_events_date_recur_modular_sierra_widget'.
+ */
+function os_events_preprocess_os_events_date_recur_modular_sierra_widget(array &$variables): void {
+  $variables['attributes']['class'][] = 'date-recur-modular-sierra-widget';
+  $variables['#attached']['library'][] = 'date_recur_modular/date_recur_modular_sierra_widget';
+}
+
+/**
+ * Implements hook_theme().
+ */
+function os_events_theme(array $existing, string $type, string $theme, string $path): array {
+  return [
+    'os_events_date_recur_modular_sierra_widget' => [
+      'render element' => 'widget',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_field_widget_form_alter().
+ */
+function os_events_field_widget_form_alter(&$element, FormStateInterface $form_state, $context) {
+  if (($context['items']->getName() != 'field_recurring_date')) {
+    return;
+  }
+  $element['#theme'] = 'os_events_date_recur_modular_sierra_widget';
+
+  $visibility = [
+    ':input[name="field_recurring_date[0][recurrence_option]"]' =>
+    [
+      ['value' => 'daily'],
+      ['value' => 'weekly_oneday'],
+      ['value' => 'monthly_th_weekday'],
+      ['value' => 'yearly_monthday'],
+      ['value' => 'weekdayly'],
+    ],
+  ];
+
+  $parts = [];
+  $rule1 = NULL;
+  $rrule = $element['rrule_in_storage']['#value'] ?? '';
+  if (isset($rrule)) {
+    $startDate = new \DateTime();
+    try {
+      $helper = DateRecurHelper::create($rrule, $startDate);
+      $rules = $helper->getRules();
+      $rule1 = count($rules) > 0 ? reset($rules) : NULL;
+      $parts = $rule1 ? $rule1->getParts() : [];
+      $service = Drupal::getContainer()->get('os_events.widget_helper');
+      $getOption = $service->getRecurrenceOptions($rrule, $startDate);
+      $element['recurrence_option']['#default_value'] = $getOption;
+    }
+    catch (\Exception $e) {
+    }
+  }
+
+  $endsDate = NULL;
+  try {
+    $until = $parts['UNTIL'] ?? NULL;
+    if (is_string($until)) {
+      $endsDate = new \DateTime($until);
+    }
+    elseif ($until instanceof \DateTimeInterface) {
+      $endsDate = $until;
+    }
+  }
+  catch (\Exception $e) {
+  }
+
+  $count = $parts['COUNT'] ?? NULL;
+  $endsModeDefault = NULL;
+  if ($endsDate) {
+    $endsModeDefault = DateRecurModularWidgetOptions::ENDS_MODE_ON_DATE;
+  }
+  elseif ($count > 0) {
+    $endsModeDefault = DateRecurModularWidgetOptions::ENDS_MODE_OCCURRENCES;
+  }
+
+  $element['ends_mode'] = [
+    '#type' => 'radios',
+    '#title' => t('Ends'),
+    '#options' => [
+      DateRecurModularWidgetOptions::ENDS_MODE_ON_DATE => t('End on Date'),
+      DateRecurModularWidgetOptions::ENDS_MODE_OCCURRENCES => t('End after'),
+    ],
+    '#default_value' => $endsModeDefault,
+  ];
+  $element['ends_mode'][DateRecurModularWidgetOptions::ENDS_MODE_ON_DATE]['#states']['visible'] = [$visibility];
+  $element['ends_mode'][DateRecurModularWidgetOptions::ENDS_MODE_OCCURRENCES]['#states']['visible'] = [$visibility];
+
+  $element['ends_count'] = [
+    '#type' => 'number',
+    '#title' => t('End after number of occurrences'),
+    '#title_display' => 'invisible',
+    '#field_suffix' => t('occurrences'),
+    '#default_value' => $count ?? 1,
+    '#min' => 1,
+  ];
+  $element['ends_count']['#states']['visible'][] = [$visibility];
+
+  $element['ends_count']['#states']['enabled'][] = [
+    // This applies correctly but Drupal has no theming for disabled dates.
+    ':input[name="field_recurring_date[0][ends_mode]"]' => ['value' => DateRecurModularWidgetOptions::ENDS_MODE_OCCURRENCES],
+  ];
+
+  $element['ends_date'] = [
+    '#type' => 'container',
+  ];
+  $element['ends_date']['#states']['visible'][] = [$visibility];
+
+  $element['ends_date']['#states']['enabled'][] = [
+    // This applies correctly but Drupal has no theming for disabled dates.
+    ':input[name="field_recurring_date[0][ends_mode]"]' => ['value' => DateRecurModularWidgetOptions::ENDS_MODE_ON_DATE],
+  ];
+  $element['ends_date']['ends_date'] = [
+    '#type' => 'datetime',
+    '#default_value' => $endsDate ? DrupalDateTime::createFromDateTime($endsDate) : NULL,
+  ];
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function os_events_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form_id == 'node_events_edit_form' || $form_id == 'node_events_form') {
+    $visibility = [
+      ':input[name="field_recurring_date[0][recurrence_option]"]' =>
+        [
+          ['value' => 'daily'],
+          ['value' => 'weekly_oneday'],
+          ['value' => 'monthly_th_weekday'],
+          ['value' => 'yearly_monthday'],
+          ['value' => 'weekdayly'],
+        ],
+    ];
+    $form['field_singup_multiple']['#states']['visible'] = $visibility;
+    array_unshift($form['actions']['submit']['#submit'], 'os_events_set_rrule');
+  }
+}
+
+/**
+ * Helps to alter the rrule to add limits or set defaults.
+ *
+ * @param array $form
+ *   Form.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Form state.
+ *
+ * @throws Exception
+ */
+function os_events_set_rrule(array &$form, FormStateInterface $form_state) {
+
+  $values = $form_state->getValues();
+  $value_parents = $form['field_recurring_date']['widget'][0]['#parents'];
+  $field_recurring_date = $values['field_recurring_date'];
+  $field_recurring_date = array_shift($field_recurring_date);
+
+  $not_applicable = ['', 'custom'];
+  if (in_array($field_recurring_date['recurrence_option'], $not_applicable)) {
+    return;
+  }
+
+  // Get the Rrule set already by this point.
+  $rrule = $form_state->getValue(array_merge($value_parents, ['rrule']));
+  // Service we need to alter the rrule.
+  $service = Drupal::getContainer()->get('os_events.widget_helper');
+  $rrule = $service->alterRrule($rrule, $field_recurring_date);
+
+  // Set the altered rule so that it can be saved in DB.
+  $form_state->setValue(array_merge($value_parents, ['rrule']), $rrule);
 }

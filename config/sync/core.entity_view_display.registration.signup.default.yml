@@ -3,10 +3,22 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.registration.signup.field_for_date
     - rng.registration_type.signup
+  module:
+    - datetime
 id: registration.signup.default
 targetEntityType: registration
 bundle: signup
 mode: default
-content: {  }
+content:
+  field_for_date:
+    weight: 0
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
 hidden: {  }

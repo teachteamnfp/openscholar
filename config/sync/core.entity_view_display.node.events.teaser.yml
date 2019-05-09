@@ -7,10 +7,21 @@ dependencies:
     - core.date_format.medium
     - core.entity_view_mode.node.teaser
     - field.field.node.events.body
+    - field.field.node.events.field_close_
     - field.field.node.events.field_location
     - field.field.node.events.field_media
+    - field.field.node.events.field_open_date
     - field.field.node.events.field_recurring_date
     - field.field.node.events.field_signup
+    - field.field.node.events.field_singup_multiple
+    - field.field.node.events.rng_capacity
+    - field.field.node.events.rng_registrants_duplicate
+    - field.field.node.events.rng_registrants_maximum
+    - field.field.node.events.rng_registrants_minimum
+    - field.field.node.events.rng_registration_groups
+    - field.field.node.events.rng_registration_type
+    - field.field.node.events.rng_reply_to
+    - field.field.node.events.rng_status
     - node.type.events
   module:
     - date_recur
@@ -47,24 +58,27 @@ content:
     region: content
     label: above
     settings:
-      show_next: 5
-      count_per_item: true
+      format_type: medium
       occurrence_format_type: medium
       same_end_date_format_type: medium
-      allow_all_day: false
       all_day_format_type: html_date
-      interpreter: null
       separator: '-'
-      format_type: medium
       timezone_override: ''
+      interpreter: ''
+      allow_all_day: 0
+      show_next: 5
+      count_per_item: true
     third_party_settings: {  }
 hidden:
   field_close_: true
   field_groups: true
   field_media: true
   field_open_date: true
+  field_send_reminder: true
+  field_should_send_reminder: true
   field_signup: true
   field_singup_multiple: true
+  field_taxonomy_terms: true
   langcode: true
   links: true
   rng_capacity: true

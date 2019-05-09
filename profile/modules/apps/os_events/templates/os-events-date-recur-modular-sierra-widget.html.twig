@@ -1,0 +1,29 @@
+<div{{ attributes }}>
+  <div class="date-recur-modular-sierra-widget-day">
+    {% spaceless %}
+    {{ widget.day_start }}
+    {{ widget.time_start }}
+    {{ ' to '|t }}
+    {{ widget.time_end }}
+    {{ widget.day_end }}
+    {{ widget.time_zone }}
+    {% endspaceless %}
+  </div>
+  <div class="date-recur-modular-sierra-widget-recurrences">
+    {{ widget.is_all_day }}
+    {{ widget.recurrence_option }}
+
+    <div class="ends">
+      <div class="ends-row">
+        <div class="ends-row-label">{{ widget.ends_mode.date }}</div>
+        <div class="ends-row-field">{{ widget.ends_date }}</div>
+      </div>
+      <div class="ends-row">
+        <div class="ends-row-label">{{ widget.ends_mode.count }}</div>
+        <div class="ends-row-field">{{ widget.ends_count }}</div>
+      </div>
+    </div>
+
+  </div>
+  {{ widget.buttons }}
+</div>

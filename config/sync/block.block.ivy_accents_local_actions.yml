@@ -1,0 +1,20 @@
+uuid: 519d73f0-4c32-4231-aae5-7f32c9b22190
+langcode: en
+status: true
+dependencies:
+  theme:
+    - ivy_accents
+_core:
+  default_config_hash: 13GQpeITIJsp1kyPniXtWZfyFH87vb1xxJCHifL4UeE
+id: ivy_accents_local_actions
+theme: ivy_accents
+region: content
+weight: -5
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Primary admin actions'
+  provider: core
+  label_display: '0'
+visibility: {  }

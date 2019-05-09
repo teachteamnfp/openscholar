@@ -2,14 +2,19 @@
 
 namespace Drupal\os_events\Form;
 
+use DateInterval;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\CloseModalDialogCommand;
 use Drupal\Core\Ajax\ReplaceCommand;
+use Drupal\Core\Datetime\DateFormatter;
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Messenger\Messenger;
+use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
+use Drupal\os_events\MailNotificationsInterface;
 use Drupal\rng\Entity\Registrant;
 use Drupal\rng\Entity\Registration;
 use Drupal\rng\EventManagerInterface;
@@ -33,15 +38,18 @@ class EventSignupForm extends FormBase {
    *   The Event Manager service.
    * @param \Drupal\Core\Messenger\Messenger $messenger
    *   The Messenger service.
+   * @param \Drupal\Core\Datetime\DateFormatter $dateFormatter
+   *   The Date formatter service.
+   * @param \Drupal\os_events\MailNotificationsInterface $mailNotification
+   *   The mail notification service.
    */
-  public function __construct(RegistrantFactoryInterface $registrantFactory,
-                              EntityTypeManagerInterface $entityManager,
-                              EventManagerInterface $eventManager,
-                              Messenger $messenger) {
+  public function __construct(RegistrantFactoryInterface $registrantFactory, EntityTypeManagerInterface $entityManager, EventManagerInterface $eventManager, Messenger $messenger, DateFormatter $dateFormatter, MailNotificationsInterface $mailNotification) {
     $this->registrantFactory = $registrantFactory;
     $this->entityManager = $entityManager;
     $this->eventManager = $eventManager;
     $this->messenger = $messenger;
+    $this->dateFormatter = $dateFormatter;
+    $this->mailNotification = $mailNotification;
   }
 
   /**
@@ -52,7 +60,9 @@ class EventSignupForm extends FormBase {
       $container->get('rng.registrant.factory'),
       $container->get('entity_type.manager'),
       $container->get('rng.event_manager'),
-      $container->get('messenger')
+      $container->get('messenger'),
+      $container->get('date.formatter'),
+      $container->get('os_events.mail_notifications')
     );
   }
 
@@ -78,12 +88,30 @@ class EventSignupForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, $nid = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, $nid = NULL, $timestamp = NULL) {
 
     // Add the core AJAX library.
     $form['#attached']['library'][] = 'core/drupal.ajax';
     $form['#prefix'] = '<div id = "signup-modal-form">';
     $form['#suffix'] = '</div>';
+
+    $dateTimeObject = DrupalDateTime::createFromTimestamp($timestamp);
+    $offset = $dateTimeObject->getOffset();
+    $interval = DateInterval::createFromDateString((string) $offset . 'seconds');
+    $dateTimeObject->add($interval);
+    $dateDisplay = $dateTimeObject->format('l, F j, Y H:i:s');
+
+    $form['field_repeating_event_date_text'] = [
+      '#markup' => '<span class="date-display-single">' . $this->t('On @date', ['@date' => $dateDisplay]) . "</span>",
+      '#weight' => -10,
+    ];
+
+    $dateStorage = $this->dateFormatter->format($timestamp, 'custom', DateTimeItemInterface::DATETIME_STORAGE_FORMAT);
+
+    $form['registering_for_date'] = [
+      '#type' => 'hidden',
+      '#value' => $dateStorage,
+    ];
 
     $form['email'] = [
       '#type' => 'email',
@@ -122,6 +150,7 @@ class EventSignupForm extends FormBase {
         'event' => 'click',
       ],
     ];
+    $form['#cache'] = ['max-age' => 0];
     return $form;
   }
 
@@ -131,15 +160,20 @@ class EventSignupForm extends FormBase {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $node = $this->entityManager->getStorage('node')->load($form_state->getValue('nid'));
     $eventMeta = $this->eventManager->getMeta($node);
+    $registrations = $eventMeta->getRegistrations();
     $registrants = $eventMeta->getRegistrants('rng_contact');
     $emailEntered = $form_state->getValue('email');
+    $forDate = $form_state->getValue('registering_for_date');
 
-    foreach ($registrants as $registrant) {
-      $id = $registrant->identity->getValue()[0]['target_id'];
-      $identity = $this->entityManager->getStorage('rng_contact')->load($id);
-      $email = $identity->field_email->value;
-      if ($email == $emailEntered) {
-        $form_state->setErrorByName('email', $this->t('User is already registered for this event.'));
+    foreach ($registrations as $registration) {
+      $date = $registration->field_for_date->value;
+      foreach ($registrants as $registrant) {
+        $id = $registrant->identity->getValue()[0]['target_id'];
+        $identity = $this->entityManager->getStorage('rng_contact')->load($id);
+        $email = $identity->field_email->value;
+        if ($email === $emailEntered && $date === $forDate) {
+          $form_state->setErrorByName('email', $this->t('User is already registered for this date.'));
+        }
       }
     }
   }
@@ -185,11 +219,15 @@ class EventSignupForm extends FormBase {
 
       // Check if capacity is full,replace Signup with relevant message.
       $capacity = $eventMeta->remainingCapacity();
-      ($capacity == -1) ? $slot_available = TRUE : ($capacity > 0) ? $slot_available = TRUE : $slot_available = FALSE;
+      $slot_available = FALSE;
+      if ($capacity == -1 || $capacity > 0) {
+        $slot_available = TRUE;
+      }
       if (!$slot_available) {
         $id = 'registration-link-' . $node->id();
         $message = '<div id="' . $id . '">' . $this->t("Sorry, the event is full") . '</div>';
         $response->addCommand(new ReplaceCommand('#' . $id, $message));
+        $this->mailNotification->sendEventFullEmail($node);
       }
       $response->addCommand(new CloseModalDialogCommand());
     }
@@ -208,10 +246,12 @@ class EventSignupForm extends FormBase {
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   protected function createRegistration(array $values, EntityInterface $node) {
+    $date = $values['registering_for_date'];
 
     $registration = Registration::create([
       'type' => 'signup',
       'event' => $node,
+      'field_for_date' => ['value' => $date],
     ]);
     $registration->save();
 

@@ -36,7 +36,7 @@ dependencies:
   - drupal:crop
   - drupal:ctools
   - drupal:date_recur
-  - drupal:date_recur_interactive
+  - drupal:date_recur_modular
   - drupal:datetime
   - drupal:datetime_range
   - drupal:dblog

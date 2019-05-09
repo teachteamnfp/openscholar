@@ -1,0 +1,11 @@
+uuid: 3023cdfd-daad-42c2-b0fe-e919c7a850d6
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.rss_feed
+id: block_content.rss_feed
+target_entity_type_id: block_content
+target_bundle: rss_feed
+default_langcode: site_default
+language_alterable: false
