@@ -1,0 +1,20 @@
+uuid: ed228889-5c3b-4cab-9c87-6452e439426b
+langcode: en
+status: true
+dependencies:
+  theme:
+    - shadow
+_core:
+  default_config_hash: 7rR9chwXvdM2H8OYMAYx9Zj3GGlPMrZp_M3ZA4thYTk
+id: shadow_page_title
+theme: shadow
+region: content
+weight: -7
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  provider: core
+  label_display: '0'
+visibility: {  }
