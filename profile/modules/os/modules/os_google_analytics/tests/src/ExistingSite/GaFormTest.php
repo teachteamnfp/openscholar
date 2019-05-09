@@ -8,6 +8,7 @@ use weitzman\DrupalTestTraits\ExistingSiteBase;
  * Class GaFormTest.
  *
  * @group functional
+ * @group analytics
  *
  * @package Drupal\Tests\os_publications\ExistingSite
  */
