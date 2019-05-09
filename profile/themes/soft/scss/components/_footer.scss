@@ -1,0 +1,21 @@
+footer {
+  background: $color-footer;
+  color: $color-white;
+  h2.block-title {
+    color: $color-white;
+  }
+  nav {
+    h2 {
+      color: $color-white;
+    }
+  }
+  ul.nav {
+    li {
+      a {
+        &:hover {
+          color: $color-blue;
+        }
+      }
+    }
+  }
+}
