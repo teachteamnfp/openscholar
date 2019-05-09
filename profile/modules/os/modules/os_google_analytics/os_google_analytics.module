@@ -1,0 +1,64 @@
+<?php
+
+/**
+ * @file
+ * Os Google Analytics alterations.
+ */
+
+use Drupal\Component\Serialization\Json;
+use Drupal\Core\Cache\Cache;
+use Drupal\google_analytics\Component\Render\GoogleAnalyticsJavaScriptSnippet;
+
+/**
+ * Implements hook_page_attachments().
+ *
+ * Insert JavaScript to the appropriate scope/region of the page.
+ */
+function os_google_analytics_page_attachments(array &$page) {
+
+  $config = \Drupal::config('os_ga.settings');
+  $id = $config->get('web_property_id');
+  $site_url = Drupal::service('vsite.context_manager')->getActivePurl();
+  if (!$site_url || !$id) {
+    return;
+  }
+
+  $google_js = [];
+
+  // Check if ga js is already set and then unset it.
+  foreach ($page['#attached']['html_head'] as $k => $google_js) {
+    if ($google_js[1] === "google_analytics_tracking_script") {
+      unset($page['#attached']['html_head'][$k]);
+      break;
+    }
+  }
+
+  if (empty($google_js)) {
+    return;
+  }
+  // Get the global js tag already set to append vsite specific UA property.
+  $script = $google_js[0]['#value']->__toString();
+
+  // Add module cache tags.
+  $page['#cache']['tags'] = Cache::mergeTags(isset($page['#cache']['tags']) ? $page['#cache']['tags'] : [], $config->getCacheTags());
+
+  // Check if the GA account number has a valid value.
+  if (preg_match('/^UA-\d+-\d+$/', $id)) {
+
+    // Build the create only fields list.
+    $create_only_fields = ['cookieDomain' => 'auto', 'name' => $site_url];
+
+    // Create a tracker.
+    $script .= 'ga("create", ' . Json::encode($id) . ', ' . Json::encode($create_only_fields) . ');';
+    $script .= 'ga("' . $site_url . '.send", "pageview");';
+
+    // Attach the new script which contains vsite tracker object.
+    $page['#attached']['html_head'][] = [
+      [
+        '#tag' => 'script',
+        '#value' => new GoogleAnalyticsJavaScriptSnippet($script),
+      ],
+      'google_analytics_tracking_script',
+    ];
+  }
+}

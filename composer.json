@@ -225,7 +225,8 @@
         "drupal/advancedqueue": "^1.0@beta",
         "drupal/rng": "^1.7",
         "drupal/rng_views": "^1.7",
-        "drupal/date_recur_modular": "^1.0@alpha"
+        "drupal/date_recur_modular": "^1.0@alpha",
+        "drupal/google_analytics": "^2.4"
     },
     "require-dev": {
         "drupal/features": "^3.7",
