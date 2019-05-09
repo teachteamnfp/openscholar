@@ -18,6 +18,7 @@ dependencies:
     - media
     - rest
     - serialization
+    - user
     - vsite
 id: os_media
 label: 'OS Media'
