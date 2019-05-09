@@ -2,6 +2,9 @@
 
 namespace Drupal\Tests\os_widgets\ExistingSite;
 
+use DateTime;
+use DateInterval;
+
 /**
  * Class TaxonomyWidget.
  *
@@ -65,7 +68,7 @@ class TaxonomyBlockRenderTest extends OsWidgetsExistingSiteTestBase {
     $render = $view_builder->view($block_content);
     $renderer = $this->container->get('renderer');
 
-    /** @var \Drupal\Core\Render\Markup $markup_array */
+    /** @var \Drupal\Core\Render\Markup $markup */
     $markup = $renderer->renderRoot($render);
     $this->assertContains($term1->label(), $markup->__toString());
     $this->assertNotContains($term1->label() . ' (0)', $markup->__toString());
@@ -91,7 +94,7 @@ class TaxonomyBlockRenderTest extends OsWidgetsExistingSiteTestBase {
     $render = $view_builder->view($block_content);
     $renderer = $this->container->get('renderer');
 
-    /** @var \Drupal\Core\Render\Markup $markup_array */
+    /** @var \Drupal\Core\Render\Markup $markup */
     $markup = $renderer->renderRoot($render);
     $this->assertContains($term->label(), $markup->__toString());
     $this->assertNotContains($term->label() . ' (0)', $markup->__toString());
@@ -118,7 +121,7 @@ class TaxonomyBlockRenderTest extends OsWidgetsExistingSiteTestBase {
     $render = $view_builder->view($block_content);
     $renderer = $this->container->get('renderer');
 
-    /** @var \Drupal\Core\Render\Markup $markup_array */
+    /** @var \Drupal\Core\Render\Markup $markup */
     $markup = $renderer->renderRoot($render);
     $this->assertContains($term1->label(), $markup->__toString());
     $this->assertNotContains($term2->label(), $markup->__toString());
@@ -137,7 +140,7 @@ class TaxonomyBlockRenderTest extends OsWidgetsExistingSiteTestBase {
     $render = $view_builder->view($block_content);
     $renderer = $this->container->get('renderer');
 
-    /** @var \Drupal\Core\Render\Markup $markup_array */
+    /** @var \Drupal\Core\Render\Markup $markup */
     $markup = $renderer->renderRoot($render);
     $this->assertContains($term1->label(), $markup->__toString());
     $this->assertContains($term2->label(), $markup->__toString());
@@ -167,7 +170,7 @@ class TaxonomyBlockRenderTest extends OsWidgetsExistingSiteTestBase {
     $render = $view_builder->view($block_content);
     $renderer = $this->container->get('renderer');
 
-    /** @var \Drupal\Core\Render\Markup $markup_array */
+    /** @var \Drupal\Core\Render\Markup $markup */
     $markup = $renderer->renderRoot($render);
     $this->assertContains($term1->label(), $markup->__toString());
     $this->assertNotContains($term2->label(), $markup->__toString());
@@ -197,7 +200,7 @@ class TaxonomyBlockRenderTest extends OsWidgetsExistingSiteTestBase {
     $render = $view_builder->view($block_content);
     $renderer = $this->container->get('renderer');
 
-    /** @var \Drupal\Core\Render\Markup $markup_array */
+    /** @var \Drupal\Core\Render\Markup $markup */
     $markup = $renderer->renderRoot($render);
     $this->assertContains($term1->label(), $markup->__toString());
     $this->assertContains($term2->label(), $markup->__toString());
@@ -234,7 +237,7 @@ class TaxonomyBlockRenderTest extends OsWidgetsExistingSiteTestBase {
     $render = $view_builder->view($block_content);
     $renderer = $this->container->get('renderer');
 
-    /** @var \Drupal\Core\Render\Markup $markup_array */
+    /** @var \Drupal\Core\Render\Markup $markup */
     $markup = $renderer->renderRoot($render);
     $this->assertNotContains($term1->label(), $markup->__toString());
     $this->assertNotContains($term2->label(), $markup->__toString());
@@ -266,7 +269,7 @@ class TaxonomyBlockRenderTest extends OsWidgetsExistingSiteTestBase {
     $renderer = $this->container->get('renderer');
 
     $description = $term1->getDescription();
-    /** @var \Drupal\Core\Render\Markup $markup_array */
+    /** @var \Drupal\Core\Render\Markup $markup */
     $markup = $renderer->renderRoot($render);
     $this->assertNotContains($description, $markup->__toString());
 
@@ -286,7 +289,7 @@ class TaxonomyBlockRenderTest extends OsWidgetsExistingSiteTestBase {
     $renderer = $this->container->get('renderer');
 
     $description = $term1->getDescription();
-    /** @var \Drupal\Core\Render\Markup $markup_array */
+    /** @var \Drupal\Core\Render\Markup $markup */
     $markup = $renderer->renderRoot($render);
     $this->assertContains($description, $markup->__toString());
   }
@@ -327,7 +330,7 @@ class TaxonomyBlockRenderTest extends OsWidgetsExistingSiteTestBase {
     $render = $view_builder->view($block_content);
     $renderer = $this->container->get('renderer');
 
-    /** @var \Drupal\Core\Render\Markup $markup_array */
+    /** @var \Drupal\Core\Render\Markup $markup */
     $markup = $renderer->renderRoot($render);
     $this->assertContains($term1->label(), $markup->__toString());
     $this->assertContains($term2->label(), $markup->__toString());
@@ -373,7 +376,7 @@ class TaxonomyBlockRenderTest extends OsWidgetsExistingSiteTestBase {
     $render = $view_builder->view($block_content);
     $renderer = $this->container->get('renderer');
 
-    /** @var \Drupal\Core\Render\Markup $markup_array */
+    /** @var \Drupal\Core\Render\Markup $markup */
     $markup = $renderer->renderRoot($render);
     $this->assertContains($term1->label(), $markup->__toString());
     $this->assertContains($term2->label(), $markup->__toString());
@@ -419,7 +422,7 @@ class TaxonomyBlockRenderTest extends OsWidgetsExistingSiteTestBase {
     $render = $view_builder->view($block_content);
     $renderer = $this->container->get('renderer');
 
-    /** @var \Drupal\Core\Render\Markup $markup_array */
+    /** @var \Drupal\Core\Render\Markup $markup */
     $markup = $renderer->renderRoot($render);
     $this->assertContains($term1->label(), $markup->__toString());
     $this->assertContains($term2->label(), $markup->__toString());
@@ -496,7 +499,7 @@ class TaxonomyBlockRenderTest extends OsWidgetsExistingSiteTestBase {
     $render = $view_builder->view($block_content);
     $renderer = $this->container->get('renderer');
 
-    /** @var \Drupal\Core\Render\Markup $markup_array */
+    /** @var \Drupal\Core\Render\Markup $markup */
     $markup = $renderer->renderRoot($render);
     // Checking only 3 entities related, not 6.
     $this->assertContains($term->label() . ' (3)', $markup->__toString());
@@ -542,7 +545,7 @@ class TaxonomyBlockRenderTest extends OsWidgetsExistingSiteTestBase {
     $render = $view_builder->view($block_content);
     $renderer = $this->container->get('renderer');
 
-    /** @var \Drupal\Core\Render\Markup $markup_array */
+    /** @var \Drupal\Core\Render\Markup $markup */
     $markup = $renderer->renderRoot($render);
     $this->assertContains($term->label(), $markup->__toString());
     $this->assertNotContains($term->label() . ' (2)', $markup->__toString());
@@ -608,7 +611,7 @@ class TaxonomyBlockRenderTest extends OsWidgetsExistingSiteTestBase {
     $render = $view_builder->view($block_content);
     $renderer = $this->container->get('renderer');
 
-    /** @var \Drupal\Core\Render\Markup $markup_array */
+    /** @var \Drupal\Core\Render\Markup $markup */
     $markup = $renderer->renderRoot($render);
     // Checking rendered term.
     $this->assertContains($term->label(), $markup->__toString());
@@ -631,11 +634,180 @@ class TaxonomyBlockRenderTest extends OsWidgetsExistingSiteTestBase {
     $render = $view_builder->view($block_content);
     $renderer = $this->container->get('renderer');
 
-    /** @var \Drupal\Core\Render\Markup $markup_array */
+    /** @var \Drupal\Core\Render\Markup $markup */
     $markup = $renderer->renderRoot($render);
     // Checking rendered term.
     $this->assertContains('<li class="term-lorem-1-eauuouoo">', $markup->__toString());
     $this->assertContains('<li class="term-lorem-2---special-chars">', $markup->__toString());
+  }
+
+  /**
+   * Test past events special bundle.
+   */
+  public function testBuildPastEvents() {
+    $config_vocab = $this->config->getEditable('taxonomy.vocabulary.' . $this->vocabulary->id());
+    $config_vocab
+      ->set('allowed_vocabulary_reference_types', [
+        'node:past_events',
+      ])
+      ->save(TRUE);
+    $term1 = $this->createTerm($this->vocabulary, ['name' => 'Lorem1']);
+    $term2 = $this->createTerm($this->vocabulary, ['name' => 'Lorem2']);
+    // Create past event.
+    $new_datetime = new DateTime();
+    $date_interval = new DateInterval('P2D');
+    $date_interval->invert = 1;
+    $new_datetime->add($date_interval);
+    $date = $new_datetime->format("Y-m-d\TH:i:s");
+    $this->createNode([
+      'type' => 'events',
+      'status' => 1,
+      'field_taxonomy_terms' => [
+        $term1->id(),
+      ],
+      'field_recurring_date' => [
+        'value' => $date,
+        'end_value' => $date,
+        'timezone' => 'America/Anguilla',
+        'infinite' => 0,
+      ],
+    ]);
+
+    // Create bundle past_events.
+    $block_content = $this->createBlockContent([
+      'type' => 'taxonomy',
+      'field_taxonomy_vocabulary' => [
+        $this->vocabulary->id(),
+      ],
+      'field_taxonomy_bundle' => 'past_events',
+    ]);
+    $view_builder = $this->entityTypeManager
+      ->getViewBuilder('block_content');
+    $render = $view_builder->view($block_content);
+    $renderer = $this->container->get('renderer');
+
+    /** @var \Drupal\Core\Render\Markup $markup */
+    $markup = $renderer->renderRoot($render);
+    $this->assertContains($term1->label() . ' (1)', $markup->__toString());
+    $this->assertNotContains($term2->label(), $markup->__toString());
+  }
+
+  /**
+   * Test upcoming events special bundle.
+   */
+  public function testBuildUpcomingEvents() {
+    $config_vocab = $this->config->getEditable('taxonomy.vocabulary.' . $this->vocabulary->id());
+    $config_vocab
+      ->set('allowed_vocabulary_reference_types', [
+        'node:upcoming_events',
+      ])
+      ->save(TRUE);
+    $term1 = $this->createTerm($this->vocabulary, ['name' => 'Lorem1']);
+    $term2 = $this->createTerm($this->vocabulary, ['name' => 'Lorem2']);
+    // Create future event.
+    $new_datetime = new DateTime();
+    $date_interval = new DateInterval('P2D');
+    $new_datetime->add($date_interval);
+    $date = $new_datetime->format("Y-m-d\TH:i:s");
+    $this->createNode([
+      'type' => 'events',
+      'status' => 1,
+      'field_taxonomy_terms' => [
+        $term1->id(),
+      ],
+      'field_recurring_date' => [
+        'value' => $date,
+        'end_value' => $date,
+        'timezone' => 'America/Anguilla',
+        'infinite' => 0,
+      ],
+    ]);
+
+    // Create bundle upcoming_events.
+    $block_content = $this->createBlockContent([
+      'type' => 'taxonomy',
+      'field_taxonomy_vocabulary' => [
+        $this->vocabulary->id(),
+      ],
+      'field_taxonomy_bundle' => 'upcoming_events',
+    ]);
+    $view_builder = $this->entityTypeManager
+      ->getViewBuilder('block_content');
+    $render = $view_builder->view($block_content);
+    $renderer = $this->container->get('renderer');
+
+    /** @var \Drupal\Core\Render\Markup $markup */
+    $markup = $renderer->renderRoot($render);
+    $this->assertContains($term1->label() . ' (1)', $markup->__toString());
+    $this->assertNotContains($term2->label(), $markup->__toString());
+  }
+
+  /**
+   * Test both upcoming and past events special bundle.
+   */
+  public function testBuildBothSpecialEvents() {
+    $config_vocab = $this->config->getEditable('taxonomy.vocabulary.' . $this->vocabulary->id());
+    $config_vocab
+      ->set('allowed_vocabulary_reference_types', [
+        'node:past_events',
+        'node:upcoming_events',
+      ])
+      ->save(TRUE);
+    $term1 = $this->createTerm($this->vocabulary, ['name' => 'Lorem1']);
+    $term2 = $this->createTerm($this->vocabulary, ['name' => 'Lorem2']);
+    // Create both events.
+    $new_datetime = new DateTime();
+    $date_interval = new DateInterval('P2D');
+    $new_datetime->add($date_interval);
+    $date = $new_datetime->format("Y-m-d\TH:i:s");
+    $this->createNode([
+      'type' => 'events',
+      'status' => 1,
+      'field_taxonomy_terms' => [
+        $term1->id(),
+      ],
+      'field_recurring_date' => [
+        'value' => $date,
+        'end_value' => $date,
+        'timezone' => 'America/Anguilla',
+        'infinite' => 0,
+      ],
+    ]);
+    $new_datetime = new DateTime();
+    $date_interval = new DateInterval('P2D');
+    $date_interval->invert = 1;
+    $new_datetime->add($date_interval);
+    $date = $new_datetime->format("Y-m-d\TH:i:s");
+    $this->createNode([
+      'type' => 'events',
+      'status' => 1,
+      'field_taxonomy_terms' => [
+        $term2->id(),
+      ],
+      'field_recurring_date' => [
+        'value' => $date,
+        'end_value' => $date,
+        'timezone' => 'America/Anguilla',
+        'infinite' => 0,
+      ],
+    ]);
+
+    // Create without bundle.
+    $block_content = $this->createBlockContent([
+      'type' => 'taxonomy',
+      'field_taxonomy_vocabulary' => [
+        $this->vocabulary->id(),
+      ],
+    ]);
+    $view_builder = $this->entityTypeManager
+      ->getViewBuilder('block_content');
+    $render = $view_builder->view($block_content);
+    $renderer = $this->container->get('renderer');
+
+    /** @var \Drupal\Core\Render\Markup $markup */
+    $markup = $renderer->renderRoot($render);
+    $this->assertContains($term1->label() . ' (1)', $markup->__toString());
+    $this->assertContains($term2->label() . ' (1)', $markup->__toString());
   }
 
   /**
