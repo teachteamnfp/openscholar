@@ -61,6 +61,7 @@ class MediaBrowserWidget extends WidgetBase implements ContainerFactoryPluginInt
   public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, EntityTypeManagerInterface $entity_type_manager, AngularModuleManagerInterface $angular_module_manager) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $third_party_settings);
     $this->entityTypeManager = $entity_type_manager;
+    $this->angularModuleManager = $angular_module_manager;
   }
 
   /**
@@ -74,7 +75,10 @@ class MediaBrowserWidget extends WidgetBase implements ContainerFactoryPluginInt
    * {@inheritdoc}
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
-    $media = $items;
+    $media = [];
+    for ($i = 0, $l = $items->count(); $i < $l; $i++) {
+      $media[] = $items->get($i);
+    }
     $settings = $this->getFieldSettings();
     $bundles = $settings['handler_settings']['target_bundles'];
     $types = [];
@@ -91,10 +95,10 @@ class MediaBrowserWidget extends WidgetBase implements ContainerFactoryPluginInt
       '#attributes' => [
         'media-browser-field' => '',
         'types' => implode(',', $types),
-        'maxFilesize' => '512 MB',
+        'max-filesize' => '512 MB',
         'upload_text' => 'Upload',
         'droppable_text' => 'Drop here.',
-        'cardinality' => -1,
+        'cardinality' => $this->fieldDefinition->getFieldStorageDefinition()->getCardinality(),
         'files' => 'files',
       ],
       '#markup' => $this->t('Loading the Media Browser. Please wait a moment.'),
