@@ -26,6 +26,7 @@ services:
       PHP_XDEBUG: $PHP_XDEBUG_ENABLED
     volumes:
       - ./:/var/www/html
+      - ./docker-cache:/home/wodby/.composer/cache/files
 
   mailhog:
     image: mailhog/mailhog
