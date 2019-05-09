@@ -246,6 +246,12 @@ a {
     text-transform: uppercase;
   }
 }
+header {
+  color: $white;
+  h2 {
+    color: $white;
+  }
+}
 .section-nav {
   ul {
     &.nav li a {

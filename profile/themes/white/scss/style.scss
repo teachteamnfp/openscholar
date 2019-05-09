@@ -18,14 +18,9 @@ body {
 }
 .header-container {
   background: $white;
+  color: $color_woodsmoke_approx;
   ul.nav li a {
     color: $color_st_tropaz_approx;
-  }
-}
-#boxes-box-site_info {
-  color: $color_woodsmoke_approx;
-  a {
-    color: $color_woodsmoke_approx;
   }
 }
 .search-block-form {
