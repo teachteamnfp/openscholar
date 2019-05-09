@@ -87,6 +87,15 @@ content:
     third_party_settings: {  }
     type: boolean_checkbox
     region: content
+  field_taxonomy_terms:
+    type: entity_reference_autocomplete
+    weight: 15
+    region: content
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   langcode:
     type: language_select
     weight: 7
@@ -117,7 +126,7 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 15
+    weight: 16
     region: content
     third_party_settings: {  }
   sticky:
@@ -153,6 +162,8 @@ hidden:
   field_close_: true
   field_open_date: true
   field_taxonomy_terms: true
+  field_send_reminder: true
+  field_should_send_reminder: true
   rng_capacity: true
   rng_registrants_duplicate: true
   rng_registrants_maximum: true

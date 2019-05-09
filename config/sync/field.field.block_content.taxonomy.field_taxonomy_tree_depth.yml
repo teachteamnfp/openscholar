@@ -1,0 +1,23 @@
+uuid: d5250307-06c8-4b3b-a1eb-1538c6f020ae
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.taxonomy
+    - field.storage.block_content.field_taxonomy_tree_depth
+  module:
+    - options
+id: block_content.taxonomy.field_taxonomy_tree_depth
+field_name: field_taxonomy_tree_depth
+entity_type: block_content
+bundle: taxonomy
+label: 'Taxonomy tree depth'
+description: 'How many levels would you like to display?'
+required: true
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings: {  }
+field_type: list_integer
