@@ -173,7 +173,7 @@ class RoboFile extends \Robo\Tasks
 
         $tasks[] = $this->taskExec('docker-compose --verbose pull --parallel');
         $tasks[] = $this->taskExec('docker-compose up -d');
-        $tasks[] = $this->taskExec('docker exec -it d8cidemo_php sh -c "git config --global github.accesstoken $GITHUB_TOKEN"');
+        $tasks[] = $this->taskExec('docker exec -it d8cidemo_php sh -c "git config --global github.accesstoken $ROBO_GITHUB_TOKEN"');
         $tasks[] = $this->taskExec('make');
         $tasks[] = $this->taskExec('docker-compose exec -T php cp .travis/config/phpunit.xml web/core/phpunit.xml');
         $tasks[] = $this->taskExec('docker-compose exec -T php cp .travis/config//bootstrap.php web/core/tests/bootstrap.php');

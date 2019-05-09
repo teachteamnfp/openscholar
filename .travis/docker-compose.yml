@@ -24,7 +24,6 @@ services:
       DB_NAME: $DB_NAME
       DB_DRIVER: $DB_DRIVER
       PHP_XDEBUG: $PHP_XDEBUG_ENABLED
-      GITHUB_TOKEN: $GITHUB_TOKEN
     volumes:
       - ./:/var/www/html
 

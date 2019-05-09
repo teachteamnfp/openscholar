@@ -38,12 +38,14 @@ env:
 
 before_install:
   - echo 'sendmail_path = /bin/true' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  - git config --global github.accesstoken $GITHUB_TOKEN
 
 install:
   - composer global require consolidation/robo
 
 before_script:
   - cp .travis/RoboFile.php .
+  - export ROBO_GITHUB_TOKEN=$GITHUB_TOKEN
 
 script:
   - robo $JOB
