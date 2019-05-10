@@ -1,0 +1,22 @@
+uuid: b38c0423-b3d8-411d-b572-27198a7f7a1d
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - soft
+_core:
+  default_config_hash: jQQUUWN2Uxr5qZtc9zcJKBCxpKY8orN1u2HPqYYRQDI
+id: soft_powered
+theme: soft
+region: footer
+weight: -6
+provider: null
+plugin: system_powered_by_block
+settings:
+  id: system_powered_by_block
+  label: 'Powered by Drupal'
+  provider: system
+  label_display: '0'
+visibility: {  }

@@ -1,0 +1,30 @@
+uuid: b1e76c08-1fbe-48cc-b79b-9f31adcacccd
+langcode: en
+status: true
+dependencies:
+  module:
+    - block_content
+    - options
+id: block_content.field_taxonomy_display_type
+field_name: field_taxonomy_display_type
+entity_type: block_content
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: classic
+      label: Classic/List
+    -
+      value: menu
+      label: Menu
+    -
+      value: slider
+      label: Slidedown
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

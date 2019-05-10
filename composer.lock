@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4584c8cef12d9582cee2602e8f8ae3f7",
+    "content-hash": "970d0f42b10e3e1312fd94f374a3830d",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -4302,6 +4302,81 @@
             }
         },
         {
+            "name": "drupal/easy_breadcrumb",
+            "version": "1.8.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/easy_breadcrumb.git",
+                "reference": "8.x-1.8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/easy_breadcrumb-8.x-1.8.zip",
+                "reference": "8.x-1.8",
+                "shasum": "75be89f78e9b47daf0bb54429652180a2e6063b5"
+            },
+            "require": {
+                "drupal/core": "~8.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.8",
+                    "datestamp": "1557434281",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Greg Boggs",
+                    "homepage": "https://www.drupal.org/user/153069"
+                },
+                {
+                    "name": "RenatoG",
+                    "homepage": "https://www.drupal.org/user/3326031"
+                },
+                {
+                    "name": "diamondsea",
+                    "homepage": "https://www.drupal.org/user/430714"
+                },
+                {
+                    "name": "hmartens",
+                    "homepage": "https://www.drupal.org/user/622826"
+                },
+                {
+                    "name": "loopduplicate",
+                    "homepage": "https://www.drupal.org/user/717290"
+                },
+                {
+                    "name": "sonemonu",
+                    "homepage": "https://www.drupal.org/user/1667988"
+                },
+                {
+                    "name": "tatarbj",
+                    "homepage": "https://www.drupal.org/user/649590"
+                },
+                {
+                    "name": "volkswagenchick",
+                    "homepage": "https://www.drupal.org/user/3332522"
+                }
+            ],
+            "description": "Adds configuration to the system breadcrumbs.",
+            "homepage": "https://www.drupal.org/project/easy_breadcrumb",
+            "support": {
+                "source": "https://git.drupalcode.org/project/easy_breadcrumb"
+            }
+        },
+        {
             "name": "drupal/entity_reference_revisions",
             "version": "1.6.0",
             "source": {
@@ -4566,6 +4641,10 @@
                 {
                     "name": "kristiaanvandeneynde",
                     "homepage": "https://www.drupal.org/user/1345130"
+                },
+                {
+                    "name": "ronaldtebrake",
+                    "homepage": "https://www.drupal.org/user/2314038"
                 }
             ],
             "description": "This module allows you to group users, content and other entities",
@@ -6189,11 +6268,7 @@
                 "shasum": null
             },
             "type": "drupal-module",
-            "extra": {
-                "patches_applied": {
-                    "No page title due to undefined variable $config": "https://www.drupal.org/files/issues/2891778-2-undefined-variable-notice-fix.patch"
-                }
-            }
+            "time": "2019-05-09T09:45:57+00:00"
         },
         {
             "name": "drupal/views_infinite_scroll",

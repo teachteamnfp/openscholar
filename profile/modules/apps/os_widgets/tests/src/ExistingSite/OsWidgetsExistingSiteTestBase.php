@@ -6,6 +6,8 @@ use Drupal\bibcite_entity\Entity\Contributor;
 use Drupal\bibcite_entity\Entity\ContributorInterface;
 use Drupal\bibcite_entity\Entity\Reference;
 use Drupal\bibcite_entity\Entity\ReferenceInterface;
+use Drupal\media\Entity\Media;
+use Drupal\media\MediaInterface;
 use weitzman\DrupalTestTraits\ExistingSiteBase;
 
 /**
@@ -29,6 +31,13 @@ class OsWidgetsExistingSiteTestBase extends ExistingSiteBase {
   protected $osWidgets;
 
   /**
+   * Vsite Context Manager.
+   *
+   * @var \Drupal\vsite\Plugin\VsiteContextManagerInterface
+   */
+  protected $vsiteContextManager;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
@@ -36,6 +45,7 @@ class OsWidgetsExistingSiteTestBase extends ExistingSiteBase {
 
     $this->entityTypeManager = $this->container->get('entity_type.manager');
     $this->osWidgets = $this->container->get('plugin.manager.os_widgets');
+    $this->vsiteContextManager = $this->container->get('vsite.context_manager');
   }
 
   /**
@@ -117,6 +127,31 @@ class OsWidgetsExistingSiteTestBase extends ExistingSiteBase {
     $this->markEntityForCleanup($contributor);
 
     return $contributor;
+  }
+
+  /**
+   * Creates a media.
+   *
+   * @param array $values
+   *   (Optional) Default values for the media.
+   *
+   * @return \Drupal\media\MediaInterface
+   *   The new media entity.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public function createMedia(array $values = []) : MediaInterface {
+    $media = Media::create($values + [
+      'bundle' => 'default',
+      'name' => $this->randomMachineName(8),
+      'status' => 1,
+    ]);
+
+    $media->save();
+
+    $this->markEntityForCleanup($media);
+
+    return $media;
   }
 
 }

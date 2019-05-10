@@ -242,6 +242,7 @@
         "drupal/rng": "^1.7",
         "drupal/rng_views": "^1.7",
         "drupal/date_recur_modular": "^1.0@alpha",
+        "drupal/easy_breadcrumb": "^1.8",
         "drupal/views_ical": "8.x-2.x-dev",
         "eluceo/ical": "^0.15.0"
     },
@@ -331,9 +332,6 @@
             },
             "drupal/fullcalendar": {
                 "Fullcalendar incompatible with Date Recur 2.x": "https://www.drupal.org/files/issues/2019-01-09/3023612-5.patch"
-            },
-            "drupal/views_ical": {
-                "No page title due to undefined variable $config": "https://www.drupal.org/files/issues/2891778-2-undefined-variable-notice-fix.patch"
             },
             "drupal/block_visibility_groups": {
                 "8.6: error when deleting a block visibility group": "https://www.drupal.org/files/issues/2018-10-18/block_visibility_groups_3000396-4.patch"

@@ -1,0 +1,22 @@
+uuid: ed722145-4857-4804-b536-e505e9c51112
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - soft
+_core:
+  default_config_hash: oXUb3JZR2WW5VOdw4HrhRicCsq51mCgLfRyvheG68ck
+id: soft_breadcrumbs
+theme: soft
+region: content
+weight: -8
+provider: null
+plugin: system_breadcrumb_block
+settings:
+  id: system_breadcrumb_block
+  label: Breadcrumbs
+  provider: system
+  label_display: '0'
+visibility: {  }
