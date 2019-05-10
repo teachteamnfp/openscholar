@@ -1,0 +1,26 @@
+uuid: 179fca55-ac8a-4bb3-9265-9d3b84d4c1e7
+langcode: en
+status: true
+dependencies:
+  config:
+    - bibcite_entity.bibcite_reference_type.government_report
+    - field.storage.bibcite_reference.field_taxonomy_terms
+id: bibcite_reference.government_report.field_taxonomy_terms
+field_name: field_taxonomy_terms
+entity_type: bibcite_reference
+bundle: government_report
+label: 'Tag with Terms'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: views
+  handler_settings:
+    view:
+      view_name: reference_taxonomy_term
+      display_name: entity_reference_1
+      arguments:
+        - 'bibcite_reference:government_report'
+field_type: entity_reference

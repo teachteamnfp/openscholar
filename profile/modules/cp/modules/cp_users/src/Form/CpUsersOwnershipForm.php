@@ -57,9 +57,9 @@ class CpUsersOwnershipForm extends FormBase {
     if ($group = $this->vsiteContextManager->getActiveVsite()) {
       $role = 'personal-member';
       $users = [];
-      $memberships = $group->getMembers($role);
-      foreach ($memberships as $m) {
-        $u = $m->getUser();
+      /** @var \Drupal\user\UserInterface[] $memberships */
+      $memberships = $group->getContentEntities('group_membership');
+      foreach ($memberships as $u) {
         $users[$u->id()] = $u->getDisplayName();
       }
 

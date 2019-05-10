@@ -1,0 +1,20 @@
+uuid: 772cc0bb-320f-43a1-8d1c-8dce1e0dbffe
+langcode: en
+status: true
+dependencies:
+  module:
+    - block_content
+id: block_content.field_taxonomy_range
+field_name: field_taxonomy_range
+entity_type: block_content
+type: integer
+settings:
+  unsigned: false
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
