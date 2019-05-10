@@ -58,18 +58,15 @@ class GaFormTest extends ExistingSiteBase {
 
   /**
    * Test if vsite codes show on page in analytics script.
-   *
-   * @throws \Behat\Mink\Exception\ExpectationException
    */
   public function testVsiteCodesShowOnPage() {
 
-    $vsite = $this->createGroup([
+    $this->createGroup([
       'type' => 'personal',
       'path' => [
         'alias' => '/test-alias',
       ],
     ]);
-    $this->vsiteContextManager->activateVsite($vsite);
     $this->drupalLogin($this->adminUser);
     $this->drupalGet('test-alias/cp/settings/analytics');
 
