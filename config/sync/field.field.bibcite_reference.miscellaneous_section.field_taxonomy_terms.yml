@@ -1,0 +1,26 @@
+uuid: 38da6617-2786-4254-b28b-d15d824bfc93
+langcode: en
+status: true
+dependencies:
+  config:
+    - bibcite_entity.bibcite_reference_type.miscellaneous_section
+    - field.storage.bibcite_reference.field_taxonomy_terms
+id: bibcite_reference.miscellaneous_section.field_taxonomy_terms
+field_name: field_taxonomy_terms
+entity_type: bibcite_reference
+bundle: miscellaneous_section
+label: 'Tag with Terms'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: views
+  handler_settings:
+    view:
+      view_name: reference_taxonomy_term
+      display_name: entity_reference_1
+      arguments:
+        - 'bibcite_reference:miscellaneous_section'
+field_type: entity_reference

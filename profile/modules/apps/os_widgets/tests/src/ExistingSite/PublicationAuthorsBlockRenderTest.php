@@ -22,20 +22,12 @@ class PublicationAuthorsBlockRenderTest extends OsWidgetsExistingSiteTestBase {
   protected $publicationAuthorsWidget;
 
   /**
-   * Vsite Context Manager.
-   *
-   * @var \Drupal\vsite\Plugin\VsiteContextManagerInterface
-   */
-  protected $vsiteContextManager;
-
-  /**
    * {@inheritdoc}
    */
   public function setUp() {
     parent::setUp();
     Cache::invalidateTags(['config:views.view.publication_contributors']);
     $this->publicationAuthorsWidget = $this->osWidgets->createInstance('publication_authors_widget');
-    $this->vsiteContextManager = $this->container->get('vsite.context_manager');
   }
 
   /**

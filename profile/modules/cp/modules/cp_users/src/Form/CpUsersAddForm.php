@@ -70,7 +70,6 @@ class CpUsersAddForm extends FormBase {
     }
 
     $roleData = [];
-    $descriptions = [];
     /*@var \Drupal\group\Entity\GroupTypeInterface $group_type */
     $group_type = $group->getGroupType();
     $roles = $group_type->getRoles(TRUE);
@@ -211,6 +210,9 @@ class CpUsersAddForm extends FormBase {
 
       /** @var string $role */
       $role = $form_state->getValue('role');
+      if (!$role) {
+        $role = $group->getGroupType()->getMemberRoleId();
+      }
 
       $values = [
         'group_roles' => [

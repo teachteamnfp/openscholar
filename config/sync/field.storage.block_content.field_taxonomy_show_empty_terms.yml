@@ -1,0 +1,18 @@
+uuid: 26a23305-2df6-4a4a-bd62-1436d891939b
+langcode: en
+status: true
+dependencies:
+  module:
+    - block_content
+id: block_content.field_taxonomy_show_empty_terms
+field_name: field_taxonomy_show_empty_terms
+entity_type: block_content
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
