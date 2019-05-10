@@ -185,7 +185,15 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
         'url' => Url::fromRoute('cp_appearance.cp_select_theme', [
           'theme' => $theme->getName(),
         ]),
-        'attributes' => ['title' => $this->t('Set @theme as your theme', ['@theme' => $theme->info['name']])],
+        'attributes' => [
+          'title' => $this->t('Set @theme as your theme', ['@theme' => $theme->info['name']]),
+          'class' => [
+            'btn',
+            'btn-sm',
+            'btn-default',
+            'set-default',
+          ],
+        ],
       ];
 
       $operations[] = [
@@ -193,7 +201,15 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
         'url' => Url::fromRoute('cp_appearance.preview', [
           'theme' => $theme->getName(),
         ]),
-        'attributes' => ['title' => $this->t('Preview @theme', ['@theme' => $theme->info['name']])],
+        'attributes' => [
+          'title' => $this->t('Preview @theme', ['@theme' => $theme->info['name']]),
+          'class' => [
+            'btn',
+            'btn-sm',
+            'btn-default',
+            'preview',
+          ],
+        ],
       ];
     }
 
