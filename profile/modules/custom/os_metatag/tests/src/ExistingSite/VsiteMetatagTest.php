@@ -2,6 +2,9 @@
 
 namespace Drupal\Tests\os_metatag\ExistingSite;
 
+use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
+use Drupal\Tests\os_metatag\Traits\OsMetatagTestTrait;
+
 /**
  * Vsite metatag tests.
  *
@@ -9,7 +12,9 @@ namespace Drupal\Tests\os_metatag\ExistingSite;
  * @group kernel
  * @group other
  */
-class VsiteMetatagTest extends OsMetatagTestBase {
+class VsiteMetatagTest extends OsExistingSiteTestBase {
+
+  use OsMetatagTestTrait;
 
   /**
    * Test group.
@@ -30,7 +35,7 @@ class VsiteMetatagTest extends OsMetatagTestBase {
    *
    * @var \Drupal\user\UserInterface
    */
-  protected $groupCreator;
+  protected $groupMember;
 
   /**
    * {@inheritdoc}
@@ -53,10 +58,9 @@ class VsiteMetatagTest extends OsMetatagTestBase {
     ]);
     $vsite_context_manager->activateVsite($this->group);
 
-    $this->groupCreator = $this->createUser([
-      'bypass group access',
-    ]);
-    $this->drupalLogin($this->groupCreator);
+    $this->groupMember = $this->createUser();
+    $this->group->addMember($this->groupMember);
+    $this->drupalLogin($this->groupMember);
   }
 
   /**
@@ -64,10 +68,10 @@ class VsiteMetatagTest extends OsMetatagTestBase {
    *
    * @throws \Behat\Mink\Exception\ExpectationException
    */
-  public function testMetatagsOnVsiteFrontPage() {
+  public function testMetatagsOnVsiteFrontPage(): void {
     $web_assert = $this->assertSession();
 
-    $this->visit("/test-alias/");
+    $this->visit('/test-alias/');
     $web_assert->statusCodeEquals(200);
     $expectedHtmlValue = '<meta name="twitter:image" content="http://apache/sites/default/files/styles/large/public/' . $this->fileLogo->getFilename();
     $this->assertContains($expectedHtmlValue, $this->getCurrentPageContent(), 'HTML head not contains twitter image.');

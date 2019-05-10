@@ -2,13 +2,12 @@
 
 namespace Drupal\Tests\cp_appearance\ExistingSite;
 
-use Drupal\group\Entity\GroupInterface;
-use weitzman\DrupalTestTraits\ExistingSiteBase;
+use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
 
 /**
  * TestBase for cp_appearance tests.
  */
-abstract class TestBase extends ExistingSiteBase {
+abstract class TestBase extends OsExistingSiteTestBase {
 
   /**
    * The entity type manager service.
@@ -46,11 +45,11 @@ abstract class TestBase extends ExistingSiteBase {
   protected $defaultTheme;
 
   /**
-   * Administrator.
+   * Group administrator.
    *
    * @var \Drupal\user\UserInterface
    */
-  protected $admin;
+  protected $groupAdmin;
 
   /**
    * Theme handler.
@@ -65,7 +64,7 @@ abstract class TestBase extends ExistingSiteBase {
   public function setUp() {
     parent::setUp();
 
-    $this->admin = $this->createUser([], NULL, TRUE);
+    $this->groupAdmin = $this->createUser();
 
     $this->entityTypeManager = $this->container->get('entity_type.manager');
     $this->vsiteContextManager = $this->container->get('vsite.context_manager');
@@ -75,32 +74,6 @@ abstract class TestBase extends ExistingSiteBase {
     $theme_config = $this->configFactory->get('system.theme');
     $this->defaultTheme = $theme_config->get('default');
     $this->themeHandler = $this->container->get('theme_handler');
-  }
-
-  /**
-   * Creates a group.
-   *
-   * @param array $values
-   *   (optional) The values used to create the entity.
-   *
-   * @return \Drupal\group\Entity\GroupInterface
-   *   The created group entity.
-   *
-   * @throws \Drupal\Core\Entity\EntityStorageException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   */
-  protected function createGroup(array $values = []): GroupInterface {
-    $group = $this->entityTypeManager->getStorage('group')->create($values + [
-      'type' => 'personal',
-      'label' => $this->randomMachineName(),
-    ]);
-    $group->enforceIsNew();
-    $group->save();
-
-    $this->markEntityForCleanup($group);
-
-    return $group;
   }
 
   /**

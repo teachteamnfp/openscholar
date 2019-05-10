@@ -20,6 +20,11 @@ class FlavorFormTest extends OsExistingSiteJavascriptTestBase {
    */
   protected $group;
 
+  /**
+   * Default theme name.
+   *
+   * @var string
+   */
   protected $defaultTheme;
 
   /**
@@ -37,9 +42,9 @@ class FlavorFormTest extends OsExistingSiteJavascriptTestBase {
         'alias' => '/cp-appearance-flavor',
       ],
     ]);
-    $admin = $this->createAdminUser();
+    $admin = $this->createUser();
 
-    $this->group->addMember($admin);
+    $this->addGroupAdmin($admin, $this->group);
 
     $this->drupalLogin($admin);
   }

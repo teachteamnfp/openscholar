@@ -2,21 +2,16 @@
 
 namespace Drupal\os_publications\Plugin\CpSetting;
 
-use Drupal\Component\Plugin\PluginBase;
-use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\cp_settings\CpSettingInterface;
+use Drupal\cp_settings\CpSettingBase;
 use Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager;
 use Drupal\os_publications\PublicationsListingHelperInterface;
+use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\bibcite\CitationStylerInterface;
 use Drupal\bibcite\Plugin\BibciteFormatManagerInterface;
-use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\os_publications\Plugin\SampleCitations;
 
 /**
@@ -32,9 +27,7 @@ use Drupal\os_publications\Plugin\SampleCitations;
  *   }
  * )
  */
-class PublicationSettingsForm extends PluginBase implements CpSettingInterface, ContainerFactoryPluginInterface {
-
-  use StringTranslationTrait;
+class PublicationSettingsForm extends CpSettingBase {
 
   /**
    * The styler service.
@@ -72,10 +65,38 @@ class PublicationSettingsForm extends PluginBase implements CpSettingInterface, 
   protected $publicationsListingHelper;
 
   /**
-   * {@inheritdoc}
+   * Citation distribution plugin manager.
+   *
+   * @var \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, CitationStylerInterface $styler, BibciteFormatManagerInterface $formatManager, EntityTypeManagerInterface $entityTypeManager, SampleCitations $citations, PublicationsListingHelperInterface $redirect_repository, CitationDistributePluginManager $pluginManager) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
+  protected $pluginManager;
+
+  /**
+   * Creates a new PublicationSettingsForm object.
+   *
+   * @param array $configuration
+   *   A configuration array containing information about the plugin instance.
+   * @param string $plugin_id
+   *   The plugin_id for the plugin instance.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
+   * @param \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager
+   *   Vsite context manager.
+   * @param \Drupal\bibcite\CitationStylerInterface $styler
+   *   The styler service.
+   * @param \Drupal\bibcite\Plugin\BibciteFormatManagerInterface $formatManager
+   *   Format Manager.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   The EntityTypeManager service.
+   * @param \Drupal\os_publications\Plugin\SampleCitations $citations
+   *   Citation generate.
+   * @param \Drupal\os_publications\PublicationsListingHelperInterface $redirect_repository
+   *   Publications listing helper.
+   * @param \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager $pluginManager
+   *   Citation distribution plugin manager.
+   */
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, VsiteContextManagerInterface $vsite_context_manager, CitationStylerInterface $styler, BibciteFormatManagerInterface $formatManager, EntityTypeManagerInterface $entityTypeManager, SampleCitations $citations, PublicationsListingHelperInterface $redirect_repository, CitationDistributePluginManager $pluginManager) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $vsite_context_manager);
     $this->styler = $styler;
     $this->formatManager = $formatManager;
     $this->entityTypeManager = $entityTypeManager;
@@ -92,6 +113,7 @@ class PublicationSettingsForm extends PluginBase implements CpSettingInterface, 
       $configuration,
       $plugin_id,
       $plugin_definition,
+      $container->get('vsite.context_manager'),
       $container->get('bibcite.citation_styler'),
       $container->get('plugin.manager.bibcite_format'),
       $container->get('entity_type.manager'),
@@ -244,17 +266,6 @@ class PublicationSettingsForm extends PluginBase implements CpSettingInterface, 
       ->save();
 
     $this->publicationsListingHelper->setRedirect('publications', $formState->getValue('biblio_sort'));
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function access(AccountInterface $account): AccessResultInterface {
-    if (!$account->hasPermission('access control panel')) {
-      return AccessResult::forbidden();
-    }
-
-    return AccessResult::allowed();
   }
 
 }

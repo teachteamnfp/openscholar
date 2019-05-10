@@ -2,6 +2,9 @@
 
 namespace Drupal\Tests\os_theme_preview\ExistingSite;
 
+use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
+use Drupal\Tests\os_theme_preview\Traits\ThemePreviewTestTrait;
+
 /**
  * Tests preview action form.
  *
@@ -9,14 +12,16 @@ namespace Drupal\Tests\os_theme_preview\ExistingSite;
  * @group os-theme-preview
  * @coversDefaultClass \Drupal\os_theme_preview\Form\PreviewAction
  */
-class PreviewActionTest extends TestBase {
+class PreviewActionOsThemePreviewTest extends OsExistingSiteTestBase {
+
+  use ThemePreviewTestTrait;
 
   /**
-   * Administrator.
+   * Group administrator.
    *
    * @var \Drupal\user\UserInterface
    */
-  protected $admin;
+  protected $groupAdmin;
 
   /**
    * Config factory.
@@ -45,7 +50,7 @@ class PreviewActionTest extends TestBase {
   public function setUp() {
     parent::setUp();
 
-    $this->admin = $this->createUser([], NULL, TRUE);
+    $this->groupAdmin = $this->createUser();
     $this->configFactory = $this->container->get('config.factory');
     $this->themeConfig = $this->configFactory->get('system.theme');
     $this->group = $this->createGroup([
@@ -53,10 +58,9 @@ class PreviewActionTest extends TestBase {
         'alias' => '/os-theme-preview',
       ],
     ]);
-    $this->group->addMember($this->admin);
+    $this->addGroupAdmin($this->groupAdmin, $this->group);
 
-    $this->vsiteContextManager->activateVsite($this->group);
-    $this->drupalLogin($this->admin);
+    $this->drupalLogin($this->groupAdmin);
   }
 
   /**
@@ -79,6 +83,7 @@ class PreviewActionTest extends TestBase {
    * @covers ::submitForm
    *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
+   * @throws \Behat\Mink\Exception\ExpectationException
    */
   public function testSave(): void {
     $this->visit('/os-theme-preview/cp/appearance/preview/documental');
@@ -86,6 +91,11 @@ class PreviewActionTest extends TestBase {
 
     $this->visit('/os-theme-preview');
     $this->assertSession()->responseContains('/profiles/contrib/openscholar/themes/documental/css/style.css');
+
+    // This is part of the test cleanup.
+    // If this is not done, then it leads to database deadlock error in the
+    // test. The test is performing nested db operations during cleanup.
+    $this->visit('/');
   }
 
   /**
@@ -128,10 +138,10 @@ class PreviewActionTest extends TestBase {
    * {@inheritdoc}
    */
   public function tearDown() {
+    parent::tearDown();
     /** @var \Drupal\Core\Config\Config $theme_config_mut */
     $theme_config_mut = $this->configFactory->getEditable('system.theme');
-    $theme_config_mut->set('default', $this->themeConfig->get('default'));
-    parent::tearDown();
+    $theme_config_mut->set('default', $this->themeConfig->get('default'))->save();
   }
 
 }

@@ -11,9 +11,12 @@ is_admin: false
 permissions:
   - 'access content'
   - 'access toolbar'
+  - 'create class content'
   - 'create page content'
   - 'create personal group'
   - 'opt-in or out of google analytics tracking'
+  - 'delete own class content'
+  - 'edit own class content'
   - 'rng register self'
   - 'use text format filtered_html'
   - 'view control_panel in toolbar'

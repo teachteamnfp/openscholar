@@ -8,9 +8,9 @@ dependencies:
     - node.type.link
     - system.menu.main
   module:
+    - group
     - link
     - node
-    - user
     - vsite_infinite_scroll
 _core:
   default_config_hash: VWyi6jvmAslr_TH2S8zUwE0mKGwT4wh9tIzrNCngmwg
@@ -30,9 +30,9 @@ display:
     position: 0
     display_options:
       access:
-        type: perm
+        type: group_permission
         options:
-          perm: 'access content'
+          group_permission: 'view group_node:link entity'
       cache:
         type: tag
         options: {  }
@@ -262,11 +262,11 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
+        - group_membership.roles.permissions
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
         - 'user.node_grants:view'
-        - user.permissions
       tags:
         - 'config:field.storage.node.field_url_web_address'
   block_1:
@@ -373,11 +373,11 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
+        - group_membership.roles.permissions
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
         - 'user.node_grants:view'
-        - user.permissions
       tags: {  }
   feed_1:
     display_plugin: feed
@@ -399,10 +399,10 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
+        - group_membership.roles.permissions
         - 'languages:language_content'
         - 'languages:language_interface'
         - 'user.node_grants:view'
-        - user.permissions
       tags:
         - 'config:field.storage.node.field_url_web_address'
   page:
@@ -421,10 +421,10 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
+        - group_membership.roles.permissions
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
         - 'user.node_grants:view'
-        - user.permissions
       tags:
         - 'config:field.storage.node.field_url_web_address'

@@ -2,6 +2,9 @@
 
 namespace Drupal\Tests\os_theme_preview\ExistingSiteJavascript;
 
+use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTestBase;
+use Drupal\Tests\os_theme_preview\Traits\ThemePreviewTestTrait;
+
 /**
  * Theme preview test.
  *
@@ -9,21 +12,23 @@ namespace Drupal\Tests\os_theme_preview\ExistingSiteJavascript;
  * @group os-theme-preview
  * @coversDefaultClass \Drupal\os_theme_preview\Theme\Negotiator
  */
-class PreviewTest extends TestBase {
+class PreviewTest extends OsExistingSiteJavascriptTestBase {
+
+  use ThemePreviewTestTrait;
 
   /**
-   * Administrator user.
+   * Group administrator.
    *
    * @var \Drupal\user\UserInterface
    */
-  protected $admin;
+  protected $groupAdmin;
 
   /**
    * {@inheritdoc}
    */
   public function setUp() {
     parent::setUp();
-    $this->admin = $this->createUser([], NULL, TRUE);
+    $this->groupAdmin = $this->createUser();
   }
 
   /**
@@ -33,13 +38,13 @@ class PreviewTest extends TestBase {
    * @covers ::determineActiveTheme
    *
    * @throws \Behat\Mink\Exception\ExpectationException
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
-   * @throws \Drupal\Core\Entity\EntityStorageException
-   * @throws \Drupal\os_theme_preview\ThemePreviewException
    */
   public function testMultipleVsite(): void {
-    $this->drupalLogin($this->admin);
+    $request_stack = $this->container->get('request_stack');
+    $handler = $this->container->get('os_theme_preview.handler');
+    $theme_manager = $this->container->get('theme.manager');
+
+    $this->drupalLogin($this->groupAdmin);
 
     // Do setup.
     $group1 = $this->createGroup([
@@ -52,22 +57,25 @@ class PreviewTest extends TestBase {
         'alias' => '/test-multiple-vsite-two',
       ],
     ]);
-    $this->setSession($this->requestStack->getCurrentRequest());
+    $this->addGroupAdmin($this->groupAdmin, $group1);
+    $this->addGroupAdmin($this->groupAdmin, $group2);
 
-    $this->handler->startPreviewMode('hwpi_themeone_bentley', $group1->id());
+    $this->setSessionFunctionalJavascript($request_stack->getCurrentRequest());
+
+    $handler->startPreviewMode('hwpi_themeone_bentley', $group1->id());
 
     // Make sure the preview is enabled in the vsite where it was activated.
     $this->visitGroupPage($group1, '/');
 
     $this->assertSession()->statusCodeEquals(200);
-    $this->assertEquals('hwpi_themeone_bentley', $this->themeManager->getActiveTheme()->getName());
+    $this->assertEquals('hwpi_themeone_bentley', $theme_manager->getActiveTheme()->getName());
 
     // Make sure the preview is not enabled in the vsite where it was not
     // enabled.
     $this->visitGroupPage($group2, '/');
 
     $this->assertSession()->statusCodeEquals(200);
-    $this->assertNotEquals('hwpi_themeone_bentley', $this->themeManager->getActiveTheme()->getName());
+    $this->assertNotEquals('hwpi_themeone_bentley', $theme_manager->getActiveTheme()->getName());
   }
 
 }
