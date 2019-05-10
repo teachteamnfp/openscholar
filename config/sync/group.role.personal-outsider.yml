@@ -11,4 +11,7 @@ internal: true
 audience: outsider
 group_type: personal
 permissions_ui: true
-permissions: {  }
+permissions:
+  0: 'view group'
+  1: 'join group'
+  4: 'view group_node:person entity'

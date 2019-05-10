@@ -1,0 +1,24 @@
+uuid: cc97aa4f-8d3f-4fda-ba5d-8f5cd48eafc6
+langcode: en
+status: true
+dependencies:
+  module:
+    - group
+  theme:
+    - shadow
+_core:
+  default_config_hash: MjMChFykEa-4UxdnGstVk1FcXqwUF3p_GBJLIFT3_XI
+id: shadow_group_operations
+theme: shadow
+region: content
+weight: -1
+provider: null
+plugin: group_operations
+settings:
+  id: group_operations
+  label: 'Group operations'
+  provider: group
+  label_display: visible
+  context_mapping:
+    group: '@group.group_route_context:group'
+visibility: {  }

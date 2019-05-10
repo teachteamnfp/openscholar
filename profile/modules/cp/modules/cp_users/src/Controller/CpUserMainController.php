@@ -101,6 +101,9 @@ class CpUserMainController extends ControllerBase {
     }
 
     $build['cp_user'] = [
+      '#cache' => [
+        'max-age' => 0,
+      ],
       '#type' => 'container',
       '#attributes' => [
         'id' => 'cp-user',
