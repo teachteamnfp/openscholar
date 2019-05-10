@@ -39,8 +39,7 @@ final class ThemeSelectorBuilder implements ThemeSelectorBuilderInterface {
    * {@inheritdoc}
    */
   public function getScreenshotUri(Extension $theme): ?string {
-    $candidates = [$theme->getName()];
-    $candidates[] = $theme->base_themes;
+    $candidates = array_merge([$theme->getName()], array_keys($theme->base_themes));
 
     foreach ($candidates as $candidate) {
       /** @var string $screenshot_uri */
