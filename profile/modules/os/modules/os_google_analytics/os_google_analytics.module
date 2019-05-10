@@ -42,23 +42,19 @@ function os_google_analytics_page_attachments(array &$page) {
   // Add module cache tags.
   $page['#cache']['tags'] = Cache::mergeTags(isset($page['#cache']['tags']) ? $page['#cache']['tags'] : [], $config->getCacheTags());
 
-  // Check if the GA account number has a valid value.
-  if (preg_match('/^UA-\d+-\d+$/', $id)) {
+  // Build the create only fields list.
+  $create_only_fields = ['cookieDomain' => 'auto', 'name' => $site_url];
 
-    // Build the create only fields list.
-    $create_only_fields = ['cookieDomain' => 'auto', 'name' => $site_url];
+  // Create a tracker.
+  $script .= 'ga("create", ' . Json::encode($id) . ', ' . Json::encode($create_only_fields) . ');';
+  $script .= 'ga("' . $site_url . '.send", "pageview");';
 
-    // Create a tracker.
-    $script .= 'ga("create", ' . Json::encode($id) . ', ' . Json::encode($create_only_fields) . ');';
-    $script .= 'ga("' . $site_url . '.send", "pageview");';
-
-    // Attach the new script which contains vsite tracker object.
-    $page['#attached']['html_head'][] = [
-      [
-        '#tag' => 'script',
-        '#value' => new GoogleAnalyticsJavaScriptSnippet($script),
-      ],
-      'google_analytics_tracking_script',
-    ];
-  }
+  // Attach the new script which contains vsite tracker object.
+  $page['#attached']['html_head'][] = [
+    [
+      '#tag' => 'script',
+      '#value' => new GoogleAnalyticsJavaScriptSnippet($script),
+    ],
+    'google_analytics_tracking_script',
+  ];
 }
