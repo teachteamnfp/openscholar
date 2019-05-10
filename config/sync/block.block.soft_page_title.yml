@@ -1,0 +1,20 @@
+uuid: 6e801eb3-38c6-4d76-a0b1-c3523cd6983b
+langcode: en
+status: true
+dependencies:
+  theme:
+    - soft
+_core:
+  default_config_hash: 7rR9chwXvdM2H8OYMAYx9Zj3GGlPMrZp_M3ZA4thYTk
+id: soft_page_title
+theme: soft
+region: content
+weight: -7
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  provider: core
+  label_display: '0'
+visibility: {  }

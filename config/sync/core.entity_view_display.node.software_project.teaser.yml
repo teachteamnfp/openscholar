@@ -39,4 +39,5 @@ hidden:
   field_packaging_method: true
   field_rbuild_short_name: true
   field_repository_url: true
+  field_taxonomy_terms: true
   langcode: true

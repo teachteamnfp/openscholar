@@ -1,0 +1,20 @@
+<?php
+
+/**
+ * @file
+ * Taxonomy related alterations.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function os_taxonomy_form_taxonomy_vocabulary_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Hide and disable vocabulary language field.
+  $form['langcode']['#disabled'] = TRUE;
+  $form['langcode']['#type'] = 'hidden';
+  // Hide and disable Term language field.
+  $form['default_terms_language']['#disabled'] = TRUE;
+  $form['default_terms_language']['#type'] = 'hidden';
+}

@@ -40,4 +40,5 @@ hidden:
   field_software_package: true
   field_software_project: true
   field_software_version: true
+  field_taxonomy_terms: true
   langcode: true

@@ -24,8 +24,6 @@ aside {
 }
 header {
   background: $color-link;
-}
-.header-container {
   a {
     color: $color-white;
   }
@@ -41,4 +39,11 @@ h2.block-title {
   border-left: 3px solid $color-link;
   padding: 9px 15px 10px;
   margin-bottom: 10px;
+}
+.main-container {
+  box-shadow: 0 1px 3px 0 $color-gray3, 0 0 0 1px $color-gray3;
+  margin-top: 0;
+  padding-top: 40px;
+  margin-bottom: 0;
+  padding-bottom: 20px;
 }
