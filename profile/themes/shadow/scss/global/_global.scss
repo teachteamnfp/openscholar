@@ -9,13 +9,12 @@
   h2.block-title {
     background: $color-light-gray;
     border-bottom: 2px solid $color-green;
-    border-left: 2px solid $color-green;
     padding: 9px 15px 10px;
     margin-bottom: 10px;
   }
 }
 .read-more, .node-readmore a {
-  color: $color-green;
+  color: $color-gray2;
   text-decoration: underline;
   font-size: 14px;
   &:after {
@@ -23,10 +22,11 @@
   }
 }
 .node--title a {
-  color: $color-green;
+  color: $color-gray2;
 }
 .page-header {
   border-left: 3px solid $color-green;
   padding: 1rem 0 1rem 2rem;
   font-weight: 700;
+  color: $color-gray2;
 }

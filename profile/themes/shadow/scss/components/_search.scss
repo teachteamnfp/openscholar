@@ -1,8 +1,8 @@
 .search-block-form,
 .search-form {
   .form-submit {
-    background: $color-green;
-    border-color: $color-green;
+    background: $color-gray2;
+    border-color: $color-gray2;
     &:focus {
       @extend .form-submit;
     }

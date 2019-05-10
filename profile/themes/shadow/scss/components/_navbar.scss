@@ -7,23 +7,23 @@
   .navbar-nav {
     > li {
       @media #{$mobile} {
-        border-bottom: 1px solid $color-green;
+        border-bottom: 1px solid $color-gray2;
         padding: 6px 0;
       }
       > a {
-        color: $color-green;
+        color: $color-gray2;
         font-weight: 700;
         font-size: 16px;
         transition: all .3s ease;
         padding: 16px 20px;
         &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
-          color: $color-green;
+          color: $color-gray2;
           background: $color-light-gray;
         }
       }
       &.open, &.active {
         > a, > a:hover, > a:active, > a:focus {
-          color: $color-green;
+          color: $color-gray2;
           background: $color-light-gray;
         }
         ul {
@@ -54,22 +54,22 @@
         @media #{$mobile} {
           font-size: 19px;
           font-weight: 700;
-          color: $color-green;
+          color: $color-gray2;
           border: 0 none;
           background: none;
         }
         &:hover, &:active {
-          color: $color-green;
+          color: $color-white;
           padding-left: 20px;
           @media #{$mobile} {
             background: none;
-            color: $color-green;
+            color: $color-gray2;
           }
         }
       }
       &.active {
         a, a:hover {
-          color: $color-green;
+          color: $color-gray2;
           @media #{$mobile} {
             background: none;
           }

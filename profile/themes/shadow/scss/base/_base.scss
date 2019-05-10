@@ -2,20 +2,13 @@
 
 body {
   font-family: 'Roboto', sans-serif;
-  border-top: 5px solid $color-green;
   color: $color-gray;
   background: $color-light-gray;
 }
 a {
-  color: $color-gray1;
+  color: $color-gray2;
   transition: all .3s ease;
   &:visited {
-    color: $color-gray1;
-      &:hover {
-      color: $color-green;
-    }
-  }
-  &:hover {
-    color: $color-green;
+    color: $color-gray2;
   }
 }
