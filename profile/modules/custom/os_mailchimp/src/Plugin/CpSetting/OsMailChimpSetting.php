@@ -2,14 +2,10 @@
 
 namespace Drupal\os_mailchimp\Plugin\CpSetting;
 
-use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Plugin\PluginBase;
-use Drupal\Core\Session\AccountInterface;
-use Drupal\cp_settings\CpSettingInterface;
+use Drupal\cp_settings\CpSettingBase;
 
 /**
  * CP mailchimp setting.
@@ -24,7 +20,7 @@ use Drupal\cp_settings\CpSettingInterface;
  *   }
  * )
  */
-class OsMailChimpSetting extends PluginBase implements CpSettingInterface {
+class OsMailChimpSetting extends CpSettingBase {
 
   /**
    * {@inheritdoc}
@@ -58,16 +54,6 @@ class OsMailChimpSetting extends PluginBase implements CpSettingInterface {
     Cache::invalidateTags([
       'mailchimp',
     ]);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function access(AccountInterface $account): AccessResultInterface {
-    if (!$account->hasPermission('access control panel')) {
-      return AccessResult::forbidden();
-    }
-    return AccessResult::allowed();
   }
 
 }

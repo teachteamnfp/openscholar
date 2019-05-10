@@ -58,7 +58,6 @@ class VsiteContextManagerTest extends VsiteExistingSiteTestBase {
   public function testGetActivePurl() {
     // Negative tests.
     $this->createGroup([
-      'type' => 'personal',
       'path' => [
         'alias' => '/no-active-test-alias',
       ],
@@ -66,16 +65,13 @@ class VsiteContextManagerTest extends VsiteExistingSiteTestBase {
 
     $this->assertEquals('', $this->vsiteContextManager->getActivePurl());
 
-    $group = $this->createGroup([
-      'type' => 'personal',
-    ]);
+    $group = $this->createGroup();
     $this->vsiteContextManager->activateVsite($group);
 
     $this->assertEquals('', $this->vsiteContextManager->getActivePurl());
 
     // Positive test.
     $group = $this->createGroup([
-      'type' => 'personal',
       'path' => [
         'alias' => '/test-alias',
       ],
