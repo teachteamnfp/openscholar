@@ -3,18 +3,18 @@
 namespace Drupal\Tests\os_publications\ExistingSite;
 
 use Drupal\bibcite_entity\Entity\Contributor;
-use Drupal\bibcite_entity\Entity\ContributorInterface;
 use Drupal\bibcite_entity\Entity\Keyword;
-use Drupal\bibcite_entity\Entity\KeywordInterface;
-use Drupal\bibcite_entity\Entity\Reference;
 use Drupal\bibcite_entity\Entity\ReferenceInterface;
 use Drupal\file\Entity\File;
-use weitzman\DrupalTestTraits\ExistingSiteBase;
+use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
+use Drupal\Tests\os_publications\Traits\OsPublicationsTestTrait;
 
 /**
  * TestBase for bibcite customizations.
  */
-abstract class TestBase extends ExistingSiteBase {
+abstract class TestBase extends OsExistingSiteTestBase {
+
+  use OsPublicationsTestTrait;
 
   /**
    * Default repec settings.
@@ -47,89 +47,6 @@ abstract class TestBase extends ExistingSiteBase {
     $this->repec = $this->container->get('repec');
     $this->defaultRepecSettings = $this->configFactory->get('repec.settings')->getRawData();
     $this->repec->initializeTemplates();
-  }
-
-  /**
-   * Creates a reference.
-   *
-   * @param array $values
-   *   (Optional) Default values for the reference.
-   *
-   * @return \Drupal\bibcite_entity\Entity\ReferenceInterface
-   *   The new reference entity.
-   *
-   * @throws \Drupal\Core\Entity\EntityStorageException
-   */
-  public function createReference(array $values = []) : ReferenceInterface {
-    $reference = Reference::create($values + [
-      'title' => $this->randomMachineName(),
-      'type' => 'artwork',
-      'bibcite_year' => [
-        'value' => 1980,
-      ],
-      'distribution' => [
-        [
-          'value' => 'citation_distribute_repec',
-        ],
-      ],
-      'status' => [
-        'value' => 1,
-      ],
-    ]);
-
-    $reference->save();
-
-    $this->markEntityForCleanup($reference);
-
-    return $reference;
-  }
-
-  /**
-   * Creates a contributor.
-   *
-   * @param array $values
-   *   (Optional) Default values for the contributor.
-   *
-   * @return \Drupal\bibcite_entity\Entity\ContributorInterface
-   *   The new contributor entity.
-   *
-   * @throws \Drupal\Core\Entity\EntityStorageException
-   */
-  public function createContributor(array $values = []) : ContributorInterface {
-    $contributor = Contributor::create($values + [
-      'first_name' => $this->randomMachineName(),
-      'middle_name' => $this->randomMachineName(),
-      'last_name' => $this->randomMachineName(),
-    ]);
-
-    $contributor->save();
-
-    $this->markEntityForCleanup($contributor);
-
-    return $contributor;
-  }
-
-  /**
-   * Creates a keyword.
-   *
-   * @param array $values
-   *   (Optional) Default values for the keyword.
-   *
-   * @return \Drupal\bibcite_entity\Entity\KeywordInterface
-   *   The new keyword entity.
-   *
-   * @throws \Drupal\Core\Entity\EntityStorageException
-   */
-  public function createKeyword(array $values = []) : KeywordInterface {
-    $keyword = Keyword::create($values + [
-      'name' => $this->randomMachineName(),
-    ]);
-
-    $keyword->save();
-
-    $this->markEntityForCleanup($keyword);
-
-    return $keyword;
   }
 
   /**
@@ -183,28 +100,10 @@ abstract class TestBase extends ExistingSiteBase {
     }
 
     /** @var array $abstract */
-    if ($abstract = $reference->get('bibcite_abst_e')->getValue()) {
+    $abstract = $reference->get('bibcite_abst_e')->getValue();
+    if ($abstract) {
       $this->assertContains("Abstract: {$abstract[0]['value']}", $content);
     }
-  }
-
-  /**
-   * Returns the rdf file template path.
-   *
-   * The path is already URI prefixed, i.e. prefixed with `public://`.
-   *
-   * @param \Drupal\bibcite_entity\Entity\ReferenceInterface $reference
-   *   The reference whose template path to be obtained.
-   *
-   * @return string
-   *   The template path.
-   */
-  protected function getRepecTemplatePath(ReferenceInterface $reference): string {
-    $serie_directory_config = $this->repec->getEntityBundleSettings('serie_directory', $reference->getEntityTypeId(), $reference->bundle());
-    $directory = "{$this->repec->getArchiveDirectory()}{$serie_directory_config}/";
-    $file_name = "{$serie_directory_config}_{$reference->getEntityTypeId()}_{$reference->id()}.rdf";
-
-    return "$directory/$file_name";
   }
 
   /**

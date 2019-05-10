@@ -172,7 +172,7 @@ class VsitePathActivatorTest extends UnitTestCase {
       ->method('getParameter')
       ->with('group')
       ->willReturn(NULL);
-    $currentRouteMatch->expects($this->at(2))
+    $currentRouteMatch->expects($this->at(3))
       ->method('getParameter')
       ->with('node')
       ->willReturn($this->node);

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5e16ee162def0ab0e75ae08936daa74e",
+    "content-hash": "4fb1f82847eac0cbb964245537227275",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -2119,22 +2119,22 @@
         },
         {
             "name": "drupal-composer/drupal-scaffold",
-            "version": "2.6.1",
+            "version": "2.5.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal-composer/drupal-scaffold.git",
-                "reference": "13c1ffc7dd4925cb03707759128b85c0cd6276f8"
+                "reference": "fc6bf4ceecb5d47327f54d48d4d4f67b17da956d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal-composer/drupal-scaffold/zipball/13c1ffc7dd4925cb03707759128b85c0cd6276f8",
-                "reference": "13c1ffc7dd4925cb03707759128b85c0cd6276f8",
+                "url": "https://api.github.com/repos/drupal-composer/drupal-scaffold/zipball/fc6bf4ceecb5d47327f54d48d4d4f67b17da956d",
+                "reference": "fc6bf4ceecb5d47327f54d48d4d4f67b17da956d",
                 "shasum": ""
             },
             "require": {
                 "composer-plugin-api": "^1.0.0",
                 "composer/semver": "^1.4",
-                "php": "^5.5.9|>=7.0.8"
+                "php": ">=5.4.5"
             },
             "require-dev": {
                 "composer/composer": "dev-master",
@@ -2159,7 +2159,7 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Composer Plugin for updating the Drupal scaffold files when using drupal/core",
-            "time": "2019-03-30T10:41:38+00:00"
+            "time": "2018-07-27T10:07:07+00:00"
         },
         {
             "name": "drupal/admin_toolbar",
@@ -3909,7 +3909,8 @@
                     "Make sure TestSitePath exist before creating .htkey": "https://www.drupal.org/files/issues/2246725-24.patch",
                     "Views Date Filter Datetime Granularity Option": "https://www.drupal.org/files/issues/2018-12-11/views_date_filter_granularity_2868014-60.patch",
                     "Add paging info to rest request": "https://www.drupal.org/files/issues/2018-06-30/2982729-viewsRestInfo.patch",
-                    "Getlabel() on null layout builder.": "https://www.drupal.org/files/issues/2018-07-16/2985882-entityfield-2.patch"
+                    "Getlabel() on null layout builder.": "https://www.drupal.org/files/issues/2018-07-16/2985882-entityfield-2.patch",
+                    "'view_path' is set to /views/ajax after second ajax request": "https://www.drupal.org/files/issues/2018-03-14/drupal-views_path_ajax-2866386-10.patch"
                 }
             },
             "autoload": {
@@ -4631,6 +4632,9 @@
                         "status": "not-covered",
                         "message": "RC releases are not covered by Drupal security advisories."
                     }
+                },
+                "patches_applied": {
+                    "/views/ajax?_wrapper_format=drupal_ajax HTTP/1.1 - HTTP/1.1 403 Forbidden": "https://www.drupal.org/files/issues/2018-08-15/group-route-match-ajax-views-d8-2942657-11.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4641,12 +4645,16 @@
                 {
                     "name": "kristiaanvandeneynde",
                     "homepage": "https://www.drupal.org/user/1345130"
+                },
+                {
+                    "name": "ronaldtebrake",
+                    "homepage": "https://www.drupal.org/user/2314038"
                 }
             ],
             "description": "This module allows you to group users, content and other entities",
             "homepage": "https://www.drupal.org/project/group",
             "support": {
-                "source": "http://cgit.drupalcode.org/group"
+                "source": "https://git.drupalcode.org/project/group"
             }
         },
         {
@@ -6295,7 +6303,8 @@
             "homepage": "https://www.drupal.org/project/views_ical",
             "support": {
                 "source": "https://git.drupalcode.org/project/views_ical"
-            }
+            },
+            "time": "2019-03-04T15:17:05+00:00"
         },
         {
             "name": "drupal/views_infinite_scroll",

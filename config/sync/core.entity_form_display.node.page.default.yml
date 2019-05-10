@@ -5,7 +5,6 @@ dependencies:
   config:
     - field.field.node.page.body
     - field.field.node.page.field_media
-    - field.field.node.page.field_slideshow
     - field.field.node.page.field_taxonomy_terms
     - node.type.page
   module:
@@ -13,7 +12,6 @@ dependencies:
     - field_layout
     - layout_discovery
     - os_media
-    - paragraphs
     - path
     - text
 third_party_settings:
@@ -45,18 +43,6 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: media_browser_widget
-    region: content
-  field_slideshow:
-    type: entity_reference_paragraphs
-    weight: 122
-    settings:
-      title: Paragraph
-      title_plural: Paragraphs
-      edit_mode: open
-      add_mode: dropdown
-      form_display_mode: default
-      default_paragraph_type: ''
-    third_party_settings: {  }
     region: content
   field_taxonomy_terms:
     weight: 124
