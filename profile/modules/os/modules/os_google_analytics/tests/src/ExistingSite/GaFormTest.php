@@ -35,7 +35,6 @@ class GaFormTest extends ExistingSiteBase {
     $this->drupalLogin($this->adminUser);
 
     $this->drupalGet('cp/settings/analytics');
-    drupal_flush_all_caches();
     $this->drupalGet('cp/settings/analytics');
     $this->assertSession()->statusCodeEquals(200);
   }
