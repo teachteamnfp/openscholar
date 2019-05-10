@@ -1,0 +1,26 @@
+uuid: 4b6621b7-7121-4b12-96dc-70abb22b7db3
+langcode: en
+status: true
+dependencies:
+  config:
+    - bibcite_entity.bibcite_reference_type.journal_article
+    - field.storage.bibcite_reference.field_taxonomy_terms
+id: bibcite_reference.journal_article.field_taxonomy_terms
+field_name: field_taxonomy_terms
+entity_type: bibcite_reference
+bundle: journal_article
+label: 'Tag with Terms'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: views
+  handler_settings:
+    view:
+      view_name: reference_taxonomy_term
+      display_name: entity_reference_1
+      arguments:
+        - 'bibcite_reference:journal_article'
+field_type: entity_reference

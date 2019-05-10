@@ -12,7 +12,7 @@
   margin-bottom: 0;
   padding: 10px;
   height: 51px;
-  @extend .clearfix;
+  @include clearfix();
 }
 .filter-help {
   float: right;

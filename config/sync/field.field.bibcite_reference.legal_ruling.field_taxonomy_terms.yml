@@ -1,0 +1,26 @@
+uuid: 54c3fd42-7777-4c73-9d97-d4a1a5260555
+langcode: en
+status: true
+dependencies:
+  config:
+    - bibcite_entity.bibcite_reference_type.legal_ruling
+    - field.storage.bibcite_reference.field_taxonomy_terms
+id: bibcite_reference.legal_ruling.field_taxonomy_terms
+field_name: field_taxonomy_terms
+entity_type: bibcite_reference
+bundle: legal_ruling
+label: 'Tag with Terms'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: views
+  handler_settings:
+    view:
+      view_name: reference_taxonomy_term
+      display_name: entity_reference_1
+      arguments:
+        - 'bibcite_reference:legal_ruling'
+field_type: entity_reference

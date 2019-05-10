@@ -31,5 +31,6 @@ content:
     region: content
 hidden:
   field_attached_media: true
+  field_taxonomy_terms: true
   langcode: true
   links: true
