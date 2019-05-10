@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.person.body
     - field.field.node.person.field_address
     - field.field.node.person.field_email
+    - field.field.node.person.field_first_name
     - field.field.node.person.field_honorific
     - field.field.node.person.field_last_name
     - field.field.node.person.field_middle_name
@@ -53,6 +54,14 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: basic_string
+    region: content
+  field_first_name:
+    weight: 15
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
     region: content
   field_honorific:
     weight: 14

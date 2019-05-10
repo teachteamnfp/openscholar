@@ -1,0 +1,35 @@
+<?php
+
+/**
+ * @file
+ * Profiles and person customisations.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_alter().
+ */
+function os_profiles_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form_id === 'node_person_form' || $form_id === 'node_person_edit_form') {
+    $form['title']['#access'] = FALSE;
+    array_unshift($form['actions']['submit']['#submit'], 'os_profiles_title_handler');
+  }
+}
+
+/**
+ * Submit handler to fill hidden Title field with full name from other fields.
+ */
+function os_profiles_title_handler(&$form, FormStateInterface $form_state) {
+  $values = $form_state->getValues();
+  $honorific = array_shift($values['field_honorific'])['value'];
+  $first_name = array_shift($values['field_first_name'])['value'];
+  $middle_name = array_shift($values['field_middle_name'])['value'];
+  $last_name = array_shift($values['field_last_name'])['value'];
+  $full_name = [
+    [
+      'value' => ($honorific ? $honorific . ' ' : '') . ($first_name ? $first_name . ' ' : '') . ($middle_name ? $middle_name . ' ' : '') . $last_name,
+    ],
+  ];
+  $form_state->setValue('title', $full_name);
+}
