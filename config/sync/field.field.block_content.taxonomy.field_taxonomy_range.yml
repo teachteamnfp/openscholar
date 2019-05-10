@@ -1,0 +1,25 @@
+uuid: 84cb5b1f-4d82-4f4f-b60c-ca411290cdae
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.taxonomy
+    - field.storage.block_content.field_taxonomy_range
+id: block_content.taxonomy.field_taxonomy_range
+field_name: field_taxonomy_range
+entity_type: block_content
+bundle: taxonomy
+label: 'Max number'
+description: 'Maximum number of top level terms to display'
+required: false
+translatable: false
+default_value:
+  -
+    value: 10
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

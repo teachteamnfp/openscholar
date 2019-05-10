@@ -64,7 +64,7 @@
           }
           let pager = data.pager;
 
-          if (pager.current_page != pager.total_pages - 1) {
+          if (pager.current_page != null && pager.current_page != pager.total_pages - 1) {
             let max = pager.total_pages,
               curr = pager.current_page;
             defers[key].notify(("Loading $p% complete.").replace('$p', Math.round(((curr-1)/max)*100)));
