@@ -49,7 +49,6 @@ class OsRedirectMaximumSetting extends PluginBase implements CpSettingInterface 
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $formState) {
-
   }
 
   /**
