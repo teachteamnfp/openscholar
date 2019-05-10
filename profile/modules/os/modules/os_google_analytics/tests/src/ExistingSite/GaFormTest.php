@@ -48,14 +48,12 @@ class GaFormTest extends ExistingSiteBase {
   public function testGaSettingsForm() {
     $this->drupalLogin($this->adminUser);
     $this->drupalGet('cp/settings/analytics');
-    drupal_flush_all_caches();
-    $this->drupalGet('cp/settings/analytics');
     // Dummy web property.
     $edit = [
       'edit-web-property-id' => 'UA-111111111-1',
     ];
     $this->submitForm($edit, 'edit-submit');
-    $this->assertSession()->fieldValueEquals('edit-web-property-id', 'UA-1234567-A1');
+    $this->assertSession()->fieldValueEquals('edit-web-property-id', 'UA-111111111-1');
   }
 
   /**
