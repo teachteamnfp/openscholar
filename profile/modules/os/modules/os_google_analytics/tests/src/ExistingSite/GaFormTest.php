@@ -57,7 +57,7 @@ class GaFormTest extends ExistingSiteBase {
   }
 
   /**
-   * Test Settings form.
+   * Test if vsite codes show on page in analytics script.
    *
    * @throws \Behat\Mink\Exception\ExpectationException
    */
