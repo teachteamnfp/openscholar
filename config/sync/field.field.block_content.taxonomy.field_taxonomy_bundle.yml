@@ -1,0 +1,21 @@
+uuid: 0f5dd818-f4a3-485d-993b-e60c0e198796
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.taxonomy
+    - field.storage.block_content.field_taxonomy_bundle
+  module:
+    - options
+id: block_content.taxonomy.field_taxonomy_bundle
+field_name: field_taxonomy_bundle
+entity_type: block_content
+bundle: taxonomy
+label: Bundle
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

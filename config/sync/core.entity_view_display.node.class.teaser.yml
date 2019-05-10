@@ -68,4 +68,5 @@ content:
 hidden:
   field_attached_media: true
   field_class_materials: true
+  field_taxonomy_terms: true
   langcode: true

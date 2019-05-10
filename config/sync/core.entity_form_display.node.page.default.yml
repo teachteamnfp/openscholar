@@ -11,6 +11,8 @@ dependencies:
     - content_moderation
     - field_layout
     - layout_discovery
+    - os_media
+    - paragraphs
     - path
     - text
 third_party_settings:
@@ -39,12 +41,9 @@ content:
     third_party_settings: {  }
   field_media:
     weight: 123
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: media_browser_widget
     region: content
   field_taxonomy_terms:
     weight: 124

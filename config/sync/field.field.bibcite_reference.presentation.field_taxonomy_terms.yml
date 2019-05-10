@@ -1,0 +1,26 @@
+uuid: c9b7e9d6-aa2c-47f0-b869-4878c93e07cf
+langcode: en
+status: true
+dependencies:
+  config:
+    - bibcite_entity.bibcite_reference_type.presentation
+    - field.storage.bibcite_reference.field_taxonomy_terms
+id: bibcite_reference.presentation.field_taxonomy_terms
+field_name: field_taxonomy_terms
+entity_type: bibcite_reference
+bundle: presentation
+label: 'Tag with Terms'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: views
+  handler_settings:
+    view:
+      view_name: reference_taxonomy_term
+      display_name: entity_reference_1
+      arguments:
+        - 'bibcite_reference:presentation'
+field_type: entity_reference

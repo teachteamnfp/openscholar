@@ -1,0 +1,23 @@
+uuid: 8b9e4805-c71e-496c-b79b-4988376c7a0e
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.taxonomy
+    - field.storage.block_content.field_taxonomy_show_term_desc
+id: block_content.taxonomy.field_taxonomy_show_term_desc
+field_name: field_taxonomy_show_term_desc
+entity_type: block_content
+bundle: taxonomy
+label: 'Show term descriptions'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

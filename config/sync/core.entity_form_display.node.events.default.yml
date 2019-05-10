@@ -9,8 +9,6 @@ dependencies:
     - field.field.node.events.field_media
     - field.field.node.events.field_open_date
     - field.field.node.events.field_recurring_date
-    - field.field.node.events.field_send_reminder
-    - field.field.node.events.field_should_send_reminder
     - field.field.node.events.field_signup
     - field.field.node.events.field_singup_multiple
     - field.field.node.events.field_taxonomy_terms
@@ -28,6 +26,7 @@ dependencies:
     - date_recur_modular
     - field_layout
     - layout_discovery
+    - os_media
     - path
     - text
 third_party_settings:
@@ -64,12 +63,9 @@ content:
     region: content
   field_media:
     weight: 4
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: media_browser_widget
     region: content
   field_recurring_date:
     weight: 1
@@ -91,6 +87,15 @@ content:
     third_party_settings: {  }
     type: boolean_checkbox
     region: content
+  field_taxonomy_terms:
+    type: entity_reference_autocomplete
+    weight: 15
+    region: content
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   langcode:
     type: language_select
     weight: 7
@@ -121,7 +126,7 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 15
+    weight: 16
     region: content
     third_party_settings: {  }
   sticky:
@@ -156,9 +161,9 @@ content:
 hidden:
   field_close_: true
   field_open_date: true
+  field_taxonomy_terms: true
   field_send_reminder: true
   field_should_send_reminder: true
-  field_taxonomy_terms: true
   rng_capacity: true
   rng_registrants_duplicate: true
   rng_registrants_maximum: true
