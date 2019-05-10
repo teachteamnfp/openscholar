@@ -1,0 +1,22 @@
+uuid: 30715bc6-315d-41da-aabd-ff3c4269febb
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - shadow
+_core:
+  default_config_hash: 9EoWV2Lot6FVSr50t4hoKgiz1LIXYWNG-IIPYsWxBqo
+id: shadow_content
+theme: shadow
+region: content
+weight: -4
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  provider: system
+  label_display: '0'
+visibility: {  }

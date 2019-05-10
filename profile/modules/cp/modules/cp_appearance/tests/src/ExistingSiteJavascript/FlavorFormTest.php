@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\cp_appearance\ExistingSiteJavascript;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTestBase;
 
 /**
@@ -60,7 +61,14 @@ class FlavorFormTest extends OsExistingSiteJavascriptTestBase {
   public function testFlavorForDefaultTheme(): void {
     $this->visit('/cp-appearance-flavor/cp/appearance');
     $this->assertSession()->statusCodeEquals(200);
-    $this->assertSession()->elementExists('css', 'form.cp-appearance-vibrant-flavor-form select');
+    $default_theme = 'hwpi_classic';
+
+    /** @var \Drupal\Core\Config\Config $theme_setting_mut */
+    $theme_setting_mut = $this->container->get('config.factory')->getEditable('system.theme');
+    $theme_setting_mut->set('default', $default_theme)->save();
+
+    $flavor_form_identifier = Html::cleanCssIdentifier("cp-appearance-$default_theme-flavor-form");
+    $this->assertSession()->elementExists('css', "form.$flavor_form_identifier select");
     $this->assertSession()->elementExists('css', 'button[name="save-vibrant"]');
   }
 
@@ -88,6 +96,32 @@ class FlavorFormTest extends OsExistingSiteJavascriptTestBase {
     $this->waitForAjaxToFinish();
 
     $this->assertSession()->elementExists('css', 'img[src="/profiles/contrib/openscholar/themes/vibrant/screenshot.png"]');
+  }
+
+  /**
+   * Tests the behavior when flavor option is changed for default theme.
+   *
+   * @covers ::flavorChangeHandler
+   *
+   * @throws \Behat\Mink\Exception\ExpectationException
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
+   * @throws \Behat\Mink\Exception\UnsupportedDriverActionException
+   * @throws \Behat\Mink\Exception\DriverException
+   */
+  public function testFlavorSelectionChangeDefaultTheme(): void {
+    $default_theme = 'hwpi_classic';
+
+    /** @var \Drupal\Core\Config\Config $theme_setting_mut */
+    $theme_setting_mut = $this->container->get('config.factory')->getEditable('system.theme');
+    $theme_setting_mut->set('default', $default_theme)->save();
+
+    $this->visit('/cp-appearance-flavor/cp/appearance');
+    $this->assertSession()->elementNotExists('css', "a[href=\"{$this->group->get('path')->first()->getValue()['alias']}/cp/appearance/preview/$default_theme\"]");
+
+    $this->getCurrentPage()->fillField("options_$default_theme", 'indigo');
+    $this->waitForAjaxToFinish();
+
+    $this->assertSession()->elementExists('css', "a[href=\"{$this->group->get('path')->first()->getValue()['alias']}/cp/appearance/preview/indigo\"]");
   }
 
   /**
