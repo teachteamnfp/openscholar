@@ -11,8 +11,11 @@ is_admin: false
 permissions:
   - 'access content'
   - 'access toolbar'
+  - 'create class content'
   - 'create page content'
   - 'create personal group'
+  - 'delete own class content'
+  - 'edit own class content'
   - 'rng register self'
   - 'use text format filtered_html'
   - 'view control_panel in toolbar'

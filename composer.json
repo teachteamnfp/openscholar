@@ -306,7 +306,8 @@
                 "Make sure TestSitePath exist before creating .htkey": "https://www.drupal.org/files/issues/2246725-24.patch",
                 "Views Date Filter Datetime Granularity Option": "https://www.drupal.org/files/issues/2018-12-11/views_date_filter_granularity_2868014-60.patch",
                 "Add paging info to rest request": "https://www.drupal.org/files/issues/2018-06-30/2982729-viewsRestInfo.patch",
-                "Getlabel() on null layout builder.": "https://www.drupal.org/files/issues/2018-07-16/2985882-entityfield-2.patch"
+                "Getlabel() on null layout builder.": "https://www.drupal.org/files/issues/2018-07-16/2985882-entityfield-2.patch",
+                "'view_path' is set to /views/ajax after second ajax request": "https://www.drupal.org/files/issues/2018-03-14/drupal-views_path_ajax-2866386-10.patch"
             },
             "drupal/group_purl": {
                 "Prevent base path from interfering with purl detection": "https://www.drupal.org/files/issues/2019-04-12/group_purl.3026646-3.basepath.patch",
@@ -344,6 +345,9 @@
             },
             "drupal/courier": {
                 "Fixes checkboxes count warning": "https://github.com/dpi/courier/pull/48.patch"
+            },
+            "drupal/group": {
+                "/views/ajax?_wrapper_format=drupal_ajax HTTP/1.1 - HTTP/1.1 403 Forbidden": "https://www.drupal.org/files/issues/2018-08-15/group-route-match-ajax-views-d8-2942657-11.patch"
             }
         },
         "patches-ignore": {

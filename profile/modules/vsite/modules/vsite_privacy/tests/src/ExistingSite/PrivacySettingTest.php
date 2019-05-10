@@ -2,13 +2,15 @@
 
 namespace Drupal\Tests\vsite_privacy\ExistingSite;
 
+use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
+
 /**
  * Class PrivacySettingTest.
  *
  * @group functional
  * @group vsite
  */
-class PrivacySettingTest extends TestBase {
+class PrivacySettingTest extends OsExistingSiteTestBase {
 
   /**
    * Vsite context manager.
@@ -25,11 +27,11 @@ class PrivacySettingTest extends TestBase {
   protected $group;
 
   /**
-   * Admin user.
+   * Group admin.
    *
    * @var \Drupal\user\UserInterface
    */
-  protected $admin;
+  protected $groupAdmin;
 
   /**
    * {@inheritdoc}
@@ -44,26 +46,62 @@ class PrivacySettingTest extends TestBase {
         'alias' => '/something-else',
       ],
     ]);
-    $this->admin = $this->createUser([], NULL, TRUE);
+    $this->groupAdmin = $this->createUser();
+
+    $this->addGroupAdmin($this->groupAdmin, $this->group);
   }
 
   /**
-   * Tests setting access.
+   * Tests setting's access when accessed outside group.
    *
    * @covers \Drupal\vsite_privacy\Plugin\CpSetting\VsitePrivacyForm::access
    *
    * @throws \Behat\Mink\Exception\ExpectationException
    */
-  public function testSetting() {
-    $this->drupalLogin($this->admin);
+  public function testSettingOutsideVsiteAsAdmin(): void {
+    $this->drupalLogin($this->groupAdmin);
 
-    // Negative tests.
     $this->visit('/cp/settings/privacy');
     $this->assertSession()->statusCodeEquals(403);
+  }
 
-    // Positive tests.
+  /**
+   * Test setting access as group admin.
+   *
+   * @throws \Behat\Mink\Exception\ExpectationException
+   */
+  public function testSettingAsAdmin(): void {
+    $this->drupalLogin($this->groupAdmin);
+
     $this->visit('/something-else/cp/settings/privacy');
     $this->assertSession()->statusCodeEquals(200);
+  }
+
+  /**
+   * Test setting access as group member.
+   *
+   * @throws \Behat\Mink\Exception\ExpectationException
+   */
+  public function testSettingAsMember(): void {
+    $group_member = $this->createUser();
+    $this->group->addMember($group_member);
+    $this->drupalLogin($group_member);
+
+    $this->visit('/something-else/cp/settings/privacy');
+    $this->assertSession()->statusCodeEquals(403);
+  }
+
+  /**
+   * Tests setting access as a group non-member.
+   *
+   * @throws \Behat\Mink\Exception\ExpectationException
+   */
+  public function testSettingAsOutsider(): void {
+    $outsider = $this->createUser();
+    $this->drupalLogin($outsider);
+
+    $this->visit('/something-else/cp/settings/privacy');
+    $this->assertSession()->statusCodeEquals(403);
   }
 
 }

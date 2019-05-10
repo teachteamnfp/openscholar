@@ -6,7 +6,6 @@ use Drupal\group\Entity\GroupInterface;
 use Drupal\media\MediaInterface;
 use Drupal\node\NodeInterface;
 use Drupal\taxonomy\Entity\Vocabulary;
-use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTestBase;
 
 /**
  * Tests taxonomy_terms fields functionality.
@@ -14,7 +13,7 @@ use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTest
  * @group functional-javascript
  * @group cp
  */
-class TaxonomyTermsFieldTest extends OsExistingSiteJavascriptTestBase {
+class TaxonomyTermsFieldTest extends CpTaxonomyExistingSiteJavascriptTestBase {
   /**
    * The entity type manager service.
    *
@@ -50,7 +49,12 @@ class TaxonomyTermsFieldTest extends OsExistingSiteJavascriptTestBase {
    */
   protected $vsiteContextManager;
 
-  protected $groupUser;
+  /**
+   * Group administrator.
+   *
+   * @var \Drupal\user\UserInterface
+   */
+  protected $groupAdmin;
 
   /**
    * {@inheritdoc}
@@ -72,10 +76,14 @@ class TaxonomyTermsFieldTest extends OsExistingSiteJavascriptTestBase {
       ],
     ]);
 
-    $this->groupUser = $this->createUser([], NULL, TRUE);
-    $this->group1->addMember($this->groupUser);
-    $this->group2->addMember($this->groupUser);
-    $this->drupalLogin($this->groupUser);
+    $this->groupAdmin = $this->createUser([
+      'create taxonomy_test_1 content',
+      'create taxonomy_test_2 content',
+      'create taxonomy_test_file media',
+    ]);
+    $this->addGroupAdmin($this->groupAdmin, $this->group1);
+    $this->addGroupAdmin($this->groupAdmin, $this->group2);
+    $this->drupalLogin($this->groupAdmin);
     $this->createGroupVocabulary($this->group1, 'vocab_group_1', ['node:taxonomy_test_1']);
     $this->createGroupVocabulary($this->group2, 'vocab_group_2', ['node:taxonomy_test_1']);
   }
