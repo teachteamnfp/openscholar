@@ -1,0 +1,22 @@
+uuid: bd3427a8-fce9-41bd-a88a-3d5bf0969641
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - shadow
+_core:
+  default_config_hash: jQQUUWN2Uxr5qZtc9zcJKBCxpKY8orN1u2HPqYYRQDI
+id: shadow_powered
+theme: shadow
+region: footer
+weight: -6
+provider: null
+plugin: system_powered_by_block
+settings:
+  id: system_powered_by_block
+  label: 'Powered by Drupal'
+  provider: system
+  label_display: '0'
+visibility: {  }
