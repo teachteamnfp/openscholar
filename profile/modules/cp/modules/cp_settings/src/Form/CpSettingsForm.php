@@ -127,9 +127,7 @@ class CpSettingsForm extends ConfigFormBase {
     /** @var \Drupal\cp_settings\CpSettingInterface[] $plugins */
     $plugins = $this->getPlugins();
     foreach ($plugins as $p) {
-      if (method_exists($p, 'validateForm')) {
-        $p->validateForm($form, $form_state);
-      }
+      $p->validateForm($form, $form_state);
     }
   }
 

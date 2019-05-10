@@ -62,6 +62,12 @@ class OsMetatagSetting extends PluginBase implements CpSettingInterface {
   /**
    * {@inheritdoc}
    */
+  public function validateForm(array &$form, FormStateInterface $formState) {
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function submitForm(
     FormStateInterface $formState,
     ConfigFactoryInterface $configFactory

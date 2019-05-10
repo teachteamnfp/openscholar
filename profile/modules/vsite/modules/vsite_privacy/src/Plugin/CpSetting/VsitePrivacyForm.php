@@ -110,6 +110,12 @@ class VsitePrivacyForm extends PluginBase implements CpSettingInterface, Contain
   /**
    * {@inheritdoc}
    */
+  public function validateForm(array &$form, FormStateInterface $formState) {
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function submitForm(FormStateInterface $form_state, ConfigFactoryInterface $config_factory) {
     $this->activeVsite->set('field_privacy_level', [
       'value' => $form_state->getValue('privacy_levels'),

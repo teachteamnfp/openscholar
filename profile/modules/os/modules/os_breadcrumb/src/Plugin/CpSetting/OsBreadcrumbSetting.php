@@ -48,6 +48,12 @@ class OsBreadcrumbSetting extends PluginBase implements CpSettingInterface {
   /**
    * {@inheritdoc}
    */
+  public function validateForm(array &$form, FormStateInterface $formState) {
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function submitForm(FormStateInterface $formState, ConfigFactoryInterface $configFactory) {
     $config = $configFactory->getEditable('os_breadcrumb.settings');
     $config->set('show_breadcrumbs', $formState->getValue('show_breadcrumbs'));

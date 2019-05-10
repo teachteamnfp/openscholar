@@ -48,6 +48,13 @@ class OsMailChimpSetting extends PluginBase implements CpSettingInterface {
   /**
    * {@inheritdoc}
    */
+  public function validateForm(array &$form, FormStateInterface $formState) {
+
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function submitForm(FormStateInterface $formState, ConfigFactoryInterface $configFactory) {
     $config = $configFactory->getEditable('mailchimp.settings');
     $config->set('api_key', $formState->getValue('api_key'));
