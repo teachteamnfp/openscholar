@@ -67,16 +67,29 @@ class GaFormTest extends ExistingSiteBase {
       ],
     ]);
     $this->drupalLogin($this->adminUser);
-    $this->drupalGet('test-alias/cp/settings/analytics');
 
-    // Dummy web property.
+    // Test only vsite.
+    $this->drupalGet('test-alias/cp/settings/analytics');
+    // Dummy vsite web property.
     $edit = [
       'edit-web-property-id' => 'UA-111111111-1',
     ];
     $this->submitForm($edit, 'edit-submit');
     $this->drupalGet('test-alias');
+    $this->assertSession()->responseContains('ga("send", "pageview")');
+    $this->assertSession()->responseContains('UA-111111111-1');
+
+    // Test both Global and vsite together.
+    $this->drupalGet('admin/config/system/google-analytics');
+    // Dummy global web property.
+    $edit = [
+      'google_analytics_account' => 'UA-111111111-2',
+    ];
+    $this->submitForm($edit, 'edit-submit');
+    $this->drupalGet('test-alias');
     $this->assertSession()->responseContains('ga("test-alias.send", "pageview")');
     $this->assertSession()->responseContains('UA-111111111-1');
+    $this->assertSession()->responseContains('UA-111111111-2');
   }
 
   /**
