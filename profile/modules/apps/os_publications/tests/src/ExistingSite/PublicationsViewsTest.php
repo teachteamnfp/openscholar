@@ -670,7 +670,7 @@ class PublicationsViewsTest extends TestBase {
   public function testAnonymousUserAccess() {
     $this->visit('/publications');
 
-    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->statusCodeEquals(403);
   }
 
   /**
