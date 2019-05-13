@@ -528,3 +528,36 @@ function os_events_set_rrule(array &$form, FormStateInterface $form_state) {
   // Set the altered rule so that it can be saved in DB.
   $form_state->setValue(array_merge($value_parents, ['rrule']), $rrule);
 }
+
+/**
+ * Implements hook_node_links_alter().
+ */
+function os_events_node_links_alter(array &$links, NodeInterface $entity, array &$context) {
+  if ($entity->bundle() !== 'events') {
+    return;
+  }
+
+  $links['os_events'] = [
+    '#theme' => 'links__node__node',
+    '#attributes' => [
+      'class' => [
+        'links',
+        'inline',
+      ],
+    ],
+    '#links' => [
+      'rss' => [
+        'title' => t('RSS'),
+        'url' => Url::fromRoute('view.event_exportables.feed_1', [
+          'arg_0' => $entity->id(),
+        ]),
+      ],
+      'ical' => [
+        'title' => t('iCal'),
+        'url' => Url::fromRoute('view.event_exportables.feed_2', [
+          'arg_0' => $entity->id(),
+        ]),
+      ],
+    ],
+  ];
+}
