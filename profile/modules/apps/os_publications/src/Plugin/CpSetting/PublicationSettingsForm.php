@@ -243,12 +243,6 @@ class PublicationSettingsForm extends CpSettingBase {
   /**
    * {@inheritdoc}
    */
-  public function validateForm(array &$form, FormStateInterface $formState) {
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function submitForm(FormStateInterface $formState, ConfigFactoryInterface $configFactory) {
     $bibcite_config = $configFactory->getEditable('bibcite.settings');
     $publication_config = $configFactory->getEditable('os_publications.settings');

@@ -6,9 +6,8 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Plugin\PluginBase;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\cp_settings\CpSettingInterface;
+use Drupal\cp_settings\CpSettingBase;
 
 /**
  * CP breadcrumb setting.
@@ -23,7 +22,7 @@ use Drupal\cp_settings\CpSettingInterface;
  *   }
  * )
  */
-class OsBreadcrumbSetting extends PluginBase implements CpSettingInterface {
+class OsBreadcrumbSetting extends CpSettingBase {
 
   /**
    * {@inheritdoc}
@@ -43,12 +42,6 @@ class OsBreadcrumbSetting extends PluginBase implements CpSettingInterface {
       '#title' => t('Show breadcrumbs on my site'),
       '#default_value' => $config->get('show_breadcrumbs'),
     ];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function validateForm(array &$form, FormStateInterface $formState) {
   }
 
   /**

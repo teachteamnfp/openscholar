@@ -58,12 +58,6 @@ class OsMetatagSetting extends CpSettingBase {
   /**
    * {@inheritdoc}
    */
-  public function validateForm(array &$form, FormStateInterface $formState) {
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function submitForm(
     FormStateInterface $formState,
     ConfigFactoryInterface $configFactory

@@ -2,14 +2,13 @@
 
 namespace Drupal\os_google_analytics\Plugin\CpSetting;
 
-use Drupal\Component\Plugin\PluginBase;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
-use Drupal\cp_settings\CpSettingInterface;
+use Drupal\cp_settings\CpSettingBase;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
@@ -25,7 +24,7 @@ use Drupal\Core\Form\FormStateInterface;
  *   }
  * )
  */
-class GaSettingForm extends PluginBase implements CpSettingInterface {
+class GaSettingForm extends CpSettingBase {
 
   use StringTranslationTrait;
 
@@ -75,7 +74,7 @@ class GaSettingForm extends PluginBase implements CpSettingInterface {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-
+    parent::validateForm($form, $form_state);
     // Replace all type of dashes (n-dash, m-dash, minus) with normal dashes.
     $form_state->setValue('web_property_id', str_replace([
       '–',
