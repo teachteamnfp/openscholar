@@ -10,20 +10,19 @@ namespace Drupal\Tests\os_redirect\ExistingSite;
  */
 class RedirectOnVsiteTest extends OsRedirectTestBase {
 
-  protected $siteUser;
-
   /**
    * {@inheritdoc}
    */
   public function setUp() {
     parent::setUp();
 
-    // Set the current user so group creation can rely on it.
-    $this->container->get('current_user')->setAccount($this->createUser());
+    $user = $this->createUser();
+    $this->addGroupAdmin($user, $this->group);
+    $this->drupalLogin($user);
 
     // Enable the user_as_content plugin on the default group type.
     /** @var \Drupal\group\Entity\Storage\GroupContentTypeStorageInterface $storage */
-    $storage = $this->entityTypeManager->getStorage('group_content_type');
+    $storage = $this->container->get('entity_type.manager')->getStorage('group_content_type');
     /** @var \Drupal\group\Entity\GroupContentTypeInterface[] $plugin */
     $plugins = $storage->loadByContentPluginId('group_entity:redirect');
     /** @var \Drupal\group\Entity\GroupContentTypeInterface $plugin */
@@ -40,6 +39,17 @@ class RedirectOnVsiteTest extends OsRedirectTestBase {
       'status_code' => 301,
     ]);
     $this->group->addContent($redirect, $plugin->getContentPluginId());
+
+    $redirect = $this->createRedirect([
+      'redirect_source' => [
+        'path' => '[vsite:' . $this->group->id() . ']/working-internal-redirect',
+      ],
+      'redirect_redirect' => [
+        'uri' => 'internal:/publications',
+      ],
+      'status_code' => 301,
+    ]);
+    $this->group->addContent($redirect, $plugin->getContentPluginId());
   }
 
   /**
@@ -52,6 +62,18 @@ class RedirectOnVsiteTest extends OsRedirectTestBase {
     $web_assert->statusCodeEquals(200);
     $web_assert->addressEquals('/');
     $this->assertContains('Google', $this->getCurrentPageContent());
+
+  }
+
+  /**
+   * Tests redirect on vsite internal success.
+   */
+  public function testRedirectInternalSuccess301() {
+    $web_assert = $this->assertSession();
+
+    $this->visit($this->group->get('path')->getValue()[0]['alias'] . "/working-internal-redirect");
+    $web_assert->statusCodeEquals(200);
+    $this->assertContains('Publications', $this->getCurrentPageContent());
 
   }
 
