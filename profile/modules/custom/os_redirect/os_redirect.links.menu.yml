@@ -1,6 +1,4 @@
 os_redirect.list:
   title: 'URL redirects'
-  menu: control-panel
   route_name: os_redirect.list
-  parent: cp.content
-  weight: 0
+  parent: cp.settings.global

@@ -162,7 +162,7 @@
     "require": {
         "composer/installers": "^1.2",
         "cweagans/composer-patches": "^1.6",
-        "drupal-composer/drupal-scaffold": "^2.5",
+        "drupal-composer/drupal-scaffold": "^2.6",
         "drupal/console": "^1.0.2",
         "drupal/core": "^8.6.15",
         "drupal/purl": "1.0.2",
@@ -300,7 +300,10 @@
             "initial": {
                 ".editorconfig": "../.editorconfig",
                 ".gitattributes": "../.gitattributes"
-            }
+            },
+            "source": [
+                "https://raw.githubusercontent.com/drupal/drupal/{version}/{path}"
+            ]
         },
         "patches": {
             "drupal/core": {

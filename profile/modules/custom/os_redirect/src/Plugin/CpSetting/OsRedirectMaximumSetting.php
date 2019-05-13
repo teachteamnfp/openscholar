@@ -17,7 +17,7 @@ use Drupal\cp_settings\CpSettingBase;
  *   title = @Translation("OS redirect maximum"),
  *   group = {
  *    "id" = "redirect_maximum",
- *    "title" = @Translation("Redirect maximum"),
+ *    "title" = @Translation("Maximum Redirects"),
  *    "parent" = "cp.settings.global"
  *   }
  * )

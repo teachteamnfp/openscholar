@@ -1,5 +1,5 @@
-cp.appearance:
-  title: 'Appearance'
+cp.themes:
+  title: 'Themes'
   route_name: cp.appearance
   weight: 2
-  menu_name: control-panel
+  parent: cp.appearance
