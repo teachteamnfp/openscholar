@@ -12,7 +12,7 @@ namespace Drupal\Tests\cp_taxonomy\ExistingSite;
  */
 class CpTaxonomyHelperTest extends TestBase {
 
-  private $group;
+  protected $group;
   private $helper;
 
   /**

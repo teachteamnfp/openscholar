@@ -52,7 +52,7 @@ settings:
         -
           name: Tools
           items:
-            - Format
+            - Styles
             - Table
         -
           name: Media
@@ -67,7 +67,7 @@ settings:
             - DrupalUnlink
   plugins:
     stylescombo:
-      styles: ''
+      styles: "p|Normal\r\naddress|Address\r\npre|Formatted\r\nh2|Heading 2\r\nh3|Heading 3\r\nh4|Heading 4\r\nh5|Heading 5\r\nh6|Heading 6\r\ndiv|Normal (DIV)"
     language:
       language_list: un
     colorbutton:

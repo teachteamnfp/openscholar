@@ -17,7 +17,7 @@
 #  weight: 0
 #  parent: cp.build
 cp.content:
-  title: 'Content'
+  title: 'Site Content'
   url: 'internal:##'
   menu_name: control-panel
   weight: 0
@@ -31,13 +31,38 @@ cp.content.import:
   parent: cp.content
 cp.content.browse:
   title: 'Browse'
-  route_name: view.site_content.page_1
+  url: 'internal:##'
   parent: cp.content
+cp.content.browse.content:
+  title: 'Content'
+  route_name: view.site_content.page_1
+  parent: cp.content.browse
+cp.content.browser.publications:
+  title: 'Publications'
+  route_name: view.publications.cp
+  parent: cp.content.browse
+cp.content.browse.media:
+  title: 'Files'
+  route_name: view.os_media.page_1
+  parent: cp.content.browse
 cp.menu:
   title: 'Menus'
   url: 'internal:##'
   weight: 1
   menu_name: control-panel
+cp.appearance:
+  title: 'Appearance'
+  url: 'internal:##'
+  menu_name: control-panel
+  weight: 2
+cp.breadcrumbs:
+  title: 'Breadcrumbs'
+  url: 'internal:##'
+  parent: cp.appearance
+cp.favicon:
+  title: 'Favicon'
+  url: 'internal:##'
+  parent: cp.appearance
 cp.settings:
   title: 'Settings'
   url: 'internal:##'
@@ -55,3 +80,38 @@ cp.settings.global:
   weight: 2
   menu_name: global-settings
   parent: cp.settings
+# These are temporary placeholders, and should be removed when they
+# are properly implemented.
+cp.settings.global.cache:
+  title: 'Cache / Reindex'
+  url: 'internal:##'
+  parent: cp.settings.global
+cp.settings.global.domain:
+  title: 'Custom Domain'
+  url: 'internal:##'
+  parent: cp.settings.global
+cp.settings.global.ga:
+  title: 'Google Analytics'
+  url: 'internal:##'
+  parent: cp.settings.global
+cp.settings.global.privacy_policy:
+  title: 'Privacy Policy'
+  url: 'internal:##'
+  parent: cp.settings.global
+cp.settings.global.taxonomy:
+  title: 'Taxonomy'
+  url: 'internal:##'
+  parent: cp.settings.global
+cp.help:
+  title: 'Help'
+  url: 'internal:##'
+  menu_name: control-panel
+  weight: 20
+cp.help.documentation:
+  title: 'Documentation'
+  url: 'internal:##'
+  parent: cp.help
+cp.help.support:
+  title: 'Support'
+  url: 'internal:##'
+  parent: cp.help

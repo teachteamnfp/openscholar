@@ -1,0 +1,26 @@
+uuid: d92b2d71-6e75-41ae-86a9-95e3b46dff64
+langcode: en
+status: true
+dependencies:
+  config:
+    - bibcite_entity.bibcite_reference_type.classical
+    - field.storage.bibcite_reference.field_taxonomy_terms
+id: bibcite_reference.classical.field_taxonomy_terms
+field_name: field_taxonomy_terms
+entity_type: bibcite_reference
+bundle: classical
+label: 'Tag with Terms'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: views
+  handler_settings:
+    view:
+      view_name: reference_taxonomy_term
+      display_name: entity_reference_1
+      arguments:
+        - 'bibcite_reference:classical'
+field_type: entity_reference

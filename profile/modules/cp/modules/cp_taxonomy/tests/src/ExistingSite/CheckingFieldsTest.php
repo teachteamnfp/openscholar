@@ -57,4 +57,20 @@ class CheckingFieldsTest extends TestBase {
     }
   }
 
+  /**
+   * Test all reference types.
+   */
+  public function testAllReferenceTypesFieldExists() {
+    $definitions = $this->entityTypeManager->getDefinitions();
+    foreach ($definitions as $definition) {
+      if ($definition->id() == 'bibcite_reference') {
+        $bundles = $this->entityManager->getBundleInfo($definition->id());
+        foreach ($bundles as $machine_name => $bundle) {
+          $fields = $this->entityFieldManager->getFieldDefinitions($definition->id(), $machine_name);
+          $this->assertArrayHasKey($this->fieldName, $fields, 'Reference bundle ' . $bundle['label'] . ' not contains ' . $this->fieldName . ' field.');
+        }
+      }
+    }
+  }
+
 }

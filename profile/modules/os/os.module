@@ -5,6 +5,8 @@
  * Hook implementations for the os module.
  */
 
+use Drupal\Core\Link;
+
 /**
  * Implements hook_library_info_alter().
  */
@@ -44,5 +46,23 @@ function os_preprocess_html(&$variables) {
     $variables['attributes']['ng-app'] = 'openscholar';
     $variables['attributes']['data-ng-modules'] = implode(',', $modules);
     $variables['#attached']['library'][] = 'os/openscholarModule';
+  }
+}
+
+/**
+ * Implements hook_preprocess_block().
+ *
+ * Replaces 'Drupal' with 'OpenScholar' in the powered by block.
+ *
+ * @param array $vars
+ *   Theme variables.
+ */
+function os_preprocess_block(array &$vars) {
+  if (isset($vars['plugin_id']) && $vars['plugin_id'] == 'system_powered_by_block') {
+    $vars['content']['#markup'] = '';
+    if (\Drupal::currentUser()->isAnonymous()) {
+      $vars['content']['#markup'] .= Link::createFromRoute(t('Admin Login'), 'user.login', [], ['query' => \Drupal::destination()->getAsArray()])->toString();
+    }
+    $vars['content']['#markup'] .= t('<span id="powered-by">Powered by <a href=":link">OpenScholar</a></span>', [':link' => 'https://theopenscholar.com/']);
   }
 }
