@@ -20,12 +20,14 @@ function os_redirect_redirect_matched_redirect_alter(&$redirect) {
     // (prevent global redirect in all vsite).
     if (empty($exist_redirect)) {
       $redirect = NULL;
+      return;
     }
   }
 
   if (Drupal::currentUser()->hasPermission('ignore redirects')) {
     Drupal::messenger()->addWarning(t('You are redirected to: @uri', ['@uri' => $redirect->getRedirectUrl()->getUri()]));
     $redirect = NULL;
+    return;
   }
 }
 
