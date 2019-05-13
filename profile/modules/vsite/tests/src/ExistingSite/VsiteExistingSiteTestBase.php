@@ -2,13 +2,14 @@
 
 namespace Drupal\Tests\vsite\ExistingSite;
 
+use Drupal\group\Entity\GroupInterface;
+use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
 use Symfony\Component\CssSelector\CssSelectorConverter;
-use weitzman\DrupalTestTraits\ExistingSiteBase;
 
 /**
  * Base class for vsite tests.
  */
-abstract class VsiteExistingSiteTestBase extends ExistingSiteBase {
+abstract class VsiteExistingSiteTestBase extends OsExistingSiteTestBase {
 
   /**
    * The entity type manager service.
@@ -27,16 +28,11 @@ abstract class VsiteExistingSiteTestBase extends ExistingSiteBase {
   }
 
   /**
-   * Creates a group.
-   *
-   * @param array $values
-   *   (optional) The values used to create the entity.
-   *
-   * @return \Drupal\group\Entity\GroupInterface
-   *   The created group entity.
+   * {@inheritdoc}
    */
-  protected function createGroup(array $values = []) {
-    $group = $this->entityTypeManager->getStorage('group')->create($values + [
+  protected function createGroup(array $values = []): GroupInterface {
+    $storage = $this->container->get('entity_type.manager')->getStorage('group');
+    $group = $storage->create($values + [
       'type' => 'personal',
       'label' => $this->randomMachineName(),
     ]);
@@ -66,7 +62,7 @@ abstract class VsiteExistingSiteTestBase extends ExistingSiteBase {
    * @return string
    *   The equivalent XPath of a CSS expression.
    */
-  protected function cssSelectToXpath($selector, $html = TRUE, $prefix = 'descendant-or-self::') {
+  protected function cssSelectToXpath($selector, $html = TRUE, $prefix = 'descendant-or-self::'): string {
     return (new CssSelectorConverter($html))->toXPath($selector, $prefix);
   }
 

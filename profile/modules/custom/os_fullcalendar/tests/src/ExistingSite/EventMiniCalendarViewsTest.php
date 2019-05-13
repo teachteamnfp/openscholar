@@ -15,9 +15,9 @@ class EventMiniCalendarViewsTest extends EventTestBase {
   /**
    * Tests monthly calendar view.
    */
-  public function testMonthlyCalendarView() {
-    $start = new DateTimePlus('+1 month midnight +5 hours', $this->config->get('system.date')->get('timezone.default'));
-    $end = new DateTimePlus('+1 day +1 month midnight +5 hours', $this->config->get('system.date')->get('timezone.default'));
+  public function testMonthlyCalendarView(): void {
+    $start = new DateTimePlus('+1 month midnight +5 hours', $this->user->getTimeZone());
+    $end = new DateTimePlus('+1 day +1 month midnight +5 hours', $this->user->getTimeZone());
     /** @var \Drupal\node\NodeInterface $next_month_event */
     $next_month_event = $this->createEvent([
       'title' => 'Next Month Event',
@@ -25,7 +25,7 @@ class EventMiniCalendarViewsTest extends EventTestBase {
         'value' => $start->format("Y-m-d\TH:i:s"),
         'end_value' => $end->format("Y-m-d\TH:i:s"),
         'rrule' => '',
-        'timezone' => $this->config->get('system.date')->get('timezone.default'),
+        'timezone' => $this->user->getTimeZone(),
         'infinite' => FALSE,
       ],
       'status' => TRUE,
@@ -46,9 +46,9 @@ class EventMiniCalendarViewsTest extends EventTestBase {
   /**
    * Tests upcoming events calendar view.
    */
-  public function testUpcomingEventsCalendarView() {
-    $start = new DateTimePlus('-2 day -1 month midnight', $this->config->get('system.date')->get('timezone.default'));
-    $end = new DateTimePlus('-1 day -1 month midnight', $this->config->get('system.date')->get('timezone.default'));
+  public function testUpcomingEventsCalendarView(): void {
+    $start = new DateTimePlus('-2 day -1 month midnight', $this->user->getTimeZone());
+    $end = new DateTimePlus('-1 day -1 month midnight', $this->user->getTimeZone());
     /** @var \Drupal\node\NodeInterface $past_event */
     $past_event = $this->createEvent([
       'title' => 'Past Event',
@@ -56,15 +56,15 @@ class EventMiniCalendarViewsTest extends EventTestBase {
         'value' => $start->format("Y-m-d\TH:i:s"),
         'end_value' => $end->format("Y-m-d\TH:i:s"),
         'rrule' => '',
-        'timezone' => $this->config->get('system.date')->get('timezone.default'),
+        'timezone' => $this->user->getTimeZone(),
         'infinite' => FALSE,
       ],
       'status' => TRUE,
     ]);
     $this->group->addContent($past_event, "group_node:{$past_event->bundle()}");
 
-    $start = new DateTimePlus('tomorrow midnight', $this->config->get('system.date')->get('timezone.default'));
-    $end = new DateTimePlus('2 day midnight', $this->config->get('system.date')->get('timezone.default'));
+    $start = new DateTimePlus('tomorrow midnight', $this->user->getTimeZone());
+    $end = new DateTimePlus('2 day midnight', $this->user->getTimeZone());
     /** @var \Drupal\node\NodeInterface $future_event */
     $future_event = $this->createEvent([
       'title' => 'Future Event',
@@ -72,7 +72,7 @@ class EventMiniCalendarViewsTest extends EventTestBase {
         'value' => $start->format("Y-m-d\TH:i:s"),
         'end_value' => $end->format("Y-m-d\TH:i:s"),
         'rrule' => '',
-        'timezone' => $this->config->get('system.date')->get('timezone.default'),
+        'timezone' => $this->user->getTimeZone(),
         'infinite' => FALSE,
       ],
       'status' => TRUE,

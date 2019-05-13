@@ -1,0 +1,23 @@
+uuid: 04ae04c7-e083-4867-83c1-040d4611dbbb
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.taxonomy
+    - field.storage.block_content.field_taxonomy_show_count
+id: block_content.taxonomy.field_taxonomy_show_count
+field_name: field_taxonomy_show_count
+entity_type: block_content
+bundle: taxonomy
+label: 'Show number of posts'
+description: 'Show number of posts tagged to a term next to the term.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

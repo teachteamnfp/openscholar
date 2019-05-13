@@ -2,7 +2,25 @@
   border: 0 none;
   padding: 50px 0 50px;
   margin: 0;
+
   .region {
     margin-bottom: 20px;
+  }
+  ul.nav {
+    li {
+      a {
+        &:hover {
+          background: none;
+        }
+      }
+      &.open {
+        a {
+          background: none;
+          &:hover {
+            background: none;
+          }
+        }
+      }
+    }
   }
 }

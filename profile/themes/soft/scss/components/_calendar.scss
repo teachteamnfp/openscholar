@@ -1,0 +1,17 @@
+.fc-event-default {
+  border-color: $color-blue;
+  background-color: $color-blue;
+}
+.fc-listUpcoming-view .fc-list-heading .fc-list-heading-main,
+.fc-listPast-view .fc-list-heading .fc-list-heading-main {
+  background: $color-white;
+  border: 1px solid $color-blue;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  .event-year {
+    border-top: 4px solid $color-blue;
+  }
+  span.event-start-day {
+    color: $color-blue;
+  }
+}

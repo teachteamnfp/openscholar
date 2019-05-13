@@ -22,13 +22,6 @@ class VsitePathActivatorTest extends VsiteExistingSiteTestBase {
   protected $hierarchicalStorage;
 
   /**
-   * A test user with group creation rights.
-   *
-   * @var \Drupal\user\UserInterface
-   */
-  protected $groupCreator;
-
-  /**
    * Event dispatcher.
    *
    * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
@@ -42,12 +35,6 @@ class VsitePathActivatorTest extends VsiteExistingSiteTestBase {
     parent::setUp();
     $this->hierarchicalStorage = $this->container->get('hierarchical.storage');
     $this->eventDispatcher = $this->container->get('event_dispatcher');
-    $this->groupCreator = $this->createUser([
-      'view the administration theme',
-      'access administration pages',
-      'create personal group',
-    ]);
-    $this->drupalLogin($this->groupCreator);
   }
 
   /**
@@ -55,7 +42,7 @@ class VsitePathActivatorTest extends VsiteExistingSiteTestBase {
    *
    * @covers \Drupal\vsite\Plugin\VsitePathActivator::onModifierMatched
    */
-  public function testModifierMatched() {
+  public function testModifierMatched(): void {
     $group = $this->createGroup([
       'type' => 'personal',
       'path' => [
@@ -74,7 +61,7 @@ class VsitePathActivatorTest extends VsiteExistingSiteTestBase {
    *
    * @covers \Drupal\vsite\Plugin\VsitePathActivator::onRequest
    */
-  public function testOnRequest() {
+  public function testOnRequest(): void {
     $group = $this->createGroup([
       'type' => 'personal',
       'path' => [

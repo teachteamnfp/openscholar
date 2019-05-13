@@ -5,12 +5,15 @@ namespace Drupal\cp_taxonomy;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\taxonomy\Entity\Vocabulary;
 
 /**
  * Helper functions to handle vocabularies and related entities.
  */
 class CpTaxonomyHelper implements CpTaxonomyHelperInterface {
+
+  use StringTranslationTrait;
 
   private $configFactory;
   private $entityTypeManager;
@@ -75,6 +78,7 @@ class CpTaxonomyHelper implements CpTaxonomyHelperInterface {
     $allowed_entity_types = [
       'node',
       'media',
+      'bibcite_reference',
     ];
     $options = [];
     foreach ($definitions as $definition) {
@@ -84,6 +88,10 @@ class CpTaxonomyHelper implements CpTaxonomyHelperInterface {
       $bundles = $this->entityTypeBundleInfo->getBundleInfo($definition->id());
       foreach ($bundles as $machine_name => $bundle) {
         $options[$definition->id() . ':' . $machine_name] = $definition->getLabel() . ' - ' . $bundle['label'];
+        if ($definition->id() == 'node' && $machine_name == 'events') {
+          $options['node:past_events'] = $definition->getLabel() . ' - ' . $this->t('Past events');
+          $options['node:upcoming_events'] = $definition->getLabel() . ' - ' . $this->t('Upcoming events');
+        }
       }
     }
     return $options;
@@ -98,6 +106,18 @@ class CpTaxonomyHelper implements CpTaxonomyHelperInterface {
     $config_vocab
       ->set('allowed_vocabulary_reference_types', $filtered_entity_types)
       ->save(TRUE);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function explodeEntityBundles(array $bundles): array {
+    $entities = [];
+    foreach ($bundles as $bundle) {
+      list($entity_name, $bundle) = explode(':', $bundle);
+      $entities[$entity_name][] = $bundle;
+    }
+    return $entities;
   }
 
 }

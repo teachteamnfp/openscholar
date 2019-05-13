@@ -70,7 +70,6 @@ class CpUsersAddForm extends FormBase {
     }
 
     $roleData = [];
-    $descriptions = [];
     /*@var \Drupal\group\Entity\GroupTypeInterface $group_type */
     $group_type = $group->getGroupType();
     $roles = $group_type->getRoles(TRUE);
@@ -146,7 +145,9 @@ class CpUsersAddForm extends FormBase {
         '#type' => 'submit',
         '#value' => $this->t('Save'),
         '#attributes' => [
-          'class' => 'use-ajax',
+          'class' => [
+            'use-ajax',
+          ],
         ],
         '#ajax' => [
           'callback' => [$this, 'submitForm'],
@@ -157,7 +158,9 @@ class CpUsersAddForm extends FormBase {
         '#type' => 'button',
         '#value' => $this->t('Cancel'),
         '#attributes' => [
-          'class' => 'use-ajax',
+          'class' => [
+            'use-ajax',
+          ],
         ],
         '#ajax' => [
           'callback' => [$this, 'closeModal'],
@@ -199,6 +202,7 @@ class CpUsersAddForm extends FormBase {
           'field_last_name' => $form_state->getValue('last_name'),
           'name' => $form_state->getValue('username'),
           'mail' => $form_state->getValue('email'),
+          'status' => TRUE,
         ]);
         $account->save();
         $email_key = CP_USERS_NEW_USER;
@@ -206,6 +210,9 @@ class CpUsersAddForm extends FormBase {
 
       /** @var string $role */
       $role = $form_state->getValue('role');
+      if (!$role) {
+        $role = $group->getGroupType()->getMemberRoleId();
+      }
 
       $values = [
         'group_roles' => [

@@ -5,6 +5,8 @@
  * OS widgets.
  */
 
+use Drupal\Core\Ajax\ReplaceCommand;
+use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\os_widgets\Entity\OsBlockContent;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityInterface;
@@ -81,7 +83,53 @@ function os_widgets_theme($existing, $type, $theme, $path) {
         'is_display_count' => FALSE,
       ],
     ],
+    'os_widgets_taxonomy_term_item' => [
+      'variables' => [
+        'term' => NULL,
+        'label' => '',
+        'description' => '',
+        'children' => [],
+      ],
+    ],
+    'os_widgets_taxonomy_display_type_menu' => [
+      'variables' => [
+        'items' => [],
+        'title' => '',
+        'list_type' => NULL,
+        'wrapper_attributes' => [],
+        'attributes' => [],
+        'empty' => NULL,
+        'context' => [],
+        'children' => [],
+      ],
+    ],
+    'os_widgets_taxonomy_display_type_slider' => [
+      'variables' => [
+        'items' => [],
+        'title' => '',
+        'list_type' => NULL,
+        'wrapper_attributes' => [],
+        'attributes' => [],
+        'empty' => NULL,
+        'context' => [],
+        'children' => [],
+      ],
+    ],
   ];
+}
+
+/**
+ * Implements template_preprocess_HOOK().
+ */
+function template_preprocess_os_widgets_taxonomy_display_type_menu(&$variables) {
+  template_preprocess_item_list($variables);
+}
+
+/**
+ * Implements template_preprocess_HOOK().
+ */
+function template_preprocess_os_widgets_taxonomy_display_type_slider(&$variables) {
+  template_preprocess_item_list($variables);
 }
 
 /**
@@ -107,6 +155,36 @@ function os_widgets_form_alter(&$form, FormStateInterface $form_state, $form_id)
       ];
       break;
 
+    case 'block_content_taxonomy_form':
+    case 'block_content_taxonomy_edit_form':
+      $form['field_taxonomy_vocabulary']['widget']['#ajax'] = [
+        'callback' => 'os_widgets_field_taxonomy_vocabulary_ajax',
+        'event' => 'change',
+      ];
+      $form['field_taxonomy_bundle']['#states'] = [
+        'visible' => [
+          ':input[name="field_taxonomy_behavior"]' => [
+            'value' => 'select',
+          ],
+        ],
+      ];
+      $form['field_taxonomy_tree_depth']['#states'] = [
+        'visible' => [
+          ':input[name="field_taxonomy_show_children[value]"]' => [
+            'checked' => TRUE,
+          ],
+        ],
+      ];
+      if (!empty($form['field_taxonomy_vocabulary']['widget']['#default_value'][0])) {
+        /** @var \Drupal\cp_taxonomy\CpTaxonomyHelperInterface $taxonomy_helper */
+        $taxonomy_helper = Drupal::service('cp.taxonomy.helper');
+        $data['vid']['#default_value'] = $form['field_taxonomy_vocabulary']['widget']['#default_value'][0];
+        $saved_entity_types = $taxonomy_helper->getSelectedBundles($data);
+
+        _os_widgets_taxonomy_filter_bundle_options($form, $saved_entity_types);
+      }
+      break;
+
     case 'block_content_rss_feed_form':
     case 'block_content_rss_feed_edit_form':
       $form['field_content_to_display']['#states'] = [
@@ -118,6 +196,66 @@ function os_widgets_form_alter(&$form, FormStateInterface $form_state, $form_id)
       ];
       break;
   }
+}
+
+/**
+ * Ajax callback handler for field_taxonomy_vocabulary.
+ */
+function os_widgets_field_taxonomy_vocabulary_ajax(array &$form, FormStateInterface $form_state) {
+  $selected_vocabulary = $form_state->getValue('field_taxonomy_vocabulary');
+  /** @var \Drupal\cp_taxonomy\CpTaxonomyHelperInterface $taxonomy_helper */
+  $taxonomy_helper = Drupal::service('cp.taxonomy.helper');
+  $data['vid']['#default_value'] = $selected_vocabulary[0]['target_id'] ?? '';
+  $saved_entity_types = $taxonomy_helper->getSelectedBundles($data);
+
+  if (empty($saved_entity_types)) {
+    return _os_widgets_create_form_taxonomy_bundle_ajax_response($form);
+  }
+  _os_widgets_taxonomy_filter_bundle_options($form, $saved_entity_types);
+  return _os_widgets_create_form_taxonomy_bundle_ajax_response($form);
+}
+
+/**
+ * Check and remove from bundle options depend on entity bundles.
+ *
+ * @param array $form
+ *   Form array.
+ * @param array $saved_entity_types
+ *   Array of selectable entity bundles.
+ */
+function _os_widgets_taxonomy_filter_bundle_options(array &$form, array $saved_entity_types): void {
+  if (empty($saved_entity_types)) {
+    return;
+  }
+  foreach ($form['field_taxonomy_bundle']['widget']['#options'] as $key => $option) {
+    if ($key == '_none') {
+      continue;
+    }
+    if (!in_array($key, $saved_entity_types)) {
+      unset($form['field_taxonomy_bundle']['widget']['#options'][$key]);
+    }
+  }
+}
+
+/**
+ * Create an AjaxResponse and add command to rebuild taxonomy bundle element.
+ */
+function _os_widgets_create_form_taxonomy_bundle_ajax_response($form) {
+  $renderer = \Drupal::service('renderer');
+  $response = new AjaxResponse();
+  $response->addCommand(new ReplaceCommand('.form-item-field-taxonomy-bundle', $renderer->render($form['field_taxonomy_bundle']['widget'])));
+  return $response;
+}
+
+/**
+ * Collect all content types in array.
+ *
+ * @return array
+ *   Collected array used by checkboxes in field.
+ */
+function os_widgets_field_taxonomy_bundle_allowed_values() {
+  $taxonomy_helper = Drupal::service('cp.taxonomy.helper');
+  return $taxonomy_helper->getSelectableBundles();
 }
 
 /**

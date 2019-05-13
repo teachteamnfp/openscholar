@@ -1,0 +1,6 @@
+name: OS Breadcrumb
+description: 'Provides Cp setting plugin and Alters the Breadcrumbs.'
+type: module
+core: 8.x
+dependencies:
+  - "drupal:easy_breadcrumb"

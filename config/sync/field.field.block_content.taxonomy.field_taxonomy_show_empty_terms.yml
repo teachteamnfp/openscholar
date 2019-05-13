@@ -1,0 +1,23 @@
+uuid: 4fa09386-b3d7-4221-a4cf-3ce6d0234fa2
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.taxonomy
+    - field.storage.block_content.field_taxonomy_show_empty_terms
+id: block_content.taxonomy.field_taxonomy_show_empty_terms
+field_name: field_taxonomy_show_empty_terms
+entity_type: block_content
+bundle: taxonomy
+label: 'Show empty terms (terms with no posts tagged with them)'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

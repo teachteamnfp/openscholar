@@ -6,7 +6,7 @@ dependencies:
     - core.entity_view_mode.node.teaser
     - field.field.node.page.body
     - field.field.node.page.field_media
-    - field.field.node.page.field_slideshow
+    - field.field.node.page.field_taxonomy_terms
     - node.type.page
   module:
     - layout_builder
@@ -35,5 +35,5 @@ content:
     third_party_settings: {  }
 hidden:
   field_media: true
-  field_slideshow: true
+  field_taxonomy_terms: true
   langcode: true

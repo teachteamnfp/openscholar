@@ -1,0 +1,8 @@
+.read-more,
+.node-readmore a {
+  font-size: 14px;
+  text-decoration: underline;
+  &:after {
+    border: 0 none;
+  }
+}

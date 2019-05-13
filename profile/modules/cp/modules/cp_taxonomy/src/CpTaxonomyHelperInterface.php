@@ -49,4 +49,15 @@ interface CpTaxonomyHelperInterface {
    */
   public function saveAllowedBundlesToVocabulary(string $vid, array $allowed_entity_types): void;
 
+  /**
+   * Explode entity bundles.
+   *
+   * @param array $bundles
+   *   Array of entity bundles.
+   *
+   * @return array
+   *   Exploded array, keyed entity name and values are bundles array.
+   */
+  public function explodeEntityBundles(array $bundles): array;
+
 }

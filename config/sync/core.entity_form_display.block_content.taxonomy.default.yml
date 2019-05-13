@@ -1,0 +1,124 @@
+uuid: bbddb4ca-e85a-4551-ba21-d7467d029b18
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.taxonomy
+    - field.field.block_content.taxonomy.field_taxonomy_behavior
+    - field.field.block_content.taxonomy.field_taxonomy_bundle
+    - field.field.block_content.taxonomy.field_taxonomy_display_type
+    - field.field.block_content.taxonomy.field_taxonomy_offset
+    - field.field.block_content.taxonomy.field_taxonomy_range
+    - field.field.block_content.taxonomy.field_taxonomy_show_children
+    - field.field.block_content.taxonomy.field_taxonomy_show_count
+    - field.field.block_content.taxonomy.field_taxonomy_show_empty_terms
+    - field.field.block_content.taxonomy.field_taxonomy_show_term_desc
+    - field.field.block_content.taxonomy.field_taxonomy_tree_depth
+    - field.field.block_content.taxonomy.field_taxonomy_vocabulary
+  module:
+    - content_moderation
+    - field_layout
+    - layout_discovery
+third_party_settings:
+  field_layout:
+    id: layout_onecol
+    settings: {  }
+id: block_content.taxonomy.default
+targetEntityType: block_content
+bundle: taxonomy
+mode: default
+content:
+  field_taxonomy_behavior:
+    weight: 4
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_taxonomy_bundle:
+    weight: 5
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_taxonomy_display_type:
+    weight: 13
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
+    region: content
+  field_taxonomy_offset:
+    weight: 7
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_taxonomy_range:
+    weight: 6
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_taxonomy_show_children:
+    weight: 10
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_taxonomy_show_count:
+    weight: 12
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_taxonomy_show_empty_terms:
+    weight: 8
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_taxonomy_show_term_desc:
+    weight: 9
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_taxonomy_tree_depth:
+    weight: 11
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_taxonomy_vocabulary:
+    weight: 3
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  info:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  langcode:
+    type: language_select
+    weight: 1
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+  moderation_state:
+    type: moderation_state_default
+    weight: 2
+    settings: {  }
+    region: content
+    third_party_settings: {  }
+hidden: {  }

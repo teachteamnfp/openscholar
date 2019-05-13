@@ -90,6 +90,7 @@ function cp_taxonomy_form_taxonomy_vocabulary_form_alter(array &$form, FormState
     '#title' => t('Allowed entity types'),
     '#default_value' => $saved_entity_types,
   ];
+  $form['actions']['submit']['#submit'][] = 'cp_taxonomy_form_save_allowed_bundles_submit';
 }
 
 /**
@@ -154,12 +155,23 @@ function cp_taxonomy_form_taxonomy_vocabulary_confirm_delete_alter(array &$form,
  *   The form state.
  */
 function cp_taxonomy_form_add_vocab_submit(array &$form, FormStateInterface &$form_state) {
+  $form_state->setRedirect('cp.taxonomy');
+}
+
+/**
+ * Save allowed bundles to vocabulary when done.
+ *
+ * @param array $form
+ *   The form.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state.
+ */
+function cp_taxonomy_form_save_allowed_bundles_submit(array &$form, FormStateInterface &$form_state) {
   $vid = $form_state->getValue('vid');
   $allowed_entity_types = $form_state->getValue('allowed_entity_types');
   if (!is_null($allowed_entity_types)) {
     Drupal::service('cp.taxonomy.helper')->saveAllowedBundlesToVocabulary($vid, $allowed_entity_types);
   }
-  $form_state->setRedirect('cp.taxonomy');
 }
 
 /**
@@ -186,6 +198,42 @@ function cp_taxonomy_form_node_form_alter(&$form, FormStateInterface $form_state
     $node_form = $form_state->getBuildInfo()['callback_object'];
     $bundle = $node_form->getEntity()->bundle();
     $bundle_key = 'node:' . $bundle;
+
+    $vocabularies = Drupal::service('cp.taxonomy.helper')->searchAllowedVocabulariesByType($bundle_key);
+    // If the current node type has no related vocabularies, then hide it.
+    if (empty($vocabularies)) {
+      $form['field_taxonomy_terms']['#access'] = FALSE;
+    }
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function cp_taxonomy_form_bibcite_reference_form_alter(&$form, FormStateInterface $form_state) {
+  if (!empty($form['field_taxonomy_terms']['widget'])) {
+    /** @var \Drupal\bibcite_entity\Form\ReferenceForm $bibcite_reference_form */
+    $bibcite_reference_form = $form_state->getBuildInfo()['callback_object'];
+    $bundle = $bibcite_reference_form->getEntity()->bundle();
+    $bundle_key = 'bibcite_reference:' . $bundle;
+
+    $vocabularies = Drupal::service('cp.taxonomy.helper')->searchAllowedVocabulariesByType($bundle_key);
+    // If the current node type has no related vocabularies, then hide it.
+    if (empty($vocabularies)) {
+      $form['field_taxonomy_terms']['#access'] = FALSE;
+    }
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function cp_taxonomy_form_media_form_alter(&$form, FormStateInterface $form_state) {
+  if (!empty($form['field_taxonomy_terms']['widget'])) {
+    /** @var \Drupal\media\MediaForm $media_form */
+    $media_form = $form_state->getBuildInfo()['callback_object'];
+    $bundle = $media_form->getEntity()->bundle();
+    $bundle_key = 'media:' . $bundle;
 
     $vocabularies = Drupal::service('cp.taxonomy.helper')->searchAllowedVocabulariesByType($bundle_key);
     // If the current node type has no related vocabularies, then hide it.
