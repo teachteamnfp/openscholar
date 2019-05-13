@@ -48,6 +48,8 @@ settings:
             - Source
             - PasteFromWord
             - RemoveFormat
+            - OsLink
+            - OsUnLink
       -
         -
           name: Tools
@@ -66,10 +68,10 @@ settings:
             - DrupalLink
             - DrupalUnlink
   plugins:
-    stylescombo:
-      styles: "p|Normal\r\naddress|Address\r\npre|Formatted\r\nh2|Heading 2\r\nh3|Heading 3\r\nh4|Heading 4\r\nh5|Heading 5\r\nh6|Heading 6\r\ndiv|Normal (DIV)"
     language:
       language_list: un
+    stylescombo:
+      styles: "p|Normal\r\naddress|Address\r\npre|Formatted\r\nh2|Heading 2\r\nh3|Heading 3\r\nh4|Heading 4\r\nh5|Heading 5\r\nh6|Heading 6\r\ndiv|Normal (DIV)"
     colorbutton:
       colors: ''
 image_upload:
