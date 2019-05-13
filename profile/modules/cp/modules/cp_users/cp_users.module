@@ -17,10 +17,6 @@ define('CP_USERS_DELETE_FROM_GROUP', 'cp_users_delete_from_group');
  * @throws \Drupal\Core\TypedData\Exception\MissingDataException
  */
 function cp_users_mail($key, &$message, $params) {
-  $options = [
-    'langcode' => $message['langcode'],
-  ];
-
   /** @var \Drupal\Core\Config\ImmutableConfig $config */
   $config = Drupal::config('cp_users.settings');
 
@@ -33,11 +29,15 @@ function cp_users_mail($key, &$message, $params) {
   /** @var \Drupal\user\UserInterface $creator */
   $creator = $params['creator'];
 
+  /** @var \Drupal\group\Entity\GroupRoleInterface[] $roles */
+  $roles = $group->getMember($user)->getRoles();
+  /** @var string|\Drupal\Component\Render\MarkupInterface $creator_display_name */
+  $creator_display_name = $creator->getDisplayName();
   $variables = [
-    '@user-role' => reset($group->getMember($user)->getRoles())->label(),
+    '@user-role' => \reset($roles)->label(),
     '@site-url' => Url::fromRoute('entity.group.canonical', ['group' => $group->id()], ['absolute' => TRUE])->toString(),
     '@user-firstname' => $user->get('field_first_name')->count() ? $user->get('field_first_name')->first()->getValue()['value'] : render($user->getDisplayName()),
-    '@account-modifier' => render($creator->getDisplayName()),
+    '@account-modifier' => render($creator_display_name),
     '@account-modifier-email' => $creator->getEmail(),
     '@sitewide-name' => $config->get('sitewide_name'),
   ];
@@ -53,14 +53,14 @@ function cp_users_mail($key, &$message, $params) {
       $links = [];
       if ($training = $config->get('training_signup_url')) {
         $links[] = " * Sign up for training: $training\n";
-      }@
+      }
       $links[] = " * OpenScholar documentation: https://help.theopenscholar.com\n";
       if ($contact = $config->get('contact_url')) {
         $links[] = " * Need help with your project? $contact";
       }
       $message['body'][] = implode("", $links);
       $message['body'][] = t("Sincerely,\n@sitewide-name", $variables);
-      $message['headers'] += is_array($params['headers']) ? $params['headers'] : [];
+      $message['headers'] += (isset($params['headers']) && is_array($params['headers'])) ? $params['headers'] : [];
       break;
 
     case CP_USERS_DELETE_FROM_GROUP:

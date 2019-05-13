@@ -203,6 +203,7 @@ theme:
   clean: 0
   dark: 0
   clean_blue: 0
+  shadow: 0
   soft: 0
 profile: openscholar
 _core:
