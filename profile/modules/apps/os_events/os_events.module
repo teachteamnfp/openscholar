@@ -530,34 +530,30 @@ function os_events_set_rrule(array &$form, FormStateInterface $form_state) {
 }
 
 /**
- * Implements hook_node_links_alter().
+ * Implements hook_ENTITY_TYPE_view_alter().
  */
-function os_events_node_links_alter(array &$links, NodeInterface $entity, array &$context) {
+function os_events_node_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
   if ($entity->bundle() !== 'events') {
     return;
   }
 
-  $links['os_events'] = [
-    '#theme' => 'links__node__node',
-    '#attributes' => [
-      'class' => [
-        'links',
-        'inline',
+  // TODO: Do not use #markup.
+  // TODO: Rename the theme to something more generic.
+  $build['os_events'] = [
+    '#theme' => 'item_list__events',
+    '#title' => [
+      '#markup' => '<a data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Export</a>',
+    ],
+    '#items' => [
+      [
+        '#markup' => Link::createFromRoute(t('RSS'), 'view.event_exportables.feed_1', [
+          'arg_0' => $entity->id(),
+        ])->toString(),
       ],
     ],
-    '#links' => [
-      'rss' => [
-        'title' => t('RSS'),
-        'url' => Url::fromRoute('view.event_exportables.feed_1', [
-          'arg_0' => $entity->id(),
-        ]),
-      ],
-      'ical' => [
-        'title' => t('iCal'),
-        'url' => Url::fromRoute('view.event_exportables.feed_2', [
-          'arg_0' => $entity->id(),
-        ]),
-      ],
+    '#list_type' => 'ul',
+    '#attributes' => [
+      'class' => ['dropdown-menu'],
     ],
   ];
 }
