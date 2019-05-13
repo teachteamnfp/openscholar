@@ -99,6 +99,17 @@ class PublicationsViewsFunctionalTest extends TestBase {
   }
 
   /**
+   * Check anonymous user access to publications.
+   *
+   * @throws \Behat\Mink\Exception\ExpectationException
+   */
+  public function testAnonymousUserAccess(): void {
+    $this->visit('/publications');
+
+    $this->assertSession()->statusCodeEquals(403);
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function tearDown() {
