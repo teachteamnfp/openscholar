@@ -259,7 +259,10 @@ class PublicationSettingsForm extends CpSettingBase {
       ->set('citation_distribute_autoflags', $formState->getValue('citation_distribute_autoflags'))
       ->save();
 
-    $this->publicationsListingHelper->setRedirect('publications', $formState->getValue('biblio_sort'));
+    /** @var \Drupal\group\Entity\GroupInterface $group */
+    $group = $this->vsiteContextManager->getActiveVsite();
+
+    $this->publicationsListingHelper->setRedirect("[vsite:{$group->id()}]/publications", "internal:/publications/{$formState->getValue('biblio_sort')}");
   }
 
 }
