@@ -10,30 +10,36 @@
       align-items: center;
       display: flex;
     }
+
     >li {
       @media #{$mobile} {
         border-bottom: 1px solid $color-light-gray1;
       }
+
       >a {
         color: $color-oxford-blue;
         transition: all 200ms ease;
         font-family: 'Roboto', sans-serif;
+        border-bottom: 2px solid transparent;
+
         &:hover,
         &:active,
         &:focus,
         &.is-active,
         &.is-active:hover {
-          color: $color-blue;
+          border-bottom: 2px solid $color-oxford-blue;
           background: none;
         }
       }
+
       &.open,
       &.active {
+
         >a,
         >a:hover,
         >a:active,
         >a:focus {
-          color: $color-blue;
+          border-bottom: 2px solid $color-oxford-blue;
           background: none;
         }
       }
