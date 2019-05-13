@@ -45,5 +45,6 @@ content:
       rel: '0'
     third_party_settings: {  }
 hidden:
+  field_taxonomy_terms: true
   langcode: true
   links: true

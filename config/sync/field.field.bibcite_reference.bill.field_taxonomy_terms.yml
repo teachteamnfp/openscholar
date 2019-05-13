@@ -1,0 +1,26 @@
+uuid: f279729e-77b8-4cde-a4db-049b881b8d63
+langcode: en
+status: true
+dependencies:
+  config:
+    - bibcite_entity.bibcite_reference_type.bill
+    - field.storage.bibcite_reference.field_taxonomy_terms
+id: bibcite_reference.bill.field_taxonomy_terms
+field_name: field_taxonomy_terms
+entity_type: bibcite_reference
+bundle: bill
+label: 'Tag with Terms'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: views
+  handler_settings:
+    view:
+      view_name: reference_taxonomy_term
+      display_name: entity_reference_1
+      arguments:
+        - 'bibcite_reference:bill'
+field_type: entity_reference

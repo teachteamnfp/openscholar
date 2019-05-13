@@ -13,6 +13,21 @@ abstract class OsExistingSiteJavascriptTestBase extends ExistingSiteWebDriverTes
   use ExistingSiteTestTrait;
 
   /**
+   * Test group.
+   *
+   * @var \Drupal\group\Entity\GroupInterface
+   */
+  protected $group;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setUp() {
+    parent::setUp();
+    $this->group = $this->createGroup();
+  }
+
+  /**
    * Waits for the given time or until the given JS condition becomes TRUE.
    *
    * Shamelessly copied from DrupalCommerce.

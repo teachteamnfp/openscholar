@@ -1,0 +1,166 @@
+<?php
+
+/**
+ * @file
+ * Helper functions for Breadcrumb.
+ */
+
+use Drupal\Core\Breadcrumb\Breadcrumb;
+use Drupal\Core\Entity\Entity;
+use Drupal\Core\Link;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Url;
+use Drupal\node\Entity\Node;
+use Drupal\taxonomy\Entity\Term;
+
+/**
+ * Implements hook_theme().
+ */
+function os_breadcrumb_theme(array $existing, string $type, string $theme, string $path): array {
+  return [
+    'os_breadcrumb_settings_form' => [
+      'render element' => 'form',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function os_breadcrumb_preprocess_page(&$variables) {
+  $show_breadcrumbs = Drupal::config('os_breadcrumb.settings')->get('show_breadcrumbs');
+  if (!$show_breadcrumbs) {
+    unset($variables['page']['content']['os_base_breadcrumbs']);
+  }
+}
+
+/**
+ * Implements hook_system_breadcrumb_alter().
+ */
+function os_breadcrumb_system_breadcrumb_alter(Breadcrumb &$breadcrumb, RouteMatchInterface $route_match, array $context) {
+  // App Breadcrumbs.
+  $node = $route_match->getCurrentRouteMatch()->getParameter('node');
+  if ($node && $node->bundle() === 'events') {
+    os_breadcrumb_edit_app_breadcrumbs($breadcrumb);
+  }
+  // Taxonomy breadcrumbs.
+  $term = $route_match->getParameter('taxonomy_term');
+  if ($term) {
+    os_breadcrumb_edit_taxonomy_breadcrumbs($term, $breadcrumb);
+  }
+  // Page/Book breadcrumbs.
+  if ($node && $node->bundle() === 'page') {
+    os_breadcrumb_edit_pages_breadcrumbs($node, $breadcrumb);
+  }
+}
+
+/**
+ * App, Event Page breadcrumb alterations.
+ *
+ * @param \Drupal\Core\Breadcrumb\Breadcrumb $breadcrumb
+ *   Breadcrumb to alter.
+ */
+function os_breadcrumb_edit_app_breadcrumbs(Breadcrumb &$breadcrumb) {
+  $original = $breadcrumb;
+  $breadcrumb->addLink(Link::fromTextAndUrl('Calendar', Url::fromRoute('view.calendar.page_1')));
+  $links = $breadcrumb->getLinks();
+
+  // Swap links to display correctly.
+  $temp = $links[1];
+  $links[1] = $links[2];
+  $links[2] = $temp;
+
+  // New breadcumb object.
+  $breadcrumb = new Breadcrumb();
+  $breadcrumb->setLinks($links);
+
+  // Adding Cache Data from original object.
+  $breadcrumb->addCacheableDependency($original);
+}
+
+/**
+ * Taxonomy Term page alterations.
+ *
+ * @param \Drupal\taxonomy\Entity\Term $term
+ *   Taxonomy term in context.
+ * @param \Drupal\Core\Breadcrumb\Breadcrumb $breadcrumb
+ *   Breadcrumb to alter.
+ *
+ * @throws \Drupal\Core\Entity\EntityMalformedException
+ */
+function os_breadcrumb_edit_taxonomy_breadcrumbs(Term $term, Breadcrumb &$breadcrumb) {
+  $parent_chain = [];
+  $original = $breadcrumb;
+  $parent_tid = $term->parent->target_id;
+
+  // Get the parent chain.
+  while ($parent_tid != 0) {
+    $parent = Term::load($parent_tid);
+    $parent_chain[] = $parent;
+    $parent_tid = $parent->parent->target_id;
+  }
+
+  // Reverse the array so that parents display in correct order.
+  $parent_chain = array_reverse($parent_chain);
+
+  // Skip first two indexes for Home and Vocab name.
+  // Get existing links array and alter the array to include needed breadcrumbs.
+  $links = $breadcrumb->getLinks();
+  $count = count($links);
+  $temp = $links[$count - 1];
+  foreach ($parent_chain as $k => $parent) {
+    $links[$k + 2] = $parent->toLink();
+  }
+  count($parent_chain) ? array_push($links, $temp) : NULL;
+
+  // New breadcrumb object.
+  $breadcrumb = new Breadcrumb();
+  $breadcrumb->setLinks($links);
+
+  // Adding Cache Data from original object.
+  $breadcrumb->addCacheableDependency($original);
+}
+
+/**
+ * Pages section/subsection.
+ *
+ * @param \Drupal\Core\Entity\Entity $node
+ *   Node page in context.
+ * @param \Drupal\Core\Breadcrumb\Breadcrumb $breadcrumb
+ *   Breadcrumb to alter.
+ *
+ * @throws \Drupal\Core\Entity\EntityMalformedException
+ */
+function os_breadcrumb_edit_pages_breadcrumbs(Entity $node, Breadcrumb &$breadcrumb) {
+  $pages = $node->book;
+  $parent_chain = [];
+  $original = $breadcrumb;
+  $i = $pages['depth'];
+
+  // Get the parent chain.
+  while ($i != 0) {
+    $parent = Node::load($pages["p$i"])->toLink();
+    $parent_chain[] = $parent;
+    $i--;
+  }
+
+  // Reverse the array so that parents display in correct order.
+  $parent_chain = array_reverse($parent_chain);
+
+  // Skip first index for Home.
+  // Get existing links array and alter the array to include needed breadcrumbs.
+  $links = $breadcrumb->getLinks();
+  foreach ($parent_chain as $k => $parent) {
+    $links[$k + 1] = $parent;
+  }
+  $count = count($links);
+  $temp = $links[$count - 1];
+  $links[$count - 1] = $temp->setUrl(Url::fromRoute('<none>'));
+
+  // New breadcrumb object.
+  $breadcrumb = new Breadcrumb();
+  $breadcrumb->setLinks($links);
+
+  // Adding Cache Data from original object.
+  $breadcrumb->addCacheableDependency($original);
+}

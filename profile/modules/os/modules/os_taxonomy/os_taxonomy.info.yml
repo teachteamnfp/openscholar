@@ -1,0 +1,4 @@
+name: OpenScholar customisations for Taxonomy.
+core: 8.x
+type: module
+description: "Taxonomy changes and alterations."

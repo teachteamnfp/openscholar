@@ -1,0 +1,26 @@
+uuid: f80ec615-9899-4462-8a28-d050196ac6f4
+langcode: en
+status: true
+dependencies:
+  config:
+    - bibcite_entity.bibcite_reference_type.magazine_article
+    - field.storage.bibcite_reference.field_taxonomy_terms
+id: bibcite_reference.magazine_article.field_taxonomy_terms
+field_name: field_taxonomy_terms
+entity_type: bibcite_reference
+bundle: magazine_article
+label: 'Tag with Terms'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: views
+  handler_settings:
+    view:
+      view_name: reference_taxonomy_term
+      display_name: entity_reference_1
+      arguments:
+        - 'bibcite_reference:magazine_article'
+field_type: entity_reference

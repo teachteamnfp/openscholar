@@ -6,3 +6,4 @@ dependencies:
   - "drupal:block"
   - "drupal:node"
   - "drupal:os_twitter_pull"
+  - "drupal:cp_taxonomy"

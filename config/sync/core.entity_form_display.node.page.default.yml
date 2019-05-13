@@ -5,14 +5,13 @@ dependencies:
   config:
     - field.field.node.page.body
     - field.field.node.page.field_media
-    - field.field.node.page.field_slideshow
     - field.field.node.page.field_taxonomy_terms
     - node.type.page
   module:
     - content_moderation
     - field_layout
     - layout_discovery
-    - paragraphs
+    - os_media
     - path
     - text
 third_party_settings:
@@ -41,24 +40,9 @@ content:
     third_party_settings: {  }
   field_media:
     weight: 123
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
-  field_slideshow:
-    type: entity_reference_paragraphs
-    weight: 122
-    settings:
-      title: Paragraph
-      title_plural: Paragraphs
-      edit_mode: open
-      add_mode: dropdown
-      form_display_mode: default
-      default_paragraph_type: ''
-    third_party_settings: {  }
+    type: media_browser_widget
     region: content
   field_taxonomy_terms:
     weight: 124

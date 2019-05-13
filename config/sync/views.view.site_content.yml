@@ -86,6 +86,7 @@ display:
             node_bulk_form: node_bulk_form
             title: title
             type: type
+            uid: uid
             status: status
             changed: changed
             view_group_content: view_group_content
@@ -108,15 +109,22 @@ display:
               empty_column: false
               responsive: ''
             type:
-              sortable: false
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            uid:
+              sortable: true
               default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
             status:
-              sortable: false
-              default_sort_order: asc
+              sortable: true
+              default_sort_order: desc
               align: ''
               separator: ''
               empty_column: false

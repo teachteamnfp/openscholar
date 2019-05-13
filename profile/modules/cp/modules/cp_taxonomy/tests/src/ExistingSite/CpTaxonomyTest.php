@@ -33,14 +33,7 @@ class CpTaxonomyTest extends VsiteExistingSiteTestBase {
    *
    * @var \Drupal\Core\Session\AccountInterface
    */
-  protected $admin;
-
-  /**
-   * The GroupMember object.
-   *
-   * @var \Drupal\group\GroupMembership
-   */
-  protected $groupMember;
+  protected $groupAdmin;
 
   /**
    * {@inheritdoc}
@@ -56,18 +49,17 @@ class CpTaxonomyTest extends VsiteExistingSiteTestBase {
       ],
     ]);
 
-    $this->admin = $this->createUser([], NULL, TRUE);
-    $this->group->addMember($this->admin);
-    $this->groupMember = $this->group->getMember($this->admin);
+    $this->groupAdmin = $this->createUser([], NULL, TRUE);
+    $this->addGroupAdmin($this->groupAdmin, $this->group);
   }
 
   /**
    * Test everything one piece at a time.
    */
-  public function testTaxonomyFunctionality() {
+  public function testTaxonomyFunctionality(): void {
     try {
       $this->assertTrue(\Drupal::moduleHandler()->moduleExists('cp_taxonomy'));
-      $this->drupalLogin($this->admin);
+      $this->drupalLogin($this->groupAdmin);
       $this->visit('/cp/taxonomy');
       $this->assertSession()->statusCodeEquals(403);
 
