@@ -15,6 +15,10 @@
             "url": "https://github.com/openscholar/purl-d8"
         },
         {
+            "type": "vcs",
+            "url": "https://github.com/openscholar/views_ical"
+        },
+        {
             "type": "package",
             "package": {
                 "name": "kenwheeler/slick",
@@ -157,23 +161,6 @@
                     "type": "zip"
                 }
             }
-        },
-        {
-            "type": "package",
-            "package": {
-                "name": "drupal/views_ical",
-                "version": "8.x-2.x-dev",
-                "type": "drupal-module",
-                "dist": {
-                    "url": "https://github.com/subhojit777/views_ical/archive/8.x-2.x.zip",
-                    "type": "zip"
-                },
-                "source": {
-                    "url": "https://github.com/subhojit777/views_ical.git",
-                    "type": "git",
-                    "reference": "8.x-2.x"
-                }
-            }
         }
     ],
     "require": {
@@ -243,8 +230,7 @@
         "drupal/rng_views": "^1.7",
         "drupal/date_recur_modular": "^1.0@alpha",
         "drupal/easy_breadcrumb": "^1.8",
-        "drupal/views_ical": "8.x-2.x-dev",
-        "eluceo/ical": "^0.15.0"
+        "drupal/views_ical": "dev-8.x-2.x"
     },
     "require-dev": {
         "drupal/features": "^3.7",

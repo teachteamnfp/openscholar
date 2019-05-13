@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c9bc8a2b858402130666a48002ba5e5a",
+    "content-hash": "49f5974d7c4ae9d04f424c5fcdcf5308",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -6259,19 +6259,29 @@
         },
         {
             "name": "drupal/views_ical",
-            "version": "8.x-2.x-dev",
+            "version": "dev-8.x-2.x",
             "source": {
                 "type": "git",
-                "url": "https://github.com/subhojit777/views_ical.git",
-                "reference": "8.x-2.x"
+                "url": "https://github.com/openscholar/views_ical.git",
+                "reference": "72b6f4d5d2ffc1eace8cf90442acfa5a3d4a08d3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/subhojit777/views_ical/archive/8.x-2.x.zip",
-                "reference": "8.x-2.x",
-                "shasum": null
+                "url": "https://api.github.com/repos/openscholar/views_ical/zipball/72b6f4d5d2ffc1eace8cf90442acfa5a3d4a08d3",
+                "reference": "72b6f4d5d2ffc1eace8cf90442acfa5a3d4a08d3",
+                "shasum": ""
+            },
+            "require": {
+                "eluceo/ical": "^0.15"
             },
             "type": "drupal-module",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "description": "Provides an iCal Views style plugin.",
+            "support": {
+                "source": "https://github.com/openscholar/views_ical/tree/8.x-2.x"
+            },
             "time": "2019-05-10T09:51:53+00:00"
         },
         {
