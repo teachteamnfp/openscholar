@@ -1,5 +1,5 @@
 /**** footer ****/
-footer {
+footer.footer {
   background-color: $color-silver-rust;
   color: $color-gray;
   h2.block-title {
@@ -7,6 +7,6 @@ footer {
     background: none;
   }
   a {
-    color: $color-blue;
+    color: $color-footer-link;
   }
 }
