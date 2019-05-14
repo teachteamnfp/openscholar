@@ -1,0 +1,7 @@
+os_wysiwyg.os_link_dialog:
+  path: '/os_wysiwyg/dialog/os_link/{editor}'
+  defaults:
+    _form: '\Drupal\os_wysiwyg\Form\OsWysiwygLinkDialog'
+    _title: 'Add link'
+  requirements:
+    _entity_access: 'editor.use'

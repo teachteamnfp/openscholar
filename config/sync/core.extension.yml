@@ -50,6 +50,8 @@ module:
   dynamic_page_cache: 0
   easy_breadcrumb: 0
   editor: 0
+  entity_browser: 0
+  entity_browser_entity_form: 0
   entity_reference: 0
   entity_reference_revisions: 0
   fakeobjects: 0
@@ -68,6 +70,7 @@ module:
   hal: 0
   image: 0
   image_widget_crop: 0
+  inline_entity_form: 0
   inline_form_errors: 0
   kint: 0
   language: 0
@@ -78,6 +81,7 @@ module:
   mailchimp: 0
   mathjax: 0
   media: 0
+  media_entity_browser: 0
   menu_ui: 0
   metatag: 0
   metatag_facebook: 0

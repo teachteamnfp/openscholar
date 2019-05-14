@@ -147,7 +147,7 @@
             dialogClass: 'editor-link-dialog'
           };
 
-          Drupal.ckeditor.openDialog(editor, Drupal.url('editor/dialog/link/' + editor.config.drupal.format), existingValues, saveCallback, dialogSettings);
+          Drupal.ckeditor.openDialog(editor, Drupal.url('os_wysiwyg/dialog/os_link/' + editor.config.drupal.format), existingValues, saveCallback, dialogSettings);
         }
       });
       editor.addCommand('os_unlink', {
