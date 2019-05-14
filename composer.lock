@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "49f5974d7c4ae9d04f424c5fcdcf5308",
+    "content-hash": "c8a803fea363e082f83a0493b818f45a",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -6259,7 +6259,7 @@
         },
         {
             "name": "drupal/views_ical",
-            "version": "dev-8.x-2.x",
+            "version": "2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/openscholar/views_ical.git",
@@ -13410,7 +13410,6 @@
         "drupal/field_tools": 15,
         "drupal/advancedqueue": 10,
         "drupal/date_recur_modular": 15,
-        "drupal/views_ical": 20,
         "weitzman/drupal-test-traits": 10
     },
     "prefer-stable": true,
