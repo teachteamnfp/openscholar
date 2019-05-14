@@ -34,7 +34,6 @@ class ControllerTest extends OsRedirectTestBase {
   public function setUp() {
     parent::setUp();
     $this->siteUser = $this->createUser([
-      'access control panel',
       'administer control panel redirects',
     ]);
 

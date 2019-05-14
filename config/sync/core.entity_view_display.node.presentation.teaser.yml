@@ -56,4 +56,5 @@ content:
 hidden:
   field_additional_media: true
   field_presentation_slides: true
+  field_taxonomy_terms: true
   langcode: true

@@ -1,0 +1,22 @@
+body {
+  background: $color-white;
+  color: $color-oxford-blue;
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.5;
+}
+a,
+a:visited,
+.full-calendar-view .fc-header-toolbar button {
+  color: $color-oxford-blue;
+  &:hover {
+    color: $color-blue;
+  }
+}
+h1, h2, h3, h4, h5, h6 {
+  color: $color-oxford-blue;
+}
+.page-title {
+  position: relative;
+  font-family: 'Roboto Slab', sans-serif;
+  font-weight: 700;
+}

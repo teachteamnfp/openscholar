@@ -5,6 +5,7 @@ dependencies:
   config:
     - bibcite_entity.bibcite_reference_type.chart
     - field.field.bibcite_reference.chart.field_files
+    - field.field.bibcite_reference.chart.field_taxonomy_terms
   enforced:
     module:
       - bibcite_entity
@@ -408,6 +409,14 @@ content:
       use_description_as_link_text: true
     third_party_settings: {  }
     type: file_default
+    region: content
+  field_taxonomy_terms:
+    weight: 103
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
     region: content
   keywords:
     type: entity_reference_label

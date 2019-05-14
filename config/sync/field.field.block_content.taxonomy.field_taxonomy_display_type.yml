@@ -1,0 +1,23 @@
+uuid: b551e21e-63e4-4a8f-bc08-0ef420a4b6d9
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.taxonomy
+    - field.storage.block_content.field_taxonomy_display_type
+  module:
+    - options
+id: block_content.taxonomy.field_taxonomy_display_type
+field_name: field_taxonomy_display_type
+entity_type: block_content
+bundle: taxonomy
+label: 'Display Type'
+description: 'Each taxonomy term must have its own description (see the term creation/edit form). Also, the Show term descriptions checkbox above must be checked, and the Show child terms checkbox above must be unchecked.'
+required: true
+translatable: false
+default_value:
+  -
+    value: classic
+default_value_callback: ''
+settings: {  }
+field_type: list_string

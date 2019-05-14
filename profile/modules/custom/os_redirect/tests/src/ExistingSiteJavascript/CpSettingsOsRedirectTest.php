@@ -2,7 +2,7 @@
 
 namespace Drupal\Tests\os_redirect\ExistingSiteJavascript;
 
-use weitzman\DrupalTestTraits\ExistingSiteWebDriverTestBase;
+use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTestBase;
 
 /**
  * Tests os_redirect module.
@@ -10,35 +10,32 @@ use weitzman\DrupalTestTraits\ExistingSiteWebDriverTestBase;
  * @group functional-javascript
  * @group redirect
  */
-class CpSettingsOsRedirectTest extends ExistingSiteWebDriverTestBase {
+class CpSettingsOsRedirectTest extends OsExistingSiteJavascriptTestBase {
 
   /**
    * Admin user.
    *
    * @var \Drupal\user\Entity\User
    */
-  protected $adminUser;
+  protected $groupAdmin;
 
   /**
    * {@inheritdoc}
    */
   public function setUp() {
     parent::setUp();
-    $this->adminUser = $this->createUser([
-      'access administration pages',
-      'access control panel',
-      'administer control panel redirect_maximum',
-    ]);
+    $this->groupAdmin = $this->createUser();
+    $this->addGroupAdmin($this->groupAdmin, $this->group);
   }
 
   /**
    * Tests os_redirect cp settings form behavior.
    */
-  public function testCpSettingsFormSave() {
+  public function testCpSettingsFormSave(): void {
     $web_assert = $this->assertSession();
-    $this->drupalLogin($this->adminUser);
+    $this->drupalLogin($this->groupAdmin);
 
-    $this->visit("/cp/settings/redirect_maximum");
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/redirect_maximum");
     $web_assert->statusCodeEquals(200);
 
     $edit = [
@@ -50,7 +47,7 @@ class CpSettingsOsRedirectTest extends ExistingSiteWebDriverTestBase {
     $this->assertTrue($check_html_value, 'The form did not write the correct message.');
 
     // Check form elements load default values.
-    $this->visit("/cp/settings/redirect_maximum");
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/redirect_maximum");
     $web_assert->statusCodeEquals(200);
     $page = $this->getCurrentPage();
     $field_value = $page->findField('maximum_number')->getValue();

@@ -5,6 +5,7 @@ dependencies:
   config:
     - bibcite_entity.bibcite_reference_type.chart
     - field.field.bibcite_reference.chart.field_files
+    - field.field.bibcite_reference.chart.field_taxonomy_terms
   module:
     - bibcite_entity
     - field_layout
@@ -416,6 +417,15 @@ content:
     third_party_settings: {  }
     type: file_generic
     region: content
+  field_taxonomy_terms:
+    weight: 105
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
   is_sticky:
     type: boolean_checkbox
     settings:
@@ -438,6 +448,13 @@ content:
     region: content
     settings:
       include_locked: true
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    region: content
+    weight: 104
     third_party_settings: {  }
   title:
     type: string_textfield

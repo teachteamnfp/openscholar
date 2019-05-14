@@ -3,6 +3,7 @@
 namespace Drupal\Tests\openscholar\Traits;
 
 use Drupal\group\Entity\GroupInterface;
+use Drupal\user\UserInterface;
 
 /**
  * Provides a trait for openscholar tests.
@@ -23,6 +24,9 @@ trait ExistingSiteTestTrait {
     $group = $storage->create($values + [
       'type' => 'personal',
       'label' => $this->randomMachineName(),
+      'path' => [
+        'alias' => "/{$this->randomMachineName()}",
+      ],
     ]);
     $group->enforceIsNew();
     $group->save();
@@ -47,6 +51,22 @@ trait ExistingSiteTestTrait {
    */
   protected function createAdminUser(array $permissions = [], $name = NULL) {
     return $this->createUser($permissions, $name, TRUE);
+  }
+
+  /**
+   * Adds a user to group as admin.
+   *
+   * @param \Drupal\user\UserInterface $admin
+   *   The user.
+   * @param \Drupal\group\Entity\GroupInterface $group
+   *   The user.
+   */
+  protected function addGroupAdmin(UserInterface $admin, GroupInterface $group): void {
+    $group->addMember($admin, [
+      'group_roles' => [
+        'personal-administrator',
+      ],
+    ]);
   }
 
 }

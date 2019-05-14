@@ -1,9 +1,12 @@
 aside {
   ul.navbar-nav {
     li {
+      a {
+        color: $color-text;
+      }
       .dropdown-menu {
         a {
-          color: $color-link;
+          color: $color-text;
         }
       }
     }
