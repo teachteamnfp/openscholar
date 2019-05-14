@@ -91,7 +91,7 @@ if [[ $FORCE_REBUILD == "1" ]] || [[ "$(cmp -b 'openscholar/composer.json' '/tmp
   # Directories that track via .git need to be removed before they are updated see https://getcomposer.org/doc/faqs/should-i-commit-the-dependencies-in-my-vendor-directory.md
   rm -rf web/modules/contrib/purl || true
   rm -rf vendor/drupal/coder || true
-
+  rm -rf web/modules/contrib/views_ical || true
 
   # Download composer components
   composer install --ignore-platform-reqs --no-interaction --prefer-dist || exit 1
