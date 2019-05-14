@@ -3,6 +3,7 @@
 namespace Drupal\Tests\os_wysiwyg\ExistingSite;
 
 use Drupal\editor\Entity\Editor;
+use Drupal\file\Entity\File;
 use Drupal\filter\Entity\FilterFormat;
 use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
 use Drupal\Tests\openscholar\Traits\ExistingSiteTestTrait;
@@ -66,14 +67,36 @@ class OsWysiwygLinkFilterTest extends OsExistingSiteTestBase {
    * Test for simple data url.
    */
   public function testDataUrlProcess() {
-    $content = '<a data-url="http://example.com">Simple url</a>';
+    $content = '<a data-url="http://example.com" title="Test">Simple url</a>';
     $settings = [];
     $settings['type'] = 'page';
     $settings['title'] = 'Test data url';
     $settings['body'] = [['value' => $content, 'format' => 'custom_format']];
     $node = $this->createNode($settings);
     $this->drupalGet('node/' . $node->id());
-    $this->assertContains('href="http://example.com"', $this->getCurrentPageContent());
+    $this->assertContains('title="Test" href="http://example.com"', $this->getCurrentPageContent());
+  }
+
+  /**
+   * Test for simple data fid.
+   */
+  public function testDataFidProcess() {
+    $file = File::create([
+      'filename' => 'example.jpg',
+      'uri' => 'public://photos/example.jpg',
+      'filemime' => 'image/jpeg',
+      'status' => 1,
+    ]);
+    $file->save();
+    $this->markEntityForCleanup($file);
+    $content = '<a data-fid="' . $file->id() . '" title="Test">Simple fid</a>';
+    $settings = [];
+    $settings['type'] = 'page';
+    $settings['title'] = 'Test data fid';
+    $settings['body'] = [['value' => $content, 'format' => 'custom_format']];
+    $node = $this->createNode($settings);
+    $this->drupalGet('node/' . $node->id());
+    $this->assertContains('title="Test" href="http://apache/sites/default/files/photos/example.jpg"', $this->getCurrentPageContent());
   }
 
 }
