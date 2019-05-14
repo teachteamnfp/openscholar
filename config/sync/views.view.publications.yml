@@ -63,7 +63,7 @@ display:
       access:
         type: group_permission
         options:
-          group_permission: 'access content overview'
+          group_permission: 'view group_entity:bibcite_reference entity'
       cache:
         type: tag
         options: {  }
