@@ -15,6 +15,10 @@
             "url": "https://github.com/openscholar/purl-d8"
         },
         {
+            "type": "vcs",
+            "url": "https://github.com/openscholar/views_ical"
+        },
+        {
             "type": "package",
             "package": {
                 "name": "kenwheeler/slick",
@@ -191,7 +195,6 @@
         "drupal/admin_toolbar": "^1.25",
         "drupal/fullcalendar": "1.x-dev",
         "drupal/date_recur": "^2.0",
-        "drupal/views_ical": "1.x-dev",
         "fullcalendar/fullcalendar": "^3.3",
         "drupal/bootstrap": "^3.17",
         "drupal/styleguide": "^1.0@alpha",
@@ -226,7 +229,8 @@
         "drupal/rng": "^1.7",
         "drupal/rng_views": "^1.7",
         "drupal/date_recur_modular": "^1.0@alpha",
-        "drupal/easy_breadcrumb": "^1.8"
+        "drupal/easy_breadcrumb": "^1.8",
+        "drupal/views_ical": "^2.0"
     },
     "require-dev": {
         "drupal/features": "^3.7",
@@ -318,11 +322,6 @@
             },
             "drupal/fullcalendar": {
                 "Fullcalendar incompatible with Date Recur 2.x": "https://www.drupal.org/files/issues/2019-01-09/3023612-5.patch"
-            },
-            "drupal/views_ical": {
-                "Define missing views methods": "https://www.drupal.org/files/issues/2019-01-10/2982848-2.patch",
-                "No page title due to undefined variable $config": "https://www.drupal.org/files/issues/2891778-2-undefined-variable-notice-fix.patch",
-                "Add HTTP Header: application/calendar": "https://www.drupal.org/files/issues/views_ical-set_response_header-2601522-4.patch"
             },
             "drupal/block_visibility_groups": {
                 "8.6: error when deleting a block visibility group": "https://www.drupal.org/files/issues/2018-10-18/block_visibility_groups_3000396-4.patch"
