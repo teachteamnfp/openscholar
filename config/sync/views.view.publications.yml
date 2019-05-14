@@ -621,6 +621,7 @@ display:
         filters: false
         filter_groups: false
         sorts: false
+        access: false
       filters:
         current_vsite_filter:
           id: current_vsite_filter
@@ -829,6 +830,10 @@ display:
         groups:
           1: AND
       sorts: {  }
+      access:
+        type: group_permission
+        options:
+          group_permission: 'access content overview'
     cache_metadata:
       max-age: 0
       contexts:
