@@ -118,11 +118,16 @@ class PublicationsViewsFunctionalTest extends TestBase {
    * Check anonymous user access to publications.
    *
    * @throws \Behat\Mink\Exception\ExpectationException
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
   public function testAnonymousUserAccess(): void {
     $this->visit('/publications');
 
     $this->assertSession()->statusCodeEquals(403);
+
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/publications");
+
+    $this->assertSession()->statusCodeEquals(200);
   }
 
   /**
