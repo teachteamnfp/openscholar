@@ -2,7 +2,7 @@
 //colors
 $color_tundora_approx: #444;
 $color_tapa_approx: #777;
-$color_red_stage_approx: #d16103;
+$color_red_stage_approx: #BF5803;
 $color_st_tropaz_approx: #215990;
 $color_concrete_approx: #f3f3f1;
 $color_steel_blue_approx: #4e84c4;
@@ -182,7 +182,7 @@ h4 {
     color: $color_st_tropaz_approx;
   }
 }
-footer {
+footer.footer {
   background: $color_cape_cod_approx;
   color: $white;
   border-top: 6px solid $color_tapa_approx;
@@ -199,6 +199,11 @@ footer {
     font-size: 13px;
   }
   ul.menu li a.menu-heading {
+    font-size: 1.14em;
+  }
+  nav h2 {
+    letter-spacing: 0.1em;
+    font-weight: bold;
     font-size: 1.14em;
   }
 }
@@ -254,4 +259,13 @@ a.rslides_nav {
 }
 .ui-tabs ul.ui-tabs-nav li.ui-tabs-active {
   background: $color_red_stage_approx;
+}
+/** accessibility fixes **/
+footer {
+  button.visually-hidden {
+    color: $black;
+  }
+}
+.search-block-form .form-item label.sr-only {
+  color: $black;
 }

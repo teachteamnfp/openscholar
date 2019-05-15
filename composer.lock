@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "52d422b93ca2d7f56abb7c259ba2ab62",
+    "content-hash": "5a52431df38ae05b1166c8d0d69fc460",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -6259,52 +6259,30 @@
         },
         {
             "name": "drupal/views_ical",
-            "version": "dev-1.x",
+            "version": "2.0",
             "source": {
                 "type": "git",
-                "url": "https://git.drupalcode.org/project/views_ical.git",
-                "reference": "21cc99b337b6f00f063e29ae1e83ec12ddc5ef6d"
+                "url": "https://github.com/openscholar/views_ical.git",
+                "reference": "72b6f4d5d2ffc1eace8cf90442acfa5a3d4a08d3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/openscholar/views_ical/zipball/72b6f4d5d2ffc1eace8cf90442acfa5a3d4a08d3",
+                "reference": "72b6f4d5d2ffc1eace8cf90442acfa5a3d4a08d3",
+                "shasum": ""
             },
             "require": {
-                "drupal/core": "*"
+                "eluceo/ical": "^0.15"
             },
             "type": "drupal-module",
-            "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
-                "drupal": {
-                    "version": "8.x-1.x-dev",
-                    "datestamp": "1551712686",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Project has not opted into security advisory coverage!"
-                    }
-                },
-                "patches_applied": {
-                    "No page title due to undefined variable $config": "https://www.drupal.org/files/issues/2891778-2-undefined-variable-notice-fix.patch"
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "bburg",
-                    "homepage": "https://www.drupal.org/user/1867900"
-                },
-                {
-                    "name": "mukhsim",
-                    "homepage": "https://www.drupal.org/user/63885"
-                }
+                "GPL-2.0+"
             ],
             "description": "Provides an iCal Views style plugin.",
-            "homepage": "https://www.drupal.org/project/views_ical",
             "support": {
-                "source": "https://git.drupalcode.org/project/views_ical"
+                "source": "https://github.com/openscholar/views_ical/tree/8.x-2.x"
             },
-            "time": "2019-03-04T15:17:05+00:00"
+            "time": "2019-05-10T09:51:53+00:00"
         },
         {
             "name": "drupal/views_infinite_scroll",
@@ -6572,6 +6550,57 @@
                 "validator"
             ],
             "time": "2018-09-25T20:59:41+00:00"
+        },
+        {
+            "name": "eluceo/ical",
+            "version": "0.15.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/markuspoerschke/iCal.git",
+                "reference": "add0ca99aa1f77f134a2e8b071f2ebc22b115139"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/markuspoerschke/iCal/zipball/add0ca99aa1f77f134a2e8b071f2ebc22b115139",
+                "reference": "add0ca99aa1f77f134a2e8b071f2ebc22b115139",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.0"
+            },
+            "suggest": {
+                "ext-mbstring": "Massive performance enhancement of line folding"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Eluceo\\iCal\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Markus Poerschke",
+                    "email": "markus@eluceo.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "The eluceo/iCal package offers a abstraction layer for creating iCalendars. You can easily create iCal files by using PHP object instead of typing your *.ics file by hand. The output will follow RFC 5545 as best as possible.",
+            "homepage": "https://github.com/markuspoerschke/iCal",
+            "keywords": [
+                "calendar",
+                "iCalendar",
+                "ical",
+                "ics",
+                "php calendar"
+            ],
+            "time": "2019-01-13T22:00:58+00:00"
         },
         {
             "name": "fullcalendar/fullcalendar",
@@ -9728,16 +9757,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.40.1",
+            "version": "v1.41.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "35889516bbd6bbe46a600c2c33b03515df4a076e"
+                "reference": "575cd5028362da591facde1ef5d7b94553c375c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/35889516bbd6bbe46a600c2c33b03515df4a076e",
-                "reference": "35889516bbd6bbe46a600c2c33b03515df4a076e",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/575cd5028362da591facde1ef5d7b94553c375c9",
+                "reference": "575cd5028362da591facde1ef5d7b94553c375c9",
                 "shasum": ""
             },
             "require": {
@@ -9752,7 +9781,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.40-dev"
+                    "dev-master": "1.41-dev"
                 }
             },
             "autoload": {
@@ -9790,31 +9819,33 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2019-04-29T14:12:28+00:00"
+            "time": "2019-05-14T11:59:08+00:00"
         },
         {
             "name": "typo3/phar-stream-wrapper",
-            "version": "v2.1.1",
+            "version": "v2.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/phar-stream-wrapper.git",
-                "reference": "e438b0c78652b33407983eb29d215a1a3f68f6f3"
+                "reference": "057622f5a3b92a5ffbea0fbaadce573500a62870"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/phar-stream-wrapper/zipball/e438b0c78652b33407983eb29d215a1a3f68f6f3",
-                "reference": "e438b0c78652b33407983eb29d215a1a3f68f6f3",
+                "url": "https://api.github.com/repos/TYPO3/phar-stream-wrapper/zipball/057622f5a3b92a5ffbea0fbaadce573500a62870",
+                "reference": "057622f5a3b92a5ffbea0fbaadce573500a62870",
                 "shasum": ""
             },
             "require": {
                 "brumann/polyfill-unserialize": "^1.0",
-                "ext-fileinfo": "*",
                 "ext-json": "*",
                 "php": "^5.3.3|^7.0"
             },
             "require-dev": {
                 "ext-xdebug": "*",
                 "phpunit/phpunit": "^4.8.36"
+            },
+            "suggest": {
+                "ext-fileinfo": "For PHP builtin file type guessing, otherwise uses internal processing"
             },
             "type": "library",
             "autoload": {
@@ -9834,7 +9865,7 @@
                 "security",
                 "stream-wrapper"
             ],
-            "time": "2019-05-05T17:30:51+00:00"
+            "time": "2019-05-14T13:14:31+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -10289,12 +10320,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/minkphp/Mink.git",
-                "reference": "153e4bbee958fea4a6dc542105ff6013c06813e8"
+                "reference": "6d637f7af4816c26ad8a943da2e3f7eef1231bea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/minkphp/Mink/zipball/153e4bbee958fea4a6dc542105ff6013c06813e8",
-                "reference": "153e4bbee958fea4a6dc542105ff6013c06813e8",
+                "url": "https://api.github.com/repos/minkphp/Mink/zipball/6d637f7af4816c26ad8a943da2e3f7eef1231bea",
+                "reference": "6d637f7af4816c26ad8a943da2e3f7eef1231bea",
                 "shasum": ""
             },
             "require": {
@@ -10340,7 +10371,7 @@
                 "testing",
                 "web"
             ],
-            "time": "2019-05-07T14:41:06+00:00"
+            "time": "2019-05-14T09:56:49+00:00"
         },
         {
             "name": "behat/mink-browserkit-driver",
@@ -13377,7 +13408,6 @@
         "drupal/context": 10,
         "kenwheeler/slick": 20,
         "drupal/fullcalendar": 20,
-        "drupal/views_ical": 20,
         "drupal/styleguide": 15,
         "drupal/bibcite": 20,
         "drupal/field_tools": 15,
