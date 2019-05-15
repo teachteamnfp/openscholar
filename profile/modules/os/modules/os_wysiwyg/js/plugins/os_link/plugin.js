@@ -16,6 +16,7 @@
       text: a.innerHTML,
       url: '',
       title: '',
+      is_blank: 0,
       type: ''
     };
     if (a.hasAttribute('data-fid')) {
@@ -40,6 +41,9 @@
       }
     }
     ret.title = a.getAttribute('title');
+    if (a.hasAttribute('target') && a.getAttribute('target') == '_blank') {
+      ret.is_blank = 1;
+    }
     return ret;
   }
 

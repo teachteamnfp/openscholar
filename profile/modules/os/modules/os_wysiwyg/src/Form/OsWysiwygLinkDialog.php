@@ -84,7 +84,7 @@ class OsWysiwygLinkDialog extends FormBase {
       '#type' => 'checkbox',
       '#title' => $this->t('Open this link in a new tab'),
       '#description' => $this->t('Note: depending on the usage, may cause accessibility concerns. <a href="@link" target="_blank">Learn more</a>', ['@link' => 'https://www.w3.org/TR/WCAG20-TECHS/G200.html']),
-      '#default_value' => 0,
+      '#default_value' => isset($input['is_blank']) ? $input['is_blank'] : 0,
     ];
     $form['email'] = [
       '#type' => 'details',
