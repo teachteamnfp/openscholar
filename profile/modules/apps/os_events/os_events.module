@@ -537,18 +537,17 @@ function os_events_node_view_alter(array &$build, EntityInterface $entity, Entit
     return;
   }
 
-  // TODO: Do not use #markup.
   // TODO: Rename the theme to something more generic.
   $build['os_events'] = [
     '#theme' => 'item_list__events',
-    '#title' => [
-      '#markup' => '<a data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Export</a>',
-    ],
+    '#title' => t('Export'),
     '#items' => [
       [
-        '#markup' => Link::createFromRoute(t('RSS'), 'view.event_exportables.feed_1', [
+        '#type' => 'link',
+        '#title' => t('RSS'),
+        '#url' => Url::fromRoute('view.event_exportables.feed_1', [
           'arg_0' => $entity->id(),
-        ])->toString(),
+        ]),
       ],
     ],
     '#list_type' => 'ul',

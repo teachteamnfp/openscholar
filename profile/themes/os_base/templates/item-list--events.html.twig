@@ -27,7 +27,7 @@
 {% if items or empty %}
   <div {{ wrapper_attributes }}>
     {%- if title is not empty -%}
-      {{ title }}
+      <a data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ title }}</a>
     {%- endif -%}
 
     {%- if items -%}
