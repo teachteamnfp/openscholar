@@ -549,6 +549,13 @@ function os_events_node_view_alter(array &$build, EntityInterface $entity, Entit
           'arg_0' => $entity->id(),
         ]),
       ],
+      [
+        '#type' => 'link',
+        '#title' => t('iCal'),
+        '#url' => Url::fromRoute('view.event_exportables.feed_2', [
+          'arg_0' => $entity->id(),
+        ]),
+      ],
     ],
     '#list_type' => 'ul',
     '#attributes' => [
