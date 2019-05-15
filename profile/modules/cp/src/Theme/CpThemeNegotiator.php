@@ -5,6 +5,9 @@ namespace Drupal\cp\Theme;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Theme\ThemeNegotiatorInterface;
 
+/**
+ * Activate the CP theme on cp pages and certain admin routes.
+ */
 class CpThemeNegotiator implements ThemeNegotiatorInterface {
 
   /**
@@ -14,23 +17,23 @@ class CpThemeNegotiator implements ThemeNegotiatorInterface {
     $route_name = $route_match->getRouteName();
     $route = $route_match->getRouteObject();
     if (!$route) {
-      return false;
+      return FALSE;
     }
 
     if (strpos($route->getPath(), '/cp/') === 0) {
-      return true;
+      return TRUE;
     }
 
     if ($route->getOption('_admin_route') == 'true') {
       if (strpos($route->getPath(), '/node/') !== FALSE) {
-        return true;
+        return TRUE;
       }
       elseif (strpos($route->getPath(), '/bibcite/reference/') !== FALSE) {
-        return true;
+        return TRUE;
       }
     }
 
-    return false;
+    return FALSE;
   }
 
   /**
@@ -39,4 +42,5 @@ class CpThemeNegotiator implements ThemeNegotiatorInterface {
   public function determineActiveTheme(RouteMatchInterface $route_match) {
     return 'os_admin';
   }
+
 }
