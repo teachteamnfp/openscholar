@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if [[ -z "$COMPOSER_DEV_MODE" ]]; then
+if [ "${COMPOSER_DEV_MODE}" != 1 ]; then
    echo "No Dev, not installing pre-commit hooks."
    exit
 fi

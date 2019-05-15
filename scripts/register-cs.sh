@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
+echo "how is this set [$COMPOSER_DEV_MODE] set";
 
-if [[ -z "$COMPOSER_DEV_MODE" ]]; then
+if [ "${COMPOSER_DEV_MODE}" != 1 ]; then
    echo "No Dev, not checking coding standards."
    exit
 fi
