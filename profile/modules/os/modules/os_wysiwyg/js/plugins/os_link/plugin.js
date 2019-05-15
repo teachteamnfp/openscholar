@@ -115,6 +115,9 @@
           } else if (focusedImageWidget && focusedImageWidget.data.link) {
             existingValues = CKEDITOR.tools.clone(focusedImageWidget.data.link);
           }
+          if (existingValues.text == undefined) {
+            existingValues.text = editor.getSelection().getSelectedText();
+          }
 
           var saveCallback = function saveCallback(returnValues) {
             if (focusedImageWidget) {
@@ -125,26 +128,8 @@
 
             editor.fire('saveSnapshot');
 
-            if (!linkElement && returnValues.attributes.href) {
-              var selection = editor.getSelection();
-              var range = selection.getRanges(1)[0];
-
-              if (range.collapsed) {
-                var text = new CKEDITOR.dom.text(returnValues.attributes.href.replace(/^mailto:/, ''), editor.document);
-                range.insertNode(text);
-                range.selectNodeContents(text);
-              }
-
-              var style = new CKEDITOR.style({
-                element: 'a',
-                attributes: returnValues.attributes
-              });
-              style.type = CKEDITOR.STYLE_INLINE;
-              style.applyToRange(range);
-              range.select();
-
-              linkElement = getSelectedLink(editor);
-            } else if (linkElement) {
+            // If Web Address is selected.
+            if (returnValues.link_to.link_to__active_tab.indexOf("web-address") >= 0 && linkElement) {
               Object.keys(returnValues.attributes || {}).forEach(function (attrName) {
                 if (returnValues.attributes[attrName].length > 0) {
                   var value = returnValues.attributes[attrName];
@@ -165,6 +150,26 @@
               else {
                 linkElement.removeData('url');
               }
+            }
+            if (!linkElement && returnValues.attributes.href) {
+              var selection = editor.getSelection();
+              var range = selection.getRanges(1)[0];
+
+              if (range.collapsed) {
+                var text = new CKEDITOR.dom.text(returnValues.attributes.href.replace(/^mailto:/, ''), editor.document);
+                range.insertNode(text);
+                range.selectNodeContents(text);
+              }
+
+              var style = new CKEDITOR.style({
+                element: 'a',
+                attributes: returnValues.attributes
+              });
+              style.type = CKEDITOR.STYLE_INLINE;
+              style.applyToRange(range);
+              range.select();
+
+              linkElement = getSelectedLink(editor);
             }
 
             editor.fire('saveSnapshot');
