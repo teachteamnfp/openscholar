@@ -25,17 +25,19 @@
   {%- set attributes = attributes.addClass('item-list__' ~ context.list_style) %}
 {% endif %}
 {% if items or empty %}
-  {%- if title is not empty -%}
-    {{ title }}
-  {%- endif -%}
+  <div {{ wrapper_attributes }}>
+    {%- if title is not empty -%}
+      {{ title }}
+    {%- endif -%}
 
-  {%- if items -%}
-    <{{ list_type }}{{ attributes }}>
-      {%- for item in items -%}
-        <li{{ item.attributes }}>{{ item.value }}</li>
-      {%- endfor -%}
-    </{{ list_type }}>
-  {%- else -%}
-    {{- empty -}}
-  {%- endif -%}
+    {%- if items -%}
+      <{{ list_type }}{{ attributes }}>
+        {%- for item in items -%}
+          <li{{ item.attributes }}>{{ item.value }}</li>
+        {%- endfor -%}
+      </{{ list_type }}>
+    {%- else -%}
+      {{- empty -}}
+    {%- endif -%}
+  </div>
 {%- endif %}
