@@ -2,10 +2,7 @@
 
 namespace Drupal\os_google_analytics\Plugin\CpSetting;
 
-use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\cp_settings\CpSettingBase;
@@ -95,17 +92,6 @@ class GaSettingForm extends CpSettingBase {
     $config_ga
       ->set('web_property_id', $formState->getValue('web_property_id'))
       ->save();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function access(AccountInterface $account): AccessResultInterface {
-    if (!$account->hasPermission('access control panel')) {
-      return AccessResult::forbidden();
-    }
-
-    return AccessResult::allowed();
   }
 
 }

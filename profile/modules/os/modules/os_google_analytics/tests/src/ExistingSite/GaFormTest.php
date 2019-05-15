@@ -32,10 +32,16 @@ class GaFormTest extends OsExistingSiteTestBase {
    * @throws \Behat\Mink\Exception\ExpectationException
    */
   public function testGaSettingsPath() {
+
+    $this->createGroup([
+      'type' => 'personal',
+      'path' => [
+        'alias' => '/test-alias',
+      ],
+    ]);
     $this->drupalLogin($this->adminUser);
 
-    $this->drupalGet('cp/settings/analytics');
-    $this->drupalGet('cp/settings/analytics');
+    $this->drupalGet('test-alias/cp/settings/analytics');
     $this->assertSession()->statusCodeEquals(200);
   }
 
@@ -45,8 +51,14 @@ class GaFormTest extends OsExistingSiteTestBase {
    * @throws \Behat\Mink\Exception\ExpectationException
    */
   public function testGaSettingsForm() {
+    $this->createGroup([
+      'type' => 'personal',
+      'path' => [
+        'alias' => '/test-alias',
+      ],
+    ]);
     $this->drupalLogin($this->adminUser);
-    $this->drupalGet('cp/settings/analytics');
+    $this->drupalGet('test-alias/cp/settings/analytics');
     // Dummy web property.
     $edit = [
       'edit-web-property-id' => 'UA-111111111-1',
