@@ -1,3 +1,6 @@
 services:
   angular.module_manager:
     class: Drupal\os\OsAngularModuleManager
+  menu.helper:
+    class: Drupal\os\Utils\MenuHelper
+    arguments: ['@config.factory', '@module_handler']
