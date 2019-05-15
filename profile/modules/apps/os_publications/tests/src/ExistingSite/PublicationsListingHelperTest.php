@@ -33,7 +33,7 @@ class PublicationsListingHelperTest extends TestBase {
    *
    * @covers ::convertLabel
    */
-  public function testConvertToPublicationsListingLabel() {
+  public function testConvertToPublicationsListingLabel(): void {
     $this->assertEquals('T', $this->listingHelper->convertLabel('Talk Talk'));
     $this->assertEquals('L', $this->listingHelper->convertLabel('The Lord of the Rings'));
     $this->assertEquals('U', $this->listingHelper->convertLabel('From up on Poppy Hill'));
@@ -47,7 +47,7 @@ class PublicationsListingHelperTest extends TestBase {
    * @throws \Drupal\Core\Entity\EntityStorageException
    * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
-  public function testConvertToPublicationsListingAuthorName() {
+  public function testConvertToPublicationsListingAuthorName(): void {
     $contributor = $this->createContributor([
       'last_name' => 'Hollis',
     ]);
@@ -73,7 +73,7 @@ class PublicationsListingHelperTest extends TestBase {
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  public function testSetRedirect() {
+  public function testSetRedirect(): void {
     $source = $this->randomMachineName();
 
     $redirect = Redirect::create([
@@ -84,7 +84,7 @@ class PublicationsListingHelperTest extends TestBase {
     $redirect->save();
 
     /** @var \Drupal\redirect\Entity\Redirect $new_redirect */
-    $new_redirect = $this->listingHelper->setRedirect($source, 'year');
+    $new_redirect = $this->listingHelper->setRedirect($source, "internal:/$source/year");
 
     /** @var \Drupal\redirect\RedirectRepository $redirect_repository */
     $redirect_repository = $this->container->get('redirect.repository');
