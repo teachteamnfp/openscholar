@@ -3,7 +3,7 @@
 $color_orange_white_approx: #fdfaee;
 $color_goldenrod_approx: #ffdb6d;
 $white: #fff;
-$color_curious_blue_approx: #3a8bd9;
+$color_curious_blue_approx: #0957a1;
 $color-black1: #222;
 
 //fonts
@@ -200,4 +200,10 @@ a.rslides_nav {
 }
 aside .region > .block, .path-front .content-inner .block {
   border: 0;
+}
+/** accessiblity fixes **/
+.form-submit {
+  .sr-only {
+    color: $color-black1;
+  }
 }
