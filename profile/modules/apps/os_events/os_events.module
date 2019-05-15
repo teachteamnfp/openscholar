@@ -537,9 +537,8 @@ function os_events_node_view_alter(array &$build, EntityInterface $entity, Entit
     return;
   }
 
-  // TODO: Rename the theme to something more generic.
   $build['os_events'] = [
-    '#theme' => 'item_list__events',
+    '#theme' => 'item_list__os_dropdown',
     '#title' => t('Export'),
     '#items' => [
       [
