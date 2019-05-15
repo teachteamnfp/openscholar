@@ -5,7 +5,7 @@ $color_scarpa_flow_approx: #545a5d;
 $color_cape_cod_approx: #3f3f3f;
 $color_fuscous_gray_approx: #525252;
 $color_celeste_approx: #ccc;
-$color_nevada_approx: #6a7073;
+$color_nevada_approx: #303030;
 $color_ironside_gray_approx: #686868;
 $color_pink_swan_approx: #bbbbbb;
 $white: #ffffff;
@@ -13,7 +13,7 @@ $color_boulder_80_approx: rgba(120, 124, 126, 0.80);
 $color_chamois_approx: #e6e1b3;
 $color_stiletto_approx: #a23338;
 $color_swiss_coffee_approx: #e4d9d9;
-$color_gunsmoke_approx: #838383;
+$color_gunsmoke_approx: #3e3e3e;
 $color_concrete_approx: #f3f3f1;
 $color_corduroy_approx: #636a6d;
 $color_tapa_approx: #707476;
@@ -344,4 +344,15 @@ footer ul.nav li a {
 }
 .fc-header-toolbar h2 {
   font-family: $font_0, $font_1, $font_2, $font_3;
+}
+/** accessibility fixes **/
+.navbar-collapse {
+  .sr-only {
+    color: $color_nevada_approx;
+  }
+}
+.header-container {
+  button.visually-hidden {
+    color: $color_nevada_approx;
+  }
 }
