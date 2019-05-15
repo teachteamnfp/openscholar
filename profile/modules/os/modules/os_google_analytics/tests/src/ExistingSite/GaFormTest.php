@@ -2,7 +2,7 @@
 
 namespace Drupal\Tests\os_google_analytics\ExistingSite;
 
-use weitzman\DrupalTestTraits\ExistingSiteBase;
+use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
 
 /**
  * Class GaFormTest.
@@ -12,7 +12,7 @@ use weitzman\DrupalTestTraits\ExistingSiteBase;
  *
  * @package Drupal\Tests\os_publications\ExistingSite
  */
-class GaFormTest extends ExistingSiteBase {
+class GaFormTest extends OsExistingSiteTestBase {
 
   /**
    * {@inheritdoc}
@@ -90,28 +90,6 @@ class GaFormTest extends ExistingSiteBase {
     $this->assertSession()->responseContains('ga("test-alias.send", "pageview")');
     $this->assertSession()->responseContains('UA-111111111-1');
     $this->assertSession()->responseContains('UA-111111111-2');
-  }
-
-  /**
-   * Create a vsite.
-   *
-   * @param array $values
-   *   The values for the new vsite.
-   *
-   * @return \Drupal\group\Entity\GroupInterface
-   *   The created group entity.
-   */
-  protected function createGroup(array $values = []) {
-    $group = $this->entityTypeManager->getStorage('group')->create($values + [
-      'type' => 'personal',
-      'label' => $this->randomMachineName(),
-    ]);
-    $group->enforceIsNew();
-    $group->save();
-
-    $this->markEntityForCleanup($group);
-
-    return $group;
   }
 
 }
