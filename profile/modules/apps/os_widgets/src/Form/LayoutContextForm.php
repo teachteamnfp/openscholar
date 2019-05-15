@@ -13,10 +13,10 @@ class LayoutContextForm extends EntityForm {
   public function form(array $form, FormStateInterface $form_state) {
     $context = $this->entity;
     if ($context->isNew()) {
-      $form['#title'] = $this->t('Add vocabulary');
+      $form['#title'] = $this->t('Add layout context');
     }
     else {
-      $form['#title'] = $this->t('Edit vocabulary');
+      $form['#title'] = $this->t('Edit layout context');
     }
 
     $form['name'] = [

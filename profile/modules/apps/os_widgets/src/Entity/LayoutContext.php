@@ -36,6 +36,7 @@ use Drupal\os_widgets\LayoutContextInterface;
  *     },
  *     "list_builder" = "Drupal\os_widgets\LayoutContextListBuilder",
  *   },
+ *   fieldable = true,
  *   links = {
  *     "add-form" = "/admin/structure/layout-context/add",
  *     "edit-form" = "/admin/structure/layout-context/manage/{layout_context}",
