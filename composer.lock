@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "24bdae9450ecd5f30ac49e114842e919",
+    "content-hash": "c8a803fea363e082f83a0493b818f45a",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -6259,51 +6259,30 @@
         },
         {
             "name": "drupal/views_ical",
-            "version": "dev-1.x",
+            "version": "2.0",
             "source": {
                 "type": "git",
-                "url": "https://git.drupalcode.org/project/views_ical.git",
-                "reference": "21cc99b337b6f00f063e29ae1e83ec12ddc5ef6d"
+                "url": "https://github.com/openscholar/views_ical.git",
+                "reference": "72b6f4d5d2ffc1eace8cf90442acfa5a3d4a08d3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/openscholar/views_ical/zipball/72b6f4d5d2ffc1eace8cf90442acfa5a3d4a08d3",
+                "reference": "72b6f4d5d2ffc1eace8cf90442acfa5a3d4a08d3",
+                "shasum": ""
             },
             "require": {
-                "drupal/core": "*"
+                "eluceo/ical": "^0.15"
             },
             "type": "drupal-module",
-            "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
-                "drupal": {
-                    "version": "8.x-1.x-dev",
-                    "datestamp": "1551712686",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Project has not opted into security advisory coverage!"
-                    }
-                },
-                "patches_applied": {
-                    "No page title due to undefined variable $config": "https://www.drupal.org/files/issues/2891778-2-undefined-variable-notice-fix.patch"
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "bburg",
-                    "homepage": "https://www.drupal.org/user/1867900"
-                },
-                {
-                    "name": "mukhsim",
-                    "homepage": "https://www.drupal.org/user/63885"
-                }
+                "GPL-2.0+"
             ],
             "description": "Provides an iCal Views style plugin.",
-            "homepage": "https://www.drupal.org/project/views_ical",
             "support": {
-                "source": "https://git.drupalcode.org/project/views_ical"
-            }
+                "source": "https://github.com/openscholar/views_ical/tree/8.x-2.x"
+            },
+            "time": "2019-05-10T09:51:53+00:00"
         },
         {
             "name": "drupal/views_infinite_scroll",
@@ -6571,6 +6550,57 @@
                 "validator"
             ],
             "time": "2018-09-25T20:59:41+00:00"
+        },
+        {
+            "name": "eluceo/ical",
+            "version": "0.15.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/markuspoerschke/iCal.git",
+                "reference": "add0ca99aa1f77f134a2e8b071f2ebc22b115139"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/markuspoerschke/iCal/zipball/add0ca99aa1f77f134a2e8b071f2ebc22b115139",
+                "reference": "add0ca99aa1f77f134a2e8b071f2ebc22b115139",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.0"
+            },
+            "suggest": {
+                "ext-mbstring": "Massive performance enhancement of line folding"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Eluceo\\iCal\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Markus Poerschke",
+                    "email": "markus@eluceo.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "The eluceo/iCal package offers a abstraction layer for creating iCalendars. You can easily create iCal files by using PHP object instead of typing your *.ics file by hand. The output will follow RFC 5545 as best as possible.",
+            "homepage": "https://github.com/markuspoerschke/iCal",
+            "keywords": [
+                "calendar",
+                "iCalendar",
+                "ical",
+                "ics",
+                "php calendar"
+            ],
+            "time": "2019-01-13T22:00:58+00:00"
         },
         {
             "name": "fullcalendar/fullcalendar",
@@ -13375,7 +13405,6 @@
         "drupal/context": 10,
         "kenwheeler/slick": 20,
         "drupal/fullcalendar": 20,
-        "drupal/views_ical": 20,
         "drupal/styleguide": 15,
         "drupal/bibcite": 20,
         "drupal/field_tools": 15,
