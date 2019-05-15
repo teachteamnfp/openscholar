@@ -6,36 +6,49 @@
 **/
 
 (function ($, Drupal, drupalSettings, CKEDITOR) {
-  function parseAttributes(editor, element) {
-    var parsedAttributes = {};
-
-    var domElement = element.$;
-    var attribute = void 0;
-    var attributeName = void 0;
-    for (var attrIndex = 0; attrIndex < domElement.attributes.length; attrIndex++) {
-      attribute = domElement.attributes.item(attrIndex);
-      attributeName = attribute.nodeName.toLowerCase();
-
-      if (attributeName.indexOf('data-cke-') === 0) {
-        continue;
+  /**
+   * Reads an anchor tag to determine whether it's internal, external, an e-mail or a link to a file
+   * @param a
+   * @return {link text, link url, link type}
+   */
+  function parseAnchor(a) {
+    var ret = {
+      text: a.innerHTML,
+      url: '',
+      title: '',
+      type: ''
+    };
+    if (a.hasAttribute('data-fid')) {
+      ret.url = a.getAttribute('data-fid');
+      ret.type = 'media';
+    }
+    else if (a.origin == 'mailto://' || a.protocol == 'mailto:') {
+      ret.url = a.pathname || a.href.replace('mailto:', '');
+      ret.type = 'email';
+    }
+    else {
+      var home = drupalSettings.path.baseUrl + (typeof drupalSettings.path.pathPrefix != 'undefined' ? drupalSettings.path.pathPrefix : ''),
+        dummy = document.createElement('a');
+      dummy.href = home;
+      if (a.hasAttribute('data-url')) {
+        ret.url = a.getAttribute('data-url');
+        ret.type = 'web_address';
       }
-
-      parsedAttributes[attributeName] = element.data('cke-saved-' + attributeName) || attribute.nodeValue;
+      else {
+        ret.url = a.href.replace(home, '');
+        ret.type = 'web_address';
+      }
     }
-
-    if (parsedAttributes.class) {
-      parsedAttributes.class = CKEDITOR.tools.trim(parsedAttributes.class.replace(/cke_\S+/, ''));
-    }
-
-    return parsedAttributes;
+    ret.title = a.getAttribute('title');
+    return ret;
   }
+
 
   function getAttributes(editor, data) {
     var set = {};
     Object.keys(data || {}).forEach(function (attributeName) {
       set[attributeName] = data[attributeName];
     });
-
     set['data-cke-saved-href'] = set.href;
 
     var removed = {};
@@ -94,10 +107,10 @@
 
           var existingValues = {};
           if (linkElement && linkElement.$) {
-            existingValues = parseAttributes(editor, linkElement);
+            existingValues = parseAnchor(linkElement.$);
           } else if (focusedImageWidget && focusedImageWidget.data.link) {
-              existingValues = CKEDITOR.tools.clone(focusedImageWidget.data.link);
-            }
+            existingValues = CKEDITOR.tools.clone(focusedImageWidget.data.link);
+          }
 
           var saveCallback = function saveCallback(returnValues) {
             if (focusedImageWidget) {
@@ -128,23 +141,34 @@
 
               linkElement = getSelectedLink(editor);
             } else if (linkElement) {
-                Object.keys(returnValues.attributes || {}).forEach(function (attrName) {
-                  if (returnValues.attributes[attrName].length > 0) {
-                    var value = returnValues.attributes[attrName];
-                    linkElement.data('cke-saved-' + attrName, value);
-                    linkElement.setAttribute(attrName, value);
-                  } else {
-                      linkElement.removeAttribute(attrName);
-                    }
-                });
+              Object.keys(returnValues.attributes || {}).forEach(function (attrName) {
+                if (returnValues.attributes[attrName].length > 0) {
+                  var value = returnValues.attributes[attrName];
+                  linkElement.setAttribute(attrName, value);
+                } else {
+                  linkElement.removeAttribute(attrName);
+                }
+              });
+              if (returnValues.web_address.href !== undefined) {
+                linkElement.setAttribute('href', returnValues.web_address.href);
+                linkElement.data('url', returnValues.web_address.href);
+                linkElement.data('cke-saved-href', returnValues.web_address.href);
+                linkElement.removeAttribute('target');
+                if (returnValues.web_address.target_option == 1) {
+                  linkElement.setAttribute('target', '_blank');
+                }
               }
+              else {
+                linkElement.removeData('url');
+              }
+            }
 
             editor.fire('saveSnapshot');
           };
 
           var dialogSettings = {
             title: linkElement ? editor.config.osLink_dialogLinkEdit : editor.config.osLink_dialogLinkAdd,
-            dialogClass: 'editor-link-dialog'
+            dialogClass: 'os-wysiwyg-link-dialog'
           };
 
           Drupal.ckeditor.openDialog(editor, Drupal.url('os_wysiwyg/dialog/os_link/' + editor.config.drupal.format), existingValues, saveCallback, dialogSettings);
@@ -243,7 +267,6 @@
   });
 
   CKEDITOR.plugins.os_link = {
-    parseLinkAttributes: parseAttributes,
     getLinkAttributes: getAttributes
   };
 })(jQuery, Drupal, drupalSettings, CKEDITOR);

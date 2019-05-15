@@ -48,8 +48,6 @@ settings:
             - Source
             - PasteFromWord
             - RemoveFormat
-            - OsLink
-            - OsUnLink
       -
         -
           name: Tools
@@ -65,8 +63,8 @@ settings:
         -
           name: Links
           items:
-            - DrupalLink
-            - DrupalUnlink
+            - OsLink
+            - OsUnLink
   plugins:
     language:
       language_list: un

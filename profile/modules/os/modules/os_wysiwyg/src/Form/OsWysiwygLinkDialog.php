@@ -54,14 +54,13 @@ class OsWysiwygLinkDialog extends FormBase {
         '#type' => 'textfield',
         '#title' => $this->t('Text To Display'),
         '#description' => $this->t('The text of the link. Leave blank to use the url of the link itself.'),
-        '#name' => 'link-text',
+        '#default_value' => isset($input['text']) ? $input['text'] : '',
       ],
       'title' => [
         '#type' => 'textfield',
-        '#id' => 'edit-link-title',
         '#title' => $this->t('Title Text'),
         '#description' => $this->t('This text will appear on mouse hover and is used by screen readers, however, it will not appear for keyboard-only users or touch-only users.'),
-        '#name' => 'link-title',
+        '#default_value' => isset($input['title']) ? $input['title'] : '',
       ],
     ];
 
@@ -74,12 +73,12 @@ class OsWysiwygLinkDialog extends FormBase {
       '#title' => $this->t('Web address'),
       '#group' => 'link_to',
     ];
-    $form['web_address']['external'] = [
+    $form['web_address']['href'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Website URL'),
       '#description' => $this->t('The URL of the web page. Can be a link to one of your own pages.'),
       '#maxlength' => 500,
-      '#default_value' => isset($input['href']) ? $input['href'] : '',
+      '#default_value' => isset($input['url']) ? $input['url'] : '',
     ];
     $form['web_address']['target_option'] = [
       '#type' => 'checkbox',
@@ -123,9 +122,8 @@ class OsWysiwygLinkDialog extends FormBase {
       ];
     }
 
-    $active_tab = $this->getRequest()->get('active');
-    if (isset($active_tab) && isset($form[$active_tab])) {
-      $form['link_to']['#default_tab'] = 'edit-' . $active_tab;
+    if (isset($input['type']) && isset($form[$input['type']])) {
+      $form['link_to']['#default_tab'] = 'edit-' . $input['type'];
     }
 
     $form['actions'] = [
