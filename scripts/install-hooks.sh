@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+if [[ -z "$COMPOSER_DEV_MODE" ]]; then
+   echo "No Dev, not installing pre-commit hooks."
+   exit
+fi
+
 GIT_DIR=$(git rev-parse --git-dir)
 
 echo "Installing hooks..."
