@@ -117,9 +117,8 @@ class OsWysiwygLinkDialog extends FormBase {
         '#title' => $this->t('File'),
         '#group' => 'link_to',
       ];
-      $form['media']['media'] = [
-        'library' => $build,
-      ];
+      $form['media']['library'] = $build;
+      $form['media']['library']['#tree'] = TRUE;;
     }
 
     if (isset($input['type']) && isset($form[$input['type']])) {

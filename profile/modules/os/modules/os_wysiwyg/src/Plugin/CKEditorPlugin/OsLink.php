@@ -28,6 +28,7 @@ class OsLink extends CKEditorPluginBase {
   public function getLibraries(Editor $editor) {
     return [
       'core/drupal.ajax',
+      'media_library/widget',
     ];
   }
 
@@ -36,8 +37,8 @@ class OsLink extends CKEditorPluginBase {
    */
   public function getConfig(Editor $editor) {
     return [
-      'osLink_dialogLinkAdd' => t('Add link'),
-      'osLink_dialogLinkEdit' => t('Edit link'),
+      'osLink_dialogLinkAdd' => $this->t('Add link'),
+      'osLink_dialogLinkEdit' => $this->t('Edit link'),
     ];
   }
 

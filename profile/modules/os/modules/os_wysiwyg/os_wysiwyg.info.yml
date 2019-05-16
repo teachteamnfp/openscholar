@@ -2,3 +2,5 @@ name: OpenScholar customisations for WYSIWYG editors.
 core: 8.x
 type: module
 description: "WYSIWYG extended functionality."
+dependencies:
+  - drupal:media_library

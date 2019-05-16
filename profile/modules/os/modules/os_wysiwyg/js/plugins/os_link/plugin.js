@@ -6,6 +6,9 @@
 **/
 
 (function ($, Drupal, drupalSettings, CKEDITOR) {
+
+  var htmlContentPlaceholder = '[html content]';
+
   /**
    * Reads an anchor tag to determine whether it's internal, external, an e-mail or a link to a file
    * @param a
@@ -24,7 +27,7 @@
       ret.type = 'media';
     }
     else if (a.origin == 'mailto://' || a.protocol == 'mailto:') {
-      ret.url = a.pathname || a.href.replace('mailto:', '');
+      ret.email = a.pathname || a.href.replace('mailto:', '');
       ret.type = 'email';
     }
     else {
@@ -150,6 +153,9 @@
               else {
                 linkElement.removeData('url');
               }
+            }
+            if (returnValues.attributes.text != htmlContentPlaceholder && linkElement) {
+              linkElement.setHtml(returnValues.attributes.text);
             }
             if (!linkElement && returnValues.attributes.href) {
               var selection = editor.getSelection();
