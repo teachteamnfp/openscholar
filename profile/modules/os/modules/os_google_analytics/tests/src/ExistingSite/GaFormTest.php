@@ -20,8 +20,13 @@ class GaFormTest extends OsExistingSiteTestBase {
   public function setUp() {
     parent::setUp();
 
+    $this->createGroup([
+      'type' => 'personal',
+      'path' => [
+        'alias' => '/test-alias',
+      ],
+    ]);
     $this->adminUser = $this->createUser([], '', TRUE);
-    $this->simpleUser = $this->createUser();
     $this->entityTypeManager = $this->container->get('entity_type.manager');
     $this->vsiteContextManager = $this->container->get('vsite.context_manager');
   }
@@ -33,12 +38,6 @@ class GaFormTest extends OsExistingSiteTestBase {
    */
   public function testGaSettingsPath() {
 
-    $this->createGroup([
-      'type' => 'personal',
-      'path' => [
-        'alias' => '/test-alias',
-      ],
-    ]);
     $this->drupalLogin($this->adminUser);
 
     $this->drupalGet('test-alias/cp/settings/analytics');
@@ -51,12 +50,7 @@ class GaFormTest extends OsExistingSiteTestBase {
    * @throws \Behat\Mink\Exception\ExpectationException
    */
   public function testGaSettingsForm() {
-    $this->createGroup([
-      'type' => 'personal',
-      'path' => [
-        'alias' => '/test-alias',
-      ],
-    ]);
+
     $this->drupalLogin($this->adminUser);
     $this->drupalGet('test-alias/cp/settings/analytics');
     // Dummy web property.
@@ -69,15 +63,11 @@ class GaFormTest extends OsExistingSiteTestBase {
 
   /**
    * Test if vsite codes show on page in analytics script.
+   *
+   * @covers ::os_google_analytics_page_attachments
    */
   public function testVsiteCodesShowOnPage() {
 
-    $this->createGroup([
-      'type' => 'personal',
-      'path' => [
-        'alias' => '/test-alias',
-      ],
-    ]);
     $this->drupalLogin($this->adminUser);
 
     // Test only vsite.
