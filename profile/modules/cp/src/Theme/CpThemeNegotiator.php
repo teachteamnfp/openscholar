@@ -14,6 +14,9 @@ class CpThemeNegotiator implements ThemeNegotiatorInterface {
    * {@inheritdoc}
    */
   public function applies(RouteMatchInterface $route_match) {
+    // lol the function argument is absolutely useless!
+    // Drupal never actually calls it with anything other than null!
+    $route_match = \Drupal::routeMatch();
     $route_name = $route_match->getRouteName();
     $route = $route_match->getRouteObject();
     if (!$route) {
