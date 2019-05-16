@@ -92,7 +92,6 @@ if [[ $FORCE_REBUILD == "1" ]] || [[ "$(cmp -b 'openscholar/composer.json' '/tmp
   rm -rf web/modules/contrib/purl || true
   rm -rf vendor/drupal/coder || true
   rm -rf web/modules/contrib/views_ical || true
-  rm scripts/register-cs.sh || true
 
   # Download composer components
   composer install --ignore-platform-reqs --no-interaction --prefer-dist --no-dev || exit 1
