@@ -1,5 +1,6 @@
 name: 'OS Blogs'
 description: 'Provides Blog content type and related configuration. Allows creation of a blog.'
+package: OpenScholar
 type: module
 core: 8.x
 dependencies:
