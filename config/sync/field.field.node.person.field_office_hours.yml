@@ -1,4 +1,4 @@
-uuid: 72ac0c8a-12af-4177-8dbf-3e4d97fd280d
+uuid: fa528037-3273-45d6-bca2-d4c38eb2f74f
 langcode: en
 status: true
 dependencies:
@@ -15,9 +15,5 @@ required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
-settings:
-  min: null
-  max: null
-  prefix: ''
-  suffix: ' hour| hours'
-field_type: integer
+settings: {  }
+field_type: string

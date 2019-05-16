@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+if [ "${COMPOSER_DEV_MODE}" != 1 ]; then
+   echo "No Dev, not checking coding standards."
+   exit
+fi
+
 echo "Registering code standards..."
 ./vendor/bin/phpcs --config-set installed_paths "$PWD/vendor/drupal/coder/coder_sniffer"
 
