@@ -13330,17 +13330,6 @@
         {
             "name": "webflo/drupal-core-require-dev",
             "version": "8.6.16",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/webflo/drupal-core-require-dev.git",
-                "reference": "e40bed8b3de2b75e10874e2754f51559615d8e59"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/webflo/drupal-core-require-dev/zipball/e40bed8b3de2b75e10874e2754f51559615d8e59",
-                "reference": "e40bed8b3de2b75e10874e2754f51559615d8e59",
-                "shasum": ""
-            },
             "require": {
                 "behat/mink": "1.7.x-dev",
                 "behat/mink-goutte-driver": "^1.2",
