@@ -3,12 +3,15 @@
 namespace Drupal\Tests\os_events\ExistingSite;
 
 use Drupal\Component\Datetime\DateTimePlus;
+use Drupal\Tests\os_events\Traits\EventTestTrait;
 use weitzman\DrupalTestTraits\ExistingSiteBase;
 
 /**
  * Test base for event tests.
  */
 abstract class EventsTestBase extends ExistingSiteBase {
+
+  use EventTestTrait;
 
   /**
    * Config factory.
@@ -41,7 +44,7 @@ abstract class EventsTestBase extends ExistingSiteBase {
    * @param bool $signupChecked
    *   If Signup is checked or not.
    */
-  protected function createEvent(bool $signupChecked) {
+  protected function createEventFunctional(bool $signupChecked): void {
     $date = new DateTimePlus('+5 days', $this->config->get('system.date')->get('timezone.default'));
 
     $this->drupalLogin($this->adminUser);
