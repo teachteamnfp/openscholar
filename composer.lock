@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5a52431df38ae05b1166c8d0d69fc460",
+    "content-hash": "20c66a7d8b2ce6e5f745cd252b88fcb1",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -6324,7 +6324,7 @@
             ],
             "description": "Provides an iCal Views style plugin.",
             "support": {
-                "source": "https://github.com/openscholar/views_ical/tree/8.x-2.x"
+                "source": "https://github.com/openscholar/views_ical/tree/2.0"
             },
             "time": "2019-05-10T09:51:53+00:00"
         },
@@ -13330,6 +13330,17 @@
         {
             "name": "webflo/drupal-core-require-dev",
             "version": "8.6.16",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/webflo/drupal-core-require-dev.git",
+                "reference": "e40bed8b3de2b75e10874e2754f51559615d8e59"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/webflo/drupal-core-require-dev/zipball/e40bed8b3de2b75e10874e2754f51559615d8e59",
+                "reference": "e40bed8b3de2b75e10874e2754f51559615d8e59",
+                "shasum": ""
+            },
             "require": {
                 "behat/mink": "1.7.x-dev",
                 "behat/mink-goutte-driver": "^1.2",
