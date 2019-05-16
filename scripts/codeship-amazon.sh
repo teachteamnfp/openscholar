@@ -94,7 +94,7 @@ if [[ $FORCE_REBUILD == "1" ]] || [[ "$(cmp -b 'openscholar/composer.json' '/tmp
   rm -rf web/modules/contrib/views_ical || true
 
   # Download composer components
-  composer install --ignore-platform-reqs --no-interaction --prefer-dist || exit 1
+  composer install --ignore-platform-reqs --no-interaction --prefer-dist --no-dev || exit 1
 
   # Do not use the node_modules symlink, and reinstall node modules
   rm -rf node_modules

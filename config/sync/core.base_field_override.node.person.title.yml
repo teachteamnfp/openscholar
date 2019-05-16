@@ -1,18 +1,17 @@
-uuid: 33e71936-53c8-4761-a503-8368edb92690
+uuid: b8363872-9221-4a06-8172-1716860733cd
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_first_name
     - node.type.person
-id: node.person.field_first_name
-field_name: field_first_name
+id: node.person.title
+field_name: title
 entity_type: node
 bundle: person
-label: 'First Name'
+label: Title
 description: ''
 required: true
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings: {  }

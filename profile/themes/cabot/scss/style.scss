@@ -1,7 +1,7 @@
 @import '../../os_base/scss/base/breakpoints';
 //colors
 $color_goldenrod_approx: #ffdb6d;
-$color_steel_blue_approx: #4e84c4;
+$color_steel_blue_approx: #0053b6;
 $white: #fff;
 $color_submarine_approx: #bac5c6;
 $black: #000;
@@ -246,5 +246,16 @@ a.rslides_nav {
   }
   &:first-child {
     background: transparent;
+  }
+}
+/** accessibility fixes **/
+.navbar-collapse {
+  h2.sr-only {
+    color: $white;
+  }
+}
+.form-submit {
+  .sr-only {
+    color: $white;
   }
 }
