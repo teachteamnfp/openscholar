@@ -8,7 +8,7 @@ use Drupal\vsite\Plugin\AppPluginBase;
  * Events app.
  *
  * @App(
- *   title = @Translation("Events"),
+ *   title = @Translation("Event"),
  *   canDisable = true,
  *   entityType = "node",
  *   bundle = {
