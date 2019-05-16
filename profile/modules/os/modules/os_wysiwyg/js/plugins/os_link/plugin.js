@@ -123,6 +123,16 @@
           }
 
           var saveCallback = function saveCallback(returnValues) {
+
+            var newLinkData = {
+              text: '',
+              attributes: {},
+              data: {},
+            };
+            newLinkData.attributes.title = returnValues.attributes.title;
+            newLinkData.text = returnValues.attributes.text;
+
+            // TODO: handle image widget.
             if (focusedImageWidget) {
               focusedImageWidget.setData('link', CKEDITOR.tools.extend(returnValues.attributes, focusedImageWidget.data.link));
               editor.fire('saveSnapshot');
@@ -132,44 +142,60 @@
             editor.fire('saveSnapshot');
 
             // If Web Address is selected.
-            if (returnValues.link_to.link_to__active_tab.indexOf("web-address") >= 0 && linkElement) {
-              Object.keys(returnValues.attributes || {}).forEach(function (attrName) {
-                if (returnValues.attributes[attrName].length > 0) {
-                  var value = returnValues.attributes[attrName];
+            if (returnValues.link_to.link_to__active_tab.indexOf("web-address") >= 0) {
+              if (returnValues.web_address.href !== undefined) {
+                newLinkData.attributes.href = returnValues.web_address.href;
+                newLinkData.data.url = returnValues.web_address.href;
+                if (returnValues.web_address.target_option == 1) {
+                  newLinkData.attributes.target = '_blank';
+                }
+              }
+            }
+            // If Email is selected.
+            if (returnValues.link_to.link_to__active_tab.indexOf("email") >= 0) {
+              newLinkData.attributes.href = 'mailto:' + returnValues.email.email;
+            }
+            // Edit current link object.
+            if (linkElement) {
+              linkElement.removeAttribute('target');
+              linkElement.removeAttribute('target');
+              Object.keys(newLinkData.attributes || {}).forEach(function (attrName) {
+                if (newLinkData.attributes[attrName].length > 0) {
+                  var value = newLinkData.attributes[attrName];
                   linkElement.setAttribute(attrName, value);
                 } else {
                   linkElement.removeAttribute(attrName);
                 }
               });
-              if (returnValues.web_address.href !== undefined) {
-                linkElement.setAttribute('href', returnValues.web_address.href);
-                linkElement.data('url', returnValues.web_address.href);
-                linkElement.data('cke-saved-href', returnValues.web_address.href);
-                linkElement.removeAttribute('target');
-                if (returnValues.web_address.target_option == 1) {
-                  linkElement.setAttribute('target', '_blank');
+              linkElement.removeAttribute('data-url');
+              Object.keys(newLinkData.data || {}).forEach(function (dataName) {
+                if (newLinkData.data[dataName].length > 0) {
+                  var value = newLinkData.data[dataName];
+                  linkElement.data(dataName, value);
+                } else {
+                  linkElement.data(dataName, null);
                 }
-              }
-              else {
-                linkElement.removeData('url');
+              });
+              linkElement.data('cke-saved-href', newLinkData.attributes.href);
+              if (newLinkData.text != htmlContentPlaceholder) {
+                linkElement.setHtml(newLinkData.text);
               }
             }
-            if (returnValues.attributes.text != htmlContentPlaceholder && linkElement) {
-              linkElement.setHtml(returnValues.attributes.text);
-            }
-            if (!linkElement && returnValues.attributes.href) {
+            // Create new link object.
+            else if (returnValues.attributes.text) {
               var selection = editor.getSelection();
               var range = selection.getRanges(1)[0];
 
+              // If selection is empty.
               if (range.collapsed) {
-                var text = new CKEDITOR.dom.text(returnValues.attributes.href.replace(/^mailto:/, ''), editor.document);
+                var text = new CKEDITOR.dom.text(newLinkData.text, editor.document);
                 range.insertNode(text);
                 range.selectNodeContents(text);
               }
 
               var style = new CKEDITOR.style({
                 element: 'a',
-                attributes: returnValues.attributes
+                attributes: newLinkData.attributes
               });
               style.type = CKEDITOR.STYLE_INLINE;
               style.applyToRange(range);
