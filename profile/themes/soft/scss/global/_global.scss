@@ -1,0 +1,22 @@
+.page-title {
+  &:after {
+    position: absolute;
+    content: "";
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 40px;
+    background: $color-oxford-blue;
+  }
+}
+.block-title, nav h2 {
+  font-size: 20px;
+  font-family: 'Roboto Slab', sans-serif;
+  padding-bottom: 12px;
+  border-bottom: 2px solid $color-oxford-blue;
+  font-weight: 600;
+  color: $color-oxford-blue;
+}
+.block-content {
+  margin-top: 10px;
+}

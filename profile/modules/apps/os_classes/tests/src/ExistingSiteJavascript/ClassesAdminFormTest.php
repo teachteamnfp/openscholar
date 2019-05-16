@@ -3,6 +3,8 @@
 namespace Drupal\Tests\os_classes\ExistingSiteJavascript;
 
 use Behat\Mink\Exception\ExpectationException;
+use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTestBase;
+use Drupal\Tests\os_classes\Traits\OsClassesTestTrait;
 
 /**
  * Tests os_classes module.
@@ -11,7 +13,9 @@ use Behat\Mink\Exception\ExpectationException;
  * @group classes
  * @coversDefaultClass \Drupal\os_classes\Form\SemesterFieldOptionsForm
  */
-class ClassesAdminFormTest extends ClassesExistingSiteJavascriptTestBase {
+class ClassesAdminFormTest extends OsExistingSiteJavascriptTestBase {
+
+  use OsClassesTestTrait;
 
   /**
    * Tests allowed values admin form access denied.

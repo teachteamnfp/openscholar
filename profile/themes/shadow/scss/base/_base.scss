@@ -1,0 +1,14 @@
+@import "https://fonts.googleapis.com/css?family=Roboto";
+
+body {
+  font-family: 'Roboto', sans-serif;
+  color: $color-gray;
+  background: $color-light-gray;
+}
+a {
+  color: $color-gray2;
+  transition: all .3s ease;
+  &:visited {
+    color: $color-gray2;
+  }
+}

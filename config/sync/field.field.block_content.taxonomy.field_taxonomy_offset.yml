@@ -1,0 +1,23 @@
+uuid: bc483ec3-1919-4ee6-aed0-a1da0fe2fa7f
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.taxonomy
+    - field.storage.block_content.field_taxonomy_offset
+id: block_content.taxonomy.field_taxonomy_offset
+field_name: field_taxonomy_offset
+entity_type: block_content
+bundle: taxonomy
+label: 'Start at'
+description: 'By default the list of terms will start at the first one, if you specify (3) for example it will skip the first 3 terms and start the list at the fourth.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

@@ -1,0 +1,23 @@
+header {
+  box-shadow: 0px 5px 20px rgba(0,0,0,0.05);
+}
+.header-container {
+  background: $color-oxford-blue;
+  color: $color-white;
+  min-height: 100px;
+  ul.nav {
+    li {
+      a {
+        color: $color-white;
+      }
+      ul li {
+          a {
+            color: $color-blue;
+          }
+        }
+    }
+  }
+  h2, h1 {
+    color: $color-white;
+  }
+}

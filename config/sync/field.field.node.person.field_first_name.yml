@@ -1,4 +1,4 @@
-uuid: 388ce4cf-9671-48fd-ac9f-595e93d50761
+uuid: 33e71936-53c8-4761-a503-8368edb92690
 langcode: en
 status: true
 dependencies:
@@ -11,7 +11,7 @@ entity_type: node
 bundle: person
 label: 'First Name'
 description: ''
-required: false
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''

@@ -22,7 +22,7 @@ class ModalSignupFormTest extends EventsJavascriptTestBase {
   public function setUp() {
     parent::setUp();
 
-    $this->simpleUser = $this->createUser(['access control panel']);
+    $this->simpleUser = $this->createUser();
   }
 
   /**
