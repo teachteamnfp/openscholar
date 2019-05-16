@@ -35,17 +35,16 @@ function os_base_preprocess_html(&$variables) {
  *
  * Preprocess hook for item_list__os_dropdown theme.
  */
-function os_base_preprocess_item_list(&$variables) {
-  if ($variables['theme_hook_original'] === 'item_list__os_dropdown') {
-    foreach ($variables['items'] as &$item) {
-      if (!isset($item['value']['#iconize'])) {
-        continue;
-      }
-
-      $icon = Bootstrap::glyphicon($item['value']['#iconize']);
-      $title = $item['value']['#title'];
-      $icon['#value'] = $title;
-      $item['value']['#title'] = $icon;
+function os_base_preprocess_item_list__os_dropdown(&$variables) {
+  foreach ($variables['items'] as &$item) {
+    if (!isset($item['value']['#iconize'])) {
+      continue;
     }
+
+    // Icon-ize the title.
+    $icon = Bootstrap::glyphicon($item['value']['#iconize']);
+    $title = $item['value']['#title'];
+    $icon['#value'] = $title;
+    $item['value']['#title'] = $icon;
   }
 }
