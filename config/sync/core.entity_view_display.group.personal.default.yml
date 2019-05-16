@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.group.personal.field_domain
     - field.field.group.personal.field_parent_site
     - field.field.group.personal.field_privacy_level
     - field.field.group.personal.field_site_description
@@ -58,6 +59,22 @@ third_party_settings:
                 entity: layout_builder.entity
             additional: {  }
             weight: 1
+          1adc582f-7dc8-452f-95c0-70510d2b4224:
+            uuid: 1adc582f-7dc8-452f-95c0-70510d2b4224
+            region: first
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:group:personal:field_domain'
+              formatter:
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+                type: string
+            additional: {  }
+            weight: 2
     allow_custom: true
     enabled: true
 id: group.personal.default
@@ -65,6 +82,14 @@ targetEntityType: group
 bundle: personal
 mode: default
 content:
+  field_domain:
+    weight: -2
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: first
   field_parent_site:
     weight: -4
     label: above

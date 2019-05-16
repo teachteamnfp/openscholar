@@ -3,5 +3,5 @@ langcode: en
 status: true
 dependencies: {  }
 provider_key: group_purl_provider
-label: Personal
+label: 'Path Provider'
 method_key: vsite_prefix

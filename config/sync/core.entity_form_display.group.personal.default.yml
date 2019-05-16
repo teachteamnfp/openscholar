@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.group.personal.field_domain
     - field.field.group.personal.field_parent_site
     - field.field.group.personal.field_privacy_level
     - field.field.group.personal.field_site_description
@@ -25,6 +26,14 @@ targetEntityType: group
 bundle: personal
 mode: default
 content:
+  field_domain:
+    weight: 33
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
   field_parent_site:
     weight: 31
     settings:

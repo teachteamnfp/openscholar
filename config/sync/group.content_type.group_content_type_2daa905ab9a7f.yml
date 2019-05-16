@@ -1,0 +1,18 @@
+uuid: 53520c72-0f1d-476c-ab86-c119985422b7
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.personal
+  module:
+    - bibcite_entity
+    - group_entity
+id: group_content_type_2daa905ab9a7f
+label: 'Personal: Group bibcite_reference'
+description: 'Adds <em class="placeholder">bibcite_reference</em> content to groups both publicly and privately.'
+group_type: personal
+content_plugin: 'group_entity:bibcite_reference'
+plugin_config:
+  group_cardinality: 1
+  entity_cardinality: 1
+  use_creation_wizard: false

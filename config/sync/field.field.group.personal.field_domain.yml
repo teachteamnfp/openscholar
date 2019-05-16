@@ -1,0 +1,19 @@
+uuid: 6c8a3e90-de6c-4b2c-baca-aacf7fc2e444
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.group.field_domain
+    - group.type.personal
+id: group.personal.field_domain
+field_name: field_domain
+entity_type: group
+bundle: personal
+label: 'Custom Domain'
+description: 'If entered this site will be set up to use this custom domain.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

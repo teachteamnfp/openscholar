@@ -1,0 +1,7 @@
+uuid: 1b60ff5e-bdcd-4b80-9366-d07331314691
+langcode: en
+status: true
+dependencies: {  }
+provider_key: vsite_domain_purl_provider
+label: 'Domain Provider'
+method_key: vsite_domain
