@@ -15,8 +15,15 @@
    * @return {link text, link url, link type}
    */
   function parseAnchor(a) {
+    var text = '';
+    if (a.innerHTML.startsWith('<')) {
+      text = htmlContentPlaceholder;
+    }
+    else {
+      text = a.innerHTML;
+    }
     var ret = {
-      text: a.innerHTML,
+      text: text,
       url: '',
       title: '',
       is_blank: 0,
@@ -119,7 +126,12 @@
             existingValues = CKEDITOR.tools.clone(focusedImageWidget.data.link);
           }
           if (existingValues.text == undefined) {
-            existingValues.text = editor.getSelection().getSelectedText();
+            if (editor.getSelection().getSelectedText()) {
+              existingValues.text = editor.getSelection().getSelectedText();
+            }
+            else {
+              existingValues.text = htmlContentPlaceholder;
+            }
           }
 
           var saveCallback = function saveCallback(returnValues) {
@@ -158,7 +170,6 @@
             // Edit current link object.
             if (linkElement) {
               linkElement.removeAttribute('target');
-              linkElement.removeAttribute('target');
               Object.keys(newLinkData.attributes || {}).forEach(function (attrName) {
                 if (newLinkData.attributes[attrName].length > 0) {
                   var value = newLinkData.attributes[attrName];
@@ -193,6 +204,7 @@
                 range.selectNodeContents(text);
               }
 
+              // TODO: apply new data attributes as well
               var style = new CKEDITOR.style({
                 element: 'a',
                 attributes: newLinkData.attributes
