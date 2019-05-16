@@ -41,6 +41,13 @@ class LayoutContextForm extends EntityForm {
       '#default_value' => $context->getDescription(),
     ];
 
+    $form['activate_on'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('Activation Rules'),
+      '#default_value' => $context->getActivationRules(),
+      '#description' => $this->t('A list of paths and routes that this layout context should be active for.')
+    ];
+
     return $form;
   }
 
