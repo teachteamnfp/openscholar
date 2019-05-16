@@ -42,12 +42,11 @@ content:
     third_party_settings: {  }
     region: content
   field_address:
-    weight: 5
+    weight: 13
     label: above
-    settings:
-      link_to_entity: false
+    settings: {  }
     third_party_settings: {  }
-    type: string
+    type: basic_string
     region: content
   field_email:
     weight: 7
@@ -57,8 +56,16 @@ content:
     type: basic_string
     region: content
   field_first_name:
-    weight: 2
-    label: hidden
+    weight: 15
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_honorific:
+    weight: 14
+    label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
@@ -73,13 +80,12 @@ content:
     type: string
     region: content
   field_office_hours:
-    weight: 9
+    weight: 12
     label: above
     settings:
-      thousand_separator: ''
-      prefix_suffix: true
+      link_to_entity: false
     third_party_settings: {  }
-    type: number_integer
+    type: string
     region: content
   field_phone:
     weight: 6
@@ -132,7 +138,6 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
-  field_honorific: true
   field_middle_name: true
   field_redirect_to_source: true
   langcode: true

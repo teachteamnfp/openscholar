@@ -2,9 +2,9 @@
 //colors
 $color_alabaster_approx: #f9f9f9;
 $color_chathams_blue_approx: #1b4977;
-$color_regent_gray_approx: #8996a0;
+$color_regent_gray_approx: #585858;
 $white: #fff;
-$color_steel_blue_approx: #4e84c4;
+$color_steel_blue_approx: #1758a5;
 $gallery: #efefef;
 $color_mountain_mist_approx: #999;
 $color_gray_nurse_approx: #e9e9e9;
@@ -114,6 +114,7 @@ footer {
         }
         &:hover, &:active {
           background: none;
+          color: $white;
           @media #{$mobile} {
             color: $white;
           }
@@ -128,6 +129,7 @@ footer {
           }
           &:hover {
             background: none;
+            color: $white;
             @media #{$mobile} {
               color: $white;
             }
@@ -149,7 +151,6 @@ footer {
 }
 .search-block-form {
   label {
-    color: $white;
   }
   .form-submit {
     background: $color_regent_gray_approx;
@@ -210,4 +211,16 @@ aside .region > .block {
 }
 .path-person .block-inner {
   border-top: 1px solid $color_mountain_mist_approx;
+}
+/** accessibility fixes **/
+header {
+  button.visually-hidden {
+    color: black;
+  }
+}
+aside .navbar-nav li .dropdown-menu a {
+  background: none;
+  &:hover {
+    color: currentColor;
+  }
 }
