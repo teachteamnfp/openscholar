@@ -1,45 +1,18 @@
-uuid: 8c4f9386-053b-48f9-aead-a7481857eaa8
+uuid: 58d7e149-77df-4564-8823-e7f5759a9815
 langcode: en
 status: true
 dependencies:
   module:
     - node
-    - options
 id: node.field_honorific
 field_name: field_honorific
 entity_type: node
-type: list_string
+type: string
 settings:
-  allowed_values:
-    -
-      value: mr
-      label: Mr
-    -
-      value: mrs
-      label: Mrs
-    -
-      value: miss
-      label: Miss
-    -
-      value: ms
-      label: Ms
-    -
-      value: sir
-      label: Sir
-    -
-      value: dr
-      label: Dr.
-    -
-      value: prof
-      label: Professor
-    -
-      value: lady
-      label: Lady
-    -
-      value: lord
-      label: Lord
-  allowed_values_function: ''
-module: options
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
 locked: false
 cardinality: 1
 translatable: true
