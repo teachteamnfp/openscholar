@@ -47,7 +47,7 @@ cp.content.browse.media:
   parent: cp.content.browse
 cp.menu:
   title: 'Menus'
-  route_name: cp.build.menu
+  url: 'internal:##'
   weight: 1
   menu_name: control-panel
 cp.appearance:
