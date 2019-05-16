@@ -49,7 +49,6 @@ cp -f openscholar/composer.json /tmp/
 cp -f openscholar/composer.lock /tmp/
 cd openscholar/profile/themes
 cp -rf . /tmp/
-rm scripts/register-cs.sh
 
 cd $BUILD_ROOT
 
