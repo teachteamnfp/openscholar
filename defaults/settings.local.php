@@ -21,6 +21,6 @@ $config['system.logging']['error_level'] = 'verbose';
 // Disable this if you don't want to use local specific configurations,
 // publications, block placements, etc.
 $config['config_split.config_split.local']['status'] = TRUE;
-// Disable this if you don't want to enable coding and development tools, for
-// example, devel.
-$config['config_split.config_split.development']['status'] = TRUE;
+// Enable this if you want to enable coding and development tools, for example,
+// devel.
+$config['config_split.config_split.development']['status'] = FALSE;
