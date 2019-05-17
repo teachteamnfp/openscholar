@@ -45,7 +45,6 @@ module:
   datetime: 0
   datetime_range: 0
   dblog: 0
-  devel: 0
   dynamic_entity_reference: 0
   dynamic_page_cache: 0
   easy_breadcrumb: 0
@@ -69,7 +68,6 @@ module:
   image: 0
   image_widget_crop: 0
   inline_form_errors: 0
-  kint: 0
   language: 0
   layout_builder: 0
   layout_discovery: 0
