@@ -1,0 +1,34 @@
+<?php
+
+/**
+ * @file
+ * Profiles and person customisations.
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_alter().
+ */
+function os_profiles_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form_id === 'node_person_form' || $form_id === 'node_person_edit_form') {
+    $form['title']['#access'] = FALSE;
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ *
+ * Fill hidden Title field with full name derived from other fields.
+ */
+function os_profiles_node_presave(EntityInterface $entity) {
+  if ($entity->bundle() === 'person') {
+    $honorific = $entity->field_honorific->value;
+    $first_name = $entity->field_first_name->value;
+    $middle_name = $entity->field_middle_name->value;
+    $last_name = $entity->field_last_name->value;
+    $full_name = ($honorific ? $honorific . ' ' : '') . ($first_name ? $first_name . ' ' : '') . ($middle_name ? $middle_name . ' ' : '') . $last_name;
+    $entity->setTitle($full_name);
+  }
+}
