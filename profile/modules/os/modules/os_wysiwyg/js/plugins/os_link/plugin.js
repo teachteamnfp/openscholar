@@ -167,7 +167,7 @@
             }
             // If File is selected.
             if (returnValues.activeTab.indexOf("media") >= 0) {
-              newLinkData.attributes.href = '/media/' + returnValues.selectedMedia;
+              newLinkData.attributes.href = returnValues.selectedMediaUrl;
               newLinkData.data.mid = returnValues.selectedMedia;
             }
             // Edit current link object.

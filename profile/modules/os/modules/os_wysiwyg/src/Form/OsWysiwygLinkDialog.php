@@ -9,7 +9,9 @@ use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\editor\Ajax\EditorDialogSave;
 use Drupal\Core\Ajax\CloseModalDialogCommand;
+use Drupal\os_wysiwyg\OsLinkHelperInterface;
 use Drupal\views\Views;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a link dialog for text editors.
@@ -17,6 +19,33 @@ use Drupal\views\Views;
  * @internal
  */
 class OsWysiwygLinkDialog extends FormBase {
+
+
+  /**
+   * Os Link Helper.
+   *
+   * @var \Drupal\os_wysiwyg\OsLinkHelperInterface
+   */
+  protected $osLinkHelper;
+
+  /**
+   * OsWysiwygLinkDialog constructor.
+   *
+   * @param \Drupal\os_wysiwyg\OsLinkHelperInterface $os_link_helper
+   *   Os Link Helper.
+   */
+  public function __construct(OsLinkHelperInterface $os_link_helper) {
+    $this->osLinkHelper = $os_link_helper;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('os_wysiwyg.os_link_helper')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -180,6 +209,7 @@ class OsWysiwygLinkDialog extends FormBase {
         'attributes' => $form_state->getValue('attributes'),
         'email' => $form_state->getValue('email'),
         'selectedMedia' => $id,
+        'selectedMediaUrl' => !empty($id) ? $this->osLinkHelper->getFileUrlFromMedia($id) : '',
         'activeTab' => $form_state->getValue('link_to__active_tab'),
         'targetOption' => $form_state->getValue('target_option'),
       ];
