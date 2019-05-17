@@ -528,3 +528,55 @@ function os_events_set_rrule(array &$form, FormStateInterface $form_state) {
   // Set the altered rule so that it can be saved in DB.
   $form_state->setValue(array_merge($value_parents, ['rrule']), $rrule);
 }
+
+/**
+ * Implements hook_ENTITY_TYPE_view_alter().
+ */
+function os_events_node_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
+  if ($entity->bundle() !== 'events') {
+    return;
+  }
+
+  // Using `#iconize` instead of `#icon` because then I would had to use
+  // \Drupal\bootstrap\Bootstrap::glyphicon. This would couple the module with
+  // theme.
+  $build['os_events'] = [
+    '#theme' => 'item_list__os_dropdown',
+    '#title' => [
+      '#type' => 'button',
+      '#value' => t('Export'),
+      '#attributes' => [
+        'data-toggle' => 'dropdown',
+        'role' => 'button',
+        'aria-haspopup' => 'true',
+        'aria-expanded' => 'false',
+      ],
+    ],
+    '#items' => [
+      [
+        '#type' => 'link',
+        '#title' => t('RSS'),
+        '#url' => Url::fromRoute('view.event_exportables.feed_1', [
+          'arg_0' => $entity->id(),
+        ]),
+        '#iconize' => 'calendar',
+      ],
+      [
+        '#type' => 'link',
+        '#title' => t('iCal'),
+        '#url' => Url::fromRoute('view.event_exportables.feed_2', [
+          'arg_0' => $entity->id(),
+        ]),
+        '#iconize' => 'calendar',
+      ],
+    ],
+    '#list_type' => 'ul',
+    '#attributes' => [
+      'class' => ['dropdown-menu'],
+    ],
+    '#wrapper_attributes' => [
+      'class' => ['dropdown'],
+    ],
+    '#weight' => 100,
+  ];
+}
