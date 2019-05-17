@@ -15,18 +15,26 @@ use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
 class GaFormTest extends OsExistingSiteTestBase {
 
   /**
+   * Group administrator.
+   *
+   * @var \Drupal\user\Entity\User
+   */
+  protected $groupAdmin;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
     parent::setUp();
 
-    $this->createGroup([
+    $group = $this->createGroup([
       'type' => 'personal',
       'path' => [
         'alias' => '/test-alias',
       ],
     ]);
-    $this->adminUser = $this->createUser([], '', TRUE);
+    $this->groupAdmin = $this->createUser();
+    $this->addGroupAdmin($this->groupAdmin, $group);
     $this->entityTypeManager = $this->container->get('entity_type.manager');
     $this->vsiteContextManager = $this->container->get('vsite.context_manager');
   }
@@ -38,8 +46,7 @@ class GaFormTest extends OsExistingSiteTestBase {
    */
   public function testGaSettingsPath() {
 
-    $this->drupalLogin($this->adminUser);
-
+    $this->drupalLogin($this->groupAdmin);
     $this->drupalGet('test-alias/cp/settings/analytics');
     $this->assertSession()->statusCodeEquals(200);
   }
@@ -51,7 +58,7 @@ class GaFormTest extends OsExistingSiteTestBase {
    */
   public function testGaSettingsForm() {
 
-    $this->drupalLogin($this->adminUser);
+    $this->drupalLogin($this->groupAdmin);
     $this->drupalGet('test-alias/cp/settings/analytics');
     // Dummy web property.
     $edit = [
@@ -68,8 +75,7 @@ class GaFormTest extends OsExistingSiteTestBase {
    */
   public function testVsiteCodesShowOnPage() {
 
-    $this->drupalLogin($this->adminUser);
-
+    $this->drupalLogin($this->groupAdmin);
     // Test only vsite.
     $this->drupalGet('test-alias/cp/settings/analytics');
     // Dummy vsite web property.
