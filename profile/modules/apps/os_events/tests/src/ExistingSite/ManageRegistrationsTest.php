@@ -23,7 +23,7 @@ class ManageRegistrationsTest extends EventsTestBase {
    * @throws \Behat\Mink\Exception\ResponseTextException
    */
   public function testManageRegistrationsTabSignupChecked() {
-    $this->createEvent(TRUE);
+    $this->createEventFunctional(TRUE);
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->pageTextContains('Manage Registrations');
 
@@ -36,7 +36,7 @@ class ManageRegistrationsTest extends EventsTestBase {
    * @throws \Behat\Mink\Exception\ResponseTextException
    */
   public function testManageRegistrationsTabSignupUnChecked() {
-    $this->createEvent(FALSE);
+    $this->createEventFunctional(FALSE);
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->pageTextNotContains('Manage Registrations');
 
@@ -49,7 +49,7 @@ class ManageRegistrationsTest extends EventsTestBase {
    * @throws \Behat\Mink\Exception\ExpectationException
    */
   public function testEventsPage() {
-    $this->createEvent(TRUE);
+    $this->createEventFunctional(TRUE);
     $this->assertSession()->elementExists('css', '#events_signup_modal_form');
   }
 
@@ -61,7 +61,7 @@ class ManageRegistrationsTest extends EventsTestBase {
    */
   public function testRegistrationOpenDate() {
 
-    $this->createEvent(TRUE);
+    $this->createEventFunctional(TRUE);
     $node_url = $this->getUrl();
     $this->assertSession()->elementExists('css', '#events_signup_modal_form');
     // Set a future open date.
@@ -83,7 +83,7 @@ class ManageRegistrationsTest extends EventsTestBase {
    */
   public function testRegistrationCloseDate() {
 
-    $this->createEvent(TRUE);
+    $this->createEventFunctional(TRUE);
     $node_url = $this->getUrl();
     $this->assertSession()->elementExists('css', '#events_signup_modal_form');
     // Set a past close date.
@@ -106,7 +106,7 @@ class ManageRegistrationsTest extends EventsTestBase {
    * @throws \Behat\Mink\Exception\ExpectationException
    */
   public function testRegistrationsListPage() {
-    $this->createEvent(TRUE);
+    $this->createEventFunctional(TRUE);
     $this->clickLink('Manage Registrations');
     $this->clickLink('Registrations');
     $this->assertSession()->statusCodeEquals(200);
@@ -120,7 +120,7 @@ class ManageRegistrationsTest extends EventsTestBase {
    * @throws \Behat\Mink\Exception\ExpectationException
    */
   public function testEmailRegistrantsPage() {
-    $this->createEvent(TRUE);
+    $this->createEventFunctional(TRUE);
     $this->clickLink('Manage Registrations');
     $this->clickLink('Email Registrants');
     $this->assertSession()->statusCodeEquals(200);
