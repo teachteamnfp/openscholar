@@ -35,6 +35,7 @@ class GaFormTest extends OsExistingSiteTestBase {
     ]);
     $this->groupAdmin = $this->createUser();
     $this->addGroupAdmin($this->groupAdmin, $group);
+    $this->adminUser = $this->createUser([], '', TRUE);
     $this->entityTypeManager = $this->container->get('entity_type.manager');
     $this->vsiteContextManager = $this->container->get('vsite.context_manager');
   }
@@ -87,6 +88,7 @@ class GaFormTest extends OsExistingSiteTestBase {
     $this->assertSession()->responseContains('ga("send", "pageview")');
     $this->assertSession()->responseContains('UA-111111111-1');
 
+    $this->drupalLogin($this->adminUser);
     // Test both Global and vsite together.
     $this->drupalGet('admin/config/system/google-analytics');
     // Dummy global web property.
