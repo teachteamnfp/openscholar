@@ -68,14 +68,20 @@ class OsWysiwygLinkFilterTest extends OsExistingSiteTestBase {
    * Test for simple data url.
    */
   public function testDataUrlProcess() {
+    /** @var \Drupal\Core\Entity\EntityTypeManager $entity_type_manager */
+    $entity_type_manager = $this->container->get('entity_type.manager');
+    /** @var \Drupal\Core\Render\Renderer $renderer_service */
+    $renderer_service = \Drupal::service('renderer');
+
     $content = '<a data-url="http://example.com" title="Test">Simple url</a>';
     $settings = [];
     $settings['type'] = 'page';
     $settings['title'] = 'Test data url';
     $settings['body'] = [['value' => $content, 'format' => 'custom_format']];
     $node = $this->createNode($settings);
-    $this->drupalGet('node/' . $node->id());
-    $this->assertContains('title="Test" href="http://example.com"', $this->getCurrentPageContent());
+    $build = $entity_type_manager->getViewBuilder('node')->view($node);
+    $output = $renderer_service->renderRoot($build);
+    $this->assertContains('title="Test" href="http://example.com"', $output->__toString());
   }
 
   /**
