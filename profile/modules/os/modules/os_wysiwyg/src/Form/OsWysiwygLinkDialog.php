@@ -179,9 +179,9 @@ class OsWysiwygLinkDialog extends FormBase {
       $js_data = [
         'attributes' => $form_state->getValue('attributes'),
         'email' => $form_state->getValue('email'),
-        'selected_media' => $id,
-        'active_tab' => $form_state->getValue('link_to__active_tab'),
-        'target_option' => $form_state->getValue('target_option'),
+        'selectedMedia' => $id,
+        'activeTab' => $form_state->getValue('link_to__active_tab'),
+        'targetOption' => $form_state->getValue('target_option'),
       ];
       $response->addCommand(new EditorDialogSave($js_data));
       $response->addCommand(new CloseModalDialogCommand());

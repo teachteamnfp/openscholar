@@ -152,23 +152,23 @@
             editor.fire('saveSnapshot');
 
             // If Web Address is selected.
-            if (returnValues.active_tab.indexOf("web-address") >= 0) {
+            if (returnValues.activeTab.indexOf("web-address") >= 0) {
               if (returnValues.href !== undefined) {
                 newLinkData.attributes.href = returnValues.href;
                 newLinkData.data.url = returnValues.href;
-                if (returnValues.target_option == 1) {
+                if (returnValues.targetOption == 1) {
                   newLinkData.attributes.target = '_blank';
                 }
               }
             }
             // If Email is selected.
-            if (returnValues.active_tab.indexOf("email") >= 0) {
+            if (returnValues.activeTab.indexOf("email") >= 0) {
               newLinkData.attributes.href = 'mailto:' + returnValues.email;
             }
             // If File is selected.
-            if (returnValues.active_tab.indexOf("media") >= 0) {
-              newLinkData.attributes.href = 'media/' + returnValues.selected_media;
-              newLinkData.data.mid = returnValues.selected_media;
+            if (returnValues.activeTab.indexOf("media") >= 0) {
+              newLinkData.attributes.href = '/media/' + returnValues.selectedMedia;
+              newLinkData.data.mid = returnValues.selectedMedia;
             }
             // Edit current link object.
             if (linkElement) {

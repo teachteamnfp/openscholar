@@ -7,6 +7,7 @@ use Drupal\Core\Url;
 use Drupal\filter\FilterProcessResult;
 use Drupal\filter\Plugin\FilterBase;
 use Drupal\media\Entity\Media;
+use Drupal\media\MediaInterface;
 use InvalidArgumentException;
 
 /**
@@ -86,13 +87,13 @@ class OsLinkFilter extends FilterBase {
   /**
    * Get file from media.
    *
-   * @param \Drupal\media\Entity\Media $media
+   * @param \Drupal\media\Entity\MediaInterface $media
    *   Media entity.
    *
    * @return \Drupal\file\Entity\File|null
    *   File entity or null.
    */
-  protected function getFileFromMedia(Media $media) {
+  protected function getFileFromMedia(MediaInterface $media) {
     $file_field_name = '';
     if ($media->hasField('field_media_file')) {
       $file_field_name = 'field_media_file';
