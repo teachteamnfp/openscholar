@@ -170,6 +170,30 @@
               newLinkData.attributes.href = returnValues.selectedMediaUrl;
               newLinkData.data.mid = returnValues.selectedMedia;
             }
+
+            // Create new link object.
+            if (!linkElement && returnValues.attributes.text) {
+              var selection = editor.getSelection();
+              var range = selection.getRanges(1)[0];
+
+              // If selection is empty.
+              if (range.collapsed) {
+                var text = new CKEDITOR.dom.text(newLinkData.text, editor.document);
+                range.insertNode(text);
+                range.selectNodeContents(text);
+              }
+
+              // TODO: apply new data attributes as well
+              var style = new CKEDITOR.style({
+                element: 'a',
+                attributes: newLinkData.attributes
+              });
+              style.type = CKEDITOR.STYLE_INLINE;
+              style.applyToRange(range);
+              range.select();
+
+              linkElement = getSelectedLink(editor);
+            }
             // Edit current link object.
             if (linkElement) {
               linkElement.removeAttribute('target');
@@ -194,29 +218,6 @@
               if (newLinkData.text != htmlContentPlaceholder) {
                 linkElement.setHtml(newLinkData.text);
               }
-            }
-            // Create new link object.
-            else if (returnValues.attributes.text) {
-              var selection = editor.getSelection();
-              var range = selection.getRanges(1)[0];
-
-              // If selection is empty.
-              if (range.collapsed) {
-                var text = new CKEDITOR.dom.text(newLinkData.text, editor.document);
-                range.insertNode(text);
-                range.selectNodeContents(text);
-              }
-
-              // TODO: apply new data attributes as well
-              var style = new CKEDITOR.style({
-                element: 'a',
-                attributes: newLinkData.attributes
-              });
-              style.type = CKEDITOR.STYLE_INLINE;
-              style.applyToRange(range);
-              range.select();
-
-              linkElement = getSelectedLink(editor);
             }
 
             editor.fire('saveSnapshot');

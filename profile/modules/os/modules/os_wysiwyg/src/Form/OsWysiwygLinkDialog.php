@@ -207,6 +207,7 @@ class OsWysiwygLinkDialog extends FormBase {
 
       $js_data = [
         'attributes' => $form_state->getValue('attributes'),
+        'href' => $form_state->getValue('href'),
         'email' => $form_state->getValue('email'),
         'selectedMedia' => $id,
         'selectedMediaUrl' => !empty($id) ? $this->osLinkHelper->getFileUrlFromMedia($id) : '',
