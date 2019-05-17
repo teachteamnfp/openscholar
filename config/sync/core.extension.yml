@@ -90,7 +90,6 @@ module:
   os_app_access: 0
   os_blog: 0
   os_breadcrumb: 0
-  os_blogs: 0
   os_classes: 0
   os_events: 0
   os_faq: 0
