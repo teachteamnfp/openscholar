@@ -61,6 +61,7 @@ module:
   fullcalendar: 0
   fullcalendar_options: 0
   gnode: 0
+  google_analytics: 0
   group: 0
   group_entity: 0
   group_purl: 0
@@ -92,6 +93,7 @@ module:
   os_events: 0
   os_faq: 0
   os_fullcalendar: 0
+  os_google_analytics: 0
   os_links: 0
   os_mailchimp: 0
   os_media: 0

@@ -86,10 +86,6 @@ cp.settings.global.domain:
   title: 'Custom Domain'
   url: 'internal:##'
   parent: cp.settings.global
-cp.settings.global.ga:
-  title: 'Google Analytics'
-  url: 'internal:##'
-  parent: cp.settings.global
 cp.settings.global.privacy_policy:
   title: 'Privacy Policy'
   url: 'internal:##'
