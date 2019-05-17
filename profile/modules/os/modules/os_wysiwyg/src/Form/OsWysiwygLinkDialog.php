@@ -44,12 +44,12 @@ class OsWysiwygLinkDialog extends FormBase {
     $user_input = $form_state->getUserInput();
     $input = isset($user_input['editor_object']) ? $user_input['editor_object'] : [];
 
-    $form['#tree'] = TRUE;
     $form['#attached']['library'][] = 'editor/drupal.editor.dialog';
     $form['#prefix'] = '<div id="os-wysiwyg-link-dialog-form">';
     $form['#suffix'] = '</div>';
 
     $form['attributes'] = [
+      '#tree' => TRUE,
       'text' => [
         '#type' => 'textfield',
         '#title' => $this->t('Text To Display'),
@@ -105,7 +105,7 @@ class OsWysiwygLinkDialog extends FormBase {
       $view->setDisplay($display);
       $view->setItemsPerPage(12);
       $view->preExecute();
-      $build = $view->preview();
+      $build = $view->preview($display);
 
       // Allow the View title to override the plugin title.
       if ($title = $view->getTitle()) {
@@ -116,9 +116,13 @@ class OsWysiwygLinkDialog extends FormBase {
         '#type' => 'details',
         '#title' => $this->t('File'),
         '#group' => 'link_to',
+        '#tree' => FALSE,
       ];
       $form['media']['library'] = $build;
-      $form['media']['library']['#tree'] = TRUE;;
+      $form['media']['original_selected_media'] = [
+        '#type' => 'hidden',
+        '#default_value' => isset($input['mid']) ? $input['mid'] : 0,
+      ];
     }
 
     if (isset($input['type']) && isset($form[$input['type']])) {
@@ -134,7 +138,7 @@ class OsWysiwygLinkDialog extends FormBase {
       // No regular submit-handler. This form only works via JavaScript.
       '#submit' => [],
       '#ajax' => [
-        'callback' => '::submitForm',
+        'callback' => '::submitDialogForm',
         'event' => 'click',
       ],
     ];
@@ -143,9 +147,17 @@ class OsWysiwygLinkDialog extends FormBase {
   }
 
   /**
-   * {@inheritdoc}
+   * Form ajax dialog submission handler.
+   *
+   * @param array $form
+   *   An associative array containing the structure of the form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the form.
+   *
+   * @return \Drupal\Core\Ajax\AjaxResponse
+   *   Ajax response.
    */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
+  public function submitDialogForm(array &$form, FormStateInterface $form_state) {
     $response = new AjaxResponse();
 
     if ($form_state->getErrors()) {
@@ -157,11 +169,32 @@ class OsWysiwygLinkDialog extends FormBase {
       $response->addCommand(new HtmlCommand('#editor-link-dialog-form', $form));
     }
     else {
-      $response->addCommand(new EditorDialogSave($form_state->getValues()));
+      $selected_media_values = array_filter($form_state->getValue('entity_browser_select'));
+      $first_media = array_shift($selected_media_values);
+      list(, $id) = explode(':', $first_media);
+      if (empty($id) && !empty($form_state->getValue('original_selected_media'))) {
+        $id = $form_state->getValue('original_selected_media');
+      }
+
+      $js_data = [
+        'attributes' => $form_state->getValue('attributes'),
+        'email' => $form_state->getValue('email'),
+        'selected_media' => $id,
+        'active_tab' => $form_state->getValue('link_to__active_tab'),
+        'target_option' => $form_state->getValue('target_option'),
+      ];
+      $response->addCommand(new EditorDialogSave($js_data));
       $response->addCommand(new CloseModalDialogCommand());
     }
 
     return $response;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function submitForm(array &$form, FormStateInterface $form_state) {
+    $form_state->setRebuild();
   }
 
 }

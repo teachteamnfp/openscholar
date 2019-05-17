@@ -29,8 +29,10 @@
       is_blank: 0,
       type: ''
     };
-    if (a.hasAttribute('data-fid')) {
-      ret.url = a.getAttribute('data-fid');
+    var home = drupalSettings.path.baseUrl + (typeof drupalSettings.path.pathPrefix != 'undefined' ? drupalSettings.path.pathPrefix : '');
+    if (a.hasAttribute('data-mid')) {
+      ret.url = a.href.replace(home, '');
+      ret.mid = a.getAttribute('data-mid');
       ret.type = 'media';
     }
     else if (a.origin == 'mailto://' || a.protocol == 'mailto:') {
@@ -38,16 +40,12 @@
       ret.type = 'email';
     }
     else {
-      var home = drupalSettings.path.baseUrl + (typeof drupalSettings.path.pathPrefix != 'undefined' ? drupalSettings.path.pathPrefix : ''),
-        dummy = document.createElement('a');
-      dummy.href = home;
+      ret.type = 'web_address';
       if (a.hasAttribute('data-url')) {
         ret.url = a.getAttribute('data-url');
-        ret.type = 'web_address';
       }
       else {
         ret.url = a.href.replace(home, '');
-        ret.type = 'web_address';
       }
     }
     ret.title = a.getAttribute('title');
@@ -154,18 +152,23 @@
             editor.fire('saveSnapshot');
 
             // If Web Address is selected.
-            if (returnValues.link_to.link_to__active_tab.indexOf("web-address") >= 0) {
-              if (returnValues.web_address.href !== undefined) {
-                newLinkData.attributes.href = returnValues.web_address.href;
-                newLinkData.data.url = returnValues.web_address.href;
-                if (returnValues.web_address.target_option == 1) {
+            if (returnValues.active_tab.indexOf("web-address") >= 0) {
+              if (returnValues.href !== undefined) {
+                newLinkData.attributes.href = returnValues.href;
+                newLinkData.data.url = returnValues.href;
+                if (returnValues.target_option == 1) {
                   newLinkData.attributes.target = '_blank';
                 }
               }
             }
             // If Email is selected.
-            if (returnValues.link_to.link_to__active_tab.indexOf("email") >= 0) {
-              newLinkData.attributes.href = 'mailto:' + returnValues.email.email;
+            if (returnValues.active_tab.indexOf("email") >= 0) {
+              newLinkData.attributes.href = 'mailto:' + returnValues.email;
+            }
+            // If File is selected.
+            if (returnValues.active_tab.indexOf("media") >= 0) {
+              newLinkData.attributes.href = 'media/' + returnValues.selected_media;
+              newLinkData.data.mid = returnValues.selected_media;
             }
             // Edit current link object.
             if (linkElement) {
