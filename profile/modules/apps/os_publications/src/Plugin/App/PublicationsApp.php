@@ -8,7 +8,7 @@ use Drupal\vsite\Plugin\AppPluginBase;
  * Publications app.
  *
  * @App(
- *   title = @Translation("Publications"),
+ *   title = @Translation("Publication"),
  *   canDisable = true,
  *   entityType = "bibcite_reference",
  *   id = "publications"
