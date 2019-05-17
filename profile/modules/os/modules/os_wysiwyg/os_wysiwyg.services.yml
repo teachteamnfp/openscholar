@@ -1,0 +1,4 @@
+services:
+  os_wysiwyg.os_link_helper:
+    class: Drupal\os_wysiwyg\OsLinkHelper
+    arguments: ['@stream_wrapper_manager']
