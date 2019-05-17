@@ -12,7 +12,7 @@ use Drupal\Tests\openscholar\Traits\ExistingSiteTestTrait;
 /**
  * Class MediaEntityResourceTest.
  *
- * @package Drupal\Tests\os_rest\ExistingSite
+ * @package Drupal\Tests\os_wysiwyg\ExistingSite
  * @group kernel
  * @group wysiwyg
  */
