@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5a52431df38ae05b1166c8d0d69fc460",
+    "content-hash": "f64a96d0370f91fe669eda6aa5087d7b",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -4630,7 +4630,8 @@
                     }
                 },
                 "patches_applied": {
-                    "/views/ajax?_wrapper_format=drupal_ajax HTTP/1.1 - HTTP/1.1 403 Forbidden": "https://www.drupal.org/files/issues/2018-08-15/group-route-match-ajax-views-d8-2942657-11.patch"
+                    "/views/ajax?_wrapper_format=drupal_ajax HTTP/1.1 - HTTP/1.1 403 Forbidden": "https://www.drupal.org/files/issues/2018-08-15/group-route-match-ajax-views-d8-2942657-11.patch",
+                    "Entities identified by strings as group content": "https://www.drupal.org/files/issues/2018-11-26/group-support_string_entity_ids-2797793-146.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -5401,7 +5402,7 @@
                 "shasum": null
             },
             "type": "drupal-module",
-            "time": "2019-03-22T17:35:09+00:00"
+            "time": "2019-04-23T13:49:43+00:00"
         },
         {
             "name": "drupal/rng",
