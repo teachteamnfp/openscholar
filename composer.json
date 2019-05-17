@@ -230,7 +230,8 @@
         "drupal/rng_views": "^1.7",
         "drupal/date_recur_modular": "^1.0@alpha",
         "drupal/easy_breadcrumb": "^1.8",
-        "drupal/views_ical": "^2.1"
+        "drupal/views_ical": "^2.1",
+        "drupal/google_analytics": "^2.4"
     },
     "require-dev": {
         "drupal/features": "^3.7",
