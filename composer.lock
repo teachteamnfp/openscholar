@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "65bee8bccf3d6100bb510a5c52be09cf",
+    "content-hash": "9763806907cfd228b9370f20cd4e5a79",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -6259,16 +6259,16 @@
         },
         {
             "name": "drupal/views_ical",
-            "version": "2.0",
+            "version": "2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/openscholar/views_ical.git",
-                "reference": "72b6f4d5d2ffc1eace8cf90442acfa5a3d4a08d3"
+                "reference": "e88461d92a78ca72aba97ba7636d0e1b0c285b9e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/openscholar/views_ical/zipball/72b6f4d5d2ffc1eace8cf90442acfa5a3d4a08d3",
-                "reference": "72b6f4d5d2ffc1eace8cf90442acfa5a3d4a08d3",
+                "url": "https://api.github.com/repos/openscholar/views_ical/zipball/e88461d92a78ca72aba97ba7636d0e1b0c285b9e",
+                "reference": "e88461d92a78ca72aba97ba7636d0e1b0c285b9e",
                 "shasum": ""
             },
             "require": {
@@ -6280,9 +6280,9 @@
             ],
             "description": "Provides an iCal Views style plugin.",
             "support": {
-                "source": "https://github.com/openscholar/views_ical/tree/2.0"
+                "source": "https://github.com/openscholar/views_ical/tree/2.1"
             },
-            "time": "2019-05-10T09:51:53+00:00"
+            "time": "2019-05-16T10:44:55+00:00"
         },
         {
             "name": "drupal/views_infinite_scroll",
