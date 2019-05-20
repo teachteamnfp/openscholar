@@ -200,9 +200,12 @@ class OsWysiwygLinkDialog extends FormBase {
     else {
       $selected_media_values = array_filter($form_state->getValue('entity_browser_select'));
       $first_media = array_shift($selected_media_values);
-      list(, $id) = explode(':', $first_media);
-      if (empty($id) && !empty($form_state->getValue('original_selected_media'))) {
-        $id = $form_state->getValue('original_selected_media');
+      $id = '';
+      if (!empty($first_media)) {
+        list(, $id) = explode(':', $first_media);
+        if (empty($id) && !empty($form_state->getValue('original_selected_media'))) {
+          $id = $form_state->getValue('original_selected_media');
+        }
       }
 
       $js_data = [
