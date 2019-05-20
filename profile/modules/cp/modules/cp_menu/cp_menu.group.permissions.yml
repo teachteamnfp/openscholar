@@ -1,4 +1,0 @@
-manage_menu:
-  title: 'Manage Site Menus'
-  description: 'Allow users to perform CRUD operations on the menus of a site.'
-  restrict access: false
