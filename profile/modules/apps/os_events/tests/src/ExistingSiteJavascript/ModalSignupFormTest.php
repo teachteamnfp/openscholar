@@ -32,7 +32,7 @@ class ModalSignupFormTest extends EventsJavascriptTestBase {
    */
   public function testModalOpen() {
 
-    $url = $this->createEvent();
+    $url = $this->createEventFunctionalJs();
     $this->drupalLogin($this->simpleUser);
 
     $this->visit($url);
@@ -54,7 +54,7 @@ class ModalSignupFormTest extends EventsJavascriptTestBase {
    */
   public function testModalFormSubmission() {
 
-    $url = $this->createEvent();
+    $url = $this->createEventFunctionalJs();
     $this->drupalLogin($this->simpleUser);
 
     $this->visit($url);
@@ -96,7 +96,7 @@ class ModalSignupFormTest extends EventsJavascriptTestBase {
    */
   public function testRegistrationCreation() {
 
-    $url = $this->createEvent();
+    $url = $this->createEventFunctionalJs();
     $this->visit($url);
 
     $web_assert = $this->assertSession();

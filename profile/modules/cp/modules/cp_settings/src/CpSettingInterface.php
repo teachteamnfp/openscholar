@@ -31,6 +31,16 @@ interface CpSettingInterface {
   public function getForm(array &$form, ConfigFactoryInterface $configFactory);
 
   /**
+   * Validates the form.
+   *
+   * @param array $form
+   *   The form.
+   * @param \Drupal\Core\Form\FormStateInterface $formState
+   *   The form state.
+   */
+  public function validateForm(array &$form, FormStateInterface $formState);
+
+  /**
    * Submit form callback.
    *
    * @param \Drupal\Core\Form\FormStateInterface $formState
