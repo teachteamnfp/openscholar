@@ -28,7 +28,7 @@ class OsLink extends CKEditorPluginBase {
   public function getLibraries(Editor $editor) {
     return [
       'core/drupal.ajax',
-      'media_entity_browser/view',
+      'core/views.ajax',
     ];
   }
 
