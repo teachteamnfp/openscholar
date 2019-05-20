@@ -87,4 +87,12 @@ class OsWysiwygHelperServiceTest extends OsExistingSiteTestBase {
     $this->assertEquals('http://apache/sites/default/files/docs/document.doc', $url);
   }
 
+  /**
+   * Test for empty media image mid conversion.
+   */
+  public function testMediaEmptyImageMidConvert() {
+    $url = $this->osLinkHelper->getFileUrlFromMedia(999);
+    $this->assertEquals('', $url);
+  }
+
 }
