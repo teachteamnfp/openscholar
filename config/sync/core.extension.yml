@@ -45,7 +45,6 @@ module:
   datetime: 0
   datetime_range: 0
   dblog: 0
-  devel: 0
   dynamic_entity_reference: 0
   dynamic_page_cache: 0
   easy_breadcrumb: 0
@@ -64,6 +63,7 @@ module:
   fullcalendar: 0
   fullcalendar_options: 0
   gnode: 0
+  google_analytics: 0
   group: 0
   group_entity: 0
   group_purl: 0
@@ -72,7 +72,6 @@ module:
   image_widget_crop: 0
   inline_entity_form: 0
   inline_form_errors: 0
-  kint: 0
   language: 0
   layout_builder: 0
   layout_discovery: 0
@@ -98,6 +97,7 @@ module:
   os_events: 0
   os_faq: 0
   os_fullcalendar: 0
+  os_google_analytics: 0
   os_links: 0
   os_mailchimp: 0
   os_media: 0

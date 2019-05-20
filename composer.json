@@ -230,10 +230,10 @@
         "drupal/rng_views": "^1.7",
         "drupal/date_recur_modular": "^1.0@alpha",
         "drupal/easy_breadcrumb": "^1.8",
-        "drupal/views_ical": "^2.1"
+        "drupal/views_ical": "^2.1",
+        "drupal/google_analytics": "^2.4"
     },
     "require-dev": {
-        "drupal/features": "^3.7",
         "webflo/drupal-core-require-dev": "~8.6.16",
         "drupal/devel": "^1.2",
         "weitzman/drupal-test-traits": "^1.0@beta",
@@ -283,7 +283,7 @@
             "DrupalProject\\composer\\ScriptHandler::installBootstrapLibrary"
         ],
         "code-standard": [
-            "./vendor/bin/phpcs --standard=Drupal --ignore=*.yml",
+            "./vendor/bin/phpcs --standard=Drupal --ignore=*.yml,*.md",
             "./vendor/bin/phpcs --standard=DrupalPractice"
         ],
         "code-standard-fix": [

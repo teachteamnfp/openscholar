@@ -1,0 +1,103 @@
+<?php
+
+/**
+ * @file
+ * Os Google Analytics alterations.
+ */
+
+use Drupal\Component\Serialization\Json;
+use Drupal\google_analytics\Component\Render\GoogleAnalyticsJavaScriptSnippet;
+
+/**
+ * Implements hook_page_attachments().
+ *
+ * Insert JavaScript to the appropriate scope/region of the page.
+ */
+function os_google_analytics_page_attachments(array &$page) {
+
+  // Get required settings and values.
+  $vsite_web_property = Drupal::config('os_ga.settings')->get('web_property_id');
+  $config = \Drupal::config('google_analytics.settings');
+  $global_web_property = $config->get('account');
+  $trackfiles_extensions = $config->get('track.files_extensions');
+  $site_url = Drupal::service('vsite.context_manager')->getActivePurl();
+
+  // Build the create only fields list.
+  $create_only_fields = ['cookieDomain' => 'auto'];
+
+  // If global tracking property is not set, cannot create two tracking objects.
+  // Create only vsite tracking script if in vsite context.
+  if (!$global_web_property && $site_url && $vsite_web_property) {
+
+    // Add link tracking.
+    $link_settings = [];
+    $link_settings['trackOutbound'] = TRUE;
+    $link_settings['trackMailto'] = TRUE;
+    $link_settings['trackDownload'] = TRUE;
+    $link_settings['trackDownloadExtensions'] = $trackfiles_extensions;
+    if ((\Drupal::moduleHandler()->moduleExists('colorbox'))) {
+      $link_settings['trackColorbox'] = TRUE;
+    }
+
+    $page['#attached']['drupalSettings']['google_analytics'] = $link_settings;
+    $page['#attached']['library'][] = 'google_analytics/google_analytics';
+
+    // Build tracker code.
+    $script = '(function(i,s,o,g,r,a,m){';
+    $script .= 'i["GoogleAnalyticsObject"]=r;i[r]=i[r]||function(){';
+    $script .= '(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),';
+    $script .= 'm=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)';
+    $script .= '})(window,document,"script",';
+    $library_tracker_url = 'https://www.google-analytics.com/analytics.js';
+    $script .= '"' . $library_tracker_url . '"';
+    $script .= ',"ga");';
+    // Create a tracker.
+    $script .= 'ga("create", ' . Json::encode($vsite_web_property) . ', ' . Json::encode($create_only_fields) . ');';
+    $script .= 'ga("set", "anonymizeIp", true);';
+    $script .= 'ga("send", "pageview");';
+    $page['#attached']['html_head'][] = [
+      [
+        '#tag' => 'script',
+        '#value' => new GoogleAnalyticsJavaScriptSnippet($script),
+      ],
+      'google_analytics_tracking_script',
+    ];
+    return;
+  }
+
+  if (!$site_url || !$vsite_web_property) {
+    return;
+  }
+
+  $google_js = [];
+
+  // Check if ga js is already set and then unset it.
+  foreach ($page['#attached']['html_head'] as $k => $google_js) {
+    if ($google_js[1] === "google_analytics_tracking_script") {
+      unset($page['#attached']['html_head'][$k]);
+      break;
+    }
+  }
+
+  if ($google_js[1] !== 'google_analytics_tracking_script') {
+    return;
+  }
+  // Get the global js tag already set to append vsite specific UA property.
+  $script = $google_js[0]['#value']->__toString();
+
+  // Build the create only fields list.
+  $create_only_fields = ['cookieDomain' => 'auto', 'name' => $site_url];
+
+  // Create a tracker.
+  $script .= 'ga("create", ' . Json::encode($vsite_web_property) . ', ' . Json::encode($create_only_fields) . ');';
+  $script .= 'ga("' . $site_url . '.send", "pageview");';
+
+  // Attach the new script which contains vsite tracker object.
+  $page['#attached']['html_head'][] = [
+    [
+      '#tag' => 'script',
+      '#value' => new GoogleAnalyticsJavaScriptSnippet($script),
+    ],
+    'google_analytics_tracking_script',
+  ];
+}
