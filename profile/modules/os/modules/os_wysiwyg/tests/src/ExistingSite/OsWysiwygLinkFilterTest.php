@@ -10,7 +10,7 @@ use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
 use Drupal\Tests\openscholar\Traits\ExistingSiteTestTrait;
 
 /**
- * Class MediaEntityResourceTest.
+ * Class OsWysiwygLinkFilterTest.
  *
  * @package Drupal\Tests\os_wysiwyg\ExistingSite
  * @group kernel

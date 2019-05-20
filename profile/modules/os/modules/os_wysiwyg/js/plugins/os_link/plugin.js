@@ -91,7 +91,7 @@
   }
 
   CKEDITOR.plugins.add('os_link', {
-    icons: 'oslink,osunlink',
+    icons: 'oslink',
     hidpi: true,
 
     init: function init(editor) {
@@ -231,32 +231,6 @@
           Drupal.ckeditor.openDialog(editor, Drupal.url('os_wysiwyg/dialog/os_link/' + editor.config.drupal.format), existingValues, saveCallback, dialogSettings);
         }
       });
-      editor.addCommand('os_unlink', {
-        contextSensitive: 1,
-        startDisabled: 1,
-        requiredContent: new CKEDITOR.style({
-          element: 'a',
-          attributes: {
-            href: ''
-          }
-        }),
-        exec: function exec(editor) {
-          var style = new CKEDITOR.style({
-            element: 'a',
-            type: CKEDITOR.STYLE_INLINE,
-            alwaysRemoveElement: 1
-          });
-          editor.removeStyle(style);
-        },
-        refresh: function refresh(editor, path) {
-          var element = path.lastElement && path.lastElement.getAscendant('a', true);
-          if (element && element.getName() === 'a' && element.getAttribute('href') && element.getChildCount()) {
-            this.setState(CKEDITOR.TRISTATE_OFF);
-          } else {
-            this.setState(CKEDITOR.TRISTATE_DISABLED);
-          }
-        }
-      });
 
       editor.setKeystroke(CKEDITOR.CTRL + 75, 'os_link');
 
@@ -264,10 +238,6 @@
         editor.ui.addButton('OsLink', {
           label: Drupal.t('Link'),
           command: 'os_link'
-        });
-        editor.ui.addButton('OsUnlink', {
-          label: Drupal.t('Unlink'),
-          command: 'os_unlink'
         });
       }
 
@@ -290,13 +260,6 @@
             group: 'link',
             order: 1
           },
-
-          os_unlink: {
-            label: Drupal.t('Unlink'),
-            command: 'os_unlink',
-            group: 'link',
-            order: 5
-          }
         });
       }
 
@@ -314,7 +277,6 @@
           if (anchor.getAttribute('href') && anchor.getChildCount()) {
             menu = {
               os_link: CKEDITOR.TRISTATE_OFF,
-              os_unlink: CKEDITOR.TRISTATE_OFF
             };
           }
           return menu;

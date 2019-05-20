@@ -64,7 +64,7 @@ settings:
           name: Links
           items:
             - OsLink
-            - OsUnLink
+            - Unlink
   plugins:
     language:
       language_list: un
