@@ -9,8 +9,8 @@ use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\editor\Ajax\EditorDialogSave;
 use Drupal\Core\Ajax\CloseModalDialogCommand;
+use Drupal\entity_browser\Element\EntityBrowserElement;
 use Drupal\os_wysiwyg\OsLinkHelperInterface;
-use Drupal\views\Views;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -126,33 +126,33 @@ class OsWysiwygLinkDialog extends FormBase {
       '#default_value' => isset($input['email']) ? $input['email'] : '',
     ];
 
-    $name = 'media_entity_browser';
-    $display = 'media_browser_all';
+    $form['media'] = [
+      '#type' => 'details',
+      '#title' => $this->t('File'),
+      '#group' => 'link_to',
+      '#tree' => FALSE,
+    ];
 
-    $view = Views::getView($name);
-    if (!empty($view)) {
-      $view->setDisplay($display);
-      $view->setItemsPerPage(12);
-      $view->preExecute();
-      $build = $view->preview($display);
-
-      // Allow the View title to override the plugin title.
-      if ($title = $view->getTitle()) {
-        $build['#title'] = $title;
-      }
-
-      $form['media'] = [
-        '#type' => 'details',
-        '#title' => $this->t('File'),
-        '#group' => 'link_to',
-        '#tree' => FALSE,
-      ];
-      $form['media']['library'] = $build;
-      $form['media']['original_selected_media'] = [
-        '#type' => 'hidden',
-        '#default_value' => isset($input['mid']) ? $input['mid'] : 0,
-      ];
-    }
+    $form['media']['entity_browser'] = [
+      '#type' => 'entity_browser',
+      '#entity_browser' => 'os_link_media_select',
+      '#cardinality' => 1,
+      '#selection_mode' => EntityBrowserElement::SELECTION_MODE_APPEND,
+      '#entity_browser_validators' => [
+        'entity_type' => [
+          'type' => 'media',
+        ],
+      ],
+      '#widget_context' => [],
+      '#custom_hidden_id' => 'original_selected_media',
+      '#process' => [
+        ['\Drupal\entity_browser\Element\EntityBrowserElement', 'processEntityBrowser'],
+      ],
+    ];
+    $form['media']['original_selected_media'] = [
+      '#type' => 'hidden',
+      '#default_value' => isset($input['mid']) ? $input['mid'] : 0,
+    ];
 
     if (isset($input['type']) && isset($form[$input['type']])) {
       $form['link_to']['#default_tab'] = 'edit-' . $input['type'];
@@ -198,11 +198,10 @@ class OsWysiwygLinkDialog extends FormBase {
       $response->addCommand(new HtmlCommand('#editor-link-dialog-form', $form));
     }
     else {
-      $selected_media_values = array_filter($form_state->getValue('entity_browser_select'));
-      $first_media = array_shift($selected_media_values);
+      $selected_media_values = array_filter($form_state->getValue('entity_browser'));
       $id = '';
-      if (!empty($first_media)) {
-        list(, $id) = explode(':', $first_media);
+      if (!empty($selected_media_values['entity_ids'])) {
+        list(, $id) = explode(':', $selected_media_values['entity_ids']);
         if (empty($id) && !empty($form_state->getValue('original_selected_media'))) {
           $id = $form_state->getValue('original_selected_media');
         }
