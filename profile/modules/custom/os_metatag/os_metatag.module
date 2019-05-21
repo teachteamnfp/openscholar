@@ -13,6 +13,8 @@ use Drupal\Component\Utility\Html;
 function os_metatag_page_attachments(array &$attachments) {
   $config = \Drupal::config('os_metatag.settings');
   $publisher_url = $config->get('publisher_url');
+  $render_cache = \Drupal::service('cache.render');
+  $render_cache->invalidateAll();
   if (!empty($publisher_url)) {
     $publisher_link = [
       '#tag' => 'link',
