@@ -68,7 +68,6 @@ class OsMetatagSetting extends CpSettingBase {
     $config->set('publisher_url', $formState->getValue('publisher_url'));
     $config->set('author_url', $formState->getValue('author_url'));
     $config->save(TRUE);
-    drupal_flush_all_caches();
   }
 
 }
