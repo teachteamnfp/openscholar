@@ -2,9 +2,12 @@
 
 namespace Drupal\os_metatag\Plugin\CpSetting;
 
+use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\cp_settings\CpSettingBase;
+use Drupal\vsite\Plugin\VsiteContextManagerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * CP metatag setting.
@@ -20,6 +23,45 @@ use Drupal\cp_settings\CpSettingBase;
  * )
  */
 class OsMetatagSetting extends CpSettingBase {
+
+  /**
+   * CacheBackend Service.
+   *
+   * @var \Drupal\Core\Cache\CacheBackendInterface
+   */
+  protected $renderCache;
+
+  /**
+   * OsMetatagSetting constructor.
+   *
+   * @param array $configuration
+   *   Plugin Configuration.
+   * @param string $plugin_id
+   *   Plugin Id.
+   * @param mixed $plugin_definition
+   *   Plugin Definition.
+   * @param \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager
+   *   Vsite Context Manager.
+   * @param \Drupal\Core\Cache\CacheBackendInterface $cache
+   *   Cache service.
+   */
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, VsiteContextManagerInterface $vsite_context_manager, CacheBackendInterface $cache) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $vsite_context_manager);
+    $this->renderCache = $cache;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('vsite.context_manager'),
+      $container->get('cache.render')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -68,8 +110,7 @@ class OsMetatagSetting extends CpSettingBase {
     $config->set('publisher_url', $formState->getValue('publisher_url'));
     $config->set('author_url', $formState->getValue('author_url'));
     $config->save(TRUE);
-    $render_cache = \Drupal::service('cache.render');
-    $render_cache->invalidateAll();
+    $this->renderCache->invalidateAll();
   }
 
 }
