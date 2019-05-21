@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "95cd55db8407bca5904e9130ed2d503f",
+    "content-hash": "1ed8e2246c33a38907994d927a125216",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -4686,7 +4686,8 @@
                     }
                 },
                 "patches_applied": {
-                    "/views/ajax?_wrapper_format=drupal_ajax HTTP/1.1 - HTTP/1.1 403 Forbidden": "https://www.drupal.org/files/issues/2018-08-15/group-route-match-ajax-views-d8-2942657-11.patch"
+                    "/views/ajax?_wrapper_format=drupal_ajax HTTP/1.1 - HTTP/1.1 403 Forbidden": "https://www.drupal.org/files/issues/2018-08-15/group-route-match-ajax-views-d8-2942657-11.patch",
+                    "Entities identified by strings as group content": "https://www.drupal.org/files/issues/2018-11-26/group-support_string_entity_ids-2797793-146.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4764,6 +4765,61 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/group_purl",
                 "issues": "https://www.drupal.org/project/issues/group_purl"
+            }
+        },
+        {
+            "name": "drupal/groupmenu",
+            "version": "1.0.0-beta2",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/groupmenu.git",
+                "reference": "8.x-1.0-beta2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/groupmenu-8.x-1.0-beta2.zip",
+                "reference": "8.x-1.0-beta2",
+                "shasum": "2a3e49b3dabf7271e5b04a84c7a95cd6ca1aafbf"
+            },
+            "require": {
+                "drupal/core": "*",
+                "drupal/group": "*"
+            },
+            "require-dev": {
+                "drupal/gnode": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0-beta2",
+                    "datestamp": "1554443887",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Beta releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "mike.davis",
+                    "homepage": "https://www.drupal.org/user/2660157"
+                },
+                {
+                    "name": "seanB",
+                    "homepage": "https://www.drupal.org/user/545912"
+                }
+            ],
+            "description": "Gives the ability to create and manage menus for groups.",
+            "homepage": "https://www.drupal.org/project/groupmenu",
+            "support": {
+                "source": "https://git.drupalcode.org/project/groupmenu"
             }
         },
         {
