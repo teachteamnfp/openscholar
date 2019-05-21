@@ -5,3 +5,5 @@ os_wysiwyg.os_link_dialog:
     _title: 'Add link'
   requirements:
     _entity_access: 'editor.use'
+  options:
+    _admin_route: TRUE
