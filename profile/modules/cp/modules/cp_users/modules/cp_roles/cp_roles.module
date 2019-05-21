@@ -6,15 +6,9 @@
  */
 
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\cp_roles\Entity\Form\CpRoleForm;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\group\Entity\GroupRoleInterface;
-
-/**
- * Implements hook_entity_type_build().
- */
-function cp_roles_entity_type_build(array &$entity_types) {
-  $entity_types['group_role']->setFormClass('add', CpRoleForm::class);
-}
 
 /**
  * Implements hook_entity_presave().
@@ -36,4 +30,27 @@ function cp_roles_entity_presave(EntityInterface $entity) {
 
     $entity->set('id', "{$entity->getGroupTypeId()}-{$vsite->id()}-{$provided_entity_id}");
   }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function cp_roles_form_group_role_add_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Performs alterations in the role-add form, so that it matches the
+  // requirement of putting vsite ID in the GroupRole ID.
+  /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
+  $vsite_context_manager = \Drupal::service('vsite.context_manager');
+  /** @var \Drupal\group\Entity\GroupInterface|null $vsite */
+  $vsite = $vsite_context_manager->getActiveVsite();
+
+  if (!$vsite) {
+    return;
+  }
+
+  $subtract = \strlen($vsite->bundle()) + \strlen($vsite->id()) + 1;
+  /** @var string $default_id_prefix */
+  $default_id_prefix = $form['id']['#field_prefix'];
+
+  $form['id']['#field_prefix'] = "$default_id_prefix{$vsite->id()}-";
+  $form['id']['#maxlength'] = EntityTypeInterface::ID_MAX_LENGTH - $subtract;
 }
