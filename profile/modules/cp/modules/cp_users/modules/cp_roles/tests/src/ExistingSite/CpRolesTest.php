@@ -2,16 +2,13 @@
 
 namespace Drupal\Tests\cp_roles\ExistingSite;
 
-use Drupal\group\Entity\GroupRole;
-use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
-
 /**
  * Class CpRoleTest.
  *
  * @group kernel
  * @group cp
  */
-class CpRoleTest extends OsExistingSiteTestBase {
+class CpRolesTest extends CpRolesTestBase {
 
   /**
    * Tests custom role save.
@@ -25,16 +22,11 @@ class CpRoleTest extends OsExistingSiteTestBase {
     $vsite_context_manager = $this->container->get('vsite.context_manager');
     $vsite_context_manager->activateVsite($this->group);
 
-    $group_role = GroupRole::create([
+    $group_role = $this->createGroupRole([
       'id' => 'cprole',
-      'label' => $this->randomMachineName(),
-      'group_type' => 'personal',
     ]);
-    $group_role->save();
 
     $this->assertEquals("personal-{$this->group->id()}-cprole", $group_role->id());
-
-    $group_role->delete();
   }
 
 }
