@@ -1,0 +1,8 @@
+cp_roles.role.add_form:
+  path: '/cp/{group_type}/users/roles/add'
+  defaults:
+    _entity_form: 'group_role.add'
+    _title: 'Add vsite role'
+  requirements:
+    _group_permission: 'manage cp roles'
+    _group_member: 'TRUE'

@@ -1,0 +1,39 @@
+<?php
+
+/**
+ * @file
+ * Manages vsite roles.
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\cp_roles\Entity\Form\CpRoleForm;
+use Drupal\group\Entity\GroupRoleInterface;
+
+/**
+ * Implements hook_entity_type_build().
+ */
+function cp_roles_entity_type_build(array &$entity_types) {
+  $entity_types['group_role']->setFormClass('add', CpRoleForm::class);
+}
+
+/**
+ * Implements hook_entity_presave().
+ */
+function cp_roles_entity_presave(EntityInterface $entity) {
+  // Makes sure that the GroupRole ID contains the vsite ID where it was
+  // created.
+  if ($entity instanceof GroupRoleInterface && $entity->isNew()) {
+    /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
+    $vsite_context_manager = \Drupal::service('vsite.context_manager');
+    /** @var \Drupal\group\Entity\GroupInterface|null $vsite */
+    $vsite = $vsite_context_manager->getActiveVsite();
+
+    if (!$vsite) {
+      return;
+    }
+
+    $provided_entity_id = \str_replace("{$entity->getGroupTypeId()}-", '', $entity->id());
+
+    $entity->set('id', "{$entity->getGroupTypeId()}-{$vsite->id()}-{$provided_entity_id}");
+  }
+}

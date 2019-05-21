@@ -1,0 +1,4 @@
+manage cp roles:
+  title: 'Manage CP Roles'
+  description: 'Allow users to access the CP Roles tool suite'
+  restrict access: true

@@ -1,0 +1,8 @@
+name: Vsite Roles Management
+description: Manages vsite roles
+type: module
+core: 8.x
+depdendencies:
+  - drupal:group
+  - cp:cp_users
+  - drupal:vsite
