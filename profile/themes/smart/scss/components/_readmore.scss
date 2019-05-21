@@ -1,16 +1,15 @@
-.node-readmore {
-  a {
-    border-bottom: none;
-    font-weight: bold;
-    padding-right: 11px;
-    position: relative;
-    z-index: 9;
-    text-decoration: none;
-    font-size: .90em;
-    &:after {
-      background: url("../../os_base/images/basesprite.png") no-repeat 3px -572px;
-      padding-right: 11px;
-      content: '';
-    }
+.read-more,
+.node-readmore a {
+  font-weight: bold;
+  font-size: 14px;
+  position: relative;
+  z-index: 9;
+  text-decoration: none;
+  border: 1px solid;
+  padding: 10px;
+  margin-top: 10px;
+  display: inline-block;
+  &:after {
+    background: none;
   }
 }

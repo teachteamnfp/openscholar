@@ -1,4 +1,4 @@
-aside {
+aside, .content-inner {
   .block-title {
     font-size: 16px;
     text-transform: uppercase;
@@ -6,5 +6,13 @@ aside {
     color: $color-text2;
     padding: 0 14px;
     line-height: 34px;
+    margin-bottom: 15px;
+    border-left: 3px solid $color-pink;
+  }
+  .navbar-nav li .dropdown-menu a {
+    color: $color-black;
+    &:hover {
+      color: $color-black;
+    }
   }
 }

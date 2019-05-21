@@ -18,4 +18,10 @@ footer.footer {
     margin-bottom: 15px;
     padding-bottom: 15px;
   }
+  .sr-only {
+    color: $color-text1;
+  }
+  .visually-hidden {
+    color: $color-black;
+  }
 }

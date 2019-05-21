@@ -61,6 +61,18 @@
           }
         }
       }
+      &:last-child {
+        a {
+          border: 0;
+        }
+      }
     }
   }
+  .sr-only {
+    color: $color-white;
+  }
+}
+.dropdown-menu > .active > a {
+  background: none;
+  color: $color-text;
 }
