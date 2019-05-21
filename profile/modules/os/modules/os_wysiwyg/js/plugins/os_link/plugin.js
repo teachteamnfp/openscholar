@@ -183,7 +183,6 @@
                 range.selectNodeContents(text);
               }
 
-              // TODO: apply new data attributes as well
               var style = new CKEDITOR.style({
                 element: 'a',
                 attributes: newLinkData.attributes
