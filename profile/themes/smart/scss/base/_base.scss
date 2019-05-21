@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Roboto+Slab&display=swap');
+
+body {
+  font: 14px/1.5 "Open Sans", Arial, sans-serif;
+  color: $color-text;
+  background: $color-light-gray;
+}
+.fc-header-toolbar h2, .fc-header-toolbar .ui-button {
+  padding-bottom: 0;
+  font-family: "Open Sans", Arial, sans-serif;
+  color: $color-black;
+}
+a {
+  color: $color-black;
+  text-decoration: none;
+  -webkit-transition: all .4s ease-in-out;
+  -moz-transition: all .4s ease-in-out;
+  -o-transition: all .4s ease-in-out;
+  transition: all .4s ease-in-out;
+  &:visited {
+    color: $color-black;
+  }
+}
+h1, h2, h3, h4, h5, h6 {
+  font-weight: normal;
+  font-family: "Roboto Slab", Georgia, serif;
+  color: $color-black;
+}
