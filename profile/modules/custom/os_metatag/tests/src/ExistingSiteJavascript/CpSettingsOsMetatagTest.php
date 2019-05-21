@@ -26,6 +26,7 @@ class CpSettingsOsMetatagTest extends OsExistingSiteJavascriptTestBase {
     parent::setUp();
     $this->groupAdmin = $this->createUser();
     $this->addGroupAdmin($this->groupAdmin, $this->group);
+    $this->renderCache = $this->container->get('cache.render');
   }
 
   /**
@@ -82,6 +83,7 @@ class CpSettingsOsMetatagTest extends OsExistingSiteJavascriptTestBase {
     $web_assert->statusCodeEquals(200);
 
     $this->drupalLogout();
+    $this->renderCache->invalidateAll();
     $this->visit($this->group->get('path')->first()->getValue()['alias']);
     $expectedHtmlValue = '<link rel="publisher" href="http://example-publisher.com/&amp;quot;&amp;#039;quote-test&amp;lt;&amp;gt;">';
     $this->assertContains($expectedHtmlValue, $this->getCurrentPageContent(), 'HTML head not contains publisher link.');
