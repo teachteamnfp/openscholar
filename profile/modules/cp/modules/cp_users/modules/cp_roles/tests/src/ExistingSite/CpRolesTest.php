@@ -6,7 +6,7 @@ namespace Drupal\Tests\cp_roles\ExistingSite;
  * CpRolesTest.
  *
  * @group kernel
- * @group cp
+ * @group unique
  */
 class CpRolesTest extends CpRolesExistingSiteTestBase {
 
