@@ -4,6 +4,7 @@ namespace Drupal\cp_settings;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\PluginBase;
 use Drupal\Core\Session\AccountInterface;
@@ -58,6 +59,11 @@ abstract class CpSettingBase extends PluginBase implements CpSettingInterface, C
     $this->vsiteContextManager = $vsite_context_manager;
     $this->activeVsite = $vsite_context_manager->getActiveVsite();
   }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function validateForm(array &$form, FormStateInterface $formState) {}
 
   /**
    * {@inheritdoc}

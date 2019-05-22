@@ -55,10 +55,6 @@ cp.appearance:
   url: 'internal:##'
   menu_name: control-panel
   weight: 2
-cp.breadcrumbs:
-  title: 'Breadcrumbs'
-  url: 'internal:##'
-  parent: cp.appearance
 cp.favicon:
   title: 'Favicon'
   url: 'internal:##'
@@ -84,10 +80,6 @@ cp.settings.global:
 # are properly implemented.
 cp.settings.global.cache:
   title: 'Cache / Reindex'
-  url: 'internal:##'
-  parent: cp.settings.global
-cp.settings.global.ga:
-  title: 'Google Analytics'
   url: 'internal:##'
   parent: cp.settings.global
 cp.settings.global.privacy_policy:
