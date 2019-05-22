@@ -34,6 +34,6 @@ interface HierarchicalStorageInterface extends StorageInterface {
    * @return string[]
    *   All matching config names from the given storage level.
    */
-  public function listAllFromLevel($prefix = '', $level = INF);
+  public function listAllFromLevel($prefix = '', $level = HierarchicalStorage::GLOBAL_STORAGE);
 
 }
