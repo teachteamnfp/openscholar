@@ -41,7 +41,7 @@ class CpRolesTest extends CpRolesExistingSiteTestBase {
     file_put_contents('public://test2.txt', print_r($config2, TRUE));
 
     $this->assertContains("group.role.personal-{$vsite1->id()}-vsite1role", $vsite1_configs);
-    $this->assertNotContains("group.role.personal-{$vsite2->id()}-vsite1role", $vsite2_configs);
+    $this->assertNotContains("group.role.personal-{$vsite1->id()}-vsite1role", $vsite2_configs);
   }
 
 }
