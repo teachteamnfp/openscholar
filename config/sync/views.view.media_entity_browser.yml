@@ -6,9 +6,11 @@ dependencies:
     - image.style.media_entity_browser_thumbnail
   module:
     - entity_browser
+    - group
     - image
     - media
     - user
+    - vsite
 _core:
   default_config_hash: 9CYXdjgi8d9eHVQdPl2ZMXEXa8I-KKuOoFcz5ymLkkE
 id: media_entity_browser
@@ -379,46 +381,6 @@ display:
           entity_type: media
           entity_field: status
           plugin_id: boolean
-        bundle:
-          id: bundle
-          table: media_field_data
-          field: bundle
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: in
-          value: {  }
-          group: 1
-          exposed: true
-          expose:
-            operator_id: bundle_op
-            label: Provider
-            description: ''
-            use_operator: false
-            operator: bundle_op
-            identifier: provider
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          entity_type: media
-          entity_field: bundle
-          plugin_id: bundle
         name:
           id: name
           table: media_field_data
@@ -443,6 +405,8 @@ display:
             remember_roles:
               authenticated: authenticated
               anonymous: '0'
+              administrator: '0'
+            placeholder: ''
           is_grouped: false
           group_info:
             label: ''
@@ -458,11 +422,60 @@ display:
           entity_type: media
           entity_field: name
           plugin_id: string
+        current_vsite_filter:
+          id: current_vsite_filter
+          table: group_content
+          field: current_vsite_filter
+          relationship: group_content
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: ''
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: group_content
+          plugin_id: vsite_current_filter
       sorts: {  }
       header: {  }
       footer: {  }
       empty: {  }
-      relationships: {  }
+      relationships:
+        group_content:
+          id: group_content
+          table: media_field_data
+          field: group_content
+          relationship: none
+          group_type: group
+          admin_label: 'Media group content'
+          required: false
+          group_content_plugins:
+            'group_entity:media': 'group_entity:media'
+          entity_type: media
+          plugin_id: group_content_to_entity_reverse
       arguments: {  }
       display_extenders: {  }
       filter_groups:
