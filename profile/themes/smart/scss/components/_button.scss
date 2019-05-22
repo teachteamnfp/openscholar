@@ -1,12 +1,12 @@
 button {
-  &.button {
-    background: none;
-    color: $color-black;
-    border-color: currentColor;
+  &.button, &.btn, &.btn[aria-expanded="true"] {
+    background: $color-black;
+    color: $color-white;
+    border: 0 none;
     &:hover {
-      background: none;
-      color: $color-black;
-      border-color: currentColor;
+      background: $color-black;
+      color: $color-white;
+      border: 0 none;
     }
   }
 }
