@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b0879ee61bf95deaa0f3470e895d3736",
+    "content-hash": "6d6db3cd2ff6622771778200f223d6a1",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -2651,11 +2651,17 @@
         },
         {
             "name": "drupal/bibcite",
-            "version": "dev-1.x",
+            "version": "1.0.0-alpha9",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/bibcite.git",
-                "reference": "06f9a8b2757fced293a3e82d0089805d86e32147"
+                "reference": "8.x-1.0-alpha9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/bibcite-8.x-1.0-alpha9.zip",
+                "reference": "8.x-1.0-alpha9",
+                "shasum": "33223d3347610a5d320131f25b6e5fbec494b53c"
             },
             "require": {
                 "academicpuma/citeproc-php": "~1.0",
@@ -2674,8 +2680,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha8+6-dev",
-                    "datestamp": "1557309181",
+                    "version": "8.x-1.0-alpha9",
+                    "datestamp": "1557309786",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -2717,8 +2723,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/bibcite",
                 "issues": "https://www.drupal.org/project/issues/bibcite"
-            },
-            "time": "2019-05-21T16:05:16+00:00"
+            }
         },
         {
             "name": "drupal/blazy",
@@ -13180,7 +13185,6 @@
         "kenwheeler/slick": 20,
         "drupal/fullcalendar": 20,
         "drupal/styleguide": 15,
-        "drupal/bibcite": 20,
         "drupal/field_tools": 15,
         "drupal/advancedqueue": 10,
         "drupal/date_recur_modular": 15,

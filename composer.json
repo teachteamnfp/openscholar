@@ -202,7 +202,7 @@
         "drupal/views_infinite_scroll": "^1.5",
         "twbs/bootstrap-sass": "^3.3.7",
         "drupal/mailchimp": "^1.8",
-        "drupal/bibcite": "1.x-dev",
+        "drupal/bibcite": "1.0-alpha9",
         "drupal/field_tools": "^1.0@alpha",
         "ext-json": "*",
         "php-ds/php-ds": "^1.2",
