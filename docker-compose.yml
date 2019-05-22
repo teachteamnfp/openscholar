@@ -49,7 +49,7 @@ services:
     labels:
       - 'traefik.backend=osd8_apache_1'
       - 'traefik.port=80'
-      - 'traefik.frontend.rule=Host:home.d8.theopenscholar.com,home.site01.com'
+      - 'traefik.frontend.rule=Host:home.d8.theopenscholar.com,home.site01.com,home.site02.com,home.site03.com,home.gking.com'
 
   chrome:
     # Note: chrome 67/68 is giving errors so we pin to 65 for now.
