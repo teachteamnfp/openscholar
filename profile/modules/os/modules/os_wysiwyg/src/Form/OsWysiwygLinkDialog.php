@@ -146,7 +146,7 @@ class OsWysiwygLinkDialog extends FormBase {
       '#widget_context' => [],
       '#custom_hidden_id' => 'original_selected_media',
       '#process' => [
-        ['\Drupal\entity_browser\Element\EntityBrowserElement', 'processEntityBrowser'],
+        [EntityBrowserElement::class, 'processEntityBrowser'],
       ],
     ];
     $form['media']['original_selected_media'] = [
