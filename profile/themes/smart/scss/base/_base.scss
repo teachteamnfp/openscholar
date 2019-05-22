@@ -1,10 +1,7 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
-@import url('https://fonts.googleapis.com/css?family=Roboto+Slab&display=swap');
-
 body {
   font: 14px/1.5 "Open Sans", Arial, sans-serif;
   color: $color-text;
-  background: $color-light-gray;
+  background: $color-white;
 }
 .fc-header-toolbar h2, .fc-header-toolbar .ui-button {
   padding-bottom: 0;

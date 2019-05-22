@@ -1,0 +1,12 @@
+button {
+  &.button {
+    background: none;
+    color: $color-black;
+    border-color: currentColor;
+    &:hover {
+      background: none;
+      color: $color-black;
+      border-color: currentColor;
+    }
+  }
+}
