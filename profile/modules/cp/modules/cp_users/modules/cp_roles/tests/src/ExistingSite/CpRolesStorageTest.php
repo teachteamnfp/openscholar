@@ -8,7 +8,7 @@ namespace Drupal\Tests\cp_roles\ExistingSite;
  * @group kernel
  * @group cp
  */
-class CpRolesStorageTest extends CpRolesTestBase {
+class CpRolesStorageTest extends CpRolesExistingSiteTestBase {
 
   /**
    * Tests custom role save.

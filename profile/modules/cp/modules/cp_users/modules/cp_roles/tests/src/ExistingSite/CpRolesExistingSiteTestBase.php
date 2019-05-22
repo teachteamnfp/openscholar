@@ -8,7 +8,7 @@ use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
 /**
  * Test base for CpRoles tests.
  */
-abstract class CpRolesTestBase extends OsExistingSiteTestBase {
+abstract class CpRolesExistingSiteTestBase extends OsExistingSiteTestBase {
 
   use CpRolesTestTrait;
 

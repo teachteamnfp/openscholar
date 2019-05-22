@@ -8,7 +8,7 @@ namespace Drupal\Tests\cp_roles\ExistingSite;
  * @group kernel
  * @group cp
  */
-class CpRolesTest extends CpRolesTestBase {
+class CpRolesTest extends CpRolesExistingSiteTestBase {
 
   /**
    * Tests - Role created for a vsite should not be available for other vsite.
