@@ -240,17 +240,6 @@
         });
       }
 
-      editor.on('doubleclick', function (evt) {
-        var element = getSelectedLink(editor) || evt.data.element;
-
-        if (!element.isReadOnly()) {
-          if (element.is('a')) {
-            editor.getSelection().selectElement(element);
-            editor.getCommand('os_link').exec();
-          }
-        }
-      });
-
       if (editor.addMenuItems) {
         editor.addMenuItems({
           os_link: {

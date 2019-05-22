@@ -202,9 +202,9 @@ class OsWysiwygLinkDialog extends FormBase {
       $id = '';
       if (!empty($selected_media_values['entity_ids'])) {
         list(, $id) = explode(':', $selected_media_values['entity_ids']);
-        if (empty($id) && !empty($form_state->getValue('original_selected_media'))) {
-          $id = $form_state->getValue('original_selected_media');
-        }
+      }
+      if (empty($id) && !empty($form_state->getValue('original_selected_media'))) {
+        $id = $form_state->getValue('original_selected_media');
       }
 
       $js_data = [

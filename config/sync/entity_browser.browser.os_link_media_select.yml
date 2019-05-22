@@ -10,8 +10,8 @@ name: os_link_media_select
 label: 'Os Link Media select'
 display: iframe
 display_configuration:
-  width: '600'
-  height: '500'
+  width: '800'
+  height: '400'
   link_text: 'Select entities'
   auto_open: true
 selection_display: no_display

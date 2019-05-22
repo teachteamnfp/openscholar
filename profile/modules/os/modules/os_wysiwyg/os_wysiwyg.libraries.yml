@@ -1,0 +1,5 @@
+os_link:
+  version: 1.0
+  css:
+    component:
+      css/os_link.css: { }

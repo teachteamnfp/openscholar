@@ -29,6 +29,7 @@ class OsLink extends CKEditorPluginBase {
     return [
       'core/drupal.ajax',
       'core/views.ajax',
+      'os_wysiwyg/os_link',
     ];
   }
 
