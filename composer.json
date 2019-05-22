@@ -169,7 +169,7 @@
         "drupal-composer/drupal-scaffold": "^2.6",
         "drupal/console": "^1.0.2",
         "drupal/core": "~8.6.16",
-        "drupal/purl": "1.0.2",
+        "drupal/purl": "1.0.3",
         "drupal/group_purl": "1.0-alpha1",
         "drupal/search_api": "^1.9",
         "drush/drush": "^9.0.0",
