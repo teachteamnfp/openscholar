@@ -231,7 +231,8 @@
         "drupal/date_recur_modular": "^1.0@alpha",
         "drupal/easy_breadcrumb": "^1.8",
         "drupal/views_ical": "^2.1",
-        "drupal/google_analytics": "^2.4"
+        "drupal/google_analytics": "^2.4",
+        "drupal/groupmenu": "^1.0"
     },
     "require-dev": {
         "webflo/drupal-core-require-dev": "~8.6.16",
@@ -349,7 +350,8 @@
                 "Fixes checkboxes count warning": "https://github.com/dpi/courier/pull/48.patch"
             },
             "drupal/group": {
-                "/views/ajax?_wrapper_format=drupal_ajax HTTP/1.1 - HTTP/1.1 403 Forbidden": "https://www.drupal.org/files/issues/2018-08-15/group-route-match-ajax-views-d8-2942657-11.patch"
+                "/views/ajax?_wrapper_format=drupal_ajax HTTP/1.1 - HTTP/1.1 403 Forbidden": "https://www.drupal.org/files/issues/2018-08-15/group-route-match-ajax-views-d8-2942657-11.patch",
+                "Entities identified by strings as group content": "https://www.drupal.org/files/issues/2797793-20.patch"
             }
         },
         "patches-ignore": {
