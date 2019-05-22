@@ -60,12 +60,12 @@ class CpRolesTest extends CpRolesExistingSiteJavascriptTestBase {
    * {@inheritdoc}
    */
   public function tearDown() {
-    parent::tearDown();
-
     $vsite_context_manager = $this->container->get('vsite.context_manager');
     $vsite_context_manager->activateVsite($this->group);
     $group_role = GroupRole::load("personal-{$this->group->id()}-stooges");
     $group_role->delete();
+
+    parent::tearDown();
   }
 
 }
