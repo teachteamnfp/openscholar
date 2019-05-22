@@ -67,8 +67,8 @@ class OsWysiwygLinkDialogFormTest extends OsExistingSiteTestBase {
         'email' => 'example@test.com',
         'link_to__active_tab' => 'edit-website',
         'target_option' => '1',
-        'entity_browser_select' => [
-          'media:10' => 'media:10',
+        'entity_browser' => [
+          'entity_ids' => 'media:10',
         ],
       ]);
     // Manually call ajax submit handler.
