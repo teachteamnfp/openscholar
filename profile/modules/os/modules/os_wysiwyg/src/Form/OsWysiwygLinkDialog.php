@@ -101,6 +101,7 @@ class OsWysiwygLinkDialog extends FormBase {
       '#type' => 'details',
       '#title' => $this->t('Web address'),
       '#group' => 'link_to',
+      '#id' => 'edit-os-link-to-web-address',
     ];
     $form['web_address']['href'] = [
       '#type' => 'textfield',
@@ -119,6 +120,7 @@ class OsWysiwygLinkDialog extends FormBase {
       '#type' => 'details',
       '#title' => $this->t('Email'),
       '#group' => 'link_to',
+      '#id' => 'edit-os-link-to-email',
     ];
     $form['email']['email'] = [
       '#type' => 'textfield',
@@ -131,6 +133,7 @@ class OsWysiwygLinkDialog extends FormBase {
       '#title' => $this->t('File'),
       '#group' => 'link_to',
       '#tree' => FALSE,
+      '#id' => 'edit-os-link-to-media',
     ];
 
     $form['media']['entity_browser'] = [
@@ -155,7 +158,7 @@ class OsWysiwygLinkDialog extends FormBase {
     ];
 
     if (isset($input['type']) && isset($form[$input['type']])) {
-      $form['link_to']['#default_tab'] = 'edit-' . $input['type'];
+      $form['link_to']['#default_tab'] = 'edit-os-link-to-' . $input['type'];
     }
 
     $form['actions'] = [
