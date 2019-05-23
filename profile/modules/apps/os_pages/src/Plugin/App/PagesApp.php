@@ -8,7 +8,7 @@ use Drupal\vsite\Plugin\AppPluginBase;
  * Pages app.
  *
  * @App(
- *   title = @Translation("Pages"),
+ *   title = @Translation("Page"),
  *   canDisable = false,
  *   entityType = "node",
  *   bundle = {

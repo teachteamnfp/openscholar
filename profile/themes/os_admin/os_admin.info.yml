@@ -19,5 +19,6 @@ regions:
 regions_hidden:
   - sidebar_first
 
-libraries:
- - os_admin/global-styling
+libraries-extend:
+  seven/global-styling:
+    - os_admin/global-styling

@@ -2,13 +2,15 @@
 
 namespace Drupal\Tests\os_events\ExistingSite;
 
-use Drupal\Component\Datetime\DateTimePlus;
-use weitzman\DrupalTestTraits\ExistingSiteBase;
+use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
+use Drupal\Tests\os_events\Traits\EventTestTrait;
 
 /**
  * Test base for event tests.
  */
-abstract class EventsTestBase extends ExistingSiteBase {
+abstract class EventsTestBase extends OsExistingSiteTestBase {
+
+  use EventTestTrait;
 
   /**
    * Config factory.
@@ -32,28 +34,6 @@ abstract class EventsTestBase extends ExistingSiteBase {
 
     $this->adminUser = $this->createUser([], '', TRUE);
     $this->config = $this->container->get('config.factory');
-
-  }
-
-  /**
-   * Creates an event.
-   *
-   * @param bool $signupChecked
-   *   If Signup is checked or not.
-   */
-  protected function createEvent(bool $signupChecked) {
-    $date = new DateTimePlus('+5 days', $this->config->get('system.date')->get('timezone.default'));
-
-    $this->drupalLogin($this->adminUser);
-    $this->drupalGet('node/add/events');
-    $edit = [
-      'title[0][value]' => $this->randomString(),
-      'field_recurring_date[0][day_start]' => $date->format("Y-m-d"),
-      'field_recurring_date[0][is_all_day]' => TRUE,
-      'field_recurring_date[0][day_end]' => $date->format("Y-m-d"),
-      'field_signup[value]' => $signupChecked,
-    ];
-    $this->submitForm($edit, 'edit-submit');
   }
 
 }

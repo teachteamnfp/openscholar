@@ -147,7 +147,7 @@ class CpUsersMainTest extends OsExistingSiteJavascriptTestBase {
       $page = $this->getCurrentPage();
       $page->clickLink('+ Add a member');
       $this->assertSession()->waitForElement('css', '#drupal-modal--content');
-      $page->clickLink('Add New User');
+      $page->find('css', '#new-user-fieldset summary.seven-details__summary')->click();
       $page->fillField('First Name', 'test');
       $page->fillField('Last Name', 'user');
       $page->fillField('Username', 'test-user');
