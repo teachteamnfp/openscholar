@@ -32,7 +32,7 @@ class CpRolesTest extends CpRolesExistingSiteTestBase {
     /** @var \Drupal\vsite\Config\HierarchicalStorageInterface $hierarchical_storage */
     $hierarchical_storage = $this->container->get('hierarchical.storage');
     $vsite1_configs = $hierarchical_storage->listAllFromLevel("group.role.personal-{$vsite1->id()}", 0);
-    $vsite2_configs = $hierarchical_storage->listAllFromLevel("group.role.personal-{$vsite2->id()}", -1);
+    $vsite2_configs = $hierarchical_storage->listAllFromLevel("group.role.personal-{$vsite2->id()}", 1);
 
     $this->assertContains("group.role.personal-{$vsite1->id()}-vsite1role", $vsite1_configs);
     $this->assertNotContains("group.role.personal-{$vsite1->id()}-vsite1role", $vsite2_configs);

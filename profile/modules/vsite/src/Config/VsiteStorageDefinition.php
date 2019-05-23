@@ -10,6 +10,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  * Sets the ConfigStorage for a vsite when it's activated.
  */
 class VsiteStorageDefinition implements EventSubscriberInterface {
+  const VSITE_STORAGE = 0;
 
   /**
    * The storage element to add a vsite storage to.
@@ -43,7 +44,7 @@ class VsiteStorageDefinition implements EventSubscriberInterface {
   public function onVsiteActivated(VsiteActivatedEvent $event) {
     static $vsite_weight = 0;
     $storage = $this->hierarchicalStorage->createCollection('vsite:' . $event->getGroup()->id());
-    $this->hierarchicalStorage->addStorage($storage, $vsite_weight--);
+    $this->hierarchicalStorage->addStorage($storage, $vsite_weight++);
   }
 
 }
