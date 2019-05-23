@@ -27,4 +27,15 @@ abstract class OsExistingSiteTestBase extends ExistingSiteBase {
     $this->group = $this->createGroup();
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function tearDown() {
+    parent::tearDown();
+
+    foreach ($this->cleanUpConfigs as $config_entity) {
+      $config_entity->delete();
+    }
+  }
+
 }
