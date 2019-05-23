@@ -42,9 +42,8 @@ class VsiteStorageDefinition implements EventSubscriberInterface {
    * Listener for VsiteActivatedEvent.
    */
   public function onVsiteActivated(VsiteActivatedEvent $event) {
-    static $vsite_weight = 0;
     $storage = $this->hierarchicalStorage->createCollection('vsite:' . $event->getGroup()->id());
-    $this->hierarchicalStorage->addStorage($storage, $vsite_weight++);
+    $this->hierarchicalStorage->addStorage($storage, self::VSITE_STORAGE);
   }
 
 }
