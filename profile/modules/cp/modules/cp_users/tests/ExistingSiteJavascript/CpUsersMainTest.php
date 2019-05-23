@@ -92,7 +92,7 @@ class CpUsersMainTest extends OsExistingSiteJavascriptTestBase {
   public function testAddExistingUser(): void {
     try {
       $this->drupalLogin($this->groupAdmin);
-      $username = $this->randomString();
+      $username = $this->randomMachineName();
       $group_member = $this->createUser([], $username, FALSE);
       $this->group->addMember($group_member);
 
@@ -103,12 +103,11 @@ class CpUsersMainTest extends OsExistingSiteJavascriptTestBase {
       $this->assertContains('/' . $this->modifier . '/cp/users/add', $link->getAttribute('href'), "Add link is not in the vsite.");
       $page->clickLink('+ Add a member');
       $this->assertSession()->waitForElement('css', '#drupal-modal--content');
-      $page->clickLink('Add an Existing User');
+      $page->find('css', '#existing-member-fieldset summary.seven-details__summary')->click();
       $page->fillField('member-entity', substr($username, 0, 3));
       $this->assertSession()->waitOnAutocomplete();
-      $element = $page->find('css', '#ui-id-2');
-      $this->assertNotNull($element, 'cannot find ui-id-2');
-      $element->click();
+      $this->assertSession()->responseContains($username);
+      $this->getSession()->getPage()->find('css', 'ul.ui-autocomplete li:first-child')->click();
 
       $page->selectFieldOption('role', 'personal-member');
       $page->pressButton("Save");
