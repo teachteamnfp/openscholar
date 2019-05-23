@@ -69,7 +69,8 @@ class FlavorFormTest extends OsExistingSiteJavascriptTestBase {
 
     $flavor_form_identifier = Html::cleanCssIdentifier("cp-appearance-$default_theme-flavor-form");
     $this->assertSession()->elementExists('css', "form.$flavor_form_identifier select");
-    $this->assertSession()->elementExists('css', 'button[name="save-vibrant"]');
+    $flavor_save_identifier = Html::cleanCssIdentifier("save-$default_theme");
+    $this->assertSession()->elementExists('css', "input[name=\"$flavor_save_identifier\"]");
   }
 
   /**
