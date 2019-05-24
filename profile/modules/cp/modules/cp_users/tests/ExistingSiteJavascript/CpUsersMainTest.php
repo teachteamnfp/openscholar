@@ -92,7 +92,7 @@ class CpUsersMainTest extends OsExistingSiteJavascriptTestBase {
   public function testAddExistingUser(): void {
     try {
       $this->drupalLogin($this->groupAdmin);
-      $username = $this->randomString();
+      $username = $this->randomMachineName();
       $group_member = $this->createUser([], $username, FALSE);
       $this->group->addMember($group_member);
 
@@ -122,7 +122,7 @@ class CpUsersMainTest extends OsExistingSiteJavascriptTestBase {
       $this->assertSession()->waitForElement('css', '#drupal-modal--content');
       $page->pressButton('Confirm');
       $this->assertSession()->assertWaitOnAjaxRequest();
-      $this->assertFalse($page->hasContent($username), "Username $username still found on page.");
+      $this->assertTrue($page->hasContent('Member ' . $username . ' has been removed from ' . $this->group->label()), "Username $username has not removed.");
     }
     catch (\Exception $e) {
       \file_put_contents(REQUEST_TIME . '.jpg', $this->getSession()->getScreenshot());
