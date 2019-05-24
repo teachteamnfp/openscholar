@@ -2,7 +2,7 @@
 //colors
 $color_concrete_approx: #f3f3f1;
 $color_mexican_red_approx: #a51c30;
-$color_squirrel_approx: #8c8179;
+$color_squirrel_approx: #514d4b;
 $color_rangoon_green_approx: #1e1e1e;
 $white: #fff;
 $color_tundora_approx: #444;
@@ -269,4 +269,18 @@ aside .region >.block {
 .path-person .block-inner {
   border-top: 1px solid $color_mexican_red_approx;
   border-top: none;
+}
+/** accessibility fixes **/
+header {
+  button.visually-hidden {
+    color: $black;
+  }
+  h2.sr-only {
+    color: $white
+  }
+}
+footer {
+  button.visually-hidden {
+    color: $black;
+  }
 }

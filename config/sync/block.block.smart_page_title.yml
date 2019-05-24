@@ -1,0 +1,20 @@
+uuid: 7c915381-2395-4b40-a070-aa9903308ca5
+langcode: en
+status: true
+dependencies:
+  theme:
+    - smart
+_core:
+  default_config_hash: 7rR9chwXvdM2H8OYMAYx9Zj3GGlPMrZp_M3ZA4thYTk
+id: smart_page_title
+theme: smart
+region: content
+weight: -7
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  provider: core
+  label_display: '0'
+visibility: {  }

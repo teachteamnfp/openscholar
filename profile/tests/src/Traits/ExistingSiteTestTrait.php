@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\openscholar\Traits;
 
+use Drupal\Core\Config\Entity\ConfigEntityInterface;
 use Drupal\group\Entity\GroupInterface;
 use Drupal\user\UserInterface;
 
@@ -9,6 +10,13 @@ use Drupal\user\UserInterface;
  * Provides a trait for openscholar tests.
  */
 trait ExistingSiteTestTrait {
+
+  /**
+   * Configurations to clean up.
+   *
+   * @var \Drupal\Core\Config\Entity\ConfigEntityInterface[]
+   */
+  protected $cleanUpConfigs = [];
 
   /**
    * Creates a group.
@@ -67,6 +75,19 @@ trait ExistingSiteTestTrait {
         'personal-administrator',
       ],
     ]);
+  }
+
+  /**
+   * Mark an config for deletion.
+   *
+   * Any configurations you create when running against an installed site should
+   * be flagged for deletion to ensure isolation between tests.
+   *
+   * @param \Drupal\Core\Config\Entity\ConfigEntityInterface $config_entity
+   *   The configuration to delete.
+   */
+  protected function markConfigForCleanUp(ConfigEntityInterface $config_entity): void {
+    $this->cleanUpConfigs[] = $config_entity;
   }
 
 }
