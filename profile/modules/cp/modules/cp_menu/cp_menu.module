@@ -1,0 +1,18 @@
+<?php
+
+/**
+ * @file
+ * Hook implementations for cp_menu.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_node_form_alter().
+ */
+function cp_menu_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if (empty($form['menu'])) {
+    return;
+  }
+  $form['menu']['link']['weight']['#access'] = FALSE;
+}

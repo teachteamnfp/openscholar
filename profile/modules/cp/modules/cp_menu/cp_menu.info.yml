@@ -1,0 +1,7 @@
+name: 'Control Panel: Menu'
+description: 'Custom Menu Management UI'
+type: module
+core: 8.x
+version: 1.0
+requirements:
+  - cp
