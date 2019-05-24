@@ -1,0 +1,12 @@
+button {
+  &.button, &.btn, &.btn[aria-expanded="true"] {
+    background: $color-dark;
+    color: $color-white;
+    border-color: $color-white;
+    &:hover {
+      background: $color-dark;
+      color: $color-white;
+      border-color: $color-white;
+    }
+  }
+}
