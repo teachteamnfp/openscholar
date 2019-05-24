@@ -89,9 +89,11 @@ class BreadCrumbSettingFormTest extends OsExistingSiteTestBase {
       'show_breadcrumbs' => TRUE,
     ];
     $this->submitForm($edit, 'edit-submit');
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/classes");
     $this->assertSession()->elementExists('css', 'ol.breadcrumb');
 
     // Test is not visible.
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/breadcrumb");
     $edit = [
       'show_breadcrumbs' => FALSE,
     ];
