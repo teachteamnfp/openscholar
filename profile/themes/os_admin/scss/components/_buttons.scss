@@ -1,0 +1,7 @@
+.button.button--primary {
+  border-color: $color-link;
+  background-color: $color-link;
+  background-image: -webkit-linear-gradient(top, $color-link, $color-link);
+  background-image: linear-gradient(to bottom, $color-link, $color-link);
+  padding: 8px 25px;
+}

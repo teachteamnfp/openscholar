@@ -1,0 +1,42 @@
+.vertical-tabs__menu-item {
+  a {
+    color: $color_venice_blue;
+  }
+}
+.toolbar {
+  .toolbar-tray-vertical {
+    background-color: $color-white;
+    border-right: 1px solid $color-light-gray;
+    box-shadow: none;
+    .menu-item+.menu-item {
+      border-top: none;
+    }
+    .toolbar-tray {
+      a {
+        padding: 1.3em 1.3333em;
+      }
+    }
+  }
+  .toolbar-bar {
+    background-color: $color-light-gray1;
+    box-shadow: -1px 0 3px 1px rgba(183, 183, 183, 0.3333);
+    .toolbar-item {
+      color: $color-link;
+    }
+    .toolbar-icon-menu {
+      &.is-active {
+        &:before {
+          background: url(../../../../../../core/themes/stable/images/core/icons/bebebe/hamburger.svg) no-repeat;
+          background-position: center;
+        }
+      }
+    }
+  }
+  .toolbar-toggle-orientation {
+    background: $color-white;
+  }
+}
+
+.seven-details__summary {
+  color: $color-link;
+}
