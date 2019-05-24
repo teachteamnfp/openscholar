@@ -1,0 +1,27 @@
+footer {
+  background-color: $color-black;
+  color: $color-text3;
+  ul.nav a {
+    text-transform: uppercase;
+    font-size: 12px;
+    color: $color-text3;
+  }
+}
+footer.footer {
+  a {
+    color: $color-text2;
+  }
+  .block-title {
+    color: $color-text1;
+    border-bottom: 1px solid $color-blue;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+  }
+  .sr-only {
+    color: $color-text1;
+  }
+  .visually-hidden {
+    color: $color-black;
+  }
+}
