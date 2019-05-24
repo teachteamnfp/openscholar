@@ -80,7 +80,7 @@ class CpUserMainController extends ControllerBase {
         $role_link = Link::createfromRoute('Change Owner', 'cp.users.owner', ['user' => $u->id()], ['attributes' => ['class' => ['use-ajax']]])->toString();
       }
       elseif ($group->getMember($u)->hasPermission('change user roles') || \Drupal::currentUser()->hasPermission('change user roles')) {
-        $role_link = 'Change Role Placeholder';
+        $role_link = Link::createFromRoute($this->t('Change Role'), 'cp_roles.role.change', ['user' => $u->id()])->toString();
       }
       else {
         $role_link = '';

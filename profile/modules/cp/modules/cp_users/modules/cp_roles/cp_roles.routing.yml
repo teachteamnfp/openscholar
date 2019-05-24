@@ -17,3 +17,12 @@ cp_roles.role.permission_form:
   requirements:
     _group_permission: 'manage cp roles'
     _group_member: 'TRUE'
+
+cp_roles.role.change:
+  path: '/cp/users/change-role/{user}'
+  defaults:
+    _form: '\Drupal\cp_roles\Form\ChangeRoleForm'
+    _title: 'Change role'
+  requirements:
+    _group_permission: 'manage cp roles'
+    _group_member: 'TRUE'
