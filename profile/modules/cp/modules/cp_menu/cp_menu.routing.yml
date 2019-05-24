@@ -1,0 +1,7 @@
+cp.build.menu:
+  path: 'cp/build/menu'
+  defaults:
+    _form: '\Drupal\cp_menu\Form\MenuBuildForm'
+  requirements:
+    _group_permission: 'manage_menu'
+    _group_member: 'TRUE'
