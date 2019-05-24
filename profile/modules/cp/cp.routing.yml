@@ -5,3 +5,11 @@ cp.build.taxonomy.add:
     _title: 'Add term'
   requirements:
     _entity_create_access: 'taxonomy_term:{taxonomy_vocabulary}'
+
+cp.node.multiple_delete_confirm:
+  path: '/cp/content-node-delete'
+  defaults:
+    _form: '\Drupal\cp\Form\CpDeleteMultipleForm'
+    entity_type_id: 'node'
+  requirements:
+    _entity_delete_multiple_access: 'node'

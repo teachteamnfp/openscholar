@@ -1,0 +1,14 @@
+uuid: 874ddd91-489e-4146-8a03-a4963d959831
+langcode: en
+status: true
+dependencies:
+  module:
+    - cp
+    - node
+_core:
+  default_config_hash: LXkZ0Sz6dQWh8y-hDmrQ7bvgRZHi7XaGKQSYttslpzU
+id: cp_node_delete_action
+label: 'Delete content'
+type: node
+plugin: 'cp_entity:delete_action:node'
+configuration: {  }
