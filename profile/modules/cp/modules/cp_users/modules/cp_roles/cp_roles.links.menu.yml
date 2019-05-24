@@ -1,0 +1,5 @@
+cp_roles.permissions:
+  title: 'Permissions'
+  description: 'Manage role permissions'
+  parent: cp.users
+  route_name: cp_roles.role.permission_form
