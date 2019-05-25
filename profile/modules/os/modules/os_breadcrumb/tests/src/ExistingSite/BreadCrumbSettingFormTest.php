@@ -2,7 +2,7 @@
 
 namespace Drupal\Tests\os_breadcrumb\ExistingSite;
 
-use weitzman\DrupalTestTraits\ExistingSiteBase;
+use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
 
 /**
  * Class BreadCrumbSettingFormTest.
@@ -12,14 +12,14 @@ use weitzman\DrupalTestTraits\ExistingSiteBase;
  *
  * @package Drupal\Tests\os_breadcrumb\ExistingSite
  */
-class BreadCrumbSettingFormTest extends ExistingSiteBase {
+class BreadCrumbSettingFormTest extends OsExistingSiteTestBase {
 
   /**
-   * Admin user.
+   * Group Admin user.
    *
    * @var \Drupal\user\Entity\User|false
    */
-  protected $adminUser;
+  protected $groupAdmin;
 
   /**
    * Simple user.
@@ -33,8 +33,9 @@ class BreadCrumbSettingFormTest extends ExistingSiteBase {
    */
   public function setUp() {
     parent::setUp();
+    $this->groupAdmin = $this->createUser();
+    $this->addGroupAdmin($this->groupAdmin, $this->group);
 
-    $this->adminUser = $this->createUser([], '', TRUE);
     $this->simpleUser = $this->createUser();
   }
 
@@ -45,7 +46,7 @@ class BreadCrumbSettingFormTest extends ExistingSiteBase {
    */
   public function testBreadcrumbSettingsFormAccess() {
     $this->drupalLogin($this->simpleUser);
-    $this->drupalGet('cp/settings/breadcrumb');
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/breadcrumb");
     // Testing Access.
     $this->assertSession()->statusCodeEquals(403);
   }
@@ -56,8 +57,8 @@ class BreadCrumbSettingFormTest extends ExistingSiteBase {
    * @throws \Behat\Mink\Exception\ExpectationException
    */
   public function testBreadcrumbSettingsForm() {
-    $this->drupalLogin($this->adminUser);
-    $this->drupalGet('cp/settings/breadcrumb');
+    $this->drupalLogin($this->groupAdmin);
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/breadcrumb");
     // Testing checked.
     $edit = [
       'show_breadcrumbs' => 'checked',
@@ -65,8 +66,6 @@ class BreadCrumbSettingFormTest extends ExistingSiteBase {
     $this->submitForm($edit, 'edit-submit');
     $this->assertSession()
       ->checkboxChecked('show_breadcrumbs');
-
-    $this->drupalGet('cp/settings/breadcrumb');
     // Testing unchecked.
     $edit = [
       'show_breadcrumbs' => FALSE,
@@ -82,17 +81,19 @@ class BreadCrumbSettingFormTest extends ExistingSiteBase {
    * @throws \Behat\Mink\Exception\ExpectationException
    */
   public function testBreadcrumbSettings() {
-    $this->drupalLogin($this->adminUser);
+    $this->drupalLogin($this->groupAdmin);
 
     // Test is visible.
-    $this->drupalGet('cp/settings/breadcrumb');
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/breadcrumb");
     $edit = [
       'show_breadcrumbs' => TRUE,
     ];
     $this->submitForm($edit, 'edit-submit');
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/classes");
     $this->assertSession()->elementExists('css', 'ol.breadcrumb');
 
     // Test is not visible.
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/breadcrumb");
     $edit = [
       'show_breadcrumbs' => FALSE,
     ];

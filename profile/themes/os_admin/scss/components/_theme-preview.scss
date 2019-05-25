@@ -1,0 +1,10 @@
+.theme-info {
+  form {
+    margin-top: 30px;
+  }
+  .operations {
+    &:after {
+      clear: none;
+    }
+  }
+}
