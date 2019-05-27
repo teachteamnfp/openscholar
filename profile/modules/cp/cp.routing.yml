@@ -13,3 +13,11 @@ cp.node.multiple_delete_confirm:
     entity_type_id: 'node'
   requirements:
     _entity_delete_multiple_access: 'node'
+
+cp.bibcite_reference.delete_multiple_form:
+  path: '/cp/publication-delete'
+  defaults:
+    _form: '\Drupal\cp\Form\CpDeleteMultipleForm'
+    entity_type_id: 'bibcite_reference'
+  requirements:
+    _entity_delete_multiple_access: 'bibcite_reference'
