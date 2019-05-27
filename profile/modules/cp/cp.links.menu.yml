@@ -57,7 +57,7 @@ cp.appearance:
   weight: 2
 cp.favicon:
   title: 'Favicon'
-  url: 'internal:##'
+  route_name: 'vsite_favicon.edit'
   parent: cp.appearance
 cp.settings:
   title: 'Settings'

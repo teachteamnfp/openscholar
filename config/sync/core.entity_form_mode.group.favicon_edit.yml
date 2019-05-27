@@ -1,0 +1,10 @@
+uuid: 87b17b3e-7efd-42f8-9546-84ad3e6fa7a9
+langcode: en
+status: true
+dependencies:
+  module:
+    - group
+id: group.favicon_edit
+label: 'Favicon edit'
+targetEntityType: group
+cache: true

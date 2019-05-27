@@ -1,0 +1,27 @@
+uuid: 558fe088-2ec6-460e-9029-732e65b78e2b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.group.field_site_favicon
+    - group.type.personal
+  module:
+    - file
+id: group.personal.field_site_favicon
+field_name: field_site_favicon
+entity_type: group
+bundle: personal
+label: 'Site Favicon'
+description: 'A 16x16 .png file to be displayed in browser shortcut icons and tabs for any page on your site. For help generating a favicon file, try <a href="http://www.favicon.cc/" target="_blank">http://www.favicon.cc/</a>.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: favicon
+  file_extensions: png
+  max_filesize: '2 KB'
+  description_field: false
+  handler: 'default:file'
+  handler_settings: {  }
+field_type: file

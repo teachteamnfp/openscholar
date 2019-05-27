@@ -1,0 +1,15 @@
+<?php
+
+/**
+ * @file
+ * Hook implementations for the vsite favicon module.
+ */
+
+use Drupal\group\Entity\Form\GroupForm;
+
+/**
+ * Implements hook_entity_type_build().
+ */
+function vsite_favicon_entity_type_build(array &$entity_types) {
+  $entity_types['group']->setFormClass('favicon_edit', GroupForm::class);
+}

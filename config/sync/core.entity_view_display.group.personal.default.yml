@@ -6,10 +6,12 @@ dependencies:
     - field.field.group.personal.field_parent_site
     - field.field.group.personal.field_privacy_level
     - field.field.group.personal.field_site_description
+    - field.field.group.personal.field_site_favicon
     - field.field.group.personal.field_site_logo
     - field.field.group.personal.layout_builder__layout
     - group.type.personal
   module:
+    - file
     - image
     - layout_builder
     - layout_discovery
@@ -58,6 +60,22 @@ third_party_settings:
                 entity: layout_builder.entity
             additional: {  }
             weight: 1
+          d56767a6-aeaa-4528-86bd-14dbe8a0b2f5:
+            uuid: d56767a6-aeaa-4528-86bd-14dbe8a0b2f5
+            region: first
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:group:personal:field_site_favicon'
+              formatter:
+                label: above
+                settings:
+                  use_description_as_link_text: true
+                third_party_settings: {  }
+                type: file_default
+            additional: {  }
+            weight: 2
     allow_custom: true
     enabled: true
 id: group.personal.default
@@ -86,6 +104,14 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: text_default
+    region: first
+  field_site_favicon:
+    weight: -2
+    label: above
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    type: file_default
     region: first
   field_site_logo:
     weight: -4
