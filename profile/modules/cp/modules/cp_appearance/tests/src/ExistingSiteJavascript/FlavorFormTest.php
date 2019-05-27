@@ -29,6 +29,13 @@ class FlavorFormTest extends OsExistingSiteJavascriptTestBase {
   protected $defaultTheme;
 
   /**
+   * Group administrator.
+   *
+   * @var \Drupal\user\UserInterface
+   */
+  protected $groupAdmin;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
@@ -43,11 +50,11 @@ class FlavorFormTest extends OsExistingSiteJavascriptTestBase {
         'alias' => '/cp-appearance-flavor',
       ],
     ]);
-    $admin = $this->createUser();
+    $this->groupAdmin = $this->createUser();
 
-    $this->addGroupAdmin($admin, $this->group);
+    $this->addGroupAdmin($this->groupAdmin, $this->group);
 
-    $this->drupalLogin($admin);
+    $this->drupalLogin($this->groupAdmin);
   }
 
   /**
@@ -178,6 +185,14 @@ class FlavorFormTest extends OsExistingSiteJavascriptTestBase {
     /** @var \Drupal\Core\Config\Config $theme_setting_mut */
     $theme_setting_mut = $this->container->get('config.factory')->getEditable('system.theme');
     $theme_setting_mut->set('default', $this->defaultTheme)->save();
+
+    // This is part of the test cleanup.
+    // If this is not done, then it leads to database deadlock error in the
+    // test. The test is performing nested db operations during cleanup.
+    $this->visit('/');
+    $this->drupalLogout();
+    $this->groupAdmin->delete();
+    $this->group->delete();
 
     parent::tearDown();
   }
