@@ -55,7 +55,6 @@ class CpUsersOwnershipForm extends FormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     /* @var VsiteContextManagerInterface $vsiteContextManager */
     if ($group = $this->vsiteContextManager->getActiveVsite()) {
-      $role = 'personal-member';
       $users = [];
       /** @var \Drupal\user\UserInterface[] $memberships */
       $memberships = $group->getContentEntities('group_membership');
@@ -81,7 +80,7 @@ class CpUsersOwnershipForm extends FormBase {
             '#type' => 'submit',
             '#value' => $this->t('Save'),
             '#attributes' => [
-              'class' => 'use-ajax',
+              'class' => ['use-ajax'],
             ],
             '#ajax' => [
               'callback' => [$this, 'submitForm'],
@@ -92,7 +91,7 @@ class CpUsersOwnershipForm extends FormBase {
             '#type' => 'button',
             '#value' => $this->t('Cancel'),
             '#attributes' => [
-              'class' => 'use-ajax',
+              'class' => ['use-ajax'],
             ],
             '#ajax' => [
               'callback' => [$this, 'closeModal'],

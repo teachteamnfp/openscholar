@@ -1,0 +1,22 @@
+uuid: 3b6a85e9-107a-419b-a5b0-51b80b2e04c3
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - os_admin
+_core:
+  default_config_hash: 3IT0EqKR4DVwwoyoHEKwnZSYOHAIXByIjorP3QfwUz8
+id: os_admin_messages
+theme: os_admin
+region: highlighted
+weight: 0
+provider: null
+plugin: system_messages_block
+settings:
+  id: system_messages_block
+  label: 'Status messages'
+  provider: system
+  label_display: '0'
+visibility: {  }
