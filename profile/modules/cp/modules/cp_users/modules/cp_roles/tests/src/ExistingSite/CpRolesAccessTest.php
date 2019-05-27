@@ -11,7 +11,7 @@ namespace Drupal\Tests\cp_roles\ExistingSite;
 class CpRolesAccessTest extends CpRolesExistingSiteTestBase {
 
   /**
-   * Tests whether custom role access is correctly working or not.
+   * Positive tests whether custom role access is correctly working or not.
    *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
    * @throws \Behat\Mink\Exception\ExpectationException
@@ -19,7 +19,7 @@ class CpRolesAccessTest extends CpRolesExistingSiteTestBase {
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  public function test(): void {
+  public function testPositive(): void {
     // Setup role.
     $group_role = $this->createRoleForGroup($this->group);
     $group_role->grantPermissions([
@@ -61,6 +61,32 @@ class CpRolesAccessTest extends CpRolesExistingSiteTestBase {
     $this->assertEquals($question, $node->get('title')->first()->getValue()['value']);
 
     $node->delete();
+  }
+
+  /**
+   * Negative tests whether custom role access is correctly working or not.
+   *
+   * @throws \Behat\Mink\Exception\ExpectationException
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public function testNegative(): void {
+    // Setup role.
+    $group_role = $this->createRoleForGroup($this->group);
+
+    // Setup user.
+    $member = $this->createUser();
+    $this->group->addMember($member, [
+      'group_roles' => [
+        $group_role->id(),
+      ],
+    ]);
+
+    // Perform tests.
+    $this->drupalLogin($member);
+
+    $this->visit("/{$this->group->get('path')->getValue()[0]['alias']}/node/add/faq");
+
+    $this->assertSession()->statusCodeEquals(403);
   }
 
 }
