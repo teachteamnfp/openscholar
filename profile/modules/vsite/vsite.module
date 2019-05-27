@@ -144,7 +144,7 @@ function vsite_form_alter(&$form, FormStateInterface $formState, $form_id) {
       }
     }
     $allowedSubSites = \Drupal::config('vsite.settings')->get('allowed_subsite_group_types');
-    if ($entityTypeId == 'group' && !in_array($entity->bundle(), $allowedSubSites)) {
+    if (!empty($allowedSubSites) && $entityTypeId == 'group' && !in_array($entity->bundle(), $allowedSubSites)) {
       $form['field_parent_site']['#access'] = FALSE;
     }
   }
