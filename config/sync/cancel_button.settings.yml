@@ -1,0 +1,441 @@
+entity_type_cancel_destination:
+  default:
+    path: /
+    enabled: true
+  comment:
+    path: /
+    enabled: false
+  block:
+    path: /admin/structure/block
+    enabled: true
+  block_content_type:
+    path: /admin/structure/block/block-content/types
+    enabled: true
+  comment_type:
+    path: /admin/structure/comment
+    enabled: true
+  contact_form:
+    path: /admin/structure/contact
+    enabled: true
+  editor:
+    path: /
+    enabled: false
+  field_storage_config:
+    path: /
+    enabled: false
+  field_config:
+    path: /
+    enabled: true
+  file:
+    path: /
+    enabled: false
+  filter_format:
+    path: /admin/config/content/formats
+    enabled: true
+  image_style:
+    path: /admin/config/media/image-styles
+    enabled: true
+  node_type:
+    path: /admin/structure/types
+    enabled: true
+  node:
+    path: /
+    enabled: true
+  shortcut_set:
+    path: /
+    enabled: false
+  shortcut:
+    path: /
+    enabled: false
+  action:
+    path: /
+    enabled: false
+  menu:
+    path: /
+    enabled: false
+  taxonomy_term:
+    path: /
+    enabled: false
+  taxonomy_vocabulary:
+    path: /admin/structure/taxonomy
+    enabled: true
+  tour:
+    path: /
+    enabled: false
+  user_role:
+    path: /admin/people/roles
+    enabled: true
+  user:
+    path: /
+    enabled: true
+  menu_link_content:
+    path: /
+    enabled: false
+  view:
+    path: /
+    enabled: false
+  base_field_override:
+    path: /
+    enabled: false
+  date_format:
+    path: /
+    enabled: false
+  entity_view_mode:
+    path: /admin/structure/display-modes/view
+    enabled: true
+  entity_form_display:
+    path: /
+    enabled: false
+  entity_view_display:
+    path: /
+    enabled: false
+  entity_form_mode:
+    path: /admin/structure/display-modes/form
+    enabled: true
+  advancedqueue_queue:
+    path: /
+    enabled: true
+  bibcite_csl_style:
+    path: /
+    enabled: true
+  bibcite_contributor_role:
+    path: /
+    enabled: true
+  bibcite_reference_artwork:
+    path: /cp/browse/publications
+  bibcite_reference_audiovisual:
+    path: /cp/browse/publications
+  bibcite_reference_bill:
+    path: /cp/browse/publications
+  bibcite_reference_book:
+    path: /cp/browse/publications
+  bibcite_reference_book_chapter:
+    path: /cp/browse/publications
+  bibcite_reference_broadcast:
+    path: /cp/browse/publications
+  bibcite_reference_case:
+    path: /cp/browse/publications
+  bibcite_reference_chart:
+    path: /cp/browse/publications
+  bibcite_reference_classical:
+    path: /cp/browse/publications
+  bibcite_reference_conference_paper:
+    path: /cp/browse/publications
+  bibcite_reference_conference_proceedings:
+    path: /cp/browse/publications
+  bibcite_reference_database:
+    path: /cp/browse/publications
+  bibcite_reference_film:
+    path: /cp/browse/publications
+  bibcite_reference_government_report:
+    path: /cp/browse/publications
+  bibcite_reference_hearing:
+    path: /cp/browse/publications
+  bibcite_reference_journal:
+    path: /cp/browse/publications
+  bibcite_reference_journal_article:
+    path: /cp/browse/publications
+  bibcite_reference_legal_ruling:
+    path: /cp/browse/publications
+  bibcite_reference_magazine_article:
+    path: /cp/browse/publications
+  bibcite_reference_manuscript:
+    path: /cp/browse/publications
+  bibcite_reference_map:
+    path: /cp/browse/publications
+  bibcite_reference_miscellaneous:
+    path: /cp/browse/publications
+  bibcite_reference_miscellaneous_section:
+    path: /cp/browse/publications
+  bibcite_reference_newspaper_article:
+    path: /cp/browse/publications
+  bibcite_reference_patent:
+    path: /cp/browse/publications
+  bibcite_reference_personal:
+    path: /cp/browse/publications
+  bibcite_reference_presentation:
+    path: /cp/browse/publications
+  bibcite_reference_report:
+    path: /cp/browse/publications
+  bibcite_reference_software:
+    path: /cp/browse/publications
+  bibcite_reference_statute:
+    path: /cp/browse/publications
+  bibcite_reference_thesis:
+    path: /cp/browse/publications
+  bibcite_reference_unpublished:
+    path: /cp/browse/publications
+  bibcite_reference_website:
+    path: /cp/browse/publications
+  bibcite_reference_web_article:
+    path: /cp/browse/publications
+  bibcite_reference_web_project_page:
+    path: /cp/browse/publications
+  bibcite_reference_web_service:
+    path: /cp/browse/publications
+  bibcite_reference:
+    enabled: true
+  bibcite_reference_type:
+    path: /
+    enabled: true
+  bibcite_contributor:
+    path: /
+    enabled: true
+  bibcite_keyword:
+    path: /
+    enabled: true
+  bibcite_contributor_category:
+    path: /
+    enabled: true
+  block_content_addthis:
+    path: /
+  block_content_basic:
+    path: /
+  block_content_custom_text_html:
+    path: /
+  block_content_embed_media:
+    path: /
+  block_content_featured_posts:
+    path: /
+  block_content_media_gallery:
+    path: /
+  block_content_publication_authors:
+    path: /
+  block_content_publication_types:
+    path: /
+  block_content_publication_years:
+    path: /
+  block_content_rss_feed:
+    path: /
+  block_content_taxonomy:
+    path: /
+  block_content_twitter_feed:
+    path: /
+  block_content:
+    enabled: true
+  block_visibility_group:
+    path: /
+    enabled: true
+  config_split:
+    path: /
+    enabled: true
+  contact_message_personal:
+    path: /
+  contact_message:
+    enabled: true
+  content_moderation_state:
+    path: /
+    enabled: true
+  context:
+    path: /
+    enabled: true
+  courier_message_queue_item:
+    path: /
+    enabled: true
+  courier_template_collection:
+    path: /
+    enabled: true
+  template_collection_global:
+    path: /
+    enabled: true
+  courier_context:
+    path: /
+    enabled: true
+  courier_email:
+    path: /
+    enabled: true
+  crop_crop_1_1:
+    path: /
+  crop:
+    enabled: true
+  crop_type:
+    path: /
+    enabled: true
+  date_recur_interpreter:
+    path: /
+    enabled: true
+  group_role:
+    path: /
+    enabled: true
+  group_type:
+    path: /
+    enabled: true
+  group_content_type:
+    path: /
+    enabled: true
+  group_personal:
+    path: /
+  group:
+    enabled: true
+  group_content_group_content_type_2daa905ab9a7f:
+    path: /
+  group_content_group_content_type_4471edaaa505a:
+    path: /
+  group_content_group_content_type_bc51384643a6d:
+    path: /
+  group_content_group_content_type_bf3f506a6ab8e:
+    path: /
+  group_content_group_content_type_eeecd9922e38a:
+    path: /
+  group_content_personal-group_entity-media:
+    path: /
+  group_content_personal-group_entity-redirect:
+    path: /
+  group_content_personal-group_membership:
+    path: /
+  group_content_personal-group_menu-menu:
+    path: /
+  group_content_personal-group_node-blog:
+    path: /
+  group_content_personal-group_node-class:
+    path: /
+  group_content_personal-group_node-events:
+    path: /
+  group_content_personal-group_node-faq:
+    path: /
+  group_content_personal-group_node-link:
+    path: /
+  group_content_personal-group_node-news:
+    path: /
+  group_content_personal-group_node-page:
+    path: /
+  group_content_personal-group_node-person:
+    path: /
+  group_content_personal-group_node-presentation:
+    path: /
+  group_content:
+    enabled: true
+  language_content_settings:
+    path: /
+    enabled: true
+  configurable_language:
+    path: /
+    enabled: true
+  media_type:
+    path: /
+    enabled: true
+  media_audio:
+    path: /
+  media_document:
+    path: /
+  media_executable:
+    path: /
+  media_icon:
+    path: /
+  media_image:
+    path: /
+  media_presentation_materials:
+    path: /
+  media_remote:
+    path: /
+  media_video:
+    path: /
+  media:
+    enabled: true
+  metatag_defaults:
+    path: /
+    enabled: true
+  node_blog:
+    path: /cp/content
+  node_class:
+    path: /cp/content
+  node_events:
+    path: /cp/content
+  node_faq:
+    path: /cp/content
+  node_link:
+    path: /cp/content
+  node_news:
+    path: /cp/content
+  node_page:
+    path: /cp/content
+  node_person:
+    path: /cp/content
+  node_presentation:
+    path: /cp/content
+  node_software_project:
+    path: /cp/content
+  node_software_release:
+    path: /cp/content
+  purl_provider:
+    path: /
+    enabled: true
+  rdf_mapping:
+    path: /
+    enabled: true
+  redirect:
+    path: /cp/redirects/list
+    enabled: true
+  responsive_image_style:
+    path: /
+    enabled: true
+  rest_resource_config:
+    path: /
+    enabled: true
+  registration_signup:
+    path: /
+  registration:
+    enabled: true
+  rng_event_type_rule:
+    path: /
+    enabled: true
+  registrant_type:
+    path: /
+    enabled: true
+  event_type:
+    path: /
+    enabled: true
+  registration_type:
+    path: /
+    enabled: true
+  rng_rule_scheduler:
+    path: /
+    enabled: true
+  rng_rule:
+    path: /
+    enabled: true
+  rng_rule_component:
+    path: /
+    enabled: true
+  registration_group:
+    path: /
+    enabled: true
+  registrant_registrant:
+    path: /
+  registrant:
+    enabled: true
+  rng_contact_type:
+    path: /
+    enabled: true
+  rng_contact_anonymous_:
+    path: /
+  rng_contact:
+    enabled: true
+  search_page:
+    path: /
+    enabled: true
+  slick:
+    path: /
+    enabled: true
+  toolbar_menu_element:
+    path: /
+    enabled: true
+  workflow:
+    path: /
+    enabled: true
+  pathauto_pattern:
+    path: /
+    enabled: true
+  paragraphs_type:
+    path: /
+    enabled: true
+  paragraph_class_material:
+    path: /
+  paragraph_slideshow:
+    path: /
+  paragraph_test:
+    path: /
+  paragraph:
+    enabled: true
+_core:
+  default_config_hash: K_LddvA0aVOWbF6aw7aoX1n_BmWah6y3HWE1Ya7QmUc

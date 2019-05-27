@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1ed8e2246c33a38907994d927a125216",
+    "content-hash": "822111fadc0ffa95b519c3402a81f141",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -2641,6 +2641,61 @@
             }
         },
         {
+            "name": "drupal/cancel_button",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/cancel_button.git",
+                "reference": "8.x-1.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/cancel_button-8.x-1.1.zip",
+                "reference": "8.x-1.1",
+                "shasum": "0ec327c7db0114d6ac6ca8160893b90ee47f55f9"
+            },
+            "require": {
+                "drupal/core": "~8.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.1",
+                    "datestamp": "1536187080",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "danmuzyka",
+                    "homepage": "https://www.drupal.org/user/48685"
+                },
+                {
+                    "name": "kevin.dutra",
+                    "homepage": "https://www.drupal.org/user/1312744"
+                },
+                {
+                    "name": "sukanya.ramakrishnan",
+                    "homepage": "https://www.drupal.org/user/3320069"
+                }
+            ],
+            "description": "This small module adds a Cancel button to Entity forms.",
+            "homepage": "https://www.drupal.org/project/cancel_button",
+            "support": {
+                "source": "https://git.drupalcode.org/project/cancel_button"
+            }
+        },
+        {
             "name": "drupal/ckeditor_bidi",
             "version": "2.1.0",
             "source": {
@@ -4326,7 +4381,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.8",
-                    "datestamp": "1524864180",
+                    "datestamp": "1557434281",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -4687,7 +4742,7 @@
                 },
                 "patches_applied": {
                     "/views/ajax?_wrapper_format=drupal_ajax HTTP/1.1 - HTTP/1.1 403 Forbidden": "https://www.drupal.org/files/issues/2018-08-15/group-route-match-ajax-views-d8-2942657-11.patch",
-                    "Entities identified by strings as group content": "https://www.drupal.org/files/issues/2018-11-26/group-support_string_entity_ids-2797793-146.patch"
+                    "Entities identified by strings as group content": "https://www.drupal.org/files/issues/2797793-20.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
