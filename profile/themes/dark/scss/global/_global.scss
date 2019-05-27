@@ -74,3 +74,7 @@ aside {
 a.class_material_field_class_anchor {
   background: url(../../../themes/os_base/images/scholarbase-sprite.png) 0px -1018px no-repeat;
 }
+/** accessibility test **/
+button.visually-hidden {
+  color: $color-black;
+}

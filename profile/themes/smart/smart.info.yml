@@ -1,0 +1,29 @@
+name: 'Smart'
+description: 'Smart theme'
+
+base theme: os_base
+core: 8.x
+type: theme
+
+regions:
+  header: 'Header'
+  header_left: 'Header Left'
+  header_right: 'Header Right'
+  navigation_collapsible: 'Navigation (Collapsible)'
+  content: 'Content'
+  content_first: 'Content First'
+  content_second: 'Content Second'
+  content_bottom: 'Content bottom'
+  content_bottom_first: 'Content bottom first'
+  content_bottom_second: 'Content bottom second'
+  sidebar_first: 'Primary'
+  sidebar_second: 'Secondary'
+  footer: 'Footer'
+  footer_left: 'Footer left'
+  footer_right: 'Footer right'
+  footer_bottom: 'Footer bottom'
+  page_top: 'Page top'
+  page_bottom: 'Page bottom'
+
+libraries:
+  - smart/global-styling

@@ -2,11 +2,8 @@
 
 namespace Drupal\os_breadcrumb\Plugin\CpSetting;
 
-use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Session\AccountInterface;
 use Drupal\cp_settings\CpSettingBase;
 
 /**
@@ -51,16 +48,6 @@ class OsBreadcrumbSetting extends CpSettingBase {
     $config = $configFactory->getEditable('os_breadcrumb.settings');
     $config->set('show_breadcrumbs', $formState->getValue('show_breadcrumbs'));
     $config->save(TRUE);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function access(AccountInterface $account): AccessResultInterface {
-    if (!$account->hasPermission('access control panel')) {
-      return AccessResult::forbidden();
-    }
-    return AccessResult::allowed();
   }
 
 }

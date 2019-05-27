@@ -35,6 +35,7 @@ module:
   courier: 0
   cp: 0
   cp_appearance: 0
+  cp_roles: 0
   cp_settings: 0
   cp_taxonomy: 0
   cp_users: 0
@@ -67,6 +68,7 @@ module:
   group: 0
   group_entity: 0
   group_purl: 0
+  groupmenu: 0
   hal: 0
   image: 0
   image_widget_crop: 0
@@ -208,8 +210,10 @@ theme:
   clean: 0
   dark: 0
   clean_blue: 0
+  os_admin: 0
   shadow: 0
   soft: 0
+  smart: 0
 profile: openscholar
 _core:
   default_config_hash: R4IF-ClDHXxblLcG0L7MgsLvfBIMAvi_skumNFQwkDc
