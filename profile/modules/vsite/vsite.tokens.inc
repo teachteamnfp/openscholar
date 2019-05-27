@@ -32,6 +32,11 @@ function vsite_token_info() {
     'description' => t("Field site description of active personal group."),
   ];
 
+  $settings['site_favicon'] = [
+    'name' => t("Site favicon"),
+    'description' => t("Field site favicon URL of active personal group."),
+  ];
+
   return [
     'types' => ['vsite' => $type],
     'tokens' => ['vsite' => $settings],
@@ -97,6 +102,21 @@ function vsite_tokens($type, $tokens, array $data, array $options, BubbleableMet
             $value = $site_description->getValue();
             if (!empty($value)) {
               $replacements[$original] = check_markup($value[0]['value'], $value[0]['format']);
+            }
+          }
+          break;
+
+        case 'site_favicon':
+          /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContext */
+          $vsiteContext = \Drupal::service('vsite.context_manager');
+
+          $replacements[$original] = '';
+          /** @var \Drupal\group\Entity\GroupInterface $group */
+          if ($group = $vsiteContext->getActiveVsite()) {
+            $site_favicon = $group->get('field_site_favicon');
+            $value = $site_favicon->getValue();
+            if (!empty($value)) {
+              $replacements[$original] = file_create_url($group->field_site_favicon->entity->uri->value);
             }
           }
           break;
