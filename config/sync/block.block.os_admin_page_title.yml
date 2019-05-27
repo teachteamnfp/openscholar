@@ -1,0 +1,20 @@
+uuid: 111b8fc1-6682-4592-b997-bb974fdd32c7
+langcode: en
+status: true
+dependencies:
+  theme:
+    - os_admin
+_core:
+  default_config_hash: 9cldOgRYZcChU5uwgahyBZxWa_qThXtxPy82hZoS0cM
+id: os_admin_page_title
+theme: os_admin
+region: header
+weight: -30
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  provider: core
+  label_display: '0'
+visibility: {  }
