@@ -47,13 +47,8 @@ class CpRolesTest extends CpRolesExistingSiteJavascriptTestBase {
 
     $this->getSession()->getPage()->pressButton('Save group role');
 
-    // TODO: Instead of activating the vsite, visit roles listing page and check
-    // TODO: whether the role has been created.
-    /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
-    $vsite_context_manager = $this->container->get('vsite.context_manager');
-    $vsite_context_manager->activateVsite($this->group);
-    $group_role = GroupRole::load("personal-{$this->group->id()}-stooges");
-    $this->assertNotNull($group_role);
+    $this->visit("/{$this->group->get('path')->getValue()[0]['alias']}/cp/users/roles");
+    $this->assertSession()->pageTextContains('Stooges');
   }
 
   /**
