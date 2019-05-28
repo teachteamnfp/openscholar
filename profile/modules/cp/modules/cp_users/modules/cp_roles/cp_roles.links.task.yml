@@ -2,3 +2,8 @@ cp_roles.permissions:
   title: 'Permissions'
   base_route: cp.users
   route_name: cp_roles.role.permission_form
+
+cp_roles.list:
+  title: 'Roles'
+  base_route: cp.users
+  route_name: cp_roles.role.list
