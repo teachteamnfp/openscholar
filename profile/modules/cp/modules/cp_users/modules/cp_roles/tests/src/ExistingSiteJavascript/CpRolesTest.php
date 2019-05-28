@@ -31,7 +31,6 @@ class CpRolesTest extends CpRolesExistingSiteJavascriptTestBase {
   /**
    * Tests role creation from UI.
    *
-   * @covers ::cp_roles_entity_presave
    * @covers ::cp_roles_form_group_role_add_form_alter
    *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
@@ -47,7 +46,7 @@ class CpRolesTest extends CpRolesExistingSiteJavascriptTestBase {
 
     $this->getSession()->getPage()->pressButton('Save group role');
 
-    $this->visit("/{$this->group->get('path')->getValue()[0]['alias']}/cp/users/roles");
+    $this->assertContains("{$this->group->get('path')->getValue()[0]['alias']}/cp/users/roles", $this->getSession()->getCurrentUrl());
     $this->assertSession()->pageTextContains('Stooges');
   }
 
