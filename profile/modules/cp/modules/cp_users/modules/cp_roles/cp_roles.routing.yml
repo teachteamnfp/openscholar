@@ -26,3 +26,17 @@ cp_roles.role.change:
   requirements:
     _group_permission: 'manage cp roles'
     _group_member: 'TRUE'
+
+cp_roles.role.list:
+  path: '/cp/users/roles/{group_type}'
+  defaults:
+    _entity_list: 'group_role'
+    _title: 'Vsite roles'
+    group_type: personal
+  requirements:
+    _group_permission: 'manage cp roles'
+    _group_member: 'TRUE'
+  options:
+    parameters:
+      group_type:
+        type: entity:group_type
