@@ -20,11 +20,16 @@ class CpRolesAccessTest extends CpRolesExistingSiteTestBase {
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function testPositive(): void {
+    $test_faq = $this->createNode([
+      'type' => 'faq',
+    ]);
+    $this->group->addContent($test_faq, 'group_node:faq');
+
     // Setup role.
     $group_role = $this->createRoleForGroup($this->group);
     $group_role->grantPermissions([
-      'create group_node:faq entity',
-      'create group_node:faq content',
+      'update any group_node:faq entity',
+      'update any group_node:faq content',
     ])->save();
 
     // Setup user.
@@ -38,8 +43,7 @@ class CpRolesAccessTest extends CpRolesExistingSiteTestBase {
     // Perform tests.
     $this->drupalLogin($member);
 
-    $this->visit("/{$this->group->get('path')->getValue()[0]['alias']}/node/add/faq");
-
+    $this->visit("/{$this->group->get('path')->getValue()[0]['alias']}/node/{$test_faq->id()}/edit");
     $this->assertSession()->statusCodeEquals(200);
 
     $question = $this->randomMachineName();
@@ -70,6 +74,11 @@ class CpRolesAccessTest extends CpRolesExistingSiteTestBase {
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function testNegative(): void {
+    $test_faq = $this->createNode([
+      'type' => 'faq',
+    ]);
+    $this->group->addContent($test_faq, 'group_node:faq');
+
     // Setup role.
     $group_role = $this->createRoleForGroup($this->group);
 
@@ -84,7 +93,7 @@ class CpRolesAccessTest extends CpRolesExistingSiteTestBase {
     // Perform tests.
     $this->drupalLogin($member);
 
-    $this->visit("/{$this->group->get('path')->getValue()[0]['alias']}/node/add/faq");
+    $this->visit("/{$this->group->get('path')->getValue()[0]['alias']}/node/{$test_faq->id()}/edit");
 
     $this->assertSession()->statusCodeEquals(403);
   }
