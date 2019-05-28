@@ -1,0 +1,6 @@
+cp_menu.drag:
+  version: 1.0
+  js:
+    js/cp_menu.js: { }
+  dependencies:
+    - core/jquery

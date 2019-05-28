@@ -6,9 +6,13 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
+use Drupal\Core\Menu\MenuLinkManagerInterface;
+use Drupal\Core\Menu\MenuLinkTree;
+use Drupal\Core\Menu\MenuLinkTreeElement;
 use Drupal\Core\Menu\MenuTreeParameters;
+use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
-use Drupal\os\MenuHelperInterface;
+use Drupal\vsite\Plugin\VsiteContextManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -24,6 +28,13 @@ class MenuBuildForm extends FormBase {
   protected $configFactory;
 
   /**
+   * The overview tree form.
+   *
+   * @var array
+   */
+  protected $overviewTreeForm = ['#tree' => TRUE];
+
+  /**
    * Creates a new FlavorForm object.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
@@ -31,9 +42,11 @@ class MenuBuildForm extends FormBase {
    * @param \Drupal\os\MenuHelperInterface $menuHelper
    *   Menu Helper.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, MenuHelperInterface $menuHelper) {
+  public function __construct(ConfigFactoryInterface $config_factory, MenuLinkTree $menu_tree, VsiteContextManager $vsite_manager, MenuLinkManagerInterface $menu_link_manager) {
     $this->configFactory = $config_factory;
-    $this->menuHelper = $menuHelper;
+    $this->menuTree = $menu_tree;
+    $this->vsiteManager = $vsite_manager;
+    $this->menuLinkManager = $menu_link_manager;
   }
 
   /**
@@ -42,7 +55,9 @@ class MenuBuildForm extends FormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('config.factory'),
-      $container->get('menu.helper')
+      $container->get('menu.link_tree'),
+      $container->get('vsite.context_manager'),
+      $container->get('plugin.manager.menu.link')
     );
   }
 
@@ -58,258 +73,138 @@ class MenuBuildForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state): array {
 
-    $menu_array = $this->menuHelper->osGetMenus();
-    foreach ($menu_array as $key => $menu) {
-      $menus[$key] = \Drupal::entityTypeManager()->getStorage('menu')->load($key);
+    $this->menus = $this->configFactory->getEditable('cp_menu.settings')->get('menus');
+    $vsiteId = $this->vsiteManager->getActiveVsite()->id();
+    if (!$this->menus) {
+      $this->menus = [
+        'group-menu-' . $vsiteId => 'Primary Menu',
+        'group-menu-secondary-' . $vsiteId => 'Secondary Menu'
+      ];
     }
-//
-    $weight = 5;
-//
-//    $form['$menus'] = [
-//      '#type' => 'table',
-//      '#header' => [
-//        t('Title'),
-//        t('URL'),
-//        t('Edit'),
-//        t('Delete'),
-//        t('Menu'),
-//        t('Weight')
-//      ],
-//      '#empty' => t('There are no items yet. <a href="@add-url">Add an item.</a>', array(
-//        '@add-url' => Url::fromRoute('mymodule.manage_add'),
-//      )),
-//      // TableDrag: Each array value is a list of callback arguments for
-//      // drupal_add_tabledrag(). The #id of the table is automatically prepended;
-//      // if there is none, an HTML ID is auto-generated.
-//      '#tabledrag' => [
-//        [
-//          'action' => 'order',
-//          'relationship' => 'sibling',
-//          'group' => 'mytable-order-weight',
-//        ],
-//      ],
-//    ];
-//
-//
-//
-//    foreach ($menus as $m => $menu) {
-//      //      $form['$menu_array']['menus'][$m] = [
-//      //        '#weight' => $weight++,
-//      //        'menu-name' => [
-//      //          '#type' => 'hidden',
-//      //          '#value' => $m,
-//      //          '#attributes' => [
-//      //            'class' => [
-//      //              'menu-name',
-//      //            ],
-//      //          ],
-//      //        ],
-//      //      ];
-//      $links[$m] = $this->menuLoadLinks($m);
-//    }
-//
-//      //$linksinks = _cp_menu_flatten_tree(os_menu_tree_data($m));
-//      foreach ($links['primary-menu'] as $link) {
-//        //Show links as absolute
-//        $url = ($link->url) ?? FALSE;
-//        $title = unserialize($link->title);
-//
-//        // Show the first 80 charcters of the URL.
-//        $url_display = ($url && strlen($url) > 80) ? substr($url, 0, 80)."...":$url;
-//
-//
-//        // TableDrag: Mark the table row as draggable.
-//        $form['$menus']['primary'][$link->mlid]['#attributes']['class'][] = 'draggable';
-//        // TableDrag: Sort the table row according to its existing/configured weight.
-//        $form['$menus']['primary'][$link->mlid]['#weight'] = $link->weight;
-//
-//
-//        $form['$menus']['primary'][$link->mlid] = [
-//          'title' => [
-//            '#type' => 'item',
-//            '#markup' => '<div class="link-title">' . $title . '</div>',
-//          ],
-//          'link_href' => [
-//            '#markup' => $url ?? Link::fromTextAndUrl('delete', Url::fromUserInput($url))->toString(),
-//          ],
-//          'delete_link' => [
-//            '#markup' => Link::fromTextAndUrl('delete', Url::fromUserInput('/cp/build/menu/link/' . $link->mlid . '/delete'))->toString()
-//          ],
-//          'edit_link' => [
-//            '#markup' => Link::fromTextAndUrl('edit', Url::fromUserInput('/cp/build/menu/link/' . $link->mlid . '/edit'))->toString()
-//          ],
-//          'menu' => [
-//            '#type' => 'select',
-//            '#options' => $menu_array,
-//            '#default_value' => $link->menu_name,
-//            '#attributes' => [
-//              'class' => [
-//                'menu-name',
-//                'menu-name-' . $link->menu_name
-//              ]
-//            ]
-//          ],
-//          'weight' => [
-//            '#type' => 'weight',
-//            '#default_value' => $link->weight,
-//            '#attributes' => [
-//              'class' => [
-//                'menu-weight',
-//                'menu-weight-' . $link->menu_name
-//              ]
-//            ]
-//          ],
-////          'plid' => [
-////            '#type' => 'hidden',
-////            '#default_value' => $link->plid,
-////            '#attributes' => [
-////              'class' => [
-////                'menu-plid',
-////                'menu-plid-' . $link->menu_name
-////              ]
-////            ]
-////          ],
-//          'mlid' => [
-//            '#type' => 'hidden',
-//            '#default_value' => $link->mlid,
-//            '#attributes' => [
-//              'class' => [
-//                'menu-mlid',
-//                'menu-mlid' . $link->menu_name
-//              ]
-//            ]
-//          ],
-//          'menu-old' => [
-//            '#type' => 'hidden',
-//            '#value' => $link->menu_name
-//          ],
-//          '#depth' => $link->depth
-//        ];
-//      }
-//    $form['actions'] = [
-//      '#type' => 'actions',
-//      'submit' => [
-//        '#type' => 'submit',
-//        '#value' => $this->t('Save settings'),
-//      ],
-//    ];
-//
-//    $form['#submit'] = ['cp_menu_submit_form'];
-//
-//    return $form;
 
-
-    $vsite_alias =  '/' . \Drupal::service('vsite.context_manager')->getActivePurl();
-
-    $form['mytable'] = [
-      '#type' => 'table',
-      '#header' => [
-//        t('Title'),
-//        t('URL'),
-//        t('Edit'),
-//        t('Delete'),
-//        t('Menu'),
-//        t('Weight')
-      ],
-      // TableDrag: Each array value is a list of callback arguments for
-      // drupal_add_tabledrag(). The #id of the table is automatically prepended;
-      // if there is none, an HTML ID is auto-generated.
-      '#tabledrag' => [
-        [
-          'action' => 'order',
-          'relationship' => 'sibling',
-          'group' => 'mytable-order-weight',
-        ],
-      ],
+    $this->vsiteAlias =  '/' . $this->vsiteManager->getActivePurl();
+    $headers = [
+      $this->t('Title'),
+      $this->t('Url'),
+      $this->t('Edit'),
+      $this->t('Delete'),
+      $this->t('Menu'),
+      $this->t('Weight')
     ];
 
     $revert = [
-      'primary-menu',
-      'secondary-menu',
+      'group-menu-' . $vsiteId,
+      'group-menu-secondary-' . $vsiteId,
     ];
 
+    $form['links'] = [
+      '#type' => 'table',
+      '#theme' => 'table__menu_overview',
+      '#header' => $headers,
+      '#attributes' => [
+        'id' => 'menu-overview',
+      ],
+    ];
 
-      $links = $this->menuLoadLinks();
+    foreach ($this->menus as $m => $menu) {
 
-      // Build the table rows and columns.
-      // The first nested level in the render array forms the table row, on which you
-      // likely want to set #attributes and #weight.
-      // Each child element on the second level represents a table column cell in the
-      // respective table row, which are render elements on their own. For single
-      // output elements, use the table cell itself for the render element. If a cell
-      // should contain multiple elements, simply use nested sub-keys to build the
-      // render element structure for drupal_render() as you would everywhere else.
-      foreach ($links as $id => $link) {
-        $m = $link->menu_name;
-        if (!isset($form['mytable'][$m])) {
-          $form['mytable'][$m]['title'] = [
-          '#plain_text' => $m,
+      $form['links']['#tabledrag'][] = [
+          'action' => 'match',
+          'relationship' => 'parent',
+          'group' => 'menu-parent',
+          'subgroup' => 'menu-parent',
+          'source' => 'menu-id',
+          'hidden' => FALSE,
+          'limit' => $this->menuTree->maxDepth() - 1,
+        ];
+      $form['links']['#tabledrag'][] = [
+        'action' => 'order',
+        'relationship' => 'sibling',
+        'group' => 'menu-weight',
+      ];
+
+      $tree = $this->menuLoadTree($m);
+      $manipulators = [
+        ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort']
+      ];
+      $tree = $this->menuTree->transform($tree, $manipulators);
+
+      // Determine the delta; the number of weights to be made available.
+      $count = function (array $tree) {
+        $sum = function ($carry, MenuLinkTreeElement $item) {
+          return $carry + $item->count();
+        };
+        return array_reduce($tree, $sum);
+      };
+      $delta = max($count($tree), 50);
+
+      $form['links'][$m]['title'] = [
+        '#markup' => $this->t($menu),
+        'menu-name' => [
+          '#type' => 'hidden',
+          '#value' => $m,
           '#attributes' => [
             'class' => [
               'menu-name'
-            ],
-          ]
-        ];
-          $removeLinkText = in_array($m, $revert) ? 'Reset' : 'Remove';
-          $form['mytable'][$m]['reset'] = [
-            '#markup' => Link::fromTextAndUrl($removeLinkText, Url::fromUserInput($vsite_alias . '/cp/build/menu/remove/' . $m))
-              ->toString()
-          ];
-          $form['mytable'][$m]['add_new'] = [
-            '#markup' => Link::fromTextAndUrl(t('+ Add new link'), Url::fromUserInput($vsite_alias . '/cp/build/menu/link/new/' . $m))
-              ->toString()
-          ];
-        }
-
-        // TableDrag: Mark the table row as draggable.
-        $form['mytable'][$id]['#attributes']['class'][] = 'draggable';
-        // TableDrag: Sort the table row according to its existing/configured weight.
-        $form['mytable'][$id]['#weight'] = $link->weight;
-
-
-        $title = unserialize($link->title);
-        $options = ['absolute' => TRUE];
-        $url = ($link->url) ? $link->url : FALSE;//Url::fromRoute($link->route_name, [], $options);
-
-        // Some table columns containing raw markup.
-        $form['mytable'][$id]['title'] = [
-          '#plain_text' => $title,
-        ];
-        $form['mytable'][$id]['link_url'] = [
-          '#markup' => $url,
-        ];
-        $form['mytable'][$id]['edit'] = [
-          '#markup' => Link::fromTextAndUrl('edit', Url::fromUserInput($vsite_alias . '/cp/build/menu/link/' . $link->mlid . '/edit'))
-            ->toString(),
-        ];
-        $form['mytable'][$id]['delete'] = [
-          '#markup' => Link::fromTextAndUrl('delete', Url::fromUserInput($vsite_alias . '/cp/build/menu/link/' . $link->mlid . '/delete'))
-            ->toString(),
-        ];
-        $form['mytable'][$id]['menu'] = [
-          '#type' => 'select',
-          '#options' => $menu_array,
-          '#default_value' => $link->menu_name,
-          '#attributes' => [
-            'class' => [
-              'menu-name',
-              'menu-name-' . $link->menu_name
             ]
           ]
-        ];
+        ],
+        '#wrapper_attributes' => [
+          'colspan' => 1,
+        ],
+      ];
+      $form['links'][$m]['title']['#attributes'] = ['class' => ['menu-name']];
 
-        // TableDrag: Weight column element.
-        // NOTE: The tabledrag javascript puts the drag handles inside the first column,
-        // then hides the weight column. This means that tabledrag handle will not show
-        // if the weight element will be in the first column so place it further as in this example.
-        $form['mytable'][$id]['weight'] = [
-          '#type' => 'weight',
-          '#title' => t('Weight for @title', ['@title' => $title]),
-          '#title_display' => 'invisible',
-          '#default_value' => $link->weight,
-          // Classify the weight element for #tabledrag.
-          '#attributes' => ['class' => ['mytable-order-weight']],
-        ];
+      $form['links'][$m]['reset'] = [
+        '#markup' => $removeText = in_array($m, $revert) ? 'Reset' : 'Remove',
+        '#wrapper_attributes' => [
+          'colspan' => 3,
+        ],
+      ];
+      $form['links'][$m]['new_link'] = [
+        '#markup' => '+ Add new Link',
+        '#wrapper_attributes' => [
+          'colspan' => 2,
+        ],
+      ];
+
+      $form['links'][$m]['#attributes'] = ['class' => 'section-heading'];
+
+      $links = $this->buildMenuTreeForm($tree, $delta);
+        foreach (Element::children($links) as $id) {
+          if (isset($links[$id]['#item'])) {
+            $element = $links[$id];
+
+            $form['links'][$id]['#item'] = $element['#item'];
+
+            // TableDrag: Mark the table row as draggable.
+            $form['links'][$id]['#attributes'] = $element['#attributes'];
+            $form['links'][$id]['#attributes']['class'][] = 'draggable';
+
+            // TableDrag: Sort the table row according to its existing/configured weight.
+            $form['links'][$id]['#weight'] = $element['#item']->link->getWeight();
+
+            // Add special classes to be used for tabledrag.js.
+            $element['parent']['#attributes']['class'] = ['menu-parent'];
+            $element['weight']['#attributes']['class'] = ['menu-weight'];
+            $element['id']['#attributes']['class'] = ['menu-id'];
+
+            $form['links'][$id]['title'] = [
+              [
+                '#theme' => 'indentation',
+                '#size' => $element['#item']->depth - 1,
+              ],
+              $element['title'],
+            ];
+            $form['links'][$id]['link_url'] = $element['link_url'];
+            $form['links'][$id]['edit'] = $element['edit'];
+            $form['links'][$id]['delete'] = $element['delete'];
+            $form['links'][$id]['menu_name'] = $element['menu_name'];
+            $form['links'][$id]['weight'] = $element['weight'];
+            $form['links'][$id]['id'] = $element['id'];
+            $form['links'][$id]['parent'] = $element['parent'];
+          }
+        }
       }
 
     $form['actions'] = ['#type' => 'actions'];
@@ -317,6 +212,8 @@ class MenuBuildForm extends FormBase {
       '#type' => 'submit',
       '#value' => t('Save changes'),
     ];
+
+    $form['#attached']['library'][] = 'cp_menu/cp_menu.drag';
     return $form;
 
 
@@ -326,27 +223,108 @@ class MenuBuildForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state): void {
-
+    $fields = ['weight', 'parent', 'menu_name'];
+    $form_links = $form['links'];
+    foreach (Element::children($form_links) as $id) {
+      if (isset($form_links[$id]['#item'])) {
+        $element = $form_links[$id];
+        $updated_values = [];
+        // Update any fields that have changed in this menu item.
+        foreach ($fields as $field) {
+          if ($element[$field]['#value'] != $element[$field]['#default_value']) {
+            $updated_values[$field] = $element[$field]['#value'];
+          }
+        }
+        if ($updated_values) {
+          // Use the ID from the actual plugin instance since the hidden value
+          // in the form could be tampered with.
+          $this->menuLinkManager->updateDefinition($element['#item']->link->getPLuginId(), $updated_values);
+        }
+      }
+    }
   }
 
   /**
    * Get menu link data by menu name
    */
-  public function menuLoadLinks() {
-    $storage = \Drupal::entityTypeManager()->getStorage('menu_link_content');
-    $groupId = \Drupal::service('vsite.context_manager')->getActiveVsite()->id();
+  protected function menuLoadTree($menu) {
+    $groupId = $this->vsiteManager->getActiveVsite()->id();
+    $treeParams = new MenuTreeParameters();
+    $tree = $this->menuTree->load($menu, $treeParams);
+    return $tree;
+  }
 
-      $treeParams = new MenuTreeParameters();
-      $treeParams->addCondition('route_name', 'entity.group.canonical');
-      // Get the tree.
-      $query = \Drupal::database()->select('menu_tree', 'mt');
-      $query->fields('mt', []);
-      $query->condition('route_param_key', "group=$groupId");
-      $links = $query->execute()->fetchAll();
-//      $service = \Drupal::service('menu.tree_storage');
-//      $linksinks = $service->loadTreeData($menu_name, $treeParams);
-//      kint($linksinks);
-      return $links;
+  /**
+   * Recursive helper function for buildOverviewForm().
+   *
+   * @param \Drupal\Core\Menu\MenuLinkTreeElement[] $tree
+   *   The tree retrieved by \Drupal\Core\Menu\MenuLinkTreeInterface::load().
+   * @param int $delta
+   *   The default number of menu items used in the menu weight selector is 50.
+   *
+   * @return array
+   *   The overview tree form.
+   */
+  protected function buildMenuTreeForm($tree, $delta) {
+    $form = &$this->overviewTreeForm;
+    foreach ($tree as $element) {
+      /** @var \Drupal\Core\Menu\MenuLinkInterface $link */
+      $link = $element->link;
+      if ($link) {
+        $id = 'menu_plugin_id:' . $link->getPluginId();
+        $form[$id]['#item'] = $element;
+        $form[$id]['#attributes'] = ['class' => ['menu-enabled']];
+        $form[$id]['title'] =  Link::fromTextAndUrl($link->getTitle(), $link->getUrlObject())->toRenderable();
 
+
+        // Show the first 80 charcters of the URL.
+        $menuLinkText = $link->getUrlObject()->setOption('absolute', TRUE)->toString();
+        $urlDisplay = (strlen($menuLinkText) > 80) ? substr($menuLinkText, 0, 80) . "..." : $menuLinkText;
+
+        $form[$id]['link_url'] = [
+          '#markup' => Link::fromTextAndUrl($urlDisplay, $link->getUrlObject())->toString(),
+        ];
+
+        $form[$id]['id'] = [
+          '#type' => 'hidden',
+          '#value' => $link->getPluginId(),
+        ];
+        $form[$id]['parent'] = [
+          '#type' => 'hidden',
+          '#default_value' => $link->getParent(),
+        ];
+        $form[$id]['edit'] = [
+          '#markup' => Link::fromTextAndUrl('edit', Url::fromUserInput($this->vsiteAlias . '/cp/build/menu/link/' . $link->getPluginId() . '/edit'))
+            ->toString(),
+        ];
+        $form[$id]['delete'] = [
+          '#markup' => Link::fromTextAndUrl('delete', Url::fromUserInput($this->vsiteAlias . '/cp/build/menu/link/' . $link->getPluginId() . '/delete'))
+            ->toString(),
+        ];
+        $form[$id]['menu_name'] = [
+          '#type' => 'select',
+          '#options' => $this->menus,
+          '#default_value' => $link->getMenuName(),
+          '#attributes' => [
+            'class' => [
+              'menu-name',
+              'menu-name-' . $link->getMenuName()
+            ]
+          ]
+        ];
+        $form[$id]['weight'] = [
+          '#type' => 'weight',
+          '#delta' => $delta,
+          '#default_value' => $link->getWeight(),
+          '#title' => $this->t('Weight for @title', ['@title' => $link->getTitle()]),
+          '#title_display' => 'invisible',
+        ];
+
+      }
+      if ($element->subtree) {
+        $this->buildMenuTreeForm($element->subtree, $delta);
+      }
+    }
+    return $form;
   }
 }

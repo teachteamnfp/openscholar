@@ -1,0 +1,111 @@
+<?php
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\vsite\Config\VsiteStorageDefinition;
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ */
+function cp_menu_group_insert(EntityInterface $entity) {
+  if (!$entity->getGroupType()->hasContentPlugin('group_menu:menu')) {
+    return;
+  }
+
+  $path = 'internal:' . $entity->path->alias;
+
+  $storage = \Drupal::service('hierarchical.storage')->createCollection('vsite:' . $entity->id());
+  \Drupal::service('hierarchical.storage')->addStorage($storage, VsiteStorageDefinition::VSITE_STORAGE);
+
+  $group_menu = \Drupal::entityTypeManager()->getStorage('menu')->create([
+    'id' => 'group-menu-' . $entity->id(),
+    'label' => 'Primary menu',
+    'description' => 'Menu for ' . $entity->label(),
+  ]);
+  $group_menu->save();
+
+   $group_menu_secondary = \Drupal::entityTypeManager()->getStorage('menu')->create([
+    'id' => 'group-menu-secondary-' . $entity->id(),
+    'label' => 'Secondary menu',
+    'description' => 'Menu for ' . $entity->label(),
+  ]);
+  $group_menu_secondary->save();
+
+  // Add menu link for group if enabled.
+  $menu_content_storage = \Drupal::entityTypeManager()->getStorage('menu_link_content');
+  $weight = 5;
+
+  $menu_content_storage->create([
+    'title' => t('Home'),
+    'link' => ['uri' => $path],
+    'menu_name' => $group_menu->id(),
+    'weight' => $weight++,
+    'expanded' => TRUE,
+  ])->save();
+
+  $menu_content_storage->create([
+    'title' => t('Blog'),
+    'link' => ['uri' => $path . '/blog', 'route_name' => 'entity.group.canonical'],
+    'menu_name' => $group_menu->id(),
+    'weight' => $weight++,
+    'expanded' => TRUE,
+  ])->save();
+  $menu_content_storage->create([
+    'title' => t('Calendar'),
+    'link' => ['uri' => $path . '/calendar'],
+    'menu_name' => $group_menu->id(),
+    'weight' => $weight++,
+    'expanded' => TRUE,
+  ])->save();
+  $menu_content_storage->create([
+    'title' => t('Classes'),
+    'link' => ['uri' => $path . '/classes'],
+    'menu_name' => $group_menu->id(),
+    'weight' => $weight++,
+    'expanded' => TRUE,
+  ])->save();
+  $menu_content_storage->create([
+    'title' => t('Links'),
+    'link' => ['uri' => $path . '/links'],
+    'menu_name' => $group_menu->id(),
+    'weight' => $weight++,
+    'expanded' => TRUE,
+  ])->save();
+  $menu_content_storage->create([
+    'title' => t('News'),
+    'link' => ['uri' => $path . '/news'],
+    'menu_name' => $group_menu->id(),
+    'weight' => $weight++,
+    'expanded' => TRUE,
+  ])->save();
+  $menu_content_storage->create([
+    'title' => t('People'),
+    'link' => ['uri' => $path . '/people'],
+    'menu_name' => $group_menu->id(),
+    'weight' => $weight++,
+    'expanded' => TRUE,
+  ])->save();
+  $menu_content_storage->create([
+    'title' => t('Presentations'),
+    'link' => ['uri' => $path . '/presentations'],
+    'menu_name' => $group_menu->id(),
+    'weight' => $weight++,
+    'expanded' => TRUE,
+  ])->save();
+  $menu_content_storage->create([
+    'title' => t('Projects'),
+    'link' => ['uri' => $path . '/software'],
+    'menu_name' => $group_menu->id(),
+    'weight' => $weight++,
+    'expanded' => TRUE,
+  ])->save();
+  $menu_content_storage->create([
+    'title' => t('Publications'),
+    'link' => ['uri' => $path . '/publications'],
+    'menu_name' => $group_menu->id(),
+    'weight' => $weight++,
+    'expanded' => TRUE,
+  ])->save();
+
+  $entity->addContent($group_menu, 'group_menu:menu');
+  $entity->addContent($group_menu_secondary, 'group_menu:menu');
+}
