@@ -376,7 +376,7 @@ class MenuBuildForm extends FormBase {
             'class' => ['use-ajax'],
             'data-dialog-type' => 'modal',
             'data-dialog-options' => json_encode(['width' => '50%']),
-            'id' => 'add_new_menu',
+            'id' => 'edit_menu_link',
           ],
         ];
 
@@ -391,7 +391,7 @@ class MenuBuildForm extends FormBase {
             'class' => ['use-ajax'],
             'data-dialog-type' => 'modal',
             'data-dialog-options' => json_encode(['width' => '50%']),
-            'id' => 'add_new_menu',
+            'id' => 'delete_menu_link',
           ],
         ];
 
