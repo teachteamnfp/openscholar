@@ -12,6 +12,7 @@ use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTest
  */
 class CpCancelButtonTest extends OsExistingSiteJavascriptTestBase {
 
+  protected $node;
   protected $nodePath;
   protected $vsiteAlias;
 
@@ -25,11 +26,11 @@ class CpCancelButtonTest extends OsExistingSiteJavascriptTestBase {
     /** @var \Drupal\Core\Path\AliasStorageInterface $path_alias_storage */
     $path_alias_storage = $this->container->get('path.alias_storage');
     $this->vsiteAlias = $this->group->get('path')->first()->getValue()['alias'];
-    $node = $this->createNode();
-    $this->group->addContent($node, "group_node:{$node->bundle()}");
-    $this->nodePath = $this->vsiteAlias . $path_alias_manager->getAliasByPath('/node/' . $node->id());
+    $this->node = $this->createNode();
+    $this->group->addContent($this->node, "group_node:{$this->node->bundle()}");
+    $this->nodePath = $this->vsiteAlias . $path_alias_manager->getAliasByPath('/node/' . $this->node->id());
     // Fix group alias of the node.
-    $path_alias_storage->save('/node/' . $node->id(), $this->nodePath);
+    $path_alias_storage->save('/node/' . $this->node->id(), $this->nodePath);
   }
 
   /**
@@ -40,10 +41,10 @@ class CpCancelButtonTest extends OsExistingSiteJavascriptTestBase {
     $web_assert = $this->assertSession();
 
     // Visit node.
-    $this->visit($this->nodePath);
+    $this->visit($this->vsiteAlias . '/node/' . $this->node->id());
     $url = $session->getCurrentUrl();
     file_put_contents('public://testNodeDeleteCancelButtonPage.png', $session->getScreenshot());
-    $this->assertEquals('http://apache' . $this->nodePath, $url);
+    $this->assertEquals('http://apache' . $this->vsiteAlias . '/node/' . $this->node->id(), $url);
     $web_assert->statusCodeEquals(200);
     $page = $this->getCurrentPage();
     $edit_link = $page->findLink('Edit');
