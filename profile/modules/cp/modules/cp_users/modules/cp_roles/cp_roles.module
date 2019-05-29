@@ -71,7 +71,9 @@ function cp_roles_group_role_add_form_submit(array &$form, FormStateInterface $f
  * Implements hook_entity_type_build().
  */
 function cp_roles_entity_type_build(array &$entity_types) {
-  /** @var \Drupal\Core\Config\Entity\ConfigEntityTypeInterface $group_role_type */
-  $group_role_type = $entity_types['group_role'];
-  $group_role_type->setListBuilderClass(CpRoleListBuilder::class);
+  if (isset($entity_types['group_role'])) {
+    /** @var \Drupal\Core\Config\Entity\ConfigEntityTypeInterface $group_role_type */
+    $group_role_type = $entity_types['group_role'];
+    $group_role_type->setListBuilderClass(CpRoleListBuilder::class);
+  }
 }
