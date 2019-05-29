@@ -119,8 +119,8 @@ class MenuBuildForm extends FormBase {
     ];
 
     $revert = [
-      'group-menu-' . $vsiteId,
-      'group-menu-secondary-' . $vsiteId,
+      'menu-primary-' . $vsiteId,
+      'menu-secondary-' . $vsiteId,
     ];
 
     $form['links'] = [
@@ -186,8 +186,18 @@ class MenuBuildForm extends FormBase {
 
       $form['links'][$m]['#weight'] = $weight++;
 
+      $url = Url::fromRoute('cp.build.remove_menu', ['menu_id' => $m, 'label' => $menu], [
+        'attributes' => [
+          'class' => ['use-ajax'],
+          'data-dialog-type' => 'modal',
+          'data-dialog-options' => json_encode(['width' => '100%']),
+          'id' => 'remove_menu',
+        ],
+      ]);
+      $resetLink = Link::fromTextAndUrl(in_array($m, $revert) ? 'Reset' : 'Remove', $url)->toString();
+
       $form['links'][$m]['reset'] = [
-        '#markup' => in_array($m, $revert) ? 'Reset' : 'Remove',
+        '#markup' => $resetLink,
         '#wrapper_attributes' => [
           'colspan' => 3,
         ],
@@ -262,7 +272,6 @@ class MenuBuildForm extends FormBase {
       }
     }
 
-    // $link = Link::fromTextAndUrl($text, $url)->toString();
     $form['add_new'] = [
       '#title' => $this->t('Add new menu'),
       '#type' => 'link',

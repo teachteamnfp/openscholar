@@ -27,6 +27,34 @@ class AddNewMenuForm extends FormBase {
   const MENU_MAX_MENU_NAME_LENGTH = 24;
 
   /**
+   * Config factory service.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
+   * Entity Manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManager
+   */
+  protected $entityManager;
+
+  /**
+   * VsiteContextManager service.
+   *
+   * @var \Drupal\vsite\Plugin\VsiteContextManager
+   */
+  protected $vsiteManager;
+
+  /**
+   * Vsite id.
+   *
+   * @var string
+   */
+  protected $vsite;
+
+  /**
    * AddNewMenuForm constructor.
    *
    * @param \Drupal\Core\Config\ConfigFactory $config_factory
@@ -40,7 +68,7 @@ class AddNewMenuForm extends FormBase {
     $this->configFactory = $config_factory;
     $this->entityManager = $entity_type_manager;
     $this->vsiteManager = $vsite_manager;
-    $this->vsiteId = $this->vsiteManager->getActiveVsite()->id();
+    $this->vsite = $this->vsiteManager->getActiveVsite();
   }
 
   /**
@@ -64,7 +92,7 @@ class AddNewMenuForm extends FormBase {
    *   The form id.
    */
   public function getFormId() : string {
-    return 'add_new_menu';
+    return 'cp_add_new_menu';
   }
 
   /**
@@ -147,11 +175,12 @@ class AddNewMenuForm extends FormBase {
     }
     else {
       $groupMenu = $this->entityManager->getStorage('menu')->create([
-        'id' => $form_state->getValue('menu_name') . "-$this->vsiteId",
+        'id' => "menu-" . $form_state->getValue('menu_name') . "-" . $this->vsite->id(),
         'label' => $form_state->getValue('title'),
         'description' => 'Custom Menu',
       ]);
       $groupMenu->save();
+      $this->vsite->addContent($groupMenu, 'group_menu:menu');
       $config = $this->configFactory->getEditable('cp_menu.settings');
       $menus = $config->get('menus');
       $default = $menus;
@@ -174,7 +203,7 @@ class AddNewMenuForm extends FormBase {
    */
   public function cpMenuExists($menu_name) {
     $menus = $this->configFactory->getEditable('cp_menu.settings')->get('menus');
-    $menu_name = $menu_name . "-$this->vsiteId";
+    $menu_name = "menu-" . $menu_name . "-" . $this->vsite->id();
     return isset($menus[$menu_name]);
   }
 

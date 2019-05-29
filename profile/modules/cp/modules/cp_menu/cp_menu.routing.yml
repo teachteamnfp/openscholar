@@ -14,3 +14,10 @@ cp.build.add_menu:
   requirements:
     _group_permission: 'manage_menu'
     _group_member: 'TRUE'
+cp.build.remove_menu:
+  path: '/cp/build/menu/remove/{menu_id}/{label}'
+  defaults:
+    _form: '\Drupal\cp_menu\Form\RemoveMenuForm'
+  requirements:
+    _group_permission: 'manage_menu'
+    _group_member: 'TRUE'
