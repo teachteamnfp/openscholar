@@ -23,7 +23,6 @@ class RemoveMenuForm extends ConfirmFormBase {
    */
   protected $id;
 
-
   /**
    * Config factory service.
    *

@@ -7,12 +7,12 @@
  */
 (function ($, Drupal) {
 
-    var drag;
+    let drag;
 
     function changeSelect() {
-        var $this = $(this.oldRowElement),
+        let $this = $(this.oldRowElement),
             $prev = $this.prevAll('.section-heading').sort(function (a, b) {
-                var ad = Math.abs($this.index() - $(a).index()),
+                let ad = Math.abs($this.index() - $(a).index()),
                     bd = Math.abs($this.index() - $(b).index());
                 return (ad - bd);
             }).first(),
@@ -31,13 +31,13 @@
 
     function changeRegion() {
         // remove the hidden class
-        var self = this;
+        let self = this;
         $('input').filter(function (i) {
             return (this.value && this.value === self.value);
         }).parents('tr').removeClass('hidden');
 
         // move the field to the new region
-        var $row = $(self).parents('tr'),
+        let $row = $(self).parents('tr'),
             row = $row.get(0),
             $dest = $('tr.section-heading').filter(function() {
                 return ($('.menu-name', this).val() === self.value);
@@ -55,14 +55,14 @@
      * Otherwise, switch to region-populated
      */
     function emptySections() {
-        var $table = $(drag.table),
+        let $table = $(drag.table),
             // get all the section messages
             $sections = $('.section-message');
 
         // loop through each select
         // find it's section header, then look down for the section message
         $('select.menu-name', $table).each(function () {
-            var $header = $(this).parents('tr').prevAll('.section-heading').first(),
+            let $header = $(this).parents('tr').prevAll('.section-heading').first(),
                 $message = $header.nextAll('.section-message').first();
 
             // remove this message from the list we made earlier
@@ -88,7 +88,7 @@
     Drupal.behaviors.cpMenuFormValidation = {
         attach: function(ctx) {
             $('#cp-menu-build-form').submit( function(event) {
-                var show = false;
+                let show = false;
                 $('.draggable').each(function() {
                     if ($(this).find('.indentation').length >= 4) {
                         event.preventDefault();
