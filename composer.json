@@ -169,7 +169,7 @@
         "drupal-composer/drupal-scaffold": "^2.6",
         "drupal/console": "^1.0.2",
         "drupal/core": "~8.6.16",
-        "drupal/purl": "1.0.3",
+        "drupal/purl": "1.0.4",
         "drupal/group_purl": "1.0-alpha1",
         "drupal/search_api": "^1.9",
         "drush/drush": "^9.0.0",
@@ -319,7 +319,8 @@
             },
             "drupal/group_purl": {
                 "Prevent base path from interfering with purl detection": "https://www.drupal.org/files/issues/2019-04-12/group_purl.3026646-3.basepath.patch",
-                "Don't attempt to redirect to subdomains by default": "https://www.drupal.org/files/issues/2019-03-05/group_purl.3036879-4.subdomain_disable.patch"
+                "Don't attempt to redirect to subdomains by default": "https://www.drupal.org/files/issues/2019-03-05/group_purl.3036879-4.subdomain_disable.patch",
+                "Return the request object": "https://www.drupal.org/files/issues/2019-05-29/update_alterRequest_return-3058009-2.patch"
             },
             "drupal/fullcalendar": {
                 "Fullcalendar incompatible with Date Recur 2.x": "https://www.drupal.org/files/issues/2019-01-09/3023612-5.patch"
