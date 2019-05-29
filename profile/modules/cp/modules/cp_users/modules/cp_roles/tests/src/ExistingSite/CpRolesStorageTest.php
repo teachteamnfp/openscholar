@@ -18,11 +18,7 @@ class CpRolesStorageTest extends CpRolesExistingSiteTestBase {
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function testSave(): void {
-    /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
-    $vsite_context_manager = $this->container->get('vsite.context_manager');
-    $vsite_context_manager->activateVsite($this->group);
-
-    $group_role = $this->createGroupRole([
+    $group_role = $this->createRoleForGroup($this->group, [
       'id' => 'cprole',
     ]);
 

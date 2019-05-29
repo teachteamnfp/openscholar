@@ -8,6 +8,7 @@
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\cp_roles\Controller\CpRoleListBuilder;
 use Drupal\group\Entity\GroupRoleInterface;
 
 /**
@@ -53,4 +54,26 @@ function cp_roles_form_group_role_add_form_alter(&$form, FormStateInterface $for
 
   $form['id']['#field_prefix'] = "$default_id_prefix{$vsite->id()}-";
   $form['id']['#maxlength'] = EntityTypeInterface::ID_MAX_LENGTH - $subtract;
+
+  $form['actions']['submit']['#submit'][] = 'cp_roles_group_role_add_form_submit';
+}
+
+/**
+ * Submit handler for group role add form.
+ *
+ * @ingroup forms
+ */
+function cp_roles_group_role_add_form_submit(array &$form, FormStateInterface $form_state) {
+  $form_state->setRedirect('cp_roles.role.list');
+}
+
+/**
+ * Implements hook_entity_type_build().
+ */
+function cp_roles_entity_type_build(array &$entity_types) {
+  if (isset($entity_types['group_role'])) {
+    /** @var \Drupal\Core\Config\Entity\ConfigEntityTypeInterface $group_role_type */
+    $group_role_type = $entity_types['group_role'];
+    $group_role_type->setListBuilderClass(CpRoleListBuilder::class);
+  }
 }

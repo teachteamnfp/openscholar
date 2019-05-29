@@ -21,9 +21,8 @@ class CpRolesTest extends CpRolesExistingSiteTestBase {
 
     /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
     $vsite_context_manager = $this->container->get('vsite.context_manager');
-    $vsite_context_manager->activateVsite($vsite1);
 
-    $this->createGroupRole([
+    $this->createRoleForGroup($vsite1, [
       'id' => 'vsite1role',
     ]);
 
