@@ -7,6 +7,7 @@ dependencies:
     - node.type.presentation
     - system.menu.main
   module:
+    - datetime
     - group
     - node
     - vsite
@@ -342,6 +343,22 @@ display:
         type: normal
         title: Presentations
         menu_name: main
+      sorts:
+        field_presentation_date_value:
+          id: field_presentation_date_value
+          table: node__field_presentation_date
+          field: field_presentation_date_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: DESC
+          exposed: false
+          expose:
+            label: ''
+          granularity: second
+          plugin_id: datetime
+      defaults:
+        sorts: false
     cache_metadata:
       max-age: -1
       contexts:

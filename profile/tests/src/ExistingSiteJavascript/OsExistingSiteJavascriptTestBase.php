@@ -64,4 +64,15 @@ abstract class OsExistingSiteJavascriptTestBase extends ExistingSiteWebDriverTes
     $this->assertJsCondition($condition, 10000);
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function tearDown() {
+    parent::tearDown();
+
+    foreach ($this->cleanUpConfigs as $config_entity) {
+      $config_entity->delete();
+    }
+  }
+
 }
