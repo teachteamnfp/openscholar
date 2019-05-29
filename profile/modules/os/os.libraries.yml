@@ -167,7 +167,7 @@ fileEditor:
   css:
     component:
       js/FileEditor/FileEditor.style.css: { }
-  paths: js/fileEditor
+  paths: js/FileEditor
   drupalSettings:
     version: { fileEditor: 1.0.1 }
   dependencies:

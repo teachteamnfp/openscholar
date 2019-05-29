@@ -1,0 +1,14 @@
+uuid: 7d379677-a1f4-4896-8362-2239ef3bceb3
+langcode: en
+status: true
+dependencies:
+  module:
+    - bibcite_entity
+    - cp
+_core:
+  default_config_hash: jI5qVYcuzILVXzfTWzLEfVBqWd9ZMuIuuNKBy9wWwvQ
+id: cp_bibcite_entity_reference_delete
+label: 'Delete reference'
+type: bibcite_reference
+plugin: 'cp_entity:delete_action:bibcite_reference'
+configuration: {  }

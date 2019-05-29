@@ -7,6 +7,8 @@ dependencies:
     - field.field.node.person.body
     - field.field.node.person.field_address
     - field.field.node.person.field_email
+    - field.field.node.person.field_first_name
+    - field.field.node.person.field_honorific
     - field.field.node.person.field_last_name
     - field.field.node.person.field_middle_name
     - field.field.node.person.field_office_hours
@@ -36,19 +38,43 @@ content:
   body:
     label: hidden
     type: text_summary_or_trimmed
-    weight: 4
+    weight: 6
     settings:
       trim_length: 600
     third_party_settings: {  }
     region: content
   field_email:
     type: basic_string
-    weight: 7
+    weight: 8
     region: content
-    label: inline
+    label: hidden
     settings: {  }
     third_party_settings: {  }
+  field_first_name:
+    type: string
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_honorific:
+    type: string
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
   field_last_name:
+    type: string
+    weight: 3
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_middle_name:
     type: string
     weight: 2
     region: content
@@ -58,15 +84,15 @@ content:
     third_party_settings: {  }
   field_phone:
     type: telephone_link
-    weight: 8
+    weight: 9
     region: content
-    label: inline
+    label: hidden
     settings:
       title: ''
     third_party_settings: {  }
   field_photo_person:
     type: image
-    weight: 0
+    weight: 5
     region: content
     label: hidden
     settings:
@@ -75,7 +101,7 @@ content:
     third_party_settings: {  }
   field_professional_titles:
     type: string
-    weight: 3
+    weight: 4
     region: content
     label: hidden
     settings:
@@ -83,9 +109,9 @@ content:
     third_party_settings: {  }
   field_website:
     type: link
-    weight: 5
+    weight: 7
     region: content
-    label: inline
+    label: above
     settings:
       trim_length: 80
       url_only: false
@@ -94,15 +120,12 @@ content:
       target: ''
     third_party_settings: {  }
   links:
-    weight: 9
+    weight: 10
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
   field_address: true
-  field_first_name: true
-  field_honorific: true
-  field_middle_name: true
   field_office_hours: true
   field_redirect_to_source: true
   field_taxonomy_terms: true
