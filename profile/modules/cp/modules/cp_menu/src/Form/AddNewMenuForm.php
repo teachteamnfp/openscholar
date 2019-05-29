@@ -177,15 +177,13 @@ class AddNewMenuForm extends FormBase {
       $groupMenu = $this->entityManager->getStorage('menu')->create([
         'id' => "menu-" . $form_state->getValue('menu_name') . "-" . $this->vsite->id(),
         'label' => $form_state->getValue('title'),
-        'description' => 'Custom Menu',
       ]);
       $groupMenu->save();
       $this->vsite->addContent($groupMenu, 'group_menu:menu');
       $config = $this->configFactory->getEditable('cp_menu.settings');
       $menus = $config->get('menus');
-      $default = $menus;
-      $default[$groupMenu->id()] = $groupMenu->label();
-      $config->set('menus', $default)->save();
+      $menus[$groupMenu->id()] = $groupMenu->label();
+      $config->set('menus', $menus)->save();
       $currentURL = Url::fromRoute('cp.build.menu');
       $response->addCommand(new RedirectCommand($currentURL->toString()));
     }

@@ -172,9 +172,8 @@ class RemoveMenuForm extends ConfirmFormBase {
       $this->menuLinkManager->deleteLinksInMenu($this->id);
       $config = $this->configFactory->getEditable('cp_menu.settings');
       $menus = $config->get('menus');
-      $default = $menus;
-      unset($default[$this->id]);
-      $config->set('menus', $default)->save();
+      unset($menus[$this->id]);
+      $config->set('menus', $menus)->save();
     }
     $form_state->setRedirect('cp.build.menu');
   }

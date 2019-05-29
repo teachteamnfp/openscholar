@@ -18,25 +18,30 @@ function cp_menu_group_insert(EntityInterface $entity) {
 
   $path = 'internal:' . $entity->path->alias;
 
-  $storage = \Drupal::service('hierarchical.storage')->createCollection('vsite:' . $entity->id());
-  \Drupal::service('hierarchical.storage')->addStorage($storage, VsiteStorageDefinition::VSITE_STORAGE);
+  // This is needed to activate the vsite specific collection and store the
+  // config in that vsite specific collection as it is not available by default
+  // at this point.
+  $hierarchical_storage = \Drupal::service('hierarchical.storage');
+  $storage = $hierarchical_storage->createCollection('vsite:' . $entity->id());
+  $hierarchical_storage->addStorage($storage, VsiteStorageDefinition::VSITE_STORAGE);
 
   $group_menu = \Drupal::entityTypeManager()->getStorage('menu')->create([
     'id' => 'menu-primary-' . $entity->id(),
-    'label' => 'Primary menu',
-    'description' => 'Menu for ' . $entity->label(),
+    'label' => t('Primary menu'),
+    'description' => t('Menu for %label', ['%label' => $entity->label()]),
   ]);
   $group_menu->save();
 
-  $group_menu_secondary = \Drupal::entityTypeManager()->getStorage('menu')->create([
+  $entityTypeManager = \Drupal::entityTypeManager();
+  $group_menu_secondary = $entityTypeManager->getStorage('menu')->create([
     'id' => 'menu-secondary-' . $entity->id(),
-    'label' => 'Secondary menu',
-    'description' => 'Menu for ' . $entity->label(),
+    'label' => t('Secondary menu'),
+    'description' => t('Menu for %label', ['%label' => $entity->label()]),
   ]);
   $group_menu_secondary->save();
 
   // Add menu link for group if enabled.
-  $menu_content_storage = \Drupal::entityTypeManager()->getStorage('menu_link_content');
+  $menu_content_storage = $entityTypeManager->getStorage('menu_link_content');
   $weight = 5;
 
   $menu_content_storage->create([
