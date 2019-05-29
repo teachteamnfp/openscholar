@@ -6,10 +6,10 @@
 .ui-accordion {
   .ui-accordion-header {
     background: none;
-    border-color: #ddd;
+    border-color: $color-light-gray3;
     &.ui-state-active {
       background: none;
-      border-color: #ddd;
+      border-color: $color-light-gray3;
       a {
         color: $color-black;
       }
