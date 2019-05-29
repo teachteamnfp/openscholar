@@ -1,6 +1,9 @@
 /**
  *  Javascript for the Control Panel menu.
  *
+ *  Core's tabledrag is not enough for our use case as we are working with multiple groups(Menus) at once.
+ *  And want to be able drag between those.
+ *
  *   Does two things:
  *   1. Changes the menu select when the user drags a row
  *   2. Removes the 'hidden' class when the user selects a new menu from the select.
