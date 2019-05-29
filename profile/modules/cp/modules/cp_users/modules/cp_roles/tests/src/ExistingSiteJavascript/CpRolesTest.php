@@ -51,6 +51,31 @@ class CpRolesTest extends CpRolesExistingSiteJavascriptTestBase {
   }
 
   /**
+   * Tests custom role edit via UI.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   * @throws \Behat\Mink\Exception\ResponseTextException
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public function testEdit(): void {
+    $group_role = $this->createRoleForGroup($this->group, [
+      'id' => 'stooges',
+      'label' => 'The Stooges',
+    ]);
+
+    $this->drupalLogin($this->groupAdmin);
+
+    $this->visit("/{$this->group->get('path')->getValue()[0]['alias']}/cp/users/roles");
+    $group_role_edit_link = $this->getSession()->getPage()->find('css', "[href='{$this->group->get('path')->getValue()[0]['alias']}/cp/users/roles/{$group_role->id()}/edit?destination={$this->group->get('path')->getValue()[0]['alias']}/cp/users/roles']");
+    $group_role_edit_link->click();
+
+    $this->getSession()->getPage()->fillField('Name', 'The Stooges Funhouse');
+    $this->getSession()->getPage()->pressButton('Save group role');
+
+    $this->assertSession()->pageTextContains('The Stooges Funhouse');
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function tearDown() {
