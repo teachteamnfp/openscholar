@@ -22,7 +22,7 @@ class CpRolesStorageTest extends CpRolesExistingSiteTestBase {
       'id' => 'cprole',
     ]);
 
-    $this->assertEquals("personal-{$this->group->id()}-cprole", $group_role->id());
+    $this->assertEquals("personal-{$this->group->id()}_cprole", $group_role->id());
   }
 
 }

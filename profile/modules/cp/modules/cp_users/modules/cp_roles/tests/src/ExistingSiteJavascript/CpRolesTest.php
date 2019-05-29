@@ -42,7 +42,7 @@ class CpRolesTest extends CpRolesExistingSiteJavascriptTestBase {
     $this->visit("/{$this->group->get('path')->getValue()[0]['alias']}/cp/users/roles/add");
     $this->getSession()->getPage()->fillField('Name', 'Stooges');
     $this->assertSession()->waitForElementVisible('css', '.machine-name-value');
-    $this->assertSession()->pageTextContains("personal-{$this->group->id()}-stooges");
+    $this->assertSession()->pageTextContains("personal-{$this->group->id()}_stooges");
 
     $this->getSession()->getPage()->pressButton('Save group role');
 
@@ -56,7 +56,7 @@ class CpRolesTest extends CpRolesExistingSiteJavascriptTestBase {
   public function tearDown() {
     $vsite_context_manager = $this->container->get('vsite.context_manager');
     $vsite_context_manager->activateVsite($this->group);
-    $group_role = GroupRole::load("personal-{$this->group->id()}-stooges");
+    $group_role = GroupRole::load("personal-{$this->group->id()}_stooges");
     $group_role->delete();
 
     parent::tearDown();
