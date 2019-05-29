@@ -43,7 +43,7 @@ class CpCancelButtonTest extends OsExistingSiteJavascriptTestBase {
     // Visit node.
     $this->visit($this->vsiteAlias . '/node/' . $this->node->id());
     $url = $session->getCurrentUrl();
-    file_put_contents('public://testNodeDeleteCancelButtonPage.png', $session->getScreenshot());
+    file_put_contents('public://testNodeDeleteCancelButtonPage1.png', $session->getScreenshot());
     $this->assertEquals('http://apache' . $this->vsiteAlias . '/node/' . $this->node->id(), $url);
     $web_assert->statusCodeEquals(200);
     $page = $this->getCurrentPage();
@@ -52,12 +52,13 @@ class CpCancelButtonTest extends OsExistingSiteJavascriptTestBase {
     // Go to edit path.
     $page = $this->getCurrentPage();
     $cancel_button = $page->findLink('Cancel');
+    file_put_contents('public://testNodeDeleteCancelButtonPage2.png', $session->getScreenshot());
     // Click to cancel.
     $cancel_button->press();
-    $web_assert->statusCodeEquals(200);
 
     // Assert url is a node path with group alias.
     $url = $session->getCurrentUrl();
+    file_put_contents('public://testNodeDeleteCancelButtonPage3.png', $session->getScreenshot());
     $this->assertEquals('http://apache' . $this->nodePath, $url);
   }
 
