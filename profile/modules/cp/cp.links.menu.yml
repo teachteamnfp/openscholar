@@ -90,10 +90,6 @@ cp.settings.global.privacy_policy:
   title: 'Privacy Policy'
   url: 'internal:##'
   parent: cp.settings.global
-cp.settings.global.taxonomy:
-  title: 'Taxonomy'
-  route_name: cp.taxonomy
-  parent: cp.settings.global
 cp.help:
   title: 'Help'
   url: 'internal:##'

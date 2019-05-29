@@ -5,3 +5,15 @@ taxonomy.vocabulary.*:
       label: 'List of entity type and bundle concat string'
       sequence:
         type: string
+cp_taxonomy.settings:
+  type: config_object
+  label: 'CP taxonomy settings'
+  mapping:
+    display_term_under_content:
+      type: string
+      label: 'Display term under content'
+    display_term_under_content_teaser_types:
+      type: sequence
+      label: 'Under these content types when displayed in a list'
+      sequence:
+        type: string
