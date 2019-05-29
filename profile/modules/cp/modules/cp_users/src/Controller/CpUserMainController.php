@@ -79,7 +79,7 @@ class CpUserMainController extends ControllerBase {
       if ($can_change_ownership && $group->getOwnerId() == $u->id()) {
         $role_link = Link::createfromRoute('Change Owner', 'cp.users.owner', ['user' => $u->id()], ['attributes' => ['class' => ['use-ajax']]])->toString();
       }
-      elseif ($group->getMember($u)->hasPermission('manage cp roles')) {
+      elseif ($group->getMember($u)->hasPermission('manage cp roles') || \Drupal::currentUser()->hasPermission('change user roles')) {
         $role_link = Link::createFromRoute($this->t('Change Role'), 'cp_roles.role.change', ['user' => $u->id()])->toString();
       }
       else {
