@@ -65,27 +65,30 @@ class CpUserMainController extends ControllerBase {
     if (!$group) {
       throw new AccessDeniedHttpException();
     }
+    /** @var \Drupal\Core\Session\AccountInterface $current_user */
+    $current_user = $this->currentUser();
 
     $users = $group->getContentEntities('group_membership');
 
     $build = [];
 
-    $can_change_ownership = (($group->getOwnerId() == \Drupal::currentUser()->id()) || $group->getMember(\Drupal::currentUser())->hasPermission('administer group'));
+    $can_change_ownership = (($group->getOwnerId() == $current_user->id()) || $group->getMember($current_user)->hasPermission('administer group'));
 
     $userRows = [];
     /* @var \Drupal\user\UserInterface $u */
     foreach ($users as $u) {
       $roles = $group->getMember($u)->getRoles();
+
       if ($can_change_ownership && $group->getOwnerId() == $u->id()) {
-        $role_link = Link::createfromRoute('Change Owner', 'cp.users.owner', ['user' => $u->id()], ['attributes' => ['class' => ['use-ajax']]])->toString();
+        $role_link = Link::createFromRoute('Change Owner', 'cp.users.owner', ['user' => $u->id()], ['attributes' => ['class' => ['use-ajax']]])->toString();
       }
-      elseif ($group->getMember($u)->hasPermission('manage cp roles') || \Drupal::currentUser()->hasPermission('change user roles')) {
+      elseif ($this->currentUser()->hasPermission('change user roles') || $group->getMember($this->currentUser())->hasPermission('manage cp roles')) {
         $role_link = Link::createFromRoute($this->t('Change Role'), 'cp_roles.role.change', ['user' => $u->id()])->toString();
       }
       else {
         $role_link = '';
       }
-      $remove_link = Link::createFromRoute('Remove', 'cp.users.remove', ['user' => $u->id()], ['attributes' => ['class' => ['use-ajax']]])->toString();
+      $remove_link = Link::createFromRoute($this->t('Remove'), 'cp.users.remove', ['user' => $u->id()], ['attributes' => ['class' => ['use-ajax']]])->toString();
       $row = [
         'data-user-id' => $u->id(),
         'data' => [
