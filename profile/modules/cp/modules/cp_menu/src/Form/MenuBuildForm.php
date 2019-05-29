@@ -323,7 +323,7 @@ class MenuBuildForm extends FormBase {
   /**
    * Get menu link data by menu name.
    */
-  protected function menuLoadTree($menu) {
+  protected function menuLoadTree($menu) : array {
     $treeParams = new MenuTreeParameters();
     $tree = $this->menuTree->load($menu, $treeParams);
     return $tree;
@@ -340,7 +340,7 @@ class MenuBuildForm extends FormBase {
    * @return array
    *   The overview tree form.
    */
-  protected function buildMenuTreeForm(array $tree, $delta) {
+  protected function buildMenuTreeForm(array $tree, $delta) : array {
     $form = &$this->overviewTreeForm;
     foreach ($tree as $element) {
       /** @var \Drupal\Core\Menu\MenuLinkInterface $link */
