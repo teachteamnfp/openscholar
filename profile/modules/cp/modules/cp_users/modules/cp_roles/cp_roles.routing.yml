@@ -40,3 +40,13 @@ cp_roles.role.list:
     parameters:
       group_type:
         type: entity:group_type
+
+cp_roles.role.role_permission_form:
+  path: '/cp/users/permissions/{group_role}/{group_type}'
+  defaults:
+    _form: '\Drupal\group\Form\GroupPermissionsRoleSpecificForm'
+    _title: 'Edit vsite permissions'
+    group_type: personal
+  requirements:
+    _group_permission: 'manage cp roles'
+    _group_member: 'TRUE'

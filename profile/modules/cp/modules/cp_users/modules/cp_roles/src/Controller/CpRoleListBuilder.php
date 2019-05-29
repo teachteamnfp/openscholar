@@ -9,6 +9,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 use Drupal\group\Entity\GroupTypeInterface;
+use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -30,10 +31,27 @@ class CpRoleListBuilder extends DraggableListBuilder {
   protected $groupType;
 
   /**
+   * Vsite context manager.
+   *
+   * @var \Drupal\vsite\Plugin\VsiteContextManagerInterface
+   */
+  protected $vsiteContextManager;
+
+  /**
+   * Active group.
+   *
+   * @var \Drupal\group\Entity\GroupInterface|null
+   */
+  protected $activeVsite;
+
+  /**
    * {@inheritdoc}
    */
-  public function __construct(EntityTypeInterface $entity_type, EntityStorageInterface $storage, RouteMatchInterface $route_match) {
+  public function __construct(EntityTypeInterface $entity_type, EntityStorageInterface $storage, RouteMatchInterface $route_match, VsiteContextManagerInterface $vsite_context_manager) {
     parent::__construct($entity_type, $storage);
+
+    $this->vsiteContextManager = $vsite_context_manager;
+    $this->activeVsite = $this->vsiteContextManager->getActiveVsite();
 
     $parameters = $route_match->getParameters();
     $group_type = $parameters->get('group_type');
@@ -50,7 +68,8 @@ class CpRoleListBuilder extends DraggableListBuilder {
     return new static(
       $entity_type,
       $container->get('entity.manager')->getStorage($entity_type->id()),
-      $container->get('current_route_match')
+      $container->get('current_route_match'),
+      $container->get('vsite.context_manager')
     );
   }
 
@@ -100,7 +119,16 @@ class CpRoleListBuilder extends DraggableListBuilder {
   public function getDefaultOperations(EntityInterface $entity) {
     $operations = parent::getDefaultOperations($entity);
 
-    if ($entity->hasLinkTemplate('permissions-form')) {
+    if ($this->activeVsite) {
+      $operations['permissions'] = [
+        'title' => $this->t('Edit permissions'),
+        'weight' => 5,
+        'url' => Url::fromRoute('cp_roles.role.role_permission_form', [
+          'group_role' => $entity->id(),
+        ]),
+      ];
+    }
+    elseif ($entity->hasLinkTemplate('permissions-form')) {
       $operations['permissions'] = [
         'title' => $this->t('Edit permissions'),
         'weight' => 5,
