@@ -1,0 +1,8 @@
+.section-message.section-populated,
+.cp-menu-build button.tabledrag-toggle-weight,
+#cp-build-menu-table thead {
+  display: none;
+}
+.section-message.section-empty {
+  display: block;
+}

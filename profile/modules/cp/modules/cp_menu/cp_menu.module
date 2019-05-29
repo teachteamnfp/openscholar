@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Cp menu customisations.
+ */
+
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\vsite\Config\VsiteStorageDefinition;
 
@@ -17,14 +22,14 @@ function cp_menu_group_insert(EntityInterface $entity) {
   \Drupal::service('hierarchical.storage')->addStorage($storage, VsiteStorageDefinition::VSITE_STORAGE);
 
   $group_menu = \Drupal::entityTypeManager()->getStorage('menu')->create([
-    'id' => 'group-menu-' . $entity->id(),
+    'id' => 'menu-primary-' . $entity->id(),
     'label' => 'Primary menu',
     'description' => 'Menu for ' . $entity->label(),
   ]);
   $group_menu->save();
 
-   $group_menu_secondary = \Drupal::entityTypeManager()->getStorage('menu')->create([
-    'id' => 'group-menu-secondary-' . $entity->id(),
+  $group_menu_secondary = \Drupal::entityTypeManager()->getStorage('menu')->create([
+    'id' => 'menu-secondary-' . $entity->id(),
     'label' => 'Secondary menu',
     'description' => 'Menu for ' . $entity->label(),
   ]);
@@ -108,4 +113,10 @@ function cp_menu_group_insert(EntityInterface $entity) {
 
   $entity->addContent($group_menu, 'group_menu:menu');
   $entity->addContent($group_menu_secondary, 'group_menu:menu');
+  $menus = [
+    $group_menu->id() => $group_menu->label(),
+    $group_menu_secondary->id() => $group_menu_secondary->label(),
+  ];
+  $config = \Drupal::configFactory()->getEditable('cp_menu.settings');
+  $config->set('menus', $menus)->save();
 }

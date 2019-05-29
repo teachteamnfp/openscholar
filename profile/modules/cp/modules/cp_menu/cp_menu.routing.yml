@@ -2,6 +2,15 @@ cp.build.menu:
   path: 'cp/build/menu'
   defaults:
     _form: '\Drupal\cp_menu\Form\MenuBuildForm'
+    _title: 'Menu'
+  requirements:
+    _group_permission: 'manage_menu'
+    _group_member: 'TRUE'
+cp.build.add_menu:
+  path: 'cp/build/add-menu'
+  defaults:
+    _form: '\Drupal\cp_menu\Form\AddNewMenuForm'
+    _title: 'Add New Menu'
   requirements:
     _group_permission: 'manage_menu'
     _group_member: 'TRUE'

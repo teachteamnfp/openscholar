@@ -1,5 +1,8 @@
 cp_menu.drag:
   version: 1.0
+  css:
+    base:
+      css/cp_menu.css: {}
   js:
     js/cp_menu.js: { }
   dependencies:

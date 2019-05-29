@@ -16,16 +16,44 @@ use Drupal\vsite\Plugin\VsiteContextManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Menu form.
+ * Menu List form.
  */
 class MenuBuildForm extends FormBase {
 
   /**
-   * Config factory.
+   * Config factory service.
    *
    * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
   protected $configFactory;
+
+  /**
+   * MenuLinkTree service.
+   *
+   * @var \Drupal\Core\Menu\MenuLinkTree
+   */
+  protected $menuTree;
+
+  /**
+   * VsiteContextManager service.
+   *
+   * @var \Drupal\vsite\Plugin\VsiteContextManager
+   */
+  protected $vsiteManager;
+
+  /**
+   * Menu Link manager service.
+   *
+   * @var \Drupal\Core\Menu\MenuLinkManagerInterface
+   */
+  protected $menuLinkManager;
+
+  /**
+   * Menus for this vsite.
+   *
+   * @var array
+   */
+  protected $menus;
 
   /**
    * The overview tree form.
@@ -35,12 +63,16 @@ class MenuBuildForm extends FormBase {
   protected $overviewTreeForm = ['#tree' => TRUE];
 
   /**
-   * Creates a new FlavorForm object.
+   * MenuBuildForm constructor.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
-   *   Config factory.
-   * @param \Drupal\os\MenuHelperInterface $menuHelper
-   *   Menu Helper.
+   *   Config factory instance.
+   * @param \Drupal\Core\Menu\MenuLinkTree $menu_tree
+   *   Menu Link tree instance.
+   * @param \Drupal\vsite\Plugin\VsiteContextManager $vsite_manager
+   *   Vsite Context Manager instance.
+   * @param \Drupal\Core\Menu\MenuLinkManagerInterface $menu_link_manager
+   *   Menu Link Manager instance.
    */
   public function __construct(ConfigFactoryInterface $config_factory, MenuLinkTree $menu_tree, VsiteContextManager $vsite_manager, MenuLinkManagerInterface $menu_link_manager) {
     $this->configFactory = $config_factory;
@@ -73,23 +105,17 @@ class MenuBuildForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state): array {
 
-    $this->menus = $this->configFactory->getEditable('cp_menu.settings')->get('menus');
     $vsiteId = $this->vsiteManager->getActiveVsite()->id();
-    if (!$this->menus) {
-      $this->menus = [
-        'group-menu-' . $vsiteId => 'Primary Menu',
-        'group-menu-secondary-' . $vsiteId => 'Secondary Menu'
-      ];
-    }
+    $this->menus = $this->configFactory->getEditable('cp_menu.settings')->get('menus');
 
-    $this->vsiteAlias =  '/' . $this->vsiteManager->getActivePurl();
+    $this->vsiteAlias = '/' . $this->vsiteManager->getActivePurl();
     $headers = [
       $this->t('Title'),
       $this->t('Url'),
       $this->t('Edit'),
       $this->t('Delete'),
       $this->t('Menu'),
-      $this->t('Weight')
+      $this->t('Weight'),
     ];
 
     $revert = [
@@ -102,30 +128,33 @@ class MenuBuildForm extends FormBase {
       '#theme' => 'table__menu_overview',
       '#header' => $headers,
       '#attributes' => [
-        'id' => 'menu-overview',
+        'id' => 'cp-build-menu-table',
       ],
     ];
 
-    foreach ($this->menus as $m => $menu) {
+    $weight = 5;
 
+    foreach ($this->menus as $m => $menu) {
       $form['links']['#tabledrag'][] = [
-          'action' => 'match',
-          'relationship' => 'parent',
-          'group' => 'menu-parent',
-          'subgroup' => 'menu-parent',
-          'source' => 'menu-id',
-          'hidden' => FALSE,
-          'limit' => $this->menuTree->maxDepth() - 1,
-        ];
+        'action' => 'match',
+        'relationship' => 'parent',
+        'group' => 'menu-parent',
+        'subgroup' => 'menu-parent-' . $m,
+        'source' => 'menu-id',
+        'hidden' => FALSE,
+        'limit' => $this->menuTree->maxDepth() - 1,
+      ];
       $form['links']['#tabledrag'][] = [
         'action' => 'order',
         'relationship' => 'sibling',
         'group' => 'menu-weight',
+        'subgroup' => 'menu-weight-' . $m,
+        'hidden' => FALSE,
       ];
 
       $tree = $this->menuLoadTree($m);
       $manipulators = [
-        ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort']
+        ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
       ];
       $tree = $this->menuTree->transform($tree, $manipulators);
 
@@ -139,15 +168,15 @@ class MenuBuildForm extends FormBase {
       $delta = max($count($tree), 50);
 
       $form['links'][$m]['title'] = [
-        '#markup' => $this->t($menu),
+        '#markup' => $menu,
         'menu-name' => [
           '#type' => 'hidden',
           '#value' => $m,
           '#attributes' => [
             'class' => [
-              'menu-name'
-            ]
-          ]
+              'menu-name',
+            ],
+          ],
         ],
         '#wrapper_attributes' => [
           'colspan' => 1,
@@ -155,8 +184,10 @@ class MenuBuildForm extends FormBase {
       ];
       $form['links'][$m]['title']['#attributes'] = ['class' => ['menu-name']];
 
+      $form['links'][$m]['#weight'] = $weight++;
+
       $form['links'][$m]['reset'] = [
-        '#markup' => $removeText = in_array($m, $revert) ? 'Reset' : 'Remove',
+        '#markup' => in_array($m, $revert) ? 'Reset' : 'Remove',
         '#wrapper_attributes' => [
           'colspan' => 3,
         ],
@@ -170,52 +201,88 @@ class MenuBuildForm extends FormBase {
 
       $form['links'][$m]['#attributes'] = ['class' => 'section-heading'];
 
+      $form['links'][$m . '-message'] = [
+        '#attributes' => [
+          'class' => [
+            'section-message',
+            'section-' . $m . '-message',
+            empty($tree) ? 'section-empty' : 'section-populated',
+          ],
+        ],
+      ];
+      $form['links'][$m . '-message']['message'] = [
+        '#markup' => $this->t('This menu has no links.'),
+        '#wrapper_attributes' => [
+          'colspan' => 5,
+        ],
+      ];
+
       $links = $this->buildMenuTreeForm($tree, $delta);
-        foreach (Element::children($links) as $id) {
-          if (isset($links[$id]['#item'])) {
-            $element = $links[$id];
+      foreach (Element::children($links) as $id) {
+        if (isset($links[$id]['#item'])) {
+          $element = $links[$id];
 
-            $form['links'][$id]['#item'] = $element['#item'];
+          $form['links'][$id]['#item'] = $element['#item'];
 
-            // TableDrag: Mark the table row as draggable.
-            $form['links'][$id]['#attributes'] = $element['#attributes'];
-            $form['links'][$id]['#attributes']['class'][] = 'draggable';
+          // TableDrag: Mark the table row as draggable.
+          $form['links'][$id]['#attributes'] = $element['#attributes'];
+          $form['links'][$id]['#attributes']['class'][] = 'draggable';
 
-            // TableDrag: Sort the table row according to its existing/configured weight.
-            $form['links'][$id]['#weight'] = $element['#item']->link->getWeight();
+          // TableDrag: Sort the table row according to its
+          // existing/configured weight.
+          $form['links'][$id]['#weight'] = $element['#item']->link->getWeight();
 
-            // Add special classes to be used for tabledrag.js.
-            $element['parent']['#attributes']['class'] = ['menu-parent'];
-            $element['weight']['#attributes']['class'] = ['menu-weight'];
-            $element['id']['#attributes']['class'] = ['menu-id'];
+          // Add special classes to be used for tabledrag.js.
+          $element['parent']['#attributes']['class'] = [
+            'menu-parent',
+            'menu-parent-' . $m,
+          ];
+          $element['weight']['#attributes']['class'] = [
+            'menu-weight',
+            'menu-weight-' . $m,
+            'hidden',
+          ];
+          $element['id']['#attributes']['class'] = ['menu-id'];
 
-            $form['links'][$id]['title'] = [
+          $form['links'][$id]['title'] = [
               [
                 '#theme' => 'indentation',
                 '#size' => $element['#item']->depth - 1,
               ],
-              $element['title'],
-            ];
-            $form['links'][$id]['link_url'] = $element['link_url'];
-            $form['links'][$id]['edit'] = $element['edit'];
-            $form['links'][$id]['delete'] = $element['delete'];
-            $form['links'][$id]['menu_name'] = $element['menu_name'];
-            $form['links'][$id]['weight'] = $element['weight'];
-            $form['links'][$id]['id'] = $element['id'];
-            $form['links'][$id]['parent'] = $element['parent'];
-          }
+            $element['title'],
+          ];
+          $form['links'][$id]['link_url'] = $element['link_url'];
+          $form['links'][$id]['edit'] = $element['edit'];
+          $form['links'][$id]['delete'] = $element['delete'];
+          $form['links'][$id]['menu_name'] = $element['menu_name'];
+          $form['links'][$id]['weight'] = $element['weight'];
+          $form['links'][$id]['id'] = $element['id'];
+          $form['links'][$id]['parent'] = $element['parent'];
         }
       }
+    }
+
+    // $link = Link::fromTextAndUrl($text, $url)->toString();
+    $form['add_new'] = [
+      '#title' => $this->t('Add new menu'),
+      '#type' => 'link',
+      '#url' => Url::fromRoute('cp.build.add_menu'),
+      '#attributes' => [
+        'class' => ['use-ajax'],
+        'data-dialog-type' => 'modal',
+        'data-dialog-options' => json_encode(['width' => '50%']),
+        'id' => 'add_new_menu',
+      ],
+    ];
 
     $form['actions'] = ['#type' => 'actions'];
     $form['actions']['submit'] = [
       '#type' => 'submit',
-      '#value' => t('Save changes'),
+      '#value' => $this->t('Save changes'),
     ];
 
     $form['#attached']['library'][] = 'cp_menu/cp_menu.drag';
     return $form;
-
 
   }
 
@@ -245,10 +312,9 @@ class MenuBuildForm extends FormBase {
   }
 
   /**
-   * Get menu link data by menu name
+   * Get menu link data by menu name.
    */
   protected function menuLoadTree($menu) {
-    $groupId = $this->vsiteManager->getActiveVsite()->id();
     $treeParams = new MenuTreeParameters();
     $tree = $this->menuTree->load($menu, $treeParams);
     return $tree;
@@ -265,7 +331,7 @@ class MenuBuildForm extends FormBase {
    * @return array
    *   The overview tree form.
    */
-  protected function buildMenuTreeForm($tree, $delta) {
+  protected function buildMenuTreeForm(array $tree, $delta) {
     $form = &$this->overviewTreeForm;
     foreach ($tree as $element) {
       /** @var \Drupal\Core\Menu\MenuLinkInterface $link */
@@ -274,8 +340,7 @@ class MenuBuildForm extends FormBase {
         $id = 'menu_plugin_id:' . $link->getPluginId();
         $form[$id]['#item'] = $element;
         $form[$id]['#attributes'] = ['class' => ['menu-enabled']];
-        $form[$id]['title'] =  Link::fromTextAndUrl($link->getTitle(), $link->getUrlObject())->toRenderable();
-
+        $form[$id]['title'] = Link::fromTextAndUrl($link->getTitle(), $link->getUrlObject())->toRenderable();
 
         // Show the first 80 charcters of the URL.
         $menuLinkText = $link->getUrlObject()->setOption('absolute', TRUE)->toString();
@@ -308,9 +373,9 @@ class MenuBuildForm extends FormBase {
           '#attributes' => [
             'class' => [
               'menu-name',
-              'menu-name-' . $link->getMenuName()
-            ]
-          ]
+              'menu-name-' . $link->getMenuName(),
+            ],
+          ],
         ];
         $form[$id]['weight'] = [
           '#type' => 'weight',
@@ -327,4 +392,5 @@ class MenuBuildForm extends FormBase {
     }
     return $form;
   }
+
 }

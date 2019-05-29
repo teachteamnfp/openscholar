@@ -33,14 +33,14 @@
         // remove the hidden class
         var self = this;
         $('input').filter(function (i) {
-            return (this.value && this.value == self.value);
+            return (this.value && this.value === self.value);
         }).parents('tr').removeClass('hidden');
 
         // move the field to the new region
         var $row = $(self).parents('tr'),
             row = $row.get(0),
             $dest = $('tr.section-heading').filter(function() {
-                return ($('.menu-name', this).val() == self.value);
+                return ($('.menu-name', this).val() === self.value);
             });
         $dest.after($row);
 
@@ -80,7 +80,7 @@
             // remove the 'hidden' class when a menu is changed
             $('select.menu-name', ctx).change(changeRegion);
 
-            drag = Drupal.tableDrag['menu-overview'];
+            drag = Drupal.tableDrag['cp-build-menu-table'];
             drag.onDrop = changeSelect;
         }
     };
