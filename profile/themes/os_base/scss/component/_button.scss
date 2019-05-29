@@ -1,0 +1,23 @@
+%btn {
+  background: rgb(251, 251, 251);
+  border: 1px solid rgb(251, 251, 251);
+  color: $color-black;
+  background-image: linear-gradient(to bottom, #f6f6f3, #e7e7df);
+  background-image: -webkit-linear-gradient(to bottom, #f6f6f3, #e7e7df);
+}
+button {
+  &.btn,
+  &.button {
+    @extend %btn;
+    &:hover,
+    &:active,
+    &:focus,
+    &:visited {
+      @extend %btn;
+      &:hover,
+      &:focus {
+        @extend %btn;
+      }
+    }
+  }
+}
