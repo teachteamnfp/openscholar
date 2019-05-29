@@ -3,20 +3,16 @@
     margin-bottom: 10px;
   }
 }
-
 .ui-accordion {
   .ui-accordion-header {
     background: none;
     border-color: #ddd;
-
     &.ui-state-active {
       background: none;
       border-color: #ddd;
-
       a {
         color: $color-black;
       }
-
       .ui-icon {
         background-image: url(../../../../../../core/assets/vendor/jquery.ui/themes/base/images/ui-icons_444444_256x240.png);
       }
