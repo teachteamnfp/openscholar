@@ -41,6 +41,9 @@ class CpCancelButtonTest extends OsExistingSiteJavascriptTestBase {
 
     // Visit node.
     $this->visit($this->nodePath);
+    $url = $session->getCurrentUrl();
+    file_put_contents('public://testNodeDeleteCancelButtonPage.png', $session->getScreenshot());
+    $this->assertEquals('http://apache' . $this->nodePath, $url);
     $web_assert->statusCodeEquals(200);
     $page = $this->getCurrentPage();
     $edit_link = $page->findLink('Edit');
