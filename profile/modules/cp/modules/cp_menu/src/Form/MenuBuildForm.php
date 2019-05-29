@@ -367,14 +367,34 @@ class MenuBuildForm extends FormBase {
           '#type' => 'hidden',
           '#default_value' => $link->getParent(),
         ];
+
         $form[$id]['edit'] = [
-          '#markup' => Link::fromTextAndUrl('edit', Url::fromUserInput($this->vsiteAlias . '/cp/build/menu/link/' . $link->getPluginId() . '/edit'))
-            ->toString(),
+          '#title' => $this->t('edit'),
+          '#type' => 'link',
+          '#url' => Url::fromRoute('cp.build.edit_menu_link', ['link_id' => $link->getPluginId()]),
+          '#attributes' => [
+            'class' => ['use-ajax'],
+            'data-dialog-type' => 'modal',
+            'data-dialog-options' => json_encode(['width' => '50%']),
+            'id' => 'add_new_menu',
+          ],
         ];
+
         $form[$id]['delete'] = [
-          '#markup' => Link::fromTextAndUrl('delete', Url::fromUserInput($this->vsiteAlias . '/cp/build/menu/link/' . $link->getPluginId() . '/delete'))
-            ->toString(),
+          '#title' => $this->t('delete'),
+          '#type' => 'link',
+          '#url' => Url::fromRoute('cp.build.delete_menu_link', [
+            'link_id' => $link->getPluginId(),
+            'link_title' => $link->getTitle(),
+          ]),
+          '#attributes' => [
+            'class' => ['use-ajax'],
+            'data-dialog-type' => 'modal',
+            'data-dialog-options' => json_encode(['width' => '50%']),
+            'id' => 'add_new_menu',
+          ],
         ];
+
         $form[$id]['menu_name'] = [
           '#type' => 'select',
           '#options' => $this->menus,

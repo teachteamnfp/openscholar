@@ -21,3 +21,19 @@ cp.build.remove_menu:
   requirements:
     _group_permission: 'manage_menu'
     _group_member: 'TRUE'
+cp.build.edit_menu_link:
+  path: '/cp/build/menu/link/{link_id}/edit'
+  defaults:
+    _form: '\Drupal\cp_menu\Form\EditMenuLinkForm'
+    _title: 'Edit Link'
+  requirements:
+    _group_permission: 'manage_menu'
+    _group_member: 'TRUE'
+cp.build.delete_menu_link:
+  path: '/cp/build/menu/link/{link_id}/{link_title}/delete'
+  defaults:
+    _form: '\Drupal\cp_menu\Form\DeleteMenuLinkForm'
+    _title: 'Delete Link'
+  requirements:
+    _group_permission: 'manage_menu'
+    _group_member: 'TRUE'
