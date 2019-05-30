@@ -6,12 +6,18 @@ dependencies:
     - bibcite_entity.bibcite_reference_type.conference_proceedings
     - core.entity_view_mode.bibcite_reference.citation
     - field.field.bibcite_reference.conference_proceedings.field_files
+    - field.field.bibcite_reference.conference_proceedings.field_taxonomy_terms
   enforced:
     config:
       - core.entity_view_mode.bibcite_reference.citation
       - bibcite_entity.bibcite_reference_type.conference_proceedings
     module:
       - bibcite_entity
+  module:
+    - layout_builder
+third_party_settings:
+  layout_builder:
+    sections: {  }
 _core:
   default_config_hash: kqNrX7zsn_8OHih3CS1atfxTKkUmOqGp_M9Di_wZ7NU
 id: bibcite_reference.conference_proceedings.citation
@@ -23,6 +29,14 @@ content:
     weight: 0
     region: content
     settings: {  }
+    third_party_settings: {  }
+  field_taxonomy_terms:
+    type: entity_reference_label
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      link: true
     third_party_settings: {  }
 hidden:
   author: true
