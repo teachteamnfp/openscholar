@@ -1,0 +1,10 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - bibcite_entity
+id: cp_bibcite_entity_reference_delete
+label: 'Delete reference'
+type: bibcite_reference
+plugin: 'cp_entity:delete_action:bibcite_reference'
+configuration: {  }

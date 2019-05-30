@@ -7,3 +7,46 @@ cp_roles.role.add_form:
   requirements:
     _group_permission: 'manage cp roles'
     _group_member: 'TRUE'
+
+cp_roles.role.permission_form:
+  path: '/cp/users/permissions/{group_type}'
+  defaults:
+    _form: '\Drupal\group\Form\GroupPermissionsTypeSpecificForm'
+    _title: 'Edit vsite permissions'
+    group_type: personal
+  requirements:
+    _group_permission: 'manage cp roles'
+    _group_member: 'TRUE'
+
+cp_roles.role.change:
+  path: '/cp/users/change-role/{user}'
+  defaults:
+    _form: '\Drupal\cp_roles\Form\ChangeRoleForm'
+    _title: 'Change role'
+  requirements:
+    _group_permission: 'manage cp roles'
+    _group_member: 'TRUE'
+
+cp_roles.role.list:
+  path: '/cp/users/roles/{group_type}'
+  defaults:
+    _entity_list: 'group_role'
+    _title: 'Vsite roles'
+    group_type: personal
+  requirements:
+    _group_permission: 'manage cp roles'
+    _group_member: 'TRUE'
+  options:
+    parameters:
+      group_type:
+        type: entity:group_type
+
+cp_roles.role.role_permission_form:
+  path: '/cp/users/permissions/{group_role}/{group_type}'
+  defaults:
+    _form: '\Drupal\group\Form\GroupPermissionsRoleSpecificForm'
+    _title: 'Edit vsite permissions'
+    group_type: personal
+  requirements:
+    _group_permission: 'manage cp roles'
+    _group_member: 'TRUE'

@@ -31,7 +31,6 @@ class CpRolesTest extends CpRolesExistingSiteJavascriptTestBase {
   /**
    * Tests role creation from UI.
    *
-   * @covers ::cp_roles_entity_presave
    * @covers ::cp_roles_form_group_role_add_form_alter
    *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
@@ -47,13 +46,8 @@ class CpRolesTest extends CpRolesExistingSiteJavascriptTestBase {
 
     $this->getSession()->getPage()->pressButton('Save group role');
 
-    // TODO: Instead of activating the vsite, visit roles listing page and check
-    // TODO: whether the role has been created.
-    /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
-    $vsite_context_manager = $this->container->get('vsite.context_manager');
-    $vsite_context_manager->activateVsite($this->group);
-    $group_role = GroupRole::load("personal-{$this->group->id()}-stooges");
-    $this->assertNotNull($group_role);
+    $this->assertContains("{$this->group->get('path')->getValue()[0]['alias']}/cp/users/roles", $this->getSession()->getCurrentUrl());
+    $this->assertSession()->pageTextContains('Stooges');
   }
 
   /**
