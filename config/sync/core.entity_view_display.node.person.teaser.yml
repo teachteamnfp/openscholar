@@ -107,6 +107,14 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
+  field_taxonomy_terms:
+    type: entity_reference_label
+    weight: 10
+    region: content
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
   field_website:
     type: link
     weight: 7
@@ -120,7 +128,7 @@ content:
       target: ''
     third_party_settings: {  }
   links:
-    weight: 10
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -128,5 +136,4 @@ hidden:
   field_address: true
   field_office_hours: true
   field_redirect_to_source: true
-  field_taxonomy_terms: true
   langcode: true

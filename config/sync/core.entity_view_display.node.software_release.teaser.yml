@@ -9,6 +9,7 @@ dependencies:
     - field.field.node.software_release.field_software_package
     - field.field.node.software_release.field_software_project
     - field.field.node.software_release.field_software_version
+    - field.field.node.software_release.field_taxonomy_terms
     - node.type.software_release
   module:
     - layout_builder
@@ -30,8 +31,16 @@ content:
       trim_length: 600
     third_party_settings: {  }
     region: content
-  links:
+  field_taxonomy_terms:
+    type: entity_reference_label
     weight: 1
+    region: content
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+  links:
+    weight: 2
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -40,5 +49,4 @@ hidden:
   field_software_package: true
   field_software_project: true
   field_software_version: true
-  field_taxonomy_terms: true
   langcode: true

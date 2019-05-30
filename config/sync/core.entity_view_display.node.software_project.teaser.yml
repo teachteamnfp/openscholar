@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.software_project.body
     - field.field.node.software_project.field_attached_media
     - field.field.node.software_project.field_packaging
+    - field.field.node.software_project.field_taxonomy_terms
     - node.type.software_project
   module:
     - layout_builder
@@ -28,8 +29,16 @@ content:
       trim_length: 600
     third_party_settings: {  }
     region: content
-  links:
+  field_taxonomy_terms:
+    type: entity_reference_label
     weight: 1
+    region: content
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+  links:
+    weight: 2
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -39,5 +48,4 @@ hidden:
   field_packaging_method: true
   field_rbuild_short_name: true
   field_repository_url: true
-  field_taxonomy_terms: true
   langcode: true
