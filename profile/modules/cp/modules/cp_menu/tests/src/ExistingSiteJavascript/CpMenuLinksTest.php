@@ -7,6 +7,9 @@ use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTest
 /**
  * Class CpMenuLinksTest.
  *
+ * @group functional-javascript
+ * @group cp-menu
+ *
  * @package Drupal\Tests\cp_menu\ExistingSiteJavaScript
  */
 class CpMenuLinksTest extends OsExistingSiteJavascriptTestBase {
