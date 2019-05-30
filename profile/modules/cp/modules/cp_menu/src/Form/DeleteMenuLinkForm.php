@@ -108,7 +108,7 @@ class DeleteMenuLinkForm extends ConfirmFormBase {
    * @throws \Drupal\Component\Plugin\Exception\PluginException
    */
   public function submitForm(array &$form, FormStateInterface $form_state) : void {
-    // Delete all links and add Home if Primary Menu.
+    // Delete the link.
     $this->menuLinkManager->removeDefinition($this->id);
     $form_state->setRedirect('cp.build.menu');
   }
