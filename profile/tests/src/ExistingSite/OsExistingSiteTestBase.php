@@ -35,6 +35,14 @@ abstract class OsExistingSiteTestBase extends ExistingSiteBase {
 
     foreach ($this->cleanUpConfigs as $config_entity) {
       $config_entity->delete();
+      // This is part of the test cleanup.
+      // If this is not done, then it leads to database deadlock error in the
+      // test. The test is performing nested db operations during cleanup.
+      $this->menus = $this->group->getContent('group_menu:menu');
+      foreach ($this->menus as $menu) {
+        $menu->delete();
+      }
+      $this->group->delete();
     }
   }
 
