@@ -190,7 +190,7 @@ class MenuBuildForm extends FormBase {
         'attributes' => [
           'class' => ['use-ajax'],
           'data-dialog-type' => 'modal',
-          'data-dialog-options' => json_encode(['width' => '100%']),
+          'data-dialog-options' => json_encode(['width' => '50%']),
           'id' => 'remove_menu',
         ],
       ]);

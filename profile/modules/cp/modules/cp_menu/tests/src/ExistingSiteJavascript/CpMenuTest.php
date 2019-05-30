@@ -54,7 +54,7 @@ class CpMenuTest extends OsExistingSiteJavascriptTestBase {
   /**
    * Tests Menu List drag re-ordering.
    */
-  public function testMenuLinksReorder() {
+  public function testMenuLinksReorder(): void {
 
     $this->visit('/test-menu/cp/build/menu');
     $session = $this->assertSession();
@@ -82,7 +82,7 @@ class CpMenuTest extends OsExistingSiteJavascriptTestBase {
    * @throws \Behat\Mink\Exception\ElementNotFoundException
    * @throws \Behat\Mink\Exception\ExpectationException
    */
-  public function testAddNewMenu() {
+  public function testAddNewMenu(): void {
 
     $this->visit('/test-menu/cp/build/menu');
     $session = $this->assertSession();
@@ -93,9 +93,17 @@ class CpMenuTest extends OsExistingSiteJavascriptTestBase {
       'title' => 'Third Menu',
       'menu_name' => 'third_menu',
     ];
+    // Test Add new menu.
     $this->submitForm($edit, 'Save');
     $session->assertWaitOnAjaxRequest();
     $session->pageTextContains('Third Menu');
+
+    // Test Remove menu.
+    $page->clickLink('Remove');
+    $session->waitForElementVisible('css', '.cp-remove-menu');
+    $this->submitForm([], 'Confirm');
+    $session->waitForElementVisible('css', '#cp-build-menu-table');
+    $session->pageTextNotContains('Third Menu');
   }
 
 }
