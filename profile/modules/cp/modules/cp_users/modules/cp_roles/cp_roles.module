@@ -29,7 +29,7 @@ function cp_roles_entity_presave(EntityInterface $entity) {
 
     $provided_entity_id = \str_replace("{$entity->getGroupTypeId()}-", '', $entity->id());
 
-    $entity->set('id', "{$entity->getGroupTypeId()}-{$vsite->id()}-{$provided_entity_id}");
+    $entity->set('id', "{$entity->getGroupTypeId()}-{$vsite->id()}_{$provided_entity_id}");
   }
 }
 
@@ -52,7 +52,7 @@ function cp_roles_form_group_role_add_form_alter(&$form, FormStateInterface $for
   /** @var string $default_id_prefix */
   $default_id_prefix = $form['id']['#field_prefix'];
 
-  $form['id']['#field_prefix'] = "$default_id_prefix{$vsite->id()}-";
+  $form['id']['#field_prefix'] = "$default_id_prefix{$vsite->id()}_";
   $form['id']['#maxlength'] = EntityTypeInterface::ID_MAX_LENGTH - $subtract;
 
   $form['actions']['submit']['#submit'][] = 'cp_roles_group_role_add_form_submit';
