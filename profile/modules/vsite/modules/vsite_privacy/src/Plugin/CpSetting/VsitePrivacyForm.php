@@ -17,7 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   title = @Translation("Vsite Privacy Setting Form"),
  *   group = {
  *    "id" = "privacy",
- *    "title" = @Translation("Site Privacy"),
+ *    "title" = @Translation("Site Visibility"),
  *    "parent" = "cp.settings.global"
  *   }
  * )
