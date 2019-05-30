@@ -348,7 +348,7 @@ class MenuBuildForm extends FormBase {
       if ($link) {
         $id = 'menu_plugin_id:' . $link->getPluginId();
         $form[$id]['#item'] = $element;
-        $form[$id]['#attributes'] = ['class' => ['menu-enabled']];
+        $form[$id]['#attributes'] = ['class' => [$link->getTitle()]];
         $form[$id]['title'] = Link::fromTextAndUrl($link->getTitle(), $link->getUrlObject())->toRenderable();
 
         // Show the first 80 charcters of the URL.
