@@ -248,25 +248,37 @@ function cp_taxonomy_form_media_form_alter(&$form, FormStateInterface $form_stat
  * Implements hook_node_view_alter().
  */
 function cp_taxonomy_node_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
-  $config = Drupal::config('cp_taxonomy.settings');
-  $display_term_under_content = $config->get('display_term_under_content');
-  if (empty($display_term_under_content) && $build['#view_mode'] == 'full') {
-    $build['field_taxonomy_terms']['#access'] = FALSE;
-  }
-  $display_term_under_content_teaser_types = $config->get('display_term_under_content_teaser_types');
-  // Unset og_vocabulary for unchecked bundles from cp/settings page for teaser view.
-  if (!empty($display_term_under_content_teaser_types) && !in_array('node:' . $entity->bundle(), $display_term_under_content_teaser_types) && $build['#view_mode'] == 'teaser') {
-    $build['field_taxonomy_terms']['#access'] = FALSE;
-  }
+  /** @var \Drupal\cp_taxonomy\CpTaxonomyHelperInterface $cp_taxonomy_helper */
+  $cp_taxonomy_helper = Drupal::service('cp.taxonomy.helper');
+  $view_modes = [
+    'full',
+  ];
+  $cp_taxonomy_helper->checkTaxonomyTermsPageVisibility($build, $view_modes);
+  $cp_taxonomy_helper->checkTaxonomyTermsListingVisibility($build, 'node:' . $entity->bundle());
 }
 
 /**
  * Implements hook_bibcite_reference_view_alter().
  */
 function cp_taxonomy_bibcite_reference_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
-  $config = Drupal::config('cp_taxonomy.settings');
-  $display_term_under_content = $config->get('display_term_under_content');
-  if (empty($display_term_under_content) && in_array($build['#view_mode'], ['full', 'citation'])) {
-    $build['field_taxonomy_terms']['#access'] = FALSE;
-  }
+  /** @var \Drupal\cp_taxonomy\CpTaxonomyHelperInterface $cp_taxonomy_helper */
+  $cp_taxonomy_helper = Drupal::service('cp.taxonomy.helper');
+  $view_modes = [
+    'full',
+    'citation',
+  ];
+  $cp_taxonomy_helper->checkTaxonomyTermsPageVisibility($build, $view_modes);
+}
+
+/**
+ * Implements hook_media_view_alter().
+ */
+function cp_taxonomy_media_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
+  /** @var \Drupal\cp_taxonomy\CpTaxonomyHelperInterface $cp_taxonomy_helper */
+  $cp_taxonomy_helper = Drupal::service('cp.taxonomy.helper');
+  $view_modes = [
+    'full',
+  ];
+  $cp_taxonomy_helper->checkTaxonomyTermsPageVisibility($build, $view_modes);
+  $cp_taxonomy_helper->checkTaxonomyTermsListingVisibility($build, 'media:' . $entity->bundle());
 }

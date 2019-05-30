@@ -120,4 +120,27 @@ class CpTaxonomyHelper implements CpTaxonomyHelperInterface {
     return $entities;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function checkTaxonomyTermsPageVisibility(array &$build, array $view_modes): void {
+    $config = $this->configFactory->get('cp_taxonomy.settings');
+    $display_term_under_content = $config->get('display_term_under_content');
+    if (empty($display_term_under_content) && in_array($build['#view_mode'], $view_modes)) {
+      $build['field_taxonomy_terms']['#access'] = FALSE;
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function checkTaxonomyTermsListingVisibility(array &$build, string $entity_type): void {
+    $config = $this->configFactory->get('cp_taxonomy.settings');
+    $display_term_under_content_teaser_types = $config->get('display_term_under_content_teaser_types');
+    // Unset field_taxonomy_terms for unchecked bundles from settings page.
+    if (!empty($display_term_under_content_teaser_types) && !in_array($entity_type, $display_term_under_content_teaser_types) && $build['#view_mode'] == 'teaser') {
+      $build['field_taxonomy_terms']['#access'] = FALSE;
+    }
+  }
+
 }
