@@ -29,11 +29,16 @@ class GlobalPathAccessTest extends OsExistingSiteTestBase {
   /**
    * Tests node create global path access.
    *
+   * This test only tests node create global path access. The edit, delete path
+   * access is handled by gnode_node_access().
+   *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
    * @throws \Behat\Mink\Exception\ExpectationException
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    * @throws \Drupal\Core\Entity\EntityStorageException
+   *
+   * @see \gnode_node_access()
    */
   public function testNode(): void {
     $this->visit("{$this->group->get('path')->getValue()[0]['alias']}/node/add/faq");
