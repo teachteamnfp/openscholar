@@ -6,7 +6,6 @@
  */
 
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\vsite\Config\VsiteStorageDefinition;
 
 /**
  * Implements hook_ENTITY_TYPE_insert().
@@ -17,13 +16,6 @@ function cp_menu_group_insert(EntityInterface $entity) {
   }
 
   $path = 'internal:' . $entity->path->alias;
-
-  // This is needed to activate the vsite specific collection and store the
-  // config in that vsite specific collection as it is not available by default
-  // at this point.
-  $hierarchical_storage = \Drupal::service('hierarchical.storage');
-  $storage = $hierarchical_storage->createCollection('vsite:' . $entity->id());
-  $hierarchical_storage->addStorage($storage, VsiteStorageDefinition::VSITE_STORAGE);
 
   $group_menu = \Drupal::entityTypeManager()->getStorage('menu')->create([
     'id' => 'menu-primary-' . $entity->id(),
