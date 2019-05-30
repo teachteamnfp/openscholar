@@ -89,7 +89,7 @@
   {% endif %}
   {{ title_suffix }}
 
-  {% set createdDate = node.getCreatedTime|date('F j, Y') %}
+  {% set createdDate = node.getCreatedTime|format_date('os_date_format') %}
   <div class="date field">{{ createdDate }}</div>
 
   <div{{ content_attributes }}>
