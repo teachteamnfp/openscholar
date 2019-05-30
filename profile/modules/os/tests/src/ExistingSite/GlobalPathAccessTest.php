@@ -15,6 +15,18 @@ use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
 class GlobalPathAccessTest extends OsExistingSiteTestBase {
 
   /**
+   * {@inheritdoc}
+   */
+  public function setUp() {
+    parent::setUp();
+
+    $member = $this->createUser();
+    $this->group->addMember($member);
+
+    $this->drupalLogin($member);
+  }
+
+  /**
    * Tests node create global path access.
    *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
@@ -24,13 +36,6 @@ class GlobalPathAccessTest extends OsExistingSiteTestBase {
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function testNode(): void {
-    // Setup.
-    $member = $this->createUser();
-    $this->group->addMember($member);
-
-    // Tests.
-    $this->drupalLogin($member);
-
     $this->visit("{$this->group->get('path')->getValue()[0]['alias']}/node/add/faq");
 
     $this->assertSession()->statusCodeEquals(200);
@@ -54,6 +59,21 @@ class GlobalPathAccessTest extends OsExistingSiteTestBase {
     $this->assertEquals($question, $node->get('title')->first()->getValue()['value']);
 
     $node->delete();
+  }
+
+  /**
+   * Tests media create global path access.
+   *
+   * @throws \Behat\Mink\Exception\ExpectationException
+   */
+  public function testMediaCreate(): void {
+    $this->visit("{$this->group->get('path')->getValue()[0]['alias']}/media/add/document");
+
+    $this->assertSession()->statusCodeEquals(200);
+
+    // Skipping the media creation assertions, because, I was not able to
+    // replicate the AJAX file upload in test. I have tested it manually, and
+    // the media creation works.
   }
 
 }

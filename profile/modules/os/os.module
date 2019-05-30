@@ -74,23 +74,23 @@ function os_preprocess_block(array &$vars) {
  * - `/node/add/<bundle>`
  * - `/media/add/<bundle>`
  * - `/bibcite/reference/add/<bundle>`
- *
- * Only the following entity types are supported:
- * - `node`
- * - `media`
- * - `bibcite_reference`
  */
 function os_entity_create_access(AccountInterface $account, array $context, $entity_bundle) {
   $vsite_context_manager = \Drupal::service('vsite.context_manager');
   /** @var \Drupal\group\Entity\GroupInterface|null $vsite */
   $vsite = $vsite_context_manager->getActiveVsite();
 
-  // The access stack is going to handle this case.
+  // Let the access stack handle this case.
   if (!$vsite) {
     return AccessResult::neutral();
   }
 
-  $plugin_id = "group_{$context['entity_type_id']}:$entity_bundle";
+  $plugin_id = "group_entity:{$context['entity_type_id']}";
+
+  // Nodes follow a different plugin_id structure.
+  if ($context['entity_type_id'] === 'node') {
+    $plugin_id = "group_node:$entity_bundle";
+  }
 
   // Only act if there are group content types for this node type.
   $group_content_types = GroupContentType::loadByContentPluginId($plugin_id);
