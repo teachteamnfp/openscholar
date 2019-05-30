@@ -3,3 +3,19 @@
     margin-bottom: 10px;
   }
 }
+.ui-accordion {
+  .ui-accordion-header {
+    background: none;
+    border-color: $color-light-gray3;
+    &.ui-state-active {
+      background: none;
+      border-color: $color-light-gray3;
+      a {
+        color: $color-black;
+      }
+      .ui-icon {
+        background-image: url(../../../../../../core/assets/vendor/jquery.ui/themes/base/images/ui-icons_444444_256x240.png);
+      }
+    }
+  }
+}

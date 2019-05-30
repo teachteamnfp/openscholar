@@ -35,7 +35,7 @@ class CpRolesFunctionalTest extends CpRolesExistingSiteTestBase {
     $this->visit("/{$this->group->get('path')->getValue()[0]['alias']}/cp/users/roles");
 
     $this->assertSession()->pageTextContains('Test Role');
-    $this->assertSession()->responseContains("{$this->group->get('path')->getValue()[0]['alias']}/cp/users/permissions/personal-{$this->group->id()}-test_role");
+    $this->assertSession()->responseContains("{$this->group->get('path')->getValue()[0]['alias']}/cp/users/permissions/personal-{$this->group->id()}_test_role");
   }
 
   /**
