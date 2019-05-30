@@ -5,12 +5,22 @@
   h3 {
     color: $color-black;
     font-weight: bold;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid $color-gray2;
     margin: 1em 0 1em 0;
     padding-bottom: 5px;
     font-size: 14px;
   }
   .views-row {
     margin: 10px 0 20px 0;
+  }
+}
+/** citation **/
+.path-bibcite {
+  .bibcite-citation {
+    display: block;
+    border: 1px solid $color-gray2;
+    overflow: visible;
+    padding: 10px;
+    margin-bottom: 8px;
   }
 }
