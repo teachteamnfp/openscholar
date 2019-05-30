@@ -152,7 +152,7 @@ class RemoveMenuForm extends ConfirmFormBase {
       // Add Home menu link for group if enabled.
       $menu_content_storage = $this->entityManager->getStorage('menu_link_content');
       $weight = 5;
-      $path = 'internal:' . $this->vsiteAlias = '/' . $this->vsiteManager->getActivePurl();
+      $path = 'internal:/' . $this->vsiteManager->getActivePurl();
       $menu_content_storage->create([
         'title' => t('Home'),
         'link' => ['uri' => $path],
