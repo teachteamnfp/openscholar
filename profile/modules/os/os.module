@@ -5,7 +5,10 @@
  * Hook implementations for the os module.
  */
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Link;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\group\Entity\GroupContentType;
 
 /**
  * Implements hook_library_info_alter().
@@ -53,9 +56,6 @@ function os_preprocess_html(&$variables) {
  * Implements hook_preprocess_block().
  *
  * Replaces 'Drupal' with 'OpenScholar' in the powered by block.
- *
- * @param array $vars
- *   Theme variables.
  */
 function os_preprocess_block(array &$vars) {
   if (isset($vars['plugin_id']) && $vars['plugin_id'] == 'system_powered_by_block') {
@@ -65,4 +65,43 @@ function os_preprocess_block(array &$vars) {
     }
     $vars['content']['#markup'] .= t('<span id="powered-by">Powered by <a href=":link">OpenScholar</a></span>', [':link' => 'https://theopenscholar.com/']);
   }
+}
+
+/**
+ * Implements hook_entity_create_access().
+ *
+ * Handles entity create inside group via global paths:
+ * - `/node/add/<bundle>`
+ * - `/media/add/<bundle>`
+ * - `/bibcite/reference/add/<bundle>`
+ *
+ * Only the following entity types are supported:
+ * - `node`
+ * - `media`
+ * - `bibcite_reference`
+ */
+function os_entity_create_access(AccountInterface $account, array $context, $entity_bundle) {
+  $vsite_context_manager = \Drupal::service('vsite.context_manager');
+  /** @var \Drupal\group\Entity\GroupInterface|null $vsite */
+  $vsite = $vsite_context_manager->getActiveVsite();
+
+  // The access stack is going to handle this case.
+  if (!$vsite) {
+    return AccessResult::neutral();
+  }
+
+  $plugin_id = "group_{$context['entity_type_id']}:$entity_bundle";
+
+  // Only act if there are group content types for this node type.
+  $group_content_types = GroupContentType::loadByContentPluginId($plugin_id);
+  if (empty($group_content_types)) {
+    return AccessResult::neutral();
+  }
+
+  // Pass the judgement here.
+  if ($vsite->hasPermission("create $plugin_id entity", $account) && $vsite->hasPermission("create $plugin_id content", $account)) {
+    return AccessResult::allowed();
+  }
+
+  return AccessResult::neutral();
 }
