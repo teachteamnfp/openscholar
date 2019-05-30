@@ -59,7 +59,9 @@ class CpUsersOwnershipForm extends FormBase {
       /** @var \Drupal\user\UserInterface[] $memberships */
       $memberships = $group->getContentEntities('group_membership');
       foreach ($memberships as $u) {
-        $users[$u->id()] = $u->getDisplayName();
+        if ($group->getOwnerId() != $u->id()) {
+          $users[$u->id()] = $u->getDisplayName();
+        }
       }
 
       $form['wrapper'] = [
