@@ -78,7 +78,7 @@ class VsitePrivacyForm extends CpSettingBase {
     $default_privacy_level = $this->activeVsite->get('field_privacy_level')->getValue();
     $form['privacy_levels'] = [
       '#type' => 'radios',
-      '#title' => $this->t('Privacy Levels'),
+      '#title' => $this->t('Site Visibility'),
       '#options' => $this->vsitePrivacyLevelManager->getOptions(),
       '#default_value' => $default_privacy_level[0]['value'] ?? NULL,
     ];
