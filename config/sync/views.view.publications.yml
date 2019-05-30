@@ -612,8 +612,8 @@ display:
           action_title: Action
           include_exclude: include
           selected_actions:
-            - bibcite_entity_reference_delete
             - bibcite_export_multiple
+            - cp_bibcite_entity_reference_delete
           entity_type: bibcite_reference
           plugin_id: bulk_form
       defaults:
