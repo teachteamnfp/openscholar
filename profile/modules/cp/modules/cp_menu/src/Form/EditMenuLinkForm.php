@@ -86,7 +86,6 @@ class EditMenuLinkForm extends FormBase {
     ];
 
     $form['actions'] = [
-      '#type' => 'actions',
       'submit' => [
         '#type' => 'submit',
         '#value' => $this->t('Save'),

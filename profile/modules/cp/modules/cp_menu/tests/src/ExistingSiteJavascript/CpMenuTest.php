@@ -88,13 +88,14 @@ class CpMenuTest extends OsExistingSiteJavascriptTestBase {
     $session = $this->assertSession();
     $page = $this->getCurrentPage();
     $page->clickLink('add_new_menu');
-    $session->waitForElementVisible('css', '#new-menu-modal-form');
+    $session->waitForElementVisible('css', '.cp-add-new-menu');
     $edit = [
       'title' => 'Third Menu',
       'menu_name' => 'third_menu',
     ];
     $this->submitForm($edit, 'Save');
-    $session->waitForText('Third Menu');
+    $session->assertWaitOnAjaxRequest();
+    $session->pageTextContains('Third Menu');
   }
 
 }
