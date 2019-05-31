@@ -42,11 +42,6 @@ abstract class OsExistingSiteTestBase extends ExistingSiteBase {
       foreach ($menus as $menu) {
         $menu->delete();
       }
-      $contents = $this->group->getContent();
-      foreach ($contents as $content) {
-        $content->delete();
-      }
-      $this->groupAdmin->delete();
       $this->group->delete();
     }
   }
