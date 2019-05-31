@@ -42,6 +42,10 @@ abstract class OsExistingSiteTestBase extends ExistingSiteBase {
       foreach ($menus as $menu) {
         $menu->delete();
       }
+      $members = $this->group->getContent('group_membership');
+      foreach ($members as $member) {
+        $member->delete();
+      }
       $this->group->delete();
     }
   }
