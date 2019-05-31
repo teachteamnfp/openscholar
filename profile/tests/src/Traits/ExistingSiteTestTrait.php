@@ -80,12 +80,34 @@ trait ExistingSiteTestTrait {
     ]);
   }
 
+  /**
+   * Creates a media entity.
+   *
+   * @param array $values
+   *   (optional) The values used to create the entity.
+   * @param string $type
+   *   (optional) The file type to attach to the entity.
+   *
+   * @return \Drupal\media\MediaInterface
+   *   The new media entity.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
   protected function createMedia(array $values = [], $type = 'text'): MediaInterface {
+    $file = $this->createFile($type);
     /** @var \Drupal\media\MediaStorage $storage */
     $storage = $this->container->get('entity_type.manager')->getStorage('media');
     $media = $storage->create($values + [
-      'name' => $this->randomMachineName(),
-      'bundle' => 'document',
+      'name' => [
+        'value' => $this->randomMachineName(),
+      ],
+      'bundle' => [
+        'target_id' => 'document',
+      ],
+      'field_media_file' => [
+        'target_id' => $file->id(),
+        'display' => 1,
+      ],
     ]);
     $media->enforceIsNew();
     $media->save();
@@ -95,10 +117,22 @@ trait ExistingSiteTestTrait {
     return $media;
   }
 
+  /**
+   * Creates a file entity.
+   *
+   * @param string $type
+   *   (optional) The file type.
+   *
+   * @return \Drupal\file\FileInterface
+   *   The new file entity.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
   protected function createFile($type = 'text'): FileInterface {
     /** @var array $test_files */
     $test_files = $this->getTestFiles($type);
     $file = File::create((array) current($test_files));
+    $file->save();
 
     $this->markEntityForCleanup($file);
 

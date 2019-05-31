@@ -7,8 +7,6 @@ use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
 /**
  * Tests whether group member has access to entity create global paths.
  *
- * @covers ::os_entity_create_access
- *
  * @group functional
  * @group os
  */
@@ -31,6 +29,8 @@ class GlobalPathAccessTest extends OsExistingSiteTestBase {
    *
    * This test only tests node create global path access. The edit, delete path
    * access is handled by gnode_node_access().
+   *
+   * @covers ::os_entity_create_access
    *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
    * @throws \Behat\Mink\Exception\ExpectationException
@@ -69,6 +69,8 @@ class GlobalPathAccessTest extends OsExistingSiteTestBase {
   /**
    * Tests media create global path access.
    *
+   * @covers ::os_entity_create_access
+   *
    * @throws \Behat\Mink\Exception\ExpectationException
    */
   public function testMediaCreate(): void {
@@ -81,8 +83,43 @@ class GlobalPathAccessTest extends OsExistingSiteTestBase {
     // the media creation works.
   }
 
+  /**
+   * Tests media update global path access.
+   *
+   * @covers ::os_media_access
+   *
+   * @throws \Behat\Mink\Exception\ExpectationException
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
   public function testMediaUpdate(): void {
+    $member = $this->createUser();
+    $this->group->addMember($member);
+    $media = $this->createMedia();
+    $media->setOwner($member)->save();
+    $this->group->addContent($media, 'group_entity:media');
 
+    $this->drupalLogin($member);
+
+    $this->visit("{$this->group->get('path')->getValue()[0]['alias']}/media/{$media->id()}/edit");
+    file_put_contents('public://page-name.html', $this->getCurrentPageContent());
+    $this->assertSession()->statusCodeEquals(200);
+    $this->drupalPostForm(NULL, [
+      'name[0][value]' => 'Document media edited',
+    ], 'Save');
+
+    /** @var \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager */
+    $entity_type_manager = $this->container->get('entity_type.manager');
+
+    $medias = $entity_type_manager->getStorage('media')->loadByProperties([
+      'name' => 'Document media edited',
+    ]);
+
+    $this->assertNotEmpty($medias);
+    $media = \reset($medias);
+
+    $this->assertEquals('Document media edited', $media->get('name')->first()->getValue()['value']);
   }
 
 }

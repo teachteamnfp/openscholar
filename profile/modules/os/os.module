@@ -128,6 +128,8 @@ function os_media_access(MediaInterface $entity, $operation, AccountInterface $a
     return AccessResult::neutral();
   }
 
+  // TODO: Remove entry for `media` entities in \os_entity_create_access and
+  // TODO: handle it here.
   switch ($operation) {
     case 'update':
     case 'delete':
