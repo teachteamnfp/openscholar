@@ -19,6 +19,14 @@ abstract class OsExistingSiteTestBase extends ExistingSiteBase {
    */
   protected $group;
 
+
+  /**
+   * Group Plugin manager.
+   *
+   * @var \Drupal\group\Plugin\GroupContentEnablerManager
+   */
+  protected $pluginManager;
+
   /**
    * {@inheritdoc}
    */
@@ -40,13 +48,14 @@ abstract class OsExistingSiteTestBase extends ExistingSiteBase {
     // This is part of the test cleanup.
     // If this is not done, then it leads to database deadlock error in the
     // test. The test is performing nested db operations during cleanup.
-    $menus = $this->group->getContent('group_menu:menu');
-    foreach ($menus as $menu) {
-      $menu->delete();
-    }
-    $members = $this->group->getContent('group_membership');
-    foreach ($members as $member) {
-      $member->delete();
+    $installed = $this->pluginManager->getInstalledIds($this->group->getGroupType());
+    foreach ($this->pluginManager->getAll() as $plugin_id => $plugin) {
+      if (in_array($plugin_id, $installed)) {
+        $contents = $this->group->getContent($plugin_id);
+        foreach ($contents as $content) {
+          $content->delete();
+        }
+      }
     }
     $this->group->delete();
   }
