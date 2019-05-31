@@ -98,6 +98,10 @@ class PreviewActionOsThemePreviewTest extends OsExistingSiteTestBase {
     // test. The test is performing nested db operations during cleanup.
     $this->visit('/');
     $this->drupalLogout();
+    $menus = $this->group->getContent('group_menu:menu');
+    foreach ($menus as $menu) {
+      $menu->delete();
+    }
     $this->groupAdmin->delete();
     $this->group->delete();
   }
