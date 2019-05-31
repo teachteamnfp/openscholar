@@ -9,6 +9,7 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Link;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\group\Entity\GroupContentType;
+use Drupal\media\MediaInterface;
 
 /**
  * Implements hook_library_info_alter().
@@ -101,6 +102,45 @@ function os_entity_create_access(AccountInterface $account, array $context, $ent
   // Pass the judgement here.
   if ($vsite->hasPermission("create $plugin_id entity", $account) && $vsite->hasPermission("create $plugin_id content", $account)) {
     return AccessResult::allowed();
+  }
+
+  return AccessResult::neutral();
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_access().
+ */
+function os_media_access(MediaInterface $entity, $operation, AccountInterface $account) {
+  $vsite_context_manager = \Drupal::service('vsite.context_manager');
+  /** @var \Drupal\group\Entity\GroupInterface|null $vsite */
+  $vsite = $vsite_context_manager->getActiveVsite();
+
+  // Let the access stack handle this case.
+  if (!$vsite) {
+    return AccessResult::neutral();
+  }
+
+  $plugin_id = 'group_entity:media';
+
+  // Only act if there are group content types for this plugin.
+  $group_content_types = GroupContentType::loadByContentPluginId($plugin_id);
+  if (empty($group_content_types)) {
+    return AccessResult::neutral();
+  }
+
+  switch ($operation) {
+    case 'update':
+    case 'delete':
+      if ($vsite->hasPermission("$operation any $plugin_id entity", $account)) {
+        return AccessResult::allowed();
+      }
+
+      if ($vsite->hasPermission("$operation own $plugin_id entity", $account) &&
+        ($account->id() === $entity->getOwner()->id())) {
+        return AccessResult::allowed();
+      }
+
+      break;
   }
 
   return AccessResult::neutral();
