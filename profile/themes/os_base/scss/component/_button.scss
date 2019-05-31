@@ -1,0 +1,21 @@
+%btn {
+  background: $color-gray3;
+  border: 1px solid $color-gray3;
+  color: $color-white;
+}
+button {
+  &.btn,
+  &.button {
+    @extend %btn;
+    &:hover,
+    &:active,
+    &:focus,
+    &:visited {
+      @extend %btn;
+      &:hover,
+      &:focus {
+        @extend %btn;
+      }
+    }
+  }
+}

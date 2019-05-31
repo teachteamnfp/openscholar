@@ -1,0 +1,4 @@
+cp.users:
+  title: 'Users'
+  base_route: cp.users
+  route_name: cp.users
