@@ -52,6 +52,11 @@
  */
 #}
 {% set container = theme.settings.fluid_container ? 'container-fluid' : 'container' %}
+<div class="branding-header">
+    <div class="container">
+      {{ page.branding_header }}
+    </div>
+</div>
 {# Navbar #}
 {% if page.navigation or page.navigation_collapsible %}
   {% block navbar %}
