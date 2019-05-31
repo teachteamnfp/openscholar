@@ -20,11 +20,19 @@ abstract class OsExistingSiteTestBase extends ExistingSiteBase {
   protected $group;
 
   /**
+   * Test group alias.
+   *
+   * @var string
+   */
+  protected $groupAlias;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
     parent::setUp();
     $this->group = $this->createGroup();
+    $this->groupAlias = $this->group->get('path')->first()->getValue()['alias'];
   }
 
   /**
