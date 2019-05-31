@@ -772,3 +772,8 @@ $config_directories['sync'] = '../config/sync';
 #   include $app_root . '/' . $site_path . '/settings.local.php';
 # }
 $config['config_split.config_split.local']['status'] = FALSE;
+
+# Prevent deadlocks during test cleanup in Travis.
+$databases['default']['default']['init_commands']['isolation'] = "SET SESSION tx_isolation='READ-COMMITTED'";
+$databases['default']['default']['init_commands']['lock_wait_timeout'] = "SET SESSION innodb_lock_wait_timeout = 20";
+$databases['default']['default']['init_commands']['wait_timeout'] = "SET SESSION wait_timeout = 600";
