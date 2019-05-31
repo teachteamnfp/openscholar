@@ -50,3 +50,13 @@ cp_roles.role.role_permission_form:
   requirements:
     _group_permission: 'manage cp roles'
     _group_member: 'TRUE'
+
+cp_roles.role.edit_form:
+  path: '/cp/users/roles/{group_role}/edit/{group_type}'
+  defaults:
+    _entity_form: 'group_role.edit'
+    _title: 'Edit vsite role'
+    group_type: personal
+  requirements:
+    _group_permission: 'manage cp roles'
+    _group_member: 'TRUE'
