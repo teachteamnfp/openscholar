@@ -90,4 +90,16 @@ trait ExistingSiteTestTrait {
     $this->cleanUpConfigs[] = $config_entity;
   }
 
+  /**
+   * Triggers a URL visit via a vsite.
+   *
+   * @param string $url
+   *   The URL to visit.
+   * @param \Drupal\group\Entity\GroupInterface $vsite
+   *   The vsite to be used.
+   */
+  protected function visitViaVsite(string $url, GroupInterface $vsite): void {
+    $this->visit("{$vsite->get('path')->getValue()[0]['alias']}/$url");
+  }
+
 }
