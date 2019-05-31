@@ -42,13 +42,13 @@ abstract class OsExistingSiteTestBase extends ExistingSiteBase {
       foreach ($menus as $menu) {
         $menu->delete();
       }
-      $nodes = $this->group->getContent('group_node:node');
-      foreach ($nodes as $node) {
-        $node->delete();
-      }
       $members = $this->group->getContent('group_membership:user');
       foreach ($members as $member) {
         $member->delete();
+      }
+      $contents = $this->group->getContent();
+      foreach ($contents as $content) {
+        $content->delete();
       }
       $this->group->delete();
     }
