@@ -138,7 +138,7 @@ class CpTaxonomyHelper implements CpTaxonomyHelperInterface {
     $config = $this->configFactory->get('cp_taxonomy.settings');
     $display_term_under_content_teaser_types = $config->get('display_term_under_content_teaser_types');
     // Unset field_taxonomy_terms for unchecked bundles from settings page.
-    if (!empty($display_term_under_content_teaser_types) && !in_array($entity_type, $display_term_under_content_teaser_types) && $build['#view_mode'] == 'teaser') {
+    if (is_array($display_term_under_content_teaser_types) && !in_array($entity_type, $display_term_under_content_teaser_types) && $build['#view_mode'] == 'teaser') {
       $build['field_taxonomy_terms']['#access'] = FALSE;
     }
   }
