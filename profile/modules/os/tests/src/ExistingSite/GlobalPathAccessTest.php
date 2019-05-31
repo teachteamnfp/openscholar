@@ -81,4 +81,8 @@ class GlobalPathAccessTest extends OsExistingSiteTestBase {
     // the media creation works.
   }
 
+  public function testMediaUpdate(): void {
+
+  }
+
 }

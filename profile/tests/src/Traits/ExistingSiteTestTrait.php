@@ -3,7 +3,10 @@
 namespace Drupal\Tests\openscholar\Traits;
 
 use Drupal\Core\Config\Entity\ConfigEntityInterface;
+use Drupal\file\Entity\File;
+use Drupal\file\FileInterface;
 use Drupal\group\Entity\GroupInterface;
+use Drupal\media\MediaInterface;
 use Drupal\user\UserInterface;
 
 /**
@@ -75,6 +78,31 @@ trait ExistingSiteTestTrait {
         'personal-administrator',
       ],
     ]);
+  }
+
+  protected function createMedia(array $values = [], $type = 'text'): MediaInterface {
+    /** @var \Drupal\media\MediaStorage $storage */
+    $storage = $this->container->get('entity_type.manager')->getStorage('media');
+    $media = $storage->create($values + [
+      'name' => $this->randomMachineName(),
+      'bundle' => 'document',
+    ]);
+    $media->enforceIsNew();
+    $media->save();
+
+    $this->markEntityForCleanup($media);
+
+    return $media;
+  }
+
+  protected function createFile($type = 'text'): FileInterface {
+    /** @var array $test_files */
+    $test_files = $this->getTestFiles($type);
+    $file = File::create((array) current($test_files));
+
+    $this->markEntityForCleanup($file);
+
+    return $file;
   }
 
   /**
