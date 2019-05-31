@@ -37,13 +37,13 @@ class CpRolesChangeRoleFormTest extends CpRolesExistingSiteTestBase {
     $this->assertTrue($this->getSession()->getPage()->find('css', '[value="personal-member"]')->isChecked());
 
     $this->drupalPostForm(NULL, [
-      'roles' => "personal-{$this->group->id()}-cprolechange",
+      'roles' => "personal-{$this->group->id()}_cprolechange",
     ], 'Save');
 
     /** @var \Drupal\group\GroupMembership $group_membership */
     $group_membership = $this->group->getMember($member);
     $updated_roles = $group_membership->getRoles();
-    $this->assertInstanceOf(GroupRole::class, $updated_roles["personal-{$this->group->id()}-cprolechange"]);
+    $this->assertInstanceOf(GroupRole::class, $updated_roles["personal-{$this->group->id()}_cprolechange"]);
   }
 
 }

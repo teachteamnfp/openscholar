@@ -42,7 +42,7 @@ class CpRolesTest extends CpRolesExistingSiteJavascriptTestBase {
     $this->visit("/{$this->group->get('path')->getValue()[0]['alias']}/cp/users/roles/add");
     $this->getSession()->getPage()->fillField('Name', 'Stooges');
     $this->assertSession()->waitForElementVisible('css', '.machine-name-value');
-    $this->assertSession()->pageTextContains("personal-{$this->group->id()}-stooges");
+    $this->assertSession()->pageTextContains("personal-{$this->group->id()}_stooges");
 
     $this->getSession()->getPage()->pressButton('Save group role');
 
@@ -51,12 +51,37 @@ class CpRolesTest extends CpRolesExistingSiteJavascriptTestBase {
   }
 
   /**
+   * Tests custom role edit via UI.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   * @throws \Behat\Mink\Exception\ResponseTextException
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public function testEdit(): void {
+    $group_role = $this->createRoleForGroup($this->group, [
+      'id' => 'stooges',
+      'label' => 'The Stooges',
+    ]);
+
+    $this->drupalLogin($this->groupAdmin);
+
+    $this->visit("/{$this->group->get('path')->getValue()[0]['alias']}/cp/users/roles");
+    $group_role_edit_link = $this->getSession()->getPage()->find('css', "[href='{$this->group->get('path')->getValue()[0]['alias']}/cp/users/roles/{$group_role->id()}/edit?destination={$this->group->get('path')->getValue()[0]['alias']}/cp/users/roles']");
+    $group_role_edit_link->click();
+
+    $this->getSession()->getPage()->fillField('Name', 'The Stooges Funhouse');
+    $this->getSession()->getPage()->pressButton('Save group role');
+
+    $this->assertSession()->pageTextContains('The Stooges Funhouse');
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function tearDown() {
     $vsite_context_manager = $this->container->get('vsite.context_manager');
     $vsite_context_manager->activateVsite($this->group);
-    $group_role = GroupRole::load("personal-{$this->group->id()}-stooges");
+    $group_role = GroupRole::load("personal-{$this->group->id()}_stooges");
     $group_role->delete();
 
     parent::tearDown();
