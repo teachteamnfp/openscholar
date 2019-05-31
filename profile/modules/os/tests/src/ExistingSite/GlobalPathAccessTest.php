@@ -94,16 +94,17 @@ class GlobalPathAccessTest extends OsExistingSiteTestBase {
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function testMediaUpdate(): void {
+    // Setup.
     $member = $this->createUser();
     $this->group->addMember($member);
     $media = $this->createMedia();
     $media->setOwner($member)->save();
     $this->group->addContent($media, 'group_entity:media');
 
+    // Tests.
     $this->drupalLogin($member);
 
     $this->visit("{$this->group->get('path')->getValue()[0]['alias']}/media/{$media->id()}/edit");
-    file_put_contents('public://page-name.html', $this->getCurrentPageContent());
     $this->assertSession()->statusCodeEquals(200);
     $this->drupalPostForm(NULL, [
       'name[0][value]' => 'Document media edited',
@@ -120,6 +121,46 @@ class GlobalPathAccessTest extends OsExistingSiteTestBase {
     $media = \reset($medias);
 
     $this->assertEquals('Document media edited', $media->get('name')->first()->getValue()['value']);
+  }
+
+  /**
+   * Tests media delete global path access.
+   *
+   * @covers ::os_media_access
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   * @throws \Behat\Mink\Exception\ExpectationException
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public function testMediaDelete(): void {
+    // Setup.
+    $member = $this->createUser();
+    $this->group->addMember($member);
+    $media = $this->createMedia([
+      'name' => [
+        'value' => 'Media meant to be deleted',
+      ],
+    ]);
+    $media->setOwner($member)->save();
+    $this->group->addContent($media, 'group_entity:media');
+
+    // Tests.
+    $this->drupalLogin($member);
+
+    $this->visit("{$this->group->get('path')->getValue()[0]['alias']}/media/{$media->id()}/delete");
+    $this->assertSession()->statusCodeEquals(200);
+    $this->getSession()->getPage()->pressButton('Delete');
+
+    /** @var \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager */
+    $entity_type_manager = $this->container->get('entity_type.manager');
+
+    $medias = $entity_type_manager->getStorage('media')->loadByProperties([
+      'name' => 'Media meant to be deleted',
+    ]);
+
+    $this->assertEmpty($medias);
   }
 
 }
