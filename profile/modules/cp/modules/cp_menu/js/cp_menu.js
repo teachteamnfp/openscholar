@@ -90,7 +90,7 @@
 
     Drupal.behaviors.cpMenuFormValidation = {
         attach: function(ctx) {
-            $('#cp-menu-build-form').submit( function(event) {
+            $('#cp-menu-build').submit( function(event) {
                 let show = false;
                 $('.draggable').each(function() {
                     if ($(this).find('.indentation').length >= 4) {
@@ -98,9 +98,8 @@
                         show = true;
                     }
                 });
-
                 if (show) {
-                    $('#cp-menu-build-form').prepend('<div class="messages error">' + Drupal.t('Our themes do not support more than four menu levels') + '</div>');
+                    $('#cp-menu-build').prepend('<div class="messages error">' + Drupal.t('Our themes do not support more than four menu levels') + '</div>');
                 }
             });
         }
