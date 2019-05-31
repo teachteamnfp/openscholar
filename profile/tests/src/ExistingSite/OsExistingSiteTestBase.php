@@ -38,10 +38,15 @@ abstract class OsExistingSiteTestBase extends ExistingSiteBase {
       // This is part of the test cleanup.
       // If this is not done, then it leads to database deadlock error in the
       // test. The test is performing nested db operations during cleanup.
+      $menus = $this->group->getContent('group_menu:menu');
+      foreach ($menus as $menu) {
+        $menu->delete();
+      }
       $contents = $this->group->getContent();
       foreach ($contents as $content) {
         $content->delete();
       }
+      $this->groupAdmin->delete();
       $this->group->delete();
     }
   }
