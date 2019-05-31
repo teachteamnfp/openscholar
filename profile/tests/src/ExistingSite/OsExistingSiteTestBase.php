@@ -25,6 +25,7 @@ abstract class OsExistingSiteTestBase extends ExistingSiteBase {
   public function setUp() {
     parent::setUp();
     $this->group = $this->createGroup();
+    $this->pluginManager = $this->container->get('plugin.manager.group_content_enabler');
   }
 
   /**
@@ -35,19 +36,19 @@ abstract class OsExistingSiteTestBase extends ExistingSiteBase {
 
     foreach ($this->cleanUpConfigs as $config_entity) {
       $config_entity->delete();
-      // This is part of the test cleanup.
-      // If this is not done, then it leads to database deadlock error in the
-      // test. The test is performing nested db operations during cleanup.
-      $menus = $this->group->getContent('group_menu:menu');
-      foreach ($menus as $menu) {
-        $menu->delete();
-      }
-      $members = $this->group->getContent('group_membership');
-      foreach ($members as $member) {
-        $member->delete();
-      }
-      $this->group->delete();
     }
+    // This is part of the test cleanup.
+    // If this is not done, then it leads to database deadlock error in the
+    // test. The test is performing nested db operations during cleanup.
+    $menus = $this->group->getContent('group_menu:menu');
+    foreach ($menus as $menu) {
+      $menu->delete();
+    }
+    $members = $this->group->getContent('group_membership');
+    foreach ($members as $member) {
+      $member->delete();
+    }
+    $this->group->delete();
   }
 
 }
