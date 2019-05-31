@@ -28,6 +28,7 @@ regions:
   footer_bottom: 'Footer bottom'
   page_top: 'Page top'
   page_bottom: 'Page bottom'
+  branding_footer: 'Branding footer'
 
 libraries-extend:
   bootstrap/framework:
