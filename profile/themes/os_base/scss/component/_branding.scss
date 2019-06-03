@@ -4,4 +4,24 @@
   color: $color-white;
   font-weight: bold;
   height: 38px;
+  a {
+    color: $color-white;
+    text-decoration: underline;
+  }
+}
+.branding-footer {
+  height: 45px;
+  line-height: 45px;
+}
+.branding-left {
+  float: left;
+  margin: 10px 0 0 -30px;
+  position: relative;
+  z-index: 1;
+}
+.branding-right {
+  float: right;
+  line-height: 38px;
+  margin: 0;
+  text-transform: uppercase;
 }
