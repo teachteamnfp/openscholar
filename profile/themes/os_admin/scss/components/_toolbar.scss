@@ -18,10 +18,10 @@
     }
   }
   .toolbar-bar {
-    background-color: $color-light-gray1;
+    background-color: $color-blue;
     box-shadow: -1px 0 3px 1px rgba(183, 183, 183, 0.3333);
     .toolbar-item {
-      color: $color-link;
+      color: $color-white;
     }
     .toolbar-icon-menu {
       &.is-active {
@@ -30,6 +30,11 @@
           background-position: center;
         }
       }
+    }
+    .toolbar-tab {
+      > .toolbar-item.is-active {
+          background-image: none;
+        }
     }
   }
   .toolbar-toggle-orientation {

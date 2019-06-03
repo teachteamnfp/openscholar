@@ -1,0 +1,24 @@
+.entity-meta__header {
+  background-color: #F7F9FB;
+  border-top: 1px solid #E2E8EF;
+  border-bottom: 1px solid #E2E8EF;
+}
+.entity-meta {
+  background-color: #F7F9FB;
+  border-left: 1px solid #E2E8EF;
+  border-right: 1px solid #E2E8EF;
+  .seven-details[open] {
+    background-color: #fff;
+    background-image: none;
+    background-image: none;
+  }
+  .seven-details {
+    @extend .entity-meta__header;
+    &:focus-within {
+      outline: 1px solid;
+    }
+  }
+}
+.seven-details {
+  border: 1px solid #E2E8EF;
+}
