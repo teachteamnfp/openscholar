@@ -188,6 +188,14 @@ function cp_taxonomy_views_data_alter(&$data) {
       'id' => 'entity_bundle_to_vocabulary_vid',
     ],
   ];
+  $data['bibcite_reference']['cp_taxonomy_field_taxonomy_terms'] = [
+    'title' => t('Reference Tag with terms'),
+    'field' => [
+      'title' => t('Reference Tag with terms'),
+      'help' => t('Handle access by settings and current type.'),
+      'id' => 'cp_taxonomy_field_taxonomy_terms',
+    ],
+  ];
 }
 
 /**
