@@ -10,6 +10,7 @@ use Drupal\Tests\os_theme_preview\Traits\ThemePreviewTestTrait;
  *
  * @group functional
  * @group os-theme-preview
+ * @group unique-test
  * @coversDefaultClass \Drupal\os_theme_preview\Form\PreviewAction
  */
 class PreviewActionOsThemePreviewTest extends OsExistingSiteTestBase {
