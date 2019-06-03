@@ -92,6 +92,13 @@ class PreviewActionOsThemePreviewTest extends OsExistingSiteTestBase {
     $this->visit('/os-theme-preview');
     $this->assertSession()->responseContains('/profiles/contrib/openscholar/themes/documental/css/style.css');
 
+    // This is part of the cleanup.
+    // If this is not done, then it leads to deadlock errors in Travis
+    // https://travis-ci.org/openscholar/openscholar/jobs/540605242.
+    // My understanding, big_pipe initiates some sort of request in background,
+    // which puts a lock in the database. That lock hinders the test cleanup.
+    // Putting this to sleep for arbitrary amount of time seems to fix
+    // the problem.
     \sleep(5);
     $this->visit('/');
   }
