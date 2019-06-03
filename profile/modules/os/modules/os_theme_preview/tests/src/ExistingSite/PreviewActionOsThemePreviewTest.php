@@ -92,6 +92,9 @@ class PreviewActionOsThemePreviewTest extends OsExistingSiteTestBase {
 
     $this->visit('/os-theme-preview');
     $this->assertSession()->responseContains('/profiles/contrib/openscholar/themes/documental/css/style.css');
+
+    \sleep(5);
+    $this->visit('/');
   }
 
   /**
