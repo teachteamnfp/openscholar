@@ -26,9 +26,9 @@ regions:
   footer_left: 'Footer left'
   footer_right: 'Footer right'
   footer_bottom: 'Footer bottom'
+  branding_footer: 'Branding footer'
   page_top: 'Page top'
   page_bottom: 'Page bottom'
-  branding_footer: 'Branding footer'
 
 libraries-extend:
   bootstrap/framework:
