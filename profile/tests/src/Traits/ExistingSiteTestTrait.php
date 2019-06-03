@@ -2,6 +2,8 @@
 
 namespace Drupal\Tests\openscholar\Traits;
 
+use Drupal\bibcite_entity\Entity\Reference;
+use Drupal\bibcite_entity\Entity\ReferenceInterface;
 use Drupal\Core\Config\Entity\ConfigEntityInterface;
 use Drupal\file\Entity\File;
 use Drupal\file\FileInterface;
@@ -137,6 +139,41 @@ trait ExistingSiteTestTrait {
     $this->markEntityForCleanup($file);
 
     return $file;
+  }
+
+  /**
+   * Creates a reference.
+   *
+   * @param array $values
+   *   (Optional) Default values for the reference.
+   *
+   * @return \Drupal\bibcite_entity\Entity\ReferenceInterface
+   *   The new reference entity.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public function createReference(array $values = []) : ReferenceInterface {
+    $reference = Reference::create($values + [
+      'title' => $this->randomMachineName(),
+      'type' => 'artwork',
+      'bibcite_year' => [
+        'value' => 1980,
+      ],
+      'distribution' => [
+        [
+          'value' => 'citation_distribute_repec',
+        ],
+      ],
+      'status' => [
+        'value' => 1,
+      ],
+    ]);
+
+    $reference->save();
+
+    $this->markEntityForCleanup($reference);
+
+    return $reference;
   }
 
   /**

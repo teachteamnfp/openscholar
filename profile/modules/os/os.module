@@ -5,6 +5,7 @@
  * Hook implementations for the os module.
  */
 
+use Drupal\bibcite_entity\Entity\ReferenceInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\media\MediaInterface;
@@ -92,6 +93,16 @@ function os_entity_create_access(AccountInterface $account, array $context, $ent
  * Implements hook_ENTITY_TYPE_access().
  */
 function os_media_access(MediaInterface $entity, $operation, AccountInterface $account) {
+  /** @var \Drupal\os\AccessHelperInterface $access_helper */
+  $access_helper = \Drupal::service('os.access_helper');
+
+  return $access_helper->checkAccess($entity, $operation, $account);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_access().
+ */
+function os_bibcite_reference_access(ReferenceInterface $entity, $operation, AccountInterface $account) {
   /** @var \Drupal\os\AccessHelperInterface $access_helper */
   $access_helper = \Drupal::service('os.access_helper');
 

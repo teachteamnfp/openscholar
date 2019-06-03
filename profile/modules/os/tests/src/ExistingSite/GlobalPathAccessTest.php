@@ -163,4 +163,120 @@ class GlobalPathAccessTest extends OsExistingSiteTestBase {
     $this->assertEmpty($medias);
   }
 
+  /**
+   * Tests bibcite reference create global path access.
+   *
+   * @covers ::os_entity_create_access
+   *
+   * @throws \Behat\Mink\Exception\ExpectationException
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public function testBibciteReferenceCreate(): void {
+    $this->visit("{$this->group->get('path')->getValue()[0]['alias']}/bibcite/reference/add/artwork");
+
+    $this->assertSession()->statusCodeEquals(200);
+
+    $this->drupalPostForm(NULL, [
+      'title[0][value]' => 'Test Artwork',
+      'bibcite_year[0][value]' => 1980,
+      'status[value]' => 1,
+    ], 'Save');
+
+    /** @var \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager */
+    $entity_type_manager = $this->container->get('entity_type.manager');
+
+    $references = $entity_type_manager->getStorage('bibcite_reference')->loadByProperties([
+      'title' => 'Test Artwork',
+    ]);
+
+    $this->assertNotEmpty($references);
+    $reference = \reset($references);
+
+    $this->assertEquals('Test Artwork', $reference->get('title')->first()->getValue()['value']);
+
+    $reference->delete();
+  }
+
+  /**
+   * Tests bibcite_reference update global path access.
+   *
+   * @covers ::os_bibcite_reference_access
+   *
+   * @throws \Behat\Mink\Exception\ExpectationException
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public function testBibciteReferenceUpdate(): void {
+    // Setup.
+    $member = $this->createUser();
+    $this->group->addMember($member);
+    $reference = $this->createReference();
+    $reference->setOwner($member)->save();
+    $this->group->addContent($reference, 'group_entity:bibcite_reference');
+
+    // Tests.
+    $this->drupalLogin($member);
+
+    $this->visit("{$this->group->get('path')->getValue()[0]['alias']}/bibcite/reference/{$reference->id()}/edit");
+    $this->assertSession()->statusCodeEquals(200);
+    $this->drupalPostForm(NULL, [
+      'title[0][value]' => 'Artwork Reference Edited',
+    ], 'Save');
+
+    /** @var \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager */
+    $entity_type_manager = $this->container->get('entity_type.manager');
+
+    $references = $entity_type_manager->getStorage('bibcite_reference')->loadByProperties([
+      'title' => 'Artwork Reference Edited',
+    ]);
+
+    $this->assertNotEmpty($references);
+    $reference = \reset($references);
+
+    $this->assertEquals('Artwork Reference Edited', $reference->get('title')->first()->getValue()['value']);
+  }
+
+  /**
+   * Tests bibcite_reference delete global path access.
+   *
+   * @covers ::os_bibcite_reference_access
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   * @throws \Behat\Mink\Exception\ExpectationException
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public function testBibciteReferenceDelete(): void {
+    // Setup.
+    $member = $this->createUser();
+    $this->group->addMember($member);
+    $reference = $this->createReference([
+      'title' => [
+        'value' => 'Artwork meant to be deleted',
+      ],
+    ]);
+    $reference->setOwner($member)->save();
+    $this->group->addContent($reference, 'group_entity:bibcite_reference');
+
+    // Tests.
+    $this->drupalLogin($member);
+
+    $this->visit("{$this->group->get('path')->getValue()[0]['alias']}/bibcite/reference/{$reference->id()}/delete");
+    $this->assertSession()->statusCodeEquals(200);
+    $this->getSession()->getPage()->pressButton('Delete');
+
+    /** @var \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager */
+    $entity_type_manager = $this->container->get('entity_type.manager');
+
+    $references = $entity_type_manager->getStorage('bibcite_reference')->loadByProperties([
+      'title' => 'Artwork meant to be deleted',
+    ]);
+
+    $this->assertEmpty($references);
+  }
+
 }
