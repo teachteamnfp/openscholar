@@ -84,7 +84,6 @@ class PreviewActionOsThemePreviewTest extends OsExistingSiteTestBase {
    *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
    * @throws \Behat\Mink\Exception\ExpectationException
-   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function testSave(): void {
     $this->visit('/os-theme-preview/cp/appearance/preview/documental');
@@ -92,14 +91,6 @@ class PreviewActionOsThemePreviewTest extends OsExistingSiteTestBase {
 
     $this->visit('/os-theme-preview');
     $this->assertSession()->responseContains('/profiles/contrib/openscholar/themes/documental/css/style.css');
-
-    // This is part of the test cleanup.
-    // If this is not done, then it leads to database deadlock error in the
-    // test. The test is performing nested db operations during cleanup.
-    $this->visit('/');
-    $this->drupalLogout();
-    $this->groupAdmin->delete();
-    $this->group->delete();
   }
 
   /**
