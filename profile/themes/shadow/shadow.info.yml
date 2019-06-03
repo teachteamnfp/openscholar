@@ -6,6 +6,7 @@ core: 8.x
 type: theme
 
 regions:
+  branding_header: 'Branding Header'
   header: 'Header'
   header_left: 'Header Left'
   header_right: 'Header Right'
