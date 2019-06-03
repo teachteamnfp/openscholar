@@ -137,13 +137,13 @@ class PreviewAction extends FormBase {
       ->set('default', $form_state->getValue('name'))
       ->save();
 
-    try {
-      $this->handler->stopPreviewMode();
-    }
-    catch (ThemePreviewException $exception) {
-      $this->loggerFactory->get('os_theme_preview')->error($exception->getMessage());
-      $this->messenger->addError($this->t('Preview could not be stopped. Check logs for more details.'));
-    }
+//    try {
+//      $this->handler->stopPreviewMode();
+//    }
+//    catch (ThemePreviewException $exception) {
+//      $this->loggerFactory->get('os_theme_preview')->error($exception->getMessage());
+//      $this->messenger->addError($this->t('Preview could not be stopped. Check logs for more details.'));
+//    }
   }
 
   /**
