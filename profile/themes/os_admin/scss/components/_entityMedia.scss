@@ -1,12 +1,12 @@
 .entity-meta__header {
-  background-color: #F7F9FB;
-  border-top: 1px solid #E2E8EF;
-  border-bottom: 1px solid #E2E8EF;
+  background-color: $color-light-gray3;
+  border-top: 1px solid $color-light-gray2;
+  border-bottom: 1px solid $color-light-gray2;
 }
 .entity-meta {
-  background-color: #F7F9FB;
-  border-left: 1px solid #E2E8EF;
-  border-right: 1px solid #E2E8EF;
+  background-color: $color-light-gray3;
+  border-left: 1px solid $color-light-gray2;
+  border-right: 1px solid $color-light-gray2;
   .seven-details[open] {
     background-color: #fff;
     background-image: none;
@@ -20,5 +20,5 @@
   }
 }
 .seven-details {
-  border: 1px solid #E2E8EF;
+  border: 1px solid $color-light-gray2;
 }
