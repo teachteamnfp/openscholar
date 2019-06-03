@@ -40,7 +40,6 @@ abstract class OsExistingSiteTestBase extends ExistingSiteBase {
    * {@inheritdoc}
    */
   public function tearDown() {
-    parent::tearDown();
 
     foreach ($this->cleanUpConfigs as $config_entity) {
       $config_entity->delete();
@@ -58,6 +57,7 @@ abstract class OsExistingSiteTestBase extends ExistingSiteBase {
       }
     }
     $this->group->delete();
+    parent::tearDown();
   }
 
 }
