@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "822111fadc0ffa95b519c3402a81f141",
+    "content-hash": "5ccc8b35ddca8856da42f7acdf940ee1",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -4742,7 +4742,8 @@
                 },
                 "patches_applied": {
                     "/views/ajax?_wrapper_format=drupal_ajax HTTP/1.1 - HTTP/1.1 403 Forbidden": "https://www.drupal.org/files/issues/2018-08-15/group-route-match-ajax-views-d8-2942657-11.patch",
-                    "Entities identified by strings as group content": "https://www.drupal.org/files/issues/2797793-20.patch"
+                    "Entities identified by strings as group content": "https://www.drupal.org/files/issues/2797793-20.patch",
+                    "Integrity constraint violation: Duplicate entry for key PRIMARY in node_access": "https://www.drupal.org/files/issues/2018-08-17/group-duplicate-node-access-entries-2892512-15.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
