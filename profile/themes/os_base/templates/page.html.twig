@@ -204,8 +204,10 @@
   {% endblock %}
 {% endif %}
 {#branding footer#}
-<div class="branding-footer">
-    <div class="container">
-     {{ page.branding_footer }}
-    </div>
-</div>
+{% if page.footer %}
+  <div class="branding-footer">
+      <div class="container">
+      {{ page.branding_footer }}
+      </div>
+  </div>
+{% endif %}
