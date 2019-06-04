@@ -6,6 +6,7 @@
  */
 
 use Drupal\bibcite_entity\Entity\ReferenceInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\media\MediaInterface;
@@ -107,4 +108,25 @@ function os_bibcite_reference_access(ReferenceInterface $entity, $operation, Acc
   $access_helper = \Drupal::service('os.access_helper');
 
   return $access_helper->checkAccess($entity, $operation, $account);
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function os_form_node_confirm_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Only act on node delete confirmation forms.
+  if (strpos($form_id, '_delete_form') === FALSE) {
+    return;
+  }
+
+  $form['actions']['submit']['#submit'][] = 'os_alter_post_node_delete_redirect';
+}
+
+/**
+ * Alters redirect location after a node is deleted.
+ *
+ * @ingroup forms
+ */
+function os_alter_post_node_delete_redirect(array &$form, FormStateInterface $form_state) {
+  $form_state->setRedirect('view.blog.page_1');
 }
