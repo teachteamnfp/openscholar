@@ -56,7 +56,7 @@ class CpCancelButtonTest extends OsExistingSiteJavascriptTestBase {
 
     // Assert url is a node path with group alias.
     $url = $session->getCurrentUrl();
-    $this->assertEquals('http://apache' . $this->nodePath, $url);
+    $this->assertContains($this->nodePath, $url);
   }
 
   /**
@@ -81,7 +81,7 @@ class CpCancelButtonTest extends OsExistingSiteJavascriptTestBase {
 
     // Assert url is a browse path with group alias.
     $url = $session->getCurrentUrl();
-    $this->assertEquals('http://apache' . $this->vsiteAlias . '/cp/content', $url);
+    $this->assertContains($this->vsiteAlias . '/cp/content', $url);
   }
 
 }
