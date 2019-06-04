@@ -10,6 +10,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\media\MediaInterface;
+use Ds\Map;
 
 /**
  * Implements hook_library_info_alter().
@@ -119,7 +120,18 @@ function os_form_node_confirm_form_alter(&$form, FormStateInterface $form_state,
     return;
   }
 
+  $content_type_redirect_mapping = new Map();
+  $content_type_redirect_mapping->put('blog', 'view.blog.page_1');
+  $content_type_redirect_mapping->put('events', 'view.calendar.page_1');
+  $content_type_redirect_mapping->put('class', 'view.os_classes.page_1');
+  $content_type_redirect_mapping->put('link', 'view.links.page');
+  $content_type_redirect_mapping->put('news', 'view.news.page_1');
+  $content_type_redirect_mapping->put('person', 'view.people.page_1');
+  $content_type_redirect_mapping->put('presentation', 'view.presentations.page_1');
+  $content_type_redirect_mapping->put('software_project', 'view.os_software_projects.page_1');
+
   $form['actions']['submit']['#submit'][] = 'os_alter_post_node_delete_redirect';
+  $form_state->addBuildInfo('redirect_mapping', $content_type_redirect_mapping);
 }
 
 /**
@@ -128,5 +140,18 @@ function os_form_node_confirm_form_alter(&$form, FormStateInterface $form_state,
  * @ingroup forms
  */
 function os_alter_post_node_delete_redirect(array &$form, FormStateInterface $form_state) {
-  $form_state->setRedirect('view.blog.page_1');
+  /** @var \Drupal\node\Form\NodeDeleteForm $form_object */
+  $form_object = $form_state->getFormObject();
+  /** @var \Drupal\node\NodeInterface $entity */
+  $entity = $form_object->getEntity();
+  /** @var array $build_info */
+  $build_info = $form_state->getBuildInfo();
+  /** @var \Ds\Map $content_type_redirect_mapping */
+  $content_type_redirect_mapping = $build_info['redirect_mapping'];
+  /** @var string|NULL $redirect_route */
+  $redirect_route = $content_type_redirect_mapping->get($entity->bundle(), NULL);
+
+  if ($redirect_route) {
+    $form_state->setRedirect($redirect_route);
+  }
 }
