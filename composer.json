@@ -351,7 +351,8 @@
             },
             "drupal/group": {
                 "/views/ajax?_wrapper_format=drupal_ajax HTTP/1.1 - HTTP/1.1 403 Forbidden": "https://www.drupal.org/files/issues/2018-08-15/group-route-match-ajax-views-d8-2942657-11.patch",
-                "Entities identified by strings as group content": "https://www.drupal.org/files/issues/2797793-20.patch"
+                "Entities identified by strings as group content": "https://www.drupal.org/files/issues/2797793-20.patch",
+                "Integrity constraint violation: Duplicate entry for key PRIMARY in node_access": "https://www.drupal.org/files/issues/2018-08-17/group-duplicate-node-access-entries-2892512-15.patch"
             }
         },
         "patches-ignore": {

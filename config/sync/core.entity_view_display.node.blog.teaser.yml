@@ -9,8 +9,12 @@ dependencies:
     - field.field.node.blog.field_taxonomy_terms
     - node.type.blog
   module:
+    - layout_builder
     - text
     - user
+third_party_settings:
+  layout_builder:
+    sections: {  }
 _core:
   default_config_hash: FP0h57mJ5P8XZR12zCu7X6tvHjltx3FuMDhxed7VSzc
 id: node.blog.teaser
@@ -21,17 +25,31 @@ content:
   body:
     label: hidden
     type: text_summary_or_trimmed
-    weight: 101
+    weight: 0
     settings:
       trim_length: 600
     third_party_settings: {  }
     region: content
+  field_attached_media:
+    type: entity_reference_label
+    weight: 1
+    region: content
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+  field_taxonomy_terms:
+    type: entity_reference_label
+    weight: 2
+    region: content
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
   links:
-    weight: 100
+    weight: 3
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
 hidden:
-  field_attached_media: true
-  field_taxonomy_terms: true
   langcode: true

@@ -21,9 +21,8 @@ class CpRolesTest extends CpRolesExistingSiteTestBase {
 
     /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
     $vsite_context_manager = $this->container->get('vsite.context_manager');
-    $vsite_context_manager->activateVsite($vsite1);
 
-    $this->createGroupRole([
+    $this->createRoleForGroup($vsite1, [
       'id' => 'vsite1role',
     ]);
 
@@ -34,8 +33,8 @@ class CpRolesTest extends CpRolesExistingSiteTestBase {
     $vsite1_configs = $hierarchical_storage->listAllFromLevel("group.role.personal-{$vsite1->id()}", 0);
     $vsite2_configs = $hierarchical_storage->listAllFromLevel("group.role.personal-{$vsite2->id()}", 0);
 
-    $this->assertContains("group.role.personal-{$vsite1->id()}-vsite1role", $vsite1_configs);
-    $this->assertNotContains("group.role.personal-{$vsite1->id()}-vsite1role", $vsite2_configs);
+    $this->assertContains("group.role.personal-{$vsite1->id()}_vsite1role", $vsite1_configs);
+    $this->assertNotContains("group.role.personal-{$vsite1->id()}_vsite1role", $vsite2_configs);
   }
 
 }

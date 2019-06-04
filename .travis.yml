@@ -28,9 +28,9 @@ env:
     - JOB=job:check-coding-standards
     - JOB=job:run-unit-tests
     - JOB="job:run-kernel-tests widgets,vsite"
-    - JOB="job:run-kernel-tests os-theme-preview,cp-appearance,publications"
+    - JOB="job:run-kernel-tests os-theme-preview,cp-appearance,publications,os"
     - JOB="job:run-kernel-tests redirect,other,cp"
-    - JOB="job:run-functional-tests classes,events,pages,publications,cp-appearance"
+    - JOB="job:run-functional-tests classes,events,pages,publications,cp-appearance,os"
     - JOB="job:run-functional-tests cp,media-browser,os-theme-preview,vsite,breadcrumbs,analytics"
     - JOB="job:run-functional-javascript-tests classes,events,pages,publications,widgets,cp-appearance"
     - JOB="job:run-functional-javascript-tests cp,vsite,mailchimp,metatag,redirect,os-theme-preview"

@@ -123,7 +123,7 @@ class CpUsersMainTest extends OsExistingSiteJavascriptTestBase {
     $this->assertSession()->waitForElement('css', '#drupal-modal--content');
     $page->pressButton('Confirm');
     $this->assertSession()->assertWaitOnAjaxRequest();
-    $this->assertFalse($page->hasContent($username), "Username $username still found on page.");
+    $this->assertTrue($page->hasContent('Member ' . $username . ' has been removed from ' . $this->group->label()), "Username $username has not removed.");
   }
 
   /**
