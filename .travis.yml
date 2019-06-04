@@ -27,7 +27,7 @@ env:
   matrix:
     - JOB=job:check-coding-standards
     - JOB=job:run-unit-tests
-    - JOB="job:run-kernel-tests widgets,vsite"
+    - JOB="job:run-kernel-tests widgets"
     - JOB="job:run-kernel-tests os-theme-preview,cp-appearance,publications,os"
     - JOB="job:run-kernel-tests redirect,wysiwyg,vsite,cp"
     - JOB="job:run-kernel-tests other,cp-menu"
