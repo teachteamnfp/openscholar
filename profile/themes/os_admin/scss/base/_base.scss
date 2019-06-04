@@ -1,7 +1,13 @@
 body {
   color: $color-text;
+  font-family: "Helvetica Neue", sans-serif;
 }
-a, .link {
+a,
+.link {
   color: $color-link;
   text-decoration: none;
+}
+.page-title {
+  font-size: 3em;
+  font-weight: 500;
 }
