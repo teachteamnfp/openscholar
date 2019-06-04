@@ -27,12 +27,13 @@ env:
   matrix:
     - JOB=job:check-coding-standards
     - JOB=job:run-unit-tests
-    - JOB="job:run-kernel-tests widgets,vsite"
+    - JOB="job:run-kernel-tests widgets"
     - JOB="job:run-kernel-tests os-theme-preview,cp-appearance,publications,os"
-    - JOB="job:run-kernel-tests redirect,other,cp"
-    - JOB="job:run-functional-tests classes,events,pages,publications,cp-appearance,os"
-    - JOB="job:run-functional-tests cp,media-browser,os-theme-preview,vsite,breadcrumbs,analytics"
-    - JOB="job:run-functional-javascript-tests classes,events,pages,publications,widgets,cp-appearance"
+    - JOB="job:run-kernel-tests redirect,wysiwyg,vsite,cp"
+    - JOB="job:run-kernel-tests other"
+    - JOB="job:run-functional-tests classes,events,pages,publications,os,cp-appearance"
+    - JOB="job:run-functional-tests cp,media-browser,os-theme-preview,vsite,breadcrumbs,analytics,cp-menu"
+    - JOB="job:run-functional-javascript-tests classes,events,pages,publications,widgets,cp-appearance,cp-menu"
     - JOB="job:run-functional-javascript-tests cp,vsite,mailchimp,metatag,redirect,os-theme-preview"
 #    - JOB=job:run-behat-tests
 
