@@ -1,7 +1,0 @@
-vsite_favicon.edit:
-  path: '/cp/favicon'
-  defaults:
-    _controller: '\Drupal\vsite_favicon\Controller\VsiteFaviconController::editFavicon'
-    _title: 'Favicon'
-  requirements:
-    _permission: 'access control panel'

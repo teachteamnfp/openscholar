@@ -7,6 +7,7 @@
 
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\image\Entity\ImageStyle;
+use Drupal\file\Entity\File;
 
 /**
  * Implements hook_token_info().
@@ -108,17 +109,16 @@ function vsite_tokens($type, $tokens, array $data, array $options, BubbleableMet
 
         case 'site_favicon':
           /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContext */
-          $vsiteContext = \Drupal::service('vsite.context_manager');
-
-          $replacements[$original] = '';
-          /** @var \Drupal\group\Entity\GroupInterface $group */
-          if ($group = $vsiteContext->getActiveVsite()) {
-            $site_favicon = $group->get('field_site_favicon');
-            $value = $site_favicon->getValue();
-            if (!empty($value)) {
-              $replacements[$original] = file_create_url($group->field_site_favicon->entity->uri->value);
-            }
+          $config_factory = \Drupal::service('config.factory');
+          $config = $config_factory->get('vsite.settings');
+          $favicon_fid = $config->get('favicon_fid');
+          if (!empty($favicon_fid) && $file = File::load($favicon_fid)) {
+            $favicon_url = file_create_url($file->getFileUri());
           }
+          else {
+            $favicon_url = file_create_url('/profiles/contrib/openscholar/themes/os_base/favicon.ico');
+          }
+          $replacements[$original] = $favicon_url;
           break;
       }
     }

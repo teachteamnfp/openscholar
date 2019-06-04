@@ -6,14 +6,12 @@ dependencies:
     - field.field.group.personal.field_parent_site
     - field.field.group.personal.field_privacy_level
     - field.field.group.personal.field_site_description
-    - field.field.group.personal.field_site_favicon
     - field.field.group.personal.field_site_logo
     - field.field.group.personal.layout_builder__layout
     - group.type.personal
     - image.style.thumbnail
   module:
     - field_layout
-    - file
     - image_widget_crop
     - layout_discovery
     - path
@@ -49,13 +47,6 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: text_textarea
-    region: content
-  field_site_favicon:
-    weight: 5
-    settings:
-      progress_indicator: throbber
-    third_party_settings: {  }
-    type: file_generic
     region: content
   field_site_logo:
     weight: 4

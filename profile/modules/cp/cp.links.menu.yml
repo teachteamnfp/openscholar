@@ -55,10 +55,6 @@ cp.appearance:
   url: 'internal:##'
   menu_name: control-panel
   weight: 2
-cp.favicon:
-  title: 'Favicon'
-  route_name: 'vsite_favicon.edit'
-  parent: cp.appearance
 cp.settings:
   title: 'Settings'
   url: 'internal:##'
