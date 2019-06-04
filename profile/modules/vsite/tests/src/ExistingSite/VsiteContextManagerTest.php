@@ -65,7 +65,9 @@ class VsiteContextManagerTest extends VsiteExistingSiteTestBase {
 
     $this->assertEquals('', $this->vsiteContextManager->getActivePurl());
 
-    $group = $this->createGroup();
+    $group = $this->createGroup([
+      'path' => NULL,
+    ]);
     $this->vsiteContextManager->activateVsite($group);
 
     $this->assertEquals('', $this->vsiteContextManager->getActivePurl());
