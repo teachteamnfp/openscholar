@@ -2,7 +2,10 @@
 
 namespace Drupal\cp_menu\Form\Multistep\Manager;
 
+use Drupal\Core\DependencyInjection\DependencySerializationTrait;
+use Drupal\Core\TempStore\PrivateTempStoreFactory;
 use Drupal\cp_menu\Form\Multistep\Step\StepInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class StepManager.
@@ -10,6 +13,7 @@ use Drupal\cp_menu\Form\Multistep\Step\StepInterface;
  * @package Drupal\ms_ajax_form_example\Manager
  */
 class StepManager implements StepManagerInterface {
+  use DependencySerializationTrait;
 
   /**
    * Multi steps of the form.
@@ -21,7 +25,21 @@ class StepManager implements StepManagerInterface {
   /**
    * StepManager constructor.
    */
-  public function __construct() {
+  public function __construct(PrivateTempStoreFactory $private_temp_store) {
+    $this->privateTempStore = $private_temp_store;
+
+  }
+
+  /**
+   * Inject all services we need.
+   *
+   * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+   *   Service container.
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('tempstore.private')
+    );
   }
 
   /**
@@ -49,7 +67,7 @@ class StepManager implements StepManagerInterface {
         $class = 'Drupal\cp_menu\Form\Multistep\Step\StepTwo';
       }
       // Init step.
-      $step = new $class($this);
+      $step = new $class($this->privateTempStore, $this);
     }
     return $step;
   }

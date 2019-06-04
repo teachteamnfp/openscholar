@@ -33,14 +33,4 @@ interface StepInterface {
    */
   public function getFieldsValidators();
 
-  /**
-   * Sets filled out values of step.
-   */
-  public function setValues($values);
-
-  /**
-   * Gets filled out values of step.
-   */
-  public function getValues();
-
 }

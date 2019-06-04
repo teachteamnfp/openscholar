@@ -2,15 +2,19 @@
 
 namespace Drupal\cp_menu\Form\Multistep\Step;
 
+use Drupal\Core\DependencyInjection\DependencySerializationTrait;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Core\TempStore\PrivateTempStoreFactory;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class BaseStep.
  *
- * @package Drupal\ms_ajax_form_example\Step
+ * @package Drupal\cp_menu\Form\Multistep\Step
  */
 abstract class BaseStep implements StepInterface {
   use StringTranslationTrait;
+  use DependencySerializationTrait;
 
   /**
    * Multi steps of the form.
@@ -20,17 +24,24 @@ abstract class BaseStep implements StepInterface {
   protected $step;
 
   /**
-   * Values of element.
-   *
-   * @var array
-   */
-  protected $values;
-
-  /**
    * BaseStep constructor.
    */
-  public function __construct() {
+  public function __construct(PrivateTempStoreFactory $private_temp_store) {
+    $this->privateTempStore = $private_temp_store;
+    $this->store = $this->privateTempStore->get('link_data');
     $this->step = $this->setStep();
+  }
+
+  /**
+   * Inject all services we need.
+   *
+   * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+   *   Service container.
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('tempstore.private')
+    );
   }
 
   /**
@@ -45,20 +56,6 @@ abstract class BaseStep implements StepInterface {
    */
   public function isLastStep() {
     return FALSE;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setValues($values) {
-    $this->values = $values;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getValues() {
-    return $this->values;
   }
 
   /**

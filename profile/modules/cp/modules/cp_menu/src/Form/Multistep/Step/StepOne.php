@@ -35,28 +35,10 @@ class StepOne extends BaseStep {
         'home' => $this->t('Home'),
         'menu_heading' => $this->t('Menu Heading'),
       ],
-      '#default_value' => $this->getValues()['link_type'] ?? '',
+      '#default_value' => $this->store->get('link_type') ?? '',
       '#description' => $this->t('Select heading or type of content to link to.'),
       '#required' => TRUE,
     ];
-
-    $form['actions']['#type'] = 'actions';
-
-    $form['actions']['submit'] = [
-      '#type' => 'submit',
-      '#value' => $this->t('Continue'),
-      '#ajax' => [
-        'callback' => [$this, 'loadStep'],
-        'event' => 'click',
-      ],
-      '#goto_step' => StepTwo::STEP_TWO,
-    ];
-
-    $form['actions']['Cancel'] = [
-      '#type' => 'submit',
-      '#value' => $this->t('Cancel'),
-    ];
-
     return $form;
   }
 

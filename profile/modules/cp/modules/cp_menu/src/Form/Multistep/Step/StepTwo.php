@@ -33,11 +33,13 @@ class StepTwo extends BaseStep {
       '#description' => t('Name your link or heading.'),
       '#required' => TRUE,
     ];
-
     // Adds type dependent fields.
-    switch ($this->getValues()['link_type']) {
+    switch ($this->store->get('link_type')) {
       case 'url':
-        $form['new_node_type'] = ['#type' => 'hidden', '#value' => 0];
+        $form['new_node_type'] = [
+          '#type' => 'hidden',
+          '#value' => 0,
+        ];
         $form['url'] = [
           '#type' => 'textfield',
           '#title' => t('URL'),
@@ -45,7 +47,7 @@ class StepTwo extends BaseStep {
           '#description' => t('The address of the link.'),
         ];
 
-        $form['#validate'][] = 'cp_menu_url_validate';
+        // $form['#validate'][] = 'cp_menu_url_validate';.
         break;
 
       case 'home':
@@ -59,29 +61,6 @@ class StepTwo extends BaseStep {
         ];
         break;
     }
-
-    $form['actions']['#type'] = 'actions';
-
-    $form['actions']['previous'] = [
-      '#type' => 'submit',
-      '#value' => $this->t('Back'),
-      '#ajax' => [
-        'callback' => [$this, 'loadStep'],
-        'event' => 'click',
-      ],
-      '#goto_step' => StepOne::STEP_ONE,
-    ];
-
-    $form['actions']['submit'] = [
-      '#type' => 'submit',
-      '#value' => $this->t('Finish'),
-    ];
-
-    $form['actions']['Cancel'] = [
-      '#type' => 'submit',
-      '#value' => $this->t('Cancel'),
-    ];
-
     return $form;
   }
 

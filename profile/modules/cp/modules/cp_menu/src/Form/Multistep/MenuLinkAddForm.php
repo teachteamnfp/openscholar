@@ -9,25 +9,13 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\TempStore\PrivateTempStoreFactory;
 use Drupal\cp_menu\Form\Multistep\Manager\StepManager;
 use Drupal\cp_menu\Form\Multistep\Step\StepOne;
+use Drupal\cp_menu\Form\Multistep\Step\StepTwo;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class MenuLinkAddForm.
  */
 class MenuLinkAddForm extends FormBase {
-
-  /**
-   * Temporary storage.
-   *
-   * @var \Drupal\user\PrivateTempStoreFactory
-   */
-  protected $tempStoreFactory;
-  /**
-   * Private temp store.
-   *
-   * @var \Drupal\user\PrivateTempStore
-   */
-  protected $store;
 
   /**
    * Step Id.
@@ -53,15 +41,18 @@ class MenuLinkAddForm extends FormBase {
   /**
    * Constructs a \Drupal\cp_menu\Form\Multistep\MenuWizardBase instance.
    */
-  public function __construct(PrivateTempStoreFactory $temp_store_factory) {
-    $this->tempStoreFactory = $temp_store_factory;
-    $this->store = $this->tempStoreFactory->get('multistep_data');
+  public function __construct(PrivateTempStoreFactory $private_temp_store) {
     $this->stepId = StepOne::STEP_ONE;
-    $this->stepManager = new StepManager();
+    $this->privateTempStore = $private_temp_store;
+    $this->store = $this->privateTempStore->get('link_data');
+    $this->stepManager = new StepManager($this->privateTempStore);
   }
 
   /**
-   * {@inheritdoc}
+   * Inject all services we need.
+   *
+   * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+   *   Service container.
    */
   public static function create(ContainerInterface $container) {
     return new static(
@@ -102,7 +93,53 @@ class MenuLinkAddForm extends FormBase {
     $form['wrapper'] += $this->step->buildStepFormElements();
 
     // Attach buttons.
-    // $form['wrapper']['actions']['#type'] = 'actions';.
+    $form['wrapper']['actions']['#type'] = 'actions';
+
+    // Buttons for Step one.
+    if ($this->stepId === 1) {
+      $form['wrapper']['actions']['continue'] = [
+        '#type' => 'submit',
+        '#value' => $this->t('Continue'),
+        '#goto_step' => StepTwo::STEP_TWO,
+        '#ajax' => [
+          'callback' => [$this, 'loadStep'],
+          'event' => 'click',
+          'wrapper' => 'form-wrapper',
+        ],
+      ];
+
+      $form['wrapper']['actions']['cancel'] = [
+        '#type' => 'submit',
+        '#value' => $this->t('Cancel'),
+      ];
+    }
+
+    // Buttons for Step Two.
+    elseif ($this->stepId === 2) {
+
+      $form['wrapper']['actions']['previous'] = [
+        '#type' => 'submit',
+        '#value' => $this->t('Back'),
+        '#goto_step' => StepOne::STEP_ONE,
+        '#limit_validation_errors' => [],
+        '#submit' => [],
+        '#ajax' => [
+          'callback' => [$this, 'loadStep'],
+          'wrapper' => 'form-wrapper',
+          'event' => 'click',
+        ],
+      ];
+
+      $form['wrapper']['actions']['finish'] = [
+        '#type' => 'submit',
+        '#value' => $this->t('Finish'),
+      ];
+
+      $form['wrapper']['actions']['cancel'] = [
+        '#type' => 'submit',
+        '#value' => $this->t('Cancel'),
+      ];
+    }
     return $form;
   }
 
@@ -117,7 +154,7 @@ class MenuLinkAddForm extends FormBase {
    * @return \Drupal\Core\Ajax\AjaxResponse
    *   Ajax response.
    */
-  public function loadStep(array &$form, FormStateInterface $form_state) {
+  public static function loadStep(array &$form, FormStateInterface $form_state) {
     $response = new AjaxResponse();
 
     // Remove messages.
@@ -136,11 +173,10 @@ class MenuLinkAddForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
 
     // Save filled values to step. So we can use them as default_value later on.
-    $form_values = $form_state->getValues();
-    foreach ($form_values as $name => $value) {
-      $values[$name] = $value;
+    if ($this->stepId === 1) {
+      $type = $form_state->getValue('link_type');
+      $this->store->set('link_type', $type);
     }
-    $this->step->setValues($values);
     // Add step to manager.
     $this->stepManager->addStep($this->step);
     // Set step to navigate to.
@@ -152,7 +188,6 @@ class MenuLinkAddForm extends FormBase {
     if (isset($triggering_element['#submit_handler'])) {
       $this->{$triggering_element['#submit_handler']}($form, $form_state);
     }
-
     $form_state->setRebuild(TRUE);
   }
 
