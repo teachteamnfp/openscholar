@@ -9,19 +9,22 @@ namespace Drupal\cp_menu\Form\Multistep\Step;
  */
 class StepOne extends BaseStep {
 
+  /**
+   * Step number.
+   */
   const STEP_ONE = 1;
 
   /**
    * {@inheritdoc}
    */
-  protected function setStep() {
+  protected function setStep() : int {
     return self::STEP_ONE;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function buildStepFormElements() {
+  public function buildStepFormElements() : array {
 
     $form['link_type'] = [
       '#type' => 'radios',
@@ -37,6 +40,8 @@ class StepOne extends BaseStep {
       '#required' => TRUE,
     ];
 
+    $form['actions']['#type'] = 'actions';
+
     $form['actions']['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Continue'),
@@ -44,6 +49,12 @@ class StepOne extends BaseStep {
         'callback' => [$this, 'loadStep'],
         'event' => 'click',
       ],
+      '#goto_step' => StepTwo::STEP_TWO,
+    ];
+
+    $form['actions']['Cancel'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Cancel'),
     ];
 
     return $form;

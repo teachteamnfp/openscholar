@@ -102,13 +102,20 @@ class MenuLinkAddForm extends FormBase {
     $form['wrapper'] += $this->step->buildStepFormElements();
 
     // Attach buttons.
-    $form['wrapper']['actions']['#type'] = 'actions';
-
+    // $form['wrapper']['actions']['#type'] = 'actions';.
     return $form;
   }
 
   /**
-   * {@inheritdoc}
+   * Ajax callback to load new step.
+   *
+   * @param array $form
+   *   Form array.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   Form state interface.
+   *
+   * @return \Drupal\Core\Ajax\AjaxResponse
+   *   Ajax response.
    */
   public function loadStep(array &$form, FormStateInterface $form_state) {
     $response = new AjaxResponse();
