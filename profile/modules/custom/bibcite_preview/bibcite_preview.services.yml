@@ -1,0 +1,6 @@
+services:
+  bibcite_reference_preview:
+    class: Drupal\bibcite_preview\ParamConverter\BibciteReferencePreviewConverter
+    arguments: ['@tempstore.private']
+    tags:
+      - { name: paramconverter }

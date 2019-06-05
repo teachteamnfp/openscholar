@@ -1,0 +1,11 @@
+entity.bibcite_reference.preview:
+  path: '/bibcite/reference/preview/{bibcite_reference_preview}/{view_mode_id}'
+  defaults:
+    _controller: '\Drupal\bibcite_preview\Controller\BibciteEntityPreviewController::view'
+    _title_callback: '\Drupal\bibcite_preview\Controller\BibciteEntityPreviewController::title'
+  requirements:
+    _access: TRUE
+  options:
+    parameters:
+      bibcite_reference_preview:
+        type: 'bibcite_reference_preview'
