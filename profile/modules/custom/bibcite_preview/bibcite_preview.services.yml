@@ -1,4 +1,9 @@
 services:
+  access_check.bibcite_reference.preview:
+    class: Drupal\bibcite_preview\Access\BibciteReferencePreviewAccessCheck
+    arguments: ['@entity.manager']
+    tags:
+      - { name: access_check, applies_to: _bibcite_reference_preview_access }
   bibcite_reference_preview:
     class: Drupal\bibcite_preview\ParamConverter\BibciteReferencePreviewConverter
     arguments: ['@tempstore.private']

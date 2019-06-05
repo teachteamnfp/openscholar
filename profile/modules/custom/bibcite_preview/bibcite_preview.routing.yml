@@ -4,7 +4,7 @@ entity.bibcite_reference.preview:
     _controller: '\Drupal\bibcite_preview\Controller\BibciteEntityPreviewController::view'
     _title_callback: '\Drupal\bibcite_preview\Controller\BibciteEntityPreviewController::title'
   requirements:
-    _access: TRUE
+    _bibcite_reference_preview_access: '{bibcite_reference_preview}'
   options:
     parameters:
       bibcite_reference_preview:
