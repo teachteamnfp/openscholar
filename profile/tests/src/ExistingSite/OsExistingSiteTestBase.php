@@ -21,13 +21,12 @@ abstract class OsExistingSiteTestBase extends ExistingSiteBase {
    */
   protected $group;
 
-
   /**
-   * Group Plugin manager.
+   * Test group alias.
    *
-   * @var \Drupal\group\Plugin\GroupContentEnablerManager
+   * @var string
    */
-  protected $pluginManager;
+  protected $groupAlias;
 
   /**
    * {@inheritdoc}
@@ -35,31 +34,18 @@ abstract class OsExistingSiteTestBase extends ExistingSiteBase {
   public function setUp() {
     parent::setUp();
     $this->group = $this->createGroup();
-    $this->pluginManager = $this->container->get('plugin.manager.group_content_enabler');
+    $this->groupAlias = $this->group->get('path')->first()->getValue()['alias'];
   }
 
   /**
    * {@inheritdoc}
    */
   public function tearDown() {
+    parent::tearDown();
+
     foreach ($this->cleanUpConfigs as $config_entity) {
       $config_entity->delete();
     }
-    // This is part of the test cleanup.
-    // If this is not done, then it leads to database deadlock error in the
-    // test. The test is performing nested db operations during cleanup.
-    $installed = $this->pluginManager->getInstalledIds($this->group->getGroupType());
-    foreach ($this->pluginManager->getAll() as $plugin_id => $plugin) {
-      if (in_array($plugin_id, $installed)) {
-        $contents = $this->group->getContent($plugin_id);
-        foreach ($contents as $content) {
-          $content->delete();
-        }
-      }
-    }
-    $this->group->delete();
-
-    parent::tearDown();
   }
 
 }

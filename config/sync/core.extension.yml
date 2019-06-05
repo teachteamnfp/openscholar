@@ -19,6 +19,7 @@ module:
   block_visibility_groups: 0
   book: 0
   breakpoint: 0
+  cancel_button: 0
   ckeditor: 0
   ckeditor_bidi: 0
   colorbutton: 0
@@ -35,7 +36,6 @@ module:
   courier: 0
   cp: 0
   cp_appearance: 0
-  cp_menu: 0
   cp_roles: 0
   cp_settings: 0
   cp_taxonomy: 0
