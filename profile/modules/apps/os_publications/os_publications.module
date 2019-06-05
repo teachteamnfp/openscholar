@@ -325,3 +325,24 @@ function os_publications_repec_template_ecbook_alter(array &$data, ContentEntity
     ];
   }
 }
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function os_publications_form_bibcite_reference_confirm_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Only act on bibcite_reference delete confirmation forms.
+  if (strpos($form_id, '_delete_form') === FALSE) {
+    return;
+  }
+
+  $form['actions']['submit']['#submit'][] = 'os_publications_alter_post_bibcite_reference_delete_redirect';
+}
+
+/**
+ * Alters redirect location after a bibcite_reference is deleted.
+ *
+ * @ingroup forms
+ */
+function os_publications_alter_post_bibcite_reference_delete_redirect(array &$form, FormStateInterface $form_state) {
+  $form_state->setRedirect('view.publications.page_1');
+}
