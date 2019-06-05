@@ -3,6 +3,7 @@
 namespace Drupal\Tests\openscholar\ExistingSite;
 
 use Drupal\Tests\openscholar\Traits\ExistingSiteTestTrait;
+use Drupal\Tests\TestFileCreationTrait;
 use weitzman\DrupalTestTraits\ExistingSiteBase;
 
 /**
@@ -11,6 +12,7 @@ use weitzman\DrupalTestTraits\ExistingSiteBase;
 abstract class OsExistingSiteTestBase extends ExistingSiteBase {
 
   use ExistingSiteTestTrait;
+  use TestFileCreationTrait;
 
   /**
    * Test group.
@@ -20,11 +22,19 @@ abstract class OsExistingSiteTestBase extends ExistingSiteBase {
   protected $group;
 
   /**
+   * Test group alias.
+   *
+   * @var string
+   */
+  protected $groupAlias;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
     parent::setUp();
     $this->group = $this->createGroup();
+    $this->groupAlias = $this->group->get('path')->first()->getValue()['alias'];
   }
 
   /**
