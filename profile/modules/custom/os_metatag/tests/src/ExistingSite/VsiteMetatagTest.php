@@ -3,7 +3,6 @@
 namespace Drupal\Tests\os_metatag\ExistingSite;
 
 use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
-use Drupal\Tests\os_metatag\Traits\OsMetatagTestTrait;
 
 /**
  * Vsite metatag tests.
@@ -13,8 +12,6 @@ use Drupal\Tests\os_metatag\Traits\OsMetatagTestTrait;
  * @group other
  */
 class VsiteMetatagTest extends OsExistingSiteTestBase {
-
-  use OsMetatagTestTrait;
 
   /**
    * Test group.
@@ -45,7 +42,7 @@ class VsiteMetatagTest extends OsExistingSiteTestBase {
     /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
     $vsite_context_manager = $this->container->get('vsite.context_manager');
 
-    $this->fileLogo = $this->createFile();
+    $this->fileLogo = $this->createFile('image');
     $this->group = $this->createGroup([
       'path' => [
         'alias' => '/test-alias',

@@ -13,13 +13,6 @@ use Drupal\Tests\vsite\ExistingSite\VsiteExistingSiteTestBase;
 abstract class TestBase extends VsiteExistingSiteTestBase {
 
   /**
-   * The entity type manager service.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
-
-  /**
    * Vsite context manager service.
    *
    * @var \Drupal\vsite\Plugin\VsiteContextManagerInterface
@@ -45,7 +38,6 @@ abstract class TestBase extends VsiteExistingSiteTestBase {
    */
   public function setUp() {
     parent::setUp();
-    $this->entityTypeManager = $this->container->get('entity_type.manager');
     $this->vsiteContextManager = $this->container->get('vsite.context_manager');
     $this->configFactory = $this->container->get('config.factory');
     $this->taxonomyHelper = $this->container->get('cp.taxonomy.helper');

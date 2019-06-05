@@ -3,6 +3,7 @@
 namespace Drupal\Tests\openscholar\ExistingSite;
 
 use Drupal\Tests\openscholar\Traits\ExistingSiteTestTrait;
+use Drupal\Tests\TestFileCreationTrait;
 use weitzman\DrupalTestTraits\ExistingSiteBase;
 
 /**
@@ -11,6 +12,7 @@ use weitzman\DrupalTestTraits\ExistingSiteBase;
 abstract class OsExistingSiteTestBase extends ExistingSiteBase {
 
   use ExistingSiteTestTrait;
+  use TestFileCreationTrait;
 
   /**
    * Test group.
@@ -28,11 +30,19 @@ abstract class OsExistingSiteTestBase extends ExistingSiteBase {
   protected $pluginManager;
 
   /**
+   * Test group alias.
+   *
+   * @var string
+   */
+  protected $groupAlias;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
     parent::setUp();
     $this->group = $this->createGroup();
+    $this->groupAlias = $this->group->get('path')->first()->getValue()['alias'];
     $this->pluginManager = $this->container->get('plugin.manager.group_content_enabler');
   }
 
@@ -40,8 +50,6 @@ abstract class OsExistingSiteTestBase extends ExistingSiteBase {
    * {@inheritdoc}
    */
   public function tearDown() {
-    parent::tearDown();
-
     foreach ($this->cleanUpConfigs as $config_entity) {
       $config_entity->delete();
     }
@@ -58,6 +66,8 @@ abstract class OsExistingSiteTestBase extends ExistingSiteBase {
       }
     }
     $this->group->delete();
+
+    parent::tearDown();
   }
 
 }

@@ -3,6 +3,7 @@
 namespace Drupal\Tests\openscholar\ExistingSiteJavascript;
 
 use Drupal\Tests\openscholar\Traits\ExistingSiteTestTrait;
+use Drupal\Tests\TestFileCreationTrait;
 use weitzman\DrupalTestTraits\ExistingSiteWebDriverTestBase;
 
 /**
@@ -11,6 +12,7 @@ use weitzman\DrupalTestTraits\ExistingSiteWebDriverTestBase;
 abstract class OsExistingSiteJavascriptTestBase extends ExistingSiteWebDriverTestBase {
 
   use ExistingSiteTestTrait;
+  use TestFileCreationTrait;
 
   /**
    * Test group.
