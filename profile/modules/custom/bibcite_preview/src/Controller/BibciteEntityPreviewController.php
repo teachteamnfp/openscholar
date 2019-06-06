@@ -26,7 +26,7 @@ class BibciteEntityPreviewController extends EntityViewController {
   }
 
   /**
-   * The _title_callback for the page that renders a single node in preview.
+   * The _title_callback for the page that renders a reference in preview.
    *
    * @param \Drupal\Core\Entity\EntityInterface $bibcite_reference_preview
    *   The current reference entity.
