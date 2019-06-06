@@ -4,3 +4,7 @@ services:
     parent: default_plugin_manager
   os_widgets.rss_helper:
     class: Drupal\os_widgets\Helper\RssHelper
+  os_widgets.block.repository:
+    class: Drupal\os_widgets\OsWidgetsBlockRepository
+    decorates: block.repository
+    arguments: ['@os_widgets.block.repository.inner', '@entity_type.manager', '@theme.manager']
