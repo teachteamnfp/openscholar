@@ -1,0 +1,7 @@
+os_profiles.settings:
+  type: config_object
+  label: 'OS profiles settings'
+  mapping:
+    display_type:
+      type: string
+      label: 'Display type'
