@@ -4,6 +4,7 @@ namespace Drupal\os_rest\Plugin\rest\resource;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\rest\ResourceResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class OsMediaResource.
@@ -25,9 +26,9 @@ class OsMediaResource extends OsEntityResource {
    * @return \Drupal\rest\ResourceResponse
    *   The response to the client.
    */
-  public function get($arg1) {
+  public function get(EntityInterface $arg1, Request $request) {
     if ($arg1 instanceof EntityInterface) {
-      return parent::get($arg1);
+      return parent::get($arg1, $request);
     }
     elseif (is_string($arg1)) {
       return $this->checkFilename($arg1);
