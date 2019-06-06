@@ -1,0 +1,25 @@
+os_widgets.layout_context.*:
+  type: config_entity
+  label: 'Layout Context'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    status:
+      type: boolean
+      label: 'Status'
+    description:
+      type: string
+      label: 'Description'
+    activationRules:
+      type: text
+      label: 'Activation Rules'
+    weight:
+      type: integer
+      label: 'Weight'
+    data:
+      type: mapping
+      label: 'Data'
