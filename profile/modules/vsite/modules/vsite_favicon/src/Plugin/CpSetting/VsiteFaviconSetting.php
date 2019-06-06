@@ -34,7 +34,7 @@ class VsiteFaviconSetting extends CpSettingBase {
    */
   public function getForm(array &$form, ConfigFactoryInterface $configFactory) {
     $config = $configFactory->get('vsite.settings');
-    $upload_location = 'public:/' . $this->activeVsite->toUrl()->toString() . '/favicon';
+    $upload_location = 'public://' . $this->activeVsite->id() . '/favicon';
     $form['favicon_fid'] = [
       '#type' => 'managed_file',
       '#title' => $this->t('Favicon'),
