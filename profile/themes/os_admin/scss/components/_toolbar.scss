@@ -1,8 +1,3 @@
-.vertical-tabs__menu-item {
-  a {
-    color: $color_venice_blue;
-  }
-}
 .toolbar {
   .toolbar-tray-vertical {
     background-color: $color-white;
@@ -40,8 +35,12 @@
   .toolbar-toggle-orientation {
     background: $color-white;
   }
+  .toolbar-tray {
+    a {
+      color: $color-dark-gray;
+    }
+  }
 }
-
 .seven-details__summary {
   color: $color-link;
 }

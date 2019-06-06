@@ -3,3 +3,9 @@ global-styling:
   css:
     theme:
       css/style.css: {}
+
+#this libarray used in os admin theme to make admin toolbar consistant for admin and non admin pages
+toolbar:
+  css:
+    theme:
+      css/toolbar.css: {}

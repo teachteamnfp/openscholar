@@ -34,3 +34,4 @@ libraries-extend:
 
 libraries:
   - os_base/modal
+  - os_admin/toolbar
