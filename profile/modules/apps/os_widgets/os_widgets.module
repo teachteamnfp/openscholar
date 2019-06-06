@@ -16,6 +16,17 @@ use Drupal\views\ViewExecutable;
 use Drupal\views\Plugin\views\cache\CachePluginBase;
 
 /**
+ * Implements hook_library_info_alter().
+ */
+function os_widgets_library_info_alter(&$libraries, $extension) {
+  if ($extension == 'os_widgets') {
+    if (isset($libraries['layout'])) {
+      $libraries['layout']['drupalSettings']['path']['layout']['saveLayout'] = \Drupal\Core\Url::fromRoute('os_widgets.save_layout')->toString();
+    }
+  }
+}
+
+/**
  * Implements hook_entity_type_alter().
  */
 function os_widgets_entity_type_alter(array &$entity_types) {
@@ -322,4 +333,21 @@ function os_widgets_views_post_render(ViewExecutable $view, &$output, CachePlugi
       $output = $rss_helper->getOutput();
     }
   }
+}
+
+/**
+ * Implements hook_display_variant_plugin_alter().
+ */
+function os_widgets_display_variant_plugin_alter(&$plugins) {
+  if (isset($plugins['block_place_page'])) {
+    $plugins['block_place_page']['class'] = \Drupal\os_widgets\Plugin\DisplayVariant\PlaceBlockPageVariant::class;
+  }
+}
+
+function os_widgets_form_block_content_form_alter(&$form, FormStateInterface &$form_state) {
+  $form['actions']['submit']['#ajax'] = [
+    'callback' => '\Drupal\os_widgets\Controller\WidgetLibraryController::ajaxSubmitSave'
+  ];
+
+  #$form['actions']['submit']['#submit'][] = ;
 }
