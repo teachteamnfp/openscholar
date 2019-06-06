@@ -5,12 +5,19 @@ namespace Drupal\os_widgets\Entity;
 use Drupal\Core\Config\Entity\ConfigEntityBase;
 use Drupal\Core\Config\Entity\ConfigEntityType;
 use Drupal\Core\Entity\Display\EntityDisplayInterface;
+use Drupal\Core\Entity\EntityConstraintViolationList;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\layout_builder\Entity\LayoutEntityDisplayInterface;
 use Drupal\layout_builder\LayoutBuilderEnabledInterface;
 use Drupal\layout_builder\LayoutEntityHelperTrait;
 use Drupal\layout_builder\SectionStorage\SectionStorageTrait;
 use Drupal\os_widgets\LayoutContextInterface;
+use Drupal\serialization\Normalizer\FieldableEntityNormalizerTrait;
 
 /**
  * @ConfigEntityType(
@@ -51,9 +58,11 @@ use Drupal\os_widgets\LayoutContextInterface;
  *   config_export = {
  *     "id",
  *     "label",
- *     "module",
+ *     "status",
  *     "description",
- *     "activate_on"
+ *     "activationRules",
+ *     "weight",
+ *     "data"
  *   }
  * )
  */
@@ -66,11 +75,42 @@ class LayoutContext extends ConfigEntityBase implements LayoutContextInterface {
 
   protected $label;
 
-  protected $description;
+  protected $description = '';
 
-  protected $status;
+  protected $status = 1;
 
-  protected $activationRules;
+  protected $activationRules = '';
+
+  /**
+   * @var int
+   */
+  protected $weight = 0;
+
+  protected $data = [];
+
+  /**
+   * Returns all contexts applicable to this page.
+   *
+   * @return LayoutContextInterface[]
+   *   Array of applicable contexts.
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   */
+  public static function getApplicable() {
+
+    /** @var LayoutContextInterface[] $contexts */
+    $contexts = \Drupal::entityTypeManager()->getStorage('layout_context')->loadMultiple();
+    $applicable = [];
+    foreach ($contexts as $c) {
+      if ($c->applies()) {
+        $applicable[] = $c;
+      }
+    }
+    @uasort($applicable, ['ConfigEntityBase', 'sort']);
+    $applicable = array_reverse($applicable);
+
+    return $applicable;
+  }
 
   /**
    * {@inheritdoc}
@@ -96,69 +136,57 @@ class LayoutContext extends ConfigEntityBase implements LayoutContextInterface {
   /**
    * {@inheritdoc}
    */
-  public function isOverridable() {
-    return $this->isLayoutBuilderEnabled() && $this->getThirdPartySetting('layout_builder', 'allow_custom', FALSE);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setOverridable($overridable = TRUE) {
-    $this->setThirdPartySetting('layout_builder', 'allow_custom', $overridable);
-    // Enable Layout Builder if it's not already enabled and overriding.
-    if ($overridable && !$this->isLayoutBuilderEnabled()) {
-      $this->enableLayoutBuilder();
-    }
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function isLayoutBuilderEnabled() {
-    // To prevent infinite recursion, Layout Builder must not be enabled for the
-    // '_custom' view mode that is used for on-the-fly rendering of fields in
-    // isolation from the entity.
-    return (bool) $this->getThirdPartySetting('layout_builder', 'enabled');
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function enableLayoutBuilder() {
-    $this->setThirdPartySetting('layout_builder', 'enabled', TRUE);
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function disableLayoutBuilder() {
-    $this->setOverridable(FALSE);
-    $this->setThirdPartySetting('layout_builder', 'enabled', FALSE);
-    return $this;
+  public function getWeight() {
+    return (int) $this->weight;
   }
 
   /**
    * {@inheritdoc}
    */
   public function getSections() {
-    return $this->getThirdPartySetting('layout_builder', 'sections', []);
+    return $this->data;
   }
 
   /**
    * {@inheritdoc}
    */
   protected function setSections(array $sections) {
-    // Third-party settings must be completely unset instead of stored as an
-    // empty array.
-    if (!$sections) {
-      $this->unsetThirdPartySetting('layout_builder', 'sections');
-    }
-    else {
-      $this->setThirdPartySetting('layout_builder', 'sections', array_values($sections));
-    }
+    $this->data = $sections;
     return $this;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function applies(): bool {
+    $rules = $this->getActivationRules();
+
+    $rule_lines = preg_split('|[\r\n]|', $rules);
+    $route_name = \Drupal::routeMatch()->getRouteName();
+    $path = \Drupal::request()->getUri();
+
+    foreach ($rule_lines as $rule) {
+      $negate = false;
+      if ($rule[0] == '~') {
+        $negate = true;
+        $rule = substr($rule, 1);
+      }
+      $rule = '|'.str_replace('*', '[.]*', $rule).'|';
+      if (preg_match($rule, $route_name) || preg_match($rule, $path)) {
+        return !$negate;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getBlockPlacements() {
+    return $this->data;
+  }
+
+  public function setBlockPlacements(array $blocks) {
+    $this->data = $blocks;
+  }
 }

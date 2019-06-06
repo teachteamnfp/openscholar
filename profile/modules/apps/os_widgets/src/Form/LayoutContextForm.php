@@ -19,7 +19,7 @@ class LayoutContextForm extends EntityForm {
       $form['#title'] = $this->t('Edit layout context');
     }
 
-    $form['name'] = [
+    $form['label'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Name'),
       '#default_value' => $context->label(),
@@ -40,8 +40,14 @@ class LayoutContextForm extends EntityForm {
       '#title' => $this->t('Description'),
       '#default_value' => $context->getDescription(),
     ];
-
-    $form['activate_on'] = [
+    $form['weight'] = [
+      '#type' => 'weight',
+      '#title' => 'Weight',
+      '#default_value' => $context->getWeight(),
+      '#delta' => 10,
+      '#description' => $this->t('Set the weight of this context. Higher weighted contexts will override lower weighted.')
+    ];
+    $form['activationRules'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Activation Rules'),
       '#default_value' => $context->getActivationRules(),
