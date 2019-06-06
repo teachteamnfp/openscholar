@@ -36,10 +36,6 @@ class StepTwo extends BaseStep {
     // Adds type dependent fields.
     switch ($this->store->get('link_type')) {
       case 'url':
-        $form['new_node_type'] = [
-          '#type' => 'hidden',
-          '#value' => 0,
-        ];
         $form['url'] = [
           '#type' => 'textfield',
           '#title' => t('URL'),
@@ -49,18 +45,18 @@ class StepTwo extends BaseStep {
 
         // $form['#validate'][] = 'cp_menu_url_validate';.
         break;
-
-      case 'home':
-        $form['new_node_type'] = [
-          '#type' => 'hidden',
-          '#value' => 0,
-        ];
-        $form['url'] = [
-          '#type' => 'hidden',
-          '#value' => '<front>',
-        ];
-        break;
     }
+
+    $form['advanced'] = [
+      '#type' => 'details',
+      '#title' => t('Advanced Options'),
+    ];
+
+    $form['advanced']['tooltip'] = [
+      '#type' => 'textfield',
+      '#title' => t('Tooltip'),
+      '#description' => t('Text displayed when mouse hovers over link'),
+    ];
     return $form;
   }
 

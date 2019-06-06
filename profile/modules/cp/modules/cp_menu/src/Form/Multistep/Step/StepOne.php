@@ -30,12 +30,11 @@ class StepOne extends BaseStep {
       '#type' => 'radios',
       '#title' => $this->t('Item Type'),
       '#options' => [
-        'post' => $this->t('Post'),
         'url' => $this->t('URL'),
         'home' => $this->t('Home'),
         'menu_heading' => $this->t('Menu Heading'),
       ],
-      '#default_value' => $this->store->get('link_type') ?? '',
+      '#default_value' => $this->store->get('link_type') ?? 'url',
       '#description' => $this->t('Select heading or type of content to link to.'),
       '#required' => TRUE,
     ];

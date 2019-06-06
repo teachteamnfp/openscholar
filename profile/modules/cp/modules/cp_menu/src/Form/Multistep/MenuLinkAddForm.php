@@ -2,11 +2,18 @@
 
 namespace Drupal\cp_menu\Form\Multistep;
 
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\CloseModalDialogCommand;
 use Drupal\Core\Ajax\HtmlCommand;
+use Drupal\Core\Ajax\RedirectCommand;
+use Drupal\Core\Ajax\ReplaceCommand;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Path\PathValidatorInterface;
 use Drupal\Core\TempStore\PrivateTempStoreFactory;
+use Drupal\Core\Url;
 use Drupal\cp_menu\Form\Multistep\Manager\StepManager;
 use Drupal\cp_menu\Form\Multistep\Step\StepOne;
 use Drupal\cp_menu\Form\Multistep\Step\StepTwo;
@@ -39,13 +46,50 @@ class MenuLinkAddForm extends FormBase {
   protected $stepManager;
 
   /**
-   * Constructs a \Drupal\cp_menu\Form\Multistep\MenuWizardBase instance.
+   * Private temp store.
+   *
+   * @var \Drupal\Core\TempStore\PrivateTempStore
    */
-  public function __construct(PrivateTempStoreFactory $private_temp_store) {
+  protected $store;
+
+  /**
+   * Private temp store service.
+   *
+   * @var \Drupal\Core\TempStore\PrivateTempStoreFactory
+   */
+  protected $privateTempStore;
+
+  /**
+   * Entity Type Manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * Path Validator Service.
+   *
+   * @var \Drupal\Core\Path\PathValidatorInterface
+   */
+  protected $pathValidator;
+
+  /**
+   * Constructs a \Drupal\cp_menu\Form\Multistep\MenuWizardBase instance.
+   *
+   * @param \Drupal\Core\TempStore\PrivateTempStoreFactory $private_temp_store
+   *   Private temp store factory instance.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   Entity type manager instance.
+   * @param \Drupal\Core\Path\PathValidatorInterface $path_validator
+   *   Path validator instance.
+   */
+  public function __construct(PrivateTempStoreFactory $private_temp_store, EntityTypeManagerInterface $entity_type_manager, PathValidatorInterface $path_validator) {
     $this->stepId = StepOne::STEP_ONE;
     $this->privateTempStore = $private_temp_store;
     $this->store = $this->privateTempStore->get('link_data');
     $this->stepManager = new StepManager($this->privateTempStore);
+    $this->entityTypeManager = $entity_type_manager;
+    $this->pathValidator = $path_validator;
   }
 
   /**
@@ -56,7 +100,9 @@ class MenuLinkAddForm extends FormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('tempstore.private')
+      $container->get('tempstore.private'),
+      $container->get('entity_type.manager'),
+      $container->get('path.validator')
     );
   }
 
@@ -70,7 +116,7 @@ class MenuLinkAddForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state) {
+  public function buildForm(array $form, FormStateInterface $form_state, $menu = NULL) : array {
 
     $form['wrapper-messages'] = [
       '#type' => 'container',
@@ -88,6 +134,9 @@ class MenuLinkAddForm extends FormBase {
 
     // Get step from step manager.
     $this->step = $this->stepManager->getStep($this->stepId);
+
+    // Store the menu name in the store.
+    $this->store->set('menu_name', $menu);
 
     // Attach step form elements.
     $form['wrapper'] += $this->step->buildStepFormElements();
@@ -111,6 +160,9 @@ class MenuLinkAddForm extends FormBase {
       $form['wrapper']['actions']['cancel'] = [
         '#type' => 'submit',
         '#value' => $this->t('Cancel'),
+        '#limit_validation_errors' => [],
+        '#submit' => [],
+        '#cancel' => TRUE,
       ];
     }
 
@@ -133,11 +185,19 @@ class MenuLinkAddForm extends FormBase {
       $form['wrapper']['actions']['finish'] = [
         '#type' => 'submit',
         '#value' => $this->t('Finish'),
+        '#ajax' => [
+          'callback' => [$this, 'submitValues'],
+          'event' => 'click',
+          'wrapper' => 'form-wrapper',
+        ],
       ];
 
       $form['wrapper']['actions']['cancel'] = [
         '#type' => 'submit',
         '#value' => $this->t('Cancel'),
+        '#limit_validation_errors' => [],
+        '#submit' => [],
+        '#cancel' => TRUE,
       ];
     }
     return $form;
@@ -154,7 +214,7 @@ class MenuLinkAddForm extends FormBase {
    * @return \Drupal\Core\Ajax\AjaxResponse
    *   Ajax response.
    */
-  public static function loadStep(array &$form, FormStateInterface $form_state) {
+  public static function loadStep(array &$form, FormStateInterface $form_state) : AjaxResponse {
     $response = new AjaxResponse();
 
     // Remove messages.
@@ -170,25 +230,109 @@ class MenuLinkAddForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-
-    // Save filled values to step. So we can use them as default_value later on.
-    if ($this->stepId === 1) {
-      $type = $form_state->getValue('link_type');
-      $this->store->set('link_type', $type);
-    }
-    // Add step to manager.
-    $this->stepManager->addStep($this->step);
-    // Set step to navigate to.
+  public function validateForm(array &$form, FormStateInterface $form_state) : void {
     $triggering_element = $form_state->getTriggeringElement();
-    $this->stepId = $triggering_element['#goto_step'];
-
-    // If an extra submit handler is set, execute it.
-    // We already tested if it is callable before.
-    if (isset($triggering_element['#submit_handler'])) {
-      $this->{$triggering_element['#submit_handler']}($form, $form_state);
+    // Only validate if validation doesn't have to be skipped.
+    // For example on "previous" button.
+    if (!isset($triggering_element['#cancel'])) {
+      // Validate fields.
+      // Validate all validators for field.
+      $values = $form_state->getValues();
+      if (isset($values['url']) && $values['url']) {
+        $url = $this->pathValidator->getUrlIfValid($values['url']);
+        if ($url === FALSE) {
+          $form_state->setErrorByName('url', 'Url is invalid');
+        }
+      }
     }
-    $form_state->setRebuild(TRUE);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function submitForm(array &$form, FormStateInterface $form_state) : void {
+
+    $triggering_element = $form_state->getTriggeringElement();
+    // Save filled values to step. So we can use them as default_value later on.
+    if (isset($triggering_element['#goto_step'])) {
+      if ($this->stepId === 1) {
+        $type = $form_state->getValue('link_type');
+        $this->store->set('link_type', $type);
+      }
+      // Add step to manager.
+      $this->stepManager->addStep($this->step);
+      // Set step to navigate to.
+      $this->stepId = $triggering_element['#goto_step'];
+      $form_state->setRebuild(TRUE);
+    }
+
+    if (isset($triggering_element['#cancel'])) {
+      $keys = ['link_type', 'menu_name'];
+      foreach ($keys as $key) {
+        $this->store->delete($key);
+      }
+      $form_state->setRedirect('cp.build.menu');
+    }
+  }
+
+  /**
+   * Submit handler for last step of form.
+   *
+   * @param array $form
+   *   Form array.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   Form state interface.
+   */
+  public function submitValues(array &$form, FormStateInterface $form_state) : AjaxResponse {
+    $response = new AjaxResponse();
+
+    if ($form_state->getErrors()) {
+      $response->addCommand(new ReplaceCommand('#form-wrapper', $form));
+      $this->messenger()->deleteAll();
+      return $response;
+    }
+
+    $type = $this->store->get('link_type');
+    $menu_name = $this->store->get('menu_name');
+    // Add menu link for group if enabled.
+    $menu_content_storage = $this->entityTypeManager->getStorage('menu_link_content');
+
+    $values = $form_state->getValues();
+
+    switch ($type) {
+      case 'home':
+        $url = 'internal:/';
+        break;
+
+      case 'menu_heading':
+        $url = 'internal:#';
+        break;
+
+      case 'url':
+        $url = $this->pathValidator->getUrlIfValid($values['url'])->toString();
+        if (UrlHelper::isExternal($url)) {
+          $parts = UrlHelper::parse($url);
+          $url = $parts['path'];
+          $options['query'] = $parts['query'];
+          $options['fragment'] = $parts['fragment'];
+        }
+        else {
+          $url = 'internal:' . $url;
+        }
+        break;
+    }
+    $menu_content_storage->create([
+      'title' => $values['title'],
+      'link' => ['uri' => $url, 'options' => $options ?? []],
+      'menu_name' => $menu_name,
+      'description' => $values['tooltip'] ?? '',
+      'expanded' => TRUE,
+    ])->save();
+
+    $response->addCommand(new CloseModalDialogCommand());
+    $currentURL = Url::fromRoute('cp.build.menu');
+    $response->addCommand(new RedirectCommand($currentURL->toString()));
+    return $response;
   }
 
 }
