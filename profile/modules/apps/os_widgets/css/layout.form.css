@@ -111,6 +111,12 @@ nav.ui-sortable-helper ul.menu {
     top: 14px;
 }
 
+.ui-sortable-placeholder {
+    outline: 1px dotted black;
+    background-color: black;
+    opacity: 0.25;
+}
+
 @media (min-width: 768px) {
     #drupal-off-canvas .modal-dialog {
         width: auto;

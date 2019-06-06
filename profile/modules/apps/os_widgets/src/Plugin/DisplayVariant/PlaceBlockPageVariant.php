@@ -52,6 +52,7 @@ class PlaceBlockPageVariant extends OriginalVariant {
 
     foreach (Element::children($build) as $region) {
       $build[$region]['#attributes']['class'] = 'block-place-region';
+      $build[$region]['#attributes']['data-region'] = $region;
       unset($build[$region]['block_place_operations']);
       $build[$region]['placeholder'] = [
         '#type' => 'markup',

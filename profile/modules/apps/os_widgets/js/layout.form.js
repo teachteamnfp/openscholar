@@ -42,6 +42,7 @@
         placeholder: 'ui-state-drop',
         appendTo: document.body,
         helper: 'clone',
+        scroll: false,
         out: function (e, ui) {
           console.log(ui);
         }
@@ -51,9 +52,9 @@
       $('#block-list', context).sortable({
         items: '> div, > nav',
         connectWith: '.block-place-region, #block-list',
-        placeholder: 'ui-state-drop',
         appendTo: document.body,
         helper: 'clone',
+        scroll: false,
         out: function (e, ui) {
           console.log(ui);
         }
@@ -74,11 +75,13 @@
         $('.block-place-region').each(function (region) {
           let region_name = this.attributes['data-region'].value;
           $(this).find('> div, > nav').each(function (weight) {
-            items.push({
-              id: this.attributes['data-block-id'].value,
-              region: region_name,
-              weight: weight
-            });
+            if (this.attributes['data-block-id']) {
+              items.push({
+                id: this.attributes['data-block-id'].value,
+                region: region_name,
+                weight: weight
+              });
+            }
           });
         });
 
@@ -86,7 +89,7 @@
           contexts: active_limited,
           blocks: items
         };
-        let url = drupalSettings.paths.layout.saveLayout;
+        let url = drupalSettings.path.layout.saveLayout;
         $.post(url, payload).done(function (data, status, xhr) {
           //window.location.href = data.redirect;
         }).fail(function (xhr, status, error) {
