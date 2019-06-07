@@ -54,20 +54,6 @@ abstract class BaseStep implements StepInterface {
   /**
    * {@inheritdoc}
    */
-  public function isLastStep() {
-    return FALSE;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getFieldsValidators() {
-    return [];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   abstract protected function setStep();
 
 }

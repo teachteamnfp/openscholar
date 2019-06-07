@@ -241,7 +241,7 @@ class MenuLinkAddForm extends FormBase {
       if (isset($values['url']) && $values['url']) {
         $url = $this->pathValidator->getUrlIfValid($values['url']);
         if ($url === FALSE) {
-          $form_state->setErrorByName('url', 'Url is invalid');
+          $form_state->setErrorByName('url', 'Url is invalid.');
         }
       }
     }

@@ -21,16 +21,4 @@ interface StepInterface {
    */
   public function buildStepFormElements();
 
-  /**
-   * Indicates if step is last step.
-   */
-  public function isLastStep();
-
-  /**
-   * All field validators.
-   *
-   * @returns array of fields with their validation requirements.
-   */
-  public function getFieldsValidators();
-
 }
