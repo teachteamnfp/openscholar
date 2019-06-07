@@ -11,6 +11,7 @@ use Drupal\block_content\Plugin\Block\BlockContentBlock;
 use Drupal\block_place\Plugin\DisplayVariant\PlaceBlockPageVariant as OriginalVariant;
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\Block\BlockManagerInterface;
+use Drupal\Core\Controller\ControllerResolverInterface;
 use Drupal\Core\Entity\Entity\EntityViewDisplay;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Link;
@@ -58,6 +59,42 @@ class PlaceBlockPageVariant extends OriginalVariant {
         '#type' => 'markup',
         '#markup' => '<div class="block-placeholder"></div>'
       ];
+      foreach (Element::children($build[$region]) as $block) {
+        if (isset($build[$region][$block]['#block'])) {
+          /** @var BlockInterface $block_obj */
+          $block_obj = $build[$region][$block]['#block'];
+          $build[$region][$block] = [
+            '#type' => 'inline_template',
+            '#template' => '<div class="block" data-block-id="{{ id }}"><h3 class="block-title">{{ title }}</h3>{{ content }}</div>',
+            '#context' => [
+              'id' => $block_obj->id(),
+              'title' => $block_obj->label(),
+              'content' => $build[$region][$block]
+            ]
+          ];
+        }
+        elseif (isset($build[$region][$block]['#lazy_builder'])) {
+          $callable = $build[$region][$block]['#lazy_builder'][0];
+          $args = $build[$region][$block]['#lazy_builder'][1];
+          if (is_string($callable) && strpos($callable, '::') === FALSE) {
+            /** @var ControllerResolverInterface $controllerResolver */
+            $controllerResolver = \Drupal::service('controller_resolver');
+            $callable = $controllerResolver->getControllerFromDefinition($callable);
+          }
+          $new_elements = call_user_func_array($callable, $args);
+          /** @var BlockInterface $block_obj */
+          $block_obj = $new_elements['#block'];
+          $build[$region][$block] = [
+            '#type' => 'inline_template',
+            '#template' => '<div class="block" data-block-id="{{ id }}"><h3 class="block-title">{{ title }}</h3>{{ content }}</div>',
+            '#context' => [
+              'id' => $block_obj->id(),
+              'title' => $block_obj->label(),
+              'content' => $new_elements
+            ]
+          ];
+          }
+      }
     }
 
     $context = \Drupal::request()->query->get('context');
