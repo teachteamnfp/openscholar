@@ -361,6 +361,16 @@ function os_widgets_form_block_content_form_alter(&$form, FormStateInterface &$f
         'callback' => '\Drupal\os_widgets\Controller\WidgetLibraryController::ajaxSubmitEdit'
       ];
     }
+    $form['actions']['delete']['#attributes']['class'][] = 'use-ajax';
+    $form['actions']['delete']['#attributes']['data-dialog-type'] = 'modal';
+  }
+}
+
+function os_widgets_form_block_content_confirm_form_alter(&$form, FormStateInterface $form_state) {
+  if (\Drupal::request()->isXmlHttpRequest()) {
+    $form['actions']['submit']['#ajax'] = [
+      'callback' => '\Drupal\os_widgets\Controller\WidgetLibraryController::ajaxDelete'
+    ];
   }
 }
 

@@ -96,4 +96,12 @@ class WidgetLibraryController extends ControllerBase {
     return $response;
   }
 
+  public static function ajaxDelete(&$form, FormStateInterface $form_state) {
+    $response = new AjaxResponse();
+
+    $response->addCommand(new CloseModalDialogCommand());
+
+    return $response;
+  }
+
 }

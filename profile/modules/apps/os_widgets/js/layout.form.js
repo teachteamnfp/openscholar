@@ -1,4 +1,5 @@
 (function ($) {
+  let bound = false;
 
   Drupal.behaviors.osWidgetsLayoutForm = {
     attach: function (context, settings) {
@@ -22,9 +23,9 @@
         let vars = {}, hash;
 
         let q = window.location.search;
-        if (q != undefined){
+        if (q != undefined) {
           q = q.slice(1).split('&');
-          for (let i = 0; i < q.length; i++){
+          for (let i = 0; i < q.length; i++) {
             hash = q[i].split('=');
             vars[hash[0]] = hash[1];
           }
@@ -32,7 +33,7 @@
 
         vars.context = new_context;
         let query_string = $.param(vars);
-        window.location.search = '?'+query_string;
+        window.location.search = '?' + query_string;
       });
 
       // Define regions to be sortable targets
@@ -62,7 +63,7 @@
 
       // Open the new widget panel
       $('#create-new-widget-btn', context).click(function (e) {
-          $('#factory-wrapper').show();
+        $('#factory-wrapper').show();
       });
 
       $('#factory-wrapper .close', context).click(function (e) {
@@ -100,8 +101,25 @@
       $('#block-place-actions-wrapper .btn-default', context).click(function (e) {
         window.location.reload();
       });
+
+      if (!bound) {
+        $(window).bind('dialog:beforecreate', function (event, dialog, $element, settings) {
+          // If this attribute exists on a modal when we attempt to reuse it, the modal will have most of its
+          //   inner markup removed and will be completely useless.
+          // @see https://www.drupal.org/project/bootstrap/issues/3032922
+          $element.removeAttr('data-drupal-theme');
+        });
+        bound = true;
+      }
+
+      $('a[data-drupal-selector="edit-cancel"]', context).click(function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        $('#drupal-modal').dialog('close');
+      });
     }
-  }
+  };
 
   Drupal.behaviors.layoutBuilderDisableInteractiveElements = {
     attach: function attach(context, settings) {
