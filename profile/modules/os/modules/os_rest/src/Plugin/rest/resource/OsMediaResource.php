@@ -20,8 +20,10 @@ class OsMediaResource extends OsEntityResource {
    * and PHP doesn't support method overloading, so this kind of thing is
    * necessary.
    *
-   * @param \Drupal\Core\Entity\EntityInterface|string $arg1
+   * @param \Drupal\Core\Entity\EntityInterface $arg1
    *   The argument from the path.
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *   The request being made.
    *
    * @return \Drupal\rest\ResourceResponse
    *   The response to the client.

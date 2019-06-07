@@ -2,23 +2,23 @@
 
 namespace Drupal\os_widgets;
 
-
 use Drupal\block\BlockInterface;
 use Drupal\block\BlockRepositoryInterface;
 use Drupal\block\Entity\Block;
-use Drupal\block_content\BlockContentInterface;
-use Drupal\block_content\Entity\BlockContent;
-use Drupal\Core\Config\Entity\ConfigEntityBase;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Theme\ThemeManagerInterface;
 use Drupal\os_widgets\Entity\LayoutContext;
-use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 
 /**
  * Decorates core's Block Repositry to take Layout Contexts into account.
  */
 class OsWidgetsBlockRepository implements BlockRepositoryInterface {
 
+  /**
+   * The deocarted BlockReository object.
+   *
+   * @var \Drupal\block\BlockRepositoryInterface
+   */
   protected $blockRepository;
 
   /**
@@ -38,8 +38,8 @@ class OsWidgetsBlockRepository implements BlockRepositoryInterface {
   /**
    * Constructs a new BlockRepository.
    *
-   * @param \Drupal\block\BlockRepositoryInterface
-   *   THe original block repository being decorated
+   * @param \Drupal\block\BlockRepositoryInterface $blockRepository
+   *   The original block repository being decorated.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
    * @param \Drupal\Core\Theme\ThemeManagerInterface $theme_manager
@@ -59,7 +59,7 @@ class OsWidgetsBlockRepository implements BlockRepositoryInterface {
     if (\Drupal::currentUser()->id() == 1) {
       $blocks = $this->blockRepository->getVisibleBlocksPerRegion($cacheable_metadata);
       $allBlocks = call_user_func_array('array_merge', $blocks);
-      /** @var BlockInterface $b */
+      /** @var \Drupal\block\BlockInterface $b */
       foreach ($allBlocks as $b) {
         if ($b instanceof BlockInterface) {
           $output[$b->getRegion()][$b->id()] = $b;
@@ -73,21 +73,22 @@ class OsWidgetsBlockRepository implements BlockRepositoryInterface {
 
     $limit_found = !$limit;
     $flat = [];
-    $editing = true; // TODO: Replace with mechanism to detect when we're on a block_place page.
+    // TODO: Replace with mechanism to detect when we're on a block_place page.
+    $editing = TRUE;
 
-    // Pull down a list of all the blocks in the site
-    /** @var VsiteContextManagerInterface $vsiteContextManager */
+    // Pull down a list of all the blocks in the site.
+    /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContextManager */
     if ($editing) {
       $vsiteContextManager = \Drupal::service('vsite.context_manager');
       if ($vsite = $vsiteContextManager->getActiveVsite()) {
         $blockGCEs = $vsite->getContent('group_entity:block_content');
         foreach ($blockGCEs as $bgce) {
-          /** @var BlockContentInterface $block_content */
+          /** @var \Drupal\block\Entity\BlockContentInterface $block_content */
           $block_content = $bgce->getEntity();
           $instances = $block_content->getInstances();
           if (!$instances) {
-            $plugin_id = 'block_content:'.$block_content->uuid();
-            $block_id = 'block_content|'.$block_content->uuid();
+            $plugin_id = 'block_content:' . $block_content->uuid();
+            $block_id = 'block_content|' . $block_content->uuid();
             $block = $this->entityTypeManager->getStorage('block')->create(['plugin' => $plugin_id, 'id' => $block_id]);
             $block->save();
           }
@@ -103,11 +104,12 @@ class OsWidgetsBlockRepository implements BlockRepositoryInterface {
       }
     }
 
-    // Take any block in the currently active contexts and place it in the correct region.
-    /** @var LayoutContextInterface $a */
+    // Take any block in the currently active contexts and
+    // place it in the correct region.
+    /** @var \Drupal\os_widgets\Entity\LayoutContextInterface $a */
     foreach ($applicable as $a) {
       if ($a->id() == $limit) {
-        $limit_found = true;
+        $limit_found = TRUE;
       }
       if ($limit_found) {
         $context_blocks = $a->getBlockPlacements();
@@ -117,7 +119,7 @@ class OsWidgetsBlockRepository implements BlockRepositoryInterface {
       }
     }
 
-    // split out the flat list by region while loading the real block.
+    // Split out the flat list by region while loading the real block.
     foreach ($flat as $b) {
       if ($block = Block::load($b['id'])) {
         $output[$b['region']][$b['weight']] = $block;

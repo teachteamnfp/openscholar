@@ -3,23 +3,13 @@
 namespace Drupal\os_widgets\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBase;
-use Drupal\Core\Config\Entity\ConfigEntityType;
-use Drupal\Core\Entity\Display\EntityDisplayInterface;
-use Drupal\Core\Entity\EntityConstraintViolationList;
-use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityStorageInterface;
-use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\Core\Entity\FieldableEntityInterface;
-use Drupal\Core\Field\BaseFieldDefinition;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\layout_builder\Entity\LayoutEntityDisplayInterface;
-use Drupal\layout_builder\LayoutBuilderEnabledInterface;
 use Drupal\layout_builder\LayoutEntityHelperTrait;
 use Drupal\layout_builder\SectionStorage\SectionStorageTrait;
 use Drupal\os_widgets\LayoutContextInterface;
-use Drupal\serialization\Normalizer\FieldableEntityNormalizerTrait;
 
 /**
+ * Data structure for holding arrangements of blocks.
+ *
  * @ConfigEntityType(
  *   id = "layout_context",
  *   label = @Translation("Layout Context", context = "Layout context entity type"),
@@ -81,9 +71,6 @@ class LayoutContext extends ConfigEntityBase implements LayoutContextInterface {
 
   protected $activationRules = '';
 
-  /**
-   * @var int
-   */
   protected $weight = 0;
 
   protected $data = [];
@@ -91,14 +78,15 @@ class LayoutContext extends ConfigEntityBase implements LayoutContextInterface {
   /**
    * Returns all contexts applicable to this page.
    *
-   * @return LayoutContextInterface[]
+   * @return \Drupal\os_widgets\LayoutContextInterface[]
    *   Array of applicable contexts.
+   *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   public static function getApplicable() {
 
-    /** @var LayoutContextInterface[] $contexts */
+    /** @var \Drupal\os_widgets\LayoutContextInterface[] $contexts */
     $contexts = \Drupal::entityTypeManager()->getStorage('layout_context')->loadMultiple();
     $applicable = [];
     foreach ($contexts as $c) {
@@ -166,17 +154,17 @@ class LayoutContext extends ConfigEntityBase implements LayoutContextInterface {
     $path = \Drupal::request()->getUri();
 
     foreach ($rule_lines as $rule) {
-      $negate = false;
+      $negate = FALSE;
       if ($rule[0] == '~') {
-        $negate = true;
+        $negate = TRUE;
         $rule = substr($rule, 1);
       }
-      $rule = '|'.str_replace('*', '[.]*', $rule).'|';
+      $rule = '|' . str_replace('*', '[.]*', $rule) . '|';
       if (preg_match($rule, $route_name) || preg_match($rule, $path)) {
         return !$negate;
       }
     }
-    return false;
+    return FALSE;
   }
 
   /**
@@ -186,7 +174,11 @@ class LayoutContext extends ConfigEntityBase implements LayoutContextInterface {
     return $this->data;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function setBlockPlacements(array $blocks) {
     $this->data = $blocks;
   }
+
 }

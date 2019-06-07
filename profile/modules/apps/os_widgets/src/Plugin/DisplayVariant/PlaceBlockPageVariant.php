@@ -2,33 +2,32 @@
 
 namespace Drupal\os_widgets\Plugin\DisplayVariant;
 
-use Drupal\block\BlockInterface;
-use Drupal\block\BlockRepositoryInterface;
-use Drupal\block\Entity\Block;
-use Drupal\block_content\Entity\BlockContent;
-use Drupal\block_content\Entity\BlockContentType;
-use Drupal\block_content\Plugin\Block\BlockContentBlock;
 use Drupal\block_place\Plugin\DisplayVariant\PlaceBlockPageVariant as OriginalVariant;
 use Drupal\Component\Serialization\Json;
-use Drupal\Core\Block\BlockManagerInterface;
-use Drupal\Core\Controller\ControllerResolverInterface;
-use Drupal\Core\Entity\Entity\EntityViewDisplay;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Link;
-use Drupal\Core\Plugin\Context\EntityContext;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
-use Drupal\layout_builder\SectionStorage\SectionStorageManagerInterface;
 use Drupal\os_widgets\Entity\LayoutContext;
-use Drupal\os_widgets\LayoutContextInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * PageVariant to handle our custom layout management.
+ */
 class PlaceBlockPageVariant extends OriginalVariant {
 
-  /** @var SectionStorageManagerInterface */
+  /**
+   * Section Storage Manager.
+   *
+   * Might not be needed.
+   *
+   * @var \Drupal\layout_builder\SectionStorage\SectionStorageManagerInterface
+   */
   protected $sectionStorageManager;
 
-  /** @var EntityTypeManagerInterface */
+  /**
+   * Entity Type Manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
   protected $entityTypeManager;
 
   /**
@@ -41,7 +40,11 @@ class PlaceBlockPageVariant extends OriginalVariant {
     return $instance;
   }
 
-  // context should be in path
+  /**
+   * Build out the page.
+   *
+   * Context should be in path.
+   */
   public function build() {
     $build = parent::build();
     $applicable = LayoutContext::getApplicable();
@@ -57,11 +60,11 @@ class PlaceBlockPageVariant extends OriginalVariant {
       unset($build[$region]['block_place_operations']);
       $build[$region]['placeholder'] = [
         '#type' => 'markup',
-        '#markup' => '<div class="block-placeholder"></div>'
+        '#markup' => '<div class="block-placeholder"></div>',
       ];
       foreach (Element::children($build[$region]) as $block) {
         if (isset($build[$region][$block]['#block'])) {
-          /** @var BlockInterface $block_obj */
+          /** @var \Drupal\block\BlockInterface $block_obj */
           $block_obj = $build[$region][$block]['#block'];
           $build[$region][$block] = [
             '#type' => 'inline_template',
@@ -69,20 +72,20 @@ class PlaceBlockPageVariant extends OriginalVariant {
             '#context' => [
               'id' => $block_obj->id(),
               'title' => $block_obj->label(),
-              'content' => $build[$region][$block]
-            ]
+              'content' => $build[$region][$block],
+            ],
           ];
         }
         elseif (isset($build[$region][$block]['#lazy_builder'])) {
           $callable = $build[$region][$block]['#lazy_builder'][0];
           $args = $build[$region][$block]['#lazy_builder'][1];
           if (is_string($callable) && strpos($callable, '::') === FALSE) {
-            /** @var ControllerResolverInterface $controllerResolver */
+            /** @var \Drupal\Core\Controller\ControllerResolverInterface $controllerResolver */
             $controllerResolver = \Drupal::service('controller_resolver');
             $callable = $controllerResolver->getControllerFromDefinition($callable);
           }
           $new_elements = call_user_func_array($callable, $args);
-          /** @var BlockInterface $block_obj */
+          /** @var \Drupal\block\BlockInterface $block_obj */
           $block_obj = $new_elements['#block'];
           $build[$region][$block] = [
             '#type' => 'inline_template',
@@ -90,10 +93,10 @@ class PlaceBlockPageVariant extends OriginalVariant {
             '#context' => [
               'id' => $block_obj->id(),
               'title' => $block_obj->label(),
-              'content' => $new_elements
-            ]
+              'content' => $new_elements,
+            ],
           ];
-          }
+        }
       }
     }
 
@@ -102,9 +105,9 @@ class PlaceBlockPageVariant extends OriginalVariant {
     $build['footer_bottom']['widget_selector'] = [
       '#type' => 'container',
       '#attributes' => [
-        'id' => 'block-place-widget-selector-wrapper'
+        'id' => 'block-place-widget-selector-wrapper',
       ],
-      'markup' => $this->buildWidgetLibrary()
+      'markup' => $this->buildWidgetLibrary(),
     ];
 
     $build['footer_bottom']['context_selector'] = [
@@ -117,17 +120,17 @@ class PlaceBlockPageVariant extends OriginalVariant {
         '#options' => $contexts,
         '#title' => $this->t('Select Context'),
         '#attributes' => [
-          'id' => 'block-place-context-selector'
-        ]
+          'id' => 'block-place-context-selector',
+        ],
       ],
       '#attached' => [
         'library' => [
-          'os_widgets/layout'
+          'os_widgets/layout',
         ],
         'drupalSettings' => [
           'layoutContexts' => $contexts,
-        ]
-      ]
+        ],
+      ],
     ];
 
     $build['footer_bottom']['actions'] = [
@@ -136,27 +139,30 @@ class PlaceBlockPageVariant extends OriginalVariant {
       '#suffix' => '</div>',
       'save' => [
         '#type' => 'button',
-        '#value' => $this->t('Save')
+        '#value' => $this->t('Save'),
       ],
       'reset' => [
         '#type' => 'button',
-        '#value' => $this->t('Reset')
-      ]
+        '#value' => $this->t('Reset'),
+      ],
     ];
 
     return $build;
   }
 
+  /**
+   * Builds the widget library section of the page.
+   */
   private function buildWidgetLibrary() {
 
-    /** @var BlockRepositoryInterface $blockRepository */
+    /** @var \Drupal\block\BlockRepositoryInterface $blockRepository */
     $blockRepository = \Drupal::service('os_widgets.block.repository');
     $allBlocks = $blockRepository->getVisibleBlocksPerRegion();
 
-    /** @var Block[] $blocks */
+    /** @var \Drupal\block\Entity\Block[] $blocks */
     $blocks = $allBlocks[0];
 
-    /** @var BlockContentType[] $block_types */
+    /** @var \Drupal\block_content\Entity\BlockContentType[] $block_types */
     $block_types = $this->entityTypeManager->getStorage('block_content_type')->loadMultiple();
     $factory_links = [];
     $t = [];
@@ -171,9 +177,9 @@ class PlaceBlockPageVariant extends OriginalVariant {
           'data-dialog-type' => 'modal',
           'data-dialog-options' => Json::encode([
             'width' => 800,
-            'autoOpen' => true,
+            'autoOpen' => TRUE,
           ]),
-        ]
+        ],
       ];
     }
 
@@ -182,14 +188,14 @@ class PlaceBlockPageVariant extends OriginalVariant {
         '#type' => 'button',
         '#title' => $this->t('Create New Widget'),
         '#attributes' => [
-          'id' => 'create-new-widget-btn'
-        ]
+          'id' => 'create-new-widget-btn',
+        ],
       ],
       'filter' => [
         '#type' => 'textfield',
         '#title' => $this->t('Filter blocks'),
         '#maxlength' => 60,
-        '#size' => 60
+        '#size' => 60,
       ],
       'existing-blocks' => [
         '#prefix' => '<div id="block-list">',
@@ -201,16 +207,16 @@ class PlaceBlockPageVariant extends OriginalVariant {
           'id' => 'factory-wrapper',
         ],
         'title' => [
-          '#markup' => '<h3>'.$this->t('Select Widget Type').'</h3>',
+          '#markup' => '<h3>' . $this->t('Select Widget Type') . '</h3>',
         ],
         'close' => [
-          '#markup' => '<div class="close">X</div>'
+          '#markup' => '<div class="close">X</div>',
         ],
         'links' => [
           '#theme' => 'links',
-          '#links' => $factory_links
-        ]
-      ]
+          '#links' => $factory_links,
+        ],
+      ],
     ];
 
     foreach ($blocks as $b) {
@@ -220,8 +226,8 @@ class PlaceBlockPageVariant extends OriginalVariant {
         '#context' => [
           'id' => $b->id(),
           'title' => '',
-          'content' => ''
-        ]
+          'content' => '',
+        ],
       ];
       $block_build['#context']['title'] = $b->label();
       $block_build['#context']['content'] = $this->entityTypeManager->getViewBuilder('block')->view($b);

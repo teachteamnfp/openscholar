@@ -1,15 +1,19 @@
 <?php
 
-
 namespace Drupal\os_widgets\Form;
-
 
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
 
+/**
+ * Form for creating or editting LayoutContexts.
+ */
 class LayoutContextForm extends EntityForm {
 
+  /**
+   * {@inheritdoc}
+   */
   public function form(array $form, FormStateInterface $form_state) {
     $context = $this->entity;
     if ($context->isNew()) {
@@ -45,13 +49,13 @@ class LayoutContextForm extends EntityForm {
       '#title' => 'Weight',
       '#default_value' => $context->getWeight(),
       '#delta' => 10,
-      '#description' => $this->t('Set the weight of this context. Higher weighted contexts will override lower weighted.')
+      '#description' => $this->t('Set the weight of this context. Higher weighted contexts will override lower weighted.'),
     ];
     $form['activationRules'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Activation Rules'),
       '#default_value' => $context->getActivationRules(),
-      '#description' => $this->t('A list of paths and routes that this layout context should be active for.')
+      '#description' => $this->t('A list of paths and routes that this layout context should be active for.'),
     ];
 
     return $form;
