@@ -1,5 +1,5 @@
 ui_override:
-  enable_form_override: true
+  enable_form_override: false
 display_override:
   reference_page_view_mode: citation
 _core:
