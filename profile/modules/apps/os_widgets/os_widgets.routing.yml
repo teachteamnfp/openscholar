@@ -1,11 +1,3 @@
-os_widgets.admin_library:
-  path: 'cp/layout/widgets'
-  defaults:
-    _controller: '\Drupal\os_widgets\Controller\WidgetLibraryController::listBlocks'
-    _title: 'Place block'
-  requirements:
-    _access: 'TRUE'
-    #_group_permission: 'administer layout'
 os_widgets.save_layout:
   path: '/cp/layout/save'
   defaults:
