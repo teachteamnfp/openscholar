@@ -344,10 +344,34 @@ function os_widgets_display_variant_plugin_alter(&$plugins) {
   }
 }
 
+/**
+ * Implements hook_form_block_content_form_alter().
+ */
 function os_widgets_form_block_content_form_alter(&$form, FormStateInterface &$form_state) {
-  $form['actions']['submit']['#ajax'] = [
-    'callback' => '\Drupal\os_widgets\Controller\WidgetLibraryController::ajaxSubmitSave'
-  ];
+  if (\Drupal::request()->isXmlHttpRequest()) {
+    /** @var EntityInterface $entity */
+    $entity = $form_state->getFormObject()->getEntity();
+    if ($entity->isNew()) {
+      $form['actions']['submit']['#ajax'] = [
+        'callback' => '\Drupal\os_widgets\Controller\WidgetLibraryController::ajaxSubmitSave'
+      ];
+    }
+    else {
+      $form['actions']['submit']['#ajax'] = [
+        'callback' => '\Drupal\os_widgets\Controller\WidgetLibraryController::ajaxSubmitEdit'
+      ];
+    }
+  }
+}
 
-  #$form['actions']['submit']['#submit'][] = ;
+/**
+ * Implements hook_contextual_links_view_alter().
+ */
+function os_widgets_contextual_links_view_alter(&$element, $items) {
+  if (isset($element['#links']['block-contentblock-edit'])) {
+    $element['#links']['block-contentblock-edit']['attributes'] = [
+      'class' => ['use-ajax'],
+      'data-dialog-type' => 'modal',
+    ];
+  }
 }
