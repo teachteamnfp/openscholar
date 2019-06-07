@@ -116,7 +116,8 @@ function vsite_tokens($type, $tokens, array $data, array $options, BubbleableMet
             $favicon_url = file_create_url($file->getFileUri());
           }
           else {
-            $favicon_url = file_create_url('/profiles/contrib/openscholar/themes/os_base/favicon.ico');
+            $base_theme_path = drupal_get_path('theme', 'os_base');
+            $favicon_url = file_create_url($base_theme_path . '/favicon.ico');
           }
           $replacements[$original] = $favicon_url;
           break;
