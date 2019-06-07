@@ -1,6 +1,6 @@
 vsite.settings.allowed_subsite_group_types:
   type: sequence
   label: 'Allowed subsite group types'
-vsite.settings.favicon:
+vsite.settings.favicon_fid:
   type: string
-  label: 'Favicon'
+  label: 'Favicon file ID'
