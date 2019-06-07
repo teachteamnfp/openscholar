@@ -328,7 +328,8 @@
                 "8.6: error when deleting a block visibility group": "https://www.drupal.org/files/issues/2018-10-18/block_visibility_groups_3000396-4.patch"
             },
             "drupal/bootstrap": {
-                "Unsupported operand types during providers JSON discovery #8": "https://www.drupal.org/files/issues/2019-01-24/3027569-8.x-3.x-8.patch"
+                "Unsupported operand types during providers JSON discovery #8": "https://www.drupal.org/files/issues/2019-01-24/3027569-8.x-3.x-8.patch",
+                "Fix modal elements getting lost after reusing modal": "https://raw.githubusercontent.com/openscholar/openscholar/e4d27051b02cb9c92e44e76c5e9f4f4a57c2e874/patches/bootstrap.11027.footer.patch"
             },
             "drupal/mailchimp": {
                 "Cache read problem in mailchimp_get_mergevars()": "https://www.drupal.org/files/issues/2019-02-13/3032674-cache-fix-for-mailchimp_get_mergevars-3.patch"
