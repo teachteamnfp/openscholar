@@ -129,13 +129,15 @@ class CpRoleListBuilder extends DraggableListBuilder {
         ]),
       ];
 
-      $operations['edit'] = [
-        'title' => $this->t('Edit'),
-        'weight' => 10,
-        'url' => $this->ensureDestination(Url::fromRoute('cp_roles.role.edit_form', [
-          'group_role' => $entity->id(),
-        ])),
-      ];
+      if (!\in_array($entity->id(), CpRolesEditable::NON_EDITABLE, TRUE)) {
+        $operations['edit'] = [
+          'title' => $this->t('Edit'),
+          'weight' => 10,
+          'url' => $this->ensureDestination(Url::fromRoute('cp_roles.role.edit_form', [
+            'group_role' => $entity->id(),
+          ])),
+        ];
+      }
     }
     elseif ($entity->hasLinkTemplate('permissions-form')) {
       $operations['permissions'] = [
