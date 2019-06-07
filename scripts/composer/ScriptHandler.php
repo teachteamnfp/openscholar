@@ -275,18 +275,18 @@ class ScriptHandler {
     $fs = new ComposerFilesystem();
     $io = $event->getIO();
     $root = realpath($event->getComposer()->getPackage()->getDistUrl());
-    $fullcalendar_source = "$root/profile/libraries/os-toolbar";
-    $fullcalendar_destination = "$root/web/libraries/os-toolbar";
-    $fullcalendar_files = [
+    $toolbar_source = "$root/profile/libraries/os-toolbar";
+    $toolbar_destination = "$root/web/libraries/os-toolbar";
+    $toolbar_files = [
       'os-toolbar.css',
     ];
     try {
-      $io->write(sprintf("Symlinking fullcalendar library..."));
-      $fs->ensureDirectoryExists($fullcalendar_destination);
+      $io->write(sprintf("Symlinking toolbar library..."));
+      $fs->ensureDirectoryExists($toolbar_destination);
 
-      foreach ($fullcalendar_files as $file) {
-        $fs->relativeSymlink("$fullcalendar_source/$file", "$fullcalendar_destination/$file");
-        $io->write(sprintf("Symlinked %s", "$fullcalendar_source/$file"));
+      foreach ($toolbar_files as $file) {
+        $fs->relativeSymlink("$toolbar_source/$file", "$toolbar_destination/$file");
+        $io->write(sprintf("Symlinked %s", "$toolbar_source/$file"));
       }
 
       $io->write(sprintf("Symlinking complete."));
