@@ -249,6 +249,8 @@ function _vsite_get_group_and_subsite_ids(GroupInterface $group) {
 
 /**
  * Implements hook_js_settings_alter().
+ *
+ * Performs alterations in drupalSettings specifically for vsites.
  */
 function vsite_js_settings_alter(array &$settings, AttachedAssetsInterface $assets) {
   /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
@@ -264,9 +266,7 @@ function vsite_js_settings_alter(array &$settings, AttachedAssetsInterface $asse
   // See contextual.es6.js - initContextual.
   /** @var string $current_path */
   $current_path = \Drupal::service('path.current')->getPath();
-  /** @var string $vsite_absolute_url */
-  $vsite_absolute_url = $vsite_context_manager->getAbsoluteUrl();
-
-  $settings['path']['baseUrl'] = $vsite_absolute_url;
-  $settings['path']['currentPath'] = $current_path;
+  // The prefix `/` will be added as part of baseUrl. Therefore, removing it
+  // from here, to prevent multiple slashes.
+  $settings['path']['currentPath'] = ltrim($current_path, '/');
 }

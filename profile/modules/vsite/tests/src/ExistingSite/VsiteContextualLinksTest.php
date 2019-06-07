@@ -30,8 +30,7 @@ class VsiteContextualLinksTest extends OsExistingSiteTestBase {
     $javascript = $asset_resolver->getJsAssets($assets, FALSE)[1];
 
     // Tests.
-    $this->assertEquals($vsite_context_manager->getAbsoluteUrl(), $javascript['drupalSettings']['data']['path']['baseUrl']);
-    $this->assertEquals('/', $javascript['drupalSettings']['data']['path']['currentPath']);
+    $this->assertEquals('', $javascript['drupalSettings']['data']['path']['currentPath']);
   }
 
 }
