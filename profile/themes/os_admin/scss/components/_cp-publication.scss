@@ -1,0 +1,30 @@
+.cp-settings-form {
+  .publication-format {
+    display: inline-block;
+    margin-right: 15px;
+    margin-top: 0;
+  }
+  .citation-format-example {
+    display: inline-block;
+    background: $color-light-gray6;
+    padding: 0 10px 10px;
+    @media all and (min-width: 1200px) {
+     position: absolute;
+     margin-right: 10px;
+     box-shadow: 2px 2px 3px rgba(0,0,0,.2);
+    }
+  }
+  .publication-display {
+    width: 100%;
+    clear: both;
+  }
+  .form-inline {
+    .js-form-type-checkbox {
+      @media all and (min-width: 1200px) {
+        width: 20%;
+      }
+      width: 45%;
+      display: inline-block;
+    }
+  }
+}

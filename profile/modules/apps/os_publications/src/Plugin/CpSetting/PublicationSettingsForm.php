@@ -150,6 +150,8 @@ class PublicationSettingsForm extends CpSettingBase {
       '#title' => $this->t('Preferred bibliographic format'),
       '#default_value' => $this->styler->getStyle()->id(),
       '#weight' => -1,
+      '#prefix' => '<div class="publication-format">',
+      '#suffix' => '</div>',
       '#options' => $styles_options,
     ];
 
@@ -157,7 +159,7 @@ class PublicationSettingsForm extends CpSettingBase {
     $form['os_publications_citation_examples'] = [
       '#markup' => $cite_example_output,
       '#weight' => 0,
-      '#prefix' => '<div id="citation-examples">',
+      '#prefix' => '<div id="citation-examples" class="citation-format-example">',
       '#suffix' => '</div>',
     ];
 
@@ -176,6 +178,8 @@ class PublicationSettingsForm extends CpSettingBase {
       '#options' => $publication_types_options,
       '#weight' => 0,
       '#sorted_options' => TRUE,
+      '#prefix' => '<div class="publication-display form-inline">',
+      '#suffix' => '</div>',
     ];
 
     $form['os_publications_note_in_teaser'] = [
@@ -222,6 +226,8 @@ class PublicationSettingsForm extends CpSettingBase {
       '#options' => array_map(function ($format) {
         return $format['label'];
       }, $this->formatManager->getExportDefinitions()),
+      '#prefix' => '<div class="form-inline">',
+      '#suffix' => '</div>',
     ];
 
     $plugins = $this->pluginManager->getDefinitions();
