@@ -265,4 +265,35 @@ class ScriptHandler {
     }
   }
 
+  /**
+   * Installs custom toolbar library.
+   *
+   * @param \Composer\Script\Event $event
+   *   Composer event.
+   */
+  public static function installOsToolbarLibrary(Event $event) {
+    $fs = new ComposerFilesystem();
+    $io = $event->getIO();
+    $root = realpath($event->getComposer()->getPackage()->getDistUrl());
+    $fullcalendar_source = "$root/profile/libraries/os-toolbar";
+    $fullcalendar_destination = "$root/web/libraries/os-toolbar";
+    $fullcalendar_files = [
+      'os-toolbar.css',
+    ];
+    try {
+      $io->write(sprintf("Symlinking fullcalendar library..."));
+      $fs->ensureDirectoryExists($fullcalendar_destination);
+
+      foreach ($fullcalendar_files as $file) {
+        $fs->relativeSymlink("$fullcalendar_source/$file", "$fullcalendar_destination/$file");
+        $io->write(sprintf("Symlinked %s", "$fullcalendar_source/$file"));
+      }
+
+      $io->write(sprintf("Symlinking complete."));
+    }
+    catch (\Exception $e) {
+      throw new \RuntimeException($e->getMessage());
+    }
+  }
+
 }

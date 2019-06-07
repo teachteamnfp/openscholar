@@ -273,6 +273,7 @@
             "DrupalProject\\composer\\ScriptHandler::installFullcalendarLibrary",
             "command -v npm install || echo \"NPM not installed. Please install it and run composer install again.\"",
             "DrupalProject\\composer\\ScriptHandler::installBootstrapLibrary",
+            "DrupalProject\\composer\\ScriptHandler::installOsToolbarLibrary",
             "./scripts/register-cs.sh",
             "./scripts/install-hooks.sh"
         ],
@@ -282,7 +283,8 @@
             "DrupalProject\\composer\\ScriptHandler::placeProfile",
             "DrupalProject\\composer\\ScriptHandler::installFullcalendarLibrary",
             "command -v npm update || echo \"NPM not installed. Please install it and run composer install.\"",
-            "DrupalProject\\composer\\ScriptHandler::installBootstrapLibrary"
+            "DrupalProject\\composer\\ScriptHandler::installBootstrapLibrary",
+            "DrupalProject\\composer\\ScriptHandler::installOsToolbarLibrary"
         ],
         "code-standard": [
             "./vendor/bin/phpcs --standard=Drupal --ignore=*.yml,*.md",
