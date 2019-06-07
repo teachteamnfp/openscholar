@@ -56,7 +56,7 @@ class VsiteFaviconSetting extends CpSettingBase {
    */
   public function submitForm(FormStateInterface $form_state, ConfigFactoryInterface $configFactory) {
     $config = $configFactory->getEditable('vsite.settings');
-    $form_file = $form_state->getValue('favicon_fid', 0);
+    $form_file = $form_state->getValue('favicon_fid', '0');
     if (!empty($form_file[0])) {
       $file = File::load($form_file[0]);
       $file->setPermanent();
