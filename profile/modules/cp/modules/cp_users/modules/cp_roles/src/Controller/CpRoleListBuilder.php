@@ -8,6 +8,7 @@ use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
+use Drupal\cp_roles\CpRolesEditable;
 use Drupal\group\Entity\GroupTypeInterface;
 use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -78,7 +79,7 @@ class CpRoleListBuilder extends DraggableListBuilder {
    */
   protected function getEntityIds() {
     $query = $this->getStorage()->getQuery()
-      ->condition('internal', 0, '=')
+      ->condition('id', CpRolesEditable::NON_CONFIGURABLE, 'NOT IN')
       ->condition('group_type', $this->groupType->id(), '=')
       ->sort($this->entityType->getKey('weight'));
 
