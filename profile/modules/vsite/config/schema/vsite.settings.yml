@@ -2,5 +2,5 @@ vsite.settings.allowed_subsite_group_types:
   type: sequence
   label: 'Allowed subsite group types'
 vsite.settings.favicon_fid:
-  type: string
+  type: integer
   label: 'Favicon file ID'
