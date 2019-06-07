@@ -1,0 +1,18 @@
+.vertical-tabs {
+  border: 1px solid $color-light-gray2;
+  background: $color-light-gray3;
+}
+.vertical-tabs__menu {
+  border-bottom: 1px solid $color-light-gray2;
+}
+.vertical-tabs__menu-item {
+  a {
+    border-bottom: 1px solid $color-light-gray2;
+    background-color: $color-light-gray3;
+  }
+  &.is-selected {
+    border-right: 1px solid $color-light-gray2;
+    box-shadow: none;
+    border-bottom: 1px solid $color-light-gray2;
+  }
+}

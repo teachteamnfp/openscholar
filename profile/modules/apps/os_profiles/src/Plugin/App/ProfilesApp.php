@@ -8,7 +8,7 @@ use Drupal\vsite\Plugin\AppPluginBase;
  * Profiles app.
  *
  * @App(
- *   title = @Translation("Profiles"),
+ *   title = @Translation("Person"),
  *   canDisable = true,
  *   entityType = "node",
  *   bundle = {

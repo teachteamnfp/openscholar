@@ -52,9 +52,7 @@ class PublicationsRedirectTest extends TestBase {
       'os_publications_export_format[ris]' => 'ris',
     ], 'Save configuration');
 
-    $this->drupalLogout();
-
-    $this->visit('/publications');
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/publications");
 
     $web_assert = $this->assertSession();
 

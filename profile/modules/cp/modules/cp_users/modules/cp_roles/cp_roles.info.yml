@@ -1,0 +1,8 @@
+name: Vsite Roles Management
+description: Manages vsite roles. This is built on top of GroupRole. It includes the vsite ID in the GroupRole entity ID.
+type: module
+core: 8.x
+depdendencies:
+  - drupal:group
+  - cp:cp_users
+  - drupal:vsite

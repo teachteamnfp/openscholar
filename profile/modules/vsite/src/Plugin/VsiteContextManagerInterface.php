@@ -18,11 +18,6 @@ interface VsiteContextManagerInterface {
   public function activateVsite(GroupInterface $group);
 
   /**
-   * Activate the user's roles within the active vsite.
-   */
-  public function activateRoles();
-
-  /**
    * Return the active vsite.
    *
    * @return \Drupal\group\Entity\GroupInterface|null

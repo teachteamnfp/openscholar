@@ -6,48 +6,12 @@ use Drupal\bibcite_entity\Entity\Contributor;
 use Drupal\bibcite_entity\Entity\ContributorInterface;
 use Drupal\bibcite_entity\Entity\Keyword;
 use Drupal\bibcite_entity\Entity\KeywordInterface;
-use Drupal\bibcite_entity\Entity\Reference;
 use Drupal\bibcite_entity\Entity\ReferenceInterface;
 
 /**
  * OsPublications test helpers.
  */
 trait OsPublicationsTestTrait {
-
-  /**
-   * Creates a reference.
-   *
-   * @param array $values
-   *   (Optional) Default values for the reference.
-   *
-   * @return \Drupal\bibcite_entity\Entity\ReferenceInterface
-   *   The new reference entity.
-   *
-   * @throws \Drupal\Core\Entity\EntityStorageException
-   */
-  public function createReference(array $values = []) : ReferenceInterface {
-    $reference = Reference::create($values + [
-      'title' => $this->randomMachineName(),
-      'type' => 'artwork',
-      'bibcite_year' => [
-        'value' => 1980,
-      ],
-      'distribution' => [
-        [
-          'value' => 'citation_distribute_repec',
-        ],
-      ],
-      'status' => [
-        'value' => 1,
-      ],
-    ]);
-
-    $reference->save();
-
-    $this->markEntityForCleanup($reference);
-
-    return $reference;
-  }
 
   /**
    * Creates a contributor.

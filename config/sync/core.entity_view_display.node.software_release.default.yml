@@ -11,8 +11,12 @@ dependencies:
     - field.field.node.software_release.field_taxonomy_terms
     - node.type.software_release
   module:
+    - layout_builder
     - text
     - user
+third_party_settings:
+  layout_builder:
+    sections: {  }
 id: node.software_release.default
 targetEntityType: node
 bundle: software_release
@@ -51,15 +55,15 @@ content:
     type: string
     region: content
   field_taxonomy_terms:
-    weight: 5
-    label: above
+    weight: 4
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
     region: content
   links:
-    weight: 4
+    weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }

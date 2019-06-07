@@ -3,6 +3,7 @@
 namespace Drupal\Tests\openscholar\ExistingSiteJavascript;
 
 use Drupal\Tests\openscholar\Traits\ExistingSiteTestTrait;
+use Drupal\Tests\TestFileCreationTrait;
 use weitzman\DrupalTestTraits\ExistingSiteWebDriverTestBase;
 
 /**
@@ -11,6 +12,7 @@ use weitzman\DrupalTestTraits\ExistingSiteWebDriverTestBase;
 abstract class OsExistingSiteJavascriptTestBase extends ExistingSiteWebDriverTestBase {
 
   use ExistingSiteTestTrait;
+  use TestFileCreationTrait;
 
   /**
    * Test group.
@@ -62,6 +64,17 @@ abstract class OsExistingSiteJavascriptTestBase extends ExistingSiteWebDriverTes
   protected function waitForAjaxToFinish(): void {
     $condition = "(0 === jQuery.active && 0 === jQuery(':animated').length)";
     $this->assertJsCondition($condition, 10000);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function tearDown() {
+    parent::tearDown();
+
+    foreach ($this->cleanUpConfigs as $config_entity) {
+      $config_entity->delete();
+    }
   }
 
 }

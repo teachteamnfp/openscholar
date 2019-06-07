@@ -14,6 +14,7 @@ permissions:
   - 'create class content'
   - 'create page content'
   - 'create personal group'
+  - 'opt-in or out of google analytics tracking'
   - 'delete own class content'
   - 'edit own class content'
   - 'rng register self'

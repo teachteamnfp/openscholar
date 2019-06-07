@@ -1,0 +1,22 @@
+uuid: e1b89234-de5e-4db0-84f2-0aba4b9b2840
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.personal
+  module:
+    - groupmenu
+    - system
+id: personal-group_menu-menu
+label: 'Personal: Group menu'
+description: 'Adds menus to groups'
+group_type: personal
+content_plugin: 'group_menu:menu'
+plugin_config:
+  group_cardinality: 0
+  entity_cardinality: 1
+  use_creation_wizard: true
+  node_form_group_menu: 1
+  auto_create_group_menu: 0
+  auto_create_home_link: 0
+  auto_create_home_link_title: Home

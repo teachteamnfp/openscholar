@@ -141,14 +141,14 @@ final class PublicationsListingHelper implements PublicationsListingHelperInterf
       return NULL;
     }
 
-    $redirect = Redirect::create([
+    $redirect_entity = Redirect::create([
       'redirect_source' => $source,
-      'redirect_redirect' => "internal:/$source/$redirect",
+      'redirect_redirect' => $redirect,
       'status_code' => 301,
     ]);
-    $redirect->save();
+    $redirect_entity->save();
 
-    return $redirect;
+    return $redirect_entity;
   }
 
 }

@@ -65,7 +65,7 @@ class CpSettingsForm extends ConfigFormBase {
     /** @var \Drupal\Core\Access\AccessResultInterface $access */
     $access = AccessResult::neutral();
     /** @var \Drupal\cp_settings\CpSettingInterface $cp */
-    foreach ($this->getPlugins() as $group => $cp) {
+    foreach ($this->getPlugins() as $cp) {
       $access = $access->orIf($cp->access($account));
     }
     return $access;
@@ -117,6 +117,18 @@ class CpSettingsForm extends ConfigFormBase {
     }
 
     return $form;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    parent::validateForm($form, $form_state);
+    /** @var \Drupal\cp_settings\CpSettingInterface[] $plugins */
+    $plugins = $this->getPlugins();
+    foreach ($plugins as $p) {
+      $p->validateForm($form, $form_state);
+    }
   }
 
   /**

@@ -167,7 +167,7 @@ fileEditor:
   css:
     component:
       js/FileEditor/FileEditor.style.css: { }
-  paths: js/fileEditor
+  paths: js/FileEditor
   drupalSettings:
     version: { fileEditor: 1.0.1 }
   dependencies:
@@ -180,7 +180,7 @@ fileEditor:
 fileEditorModal:
   version: 1.0
   js:
-    js/FileEditor/fileEditorModal.module.js: { }
+    js/FileEditor/FileEditorModal.module.js: { }
   dependencies:
     - os/fileEditor
     - os/angular.modalService

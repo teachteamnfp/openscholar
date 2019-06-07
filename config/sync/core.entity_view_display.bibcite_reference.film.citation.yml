@@ -6,12 +6,18 @@ dependencies:
     - bibcite_entity.bibcite_reference_type.film
     - core.entity_view_mode.bibcite_reference.citation
     - field.field.bibcite_reference.film.field_files
+    - field.field.bibcite_reference.film.field_taxonomy_terms
   enforced:
     config:
       - core.entity_view_mode.bibcite_reference.citation
       - bibcite_entity.bibcite_reference_type.film
     module:
       - bibcite_entity
+  module:
+    - layout_builder
+third_party_settings:
+  layout_builder:
+    sections: {  }
 _core:
   default_config_hash: o-M-f6PNIriS41uv6hsEGfbQbcY2IJui4iv4GovaTlw
 id: bibcite_reference.film.citation
@@ -23,6 +29,14 @@ content:
     weight: 0
     region: content
     settings: {  }
+    third_party_settings: {  }
+  field_taxonomy_terms:
+    type: entity_reference_label
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      link: true
     third_party_settings: {  }
 hidden:
   author: true

@@ -1,3 +1,6 @@
 services:
   angular.module_manager:
     class: Drupal\os\OsAngularModuleManager
+  os.access_helper:
+    class: \Drupal\os\AccessHelper
+    arguments: ['@vsite.context_manager']
