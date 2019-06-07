@@ -76,13 +76,40 @@ class CpRolesTest extends CpRolesExistingSiteJavascriptTestBase {
   }
 
   /**
+   * Tests custom role delete via UI.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   * @throws \Behat\Mink\Exception\ExpectationException
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public function testDelete(): void {
+    $group_role = $this->createRoleForGroup($this->group, [
+      'id' => 'stooges',
+      'label' => 'The Stooges',
+    ]);
+
+    $this->drupalLogin($this->groupAdmin);
+
+    $this->visit("/{$this->group->get('path')->getValue()[0]['alias']}/cp/users/roles");
+
+    $group_role_delete_link = $this->getSession()->getPage()->find('css', "[href='{$this->group->get('path')->getValue()[0]['alias']}/cp/users/roles/{$group_role->id()}/delete?destination={$this->group->get('path')->getValue()[0]['alias']}/cp/users/roles']");
+    $group_role_delete_link->click();
+
+    $this->getSession()->getPage()->pressButton('Delete');
+
+    $this->assertSession()->elementNotExists('css', '[data-drupal-selector="edit-entities-personal-stooges"]');
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function tearDown() {
     $vsite_context_manager = $this->container->get('vsite.context_manager');
     $vsite_context_manager->activateVsite($this->group);
     $group_role = GroupRole::load("personal-{$this->group->id()}_stooges");
-    $group_role->delete();
+    if ($group_role) {
+      $group_role->delete();
+    }
 
     parent::tearDown();
   }

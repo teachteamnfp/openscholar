@@ -135,6 +135,14 @@ class CpRoleListBuilder extends DraggableListBuilder {
           'group_role' => $entity->id(),
         ])),
       ];
+
+      $operations['delete'] = [
+        'title' => $this->t('Delete'),
+        'weight' => 15,
+        'url' => $this->ensureDestination(Url::fromRoute('cp_roles.role.delete_form', [
+          'group_role' => $entity->id(),
+        ])),
+      ];
     }
     elseif ($entity->hasLinkTemplate('permissions-form')) {
       $operations['permissions'] = [

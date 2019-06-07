@@ -60,3 +60,13 @@ cp_roles.role.edit_form:
   requirements:
     _group_permission: 'manage cp roles'
     _group_member: 'TRUE'
+
+cp_roles.role.delete_form:
+  path: '/cp/users/roles/{group_role}/delete/{group_type}'
+  defaults:
+    _entity_form: 'group_role.delete'
+    _title: 'Delete vsite role'
+    group_type: personal
+  requirements:
+    _group_permission: 'manage cp roles'
+    _group_member: 'TRUE'
