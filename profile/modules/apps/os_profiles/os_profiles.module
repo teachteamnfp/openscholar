@@ -32,3 +32,30 @@ function os_profiles_node_presave(EntityInterface $entity) {
     $entity->setTitle($full_name);
   }
 }
+
+/**
+ * Implements hook_theme().
+ */
+function os_profiles_theme($existing, $type, $theme, $path) {
+  return [
+    'os_profiles_example_title' => [
+      'variables' => [],
+    ],
+    'os_profiles_example_teaser' => [
+      'variables' => [
+        'image' => '',
+      ],
+    ],
+    'os_profiles_example_sidebar_teaser' => [
+      'variables' => [
+        'image' => '',
+      ],
+    ],
+    'os_profiles_example_slide_teaser' => [
+      'variables' => [],
+    ],
+    'os_profiles_example_no_image_teaser' => [
+      'variables' => [],
+    ],
+  ];
+}
