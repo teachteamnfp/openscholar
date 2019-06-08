@@ -202,7 +202,6 @@
         "drupal/views_infinite_scroll": "^1.5",
         "twbs/bootstrap-sass": "^3.3.7",
         "drupal/mailchimp": "^1.8",
-        "drupal/bibcite": "1.x-dev",
         "drupal/field_tools": "^1.0@alpha",
         "ext-json": "*",
         "php-ds/php-ds": "^1.2",
@@ -233,7 +232,8 @@
         "drupal/views_ical": "^2.1",
         "drupal/google_analytics": "^2.4",
         "drupal/groupmenu": "^1.0",
-        "drupal/cancel_button": "^1.1"
+        "drupal/cancel_button": "^1.1",
+        "drupal/bibcite": "1.0-alpha10"
     },
     "require-dev": {
         "drupal/features": "^3.7",
