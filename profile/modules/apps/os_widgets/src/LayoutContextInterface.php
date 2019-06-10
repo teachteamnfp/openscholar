@@ -8,7 +8,7 @@ use Drupal\layout_builder\SectionListInterface;
 /**
  * Interface for LayoutContext objects.
  */
-interface LayoutContextInterface extends SectionListInterface, ConfigEntityInterface {
+interface LayoutContextInterface extends ConfigEntityInterface {
 
   /**
    * Get the description of the LayoutContext.

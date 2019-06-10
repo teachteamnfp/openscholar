@@ -58,7 +58,7 @@ use Drupal\os_widgets\LayoutContextInterface;
  */
 class LayoutContext extends ConfigEntityBase implements LayoutContextInterface {
 
-  use SectionStorageTrait;
+  //use SectionStorageTrait;
   use LayoutEntityHelperTrait;
 
   protected $id;
