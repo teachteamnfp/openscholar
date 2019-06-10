@@ -1,0 +1,10 @@
+uuid: 62833b3b-65fb-443d-a270-5ef6a0a5961c
+langcode: en
+status: true
+dependencies: {  }
+id: people
+label: People
+description: ''
+activationRules: 'people/*'
+weight: 0
+data: {  }
