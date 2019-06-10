@@ -56,16 +56,16 @@ class OsWidgetsBlockRepository implements BlockRepositoryInterface {
    */
   public function getVisibleBlocksPerRegion(array &$cacheable_metadata = []) {
     $output = [];
-    if (\Drupal::currentUser()->id() == 1) {
-      $blocks = $this->blockRepository->getVisibleBlocksPerRegion($cacheable_metadata);
-      $allBlocks = call_user_func_array('array_merge', $blocks);
-      /** @var \Drupal\block\BlockInterface $b */
-      foreach ($allBlocks as $b) {
-        if ($b instanceof BlockInterface) {
-          $output[$b->getRegion()][$b->id()] = $b;
-        }
-      }
-    }
+//    if (\Drupal::currentUser()->id() == 1) {
+//      $blocks = $this->blockRepository->getVisibleBlocksPerRegion($cacheable_metadata);
+//      $allBlocks = call_user_func_array('array_merge', $blocks);
+//      /** @var \Drupal\block\BlockInterface $b */
+//      foreach ($allBlocks as $b) {
+//        if ($b instanceof BlockInterface) {
+//          $output[$b->getRegion()][$b->id()] = $b;
+//        }
+//      }
+//    }
 
     $applicable = LayoutContext::getApplicable();
 

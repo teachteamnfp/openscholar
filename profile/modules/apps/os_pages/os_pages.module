@@ -21,9 +21,19 @@ function os_pages_entity_insert(EntityInterface $entity) {
   /** @var \Drupal\os_pages\VisibilityHelper $visibility_helper */
   $visibility_helper = \Drupal::service('os_pages.visibility_helper');
 
-  if (!$visibility_helper->isBookPage($entity)) {
+  if ($entity->getEntityTypeId() != 'node' || $entity->bundle() != 'page') {
     return;
   }
+
+  /** @var \Drupal\Core\Path\AliasManagerInterface $alias_manager */
+  $alias_manager = \Drupal::service('path.alias_manager');
+
+  $layout_context_storage = \Drupal::entityTypeManager()->getStorage('layout_context');
+  $layout_context_storage->create([
+    'id' => "os_pages_page_{$entity->id()}",
+    'activation_rules' => $alias_manager->getAliasByPath("/node/{$entity->id()}"),
+    'weight' => 100
+  ])->save();
 
   /** @var \Drupal\os_pages\VisibilityStorageInterface $visibility_storage */
   $visibility_storage = \Drupal::service('os_pages.visibility_storage');
@@ -56,15 +66,50 @@ function os_pages_entity_insert(EntityInterface $entity) {
     ],
   ]);
 
+  if (!$visibility_helper->isBookPage($entity)) {
+    return;
+  }
+
   /** @var \Drupal\node\NodeInterface $book */
   $book = Node::load($entity->book['bid']);
 
+  $section_id = "os_pages_section_{$book->id()}";
+  /** @var \Drupal\os_widgets\LayoutContextInterface $section_layout */
+  $section_layout = $layout_context_storage->load($section_id);
+  // No book section yet
+  if (!$section_layout) {
+    if ($visibility_helper->isBookFirstPage($entity)) {
+      $section_layout = $layout_context_storage->create([
+        'is' => $section_id,
+        'activation_rules' => $alias_manager->getAliasByPath("/node/{$entity->id()}"),
+        'weight' => 50,
+        'data' => [
+          [
+            'id' => 'book_navigation',
+            'region' => 'sidebar_first',
+            'weight' => 0
+          ]
+        ]
+      ]);
+      $section_layout->save();
+    }
+  }
+  else {
+    $paths = $section_layout->getActivationRules();
+    $paths = explode("\n", $paths);
+    $paths[] = $alias_manager->getAliasByPath("/node/{$entity->id()}");
+    $section_layout->setActivationRules(implode("\n", $paths));
+    $section_layout->save();
+  }
+
+
   /** @var \Drupal\block_visibility_groups\Entity\BlockVisibilityGroup|null $section_visibility_group */
-  $section_visibility_group = BlockVisibilityGroup::load("os_pages_section_{$book->id()}");
+  $section_visibility_group = BlockVisibilityGroup::load($section_id);
 
   // Create/update section visibility group.
   if (!$section_visibility_group) {
     if ($visibility_helper->isBookFirstPage($entity)) {
+
       $visibility_storage->create([
         'id' => "os_pages_section_{$book->id()}",
         'label' => t('OS Pages: Section @book_name', [

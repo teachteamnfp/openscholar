@@ -21,6 +21,11 @@ interface LayoutContextInterface extends ConfigEntityInterface {
   public function getActivationRules();
 
   /**
+   * Set the rules under which this context should be active.
+   */
+  public function setActivationRules(string $rules);
+
+  /**
    * Get the weight of the Layout Context.
    *
    * Higher weights override lower.

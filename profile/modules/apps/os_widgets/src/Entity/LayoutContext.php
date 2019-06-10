@@ -124,6 +124,13 @@ class LayoutContext extends ConfigEntityBase implements LayoutContextInterface {
   /**
    * {@inheritdoc}
    */
+  public function setActivationRules(string $rules) {
+    $this->activationRules = $rules;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getWeight() {
     return (int) $this->weight;
   }
