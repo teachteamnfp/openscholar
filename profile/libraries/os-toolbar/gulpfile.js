@@ -1,6 +1,6 @@
 /**
  * @file
- * Base theme gulp tasks.
+ * gulp tasks.
  */
 
 (function () {
