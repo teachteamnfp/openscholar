@@ -105,7 +105,7 @@ if [[ $FORCE_REBUILD == "1" ]] || [[ "$(cmp -b 'openscholar/composer.json' '/tmp
   ./../../node_modules/.bin/gulp sass || exit 1
 
   cd profile/libraries/os-toolbar
-  ./../../../node_modules/bin/gulp sass || exit 1
+  ./../../../node_modules/gulp/bin/gulp sass || exit 1
 
   cd ../../..
 
