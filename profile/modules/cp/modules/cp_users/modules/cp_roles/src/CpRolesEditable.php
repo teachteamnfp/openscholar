@@ -9,6 +9,7 @@ final class CpRolesEditable {
 
   public const NON_CONFIGURABLE = [
     'personal-anonymous',
+    'personal-outsider',
   ];
 
   public const NON_EDITABLE = [
