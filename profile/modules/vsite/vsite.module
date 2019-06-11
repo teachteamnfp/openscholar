@@ -5,6 +5,7 @@
  * Hook implementations for the vsite module.
  */
 
+use Drupal\Core\Asset\AttachedAssetsInterface;
 use Drupal\group\Entity\GroupInterface;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Entity\EntityFormInterface;
@@ -244,4 +245,28 @@ function _vsite_get_group_and_subsite_ids(GroupInterface $group) {
   // Add parent group to list.
   $gids[$group->id()] = $group->id();
   return $gids;
+}
+
+/**
+ * Implements hook_js_settings_alter().
+ *
+ * Performs alterations in drupalSettings specifically for vsites.
+ */
+function vsite_js_settings_alter(array &$settings, AttachedAssetsInterface $assets) {
+  /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
+  $vsite_context_manager = \Drupal::service('vsite.context_manager');
+  /** @var \Drupal\group\Entity\GroupInterface|null $vsite */
+  $vsite = $vsite_context_manager->getActiveVsite();
+
+  if (!$vsite) {
+    return;
+  }
+
+  // Make sure that the destination parameter in contextual links are correct.
+  // See contextual.es6.js - initContextual.
+  /** @var string $current_path */
+  $current_path = \Drupal::service('path.current')->getPath();
+  // The prefix `/` will be added as part of baseUrl. Therefore, removing it
+  // from here, to prevent multiple slashes.
+  $settings['path']['currentPath'] = ltrim($current_path, '/');
 }
