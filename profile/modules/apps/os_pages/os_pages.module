@@ -31,7 +31,8 @@ function os_pages_entity_insert(EntityInterface $entity) {
   $layout_context_storage = \Drupal::entityTypeManager()->getStorage('layout_context');
   $layout_context_storage->create([
     'id' => "os_pages_page_{$entity->id()}",
-    'activation_rules' => $alias_manager->getAliasByPath("/node/{$entity->id()}"),
+    'label' => t('Page Layout For @label', ['@label' => $entity->label()]),
+    'activationRules' => $alias_manager->getAliasByPath("/node/{$entity->id()}"),
     'weight' => 100,
   ])->save();
 
@@ -81,7 +82,8 @@ function os_pages_entity_insert(EntityInterface $entity) {
     if ($visibility_helper->isBookFirstPage($entity)) {
       $section_layout = $layout_context_storage->create([
         'id' => $section_id,
-        'activation_rules' => $alias_manager->getAliasByPath("/node/{$entity->id()}"),
+        'label' => t('Section Layout For @label', ['@label' => $book->label()]),
+        'activationRules' => $alias_manager->getAliasByPath("/node/{$entity->id()}"),
         'weight' => 50,
         'data' => [
           [
@@ -228,5 +230,18 @@ function os_pages_menu_local_tasks_alter(&$data, $route_name, RefinableCacheable
         unset($data['tabs'][0][$task]);
       }
     }
+  }
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ *
+ * Force os_pages to be behind pathauto so we can read aliases.
+ */
+function os_pages_module_implements_alter(&$implementations, $hook) {
+  if ($hook == 'entity_insert') {
+    $group = $implementations['os_pages'];
+    unset($implementations['os_pages']);
+    $implementations['os_pages'] = $group;
   }
 }
