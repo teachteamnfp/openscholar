@@ -232,7 +232,8 @@
         "drupal/easy_breadcrumb": "^1.8",
         "drupal/views_ical": "^2.1",
         "drupal/google_analytics": "^2.4",
-        "drupal/groupmenu": "^1.0"
+        "drupal/groupmenu": "^1.0",
+        "drupal/cancel_button": "^1.1"
     },
     "require-dev": {
         "webflo/drupal-core-require-dev": "~8.6.16",
