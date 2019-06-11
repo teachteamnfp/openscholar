@@ -31,7 +31,7 @@ class PublicationPreviewFunctionalTest extends OsExistingSiteJavascriptTestBase 
   }
 
   /**
-   * Test publication edit and press preview, change view mode and get back.
+   * Test publication edit and press preview and get back.
    */
   public function testPublicationEditPreviewAndBack() {
     $modified_title = $this->randomMachineName();
@@ -48,15 +48,6 @@ class PublicationPreviewFunctionalTest extends OsExistingSiteJavascriptTestBase 
     $preview_button->press();
     $web_assert->statusCodeEquals(200);
 
-    // Check preview page, contains modified title.
-    $web_assert->pageTextContains($modified_title);
-    $web_assert->elementNotExists('css', '.bibcite-citation');
-
-    // Check to modify to citation view mode.
-    $page = $this->getCurrentPage();
-    $page->fillField('view_mode', 'citation');
-    $web_assert->waitForElement('css', '.bibcite-citation');
-    $web_assert->elementExists('css', '.bibcite-citation');
     $back_link = $page->findById('edit-backlink');
     $back_link->press();
     $web_assert->statusCodeEquals(200);
@@ -64,6 +55,33 @@ class PublicationPreviewFunctionalTest extends OsExistingSiteJavascriptTestBase 
     // Check going back to edit page and see modified title.
     $page = $this->getCurrentPage();
     $this->assertContains($modified_title, $page->getHtml());
+  }
+
+  /**
+   * Test publication create and press preview get back.
+   */
+  public function testPublicationCreatePreviewAndBack() {
+    $title = $this->randomMachineName();
+    // Visit edit page.
+    $this->visit('/bibcite/reference/add/artwork');
+    $web_assert = $this->assertSession();
+    $web_assert->statusCodeEquals(200);
+    $page = $this->getCurrentPage();
+    $page->fillField('title[0][value]', $title);
+    $page->fillField('bibcite_year[0][value]', '1990');
+
+    // Find and press Preview button.
+    $preview_button = $page->findButton('Preview');
+    $preview_button->press();
+    $web_assert->statusCodeEquals(200);
+
+    $back_link = $page->findById('edit-backlink');
+    $back_link->press();
+    $web_assert->statusCodeEquals(200);
+
+    // Check going back to edit page and see modified title.
+    $page = $this->getCurrentPage();
+    $this->assertContains($title, $page->getHtml());
   }
 
 }

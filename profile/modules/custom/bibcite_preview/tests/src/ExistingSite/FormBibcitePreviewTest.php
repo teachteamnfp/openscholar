@@ -49,7 +49,7 @@ class FormBibcitePreviewTest extends OsExistingSiteTestBase {
   public function testFormRender() {
     $form_state = (new FormState())
       ->setValues([
-        'view_mode' => 'full',
+        'view_mode' => 'citation',
       ]);
     $form = $this->form->buildForm([], $form_state, $this->reference);
     $this->assertNotEmpty($form['backlink']);
@@ -62,7 +62,7 @@ class FormBibcitePreviewTest extends OsExistingSiteTestBase {
     $this->assertNotEmpty($form_state->getValue('uuid'));
     $this->assertEquals($this->reference->uuid(), $form_state->getValue('uuid'));
     $this->assertNotEmpty($form_state->getValue('view_mode'));
-    $this->assertEquals('full', $form_state->getValue('view_mode'));
+    $this->assertEquals('citation', $form_state->getValue('view_mode'));
     // Should assert redirect value, but can't access cause programmed is true.
   }
 
