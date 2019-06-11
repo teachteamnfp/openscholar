@@ -2,12 +2,38 @@
 
 namespace Drupal\os_widgets\Controller;
 
+use Drupal\Core\Controller\ControllerBase;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Handle the saving of a collection of blocks into LayoutContexts.
  */
-class LayoutManagementController {
+class LayoutManagementController extends ControllerBase {
+
+  /**
+   * The request object.
+   *
+   * @var Request
+   */
+  protected $request;
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static($container->get('request'));
+  }
+
+  /**
+   * LayoutManagementController constructor.
+   *
+   * @param Request $request
+   *   The request we're checking data for.
+   */
+  public function __construct(Request $request) {
+    $this->request = $request;
+  }
 
   /**
    * Save the blocks sent to us to the topmost LayoutContext.
@@ -18,11 +44,11 @@ class LayoutManagementController {
    *   The final blocks sent to the LayoutContext.
    */
   public function saveLayout() {
-    $context_ids = \Drupal::request()->request->get('contexts');
-    $blocks = \Drupal::request()->request->get('blocks');
+    $context_ids = $this->request->request->get('contexts');
+    $blocks = $this->request->request->get('blocks');
 
     /** @var \Drupal\os_widgets\Entity\LayoutContext[] $contexts */
-    $contexts = \Drupal::entityTypeManager()->getStorage('layout_context')->loadMultiple($context_ids);
+    $contexts = $this->entityTypeManager()->getStorage('layout_context')->loadMultiple($context_ids);
 
     uasort($contexts, ['ConfigEntityBase', 'sort']);
     $target = array_shift($contexts);
