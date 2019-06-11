@@ -38,6 +38,13 @@ function os_profiles_node_presave(EntityInterface $entity) {
  */
 function os_profiles_theme($existing, $type, $theme, $path) {
   return [
+    'os_profiles_example_hover_popup' => [
+      'variables' => [
+        'counter' => 0,
+        'label' => '',
+        'profile_example' => '',
+      ],
+    ],
     'os_profiles_example_title' => [
       'variables' => [],
     ],

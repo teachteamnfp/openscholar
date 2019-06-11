@@ -110,18 +110,16 @@ class ProfilesSetting extends CpSettingBase {
     // Create markup for style examples when hovering over each style.
     foreach ($profile_styles as $name => $label) {
       $counter++;
-      // Prepare the popup and the style name.
-      $profile_example_link = '<a href="#" class="profile-pop" data-popbox="pop' . $counter . '">' . Html::escape($label) . '</a>';
-      $profile_example_title = '<h2>' . $label . '</h2>';
-      // Prepare the profile style example for the popup.
-      $build = [
-        '#theme' => 'os_profiles_example_' . $name,
-        '#image' => $hover_image_url,
+      $build_hover = [
+        '#theme' => 'os_profiles_example_hover_popup',
+        '#counter' => $counter,
+        '#label' => Html::escape($label),
+        '#profile_example' => [
+          '#theme' => 'os_profiles_example_' . $name,
+          '#image' => $hover_image_url,
+        ],
       ];
-      $profile_example = $this->renderer->render($build);
-      $profile_example_text = '<p>' . $profile_example . '</p>';
-      $profile_example_output = $profile_example_link . '<div id="pop' . $counter . '" class="stylebox">' . $profile_example_title . $profile_example_text . '</div>';
-      $profile_styles_hover[$name] = $profile_example_output;
+      $profile_styles_hover[$name] = $this->renderer->render($build_hover);
     }
 
     $form['display_type'] = [
