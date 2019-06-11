@@ -89,12 +89,13 @@ class ReferencePreviewForm extends FormBase {
     ];
 
     // Always show full as an option, even if the display is not enabled.
-    $view_mode_options = ['full' => $this->t('Full')] + $this->entityDisplayRepository->getViewModeOptionsByBundle('bibcite_reference', $reference->bundle());
+    $view_mode_options = $this->entityDisplayRepository->getViewModeOptionsByBundle('bibcite_reference', $reference->bundle());
 
     // Unset view modes that are not used in the front end.
     unset($view_mode_options['default']);
     unset($view_mode_options['rss']);
     unset($view_mode_options['search_index']);
+    unset($view_mode_options['table']);
 
     $form['uuid'] = [
       '#type' => 'value',

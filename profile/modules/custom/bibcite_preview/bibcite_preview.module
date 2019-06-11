@@ -73,7 +73,7 @@ function bibcite_preview_entity_preview(array &$form, FormStateInterface $form_s
 
   $route_parameters = [
     'bibcite_reference_preview' => $entity->uuid(),
-    'view_mode_id' => 'full',
+    'view_mode_id' => 'citation',
   ];
 
   $options = [];
