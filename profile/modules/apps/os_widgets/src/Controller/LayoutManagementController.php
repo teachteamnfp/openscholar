@@ -5,6 +5,7 @@ namespace Drupal\os_widgets\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Handle the saving of a collection of blocks into LayoutContexts.
@@ -14,15 +15,15 @@ class LayoutManagementController extends ControllerBase {
   /**
    * The request object.
    *
-   * @var Request
+   * @var RequestStack
    */
-  protected $request;
+  protected $requestStack;
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    return new static($container->get('request'));
+    return new static($container->get('request_stack'));
   }
 
   /**
@@ -31,8 +32,8 @@ class LayoutManagementController extends ControllerBase {
    * @param Request $request
    *   The request we're checking data for.
    */
-  public function __construct(Request $request) {
-    $this->request = $request;
+  public function __construct(RequestStack $stack) {
+    $this->requestStack = $stack;
   }
 
   /**
@@ -44,8 +45,8 @@ class LayoutManagementController extends ControllerBase {
    *   The final blocks sent to the LayoutContext.
    */
   public function saveLayout() {
-    $context_ids = $this->request->request->get('contexts');
-    $blocks = $this->request->request->get('blocks');
+    $context_ids = $this->requestStack->getCurrentRequest()->request->get('contexts');
+    $blocks = $this->requestStack->getCurrentRequest()->request->get('blocks');
 
     /** @var \Drupal\os_widgets\Entity\LayoutContext[] $contexts */
     $contexts = $this->entityTypeManager()->getStorage('layout_context')->loadMultiple($context_ids);
@@ -64,8 +65,10 @@ class LayoutManagementController extends ControllerBase {
     $adjusted = $this->adjustRelativeWeights($blocks, $parent_blocks);
     $data = $this->filterBlocks($adjusted, $parent_blocks);
 
-    $target->setBlockPlacements($data);
-    $target->save();
+    if ($data) {
+      $target->setBlockPlacements($data);
+      $target->save();
+    }
 
     return $data;
   }
