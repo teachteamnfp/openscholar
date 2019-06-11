@@ -129,14 +129,84 @@ class ProfilesSetting extends CpSettingBase {
       '#default_value' => $config->get('display_type'),
       '#description' => t('Choose the display type of a person in the "/people" page.'),
     ];
+
+    // Form element for disabling the use of a default image.
+    $form['default_image'] = [
+      '#type' => 'fieldset',
+      '#title' => t('Default Image'),
+      '#weight' => -50,
+    ];
+
+    $form['default_image']['disable_default_image'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Disable default image for people profiles'),
+      '#default_value' => $config->get('disable_default_image'),
+      '#description' => $this->t('If checked no image will be used when viewing the "/people" page.'),
+      '#weight' => -101,
+    ];
+    $upload_location = 'public://' . $this->activeVsite->id() . '/files';
+    $allowed_file_types = 'gif png jpg jpeg';
+    $form['default_image']['default_image_fid'] = [
+      '#type' => 'managed_file',
+      '#description' => $this->t('The default image will be used if a profile photo is not available. Instead, you can upload your own default image.<br/>Position the cropping tool over it if necessary. Allowed file types: <strong> @allowed_file_types </strong>', ['@allowed_file_types' => $allowed_file_types]),
+      '#upload_location' => $upload_location,
+      '#upload_validators' => [
+        'file_validate_extensions' => [$allowed_file_types],
+      ],
+    ];
+    if ($default_fid = $config->get('default_image_fid')) {
+      $form['default_image']['default_image_fid']['#default_value'] = [$default_fid];
+
+      // Implement basic preview mode, it should be deleted after crop finished.
+      $file = File::load($default_fid);
+      $file_variables = [
+        'style_name' => 'medium',
+        'uri' => $file->getFileUri(),
+      ];
+      // Determine image dimensions.
+      $image = \Drupal::service('image.factory')->get($file->getFileUri());
+      if ($image->isValid()) {
+        $file_variables['width'] = $image->getWidth();
+        $file_variables['height'] = $image->getHeight();
+      }
+      else {
+        $file_variables['width'] = $file_variables['height'] = NULL;
+      }
+
+      $form['default_image']['preview'] = [
+        '#weight' => -10,
+        '#theme' => 'image_style',
+        '#width' => $file_variables['width'],
+        '#height' => $file_variables['height'],
+        '#style_name' => $file_variables['style_name'],
+        '#uri' => $file_variables['uri'],
+      ];
+    }
   }
 
   /**
    * {@inheritdoc}
    */
-  public function submitForm(FormStateInterface $formState, ConfigFactoryInterface $configFactory) {
+  public function submitForm(FormStateInterface $form_state, ConfigFactoryInterface $configFactory) {
     $config = $configFactory->getEditable('os_profiles.settings');
-    $config->set('display_type', $formState->getValue('display_type'));
+    $config->set('display_type', $form_state->getValue('display_type'));
+    $config->set('disable_default_image', (bool) $form_state->getValue('disable_default_image'));
+
+    $form_file = $form_state->getValue('default_image_fid', 0);
+    if (!empty($form_file[0])) {
+      $file = File::load($form_file[0]);
+      $file->setPermanent();
+      $file->save();
+      $config->set('default_image_fid', $file->id());
+    }
+    else {
+      // Checking is there any exists file and delete.
+      if ($exists_fid = $config->get('default_image_fid')) {
+        File::load($exists_fid)->delete();
+      }
+      $config->set('default_image_fid', NULL);
+    }
+
     $config->save(TRUE);
   }
 

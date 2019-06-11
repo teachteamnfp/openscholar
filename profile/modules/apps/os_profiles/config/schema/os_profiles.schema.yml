@@ -5,3 +5,9 @@ os_profiles.settings:
     display_type:
       type: string
       label: 'Display type'
+    disable_default_image:
+      type: boolean
+      label: 'Disable default image'
+    default_image_fid:
+      type: integer
+      label: 'Default image'
