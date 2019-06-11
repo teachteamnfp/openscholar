@@ -102,7 +102,8 @@ class MenuLinkAddForm extends FormBase {
     return new static(
       $container->get('tempstore.private'),
       $container->get('entity_type.manager'),
-      $container->get('path.validator')
+      $container->get('path.validator'),
+      $container->get('vsite.context_manager')
     );
   }
 
