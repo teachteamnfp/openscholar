@@ -7,7 +7,7 @@ use Symfony\Component\Routing\Route;
 use Drupal\Core\ParamConverter\ParamConverterInterface;
 
 /**
- * Provides upcasting for a node entity in preview.
+ * Provides upcasting for a reference entity in preview.
  */
 class BibciteReferencePreviewConverter implements ParamConverterInterface {
 
