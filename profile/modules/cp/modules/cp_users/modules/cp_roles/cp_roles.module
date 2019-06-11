@@ -9,7 +9,9 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\cp_roles\Controller\CpRoleListBuilder;
+use Drupal\group\Entity\GroupRole;
 use Drupal\group\Entity\GroupRoleInterface;
+use Drupal\group\Entity\GroupTypeInterface;
 
 /**
  * Implements hook_entity_presave().
@@ -75,5 +77,29 @@ function cp_roles_entity_type_build(array &$entity_types) {
     /** @var \Drupal\Core\Config\Entity\ConfigEntityTypeInterface $group_role_type */
     $group_role_type = $entity_types['group_role'];
     $group_role_type->setListBuilderClass(CpRoleListBuilder::class);
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ */
+function cp_roles_group_type_insert(GroupTypeInterface $entity) {
+  // Group administrators should be able to edit permissions of member role.
+  // Group module restricts that edit access for internal roles.
+  $roles_to_be_converted_to_non_internal = [
+    'member',
+  ];
+
+  foreach ($roles_to_be_converted_to_non_internal as $role) {
+    /** @var \Drupal\group\Entity\GroupRoleInterface $group_role */
+    $group_role = GroupRole::load("{$entity->id()}-$role");
+
+    $group_role->set('internal', FALSE);
+
+    if ($role === 'member') {
+      $group_role->set('label', t('Basic member'));
+    }
+
+    $group_role->save();
   }
 }
