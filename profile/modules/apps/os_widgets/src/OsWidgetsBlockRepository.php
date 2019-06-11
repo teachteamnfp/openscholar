@@ -71,7 +71,7 @@ class OsWidgetsBlockRepository implements BlockRepositoryInterface {
       if ($vsite = $vsiteContextManager->getActiveVsite()) {
         $blockGCEs = $vsite->getContent('group_entity:block_content');
         foreach ($blockGCEs as $bgce) {
-          /** @var \Drupal\block\Entity\BlockContentInterface $block_content */
+          /** @var \Drupal\block_content\BlockContentInterface $block_content */
           $block_content = $bgce->getEntity();
           $instances = $block_content->getInstances();
           if (!$instances) {
@@ -94,7 +94,7 @@ class OsWidgetsBlockRepository implements BlockRepositoryInterface {
 
     // Take any block in the currently active contexts and
     // place it in the correct region.
-    /** @var \Drupal\os_widgets\Entity\LayoutContextInterface $a */
+    /** @var \Drupal\os_widgets\LayoutContextInterface $a */
     foreach ($applicable as $a) {
       if ($a->id() == $limit) {
         $limit_found = TRUE;
