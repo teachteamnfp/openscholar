@@ -20,17 +20,15 @@ class OsMediaResource extends OsEntityResource {
    * and PHP doesn't support method overloading, so this kind of thing is
    * necessary.
    *
-   * @param \Drupal\Core\Entity\EntityInterface $arg1
+   * @param \Drupal\Core\Entity\EntityInterface|string $arg1
    *   The argument from the path.
-   * @param \Symfony\Component\HttpFoundation\Request $request
-   *   The request being made.
    *
    * @return \Drupal\rest\ResourceResponse
    *   The response to the client.
    */
-  public function get(EntityInterface $arg1, Request $request) {
+  public function get($arg1) {
     if ($arg1 instanceof EntityInterface) {
-      return parent::get($arg1, $request);
+      return parent::get($arg1);
     }
     elseif (is_string($arg1)) {
       return $this->checkFilename($arg1);
