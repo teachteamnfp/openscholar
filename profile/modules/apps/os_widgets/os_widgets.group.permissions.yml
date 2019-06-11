@@ -1,0 +1,4 @@
+manage layout:
+  title: 'Manage Layout and Blocks'
+  description: 'Allow users to managed the layout and blocks for their site'
+  restrict access: false
