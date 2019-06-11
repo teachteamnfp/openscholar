@@ -10,7 +10,7 @@ use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
 /**
  * Tests bibcite_preview module convert.
  *
- * @group kernel
+ * @group functional
  * @group publications
  */
 class ConverterBibcitePreviewTest extends OsExistingSiteTestBase {
