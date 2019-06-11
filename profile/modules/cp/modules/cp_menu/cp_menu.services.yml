@@ -1,0 +1,4 @@
+services:
+  cp_menu.menu_helper:
+    class: Drupal\cp_menu\Services\MenuHelper
+    arguments: ['@config.factory', '@menu.link_tree', '@entity_type.manager']

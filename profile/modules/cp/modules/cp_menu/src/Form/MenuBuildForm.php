@@ -12,6 +12,7 @@ use Drupal\Core\Menu\MenuLinkTreeElement;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
+use Drupal\cp_menu\MenuHelperInterface;
 use Drupal\vsite\Plugin\VsiteContextManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -56,6 +57,13 @@ class MenuBuildForm extends FormBase {
   protected $menus;
 
   /**
+   * Cp Menu Helper service.
+   *
+   * @var \Drupal\cp_menu\MenuHelperInterface
+   */
+  protected $menuHelper;
+
+  /**
    * The overview tree form.
    *
    * @var array
@@ -73,12 +81,15 @@ class MenuBuildForm extends FormBase {
    *   Vsite Context Manager instance.
    * @param \Drupal\Core\Menu\MenuLinkManagerInterface $menu_link_manager
    *   Menu Link Manager instance.
+   * @param \Drupal\cp_menu\MenuHelperInterface $menu_helper
+   *   Menu Helper interface.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, MenuLinkTree $menu_tree, VsiteContextManager $vsite_manager, MenuLinkManagerInterface $menu_link_manager) {
+  public function __construct(ConfigFactoryInterface $config_factory, MenuLinkTree $menu_tree, VsiteContextManager $vsite_manager, MenuLinkManagerInterface $menu_link_manager, MenuHelperInterface $menu_helper) {
     $this->configFactory = $config_factory;
     $this->menuTree = $menu_tree;
     $this->vsiteManager = $vsite_manager;
     $this->menuLinkManager = $menu_link_manager;
+    $this->menuHelper = $menu_helper;
   }
 
   /**
@@ -89,7 +100,8 @@ class MenuBuildForm extends FormBase {
       $container->get('config.factory'),
       $container->get('menu.link_tree'),
       $container->get('vsite.context_manager'),
-      $container->get('plugin.manager.menu.link')
+      $container->get('plugin.manager.menu.link'),
+      $container->get('cp_menu.menu_helper')
     );
   }
 
@@ -105,8 +117,20 @@ class MenuBuildForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state): array {
 
-    $vsiteId = $this->vsiteManager->getActiveVsite()->id();
-    $this->menus = $this->configFactory->getEditable('cp_menu.settings')->get('menus');
+    $vsite = $this->vsiteManager->getActiveVsite();
+    $vsiteId = $vsite->id();
+    $menus = $vsite->getContent('group_menu:menu');
+
+    if (!$menus) {
+      $this->menus = [
+        'main' => 'Primary Menu',
+      ];
+    }
+    elseif ($menus) {
+      foreach ($menus as $menu) {
+        $this->menus[$menu->entity_id_str->target_id] = $menu->label();
+      }
+    }
 
     $this->vsiteAlias = '/' . $this->vsiteManager->getActivePurl();
     $headers = [
@@ -202,8 +226,19 @@ class MenuBuildForm extends FormBase {
           'colspan' => 3,
         ],
       ];
+
+      $url = Url::fromRoute('cp.build.add_new_link', ['menu' => $m], [
+        'attributes' => [
+          'class' => ['use-ajax'],
+          'data-dialog-type' => 'modal',
+          'data-dialog-options' => json_encode(['width' => '50%']),
+          'id' => 'add_new_link',
+        ],
+      ]);
+      $newLink = Link::fromTextAndUrl('+ Add new Link', $url)->toString();
+
       $form['links'][$m]['new_link'] = [
-        '#markup' => '+ Add new Link',
+        '#markup' => $newLink,
         '#wrapper_attributes' => [
           'colspan' => 2,
         ],
@@ -312,9 +347,38 @@ class MenuBuildForm extends FormBase {
           }
         }
         if ($updated_values) {
+          $vsite = $this->vsiteManager->getActiveVsite();
+          $menus = $vsite->getContent('group_menu:menu');
+          // If first time changes , create new menus and map changes.
+          if (!$menus) {
+            // Create new menus and get the tree for mapping.
+            $tree = $this->menuHelper->createVsiteMenus($vsite);
+            // Cache the tree in form state as we need plugin ids to map changes
+            // Ids will not change, so it is safe to cache this.
+            $form_state->set('new_tree', $tree);
+          }
+
+          $new_tree = $form_state->get('new_tree') ?? [];
+          $pluginId = NULL;
           // Use the ID from the actual plugin instance since the hidden value
           // in the form could be tampered with.
-          $this->menuLinkManager->updateDefinition($element['#item']->link->getPLuginId(), $updated_values);
+          foreach ($updated_values as $key => $value) {
+            if ($key == 'parent' && $value) {
+              $old_parent = $this->menuLinkManager->getDefinition($value)['title'];
+            }
+          }
+          foreach ($new_tree as $link) {
+            if ($link->link->getTitle()->__toString() == $old_parent) {
+              $updated_values['parent'] = $link->link->getPluginId();
+            }
+            if ($element['#item']->link->getTitle() == $link->link->getTitle()) {
+              $pluginId = $link->link->getPluginId();
+            }
+          }
+          // If first time changes then use new plugin ids, otherwise use
+          // current element ids.
+          $pluginId = $pluginId ?? $element['#item']->link->getPluginId();
+          $this->menuLinkManager->updateDefinition($pluginId, $updated_values);
         }
       }
     }
@@ -325,6 +389,8 @@ class MenuBuildForm extends FormBase {
    */
   protected function menuLoadTree($menu) : array {
     $treeParams = new MenuTreeParameters();
+
+    // Load common menu links for all vsites.
     $tree = $this->menuTree->load($menu, $treeParams);
     return $tree;
   }
@@ -363,6 +429,7 @@ class MenuBuildForm extends FormBase {
           '#type' => 'hidden',
           '#value' => $link->getPluginId(),
         ];
+
         $form[$id]['parent'] = [
           '#type' => 'hidden',
           '#default_value' => $link->getParent(),
