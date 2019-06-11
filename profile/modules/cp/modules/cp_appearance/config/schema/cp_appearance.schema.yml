@@ -1,0 +1,13 @@
+cp_appearance.custom_theme.*:
+  type: config_entity
+  label: 'Cp Custom Theme'
+  mapping:
+    id:
+      type: 'string'
+      label: 'Machine name'
+    label:
+      type: 'label'
+      label: 'Label'
+    base_theme:
+      type: 'string'
+      label: 'Base theme'
