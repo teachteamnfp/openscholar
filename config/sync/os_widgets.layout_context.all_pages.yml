@@ -5,7 +5,7 @@ dependencies: {  }
 id: all_pages
 label: 'All Pages'
 description: 'Context active on all pages'
-activationRules: "~cp/*\r\n~node/*/edit\r\n~node/*/delete"
+activationRules: "*\r\n~cp/*\r\n~node/*/edit\r\n~node/*/delete"
 weight: -10
 data:
   -
