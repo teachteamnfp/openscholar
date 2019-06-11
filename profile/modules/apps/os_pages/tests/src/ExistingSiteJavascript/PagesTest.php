@@ -4,6 +4,7 @@ namespace Drupal\Tests\os_pages\ExistingSiteJavascript;
 
 use Behat\Mink\Exception\ExpectationException;
 use Drupal\block\Entity\Block;
+use Drupal\os_widgets\Entity\LayoutContext;
 
 /**
  * Tests book pages.
@@ -60,16 +61,18 @@ class PagesTest extends TestBase {
         'label_display' => 'visible',
         'block_mode' => 'all pages',
       ],
-      'visibility' => [
-        'condition_group' => [
-          'id' => 'condition_group',
-          'negate' => FALSE,
-          'block_visibility_group' => "os_pages_section_{$book1->id()}",
-          'context_mapping' => [],
-        ],
-      ],
     ]);
     $section_block->save();
+    $layout = LayoutContext::load('os_pages_section_'.$book1->id());
+    $blocks = $layout->getBlockPlacements();
+    $blocks[$section_block->id()] = [
+      'id' => $section_block->id(),
+      'region' => 'sidebar_second',
+      'weight' => 0
+    ];
+    $layout->setBlockPlacements($blocks);
+    $layout->save();
+
 
     $page_block = Block::create([
       'id' => "entityviewcontent_{$page1->id()}",
