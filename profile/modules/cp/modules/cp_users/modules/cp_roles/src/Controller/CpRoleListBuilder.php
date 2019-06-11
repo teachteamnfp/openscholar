@@ -10,6 +10,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 use Drupal\cp_roles\CpRolesEditable;
+use Drupal\cp_roles\CpRolesEditableInterface;
 use Drupal\group\Entity\GroupTypeInterface;
 use Drupal\group\GroupRoleSynchronizerInterface;
 use Drupal\vsite\Plugin\VsiteContextManagerInterface;
@@ -62,15 +63,38 @@ class CpRoleListBuilder extends DraggableListBuilder {
   protected $entityTypeManager;
 
   /**
-   * {@inheritdoc}
+   * CpRoles editable service.
+   *
+   * @var \Drupal\cp_roles\CpRolesEditableInterface
    */
-  public function __construct(EntityTypeInterface $entity_type, EntityStorageInterface $storage, RouteMatchInterface $route_match, VsiteContextManagerInterface $vsite_context_manager, GroupRoleSynchronizerInterface $group_role_synchronizer, EntityTypeManagerInterface $entity_type_manager) {
+  protected $cpRolesEditable;
+
+  /**
+   * Creates a new CpRoleListBuilder object.
+   *
+   * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
+   *   The entity type definition.
+   * @param \Drupal\Core\Entity\EntityStorageInterface $storage
+   *   The entity storage class.
+   * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
+   *   Route match service.
+   * @param \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager
+   *   Vsite context manager.
+   * @param \Drupal\group\GroupRoleSynchronizerInterface $group_role_synchronizer
+   *   Group role synchronizer.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   Entity type manager.
+   * @param \Drupal\cp_roles\CpRolesEditableInterface $cp_roles_editable
+   *   CpRoles editable service.
+   */
+  public function __construct(EntityTypeInterface $entity_type, EntityStorageInterface $storage, RouteMatchInterface $route_match, VsiteContextManagerInterface $vsite_context_manager, GroupRoleSynchronizerInterface $group_role_synchronizer, EntityTypeManagerInterface $entity_type_manager, CpRolesEditableInterface $cp_roles_editable) {
     parent::__construct($entity_type, $storage);
 
     $this->vsiteContextManager = $vsite_context_manager;
     $this->activeVsite = $this->vsiteContextManager->getActiveVsite();
     $this->groupRoleSynchronizer = $group_role_synchronizer;
     $this->entityTypeManager = $entity_type_manager;
+    $this->cpRolesEditable = $cp_roles_editable;
 
     $parameters = $route_match->getParameters();
     $group_type = $parameters->get('group_type');
@@ -90,7 +114,8 @@ class CpRoleListBuilder extends DraggableListBuilder {
       $container->get('current_route_match'),
       $container->get('vsite.context_manager'),
       $container->get('group_role.synchronizer'),
-      $container->get('entity_type.manager')
+      $container->get('entity_type.manager'),
+      $container->get('cp_roles.editable')
     );
   }
 
@@ -111,7 +136,7 @@ class CpRoleListBuilder extends DraggableListBuilder {
     }
 
     $query = $this->getStorage()->getQuery()
-      ->condition('id', array_merge(CpRolesEditable::NON_CONFIGURABLE, $synchronized_roles), 'NOT IN')
+      ->condition('id', array_merge($this->cpRolesEditable->getNonConfigurableGroupRoles($this->activeVsite), $synchronized_roles), 'NOT IN')
       ->condition('group_type', $this->groupType->id(), '=')
       ->sort($this->entityType->getKey('weight'));
 
@@ -161,7 +186,7 @@ class CpRoleListBuilder extends DraggableListBuilder {
         ]),
       ];
 
-      if (!\in_array($entity->id(), CpRolesEditable::NON_EDITABLE, TRUE)) {
+      if (!\in_array($entity->id(), $this->cpRolesEditable->getNonEditableGroupRoles($this->activeVsite), TRUE)) {
         $operations['edit'] = [
           'title' => $this->t('Edit'),
           'weight' => 10,
