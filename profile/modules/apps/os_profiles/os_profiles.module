@@ -7,6 +7,7 @@
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\file\Entity\File;
 
 /**
  * Implements hook_form_alter().
@@ -65,4 +66,48 @@ function os_profiles_theme($existing, $type, $theme, $path) {
       'variables' => [],
     ],
   ];
+}
+
+/**
+ * Implements hook_preprocess_node().
+ */
+function os_profiles_preprocess_node(&$variables) {
+  /** @var \Drupal\node\Entity\Node $node */
+  $node = $variables['node'];
+  $content = $variables['content'];
+  $config = Drupal::config('os_profiles.settings');
+  if ($node->bundle() == 'person'
+    && $variables['view_mode'] == 'teaser'
+    && empty($content['field_photo_person']['#items'])
+    && !$config->get('disable_default_image')
+    && $default_image_fid = $config->get('default_image_fid')) {
+    $file = File::load($default_image_fid);
+    $image_vars = [
+      'style_name' => 'crop_photo_person',
+      'uri' => $file->getFileUri(),
+    ];
+
+    // The image.factory service will check if our image is valid.
+    $image = \Drupal::service('image.factory')->get($file->getFileUri());
+    if ($image->isValid()) {
+      $image_vars['width'] = $image->getWidth();
+      $image_vars['height'] = $image->getHeight();
+    }
+    else {
+      $image_vars['width'] = $image_vars['height'] = NULL;
+    }
+
+    $default_image_render_array = [
+      '#theme' => 'image_style',
+      '#width' => $image_vars['width'],
+      '#height' => $image_vars['height'],
+      '#style_name' => $image_vars['style_name'],
+      '#uri' => $image_vars['uri'],
+    ];
+    // Add the file entity to the cache dependencies.
+    // This will clear our cache when this entity updates.
+    $renderer = \Drupal::service('renderer');
+    $renderer->addCacheableDependency($default_image_render_array, $file);
+    $variables['content']['field_photo_person'][0] = $default_image_render_array;
+  }
 }
