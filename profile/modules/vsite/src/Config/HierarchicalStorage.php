@@ -148,7 +148,7 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
     foreach ($this->storages as $s) {
       /** @var \Drupal\Core\Config\StorageInterface $store */
       $store = $s['storage'];
-      $output += $store->listAll($prefix);
+      $output = array_merge($output, $store->listAll($prefix));
     }
 
     return $output;
