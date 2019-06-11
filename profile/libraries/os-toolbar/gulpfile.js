@@ -9,8 +9,7 @@
   var gulp = require('gulp'),
     sass = require('gulp-sass'),
     sourcemaps = require('gulp-sourcemaps'),
-    rename = require('gulp-rename'),
-    path = require('path');
+    cssbeautify = require('gulp-cssbeautify');
 
   gulp.task('sass', function () {
     return gulp
@@ -20,6 +19,9 @@
         outputStyle: 'uncompressed'
       }).on('error', sass.logError))
       .pipe(sourcemaps.write('./'))
+      .pipe(cssbeautify({
+        indent: '  ',
+      }))
       .pipe(gulp.dest('.'));
   });
 
