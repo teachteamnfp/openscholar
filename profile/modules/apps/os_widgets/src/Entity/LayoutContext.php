@@ -4,7 +4,6 @@ namespace Drupal\os_widgets\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBase;
 use Drupal\layout_builder\LayoutEntityHelperTrait;
-use Drupal\layout_builder\SectionStorage\SectionStorageTrait;
 use Drupal\os_widgets\LayoutContextInterface;
 
 /**
@@ -58,7 +57,6 @@ use Drupal\os_widgets\LayoutContextInterface;
  */
 class LayoutContext extends ConfigEntityBase implements LayoutContextInterface {
 
-  //use SectionStorageTrait;
   use LayoutEntityHelperTrait;
 
   protected $id;

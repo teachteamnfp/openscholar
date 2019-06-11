@@ -3,7 +3,6 @@
 namespace Drupal\os_widgets;
 
 use Drupal\Core\Config\Entity\ConfigEntityInterface;
-use Drupal\layout_builder\SectionListInterface;
 
 /**
  * Interface for LayoutContext objects.

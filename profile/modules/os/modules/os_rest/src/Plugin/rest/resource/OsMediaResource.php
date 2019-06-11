@@ -4,7 +4,6 @@ namespace Drupal\os_rest\Plugin\rest\resource;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\rest\ResourceResponse;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class OsMediaResource.

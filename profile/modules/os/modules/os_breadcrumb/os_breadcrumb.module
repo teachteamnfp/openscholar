@@ -5,8 +5,8 @@
  * Helper functions for Breadcrumb.
  */
 
+use Drupal\Core\Entity\EntityBase;
 use Drupal\Core\Breadcrumb\Breadcrumb;
-use Drupal\Core\Entity\Entity;
 use Drupal\Core\Link;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
@@ -131,7 +131,7 @@ function os_breadcrumb_edit_taxonomy_breadcrumbs(Term $term, Breadcrumb &$breadc
  *
  * @throws \Drupal\Core\Entity\EntityMalformedException
  */
-function os_breadcrumb_edit_pages_breadcrumbs(\Drupal\Core\Entity\EntityBase $node, Breadcrumb &$breadcrumb) {
+function os_breadcrumb_edit_pages_breadcrumbs(EntityBase $node, Breadcrumb &$breadcrumb) {
   $pages = $node->book;
   $parent_chain = [];
   $original = $breadcrumb;
