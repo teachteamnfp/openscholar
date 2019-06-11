@@ -10,6 +10,7 @@ module:
   bibcite_entity: 0
   bibcite_export: 0
   bibcite_marc: 0
+  bibcite_preview: 0
   bibcite_ris: 0
   big_pipe: 0
   blazy: 0
