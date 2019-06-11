@@ -80,7 +80,7 @@ function os_pages_entity_insert(EntityInterface $entity) {
   if (!$section_layout) {
     if ($visibility_helper->isBookFirstPage($entity)) {
       $section_layout = $layout_context_storage->create([
-        'is' => $section_id,
+        'id' => $section_id,
         'activation_rules' => $alias_manager->getAliasByPath("/node/{$entity->id()}"),
         'weight' => 50,
         'data' => [
