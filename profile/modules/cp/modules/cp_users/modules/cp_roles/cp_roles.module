@@ -91,8 +91,12 @@ function cp_roles_group_type_insert(GroupTypeInterface $entity) {
   ];
 
   foreach ($roles_to_be_converted_to_non_internal as $role) {
-    /** @var \Drupal\group\Entity\GroupRoleInterface $group_role */
+    /** @var \Drupal\group\Entity\GroupRoleInterface|null $group_role */
     $group_role = GroupRole::load("{$entity->id()}-$role");
+
+    if (!$group_role) {
+      continue;
+    }
 
     $group_role->set('internal', FALSE);
 
