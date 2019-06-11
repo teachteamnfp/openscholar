@@ -151,7 +151,7 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
       $output = array_merge($output, $store->listAll($prefix));
     }
 
-    return $output;
+    return array_unique($output);
   }
 
   /**
