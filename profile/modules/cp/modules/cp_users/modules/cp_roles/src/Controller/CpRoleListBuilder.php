@@ -135,8 +135,13 @@ class CpRoleListBuilder extends DraggableListBuilder {
       $synchronized_roles[] = $this->groupRoleSynchronizer->getGroupRoleId($this->groupType->id(), $role_id);
     }
 
+    $roles_filter = $synchronized_roles;
+    if ($this->activeVsite) {
+      $roles_filter = array_merge($this->cpRolesEditable->getNonConfigurableGroupRoles($this->activeVsite), $synchronized_roles);
+    }
+
     $query = $this->getStorage()->getQuery()
-      ->condition('id', array_merge($this->cpRolesEditable->getNonConfigurableGroupRoles($this->activeVsite), $synchronized_roles), 'NOT IN')
+      ->condition('id', $roles_filter, 'NOT IN')
       ->condition('group_type', $this->groupType->id(), '=')
       ->sort($this->entityType->getKey('weight'));
 
