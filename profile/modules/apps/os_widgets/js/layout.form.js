@@ -6,7 +6,7 @@
       let all_contexts = drupalSettings.layoutContexts,
         top_level = (new URLSearchParams(window.location.search)).get('context'),
         active_limited = [],
-        context_found = false;
+        context_found = !top_level;
 
       for (let k in all_contexts) {
         if (k == top_level) {
