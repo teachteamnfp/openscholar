@@ -265,4 +265,35 @@ class ScriptHandler {
     }
   }
 
+  /**
+   * Installs custom toolbar library.
+   *
+   * @param \Composer\Script\Event $event
+   *   Composer event.
+   */
+  public static function installOsToolbarLibrary(Event $event) {
+    $fs = new ComposerFilesystem();
+    $io = $event->getIO();
+    $root = realpath($event->getComposer()->getPackage()->getDistUrl());
+    $toolbar_source = "$root/profile/libraries/os-toolbar";
+    $toolbar_destination = "$root/web/libraries/os-toolbar";
+    $toolbar_files = [
+      'os-toolbar.css',
+    ];
+    try {
+      $io->write(sprintf("Symlinking toolbar library..."));
+      $fs->ensureDirectoryExists($toolbar_destination);
+
+      foreach ($toolbar_files as $file) {
+        $fs->relativeSymlink("$toolbar_source/$file", "$toolbar_destination/$file");
+        $io->write(sprintf("Symlinked %s", "$toolbar_source/$file"));
+      }
+
+      $io->write(sprintf("Symlinking complete."));
+    }
+    catch (\Exception $e) {
+      throw new \RuntimeException($e->getMessage());
+    }
+  }
+
 }
