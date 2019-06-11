@@ -150,6 +150,8 @@ class PublicationSettingsForm extends CpSettingBase {
       '#title' => $this->t('Preferred bibliographic format'),
       '#default_value' => $this->styler->getStyle()->id(),
       '#weight' => -1,
+      '#prefix' => '<div class="publication-format">',
+      '#suffix' => '</div>',
       '#options' => $styles_options,
     ];
 
@@ -157,7 +159,7 @@ class PublicationSettingsForm extends CpSettingBase {
     $form['os_publications_citation_examples'] = [
       '#markup' => $cite_example_output,
       '#weight' => 0,
-      '#prefix' => '<div id="citation-examples">',
+      '#prefix' => '<div id="citation-examples" class="citation-format-example">',
       '#suffix' => '</div>',
     ];
 
@@ -176,14 +178,18 @@ class PublicationSettingsForm extends CpSettingBase {
       '#options' => $publication_types_options,
       '#weight' => 0,
       '#sorted_options' => TRUE,
+      '#prefix' => '<div class="publication-display form-inline">',
+      '#suffix' => '</div>',
     ];
-
+    $form['markup_start'] = [
+      "#type" => 'markup',
+      '#prefix' => '<div class="citation-content-wrapper">',
+    ];
     $form['os_publications_note_in_teaser'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Show note content in teaser'),
       '#default_value' => $publication_config->get('note_in_teaser'),
-      '#weight' => 0,
-      '#prefix' => '<label>' . $this->t('Notes') . '</label>',
+      '#prefix' => '<div class="citation-row"><span class="label">' . $this->t('Notes') . '</span>',
     ];
 
     $form['biblio_sort'] = [
@@ -196,23 +202,21 @@ class PublicationSettingsForm extends CpSettingBase {
         'type' => $this->t('Type'),
         'year' => $this->t('Year'),
       ],
-      '#weight' => 0,
     ];
 
     $form['biblio_order'] = [
       '#type' => 'select',
       '#default_value' => $publication_config->get('biblio_order'),
       '#options' => ['DESC' => $this->t('Descending'), 'ASC' => $this->t('Ascending')],
-      '#weight' => 0,
       '#title' => $this->t('Sort Order'),
+      '#suffix' => '</div>',
     ];
 
     $form['os_publications_shorten_citations'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Include Short URLs in citations'),
       '#default_value' => $publication_config->get('shorten_citations'),
-      '#weight' => 2,
-      '#prefix' => '<label>Short URLs</label>',
+      '#prefix' => '<div class="citation-row"><span class="label">' . $this->t('Short URLs') . '</span>',
     ];
 
     $form['os_publications_export_format'] = [
@@ -222,6 +226,7 @@ class PublicationSettingsForm extends CpSettingBase {
       '#options' => array_map(function ($format) {
         return $format['label'];
       }, $this->formatManager->getExportDefinitions()),
+      '#suffix' => '</div>',
     ];
 
     $plugins = $this->pluginManager->getDefinitions();
@@ -234,6 +239,12 @@ class PublicationSettingsForm extends CpSettingBase {
       '#title' => $this->t('Distribute to repositories'),
       '#default_value' => $publication_config->get('citation_distribute_autoflags'),
       '#options' => $distribution_options,
+      '#prefix' => '<div class="citation-row">',
+      '#suffix' => '</div>',
+    ];
+    $form['markup_end'] = [
+      "#type" => 'markup',
+      '#prefix' => '</div>',
     ];
 
     $form['#attached']['library'][] = 'os_publications/drupal.os_publications';
