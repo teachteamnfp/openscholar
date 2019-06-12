@@ -4,11 +4,37 @@ namespace Drupal\cp_appearance\Entity\Form;
 
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\cp_appearance\AppearanceSettingsBuilderInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Form handler for CustomTheme add and edit.
  */
 class CustomThemeForm extends EntityForm {
+
+  /**
+   * Appearance settings builder service.
+   *
+   * @var \Drupal\cp_appearance\AppearanceSettingsBuilderInterface
+   */
+  protected $appearanceSettingsBuilder;
+
+  /**
+   * Creates a new CustomThemeForm object.
+   *
+   * @param \Drupal\cp_appearance\AppearanceSettingsBuilderInterface $appearance_settings_builder
+   *   Appearance settings builder service.
+   */
+  public function __construct(AppearanceSettingsBuilderInterface $appearance_settings_builder) {
+    $this->appearanceSettingsBuilder = $appearance_settings_builder;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static($container->get('cp_appearance.appearance_settings_builder'));
+  }
 
   /**
    * {@inheritdoc}
@@ -17,6 +43,11 @@ class CustomThemeForm extends EntityForm {
     $form = parent::form($form, $form_state);
     /** @var \Drupal\cp_appearance\Entity\CustomThemeInterface $entity */
     $entity = $this->entity;
+    $base_theme_options = [];
+
+    foreach ($this->appearanceSettingsBuilder->getThemes() as $key => $data) {
+      $base_theme_options[$key] = $data->info['name'];
+    }
 
     $form['label'] = [
       '#title' => $this->t('Custom Theme Name'),
@@ -45,15 +76,11 @@ class CustomThemeForm extends EntityForm {
       ],
     ];
 
-    // TODO: Use legit options.
     $form['base_theme'] = [
       '#type' => 'select',
       '#title' => $this->t('Parent Theme'),
       '#default_value' => $entity->getBaseTheme(),
-      '#options' => [
-        'theme_1' => $this->t('Theme 1'),
-        'theme_2' => $this->t('Theme 2'),
-      ],
+      '#options' => $base_theme_options,
       '#required' => TRUE,
     ];
 
