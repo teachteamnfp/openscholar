@@ -9,6 +9,8 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\cp_settings\CpSettingBase;
 use Drupal\file\Entity\File;
+use Drupal\file\FileUsage\FileUsageInterface;
+use Drupal\image_widget_crop\ImageWidgetCropInterface;
 use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -42,6 +44,20 @@ class ProfilesSetting extends CpSettingBase {
   protected $renderer;
 
   /**
+   * File usage interface to configurate an file object.
+   *
+   * @var Drupal\file\FileUsage\FileUsageInterface
+   */
+  protected $fileUsage;
+
+  /**
+   * Instance of API ImageWidgetCropManager.
+   *
+   * @var \Drupal\image_widget_crop\ImageWidgetCropInterface
+   */
+  protected $imageWidgetCropManager;
+
+  /**
    * ProfilesSetting constructor.
    *
    * @param array $configuration
@@ -56,11 +72,17 @@ class ProfilesSetting extends CpSettingBase {
    *   Entity Display Repository Interface.
    * @param \Drupal\Core\Render\RendererInterface $renderer
    *   Renderer.
+   * @param \Drupal\file\FileUsage\FileUsageInterface $file_usage
+   *   File usage service.
+   * @param \Drupal\image_widget_crop\ImageWidgetCropInterface $iwc_manager
+   *   The ImageWidgetCrop manager service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, VsiteContextManagerInterface $vsite_context_manager, EntityDisplayRepositoryInterface $entity_display_repository, RendererInterface $renderer) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, VsiteContextManagerInterface $vsite_context_manager, EntityDisplayRepositoryInterface $entity_display_repository, RendererInterface $renderer, FileUsageInterface $file_usage, ImageWidgetCropInterface $iwc_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $vsite_context_manager);
     $this->entityDisplayRepository = $entity_display_repository;
     $this->renderer = $renderer;
+    $this->fileUsage = $file_usage;
+    $this->imageWidgetCropManager = $iwc_manager;
   }
 
   /**
@@ -73,7 +95,9 @@ class ProfilesSetting extends CpSettingBase {
       $plugin_definition,
       $container->get('vsite.context_manager'),
       $container->get('entity_display.repository'),
-      $container->get('renderer')
+      $container->get('renderer'),
+      $container->get('file.usage'),
+      $container->get('image_widget_crop.manager')
     );
   }
 
@@ -153,33 +177,22 @@ class ProfilesSetting extends CpSettingBase {
       '#upload_validators' => [
         'file_validate_extensions' => [$allowed_file_types],
       ],
+      '#multiple' => FALSE,
     ];
     if ($default_fid = $config->get('default_image_fid')) {
       $form['default_image']['default_image_fid']['#default_value'] = [$default_fid];
 
-      // Implement basic preview mode, it should be deleted after crop finished.
       $file = File::load($default_fid);
-      $file_variables = [
-        'style_name' => 'medium',
-        'uri' => $file->getFileUri(),
-      ];
-      // Determine image dimensions.
-      $image = \Drupal::service('image.factory')->get($file->getFileUri());
-      if ($image->isValid()) {
-        $file_variables['width'] = $image->getWidth();
-        $file_variables['height'] = $image->getHeight();
-      }
-      else {
-        $file_variables['width'] = $file_variables['height'] = NULL;
-      }
-
-      $form['default_image']['preview'] = [
-        '#weight' => -10,
-        '#theme' => 'image_style',
-        '#width' => $file_variables['width'],
-        '#height' => $file_variables['height'],
-        '#style_name' => $file_variables['style_name'],
-        '#uri' => $file_variables['uri'],
+      // The key of element are hardcoded into buildCropToForm function,
+      // ATM that is mendatory but can change easily.
+      $form['default_image']['image_crop'] = [
+        '#type' => 'image_crop',
+        '#file' => $file,
+        '#crop_type_list' => ['crop_16_9'],
+        '#crop_preview_image_style' => 'crop_thumbnail',
+        '#show_default_crop' => TRUE,
+        '#show_crop_area' => FALSE,
+        '#warn_mupltiple_usages' => TRUE,
       ];
     }
   }
@@ -191,12 +204,15 @@ class ProfilesSetting extends CpSettingBase {
     $config = $configFactory->getEditable('os_profiles.settings');
     $config->set('display_type', $form_state->getValue('display_type'));
     $config->set('disable_default_image', (bool) $form_state->getValue('disable_default_image'));
+    $config->set('image_crop', $form_state->getValue('image_crop'));
 
     $form_file = $form_state->getValue('default_image_fid', 0);
     if (!empty($form_file[0])) {
       $file = File::load($form_file[0]);
+      $this->fileUsage->add($file, 'os_profiles', 'form', $file->id());
       $file->setPermanent();
       $file->save();
+      $form_state->getFormObject()->setEntity($file);
       $config->set('default_image_fid', $file->id());
     }
     else {
@@ -208,6 +224,10 @@ class ProfilesSetting extends CpSettingBase {
     }
 
     $config->save(TRUE);
+    if (!empty($form_state->getValue('image_crop')) && !empty($file)) {
+      // Call IWC manager to attach crop defined into image file.
+      $this->imageWidgetCropManager->buildCropToForm($form_state);
+    }
   }
 
   /**

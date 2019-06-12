@@ -11,3 +11,6 @@ os_profiles.settings:
     default_image_fid:
       type: integer
       label: 'Default image'
+    image_crop_applied:
+      type: sequence
+      label: 'Image crop applied'

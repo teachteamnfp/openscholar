@@ -2,3 +2,5 @@ display_type: teaser
 disable_default_image: false
 default_image_fid: null
 image_crop: null
+_core:
+  default_config_hash: K97lQPkTKnEppBdnivwnjRaVFUROShSqs26kYfc96sQ

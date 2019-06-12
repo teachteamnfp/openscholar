@@ -8,6 +8,8 @@ use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\cp_settings\Plugin\CpSettingsManagerInterface;
+use Drupal\file\Entity\File;
+use Drupal\file\FileInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -28,6 +30,13 @@ class CpSettingsForm extends ConfigFormBase {
    * @var \Drupal\cp_settings\Annotation\CpSetting[]
    */
   protected $plugins = [];
+
+  /**
+   * Created file entity.
+   *
+   * @var \Drupal\file\Entity\File|null
+   */
+  protected $file = NULL;
 
   /**
    * Creates new CpSettingsForm object.
@@ -142,6 +151,31 @@ class CpSettingsForm extends ConfigFormBase {
     }
 
     parent::submitForm($form, $form_state);
+  }
+
+  /**
+   * Helper to expose file entity element.
+   *
+   * This method is mendatory to works with "buildCropToForm",
+   * for unicity with File entity compatibility.
+   *
+   * @return \Drupal\file\Entity\File|null
+   *   File saved by file_manager element.
+   *
+   * @see \Drupal\image_widget_crop\ImageWidgetCropManager::buildCropToForm
+   */
+  public function getEntity() {
+    return $this->file;
+  }
+
+  /**
+   * Helper to set file entity element.
+   *
+   * @param \Drupal\file\FileInterface $file
+   *   File entity.
+   */
+  public function setEntity(FileInterface $file) {
+    $this->file = $file;
   }
 
 }
