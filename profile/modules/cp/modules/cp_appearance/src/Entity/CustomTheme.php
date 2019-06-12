@@ -75,7 +75,7 @@ class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
   /**
    * {@inheritdoc}
    */
-  public function getBaseTheme(): string {
+  public function getBaseTheme(): ?string {
     return $this->baseTheme;
   }
 

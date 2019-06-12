@@ -23,9 +23,9 @@ interface CustomThemeInterface extends ConfigEntityInterface {
   /**
    * Returns the base theme of the custom theme.
    *
-   * @return string
+   * @return string|null
    *   The theme name.
    */
-  public function getBaseTheme(): string;
+  public function getBaseTheme(): ?string;
 
 }
