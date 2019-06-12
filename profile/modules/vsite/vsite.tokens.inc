@@ -7,6 +7,7 @@
 
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\image\Entity\ImageStyle;
+use Drupal\file\Entity\File;
 
 /**
  * Implements hook_token_info().
@@ -30,6 +31,11 @@ function vsite_token_info() {
   $settings['site_description'] = [
     'name' => t("Site description"),
     'description' => t("Field site description of active personal group."),
+  ];
+
+  $settings['site_favicon'] = [
+    'name' => t("Site favicon"),
+    'description' => t("Field site favicon URL of active personal group."),
   ];
 
   return [
@@ -99,6 +105,21 @@ function vsite_tokens($type, $tokens, array $data, array $options, BubbleableMet
               $replacements[$original] = check_markup($value[0]['value'], $value[0]['format']);
             }
           }
+          break;
+
+        case 'site_favicon':
+          /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContext */
+          $config_factory = \Drupal::service('config.factory');
+          $config = $config_factory->get('vsite.settings');
+          $favicon_fid = $config->get('favicon_fid');
+          if (!empty($favicon_fid) && $file = File::load($favicon_fid)) {
+            $favicon_url = file_create_url($file->getFileUri());
+          }
+          else {
+            $base_theme_path = drupal_get_path('theme', 'os_base');
+            $favicon_url = file_create_url($base_theme_path . '/favicon.ico');
+          }
+          $replacements[$original] = $favicon_url;
           break;
       }
     }

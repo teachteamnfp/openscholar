@@ -188,6 +188,7 @@ class CpRoleListBuilder extends DraggableListBuilder {
         'weight' => 5,
         'url' => Url::fromRoute('cp_roles.role.role_permission_form', [
           'group_role' => $entity->id(),
+          'group_type' => $this->groupType->id(),
         ]),
       ];
 
@@ -197,6 +198,15 @@ class CpRoleListBuilder extends DraggableListBuilder {
           'weight' => 10,
           'url' => $this->ensureDestination(Url::fromRoute('cp_roles.role.edit_form', [
             'group_role' => $entity->id(),
+          ])),
+        ];
+
+        $operations['delete'] = [
+          'title' => $this->t('Delete'),
+          'weight' => 15,
+          'url' => $this->ensureDestination(Url::fromRoute('cp_roles.role.delete_form', [
+            'group_role' => $entity->id(),
+            'group_type' => $this->groupType->id(),
           ])),
         ];
       }
