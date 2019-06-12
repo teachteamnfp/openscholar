@@ -53,7 +53,7 @@ class CpMenuLinksTest extends OsExistingSiteJavascriptTestBase {
   }
 
   /**
-   * Tests Menu List drag re-ordering.
+   * Tests Menu Link edit.
    */
   public function testMenuLinkEdit(): void {
 
@@ -61,7 +61,7 @@ class CpMenuLinksTest extends OsExistingSiteJavascriptTestBase {
     $session = $this->assertSession();
     $page = $this->getCurrentPage();
 
-    $link = $page->find('css', '.Home #edit_menu_link');
+    $link = $page->find('css', '.Calendar #edit_menu_link');
     $link->click();
     $session->waitForElementVisible('css', '.cp-menu-link-edit');
     $edit = [
@@ -79,13 +79,13 @@ class CpMenuLinksTest extends OsExistingSiteJavascriptTestBase {
     $this->visit('/test-menu/cp/build/menu');
     $session = $this->assertSession();
     $page = $this->getCurrentPage();
-    $session->elementExists('css', '#cp-build-menu-table .Home');
-    $link = $page->find('css', '.Home #delete_menu_link');
+    $session->elementExists('css', '#cp-build-menu-table .Calendar');
+    $link = $page->find('css', '.Calendar #delete_menu_link');
     $link->click();
     $session->waitForElementVisible('css', '.cp-delete-menu-link');
     $this->submitForm([], 'Confirm');
     $session->waitForElementVisible('css', '#cp-build-menu-table');
-    $session->elementNotExists('css', '#cp-build-menu-table .Home');
+    $session->elementNotExists('css', '#cp-build-menu-table .Calendar');
   }
 
 }

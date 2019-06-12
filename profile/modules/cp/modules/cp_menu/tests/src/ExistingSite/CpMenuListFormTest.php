@@ -81,10 +81,9 @@ class CpMenuListFormTest extends OsExistingSiteJavascriptTestBase {
     $session = $this->assertSession();
     $session->elementExists('css', '#cp-menu-build');
     $session->elementExists('css', '#cp-build-menu-table');
-    $session->elementAttributeContains('css', '.menu-name', 'name', "links[menu-primary-$this->id][title][menu-name]");
     $session->elementExists('css', '.section-heading');
-    $session->elementExists('css', ".section-menu-primary-$this->id-message");
-    $session->elementExists('css', ".section-menu-secondary-$this->id-message");
+    $session->elementExists('css', ".section-main-message");
+    $session->elementExists('css', ".section-footer-message");
     $session->linkByHrefExists('/test-menu/cp/build/add-menu');
   }
 

@@ -118,17 +118,20 @@ class MenuBuildForm extends FormBase {
   public function buildForm(array $form, FormStateInterface $form_state): array {
 
     $vsite = $this->vsiteManager->getActiveVsite();
-    $vsiteId = $vsite->id();
     $menus = $vsite->getContent('group_menu:menu');
 
     if (!$menus) {
       $this->menus = [
         'main' => 'Primary Menu',
+        'footer' => 'Secondary Menu',
       ];
+      $revert = array_keys($this->menus);
     }
     elseif ($menus) {
       foreach ($menus as $menu) {
         $this->menus[$menu->entity_id_str->target_id] = $menu->label();
+        $revert = array_keys($this->menus);
+        $revert = count($revert) > 2 ? array_slice($revert, 0, 2) : $revert;
       }
     }
 
@@ -140,11 +143,6 @@ class MenuBuildForm extends FormBase {
       $this->t('Delete'),
       $this->t('Menu'),
       $this->t('Weight'),
-    ];
-
-    $revert = [
-      'menu-primary-' . $vsiteId,
-      'menu-secondary-' . $vsiteId,
     ];
 
     $form['links'] = [
@@ -227,18 +225,8 @@ class MenuBuildForm extends FormBase {
         ],
       ];
 
-      $url = Url::fromRoute('cp.build.add_new_link', ['menu' => $m], [
-        'attributes' => [
-          'class' => ['use-ajax'],
-          'data-dialog-type' => 'modal',
-          'data-dialog-options' => json_encode(['width' => '50%']),
-          'id' => 'add_new_link',
-        ],
-      ]);
-      $newLink = Link::fromTextAndUrl('+ Add new Link', $url)->toString();
-
       $form['links'][$m]['new_link'] = [
-        '#markup' => $newLink,
+        '#markup' => $this->t('+ Add new Link'),
         '#wrapper_attributes' => [
           'colspan' => 2,
         ],
@@ -367,6 +355,8 @@ class MenuBuildForm extends FormBase {
               $old_parent = $this->menuLinkManager->getDefinition($value)['title'];
             }
           }
+          // Map changes to the new tree. It is safe to compare titles as for
+          // the first time we always know what those are.
           foreach ($new_tree as $link) {
             if ($link->link->getTitle()->__toString() == $old_parent) {
               $updated_values['parent'] = $link->link->getPluginId();

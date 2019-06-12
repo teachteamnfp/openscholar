@@ -10,6 +10,7 @@ use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
+use Drupal\cp_menu\MenuHelperInterface;
 use Drupal\vsite\Plugin\VsiteContextManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -55,6 +56,13 @@ class AddNewMenuForm extends FormBase {
   protected $vsite;
 
   /**
+   * CpMenu helper service.
+   *
+   * @var \Drupal\cp_menu\MenuHelperInterface
+   */
+  protected $menuHelper;
+
+  /**
    * AddNewMenuForm constructor.
    *
    * @param \Drupal\Core\Config\ConfigFactory $config_factory
@@ -63,12 +71,15 @@ class AddNewMenuForm extends FormBase {
    *   EntityTypeManager instance.
    * @param \Drupal\vsite\Plugin\VsiteContextManager $vsite_manager
    *   VsiteContextManager instance.
+   * @param \Drupal\cp_menu\MenuHelperInterface $menu_helper
+   *   MenuHelperInterface instance.
    */
-  public function __construct(ConfigFactory $config_factory, EntityTypeManager $entity_type_manager, VsiteContextManager $vsite_manager) {
+  public function __construct(ConfigFactory $config_factory, EntityTypeManager $entity_type_manager, VsiteContextManager $vsite_manager, MenuHelperInterface $menu_helper) {
     $this->configFactory = $config_factory;
     $this->entityManager = $entity_type_manager;
     $this->vsiteManager = $vsite_manager;
     $this->vsite = $this->vsiteManager->getActiveVsite();
+    $this->menuHelper = $menu_helper;
   }
 
   /**
@@ -81,7 +92,8 @@ class AddNewMenuForm extends FormBase {
     return new static(
       $container->get('config.factory'),
       $container->get('entity_type.manager'),
-      $container->get('vsite.context_manager')
+      $container->get('vsite.context_manager'),
+      $container->get('cp_menu.menu_helper')
     );
   }
 
@@ -149,6 +161,12 @@ class AddNewMenuForm extends FormBase {
    *   The form state.
    */
   public function submitForm(array &$form, FormStateInterface $form_state) : void {
+    $menus = $this->vsite->getContent('group_menu:menu');
+    // If first time then create a new menu by replicating shared menu.
+    if (!$menus) {
+      // Create new menus to maintain it's unifromity with the third one.
+      $this->menuHelper->createVsiteMenus($this->vsite);
+    }
     $form_state->setRebuild(TRUE);
   }
 
@@ -176,14 +194,10 @@ class AddNewMenuForm extends FormBase {
     else {
       $groupMenu = $this->entityManager->getStorage('menu')->create([
         'id' => "menu-" . $form_state->getValue('menu_name') . "-" . $this->vsite->id(),
-        'label' => $form_state->getValue('title'),
+        'label' => $this->t('@title', ['@title' => $form_state->getValue('title')]),
       ]);
       $groupMenu->save();
       $this->vsite->addContent($groupMenu, 'group_menu:menu');
-      $config = $this->configFactory->getEditable('cp_menu.settings');
-      $menus = $config->get('menus');
-      $menus[$groupMenu->id()] = $groupMenu->label();
-      $config->set('menus', $menus)->save();
       $currentURL = Url::fromRoute('cp.build.menu');
       $response->addCommand(new RedirectCommand($currentURL->toString()));
     }
@@ -200,9 +214,14 @@ class AddNewMenuForm extends FormBase {
    *   If menu id already exists.
    */
   public function cpMenuExists($menu_name) {
-    $menus = $this->configFactory->getEditable('cp_menu.settings')->get('menus');
     $menu_name = "menu-" . $menu_name . "-" . $this->vsite->id();
-    return isset($menus[$menu_name]);
+    $menus = $this->vsite->getContent('group_menu:menu');
+    foreach ($menus as $menu) {
+      if ($menu_name == $menu->entity_id_str->target_id) {
+        return TRUE;
+      }
+    }
+    return FALSE;
   }
 
 }

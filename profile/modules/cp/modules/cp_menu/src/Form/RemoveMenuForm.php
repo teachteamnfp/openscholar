@@ -8,6 +8,7 @@ use Drupal\Core\Form\ConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Menu\MenuLinkManagerInterface;
 use Drupal\Core\Url;
+use Drupal\cp_menu\MenuHelperInterface;
 use Drupal\vsite\Plugin\VsiteContextManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -59,6 +60,13 @@ class RemoveMenuForm extends ConfirmFormBase {
   protected $menuLinkManager;
 
   /**
+   * Menu helper service.
+   *
+   * @var \Drupal\cp_menu\MenuHelperInterface
+   */
+  protected $menuHelper;
+
+  /**
    * Constructor to initialize instances.
    *
    * @param \Drupal\Core\Config\ConfigFactory $config_factory
@@ -69,8 +77,10 @@ class RemoveMenuForm extends ConfirmFormBase {
    *   Vsite manager instance.
    * @param \Drupal\Core\Menu\MenuLinkManagerInterface $menu_link_manager
    *   MenuLink manager instance.
+   * @param \Drupal\cp_menu\MenuHelperInterface $menu_helper
+   *   Menu helper instance.
    */
-  public function __construct(ConfigFactory $config_factory, EntityTypeManager $entity_type_manager, VsiteContextManager $vsite_manager, MenuLinkManagerInterface $menu_link_manager) {
+  public function __construct(ConfigFactory $config_factory, EntityTypeManager $entity_type_manager, VsiteContextManager $vsite_manager, MenuLinkManagerInterface $menu_link_manager, MenuHelperInterface $menu_helper) {
     $this->configFactory = $config_factory;
     $this->entityManager = $entity_type_manager;
     $this->vsiteManager = $vsite_manager;
@@ -80,6 +90,7 @@ class RemoveMenuForm extends ConfirmFormBase {
       'menu-primary-' . $this->vsiteId,
       'menu-secondary-' . $this->vsiteId,
     ];
+    $this->menuHelper = $menu_helper;
   }
 
   /**
@@ -93,7 +104,8 @@ class RemoveMenuForm extends ConfirmFormBase {
       $container->get('config.factory'),
       $container->get('entity_type.manager'),
       $container->get('vsite.context_manager'),
-      $container->get('plugin.manager.menu.link')
+      $container->get('plugin.manager.menu.link'),
+      $container->get('cp_menu.menu_helper')
     );
   }
 
@@ -147,15 +159,29 @@ class RemoveMenuForm extends ConfirmFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     // Delete all links and add Home if Primary Menu.
+    $vsite = $this->vsiteManager->getActiveVsite();
+    $menus = $vsite->getContent('group_menu:menu');
+    // If first time then create a new menu by replicating shared menu.
+    if (!$menus) {
+      if ($this->id === 'main') {
+        // Create new primary menu with home link & map secondary menu changes.
+        $this->menuHelper->resetVsiteMenus($vsite);
+      }
+      elseif ($this->id === 'footer') {
+        $this->menuHelper->resetVsiteMenus($vsite, TRUE);
+      }
+      $form_state->setRedirect('cp.build.menu');
+      return;
+    }
+
     if ($this->id === 'menu-primary-' . $this->vsiteId) {
       $this->menuLinkManager->deleteLinksInMenu($this->id);
       // Add Home menu link for group if enabled.
       $menu_content_storage = $this->entityManager->getStorage('menu_link_content');
-      $weight = 5;
-      $path = 'internal:/' . $this->vsiteManager->getActivePurl();
+      $weight = -1;
       $menu_content_storage->create([
         'title' => t('Home'),
-        'link' => ['uri' => $path],
+        'link' => ['uri' => 'internal:/'],
         'menu_name' => $this->id,
         'weight' => $weight,
         'expanded' => TRUE,
@@ -170,10 +196,6 @@ class RemoveMenuForm extends ConfirmFormBase {
       $groupMenu = $this->entityManager->getStorage('menu')->load($this->id);
       $groupMenu->delete();
       $this->menuLinkManager->deleteLinksInMenu($this->id);
-      $config = $this->configFactory->getEditable('cp_menu.settings');
-      $menus = $config->get('menus');
-      unset($menus[$this->id]);
-      $config->set('menus', $menus)->save();
     }
     $form_state->setRedirect('cp.build.menu');
   }

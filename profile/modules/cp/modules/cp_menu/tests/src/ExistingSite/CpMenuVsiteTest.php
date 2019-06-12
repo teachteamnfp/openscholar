@@ -12,7 +12,7 @@ use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
  *
  * @package Drupal\Tests\cp_menu\ExistingSite
  */
-class CpMenuDefaultTest extends OsExistingSiteTestBase {
+class CpMenuVsiteTest extends OsExistingSiteTestBase {
   /**
    * Test group.
    *
@@ -57,6 +57,7 @@ class CpMenuDefaultTest extends OsExistingSiteTestBase {
     $this->drupalLogin($this->groupAdmin);
     $this->id = $this->group->id();
 
+    $this->menuHelper = $this->container->get('cp_menu.menu_helper');
     $this->database = $this->container->get('database');
     $this->menuLink = $this->container->get('plugin.manager.menu.link');
 
@@ -65,7 +66,12 @@ class CpMenuDefaultTest extends OsExistingSiteTestBase {
   /**
    * Tests that two menus are created by default.
    */
-  public function testDefaultMenu(): void {
+  public function testVsiteMenuService(): void {
+    // Test if the service creates a new tree.
+    $tree = $this->menuHelper->createVsiteMenus($this->group);
+    $this->assertNotNull($tree, 'No tree found.');
+
+    // Test new menu creation when service is called.
     $query = $this->database
       ->select('config', 'con')
       ->fields('con', [
@@ -75,12 +81,8 @@ class CpMenuDefaultTest extends OsExistingSiteTestBase {
     $query->condition('con.name', "system.menu.menu-secondary-$this->id");
     $menus = $query->execute();
     $this->assertNotNull($menus, 'No matching menus found.');
-  }
 
-  /**
-   * Tests that Primary menu has links and is not empty.
-   */
-  public function testDefaultLinks(): void {
+    // Tests that Primary menu has links and is not empty.
     $menuCount = $this->menuLink->countMenuLinks("menu-primary-$this->id");
     $this->assertNotEquals('0', $menuCount);
   }
