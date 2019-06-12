@@ -106,11 +106,6 @@ class CpMenuVsiteTest extends OsExistingSiteTestBase {
     // Tests that Primary menu has just 1 link.
     $menuCount = $this->menuLink->countMenuLinks("menu-primary-$this->id");
     $this->assertEquals('1', $menuCount);
-
-    // Test if the service deletes all secondary menu links.
-    $this->menuHelper->resetVsiteMenus($this->group, TRUE);
-    $menuCount = $this->menuLink->countMenuLinks("menu-secondary-$this->id");
-    $this->assertEquals('0', $menuCount);
   }
 
   /**
