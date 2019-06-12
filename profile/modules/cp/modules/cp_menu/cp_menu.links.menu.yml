@@ -3,3 +3,4 @@ cp_menu.home:
   route_name: <front>
   menu_name: main
   weight: -50
+  
