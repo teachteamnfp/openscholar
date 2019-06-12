@@ -5,6 +5,8 @@ namespace Drupal\cp_menu\Form;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Menu\MenuLinkManagerInterface;
+use Drupal\cp_menu\MenuHelperInterface;
+use Drupal\vsite\Plugin\VsiteContextManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -22,13 +24,33 @@ class EditMenuLinkForm extends FormBase {
   protected $menuLinkManager;
 
   /**
+   * Vsite Manager service.
+   *
+   * @var \Drupal\vsite\Plugin\VsiteContextManager
+   */
+  protected $vsiteManager;
+
+  /**
+   * Menu helper service.
+   *
+   * @var \Drupal\cp_menu\MenuHelperInterface
+   */
+  protected $menuHelper;
+
+  /**
    * EditMenuLinkForm constructor.
    *
    * @param \Drupal\Core\Menu\MenuLinkManagerInterface $menu_link_manager
    *   MenuLinkManager instance.
+   * @param \Drupal\vsite\Plugin\VsiteContextManager $vsite_manager
+   *   Vsite Manager instance.
+   * @param \Drupal\cp_menu\MenuHelperInterface $menu_helper
+   *   Menu helper instance.
    */
-  public function __construct(MenuLinkManagerInterface $menu_link_manager) {
+  public function __construct(MenuLinkManagerInterface $menu_link_manager, VsiteContextManager $vsite_manager, MenuHelperInterface $menu_helper) {
     $this->menuLinkManager = $menu_link_manager;
+    $this->vsiteManager = $vsite_manager;
+    $this->menuHelper = $menu_helper;
   }
 
   /**
@@ -36,7 +58,9 @@ class EditMenuLinkForm extends FormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('plugin.manager.menu.link')
+      $container->get('plugin.manager.menu.link'),
+      $container->get('vsite.context_manager'),
+      $container->get('cp_menu.menu_helper')
     );
   }
 
@@ -68,7 +92,7 @@ class EditMenuLinkForm extends FormBase {
   public function buildForm(array $form, FormStateInterface $form_state, $link_id = NULL) : array {
 
     $link = $this->menuLinkManager->getDefinition($link_id);
-    $form['#link_id'] = $link_id;
+    $form['#link'] = $link;
 
     $form['title'] = [
       '#title' => $this->t('Title'),
@@ -109,13 +133,29 @@ class EditMenuLinkForm extends FormBase {
    * @throws \Drupal\Component\Plugin\Exception\PluginException
    */
   public function submitForm(array &$form, FormStateInterface $form_state) : void {
-    $link_id = $form['#link_id'];
+    $link = $form['#link'];
     if ($form_state->getValue('op')->__toString() === 'Save') {
-      $updated_values['title'] = $form_state->getValue('title');
-      if ($form_state->getValue('tooltip')) {
-        $updated_values['description'] = $form_state->getValue('tooltip');
+      // If changes are there then only proceed.
+      if ($link['title'] != $form_state->getValue('title') || $link['description'] != $form_state->getValue('tooltip')) {
+        $updated_values['title'] = $this->t('@title', ['@title' => $form_state->getValue('title')]);
+        $updated_values['description'] = $this->t('@tooltip', ['@tooltip' => $form_state->getValue('tooltip')]);
+
+        $vsite = $this->vsiteManager->getActiveVsite();
+        $menus = $vsite->getContent('group_menu:menu');
+        // If first time then create a new menu by replicating shared menu.
+        if (!$menus) {
+          // Create new menus and get the tree for editing it's menu.
+          $tree = $this->menuHelper->createVsiteMenus($vsite);
+          foreach ($tree as $element) {
+            if ($link['title'] == $element->link->getTitle()) {
+              $pluginId = $element->link->getPluginId();
+            }
+          }
+        }
+        $pluginId = $pluginId ?? $link['id'];
+        // Update definitions.
+        $this->menuLinkManager->updateDefinition($pluginId, $updated_values);
       }
-      $this->menuLinkManager->updateDefinition($link_id, $updated_values);
     }
     $form_state->setRedirect('cp.build.menu');
   }

@@ -6,6 +6,8 @@ use Drupal\Core\Form\ConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Menu\MenuLinkManagerInterface;
 use Drupal\Core\Url;
+use Drupal\cp_menu\MenuHelperInterface;
+use Drupal\vsite\Plugin\VsiteContextManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -37,13 +39,33 @@ class DeleteMenuLinkForm extends ConfirmFormBase {
   protected $menuLinkManager;
 
   /**
+   * Vsite Manager service.
+   *
+   * @var \Drupal\vsite\Plugin\VsiteContextManager
+   */
+  protected $vsiteManager;
+
+  /**
+   * Menu helper service.
+   *
+   * @var \Drupal\cp_menu\MenuHelperInterface
+   */
+  protected $menuHelper;
+
+  /**
    * Constructor to initialize instances.
    *
    * @param \Drupal\Core\Menu\MenuLinkManagerInterface $menu_link_manager
    *   MenuLink manager instance.
+   * @param \Drupal\vsite\Plugin\VsiteContextManager $vsite_manager
+   *   Vsite Manager instance.
+   * @param \Drupal\cp_menu\MenuHelperInterface $menu_helper
+   *   Menu helper instance.
    */
-  public function __construct(MenuLinkManagerInterface $menu_link_manager) {
+  public function __construct(MenuLinkManagerInterface $menu_link_manager, VsiteContextManager $vsite_manager, MenuHelperInterface $menu_helper) {
     $this->menuLinkManager = $menu_link_manager;
+    $this->vsiteManager = $vsite_manager;
+    $this->menuHelper = $menu_helper;
   }
 
   /**
@@ -54,7 +76,9 @@ class DeleteMenuLinkForm extends ConfirmFormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('plugin.manager.menu.link')
+      $container->get('plugin.manager.menu.link'),
+      $container->get('vsite.context_manager'),
+      $container->get('cp_menu.menu_helper')
     );
   }
 
@@ -108,8 +132,22 @@ class DeleteMenuLinkForm extends ConfirmFormBase {
    * @throws \Drupal\Component\Plugin\Exception\PluginException
    */
   public function submitForm(array &$form, FormStateInterface $form_state) : void {
+
+    $vsite = $this->vsiteManager->getActiveVsite();
+    $menus = $vsite->getContent('group_menu:menu');
+    // If first time then create a new menu by replicating shared menu.
+    if (!$menus) {
+      // Create new menus and get the tree for deleting it's menu.
+      $tree = $this->menuHelper->createVsiteMenus($vsite);
+      foreach ($tree as $element) {
+        if ($this->label == $element->link->getTitle()) {
+          $pluginId = $element->link->getPluginId();
+        }
+      }
+    }
+    $pluginId = $pluginId ?? $this->id;
     // Delete the link.
-    $this->menuLinkManager->removeDefinition($this->id);
+    $this->menuLinkManager->removeDefinition($pluginId);
     $form_state->setRedirect('cp.build.menu');
   }
 
