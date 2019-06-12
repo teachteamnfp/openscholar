@@ -104,10 +104,12 @@ if [[ $FORCE_REBUILD == "1" ]] || [[ "$(cmp -b 'openscholar/composer.json' '/tmp
   cd profile/themes
   ./../../node_modules/.bin/gulp sass || exit 1
 
-  cd profile/libraries/os-toolbar
-  ./../../../node_modules/gulp/bin/gulp sass || exit 1
+  cd ../..
 
-  cd ../../..
+  cd profile/libraries/os-toolbar
+  ./../../../node_modules/.bin/gulp sass || exit 1
+
+  cd ../../../..
 
   #remove install.php
   rm -Rf web/install.php || true
