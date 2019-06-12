@@ -1,0 +1,5 @@
+cp_menu.home:
+  title: 'Home'
+  route_name: <front>
+  menu_name: main
+  weight: -50
