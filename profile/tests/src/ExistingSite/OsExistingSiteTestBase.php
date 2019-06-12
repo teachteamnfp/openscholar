@@ -41,6 +41,7 @@ abstract class OsExistingSiteTestBase extends ExistingSiteBase {
    * {@inheritdoc}
    */
   public function tearDown() {
+    $this->cleanupEntities = array_reverse($this->cleanupEntities);
     parent::tearDown();
 
     foreach ($this->cleanUpConfigs as $config_entity) {
