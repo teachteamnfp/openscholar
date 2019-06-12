@@ -58,6 +58,22 @@ class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
   protected $baseTheme;
 
   /**
+   * Favicon file id.
+   *
+   * @var int
+   */
+  protected $favicon;
+
+  /**
+   * Image file ids.
+   *
+   * The images could be sprites, read-more-arrow, etc.
+   *
+   * @var int[]
+   */
+  protected $images;
+
+  /**
    * {@inheritdoc}
    */
   public function id() {
@@ -77,6 +93,36 @@ class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
    */
   public function getBaseTheme(): ?string {
     return $this->baseTheme;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getFavicon(): int {
+    return $this->favicon;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setFavicon(int $favicon): CustomThemeInterface {
+    $this->favicon = $favicon;
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getImages(): array {
+    return $this->images;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setImages(array $images): CustomThemeInterface {
+    $this->images = $images;
+    return $this;
   }
 
 }
