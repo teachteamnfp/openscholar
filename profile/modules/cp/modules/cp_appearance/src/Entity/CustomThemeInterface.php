@@ -31,10 +31,10 @@ interface CustomThemeInterface extends ConfigEntityInterface {
   /**
    * Returns the favicon of the custom theme.
    *
-   * @return int
+   * @return int|null
    *   The favicon file id.
    */
-  public function getFavicon(): int;
+  public function getFavicon(): ?int;
 
   /**
    * Sets the favicon of the custom theme.
@@ -50,10 +50,10 @@ interface CustomThemeInterface extends ConfigEntityInterface {
   /**
    * Returns the images of the custom theme.
    *
-   * @return int[]
+   * @return int[]|null
    *   The image file ids.
    */
-  public function getImages(): array;
+  public function getImages(): ?array;
 
   /**
    * Sets images for the custom theme.

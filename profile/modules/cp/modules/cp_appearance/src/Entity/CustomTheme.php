@@ -98,7 +98,7 @@ class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
   /**
    * {@inheritdoc}
    */
-  public function getFavicon(): int {
+  public function getFavicon(): ?int {
     return $this->favicon;
   }
 
@@ -113,7 +113,7 @@ class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
   /**
    * {@inheritdoc}
    */
-  public function getImages(): array {
+  public function getImages(): ?array {
     return $this->images;
   }
 

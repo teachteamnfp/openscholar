@@ -67,13 +67,13 @@ class CustomThemeForm extends EntityForm {
       '#disabled' => !$entity->isNew(),
     ];
 
-    // TODO: Set default_value.
     $form['favicon'] = [
       '#type' => 'managed_file',
       '#title' => $this->t('Favicon'),
       '#upload_validators' => [
         'file_validate_extensions' => ['png jpg jpeg'],
       ],
+      '#default_value' => $entity->getFavicon(),
     ];
 
     $form['base_theme'] = [
@@ -84,13 +84,13 @@ class CustomThemeForm extends EntityForm {
       '#required' => TRUE,
     ];
 
-    // TODO: Set default_value.
     $form['images'] = [
       '#type' => 'managed_file',
       '#title' => $this->t('Images'),
       '#upload_validators' => [
         'file_validate_extensions' => ['png jpg jpeg'],
       ],
+      '#default_value' => $entity->getImages(),
     ];
 
     // TODO: Set default_value.
