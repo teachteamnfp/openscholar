@@ -198,6 +198,7 @@ class CpRoleListBuilder extends DraggableListBuilder {
           'weight' => 10,
           'url' => $this->ensureDestination(Url::fromRoute('cp_roles.role.edit_form', [
             'group_role' => $entity->id(),
+            'group_type' => $this->groupType->id(),
           ])),
         ];
 
