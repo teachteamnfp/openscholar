@@ -116,7 +116,6 @@ class PagesTest extends TestBase {
       $web_assert->pageTextContains($page1->label());
       $web_assert->pageTextContains($book2->label());
 
-      $this->assertNotNull($web_assert->elementExists('css', '.block-entity-viewnode'));
       $web_assert->pageTextContains($page1->get('body')->first()->getValue()['value']);
 
       $this->visit($path_alias_manager->getAliasByPath("/node/{$event->id()}"));
