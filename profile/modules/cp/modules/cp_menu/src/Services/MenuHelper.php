@@ -78,9 +78,9 @@ class MenuHelper implements MenuHelperInterface {
     $this->mapPrimaryMenuLinks($group_menu);
 
     // Create vsite specific scondary menu.
-    $this->createSecondaryMenu($vsite);
+    $group_menu_secondary = $this->createSecondaryMenu($vsite);
     // Map Links from secondary to vsite specific menu.
-    $this->mapSecondaryMenuLinks($group_menu);
+    $this->mapSecondaryMenuLinks($group_menu_secondary);
 
     // Return newly created tree.
     return $this->menuTree->load('menu-primary-' . $vsite->id(), new MenuTreeParameters());
