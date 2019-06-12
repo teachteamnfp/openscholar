@@ -127,7 +127,7 @@ class PagesTest extends TestBase {
       $this->assertTrue(TRUE);
     }
     catch (ExpectationException $e) {
-      $this->fail(sprintf("Test failed: %s\nBacktrace: %s", $e->getMessage(), $e->getTraceAsString()));
+      $this->fail(sprintf("Test failed: %s\nBacktrace: %s\n%s", $e->getMessage(), $e->getTraceAsString(), $this->getSession()->getPage()->getContent()));
     }
   }
 

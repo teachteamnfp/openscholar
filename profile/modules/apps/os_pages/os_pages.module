@@ -83,10 +83,13 @@ function os_pages_entity_insert(EntityInterface $entity) {
       $section_layout = $layout_context_storage->create([
         'id' => $section_id,
         'label' => t('Section Layout For @label', ['@label' => $book->label()]),
-        'activationRules' => $alias_manager->getAliasByPath("/node/{$entity->id()}"),
+        'activationRules' => implode("\n", [
+          $alias_manager->getAliasByPath("/node/{$book->id()}"),
+          $alias_manager->getAliasByPath("/node/{$entity->id()}"),
+        ]),
         'weight' => 50,
         'data' => [
-          [
+          'book_navigation' => [
             'id' => 'book_navigation',
             'region' => 'sidebar_first',
             'weight' => 0,
