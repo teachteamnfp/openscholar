@@ -348,17 +348,21 @@ class MenuBuildForm extends FormBase {
 
           $new_tree = $form_state->get('new_tree') ?? [];
           $pluginId = NULL;
+          $old_parent = NULL;
           // Use the ID from the actual plugin instance since the hidden value
           // in the form could be tampered with.
           foreach ($updated_values as $key => $value) {
             if ($key == 'parent' && $value) {
               $old_parent = $this->menuLinkManager->getDefinition($value)['title'];
             }
+            if ($key == 'menu_name' && $value == 'footer') {
+              $updated_values[$key] = 'menu-secondary-' . $vsite->id();
+            }
           }
           // Map changes to the new tree. It is safe to compare titles as for
           // the first time we always know what those are.
           foreach ($new_tree as $link) {
-            if ($link->link->getTitle()->__toString() == $old_parent) {
+            if ($old_parent && $link->link->getTitle()->__toString() == $old_parent) {
               $updated_values['parent'] = $link->link->getPluginId();
             }
             if ($element['#item']->link->getTitle() == $link->link->getTitle()) {
