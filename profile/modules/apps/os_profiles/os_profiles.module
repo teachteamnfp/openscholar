@@ -111,3 +111,23 @@ function os_profiles_preprocess_node(&$variables) {
     $variables['content']['field_photo_person'][0] = $default_image_render_array;
   }
 }
+
+/**
+ * Implements hook_entity_view_mode_alter().
+ */
+function os_profiles_entity_view_mode_alter(&$view_mode, EntityInterface $entity, $context) {
+  if ($entity->getEntityType() != 'node' && $entity->bundle() != 'person') {
+    return;
+  }
+  /** @var \Symfony\Component\HttpFoundation\ParameterBag $attributes */
+  $attributes = Drupal::request()->attributes;
+  $parameters = $attributes->all();
+  if (empty($parameters['_route']) || $parameters['_route'] != 'view.people.page_1') {
+    return;
+  }
+  $profiles_view_mode = Drupal::config('os_profiles.settings')->get('display_type');
+  if (empty($profiles_view_mode)) {
+    return;
+  }
+  $view_mode = $profiles_view_mode;
+}
