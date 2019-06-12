@@ -1,0 +1,6 @@
+name: Bibcite preview button
+core: 8.x
+type: module
+description: Create a new preview button for bibcite reference entity
+dependencies:
+  - drupal:bibcite_entity
