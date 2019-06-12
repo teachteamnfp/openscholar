@@ -1,0 +1,32 @@
+os_widgets.save_layout:
+  path: '/cp/layout/save'
+  defaults:
+    _controller: '\Drupal\os_widgets\Controller\LayoutManagementController::saveLayout'
+    _title: 'Save Layout'
+  method: [ POST ]
+  requirements:
+    _group_permission: 'manage layout'
+    _group_member: 'TRUE'
+os_widgets.create_widget:
+  path: '/cp/layout/create/{block_type}'
+  defaults:
+    _controller: '\Drupal\os_widgets\Controller\WidgetLibraryController::createBlock'
+    _title: 'Create block'
+  requirements:
+    _group_permission: 'manage layout'
+    _group_member: 'TRUE'
+os_widgets.edit_widget:
+  path: '/cp/layout/edit/{block}'
+  defaults:
+    _entity_form: 'block.default'
+    _title: 'Configure block'
+  requirements:
+    _entity_access: 'block.update'
+os_widgets.delete_widget:
+  path: '/cp/layout/delete/{block}'
+  defaults:
+    _entity_form: 'block.delete'
+    _title: 'Delete block'
+  requirements:
+    _group_permission: 'manage layout'
+    _group_member: 'TRUE'

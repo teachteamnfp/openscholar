@@ -1,0 +1,17 @@
+diff --git a/src/Entity/GroupContent.php b/src/Entity/GroupContent.php
+index 645a804..b49c6f5 100644
+--- a/src/Entity/GroupContent.php
++++ b/src/Entity/GroupContent.php
+@@ -245,7 +245,11 @@ class GroupContent extends ContentEntityBase implements GroupContentInterface {
+         // trying to save an entity that just got deleted and triggered the
+         // deletion of its group content entities.
+         // @todo Revisit when https://www.drupal.org/node/2754399 lands.
+-        $entity->save();
++
++        // Force the entity to reload to make sure it hasn't already been deleted.
++        if (\Drupal::entityTypeManager()->getStorage($entity->getEntityTypeId())->load($entity->id())) {
++          $entity->save();
++        }
+ 
+         // If a membership gets deleted, we need to reset the internal group
+         // roles cache for the member in that group, but only if the user still
