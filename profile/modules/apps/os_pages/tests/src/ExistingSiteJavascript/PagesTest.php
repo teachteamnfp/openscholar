@@ -63,16 +63,15 @@ class PagesTest extends TestBase {
       ],
     ]);
     $section_block->save();
-    $layout = LayoutContext::load('os_pages_section_'.$book1->id());
+    $layout = LayoutContext::load('os_pages_section_' . $book1->id());
     $blocks = $layout->getBlockPlacements();
     $blocks[$section_block->id()] = [
       'id' => $section_block->id(),
       'region' => 'sidebar_second',
-      'weight' => 0
+      'weight' => 0,
     ];
     $layout->setBlockPlacements($blocks);
     $layout->save();
-
 
     $page_block = Block::create([
       'id' => "entityviewcontent_{$page1->id()}",

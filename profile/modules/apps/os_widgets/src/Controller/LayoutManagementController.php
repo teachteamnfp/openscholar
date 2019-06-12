@@ -15,7 +15,7 @@ class LayoutManagementController extends ControllerBase {
   /**
    * The request object.
    *
-   * @var RequestStack
+   * @var \Symfony\Component\HttpFoundation\RequestStack
    */
   protected $requestStack;
 
@@ -29,7 +29,7 @@ class LayoutManagementController extends ControllerBase {
   /**
    * LayoutManagementController constructor.
    *
-   * @param Request $request
+   * @param \Symfony\Component\HttpFoundation\RequestStack $stack
    *   The request we're checking data for.
    */
   public function __construct(RequestStack $stack) {

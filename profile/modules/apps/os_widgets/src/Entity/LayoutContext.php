@@ -154,7 +154,7 @@ class LayoutContext extends ConfigEntityBase implements LayoutContextInterface {
   public function applies(): bool {
     $rules = $this->getActivationRules();
 
-    // remove blank lines
+    // Remove blank lines.
     $rule_lines = array_filter(preg_split('|[\r\n]|', $rules));
     $route_name = \Drupal::routeMatch()->getRouteName();
     $path = \Drupal::requestStack()->getMasterRequest()->getUri();

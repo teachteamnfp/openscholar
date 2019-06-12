@@ -142,7 +142,7 @@ class RssFeedBlockJavascriptTest extends ExistingSiteWebDriverTestBase {
     $blocks[$block->id()] = [
       'id' => $block->id(),
       'region' => 'content',
-      'weight' => 0
+      'weight' => 0,
     ];
     $layoutContext->setBlockPlacements($blocks);
     $layoutContext->save();
