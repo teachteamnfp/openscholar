@@ -60,4 +60,24 @@ interface CpTaxonomyHelperInterface {
    */
   public function explodeEntityBundles(array $bundles): array;
 
+  /**
+   * Check visibility of taxonomy terms on page.
+   *
+   * @param array $build
+   *   View alter build array.
+   * @param array $view_modes
+   *   Applied view modes.
+   */
+  public function checkTaxonomyTermsPageVisibility(array &$build, array $view_modes): void;
+
+  /**
+   * Check visibility of taxonomy terms on list page.
+   *
+   * @param array $build
+   *   View alter build array.
+   * @param string $entity_type
+   *   Current entity type with bundle (ex node:news).
+   */
+  public function checkTaxonomyTermsListingVisibility(array &$build, string $entity_type): void;
+
 }

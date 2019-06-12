@@ -5,7 +5,7 @@ namespace Drupal\Tests\cp_taxonomy\ExistingSite;
 /**
  * Class CheckingFieldsTest.
  *
- * @group other
+ * @group cp
  * @group kernel
  *
  * @package Drupal\Tests\cp_taxonomy\ExistingSite

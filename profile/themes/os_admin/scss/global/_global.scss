@@ -4,20 +4,7 @@
     background: $color_fuscous_gray;
   }
 }
-.vertical-tabs__menu-item {
-  a {
-    color: $color_venice_blue;
-  }
-}
 .content-header {
-  background-color: $color-gray1;
-  color: $color-white;
-}
-/** keyboard accessibility **/
-.entity-meta {
-  .seven-details {
-    &:focus-within {
-      outline: 1px solid;
-    }
-  }
+  background-color: $color-white;
+  color: $color_fuscous_gray;
 }

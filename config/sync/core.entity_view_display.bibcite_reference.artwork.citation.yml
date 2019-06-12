@@ -5,12 +5,19 @@ dependencies:
   config:
     - bibcite_entity.bibcite_reference_type.artwork
     - core.entity_view_mode.bibcite_reference.citation
+    - field.field.bibcite_reference.artwork.field_files
+    - field.field.bibcite_reference.artwork.field_taxonomy_terms
   enforced:
     config:
       - core.entity_view_mode.bibcite_reference.citation
       - bibcite_entity.bibcite_reference_type.artwork
     module:
       - bibcite_entity
+  module:
+    - layout_builder
+third_party_settings:
+  layout_builder:
+    sections: {  }
 _core:
   default_config_hash: HNa1gbrE9PMKvennFCTwEWKzjdGAcK9VfU6cf-Bp_EY
 id: bibcite_reference.artwork.citation
@@ -22,6 +29,14 @@ content:
     weight: 0
     region: content
     settings: {  }
+    third_party_settings: {  }
+  field_taxonomy_terms:
+    type: entity_reference_label
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      link: true
     third_party_settings: {  }
 hidden:
   author: true
@@ -74,6 +89,7 @@ hidden:
   bibcite_url: true
   bibcite_volume: true
   bibcite_year: true
+  field_files: true
   keywords: true
   langcode: true
   uid: true

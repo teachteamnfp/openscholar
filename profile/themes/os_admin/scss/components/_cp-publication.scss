@@ -1,0 +1,57 @@
+.cp-settings-form {
+  .publication-format {
+    display: inline-block;
+    margin-right: 15px;
+    margin-top: 0;
+  }
+  .citation-format-example {
+    display: inline-block;
+    background: $color-light-gray6;
+    padding: 0 10px 10px;
+    @media all and (min-width: 1200px) {
+      position: absolute;
+      margin-right: 10px;
+      box-shadow: 2px 2px 3px rgba(0, 0, 0, .2);
+    }
+  }
+  .publication-display {
+    width: 100%;
+    clear: both;
+  }
+  .form-inline {
+    .js-form-type-checkbox {
+      @media all and (min-width: 1200px) {
+        width: 24%;
+      }
+      width: 45%;
+      display: inline-block;
+    }
+  }
+}
+.citation-content-wrapper {
+  margin-top: 20px;
+  border-left: 5px solid;
+  border-right: 5px solid;
+  padding: 10px;
+  background: $color-light-gray6;
+  .citation-row {
+    display: inline-block;
+    @media all and (min-width: 1025px) {
+      width: 24%;
+    }
+    @media all and (max-width: 1024px) and (min-width: 768px) {
+      width: 33%;
+    }
+    width: 100%;
+    vertical-align: top;
+    .form-item {
+      margin-top: 0.2em;
+    }
+    select {
+      min-width: 120px;
+    }
+  }
+  fieldset {
+    margin: 0;
+  }
+}
