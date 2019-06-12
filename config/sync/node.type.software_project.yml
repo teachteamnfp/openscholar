@@ -17,5 +17,5 @@ type: software_project
 description: 'A software project page. Provides a summary of project information and releases for download.'
 help: ''
 new_revision: true
-preview_mode: 0
+preview_mode: 1
 display_submitted: false

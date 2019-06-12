@@ -55,10 +55,6 @@ cp.appearance:
   url: 'internal:##'
   menu_name: control-panel
   weight: 2
-cp.favicon:
-  title: 'Favicon'
-  url: 'internal:##'
-  parent: cp.appearance
 cp.settings:
   title: 'Settings'
   url: 'internal:##'
