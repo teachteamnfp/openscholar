@@ -17,6 +17,8 @@ use Drupal\Core\Url;
 use Drupal\cp_menu\Form\Multistep\Manager\StepManager;
 use Drupal\cp_menu\Form\Multistep\Step\StepOne;
 use Drupal\cp_menu\Form\Multistep\Step\StepTwo;
+use Drupal\cp_menu\MenuHelperInterface;
+use Drupal\vsite\Plugin\VsiteContextManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -74,6 +76,20 @@ class MenuLinkAddForm extends FormBase {
   protected $pathValidator;
 
   /**
+   * Menu helper service.
+   *
+   * @var \Drupal\cp_menu\MenuHelperInterface
+   */
+  protected $menuHelper;
+
+  /**
+   * Vsite Manager service.
+   *
+   * @var \Drupal\vsite\Plugin\VsiteContextManager
+   */
+  protected $vsiteManager;
+
+  /**
    * Constructs a \Drupal\cp_menu\Form\Multistep\MenuWizardBase instance.
    *
    * @param \Drupal\Core\TempStore\PrivateTempStoreFactory $private_temp_store
@@ -82,14 +98,20 @@ class MenuLinkAddForm extends FormBase {
    *   Entity type manager instance.
    * @param \Drupal\Core\Path\PathValidatorInterface $path_validator
    *   Path validator instance.
+   * @param \Drupal\cp_menu\MenuHelperInterface $menu_helper
+   *   Menu helper instance.
+   * @param \Drupal\vsite\Plugin\VsiteContextManager $vsite_manager
+   *   Vsite manager instance.
    */
-  public function __construct(PrivateTempStoreFactory $private_temp_store, EntityTypeManagerInterface $entity_type_manager, PathValidatorInterface $path_validator) {
+  public function __construct(PrivateTempStoreFactory $private_temp_store, EntityTypeManagerInterface $entity_type_manager, PathValidatorInterface $path_validator, MenuHelperInterface $menu_helper, VsiteContextManager $vsite_manager) {
     $this->stepId = StepOne::STEP_ONE;
     $this->privateTempStore = $private_temp_store;
     $this->store = $this->privateTempStore->get('link_data');
     $this->stepManager = new StepManager($this->privateTempStore);
     $this->entityTypeManager = $entity_type_manager;
     $this->pathValidator = $path_validator;
+    $this->menuHelper = $menu_helper;
+    $this->vsiteManager = $vsite_manager;
   }
 
   /**
@@ -102,7 +124,9 @@ class MenuLinkAddForm extends FormBase {
     return new static(
       $container->get('tempstore.private'),
       $container->get('entity_type.manager'),
-      $container->get('path.validator')
+      $container->get('path.validator'),
+      $container->get('cp_menu.menu_helper'),
+      $container->get('vsite.context_manager')
     );
   }
 
@@ -293,12 +317,25 @@ class MenuLinkAddForm extends FormBase {
     }
 
     $type = $this->store->get('link_type');
-    $menu_name = $this->store->get('menu_name');
-    // Add menu link for group if enabled.
-    $menu_content_storage = $this->entityTypeManager->getStorage('menu_link_content');
-
+    $menu_id = $this->store->get('menu_name');
     $values = $form_state->getValues();
 
+    $vsite = $this->vsiteManager->getActiveVsite();
+    $menus = $vsite->getContent('group_menu:menu');
+    // If first time then create a new menu by replicating shared menus.
+    if (!$menus) {
+      // Create new menus.
+      $this->menuHelper->createVsiteMenus($vsite);
+      // Map menu ids so that new links get saved in newly created menus.
+      if ($menu_id == 'main') {
+        $menu_id = 'menu-primary-' . $vsite->id();
+      }
+      elseif ($menu_id == 'footer') {
+        $menu_id = 'menu-secondary-' . $vsite->id();
+      }
+    }
+
+    // Decide the data to be saved in the link based on link types.
     switch ($type) {
       case 'home':
         $url = 'internal:/';
@@ -321,10 +358,12 @@ class MenuLinkAddForm extends FormBase {
         }
         break;
     }
-    $menu_content_storage->create([
+
+    // Save the link to mapped menu.
+    $this->entityTypeManager->getStorage('menu_link_content')->create([
       'title' => $values['title'],
       'link' => ['uri' => $url, 'options' => $options ?? []],
-      'menu_name' => $menu_name,
+      'menu_name' => $menu_id,
       'description' => $values['tooltip'] ?? '',
       'expanded' => TRUE,
     ])->save();
