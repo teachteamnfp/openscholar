@@ -1,0 +1,10 @@
+uuid: 0f87d4da-a7f3-46cb-b3c8-023b754e3905
+langcode: en
+status: true
+dependencies: {  }
+id: blog
+label: Blog
+description: ''
+activationRules: 'blog/*'
+weight: 0
+data: {  }
