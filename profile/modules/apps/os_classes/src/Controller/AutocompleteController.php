@@ -46,7 +46,8 @@ class AutocompleteController extends ControllerBase {
         ]);
       $query->distinct();
       $query->join('node_field_data', 'n', 'fyo.entity_id = n.nid');
-      $query->join('group_content_field_data', 'gfd', 'fyo.entity_id = gfd.entity_id');
+      $query->join('group_content__entity_id', 'gce', 'n.nid = gce.entity_id_target_id');
+      $query->join('group_content_field_data', 'gfd', 'gce.entity_id = gfd.id');
       $query->condition('gfd.type', 'personal-group_node-class')
         ->condition('n.status', NodeInterface::PUBLISHED)
         ->condition('gfd.gid', $vsite)

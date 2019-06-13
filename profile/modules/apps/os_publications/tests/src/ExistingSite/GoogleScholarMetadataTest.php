@@ -31,21 +31,6 @@ class GoogleScholarMetadataTest extends TestBase {
     parent::setUp();
 
     $this->admin = $this->createUser([], '', TRUE);
-    $this->user = $this->createUser();
-  }
-
-  /**
-   * Test Setting form route.
-   *
-   * @throws \Behat\Mink\Exception\ExpectationException
-   * @throws \Drupal\Core\Entity\EntityStorageException
-   */
-  public function testPublicationSettingsPath() {
-    $this->drupalLogin($this->admin);
-    $reference = $this->createReference();
-
-    $this->drupalGet('bibcite/reference/' . $reference->id());
-    $this->assertSession()->statusCodeEquals(200);
   }
 
   /**
