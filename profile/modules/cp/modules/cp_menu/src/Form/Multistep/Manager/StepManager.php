@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Class StepManager.
  *
- * @package Drupal\ms_ajax_form_example\Manager
+ * @package Drupal\cp_menu\Form\Multistep\Manager
  */
 class StepManager implements StepManagerInterface {
   use DependencySerializationTrait;

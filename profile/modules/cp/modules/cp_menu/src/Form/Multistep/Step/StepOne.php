@@ -5,7 +5,7 @@ namespace Drupal\cp_menu\Form\Multistep\Step;
 /**
  * Class StepOne.
  *
- * @package Drupal\ms_ajax_form_example\Step
+ * @package Drupal\cp_menu\Form\Multistep\Step
  */
 class StepOne extends BaseStep {
 
