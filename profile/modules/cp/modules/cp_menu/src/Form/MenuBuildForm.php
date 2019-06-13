@@ -358,6 +358,9 @@ class MenuBuildForm extends FormBase {
             if ($key == 'menu_name' && $value == 'footer') {
               $updated_values[$key] = 'menu-secondary-' . $vsite->id();
             }
+            if ($key == 'menu_name' && $value == 'main') {
+              $updated_values[$key] = 'menu-primary-' . $vsite->id();
+            }
           }
           // Map changes to the new tree. It is safe to compare titles as for
           // the first time we always know what those are.
