@@ -11,4 +11,8 @@ internal: true
 audience: outsider
 group_type: personal
 permissions_ui: true
-permissions: {  }
+permissions:
+  0: 'view group'
+  2: 'view group_node:person entity'
+  3: 'view group_entity:bibcite_reference entity'
+  4: 'view group_entity:bibcite_reference content'

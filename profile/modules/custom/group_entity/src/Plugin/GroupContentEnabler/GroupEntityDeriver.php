@@ -23,6 +23,7 @@ class GroupEntityDeriver extends DeriverBase {
       'media',
       'block_content',
       'taxonomy_term',
+      'bibcite_reference',
       'redirect',
     ];
     foreach ($entity_types as $type_id) {

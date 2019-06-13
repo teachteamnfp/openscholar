@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\vsite_infinite_scroll\ExistingSite;
 
+use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
 use Drupal\views\Views;
 use Drupal\vsite_infinite_scroll\Plugin\views\pager\VsiteInfiniteScroll;
 
@@ -13,7 +14,7 @@ use Drupal\vsite_infinite_scroll\Plugin\views\pager\VsiteInfiniteScroll;
  * @group kernel
  * @coversDefaultClass \Drupal\vsite_infinite_scroll\Plugin\views\pager\VsiteInfiniteScroll
  */
-class VsiteInfiniteScrollTest extends VsiteInfiniteScrollExistingSiteTestBase {
+class VsiteInfiniteScrollTest extends OsExistingSiteTestBase {
 
   /**
    * Group parent test entity.
@@ -38,10 +39,10 @@ class VsiteInfiniteScrollTest extends VsiteInfiniteScrollExistingSiteTestBase {
   protected $renderer;
 
   /**
-   * Drupal config.
+   * Vsite infinite scroll config.
    *
-   * @var \Drupal\Core\Config\ConfigFactory
-   *   Renderer.
+   * @var \Drupal\Core\Config\Config
+   *   Config.
    */
   protected $config;
 
@@ -50,13 +51,15 @@ class VsiteInfiniteScrollTest extends VsiteInfiniteScrollExistingSiteTestBase {
    */
   public function setUp() {
     parent::setUp();
+    /** @var \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager */
+    $entity_type_manager = $this->container->get('entity_type.manager');
 
     // Set the current user so group creation can rely on it.
     $this->container->get('current_user')->setAccount($this->createUser());
 
     // Enable the user_as_content plugin on the default group type.
     /** @var \Drupal\group\Entity\Storage\GroupContentTypeStorageInterface $storage */
-    $storage = $this->entityTypeManager->getStorage('group_content_type');
+    $storage = $entity_type_manager->getStorage('group_content_type');
     /** @var \Drupal\group\Entity\GroupContentTypeInterface[] $plugin */
     $plugins = $storage->loadByContentPluginId('group_node:person');
     /** @var \Drupal\group\Entity\GroupContentTypeInterface $plugin */
@@ -87,13 +90,13 @@ class VsiteInfiniteScrollTest extends VsiteInfiniteScrollExistingSiteTestBase {
   /**
    * Check views pager settings and default result.
    */
-  public function testRenderedDefaultPager() {
+  public function testRenderedDefaultPager(): void {
     // Modify config to empty string.
     $this->config->set('long_list_content_pagination', '');
     $this->config->save(TRUE);
 
     $render_view = $this->renderPeopleView();
-    $this->assertTrue($render_view['#view']->pager instanceof VsiteInfiniteScroll);
+    $this->assertInstanceOf(VsiteInfiniteScroll::class, $render_view['#view']->pager);
     $html = $this->renderer->renderPlain($render_view)->__toString();
     $this->assertContains('Load More', $html, 'Vsite infinite scroll is not visible. (null config)');
 
@@ -108,13 +111,13 @@ class VsiteInfiniteScrollTest extends VsiteInfiniteScrollExistingSiteTestBase {
   /**
    * Check views pager settings and default result.
    */
-  public function testRenderedModifiedPager() {
+  public function testRenderedModifiedPager(): void {
     // Modify default config to pager.
     $this->config->set('long_list_content_pagination', 'pager');
     $this->config->save(TRUE);
 
     $render_view = $this->renderPeopleView();
-    $this->assertTrue($render_view['#view']->pager instanceof VsiteInfiniteScroll);
+    $this->assertInstanceOf(VsiteInfiniteScroll::class, $render_view['#view']->pager);
     $html = $this->renderer->renderPlain($render_view)->__toString();
     $this->assertContains('Next page', $html, 'Default pager is not visible.');
   }
@@ -125,11 +128,10 @@ class VsiteInfiniteScrollTest extends VsiteInfiniteScrollExistingSiteTestBase {
    * @return array|null
    *   Rendered array.
    */
-  protected function renderPeopleView() {
+  protected function renderPeopleView(): ?array {
     $view = Views::getView('people');
     $view->setDisplay('page_1');
-    $render_view = $view->render();
-    return $render_view;
+    return $view->render();
   }
 
 }

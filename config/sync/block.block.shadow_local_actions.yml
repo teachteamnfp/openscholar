@@ -1,0 +1,20 @@
+uuid: 91360216-db3c-4edc-8b57-d1c6a42cf410
+langcode: en
+status: true
+dependencies:
+  theme:
+    - shadow
+_core:
+  default_config_hash: 13GQpeITIJsp1kyPniXtWZfyFH87vb1xxJCHifL4UeE
+id: shadow_local_actions
+theme: shadow
+region: content
+weight: -5
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Primary admin actions'
+  provider: core
+  label_display: '0'
+visibility: {  }

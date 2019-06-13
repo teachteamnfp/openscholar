@@ -1,0 +1,22 @@
+uuid: ae6374af-5c73-49b1-9934-7258c62638b6
+langcode: en
+status: true
+dependencies:
+  theme:
+    - smart
+_core:
+  default_config_hash: X9I1OB0W3WlWtrK-CNcg6hNWwa8wficanpH8pYnDZDE
+id: smart_local_tasks
+theme: smart
+region: content
+weight: -6
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: Tabs
+  provider: core
+  label_display: '0'
+  primary: true
+  secondary: true
+visibility: {  }

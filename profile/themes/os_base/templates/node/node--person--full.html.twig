@@ -73,7 +73,7 @@
  */
 #}
 <div class="person--title">
-  <h1>{{ content.field_first_name.0['#context'].value }} {{ content.field_last_name.0['#context'].value }}</h1>
+  <h1>{{ content.field_honorific.0['#context'].value }} {{ content.field_first_name.0['#context'].value }} {{ content.field_middle_name.0['#context'].value }} {{ content.field_last_name.0['#context'].value }}</h1>
   {{content.field_professional_titles}}
 </div>
 
@@ -101,8 +101,8 @@
     <div class="content--image--area">
       {{ content.field_photo_person }}
       {{ content.body }}
-    </div> 
-    <div class="content--main--area">{{ content|without('field_photo_person', 'body', "field_last_name", "field_first_name", "field_professional_titles") }}</div>
+    </div>
+    <div class="content--main--area">{{ content|without('field_photo_person', 'body', "field_last_name", "field_first_name", "field_professional_titles", "field_honorific","field_middle_name") }}</div>
   </div>
 
 </article>

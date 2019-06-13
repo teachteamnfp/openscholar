@@ -7,9 +7,9 @@ dependencies:
     - node.type.presentation
     - system.menu.main
   module:
+    - datetime
     - group
     - node
-    - user
     - vsite
     - vsite_infinite_scroll
 id: presentations
@@ -28,9 +28,9 @@ display:
     position: 0
     display_options:
       access:
-        type: perm
+        type: group_permission
         options:
-          perm: 'access content'
+          group_permission: 'view group_node:presentation entity'
       cache:
         type: tag
         options: {  }
@@ -227,11 +227,11 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
+        - group_membership.roles.permissions
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
         - 'user.node_grants:view'
-        - user.permissions
       tags: {  }
   block_1:
     display_plugin: block
@@ -325,10 +325,10 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
+        - group_membership.roles.permissions
         - 'languages:language_content'
         - 'languages:language_interface'
         - 'user.node_grants:view'
-        - user.permissions
       tags: {  }
   page_1:
     display_plugin: page
@@ -343,12 +343,28 @@ display:
         type: normal
         title: Presentations
         menu_name: main
+      sorts:
+        field_presentation_date_value:
+          id: field_presentation_date_value
+          table: node__field_presentation_date
+          field: field_presentation_date_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: DESC
+          exposed: false
+          expose:
+            label: ''
+          granularity: second
+          plugin_id: datetime
+      defaults:
+        sorts: false
     cache_metadata:
       max-age: -1
       contexts:
+        - group_membership.roles.permissions
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
         - 'user.node_grants:view'
-        - user.permissions
       tags: {  }

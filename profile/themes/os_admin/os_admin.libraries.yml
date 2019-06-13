@@ -1,0 +1,6 @@
+global-styling:
+  version: VERSION
+  css:
+    theme:
+      css/style.css: {}
+      /libraries/os-toolbar/os-toolbar.css: {}

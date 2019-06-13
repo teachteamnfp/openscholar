@@ -1,12 +1,12 @@
 @import '../../os_base/scss/base/breakpoints';
 //colors
 $black: #000;
-$color_hippie_green_approx: #52854c;
+$color_hippie_green_approx: #467141;
 $white: #fff;
-$color_red_stage_approx: #d16103;
-$color_mountain_mist_approx: #999;
+$color_red_stage_approx: #BF5803;
+$color_mountain_mist_approx: #757575;
 $color_concrete_approx: #f3f3f1;
-$color_indian_khaki_22_approx: rgba(186, 175, 134, 0.22);
+$color_indian_khaki_22_approx: #E3E0D4;
 $color_iron_approx: #d7d7d7;
 $color_fuscous_gray_approx: #555;
 
@@ -27,9 +27,7 @@ $font_1: sans-serif !important;
   color: $color_hippie_green_approx;
   padding: 12px 15px 16px;
 }
-
 @import url(https://fonts.googleapis.com/css?family=Droid+Sans);
-
 html {
   color: $black;
 }
@@ -37,7 +35,8 @@ body {
   color: $black;
   font-family: $font_0, $font_1;
 }
-a, .full-calendar-view .fc-header-toolbar button {
+a,
+.full-calendar-view .fc-header-toolbar button {
   color: $color_hippie_green_approx;
   &:visited {
     color: $color_hippie_green_approx;
@@ -66,7 +65,7 @@ aside {
     a {
       font-family: $font_0, $font_1;
     }
-    > a {
+    >a {
       background-color: $color_concrete_approx !important;
       color: $color_hippie_green_approx !important;
       border-bottom: 1px solid $color_iron_approx !important;
@@ -106,28 +105,35 @@ footer {
   }
   /***** navbar nav *****/
   .nav.navbar-nav {
-    > li {
+    >li {
       @media #{$mobile} {
         border-bottom: 1px solid $white;
         border-top: 0 none;
       }
-      > a {
+      >a {
         font-family: $font_0, $font_1;
         @media #{$mobile} {
           padding: 12px 15px 16px;
         }
         @extend %extend_1;
-        &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
+        &:hover,
+        &:active,
+        &:focus,
+        &.is-active,
+        &.is-active:hover {
           @extend %extend_1;
           @extend %extend_2;
         }
       }
-      &.open, &.active {
-        > a, > a:hover, > a:active, > a:focus {
+      &.open,
+      &.active {
+        >a,
+        >a:hover,
+        >a:active,
+        >a:focus {
           @extend %extend_1;
           @extend %extend_2;
         }
-
       }
     }
   }
@@ -141,8 +147,8 @@ footer {
       background: none;
       border: 0 none;
     }
-    > li {
-      > a {
+    >li {
+      >a {
         color: $color_hippie_green_approx;
         border-top: 0;
         padding: 12px 15px 16px;
@@ -152,7 +158,8 @@ footer {
         @media #{$mobile} {
           background: none;
         }
-        &:hover, &:active {
+        &:hover,
+        &:active {
           background: white;
           color: $color_hippie_green_approx;
           @media #{$mobile} {
@@ -271,4 +278,7 @@ footer.footer {
   a {
     color: $white;
   }
+}
+.contextual .trigger {
+  color: $black;
 }

@@ -1,0 +1,22 @@
+uuid: 26050a8b-1d30-4d3b-a739-521af19e890e
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - smart
+_core:
+  default_config_hash: oXUb3JZR2WW5VOdw4HrhRicCsq51mCgLfRyvheG68ck
+id: smart_breadcrumbs
+theme: smart
+region: content
+weight: -8
+provider: null
+plugin: system_breadcrumb_block
+settings:
+  id: system_breadcrumb_block
+  label: Breadcrumbs
+  provider: system
+  label_display: '0'
+visibility: {  }

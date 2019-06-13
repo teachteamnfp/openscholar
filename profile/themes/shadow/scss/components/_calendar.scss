@@ -1,0 +1,16 @@
+aside .block .fc-row.ui-widget-header th {
+  background: none;
+}
+.fc-event-default {
+  border-color: $color-green;
+  background-color: $color-green;
+}
+.fc-header-toolbar {
+  button.ui-button {
+    background: $color-green;
+    color: $color-white;
+  }
+}
+.ui-widget .fc-event:hover {
+  color: $color-white;
+}

@@ -380,6 +380,7 @@ div[file-edit] .control button,
 .media-browser-pane #media-browser-file-select {
   left: 36%;
   width: 160px;
+  height: 40px;
 }
 
 .media-browser-drop-box a[mb-open-modal] {

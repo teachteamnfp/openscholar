@@ -1,0 +1,7 @@
+name: Vsite favicon
+type: module
+description: Handle special form to set vsite favicon.
+core: 8.x
+dependencies:
+  - drupal:vsite
+  - cp:cp_settings

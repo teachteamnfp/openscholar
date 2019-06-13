@@ -41,6 +41,13 @@ abstract class EventTestBase extends ExistingSiteBase {
   protected $config;
 
   /**
+   * Test user.
+   *
+   * @var \Drupal\user\UserInterface
+   */
+  protected $user;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
@@ -51,6 +58,8 @@ abstract class EventTestBase extends ExistingSiteBase {
     /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
     $vsite_context_manager = $this->container->get('vsite.context_manager');
 
+    $this->user = $this->createUser();
+
     $this->group = $this->createGroup([
       'path' => [
         'alias' => '/test-alias',
@@ -59,15 +68,15 @@ abstract class EventTestBase extends ExistingSiteBase {
 
     $vsite_context_manager->activateVsite($this->group);
 
-    $start = new DateTimePlus('today midnight', $this->config->get('system.date')->get('timezone.default'));
-    $end = new DateTimePlus('tomorrow midnight', $this->config->get('system.date')->get('timezone.default'));
+    $start = new DateTimePlus('today midnight', $this->user->getTimeZone());
+    $end = new DateTimePlus('tomorrow midnight', $this->user->getTimeZone());
     $this->event = $this->createEvent([
       'title' => 'Test Event',
       'field_recurring_date' => [
         'value' => $start->format("Y-m-d\TH:i:s"),
         'end_value' => $end->format("Y-m-d\TH:i:s"),
         'rrule' => '',
-        'timezone' => $this->config->get('system.date')->get('timezone.default'),
+        'timezone' => $this->user->getTimeZone(),
         'infinite' => FALSE,
       ],
       'status' => TRUE,

@@ -1,0 +1,21 @@
+%btn {
+  background: $color-black;
+  color: $color-white;
+  border: 0 none;
+}
+button {
+  &.button,
+  &.btn,
+  &.btn[aria-expanded="true"] {
+    @extend %btn;
+    &:hover,
+    &:focus,
+    &:active {
+      @extend %btn;
+      &:hover,
+      &:focus {
+        @extend %btn;
+      }
+    }
+  }
+}

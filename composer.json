@@ -15,6 +15,10 @@
             "url": "https://github.com/openscholar/purl-d8"
         },
         {
+            "type": "vcs",
+            "url": "https://github.com/openscholar/views_ical"
+        },
+        {
             "type": "package",
             "package": {
                 "name": "kenwheeler/slick",
@@ -162,9 +166,9 @@
     "require": {
         "composer/installers": "^1.2",
         "cweagans/composer-patches": "^1.6",
-        "drupal-composer/drupal-scaffold": "^2.5",
+        "drupal-composer/drupal-scaffold": "^2.6",
         "drupal/console": "^1.0.2",
-        "drupal/core": "^8.6.15",
+        "drupal/core": "8.6.16",
         "drupal/purl": "1.0.2",
         "drupal/group_purl": "1.0-alpha1",
         "drupal/search_api": "^1.9",
@@ -191,7 +195,6 @@
         "drupal/admin_toolbar": "^1.25",
         "drupal/fullcalendar": "1.x-dev",
         "drupal/date_recur": "^2.0",
-        "drupal/views_ical": "1.x-dev",
         "fullcalendar/fullcalendar": "^3.3",
         "drupal/bootstrap": "^3.17",
         "drupal/styleguide": "^1.0@alpha",
@@ -199,7 +202,6 @@
         "drupal/views_infinite_scroll": "^1.5",
         "twbs/bootstrap-sass": "^3.3.7",
         "drupal/mailchimp": "^1.8",
-        "drupal/bibcite": "1.x-dev",
         "drupal/field_tools": "^1.0@alpha",
         "ext-json": "*",
         "php-ds/php-ds": "^1.2",
@@ -226,11 +228,18 @@
         "drupal/rng": "^1.7",
         "drupal/rng_views": "^1.7",
         "drupal/date_recur_modular": "^1.0@alpha",
-        "drupal/easy_breadcrumb": "^1.8"
+        "drupal/easy_breadcrumb": "^1.8",
+        "drupal/views_ical": "^2.1",
+        "drupal/google_analytics": "^2.4",
+        "drupal/groupmenu": "^1.0",
+        "drupal/cancel_button": "^1.1",
+        "drupal/bibcite": "1.0-alpha10",
+        "egulias/email-validator": "1.2.6",
+        "doctrine/lexer": "dev-master"
     },
     "require-dev": {
         "drupal/features": "^3.7",
-        "webflo/drupal-core-require-dev": "^8.6.15",
+        "webflo/drupal-core-require-dev": "8.6.16",
         "drupal/devel": "^1.2",
         "weitzman/drupal-test-traits": "^1.0@beta",
         "dmore/chrome-mink-driver": "^2.6"
@@ -267,6 +276,7 @@
             "DrupalProject\\composer\\ScriptHandler::installFullcalendarLibrary",
             "command -v npm install || echo \"NPM not installed. Please install it and run composer install again.\"",
             "DrupalProject\\composer\\ScriptHandler::installBootstrapLibrary",
+            "DrupalProject\\composer\\ScriptHandler::installOsToolbarLibrary",
             "./scripts/register-cs.sh",
             "./scripts/install-hooks.sh"
         ],
@@ -276,10 +286,11 @@
             "DrupalProject\\composer\\ScriptHandler::placeProfile",
             "DrupalProject\\composer\\ScriptHandler::installFullcalendarLibrary",
             "command -v npm update || echo \"NPM not installed. Please install it and run composer install.\"",
-            "DrupalProject\\composer\\ScriptHandler::installBootstrapLibrary"
+            "DrupalProject\\composer\\ScriptHandler::installBootstrapLibrary",
+            "DrupalProject\\composer\\ScriptHandler::installOsToolbarLibrary"
         ],
         "code-standard": [
-            "./vendor/bin/phpcs --standard=Drupal --ignore=*.yml",
+            "./vendor/bin/phpcs --standard=Drupal --ignore=*.yml,*.md",
             "./vendor/bin/phpcs --standard=DrupalPractice"
         ],
         "code-standard-fix": [
@@ -299,14 +310,18 @@
             "initial": {
                 ".editorconfig": "../.editorconfig",
                 ".gitattributes": "../.gitattributes"
-            }
+            },
+            "source": [
+                "https://raw.githubusercontent.com/drupal/drupal/{version}/{path}"
+            ]
         },
         "patches": {
             "drupal/core": {
                 "Make sure TestSitePath exist before creating .htkey": "https://www.drupal.org/files/issues/2246725-24.patch",
                 "Views Date Filter Datetime Granularity Option": "https://www.drupal.org/files/issues/2018-12-11/views_date_filter_granularity_2868014-60.patch",
                 "Add paging info to rest request": "https://www.drupal.org/files/issues/2018-06-30/2982729-viewsRestInfo.patch",
-                "Getlabel() on null layout builder.": "https://www.drupal.org/files/issues/2018-07-16/2985882-entityfield-2.patch"
+                "Getlabel() on null layout builder.": "https://www.drupal.org/files/issues/2018-07-16/2985882-entityfield-2.patch",
+                "'view_path' is set to /views/ajax after second ajax request": "https://www.drupal.org/files/issues/2018-03-14/drupal-views_path_ajax-2866386-10.patch"
             },
             "drupal/group_purl": {
                 "Prevent base path from interfering with purl detection": "https://www.drupal.org/files/issues/2019-04-12/group_purl.3026646-3.basepath.patch",
@@ -315,16 +330,12 @@
             "drupal/fullcalendar": {
                 "Fullcalendar incompatible with Date Recur 2.x": "https://www.drupal.org/files/issues/2019-01-09/3023612-5.patch"
             },
-            "drupal/views_ical": {
-                "Define missing views methods": "https://www.drupal.org/files/issues/2019-01-10/2982848-2.patch",
-                "No page title due to undefined variable $config": "https://www.drupal.org/files/issues/2891778-2-undefined-variable-notice-fix.patch",
-                "Add HTTP Header: application/calendar": "https://www.drupal.org/files/issues/views_ical-set_response_header-2601522-4.patch"
-            },
             "drupal/block_visibility_groups": {
                 "8.6: error when deleting a block visibility group": "https://www.drupal.org/files/issues/2018-10-18/block_visibility_groups_3000396-4.patch"
             },
             "drupal/bootstrap": {
-                "Unsupported operand types during providers JSON discovery #8": "https://www.drupal.org/files/issues/2019-01-24/3027569-8.x-3.x-8.patch"
+                "Unsupported operand types during providers JSON discovery #8": "https://www.drupal.org/files/issues/2019-01-24/3027569-8.x-3.x-8.patch",
+                "Fix modal elements getting lost after reusing modal": "https://raw.githubusercontent.com/openscholar/openscholar/e4d27051b02cb9c92e44e76c5e9f4f4a57c2e874/patches/bootstrap.11027.footer.patch"
             },
             "drupal/mailchimp": {
                 "Cache read problem in mailchimp_get_mergevars()": "https://www.drupal.org/files/issues/2019-02-13/3032674-cache-fix-for-mailchimp_get_mergevars-3.patch"
@@ -344,6 +355,13 @@
             },
             "drupal/courier": {
                 "Fixes checkboxes count warning": "https://github.com/dpi/courier/pull/48.patch"
+            },
+            "drupal/group": {
+                "/views/ajax?_wrapper_format=drupal_ajax HTTP/1.1 - HTTP/1.1 403 Forbidden": "https://www.drupal.org/files/issues/2018-08-15/group-route-match-ajax-views-d8-2942657-11.patch",
+                "Integrity constraint violation: Duplicate entry for key PRIMARY in node_access": "https://www.drupal.org/files/issues/2018-08-17/group-duplicate-node-access-entries-2892512-15.patch",
+                "New group content created when node edited": "https://www.drupal.org/files/issues/2019-06-04/3059300-3.patch",
+                "Prevent resaving of deleted entities": "https://raw.githubusercontent.com/openscholar/openscholar/ae879229e866cbc96d91d2b2a8273292fa26fd34/patches/group.fix_saving_deleted_entity.patch",
+                "Entities identified by strings as group content": "https://www.drupal.org/files/issues/2019-05-28/group-support_string_entity_ids-2797793-162.patch"
             }
         },
         "patches-ignore": {

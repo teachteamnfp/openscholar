@@ -60,18 +60,10 @@ class VsiteContextManager implements VsiteContextManagerInterface {
 
     if (is_null($this->activeGroup) || $this->activeGroup->id() !== $group->id()) {
       $this->activeGroup = $group;
-      $this->activateRoles();
 
       $event = new VsiteActivatedEvent($group);
       $this->dispatcher->dispatch(VsiteEvents::VSITE_ACTIVATED, $event);
     }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function activateRoles() {
-    // TODO: Implement activateRoles() method.
   }
 
   /**

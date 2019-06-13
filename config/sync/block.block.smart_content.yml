@@ -1,0 +1,22 @@
+uuid: b1fdd14d-6d68-46cc-adb9-9054cde05a5e
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - smart
+_core:
+  default_config_hash: 9EoWV2Lot6FVSr50t4hoKgiz1LIXYWNG-IIPYsWxBqo
+id: smart_content
+theme: smart
+region: content
+weight: -4
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  provider: system
+  label_display: '0'
+visibility: {  }

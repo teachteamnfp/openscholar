@@ -9,13 +9,13 @@
 {% block title %}
   {{ title_prefix }}
     <h2{{ title_attributes }} class="node--title">
-      <a href="{{ url }}" rel="bookmark">{{ content.field_first_name.0['#context'].value }} {{ content.field_last_name.0['#context'].value }}</a>
+      <a href="{{ url }}" rel="bookmark">{{ content.field_honorific.0['#context'].value }} {{ content.field_first_name.0['#context'].value }} {{ content.field_middle_name.0['#context'].value }} {{ content.field_last_name.0['#context'].value }}</a>
     </h2>
   {{ title_suffix }}
 {% endblock %}
 
 {% block content %}
   <div{{ content_attributes }}>
-    {{ content|without("field_photo_person", "field_first_name", "field_last_name") }}
+    {{ content|without("field_photo_person", "field_first_name", "field_last_name","field_honorific", "field_middle_name") }}
   </div>
 {% endblock %}

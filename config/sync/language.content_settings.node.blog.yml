@@ -1,0 +1,13 @@
+uuid: 4ae1b830-9c0a-4780-94ba-15e3d23b82f6
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.blog
+_core:
+  default_config_hash: DK--O5hi_gNwXhF7uaguR7ZqKT5sx_E2BxFJA4b63i0
+id: node.blog
+target_entity_type_id: node
+target_bundle: blog
+default_langcode: site_default
+language_alterable: false

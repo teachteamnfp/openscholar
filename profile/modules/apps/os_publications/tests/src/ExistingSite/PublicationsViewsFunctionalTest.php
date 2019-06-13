@@ -32,6 +32,13 @@ class PublicationsViewsFunctionalTest extends TestBase {
   protected $citationStyler;
 
   /**
+   * Group administrator.
+   *
+   * @var \Drupal\user\UserInterface
+   */
+  protected $groupAdmin;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
@@ -42,6 +49,9 @@ class PublicationsViewsFunctionalTest extends TestBase {
     $bibcite_settings = $this->configFactory->get('bibcite.settings');
     $this->defaultBibciteCitationStyle = $bibcite_settings->get('default_style');
     $this->citationStyler = $this->container->get('bibcite.citation_styler');
+
+    $this->groupAdmin = $this->createUser();
+    $this->addGroupAdmin($this->groupAdmin, $this->group);
   }
 
   /**
@@ -49,8 +59,9 @@ class PublicationsViewsFunctionalTest extends TestBase {
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    * @throws \Behat\Mink\Exception\ExpectationException
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
-  public function testReferenceStyle() {
+  public function testReferenceStyle(): void {
     $contributor = $this->createContributor([
       'first_name' => 'Leonardo',
       'middle_name' => '',
@@ -66,6 +77,7 @@ class PublicationsViewsFunctionalTest extends TestBase {
       ],
       'bibcite_year' => [],
     ]);
+    $this->group->addContent($reference, 'group_entity:bibcite_reference');
 
     /** @var \Drupal\Core\Config\ConfigFactoryInterface $config_factory */
     $config_factory = $this->container->get('config.factory');
@@ -85,17 +97,37 @@ class PublicationsViewsFunctionalTest extends TestBase {
       ],
     ]), FALSE);
 
+    $this->drupalLogin($this->groupAdmin);
+
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/publications");
+    $this->assertSession()->responseContains($this->citationStyler->render($reference_as_stdclass));
+
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/publications/title");
+    $this->assertSession()->responseContains($this->citationStyler->render($reference_as_stdclass));
+
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/publications/author");
+    $this->assertSession()->responseContains($this->citationStyler->render($reference_as_stdclass));
+
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/publications/year");
+    $this->assertSession()->responseContains($this->citationStyler->render($reference_as_stdclass));
+
+    $this->drupalLogout();
+  }
+
+  /**
+   * Check anonymous user access to publications.
+   *
+   * @throws \Behat\Mink\Exception\ExpectationException
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
+   */
+  public function testAnonymousUserAccess(): void {
     $this->visit('/publications');
-    $this->assertSession()->responseContains($this->citationStyler->render($reference_as_stdclass));
 
-    $this->visit('/publications/title');
-    $this->assertSession()->responseContains($this->citationStyler->render($reference_as_stdclass));
+    $this->assertSession()->statusCodeEquals(403);
 
-    $this->visit('/publications/author');
-    $this->assertSession()->responseContains($this->citationStyler->render($reference_as_stdclass));
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/publications");
 
-    $this->visit('/publications/year');
-    $this->assertSession()->responseContains($this->citationStyler->render($reference_as_stdclass));
+    $this->assertSession()->statusCodeEquals(200);
   }
 
   /**

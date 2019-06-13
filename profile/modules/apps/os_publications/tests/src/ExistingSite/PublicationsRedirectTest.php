@@ -11,11 +11,11 @@ namespace Drupal\Tests\os_publications\ExistingSite;
 class PublicationsRedirectTest extends TestBase {
 
   /**
-   * Admin user.
+   * Group administrator.
    *
    * @var \Drupal\user\UserInterface
    */
-  protected $adminUser;
+  protected $groupAdmin;
 
   /**
    * {@inheritdoc}
@@ -23,9 +23,8 @@ class PublicationsRedirectTest extends TestBase {
   public function setUp() {
     parent::setUp();
 
-    $this->adminUser = $this->createUser([
-      'access control panel',
-    ]);
+    $this->groupAdmin = $this->createUser();
+    $this->addGroupAdmin($this->groupAdmin, $this->group);
   }
 
   /**
@@ -33,11 +32,12 @@ class PublicationsRedirectTest extends TestBase {
    *
    * @throws \Behat\Mink\Exception\ResponseTextException
    * @throws \Behat\Mink\Exception\ExpectationException
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
-  public function testRedirect() {
-    $this->drupalLogin($this->adminUser);
+  public function testRedirect(): void {
+    $this->drupalLogin($this->groupAdmin);
 
-    $this->visit('/cp/settings/publications');
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/publications");
     $this->assertSession()->statusCodeEquals(200);
 
     $this->drupalPostForm(NULL, [
@@ -52,9 +52,7 @@ class PublicationsRedirectTest extends TestBase {
       'os_publications_export_format[ris]' => 'ris',
     ], 'Save configuration');
 
-    $this->drupalLogout();
-
-    $this->visit('/publications');
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/publications");
 
     $web_assert = $this->assertSession();
 

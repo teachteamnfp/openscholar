@@ -1,0 +1,20 @@
+uuid: 18dc1968-5d9a-4451-9008-eec7c39d60f7
+langcode: en
+status: true
+dependencies:
+  theme:
+    - smart
+_core:
+  default_config_hash: 13GQpeITIJsp1kyPniXtWZfyFH87vb1xxJCHifL4UeE
+id: smart_local_actions
+theme: smart
+region: content
+weight: -5
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Primary admin actions'
+  provider: core
+  label_display: '0'
+visibility: {  }

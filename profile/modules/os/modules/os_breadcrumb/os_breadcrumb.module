@@ -5,8 +5,8 @@
  * Helper functions for Breadcrumb.
  */
 
-use Drupal\Core\Breadcrumb\Breadcrumb;
 use Drupal\Core\Entity\Entity;
+use Drupal\Core\Breadcrumb\Breadcrumb;
 use Drupal\Core\Link;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
@@ -39,7 +39,7 @@ function os_breadcrumb_preprocess_page(&$variables) {
  */
 function os_breadcrumb_system_breadcrumb_alter(Breadcrumb &$breadcrumb, RouteMatchInterface $route_match, array $context) {
   // App Breadcrumbs.
-  $node = $route_match->getCurrentRouteMatch()->getParameter('node');
+  $node = $route_match->getParameter('node');
   if ($node && $node->bundle() === 'events') {
     os_breadcrumb_edit_app_breadcrumbs($breadcrumb);
   }

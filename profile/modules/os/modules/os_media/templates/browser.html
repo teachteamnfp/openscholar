@@ -1,8 +1,8 @@
 <div class="container-fluid" ng-switch="pane">
     <div class="media-browser-buttons" ng-show="pane != 'edit' && pane != 'delete'">
-        <div class="media-browser-button" ng-class="{active:pane=='upload'}" ng-show="activePanes.upload" ng-click="changePanes('upload')">Upload from your computer</div>
-        <div class="media-browser-button" ng-class="{active:pane=='web'}" ng-show="activePanes.web" ng-click="changePanes('web')">Embed from the web</div>
-        <div class="media-browser-button" ng-class="{active:pane=='library'}" ng-show="activePanes.library" ng-click="changePanes('library')">Previously uploaded files</div>
+        <div tabindex="0" class="media-browser-button" ng-class="{active:pane=='upload'}" ng-show="activePanes.upload" ng-click="changePanes('upload')" ng-keydown="$event.keyCode === 13 && changePanes('upload')">Upload from your computer</div>
+        <div tabindex="0" class="media-browser-button" ng-class="{active:pane=='web'}" ng-show="activePanes.web" ng-click="changePanes('web')" ng-keydown="$event.keyCode === 13 && changePanes('web')">Embed from the web</div>
+        <div tabindex="0" class="media-browser-button" ng-class="{active:pane=='library'}" ng-show="activePanes.library" ng-click="changePanes('library')" ng-keydown="$event.keyCode === 13 && changePanes('library')">Previously uploaded files</div>
     </div>
     <div class="media-browser-panes">
         <div class="media-browser-pane" ng-switch-when="upload">
@@ -10,8 +10,8 @@
                  ngf-drag-over-class="media-browser-drag-over" ngf-multiple="true" allow-dir="true"
                  ngf-hide-on-drop-not-available="true" ngf-accept="$parent.validate($file)">
                 <span id="drag-text">Drag and drop files here. <span class="help_icon" ng-mouseenter="showHelp = true" ng-mouseleave="showHelp = false">?</span></span>
-                <span id="media-browser-file-select" ngf-select ngf-change="$parent.checkForDupes($files, $event)"
-                   ngf-accept="$parent.validate($file)" accept="{{'.'+extensions.join(',.')}}" ngf-multiple="true" ng-click="removeMsg()">{{button_text}}</span>
+                <button type="button" id="media-browser-file-select" ngf-select ngf-change="$parent.checkForDupes($files, $event)"
+                   ngf-accept="$parent.validate($file)" accept="{{'.'+extensions.join(',.')}}" ngf-multiple="true" ng-click="removeMsg()">{{button_text}}</button>
                      <div class="help" ng-show="showHelp"><strong>Allowed file types:</strong><br /> {{extensions.join(' ')}}<br /><br />
                    <strong>Max file size:</strong> {{maxFilesize}}.</div>
                 <span id="filename-check" ng-show="$parent.checkingFilenames">Checking for duplicate files...</span>
@@ -52,7 +52,7 @@
         <div class="media-browser-pane" ng-switch-when="web">
             <label for="media-browser-web">URL or HTML:</label>
             <textarea id="media-browser-web" cols="60" rows="5" ng-model="$parent.embed" placeholder="Enter the URL or HTML here"></textarea>
-            <div class="description embedly">Enter a URL from one of 
+            <div class="description embedly">Enter a URL from one of
                 <a href="http://embed.ly/embed/features/providers" target="_blank">these providers</a> or paste a snippet of HTML. The HTML may contain references to any of the <a slide-toggle="#list-of-embedly-providers">following sites</a>. Don't see what you're looking for? <a href="https://help.theopenscholar.com/embedding-third-party-content" target="_blank">Learn more about how to whitelist.</a>   <br><br>
                 <div id="list-of-embedly-providers" easing="linear" duration=".2s" class="slideable">
                   <span ng-init="limit = -21" ng-repeat="domain in whitelist" ng-mouseenter="limit = -120"

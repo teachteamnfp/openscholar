@@ -37,6 +37,7 @@
       set theme_group_classes = [
         'system-themes-list',
         'system-themes-list-' ~ theme_group.state,
+        'system-themes-list-installed',
         'clearfix',
         'panel',
         'panel-default',
@@ -57,7 +58,7 @@
           theme_group.state != 'uninstalled' ? 'in',
       ]
       %}
-      <table id="system-themes-list--{{ theme_group.state }}" class="{{ table_classes|join(' ')}}">
+      <div id="system-themes-list--{{ theme_group.state }}" class="{{ table_classes|join(' ')}}">
         {% for theme in theme_group.themes %}
           {%
             set theme_classes = [
@@ -67,13 +68,13 @@
               'clearfix',
             ]
           %}
-          <tr{{ theme.attributes.addClass(theme_classes) }}>
-            <td class="theme-screenshot col-sm-3">
+          <div{{ theme.attributes.addClass(theme_classes) }}>
+          <div class="theme-screenshot">
               {% if theme.screenshot %}
                 {{ theme.screenshot }}
+                </div>
               {% endif %}
-            </td>
-            <td class="theme-info col-sm-9">
+            <div class="theme-info col-sm-9">
               <h4 class="theme-info__header">
                 {{- theme.name }} {{ theme.version -}}
                 {% if theme.notes %}
@@ -90,10 +91,10 @@
                   {{ operation }}
                 {% endfor %}
               {% endif %}
-            </td>
-          </tr>
+            </div>
+          </div>
         {% endfor %}
-      </table>
+      </div>
     </div>
   {% endfor %}
 </div>

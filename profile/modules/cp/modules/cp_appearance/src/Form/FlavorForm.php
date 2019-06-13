@@ -3,12 +3,15 @@
 namespace Drupal\cp_appearance\Form;
 
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Ajax\AfterCommand;
 use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\RemoveCommand;
 use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Extension\Extension;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 use Drupal\cp_appearance\ThemeSelectorBuilderInterface;
 use Ds\Map;
 
@@ -48,6 +51,13 @@ class FlavorForm extends FormBase {
   protected $configFactory;
 
   /**
+   * Name of the default theme.
+   *
+   * @var string
+   */
+  protected $defaultTheme;
+
+  /**
    * Creates a new FlavorForm object.
    *
    * @param \Drupal\Core\Extension\Extension $theme
@@ -64,6 +74,9 @@ class FlavorForm extends FormBase {
     $this->flavors = $flavors;
     $this->themeSelectorBuilder = $theme_selector_builder;
     $this->configFactory = $config_factory;
+    /** @var \Drupal\Core\Config\ImmutableConfig $theme_settings */
+    $theme_settings = $config_factory->get('system.theme');
+    $this->defaultTheme = $theme_settings->get('default');
   }
 
   /**
@@ -80,10 +93,8 @@ class FlavorForm extends FormBase {
     $options = [
       $this->theme->getName() => $this->t('Without Flavor'),
     ];
-    /** @var \Drupal\Core\Config\ImmutableConfig $theme_settings */
-    $theme_settings = $this->configFactory->get('system.theme');
     /** @var string $default_theme */
-    $default_theme = $theme_settings->get('default');
+    $default_theme = $this->defaultTheme;
 
     /** @var \Drupal\Core\Extension\Extension $flavor */
     foreach ($this->flavors->values() as $flavor) {
@@ -134,7 +145,12 @@ class FlavorForm extends FormBase {
     $response = new AjaxResponse();
     /** @var string $selection */
     $selection = $form_state->getValue("options_{$this->theme->getName()}");
+    /** @var string $theme_selector_identifier */
+    $theme_selector_identifier = Html::cleanCssIdentifier("theme-selector-{$this->theme->getName()}");
+    $available_flavors = \array_keys($this->theme->sub_themes);
+    $default_theme_options = \array_merge([$this->theme->getName()], $available_flavors);
 
+    // Prepare data for screenshot preview.
     if ($selection !== $this->theme->getName()) {
       /** @var \Drupal\Core\Extension\Extension $flavor */
       $flavor = $this->flavors->get($selection);
@@ -144,15 +160,13 @@ class FlavorForm extends FormBase {
       $screenshot_uri = $this->themeSelectorBuilder->getScreenshotUri($flavor);
     }
     else {
-      // Revert everything to normal is user has not chosen a flavor.
+      // Revert everything to normal if user has not chosen a flavor.
       /** @var array $info */
       $info = $this->theme->info;
       /** @var string|null $screenshot_uri */
       $screenshot_uri = $this->themeSelectorBuilder->getScreenshotUri($this->theme);
     }
 
-    /** @var string $theme_selector_identifier */
-    $theme_selector_identifier = Html::cleanCssIdentifier("theme-selector-{$this->theme->getName()}");
     $response->addCommand(new ReplaceCommand("#$theme_selector_identifier .theme-screenshot img", [
       '#theme' => 'image',
       '#uri' => $screenshot_uri ?? '',
@@ -160,6 +174,64 @@ class FlavorForm extends FormBase {
       '#title' => $this->t('Screenshot for @theme theme', ['@theme' => $info['name']]),
       '#attributes' => ['class' => ['screenshot']],
     ]));
+
+    // Theme operations are going to be rendered differently in case of default
+    // theme.
+    if (\in_array($this->defaultTheme, $default_theme_options, TRUE)) {
+      // Making sure that multiple operations are not added.
+      $response->addCommand(new RemoveCommand("#$theme_selector_identifier .theme-info .operations"));
+
+      if ($selection !== $this->defaultTheme) {
+        $response->addCommand(new AfterCommand("#$theme_selector_identifier .theme-info__description", [
+          '#theme' => 'links',
+          '#attributes' => [
+            'class' => [
+              'operations',
+            ],
+          ],
+          '#links' => [
+            [
+              'title' => $this->t('Preview'),
+              'url' => Url::fromRoute('cp_appearance.preview', [
+                'theme' => $selection,
+              ]),
+            ],
+          ],
+        ]));
+      }
+    }
+    else {
+      $response->addCommand(new ReplaceCommand("#$theme_selector_identifier .theme-info .operations .preview", [
+        '#type' => 'link',
+        '#title' => $this->t('Preview'),
+        '#url' => Url::fromRoute('cp_appearance.preview', [
+          'theme' => $selection,
+        ]),
+        '#options' => [
+          'attributes' => [
+            'title' => $this->t('Preview @theme', ['@theme' => $info['name']]),
+            'class' => [
+              'btn',
+              'btn-sm',
+              'btn-default',
+              'preview',
+            ],
+            'data-toggle' => 'tooltip',
+            'data-placement' => 'bottom',
+            'data-original-title' => $this->t('Preview @theme', ['@theme' => $info['name']]),
+          ],
+        ],
+        '#icon' => [
+          '#type' => 'html_tag',
+          '#tag' => 'span',
+          '#value' => '',
+          '#attributes' => [
+            'class' => ['icon', 'glyphicon', 'glyphicon-eye-open'],
+            'aria-hidden' => 'true',
+          ],
+        ],
+      ]));
+    }
 
     return $response;
   }

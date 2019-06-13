@@ -22,16 +22,17 @@ class DeleteRedirectTest extends OsRedirectTestBase {
   public function setUp() {
     parent::setUp();
     $this->siteUser = $this->createUser([
-      'access control panel',
       'administer control panel redirects',
     ]);
+    /** @var \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager */
+    $entity_type_manager = $this->container->get('entity_type.manager');
 
     // Set the current user so group creation can rely on it.
     $this->container->get('current_user')->setAccount($this->siteUser);
 
     // Enable the user_as_content plugin on the default group type.
     /** @var \Drupal\group\Entity\Storage\GroupContentTypeStorageInterface $storage */
-    $storage = $this->entityTypeManager->getStorage('group_content_type');
+    $storage = $entity_type_manager->getStorage('group_content_type');
     /** @var \Drupal\group\Entity\GroupContentTypeInterface[] $plugin */
     $plugins = $storage->loadByContentPluginId('group_entity:redirect');
     /** @var \Drupal\group\Entity\GroupContentTypeInterface $plugin */

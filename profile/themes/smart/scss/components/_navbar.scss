@@ -1,0 +1,78 @@
+/**** navbar background ****/
+.navbar-collapse {
+  background: $color-black;
+  padding: 0 !important;
+  /***** navbar nav *****/
+  .navbar-nav {
+    > li {
+      @media #{$mobile} {
+        // border-bottom: 1px solid $color-red;
+        // border-top: 1px solid $color-red1;
+      }
+      > a {
+        color: $color-text2;
+        border-bottom: 2px solid transparent;
+        font-family: "Open Sans", Arial, sans-serif;
+        font-size: 16px;
+        &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
+          background: none;
+          color: $color-text2;
+          border-bottom: 2px solid $color-pink;
+        }
+      }
+      &.open, &.active {
+        > a, > a:hover, > a:active, > a:focus {
+          background: none;
+          color: $color-text2;
+          border-bottom: 2px solid $color-pink;
+        }
+      }
+    }
+  }
+  /**** dropdown menu ****/
+  .dropdown-menu {
+    background: $color-black;
+    @media #{$mobile} {
+      background: none;
+    }
+    > li {
+      > a {
+        color: $color-text2;
+        border-bottom: 1px solid $color-white;
+        font-family: "Open Sans", Arial, sans-serif;
+        @media #{$mobile} {
+          font-size: 19px;
+          font-weight: normal;
+        }
+        &:hover, &:active {
+          color: $color-text2;
+          background: none;
+          @media #{$mobile} {
+            background: none;
+          }
+        }
+      }
+      &.active {
+        a, a:hover {
+          color: $color-text2;
+          background: none;
+          @media #{$mobile} {
+            background: none;
+          }
+        }
+      }
+      &:last-child {
+        a {
+          border: 0;
+        }
+      }
+    }
+  }
+  .sr-only {
+    color: $color-white;
+  }
+}
+.dropdown-menu > .active > a {
+  background: none;
+  color: $color-text;
+}

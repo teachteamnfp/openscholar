@@ -1,5 +1,7 @@
 services:
   vsite_infinite_scroll.ajax_subscriber:
     class: Drupal\vsite_infinite_scroll\EventSubscriber\AjaxResponseSubscriber
+    arguments:
+      - '@config.factory'
     tags:
       - { name: event_subscriber }

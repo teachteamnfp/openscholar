@@ -5,11 +5,9 @@ dependencies:
   config:
     - field.field.node.page.body
     - field.field.node.page.field_media
-    - field.field.node.page.field_slideshow
     - field.field.node.page.field_taxonomy_terms
     - node.type.page
   module:
-    - entity_reference_revisions
     - layout_builder
     - text
     - user
@@ -35,15 +33,6 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
-    region: content
-  field_slideshow:
-    type: entity_reference_revisions_entity_view
-    weight: 1
-    label: above
-    settings:
-      view_mode: default
-      link: ''
-    third_party_settings: {  }
     region: content
   field_taxonomy_terms:
     weight: 4

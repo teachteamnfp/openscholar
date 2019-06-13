@@ -3,6 +3,7 @@
 namespace Drupal\Tests\vsite\ExistingSiteJavascript;
 
 use Behat\Mink\Exception\Exception;
+use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTestBase;
 
 /**
  * Class LinkTest.
@@ -11,7 +12,7 @@ use Behat\Mink\Exception\Exception;
  * @group functional-javascript
  * @group vsite
  */
-class VsiteLinkTest extends VsiteExistingSiteJavascriptTestBase {
+class VsiteLinkTest extends OsExistingSiteJavascriptTestBase {
 
   /**
    * The group we're testing against.

@@ -1,0 +1,10 @@
+uuid: 3bf0613b-114b-40f8-ac59-10c10eeb5851
+langcode: en
+status: true
+dependencies: {  }
+id: faq
+label: FAQ
+description: ''
+activationRules: 'faq/*'
+weight: 0
+data: {  }

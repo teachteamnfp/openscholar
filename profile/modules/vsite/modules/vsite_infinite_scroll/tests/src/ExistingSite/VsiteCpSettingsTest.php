@@ -2,6 +2,8 @@
 
 namespace Drupal\Tests\vsite_infinite_scroll\ExistingSite;
 
+use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
+
 /**
  * Test the Infinite Scroll Vsite Views pager.
  *
@@ -10,39 +12,40 @@ namespace Drupal\Tests\vsite_infinite_scroll\ExistingSite;
  * @group kernel
  * @coversDefaultClass \Drupal\vsite_infinite_scroll\Plugin\CpSetting\VsitePagerSetting
  */
-class VsiteCpSettingsTest extends VsiteInfiniteScrollExistingSiteTestBase {
+class VsiteCpSettingsTest extends OsExistingSiteTestBase {
 
   /**
-   * Admin user.
+   * Group admin.
    *
    * @var \Drupal\user\Entity\User
    */
-  protected $adminUser;
+  protected $groupAdmin;
 
   /**
    * {@inheritdoc}
    */
   public function setUp() {
     parent::setUp();
-    $this->adminUser = $this->createUser([
-      'access administration pages',
-      'access control panel',
-    ]);
+    $this->groupAdmin = $this->createUser();
+    $this->addGroupAdmin($this->groupAdmin, $this->group);
   }
 
   /**
    * Check vsite cp settings form submit.
+   *
+   * @throws \Behat\Mink\Exception\ExpectationException
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
-  public function testCpSettingsPageFormSave() {
-    $this->drupalLogin($this->adminUser);
-    $this->visit("/cp/settings/vsite");
+  public function testCpSettingsPageFormSave(): void {
+    $this->drupalLogin($this->groupAdmin);
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/vsite");
     $this->assertSession()->statusCodeEquals(200);
     $html = $this->getSession()->getPage()->getContent();
     $this->assertContains('Choose how long lists of content will display', $html);
-    $this->drupalPostForm('/cp/settings/vsite', [
+    $this->drupalPostForm("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/vsite", [
       'long_list_content_pagination' => 'pager',
     ], 'Save configuration');
-    $this->visit("/cp/settings/vsite");
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/vsite");
     $html = $this->getSession()->getPage()->getContent();
     $this->assertContains('name="long_list_content_pagination" value="pager" checked="checked"', $html, 'Default value is not set.');
   }

@@ -3,7 +3,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.date_format.html_date
     - core.date_format.medium
     - core.entity_view_mode.node.rss
     - field.storage.node.body
@@ -18,7 +17,6 @@ dependencies:
     - group
     - node
     - text
-    - user
     - views_ical
     - vsite
 id: calendar
@@ -37,11 +35,11 @@ display:
     position: 0
     display_options:
       access:
-        type: perm
+        type: group_permission
         options:
-          perm: 'access content'
+          group_permission: 'view group_node:class entity'
       cache:
-        type: tag
+        type: none
         options: {  }
       query:
         type: views_query
@@ -285,10 +283,10 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
+        - group_membership.roles.permissions
         - 'languages:language_content'
         - 'languages:language_interface'
         - 'user.node_grants:view'
-        - user.permissions
       tags:
         - 'config:field.storage.node.field_recurring_date'
   block_1:
@@ -475,10 +473,10 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
+        - group_membership.roles.permissions
         - 'languages:language_content'
         - 'languages:language_interface'
         - 'user.node_grants:view'
-        - user.permissions
       tags:
         - 'config:field.storage.node.field_recurring_date'
   block_2:
@@ -662,10 +660,10 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
+        - group_membership.roles.permissions
         - 'languages:language_content'
         - 'languages:language_interface'
         - 'user.node_grants:view'
-        - user.permissions
       tags:
         - 'config:field.storage.node.field_recurring_date'
   feed_1:
@@ -696,10 +694,10 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
+        - group_membership.roles.permissions
         - 'languages:language_content'
         - 'languages:language_interface'
         - 'user.node_grants:view'
-        - user.permissions
       tags:
         - 'config:field.storage.node.field_recurring_date'
   feed_2:
@@ -722,8 +720,10 @@ display:
       style:
         type: ical
         options:
-          grouping: {  }
-          uses_fields: false
+          date_field: field_recurring_date
+          summary_field: title
+          location_field: field_location
+          description_field: body
       pager:
         type: none
         options:
@@ -1000,10 +1000,10 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
+        - group_membership.roles.permissions
         - 'languages:language_content'
         - 'languages:language_interface'
         - 'user.node_grants:view'
-        - user.permissions
       tags:
         - 'config:field.storage.node.body'
         - 'config:field.storage.node.field_location'
@@ -1033,9 +1033,9 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
+        - group_membership.roles.permissions
         - 'languages:language_content'
         - 'languages:language_interface'
         - 'user.node_grants:view'
-        - user.permissions
       tags:
         - 'config:field.storage.node.field_recurring_date'

@@ -21,7 +21,7 @@ services:
     environment:
       PHP_SENDMAIL_PATH: /usr/sbin/sendmail -t -i -S mailhog:1025
       PHP_MAX_INPUT_VARS: 10000
-#      PHP_XDEBUG: 1 #Leave this commented out when not using to speed up localdev
+      PHP_XDEBUG: $PHP_XDEBUG
       PHP_XDEBUG_REMOTE_AUTOSTART: "0"
       PHP_XDEBUG_DEFAULT_ENABLE: 0
       PHP_XDEBUG_REMOTE_CONNECT_BACK: 0         # Disable this if not on MAC - This is needed to respect remote.host setting below

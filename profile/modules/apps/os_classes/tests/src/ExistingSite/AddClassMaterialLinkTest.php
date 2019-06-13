@@ -2,7 +2,7 @@
 
 namespace Drupal\Tests\os_classes\ExistingSite;
 
-use weitzman\DrupalTestTraits\ExistingSiteBase;
+use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
 
 /**
  * Class AddClassMaterialLinkTest.
@@ -12,7 +12,28 @@ use weitzman\DrupalTestTraits\ExistingSiteBase;
  *
  * @package Drupal\Tests\os_publications\ExistingSite
  */
-class AddClassMaterialLinkTest extends ExistingSiteBase {
+class AddClassMaterialLinkTest extends OsExistingSiteTestBase {
+
+  /**
+   * Administrator and group administrator.
+   *
+   * @var \Drupal\user\UserInterface
+   */
+  protected $adminUser;
+
+  /**
+   * Outsider.
+   *
+   * @var \Drupal\user\UserInterface
+   */
+  protected $simpleUser;
+
+  /**
+   * Test class.
+   *
+   * @var \Drupal\node\NodeInterface
+   */
+  protected $class;
 
   /**
    * {@inheritdoc}
@@ -20,7 +41,7 @@ class AddClassMaterialLinkTest extends ExistingSiteBase {
   public function setUp() {
     parent::setUp();
 
-    $this->adminUser = $this->createUser([], '', TRUE);
+    $this->adminUser = $this->createUser();
     $this->simpleUser = $this->createUser();
 
     $this->class = $this->createNode([
@@ -30,32 +51,34 @@ class AddClassMaterialLinkTest extends ExistingSiteBase {
       'field_class_materials[0][subform][field_title][0][value]' => $this->randomString(),
       'field_class_materials[0][subform][field_body][0][value]' => $this->randomString(),
     ]);
+    $this->addGroupAdmin($this->adminUser, $this->group);
+    $this->group->addContent($this->class, 'group_node:class');
   }
 
   /**
    * Test Add Class material link as admin.
    *
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    * @throws \Behat\Mink\Exception\ExpectationException
    */
-  public function testAddMaterialLinkAsAdmin() {
+  public function testAddMaterialLinkAsAdmin(): void {
     $this->drupalLogin($this->adminUser);
 
-    $this->drupalGet('node/' . $this->class->id());
+    $this->drupalGet("{$this->group->get('path')->first()->getValue()['alias']}/node/{$this->class->id()}");
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->linkByHrefExists('add/paragraph/class_material');
   }
 
   /**
-   * Test Add class material link as anonymous user.
+   * Test Add class material link as a non-member.
    *
    * @throws \Behat\Mink\Exception\ExpectationException
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
-  public function testAddMaterialLinkAsAnon() {
-    if ($this->loggedInUser) {
-      $this->drupalLogout();
-    }
+  public function testAddMaterialLinkAsOutsider(): void {
+    $this->drupalLogin($this->simpleUser);
 
-    $this->drupalGet('node/' . $this->class->id());
+    $this->drupalGet("{$this->group->get('path')->first()->getValue()['alias']}/node/{$this->class->id()}");
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->linkByHrefNotExists('add/paragraph/class_material');
   }
@@ -64,28 +87,28 @@ class AddClassMaterialLinkTest extends ExistingSiteBase {
    * Test Add Class material Link on classes view as Admin user.
    *
    * @throws \Behat\Mink\Exception\ExpectationException
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
-  public function testAddLinkOnClassesViewAsAdmin() {
+  public function testAddLinkOnClassesViewAsAdmin(): void {
     $this->drupalLogin($this->adminUser);
 
-    $this->drupalGet('classes');
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/classes");
     $this->assertSession()->statusCodeEquals(200);
-    $this->assertSession()->linkByHrefExists('add/paragraph/class_material');
+    $this->assertSession()->linkByHrefExists("{$this->group->get('path')->first()->getValue()['alias']}/node/{$this->class->id()}/add/paragraph/class_material");
   }
 
   /**
-   * Test Add Class material Link on classes view as anonymous user.
+   * Test Add Class material Link on classes view as a non-member.
    *
    * @throws \Behat\Mink\Exception\ExpectationException
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
-  public function testAddLinkOnClassesViewAsAnon() {
-    if ($this->loggedInUser) {
-      $this->drupalLogout();
-    }
+  public function testAddLinkOnClassesViewAsOutsider(): void {
+    $this->drupalLogin($this->simpleUser);
 
-    $this->drupalGet('classes');
-    $this->assertSession()->statusCodeEquals(200);
-    $this->assertSession()->linkByHrefNotExists('add/paragraph/class_material');
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/classes");
+    $this->assertSession()->statusCodeEquals(403);
+    $this->assertSession()->linkByHrefNotExists("{$this->group->get('path')->first()->getValue()['alias']}/node/{$this->class->id()}/add/paragraph/class_material");
   }
 
 }

@@ -1,0 +1,22 @@
+uuid: 944c2932-7456-448e-bb00-1e17dbb17375
+langcode: en
+status: true
+dependencies:
+  module:
+    - user
+  theme:
+    - os_admin
+_core:
+  default_config_hash: K1iY0aWbZs1OpYY-NOPTQ5B4ZqtoNxwgalniZcapaiw
+id: os_admin_login
+theme: os_admin
+region: content
+weight: 10
+provider: null
+plugin: user_login_block
+settings:
+  id: user_login_block
+  label: 'User login'
+  provider: user
+  label_display: visible
+visibility: {  }

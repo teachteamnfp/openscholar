@@ -1,0 +1,17 @@
+aside, .content-inner {
+  .block-title {
+    font-size: 16px;
+    text-transform: uppercase;
+    background: $color-black;
+    color: $color-text2;
+    padding: 10px 14px;
+    margin-bottom: 15px;
+    border-left: 3px solid $color-pink;
+  }
+  .navbar-nav li .dropdown-menu a {
+    color: $color-black;
+    &:hover {
+      color: $color-black;
+    }
+  }
+}

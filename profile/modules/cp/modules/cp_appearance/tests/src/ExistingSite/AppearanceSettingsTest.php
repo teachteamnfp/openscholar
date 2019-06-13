@@ -29,9 +29,9 @@ class AppearanceSettingsTest extends TestBase {
         'alias' => '/cp-appearance',
       ],
     ]);
-    $this->group->addMember($this->admin);
+    $this->addGroupAdmin($this->groupAdmin, $this->group);
 
-    $this->drupalLogin($this->admin);
+    $this->drupalLogin($this->groupAdmin);
   }
 
   /**
@@ -54,6 +54,8 @@ class AppearanceSettingsTest extends TestBase {
 
     $this->visit('/cp-appearance');
     $this->assertSession()->responseContains('/profiles/contrib/openscholar/themes/hwpi_lamont/css/style.css');
+
+    $this->visit('/');
   }
 
   /**
@@ -68,6 +70,8 @@ class AppearanceSettingsTest extends TestBase {
 
     $this->visit('/cp-appearance');
     $this->assertSession()->responseContains('/profiles/contrib/openscholar/themes/hwpi_college/css/style.css');
+
+    $this->visit('/');
   }
 
   /**
@@ -86,6 +90,8 @@ class AppearanceSettingsTest extends TestBase {
 
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->pageTextContains('Previewing: Sterling');
+
+    $this->visit('/');
   }
 
 }

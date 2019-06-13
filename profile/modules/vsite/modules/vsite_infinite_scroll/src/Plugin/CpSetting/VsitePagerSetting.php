@@ -2,14 +2,10 @@
 
 namespace Drupal\vsite_infinite_scroll\Plugin\CpSetting;
 
-use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Plugin\PluginBase;
-use Drupal\Core\Session\AccountInterface;
-use Drupal\cp_settings\CpSettingInterface;
+use Drupal\cp_settings\CpSettingBase;
 
 /**
  * CP metatag setting.
@@ -19,12 +15,12 @@ use Drupal\cp_settings\CpSettingInterface;
  *   title = @Translation("Vsite pager"),
  *   group = {
  *    "id" = "vsite",
- *    "title" = @Translation("Vsite"),
+ *    "title" = @Translation("Long List Display"),
  *    "parent" = "cp.settings.global"
  *   }
  * )
  */
-class VsitePagerSetting extends PluginBase implements CpSettingInterface {
+class VsitePagerSetting extends CpSettingBase {
 
   /**
    * {@inheritdoc}
@@ -62,16 +58,6 @@ class VsitePagerSetting extends PluginBase implements CpSettingInterface {
     Cache::invalidateTags([
       _vsite_infinite_scroll_get_cache_tag(),
     ]);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function access(AccountInterface $account): AccessResultInterface {
-    if (!$account->hasPermission('access control panel')) {
-      return AccessResult::forbidden();
-    }
-    return AccessResult::allowed();
   }
 
 }

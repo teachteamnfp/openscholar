@@ -2,6 +2,7 @@
 
 namespace Drupal\vsite_infinite_scroll\EventSubscriber;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\views\Ajax\ViewAjaxResponse;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
@@ -11,6 +12,23 @@ use Symfony\Component\HttpKernel\KernelEvents;
  * Response subscriber to handle AJAX responses.
  */
 class AjaxResponseSubscriber implements EventSubscriberInterface {
+
+  /**
+   * Config Factory.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
+   * Constructor.
+   *
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   Config Factory Interface.
+   */
+  public function __construct(ConfigFactoryInterface $config_factory) {
+    $this->configFactory = $config_factory;
+  }
 
   /**
    * Alter the views AJAX response commands only for the infinite pager.
@@ -50,6 +68,12 @@ class AjaxResponseSubscriber implements EventSubscriberInterface {
     // Only alter commands if the user has selected our pager and it attempting
     // to move beyond page 0.
     if ($view->getPager()->getPluginId() !== 'vsite_infinite_scroll' || $view->getCurrentPage() === 0) {
+      return;
+    }
+    $config = $this->configFactory->get('vsite_infinite_scroll.settings');
+    $long_list_content_pagination = $config->get('long_list_content_pagination');
+    // If pager is set, no need to alter commands.
+    if ($long_list_content_pagination == 'pager') {
       return;
     }
 

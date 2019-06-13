@@ -1,0 +1,6 @@
+name: OS Google Analytics
+core: 8.x
+type: module
+description: Google Analytics for OpenScholar
+dependencies:
+  - drupal:google_analytics

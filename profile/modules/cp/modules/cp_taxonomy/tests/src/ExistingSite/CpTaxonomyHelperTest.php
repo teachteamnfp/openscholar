@@ -5,14 +5,14 @@ namespace Drupal\Tests\cp_taxonomy\ExistingSite;
 /**
  * Class CheckingFieldsTest.
  *
- * @group other
+ * @group cp
  * @group kernel
  *
  * @package Drupal\Tests\cp_taxonomy\ExistingSite
  */
 class CpTaxonomyHelperTest extends TestBase {
 
-  private $group;
+  protected $group;
   private $helper;
 
   /**

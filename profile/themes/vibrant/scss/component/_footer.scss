@@ -3,12 +3,6 @@ footer.footer {
   padding: 60px 0 12px;
   position: relative;
   background: $color-gray3;
-  background: -moz-linear-gradient(top, $color-gray3 0%, $color-gray4 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, $color-gray3), color-stop(100%, $color-gray4));
-  background: -webkit-linear-gradient(top, $color-gray3 0%, $color-gray4 100%);
-  background: -o-linear-gradient(top, $color-gray3 0%, $color-gray4 100%);
-  background: -ms-linear-gradient(top, $color-gray3 0%, $color-gray4 100%);
-  background: linear-gradient(to bottom, $color-gray3 0%, $color-gray4 100%);
   ul.nav {
     a {
       font-family: Arial,Helvetica,sans-serif;
@@ -26,5 +20,8 @@ footer.footer {
     text-shadow: none;
     padding: 0;
     font-size: 13px;
+  }
+  button.visually-hidden {
+    color: $color-black;
   }
 }

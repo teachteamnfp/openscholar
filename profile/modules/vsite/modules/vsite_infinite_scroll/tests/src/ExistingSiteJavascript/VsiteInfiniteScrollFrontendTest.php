@@ -2,13 +2,15 @@
 
 namespace Drupal\Tests\vsite_infinite_scroll\ExistingSiteJavascript;
 
+use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTestBase;
+
 /**
  * Tests vsite_infinite_scroll module.
  *
  * @group functional-javascript
  * @group vsite
  */
-class VsiteInfiniteScrollFrontendTest extends VsiteInfiniteScrollExistingSiteJavascriptTestBase {
+class VsiteInfiniteScrollFrontendTest extends OsExistingSiteJavascriptTestBase {
 
   /**
    * Group parent test entity.
@@ -17,34 +19,29 @@ class VsiteInfiniteScrollFrontendTest extends VsiteInfiniteScrollExistingSiteJav
    */
   protected $group;
 
-  private $lastPersonTitle = '';
-
   /**
    * {@inheritdoc}
    */
   public function setUp() {
     parent::setUp();
+    $entity_type_manager = $this->container->get('entity_type.manager');
 
     // Set the current user so group creation can rely on it.
     $this->container->get('current_user')->setAccount($this->createUser());
 
     // Enable the user_as_content plugin on the default group type.
     /** @var \Drupal\group\Entity\Storage\GroupContentTypeStorageInterface $storage */
-    $storage = $this->entityTypeManager->getStorage('group_content_type');
+    $storage = $entity_type_manager->getStorage('group_content_type');
     /** @var \Drupal\group\Entity\GroupContentTypeInterface[] $plugin */
     $plugins = $storage->loadByContentPluginId('group_node:person');
     /** @var \Drupal\group\Entity\GroupContentTypeInterface $plugin */
     $plugin = reset($plugins);
 
-    $this->group = $this->createGroup([
-      'type' => 'personal',
-      'title' => 'Site01',
-      'path' => '/site01',
-    ]);
+    $this->group = $this->createGroup();
     $this->group->save();
 
     $i = 0;
-    while ($i < 11) {
+    while ($i < 21) {
       $person = $this->createNode([
         'type' => 'person',
         'status' => 1,
@@ -67,10 +64,13 @@ class VsiteInfiniteScrollFrontendTest extends VsiteInfiniteScrollExistingSiteJav
   /**
    * Tests vsite_infinite_scroll people view load more button ajax request.
    */
-  public function testClickOnLoadMoreButton() {
+  public function testClickOnLoadMoreButton(): void {
     $web_assert = $this->assertSession();
-    $this->config->set('long_list_content_pagination', 'infinite_scroll');
-    $this->config->save(TRUE);
+    $config_factory = $this->container->get('config.factory');
+    /** @var \Drupal\Core\Config\Config $config */
+    $config = $config_factory->getEditable('vsite_infinite_scroll.settings');
+    $config->set('long_list_content_pagination', 'infinite_scroll');
+    $config->save(TRUE);
 
     $path = $this->group->get('path')->getValue();
     $alias = $path[0]['alias'];
@@ -80,8 +80,14 @@ class VsiteInfiniteScrollFrontendTest extends VsiteInfiniteScrollExistingSiteJav
     $page = $this->getCurrentPage();
     $checkHtmlValue = $page->hasContent('Load More');
     $this->assertTrue($checkHtmlValue, 'Load More button has not found.');
+
     $load_button = $page->findLink('Load More');
     $load_button->press();
+    $this->waitForAjaxToFinish();
+    $load_button = $page->findLink('Load More');
+    $load_button->press();
+    $this->waitForAjaxToFinish();
+
     $result = $web_assert->waitForElementVisible('named', ['link', 'Old Man']);
     $this->assertNotNull($result, 'Following node title not found: Old created person');
   }
