@@ -35,7 +35,9 @@ class PagesFormTest extends TestBase {
       'book[bid]' => $book->id(),
     ];
     $this->drupalPostForm('/node/add/page', $edit, 'Save');
-    $page = $this->getNodeByTitle($title);
+    $this->assertSession()->statusCodeEquals(200);
+
+    $page = $this->getNodeByTitle($title, TRUE);
 
     $this->drupalLogin($this->createUser());
 
