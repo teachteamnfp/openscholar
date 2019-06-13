@@ -79,7 +79,7 @@ function vsite_form_node_form_alter(&$form, FormStateInterface $form_state, $for
     /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
     $entity = $form_state->getFormObject()->getEntity();
     $plugin_id = 'group_node:' . $entity->bundle();
-    if (!$group->getContentByEntityId($plugin_id, $entity->id())) {
+    if ($entity->isNew() || !$group->getContentByEntityId($plugin_id, $entity->id())) {
       $form_state->set('group', $group);
       $form_state->set('group_content_enabler', 'group_node:' . $entity->bundle());
       foreach (Element::children($form['actions']) as $name) {
