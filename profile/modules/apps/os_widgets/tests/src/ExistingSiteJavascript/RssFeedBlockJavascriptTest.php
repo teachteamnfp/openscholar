@@ -4,6 +4,7 @@ namespace Drupal\Tests\os_widgets\ExistingSiteJavascript;
 
 use Drupal\block\Entity\Block;
 use Drupal\block_content\Entity\BlockContent;
+use Drupal\os_widgets\Entity\LayoutContext;
 use weitzman\DrupalTestTraits\ExistingSiteWebDriverTestBase;
 
 /**
@@ -136,6 +137,15 @@ class RssFeedBlockJavascriptTest extends ExistingSiteWebDriverTestBase {
     ];
     $block = Block::create($values);
     $block->save();
+    $layoutContext = LayoutContext::load('all_pages');
+    $blocks = $layoutContext->getBlockPlacements();
+    $blocks[$block->id()] = [
+      'id' => $block->id(),
+      'region' => 'content',
+      'weight' => 0,
+    ];
+    $layoutContext->setBlockPlacements($blocks);
+    $layoutContext->save();
     $this->markEntityForCleanup($block);
   }
 

@@ -1,0 +1,10 @@
+uuid: 6cb89b72-43a5-4077-8a38-78ecaeeafb9a
+langcode: en
+status: true
+dependencies: {  }
+id: news
+label: News
+description: 'Layout Context for News'
+activationRules: 'news/*'
+weight: 0
+data: {  }
