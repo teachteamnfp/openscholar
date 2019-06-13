@@ -73,14 +73,14 @@ class MenuHelper implements MenuHelperInterface {
   public function createVsiteMenus(GroupInterface $vsite) : array {
 
     // Create vsite specific primary menu.
-    $group_menu = $this->createPrimaryMenu($vsite);
+    $group_menu = $this->createMenu($vsite);
     // Map Links from main to vsite specific menu.
-    $this->mapPrimaryMenuLinks($group_menu);
+    $this->mapMenuLinks($group_menu);
 
     // Create vsite specific scondary menu.
-    $group_menu_secondary = $this->createSecondaryMenu($vsite);
+    $group_menu_secondary = $this->createMenu($vsite, FALSE);
     // Map Links from secondary to vsite specific menu.
-    $this->mapSecondaryMenuLinks($group_menu_secondary);
+    $this->mapMenuLinks($group_menu_secondary, FALSE);
 
     // Return newly created tree.
     return $this->menuTree->load('menu-primary-' . $vsite->id(), new MenuTreeParameters());
@@ -90,9 +90,9 @@ class MenuHelper implements MenuHelperInterface {
    * {@inheritdoc}
    */
   public function resetVsiteMenus($vsite, $secondary = FALSE) : void {
-    // Create vsite specific primary menu.
-    $group_menu = $this->createPrimaryMenu($vsite);
-    $group_menu_secondary = $this->createSecondaryMenu($vsite);
+    // Create vsite specific menus.
+    $group_menu = $this->createMenu($vsite);
+    $group_menu_secondary = $this->createMenu($vsite, FALSE);
 
     if (!$secondary) {
       $this->storage->create([
@@ -102,18 +102,22 @@ class MenuHelper implements MenuHelperInterface {
         'weight' => -1,
         'expanded' => TRUE,
       ])->save();
-      $this->mapSecondaryMenuLinks($group_menu_secondary);
+      // Map secondary menu links.
+      $this->mapMenuLinks($group_menu_secondary, FALSE);
     }
     else {
-      $this->mapPrimaryMenuLinks($group_menu);
+      // Map primary menu links.
+      $this->mapMenuLinks($group_menu);
     }
   }
 
   /**
-   * Create a vsite specific primary menu.
+   * Create a vsite specific menu.
    *
    * @param \Drupal\group\Entity\GroupInterface $vsite
    *   Group/vsite.
+   * @param bool $primary
+   *   If primary or secondary menu.
    *
    * @return \Drupal\Core\Entity\EntityInterface
    *   Menu entity.
@@ -122,12 +126,15 @@ class MenuHelper implements MenuHelperInterface {
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  protected function createPrimaryMenu(GroupInterface $vsite) : EntityInterface {
+  protected function createMenu(GroupInterface $vsite, $primary = TRUE) : EntityInterface {
+    $id = $primary ? 'menu-primary-' . $vsite->id() : 'menu-secondary-' . $vsite->id();
+    $label = $primary ? $this->t('Primary menu') : $this->t('Secondary menu');
+
     $group_menu = $this->entityTypeManager
       ->getStorage('menu')
       ->create([
-        'id' => 'menu-primary-' . $vsite->id(),
-        'label' => $this->t('Primary menu'),
+        'id' => $id,
+        'label' => $label,
         'description' => $this->t('Menu for %label', ['%label' => $vsite->label()]),
       ]);
     $group_menu->save();
@@ -141,70 +148,23 @@ class MenuHelper implements MenuHelperInterface {
    *
    * @param \Drupal\Core\Entity\EntityInterface $group_menu
    *   Group menu.
+   * @param bool $primary
+   *   If primary or secondary menu.
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  protected function mapPrimaryMenuLinks(EntityInterface $group_menu) : void {
+  protected function mapMenuLinks(EntityInterface $group_menu, $primary = TRUE) : void {
     // Load shared main menu tree.
-    $sharedMainMenuTree = $this->menuTree->load('main', new MenuTreeParameters());
+    $menu = $primary ? 'main' : 'footer';
+    $sharedMenuTree = $this->menuTree->load($menu, new MenuTreeParameters());
 
-    foreach ($sharedMainMenuTree as $links) {
+    foreach ($sharedMenuTree as $links) {
       $definition = $links->link->getPluginDefinition();
       $route_name = $definition['route_name'];
       $this->storage->create([
         'title' => $this->t('@title', ['@title' => $definition['title']]),
         'link' => ['uri' => "route:$route_name"],
         'menu_name' => $group_menu->id(),
-        'weight' => $definition['weight'],
-        'expanded' => TRUE,
-      ])->save();
-    }
-  }
-
-  /**
-   * Create a vsite specific primary menu.
-   *
-   * @param \Drupal\group\Entity\GroupInterface $vsite
-   *   Group/vsite.
-   *
-   * @return \Drupal\Core\Entity\EntityInterface
-   *   Menu Entity.
-   *
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
-   * @throws \Drupal\Core\Entity\EntityStorageException
-   */
-  protected function createSecondaryMenu(GroupInterface $vsite) : EntityInterface {
-    $group_menu_secondary = $this->entityTypeManager->getStorage('menu')
-      ->create([
-        'id' => 'menu-secondary-' . $vsite->id(),
-        'label' => $this->t('Secondary menu'),
-        'description' => $this->t('Menu for %label', ['%label' => $vsite->label()]),
-      ]);
-    $group_menu_secondary->save();
-    $vsite->addContent($group_menu_secondary, 'group_menu:menu');
-    return $group_menu_secondary;
-  }
-
-  /**
-   * Map menus from shared to new vsite menu.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $group_menu_secondary
-   *   Group menu secondary.
-   *
-   * @throws \Drupal\Core\Entity\EntityStorageException
-   */
-  protected function mapSecondaryMenuLinks(EntityInterface $group_menu_secondary) : void {
-    // Load shared secondary menu tree.
-    $sharedSecondaryMenuTree = $this->menuTree->load('footer', new MenuTreeParameters());
-
-    foreach ($sharedSecondaryMenuTree as $links) {
-      $definition = $links->link->getPluginDefinition();
-      $route_name = $definition['route_name'];
-      $this->storage->create([
-        'title' => $this->t('@title', ['@title' => $definition['title']]),
-        'link' => ['uri' => "route:$route_name"],
-        'menu_name' => $group_menu_secondary->id(),
         'weight' => $definition['weight'],
         'expanded' => TRUE,
       ])->save();

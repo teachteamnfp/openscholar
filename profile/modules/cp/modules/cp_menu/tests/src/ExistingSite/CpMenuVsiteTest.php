@@ -87,4 +87,35 @@ class CpMenuVsiteTest extends OsExistingSiteTestBase {
     $this->assertNotEquals('0', $menuCount);
   }
 
+  /**
+   * Tests Reset Menu primary service.
+   */
+  public function testMenuResetServicePrimary(): void {
+    // Test if the service creates new menus.
+    $this->menuHelper->resetVsiteMenus($this->group);
+    $query = $this->database
+      ->select('config', 'con')
+      ->fields('con', [
+        'name',
+      ]);
+    $query->condition('con.name', "system.menu.menu-primary-$this->id");
+    $query->condition('con.name', "system.menu.menu-secondary-$this->id");
+    $menus = $query->execute();
+    $this->assertNotNull($menus, 'No matching menus found.');
+
+    // Tests that Primary menu has just 1 link.
+    $menuCount = $this->menuLink->countMenuLinks("menu-primary-$this->id");
+    $this->assertEquals('1', $menuCount);
+  }
+
+  /**
+   * Tests Reset Menu secondary service.
+   */
+  public function testMenuResetServiceSecondary(): void {
+    // Test if the service deletes all secondary menu links.
+    $this->menuHelper->resetVsiteMenus($this->group, TRUE);
+    $menuCount = $this->menuLink->countMenuLinks("menu-secondary-$this->id");
+    $this->assertEquals('0', $menuCount);
+  }
+
 }
