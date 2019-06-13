@@ -125,7 +125,7 @@ function vsite_form_alter(&$form, FormStateInterface $formState, $form_id) {
       $availablePlugins = $plugins[$groupTypeId];
 
       $plugin_id = 'group_entity:' . $entity->getEntityTypeId();
-      if (in_array($plugin_id, $availablePlugins) && !($existingEntity = $group->getContentByEntityId($plugin_id, $entity->id()))) {
+      if (in_array($plugin_id, $availablePlugins) && ($entity->isNew() || !($existingEntity = $group->getContentByEntityId($plugin_id, $entity->id())))) {
         $formState->set('group', $group);
         $formState->set('group_content_enabler', $plugin_id);
         foreach (Element::children($form['actions']) as $name) {
