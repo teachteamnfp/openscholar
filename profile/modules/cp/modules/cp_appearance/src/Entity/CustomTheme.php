@@ -27,6 +27,8 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
  *     "id",
  *     "label",
  *     "base_theme",
+ *     "favicon",
+ *     "images",
  *   },
  *   links = {
  *     "add-form" = "/cp/appearance/custom-themes/add",

@@ -3,8 +3,11 @@
 namespace Drupal\cp_appearance\Entity\Form;
 
 use Drupal\Core\Entity\EntityForm;
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\cp_appearance\AppearanceSettingsBuilderInterface;
+use Drupal\cp_appearance\Entity\CustomTheme;
+use Drupal\cp_appearance\Entity\CustomThemeException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -59,20 +62,18 @@ class CustomThemeForm extends EntityForm {
 
     $form['id'] = [
       '#type' => 'machine_name',
+      '#maxlength' => EntityTypeInterface::ID_MAX_LENGTH,
       '#default_value' => $entity->id(),
       '#machine_name' => [
-        'exists' => [$this, 'exist'],
+        'exists' => [$this, 'exists'],
         'source' => ['label'],
       ],
       '#disabled' => !$entity->isNew(),
     ];
 
     $form['favicon'] = [
-      '#type' => 'managed_file',
+      '#type' => 'file',
       '#title' => $this->t('Favicon'),
-      '#upload_validators' => [
-        'file_validate_extensions' => ['png jpg jpeg'],
-      ],
       '#default_value' => $entity->getFavicon(),
     ];
 
@@ -85,12 +86,10 @@ class CustomThemeForm extends EntityForm {
     ];
 
     $form['images'] = [
-      '#type' => 'managed_file',
+      '#type' => 'file',
       '#title' => $this->t('Images'),
-      '#upload_validators' => [
-        'file_validate_extensions' => ['png jpg jpeg'],
-      ],
       '#default_value' => $entity->getImages(),
+      '#multiple' => TRUE,
     ];
 
     // TODO: Set default_value.
@@ -107,6 +106,86 @@ class CustomThemeForm extends EntityForm {
     ];
 
     return $form;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    parent::validateForm($form, $form_state);
+
+    // Handle file upload.
+    // It is silly doing such things in validation handler, but Drupal also does
+    // it.
+    $file_fields = ['favicon', 'images'];
+    $file_validators = [
+      'file_validate_extensions' => ['png jpg jpeg'],
+    ];
+    foreach ($file_fields as $field) {
+      $files = file_save_upload($field, $file_validators, 'temporary://');
+
+      if ($files === FALSE) {
+        $form_state->setError($form[$field], $this->t('Failed to upload @file_field. Please contact site administrator for support.', [
+          '@file_field' => $field,
+        ]));
+      }
+      elseif ($files !== NULL) {
+        $form_state->setValue($field, $files);
+      }
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function save(array $form, FormStateInterface $form_state) {
+    /** @var \Drupal\cp_appearance\Entity\CustomThemeInterface $entity */
+    $entity = $this->getEntity();
+    /** @var array $form_state_values */
+    $form_state_values = $form_state->getValues();
+
+    // Move uploaded favicon to a persistent location.
+    /** @var \Drupal\file\FileInterface $file */
+    foreach ($form_state_values['favicon'] as $file) {
+      $moved_file = file_move($file, 'public://');
+
+      if ($moved_file === FALSE) {
+        throw new CustomThemeException($this->t('Failed to move file. Please contact the site administrator for support.'));
+      }
+
+      $entity->setFavicon($moved_file->id());
+    }
+
+    // Move uploaded images to a persistent location.
+    $uploaded_image_ids = [];
+    foreach ($form_state_values['images'] as $file) {
+      $moved_file = file_move($file, 'public://');
+
+      if ($moved_file === FALSE) {
+        throw new CustomThemeException($this->t('Failed to move file. Please contact the site administrator for support.'));
+      }
+
+      $uploaded_image_ids[] = $moved_file->id();
+    }
+
+    $entity->setImages($uploaded_image_ids);
+
+    parent::save($form, $form_state);
+
+    $this->messenger()->addStatus($this->t('Custom theme successfully saved.'));
+  }
+
+  /**
+   * Checks whether a custom theme ID exists already.
+   *
+   * @param string $id
+   *   The ID to check.
+   *
+   * @return bool
+   *   Whether the ID is taken.
+   */
+  public function exists($id): bool {
+    return (bool) CustomTheme::load($id);
   }
 
 }
