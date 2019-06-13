@@ -4,3 +4,15 @@ addthis:
 rss_feed_copy:
   js:
     js/os_widgets_rss_feed_copy.js: { }
+layout:
+  css:
+    component:
+      css/layout.form.css: {}
+  js:
+    js/layout.form.js: {}
+  dependencies:
+    - core/jquery.ui.sortable
+    - core/drupal.dialog.off_canvas
+    - core/drupal.announce
+    - core/drupal.debounce
+    - core/drupal.dropbutton

@@ -168,7 +168,7 @@
         "cweagans/composer-patches": "^1.6",
         "drupal-composer/drupal-scaffold": "^2.6",
         "drupal/console": "^1.0.2",
-        "drupal/core": "~8.6.16",
+        "drupal/core": "8.6.16",
         "drupal/purl": "1.0.2",
         "drupal/group_purl": "1.0-alpha1",
         "drupal/search_api": "^1.9",
@@ -202,7 +202,6 @@
         "drupal/views_infinite_scroll": "^1.5",
         "twbs/bootstrap-sass": "^3.3.7",
         "drupal/mailchimp": "^1.8",
-        "drupal/bibcite": "1.x-dev",
         "drupal/field_tools": "^1.0@alpha",
         "ext-json": "*",
         "php-ds/php-ds": "^1.2",
@@ -233,10 +232,14 @@
         "drupal/views_ical": "^2.1",
         "drupal/google_analytics": "^2.4",
         "drupal/groupmenu": "^1.0",
-        "drupal/cancel_button": "^1.1"
+        "drupal/cancel_button": "^1.1",
+        "drupal/bibcite": "1.0-alpha10",
+        "egulias/email-validator": "1.2.6",
+        "doctrine/lexer": "dev-master"
     },
     "require-dev": {
-        "webflo/drupal-core-require-dev": "~8.6.16",
+        "drupal/features": "^3.7",
+        "webflo/drupal-core-require-dev": "8.6.16",
         "drupal/devel": "^1.2",
         "weitzman/drupal-test-traits": "^1.0@beta",
         "dmore/chrome-mink-driver": "^2.6"
@@ -331,7 +334,8 @@
                 "8.6: error when deleting a block visibility group": "https://www.drupal.org/files/issues/2018-10-18/block_visibility_groups_3000396-4.patch"
             },
             "drupal/bootstrap": {
-                "Unsupported operand types during providers JSON discovery #8": "https://www.drupal.org/files/issues/2019-01-24/3027569-8.x-3.x-8.patch"
+                "Unsupported operand types during providers JSON discovery #8": "https://www.drupal.org/files/issues/2019-01-24/3027569-8.x-3.x-8.patch",
+                "Fix modal elements getting lost after reusing modal": "https://raw.githubusercontent.com/openscholar/openscholar/e4d27051b02cb9c92e44e76c5e9f4f4a57c2e874/patches/bootstrap.11027.footer.patch"
             },
             "drupal/mailchimp": {
                 "Cache read problem in mailchimp_get_mergevars()": "https://www.drupal.org/files/issues/2019-02-13/3032674-cache-fix-for-mailchimp_get_mergevars-3.patch"
@@ -356,7 +360,8 @@
                 "/views/ajax?_wrapper_format=drupal_ajax HTTP/1.1 - HTTP/1.1 403 Forbidden": "https://www.drupal.org/files/issues/2018-08-15/group-route-match-ajax-views-d8-2942657-11.patch",
                 "Entities identified by strings as group content": "https://www.drupal.org/files/issues/2019-05-28/group-support_string_entity_ids-2797793-162.patch",
                 "Integrity constraint violation: Duplicate entry for key PRIMARY in node_access": "https://www.drupal.org/files/issues/2018-08-17/group-duplicate-node-access-entries-2892512-15.patch",
-                "New group content created when node edited": "https://www.drupal.org/files/issues/2019-06-04/3059300-3.patch"
+                "New group content created when node edited": "https://www.drupal.org/files/issues/2019-06-04/3059300-3.patch",
+                "Prevent resaving of deleted entities": "https://raw.githubusercontent.com/openscholar/openscholar/ae879229e866cbc96d91d2b2a8273292fa26fd34/patches/group.fix_saving_deleted_entity.patch"
             }
         },
         "patches-ignore": {
