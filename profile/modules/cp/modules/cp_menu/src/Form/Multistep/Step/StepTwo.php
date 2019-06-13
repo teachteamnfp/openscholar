@@ -43,7 +43,6 @@ class StepTwo extends BaseStep {
           '#description' => t('The address of the link.'),
         ];
 
-        // $form['#validate'][] = 'cp_menu_url_validate';.
         break;
     }
 

@@ -10,6 +10,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Class BaseStep.
  *
+ * Provides base methods,services and traits needed for steps extending this.
+ *
+ * Any steps added in future can extend this for code reusability.
+ *
  * @package Drupal\cp_menu\Form\Multistep\Step
  */
 abstract class BaseStep implements StepInterface {

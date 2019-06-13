@@ -10,6 +10,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Class StepManager.
  *
+ * Helps in managing the steps of the form like saving a step.
+ *
+ * And getting the current step when required.
+ *
  * @package Drupal\cp_menu\Form\Multistep\Manager
  */
 class StepManager implements StepManagerInterface {
