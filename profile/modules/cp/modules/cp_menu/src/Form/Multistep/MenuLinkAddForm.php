@@ -263,7 +263,8 @@ class MenuLinkAddForm extends FormBase {
       // Validate all validators for field.
       $values = $form_state->getValues();
       if (isset($values['url']) && $values['url']) {
-        $url = $this->pathValidator->getUrlIfValid($values['url']);
+        $url = $this->stripPurl($values['url']);
+        $url = $this->pathValidator->getUrlIfValid($url);
         if ($url === FALSE) {
           $form_state->setErrorByName('url', 'Url is invalid.');
         }
@@ -346,7 +347,8 @@ class MenuLinkAddForm extends FormBase {
         break;
 
       case 'url':
-        $url = $this->pathValidator->getUrlIfValid($values['url'])->toString();
+        $url = $this->stripPurl($values['url']);
+        $url = $this->pathValidator->getUrlIfValid($url)->toString();
         if (UrlHelper::isExternal($url)) {
           $parts = UrlHelper::parse($url);
           $url = $parts['path'];
@@ -372,6 +374,25 @@ class MenuLinkAddForm extends FormBase {
     $currentURL = Url::fromRoute('cp.build.menu');
     $response->addCommand(new RedirectCommand($currentURL->toString()));
     return $response;
+  }
+
+  /**
+   * Strips the purl as it is automatically attached while saving.
+   *
+   * @param string $value
+   *   The entered url.
+   *
+   * @return string
+   *   The stripped url.
+   */
+  protected function stripPurl(string $value) {
+    $purl = $this->vsiteManager->getActivePurl();
+    // If vsite prefix is entered, strip it.
+    $parts = explode('/', $value);
+    if ($parts && in_array($purl, $parts)) {
+      return str_replace($purl, '', $value);
+    }
+    return $value;
   }
 
 }
