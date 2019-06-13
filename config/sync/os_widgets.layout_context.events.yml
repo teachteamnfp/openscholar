@@ -1,0 +1,10 @@
+uuid: ae9a1893-af96-48de-abad-e76e4d12ce87
+langcode: en
+status: true
+dependencies: {  }
+id: events
+label: Events
+description: ''
+activationRules: "calendar\r\ncalendar/*\r\nevent/*"
+weight: 0
+data: {  }
