@@ -1,0 +1,4 @@
+services:
+  os_media.lazy_builders:
+    class: \Drupal\os_media\OsMediaLazyBuilders
+    arguments: ['@entity_type.manager']
