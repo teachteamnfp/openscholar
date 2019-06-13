@@ -225,8 +225,18 @@ class MenuBuildForm extends FormBase {
         ],
       ];
 
+      $url = Url::fromRoute('cp.build.add_new_link', ['menu' => $m], [
+        'attributes' => [
+          'class' => ['use-ajax'],
+          'data-dialog-type' => 'modal',
+          'data-dialog-options' => json_encode(['width' => '50%']),
+          'id' => 'add_new_link',
+        ],
+      ]);
+      $newLink = Link::fromTextAndUrl('+ Add new Link', $url)->toString();
+
       $form['links'][$m]['new_link'] = [
-        '#markup' => $this->t('+ Add new Link'),
+        '#markup' => $newLink,
         '#wrapper_attributes' => [
           'colspan' => 2,
         ],
