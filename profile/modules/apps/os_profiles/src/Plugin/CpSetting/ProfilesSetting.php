@@ -180,6 +180,11 @@ class ProfilesSetting extends CpSettingBase {
       '#multiple' => FALSE,
     ];
     if ($default_fid = $config->get('default_image_fid')) {
+      $field_layout = \Drupal::entityTypeManager()
+        ->getStorage('entity_form_display')
+        ->load('node.person.default');
+      $content = $field_layout->get('content');
+      $settings = $content['field_photo_person']['settings'];
       $form['default_image']['default_image_fid']['#default_value'] = [$default_fid];
 
       $file = File::load($default_fid);
@@ -188,11 +193,12 @@ class ProfilesSetting extends CpSettingBase {
       $form['default_image']['image_crop'] = [
         '#type' => 'image_crop',
         '#file' => $file,
-        '#crop_type_list' => ['crop_16_9'],
-        '#crop_preview_image_style' => 'crop_thumbnail',
-        '#show_default_crop' => TRUE,
-        '#show_crop_area' => FALSE,
-        '#warn_mupltiple_usages' => TRUE,
+        '#crop_type_list' => $settings['crop_list'],
+        '#preview_image_style' => $settings['preview_image_style'],
+        '#crop_preview_image_style' => $settings['crop_preview_image_style'],
+        '#show_default_crop' => $settings['show_default_crop'],
+        '#show_crop_area' => $settings['show_crop_area'],
+        '#warn_mupltiple_usages' => $settings['warn_multiple_usages'],
       ];
     }
   }
