@@ -5,9 +5,9 @@ dependencies:
   config:
     - group.type.personal
 id: personal-member
-label: Member
+label: Basic member
 weight: -100
-internal: true
+internal: false
 audience: member
 group_type: personal
 permissions_ui: true
