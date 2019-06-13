@@ -76,6 +76,20 @@ class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
   protected $images;
 
   /**
+   * Custom theme styles.
+   *
+   * @var string
+   */
+  protected $styles;
+
+  /**
+   * Custom theme scripts.
+   *
+   * @var string
+   */
+  protected $scripts;
+
+  /**
    * {@inheritdoc}
    */
   public function id() {
@@ -124,6 +138,36 @@ class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
    */
   public function setImages(array $images): CustomThemeInterface {
     $this->images = $images;
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getStyles(): ?string {
+    return $this->styles;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setStyles(string $styles): CustomThemeInterface {
+    $this->styles = $styles;
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getScripts(): ?string {
+    return $this->scripts;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setScripts(string $scripts): CustomThemeInterface {
+    $this->scripts = $scripts;
     return $this;
   }
 

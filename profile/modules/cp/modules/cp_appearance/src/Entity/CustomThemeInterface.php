@@ -66,4 +66,42 @@ interface CustomThemeInterface extends ConfigEntityInterface {
    */
   public function setImages(array $images): CustomThemeInterface;
 
+  /**
+   * Returns the styles of the custom theme.
+   *
+   * @return string|null
+   *   The cascading styles.
+   */
+  public function getStyles(): ?string;
+
+  /**
+   * Sets the styles for the custom theme.
+   *
+   * @param string $styles
+   *   The cascading styles.
+   *
+   * @return \Drupal\cp_appearance\Entity\CustomThemeInterface
+   *   The custom theme this was called on.
+   */
+  public function setStyles(string $styles): CustomThemeInterface;
+
+  /**
+   * Returns the scripts of the custom theme.
+   *
+   * @return string|null
+   *   The JavaScript code added for the custom theme.
+   */
+  public function getScripts(): ?string;
+
+  /**
+   * Sets the scripts for the custom theme.
+   *
+   * @param string $scripts
+   *   The JavaScript code to be set.
+   *
+   * @return \Drupal\cp_appearance\Entity\CustomThemeInterface
+   *   The custom theme this was called on.
+   */
+  public function setScripts(string $scripts): CustomThemeInterface;
+
 }
