@@ -24,6 +24,13 @@ abstract class BaseStep implements StepInterface {
   protected $step;
 
   /**
+   * Private Temp store service.
+   *
+   * @var \Drupal\Core\TempStore\PrivateTempStoreFactory
+   */
+  protected $privateTempStore;
+
+  /**
    * BaseStep constructor.
    */
   public function __construct(PrivateTempStoreFactory $private_temp_store) {

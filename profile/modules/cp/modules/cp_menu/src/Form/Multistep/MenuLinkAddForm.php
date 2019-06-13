@@ -361,7 +361,7 @@ class MenuLinkAddForm extends FormBase {
 
     // Save the link to mapped menu.
     $this->entityTypeManager->getStorage('menu_link_content')->create([
-      'title' => $values['title'],
+      'title' => $this->t('@title', ['@title' => $values['title']]),
       'link' => ['uri' => $url, 'options' => $options ?? []],
       'menu_name' => $menu_id,
       'description' => $values['tooltip'] ?? '',
