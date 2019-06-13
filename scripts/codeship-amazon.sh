@@ -92,6 +92,7 @@ if [[ $FORCE_REBUILD == "1" ]] || [[ "$(cmp -b 'openscholar/composer.json' '/tmp
   rm -rf web/modules/contrib/purl || true
   rm -rf vendor/drupal/coder || true
   rm -rf web/modules/contrib/views_ical || true
+  rm -rf web/modules/contrib/bibcite || true
 
   # Download composer components
   composer install --ignore-platform-reqs --no-interaction --prefer-dist --no-dev || exit 1
@@ -107,7 +108,7 @@ if [[ $FORCE_REBUILD == "1" ]] || [[ "$(cmp -b 'openscholar/composer.json' '/tmp
   cd ../../profile/libraries/os-toolbar
   ./../../../node_modules/.bin/gulp sass || exit 1
 
-  cd ../../..
+  cd ../../../..
 
   #remove install.php
   rm -Rf web/install.php || true
