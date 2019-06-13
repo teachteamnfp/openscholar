@@ -77,37 +77,46 @@ function os_profiles_preprocess_node(&$variables) {
   $content = $variables['content'];
   $config = Drupal::config('os_profiles.settings');
   if ($node->bundle() == 'person'
-    && $variables['view_mode'] == 'teaser'
+    && in_array($variables['view_mode'], ['teaser', 'sidebar_teaser'])
     && empty($content['field_photo_person']['#items'])
-    && !$config->get('disable_default_image')
-    && $default_image_fid = $config->get('default_image_fid')) {
-    $file = File::load($default_image_fid);
-    $image_vars = [
-      'style_name' => 'crop_photo_person',
-      'uri' => $file->getFileUri(),
-    ];
+    && !$config->get('disable_default_image')) {
 
-    // The image.factory service will check if our image is valid.
-    $image = \Drupal::service('image.factory')->get($file->getFileUri());
-    if ($image->isValid()) {
-      $image_vars['width'] = $image->getWidth();
-      $image_vars['height'] = $image->getHeight();
+    if ($default_image_fid = $config->get('default_image_fid')) {
+      $file = File::load($default_image_fid);
+      $image_vars = [
+        'style_name' => 'crop_photo_person',
+        'uri' => $file->getFileUri(),
+      ];
+
+      // The image.factory service will check if our image is valid.
+      $image = \Drupal::service('image.factory')->get($file->getFileUri());
+      if ($image->isValid()) {
+        $image_vars['width'] = $image->getWidth();
+        $image_vars['height'] = $image->getHeight();
+      }
+      else {
+        $image_vars['width'] = $image_vars['height'] = NULL;
+      }
+
+      $default_image_render_array = [
+        '#theme' => 'image_style',
+        '#width' => $image_vars['width'],
+        '#height' => $image_vars['height'],
+        '#style_name' => $image_vars['style_name'],
+        '#uri' => $image_vars['uri'],
+      ];
     }
     else {
-      $image_vars['width'] = $image_vars['height'] = NULL;
+      // Use default image.
+      $default_image_render_array = [
+        '#theme' => 'image',
+        '#uri' => file_create_url(drupal_get_path('theme', 'os_base') . '/images/person-default-image.png'),
+      ];
     }
-
-    $default_image_render_array = [
-      '#theme' => 'image_style',
-      '#width' => $image_vars['width'],
-      '#height' => $image_vars['height'],
-      '#style_name' => $image_vars['style_name'],
-      '#uri' => $image_vars['uri'],
-    ];
     // Add the file entity to the cache dependencies.
     // This will clear our cache when this entity updates.
-    $renderer = \Drupal::service('renderer');
-    $renderer->addCacheableDependency($default_image_render_array, $file);
+    // $renderer = \Drupal::service('renderer');
+    // $renderer->addCacheableDependency($default_image_render_array, $file);.
     $variables['content']['field_photo_person'][0] = $default_image_render_array;
   }
 }

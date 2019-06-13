@@ -130,7 +130,7 @@ class ProfilesSetting extends CpSettingBase {
     $profile_styles_hover = [];
     $counter = 0;
 
-    $hover_image_url = $this->getExampleImage($config->get('default_image_file'));
+    $hover_image = $this->getExampleImage($config->get('default_image_fid'));
     // Create markup for style examples when hovering over each style.
     foreach ($profile_styles as $name => $label) {
       $counter++;
@@ -140,7 +140,7 @@ class ProfilesSetting extends CpSettingBase {
         '#label' => Html::escape($label),
         '#profile_example' => [
           '#theme' => 'os_profiles_example_' . $name,
-          '#image' => $hover_image_url,
+          '#image' => $hover_image,
         ],
       ];
       $profile_styles_hover[$name] = $this->renderer->render($build_hover);
@@ -151,13 +151,13 @@ class ProfilesSetting extends CpSettingBase {
       '#title' => $this->t('Display types'),
       '#options' => $profile_styles_hover,
       '#default_value' => $config->get('display_type'),
-      '#description' => t('Choose the display type of a person in the "/people" page.'),
+      '#description' => $this->t('Choose the display type of a person in the "/people" page.'),
     ];
 
     // Form element for disabling the use of a default image.
     $form['default_image'] = [
       '#type' => 'fieldset',
-      '#title' => t('Default Image'),
+      '#title' => $this->t('Default Image'),
       '#weight' => -50,
     ];
 
@@ -239,15 +239,15 @@ class ProfilesSetting extends CpSettingBase {
   /**
    * Get image markup for example hover.
    */
-  public function getExampleImage($default_image_file) {
+  public function getExampleImage($default_image_fid) {
     // Use custom default image if available.
-    if (!empty($default_image_file)) {
-      $image_file = File::load($default_image_file);
+    if (!empty($default_image_fid)) {
+      $image_file = File::load($default_image_fid);
       $path = $image_file->getFileUri();
       $build = [
         '#theme' => 'image_style',
-        '#path' => $path,
-        '#style_name' => 'profile_thumbnail',
+        '#uri' => $path,
+        '#style_name' => 'crop_photo_person',
       ];
       return $this->renderer->render($build);
     }
