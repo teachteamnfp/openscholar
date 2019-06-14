@@ -175,7 +175,7 @@ class GlobalPathAccessTest extends OsExistingSiteTestBase {
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function testBibciteReferenceCreate(): void {
-    /** @var AppManangerInterface $appManager */
+    /** @var \Drupal\vsite\Plugin\AppManangerInterface $appManager */
     $appManager = \Drupal::service('vsite.app.manager');
     // Without this, the page errors cause the it can't find the app.
     $appManager->clearCachedDefinitions();
