@@ -8,6 +8,7 @@
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\file\Entity\File;
+use Drupal\views\ViewExecutable;
 
 /**
  * Implements hook_form_alter().
@@ -76,7 +77,18 @@ function os_profiles_preprocess_node(&$variables) {
   $node = $variables['node'];
   $content = $variables['content'];
   $config = Drupal::config('os_profiles.settings');
-  if ($node->bundle() == 'person'
+  /** @var \Symfony\Component\HttpFoundation\ParameterBag $attributes */
+  $attributes = Drupal::request()->attributes;
+  $parameters = $attributes->all();
+
+  // You are on person page.
+  // Node bundle is person.
+  // Current view mode has image.
+  // Person image is empty.
+  // Default image is not hidden.
+  if (!empty($parameters['_route'])
+    && $parameters['_route'] == 'view.people.page_1'
+    && $node->bundle() == 'person'
     && in_array($variables['view_mode'], ['teaser', 'sidebar_teaser'])
     && empty($content['field_photo_person']['#items'])
     && !$config->get('disable_default_image')) {
@@ -113,11 +125,14 @@ function os_profiles_preprocess_node(&$variables) {
         '#uri' => file_create_url(drupal_get_path('theme', 'os_base') . '/images/person-default-image.png'),
       ];
     }
-    // Add the file entity to the cache dependencies.
-    // This will clear our cache when this entity updates.
-    // $renderer = \Drupal::service('renderer');
-    // $renderer->addCacheableDependency($default_image_render_array, $file);.
     $variables['content']['field_photo_person'][0] = $default_image_render_array;
+  }
+  /** @var \Drupal\vsite\Plugin\VsiteContextManager $vsite_context_manager */
+  $vsite_context_manager = Drupal::service('vsite.context_manager');
+  // Mark person nodes without images.
+  // Invalidate if profile settings are changed.
+  if ($node->bundle() == 'person' && empty($content['field_photo_person']['#items']) && $group = $vsite_context_manager->getActiveVsite()) {
+    $variables['#cache']['tags'][] = 'node-person-without-image:' . $group->id();
   }
 }
 
@@ -139,4 +154,19 @@ function os_profiles_entity_view_mode_alter(&$view_mode, EntityInterface $entity
     return;
   }
   $view_mode = $profiles_view_mode;
+}
+
+/**
+ * Implements hook_views_pre_build().
+ */
+function os_profiles_views_pre_build(ViewExecutable $view) {
+  if ($view->id() != 'people' || $view->current_display != 'page_1') {
+    return;
+  }
+  /** @var \Drupal\vsite\Plugin\VsiteContextManager $vsite_context_manager */
+  $vsite_context_manager = Drupal::service('vsite.context_manager');
+  // Mark people views and invalidate if display type changed.
+  if ($group = $vsite_context_manager->getActiveVsite()) {
+    $view->storage->addCacheTags(['view:people:page:' . $group->id()]);
+  }
 }

@@ -3,6 +3,7 @@
 namespace Drupal\os_profiles\Plugin\CpSetting;
 
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityDisplayRepositoryInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -208,6 +209,7 @@ class ProfilesSetting extends CpSettingBase {
    */
   public function submitForm(FormStateInterface $form_state, ConfigFactoryInterface $configFactory) {
     $config = $configFactory->getEditable('os_profiles.settings');
+    $display_type_changed = $config->get('display_type') != $form_state->getValue('display_type');
     $config->set('display_type', $form_state->getValue('display_type'));
     $config->set('disable_default_image', (bool) $form_state->getValue('disable_default_image'));
     $config->set('image_crop', $form_state->getValue('image_crop'));
@@ -233,6 +235,12 @@ class ProfilesSetting extends CpSettingBase {
     if (!empty($form_state->getValue('image_crop')) && !empty($file)) {
       // Call IWC manager to attach crop defined into image file.
       $this->imageWidgetCropManager->buildCropToForm($form_state);
+    }
+    if ($group = $this->vsiteContextManager->getActiveVsite()) {
+      Cache::invalidateTags(['node-person-without-image:' . $group->id()]);
+      if ($display_type_changed) {
+        Cache::invalidateTags(['view:people:page:' . $group->id()]);
+      }
     }
   }
 
