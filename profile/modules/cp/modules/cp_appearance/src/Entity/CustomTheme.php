@@ -110,15 +110,23 @@ class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
     parent::postSave($storage, $update);
 
     $custom_theme_directory_path = self::ABSOLUTE_CUSTOM_THEMES_LOCATION . '/' . $this->id();
-    $status = file_prepare_directory($custom_theme_directory_path, FILE_CREATE_DIRECTORY);
+    $custom_theme_images_path = $custom_theme_directory_path . '/images';
+    $status = file_prepare_directory($custom_theme_images_path, FILE_CREATE_DIRECTORY);
 
     if (!$status) {
       throw new CustomThemeException(t('Unable to create directory for storing the theme. Please contact the site administrator for support.'));
     }
 
+    // Move custom theme files.
     /** @var \Drupal\file\FileInterface $favicon */
     $favicon = File::load($this->getFavicon());
-    file_unmanaged_move($favicon->getFileUri(), 'file://' . $custom_theme_directory_path . '/favicon.ico');
+    file_unmanaged_move($favicon->getFileUri(), "file://$custom_theme_directory_path/favicon.ico");
+
+    /** @var \Drupal\file\FileInterface[] $images */
+    $images = File::loadMultiple($this->getImages());
+    foreach ($images as $image) {
+      file_unmanaged_move($image->getFileUri(), "file://$custom_theme_images_path");
+    }
   }
 
 }
