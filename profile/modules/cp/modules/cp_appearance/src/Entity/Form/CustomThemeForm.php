@@ -158,6 +158,12 @@ class CustomThemeForm extends EntityForm {
       $entity->setImages($uploaded_image_ids);
     }
 
+    $entity->setStyles($form_state_values['styles']);
+
+    if (!empty($form_state_values['scripts'])) {
+      $entity->setScripts($form_state_values['scripts']);
+    }
+
     parent::save($form, $form_state);
 
     $this->messenger()->addStatus($this->t('Custom theme successfully saved.'));

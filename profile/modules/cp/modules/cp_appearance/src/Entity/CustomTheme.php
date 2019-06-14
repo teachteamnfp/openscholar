@@ -162,6 +162,25 @@ class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
         ]));
       }
     }
+
+    // Place styles and scripts.
+    $styles = $this->getStyles();
+    if ($styles) {
+      $status = file_unmanaged_save_data($styles, "file://$custom_theme_directory_path/style.css");
+
+      if (!$status) {
+        throw new CustomThemeException(t('Unable to place the styles. Please contact the site administrator for support.'));
+      }
+    }
+
+    $scripts = $this->getScripts();
+    if ($scripts) {
+      $status = file_unmanaged_save_data($scripts, "file://$custom_theme_directory_path/script.js");
+
+      if (!$status) {
+        throw new CustomThemeException(t('Unable to place the scripts. Please contact the site administrator for support.'));
+      }
+    }
   }
 
   /**
