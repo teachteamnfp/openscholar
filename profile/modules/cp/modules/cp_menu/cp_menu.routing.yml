@@ -1,0 +1,47 @@
+cp.build.menu:
+  path: '/cp/build/menu'
+  defaults:
+    _form: '\Drupal\cp_menu\Form\MenuBuildForm'
+    _title: 'Menu'
+  requirements:
+    _group_permission: 'manage_menu'
+    _group_member: 'TRUE'
+cp.build.add_menu:
+  path: '/cp/build/add-menu'
+  defaults:
+    _form: '\Drupal\cp_menu\Form\AddNewMenuForm'
+    _title: 'Add New Menu'
+  requirements:
+    _group_permission: 'manage_menu'
+    _group_member: 'TRUE'
+cp.build.remove_menu:
+  path: '/cp/build/menu/remove/{menu_id}/{label}'
+  defaults:
+    _form: '\Drupal\cp_menu\Form\RemoveMenuForm'
+  requirements:
+    _group_permission: 'manage_menu'
+    _group_member: 'TRUE'
+cp.build.edit_menu_link:
+  path: '/cp/build/menu/link/{link_id}/edit'
+  defaults:
+    _form: '\Drupal\cp_menu\Form\EditMenuLinkForm'
+    _title: 'Edit Link'
+  requirements:
+    _group_permission: 'manage_menu'
+    _group_member: 'TRUE'
+cp.build.delete_menu_link:
+  path: '/cp/build/menu/link/{link_id}/{link_title}/delete'
+  defaults:
+    _form: '\Drupal\cp_menu\Form\DeleteMenuLinkForm'
+    _title: 'Delete Link'
+  requirements:
+    _group_permission: 'manage_menu'
+    _group_member: 'TRUE'
+cp.build.add_new_link:
+  path: '/cp/build/menu/link/new/{menu}'
+  defaults:
+    _form: '\Drupal\cp_menu\Form\Multistep\MenuLinkAddForm'
+    _title: 'Menu'
+  requirements:
+    _group_permission: 'manage_menu'
+    _group_member: 'TRUE'

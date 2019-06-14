@@ -5,6 +5,8 @@ namespace Drupal\Tests\cp_roles\Traits;
 use Drupal\group\Entity\GroupInterface;
 use Drupal\group\Entity\GroupRole;
 use Drupal\group\Entity\GroupRoleInterface;
+use Drupal\group\Entity\GroupType;
+use Drupal\group\Entity\GroupTypeInterface;
 
 /**
  * Helper methods for CpRoles tests.
@@ -54,6 +56,30 @@ trait CpRolesTestTrait {
     $vsite_context_manager->activateVsite($group);
 
     return $this->createGroupRole($values);
+  }
+
+  /**
+   * Creates new group type.
+   *
+   * @param array $values
+   *   Default values.
+   *
+   * @return \Drupal\group\Entity\GroupTypeInterface
+   *   The new group type.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  protected function createGroupType(array $values = []): GroupTypeInterface {
+    $group_type = GroupType::create($values + [
+      'id' => $this->randomMachineName(),
+      'label' => $this->randomMachineName(),
+      'description' => $this->randomMachineName(),
+    ]);
+    $group_type->save();
+
+    $this->markConfigForCleanUp($group_type);
+
+    return $group_type;
   }
 
 }
