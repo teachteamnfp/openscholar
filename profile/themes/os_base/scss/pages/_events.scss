@@ -2,11 +2,14 @@
   .events {
     &.full {
       margin-bottom: 20px;
+      .dropdown {
+        margin-top: 10px;
+      }
     }
   }
 }
 .registration-form {
-  .form-action {
+  .form-actions {
     margin-top: 10px;
   }
   fieldset {

@@ -1,0 +1,14 @@
+uuid: 9ef880c8-b8c8-4e14-9c4e-d025db695497
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.personal
+id: personal-content_editor
+label: 'Content editor'
+weight: 5
+internal: false
+audience: member
+group_type: personal
+permissions_ui: true
+permissions: {  }
