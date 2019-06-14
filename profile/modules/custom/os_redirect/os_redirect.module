@@ -40,7 +40,7 @@ function os_redirect_redirect_matched_redirect_alter(&$redirect) {
 function os_redirect_redirect_path_alter(&$path) {
   /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContextManager */
   $vsiteContextManager = Drupal::service('vsite.context_manager');
-  if ($group = $vsiteContextManager->getActiveVsite()) {
+  if (($group = $vsiteContextManager->getActiveVsite()) && strpos($path, 'node') === FALSE) {
     $path = '[vsite:' . $group->id() . ']/' . $path;
   }
 }
