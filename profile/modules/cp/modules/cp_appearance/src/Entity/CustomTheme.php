@@ -141,34 +141,4 @@ class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
     return $this;
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function getStyles(): ?string {
-    return $this->styles;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setStyles(string $styles): CustomThemeInterface {
-    $this->styles = $styles;
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getScripts(): ?string {
-    return $this->scripts;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setScripts(string $scripts): CustomThemeInterface {
-    $this->scripts = $scripts;
-    return $this;
-  }
-
 }

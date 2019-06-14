@@ -29,8 +29,6 @@ class CustomThemeTest extends TestBase {
     $custom_theme->setBaseTheme('clean');
     $custom_theme->setFavicon($favicon->id());
     $custom_theme->setImages([$image->id()]);
-    $custom_theme->setStyles('body { color: black; }');
-    $custom_theme->setScripts('alter("Hello World")');
     $custom_theme->save();
 
     $this->assertEquals('test', $custom_theme->id());
@@ -38,8 +36,6 @@ class CustomThemeTest extends TestBase {
     $this->assertEquals('clean', $custom_theme->getBaseTheme());
     $this->assertEquals($favicon->id(), $custom_theme->getFavicon());
     $this->assertEquals([$image->id()], $custom_theme->getImages());
-    $this->assertEquals('body { color: black; }', $custom_theme->getStyles());
-    $this->assertEquals('alter("Hello World")', $custom_theme->getScripts());
 
     $this->markConfigForCleanUp($custom_theme);
   }
