@@ -2,12 +2,11 @@
 
 namespace Drupal\os_media\Plugin\Filter;
 
-
 use Drupal\filter\FilterProcessResult;
 use Drupal\filter\Plugin\FilterBase;
 
 /**
- * Class OsMediaFileTransformationFilter
+ * Class OsMediaFileTransformationFilter.
  *
  * @Filter(
  *   id = "media_transform",

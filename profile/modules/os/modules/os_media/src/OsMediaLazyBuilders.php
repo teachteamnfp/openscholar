@@ -6,27 +6,42 @@ use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class OsMediaLazyBuilders  implements ContainerInjectionInterface {
+/**
+ * Handles lazy builder of media entities.
+ */
+class OsMediaLazyBuilders implements ContainerInjectionInterface {
 
   /**
-   * @var EntityTypeManagerInterface
+   * Entity Type Manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
 
-    /**
-     * {@inheritdoc}
-     */
+  /**
+   * {@inheritdoc}
+   */
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('entity_type.manager')
     );
   }
 
-
+  /**
+   * Constructor.
+   */
   public function __construct(EntityTypeManagerInterface $entityTypeManager) {
     $this->entityTypeManager = $entityTypeManager;
   }
 
+  /**
+   * Renders the media entity to the given width.
+   *
+   * @param int $id
+   *   The id of the media entity to render.
+   * @param string $width
+   *   The width of the final media entity render, or 'default' if no width is set.
+   */
   public function renderMedia($id, $width) {
     if ($entity = $this->entityTypeManager->getStorage('media')->load($id)) {
       if ($width != 'default') {
@@ -44,4 +59,5 @@ class OsMediaLazyBuilders  implements ContainerInjectionInterface {
       '#markup' => ""
     ];
   }
+
 }

@@ -2,7 +2,6 @@
 
 namespace Drupal\os_media\Plugin\CKEditorPlugin;
 
-
 use Drupal\ckeditor\CKEditorPluginButtonsInterface;
 use Drupal\ckeditor\CKEditorPluginInterface;
 use Drupal\Core\Plugin\PluginBase;
@@ -25,7 +24,7 @@ class OsMedia extends PluginBase implements CKEditorPluginInterface, CKEditorPlu
     return [
       'MediaBrowser' => [
         'label' => t('Embed Media'),
-        'image' => drupal_get_path('module', 'os_media').'/wysiwyg_plugin/icons/media.png'
+        'image' => drupal_get_path('module', 'os_media') . '/wysiwyg_plugin/icons/media.png'
       ]
     ];
   }
@@ -57,7 +56,7 @@ class OsMedia extends PluginBase implements CKEditorPluginInterface, CKEditorPlu
    * {@inheritdoc}
    */
   public function getFile() {
-    return drupal_get_path('module', 'os_media').'/wysiwyg_plugin/plugin.js';
+    return drupal_get_path('module', 'os_media') . '/wysiwyg_plugin/plugin.js';
   }
 
   /**
