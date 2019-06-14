@@ -41,7 +41,7 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
     $custom_theme = CustomTheme::load('cyberpunk');
     $this->assertNotNull($custom_theme);
     $this->assertEquals('Cyberpunk', $custom_theme->label());
-    $this->assertEquals('clean', $custom_theme->get('base_theme'));
+    $this->assertEquals('clean', $custom_theme->getBaseTheme());
 
     // Clean up.
     $custom_theme->delete();
