@@ -35,6 +35,17 @@ function os_redirect_redirect_matched_redirect_alter(&$redirect) {
 }
 
 /**
+ * Implements hook_redirect_path_alter().
+ */
+function os_redirect_redirect_path_alter(&$path) {
+  /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContextManager */
+  $vsiteContextManager = Drupal::service('vsite.context_manager');
+  if ($group = $vsiteContextManager->getActiveVsite()) {
+    $path = '[vsite:' . $group->id() . ']/' . $path;
+  }
+}
+
+/**
  * Implements hook_redirect_insert().
  */
 function os_redirect_redirect_insert(Redirect $redirect) {
