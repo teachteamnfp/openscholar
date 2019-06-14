@@ -7,7 +7,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\cp_appearance\AppearanceSettingsBuilderInterface;
 use Drupal\cp_appearance\Entity\CustomTheme;
-use Drupal\cp_appearance\Entity\CustomThemeException;
+use Drupal\file\FileInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -144,35 +144,19 @@ class CustomThemeForm extends EntityForm {
     /** @var array $form_state_values */
     $form_state_values = $form_state->getValues();
 
-    // Move uploaded favicon to a persistent location.
     if ($form_state_values['favicon']) {
-      /** @var \Drupal\file\FileInterface $file */
-      foreach ($form_state_values['favicon'] as $file) {
-        $moved_file = file_move($file, 'public://');
-
-        if ($moved_file === FALSE) {
-          throw new CustomThemeException($this->t('Failed to move file. Please contact the site administrator for support.'));
-        }
-
-        $entity->setFavicon($moved_file->id());
-      }
+      /** @var \Drupal\file\FileInterface $favicon */
+      $favicon = reset($form_state_values['favicon']);
+      $entity->setFavicon($favicon->id());
     }
 
-    // Move uploaded images to a persistent location.
-    $uploaded_image_ids = [];
     if ($form_state_values['images']) {
-      /** @var \Drupal\file\FileInterface $file */
-      foreach ($form_state_values['images'] as $file) {
-        $moved_file = file_move($file, 'public://');
+      $uploaded_image_ids = array_map(function (FileInterface $file) {
+        return $file->id();
+      }, $form_state_values['images']);
 
-        if ($moved_file === FALSE) {
-          throw new CustomThemeException($this->t('Failed to move file. Please contact the site administrator for support.'));
-        }
-
-        $uploaded_image_ids[] = $moved_file->id();
-      }
+      $entity->setImages($uploaded_image_ids);
     }
-    $entity->setImages($uploaded_image_ids);
 
     parent::save($form, $form_state);
 
