@@ -80,6 +80,15 @@ abstract class TestBase extends OsExistingSiteTestBase {
    * {@inheritdoc}
    */
   public function tearDown() {
+    // This is part of the cleanup.
+    // If this is not done, then it leads to deadlock errors in Travis
+    // https://travis-ci.org/openscholar/openscholar/jobs/540643382.
+    // My understanding, big_pipe initiates some sort of request in background,
+    // which puts a lock in the database. That lock hinders the test cleanup.
+    // Putting this to sleep for arbitrary amount of time seems to fix
+    // the problem.
+    \sleep(5);
+
     parent::tearDown();
     /** @var \Drupal\Core\Config\Config $theme_config_mut */
     $theme_config_mut = $this->configFactory->getEditable('system.theme');
