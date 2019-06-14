@@ -50,10 +50,10 @@ interface CustomThemeInterface extends ConfigEntityInterface {
   /**
    * Returns the images of the custom theme.
    *
-   * @return int[]|null
+   * @return int[]
    *   The image file ids.
    */
-  public function getImages(): ?array;
+  public function getImages(): array;
 
   /**
    * Sets images for the custom theme.

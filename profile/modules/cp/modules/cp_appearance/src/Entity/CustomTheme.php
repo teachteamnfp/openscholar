@@ -105,8 +105,14 @@ class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
   /**
    * {@inheritdoc}
    */
-  public function getImages(): ?array {
-    return $this->get('images');
+  public function getImages(): array {
+    $images = $this->get('images');
+
+    if (empty($images)) {
+      return [];
+    }
+
+    return $images;
   }
 
   /**
@@ -132,14 +138,29 @@ class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
     }
 
     // Move custom theme files.
-    /** @var \Drupal\file\FileInterface $favicon */
-    $favicon = File::load($this->getFavicon());
-    file_unmanaged_move($favicon->getFileUri(), "file://$custom_theme_directory_path/favicon.ico");
+    $favicon_id = $this->getFavicon();
+    if ($favicon_id) {
+      /** @var \Drupal\file\FileInterface $favicon */
+      $favicon = File::load($favicon_id);
+      $status = file_unmanaged_move($favicon->getFileUri(), "file://$custom_theme_directory_path/favicon.ico");
 
-    /** @var \Drupal\file\FileInterface[] $images */
-    $images = File::loadMultiple($this->getImages());
-    foreach ($images as $image) {
-      file_unmanaged_move($image->getFileUri(), "file://$custom_theme_images_path");
+      if (!$status) {
+        throw new CustomThemeException(t('Unable to place favicon in the theme. Please contact the site administrator for support.'));
+      }
+    }
+
+    /** @var int[] $image_ids */
+    $image_ids = $this->getImages();
+    foreach ($image_ids as $id) {
+      /** @var \Drupal\file\FileInterface $image */
+      $image = File::load($id);
+      $status = file_unmanaged_move($image->getFileUri(), "file://$custom_theme_images_path");
+
+      if (!$status) {
+        throw new CustomThemeException(t('Unable to place file %file_uri in the theme. Please contact the site administrator for support.', [
+          '%file_url' => $image->getFileUri(),
+        ]));
+      }
     }
   }
 
