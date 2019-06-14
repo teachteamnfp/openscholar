@@ -54,6 +54,7 @@ class CustomThemeForm extends EntityForm {
 
     $form['label'] = [
       '#title' => $this->t('Custom Theme Name'),
+      '#description' => $this->t('Enter name of the theme'),
       '#type' => 'textfield',
       '#default_value' => $entity->label(),
       '#required' => TRUE,
@@ -74,12 +75,14 @@ class CustomThemeForm extends EntityForm {
     $form['favicon'] = [
       '#type' => 'file',
       '#title' => $this->t('Favicon'),
+      '#description' => $this->t('Upload the favicon for the theme. If no favicon uploaded, then the favicon of the parent theme will be used.'),
       '#default_value' => $entity->getFavicon(),
     ];
 
     $form['base_theme'] = [
       '#type' => 'select',
       '#title' => $this->t('Parent Theme'),
+      '#description' => $this->t('Select the base theme of this custom theme.'),
       '#default_value' => $entity->getBaseTheme(),
       '#options' => $base_theme_options,
       '#required' => TRUE,
@@ -88,6 +91,12 @@ class CustomThemeForm extends EntityForm {
     $form['images'] = [
       '#type' => 'file',
       '#title' => $this->t('Images'),
+      '#description' => $this->t('Upload necessary files required for styling of your custom theme. These could be image sprites, arrow icons, etc. The images are going to be put inside %location directory. Therefore make sure you have mentioned the path while writing the style. For example, if you have uploaded %example_file_name, then the style should be <code>background-image: url("@location/@example_file_name")</code>', [
+        '%location' => CustomTheme::CUSTOM_THEMES_IMAGES_LOCATION,
+        '@location' => CustomTheme::CUSTOM_THEMES_IMAGES_LOCATION,
+        '%example_file_name' => 'background-image.png',
+        '@example_file_name' => 'background-image.png',
+      ]),
       '#default_value' => $entity->getImages(),
       '#multiple' => TRUE,
     ];
@@ -96,6 +105,9 @@ class CustomThemeForm extends EntityForm {
     $form['styles'] = [
       '#type' => 'textarea',
       '#title' => $this->t('CSS'),
+      '#description' => $this->t('Enter the styles for your custom theme. These styles will be overriding the styles provided by the selected base theme. The styles are going to be put inside %style_file file.', [
+        '%style_file' => CustomTheme::CUSTOM_THEMES_STYLE_LOCATION,
+      ]),
       '#required' => TRUE,
     ];
 
@@ -103,6 +115,9 @@ class CustomThemeForm extends EntityForm {
     $form['scripts'] = [
       '#type' => 'textarea',
       '#title' => $this->t('JavaScript'),
+      '#description' => $this->t('Enter the scripts for your custom theme. Make sure that the script is valid, otherwise the site might break. The scripts are going to be put inside %script_file file.', [
+        '%script_file' => CustomTheme::CUSTOM_THEMES_SCRIPT_LOCATION,
+      ]),
     ];
 
     return $form;

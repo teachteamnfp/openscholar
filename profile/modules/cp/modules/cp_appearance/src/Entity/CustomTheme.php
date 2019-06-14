@@ -42,7 +42,13 @@ class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
 
   public const CUSTOM_THEMES_LOCATION = 'custom_themes';
 
+  public const CUSTOM_THEMES_IMAGES_LOCATION = 'images';
+
   public const ABSOLUTE_CUSTOM_THEMES_LOCATION = DRUPAL_ROOT . '/../' . self::CUSTOM_THEMES_LOCATION;
+
+  public const CUSTOM_THEMES_STYLE_LOCATION = 'style.css';
+
+  public const CUSTOM_THEMES_SCRIPT_LOCATION = 'script.js';
 
   /**
    * The machine name of the custom theme.
@@ -130,7 +136,7 @@ class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
     parent::postSave($storage, $update);
 
     $custom_theme_directory_path = self::ABSOLUTE_CUSTOM_THEMES_LOCATION . '/' . $this->id();
-    $custom_theme_images_path = $custom_theme_directory_path . '/images';
+    $custom_theme_images_path = $custom_theme_directory_path . '/' . self::CUSTOM_THEMES_IMAGES_LOCATION;
     $status = file_prepare_directory($custom_theme_images_path, FILE_CREATE_DIRECTORY);
 
     if (!$status) {
@@ -166,7 +172,7 @@ class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
     // Place styles and scripts.
     $styles = $this->getStyles();
     if ($styles) {
-      $status = file_unmanaged_save_data($styles, "file://$custom_theme_directory_path/style.css");
+      $status = file_unmanaged_save_data($styles, "file://$custom_theme_directory_path/" . self::CUSTOM_THEMES_STYLE_LOCATION);
 
       if (!$status) {
         throw new CustomThemeException(t('Unable to place the styles. Please contact the site administrator for support.'));
@@ -175,7 +181,7 @@ class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
 
     $scripts = $this->getScripts();
     if ($scripts) {
-      $status = file_unmanaged_save_data($scripts, "file://$custom_theme_directory_path/script.js");
+      $status = file_unmanaged_save_data($scripts, "file://$custom_theme_directory_path/" . self::CUSTOM_THEMES_SCRIPT_LOCATION);
 
       if (!$status) {
         throw new CustomThemeException(t('Unable to place the scripts. Please contact the site administrator for support.'));
