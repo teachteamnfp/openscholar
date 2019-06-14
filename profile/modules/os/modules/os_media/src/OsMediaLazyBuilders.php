@@ -27,9 +27,13 @@ class OsMediaLazyBuilders  implements ContainerInjectionInterface {
     $this->entityTypeManager = $entityTypeManager;
   }
 
-  public function renderMedia($id) {
+  public function renderMedia($id, $width) {
     if ($entity = $this->entityTypeManager->getStorage('media')->load($id)) {
-      return $this->entityTypeManager->getViewBuilder('media')->view($entity);
+      if ($width != 'default') {
+        $entity->dimensions['width'] = $width;
+      }
+      $output = $this->entityTypeManager->getViewBuilder('media')->view($entity);
+      return $output;
     }
 
     // No media entity of $id found.
