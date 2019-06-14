@@ -3,6 +3,8 @@
 namespace Drupal\cp_appearance\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBase;
+use Drupal\Core\Entity\EntityStorageInterface;
+use Drupal\file\Entity\File;
 
 /**
  * Defines the CustomTheme entity.
@@ -37,6 +39,10 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
  * )
  */
 class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
+
+  public const CUSTOM_THEMES_LOCATION = 'custom_themes';
+
+  public const ABSOLUTE_CUSTOM_THEMES_LOCATION = DRUPAL_ROOT . '/../' . self::CUSTOM_THEMES_LOCATION;
 
   /**
    * The machine name of the custom theme.
@@ -95,6 +101,24 @@ class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
   public function setImages(array $images): CustomThemeInterface {
     $this->set('images', $images);
     return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function postSave(EntityStorageInterface $storage, $update = TRUE) {
+    parent::postSave($storage, $update);
+
+    $custom_theme_directory_path = self::ABSOLUTE_CUSTOM_THEMES_LOCATION . '/' . $this->id();
+    $status = file_prepare_directory($custom_theme_directory_path, FILE_CREATE_DIRECTORY);
+
+    if (!$status) {
+      throw new CustomThemeException(t('Unable to create directory for storing the theme. Please contact the site administrator for support.'));
+    }
+
+    /** @var \Drupal\file\FileInterface $favicon */
+    $favicon = File::load($this->getFavicon());
+    file_unmanaged_move($favicon->getFileUri(), 'file://' . $custom_theme_directory_path . '/favicon.ico');
   }
 
 }
