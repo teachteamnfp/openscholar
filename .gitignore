@@ -12,6 +12,7 @@
 /profile/themes/os_base/bootstrap
 /profile/themes/*/css/
 /node_modules/
+/profile/libraries/os-toolbar/os-toolbar.css
 
 # Ignore sensitive information
 /web/sites/*/settings.php

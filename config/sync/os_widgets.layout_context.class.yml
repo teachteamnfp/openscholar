@@ -1,0 +1,10 @@
+uuid: c9af1651-bb81-41c7-be5d-595c03a00d83
+langcode: en
+status: null
+dependencies: {  }
+id: class
+label: Class
+description: 'Layout Context for Classes'
+activationRules: 'classes/*'
+weight: 0
+data: {  }

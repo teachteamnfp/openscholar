@@ -5,6 +5,8 @@
  * OS widgets.
  */
 
+use Drupal\os_widgets\Plugin\DisplayVariant\PlaceBlockPageVariant;
+use Drupal\Core\Url;
 use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\os_widgets\Entity\OsBlockContent;
@@ -14,6 +16,17 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\views\Views;
 use Drupal\views\ViewExecutable;
 use Drupal\views\Plugin\views\cache\CachePluginBase;
+
+/**
+ * Implements hook_library_info_alter().
+ */
+function os_widgets_library_info_alter(&$libraries, $extension) {
+  if ($extension == 'os_widgets') {
+    if (isset($libraries['layout'])) {
+      $libraries['layout']['drupalSettings']['path']['layout']['saveLayout'] = Url::fromRoute('os_widgets.save_layout')->toString();
+    }
+  }
+}
 
 /**
  * Implements hook_entity_type_alter().
@@ -321,5 +334,59 @@ function os_widgets_views_post_render(ViewExecutable $view, &$output, CachePlugi
       $rss_helper->mergeRows($original_view_order, $reference_view_order);
       $output = $rss_helper->getOutput();
     }
+  }
+}
+
+/**
+ * Implements hook_display_variant_plugin_alter().
+ */
+function os_widgets_display_variant_plugin_alter(&$plugins) {
+  if (isset($plugins['block_place_page'])) {
+    $plugins['block_place_page']['class'] = PlaceBlockPageVariant::class;
+  }
+}
+
+/**
+ * Implements hook_form_block_content_form_alter().
+ */
+function os_widgets_form_block_content_form_alter(&$form, FormStateInterface &$form_state) {
+  if (\Drupal::request()->isXmlHttpRequest()) {
+    /** @var \Drupal\Core\Entity\EntityInterface $entity */
+    $entity = $form_state->getFormObject()->getEntity();
+    if ($entity->isNew()) {
+      $form['actions']['submit']['#ajax'] = [
+        'callback' => '\Drupal\os_widgets\Controller\WidgetLibraryController::ajaxSubmitSave',
+      ];
+    }
+    else {
+      $form['actions']['submit']['#ajax'] = [
+        'callback' => '\Drupal\os_widgets\Controller\WidgetLibraryController::ajaxSubmitEdit',
+      ];
+    }
+    $form['actions']['delete']['#attributes']['class'][] = 'use-ajax';
+    $form['actions']['delete']['#attributes']['data-dialog-type'] = 'modal';
+  }
+}
+
+/**
+ * Implements hook_form_block_content_form_alter().
+ */
+function os_widgets_form_block_content_confirm_form_alter(&$form, FormStateInterface $form_state) {
+  if (\Drupal::request()->isXmlHttpRequest()) {
+    $form['actions']['submit']['#ajax'] = [
+      'callback' => '\Drupal\os_widgets\Controller\WidgetLibraryController::ajaxDelete',
+    ];
+  }
+}
+
+/**
+ * Implements hook_contextual_links_view_alter().
+ */
+function os_widgets_contextual_links_view_alter(&$element, $items) {
+  if (isset($element['#links']['block-contentblock-edit'])) {
+    $element['#links']['block-contentblock-edit']['attributes'] = [
+      'class' => ['use-ajax'],
+      'data-dialog-type' => 'modal',
+    ];
   }
 }

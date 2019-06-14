@@ -1,8 +1,10 @@
-.vertical-tabs__menu-item {
-  a {
-    color: $color_venice_blue;
-  }
-}
+//variables
+$color_blue: #3e77bb;
+$color-white: #fff;
+$color-light-gray: #efefef;
+$color-link: #215990;
+$color-gray: #565656;
+
 .toolbar {
   .toolbar-tray-vertical {
     background-color: $color-white;
@@ -23,14 +25,6 @@
     .toolbar-item {
       color: $color-white;
     }
-    .toolbar-icon-menu {
-      &.is-active {
-        &:before {
-          background: url(../../../../../../core/themes/stable/images/core/icons/bebebe/hamburger.svg) no-repeat;
-          background-position: center;
-        }
-      }
-    }
     .toolbar-tab {
       > .toolbar-item.is-active {
           background-image: none;
@@ -40,8 +34,12 @@
   .toolbar-toggle-orientation {
     background: $color-white;
   }
+  .toolbar-tray {
+    a {
+      color: $color-gray;
+    }
+  }
 }
-
 .seven-details__summary {
   color: $color-link;
 }

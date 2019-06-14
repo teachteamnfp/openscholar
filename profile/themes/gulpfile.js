@@ -14,7 +14,7 @@
 
   gulp.task('sass', function () {
     return gulp
-    .src('./**/scss/style.scss')
+    .src('./**/scss/*.scss')
     .pipe(sourcemaps.init())
     .pipe(sass({
       outputStyle: 'uncompressed'

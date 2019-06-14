@@ -1,0 +1,14 @@
+diff --git a/js/modal.jquery.ui.bridge.js b/js/modal.jquery.ui.bridge.js
+index 53a5484..d21e092 100644
+--- a/js/modal.jquery.ui.bridge.js
++++ b/js/modal.jquery.ui.bridge.js
+@@ -140,6 +140,9 @@
+            * Creates any necessary buttons from dialog options.
+            */
+           createButtons: function () {
++            if (this.$footer.parents('html').length == 0) {
++              this.$footer.appendTo(this.$element.find('.modal-body'));
++            }
+             this.$footer.find('.modal-buttons').remove();
+ 
+             // jQuery UI supports both objects and arrays. Unfortunately
