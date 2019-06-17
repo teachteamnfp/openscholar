@@ -74,10 +74,8 @@ function os_classes_node_class_form_validate(array &$form, FormStateInterface $f
     return;
   }
   $yearValue = (int) $field_year_offered[0]['value'];
-  $requestTime = \Drupal::time()->getRequestTime();
-  $currentYear = \Drupal::service('date.formatter')->format($requestTime, 'custom', 'Y');
-  if ($yearValue < 1970 || $yearValue > $currentYear) {
-    $form_state->setError($field_year_offered, t('Year offered value must be between 1970 and current year.'));
+  if ($yearValue < 1970) {
+    $form_state->setError($field_year_offered, t('Year offered value must be greater than 1970'));
   }
 }
 
