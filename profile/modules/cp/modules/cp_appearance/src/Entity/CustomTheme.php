@@ -5,6 +5,7 @@ namespace Drupal\cp_appearance\Entity;
 use Drupal\Core\Config\Entity\ConfigEntityBase;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\file\Entity\File;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Defines the CustomTheme entity.
@@ -49,6 +50,27 @@ class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
   public const CUSTOM_THEMES_STYLE_LOCATION = 'style.css';
 
   public const CUSTOM_THEMES_SCRIPT_LOCATION = 'script.js';
+
+  public const CUSTOM_THEME_GLOBAL_STYLING_NAMESPACE = 'global-styling';
+
+  public const CUSTOM_THEME_INFO_TEMPLATE = [
+    'core' => '8.x',
+    'type' => 'theme',
+  ];
+
+  public const CUSTOM_THEME_LIBRARIES_INFO_TEMPLATE = [
+    self::CUSTOM_THEME_GLOBAL_STYLING_NAMESPACE => [
+      'version' => 'VERSION',
+      'css' => [
+        'theme' => [
+          self::CUSTOM_THEMES_STYLE_LOCATION => [],
+        ],
+      ],
+      'js' => [
+        self::CUSTOM_THEMES_SCRIPT_LOCATION => [],
+      ],
+    ],
+  ];
 
   /**
    * The machine name of the custom theme.
@@ -186,6 +208,41 @@ class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
       if (!$status) {
         throw new CustomThemeException(t('Unable to place the scripts. Please contact the site administrator for support.'));
       }
+    }
+
+    // Place theme.libraries.yml file.
+    $status = file_unmanaged_save_data(Yaml::dump(self::CUSTOM_THEME_LIBRARIES_INFO_TEMPLATE), "file://$custom_theme_directory_path/{$this->id()}.libraries.yml");
+
+    if (!$status) {
+      throw new CustomThemeException(t('Unable to place theme libraries info file. Please contact the site administrator for support.'));
+    }
+
+    // Place theme.info.yml file.
+    $base_info = [
+      'name' => $this->id(),
+      'base theme' => $this->getBaseTheme(),
+      'libraries' => [
+        $this->id() . '/' . self::CUSTOM_THEME_GLOBAL_STYLING_NAMESPACE,
+      ],
+    ];
+
+    // system_region_list() returns region names as translatable markup.
+    // It needs to be converted to plain text, otherwise it fails to be parsed
+    // into file.
+    /** @var array $base_theme_regions */
+    $base_theme_regions = system_region_list($this->getBaseTheme());
+    $formatted_regions = [];
+    /** @var \Drupal\Core\StringTranslation\TranslatableMarkup $region_name */
+    foreach ($base_theme_regions as $region => $region_name) {
+      $formatted_regions[$region] = $region_name->__toString();
+    }
+
+    $info = array_merge($base_info, ['regions' => $formatted_regions], self::CUSTOM_THEME_INFO_TEMPLATE);
+
+    $status = file_unmanaged_save_data(Yaml::dump($info), "file://$custom_theme_directory_path/{$this->id()}.info.yml");
+
+    if (!$status) {
+      throw new CustomThemeException(t('Unable to place theme info file. Please contact the site administrator for support.'));
     }
   }
 
