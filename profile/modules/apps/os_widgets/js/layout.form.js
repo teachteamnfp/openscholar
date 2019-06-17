@@ -17,6 +17,10 @@
         }
       }
 
+      if (top_level) {
+        $('#block-place-context-selector', context).value(top_level);
+      }
+
       // swap the context that is being editted.
       $('#block-place-context-selector', context).change(function (e) {
         let new_context = e.target.value;
