@@ -296,4 +296,39 @@ class ScriptHandler {
     }
   }
 
+  /**
+   * Make sure custom themes are available for installation.
+   */
+  public static function placeCustomThemes(Event $event): void {
+    $fs = new ComposerFilesystem();
+    $io = $event->getIO();
+    $root = realpath($event->getComposer()->getPackage()->getDistUrl());
+    $path = $root . '/web/profiles/contrib/openscholar';
+    $source = "$root/custom_themes";
+    $destination = "$root/web/themes/custom";
+
+    try {
+      if (Platform::isWindows()) {
+        if (is_dir($destination)) {
+          $fs->removeDirectory($destination);
+        }
+        else {
+          $fs->unlink($destination);
+        }
+
+        $io->writeError(sprintf("Junctioning from %s\n", $source), FALSE);
+        $fs->junction($source, $destination);
+      }
+      else {
+        $path = rtrim($path, DIRECTORY_SEPARATOR);
+        $io->writeError(sprintf("Symlinking from %s\n", $source), FALSE);
+        $fs->ensureDirectoryExists($destination);
+        $fs->relativeSymlink($source, $destination);
+      }
+    }
+    catch (IOException $e) {
+      throw new \RuntimeException(sprintf('Symlink from "%s" to "%s" failed!', $root, $path));
+    }
+  }
+
 }
