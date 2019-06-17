@@ -20,7 +20,7 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 class SecondaryMenuBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
-   * Primary menu will always be main by default.
+   * Secondary menu will always be footer by default.
    */
   const SECONDARY_MENU = 'footer';
 
