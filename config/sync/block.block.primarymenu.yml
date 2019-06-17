@@ -1,30 +1,24 @@
-uuid: de9674b5-b892-41a8-bdb6-dc3e6d1b70d9
+uuid: 274e2e8e-105d-40ce-ba79-7be8b6c2af8e
 langcode: en
-status: false
+status: true
 dependencies:
-  config:
-    - system.menu.main
   module:
     - block_visibility_groups
+    - cp_menu
     - rng
-    - system
   theme:
     - os_base
-_core:
-  default_config_hash: rx9IrdDv7Ldc4kpalZAxdhIPZfYIeOMh1N-qKoQZwHo
-id: os_base_main_menu
+id: primarymenu
 theme: os_base
 region: navigation_collapsible
-weight: -6
+weight: 0
 provider: null
-plugin: 'system_menu_block:main'
+plugin: primarymenu
 settings:
-  id: 'system_menu_block:main'
-  label: 'Main navigation'
-  provider: system
+  id: primarymenu
+  label: 'Primary menu'
+  provider: cp_menu
   label_display: '0'
-  level: 1
-  depth: 2
 visibility:
   condition_group:
     id: condition_group
@@ -35,11 +29,11 @@ visibility:
     id: rng_rule_scheduler
     rng_rule_component: null
     rng_rule_scheduler: null
-    date: '1553764526'
+    date: '1560769356'
     negate: false
     context_mapping: {  }
   rng_current_time:
     id: rng_current_time
-    date: '1553764526'
+    date: '1560769356'
     negate: false
     context_mapping: {  }
