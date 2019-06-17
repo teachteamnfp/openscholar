@@ -46,7 +46,7 @@ class SecondaryMenuBlock extends BlockBase implements ContainerFactoryPluginInte
   protected $vsite;
 
   /**
-   * PrimaryMenuBlock constructor.
+   * SecondaryMenuBlock constructor.
    *
    * @param array $configuration
    *   Block configuration.
