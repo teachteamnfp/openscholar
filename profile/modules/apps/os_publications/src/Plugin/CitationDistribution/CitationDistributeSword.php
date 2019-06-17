@@ -135,10 +135,10 @@ abstract class CitationDistributeSword implements CitationDistributionInterface,
     }
 
     /* Add each file as well */
-    $files = $entity->get('field_files');
+    $files = $entity->get('field_attach_files');
     if (empty($files)) {
       $citation_distribute_entity_object = &drupal_static('citation_distribute_entity_object');
-      $files = $citation_distribute_entity_object->field_files;
+      $files = $citation_distribute_entity_object->field_attach_files;
     }
     foreach ($files as $file) {
       // $file = file_load($file->fid);

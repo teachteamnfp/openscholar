@@ -2,8 +2,7 @@
 
 namespace Drupal\os_blog\Plugin\App;
 
-use Drupal\Component\Plugin\PluginBase;
-use Drupal\vsite\AppInterface;
+use Drupal\vsite\Plugin\AppPluginBase;
 
 /**
  * Bog app.
@@ -16,7 +15,7 @@ use Drupal\vsite\AppInterface;
  *   id = "blog"
  * )
  */
-class BlogApp extends PluginBase implements AppInterface {
+class BlogApp extends AppPluginBase {
 
   /**
    * {@inheritdoc}
@@ -30,21 +29,14 @@ class BlogApp extends PluginBase implements AppInterface {
   /**
    * {@inheritdoc}
    */
-  public function getTitle() {
-    return $this->pluginDefinition['title'];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function getCreateLinks() {
     return [
-      'link' => [
+      'blog' => [
         'menu_name' => 'control-panel',
         'route_name' => 'node.add',
         'route_parameters' => ['node_type' => 'blog'],
         'parent' => 'cp.content.add',
-        'title' => $this->getTitle()->render(),
+        'title' => $this->getTitle(),
       ],
     ];
   }
