@@ -9,6 +9,7 @@ use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTest
  *
  * @group functional-javascript
  * @group cp
+ * @group unique
  */
 class CpCancelButtonTest extends OsExistingSiteJavascriptTestBase {
 
