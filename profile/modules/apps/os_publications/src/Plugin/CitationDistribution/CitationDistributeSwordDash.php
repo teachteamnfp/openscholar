@@ -136,12 +136,12 @@ class CitationDistributeSwordDash extends CitationDistributeSword {
       // $files = $id['values']['field_upload'];.
     }
     elseif (is_int($id) && $entity = $this->entityTypeManager->getStorage('bibcite_reference')->load($id)) {
-      $files = $entity->field_files;
+      $files = $entity->field_attach_files;
       $citation_distribute_entity_object = &drupal_static('citation_distribute_entity_object');
-      if ($entity->get('field_files')->isEmpty() && isset($citation_distribute_entity_object)) {
+      if ($entity->get('field_attach_files')->isEmpty() && isset($citation_distribute_entity_object)) {
         // During entity insert, files may not be availabe.
         // if so, use staticly cached entity object.
-        $files = $citation_distribute_entity_object->get('field_files');
+        $files = $citation_distribute_entity_object->get('field_attach_files');
       }
     }
     else {
