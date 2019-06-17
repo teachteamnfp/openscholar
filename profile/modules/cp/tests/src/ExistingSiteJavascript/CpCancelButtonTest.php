@@ -44,9 +44,8 @@ class CpCancelButtonTest extends OsExistingSiteJavascriptTestBase {
     // Visit node.
     $this->visit($this->nodePath);
     $web_assert->statusCodeEquals(200);
-    $page = $this->getCurrentPage();
-    $edit_link = $page->findLink('Edit');
-    $edit_link->press();
+    $this->assertSession()->waitForElementVisible('css', "[href='{$this->groupAlias}/node/{$this->node->id()}/edit']");
+    $this->getSession()->getPage()->findLink('Edit')->press();
     // Go to edit path.
     $page = $this->getCurrentPage();
     $cancel_button = $page->findLink('Cancel');
