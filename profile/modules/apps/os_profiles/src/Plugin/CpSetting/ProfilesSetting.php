@@ -217,7 +217,10 @@ class ProfilesSetting extends CpSettingBase {
     $form_file = $form_state->getValue('default_image_fid', 0);
     if (!empty($form_file[0])) {
       $file = File::load($form_file[0]);
-      $this->fileUsage->add($file, 'os_profiles', 'form', $file->id());
+      $file_changed = $config->get('default_image_fid') != $form_file[0];
+      if ($file_changed) {
+        $this->fileUsage->add($file, 'os_profiles', 'form', $file->id());
+      }
       $file->setPermanent();
       $file->save();
       $form_state->getFormObject()->setEntity($file);
