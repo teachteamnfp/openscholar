@@ -18,23 +18,14 @@
       }
 
       if (top_level) {
-        $('#block-place-context-selector', context).value(top_level);
+        $('#block-place-context-selector', context).val(top_level);
       }
 
       // swap the context that is being editted.
       $('#block-place-context-selector', context).change(function (e) {
         let new_context = e.target.value;
-        let vars = {}, hash;
 
-        let q = window.location.search;
-        if (q != undefined) {
-          q = q.slice(1).split('&');
-          for (let i = 0; i < q.length; i++) {
-            hash = q[i].split('=');
-            vars[hash[0]] = hash[1];
-          }
-        }
-
+        vars = parseQuery();
         vars.context = new_context;
         let query_string = $.param(vars);
         window.location.search = '?' + query_string;
@@ -96,10 +87,16 @@
         };
         let url = drupalSettings.path.layout.saveLayout;
         $.post(url, payload).done(function (data, status, xhr) {
-          //window.location.href = data.redirect;
+          vars = parseQuery();
+          delete vars.context;
+          delete vars['block-place'];
+          delete vars.destination;
+          let query_string = $.param(vars);
+          window.location.search = '?' + query_string;
         }).fail(function (xhr, status, error) {
 
         });
+        e.target.disabled = true;
       });
 
       $('#block-place-actions-wrapper .btn-default', context).click(function (e) {
@@ -141,5 +138,24 @@
       }).attr('tabindex', -1);
     }
   };
+
+  /**
+   * Parse the query arguments into an object map
+   * @returns {{}}
+   */
+  function parseQuery() {
+    let vars = {}, hash;
+
+    let q = window.location.search;
+    if (q != undefined) {
+      q = q.slice(1).split('&');
+      for (let i = 0; i < q.length; i++) {
+        hash = q[i].split('=');
+        vars[hash[0]] = hash[1];
+      }
+    }
+
+    return vars;
+  }
 
 })(jQuery);

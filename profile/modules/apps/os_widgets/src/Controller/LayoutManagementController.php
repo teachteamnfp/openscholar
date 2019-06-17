@@ -4,7 +4,7 @@ namespace Drupal\os_widgets\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
@@ -41,8 +41,8 @@ class LayoutManagementController extends ControllerBase {
    *
    * Only saves the diff.
    *
-   * @return array
-   *   The final blocks sent to the LayoutContext.
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   *   The return result
    */
   public function saveLayout() {
     $context_ids = $this->requestStack->getCurrentRequest()->request->get('contexts');
@@ -70,7 +70,11 @@ class LayoutManagementController extends ControllerBase {
       $target->save();
     }
 
-    return $data;
+    $response = new JsonResponse();
+    $response->setData([
+      'blocks' => $data
+    ]);
+    return $response;
   }
 
   /**
