@@ -37,3 +37,11 @@ cp.build.delete_menu_link:
   requirements:
     _group_permission: 'manage_menu'
     _group_member: 'TRUE'
+cp.build.add_new_link:
+  path: '/cp/build/menu/link/new/{menu}'
+  defaults:
+    _form: '\Drupal\cp_menu\Form\Multistep\MenuLinkAddForm'
+    _title: 'Menu'
+  requirements:
+    _group_permission: 'manage_menu'
+    _group_member: 'TRUE'
