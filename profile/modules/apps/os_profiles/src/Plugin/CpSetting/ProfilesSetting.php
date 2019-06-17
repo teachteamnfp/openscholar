@@ -214,12 +214,18 @@ class ProfilesSetting extends CpSettingBase {
     $config->set('disable_default_image', (bool) $form_state->getValue('disable_default_image'));
     $config->set('image_crop', $form_state->getValue('image_crop'));
 
+    $deletable_fid = 0;
     $form_file = $form_state->getValue('default_image_fid', 0);
     if (!empty($form_file[0])) {
       $file = File::load($form_file[0]);
       $file_changed = $config->get('default_image_fid') != $form_file[0];
       if ($file_changed) {
         $this->fileUsage->add($file, 'os_profiles', 'form', $file->id());
+        // Checking is there any exists file and delete.
+        // Use case: remove exists file and upload immediately a new one.
+        if ($exists_fid = $config->get('default_image_fid')) {
+          $deletable_fid = $exists_fid;
+        }
       }
       $file->setPermanent();
       $file->save();
@@ -229,9 +235,12 @@ class ProfilesSetting extends CpSettingBase {
     else {
       // Checking is there any exists file and delete.
       if ($exists_fid = $config->get('default_image_fid')) {
-        File::load($exists_fid)->delete();
+        $deletable_fid = $exists_fid;
       }
       $config->set('default_image_fid', NULL);
+    }
+    if ($deletable_fid) {
+      File::load($deletable_fid)->delete();
     }
 
     $config->save(TRUE);
