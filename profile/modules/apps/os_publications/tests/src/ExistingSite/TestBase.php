@@ -83,7 +83,7 @@ abstract class TestBase extends OsExistingSiteTestBase {
 
     // Assert files.
     $files_data = [];
-    foreach ($reference->get('field_files') as $item) {
+    foreach ($reference->get('field_attach_files') as $item) {
       $file = File::load($item->getValue()['target_id']);
       $files_data[] = [
         'url' => file_create_url($file->getFileUri()),

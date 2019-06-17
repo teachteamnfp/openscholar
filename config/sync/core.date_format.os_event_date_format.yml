@@ -1,0 +1,8 @@
+uuid: 82b9d7f4-f3a9-4b67-9bee-64f227149a9a
+langcode: en
+status: true
+dependencies: {  }
+id: os_event_date_format
+label: 'Os event date format'
+locked: false
+pattern: 'l, M d, Y, h:ia'

@@ -1,0 +1,10 @@
+uuid: b91e5b90-ba4a-49ff-87ce-7851e00dbead
+langcode: en
+status: true
+dependencies: {  }
+id: software
+label: Software
+description: ''
+activationRules: "software/*\r\n"
+weight: 0
+data: {  }

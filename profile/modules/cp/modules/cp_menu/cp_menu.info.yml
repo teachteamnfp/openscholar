@@ -1,0 +1,9 @@
+name: Control Panel Menu Management
+description: Management of a vsite's menus
+type: module
+core: 8.x
+version: 1.0
+dependencies:
+  - drupal:cp
+  - drupal:group
+  - drupal:groupmenu

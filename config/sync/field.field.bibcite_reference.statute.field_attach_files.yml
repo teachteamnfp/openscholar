@@ -1,0 +1,42 @@
+uuid: 195158a9-aca9-4806-aab3-e24804771307
+langcode: en
+status: true
+dependencies:
+  config:
+    - bibcite_entity.bibcite_reference_type.statute
+    - field.storage.bibcite_reference.field_attach_files
+    - media.type.audio
+    - media.type.document
+    - media.type.executable
+    - media.type.icon
+    - media.type.image
+    - media.type.presentation_materials
+    - media.type.remote
+    - media.type.video
+id: bibcite_reference.statute.field_attach_files
+field_name: field_attach_files
+entity_type: bibcite_reference
+bundle: statute
+label: 'Attach Files'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      audio: audio
+      document: document
+      executable: executable
+      icon: icon
+      image: image
+      presentation_materials: presentation_materials
+      remote: remote
+      video: video
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: audio
+field_type: entity_reference

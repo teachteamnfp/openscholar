@@ -57,13 +57,6 @@ class VisibilityHelperTest extends TestBase {
     ]);
 
     $this->assertNull(BlockVisibilityGroup::load("os_pages_page_{$event->id()}"));
-
-    /** @var \Drupal\node\NodeInterface $non_book_page */
-    $non_book_page = $this->createNode([
-      'type' => 'page',
-    ]);
-
-    $this->assertNull(BlockVisibilityGroup::load("os_pages_page_{$non_book_page->id()}"));
   }
 
   /**

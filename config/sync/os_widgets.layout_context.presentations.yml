@@ -1,0 +1,10 @@
+uuid: f135157e-c1b6-4dd4-9047-7dd6dffc895b
+langcode: en
+status: true
+dependencies: {  }
+id: presentations
+label: Presentations
+description: ''
+activationRules: 'presentations/*'
+weight: 0
+data: {  }
