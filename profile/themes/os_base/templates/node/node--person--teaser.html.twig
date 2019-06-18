@@ -9,7 +9,7 @@
 {% block title %}
   {{ title_prefix }}
     <h2{{ title_attributes }} class="node--title">
-      <a href="{{ url }}" rel="bookmark">{{ content.field_honorific.0['#context'].value }} {{ content.field_first_name.0['#context'].value }} {{ content.field_middle_name.0['#context'].value }} {{ content.field_last_name.0['#context'].value }}</a>
+      <a href="{{ url }}" rel="bookmark">{{ node.label }}</a>
     </h2>
   {{ title_suffix }}
 {% endblock %}
