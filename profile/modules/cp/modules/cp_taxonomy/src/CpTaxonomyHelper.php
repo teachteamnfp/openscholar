@@ -87,7 +87,8 @@ class CpTaxonomyHelper implements CpTaxonomyHelperInterface {
       }
       $bundles = $this->entityTypeBundleInfo->getBundleInfo($definition->id());
       foreach ($bundles as $machine_name => $bundle) {
-        $options[$definition->id() . ':' . $machine_name] = $definition->getLabel() . ' - ' . $bundle['label'];
+        $label = ($definition->getLabel() == 'Reference') ? 'Publication' : $definition->getLabel();
+        $options[$definition->id() . ':' . $machine_name] = $label . ' - ' . $bundle['label'];
         if ($definition->id() == 'node' && $machine_name == 'events') {
           $options['node:past_events'] = $definition->getLabel() . ' - ' . $this->t('Past events');
           $options['node:upcoming_events'] = $definition->getLabel() . ' - ' . $this->t('Upcoming events');
