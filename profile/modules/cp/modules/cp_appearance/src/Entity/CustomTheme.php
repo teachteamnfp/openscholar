@@ -219,7 +219,7 @@ class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
 
     // Place theme.info.yml file.
     $base_info = [
-      'name' => $this->id(),
+      'name' => $this->label(),
       'base theme' => $this->getBaseTheme(),
       'libraries' => [
         $this->id() . '/' . self::CUSTOM_THEME_GLOBAL_STYLING_NAMESPACE,

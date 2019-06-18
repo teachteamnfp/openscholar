@@ -88,7 +88,7 @@ class CustomThemeTest extends TestBase {
     $theme_info_file_location = 'file://' . CustomTheme::ABSOLUTE_CUSTOM_THEMES_LOCATION . '/' . $custom_theme->id() . '/' . $custom_theme->id() . '.info.yml';
     $this->assertFileExists($theme_info_file_location);
     $theme_info_file_data = Yaml::parseFile($theme_info_file_location);
-    $this->assertEquals($custom_theme->id(), $theme_info_file_data['name']);
+    $this->assertEquals($custom_theme->label(), $theme_info_file_data['name']);
     $this->assertEquals($custom_theme->getBaseTheme(), $theme_info_file_data['base theme']);
     $this->assertEquals([
       $custom_theme->id() . '/' . CustomTheme::CUSTOM_THEME_GLOBAL_STYLING_NAMESPACE,
