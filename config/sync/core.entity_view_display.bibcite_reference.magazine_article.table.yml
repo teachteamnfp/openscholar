@@ -5,7 +5,8 @@ dependencies:
   config:
     - bibcite_entity.bibcite_reference_type.magazine_article
     - core.entity_view_mode.bibcite_reference.table
-    - field.field.bibcite_reference.magazine_article.field_files
+    - field.field.bibcite_reference.magazine_article.field_attach_files
+    - field.field.bibcite_reference.magazine_article.field_taxonomy_terms
   enforced:
     config:
       - core.entity_view_mode.bibcite_reference.table
@@ -413,6 +414,7 @@ content:
 hidden:
   bibcite_type: true
   citation: true
-  field_files: true
+  field_attach_files: true
+  field_taxonomy_terms: true
   langcode: true
   uid: true
