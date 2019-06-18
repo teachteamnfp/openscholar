@@ -39,6 +39,13 @@ class CpSettingsForm extends ConfigFormBase {
   protected $file = NULL;
 
   /**
+   * Machine name of current setting group.
+   *
+   * @var string
+   */
+  protected $settingGroup = '';
+
+  /**
    * Creates new CpSettingsForm object.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
@@ -84,7 +91,7 @@ class CpSettingsForm extends ConfigFormBase {
    * Returns plugins.
    */
   protected function getPlugins() {
-    $group = $this->getRequest()->get('setting_group');
+    $group = $this->getSettingGroup();
 
     if (empty($this->plugins) && $group) {
       $this->plugins = $this->cpSettingsManager->getPluginsForGroup($group);
@@ -176,6 +183,29 @@ class CpSettingsForm extends ConfigFormBase {
    */
   public function setEntity(FileInterface $file) {
     $this->file = $file;
+  }
+
+  /**
+   * Getter for setting_group.
+   *
+   * @return mixed|string
+   *   Machine name of setting group.
+   */
+  public function getSettingGroup() {
+    if (empty($this->settingGroup)) {
+      $this->settingGroup = $this->getRequest()->get('setting_group');
+    }
+    return $this->settingGroup;
+  }
+
+  /**
+   * Setter for setting_group.
+   *
+   * @param string $setting_group
+   *   Machine name of setting group.
+   */
+  public function setSettingGroup(string $setting_group) {
+    $this->settingGroup = $setting_group;
   }
 
 }
