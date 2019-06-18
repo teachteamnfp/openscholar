@@ -302,28 +302,39 @@ class ScriptHandler {
   public static function placeCustomThemes(Event $event): void {
     $fs = new ComposerFilesystem();
     $io = $event->getIO();
+    $fileList = [
+      'custom_themes' => 'custom_themes',
+    ];
     $root = realpath($event->getComposer()->getPackage()->getDistUrl());
-    $path = $root . '/web/profiles/contrib/openscholar';
-    $source = "$root/custom_themes";
-    $destination = "$root/web/themes/custom";
+    $path = $root . '/web/themes';
 
     try {
-      if (Platform::isWindows()) {
-        if (is_dir($destination)) {
-          $fs->removeDirectory($destination);
+      foreach ($fileList as $orig_file => $file) {
+        $orig = $root . DIRECTORY_SEPARATOR . $orig_file;
+        $link = $path . DIRECTORY_SEPARATOR . $file;
+        if (Platform::isWindows() && is_dir($orig)) {
+          if (file_exists($link)) {
+            if ($fs->isJunction($link)) {
+              $io->writeError(sprintf("Removing junction from %s\n", $file));
+              $fs->removeJunction($link);
+            }
+            elseif (is_dir($link)) {
+              $fs->removeDirectory($link);
+            }
+            else {
+              $fs->unlink($link);
+            }
+          }
+
+          $io->writeError(sprintf("Junctioning from %s\n", $file), FALSE);
+          $fs->junction($orig, $link);
         }
         else {
-          $fs->unlink($destination);
+          $path = rtrim($path, DIRECTORY_SEPARATOR);
+          $io->writeError(sprintf("Symlinking from %s\n", $file), FALSE);
+          $fs->ensureDirectoryExists(dirname($link));
+          $fs->relativeSymlink($orig, $link);
         }
-
-        $io->writeError(sprintf("Junctioning from %s\n", $source), FALSE);
-        $fs->junction($source, $destination);
-      }
-      else {
-        $path = rtrim($path, DIRECTORY_SEPARATOR);
-        $io->writeError(sprintf("Symlinking from %s\n", $source), FALSE);
-        $fs->ensureDirectoryExists($destination);
-        $fs->relativeSymlink($source, $destination);
       }
     }
     catch (IOException $e) {
