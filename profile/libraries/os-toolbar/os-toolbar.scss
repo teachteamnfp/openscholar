@@ -18,10 +18,27 @@ $color-gray: #565656;
         padding: 1.3em 1.3333em;
       }
     }
+    li.open {
+      > ul {
+        a {
+          margin-left: 10px;
+        }
+      }
+    }
   }
   .toolbar-bar {
     background-color: $color-blue;
     box-shadow: -1px 0 3px 1px rgba(183, 183, 183, 0.3333);
+    padding-right: 100px;
+    &:after {
+      content: "";
+      background: url(images/os-logo.png) no-repeat;
+      width: 87px;
+      height: 27px;
+      position: absolute;
+      right: 10px;
+      top: 5px;
+    }
     .toolbar-item {
       color: $color-white;
     }
@@ -30,6 +47,46 @@ $color-gray: #565656;
           background-image: none;
         }
     }
+    /**** toolbar icons ****/
+    .toolbar-icon-menu:before {
+      background: url(images/hamburger.png) 0 center no-repeat;
+    }
+    .toolbar-icon-toolbar-menu:before {
+      background: url(images/cog.png) 0 center no-repeat;
+    }
+    .toolbar-icon-user:before {
+      background: url(images/person.png) 0 center no-repeat;
+    }
+    .toolbar-icon-devel:before {
+      background: url(images/cog.png) 0 center no-repeat;
+    }
+    .toolbar-icon-place-block-inactive:before {
+      background: url(images/place-block.png) 0 center no-repeat;
+    }
+    .toolbar-icon-edit:before {
+      background: url(images/pencil.png) 0 center no-repeat;
+    }
+    .toolbar-icon-link-toolbar-menu-cp-content:before {
+      background: url(images/site-content-icon.png) 0 center no-repeat;
+    }
+    .toolbar-icon-link-toolbar-menu-cp-menu:before {
+      background: url(images/menus-icon.png) 0 center no-repeat;
+    }
+    .toolbar-icon-link-toolbar-menu-cp-appearance:before {
+      background: url(images/appearance-icon.png) 0 center no-repeat;
+    }
+    .toolbar-icon-link-toolbar-menu-cp-taxonomy:before {
+      background: url(images/taxonomy-icon.png) 0 center no-repeat;
+    }
+    .toolbar-icon-link-toolbar-menu-cp-settings:before {
+      background: url(images/settings-icon.png) 0 center no-repeat;
+    }
+    .toolbar-icon-link-toolbar-menu-cp-users:before {
+      background: url(images/members-roles-icon.png) 0 center no-repeat;
+    }
+    .toolbar-icon-link-toolbar-menu-cp-help:before {
+      background: url(images/help-icon.png) 0 center no-repeat;
+    }
   }
   .toolbar-toggle-orientation {
     background: $color-white;
@@ -37,6 +94,19 @@ $color-gray: #565656;
   .toolbar-tray {
     a {
       color: $color-gray;
+    }
+  }
+  .toolbar-icon.toolbar-handle {
+    &:focus{
+      background-color: $color-white;
+    }
+    &:before {
+      background: url(images/plus-icon.png) center no-repeat;
+    }
+    &.open {
+      &:before {
+        background: url(images/minus-icon.png) center no-repeat;
+      }
     }
   }
 }
