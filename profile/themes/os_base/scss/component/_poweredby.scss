@@ -1,0 +1,25 @@
+.block-system-powered-by-block {
+  .block-content {
+    > a {
+      float: right;
+      font-size: 12px;
+      font-style: normal;
+      font-weight: bold;
+      line-height: 18px;
+      padding: 1px 11px 0 18px;
+      text-decoration: none;
+      text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.7);
+      border-left: 1px solid #ccc;
+      position: relative;
+    }
+  }
+  .powered-by {
+    background: url(../../../themes/os_base/images/scholarbase-sprite.png) no-repeat scroll -14px -521px transparent;
+    height: 26px;
+    text-indent: -999em;
+    width: 85px;
+    margin-right: 8px;
+    float: right;
+    display: inline;
+  }
+}
