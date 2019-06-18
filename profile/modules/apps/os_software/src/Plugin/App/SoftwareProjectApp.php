@@ -8,17 +8,16 @@ use Drupal\vsite\Plugin\AppPluginBase;
  * Software app.
  *
  * @App(
- *   title = @Translation("Software"),
+ *   title = @Translation("Software Project"),
  *   canDisable = true,
  *   entityType = "node",
  *   bundle = {
- *     "software_project",
- *     "software_release"
+ *     "software_project"
  *   },
- *   id = "software"
+ *   id = "software_project"
  * )
  */
-class SoftwareApp extends AppPluginBase {
+class SoftwareProjectApp extends AppPluginBase {
 
   /**
    * {@inheritdoc}
