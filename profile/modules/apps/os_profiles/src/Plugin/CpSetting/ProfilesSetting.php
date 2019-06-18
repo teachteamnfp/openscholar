@@ -144,7 +144,7 @@ class ProfilesSetting extends CpSettingBase {
           '#image' => $hover_image,
         ],
       ];
-      $profile_styles_hover[$name] = $this->renderer->render($build_hover);
+      $profile_styles_hover[$name] = $this->renderer->renderRoot($build_hover);
     }
 
     $form['display_type'] = [
@@ -269,7 +269,7 @@ class ProfilesSetting extends CpSettingBase {
         '#uri' => $path,
         '#style_name' => 'crop_photo_person',
       ];
-      return $this->renderer->render($build);
+      return $this->renderer->renderRoot($build);
     }
     else {
       // Use default image.
@@ -277,7 +277,7 @@ class ProfilesSetting extends CpSettingBase {
         '#theme' => 'image',
         '#uri' => file_create_url(drupal_get_path('theme', 'os_base') . '/images/person-default-image.png'),
       ];
-      return $this->renderer->render($build);
+      return $this->renderer->renderRoot($build);
     }
   }
 
