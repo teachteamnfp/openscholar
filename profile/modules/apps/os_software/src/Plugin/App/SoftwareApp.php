@@ -8,16 +8,17 @@ use Drupal\vsite\Plugin\AppPluginBase;
  * Software app.
  *
  * @App(
- *   title = @Translation("Software Project"),
+ *   title = @Translation("Software"),
  *   canDisable = true,
  *   entityType = "node",
  *   bundle = {
- *     "software_project"
+ *     "software_project",
+ *     "software_release"
  *   },
- *   id = "software_project"
+ *   id = "software"
  * )
  */
-class SoftwareProjectApp extends AppPluginBase {
+class SoftwareApp extends AppPluginBase {
 
   /**
    * {@inheritdoc}
@@ -28,6 +29,13 @@ class SoftwareProjectApp extends AppPluginBase {
         'menu_name' => 'control-panel',
         'route_name' => 'node.add',
         'route_parameters' => ['node_type' => 'software_project'],
+        'parent' => 'cp.content.add',
+        'title' => $this->getTitle(),
+      ],
+      'software-release' => [
+        'menu_name' => 'control-panel',
+        'route_name' => 'node.add',
+        'route_parameters' => ['node_type' => 'software_release'],
         'parent' => 'cp.content.add',
         'title' => $this->getTitle(),
       ],
