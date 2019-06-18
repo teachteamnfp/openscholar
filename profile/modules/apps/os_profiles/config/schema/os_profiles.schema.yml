@@ -1,0 +1,16 @@
+os_profiles.settings:
+  type: config_object
+  label: 'OS profiles settings'
+  mapping:
+    display_type:
+      type: string
+      label: 'Display type'
+    disable_default_image:
+      type: boolean
+      label: 'Disable default image'
+    default_image_fid:
+      type: integer
+      label: 'Default image'
+    image_crop_applied:
+      type: sequence
+      label: 'Image crop applied'
