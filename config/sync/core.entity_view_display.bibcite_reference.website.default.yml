@@ -4,7 +4,7 @@ status: true
 dependencies:
   config:
     - bibcite_entity.bibcite_reference_type.website
-    - field.field.bibcite_reference.website.field_files
+    - field.field.bibcite_reference.website.field_attach_files
     - field.field.bibcite_reference.website.field_taxonomy_terms
   enforced:
     module:
@@ -13,7 +13,6 @@ dependencies:
       - bibcite_entity.bibcite_reference_type.website
   module:
     - bibcite_entity
-    - file
 _core:
   default_config_hash: FhE1oOlipvBqO48_XXrLtv2OAREdFUpoRqMvrHahb6U
 id: bibcite_reference.website.default
@@ -402,13 +401,14 @@ content:
       thousand_separator: ''
       prefix_suffix: true
     third_party_settings: {  }
-  field_files:
-    weight: 102
+  field_attach_files:
+    type: entity_reference_entity_view
+    weight: 50
     label: above
     settings:
-      use_description_as_link_text: true
+      view_mode: default
+      link: false
     third_party_settings: {  }
-    type: file_default
     region: content
   field_taxonomy_terms:
     weight: 103

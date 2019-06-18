@@ -4,13 +4,13 @@ status: true
 dependencies:
   config:
     - bibcite_entity.bibcite_reference_type.broadcast
-    - field.field.bibcite_reference.broadcast.field_files
+    - field.field.bibcite_reference.broadcast.field_attach_files
     - field.field.bibcite_reference.broadcast.field_taxonomy_terms
   module:
     - bibcite_entity
     - field_layout
-    - file
     - layout_discovery
+    - os_media
 third_party_settings:
   field_layout:
     id: layout_onecol
@@ -410,12 +410,11 @@ content:
     weight: 10
     region: content
     third_party_settings: {  }
-  field_files:
-    weight: 102
-    settings:
-      progress_indicator: throbber
+  field_attach_files:
+    weight: 55
+    settings: {  }
     third_party_settings: {  }
-    type: file_generic
+    type: media_browser_widget
     region: content
   field_taxonomy_terms:
     weight: 105

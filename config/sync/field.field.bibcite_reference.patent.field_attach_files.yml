@@ -1,0 +1,42 @@
+uuid: 866bc419-b379-4e47-b514-c99fdd3ac4f0
+langcode: en
+status: true
+dependencies:
+  config:
+    - bibcite_entity.bibcite_reference_type.patent
+    - field.storage.bibcite_reference.field_attach_files
+    - media.type.audio
+    - media.type.document
+    - media.type.executable
+    - media.type.icon
+    - media.type.image
+    - media.type.presentation_materials
+    - media.type.remote
+    - media.type.video
+id: bibcite_reference.patent.field_attach_files
+field_name: field_attach_files
+entity_type: bibcite_reference
+bundle: patent
+label: 'Attach Files'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      audio: audio
+      document: document
+      executable: executable
+      icon: icon
+      image: image
+      presentation_materials: presentation_materials
+      remote: remote
+      video: video
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: audio
+field_type: entity_reference
