@@ -53,6 +53,8 @@ class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
 
   public const CUSTOM_THEME_GLOBAL_STYLING_NAMESPACE = 'global-styling';
 
+  public const CUSTOM_THEMES_DRUPAL_LOCATION = 'themes/custom_themes';
+
   public const CUSTOM_THEME_INFO_TEMPLATE = [
     'core' => '8.x',
     'type' => 'theme',

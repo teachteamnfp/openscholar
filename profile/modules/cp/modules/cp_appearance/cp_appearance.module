@@ -5,6 +5,8 @@
  * Management of a vsite's themes.
  */
 
+use Drupal\cp_appearance\Entity\CustomTheme;
+
 /**
  * Implements hook_theme().
  */
@@ -19,4 +21,36 @@ function cp_appearance_theme() {
       'template' => 'cp-appearance-themes-page',
     ],
   ];
+}
+
+/**
+ * Implements hook_page_attachments_alter().
+ */
+function cp_appearance_page_attachments_alter(array &$attachments) {
+  // Make sure that the favicon used in custom theme appears in the site.
+  // Note that this is hook implementation is a workaround for altering the
+  // favicon. Ideally placing the favicon.ico inside the theme should have
+  // worked, but it didn't.
+  /** @var \Drupal\Core\Config\ImmutableConfig $theme_setting */
+  $theme_setting = \Drupal::config('system.theme');
+  $default_theme = $theme_setting->get('default');
+  /** @var \Drupal\cp_appearance\Entity\CustomTheme|null $custom_theme */
+  $custom_theme = CustomTheme::load($default_theme);
+
+  if (!$custom_theme) {
+    return;
+  }
+
+  if (!$custom_theme->getFavicon()) {
+    return;
+  }
+
+  foreach ($attachments['#attached']['html_head'] as &$attachment) {
+    list(, $attachment_type) = $attachment;
+
+    if ($attachment_type === 'shortcut_icon') {
+      $favicon_path = CustomTheme::CUSTOM_THEMES_DRUPAL_LOCATION . '/' . $custom_theme->id() . '/favicon.ico';
+      $attachment[0]['#attributes']['href'] = file_create_url($favicon_path);
+    }
+  }
 }
