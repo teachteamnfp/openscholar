@@ -139,12 +139,18 @@ class CustomThemeForm extends EntityForm {
     foreach ($file_fields as $field) {
       $files = file_save_upload($field, $file_validators, 'temporary://');
 
-      if ($files === FALSE) {
-        $form_state->setError($form[$field], $this->t('Failed to upload @file_field. Please contact site administrator for support.', [
-          '@file_field' => $field,
-        ]));
+      if ($files === NULL) {
+        continue;
       }
-      elseif ($files !== NULL) {
+
+      // file_save_upload() puts a FALSE inside `$files` in case of errors.
+      // `$files` itself is not FALSE.
+      // Therefore, validation is done in this way.
+      $valid_files = array_filter($files);
+      if (count($valid_files) !== count($files)) {
+        $form_state->setError($form[$field]);
+      }
+      else {
         $form_state->setValue($field, $files);
       }
     }
