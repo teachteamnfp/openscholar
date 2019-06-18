@@ -12,7 +12,7 @@ use Drupal\vsite\Plugin\AppPluginBase;
  *   canDisable = true,
  *   entityType = "node",
  *   bundle = {
- *     "software_project"
+ *     "software_release"
  *   },
  *   id = "software_release"
  * )
