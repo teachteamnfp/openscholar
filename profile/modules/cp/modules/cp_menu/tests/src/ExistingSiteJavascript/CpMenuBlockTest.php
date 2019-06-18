@@ -62,7 +62,6 @@ class CpMenuBlockTest extends OsExistingSiteJavascriptTestBase {
     $session = $this->assertSession();
     $session->linkNotExists('Test Calendar Link');
 
-    $this->drupalLogin($this->groupAdmin);
     $this->visit('/test-menu/cp/build/menu');
     $page = $this->getCurrentPage();
 
