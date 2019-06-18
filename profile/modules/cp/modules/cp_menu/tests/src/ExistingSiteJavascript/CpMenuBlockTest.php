@@ -61,12 +61,14 @@ class CpMenuBlockTest extends OsExistingSiteJavascriptTestBase {
     $this->visit('/test-menu');
     $session = $this->assertSession();
     $session->linkNotExists('Test Calendar Link');
+    $this->drupalLogin($this->groupAdmin);
 
     $this->visit('/test-menu/cp/build/menu');
     $page = $this->getCurrentPage();
 
     // Test if newly added link is vsisble in the menu block.
     $link = $page->find('css', '#add_new_link');
+    file_put_contents('public://screenshot.jpg', $this->getSession()->getScreenshot());
     $link->click();
     $session->waitForElementVisible('css', '.cp-menu-link-add-form');
     $edit = [
