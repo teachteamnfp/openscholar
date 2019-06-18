@@ -82,10 +82,8 @@ class CpMenuBlockTest extends OsExistingSiteJavascriptTestBase {
       'url' => '/calendar',
     ];
     $this->submitForm($edit, 'Finish');
-    $session->assertWaitOnAjaxRequest();
-    // Clear all caches.
-    $this->drupalLogin($this->adminUser);
-    $this->drupalPostForm('admin/config/development/performance', [], t('Clear all caches'));
+    $session->waitForElementVisible('css', '#cp-build-menu-table');
+
     $this->visit('/test-menu');
     $session->linkExists('Test Calendar Link');
   }
