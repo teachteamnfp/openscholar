@@ -66,9 +66,6 @@ class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
           self::CUSTOM_THEMES_STYLE_LOCATION => [],
         ],
       ],
-      'js' => [
-        self::CUSTOM_THEMES_SCRIPT_LOCATION => [],
-      ],
     ],
   ];
 
@@ -211,7 +208,15 @@ class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
     }
 
     // Place theme.libraries.yml file.
-    $status = file_unmanaged_save_data(Yaml::dump(self::CUSTOM_THEME_LIBRARIES_INFO_TEMPLATE), "file://$custom_theme_directory_path/{$this->id()}.libraries.yml");
+    $libraries_info = self::CUSTOM_THEME_LIBRARIES_INFO_TEMPLATE;
+
+    if ($scripts) {
+      $libraries_info[self::CUSTOM_THEME_GLOBAL_STYLING_NAMESPACE]['js'] = [
+        self::CUSTOM_THEMES_SCRIPT_LOCATION => [],
+      ];
+    }
+
+    $status = file_unmanaged_save_data(Yaml::dump($libraries_info), "file://$custom_theme_directory_path/{$this->id()}.libraries.yml");
 
     if (!$status) {
       throw new CustomThemeException(t('Unable to place theme libraries info file. Please contact the site administrator for support.'));
