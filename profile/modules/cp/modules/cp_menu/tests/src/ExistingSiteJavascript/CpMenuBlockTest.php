@@ -39,6 +39,8 @@ class CpMenuBlockTest extends OsExistingSiteJavascriptTestBase {
   public function setUp() {
     parent::setUp();
 
+    $this->adminUser = $this->createUser([], '', TRUE);
+
     $this->group = $this->createGroup([
       'path' => [
         'alias' => '/test-menu',
@@ -68,7 +70,6 @@ class CpMenuBlockTest extends OsExistingSiteJavascriptTestBase {
 
     // Test if newly added link is vsisble in the menu block.
     $link = $page->find('css', '#add_new_link');
-    file_put_contents('public://screenshot.jpg', $this->getSession()->getScreenshot());
     $link->click();
     $session->waitForElementVisible('css', '.cp-menu-link-add-form');
     $edit = [
@@ -83,6 +84,7 @@ class CpMenuBlockTest extends OsExistingSiteJavascriptTestBase {
     $this->submitForm($edit, 'Finish');
     $session->assertWaitOnAjaxRequest();
     // Clear all caches.
+    $this->drupalLogin($this->adminUser);
     $this->drupalPostForm('admin/config/development/performance', [], t('Clear all caches'));
     $this->visit('/test-menu');
     $session->linkExists('Test Calendar Link');
