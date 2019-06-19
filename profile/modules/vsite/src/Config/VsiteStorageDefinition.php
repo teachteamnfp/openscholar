@@ -2,6 +2,7 @@
 
 namespace Drupal\vsite\Config;
 
+use Drupal\vsite\Entity\GroupPresetInterface;
 use Drupal\vsite\Event\VsiteActivatedEvent;
 use Drupal\vsite\VsiteEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -11,6 +12,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class VsiteStorageDefinition implements EventSubscriberInterface {
   const VSITE_STORAGE = 0;
+  const PRESET_STORAGE = -10;
 
   /**
    * The storage element to add a vsite storage to.
@@ -44,6 +46,14 @@ class VsiteStorageDefinition implements EventSubscriberInterface {
   public function onVsiteActivated(VsiteActivatedEvent $event) {
     $storage = $this->hierarchicalStorage->createCollection('vsite:' . $event->getGroup()->id());
     $this->hierarchicalStorage->addStorage($storage, self::VSITE_STORAGE);
+
+    if ($event->getGroup()->hasField('field_preset')) {
+      $preset_id = $event->getGroup()->get('field_preset')->get(0)->getValue()['target_id'];
+      /** @var GroupPresetInterface $preset */
+      if ($preset = \Drupal::entityTypeManager()->getStorage('group_preset')->load($preset_id)) {
+        $this->hierarchicalStorage->addStorage($preset->getPresetStorage(), self::PRESET_STORAGE);
+      }
+    }
   }
 
 }
