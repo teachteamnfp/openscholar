@@ -74,8 +74,10 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
    * Tests whether the custom theme is installable.
    *
    * @throws \Behat\Mink\Exception\ExpectationException
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function testInstallable(): void {
+    // Setup.
     $custom_theme = $this->createCustomTheme([], '', 'test');
 
     $admin = $this->createUser([
@@ -91,6 +93,7 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
     $this->assertNotNull($set_default_theme_link);
     $set_default_theme_link->click();
 
+    // Tests.
     $this->visit('/');
     $this->assertSession()->responseContains("/themes/custom_themes/{$custom_theme->id()}/style.css");
     $this->assertSession()->responseContains("/themes/custom_themes/{$custom_theme->id()}/script.js");
