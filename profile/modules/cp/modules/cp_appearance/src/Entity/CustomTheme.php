@@ -40,6 +40,8 @@ use Symfony\Component\Yaml\Yaml;
  */
 class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
 
+  public const CUSTOM_THEME_ID_PREFIX = 'os_ct_';
+
   public const CUSTOM_THEMES_LOCATION = 'custom_themes';
 
   public const CUSTOM_THEMES_IMAGES_LOCATION = 'images';

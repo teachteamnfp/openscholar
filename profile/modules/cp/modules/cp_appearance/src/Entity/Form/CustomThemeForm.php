@@ -62,13 +62,14 @@ class CustomThemeForm extends EntityForm {
 
     $form['id'] = [
       '#type' => 'machine_name',
-      '#maxlength' => DRUPAL_EXTENSION_NAME_MAX_LENGTH,
+      '#maxlength' => DRUPAL_EXTENSION_NAME_MAX_LENGTH - \strlen(CustomTheme::CUSTOM_THEME_ID_PREFIX),
       '#default_value' => $entity->id(),
       '#machine_name' => [
         'exists' => [$this, 'exists'],
         'source' => ['label'],
       ],
       '#disabled' => !$entity->isNew(),
+      '#field_prefix' => CustomTheme::CUSTOM_THEME_ID_PREFIX,
     ];
 
     $form['base_theme'] = [
@@ -156,6 +157,8 @@ class CustomThemeForm extends EntityForm {
     $entity = $this->getEntity();
     /** @var array $form_state_values */
     $form_state_values = $form_state->getValues();
+
+    $entity->set('id', CustomTheme::CUSTOM_THEME_ID_PREFIX . $entity->id());
 
     if ($form_state_values['images']) {
       $uploaded_image_ids = array_map(function (FileInterface $file) {

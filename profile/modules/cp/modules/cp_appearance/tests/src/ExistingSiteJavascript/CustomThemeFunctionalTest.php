@@ -61,7 +61,7 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
     $vsite_context_manager = $this->container->get('vsite.context_manager');
     $vsite_context_manager->activateVsite($this->group);
     /** @var \Drupal\cp_appearance\Entity\CustomThemeInterface $custom_theme */
-    $custom_theme = CustomTheme::load('cyberpunk');
+    $custom_theme = CustomTheme::load(CustomTheme::CUSTOM_THEME_ID_PREFIX . 'cyberpunk');
     $this->assertNotNull($custom_theme);
     $this->assertEquals('Cyberpunk', $custom_theme->label());
     $this->assertEquals('clean', $custom_theme->getBaseTheme());
