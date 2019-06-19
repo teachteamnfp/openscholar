@@ -65,7 +65,7 @@ function os_preprocess_block(array &$vars) {
     if (\Drupal::currentUser()->isAnonymous()) {
       $vars['content']['#markup'] .= Link::createFromRoute(t('Admin Login'), 'user.login', [], ['query' => \Drupal::destination()->getAsArray()])->toString();
     }
-    $vars['content']['#markup'] .= t('<span id="powered-by">Powered by <a href=":link">OpenScholar</a></span>', [':link' => 'https://theopenscholar.com/']);
+    $vars['content']['#markup'] .= t('<span id="powered-by"><a class="powered-by" href=":link">OpenScholar</a></span>', [':link' => 'https://theopenscholar.com/']);
   }
 }
 
