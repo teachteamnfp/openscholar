@@ -37,7 +37,7 @@ $color-gray: #565656;
       height: 27px;
       position: absolute;
       right: 10px;
-      top: 5px;
+      top: 6px;
     }
     .toolbar-item {
       color: $color-white;
@@ -71,6 +71,7 @@ $color-gray: #565656;
     }
     .toolbar-icon-link-toolbar-menu-cp-menu:before {
       background: url(images/menus-icon.png) 0 center no-repeat;
+      left: 1.1em;
     }
     .toolbar-icon-link-toolbar-menu-cp-appearance:before {
       background: url(images/appearance-icon.png) 0 center no-repeat;
