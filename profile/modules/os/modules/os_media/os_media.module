@@ -5,6 +5,8 @@
  * Hook implementations to support the media browser.
  */
 
+use Drupal\media\MediaInterface;
+
 /**
  * Implements hook_library_info_alter().
  */
@@ -25,6 +27,30 @@ function os_media_library_info_alter(&$libraries, $extension) {
       $libraries['mediaBrowser']['drupalSettings']['embedWhitelist'] = [];
       $libraries['mediaBrowser']['drupalSettings']['maximumFileSize'] = format_size(file_upload_max_size());
       $libraries['mediaBrowser']['drupalSettings']['maximumFileSizeRaw'] = file_upload_max_size();
+    }
+  }
+}
+
+/**
+ * Implements hook_media_view_alter().
+ */
+function os_media_media_view_alter(array $build, MediaInterface $media, $display) {
+  if (isset($media->dimensions) && $media->dimensions != 'default') {
+    if ($build['thumbnail']['#field_type'] == 'image') {
+      /** @var \Drupal\image\Plugin\Field\FieldType\ImageItem $imageItem */
+      $imageItem = $build['thumbnail'][0]['#item'];
+      $width = $media->dimensions['width'];
+      if (!isset($media->dimensions['height'])) {
+        $orig_width = $imageItem->get('width')->getValue();
+        $orig_height = $imageItem->get('height')->getValue();
+        $ratio = $media->dimensions['width'] / $orig_width;
+        $height = $ratio * $orig_height;
+      }
+      else {
+        $height = $media->dimensions['height'];
+      }
+      $imageItem->set('width', $width);
+      $imageItem->set('height', $height);
     }
   }
 }
