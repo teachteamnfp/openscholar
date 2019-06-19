@@ -21,8 +21,6 @@ class CustomThemeTest extends TestBase {
    * @covers ::label
    * @covers ::setBaseTheme
    * @covers ::getBaseTheme
-   * @covers ::setFavicon
-   * @covers ::getFavicon
    * @covers ::setImages
    * @covers ::getImages
    * @covers ::getStyles
@@ -35,14 +33,12 @@ class CustomThemeTest extends TestBase {
    */
   public function testSave(): void {
     $image = $this->createFile('image');
-    $favicon = $this->createFile('image', 1);
 
     $custom_theme = CustomTheme::create([
       'id' => 'test',
       'label' => 'Test',
     ]);
     $custom_theme->setBaseTheme('clean');
-    $custom_theme->setFavicon($favicon->id());
     $custom_theme->setImages([$image->id()]);
     $custom_theme->setStyles('background-color: black;');
     $custom_theme->setScripts('alert("Hello World");');
@@ -52,11 +48,7 @@ class CustomThemeTest extends TestBase {
     $this->assertEquals('test', $custom_theme->id());
     $this->assertEquals('Test', $custom_theme->label());
     $this->assertEquals('clean', $custom_theme->getBaseTheme());
-    $this->assertEquals($favicon->id(), $custom_theme->getFavicon());
     $this->assertEquals([$image->id()], $custom_theme->getImages());
-
-    // Assert presence of favicon.
-    $this->assertFileExists('file://' . CustomTheme::ABSOLUTE_CUSTOM_THEMES_LOCATION . '/' . $custom_theme->id() . '/favicon.ico');
 
     // Assert presence of images.
     $this->assertFileExists('file://' . CustomTheme::ABSOLUTE_CUSTOM_THEMES_LOCATION . '/' . $custom_theme->id() . '/' . CustomTheme::CUSTOM_THEMES_IMAGES_LOCATION . '/' . $image->getFilename());

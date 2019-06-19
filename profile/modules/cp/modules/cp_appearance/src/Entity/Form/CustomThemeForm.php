@@ -72,13 +72,6 @@ class CustomThemeForm extends EntityForm {
       '#disabled' => !$entity->isNew(),
     ];
 
-    $form['favicon'] = [
-      '#type' => 'file',
-      '#title' => $this->t('Favicon'),
-      '#description' => $this->t('Upload the favicon for the theme. If no favicon uploaded, then the favicon of the parent theme will be used.'),
-      '#default_value' => $entity->getFavicon(),
-    ];
-
     $form['base_theme'] = [
       '#type' => 'select',
       '#title' => $this->t('Parent Theme'),
@@ -132,7 +125,7 @@ class CustomThemeForm extends EntityForm {
     // Handle file upload.
     // It is silly doing such things in validation handler, but Drupal also does
     // it.
-    $file_fields = ['favicon', 'images'];
+    $file_fields = ['images'];
     $file_validators = [
       'file_validate_extensions' => ['png jpg jpeg'],
     ];
@@ -164,12 +157,6 @@ class CustomThemeForm extends EntityForm {
     $entity = $this->getEntity();
     /** @var array $form_state_values */
     $form_state_values = $form_state->getValues();
-
-    if ($form_state_values['favicon']) {
-      /** @var \Drupal\file\FileInterface $favicon */
-      $favicon = reset($form_state_values['favicon']);
-      $entity->setFavicon($favicon->id());
-    }
 
     if ($form_state_values['images']) {
       $uploaded_image_ids = array_map(function (FileInterface $file) {

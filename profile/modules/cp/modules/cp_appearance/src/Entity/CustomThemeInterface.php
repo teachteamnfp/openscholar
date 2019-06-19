@@ -29,25 +29,6 @@ interface CustomThemeInterface extends ConfigEntityInterface {
   public function getBaseTheme(): ?string;
 
   /**
-   * Returns the favicon of the custom theme.
-   *
-   * @return int|null
-   *   The favicon file id.
-   */
-  public function getFavicon(): ?int;
-
-  /**
-   * Sets the favicon of the custom theme.
-   *
-   * @param int $favicon
-   *   The favicon file id.
-   *
-   * @return \Drupal\cp_appearance\Entity\CustomThemeInterface
-   *   The custom theme this was called on.
-   */
-  public function setFavicon(int $favicon): CustomThemeInterface;
-
-  /**
    * Returns the images of the custom theme.
    *
    * @return int[]

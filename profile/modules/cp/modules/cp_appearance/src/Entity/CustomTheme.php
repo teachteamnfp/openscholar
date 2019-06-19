@@ -30,7 +30,6 @@ use Symfony\Component\Yaml\Yaml;
  *     "id",
  *     "label",
  *     "base_theme",
- *     "favicon",
  *     "images",
  *   },
  *   links = {
@@ -117,21 +116,6 @@ class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
   /**
    * {@inheritdoc}
    */
-  public function getFavicon(): ?int {
-    return $this->get('favicon');
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setFavicon(int $favicon): CustomThemeInterface {
-    $this->set('favicon', $favicon);
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function getImages(): array {
     $images = $this->get('images');
 
@@ -165,17 +149,6 @@ class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
     }
 
     // Move custom theme files.
-    $favicon_id = $this->getFavicon();
-    if ($favicon_id) {
-      /** @var \Drupal\file\FileInterface $favicon */
-      $favicon = File::load($favicon_id);
-      $status = file_unmanaged_move($favicon->getFileUri(), "file://$custom_theme_directory_path/favicon.ico");
-
-      if (!$status) {
-        throw new CustomThemeException(t('Unable to place favicon in the theme. Please contact the site administrator for support.'));
-      }
-    }
-
     /** @var int[] $image_ids */
     $image_ids = $this->getImages();
     foreach ($image_ids as $id) {

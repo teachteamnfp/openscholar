@@ -11,9 +11,6 @@ cp_appearance.custom_theme.*:
     base_theme:
       type: 'string'
       label: 'Base theme'
-    favicon:
-      type: integer
-      label: 'Favicon'
     images:
       type: cp_appearance_custom_theme.images
 
