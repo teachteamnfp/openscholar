@@ -1,0 +1,6 @@
+settings_hover:
+  js:
+    js/os_profiles_settings_hover.js: {}
+  css:
+    theme:
+      css/os_profiles_settings.css: {}

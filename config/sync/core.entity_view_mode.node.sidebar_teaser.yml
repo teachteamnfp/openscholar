@@ -1,0 +1,10 @@
+uuid: f3db905d-fee5-46e7-bf21-f766120f1416
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.sidebar_teaser
+label: 'Sidebar Teaser'
+targetEntityType: node
+cache: true

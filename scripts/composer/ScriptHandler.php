@@ -279,6 +279,7 @@ class ScriptHandler {
     $toolbar_destination = "$root/web/libraries/os-toolbar";
     $toolbar_files = [
       'os-toolbar.css',
+      'images',
     ];
     try {
       $io->write(sprintf("Symlinking toolbar library..."));
