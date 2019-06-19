@@ -256,4 +256,17 @@ class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
     return $this;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public static function postDelete(EntityStorageInterface $storage, array $entities) {
+    parent::postDelete($storage, $entities);
+
+    // Cleanup custom theme files.
+    foreach ($entities as $custom_theme) {
+      $custom_theme_directory_path = 'file://' . self::ABSOLUTE_CUSTOM_THEMES_LOCATION . '/' . $custom_theme->id();
+      file_unmanaged_delete_recursive($custom_theme_directory_path);
+    }
+  }
+
 }
