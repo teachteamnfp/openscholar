@@ -52,6 +52,7 @@ abstract class OsExistingSiteTestBase extends ExistingSiteBase {
    */
   public function tearDown() {
     $this->cleanupEntities = array_reverse($this->cleanupEntities);
+    parent::tearDown();
 
     foreach ($this->cleanUpConfigs as $config_entity) {
       $config_entity->delete();
@@ -69,7 +70,6 @@ abstract class OsExistingSiteTestBase extends ExistingSiteBase {
       }
     }
     $this->group->delete();
-    parent::tearDown();
   }
 
 }
