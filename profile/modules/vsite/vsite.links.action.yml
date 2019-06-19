@@ -1,0 +1,5 @@
+vsite.add_preset:
+  route_name: 'entity.group_preset.add_form'
+  title: 'Add group preset'
+  appears_on:
+    - 'entity.group_preset.collection'
