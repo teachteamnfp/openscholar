@@ -2,12 +2,15 @@
 
 namespace Drupal\Tests\cp_appearance\ExistingSite;
 
+use Drupal\Tests\cp_appearance\Traits\CpAppearanceTestTrait;
 use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
 
 /**
  * TestBase for cp_appearance tests.
  */
 abstract class TestBase extends OsExistingSiteTestBase {
+
+  use CpAppearanceTestTrait;
 
   /**
    * The entity type manager service.

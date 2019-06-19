@@ -297,4 +297,50 @@ class ScriptHandler {
     }
   }
 
+  /**
+   * Make sure custom themes are available for installation.
+   */
+  public static function placeCustomThemes(Event $event): void {
+    $fs = new ComposerFilesystem();
+    $io = $event->getIO();
+    $fileList = [
+      'custom_themes' => 'custom_themes',
+    ];
+    $root = realpath($event->getComposer()->getPackage()->getDistUrl());
+    $path = $root . '/web/themes';
+
+    try {
+      foreach ($fileList as $orig_file => $file) {
+        $orig = $root . DIRECTORY_SEPARATOR . $orig_file;
+        $link = $path . DIRECTORY_SEPARATOR . $file;
+        if (Platform::isWindows() && is_dir($orig)) {
+          if (file_exists($link)) {
+            if ($fs->isJunction($link)) {
+              $io->writeError(sprintf("Removing junction from %s\n", $file));
+              $fs->removeJunction($link);
+            }
+            elseif (is_dir($link)) {
+              $fs->removeDirectory($link);
+            }
+            else {
+              $fs->unlink($link);
+            }
+          }
+
+          $io->writeError(sprintf("Junctioning from %s\n", $file), FALSE);
+          $fs->junction($orig, $link);
+        }
+        else {
+          $path = rtrim($path, DIRECTORY_SEPARATOR);
+          $io->writeError(sprintf("Symlinking from %s\n", $file), FALSE);
+          $fs->ensureDirectoryExists(dirname($link));
+          $fs->relativeSymlink($orig, $link);
+        }
+      }
+    }
+    catch (IOException $e) {
+      throw new \RuntimeException(sprintf('Symlink from "%s" to "%s" failed!', $root, $path));
+    }
+  }
+
 }
