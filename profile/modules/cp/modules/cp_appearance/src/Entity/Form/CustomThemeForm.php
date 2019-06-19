@@ -3,7 +3,6 @@
 namespace Drupal\cp_appearance\Entity\Form;
 
 use Drupal\Core\Entity\EntityForm;
-use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\cp_appearance\AppearanceSettingsBuilderInterface;
 use Drupal\cp_appearance\Entity\CustomTheme;
@@ -63,7 +62,7 @@ class CustomThemeForm extends EntityForm {
 
     $form['id'] = [
       '#type' => 'machine_name',
-      '#maxlength' => EntityTypeInterface::ID_MAX_LENGTH,
+      '#maxlength' => DRUPAL_EXTENSION_NAME_MAX_LENGTH,
       '#default_value' => $entity->id(),
       '#machine_name' => [
         'exists' => [$this, 'exists'],
