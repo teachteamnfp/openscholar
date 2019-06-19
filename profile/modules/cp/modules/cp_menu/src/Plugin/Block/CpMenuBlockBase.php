@@ -80,6 +80,29 @@ abstract class CpMenuBlockBase extends BlockBase implements ContainerFactoryPlug
   }
 
   /**
+   * Get the name of the menu in context.
+   *
+   * @param string $default
+   *   The default shared menu.
+   *
+   * @return string
+   *   The menu name.
+   */
+  public function getMenuName(string $default) {
+    if ($this->vsite) {
+      if ($default == 'main') {
+        $menu_id = 'menu-primary-' . $this->id;
+      }
+      elseif ($default == 'footer') {
+        $menu_id = 'menu-secondary-' . $this->id;
+      }
+      $vsite_menu = $this->vsite->getContent('group_menu:menu', ['entity_id_str' => $menu_id]);
+      return $vsite_menu ? $menu_id : $default;
+    }
+    return $default;
+  }
+
+  /**
    * Load the tree.
    *
    * @param string $menu_name

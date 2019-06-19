@@ -21,14 +21,8 @@ class SecondaryMenuBlock extends CpMenuBlockBase {
    * {@inheritdoc}
    */
   public function build() {
-
-    $menu_name = self::SECONDARY_MENU;
     // Get the associated group menu for the current page.
-    if ($this->vsite) {
-      $secondary_menu_id = 'menu-secondary-' . $this->id;
-      $vsite_menu = $this->vsite->getContent('group_menu:menu', ['entity_id_str' => $secondary_menu_id]);
-      $menu_name = $vsite_menu ? $secondary_menu_id : self::SECONDARY_MENU;
-    }
+    $menu_name = $this->getMenuName(self::SECONDARY_MENU);
     // Render the menus.
     return $this->loadMenuTree($menu_name);
   }
