@@ -46,6 +46,16 @@
     li {
       padding: .5em 0;
       display: block;
+      a {
+        &:before {
+          content: "";
+          background: url(../../../themes/os_base/images/puzzle.png) no-repeat;
+          height: 21px;
+          width: 21px;
+          position: absolute;
+          left: 7px;
+        }
+      }
     }
   }
 }
