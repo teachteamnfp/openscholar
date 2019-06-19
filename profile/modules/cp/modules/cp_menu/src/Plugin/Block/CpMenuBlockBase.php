@@ -62,7 +62,6 @@ abstract class CpMenuBlockBase extends BlockBase implements ContainerFactoryPlug
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->vsiteManager = $vsite_manager;
     $this->vsite = $this->vsiteManager->getActiveVsite();
-    $this->id = $this->vsite->id();
     $this->menuTree = $menu_tree;
   }
 
@@ -90,6 +89,7 @@ abstract class CpMenuBlockBase extends BlockBase implements ContainerFactoryPlug
    */
   public function getMenuName(string $default) {
     if ($this->vsite) {
+      $this->id = $this->vsite->id();
       if ($default == 'main') {
         $menu_id = 'menu-primary-' . $this->id;
       }
