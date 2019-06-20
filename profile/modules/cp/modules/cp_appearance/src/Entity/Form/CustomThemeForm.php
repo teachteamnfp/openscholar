@@ -116,7 +116,6 @@ class CustomThemeForm extends EntityForm {
       '#multiple' => TRUE,
     ];
 
-    // TODO: Set default_value.
     $form['styles'] = [
       '#type' => 'textarea',
       '#title' => $this->t('CSS'),
@@ -124,15 +123,16 @@ class CustomThemeForm extends EntityForm {
         '%style_file' => CustomTheme::CUSTOM_THEMES_STYLE_LOCATION,
       ]),
       '#required' => TRUE,
+      '#default_value' => $entity->getStyles(),
     ];
 
-    // TODO: Set default_value.
     $form['scripts'] = [
       '#type' => 'textarea',
       '#title' => $this->t('JavaScript'),
       '#description' => $this->t('Enter the scripts for your custom theme. Make sure that the script is valid, otherwise the site might break. The scripts are going to be put inside %script_file file.', [
         '%script_file' => CustomTheme::CUSTOM_THEMES_SCRIPT_LOCATION,
       ]),
+      '#default_value' => $entity->getScripts(),
     ];
 
     return $form;
