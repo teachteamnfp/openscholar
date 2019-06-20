@@ -109,6 +109,33 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
   }
 
   /**
+   * Tests custom theme save and set default.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   * @throws \Behat\Mink\Exception\ExpectationException
+   */
+  public function testSaveDefault(): void {
+    // Setup.
+    $group_admin = $this->createUser();
+    $this->addGroupAdmin($group_admin, $this->group);
+    $this->drupalLogin($group_admin);
+
+    $this->visitViaVsite('cp/appearance/custom-themes/add', $this->group);
+    $this->getSession()->getPage()->fillField('Custom Theme Name', 'Cyberpunk 2077');
+    $this->assertSession()->waitForElementVisible('css', '.machine-name-value');
+    $this->getSession()->getPage()->selectFieldOption('Parent Theme', 'clean');
+    $this->getSession()->getPage()->findField('styles')->setValue('body { color: black; }');
+    $this->getSession()->getPage()->findField('scripts')->setValue('alert("Hello World")');
+    $this->getSession()->getPage()->pressButton('Save and set as default theme');
+
+    // Tests.
+    $this->visitViaVsite('', $this->group);
+    $custom_theme_id = CustomTheme::CUSTOM_THEME_ID_PREFIX . 'cyberpunk_2077';
+    $this->assertSession()->responseContains("/themes/custom_themes/$custom_theme_id/style.css");
+    $this->assertSession()->responseContains("/themes/custom_themes/$custom_theme_id/script.js");
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function tearDown() {
