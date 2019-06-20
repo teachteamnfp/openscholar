@@ -38,6 +38,7 @@ $class_loader->addPsr4('Drupal\Tests\os_widgets\ExistingSiteJavascript\\', "$roo
 $class_loader->addPsr4('Drupal\Tests\os_widgets\Unit\\', "$root/profiles/contrib/openscholar/modules/apps/os_widgets/tests/src/Unit");
 $class_loader->addPsr4('Drupal\Tests\cp_appearance\ExistingSite\\', "$root/profiles/contrib/openscholar/modules/cp/modules/cp_appearance/tests/src/ExistingSite");
 $class_loader->addPsr4('Drupal\Tests\cp_appearance\ExistingSiteJavascript\\', "$root/profiles/contrib/openscholar/modules/cp/modules/cp_appearance/tests/src/ExistingSiteJavascript");
+$class_loader->addPsr4('Drupal\Tests\cp_appearance\Traits\\', "$root/profiles/contrib/openscholar/modules/cp/modules/cp_appearance/tests/src/Traits");
 $class_loader->addPsr4('Drupal\Tests\cp_taxonomy\ExistingSite\\', "$root/profiles/contrib/openscholar/modules/cp/modules/cp_taxonomy/tests/src/ExistingSite");
 $class_loader->addPsr4('Drupal\Tests\cp_taxonomy\ExistingSiteJavascript\\', "$root/profiles/contrib/openscholar/modules/cp/modules/cp_taxonomy/tests/src/ExistingSiteJavascript");
 $class_loader->addPsr4('Drupal\Tests\cp_roles\ExistingSite\\', "$root/profiles/contrib/openscholar/modules/cp/modules/cp_roles/tests/src/ExistingSite");
