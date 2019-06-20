@@ -1,0 +1,11 @@
+uuid: f8e476b3-f08f-4ffb-abff-9ad8343f2b68
+langcode: en
+status: true
+dependencies: {  }
+id: national_library_of_medicine
+parent: vancouver
+label: 'National Library of Medicine'
+csl: "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<style xmlns=\"http://purl.org/net/xbiblio/csl\" version=\"1.0\" default-locale=\"en-US\">\r\n  <info>\r\n    <title>National Library of Medicine</title>\r\n    <title-short>NLM</title-short>\r\n    <id>http://www.zotero.org/styles/national-library-of-medicine</id>\r\n    <link href=\"http://www.zotero.org/styles/national-library-of-medicine\" rel=\"self\"/>\r\n    <link href=\"http://www.zotero.org/styles/vancouver\" rel=\"independent-parent\"/>\r\n    <link href=\"http://www.ncbi.nlm.nih.gov/books/NBK7256/\" rel=\"documentation\"/>\r\n    <category citation-format=\"numeric\"/>\r\n    <category field=\"medicine\"/>\r\n    <updated>2013-03-31T16:27:04+00:00</updated>\r\n    <rights license=\"http://creativecommons.org/licenses/by-sa/3.0/\">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>\r\n  </info>\r\n</style>\r\n"
+updated: 1560855413
+custom: true
+url_id: 'http://www.zotero.org/styles/national-library-of-medicine'

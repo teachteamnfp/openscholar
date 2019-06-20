@@ -124,16 +124,18 @@ trait ExistingSiteTestTrait {
    *
    * @param string $type
    *   (optional) The file type.
+   * @param int $index
+   *   The index of the test files which is going to be used to create the file.
    *
    * @return \Drupal\file\FileInterface
    *   The new file entity.
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  protected function createFile($type = 'text'): FileInterface {
+  protected function createFile($type = 'text', $index = 0): FileInterface {
     /** @var array $test_files */
     $test_files = $this->getTestFiles($type);
-    $file = File::create((array) current($test_files));
+    $file = File::create((array) $test_files[$index]);
     $file->save();
 
     $this->markEntityForCleanup($file);
