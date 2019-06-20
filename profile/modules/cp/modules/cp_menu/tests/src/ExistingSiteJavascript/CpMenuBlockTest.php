@@ -85,6 +85,7 @@ class CpMenuBlockTest extends OsExistingSiteJavascriptTestBase {
     $session->waitForElementVisible('css', '#cp-build-menu-table');
 
     $this->visit('/test-menu');
+    $this->assertSession()->waitForElementVisible('css', ".menu--menu-primary-{$this->group->id()}");
     $session->linkExists('Test Calendar Link');
   }
 
