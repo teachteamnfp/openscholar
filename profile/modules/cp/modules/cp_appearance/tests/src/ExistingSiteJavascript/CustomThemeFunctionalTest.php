@@ -56,7 +56,6 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
     $this->getSession()->getPage()->findField('scripts')->setValue('alert("Hello World")');
     $this->getSession()->getPage()->pressButton('Save');
 
-    // TODO: Test that styles and scripts have been created.
     /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
     $vsite_context_manager = $this->container->get('vsite.context_manager');
     $vsite_context_manager->activateVsite($this->group);
@@ -65,6 +64,16 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
     $this->assertNotNull($custom_theme);
     $this->assertEquals('Cyberpunk', $custom_theme->label());
     $this->assertEquals('clean', $custom_theme->getBaseTheme());
+
+    $style_file = 'file://' . CustomTheme::ABSOLUTE_CUSTOM_THEMES_LOCATION . '/' . $custom_theme->id() . '/' . CustomTheme::CUSTOM_THEMES_STYLE_LOCATION;
+    $styles = file_get_contents($style_file);
+    $this->assertFileExists('file://' . CustomTheme::ABSOLUTE_CUSTOM_THEMES_LOCATION . '/' . $custom_theme->id() . '/' . CustomTheme::CUSTOM_THEMES_STYLE_LOCATION);
+    $this->assertEquals('body { color: black; }', $styles);
+
+    $script_file = 'file://' . CustomTheme::ABSOLUTE_CUSTOM_THEMES_LOCATION . '/' . $custom_theme->id() . '/' . CustomTheme::CUSTOM_THEMES_SCRIPT_LOCATION;
+    $scripts = file_get_contents($script_file);
+    $this->assertFileExists($script_file);
+    $this->assertEquals('alert("Hello World")', $scripts);
 
     // Clean up.
     $custom_theme->delete();
