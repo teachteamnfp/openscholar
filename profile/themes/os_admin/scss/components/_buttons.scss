@@ -1,4 +1,5 @@
-.button.button--primary {
+.button.button--primary,
+.button.button--primary:hover {
   border-color: $color-link;
   background-color: $color-link;
   background-image: -webkit-linear-gradient(top, $color-link, $color-link);
