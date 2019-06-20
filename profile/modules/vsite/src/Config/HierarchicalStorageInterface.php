@@ -36,4 +36,35 @@ interface HierarchicalStorageInterface extends StorageInterface {
    */
   public function listAllFromLevel($prefix = '', $level = HierarchicalStorage::GLOBAL_STORAGE);
 
+  /**
+   * Save a value to a specific level.
+   *
+   * @param string $name
+   *   Name of config item.
+   * @param mixed $value
+   *   Value of config item.
+   * @param $level
+   *   The level being being saved to
+   *
+   * @return void
+   */
+  public function saveTolevel($name, $value, $level);
+
+  /**
+   * Override the level that writes should occur at.
+   *
+   * @param $level
+   *   Level to write to.
+   *
+   * @return void
+   */
+  public function overrideWriteLevel($level);
+
+  /**
+   * Clear any write level overrides.
+   *
+   * @return void
+   */
+  public function clearWriteOverride();
+
 }
