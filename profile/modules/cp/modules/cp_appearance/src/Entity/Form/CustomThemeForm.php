@@ -3,6 +3,8 @@
 namespace Drupal\cp_appearance\Entity\Form;
 
 use Drupal\Core\Entity\EntityForm;
+use Drupal\Core\Extension\ThemeHandlerInterface;
+use Drupal\Core\Extension\ThemeInstallerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\cp_appearance\AppearanceSettingsBuilderInterface;
 use Drupal\cp_appearance\Entity\CustomTheme;
@@ -22,20 +24,40 @@ class CustomThemeForm extends EntityForm {
   protected $appearanceSettingsBuilder;
 
   /**
+   * Theme installer service.
+   *
+   * @var \Drupal\Core\Extension\ThemeInstallerInterface
+   */
+  protected $themeInstaller;
+
+  /**
+   * Theme handler service.
+   *
+   * @var \Drupal\Core\Extension\ThemeHandlerInterface
+   */
+  protected $themeHandler;
+
+  /**
    * Creates a new CustomThemeForm object.
    *
    * @param \Drupal\cp_appearance\AppearanceSettingsBuilderInterface $appearance_settings_builder
    *   Appearance settings builder service.
+   * @param \Drupal\Core\Extension\ThemeInstallerInterface $theme_installer
+   *   Theme installer service.
+   * @param \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler
+   *   Theme handler service.
    */
-  public function __construct(AppearanceSettingsBuilderInterface $appearance_settings_builder) {
+  public function __construct(AppearanceSettingsBuilderInterface $appearance_settings_builder, ThemeInstallerInterface $theme_installer, ThemeHandlerInterface $theme_handler) {
     $this->appearanceSettingsBuilder = $appearance_settings_builder;
+    $this->themeInstaller = $theme_installer;
+    $this->themeHandler = $theme_handler;
   }
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    return new static($container->get('cp_appearance.appearance_settings_builder'));
+    return new static($container->get('cp_appearance.appearance_settings_builder'), $container->get('theme_installer'), $container->get('theme_handler'));
   }
 
   /**
@@ -180,6 +202,40 @@ class CustomThemeForm extends EntityForm {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  protected function actions(array $form, FormStateInterface $form_state) {
+    $actions = parent::actions($form, $form_state);
+
+    $actions['save_default'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Save and set as default theme'),
+      '#submit' => ['::submitForm', '::save', '::setDefault'],
+    ];
+
+    return $actions;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function actionsElement(array $form, FormStateInterface $form_state) {
+    $element = parent::actionsElement($form, $form_state);
+
+    // Make sure that the "Save and set as default theme" operation is more
+    // highlighted.
+    $save_button_weight = $element['submit']['#weight'];
+    $save_default_button_weight = $element['save_default']['#weight'];
+
+    $element['submit']['#weight'] = $save_default_button_weight;
+    unset($element['submit']['#button_type']);
+    $element['save_default']['#weight'] = $save_button_weight;
+    $element['save_default']['#button_type'] = 'primary';
+
+    return $element;
+  }
+
+  /**
    * Checks whether a custom theme ID exists already.
    *
    * @param string $id
@@ -190,6 +246,30 @@ class CustomThemeForm extends EntityForm {
    */
   public function exists($id): bool {
     return (bool) CustomTheme::load($id);
+  }
+
+  /**
+   * Sets the new custom theme as default theme.
+   *
+   * @ingroup forms
+   *
+   * @throws \Drupal\Core\Extension\ExtensionNameLengthException
+   */
+  public function setDefault(array &$form, FormStateInterface $form_state): void {
+    /** @var \Drupal\cp_appearance\Entity\CustomThemeInterface $custom_theme */
+    $custom_theme = $this->getEntity();
+
+    // Reset is necessary, otherwise the system fails to locate the new theme.
+    $this->themeHandler->reset();
+    $this->themeInstaller->install([$custom_theme->id()]);
+
+    /** @var \Drupal\Core\Config\Config $theme_setting_mut */
+    $theme_setting_mut = $this->configFactory()->getEditable('system.theme');
+    $theme_setting_mut->set('default', $custom_theme->id())->save();
+
+    $this->messenger()->addMessage($this->t('Custom theme %name successfully set as default.', [
+      '%name' => $custom_theme->label(),
+    ]));
   }
 
 }
