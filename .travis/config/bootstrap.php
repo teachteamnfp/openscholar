@@ -25,6 +25,7 @@ $class_loader->addPsr4('Drupal\Tests\book\Functional\\', "$root/core/modules/boo
 $class_loader->addPsr4('Drupal\Tests\block\Traits\\', "$root/core/modules/block/tests/src/Traits");
 $class_loader->addPsr4('Drupal\Tests\rest\Functional\EntityResource\\', "$root/core/modules/rest/tests/src/Functional/EntityResource");
 $class_loader->addPsr4('Drupal\Tests\rest\Functional\\', "$root/core/modules/rest/tests/src/Functional");
+$class_loader->addPsr4('Drupal\views\Plugin\views\access\\', "$root/core/modules/views/src/Plugin/views/access");
 $class_loader->addPsr4('Drupal\vsite\Plugin\\', "$root/profiles/contrib/openscholar/modules/vsite/src/Plugin");
 $class_loader->addPsr4('Drupal\Tests\os_classes\ExistingSite\\', "$root/profiles/contrib/openscholar/modules/apps/os_classes/tests/src/ExistingSite");
 $class_loader->addPsr4('Drupal\Tests\os_classes\ExistingSiteJavascript\\', "$root/profiles/contrib/openscholar/modules/apps/os_classes/tests/src/ExistingSiteJavascript");
