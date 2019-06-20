@@ -30,4 +30,12 @@ interface AppearanceSettingsBuilderInterface {
    */
   public function themeIsDefault(Extension $theme): bool;
 
+  /**
+   * Returns the custom themes.
+   *
+   * @return \Drupal\Core\Extension\Extension[]
+   *   List of custom themes.
+   */
+  public function getCustomThemes(): array;
+
 }

@@ -8,6 +8,7 @@ use Drupal\Core\Extension\ThemeHandlerInterface;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
+use Drupal\cp_appearance\Entity\CustomTheme;
 use Drupal\cp_appearance\Form\FlavorForm;
 use Ds\Map;
 
@@ -262,6 +263,35 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
     }
 
     return $operations;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCustomThemes(): array {
+    $custom_theme_entities = CustomTheme::loadMultiple();
+    $installed_themes = $this->drupalInstalledThemes;
+    $custom_themes = [];
+
+    foreach ($installed_themes as $theme) {
+      if (isset($custom_theme_entities[$theme->getName()])) {
+        $custom_themes[$theme->getName()] = $theme;
+      }
+    }
+
+    uasort($custom_themes, 'system_sort_modules_by_info_name');
+
+    // Attach additional information in the themes.
+    foreach ($custom_themes as $theme) {
+      $theme->is_default = $this->themeIsDefault($theme);
+      $theme->is_admin = FALSE;
+      $theme->screenshot = $this->addScreenshotInfo($theme);
+      $theme->operations = $this->addOperations($theme);
+      $theme->more_operations = $this->addMoreOperations($theme);
+      $theme->notes = $this->addNotes($theme);
+    }
+
+    return $custom_themes;
   }
 
 }

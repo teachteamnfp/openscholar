@@ -102,6 +102,8 @@ class CpAppearanceMainController extends ControllerBase {
   public function main(): array {
     /** @var \Drupal\Core\Extension\Extension[] $themes */
     $themes = $this->appearanceSettingsBuilder->getThemes();
+    /** @var \Drupal\Core\Extension\Extension[] $custom_themes */
+    $custom_themes = $this->appearanceSettingsBuilder->getCustomThemes();
 
     // Use for simple dropdown for now.
     $basic_theme_options = [];
@@ -110,9 +112,15 @@ class CpAppearanceMainController extends ControllerBase {
     }
 
     // There are two possible theme groups.
-    $theme_groups = ['featured' => $themes, 'basic' => []];
+    $theme_groups = [
+      'featured' => $themes,
+      'basic' => [],
+      'custom_theme' => $custom_themes,
+    ];
     $theme_group_titles = [
       'featured' => $this->formatPlural(count($theme_groups['featured']), 'Featured theme', 'Featured themes'),
+      'basic' => $this->formatPlural(count($theme_groups['basic']), 'Basic theme', 'Basic themes'),
+      'custom_theme' => $this->formatPlural(count($theme_groups['custom_theme']), 'Custom theme', 'Custom themes'),
     ];
 
     uasort($theme_groups['featured'], 'system_sort_themes');
