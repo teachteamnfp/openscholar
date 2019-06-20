@@ -2,7 +2,9 @@
 
 namespace Drupal\cp_taxonomy\Plugin\CpSetting;
 
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\cp_settings\CpSettingBase;
 use Drupal\cp_taxonomy\CpTaxonomyHelperInterface;
@@ -25,6 +27,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class CpTaxonomySetting extends CpSettingBase {
 
   protected $cpTaxonomyHelper;
+  protected $entityTypeBundleInfo;
 
   /**
    * Creates a new CpSettingBase object.
@@ -39,10 +42,13 @@ class CpTaxonomySetting extends CpSettingBase {
    *   Vsite context manager.
    * @param \Drupal\cp_taxonomy\CpTaxonomyHelperInterface $cp_taxonomy_helper
    *   Cp Taxonomy Helper.
+   * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface $entity_type_bundle_info
+   *   Entity Type Bundle Info.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, VsiteContextManagerInterface $vsite_context_manager, CpTaxonomyHelperInterface $cp_taxonomy_helper) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, VsiteContextManagerInterface $vsite_context_manager, CpTaxonomyHelperInterface $cp_taxonomy_helper, EntityTypeBundleInfoInterface $entity_type_bundle_info) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $vsite_context_manager);
     $this->cpTaxonomyHelper = $cp_taxonomy_helper;
+    $this->entityTypeBundleInfo = $entity_type_bundle_info;
   }
 
   /**
@@ -54,7 +60,8 @@ class CpTaxonomySetting extends CpSettingBase {
       $plugin_id,
       $plugin_definition,
       $container->get('vsite.context_manager'),
-      $container->get('cp.taxonomy.helper')
+      $container->get('cp.taxonomy.helper'),
+      $container->get('entity_type.bundle.info')
     );
   }
 
@@ -93,9 +100,14 @@ class CpTaxonomySetting extends CpSettingBase {
    */
   public function submitForm(FormStateInterface $formState, ConfigFactoryInterface $configFactory) {
     $config = $configFactory->getEditable('cp_taxonomy.settings');
+    $term_under_content_changed = $config->get('display_term_under_content') != $formState->getValue('display_term_under_content');
+    $term_under_content_teaser_changed = $config->get('display_term_under_content_teaser_types') != array_filter($formState->getValue('display_term_under_content_teaser_types'));
     $config->set('display_term_under_content', $formState->getValue('display_term_under_content'));
     $config->set('display_term_under_content_teaser_types', array_filter($formState->getValue('display_term_under_content_teaser_types')));
     $config->save(TRUE);
+    if ($term_under_content_changed || $term_under_content_teaser_changed) {
+      Cache::invalidateTags(['entity-with-taxonomy-terms:' . $this->activeVsite->id()]);
+    }
   }
 
 }
