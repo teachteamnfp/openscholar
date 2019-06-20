@@ -1,19 +1,15 @@
 <?php
 
-
 namespace Drupal\vsite\Entity;
-
 
 use Drupal\Core\Config\Entity\ConfigEntityBase;
 use Drupal\Core\Config\StorageInterface;
-use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\vsite\Config\HierarchicalStorageInterface;
 use Drupal\vsite\Config\VsiteStorageDefinition;
-use Drupal\vsite\Plugin\VsitePathActivator;
-
 
 /**
+ * Group Preset Config Entity.
+ *
  * @ConfigEntityType(
  *   id = "group_preset",
  *   label = @Translation("Group Preset"),
@@ -72,8 +68,8 @@ class GroupPreset extends ConfigEntityBase implements GroupPresetInterface {
    * {@inheritdoc}
    */
   public function getPresetStorage(): StorageInterface {
-    $collection = 'preset:'.$this->id();
-    /** @var StorageInterface $storage */
+    $collection = 'preset:' . $this->id();
+    /** @var \Drupal\Core\Config\StorageInterface $storage */
     $storage = \Drupal::service('config.storage');
     return $storage->createCollection($collection);
   }
@@ -90,7 +86,7 @@ class GroupPreset extends ConfigEntityBase implements GroupPresetInterface {
    */
   public function saveConfig($form, FormStateInterface $formState) {
 
-    /** @var HierarchicalStorageInterface $storage */
+    /** @var \Drupal\vsite\Config\HierarchicalStorageInterface $storage */
     $storage = \Drupal::service('config.storage');
 
     $storage->overrideWriteLevel(VsiteStorageDefinition::PRESET_STORAGE);

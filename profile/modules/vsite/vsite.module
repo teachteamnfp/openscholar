@@ -5,6 +5,8 @@
  * Hook implementations for the vsite module.
  */
 
+use Drupal\vsite\Entity\GroupPreset;
+use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Asset\AttachedAssetsInterface;
 use Drupal\group\Entity\GroupInterface;
 use Drupal\Core\Cache\CacheableMetadata;
@@ -149,18 +151,17 @@ function vsite_form_alter(&$form, FormStateInterface $formState, $form_id) {
       $form['field_parent_site']['#access'] = FALSE;
     }
   }
-  elseif ($formState->getFormObject() instanceof \Drupal\Core\Form\ConfigFormBase && \Drupal::currentUser()->hasPermission('administer presets')) {
+  elseif ($formState->getFormObject() instanceof ConfigFormBase && \Drupal::currentUser()->hasPermission('administer presets')) {
     if ($vsite = $vsiteContext->getActiveVsite()) {
       if ($vsite->hasField('field_preset') && !$vsite->get('field_preset')->isEmpty()) {
         $preset_id = $vsite->get('field_preset')->get(0)->getValue()['target_id'];
-        $preset = \Drupal\vsite\Entity\GroupPreset::load($preset_id);
-        ksm($preset);
+        $preset = GroupPreset::load($preset_id);
         $form['actions']['submitToPreset'] = [
           '#type' => 'submit',
           '#value' => t('Save To Preset @label', ['@label' => $preset->label()]),
           '#submit' => [
-            [$preset, 'saveConfig']
-          ]
+            [$preset, 'saveConfig'],
+          ],
         ];
       }
     }

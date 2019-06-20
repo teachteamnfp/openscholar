@@ -2,7 +2,6 @@
 
 namespace Drupal\vsite\Entity\Form;
 
-use Drupal\Core\Entity\Entity;
 use Drupal\Core\Entity\EntityConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
@@ -30,7 +29,7 @@ class GroupPresetDeleteForm extends EntityConfirmFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    /** @var Entity $entity */
+    /** @var \Drupal\Core\Entity\Entity $entity */
     $entity = $form_state->getFormObject()->getEntity();
     $entity->delete();
   }

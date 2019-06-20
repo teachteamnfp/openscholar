@@ -2,12 +2,9 @@
 
 namespace Drupal\vsite\Entity\Form;
 
-
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
-use Drupal\group\Entity\GroupTypeInterface;
-use Drupal\vsite\Entity\GroupPresetInterface;
 
 /**
  * Class GroupPresetForm.
@@ -16,7 +13,11 @@ use Drupal\vsite\Entity\GroupPresetInterface;
  */
 class GroupPresetForm extends EntityForm {
 
-  /** @var GroupPresetInterface */
+  /**
+   * The entity being operated on.
+   *
+   * @var \Drupal\vsite\Entity\GroupPresetInterface
+   */
   protected $entity;
 
   /**
@@ -39,7 +40,7 @@ class GroupPresetForm extends EntityForm {
       '#machine_name' => [
         'exists' => '\\Drupal\\vsite\\Entity\\GroupPreset::load',
       ],
-      //'#disabled' => true
+      // '#disabled' => true.
     ];
 
     $form['description'] = [
@@ -49,7 +50,7 @@ class GroupPresetForm extends EntityForm {
     ];
 
     $applicableToOptions = [];
-    /** @var GroupTypeInterface[] $group_types */
+    /** @var \Drupal\group\Entity\GroupTypeInterface[] $group_types */
     $group_types = $this->entityTypeManager->getStorage('group_type')->loadMultiple();
     foreach ($group_types as $gt) {
       $applicableToOptions[$gt->id()] = $gt->label();
@@ -57,7 +58,7 @@ class GroupPresetForm extends EntityForm {
     $form['applicableTo'] = [
       '#type' => 'select',
       '#title' => $this->t('Applies To'),
-      '#multiple' => true,
+      '#multiple' => TRUE,
       '#options' => $applicableToOptions,
       '#default_value' => $this->entity->get('applicableTo'),
       '#description' => $this->t('Select what group types can use this preset.'),
@@ -65,8 +66,6 @@ class GroupPresetForm extends EntityForm {
     ];
 
     // TODO: Tasks to execute on group creation.
-
-
     $this->getRedirectDestination()->set(Url::fromRoute('entity.group_preset.collection')->toString());
     return $form;
   }

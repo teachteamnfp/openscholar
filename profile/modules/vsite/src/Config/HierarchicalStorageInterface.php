@@ -43,27 +43,21 @@ interface HierarchicalStorageInterface extends StorageInterface {
    *   Name of config item.
    * @param mixed $value
    *   Value of config item.
-   * @param $level
-   *   The level being being saved to
-   *
-   * @return void
+   * @param int $level
+   *   The level being being saved to.
    */
   public function saveTolevel($name, $value, $level);
 
   /**
    * Override the level that writes should occur at.
    *
-   * @param $level
+   * @param int $level
    *   Level to write to.
-   *
-   * @return void
    */
   public function overrideWriteLevel($level);
 
   /**
    * Clear any write level overrides.
-   *
-   * @return void
    */
   public function clearWriteOverride();
 
