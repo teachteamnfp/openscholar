@@ -9,7 +9,6 @@ use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTest
  *
  * @group functional-javascript
  * @group cp-menu
- * @group unique
  */
 class CpMenuBlockTest extends OsExistingSiteJavascriptTestBase {
 
