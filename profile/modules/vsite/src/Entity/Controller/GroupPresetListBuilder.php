@@ -2,7 +2,6 @@
 
 namespace Drupal\vsite\Entity\Controller;
 
-
 use Drupal\Core\Config\Entity\ConfigEntityListBuilder;
 use Drupal\Core\Entity\EntityInterface;
 
@@ -13,6 +12,9 @@ use Drupal\Core\Entity\EntityInterface;
  */
 class GroupPresetListBuilder extends ConfigEntityListBuilder {
 
+  /**
+   * {@inheritdoc}
+   */
   public function buildHeader() {
     $header = [
       'label' => $this->t('Label'),
@@ -22,14 +24,17 @@ class GroupPresetListBuilder extends ConfigEntityListBuilder {
     return $header;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function buildRow(EntityInterface $entity) {
     $row = [
       'label' => [
         'data' => $entity->label(),
       ],
       'description' => [
-        'data' => $entity->get('description')
-      ]
+        'data' => $entity->get('description'),
+      ],
     ];
     $row += parent::buildRow($entity);
 

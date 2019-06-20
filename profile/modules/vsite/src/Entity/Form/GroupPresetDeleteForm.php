@@ -2,27 +2,37 @@
 
 namespace Drupal\vsite\Entity\Form;
 
-
+use Drupal\Core\Entity\Entity;
 use Drupal\Core\Entity\EntityConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 
+/**
+ * Confirm Delete Form.
+ */
 class GroupPresetDeleteForm extends EntityConfirmFormBase {
 
   /**
-   * @inheritDoc
+   * {@inheritdoc}
    */
   public function getQuestion() {
-    // TODO: Implement getQuestion() method.
+    return $this->t('Delete preset');
   }
 
   /**
-   * @inheritDoc
+   * {@inheritdoc}
    */
   public function getCancelUrl() {
-    // TODO: Implement getCancelUrl() method.
+    return Url::fromRoute('entity.group_preset.collection');
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-
+    /** @var Entity $entity */
+    $entity = $form_state->getFormObject()->getEntity();
+    $entity->delete();
   }
+
 }

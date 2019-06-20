@@ -6,6 +6,11 @@ namespace Drupal\vsite\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBase;
 use Drupal\Core\Config\StorageInterface;
+use Drupal\Core\Form\ConfigFormBase;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\vsite\Config\HierarchicalStorageInterface;
+use Drupal\vsite\Config\VsiteStorageDefinition;
+use Drupal\vsite\Plugin\VsitePathActivator;
 
 
 /**
@@ -78,6 +83,19 @@ class GroupPreset extends ConfigEntityBase implements GroupPresetInterface {
    */
   public function getCreationTasks() {
     return $this->creationTasks;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function saveConfig($form, FormStateInterface $formState) {
+
+    /** @var HierarchicalStorageInterface $storage */
+    $storage = \Drupal::service('config.storage');
+
+    $storage->overrideWriteLevel(VsiteStorageDefinition::PRESET_STORAGE);
+    $formState->getFormObject()->submitForm($form, $formState);
+    $storage->clearWriteOverride();
   }
 
 }
