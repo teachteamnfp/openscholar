@@ -287,3 +287,47 @@ function vsite_js_settings_alter(array &$settings, AttachedAssetsInterface $asse
   // from here, to prevent multiple slashes.
   $settings['path']['currentPath'] = ltrim($current_path, '/');
 }
+
+/**
+ * Implements hook_group_create().
+ */
+function vsite_group_create(GroupInterface $group) {
+  if ($group->hasField('field_preset') && !$group->get('field_preset')->isEmpty()) {
+    $preset_id = $group->get('field_preset')->get(0)->getValue()['target_id'];
+    if ($preset = GroupPreset::load($preset_id)) {
+      $tasks = $preset->getCreationTasks();
+      $batch = [
+        'title' => t('Setting up your new OpenScholar site'),
+        'operations' => [],
+        'finished' => '_vsite_batch_finished',
+        'init_message' => t('Preparing for setup'),
+        'progress_message' => t('Set up tasks @current of @total completed. Estimated time for completion is @estimate')
+      ];
+      foreach ($tasks as $t) {
+        $batch['operations'][] = ['_vsite_process_preset_task', [$group, $preset, $t]];
+      }
+      batch_set($batch);
+    }
+  }
+}
+
+/**
+ * Performs a single preset task.
+ *
+ * @param GroupInterface $group
+ *   The group being operated on.
+ * @param \Drupal\vsite\Entity\GroupPresetInterface $preset
+ *   The preset the group is using.
+ * @param string $task
+ *   The task to perform.
+ *
+ * @return array|null
+ *   The result of the batch or null if the task was not callable
+ */
+function _vsite_process_preset_task(GroupInterface $group, \Drupal\vsite\Entity\GroupPresetInterface $preset, string $task, &$context) {
+  if (is_callable($task)) {
+    return call_user_func_array($task, [$group, $preset, &$context]);
+  }
+  // what do I do here?
+  return;
+}
