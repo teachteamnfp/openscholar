@@ -78,6 +78,7 @@ abstract class OsExistingSiteJavascriptTestBase extends ExistingSiteWebDriverTes
    * {@inheritdoc}
    */
   public function tearDown() {
+    $this->cleanupEntities = array_reverse($this->cleanupEntities);
     parent::tearDown();
 
     foreach ($this->cleanUpConfigs as $config_entity) {

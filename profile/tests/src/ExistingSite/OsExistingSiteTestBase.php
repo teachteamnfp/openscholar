@@ -44,12 +44,16 @@ abstract class OsExistingSiteTestBase extends ExistingSiteBase {
     $this->group = $this->createGroup();
     $this->groupAlias = $this->group->get('path')->first()->getValue()['alias'];
     $this->pluginManager = $this->container->get('plugin.manager.group_content_enabler');
+    $this->runCount = 0;
   }
 
   /**
    * {@inheritdoc}
    */
   public function tearDown() {
+    $this->cleanupEntities = array_reverse($this->cleanupEntities);
+    parent::tearDown();
+
     foreach ($this->cleanUpConfigs as $config_entity) {
       $config_entity->delete();
     }
@@ -66,8 +70,6 @@ abstract class OsExistingSiteTestBase extends ExistingSiteBase {
       }
     }
     $this->group->delete();
-
-    parent::tearDown();
   }
 
 }
