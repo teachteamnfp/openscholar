@@ -279,6 +279,8 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
       }
     }
 
+    // The same code is written in getThemes().
+    // TODO: Move the following code to a common function.
     uasort($custom_themes, 'system_sort_modules_by_info_name');
 
     // Attach additional information in the themes.
