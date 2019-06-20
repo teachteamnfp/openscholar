@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Asset\AttachedAssetsInterface;
+use Drupal\Core\Url;
 use Drupal\group\Entity\GroupInterface;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Entity\EntityFormInterface;
@@ -143,12 +144,28 @@ function vsite_form_alter(&$form, FormStateInterface $formState, $form_id) {
           $form['actions'][$name]['#submit'][] = 'group_content_entity_submit';
         }
       }
+      $current_url = Url::fromRoute('<front>', [], ["absolute" => TRUE])->toString();
+      $form['path']['widget'][0]['alias']['#field_prefix'] = $current_url;
+      $purl = $vsiteContext->getActivePurl();
+      $alias = $form['path']['widget'][0]['alias']['#default_value'];
+      $alias_without_purl = preg_replace('$^/' . $purl . '$', '', $alias);
+      $form['path']['widget'][0]['alias']['#default_value'] = $alias_without_purl;
+      array_unshift($form['path']['widget'][0]['#element_validate'], 'vsite_node_alias_purl_element_validate');
     }
     $allowedSubSites = \Drupal::config('vsite.settings')->get('allowed_subsite_group_types');
     if (!empty($allowedSubSites) && $entityTypeId == 'group' && !in_array($entity->bundle(), $allowedSubSites)) {
       $form['field_parent_site']['#access'] = FALSE;
     }
   }
+}
+
+/**
+ * Put back vsite purl to alias value to handle right validate.
+ */
+function vsite_node_alias_purl_element_validate(array &$element, FormStateInterface $form_state) {
+  /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContext */
+  $vsiteContext = \Drupal::service('vsite.context_manager');
+  $element['alias']['#value'] = '/' . $vsiteContext->getActivePurl() . $element['alias']['#value'];
 }
 
 /**
