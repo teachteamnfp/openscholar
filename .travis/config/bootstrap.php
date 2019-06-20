@@ -22,6 +22,7 @@ $root = $finder->getDrupalRoot();
 
 // Register more namespaces, as needed.
 $class_loader->addPsr4('Drupal\Tests\book\Functional\\', "$root/core/modules/book/tests/src/Functional");
+$class_loader->addPsr4('Drupal\Tests\block\Traits\\', "$root/core/modules/block/tests/src/Traits");
 $class_loader->addPsr4('Drupal\Tests\rest\Functional\EntityResource\\', "$root/core/modules/rest/tests/src/Functional/EntityResource");
 $class_loader->addPsr4('Drupal\Tests\rest\Functional\\', "$root/core/modules/rest/tests/src/Functional");
 $class_loader->addPsr4('Drupal\Tests\os_classes\ExistingSite\\', "$root/profiles/contrib/openscholar/modules/apps/os_classes/tests/src/ExistingSite");
