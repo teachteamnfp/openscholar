@@ -75,6 +75,10 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
     $this->assertFileExists($script_file);
     $this->assertEquals('alert("Hello World")', $scripts);
 
+    /** @var \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler */
+    $theme_handler = $this->container->get('theme_handler');
+    $this->assertTrue($theme_handler->themeExists($custom_theme->id()));
+
     // Clean up.
     $custom_theme->delete();
   }

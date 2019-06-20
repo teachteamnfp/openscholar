@@ -207,10 +207,17 @@ class CustomThemeForm extends EntityForm {
   protected function actions(array $form, FormStateInterface $form_state) {
     $actions = parent::actions($form, $form_state);
 
+    $actions['submit']['#submit'][] = '::install';
+
     $actions['save_default'] = [
       '#type' => 'submit',
       '#value' => $this->t('Save and set as default theme'),
-      '#submit' => ['::submitForm', '::save', '::setDefault'],
+      '#submit' => [
+        '::submitForm',
+        '::save',
+        '::install',
+        '::setDefault',
+      ],
     ];
 
     return $actions;
@@ -249,19 +256,29 @@ class CustomThemeForm extends EntityForm {
   }
 
   /**
-   * Sets the new custom theme as default theme.
+   * Installs the custom theme.
    *
    * @ingroup forms
    *
    * @throws \Drupal\Core\Extension\ExtensionNameLengthException
    */
-  public function setDefault(array &$form, FormStateInterface $form_state): void {
+  public function install(array &$form, FormStateInterface $form_state): void {
     /** @var \Drupal\cp_appearance\Entity\CustomThemeInterface $custom_theme */
     $custom_theme = $this->getEntity();
 
     // Reset is necessary, otherwise the system fails to locate the new theme.
     $this->themeHandler->reset();
     $this->themeInstaller->install([$custom_theme->id()]);
+  }
+
+  /**
+   * Sets the new custom theme as default theme.
+   *
+   * @ingroup forms
+   */
+  public function setDefault(array &$form, FormStateInterface $form_state): void {
+    /** @var \Drupal\cp_appearance\Entity\CustomThemeInterface $custom_theme */
+    $custom_theme = $this->getEntity();
 
     /** @var \Drupal\Core\Config\Config $theme_setting_mut */
     $theme_setting_mut = $this->configFactory()->getEditable('system.theme');
