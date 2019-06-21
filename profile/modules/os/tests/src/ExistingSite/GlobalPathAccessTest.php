@@ -3,6 +3,7 @@
 namespace Drupal\Tests\os\ExistingSite;
 
 use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
+use Drupal\vsite\Plugin\AppManangerInterface;
 
 /**
  * Tests whether group member has access to entity create global paths.
@@ -174,6 +175,10 @@ class GlobalPathAccessTest extends OsExistingSiteTestBase {
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function testBibciteReferenceCreate(): void {
+    /** @var \Drupal\vsite\Plugin\AppManangerInterface $appManager */
+    $appManager = \Drupal::service('vsite.app.manager');
+    // Without this, the page errors cause the it can't find the app.
+    $appManager->clearCachedDefinitions();
     $this->visit("{$this->group->get('path')->getValue()[0]['alias']}/bibcite/reference/add/artwork");
 
     $this->assertSession()->statusCodeEquals(200);
