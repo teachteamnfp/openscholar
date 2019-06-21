@@ -31,5 +31,5 @@ libraries:
   - clean/global-styling
 
 ckeditor_stylesheets:
-  - '//fonts.googleapis.com/css?family=Roboto': { external: true }
+  - //fonts.googleapis.com/css?family=Roboto
   - css/ckeditor.css
