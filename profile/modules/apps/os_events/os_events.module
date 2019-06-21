@@ -322,7 +322,7 @@ function os_events_views_pre_render(ViewExecutable $view) {
 /**
  * Implements hook_form_FORM_ID_alter().
  *
- * Alters the artist options on artwork pages.
+ * Alters the Registration filter by date field.
  */
 function os_events_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 
