@@ -46,7 +46,7 @@ class VsiteStorageDefinition implements EventSubscriberInterface {
     $storage = $this->hierarchicalStorage->createCollection('vsite:' . $event->getGroup()->id());
     $this->hierarchicalStorage->addStorage($storage, self::VSITE_STORAGE);
 
-    if ($event->getGroup()->hasField('field_preset')) {
+    if ($event->getGroup()->hasField('field_preset') && !$event->getGroup()->get('field_preset')->isEmpty()) {
       $preset_id = $event->getGroup()->get('field_preset')->get(0)->getValue()['target_id'];
       /** @var \Drupal\vsite\Entity\GroupPresetInterface $preset */
       if ($preset = \Drupal::entityTypeManager()->getStorage('group_preset')->load($preset_id)) {
