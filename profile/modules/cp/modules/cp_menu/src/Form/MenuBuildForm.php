@@ -386,6 +386,7 @@ class MenuBuildForm extends FormBase {
           // current element ids.
           $pluginId = $pluginId ?? $element['#item']->link->getPluginId();
           $this->menuLinkManager->updateDefinition($pluginId, $updated_values);
+          $this->menuHelper->invalidateBlockCache();
         }
       }
     }

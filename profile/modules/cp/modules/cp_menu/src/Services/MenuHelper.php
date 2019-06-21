@@ -2,6 +2,7 @@
 
 namespace Drupal\cp_menu\Services;
 
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -109,6 +110,17 @@ class MenuHelper implements MenuHelperInterface {
       // Map primary menu links.
       $this->mapMenuLinks($group_menu);
     }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function invalidateBlockCache() : void {
+    $tags = [
+      'config:block.block.primarymenu',
+      'config:block.block.secondarymenu',
+    ];
+    Cache::invalidateTags($tags);
   }
 
   /**

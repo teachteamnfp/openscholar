@@ -155,6 +155,7 @@ class EditMenuLinkForm extends FormBase {
         $pluginId = $pluginId ?? $link['id'];
         // Update definitions.
         $this->menuLinkManager->updateDefinition($pluginId, $updated_values);
+        $this->menuHelper->invalidateBlockCache();
       }
     }
     $form_state->setRedirect('cp.build.menu');

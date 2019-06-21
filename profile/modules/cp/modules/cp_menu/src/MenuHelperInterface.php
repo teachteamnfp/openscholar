@@ -30,4 +30,9 @@ interface MenuHelperInterface {
    */
   public function resetVsiteMenus(GroupInterface $vsite, $secondary = FALSE) : void;
 
+  /**
+   * Invalidates Menu block caches when changes are made.
+   */
+  public function invalidateBlockCache() : void;
+
 }
