@@ -37,7 +37,7 @@ class AppearanceSettingsBuilderTest extends TestBase {
   }
 
   /**
-   * @covers ::getThemes
+   * @covers ::getFeaturedThemes
    * @covers ::addScreenshotInfo
    * @covers ::addOperations
    * @covers ::addMoreOperations
@@ -49,7 +49,7 @@ class AppearanceSettingsBuilderTest extends TestBase {
     $theme_config_mut->set('default', 'hwpi_classic')->save();
 
     /** @var \Drupal\Core\Extension\Extension[] $themes */
-    $themes = $this->appearanceSettingsBuilder->getThemes();
+    $themes = $this->appearanceSettingsBuilder->getFeaturedThemes();
 
     $this->assertFalse(isset($themes['stark']));
     $this->assertFalse(isset($themes['seven']));
@@ -106,7 +106,7 @@ class AppearanceSettingsBuilderTest extends TestBase {
    */
   public function testNoFlavors(): void {
     /** @var \Drupal\Core\Extension\Extension[] $themes */
-    $themes = $this->appearanceSettingsBuilder->getThemes();
+    $themes = $this->appearanceSettingsBuilder->getFeaturedThemes();
     /** @var array $sub_themes */
     $sub_themes = $themes['vibrant']->sub_themes;
 
@@ -145,7 +145,7 @@ class AppearanceSettingsBuilderTest extends TestBase {
     $theme_config_mut->set('default', 'loeb')->save();
 
     /** @var \Drupal\Core\Extension\Extension[] $themes */
-    $themes = $this->appearanceSettingsBuilder->getThemes();
+    $themes = $this->appearanceSettingsBuilder->getFeaturedThemes();
 
     $active_theme = $themes['hwpi_sterling'];
     $screenshot_info = $active_theme->screenshot;

@@ -10,12 +10,12 @@ use Drupal\Core\Extension\Extension;
 interface AppearanceSettingsBuilderInterface {
 
   /**
-   * Returns the themes for vsites.
+   * Returns the featured themes for vsites.
    *
    * @return \Drupal\Core\Extension\Extension[]
    *   List of themes.
    */
-  public function getThemes(): array;
+  public function getFeaturedThemes(): array;
 
   /**
    * Determines if a theme is set as default.

@@ -95,7 +95,7 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
   /**
    * {@inheritdoc}
    */
-  public function getThemes(): array {
+  public function getFeaturedThemes(): array {
     // We do not want to make any unwanted changes to osInstalledThemes by
     // mistake.
     $themes = $this->osInstalledThemes;
@@ -279,8 +279,6 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
       }
     }
 
-    // The same code is written in getThemes().
-    // TODO: Move the following code to a common function.
     uasort($custom_themes, 'system_sort_modules_by_info_name');
 
     // Attach additional information in the themes.

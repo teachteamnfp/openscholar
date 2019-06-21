@@ -100,10 +100,11 @@ class CpAppearanceMainController extends ControllerBase {
    * Entry point for cp/users.
    */
   public function main(): array {
-    /** @var \Drupal\Core\Extension\Extension[] $themes */
-    $themes = $this->appearanceSettingsBuilder->getThemes();
+    /** @var \Drupal\Core\Extension\Extension[] $featured_themes */
+    $featured_themes = $this->appearanceSettingsBuilder->getFeaturedThemes();
     /** @var \Drupal\Core\Extension\Extension[] $custom_themes */
     $custom_themes = $this->appearanceSettingsBuilder->getCustomThemes();
+    $themes = array_merge($custom_themes, $featured_themes);
 
     // Use for simple dropdown for now.
     $basic_theme_options = [];
@@ -114,7 +115,7 @@ class CpAppearanceMainController extends ControllerBase {
     // There are two possible theme groups.
     $theme_groups = [
       'custom_theme' => $custom_themes,
-      'featured' => $themes,
+      'featured' => $featured_themes,
       'basic' => [],
     ];
     $theme_group_titles = [

@@ -69,7 +69,7 @@ class CustomThemeForm extends EntityForm {
     $entity = $this->entity;
     $base_theme_options = [];
 
-    foreach ($this->appearanceSettingsBuilder->getThemes() as $key => $data) {
+    foreach ($this->appearanceSettingsBuilder->getFeaturedThemes() as $key => $data) {
       $base_theme_options[$key] = $data->info['name'];
     }
 
