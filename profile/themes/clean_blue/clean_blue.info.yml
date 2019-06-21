@@ -29,3 +29,7 @@ regions:
 
 libraries:
   - clean_blue/global-styling
+
+ckeditor_stylesheets:
+  - '//fonts.googleapis.com/css?family=Roboto': { external: true }
+  - css/ckeditor.css

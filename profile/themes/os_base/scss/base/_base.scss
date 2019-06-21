@@ -8,10 +8,22 @@ body {
   font-family: $font-family-sans-serif;
 }
 h1 {
-  font-size: 30px;
+  font-size: 2em;
 }
 h2 {
   font-size: 1.3em;
+}
+h3 {
+  font-size: 1.1em;
+}
+h4 {
+  font-size: 1em;
+}
+h5 {
+  font-size: .9em;
+}
+h6 {
+  font-size: .8em;
 }
 a, a:visited {
   color: $color-link1;
@@ -26,6 +38,10 @@ p {
 h1, h2, h3, h4, h5, h6 {
   margin: 0;
   padding: 0;
+  line-height: inherit;
+}
+h4, h5, h6 {
+  font-weight: bold;
 }
 .node--teaser {
   .field-name-body {
