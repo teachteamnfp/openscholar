@@ -16,6 +16,7 @@ use Drupal\date_recur_modular\DateRecurModularWidgetOptions;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Cache\RefinableCacheableDependencyInterface;
+use Drupal\rng\Entity\Registration;
 use Drupal\views\ViewExecutable;
 
 /**
@@ -51,6 +52,17 @@ function os_events_menu_local_tasks_alter(&$data, $route_name, RefinableCacheabl
         $data['tabs'][1]['rng_date_scheduler.local_tasks:rng.event.node.event.date_scheduler'],
         $data['tabs'][1]['rng.local_tasks:rng.event.node.event.messages']
       );
+    }
+  }
+  // Remove Edit and Identities local tasks from Registration view page.
+  if ($route_name == 'entity.registration.canonical') {
+    $to_remove = ['entity.registration.edit', 'entity.registration.registrants'];
+    if (isset($data['tabs'][0])) {
+      foreach ($data['tabs'][0] as $task => $tab) {
+        if (in_array($task, $to_remove)) {
+          unset($data['tabs'][0][$task]);
+        }
+      }
     }
   }
 }
@@ -576,4 +588,13 @@ function os_events_node_view_alter(array &$build, EntityInterface $entity, Entit
     ],
     '#weight' => 100,
   ];
+}
+
+/**
+ * Implements hook_entity_operation_alter().
+ */
+function os_events_entity_operation_alter(array &$operations, EntityInterface $entity) {
+  if ($entity instanceof Registration) {
+    unset($operations['edit']);
+  }
 }
