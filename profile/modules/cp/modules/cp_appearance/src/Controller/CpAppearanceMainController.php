@@ -113,14 +113,14 @@ class CpAppearanceMainController extends ControllerBase {
 
     // There are two possible theme groups.
     $theme_groups = [
+      'custom_theme' => $custom_themes,
       'featured' => $themes,
       'basic' => [],
-      'custom_theme' => $custom_themes,
     ];
     $theme_group_titles = [
+      'custom_theme' => $this->formatPlural(count($theme_groups['custom_theme']), 'Custom theme', 'Custom themes'),
       'featured' => $this->formatPlural(count($theme_groups['featured']), 'Featured theme', 'Featured themes'),
       'basic' => $this->formatPlural(count($theme_groups['basic']), 'Basic theme', 'Basic themes'),
-      'custom_theme' => $this->formatPlural(count($theme_groups['custom_theme']), 'Custom theme', 'Custom themes'),
     ];
 
     uasort($theme_groups['featured'], 'system_sort_themes');
