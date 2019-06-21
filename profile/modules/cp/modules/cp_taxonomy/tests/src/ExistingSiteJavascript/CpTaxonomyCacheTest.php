@@ -36,9 +36,9 @@ class CpTaxonomyCacheTest extends CpTaxonomyExistingSiteJavascriptTestBase {
   }
 
   /**
-   * Test node listing and page caching.
+   * Test node page caching.
    */
-  public function testNodeListingAndPageCaching() {
+  public function testNodePageCaching() {
     $web_assert = $this->assertSession();
     $node = $this->createNode([
       'type' => 'news',
@@ -59,6 +59,21 @@ class CpTaxonomyCacheTest extends CpTaxonomyExistingSiteJavascriptTestBase {
     $this->visitViaVsite("node/" . $node->id(), $this->group);
     $web_assert->statusCodeEquals(200);
     $web_assert->pageTextNotContains($this->term->label());
+  }
+
+  /**
+   * Test node listing caching.
+   */
+  public function testNodeListingCaching() {
+    $web_assert = $this->assertSession();
+    $node = $this->createNode([
+      'type' => 'news',
+      'field_taxonomy_terms' => [
+        $this->term->id(),
+      ],
+      'status' => 1,
+    ]);
+    $this->group->addContent($node, 'group_node:news');
 
     // Test listing.
     $this->showTermsOnListing(['node:news']);
@@ -103,7 +118,7 @@ class CpTaxonomyCacheTest extends CpTaxonomyExistingSiteJavascriptTestBase {
    * Set config, hide terms on entity listing.
    */
   private function hideTermsOnListing() {
-    $this->config->set('display_term_under_content_teaser_types', []);
+    $this->config->set('display_term_under_content_teaser_types', ['node:not_exists_bundle']);
     $this->config->save(TRUE);
   }
 
