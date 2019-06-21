@@ -6,7 +6,6 @@
  */
 
 use Drupal\bibcite_entity\Entity\ReferenceInterface;
-use Drupal\Component\Utility\Html;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Session\AccountInterface;
@@ -67,13 +66,6 @@ function os_preprocess_block(array &$vars) {
       $vars['content']['#markup'] .= Link::createFromRoute(t('Admin Login'), 'user.login', [], ['query' => \Drupal::destination()->getAsArray()])->toString();
     }
     $vars['content']['#markup'] .= t('<span id="powered-by"><a class="powered-by" href=":link">OpenScholar</a></span>', [':link' => 'https://theopenscholar.com/']);
-    $config = Drupal::config('os_privacy_policy.settings');
-    $copyright_build = [
-      '#theme' => 'os_privacy_policy_copyright_block',
-      '#privacy_policy_text' => Html::escape($config->get('os_privacy_policy_text')),
-      '#privacy_policy_url' => Html::escape($config->get('os_privacy_policy_url')),
-    ];
-    $vars['content']['#markup'] .= \Drupal::service('renderer')->renderRoot($copyright_build);
   }
 }
 
