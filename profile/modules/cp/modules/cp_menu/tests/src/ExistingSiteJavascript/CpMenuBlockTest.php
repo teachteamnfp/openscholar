@@ -84,8 +84,12 @@ class CpMenuBlockTest extends OsExistingSiteJavascriptTestBase {
     $this->submitForm($edit, 'Finish');
     $session->waitForElementVisible('css', '#cp-build-menu-table');
 
+    // TODO: The cache invalidate should be removed from here.
+    // FIXME: https://github.com/openscholar/openscholar/issues/11811
+    /** @var \Drupal\Core\Cache\CacheBackendInterface $cache_backend */
+    $cache_backend = $this->container->get('cache.render');
+    $cache_backend->invalidateAll();
     $this->visit('/test-menu');
-    $this->assertSession()->waitForElementVisible('css', ".menu--menu-primary-{$this->group->id()}");
     $session->linkExists('Test Calendar Link');
   }
 
