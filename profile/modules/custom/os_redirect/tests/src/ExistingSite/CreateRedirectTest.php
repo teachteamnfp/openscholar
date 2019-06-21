@@ -2,6 +2,8 @@
 
 namespace Drupal\Tests\os_redirect\ExistingSite;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
+
 /**
  * Tests os_redirect module.
  *
@@ -31,6 +33,7 @@ class CreateRedirectTest extends OsRedirectTestBase {
     $web_assert = $this->assertSession();
 
     // Set global maximum number.
+    /** @var \Drupal\Core\Config\ConfigFactoryInterface $configFactory */
     $configFactory = $this->container->get('config.factory');
     $config = $configFactory->getEditable('os_redirect.settings');
     $config->set('maximum_number', 10);
