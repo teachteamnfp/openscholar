@@ -173,18 +173,19 @@ class AppearanceSettingsBuilderTest extends TestBase {
   public function testCustomThemes(): void {
     $custom_theme_entity_1 = CustomTheme::load(self::TEST_CUSTOM_THEME_1_NAME);
     $custom_theme_entity_2 = CustomTheme::load(self::TEST_CUSTOM_THEME_2_NAME);
+
     $this->installCustomTheme($custom_theme_entity_1);
     $this->installCustomTheme($custom_theme_entity_2);
+    // If cache not cleared, then the system fails to identify the theme that is
+    // just installed in the test.
+    drupal_flush_all_caches();
 
     /** @var \Drupal\Core\Config\Config $theme_config_mut */
     $theme_config_mut = $this->configFactory->getEditable('system.theme');
     $theme_config_mut->set('default', $custom_theme_entity_1->id())->save();
 
-    drupal_flush_all_caches();
-    /** @var \Drupal\cp_appearance\AppearanceSettingsBuilderInterface $appearance_settings_builder */
-    $appearance_settings_builder = $this->container->get('cp_appearance.appearance_settings_builder');
     /** @var \Drupal\Core\Extension\Extension[] $custom_themes */
-    $custom_themes = $appearance_settings_builder->getCustomThemes();
+    $custom_themes = $this->appearanceSettingsBuilder->getCustomThemes();
 
     $this->assertFalse(isset($custom_themes['hwpi_classic']));
     $this->assertTrue(isset($custom_themes[$custom_theme_entity_1->id()]));
