@@ -12,6 +12,9 @@ use Drupal\vsite\Entity\GroupPresetInterface;
  */
 class TestTask {
 
+  /**
+   * Just a simple test.
+   */
   public function testMethod(GroupInterface $group, GroupPresetInterface $preset, array &$context) {
     if (empty($context['sandbox'])) {
       $context['sandbox']['progress'] = 0;

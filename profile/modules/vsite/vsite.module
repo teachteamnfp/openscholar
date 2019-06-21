@@ -5,6 +5,7 @@
  * Hook implementations for the vsite module.
  */
 
+use Drupal\vsite\Entity\GroupPresetInterface;
 use Drupal\vsite\Entity\GroupPreset;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Asset\AttachedAssetsInterface;
@@ -301,10 +302,13 @@ function vsite_group_create(GroupInterface $group) {
         'operations' => [],
         'finished' => '_vsite_batch_finished',
         'init_message' => t('Preparing for setup'),
-        'progress_message' => t('Set up tasks @current of @total completed. Estimated time for completion is @estimate')
+        'progress_message' => t('Set up tasks @current of @total completed. Estimated time for completion is @estimate'),
       ];
       foreach ($tasks as $t) {
-        $batch['operations'][] = ['_vsite_process_preset_task', [$group, $preset, $t]];
+        $batch['operations'][] = [
+          '_vsite_process_preset_task',
+          [$group, $preset, $t]
+        ];
       }
       batch_set($batch);
     }
@@ -314,7 +318,7 @@ function vsite_group_create(GroupInterface $group) {
 /**
  * Performs a single preset task.
  *
- * @param GroupInterface $group
+ * @param \Drupal\group\Entity\GroupInterface $group
  *   The group being operated on.
  * @param \Drupal\vsite\Entity\GroupPresetInterface $preset
  *   The preset the group is using.
@@ -324,10 +328,10 @@ function vsite_group_create(GroupInterface $group) {
  * @return array|null
  *   The result of the batch or null if the task was not callable
  */
-function _vsite_process_preset_task(GroupInterface $group, \Drupal\vsite\Entity\GroupPresetInterface $preset, string $task, &$context) {
+function _vsite_process_preset_task(GroupInterface $group, GroupPresetInterface $preset, string $task, &$context) {
   if (is_callable($task)) {
     return call_user_func_array($task, [$group, $preset, &$context]);
   }
-  // what do I do here?
+  // What do I do here?
   return;
 }
