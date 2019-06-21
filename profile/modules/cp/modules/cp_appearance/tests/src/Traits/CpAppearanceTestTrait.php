@@ -63,4 +63,32 @@ trait CpAppearanceTestTrait {
     return $theme;
   }
 
+  /**
+   * Installs a custom theme.
+   *
+   * @param \Drupal\cp_appearance\Entity\CustomThemeInterface $custom_theme
+   *   The custom theme.
+   *
+   * @throws \Drupal\Core\Extension\ExtensionNameLengthException
+   */
+  public function installCustomTheme(CustomThemeInterface $custom_theme): void {
+    /** @var \Drupal\Core\Extension\ThemeInstallerInterface $theme_installer */
+    $theme_installer = $this->container->get('theme_installer');
+
+    $theme_installer->install([$custom_theme->id()]);
+  }
+
+  /**
+   * Uninstalls a custom theme.
+   *
+   * @param \Drupal\cp_appearance\Entity\CustomThemeInterface $custom_theme
+   *   The custom theme.
+   */
+  public function uninstallCustomTheme(CustomThemeInterface $custom_theme): void {
+    /** @var \Drupal\Core\Extension\ThemeInstallerInterface $theme_installer */
+    $theme_installer = $this->container->get('theme_installer');
+
+    $theme_installer->uninstall([$custom_theme->id()]);
+  }
+
 }

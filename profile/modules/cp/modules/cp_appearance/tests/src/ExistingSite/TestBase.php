@@ -12,6 +12,10 @@ abstract class TestBase extends OsExistingSiteTestBase {
 
   use CpAppearanceTestTrait;
 
+  public const TEST_CUSTOM_THEME_1_NAME = 'os_ct_cp_appearance_test_1';
+
+  public const TEST_CUSTOM_THEME_2_NAME = 'os_ct_cp_appearance_test_2';
+
   /**
    * The entity type manager service.
    *

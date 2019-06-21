@@ -3,6 +3,7 @@
 namespace Drupal\cp_appearance;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Extension\Extension;
 use Drupal\Core\Extension\ThemeHandlerInterface;
 use Drupal\Core\Form\FormBuilderInterface;
@@ -11,11 +12,12 @@ use Drupal\Core\Url;
 use Drupal\cp_appearance\Entity\CustomTheme;
 use Drupal\cp_appearance\Form\FlavorForm;
 use Ds\Map;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Helper methods for appearance settings.
  */
-final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterface {
+final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterface, ContainerInjectionInterface {
 
   use StringTranslationTrait;
 
@@ -95,22 +97,24 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
   /**
    * {@inheritdoc}
    */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('theme_handler'),
+      $container->get('config.factory'),
+      $container->get('form_builder'),
+      $container->get('cp_appearance.theme_selector_builder')
+    );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getFeaturedThemes(): array {
     // We do not want to make any unwanted changes to osInstalledThemes by
     // mistake.
     $themes = $this->osInstalledThemes;
 
-    uasort($themes, 'system_sort_modules_by_info_name');
-
-    // Attach additional information in the themes.
-    foreach ($themes as $theme) {
-      $theme->is_default = $this->themeIsDefault($theme);
-      $theme->is_admin = FALSE;
-      $theme->screenshot = $this->addScreenshotInfo($theme);
-      $theme->operations = $this->addOperations($theme);
-      $theme->more_operations = $this->addMoreOperations($theme);
-      $theme->notes = $this->addNotes($theme);
-    }
+    $this->prepareThemes($themes);
 
     return $themes;
   }
@@ -269,20 +273,34 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
    * {@inheritdoc}
    */
   public function getCustomThemes(): array {
-    $custom_theme_entities = CustomTheme::loadMultiple();
-    $installed_themes = $this->drupalInstalledThemes;
     $custom_themes = [];
+    $custom_theme_entities = CustomTheme::loadMultiple();
+    // Custom themes are dynamically added, it is necessary to pull it from the
+    // source itself, rather than relying on `drupalInstalledThemes` property.
+    $themes = $this->themeHandler->listInfo();
 
-    foreach ($installed_themes as $theme) {
+    foreach ($themes as $theme) {
       if (isset($custom_theme_entities[$theme->getName()])) {
         $custom_themes[$theme->getName()] = $theme;
       }
     }
 
-    uasort($custom_themes, 'system_sort_modules_by_info_name');
+    $this->prepareThemes($custom_themes);
+
+    return $custom_themes;
+  }
+
+  /**
+   * Make the themes ready for settings form.
+   *
+   * @param \Drupal\Core\Extension\Extension[] $themes
+   *   The themes.
+   */
+  protected function prepareThemes(array &$themes): void {
+    uasort($themes, 'system_sort_modules_by_info_name');
 
     // Attach additional information in the themes.
-    foreach ($custom_themes as $theme) {
+    foreach ($themes as $theme) {
       $theme->is_default = $this->themeIsDefault($theme);
       $theme->is_admin = FALSE;
       $theme->screenshot = $this->addScreenshotInfo($theme);
@@ -290,8 +308,6 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
       $theme->more_operations = $this->addMoreOperations($theme);
       $theme->notes = $this->addNotes($theme);
     }
-
-    return $custom_themes;
   }
 
 }

@@ -2,6 +2,8 @@
 
 namespace Drupal\Tests\cp_appearance\ExistingSite;
 
+use Drupal\cp_appearance\Entity\CustomTheme;
+
 /**
  * AppearanceSettingsBuilder service test.
  *
@@ -38,12 +40,13 @@ class AppearanceSettingsBuilderTest extends TestBase {
 
   /**
    * @covers ::getFeaturedThemes
+   * @covers ::prepareThemes
    * @covers ::addScreenshotInfo
    * @covers ::addOperations
    * @covers ::addMoreOperations
    * @covers ::addNotes
    */
-  public function test(): void {
+  public function testFeaturedThemes(): void {
     /** @var \Drupal\Core\Config\Config $theme_config_mut */
     $theme_config_mut = $this->configFactory->getEditable('system.theme');
     $theme_config_mut->set('default', 'hwpi_classic')->save();
@@ -155,6 +158,72 @@ class AppearanceSettingsBuilderTest extends TestBase {
     $this->assertSame('Screenshot for Loeb theme', $screenshot_info['alt']->__toString());
     $this->assertSame('Screenshot for Loeb theme', $screenshot_info['title']->__toString());
     $this->assertTrue(isset($screenshot_info['attributes']));
+  }
+
+  /**
+   * @covers ::getCustomThemes
+   * @covers ::prepareThemes
+   * @covers ::addScreenshotInfo
+   * @covers ::addOperations
+   * @covers ::addMoreOperations
+   * @covers ::addNotes
+   *
+   * @throws \Drupal\Core\Extension\ExtensionNameLengthException
+   */
+  public function testCustomThemes(): void {
+    $custom_theme_entity_1 = CustomTheme::load(self::TEST_CUSTOM_THEME_1_NAME);
+    $custom_theme_entity_2 = CustomTheme::load(self::TEST_CUSTOM_THEME_2_NAME);
+    $this->installCustomTheme($custom_theme_entity_1);
+    $this->installCustomTheme($custom_theme_entity_2);
+
+    /** @var \Drupal\Core\Config\Config $theme_config_mut */
+    $theme_config_mut = $this->configFactory->getEditable('system.theme');
+    $theme_config_mut->set('default', $custom_theme_entity_1->id())->save();
+
+    drupal_flush_all_caches();
+    /** @var \Drupal\cp_appearance\AppearanceSettingsBuilderInterface $appearance_settings_builder */
+    $appearance_settings_builder = $this->container->get('cp_appearance.appearance_settings_builder');
+    /** @var \Drupal\Core\Extension\Extension[] $custom_themes */
+    $custom_themes = $appearance_settings_builder->getCustomThemes();
+
+    $this->assertFalse(isset($custom_themes['hwpi_classic']));
+    $this->assertTrue(isset($custom_themes[$custom_theme_entity_1->id()]));
+
+    // Test presence of custom properties.
+    $active_theme = $custom_themes[$custom_theme_entity_1->id()];
+
+    $this->assertTrue(property_exists($active_theme, 'is_default'));
+    $this->assertTrue(property_exists($active_theme, 'is_admin'));
+    $this->assertTrue(property_exists($active_theme, 'screenshot'));
+    $this->assertTrue(property_exists($active_theme, 'operations'));
+    $this->assertTrue(property_exists($active_theme, 'notes'));
+
+    // Test screenshot info.
+    $screenshot_info = $active_theme->screenshot;
+
+    $this->assertNotNull($screenshot_info);
+    $this->assertSame('profiles/contrib/openscholar/themes/documental/screenshot.png', $screenshot_info['uri']);
+    $this->assertSame("Screenshot for {$custom_theme_entity_1->label()} theme", $screenshot_info['alt']->__toString());
+    $this->assertSame("Screenshot for {$custom_theme_entity_1->label()} theme", $screenshot_info['title']->__toString());
+    $this->assertTrue(isset($screenshot_info['attributes']));
+
+    // Test operations.
+    $inactive_theme = $custom_themes[$custom_theme_entity_2->id()];
+
+    $this->assertCount(2, $inactive_theme->operations);
+    $operations = $inactive_theme->operations[0];
+    $this->assertTrue(isset($operations['title']));
+    $this->assertTrue(isset($operations['url']));
+    $this->assertTrue(isset($operations['attributes']));
+
+    $this->assertCount(0, $active_theme->operations);
+
+    // Test notes.
+    $this->assertCount(0, $inactive_theme->notes);
+
+    $this->assertCount(1, $active_theme->notes);
+    $notes = $active_theme->notes[0];
+    $this->assertEquals('current theme', $notes);
   }
 
   /**
