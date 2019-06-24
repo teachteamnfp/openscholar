@@ -19,7 +19,7 @@ $font_2: Volkhov;
 @import url(https://fonts.googleapis.com/css?family=Droid+Sans:300,400,700|Volkhov:300,400,400i,700);
 
 body {
-  font-family: $font_0, $font_1;
+  font-family: $font_0, $font_1 !important;
 }
 .node--title {
   font-family: $font_0, $font_1;
