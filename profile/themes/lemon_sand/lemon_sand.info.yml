@@ -29,3 +29,9 @@ regions:
 
 libraries:
   - lemon_sand/global-styling
+
+ckeditor_stylesheets:
+  - //fonts.googleapis.com/css?family=Playfair+Display
+  - //fonts.googleapis.com/css?family=Vidaloka
+  - //fonts.googleapis.com/css?family=Oxygen
+  - css/ckeditor.css
