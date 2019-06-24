@@ -179,7 +179,7 @@ class ProfilesSetting extends CpSettingBase {
     $allowed_file_types = 'gif png jpg jpeg';
     $form['default_image']['default_image_fid'] = [
       '#type' => 'managed_file',
-      '#description' => $this->t('The default image will be used if a profile photo is not available. Instead, you can upload your own default image.<br/>Position the cropping tool over it if necessary. Allowed file types: <strong> @allowed_file_types </strong>', ['@allowed_file_types' => $allowed_file_types]),
+      '#description' => $this->getDefaultImage() . '<br />' . $this->t('The default image will be used if a profile photo is not available. Instead, you can upload your own default image.<br/>Position the cropping tool over it if necessary. Allowed file types: <strong> @allowed_file_types </strong>', ['@allowed_file_types' => $allowed_file_types]),
       '#upload_location' => $upload_location,
       '#upload_validators' => [
         'file_validate_extensions' => [$allowed_file_types],
@@ -207,6 +207,8 @@ class ProfilesSetting extends CpSettingBase {
         '#show_crop_area' => $settings['show_crop_area'],
         '#warn_mupltiple_usages' => $settings['warn_multiple_usages'],
       ];
+    }
+    else {
     }
   }
 
@@ -265,7 +267,7 @@ class ProfilesSetting extends CpSettingBase {
   /**
    * Get image markup for example hover.
    */
-  public function getExampleImage($default_image_fid) {
+  public function getExampleImage($default_image_fid = NULL) {
     // Use custom default image if available.
     if (!empty($default_image_fid)) {
       $image_file = File::load($default_image_fid);
@@ -285,6 +287,17 @@ class ProfilesSetting extends CpSettingBase {
       ];
       return $this->renderer->renderRoot($build);
     }
+  }
+
+  /**
+   * Get default image.
+   */
+  public function getDefaultImage() {
+    $build = [
+      '#theme' => 'image',
+      '#uri' => file_create_url(drupal_get_path('theme', 'os_base') . '/images/person-default-image-big.png'),
+    ];
+    return $this->renderer->renderRoot($build);
   }
 
   /**
