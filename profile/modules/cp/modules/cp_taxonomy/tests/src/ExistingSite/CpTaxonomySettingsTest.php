@@ -72,7 +72,7 @@ class CpTaxonomySettingsTest extends TestBase {
   /**
    * Test view tags on node entity.
    */
-  public function testViewTagsOnListingPageNodeEntity() {
+  public function testViewTagsOnListingNodeEntity() {
     $view_builder = $this->entityTypeManager
       ->getViewBuilder('node');
 

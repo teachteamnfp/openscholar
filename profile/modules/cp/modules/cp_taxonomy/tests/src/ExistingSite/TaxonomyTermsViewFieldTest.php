@@ -45,13 +45,18 @@ class TaxonomyTermsViewFieldTest extends TestBase {
     ]);
     $this->group->addContent($this->publication, 'group_entity:bibcite_reference');
     $this->renderer = $this->container->get('renderer');
+    $this->vsiteContextManager->activateVsite($this->group);
   }
 
   /**
    * Test taxonomy terms view field show.
    */
   public function testTaxonomyTermViewFieldShow() {
-    $this->vsiteContextManager->activateVsite($this->group);
+    $config = $this->configFactory->getEditable('cp_taxonomy.settings');
+    // Make sure to show bundle.
+    $config->set('display_term_under_content_teaser_types', ['bibcite_reference:artwork']);
+    $config->save(TRUE);
+
     $view = Views::getView('publications');
     $view->setDisplay('page_1');
     $view->preExecute();
@@ -70,7 +75,6 @@ class TaxonomyTermsViewFieldTest extends TestBase {
     $config->set('display_term_under_content_teaser_types', ['bibcite_reference:not_exist_bundle']);
     $config->save(TRUE);
 
-    $this->vsiteContextManager->activateVsite($this->group);
     $view = Views::getView('publications');
     $view->setDisplay('page_1');
     $view->preExecute();
