@@ -1,0 +1,14 @@
+@import '../../os_base/scss/ckeditor.scss';
+
+$color_hippie_green_approx: #467141;
+body {
+  color: #000;
+  font-family: Droid Sans, sans-serif !important;
+}
+a,
+.full-calendar-view .fc-header-toolbar button {
+  color: $color_hippie_green_approx;
+  &:visited {
+    color: $color_hippie_green_approx;
+  }
+}
