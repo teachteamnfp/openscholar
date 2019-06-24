@@ -1,0 +1,9 @@
+@import '../../os_base/scss/ckeditor.scss';
+@import '../scss/base/variables';
+body {
+  font-family: 'Montserrat', sans-serif !important;
+}
+html,
+body {
+  color: $color-gray;
+}
