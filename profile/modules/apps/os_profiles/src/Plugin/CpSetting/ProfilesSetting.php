@@ -159,7 +159,6 @@ class ProfilesSetting extends CpSettingBase {
     $form['default_image'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Default Image'),
-      '#weight' => -50,
     ];
 
     $form['default_image']['disable_default_image'] = [
@@ -167,7 +166,7 @@ class ProfilesSetting extends CpSettingBase {
       '#title' => $this->t('Disable default image for people profiles'),
       '#default_value' => $config->get('disable_default_image'),
       '#description' => $this->t('If checked no image will be used when viewing the "/people" page.'),
-      '#weight' => -101,
+      '#weight' => -1,
     ];
     $upload_location = 'public://' . $this->activeVsite->id() . '/files';
     $allowed_file_types = 'gif png jpg jpeg';
