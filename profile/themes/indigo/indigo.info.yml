@@ -29,3 +29,6 @@ regions:
 
 libraries:
   - indigo/global-styling
+
+ckeditor_stylesheets:
+  - css/ckeditor.css
