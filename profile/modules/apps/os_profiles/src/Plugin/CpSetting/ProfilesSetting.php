@@ -146,11 +146,18 @@ class ProfilesSetting extends CpSettingBase {
       ];
       $profile_styles_hover[$name] = $this->renderer->renderRoot($build_hover);
     }
+    $display_types_order = [
+      'teaser',
+      'sidebar_teaser',
+      'title',
+      'slide_teaser',
+      'no_image_teaser',
+    ];
 
     $form['display_type'] = [
       '#type' => 'radios',
       '#title' => $this->t('Display types'),
-      '#options' => $profile_styles_hover,
+      '#options' => $this->sortDisplayTypes($profile_styles_hover, $display_types_order),
       '#default_value' => $config->get('display_type'),
       '#description' => $this->t('Choose the display type of a person in the "/people" page.'),
     ];
@@ -278,6 +285,30 @@ class ProfilesSetting extends CpSettingBase {
       ];
       return $this->renderer->renderRoot($build);
     }
+  }
+
+  /**
+   * Short display types as order array.
+   *
+   * @param array $display_types
+   *   Original array.
+   * @param array $order
+   *   Desired sorting with listed keys.
+   *
+   * @return array
+   *   Ordered array.
+   */
+  protected function sortDisplayTypes(array $display_types, array $order) {
+    $ordered_display_types = [];
+    foreach ($order as $key) {
+      if (isset($display_types[$key])) {
+        $ordered_display_types[$key] = $display_types[$key];
+        unset($display_types[$key]);
+      }
+    }
+    // Merge the rest of array.
+    $ordered_display_types = array_merge($ordered_display_types, $display_types);
+    return $ordered_display_types;
   }
 
 }
