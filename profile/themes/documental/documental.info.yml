@@ -29,3 +29,6 @@ regions:
 
 libraries:
   - documental/global-styling
+
+ckeditor_stylesheets:
+  - css/ckeditor.css
