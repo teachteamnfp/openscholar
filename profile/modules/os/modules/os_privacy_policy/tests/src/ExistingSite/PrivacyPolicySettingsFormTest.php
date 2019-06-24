@@ -70,4 +70,12 @@ class PrivacyPolicySettingsFormTest extends OsExistingSiteTestBase {
     $this->assertEquals('http://example.com/my-privacy-url', $config->get('os_privacy_policy_url'));
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function tearDown() {
+    $this->config->getEditable('os_privacy_policy.settings')->delete();
+    parent::tearDown();
+  }
+
 }

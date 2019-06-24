@@ -55,7 +55,6 @@ class OsPrivacyPolicy extends CpSettingBase {
     $config->set('os_privacy_policy_text', $form_state->getValue('os_privacy_policy_text'));
     $config->set('os_privacy_policy_url', $form_state->getValue('os_privacy_policy_url'));
     $config->save(TRUE);
-
   }
 
 }

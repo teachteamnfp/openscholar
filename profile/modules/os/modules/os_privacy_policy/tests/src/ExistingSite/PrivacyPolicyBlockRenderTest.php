@@ -2,12 +2,13 @@
 
 namespace Drupal\Tests\os_privacy_policy\ExistingSite;
 
+use Drupal\block\BlockViewBuilder;
 use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
 
 /**
  * Tests os_privacy_policy module render footer.
  *
- * @group functional
+ * @group kernel
  * @group os
  */
 class PrivacyPolicyBlockRenderTest extends OsExistingSiteTestBase {
@@ -31,20 +32,40 @@ class PrivacyPolicyBlockRenderTest extends OsExistingSiteTestBase {
   }
 
   /**
-   * Test block render.
+   * Test block render with values.
    */
-  public function testBlockFooterRender() {
-    $web_assert = $this->assertSession();
+  public function testBlockRenderWithValues() {
     $config = $this->config->getEditable('os_privacy_policy.settings');
-    $config->set('os_privacy_policy_text', 'Privacy<script>');
-    $config->set('os_privacy_policy_url', 'https://maps.google.com\'"+!%/=()$ß*>;~');
+    $config->set('os_privacy_policy_text', 'Privacy link');
+    $config->set('os_privacy_policy_url', 'https://theopenscholar.com/');
     $config->save(TRUE);
 
-    $this->visitViaVsite('', $this->group);
-    $web_assert->statusCodeEquals(200);
-    $web_assert->pageTextContains('Privacy&lt;script&gt;');
-    $page_content = $this->getCurrentPageContent();
-    $this->assertContains('https://maps.google.com&amp;#039;&amp;quot;+!%/=()$ß*&amp;gt;;~', $page_content);
+    $build = BlockViewBuilder::lazyBuilder('copyright', 'full');
+    $html = $this->container->get('renderer')->renderRoot($build);
+    $this->assertContains('Privacy link', $html->__toString());
+    $this->assertContains('https://theopenscholar.com/', $html->__toString());
+  }
+
+  /**
+   * Test block render without values.
+   */
+  public function testBlockRenderWithoutValues() {
+    $config = $this->config->getEditable('os_privacy_policy.settings');
+    $config->set('os_privacy_policy_text', 'Privacy link');
+    $config->set('os_privacy_policy_url', '');
+    $config->save(TRUE);
+
+    $build = BlockViewBuilder::lazyBuilder('copyright', 'full');
+    $html = $this->container->get('renderer')->renderRoot($build);
+    $this->assertNotContains('Privacy link', $html->__toString());
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function tearDown() {
+    $this->config->getEditable('os_privacy_policy.settings')->delete();
+    parent::tearDown();
   }
 
 }
