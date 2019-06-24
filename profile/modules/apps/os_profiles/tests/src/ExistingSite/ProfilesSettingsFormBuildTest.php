@@ -15,17 +15,11 @@ use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
 class ProfilesSettingsFormBuildTest extends OsExistingSiteTestBase {
 
   /**
-   * Reference Preview Form.
+   * Cp setting form.
    *
    * @var \Drupal\os_profiles\Plugin\CpSetting\ProfilesSetting
    */
   protected $profileSettings;
-
-  /**
-   * Form Builder Interface.
-   *
-   * @var \Drupal\Core\Form\FormBuilderInterface*/
-  protected $formBuilder;
 
   /**
    * Config factory.
@@ -45,7 +39,6 @@ class ProfilesSettingsFormBuildTest extends OsExistingSiteTestBase {
     $vsiteContextManager = $this->container->get('vsite.context_manager');
     $vsiteContextManager->activateVsite($this->group);
     $this->profileSettings = $cp_settings_manager->createInstance('profiles_setting');
-    $this->formBuilder = $this->container->get('form_builder');
     $this->config = $this->container->get('config.factory');
   }
 
