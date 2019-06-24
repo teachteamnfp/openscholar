@@ -110,7 +110,7 @@ abstract class TestBase extends VsiteExistingSiteTestBase {
   }
 
   /**
-   * Create a vocabulary to a group on cp taxonomy pages.
+   * Create a taxonomy term on a group.
    *
    * @param \Drupal\group\Entity\GroupInterface $group
    *   Group entity.
@@ -118,6 +118,9 @@ abstract class TestBase extends VsiteExistingSiteTestBase {
    *   Vocabulary id.
    * @param string $name
    *   Taxonomy term name.
+   *
+   * @return \Drupal\taxonomy\Entity\Term
+   *   Created taxonomy term.
    */
   protected function createGroupTerm(GroupInterface $group, string $vid, string $name) {
     $vocab = Vocabulary::load($vid);
@@ -125,6 +128,7 @@ abstract class TestBase extends VsiteExistingSiteTestBase {
       'name' => $name,
     ]);
     $group->addContent($term, 'group_entity:taxonomy_term');
+    return $term;
   }
 
 }
