@@ -1,0 +1,20 @@
+@import '../../os_base/scss/ckeditor.scss';
+$color_mexican_red_approx: #a51c30;
+
+body {
+  font-family: Source Sans Pro, sans-serif, Georgia, serif !important;
+}
+
+h2,
+h3,
+h4 {
+  margin-bottom: 16px;
+  font-weight: normal;
+  font-family: Source Sans Pro, sans-serif, Georgia, serif !important;
+}
+a {
+  color: $color_mexican_red_approx;
+  &:visited {
+    color: $color_mexican_red_approx;
+  }
+}
