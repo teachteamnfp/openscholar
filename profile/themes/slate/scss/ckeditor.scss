@@ -1,0 +1,18 @@
+@import '../../os_base/scss/ckeditor.scss';
+
+$color_thunderbird_approx: #c2230e;
+
+h2,
+h3,
+h4 {
+  margin-bottom: 16px;
+  font-weight: normal;
+  font-family: helvetica, Georgia, Baskerville, Palatino, Palatino Linotype, Book Antiqua, Times New Roman, serif;
+}
+body {
+  color: #4c4c4c;
+  font-family: helvetica, Georgia, Baskerville, Palatino, Palatino Linotype, Book Antiqua, Times New Roman, serif;
+}
+a {
+  color: $color_thunderbird_approx;
+}
