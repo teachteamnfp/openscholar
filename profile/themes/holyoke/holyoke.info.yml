@@ -29,3 +29,7 @@ regions:
 
 libraries:
   - holyoke/global-styling
+
+ckeditor_stylesheets:
+  - //fonts.googleapis.com/css?family=Arimo:400,700&display=swap
+  - css/ckeditor.css
