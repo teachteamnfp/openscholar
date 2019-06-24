@@ -31,5 +31,4 @@ libraries:
   - vibrant/global-styling
 
 ckeditor_stylesheets:
-  - //fonts.googleapis.com/css?family=Montserrat
   - css/ckeditor.css
