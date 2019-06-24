@@ -1,0 +1,10 @@
+@import '../../os_base/scss/ckeditor.scss';
+@import '../scss/base/variables';
+body {
+  font-family: helvetica, arial;
+  background: $color-light-gray1;
+}
+a,
+a:visited {
+  color: $color-link;
+}
