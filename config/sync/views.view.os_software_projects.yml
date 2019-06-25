@@ -9,6 +9,7 @@ dependencies:
   module:
     - group
     - node
+    - user
     - vsite
 id: os_software_projects
 label: 'OS Software projects'
@@ -234,7 +235,8 @@ display:
     display_title: 'Entity Reference'
     position: 2
     display_options:
-      display_extenders: {  }
+      display_extenders:
+        metatag_display_extender: {  }
       style:
         type: entity_reference
         options:
@@ -247,13 +249,19 @@ display:
           inline: {  }
           separator: '-'
           hide_empty: false
+      access:
+        type: perm
+        options:
+          perm: 'access content'
+      defaults:
+        access: false
     cache_metadata:
       max-age: -1
       contexts:
-        - group_membership.roles.permissions
         - 'languages:language_content'
         - 'languages:language_interface'
         - 'user.node_grants:view'
+        - user.permissions
       tags: {  }
   page_1:
     display_plugin: page
