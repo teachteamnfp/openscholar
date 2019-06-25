@@ -373,7 +373,10 @@ class MenuLinkAddForm extends FormBase {
     $response->addCommand(new CloseModalDialogCommand());
     $currentURL = Url::fromRoute('cp.build.menu');
     $response->addCommand(new RedirectCommand($currentURL->toString()));
-    $this->menuHelper->invalidateBlockCache();
+
+    // Call the block cache clear method as changes are made.
+    $this->menuHelper->invalidateBlockCache($menu_id);
+
     return $response;
   }
 

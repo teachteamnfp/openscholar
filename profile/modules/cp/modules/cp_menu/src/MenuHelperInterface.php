@@ -32,7 +32,12 @@ interface MenuHelperInterface {
 
   /**
    * Invalidates Menu block caches when changes are made.
+   *
+   * @param mixed $menu_id
+   *   Single id or array of menu ids.
+   * @param bool $buildForm
+   *   If called from main buildForm changes.
    */
-  public function invalidateBlockCache() : void;
+  public function invalidateBlockCache($menu_id, $buildForm) : void;
 
 }

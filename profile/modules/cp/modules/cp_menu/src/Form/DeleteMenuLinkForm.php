@@ -146,9 +146,14 @@ class DeleteMenuLinkForm extends ConfirmFormBase {
       }
     }
     $pluginId = $pluginId ?? $this->id;
+    // Get the menu id before plugin is deleted to clear cache later.
+    $menu_id = $this->menuLinkManager->getDefinition($pluginId)['menu_name'];
     // Delete the link.
     $this->menuLinkManager->removeDefinition($pluginId);
-    $this->menuHelper->invalidateBlockCache();
+
+    // Call the block cache clear method as changes are made.
+    $this->menuHelper->invalidateBlockCache($menu_id);
+
     $form_state->setRedirect('cp.build.menu');
   }
 

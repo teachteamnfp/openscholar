@@ -200,7 +200,6 @@ class AddNewMenuForm extends FormBase {
       $this->vsite->addContent($groupMenu, 'group_menu:menu');
       $currentURL = Url::fromRoute('cp.build.menu');
       $response->addCommand(new RedirectCommand($currentURL->toString()));
-      $this->menuHelper->invalidateBlockCache();
     }
     return $response;
   }

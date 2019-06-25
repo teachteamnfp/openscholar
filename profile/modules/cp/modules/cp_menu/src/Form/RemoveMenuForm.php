@@ -171,7 +171,6 @@ class RemoveMenuForm extends ConfirmFormBase {
         $this->menuHelper->resetVsiteMenus($vsite, TRUE);
       }
       $form_state->setRedirect('cp.build.menu');
-      $this->menuHelper->invalidateBlockCache();
       return;
     }
 
@@ -199,7 +198,6 @@ class RemoveMenuForm extends ConfirmFormBase {
       $this->menuLinkManager->deleteLinksInMenu($this->id);
     }
     $form_state->setRedirect('cp.build.menu');
-    $this->menuHelper->invalidateBlockCache();
   }
 
 }
