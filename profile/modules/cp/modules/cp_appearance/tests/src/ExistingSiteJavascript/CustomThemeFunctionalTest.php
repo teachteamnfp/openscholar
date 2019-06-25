@@ -147,6 +147,30 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
   }
 
   /**
+   * @covers ::exists
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   * @throws \Behat\Mink\Exception\ResponseTextException
+   */
+  public function testMachineNameValidation(): void {
+    // Setup.
+    $group_admin = $this->createUser();
+    $this->addGroupAdmin($group_admin, $this->group);
+    $this->drupalLogin($group_admin);
+
+    // Tests.
+    $this->visitViaVsite('cp/appearance/custom-themes/add', $this->group);
+    $this->getSession()->getPage()->fillField('Custom Theme Name', 'Cp Appearance Test 1');
+    $this->assertSession()->waitForElementVisible('css', '.machine-name-value');
+    $this->getSession()->getPage()->selectFieldOption('Parent Theme', 'clean');
+    $this->getSession()->getPage()->findField('styles')->setValue('body { color: black; }');
+    $this->getSession()->getPage()->findField('scripts')->setValue('alert("Hello World")');
+    $this->getSession()->getPage()->pressButton('Save');
+
+    $this->assertSession()->pageTextContains('The machine-readable name is already in use. It must be unique.');
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function tearDown() {

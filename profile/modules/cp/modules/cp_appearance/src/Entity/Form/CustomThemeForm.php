@@ -252,7 +252,7 @@ class CustomThemeForm extends EntityForm {
    *   Whether the ID is taken.
    */
   public function exists($id): bool {
-    return (bool) CustomTheme::load($id);
+    return (bool) CustomTheme::load(CustomTheme::CUSTOM_THEME_ID_PREFIX . $id);
   }
 
   /**
