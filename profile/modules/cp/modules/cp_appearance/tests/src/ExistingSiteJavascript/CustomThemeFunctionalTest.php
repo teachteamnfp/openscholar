@@ -38,6 +38,9 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
   /**
    * Tests custom theme save.
    *
+   * @covers ::save
+   * @covers ::install
+   *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
@@ -114,6 +117,10 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
 
   /**
    * Tests custom theme save and set default.
+   *
+   * @covers ::save
+   * @covers ::install
+   * @covers ::setDefault
    *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
    * @throws \Behat\Mink\Exception\ExpectationException
