@@ -93,7 +93,7 @@ class TaxonomyTermsFieldTest extends CpTaxonomyExistingSiteJavascriptTestBase {
    * Test media taxonomy terms field autocomplete.
    */
   public function testMediaTaxonomyTermsFieldAutocompleteSuccess() {
-    $this->createGroupVocabulary($this->group1, 'vocab_media_group_1', ['media:taxonomy_test_file']);
+    $this->createGroupVocabulary($this->group1, 'vocab_media_group_1', ['media:*']);
     $this->createGroupTerm($this->group1, 'vocab_media_group_1', 'Term 1 group 1 vid1');
     $this->createGroupTerm($this->group1, 'vocab_media_group_1', 'Term 2 group 1 vid1');
 

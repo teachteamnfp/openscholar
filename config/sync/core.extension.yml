@@ -105,9 +105,11 @@ module:
   os_media: 0
   os_media_gallery: 0
   os_metatag: 0
+  os_news: 0
   os_office_embed: 0
   os_pages: 0
   os_presentations: 0
+  os_privacy_policy: 0
   os_profiles: 0
   os_publications: 0
   os_redirect: 0

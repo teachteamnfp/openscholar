@@ -115,18 +115,18 @@ class CpTaxonomySettingsTest extends TestBase {
     $page = $this->getCurrentPageContent();
     // Assert checkboxes are checked.
     $this->assertContains('name="display_term_under_content" value="1" checked="checked" class="form-checkbox"', $page);
-    $this->assertContains('name="display_term_under_content_teaser_types[bibcite_reference:artwork]" value="bibcite_reference:artwork" checked="checked" class="form-checkbox"', $page);
+    $this->assertContains('name="display_term_under_content_teaser_types[bibcite_reference:*]" value="bibcite_reference:*" checked="checked" class="form-checkbox"', $page);
 
     $edit = [
       'display_term_under_content' => '0',
-      'display_term_under_content_teaser_types[bibcite_reference:artwork]' => '',
+      'display_term_under_content_teaser_types[bibcite_reference:*]' => '',
     ];
     $this->drupalPostForm(NULL, $edit, 'Save configuration');
     $this->assertSession()->statusCodeEquals(200);
     $page = $this->getCurrentPageContent();
     // Assert checkboxes are unchecked.
     $this->assertContains('name="display_term_under_content" value="1" class="form-checkbox"', $page);
-    $this->assertContains('name="display_term_under_content_teaser_types[bibcite_reference:artwork]" value="bibcite_reference:artwork" class="form-checkbox"', $page);
+    $this->assertContains('name="display_term_under_content_teaser_types[bibcite_reference:*]" value="bibcite_reference:*" class="form-checkbox"', $page);
 
   }
 
