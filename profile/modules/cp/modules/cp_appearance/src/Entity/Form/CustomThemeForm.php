@@ -208,6 +208,7 @@ class CustomThemeForm extends EntityForm {
     $actions = parent::actions($form, $form_state);
 
     $actions['submit']['#submit'][] = '::install';
+    $actions['submit']['#submit'][] = '::redirectOnSave';
 
     $actions['save_default'] = [
       '#type' => 'submit',
@@ -217,6 +218,7 @@ class CustomThemeForm extends EntityForm {
         '::save',
         '::install',
         '::setDefault',
+        '::redirectOnSave',
       ],
     ];
 
@@ -287,6 +289,15 @@ class CustomThemeForm extends EntityForm {
     $this->messenger()->addMessage($this->t('Custom theme %name successfully set as default.', [
       '%name' => $custom_theme->label(),
     ]));
+  }
+
+  /**
+   * Redirects to correct location on save.
+   *
+   * @ingroup forms
+   */
+  public function redirectOnSave(array &$form, FormStateInterface $form_state): void {
+    $form_state->setRedirect('cp.appearance');
   }
 
 }

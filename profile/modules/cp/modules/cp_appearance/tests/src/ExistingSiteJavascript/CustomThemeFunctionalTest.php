@@ -40,6 +40,7 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
    *
    * @covers ::save
    * @covers ::install
+   * @covers ::redirectOnSave
    *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
    * @throws \Drupal\Core\Entity\EntityStorageException
@@ -58,6 +59,8 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
     $this->getSession()->getPage()->findField('styles')->setValue('body { color: black; }');
     $this->getSession()->getPage()->findField('scripts')->setValue('alert("Hello World")');
     $this->getSession()->getPage()->pressButton('Save');
+
+    $this->assertContains("{$this->groupAlias}/cp/appearance", $this->getSession()->getCurrentUrl());
 
     /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
     $vsite_context_manager = $this->container->get('vsite.context_manager');
@@ -121,6 +124,7 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
    * @covers ::save
    * @covers ::install
    * @covers ::setDefault
+   * @covers ::redirectOnSave
    *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
    * @throws \Behat\Mink\Exception\ExpectationException
@@ -138,6 +142,8 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
     $this->getSession()->getPage()->findField('styles')->setValue('body { color: black; }');
     $this->getSession()->getPage()->findField('scripts')->setValue('alert("Hello World")');
     $this->getSession()->getPage()->pressButton('Save and set as default theme');
+
+    $this->assertContains("{$this->groupAlias}/cp/appearance", $this->getSession()->getCurrentUrl());
 
     // Tests.
     $this->visitViaVsite('', $this->group);
