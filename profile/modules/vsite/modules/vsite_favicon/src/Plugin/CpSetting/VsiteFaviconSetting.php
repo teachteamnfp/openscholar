@@ -42,9 +42,9 @@ class VsiteFaviconSetting extends CpSettingBase {
       '#upload_location' => $upload_location,
       '#upload_validators' => [
         'file_validate_extensions' => ['png'],
-        'file_validate_size' => [2 * 1024],
         'file_validate_image_resolution' => ['16x16'],
       ],
+      '#accept' => '.png',
     ];
     if ($default_fid = $config->get('favicon_fid')) {
       $form['favicon_fid']['#default_value'] = [$default_fid];
