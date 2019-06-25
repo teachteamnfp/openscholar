@@ -128,9 +128,8 @@ class MenuHelper implements MenuHelperInterface {
    * {@inheritdoc}
    */
   public function invalidateBlockCache($ids, $buildForm = FALSE) : void {
-    // Get definition to clear cache of the menu block in context.
     $menu_label = $ids;
-    // If called from Main build form changes or not.
+    // If not called from Main build form then ids will be a single string.
     if (!$buildForm) {
       $vsite = $this->vsiteManager->getActiveVsite();
       $menus = $vsite->getContent('group_menu:menu');
@@ -141,6 +140,7 @@ class MenuHelper implements MenuHelperInterface {
       $menu_label = strtolower(preg_replace('/[^a-zA-Z0-9_]/', '', $menu_label));
       $tags[] = "config:block.block.$menu_label";
     }
+    // If called from main build form ids will be an array.
     else {
       foreach ($menu_label as $label) {
         $label = strtolower(preg_replace('/[^a-zA-Z0-9_]/', '', $label));
