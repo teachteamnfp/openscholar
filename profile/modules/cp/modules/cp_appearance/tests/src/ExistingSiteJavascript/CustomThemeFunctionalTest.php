@@ -146,6 +146,17 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
     $this->assertContains("{$this->groupAlias}/cp/appearance", $this->getSession()->getCurrentUrl());
 
     // Tests.
+    /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
+    $vsite_context_manager = $this->container->get('vsite.context_manager');
+    $vsite_context_manager->activateVsite($this->group);
+    /** @var \Drupal\cp_appearance\Entity\CustomThemeInterface $custom_theme */
+    $custom_theme = CustomTheme::load(CustomTheme::CUSTOM_THEME_ID_PREFIX . 'cyberpunk');
+    $this->assertNotNull($custom_theme);
+
+    /** @var \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler */
+    $theme_handler = $this->container->get('theme_handler');
+    $this->assertTrue($theme_handler->themeExists($custom_theme->id()));
+
     $this->visitViaVsite('', $this->group);
     $custom_theme_id = CustomTheme::CUSTOM_THEME_ID_PREFIX . 'cyberpunk_2077';
     $this->assertSession()->responseContains("/themes/custom_themes/$custom_theme_id/style.css");
