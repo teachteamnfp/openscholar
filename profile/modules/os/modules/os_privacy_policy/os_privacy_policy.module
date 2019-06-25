@@ -1,0 +1,20 @@
+<?php
+
+/**
+ * @file
+ * Hook implementations for the os privacy policy module.
+ */
+
+/**
+ * Implements hook_theme().
+ */
+function os_privacy_policy_theme($existing, $type, $theme, $path) {
+  return [
+    'os_privacy_policy_copyright_block' => [
+      'variables' => [
+        'privacy_policy_text' => '',
+        'privacy_policy_url' => '',
+      ],
+    ],
+  ];
+}
