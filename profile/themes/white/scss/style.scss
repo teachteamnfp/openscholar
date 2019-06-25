@@ -1,18 +1,6 @@
 @import '../../os_base/scss/base/breakpoints';
-//colors
-$white: #fff;
-$color_woodsmoke_approx: #111111;
-$color_masala_approx: #3d3d3d;
-$color_tundora_approx: #444;
-$color_mine_shaft_approx: #333333;
-$color_st_tropaz_approx: #215990;
+@import './variables';
 
-//fonts
-$font_0: Open Sans;
-$font_1: Helvetica;
-$font_2: sans-serif;
-
-@import url(https://fonts.googleapis.com/css?family=Open+Sans);
 body {
   font-family: $font_0, $font_1, $font_2;
 }

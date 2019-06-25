@@ -1,10 +1,8 @@
-@import '../../os_base/scss/ckeditor.scss';
-$color_mexican_red_approx: #a51c30;
+@import './variables';
 
 body {
   font-family: Source Sans Pro, sans-serif, Georgia, serif !important;
 }
-
 h2,
 h3,
 h4 {

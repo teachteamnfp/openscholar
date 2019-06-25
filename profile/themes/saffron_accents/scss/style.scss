@@ -1,24 +1,5 @@
 @import '../../os_base/scss/base/breakpoints';
-//colors
-$color_tundora_approx: #444;
-$color_tapa_approx: #777;
-$color_red_stage_approx: #BF5803;
-$color_st_tropaz_approx: #215990;
-$color_concrete_approx: #f3f3f1;
-$color_steel_blue_approx: #4e84c4;
-$color_cape_cod_approx: #434343;
-$white: #fff;
-$color_regent_gray_approx: #8996a0;
-$color_mountain_mist_approx: #999;
-$black: #000;
-$color_masala_approx: #3d3d3d;
-$color_picton_blue_approx: #57acff;
-
-//fonts
-$font_0: arial;
-$font_1: News Cycle;
-$font_2: arial !important;
-$font_3: georgia;
+@import './variables';
 
 //@extend-elements
 %extend_1 {
@@ -28,7 +9,6 @@ $font_3: georgia;
   line-height: 18px;
 }
 
-@import url(https://fonts.googleapis.com/css?family=News+Cycle);
 body {
   font-family: $font_0;
   color: $color_tundora_approx;

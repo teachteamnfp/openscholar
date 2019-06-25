@@ -30,5 +30,3 @@ regions:
 libraries:
   - modern/global-styling
 
-ckeditor_stylesheets:
-  - css/ckeditor.css

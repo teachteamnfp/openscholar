@@ -1,21 +1,5 @@
 @import '../../os_base/scss/base/breakpoints';
-//colors
-$color_goldenrod_approx: #ffdb6d;
-$color_steel_blue_approx: #0053b6;
-$white: #fff;
-$color_submarine_approx: #bac5c6;
-$black: #000;
-$color_alto_approx: #dedede;
-$color_pizza_approx: #c4961a;
-$color_log_cabin_approx: #222;
-$color_chathams_blue_approx: #1b4977;
-
-//fonts
-$font_0: Noto Serif;
-$font_1: Georgia;
-$font_2: serif;
-$font_3: arial;
-$font_4: sans-serif;
+@import './variables';
 
 //@extend-elements
 %extend_1 {
@@ -31,7 +15,6 @@ $font_4: sans-serif;
   color: $color_chathams_blue_approx;
 }
 
-@import url(https://fonts.googleapis.com/css?family=Noto+Serif);
 body {
   font-family: $font_0, $font_1, $font_2;
 }

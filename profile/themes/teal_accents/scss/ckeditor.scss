@@ -1,5 +1,4 @@
-@import '../../os_base/scss/ckeditor.scss';
-
+@import './varibales';
 h2,
 h3,
 h4 {
@@ -12,6 +11,6 @@ body {
   font-family: Cardo, sans-serif, Georgia, serif !important;
 }
 a {
-  color: #222;
+  color: $color_log_cabin_approx;
   text-decoration: underline;
 }

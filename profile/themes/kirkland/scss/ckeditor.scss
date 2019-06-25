@@ -1,10 +1,12 @@
-@import '../../os_base/scss/ckeditor.scss';
+@import './variables';
 body {
   font-size: 16px;
-  color: #222;
+  color: $color_log_cabin_approx;
   font-family: Quattrocento, sans-serif !important;
 }
-h2,h3,h4 {
+h2,
+h3,
+h4 {
   font-family: Oswald, sans-serif !important;
   font-weight: 300;
 }

@@ -29,6 +29,3 @@ regions:
 
 libraries:
   - red_raven/global-styling
-
-ckeditor_stylesheets:
-  - css/ckeditor.css

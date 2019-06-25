@@ -1,5 +1,5 @@
-@import '../../os_base/scss/ckeditor.scss';
+@import './variables';
 body {
-  color: #000;
+  color: $black;
   font-family: Cardo, sans-serif !important;
 }

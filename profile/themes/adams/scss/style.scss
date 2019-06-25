@@ -1,26 +1,5 @@
 @import '../../os_base/scss/base/breakpoints';
-//colors
-$color_st_tropaz_approx: #215990;
-$color_squirrel_approx: #8c8179;
-$white: #fff;
-$color_tundora_approx: #444;
-$color_mexican_red_approx: #a51c30;
-$color_chicago_approx: #5a5a5a;
-$color_merlot_approx: #86111e;
-$color_goldenrod_approx: #ffdb6d;
-$black: #000;
-$color_steel_blue_approx: #4e84c4;
-$color_celeste_approx: #ccc;
-$color_alto_approx: #ddd;
-$color-light-gray: #f4f4f4;
-
-//fonts
-$font_0: Open Sans;
-$font_1: sans-serif;
-$font_2: Open Sans Condensed;
-$font_3: sans-serif;
-$font_4: Oswald;
-
+@import './variables';
 //@extend-elements
 %extend_1 {
   background-color: $color_squirrel_approx;

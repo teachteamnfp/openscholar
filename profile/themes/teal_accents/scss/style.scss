@@ -1,33 +1,11 @@
 @import '../../os_base/scss/base/breakpoints';
-//colors
-$color_alabaster_approx: #f9f9f9;
-$color_log_cabin_approx: #222;
-$white: #fff;
-$color_tundora_approx: #444;
-$color_tuatara_approx: #343434;
-$color_java_approx: #1ebfb3;
-$color_downy_approx: #75c5bc;
-$color_ebb_approx: #ebe3df;
-$color_celeste_approx: #ccc;
-$color-gray: #666;
-
-//fonts
-$font_0: Cardo;
-$font_1: sans-serif;
-$font_2: Georgia;
-$font_3: serif !important;
-$font_4: Montserrat;
-$font_5: helvetica !important;
-$font_6: helvetica;
-
+@import './varibales';
 //@extend-elements
 %extend_1 {
   background-image: none;
   background-color: $white;
   border-top: 3px solid $color_celeste_approx;
 }
-@import url(https://fonts.googleapis.com/css?family=Montserrat);
-@import url(https://fonts.googleapis.com/css?family=Cardo);
 
 body {
   font-size: 15px;

@@ -1,25 +1,5 @@
 @import '../../os_base/scss/base/breakpoints';
-//colors
-$color_cararra_approx: #ebebeb;
-$color_alto_approx: #dddddd;
-$color_mine_shaft_approx: #303030;
-$white: #ffffff;
-$color_storm_dust_approx: #666666;
-$color_hippie_green_approx: #52854c;
-$color_alabaster_approx: #f9f9f9;
-$color-light-gray: #f4f4f4;
-
-//fonts
-$font_0: Roboto;
-$font_1: Baskerville;
-$font_2: Palatino;
-$font_3: Palatino Linotype;
-$font_4: Book Antiqua;
-$font_5: Times New Roman;
-$font_6: serif;
-$font_7: georgia;
-$font_8: arial;
-$font_9: helvetica;
+@import './variables';
 
 //@extend-elements
 %extend_1 {
@@ -48,7 +28,7 @@ $font_9: helvetica;
   min-height: 20px;
   padding: 7px 15px !important;
 }
-@import url(https://fonts.googleapis.com/css?family=Roboto);
+
 body {
   font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6;
   font-size: 14px;

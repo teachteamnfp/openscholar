@@ -1,27 +1,6 @@
 @import '../../os_base/scss/base/breakpoints';
-//colors
-$color_alabaster_approx: #f9f9f9;
-$color_chathams_blue_approx: #1b4977;
-$color_regent_gray_approx: #585858;
-$white: #fff;
-$color_steel_blue_approx: #1758a5;
-$gallery: #efefef;
-$color_mountain_mist_approx: #999;
-$color_gray_nurse_approx: #e9e9e9;
-$color_rangoon_green_approx: #1e1e1e;
+@import './variables';
 
-//fonts
-$font_0: Raleway;
-$font_1: Georgia;
-$font_2: Baskerville;
-$font_3: Palatino;
-$font_4: Palatino Linotype;
-$font_5: Book Antiqua;
-$font_6: Times New Roman;
-$font_7: serif;
-$font_8: arial;
-
-@import url(https://fonts.googleapis.com/css?family=Raleway);
 body {
   background: $color_alabaster_approx;
   font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;

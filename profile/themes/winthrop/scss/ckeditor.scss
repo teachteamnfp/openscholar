@@ -1,7 +1,7 @@
-@import '../../os_base/scss/ckeditor.scss';
+@import './variables';
 
 body {
-  color: #222;
+  color: $color_log_cabin_approx;
   font-family: Merriweather, Georgia, serif !important;
 }
 h2,

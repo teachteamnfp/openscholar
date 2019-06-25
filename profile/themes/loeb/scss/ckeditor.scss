@@ -1,6 +1,5 @@
-@import '../../os_base/scss/ckeditor.scss';
-$color_log_cabin_approx: #222;
-$color_fern_green_approx:  #457141;
+@import './variables';
+
 body {
   color: $color_log_cabin_approx;
   * {
