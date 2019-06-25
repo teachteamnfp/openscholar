@@ -36,13 +36,6 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
   protected $configFactory;
 
   /**
-   * Theme configuration.
-   *
-   * @var \Drupal\Core\Config\ImmutableConfig
-   */
-  protected $themeConfig;
-
-  /**
    * Form builder.
    *
    * @var \Drupal\Core\Form\FormBuilderInterface
@@ -87,7 +80,6 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
     $this->configFactory = $config_factory;
     $this->formBuilder = $form_builder;
     $this->themeSelectorBuilder = $theme_selector_builder;
-    $this->themeConfig = $this->configFactory->get('system.theme');
     $this->drupalInstalledThemes = $this->themeHandler->listInfo();
     $this->osInstalledThemes = array_filter($this->drupalInstalledThemes, function (Extension $theme) {
       return (isset($theme->base_themes) && $theme->base_theme === 'os_base' && $theme->status);
@@ -123,8 +115,10 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
    * {@inheritdoc}
    */
   public function themeIsDefault(Extension $theme): bool {
+    /** @var \Drupal\Core\Config\Config $theme_config */
+    $theme_config = $this->configFactory->get('system.theme');
     /** @var string $theme_default */
-    $theme_default = $this->themeConfig->get('default');
+    $theme_default = $theme_config->get('default');
 
     if ($theme_default === $theme->getName()) {
       return TRUE;
@@ -147,8 +141,10 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
    *   Renderable theme_image structure. NULL if no screenshot found.
    */
   protected function addScreenshotInfo(Extension $theme): ?array {
+    /** @var \Drupal\Core\Config\Config $theme_config */
+    $theme_config = $this->configFactory->get('system.theme');
     /** @var string $theme_default */
-    $theme_default = $this->themeConfig->get('default');
+    $theme_default = $theme_config->get('default');
     $preview = $theme;
 
     // Make sure that if a flavor is set as default, then its preview is being
