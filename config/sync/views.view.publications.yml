@@ -129,14 +129,14 @@ display:
             bibcite_reference_bulk_form: bibcite_reference_bulk_form
           info:
             title:
-              sortable: false
+              sortable: true
               default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
             type:
-              sortable: false
+              sortable: true
               default_sort_order: asc
               align: ''
               separator: ''
@@ -148,14 +148,14 @@ display:
               empty_column: false
               responsive: ''
             status:
-              sortable: false
+              sortable: true
               default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
             changed:
-              sortable: false
+              sortable: true
               default_sort_order: asc
               align: ''
               separator: ''
