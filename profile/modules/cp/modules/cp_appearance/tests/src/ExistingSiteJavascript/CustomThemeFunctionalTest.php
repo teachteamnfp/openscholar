@@ -39,7 +39,6 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
    * Tests custom theme save.
    *
    * @covers ::save
-   * @covers ::install
    * @covers ::redirectOnSave
    *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
@@ -59,6 +58,7 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
     $this->getSession()->getPage()->findField('styles')->setValue('body { color: black; }');
     $this->getSession()->getPage()->findField('scripts')->setValue('alert("Hello World")');
     $this->getSession()->getPage()->pressButton('Save');
+    $this->getSession()->getPage()->pressButton('Confirm');
 
     $this->assertContains("{$this->groupAlias}/cp/appearance", $this->getSession()->getCurrentUrl());
 
@@ -122,12 +122,11 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
    * Tests custom theme save and set default.
    *
    * @covers ::save
-   * @covers ::install
-   * @covers ::setDefault
    * @covers ::redirectOnSave
    *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
    * @throws \Behat\Mink\Exception\ExpectationException
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function testSaveDefault(): void {
     // Setup.
@@ -142,6 +141,7 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
     $this->getSession()->getPage()->findField('styles')->setValue('body { color: black; }');
     $this->getSession()->getPage()->findField('scripts')->setValue('alert("Hello World")');
     $this->getSession()->getPage()->pressButton('Save and set as default theme');
+    $this->getSession()->getPage()->pressButton('Confirm');
 
     $this->assertContains("{$this->groupAlias}/cp/appearance", $this->getSession()->getCurrentUrl());
 
@@ -150,7 +150,7 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
     $vsite_context_manager = $this->container->get('vsite.context_manager');
     $vsite_context_manager->activateVsite($this->group);
     /** @var \Drupal\cp_appearance\Entity\CustomThemeInterface $custom_theme */
-    $custom_theme = CustomTheme::load(CustomTheme::CUSTOM_THEME_ID_PREFIX . 'cyberpunk');
+    $custom_theme = CustomTheme::load(CustomTheme::CUSTOM_THEME_ID_PREFIX . 'cyberpunk_2077');
     $this->assertNotNull($custom_theme);
 
     /** @var \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler */
@@ -161,6 +161,8 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
     $custom_theme_id = CustomTheme::CUSTOM_THEME_ID_PREFIX . 'cyberpunk_2077';
     $this->assertSession()->responseContains("/themes/custom_themes/$custom_theme_id/style.css");
     $this->assertSession()->responseContains("/themes/custom_themes/$custom_theme_id/script.js");
+
+    $custom_theme->delete();
   }
 
   /**
@@ -183,6 +185,7 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
     $this->getSession()->getPage()->findField('styles')->setValue('body { color: black; }');
     $this->getSession()->getPage()->findField('scripts')->setValue('alert("Hello World")');
     $this->getSession()->getPage()->pressButton('Save');
+    $this->getSession()->getPage()->pressButton('Confirm');
 
     $this->assertSession()->pageTextContains('The machine-readable name is already in use. It must be unique.');
   }
