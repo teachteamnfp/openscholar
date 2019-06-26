@@ -56,6 +56,83 @@
           left: 7px;
         }
       }
+      &.addthis {
+        a {
+          &:before {
+            background: url(../../../themes/os_base/images/widgets/add-this.png) no-repeat;
+          }
+        }
+      }
+      &.basic {
+        a {
+          &:before {
+            background: url(../../../themes/os_base/images/widgets/basic-block.png) no-repeat;
+          }
+        }
+      }
+      &.custom-text-html {
+        a {
+          &:before {
+            background: url(../../../themes/os_base/images/widgets/html.png) no-repeat;
+          }
+        }
+      }
+      &.embed-media {
+        a {
+          &:before {
+            background: url(../../../themes/os_base/images/widgets/media.png) no-repeat;
+          }
+        }
+      }
+      &.featured-posts {
+        a {
+          &:before {
+            background: url(../../../themes/os_base/images/widgets/featured-post.png) no-repeat;
+          }
+        }
+      }
+      &.media-gallery {
+        a {
+          &:before {
+            background: url(../../../themes/os_base/images/widgets/media.png) no-repeat;
+          }
+        }
+      }
+      &.publication-years {
+        a {
+          &:before {
+            background: url(../../../themes/os_base/images/widgets/date.png) no-repeat;
+          }
+        }
+      }
+      // &.publication-types {
+      //   a {
+      //     &:before {
+      //       background: url(../../../themes/os_base/images/widgets/publication-type.png) no-repeat;
+      //     }
+      //   }
+      // }
+      &.rss-feed {
+        a {
+          &:before {
+            background: url(../../../themes/os_base/images/widgets/rss.png) no-repeat;
+          }
+        }
+      }
+      &.taxonomy {
+        a {
+          &:before {
+            background: url(../../../themes/os_base/images/widgets/taxonomy-icon.png) no-repeat;
+          }
+        }
+      }
+      &.twitter-feed {
+        a {
+          &:before {
+            background: url(../../../themes/os_base/images/widgets/twitter.png) no-repeat;
+          }
+        }
+      }
     }
   }
 }
