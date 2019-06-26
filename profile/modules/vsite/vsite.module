@@ -5,6 +5,9 @@
  * Hook implementations for the vsite module.
  */
 
+use Drupal\vsite\Entity\GroupPresetInterface;
+use Drupal\vsite\Entity\GroupPreset;
+use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Asset\AttachedAssetsInterface;
 use Drupal\Core\Url;
 use Drupal\group\Entity\GroupInterface;
@@ -108,10 +111,10 @@ function vsite_form_node_form_alter(&$form, FormStateInterface $form_state, $for
  * Implements hook_form_alter().
  */
 function vsite_form_alter(&$form, FormStateInterface $formState, $form_id) {
-  if ($formState->getFormObject() instanceof EntityFormInterface) {
+  /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContext */
+  $vsiteContext = \Drupal::service('vsite.context_manager');
 
-    /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContext */
-    $vsiteContext = \Drupal::service('vsite.context_manager');
+  if ($formState->getFormObject() instanceof EntityFormInterface) {
 
     /** @var \Drupal\Core\Entity\EntityInterface $entity */
     $entity = $formState->getFormObject()->getEntity();
@@ -158,6 +161,21 @@ function vsite_form_alter(&$form, FormStateInterface $formState, $form_id) {
     $allowedSubSites = \Drupal::config('vsite.settings')->get('allowed_subsite_group_types');
     if (!empty($allowedSubSites) && $entityTypeId == 'group' && !in_array($entity->bundle(), $allowedSubSites)) {
       $form['field_parent_site']['#access'] = FALSE;
+    }
+  }
+  elseif ($formState->getFormObject() instanceof ConfigFormBase && \Drupal::currentUser()->hasPermission('administer presets')) {
+    if ($vsite = $vsiteContext->getActiveVsite()) {
+      if ($vsite->hasField('field_preset') && !$vsite->get('field_preset')->isEmpty()) {
+        $preset_id = $vsite->get('field_preset')->get(0)->getValue()['target_id'];
+        $preset = GroupPreset::load($preset_id);
+        $form['actions']['submitToPreset'] = [
+          '#type' => 'submit',
+          '#value' => t('Save To Preset @label', ['@label' => $preset->label()]),
+          '#submit' => [
+            [$preset, 'saveConfig'],
+          ],
+        ];
+      }
     }
   }
 }
@@ -289,4 +307,51 @@ function vsite_js_settings_alter(array &$settings, AttachedAssetsInterface $asse
   // The prefix `/` will be added as part of baseUrl. Therefore, removing it
   // from here, to prevent multiple slashes.
   $settings['path']['currentPath'] = ltrim($current_path, '/');
+}
+
+/**
+ * Implements hook_group_create().
+ */
+function vsite_group_create(GroupInterface $group) {
+  if ($group->hasField('field_preset') && !$group->get('field_preset')->isEmpty()) {
+    $preset_id = $group->get('field_preset')->get(0)->getValue()['target_id'];
+    if ($preset = GroupPreset::load($preset_id)) {
+      $tasks = $preset->getCreationTasks();
+      $batch = [
+        'title' => t('Setting up your new OpenScholar site'),
+        'operations' => [],
+        'finished' => '_vsite_batch_finished',
+        'init_message' => t('Preparing for setup'),
+        'progress_message' => t('Set up tasks @current of @total completed. Estimated time for completion is @estimate'),
+      ];
+      foreach ($tasks as $t) {
+        $batch['operations'][] = [
+          '_vsite_process_preset_task',
+          [$group, $preset, $t]
+        ];
+      }
+      batch_set($batch);
+    }
+  }
+}
+
+/**
+ * Performs a single preset task.
+ *
+ * @param \Drupal\group\Entity\GroupInterface $group
+ *   The group being operated on.
+ * @param \Drupal\vsite\Entity\GroupPresetInterface $preset
+ *   The preset the group is using.
+ * @param string $task
+ *   The task to perform.
+ *
+ * @return array|null
+ *   The result of the batch or null if the task was not callable
+ */
+function _vsite_process_preset_task(GroupInterface $group, GroupPresetInterface $preset, string $task, &$context) {
+  if (is_callable($task)) {
+    return call_user_func_array($task, [$group, $preset, &$context]);
+  }
+  // What do I do here?
+  return;
 }

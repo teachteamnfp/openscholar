@@ -1,0 +1,6 @@
+entity.group_preset.canonical:
+  title: 'Group presets'
+  description: 'Configure group presets.'
+  route_name: 'entity.group_preset.collection'
+  parent: 'system.admin_group'
+  weight: 6
