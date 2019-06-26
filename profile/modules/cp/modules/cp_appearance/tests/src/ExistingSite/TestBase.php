@@ -81,6 +81,12 @@ abstract class TestBase extends OsExistingSiteTestBase {
     $theme_config = $this->configFactory->get('system.theme');
     $this->defaultTheme = $theme_config->get('default');
     $this->themeHandler = $this->container->get('theme_handler');
+    /** @var \Drupal\Core\Extension\ThemeInstallerInterface $theme_installer */
+    $theme_installer = $this->container->get('theme_installer');
+    $theme_installer->install([
+      self::TEST_CUSTOM_THEME_1_NAME,
+      self::TEST_CUSTOM_THEME_2_NAME,
+    ]);
   }
 
   /**
@@ -96,10 +102,18 @@ abstract class TestBase extends OsExistingSiteTestBase {
     // the problem.
     \sleep(5);
 
-    parent::tearDown();
     /** @var \Drupal\Core\Config\Config $theme_config_mut */
     $theme_config_mut = $this->configFactory->getEditable('system.theme');
     $theme_config_mut->set('default', $this->defaultTheme)->save();
+
+    /** @var \Drupal\Core\Extension\ThemeInstallerInterface $theme_installer */
+    $theme_installer = $this->container->get('theme_installer');
+    $theme_installer->uninstall([
+      self::TEST_CUSTOM_THEME_1_NAME,
+      self::TEST_CUSTOM_THEME_2_NAME,
+    ]);
+
+    parent::tearDown();
   }
 
 }
