@@ -3,6 +3,7 @@
 namespace Drupal\Tests\cp_taxonomy\ExistingSiteJavascript;
 
 use Drupal\taxonomy\Entity\Vocabulary;
+use Drupal\Tests\openscholar\Traits\CpTaxonomyTestTrait;
 
 /**
  * Tests taxonomy_terms fields functionality.
@@ -11,6 +12,8 @@ use Drupal\taxonomy\Entity\Vocabulary;
  * @group cp
  */
 class TaxonomyTermsFieldTest extends CpTaxonomyExistingSiteJavascriptTestBase {
+
+  use CpTaxonomyTestTrait;
 
   /**
    * Test group 1.
@@ -71,7 +74,7 @@ class TaxonomyTermsFieldTest extends CpTaxonomyExistingSiteJavascriptTestBase {
     $this->createGroupTerm($this->group1, 'vocab_group_1', 'Term 2 group 1 vid1');
     $this->createGroupTerm($this->group2, 'vocab_group_2', 'Term 1 group 2 vid2');
 
-    $this->visit($this->group1->get('path')->getValue()[0]['alias'] . "/node/add/taxonomy_test_1");
+    $this->visitViaVsite("node/add/taxonomy_test_1", $this->group1);
     $web_assert = $this->assertSession();
     $web_assert->statusCodeEquals(200);
     $page = $this->getCurrentPage();
@@ -97,7 +100,7 @@ class TaxonomyTermsFieldTest extends CpTaxonomyExistingSiteJavascriptTestBase {
     $this->createGroupTerm($this->group1, 'vocab_media_group_1', 'Term 1 group 1 vid1');
     $this->createGroupTerm($this->group1, 'vocab_media_group_1', 'Term 2 group 1 vid1');
 
-    $this->visit($this->group1->get('path')->getValue()[0]['alias'] . "/media/add/taxonomy_test_file");
+    $this->visitViaVsite("media/add/taxonomy_test_file", $this->group1);
     $web_assert = $this->assertSession();
     $web_assert->statusCodeEquals(200);
     $page = $this->getCurrentPage();
@@ -118,7 +121,7 @@ class TaxonomyTermsFieldTest extends CpTaxonomyExistingSiteJavascriptTestBase {
    * Test node taxonomy hidden field on node add page.
    */
   public function testNodeTaxonomyHiddenField() {
-    $this->visit($this->group1->get('path')->getValue()[0]['alias'] . "/node/add/taxonomy_test_2");
+    $this->visitViaVsite("node/add/taxonomy_test_2", $this->group1);
     $web_assert = $this->assertSession();
     $web_assert->statusCodeEquals(200);
     $page = $this->getCurrentPage();

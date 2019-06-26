@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\cp_taxonomy\ExistingSite;
 
+use Drupal\Tests\openscholar\Traits\CpTaxonomyTestTrait;
 use Drupal\views\Views;
 
 /**
@@ -13,6 +14,8 @@ use Drupal\views\Views;
  * @package Drupal\Tests\cp_taxonomy\ExistingSite
  */
 class TaxonomyTermsViewFieldTest extends TestBase {
+
+  use CpTaxonomyTestTrait;
 
   /**
    * Test publication.

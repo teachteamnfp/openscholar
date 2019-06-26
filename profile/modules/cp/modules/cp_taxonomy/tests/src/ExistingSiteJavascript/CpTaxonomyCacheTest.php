@@ -4,6 +4,7 @@ namespace Drupal\Tests\cp_taxonomy\ExistingSiteJavascript;
 
 use Drupal\Core\Cache\Cache;
 use Drupal\taxonomy\Entity\Vocabulary;
+use Drupal\Tests\openscholar\Traits\CpTaxonomyTestTrait;
 
 /**
  * Tests cache invalidation listing and entity page.
@@ -12,6 +13,8 @@ use Drupal\taxonomy\Entity\Vocabulary;
  * @group cp
  */
 class CpTaxonomyCacheTest extends CpTaxonomyExistingSiteJavascriptTestBase {
+
+  use CpTaxonomyTestTrait;
 
   protected $term;
   protected $config;
@@ -26,13 +29,13 @@ class CpTaxonomyCacheTest extends CpTaxonomyExistingSiteJavascriptTestBase {
     $this->drupalLogin($admin);
     $allowed_types = [
       'node:news',
-      'media:taxonomy_test_file',
+      'media:*',
       'bibcite_reference:artwork',
     ];
     $this->createGroupVocabulary($this->group, 'vocab_group_1', $allowed_types);
     $this->term = $this->createGroupTerm($this->group, 'vocab_group_1', 'Term1');
     $this->vsiteContextManager->activateVsite($this->group);
-    $this->config = $this->container->get('config.factory')->getEditable('cp_taxonomy.settings');
+    $this->config = $this->configFactory->getEditable('cp_taxonomy.settings');
   }
 
   /**
