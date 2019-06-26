@@ -2,6 +2,7 @@
 
 namespace Drupal\cp_menu\Services;
 
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -10,6 +11,7 @@ use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\cp_menu\MenuHelperInterface;
 use Drupal\group\Entity\GroupInterface;
+use Drupal\vsite\Plugin\VsiteContextManager;
 
 /**
  * Class MenuHelper.
@@ -48,6 +50,13 @@ class MenuHelper implements MenuHelperInterface {
   protected $storage;
 
   /**
+   * Vsite Context Manager service.
+   *
+   * @var \Drupal\vsite\Plugin\VsiteContextManager
+   */
+  protected $vsiteManager;
+
+  /**
    * MenuHelper constructor.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
@@ -56,15 +65,18 @@ class MenuHelper implements MenuHelperInterface {
    *   Menu Link tree instance.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   EntityTypeManager instance.
+   * @param \Drupal\vsite\Plugin\VsiteContextManager $vsite_manager
+   *   Vsite context manager instance.
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function __construct(ConfigFactoryInterface $config_factory, MenuLinkTree $menu_tree, EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(ConfigFactoryInterface $config_factory, MenuLinkTree $menu_tree, EntityTypeManagerInterface $entity_type_manager, VsiteContextManager $vsite_manager) {
     $this->configFactory = $config_factory;
     $this->menuTree = $menu_tree;
     $this->entityTypeManager = $entity_type_manager;
     $this->storage = $this->entityTypeManager->getStorage('menu_link_content');
+    $this->vsiteManager = $vsite_manager;
   }
 
   /**
@@ -109,6 +121,34 @@ class MenuHelper implements MenuHelperInterface {
       // Map primary menu links.
       $this->mapMenuLinks($group_menu);
     }
+    $this->invalidateBlockCache(['primarymenu', 'secondarymenu'], TRUE);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function invalidateBlockCache($ids, $buildForm = FALSE) : void {
+    $menu_label = $ids;
+    // If not called from Main build form then ids will be a single string.
+    if (!$buildForm) {
+      $vsite = $this->vsiteManager->getActiveVsite();
+      $menus = $vsite->getContent('group_menu:menu');
+      foreach ($menus as $menu) {
+        $this->menus[$menu->entity_id_str->target_id] = $menu->label();
+      }
+      $menu_label = $this->menus[$ids];
+      $menu_label = strtolower(preg_replace('/[^a-zA-Z0-9_]/', '', $menu_label));
+      $tags[] = "config:block.block.$menu_label";
+    }
+    // If called from main build form ids will be an array.
+    else {
+      foreach ($menu_label as $label) {
+        $label = strtolower(preg_replace('/[^a-zA-Z0-9_]/', '', $label));
+        $tags[] = "config:block.block.$label";
+      }
+    }
+    $tags = array_unique($tags);
+    Cache::invalidateTags($tags);
   }
 
   /**
