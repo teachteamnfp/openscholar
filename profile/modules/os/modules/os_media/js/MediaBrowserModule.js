@@ -14,6 +14,18 @@
       // if the File object is not supported by this browser, fallback to the
       // original media browser.
       if (mbModal.requirementsMet()) {
+        let options = {
+          global: {},
+          widget: {}
+        };
+        Drupal.media = {};
+        Drupal.media.modal = function (params) {
+          options.global = $.extend({}, options.global);
+          options.plugins = {};
+          options.widget = $.extend({}, options.widget);
+
+          mbModal.open(params);
+        };
         // Drupal = Drupal || {};
         // Drupal.media = Drupal.media || {};
         // Drupal.media.popups = Drupal.media.popups || {};
@@ -21,9 +33,6 @@
         // Drupal.media.popups.mediaBrowserOld = oldPopup;
         // Drupal.media.popups.mediaBrowser = function (onSelect, globalOptions, pluginOptions, widgetOptions) {
         //   var options = Drupal.media.popups.mediaBrowser.getDefaults();
-        //   options.global = $.extend({}, options.global, globalOptions);
-        //   options.plugins = pluginOptions;
-        //   options.widget = $.extend({}, options.widget, widgetOptions);
         //
         //
         //   // Params to send along to the iframe. WIP.

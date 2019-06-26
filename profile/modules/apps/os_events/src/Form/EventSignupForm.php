@@ -6,6 +6,7 @@ use DateInterval;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\CloseModalDialogCommand;
 use Drupal\Core\Ajax\ReplaceCommand;
+use Drupal\Core\Database\Connection;
 use Drupal\Core\Datetime\DateFormatter;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityInterface;
@@ -30,7 +31,7 @@ class EventSignupForm extends FormBase {
   /**
    * Constructs EventSignup object.
    *
-   * @param \Drupal\rng\Entity\RegistrantFactoryInterface $registrantFactory
+   * @param \Drupal\rng\RegistrantFactoryInterface $registrantFactory
    *   The registrant factory service.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityManager
    *   The EntityManager service.
@@ -42,14 +43,17 @@ class EventSignupForm extends FormBase {
    *   The Date formatter service.
    * @param \Drupal\os_events\MailNotificationsInterface $mailNotification
    *   The mail notification service.
+   * @param \Drupal\Core\Database\Connection $database
+   *   The database service.
    */
-  public function __construct(RegistrantFactoryInterface $registrantFactory, EntityTypeManagerInterface $entityManager, EventManagerInterface $eventManager, Messenger $messenger, DateFormatter $dateFormatter, MailNotificationsInterface $mailNotification) {
+  public function __construct(RegistrantFactoryInterface $registrantFactory, EntityTypeManagerInterface $entityManager, EventManagerInterface $eventManager, Messenger $messenger, DateFormatter $dateFormatter, MailNotificationsInterface $mailNotification, Connection $database) {
     $this->registrantFactory = $registrantFactory;
     $this->entityManager = $entityManager;
     $this->eventManager = $eventManager;
     $this->messenger = $messenger;
     $this->dateFormatter = $dateFormatter;
     $this->mailNotification = $mailNotification;
+    $this->database = $database;
   }
 
   /**
@@ -62,7 +66,8 @@ class EventSignupForm extends FormBase {
       $container->get('rng.event_manager'),
       $container->get('messenger'),
       $container->get('date.formatter'),
-      $container->get('os_events.mail_notifications')
+      $container->get('os_events.mail_notifications'),
+      $container->get('database')
     );
   }
 
@@ -161,20 +166,26 @@ class EventSignupForm extends FormBase {
     $node = $this->entityManager->getStorage('node')->load($form_state->getValue('nid'));
     $eventMeta = $this->eventManager->getMeta($node);
     $registrations = $eventMeta->getRegistrations();
-    $registrants = $eventMeta->getRegistrants('rng_contact');
     $emailEntered = $form_state->getValue('email');
     $forDate = $form_state->getValue('registering_for_date');
 
     foreach ($registrations as $registration) {
-      $date = $registration->field_for_date->value;
-      foreach ($registrants as $registrant) {
-        $id = $registrant->identity->getValue()[0]['target_id'];
-        $identity = $this->entityManager->getStorage('rng_contact')->load($id);
-        $email = $identity->field_email->value;
-        if ($email === $emailEntered && $date === $forDate) {
-          $form_state->setErrorByName('email', $this->t('User is already registered for this date.'));
-        }
-      }
+      $ids[] = $registration->id();
+    }
+
+    // To find out if a email is already registered for a particular date.
+    $query = $this->database
+      ->select('registration__field_for_date', 'rfd')
+      ->fields('rfd', []);
+    $query->join('registrant', 'reg', 'rfd.entity_id = reg.registration');
+    $query->join('rng_contact__field_email', 'rce', 'reg.identity__target_id = rce.entity_id');
+    $query->condition('rfd.entity_id', $ids, 'IN');
+    $query->condition('rfd.field_for_date_value', $forDate);
+    $query->condition('rce.field_email_value', $emailEntered);
+    $result = $query->execute()->fetchAssoc();
+
+    if ($result) {
+      $form_state->setErrorByName('email', $this->t('User is already registered for this date.'));
     }
   }
 

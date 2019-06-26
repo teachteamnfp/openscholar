@@ -23,3 +23,13 @@ cp_appearance.preview:
   requirements:
     _group_permission: 'manage cp appearance'
     _group_member: 'TRUE'
+
+# CustomTheme routes.
+entity.cp_custom_theme.add_form:
+  path: '/cp/appearance/custom-themes/add'
+  defaults:
+    _entity_form: 'cp_custom_theme.add'
+    _title: 'Add Custom Theme'
+  requirements:
+    _group_permission: 'manage cp appearance'
+    _group_member: 'TRUE'
