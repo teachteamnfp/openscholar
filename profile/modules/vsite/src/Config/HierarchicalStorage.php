@@ -25,6 +25,13 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
   protected $storages = [];
 
   /**
+   * The level that writes should occur at.
+   *
+   * @var int
+   */
+  protected $overrideLevel;
+
+  /**
    * Constructor.
    */
   public function __construct(StorageInterface $storage) {
@@ -99,9 +106,21 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
    * {@inheritdoc}
    */
   public function write($name, array $data) {
-    /** @var \Drupal\Core\Config\StorageInterface $store */
-    $store = $this->storages[0]['storage'];
-    $store->write($name, $data);
+    if (!is_null($this->overrideLevel)) {
+      foreach ($this->storages as $st) {
+        if ($st['weight'] == $this->overrideLevel) {
+          /** @var \Drupal\Core\Config\StorageInterface $store */
+          $store = $st['storage'];
+          break;
+        }
+      }
+    }
+    else {
+      $store = $this->storages[0]['storage'];
+    }
+    if ($store) {
+      $store->write($name, $data);
+    }
   }
 
   /**
@@ -202,6 +221,32 @@ class HierarchicalStorage implements HierarchicalStorageInterface {
     /** @var \Drupal\Core\Config\StorageInterface $store */
     $store = $this->storages[0]['storage'];
     return $store->getCollectionName();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function saveTolevel($name, $value, $level) {
+    /** @var \Drupal\Core\Config\StorageInterface $st */
+    foreach ($this->storages as $st) {
+      if ($st['weight'] == $level) {
+        $st->write($name, $value);
+      }
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function overrideWriteLevel($level) {
+    $this->overrideLevel = $level;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function clearWriteOverride() {
+    $this->overrideLevel = NULL;
   }
 
 }

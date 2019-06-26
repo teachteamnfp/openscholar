@@ -221,6 +221,13 @@ function os_widgets_field_taxonomy_vocabulary_ajax(array &$form, FormStateInterf
   $data['vid']['#default_value'] = $selected_vocabulary[0]['target_id'] ?? '';
   $saved_entity_types = $taxonomy_helper->getSelectedBundles($data);
 
+  foreach ($saved_entity_types as $entity_key) {
+    if ($entity_key == 'node:events') {
+      $saved_entity_types[] = 'node:past_events';
+      $saved_entity_types[] = 'node:upcoming_events';
+    }
+  }
+
   if (empty($saved_entity_types)) {
     return _os_widgets_create_form_taxonomy_bundle_ajax_response($form);
   }
@@ -267,8 +274,16 @@ function _os_widgets_create_form_taxonomy_bundle_ajax_response($form) {
  *   Collected array used by checkboxes in field.
  */
 function os_widgets_field_taxonomy_bundle_allowed_values() {
+  /** @var \Drupal\cp_taxonomy\CpTaxonomyHelperInterface $taxonomy_helper */
   $taxonomy_helper = Drupal::service('cp.taxonomy.helper');
-  return $taxonomy_helper->getSelectableBundles();
+  $bundles = $taxonomy_helper->getSelectableBundles();
+  foreach (array_keys($bundles) as $bundle_name) {
+    if ($bundle_name == 'node:events') {
+      $bundles['node:past_events'] = t('Past events');
+      $bundles['node:upcoming_events'] = t('Upcoming events');
+    }
+  }
+  return $bundles;
 }
 
 /**
