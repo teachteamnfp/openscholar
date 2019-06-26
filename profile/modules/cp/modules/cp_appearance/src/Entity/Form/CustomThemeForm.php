@@ -190,10 +190,10 @@ class CustomThemeForm extends EntityForm {
     $actions['save_default'] = [
       '#type' => 'submit',
       '#value' => $this->t('Save and set as default theme'),
+      '#name' => 'save_default',
       '#submit' => [
         '::submitForm',
         '::save',
-        '::setDefault',
         '::redirectOnSave',
       ],
     ];
@@ -234,34 +234,25 @@ class CustomThemeForm extends EntityForm {
   }
 
   /**
-   * Sets the new custom theme as default theme.
-   *
-   * @ingroup forms
-   */
-  public function setDefault(array &$form, FormStateInterface $form_state): void {
-    /** @var \Drupal\cp_appearance\Entity\CustomThemeInterface $custom_theme */
-    $custom_theme = $this->getEntity();
-
-    /** @var \Drupal\Core\Config\Config $theme_setting_mut */
-    $theme_setting_mut = $this->configFactory()->getEditable('system.theme');
-    $theme_setting_mut->set('default', $custom_theme->id())->save();
-
-    $this->messenger()->addMessage($this->t('Custom theme %name successfully set as default.', [
-      '%name' => $custom_theme->label(),
-    ]));
-  }
-
-  /**
    * Redirects to correct location on save.
    *
    * @ingroup forms
    */
   public function redirectOnSave(array &$form, FormStateInterface $form_state): void {
+    /** @var array $element */
+    $element = $form_state->getTriggeringElement();
     /** @var \Drupal\cp_appearance\Entity\CustomThemeInterface $entity */
     $entity = $this->getEntity();
-    $form_state->setRedirect('cp_custom_theme.install_form', [
+
+    $route_parameters = [
       'custom_theme' => $entity->id(),
-    ]);
+    ];
+
+    if ($element['#name'] === 'save_default') {
+      $route_parameters['make_default'] = TRUE;
+    }
+
+    $form_state->setRedirect('cp_custom_theme.install_form', $route_parameters);
   }
 
 }

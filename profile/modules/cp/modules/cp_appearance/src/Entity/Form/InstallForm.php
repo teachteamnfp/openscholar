@@ -30,6 +30,13 @@ final class InstallForm extends ConfirmFormBase implements ContainerInjectionInt
   protected $customTheme;
 
   /**
+   * Marks if the theme should be made as default.
+   *
+   * @var bool
+   */
+  protected $makeDefault;
+
+  /**
    * Creates a new InstallForm object.
    *
    * @param \Drupal\Core\Extension\ThemeInstallerInterface $theme_installer
@@ -72,8 +79,9 @@ final class InstallForm extends ConfirmFormBase implements ContainerInjectionInt
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, $custom_theme = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, $custom_theme = NULL, $make_default = NULL) {
     $this->customTheme = CustomTheme::load($custom_theme);
+    $this->makeDefault = (bool) $make_default;
     return parent::buildForm($form, $form_state);
   }
 
@@ -85,9 +93,20 @@ final class InstallForm extends ConfirmFormBase implements ContainerInjectionInt
       $this->customTheme->id(),
     ]);
 
-    $this->messenger()->addMessage('Custom theme %name successfully installed.', [
+    $this->messenger()->addMessage($this->t('Custom theme %name successfully installed.', [
       '%name' => $this->customTheme->label(),
-    ]);
+    ]));
+
+    if ($this->makeDefault) {
+      /** @var \Drupal\Core\Config\Config $theme_setting_mut */
+      $theme_setting_mut = $this->configFactory()->getEditable('system.theme');
+      $theme_setting_mut->set('default', $this->customTheme->id())->save();
+
+      $this->messenger()->addMessage($this->t('Custom theme %name is made as default.', [
+        '%name' => $this->customTheme->label(),
+      ]));
+    }
+
     $form_state->setRedirect('cp.appearance');
   }
 
