@@ -1,0 +1,65 @@
+<?php
+
+/**
+ * @file
+ * Cp Appearance installation/un-installation scripts.
+ */
+
+use Drupal\Component\PhpStorage\FileStorage;
+use Drupal\cp_appearance\Entity\CustomTheme;
+use Drupal\cp_appearance\Entity\CustomThemeException;
+
+/**
+ * Implements hook_install().
+ */
+function cp_appearance_install() {
+  try {
+    cp_appearance_init_custom_themes_storage_location();
+  }
+  catch (Exception $e) {
+    /** @var \Drupal\Core\Logger\LoggerChannelFactoryInterface $logger_factory */
+    $logger_factory = Drupal::service('logger.factory');
+    $logger_factory->get('cp_appearance')->error($e->getMessage());
+  }
+}
+
+/**
+ * Initialize custom themes storage location.
+ */
+function cp_appearance_update_8001() {
+  try {
+    cp_appearance_init_custom_themes_storage_location();
+  }
+  catch (Exception $e) {
+    /** @var \Drupal\Core\Logger\LoggerChannelFactoryInterface $logger_factory */
+    $logger_factory = Drupal::service('logger.factory');
+    $logger_factory->get('cp_appearance')->error($e->getMessage());
+  }
+}
+
+/**
+ * Initializes custom themes storage location.
+ *
+ * @throws \Drupal\cp_appearance\Entity\CustomThemeException
+ */
+function cp_appearance_init_custom_themes_storage_location() {
+  $custom_theme_path = CustomTheme::ABSOLUTE_CUSTOM_THEMES_LOCATION;
+  $status = file_prepare_directory($custom_theme_path, FILE_CREATE_DIRECTORY);
+
+  if (!$status) {
+    throw new CustomThemeException(t('Unable to create directory for storing the theme. Please contact the site administrator for support.'));
+  }
+
+  if (!is_writable($custom_theme_path)) {
+    throw new CustomThemeException(t('Custom theme storage location is not writable. Please contact the site administrator for support.'));
+  }
+
+  $htaccess_path = CustomTheme::ABSOLUTE_CUSTOM_THEMES_LOCATION . '/.htaccess';
+  file_put_contents($htaccess_path, FileStorage::htaccessLines());
+
+  $readme_path = CustomTheme::ABSOLUTE_CUSTOM_THEMES_LOCATION . '/README.txt';
+  $readme_content = <<<EOF
+This directory contains custom themes.
+EOF;
+  file_put_contents($readme_path, $readme_content);
+}
