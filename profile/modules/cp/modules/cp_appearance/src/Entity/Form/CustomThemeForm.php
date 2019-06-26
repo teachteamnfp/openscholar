@@ -269,7 +269,7 @@ class CustomThemeForm extends EntityForm {
     $custom_theme = $this->getEntity();
 
     // Reset is necessary, otherwise the system fails to locate the new theme.
-    $this->themeHandler->rebuildThemeData();
+    $this->themeHandler->reset();
     $this->themeInstaller->install([$custom_theme->id()]);
   }
 
