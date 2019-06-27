@@ -10,6 +10,10 @@
         "drupal/cas_attributes": "^1.0",
         "drupal/ldap": "^2.5"
     },
+    "config": {
+        "vendor-dir": "~/src/amazon/web/sites/ucmerced.theopenscholar.com/modules",
+        "discard-changes": true
+    },
     "minimum-stability": "dev",
     "prefer-stable": true
 }
