@@ -96,6 +96,8 @@ class AppearanceSettingsBuilderTest extends TestBase {
     $this->assertGreaterThan(0, \count($theme->more_operations));
     $more_operations = $theme->more_operations[0];
     $this->assertEquals($more_operations['#type'], 'form');
+    // Custom theme should not appear as flavor.
+    $this->assertCount(0, $themes['documental']->more_operations);
 
     // Test notes.
     $this->assertCount(0, $inactive_theme->notes);
@@ -166,7 +168,6 @@ class AppearanceSettingsBuilderTest extends TestBase {
    * @covers ::prepareThemes
    * @covers ::addScreenshotInfo
    * @covers ::addOperations
-   * @covers ::addMoreOperations
    * @covers ::addNotes
    */
   public function testCustomThemes(): void {
