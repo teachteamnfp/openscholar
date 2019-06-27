@@ -2,5 +2,5 @@ global-styling:
   version: VERSION
   css:
     theme:
-      '//fonts.googleapis.com/css?family=News+Cycle)': { external: true }
+      'https://fonts.googleapis.com/css?family=News+Cycle&display=swap': { external: true }
       css/style.css: {}

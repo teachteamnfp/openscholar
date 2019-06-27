@@ -1,6 +1,6 @@
 @import '../../os_base/scss/base/breakpoints';
 @import './variables';
-
+@import './base';
 //@extend-elements
 %extend_1 {
   background: $black;
@@ -10,14 +10,7 @@
   border-bottom-left-radius: 0;
 }
 
-html {
-  color: $black;
-}
-body {
-  color: $black;
-  font-family: $font_0, $font_1;
-}
-.front {
+.path-front {
   .content-inner {
     font-size: 16px;
   }

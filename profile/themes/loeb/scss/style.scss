@@ -1,26 +1,18 @@
 @import '../../os_base/scss/base/breakpoints';
 @import './variables';
-
+@import './base';
 //@extend-elements
 %extend_1 {
   background-color: $color_fern_green_approx;
   color: $white;
   border-radius: 3px;
 }
-
 %extend_2 {
   background: none;
   box-shadow: none;
   text-shadow: none;
 }
 
-body {
-  background-color: $color_alabaster_approx;
-  color: $color_log_cabin_approx;
-  * {
-    font-family: $font_0;
-  }
-}
 .header-container {
   background-color: $white;
   border-top: 7px solid $color_fern_green_approx;
@@ -130,18 +122,6 @@ body {
   }
   a:hover {
     background-color: $seashell;
-  }
-}
-a {
-  color: $color_fern_green_approx;
-  &:visited {
-    color: $color_fern_green_approx;
-  }
-  &.os-swipe-large {
-    background-color: $color_fern_green_approx;
-  }
-  &.os-swipe-small {
-    background-color: $color_fern_green_approx;
   }
 }
 footer {

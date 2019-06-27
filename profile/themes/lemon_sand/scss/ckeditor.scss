@@ -1,10 +1,8 @@
+@import './variables';
+@import './common';
 h2,
 h3,
-h4 {
-  margin-bottom: 16px;
-  font-weight: normal;
-  font-family: Playfair Display, sans-serif, Georgia, serif !important;
-}
+h4,
 body {
-  font-family: Playfair Display, sans-serif, Georgia, serif !important;
+  @extend %font;
 }

@@ -1,5 +1,6 @@
 @import '../../os_base/scss/base/breakpoints';
 @import './variables';
+@import './common';
 //@extend-elements
 %extend_1 {
   background-color: $color_squirrel_approx;
@@ -14,10 +15,6 @@
   height: 60px;
 }
 
-body {
-  overflow-x: initial;
-  font-family: $font_0, $font_1;
-}
 .dialog-off-canvas-main-canvas {
   background: $color_tundora_approx;
 }

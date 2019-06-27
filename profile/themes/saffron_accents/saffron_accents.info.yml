@@ -31,5 +31,5 @@ libraries:
   - saffron_accents/global-styling
 
 ckeditor_stylesheets:
-  - //fonts.googleapis.com/css?family=News+Cycle
+  - https://fonts.googleapis.com/css?family=News+Cycle&display=swap
   - css/ckeditor.css

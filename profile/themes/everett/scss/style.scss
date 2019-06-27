@@ -1,33 +1,16 @@
 @import '../../os_base/scss/base/breakpoints';
 @import './variables';
-
-//@extend-elements
-%extend_1 {
-  color: $color_hippie_green_approx;
-  text-transform: none;
-  font-weight: bold;
-  font-size: 1.25em;
-}
-%extend_2 {
-  background-color: $white;
-  border-top: 4px solid $color_hippie_green_approx;
-  color: $color_hippie_green_approx;
-  padding: 12px 15px 16px;
-}
+@import './common';
 
 html {
   color: $black;
 }
 body {
-  color: $black;
-  font-family: $font_0, $font_1;
+  @extend %body;
 }
 a,
 .full-calendar-view .fc-header-toolbar button {
-  color: $color_hippie_green_approx;
-  &:visited {
-    color: $color_hippie_green_approx;
-  }
+  @extend %link;
 }
 .node-readmore a:after {
   background: none;

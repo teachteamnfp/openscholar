@@ -1,24 +1,2 @@
-@import '../scss/base/variables';
-body {
-  color: $color-gray;
-  line-height: 24px;
-}
-/* Elements */
-h2 {
-  color: $color-gray;
-  font-family: Georgia,serif;
-  font-size: 1.45em;
-  font-weight: normal;
-  line-height: 36px;
-  padding-bottom: 0.75em;
-}
-blockquote {
-  border-left: 1px solid $color-light-gray2;
-  color: $color-dove-gray;
-  margin: 1em 0 1em 1em;
-  padding-left: 1em;
-}
-a:link {
-  color: $color-blue;
-  text-decoration: none;
-}
+@import './base/variables';
+@import './base/base';

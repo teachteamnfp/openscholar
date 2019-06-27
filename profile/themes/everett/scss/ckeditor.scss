@@ -1,11 +1,8 @@
 @import './variables';
+@import './common';
 body {
-  color: $black;
-  font-family: Droid Sans, sans-serif !important;
+  @extend %body;
 }
 a {
-  color: $color_hippie_green_approx;
-  &:visited {
-    color: $color_hippie_green_approx;
-  }
+  @extend %link;
 }

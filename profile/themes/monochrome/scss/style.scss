@@ -1,6 +1,6 @@
 @import '../../os_base/scss/base/breakpoints';
 @import './variables';
-
+@import './base';
 //@extend-elements
 %extend_1 {
   width: 55px;
@@ -11,16 +11,15 @@
 
 body {
   background: $color_concrete_approx;
-  font-family: $font_0, $font_1, $font_2, $font_3;
 }
 .page-header {
-  font-family: $font_0, $font_1, $font_2, $font_3;
+  @extend %font;
 }
 .node--title {
-  font-family: $font_0, $font_1, $font_2, $font_3;
+  @extend %font;
 }
 .more-link {
-  font-family: $font_0, $font_1, $font_2, $font_3;
+  @extend %font;
   &:after {
     background-image: none;
   }
@@ -36,7 +35,7 @@ footer {
   }
   ul.nav {
     a {
-      font-family: $font_0, $font_1, $font_2, $font_3;
+      @extend %font;
     }
     li {
       a {
@@ -47,20 +46,20 @@ footer {
         }
       }
       ul li a {
-        font-family: $font_0, $font_1, $font_2, $font_3;
+        @extend %font;
       }
     }
   }
 }
 .content-inner {
   h2 {
-    font-family: $font_0, $font_1, $font_2, $font_3;
+    @extend %font;
   }
   h3 {
-    font-family: $font_0, $font_1, $font_2, $font_3;
+    @extend %font;
   }
   h4 {
-    font-family: $font_0, $font_1, $font_2, $font_3;
+    @extend %font;
   }
   .block.block-boxes-os_boxes_columns .block {
     border-top: 1px solid $color_mexican_red_approx;
@@ -71,7 +70,7 @@ footer {
   background: $color_squirrel_approx;
   color: $white;
   ul.nav li a {
-    font-family: $font_0, $font_1, $font_2, $font_3;
+    @extend %font;
     color: $white;
     text-transform: none;
   }
@@ -89,7 +88,7 @@ footer {
         border-top: 0 none;
       }
       > a {
-        font-family: $font_0, $font_1, $font_2, $font_3;
+        @extend %font;
         color: $white;
         @media #{$mobile} {
           color: $white;
@@ -145,10 +144,6 @@ footer {
   }
 }
 a {
-  color: $color_mexican_red_approx;
-  &:visited {
-    color: $color_mexican_red_approx;
-  }
   &.os-swipe-large {
     background-color: $color_mexican_red_approx;
   }
@@ -196,16 +191,16 @@ a {
   }
 }
 .path-search .title a {
-  font-family: $font_0, $font_1, $font_2, $font_3;
+  @extend %font;
 }
 .links a {
-  font-family: $font_0, $font_1, $font_2, $font_3;
+  @extend %font;
 }
 h2.block-title {
-  font-family: $font_0, $font_1, $font_2, $font_3;
+  @extend %font;
 }
 .cke_editable * {
-  font-family: $font_0, $font_1, $font_2, $font_3;
+  @extend %font;
 }
 .breadcrumb a {
   color: $color_mexican_red_approx;

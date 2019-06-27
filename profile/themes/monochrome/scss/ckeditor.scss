@@ -1,18 +1,9 @@
 @import './variables';
-
-body {
-  font-family: Source Sans Pro, sans-serif, Georgia, serif !important;
-}
+@import './base';
 h2,
 h3,
 h4 {
   margin-bottom: 16px;
   font-weight: normal;
-  font-family: Source Sans Pro, sans-serif, Georgia, serif !important;
-}
-a {
-  color: $color_mexican_red_approx;
-  &:visited {
-    color: $color_mexican_red_approx;
-  }
+  @extend %font;
 }

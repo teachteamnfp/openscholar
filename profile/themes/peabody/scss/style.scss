@@ -1,9 +1,7 @@
 @import '../../os_base/scss/base/breakpoints';
 @import './variables';
+@import './base';
 
-body {
-  font-family: $font_0, $font_1 !important;
-}
 .node--title {
   font-family: $font_0, $font_1;
 }

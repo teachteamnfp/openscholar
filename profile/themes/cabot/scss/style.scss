@@ -1,6 +1,6 @@
 @import '../../os_base/scss/base/breakpoints';
 @import './variables';
-
+@import './common';
 //@extend-elements
 %extend_1 {
   width: 55px;
@@ -16,16 +16,16 @@
 }
 
 body {
-  font-family: $font_0, $font_1, $font_2;
+  @extend %font-family;
 }
 .page-header {
-  font-family: $font_0, $font_1, $font_2;
+  @extend %font-family;
 }
 .node--title {
-  font-family: $font_0, $font_1, $font_2;
+  @extend %font-family;
 }
 .more-link {
-  font-family: $font_0, $font_1, $font_2;
+  @extend %font-family;
 }
 footer {
   background: $color_goldenrod_approx;
@@ -34,7 +34,7 @@ footer {
   }
   ul.nav {
     a {
-      font-family: $font_0, $font_1, $font_2;
+      @extend %font-family;
     }
     li {
       a {
@@ -44,7 +44,7 @@ footer {
         }
       }
       ul li a {
-        font-family: $font_0, $font_1, $font_2;
+        @extend %font-family;
       }
     }
   }
@@ -52,7 +52,7 @@ footer {
 aside {
   .nav {
     a {
-      font-family: $font_0, $font_1, $font_2;
+      @extend %font-family;
     }
   }
   .region > .block {
@@ -61,13 +61,13 @@ aside {
 }
 .content-inner {
   h2 {
-    font-family: $font_0, $font_1, $font_2;
+    @extend %font-family;
   }
   h3 {
-    font-family: $font_0, $font_1, $font_2;
+    @extend %font-family;
   }
   h4 {
-    font-family: $font_0, $font_1, $font_2;
+    @extend %font-family;
   }
   .block.block-boxes-os_boxes_columns .block {
     border-top: none;
@@ -76,7 +76,7 @@ aside {
 .header-container {
   background: $color_goldenrod_approx;
   ul.nav li a {
-    font-family: $font_0, $font_1, $font_2;
+    @extend %font-family;
     @extend %extend_2;
   }
 }
@@ -162,16 +162,16 @@ aside {
   border: 1px solid $color_goldenrod_approx;
 }
 .path-search .title a {
-  font-family: $font_0, $font_1, $font_2;
+  @extend %font-family;
 }
 .links a {
-  font-family: $font_0, $font_1, $font_2;
+  @extend %font-family;
 }
 .boxes-box-content h2 {
-  font-family: $font_0, $font_1, $font_2;
+  @extend %font-family;
 }
 h2.block-title {
-  font-family: $font_0, $font_1, $font_2;
+  @extend %font-family;
 }
 .fc-listUpcoming-view .fc-list-heading .fc-list-heading-main {
   @extend %extend_1;

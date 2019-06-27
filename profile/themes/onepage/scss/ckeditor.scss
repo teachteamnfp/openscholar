@@ -1,8 +1,2 @@
 @import '../scss/base/variables';
-body {
-  font-family: 'Montserrat', sans-serif !important;
-}
-html,
-body {
-  color: $color-gray;
-}
+@import './base/base';

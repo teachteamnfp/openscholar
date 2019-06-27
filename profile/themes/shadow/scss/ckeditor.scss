@@ -1,12 +1,5 @@
 @import '../scss/base/variables';
+@import './base/base';
 body {
-  font-family: 'Roboto', sans-serif;
-  color: $color-gray;
-}
-a {
-  color: $color-gray2;
-  transition: all .3s ease;
-  &:visited {
-    color: $color-gray2;
-  }
+  background: none;
 }

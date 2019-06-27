@@ -1,8 +1,2 @@
 @import './variables';
-html,
-body,
-.cke_editable * {
-  color: $color_scarpa_flow_approx;
-  font-family: Open Sans, Arial, Helvetica, sans-serif;
-  line-height: 24px;
-}
+@import './base';

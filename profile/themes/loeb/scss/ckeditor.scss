@@ -1,20 +1,2 @@
 @import './variables';
-
-body {
-  color: $color_log_cabin_approx;
-  * {
-    font-family: 'Open Sans';
-  }
-}
-a {
-  color: $color_fern_green_approx;
-  &:visited {
-    color: $color_fern_green_approx;
-  }
-  &.os-swipe-large {
-    background-color: $color_fern_green_approx;
-  }
-  &.os-swipe-small {
-    background-color: $color_fern_green_approx;
-  }
-}
+@import './base';

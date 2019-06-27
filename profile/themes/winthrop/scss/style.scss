@@ -1,5 +1,6 @@
 @import '../../os_base/scss/base/breakpoints';
 @import './variables';
+@import './base';
 
 //@extend-elements
 %extend_1 {
@@ -18,28 +19,24 @@
 html {
   color: $color_log_cabin_approx;
 }
-body {
-  color: $color_log_cabin_approx;
-  font-family: $font_0, $font_1, $font_2;
-}
 .page-header {
-  font-family: $font_0, $font_1, $font_2;
+  @extend %font;
 }
 .node--title {
-  font-family: $font_0, $font_1, $font_2;
+  @extend %font;
 }
 .more-link {
-  font-family: $font_0, $font_1, $font_2;
+  @extend %font;
 }
 .content-inner {
   h2 {
-    font-family: $font_0, $font_1, $font_2;
+    @extend %font;
   }
   h3 {
-    font-family: $font_0, $font_1, $font_2;
+    @extend %font;
   }
   h4 {
-    font-family: $font_0, $font_1, $font_2;
+    @extend %font;
   }
 }
 footer {
@@ -62,7 +59,7 @@ footer {
       font-family: $font_3, $font_4;
     }
     li ul li a {
-      font-family: $font_0, $font_1, $font_2;
+      @extend %font;
     }
   }
 }
@@ -79,7 +76,7 @@ footer {
         border-top: 0 none;
       }
       > a {
-        font-family: $font_0, $font_1, $font_2;
+        @extend %font;
         padding: 16px 15px;
         @extend %extend_1;
         @media #{$mobile} {
@@ -109,7 +106,7 @@ footer {
     }
     > li {
       > a {
-        font-family: $font_0, $font_1, $font_2;
+        @extend %font;
         @extend %extend_1;
         font-size: 1em;
         background: none;
@@ -180,23 +177,23 @@ footer {
   color: $color_log_cabin_approx;
 }
 .path-search .title a {
-  font-family: $font_0, $font_1, $font_2;
+  @extend %font;
 }
 .links a {
-  font-family: $font_0, $font_1, $font_2;
+  @extend %font;
 }
 .section-nav a {
-  font-family: $font_0, $font_1, $font_2;
+  @extend %font;
 }
 h2.block-title {
-  font-family: $font_0, $font_1, $font_2;
+  @extend %font;
 }
 .header-container ul.nav li a {
   font-family: $font_3, $font_4;
   text-transform: uppercase;
 }
 .fc-header-toolbar h2 {
-  font-family: $font_0, $font_1, $font_2;
+  @extend %font;
 }
 .field--name-body h2 {
   font-weight: normal;
