@@ -25,17 +25,18 @@ env:
     - PATH="$PATH:$HOME/.composer/vendor/bin"
     - TRAVIS_NODE_VERSION="4"
   matrix:
-    - JOB=job:check-coding-standards
-    - JOB=job:run-unit-tests
-    - JOB="job:run-kernel-tests widgets"
-    - JOB="job:run-kernel-tests os-theme-preview,cp-appearance,profiles"
-    - JOB="job:run-kernel-tests publications,os"
-    - JOB="job:run-kernel-tests redirect,vsite,cp"
-    - JOB="job:run-kernel-tests other,cp-menu"
-    - JOB="job:run-functional-tests classes,events,pages,cp-appearance,os"
-    - JOB="job:run-functional-tests cp,media-browser,os-theme-preview,vsite,breadcrumbs,analytics,cp-menu,publications"
-    - JOB="job:run-functional-javascript-tests classes,events,pages,publications,widgets,cp-appearance,cp-menu,profiles"
-    - JOB="job:run-functional-javascript-tests cp,vsite,mailchimp,metatag,redirect,os-theme-preview"
+#    - JOB=job:check-coding-standards
+#    - JOB=job:run-unit-tests
+#    - JOB="job:run-kernel-tests widgets"
+#    - JOB="job:run-kernel-tests os-theme-preview,cp-appearance,profiles"
+#    - JOB="job:run-kernel-tests publications,os"
+#    - JOB="job:run-kernel-tests redirect,vsite,cp"
+#    - JOB="job:run-kernel-tests other,cp-menu"
+#    - JOB="job:run-functional-tests classes,events,pages,cp-appearance,os"
+#    - JOB="job:run-functional-tests cp,media-browser,os-theme-preview,vsite,breadcrumbs,analytics,cp-menu,publications"
+#    - JOB="job:run-functional-javascript-tests classes,events,pages,publications,widgets,cp-appearance,cp-menu,profiles"
+    - JOB="job:run-functional-javascript-tests cp-appearance,cp-menu"
+#    - JOB="job:run-functional-javascript-tests cp,vsite,mailchimp,metatag,redirect,os-theme-preview"
 #    - JOB=job:run-behat-tests
 
 before_install:
