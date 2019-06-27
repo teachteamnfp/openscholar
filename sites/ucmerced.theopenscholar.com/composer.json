@@ -12,7 +12,7 @@
     },
     "replace": {
         "drupal/drupal": "*"
-    }
+    },
     "config": {
         "vendor-dir": "~/src/amazon/web/sites/ucmerced.theopenscholar.com/modules",
         "discard-changes": true
