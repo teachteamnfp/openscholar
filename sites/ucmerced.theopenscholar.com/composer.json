@@ -3,7 +3,7 @@
     "description": "Packages required for UC Merced / CAS",
     "repositories": [
       { "type": "composer", "url": "https://packages.drupal.org/7" },
-      { "type": "composer", "url": "https://packagist.drupal-composer.org"}
+      { "type": "composer", "url": "https://packagelist.drupal-composer.org"}
     ],
     "require": {
         "jasig/phpcas": "^1.3",
