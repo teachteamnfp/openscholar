@@ -34,6 +34,15 @@ entity.cp_custom_theme.add_form:
     _group_permission: 'manage cp appearance'
     _group_member: 'TRUE'
 
+entity.cp_custom_theme.edit_form:
+  path: '/cp/appearance/custom-themes/{cp_custom_theme}/edit'
+  defaults:
+    _entity_form: 'cp_custom_theme.edit'
+    _title: 'Edit Custom Theme'
+  requirements:
+    _group_permission: 'manage cp appearance'
+    _group_member: 'TRUE'
+
 cp_custom_theme.install_form:
   path: '/cp/appearance/custom-themes/{custom_theme}/install/{make_default}'
   defaults:
