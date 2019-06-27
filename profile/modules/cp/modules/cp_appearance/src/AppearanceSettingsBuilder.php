@@ -10,6 +10,7 @@ use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\cp_appearance\Entity\CustomTheme;
+use Drupal\cp_appearance\Entity\CustomThemeInterface;
 use Drupal\cp_appearance\Form\FlavorForm;
 use Ds\Map;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -244,13 +245,21 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
     $drupal_installed_themes = $this->themeHandler->listInfo();
 
     if (\property_exists($theme, 'sub_themes')) {
-      // Create a key-extension_info mapping.
-      $sub_themes = new Map();
-      foreach ($theme->sub_themes as $key => $name) {
-        $sub_themes->put($key, $drupal_installed_themes[$key]);
-      }
+      $custom_theme_ids = array_map(function (CustomThemeInterface $custom_theme) {
+        return $custom_theme->id();
+      }, CustomTheme::loadMultiple());
+      $flavors_excluding_custom_themes = array_diff(array_keys($theme->sub_themes), $custom_theme_ids);
 
-      $operations[] = $this->formBuilder->getForm(new FlavorForm($theme, $sub_themes, $this->themeSelectorBuilder, $this->configFactory));
+      // Create a key-extension_info mapping.
+      if ($flavors_excluding_custom_themes) {
+        $sub_themes = new Map();
+
+        foreach ($flavors_excluding_custom_themes as $sub_theme) {
+          $sub_themes->put($sub_theme, $drupal_installed_themes[$sub_theme]);
+        }
+
+        $operations[] = $this->formBuilder->getForm(new FlavorForm($theme, $sub_themes, $this->themeSelectorBuilder, $this->configFactory));
+      }
     }
 
     return $operations;
