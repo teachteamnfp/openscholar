@@ -45,7 +45,7 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
   /**
    * List of installed themes made from os_base.
    *
-   * @var \Drupal\Core\Extension\Extension[]
+   * @var \Drupal\Core\Extension\Extension[]|null
    */
   protected $osInstalledThemes;
 
@@ -73,9 +73,6 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
     $this->configFactory = $config_factory;
     $this->formBuilder = $form_builder;
     $this->themeSelectorBuilder = $theme_selector_builder;
-    $this->osInstalledThemes = array_filter($this->themeHandler->listInfo(), function (Extension $theme) {
-      return (isset($theme->base_themes) && $theme->base_theme === 'os_base' && $theme->status);
-    });
   }
 
   /**
@@ -94,9 +91,7 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
    * {@inheritdoc}
    */
   public function getFeaturedThemes(): array {
-    // We do not want to make any unwanted changes to osInstalledThemes by
-    // mistake.
-    $themes = $this->osInstalledThemes;
+    $themes = $this->osInstalledThemes();
 
     $this->prepareThemes($themes);
 
@@ -298,6 +293,22 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
       $theme->more_operations = $this->addMoreOperations($theme);
       $theme->notes = $this->addNotes($theme);
     }
+  }
+
+  /**
+   * List of installed themes made from os_base.
+   *
+   * @return \Drupal\Core\Extension\Extension[]
+   *   The themes.
+   */
+  protected function osInstalledThemes(): array {
+    if (!$this->osInstalledThemes) {
+      $this->osInstalledThemes = array_filter($this->themeHandler->listInfo(), function (Extension $theme) {
+        return (isset($theme->base_themes) && $theme->base_theme === 'os_base' && $theme->status);
+      });
+    }
+
+    return $this->osInstalledThemes;
   }
 
 }

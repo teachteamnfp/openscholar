@@ -40,6 +40,7 @@ class AppearanceSettingsBuilderTest extends TestBase {
 
   /**
    * @covers ::getFeaturedThemes
+   * @covers ::osInstalledThemes
    * @covers ::prepareThemes
    * @covers ::addScreenshotInfo
    * @covers ::addOperations
