@@ -40,6 +40,7 @@ class AppearanceSettingsBuilderTest extends TestBase {
 
   /**
    * @covers ::getFeaturedThemes
+   * @covers ::osInstalledThemes
    * @covers ::prepareThemes
    * @covers ::addScreenshotInfo
    * @covers ::addOperations
@@ -167,18 +168,10 @@ class AppearanceSettingsBuilderTest extends TestBase {
    * @covers ::addOperations
    * @covers ::addMoreOperations
    * @covers ::addNotes
-   *
-   * @throws \Drupal\Core\Extension\ExtensionNameLengthException
    */
   public function testCustomThemes(): void {
     $custom_theme_entity_1 = CustomTheme::load(self::TEST_CUSTOM_THEME_1_NAME);
     $custom_theme_entity_2 = CustomTheme::load(self::TEST_CUSTOM_THEME_2_NAME);
-
-    $this->installCustomTheme($custom_theme_entity_1);
-    $this->installCustomTheme($custom_theme_entity_2);
-    // If cache not cleared, then the system fails to identify the theme that is
-    // just installed in the test.
-    drupal_flush_all_caches();
 
     /** @var \Drupal\Core\Config\Config $theme_config_mut */
     $theme_config_mut = $this->configFactory->getEditable('system.theme');
