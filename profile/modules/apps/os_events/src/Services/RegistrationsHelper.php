@@ -140,7 +140,6 @@ class RegistrationsHelper implements RegistrationsHelperInterface {
     // Generate select menu options for other dates available for registration.
     if ($entity->field_recurring_date->rrule &&
         !isset($status['message']) &&
-        $entity->field_singup_multiple->value &&
         $this->requestStack->getCurrentRequest()->getPathInfo() != '/calendar') {
       $occurrences = $this->getOccurrences($id);
 

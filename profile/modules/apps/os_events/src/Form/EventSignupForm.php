@@ -173,19 +173,26 @@ class EventSignupForm extends FormBase {
       $ids[] = $registration->id();
     }
 
-    // To find out if a email is already registered for a particular date.
+    // Build a query needed for validations.
     $query = $this->database
       ->select('registration__field_for_date', 'rfd')
       ->fields('rfd', []);
     $query->join('registrant', 'reg', 'rfd.entity_id = reg.registration');
     $query->join('rng_contact__field_email', 'rce', 'reg.identity__target_id = rce.entity_id');
     $query->condition('rfd.entity_id', $ids, 'IN');
-    $query->condition('rfd.field_for_date_value', $forDate);
     $query->condition('rce.field_email_value', $emailEntered);
     $result = $query->execute()->fetchAssoc();
 
-    if ($result) {
-      $form_state->setErrorByName('email', $this->t('User is already registered for this date.'));
+    // Flag set to TRUE if multiple singup is not allowed and user is already
+    // registered for one of the occurrences.
+    $flag = (!$node->field_singup_multiple->value && $result) ? TRUE : FALSE;
+
+    // To find out if a email is already registered for a particular date.
+    $query->condition('rfd.field_for_date_value', $forDate);
+    $result = $query->execute()->fetchAssoc();
+
+    if ($flag || $result) {
+      $form_state->setErrorByName('email', $this->t('"@email" is already registered for the event.', ['@email' => $emailEntered]));
     }
   }
 
