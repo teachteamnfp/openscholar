@@ -87,6 +87,9 @@ abstract class TestBase extends OsExistingSiteTestBase {
       self::TEST_CUSTOM_THEME_1_NAME,
       self::TEST_CUSTOM_THEME_2_NAME,
     ]);
+    // If cache not cleared, then the system fails to identify the theme that is
+    // just installed in the test.
+    drupal_flush_all_caches();
   }
 
   /**

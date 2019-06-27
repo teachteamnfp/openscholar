@@ -43,13 +43,6 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
   protected $formBuilder;
 
   /**
-   * List of currently installed themes in the site.
-   *
-   * @var \Drupal\Core\Extension\Extension[]
-   */
-  protected $drupalInstalledThemes;
-
-  /**
    * List of installed themes made from os_base.
    *
    * @var \Drupal\Core\Extension\Extension[]
@@ -80,8 +73,7 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
     $this->configFactory = $config_factory;
     $this->formBuilder = $form_builder;
     $this->themeSelectorBuilder = $theme_selector_builder;
-    $this->drupalInstalledThemes = $this->themeHandler->listInfo();
-    $this->osInstalledThemes = array_filter($this->drupalInstalledThemes, function (Extension $theme) {
+    $this->osInstalledThemes = array_filter($this->themeHandler->listInfo(), function (Extension $theme) {
       return (isset($theme->base_themes) && $theme->base_theme === 'os_base' && $theme->status);
     });
   }
@@ -141,6 +133,8 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
    *   Renderable theme_image structure. NULL if no screenshot found.
    */
   protected function addScreenshotInfo(Extension $theme): ?array {
+    /** @var \Drupal\Core\Extension\Extension[] $drupal_installed_themes */
+    $drupal_installed_themes = $this->themeHandler->listInfo();
     /** @var \Drupal\Core\Config\Config $theme_config */
     $theme_config = $this->configFactory->get('system.theme');
     /** @var string $theme_default */
@@ -150,7 +144,7 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
     // Make sure that if a flavor is set as default, then its preview is being
     // showed, not its base theme's.
     if (isset($theme->sub_themes[$theme_default])) {
-      $preview = $this->drupalInstalledThemes[$theme_default];
+      $preview = $drupal_installed_themes[$theme_default];
     }
 
     /** @var string|null $screenshot_uri */
@@ -251,12 +245,14 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
    */
   protected function addMoreOperations(Extension $theme): array {
     $operations = [];
+    /** @var \Drupal\Core\Extension\Extension[] $drupal_installed_themes */
+    $drupal_installed_themes = $this->themeHandler->listInfo();
 
     if (\property_exists($theme, 'sub_themes')) {
       // Create a key-extension_info mapping.
       $sub_themes = new Map();
       foreach ($theme->sub_themes as $key => $name) {
-        $sub_themes->put($key, $this->drupalInstalledThemes[$key]);
+        $sub_themes->put($key, $drupal_installed_themes[$key]);
       }
 
       $operations[] = $this->formBuilder->getForm(new FlavorForm($theme, $sub_themes, $this->themeSelectorBuilder, $this->configFactory));
@@ -271,8 +267,6 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
   public function getCustomThemes(): array {
     $custom_themes = [];
     $custom_theme_entities = CustomTheme::loadMultiple();
-    // Custom themes are dynamically added, it is necessary to pull it from the
-    // source itself, rather than relying on `drupalInstalledThemes` property.
     $themes = $this->themeHandler->listInfo();
 
     foreach ($themes as $theme) {
