@@ -1,10 +1,7 @@
 @import '../../os_base/scss/base/breakpoints';
 @import './variables';
+@import './base';
 
-body {
-  font-family: $font_0, $font_1;
-  font-size: 16px;
-}
 .page-header {
   font-family: $font_0, $font_1;
 }
