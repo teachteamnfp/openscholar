@@ -86,7 +86,7 @@ class ModalSignupFormTest extends EventsJavascriptTestBase {
     $this->submitForm($edit, 'Signup');
     $web_assert->assertWaitOnAjaxRequest();
     $web_assert->elementExists('css', '#signup-modal-form');
-    $web_assert->pageTextContains('User is already registered for this date.');
+    $web_assert->pageTextContains('"test@example.com" is already registered for the event.');
   }
 
   /**
