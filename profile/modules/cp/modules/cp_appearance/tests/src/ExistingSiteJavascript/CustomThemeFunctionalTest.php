@@ -195,6 +195,9 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
   /**
    * Tests custom theme edit.
    *
+   * @covers ::save
+   * @covers ::redirectOnSave
+   *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
    * @throws \Behat\Mink\Exception\ExpectationException
    * @throws \Drupal\Core\Entity\EntityStorageException
@@ -227,6 +230,14 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
     $this->assertSession()->elementNotExists('css', '.admin-link');
     $this->assertEquals('body { color: black; }', $this->getSession()->getPage()->findField('styles')->getValue());
     $this->assertEquals('alert("Hello World")', $this->getSession()->getPage()->findField('scripts')->getValue());
+
+    $this->getSession()->getPage()->fillField('Custom Theme Name', 'Cyberpunk');
+    $this->getSession()->getPage()->selectFieldOption('Parent Theme', 'shadow');
+    $this->getSession()->getPage()->findField('styles')->setValue('body { color: black; font-family: Sans-Serif; };');
+    $this->getSession()->getPage()->findField('scripts')->setValue('alert("Hello World"); test');
+    $this->getSession()->getPage()->pressButton('Save');
+
+    $this->assertContains('cp/appearance', $this->getSession()->getCurrentUrl());
 
     $custom_theme->delete();
   }

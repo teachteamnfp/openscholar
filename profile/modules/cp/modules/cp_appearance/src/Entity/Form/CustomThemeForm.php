@@ -3,6 +3,7 @@
 namespace Drupal\cp_appearance\Entity\Form;
 
 use Drupal\Core\Entity\EntityForm;
+use Drupal\Core\Extension\ThemeHandlerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\cp_appearance\AppearanceSettingsBuilderInterface;
 use Drupal\cp_appearance\Entity\CustomTheme;
@@ -21,20 +22,30 @@ class CustomThemeForm extends EntityForm {
   protected $appearanceSettingsBuilder;
 
   /**
+   * Theme handler service.
+   *
+   * @var \Drupal\Core\Extension\ThemeHandlerInterface
+   */
+  protected $themeHandler;
+
+  /**
    * Creates a new CustomThemeForm object.
    *
    * @param \Drupal\cp_appearance\AppearanceSettingsBuilderInterface $appearance_settings_builder
    *   Appearance settings builder service.
+   * @param \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler
+   *   Theme handler service.
    */
-  public function __construct(AppearanceSettingsBuilderInterface $appearance_settings_builder) {
+  public function __construct(AppearanceSettingsBuilderInterface $appearance_settings_builder, ThemeHandlerInterface $theme_handler) {
     $this->appearanceSettingsBuilder = $appearance_settings_builder;
+    $this->themeHandler = $theme_handler;
   }
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    return new static($container->get('cp_appearance.appearance_settings_builder'));
+    return new static($container->get('cp_appearance.appearance_settings_builder'), $container->get('theme_handler'));
   }
 
   /**
@@ -210,16 +221,28 @@ class CustomThemeForm extends EntityForm {
     $element = $form_state->getTriggeringElement();
     /** @var \Drupal\cp_appearance\Entity\CustomThemeInterface $entity */
     $entity = $this->getEntity();
+    $installed_themes = array_keys($this->themeHandler->listInfo());
 
-    $route_parameters = [
-      'custom_theme' => $entity->id(),
-    ];
+    if (\in_array($entity->id(), $installed_themes, TRUE)) {
+      if ($element['#name'] === 'save_default') {
+        /** @var \Drupal\Core\Config\Config $theme_setting_mut */
+        $theme_setting_mut = $this->configFactory()->getEditable('system.theme');
+        $theme_setting_mut->set('default', $entity->id())->save();
+      }
 
-    if ($element['#name'] === 'save_default') {
-      $route_parameters['make_default'] = TRUE;
+      $form_state->setRedirect('cp.appearance');
     }
+    else {
+      $route_parameters = [
+        'custom_theme' => $entity->id(),
+      ];
 
-    $form_state->setRedirect('cp_custom_theme.install_form', $route_parameters);
+      if ($element['#name'] === 'save_default') {
+        $route_parameters['make_default'] = TRUE;
+      }
+
+      $form_state->setRedirect('cp_custom_theme.install_form', $route_parameters);
+    }
   }
 
 }
