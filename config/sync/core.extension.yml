@@ -163,6 +163,7 @@ module:
   vsite_favicon: 0
   vsite_infinite_scroll: 0
   vsite_privacy: 0
+  vsite_site_creation: 0
   workflows: 0
   menu_link_content: 1
   pathauto: 1
