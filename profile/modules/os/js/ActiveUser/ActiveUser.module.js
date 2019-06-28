@@ -1,13 +1,13 @@
 (function () {
-  let m = angular.module('ActiveUser', ['DrupalSettings']);
+  let m = angular.module('ActiveUser', ['DrupalSettings', 'UrlGenerator']);
 
-  m.service('ActiveUserService', ['$http', '$q', 'drupalSettings', function ($http, $q, settings) {
+  m.service('ActiveUserService', ['$http', '$q', 'drupalSettings', 'urlGenerator', function ($http, $q, settings, url) {
     let user = {
       uid: settings.fetchSetting('user.uid'),
       name: '',
       permissions: {}
     };
-    let restPath = settings.fetchSetting('paths.api');
+    let restPath = url.generate(settings.fetchSetting('paths.api'));
 
     let deferred;
     this.init = function () {
