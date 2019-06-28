@@ -74,26 +74,13 @@ class CpTaxonomyHelper implements CpTaxonomyHelperInterface {
    * {@inheritdoc}
    */
   public function getSelectableBundles(): array {
-    $definitions = $this->entityTypeManager->getDefinitions();
-    $allowed_entity_types = [
-      'node',
-      'media',
-      'bibcite_reference',
-    ];
     $options = [];
-    foreach ($definitions as $definition) {
-      if (!in_array($definition->id(), $allowed_entity_types)) {
-        continue;
-      }
-      $bundles = $this->entityTypeBundleInfo->getBundleInfo($definition->id());
-      foreach ($bundles as $machine_name => $bundle) {
-        $label = ($definition->getLabel() == 'Reference') ? 'Publication' : $definition->getLabel();
-        $options[$definition->id() . ':' . $machine_name] = $label . ' - ' . $bundle['label'];
-        if ($definition->id() == 'node' && $machine_name == 'events') {
-          $options['node:past_events'] = $definition->getLabel() . ' - ' . $this->t('Past events');
-          $options['node:upcoming_events'] = $definition->getLabel() . ' - ' . $this->t('Upcoming events');
-        }
-      }
+    $options['media:*'] = $this->t('Media');
+    $options['bibcite_reference:*'] = $this->t('Publications');
+    $definition = $this->entityTypeManager->getDefinition('node');
+    $bundles = $this->entityTypeBundleInfo->getBundleInfo($definition->id());
+    foreach ($bundles as $machine_name => $bundle) {
+      $options[$definition->id() . ':' . $machine_name] = $bundle['label'];
     }
     return $options;
   }

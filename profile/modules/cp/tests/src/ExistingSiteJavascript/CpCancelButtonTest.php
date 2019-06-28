@@ -28,7 +28,7 @@ class CpCancelButtonTest extends OsExistingSiteJavascriptTestBase {
     $this->vsiteAlias = $this->group->get('path')->first()->getValue()['alias'];
     $this->node = $this->createNode();
     $this->group->addContent($this->node, "group_node:{$this->node->bundle()}");
-    $this->nodePath = $this->vsiteAlias . $path_alias_manager->getAliasByPath('/node/' . $this->node->id());
+    $this->nodePath = $path_alias_manager->getAliasByPath('/node/' . $this->node->id());
     $exist_alias = $path_alias_storage->load(['source' => '/node/' . $this->node->id()]);
     // Fix group alias of the node.
     $path_alias_storage->save('/node/' . $this->node->id(), '/[vsite:' . $this->group->id() . ']' . $exist_alias['alias'], 'en', $exist_alias['pid']);
@@ -44,9 +44,8 @@ class CpCancelButtonTest extends OsExistingSiteJavascriptTestBase {
     // Visit node.
     $this->visit($this->nodePath);
     $web_assert->statusCodeEquals(200);
-    $page = $this->getCurrentPage();
-    $edit_link = $page->findLink('Edit');
-    $edit_link->press();
+    $this->assertSession()->waitForElementVisible('css', "[href='{$this->groupAlias}/node/{$this->node->id()}/edit']");
+    $this->getSession()->getPage()->findLink('Edit')->press();
     // Go to edit path.
     $page = $this->getCurrentPage();
     $cancel_button = $page->findLink('Cancel');

@@ -9,7 +9,7 @@ activationRules: "*\r\n~cp/*\r\n~node/*/edit\r\n~node/*/delete"
 weight: -10
 data:
   -
-    id: os_base_main_menu
+    id: primarymenu
     region: navigation_collapsible
     weight: '0'
   -
@@ -33,10 +33,14 @@ data:
     region: content
     weight: '5'
   -
-    id: os_base_footer
+    id: secondarymenu
     region: footer
     weight: '0'
   -
     id: os_base_powered
     region: footer
     weight: '1'
+  -
+    id: copyright
+    region: footer
+    weight: '2'

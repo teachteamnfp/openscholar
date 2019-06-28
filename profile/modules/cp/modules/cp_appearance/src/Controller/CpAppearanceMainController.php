@@ -100,8 +100,11 @@ class CpAppearanceMainController extends ControllerBase {
    * Entry point for cp/users.
    */
   public function main(): array {
-    /** @var \Drupal\Core\Extension\Extension[] $themes */
-    $themes = $this->appearanceSettingsBuilder->getThemes();
+    /** @var \Drupal\Core\Extension\Extension[] $featured_themes */
+    $featured_themes = $this->appearanceSettingsBuilder->getFeaturedThemes();
+    /** @var \Drupal\Core\Extension\Extension[] $custom_themes */
+    $custom_themes = $this->appearanceSettingsBuilder->getCustomThemes();
+    $themes = array_merge($custom_themes, $featured_themes);
 
     // Use for simple dropdown for now.
     $basic_theme_options = [];
@@ -110,9 +113,15 @@ class CpAppearanceMainController extends ControllerBase {
     }
 
     // There are two possible theme groups.
-    $theme_groups = ['featured' => $themes, 'basic' => []];
+    $theme_groups = [
+      'custom_theme' => $custom_themes,
+      'featured' => $featured_themes,
+      'basic' => [],
+    ];
     $theme_group_titles = [
+      'custom_theme' => $this->formatPlural(count($theme_groups['custom_theme']), 'Custom theme', 'Custom themes'),
       'featured' => $this->formatPlural(count($theme_groups['featured']), 'Featured theme', 'Featured themes'),
+      'basic' => $this->formatPlural(count($theme_groups['basic']), 'Basic theme', 'Basic themes'),
     ];
 
     uasort($theme_groups['featured'], 'system_sort_themes');

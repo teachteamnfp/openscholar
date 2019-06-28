@@ -30,7 +30,11 @@ function os_breadcrumb_theme(array $existing, string $type, string $theme, strin
 function os_breadcrumb_preprocess_page(&$variables) {
   $show_breadcrumbs = Drupal::config('os_breadcrumb.settings')->get('show_breadcrumbs');
   if (!$show_breadcrumbs) {
-    unset($variables['page']['content']['os_base_breadcrumbs']);
+    foreach ($variables['page']['content'] as $key => $item) {
+      if (isset($item['#cache']['keys']) && in_array('os_base_breadcrumbs', $item['#cache']['keys'])) {
+        unset($variables['page']['content'][$key]);
+      }
+    }
   }
 }
 
