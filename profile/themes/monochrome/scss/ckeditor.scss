@@ -3,7 +3,5 @@
 h2,
 h3,
 h4 {
-  margin-bottom: 16px;
-  font-weight: normal;
   @extend %font;
 }
