@@ -6,7 +6,6 @@ use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\cp_appearance\AppearanceSettingsBuilderInterface;
 use Drupal\cp_appearance\Entity\CustomTheme;
-use Drupal\file\FileInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -69,7 +68,7 @@ class CustomThemeForm extends EntityForm {
         'source' => ['label'],
       ],
       '#disabled' => !$entity->isNew(),
-      '#field_prefix' => CustomTheme::CUSTOM_THEME_ID_PREFIX,
+      '#field_prefix' => $entity->isNew() ? CustomTheme::CUSTOM_THEME_ID_PREFIX : '',
     ];
 
     $form['base_theme'] = [
@@ -82,7 +81,7 @@ class CustomThemeForm extends EntityForm {
     ];
 
     $form['images'] = [
-      '#type' => 'file',
+      '#type' => 'managed_file',
       '#title' => $this->t('Images'),
       '#description' => $this->t('Upload necessary files required for styling of your custom theme. These could be image sprites, arrow icons, etc. The images are going to be put inside %location directory. Therefore make sure you have mentioned the path while writing the style. For example, if you have uploaded %example_file_name, then the style should be <code>background-image: url("@location/@example_file_name")</code>', [
         '%location' => CustomTheme::CUSTOM_THEMES_IMAGES_LOCATION,
@@ -119,53 +118,18 @@ class CustomThemeForm extends EntityForm {
   /**
    * {@inheritdoc}
    */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    parent::validateForm($form, $form_state);
-
-    // Handle file upload.
-    // It is silly doing such things in validation handler, but Drupal also does
-    // it.
-    $file_fields = ['images'];
-    $file_validators = [
-      'file_validate_extensions' => ['png jpg jpeg'],
-    ];
-    foreach ($file_fields as $field) {
-      $files = file_save_upload($field, $file_validators, 'temporary://');
-
-      if ($files === NULL) {
-        continue;
-      }
-
-      // file_save_upload() puts a FALSE inside `$files` in case of errors.
-      // `$files` itself is not FALSE.
-      // Therefore, validation is done in this way.
-      $valid_files = array_filter($files);
-      if (count($valid_files) !== count($files)) {
-        $form_state->setError($form[$field]);
-      }
-      else {
-        $form_state->setValue($field, $files);
-      }
-    }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function save(array $form, FormStateInterface $form_state) {
     /** @var \Drupal\cp_appearance\Entity\CustomThemeInterface $entity */
     $entity = $this->getEntity();
     /** @var array $form_state_values */
     $form_state_values = $form_state->getValues();
 
-    $entity->set('id', CustomTheme::CUSTOM_THEME_ID_PREFIX . $entity->id());
+    if ($entity->isNew()) {
+      $entity->set('id', CustomTheme::CUSTOM_THEME_ID_PREFIX . $entity->id());
+    }
 
     if ($form_state_values['images']) {
-      $uploaded_image_ids = array_map(function (FileInterface $file) {
-        return $file->id();
-      }, $form_state_values['images']);
-
-      $entity->setImages($uploaded_image_ids);
+      $entity->setImages($form_state_values['images']);
     }
 
     $entity->setStyles($form_state_values['styles']);

@@ -156,11 +156,11 @@ class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
     foreach ($image_ids as $id) {
       /** @var \Drupal\file\FileInterface $image */
       $image = File::load($id);
-      $status = file_unmanaged_move($image->getFileUri(), "file://$custom_theme_images_path");
+      $status = file_unmanaged_copy($image->getFileUri(), "file://$custom_theme_images_path", FILE_EXISTS_REPLACE);
 
       if (!$status) {
         throw new CustomThemeException(t('Unable to place file %file_uri in the theme. Please contact the site administrator for support.', [
-          '%file_url' => $image->getFileUri(),
+          '%file_uri' => $image->getFileUri(),
         ]));
       }
     }
