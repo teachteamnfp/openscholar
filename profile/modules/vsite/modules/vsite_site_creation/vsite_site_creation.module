@@ -44,7 +44,7 @@ function vsite_site_creation_library_info_alter(&$libraries, $extension) {
     $settings['themes'] = [];
     /** @var \Drupal\cp_appearance\AppearanceSettingsBuilderInterface $themeList */
     $themeList = \Drupal::service('cp_appearance.appearance_settings_builder');
-    $themes = $themeList->getThemes();
+    $themes = $themeList->getFeaturedThemes();
     foreach ($themes as $theme_name => $theme) {
       // TODO: Filter this list into featured, other, and one page when requisite features are done
       // Needed features: Feature a theme, one page themes

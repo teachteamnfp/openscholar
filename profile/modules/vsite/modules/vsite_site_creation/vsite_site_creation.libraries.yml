@@ -9,7 +9,7 @@ site_creation:
   paths: 'templates'
   drupalSettings:
     angularModules:
-      - SiteCreationForm
+      site_creation: SiteCreationForm
     version:
       siteCreation: 1.0
   dependencies:
