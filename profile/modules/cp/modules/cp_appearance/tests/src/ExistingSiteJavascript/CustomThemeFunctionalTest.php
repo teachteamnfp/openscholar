@@ -9,6 +9,8 @@ use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTest
 /**
  * Tests custom theme creation via UI.
  *
+ * @group functional-javascript
+ * @group cp-appearance
  * @coversDefaultClass \Drupal\cp_appearance\Entity\Form\CustomThemeForm
  */
 class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
