@@ -1,0 +1,3 @@
+'create vsite on behalf of others':
+  title: 'Create Vsite on Behalf of Others'
+  description: 'Allows the user to create user and vsite at the same time'
