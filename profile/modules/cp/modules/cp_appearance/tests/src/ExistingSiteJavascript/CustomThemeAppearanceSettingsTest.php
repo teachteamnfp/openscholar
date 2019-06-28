@@ -8,7 +8,7 @@ use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTest
 /**
  * Tests appearance settings for custom themes.
  *
- * @group functional
+ * @group functional-javascript
  * @group cp-appearance
  * @coversDefaultClass \Drupal\cp_appearance\Controller\CpAppearanceMainController
  */
