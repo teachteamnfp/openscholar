@@ -45,6 +45,7 @@ class CustomThemeForm extends EntityForm {
     /** @var \Drupal\cp_appearance\Entity\CustomThemeInterface $entity */
     $entity = $this->entity;
     $base_theme_options = [];
+    $custom_theme_directory_path = CustomTheme::ABSOLUTE_CUSTOM_THEMES_LOCATION . '/' . $entity->id();
 
     foreach ($this->appearanceSettingsBuilder->getFeaturedThemes() as $key => $data) {
       $base_theme_options[$key] = $data->info['name'];
@@ -93,6 +94,7 @@ class CustomThemeForm extends EntityForm {
       '#multiple' => TRUE,
     ];
 
+    $styles_path = $custom_theme_directory_path . '/' . CustomTheme::CUSTOM_THEMES_STYLE_LOCATION;
     $form['styles'] = [
       '#type' => 'textarea',
       '#title' => $this->t('CSS'),
@@ -100,16 +102,17 @@ class CustomThemeForm extends EntityForm {
         '%style_file' => CustomTheme::CUSTOM_THEMES_STYLE_LOCATION,
       ]),
       '#required' => TRUE,
-      '#default_value' => $entity->getStyles(),
+      '#default_value' => !$entity->isNew() ? file_get_contents($styles_path) : NULL,
     ];
 
+    $scripts_path = $custom_theme_directory_path . '/' . CustomTheme::CUSTOM_THEMES_SCRIPT_LOCATION;
     $form['scripts'] = [
       '#type' => 'textarea',
       '#title' => $this->t('JavaScript'),
       '#description' => $this->t('Enter the scripts for your custom theme. Make sure that the script is valid, otherwise the site might break. The scripts are going to be put inside %script_file file.', [
         '%script_file' => CustomTheme::CUSTOM_THEMES_SCRIPT_LOCATION,
       ]),
-      '#default_value' => $entity->getScripts(),
+      '#default_value' => (!$entity->isNew() && file_exists($scripts_path)) ? file_get_contents($scripts_path) : NULL,
     ];
 
     return $form;

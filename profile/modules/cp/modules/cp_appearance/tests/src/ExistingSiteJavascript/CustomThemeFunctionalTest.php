@@ -193,6 +193,45 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
   }
 
   /**
+   * Tests custom theme edit.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   * @throws \Behat\Mink\Exception\ExpectationException
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public function testUpdate(): void {
+    // Setup.
+    $group_admin = $this->createUser();
+    $this->addGroupAdmin($group_admin, $this->group);
+    $this->drupalLogin($group_admin);
+    $custom_theme_label = strtolower($this->randomMachineName());
+
+    $this->visitViaVsite('cp/appearance/custom-themes/add', $this->group);
+    $this->getSession()->getPage()->fillField('Custom Theme Name', $custom_theme_label);
+    $this->assertSession()->waitForElementVisible('css', '.machine-name-value');
+    $this->getSession()->getPage()->selectFieldOption('Parent Theme', 'clean');
+    $this->getSession()->getPage()->findField('styles')->setValue('body { color: black; }');
+    $this->getSession()->getPage()->findField('scripts')->setValue('alert("Hello World")');
+    $this->getSession()->getPage()->pressButton('Save');
+    $this->getSession()->getPage()->pressButton('Confirm');
+
+    /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
+    $vsite_context_manager = $this->container->get('vsite.context_manager');
+    $vsite_context_manager->activateVsite($this->group);
+    $custom_theme = CustomTheme::load(CustomTheme::CUSTOM_THEME_ID_PREFIX . $custom_theme_label);
+
+    // Tests.
+    $this->visitViaVsite("cp/appearance/custom-themes/{$custom_theme->id()}/edit", $this->group);
+
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->elementNotExists('css', '.admin-link');
+    $this->assertEquals('body { color: black; }', $this->getSession()->getPage()->findField('styles')->getValue());
+    $this->assertEquals('alert("Hello World")', $this->getSession()->getPage()->findField('scripts')->getValue());
+
+    $custom_theme->delete();
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function tearDown() {
