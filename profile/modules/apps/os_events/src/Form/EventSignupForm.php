@@ -185,7 +185,7 @@ class EventSignupForm extends FormBase {
 
     // Flag set to TRUE if multiple singup is not allowed and user is already
     // registered for one of the occurrences.
-    $flag = (!$node->field_singup_multiple->value && $result) ? TRUE : FALSE;
+    $flag = (!$node->field_singup_multiple->value && $result);
 
     // To find out if a email is already registered for a particular date.
     $query->condition('rfd.field_for_date_value', $forDate);
