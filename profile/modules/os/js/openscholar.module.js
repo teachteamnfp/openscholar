@@ -2,8 +2,8 @@
 
   var moduleListElem = document.querySelector('body[data-ng-modules]');
   if (moduleListElem !== false) {
-    moduleList = moduleListElem.attributes['data-ng-modules'].value.split(',');
+    moduleList = [];
 
-    angular.module('openscholar', moduleList);
+    angular.module('openscholar', drupalSettings.angularModules);
   }
 })(document);
