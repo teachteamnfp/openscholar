@@ -100,7 +100,7 @@
           var cKey = entityType + ':' + id;
 
           if (!defers[cKey]) {
-            let url = url.generate(settings.fetchSetting('paths.api') + '/' + entityType + '/' + id + format, true);
+            let url = urlGenerator.generate(settings.fetchSetting('paths.api') + '/' + entityType + '/' + id + format, true);
             defers[cKey] = $q.defer();
             $http.get(url, {pKey: cKey})
               .then(function (response) {
