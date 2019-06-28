@@ -84,6 +84,13 @@
           }
         }
       }
+      &.publication-types {
+        a {
+          &:before {
+            background: url(../../../themes/os_base/images/widgets/publication12.png) no-repeat;
+          }
+        }
+      }
       &.featured-posts {
         a {
           &:before {
