@@ -1,0 +1,8 @@
+type: module
+name: Cp Apperance Test
+description: Cp appearance test module.
+package: Testing
+core: 8.x
+dependencies:
+  - cp:cp_appearance
+hidden: TRUE
