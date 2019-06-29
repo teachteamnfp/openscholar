@@ -38,6 +38,9 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
   /**
    * Tests custom theme save.
    *
+   * @covers ::save
+   * @covers ::redirectOnSave
+   *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
@@ -55,8 +58,10 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
     $this->getSession()->getPage()->findField('styles')->setValue('body { color: black; }');
     $this->getSession()->getPage()->findField('scripts')->setValue('alert("Hello World")');
     $this->getSession()->getPage()->pressButton('Save');
+    $this->getSession()->getPage()->pressButton('Confirm');
 
-    // TODO: Test that styles and scripts have been created.
+    $this->assertContains("{$this->groupAlias}/cp/appearance", $this->getSession()->getCurrentUrl());
+
     /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
     $vsite_context_manager = $this->container->get('vsite.context_manager');
     $vsite_context_manager->activateVsite($this->group);
@@ -65,6 +70,20 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
     $this->assertNotNull($custom_theme);
     $this->assertEquals('Cyberpunk', $custom_theme->label());
     $this->assertEquals('clean', $custom_theme->getBaseTheme());
+
+    $style_file = 'file://' . CustomTheme::ABSOLUTE_CUSTOM_THEMES_LOCATION . '/' . $custom_theme->id() . '/' . CustomTheme::CUSTOM_THEMES_STYLE_LOCATION;
+    $styles = file_get_contents($style_file);
+    $this->assertFileExists('file://' . CustomTheme::ABSOLUTE_CUSTOM_THEMES_LOCATION . '/' . $custom_theme->id() . '/' . CustomTheme::CUSTOM_THEMES_STYLE_LOCATION);
+    $this->assertEquals('body { color: black; }', $styles);
+
+    $script_file = 'file://' . CustomTheme::ABSOLUTE_CUSTOM_THEMES_LOCATION . '/' . $custom_theme->id() . '/' . CustomTheme::CUSTOM_THEMES_SCRIPT_LOCATION;
+    $scripts = file_get_contents($script_file);
+    $this->assertFileExists($script_file);
+    $this->assertEquals('alert("Hello World")', $scripts);
+
+    /** @var \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler */
+    $theme_handler = $this->container->get('theme_handler');
+    $this->assertTrue($theme_handler->themeExists($custom_theme->id()));
 
     // Clean up.
     $custom_theme->delete();
@@ -97,6 +116,78 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
     $this->visit('/');
     $this->assertSession()->responseContains("/themes/custom_themes/{$custom_theme->id()}/style.css");
     $this->assertSession()->responseContains("/themes/custom_themes/{$custom_theme->id()}/script.js");
+  }
+
+  /**
+   * Tests custom theme save and set default.
+   *
+   * @covers ::save
+   * @covers ::redirectOnSave
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   * @throws \Behat\Mink\Exception\ExpectationException
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public function testSaveDefault(): void {
+    // Setup.
+    $group_admin = $this->createUser();
+    $this->addGroupAdmin($group_admin, $this->group);
+    $this->drupalLogin($group_admin);
+
+    $this->visitViaVsite('cp/appearance/custom-themes/add', $this->group);
+    $this->getSession()->getPage()->fillField('Custom Theme Name', 'Cyberpunk 2077');
+    $this->assertSession()->waitForElementVisible('css', '.machine-name-value');
+    $this->getSession()->getPage()->selectFieldOption('Parent Theme', 'clean');
+    $this->getSession()->getPage()->findField('styles')->setValue('body { color: black; }');
+    $this->getSession()->getPage()->findField('scripts')->setValue('alert("Hello World")');
+    $this->getSession()->getPage()->pressButton('Save and set as default theme');
+    $this->getSession()->getPage()->pressButton('Confirm');
+
+    $this->assertContains("{$this->groupAlias}/cp/appearance", $this->getSession()->getCurrentUrl());
+
+    // Tests.
+    /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
+    $vsite_context_manager = $this->container->get('vsite.context_manager');
+    $vsite_context_manager->activateVsite($this->group);
+    /** @var \Drupal\cp_appearance\Entity\CustomThemeInterface $custom_theme */
+    $custom_theme = CustomTheme::load(CustomTheme::CUSTOM_THEME_ID_PREFIX . 'cyberpunk_2077');
+    $this->assertNotNull($custom_theme);
+
+    /** @var \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler */
+    $theme_handler = $this->container->get('theme_handler');
+    $this->assertTrue($theme_handler->themeExists($custom_theme->id()));
+
+    $this->visitViaVsite('', $this->group);
+    $custom_theme_id = CustomTheme::CUSTOM_THEME_ID_PREFIX . 'cyberpunk_2077';
+    $this->assertSession()->responseContains("/themes/custom_themes/$custom_theme_id/style.css");
+    $this->assertSession()->responseContains("/themes/custom_themes/$custom_theme_id/script.js");
+
+    $custom_theme->delete();
+  }
+
+  /**
+   * @covers ::exists
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   * @throws \Behat\Mink\Exception\ResponseTextException
+   */
+  public function testMachineNameValidation(): void {
+    // Setup.
+    $group_admin = $this->createUser();
+    $this->addGroupAdmin($group_admin, $this->group);
+    $this->drupalLogin($group_admin);
+
+    // Tests.
+    $this->visitViaVsite('cp/appearance/custom-themes/add', $this->group);
+    $this->getSession()->getPage()->fillField('Custom Theme Name', 'Cp Appearance Test 1');
+    $this->assertSession()->waitForElementVisible('css', '.machine-name-value');
+    $this->getSession()->getPage()->selectFieldOption('Parent Theme', 'clean');
+    $this->getSession()->getPage()->findField('styles')->setValue('body { color: black; }');
+    $this->getSession()->getPage()->findField('scripts')->setValue('alert("Hello World")');
+    $this->getSession()->getPage()->pressButton('Save');
+    $this->getSession()->getPage()->pressButton('Confirm');
+
+    $this->assertSession()->pageTextContains('The machine-readable name is already in use. It must be unique.');
   }
 
   /**
