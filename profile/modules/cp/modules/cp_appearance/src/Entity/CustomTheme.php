@@ -168,7 +168,14 @@ class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
     // Place styles and scripts.
     $styles = $this->getStyles();
     if ($styles) {
-      $status = file_unmanaged_save_data($styles, "file://$custom_theme_directory_path/" . self::CUSTOM_THEMES_STYLE_LOCATION);
+      $styles_location = "file://$custom_theme_directory_path/" . self::CUSTOM_THEMES_STYLE_LOCATION;
+      $status = touch($styles_location);
+
+      if (!$status) {
+        throw new CustomThemeException(t('Unable to place the styles. Please contact the site administrator for support.'));
+      }
+
+      $status = file_unmanaged_save_data($styles, $styles_location);
 
       if (!$status) {
         throw new CustomThemeException(t('Unable to place the styles. Please contact the site administrator for support.'));
@@ -177,7 +184,14 @@ class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
 
     $scripts = $this->getScripts();
     if ($scripts) {
-      $status = file_unmanaged_save_data($scripts, "file://$custom_theme_directory_path/" . self::CUSTOM_THEMES_SCRIPT_LOCATION);
+      $scripts_location = "file://$custom_theme_directory_path/" . self::CUSTOM_THEMES_SCRIPT_LOCATION;
+      $status = touch($scripts_location);
+
+      if (!$status) {
+        throw new CustomThemeException(t('Unable to place the scripts. Please contact the site administrator for support.'));
+      }
+
+      $status = file_unmanaged_save_data($scripts, $scripts_location);
 
       if (!$status) {
         throw new CustomThemeException(t('Unable to place the scripts. Please contact the site administrator for support.'));
@@ -193,7 +207,14 @@ class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
       ];
     }
 
-    $status = file_unmanaged_save_data(Yaml::dump($libraries_info), "file://$custom_theme_directory_path/{$this->id()}.libraries.yml");
+    $libraries_info_location = "file://$custom_theme_directory_path/{$this->id()}.libraries.yml";
+    $status = touch($libraries_info_location);
+
+    if (!$status) {
+      throw new CustomThemeException(t('Unable to place theme libraries info file. Please contact the site administrator for support.'));
+    }
+
+    $status = file_unmanaged_save_data(Yaml::dump($libraries_info), $libraries_info_location);
 
     if (!$status) {
       throw new CustomThemeException(t('Unable to place theme libraries info file. Please contact the site administrator for support.'));
@@ -221,7 +242,14 @@ class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
 
     $info = array_merge($base_info, ['regions' => $formatted_regions], self::CUSTOM_THEME_INFO_TEMPLATE);
 
-    $status = file_unmanaged_save_data(Yaml::dump($info), "file://$custom_theme_directory_path/{$this->id()}.info.yml");
+    $info_location = "file://$custom_theme_directory_path/{$this->id()}.info.yml";
+    $status = touch($info_location);
+
+    if (!$status) {
+      throw new CustomThemeException(t('Unable to place theme info file. Please contact the site administrator for support.'));
+    }
+
+    $status = file_unmanaged_save_data(Yaml::dump($info), $info_location);
 
     if (!$status) {
       throw new CustomThemeException(t('Unable to place theme info file. Please contact the site administrator for support.'));
