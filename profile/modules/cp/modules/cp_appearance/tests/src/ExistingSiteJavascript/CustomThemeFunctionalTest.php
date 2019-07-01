@@ -173,11 +173,9 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
     $theme_handler = $this->container->get('theme_handler');
     $this->assertTrue($theme_handler->themeExists($custom_theme->id()));
 
-    $this->visitViaVsite('', $this->group);
-    $custom_theme_id = CustomTheme::CUSTOM_THEME_ID_PREFIX . 'cyberpunk_2077';
-    $this->assertSession()->waitForElement('css', 'body');
-    $this->assertSession()->responseContains("/themes/custom_themes/$custom_theme_id/style.css");
-    $this->assertSession()->responseContains("/themes/custom_themes/$custom_theme_id/script.js");
+    /** @var \Drupal\Core\Config\ConfigFactoryInterface $config_factory */
+    $config_factory = $this->container->get('config.factory');
+    $this->assertEquals($custom_theme->id(), $config_factory->get('system.theme')->get('default'));
 
     // Cleanup.
     $custom_theme->delete();
