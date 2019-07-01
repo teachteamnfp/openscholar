@@ -175,6 +175,7 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
 
     $this->visitViaVsite('', $this->group);
     $custom_theme_id = CustomTheme::CUSTOM_THEME_ID_PREFIX . 'cyberpunk_2077';
+    $this->assertSession()->waitForElement('css', 'body');
     $this->assertSession()->responseContains("/themes/custom_themes/$custom_theme_id/style.css");
     $this->assertSession()->responseContains("/themes/custom_themes/$custom_theme_id/script.js");
 
@@ -318,9 +319,10 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
     $system_theme_mut = $config_factory->getEditable('system.theme');
     $system_theme_mut->set('default', $this->defaultTheme);
     $system_theme_mut->save();
-    chmod(CustomTheme::ABSOLUTE_CUSTOM_THEMES_LOCATION, $this->customThemeDirectoryPermission);
 
     parent::tearDown();
+
+    chmod(CustomTheme::ABSOLUTE_CUSTOM_THEMES_LOCATION, $this->customThemeDirectoryPermission);
   }
 
 }
