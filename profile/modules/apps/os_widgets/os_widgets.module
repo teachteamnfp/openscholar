@@ -57,6 +57,28 @@ function os_widgets_preprocess_block(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_links__toolbar_user().
+ *
+ * Add an extra item for link OS twitter.
+ */
+function os_widgets_preprocess_links__toolbar_user(&$vars) {
+  $links_keys = array_keys($vars['links']);
+  $last_key = end($links_keys);
+  $last_item = array_pop($vars['links']);
+  $vars['links']['twitter_status']['link'] = [
+    '#type' => 'link',
+    '#title' => t('Updates on twitter'),
+    '#url' => Url::fromUri('https://twitter.com/osappstatus'),
+    '#options' => [
+      'attributes' => [
+        'target' => '_blank',
+      ],
+    ],
+  ];
+  $vars['links'][$last_key] = $last_item;
+}
+
+/**
  * Implements hook_theme().
  */
 function os_widgets_theme($existing, $type, $theme, $path) {
