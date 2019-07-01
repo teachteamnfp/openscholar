@@ -2,6 +2,8 @@
 
 namespace Drupal\Tests\cp_taxonomy\ExistingSite;
 
+use Drupal\Tests\openscholar\Traits\CpTaxonomyTestTrait;
+
 /**
  * Class CheckingFieldsTest.
  *
@@ -12,7 +14,8 @@ namespace Drupal\Tests\cp_taxonomy\ExistingSite;
  */
 class CpTaxonomyHelperTest extends TestBase {
 
-  protected $group;
+  use CpTaxonomyTestTrait;
+
   private $helper;
 
   /**
@@ -20,12 +23,6 @@ class CpTaxonomyHelperTest extends TestBase {
    */
   public function setUp() {
     parent::setUp();
-    $this->group = $this->createGroup([
-      'type' => 'personal',
-      'path' => [
-        'alias' => '/' . $this->randomMachineName(),
-      ],
-    ]);
     $this->helper = $this->container->get('cp.taxonomy.helper');
   }
 
@@ -36,8 +33,7 @@ class CpTaxonomyHelperTest extends TestBase {
     $vid = $this->randomMachineName();
     $this->createGroupVocabulary($this->group, $vid, ['node:taxonomy_test_1']);
     $form_state_array = [
-      'media:executable' => 0,
-      'media:taxonomy_test_file' => 'media:taxonomy_test_file',
+      'media:*' => 'media:*',
       'node:events' => 0,
       'node:faq' => 0,
       'node:link' => 0,
@@ -48,7 +44,7 @@ class CpTaxonomyHelperTest extends TestBase {
     $form['vid']['#default_value'] = $vid;
     $options_default = $this->helper->getSelectedBundles($form);
     $this->assertCount(2, $options_default);
-    $this->assertSame('media:taxonomy_test_file', $options_default[0]);
+    $this->assertSame('media:*', $options_default[0]);
     $this->assertSame('node:taxonomy_test_2', $options_default[1]);
   }
 
@@ -57,12 +53,12 @@ class CpTaxonomyHelperTest extends TestBase {
    */
   public function testSelectableBundlesValue() {
     $selectable_bundles = $this->helper->getSelectableBundles();
-    $this->assertArrayHasKey('media:taxonomy_test_file', $selectable_bundles);
+    $this->assertArrayHasKey('media:*', $selectable_bundles);
     $this->assertArrayHasKey('node:taxonomy_test_1', $selectable_bundles);
     $this->assertArrayHasKey('node:taxonomy_test_2', $selectable_bundles);
-    $this->assertSame('Media - Taxonomy Test File', $selectable_bundles['media:taxonomy_test_file']);
-    $this->assertSame('Content - Taxonomy Test 1', $selectable_bundles['node:taxonomy_test_1']);
-    $this->assertSame('Content - Taxonomy Test 2', $selectable_bundles['node:taxonomy_test_2']);
+    $this->assertSame('Media', $selectable_bundles['media:*']->__toString());
+    $this->assertSame('Taxonomy Test 1', $selectable_bundles['node:taxonomy_test_1']);
+    $this->assertSame('Taxonomy Test 2', $selectable_bundles['node:taxonomy_test_2']);
   }
 
 }

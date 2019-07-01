@@ -1,0 +1,23 @@
+uuid: bf689256-b3bb-4acb-8639-c2cffe32289d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.group.field_preset
+    - group.type.personal
+id: group.personal.field_preset
+field_name: field_preset
+entity_type: group
+bundle: personal
+label: Preset
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:group_preset'
+  handler_settings:
+    target_bundles: null
+    auto_create: false
+field_type: entity_reference

@@ -1,0 +1,20 @@
+uuid: 918a0d84-6823-4f1c-958b-124dc0a0faeb
+langcode: en
+status: true
+dependencies:
+  module:
+    - group
+    - vsite
+id: group.field_preset
+field_name: field_preset
+entity_type: group
+type: entity_reference
+settings:
+  target_type: group_preset
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

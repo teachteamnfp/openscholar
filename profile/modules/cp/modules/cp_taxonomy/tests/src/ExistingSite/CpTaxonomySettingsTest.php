@@ -72,7 +72,7 @@ class CpTaxonomySettingsTest extends TestBase {
   /**
    * Test view tags on node entity.
    */
-  public function testViewTagsOnListingPageNodeEntity() {
+  public function testViewTagsOnListingNodeEntity() {
     $view_builder = $this->entityTypeManager
       ->getViewBuilder('node');
 
@@ -105,29 +105,56 @@ class CpTaxonomySettingsTest extends TestBase {
   /**
    * Test group admin settings form.
    */
-  public function testCpSettingsTaxonomyForm() {
-    $this->configTaxonomy->set('display_term_under_content', '1');
+  public function testCpSettingsTaxonomyFormSelectNone() {
+    $this->configTaxonomy->set('display_term_under_content_teaser_types', NULL);
     $this->configTaxonomy->save(TRUE);
 
     $this->drupalLogin($this->groupAdmin);
-    $this->visit('/' . $this->groupAlias . '/cp/settings/taxonomy');
+    $this->visitViaVsite('cp/settings/taxonomy', $this->group);
+    $this->assertSession()->statusCodeEquals(200);
+    $page = $this->getCurrentPageContent();
+    // Assert checkboxes are checked.
+    $this->assertContains('name="display_term_under_content_teaser_types[bibcite_reference:*]" value="bibcite_reference:*" checked="checked" class="form-checkbox"', $page);
+    $this->assertContains('name="display_term_under_content_teaser_types[media:*]" value="media:*" checked="checked" class="form-checkbox"', $page);
+
+    $edit = [
+      'display_term_under_content_teaser_types[bibcite_reference:*]' => 0,
+      'display_term_under_content_teaser_types[media:*]' => 0,
+    ];
+    $this->drupalPostForm(NULL, $edit, 'Save configuration');
+    $this->assertSession()->statusCodeEquals(200);
+    $page = $this->getCurrentPageContent();
+    // Assert checkboxes are unchecked.
+    $this->assertContains('name="display_term_under_content_teaser_types[bibcite_reference:*]" value="bibcite_reference:*" class="form-checkbox"', $page);
+    $this->assertContains('name="display_term_under_content_teaser_types[media:*]" value="media:*" class="form-checkbox"', $page);
+  }
+
+  /**
+   * Test group admin settings form.
+   */
+  public function testCpSettingsTaxonomyForm() {
+    $this->configTaxonomy->set('display_term_under_content', '1');
+    $this->configTaxonomy->set('display_term_under_content_teaser_types', NULL);
+    $this->configTaxonomy->save(TRUE);
+
+    $this->drupalLogin($this->groupAdmin);
+    $this->visitViaVsite('cp/settings/taxonomy', $this->group);
     $this->assertSession()->statusCodeEquals(200);
     $page = $this->getCurrentPageContent();
     // Assert checkboxes are checked.
     $this->assertContains('name="display_term_under_content" value="1" checked="checked" class="form-checkbox"', $page);
-    $this->assertContains('name="display_term_under_content_teaser_types[bibcite_reference:artwork]" value="bibcite_reference:artwork" checked="checked" class="form-checkbox"', $page);
+    $this->assertContains('name="display_term_under_content_teaser_types[bibcite_reference:*]" value="bibcite_reference:*" checked="checked" class="form-checkbox"', $page);
 
     $edit = [
       'display_term_under_content' => '0',
-      'display_term_under_content_teaser_types[bibcite_reference:artwork]' => '',
+      'display_term_under_content_teaser_types[bibcite_reference:*]' => '',
     ];
     $this->drupalPostForm(NULL, $edit, 'Save configuration');
     $this->assertSession()->statusCodeEquals(200);
     $page = $this->getCurrentPageContent();
     // Assert checkboxes are unchecked.
     $this->assertContains('name="display_term_under_content" value="1" class="form-checkbox"', $page);
-    $this->assertContains('name="display_term_under_content_teaser_types[bibcite_reference:artwork]" value="bibcite_reference:artwork" class="form-checkbox"', $page);
-
+    $this->assertContains('name="display_term_under_content_teaser_types[bibcite_reference:*]" value="bibcite_reference:*" class="form-checkbox"', $page);
   }
 
 }

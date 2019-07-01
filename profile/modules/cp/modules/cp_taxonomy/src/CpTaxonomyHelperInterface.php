@@ -80,4 +80,12 @@ interface CpTaxonomyHelperInterface {
    */
   public function checkTaxonomyTermsListingVisibility(array &$build, string $entity_type): void;
 
+  /**
+   * Set build cache tags.
+   *
+   * @param array $build
+   *   View alter build array.
+   */
+  public function setCacheTags(array &$build): void;
+
 }

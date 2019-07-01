@@ -1,0 +1,6 @@
+name: OS Privacy Policy
+description: 'Handle privacy text and url in footer.'
+type: module
+core: 8.x
+dependencies:
+  - "drupal:cp_settings"

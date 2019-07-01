@@ -40,3 +40,7 @@ data:
     id: os_base_powered
     region: footer
     weight: '1'
+  -
+    id: copyright
+    region: footer
+    weight: '2'

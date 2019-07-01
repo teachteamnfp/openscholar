@@ -89,6 +89,9 @@ class CustomThemeTest extends TestBase {
     $this->assertEquals('8.x', $theme_info_file_data['core']);
     $this->assertEquals('theme', $theme_info_file_data['type']);
 
+    // Assert dependencies.
+    $this->assertEquals('clean', $custom_theme->getDependencies()['theme'][0]);
+
     $this->markConfigForCleanUp($custom_theme);
   }
 

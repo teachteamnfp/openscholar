@@ -59,7 +59,7 @@ class TaxonomyBlockJavascriptTest extends OsExistingSiteJavascriptTestBase {
     $web_assert->assertWaitOnAjaxRequest();
     $bundle_field = $page->findField('field_taxonomy_bundle');
     $options = $bundle_field->getHtml();
-    $this->assertEquals('<option value="_none" selected="selected">- None -</option><option value="node:taxonomy_test_1">Content - Taxonomy Test 1</option><option value="node:taxonomy_test_2">Content - Taxonomy Test 2</option>', $options);
+    $this->assertEquals('<option value="_none" selected="selected">- None -</option><option value="node:taxonomy_test_1">Taxonomy Test 1</option><option value="node:taxonomy_test_2">Taxonomy Test 2</option>', $options);
   }
 
 }

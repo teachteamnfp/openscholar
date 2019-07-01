@@ -140,7 +140,7 @@ class OsWidgetsExistingSiteTestBase extends ExistingSiteBase {
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  public function createMedia(array $values = []) : MediaInterface {
+  public function osWidgetCreateMedia(array $values = []) : MediaInterface {
     $media = Media::create($values + [
       'bundle' => 'default',
       'name' => $this->randomMachineName(8),
