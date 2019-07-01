@@ -45,6 +45,7 @@ function cp_appearance_update_8001() {
 function cp_appearance_init_custom_themes_storage_location() {
   $custom_theme_path = CustomTheme::ABSOLUTE_CUSTOM_THEMES_LOCATION;
   $status = file_prepare_directory($custom_theme_path, FILE_CREATE_DIRECTORY);
+  chmod($custom_theme_path, 0777);
 
   if (!$status) {
     throw new CustomThemeException(t('Unable to create directory for storing the theme. Please contact the site administrator for support.'));
