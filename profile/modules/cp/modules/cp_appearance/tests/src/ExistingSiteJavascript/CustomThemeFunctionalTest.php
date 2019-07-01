@@ -10,6 +10,7 @@ use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTest
  *
  * @group functional-javascript
  * @group cp-appearance
+ * @group unique
  * @coversDefaultClass \Drupal\cp_appearance\Entity\Form\CustomThemeForm
  */
 class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
