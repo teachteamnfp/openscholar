@@ -27,6 +27,13 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
   protected $defaultTheme;
 
   /**
+   * Default custom theme directory permission.
+   *
+   * @var int
+   */
+  protected $customThemeDirectoryPermission;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
@@ -37,6 +44,11 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
     /** @var \Drupal\Core\Config\ImmutableConfig $system_theme */
     $system_theme = $config_factory->get('system.theme');
     $this->defaultTheme = $system_theme->get('default');
+    /** @var \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler */
+    $theme_handler = $this->container->get('theme_handler');
+    $theme_handler->refreshInfo();
+    $this->customThemeDirectoryPermission = substr(sprintf('%o', fileperms(CustomTheme::ABSOLUTE_CUSTOM_THEMES_LOCATION)), -4);
+    chmod(CustomTheme::ABSOLUTE_CUSTOM_THEMES_LOCATION, 0777);
   }
 
   /**
@@ -301,6 +313,7 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
     $system_theme_mut = $config_factory->getEditable('system.theme');
     $system_theme_mut->set('default', $this->defaultTheme);
     $system_theme_mut->save();
+    chmod(CustomTheme::ABSOLUTE_CUSTOM_THEMES_LOCATION, $this->customThemeDirectoryPermission);
 
     parent::tearDown();
   }
