@@ -238,12 +238,22 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
     $this->assertEquals('alert("Hello World")', $this->getSession()->getPage()->findField('scripts')->getValue());
 
     $this->getSession()->getPage()->fillField('Custom Theme Name', 'Cyberpunk');
-    $this->getSession()->getPage()->selectFieldOption('Parent Theme', 'shadow');
     $this->getSession()->getPage()->findField('styles')->setValue('body { color: black; font-family: Sans-Serif; };');
     $this->getSession()->getPage()->findField('scripts')->setValue('alert("Hello World"); test');
     $this->getSession()->getPage()->pressButton('Save');
 
     $this->assertContains('cp/appearance', $this->getSession()->getCurrentUrl());
+    $this->assertSession()->pageTextContains('Cyberpunk');
+
+    $style_file = 'file://' . CustomTheme::ABSOLUTE_CUSTOM_THEMES_LOCATION . '/' . $custom_theme->id() . '/' . CustomTheme::CUSTOM_THEMES_STYLE_LOCATION;
+    $styles = file_get_contents($style_file);
+    $this->assertFileExists('file://' . CustomTheme::ABSOLUTE_CUSTOM_THEMES_LOCATION . '/' . $custom_theme->id() . '/' . CustomTheme::CUSTOM_THEMES_STYLE_LOCATION);
+    $this->assertEquals('body { color: black; font-family: Sans-Serif; };', $styles);
+
+    $script_file = 'file://' . CustomTheme::ABSOLUTE_CUSTOM_THEMES_LOCATION . '/' . $custom_theme->id() . '/' . CustomTheme::CUSTOM_THEMES_SCRIPT_LOCATION;
+    $scripts = file_get_contents($script_file);
+    $this->assertFileExists($script_file);
+    $this->assertEquals('alert("Hello World"); test', $scripts);
 
     // Cleanup.
     $custom_theme->delete();
