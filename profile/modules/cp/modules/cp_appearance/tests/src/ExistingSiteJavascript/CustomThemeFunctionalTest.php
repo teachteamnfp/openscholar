@@ -71,8 +71,6 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
     $this->getSession()->getPage()->findField('scripts')->setValue('alert("Hello World")');
     $this->getSession()->getPage()->pressButton('Save');
     file_put_contents('public://page-name.html', $this->getCurrentPageContent());
-    $count = db_query('SELECT message, variables FROM {watchdog} ORDER BY timestamp DESC LIMIT 10')->fetchAssoc();
-    file_put_contents('public://db-log.txt', format_string($count['message'], $count['variable']));
     $this->getSession()->getPage()->pressButton('Confirm');
 
     $this->assertContains("{$this->groupAlias}/cp/appearance", $this->getSession()->getCurrentUrl());
