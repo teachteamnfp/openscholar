@@ -44,9 +44,6 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
     /** @var \Drupal\Core\Config\ImmutableConfig $system_theme */
     $system_theme = $config_factory->get('system.theme');
     $this->defaultTheme = $system_theme->get('default');
-    /** @var \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler */
-    $theme_handler = $this->container->get('theme_handler');
-    $theme_handler->refreshInfo();
     $this->customThemeDirectoryPermission = substr(sprintf('%o', fileperms(CustomTheme::ABSOLUTE_CUSTOM_THEMES_LOCATION)), -4);
     chmod(CustomTheme::ABSOLUTE_CUSTOM_THEMES_LOCATION, 0777);
   }
@@ -109,6 +106,9 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
 
     // Clean up.
     $custom_theme->delete();
+    /** @var \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler */
+    $theme_handler = $this->container->get('theme_handler');
+    $theme_handler->refreshInfo();
   }
 
   /**
@@ -184,7 +184,11 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
     $this->assertSession()->responseContains("/themes/custom_themes/$custom_theme_id/style.css");
     $this->assertSession()->responseContains("/themes/custom_themes/$custom_theme_id/script.js");
 
+    // Cleanup.
     $custom_theme->delete();
+    /** @var \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler */
+    $theme_handler = $this->container->get('theme_handler');
+    $theme_handler->refreshInfo();
   }
 
   /**
@@ -259,7 +263,11 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
 
     $this->assertContains('cp/appearance', $this->getSession()->getCurrentUrl());
 
+    // Cleanup.
     $custom_theme->delete();
+    /** @var \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler */
+    $theme_handler = $this->container->get('theme_handler');
+    $theme_handler->refreshInfo();
   }
 
   /**
@@ -300,7 +308,11 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
     $config_factory = $this->container->get('config.factory');
     $this->assertEquals($custom_theme->id(), $config_factory->get('system.theme')->get('default'));
 
+    // Cleanup.
     $custom_theme->delete();
+    /** @var \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler */
+    $theme_handler = $this->container->get('theme_handler');
+    $theme_handler->refreshInfo();
   }
 
   /**
