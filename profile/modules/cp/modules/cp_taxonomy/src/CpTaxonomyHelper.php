@@ -7,6 +7,7 @@ use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\taxonomy\Entity\Vocabulary;
+use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 
 /**
  * Helper functions to handle vocabularies and related entities.
@@ -18,6 +19,7 @@ class CpTaxonomyHelper implements CpTaxonomyHelperInterface {
   private $configFactory;
   private $entityTypeManager;
   private $entityTypeBundleInfo;
+  private $vsiteContextManager;
 
   /**
    * Constructor.
@@ -28,11 +30,14 @@ class CpTaxonomyHelper implements CpTaxonomyHelperInterface {
    *   Entity Type Manager.
    * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface $entity_type_bundle_info
    *   Entity Type Bundle Info Interface.
+   * @param \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager
+   *   Vsite context manager.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, EntityTypeManagerInterface $entity_type_manager, EntityTypeBundleInfoInterface $entity_type_bundle_info) {
+  public function __construct(ConfigFactoryInterface $config_factory, EntityTypeManagerInterface $entity_type_manager, EntityTypeBundleInfoInterface $entity_type_bundle_info, VsiteContextManagerInterface $vsite_context_manager) {
     $this->configFactory = $config_factory;
     $this->entityTypeManager = $entity_type_manager;
     $this->entityTypeBundleInfo = $entity_type_bundle_info;
+    $this->vsiteContextManager = $vsite_context_manager;
   }
 
   /**
@@ -129,6 +134,20 @@ class CpTaxonomyHelper implements CpTaxonomyHelperInterface {
     if (is_array($display_term_under_content_teaser_types) && !in_array($entity_type, $display_term_under_content_teaser_types) && $build['#view_mode'] == 'teaser') {
       $build['field_taxonomy_terms']['#access'] = FALSE;
     }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setCacheTags(array &$build): void {
+    $group = $this->vsiteContextManager->getActiveVsite();
+    if (empty($group)) {
+      return;
+    }
+    if (empty($build['field_taxonomy_terms'])) {
+      return;
+    }
+    $build['#cache']['tags'][] = 'entity-with-taxonomy-terms:' . $group->id();
   }
 
 }
