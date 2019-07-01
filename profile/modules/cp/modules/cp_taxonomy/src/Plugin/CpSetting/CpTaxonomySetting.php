@@ -78,8 +78,8 @@ class CpTaxonomySetting extends CpSettingBase {
       '#default_value' => $config->get('display_term_under_content'),
     ];
     $default_value = $config->get('display_term_under_content_teaser_types');
-    // If no default available we will check all options.
-    if (empty($default_value)) {
+    // If no config value available, we will check all options.
+    if (is_null($default_value)) {
       $default_value = array_keys($this->cpTaxonomyHelper->getSelectableBundles());
     }
     $form['display_term_under_content_teaser_types'] = [
