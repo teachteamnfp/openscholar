@@ -107,7 +107,7 @@ class VsiteContextManager implements VsiteContextManagerInterface {
   /**
    * {@inheritdoc}
    */
-  public function getAbsoluteUrl(string $path = '', GroupInterface $group = NULL, BubbleableMetadata $bubbleable_metadata = null) {
+  public function getAbsoluteUrl(string $path = '', GroupInterface $group = NULL, BubbleableMetadata $bubbleable_metadata = NULL) {
     if (!$this->activeGroup) {
       return $path;
     }
@@ -116,7 +116,7 @@ class VsiteContextManager implements VsiteContextManagerInterface {
     $purl = $generatedUrl->getGeneratedUrl();
     // Prevents errors in rest requests.
     // See: https://www.lullabot.com/articles/early-rendering-a-lesson-in-debugging-drupal-8
-    if ($bubbleable_metadata) {
+    if (!is_null($bubbleable_metadata)) {
       $response = new CacheableResponse($purl, Response::HTTP_OK);
       $bubbleable_metadata->addCacheableDependency($response);
     }

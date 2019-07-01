@@ -2,16 +2,22 @@
 
 namespace Drupal\os_rest\Normalizer;
 
-
-
-use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\serialization\Normalizer\ContentEntityNormalizer;
 use Drupal\user\Entity\Role;
-use Drupal\user\Entity\User;
-use Drupal\user\UserInterface;
 use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 
+/**
+ * Replace standard normalizer with our own that returns the properties we want.
+ */
 class OsUserNormalizer extends ContentEntityNormalizer {
+
+  /**
+   * Vsite context manager.
+   *
+   * @var VsiteContextManagerInterface
+   */
+  protected $vsiteContextManager;
 
   /**
    * The interface or class that this Normalizer supports.
@@ -20,12 +26,17 @@ class OsUserNormalizer extends ContentEntityNormalizer {
    */
   protected $supportedInterfaceOrClass = '\Drupal\user\UserInterface';
 
+  public function __construct(EntityManagerInterface $entity_manager, VsiteContextManagerInterface $vsiteContextManager) {
+    parent::__construct($entity_manager);
+    $this->vsiteContextManager = $vsiteContextManager;
+  }
+
   /**
    * {@inheritdoc}
    */
   public function normalize($entity, $format = NULL, array $context = []) {
     $temp = parent::normalize($entity, $format, $context);
-    /** @var UserInterface $user */
+    /** @var \Drupal\user\UserInterface $user */
     $user = $entity;
 
     $output = [];
@@ -36,19 +47,18 @@ class OsUserNormalizer extends ContentEntityNormalizer {
     $output['first_name'] = !empty($temp['field_first_name']) ? $temp['field_first_name'][0]['value'] : '';
     $output['last_name'] = !empty($temp['field_last_name']) ? $temp['field_last_name'][0]['value'] : '';
 
-    $output['can_create_new_sites'] = true; // TODO: Replace with real logic once we have some.
+    // TODO: Replace with real logic once we have some.
+    $output['can_create_new_sites'] = TRUE;
 
     $output['roles'] = $user->getRoles();
     $output['permissions'] = [];
-    /** @var Role $r */
+    /** @var \Drupal\user\Entity\Role $r */
     foreach ($user->getRoles() as $r) {
       $role = Role::load($r);
       $output['permissions'] = array_merge($output['permissions'], $role->getPermissions());
     }
 
-    /** @var VsiteContextManagerInterface $vsiteContextManager */
-    $vsiteContextManager = \Drupal::service('vsite.context_manager');
-    if ($group = $vsiteContextManager->getActiveVsite()) {
+    if ($group = $this->vsiteContextManager->getActiveVsite()) {
       $membership = $group->getMember($user);
       foreach ($membership->getRoles() as $r) {
         $output['permissions'] = array_merge($output['permissions'], $r->getPermissions());

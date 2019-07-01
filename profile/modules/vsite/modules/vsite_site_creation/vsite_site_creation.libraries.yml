@@ -21,4 +21,3 @@ site_creation:
     - os/dependencyManager
     - os/urlGenerator
     - os/openscholarModule
-

@@ -2,10 +2,11 @@
 
 namespace Drupal\os_rest\Normalizer;
 
-
-use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\serialization\Normalizer\ContentEntityNormalizer;
 
+/**
+ * Replace the standard normalizer with our own to send the fields we want.
+ */
 class OsGroupNormalizer extends ContentEntityNormalizer {
 
   /**
@@ -35,7 +36,7 @@ class OsGroupNormalizer extends ContentEntityNormalizer {
       'label' => [['value' => $data['label']]],
       'field_privacy_level' => [['value' => $data['privacy']]],
       'field_preset' => [['target_id' => $data['preset']]],
-      'path' => [['alias' => '/'.$data['purl'], 'langcode' => 'en']]
+      'path' => [['alias' => '/' . $data['purl'], 'langcode' => 'en']],
     ];
 
     if (isset($data['parent'])) {

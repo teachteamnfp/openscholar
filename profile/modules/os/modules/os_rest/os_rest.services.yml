@@ -13,7 +13,7 @@ services:
     class: Drupal\os_rest\Normalizer\OsUserNormalizer
     tags:
       - { name: normalizer, priority: 2 }
-    arguments: ['@entity.manager']
+    arguments: ['@entity.manager', '@vsite.context_manager']
   os_rest.group:
     class: Drupal\os_rest\Normalizer\OsGroupNormalizer
     tags:

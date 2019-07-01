@@ -8,7 +8,6 @@ use Drupal\rest\ResourceResponse;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-
 /**
  * Class OsGroupExtrasResource.
  *
@@ -27,7 +26,7 @@ class OsGroupExtrasResource extends ResourceBase {
   /**
    * PURL Modifier Index.
    *
-   * @var ModifierIndex
+   * @var \Drupal\purl\Plugin\ModifierIndex
    */
   protected $modifierIndex;
 
@@ -57,12 +56,12 @@ class OsGroupExtrasResource extends ResourceBase {
    * Handler for get method.
    *
    * @param string $field
-   *    The field to validate.
-   * @param $value
-   *    The value of the field.
+   *   The field to validate.
+   * @param string $value
+   *   The value of the field.
    *
-   * @return ResourceResponse
-   *    The response to return to the client.
+   * @return \Drupal\rest\ResourceResponse
+   *   The response to return to the client.
    */
   public function get($field, $value) {
     $output = [];
@@ -79,22 +78,24 @@ class OsGroupExtrasResource extends ResourceBase {
    * Validate the supplied purl.
    *
    * @param string $value
-   *    The value to test.
+   *   The value to test.
    *
    * @return array
-   *    Array of errors.
+   *   Array of errors.
    */
   protected function testPurl($value) {
-    // Checking site creation permission
-    $return = array();
-    
-    // access check.
-    //  $return['msg'] = "Not-Permissible";
-    //  return $return;
-    
-    //Validate new vsite URL
+    // Checking site creation permission.
+    $return = [];
     $return['msg'] = '';
 
+    // Access check.
+    $access = TRUE;
+    if (!$access) {
+      $return['msg'] = "Not-Permissible";
+      return $return;
+    }
+
+    // Validate new vsite URL.
     if (strlen($value) < 3 || !preg_match('!^[a-z0-9-]+$!', $value)) {
       $return['msg'] = 'Invalid';
     }
@@ -108,16 +109,25 @@ class OsGroupExtrasResource extends ResourceBase {
 
   }
 
+  /**
+   * Test that modifier exists.
+   *
+   * @param string $value
+   *   The value to test for.
+   *
+   * @return bool
+   *   Whether the value is a purl modifier.
+   */
   protected function modifierExists($value) {
     $modifiers = $this->modifierIndex->findAll();
 
     foreach ($modifiers as $m) {
       if ($m->getModifierKey() == $value) {
-        return true;
+        return TRUE;
       }
     }
 
-    return false;
+    return FALSE;
   }
 
 }

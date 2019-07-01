@@ -1,6 +1,13 @@
 <?php
 
 /**
+ * @file
+ * Hook implementations for the vsite_site_creation module.
+ */
+
+use Drupal\vsite\Entity\GroupPreset;
+
+/**
  * Implements hook_library_info_alter().
  */
 function vsite_site_creation_library_info_alter(&$libraries, $extension) {
@@ -26,13 +33,13 @@ function vsite_site_creation_library_info_alter(&$libraries, $extension) {
     }
 
     /** @var \Drupal\vsite\Entity\GroupPreset[] $presets */
-    $presets = \Drupal\vsite\Entity\GroupPreset::loadMultiple();
+    $presets = GroupPreset::loadMultiple();
     foreach ($presets as $p) {
       $settings['presets'][$p->id()] = [
         'description' => $p->get('description'),
         'name' => $p->id(),
         'site_type' => reset($p->get('applicableTo')),
-        'title' => $p->label()
+        'title' => $p->label(),
       ];
     }
 
@@ -47,19 +54,19 @@ function vsite_site_creation_library_info_alter(&$libraries, $extension) {
     $themes = $themeList->getFeaturedThemes();
     foreach ($themes as $theme_name => $theme) {
       // TODO: Filter this list into featured, other, and one page when requisite features are done
-      // Needed features: Feature a theme, one page themes
+      // Needed features: Feature a theme, one page themes.
       if (isset($theme->info['onepage'])) {
         $settings['themes']['onepage'][] = [
           'themeKey' => $theme_name,
           'name' => $theme->info['name'],
-          'screenshot' => file_create_url($theme->info['screenshot'])
+          'screenshot' => file_create_url($theme->info['screenshot']),
         ];
       }
       else {
         $settings['themes']['featured'][] = [
           'themeKey' => $theme_name,
           'name' => $theme->info['name'],
-          'screenshot' => file_create_url($theme->info['screenshot'])
+          'screenshot' => file_create_url($theme->info['screenshot']),
         ];
       }
     }
@@ -75,6 +82,6 @@ function vsite_site_creation_library_info_alter(&$libraries, $extension) {
 function vsite_site_creation_toolbar_alter(&$items) {
   if (isset($items['user'])) {
     // This placeholder nonsense completely ruins everything angularjs related.
-    $items['user']['tray']['user_links']['#create_placeholder'] = false;
+    $items['user']['tray']['user_links']['#create_placeholder'] = FALSE;
   }
 }
