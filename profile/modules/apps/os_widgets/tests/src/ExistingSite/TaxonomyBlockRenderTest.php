@@ -458,14 +458,14 @@ class TaxonomyBlockRenderTest extends OsWidgetsExistingSiteTestBase {
       ],
     ]);
     // Create media.
-    $this->createMedia([
+    $this->osWidgetCreateMedia([
       'bundle' => 'taxonomy_test_file',
       'status' => 1,
       'field_taxonomy_terms' => [
         $term->id(),
       ],
     ]);
-    $this->createMedia([
+    $this->osWidgetCreateMedia([
       'bundle' => 'taxonomy_test_file',
       'status' => 0,
       'field_taxonomy_terms' => [

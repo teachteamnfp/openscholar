@@ -93,7 +93,6 @@ class RoboFile extends \Robo\Tasks
         $collection->addTaskList($this->buildEnvironment());
         $collection->addTaskList($this->installDrupal());
         $collection->addTaskList($this->installTestConfigs());
-        $collection->addTaskList($this->enableXDebug());
         $collection->addTaskList($this->runFunctionalTests($groups));
         return $collection->run();
     }
@@ -112,7 +111,6 @@ class RoboFile extends \Robo\Tasks
         $collection->addTaskList($this->buildEnvironment());
         $collection->addTaskList($this->installDrupal());
         $collection->addTaskList($this->installTestConfigs());
-        $collection->addTaskList($this->enableXDebug());
         $collection->addTaskList($this->runFunctionalJavascriptTests($groups));
         return $collection->run();
     }
