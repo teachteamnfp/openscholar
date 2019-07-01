@@ -15,7 +15,7 @@ class OsUserNormalizer extends ContentEntityNormalizer {
   /**
    * Vsite context manager.
    *
-   * @var VsiteContextManagerInterface
+   * @var \Drupal\vsite\Plugin\VsiteContextManagerInterface
    */
   protected $vsiteContextManager;
 
@@ -26,6 +26,9 @@ class OsUserNormalizer extends ContentEntityNormalizer {
    */
   protected $supportedInterfaceOrClass = '\Drupal\user\UserInterface';
 
+  /**
+   * {@inheritdoc}
+   */
   public function __construct(EntityManagerInterface $entity_manager, VsiteContextManagerInterface $vsiteContextManager) {
     parent::__construct($entity_manager);
     $this->vsiteContextManager = $vsiteContextManager;

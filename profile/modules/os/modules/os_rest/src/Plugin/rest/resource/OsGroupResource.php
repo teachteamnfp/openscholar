@@ -22,7 +22,7 @@ class OsGroupResource extends OsEntityResource {
   /**
    * Hierarchical storage.
    *
-   * @var HierarchicalStorageInterface
+   * @var \Drupal\vsite\Config\HierarchicalStorageInterface
    */
   protected $hierarchicalStorage;
 
@@ -36,7 +36,7 @@ class OsGroupResource extends OsEntityResource {
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   The entity type manager
+   *   The entity type manager.
    * @param array $serializer_formats
    *   The available serialization formats.
    * @param \Psr\Log\LoggerInterface $logger
@@ -45,8 +45,10 @@ class OsGroupResource extends OsEntityResource {
    *   The config factory.
    * @param \Drupal\Component\Plugin\PluginManagerInterface $link_relation_type_manager
    *   The link relation type manager.
+   * @param \Drupal\vsite\Config\HierarchicalStorageInterface $hierarchicalStorage
+   *   Hierarchical storage object.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, $serializer_formats, LoggerInterface $logger, ConfigFactoryInterface $config_factory, PluginManagerInterface $link_relation_type_manager, HierarchicalStorageInterface $hierarchicalStorage) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, array $serializer_formats, LoggerInterface $logger, ConfigFactoryInterface $config_factory, PluginManagerInterface $link_relation_type_manager, HierarchicalStorageInterface $hierarchicalStorage) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $entity_type_manager, $serializer_formats, $logger, $config_factory, $link_relation_type_manager);
     $this->entityType = $entity_type_manager->getDefinition($plugin_definition['entity_type']);
     $this->configFactory = $config_factory;
