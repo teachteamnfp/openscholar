@@ -118,3 +118,31 @@ nav {
     }
   }
 }
+//navbar toggle
+.navbar-toggle {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-right: 0;
+  padding: 10px 12px;
+  border-radius: 0;
+  float: none;
+  .icon-bar {
+    background: $color-white;
+  }
+  .glyphicon {
+    font-size: 20px;
+  }
+}
+.mobile-menu {
+  line-height: 38px;
+  text-align: right;
+  .main-menu {
+    background: #3A72AB;
+  }
+  .secondary {
+    background: #2A527A;
+  }
+  .search {
+    background: #1e1e1e;
+  }
+}

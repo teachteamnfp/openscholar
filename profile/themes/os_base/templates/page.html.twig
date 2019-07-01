@@ -53,13 +53,24 @@
 #}
 {% set container = theme.settings.fluid_container ? 'container-fluid' : 'container' %}
 {# branding header #}
-{% if page.branding_header %}
-  <div class="branding-header">
-      <div class="container">
-        {{ page.branding_header }}
-      </div>
+
+<div class="branding-header">
+  <div class="container">
+    {{ page.branding_header }}
+    {# .btn-navbar is used as the toggle for collapsed navbar content #}
+    <div class="mobile-menu">
+      {% if page.navigation_collapsible %}
+        <a class="navbar-toggle main-menu" data-toggle="collapse" data-target="#navbar-collapse">
+          <span class="sr-only">{{ 'Toggle navigation'|t }}</span>
+          <span class="glyphicon glyphicon-menu-hamburger"></span>
+        </a>
+      {% endif %}
+      <a class="navbar-toggle secondary"><span class="glyphicon glyphicon-plus"></span></a>
+      <a class="navbar-toggle search"><span class="glyphicon glyphicon-search"></span></a>
+    </div>
   </div>
-{% endif %}
+</div>
+
 {# Navbar #}
 {% if page.navigation or page.navigation_collapsible %}
   {% block navbar %}
@@ -87,18 +98,6 @@
           </div>
         </div>
       {% endif %}
-      <div class="navbar-header navbar-default">
-        {#{ page.navigation }#}
-        {# .btn-navbar is used as the toggle for collapsed navbar content #}
-        {% if page.navigation_collapsible %}
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
-            <span class="sr-only">{{ 'Toggle navigation'|t }}</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-        {% endif %}
-      </div>
 
       {# Navigation (collapsible) #}
       {% if page.navigation_collapsible %}
