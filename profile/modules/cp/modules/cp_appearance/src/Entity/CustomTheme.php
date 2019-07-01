@@ -175,7 +175,7 @@ class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
         throw new CustomThemeException(t('Unable to place the styles. Please contact the site administrator for support.'));
       }
 
-      $status = file_unmanaged_save_data($styles, $styles_location);
+      $status = file_unmanaged_save_data($styles, $styles_location, FILE_EXISTS_REPLACE);
 
       if (!$status) {
         throw new CustomThemeException(t('Unable to place the styles. Please contact the site administrator for support.'));
@@ -191,7 +191,7 @@ class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
         throw new CustomThemeException(t('Unable to place the scripts. Please contact the site administrator for support.'));
       }
 
-      $status = file_unmanaged_save_data($scripts, $scripts_location);
+      $status = file_unmanaged_save_data($scripts, $scripts_location, FILE_EXISTS_REPLACE);
 
       if (!$status) {
         throw new CustomThemeException(t('Unable to place the scripts. Please contact the site administrator for support.'));
@@ -214,7 +214,7 @@ class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
       throw new CustomThemeException(t('Unable to place theme libraries info file. Please contact the site administrator for support.'));
     }
 
-    $status = file_unmanaged_save_data(Yaml::dump($libraries_info), $libraries_info_location);
+    $status = file_unmanaged_save_data(Yaml::dump($libraries_info), $libraries_info_location, FILE_EXISTS_REPLACE);
 
     if (!$status) {
       throw new CustomThemeException(t('Unable to place theme libraries info file. Please contact the site administrator for support.'));
@@ -249,7 +249,7 @@ class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
       throw new CustomThemeException(t('Unable to place theme info file. Please contact the site administrator for support.'));
     }
 
-    $status = file_unmanaged_save_data(Yaml::dump($info), $info_location);
+    $status = file_unmanaged_save_data(Yaml::dump($info), $info_location, FILE_EXISTS_REPLACE);
 
     if (!$status) {
       throw new CustomThemeException(t('Unable to place theme info file. Please contact the site administrator for support.'));
