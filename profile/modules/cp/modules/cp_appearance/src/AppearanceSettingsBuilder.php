@@ -241,10 +241,11 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
    */
   protected function addMoreOperations(Extension $theme): array {
     $operations = [];
-    /** @var \Drupal\Core\Extension\Extension[] $drupal_installed_themes */
-    $drupal_installed_themes = $this->themeHandler->listInfo();
 
     if (\property_exists($theme, 'sub_themes')) {
+      /** @var \Drupal\Core\Extension\Extension[] $drupal_installed_themes */
+      $drupal_installed_themes = $this->themeHandler->listInfo();
+
       $custom_theme_ids = array_map(function (CustomThemeInterface $custom_theme) {
         return $custom_theme->id();
       }, CustomTheme::loadMultiple());
