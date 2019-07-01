@@ -334,6 +334,7 @@ class MenuBuildForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state): void {
     $fields = ['weight', 'parent', 'menu_name'];
     $form_links = $form['links'];
+    $label = [];
     foreach (Element::children($form_links) as $id) {
       if (isset($form_links[$id]['#item'])) {
         $element = $form_links[$id];
@@ -371,6 +372,9 @@ class MenuBuildForm extends FormBase {
             if ($key == 'menu_name' && $value == 'main') {
               $updated_values[$key] = 'menu-primary-' . $vsite->id();
             }
+            if ($key == 'menu_name') {
+              $menu_name[] = $this->menuLinkManager->getDefinition($element['#item']->link->getPluginId())['menu_name'];
+            }
           }
           // Map changes to the new tree. It is safe to compare titles as for
           // the first time we always know what those are.
@@ -386,9 +390,17 @@ class MenuBuildForm extends FormBase {
           // current element ids.
           $pluginId = $pluginId ?? $element['#item']->link->getPluginId();
           $this->menuLinkManager->updateDefinition($pluginId, $updated_values);
+
+          // Get definition to clear cache of the menu block in context.
+          $menu_name[] = $this->menuLinkManager->getDefinition($pluginId)['menu_name'];
         }
       }
     }
+    // Clear the block cache.
+    foreach ($menu_name as $name) {
+      $label[] = isset($this->menus[$name]) ? $this->menus[$name] : NULL;
+    }
+    ($label) ? $this->menuHelper->invalidateBlockCache($label, TRUE) : NULL;
   }
 
   /**

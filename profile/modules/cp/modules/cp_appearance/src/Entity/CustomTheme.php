@@ -271,4 +271,12 @@ class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
     }
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function calculateDependencies() {
+    parent::calculateDependencies();
+    $this->addDependency('theme', $this->getBaseTheme());
+  }
+
 }

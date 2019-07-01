@@ -30,4 +30,14 @@ interface MenuHelperInterface {
    */
   public function resetVsiteMenus(GroupInterface $vsite, $secondary = FALSE) : void;
 
+  /**
+   * Invalidates Menu block caches when changes are made.
+   *
+   * @param mixed $ids
+   *   Single id or array of menu ids.
+   * @param bool $buildForm
+   *   If called from main buildForm changes.
+   */
+  public function invalidateBlockCache($ids, $buildForm) : void;
+
 }
