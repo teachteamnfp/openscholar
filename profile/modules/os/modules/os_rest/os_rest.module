@@ -37,3 +37,16 @@ function os_rest_rest_resource_alter(&$resources) {
     $resources['entity:taxonomy_vocabulary']['uri_paths']['canonical'] = '/api/vocabulary/{taxonomy_vocabulary}';
   }
 }
+
+/**
+ * Implements hook_media_insert().
+ */
+function os_rest_media_insert(\Drupal\media\MediaInterface $media) {
+  /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContextManager */
+  $vsiteContextManager = \Drupal::service('vsite.context_manager');
+  if ($group = $vsiteContextManager->getActiveVsite()) {
+    if (!($group->getContentByEntityId('group_entity:media', $media->id()))) {
+      $group->addContent($media, 'group_entity:media');
+    }
+  }
+}
