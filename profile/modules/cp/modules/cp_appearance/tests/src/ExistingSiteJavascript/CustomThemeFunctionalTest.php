@@ -3,7 +3,6 @@
 namespace Drupal\Tests\cp_appearance\ExistingSiteJavascript;
 
 use Drupal\cp_appearance\Entity\CustomTheme;
-use Drupal\Tests\cp_appearance\Traits\CpAppearanceTestTrait;
 use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTestBase;
 
 /**
@@ -14,29 +13,6 @@ use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTest
  * @coversDefaultClass \Drupal\cp_appearance\Entity\Form\CustomThemeForm
  */
 class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
-
-  use CpAppearanceTestTrait;
-
-  /**
-   * Default theme.
-   *
-   * @var string
-   */
-  protected $defaultTheme;
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setUp() {
-    parent::setUp();
-
-    /** @var \Drupal\Core\Config\ConfigFactoryInterface $config_factory */
-    $config_factory = $this->container->get('config.factory');
-    /** @var \Drupal\Core\Config\ImmutableConfig $system_theme */
-    $system_theme = $config_factory->get('system.theme');
-    $this->defaultTheme = $system_theme->get('default');
-    chmod(CustomTheme::ABSOLUTE_CUSTOM_THEMES_LOCATION, 0777);
-  }
 
   /**
    * Tests custom theme save.
@@ -309,20 +285,6 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
     /** @var \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler */
     $theme_handler = $this->container->get('theme_handler');
     $theme_handler->refreshInfo();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function tearDown() {
-    /** @var \Drupal\Core\Config\ConfigFactoryInterface $config_factory */
-    $config_factory = $this->container->get('config.factory');
-    /** @var \Drupal\Core\Config\Config $system_theme_mut */
-    $system_theme_mut = $config_factory->getEditable('system.theme');
-    $system_theme_mut->set('default', $this->defaultTheme);
-    $system_theme_mut->save();
-
-    parent::tearDown();
   }
 
 }

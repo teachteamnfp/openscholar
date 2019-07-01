@@ -4,7 +4,6 @@ namespace Drupal\Tests\cp_appearance\ExistingSiteJavascript;
 
 use Drupal\Component\Render\FormattableMarkup;
 use Drupal\cp_appearance\Entity\CustomTheme;
-use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTestBase;
 
 /**
  * Tests appearance settings for custom themes.
@@ -14,7 +13,7 @@ use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTest
  * @group unique
  * @coversDefaultClass \Drupal\cp_appearance\Controller\CpAppearanceMainController
  */
-class CustomThemeAppearanceSettingsTest extends OsExistingSiteJavascriptTestBase {
+class CustomThemeAppearanceSettingsTest extends CpAppearanceExistingSiteJavascriptTestBase {
 
   /**
    * Tests whether vsite custom theme appear after site cache clear.
