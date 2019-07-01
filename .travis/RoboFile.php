@@ -93,7 +93,6 @@ class RoboFile extends \Robo\Tasks
         $collection->addTaskList($this->buildEnvironment());
         $collection->addTaskList($this->installDrupal());
         $collection->addTaskList($this->installTestConfigs());
-        $collection->addTaskList($this->enableXDebug());
         $collection->addTaskList($this->runFunctionalTests($groups));
         return $collection->run();
     }
@@ -112,7 +111,6 @@ class RoboFile extends \Robo\Tasks
         $collection->addTaskList($this->buildEnvironment());
         $collection->addTaskList($this->installDrupal());
         $collection->addTaskList($this->installTestConfigs());
-        $collection->addTaskList($this->enableXDebug());
         $collection->addTaskList($this->runFunctionalJavascriptTests($groups));
         return $collection->run();
     }
@@ -257,7 +255,8 @@ class RoboFile extends \Robo\Tasks
             ->exec('docker-compose exec -T php cp -r profile/modules/custom/os_mailchimp/tests/modules/os_mailchimp_test web/modules/test')
             ->exec('docker-compose exec -T php cp -r profile/modules/apps/os_publications/tests/modules/os_publications_test web/modules/test')
             ->exec('docker-compose exec -T php cp -r profile/modules/cp/modules/cp_taxonomy/tests/modules/cp_taxonomy_test web/modules/test')
-            ->exec('docker-compose exec -T php ./vendor/bin/drush en -y vsite_module_test group_test_config os_mailchimp_test os_publications_test cp_taxonomy_test');
+            ->exec('docker-compose exec -T php cp -r profile/modules/cp/modules/cp_appearance/tests/modules/cp_appearance_test web/modules/test')
+            ->exec('docker-compose exec -T php ./vendor/bin/drush en -y vsite_module_test group_test_config os_mailchimp_test os_publications_test cp_taxonomy_test cp_appearance_test');
         return $tasks;
     }
 

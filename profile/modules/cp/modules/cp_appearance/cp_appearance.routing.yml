@@ -33,3 +33,13 @@ entity.cp_custom_theme.add_form:
   requirements:
     _group_permission: 'manage cp appearance'
     _group_member: 'TRUE'
+
+cp_custom_theme.install_form:
+  path: '/cp/appearance/custom-themes/{custom_theme}/install/{make_default}'
+  defaults:
+    _form: '\Drupal\cp_appearance\Entity\Form\InstallForm'
+    _title: 'Confirm Installation'
+    make_default: FALSE
+  requirements:
+    _group_permission: 'manage cp appearance'
+    _group_member: 'TRUE'
