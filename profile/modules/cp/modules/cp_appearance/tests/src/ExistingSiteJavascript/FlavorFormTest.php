@@ -9,7 +9,6 @@ use Drupal\Component\Utility\Html;
  *
  * @group functional-javascript
  * @group cp-appearance
- * @group unique
  * @coversDefaultClass \Drupal\cp_appearance\Form\FlavorForm
  */
 class FlavorFormTest extends CpAppearanceExistingSiteJavascriptTestBase {
