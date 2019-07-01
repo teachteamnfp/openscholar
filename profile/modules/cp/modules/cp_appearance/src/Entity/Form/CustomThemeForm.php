@@ -47,7 +47,7 @@ class CustomThemeForm extends EntityForm {
     $entity = $this->entity;
     $base_theme_options = [];
 
-    foreach ($this->appearanceSettingsBuilder->getThemes() as $key => $data) {
+    foreach ($this->appearanceSettingsBuilder->getFeaturedThemes() as $key => $data) {
       $base_theme_options[$key] = $data->info['name'];
     }
 
@@ -94,7 +94,6 @@ class CustomThemeForm extends EntityForm {
       '#multiple' => TRUE,
     ];
 
-    // TODO: Set default_value.
     $form['styles'] = [
       '#type' => 'textarea',
       '#title' => $this->t('CSS'),
@@ -102,15 +101,16 @@ class CustomThemeForm extends EntityForm {
         '%style_file' => CustomTheme::CUSTOM_THEMES_STYLE_LOCATION,
       ]),
       '#required' => TRUE,
+      '#default_value' => $entity->getStyles(),
     ];
 
-    // TODO: Set default_value.
     $form['scripts'] = [
       '#type' => 'textarea',
       '#title' => $this->t('JavaScript'),
       '#description' => $this->t('Enter the scripts for your custom theme. Make sure that the script is valid, otherwise the site might break. The scripts are going to be put inside %script_file file.', [
         '%script_file' => CustomTheme::CUSTOM_THEMES_SCRIPT_LOCATION,
       ]),
+      '#default_value' => $entity->getScripts(),
     ];
 
     return $form;
@@ -180,6 +180,47 @@ class CustomThemeForm extends EntityForm {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  protected function actions(array $form, FormStateInterface $form_state) {
+    $actions = parent::actions($form, $form_state);
+
+    $actions['submit']['#submit'][] = '::redirectOnSave';
+
+    $actions['save_default'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Save and set as default theme'),
+      '#name' => 'save_default',
+      '#submit' => [
+        '::submitForm',
+        '::save',
+        '::redirectOnSave',
+      ],
+    ];
+
+    return $actions;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function actionsElement(array $form, FormStateInterface $form_state) {
+    $element = parent::actionsElement($form, $form_state);
+
+    // Make sure that the "Save and set as default theme" operation is more
+    // highlighted.
+    $save_button_weight = $element['submit']['#weight'];
+    $save_default_button_weight = $element['save_default']['#weight'];
+
+    $element['submit']['#weight'] = $save_default_button_weight;
+    unset($element['submit']['#button_type']);
+    $element['save_default']['#weight'] = $save_button_weight;
+    $element['save_default']['#button_type'] = 'primary';
+
+    return $element;
+  }
+
+  /**
    * Checks whether a custom theme ID exists already.
    *
    * @param string $id
@@ -189,7 +230,29 @@ class CustomThemeForm extends EntityForm {
    *   Whether the ID is taken.
    */
   public function exists($id): bool {
-    return (bool) CustomTheme::load($id);
+    return (bool) CustomTheme::load(CustomTheme::CUSTOM_THEME_ID_PREFIX . $id);
+  }
+
+  /**
+   * Redirects to correct location on save.
+   *
+   * @ingroup forms
+   */
+  public function redirectOnSave(array &$form, FormStateInterface $form_state): void {
+    /** @var array $element */
+    $element = $form_state->getTriggeringElement();
+    /** @var \Drupal\cp_appearance\Entity\CustomThemeInterface $entity */
+    $entity = $this->getEntity();
+
+    $route_parameters = [
+      'custom_theme' => $entity->id(),
+    ];
+
+    if ($element['#name'] === 'save_default') {
+      $route_parameters['make_default'] = TRUE;
+    }
+
+    $form_state->setRedirect('cp_custom_theme.install_form', $route_parameters);
   }
 
 }
