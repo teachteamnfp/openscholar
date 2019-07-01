@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\cp_appearance\ExistingSiteJavascript;
 
+use Drupal\Component\Render\FormattableMarkup;
 use Drupal\cp_appearance\Entity\CustomTheme;
 use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTestBase;
 
@@ -39,6 +40,12 @@ class CustomThemeAppearanceSettingsTest extends OsExistingSiteJavascriptTestBase
     $this->getSession()->getPage()->findField('styles')->setValue('body { color: black; }');
     $this->getSession()->getPage()->findField('scripts')->setValue('alert("Hello World")');
     $this->getSession()->getPage()->pressButton('Save');
+    file_put_contents('public://page-name.html', $this->getCurrentPageContent());
+    $count = db_query('SELECT message, variables FROM {watchdog} ORDER BY timestamp DESC LIMIT 10')->fetchAll();
+    foreach ($count as $key => $value) {
+      $test = new FormattableMarkup($value->message, unserialize($value->variables));
+      file_put_contents("public://db-log-$key.txt", print_r($test->jsonSerialize(), TRUE));
+    }
     $this->getSession()->getPage()->pressButton('Confirm');
 
     // Tests.
