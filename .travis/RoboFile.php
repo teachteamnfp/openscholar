@@ -372,6 +372,7 @@ class RoboFile extends \Robo\Tasks
         $groups = array_filter($groups, 'trim');
         $groups = implode(',', $groups);
         $tasks[] = $this->taskExecStack()
+            ->exec('docker-compose exec -T php ls -al')
             ->exec('docker-compose exec -T php ./vendor/bin/phpunit ' .
                 '-c web/core '.
                 '--debug '.
