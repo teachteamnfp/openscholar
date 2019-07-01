@@ -3,7 +3,6 @@
 namespace Drupal\Tests\cp_appearance\ExistingSiteJavascript;
 
 use Drupal\cp_appearance\Entity\CustomTheme;
-use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTestBase;
 
 /**
  * Tests custom theme creation via UI.
@@ -13,7 +12,7 @@ use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTest
  * @group unique
  * @coversDefaultClass \Drupal\cp_appearance\Entity\Form\CustomThemeForm
  */
-class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
+class CustomThemeFunctionalTest extends CpAppearanceExistingSiteJavascriptTestBase {
 
   /**
    * Tests custom theme save.
