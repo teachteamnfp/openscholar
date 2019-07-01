@@ -230,7 +230,11 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
     $custom_theme = CustomTheme::load(CustomTheme::CUSTOM_THEME_ID_PREFIX . $custom_theme_label);
 
     // Tests.
-    $this->visitViaVsite("cp/appearance/custom-themes/{$custom_theme->id()}/edit", $this->group);
+    $this->visitViaVsite('cp/appearance', $this->group);
+
+    $edit_link = $this->getSession()->getPage()->find('css', "[href='{$this->groupAlias}/cp/appearance/custom-themes/{$custom_theme->id()}/edit']");
+    $this->assertNotNull($edit_link);
+    $edit_link->click();
 
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->elementNotExists('css', '.admin-link');

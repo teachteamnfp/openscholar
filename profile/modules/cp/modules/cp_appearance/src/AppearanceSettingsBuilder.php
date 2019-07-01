@@ -7,6 +7,7 @@ use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Extension\Extension;
 use Drupal\Core\Extension\ThemeHandlerInterface;
 use Drupal\Core\Form\FormBuilderInterface;
+use Drupal\Core\Link;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\cp_appearance\Entity\CustomTheme;
@@ -241,6 +242,7 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
    */
   protected function addMoreOperations(Extension $theme): array {
     $operations = [];
+    $custom_theme_ids = array_keys(CustomTheme::loadMultiple());
 
     if (\property_exists($theme, 'sub_themes')) {
       /** @var \Drupal\Core\Extension\Extension[] $drupal_installed_themes */
@@ -261,6 +263,12 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
 
         $operations[] = $this->formBuilder->getForm(new FlavorForm($theme, $sub_themes, $this->themeSelectorBuilder, $this->configFactory));
       }
+    }
+
+    if (\in_array($theme->getName(), $custom_theme_ids, TRUE)) {
+      $operations[] = Link::createFromRoute($this->t('Edit'), 'entity.cp_custom_theme.edit_form', [
+        'cp_custom_theme' => $theme->getName(),
+      ]);
     }
 
     return $operations;
