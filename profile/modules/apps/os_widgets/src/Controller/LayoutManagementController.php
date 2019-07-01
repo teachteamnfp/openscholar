@@ -72,7 +72,7 @@ class LayoutManagementController extends ControllerBase {
 
     $response = new JsonResponse();
     $response->setData([
-      'blocks' => $data
+      'blocks' => $data,
     ]);
     return $response;
   }
