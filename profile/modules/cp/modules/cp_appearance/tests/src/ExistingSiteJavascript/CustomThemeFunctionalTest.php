@@ -11,7 +11,6 @@ use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTest
  *
  * @group functional-javascript
  * @group cp-appearance
- * @group unique
  * @coversDefaultClass \Drupal\cp_appearance\Entity\Form\CustomThemeForm
  */
 class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
@@ -62,7 +61,6 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
     $this->getSession()->getPage()->findField('styles')->setValue('body { color: black; }');
     $this->getSession()->getPage()->findField('scripts')->setValue('alert("Hello World")');
     $this->getSession()->getPage()->pressButton('Save');
-    file_put_contents('public://page-name.html', $this->getCurrentPageContent());
     $this->getSession()->getPage()->pressButton('Confirm');
 
     $this->assertContains("{$this->groupAlias}/cp/appearance", $this->getSession()->getCurrentUrl());
