@@ -9,7 +9,6 @@ use Drupal\cp_appearance\Entity\CustomTheme;
  *
  * @group functional-javascript
  * @group cp-appearance
- * @group unique
  * @coversDefaultClass \Drupal\cp_appearance\Controller\CpAppearanceMainController
  */
 class CustomThemeAppearanceSettingsTest extends CpAppearanceExistingSiteJavascriptTestBase {
