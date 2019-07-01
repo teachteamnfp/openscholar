@@ -211,7 +211,6 @@ class CustomThemeFunctionalTest extends OsExistingSiteJavascriptTestBase {
     $this->getSession()->getPage()->findField('styles')->setValue('body { color: black; }');
     $this->getSession()->getPage()->findField('scripts')->setValue('alert("Hello World")');
     $this->getSession()->getPage()->pressButton('Save');
-    $this->getSession()->getPage()->pressButton('Confirm');
 
     $this->assertSession()->pageTextContains('The machine-readable name is already in use. It must be unique.');
   }
