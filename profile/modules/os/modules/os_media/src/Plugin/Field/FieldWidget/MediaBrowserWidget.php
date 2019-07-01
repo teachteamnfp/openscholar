@@ -88,7 +88,8 @@ class MediaBrowserWidget extends WidgetBase implements ContainerFactoryPluginInt
       $types[] = $type->id();
     }
 
-    $element['#type'] = 'fieldset';
+    $element['#type'] = 'container';
+    $element['#input'] = true;
     $element['media-browser-field'] = [
       '#type' => 'html_tag',
       '#tag' => 'div',
