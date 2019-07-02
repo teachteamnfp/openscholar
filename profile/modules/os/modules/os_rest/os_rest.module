@@ -5,6 +5,8 @@
  * Hook implementations for the os_rest module.
  */
 
+use Drupal\media\MediaInterface;
+
 /**
  * Implements hook_rest_resource_alter().
  */
@@ -41,7 +43,7 @@ function os_rest_rest_resource_alter(&$resources) {
 /**
  * Implements hook_media_insert().
  */
-function os_rest_media_insert(\Drupal\media\MediaInterface $media) {
+function os_rest_media_insert(MediaInterface $media) {
   /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContextManager */
   $vsiteContextManager = \Drupal::service('vsite.context_manager');
   if ($group = $vsiteContextManager->getActiveVsite()) {
