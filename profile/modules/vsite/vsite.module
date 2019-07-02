@@ -327,7 +327,7 @@ function vsite_group_create(GroupInterface $group) {
       foreach ($tasks as $t) {
         $batch['operations'][] = [
           '_vsite_process_preset_task',
-          [$group, $preset, $t]
+          [$group, $preset, $t],
         ];
       }
       batch_set($batch);

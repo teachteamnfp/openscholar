@@ -3,7 +3,6 @@
 namespace Drupal\Tests\os\ExistingSite;
 
 use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
-use Drupal\vsite\Plugin\AppManangerInterface;
 
 /**
  * Tests whether group member has access to entity create global paths.

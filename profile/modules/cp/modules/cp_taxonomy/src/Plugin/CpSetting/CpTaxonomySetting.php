@@ -2,6 +2,7 @@
 
 namespace Drupal\cp_taxonomy\Plugin\CpSetting;
 
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\cp_settings\CpSettingBase;
@@ -77,8 +78,8 @@ class CpTaxonomySetting extends CpSettingBase {
       '#default_value' => $config->get('display_term_under_content'),
     ];
     $default_value = $config->get('display_term_under_content_teaser_types');
-    // If no default available we will check all options.
-    if (empty($default_value)) {
+    // If no config value available, we will check all options.
+    if (is_null($default_value)) {
       $default_value = array_keys($this->cpTaxonomyHelper->getSelectableBundles());
     }
     $form['display_term_under_content_teaser_types'] = [
@@ -94,9 +95,14 @@ class CpTaxonomySetting extends CpSettingBase {
    */
   public function submitForm(FormStateInterface $formState, ConfigFactoryInterface $configFactory) {
     $config = $configFactory->getEditable('cp_taxonomy.settings');
+    $term_under_content_changed = $config->get('display_term_under_content') != $formState->getValue('display_term_under_content');
+    $term_under_content_teaser_changed = $config->get('display_term_under_content_teaser_types') != array_filter($formState->getValue('display_term_under_content_teaser_types'));
     $config->set('display_term_under_content', $formState->getValue('display_term_under_content'));
     $config->set('display_term_under_content_teaser_types', array_filter($formState->getValue('display_term_under_content_teaser_types')));
     $config->save(TRUE);
+    if ($term_under_content_changed || $term_under_content_teaser_changed) {
+      Cache::invalidateTags(['entity-with-taxonomy-terms:' . $this->activeVsite->id()]);
+    }
   }
 
 }
