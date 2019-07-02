@@ -102,24 +102,29 @@ class CustomThemeTest extends TestBase {
    * @covers ::postDelete
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
+   * @throws \Drupal\Core\Extension\ExtensionNameLengthException
    */
   public function testDelete(): void {
     // Setup.
-    /** @var \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler */
-    $theme_handler = $this->container->get('theme_handler');
-    /** @var \Drupal\Core\Config\ConfigFactoryInterface $config_factory */
-    $config_factory = $this->container->get('config.factory');
     /** @var \Drupal\Core\Config\Config $theme_setting_mut */
-    $theme_setting_mut = $config_factory->getEditable('system.theme');
+    $theme_setting_mut = $this->configFactory->getEditable('system.theme');
+    /** @var \Drupal\Core\Extension\ThemeInstallerInterface $theme_installer */
+    $theme_installer = $this->container->get('theme_installer');
+
+    $theme_installer->install([self::TEST_CUSTOM_THEME_DELETE_NAME]);
+    $this->themeHandler->refreshInfo();
+
+    $theme_setting_mut->set('default', self::TEST_CUSTOM_THEME_DELETE_NAME)->save();
 
     $custom_theme = CustomTheme::load(self::TEST_CUSTOM_THEME_DELETE_NAME);
-    $theme_setting_mut->set('default', $custom_theme->id())->save();
-
     $custom_theme->delete();
 
     // Tests.
-    $this->assertEquals('documental', $theme_setting_mut->get('default'));
-    $this->assertFalse($theme_handler->themeExists($custom_theme->id()));
+    /** @var \Drupal\Core\Config\ImmutableConfig $theme_setting */
+    $theme_setting = $this->configFactory->get('system.theme');
+
+    $this->assertEquals('documental', $theme_setting->get('default'));
+    $this->assertFalse($this->themeHandler->themeExists($custom_theme->id()));
     $this->assertDirectoryNotExists('file://' . CustomTheme::ABSOLUTE_CUSTOM_THEMES_LOCATION . '/' . $custom_theme->id());
   }
 
