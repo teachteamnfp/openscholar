@@ -2,8 +2,6 @@
 
 namespace Drupal\Tests\os_redirect\ExistingSite;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
-
 /**
  * Tests os_redirect module.
  *
