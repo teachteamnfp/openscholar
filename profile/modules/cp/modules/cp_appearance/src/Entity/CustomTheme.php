@@ -32,10 +32,6 @@ use Symfony\Component\Yaml\Yaml;
  *     "label",
  *     "base_theme",
  *     "images",
- *   },
- *   links = {
- *     "add-form" = "/cp/appearance/custom-themes/add",
- *     "edit-form" = "/cp/appearance/custom-themes/{cp_custom_theme}/edit"
  *   }
  * )
  */
