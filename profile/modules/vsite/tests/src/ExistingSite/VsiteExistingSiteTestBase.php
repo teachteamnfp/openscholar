@@ -18,12 +18,20 @@ abstract class VsiteExistingSiteTestBase extends OsExistingSiteTestBase {
   protected $entityTypeManager;
 
   /**
+   * Vsite context manager service.
+   *
+   * @var \Drupal\vsite\Plugin\VsiteContextManagerInterface
+   */
+  protected $vsiteContextManager;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
     parent::setUp();
 
     $this->entityTypeManager = $this->container->get('entity_type.manager');
+    $this->vsiteContextManager = $this->container->get('vsite.context_manager');
   }
 
   /**
