@@ -142,17 +142,17 @@ nav {
     float: right;
     .main-menu {
       .glyphicon {
-        background: #3A72AB;
+        background: $color-blue2;
       }
     }
     .secondary {
       .glyphicon {
-        background: #2A527A;
+        background: $color-blue1;
       }
     }
     .search {
       .glyphicon {
-        background: #1e1e1e;
+        background: $color-black1;
       }
     }
   }
