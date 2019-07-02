@@ -6,6 +6,7 @@ use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
@@ -77,7 +78,9 @@ class MediaBrowserWidget extends WidgetBase implements ContainerFactoryPluginInt
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $media = [];
     for ($i = 0, $l = $items->count(); $i < $l; $i++) {
-      $media[] = $items->get($i);
+      /** @var EntityReferenceItem $refItem */
+      $refItem = $items->get($i);
+      $media[] = $refItem->getValue()['target_id'];
     }
     $settings = $this->getFieldSettings();
     $bundles = $settings['handler_settings']['target_bundles'];
@@ -90,6 +93,7 @@ class MediaBrowserWidget extends WidgetBase implements ContainerFactoryPluginInt
 
     $element['#type'] = 'container';
     $element['#input'] = true;
+    $element['#default_value'] = [];
     $element['media-browser-field'] = [
       '#type' => 'html_tag',
       '#tag' => 'div',
