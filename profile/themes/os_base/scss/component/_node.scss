@@ -7,7 +7,11 @@
 }
 
 .node-preview-container {
-  margin-top: -($grid-gutter-width / 2);
+  margin-top: 0;
+  .node-preview-backlink {
+    background: $color-white;
+    color: $color-link1;
+  }
 }
 
 .node-preview-form-select {

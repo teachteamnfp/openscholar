@@ -11,6 +11,27 @@ use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTest
  */
 abstract class CpTaxonomyExistingSiteJavascriptTestBase extends OsExistingSiteJavascriptTestBase {
 
+  /**
+   * The entity type manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * Config factory.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
+   * Vsite Context Manager.
+   *
+   * @var \Drupal\vsite\Plugin\VsiteContextManagerInterface
+   */
+  protected $vsiteContextManager;
+
   protected const PERMISSIONS = [
     'create group_node:taxonomy_test_1 entity',
     'delete any group_node:taxonomy_test_1 entity',
@@ -60,6 +81,10 @@ abstract class CpTaxonomyExistingSiteJavascriptTestBase extends OsExistingSiteJa
     $group_admin_role = GroupRole::load('personal-administrator');
     $group_admin_role->grantPermissions(self::PERMISSIONS);
     $group_admin_role->save();
+
+    $this->entityTypeManager = $this->container->get('entity_type.manager');
+    $this->configFactory = $this->container->get('config.factory');
+    $this->vsiteContextManager = $this->container->get('vsite.context_manager');
   }
 
   /**
