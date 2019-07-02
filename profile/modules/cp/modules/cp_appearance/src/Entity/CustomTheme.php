@@ -17,6 +17,7 @@ use Symfony\Component\Yaml\Yaml;
  *     "form" = {
  *       "add" = "\Drupal\cp_appearance\Entity\Form\CustomThemeForm",
  *       "edit" = "\Drupal\cp_appearance\Entity\Form\CustomThemeForm",
+ *       "delete" = "\Drupal\cp_appearance\Entity\Form\CustomThemeDeleteForm",
  *     },
  *   },
  *   admin_permission = "manage cp appearance",
