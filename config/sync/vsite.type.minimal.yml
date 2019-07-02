@@ -1,0 +1,10 @@
+uuid: e5df4489-6352-490e-b0c7-42b7b8739320
+langcode: en
+status: true
+dependencies: {  }
+id: minimal
+label: Minimal
+description: 'Minimal preset with little enabled'
+applicableTo:
+  personal: personal
+creationTasks: ''
