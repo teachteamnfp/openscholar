@@ -89,7 +89,7 @@ abstract class TestBase extends OsExistingSiteTestBase {
     ]);
     // If cache not cleared, then the system fails to identify the theme that is
     // just installed in the test.
-    drupal_flush_all_caches();
+    $this->themeHandler->refreshInfo();
   }
 
   /**

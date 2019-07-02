@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\cp_appearance\ExistingSite;
 
+use Drupal\Core\Link;
 use Drupal\cp_appearance\Entity\CustomTheme;
 
 /**
@@ -168,6 +169,7 @@ class AppearanceSettingsBuilderTest extends TestBase {
    * @covers ::prepareThemes
    * @covers ::addScreenshotInfo
    * @covers ::addOperations
+   * @covers ::addMoreOperations
    * @covers ::addNotes
    */
   public function testCustomThemes(): void {
@@ -212,6 +214,12 @@ class AppearanceSettingsBuilderTest extends TestBase {
     $this->assertTrue(isset($operations['attributes']));
 
     $this->assertCount(0, $active_theme->operations);
+
+    // Test more operations.
+    $theme = $custom_themes[$custom_theme_entity_1->id()];
+    $this->assertGreaterThan(0, \count($theme->more_operations));
+    $more_operations = $theme->more_operations[0];
+    $this->assertInstanceOf(Link::class, $more_operations);
 
     // Test notes.
     $this->assertCount(0, $inactive_theme->notes);
