@@ -16,6 +16,8 @@ abstract class TestBase extends OsExistingSiteTestBase {
 
   public const TEST_CUSTOM_THEME_2_NAME = 'os_ct_cp_appearance_test_2';
 
+  public const TEST_CUSTOM_THEME_DELETE_NAME = 'os_ct_cp_appearance_test_delete';
+
   /**
    * The entity type manager service.
    *
@@ -86,6 +88,7 @@ abstract class TestBase extends OsExistingSiteTestBase {
     $theme_installer->install([
       self::TEST_CUSTOM_THEME_1_NAME,
       self::TEST_CUSTOM_THEME_2_NAME,
+      self::TEST_CUSTOM_THEME_DELETE_NAME,
     ]);
     // If cache not cleared, then the system fails to identify the theme that is
     // just installed in the test.

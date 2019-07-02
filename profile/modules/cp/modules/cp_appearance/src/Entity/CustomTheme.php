@@ -286,6 +286,38 @@ class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
   /**
    * {@inheritdoc}
    */
+  public static function preDelete(EntityStorageInterface $storage, array $entities) {
+    parent::preDelete($storage, $entities);
+
+    /** @var \Drupal\Core\Config\ConfigFactoryInterface $config_factory */
+    $config_factory = \Drupal::configFactory();
+    /** @var \Drupal\Core\Config\Config $theme_setting_mut */
+    $theme_setting_mut = $config_factory->getEditable('system.theme');
+    /** @var \Drupal\Core\Extension\ThemeInstallerInterface $theme_installer */
+    $theme_installer = \Drupal::service('theme_installer');
+    /** @var \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler */
+    $theme_handler = \Drupal::service('theme_handler');
+    $default_theme = $theme_setting_mut->get('default');
+
+    // Only perform the cleanups on installed custom themes.
+    // This will prevent system crash if an uninstalled theme is deleted.
+    /** @var \Drupal\cp_appearance\Entity\CustomThemeInterface[] $installed_custom_themes */
+    $installed_custom_themes = array_filter($entities, function (CustomThemeInterface $entity) use ($theme_handler) {
+      return $theme_handler->themeExists($entity->id());
+    });
+
+    foreach ($installed_custom_themes as $custom_theme) {
+      if ($custom_theme->id() === $default_theme) {
+        $theme_setting_mut->set('default', $custom_theme->getBaseTheme())->save();
+      }
+    }
+
+    $theme_installer->uninstall(array_keys($installed_custom_themes));
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public static function postDelete(EntityStorageInterface $storage, array $entities) {
     parent::postDelete($storage, $entities);
 

@@ -98,14 +98,28 @@ class CustomThemeTest extends TestBase {
   /**
    * Tests custom theme delete.
    *
+   * @covers ::preDelete
    * @covers ::postDelete
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function testDelete(): void {
-    $custom_theme = $this->createCustomTheme();
+    // Setup.
+    /** @var \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler */
+    $theme_handler = $this->container->get('theme_handler');
+    /** @var \Drupal\Core\Config\ConfigFactoryInterface $config_factory */
+    $config_factory = $this->container->get('config.factory');
+    /** @var \Drupal\Core\Config\Config $theme_setting_mut */
+    $theme_setting_mut = $config_factory->getEditable('system.theme');
+
+    $custom_theme = CustomTheme::load(self::TEST_CUSTOM_THEME_DELETE_NAME);
+    $theme_setting_mut->set('default', $custom_theme->id())->save();
+
     $custom_theme->delete();
 
+    // Tests.
+    $this->assertEquals('documental', $theme_setting_mut->get('default'));
+    $this->assertFalse($theme_handler->themeExists($custom_theme->id()));
     $this->assertDirectoryNotExists('file://' . CustomTheme::ABSOLUTE_CUSTOM_THEMES_LOCATION . '/' . $custom_theme->id());
   }
 
