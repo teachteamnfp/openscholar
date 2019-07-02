@@ -24,8 +24,8 @@ class OsMedia extends PluginBase implements CKEditorPluginInterface, CKEditorPlu
     return [
       'MediaBrowser' => [
         'label' => t('Embed Media'),
-        'image' => drupal_get_path('module', 'os_media') . '/wysiwyg_plugin/icons/media.png'
-      ]
+        'image' => drupal_get_path('module', 'os_media') . '/wysiwyg_plugin/icons/media.png',
+      ],
     ];
   }
 
@@ -48,7 +48,7 @@ class OsMedia extends PluginBase implements CKEditorPluginInterface, CKEditorPlu
    */
   public function getLibraries(Editor $editor) {
     return [
-      'os_media/mediaBrowser'
+      'os_media/mediaBrowser',
     ];
   }
 

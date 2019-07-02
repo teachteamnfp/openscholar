@@ -2,11 +2,14 @@
 
 namespace Drupal\vsite\Plugin;
 
+use Drupal\Core\Cache\CacheableResponse;
 use Drupal\Core\Database\Connection;
+use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\group\Entity\GroupInterface;
 use Drupal\vsite\Event\VsiteActivatedEvent;
 use Drupal\vsite\VsiteEvents;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Manages and stores active vsites.
@@ -104,12 +107,19 @@ class VsiteContextManager implements VsiteContextManagerInterface {
   /**
    * {@inheritdoc}
    */
-  public function getAbsoluteUrl(string $path = '', GroupInterface $group = NULL) {
+  public function getAbsoluteUrl(string $path = '', GroupInterface $group = NULL, BubbleableMetadata $bubbleable_metadata = NULL) {
     if (!$this->activeGroup) {
       return $path;
     }
 
-    $purl = $this->activeGroup->toUrl('canonical', ['base_url' => ''])->toString();
+    $generatedUrl = $this->activeGroup->toUrl('canonical', ['base_url' => ''])->toString(TRUE);
+    $purl = $generatedUrl->getGeneratedUrl();
+    // Prevents errors in rest requests.
+    // See: https://www.lullabot.com/articles/early-rendering-a-lesson-in-debugging-drupal-8
+    if (!is_null($bubbleable_metadata)) {
+      $response = new CacheableResponse($purl, Response::HTTP_OK);
+      $bubbleable_metadata->addCacheableDependency($response);
+    }
     return $purl . '/' . ltrim($path, '/');
   }
 

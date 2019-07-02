@@ -9,3 +9,13 @@ services:
     public: false
     decorates: content_type_header_matcher
     decoration_priority: 1
+  os_rest.user:
+    class: Drupal\os_rest\Normalizer\OsUserNormalizer
+    tags:
+      - { name: normalizer, priority: 2 }
+    arguments: ['@entity.manager', '@vsite.context_manager']
+  os_rest.group:
+    class: Drupal\os_rest\Normalizer\OsGroupNormalizer
+    tags:
+      - { name: normalizer, priority: 2}
+    arguments: ['@entity.manager']

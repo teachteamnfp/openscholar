@@ -6,7 +6,9 @@ mediaBrowser:
   css:
     component:
       css/media_browser.mediaBrowser.css: { }
-  drupalSettings: { version: { mediaBrowser: "1.0" } }
+  drupalSettings:
+    version:
+      mediaBrowser: "1.0"
   paths: templates
   dependencies:
     - os/angular.ngFileUpload
@@ -19,12 +21,17 @@ mediaBrowser:
     - os/fileEditor
     - core/drupal.dialog
     - core/drupalSettings
+    - os/openscholarModule
 
 mediaBrowserField:
   version: 1.0
   js:
     js/MediaBrowserField.js: { app: MediaBrowserField }
-  drupalSettings: { version: { mediaBrowserField : "1.0" } }
+  drupalSettings:
+    version:
+      mediaBrowserField : "1.0"
+    angularModules:
+      MediaBrowserField: MediaBrowserField
   dependencies:
     - os/angular.uiSortable
     - os_media/mediaBrowser
