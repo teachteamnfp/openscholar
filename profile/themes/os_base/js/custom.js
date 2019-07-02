@@ -8,6 +8,12 @@
           $(this).removeClass("open");
         }
       );
+      $(".mobile-menu .search").click(function(){
+        $(".search-block").collapse('toggle');
+      });
+      $(".mobile-menu .secondary").click(function () {
+        $("nav.secondary").collapse('toggle');
+      });
     }
   };
 })(jQuery, Drupal);
