@@ -34,12 +34,11 @@ env:
 #    - JOB="job:run-kernel-tests other,cp-menu"
 #    - JOB="job:run-functional-tests classes,events,pages"
 #    - JOB="job:run-functional-tests cp,media-browser,os-theme-preview,vsite,breadcrumbs,analytics,cp-menu"
-#    - JOB="job:run-functional-tests os,publications"
+    - JOB="job:run-functional-tests os,publications"
 #    - JOB="job:run-functional-tests cp-appearance"
 #    - JOB="job:run-functional-javascript-tests classes,events,pages,publications,widgets,cp-appearance,cp-menu,profiles"
 #    - JOB="job:run-functional-javascript-tests cp,vsite,mailchimp,metatag,redirect,os-theme-preview"
 #    - JOB=job:run-behat-tests
-     - JOB="job:run-functional-tests test-test"
 
 before_install:
   - echo 'sendmail_path = /bin/true' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
