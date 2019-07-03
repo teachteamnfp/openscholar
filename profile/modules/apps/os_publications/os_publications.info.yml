@@ -11,3 +11,4 @@ dependencies:
   - drupal:bibcite_marc
   - drupal:redirect
   - drupal:repec
+  - drupal:shorten
