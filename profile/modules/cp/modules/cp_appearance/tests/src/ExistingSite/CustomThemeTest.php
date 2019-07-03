@@ -95,37 +95,4 @@ class CustomThemeTest extends TestBase {
     $this->markConfigForCleanUp($custom_theme);
   }
 
-  /**
-   * Tests custom theme delete.
-   *
-   * @covers ::preDelete
-   * @covers ::postDelete
-   *
-   * @throws \Drupal\Core\Entity\EntityStorageException
-   * @throws \Drupal\Core\Extension\ExtensionNameLengthException
-   */
-  public function testDelete(): void {
-    // Setup.
-    /** @var \Drupal\Core\Config\Config $theme_setting_mut */
-    $theme_setting_mut = $this->configFactory->getEditable('system.theme');
-    /** @var \Drupal\Core\Extension\ThemeInstallerInterface $theme_installer */
-    $theme_installer = $this->container->get('theme_installer');
-
-    $theme_installer->install([self::TEST_CUSTOM_THEME_DELETE_NAME]);
-    $this->themeHandler->refreshInfo();
-
-    $theme_setting_mut->set('default', self::TEST_CUSTOM_THEME_DELETE_NAME)->save();
-
-    $custom_theme = CustomTheme::load(self::TEST_CUSTOM_THEME_DELETE_NAME);
-    $custom_theme->delete();
-
-    // Tests.
-    /** @var \Drupal\Core\Config\ImmutableConfig $theme_setting */
-    $theme_setting = $this->configFactory->get('system.theme');
-
-    $this->assertEquals('documental', $theme_setting->get('default'));
-    $this->assertFalse($this->themeHandler->themeExists($custom_theme->id()));
-    $this->assertDirectoryNotExists('file://' . CustomTheme::ABSOLUTE_CUSTOM_THEMES_LOCATION . '/' . $custom_theme->id());
-  }
-
 }
