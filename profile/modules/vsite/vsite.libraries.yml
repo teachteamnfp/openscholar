@@ -1,0 +1,5 @@
+contextual:
+  js:
+    js/vsite.contextual.js: {}
+  dependencies:
+    - core/drupal

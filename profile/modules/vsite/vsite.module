@@ -5,6 +5,8 @@
  * Hook implementations for the vsite module.
  */
 
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\vsite\Entity\GroupPresetInterface;
 use Drupal\vsite\Entity\GroupPreset;
 use Drupal\Core\Form\ConfigFormBase;
@@ -129,7 +131,7 @@ function vsite_form_alter(&$form, FormStateInterface $formState, $form_id) {
       $availablePlugins = $plugins[$groupTypeId];
 
       $plugin_id = 'group_entity:' . $entity->getEntityTypeId();
-      if (in_array($plugin_id, $availablePlugins) && ($entity->isNew() || !($existingEntity = $group->getContentByEntityId($plugin_id, $entity->id())))) {
+      if (in_array($plugin_id, $availablePlugins) && ($entity->isNew() || !($group->getContentByEntityId($plugin_id, $entity->id())))) {
         $formState->set('group', $group);
         $formState->set('group_content_enabler', $plugin_id);
         foreach (Element::children($form['actions']) as $name) {
@@ -352,6 +354,18 @@ function _vsite_process_preset_task(GroupInterface $group, GroupPresetInterface 
   if (is_callable($task)) {
     return call_user_func_array($task, [$group, $preset, &$context]);
   }
-  // What do I do here?
-  return;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view_alter().
+ */
+function vsite_node_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
+  // Makes sure that after node delete via contextual link, the user is
+  // redirected to it's listing.
+  if ($build['#view_mode'] === 'full' && $entity->getEntityTypeId() === 'node') {
+    $build['#attached']['library'][] = 'vsite/contextual';
+    $build['#attached']['drupalSettings']['vsite'] = [
+      'nodeBundle' => $entity->bundle(),
+    ];
+  }
 }
