@@ -58,7 +58,7 @@ class EntityRedirectsTest extends OsExistingSiteTestBase {
     $this->groupAdmin = $this->createUser();
     $this->addGroupAdmin($this->groupAdmin, $group);
 
-    $this->node = $this->coreCreateNode([
+    $this->node = $this->createNode([
       'type' => 'news',
       'field_date' => '20/06/2019',
       'field_redirect_to_source' => 'https://www.example.com',
