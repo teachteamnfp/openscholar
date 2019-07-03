@@ -207,3 +207,4 @@ permissions:
   - 'update own group_entity:bibcite_reference content'
   - 'view group_entity:bibcite_reference content'
   - 'manage cp roles'
+  - 'manage layout'

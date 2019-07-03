@@ -77,7 +77,9 @@ class MediaBrowserWidget extends WidgetBase implements ContainerFactoryPluginInt
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $media = [];
     for ($i = 0, $l = $items->count(); $i < $l; $i++) {
-      $media[] = $items->get($i);
+      /** @var \Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem $refItem */
+      $refItem = $items->get($i);
+      $media[] = $refItem->getValue()['target_id'];
     }
     $settings = $this->getFieldSettings();
     $bundles = $settings['handler_settings']['target_bundles'];
@@ -88,7 +90,9 @@ class MediaBrowserWidget extends WidgetBase implements ContainerFactoryPluginInt
       $types[] = $type->id();
     }
 
-    $element['#type'] = 'fieldset';
+    $element['#type'] = 'container';
+    $element['#input'] = TRUE;
+    $element['#default_value'] = [];
     $element['media-browser-field'] = [
       '#type' => 'html_tag',
       '#tag' => 'div',

@@ -1,0 +1,10 @@
+vsite_site_creation.settings:
+  type: config_object
+  label: 'Site Creation settings'
+  mapping:
+    tos_url:
+      type: string
+      label: 'Terms of Service URL'
+    tos_label:
+      type: string
+      label: 'Terms of Service Label Text'

@@ -100,6 +100,12 @@ class CpAppearanceMainController extends ControllerBase {
    * Entry point for cp/users.
    */
   public function main(): array {
+    // Custom themes are installed in vsite config, therefore, refresh is
+    // necessary. Otherwise, on cache clear, Drupal picks the theme
+    // configuration from default config storage, and it fails to identify
+    // installed custom themes.
+    $this->themeHandler->refreshInfo();
+
     /** @var \Drupal\Core\Extension\Extension[] $featured_themes */
     $featured_themes = $this->appearanceSettingsBuilder->getFeaturedThemes();
     /** @var \Drupal\Core\Extension\Extension[] $custom_themes */
