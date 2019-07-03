@@ -18,7 +18,7 @@ dependencies:
     - field.field.node.person.field_redirect_to_source
     - field.field.node.person.field_taxonomy_terms
     - field.field.node.person.field_website
-    - image.style.os_news_full
+    - image.style.crop_photo_person
     - node.type.person
   module:
     - image
@@ -112,8 +112,8 @@ content:
     region: content
     label: hidden
     settings:
-      image_style: os_news_full
-      image_link: ''
+      image_style: crop_photo_person
+      image_link: content
     third_party_settings: {  }
   field_professional_titles:
     weight: 4

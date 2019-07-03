@@ -122,7 +122,7 @@ function os_profiles_preprocess_node(&$variables) {
       // Use default image.
       $default_image_render_array = [
         '#theme' => 'image',
-        '#uri' => file_create_url(drupal_get_path('theme', 'os_base') . '/images/person-default-image-big.png'),
+        '#uri' => file_create_url(drupal_get_path('theme', 'os_base') . '/images/person-default-image.png'),
       ];
     }
     $variables['content']['field_photo_person'][0] = $default_image_render_array;
