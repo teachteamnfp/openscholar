@@ -1,0 +1,10 @@
+#site-creation-container {
+  width: 100%;
+  .modal-dialog {
+    min-width: 900px;
+  }
+  .modal-body {
+    height: 90vh;
+    overflow: scroll;
+  }
+}
