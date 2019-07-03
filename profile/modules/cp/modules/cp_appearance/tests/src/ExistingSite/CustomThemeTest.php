@@ -95,4 +95,17 @@ class CustomThemeTest extends TestBase {
     $this->markConfigForCleanUp($custom_theme);
   }
 
+  /**
+   * Tests custom theme delete.
+   *
+   * @covers ::postDelete
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public function testDelete(): void {
+    $custom_theme = $this->createCustomTheme();
+    $custom_theme->delete();
+    $this->assertDirectoryNotExists('file://' . CustomTheme::ABSOLUTE_CUSTOM_THEMES_LOCATION . '/' . $custom_theme->id());
+  }
+
 }
