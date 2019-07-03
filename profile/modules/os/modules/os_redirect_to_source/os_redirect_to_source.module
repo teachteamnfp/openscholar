@@ -80,6 +80,8 @@ function _os_redirect_to_source_update_entity_redirect(EntityInterface $entity) 
  *
  * @param \Drupal\Core\Entity\EntityInterface $entity
  *   The node.
+ * @param string $path
+ *   Path to generate hash/redirect for.
  *
  * @return \Drupal\redirect\Entity\Redirect
  *   The redirect.
