@@ -5,6 +5,7 @@ dependencies:
   config:
     - bibcite_entity.bibcite_reference_type.map
     - field.field.bibcite_reference.map.field_attach_files
+    - field.field.bibcite_reference.map.field_redirect_to_source
     - field.field.bibcite_reference.map.field_taxonomy_terms
   enforced:
     module:
@@ -13,6 +14,7 @@ dependencies:
       - bibcite_entity.bibcite_reference_type.map
   module:
     - bibcite_entity
+    - link
 _core:
   default_config_hash: _HON8169ujfw8ugSLS4QuR6aTTKqYFbDHssvAs7fzN4
 id: bibcite_reference.map.default
@@ -409,6 +411,18 @@ content:
       view_mode: default
       link: false
     third_party_settings: {  }
+    region: content
+  field_redirect_to_source:
+    weight: 52
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
     region: content
   field_taxonomy_terms:
     weight: 103

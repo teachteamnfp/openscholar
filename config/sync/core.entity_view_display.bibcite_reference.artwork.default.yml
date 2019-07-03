@@ -5,6 +5,7 @@ dependencies:
   config:
     - bibcite_entity.bibcite_reference_type.artwork
     - field.field.bibcite_reference.artwork.field_attach_files
+    - field.field.bibcite_reference.artwork.field_redirect_to_source
     - field.field.bibcite_reference.artwork.field_taxonomy_terms
   enforced:
     module:
@@ -14,6 +15,7 @@ dependencies:
   module:
     - bibcite_entity
     - layout_builder
+    - link
 third_party_settings:
   layout_builder:
     sections: {  }
@@ -413,6 +415,18 @@ content:
       view_mode: default
       link: false
     third_party_settings: {  }
+    region: content
+  field_redirect_to_source:
+    weight: 52
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
     region: content
   field_taxonomy_terms:
     weight: 51

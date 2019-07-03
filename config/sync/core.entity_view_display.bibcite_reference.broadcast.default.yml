@@ -5,6 +5,7 @@ dependencies:
   config:
     - bibcite_entity.bibcite_reference_type.broadcast
     - field.field.bibcite_reference.broadcast.field_attach_files
+    - field.field.bibcite_reference.broadcast.field_redirect_to_source
     - field.field.bibcite_reference.broadcast.field_taxonomy_terms
   enforced:
     module:
@@ -13,6 +14,7 @@ dependencies:
       - bibcite_entity.bibcite_reference_type.broadcast
   module:
     - bibcite_entity
+    - link
 _core:
   default_config_hash: afZQHmXUYIdcJsAA64fl9c_xx8JVh0AaxW3_li-Dans
 id: bibcite_reference.broadcast.default
@@ -409,6 +411,18 @@ content:
       view_mode: default
       link: false
     third_party_settings: {  }
+    region: content
+  field_redirect_to_source:
+    weight: 52
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
     region: content
   field_taxonomy_terms:
     weight: 103

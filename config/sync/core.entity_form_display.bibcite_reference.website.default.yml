@@ -5,11 +5,13 @@ dependencies:
   config:
     - bibcite_entity.bibcite_reference_type.website
     - field.field.bibcite_reference.website.field_attach_files
+    - field.field.bibcite_reference.website.field_redirect_to_source
     - field.field.bibcite_reference.website.field_taxonomy_terms
   module:
     - bibcite_entity
     - field_layout
     - layout_discovery
+    - link
     - os_media
 third_party_settings:
   field_layout:
@@ -415,6 +417,14 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: media_browser_widget
+    region: content
+  field_redirect_to_source:
+    weight: 57
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
     region: content
   field_taxonomy_terms:
     weight: 105
