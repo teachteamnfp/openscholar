@@ -1,0 +1,14 @@
+os_link:
+  version: 1.0
+  css:
+    component:
+      css/os_link.css: { }
+  js:
+    js/OsWysiwygLinkTool.module.js: { }
+  libraries:
+    - os/angularjs
+    - os/FileHandler
+    - os/EntityService
+    - os/FileEditor
+    - os/JSPager
+    - os/angular.modalService
