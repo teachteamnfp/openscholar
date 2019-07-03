@@ -82,14 +82,17 @@ function os_profiles_preprocess_node(&$variables) {
   $parameters = $attributes->all();
 
   // You are on person page.
+  if (empty($parameters['_route']) || $parameters['_route'] != 'view.people.page_1') {
+    return;
+  }
   // Node bundle is person.
+  if ($node->bundle() != 'person') {
+    return;
+  }
   // Current view mode has image.
   // Person image is empty.
   // Default image is not hidden.
-  if (!empty($parameters['_route'])
-    && $parameters['_route'] == 'view.people.page_1'
-    && $node->bundle() == 'person'
-    && in_array($variables['view_mode'], ['teaser', 'sidebar_teaser'])
+  if (in_array($variables['view_mode'], ['teaser', 'sidebar_teaser'])
     && empty($content['field_photo_person']['#items'])
     && !$config->get('disable_default_image')) {
 
@@ -126,6 +129,16 @@ function os_profiles_preprocess_node(&$variables) {
       ];
     }
     $variables['content']['field_photo_person'][0] = $default_image_render_array;
+  }
+
+  if (!empty($content['field_phone'][0])) {
+    $variables['content']['field_phone']['#prefix'] = 'p: ';
+  }
+  if (!empty($content['field_email'][0]['#url'])) {
+    $url_attributes = [
+      'title' => t("@title's e - mail", ['@title' => $node->getTitle()]),
+    ];
+    $variables['content']['field_email'][0]['#url']->setOption('attributes', $url_attributes);
   }
   /** @var \Drupal\vsite\Plugin\VsiteContextManager $vsite_context_manager */
   $vsite_context_manager = Drupal::service('vsite.context_manager');
