@@ -323,6 +323,8 @@ class CustomThemeFunctionalTest extends CpAppearanceExistingSiteJavascriptTestBa
     $this->visitViaVsite("cp/appearance/custom-themes/{$custom_theme->id()}/delete", $this->group);
     $this->getSession()->getPage()->pressButton('Confirm');
 
+    $this->assertContains('cp/appearance', $this->getSession()->getCurrentUrl());
+
     /** @var \Drupal\Core\Config\ImmutableConfig $theme_setting */
     $theme_setting = $config_factory->get('system.theme');
 
