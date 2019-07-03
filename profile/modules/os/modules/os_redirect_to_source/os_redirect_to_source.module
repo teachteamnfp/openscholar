@@ -92,7 +92,7 @@ function _os_redirect_to_source_get_entity_redirect_entity(EntityInterface $enti
   $hash = Redirect::generateHash($path . $entity->id(), [], $language);
 
   // Search for duplicate.
-  $redirects = \Drupal::entityManager()
+  $redirects = \Drupal::entityTypeManager()
     ->getStorage('redirect')
     ->loadByProperties(['hash' => $hash]);
 
