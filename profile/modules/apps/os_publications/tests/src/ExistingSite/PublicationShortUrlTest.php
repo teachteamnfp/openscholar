@@ -2,7 +2,7 @@
 
 namespace Drupal\Tests\os_publications\ExistingSite;
 
-use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTestBase;
+use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
 
 /**
  * Class PublicationShortUrlTest.
@@ -13,7 +13,7 @@ use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTest
  * @package Drupal\Tests\os_publications\ExistingSite
  * @covers \os_publications_preprocess_bibcite_citation
  */
-class PublicationShortUrlTest extends OsExistingSiteJavascriptTestBase {
+class PublicationShortUrlTest extends OsExistingSiteTestBase {
   /**
    * Group administrator.
    *
@@ -38,6 +38,8 @@ class PublicationShortUrlTest extends OsExistingSiteJavascriptTestBase {
     $this->reference = $this->createReference([
       'title' => 'The Velvet Underground',
     ]);
+    $this->group->addContent($this->reference, 'group_entity:bibcite_reference');
+    $this->cacheRender = $this->container->get('cache.render');
   }
 
   /**
@@ -55,7 +57,7 @@ class PublicationShortUrlTest extends OsExistingSiteJavascriptTestBase {
     ];
     $this->submitForm($edit, 'edit-submit');
     $ref_url = $this->reference->toUrl()->toString();
-    $this->visit("/test-menu/$ref_url");
+    $this->visit("/test-menu" . $ref_url);
     $web_assert = $this->assertSession();
     $web_assert->elementNotExists('css', '.short-link');
 
@@ -65,7 +67,8 @@ class PublicationShortUrlTest extends OsExistingSiteJavascriptTestBase {
       'os_publications_shorten_citations' => TRUE,
     ];
     $this->submitForm($edit, 'edit-submit');
-    $this->visit("/test-menu/$ref_url");
+    $this->cacheRender->invalidateAll();
+    $this->visit("/test-menu" . $ref_url);
     $web_assert->elementExists('css', '.short-link');
   }
 

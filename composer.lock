@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "392c9f40aa943b313b8dd3c14041c131",
+    "content-hash": "1aef60bb304f9ee0af285719edfe8f13",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -6127,17 +6127,11 @@
         },
         {
             "name": "drupal/shorten",
-            "version": "1.0.0",
+            "version": "dev-2.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/shorten.git",
-                "reference": "8.x-1.0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/shorten-8.x-1.0.zip",
-                "reference": "8.x-1.0",
-                "shasum": "473d016cfa9df7f4b2f85ea35f46e1358985bd43"
+                "reference": "5991acb2179207a97d570ae27c4310fdaecea326"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -6145,14 +6139,14 @@
             "type": "drupal-module",
             "extra": {
                 "branch-alias": {
-                    "dev-1.x": "1.x-dev"
+                    "dev-2.x": "2.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0",
-                    "datestamp": "1485511683",
+                    "version": "8.x-2.x-dev",
+                    "datestamp": "1522077575",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -6178,7 +6172,8 @@
             "homepage": "https://www.drupal.org/project/shorten",
             "support": {
                 "source": "https://git.drupalcode.org/project/shorten"
-            }
+            },
+            "time": "2018-03-15T20:29:13+00:00"
         },
         {
             "name": "drupal/slick",
@@ -14209,6 +14204,7 @@
         "drupal/advancedqueue": 10,
         "drupal/date_recur_modular": 15,
         "doctrine/lexer": 20,
+        "drupal/shorten": 20,
         "weitzman/drupal-test-traits": 10
     },
     "prefer-stable": true,
