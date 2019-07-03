@@ -1,0 +1,23 @@
+site_creation:
+  version: 1.0
+  js:
+    js/messages.min.js: { }
+    js/osSiteCreation.module.js: { }
+  css:
+    component:
+      css/os_site_creation.css: { }
+  paths: 'templates'
+  drupalSettings:
+    angularModules:
+      site_creation: SiteCreationForm
+    version:
+      siteCreation: 1.0
+  dependencies:
+    - os/auth
+    - os/angular.modalService
+    - os/drupalSettings
+    - os/buttonSpinner
+    - os/activeUser
+    - os/dependencyManager
+    - os/urlGenerator
+    - os/openscholarModule

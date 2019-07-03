@@ -2,6 +2,7 @@
 
 namespace Drupal\vsite\Plugin;
 
+use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\group\Entity\GroupInterface;
 
 /**
@@ -35,7 +36,11 @@ interface VsiteContextManagerInterface {
    *
    * @param string $path
    *   The URL path that is requested.
+   * @param \Drupal\group\Entity\GroupInterface $group
+   *   The group we want to fetch the url for.
+   * @param \Drupal\Core\Render\BubbleableMetadata $bubbleable_metadata
+   *   Caching metadata.
    */
-  public function getAbsoluteUrl(string $path = '');
+  public function getAbsoluteUrl(string $path = '', GroupInterface $group = NULL, BubbleableMetadata $bubbleable_metadata = NULL);
 
 }

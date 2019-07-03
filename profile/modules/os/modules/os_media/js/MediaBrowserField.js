@@ -85,15 +85,15 @@
           service.fetchOne(scope.$parent.value).then(generateFunc(0));
         }
 
-        // if (scope.selectedFiles.length == 0 && Drupal.settings.mediaBrowserField != undefined) {
-        //   var fids = Drupal.settings.mediaBrowserField[scope.field_id].selectedFiles;
-        //
-        //   for (var i = 0; i < fids.length; i++) {
-        //     var fid = fids[i];
-        //     service.fetchOne(fid).then(generateFunc(i));
-        //   }
-        //   store.setData(scope.field_name, scope.selectedFiles);
-        // }
+        if (scope.selectedFiles.length == 0 && settings.hasSetting('mediaBrowserField')) {
+          let fids = settings.fetchSetting('mediaBrowserField.' + scope.field_id + '.selectedFiles');
+
+          for (let i = 0; i < fids.length; i++) {
+            let fid = fids[i];
+            service.fetchOne(fid).then(generateFunc(i));
+          }
+          store.setData(scope.field_name, scope.selectedFiles);
+        }
 
         // prefetch the files now so user can open Media Browser later
         service.fetch();
