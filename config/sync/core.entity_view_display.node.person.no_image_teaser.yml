@@ -38,66 +38,34 @@ content:
   body:
     label: hidden
     type: text_default
-    weight: 5
+    weight: 1
     settings: {  }
     third_party_settings: {  }
     region: content
   field_address:
-    weight: 7
+    weight: 3
     label: hidden
     settings: {  }
     third_party_settings: {  }
     type: basic_string
     region: content
   field_email:
-    weight: 8
+    weight: 4
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    type: basic_string
+    type: email_mailto
     region: content
-  field_first_name:
-    weight: 1
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
-  field_honorific:
-    weight: 0
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
-  field_last_name:
-    weight: 3
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
-  field_middle_name:
-    type: string
-    weight: 2
-    region: content
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
   field_office_hours:
-    weight: 10
-    label: above
+    weight: 6
+    label: inline
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
     region: content
   field_phone:
-    weight: 9
+    weight: 5
     label: hidden
     settings:
       title: ''
@@ -105,7 +73,7 @@ content:
     type: telephone_link
     region: content
   field_professional_titles:
-    weight: 4
+    weight: 0
     label: hidden
     settings:
       link_to_entity: false
@@ -113,7 +81,7 @@ content:
     type: string
     region: content
   field_taxonomy_terms:
-    weight: 11
+    weight: 7
     label: above
     settings:
       link: true
@@ -121,8 +89,8 @@ content:
     type: entity_reference_label
     region: content
   field_website:
-    weight: 6
-    label: above
+    weight: 2
+    label: hidden
     settings:
       trim_length: 80
       url_only: false
@@ -133,11 +101,15 @@ content:
     type: link
     region: content
   links:
-    weight: 12
+    weight: 8
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_first_name: true
+  field_honorific: true
+  field_last_name: true
+  field_middle_name: true
   field_photo_person: true
   field_redirect_to_source: true
   langcode: true
