@@ -17,6 +17,7 @@ class VsiteContextualLinksTest extends OsExistingSiteJavascriptTestBase {
    * Tests whether the destination parameter is valid in listings.
    *
    * @covers ::vsite_js_settings_alter
+   * @covers ::vsite_node_view_alter
    */
   public function testDestinationParameterInListing(): void {
     // Setup.
@@ -24,11 +25,9 @@ class VsiteContextualLinksTest extends OsExistingSiteJavascriptTestBase {
       'type' => 'blog',
     ]);
     $this->group->addContent($blog, 'group_node:blog');
-    $admin = $this->createUser([
-      'access contextual links',
-    ], NULL, TRUE);
-    $this->group->addMember($admin);
-    $this->drupalLogin($admin);
+    $group_admin = $this->createUser();
+    $this->addGroupAdmin($group_admin, $this->group);
+    $this->drupalLogin($group_admin);
 
     $this->visitViaVsite('blog', $this->group);
     $this->assertSession()->waitForElement('css', '.contextual button');
@@ -56,11 +55,9 @@ class VsiteContextualLinksTest extends OsExistingSiteJavascriptTestBase {
       'type' => 'blog',
     ]);
     $this->group->addContent($blog, 'group_node:blog');
-    $admin = $this->createUser([
-      'access contextual links',
-    ], NULL, TRUE);
-    $this->group->addMember($admin);
-    $this->drupalLogin($admin);
+    $group_admin = $this->createUser();
+    $this->addGroupAdmin($group_admin, $this->group);
+    $this->drupalLogin($group_admin);
 
     $this->visitViaVsite("node/{$blog->id()}", $this->group);
     $this->assertSession()->waitForElement('css', '.contextual-links .entitynodeedit-form');

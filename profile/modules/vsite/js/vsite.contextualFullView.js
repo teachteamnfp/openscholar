@@ -1,6 +1,6 @@
 /**
  * @file
- * Performs alterations in contextual links.
+ * Performs alterations in contextual links for full-view pages.
  */
 
 (function ($, Drupal, drupalSettings) {
@@ -17,9 +17,9 @@
 
   Drupal.behaviors.vsiteContextual = {
     attach: function () {
-      // Makes sure that after node delete via contextual link, the user is
-      // redirected to it's listing.
       $(document).once().bind('drupalContextualLinkAdded', function (event, data) {
+        // Makes sure that after node delete via contextual link, the user is
+        // redirected to it's listing.
         let $deleteOption = data.$el.find('li.entitynodedelete-form');
 
         if ($deleteOption.length) {
@@ -28,6 +28,20 @@
           let newDestination = drupalSettings.spaces.url + redirectMapping[drupalSettings.vsite.nodeBundle];
 
           url.searchParams.set('destination', newDestination);
+
+          $link.attr('href', decodeURIComponent(url.toString()));
+        }
+
+        // Make sure that node edit via contextual link, the user is redirected
+        // to correct location.
+        let $editOption = data.$el.find('li.entitynodeedit-form');
+
+        if ($editOption.length) {
+          let $link = $editOption.find('a');
+          let url = new URL($link.attr('href'), window.location.origin);
+          let currentPath = window.location.pathname;
+
+          url.searchParams.set('destination', currentPath);
 
           $link.attr('href', decodeURIComponent(url.toString()));
         }

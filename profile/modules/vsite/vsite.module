@@ -7,6 +7,7 @@
 
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\views\Plugin\views\cache\CachePluginBase;
 use Drupal\vsite\Entity\GroupPresetInterface;
 use Drupal\vsite\Entity\GroupPreset;
 use Drupal\Core\Form\ConfigFormBase;
@@ -360,12 +361,23 @@ function _vsite_process_preset_task(GroupInterface $group, GroupPresetInterface 
  * Implements hook_ENTITY_TYPE_view_alter().
  */
 function vsite_node_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
-  // Makes sure that after node delete via contextual link, the user is
-  // redirected to it's listing.
+  // Makes sure that the destination parameter in contextual links in node
+  // full-views are correct.
+  // For edit, it should direct to the node page.
+  // For delete, it should direct to the node's listing.
   if ($build['#view_mode'] === 'full' && $entity->getEntityTypeId() === 'node') {
-    $build['#attached']['library'][] = 'vsite/contextual';
+    $build['#attached']['library'][] = 'vsite/contextualFullView';
     $build['#attached']['drupalSettings']['vsite'] = [
       'nodeBundle' => $entity->bundle(),
     ];
   }
+}
+
+/**
+ * Implements hook_views_post_render().
+ */
+function vsite_views_post_render(ViewExecutable $view, &$output, CachePluginBase $cache) {
+  // Makes sure that destination parameter in contextual links in listings are
+  // correct. They should be directing to the listing itself.
+  $view->element['#attached']['library'][] = 'vsite/contextualList';
 }
