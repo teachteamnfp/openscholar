@@ -1,13 +1,35 @@
-.path-node {
+.page-node-type-person {
   .field--name-field-photo-person {
     float: left;
     margin-right: 1em;
     margin-bottom: 1em;
+  }
+  .content--image--area {
+    border-top: 1px solid $color-gray2;
+    padding-top: 35px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+  }
+  .content--main--area {
+    .block {
+      margin-bottom: 15px;
+    }
+    h2.block-title {
+      border-top: 3px solid $color-blue;
+      padding-top: 12px;
+    }
   }
 }
 .content--main--area {
   clear: both;
 }
 .person--title {
-  margin-bottom: 20px;
+  margin-bottom: 18px;
+  .field--name-field-professional-titles {
+    padding: 6px 0 15px;
+  }
+  h2 {
+    font-size: 38px;
+    line-height: 35px;
+  }
 }
