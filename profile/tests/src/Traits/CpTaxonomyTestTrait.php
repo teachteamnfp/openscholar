@@ -83,10 +83,12 @@ trait CpTaxonomyTestTrait {
    *   Vocabulary id.
    * @param array $allowed_types
    *   Allowed types for entity bundles.
+   * @param string $widget_type
+   *   Widget type of field node form.
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  protected function createGroupVocabulary(GroupInterface $group, string $vid, array $allowed_types = []) {
+  protected function createGroupVocabulary(GroupInterface $group, string $vid, array $allowed_types = [], string $widget_type = '') {
     $this->vsiteContextManager->activateVsite($group);
     $vocab = Vocabulary::create([
       'name' => $vid,
@@ -98,6 +100,7 @@ trait CpTaxonomyTestTrait {
       $config_vocab = $this->configFactory->getEditable('taxonomy.vocabulary.' . $vid);
       $config_vocab
         ->set('allowed_vocabulary_reference_types', $allowed_types)
+        ->set('widget_type', $widget_type)
         ->save(TRUE);
     }
 

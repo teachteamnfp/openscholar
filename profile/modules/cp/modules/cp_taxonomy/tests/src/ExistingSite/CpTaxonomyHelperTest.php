@@ -66,4 +66,26 @@ class CpTaxonomyHelperTest extends TestBase {
     $this->assertSame('Taxonomy Test 2', $selectable_bundles['node:taxonomy_test_2']);
   }
 
+  /**
+   * Test get widget type default value.
+   */
+  public function testGetWidgetTypeDefaultValue() {
+    $vid = 'test_vocab';
+    $this->createGroupVocabulary($this->group, $vid, ['node:taxonomy_test_1']);
+    // Test default widget type.
+    $widget_type = $this->helper->getWidgetType('node:taxonomy_test_1');
+    $this->assertSame('entity_reference_autocomplete', $widget_type);
+  }
+
+  /**
+   * Test get widget type value.
+   */
+  public function testGetWidgetTypeSetValue() {
+    $vid = 'test_vocab';
+    $this->createGroupVocabulary($this->group, $vid, ['node:taxonomy_test_1'], 'options_select');
+    // Test default widget type.
+    $widget_type = $this->helper->getWidgetType('node:taxonomy_test_1');
+    $this->assertSame('options_select', $widget_type);
+  }
+
 }
