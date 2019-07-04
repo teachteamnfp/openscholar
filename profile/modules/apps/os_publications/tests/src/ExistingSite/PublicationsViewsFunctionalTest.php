@@ -86,30 +86,39 @@ class PublicationsViewsFunctionalTest extends TestBase {
     $bibcite_settings_mut->set('default_style', 'american_medical_association');
     $bibcite_settings_mut->save();
 
-    $reference_as_stdclass = new \stdClass();
-    $reference_as_stdclass->title = $reference->label();
-    $reference_as_stdclass->author = json_decode(json_encode([
-      [
-        'family' => $contributor->getLastName(),
-        'given' => $contributor->getFirstName(),
-        'category' => 'primary',
-        'role' => 'author',
-      ],
-    ]), FALSE);
+    // Construct data array as required by render method.
+    $text = $reference->label();
+    $link = '"' . $reference->toLink($text)->toString() . '"';
+    $author = [
+      'category' => "primary",
+      'role' => "author",
+      'family' => $contributor->getLastName(),
+      'given' => $contributor->getFirstName(),
+    ];
+    $data = [
+      'title' => $link,
+      'author' => [$author],
+    ];
 
     $this->drupalLogin($this->groupAdmin);
 
+    $expected = $expected = trim($this->citationStyler->render($data));
+
     $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/publications");
-    $this->assertSession()->responseContains($this->citationStyler->render($reference_as_stdclass));
+    $actual = $this->getActualHtml();
+    $this->assertSame($expected, $actual);
 
     $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/publications/title");
-    $this->assertSession()->responseContains($this->citationStyler->render($reference_as_stdclass));
+    $actual = $this->getActualHtml();
+    $this->assertSame($expected, $actual);
 
     $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/publications/author");
-    $this->assertSession()->responseContains($this->citationStyler->render($reference_as_stdclass));
+    $actual = $this->getActualHtml();
+    $this->assertSame($expected, $actual);
 
     $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/publications/year");
-    $this->assertSession()->responseContains($this->citationStyler->render($reference_as_stdclass));
+    $actual = $this->getActualHtml();
+    $this->assertSame($expected, $actual);
 
     $this->drupalLogout();
   }
@@ -128,6 +137,22 @@ class PublicationsViewsFunctionalTest extends TestBase {
     $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/publications");
 
     $this->assertSession()->statusCodeEquals(200);
+  }
+
+  /**
+   * Returns a particular section of the html page.
+   *
+   * @return string
+   *   The row html to compare.
+   */
+  private function getActualHtml(): string {
+    $page = $this->getCurrentPage();
+    $row = $page->find('css', '.bibcite-citation');
+    $row_html = $row->getHtml();
+    // Strip Purl from the html for proper comparison as render method won't
+    // return it.
+    return trim(str_replace("$this->groupAlias", '', $row_html));
+
   }
 
   /**
