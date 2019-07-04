@@ -33,10 +33,11 @@ class CustomThemeTest extends TestBase {
    */
   public function testSave(): void {
     $image = $this->createFile('image');
+    $custom_theme_label = strtolower($this->randomMachineName());
 
     $custom_theme = CustomTheme::create([
-      'id' => 'test',
-      'label' => 'Test',
+      'id' => $custom_theme_label,
+      'label' => $custom_theme_label,
     ]);
     $custom_theme->setBaseTheme('clean');
     $custom_theme->setImages([$image->id()]);
@@ -45,8 +46,8 @@ class CustomThemeTest extends TestBase {
     $custom_theme->save();
 
     // Assert presence of basic data.
-    $this->assertEquals('test', $custom_theme->id());
-    $this->assertEquals('Test', $custom_theme->label());
+    $this->assertEquals($custom_theme_label, $custom_theme->id());
+    $this->assertEquals($custom_theme_label, $custom_theme->label());
     $this->assertEquals('clean', $custom_theme->getBaseTheme());
     $this->assertEquals([$image->id()], $custom_theme->getImages());
 
