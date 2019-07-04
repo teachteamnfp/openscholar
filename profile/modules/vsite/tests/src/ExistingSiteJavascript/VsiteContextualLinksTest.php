@@ -16,7 +16,6 @@ class VsiteContextualLinksTest extends OsExistingSiteJavascriptTestBase {
   /**
    * Tests whether the destination parameter is valid in listings.
    *
-   * @covers ::vsite_js_settings_alter
    * @covers ::vsite_node_view_alter
    */
   public function testDestinationParameterInListing(): void {
