@@ -97,7 +97,9 @@ function cp_taxonomy_form_taxonomy_vocabulary_form_alter(array &$form, FormState
     '#type' => 'radios',
     '#options' => TaxonomyTermsWidget::getWidgetTypes(),
   ];
-  $vocabulary_settings = $taxonomy_helper->getVocabularySettings($form['vid']['#default_value']);
+  if (!empty($form['vid']['#default_value'])) {
+    $vocabulary_settings = $taxonomy_helper->getVocabularySettings($form['vid']['#default_value']);
+  }
   if (!empty($vocabulary_settings)) {
     $form['allowed_entity_types']['#default_value'] = $vocabulary_settings['allowed_vocabulary_reference_types'];
     $form['widget_type']['#default_value'] = $vocabulary_settings['widget_type'];

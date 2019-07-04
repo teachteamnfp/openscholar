@@ -46,7 +46,7 @@ class CpTaxonomyHelper implements CpTaxonomyHelperInterface {
    */
   public function searchAllowedVocabulariesByType(string $bundle_key): array {
     $vsite_vocabularies = Vocabulary::loadMultiple();
-    $filter_vocabularies = [];
+    $found_vocabularies = [];
     foreach ($vsite_vocabularies as $vid => $vocabulary) {
       $config_vocab = $this->configFactory->getEditable('taxonomy.vocabulary.' . $vid);
       $bundle_keys = $config_vocab->get('allowed_vocabulary_reference_types');
@@ -54,10 +54,10 @@ class CpTaxonomyHelper implements CpTaxonomyHelperInterface {
         continue;
       }
       if (in_array($bundle_key, $bundle_keys)) {
-        $filter_vocabularies[$vid] = $vid;
+        $found_vocabularies[$vid] = $vid;
       }
     }
-    return $filter_vocabularies;
+    return $found_vocabularies;
   }
 
   /**
