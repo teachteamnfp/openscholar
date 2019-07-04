@@ -243,7 +243,8 @@ function os_widgets_field_taxonomy_vocabulary_ajax(array &$form, FormStateInterf
   $vid = $selected_vocabulary[0]['target_id'] ?? '';
   $settings = $taxonomy_helper->getVocabularySettings($vid);
 
-  foreach ($settings['allowed_vocabulary_reference_types'] as $entity_key) {
+  $saved_entity_types = $settings['allowed_vocabulary_reference_types'];
+  foreach ($saved_entity_types as $entity_key) {
     if ($entity_key == 'node:events') {
       $saved_entity_types[] = 'node:past_events';
       $saved_entity_types[] = 'node:upcoming_events';
