@@ -102,7 +102,7 @@ class PublicationsViewsFunctionalTest extends TestBase {
 
     $this->drupalLogin($this->groupAdmin);
 
-    $expected = $expected = trim($this->citationStyler->render($data));
+    $expected = trim($this->citationStyler->render($data));
 
     $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/publications");
     $actual = $this->getActualHtml();
