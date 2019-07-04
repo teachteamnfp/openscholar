@@ -312,7 +312,9 @@ class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
       }
     }
 
-    $theme_installer->uninstall(array_keys($installed_custom_themes));
+    if ($installed_custom_themes) {
+      $theme_installer->uninstall(array_keys($installed_custom_themes));
+    }
   }
 
   /**
