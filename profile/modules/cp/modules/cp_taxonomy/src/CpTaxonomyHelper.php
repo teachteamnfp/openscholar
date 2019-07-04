@@ -151,4 +151,23 @@ class CpTaxonomyHelper implements CpTaxonomyHelperInterface {
     $build['#cache']['tags'][] = 'entity-with-taxonomy-terms:' . $group->id();
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getWidgetType(string $entity_bundle): string {
+    $vocabularies = $this->searchAllowedVocabulariesByType($entity_bundle);
+    foreach ($vocabularies as $vid) {
+      $config_vocab = $this->configFactory->get('taxonomy.vocabulary.' . $vid);
+      if (empty($config_vocab)) {
+        continue;
+      }
+      $widget_type = $config_vocab->get('widget_type');
+      if (empty($widget_type)) {
+        continue;
+      }
+      return $widget_type;
+    }
+    return TaxonomyTermsWidget::WIDGET_TYPE_AUTOCOMPLETE;
+  }
+
 }

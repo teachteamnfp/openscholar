@@ -4,7 +4,6 @@ namespace Drupal\cp_taxonomy\Plugin\Field\FieldWidget;
 
 use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\Component\Utility\Html;
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
@@ -14,6 +13,7 @@ use Drupal\Core\Field\WidgetInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\OptGroup;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\cp_taxonomy\CpTaxonomyHelperInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
@@ -36,11 +36,11 @@ class TaxonomyTermsWidget extends WidgetBase implements WidgetInterface, Contain
   const WIDGET_TYPE_TREE = 'term_reference_tree';
 
   /**
-   * Config factory.
+   * Cp taxonomy helper.
    *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   * @var \Drupal\cp_taxonomy\CpTaxonomyHelperInterface
    */
-  protected $configFactory;
+  protected $taxonomyHelper;
   protected $column;
   protected $widgetType;
   protected $pluginManager;
@@ -58,18 +58,17 @@ class TaxonomyTermsWidget extends WidgetBase implements WidgetInterface, Contain
    *   The widget settings.
    * @param array $third_party_settings
    *   Any third party settings.
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   * @param \Drupal\cp_taxonomy\CpTaxonomyHelperInterface $taxonomy_helper
    *   Config Factory.
    * @param \Drupal\Component\Plugin\PluginManagerInterface $plugin_manager
    *   Plugin manager.
    */
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, ConfigFactoryInterface $config_factory, PluginManagerInterface $plugin_manager) {
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, CpTaxonomyHelperInterface $taxonomy_helper, PluginManagerInterface $plugin_manager) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $third_party_settings);
-    $this->configFactory = $config_factory;
+    $this->taxonomyHelper = $taxonomy_helper;
     $property_names = $this->fieldDefinition->getFieldStorageDefinition()->getPropertyNames();
     $this->column = $property_names[0];
-    $config = $this->configFactory->get('cp_taxonomy.settings');
-    $this->widgetType = $config->get('widget_type');
+    $this->widgetType = $this->taxonomyHelper->getWidgetType($field_definition->getTargetEntityTypeId() . ':' . $field_definition->getTargetBundle());
     $this->pluginManager = $plugin_manager;
   }
 
@@ -83,7 +82,7 @@ class TaxonomyTermsWidget extends WidgetBase implements WidgetInterface, Contain
       $configuration['field_definition'],
       $configuration['settings'],
       $configuration['third_party_settings'],
-      $container->get('config.factory'),
+      $container->get('cp.taxonomy.helper'),
       $container->get('plugin.manager.field.widget')
     );
   }
@@ -283,7 +282,7 @@ class TaxonomyTermsWidget extends WidgetBase implements WidgetInterface, Contain
    */
   protected function getEmptyLabel() {
     if ($this->widgetType == self::WIDGET_TYPE_OPTIONS_SELECT) {
-      return t('- None -');
+      return $this-t('- None -');
     }
     return NULL;
   }

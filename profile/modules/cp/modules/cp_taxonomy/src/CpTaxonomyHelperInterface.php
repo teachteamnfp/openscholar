@@ -88,4 +88,15 @@ interface CpTaxonomyHelperInterface {
    */
   public function setCacheTags(array &$build): void;
 
+  /**
+   * Get widget type.
+   *
+   * @param string $entity_bundle
+   *   Entity bundle.
+   *
+   * @return string
+   *   Found first settings of vocabularies related to entity type.
+   */
+  public function getWidgetType(string $entity_bundle): string;
+
 }
