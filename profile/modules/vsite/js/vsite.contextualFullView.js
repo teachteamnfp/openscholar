@@ -15,37 +15,67 @@
     software_project: 'software',
   };
 
+  /**
+   * Makes sure that after delete user is redirected to listing.
+   *
+   * @param $el
+   *   The delete contextual link element.
+   */
+  function alterDeleteDestination($el) {
+    let $link = $el.find('a');
+    let url = new URL($link.attr('href'), window.location.origin);
+    let newDestination = drupalSettings.spaces.url + redirectMapping[drupalSettings.vsite.nodeBundle];
+
+    url.searchParams.set('destination', newDestination);
+
+    $link.attr('href', decodeURIComponent(url.toString()));
+  }
+
+  /**
+   * Makes sure that after edit user is redirected to node full-view.
+   *
+   * @param $el
+   *   The edit contextual link element.
+   */
+  function alterEditDestination($el) {
+    let $link = $el.find('a');
+    let url = new URL($link.attr('href'), window.location.origin);
+    let currentPath = window.location.pathname;
+
+    url.searchParams.set('destination', currentPath);
+
+    $link.attr('href', decodeURIComponent(url.toString()));
+  }
+
+  /**
+   * Initializes the alterations.
+   */
+  function init() {
+    registerDrupalContextualLinkAddedEvent();
+  }
+
+  /**
+   * Registers to event `drupalContextualLinkAdded`.
+   */
+  function registerDrupalContextualLinkAddedEvent() {
+    $(document).once().bind('drupalContextualLinkAdded', function (event, data) {
+      let $deleteOption = data.$el.find('li.entitynodedelete-form');
+
+      if ($deleteOption.length) {
+        alterDeleteDestination($deleteOption);
+      }
+
+      let $editOption = data.$el.find('li.entitynodeedit-form');
+
+      if ($editOption.length) {
+        alterEditDestination($editOption);
+      }
+    });
+  }
+
   Drupal.behaviors.vsiteContextual = {
     attach: function () {
-      $(document).once().bind('drupalContextualLinkAdded', function (event, data) {
-        // Makes sure that after node delete via contextual link, the user is
-        // redirected to it's listing.
-        let $deleteOption = data.$el.find('li.entitynodedelete-form');
-
-        if ($deleteOption.length) {
-          let $link = $deleteOption.find('a');
-          let url = new URL($link.attr('href'), window.location.origin);
-          let newDestination = drupalSettings.spaces.url + redirectMapping[drupalSettings.vsite.nodeBundle];
-
-          url.searchParams.set('destination', newDestination);
-
-          $link.attr('href', decodeURIComponent(url.toString()));
-        }
-
-        // Make sure that node edit via contextual link, the user is redirected
-        // to correct location.
-        let $editOption = data.$el.find('li.entitynodeedit-form');
-
-        if ($editOption.length) {
-          let $link = $editOption.find('a');
-          let url = new URL($link.attr('href'), window.location.origin);
-          let currentPath = window.location.pathname;
-
-          url.searchParams.set('destination', currentPath);
-
-          $link.attr('href', decodeURIComponent(url.toString()));
-        }
-      });
+      init();
     },
   };
 })(jQuery, Drupal, drupalSettings);

@@ -3,49 +3,49 @@
  * Performs alterations in contextual links for listing pages.
  */
 
-(function ($, Drupal, drupalSettings) {
-  const redirectMapping = {
-    blog: 'blog',
-    events: 'calendar',
-    class: 'classes',
-    link: 'links',
-    news: 'news',
-    person: 'people',
-    presentation: 'presentations',
-    software_project: 'software',
-  };
+(function ($, Drupal) {
+  /**
+   * Registers to event `drupalContextualLinkAdded`.
+   */
+  function registerDrupalContextualLinkAddedEvent() {
+    $(document).once().bind('drupalContextualLinkAdded', function (event, data) {
+      let $editOption = data.$el.find('li.entitynodeedit-form');
+      let $deleteOption = data.$el.find('li.entitynodedelete-form');
+
+      [$editOption, $deleteOption].forEach(function ($element) {
+        if ($element.length) {
+          alterDestination($element);
+        }
+      });
+    });
+  }
+
+  /**
+   * Makes sure that after edit/delete user is redirected to listing.
+   *
+   * @param $el
+   *   The contextual link element.
+   */
+  function alterDestination($el) {
+    let $link = $el.find('a');
+    let url = new URL($link.attr('href'), window.location.origin);
+    let currentPath = window.location.pathname;
+
+    url.searchParams.set('destination', currentPath);
+
+    $link.attr('href', decodeURIComponent(url.toString()));
+  }
+
+  /**
+   * Initializes the alterations.
+   */
+  function init() {
+    registerDrupalContextualLinkAddedEvent();
+  }
 
   Drupal.behaviors.vsiteContextual = {
     attach: function () {
-      $(document).once().bind('drupalContextualLinkAdded', function (event, data) {
-        // Makes sure that after node delete via contextual link, the user is
-        // redirected to it's listing.
-        let $deleteOption = data.$el.find('li.entitynodedelete-form');
-
-        if ($deleteOption.length) {
-          let $link = $deleteOption.find('a');
-          let url = new URL($link.attr('href'), window.location.origin);
-          let currentPath = window.location.pathname;
-
-          url.searchParams.set('destination', currentPath);
-
-          $link.attr('href', decodeURIComponent(url.toString()));
-        }
-
-        // Make sure that node edit via contextual link, the user is redirected
-        // to correct location.
-
-        let $editOption = data.$el.find('li.entitynodeedit-form');
-        if ($editOption.length) {
-          let $link = $editOption.find('a');
-          let url = new URL($link.attr('href'), window.location.origin);
-          let currentPath = window.location.pathname;
-
-          url.searchParams.set('destination', currentPath);
-
-          $link.attr('href', decodeURIComponent(url.toString()));
-        }
-      });
+      init();
     },
   };
-})(jQuery, Drupal, drupalSettings);
+})(jQuery, Drupal);
