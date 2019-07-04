@@ -21,15 +21,15 @@ interface CpTaxonomyHelperInterface {
   public function searchAllowedVocabulariesByType(string $bundle_key): array;
 
   /**
-   * Get selected bundles from stored config.
+   * Get vocabulary settings from stored config.
    *
-   * @param array $form
-   *   Form array.
+   * @param string $vid
+   *   Vocabulary id.
    *
    * @return array
-   *   Selected bundles in array.
+   *   Vocabulary settings in array.
    */
-  public function getSelectedBundles(array $form): array;
+  public function getVocabularySettings(string $vid): array;
 
   /**
    * Get selectable bundles.
@@ -40,14 +40,14 @@ interface CpTaxonomyHelperInterface {
   public function getSelectableBundles(): array;
 
   /**
-   * Get selectable bundles.
+   * Save vocabulary settings.
    *
    * @param string $vid
    *   Vocabulary id.
-   * @param array $allowed_entity_types
-   *   Allowed entity types array from form_state.
+   * @param array $settings
+   *   Settings array.
    */
-  public function saveAllowedBundlesToVocabulary(string $vid, array $allowed_entity_types): void;
+  public function saveVocabularySettings(string $vid, array $settings): void;
 
   /**
    * Explode entity bundles.

@@ -213,10 +213,10 @@ function os_widgets_form_alter(&$form, FormStateInterface $form_state, $form_id)
       if (!empty($form['field_taxonomy_vocabulary']['widget']['#default_value'][0])) {
         /** @var \Drupal\cp_taxonomy\CpTaxonomyHelperInterface $taxonomy_helper */
         $taxonomy_helper = Drupal::service('cp.taxonomy.helper');
-        $data['vid']['#default_value'] = $form['field_taxonomy_vocabulary']['widget']['#default_value'][0];
-        $saved_entity_types = $taxonomy_helper->getSelectedBundles($data);
+        $vid = $form['field_taxonomy_vocabulary']['widget']['#default_value'][0];
+        $settings = $taxonomy_helper->getVocabularySettings($vid);
 
-        _os_widgets_taxonomy_filter_bundle_options($form, $saved_entity_types);
+        _os_widgets_taxonomy_filter_bundle_options($form, $settings['allowed_vocabulary_reference_types']);
       }
       break;
 
@@ -240,10 +240,10 @@ function os_widgets_field_taxonomy_vocabulary_ajax(array &$form, FormStateInterf
   $selected_vocabulary = $form_state->getValue('field_taxonomy_vocabulary');
   /** @var \Drupal\cp_taxonomy\CpTaxonomyHelperInterface $taxonomy_helper */
   $taxonomy_helper = Drupal::service('cp.taxonomy.helper');
-  $data['vid']['#default_value'] = $selected_vocabulary[0]['target_id'] ?? '';
-  $saved_entity_types = $taxonomy_helper->getSelectedBundles($data);
+  $vid = $selected_vocabulary[0]['target_id'] ?? '';
+  $settings = $taxonomy_helper->getVocabularySettings($vid);
 
-  foreach ($saved_entity_types as $entity_key) {
+  foreach ($settings['allowed_vocabulary_reference_types'] as $entity_key) {
     if ($entity_key == 'node:events') {
       $saved_entity_types[] = 'node:past_events';
       $saved_entity_types[] = 'node:upcoming_events';

@@ -16,6 +16,11 @@ class CpTaxonomyHelperTest extends TestBase {
 
   use CpTaxonomyTestTrait;
 
+  /**
+   * Taxonomy Helper.
+   *
+   * @var \Drupal\cp_taxonomy\CpTaxonomyHelperInterface
+   */
   private $helper;
 
   /**
@@ -32,7 +37,7 @@ class CpTaxonomyHelperTest extends TestBase {
   public function testSavingAllowedBundlesToVocabulary() {
     $vid = $this->randomMachineName();
     $this->createGroupVocabulary($this->group, $vid, ['node:taxonomy_test_1']);
-    $form_state_array = [
+    $settings['allowed_entity_types'] = [
       'media:*' => 'media:*',
       'node:events' => 0,
       'node:faq' => 0,
@@ -40,12 +45,12 @@ class CpTaxonomyHelperTest extends TestBase {
       'node:taxonomy_test_1' => 0,
       'node:taxonomy_test_2' => 'node:taxonomy_test_2',
     ];
-    $this->helper->saveAllowedBundlesToVocabulary($vid, $form_state_array);
-    $form['vid']['#default_value'] = $vid;
-    $options_default = $this->helper->getSelectedBundles($form);
-    $this->assertCount(2, $options_default);
-    $this->assertSame('media:*', $options_default[0]);
-    $this->assertSame('node:taxonomy_test_2', $options_default[1]);
+    $settings['widget_type'] = '';
+    $this->helper->saveVocabularySettings($vid, $settings);
+    $settings = $this->helper->getVocabularySettings($vid);
+    $this->assertCount(2, $settings['allowed_vocabulary_reference_types']);
+    $this->assertSame('media:*', $settings['allowed_vocabulary_reference_types'][0]);
+    $this->assertSame('node:taxonomy_test_2', $settings['allowed_vocabulary_reference_types'][1]);
   }
 
   /**
