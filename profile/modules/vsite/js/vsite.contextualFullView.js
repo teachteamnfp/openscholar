@@ -73,7 +73,7 @@
     });
   }
 
-  Drupal.behaviors.vsiteContextual = {
+  Drupal.behaviors.vsiteContextualFullView = {
     attach: function () {
       init();
     },

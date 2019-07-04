@@ -43,7 +43,7 @@
     registerDrupalContextualLinkAddedEvent();
   }
 
-  Drupal.behaviors.vsiteContextual = {
+  Drupal.behaviors.vsiteContextualList = {
     attach: function () {
       init();
     },
