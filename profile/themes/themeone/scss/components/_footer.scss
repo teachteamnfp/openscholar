@@ -1,7 +1,8 @@
 footer {
   background: $color-dark-gray;
   color: $color-white;
-  a, p {
+  a,
+  p {
     color: $color-white;
   }
   ul.nav {
@@ -13,5 +14,11 @@ footer {
   }
   .block-title {
     color: $color-text;
+  }
+}
+/**** powered by ****/
+.block-system-powered-by-block {
+  .powered-by {
+    background-position: -14px -548px;
   }
 }
