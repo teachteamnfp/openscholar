@@ -9,6 +9,7 @@ dependencies:
     - field.field.bibcite_reference.miscellaneous_section.field_extra_fields
     - field.field.bibcite_reference.miscellaneous_section.field_publication_image
     - field.field.bibcite_reference.miscellaneous_section.field_taxonomy_terms
+    - image.style.publication_details_image
   enforced:
     config:
       - core.entity_view_mode.bibcite_reference.citation
@@ -16,6 +17,7 @@ dependencies:
     module:
       - bibcite_entity
   module:
+    - image
     - key_value_field
     - layout_builder
     - text
@@ -36,11 +38,20 @@ content:
     third_party_settings: {  }
   field_extra_fields:
     type: key_value
-    weight: 4
+    weight: 5
     region: content
     label: hidden
     settings:
       value_only: false
+    third_party_settings: {  }
+  field_publication_image:
+    type: image
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      image_style: publication_details_image
+      image_link: ''
     third_party_settings: {  }
   field_taxonomy_terms:
     type: entity_reference_label
@@ -52,14 +63,14 @@ content:
     third_party_settings: {  }
   full_text:
     type: text_default
-    weight: 2
+    weight: 3
     region: content
     label: above
     settings: {  }
     third_party_settings: {  }
   notes:
     type: text_default
-    weight: 3
+    weight: 4
     region: content
     label: above
     settings: {  }
@@ -116,7 +127,6 @@ hidden:
   bibcite_volume: true
   bibcite_year: true
   field_attach_files: true
-  field_publication_image: true
   keywords: true
   langcode: true
   uid: true
