@@ -12,7 +12,7 @@ field_name: field_extra_fields
 entity_type: bibcite_reference
 bundle: personal
 label: 'Extra Fields'
-description: ''
+description: 'You may use these fields to add extra information about your publication that may not be common to publications if this type. For example, key "Publication Global ID" and value "http://hdl.handle.net/1902.1". These fields will be displayed at the bottom of the detail page of this publication.'
 required: false
 translatable: false
 default_value: {  }

@@ -240,10 +240,9 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
       ])
       ->setDisplayConfigurable('form', TRUE);
 
-    $app_link = Link::fromTextAndUrl('App settings', Url::fromRoute('cp.apps'))->toString();
     $fields['notes'] = BaseFieldDefinition::create('text_long')
       ->setLabel('NOTES')
-      ->setDescription("This note will appear after the abstract. Your notes are currently set to private. You can make this change in the publications section of your control panel's $app_link")
+      ->setDescription("This note will appear after the abstract. Your notes are currently set to private. You can make this change in the publications section of your control panel's App settings")
       ->setTranslatable(TRUE)
       ->setDisplayOptions('view', [
         'type' => 'text_default',
