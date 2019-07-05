@@ -3,7 +3,6 @@
 namespace Drupal\Tests\cp_appearance\ExistingSiteJavascript;
 
 use Drupal\Component\Utility\Html;
-use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTestBase;
 
 /**
  * FlavorFormTest.
@@ -12,7 +11,7 @@ use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTest
  * @group cp-appearance
  * @coversDefaultClass \Drupal\cp_appearance\Form\FlavorForm
  */
-class FlavorFormTest extends OsExistingSiteJavascriptTestBase {
+class FlavorFormTest extends CpAppearanceExistingSiteJavascriptTestBase {
 
   /**
    * Test group.
@@ -20,13 +19,6 @@ class FlavorFormTest extends OsExistingSiteJavascriptTestBase {
    * @var \Drupal\group\Entity\GroupInterface
    */
   protected $group;
-
-  /**
-   * Default theme name.
-   *
-   * @var string
-   */
-  protected $defaultTheme;
 
   /**
    * Group administrator.
@@ -40,10 +32,6 @@ class FlavorFormTest extends OsExistingSiteJavascriptTestBase {
    */
   public function setUp() {
     parent::setUp();
-
-    /** @var \Drupal\Core\Config\ImmutableConfig $theme_config */
-    $theme_config = $this->container->get('config.factory')->get('system.theme');
-    $this->defaultTheme = $theme_config->get('default');
 
     $this->group = $this->createGroup([
       'path' => [
@@ -182,10 +170,6 @@ class FlavorFormTest extends OsExistingSiteJavascriptTestBase {
    * {@inheritdoc}
    */
   public function tearDown() {
-    /** @var \Drupal\Core\Config\Config $theme_setting_mut */
-    $theme_setting_mut = $this->container->get('config.factory')->getEditable('system.theme');
-    $theme_setting_mut->set('default', $this->defaultTheme)->save();
-
     // This is part of the test cleanup.
     // If this is not done, then it leads to database deadlock error in the
     // test. The test is performing nested db operations during cleanup.

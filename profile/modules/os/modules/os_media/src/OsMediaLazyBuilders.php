@@ -56,7 +56,7 @@ class OsMediaLazyBuilders implements ContainerInjectionInterface {
     // TODO: Display warning for privledged users?
     return [
       '#type' => 'markup',
-      '#markup' => ""
+      '#markup' => "",
     ];
   }
 

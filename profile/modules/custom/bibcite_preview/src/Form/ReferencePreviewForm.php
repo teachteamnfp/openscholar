@@ -81,11 +81,21 @@ class ReferencePreviewForm extends FormBase {
       $query_options['query']['destination'] = $query->get('destination');
     }
 
+    $form['#attributes'] = ['class' => ['node-preview-form-select form-inline bg-info text-center clearfix']];
+
     $form['backlink'] = [
       '#type' => 'link',
       '#title' => $this->t('Back to content editing'),
       '#url' => $reference->isNew() ? Url::fromRoute('entity.bibcite_reference.add_form', ['bibcite_reference_type' => $reference->bundle()]) : $reference->urlInfo('edit-form'),
-      '#options' => ['attributes' => ['class' => ['reference-preview-backlink']]] + $query_options,
+      '#options' => ['attributes' => ['class' => ['reference-preview-backlink node-preview-backlink btn btn-info pull-left']]] + $query_options,
+      "#icon" => [
+        '#type' => "html_tag",
+        '#tag' => "span",
+        '#value' => "",
+        '#attributes' => [
+          'class' => ["icon", "glyphicon-chevron-left", "glyphicon"],
+        ],
+      ],
     ];
 
     // Always show full as an option, even if the display is not enabled.
@@ -110,6 +120,8 @@ class ReferencePreviewForm extends FormBase {
       '#attributes' => [
         'data-drupal-autosubmit' => TRUE,
       ],
+      '#prefix' => '<div class="pull-right">',
+      '#suffix' => '</div>',
     ];
 
     $form['submit'] = [

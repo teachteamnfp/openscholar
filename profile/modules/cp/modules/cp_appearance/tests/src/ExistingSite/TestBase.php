@@ -12,6 +12,10 @@ abstract class TestBase extends OsExistingSiteTestBase {
 
   use CpAppearanceTestTrait;
 
+  public const TEST_CUSTOM_THEME_1_NAME = 'os_ct_cp_appearance_test_1';
+
+  public const TEST_CUSTOM_THEME_2_NAME = 'os_ct_cp_appearance_test_2';
+
   /**
    * The entity type manager service.
    *
@@ -77,6 +81,15 @@ abstract class TestBase extends OsExistingSiteTestBase {
     $theme_config = $this->configFactory->get('system.theme');
     $this->defaultTheme = $theme_config->get('default');
     $this->themeHandler = $this->container->get('theme_handler');
+    /** @var \Drupal\Core\Extension\ThemeInstallerInterface $theme_installer */
+    $theme_installer = $this->container->get('theme_installer');
+    $theme_installer->install([
+      self::TEST_CUSTOM_THEME_1_NAME,
+      self::TEST_CUSTOM_THEME_2_NAME,
+    ]);
+    // If cache not cleared, then the system fails to identify the theme that is
+    // just installed in the test.
+    $this->themeHandler->refreshInfo();
   }
 
   /**
@@ -92,10 +105,18 @@ abstract class TestBase extends OsExistingSiteTestBase {
     // the problem.
     \sleep(5);
 
-    parent::tearDown();
     /** @var \Drupal\Core\Config\Config $theme_config_mut */
     $theme_config_mut = $this->configFactory->getEditable('system.theme');
     $theme_config_mut->set('default', $this->defaultTheme)->save();
+
+    /** @var \Drupal\Core\Extension\ThemeInstallerInterface $theme_installer */
+    $theme_installer = $this->container->get('theme_installer');
+    $theme_installer->uninstall([
+      self::TEST_CUSTOM_THEME_1_NAME,
+      self::TEST_CUSTOM_THEME_2_NAME,
+    ]);
+
+    parent::tearDown();
   }
 
 }

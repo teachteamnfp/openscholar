@@ -1,0 +1,6 @@
+services:
+  vsite_site_creation.toolbar_link_builder:
+    class: Drupal\vsite_site_creation\ToolbarLinkBuilder
+    decorates: user.toolbar_link_builder
+    decoration_priority: 0
+    arguments: ['@current_user', '@angular.module_manager']

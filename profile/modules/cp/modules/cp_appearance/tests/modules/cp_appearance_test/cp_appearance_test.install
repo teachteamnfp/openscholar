@@ -1,0 +1,40 @@
+<?php
+
+/**
+ * @file
+ * Cp appearance test install/uninstall scripts.
+ */
+
+use Drupal\cp_appearance\Entity\CustomTheme;
+
+/**
+ * Implements hook_install().
+ */
+function cp_appearance_test_install() {
+  $custom_theme_entity_1 = CustomTheme::create([
+    'id' => 'os_ct_cp_appearance_test_1',
+    'label' => 'Cp Appearance Test 1 theme',
+    'base_theme' => 'documental',
+  ]);
+  $custom_theme_entity_1->setStyles('body { background-color: green; }');
+  $custom_theme_entity_1->save();
+
+  $custom_theme_entity_2 = CustomTheme::create([
+    'id' => 'os_ct_cp_appearance_test_2',
+    'label' => 'Cp Appearance Test 2 theme',
+    'base_theme' => 'documental',
+  ]);
+  $custom_theme_entity_2->setStyles('body { background-color: red; }');
+  $custom_theme_entity_2->save();
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function cp_appearance_test_uninstall() {
+  $custom_theme_entity_1 = CustomTheme::load('os_ct_cp_appearance_test_1');
+  $custom_theme_entity_2 = CustomTheme::load('os_ct_cp_appearance_test_2');
+
+  $custom_theme_entity_1->delete();
+  $custom_theme_entity_2->delete();
+}

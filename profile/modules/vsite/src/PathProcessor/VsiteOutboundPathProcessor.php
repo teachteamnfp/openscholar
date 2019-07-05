@@ -52,7 +52,7 @@ class VsiteOutboundPathProcessor implements OutboundPathProcessorInterface {
 
     /** @var \Drupal\group\Entity\GroupInterface $group */
     if ($request && ($group = $request->get('group')) && (!isset($options['purl_context']) || $options['purl_context'] !== FALSE) && (!isset($options['purl_exit']) || !$options['purl_exit'])) {
-      $path = $this->vsiteContextManager->getAbsoluteUrl($path);
+      $path = $this->vsiteContextManager->getAbsoluteUrl($path, $group, $bubbleable_metadata);
     }
 
     return $path;

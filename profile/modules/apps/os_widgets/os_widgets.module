@@ -57,6 +57,28 @@ function os_widgets_preprocess_block(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_links__toolbar_user().
+ *
+ * Add an extra item for link OS twitter.
+ */
+function os_widgets_preprocess_links__toolbar_user(&$vars) {
+  $links_keys = array_keys($vars['links']);
+  $last_key = end($links_keys);
+  $last_item = array_pop($vars['links']);
+  $vars['links']['twitter_status']['link'] = [
+    '#type' => 'link',
+    '#title' => t('Updates on twitter'),
+    '#url' => Url::fromUri('https://twitter.com/osappstatus'),
+    '#options' => [
+      'attributes' => [
+        'target' => '_blank',
+      ],
+    ],
+  ];
+  $vars['links'][$last_key] = $last_item;
+}
+
+/**
  * Implements hook_theme().
  */
 function os_widgets_theme($existing, $type, $theme, $path) {
@@ -403,5 +425,25 @@ function os_widgets_contextual_links_view_alter(&$element, $items) {
       'class' => ['use-ajax'],
       'data-dialog-type' => 'modal',
     ];
+  }
+}
+
+/**
+ * Implements hook_toolbar_alter().
+ */
+function os_widgets_toolbar_alter(&$items) {
+  /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContextManager */
+  $vsiteContextManager = \Drupal::service('vsite.context_manager');
+  $items['block_place']['#cache']['contexts'][] = 'group_membership.roles.permissions';
+
+  if ($vsite = $vsiteContextManager->getActiveVsite()) {
+    // Remove on Admin routes.
+    $admin_route = \Drupal::service('router.admin_context')->isAdminRoute();
+    // Remove on Block Demo page.
+    $admin_demo = \Drupal::routeMatch()->getRouteName() === 'block.admin_demo';
+    if ($membership = $vsite->getMember(\Drupal::currentUser())) {
+
+      $items['block_place']['tab']['#access'] = ((\Drupal::currentUser()->hasPermission('administer blocks') || $membership->hasPermission('manage layout')) && !$admin_demo && !$admin_route);
+    }
   }
 }
