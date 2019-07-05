@@ -12,3 +12,5 @@ dependencies:
   - drupal:redirect
   - drupal:repec
   - drupal:shorten
+  - drupal:field_group
+  - drupal:key_value_field
