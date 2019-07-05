@@ -14,10 +14,6 @@
     .block {
       margin-bottom: 15px;
     }
-    h2.block-title {
-      border-top: 3px solid $color-blue;
-      padding-top: 12px;
-    }
     .field--label {
       font-weight: normal;
     }
@@ -34,5 +30,11 @@
   h2 {
     font-size: 38px;
     line-height: 35px;
+  }
+}
+.person-data {
+  h2.block-title {
+    border-top: 3px solid $color-blue;
+    padding-top: 12px;
   }
 }

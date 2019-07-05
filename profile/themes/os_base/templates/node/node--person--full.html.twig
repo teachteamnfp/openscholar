@@ -98,11 +98,11 @@
   {% endif %}
 
   <div{{ content_attributes }}>
-    <div class="content--image--area">
+    <div class="content--image--area clearfix">
       {{ content.field_photo_person }}
       {{ content.body }}
     </div>
-    <div class="content--main--area row">
+    <div class="content--main--area row person-data">
       <div class="contact--information block col-sm-6">
         <h2 class="block-title">{% trans %} Contact Information{% endtrans %}</h2>
         {{content.field_address}}
