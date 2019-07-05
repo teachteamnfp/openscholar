@@ -32,12 +32,8 @@ env:
     - JOB="job:run-kernel-tests publications,os"
     - JOB="job:run-kernel-tests redirect,vsite,cp"
     - JOB="job:run-kernel-tests other,cp-menu"
-    - JOB="job:run-functional-tests classes,events,pages"
-    - JOB="job:run-functional-tests cp,media-browser,os-theme-preview,vsite,breadcrumbs,analytics,cp-menu"
-    - JOB="job:run-functional-tests os,publications"
-    - JOB="job:run-functional-tests cp-appearance"
-    - JOB="job:run-functional-javascript-tests classes,events,pages,publications,widgets,cp-appearance,cp-menu,profiles"
-    - JOB="job:run-functional-javascript-tests cp,vsite,mailchimp,metatag,redirect,os-theme-preview"
+    - JOB="job:run-functional-tests classes,events,pages,cp,media-browser,os-theme-preview,vsite,breadcrumbs,analytics,cp-menu,os,publications,cp-appearance"
+    - JOB="job:run-functional-javascript-tests classes,events,pages,publications,widgets,cp-appearance,cp-menu,profiles,cp,vsite,mailchimp,metatag,redirect,os-theme-preview"
 #    - JOB=job:run-behat-tests
 
 before_install:
