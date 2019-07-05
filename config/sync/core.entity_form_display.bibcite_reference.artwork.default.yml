@@ -5,16 +5,41 @@ dependencies:
   config:
     - bibcite_entity.bibcite_reference_type.artwork
     - field.field.bibcite_reference.artwork.field_attach_files
+    - field.field.bibcite_reference.artwork.field_extra_fields
+    - field.field.bibcite_reference.artwork.field_publication_image
     - field.field.bibcite_reference.artwork.field_taxonomy_terms
+    - image.style.thumbnail
   module:
     - bibcite_entity
+    - field_group
     - field_layout
+    - image
+    - key_value_field
     - layout_discovery
     - os_media
+    - text
 third_party_settings:
   field_layout:
     id: layout_onecol
     settings: {  }
+  field_group:
+    group_publication_details:
+      children:
+        - full_text
+        - notes
+        - field_publication_image
+        - field_extra_fields
+      parent_name: ''
+      weight: 57
+      format_type: details
+      format_settings:
+        id: ''
+        classes: ''
+        description: ''
+        open: false
+        required_fields: false
+      label: 'Publication Details'
+      region: content
 id: bibcite_reference.artwork.default
 targetEntityType: bibcite_reference
 bundle: artwork
@@ -416,6 +441,28 @@ content:
     third_party_settings: {  }
     type: media_browser_widget
     region: content
+  field_extra_fields:
+    weight: 12
+    settings:
+      key_label: Description
+      key_size: 80
+      key_placeholder: ''
+      value_label: Value
+      size: 80
+      placeholder: ''
+      description_placeholder: ''
+      description_enabled: false
+    third_party_settings: {  }
+    type: key_value_textfield
+    region: content
+  field_publication_image:
+    weight: 11
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+    type: image_image
+    region: content
   field_taxonomy_terms:
     weight: 56
     settings:
@@ -425,6 +472,14 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content
+  full_text:
+    type: text_textarea
+    weight: 9
+    region: content
+    settings:
+      placeholder: ''
+      rows: 5
+    third_party_settings: {  }
   is_sticky:
     type: boolean_checkbox
     settings:
@@ -447,6 +502,14 @@ content:
     region: content
     settings:
       include_locked: true
+    third_party_settings: {  }
+  notes:
+    type: text_textarea
+    weight: 10
+    region: content
+    settings:
+      placeholder: ''
+      rows: 5
     third_party_settings: {  }
   status:
     type: boolean_checkbox

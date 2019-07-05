@@ -237,7 +237,8 @@
         "egulias/email-validator": "1.2.6",
         "doctrine/lexer": "dev-master",
         "drupal/shorten": "2.x-dev",
-        "drupal/field_group": "^3.0"
+        "drupal/field_group": "^3.0",
+        "drupal/key_value_field": "^1.0"
     },
     "require-dev": {
         "drupal/features": "^3.7",

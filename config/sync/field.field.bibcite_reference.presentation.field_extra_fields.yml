@@ -1,0 +1,21 @@
+uuid: 81b1054b-2240-4c34-8a1b-c2594457ba13
+langcode: en
+status: true
+dependencies:
+  config:
+    - bibcite_entity.bibcite_reference_type.presentation
+    - field.storage.bibcite_reference.field_extra_fields
+  module:
+    - key_value_field
+id: bibcite_reference.presentation.field_extra_fields
+field_name: field_extra_fields
+entity_type: bibcite_reference
+bundle: presentation
+label: 'Extra Fields'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: key_value

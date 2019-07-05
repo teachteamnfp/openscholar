@@ -1,0 +1,21 @@
+uuid: 5a2afe8b-04c3-483e-b92b-267923bc98dd
+langcode: en
+status: true
+dependencies:
+  config:
+    - bibcite_entity.bibcite_reference_type.journal_article
+    - field.storage.bibcite_reference.field_extra_fields
+  module:
+    - key_value_field
+id: bibcite_reference.journal_article.field_extra_fields
+field_name: field_extra_fields
+entity_type: bibcite_reference
+bundle: journal_article
+label: 'Extra Fields'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: key_value
