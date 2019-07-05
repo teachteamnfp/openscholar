@@ -340,7 +340,7 @@ function vsite_node_view_alter(array &$build, EntityInterface $entity, EntityVie
   // full-views are correct.
   // For edit, it should direct to the node page.
   // For delete, it should direct to the node's listing.
-  if ($build['#view_mode'] === 'full' && $entity->getEntityTypeId() === 'node') {
+  if ($build['#view_mode'] === 'full') {
     $build['#attached']['library'][] = 'vsite/contextualFullView';
     $build['#attached']['drupalSettings']['vsite'] = [
       'nodeBundle' => $entity->bundle(),
