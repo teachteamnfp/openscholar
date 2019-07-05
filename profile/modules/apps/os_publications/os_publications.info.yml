@@ -14,3 +14,4 @@ dependencies:
   - drupal:shorten
   - drupal:field_group
   - drupal:key_value_field
+  - drupal:os_app_access
