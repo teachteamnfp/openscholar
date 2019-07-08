@@ -82,7 +82,7 @@ class OsWidgetsExistingSiteTestBase extends ExistingSiteBase {
    */
   public function createReference(array $values = []) : ReferenceInterface {
     $reference = Reference::create($values + [
-      'title' => $this->randomString(),
+      'html_title' => $this->randomString(),
       'type' => 'artwork',
       'bibcite_year' => [
         'value' => 1980,
