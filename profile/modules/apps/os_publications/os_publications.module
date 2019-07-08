@@ -169,7 +169,7 @@ function os_publications_bibcite_reference_presave(EntityInterface $entity) {
   $publications_listing_helper = \Drupal::service('os_publications.listing_helper');
 
   $entity->set('title_first_char_excl_prep', [
-    'value' => $publications_listing_helper->convertLabel($entity->label()),
+    'value' => $publications_listing_helper->convertLabel($entity->html_title->value),
   ]);
 }
 
@@ -225,6 +225,19 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
       ->setDefaultValue(TRUE)
       ->setDisplayConfigurable('form', TRUE);
 
+    $fields['html_title'] = BaseFieldDefinition::create('text_long')
+      ->setLabel('Title')
+      ->setTranslatable(TRUE)
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayOptions('form', [
+        'type' => 'text_textarea',
+        'weight' => -10,
+        'settings' => [
+          'rows' => 1,
+        ],
+      ])
+      ->setDisplayConfigurable('form', TRUE);
+
     return $fields;
   }
 }
@@ -251,6 +264,11 @@ function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInte
   foreach ($required_fields as $field => $data) {
     $form[$field]['#group'] = 'content';
   }
+
+  // Set custom title filter for html title field and hide existing title field.
+  $form['html_title']['widget']['0']['#format'] = 'title_filter';
+  $form['#attached']['library'][] = 'os_publications/drupal.os_publications';
+  $form['title']['#access'] = FALSE;
 }
 
 /**
@@ -379,4 +397,12 @@ function os_publications_preprocess_bibcite_citation(&$variables) {
     $short_url = Link::fromTextAndUrl($url_text, $url)->toString();
     $variables['content']['#markup'] .= '<span class="short-link">' . t("Copy at") . "&nbsp;$short_url" . '</span>';
   }
+}
+
+/**
+ * Implements hook_editor_js_settings_alter().
+ */
+function os_publications_editor_js_settings_alter(array &$settings) {
+  // Badly affects the citation output if not set to false.
+  $settings['editor']['formats']['title_filter']['editorSettings']['autoParagraph'] = FALSE;
 }
