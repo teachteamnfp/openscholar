@@ -83,10 +83,11 @@ class OsLinkFilter extends FilterBase implements ContainerFactoryPluginInterface
         $data_url = $node->getAttribute('data-url');
         $node->removeAttribute('data-url');
         try {
-          $url = Url::fromUserInput($data_url);
+          $url = Url::fromUserInput('/' . ltrim($data_url, '/'));
         }
         catch (InvalidArgumentException $e) {
           // External url given.
+          error_log($e->getMessage());
           $url = Url::fromUri($data_url);
         }
         $node->setAttribute('href', $url->toString());

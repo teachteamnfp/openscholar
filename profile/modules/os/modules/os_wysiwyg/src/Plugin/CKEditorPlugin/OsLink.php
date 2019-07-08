@@ -51,7 +51,7 @@ class OsLink extends CKEditorPluginBase {
     return [
       'OsLink' => [
         'label' => $this->t('Link'),
-        'image' => $path . '/icons/oslink.png',
+        'image' => $path . '/icons/os_link.png',
       ],
     ];
   }

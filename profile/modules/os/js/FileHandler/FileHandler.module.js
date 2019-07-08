@@ -4,9 +4,9 @@
 
 (function (ng) {
 
-  var m = ng.module('FileHandler', ['DrupalSettings', 'UrlGenerator']);
+  var m = ng.module('FileHandler', ['ngFileUpload', 'DrupalSettings', 'UrlGenerator']);
 
-  m.service('FileHandlers', ['$upload', '$http', '$q', 'EntityConfig', '$timeout', 'drupalSettings', 'urlGenerator', function ($upload, $http, $q, config, $t, settings, url) {
+  m.service('FileHandlers', ['Upload', '$http', '$q', 'EntityConfig', '$timeout', 'drupalSettings', 'urlGenerator', function ($upload, $http, $q, config, $t, settings, url) {
     this.getInstance = function (accepts, maxSizeStr, maxSizeRaw, uploadCallback) {
       var extensions = accepts,
           typeList,
@@ -227,7 +227,7 @@
 
   m.directive('fileUploadHandler', ['drupalSettings', 'urlGenerator', function (settings, url) {
     return {
-      templateUrl: url.generate(settings.fetchSetting('paths.FileHandler'), false)+'/FileUploadHandler.template.html?v='+settings.fetchSetting('version.FileHandler'),
+      templateUrl: url.generate(settings.fetchSetting('paths.fileHandler'), false)+'/FileUploadHandler.template.html?v='+settings.fetchSetting('version.FileHandler'),
       scope: {
         fh: '='
       },

@@ -1,9 +1,9 @@
-(function () {
+(function ($) {
 
-  var m = angular.module('OsWysiwygLinkTool', ['EntityService', 'FileHandler', 'FileEditor', 'JSPager', 'angularModalService']);
+  let m = angular.module('OsWysiwygLinkTool', ['EntityService', 'FileHandler', 'FileEditor', 'JSPager', 'angularModalService', 'DrupalSettings', 'UrlGenerator']);
 
-  m.service('OWLModal', ['ModalService', function (ModalService) {
-    var dialogParams = {
+  m.service('OWLModal', ['ModalService', 'drupalSettings', 'urlGenerator', function (ModalService, settings, url) {
+    let dialogParams = {
       buttons: {},
       dialogClass: 'wysiwyg-link-tool-wrapper',
       modal: true,
@@ -11,7 +11,7 @@
       resizable: false,
       minWidth: 600,
       width: 800,
-      position: 'center',
+      //position: 'center',
       title: undefined,
       overlay: {
         backgroundColor: '#000000',
@@ -26,7 +26,7 @@
     return {
       open: function (text, type, urlArgument, titleText, newWindow, close) {
         ModalService.showModal({
-          templateUrl: Drupal.settings.paths.owl + '/theme/OsWysiwygLinkTool.template.html',
+          templateUrl: url.generate(settings.fetchSetting('paths.os_link'), false) + 'OsWysiwygLinkTool.template.html?vers=' + settings.fetchSetting('version.os_link'),
           controller: 'OWLModalController',
           inputs: {
             params: {
@@ -50,20 +50,20 @@
     }
   }]);
 
-  m.controller('OWLModalController', ['$scope', 'EntityService', 'FileHandlers', 'params', 'close', function ($s, EntityService, FileHandlers, params, close) {
-    var files = new EntityService('files', 'id');
-    var editting = false;
-    var extensions = [];
-    for (var k in Drupal.settings.extensionMap) {
-      extensions = extensions.concat(Drupal.settings.extensionMap[k]);
+  m.controller('OWLModalController', ['$scope', 'EntityService', 'FileHandlers', 'drupalSettings', 'params', 'close', function ($s, EntityService, FileHandlers, settings, params, close) {
+    let files = new EntityService('files', 'id'),
+      extensions = [];
+      extensionMap = settings.fetchSetting('extensionMap');
+    for (let k in extensionMap) {
+      extensions = extensions.concat(extensionMap[k]);
     }
 
     $s.fh = FileHandlers.getInstance(
       extensions,
-      Drupal.settings.maximumFileSize,
-      Drupal.settings.maximumFileSizeRaw,
+      settings.fetchSetting('maximumFileSize'),
+      settings.fetchSetting('maximumFileSizeRaw'),
       function ($files) {
-        for (var i = 0; i < $files.length; i++) {
+        for (let i = 0; i < $files.length; i++) {
           files.register($files[i]);
         }
 
@@ -74,7 +74,7 @@
     });
 
     $s.extensionStr = extensions.join(', ');
-    $s.filesize = Drupal.settings.maxFileSize;
+    $s.filesize = settings.fetchSetting('maximumFileSize');
 
     $s.text = params.text;
     $s.arg = params.arg;
@@ -150,12 +150,9 @@
       modal.open(info.text, info.type, info.url, info.title, info.newWindow, closeHandler)
     }
 
-    try {
-      Drupal.wysiwyg.plugins.os_link.openModal = replacement;
-    }
-    catch (e) {
-      console.log("Attempting to access plugin too early.");
-    }
+    Drupal.wysiwyg = Drupal.wysiwyg || {};
+    Drupal.wysiwyg.osLink = Drupal.wysiwyg.osLink || {};
+    Drupal.wysiwyg.osLink.modal = replacement;
   }]);
 
-})();
+})(jQuery);

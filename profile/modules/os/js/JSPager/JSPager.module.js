@@ -6,21 +6,30 @@
  */
 
 (function () {
-  var rootPath = '';
 
-  angular.module('JSPager', [])
+  /**
+   *  Given a path, finds the root domain of it.
+   *  Needed to whitelist external asset domains
+   */
+  function findDomain(path) {
+    var parser = document.createElement('a');
+    if (path == undefined) {
+      path = '';
+    }
+    parser.href = path;
+
+    return parser.protocol+'//'+parser.hostname;
+  }
+
+  angular.module('JSPager', ['DrupalSettings', 'UrlGenerator'])
     .config(function($sceDelegateProvider) {
       var whitelist = $sceDelegateProvider.resourceUrlWhitelist(),
-          domain = osCommonHelpers.findDomain(rootPath);
+          domain = findDomain();
 
       domain = domain+'/**';
       whitelist.push(domain);
 
       $sceDelegateProvider.resourceUrlWhitelist(whitelist);
-
-      if (typeof Drupal != 'undefined' && typeof Drupal.settings != 'undefined') {
-        rootPath = Drupal.settings.paths.JSPager;
-      }
     })
     .filter('PagerCurrentPage', function () {
       function currentPage(input, pager) {
@@ -29,7 +38,7 @@
           if (Array.isArray(input)) {
             return input.slice(start, start + pager.pageSize);
           }
-          else if (typeof input == "object") {
+          else if (typeof input === "object") {
             var i = 0,
               output = {};
             for (var key in input) {
@@ -45,11 +54,11 @@
       }
       return currentPage;
     })
-    .directive('jsPager', ['$parse', '$filter', function($parse, $filter) {
+    .directive('jsPager', ['$parse', 'drupalSettings', 'urlGenerator', function($parse, settings, url) {
       var currentPages = [],
         idMap = {};
       return {
-        templateUrl: rootPath+'/pager.html',
+        templateUrl: url.generate(settings.fetchSetting('paths.jsPager')+'/pager.html', false),
         transclude: true,
         controller: [function () {
 
@@ -73,14 +82,13 @@
         compile: function pagerCompile(element, attr) {
           var loop = attr.jsPager,
           /* this regex matches the following patterns:
-           * var in collection | filter:item1 | filter:item2 track by var.property starting with argument
+           * var in collection | filter:item1 | filter:item2 track by var.property
            * if you try to do 'var in collection track by var.property | filters' it won't work properly
            */
-            match = attr.jsPager.match(/^\s*([\s\S]+?)\s+in\s+([\s\S]+?)(?:\s+as\s+([\s\S]+?))?(?:\s+track\s+by\s+([\s\S]+?)(?:\s+starting\s+with\s+([\s\S]+?))?)?\s*$/),
+            match = attr.jsPager.match(/^\s*([\s\S]+?)\s+in\s+([\s\S]+?)(?:\s+as\s+([\s\S]+?))?(?:\s+track\s+by\s+([\s\S]+?))?\s*$/),
             index = match[1],
             collection = match[2],
             trackExp = match[4],
-            starting = match[5],
             elements = [],
             pageSize = attr.pageSize || 10,
             //allElements = {$id: hashKey},
@@ -116,7 +124,8 @@
               $transclude.remove();
             }
 
-            function setCollectionLength(collection) {
+            pagerLink($scope, $element, $attr, _c);
+            $scope.$watchCollection(collection, function(collection) {
               $scope.collectionLength = 0;
               if (Array.isArray(collection)) {
                 $scope.collectionLength = collection.length;
@@ -126,36 +135,7 @@
                   $scope.collectionLength++;
                 }
               }
-            }
-
-            pagerLink($scope, $element, $attr, _c);
-
-            // Determine the starting page
-            if (starting) {
-              var page = 0,
-                pagerCopy = angular.copy($scope.pager),
-                dataset = $parse(collection)($scope.$parent),
-                indexKey = trackExp.replace(index+'.' , ''),
-                argValue = $parse(starting)($scope.$parent);
-
-              if (argValue) {
-                setCollectionLength(dataset);
-                var found = false;
-                do {
-                  pagerCopy.setPage(page++);
-                  var results = $filter('PagerCurrentPage')(dataset, pagerCopy)
-                  for (var i = 0; i < results.length; i++) {
-                    found = found || (results[i][indexKey] == argValue);
-                  }
-                } while (!found && pagerCopy.currentPage() < pagerCopy.numPages());
-
-                if (found) {
-                  $scope.pager.setPage(pagerCopy.currentPage());
-                }
-              }
-            }
-
-            $scope.$watchCollection(collection, setCollectionLength);
+            });
 
             $scope.$watchCollection(collection + ' | PagerCurrentPage:pager', function(collection) {
               var i, block, childScope;
@@ -203,7 +183,6 @@
       numPages: numPages,
       canPage: canPage,
       changePage: changePage,
-      setPage: setPage,
       pageSize: parseInt(iAttrs.pageSize) || 10
     };
 
@@ -234,12 +213,6 @@
         dir = parseInt(dir);
         current += dir;
         controller.page(JSPagerId, current);
-      }
-    }
-
-    function setPage(num) {
-      if (0 <= num && num <= numPages()) {
-        current = num;
       }
     }
   }
