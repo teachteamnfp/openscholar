@@ -2,19 +2,18 @@
   left: 0;
   top: 350px;
   padding: 10px;
-  background: $color-light-gray7;
-  color: $color-light-gray9;
-  border: 1px solid $color-light-gray8;
+  background: $color-light-gray9;
+  border: 1px solid $color-light-gray10;
   width: 240px;
-  color: $color-gray4;
+  color: $color-gray5;
   z-index: 1040;
 }
 #block-list {
   background-color: $color-white;
-  border: 1px solid $color-light-gray8;
+  border: 1px solid $color-light-gray10;
 }
 #factory-wrapper {
-  background-color: $color-light-gray7;
+  background-color: $color-light-gray9;
   .close {
     float: none;
     font-size: 21px;
@@ -33,7 +32,7 @@
 #block-place-widget-selector-wrapper {
   a,
   a:hover {
-    color: $color-gray4;
+    color: $color-gray5;
     text-decoration: none;
   }
   h3 {

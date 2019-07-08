@@ -1,22 +1,6 @@
 @import '../../os_base/scss/base/breakpoints';
-//colors
-$color_spicy_mustard_approx: #755a0f;
-$color_corn_harvest_approx: #947215;
-$color_goldenrod_approx: #ffdb6d;
-$color_pizza_approx: #c4961a;
-$color_steel_blue_approx: #4e84c4;
-$white: #fff;
-$color_wheatfield_50_approx: rgba(244, 237, 202, 0.5);
-$color_outer_space_approx: #283645;
-
-//fonts
-$font_0: Arimo;
-$font_1: serif !important;
-
-body {
-  font-family: $font_0, $font_1;
-  font-size: 16px;
-}
+@import './variables';
+@import './base';
 
 .page-header {
   font-family: $font_0, $font_1;

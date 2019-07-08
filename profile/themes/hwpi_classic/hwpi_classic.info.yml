@@ -29,3 +29,6 @@ regions:
 
 libraries:
   - hwpi_classic/global-styling
+
+ckeditor_stylesheets:
+  - css/ckeditor.css

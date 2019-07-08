@@ -1,0 +1,12 @@
+@import '../scss/base/variables';
+@import '../scss/base/common';
+html,
+body {
+  @extend %body-color;
+}
+h2,
+h3,
+h4 {
+  @extend %font-family;
+  @extend %heading-margin;
+}
