@@ -152,7 +152,7 @@ function os_publications_views_pre_render(ViewExecutable $view) {
     // Alter the citation style as per settings.
     if ($field_name === 'citation') {
       /** @var \Drupal\Core\Config\ImmutableConfig $bibcite_settings */
-      $bibcite_settings = \Drupal::config('bibcite.settings');
+      $bibcite_settings = \Drupal::config('os_publications.settings');
       /** @var string $publication_style */
       $publication_style = $bibcite_settings->get('default_style');
 
