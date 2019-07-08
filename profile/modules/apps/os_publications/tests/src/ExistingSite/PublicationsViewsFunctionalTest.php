@@ -131,6 +131,50 @@ class PublicationsViewsFunctionalTest extends TestBase {
   }
 
   /**
+   * Tests publications by year.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public function testYear(): void {
+    // Set up.
+    $reference1 = $this->createReference([
+      'title' => 'The Starry Night',
+      'bibcite_year' => [
+        'value' => 1889,
+      ],
+      'is_sticky' => [
+        'value' => 0,
+      ],
+    ]);
+    // 25/12/2019.
+    $reference1->setCreatedTime(1577232000)->save();
+    $this->group->addContent($reference1, 'group_entity:bibcite_reference');
+
+    $reference2 = $this->createReference([
+      'title' => 'Foobar',
+      'bibcite_year' => [
+        'value' => 1889,
+      ],
+      'is_sticky' => [
+        'value' => 0,
+      ],
+    ]);
+    // 29/02/2012.
+    $reference2->setCreatedTime(1330473600)->save();
+    $this->group->addContent($reference2, 'group_entity:bibcite_reference');
+
+    // Tests.
+    $this->drupalLogin($this->groupAdmin);
+    $this->visitViaVsite('publications/year', $this->group);
+
+    /** @var \Behat\Mink\Element\NodeElement[] $rows */
+    $rows = $this->getSession()->getPage()->findAll('css', '.view-publications .view-content .views-row');
+
+    $this->assertContains('Foobar', $rows[0]->getHtml());
+    $this->assertContains('The Starry Night', $rows[1]->getHtml());
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function tearDown() {
