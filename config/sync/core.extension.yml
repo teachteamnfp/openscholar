@@ -140,6 +140,7 @@ module:
   rng_views: 0
   search: 0
   serialization: 0
+  shorten: 0
   slick: 0
   styleguide: 0
   system: 0
