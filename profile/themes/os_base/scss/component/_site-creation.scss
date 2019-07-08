@@ -1,10 +1,44 @@
+@import './../base/breakpoints';
 #site-creation-container {
   width: 100%;
   .modal-dialog {
     min-width: 900px;
+    @media #{$mobile} {
+      min-width: 100%;
+    }
   }
   .modal-body {
-    height: 90vh;
+    height: 85vh;
     overflow: scroll;
+  }
+  @media #{$mobile} {
+    .modal-content {
+      min-width: 100% !important;
+      width: 100%;
+    }
+    h1 {
+      clear: both;
+      padding-top: 16px;
+      line-height: 1.2;
+    }
+    #body-container-group-1 {
+      flex-wrap: wrap;
+    }
+    .site-type {
+      margin-bottom: 15px;
+      flex: 1 1 100%;
+      margin: 0 0px 15px 0;
+    }
+    #body-container-group-2 {
+      margin-top: 0;
+    }
+    input {
+      width: 100%;
+    }
+    #footer-container {
+      #nxt {
+        float: none;
+      }
+    }
   }
 }
