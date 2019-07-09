@@ -7,10 +7,7 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Url;
 use Drupal\filter\FilterProcessResult;
 use Drupal\filter\Plugin\FilterBase;
-use Drupal\media\Entity\Media;
-use Drupal\media\MediaInterface;
 use Drupal\os_wysiwyg\OsLinkHelperInterface;
-use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 use InvalidArgumentException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -85,11 +82,11 @@ class OsLinkFilter extends FilterBase implements ContainerFactoryPluginInterface
         $options = [];
         if (!\Drupal::service('file_system')->uriScheme($data_url)) {
           $data_url = '/' . ltrim($data_url, '/');
-          /** @var VsiteContextManagerInterface $vsiteContextManager */
+          /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContextManager */
           $vsiteContextManager = \Drupal::service('vsite.context_manager');
           if ($group = $vsiteContextManager->getActiveVsite()) {
             $options['purl_context'] = [
-              'id' => $group->id()
+              'id' => $group->id(),
             ];
           }
         }
