@@ -40,6 +40,7 @@ dependencies:
     - bibcite_entity.bibcite_reference_type.web_service
     - bibcite_entity.bibcite_reference_type.website
     - core.entity_view_mode.bibcite_reference.citation
+    - core.entity_view_mode.bibcite_reference.teaser
     - system.menu.main
   module:
     - bibcite_entity
@@ -533,9 +534,12 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
+        - 'url.query_args:sort_by'
+        - 'url.query_args:sort_order'
       tags:
         - 'config:core.entity_view_display.bibcite_reference.artwork.citation'
         - 'config:core.entity_view_display.bibcite_reference.artwork.default'
+        - 'config:core.entity_view_display.bibcite_reference.artwork.teaser'
         - 'config:core.entity_view_display.bibcite_reference.book.citation'
         - 'config:core.entity_view_display.bibcite_reference.book.default'
         - 'config:core.entity_view_display.bibcite_reference.artwork.table'
@@ -1306,59 +1310,9 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          view_mode: citation
+          view_mode: teaser
           entity_type: bibcite_reference
           plugin_id: rendered_entity
-        cp_taxonomy_field_taxonomy_terms:
-          id: cp_taxonomy_field_taxonomy_terms
-          table: bibcite_reference
-          field: cp_taxonomy_field_taxonomy_terms
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: ''
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          entity_type: bibcite_reference
-          plugin_id: cp_taxonomy_field_taxonomy_terms
     cache_metadata:
       max-age: -1
       contexts:
@@ -1366,10 +1320,13 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
+        - 'url.query_args:sort_by'
+        - 'url.query_args:sort_order'
       tags:
         - 'config:core.entity_view_display.bibcite_reference.artwork.citation'
         - 'config:core.entity_view_display.bibcite_reference.artwork.default'
         - 'config:core.entity_view_display.bibcite_reference.artwork.table'
+        - 'config:core.entity_view_display.bibcite_reference.artwork.teaser'
         - 'config:core.entity_view_display.bibcite_reference.audiovisual.citation'
         - 'config:core.entity_view_display.bibcite_reference.audiovisual.default'
         - 'config:core.entity_view_display.bibcite_reference.audiovisual.table'
@@ -1599,59 +1556,9 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          view_mode: citation
+          view_mode: teaser
           entity_type: bibcite_reference
           plugin_id: rendered_entity
-        cp_taxonomy_field_taxonomy_terms:
-          id: cp_taxonomy_field_taxonomy_terms
-          table: bibcite_reference
-          field: cp_taxonomy_field_taxonomy_terms
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: ''
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          entity_type: bibcite_reference
-          plugin_id: cp_taxonomy_field_taxonomy_terms
       defaults:
         fields: false
         style: false
@@ -1721,10 +1628,13 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
+        - 'url.query_args:sort_by'
+        - 'url.query_args:sort_order'
       tags:
         - 'config:core.entity_view_display.bibcite_reference.artwork.citation'
         - 'config:core.entity_view_display.bibcite_reference.artwork.default'
         - 'config:core.entity_view_display.bibcite_reference.artwork.table'
+        - 'config:core.entity_view_display.bibcite_reference.artwork.teaser'
         - 'config:core.entity_view_display.bibcite_reference.audiovisual.citation'
         - 'config:core.entity_view_display.bibcite_reference.audiovisual.default'
         - 'config:core.entity_view_display.bibcite_reference.audiovisual.table'
@@ -1965,59 +1875,9 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          view_mode: citation
+          view_mode: teaser
           entity_type: bibcite_reference
           plugin_id: rendered_entity
-        cp_taxonomy_field_taxonomy_terms:
-          id: cp_taxonomy_field_taxonomy_terms
-          table: bibcite_reference
-          field: cp_taxonomy_field_taxonomy_terms
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: ''
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          entity_type: bibcite_reference
-          plugin_id: cp_taxonomy_field_taxonomy_terms
       title: 'Publications by Author'
       sorts:
         first_letter_last_name_author:
@@ -2131,6 +1991,7 @@ display:
         - 'config:core.entity_view_display.bibcite_reference.artwork.citation'
         - 'config:core.entity_view_display.bibcite_reference.artwork.default'
         - 'config:core.entity_view_display.bibcite_reference.artwork.table'
+        - 'config:core.entity_view_display.bibcite_reference.artwork.teaser'
         - 'config:core.entity_view_display.bibcite_reference.audiovisual.citation'
         - 'config:core.entity_view_display.bibcite_reference.audiovisual.default'
         - 'config:core.entity_view_display.bibcite_reference.audiovisual.table'
@@ -2386,59 +2247,9 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          view_mode: citation
+          view_mode: teaser
           entity_type: bibcite_reference
           plugin_id: rendered_entity
-        cp_taxonomy_field_taxonomy_terms:
-          id: cp_taxonomy_field_taxonomy_terms
-          table: bibcite_reference
-          field: cp_taxonomy_field_taxonomy_terms
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: ''
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          entity_type: bibcite_reference
-          plugin_id: cp_taxonomy_field_taxonomy_terms
       sorts:
         bibcite_year:
           id: bibcite_year
@@ -2538,10 +2349,13 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - 'url.query_args:sort_by'
+        - 'url.query_args:sort_order'
       tags:
         - 'config:core.entity_view_display.bibcite_reference.artwork.citation'
         - 'config:core.entity_view_display.bibcite_reference.artwork.default'
         - 'config:core.entity_view_display.bibcite_reference.artwork.table'
+        - 'config:core.entity_view_display.bibcite_reference.artwork.teaser'
         - 'config:core.entity_view_display.bibcite_reference.audiovisual.citation'
         - 'config:core.entity_view_display.bibcite_reference.audiovisual.default'
         - 'config:core.entity_view_display.bibcite_reference.audiovisual.table'

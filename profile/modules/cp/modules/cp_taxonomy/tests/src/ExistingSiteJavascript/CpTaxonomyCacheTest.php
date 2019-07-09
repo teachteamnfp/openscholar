@@ -30,7 +30,7 @@ class CpTaxonomyCacheTest extends CpTaxonomyExistingSiteJavascriptTestBase {
     $allowed_types = [
       'node:news',
       'media:*',
-      'bibcite_reference:artwork',
+      'bibcite_reference:*',
     ];
     $this->createGroupVocabulary($this->group, 'vocab_group_1', $allowed_types);
     $this->term = $this->createGroupTerm($this->group, 'vocab_group_1', 'Term1');
@@ -127,7 +127,7 @@ class CpTaxonomyCacheTest extends CpTaxonomyExistingSiteJavascriptTestBase {
     $this->group->addContent($publication, 'group_entity:bibcite_reference');
 
     // Test listing.
-    $this->showTermsOnListing(['bibcite_reference:artwork']);
+    $this->showTermsOnListing(['bibcite_reference:*']);
     $this->visitViaVsite("publications", $this->group);
     $web_assert->statusCodeEquals(200);
     $web_assert->pageTextContains($this->term->label());

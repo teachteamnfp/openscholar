@@ -55,7 +55,9 @@
    * Initializes the alterations.
    */
   function init() {
-    registerDrupalContextualLinkAddedEvent();
+    if (drupalSettings.spaces !== undefined) {
+      registerDrupalContextualLinkAddedEvent();
+    }
   }
 
   /**
