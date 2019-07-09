@@ -2,4 +2,6 @@ global-styling:
   version: VERSION
   css:
     theme:
+      '//fonts.googleapis.com/css?family=Montserrat': { external: true }
+      '//fonts.googleapis.com/css?family=Cardo': { external: true }
       css/style.css: {}

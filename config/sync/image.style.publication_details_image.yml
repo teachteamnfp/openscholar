@@ -1,0 +1,14 @@
+uuid: 5f2a026b-8ec2-41aa-b75e-a1bd0cd4416e
+langcode: en
+status: true
+dependencies: {  }
+name: publication_details_image
+label: 'Publication details image'
+effects:
+  3058ef09-78f2-4547-9025-0a247018cf14:
+    uuid: 3058ef09-78f2-4547-9025-0a247018cf14
+    id: image_resize
+    weight: 1
+    data:
+      width: 150
+      height: 70

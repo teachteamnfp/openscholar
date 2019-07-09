@@ -25,3 +25,9 @@
 .node--title a {
   color: $color-green;
 }
+/**** node person page content inner block title *****/
+.person-data {
+  h2.block-title {
+    border-top: 0 none;
+  }
+}

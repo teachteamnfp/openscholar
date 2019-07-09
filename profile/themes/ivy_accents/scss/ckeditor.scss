@@ -1,0 +1,9 @@
+@import './common';
+body {
+  @extend %body;
+}
+h2,
+h3,
+h4 {
+  @extend %font;
+}

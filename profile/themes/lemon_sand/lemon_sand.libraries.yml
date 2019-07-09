@@ -2,4 +2,7 @@ global-styling:
   version: VERSION
   css:
     theme:
+      '//fonts.googleapis.com/css?family=Playfair+Display': { external: true }
+      '//fonts.googleapis.com/css?family=Vidaloka': { external: true }
+      '//fonts.googleapis.com/css?family=Oxygen': { external: true }
       css/style.css: {}
