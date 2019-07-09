@@ -1,0 +1,23 @@
+@import './variables';
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: News Cycle, arial !important;
+}
+body {
+  font-family: Arial;
+}
+p {
+  font-family: georgia;
+}
+
+//@extend-elements
+%extend_1 {
+  background: $color_concrete_approx;
+  color: $black;
+  font-size: 1.14em;
+  line-height: 18px;
+}

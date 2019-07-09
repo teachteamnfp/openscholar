@@ -29,3 +29,6 @@ regions:
 
 libraries:
   - vibrant/global-styling
+
+ckeditor_stylesheets:
+  - css/ckeditor.css

@@ -29,3 +29,7 @@ regions:
 
 libraries:
   - golden_accents/global-styling
+
+ckeditor_stylesheets:
+  - //fonts.googleapis.com/css?family=Cabin
+  - css/ckeditor.css

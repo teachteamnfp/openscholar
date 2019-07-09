@@ -29,3 +29,7 @@ regions:
 
 libraries:
   - mather/global-styling
+
+ckeditor_stylesheets:
+  - //fonts.googleapis.com/css?family=Cardo
+  - css/ckeditor.css

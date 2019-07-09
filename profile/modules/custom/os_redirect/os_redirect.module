@@ -28,7 +28,7 @@ function os_redirect_redirect_matched_redirect_alter(&$redirect) {
   }
 
   if ($redirect && Drupal::currentUser()->hasPermission('ignore redirects')) {
-    Drupal::messenger()->addWarning(t('You are redirected to: @uri', ['@uri' => $redirect->getRedirectUrl()->getUri()]));
+    Drupal::messenger()->addWarning(t('You are redirected to: @uri', ['@uri' => $redirect->getRedirectUrl()->toString()]));
     $redirect = NULL;
     return;
   }

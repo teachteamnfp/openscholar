@@ -1,57 +1,9 @@
 @import '../../os_base/scss/base/breakpoints';
-//colors
-$color_cararra_approx: #ebebeb;
-$color_alto_approx: #dddddd;
-$color_mine_shaft_approx: #303030;
-$white: #ffffff;
-$color_storm_dust_approx: #666666;
-$color_hippie_green_approx: #52854c;
-$color_alabaster_approx: #f9f9f9;
-$color-light-gray: #f4f4f4;
+@import './variables';
+@import './common';
 
-//fonts
-$font_0: Roboto;
-$font_1: Baskerville;
-$font_2: Palatino;
-$font_3: Palatino Linotype;
-$font_4: Book Antiqua;
-$font_5: Times New Roman;
-$font_6: serif;
-$font_7: georgia;
-$font_8: arial;
-$font_9: helvetica;
-
-//@extend-elements
-%extend_1 {
-  background: $color_storm_dust_approx;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-}
-%extend_2 {
-  border-bottom: none;
-  border-left: none;
-  border-right: none;
-  border-top: none;
-}
-%extend_3 {
-  background: $white;
-  border: 1px solid $color_alto_approx;
-  margin-bottom: 15px;
-}
-%extend_4 {
-  background: none repeat scroll 0 0 $color_cararra_approx;
-  border-bottom: 1px solid $color_alto_approx;
-  color: $color_mine_shaft_approx;
-  font-family: $font_0, $font_9;
-  font-size: 12px;
-  line-height: 20px;
-  min-height: 20px;
-  padding: 7px 15px !important;
-}
-@import url(https://fonts.googleapis.com/css?family=Roboto);
 body {
-  font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6;
-  font-size: 14px;
+  @extend %body;
 }
 .not-front {
   .content-inner {

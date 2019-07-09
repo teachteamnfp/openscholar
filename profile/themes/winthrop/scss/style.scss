@@ -1,20 +1,6 @@
 @import '../../os_base/scss/base/breakpoints';
-//colors
-$color_log_cabin_approx: #222;
-$white: #fff;
-$color_cloud_burst_approx: #293352;
-$color_sprout_approx: #c3d7a4;
-$color_steel_blue_approx: #4e84c4;
-$color_concrete_approx: #f3f3f1;
-$color_mexican_red_approx: #a51c30;
-$color_iron_approx: #d7d7d7;
-
-//fonts
-$font_0: Merriweather;
-$font_1: Georgia;
-$font_2: serif !important;
-$font_3: Merriweather Sans;
-$font_4: sans-serif !important;
+@import './variables';
+@import './base';
 
 //@extend-elements
 %extend_1 {
@@ -30,34 +16,27 @@ $font_4: sans-serif !important;
   padding: 12px 15px 16px;
 }
 
-@import url(https://fonts.googleapis.com/css?family=Merriweather:300);
-@import url(https://fonts.googleapis.com/css?family=Merriweather+Sans);
-
 html {
   color: $color_log_cabin_approx;
 }
-body {
-  color: $color_log_cabin_approx;
-  font-family: $font_0, $font_1, $font_2;
-}
 .page-header {
-  font-family: $font_0, $font_1, $font_2;
+  @extend %font;
 }
 .node--title {
-  font-family: $font_0, $font_1, $font_2;
+  @extend %font;
 }
 .more-link {
-  font-family: $font_0, $font_1, $font_2;
+  @extend %font;
 }
 .content-inner {
   h2 {
-    font-family: $font_0, $font_1, $font_2;
+    @extend %font;
   }
   h3 {
-    font-family: $font_0, $font_1, $font_2;
+    @extend %font;
   }
   h4 {
-    font-family: $font_0, $font_1, $font_2;
+    @extend %font;
   }
 }
 footer {
@@ -80,7 +59,7 @@ footer {
       font-family: $font_3, $font_4;
     }
     li ul li a {
-      font-family: $font_0, $font_1, $font_2;
+      @extend %font;
     }
   }
 }
@@ -97,7 +76,7 @@ footer {
         border-top: 0 none;
       }
       > a {
-        font-family: $font_0, $font_1, $font_2;
+        @extend %font;
         padding: 16px 15px;
         @extend %extend_1;
         @media #{$mobile} {
@@ -127,7 +106,7 @@ footer {
     }
     > li {
       > a {
-        font-family: $font_0, $font_1, $font_2;
+        @extend %font;
         @extend %extend_1;
         font-size: 1em;
         background: none;
@@ -198,23 +177,23 @@ footer {
   color: $color_log_cabin_approx;
 }
 .path-search .title a {
-  font-family: $font_0, $font_1, $font_2;
+  @extend %font;
 }
 .links a {
-  font-family: $font_0, $font_1, $font_2;
+  @extend %font;
 }
 .section-nav a {
-  font-family: $font_0, $font_1, $font_2;
+  @extend %font;
 }
 h2.block-title {
-  font-family: $font_0, $font_1, $font_2;
+  @extend %font;
 }
 .header-container ul.nav li a {
   font-family: $font_3, $font_4;
   text-transform: uppercase;
 }
 .fc-header-toolbar h2 {
-  font-family: $font_0, $font_1, $font_2;
+  @extend %font;
 }
 .field--name-body h2 {
   font-weight: normal;
