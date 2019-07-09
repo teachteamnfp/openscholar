@@ -181,6 +181,10 @@ function os_publications_bibcite_reference_presave(EntityInterface $entity) {
   $publications_listing_helper = \Drupal::service('os_publications.listing_helper');
 
   $label = strip_tags($entity->html_title->value);
+  // Set the label anyway to be used in places such as breadcrumbs.
+  // For other uses we will use html title field.
+  $entity->title->value = $label;
+
   $entity->set('title_first_char_excl_prep', [
     'value' => $publications_listing_helper->convertLabel($label),
   ]);
