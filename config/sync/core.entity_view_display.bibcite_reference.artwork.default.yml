@@ -5,7 +5,8 @@ dependencies:
   config:
     - bibcite_entity.bibcite_reference_type.artwork
     - field.field.bibcite_reference.artwork.field_attach_files
-    - field.field.bibcite_reference.artwork.field_redirect_to_source
+    - field.field.bibcite_reference.artwork.field_extra_fields
+    - field.field.bibcite_reference.artwork.field_publication_image
     - field.field.bibcite_reference.artwork.field_taxonomy_terms
   enforced:
     module:
@@ -14,8 +15,10 @@ dependencies:
       - bibcite_entity.bibcite_reference_type.artwork
   module:
     - bibcite_entity
+    - image
+    - key_value_field
     - layout_builder
-    - link
+    - text
 third_party_settings:
   layout_builder:
     sections: {  }
@@ -416,17 +419,22 @@ content:
       link: false
     third_party_settings: {  }
     region: content
-  field_redirect_to_source:
+  field_extra_fields:
+    weight: 53
+    label: hidden
+    settings:
+      value_only: false
+    third_party_settings: {  }
+    type: key_value
+    region: content
+  field_publication_image:
     weight: 52
     label: above
     settings:
-      trim_length: 80
-      url_only: false
-      url_plain: false
-      rel: ''
-      target: ''
+      image_style: ''
+      image_link: ''
     third_party_settings: {  }
-    type: link
+    type: image
     region: content
   field_taxonomy_terms:
     weight: 51
@@ -436,6 +444,13 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
     region: content
+  full_text:
+    type: text_default
+    weight: 5
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
   keywords:
     type: entity_reference_label
     weight: 1
@@ -443,6 +458,22 @@ content:
     label: above
     settings:
       link: true
+    third_party_settings: {  }
+  notes:
+    type: text_default
+    weight: 6
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  publication_image:
+    type: image
+    weight: 7
+    settings:
+      image_style: thumbnail
+      image_link: ''
+    region: content
+    label: above
     third_party_settings: {  }
 hidden:
   bibcite_type: true

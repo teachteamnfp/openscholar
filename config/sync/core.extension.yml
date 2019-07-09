@@ -57,6 +57,7 @@ module:
   entity_reference_revisions: 0
   fakeobjects: 0
   field: 0
+  field_group: 0
   field_layout: 0
   field_tools: 0
   field_ui: 0
@@ -74,6 +75,7 @@ module:
   image: 0
   image_widget_crop: 0
   inline_form_errors: 0
+  key_value_field: 0
   language: 0
   layout_builder: 0
   layout_discovery: 0
@@ -140,6 +142,7 @@ module:
   rng_views: 0
   search: 0
   serialization: 0
+  shorten: 0
   slick: 0
   styleguide: 0
   system: 0
