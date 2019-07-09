@@ -96,12 +96,12 @@ class EntityRedirectsTest extends OsExistingSiteTestBase {
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function testRedirectDeletion() :void {
-    // Test a redirect is created on node deletion.
+    // Test a redirect is deleted on node deletion.
     $path = 'node/' . $this->node->id();
     $this->entityTypeManager->getStorage('node')->load($this->node->id())->delete();
     $this->assertEmpty($this->checkRedirect($path));
 
-    // Test a redirect is created on publication deletion.
+    // Test a redirect is deleted on publication deletion.
     $path = 'bibcite/reference/' . $this->publication->id();
     $this->entityTypeManager->getStorage('bibcite_reference')->load($this->publication->id())->delete();
     $this->assertEmpty($this->checkRedirect($path));
