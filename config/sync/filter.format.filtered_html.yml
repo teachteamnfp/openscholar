@@ -5,6 +5,7 @@ dependencies:
   module:
     - editor
     - os_media
+    - os_wysiwyg
 name: 'Filtered HTML'
 format: filtered_html
 weight: 0
@@ -39,7 +40,7 @@ filters:
     status: true
     weight: -10
     settings:
-      allowed_html: '<a href hreflang> <em> <strong> <cite> <blockquote cite> <code> <ul type> <ol start type> <li> <dl> <dt> <dd> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <u> <s> <p> <img src alt data-entity-type data-entity-uuid data-align data-caption data-mid height width> <table> <caption> <tbody> <thead> <tfoot> <th> <td> <tr> <sup> <sub> <hr> <span> <span style> <p class> <div style> <a id name> <span class> <div class id title> <pre> <address>'
+      allowed_html: '<a href hreflang data-url data-mid id name> <em> <strong> <cite> <blockquote cite> <code> <ul type> <ol start type> <li> <dl> <dt> <dd> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <u> <s> <p> <img src alt data-entity-type data-entity-uuid data-align data-caption data-mid height width> <table> <caption> <tbody> <thead> <tfoot> <th> <td> <tr> <sup> <sub> <hr> <span> <span style> <p class> <div style> <span class> <div class id title> <pre> <address>'
       filter_html_help: true
       filter_html_nofollow: false
   media_transform:
@@ -47,4 +48,10 @@ filters:
     provider: os_media
     status: true
     weight: 100
+    settings: {  }
+  os_link_filter:
+    id: os_link_filter
+    provider: os_wysiwyg
+    status: true
+    weight: 0
     settings: {  }
