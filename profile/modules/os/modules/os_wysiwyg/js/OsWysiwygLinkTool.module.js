@@ -65,10 +65,25 @@
       function ($files) {
         for (let i = 0; i < $files.length; i++) {
           files.register($files[i]);
+          let found = false;
+          // check to see if this file exists
+          for (let j = 0; j < $s.files.length; j++) {
+            if ($s.files[j].mid == $files[i].mid) {
+              // we just replaced an existing file.
+              $files[i].replaced = true;
+              $s.files[j] = $files[i];
+              found = true;
+            }
+          }
+          if (!found) {
+            // This is a brand-new file. Set the true flag and add it to the list.
+            $files[i].new = true;
+            $s.files.push($files[i]);
+          }
         }
 
         if ($files.length == 1) {
-          $s.arg = $files[0].id;
+          $s.arg = $files[0].mid;
           editing = true;
         }
     });

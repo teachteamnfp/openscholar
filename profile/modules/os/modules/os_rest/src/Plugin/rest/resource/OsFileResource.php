@@ -9,6 +9,7 @@ use Drupal\file\FileInterface;
 use Drupal\file\Plugin\rest\resource\FileUploadResource;
 use Drupal\media\Entity\Media;
 use Drupal\rest\ModifiedResourceResponse;
+use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -107,6 +108,11 @@ class OsFileResource extends FileUploadResource {
       }
     }
     $media->save();
+    /** @var VsiteContextManagerInterface $vsiteContextManager */
+    $vsiteContextManager = \Drupal::service('vsite.context_manager');
+    if ($group = $vsiteContextManager->getActiveVsite()) {
+      $group->addContent($media, 'group_entity:media');
+    }
 
     // 201 Created responses return the newly created entity in the response
     // body. These responses are not cacheable, so we add no cacheability

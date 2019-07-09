@@ -84,11 +84,9 @@
             fileName: $file.newName || null
           }).progress(function (e) {
             progress = e;
-          }).success(function (e) {
-            for (var i = 0; i< e.data.length; i++) {
-              uploaded.push(e.data[i]);
-            }
-            uploadNext(e.data[0].id);
+          }).success(function (file) {
+            uploaded.push(file);
+            uploadNext(file.mid);
           }).error(function (e) {
            // addMessage(e.title);
             uploadNext();
@@ -128,7 +126,7 @@
             var self = this;
             promises.push($http.get(dupeUrl, config).then(function (response) {
                 var file = response.config.originalFile;
-                var data = response.data.data;
+                var data = response.data;
                 file.filename = file.sanitized;
                 if (data.collision) {
                   file.newName = data.expectedFileName;
@@ -227,7 +225,7 @@
 
   m.directive('fileUploadHandler', ['drupalSettings', 'urlGenerator', function (settings, url) {
     return {
-      templateUrl: url.generate(settings.fetchSetting('paths.fileHandler'), false)+'/FileUploadHandler.template.html?v='+settings.fetchSetting('version.FileHandler'),
+      templateUrl: url.generate(settings.fetchSetting('paths.fileHandler'), false)+'/FileUploadHandler.template.html?v='+settings.fetchSetting('version.fileHandler'),
       scope: {
         fh: '='
       },
