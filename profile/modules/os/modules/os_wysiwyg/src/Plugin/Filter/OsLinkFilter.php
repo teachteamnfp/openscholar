@@ -10,6 +10,7 @@ use Drupal\filter\Plugin\FilterBase;
 use Drupal\media\Entity\Media;
 use Drupal\media\MediaInterface;
 use Drupal\os_wysiwyg\OsLinkHelperInterface;
+use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 use InvalidArgumentException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -81,14 +82,24 @@ class OsLinkFilter extends FilterBase implements ContainerFactoryPluginInterface
       foreach ($xpath->query('//a[@data-url]') as $node) {
         /** @var \DOMElement $node */
         $data_url = $node->getAttribute('data-url');
+        $options = [];
+        if (!\Drupal::service('file_system')->uriScheme($data_url)) {
+          $data_url = '/' . ltrim($data_url, '/');
+          /** @var VsiteContextManagerInterface $vsiteContextManager */
+          $vsiteContextManager = \Drupal::service('vsite.context_manager');
+          if ($group = $vsiteContextManager->getActiveVsite()) {
+            $options['purl_context'] = [
+              'id' => $group->id()
+            ];
+          }
+        }
         $node->removeAttribute('data-url');
         try {
-          $url = Url::fromUserInput('/' . ltrim($data_url, '/'));
+          $url = Url::fromUserInput($data_url, $options);
         }
         catch (InvalidArgumentException $e) {
           // External url given.
-          error_log($e->getMessage());
-          $url = Url::fromUri($data_url);
+          $url = Url::fromUri($data_url, $options);
         }
         $node->setAttribute('href', $url->toString());
       }

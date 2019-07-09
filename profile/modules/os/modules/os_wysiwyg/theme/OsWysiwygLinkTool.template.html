@@ -33,7 +33,7 @@
         <div index="file" id="file-link" ng-switch-when="file">
             <div class="owl-file-controls">
                 <div class="add_new">
-                    <div ng-file-select ng-file-change="fh.checkForDupes($files)" ng-accept="fh.validate($file);" accept="{{fh.acceptString()}}" class="add_new_button">Add New</div>
+                    <div ngf-select ngf-change="fh.checkForDupes($files)" ngf-accept="fh.validate($file);" accept="{{fh.acceptString()}}" class="add_new_button">Add New</div>
                     <div class="form-help">
                         <div class="description">Files must be less than <strong>{{filesize}}</strong>.<br />Allowed file types: {{extensionStr}}</div></div>
                     </div>
@@ -48,7 +48,7 @@
             </div>
             <div class="owl-file-list" ng-if="ready">
                 <div js-pager="f in files | filter:'public':true:'schema' | orderBy:'timestamp':true | filter:search:filename track by f.id starting with arg">
-                    <div id="file-{{f.id}}" class="owl-file-item media-row" ng-class="{selected: f.id == arg, new: f.new}" ng-click="setLinkTarget(f.id)">{{f.name}}</div>
+                    <div id="file-{{f.mid}}" class="owl-file-item media-row" ng-class="{selected: f.mid == arg, new: f.new}" ng-click="setLinkTarget(f.mid)">{{f.name}}</div>
                 </div>
                 <div file-upload-handler fh="fh"></div>
                 <div file-edit file="file_edit" ng-if="editing" on-close="fileEditClose(saved)"></div>

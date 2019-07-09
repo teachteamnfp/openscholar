@@ -51,7 +51,7 @@
   }]);
 
   m.controller('OWLModalController', ['$scope', 'EntityService', 'FileHandlers', 'drupalSettings', 'params', 'close', function ($s, EntityService, FileHandlers, settings, params, close) {
-    let files = new EntityService('files', 'id'),
+    let files = new EntityService('media', 'mid'),
       extensions = [];
       extensionMap = settings.fetchSetting('extensionMap');
     for (let k in extensionMap) {
@@ -132,7 +132,7 @@
               break;
             case 'file':
               target = linkInfo.arg;
-              attributes['data-fid'] = linkInfo.arg;
+              attributes['data-mid'] = linkInfo.arg;
               break;
           }
 
