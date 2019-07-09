@@ -9,7 +9,11 @@
       editor.addCommand('os_wysiwyg_link', {
         exec: function (editor) {
           let selection = editor.getSelection(),
-            element = selection.getSelectedElement();
+            element = self.getLinkFromSelection(selection);
+
+          if (element) {
+            self.selectLink(selection, element);
+          }
 
           Drupal.wysiwyg.osLink.modal(editor, self.parseAnchor(element), self.insertLink)
         },
@@ -33,7 +37,7 @@
         newWindow: false
       };
 
-      if (!(a instanceof HTMLAnchorElement)) {
+      if (!a || a.constructor.name != 'HTMLAnchorElement') {
         return output;
       }
 
@@ -87,6 +91,19 @@
           : $html.wrap('<div>').parent().html();
       }
       editor.insertHtml(html);
+    },
+    getLinkFromSelection: function (selection) {
+      var node = selection.getStartElement().$;
+      while (node.nodeName != 'A') {
+        if (node.nodeName == 'BODY') {
+          return null;
+        }
+        node = node.parentNode;
+      }
+      return node;
+    },
+    selectLink: function (selection, node) {
+      selection.selectElement(new CKEDITOR.dom.element(node));
     }
   });
 
