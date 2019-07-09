@@ -1,0 +1,9 @@
+@import './variables';
+@import './common';
+html,
+body,
+h2,
+h3,
+h4 {
+  @extend %font-family;
+}

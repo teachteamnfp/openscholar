@@ -29,3 +29,7 @@ regions:
 
 libraries:
   - monochrome/global-styling
+
+ckeditor_stylesheets:
+  - //fonts.googleapis.com/css?family=Source+Sans+Pro
+  - css/ckeditor.css
