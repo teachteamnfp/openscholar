@@ -7,6 +7,7 @@ dependencies:
     - field.field.bibcite_reference.hearing.field_attach_files
     - field.field.bibcite_reference.hearing.field_extra_fields
     - field.field.bibcite_reference.hearing.field_publication_image
+    - field.field.bibcite_reference.hearing.field_redirect_to_source
     - field.field.bibcite_reference.hearing.field_taxonomy_terms
     - image.style.thumbnail
   module:
@@ -16,6 +17,7 @@ dependencies:
     - image
     - key_value_field
     - layout_discovery
+    - link
     - os_media
     - text
 third_party_settings:
@@ -436,7 +438,7 @@ content:
     region: content
     third_party_settings: {  }
   field_attach_files:
-    weight: 55
+    weight: 56
     settings: {  }
     third_party_settings: {  }
     type: media_browser_widget
@@ -463,8 +465,16 @@ content:
     third_party_settings: {  }
     type: image_image
     region: content
+  field_redirect_to_source:
+    type: link_default
+    weight: 55
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
   field_taxonomy_terms:
-    weight: 56
+    weight: 57
     settings:
       match_operator: CONTAINS
       size: 60
