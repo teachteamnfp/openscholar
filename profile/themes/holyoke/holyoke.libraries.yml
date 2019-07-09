@@ -2,4 +2,5 @@ global-styling:
   version: VERSION
   css:
     theme:
+      '//fonts.googleapis.com/css?family=Arimo:400,700&display=swap': { external: true }
       css/style.css: {}

@@ -1,23 +1,6 @@
 @import '../../os_base/scss/base/breakpoints';
-
-//colors
-$white: #fff;
-$color_pizza_approx: #6b5417;
-$color_alto_approx: #dededc;
-$color_shark_approx: #262829;
-$wild_sand: #f4f4f4;
-$color_submarine_approx: #bac5c6;
-$color_st_tropaz_approx: #215990;
-$color_hokey_pokey_approx: #c39936;
-$color_tundora_approx: #444;
-
-//fonts
-$font_0: Cabin;
-$font_1: helvetica;
-$font_2: Palatino Linotype;
-$font_3: Book Antiqua;
-$font_4: Times New Roman;
-$font_5: serif;
+@import './variables';
+@import './base';
 
 //@extend-elements
 %extend_1 {
@@ -32,8 +15,6 @@ $font_5: serif;
   filter: none;
   color: $white;
 }
-
-@import url(https://fonts.googleapis.com/css?family=Cabin);
 
 body {
   font-family: $font_0, $font_1;

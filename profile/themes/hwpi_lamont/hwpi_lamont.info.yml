@@ -29,3 +29,7 @@ regions:
 
 libraries:
   - hwpi_lamont/global-styling
+
+ckeditor_stylesheets:
+  - '//fonts.googleapis.com/css?family=Droid+Sans:300,400,700|Volkhov:300,400,400i,700'
+  - css/ckeditor.css

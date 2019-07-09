@@ -29,3 +29,7 @@ regions:
 
 libraries:
   - kirkland/global-styling
+
+ckeditor_stylesheets:
+  - //fonts.googleapis.com/css?family=Quattrocento|Oswald:400,700
+  - css/ckeditor.css
