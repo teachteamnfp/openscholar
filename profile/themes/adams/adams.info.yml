@@ -29,3 +29,7 @@ regions:
 
 libraries:
   - adams/global-styling
+
+ckeditor_stylesheets:
+  - //fonts.googleapis.com/css?family=Open+Sans|Open+Sans+Condensed:700|Oswald
+  - css/ckeditor.css

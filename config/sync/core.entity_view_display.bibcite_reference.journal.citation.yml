@@ -6,7 +6,10 @@ dependencies:
     - bibcite_entity.bibcite_reference_type.journal
     - core.entity_view_mode.bibcite_reference.citation
     - field.field.bibcite_reference.journal.field_attach_files
+    - field.field.bibcite_reference.journal.field_extra_fields
+    - field.field.bibcite_reference.journal.field_publication_image
     - field.field.bibcite_reference.journal.field_taxonomy_terms
+    - image.style.publication_details_image
   enforced:
     config:
       - core.entity_view_mode.bibcite_reference.citation
@@ -14,7 +17,10 @@ dependencies:
     module:
       - bibcite_entity
   module:
+    - image
+    - key_value_field
     - layout_builder
+    - text
 third_party_settings:
   layout_builder:
     sections: {  }
@@ -30,6 +36,23 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_extra_fields:
+    type: key_value
+    weight: 5
+    region: content
+    label: hidden
+    settings:
+      value_only: false
+    third_party_settings: {  }
+  field_publication_image:
+    type: image
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      image_style: publication_details_image
+      image_link: ''
+    third_party_settings: {  }
   field_taxonomy_terms:
     type: entity_reference_label
     weight: 1
@@ -37,6 +60,20 @@ content:
     label: hidden
     settings:
       link: true
+    third_party_settings: {  }
+  full_text:
+    type: text_default
+    weight: 3
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  notes:
+    type: text_default
+    weight: 4
+    region: content
+    label: above
+    settings: {  }
     third_party_settings: {  }
 hidden:
   author: true

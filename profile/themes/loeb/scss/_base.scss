@@ -1,0 +1,13 @@
+body {
+  background-color: $color_alabaster_approx;
+  color: $color_log_cabin_approx;
+  * {
+    font-family: $font_0;
+  }
+}
+a {
+  color: $color_fern_green_approx;
+  &:visited {
+    color: $color_fern_green_approx;
+  }
+}

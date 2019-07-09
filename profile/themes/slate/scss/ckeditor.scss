@@ -1,0 +1,8 @@
+@import './variables';
+@import './base';
+h2,
+h3,
+h4 {
+  @extend %font;
+}
+

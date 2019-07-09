@@ -132,7 +132,7 @@ function os_profiles_preprocess_node(&$variables) {
   }
 
   if (!empty($content['field_phone'][0])) {
-    $variables['content']['field_phone']['#prefix'] = 'p: ';
+    $variables['content']['field_phone']['#title'] = t('p', ['context' => 'Field phone title']);
   }
   if (!empty($content['field_email'][0]['#url'])) {
     $url_attributes = [
