@@ -24,8 +24,12 @@ final class CustomThemeDeleteForm extends EntityConfirmFormBase {
    * {@inheritdoc}
    */
   public function getDescription() {
-    return $this->t("The theme %name will be uninstalled. If this theme is set as default, then it's parent theme will be set as default. All of the theme files will be deleted. This action cannot be undone. Are you sure you want to proceed?", [
-      '%name' => $this->entity->label(),
+    /** @var \Drupal\cp_appearance\Entity\CustomThemeInterface $entity */
+    $entity = $this->getEntity();
+
+    return $this->t("The theme %name will be uninstalled. If this theme is set as default, then it's parent theme %parent_theme will be set as default. All of the theme files will be deleted. This action cannot be undone. Are you sure you want to proceed?", [
+      '%name' => $entity->label(),
+      '%parent_theme' => $entity->getBaseTheme(),
     ]);
   }
 
