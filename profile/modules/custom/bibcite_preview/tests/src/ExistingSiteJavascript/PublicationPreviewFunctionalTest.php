@@ -59,7 +59,6 @@ class PublicationPreviewFunctionalTest extends OsExistingSiteJavascriptTestBase 
    * Test publication create and press preview get back.
    */
   public function testPublicationCreatePreviewAndBack() {
-    $title = $this->randomMachineName();
     // Visit edit page.
     $this->visit('/bibcite/reference/add/artwork');
     $web_assert = $this->assertSession();
