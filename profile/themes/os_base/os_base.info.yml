@@ -34,3 +34,6 @@ libraries-extend:
 
 libraries:
   - os_base/modal
+
+ckeditor_stylesheets:
+  - css/ckeditor.css

@@ -6,6 +6,8 @@ dependencies:
     - bibcite_entity.bibcite_reference_type.website
     - core.entity_view_mode.bibcite_reference.table
     - field.field.bibcite_reference.website.field_attach_files
+    - field.field.bibcite_reference.website.field_extra_fields
+    - field.field.bibcite_reference.website.field_publication_image
     - field.field.bibcite_reference.website.field_taxonomy_terms
   enforced:
     config:
@@ -15,6 +17,7 @@ dependencies:
       - bibcite_entity
   module:
     - bibcite_entity
+    - text
 _core:
   default_config_hash: 2NP7I7PTlRKYNbOqEFIE0blL9g3Bw9Rba0RGpsU5kj0
 id: bibcite_reference.website.table
@@ -403,6 +406,13 @@ content:
       thousand_separator: ''
       prefix_suffix: true
     third_party_settings: {  }
+  full_text:
+    type: text_default
+    weight: 5
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
   keywords:
     type: entity_reference_label
     weight: 4
@@ -411,10 +421,19 @@ content:
     settings:
       link: true
     third_party_settings: {  }
+  notes:
+    type: text_default
+    weight: 6
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   bibcite_type: true
   citation: true
   field_attach_files: true
+  field_extra_fields: true
+  field_publication_image: true
   field_taxonomy_terms: true
   langcode: true
   uid: true

@@ -29,3 +29,7 @@ regions:
 
 libraries:
   - cabot/global-styling
+
+ckeditor_stylesheets:
+  - //fonts.googleapis.com/css?family=Noto+Serif
+  - css/ckeditor.css

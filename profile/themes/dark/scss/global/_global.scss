@@ -78,3 +78,9 @@ a.class_material_field_class_anchor {
 button.visually-hidden {
   color: $color-black;
 }
+/**** node person page content inner block title *****/
+.person-data {
+  h2.block-title {
+    border-top: 0 none;
+  }
+}

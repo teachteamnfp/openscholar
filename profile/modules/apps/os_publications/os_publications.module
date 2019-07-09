@@ -141,6 +141,26 @@ function os_publications_page_attachments(array &$page) {
 }
 
 /**
+ * Implements hook_views_pre_render().
+ */
+function os_publications_views_pre_render(ViewExecutable $view) {
+  if ($view->id() !== 'publications') {
+    return;
+  }
+
+  if ($view->current_display !== 'cp') {
+    // Convert citation title into publication entity page's url.
+    $results = $view->result;
+    foreach ($results as $result) {
+      $publication = $result->_entity;
+      $text = $publication->label();
+      $link = '"' . $publication->toLink($text)->toString() . '"';
+      $publication->title->value = $link;
+    }
+  }
+}
+
+/**
  * Implements hook_ENTITY_TYPE_presave().
  */
 function os_publications_bibcite_reference_presave(EntityInterface $entity) {
@@ -202,6 +222,36 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
         ],
       ])
       ->setDefaultValue(TRUE)
+      ->setDisplayConfigurable('form', TRUE);
+
+    $fields['full_text'] = BaseFieldDefinition::create('text_long')
+      ->setLabel('FULL TEXT')
+      ->setDescription('You can enter the full text of your article here, although most people upload PDFs instead.')
+      ->setTranslatable(TRUE)
+      ->setDisplayOptions('view', [
+        'type' => 'text_default',
+        'weight' => 5,
+      ])
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayOptions('form', [
+        'type' => 'text_textfield',
+        'weight' => 5,
+      ])
+      ->setDisplayConfigurable('form', TRUE);
+
+    $fields['notes'] = BaseFieldDefinition::create('text_long')
+      ->setLabel('NOTES')
+      ->setDescription("This note will appear after the abstract. Your notes are currently set to private. You can make this change in the publications section of your control panel's App settings")
+      ->setTranslatable(TRUE)
+      ->setDisplayOptions('view', [
+        'type' => 'text_default',
+        'weight' => 6,
+      ])
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayOptions('form', [
+        'type' => 'text_textfield',
+        'weight' => 6,
+      ])
       ->setDisplayConfigurable('form', TRUE);
 
     return $fields;
@@ -348,9 +398,27 @@ function os_publications_preprocess_bibcite_citation(&$variables) {
     $variables['style'] = $def_style;
   }
 
+  // Get current route name.
+  $route_name = \Drupal::routeMatch()->getRouteName();
+
+  // If publication view page.
+  if ($route_name === 'entity.bibcite_reference.canonical') {
+    $publication = \Drupal::routeMatch()->getParameter('bibcite_reference');
+    $text = $publication->label();
+    $link = '"' . $publication->toLink($text)->toString() . '"';
+    $variables['data']['title'] = $link;
+
+    /** @var \Drupal\bibcite\CitationStylerInterface $styler */
+    $styler = \Drupal::service('bibcite.citation_styler');
+    $data = $variables['data'];
+
+    $variables['content'] = [
+      '#markup' => $styler->render($data),
+    ];
+  }
+
   // If it is publication view page and shorten url setting is on,
   // add a shortented url to the citation.
-  $route_name = \Drupal::routeMatch()->getRouteName();
   if ($publications_config->get('shorten_citations') && $route_name === 'entity.bibcite_reference.canonical') {
     $current_uri = \Drupal::request()->getUri();
     $url_text = shorten_url($current_uri);

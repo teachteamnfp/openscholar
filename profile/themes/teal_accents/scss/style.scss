@@ -1,38 +1,11 @@
 @import '../../os_base/scss/base/breakpoints';
-//colors
-$color_alabaster_approx: #f9f9f9;
-$color_log_cabin_approx: #222;
-$white: #fff;
-$color_tundora_approx: #444;
-$color_tuatara_approx: #343434;
-$color_java_approx: #1ebfb3;
-$color_downy_approx: #75c5bc;
-$color_ebb_approx: #ebe3df;
-$color_celeste_approx: #ccc;
-$color-gray: #666;
-
-//fonts
-$font_0: Cardo;
-$font_1: sans-serif;
-$font_2: Georgia;
-$font_3: serif !important;
-$font_4: Montserrat;
-$font_5: helvetica !important;
-$font_6: helvetica;
-
-//@extend-elements
-%extend_1 {
-  background-image: none;
-  background-color: $white;
-  border-top: 3px solid $color_celeste_approx;
-}
-@import url(https://fonts.googleapis.com/css?family=Montserrat);
-@import url(https://fonts.googleapis.com/css?family=Cardo);
+@import './varibales';
+@import './base';
 
 body {
   font-size: 15px;
   background: $color_alabaster_approx;
-  font-family: $font_0, $font_1, $font_2, $font_3;
+  @extend %font;
 }
 .main-container {
   a {
@@ -88,23 +61,23 @@ a {
   color: $color_log_cabin_approx;
 }
 .page-header {
-  font-family: $font_0, $font_1, $font_2, $font_3;
+  @extend %font;
 }
 .node--title {
-  font-family: $font_0, $font_1, $font_2, $font_3;
+  @extend %font;
 }
 .more-link {
-  font-family: $font_0, $font_1, $font_2, $font_3;
+  @extend %font;
 }
 .content-inner {
   h2 {
-    font-family: $font_0, $font_1, $font_2, $font_3;
+    @extend %font;
   }
   h3 {
-    font-family: $font_0, $font_1, $font_2, $font_3;
+    @extend %font;
   }
   h4 {
-    font-family: $font_0, $font_1, $font_2, $font_3;
+    @extend %font;
   }
   .block.block-boxes-os_boxes_columns .block {
     border-top: 3px solid $color_java_approx;
@@ -124,7 +97,7 @@ a {
         border-top: 0 none;
       }
       > a {
-        font-family: $font_0, $font_1, $font_2, $font_3;
+        @extend %font;
         font-family: $font_4, $font_5;
         color: $white;
         text-decoration: none;
@@ -158,7 +131,6 @@ a {
           color: $white;
           font-size: 19px;
           padding-left: 20px;
-          font-family: $font_0, $font_1, $font_2, $font_3;
           font-family: $font_4, $font_5;
         }
         &:hover, &:active {
@@ -229,19 +201,19 @@ h1.page-header {
   line-height: 1.3;
 }
 .path-search .title a {
-  font-family: $font_0, $font_1, $font_2, $font_3;
+  @extend %font;
 }
 .links a {
-  font-family: $font_0, $font_1, $font_2, $font_3;
+  @extend %font;
 }
 .boxes-box-content h2 {
-  font-family: $font_0, $font_1, $font_2, $font_3;
+  @extend %font;
 }
 .section-nav a {
-  font-family: $font_0, $font_1, $font_2, $font_3;
+  @extend %font;
 }
 h2.block-title {
-  font-family: $font_0, $font_1, $font_2, $font_3;
+  @extend %font;
 }
 .header-container {
   background: $color_tundora_approx;
@@ -252,12 +224,12 @@ h2.block-title {
       color: $white;
     }
     &.nav a {
-      font-family: $font_0, $font_1, $font_2, $font_3;
+      @extend %font;
     }
   }
 }
 .cke_editable * {
-  font-family: $font_0, $font_1, $font_2, $font_3;
+  @extend %font;
 }
 .path-front .content-inner .block {
   border-top: 3px solid $color_java_approx;
