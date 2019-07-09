@@ -28,3 +28,7 @@ regions:
 
 libraries:
   - teal_accents/global-styling
+
+ckeditor_stylesheets:
+  - //fonts.googleapis.com/css?family=Cardo
+  - css/ckeditor.css

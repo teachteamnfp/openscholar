@@ -88,6 +88,37 @@ $color-gray: #565656;
     .toolbar-icon-link-toolbar-menu-cp-help:before {
       background: url(images/help-icon.png) 0 center no-repeat;
     }
+    #toolbar-item-user-tray {
+      .toolbar-menu.links {
+        a {
+          position: relative;
+          &:before {
+            content: "";
+            background: url(images/user-sprite.png) no-repeat;
+            position: absolute;
+            left: 0.6667em;
+            top: 0;
+            height: 30px;
+            width: 20px;
+          }
+        }
+        .account a:before {
+          background-position: -10px -160px;
+        }
+        .account-edit a:before {
+          background-position: -10px -42px;
+        }
+        .logout a:before {
+          background-position: -10px -81px;
+        }
+        .twitter:before {
+          background-position: -10px -120px;
+        }
+        .site-create a:before{
+          background-position: -10px 0px;
+        }
+      }
+    }
   }
   .toolbar-toggle-orientation {
     background: $color-white;

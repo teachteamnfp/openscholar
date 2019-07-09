@@ -20,10 +20,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @CpSetting(
  *   id = "profiles_setting",
- *   title = @Translation("Profiles Settings"),
+ *   title = @Translation("Profiles"),
  *   group = {
  *    "id" = "profiles",
- *    "title" = @Translation("Profiles Settings"),
+ *    "title" = @Translation("Profiles"),
  *    "parent" = "cp.settings.app"
  *   }
  * )

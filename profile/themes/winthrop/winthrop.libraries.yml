@@ -2,6 +2,7 @@ global-styling:
   version: VERSION
   css:
     base:
-      '//fonts.googleapis.com/css?family=Merriweather': { external: true }
+      '//fonts.googleapis.com/css?family=Merriweather:300': { external: true }
+      '//fonts.googleapis.com/css?family=Merriweather+Sans': { external: true }
     theme:
       css/style.css: {}
