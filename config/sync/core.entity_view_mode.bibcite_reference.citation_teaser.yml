@@ -1,0 +1,10 @@
+uuid: 22e0e108-f3c4-4953-b075-e73614dd2079
+langcode: en
+status: true
+dependencies:
+  module:
+    - bibcite_entity
+id: bibcite_reference.citation_teaser
+label: 'Citation Teaser'
+targetEntityType: bibcite_reference
+cache: true
