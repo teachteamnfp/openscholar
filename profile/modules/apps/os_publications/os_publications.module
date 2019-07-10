@@ -200,7 +200,6 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
     }
 
     $fields['distribution'] = BaseFieldDefinition::create('list_string')
-      ->setLabel(t("Distribute to Repositories"))
       ->setSetting('allowed_values', $options)
       ->setCardinality(-1)
       ->setDisplayOptions('form', [
@@ -213,7 +212,7 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
       ->setDisplayConfigurable('form', TRUE);
 
     $fields['is_sticky'] = BaseFieldDefinition::create('boolean')
-      ->setLabel(t('Is Sticky'))
+      ->setLabel(t('Sticky at top of lists'))
       ->setDisplayOptions('form', [
         'type' => 'boolean_checkbox',
         'settings' => [
@@ -226,7 +225,7 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
       ->setLabel(t('Title first letter excluding prepositions'));
 
     $fields['status'] = BaseFieldDefinition::create('boolean')
-      ->setLabel(t('Published'))
+      ->setLabel(t('Published to this site'))
       ->setDisplayOptions('form', [
         'type' => 'boolean_checkbox',
         'settings' => [
@@ -263,6 +262,17 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
       ->setDisplayOptions('form', [
         'type' => 'text_textfield',
         'weight' => 6,
+      ])
+      ->setDisplayConfigurable('form', TRUE);
+
+    $fields['path'] = BaseFieldDefinition::create('path')
+      ->setCustomStorage(TRUE)
+      ->setLabel(t('URL'))
+      ->setTranslatable(TRUE)
+      ->setComputed(TRUE)
+      ->setDisplayOptions('form', [
+        'type' => 'path',
+        'weight' => 30,
       ])
       ->setDisplayConfigurable('form', TRUE);
 
