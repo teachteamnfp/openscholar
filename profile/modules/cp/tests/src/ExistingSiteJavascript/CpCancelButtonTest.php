@@ -41,11 +41,17 @@ class CpCancelButtonTest extends OsExistingSiteJavascriptTestBase {
     $session = $this->getSession();
     $web_assert = $this->assertSession();
 
+    $group_admin = $this->createUser();
+    $this->addGroupAdmin($group_admin, $this->group);
+    $this->drupalLogin($group_admin);
+
     // Visit node.
-    $this->visit($this->nodePath);
-    $web_assert->statusCodeEquals(200);
-    $this->assertSession()->waitForElementVisible('css', "[href='{$this->groupAlias}/node/{$this->node->id()}/edit']");
-    $this->getSession()->getPage()->findLink('Edit')->press();
+    $this->visitViaVsite("node/{$this->node->id()}", $this->group);
+    $this->assertSession()->waitForElement('css', '.contextual-links .entitynodeedit-form');
+    $this->assertSession()->statusCodeEquals(200);
+    /** @var \Behat\Mink\Element\NodeElement|null $edit_contextual_link */
+    $edit_contextual_link = $this->getSession()->getPage()->find('css', '.contextual-links .entitynodeedit-form a');
+    $edit_contextual_link->press();
     // Go to edit path.
     $page = $this->getCurrentPage();
     $cancel_button = $page->findLink('Cancel');
