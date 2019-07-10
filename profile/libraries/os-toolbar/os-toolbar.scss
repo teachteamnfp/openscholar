@@ -92,6 +92,8 @@ $color-gray: #565656;
       .toolbar-menu.links {
         a {
           position: relative;
+          padding-left: 2.75em;
+          border-left: 1px solid #ddd;
           &:before {
             content: "";
             background: url(images/user-sprite.png) no-repeat;
@@ -106,7 +108,7 @@ $color-gray: #565656;
           background-position: -10px -160px;
         }
         .account-edit a:before {
-          background-position: -10px -42px;
+          background-position: -10px -41px;
         }
         .logout a:before {
           background-position: -10px -81px;
