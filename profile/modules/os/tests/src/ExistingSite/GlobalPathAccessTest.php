@@ -192,7 +192,7 @@ class GlobalPathAccessTest extends OsExistingSiteTestBase {
     $entity_type_manager = $this->container->get('entity_type.manager');
 
     $references = $entity_type_manager->getStorage('bibcite_reference')->loadByProperties([
-      'html_title' => 'Test Artwork',
+      'html_title__value' => 'Test Artwork',
     ]);
 
     $this->assertNotEmpty($references);
@@ -234,7 +234,7 @@ class GlobalPathAccessTest extends OsExistingSiteTestBase {
     $entity_type_manager = $this->container->get('entity_type.manager');
 
     $references = $entity_type_manager->getStorage('bibcite_reference')->loadByProperties([
-      'html_title' => 'Artwork Reference Edited',
+      'html_title__value' => 'Artwork Reference Edited',
     ]);
 
     $this->assertNotEmpty($references);
@@ -277,7 +277,7 @@ class GlobalPathAccessTest extends OsExistingSiteTestBase {
     $entity_type_manager = $this->container->get('entity_type.manager');
 
     $references = $entity_type_manager->getStorage('bibcite_reference')->loadByProperties([
-      'html_title' => 'Artwork meant to be deleted',
+      'html_title__value' => 'Artwork meant to be deleted',
     ]);
 
     $this->assertEmpty($references);
