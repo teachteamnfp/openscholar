@@ -67,6 +67,7 @@ class OsWidgetsBlockRepository implements BlockRepositoryInterface {
     // Pull down a list of all the blocks in the site.
     /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContextManager */
     if ($editing) {
+      $flatWeight = 0;
       $vsiteContextManager = \Drupal::service('vsite.context_manager');
       if ($vsite = $vsiteContextManager->getActiveVsite()) {
         $blockGCEs = $vsite->getContent('group_entity:block_content');
@@ -86,7 +87,7 @@ class OsWidgetsBlockRepository implements BlockRepositoryInterface {
           $flat[$block->id()] = [
             'id' => $block->id(),
             'region' => 0,
-            'weight' => 0,
+            'weight' => $flatWeight++,
           ];
         }
       }

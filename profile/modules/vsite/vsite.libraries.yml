@@ -1,0 +1,11 @@
+contextualFullView:
+  js:
+    js/vsite.contextualFullView.js: {}
+  dependencies:
+    - core/drupal
+
+contextualList:
+  js:
+    js/vsite.contextualList.js: {}
+  dependencies:
+    - core/drupal
