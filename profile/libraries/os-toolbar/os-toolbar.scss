@@ -2,6 +2,7 @@
 $color_blue: #3e77bb;
 $color-white: #fff;
 $color-light-gray: #efefef;
+$color-light-gray1: #ddd;
 $color-link: #215990;
 $color-gray: #565656;
 
@@ -93,7 +94,7 @@ $color-gray: #565656;
         a {
           position: relative;
           padding-left: 2.75em;
-          border-left: 1px solid #ddd;
+          border-left: 1px solid $color-light-gray1;
           &:before {
             content: "";
             background: url(images/user-sprite.png) no-repeat;
