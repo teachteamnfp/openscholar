@@ -269,6 +269,9 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
       $operations[] = Link::createFromRoute($this->t('Edit'), 'entity.cp_custom_theme.edit_form', [
         'cp_custom_theme' => $theme->getName(),
       ]);
+      $operations[] = Link::createFromRoute($this->t('Delete'), 'entity.cp_custom_theme.delete_form', [
+        'cp_custom_theme' => $theme->getName(),
+      ]);
     }
 
     return $operations;

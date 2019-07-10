@@ -9,15 +9,14 @@ use Drupal\cp_appearance\Entity\CustomTheme;
  *
  * @group functional-javascript
  * @group cp-appearance
- * @coversDefaultClass \Drupal\cp_appearance\Entity\Form\CustomThemeForm
  */
 class CustomThemeFunctionalTest extends CpAppearanceExistingSiteJavascriptTestBase {
 
   /**
    * Tests custom theme save.
    *
-   * @covers ::save
-   * @covers ::redirectOnSave
+   * @covers \Drupal\cp_appearance\Entity\Form\CustomThemeForm::save
+   * @covers \Drupal\cp_appearance\Entity\Form\CustomThemeForm::redirectOnSave
    *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
    * @throws \Drupal\Core\Entity\EntityStorageException
@@ -102,8 +101,8 @@ class CustomThemeFunctionalTest extends CpAppearanceExistingSiteJavascriptTestBa
   /**
    * Tests custom theme save and set default.
    *
-   * @covers ::save
-   * @covers ::redirectOnSave
+   * @covers \Drupal\cp_appearance\Entity\Form\CustomThemeForm::save
+   * @covers \Drupal\cp_appearance\Entity\Form\CustomThemeForm::redirectOnSave
    *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
    * @throws \Behat\Mink\Exception\ExpectationException
@@ -150,7 +149,7 @@ class CustomThemeFunctionalTest extends CpAppearanceExistingSiteJavascriptTestBa
   }
 
   /**
-   * @covers ::exists
+   * @covers \Drupal\cp_appearance\Entity\Form\CustomThemeForm::exists
    *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
    * @throws \Behat\Mink\Exception\ResponseTextException
@@ -176,8 +175,8 @@ class CustomThemeFunctionalTest extends CpAppearanceExistingSiteJavascriptTestBa
   /**
    * Tests custom theme edit.
    *
-   * @covers ::save
-   * @covers ::redirectOnSave
+   * @covers \Drupal\cp_appearance\Entity\Form\CustomThemeForm::save
+   * @covers \Drupal\cp_appearance\Entity\Form\CustomThemeForm::redirectOnSave
    *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
    * @throws \Behat\Mink\Exception\ExpectationException
@@ -244,8 +243,8 @@ class CustomThemeFunctionalTest extends CpAppearanceExistingSiteJavascriptTestBa
   /**
    * Tests custom theme edit and save as default.
    *
-   * @covers ::save
-   * @covers ::redirectOnSave
+   * @covers \Drupal\cp_appearance\Entity\Form\CustomThemeForm::save
+   * @covers \Drupal\cp_appearance\Entity\Form\CustomThemeForm::redirectOnSave
    *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
    * @throws \Drupal\Core\Entity\EntityStorageException
@@ -284,6 +283,54 @@ class CustomThemeFunctionalTest extends CpAppearanceExistingSiteJavascriptTestBa
     /** @var \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler */
     $theme_handler = $this->container->get('theme_handler');
     $theme_handler->refreshInfo();
+  }
+
+  /**
+   * Tests custom theme delete.
+   *
+   * @covers \Drupal\cp_appearance\Entity\CustomTheme::preDelete
+   * @covers \Drupal\cp_appearance\Entity\CustomTheme::postDelete
+   * @covers \Drupal\cp_appearance\Entity\Form\CustomThemeDeleteForm::submitForm
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   */
+  public function testDelete(): void {
+    // Setup.
+    /** @var \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler */
+    $theme_handler = $this->container->get('theme_handler');
+    /** @var \Drupal\Core\Config\ConfigFactoryInterface $config_factory */
+    $config_factory = $this->container->get('config.factory');
+    $group_admin = $this->createUser();
+    $this->addGroupAdmin($group_admin, $this->group);
+    $this->drupalLogin($group_admin);
+    $custom_theme_label = strtolower($this->randomMachineName());
+
+    $this->visitViaVsite('cp/appearance/custom-themes/add', $this->group);
+    $this->getSession()->getPage()->fillField('Custom Theme Name', $custom_theme_label);
+    $this->assertSession()->waitForElementVisible('css', '.machine-name-value');
+    $this->getSession()->getPage()->selectFieldOption('Parent Theme', 'clean');
+    $this->getSession()->getPage()->findField('styles')->setValue('body { color: black; }');
+    $this->getSession()->getPage()->findField('scripts')->setValue('alert("Hello World")');
+    $this->getSession()->getPage()->pressButton('Save and set as default theme');
+    $this->getSession()->getPage()->pressButton('Confirm');
+
+    /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
+    $vsite_context_manager = $this->container->get('vsite.context_manager');
+    $vsite_context_manager->activateVsite($this->group);
+    $custom_theme = CustomTheme::load(CustomTheme::CUSTOM_THEME_ID_PREFIX . $custom_theme_label);
+
+    // Tests.
+    $this->visitViaVsite("cp/appearance/custom-themes/{$custom_theme->id()}/delete", $this->group);
+    $this->getSession()->getPage()->pressButton('Confirm');
+
+    $this->assertContains('cp/appearance', $this->getSession()->getCurrentUrl());
+
+    /** @var \Drupal\Core\Config\ImmutableConfig $theme_setting */
+    $theme_setting = $config_factory->get('system.theme');
+
+    $this->assertEquals('clean', $theme_setting->get('default'));
+    $this->assertFalse($theme_handler->themeExists($custom_theme->id()));
+    $this->assertDirectoryNotExists('file://' . CustomTheme::ABSOLUTE_CUSTOM_THEMES_LOCATION . '/' . $custom_theme->id());
   }
 
 }
