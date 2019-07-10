@@ -358,7 +358,7 @@ function vsite_bibcite_reference_view_alter(array &$build, ReferenceInterface $e
   // publication full-view is correct.
   // For edit, it should direct to the publication's full-view.
   // For delete, it should direct to the publications listing.
-  if ($build['#view_mode'] === 'citation') {
+  if (in_array($build['#view_mode'], ['citation', 'teaser'])) {
     $build['#attached']['library'][] = 'vsite/contextualFullView';
     $build['#attached']['drupalSettings']['entitySetting'] = [
       'type' => $entity->getEntityTypeId(),
