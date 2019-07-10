@@ -36,7 +36,7 @@ types:
   speech: ''
   treaty: ''
 fields:
-  title: title
+  title: html_title
   type: type
   keyword: ''
   author: author
