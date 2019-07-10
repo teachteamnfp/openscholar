@@ -1,9 +1,9 @@
 #block-place-widget-selector-wrapper {
   left: 0;
   top: 350px;
-  padding: 10px;
+  padding: 0px;
   background: $color-light-gray9;
-  border: 1px solid $color-light-gray10;
+  border: 0;
   width: 240px;
   color: $color-gray5;
   z-index: 1040;
@@ -14,6 +14,7 @@
 }
 #factory-wrapper {
   background-color: $color-light-gray9;
+  z-index: 10;
   .close {
     float: none;
     font-size: 21px;
