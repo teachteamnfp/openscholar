@@ -1,0 +1,36 @@
+uuid: d73b040b-c97a-4b88-8bc2-aa02f2e4a7de
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.title_filter
+  module:
+    - ckeditor
+format: title_filter
+editor: ckeditor
+settings:
+  toolbar:
+    rows:
+      -
+        -
+          name: Formatting
+          items:
+            - Italic
+            - Superscript
+            - Subscript
+            - SpecialChar
+  plugins:
+    stylescombo:
+      styles: ''
+    language:
+      language_list: un
+    colorbutton:
+      colors: ''
+image_upload:
+  status: false
+  scheme: public
+  directory: inline-images
+  max_size: ''
+  max_dimensions:
+    width: null
+    height: null
