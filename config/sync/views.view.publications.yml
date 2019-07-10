@@ -1678,6 +1678,20 @@ display:
           entity_type: bibcite_reference
           entity_field: is_sticky
           plugin_id: standard
+        title:
+          id: title
+          table: bibcite_reference
+          field: title
+          relationship: none
+          group_type: group
+          admin_label: 'Reference title first letter excluding prepositions (Sort order altered from code, see os_publications_views_query_alter)'
+          order: ASC
+          exposed: false
+          expose:
+            label: ''
+          entity_type: bibcite_reference
+          entity_field: title
+          plugin_id: standard
       menu:
         type: none
         title: 'Publications by title'
