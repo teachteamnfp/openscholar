@@ -407,7 +407,7 @@ function os_publications_preprocess_bibcite_citation(&$variables) {
   $citation_styler = \Drupal::service('bibcite.citation_styler');
   $site_wide_style = $citation_styler->getStyle()->id();
   $publications_config = \Drupal::configFactory()->get('os_publications.settings');
-  $vsite_style = $publications_config->get('default_style');
+  $vsite_style = $publications_config->get('default_style') ?? $site_wide_style;
 
   // Change sitewide config for rendering citation.
   $citation_styler->setStyleById($vsite_style);

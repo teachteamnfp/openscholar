@@ -140,22 +140,6 @@ class PublicationsViewsFunctionalTest extends TestBase {
   }
 
   /**
-   * Returns a particular section of the html page.
-   *
-   * @return string
-   *   The row html to compare.
-   */
-  private function getActualHtml(): string {
-    $page = $this->getCurrentPage();
-    $row = $page->find('css', '.bibcite-citation');
-    $row_html = $row->getHtml();
-    // Strip Purl from the html for proper comparison as render method won't
-    // return it.
-    return trim(str_replace("$this->groupAlias", '', $row_html));
-
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function tearDown() {
