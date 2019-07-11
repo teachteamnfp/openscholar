@@ -159,18 +159,6 @@ function os_publications_views_pre_render(ViewExecutable $view) {
       $publication->html_title->value = $link;
     }
   }
-
-  foreach ($view->field as $field_name => $field) {
-    // Alter the citation style as per settings.
-    if ($field_name === 'citation') {
-      /** @var \Drupal\Core\Config\ImmutableConfig $bibcite_settings */
-      $bibcite_settings = \Drupal::config('bibcite.settings');
-      /** @var string $publication_style */
-      $publication_style = $bibcite_settings->get('default_style');
-
-      $field->options['csl_style'] = $publication_style;
-    }
-  }
 }
 
 /**
