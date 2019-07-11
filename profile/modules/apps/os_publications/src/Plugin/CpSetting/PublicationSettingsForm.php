@@ -2,6 +2,7 @@
 
 namespace Drupal\os_publications\Plugin\CpSetting;
 
+use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -72,6 +73,13 @@ class PublicationSettingsForm extends CpSettingBase {
   protected $pluginManager;
 
   /**
+   * Cache tags invalidator service.
+   *
+   * @var \Drupal\Core\Cache\CacheTagsInvalidatorInterface
+   */
+  protected $cacheTagsInvalidator;
+
+  /**
    * Creates a new PublicationSettingsForm object.
    *
    * @param array $configuration
@@ -94,8 +102,10 @@ class PublicationSettingsForm extends CpSettingBase {
    *   Publications listing helper.
    * @param \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager $pluginManager
    *   Citation distribution plugin manager.
+   * @param \Drupal\Core\Cache\CacheTagsInvalidatorInterface $cache_tags_invalidator
+   *   Cache tags invalidator service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, VsiteContextManagerInterface $vsite_context_manager, CitationStylerInterface $styler, BibciteFormatManagerInterface $formatManager, EntityTypeManagerInterface $entityTypeManager, SampleCitations $citations, PublicationsListingHelperInterface $redirect_repository, CitationDistributePluginManager $pluginManager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, VsiteContextManagerInterface $vsite_context_manager, CitationStylerInterface $styler, BibciteFormatManagerInterface $formatManager, EntityTypeManagerInterface $entityTypeManager, SampleCitations $citations, PublicationsListingHelperInterface $redirect_repository, CitationDistributePluginManager $pluginManager, CacheTagsInvalidatorInterface $cache_tags_invalidator) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $vsite_context_manager);
     $this->styler = $styler;
     $this->formatManager = $formatManager;
@@ -103,6 +113,7 @@ class PublicationSettingsForm extends CpSettingBase {
     $this->citations = $citations;
     $this->publicationsListingHelper = $redirect_repository;
     $this->pluginManager = $pluginManager;
+    $this->cacheTagsInvalidator = $cache_tags_invalidator;
   }
 
   /**
@@ -119,7 +130,8 @@ class PublicationSettingsForm extends CpSettingBase {
       $container->get('entity_type.manager'),
       $container->get('os_publications.citation_examples'),
       $container->get('os_publications.listing_helper'),
-      $container->get('os_publications.manager_citation_distribute')
+      $container->get('os_publications.manager_citation_distribute'),
+      $container->get('cache_tags.invalidator')
     );
   }
 
@@ -256,6 +268,14 @@ class PublicationSettingsForm extends CpSettingBase {
    */
   public function submitForm(FormStateInterface $formState, ConfigFactoryInterface $configFactory) {
     $publication_config = $configFactory->getEditable('os_publications.settings');
+    $form_state_values = $formState->getValues();
+
+    if ($publication_config->get('biblio_order') !== $form_state_values['biblio_order']) {
+      // This is necessary, otherwise, the setting fails to get updated in the
+      // UI.
+      $this->cacheTagsInvalidator->invalidateTags(['config:views.view.publications']);
+    }
+
     $publication_config
       ->set('default_style', $formState->getValue('os_publications_preferred_bibliographic_format'))
       ->set('filter_publication_types', $formState->getValue('os_publications_filter_publication_types'))
