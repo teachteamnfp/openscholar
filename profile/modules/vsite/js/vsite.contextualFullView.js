@@ -4,7 +4,7 @@
  */
 
 (function ($, Drupal, drupalSettings) {
-  const redirectMapping = {
+  const nodeRedirectMapping = {
     blog: 'blog',
     events: 'calendar',
     class: 'classes',
@@ -15,16 +15,20 @@
     software_project: 'software',
   };
 
+  const bibciteReferenceRedirect = 'publications';
+
   /**
    * Makes sure that after delete user is redirected to listing.
    *
    * @param $el
    *   The delete contextual link element.
+   * @param redirectLocation
+   *   The location where user will be redirected.
    */
-  function alterDeleteDestination($el) {
+  function alterDeleteDestination($el, redirectLocation) {
     let $link = $el.find('a');
     let url = new URL($link.attr('href'), window.location.origin);
-    let newDestination = drupalSettings.spaces.url + redirectMapping[drupalSettings.vsite.nodeBundle];
+    let newDestination = drupalSettings.spaces.url + redirectLocation;
 
     url.searchParams.set('destination', newDestination);
 
@@ -32,7 +36,7 @@
   }
 
   /**
-   * Makes sure that after edit user is redirected to node full-view.
+   * Makes sure that after edit, user is redirected to full-view.
    *
    * @param $el
    *   The edit contextual link element.
@@ -61,13 +65,19 @@
    */
   function registerDrupalContextualLinkAddedEvent() {
     $(document).once().bind('drupalContextualLinkAdded', function (event, data) {
-      let $deleteOption = data.$el.find('li.entitynodedelete-form');
+      let $deleteOption = data.$el.find('li.entitynodedelete-form, li.entitybibcite-referencedelete-form');
 
       if ($deleteOption.length) {
-        alterDeleteDestination($deleteOption);
+        let redirectLocation = nodeRedirectMapping[drupalSettings.entitySetting.bundle];
+
+        if (drupalSettings.entitySetting.type === 'bibcite_reference') {
+          redirectLocation = bibciteReferenceRedirect;
+        }
+
+        alterDeleteDestination($deleteOption, redirectLocation);
       }
 
-      let $editOption = data.$el.find('li.entitynodeedit-form');
+      let $editOption = data.$el.find('li.entitynodeedit-form, li.entitybibcite-referenceedit-form');
 
       if ($editOption.length) {
         alterEditDestination($editOption);

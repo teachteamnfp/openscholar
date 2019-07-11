@@ -129,6 +129,11 @@ $color-gray: #565656;
   .toolbar-tray {
     a {
       color: $color-gray;
+      &.is-active {
+        color: $color-gray;
+        font-weight: normal;
+        text-decoration: none;
+      }
     }
   }
   .toolbar-icon.toolbar-handle {

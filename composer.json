@@ -370,6 +370,9 @@
             },
             "drupal/shorten": {
                 "Update is.gd service api url": "https://www.drupal.org/files/issues/2019-07-03/update-isgd-api-3065567-2.patch"
+            },
+            "drupal/bibcite": {
+                "Contextual links for bibcite reference entities": "patches/3065990-2.patch"
             }
         },
         "patches-ignore": {
