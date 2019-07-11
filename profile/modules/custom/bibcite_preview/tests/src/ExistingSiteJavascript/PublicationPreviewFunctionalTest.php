@@ -34,14 +34,12 @@ class PublicationPreviewFunctionalTest extends OsExistingSiteJavascriptTestBase 
    * Test publication edit and press preview and get back.
    */
   public function testPublicationEditPreviewAndBack() {
-    $modified_title = $this->randomMachineName();
+    $web_assert = $this->assertSession();
     // Visit edit page.
     $this->visit('/bibcite/reference/' . $this->reference->id() . '/edit');
-    $web_assert = $this->assertSession();
     $web_assert->statusCodeEquals(200);
-    $web_assert->pageTextContains($this->reference->label());
     $page = $this->getCurrentPage();
-    $page->fillField('title[0][value]', $modified_title);
+    $page->fillField('bibcite_year[0][value]', '2019');
 
     // Find and press Preview button.
     $preview_button = $page->findButton('Preview');
@@ -54,20 +52,18 @@ class PublicationPreviewFunctionalTest extends OsExistingSiteJavascriptTestBase 
 
     // Check going back to edit page and see modified title.
     $page = $this->getCurrentPage();
-    $this->assertContains($modified_title, $page->getHtml());
+    $this->assertContains('2019', $page->getHtml());
   }
 
   /**
    * Test publication create and press preview get back.
    */
   public function testPublicationCreatePreviewAndBack() {
-    $title = $this->randomMachineName();
     // Visit edit page.
     $this->visit('/bibcite/reference/add/artwork');
     $web_assert = $this->assertSession();
     $web_assert->statusCodeEquals(200);
     $page = $this->getCurrentPage();
-    $page->fillField('title[0][value]', $title);
     $page->fillField('bibcite_year[0][value]', '1990');
 
     // Find and press Preview button.
@@ -81,7 +77,7 @@ class PublicationPreviewFunctionalTest extends OsExistingSiteJavascriptTestBase 
 
     // Check going back to edit page and see modified title.
     $page = $this->getCurrentPage();
-    $this->assertContains($title, $page->getHtml());
+    $this->assertContains('1990', $page->getHtml());
   }
 
 }
