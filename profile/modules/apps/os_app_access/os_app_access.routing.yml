@@ -4,4 +4,5 @@ cp.apps:
     _form: '\Drupal\os_app_access\Form\AppAccessForm'
     _title: 'App Access'
   requirements:
-    _permission: 'administer apps'
+    _group_permission: 'access private apps'
+    _group_member: 'TRUE'
