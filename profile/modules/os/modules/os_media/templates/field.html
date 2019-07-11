@@ -16,7 +16,7 @@
             <input type="hidden" name="{{field_name}}[{{$index}}][target_id]" value="{{file.mid}}">
             <a href="#" class="tabledrag-handle" title="Drag to re-order" ng-show="selectedFiles.length > 1"><div class="handle">&nbsp;</div></a>
             <span  title="{{file.name}}">
-                <img class="file-icon" alt="" src="{{file.icon}}">
+                <img class="file-icon" alt="" ng-src="{{file.icon}}">
                 {{file.name}} ({{file.filename}})
             </span>
             <ul>
