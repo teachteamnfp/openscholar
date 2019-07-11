@@ -17,6 +17,8 @@ function cp_toolbar_alter(&$toolbar) {
 
     if (isset($toolbar['toolbar_menu_control_panel'])) {
       $toolbar['toolbar_menu_control_panel']['tray']['#attached'] = $toolbar['administration']['tray']['#attached'];
+      $combined_libraries = array_merge_recursive($toolbar['toolbar_menu_control_panel']['#attached'], $toolbar['administration']['#attached']);
+      $toolbar['toolbar_menu_control_panel']['#attached'] = $combined_libraries;
     }
 
     unset($toolbar['administration']);
