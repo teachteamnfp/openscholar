@@ -260,8 +260,7 @@ class PublicationSettingsForm extends CpSettingBase {
 
     // If changes in style then clear citation cache.
     if ($formState->getValue('os_publications_preferred_bibliographic_format') !== $publication_config->get('default_style')) {
-      Cache::invalidateTags(['publication_citation']);
-      Cache::invalidateTags(['config:views.view.publications']);
+      Cache::invalidateTags(['publication_citation', 'config:views.view.publications']);
     }
 
     $publication_config
