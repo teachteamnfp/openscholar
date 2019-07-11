@@ -1,12 +1,36 @@
+.block-place-region.region.region-footer-bottom.ui-sortable {
+  position: fixed;
+  left: 0px;
+  top: 25px;
+  outline: 0;
+  box-shadow: none;
+  background: #f7f9fb;
+  padding: 10px;
+  border: 1px solid #e2e8ef;
+  transition: top .3s ease;
+  width: 240px;
+  z-index: 9999;
+  &:after {
+    content: "";
+  }
+  label {
+    margin: 10px 0 0 0;
+  }
+  .toolbar-vertical.toolbar-tray-open & {
+    top: 300px;
+  }
+  .toolbar-horizontal.toolbar-tray-open & {
+    top: 64px;
+  }
+  .select-wrapper {
+    z-index: 0;
+  }
+}
 #block-place-widget-selector-wrapper {
-  left: 0;
-  top: 350px;
   padding: 0px;
   background: $color-light-gray9;
   border: 0;
-  width: 240px;
   color: $color-gray5;
-  z-index: 1040;
 }
 #block-list {
   background-color: $color-white;
@@ -112,13 +136,6 @@
           }
         }
       }
-      // &.publication-types {
-      //   a {
-      //     &:before {
-      //       background: url(../../../themes/os_base/images/widgets/publication-type.png) no-repeat;
-      //     }
-      //   }
-      // }
       &.rss-feed {
         a {
           &:before {
