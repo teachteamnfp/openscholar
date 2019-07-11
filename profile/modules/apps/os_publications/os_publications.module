@@ -13,6 +13,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
+use Drupal\Core\Render\Markup;
 use Drupal\Core\Url;
 use Drupal\os_publications\RepecHelper;
 use Drupal\views\Plugin\views\query\QueryPluginBase;
@@ -153,9 +154,9 @@ function os_publications_views_pre_render(ViewExecutable $view) {
     $results = $view->result;
     foreach ($results as $result) {
       $publication = $result->_entity;
-      $text = $publication->label();
+      $text = Markup::create($publication->html_title->value);
       $link = '"' . $publication->toLink($text)->toString() . '"';
-      $publication->title->value = $link;
+      $publication->html_title->value = $link;
     }
   }
 
@@ -179,8 +180,13 @@ function os_publications_bibcite_reference_presave(EntityInterface $entity) {
   /** @var \Drupal\os_publications\PublicationsListingHelperInterface $publications_listing_helper */
   $publications_listing_helper = \Drupal::service('os_publications.listing_helper');
 
+  $label = strip_tags($entity->html_title->value);
+  // Set the label anyway to be used in places such as breadcrumbs.
+  // For other uses we will use html title field.
+  $entity->title->value = $label;
+
   $entity->set('title_first_char_excl_prep', [
-    'value' => $publications_listing_helper->convertLabel($entity->label()),
+    'value' => $publications_listing_helper->convertLabel($label),
   ]);
 }
 
@@ -200,6 +206,7 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
     }
 
     $fields['distribution'] = BaseFieldDefinition::create('list_string')
+      ->setLabel(t("Distribute to Repositories"))
       ->setSetting('allowed_values', $options)
       ->setCardinality(-1)
       ->setDisplayOptions('form', [
@@ -212,7 +219,7 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
       ->setDisplayConfigurable('form', TRUE);
 
     $fields['is_sticky'] = BaseFieldDefinition::create('boolean')
-      ->setLabel(t('Sticky at top of lists'))
+      ->setLabel(t('Is Sticky'))
       ->setDisplayOptions('form', [
         'type' => 'boolean_checkbox',
         'settings' => [
@@ -225,7 +232,7 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
       ->setLabel(t('Title first letter excluding prepositions'));
 
     $fields['status'] = BaseFieldDefinition::create('boolean')
-      ->setLabel(t('Published to this site'))
+      ->setLabel(t('Published'))
       ->setDisplayOptions('form', [
         'type' => 'boolean_checkbox',
         'settings' => [
@@ -265,14 +272,16 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
       ])
       ->setDisplayConfigurable('form', TRUE);
 
-    $fields['path'] = BaseFieldDefinition::create('path')
-      ->setCustomStorage(TRUE)
-      ->setLabel(t('URL'))
+    $fields['html_title'] = BaseFieldDefinition::create('text_long')
+      ->setLabel('Title')
       ->setTranslatable(TRUE)
-      ->setComputed(TRUE)
+      ->setDisplayConfigurable('view', TRUE)
       ->setDisplayOptions('form', [
-        'type' => 'path',
-        'weight' => 30,
+        'type' => 'text_textarea',
+        'weight' => -10,
+        'settings' => [
+          'rows' => 1,
+        ],
       ])
       ->setDisplayConfigurable('form', TRUE);
 
@@ -302,6 +311,11 @@ function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInte
   foreach ($required_fields as $field => $data) {
     $form[$field]['#group'] = 'content';
   }
+
+  // Set custom title filter for html title field and hide existing title field.
+  $form['html_title']['widget']['0']['#format'] = 'title_filter';
+  $form['#attached']['library'][] = 'os_publications/drupal.os_publications';
+  $form['title']['#access'] = FALSE;
 }
 
 /**
@@ -426,7 +440,7 @@ function os_publications_preprocess_bibcite_citation(&$variables) {
   // If publication view page.
   if ($route_name === 'entity.bibcite_reference.canonical') {
     $publication = \Drupal::routeMatch()->getParameter('bibcite_reference');
-    $text = $publication->label();
+    $text = Markup::create($publication->html_title->value);
     $link = '"' . $publication->toLink($text)->toString() . '"';
     $variables['data']['title'] = $link;
 
@@ -448,4 +462,12 @@ function os_publications_preprocess_bibcite_citation(&$variables) {
     $short_url = Link::fromTextAndUrl($url_text, $url)->toString();
     $variables['content']['#markup'] .= '<span class="short-link">' . t("Copy at") . "&nbsp;$short_url" . '</span>';
   }
+}
+
+/**
+ * Implements hook_editor_js_settings_alter().
+ */
+function os_publications_editor_js_settings_alter(array &$settings) {
+  // Badly affects the citation output if not set to false.
+  $settings['editor']['formats']['title_filter']['editorSettings']['autoParagraph'] = FALSE;
 }
