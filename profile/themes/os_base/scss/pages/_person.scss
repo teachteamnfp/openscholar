@@ -38,3 +38,14 @@
     padding-top: 12px;
   }
 }
+
+/**** slide teaser ****/
+.slide-teaser {
+  margin-bottom: 2em;
+  .card.card-body {
+    padding: 1em;
+    box-shadow: 0 1px 3px 0 #ddd, 0 0 0 1px #ddd;
+    margin-top: 5px;
+    border-radius: 0 0 5px 5px;
+}
+}
