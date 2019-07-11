@@ -225,22 +225,6 @@ abstract class TestBase extends OsExistingSiteTestBase {
   }
 
   /**
-   * Returns a particular section of the html page.
-   *
-   * @return string
-   *   The row html to compare.
-   */
-  protected function getActualHtml(): string {
-    $page = $this->getCurrentPage();
-    $row = $page->find('css', '.bibcite-citation');
-    $row_html = $row->getHtml();
-    // Strip Purl from the html for proper comparison as render method won't
-    // return it.
-    $stripped = str_replace("$this->groupAlias", '', $row_html);
-    return preg_replace('/\s*/m', '', $stripped);
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function tearDown() {

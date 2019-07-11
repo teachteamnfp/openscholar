@@ -72,14 +72,17 @@ class CitationRenderCacheTest extends TestBase {
   public function testCitationFullView(): void {
 
     $this->visitViaVsite('bibcite/reference/' . $this->reference->id(), $this->group);
-    $ama_citation = $this->getActualHtml();
+    $ieee_citation = $this->getActualHtml();
 
-    $this->visitViaVsite('cp/settings/publications', $this->group);
-    $this->submitForm(['os_publications_preferred_bibliographic_format' => 'apa'], 'edit-submit');
-    $this->visitViaVsite('bibcite/reference/' . $this->reference->id(), $this->group);
-
+    // Test different styles have different output.
+    $this->changeStyle('apa');
     $apa_citation = $this->getActualHtml();
-    $this->assertNotSame($ama_citation, $apa_citation);
+    $this->assertNotSame($ieee_citation, $apa_citation);
+
+    // Test on switching back to previous style gives same output.
+    $this->changeStyle('ieee');
+    $ieee_citation2 = $this->getActualHtml();
+    $this->assertSame($ieee_citation, $ieee_citation2);
   }
 
   /**
@@ -88,14 +91,29 @@ class CitationRenderCacheTest extends TestBase {
   public function testCitationOnViewPage(): void {
 
     $this->visitViaVsite('publications/', $this->group);
-    $ama_citation = $this->getActualHtml();
+    $ieee_citation = $this->getActualHtml();
 
-    $this->visitViaVsite('cp/settings/publications', $this->group);
-    $this->submitForm(['os_publications_preferred_bibliographic_format' => 'apa'], 'edit-submit');
-    $this->visitViaVsite('publications/', $this->group);
-
+    // Test different styles have different output.
+    $this->changeStyle('apa');
     $apa_citation = $this->getActualHtml();
-    $this->assertNotSame($ama_citation, $apa_citation);
+    $this->assertNotSame($ieee_citation, $apa_citation);
+
+    // Test on switching back to previous style gives same output.
+    $this->changeStyle('ieee');
+    $ieee_citation2 = $this->getActualHtml();
+    $this->assertSame($ieee_citation, $ieee_citation2);
+  }
+
+  /**
+   * Changes vsite style.
+   *
+   * @param string $style
+   *   The style to be set.
+   */
+  private function changeStyle(string $style): void {
+    $this->visitViaVsite('cp/settings/publications', $this->group);
+    $this->submitForm(['os_publications_preferred_bibliographic_format' => $style], 'edit-submit');
+    $this->visitViaVsite('bibcite/reference/' . $this->reference->id(), $this->group);
   }
 
 }

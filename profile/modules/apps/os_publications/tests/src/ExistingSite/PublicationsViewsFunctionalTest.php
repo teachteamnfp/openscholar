@@ -47,9 +47,6 @@ class PublicationsViewsFunctionalTest extends TestBase {
     parent::setUp();
 
     $this->configFactory = $this->container->get('config.factory');
-    /** @var \Drupal\Core\Config\ImmutableConfig $bibcite_settings */
-    $bibcite_settings = $this->configFactory->get('bibcite.settings');
-    $this->defaultBibciteCitationStyle = $bibcite_settings->get('default_style');
     $this->citationStyler = $this->container->get('bibcite.citation_styler');
 
     $this->groupAdmin = $this->createUser();
@@ -101,25 +98,22 @@ class PublicationsViewsFunctionalTest extends TestBase {
 
     $render = $this->citationStyler->render($data);
     $expected = preg_replace('/\s*/m', '', $render);
-    // Render method is adding some additional style, not present in actual
-    // output, rest of the output is same.
-    $expected = str_replace('style="text-indent:-25px;padding-left:25px;"', '', $expected);
 
     $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/publications");
     $actual = $this->getActualHtml();
-    $this->assertSame($expected, $actual);
+    $this->assertContains($actual, $expected);
 
     $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/publications/title");
     $actual = $this->getActualHtml();
-    $this->assertSame($expected, $actual);
+    $this->assertContains($actual, $expected);
 
     $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/publications/author");
     $actual = $this->getActualHtml();
-    $this->assertSame($expected, $actual);
+    $this->assertContains($actual, $expected);
 
     $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/publications/year");
     $actual = $this->getActualHtml();
-    $this->assertSame($expected, $actual);
+    $this->assertContains($actual, $expected);
 
     $this->drupalLogout();
   }
@@ -138,19 +132,6 @@ class PublicationsViewsFunctionalTest extends TestBase {
     $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/publications");
 
     $this->assertSession()->statusCodeEquals(200);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function tearDown() {
-    /** @var \Drupal\Core\Config\Config $bibcite_settings_mut */
-    $bibcite_settings_mut = $this->configFactory->getEditable('bibcite.settings');
-    $bibcite_settings_mut
-      ->set('default_style', $this->defaultBibciteCitationStyle)
-      ->save();
-
-    parent::tearDown();
   }
 
 }
