@@ -90,11 +90,11 @@ class RssFeedBlockRenderTest extends OsWidgetsExistingSiteTestBase {
       'created' => 1555593820,
     ]);
     $this->createReference([
-      'title' => 'Reference1',
+      'html_title' => 'Reference1',
       'created' => 1555593821,
     ]);
     $this->createReference([
-      'title' => 'Reference2',
+      'html_title' => 'Reference2',
       'created' => 1555593822,
     ]);
     $view = Views::getView('os_feeds');

@@ -19,7 +19,7 @@ class PublicationsCreateTest extends TestBase {
    */
   public function testSetTitleFirstLetterExclPrep() {
     $reference = $this->createReference([
-      'title' => 'The Velvet Underground',
+      'html_title' => 'The Velvet Underground',
     ]);
 
     $this->assertEquals('V', $reference->get('title_first_char_excl_prep')->getValue()[0]['value']);

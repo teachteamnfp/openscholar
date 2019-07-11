@@ -2,6 +2,8 @@
 
 namespace Drupal\Tests\os_publications\ExistingSite;
 
+use Drupal\Core\Render\Markup;
+
 /**
  * PublicationsViewsFunctionalTest.
  *
@@ -87,7 +89,7 @@ class PublicationsViewsFunctionalTest extends TestBase {
     ]);
 
     $reference = $this->createReference([
-      'title' => 'Mona Lisa',
+      'html_title' => 'Mona Lisa',
       'author' => [
         'target_id' => $contributor->id(),
         'category' => 'primary',
@@ -105,7 +107,7 @@ class PublicationsViewsFunctionalTest extends TestBase {
     $bibcite_settings_mut->save();
 
     // Construct data array as required by render method.
-    $text = $reference->label();
+    $text = Markup::create($reference->html_title->value);
     $link = '"' . $reference->toLink($text)->toString() . '"';
     $author = [
       'category' => "primary",
@@ -175,7 +177,7 @@ class PublicationsViewsFunctionalTest extends TestBase {
     ]);
 
     $reference1 = $this->createReference([
-      'title' => 'Mona Lisa',
+      'html_title' => 'Mona Lisa',
       'author' => [
         'target_id' => $contributor1->id(),
         'category' => 'primary',
@@ -188,7 +190,7 @@ class PublicationsViewsFunctionalTest extends TestBase {
     $this->group->addContent($reference1, 'group_entity:bibcite_reference');
 
     $reference2 = $this->createReference([
-      'title' => 'Harry Potter and the Deathly Hallows',
+      'html_title' => 'Harry Potter and the Deathly Hallows',
       'type' => 'book',
       'author' => [
         'target_id' => $contributor2->id(),
@@ -205,7 +207,7 @@ class PublicationsViewsFunctionalTest extends TestBase {
     $this->group->addContent($reference2, 'group_entity:bibcite_reference');
 
     $reference3 = $this->createReference([
-      'title' => 'Harry Potter and the Chamber of Secrets',
+      'html_title' => 'Harry Potter and the Chamber of Secrets',
       'type' => 'book',
       'author' => [
         'target_id' => $contributor2->id(),
@@ -222,7 +224,7 @@ class PublicationsViewsFunctionalTest extends TestBase {
     $this->group->addContent($reference3, 'group_entity:bibcite_reference');
 
     $reference4 = $this->createReference([
-      'title' => 'Sorrow',
+      'html_title' => 'Sorrow',
       'author' => [
         'target_id' => $contributor3->id(),
         'category' => 'primary',
@@ -235,7 +237,7 @@ class PublicationsViewsFunctionalTest extends TestBase {
     $this->group->addContent($reference4, 'group_entity:bibcite_reference');
 
     $reference5 = $this->createReference([
-      'title' => 'Wheatfield with Crows',
+      'html_title' => 'Wheatfield with Crows',
       'author' => [
         'target_id' => $contributor3->id(),
         'category' => 'primary',
@@ -248,7 +250,7 @@ class PublicationsViewsFunctionalTest extends TestBase {
     $this->group->addContent($reference5, 'group_entity:bibcite_reference');
 
     $reference6 = $this->createReference([
-      'title' => 'Shesher Kobita',
+      'html_title' => 'Shesher Kobita',
       'type' => 'book',
       'author' => [
         'target_id' => $contributor4->id(),
@@ -265,7 +267,7 @@ class PublicationsViewsFunctionalTest extends TestBase {
     $this->group->addContent($reference6, 'group_entity:bibcite_reference');
 
     $reference7 = $this->createReference([
-      'title' => 'Ghare Baire ',
+      'html_title' => 'Ghare Baire ',
       'type' => 'book',
       'author' => [
         'target_id' => $contributor4->id(),
@@ -297,6 +299,7 @@ class PublicationsViewsFunctionalTest extends TestBase {
     // Confirm that the grouping order is as per the setting.
     /** @var \Behat\Mink\Element\NodeElement[] $groupings */
     $groupings = $this->getSession()->getPage()->findAll('css', '.view-publications .view-content h3');
+    file_put_contents('public://page-name.html', $this->getCurrentPageContent());
 
     $this->assertEquals('V', $groupings[0]->getText());
     $this->assertEquals('T', $groupings[1]->getText());

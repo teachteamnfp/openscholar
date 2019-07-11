@@ -157,7 +157,7 @@ trait ExistingSiteTestTrait {
    */
   public function createReference(array $values = []) : ReferenceInterface {
     $reference = Reference::create($values + [
-      'title' => $this->randomMachineName(),
+      'html_title' => $this->randomMachineName(),
       'type' => 'artwork',
       'bibcite_year' => [
         'value' => 1980,
