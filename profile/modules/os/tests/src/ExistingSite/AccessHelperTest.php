@@ -111,11 +111,7 @@ class AccessHelperTest extends OsExistingSiteTestBase {
     // Negative tests.
     $this->assertInstanceOf(AccessResultNeutral::class, $access_helper->checkAccess($entity, $operation, $account));
 
-    /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
-    $vsite_context_manager = $this->container->get('vsite.context_manager');
-
-    $vsite_context_manager->activateVsite($this->group);
-
+    $this->addGroupContent($entity, $this->group);
     $this->assertInstanceOf(AccessResultNeutral::class, $access_helper->checkAccess($entity, $operation, $account));
 
     // Positive tests.
