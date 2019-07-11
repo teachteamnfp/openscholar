@@ -81,12 +81,7 @@ class PublicationsViewsFunctionalTest extends TestBase {
     ]);
     $this->group->addContent($reference, 'group_entity:bibcite_reference');
 
-    /** @var \Drupal\Core\Config\ConfigFactoryInterface $config_factory */
-    $config_factory = $this->container->get('config.factory');
-    /** @var \Drupal\Core\Config\Config $bibcite_settings_mut */
-    $bibcite_settings_mut = $config_factory->getEditable('bibcite.settings');
-    $bibcite_settings_mut->set('default_style', 'american_medical_association');
-    $bibcite_settings_mut->save();
+    $this->citationStyler->setStyleById('apa');
 
     // Construct data array as required by render method.
     $text = Markup::create($reference->html_title->value);
@@ -104,7 +99,11 @@ class PublicationsViewsFunctionalTest extends TestBase {
 
     $this->drupalLogin($this->groupAdmin);
 
-    $expected = trim($this->citationStyler->render($data));
+    $render = $this->citationStyler->render($data);
+    $expected = preg_replace('/\s*/m', '', $render);
+    // Render method is adding some additional style, not present in actual
+    // output, rest of the output is same.
+    $expected = str_replace('style="text-indent:-25px;padding-left:25px;"', '', $expected);
 
     $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/publications");
     $actual = $this->getActualHtml();

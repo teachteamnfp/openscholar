@@ -236,7 +236,8 @@ abstract class TestBase extends OsExistingSiteTestBase {
     $row_html = $row->getHtml();
     // Strip Purl from the html for proper comparison as render method won't
     // return it.
-    return trim(str_replace("$this->groupAlias", '', $row_html));
+    $stripped = str_replace("$this->groupAlias", '', $row_html);
+    return preg_replace('/\s*/m', '', $stripped);
   }
 
   /**
