@@ -2,6 +2,8 @@
 
 namespace Drupal\Tests\os_publications\ExistingSite;
 
+use Drupal\Core\Render\Markup;
+
 /**
  * PublicationsViewsFunctionalTest.
  *
@@ -69,7 +71,7 @@ class PublicationsViewsFunctionalTest extends TestBase {
     ]);
 
     $reference = $this->createReference([
-      'title' => 'Mona Lisa',
+      'html_title' => 'Mona Lisa',
       'author' => [
         'target_id' => $contributor->id(),
         'category' => 'primary',
@@ -87,7 +89,7 @@ class PublicationsViewsFunctionalTest extends TestBase {
     $bibcite_settings_mut->save();
 
     // Construct data array as required by render method.
-    $text = $reference->label();
+    $text = Markup::create($reference->html_title->value);
     $link = '"' . $reference->toLink($text)->toString() . '"';
     $author = [
       'category' => "primary",
