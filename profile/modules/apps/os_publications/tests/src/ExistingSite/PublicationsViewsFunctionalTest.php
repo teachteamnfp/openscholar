@@ -56,8 +56,8 @@ class PublicationsViewsFunctionalTest extends TestBase {
   /**
    * Tests whether publication style is changed as per the settings.
    *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
    * @throws \Drupal\Core\Entity\EntityStorageException
-   * @throws \Behat\Mink\Exception\ExpectationException
    * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
   public function testReferenceStyle(): void {
@@ -78,8 +78,6 @@ class PublicationsViewsFunctionalTest extends TestBase {
     ]);
     $this->group->addContent($reference, 'group_entity:bibcite_reference');
 
-    $this->citationStyler->setStyleById('apa');
-
     // Construct data array as required by render method.
     $text = Markup::create($reference->html_title->value);
     $link = '"' . $reference->toLink($text)->toString() . '"';
@@ -96,8 +94,12 @@ class PublicationsViewsFunctionalTest extends TestBase {
 
     $this->drupalLogin($this->groupAdmin);
 
+    $this->citationStyler->setStyleById('apa');
     $render = $this->citationStyler->render($data);
     $expected = preg_replace('/\s*/m', '', $render);
+
+    $this->visitViaVsite('cp/settings/publications', $this->group);
+    $this->submitForm(['os_publications_preferred_bibliographic_format' => 'apa'], 'edit-submit');
 
     $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/publications");
     $actual = $this->getActualHtml();
