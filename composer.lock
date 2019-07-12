@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6ac14f065c0c3a04d0c387fe1de374d9",
+    "content-hash": "493d07d3b8e3a85c2ed1ffd51864cf79",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -2694,6 +2694,9 @@
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
                     }
+                },
+                "patches_applied": {
+                    "Contextual links for bibcite reference entities": "patches/3065990-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
