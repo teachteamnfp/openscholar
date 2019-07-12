@@ -104,8 +104,8 @@
             defers[cKey] = $q.defer();
             $http.get(url, {pKey: cKey})
               .then(function (response) {
-                ents[id] = response.data.data[0];
-                defers[cKey].resolve(angular.copy(response.data.data[0]));
+                ents[id] = response.data;
+                defers[cKey].resolve(angular.copy(response.data));
               },
               function (response) {
                 defers[cKey].reject(response);

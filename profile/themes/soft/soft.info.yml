@@ -29,3 +29,8 @@ regions:
 
 libraries:
   - soft/global-styling
+
+ckeditor_stylesheets:
+  - //fonts.googleapis.com/css?family=Roboto+Slab
+  - //fonts.googleapis.com/css?family=Roboto
+  - css/ckeditor.css

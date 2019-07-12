@@ -5,6 +5,8 @@ dependencies:
   config:
     - bibcite_entity.bibcite_reference_type.conference_proceedings
     - field.field.bibcite_reference.conference_proceedings.field_attach_files
+    - field.field.bibcite_reference.conference_proceedings.field_extra_fields
+    - field.field.bibcite_reference.conference_proceedings.field_publication_image
     - field.field.bibcite_reference.conference_proceedings.field_taxonomy_terms
   enforced:
     module:
@@ -13,6 +15,9 @@ dependencies:
       - bibcite_entity.bibcite_reference_type.conference_proceedings
   module:
     - bibcite_entity
+    - image
+    - key_value_field
+    - text
 _core:
   default_config_hash: NiyyYKirXiUYgfWgp2bf1fFRwWAkdIWG0yCjt8a9GT8
 id: bibcite_reference.conference_proceedings.default
@@ -410,6 +415,23 @@ content:
       link: false
     third_party_settings: {  }
     region: content
+  field_extra_fields:
+    weight: 53
+    label: hidden
+    settings:
+      value_only: false
+    third_party_settings: {  }
+    type: key_value
+    region: content
+  field_publication_image:
+    weight: 52
+    label: above
+    settings:
+      image_style: ''
+      image_link: ''
+    third_party_settings: {  }
+    type: image
+    region: content
   field_taxonomy_terms:
     weight: 103
     label: above
@@ -418,6 +440,13 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
     region: content
+  full_text:
+    type: text_default
+    weight: 5
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
   keywords:
     type: entity_reference_label
     weight: 4
@@ -425,6 +454,13 @@ content:
     label: above
     settings:
       link: true
+    third_party_settings: {  }
+  notes:
+    type: text_default
+    weight: 6
+    region: content
+    label: above
+    settings: {  }
     third_party_settings: {  }
 hidden:
   bibcite_type: true

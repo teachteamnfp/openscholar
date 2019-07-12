@@ -1,31 +1,8 @@
 /** all base style goes here **/
-body {
-  min-height: inherit;
-  line-height: 23px;
-  margin: 0;
-  padding: 0;
-  color: $text-color;
-  font-family: $font-family-sans-serif;
-}
-h1 {
-  font-size: 30px;
-}
-h2 {
-  font-size: 1.3em;
-}
-a, a:visited {
-  color: $color-link1;
-}
-p {
-  margin: 0px 0px 1.5em;
-  padding: 0px;
-}
+@import './common';
+
 .date, time {
   color: $color-gray;
-}
-h1, h2, h3, h4, h5, h6 {
-  margin: 0;
-  padding: 0;
 }
 .node--teaser {
   .field-name-body {
@@ -40,54 +17,6 @@ h1, h2, h3, h4, h5, h6 {
       line-height: 1.2em;
     }
   }
-}
-em,
-dfn {
-  font-style: italic;
-}
-ins {
-  border-bottom: none;
-  text-decoration: none;
-}
-dt {
-  font-weight: 700;
-}
-dd {
-  margin: 0 0 1.5em 40px;
-}
-pre,
-code,
-tt,
-samp,
-kbd,
-var {
-  font-size: 1em;
-  font-family: Consolas, "Lucida Console", Menlo, Monaco, "DejaVu Sans Mono", monospace, sans-serif;
-}
-blockquote,
-q {
-  font-style: italic;
-  quotes: "" "";
-}
-blockquote {
-  border-left: 2px solid #807E6D;
-  font-style: italic;
-  margin: 1em 3em;
-  padding-left: 1em;
-  &:before, &:after {
-    content: "";
-  }
-}
-strong,
-dfn,
-caption,
-th {
-  font-weight: 700;
-}
-ul,
-ol {
-  margin: 0 0 1.5em 17px;
-  padding: 0;
 }
 .field--name-body {
   ol ul {
@@ -207,6 +136,4 @@ ul ul,
 ul ul ul ul {
   list-style-type: circle;
 }
-address {
-  font-style: italic;
-}
+

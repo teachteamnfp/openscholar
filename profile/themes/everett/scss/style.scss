@@ -1,46 +1,16 @@
 @import '../../os_base/scss/base/breakpoints';
-//colors
-$black: #000;
-$color_hippie_green_approx: #467141;
-$white: #fff;
-$color_red_stage_approx: #BF5803;
-$color_mountain_mist_approx: #757575;
-$color_concrete_approx: #f3f3f1;
-$color_indian_khaki_22_approx: #E3E0D4;
-$color_iron_approx: #d7d7d7;
-$color_fuscous_gray_approx: #555;
+@import './variables';
+@import './common';
 
-//fonts
-$font_0: Droid Sans;
-$font_1: sans-serif !important;
-
-//@extend-elements
-%extend_1 {
-  color: $color_hippie_green_approx;
-  text-transform: none;
-  font-weight: bold;
-  font-size: 1.25em;
-}
-%extend_2 {
-  background-color: $white;
-  border-top: 4px solid $color_hippie_green_approx;
-  color: $color_hippie_green_approx;
-  padding: 12px 15px 16px;
-}
-@import url(https://fonts.googleapis.com/css?family=Droid+Sans);
 html {
   color: $black;
 }
 body {
-  color: $black;
-  font-family: $font_0, $font_1;
+  @extend %body;
 }
 a,
 .full-calendar-view .fc-header-toolbar button {
-  color: $color_hippie_green_approx;
-  &:visited {
-    color: $color_hippie_green_approx;
-  }
+  @extend %link;
 }
 .node-readmore a:after {
   background: none;

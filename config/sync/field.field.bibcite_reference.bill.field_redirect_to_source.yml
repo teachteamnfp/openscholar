@@ -1,0 +1,23 @@
+uuid: 7c47741e-3555-4f74-93a0-7d08cb2b0bf8
+langcode: en
+status: true
+dependencies:
+  config:
+    - bibcite_entity.bibcite_reference_type.bill
+    - field.storage.bibcite_reference.field_redirect_to_source
+  module:
+    - link
+id: bibcite_reference.bill.field_redirect_to_source
+field_name: field_redirect_to_source
+entity_type: bibcite_reference
+bundle: bill
+label: 'Link citation directly to:'
+description: 'ex. http://amazon.com/mybook If used the publication title in the citation will link directly to the URL provided here and will bypass the landing page.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 17
+  title: 0
+field_type: link

@@ -42,7 +42,7 @@ class GoogleScholarMappingTest extends TestBase {
   public function testGoogleScholarMetadataMapping() {
     $this->drupalLogin($this->admin);
     $reference = $this->createReference([
-      'title' => 'Google Scholar Mapping test',
+      'html_title' => 'Google Scholar Mapping test',
       'bibcite_year' => '2019',
       'bibcite_abst_e' => 'This is a test for Google Scholar test.',
       'bibcite_publisher' => 'testpublisher',

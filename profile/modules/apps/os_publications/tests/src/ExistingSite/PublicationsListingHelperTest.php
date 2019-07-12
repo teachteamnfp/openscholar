@@ -98,6 +98,9 @@ class PublicationsListingHelperTest extends TestBase {
     $this->assertCount(1, $redirects);
     $redirect = reset($redirects);
     $this->assertEquals("internal:/$source/year", $redirect->getRedirect()['uri']);
+
+    $new_redirect = $this->listingHelper->setRedirect($source, "internal:/$source/type");
+    $this->assertNull($new_redirect);
   }
 
 }

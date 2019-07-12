@@ -1,0 +1,22 @@
+uuid: 3fbd60ac-2202-46ed-8c9a-bad9fa869f94
+langcode: en
+status: true
+dependencies:
+  module:
+    - basic_auth
+    - hal
+    - os_rest
+    - serialization
+    - user
+id: group.extras
+plugin_id: 'group:extras'
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - hal_json
+    - json
+  authentication:
+    - basic_auth
+    - cookie
