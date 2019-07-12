@@ -30,3 +30,7 @@ regions:
 
 libraries:
   - onepage/global-styling
+
+ckeditor_stylesheets:
+  - //fonts.googleapis.com/css?family=Montserrat
+  - css/ckeditor.css

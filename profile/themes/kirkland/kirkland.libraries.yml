@@ -3,5 +3,7 @@ global-styling:
   css:
     theme:
       css/style.css: {}
+      '//fonts.googleapis.com/css?family=Quattrocento:400,700&display=swap': { external: true }
+      '//fonts.googleapis.com/css?family=Oswald:400,700': { external: true }
   js:
     js/kirkland.js: {}

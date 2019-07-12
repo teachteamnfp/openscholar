@@ -5,10 +5,13 @@
  * Hook implementations for the vsite module.
  */
 
+use Drupal\bibcite_entity\Entity\ReferenceInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\node\NodeInterface;
+use Drupal\views\Plugin\views\cache\CachePluginBase;
 use Drupal\vsite\Entity\GroupPresetInterface;
 use Drupal\vsite\Entity\GroupPreset;
 use Drupal\Core\Form\ConfigFormBase;
-use Drupal\Core\Asset\AttachedAssetsInterface;
 use Drupal\Core\Url;
 use Drupal\group\Entity\GroupInterface;
 use Drupal\Core\Cache\CacheableMetadata;
@@ -129,7 +132,7 @@ function vsite_form_alter(&$form, FormStateInterface $formState, $form_id) {
       $availablePlugins = $plugins[$groupTypeId];
 
       $plugin_id = 'group_entity:' . $entity->getEntityTypeId();
-      if (in_array($plugin_id, $availablePlugins) && ($entity->isNew() || !($existingEntity = $group->getContentByEntityId($plugin_id, $entity->id())))) {
+      if (in_array($plugin_id, $availablePlugins) && ($entity->isNew() || !($group->getContentByEntityId($plugin_id, $entity->id())))) {
         $formState->set('group', $group);
         $formState->set('group_content_enabler', $plugin_id);
         foreach (Element::children($form['actions']) as $name) {
@@ -286,30 +289,6 @@ function _vsite_get_group_and_subsite_ids(GroupInterface $group) {
 }
 
 /**
- * Implements hook_js_settings_alter().
- *
- * Performs alterations in drupalSettings specifically for vsites.
- */
-function vsite_js_settings_alter(array &$settings, AttachedAssetsInterface $assets) {
-  /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
-  $vsite_context_manager = \Drupal::service('vsite.context_manager');
-  /** @var \Drupal\group\Entity\GroupInterface|null $vsite */
-  $vsite = $vsite_context_manager->getActiveVsite();
-
-  if (!$vsite) {
-    return;
-  }
-
-  // Make sure that the destination parameter in contextual links are correct.
-  // See contextual.es6.js - initContextual.
-  /** @var string $current_path */
-  $current_path = \Drupal::service('path.current')->getPath();
-  // The prefix `/` will be added as part of baseUrl. Therefore, removing it
-  // from here, to prevent multiple slashes.
-  $settings['path']['currentPath'] = ltrim($current_path, '/');
-}
-
-/**
  * Implements hook_group_create().
  */
 function vsite_group_create(GroupInterface $group) {
@@ -352,6 +331,47 @@ function _vsite_process_preset_task(GroupInterface $group, GroupPresetInterface 
   if (is_callable($task)) {
     return call_user_func_array($task, [$group, $preset, &$context]);
   }
-  // What do I do here?
-  return;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view_alter().
+ */
+function vsite_node_view_alter(array &$build, NodeInterface $entity, EntityViewDisplayInterface $display) {
+  // Makes sure that the destination parameter in contextual links in node
+  // full-views are correct.
+  // For edit, it should direct to the node page.
+  // For delete, it should direct to the node's listing.
+  if ($build['#view_mode'] === 'full') {
+    $build['#attached']['library'][] = 'vsite/contextualFullView';
+    $build['#attached']['drupalSettings']['entitySetting'] = [
+      'type' => $entity->getEntityTypeId(),
+      'bundle' => $entity->bundle(),
+    ];
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view_alter().
+ */
+function vsite_bibcite_reference_view_alter(array &$build, ReferenceInterface $entity, EntityViewDisplayInterface $display) {
+  // Makes sure that the destination parameter in contextual links in
+  // publication full-view and listing are correct.
+  // For edit, it should direct to the publication's full-view.
+  // For delete, it should direct to the publications listing.
+  if (in_array($build['#view_mode'], ['citation', 'teaser'])) {
+    $build['#attached']['library'][] = 'vsite/contextualFullView';
+    $build['#attached']['drupalSettings']['entitySetting'] = [
+      'type' => $entity->getEntityTypeId(),
+      'bundle' => $entity->bundle(),
+    ];
+  }
+}
+
+/**
+ * Implements hook_views_post_render().
+ */
+function vsite_views_post_render(ViewExecutable $view, &$output, CachePluginBase $cache) {
+  // Makes sure that destination parameter in contextual links in listings are
+  // correct. They should be directing to the listing itself.
+  $view->element['#attached']['library'][] = 'vsite/contextualList';
 }

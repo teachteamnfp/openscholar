@@ -1,0 +1,16 @@
+%font1 {
+  font-family: 'Droid Sans', sans-serif;
+}
+%font2 {
+  font-family: 'Volkhov', sans-serif;
+}
+body {
+  @extend %font1;
+}
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @extend %font2;
+}

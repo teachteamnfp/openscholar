@@ -101,7 +101,7 @@ content:
     type: telephone_link
     weight: 10
     region: content
-    label: hidden
+    label: inline
     settings:
       title: ''
     third_party_settings: {  }

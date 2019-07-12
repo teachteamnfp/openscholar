@@ -218,8 +218,18 @@ class AppearanceSettingsBuilderTest extends TestBase {
     // Test more operations.
     $theme = $custom_themes[$custom_theme_entity_1->id()];
     $this->assertGreaterThan(0, \count($theme->more_operations));
-    $more_operations = $theme->more_operations[0];
-    $this->assertInstanceOf(Link::class, $more_operations);
+
+    /** @var \Drupal\Core\Link $edit_operation */
+    $edit_operation = $theme->more_operations[0];
+    $edit_url = $edit_operation->getUrl();
+    $this->assertInstanceOf(Link::class, $edit_operation);
+    $this->assertEquals('entity.cp_custom_theme.edit_form', $edit_url->getRouteName());
+
+    /** @var \Drupal\Core\Link $delete_operation */
+    $delete_operation = $theme->more_operations[1];
+    $delete_url = $delete_operation->getUrl();
+    $this->assertInstanceOf(Link::class, $delete_operation);
+    $this->assertEquals('entity.cp_custom_theme.delete_form', $delete_url->getRouteName());
 
     // Test notes.
     $this->assertCount(0, $inactive_theme->notes);

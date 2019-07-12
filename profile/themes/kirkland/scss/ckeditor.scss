@@ -1,0 +1,10 @@
+@import './variables';
+@import './common';
+body {
+  @extend %style1;
+}
+h2,
+h3,
+h4 {
+  @extend %style2;
+}
