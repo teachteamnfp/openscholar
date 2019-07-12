@@ -158,9 +158,11 @@ function os_alter_post_node_delete_redirect(array &$form, FormStateInterface $fo
  * Implements hook_menu_local_tasks_alter().
  */
 function os_menu_local_tasks_alter(&$data, $route_name, RefinableCacheableDependencyInterface &$cacheability) {
-  $routes_to_check = ['entity.node.canonical'];
+  $entities_tabs_to_disable = ['node', 'bibcite_reference'];
 
-  if (in_array($route_name, $routes_to_check, TRUE)) {
-    unset($data['tabs'][0]['entity.node.edit_form'], $data['tabs'][0]['entity.node.delete_form']);
+  foreach ($entities_tabs_to_disable as $item) {
+    if ($route_name === "entity.$item.canonical") {
+      unset($data['tabs'][0]["entity.$item.edit_form"], $data['tabs'][0]["entity.$item.delete_form"]);
+    }
   }
 }
