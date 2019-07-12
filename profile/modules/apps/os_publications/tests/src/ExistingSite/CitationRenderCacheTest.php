@@ -62,7 +62,7 @@ class CitationRenderCacheTest extends TestBase {
 
     /** @var \Drupal\Core\Config\Config $bibcite_settings_mut */
     $publication_settings_mut = $this->configFactory->getEditable('os_publications.settings');
-    $publication_settings_mut->set('default_style', 'ieee');
+    $publication_settings_mut->set('default_style', 'apa');
     $publication_settings_mut->save();
   }
 
@@ -72,17 +72,17 @@ class CitationRenderCacheTest extends TestBase {
   public function testCitationFullView(): void {
 
     $this->visitViaVsite('bibcite/reference/' . $this->reference->id(), $this->group);
-    $ieee_citation = $this->getActualHtml();
+    $apa_citation = $this->getActualHtml();
 
     // Test different styles have different output.
-    $this->changeStyle('apa');
-    $apa_citation = $this->getActualHtml();
+    $this->changeStyle('ieee');
+    $ieee_citation = $this->getActualHtml();
     $this->assertNotSame($ieee_citation, $apa_citation);
 
     // Test on switching back to previous style gives same output.
-    $this->changeStyle('ieee');
-    $ieee_citation2 = $this->getActualHtml();
-    $this->assertSame($ieee_citation, $ieee_citation2);
+    $this->changeStyle('apa');
+    $apa_citation2 = $this->getActualHtml();
+    $this->assertSame($apa_citation, $apa_citation2);
   }
 
   /**
@@ -90,18 +90,18 @@ class CitationRenderCacheTest extends TestBase {
    */
   public function testCitationOnViewPage(): void {
 
-    $this->visitViaVsite('publications/', $this->group);
-    $ieee_citation = $this->getActualHtml();
+    $this->visitViaVsite('publications', $this->group);
+    $apa_citation = $this->getActualHtml();
 
     // Test different styles have different output.
-    $this->changeStyle('apa');
-    $apa_citation = $this->getActualHtml();
+    $this->changeStyle('ieee');
+    $ieee_citation = $this->getActualHtml();
     $this->assertNotSame($ieee_citation, $apa_citation);
 
     // Test on switching back to previous style gives same output.
-    $this->changeStyle('ieee');
-    $ieee_citation2 = $this->getActualHtml();
-    $this->assertSame($ieee_citation, $ieee_citation2);
+    $this->changeStyle('apa');
+    $apa_citation2 = $this->getActualHtml();
+    $this->assertSame($apa_citation, $apa_citation2);
   }
 
   /**
