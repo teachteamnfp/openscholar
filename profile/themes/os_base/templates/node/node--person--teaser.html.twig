@@ -102,7 +102,7 @@
 
     {% block content %}
       <div{{ content_attributes }}>
-        {{ content|without("field_photo_person", "field_first_name", "field_last_name","field_honorific", "field_middle_name") }}
+        {{ content|without("field_photo_person") }}
       </div>
     {% endblock %}
   </div>
