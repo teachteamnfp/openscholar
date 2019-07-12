@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6f6a62a125ac2810a71c0be8f88d9571",
+    "content-hash": "493d07d3b8e3a85c2ed1ffd51864cf79",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -5907,20 +5907,32 @@
         },
         {
             "name": "drupal/repec",
-            "version": "master",
+            "version": "v2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/openscholar/repec.git",
-                "reference": "master"
+                "reference": "9c3821d90d49458fba780aa8623ea20b890c090c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/openscholar/repec/archive/master.zip",
-                "reference": "master",
-                "shasum": null
+                "url": "https://api.github.com/repos/openscholar/repec/zipball/9c3821d90d49458fba780aa8623ea20b890c090c",
+                "reference": "9c3821d90d49458fba780aa8623ea20b890c090c",
+                "shasum": ""
             },
             "type": "drupal-module",
-            "time": "2019-04-23T13:49:43+00:00"
+            "license": [
+                "GPL-2.0+"
+            ],
+            "description": "RDF integration with Research Papers in Economics (RePEc)",
+            "homepage": "https://www.drupal.org/project/repec",
+            "keywords": [
+                "Drupal"
+            ],
+            "support": {
+                "issues": "https://www.drupal.org/project/issues/repec",
+                "source": "http://cgit.drupalcode.org/repec"
+            },
+            "time": "2019-07-09T13:33:34+00:00"
         },
         {
             "name": "drupal/rng",
