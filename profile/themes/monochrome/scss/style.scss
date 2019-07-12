@@ -1,6 +1,7 @@
 @import '../../os_base/scss/base/breakpoints';
 @import './variables';
 @import './base';
+@import './../../os_base/scss/base/poweredby_common';
 //@extend-elements
 %extend_1 {
   width: 55px;
@@ -257,11 +258,5 @@ header {
 footer {
   button.visually-hidden {
     color: $black;
-  }
-}
-/**** powered by ****/
-.block-system-powered-by-block {
-  .powered-by {
-    background-position: -14px -548px;
   }
 }

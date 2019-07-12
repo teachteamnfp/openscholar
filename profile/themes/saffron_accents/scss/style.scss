@@ -1,7 +1,7 @@
 @import '../../os_base/scss/base/breakpoints';
 @import './variables';
 @import './base';
-
+@import './../../os_base/scss/base/poweredby_common';
 body {
   color: $color_tundora_approx;
 }
@@ -236,10 +236,4 @@ footer {
 }
 .search-block-form .form-item label.sr-only {
   color: $black;
-}
-/**** powered by ****/
-.block-system-powered-by-block {
-  .powered-by {
-    background-position: -14px -548px;
-  }
 }
