@@ -16,7 +16,6 @@ permissions:
   1: 'manage cp users'
   2: 'manage taxonomy'
   3: 'access content overview'
-  4: 'administer group'
   5: 'delete group'
   6: 'edit group'
   7: 'view group'
@@ -208,4 +207,4 @@ permissions:
   193: 'view group_entity:bibcite_reference content'
   194: 'manage cp roles'
   195: 'manage layout'
-  388: 'access private apps'
+  196: 'access private apps'
