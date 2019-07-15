@@ -35,6 +35,10 @@
 #block-list {
   background-color: $color-white;
   border: 1px solid $color-light-gray10;
+  .block.ui-sortable-handle {
+    border-bottom: 1px solid $color-light-gray10;
+    padding: 5px 0;
+  }
 }
 #factory-wrapper {
   background-color: $color-light-gray9;
@@ -61,7 +65,9 @@
     text-decoration: none;
   }
   h3 {
-    font-size: 1.3em;
+    font-size: 1em;
+    cursor: pointer;
+    text-transform: capitalize;
   }
   ul.links {
     list-style-type: none;
