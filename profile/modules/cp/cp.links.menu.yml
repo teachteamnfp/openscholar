@@ -74,10 +74,6 @@ cp.settings.global:
   parent: cp.settings
 # These are temporary placeholders, and should be removed when they
 # are properly implemented.
-cp.settings.global.cache:
-  title: 'Cache / Reindex'
-  url: 'internal:##'
-  parent: cp.settings.global
 cp.settings.global.domain:
   title: 'Custom Domain'
   url: 'internal:##'

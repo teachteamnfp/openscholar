@@ -1,0 +1,3 @@
+manage vsite solr search:
+  title: 'Manage vsite search support and facets'
+  description: 'Allows the user to manage vsite search support and facets.'

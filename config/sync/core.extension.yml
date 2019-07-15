@@ -117,6 +117,7 @@ module:
   os_redirect: 0
   os_redirect_to_source: 0
   os_rest: 0
+  os_search_solr: 0
   os_slideshow: 0
   os_software: 0
   os_taxonomy: 0
