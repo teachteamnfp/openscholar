@@ -166,6 +166,7 @@ module:
   views_infinite_scroll: 0
   views_ui: 0
   vsite: 0
+  vsite_domain: 0
   vsite_favicon: 0
   vsite_infinite_scroll: 0
   vsite_privacy: 0
