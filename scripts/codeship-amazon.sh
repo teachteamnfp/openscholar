@@ -94,6 +94,7 @@ if [[ $FORCE_REBUILD == "1" ]] || [[ "$(cmp -b 'openscholar/composer.json' '/tmp
   rm -rf web/modules/contrib/views_ical || true
   rm -rf web/modules/contrib/bibcite || true
   rm -rf vendor/behat/mink || true
+  rm -rf web/modules/contrib/repec || true
 
   # Download composer components
   composer install --ignore-platform-reqs --no-interaction --prefer-dist --no-dev || exit 1

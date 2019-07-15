@@ -1,23 +1,13 @@
 #block-place-context-selector-wrapper {
-  position: fixed;
-  padding: 20px;
-  right: 0;
-  bottom: 0;
+  padding: 10px;
   background-color: white;
-  border-top: gray 1px solid;
-  border-left: gray 1px solid;
-  border-top-left-radius: 5px;
+  border: 1px solid #e2e8ef;
 }
 
 #block-place-actions-wrapper {
-  position: fixed;
-  right: 244px;
-  padding: 20px;
-  bottom: 0;
+  padding: 10px;
   background-color: white;
-  border-top: gray 1px solid;
-  border-left: gray 1px solid;
-  border-top-left-radius: 5px;
+  border: 1px solid #e2e8ef;
 }
 
 .modal-backdrop {
@@ -44,17 +34,8 @@
 }
 
 #block-place-widget-selector-wrapper {
-  position: fixed;
-  right: 0;
-  top: 100px;
-  padding: 10px;
-  background: #444;
-  color: #ddd;
-  border: 1px solid black;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
-  bottom: 200px;
-  width: 250px;
 }
 
 #block-list {
@@ -64,6 +45,8 @@
   overflow-y: auto;
   overflow-x: hidden;
   color: #000;
+  height: 200px;
+  padding: 10px;
 }
 
 #block-place-widget-selector-wrapper a,

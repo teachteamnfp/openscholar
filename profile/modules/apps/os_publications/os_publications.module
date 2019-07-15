@@ -101,6 +101,12 @@ function os_publications_views_query_alter(ViewExecutable $view, QueryPluginBase
     if ($group['field'] === $mapping->get($view->current_display, NULL)) {
       $group['direction'] = $sort_order;
     }
+
+    // Additionaly, sorting of rows inside every group in publications by
+    // author can also be controlled from the setting.
+    if ($view->current_display === 'page_2' && $group['field'] === 'bibcite_reference_title') {
+      $group['direction'] = $sort_order;
+    }
   }
 }
 
