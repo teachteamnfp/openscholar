@@ -221,6 +221,7 @@ class PublicationSettingsForm extends CpSettingBase {
 
     $form['os_publications_export_format'] = [
       '#title' => $this->t('Export format'),
+      '#description' => $this->t('Each selected format will appear in its own export link.'),
       '#type' => 'checkboxes',
       '#default_value' => $publication_config->get('export_format'),
       '#options' => array_map(function ($format) {
@@ -237,6 +238,7 @@ class PublicationSettingsForm extends CpSettingBase {
     $form['citation_distribute_autoflags'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Distribute to repositories'),
+      '#description' => $this->t('New publications will automatically be flagged for distribution to the selected services.'),
       '#default_value' => $publication_config->get('citation_distribute_autoflags'),
       '#options' => $distribution_options,
       '#prefix' => '<div class="citation-row">',
