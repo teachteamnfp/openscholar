@@ -333,4 +333,68 @@ class CustomThemeFunctionalTest extends CpAppearanceExistingSiteJavascriptTestBa
     $this->assertDirectoryNotExists('file://' . CustomTheme::ABSOLUTE_CUSTOM_THEMES_LOCATION . '/' . $custom_theme->id());
   }
 
+  /**
+   * Checks sanity of custom themes across multiple vsites.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   * @throws \Behat\Mink\Exception\ResponseTextException
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   * @throws \Behat\Mink\Exception\ExpectationException
+   */
+  public function testMultipleVsites(): void {
+    // Setup.
+    $group_admin = $this->createUser();
+    $group2 = $this->createGroup();
+    $this->addGroupAdmin($group_admin, $this->group);
+    $this->addGroupAdmin($group_admin, $group2);
+    $this->drupalLogin($group_admin);
+
+    // Create custom theme in vsite1.
+    $custom_theme1_label = strtolower($this->randomMachineName());
+    $this->visitViaVsite('cp/appearance/custom-themes/add', $this->group);
+    $this->getSession()->getPage()->fillField('Custom Theme Name', $custom_theme1_label);
+    $this->assertSession()->waitForElementVisible('css', '.machine-name-value');
+    $this->getSession()->getPage()->selectFieldOption('Parent Theme', 'clean');
+    $this->getSession()->getPage()->findField('styles')->setValue('body { color: black; }');
+    $this->getSession()->getPage()->findField('scripts')->setValue('alert("Hello World")');
+    $this->getSession()->getPage()->pressButton('Save and set as default theme');
+    $this->getSession()->getPage()->pressButton('Confirm');
+
+    // Create custom theme in vsite2.
+    $custom_theme2_label = strtolower($this->randomMachineName());
+    $this->visitViaVsite('cp/appearance/custom-themes/add', $group2);
+    $this->getSession()->getPage()->fillField('Custom Theme Name', $custom_theme2_label);
+    $this->assertSession()->waitForElementVisible('css', '.machine-name-value');
+    $this->getSession()->getPage()->selectFieldOption('Parent Theme', 'clean');
+    $this->getSession()->getPage()->findField('styles')->setValue('body { color: black; }');
+    $this->getSession()->getPage()->findField('scripts')->setValue('alert("Hello World")');
+    $this->getSession()->getPage()->pressButton('Save and set as default theme');
+    $this->getSession()->getPage()->pressButton('Confirm');
+
+    // Tests.
+    $this->visitViaVsite('cp/appearance', $this->group);
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->pageTextContains($custom_theme1_label);
+
+    $this->visitViaVsite('cp/appearance', $group2);
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->pageTextContains($custom_theme2_label);
+
+    // Cleanup.
+    /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
+    $vsite_context_manager = $this->container->get('vsite.context_manager');
+
+    $vsite_context_manager->activateVsite($this->group);
+    $custom_theme1 = CustomTheme::load(CustomTheme::CUSTOM_THEME_ID_PREFIX . $custom_theme1_label);
+    $custom_theme1->delete();
+
+    $vsite_context_manager->activateVsite($group2);
+    $custom_theme2 = CustomTheme::load(CustomTheme::CUSTOM_THEME_ID_PREFIX . $custom_theme2_label);
+    $custom_theme2->delete();
+
+    /** @var \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler */
+    $theme_handler = $this->container->get('theme_handler');
+    $theme_handler->refreshInfo();
+  }
+
 }
