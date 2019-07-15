@@ -8,6 +8,9 @@ use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTest
 
 /**
  * Tests the angular Link Form.
+ *
+ * @group functional-javascript
+ * @group os
  */
 class OsWysiwygLinkFormTest extends OsExistingSiteJavascriptTestBase {
 
