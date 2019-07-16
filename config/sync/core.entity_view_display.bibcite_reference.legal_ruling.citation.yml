@@ -8,6 +8,7 @@ dependencies:
     - field.field.bibcite_reference.legal_ruling.field_attach_files
     - field.field.bibcite_reference.legal_ruling.field_extra_fields
     - field.field.bibcite_reference.legal_ruling.field_publication_image
+    - field.field.bibcite_reference.legal_ruling.field_redirect_to_source
     - field.field.bibcite_reference.legal_ruling.field_taxonomy_terms
     - image.style.publication_details_image
   enforced:
@@ -63,14 +64,14 @@ content:
     third_party_settings: {  }
   full_text:
     type: text_default
-    weight: 3
+    weight: 4
     region: content
     label: above
     settings: {  }
     third_party_settings: {  }
   notes:
     type: text_default
-    weight: 4
+    weight: 3
     region: content
     label: above
     settings: {  }
