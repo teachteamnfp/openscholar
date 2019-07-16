@@ -37,11 +37,17 @@
       p {
         margin-left: 5px;
         font-weight: normal;
+        margin-bottom: 0;
       }
     }
   }
   .field--name-field-publication-image {
     float: left;
     margin: 0 1.5em .5em 0;
+  }
+  .bibcite-reference {
+    p {
+      margin-bottom: 1.5em;
+    }
   }
 }
