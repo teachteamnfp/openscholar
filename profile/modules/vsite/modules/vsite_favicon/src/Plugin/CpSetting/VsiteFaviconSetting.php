@@ -43,6 +43,7 @@ class VsiteFaviconSetting extends CpSettingBase {
       '#upload_validators' => [
         'file_validate_extensions' => ['png'],
         'file_validate_image_resolution' => ['228x228'],
+        'file_validate_size' => [10 * 1024 * 1024],
       ],
       '#accept' => '.png',
     ];
