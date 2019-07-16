@@ -156,6 +156,49 @@ function os_publications_views_pre_render(ViewExecutable $view) {
     return;
   }
 
+  $publications_config = \Drupal::configFactory()->get('os_publications.settings');
+  $formats = $publications_config->get('export_format');
+
+  $format_manager = \Drupal::service('plugin.manager.bibcite_format');
+
+  $export_button = [
+    '#theme' => 'item_list__os_dropdown',
+    '#title' => [
+      '#type' => 'button',
+      '#value' => t('Download Citation'),
+      '#attributes' => [
+        'data-toggle' => 'dropdown',
+        'role' => 'button',
+        'aria-haspopup' => 'true',
+        'aria-expanded' => 'false',
+      ],
+    ],
+    '#list_type' => 'ul',
+    '#attributes' => [
+      'class' => ['dropdown-menu'],
+    ],
+    '#wrapper_attributes' => [
+      'class' => ['dropdown'],
+    ],
+    '#weight' => 100,
+  ];
+
+  $request = \Drupal::request();
+  foreach ($formats as $format) {
+    $format = $format_manager->createInstance($format);
+    $export_button['#items'][] = [
+      '#type' => 'link',
+      '#title' => $format->getLabel(),
+      '#url' => Url::fromRoute('os_publictions.citation_export', [
+        'bibcite_format' => $format->getLabel(),
+        'entity_type' => 'bibcite_reference',
+        'request' => $request,
+      ]),
+    ];
+  }
+
+  $view->attachment_before = $export_button;
+
   if ($view->current_display !== 'cp') {
     // Convert citation title into publication entity page's url.
     $results = $view->result;

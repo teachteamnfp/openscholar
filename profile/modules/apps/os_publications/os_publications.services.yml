@@ -14,3 +14,7 @@ services:
     arguments: ['@os_publications.manager_citation_distribute']
     tags:
       - { name: event_subscriber }
+  os_publications.param_converter:
+    class: Drupal\os_publications\ParamConverter\OsPublicationsParamConverter
+    tags:
+      - { name: paramconverter }

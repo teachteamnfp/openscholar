@@ -5,3 +5,19 @@ os_publications.citation_distribute_settings:
     _title: 'Common Settings'
   requirements:
     _permission: 'administer site configuration'
+
+os_publictions.citation_export:
+  path: '/citation/export/{bibcite_format}/{entity_type}/{request}'
+  defaults:
+    _controller: '\Drupal\bibcite_export\Controller\ExportController::exportMultiple'
+    _title: 'BibCite Export'
+  requirements:
+    _permission: 'access content'
+  options:
+    parameters:
+      bibcite_format:
+        type: bibcite_format
+      entity:
+        type: entity:{entity_type}
+      request:
+        type: request
