@@ -274,28 +274,31 @@ class PublicationSettingsForm extends CpSettingBase {
       ($form_state_values['os_publications_preferred_bibliographic_format'] !== $publication_config->get('default_style'))) {
       // This is necessary, otherwise, the setting fails to get updated in the
       // UI.
-      $this->cacheTagsInvalidator->invalidateTags(['publication_citation', 'config:views.view.publications']);
+      $this->cacheTagsInvalidator->invalidateTags([
+        'publication_citation',
+        'config:views.view.publications',
+      ]);
+    }
 
-      $publication_config
-        ->set('default_style', $form_state_values['os_publications_preferred_bibliographic_format'])
-        ->set('filter_publication_types', $form_state_values['os_publications_filter_publication_types'])
-        ->set('biblio_sort', $form_state_values['biblio_sort'])
-        ->set('note_in_teaser', $form_state_values['os_publications_note_in_teaser'])
-        ->set('biblio_order', $form_state_values['biblio_order'])
-        ->set('shorten_citations', $form_state_values['os_publications_shorten_citations'])
-        ->set('export_format', $form_state_values['os_publications_export_format'])
-        ->set('citation_distribute_autoflags', $form_state_values['citation_distribute_autoflags'])
-        ->save();
+    $publication_config
+      ->set('default_style', $form_state_values['os_publications_preferred_bibliographic_format'])
+      ->set('filter_publication_types', $form_state_values['os_publications_filter_publication_types'])
+      ->set('biblio_sort', $form_state_values['biblio_sort'])
+      ->set('note_in_teaser', $form_state_values['os_publications_note_in_teaser'])
+      ->set('biblio_order', $form_state_values['biblio_order'])
+      ->set('shorten_citations', $form_state_values['os_publications_shorten_citations'])
+      ->set('export_format', $form_state_values['os_publications_export_format'])
+      ->set('citation_distribute_autoflags', $form_state_values['citation_distribute_autoflags'])
+      ->save();
 
-      /** @var \Drupal\group\Entity\GroupInterface $group */
-      $group = $this->vsiteContextManager->getActiveVsite();
+    /** @var \Drupal\group\Entity\GroupInterface $group */
+    $group = $this->vsiteContextManager->getActiveVsite();
 
-      /** @var \Drupal\redirect\Entity\Redirect|null $redirect */
-      $redirect = $this->publicationsListingHelper->setRedirect("[vsite:{$group->id()}]/publications", "internal:/publications/{$form_state_values['biblio_sort']}");
+    /** @var \Drupal\redirect\Entity\Redirect|null $redirect */
+    $redirect = $this->publicationsListingHelper->setRedirect("[vsite:{$group->id()}]/publications", "internal:/publications/{$form_state_values['biblio_sort']}");
 
-      if ($redirect) {
-        $group->addContent($redirect, 'group_entity:redirect');
-      }
+    if ($redirect) {
+      $group->addContent($redirect, 'group_entity:redirect');
     }
   }
 
