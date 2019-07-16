@@ -2,6 +2,7 @@
 
 namespace Drupal\os_publications\Plugin\CpSetting;
 
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -256,6 +257,12 @@ class PublicationSettingsForm extends CpSettingBase {
    */
   public function submitForm(FormStateInterface $formState, ConfigFactoryInterface $configFactory) {
     $publication_config = $configFactory->getEditable('os_publications.settings');
+
+    // If changes in style then clear citation cache.
+    if ($formState->getValue('os_publications_preferred_bibliographic_format') !== $publication_config->get('default_style')) {
+      Cache::invalidateTags(['publication_citation', 'config:views.view.publications']);
+    }
+
     $publication_config
       ->set('default_style', $formState->getValue('os_publications_preferred_bibliographic_format'))
       ->set('filter_publication_types', $formState->getValue('os_publications_filter_publication_types'))
@@ -270,9 +277,12 @@ class PublicationSettingsForm extends CpSettingBase {
     /** @var \Drupal\group\Entity\GroupInterface $group */
     $group = $this->vsiteContextManager->getActiveVsite();
 
-    /** @var \Drupal\redirect\Entity\Redirect $redirect */
+    /** @var \Drupal\redirect\Entity\Redirect|null $redirect */
     $redirect = $this->publicationsListingHelper->setRedirect("[vsite:{$group->id()}]/publications", "internal:/publications/{$formState->getValue('biblio_sort')}");
-    $group->addContent($redirect, 'group_entity:redirect');
+
+    if ($redirect) {
+      $group->addContent($redirect, 'group_entity:redirect');
+    }
   }
 
 }

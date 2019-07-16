@@ -1,7 +1,7 @@
 @import '../../os_base/scss/base/breakpoints';
 @import './variables';
 @import './base';
-
+@import './../../os_base/scss/base/poweredby_common';
 body {
   color: $color_tundora_approx;
 }
