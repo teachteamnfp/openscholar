@@ -6,7 +6,6 @@ use Drupal\Component\Utility\Bytes;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\file\FileInterface;
-use Drupal\file\FileUsage\FileUsageInterface;
 use Drupal\file\Plugin\rest\resource\FileUploadResource;
 use Drupal\media\Entity\Media;
 use Drupal\rest\ModifiedResourceResponse;

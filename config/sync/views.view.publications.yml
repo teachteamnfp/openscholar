@@ -39,6 +39,8 @@ dependencies:
     - bibcite_entity.bibcite_reference_type.web_project_page
     - bibcite_entity.bibcite_reference_type.web_service
     - bibcite_entity.bibcite_reference_type.website
+    - core.entity_view_mode.bibcite_reference.citation
+    - core.entity_view_mode.bibcite_reference.teaser
     - system.menu.main
   module:
     - bibcite_entity
@@ -246,13 +248,13 @@ display:
           entity_type: bibcite_reference
           entity_field: type
           plugin_id: field
-        citation:
-          id: citation
+        rendered_entity:
+          id: rendered_entity
           table: bibcite_reference
-          field: citation
+          field: rendered_entity
           relationship: none
           group_type: group
-          admin_label: 'Reference: Citation (The value is controlled from the code - see os_publications_views_pre_render)'
+          admin_label: ''
           label: ''
           exclude: false
           alter:
@@ -294,9 +296,9 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          csl_style: harvard_chicago_author_date
+          view_mode: citation
           entity_type: bibcite_reference
-          plugin_id: bibcite_citation
+          plugin_id: rendered_entity
         cp_taxonomy_field_taxonomy_terms:
           id: cp_taxonomy_field_taxonomy_terms
           table: bibcite_reference
@@ -425,6 +427,44 @@ display:
             group_items: {  }
           entity_type: group_content
           plugin_id: vsite_current_filter
+        status:
+          id: status
+          table: bibcite_reference
+          field: status
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: '1'
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: bibcite_reference
+          entity_field: status
+          plugin_id: boolean
       sorts:
         type:
           id: type
@@ -447,12 +487,26 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          order: ASC
-          exposed: true
+          order: DESC
+          exposed: false
           expose:
             label: 'Is Sticky'
           entity_type: bibcite_reference
           entity_field: is_sticky
+          plugin_id: standard
+        bibcite_year:
+          id: bibcite_year
+          table: bibcite_reference
+          field: bibcite_year
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: DESC
+          exposed: false
+          expose:
+            label: ''
+          entity_type: bibcite_reference
+          entity_field: bibcite_year
           plugin_id: standard
       title: 'Publications by Type'
       header: {  }
@@ -480,9 +534,151 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
-        - 'url.query_args:sort_by'
-        - 'url.query_args:sort_order'
-      tags: {  }
+      tags:
+        - 'config:core.entity_view_display.bibcite_reference.artwork.default'
+        - 'config:core.entity_view_display.bibcite_reference.artwork.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.book.default'
+        - 'config:core.entity_view_display.bibcite_reference.book.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.artwork.citation'
+        - 'config:core.entity_view_display.bibcite_reference.artwork.table'
+        - 'config:core.entity_view_display.bibcite_reference.audiovisual.citation'
+        - 'config:core.entity_view_display.bibcite_reference.audiovisual.default'
+        - 'config:core.entity_view_display.bibcite_reference.audiovisual.table'
+        - 'config:core.entity_view_display.bibcite_reference.audiovisual.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.bill.citation'
+        - 'config:core.entity_view_display.bibcite_reference.bill.default'
+        - 'config:core.entity_view_display.bibcite_reference.bill.table'
+        - 'config:core.entity_view_display.bibcite_reference.bill.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.book.citation'
+        - 'config:core.entity_view_display.bibcite_reference.book.table'
+        - 'config:core.entity_view_display.bibcite_reference.book_chapter.citation'
+        - 'config:core.entity_view_display.bibcite_reference.book_chapter.default'
+        - 'config:core.entity_view_display.bibcite_reference.book_chapter.table'
+        - 'config:core.entity_view_display.bibcite_reference.book_chapter.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.broadcast.citation'
+        - 'config:core.entity_view_display.bibcite_reference.broadcast.default'
+        - 'config:core.entity_view_display.bibcite_reference.broadcast.table'
+        - 'config:core.entity_view_display.bibcite_reference.broadcast.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.case.citation'
+        - 'config:core.entity_view_display.bibcite_reference.case.default'
+        - 'config:core.entity_view_display.bibcite_reference.case.table'
+        - 'config:core.entity_view_display.bibcite_reference.case.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.chart.citation'
+        - 'config:core.entity_view_display.bibcite_reference.chart.default'
+        - 'config:core.entity_view_display.bibcite_reference.chart.table'
+        - 'config:core.entity_view_display.bibcite_reference.chart.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.classical.citation'
+        - 'config:core.entity_view_display.bibcite_reference.classical.default'
+        - 'config:core.entity_view_display.bibcite_reference.classical.table'
+        - 'config:core.entity_view_display.bibcite_reference.classical.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.conference_paper.citation'
+        - 'config:core.entity_view_display.bibcite_reference.conference_paper.default'
+        - 'config:core.entity_view_display.bibcite_reference.conference_paper.table'
+        - 'config:core.entity_view_display.bibcite_reference.conference_paper.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.conference_proceedings.citation'
+        - 'config:core.entity_view_display.bibcite_reference.conference_proceedings.default'
+        - 'config:core.entity_view_display.bibcite_reference.conference_proceedings.table'
+        - 'config:core.entity_view_display.bibcite_reference.conference_proceedings.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.database.citation'
+        - 'config:core.entity_view_display.bibcite_reference.database.default'
+        - 'config:core.entity_view_display.bibcite_reference.database.table'
+        - 'config:core.entity_view_display.bibcite_reference.database.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.film.citation'
+        - 'config:core.entity_view_display.bibcite_reference.film.default'
+        - 'config:core.entity_view_display.bibcite_reference.film.table'
+        - 'config:core.entity_view_display.bibcite_reference.film.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.government_report.citation'
+        - 'config:core.entity_view_display.bibcite_reference.government_report.default'
+        - 'config:core.entity_view_display.bibcite_reference.government_report.table'
+        - 'config:core.entity_view_display.bibcite_reference.government_report.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.hearing.citation'
+        - 'config:core.entity_view_display.bibcite_reference.hearing.default'
+        - 'config:core.entity_view_display.bibcite_reference.hearing.table'
+        - 'config:core.entity_view_display.bibcite_reference.hearing.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.journal.citation'
+        - 'config:core.entity_view_display.bibcite_reference.journal.default'
+        - 'config:core.entity_view_display.bibcite_reference.journal.table'
+        - 'config:core.entity_view_display.bibcite_reference.journal.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.journal_article.citation'
+        - 'config:core.entity_view_display.bibcite_reference.journal_article.default'
+        - 'config:core.entity_view_display.bibcite_reference.journal_article.table'
+        - 'config:core.entity_view_display.bibcite_reference.journal_article.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.legal_ruling.citation'
+        - 'config:core.entity_view_display.bibcite_reference.legal_ruling.default'
+        - 'config:core.entity_view_display.bibcite_reference.legal_ruling.table'
+        - 'config:core.entity_view_display.bibcite_reference.legal_ruling.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.magazine_article.citation'
+        - 'config:core.entity_view_display.bibcite_reference.magazine_article.default'
+        - 'config:core.entity_view_display.bibcite_reference.magazine_article.table'
+        - 'config:core.entity_view_display.bibcite_reference.magazine_article.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.manuscript.citation'
+        - 'config:core.entity_view_display.bibcite_reference.manuscript.default'
+        - 'config:core.entity_view_display.bibcite_reference.manuscript.table'
+        - 'config:core.entity_view_display.bibcite_reference.manuscript.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.map.citation'
+        - 'config:core.entity_view_display.bibcite_reference.map.default'
+        - 'config:core.entity_view_display.bibcite_reference.map.table'
+        - 'config:core.entity_view_display.bibcite_reference.map.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.miscellaneous.citation'
+        - 'config:core.entity_view_display.bibcite_reference.miscellaneous.default'
+        - 'config:core.entity_view_display.bibcite_reference.miscellaneous.table'
+        - 'config:core.entity_view_display.bibcite_reference.miscellaneous.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.miscellaneous_section.citation'
+        - 'config:core.entity_view_display.bibcite_reference.miscellaneous_section.default'
+        - 'config:core.entity_view_display.bibcite_reference.miscellaneous_section.table'
+        - 'config:core.entity_view_display.bibcite_reference.miscellaneous_section.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.newspaper_article.citation'
+        - 'config:core.entity_view_display.bibcite_reference.newspaper_article.default'
+        - 'config:core.entity_view_display.bibcite_reference.newspaper_article.table'
+        - 'config:core.entity_view_display.bibcite_reference.newspaper_article.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.patent.citation'
+        - 'config:core.entity_view_display.bibcite_reference.patent.default'
+        - 'config:core.entity_view_display.bibcite_reference.patent.table'
+        - 'config:core.entity_view_display.bibcite_reference.patent.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.personal.citation'
+        - 'config:core.entity_view_display.bibcite_reference.personal.default'
+        - 'config:core.entity_view_display.bibcite_reference.personal.table'
+        - 'config:core.entity_view_display.bibcite_reference.personal.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.presentation.citation'
+        - 'config:core.entity_view_display.bibcite_reference.presentation.default'
+        - 'config:core.entity_view_display.bibcite_reference.presentation.table'
+        - 'config:core.entity_view_display.bibcite_reference.presentation.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.report.citation'
+        - 'config:core.entity_view_display.bibcite_reference.report.default'
+        - 'config:core.entity_view_display.bibcite_reference.report.table'
+        - 'config:core.entity_view_display.bibcite_reference.report.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.software.citation'
+        - 'config:core.entity_view_display.bibcite_reference.software.default'
+        - 'config:core.entity_view_display.bibcite_reference.software.table'
+        - 'config:core.entity_view_display.bibcite_reference.software.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.statute.citation'
+        - 'config:core.entity_view_display.bibcite_reference.statute.default'
+        - 'config:core.entity_view_display.bibcite_reference.statute.table'
+        - 'config:core.entity_view_display.bibcite_reference.statute.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.thesis.citation'
+        - 'config:core.entity_view_display.bibcite_reference.thesis.default'
+        - 'config:core.entity_view_display.bibcite_reference.thesis.table'
+        - 'config:core.entity_view_display.bibcite_reference.thesis.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.unpublished.citation'
+        - 'config:core.entity_view_display.bibcite_reference.unpublished.default'
+        - 'config:core.entity_view_display.bibcite_reference.unpublished.table'
+        - 'config:core.entity_view_display.bibcite_reference.unpublished.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.web_article.citation'
+        - 'config:core.entity_view_display.bibcite_reference.web_article.default'
+        - 'config:core.entity_view_display.bibcite_reference.web_article.table'
+        - 'config:core.entity_view_display.bibcite_reference.web_article.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.web_project_page.citation'
+        - 'config:core.entity_view_display.bibcite_reference.web_project_page.default'
+        - 'config:core.entity_view_display.bibcite_reference.web_project_page.table'
+        - 'config:core.entity_view_display.bibcite_reference.web_project_page.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.web_service.citation'
+        - 'config:core.entity_view_display.bibcite_reference.web_service.default'
+        - 'config:core.entity_view_display.bibcite_reference.web_service.table'
+        - 'config:core.entity_view_display.bibcite_reference.web_service.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.website.citation'
+        - 'config:core.entity_view_display.bibcite_reference.website.default'
+        - 'config:core.entity_view_display.bibcite_reference.website.table'
+        - 'config:core.entity_view_display.bibcite_reference.website.teaser'
   cp:
     display_plugin: page
     id: cp
@@ -1099,13 +1295,13 @@ display:
           entity_type: bibcite_reference
           entity_field: type
           plugin_id: field
-        citation:
-          id: citation
+        rendered_entity:
+          id: rendered_entity
           table: bibcite_reference
-          field: citation
+          field: rendered_entity
           relationship: none
           group_type: group
-          admin_label: 'Reference: Citation (The value is controlled from the code - see os_publications_views_pre_render)'
+          admin_label: ''
           label: ''
           exclude: false
           alter:
@@ -1147,9 +1343,9 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          csl_style: harvard_chicago_author_date
+          view_mode: teaser
           entity_type: bibcite_reference
-          plugin_id: bibcite_citation
+          plugin_id: rendered_entity
     cache_metadata:
       max-age: -1
       contexts:
@@ -1157,9 +1353,151 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
-        - 'url.query_args:sort_by'
-        - 'url.query_args:sort_order'
-      tags: {  }
+      tags:
+        - 'config:core.entity_view_display.bibcite_reference.artwork.citation'
+        - 'config:core.entity_view_display.bibcite_reference.artwork.default'
+        - 'config:core.entity_view_display.bibcite_reference.artwork.table'
+        - 'config:core.entity_view_display.bibcite_reference.artwork.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.audiovisual.citation'
+        - 'config:core.entity_view_display.bibcite_reference.audiovisual.default'
+        - 'config:core.entity_view_display.bibcite_reference.audiovisual.table'
+        - 'config:core.entity_view_display.bibcite_reference.audiovisual.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.bill.citation'
+        - 'config:core.entity_view_display.bibcite_reference.bill.default'
+        - 'config:core.entity_view_display.bibcite_reference.bill.table'
+        - 'config:core.entity_view_display.bibcite_reference.bill.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.book.citation'
+        - 'config:core.entity_view_display.bibcite_reference.book.default'
+        - 'config:core.entity_view_display.bibcite_reference.book.table'
+        - 'config:core.entity_view_display.bibcite_reference.book.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.book_chapter.citation'
+        - 'config:core.entity_view_display.bibcite_reference.book_chapter.default'
+        - 'config:core.entity_view_display.bibcite_reference.book_chapter.table'
+        - 'config:core.entity_view_display.bibcite_reference.book_chapter.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.broadcast.citation'
+        - 'config:core.entity_view_display.bibcite_reference.broadcast.default'
+        - 'config:core.entity_view_display.bibcite_reference.broadcast.table'
+        - 'config:core.entity_view_display.bibcite_reference.broadcast.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.case.citation'
+        - 'config:core.entity_view_display.bibcite_reference.case.default'
+        - 'config:core.entity_view_display.bibcite_reference.case.table'
+        - 'config:core.entity_view_display.bibcite_reference.case.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.chart.citation'
+        - 'config:core.entity_view_display.bibcite_reference.chart.default'
+        - 'config:core.entity_view_display.bibcite_reference.chart.table'
+        - 'config:core.entity_view_display.bibcite_reference.chart.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.classical.citation'
+        - 'config:core.entity_view_display.bibcite_reference.classical.default'
+        - 'config:core.entity_view_display.bibcite_reference.classical.table'
+        - 'config:core.entity_view_display.bibcite_reference.classical.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.conference_paper.citation'
+        - 'config:core.entity_view_display.bibcite_reference.conference_paper.default'
+        - 'config:core.entity_view_display.bibcite_reference.conference_paper.table'
+        - 'config:core.entity_view_display.bibcite_reference.conference_paper.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.conference_proceedings.citation'
+        - 'config:core.entity_view_display.bibcite_reference.conference_proceedings.default'
+        - 'config:core.entity_view_display.bibcite_reference.conference_proceedings.table'
+        - 'config:core.entity_view_display.bibcite_reference.conference_proceedings.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.database.citation'
+        - 'config:core.entity_view_display.bibcite_reference.database.default'
+        - 'config:core.entity_view_display.bibcite_reference.database.table'
+        - 'config:core.entity_view_display.bibcite_reference.database.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.film.citation'
+        - 'config:core.entity_view_display.bibcite_reference.film.default'
+        - 'config:core.entity_view_display.bibcite_reference.film.table'
+        - 'config:core.entity_view_display.bibcite_reference.film.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.government_report.citation'
+        - 'config:core.entity_view_display.bibcite_reference.government_report.default'
+        - 'config:core.entity_view_display.bibcite_reference.government_report.table'
+        - 'config:core.entity_view_display.bibcite_reference.government_report.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.hearing.citation'
+        - 'config:core.entity_view_display.bibcite_reference.hearing.default'
+        - 'config:core.entity_view_display.bibcite_reference.hearing.table'
+        - 'config:core.entity_view_display.bibcite_reference.hearing.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.journal.citation'
+        - 'config:core.entity_view_display.bibcite_reference.journal.default'
+        - 'config:core.entity_view_display.bibcite_reference.journal.table'
+        - 'config:core.entity_view_display.bibcite_reference.journal.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.journal_article.citation'
+        - 'config:core.entity_view_display.bibcite_reference.journal_article.default'
+        - 'config:core.entity_view_display.bibcite_reference.journal_article.table'
+        - 'config:core.entity_view_display.bibcite_reference.journal_article.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.legal_ruling.citation'
+        - 'config:core.entity_view_display.bibcite_reference.legal_ruling.default'
+        - 'config:core.entity_view_display.bibcite_reference.legal_ruling.table'
+        - 'config:core.entity_view_display.bibcite_reference.legal_ruling.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.magazine_article.citation'
+        - 'config:core.entity_view_display.bibcite_reference.magazine_article.default'
+        - 'config:core.entity_view_display.bibcite_reference.magazine_article.table'
+        - 'config:core.entity_view_display.bibcite_reference.magazine_article.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.manuscript.citation'
+        - 'config:core.entity_view_display.bibcite_reference.manuscript.default'
+        - 'config:core.entity_view_display.bibcite_reference.manuscript.table'
+        - 'config:core.entity_view_display.bibcite_reference.manuscript.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.map.citation'
+        - 'config:core.entity_view_display.bibcite_reference.map.default'
+        - 'config:core.entity_view_display.bibcite_reference.map.table'
+        - 'config:core.entity_view_display.bibcite_reference.map.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.miscellaneous.citation'
+        - 'config:core.entity_view_display.bibcite_reference.miscellaneous.default'
+        - 'config:core.entity_view_display.bibcite_reference.miscellaneous.table'
+        - 'config:core.entity_view_display.bibcite_reference.miscellaneous.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.miscellaneous_section.citation'
+        - 'config:core.entity_view_display.bibcite_reference.miscellaneous_section.default'
+        - 'config:core.entity_view_display.bibcite_reference.miscellaneous_section.table'
+        - 'config:core.entity_view_display.bibcite_reference.miscellaneous_section.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.newspaper_article.citation'
+        - 'config:core.entity_view_display.bibcite_reference.newspaper_article.default'
+        - 'config:core.entity_view_display.bibcite_reference.newspaper_article.table'
+        - 'config:core.entity_view_display.bibcite_reference.newspaper_article.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.patent.citation'
+        - 'config:core.entity_view_display.bibcite_reference.patent.default'
+        - 'config:core.entity_view_display.bibcite_reference.patent.table'
+        - 'config:core.entity_view_display.bibcite_reference.patent.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.personal.citation'
+        - 'config:core.entity_view_display.bibcite_reference.personal.default'
+        - 'config:core.entity_view_display.bibcite_reference.personal.table'
+        - 'config:core.entity_view_display.bibcite_reference.personal.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.presentation.citation'
+        - 'config:core.entity_view_display.bibcite_reference.presentation.default'
+        - 'config:core.entity_view_display.bibcite_reference.presentation.table'
+        - 'config:core.entity_view_display.bibcite_reference.presentation.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.report.citation'
+        - 'config:core.entity_view_display.bibcite_reference.report.default'
+        - 'config:core.entity_view_display.bibcite_reference.report.table'
+        - 'config:core.entity_view_display.bibcite_reference.report.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.software.citation'
+        - 'config:core.entity_view_display.bibcite_reference.software.default'
+        - 'config:core.entity_view_display.bibcite_reference.software.table'
+        - 'config:core.entity_view_display.bibcite_reference.software.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.statute.citation'
+        - 'config:core.entity_view_display.bibcite_reference.statute.default'
+        - 'config:core.entity_view_display.bibcite_reference.statute.table'
+        - 'config:core.entity_view_display.bibcite_reference.statute.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.thesis.citation'
+        - 'config:core.entity_view_display.bibcite_reference.thesis.default'
+        - 'config:core.entity_view_display.bibcite_reference.thesis.table'
+        - 'config:core.entity_view_display.bibcite_reference.thesis.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.unpublished.citation'
+        - 'config:core.entity_view_display.bibcite_reference.unpublished.default'
+        - 'config:core.entity_view_display.bibcite_reference.unpublished.table'
+        - 'config:core.entity_view_display.bibcite_reference.unpublished.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.website.citation'
+        - 'config:core.entity_view_display.bibcite_reference.website.default'
+        - 'config:core.entity_view_display.bibcite_reference.website.table'
+        - 'config:core.entity_view_display.bibcite_reference.website.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.web_article.citation'
+        - 'config:core.entity_view_display.bibcite_reference.web_article.default'
+        - 'config:core.entity_view_display.bibcite_reference.web_article.table'
+        - 'config:core.entity_view_display.bibcite_reference.web_article.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.web_project_page.citation'
+        - 'config:core.entity_view_display.bibcite_reference.web_project_page.default'
+        - 'config:core.entity_view_display.bibcite_reference.web_project_page.table'
+        - 'config:core.entity_view_display.bibcite_reference.web_project_page.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.web_service.citation'
+        - 'config:core.entity_view_display.bibcite_reference.web_service.default'
+        - 'config:core.entity_view_display.bibcite_reference.web_service.table'
+        - 'config:core.entity_view_display.bibcite_reference.web_service.teaser'
   page_2:
     display_plugin: page
     id: page_2
@@ -1236,61 +1574,10 @@ display:
           entity_type: bibcite_reference
           entity_field: title_first_char_excl_prep
           plugin_id: field
-        citation:
-          id: citation
+        rendered_entity:
+          id: rendered_entity
           table: bibcite_reference
-          field: citation
-          relationship: none
-          group_type: group
-          admin_label: 'Reference: Citation (The value is controlled from the code - see os_publications_views_pre_render)'
-          label: ''
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          csl_style: harvard_chicago_author_date
-          entity_type: bibcite_reference
-          plugin_id: bibcite_citation
-        cp_taxonomy_field_taxonomy_terms:
-          id: cp_taxonomy_field_taxonomy_terms
-          table: bibcite_reference
-          field: cp_taxonomy_field_taxonomy_terms
+          field: rendered_entity
           relationship: none
           group_type: group
           admin_label: ''
@@ -1335,8 +1622,9 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
+          view_mode: teaser
           entity_type: bibcite_reference
-          plugin_id: cp_taxonomy_field_taxonomy_terms
+          plugin_id: rendered_entity
       defaults:
         fields: false
         style: false
@@ -1383,12 +1671,26 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          order: ASC
-          exposed: true
+          order: DESC
+          exposed: false
           expose:
             label: 'Is Sticky'
           entity_type: bibcite_reference
           entity_field: is_sticky
+          plugin_id: standard
+        title:
+          id: title
+          table: bibcite_reference
+          field: title
+          relationship: none
+          group_type: group
+          admin_label: 'Reference title first letter excluding prepositions (Sort order altered from code, see os_publications_views_query_alter)'
+          order: ASC
+          exposed: false
+          expose:
+            label: ''
+          entity_type: bibcite_reference
+          entity_field: title
           plugin_id: standard
       menu:
         type: none
@@ -1406,9 +1708,151 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
-        - 'url.query_args:sort_by'
-        - 'url.query_args:sort_order'
-      tags: {  }
+      tags:
+        - 'config:core.entity_view_display.bibcite_reference.artwork.citation'
+        - 'config:core.entity_view_display.bibcite_reference.artwork.default'
+        - 'config:core.entity_view_display.bibcite_reference.artwork.table'
+        - 'config:core.entity_view_display.bibcite_reference.artwork.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.audiovisual.citation'
+        - 'config:core.entity_view_display.bibcite_reference.audiovisual.default'
+        - 'config:core.entity_view_display.bibcite_reference.audiovisual.table'
+        - 'config:core.entity_view_display.bibcite_reference.audiovisual.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.bill.citation'
+        - 'config:core.entity_view_display.bibcite_reference.bill.default'
+        - 'config:core.entity_view_display.bibcite_reference.bill.table'
+        - 'config:core.entity_view_display.bibcite_reference.bill.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.book.citation'
+        - 'config:core.entity_view_display.bibcite_reference.book.default'
+        - 'config:core.entity_view_display.bibcite_reference.book.table'
+        - 'config:core.entity_view_display.bibcite_reference.book.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.book_chapter.citation'
+        - 'config:core.entity_view_display.bibcite_reference.book_chapter.default'
+        - 'config:core.entity_view_display.bibcite_reference.book_chapter.table'
+        - 'config:core.entity_view_display.bibcite_reference.book_chapter.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.broadcast.citation'
+        - 'config:core.entity_view_display.bibcite_reference.broadcast.default'
+        - 'config:core.entity_view_display.bibcite_reference.broadcast.table'
+        - 'config:core.entity_view_display.bibcite_reference.broadcast.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.case.citation'
+        - 'config:core.entity_view_display.bibcite_reference.case.default'
+        - 'config:core.entity_view_display.bibcite_reference.case.table'
+        - 'config:core.entity_view_display.bibcite_reference.case.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.chart.citation'
+        - 'config:core.entity_view_display.bibcite_reference.chart.default'
+        - 'config:core.entity_view_display.bibcite_reference.chart.table'
+        - 'config:core.entity_view_display.bibcite_reference.chart.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.classical.citation'
+        - 'config:core.entity_view_display.bibcite_reference.classical.default'
+        - 'config:core.entity_view_display.bibcite_reference.classical.table'
+        - 'config:core.entity_view_display.bibcite_reference.classical.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.conference_paper.citation'
+        - 'config:core.entity_view_display.bibcite_reference.conference_paper.default'
+        - 'config:core.entity_view_display.bibcite_reference.conference_paper.table'
+        - 'config:core.entity_view_display.bibcite_reference.conference_paper.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.conference_proceedings.citation'
+        - 'config:core.entity_view_display.bibcite_reference.conference_proceedings.default'
+        - 'config:core.entity_view_display.bibcite_reference.conference_proceedings.table'
+        - 'config:core.entity_view_display.bibcite_reference.conference_proceedings.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.database.citation'
+        - 'config:core.entity_view_display.bibcite_reference.database.default'
+        - 'config:core.entity_view_display.bibcite_reference.database.table'
+        - 'config:core.entity_view_display.bibcite_reference.database.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.film.citation'
+        - 'config:core.entity_view_display.bibcite_reference.film.default'
+        - 'config:core.entity_view_display.bibcite_reference.film.table'
+        - 'config:core.entity_view_display.bibcite_reference.film.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.government_report.citation'
+        - 'config:core.entity_view_display.bibcite_reference.government_report.default'
+        - 'config:core.entity_view_display.bibcite_reference.government_report.table'
+        - 'config:core.entity_view_display.bibcite_reference.government_report.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.hearing.citation'
+        - 'config:core.entity_view_display.bibcite_reference.hearing.default'
+        - 'config:core.entity_view_display.bibcite_reference.hearing.table'
+        - 'config:core.entity_view_display.bibcite_reference.hearing.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.journal.citation'
+        - 'config:core.entity_view_display.bibcite_reference.journal.default'
+        - 'config:core.entity_view_display.bibcite_reference.journal.table'
+        - 'config:core.entity_view_display.bibcite_reference.journal.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.journal_article.citation'
+        - 'config:core.entity_view_display.bibcite_reference.journal_article.default'
+        - 'config:core.entity_view_display.bibcite_reference.journal_article.table'
+        - 'config:core.entity_view_display.bibcite_reference.journal_article.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.legal_ruling.citation'
+        - 'config:core.entity_view_display.bibcite_reference.legal_ruling.default'
+        - 'config:core.entity_view_display.bibcite_reference.legal_ruling.table'
+        - 'config:core.entity_view_display.bibcite_reference.legal_ruling.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.magazine_article.citation'
+        - 'config:core.entity_view_display.bibcite_reference.magazine_article.default'
+        - 'config:core.entity_view_display.bibcite_reference.magazine_article.table'
+        - 'config:core.entity_view_display.bibcite_reference.magazine_article.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.manuscript.citation'
+        - 'config:core.entity_view_display.bibcite_reference.manuscript.default'
+        - 'config:core.entity_view_display.bibcite_reference.manuscript.table'
+        - 'config:core.entity_view_display.bibcite_reference.manuscript.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.map.citation'
+        - 'config:core.entity_view_display.bibcite_reference.map.default'
+        - 'config:core.entity_view_display.bibcite_reference.map.table'
+        - 'config:core.entity_view_display.bibcite_reference.map.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.miscellaneous.citation'
+        - 'config:core.entity_view_display.bibcite_reference.miscellaneous.default'
+        - 'config:core.entity_view_display.bibcite_reference.miscellaneous.table'
+        - 'config:core.entity_view_display.bibcite_reference.miscellaneous.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.miscellaneous_section.citation'
+        - 'config:core.entity_view_display.bibcite_reference.miscellaneous_section.default'
+        - 'config:core.entity_view_display.bibcite_reference.miscellaneous_section.table'
+        - 'config:core.entity_view_display.bibcite_reference.miscellaneous_section.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.newspaper_article.citation'
+        - 'config:core.entity_view_display.bibcite_reference.newspaper_article.default'
+        - 'config:core.entity_view_display.bibcite_reference.newspaper_article.table'
+        - 'config:core.entity_view_display.bibcite_reference.newspaper_article.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.patent.citation'
+        - 'config:core.entity_view_display.bibcite_reference.patent.default'
+        - 'config:core.entity_view_display.bibcite_reference.patent.table'
+        - 'config:core.entity_view_display.bibcite_reference.patent.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.personal.citation'
+        - 'config:core.entity_view_display.bibcite_reference.personal.default'
+        - 'config:core.entity_view_display.bibcite_reference.personal.table'
+        - 'config:core.entity_view_display.bibcite_reference.personal.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.presentation.citation'
+        - 'config:core.entity_view_display.bibcite_reference.presentation.default'
+        - 'config:core.entity_view_display.bibcite_reference.presentation.table'
+        - 'config:core.entity_view_display.bibcite_reference.presentation.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.report.citation'
+        - 'config:core.entity_view_display.bibcite_reference.report.default'
+        - 'config:core.entity_view_display.bibcite_reference.report.table'
+        - 'config:core.entity_view_display.bibcite_reference.report.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.software.citation'
+        - 'config:core.entity_view_display.bibcite_reference.software.default'
+        - 'config:core.entity_view_display.bibcite_reference.software.table'
+        - 'config:core.entity_view_display.bibcite_reference.software.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.statute.citation'
+        - 'config:core.entity_view_display.bibcite_reference.statute.default'
+        - 'config:core.entity_view_display.bibcite_reference.statute.table'
+        - 'config:core.entity_view_display.bibcite_reference.statute.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.thesis.citation'
+        - 'config:core.entity_view_display.bibcite_reference.thesis.default'
+        - 'config:core.entity_view_display.bibcite_reference.thesis.table'
+        - 'config:core.entity_view_display.bibcite_reference.thesis.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.unpublished.citation'
+        - 'config:core.entity_view_display.bibcite_reference.unpublished.default'
+        - 'config:core.entity_view_display.bibcite_reference.unpublished.table'
+        - 'config:core.entity_view_display.bibcite_reference.unpublished.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.website.citation'
+        - 'config:core.entity_view_display.bibcite_reference.website.default'
+        - 'config:core.entity_view_display.bibcite_reference.website.table'
+        - 'config:core.entity_view_display.bibcite_reference.website.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.web_article.citation'
+        - 'config:core.entity_view_display.bibcite_reference.web_article.default'
+        - 'config:core.entity_view_display.bibcite_reference.web_article.table'
+        - 'config:core.entity_view_display.bibcite_reference.web_article.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.web_project_page.citation'
+        - 'config:core.entity_view_display.bibcite_reference.web_project_page.default'
+        - 'config:core.entity_view_display.bibcite_reference.web_project_page.table'
+        - 'config:core.entity_view_display.bibcite_reference.web_project_page.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.web_service.citation'
+        - 'config:core.entity_view_display.bibcite_reference.web_service.default'
+        - 'config:core.entity_view_display.bibcite_reference.web_service.table'
+        - 'config:core.entity_view_display.bibcite_reference.web_service.teaser'
   page_3:
     display_plugin: page
     id: page_3
@@ -1496,61 +1940,10 @@ display:
           entity_type: bibcite_reference
           entity_field: bibcite_contributor
           plugin_id: os_publications_first_letter_last_name_author
-        citation:
-          id: citation
+        rendered_entity:
+          id: rendered_entity
           table: bibcite_reference
-          field: citation
-          relationship: none
-          group_type: group
-          admin_label: 'Reference: Citation (The value is controlled from the code - see os_publications_views_pre_render)'
-          label: ''
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          csl_style: harvard_chicago_author_date
-          entity_type: bibcite_reference
-          plugin_id: bibcite_citation
-        cp_taxonomy_field_taxonomy_terms:
-          id: cp_taxonomy_field_taxonomy_terms
-          table: bibcite_reference
-          field: cp_taxonomy_field_taxonomy_terms
+          field: rendered_entity
           relationship: none
           group_type: group
           admin_label: ''
@@ -1595,8 +1988,9 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
+          view_mode: teaser
           entity_type: bibcite_reference
-          plugin_id: cp_taxonomy_field_taxonomy_terms
+          plugin_id: rendered_entity
       title: 'Publications by Author'
       sorts:
         first_letter_last_name_author:
@@ -1619,12 +2013,26 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          order: ASC
-          exposed: true
+          order: DESC
+          exposed: false
           expose:
             label: 'Is Sticky'
           entity_type: bibcite_reference
           entity_field: is_sticky
+          plugin_id: standard
+        title:
+          id: title
+          table: bibcite_reference
+          field: title
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: ASC
+          exposed: false
+          expose:
+            label: ''
+          entity_type: bibcite_reference
+          entity_field: title
           plugin_id: standard
       menu:
         type: none
@@ -1704,9 +2112,151 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - 'url.query_args:sort_by'
-        - 'url.query_args:sort_order'
-      tags: {  }
+      tags:
+        - 'config:core.entity_view_display.bibcite_reference.artwork.citation'
+        - 'config:core.entity_view_display.bibcite_reference.artwork.default'
+        - 'config:core.entity_view_display.bibcite_reference.artwork.table'
+        - 'config:core.entity_view_display.bibcite_reference.artwork.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.audiovisual.citation'
+        - 'config:core.entity_view_display.bibcite_reference.audiovisual.default'
+        - 'config:core.entity_view_display.bibcite_reference.audiovisual.table'
+        - 'config:core.entity_view_display.bibcite_reference.audiovisual.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.bill.citation'
+        - 'config:core.entity_view_display.bibcite_reference.bill.default'
+        - 'config:core.entity_view_display.bibcite_reference.bill.table'
+        - 'config:core.entity_view_display.bibcite_reference.bill.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.book.citation'
+        - 'config:core.entity_view_display.bibcite_reference.book.default'
+        - 'config:core.entity_view_display.bibcite_reference.book.table'
+        - 'config:core.entity_view_display.bibcite_reference.book.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.book_chapter.citation'
+        - 'config:core.entity_view_display.bibcite_reference.book_chapter.default'
+        - 'config:core.entity_view_display.bibcite_reference.book_chapter.table'
+        - 'config:core.entity_view_display.bibcite_reference.book_chapter.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.broadcast.citation'
+        - 'config:core.entity_view_display.bibcite_reference.broadcast.default'
+        - 'config:core.entity_view_display.bibcite_reference.broadcast.table'
+        - 'config:core.entity_view_display.bibcite_reference.broadcast.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.case.citation'
+        - 'config:core.entity_view_display.bibcite_reference.case.default'
+        - 'config:core.entity_view_display.bibcite_reference.case.table'
+        - 'config:core.entity_view_display.bibcite_reference.case.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.chart.citation'
+        - 'config:core.entity_view_display.bibcite_reference.chart.default'
+        - 'config:core.entity_view_display.bibcite_reference.chart.table'
+        - 'config:core.entity_view_display.bibcite_reference.chart.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.classical.citation'
+        - 'config:core.entity_view_display.bibcite_reference.classical.default'
+        - 'config:core.entity_view_display.bibcite_reference.classical.table'
+        - 'config:core.entity_view_display.bibcite_reference.classical.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.conference_paper.citation'
+        - 'config:core.entity_view_display.bibcite_reference.conference_paper.default'
+        - 'config:core.entity_view_display.bibcite_reference.conference_paper.table'
+        - 'config:core.entity_view_display.bibcite_reference.conference_paper.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.conference_proceedings.citation'
+        - 'config:core.entity_view_display.bibcite_reference.conference_proceedings.default'
+        - 'config:core.entity_view_display.bibcite_reference.conference_proceedings.table'
+        - 'config:core.entity_view_display.bibcite_reference.conference_proceedings.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.database.citation'
+        - 'config:core.entity_view_display.bibcite_reference.database.default'
+        - 'config:core.entity_view_display.bibcite_reference.database.table'
+        - 'config:core.entity_view_display.bibcite_reference.database.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.film.citation'
+        - 'config:core.entity_view_display.bibcite_reference.film.default'
+        - 'config:core.entity_view_display.bibcite_reference.film.table'
+        - 'config:core.entity_view_display.bibcite_reference.film.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.government_report.citation'
+        - 'config:core.entity_view_display.bibcite_reference.government_report.default'
+        - 'config:core.entity_view_display.bibcite_reference.government_report.table'
+        - 'config:core.entity_view_display.bibcite_reference.government_report.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.hearing.citation'
+        - 'config:core.entity_view_display.bibcite_reference.hearing.default'
+        - 'config:core.entity_view_display.bibcite_reference.hearing.table'
+        - 'config:core.entity_view_display.bibcite_reference.hearing.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.journal.citation'
+        - 'config:core.entity_view_display.bibcite_reference.journal.default'
+        - 'config:core.entity_view_display.bibcite_reference.journal.table'
+        - 'config:core.entity_view_display.bibcite_reference.journal.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.journal_article.citation'
+        - 'config:core.entity_view_display.bibcite_reference.journal_article.default'
+        - 'config:core.entity_view_display.bibcite_reference.journal_article.table'
+        - 'config:core.entity_view_display.bibcite_reference.journal_article.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.legal_ruling.citation'
+        - 'config:core.entity_view_display.bibcite_reference.legal_ruling.default'
+        - 'config:core.entity_view_display.bibcite_reference.legal_ruling.table'
+        - 'config:core.entity_view_display.bibcite_reference.legal_ruling.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.magazine_article.citation'
+        - 'config:core.entity_view_display.bibcite_reference.magazine_article.default'
+        - 'config:core.entity_view_display.bibcite_reference.magazine_article.table'
+        - 'config:core.entity_view_display.bibcite_reference.magazine_article.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.manuscript.citation'
+        - 'config:core.entity_view_display.bibcite_reference.manuscript.default'
+        - 'config:core.entity_view_display.bibcite_reference.manuscript.table'
+        - 'config:core.entity_view_display.bibcite_reference.manuscript.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.map.citation'
+        - 'config:core.entity_view_display.bibcite_reference.map.default'
+        - 'config:core.entity_view_display.bibcite_reference.map.table'
+        - 'config:core.entity_view_display.bibcite_reference.map.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.miscellaneous.citation'
+        - 'config:core.entity_view_display.bibcite_reference.miscellaneous.default'
+        - 'config:core.entity_view_display.bibcite_reference.miscellaneous.table'
+        - 'config:core.entity_view_display.bibcite_reference.miscellaneous.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.miscellaneous_section.citation'
+        - 'config:core.entity_view_display.bibcite_reference.miscellaneous_section.default'
+        - 'config:core.entity_view_display.bibcite_reference.miscellaneous_section.table'
+        - 'config:core.entity_view_display.bibcite_reference.miscellaneous_section.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.newspaper_article.citation'
+        - 'config:core.entity_view_display.bibcite_reference.newspaper_article.default'
+        - 'config:core.entity_view_display.bibcite_reference.newspaper_article.table'
+        - 'config:core.entity_view_display.bibcite_reference.newspaper_article.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.patent.citation'
+        - 'config:core.entity_view_display.bibcite_reference.patent.default'
+        - 'config:core.entity_view_display.bibcite_reference.patent.table'
+        - 'config:core.entity_view_display.bibcite_reference.patent.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.personal.citation'
+        - 'config:core.entity_view_display.bibcite_reference.personal.default'
+        - 'config:core.entity_view_display.bibcite_reference.personal.table'
+        - 'config:core.entity_view_display.bibcite_reference.personal.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.presentation.citation'
+        - 'config:core.entity_view_display.bibcite_reference.presentation.default'
+        - 'config:core.entity_view_display.bibcite_reference.presentation.table'
+        - 'config:core.entity_view_display.bibcite_reference.presentation.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.report.citation'
+        - 'config:core.entity_view_display.bibcite_reference.report.default'
+        - 'config:core.entity_view_display.bibcite_reference.report.table'
+        - 'config:core.entity_view_display.bibcite_reference.report.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.software.citation'
+        - 'config:core.entity_view_display.bibcite_reference.software.default'
+        - 'config:core.entity_view_display.bibcite_reference.software.table'
+        - 'config:core.entity_view_display.bibcite_reference.software.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.statute.citation'
+        - 'config:core.entity_view_display.bibcite_reference.statute.default'
+        - 'config:core.entity_view_display.bibcite_reference.statute.table'
+        - 'config:core.entity_view_display.bibcite_reference.statute.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.thesis.citation'
+        - 'config:core.entity_view_display.bibcite_reference.thesis.default'
+        - 'config:core.entity_view_display.bibcite_reference.thesis.table'
+        - 'config:core.entity_view_display.bibcite_reference.thesis.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.unpublished.citation'
+        - 'config:core.entity_view_display.bibcite_reference.unpublished.default'
+        - 'config:core.entity_view_display.bibcite_reference.unpublished.table'
+        - 'config:core.entity_view_display.bibcite_reference.unpublished.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.website.citation'
+        - 'config:core.entity_view_display.bibcite_reference.website.default'
+        - 'config:core.entity_view_display.bibcite_reference.website.table'
+        - 'config:core.entity_view_display.bibcite_reference.website.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.web_article.citation'
+        - 'config:core.entity_view_display.bibcite_reference.web_article.default'
+        - 'config:core.entity_view_display.bibcite_reference.web_article.table'
+        - 'config:core.entity_view_display.bibcite_reference.web_article.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.web_project_page.citation'
+        - 'config:core.entity_view_display.bibcite_reference.web_project_page.default'
+        - 'config:core.entity_view_display.bibcite_reference.web_project_page.table'
+        - 'config:core.entity_view_display.bibcite_reference.web_project_page.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.web_service.citation'
+        - 'config:core.entity_view_display.bibcite_reference.web_service.default'
+        - 'config:core.entity_view_display.bibcite_reference.web_service.table'
+        - 'config:core.entity_view_display.bibcite_reference.web_service.teaser'
   page_4:
     display_plugin: page
     id: page_4
@@ -1809,61 +2359,10 @@ display:
           entity_type: bibcite_reference
           entity_field: bibcite_year
           plugin_id: field
-        citation:
-          id: citation
+        rendered_entity:
+          id: rendered_entity
           table: bibcite_reference
-          field: citation
-          relationship: none
-          group_type: group
-          admin_label: 'Reference: Citation (The value is controlled from the code - see os_publications_views_pre_render)'
-          label: ''
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          csl_style: harvard_chicago_author_date
-          entity_type: bibcite_reference
-          plugin_id: bibcite_citation
-        cp_taxonomy_field_taxonomy_terms:
-          id: cp_taxonomy_field_taxonomy_terms
-          table: bibcite_reference
-          field: cp_taxonomy_field_taxonomy_terms
+          field: rendered_entity
           relationship: none
           group_type: group
           admin_label: ''
@@ -1908,8 +2407,9 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
+          view_mode: teaser
           entity_type: bibcite_reference
-          plugin_id: cp_taxonomy_field_taxonomy_terms
+          plugin_id: rendered_entity
       sorts:
         bibcite_year:
           id: bibcite_year
@@ -1932,13 +2432,28 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          order: ASC
-          exposed: true
+          order: DESC
+          exposed: false
           expose:
             label: 'Is Sticky'
           entity_type: bibcite_reference
           entity_field: is_sticky
           plugin_id: standard
+        created:
+          id: created
+          table: bibcite_reference
+          field: created
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: ASC
+          exposed: false
+          expose:
+            label: ''
+          granularity: hour
+          entity_type: bibcite_reference
+          entity_field: created
+          plugin_id: date
       menu:
         type: none
         title: 'Publications by Year'
@@ -1994,6 +2509,148 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - 'url.query_args:sort_by'
-        - 'url.query_args:sort_order'
-      tags: {  }
+      tags:
+        - 'config:core.entity_view_display.bibcite_reference.artwork.citation'
+        - 'config:core.entity_view_display.bibcite_reference.artwork.default'
+        - 'config:core.entity_view_display.bibcite_reference.artwork.table'
+        - 'config:core.entity_view_display.bibcite_reference.artwork.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.audiovisual.citation'
+        - 'config:core.entity_view_display.bibcite_reference.audiovisual.default'
+        - 'config:core.entity_view_display.bibcite_reference.audiovisual.table'
+        - 'config:core.entity_view_display.bibcite_reference.audiovisual.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.bill.citation'
+        - 'config:core.entity_view_display.bibcite_reference.bill.default'
+        - 'config:core.entity_view_display.bibcite_reference.bill.table'
+        - 'config:core.entity_view_display.bibcite_reference.bill.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.book.citation'
+        - 'config:core.entity_view_display.bibcite_reference.book.default'
+        - 'config:core.entity_view_display.bibcite_reference.book.table'
+        - 'config:core.entity_view_display.bibcite_reference.book.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.book_chapter.citation'
+        - 'config:core.entity_view_display.bibcite_reference.book_chapter.default'
+        - 'config:core.entity_view_display.bibcite_reference.book_chapter.table'
+        - 'config:core.entity_view_display.bibcite_reference.book_chapter.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.broadcast.citation'
+        - 'config:core.entity_view_display.bibcite_reference.broadcast.default'
+        - 'config:core.entity_view_display.bibcite_reference.broadcast.table'
+        - 'config:core.entity_view_display.bibcite_reference.broadcast.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.case.citation'
+        - 'config:core.entity_view_display.bibcite_reference.case.default'
+        - 'config:core.entity_view_display.bibcite_reference.case.table'
+        - 'config:core.entity_view_display.bibcite_reference.case.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.chart.citation'
+        - 'config:core.entity_view_display.bibcite_reference.chart.default'
+        - 'config:core.entity_view_display.bibcite_reference.chart.table'
+        - 'config:core.entity_view_display.bibcite_reference.chart.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.classical.citation'
+        - 'config:core.entity_view_display.bibcite_reference.classical.default'
+        - 'config:core.entity_view_display.bibcite_reference.classical.table'
+        - 'config:core.entity_view_display.bibcite_reference.classical.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.conference_paper.citation'
+        - 'config:core.entity_view_display.bibcite_reference.conference_paper.default'
+        - 'config:core.entity_view_display.bibcite_reference.conference_paper.table'
+        - 'config:core.entity_view_display.bibcite_reference.conference_paper.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.conference_proceedings.citation'
+        - 'config:core.entity_view_display.bibcite_reference.conference_proceedings.default'
+        - 'config:core.entity_view_display.bibcite_reference.conference_proceedings.table'
+        - 'config:core.entity_view_display.bibcite_reference.conference_proceedings.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.database.citation'
+        - 'config:core.entity_view_display.bibcite_reference.database.default'
+        - 'config:core.entity_view_display.bibcite_reference.database.table'
+        - 'config:core.entity_view_display.bibcite_reference.database.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.film.citation'
+        - 'config:core.entity_view_display.bibcite_reference.film.default'
+        - 'config:core.entity_view_display.bibcite_reference.film.table'
+        - 'config:core.entity_view_display.bibcite_reference.film.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.government_report.citation'
+        - 'config:core.entity_view_display.bibcite_reference.government_report.default'
+        - 'config:core.entity_view_display.bibcite_reference.government_report.table'
+        - 'config:core.entity_view_display.bibcite_reference.government_report.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.hearing.citation'
+        - 'config:core.entity_view_display.bibcite_reference.hearing.default'
+        - 'config:core.entity_view_display.bibcite_reference.hearing.table'
+        - 'config:core.entity_view_display.bibcite_reference.hearing.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.journal.citation'
+        - 'config:core.entity_view_display.bibcite_reference.journal.default'
+        - 'config:core.entity_view_display.bibcite_reference.journal.table'
+        - 'config:core.entity_view_display.bibcite_reference.journal.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.journal_article.citation'
+        - 'config:core.entity_view_display.bibcite_reference.journal_article.default'
+        - 'config:core.entity_view_display.bibcite_reference.journal_article.table'
+        - 'config:core.entity_view_display.bibcite_reference.journal_article.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.legal_ruling.citation'
+        - 'config:core.entity_view_display.bibcite_reference.legal_ruling.default'
+        - 'config:core.entity_view_display.bibcite_reference.legal_ruling.table'
+        - 'config:core.entity_view_display.bibcite_reference.legal_ruling.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.magazine_article.citation'
+        - 'config:core.entity_view_display.bibcite_reference.magazine_article.default'
+        - 'config:core.entity_view_display.bibcite_reference.magazine_article.table'
+        - 'config:core.entity_view_display.bibcite_reference.magazine_article.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.manuscript.citation'
+        - 'config:core.entity_view_display.bibcite_reference.manuscript.default'
+        - 'config:core.entity_view_display.bibcite_reference.manuscript.table'
+        - 'config:core.entity_view_display.bibcite_reference.manuscript.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.map.citation'
+        - 'config:core.entity_view_display.bibcite_reference.map.default'
+        - 'config:core.entity_view_display.bibcite_reference.map.table'
+        - 'config:core.entity_view_display.bibcite_reference.map.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.miscellaneous.citation'
+        - 'config:core.entity_view_display.bibcite_reference.miscellaneous.default'
+        - 'config:core.entity_view_display.bibcite_reference.miscellaneous.table'
+        - 'config:core.entity_view_display.bibcite_reference.miscellaneous.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.miscellaneous_section.citation'
+        - 'config:core.entity_view_display.bibcite_reference.miscellaneous_section.default'
+        - 'config:core.entity_view_display.bibcite_reference.miscellaneous_section.table'
+        - 'config:core.entity_view_display.bibcite_reference.miscellaneous_section.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.newspaper_article.citation'
+        - 'config:core.entity_view_display.bibcite_reference.newspaper_article.default'
+        - 'config:core.entity_view_display.bibcite_reference.newspaper_article.table'
+        - 'config:core.entity_view_display.bibcite_reference.newspaper_article.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.patent.citation'
+        - 'config:core.entity_view_display.bibcite_reference.patent.default'
+        - 'config:core.entity_view_display.bibcite_reference.patent.table'
+        - 'config:core.entity_view_display.bibcite_reference.patent.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.personal.citation'
+        - 'config:core.entity_view_display.bibcite_reference.personal.default'
+        - 'config:core.entity_view_display.bibcite_reference.personal.table'
+        - 'config:core.entity_view_display.bibcite_reference.personal.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.presentation.citation'
+        - 'config:core.entity_view_display.bibcite_reference.presentation.default'
+        - 'config:core.entity_view_display.bibcite_reference.presentation.table'
+        - 'config:core.entity_view_display.bibcite_reference.presentation.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.report.citation'
+        - 'config:core.entity_view_display.bibcite_reference.report.default'
+        - 'config:core.entity_view_display.bibcite_reference.report.table'
+        - 'config:core.entity_view_display.bibcite_reference.report.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.software.citation'
+        - 'config:core.entity_view_display.bibcite_reference.software.default'
+        - 'config:core.entity_view_display.bibcite_reference.software.table'
+        - 'config:core.entity_view_display.bibcite_reference.software.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.statute.citation'
+        - 'config:core.entity_view_display.bibcite_reference.statute.default'
+        - 'config:core.entity_view_display.bibcite_reference.statute.table'
+        - 'config:core.entity_view_display.bibcite_reference.statute.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.thesis.citation'
+        - 'config:core.entity_view_display.bibcite_reference.thesis.default'
+        - 'config:core.entity_view_display.bibcite_reference.thesis.table'
+        - 'config:core.entity_view_display.bibcite_reference.thesis.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.unpublished.citation'
+        - 'config:core.entity_view_display.bibcite_reference.unpublished.default'
+        - 'config:core.entity_view_display.bibcite_reference.unpublished.table'
+        - 'config:core.entity_view_display.bibcite_reference.unpublished.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.website.citation'
+        - 'config:core.entity_view_display.bibcite_reference.website.default'
+        - 'config:core.entity_view_display.bibcite_reference.website.table'
+        - 'config:core.entity_view_display.bibcite_reference.website.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.web_article.citation'
+        - 'config:core.entity_view_display.bibcite_reference.web_article.default'
+        - 'config:core.entity_view_display.bibcite_reference.web_article.table'
+        - 'config:core.entity_view_display.bibcite_reference.web_article.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.web_project_page.citation'
+        - 'config:core.entity_view_display.bibcite_reference.web_project_page.default'
+        - 'config:core.entity_view_display.bibcite_reference.web_project_page.table'
+        - 'config:core.entity_view_display.bibcite_reference.web_project_page.teaser'
+        - 'config:core.entity_view_display.bibcite_reference.web_service.citation'
+        - 'config:core.entity_view_display.bibcite_reference.web_service.default'
+        - 'config:core.entity_view_display.bibcite_reference.web_service.table'
+        - 'config:core.entity_view_display.bibcite_reference.web_service.teaser'

@@ -7,6 +7,7 @@
 
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\views\ViewExecutable;
 use Drupal\vsite\Config\HierarchicalStorage;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
@@ -261,6 +262,7 @@ function cp_taxonomy_node_view_alter(array &$build, EntityInterface $entity, Ent
   ];
   $cp_taxonomy_helper->checkTaxonomyTermsPageVisibility($build, $view_modes);
   $cp_taxonomy_helper->checkTaxonomyTermsListingVisibility($build, 'node:' . $entity->bundle());
+  $cp_taxonomy_helper->setCacheTags($build);
 }
 
 /**
@@ -270,10 +272,11 @@ function cp_taxonomy_bibcite_reference_view_alter(array &$build, EntityInterface
   /** @var \Drupal\cp_taxonomy\CpTaxonomyHelperInterface $cp_taxonomy_helper */
   $cp_taxonomy_helper = Drupal::service('cp.taxonomy.helper');
   $view_modes = [
-    'full',
     'citation',
   ];
   $cp_taxonomy_helper->checkTaxonomyTermsPageVisibility($build, $view_modes);
+  $cp_taxonomy_helper->checkTaxonomyTermsListingVisibility($build, 'bibcite_reference:*');
+  $cp_taxonomy_helper->setCacheTags($build);
 }
 
 /**
@@ -287,4 +290,44 @@ function cp_taxonomy_media_view_alter(array &$build, EntityInterface $entity, En
   ];
   $cp_taxonomy_helper->checkTaxonomyTermsPageVisibility($build, $view_modes);
   $cp_taxonomy_helper->checkTaxonomyTermsListingVisibility($build, 'media:*');
+  $cp_taxonomy_helper->setCacheTags($build);
+}
+
+/**
+ * Implements hook_entity_prepare_view().
+ */
+function cp_taxonomy_entity_prepare_view($entity_type_id, array $entities, array $displays, $view_mode) {
+  /** @var \Drupal\vsite\Plugin\VsiteContextManager $vsite_context_manager */
+  $vsite_context_manager = Drupal::service('vsite.context_manager');
+  $group = $vsite_context_manager->getActiveVsite();
+  if (empty($group)) {
+    return;
+  }
+  /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
+  foreach ($entities as $entity) {
+    if (!$entity->hasField('field_taxonomy_terms')) {
+      continue;
+    }
+    $field_values = $entity->get('field_taxonomy_terms')->getValue();
+    if (empty($field_values)) {
+      continue;
+    }
+    $entity->addCacheTags(['entity-with-taxonomy-terms:' . $group->id()]);
+  }
+}
+
+/**
+ * Implements hook_views_post_build().
+ */
+function cp_taxonomy_views_post_build(ViewExecutable $view) {
+  /** @var \Drupal\vsite\Plugin\VsiteContextManager $vsite_context_manager */
+  $vsite_context_manager = Drupal::service('vsite.context_manager');
+  $group = $vsite_context_manager->getActiveVsite();
+  if (empty($group)) {
+    return;
+  }
+  // Tag all publications views, can't find better working solution.
+  if ($view->id() == 'publications') {
+    $view->storage->addCacheTags(['entity-with-taxonomy-terms:' . $group->id()]);
+  }
 }

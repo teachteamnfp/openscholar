@@ -29,3 +29,7 @@ regions:
 
 libraries:
   - documental/global-styling
+
+ckeditor_stylesheets:
+  - //fonts.googleapis.com/css?family=Roboto
+  - css/ckeditor.css

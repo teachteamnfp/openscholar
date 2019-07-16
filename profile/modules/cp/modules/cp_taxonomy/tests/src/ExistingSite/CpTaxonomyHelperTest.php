@@ -2,6 +2,8 @@
 
 namespace Drupal\Tests\cp_taxonomy\ExistingSite;
 
+use Drupal\Tests\openscholar\Traits\CpTaxonomyTestTrait;
+
 /**
  * Class CheckingFieldsTest.
  *
@@ -12,7 +14,8 @@ namespace Drupal\Tests\cp_taxonomy\ExistingSite;
  */
 class CpTaxonomyHelperTest extends TestBase {
 
-  protected $group;
+  use CpTaxonomyTestTrait;
+
   private $helper;
 
   /**
@@ -20,12 +23,6 @@ class CpTaxonomyHelperTest extends TestBase {
    */
   public function setUp() {
     parent::setUp();
-    $this->group = $this->createGroup([
-      'type' => 'personal',
-      'path' => [
-        'alias' => '/' . $this->randomMachineName(),
-      ],
-    ]);
     $this->helper = $this->container->get('cp.taxonomy.helper');
   }
 

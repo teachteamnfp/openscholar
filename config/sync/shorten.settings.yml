@@ -1,0 +1,21 @@
+shorten_cache_clear_all: true
+shorten_invisible_services: 'a:7:{s:8:"Metamark";s:8:"Metamark";s:8:"migre.me";s:8:"migre.me";s:7:"PeekURL";s:7:"PeekURL";s:5:"qr.cx";s:5:"qr.cx";s:5:"ri.ms";s:5:"ri.ms";s:5:"is.gd";i:0;s:7:"TinyURL";i:0;}'
+shorten_service: is.gd
+shorten_service_backup: TinyURL
+shorten_www: false
+shorten_method: curl
+shorten_cache_duration: 1814400
+shorten_cache_fail_duration: 1800
+shorten_budurl: ''
+shorten_ez: ''
+shorten_bitly_login: ''
+shorten_bitly_key: ''
+shorten_googl: ''
+shorten_fwd4me: ''
+shorten_timeout: 3
+shorten_show_service: false
+shorten_use_alias: 1
+shorten_cligs: ''
+shorten_redirec: ''
+_core:
+  default_config_hash: kb5AkRLpea3OhyGckH1naarYzA1W1GY3hFKJT_hu5LE

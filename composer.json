@@ -19,6 +19,10 @@
             "url": "https://github.com/openscholar/views_ical"
         },
         {
+            "type": "vcs",
+            "url": "https://github.com/openscholar/repec"
+        },
+        {
             "type": "package",
             "package": {
                 "name": "kenwheeler/slick",
@@ -68,23 +72,6 @@
                 },
                 "source": {
                     "url": "https://github.com/swordapp/swordappv2-php-library.git",
-                    "type": "git",
-                    "reference": "master"
-                }
-            }
-        },
-        {
-            "type": "package",
-            "package": {
-                "name": "drupal/repec",
-                "version": "master",
-                "type": "drupal-module",
-                "dist": {
-                    "url": "https://github.com/openscholar/repec/archive/master.zip",
-                    "type": "zip"
-                },
-                "source": {
-                    "url": "https://github.com/openscholar/repec.git",
                     "type": "git",
                     "reference": "master"
                 }
@@ -206,7 +193,7 @@
         "ext-json": "*",
         "php-ds/php-ds": "^1.2",
         "swordapp/swordappv2-php-library": "master",
-        "drupal/repec": "master",
+        "drupal/repec": "^2.1",
         "ckeditor/panelbutton": "4.11.3",
         "ckeditor/colorbutton": "4.11.3",
         "ckeditor/fakeobjects": "4.11.3",
@@ -235,7 +222,10 @@
         "drupal/cancel_button": "^1.1",
         "drupal/bibcite": "1.0-alpha10",
         "egulias/email-validator": "1.2.6",
-        "doctrine/lexer": "dev-master"
+        "doctrine/lexer": "dev-master",
+        "drupal/shorten": "2.x-dev",
+        "drupal/field_group": "^3.0",
+        "drupal/key_value_field": "^1.0"
     },
     "require-dev": {
         "drupal/features": "^3.7",
@@ -364,6 +354,12 @@
                 "New group content created when node edited": "https://www.drupal.org/files/issues/2019-06-04/3059300-3.patch",
                 "Prevent resaving of deleted entities": "https://raw.githubusercontent.com/openscholar/openscholar/ae879229e866cbc96d91d2b2a8273292fa26fd34/patches/group.fix_saving_deleted_entity.patch",
                 "Entities identified by strings as group content": "https://www.drupal.org/files/issues/2019-05-28/group-support_string_entity_ids-2797793-162.patch"
+            },
+            "drupal/shorten": {
+                "Update is.gd service api url": "https://www.drupal.org/files/issues/2019-07-03/update-isgd-api-3065567-2.patch"
+            },
+            "drupal/bibcite": {
+                "Contextual links for bibcite reference entities": "patches/3065990-2.patch"
             }
         },
         "patches-ignore": {

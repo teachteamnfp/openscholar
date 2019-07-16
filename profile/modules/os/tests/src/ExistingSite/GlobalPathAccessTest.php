@@ -3,7 +3,6 @@
 namespace Drupal\Tests\os\ExistingSite;
 
 use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
-use Drupal\vsite\Plugin\AppManangerInterface;
 
 /**
  * Tests whether group member has access to entity create global paths.
@@ -184,7 +183,7 @@ class GlobalPathAccessTest extends OsExistingSiteTestBase {
     $this->assertSession()->statusCodeEquals(200);
 
     $this->drupalPostForm(NULL, [
-      'title[0][value]' => 'Test Artwork',
+      'html_title[0][value]' => 'Test Artwork',
       'bibcite_year[0][value]' => 1980,
       'status[value]' => 1,
     ], 'Save');
@@ -193,13 +192,13 @@ class GlobalPathAccessTest extends OsExistingSiteTestBase {
     $entity_type_manager = $this->container->get('entity_type.manager');
 
     $references = $entity_type_manager->getStorage('bibcite_reference')->loadByProperties([
-      'title' => 'Test Artwork',
+      'html_title__value' => 'Test Artwork',
     ]);
 
     $this->assertNotEmpty($references);
     $reference = \reset($references);
 
-    $this->assertEquals('Test Artwork', $reference->get('title')->first()->getValue()['value']);
+    $this->assertEquals('Test Artwork', $reference->html_title->value);
 
     $reference->delete();
   }
@@ -228,20 +227,20 @@ class GlobalPathAccessTest extends OsExistingSiteTestBase {
     $this->visit("{$this->group->get('path')->getValue()[0]['alias']}/bibcite/reference/{$reference->id()}/edit");
     $this->assertSession()->statusCodeEquals(200);
     $this->drupalPostForm(NULL, [
-      'title[0][value]' => 'Artwork Reference Edited',
+      'html_title[0][value]' => 'Artwork Reference Edited',
     ], 'Save');
 
     /** @var \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager */
     $entity_type_manager = $this->container->get('entity_type.manager');
 
     $references = $entity_type_manager->getStorage('bibcite_reference')->loadByProperties([
-      'title' => 'Artwork Reference Edited',
+      'html_title__value' => 'Artwork Reference Edited',
     ]);
 
     $this->assertNotEmpty($references);
     $reference = \reset($references);
 
-    $this->assertEquals('Artwork Reference Edited', $reference->get('title')->first()->getValue()['value']);
+    $this->assertEquals('Artwork Reference Edited', $reference->html_title->value);
   }
 
   /**
@@ -260,7 +259,7 @@ class GlobalPathAccessTest extends OsExistingSiteTestBase {
     $member = $this->createUser();
     $this->group->addMember($member);
     $reference = $this->createReference([
-      'title' => [
+      'html_title' => [
         'value' => 'Artwork meant to be deleted',
       ],
     ]);
@@ -278,7 +277,7 @@ class GlobalPathAccessTest extends OsExistingSiteTestBase {
     $entity_type_manager = $this->container->get('entity_type.manager');
 
     $references = $entity_type_manager->getStorage('bibcite_reference')->loadByProperties([
-      'title' => 'Artwork meant to be deleted',
+      'html_title__value' => 'Artwork meant to be deleted',
     ]);
 
     $this->assertEmpty($references);

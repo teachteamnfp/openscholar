@@ -17,7 +17,7 @@ class AuthorLastNameFirstLetter extends SortPluginBase {
   public function query() {
     $this->ensureMyTable();
 
-    $this->query->addOrderBy(NULL, "SUBSTR({$this->tableAlias}.{$this->realField}, 0, 1)", $this->options['order'], 'first_letter_last_name_author');
+    $this->query->addOrderBy(NULL, "SUBSTR({$this->tableAlias}.{$this->realField}, 1, 1)", $this->options['order'], 'first_letter_last_name_author');
   }
 
 }

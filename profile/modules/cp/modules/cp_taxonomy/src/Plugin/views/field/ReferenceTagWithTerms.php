@@ -54,7 +54,7 @@ class ReferenceTagWithTerms extends FieldPluginBase {
    * {@inheritdoc}
    */
   public function render(ResultRow $values) {
-    $reference = $values->_entity;
+    $reference = $this->getEntity($values);
     $config = $this->configFactory->get('cp_taxonomy.settings');
     $display_term_under_content_teaser_types = $config->get('display_term_under_content_teaser_types');
     if (is_null($display_term_under_content_teaser_types) || in_array($reference->getEntityType()->id() . ':' . $reference->bundle(), $display_term_under_content_teaser_types)) {

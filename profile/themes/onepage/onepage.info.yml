@@ -4,6 +4,7 @@ description: 'A one page (homepage) theme.'
 base theme: os_base
 core: 8.x
 type: theme
+onepage: true
 
 regions:
   branding_header: 'Branding Header'
@@ -29,3 +30,7 @@ regions:
 
 libraries:
   - onepage/global-styling
+
+ckeditor_stylesheets:
+  - //fonts.googleapis.com/css?family=Montserrat
+  - css/ckeditor.css

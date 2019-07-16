@@ -1,0 +1,7 @@
+name: 'Vsite Site Creation'
+description: 'Angular screens for creating a new vsite'
+type: module
+core: 8.x
+dependencies:
+  - vsite
+  - os_rest
