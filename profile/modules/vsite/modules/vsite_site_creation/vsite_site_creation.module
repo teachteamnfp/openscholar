@@ -44,9 +44,6 @@ function vsite_site_creation_library_info_alter(&$libraries, $extension) {
       ];
     }
 
-    $user = \Drupal::currentUser();
-    $settings['hasOsId'] = ($user->isAnonymous() && $user->hasPermission('restful post user_registration')) || $user->hasPermission('create vsite on behalf of others');
-
     $settings['subsite_types'] = \Drupal::config('vsite.settings')->get('allowed_subsite_group_types');
 
     $settings['themes'] = [];
@@ -75,6 +72,16 @@ function vsite_site_creation_library_info_alter(&$libraries, $extension) {
     $libraries['site_creation']['drupalSettings']['site_creation'] = $settings;
   }
 
+}
+
+/**
+ * Implements hook_js_settings_alter().
+ */
+function vsite_site_creation_js_settings_alter(array &$settings, \Drupal\Core\Asset\AttachedAssetsInterface $assets) {
+  if (in_array('vsite_site_creation/site_creation', $assets->getLibraries())) {
+    $user = \Drupal::currentUser();
+    $settings['site_creation']['hasOsId'] = ($user->isAnonymous() && $user->hasPermission('restful post user_registration')) || $user->hasPermission('create vsite on behalf of others');
+  }
 }
 
 /**
