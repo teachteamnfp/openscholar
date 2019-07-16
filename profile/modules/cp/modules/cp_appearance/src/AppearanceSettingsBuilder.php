@@ -257,7 +257,8 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
         }
 
         $info = $drupal_installed_themes[$sub_theme]->info;
-        return (isset($info['custom theme']) && ($info['custom theme'] === TRUE));
+
+        return !isset($info['custom theme']);
       });
 
       // Create a key-extension_info mapping.
