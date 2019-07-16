@@ -2,17 +2,20 @@
 
 namespace Drupal\Tests\cp_taxonomy\ExistingSite;
 
+use Drupal\Tests\openscholar\Traits\CpTaxonomyTestTrait;
 use Drupal\views\Views;
 
 /**
  * Class ReferenceViewTest.
  *
- * @group other
+ * @group cp
  * @group kernel
  *
  * @package Drupal\Tests\cp_taxonomy\ExistingSite
  */
 class ReferenceViewTest extends TestBase {
+
+  use CpTaxonomyTestTrait;
 
   protected $group1;
   protected $group2;

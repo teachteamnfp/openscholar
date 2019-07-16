@@ -6,6 +6,7 @@ core: 8.x
 type: theme
 
 regions:
+  branding_header: 'Branding Header'
   navigation_collapsible: 'Navigation (Collapsible)'
   header: 'Header'
   header_left: 'Header Left'
@@ -22,8 +23,13 @@ regions:
   footer_left: 'Footer left'
   footer_right: 'Footer right'
   footer_bottom: 'Footer bottom'
+  branding_footer: 'Branding footer'
   page_top: 'Page top'
   page_bottom: 'Page bottom'
 
 libraries:
   - cabot/global-styling
+
+ckeditor_stylesheets:
+  - //fonts.googleapis.com/css?family=Noto+Serif
+  - css/ckeditor.css

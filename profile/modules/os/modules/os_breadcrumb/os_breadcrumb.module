@@ -5,8 +5,8 @@
  * Helper functions for Breadcrumb.
  */
 
-use Drupal\Core\Breadcrumb\Breadcrumb;
 use Drupal\Core\Entity\Entity;
+use Drupal\Core\Breadcrumb\Breadcrumb;
 use Drupal\Core\Link;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
@@ -30,7 +30,11 @@ function os_breadcrumb_theme(array $existing, string $type, string $theme, strin
 function os_breadcrumb_preprocess_page(&$variables) {
   $show_breadcrumbs = Drupal::config('os_breadcrumb.settings')->get('show_breadcrumbs');
   if (!$show_breadcrumbs) {
-    unset($variables['page']['content']['os_base_breadcrumbs']);
+    foreach ($variables['page']['content'] as $key => $item) {
+      if (isset($item['#cache']['keys']) && in_array('os_base_breadcrumbs', $item['#cache']['keys'])) {
+        unset($variables['page']['content'][$key]);
+      }
+    }
   }
 }
 
@@ -39,7 +43,7 @@ function os_breadcrumb_preprocess_page(&$variables) {
  */
 function os_breadcrumb_system_breadcrumb_alter(Breadcrumb &$breadcrumb, RouteMatchInterface $route_match, array $context) {
   // App Breadcrumbs.
-  $node = $route_match->getCurrentRouteMatch()->getParameter('node');
+  $node = $route_match->getParameter('node');
   if ($node && $node->bundle() === 'events') {
     os_breadcrumb_edit_app_breadcrumbs($breadcrumb);
   }

@@ -1,0 +1,5 @@
+entity.layout_context.collection:
+  title: 'Layout contexts'
+  parent: system.admin_structure
+  description: 'Create and manage fields, forms, and display settings for layout contexts.'
+  route_name: entity.layout_context.collection

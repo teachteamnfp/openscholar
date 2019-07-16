@@ -2,6 +2,8 @@
 
 namespace Drupal\Tests\vsite\ExistingSiteJavascript;
 
+use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTestBase;
+
 /**
  * Tests vsite module.
  *
@@ -9,7 +11,7 @@ namespace Drupal\Tests\vsite\ExistingSiteJavascript;
  * @group vsite
  * @coversDefaultClass \Drupal\vsite\Form\ConfigureSubSiteForm
  */
-class VsiteConfigSubsiteAdminFormTest extends VsiteExistingSiteJavascriptTestBase {
+class VsiteConfigSubsiteAdminFormTest extends OsExistingSiteJavascriptTestBase {
 
   /**
    * Admin user.

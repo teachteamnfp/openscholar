@@ -1,0 +1,155 @@
+//variables
+$color_blue: #3e77bb;
+$color-white: #fff;
+$color-light-gray: #efefef;
+$color-light-gray1: #ddd;
+$color-link: #215990;
+$color-gray: #565656;
+
+.toolbar {
+  .toolbar-tray-vertical {
+    background-color: $color-white;
+    border-right: 1px solid $color-light-gray;
+    box-shadow: none;
+    .menu-item+.menu-item {
+      border-top: none;
+    }
+    .toolbar-tray {
+      a {
+        padding: 1.3em 1.3333em;
+      }
+    }
+    li.open {
+      > ul {
+        a {
+          margin-left: 10px;
+        }
+      }
+    }
+  }
+  .toolbar-bar {
+    background-color: $color-blue;
+    box-shadow: -1px 0 3px 1px rgba(183, 183, 183, 0.3333);
+    padding-right: 100px;
+    &:after {
+      content: "";
+      background: url(images/os-logo.png) no-repeat;
+      width: 87px;
+      height: 27px;
+      position: absolute;
+      right: 10px;
+      top: 6px;
+    }
+    .toolbar-item {
+      color: $color-white;
+    }
+    .toolbar-tab {
+      > .toolbar-item.is-active {
+          background-image: none;
+        }
+    }
+    /**** toolbar icons ****/
+    .toolbar-icon-menu:before {
+      background: url(images/hamburger.png) 0 center no-repeat;
+    }
+    .toolbar-icon-toolbar-menu:before {
+      background: url(images/cog.png) 0 center no-repeat;
+    }
+    .toolbar-icon-user:before {
+      background: url(images/person.png) 0 center no-repeat;
+    }
+    .toolbar-icon-devel:before {
+      background: url(images/cog.png) 0 center no-repeat;
+    }
+    .toolbar-icon-place-block-inactive:before {
+      background: url(images/place-block.png) 0 center no-repeat;
+    }
+    .toolbar-icon-edit:before {
+      background: url(images/pencil.png) 0 center no-repeat;
+    }
+    .toolbar-icon-link-toolbar-menu-cp-content:before {
+      background: url(images/site-content-icon.png) 0 center no-repeat;
+    }
+    .toolbar-icon-link-toolbar-menu-cp-menu:before {
+      background: url(images/menus-icon.png) 0 center no-repeat;
+      left: 1.1em;
+    }
+    .toolbar-icon-link-toolbar-menu-cp-appearance:before {
+      background: url(images/appearance-icon.png) 0 center no-repeat;
+    }
+    .toolbar-icon-link-toolbar-menu-cp-taxonomy:before {
+      background: url(images/taxonomy-icon.png) 0 center no-repeat;
+    }
+    .toolbar-icon-link-toolbar-menu-cp-settings:before {
+      background: url(images/settings-icon.png) 0 center no-repeat;
+    }
+    .toolbar-icon-link-toolbar-menu-cp-users:before {
+      background: url(images/members-roles-icon.png) 0 center no-repeat;
+    }
+    .toolbar-icon-link-toolbar-menu-cp-help:before {
+      background: url(images/help-icon.png) 0 center no-repeat;
+    }
+    #toolbar-item-user-tray {
+      .toolbar-menu {
+        a {
+          position: relative;
+          padding-left: 2.75em;
+          border-left: 1px solid $color-light-gray1;
+          &:before {
+            content: "";
+            background: url(images/user-sprite.png) no-repeat;
+            position: absolute;
+            left: 0.6667em;
+            top: 0;
+            height: 30px;
+            width: 20px;
+          }
+        }
+        .account a:before {
+          background-position: -10px -160px;
+        }
+        .account-edit a:before {
+          background-position: -10px -41px;
+        }
+        .logout a:before {
+          background-position: -10px -81px;
+        }
+        .twitter:before {
+          background-position: -10px -120px;
+        }
+        .site-create a:before{
+          background-position: -10px 0px;
+        }
+      }
+    }
+  }
+  .toolbar-toggle-orientation {
+    background: $color-white;
+  }
+  .toolbar-tray {
+    a {
+      color: $color-gray;
+      &.is-active {
+        color: $color-gray;
+        font-weight: normal;
+        text-decoration: none;
+      }
+    }
+  }
+  .toolbar-icon.toolbar-handle {
+    &:focus{
+      background-color: $color-white;
+    }
+    &:before {
+      background: url(images/plus-icon.png) center no-repeat;
+    }
+    &.open {
+      &:before {
+        background: url(images/minus-icon.png) center no-repeat;
+      }
+    }
+  }
+}
+.seven-details__summary {
+  color: $color-link;
+}

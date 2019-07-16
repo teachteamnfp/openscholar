@@ -47,7 +47,7 @@ cp.content.browse.media:
   parent: cp.content.browse
 cp.menu:
   title: 'Menus'
-  url: 'internal:##'
+  route_name: cp.build.menu
   weight: 1
   menu_name: control-panel
 cp.appearance:
@@ -55,10 +55,6 @@ cp.appearance:
   url: 'internal:##'
   menu_name: control-panel
   weight: 2
-cp.favicon:
-  title: 'Favicon'
-  url: 'internal:##'
-  parent: cp.appearance
 cp.settings:
   title: 'Settings'
   url: 'internal:##'
@@ -85,14 +81,6 @@ cp.settings.global.cache:
 cp.settings.global.domain:
   title: 'Custom Domain'
   url: 'internal:##'
-  parent: cp.settings.global
-cp.settings.global.privacy_policy:
-  title: 'Privacy Policy'
-  url: 'internal:##'
-  parent: cp.settings.global
-cp.settings.global.taxonomy:
-  title: 'Taxonomy'
-  route_name: cp.taxonomy
   parent: cp.settings.global
 cp.help:
   title: 'Help'

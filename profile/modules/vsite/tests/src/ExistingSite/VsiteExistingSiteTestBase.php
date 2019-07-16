@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\vsite\ExistingSite;
 
-use Drupal\group\Entity\GroupInterface;
 use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
 use Symfony\Component\CssSelector\CssSelectorConverter;
 
@@ -19,29 +18,20 @@ abstract class VsiteExistingSiteTestBase extends OsExistingSiteTestBase {
   protected $entityTypeManager;
 
   /**
+   * Vsite context manager service.
+   *
+   * @var \Drupal\vsite\Plugin\VsiteContextManagerInterface
+   */
+  protected $vsiteContextManager;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
     parent::setUp();
 
     $this->entityTypeManager = $this->container->get('entity_type.manager');
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function createGroup(array $values = []): GroupInterface {
-    $storage = $this->container->get('entity_type.manager')->getStorage('group');
-    $group = $storage->create($values + [
-      'type' => 'personal',
-      'label' => $this->randomMachineName(),
-    ]);
-    $group->enforceIsNew();
-    $group->save();
-
-    $this->markEntityForCleanup($group);
-
-    return $group;
+    $this->vsiteContextManager = $this->container->get('vsite.context_manager');
   }
 
   /**

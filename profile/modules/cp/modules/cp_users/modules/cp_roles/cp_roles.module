@@ -9,7 +9,9 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\cp_roles\Controller\CpRoleListBuilder;
+use Drupal\group\Entity\GroupRole;
 use Drupal\group\Entity\GroupRoleInterface;
+use Drupal\group\Entity\GroupTypeInterface;
 
 /**
  * Implements hook_entity_presave().
@@ -29,7 +31,7 @@ function cp_roles_entity_presave(EntityInterface $entity) {
 
     $provided_entity_id = \str_replace("{$entity->getGroupTypeId()}-", '', $entity->id());
 
-    $entity->set('id', "{$entity->getGroupTypeId()}-{$vsite->id()}-{$provided_entity_id}");
+    $entity->set('id', "{$entity->getGroupTypeId()}-{$vsite->id()}_{$provided_entity_id}");
   }
 }
 
@@ -52,7 +54,7 @@ function cp_roles_form_group_role_add_form_alter(&$form, FormStateInterface $for
   /** @var string $default_id_prefix */
   $default_id_prefix = $form['id']['#field_prefix'];
 
-  $form['id']['#field_prefix'] = "$default_id_prefix{$vsite->id()}-";
+  $form['id']['#field_prefix'] = "$default_id_prefix{$vsite->id()}_";
   $form['id']['#maxlength'] = EntityTypeInterface::ID_MAX_LENGTH - $subtract;
 
   $form['actions']['submit']['#submit'][] = 'cp_roles_group_role_add_form_submit';
@@ -75,5 +77,33 @@ function cp_roles_entity_type_build(array &$entity_types) {
     /** @var \Drupal\Core\Config\Entity\ConfigEntityTypeInterface $group_role_type */
     $group_role_type = $entity_types['group_role'];
     $group_role_type->setListBuilderClass(CpRoleListBuilder::class);
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ */
+function cp_roles_group_type_insert(GroupTypeInterface $entity) {
+  // Group administrators should be able to edit permissions of member role.
+  // Group module restricts that edit access for internal roles.
+  $roles_to_be_converted_to_non_internal = [
+    'member',
+  ];
+
+  foreach ($roles_to_be_converted_to_non_internal as $role) {
+    /** @var \Drupal\group\Entity\GroupRoleInterface|null $group_role */
+    $group_role = GroupRole::load("{$entity->id()}-$role");
+
+    if (!$group_role) {
+      continue;
+    }
+
+    $group_role->set('internal', FALSE);
+
+    if ($role === 'member') {
+      $group_role->set('label', t('Basic member'));
+    }
+
+    $group_role->save();
   }
 }

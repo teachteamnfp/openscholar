@@ -52,7 +52,7 @@ interface PublicationsListingHelperInterface {
    *   The redirect setting.
    *
    * @return \Drupal\redirect\Entity\Redirect|null
-   *   The redirect entity.
+   *   The redirect entity. Returns NULL, when no entity was created.
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException

@@ -70,19 +70,19 @@ class OsFileResource extends FileUploadResource {
 
     $extension = pathinfo($file->getFileUri(), PATHINFO_EXTENSION);
 
-    /** @var \Drupal\file\Entity\FileUsageInterface $fileUsage */
+    /** @var \Drupal\file\FileUsage\FileUsageInterface $fileUsage */
     $fileUsage = \Drupal::service('file.usage');
     $usage = $fileUsage->listUsage($file);
     if (isset($usage['file']['media'])) {
       ksort($usage['file']['media']);
-      /** @var \Drupal\media\Entity\MediaInterface $media */
-      $media = \Drupal::entityTypeManager()->getStorage('media')->load(reset($usage['media']));
+      /** @var \Drupal\media\MediaInterface $media */
+      $media = \Drupal::entityTypeManager()->getStorage('media')->load(reset(array_keys($usage['file']['media'])));
     }
     else {
 
       // This next big figures out what type of Media bundle to create around
       // the file.
-      /** @var \Drupal\media\Entity\MediaTypeInterface[] $mediaTypes */
+      /** @var \Drupal\media\MediaTypeInterface[] $mediaTypes */
       $mediaTypes = \Drupal::entityTypeManager()->getStorage('media_type')->loadMultiple();
       foreach ($mediaTypes as $mediaType) {
         $fieldDefinition = $mediaType->getSource()->getSourceFieldDefinition($mediaType);
@@ -125,7 +125,7 @@ class OsFileResource extends FileUploadResource {
    */
   public function put(EntityInterface $entity) {
     $temp_file_path = $this->streamUploadData();
-    /** @var \Drupal\file\Entity\FileInterface $target */
+    /** @var \Drupal\file\FileInterface $target */
     $target = $entity;
 
     if (file_unmanaged_copy($temp_file_path, $target->getFileUri(), FILE_EXISTS_REPLACE) === FALSE) {
@@ -188,7 +188,7 @@ class OsFileResource extends FileUploadResource {
   /**
    * Return validators applicable for replacing a single file.
    *
-   * @param \Drupal\file\Entity\FileInterface $target
+   * @param \Drupal\file\FileInterface $target
    *   The target file that is having its content replaced.
    *
    * @return array

@@ -5,6 +5,7 @@ dependencies:
   module:
     - editor
     - os_wysiwyg
+    - os_media
 name: 'Filtered HTML'
 format: filtered_html
 weight: 0
@@ -47,4 +48,9 @@ filters:
     provider: os_wysiwyg
     status: true
     weight: 0
+  media_transform:
+    id: media_transform
+    provider: os_media
+    status: true
+    weight: 100
     settings: {  }

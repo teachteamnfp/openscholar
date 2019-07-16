@@ -1,0 +1,10 @@
+uuid: 42108409-ae3f-4884-9a2e-3faae03703e7
+langcode: en
+status: true
+dependencies:
+  module:
+    - bibcite_entity
+id: bibcite_reference.teaser
+label: Teaser
+targetEntityType: bibcite_reference
+cache: true

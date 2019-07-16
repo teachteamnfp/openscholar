@@ -83,7 +83,7 @@ abstract class TestBase extends OsExistingSiteTestBase {
 
     // Assert files.
     $files_data = [];
-    foreach ($reference->get('field_files') as $item) {
+    foreach ($reference->get('field_attach_files') as $item) {
       $file = File::load($item->getValue()['target_id']);
       $files_data[] = [
         'url' => file_create_url($file->getFileUri()),
@@ -230,11 +230,13 @@ abstract class TestBase extends OsExistingSiteTestBase {
   public function tearDown() {
     /** @var \Drupal\Core\File\FileSystemInterface $file_system */
     $file_system = $this->container->get('file_system');
-    $template_path = "{$this->repec->getArchiveDirectory()}/{$this->defaultRepecSettings['archive_code']}seri.rdf";
-    $real_path = $file_system->realpath($template_path);
+    if (isset($this->defaultRepecSettings['archive_code'])) {
+      $template_path = "{$this->repec->getArchiveDirectory()}/{$this->defaultRepecSettings['archive_code']}seri.rdf";
+      $real_path = $file_system->realpath($template_path);
 
-    if (file_exists($real_path)) {
-      unlink($real_path);
+      if (file_exists($real_path)) {
+        unlink($real_path);
+      }
     }
 
     parent::tearDown();

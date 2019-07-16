@@ -5,13 +5,26 @@ dependencies:
   config:
     - bibcite_entity.bibcite_reference_type.unpublished
     - core.entity_view_mode.bibcite_reference.citation
-    - field.field.bibcite_reference.unpublished.field_files
+    - field.field.bibcite_reference.unpublished.field_attach_files
+    - field.field.bibcite_reference.unpublished.field_extra_fields
+    - field.field.bibcite_reference.unpublished.field_publication_image
+    - field.field.bibcite_reference.unpublished.field_redirect_to_source
+    - field.field.bibcite_reference.unpublished.field_taxonomy_terms
+    - image.style.publication_details_image
   enforced:
     config:
       - core.entity_view_mode.bibcite_reference.citation
       - bibcite_entity.bibcite_reference_type.unpublished
     module:
       - bibcite_entity
+  module:
+    - image
+    - key_value_field
+    - layout_builder
+    - text
+third_party_settings:
+  layout_builder:
+    sections: {  }
 _core:
   default_config_hash: cjdsXsD386QIZCyY5xf2bCs7QGkARfPgLXnD5Ms9RDo
 id: bibcite_reference.unpublished.citation
@@ -22,6 +35,45 @@ content:
   citation:
     weight: 0
     region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_extra_fields:
+    type: key_value
+    weight: 5
+    region: content
+    label: hidden
+    settings:
+      value_only: false
+    third_party_settings: {  }
+  field_publication_image:
+    type: image
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      image_style: publication_details_image
+      image_link: ''
+    third_party_settings: {  }
+  field_taxonomy_terms:
+    type: entity_reference_label
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+  full_text:
+    type: text_default
+    weight: 4
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  notes:
+    type: text_default
+    weight: 3
+    region: content
+    label: above
     settings: {  }
     third_party_settings: {  }
 hidden:
@@ -75,7 +127,9 @@ hidden:
   bibcite_url: true
   bibcite_volume: true
   bibcite_year: true
-  field_files: true
+  field_attach_files: true
+  field_redirect_to_source: true
+  html_title: true
   keywords: true
   langcode: true
   uid: true

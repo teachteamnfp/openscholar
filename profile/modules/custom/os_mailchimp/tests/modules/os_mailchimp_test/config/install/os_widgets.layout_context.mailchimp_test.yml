@@ -1,0 +1,13 @@
+langcode: en
+status: true
+dependencies: {  }
+id: mailchimp_test
+label: 'Mailchimp test'
+description: 'Mailchimp test'
+activationRules: "*\r\n~cp/*\r\n~node/*/edit\r\n~node/*/delete"
+weight: 0
+data:
+  -
+    id: mailchimpsubscribe
+    region: content
+    weight: '0'

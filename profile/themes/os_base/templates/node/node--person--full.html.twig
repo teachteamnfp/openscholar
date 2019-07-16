@@ -73,7 +73,7 @@
  */
 #}
 <div class="person--title">
-  <h1>{{ content.field_honorific.0['#context'].value }} {{ content.field_first_name.0['#context'].value }} {{ content.field_middle_name.0['#context'].value }} {{ content.field_last_name.0['#context'].value }}</h1>
+  <h1>{{ node.label }}</h1>
   {{content.field_professional_titles}}
 </div>
 
@@ -98,11 +98,26 @@
   {% endif %}
 
   <div{{ content_attributes }}>
-    <div class="content--image--area">
+    <div class="content--image--area clearfix">
       {{ content.field_photo_person }}
       {{ content.body }}
     </div>
-    <div class="content--main--area">{{ content|without('field_photo_person', 'body', "field_last_name", "field_first_name", "field_professional_titles", "field_honorific","field_middle_name") }}</div>
+    <div class="content--main--area row person-data">
+      <div class="contact--information block col-sm-6">
+        <h2 class="block-title">{% trans %} Contact Information{% endtrans %}</h2>
+        {{content.field_address}}
+        {{content.field_email}}
+        {% if content.field_phone.0 %}
+          <div class="field">{% trans %} p: {% endtrans %} {{content.field_phone.0['#title']}}</div>
+        {% endif %}
+        {{content.field_office_hours}}
+      </div>
+      <div class="websites--information block col-sm-6">
+        <h2 class="block-title">{% trans %} Websites{% endtrans %}</h2>
+        {{content.field_website}}
+      </div>
+      <div class="col-sm-12">
+        {{ content|without('field_photo_person', 'field_professional_titles', 'body', 'field_website', 'field_address', 'field_email', 'field_phone', 'field_office_hours') }}</div>
+      </div>
   </div>
-
 </article>

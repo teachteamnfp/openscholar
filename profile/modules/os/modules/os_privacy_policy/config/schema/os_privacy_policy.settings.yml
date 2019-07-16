@@ -1,0 +1,10 @@
+os_privacy_policy.settings:
+  type: config_object
+  label: 'OS privacy policy settings'
+  mapping:
+    os_privacy_policy_text:
+      type: string
+      label: 'Privacy policy text'
+    os_privacy_policy_url:
+      type: string
+      label: 'Privacy policy url'

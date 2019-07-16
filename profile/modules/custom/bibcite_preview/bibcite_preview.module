@@ -1,0 +1,105 @@
+<?php
+
+/**
+ * @file
+ * Bibcite preview hook implementations.
+ */
+
+use Drupal\bibcite_preview\Form\ReferencePreviewForm;
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function bibcite_preview_form_bibcite_reference_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['actions']['preview'] = [
+    '#type' => 'submit',
+    '#value' => t('Preview'),
+    '#weight' => 20,
+    '#submit' => [
+      '::submitForm',
+      'bibcite_preview_entity_preview',
+    ],
+  ];
+  // Try to restore from temp store, this must be done before calling.
+  /** @var \Drupal\Core\TempStore\PrivateTempStoreFactory $tempStoreFactory */
+  $tempStoreFactory = Drupal::getContainer()->get('tempstore.private');
+  $store = $tempStoreFactory->get('bibcite_reference_preview');
+
+  // Attempt to load from preview when the uuid is present unless we are
+  // rebuilding the form.
+  $request_uuid = \Drupal::request()->query->get('uuid');
+
+  if (!$form_state->isRebuilding() && $request_uuid && $preview = $store->get($request_uuid)) {
+    /** @var \Drupal\Core\Form\FormStateInterface $preview */
+    $form_state->setStorage($preview->getStorage());
+    $form_state->setUserInput($preview->getUserInput());
+
+    // Rebuild the form.
+    $form_state->setRebuild();
+
+    // The combination of having user input and rebuilding the form means
+    // that it will attempt to cache the form state which will fail if it is
+    // a GET request.
+    $form_state->setRequestMethod('POST');
+
+    $entity = $preview->getFormObject()->getEntity();
+    $entity->in_preview = NULL;
+
+    $form_state->set('has_been_previewed', TRUE);
+  }
+}
+
+/**
+ * Custom preview submit handler for Reference.
+ *
+ * @param array $form
+ *   Nested array of form elements that comprise the form.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The current state of the form.
+ *
+ * @throws \Drupal\Core\TempStore\TempStoreException
+ */
+function bibcite_preview_entity_preview(array &$form, FormStateInterface $form_state) {
+  /** @var \Drupal\Core\TempStore\PrivateTempStoreFactory $tempStoreFactory */
+  $tempStoreFactory = Drupal::getContainer()->get('tempstore.private');
+  $store = $tempStoreFactory->get('bibcite_reference_preview');
+
+  /** @var \Drupal\Core\Entity\EntityInterface $entity */
+  $entity = $form_state->getFormObject()->getEntity();
+
+  $entity->in_preview = TRUE;
+  $store->set($entity->uuid(), $form_state);
+
+  $route_parameters = [
+    'bibcite_reference_preview' => $entity->uuid(),
+    'view_mode_id' => 'citation',
+  ];
+
+  $options = [];
+  $query = Drupal::requestStack()->getCurrentRequest()->query;
+  if ($query->has('destination')) {
+    $options['query']['destination'] = $query->get('destination');
+    $query->remove('destination');
+  }
+  $form_state->setRedirect('entity.bibcite_reference.preview', $route_parameters, $options);
+}
+
+/**
+ * Implements hook_page_top().
+ */
+function bibcite_preview_page_top(array &$page) {
+  // Add 'Back to content editing' link on preview page.
+  $route_match = \Drupal::routeMatch();
+  if ($route_match->getRouteName() == 'entity.bibcite_reference.preview') {
+    $page['page_top']['bibcite_reference_preview'] = [
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => ['node-preview-container', 'container-inline'],
+      ],
+    ];
+
+    $form = \Drupal::formBuilder()->getForm(ReferencePreviewForm::class, $route_match->getParameter('bibcite_reference_preview'));
+    $page['page_top']['bibcite_reference_preview']['view_mode'] = $form;
+  }
+}

@@ -1,0 +1,72 @@
+uuid: 329afe8f-f82f-47c0-bebf-817bfba2fb1a
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.sidebar_teaser
+    - field.field.node.person.body
+    - field.field.node.person.field_address
+    - field.field.node.person.field_email
+    - field.field.node.person.field_first_name
+    - field.field.node.person.field_honorific
+    - field.field.node.person.field_last_name
+    - field.field.node.person.field_middle_name
+    - field.field.node.person.field_office_hours
+    - field.field.node.person.field_phone
+    - field.field.node.person.field_photo_person
+    - field.field.node.person.field_professional_titles
+    - field.field.node.person.field_redirect_to_source
+    - field.field.node.person.field_taxonomy_terms
+    - field.field.node.person.field_website
+    - image.style.crop_photo_person
+    - node.type.person
+  module:
+    - image
+    - layout_builder
+    - user
+third_party_settings:
+  layout_builder:
+    sections: {  }
+    allow_custom: false
+    enabled: false
+id: node.person.sidebar_teaser
+targetEntityType: node
+bundle: person
+mode: sidebar_teaser
+content:
+  field_photo_person:
+    type: image
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      image_style: crop_photo_person
+      image_link: content
+    third_party_settings: {  }
+  field_professional_titles:
+    weight: 1
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  links:
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  body: true
+  field_address: true
+  field_email: true
+  field_first_name: true
+  field_honorific: true
+  field_last_name: true
+  field_middle_name: true
+  field_office_hours: true
+  field_phone: true
+  field_redirect_to_source: true
+  field_taxonomy_terms: true
+  field_website: true
+  langcode: true

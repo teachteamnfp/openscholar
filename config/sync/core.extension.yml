@@ -10,6 +10,7 @@ module:
   bibcite_entity: 0
   bibcite_export: 0
   bibcite_marc: 0
+  bibcite_preview: 0
   bibcite_ris: 0
   big_pipe: 0
   blazy: 0
@@ -19,6 +20,7 @@ module:
   block_visibility_groups: 0
   book: 0
   breakpoint: 0
+  cancel_button: 0
   ckeditor: 0
   ckeditor_bidi: 0
   colorbutton: 0
@@ -35,6 +37,7 @@ module:
   courier: 0
   cp: 0
   cp_appearance: 0
+  cp_menu: 0
   cp_roles: 0
   cp_settings: 0
   cp_taxonomy: 0
@@ -56,6 +59,7 @@ module:
   entity_reference_revisions: 0
   fakeobjects: 0
   field: 0
+  field_group: 0
   field_layout: 0
   field_tools: 0
   field_ui: 0
@@ -74,6 +78,7 @@ module:
   image_widget_crop: 0
   inline_entity_form: 0
   inline_form_errors: 0
+  key_value_field: 0
   language: 0
   layout_builder: 0
   layout_discovery: 0
@@ -86,6 +91,7 @@ module:
   menu_ui: 0
   metatag: 0
   metatag_facebook: 0
+  metatag_favicons: 0
   metatag_open_graph: 0
   metatag_twitter_cards: 0
   metatag_views: 0
@@ -105,9 +111,11 @@ module:
   os_media: 0
   os_media_gallery: 0
   os_metatag: 0
+  os_news: 0
   os_office_embed: 0
   os_pages: 0
   os_presentations: 0
+  os_privacy_policy: 0
   os_profiles: 0
   os_publications: 0
   os_redirect: 0
@@ -138,6 +146,7 @@ module:
   rng_views: 0
   search: 0
   serialization: 0
+  shorten: 0
   slick: 0
   styleguide: 0
   system: 0
@@ -160,8 +169,10 @@ module:
   views_infinite_scroll: 0
   views_ui: 0
   vsite: 0
+  vsite_favicon: 0
   vsite_infinite_scroll: 0
   vsite_privacy: 0
+  vsite_site_creation: 0
   workflows: 0
   menu_link_content: 1
   pathauto: 1

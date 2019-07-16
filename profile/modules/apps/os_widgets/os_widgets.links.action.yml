@@ -1,0 +1,5 @@
+entity.layout_context.add_form:
+  route_name: entity.layout_context.add_form
+  title: 'Add Layout Context'
+  appears_on:
+    - entity.layout_context.collection

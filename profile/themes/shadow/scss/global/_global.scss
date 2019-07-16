@@ -30,3 +30,9 @@
   font-weight: 700;
   color: $color-gray2;
 }
+/**** node person page content inner block title *****/
+.person-data {
+  h2.block-title {
+    border-top: 0 none;
+  }
+}

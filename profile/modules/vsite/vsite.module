@@ -5,6 +5,14 @@
  * Hook implementations for the vsite module.
  */
 
+use Drupal\bibcite_entity\Entity\ReferenceInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\node\NodeInterface;
+use Drupal\views\Plugin\views\cache\CachePluginBase;
+use Drupal\vsite\Entity\GroupPresetInterface;
+use Drupal\vsite\Entity\GroupPreset;
+use Drupal\Core\Form\ConfigFormBase;
+use Drupal\Core\Url;
 use Drupal\group\Entity\GroupInterface;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Entity\EntityFormInterface;
@@ -77,24 +85,27 @@ function vsite_form_node_form_alter(&$form, FormStateInterface $form_state, $for
   if ($group = $vsiteContext->getActiveVsite()) {
     /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
     $entity = $form_state->getFormObject()->getEntity();
-    $form_state->set('group', $group);
-    $form_state->set('group_content_enabler', 'group_node:' . $entity->bundle());
-    foreach (Element::children($form['actions']) as $name) {
+    $plugin_id = 'group_node:' . $entity->bundle();
+    if ($entity->isNew() || !$group->getContentByEntityId($plugin_id, $entity->id())) {
+      $form_state->set('group', $group);
+      $form_state->set('group_content_enabler', 'group_node:' . $entity->bundle());
+      foreach (Element::children($form['actions']) as $name) {
 
-      // Skip buttons without submit handlers.
-      if (empty($form['actions'][$name]['#submit'])) {
-        continue;
+        // Skip buttons without submit handlers.
+        if (empty($form['actions'][$name]['#submit'])) {
+          continue;
+        }
+
+        // Skip buttons that do not properly build and save an entity.
+        $submit = $form['actions'][$name]['#submit'];
+        if (!in_array('::submitForm', $submit) || !in_array('::save', $submit)) {
+          continue;
+        }
+
+        // If we are using the wizard, we need to substitute the entity save
+        // handler in order to add the entity to the private temp store.
+        $form['actions'][$name]['#submit'][] = 'group_content_entity_submit';
       }
-
-      // Skip buttons that do not properly build and save an entity.
-      $submit = $form['actions'][$name]['#submit'];
-      if (!in_array('::submitForm', $submit) || !in_array('::save', $submit)) {
-        continue;
-      }
-
-      // If we are using the wizard, we need to substitute the entity save
-      // handler in order to add the entity to the private temp store.
-      $form['actions'][$name]['#submit'][] = 'group_content_entity_submit';
     }
   }
 }
@@ -103,10 +114,10 @@ function vsite_form_node_form_alter(&$form, FormStateInterface $form_state, $for
  * Implements hook_form_alter().
  */
 function vsite_form_alter(&$form, FormStateInterface $formState, $form_id) {
-  if ($formState->getFormObject() instanceof EntityFormInterface) {
+  /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContext */
+  $vsiteContext = \Drupal::service('vsite.context_manager');
 
-    /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContext */
-    $vsiteContext = \Drupal::service('vsite.context_manager');
+  if ($formState->getFormObject() instanceof EntityFormInterface) {
 
     /** @var \Drupal\Core\Entity\EntityInterface $entity */
     $entity = $formState->getFormObject()->getEntity();
@@ -121,7 +132,7 @@ function vsite_form_alter(&$form, FormStateInterface $formState, $form_id) {
       $availablePlugins = $plugins[$groupTypeId];
 
       $plugin_id = 'group_entity:' . $entity->getEntityTypeId();
-      if (in_array($plugin_id, $availablePlugins)) {
+      if (in_array($plugin_id, $availablePlugins) && ($entity->isNew() || !($group->getContentByEntityId($plugin_id, $entity->id())))) {
         $formState->set('group', $group);
         $formState->set('group_content_enabler', $plugin_id);
         foreach (Element::children($form['actions']) as $name) {
@@ -142,12 +153,45 @@ function vsite_form_alter(&$form, FormStateInterface $formState, $form_id) {
           $form['actions'][$name]['#submit'][] = 'group_content_entity_submit';
         }
       }
+      if (!empty($form['path']['widget'][0]['alias'])) {
+        $current_url = Url::fromRoute('<front>', [], ["absolute" => TRUE])->toString();
+        $form['path']['widget'][0]['alias']['#field_prefix'] = $current_url;
+        $purl = $vsiteContext->getActivePurl();
+        $alias = $form['path']['widget'][0]['alias']['#default_value'];
+        $alias_without_purl = preg_replace('$^/' . $purl . '$', '', $alias);
+        $form['path']['widget'][0]['alias']['#default_value'] = $alias_without_purl;
+        array_unshift($form['path']['widget'][0]['#element_validate'], 'vsite_node_alias_purl_element_validate');
+      }
     }
     $allowedSubSites = \Drupal::config('vsite.settings')->get('allowed_subsite_group_types');
-    if ($entityTypeId == 'group' && !in_array($entity->bundle(), $allowedSubSites)) {
+    if (!empty($allowedSubSites) && $entityTypeId == 'group' && !in_array($entity->bundle(), $allowedSubSites)) {
       $form['field_parent_site']['#access'] = FALSE;
     }
   }
+  elseif ($formState->getFormObject() instanceof ConfigFormBase && \Drupal::currentUser()->hasPermission('administer presets')) {
+    if ($vsite = $vsiteContext->getActiveVsite()) {
+      if ($vsite->hasField('field_preset') && !$vsite->get('field_preset')->isEmpty()) {
+        $preset_id = $vsite->get('field_preset')->get(0)->getValue()['target_id'];
+        $preset = GroupPreset::load($preset_id);
+        $form['actions']['submitToPreset'] = [
+          '#type' => 'submit',
+          '#value' => t('Save To Preset @label', ['@label' => $preset->label()]),
+          '#submit' => [
+            [$preset, 'saveConfig'],
+          ],
+        ];
+      }
+    }
+  }
+}
+
+/**
+ * Put back vsite purl to alias value to handle right validate.
+ */
+function vsite_node_alias_purl_element_validate(array &$element, FormStateInterface $form_state) {
+  /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContext */
+  $vsiteContext = \Drupal::service('vsite.context_manager');
+  $element['alias']['#value'] = '/' . $vsiteContext->getActivePurl() . $element['alias']['#value'];
 }
 
 /**
@@ -244,4 +288,92 @@ function _vsite_get_group_and_subsite_ids(GroupInterface $group) {
   // Add parent group to list.
   $gids[$group->id()] = $group->id();
   return $gids;
+}
+
+/**
+ * Implements hook_group_create().
+ */
+function vsite_group_create(GroupInterface $group) {
+  if ($group->hasField('field_preset') && !$group->get('field_preset')->isEmpty()) {
+    $preset_id = $group->get('field_preset')->get(0)->getValue()['target_id'];
+    if ($preset = GroupPreset::load($preset_id)) {
+      $tasks = $preset->getCreationTasks();
+      $batch = [
+        'title' => t('Setting up your new OpenScholar site'),
+        'operations' => [],
+        'finished' => '_vsite_batch_finished',
+        'init_message' => t('Preparing for setup'),
+        'progress_message' => t('Set up tasks @current of @total completed. Estimated time for completion is @estimate'),
+      ];
+      foreach ($tasks as $t) {
+        $batch['operations'][] = [
+          '_vsite_process_preset_task',
+          [$group, $preset, $t],
+        ];
+      }
+      batch_set($batch);
+    }
+  }
+}
+
+/**
+ * Performs a single preset task.
+ *
+ * @param \Drupal\group\Entity\GroupInterface $group
+ *   The group being operated on.
+ * @param \Drupal\vsite\Entity\GroupPresetInterface $preset
+ *   The preset the group is using.
+ * @param string $task
+ *   The task to perform.
+ *
+ * @return array|null
+ *   The result of the batch or null if the task was not callable
+ */
+function _vsite_process_preset_task(GroupInterface $group, GroupPresetInterface $preset, string $task, &$context) {
+  if (is_callable($task)) {
+    return call_user_func_array($task, [$group, $preset, &$context]);
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view_alter().
+ */
+function vsite_node_view_alter(array &$build, NodeInterface $entity, EntityViewDisplayInterface $display) {
+  // Makes sure that the destination parameter in contextual links in node
+  // full-views are correct.
+  // For edit, it should direct to the node page.
+  // For delete, it should direct to the node's listing.
+  if ($build['#view_mode'] === 'full') {
+    $build['#attached']['library'][] = 'vsite/contextualFullView';
+    $build['#attached']['drupalSettings']['entitySetting'] = [
+      'type' => $entity->getEntityTypeId(),
+      'bundle' => $entity->bundle(),
+    ];
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view_alter().
+ */
+function vsite_bibcite_reference_view_alter(array &$build, ReferenceInterface $entity, EntityViewDisplayInterface $display) {
+  // Makes sure that the destination parameter in contextual links in
+  // publication full-view and listing are correct.
+  // For edit, it should direct to the publication's full-view.
+  // For delete, it should direct to the publications listing.
+  if (in_array($build['#view_mode'], ['citation', 'teaser'])) {
+    $build['#attached']['library'][] = 'vsite/contextualFullView';
+    $build['#attached']['drupalSettings']['entitySetting'] = [
+      'type' => $entity->getEntityTypeId(),
+      'bundle' => $entity->bundle(),
+    ];
+  }
+}
+
+/**
+ * Implements hook_views_post_render().
+ */
+function vsite_views_post_render(ViewExecutable $view, &$output, CachePluginBase $cache) {
+  // Makes sure that destination parameter in contextual links in listings are
+  // correct. They should be directing to the listing itself.
+  $view->element['#attached']['library'][] = 'vsite/contextualList';
 }

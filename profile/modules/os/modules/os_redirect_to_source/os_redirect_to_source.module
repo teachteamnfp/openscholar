@@ -10,17 +10,23 @@ use Drupal\Core\Language\Language;
 use Drupal\redirect\Entity\Redirect;
 
 /**
- * Implements hook_ENTITY_TYPE_insert().
+ * Implements hook_entity_insert().
  */
-function os_redirect_to_source_node_insert(EntityInterface $entity) {
-  _os_redirect_to_source_update_node_redirect($entity);
+function os_redirect_to_source_entity_insert(EntityInterface $entity) {
+  $type = $entity->getEntityTypeId();
+  if ($type === 'node' || $type === 'bibcite_reference') {
+    _os_redirect_to_source_update_entity_redirect($entity);
+  }
 }
 
 /**
- * Implements hook_ENTITY_TYPE_update().
+ * Implements hook_entity_update().
  */
-function os_redirect_node_update(EntityInterface $entity) {
-  _os_redirect_to_source_update_node_redirect($entity);
+function os_redirect_to_source_entity_update(EntityInterface $entity) {
+  $type = $entity->getEntityTypeId();
+  if ($type === 'node' || $type === 'bibcite_reference') {
+    _os_redirect_to_source_update_entity_redirect($entity);
+  }
 }
 
 /**
@@ -33,12 +39,15 @@ function os_redirect_node_update(EntityInterface $entity) {
  * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
  * @throws \Drupal\Core\Entity\EntityStorageException
  */
-function _os_redirect_to_source_update_node_redirect(EntityInterface $entity) {
+function _os_redirect_to_source_update_entity_redirect(EntityInterface $entity) {
   if (!$entity->hasField('field_redirect_to_source')) {
     return;
   }
-  $redirectUri = _os_redirect_to_source_get_node_redirect_uri($entity);
-  $redirect = _os_redirect_to_source_get_node_redirect_entity($entity);
+  $path = ($entity->getEntityTypeId() === 'bibcite_reference') ? 'bibcite/reference/' : 'node/';
+
+  $redirectUri = _os_redirect_to_source_get_redirect_uri($entity);
+  $redirect = _os_redirect_to_source_get_entity_redirect_entity($entity, $path);
+
   if (!empty($redirect)) {
     $redirectUrl = $redirect->getRedirectUrl();
     // Delete exists redirect.
@@ -58,7 +67,7 @@ function _os_redirect_to_source_update_node_redirect(EntityInterface $entity) {
   // If not exists, then create a new redirect.
   if (!empty($redirectUri)) {
     $redirect = Redirect::create();
-    $redirect->setSource('node/' . $entity->id());
+    $redirect->setSource($path . $entity->id());
     $redirect->setRedirect($redirectUri);
     $redirect->setLanguage(Language::LANGCODE_NOT_SPECIFIED);
     $redirect->setStatusCode(307);
@@ -71,6 +80,8 @@ function _os_redirect_to_source_update_node_redirect(EntityInterface $entity) {
  *
  * @param \Drupal\Core\Entity\EntityInterface $entity
  *   The node.
+ * @param string $path
+ *   Path to generate hash/redirect for.
  *
  * @return \Drupal\redirect\Entity\Redirect
  *   The redirect.
@@ -78,12 +89,12 @@ function _os_redirect_to_source_update_node_redirect(EntityInterface $entity) {
  * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
  * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
  */
-function _os_redirect_to_source_get_node_redirect_entity(EntityInterface $entity) {
+function _os_redirect_to_source_get_entity_redirect_entity(EntityInterface $entity, $path) {
   $language = Language::LANGCODE_NOT_SPECIFIED;
-  $hash = Redirect::generateHash('node/' . $entity->id(), [], $language);
+  $hash = Redirect::generateHash($path . $entity->id(), [], $language);
 
   // Search for duplicate.
-  $redirects = \Drupal::entityManager()
+  $redirects = \Drupal::entityTypeManager()
     ->getStorage('redirect')
     ->loadByProperties(['hash' => $hash]);
 
@@ -105,7 +116,7 @@ function _os_redirect_to_source_get_node_redirect_entity(EntityInterface $entity
  * @return string
  *   The URI.
  */
-function _os_redirect_to_source_get_node_redirect_uri(EntityInterface $entity) {
+function _os_redirect_to_source_get_redirect_uri(EntityInterface $entity) {
   if (!$entity->hasField('field_redirect_to_source')) {
     return '';
   }
@@ -119,14 +130,19 @@ function _os_redirect_to_source_get_node_redirect_uri(EntityInterface $entity) {
 }
 
 /**
- * Implements hook_ENTITY_TYPE_delete().
+ * Implements hook_entity_delete().
  */
-function os_redirect_to_source_node_delete(EntityInterface $entity) {
-  $redirectUri = _os_redirect_to_source_get_node_redirect_uri($entity);
-  if (!empty($redirectUri)) {
-    $redirect = _os_redirect_to_source_get_node_redirect_entity($entity);
-    if (!empty($redirect)) {
-      $redirect->delete();
+function os_redirect_to_source_entity_delete(EntityInterface $entity) {
+  $type = $entity->getEntityTypeId();
+  if ($type === 'node' || $type === 'bibcite_reference') {
+    $path = ($type === 'bibcite_reference') ? 'bibcite/reference/' : 'node/';
+    $redirectUri = _os_redirect_to_source_get_redirect_uri($entity);
+    if (!empty($redirectUri)) {
+      $redirect = _os_redirect_to_source_get_entity_redirect_entity($entity, $path);
+      if (!empty($redirect)) {
+        $redirect->delete();
+      }
     }
   }
+
 }

@@ -1,0 +1,131 @@
+#block-place-context-selector-wrapper {
+  padding: 10px;
+  background-color: white;
+  border: 1px solid #e2e8ef;
+}
+
+#block-place-actions-wrapper {
+  padding: 10px;
+  background-color: white;
+  border: 1px solid #e2e8ef;
+}
+
+.modal-backdrop {
+  z-index: 600 !important;
+}
+
+#drupal-off-canvas {
+  height: auto !important;
+  overflow: visible auto !important;
+  bottom: 200px !important;
+}
+
+.block-place-region {
+  text-align: left !important;
+}
+
+.block-place-region:after {
+  text-align: center;
+  content: 'Drag block here';
+  padding: 10px;
+  color: gray;
+  display: inline-block;
+  width: 100%;
+}
+
+#block-place-widget-selector-wrapper {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+#block-list {
+  background-color: lightgray;
+  height: calc(90% - 47px);
+  border-radius: 5px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  color: #000;
+  height: 200px;
+  padding: 10px;
+}
+
+#block-place-widget-selector-wrapper a,
+#block-place-widget-selector-wrapper a:hover {
+  color: white;
+  text-decoration: none;
+}
+
+#block-list .block-content,
+.block.ui-sortable-helper .block-content,
+#block-list nav ul.menu,
+nav.ui-sortable-helper ul.menu {
+  display: none;
+}
+
+.ui-sortable-helper {
+  background-color: #444;
+  color: #ddd;
+  padding: 5px;
+}
+
+#block-list h2.sr-only,
+.ui-sortable-helper h2.sr-only {
+  position: initial;
+  clip: initial;
+  color: white;
+  height: auto;
+  width: auto;
+}
+
+.block-place-region .block-title {
+  display: none;
+}
+
+#block-place-widget-selector-wrapper .block-title {
+  display: block;
+}
+
+.ui-dialog.ui-dialog-off-canvas .ui-dialog-title:before {
+  content: '';
+  background-image: none;
+}
+
+.ui-dialog.ui-dialog-off-canvas .ui-dialog-titlebar-close {
+  top: 14px;
+}
+
+.ui-sortable-placeholder {
+  outline: 1px dotted black;
+  background-color: black;
+  opacity: 0.25;
+}
+
+@media (min-width: 768px) {
+  #drupal-off-canvas .modal-dialog {
+    width: auto;
+  }
+}
+
+.modal-body {
+  position: unset !important;
+}
+
+#factory-wrapper {
+  background-color: #444;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 10px;
+  display: none;
+}
+
+#drupal-off-canvas form {
+  width: 400px;
+  padding: 10px;
+}
+
+#drupal-off-canvas .form-type-vertical-tabs {
+  display: none;
+}

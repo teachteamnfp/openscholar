@@ -113,6 +113,14 @@ drupalSettings:
   dependencies:
     - os/angular.angularjs
 
+activeUser:
+  version: 1.0
+  js:
+    js/ActiveUser/ActiveUser.module.js: { }
+  dependencies:
+    - os/drupalSettings
+    - os/auth
+
 jsPager:
   version: 1.0
   js:
@@ -185,6 +193,13 @@ fileEditorModal:
     - os/fileEditor
     - os/angular.modalService
     - os/locationFix
+
+buttonSpinner:
+  version: 1.0
+  js:
+    js/buttonSpinner/buttonSpinner.module.js: { }
+  dependencies:
+    - os/angular.angularjs
 
 openscholarModule:
   version: 1.0

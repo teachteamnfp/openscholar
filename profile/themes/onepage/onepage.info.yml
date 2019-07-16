@@ -4,8 +4,10 @@ description: 'A one page (homepage) theme.'
 base theme: os_base
 core: 8.x
 type: theme
+onepage: true
 
 regions:
+  branding_header: 'Branding Header'
   header: 'Header'
   header_left: 'Header Left'
   header_right: 'Header Right'
@@ -22,8 +24,13 @@ regions:
   footer_left: 'Footer left'
   footer_right: 'Footer right'
   footer_bottom: 'Footer bottom'
+  branding_footer: 'Branding footer'
   page_top: 'Page top'
   page_bottom: 'Page bottom'
 
 libraries:
   - onepage/global-styling
+
+ckeditor_stylesheets:
+  - //fonts.googleapis.com/css?family=Montserrat
+  - css/ckeditor.css

@@ -7,6 +7,7 @@ use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\taxonomy\Entity\Vocabulary;
+use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 
 /**
  * Helper functions to handle vocabularies and related entities.
@@ -18,6 +19,7 @@ class CpTaxonomyHelper implements CpTaxonomyHelperInterface {
   private $configFactory;
   private $entityTypeManager;
   private $entityTypeBundleInfo;
+  private $vsiteContextManager;
 
   /**
    * Constructor.
@@ -28,11 +30,14 @@ class CpTaxonomyHelper implements CpTaxonomyHelperInterface {
    *   Entity Type Manager.
    * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface $entity_type_bundle_info
    *   Entity Type Bundle Info Interface.
+   * @param \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager
+   *   Vsite context manager.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, EntityTypeManagerInterface $entity_type_manager, EntityTypeBundleInfoInterface $entity_type_bundle_info) {
+  public function __construct(ConfigFactoryInterface $config_factory, EntityTypeManagerInterface $entity_type_manager, EntityTypeBundleInfoInterface $entity_type_bundle_info, VsiteContextManagerInterface $vsite_context_manager) {
     $this->configFactory = $config_factory;
     $this->entityTypeManager = $entity_type_manager;
     $this->entityTypeBundleInfo = $entity_type_bundle_info;
+    $this->vsiteContextManager = $vsite_context_manager;
   }
 
   /**
@@ -74,25 +79,13 @@ class CpTaxonomyHelper implements CpTaxonomyHelperInterface {
    * {@inheritdoc}
    */
   public function getSelectableBundles(): array {
-    $definitions = $this->entityTypeManager->getDefinitions();
-    $allowed_entity_types = [
-      'node',
-      'media',
-      'bibcite_reference',
-    ];
     $options = [];
-    foreach ($definitions as $definition) {
-      if (!in_array($definition->id(), $allowed_entity_types)) {
-        continue;
-      }
-      $bundles = $this->entityTypeBundleInfo->getBundleInfo($definition->id());
-      foreach ($bundles as $machine_name => $bundle) {
-        $options[$definition->id() . ':' . $machine_name] = $definition->getLabel() . ' - ' . $bundle['label'];
-        if ($definition->id() == 'node' && $machine_name == 'events') {
-          $options['node:past_events'] = $definition->getLabel() . ' - ' . $this->t('Past events');
-          $options['node:upcoming_events'] = $definition->getLabel() . ' - ' . $this->t('Upcoming events');
-        }
-      }
+    $options['media:*'] = $this->t('Media');
+    $options['bibcite_reference:*'] = $this->t('Publications');
+    $definition = $this->entityTypeManager->getDefinition('node');
+    $bundles = $this->entityTypeBundleInfo->getBundleInfo($definition->id());
+    foreach ($bundles as $machine_name => $bundle) {
+      $options[$definition->id() . ':' . $machine_name] = $bundle['label'];
     }
     return $options;
   }
@@ -118,6 +111,43 @@ class CpTaxonomyHelper implements CpTaxonomyHelperInterface {
       $entities[$entity_name][] = $bundle;
     }
     return $entities;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function checkTaxonomyTermsPageVisibility(array &$build, array $view_modes): void {
+    $config = $this->configFactory->get('cp_taxonomy.settings');
+    $display_term_under_content = $config->get('display_term_under_content');
+    if (empty($display_term_under_content) && in_array($build['#view_mode'], $view_modes)) {
+      $build['field_taxonomy_terms']['#access'] = FALSE;
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function checkTaxonomyTermsListingVisibility(array &$build, string $entity_type): void {
+    $config = $this->configFactory->get('cp_taxonomy.settings');
+    $display_term_under_content_teaser_types = $config->get('display_term_under_content_teaser_types');
+    // Unset field_taxonomy_terms for unchecked bundles from settings page.
+    if (is_array($display_term_under_content_teaser_types) && !in_array($entity_type, $display_term_under_content_teaser_types) && $build['#view_mode'] == 'teaser') {
+      $build['field_taxonomy_terms']['#access'] = FALSE;
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setCacheTags(array &$build): void {
+    $group = $this->vsiteContextManager->getActiveVsite();
+    if (empty($group)) {
+      return;
+    }
+    if (empty($build['field_taxonomy_terms'])) {
+      return;
+    }
+    $build['#cache']['tags'][] = 'entity-with-taxonomy-terms:' . $group->id();
   }
 
 }

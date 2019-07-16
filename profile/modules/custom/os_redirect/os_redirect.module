@@ -5,6 +5,8 @@
  * Hook implementations for the os_redirect module.
  */
 
+use Drupal\redirect\Entity\Redirect;
+
 /**
  * Implements hook_redirect_matched_redirect_alter().
  */
@@ -12,6 +14,7 @@ function os_redirect_redirect_matched_redirect_alter(&$redirect) {
   if (empty($redirect)) {
     return;
   }
+
   $vsite_context_manager = Drupal::getContainer()->get('vsite.context_manager');
   /** @var \Drupal\group\Entity\GroupInterface $group */
   if ($group = $vsite_context_manager->getActiveVsite()) {
@@ -24,8 +27,8 @@ function os_redirect_redirect_matched_redirect_alter(&$redirect) {
     }
   }
 
-  if (Drupal::currentUser()->hasPermission('ignore redirects')) {
-    Drupal::messenger()->addWarning(t('You are redirected to: @uri', ['@uri' => $redirect->getRedirectUrl()->getUri()]));
+  if ($redirect && Drupal::currentUser()->hasPermission('ignore redirects')) {
+    Drupal::messenger()->addWarning(t('You are redirected to: @uri', ['@uri' => $redirect->getRedirectUrl()->toString()]));
     $redirect = NULL;
     return;
   }
@@ -35,9 +38,39 @@ function os_redirect_redirect_matched_redirect_alter(&$redirect) {
  * Implements hook_redirect_path_alter().
  */
 function os_redirect_redirect_path_alter(&$path) {
-  $vsite_context_manager = Drupal::getContainer()->get('vsite.context_manager');
-  /** @var \Drupal\group\Entity\GroupInterface $group */
-  if ($group = $vsite_context_manager->getActiveVsite()) {
+  /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContextManager */
+  $vsiteContextManager = Drupal::service('vsite.context_manager');
+  // To check if node/publication page or not.
+  $flag = strpos($path, 'node') !== FALSE || strpos($path, 'bibcite') !== FALSE;
+  if (($group = $vsiteContextManager->getActiveVsite()) && !$flag) {
     $path = '[vsite:' . $group->id() . ']/' . $path;
+  }
+}
+
+/**
+ * Implements hook_redirect_insert().
+ */
+function os_redirect_redirect_insert(Redirect $redirect) {
+  os_redirect_assign_to_vsite($redirect);
+}
+
+/**
+ * Implements hook_redirect_update().
+ */
+function os_redirect_redirect_update(Redirect $redirect) {
+  os_redirect_assign_to_vsite($redirect);
+}
+
+/**
+ * Assign redirects to a group.
+ *
+ * @param \Drupal\redirect\Entity\Redirect $redirect
+ *   Redirect to assign to the group.
+ */
+function os_redirect_assign_to_vsite(Redirect $redirect) {
+  /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContextManager */
+  $vsiteContextManager = \Drupal::service('vsite.context_manager');
+  if (($group = $vsiteContextManager->getActiveVsite()) && !$vsiteContextManager->getActiveVsite()->getContentByEntityId('group_entity:redirect', $redirect->id())) {
+    $group->addContent($redirect, 'group_entity:redirect');
   }
 }
