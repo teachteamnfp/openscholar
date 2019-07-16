@@ -183,7 +183,7 @@ function os_publications_views_pre_render(ViewExecutable $view) {
     '#weight' => 100,
   ];
 
-  $request = \Drupal::request();
+  // $request = \Drupal::request();
   foreach ($formats as $format) {
     $format = $format_manager->createInstance($format);
     $export_button['#items'][] = [
@@ -192,7 +192,7 @@ function os_publications_views_pre_render(ViewExecutable $view) {
       '#url' => Url::fromRoute('os_publictions.citation_export', [
         'bibcite_format' => $format->getLabel(),
         'entity_type' => 'bibcite_reference',
-        'request' => $request,
+        'request' => 'request',
       ]),
     ];
   }
