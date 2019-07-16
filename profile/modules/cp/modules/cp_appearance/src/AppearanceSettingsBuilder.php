@@ -273,17 +273,6 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
       }
     }
 
-    // Build operations for custom themes.
-    $custom_theme_ids = array_keys(CustomTheme::loadMultiple());
-    if (\in_array($theme->getName(), $custom_theme_ids, TRUE)) {
-      $operations[] = Link::createFromRoute($this->t('Edit'), 'entity.cp_custom_theme.edit_form', [
-        'cp_custom_theme' => $theme->getName(),
-      ]);
-      $operations[] = Link::createFromRoute($this->t('Delete'), 'entity.cp_custom_theme.delete_form', [
-        'cp_custom_theme' => $theme->getName(),
-      ]);
-    }
-
     return $operations;
   }
 
@@ -302,6 +291,19 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
     }
 
     $this->prepareThemes($custom_themes);
+
+    foreach ($custom_themes as &$custom_theme) {
+      $operations = [];
+
+      $operations[] = Link::createFromRoute($this->t('Edit'), 'entity.cp_custom_theme.edit_form', [
+        'cp_custom_theme' => $custom_theme->getName(),
+      ]);
+      $operations[] = Link::createFromRoute($this->t('Delete'), 'entity.cp_custom_theme.delete_form', [
+        'cp_custom_theme' => $custom_theme->getName(),
+      ]);
+
+      $custom_theme->more_operations = $operations;
+    }
 
     return $custom_themes;
   }
