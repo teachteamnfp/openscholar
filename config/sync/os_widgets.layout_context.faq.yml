@@ -5,6 +5,6 @@ dependencies: {  }
 id: faq
 label: FAQ
 description: ''
-activationRules: 'faq/*'
+activationRules: "faq\r\nfaq/*"
 weight: 0
 data: {  }
