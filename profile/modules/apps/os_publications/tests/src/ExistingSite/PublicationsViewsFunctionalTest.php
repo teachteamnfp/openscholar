@@ -62,9 +62,6 @@ class PublicationsViewsFunctionalTest extends TestBase {
     parent::setUp();
 
     $this->configFactory = $this->container->get('config.factory');
-    /** @var \Drupal\Core\Config\ImmutableConfig $bibcite_settings */
-    $bibcite_settings = $this->configFactory->get('bibcite.settings');
-    $this->defaultBibciteCitationStyle = $bibcite_settings->get('default_style');
     $this->citationStyler = $this->container->get('bibcite.citation_styler');
     /** @var \Drupal\Core\Config\ImmutableConfig $publication_settings */
     $publication_settings = $this->configFactory->get('os_publications.settings');
@@ -78,8 +75,8 @@ class PublicationsViewsFunctionalTest extends TestBase {
   /**
    * Tests whether publication style is changed as per the settings.
    *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
    * @throws \Drupal\Core\Entity\EntityStorageException
-   * @throws \Behat\Mink\Exception\ExpectationException
    * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
   public function testReferenceStyle(): void {
@@ -100,13 +97,6 @@ class PublicationsViewsFunctionalTest extends TestBase {
     ]);
     $this->group->addContent($reference, 'group_entity:bibcite_reference');
 
-    /** @var \Drupal\Core\Config\ConfigFactoryInterface $config_factory */
-    $config_factory = $this->container->get('config.factory');
-    /** @var \Drupal\Core\Config\Config $bibcite_settings_mut */
-    $bibcite_settings_mut = $config_factory->getEditable('bibcite.settings');
-    $bibcite_settings_mut->set('default_style', 'american_medical_association');
-    $bibcite_settings_mut->save();
-
     // Construct data array as required by render method.
     $text = Markup::create($reference->html_title->value);
     $link = '"' . $reference->toLink($text)->toString() . '"';
@@ -123,23 +113,28 @@ class PublicationsViewsFunctionalTest extends TestBase {
 
     $this->drupalLogin($this->groupAdmin);
 
-    $expected = trim($this->citationStyler->render($data));
+    $this->citationStyler->setStyleById('apa');
+    $render = $this->citationStyler->render($data);
+    $expected = preg_replace('/\s*/m', '', $render);
+
+    $this->visitViaVsite('cp/settings/publications', $this->group);
+    $this->submitForm(['os_publications_preferred_bibliographic_format' => 'apa'], 'edit-submit');
 
     $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/publications");
     $actual = $this->getActualHtml();
-    $this->assertSame($expected, $actual);
+    $this->assertContains($actual, $expected);
 
     $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/publications/title");
     $actual = $this->getActualHtml();
-    $this->assertSame($expected, $actual);
+    $this->assertContains($actual, $expected);
 
     $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/publications/author");
     $actual = $this->getActualHtml();
-    $this->assertSame($expected, $actual);
+    $this->assertContains($actual, $expected);
 
     $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/publications/year");
     $actual = $this->getActualHtml();
-    $this->assertSame($expected, $actual);
+    $this->assertContains($actual, $expected);
 
     $this->drupalLogout();
   }
@@ -402,31 +397,9 @@ class PublicationsViewsFunctionalTest extends TestBase {
   }
 
   /**
-   * Returns a particular section of the html page.
-   *
-   * @return string
-   *   The row html to compare.
-   */
-  private function getActualHtml(): string {
-    $page = $this->getCurrentPage();
-    $row = $page->find('css', '.bibcite-citation');
-    $row_html = $row->getHtml();
-    // Strip Purl from the html for proper comparison as render method won't
-    // return it.
-    return trim(str_replace("$this->groupAlias", '', $row_html));
-
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function tearDown() {
-    /** @var \Drupal\Core\Config\Config $bibcite_settings_mut */
-    $bibcite_settings_mut = $this->configFactory->getEditable('bibcite.settings');
-    $bibcite_settings_mut
-      ->set('default_style', $this->defaultBibciteCitationStyle)
-      ->save();
-
     /** @var \Drupal\Core\Config\Config $publication_settings_mut */
     $publication_settings_mut = $this->configFactory->getEditable('os_publications.settings');
     $publication_settings_mut

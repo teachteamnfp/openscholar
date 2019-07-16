@@ -478,5 +478,7 @@ content:
 hidden:
   bibcite_type: true
   citation: true
+  field_redirect_to_source: true
+  html_title: true
   langcode: true
   uid: true
