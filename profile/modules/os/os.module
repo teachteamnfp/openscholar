@@ -6,6 +6,7 @@
  */
 
 use Drupal\bibcite_entity\Entity\ReferenceInterface;
+use Drupal\Core\Cache\RefinableCacheableDependencyInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Session\AccountInterface;
@@ -150,5 +151,18 @@ function os_alter_post_node_delete_redirect(array &$form, FormStateInterface $fo
 
   if ($redirect_route) {
     $form_state->setRedirect($redirect_route);
+  }
+}
+
+/**
+ * Implements hook_menu_local_tasks_alter().
+ */
+function os_menu_local_tasks_alter(&$data, $route_name, RefinableCacheableDependencyInterface &$cacheability) {
+  $entities_tabs_to_disable = ['node', 'bibcite_reference'];
+
+  foreach ($entities_tabs_to_disable as $item) {
+    if ($route_name === "entity.$item.canonical") {
+      unset($data['tabs'][0]["entity.$item.edit_form"], $data['tabs'][0]["entity.$item.delete_form"]);
+    }
   }
 }

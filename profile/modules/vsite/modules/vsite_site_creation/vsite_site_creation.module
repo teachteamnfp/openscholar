@@ -35,10 +35,11 @@ function vsite_site_creation_library_info_alter(&$libraries, $extension) {
     /** @var \Drupal\vsite\Entity\GroupPreset[] $presets */
     $presets = GroupPreset::loadMultiple();
     foreach ($presets as $p) {
+      $site_types = $p->get('applicableTo');
       $settings['presets'][$p->id()] = [
         'description' => $p->get('description'),
         'name' => $p->id(),
-        'site_type' => reset($p->get('applicableTo')),
+        'site_type' => reset($site_types),
         'title' => $p->label(),
       ];
     }

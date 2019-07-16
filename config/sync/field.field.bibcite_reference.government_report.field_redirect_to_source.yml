@@ -1,0 +1,23 @@
+uuid: cb8f6a4c-c8bb-4933-baa7-38792f3e4363
+langcode: en
+status: true
+dependencies:
+  config:
+    - bibcite_entity.bibcite_reference_type.government_report
+    - field.storage.bibcite_reference.field_redirect_to_source
+  module:
+    - link
+id: bibcite_reference.government_report.field_redirect_to_source
+field_name: field_redirect_to_source
+entity_type: bibcite_reference
+bundle: government_report
+label: 'Link citation directly to:'
+description: 'ex. http://amazon.com/mybook If used the publication title in the citation will link directly to the URL provided here and will bypass the landing page.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 17
+  title: 0
+field_type: link

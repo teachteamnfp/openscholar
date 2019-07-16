@@ -5,6 +5,7 @@ namespace Drupal\Tests\openscholar\Traits;
 use Drupal\bibcite_entity\Entity\Reference;
 use Drupal\bibcite_entity\Entity\ReferenceInterface;
 use Drupal\Core\Config\Entity\ConfigEntityInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\file\Entity\File;
 use Drupal\file\FileInterface;
 use Drupal\group\Entity\GroupInterface;
@@ -156,7 +157,7 @@ trait ExistingSiteTestTrait {
    */
   public function createReference(array $values = []) : ReferenceInterface {
     $reference = Reference::create($values + [
-      'title' => $this->randomMachineName(),
+      'html_title' => $this->randomMachineName(),
       'type' => 'artwork',
       'bibcite_year' => [
         'value' => 1980,
@@ -201,6 +202,31 @@ trait ExistingSiteTestTrait {
    */
   protected function visitViaVsite(string $url, GroupInterface $vsite): void {
     $this->visit("{$vsite->get('path')->getValue()[0]['alias']}/$url");
+  }
+
+  /**
+   * Adds a content entity as a group content entity.
+   *
+   * This is a wrapper of GroupInterface::addContent.
+   * Only difference is that, you do not have to pass plugin_id, and this method
+   * will decide the plugin_id for you.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The content entity to add to the group.
+   * @param \Drupal\group\Entity\GroupInterface $group
+   *   The group where the content will be added.
+   * @param array $values
+   *   (optional) Extra values to add to the group content relationship. You
+   *   cannot overwrite the group ID (gid) or entity ID (entity_id).
+   */
+  protected function addGroupContent(EntityInterface $entity, GroupInterface $group, array $values = []): void {
+    $plugin_id = "group_entity:{$entity->getEntityTypeId()}";
+
+    if ($entity->getEntityTypeId() === 'node') {
+      $plugin_id = "group_node:{$entity->bundle()}";
+    }
+
+    $group->addContent($entity, $plugin_id, $values);
   }
 
 }

@@ -29,3 +29,7 @@ regions:
 
 libraries:
   - loeb/global-styling
+
+ckeditor_stylesheets:
+  - //fonts.googleapis.com/css?family=Open+Sans
+  - css/ckeditor.css

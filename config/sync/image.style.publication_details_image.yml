@@ -1,0 +1,15 @@
+uuid: 5f2a026b-8ec2-41aa-b75e-a1bd0cd4416e
+langcode: en
+status: true
+dependencies: {  }
+name: publication_details_image
+label: 'Publication details image'
+effects:
+  dc6a8f57-aefb-4725-93ac-a0847b3d5b9b:
+    uuid: dc6a8f57-aefb-4725-93ac-a0847b3d5b9b
+    id: image_scale
+    weight: 1
+    data:
+      width: 150
+      height: 250
+      upscale: false
