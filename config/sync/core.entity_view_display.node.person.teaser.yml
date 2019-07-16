@@ -38,60 +38,28 @@ content:
   body:
     label: hidden
     type: text_summary_or_trimmed
-    weight: 6
+    weight: 2
     settings:
       trim_length: 600
     third_party_settings: {  }
     region: content
   field_address:
     type: basic_string
-    weight: 8
+    weight: 4
     region: content
     label: hidden
     settings: {  }
     third_party_settings: {  }
   field_email:
     type: email_mailto
-    weight: 9
+    weight: 5
     region: content
     label: hidden
     settings: {  }
     third_party_settings: {  }
-  field_first_name:
-    type: string
-    weight: 1
-    region: content
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-  field_honorific:
-    type: string
-    weight: 0
-    region: content
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-  field_last_name:
-    type: string
-    weight: 3
-    region: content
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-  field_middle_name:
-    type: string
-    weight: 2
-    region: content
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
   field_office_hours:
     type: string
-    weight: 11
+    weight: 7
     region: content
     label: inline
     settings:
@@ -99,7 +67,7 @@ content:
     third_party_settings: {  }
   field_phone:
     type: telephone_link
-    weight: 10
+    weight: 6
     region: content
     label: inline
     settings:
@@ -107,7 +75,7 @@ content:
     third_party_settings: {  }
   field_photo_person:
     type: image
-    weight: 5
+    weight: 1
     region: content
     label: hidden
     settings:
@@ -116,7 +84,7 @@ content:
     third_party_settings: {  }
   field_professional_titles:
     type: string
-    weight: 4
+    weight: 0
     region: content
     label: hidden
     settings:
@@ -124,7 +92,7 @@ content:
     third_party_settings: {  }
   field_taxonomy_terms:
     type: entity_reference_label
-    weight: 12
+    weight: 8
     region: content
     label: hidden
     settings:
@@ -132,7 +100,7 @@ content:
     third_party_settings: {  }
   field_website:
     type: link
-    weight: 7
+    weight: 3
     region: content
     label: hidden
     settings:
@@ -143,10 +111,14 @@ content:
       target: '0'
     third_party_settings: {  }
   links:
-    weight: 13
+    weight: 9
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_first_name: true
+  field_honorific: true
+  field_last_name: true
+  field_middle_name: true
   field_redirect_to_source: true
   langcode: true

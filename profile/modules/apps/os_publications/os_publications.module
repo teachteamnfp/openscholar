@@ -209,6 +209,18 @@ function os_publications_views_pre_render(ViewExecutable $view) {
       $publication->html_title->value = $link;
     }
   }
+
+  foreach ($view->field as $field_name => $field) {
+    // Alter the citation style as per settings.
+    if ($field_name === 'citation') {
+      /** @var \Drupal\Core\Config\ImmutableConfig $bibcite_settings */
+      $publication_settings = \Drupal::config('os_publications.settings');
+      /** @var string $publication_style */
+      $publication_style = $publication_settings->get('default_style');
+
+      $field->options['csl_style'] = $publication_style;
+    }
+  }
 }
 
 /**
@@ -466,11 +478,13 @@ function os_publications_alter_post_bibcite_reference_delete_redirect(array &$fo
  * Implements hook_preprocess_HOOK().
  */
 function os_publications_preprocess_bibcite_citation(&$variables) {
+  $citation_styler = \Drupal::service('bibcite.citation_styler');
+  $site_wide_style = $citation_styler->getStyle()->id();
   $publications_config = \Drupal::configFactory()->get('os_publications.settings');
-  $def_style = $publications_config->get('default_style');
-  if ($def_style) {
-    $variables['style'] = $def_style;
-  }
+  $vsite_style = $publications_config->get('default_style') ?? $site_wide_style;
+
+  // Change sitewide config for rendering citation.
+  $citation_styler->setStyleById($vsite_style);
 
   // Get current route name.
   $route_name = \Drupal::routeMatch()->getRouteName();
@@ -488,8 +502,14 @@ function os_publications_preprocess_bibcite_citation(&$variables) {
 
     $variables['content'] = [
       '#markup' => $styler->render($data),
+      '#cache' => [
+        'tags' => ['publication_citation'],
+      ],
     ];
   }
+
+  // Put site wide config back to default style.
+  $citation_styler->setStyleById($site_wide_style);
 
   // If it is publication view page and shorten url setting is on,
   // add a shortented url to the citation.
