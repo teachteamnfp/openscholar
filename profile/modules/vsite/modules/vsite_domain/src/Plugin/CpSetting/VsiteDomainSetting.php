@@ -50,15 +50,18 @@ class VsiteDomainSetting extends CpSettingBase {
    * {@inheritdoc}
    */
   public function access(AccountInterface $account): AccessResultInterface {
-    /** @var \Drupal\Core\Access\AccessResultInterface $parent_access */
-    $parent_access = parent::access($account);
-    $setting_access = AccessResult::neutral();
+    /** @var \Drupal\Core\Access\AccessResultInterface $access_result */
+    $access_result = parent::access($account);
 
-    if (!$this->activeVsite->hasPermission('change vsite domain', $account)) {
-      $setting_access = AccessResult::forbidden();
+    if ($access_result->isForbidden()) {
+      return $access_result;
     }
 
-    return $parent_access->orIf($setting_access);
+    if (!$this->activeVsite->hasPermission('change vsite domain', $account)) {
+      return AccessResult::forbidden();
+    }
+
+    return AccessResult::allowed();
   }
 
 }
