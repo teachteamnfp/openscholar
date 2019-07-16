@@ -8,8 +8,9 @@ dependencies:
     - field.field.bibcite_reference.conference_proceedings.field_attach_files
     - field.field.bibcite_reference.conference_proceedings.field_extra_fields
     - field.field.bibcite_reference.conference_proceedings.field_publication_image
+    - field.field.bibcite_reference.conference_proceedings.field_redirect_to_source
     - field.field.bibcite_reference.conference_proceedings.field_taxonomy_terms
-    - image.style.publication_details_image
+    - image.style.publication_details_view
   enforced:
     module:
       - bibcite_entity
@@ -33,47 +34,24 @@ bundle: conference_proceedings
 mode: teaser
 content:
   citation:
-    weight: 0
+    weight: 1
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_extra_fields:
-    type: key_value
-    weight: 5
-    region: content
-    label: hidden
-    settings:
-      value_only: false
-    third_party_settings: {  }
   field_publication_image:
-    weight: 2
+    weight: 0
     label: hidden
     settings:
-      image_style: publication_details_image
+      image_style: publication_details_view
       image_link: ''
     third_party_settings: {  }
     type: image
     region: content
-  field_taxonomy_terms:
-    weight: 1
-    label: hidden
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  full_text:
-    type: text_default
-    weight: 3
-    region: content
-    label: above
-    settings: {  }
-    third_party_settings: {  }
   notes:
     type: text_default
-    weight: 4
+    weight: 2
     region: content
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
   publication_image:
@@ -137,6 +115,11 @@ hidden:
   bibcite_volume: true
   bibcite_year: true
   field_attach_files: true
+  field_extra_fields: true
+  field_redirect_to_source: true
+  field_taxonomy_terms: true
+  full_text: true
+  html_title: true
   keywords: true
   langcode: true
   uid: true
