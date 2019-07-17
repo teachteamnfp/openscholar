@@ -10,7 +10,7 @@
         "drupal/cas": "^1.7",
         "drupal/cas_attributes": "^1.0",
         "drupal/ldap": "^2.5",
-        "openscholar/thescholr" : "1.0.0"
+        "openscholar/ucmerced" : "1.0.0"
     },
     "replace": {
         "drupal/drupal": "*"
