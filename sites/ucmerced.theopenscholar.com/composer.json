@@ -1,5 +1,5 @@
 {
-    "name": "openscholar/ucmerced",
+    "name": "openscholar/ucmerced_packages",
     "description": "Packages required for UC Merced / CAS",
     "repositories": [
       { "type": "composer", "url": "https://packages.drupal.org/7" },
