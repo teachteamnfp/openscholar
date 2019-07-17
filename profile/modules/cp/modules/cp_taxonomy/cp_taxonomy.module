@@ -283,10 +283,10 @@ function cp_taxonomy_bibcite_reference_view_alter(array &$build, EntityInterface
   /** @var \Drupal\cp_taxonomy\CpTaxonomyHelperInterface $cp_taxonomy_helper */
   $cp_taxonomy_helper = Drupal::service('cp.taxonomy.helper');
   $view_modes = [
-    'full',
     'citation',
   ];
   $cp_taxonomy_helper->checkTaxonomyTermsPageVisibility($build, $view_modes);
+  $cp_taxonomy_helper->checkTaxonomyTermsListingVisibility($build, 'bibcite_reference:*');
   $cp_taxonomy_helper->setCacheTags($build);
 }
 

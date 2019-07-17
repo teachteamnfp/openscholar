@@ -2,17 +2,15 @@
 
 namespace Drupal\Tests\os_publications\ExistingSite;
 
-use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
-
 /**
- * Class PublicationsFormTest.
+ * Class PublicationsSettingsFormTest.
  *
  * @group functional
  * @group publications
  *
  * @package Drupal\Tests\os_publications\ExistingSite
  */
-class PublicationsFormTest extends OsExistingSiteTestBase {
+class PublicationsSettingsFormTest extends TestBase {
 
   /**
    * Group administrator.
@@ -65,6 +63,41 @@ class PublicationsFormTest extends OsExistingSiteTestBase {
     $this->assertSession()->checkboxChecked('os_publications_filter_publication_types[artwork]');
     $this->assertSession()->checkboxChecked('edit-os-publications-shorten-citations');
     $this->assertSession()->fieldValueEquals('edit-biblio-sort', 'title');
+  }
+
+  /**
+   * Tests Note in teaser setting.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   * @throws \Behat\Mink\Exception\ExpectationException
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public function testNoteInTeaserSetting(): void {
+    $this->drupalLogin($this->groupAdmin);
+    $reference = $this->createReference([
+      'notes' => [
+        'value' => 'This is nootes test.',
+      ],
+    ]);
+    $this->group->addContent($reference, 'group_entity:bibcite_reference');
+    $this->visitViaVsite('cp/settings/publications', $this->group);
+
+    // Test short note does not appear.
+    $edit = [
+      'os_publications_note_in_teaser' => FALSE,
+    ];
+    $this->submitForm($edit, 'edit-submit');
+    $this->visitViaVsite('publications', $this->group);
+    $this->assertSession()->elementNotExists('css', '.field--name-notes');
+
+    // Test short note appears.
+    $this->visitViaVsite('cp/settings/publications', $this->group);
+    $edit = [
+      'os_publications_note_in_teaser' => TRUE,
+    ];
+    $this->submitForm($edit, 'edit-submit');
+    $this->visitViaVsite('publications', $this->group);
+    $this->assertSession()->elementExists('css', '.field--name-notes');
   }
 
 }

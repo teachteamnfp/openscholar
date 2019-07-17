@@ -1,44 +1,15 @@
 @import '../../os_base/scss/base/breakpoints';
-//colors
-$color_gravel_approx: #4c4c4c;
-$color_pampas_approx: #f6f5ee;
-$color_thunderbird_approx: #c2230e;
-$color_regent_gray_approx: #8996a0;
-$white: #fff;
-$color_gallery_approx: #f0f0ee;
-$color_bon_jour_approx: #e4e0e0;
-$color_fuscous_gray_approx: #555;
-$color_rangoon_green_approx: #1e1e1e;
-$color-light-gray: #f4f4f4;
-$color-gray: #666;
-
-//fonts
-$font_0: helvetica;
-$font_1: Georgia;
-$font_2: Baskerville;
-$font_3: Palatino;
-$font_4: Palatino Linotype;
-$font_5: Book Antiqua;
-$font_6: Times New Roman;
-$font_7: serif;
-$font_8: arial !important;
+@import './variables';
+@import './base';
+@import './../../os_base/scss/base/poweredby_common';
 
 html {
   color: $color_gravel_approx;
 }
 body {
-  color: $color_gravel_approx;
   background: $color_pampas_approx;
-  font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
 }
 a {
-  color: $color_thunderbird_approx;
-  &:visited {
-    color: $color_thunderbird_approx;
-  }
-  &:hover {
-    color: $color_regent_gray_approx;
-  }
   &.os-swipe-large {
     background-color: $color_thunderbird_approx;
   }
@@ -57,17 +28,17 @@ a {
     }
   }
   h2 {
-    font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+    @extend %font;
   }
 }
 .page-header {
-  font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+  @extend %font;
 }
 .node--title {
-  font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+  @extend %font;
 }
 .more-link {
-  font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+  @extend %font;
   &:after {
     background-image: none;
   }
@@ -91,7 +62,7 @@ footer {
     text-shadow: none;
   }
   ul.nav a {
-    font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+    @extend %font;
     &.menu-heading {
       font-size: .99em;
     }
@@ -99,7 +70,7 @@ footer {
 }
 aside {
   .nav a {
-    font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+    @extend %font;
   }
   .region > .block {
     border-top: 1px solid $color_bon_jour_approx;
@@ -110,13 +81,13 @@ aside .navbar-nav li .dropdown-menu a {
 }
 .content-inner {
   h2 {
-    font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+    @extend %font;
   }
   h3 {
-    font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+    @extend %font;
   }
   h4 {
-    font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+    @extend %font;
   }
   .block.block-boxes-os_boxes_columns .block {
     border-top: 1px solid $color_bon_jour_approx;
@@ -138,7 +109,7 @@ aside .navbar-nav li .dropdown-menu a {
         border-top: 0 none;
       }
       > a {
-        font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+        @extend %font;
         color: $color_gravel_approx;
         @media #{$mobile} {
           color: black;
@@ -201,11 +172,11 @@ aside .navbar-nav li .dropdown-menu a {
   }
 }
 .breadcrumb {
-  font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+  @extend %font;
   letter-spacing: 0;
   color: $color_thunderbird_approx;
   a {
-    font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+    @extend %font;
     letter-spacing: 0;
     color: $color_thunderbird_approx;
   }
@@ -241,13 +212,13 @@ aside .navbar-nav li .dropdown-menu a {
   color: $color_thunderbird_approx;
 }
 .path-search .title a {
-  font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+  @extend %font;
 }
 .links a {
-  font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+  @extend %font;
 }
 .cke_editable * {
-  font-family: $font_0, $font_1, $font_2, $font_3, $font_4, $font_5, $font_6, $font_7;
+  @extend %font;
 }
 h2.block-title {
   text-transform: none;

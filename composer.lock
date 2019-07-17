@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "214d05f69c4f7770b28764e222b373ae",
+    "content-hash": "ef9e9e66e51bc3f83b15f583592b801c",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -2694,6 +2694,9 @@
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
                     }
+                },
+                "patches_applied": {
+                    "Contextual links for bibcite reference entities": "patches/3065990-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2712,10 +2715,6 @@
                 {
                     "name": "antongp",
                     "homepage": "https://www.drupal.org/user/1060446"
-                },
-                {
-                    "name": "kruhak",
-                    "homepage": "https://www.drupal.org/user/2840307"
                 },
                 {
                     "name": "usdv",
@@ -4826,6 +4825,69 @@
             }
         },
         {
+            "name": "drupal/field_group",
+            "version": "3.0.0-rc1",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/field_group.git",
+                "reference": "8.x-3.0-rc1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/field_group-8.x-3.0-rc1.zip",
+                "reference": "8.x-3.0-rc1",
+                "shasum": "e291b5468c834a344e9aa6cafd3a76171d473a22"
+            },
+            "require": {
+                "drupal/core": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-3.x": "3.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-3.0-rc1",
+                    "datestamp": "1558647185",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "RC releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Hydra",
+                    "homepage": "https://www.drupal.org/user/647364"
+                },
+                {
+                    "name": "Stalski",
+                    "homepage": "https://www.drupal.org/user/322618"
+                },
+                {
+                    "name": "jyve",
+                    "homepage": "https://www.drupal.org/user/591438"
+                },
+                {
+                    "name": "swentel",
+                    "homepage": "https://www.drupal.org/user/107403"
+                },
+                {
+                    "name": "zuuperman",
+                    "homepage": "https://www.drupal.org/user/361625"
+                }
+            ],
+            "description": "Provides the field_group module.",
+            "homepage": "https://www.drupal.org/project/field_group",
+            "support": {
+                "source": "https://git.drupalcode.org/project/field_group"
+            }
+        },
+        {
             "name": "drupal/field_tools",
             "version": "1.0.0-alpha4",
             "source": {
@@ -5237,6 +5299,57 @@
                 "source": "https://www.drupal.org/project/image_widget_crop",
                 "issues": "https://www.drupal.org/project/issues/image_widget_crop",
                 "irc": "irc://irc.freenode.org/drupal-contribute"
+            }
+        },
+        {
+            "name": "drupal/key_value_field",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/key_value_field.git",
+                "reference": "8.x-1.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/key_value_field-8.x-1.0.zip",
+                "reference": "8.x-1.0",
+                "shasum": "70352b53af354bc9992b9d0cec7b86428d5f1a66"
+            },
+            "require": {
+                "drupal/core": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0",
+                    "datestamp": "1522161484",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "dawehner",
+                    "homepage": "https://www.drupal.org/user/99340"
+                },
+                {
+                    "name": "mirom",
+                    "homepage": "https://www.drupal.org/user/2875431"
+                }
+            ],
+            "description": "Provides a field with a key, value pair along with a description.",
+            "homepage": "https://www.drupal.org/project/key_value_field",
+            "support": {
+                "source": "https://git.drupalcode.org/project/key_value_field"
             }
         },
         {
@@ -5786,20 +5899,32 @@
         },
         {
             "name": "drupal/repec",
-            "version": "master",
+            "version": "v2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/openscholar/repec.git",
-                "reference": "master"
+                "reference": "9c3821d90d49458fba780aa8623ea20b890c090c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/openscholar/repec/archive/master.zip",
-                "reference": "master",
-                "shasum": null
+                "url": "https://api.github.com/repos/openscholar/repec/zipball/9c3821d90d49458fba780aa8623ea20b890c090c",
+                "reference": "9c3821d90d49458fba780aa8623ea20b890c090c",
+                "shasum": ""
             },
             "type": "drupal-module",
-            "time": "2019-04-23T13:49:43+00:00"
+            "license": [
+                "GPL-2.0+"
+            ],
+            "description": "RDF integration with Research Papers in Economics (RePEc)",
+            "homepage": "https://www.drupal.org/project/repec",
+            "keywords": [
+                "Drupal"
+            ],
+            "support": {
+                "issues": "https://www.drupal.org/project/issues/repec",
+                "source": "http://cgit.drupalcode.org/repec"
+            },
+            "time": "2019-07-09T13:33:34+00:00"
         },
         {
             "name": "drupal/rng",

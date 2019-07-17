@@ -1,0 +1,23 @@
+%body {
+  color: $black;
+  font-family: $font_0, $font_1;
+}
+%link {
+  color: $color_hippie_green_approx;
+  &:visited {
+    color: $color_hippie_green_approx;
+  }
+}
+//@extend-elements
+%extend_1 {
+  color: $color_hippie_green_approx;
+  text-transform: none;
+  font-weight: bold;
+  font-size: 1.25em;
+}
+%extend_2 {
+  background-color: $white;
+  border-top: 4px solid $color_hippie_green_approx;
+  color: $color_hippie_green_approx;
+  padding: 12px 15px 16px;
+}

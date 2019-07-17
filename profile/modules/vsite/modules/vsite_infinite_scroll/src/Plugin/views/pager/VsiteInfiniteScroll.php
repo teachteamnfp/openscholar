@@ -68,11 +68,12 @@ class VsiteInfiniteScroll extends InfiniteScroll {
         3 => $this->options['tags']['next'],
       ];
       return [
-        '#theme' => $this->view->buildThemeFunctions('views_mini_pager'),
+        '#theme' => $this->view->buildThemeFunctions('pager'),
         '#tags' => $tags,
         '#element' => $this->options['id'],
         '#parameters' => $input,
         '#route_name' => '<none>',
+        '#quantity' => 9,
       ];
     }
 

@@ -81,8 +81,12 @@ function os_profiles_preprocess_node(&$variables) {
   $attributes = Drupal::request()->attributes;
   $parameters = $attributes->all();
 
-  // You are on person page.
-  if (empty($parameters['_route']) || $parameters['_route'] != 'view.people.page_1') {
+  // Route param exists.
+  if (empty($parameters['_route'])) {
+    return;
+  }
+  // You are on person page or node page.
+  if (!in_array($parameters['_route'], ['view.people.page_1', 'entity.node.canonical'])) {
     return;
   }
   // Node bundle is person.
@@ -92,7 +96,7 @@ function os_profiles_preprocess_node(&$variables) {
   // Current view mode has image.
   // Person image is empty.
   // Default image is not hidden.
-  if (in_array($variables['view_mode'], ['teaser', 'sidebar_teaser'])
+  if (in_array($variables['view_mode'], ['teaser', 'sidebar_teaser', 'full'])
     && empty($content['field_photo_person']['#items'])
     && !$config->get('disable_default_image')) {
 
@@ -132,7 +136,7 @@ function os_profiles_preprocess_node(&$variables) {
   }
 
   if (!empty($content['field_phone'][0])) {
-    $variables['content']['field_phone']['#prefix'] = 'p: ';
+    $variables['content']['field_phone']['#title'] = t('p', ['context' => 'Field phone title']);
   }
   if (!empty($content['field_email'][0]['#url'])) {
     $url_attributes = [

@@ -1,0 +1,38 @@
+uuid: 3efcb78c-2d1b-4ef8-ae62-64f2631e8f27
+langcode: en
+status: true
+dependencies:
+  config:
+    - bibcite_entity.bibcite_reference_type.miscellaneous_section
+    - field.storage.bibcite_reference.field_publication_image
+  module:
+    - image
+id: bibcite_reference.miscellaneous_section.field_publication_image
+field_name: field_publication_image
+entity_type: bibcite_reference
+bundle: miscellaneous_section
+label: 'Publication Image'
+description: 'For example, book cover, journal cover'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: '[date:custom:Y]-[date:custom:m]'
+  file_extensions: 'png gif jpg jpeg'
+  max_filesize: ''
+  max_resolution: ''
+  min_resolution: ''
+  alt_field: true
+  alt_field_required: true
+  title_field: false
+  title_field_required: false
+  default_image:
+    uuid: ''
+    alt: ''
+    title: ''
+    width: null
+    height: null
+  handler: 'default:file'
+  handler_settings: {  }
+field_type: image
