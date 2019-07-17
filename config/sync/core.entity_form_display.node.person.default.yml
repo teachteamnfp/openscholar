@@ -125,8 +125,10 @@ content:
       crop_preview_image_style: crop_thumbnail
       progress_indicator: throbber
       crop_list:
+        - crop_100_122
         - crop_1_1
       crop_types_required:
+        - crop_100_122
         - crop_1_1
     third_party_settings: {  }
     type: image_widget_crop
