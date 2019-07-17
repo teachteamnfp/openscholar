@@ -233,6 +233,7 @@ class PublicationSettingsForm extends CpSettingBase {
 
     $form['os_publications_export_format'] = [
       '#title' => $this->t('Export format'),
+      '#description' => $this->t('Each selected format will appear in its own export link.'),
       '#type' => 'checkboxes',
       '#default_value' => $publication_config->get('export_format'),
       '#options' => array_map(function ($format) {
@@ -249,6 +250,7 @@ class PublicationSettingsForm extends CpSettingBase {
     $form['citation_distribute_autoflags'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Distribute to repositories'),
+      '#description' => $this->t('New publications will automatically be flagged for distribution to the selected services.'),
       '#default_value' => $publication_config->get('citation_distribute_autoflags'),
       '#options' => $distribution_options,
       '#prefix' => '<div class="citation-row">',
@@ -270,14 +272,26 @@ class PublicationSettingsForm extends CpSettingBase {
     $publication_config = $configFactory->getEditable('os_publications.settings');
     $form_state_values = $formState->getValues();
 
-    if (($publication_config->get('biblio_order') !== $form_state_values['biblio_order']) ||
-      ($form_state_values['os_publications_preferred_bibliographic_format'] !== $publication_config->get('default_style'))) {
-      // This is necessary, otherwise, the setting fails to get updated in the
-      // UI.
+    // If changes in style then clear citation cache.
+    if ($form_state_values['os_publications_preferred_bibliographic_format'] !== $publication_config->get('default_style')) {
       $this->cacheTagsInvalidator->invalidateTags([
         'publication_citation',
         'config:views.view.publications',
       ]);
+    }
+
+    if (($form_state_values['os_publications_note_in_teaser'] !== $publication_config->get('note_in_teaser')) ||
+      ($form_state_values['biblio_sort'] !== $publication_config->get('filter_publication_types')) ||
+      ($form_state_values['biblio_order'] !== $publication_config->get('biblio_order')) ||
+      ($form_state_values['os_publications_export_format'] !== $publication_config->get('export_format'))) {
+      $this->cacheTagsInvalidator->invalidateTags([
+        'config:views.view.publications',
+        'bibcite_reference_view',
+      ]);
+    }
+
+    if ($form_state_values['os_publications_shorten_citations'] !== $publication_config->get('shorten_citations')) {
+      $this->cacheTagsInvalidator->invalidateTags(['publication_citation']);
     }
 
     $publication_config
