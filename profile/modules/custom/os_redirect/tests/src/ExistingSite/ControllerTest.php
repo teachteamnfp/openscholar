@@ -8,7 +8,7 @@ use Drupal\os_redirect\Controller\RedirectListController;
  * Tests os_redirect module.
  *
  * @group redirect
- * @group kernel
+ * @group functional
  *
  * @coversDefaultClass \Drupal\os_redirect\Controller\RedirectListController
  */

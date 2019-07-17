@@ -209,4 +209,5 @@ permissions:
   194: 'manage layout'
   195: 'access private apps'
   196: 'administer apps'
-  202: 'administer group'
+  197: 'administer group'
+  198: manage_menu

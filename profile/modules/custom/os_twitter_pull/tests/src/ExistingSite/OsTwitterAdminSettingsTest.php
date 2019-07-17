@@ -8,7 +8,7 @@ use weitzman\DrupalTestTraits\ExistingSiteBase;
  * Tests os_twitter_pull module.
  *
  * @group twitter
- * @group kernel
+ * @group functional
  * @group other
  *
  * @coversDefaultClass \Drupal\os_twitter_pull\Form\OsTwitterPullAdminSettingsForm
