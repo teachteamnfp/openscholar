@@ -85,7 +85,7 @@ function os_profiles_preprocess_node(&$variables) {
   // Current view mode has image.
   // Person image is empty.
   // Default image is not hidden.
-  if (in_array($variables['view_mode'], ['teaser', 'sidebar_teaser'])
+  if (in_array($variables['view_mode'], ['teaser', 'sidebar_teaser', 'full'])
     && empty($content['field_photo_person']['#items'])
     && !$config->get('disable_default_image')) {
 

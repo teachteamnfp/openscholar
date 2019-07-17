@@ -5,6 +5,7 @@
  * Bibcite customizations for Openscholar.
  */
 
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\bibcite_entity\Entity\KeywordInterface;
 use Drupal\bibcite_entity\Entity\ReferenceType;
 use Drupal\Core\Entity\ContentEntityInterface;
@@ -484,4 +485,20 @@ function os_publications_preprocess_bibcite_citation(&$variables) {
 function os_publications_editor_js_settings_alter(array &$settings) {
   // Badly affects the citation output if not set to false.
   $settings['editor']['formats']['title_filter']['editorSettings']['autoParagraph'] = FALSE;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view_alter().
+ */
+function os_publications_bibcite_reference_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
+  if ($display->getMode() !== 'teaser') {
+    return;
+  }
+
+  // Check note in teaser setting and unset it if setting is off.
+  $publications_config = \Drupal::configFactory()->get('os_publications.settings');
+  $note_in_teaser = $publications_config->get('note_in_teaser');
+  if (!$note_in_teaser) {
+    unset($build['notes']);
+  }
 }

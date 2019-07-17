@@ -2,9 +2,13 @@
 
 namespace Drupal\os_widgets\Plugin\OsWidgets;
 
+use Drupal\Core\Database\Connection;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Url;
 use Drupal\os_widgets\OsWidgetsBase;
 use Drupal\os_widgets\OsWidgetsInterface;
+use Drupal\vsite\Plugin\VsiteContextManagerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class PublicationTypesWidget.
@@ -17,9 +21,39 @@ use Drupal\os_widgets\OsWidgetsInterface;
 class PublicationTypesWidget extends OsWidgetsBase implements OsWidgetsInterface {
 
   /**
+   * Vsite context manager.
+   *
+   * @var \Drupal\vsite\Plugin\VsiteContextManagerInterface
+   */
+  private $vsiteContextManager;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct($configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, Connection $connection, VsiteContextManagerInterface $vsite_context_manager) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $entity_type_manager, $connection);
+    $this->vsiteContextManager = $vsite_context_manager;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('entity_type.manager'),
+      $container->get('database'),
+      $container->get('vsite.context_manager')
+    );
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function buildBlock(&$build, $block_content) {
+    $group = $this->vsiteContextManager->getActiveVsite();
     // Collect all reference types with original allowed values function.
     /** @var \Drupal\field\Entity\FieldConfig $field_types_whitelist_definition */
     $field_types_whitelist_definition = $block_content->getFieldDefinition('field_types_whitelist');
@@ -48,6 +82,17 @@ class PublicationTypesWidget extends OsWidgetsBase implements OsWidgetsInterface
     $query = $this->connection->select('bibcite_reference', 'br');
     $query->fields('br', ['type']);
     $query->condition('br.type', $types_list, 'IN');
+    // Filter to vsite content.
+    if ($group) {
+      $ids = [];
+      $publications = $group->getContentEntities('group_entity:bibcite_reference');
+      foreach ($publications as $publication) {
+        $ids[] = $publication->id();
+      }
+      if (!empty($ids)) {
+        $query->condition('br.id', $ids, 'IN');
+      }
+    }
     $query->addExpression('COUNT(br.id)', 'count');
     $query->groupBy('br.type');
     $result = $query->execute();
