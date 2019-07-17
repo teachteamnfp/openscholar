@@ -33,7 +33,7 @@ env:
     - JOB="job:run-kernel-tests redirect,vsite"
     - JOB="job:run-kernel-tests cp"
     - JOB="job:run-kernel-tests other,cp-menu"
-    - JOB="job:run-functional-tests classes,events,pages,cp,media-browser,os-theme-preview,vsite,breadcrumbs,analytics,cp-menu,os,publications,cp-appearance"
+    - JOB="job:run-functional-tests classes,events,pages,cp,media-browser,os-theme-preview,vsite,breadcrumbs,analytics,cp-menu,os,publications,cp-appearance,redirect,twitter"
     - JOB="job:run-functional-javascript-tests classes,events,pages,publications,widgets,cp-appearance,cp-menu,profiles,cp,vsite,mailchimp,metatag,redirect,os-theme-preview"
 #    - JOB=job:run-behat-tests
 
