@@ -272,28 +272,6 @@ class PublicationSettingsForm extends CpSettingBase {
     $publication_config = $configFactory->getEditable('os_publications.settings');
     $form_state_values = $formState->getValues();
 
-    // If changes in style then clear citation cache.
-    if ($form_state_values['os_publications_preferred_bibliographic_format'] !== $publication_config->get('default_style')) {
-      $this->cacheTagsInvalidator->invalidateTags([
-        'publication_citation',
-        'config:views.view.publications',
-      ]);
-    }
-
-    if (($form_state_values['os_publications_note_in_teaser'] !== $publication_config->get('note_in_teaser')) ||
-      ($form_state_values['biblio_sort'] !== $publication_config->get('filter_publication_types')) ||
-      ($form_state_values['biblio_order'] !== $publication_config->get('biblio_order')) ||
-      ($form_state_values['os_publications_export_format'] !== $publication_config->get('export_format'))) {
-      $this->cacheTagsInvalidator->invalidateTags([
-        'config:views.view.publications',
-        'bibcite_reference_view',
-      ]);
-    }
-
-    if ($form_state_values['os_publications_shorten_citations'] !== $publication_config->get('shorten_citations')) {
-      $this->cacheTagsInvalidator->invalidateTags(['publication_citation']);
-    }
-
     $publication_config
       ->set('default_style', $form_state_values['os_publications_preferred_bibliographic_format'])
       ->set('filter_publication_types', $form_state_values['os_publications_filter_publication_types'])
@@ -314,6 +292,13 @@ class PublicationSettingsForm extends CpSettingBase {
     if ($redirect) {
       $group->addContent($redirect, 'group_entity:redirect');
     }
+
+    // This is necessary, otherwise the changes fails to appear in the UI.
+    $this->cacheTagsInvalidator->invalidateTags([
+      'config:views.view.publications',
+      'bibcite_reference_view',
+      'publication_citation',
+    ]);
   }
 
 }
