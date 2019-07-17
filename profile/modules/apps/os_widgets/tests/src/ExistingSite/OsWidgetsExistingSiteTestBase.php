@@ -8,12 +8,12 @@ use Drupal\bibcite_entity\Entity\Reference;
 use Drupal\bibcite_entity\Entity\ReferenceInterface;
 use Drupal\media\Entity\Media;
 use Drupal\media\MediaInterface;
-use weitzman\DrupalTestTraits\ExistingSiteBase;
+use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
 
 /**
  * Base class for os_widgets tests.
  */
-class OsWidgetsExistingSiteTestBase extends ExistingSiteBase {
+class OsWidgetsExistingSiteTestBase extends OsExistingSiteTestBase {
 
   /**
    * The entity type manager service.
