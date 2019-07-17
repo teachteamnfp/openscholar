@@ -103,6 +103,29 @@ class CpTaxonomySettingsTest extends TestBase {
   }
 
   /**
+   * Test title view mode.
+   */
+  public function testTitleViewModeHidden() {
+    $view_builder = $this->entityTypeManager
+      ->getViewBuilder('node');
+
+    $vocabulary = $this->createVocabulary();
+    $term = $this->createTerm($vocabulary);
+    $node = $this->createNode([
+      'type' => 'person',
+      'field_taxonomy_terms' => [
+        $term->id(),
+      ],
+    ]);
+    $this->configTaxonomy->set('display_term_under_content_teaser_types', ['node:person']);
+    $this->configTaxonomy->save(TRUE);
+    $render = $view_builder->view($node, 'title');
+    /** @var \Drupal\Core\Render\Markup $markup_array */
+    $markup = $this->renderer->renderRoot($render);
+    $this->assertNotContains($term->label(), $markup->__toString());
+  }
+
+  /**
    * Test group admin settings form.
    */
   public function testCpSettingsTaxonomyFormSelectNone() {
