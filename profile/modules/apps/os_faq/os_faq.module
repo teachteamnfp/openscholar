@@ -1,0 +1,8 @@
+<?php
+
+function os_faq_library_info_alter(&$libraries, $extension) {
+  if ($extension == 'views_accordion') {
+    $path = '/'.drupal_get_path('module', 'os_faq').'/js/os_faq.infinite_scroll.js';
+    $libraries['views_accordion.accordion']['js'][$path] = [];
+  }
+}
