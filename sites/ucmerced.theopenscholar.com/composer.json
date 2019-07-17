@@ -1,6 +1,6 @@
 {
     "name": "openscholar/ucmerced_packages",
-    "description": "Packages required for UC Merced / CAS",
+    "description": "Packages required for UC Merced / CAS ",
     "repositories": [
       { "type": "composer", "url": "https://packages.drupal.org/7" },
       { "type": "vcs", "url": "git@bitbucket.org:openscholar/ucmerced.git"}
