@@ -1,0 +1,23 @@
+#owl-panes {
+  position: relative;
+}
+
+#owl-file-messages {
+  display: block;
+  position: absolute;
+  background-color: red;
+  color: white;
+  padding: 5px;
+}
+
+.form-help .description {
+  position: absolute;
+  width: 300px;
+  display: none;
+  background-color: white;
+  border: 1px solid #d3d3d3;
+  padding: 8px;
+  -webkit-box-shadow: 10px 10px 15px -5px rgba(204,204,204,1);
+  -moz-box-shadow: 10px 10px 15px -5px rgba(204,204,204,1);
+  box-shadow: 10px 10px 15px -5px rgba(204,204,204,1);
+}
