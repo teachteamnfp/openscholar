@@ -222,6 +222,7 @@ class PublicationSettingsForm extends CpSettingBase {
 
     $form['os_publications_export_format'] = [
       '#title' => $this->t('Export format'),
+      '#description' => $this->t('Each selected format will appear in its own export link.'),
       '#type' => 'checkboxes',
       '#default_value' => $publication_config->get('export_format'),
       '#options' => array_map(function ($format) {
@@ -238,6 +239,7 @@ class PublicationSettingsForm extends CpSettingBase {
     $form['citation_distribute_autoflags'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Distribute to repositories'),
+      '#description' => $this->t('New publications will automatically be flagged for distribution to the selected services.'),
       '#default_value' => $publication_config->get('citation_distribute_autoflags'),
       '#options' => $distribution_options,
       '#prefix' => '<div class="citation-row">',
@@ -258,20 +260,28 @@ class PublicationSettingsForm extends CpSettingBase {
   public function submitForm(FormStateInterface $formState, ConfigFactoryInterface $configFactory) {
     $publication_config = $configFactory->getEditable('os_publications.settings');
 
+    $values = $formState->getValues();
+
     // If changes in style then clear citation cache.
-    if ($formState->getValue('os_publications_preferred_bibliographic_format') !== $publication_config->get('default_style')) {
+    if ($values['os_publications_preferred_bibliographic_format'] !== $publication_config->get('default_style')) {
       Cache::invalidateTags(['publication_citation', 'config:views.view.publications']);
+    }
+    if (($values['os_publications_note_in_teaser'] != $publication_config->get('note_in_teaser')) || ($values['biblio_sort'] != $publication_config->get('filter_publication_types')) || ($values['biblio_order'] != $publication_config->get('biblio_order')) || ($values['os_publications_export_format'] != $publication_config->get('export_format'))) {
+      Cache::invalidateTags(['config:views.view.publications', 'bibcite_reference_view']);
+    }
+    if ($values['os_publications_shorten_citations'] != $publication_config->get('shorten_citations')) {
+      Cache::invalidateTags(['publication_citation']);
     }
 
     $publication_config
-      ->set('default_style', $formState->getValue('os_publications_preferred_bibliographic_format'))
-      ->set('filter_publication_types', $formState->getValue('os_publications_filter_publication_types'))
-      ->set('biblio_sort', $formState->getValue('biblio_sort'))
-      ->set('note_in_teaser', $formState->getValue('os_publications_note_in_teaser'))
-      ->set('biblio_order', $formState->getValue('biblio_order'))
-      ->set('shorten_citations', $formState->getValue('os_publications_shorten_citations'))
-      ->set('export_format', $formState->getValue('os_publications_export_format'))
-      ->set('citation_distribute_autoflags', $formState->getValue('citation_distribute_autoflags'))
+      ->set('default_style', $values['os_publications_preferred_bibliographic_format'])
+      ->set('filter_publication_types', $values['os_publications_filter_publication_types'])
+      ->set('biblio_sort', $values['biblio_sort'])
+      ->set('note_in_teaser', $values['os_publications_note_in_teaser'])
+      ->set('biblio_order', $values['biblio_order'])
+      ->set('shorten_citations', $values['os_publications_shorten_citations'])
+      ->set('export_format', $values['os_publications_export_format'])
+      ->set('citation_distribute_autoflags', $values['citation_distribute_autoflags'])
       ->save();
 
     /** @var \Drupal\group\Entity\GroupInterface $group */

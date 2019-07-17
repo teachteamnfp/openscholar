@@ -208,4 +208,6 @@ permissions:
   193: 'manage cp roles'
   194: 'manage layout'
   195: 'access private apps'
-  197: manage_menu
+  196: 'administer apps'
+  197: 'administer group'
+  198: manage_menu

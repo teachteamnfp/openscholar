@@ -55,6 +55,11 @@ class CopyrightBlock extends BlockBase implements ContainerFactoryPluginInterfac
       '#theme' => 'os_privacy_policy_copyright_block',
       '#privacy_policy_text' => Html::escape($config->get('os_privacy_policy_text')),
       '#privacy_policy_url' => Html::escape($config->get('os_privacy_policy_url')),
+      '#cache' => [
+        'tags' => [
+          'os_privacy_policy:copyright_block',
+        ],
+      ],
     ];
   }
 
