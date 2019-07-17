@@ -7,6 +7,7 @@ namespace Drupal\Tests\os_publications\ExistingSite;
  *
  * @group functional
  * @group publications
+ * @coversDefaultClass \Drupal\os_publications\Plugin\CpSetting\PublicationSettingsForm
  */
 class PublicationsRedirectTest extends TestBase {
 
