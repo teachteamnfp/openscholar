@@ -43,15 +43,15 @@ class CpSettingsAccessCheck implements AccessInterface, ContainerInjectionInterf
    *
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The user.
-   * @param string $setting_group_id
+   * @param string $setting_group
    *   The CpSetting group id.
    *
    * @return \Drupal\Core\Access\AccessResultInterface
    *   The access result.
    */
-  public function access(AccountInterface $account, $setting_group_id): AccessResultInterface {
+  public function access(AccountInterface $account, $setting_group): AccessResultInterface {
     /** @var \Drupal\cp_settings\CpSettingInterface[] $plugins */
-    $plugins = $this->cpSettingsManager->getPluginsForGroup($setting_group_id);
+    $plugins = $this->cpSettingsManager->getPluginsForGroup($setting_group);
     $instance = reset($plugins);
     return $instance->access($account);
   }
