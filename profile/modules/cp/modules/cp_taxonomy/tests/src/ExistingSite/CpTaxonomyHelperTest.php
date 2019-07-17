@@ -16,6 +16,11 @@ class CpTaxonomyHelperTest extends TestBase {
 
   use CpTaxonomyTestTrait;
 
+  /**
+   * Cp Taxonomy Helper.
+   *
+   * @var \Drupal\cp_taxonomy\CpTaxonomyHelperInterface
+   */
   private $helper;
 
   /**
@@ -59,6 +64,24 @@ class CpTaxonomyHelperTest extends TestBase {
     $this->assertSame('Media', $selectable_bundles['media:*']->__toString());
     $this->assertSame('Taxonomy Test 1', $selectable_bundles['node:taxonomy_test_1']);
     $this->assertSame('Taxonomy Test 2', $selectable_bundles['node:taxonomy_test_2']);
+  }
+
+  /**
+   * Test empty build PageVisibility.
+   */
+  public function testEmptyBuildPageVisibility() {
+    $build = [];
+    $this->helper->checkTaxonomyTermsPageVisibility($build, []);
+    $this->assertEmpty($build);
+  }
+
+  /**
+   * Test empty build ListingVisibility.
+   */
+  public function testEmptyBuildListingVisibility() {
+    $build = [];
+    $this->helper->checkTaxonomyTermsListingVisibility($build, '');
+    $this->assertEmpty($build);
   }
 
 }
