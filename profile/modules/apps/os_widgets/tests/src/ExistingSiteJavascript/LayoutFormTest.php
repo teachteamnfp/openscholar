@@ -2,12 +2,12 @@
 
 namespace Drupal\Tests\os_widgets\ExistingSiteJavascript;
 
-
 use Drupal\group\Entity\GroupRole;
 use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTestBase;
 
 /**
- * Class LayoutFormTests
+ * Class LayoutFormTests.
+ *
  * @package Drupal\Tests\os_widgets\ExistingSiteJavascript
  * @group functional-javascript
  * @group layout
@@ -16,6 +16,9 @@ class LayoutFormTest extends OsExistingSiteJavascriptTestBase {
 
   protected $user;
 
+  /**
+   * {@inheritdoc}
+   */
   public function setUp() {
     parent::setUp();
 
@@ -28,8 +31,7 @@ class LayoutFormTest extends OsExistingSiteJavascriptTestBase {
   }
 
   /**
-   * Tests that certain values are different between
-   * @throws
+   * Tests that certain values are different between.
    */
   public function testSiteIndependence() {
     $group2 = $this->createGroup();
@@ -54,14 +56,14 @@ JS;
     $this->getSession()->executeScript($script);
     $this->getSession()->getPage()->pressButton('Save');
     $url = $this->getSession()->evaluateScript('window.phpunit__ajax_url');
-    $this->assertContains($this->groupAlias.'/cp/layout/save', $url);
+    $this->assertContains($this->groupAlias . '/cp/layout/save', $url);
 
     $this->visitViaVsite('blog', $group2);
     $this->getSession()->getPage()->clickLink('Place block');
     $this->getSession()->executeScript($script);
     $this->getSession()->getPage()->pressButton('Save');
     $url = $this->getSession()->evaluateScript('window.phpunit__ajax_url');
-    $this->assertContains($group2Alias.'/cp/layout/save', $url);
+    $this->assertContains($group2Alias . '/cp/layout/save', $url);
 
   }
 

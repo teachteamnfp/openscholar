@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Drupal\Core\Session\AccountInterface;
 
 /**
+ * Copy of core's block_place event subscriber that uses the group permission.
+ *
  * @see \Drupal\block_place\Plugin\DisplayVariant\PlaceBlockPageVariant
  */
 class BlockPlaceEventSubscriber implements EventSubscriberInterface {
@@ -31,7 +33,7 @@ class BlockPlaceEventSubscriber implements EventSubscriberInterface {
   /**
    * The vsite context manager.
    *
-   * @var VsiteContextManagerInterface
+   * @var \Drupal\vsite\Plugin\VsiteContextManagerInterface
    */
   protected $vsiteContextManager;
 
@@ -42,6 +44,8 @@ class BlockPlaceEventSubscriber implements EventSubscriberInterface {
    *   The request stack used to retrieve the current request.
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The current user.
+   * @param \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContextManager
+   *   The vsite context manager.
    */
   public function __construct(RequestStack $request_stack, AccountInterface $account, VsiteContextManagerInterface $vsiteContextManager) {
     $this->requestStack = $request_stack;
