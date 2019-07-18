@@ -5,7 +5,6 @@ namespace Drupal\cp_appearance;
 use Drupal\Core\Asset\AssetCollectionOptimizerInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Config\ConfigInstallerInterface;
-use Drupal\Core\Extension\Exception\UnknownExtensionException;
 use Drupal\Core\Extension\ExtensionNameLengthException;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Extension\ThemeHandlerInterface;
@@ -97,55 +96,12 @@ class CustomThemeInstaller implements CustomThemeInstallerInterface {
   /**
    * {@inheritdoc}
    */
-  public function install(array $theme_list, $install_dependencies = TRUE): bool {
+  public function install(array $theme_list): bool {
     $extension_config = $this->configFactory->getEditable('core.extension');
 
     $theme_data = $this->themeHandler->rebuildThemeData();
 
-    if ($install_dependencies) {
-      $theme_list = array_combine($theme_list, $theme_list);
-      $missing = array_diff_key($theme_list, $theme_data);
-
-      if ($missing) {
-        // One or more of the given themes doesn't exist.
-        throw new UnknownExtensionException('Unknown themes: ' . implode(', ', $missing) . '.');
-      }
-
-      // Only process themes that are not installed currently.
-      $installed_themes = $extension_config->get('theme') ?: [];
-      if (!$theme_list = array_diff_key($theme_list, $installed_themes)) {
-        // Nothing to do. All themes already installed.
-        return TRUE;
-      }
-
-      foreach ($theme_list as $theme => $value) {
-        // Add dependencies to the list. The new themes will be processed as
-        // the parent foreach loop continues.
-        foreach (array_keys($theme_data[$theme]->requires) as $dependency) {
-          if (!isset($theme_data[$dependency])) {
-            // The dependency does not exist.
-            return FALSE;
-          }
-
-          // Skip already installed themes.
-          if (!isset($theme_list[$dependency]) && !isset($installed_themes[$dependency])) {
-            $theme_list[$dependency] = $dependency;
-          }
-        }
-      }
-
-      // Set the actual theme weights.
-      $theme_list = array_map(function ($theme) use ($theme_data) {
-        return $theme_data[$theme]->sort;
-      }, $theme_list);
-
-      // Sort the theme list by their weights (reverse).
-      arsort($theme_list);
-      $theme_list = array_keys($theme_list);
-    }
-    else {
-      $installed_themes = $extension_config->get('theme') ?: [];
-    }
+    $installed_themes = $extension_config->get('theme') ?: [];
 
     $themes_installed = [];
     foreach ($theme_list as $key) {

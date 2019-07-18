@@ -17,10 +17,6 @@ interface CustomThemeInstallerInterface {
    *
    * @param array $theme_list
    *   An array of theme names.
-   * @param bool $install_dependencies
-   *   (optional) If TRUE, dependencies will automatically be installed in the
-   *   correct order. This incurs a significant performance cost, so use FALSE
-   *   if you know $theme_list is already complete and in the correct order.
    *
    * @return bool
    *   Whether any of the given themes have been installed.
@@ -33,6 +29,6 @@ interface CustomThemeInstallerInterface {
    *
    * @see \Drupal\Core\Extension\ThemeInstallerInterface::install
    */
-  public function install(array $theme_list, $install_dependencies = TRUE) : bool;
+  public function install(array $theme_list) : bool;
 
 }
