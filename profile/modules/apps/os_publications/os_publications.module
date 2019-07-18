@@ -156,47 +156,11 @@ function os_publications_views_pre_render(ViewExecutable $view) {
     return;
   }
 
-  $publications_config = \Drupal::configFactory()->get('os_publications.settings');
-  $formats = $publications_config->get('export_format');
-
-  $format_manager = \Drupal::service('plugin.manager.bibcite_format');
-
-  $export_button = [
-    '#theme' => 'item_list__os_dropdown',
-    '#title' => [
-      '#type' => 'button',
-      '#value' => t('Download Citation'),
-      '#attributes' => [
-        'data-toggle' => 'dropdown',
-        'role' => 'button',
-        'aria-haspopup' => 'true',
-        'aria-expanded' => 'false',
-      ],
-    ],
-    '#list_type' => 'ul',
-    '#attributes' => [
-      'class' => ['dropdown-menu'],
-    ],
-    '#wrapper_attributes' => [
-      'class' => ['dropdown'],
-    ],
-    '#weight' => 100,
-  ];
-
-  foreach ($formats as $format) {
-    $format_obj = $format_manager->createInstance($format);
-    $export_button['#items'][] = [
-      '#type' => 'link',
-      '#title' => $format_obj->getLabel(),
-      '#url' => Url::fromRoute('os_publictions.citation_export', [
-        'bibcite_format' => $format,
-      ]),
-    ];
-  }
-
-  $view->attachment_before = $export_button;
-
   if ($view->current_display !== 'cp') {
+
+    // Include citation download button.
+    $view->attachment_before = \Drupal::service('os_publications.citation_helper')->getCitationDownloadButton();
+
     // Convert citation title into publication entity page's url.
     $results = $view->result;
     foreach ($results as $result) {
@@ -519,7 +483,18 @@ function os_publications_preprocess_bibcite_citation(&$variables) {
     $url_text = shorten_url($current_uri);
     $url = Url::fromUri($url_text);
     $short_url = Link::fromTextAndUrl($url_text, $url)->toString();
+
+    // Get entity id to be passed to export button.
+    $id = \Drupal::routeMatch()->getParameter('bibcite_reference')->id();
+    // Get export button html.
+    $export_array = \Drupal::service('os_publications.citation_helper')->getCitationDownloadButton($id);
+    $export_button = \Drupal::service('renderer')->render($export_array);
+    // Append additional links to the citation.
     $variables['content']['#markup'] .= '<span class="short-link">' . t("Copy at") . "&nbsp;$short_url" . '</span>';
+    $variables['content']['#markup'] .= '<div class="citation-download">' . $export_button . '</div>';
+    $variables['content']['#allowed_tags'] = [
+      'a', 'button', 'ul', 'li', 'span', 'div',
+    ];
   }
 }
 

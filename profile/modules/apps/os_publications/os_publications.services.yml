@@ -19,3 +19,6 @@ services:
     arguments: ['@plugin.manager.bibcite_format']
     tags:
       - { name: paramconverter }
+  os_publications.citation_helper:
+    class: Drupal\os_publications\CitationHelper
+    arguments: ['@config.factory', '@plugin.manager.bibcite_format']

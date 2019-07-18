@@ -4,6 +4,7 @@ namespace Drupal\os_publications\Controller;
 
 use Drupal\bibcite\Plugin\BibciteFormatInterface;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\vsite\Plugin\VsiteContextManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -51,6 +52,7 @@ class CitationExportController extends ControllerBase {
     $this->serializer = $serializer;
     $this->entityTypeManager = $entity_type_manager;
     $this->vsiteManager = $vsite_manager;
+    $this->vsite = $this->vsiteManager->getActiveVsite();
   }
 
   /**
@@ -91,7 +93,8 @@ class CitationExportController extends ControllerBase {
 
       $response->sendHeaders();
 
-      $result = is_array($result) ? implode("\n", $result) : $result;
+      // Wordwrap the output.
+      $result = wordwrap($result);
       $response->setContent($result);
     }
 
@@ -112,8 +115,8 @@ class CitationExportController extends ControllerBase {
       throw new NotFoundHttpException();
     }
 
-    $vsite = $this->vsiteManager->getActiveVsite();
-    $publications = $vsite->getContent(self::PLUGIN_ID);
+    // Get publication entities associated with current vsite.
+    $publications = $this->vsite->getContent(self::PLUGIN_ID);
     foreach ($publications as $publication) {
       $entities[$publication->getEntity()->id()] = $publication->getEntity();
     }
@@ -122,10 +125,38 @@ class CitationExportController extends ControllerBase {
       throw new NotFoundHttpException();
     }
 
+    // Set the filename for later use.
+    $label = strtolower($this->vsite->label());
     $filename = vsprintf('%s-%s-%s', [
-      $vsite->label(), 'publications', $bibcite_format->getPluginId(),
+      $label, 'publications', $bibcite_format->getPluginId(),
     ]);
     return $this->processExport($entities, $bibcite_format, $filename);
+  }
+
+  /**
+   * Export entity to available export format.
+   *
+   * @param \Drupal\bibcite\Plugin\BibciteFormatInterface $bibcite_format
+   *   Instance of format plugin.
+   * @param \Drupal\Core\Entity\EntityInterface $bibcite_reference
+   *   Publication entity.
+   *
+   * @return \Symfony\Component\HttpFoundation\Response
+   *   Response object contains serialized reference data.
+   */
+  public function export(BibciteFormatInterface $bibcite_format, EntityInterface $bibcite_reference) {
+    if (!$bibcite_format->isExportFormat()) {
+      throw new NotFoundHttpException();
+    }
+
+    // Set the filename for later use.
+    $vsiteLabel = strtolower($this->vsite->label());
+    $shortLabel = substr($bibcite_reference->label(), 0, 7);
+    $entityLabel = str_replace(' ', '_', $shortLabel);
+    $filename = vsprintf('%s-%s-%s', [
+      $vsiteLabel, $entityLabel, $bibcite_format->getLabel(),
+    ]);
+    return $this->processExport([$bibcite_reference], $bibcite_format, $filename);
   }
 
 }
