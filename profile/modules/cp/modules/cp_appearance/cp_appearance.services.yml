@@ -7,4 +7,4 @@ services:
     arguments: ['@theme_handler']
   cp_appearance.custom_theme_installer:
     class: \Drupal\cp_appearance\CustomThemeInstaller
-    arguments: ['@theme_handler', '@config.factory', '@config.installer', '@module_handler', '@asset.css.collection_optimizer', '@logger.channel.default', '@state']
+    arguments: ['@theme_handler', '@config.factory', '@module_handler', '@asset.css.collection_optimizer', '@logger.channel.default', '@state']

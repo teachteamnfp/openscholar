@@ -4,7 +4,6 @@ namespace Drupal\cp_appearance;
 
 use Drupal\Core\Asset\AssetCollectionOptimizerInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Config\ConfigInstallerInterface;
 use Drupal\Core\Extension\Exception\UnknownExtensionException;
 use Drupal\Core\Extension\ExtensionNameLengthException;
 use Drupal\Core\Extension\ModuleHandlerInterface;
@@ -30,13 +29,6 @@ class CustomThemeInstaller implements CustomThemeInstallerInterface {
    * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
   protected $configFactory;
-
-  /**
-   * Config installer service.
-   *
-   * @var \Drupal\Core\Config\ConfigInstallerInterface
-   */
-  protected $configInstaller;
 
   /**
    * Module handler service.
@@ -73,8 +65,6 @@ class CustomThemeInstaller implements CustomThemeInstallerInterface {
    *   The theme handler.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The config factory to get the installed themes.
-   * @param \Drupal\Core\Config\ConfigInstallerInterface $config_installer
-   *   The config installer to install configuration.
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
    *   The module handler to fire themes_installed/themes_uninstalled hooks.
    * @param \Drupal\Core\Asset\AssetCollectionOptimizerInterface $css_collection_optimizer
@@ -84,10 +74,9 @@ class CustomThemeInstaller implements CustomThemeInstallerInterface {
    * @param \Drupal\Core\State\StateInterface $state
    *   The state store.
    */
-  public function __construct(ThemeHandlerInterface $theme_handler, ConfigFactoryInterface $config_factory, ConfigInstallerInterface $config_installer, ModuleHandlerInterface $module_handler, AssetCollectionOptimizerInterface $css_collection_optimizer, LoggerInterface $logger, StateInterface $state) {
+  public function __construct(ThemeHandlerInterface $theme_handler, ConfigFactoryInterface $config_factory, ModuleHandlerInterface $module_handler, AssetCollectionOptimizerInterface $css_collection_optimizer, LoggerInterface $logger, StateInterface $state) {
     $this->themeHandler = $theme_handler;
     $this->configFactory = $config_factory;
-    $this->configInstaller = $config_installer;
     $this->moduleHandler = $module_handler;
     $this->cssCollectionOptimizer = $css_collection_optimizer;
     $this->logger = $logger;
@@ -99,12 +88,9 @@ class CustomThemeInstaller implements CustomThemeInstallerInterface {
    */
   public function install(array $theme_list): bool {
     $extension_config = $this->configFactory->getEditable('core.extension');
-
     $theme_data = $this->themeHandler->rebuildThemeData();
-
-    $installed_themes = $extension_config->get('theme') ?: [];
-
     $themes_installed = [];
+
     foreach ($theme_list as $key) {
       // Only process themes that are not already installed.
       $installed = $extension_config->get("theme.$key") !== NULL;
@@ -116,10 +102,6 @@ class CustomThemeInstaller implements CustomThemeInstallerInterface {
       if (\strlen($key) > DRUPAL_EXTENSION_NAME_MAX_LENGTH) {
         throw new ExtensionNameLengthException("Theme name $key is over the maximum allowed length of " . DRUPAL_EXTENSION_NAME_MAX_LENGTH . ' characters.');
       }
-
-      // Validate default configuration of the theme. If there is existing
-      // configuration then stop installing.
-      $this->configInstaller->checkConfigurationToInstall('theme', $key);
 
       // The value is not used; the weight is ignored for themes currently. Do
       // not check schema when saving the configuration.
@@ -139,13 +121,6 @@ class CustomThemeInstaller implements CustomThemeInstallerInterface {
       // Reset theme settings.
       $theme_settings = &drupal_static('theme_get_setting');
       unset($theme_settings[$key]);
-
-      // Only install default configuration if this theme has not been installed
-      // already.
-      if (!isset($installed_themes[$key])) {
-        // Install default configuration of the theme.
-        $this->configInstaller->installDefaultConfig('theme', $key);
-      }
 
       $themes_installed[] = $key;
 
@@ -192,7 +167,6 @@ class CustomThemeInstaller implements CustomThemeInstallerInterface {
       // Reset theme settings.
       $theme_settings = &drupal_static('theme_get_setting');
       unset($theme_settings[$key]);
-
     }
     // Don't check schema when uninstalling a theme since we are only clearing
     // keys.
