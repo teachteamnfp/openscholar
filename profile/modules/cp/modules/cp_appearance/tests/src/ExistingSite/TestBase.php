@@ -16,6 +16,8 @@ abstract class TestBase extends OsExistingSiteTestBase {
 
   public const TEST_CUSTOM_THEME_2_NAME = 'os_ct_cp_appearance_test_2';
 
+  public const TEST_CUSTOM_THEME_3_NAME = 'os_ct_cp_appearance_test_3';
+
   /**
    * The entity type manager service.
    *
@@ -81,9 +83,9 @@ abstract class TestBase extends OsExistingSiteTestBase {
     $theme_config = $this->configFactory->get('system.theme');
     $this->defaultTheme = $theme_config->get('default');
     $this->themeHandler = $this->container->get('theme_handler');
-    /** @var \Drupal\Core\Extension\ThemeInstallerInterface $theme_installer */
-    $theme_installer = $this->container->get('theme_installer');
-    $theme_installer->install([
+    /** @var \Drupal\cp_appearance\CustomThemeInstaller $custom_theme_installer */
+    $custom_theme_installer = $this->container->get('cp_appearance.custom_theme_installer');
+    $custom_theme_installer->install([
       self::TEST_CUSTOM_THEME_1_NAME,
       self::TEST_CUSTOM_THEME_2_NAME,
     ]);

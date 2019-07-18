@@ -26,6 +26,14 @@ function cp_appearance_test_install() {
   ]);
   $custom_theme_entity_2->setStyles('body { background-color: red; }');
   $custom_theme_entity_2->save();
+
+  $custom_theme_entity_3 = CustomTheme::create([
+    'id' => 'os_ct_cp_appearance_test_3',
+    'label' => 'Cp Appearance Test 3 theme',
+    'base_theme' => 'documental',
+  ]);
+  $custom_theme_entity_3->setStyles('body { background-color: yellow; }');
+  $custom_theme_entity_3->save();
 }
 
 /**
@@ -34,7 +42,9 @@ function cp_appearance_test_install() {
 function cp_appearance_test_uninstall() {
   $custom_theme_entity_1 = CustomTheme::load('os_ct_cp_appearance_test_1');
   $custom_theme_entity_2 = CustomTheme::load('os_ct_cp_appearance_test_2');
+  $custom_theme_entity_3 = CustomTheme::load('os_ct_cp_appearance_test_3');
 
   $custom_theme_entity_1->delete();
   $custom_theme_entity_2->delete();
+  $custom_theme_entity_3->delete();
 }
