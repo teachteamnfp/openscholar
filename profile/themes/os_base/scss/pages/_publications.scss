@@ -12,6 +12,7 @@
   }
   .views-row {
     margin: 10px 0 20px 0;
+    overflow: hidden;
   }
   .field--name-field-publication-image {
     float: left;
@@ -46,6 +47,11 @@
     margin: 0 1.5em .5em 0;
   }
   .bibcite-reference {
+    &:before, &:after {
+      content: "";
+      display: table;
+      width: 100%;
+    }
     p {
       margin-bottom: 1.5em;
     }
