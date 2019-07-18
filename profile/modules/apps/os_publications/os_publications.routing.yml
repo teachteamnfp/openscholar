@@ -7,17 +7,13 @@ os_publications.citation_distribute_settings:
     _permission: 'administer site configuration'
 
 os_publictions.citation_export:
-  path: '/citation/export/{bibcite_format}/{entity_type}/{request}'
+  path: '/citation/export/{bibcite_format}'
   defaults:
-    _controller: '\Drupal\bibcite_export\Controller\ExportController::exportMultiple'
-    _title: 'BibCite Export'
+    _controller: '\Drupal\os_publications\Controller\CitationExportController::exportMultiple'
+    _title: 'Citation Export'
   requirements:
     _permission: 'access content'
   options:
     parameters:
       bibcite_format:
         type: bibcite_format
-      entity:
-        type: entity:{entity_type}
-      request:
-        type: request

@@ -16,5 +16,6 @@ services:
       - { name: event_subscriber }
   os_publications.param_converter:
     class: Drupal\os_publications\ParamConverter\OsPublicationsParamConverter
+    arguments: ['@plugin.manager.bibcite_format']
     tags:
       - { name: paramconverter }

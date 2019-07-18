@@ -2,6 +2,7 @@
 
 namespace Drupal\os_publications\ParamConverter;
 
+use Drupal\bibcite\Plugin\BibciteFormatManagerInterface;
 use Drupal\Core\ParamConverter\ParamConverterInterface;
 use Symfony\Component\Routing\Route;
 
@@ -13,23 +14,27 @@ use Symfony\Component\Routing\Route;
 class OsPublicationsParamConverter implements ParamConverterInterface {
 
   /**
+   * OsPublicationsParamConverter constructor.
+   *
+   * @param \Drupal\bibcite\Plugin\BibciteFormatManagerInterface $format_manager
+   *   Format manager instance.
+   */
+  public function __construct(BibciteFormatManagerInterface $format_manager) {
+    $this->formatManager = $format_manager;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function convert($value, $definition, $name, array $defaults) {
-    // If ($name == 'bibcite_format') {
-    // $formatManager = \Drupal::service('plugin.manager.bibcite_format');
-    // return $formatManager->createInstance($value);
-    // }
-    // elseif ($name == 'request') {
-    // return \Drupal::request();
-    // }
+    return $this->formatManager->createInstance($value);
   }
 
   /**
    * {@inheritdoc}
    */
   public function applies($definition, $name, Route $route) {
-    return (!empty($definition['type']) && ($definition['type'] == 'bibcite_format' || $definition['type'] == 'request'));
+    return (!empty($definition['type']) && $definition['type'] == 'bibcite_format');
   }
 
 }

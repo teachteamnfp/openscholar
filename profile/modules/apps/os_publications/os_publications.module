@@ -183,16 +183,13 @@ function os_publications_views_pre_render(ViewExecutable $view) {
     '#weight' => 100,
   ];
 
-  // $request = \Drupal::request();
   foreach ($formats as $format) {
-    $format = $format_manager->createInstance($format);
+    $format_obj = $format_manager->createInstance($format);
     $export_button['#items'][] = [
       '#type' => 'link',
-      '#title' => $format->getLabel(),
+      '#title' => $format_obj->getLabel(),
       '#url' => Url::fromRoute('os_publictions.citation_export', [
-        'bibcite_format' => $format->getLabel(),
-        'entity_type' => 'bibcite_reference',
-        'request' => 'request',
+        'bibcite_format' => $format,
       ]),
     ];
   }
