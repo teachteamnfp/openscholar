@@ -111,9 +111,9 @@ abstract class TestBase extends OsExistingSiteTestBase {
     $theme_config_mut = $this->configFactory->getEditable('system.theme');
     $theme_config_mut->set('default', $this->defaultTheme)->save();
 
-    /** @var \Drupal\Core\Extension\ThemeInstallerInterface $theme_installer */
-    $theme_installer = $this->container->get('theme_installer');
-    $theme_installer->uninstall([
+    /** @var \Drupal\cp_appearance\CustomThemeInstaller $custom_theme_installer */
+    $custom_theme_installer = $this->container->get('cp_appearance.custom_theme_installer');
+    $custom_theme_installer->uninstall([
       self::TEST_CUSTOM_THEME_1_NAME,
       self::TEST_CUSTOM_THEME_2_NAME,
     ]);

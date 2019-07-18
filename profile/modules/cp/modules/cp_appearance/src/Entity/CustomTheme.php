@@ -294,8 +294,8 @@ class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
     $config_factory = \Drupal::configFactory();
     /** @var \Drupal\Core\Config\Config $theme_setting_mut */
     $theme_setting_mut = $config_factory->getEditable('system.theme');
-    /** @var \Drupal\Core\Extension\ThemeInstallerInterface $theme_installer */
-    $theme_installer = \Drupal::service('theme_installer');
+    /** @var \Drupal\cp_appearance\CustomThemeInstallerInterface $custom_theme_installer */
+    $custom_theme_installer = \Drupal::service('cp_appearance.custom_theme_installer');
     /** @var \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler */
     $theme_handler = \Drupal::service('theme_handler');
     $default_theme = $theme_setting_mut->get('default');
@@ -314,7 +314,7 @@ class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
     }
 
     if ($installed_custom_themes) {
-      $theme_installer->uninstall(array_keys($installed_custom_themes));
+      $custom_theme_installer->uninstall(array_keys($installed_custom_themes));
     }
   }
 

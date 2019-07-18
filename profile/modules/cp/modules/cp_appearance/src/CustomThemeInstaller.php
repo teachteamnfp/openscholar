@@ -5,6 +5,7 @@ namespace Drupal\cp_appearance;
 use Drupal\Core\Asset\AssetCollectionOptimizerInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Config\ConfigInstallerInterface;
+use Drupal\Core\Extension\Exception\UnknownExtensionException;
 use Drupal\Core\Extension\ExtensionNameLengthException;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Extension\ThemeHandlerInterface;
@@ -158,6 +159,49 @@ class CustomThemeInstaller implements CustomThemeInstallerInterface {
     $this->moduleHandler->invokeAll('themes_installed', [$themes_installed]);
 
     return !empty($themes_installed);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function uninstall(array $theme_list): void {
+    $extension_config = $this->configFactory->getEditable('core.extension');
+    $theme_config = $this->configFactory->getEditable('system.theme');
+    $list = $this->themeHandler->listInfo();
+    foreach ($theme_list as $key) {
+      if (!isset($list[$key])) {
+        throw new UnknownExtensionException("Unknown theme: $key.");
+      }
+      if ($key === $theme_config->get('default')) {
+        throw new \InvalidArgumentException("The current default theme $key cannot be uninstalled.");
+      }
+      if ($key === $theme_config->get('admin')) {
+        throw new \InvalidArgumentException("The current administration theme $key cannot be uninstalled.");
+      }
+    }
+
+    $this->cssCollectionOptimizer->deleteAll();
+    $current_theme_data = $this->state->get('system.theme.data', []);
+    foreach ($theme_list as $key) {
+      // The value is not used; the weight is ignored for themes currently.
+      $extension_config->clear("theme.$key");
+
+      // Update the current theme data accordingly.
+      unset($current_theme_data[$key]);
+
+      // Reset theme settings.
+      $theme_settings = &drupal_static('theme_get_setting');
+      unset($theme_settings[$key]);
+
+    }
+    // Don't check schema when uninstalling a theme since we are only clearing
+    // keys.
+    $extension_config->save(TRUE);
+    $this->state->set('system.theme.data', $current_theme_data);
+
+    $this->themeHandler->refreshInfo();
+
+    $this->moduleHandler->invokeAll('themes_uninstalled', [$theme_list]);
   }
 
 }
