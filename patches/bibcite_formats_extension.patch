@@ -1,62 +1,69 @@
-diff --git a/modules/bibcite_bibtex/config/install/bibcite_entity.mapping.bibtex.yml b/modules/bibcite_bibtex/config/install/bibcite_entity.mapping.bibtex.yml
-index d2179bb..1b2a38b 100644
---- a/modules/bibcite_bibtex/config/install/bibcite_entity.mapping.bibtex.yml
-+++ b/modules/bibcite_bibtex/config/install/bibcite_entity.mapping.bibtex.yml
-@@ -1,19 +1,49 @@
- format: bibtex
- types:
-   article: journal_article
-+  artwork: artwork
-+  audiovisual: audiovisual
-+  bill: bill
-   book: book
--  booklet:
-+  bookchapter: book_chapter
-+  booklet: booklet
-+  broadcast: broadcast
-+  case: case
-+  chart: chart
-+  classical: classical
-   conference: conference_paper
--  inbook: book_chapter
--  incollection:
--  inproceedings:
--  manual:
--  mastersthesis:
-+  database: database
-+  film: film
-+  governmentreport: government_report
-+  hearing: hearing
-+  journal: journal
-+  inbook: inbook
-+  incollection: incollection
-+  inproceedings: inproceedings
-+  legalruling: legal_ruling
-+  magazinearticle: magazine_article
-+  manual: manual
-+  manuscript: manuscript
-+  map: map
-+  mastersthesis: thesis
-   misc: miscellaneous
--  phdthesis: thesis
-+  miscellaneoussection: miscellaneous_section
-+  newspaperarticle: newspaper_article
-+  patent: patent
-+  personal: personal
-+  presentation: presentation
-+  phdthesis: phdthesis
-   proceedings: conference_proceedings
--  techreport:
-+  report: report
-+  software: software
-+  statue: statue
-+  techreport: techreport
-   unpublished: unpublished
-+  webarticle: web_article
-+  webprojectpage: web_project_page
-+  webservice: web_service
-+  website: website
-+  workingpaper: workingpaper
- fields:
-   author: author
-   title: title
+diff --git a/modules/bibcite_bibtex/bibcite_bibtex.bibcite_format.yml b/modules/bibcite_bibtex/bibcite_bibtex.bibcite_format.yml
+index 66f8d66..028583c 100644
+--- a/modules/bibcite_bibtex/bibcite_bibtex.bibcite_format.yml
++++ b/modules/bibcite_bibtex/bibcite_bibtex.bibcite_format.yml
+@@ -4,20 +4,50 @@ bibtex:
+   extension: bib
+   encoder: \Drupal\bibcite_bibtex\Encoder\BibtexEncoder
+   types:
+-    - article
+-    - book
+-    - booklet
+-    - conference
+-    - inbook
+-    - incollection
+-    - inproceedings
+-    - manual
+-    - mastersthesis
+-    - misc
+-    - phdthesis
+-    - proceedings
+-    - techreport
+-    - unpublished
++  - article
++  - artwork
++  - audiovisual
++  - bill
++  - book
++  - bookchapter
++  - booklet
++  - broadcast
++  - case
++  - chart
++  - classical
++  - conference
++  - database
++  - film
++  - governmentreport
++  - hearing
++  - journal
++  - inbook
++  - incollection
++  - inproceedings
++  - legalruling
++  - magazinearticle
++  - manual
++  - manuscript
++  - map
++  - mastersthesis
++  - misc
++  - miscellaneoussection
++  - newspaperarticle
++  - patent
++  - personal
++  - presentation
++  - phdthesis
++  - proceedings
++  - report
++  - software
++  - statue
++  - techreport
++  - unpublished
++  - webarticle
++  - webprojectpage
++  - webservice
++  - website
++  - workingpaper
+   fields:
+     - author
+     - title
