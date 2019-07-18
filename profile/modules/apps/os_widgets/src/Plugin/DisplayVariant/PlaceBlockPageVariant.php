@@ -193,7 +193,7 @@ class PlaceBlockPageVariant extends OriginalVariant {
       ],
       'filter' => [
         '#type' => 'textfield',
-        '#title' => $this->t('Filter blocks'),
+        '#title' => $this->t('Filter Widgets'),
         '#maxlength' => 60,
         '#size' => 60,
         '#attributes' => [
