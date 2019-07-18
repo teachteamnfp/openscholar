@@ -4,10 +4,10 @@ namespace Drupal\cp_appearance\Entity\Form;
 
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Extension\ThemeHandlerInterface;
-use Drupal\Core\Extension\ThemeInstallerInterface;
 use Drupal\Core\Form\ConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
+use Drupal\cp_appearance\CustomThemeInstaller;
 use Drupal\cp_appearance\Entity\CustomTheme;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -17,11 +17,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 final class InstallForm extends ConfirmFormBase implements ContainerInjectionInterface {
 
   /**
-   * Theme installer service.
+   * Custom theme installer service.
    *
    * @var \Drupal\Core\Extension\ThemeInstallerInterface
    */
-  protected $themeInstaller;
+  protected $customThemeInstaller;
 
   /**
    * Machine name of the custom theme.
@@ -47,13 +47,13 @@ final class InstallForm extends ConfirmFormBase implements ContainerInjectionInt
   /**
    * Creates a new InstallForm object.
    *
-   * @param \Drupal\Core\Extension\ThemeInstallerInterface $theme_installer
-   *   Theme installer service.
+   * @param \Drupal\cp_appearance\CustomThemeInstaller $custom_theme_installer
+   *   Custom theme installer service.
    * @param \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler
    *   Theme handler service.
    */
-  public function __construct(ThemeInstallerInterface $theme_installer, ThemeHandlerInterface $theme_handler) {
-    $this->themeInstaller = $theme_installer;
+  public function __construct(CustomThemeInstaller $custom_theme_installer, ThemeHandlerInterface $theme_handler) {
+    $this->customThemeInstaller = $custom_theme_installer;
     $this->themeHandler = $theme_handler;
   }
 
@@ -61,7 +61,7 @@ final class InstallForm extends ConfirmFormBase implements ContainerInjectionInt
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    return new static($container->get('theme_installer'), $container->get('theme_handler'));
+    return new static($container->get('cp_appearance.custom_theme_installer'), $container->get('theme_handler'));
   }
 
   /**
@@ -100,7 +100,7 @@ final class InstallForm extends ConfirmFormBase implements ContainerInjectionInt
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $this->themeInstaller->install([
+    $this->customThemeInstaller->install([
       $this->customTheme->id(),
     ]);
     $this->themeHandler->refreshInfo();
