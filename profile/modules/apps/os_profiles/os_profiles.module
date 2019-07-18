@@ -75,24 +75,13 @@ function os_profiles_theme($existing, $type, $theme, $path) {
 function os_profiles_preprocess_node(&$variables) {
   /** @var \Drupal\node\Entity\Node $node */
   $node = $variables['node'];
-  $content = $variables['content'];
-  $config = Drupal::config('os_profiles.settings');
-  /** @var \Symfony\Component\HttpFoundation\ParameterBag $attributes */
-  $attributes = Drupal::request()->attributes;
-  $parameters = $attributes->all();
-
-  // Route param exists.
-  if (empty($parameters['_route'])) {
-    return;
-  }
-  // You are on person page or node page.
-  if (!in_array($parameters['_route'], ['view.people.page_1', 'entity.node.canonical'])) {
-    return;
-  }
   // Node bundle is person.
   if ($node->bundle() != 'person') {
     return;
   }
+  $content = $variables['content'];
+  $config = Drupal::config('os_profiles.settings');
+
   // Current view mode has image.
   // Person image is empty.
   // Default image is not hidden.

@@ -5,6 +5,6 @@ dependencies: {  }
 id: software
 label: Software
 description: ''
-activationRules: "software/*\r\n"
+activationRules: "software/\r\nsoftware/*"
 weight: 0
 data: {  }

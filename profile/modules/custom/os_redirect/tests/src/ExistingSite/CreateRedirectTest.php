@@ -6,7 +6,7 @@ namespace Drupal\Tests\os_redirect\ExistingSite;
  * Tests os_redirect module.
  *
  * @group redirect
- * @group kernel
+ * @group functional
  *
  * @coversDefaultClass \Drupal\os_redirect\Form\OsRedirectForm
  */

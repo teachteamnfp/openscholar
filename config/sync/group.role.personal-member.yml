@@ -5,7 +5,7 @@ dependencies:
   config:
     - group.type.personal
 id: personal-member
-label: Basic member
+label: 'Basic member'
 weight: -100
 internal: false
 audience: member

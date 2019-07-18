@@ -1,0 +1,6 @@
+name: "OpenScholar: Solr Search"
+description: Provides OpenScholar Solr Search support and facets
+core: 8.x
+type: module
+dependencies:
+  - cp:cp_settings

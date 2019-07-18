@@ -1,3 +1,7 @@
 'access private apps':
   title: 'Access private apps'
   description: 'Allows users to access private apps'
+
+'administer apps':
+  title: 'Administer apps'
+  description: 'Administer apps'

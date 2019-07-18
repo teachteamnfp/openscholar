@@ -363,6 +363,10 @@ function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInte
   $form['html_title']['widget']['0']['#format'] = 'title_filter';
   $form['#attached']['library'][] = 'os_publications/drupal.os_publications';
   $form['title']['#access'] = FALSE;
+
+  // Put the delete button at the end of the actions list.
+  // Cancel button's weight is 30, this needs to be higher than that.
+  $form['actions']['delete']['#weight'] = 100;
 }
 
 /**

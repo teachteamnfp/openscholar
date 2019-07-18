@@ -53,7 +53,7 @@
       transclude: true,
       template:
         "<ng-transclude></ng-transclude>" +
-        '<span ng-show="spinning" class="spinner">',
+        '<span ng-show="spinning" class="spinner glyphicon glyphicon-refresh">',
       link: function (scope, elem, attr) {
         var textElem = elem.find('ng-transclude').find('span')[0] || elem.find('ng-transclude'),
           original = '';
