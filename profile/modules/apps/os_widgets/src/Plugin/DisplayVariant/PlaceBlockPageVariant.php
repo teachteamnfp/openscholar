@@ -196,6 +196,11 @@ class PlaceBlockPageVariant extends OriginalVariant {
         '#title' => $this->t('Filter blocks'),
         '#maxlength' => 60,
         '#size' => 60,
+        '#attributes' => [
+          'id' => [
+            'filter-widgets'
+          ]
+        ]
       ],
       'existing-blocks' => [
         '#prefix' => '<div id="block-list">',
