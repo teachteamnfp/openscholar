@@ -197,20 +197,11 @@ class CustomThemeInstaller implements CustomThemeInstallerInterface {
     }
 
     $this->cssCollectionOptimizer->deleteAll();
-    $this->resetSystem();
 
     // Invoke hook_themes_installed() after the themes have been installed.
     $this->moduleHandler->invokeAll('themes_installed', [$themes_installed]);
 
     return !empty($themes_installed);
-  }
-
-  /**
-   * Resets some other systems like rebuilding the route information or caches.
-   */
-  protected function resetSystem(): void {
-    system_list_reset();
-    drupal_theme_rebuild();
   }
 
 }
