@@ -9,12 +9,15 @@
 }
 .button,
 .button:hover {
-padding: 8px 20px;
-border: none;
-border-radius: 2px;
-background-color: $color-gray2;;
-background-image: -webkit-linear-gradient(top, $color-light-gray4, $color-light-gray5);
-background-image: none;
-color: $color-white;
-text-shadow: none;
+  padding: 8px 20px;
+  border: none;
+  border-radius: 2px;
+  background-color: $color-gray2;;
+  background-image: -webkit-linear-gradient(top, $color-light-gray4, $color-light-gray5);
+  background-image: none;
+  color: $color-white;
+  text-shadow: none;
+    + .button, + .button:hover {
+      margin-right: 0;
+    }
 }

@@ -1,0 +1,35 @@
+.link-form {
+  .button {
+    padding: 8px 15px;
+    &.button--primary {
+      padding: 8px 15px;
+    }
+    i {
+      margin-right: 5px;
+    }
+  }
+  .results {
+    border: 1px solid $color-gray3;
+  }
+  .owl-file-item {
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+    border-bottom: 1px solid $color-gray3;
+    padding: 5px;
+    transition: background .3s ease-in-out;
+    font-weight: bold;
+    &.selected {
+      color: $color-white;
+      background: $color-link;
+    }
+    &:last-child {
+      border-bottom: 0px;
+    }
+  }
+  div#owl-nav-buttons {
+    border-bottom: 1px solid $color-gray3;
+    padding-bottom: 12px;
+  }
+}
+
