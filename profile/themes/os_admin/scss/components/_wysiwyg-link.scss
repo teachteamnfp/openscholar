@@ -7,6 +7,9 @@
     i {
       margin-right: 5px;
     }
+    + .button {
+      margin-right: 0;
+    }
   }
   .results {
     border: 1px solid $color-gray3;
