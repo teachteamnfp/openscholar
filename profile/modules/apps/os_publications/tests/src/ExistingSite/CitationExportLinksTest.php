@@ -27,6 +27,20 @@ class CitationExportLinksTest extends TestBase {
   protected $groupAdmin;
 
   /**
+   * Reference content.
+   *
+   * @var \Drupal\bibcite_entity\Entity\ReferenceInterface
+   */
+  protected $ref1;
+
+  /**
+   * Reference content.
+   *
+   * @var \Drupal\bibcite_entity\Entity\ReferenceInterface
+   */
+  protected $ref2;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
@@ -45,6 +59,54 @@ class CitationExportLinksTest extends TestBase {
     $this->group->addContent($this->ref2, 'group_entity:bibcite_reference');
 
     $this->drupalLogin($this->groupAdmin);
+  }
+
+  /**
+   * Tests citation download on node page.
+   */
+  public function testCitationDownloadOnPublicationNodePage(): void {
+    // Test Bibtext format output on node page.
+    $expected_text = '@artwork{' . $this->ref1->id() . ',title={Thisisexporttest},year={1980},}';
+    $text = $this->drupalGet($this->group->get('path')->getValue()[0]['alias'] . '/citation/export/bibtex/' . $this->ref1->id());
+    $actual_text = preg_replace('/\s+/', '', $text);
+    $this->assertSame($expected_text, $actual_text);
+
+    // Test EndNote7Xml format on node page.
+    $expected_text = '<?xmlversion="1.0"encoding="UTF-8"?><xml><records><RECORD><source-appname="Bibcite"version="8.x">Drupal-Bibcite</source-app><REFERENCE_TYPE>13</REFERENCE_TYPE><CONTRIBUTORS><AUTHORS/></CONTRIBUTORS><TITLES><TITLE><styleface="normal"font="default"size="100%">Thisisexporttest</style></TITLE></TITLES><KEYWORDS/><DATES/><YEAR><styleface="normal"font="default"size="100%">1980</style></YEAR><title><styleface="normal"font="default"size="100%">Thisisexporttest</style></title></RECORD></records></xml>';
+    $text = $this->drupalGet($this->group->get('path')->getValue()[0]['alias'] . '/citation/export/endnote7/' . $this->ref1->id());
+    $actual_text = preg_replace('/\s+/', '', $text);
+    $this->assertSame($expected_text, $actual_text);
+
+    // Test EndNote Tagged Xml on node page.
+    $expected_text = '%0Artwork%D1980%TThisisexporttest';
+    $text = $this->drupalGet($this->group->get('path')->getValue()[0]['alias'] . '/citation/export/tagged/' . $this->ref1->id());
+    $actual_text = preg_replace('/\s+/', '', $text);
+    $this->assertSame($expected_text, $actual_text);
+
+  }
+
+  /**
+   * Tests citation download on publication listing page.
+   */
+  public function testCitationDownloadOnListingViewPage(): void {
+    // Test Bibtext format output on node page.
+    $expected_text = '@artwork{' . $this->ref1->id() . ',title={Thisisexporttest},year={1980},}@misc{' . $this->ref2->id() . ',title={Thisisanotherexporttest},year={1980},}';
+    $text = $this->drupalGet($this->group->get('path')->getValue()[0]['alias'] . '/citation/export/bibtex');
+    $actual_text = preg_replace('/\s+/', '', $text);
+    $this->assertSame($expected_text, $actual_text);
+
+    // Test EndNote7Xml format on node page.
+    $expected_text = '<?xmlversion="1.0"encoding="UTF-8"?><xml><records><RECORD><source-appname="Bibcite"version="8.x">Drupal-Bibcite</source-app><REFERENCE_TYPE>13</REFERENCE_TYPE><CONTRIBUTORS><AUTHORS/></CONTRIBUTORS><TITLES><TITLE><styleface="normal"font="default"size="100%">Thisisexporttest</style></TITLE></TITLES><KEYWORDS/><DATES/><YEAR><styleface="normal"font="default"size="100%">1980</style></YEAR><title><styleface="normal"font="default"size="100%">Thisisexporttest</style></title></RECORD><RECORD><source-appname="Bibcite"version="8.x">Drupal-Bibcite</source-app><REFERENCE_TYPE>31</REFERENCE_TYPE><CONTRIBUTORS><AUTHORS/></CONTRIBUTORS><TITLES><TITLE><styleface="normal"font="default"size="100%">Thisisanotherexporttest</style></TITLE></TITLES><KEYWORDS/><DATES/><YEAR><styleface="normal"font="default"size="100%">1980</style></YEAR><title><styleface="normal"font="default"size="100%">Thisisanotherexporttest</style></title></RECORD></records></xml>';
+    $text = $this->drupalGet($this->group->get('path')->getValue()[0]['alias'] . '/citation/export/endnote7');
+    $actual_text = preg_replace('/\s+/', '', $text);
+    $this->assertSame($expected_text, $actual_text);
+
+    // Test EndNote Tagged Xml on node page.
+    $expected_text = '%0Artwork%D1980%TThisisexporttest%0Generic%D1980%TThisisanotherexporttest';
+    $text = $this->drupalGet($this->group->get('path')->getValue()[0]['alias'] . '/citation/export/tagged');
+    $actual_text = preg_replace('/\s+/', '', $text);
+    $this->assertSame($expected_text, $actual_text);
+
   }
 
   /**

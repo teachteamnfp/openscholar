@@ -6,10 +6,12 @@ use Drupal\bibcite\Plugin\BibciteFormatInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\vsite\Plugin\VsiteContextManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
@@ -46,13 +48,36 @@ class CitationExportController extends ControllerBase {
   protected $vsiteManager;
 
   /**
+   * Current Vsite.
+   *
+   * @var \Drupal\group\Entity\GroupInterface|null
+   */
+  protected $vsite;
+
+  /**
+   * Messenger service.
+   *
+   * @var \Drupal\Core\Messenger\MessengerInterface
+   */
+  protected $messenger;
+
+  /**
+   * Request stack service.
+   *
+   * @var \Symfony\Component\HttpFoundation\Request|null
+   */
+  protected $currentRequest;
+
+  /**
    * {@inheritdoc}
    */
-  public function __construct(SerializerInterface $serializer, EntityTypeManagerInterface $entity_type_manager, VsiteContextManager $vsite_manager) {
+  public function __construct(SerializerInterface $serializer, EntityTypeManagerInterface $entity_type_manager, VsiteContextManager $vsite_manager, MessengerInterface $messenger, RequestStack $request_stack) {
     $this->serializer = $serializer;
     $this->entityTypeManager = $entity_type_manager;
     $this->vsiteManager = $vsite_manager;
     $this->vsite = $this->vsiteManager->getActiveVsite();
+    $this->messenger = $messenger;
+    $this->currentRequest = $request_stack->getCurrentRequest();
   }
 
   /**
@@ -62,7 +87,9 @@ class CitationExportController extends ControllerBase {
     return new static(
       $container->get('serializer'),
       $container->get('entity_type.manager'),
-      $container->get('vsite.context_manager')
+      $container->get('vsite.context_manager'),
+      $container->get('messenger'),
+      $container->get('request_stack')
     );
   }
 
@@ -112,7 +139,8 @@ class CitationExportController extends ControllerBase {
    */
   public function exportMultiple(BibciteFormatInterface $bibcite_format): Response {
     if (!$bibcite_format->isExportFormat()) {
-      throw new NotFoundHttpException();
+      $this->messenger->addError('Could not process your request at this time.');
+      return new RedirectResponse($this->currentRequest->headers->get('referer'));
     }
 
     // Get publication entities associated with current vsite.
@@ -122,7 +150,8 @@ class CitationExportController extends ControllerBase {
     }
 
     if (!$entities) {
-      throw new NotFoundHttpException();
+      $this->messenger->addError('No content available for export.');
+      return new RedirectResponse($this->currentRequest->headers->get('referer'));
     }
 
     // Set the filename for later use.
@@ -144,9 +173,10 @@ class CitationExportController extends ControllerBase {
    * @return \Symfony\Component\HttpFoundation\Response
    *   Response object contains serialized reference data.
    */
-  public function export(BibciteFormatInterface $bibcite_format, EntityInterface $bibcite_reference) {
+  public function export(BibciteFormatInterface $bibcite_format, EntityInterface $bibcite_reference): Response {
     if (!$bibcite_format->isExportFormat()) {
-      throw new NotFoundHttpException();
+      $this->messenger->addError('Could not process your request at this time.');
+      return new RedirectResponse($this->currentRequest->headers->get('referer'));
     }
 
     // Set the filename for later use.

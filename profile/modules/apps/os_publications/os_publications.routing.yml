@@ -11,7 +11,7 @@ os_publictions.citation_export:
     _controller: '\Drupal\os_publications\Controller\CitationExportController::export'
     _title: 'Citation Export'
   requirements:
-    _permission: 'access content'
+    _group_permission: 'download citations'
   options:
     parameters:
       bibcite_format:
@@ -22,7 +22,7 @@ os_publictions.citation_export_multiple:
     _controller: '\Drupal\os_publications\Controller\CitationExportController::exportMultiple'
     _title: 'Citation Export'
   requirements:
-    _permission: 'access content'
+    _group_permission: 'download citations'
   options:
     parameters:
       bibcite_format:

@@ -84,7 +84,9 @@ class CitationHelper implements CitationHelperInterface {
       if ($format === $key) {
         $args['bibcite_format'] = $format;
         // If single export , send the entity id as well as a parameter.
-        $entity_id ? $args['bibcite_reference'] = $entity_id : NULL;
+        if ($entity_id) {
+          $args['bibcite_reference'] = $entity_id;
+        }
         $formatObj = $this->formatManager->createInstance($key);
         $exportButton['#items'][] = [
           '#type' => 'link',
