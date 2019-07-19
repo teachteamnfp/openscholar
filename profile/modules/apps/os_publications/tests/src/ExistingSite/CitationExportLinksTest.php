@@ -48,7 +48,7 @@ class CitationExportLinksTest extends TestBase {
   }
 
   /**
-   * Tests testCitationDownloadButtonService.
+   * Tests export button on node page.
    */
   public function testCitationExportLinksOnNodePage(): void {
 
@@ -72,7 +72,7 @@ class CitationExportLinksTest extends TestBase {
   }
 
   /**
-   * Tests citation download on node page.
+   * Tests export button on publication listing page.
    */
   public function testCitationExportLinksOnListingViewPage(): void {
 

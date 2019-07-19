@@ -92,7 +92,7 @@ class CitationDownloadTest extends TestBase {
   }
 
   /**
-   * Tests citation download on node page.
+   * Tests citation download on publication listing page.
    */
   public function testCitationDownloadOnListingViewPage(): void {
     // Test Bibtext format output on node page.
