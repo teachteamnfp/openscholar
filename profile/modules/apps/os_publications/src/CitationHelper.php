@@ -57,6 +57,7 @@ class CitationHelper implements CitationHelperInterface {
         '#type' => 'button',
         '#value' => $this->t('Download Citation'),
         '#attributes' => [
+          'class' => ['citation-download'],
           'data-toggle' => 'dropdown',
           'role' => 'button',
           'aria-haspopup' => 'true',
