@@ -93,8 +93,6 @@ class LayoutContext extends ConfigEntityBase implements LayoutContextInterface {
       }
     }
     @uasort($applicable, ['ConfigEntityBase', 'sort']);
-    $applicable = array_reverse($applicable);
-
     return $applicable;
   }
 
