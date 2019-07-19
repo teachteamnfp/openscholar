@@ -20,11 +20,22 @@ class CitationHelperTest extends TestBase {
   protected $citationHelper;
 
   /**
+   * Reference content.
+   *
+   * @var \Drupal\bibcite_entity\Entity\ReferenceInterface
+   */
+  protected $ref1;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
     parent::setUp();
     $this->citationHelper = $this->container->get('os_publications.citation_helper');
+    $this->ref1 = $this->createReference([
+      'html_title' => 'This is export test',
+    ]);
+    $this->group->addContent($this->ref1, 'group_entity:bibcite_reference');
   }
 
   /**
