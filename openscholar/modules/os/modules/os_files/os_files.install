@@ -15,6 +15,20 @@ function os_files_install() {
 }
 
 /**
+ * Implements hook_schema_alter().
+ */
+function os_files_schema_alter(&$schema) {
+  if (isset($schema['file_managed']['fields']['uri'])) {
+    $schema['file_managed']['fields']['uri']['type'] = 'varchar';
+    $schema['file_managed']['fields']['uri']['length'] = 2048;
+  }
+  if (isset($schema['file_managed']['fields']['origname'])) {
+    $schema['file_managed']['fields']['origname']['type'] = 'varchar';
+    $schema['file_managed']['fields']['origname']['length'] = 2048;
+  }
+}
+
+/**
  * Corrects files that are not in the correct directory
  */
 function os_files_update_7001(&$sandbox) {
@@ -1023,5 +1037,26 @@ function os_files_update_7027() {
     );
 
     field_update_instance ($osd);
+  }
+}
+
+/**
+ * Increase file_managed uri and origname length to 2048.
+ */
+function os_files_update_7028() {
+  if (db_table_exists('file_managed') && db_field_exists('file_managed', 'uri')) {
+    $schema = drupal_get_schema_unprocessed('system');
+    $schema['file_managed']['fields']['uri']['type'] = 'varchar';
+    $schema['file_managed']['fields']['uri']['length'] = 2048;
+    db_change_field('file_managed', 'uri', 'uri', $schema['file_managed']['fields']['uri']);
+    drupal_set_message("Table file_managed uri length successfully modified to 2048.");
+  }
+  if (db_table_exists('file_managed') && db_field_exists('file_managed', 'origname')) {
+    $schema = drupal_get_schema_unprocessed('system');
+    filefield_paths_schema_alter($schema);
+    $schema['file_managed']['fields']['origname']['type'] = 'varchar';
+    $schema['file_managed']['fields']['origname']['length'] = 2048;
+    db_change_field('file_managed', 'origname', 'origname', $schema['file_managed']['fields']['origname']);
+    drupal_set_message("Table file_managed origname length successfully modified to 2048.");
   }
 }

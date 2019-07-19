@@ -225,11 +225,17 @@ div.file-filters {
 .mb-title {
 	width: 250px;
 	word-wrap: break-word;
+	white-space: nowrap;
+  	overflow: hidden;
+  	text-overflow: ellipsis;
 }
 
 .mb-filename {
 	width: 250px;
 	word-wrap: break-word;
+	white-space: nowrap;
+  	overflow: hidden;
+  	text-overflow: ellipsis;
 }
 
 .mb-created {
