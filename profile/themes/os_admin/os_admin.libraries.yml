@@ -2,5 +2,6 @@ global-styling:
   version: VERSION
   css:
     theme:
+      //use.fontawesome.com/releases/v5.1.0/css/all.css: {external: true}
       css/style.css: {}
       /libraries/os-toolbar/os-toolbar.css: {}
