@@ -109,7 +109,7 @@ class VsiteInfiniteScrollFrontendTest extends OsExistingSiteJavascriptTestBase {
 
     // Create required publications.
     $i = 0;
-    while ($i < 11) {
+    while ($i < 21) {
       $publication = $this->createReference();
       $this->group->addContent($publication, 'group_entity:bibcite_reference');
       $i++;
@@ -126,11 +126,19 @@ class VsiteInfiniteScrollFrontendTest extends OsExistingSiteJavascriptTestBase {
     $web_assert = $this->assertSession();
     $this->visitViaVsite("publications", $this->group);
     $web_assert->statusCodeEquals(200);
+
+    // Test Artwork heading appears once.
     $web_assert->pageTextContains('Artwork');
     $web_assert->elementsCount('css', '.view-publications h3', 1);
-    $this->scrollTo(600);
+    $publications_before = count($this->getSession()->getPage()->findAll('css', '.view-publications .views-row'));
+    // Scroll down to load more publication entries.
+    $this->scrollTo(500);
     $this->getSession()->wait(1000);
-    $web_assert->pageTextContains('New created publication');
+
+    file_put_contents('public://screenshot.jpg', $this->getSession()->getScreenshot());
+    // Assert that new publications have laoded but header is not repeated.
+    $publications_after = count($this->getSession()->getPage()->findAll('css', '.view-publications .views-row'));
+    $this->assertNotEquals($publications_before, $publications_after);
     $web_assert->elementsCount('css', '.view-publications h3', 1);
   }
 
