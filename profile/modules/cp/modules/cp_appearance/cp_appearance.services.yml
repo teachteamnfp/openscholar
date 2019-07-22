@@ -13,3 +13,8 @@ services:
     arguments: ['@class_resolver', '@current_route_match', '%main_content_renderers%', '@vsite.context_manager']
     tags:
       - { name: event_subscriber }
+  cp_appearance.theme_config_subscriber:
+    class: \Drupal\cp_appearance\EventSubscriber\ThemeConfigSubscriber
+    arguments: ['@cache_tags.invalidator', '@vsite.context_manager']
+    tags:
+      - { name: event_subscriber }
