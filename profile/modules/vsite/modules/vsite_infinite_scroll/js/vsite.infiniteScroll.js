@@ -4,30 +4,16 @@
  */
 
 (function ($, Drupal) {
-    /*
-     * Hide redundant row headers.
-     */
-    function osPublicationsHideCategoryHeaders() {
-       let $selectors = $('.view-publications h3');
-
-        $selectors.each(function() {
-            let html = $(this).html();
-            $selectors.filter(function() {
-                return $(this).text() === html;
-            }).not(':first').remove();
-        });
-    }
-
-    /**
-     * Initializes the alterations.
-     */
-    function init() {
-        osPublicationsHideCategoryHeaders();
-    }
-
     Drupal.behaviors.vsiteInfiniteScroll = {
         attach: function () {
-            init();
+         // Hide redundant row headers.
+          let $selectors = $('.view-publications h3');
+          $selectors.each(function() {
+            let html = $(this).html();
+            $selectors.filter(function() {
+              return $(this).text() === html;
+            }).not(':first').remove();
+          });
         },
     };
 })(jQuery, Drupal);
