@@ -128,8 +128,8 @@ class VsiteInfiniteScrollFrontendTest extends OsExistingSiteJavascriptTestBase {
     $web_assert->statusCodeEquals(200);
     $web_assert->pageTextContains('Artwork');
     $web_assert->elementsCount('css', '.view-publications h3', 1);
-    $this->scrollTo(500);
-    $this->getSession()->wait(500);
+    $this->scrollTo(600);
+    $this->getSession()->wait(1000);
     $web_assert->pageTextContains('New created publication');
     $web_assert->elementsCount('css', '.view-publications h3', 1);
   }
