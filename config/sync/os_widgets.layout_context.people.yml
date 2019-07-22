@@ -5,6 +5,6 @@ dependencies: {  }
 id: people
 label: People
 description: ''
-activationRules: 'people/*'
+activationRules: "people\r\npeople/*"
 weight: 0
 data: {  }

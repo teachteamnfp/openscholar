@@ -488,6 +488,14 @@ content:
       placeholder: ''
       rows: 5
     third_party_settings: {  }
+  html_title:
+    type: text_textarea
+    weight: -10
+    settings:
+      rows: 1
+      placeholder: ''
+    region: content
+    third_party_settings: {  }
   is_sticky:
     type: boolean_checkbox
     settings:

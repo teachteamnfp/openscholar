@@ -5,8 +5,9 @@
  * Hook implementations for the vsite module.
  */
 
+use Drupal\bibcite_entity\Entity\ReferenceInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
-use Drupal\Core\Entity\EntityInterface;
+use Drupal\node\NodeInterface;
 use Drupal\views\Plugin\views\cache\CachePluginBase;
 use Drupal\vsite\Entity\GroupPresetInterface;
 use Drupal\vsite\Entity\GroupPreset;
@@ -152,13 +153,15 @@ function vsite_form_alter(&$form, FormStateInterface $formState, $form_id) {
           $form['actions'][$name]['#submit'][] = 'group_content_entity_submit';
         }
       }
-      $current_url = Url::fromRoute('<front>', [], ["absolute" => TRUE])->toString();
-      $form['path']['widget'][0]['alias']['#field_prefix'] = $current_url;
-      $purl = $vsiteContext->getActivePurl();
-      $alias = $form['path']['widget'][0]['alias']['#default_value'];
-      $alias_without_purl = preg_replace('$^/' . $purl . '$', '', $alias);
-      $form['path']['widget'][0]['alias']['#default_value'] = $alias_without_purl;
-      array_unshift($form['path']['widget'][0]['#element_validate'], 'vsite_node_alias_purl_element_validate');
+      if (!empty($form['path']['widget'][0]['alias'])) {
+        $current_url = Url::fromRoute('<front>', [], ["absolute" => TRUE])->toString();
+        $form['path']['widget'][0]['alias']['#field_prefix'] = $current_url;
+        $purl = $vsiteContext->getActivePurl();
+        $alias = $form['path']['widget'][0]['alias']['#default_value'];
+        $alias_without_purl = preg_replace('$^/' . $purl . '$', '', $alias);
+        $form['path']['widget'][0]['alias']['#default_value'] = $alias_without_purl;
+        array_unshift($form['path']['widget'][0]['#element_validate'], 'vsite_node_alias_purl_element_validate');
+      }
     }
     $allowedSubSites = \Drupal::config('vsite.settings')->get('allowed_subsite_group_types');
     if (!empty($allowedSubSites) && $entityTypeId == 'group' && !in_array($entity->bundle(), $allowedSubSites)) {
@@ -335,15 +338,33 @@ function _vsite_process_preset_task(GroupInterface $group, GroupPresetInterface 
 /**
  * Implements hook_ENTITY_TYPE_view_alter().
  */
-function vsite_node_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
+function vsite_node_view_alter(array &$build, NodeInterface $entity, EntityViewDisplayInterface $display) {
   // Makes sure that the destination parameter in contextual links in node
   // full-views are correct.
   // For edit, it should direct to the node page.
   // For delete, it should direct to the node's listing.
-  if ($build['#view_mode'] === 'full' && $entity->getEntityTypeId() === 'node') {
+  if ($build['#view_mode'] === 'full') {
     $build['#attached']['library'][] = 'vsite/contextualFullView';
-    $build['#attached']['drupalSettings']['vsite'] = [
-      'nodeBundle' => $entity->bundle(),
+    $build['#attached']['drupalSettings']['entitySetting'] = [
+      'type' => $entity->getEntityTypeId(),
+      'bundle' => $entity->bundle(),
+    ];
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view_alter().
+ */
+function vsite_bibcite_reference_view_alter(array &$build, ReferenceInterface $entity, EntityViewDisplayInterface $display) {
+  // Makes sure that the destination parameter in contextual links in
+  // publication full-view and listing are correct.
+  // For edit, it should direct to the publication's full-view.
+  // For delete, it should direct to the publications listing.
+  if (in_array($build['#view_mode'], ['citation', 'teaser'])) {
+    $build['#attached']['library'][] = 'vsite/contextualFullView';
+    $build['#attached']['drupalSettings']['entitySetting'] = [
+      'type' => $entity->getEntityTypeId(),
+      'bundle' => $entity->bundle(),
     ];
   }
 }

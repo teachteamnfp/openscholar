@@ -3,4 +3,4 @@ cp.settings.group:
   defaults:
     _form: '\Drupal\cp_settings\Form\CpSettingsForm'
   requirements:
-    _custom_access: '\Drupal\cp_settings\Form\CpSettingsForm::access'
+    _custom_access: '\Drupal\cp_settings\Access\CpSettingsAccessCheck::access'

@@ -5,6 +5,6 @@ dependencies: {  }
 id: class
 label: Class
 description: 'Layout Context for Classes'
-activationRules: 'classes/*'
+activationRules: "classes\r\nclasses/*"
 weight: 0
 data: {  }

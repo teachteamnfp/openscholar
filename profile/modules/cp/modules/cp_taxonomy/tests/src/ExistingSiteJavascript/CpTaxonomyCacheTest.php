@@ -30,7 +30,7 @@ class CpTaxonomyCacheTest extends CpTaxonomyExistingSiteJavascriptTestBase {
     $allowed_types = [
       'node:news',
       'media:*',
-      'bibcite_reference:artwork',
+      'bibcite_reference:*',
     ];
     $this->createGroupVocabulary($this->group, 'vocab_group_1', $allowed_types);
     $this->term = $this->createGroupTerm($this->group, 'vocab_group_1', 'Term1');
@@ -110,30 +110,6 @@ class CpTaxonomyCacheTest extends CpTaxonomyExistingSiteJavascriptTestBase {
     Cache::invalidateTags(['entity-with-taxonomy-terms:' . $this->group->id()]);
     $this->hideTermsOnPage();
     $this->visitViaVsite("bibcite/reference/" . $publication->id(), $this->group);
-    $web_assert->statusCodeEquals(200);
-    $web_assert->pageTextNotContains($this->term->label());
-  }
-
-  /**
-   * Test publication listing caching.
-   */
-  public function testPublicationListingCaching() {
-    $web_assert = $this->assertSession();
-    $publication = $this->createReference([
-      'field_taxonomy_terms' => [
-        $this->term->id(),
-      ],
-    ]);
-    $this->group->addContent($publication, 'group_entity:bibcite_reference');
-
-    // Test listing.
-    $this->showTermsOnListing(['bibcite_reference:artwork']);
-    $this->visitViaVsite("publications", $this->group);
-    $web_assert->statusCodeEquals(200);
-    $web_assert->pageTextContains($this->term->label());
-    Cache::invalidateTags(['entity-with-taxonomy-terms:' . $this->group->id()]);
-    $this->hideTermsOnListing();
-    $this->visitViaVsite("publications", $this->group);
     $web_assert->statusCodeEquals(200);
     $web_assert->pageTextNotContains($this->term->label());
   }

@@ -2,11 +2,9 @@
 
 namespace Drupal\cp_settings\Form;
 
-use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Session\AccountInterface;
 use Drupal\cp_settings\Plugin\CpSettingsManagerInterface;
 use Drupal\file\Entity\File;
 use Drupal\file\FileInterface;
@@ -66,25 +64,6 @@ class CpSettingsForm extends ConfigFormBase {
       $container->get('config.factory'),
       $container->get('cp_settings.manager')
     );
-  }
-
-  /**
-   * Checks access for a user.
-   *
-   * @param \Drupal\Core\Session\AccountInterface $account
-   *   The user account.
-   *
-   * @return \Drupal\Core\Access\AccessResultInterface
-   *   The access result.
-   */
-  public function access(AccountInterface $account) {
-    /** @var \Drupal\Core\Access\AccessResultInterface $access */
-    $access = AccessResult::neutral();
-    /** @var \Drupal\cp_settings\CpSettingInterface $cp */
-    foreach ($this->getPlugins() as $cp) {
-      $access = $access->orIf($cp->access($account));
-    }
-    return $access;
   }
 
   /**

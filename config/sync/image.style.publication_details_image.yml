@@ -5,10 +5,11 @@ dependencies: {  }
 name: publication_details_image
 label: 'Publication details image'
 effects:
-  3058ef09-78f2-4547-9025-0a247018cf14:
-    uuid: 3058ef09-78f2-4547-9025-0a247018cf14
-    id: image_resize
+  dc6a8f57-aefb-4725-93ac-a0847b3d5b9b:
+    uuid: dc6a8f57-aefb-4725-93ac-a0847b3d5b9b
+    id: image_scale
     weight: 1
     data:
       width: 150
-      height: 70
+      height: 250
+      upscale: false
