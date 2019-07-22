@@ -4,6 +4,12 @@ Patches
 Core
 ====
 
+Patch - patches/11840-custom-theme-caching.patch
+Project issue - https://github.com/openscholar/openscholar/issues/11840
+Description - Custom theme installed for a vsite should not affect performance
+in other. Installing a custom theme and setting as default was rebuilding routes
+and slowing down the other vsite. The patch disables the route rebuild.
+
 
 Contrib
 =======
