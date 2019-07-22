@@ -145,6 +145,18 @@ class MenuBuildForm extends FormBase {
       $this->t('Weight'),
     ];
 
+    $form['add_new'] = [
+      '#title' => $this->t('Add new menu'),
+      '#type' => 'link',
+      '#url' => Url::fromRoute('cp.build.add_menu'),
+      '#attributes' => [
+        'class' => ['use-ajax button button--primary new-menu'],
+        'data-dialog-type' => 'modal',
+        'data-dialog-options' => json_encode(['width' => '50%']),
+        'id' => 'add_new_menu',
+      ],
+    ];
+
     $form['links'] = [
       '#type' => 'table',
       '#theme' => 'table__menu_overview',
@@ -238,7 +250,7 @@ class MenuBuildForm extends FormBase {
       $form['links'][$m]['new_link'] = [
         '#markup' => $newLink,
         '#wrapper_attributes' => [
-          'colspan' => 2,
+          'colspan' => 4,
         ],
       ];
 
@@ -304,18 +316,6 @@ class MenuBuildForm extends FormBase {
         }
       }
     }
-
-    $form['add_new'] = [
-      '#title' => $this->t('Add new menu'),
-      '#type' => 'link',
-      '#url' => Url::fromRoute('cp.build.add_menu'),
-      '#attributes' => [
-        'class' => ['use-ajax'],
-        'data-dialog-type' => 'modal',
-        'data-dialog-options' => json_encode(['width' => '50%']),
-        'id' => 'add_new_menu',
-      ],
-    ];
 
     $form['actions'] = ['#type' => 'actions'];
     $form['actions']['submit'] = [
@@ -459,7 +459,7 @@ class MenuBuildForm extends FormBase {
           '#type' => 'link',
           '#url' => Url::fromRoute('cp.build.edit_menu_link', ['link_id' => $link->getPluginId()]),
           '#attributes' => [
-            'class' => ['use-ajax'],
+            'class' => ['use-ajax fa fa-edit'],
             'data-dialog-type' => 'modal',
             'data-dialog-options' => json_encode(['width' => '50%']),
             'id' => 'edit_menu_link',
@@ -474,7 +474,7 @@ class MenuBuildForm extends FormBase {
             'link_title' => $link->getTitle(),
           ]),
           '#attributes' => [
-            'class' => ['use-ajax'],
+            'class' => ['use-ajax fa fa-trash'],
             'data-dialog-type' => 'modal',
             'data-dialog-options' => json_encode(['width' => '50%']),
             'id' => 'delete_menu_link',
