@@ -283,7 +283,7 @@
       $scope.messages[id] = {
         text: message
       };
-      //$timeout(angular.bind($scope, removeMessage, id), 5000);
+      $timeout(angular.bind($scope, removeMessage, id), 5000);
     }
 
     function removeMessage(id) {
@@ -623,7 +623,7 @@
       // construct the entity
       var data = {
         embed: this.embed,
-      }
+      };
 
       service.add(data).success(function (e) {
         if (e.data.length) {

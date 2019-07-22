@@ -2,3 +2,8 @@ services:
   cp_settings.manager:
     class: Drupal\cp_settings\Plugin\CpSettingsManager
     parent: default_plugin_manager
+  cp_settings.access_checker:
+    class: \Drupal\cp_settings\Access\CpSettingsAccessCheck
+    arguments: ['@cp_settings.manager']
+    tags:
+      - { name: access_check }

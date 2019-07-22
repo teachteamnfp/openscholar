@@ -14,6 +14,14 @@ use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTest
 class VsiteNodePathAlias extends OsExistingSiteJavascriptTestBase {
 
   /**
+   * {@inheritdoc}
+   */
+  public function setUp() {
+    parent::setUp();
+    $this->drupalLogin($this->createAdminUser());
+  }
+
+  /**
    * Test to modify news content type path alias.
    */
   public function testNodeNewsModifyGenerateAlias() {
@@ -23,12 +31,9 @@ class VsiteNodePathAlias extends OsExistingSiteJavascriptTestBase {
       'field_date' => '2018-11-30',
     ]);
     $this->group->addContent($node, 'group_node:news');
-    $this->drupalLogin($this->createAdminUser());
     $this->visitViaVsite('node/' . $node->id() . '/edit', $this->group);
     $web_assert->statusCodeEquals(200);
     $page = $this->getSession()->getPage();
-    // Path alias #field_prefix should contains group alias.
-    $web_assert->pageTextContains($this->groupAlias . '/');
     $page->findField('path[0][pathauto]')->press();
     $page->fillField('path[0][alias]', '/news/new-alias-value');
     $page->findButton('Save')->press();
@@ -36,6 +41,42 @@ class VsiteNodePathAlias extends OsExistingSiteJavascriptTestBase {
     $this->visitViaVsite('news/new-alias-value', $this->group);
     $web_assert->statusCodeEquals(200);
     $web_assert->pageTextContains($node->label());
+  }
+
+  /**
+   * Test all path where should be visible the alias.
+   *
+   * @dataProvider collectionOfVisiblePath
+   */
+  public function testPrintingGroupAliasAtPath($path) {
+    $web_assert = $this->assertSession();
+    $this->visitViaVsite($path, $this->group);
+    $web_assert->statusCodeEquals(200);
+    $page = $this->getSession()->getPage();
+    // Path alias #field_prefix should contains group alias.
+    $path_alias_content = $page->find('css', '.form-item-path-0-alias')->getHtml();
+    $this->assertContains($this->groupAlias . '/', $path_alias_content);
+  }
+
+  /**
+   * Collection of available field prefix value.
+   */
+  public function collectionOfVisiblePath() {
+    return [
+      [
+        'node/add/blog',
+        'node/add/class',
+        'node/add/events',
+        'node/add/faq',
+        'node/add/link',
+        'node/add/news',
+        'node/add/page',
+        'node/add/person',
+        'node/add/presentation',
+        'node/add/software_project',
+        'node/add/software_release',
+      ],
+    ];
   }
 
 }

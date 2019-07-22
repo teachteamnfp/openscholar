@@ -557,7 +557,7 @@ content:
     third_party_settings: {  }
   html_title:
     type: text_textarea
-    weight: 0
+    weight: -10
     settings:
       rows: 1
       placeholder: ''

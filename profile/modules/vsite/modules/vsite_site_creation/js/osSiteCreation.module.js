@@ -104,7 +104,9 @@
 
   //Set status of next button to disabled initially
   $scope.btnDisable = true;
-  $scope.vicariousUser = settings.fetchSetting('site_creation.hasOsId');
+  $scope.canCreateUser = settings.fetchSetting('site_creation.hasOsId');
+  $scope.showUserCreation = !settings.fetchSetting('user.uid');
+  $scope.userCreationOptional = $scope.canCreateUser && !$scope.showUserCreation;
   $scope.siteNameValid = false;
   $scope.newUserResistrationEmail = false;
   $scope.newUserResistrationName = false;
@@ -140,7 +142,7 @@
   };
 
   $scope.canBeCreated = function (type) {
-    if (user && user.uid != 1 && !user.permissions['create ' +type+' group']) {
+    if (user && user.uid != 1 && user.permissions.indexOf('create ' +type+' group') == -1) {
       return false;
     }
 
@@ -203,7 +205,7 @@
       theme = $scope.selected;
 
     let userData = {};
-    if ($scope.vicariousUser && $scope.email && $scope.userName) {
+    if ($scope.showUserCreation) {
       // brand new user
       userData.field_first_name = $scope.fname;
       userData.field_last_name = $scope.lname;
@@ -322,18 +324,30 @@
     $scope.isCompletedRes();
   };
 
+  let userCreationValid = false;
   $scope.isCompletedRes = function() {
     timer = $timeout(function () {
-      if ($scope.newUserResistrationEmail && $scope.newUserResistrationName && $scope.newUserValidPwd && $scope.newUserResistrationPwd && $scope.siteNameValid && $scope.newUserResistrationPwdMatch) {
-        $scope.btnDisable = false;
+      if ($scope.newUserResistrationEmail && $scope.newUserResistrationName && $scope.newUserValidPwd && $scope.newUserResistrationPwd && $scope.newUserResistrationPwdMatch) {
+        userCreationValid = true;
       } else {
-        $scope.btnDisable = true;
+        userCreationValid = false;
       }
     }, 2000);
   };
 
   $scope.validateForms = function() {
-      return $scope.btnDisable || !$scope.tosChecked;
+      if ($scope.btnDisable) {
+        return true;
+      }
+      if ($scope.showUserCreation && userCreationValid) {
+        return !$scope.tosChecked;
+      }
+      if ($scope.showUserCreation && !userCreationValid) {
+        return true;
+      }
+      if (!$scope.showUserCreation) {
+        return !$scope.tosChecked;
+      }
   };
 
   $scope.score = function() {
@@ -406,7 +420,7 @@
           }
         })
         .then(function (modal) {
-          dialogOptions.title = scope.title;
+          dialogOptions.title = scope.title || '';
           dialogOptions.close = function (event, ui) {
             modal.element.remove();
           };

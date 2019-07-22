@@ -75,24 +75,17 @@ function os_profiles_theme($existing, $type, $theme, $path) {
 function os_profiles_preprocess_node(&$variables) {
   /** @var \Drupal\node\Entity\Node $node */
   $node = $variables['node'];
-  $content = $variables['content'];
-  $config = Drupal::config('os_profiles.settings');
-  /** @var \Symfony\Component\HttpFoundation\ParameterBag $attributes */
-  $attributes = Drupal::request()->attributes;
-  $parameters = $attributes->all();
-
-  // You are on person page.
-  if (empty($parameters['_route']) || $parameters['_route'] != 'view.people.page_1') {
-    return;
-  }
   // Node bundle is person.
   if ($node->bundle() != 'person') {
     return;
   }
+  $content = $variables['content'];
+  $config = Drupal::config('os_profiles.settings');
+
   // Current view mode has image.
   // Person image is empty.
   // Default image is not hidden.
-  if (in_array($variables['view_mode'], ['teaser', 'sidebar_teaser'])
+  if (in_array($variables['view_mode'], ['teaser', 'sidebar_teaser', 'full'])
     && empty($content['field_photo_person']['#items'])
     && !$config->get('disable_default_image')) {
 
