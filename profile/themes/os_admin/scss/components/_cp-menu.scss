@@ -8,10 +8,7 @@ tr.section-heading {
 .cp-menu-build {
   position: relative;
   .new-menu {
-    margin: 0;
-    position: absolute;
-    right: 0;
-    top: -45px;
+    margin-bottom: 1em;
   }
   .fa {
     &::before {
