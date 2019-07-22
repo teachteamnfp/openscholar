@@ -2,7 +2,7 @@ format: endnote8
 types:
   'Aggregated Database': ''
   'Ancient Text': ''
-  Artwork: ''
+  Artwork: artwork
   'Audiovisual Material': audiovisual
   Bill: bill
   Blog: ''
@@ -15,7 +15,7 @@ types:
   'Computer Program': software
   'Conference Paper': conference_paper
   'Conference Proceedings': conference_proceedings
-  Dataset: ''
+  Dataset: database
   Dictionary: ''
   'Edited Book': book
   'Electronic Article': web_article
@@ -24,7 +24,7 @@ types:
   Equation: ''
   Figure: ''
   'Film or Broadcast': film
-  Generic: ''
+  Generic: miscellaneous
   'Government Document': government_report
   Grant: ''
   Hearing: hearing
@@ -51,14 +51,12 @@ fields:
   title: title
   authors: author
   secondary-title: bibcite_secondary_title
-  tertiary-title: bibcite_tertiary_title
-  alt-title: bibcite_alternate_title
   short-title: bibcite_short_title
-  translated-title: bibcite_translated_title
-  full-title: ''
+  alt-journal: ''
+  periodical-title: ''
   rec-number: ''
   urls: bibcite_url
-  ref-type: type
+  type: ''
   year: bibcite_year
   date: bibcite_date
   keyword: keywords
@@ -74,8 +72,6 @@ fields:
   isbn: bibcite_isbn
   label: bibcite_label
   caption: ''
-  publisher: bibcite_publisher
-  pub-location: bibcite_place_published
   language: bibcite_lang
   notes: bibcite_notes
   research-notes: bibcite_research_notes

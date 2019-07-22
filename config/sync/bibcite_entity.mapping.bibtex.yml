@@ -1,19 +1,49 @@
 format: bibtex
 types:
-  book: book
-  inbook: book_chapter
-  incollection: null
-  conference: conference_paper
-  inproceedings: null
-  proceedings: conference_proceedings
   article: journal_article
-  booklet: null
-  manual: null
+  artwork: artwork
+  audiovisual: audiovisual
+  bill: bill
+  book: book
+  bookchapter: book_chapter
+  booklet: ''
+  broadcast: broadcast
+  case: case
+  chart: chart
+  classical: classical
+  conference: conference_paper
+  database: database
+  film: film
+  governmentreport: government_report
+  hearing: hearing
+  journal: journal
+  inbook: book_chapter
+  incollection: ''
+  inproceedings: ''
+  legalruling: legal_ruling
+  magazinearticle: magazine_article
+  manual: ''
+  manuscript: manuscript
+  map: map
+  mastersthesis: thesis
   misc: miscellaneous
-  techreport: null
-  mastersthesis: null
+  miscellaneoussection: miscellaneous_section
+  newspaperarticle: newspaper_article
+  patent: patent
+  personal: personal
+  presentation: presentation
   phdthesis: thesis
+  proceedings: conference_proceedings
+  report: report
+  software: software
+  statue: statute
+  techreport: ''
   unpublished: unpublished
+  webarticle: web_article
+  webprojectpage: web_project_page
+  webservice: web_service
+  website: website
+  workingpaper: ''
 fields:
   author: author
   title: title
@@ -21,19 +51,19 @@ fields:
   keywords: keywords
   abstract: bibcite_abst_e
   year: bibcite_year
-  booktitle: null
+  booktitle: ''
   journal: bibcite_secondary_title
-  series: null
+  series: ''
   volume: bibcite_volume
   edition: bibcite_edition
   chapter: bibcite_section
   number: bibcite_number
   pages: bibcite_pages
   month: bibcite_date
-  institution: null
-  organization: null
+  institution: ''
+  organization: ''
   publisher: bibcite_publisher
-  school: null
+  school: ''
   address: bibcite_place_published
   issn: bibcite_issn
   isbn: bibcite_isbn
@@ -41,6 +71,11 @@ fields:
   doi: bibcite_doi
   note: bibcite_notes
   language: bibcite_lang
+  annote: ''
+  crossref: ''
+  editor: ''
+  howpublished: ''
+  key: ''
 dependencies:
   enforced:
     module:
