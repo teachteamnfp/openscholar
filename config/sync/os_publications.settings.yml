@@ -7,7 +7,6 @@ export_format:
   endnote8: endnote8
   endnote7: endnote7
   tagged: tagged
-  marc: marc
   ris: ris
 filter_publication_types:
   artwork: artwork
