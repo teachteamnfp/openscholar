@@ -2,7 +2,7 @@ format: ris
 types:
   ABST: miscellaneous
   ADVS: audiovisual
-  AGGR: ''
+  AGGR: database
   ANCIENT: ''
   ART: artwork
   BILL: bill
@@ -10,32 +10,32 @@ types:
   BOOK: book
   CASE: case
   CHAP: book_chapter
-  CHART: ''
-  CLSWK: ''
+  CHART: chart
+  CLSWK: classical
   COMP: software
-  CONF: conference_paper
-  CPAPER: ''
+  CONF: conference_proceedings
+  CPAPER: conference_paper
   CTLG: miscellaneous
   DATA: database
-  DBASE: ''
+  DBASE: database
   DICT: ''
   EBOOK: ''
   ECHAP: ''
   EDBOOK: ''
-  EJOUR: ''
+  EJOUR: web_article
   ELEC: miscellaneous
   ENCYC: ''
   EQUA: ''
   FIGURE: ''
   GEN: miscellaneous
-  GOVDOC: ''
+  GOVDOC: government_report
   GRANT: ''
   HEAR: hearing
   ICOMM: web_article
   INPR: miscellaneous
   JFULL: miscellaneous
   JOUR: journal_article
-  LEGAL: ''
+  LEGAL: legal_ruling
   MANSCPT: manuscript
   MAP: map
   MGZN: magazine_article
