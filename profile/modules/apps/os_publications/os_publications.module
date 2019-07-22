@@ -307,16 +307,12 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
       ->setDescription(t('The time that the publication was created.'))
       ->setRevisionable(TRUE)
       ->setTranslatable(TRUE)
-      ->setDisplayOptions('view', [
-        'label' => 'hidden',
-        'type' => 'timestamp',
-        'weight' => 0,
-      ])
       ->setDisplayOptions('form', [
         'type' => 'datetime_timestamp',
         'weight' => 10,
       ])
-      ->setDisplayConfigurable('form', TRUE);
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
 
     return $fields;
   }
