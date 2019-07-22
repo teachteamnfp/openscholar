@@ -135,8 +135,7 @@ class VsiteInfiniteScrollFrontendTest extends OsExistingSiteJavascriptTestBase {
     $this->scrollTo(500);
     $this->getSession()->wait(1000);
 
-    file_put_contents('public://screenshot.jpg', $this->getSession()->getScreenshot());
-    // Assert that new publications have laoded but header is not repeated.
+    // Assert that new publications have loaded and header is not repeated.
     $publications_after = count($this->getSession()->getPage()->findAll('css', '.view-publications .views-row'));
     $this->assertNotEquals($publications_before, $publications_after);
     $web_assert->elementsCount('css', '.view-publications h3', 1);
