@@ -5,6 +5,7 @@ namespace Drupal\cp_appearance\EventSubscriber;
 use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
 use Drupal\Core\Config\ConfigCrudEvent;
 use Drupal\Core\Config\ConfigEvents;
+use Drupal\cp_appearance\Entity\CustomTheme;
 use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -49,8 +50,11 @@ class ThemeConfigSubscriber implements EventSubscriberInterface {
   public function onSave(ConfigCrudEvent $event): void {
     /** @var \Drupal\group\Entity\GroupInterface|null $vsite */
     $vsite = $this->vsiteContextManager->getActiveVsite();
+    $saved_config = $event->getConfig();
 
-    if ($vsite && $event->getConfig()->getName() === 'system.theme') {
+    if ($vsite &&
+      $saved_config->getName() === 'system.theme' &&
+      strpos($saved_config->get('default'), CustomTheme::CUSTOM_THEME_ID_PREFIX) !== FALSE) {
       $this->cacheTagsInvalidator->invalidateTags(["rendered:vsite:{$vsite->id()}"]);
     }
   }
