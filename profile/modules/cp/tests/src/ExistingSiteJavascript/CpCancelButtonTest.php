@@ -28,10 +28,10 @@ class CpCancelButtonTest extends OsExistingSiteJavascriptTestBase {
     $this->vsiteAlias = $this->group->get('path')->first()->getValue()['alias'];
     $this->node = $this->createNode();
     $this->group->addContent($this->node, "group_node:{$this->node->bundle()}");
-    $this->nodePath = $path_alias_manager->getAliasByPath('/node/' . $this->node->id());
     $exist_alias = $path_alias_storage->load(['source' => '/node/' . $this->node->id()]);
     // Fix group alias of the node.
     $path_alias_storage->save('/node/' . $this->node->id(), '/[vsite:' . $this->group->id() . ']' . $exist_alias['alias'], 'en', $exist_alias['pid']);
+    $this->nodePath = $path_alias_manager->getAliasByPath('/node/' . $this->node->id());
   }
 
   /**
@@ -46,7 +46,7 @@ class CpCancelButtonTest extends OsExistingSiteJavascriptTestBase {
     $this->drupalLogin($group_admin);
 
     // Visit node.
-    $this->visitViaVsite("node/{$this->node->id()}", $this->group);
+    $this->visit($this->nodePath);
     $this->assertSession()->waitForElement('css', '.contextual-links .entitynodeedit-form');
     $this->assertSession()->statusCodeEquals(200);
     /** @var \Behat\Mink\Element\NodeElement|null $edit_contextual_link */
