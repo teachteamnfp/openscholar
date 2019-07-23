@@ -1,20 +1,50 @@
 diff --git a/core/modules/system/src/EventSubscriber/ConfigCacheTag.php b/core/modules/system/src/EventSubscriber/ConfigCacheTag.php
-index 6a4d807..d85d502 100644
+index 6a4d807..6390436 100644
 --- a/core/modules/system/src/EventSubscriber/ConfigCacheTag.php
 +++ b/core/modules/system/src/EventSubscriber/ConfigCacheTag.php
 @@ -6,6 +6,7 @@
  use Drupal\Core\Config\ConfigCrudEvent;
  use Drupal\Core\Config\ConfigEvents;
  use Drupal\Core\Extension\ThemeHandlerInterface;
-+use Drupal\cp_appearance\Entity\CustomTheme;
++use Drupal\vsite\Plugin\VsiteContextManagerInterface;
  use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  
  /**
-@@ -47,22 +48,25 @@ public function __construct(ThemeHandlerInterface $theme_handler, CacheTagsInval
+@@ -28,16 +29,26 @@ class ConfigCacheTag implements EventSubscriberInterface {
+   protected $cacheTagsInvalidator;
+ 
+   /**
++   * Vsite context manager.
++   *
++   * @var \Drupal\vsite\Plugin\VsiteContextManagerInterface
++   */
++  protected $vsiteContextManager;
++
++  /**
+    * Constructs a ConfigCacheTag object.
+    *
+    * @param \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler
+    *   The theme handler.
+    * @param \Drupal\Core\Cache\CacheTagsInvalidatorInterface $cache_tags_invalidator
+    *   The cache tags invalidator.
++   * @param \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager
++   *   Vsite context manager.
+    */
+-  public function __construct(ThemeHandlerInterface $theme_handler, CacheTagsInvalidatorInterface $cache_tags_invalidator) {
++  public function __construct(ThemeHandlerInterface $theme_handler, CacheTagsInvalidatorInterface $cache_tags_invalidator, VsiteContextManagerInterface $vsite_context_manager) {
+     $this->themeHandler = $theme_handler;
+     $this->cacheTagsInvalidator = $cache_tags_invalidator;
++    $this->vsiteContextManager = $vsite_context_manager;
+   }
+ 
+   /**
+@@ -47,22 +58,26 @@ public function __construct(ThemeHandlerInterface $theme_handler, CacheTagsInval
     *   The Event to process.
     */
    public function onSave(ConfigCrudEvent $event) {
 +    $saved_config = $event->getConfig();
++    /** @var \Drupal\group\Entity\Group|null $active_vsite */
++    $active_vsite = $this->vsiteContextManager->getActiveVsite();
 +
      // Changing the site settings may mean a different route is selected for the
      // front page. Additionally a change to the site name or similar must
@@ -26,8 +56,7 @@ index 6a4d807..d85d502 100644
  
      // Theme configuration and global theme settings.
 -    if (in_array($event->getConfig()->getName(), ['system.theme', 'system.theme.global'], TRUE)) {
-+    if (\in_array($saved_config->getName(), ['system.theme', 'system.theme.global'], TRUE) &&
-+      strpos($saved_config->get('default'), CustomTheme::CUSTOM_THEME_ID_PREFIX) === FALSE) {
++    if (!$active_vsite && \in_array($saved_config->getName(), ['system.theme', 'system.theme.global'], TRUE)) {
        $this->cacheTagsInvalidator->invalidateTags(['rendered']);
      }
  
@@ -40,25 +69,70 @@ index 6a4d807..d85d502 100644
          break;
        }
 diff --git a/core/modules/system/src/SystemConfigSubscriber.php b/core/modules/system/src/SystemConfigSubscriber.php
-index 0ab0d15..691ed86 100644
+index 0ab0d15..566c8be 100644
 --- a/core/modules/system/src/SystemConfigSubscriber.php
 +++ b/core/modules/system/src/SystemConfigSubscriber.php
 @@ -7,6 +7,7 @@
  use Drupal\Core\Config\ConfigImporterEvent;
  use Drupal\Core\Routing\RouteBuilderInterface;
  use Drupal\Core\StringTranslation\StringTranslationTrait;
-+use Drupal\cp_appearance\Entity\CustomTheme;
++use Drupal\vsite\Plugin\VsiteContextManagerInterface;
  use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  
  /**
-@@ -39,7 +40,9 @@ public function __construct(RouteBuilderInterface $router_builder) {
+@@ -23,13 +24,23 @@ class SystemConfigSubscriber implements EventSubscriberInterface {
+   protected $routerBuilder;
+ 
+   /**
++   * Vsite context manager.
++   *
++   * @var \Drupal\vsite\Plugin\VsiteContextManagerInterface
++   */
++  protected $vsiteContextManager;
++
++  /**
+    * Constructs the SystemConfigSubscriber.
+    *
+    * @param \Drupal\Core\Routing\RouteBuilderInterface $router_builder
+    *   The router builder service.
++   * @param \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager
++   *   Vsite context manager.
+    */
+-  public function __construct(RouteBuilderInterface $router_builder) {
++  public function __construct(RouteBuilderInterface $router_builder, VsiteContextManagerInterface $vsite_context_manager) {
+     $this->routerBuilder = $router_builder;
++    $this->vsiteContextManager = $vsite_context_manager;
+   }
+ 
+   /**
+@@ -39,7 +50,11 @@ public function __construct(RouteBuilderInterface $router_builder) {
     */
    public function onConfigSave(ConfigCrudEvent $event) {
      $saved_config = $event->getConfig();
 -    if ($saved_config->getName() == 'system.theme' && ($event->isChanged('admin') || $event->isChanged('default'))) {
++    /** @var \Drupal\group\Entity\GroupInterface|null $active_vsite */
++    $active_vsite = $this->vsiteContextManager->getActiveVsite();
 +
 +    // Rebuild routes only if the default theme is not a custom theme.
-+    if (($saved_config->getName() === 'system.theme' && strpos($saved_config->get('default'), CustomTheme::CUSTOM_THEME_ID_PREFIX) === FALSE) && ($event->isChanged('admin') || $event->isChanged('default'))) {
++    if (!$active_vsite && $saved_config->getName() === 'system.theme' && ($event->isChanged('admin') || $event->isChanged('default'))) {
        $this->routerBuilder->setRebuildNeeded();
      }
    }
+diff --git a/core/modules/system/system.services.yml b/core/modules/system/system.services.yml
+index ccfabe8..e98789d 100644
+--- a/core/modules/system/system.services.yml
++++ b/core/modules/system/system.services.yml
+@@ -35,11 +35,11 @@ services:
+       - { name: theme_negotiator, priority: 100 }
+   system.config_subscriber:
+     class: Drupal\system\SystemConfigSubscriber
+-    arguments: ['@router.builder']
++    arguments: ['@router.builder', '@vsite.context_manager']
+     tags:
+       - { name: event_subscriber }
+   system.config_cache_tag:
+     class: Drupal\system\EventSubscriber\ConfigCacheTag
+-    arguments: ['@theme_handler', '@cache_tags.invalidator']
++    arguments: ['@theme_handler', '@cache_tags.invalidator', '@vsite.context_manager']
+     tags:
+       - { name: event_subscriber }
