@@ -197,6 +197,14 @@ function cp_taxonomy_views_data_alter(&$data) {
       'id' => 'cp_taxonomy_field_taxonomy_terms',
     ],
   ];
+  $data['node']['cp_taxonomy_node_field_taxonomy_terms'] = [
+    'title' => t('Node Tag with terms (cp settings)'),
+    'field' => [
+      'title' => t('Node Tag with terms (cp settings)'),
+      'help' => t('Handle access by settings.'),
+      'id' => 'cp_taxonomy_node_field_taxonomy_terms',
+    ],
+  ];
 }
 
 /**
