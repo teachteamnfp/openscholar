@@ -20,11 +20,11 @@ function os_files_install() {
 function os_files_schema_alter(&$schema) {
   if (isset($schema['file_managed']['fields']['uri'])) {
     $schema['file_managed']['fields']['uri']['type'] = 'varchar';
-    $schema['file_managed']['fields']['uri']['length'] = 2048;
+    $schema['file_managed']['fields']['uri']['length'] = 1024;
   }
   if (isset($schema['file_managed']['fields']['origname'])) {
     $schema['file_managed']['fields']['origname']['type'] = 'varchar';
-    $schema['file_managed']['fields']['origname']['length'] = 2048;
+    $schema['file_managed']['fields']['origname']['length'] = 1024;
   }
 }
 
