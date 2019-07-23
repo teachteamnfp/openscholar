@@ -1,16 +1,8 @@
 diff --git a/core/modules/system/src/EventSubscriber/ConfigCacheTag.php b/core/modules/system/src/EventSubscriber/ConfigCacheTag.php
-index 6a4d807..d85d502 100644
+index 6a4d807..6a2740f 100644
 --- a/core/modules/system/src/EventSubscriber/ConfigCacheTag.php
 +++ b/core/modules/system/src/EventSubscriber/ConfigCacheTag.php
-@@ -6,6 +6,7 @@
- use Drupal\Core\Config\ConfigCrudEvent;
- use Drupal\Core\Config\ConfigEvents;
- use Drupal\Core\Extension\ThemeHandlerInterface;
-+use Drupal\cp_appearance\Entity\CustomTheme;
- use Symfony\Component\EventDispatcher\EventSubscriberInterface;
- 
- /**
-@@ -47,22 +48,25 @@ public function __construct(ThemeHandlerInterface $theme_handler, CacheTagsInval
+@@ -47,22 +47,25 @@ public function __construct(ThemeHandlerInterface $theme_handler, CacheTagsInval
     *   The Event to process.
     */
    public function onSave(ConfigCrudEvent $event) {
@@ -27,7 +19,7 @@ index 6a4d807..d85d502 100644
      // Theme configuration and global theme settings.
 -    if (in_array($event->getConfig()->getName(), ['system.theme', 'system.theme.global'], TRUE)) {
 +    if (\in_array($saved_config->getName(), ['system.theme', 'system.theme.global'], TRUE) &&
-+      strpos($saved_config->get('default'), CustomTheme::CUSTOM_THEME_ID_PREFIX) === FALSE) {
++      strpos($saved_config->get('default'), 'os_ct_') === FALSE) {
        $this->cacheTagsInvalidator->invalidateTags(['rendered']);
      }
  
@@ -40,25 +32,17 @@ index 6a4d807..d85d502 100644
          break;
        }
 diff --git a/core/modules/system/src/SystemConfigSubscriber.php b/core/modules/system/src/SystemConfigSubscriber.php
-index 0ab0d15..691ed86 100644
+index 0ab0d15..47f88eb 100644
 --- a/core/modules/system/src/SystemConfigSubscriber.php
 +++ b/core/modules/system/src/SystemConfigSubscriber.php
-@@ -7,6 +7,7 @@
- use Drupal\Core\Config\ConfigImporterEvent;
- use Drupal\Core\Routing\RouteBuilderInterface;
- use Drupal\Core\StringTranslation\StringTranslationTrait;
-+use Drupal\cp_appearance\Entity\CustomTheme;
- use Symfony\Component\EventDispatcher\EventSubscriberInterface;
- 
- /**
-@@ -39,7 +40,9 @@ public function __construct(RouteBuilderInterface $router_builder) {
+@@ -39,7 +39,9 @@ public function __construct(RouteBuilderInterface $router_builder) {
     */
    public function onConfigSave(ConfigCrudEvent $event) {
      $saved_config = $event->getConfig();
 -    if ($saved_config->getName() == 'system.theme' && ($event->isChanged('admin') || $event->isChanged('default'))) {
 +
 +    // Rebuild routes only if the default theme is not a custom theme.
-+    if (($saved_config->getName() === 'system.theme' && strpos($saved_config->get('default'), CustomTheme::CUSTOM_THEME_ID_PREFIX) === FALSE) && ($event->isChanged('admin') || $event->isChanged('default'))) {
++    if (($saved_config->getName() === 'system.theme' && strpos($saved_config->get('default'), 'os_ct_') === FALSE) && ($event->isChanged('admin') || $event->isChanged('default'))) {
        $this->routerBuilder->setRebuildNeeded();
      }
    }
