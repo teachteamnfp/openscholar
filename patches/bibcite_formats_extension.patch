@@ -1,0 +1,69 @@
+diff --git a/modules/bibcite_bibtex/bibcite_bibtex.bibcite_format.yml b/modules/bibcite_bibtex/bibcite_bibtex.bibcite_format.yml
+index 66f8d66..028583c 100644
+--- a/modules/bibcite_bibtex/bibcite_bibtex.bibcite_format.yml
++++ b/modules/bibcite_bibtex/bibcite_bibtex.bibcite_format.yml
+@@ -4,20 +4,50 @@ bibtex:
+   extension: bib
+   encoder: \Drupal\bibcite_bibtex\Encoder\BibtexEncoder
+   types:
+-    - article
+-    - book
+-    - booklet
+-    - conference
+-    - inbook
+-    - incollection
+-    - inproceedings
+-    - manual
+-    - mastersthesis
+-    - misc
+-    - phdthesis
+-    - proceedings
+-    - techreport
+-    - unpublished
++  - article
++  - artwork
++  - audiovisual
++  - bill
++  - book
++  - bookchapter
++  - booklet
++  - broadcast
++  - case
++  - chart
++  - classical
++  - conference
++  - database
++  - film
++  - governmentreport
++  - hearing
++  - journal
++  - inbook
++  - incollection
++  - inproceedings
++  - legalruling
++  - magazinearticle
++  - manual
++  - manuscript
++  - map
++  - mastersthesis
++  - misc
++  - miscellaneoussection
++  - newspaperarticle
++  - patent
++  - personal
++  - presentation
++  - phdthesis
++  - proceedings
++  - report
++  - software
++  - statue
++  - techreport
++  - unpublished
++  - webarticle
++  - webprojectpage
++  - webservice
++  - website
++  - workingpaper
+   fields:
+     - author
+     - title
