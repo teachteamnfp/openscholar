@@ -20,3 +20,28 @@ function cp_appearance_theme() {
     ],
   ];
 }
+
+/**
+ * Implements hook_preprocess() for altering cache tags in responses for active vsite.
+ *
+ * A generic preprocess is used to make sure that every render arrays for active
+ * vsite contain the custom cache tags.
+ */
+function cp_appearance_preprocess(&$variables, $hook) {
+  /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
+  $vsite_context_manager = \Drupal::service('vsite.context_manager');
+  /** @var \Drupal\group\Entity\GroupInterface|null $active_vsite */
+  $active_vsite = $vsite_context_manager->getActiveVsite();
+
+  if ($active_vsite) {
+    if (isset($variables['#cache']['tags'])) {
+      $rendered_tag_position = array_search('rendered', $variables['#cache']['tags'], TRUE);
+
+      if ($rendered_tag_position !== FALSE) {
+        unset($variables['#cache']['tag'][$rendered_tag_position]);
+      }
+    }
+
+    $variables['#cache']['tags'][] = "rendered:vsite:{$active_vsite->id()}";
+  }
+}

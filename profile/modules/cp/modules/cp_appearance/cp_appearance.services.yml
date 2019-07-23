@@ -8,11 +8,6 @@ services:
   cp_appearance.custom_theme_installer:
     class: \Drupal\cp_appearance\CustomThemeInstaller
     arguments: ['@theme_handler', '@config.factory', '@module_handler', '@asset.css.collection_optimizer', '@logger.channel.default', '@state']
-  cp_appearance.main_content_view_subscriber:
-    class: \Drupal\cp_appearance\EventSubscriber\MainContentViewSubscriber
-    arguments: ['@class_resolver', '@current_route_match', '%main_content_renderers%', '@vsite.context_manager']
-    tags:
-      - { name: event_subscriber }
   cp_appearance.theme_config_subscriber:
     class: \Drupal\cp_appearance\EventSubscriber\ThemeConfigSubscriber
     arguments: ['@cache_tags.invalidator', '@vsite.context_manager']
