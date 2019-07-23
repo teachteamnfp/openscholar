@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6fc5f16a253954f9bd24cf086255eabf",
+    "content-hash": "18d78225f922387b36469059dff0d12d",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -2696,7 +2696,8 @@
                     }
                 },
                 "patches_applied": {
-                    "Contextual links for bibcite reference entities": "patches/3065990-2.patch"
+                    "Contextual links for bibcite reference entities": "patches/3065990-2.patch",
+                    "Extending the supported bibcite formats.": "patches/bibcite_formats_extension.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",

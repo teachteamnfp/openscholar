@@ -1,3 +1,44 @@
+diff --git a/core/modules/system/src/EventSubscriber/ConfigCacheTag.php b/core/modules/system/src/EventSubscriber/ConfigCacheTag.php
+index 6a4d807..d85d502 100644
+--- a/core/modules/system/src/EventSubscriber/ConfigCacheTag.php
++++ b/core/modules/system/src/EventSubscriber/ConfigCacheTag.php
+@@ -6,6 +6,7 @@
+ use Drupal\Core\Config\ConfigCrudEvent;
+ use Drupal\Core\Config\ConfigEvents;
+ use Drupal\Core\Extension\ThemeHandlerInterface;
++use Drupal\cp_appearance\Entity\CustomTheme;
+ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+ 
+ /**
+@@ -47,22 +48,25 @@ public function __construct(ThemeHandlerInterface $theme_handler, CacheTagsInval
+    *   The Event to process.
+    */
+   public function onSave(ConfigCrudEvent $event) {
++    $saved_config = $event->getConfig();
++
+     // Changing the site settings may mean a different route is selected for the
+     // front page. Additionally a change to the site name or similar must
+     // invalidate the render cache since this could be used anywhere.
+-    if ($event->getConfig()->getName() === 'system.site') {
++    if ($saved_config->getName() === 'system.site') {
+       $this->cacheTagsInvalidator->invalidateTags(['route_match', 'rendered']);
+     }
+ 
+     // Theme configuration and global theme settings.
+-    if (in_array($event->getConfig()->getName(), ['system.theme', 'system.theme.global'], TRUE)) {
++    if (\in_array($saved_config->getName(), ['system.theme', 'system.theme.global'], TRUE) &&
++      strpos($saved_config->get('default'), CustomTheme::CUSTOM_THEME_ID_PREFIX) === FALSE) {
+       $this->cacheTagsInvalidator->invalidateTags(['rendered']);
+     }
+ 
+     // Theme-specific settings, check if this matches a theme settings
+     // configuration object, in that case, clear the rendered cache tag.
+     foreach (array_keys($this->themeHandler->listInfo()) as $theme_name) {
+-      if ($theme_name == $event->getConfig()->getName()) {
++      if ($theme_name == $saved_config->getName()) {
+         $this->cacheTagsInvalidator->invalidateTags(['rendered']);
+         break;
+       }
 diff --git a/core/modules/system/src/SystemConfigSubscriber.php b/core/modules/system/src/SystemConfigSubscriber.php
 index 0ab0d15..691ed86 100644
 --- a/core/modules/system/src/SystemConfigSubscriber.php
