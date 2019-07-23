@@ -116,10 +116,18 @@ class CpUserMainController extends ControllerBase {
         '#type' => 'container',
         'add-member' => [
           '#type' => 'link',
-          '#title' => $this->t('+ Add a member'),
+          '#title' => $this->t('Add a member'),
           '#url' => Url::fromRoute('cp.users.add'),
           '#attributes' => [
-            'class' => ['os-green-button', 'cp-user-float-right', 'use-ajax'],
+            'class' => [
+              'os-green-button',
+              'cp-user-float-right',
+              'use-ajax',
+              'button',
+              'button--primary',
+              'button-action',
+              'action-links',
+            ],
             'data-dialog-type' => 'modal',
           ],
           '#attached' => [
