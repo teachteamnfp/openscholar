@@ -25,7 +25,7 @@ function buildComposer() {
         cd -
         mv $1/$2/sites/$site/modules/$MODULE/.git $1/$2/sites/$site/modules/$MODULE/gitdir
         if [ -d "$1/$2/sites/$site/custom" ]; then
-          ln -s ../custom modules/custom 2>&1>/dev/null
+          ln -s ../custom $1/$2/sites/$site/modules/custom 2>&1>/dev/null
         fi
         git add $1/$2/sites/$site
         cd $1
