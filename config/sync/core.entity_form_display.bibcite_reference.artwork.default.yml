@@ -47,6 +47,7 @@ third_party_settings:
       children:
         - status
         - is_sticky
+        - noindex
       parent_name: ''
       weight: 58
       format_type: details
@@ -585,6 +586,13 @@ content:
     region: content
     settings:
       include_locked: true
+    third_party_settings: {  }
+  noindex:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    region: content
+    weight: 62
     third_party_settings: {  }
   notes:
     type: text_textarea
