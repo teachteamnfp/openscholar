@@ -353,6 +353,88 @@ function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInte
   // Put the delete button at the end of the actions list.
   // Cancel button's weight is 30, this needs to be higher than that.
   $form['actions']['delete']['#weight'] = 100;
+
+  // Menu link options.
+  $defaults = \Drupal::service('cp_menu.menu_helper')->getMenuLinkDefaults($reference);
+
+  $vsite = \Drupal::service('vsite.context_manager')->getActiveVsite();
+  $menus = $vsite->getContent('group_menu:menu');
+
+  if (!$menus) {
+    $vsite_menus = [
+      'main' => 'Primary Menu',
+      'footer' => 'Secondary Menu',
+    ];
+  }
+  elseif ($menus) {
+    foreach ($menus as $menu) {
+      $vsite_menus[$menu->entity_id_str->target_id] = $menu->label();
+    }
+  }
+
+  $form['menu'] = [
+    '#type' => 'details',
+    '#title' => t('Menu settings'),
+    '#access' => \Drupal::currentUser()->hasPermission('administer menu'),
+    '#group' => 'advanced',
+    '#attached' => [
+      'library' => ['menu_ui/drupal.menu_ui'],
+    ],
+    '#tree' => TRUE,
+    '#weight' => 1,
+    '#attributes' => ['class' => ['menu-link-form']],
+  ];
+  $form['menu']['enabled'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Provide a menu link'),
+    '#default_value' => (int) (bool) $defaults['id'],
+  ];
+  $form['menu']['link'] = [
+    '#type' => 'container',
+    '#parents' => ['menu'],
+    '#states' => [
+      'invisible' => [
+        'input[name="menu[enabled]"]' => ['checked' => FALSE],
+      ],
+    ],
+  ];
+
+  // Populate the element with the link data.
+  foreach (['id', 'entity_id'] as $key) {
+    $form['menu']['link'][$key] = ['#type' => 'value', '#value' => $defaults[$key]];
+  }
+
+  $form['menu']['link']['title'] = [
+    '#type' => 'textfield',
+    '#title' => t('Menu link title'),
+    '#default_value' => $defaults['title'],
+    '#maxlength' => $defaults['title_max_length'],
+  ];
+
+  $form['menu']['link']['description'] = [
+    '#type' => 'textfield',
+    '#title' => t('Description'),
+    '#default_value' => $defaults['description'],
+    '#description' => t('Shown when hovering over the menu link.'),
+    '#maxlength' => $defaults['description_max_length'],
+  ];
+
+  $form['menu']['link']['menu_parent'] = [
+    '#type' => 'select',
+    '#title' => t('Which Menu'),
+    '#description' => t('Select the menu where you would like this link to appear. Some menus may not show on your page if they are not included in your Page Layout.'),
+    '#options' => $vsite_menus,
+    '#default_value' => $defaults['menu_name'],
+    '#attributes' => [
+      'class' => ['menu-parent-select'],
+    ],
+  ];
+
+  foreach (array_keys($form['actions']) as $action) {
+    if ($action != 'preview' && isset($form['actions'][$action]['#type']) && $form['actions'][$action]['#type'] === 'submit') {
+      $form['actions'][$action]['#submit'][] = 'os_publications_bibcite_reference_form_submit';
+    }
+  }
 }
 
 /**
@@ -559,4 +641,16 @@ function os_publications_bibcite_reference_view_alter(array &$build, EntityInter
       }
     }
   }
+}
+
+/**
+ * Handles extra submit operations for publications.
+ */
+function os_publications_bibcite_reference_form_submit(&$form, FormStateInterface $formState) {
+  $values = $formState->getValues();
+  $reference = $formState->getFormObject()->getEntity();
+  /** @var \Drupal\cp_menu\MenuHelperInterface $menu_helper */
+  $menu_helper = \Drupal::service('cp_menu.menu_helper');
+
+  $menu_helper->publicationInFormMenuAlterations($values, $reference);
 }

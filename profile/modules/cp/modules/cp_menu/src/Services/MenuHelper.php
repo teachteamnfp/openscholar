@@ -2,15 +2,20 @@
 
 namespace Drupal\cp_menu\Services;
 
+use Drupal\bibcite_entity\Entity\ReferenceInterface;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Menu\MenuLinkManagerInterface;
 use Drupal\Core\Menu\MenuLinkTree;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\cp_menu\MenuHelperInterface;
 use Drupal\group\Entity\GroupInterface;
+use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\vsite\Plugin\VsiteContextManager;
 
 /**
@@ -57,6 +62,28 @@ class MenuHelper implements MenuHelperInterface {
   protected $vsiteManager;
 
   /**
+   * Menu Link manager service.
+   *
+   * @var \Drupal\Core\Menu\MenuLinkManagerInterface
+   */
+  protected $menuLinkManager;
+
+  /**
+   * Entity Field Manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityFieldManagerInterface
+   */
+  protected $entityFieldManager;
+
+
+  /**
+   * Entity Repository service.
+   *
+   * @var \Drupal\Core\Entity\EntityRepositoryInterface
+   */
+  protected $entityRepository;
+
+  /**
    * MenuHelper constructor.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
@@ -67,16 +94,25 @@ class MenuHelper implements MenuHelperInterface {
    *   EntityTypeManager instance.
    * @param \Drupal\vsite\Plugin\VsiteContextManager $vsite_manager
    *   Vsite context manager instance.
+   * @param \Drupal\Core\Menu\MenuLinkManagerInterface $menu_link_manager
+   *   Menu Link manager interface.
+   * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager
+   *   Entity field manager instance.
+   * @param \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository
+   *   Entity Repository instance.
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function __construct(ConfigFactoryInterface $config_factory, MenuLinkTree $menu_tree, EntityTypeManagerInterface $entity_type_manager, VsiteContextManager $vsite_manager) {
+  public function __construct(ConfigFactoryInterface $config_factory, MenuLinkTree $menu_tree, EntityTypeManagerInterface $entity_type_manager, VsiteContextManager $vsite_manager, MenuLinkManagerInterface $menu_link_manager, EntityFieldManagerInterface $entity_field_manager, EntityRepositoryInterface $entity_repository) {
     $this->configFactory = $config_factory;
     $this->menuTree = $menu_tree;
     $this->entityTypeManager = $entity_type_manager;
     $this->storage = $this->entityTypeManager->getStorage('menu_link_content');
     $this->vsiteManager = $vsite_manager;
+    $this->menuLinkManager = $menu_link_manager;
+    $this->entityFieldManager = $entity_field_manager;
+    $this->entityRepository = $entity_repository;
   }
 
   /**
@@ -149,6 +185,124 @@ class MenuHelper implements MenuHelperInterface {
     }
     $tags = array_unique($tags);
     Cache::invalidateTags($tags);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getMenuLinkDefaults(ReferenceInterface $reference): ?array {
+    // Get the default max_length of a menu link title from the base field
+    // definition.
+    $field_definitions = $this->entityFieldManager
+      ->getBaseFieldDefinitions('menu_link_content');
+    $max_length = $field_definitions['title']->getSetting('max_length');
+    $description_max_length = $field_definitions['description']->getSetting('max_length');
+    $defaults = [
+      'entity_id' => 0,
+      'id' => '',
+      'title' => '',
+      'title_max_length' => $max_length,
+      'description' => '',
+      'description_max_length' => $description_max_length,
+      'menu_name' => 'main',
+    ];
+
+    if ($reference->id()) {
+      // Check all allowed menus.
+      $vsite = $this->vsiteManager->getActiveVsite();
+      $menus = $vsite->getContent('group_menu:menu');
+      $menuIds = NULL;
+      foreach ($menus as $menu) {
+        $menuIds[] = $menu->entity_id_str->target_id;
+      }
+
+      if ($menuIds) {
+        $query = $this->entityTypeManager->getStorage('menu_link_content')->getQuery()
+          ->condition('link.uri', 'entity:bibcite_reference/' . $reference->id())
+          ->condition('menu_name', $menuIds, 'IN')
+          ->sort('id', 'ASC')
+          ->range(0, 1);
+        $result = $query->execute();
+      }
+
+      $id = (!empty($result)) ? reset($result) : FALSE;
+
+      if ($id) {
+        $menu_link = MenuLinkContent::load($id);
+        $menu_link = $this->entityRepository->getTranslationFromContext($menu_link);
+        $defaults = [
+          'entity_id' => $menu_link->id(),
+          'id' => $menu_link->getPluginId(),
+          'title' => $menu_link->getTitle(),
+          'title_max_length' => $menu_link->getFieldDefinitions()['title']->getSetting('max_length'),
+          'description' => $menu_link->getDescription(),
+          'description_max_length' => $menu_link->getFieldDefinitions()['description']->getSetting('max_length'),
+          'menu_name' => $menu_link->getMenuName(),
+        ];
+      }
+    }
+    return $defaults;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function publicationInFormMenuAlterations(array $values, ReferenceInterface $reference) :void {
+    $menuId = $values['menu']['menu_parent'];
+    $linkId = $values['menu']['id'];
+    $enabled = $values['menu']['enabled'];
+
+    // If existing link update plugin definition.
+    if ($linkId && $enabled) {
+      $link = $this->menuLinkManager->getDefinition($linkId);
+      // If changes are there then only proceed.
+      if ($link['title'] != $values['menu']['title'] || $link['description'] != $values['menu']['description'] || $link['menu_name'] != $values['menu']['menu_parent']) {
+        $updatedValues['title'] = $this->t('@title', ['@title' => $values['menu']['title']]);
+        $updatedValues['description'] = $this->t('@desc', ['@desc' => $values['menu']['description']]);
+        $updatedValues['menu_name'] = $values['menu']['menu_parent'];
+        // Update definitions.
+        $this->menuLinkManager->updateDefinition($linkId, $updatedValues);
+        // Call the block cache clear method as changes are made.
+        $menuId = $this->menuLinkManager->getDefinition($linkId)['menu_name'];
+        $this->invalidateBlockCache($menuId);
+      }
+    }
+    elseif ($linkId && !$enabled) {
+      // Get the menu id before plugin is deleted to clear cache later.
+      $menuId = $this->menuLinkManager->getDefinition($linkId)['menu_name'];
+      // Delete the link.
+      $this->menuLinkManager->removeDefinition($linkId);
+      // Call the block cache clear method as changes are made.
+      $this->invalidateBlockCache($menuId);
+    }
+    // If new link create a new menu link content.
+    elseif ($enabled) {
+      $vsite = $this->vsiteManager->getActiveVsite();
+      $menus = $vsite->getContent('group_menu:menu');
+      // If first time then create a new menu by replicating shared menus.
+      if (!$menus) {
+        // Create new menus.
+        $this->createVsiteMenus($vsite);
+        // Map menu ids so that new links get saved in newly created menus.
+        if ($menuId == 'main') {
+          $menuId = 'menu-primary-' . $vsite->id();
+        }
+        elseif ($menuId == 'footer') {
+          $menuId = 'menu-secondary-' . $vsite->id();
+        }
+      }
+      // Create a new menu_link_content entity.
+      MenuLinkContent::create([
+        'link' => ['uri' => 'entity:bibcite_reference/' . $reference->id()],
+        'langcode' => $reference->language()->getId(),
+        'enabled' => TRUE,
+        'title' => trim($values['menu']['title']),
+        'description' => trim($values['menu']['description']),
+        'menu_name' => $menuId,
+      ])->save();
+      // Call the block cache clear method as changes are made.
+      $this->invalidateBlockCache($menuId);
+    }
   }
 
   /**

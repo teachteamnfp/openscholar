@@ -2,6 +2,7 @@
 
 namespace Drupal\cp_menu;
 
+use Drupal\bibcite_entity\Entity\ReferenceInterface;
 use Drupal\group\Entity\GroupInterface;
 
 /**
@@ -38,6 +39,27 @@ interface MenuHelperInterface {
    * @param bool $buildForm
    *   If called from main buildForm changes.
    */
-  public function invalidateBlockCache($ids, $buildForm) : void;
+  public function invalidateBlockCache($ids, $buildForm = FALSE) : void;
+
+  /**
+   * Get Menu Link and its data for publication edit page.
+   *
+   * @param \Drupal\bibcite_entity\Entity\ReferenceInterface $reference
+   *   The publication entity in context.
+   *
+   * @return array|null
+   *   Default menu link values for publication entity.
+   */
+  public function getMenuLinkDefaults(ReferenceInterface $reference): ?array;
+
+  /**
+   * Performs alterations on menu link associated with a publication.
+   *
+   * @param array $values
+   *   Reference submit form values.
+   * @param \Drupal\bibcite_entity\Entity\ReferenceInterface $reference
+   *   The reference entity in context.
+   */
+  public function publicationInFormMenuAlterations(array $values, ReferenceInterface $reference): void;
 
 }

@@ -1,4 +1,4 @@
 services:
   cp_menu.menu_helper:
     class: Drupal\cp_menu\Services\MenuHelper
-    arguments: ['@config.factory', '@menu.link_tree', '@entity_type.manager', '@vsite.context_manager']
+    arguments: ['@config.factory', '@menu.link_tree', '@entity_type.manager', '@vsite.context_manager', '@plugin.manager.menu.link', '@entity_field.manager', '@entity.repository']
