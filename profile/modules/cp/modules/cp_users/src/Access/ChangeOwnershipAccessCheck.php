@@ -4,16 +4,14 @@ namespace Drupal\cp_users\Access;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
-use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Routing\Access\AccessInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\vsite\Plugin\VsiteContextManagerInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Checks whether a user can change a vsite ownership.
  */
-class ChangeOwnershipAccessCheck implements AccessInterface, ContainerInjectionInterface {
+class ChangeOwnershipAccessCheck implements AccessInterface {
 
   /**
    * Vsite context manager.
@@ -30,13 +28,6 @@ class ChangeOwnershipAccessCheck implements AccessInterface, ContainerInjectionI
    */
   public function __construct(VsiteContextManagerInterface $vsite_context_manager) {
     $this->vsiteContextManager = $vsite_context_manager;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container) {
-    return new static($container->get('vsite.context_manager'));
   }
 
   /**
