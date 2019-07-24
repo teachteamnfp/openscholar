@@ -72,7 +72,7 @@ class CpUserMainController extends ControllerBase {
 
     $build = [];
 
-    $can_change_ownership = (($group->getOwnerId() == $current_user->id()) || $group->getMember($current_user)->hasPermission('administer group'));
+    $can_change_ownership = ($group->getOwnerId() == $current_user->id());
 
     $userRows = [];
     /* @var \Drupal\user\UserInterface $u */
