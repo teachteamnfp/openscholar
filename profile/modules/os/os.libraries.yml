@@ -136,7 +136,7 @@ fileHandler:
   js:
     js/FileHandler/FileHandler.module.js: { }
   css:
-    componenet:
+    component:
       js/FileHandler/fileUploadHandler.css: { }
   paths: js/FileHandler
   drupalSettings:

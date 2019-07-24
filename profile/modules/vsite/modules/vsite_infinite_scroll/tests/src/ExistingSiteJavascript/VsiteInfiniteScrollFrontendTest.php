@@ -20,6 +20,13 @@ class VsiteInfiniteScrollFrontendTest extends OsExistingSiteJavascriptTestBase {
   protected $group;
 
   /**
+   * Group content type.
+   *
+   * @var \Drupal\group\Entity\GroupContentTypeInterface
+   */
+  protected $plugin;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
@@ -35,18 +42,30 @@ class VsiteInfiniteScrollFrontendTest extends OsExistingSiteJavascriptTestBase {
     /** @var \Drupal\group\Entity\GroupContentTypeInterface[] $plugin */
     $plugins = $storage->loadByContentPluginId('group_node:person');
     /** @var \Drupal\group\Entity\GroupContentTypeInterface $plugin */
-    $plugin = reset($plugins);
+    $this->plugin = reset($plugins);
 
     $this->group = $this->createGroup();
     $this->group->save();
 
+    $config_factory = $this->container->get('config.factory');
+    /** @var \Drupal\Core\Config\Config $config */
+    $config = $config_factory->getEditable('vsite_infinite_scroll.settings');
+    $config->set('long_list_content_pagination', 'infinite_scroll');
+    $config->save(TRUE);
+  }
+
+  /**
+   * Tests vsite_infinite_scroll people view load more button ajax request.
+   */
+  public function testClickOnLoadMoreButton(): void {
+    // Create required nodes.
     $i = 0;
     while ($i < 21) {
       $person = $this->createNode([
         'type' => 'person',
         'status' => 1,
       ]);
-      $this->group->addContent($person, $plugin->getContentPluginId());
+      $this->group->addContent($person, $this->plugin->getContentPluginId());
       $i++;
     }
     $old_person = $this->createNode([
@@ -58,19 +77,10 @@ class VsiteInfiniteScrollFrontendTest extends OsExistingSiteJavascriptTestBase {
       'field_first_name' => 'Old',
       'field_last_name' => 'Man',
     ]);
-    $this->group->addContent($old_person, $plugin->getContentPluginId());
-  }
+    $this->group->addContent($old_person, $this->plugin->getContentPluginId());
 
-  /**
-   * Tests vsite_infinite_scroll people view load more button ajax request.
-   */
-  public function testClickOnLoadMoreButton(): void {
+    // Test Load more button.
     $web_assert = $this->assertSession();
-    $config_factory = $this->container->get('config.factory');
-    /** @var \Drupal\Core\Config\Config $config */
-    $config = $config_factory->getEditable('vsite_infinite_scroll.settings');
-    $config->set('long_list_content_pagination', 'infinite_scroll');
-    $config->save(TRUE);
 
     $path = $this->group->get('path')->getValue();
     $alias = $path[0]['alias'];
@@ -90,6 +100,55 @@ class VsiteInfiniteScrollFrontendTest extends OsExistingSiteJavascriptTestBase {
 
     $result = $web_assert->waitForElementVisible('named', ['link', 'Old Man']);
     $this->assertNotNull($result, 'Following node title not found: Old created person');
+  }
+
+  /**
+   * Tests that on scrolling headers do not repeat.
+   */
+  public function testInfiniteScrollOnPublicationListing(): void {
+
+    // Create required publications.
+    $i = 0;
+    while ($i < 21) {
+      $publication = $this->createReference();
+      $this->group->addContent($publication, 'group_entity:bibcite_reference');
+      $i++;
+    }
+    $new_publication = $this->createReference([
+      'html_title' => 'New created publication',
+    ]);
+    $this->group->addContent($new_publication, 'group_entity:bibcite_reference');
+
+    $groupAdmin = $this->createUser();
+    $this->addGroupAdmin($groupAdmin, $this->group);
+    $this->drupalLogin($groupAdmin);
+
+    $web_assert = $this->assertSession();
+    $this->visitViaVsite("publications", $this->group);
+    $web_assert->statusCodeEquals(200);
+
+    // Test Artwork heading appears once.
+    $web_assert->pageTextContains('Artwork');
+    $web_assert->elementsCount('css', '.view-publications h3', 1);
+    $publications_before = count($this->getSession()->getPage()->findAll('css', '.view-publications .views-row'));
+    // Scroll down to load more publication entries.
+    $this->scrollTo(500);
+    $this->getSession()->wait(1000);
+
+    // Assert that new publications have loaded and header is not repeated.
+    $publications_after = count($this->getSession()->getPage()->findAll('css', '.view-publications .views-row'));
+    $this->assertNotEquals($publications_before, $publications_after);
+    $web_assert->elementsCount('css', '.view-publications h3', 1);
+  }
+
+  /**
+   * Scroll to a pixel offset.
+   *
+   * @param int $pixels
+   *   The pixel offset to scroll to.
+   */
+  protected function scrollTo($pixels) {
+    $this->getSession()->getDriver()->executeScript("window.scrollTo(null, $pixels);");
   }
 
 }

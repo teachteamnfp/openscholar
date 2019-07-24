@@ -81,7 +81,10 @@ class VsiteInfiniteScroll extends InfiniteScroll {
       '#theme' => $this->themeFunctions(),
       '#options' => $this->options['views_infinite_scroll'],
       '#attached' => [
-        'library' => ['views_infinite_scroll/views-infinite-scroll'],
+        'library' => [
+          'views_infinite_scroll/views-infinite-scroll',
+          'vsite_infinite_scroll/vsiteInfiniteScroll',
+        ],
       ],
       '#element' => $this->options['id'],
       '#parameters' => $input,
