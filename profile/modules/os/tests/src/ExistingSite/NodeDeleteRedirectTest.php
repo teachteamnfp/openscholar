@@ -21,16 +21,19 @@ class NodeDeleteRedirectTest extends OsExistingSiteTestBase {
   public function test(): void {
     $group_admin = $this->createUser();
     $this->addGroupAdmin($group_admin, $this->group);
-    $blog = $this->createNode([
-      'type' => 'blog',
+    $news = $this->createNode([
+      'type' => 'news',
+      'field_date' => [
+        'value' => '2020-04-16',
+      ],
     ]);
-    $this->group->addContent($blog, 'group_node:blog');
+    $this->group->addContent($news, 'group_node:news');
     $this->drupalLogin($group_admin);
 
-    $this->visitViaVsite("/node/{$blog->id()}/delete", $this->group);
+    $this->visitViaVsite("/node/{$news->id()}/delete", $this->group);
     $this->getSession()->getPage()->pressButton('Delete');
 
-    $this->assertContains('/blog', $this->getSession()->getCurrentUrl());
+    $this->assertContains('/news', $this->getSession()->getCurrentUrl());
   }
 
 }

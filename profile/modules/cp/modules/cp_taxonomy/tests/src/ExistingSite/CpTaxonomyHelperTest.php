@@ -17,7 +17,7 @@ class CpTaxonomyHelperTest extends TestBase {
   use CpTaxonomyTestTrait;
 
   /**
-   * Taxonomy Helper.
+   * Cp Taxonomy Helper.
    *
    * @var \Drupal\cp_taxonomy\CpTaxonomyHelperInterface
    */
@@ -86,6 +86,24 @@ class CpTaxonomyHelperTest extends TestBase {
     // Test default widget type.
     $widget_type = $this->helper->getWidgetType('node:taxonomy_test_1');
     $this->assertSame('options_select', $widget_type);
+  }
+
+  /**
+   * Test empty build PageVisibility.
+   */
+  public function testEmptyBuildPageVisibility() {
+    $build = [];
+    $this->helper->checkTaxonomyTermsPageVisibility($build, []);
+    $this->assertEmpty($build);
+  }
+
+  /**
+   * Test empty build ListingVisibility.
+   */
+  public function testEmptyBuildListingVisibility() {
+    $build = [];
+    $this->helper->checkTaxonomyTermsListingVisibility($build, '');
+    $this->assertEmpty($build);
   }
 
 }

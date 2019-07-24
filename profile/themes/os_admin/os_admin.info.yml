@@ -22,3 +22,7 @@ regions_hidden:
 libraries-extend:
   seven/global-styling:
     - os_admin/global-styling
+
+stylesheets-remove:
+  - '@classy/css/components/pager.css'
+  - '@seven/css/components/pager.css'

@@ -224,6 +224,7 @@ class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
       'libraries' => [
         $this->id() . '/' . self::CUSTOM_THEME_GLOBAL_STYLING_NAMESPACE,
       ],
+      'custom theme' => TRUE,
     ];
 
     // system_region_list() returns region names as translatable markup.

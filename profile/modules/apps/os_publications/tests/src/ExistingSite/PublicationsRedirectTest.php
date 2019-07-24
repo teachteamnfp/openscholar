@@ -7,6 +7,7 @@ namespace Drupal\Tests\os_publications\ExistingSite;
  *
  * @group functional
  * @group publications
+ * @coversDefaultClass \Drupal\os_publications\Plugin\CpSetting\PublicationSettingsForm
  */
 class PublicationsRedirectTest extends TestBase {
 
@@ -48,7 +49,6 @@ class PublicationsRedirectTest extends TestBase {
       'os_publications_export_format[endnote8]' => 'endnote8',
       'os_publications_export_format[endnote7]' => 'endnote7',
       'os_publications_export_format[tagged]' => 'tagged',
-      'os_publications_export_format[marc]' => 'marc',
       'os_publications_export_format[ris]' => 'ris',
     ], 'Save configuration');
 

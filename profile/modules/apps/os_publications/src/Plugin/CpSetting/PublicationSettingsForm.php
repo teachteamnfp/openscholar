@@ -2,7 +2,7 @@
 
 namespace Drupal\os_publications\Plugin\CpSetting;
 
-use Drupal\Core\Cache\Cache;
+use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -73,6 +73,13 @@ class PublicationSettingsForm extends CpSettingBase {
   protected $pluginManager;
 
   /**
+   * Cache tags invalidator service.
+   *
+   * @var \Drupal\Core\Cache\CacheTagsInvalidatorInterface
+   */
+  protected $cacheTagsInvalidator;
+
+  /**
    * Creates a new PublicationSettingsForm object.
    *
    * @param array $configuration
@@ -95,8 +102,10 @@ class PublicationSettingsForm extends CpSettingBase {
    *   Publications listing helper.
    * @param \Drupal\os_publications\Plugin\CitationDistribution\CitationDistributePluginManager $pluginManager
    *   Citation distribution plugin manager.
+   * @param \Drupal\Core\Cache\CacheTagsInvalidatorInterface $cache_tags_invalidator
+   *   Cache tags invalidator service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, VsiteContextManagerInterface $vsite_context_manager, CitationStylerInterface $styler, BibciteFormatManagerInterface $formatManager, EntityTypeManagerInterface $entityTypeManager, SampleCitations $citations, PublicationsListingHelperInterface $redirect_repository, CitationDistributePluginManager $pluginManager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, VsiteContextManagerInterface $vsite_context_manager, CitationStylerInterface $styler, BibciteFormatManagerInterface $formatManager, EntityTypeManagerInterface $entityTypeManager, SampleCitations $citations, PublicationsListingHelperInterface $redirect_repository, CitationDistributePluginManager $pluginManager, CacheTagsInvalidatorInterface $cache_tags_invalidator) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $vsite_context_manager);
     $this->styler = $styler;
     $this->formatManager = $formatManager;
@@ -104,6 +113,7 @@ class PublicationSettingsForm extends CpSettingBase {
     $this->citations = $citations;
     $this->publicationsListingHelper = $redirect_repository;
     $this->pluginManager = $pluginManager;
+    $this->cacheTagsInvalidator = $cache_tags_invalidator;
   }
 
   /**
@@ -120,7 +130,8 @@ class PublicationSettingsForm extends CpSettingBase {
       $container->get('entity_type.manager'),
       $container->get('os_publications.citation_examples'),
       $container->get('os_publications.listing_helper'),
-      $container->get('os_publications.manager_citation_distribute')
+      $container->get('os_publications.manager_citation_distribute'),
+      $container->get('cache_tags.invalidator')
     );
   }
 
@@ -259,40 +270,35 @@ class PublicationSettingsForm extends CpSettingBase {
    */
   public function submitForm(FormStateInterface $formState, ConfigFactoryInterface $configFactory) {
     $publication_config = $configFactory->getEditable('os_publications.settings');
-
-    $values = $formState->getValues();
-
-    // If changes in style then clear citation cache.
-    if ($values['os_publications_preferred_bibliographic_format'] !== $publication_config->get('default_style')) {
-      Cache::invalidateTags(['publication_citation', 'config:views.view.publications']);
-    }
-    if (($values['os_publications_note_in_teaser'] != $publication_config->get('note_in_teaser')) || ($values['biblio_sort'] != $publication_config->get('filter_publication_types')) || ($values['biblio_order'] != $publication_config->get('biblio_order')) || ($values['os_publications_export_format'] != $publication_config->get('export_format'))) {
-      Cache::invalidateTags(['config:views.view.publications', 'bibcite_reference_view']);
-    }
-    if ($values['os_publications_shorten_citations'] != $publication_config->get('shorten_citations')) {
-      Cache::invalidateTags(['publication_citation']);
-    }
+    $form_state_values = $formState->getValues();
 
     $publication_config
-      ->set('default_style', $values['os_publications_preferred_bibliographic_format'])
-      ->set('filter_publication_types', $values['os_publications_filter_publication_types'])
-      ->set('biblio_sort', $values['biblio_sort'])
-      ->set('note_in_teaser', $values['os_publications_note_in_teaser'])
-      ->set('biblio_order', $values['biblio_order'])
-      ->set('shorten_citations', $values['os_publications_shorten_citations'])
-      ->set('export_format', $values['os_publications_export_format'])
-      ->set('citation_distribute_autoflags', $values['citation_distribute_autoflags'])
+      ->set('default_style', $form_state_values['os_publications_preferred_bibliographic_format'])
+      ->set('filter_publication_types', $form_state_values['os_publications_filter_publication_types'])
+      ->set('biblio_sort', $form_state_values['biblio_sort'])
+      ->set('note_in_teaser', $form_state_values['os_publications_note_in_teaser'])
+      ->set('biblio_order', $form_state_values['biblio_order'])
+      ->set('shorten_citations', $form_state_values['os_publications_shorten_citations'])
+      ->set('export_format', $form_state_values['os_publications_export_format'])
+      ->set('citation_distribute_autoflags', $form_state_values['citation_distribute_autoflags'])
       ->save();
 
     /** @var \Drupal\group\Entity\GroupInterface $group */
     $group = $this->vsiteContextManager->getActiveVsite();
 
     /** @var \Drupal\redirect\Entity\Redirect|null $redirect */
-    $redirect = $this->publicationsListingHelper->setRedirect("[vsite:{$group->id()}]/publications", "internal:/publications/{$formState->getValue('biblio_sort')}");
+    $redirect = $this->publicationsListingHelper->setRedirect("[vsite:{$group->id()}]/publications", "internal:/publications/{$form_state_values['biblio_sort']}");
 
     if ($redirect) {
       $group->addContent($redirect, 'group_entity:redirect');
     }
+
+    // This is necessary, otherwise the changes fails to appear in the UI.
+    $this->cacheTagsInvalidator->invalidateTags([
+      'config:views.view.publications',
+      'bibcite_reference_view',
+      'publication_citation',
+    ]);
   }
 
 }

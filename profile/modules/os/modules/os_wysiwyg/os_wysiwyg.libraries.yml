@@ -1,0 +1,20 @@
+os_link:
+  version: 1.0
+  css:
+    component:
+      theme/OsWysiwygLinkTool.css: { }
+  js:
+    js/OsWysiwygLinkTool.module.js: { }
+  drupalSettings:
+    version:
+      os_link: "1.0"
+    angularModules:
+      OsWysiwygLinkTool: OsWysiwygLinkTool
+  paths: theme
+  dependencies:
+    - os/angularjs
+    - os/fileHandler
+    - os/entityService
+    - os/fileEditor
+    - os/jsPager
+    - os/angular.modalService

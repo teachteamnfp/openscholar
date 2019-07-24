@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\os_publications\ExistingSite;
 
+use Behat\Mink\Element\NodeElement;
 use Drupal\Core\Render\Markup;
 
 /**
@@ -294,7 +295,6 @@ class PublicationsViewsFunctionalTest extends TestBase {
     // Confirm that the grouping order is as per the setting.
     /** @var \Behat\Mink\Element\NodeElement[] $groupings */
     $groupings = $this->getSession()->getPage()->findAll('css', '.view-publications .view-content h3');
-    file_put_contents('public://page-name.html', $this->getCurrentPageContent());
 
     $this->assertEquals('V', $groupings[0]->getText());
     $this->assertEquals('T', $groupings[1]->getText());
@@ -331,10 +331,74 @@ class PublicationsViewsFunctionalTest extends TestBase {
   }
 
   /**
+   * Tests whether the publication sort setting is updated in the UI.
+   *
+   * @covers \Drupal\os_publications\Plugin\CpSetting\PublicationSettingsForm::submitForm
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public function testPublicationsSortSetting(): void {
+    // Setup.
+    $reference1 = $this->createReference([
+      'title' => 'Mona Lisa',
+      'is_sticky' => [
+        'value' => 0,
+      ],
+    ]);
+    $this->group->addContent($reference1, 'group_entity:bibcite_reference');
+
+    $reference2 = $this->createReference([
+      'title' => 'The Rust Programming Language',
+      'type' => 'journal',
+      'bibcite_year' => [
+        'value' => 2010,
+      ],
+      'is_sticky' => [
+        'value' => 0,
+      ],
+    ]);
+    $this->group->addContent($reference2, 'group_entity:bibcite_reference');
+
+    $this->drupalLogin($this->groupAdmin);
+
+    $this->visitViaVsite('publications', $this->group);
+
+    // Note the position og groupings.
+    $headings = array_map(function (NodeElement $element) {
+      return $element->getText();
+    }, $this->getSession()->getPage()->findAll('css', '.view-publications .view-content h3'));
+
+    $pos_artwork = array_search('Artwork', $headings, TRUE);
+    $pos_journal = array_search('Journal', $headings, TRUE);
+
+    // Make changes.
+    $this->visitViaVsite('cp/settings/publications', $this->group);
+    $this->drupalPostForm(NULL, [
+      'os_publications_preferred_bibliographic_format' => 'harvard_chicago_author_date',
+      'biblio_sort' => 'type',
+      'biblio_order' => 'ASC',
+      'os_publications_export_format[bibtex]' => 'bibtex',
+      'os_publications_export_format[endnote8]' => 'endnote8',
+      'os_publications_export_format[endnote7]' => 'endnote7',
+      'os_publications_export_format[tagged]' => 'tagged',
+      'os_publications_export_format[ris]' => 'ris',
+    ], 'Save configuration');
+
+    // Tests.
+    $this->visitViaVsite('publications', $this->group);
+
+    $headings = array_map(function (NodeElement $element) {
+      return $element->getText();
+    }, $this->getSession()->getPage()->findAll('css', '.view-publications .view-content h3'));
+
+    $this->assertNotEquals($pos_artwork, array_search('Artwork', $headings, TRUE));
+    $this->assertNotEquals($pos_journal, array_search('Journal', $headings, TRUE));
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function tearDown() {
-
     /** @var \Drupal\Core\Config\Config $publication_settings_mut */
     $publication_settings_mut = $this->configFactory->getEditable('os_publications.settings');
     $publication_settings_mut

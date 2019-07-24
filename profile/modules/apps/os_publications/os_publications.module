@@ -157,6 +157,10 @@ function os_publications_views_pre_render(ViewExecutable $view) {
   }
 
   if ($view->current_display !== 'cp') {
+
+    // Include citation download button.
+    $view->attachment_before = \Drupal::service('os_publications.citation_helper')->getCitationDownloadButton();
+
     // Convert citation title into publication entity page's url.
     $results = $view->result;
     foreach ($results as $result) {
@@ -323,6 +327,10 @@ function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInte
   $form['html_title']['widget']['0']['#format'] = 'title_filter';
   $form['#attached']['library'][] = 'os_publications/drupal.os_publications';
   $form['title']['#access'] = FALSE;
+
+  // Put the delete button at the end of the actions list.
+  // Cancel button's weight is 30, this needs to be higher than that.
+  $form['actions']['delete']['#weight'] = 100;
 }
 
 /**
@@ -475,7 +483,22 @@ function os_publications_preprocess_bibcite_citation(&$variables) {
     $url_text = shorten_url($current_uri);
     $url = Url::fromUri($url_text);
     $short_url = Link::fromTextAndUrl($url_text, $url)->toString();
+
+    // Get entity id to be passed to export button.
+    $id = \Drupal::routeMatch()->getParameter('bibcite_reference')->id();
+    // Append additional links to the citation.
     $variables['content']['#markup'] .= '<span class="short-link">' . t("Copy at") . "&nbsp;$short_url" . '</span>';
+
+    // Get export button render array , get it's html and append to citation.
+    $export_array = \Drupal::service('os_publications.citation_helper')->getCitationDownloadButton($id);
+    $vsite = \Drupal::service('vsite.context_manager')->getActiveVsite();
+    if ($export_array && $vsite) {
+      $export_button = \Drupal::service('renderer')->render($export_array);
+      $variables['content']['#markup'] .= $export_button;
+      $variables['content']['#allowed_tags'] = [
+        'a', 'button', 'ul', 'li', 'span', 'div',
+      ];
+    }
   }
 }
 
@@ -491,14 +514,27 @@ function os_publications_editor_js_settings_alter(array &$settings) {
  * Implements hook_ENTITY_TYPE_view_alter().
  */
 function os_publications_bibcite_reference_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
-  if ($display->getMode() !== 'teaser') {
-    return;
+  if ($display->getMode() === 'teaser') {
+    // Check note in teaser setting and unset it if setting is off.
+    $publications_config = \Drupal::configFactory()->get('os_publications.settings');
+    $note_in_teaser = $publications_config->get('note_in_teaser');
+    if (!$note_in_teaser) {
+      unset($build['notes']);
+    }
   }
 
-  // Check note in teaser setting and unset it if setting is off.
-  $publications_config = \Drupal::configFactory()->get('os_publications.settings');
-  $note_in_teaser = $publications_config->get('note_in_teaser');
-  if (!$note_in_teaser) {
-    unset($build['notes']);
+  // If publication has pmid entered, show pubmed link.
+  if ($display->getMode() === 'citation') {
+    if ($build['#bibcite_reference']->bibcite_pmid->value) {
+      // Use bibcite module's bibcite link plugin to generate the pubmed link.
+      $manager = \Drupal::service('plugin.manager.bibcite_link');
+      $instance = $manager->createInstance('pubmed');
+      if ($link = $instance->build($entity)) {
+        $build['pubmed_link'] = [
+          '#markup' => '<span class = "citation-links-pubmed">' . \Drupal::service('renderer')->render($link) . '</span>',
+          '#weight' => 50,
+        ];
+      }
+    }
   }
 }

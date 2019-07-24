@@ -118,6 +118,9 @@ class CpTaxonomyHelper implements CpTaxonomyHelperInterface {
    * {@inheritdoc}
    */
   public function checkTaxonomyTermsPageVisibility(array &$build, array $view_modes): void {
+    if (empty($build['field_taxonomy_terms'])) {
+      return;
+    }
     $config = $this->configFactory->get('cp_taxonomy.settings');
     $display_term_under_content = $config->get('display_term_under_content');
     if (empty($display_term_under_content) && in_array($build['#view_mode'], $view_modes)) {
@@ -129,10 +132,21 @@ class CpTaxonomyHelper implements CpTaxonomyHelperInterface {
    * {@inheritdoc}
    */
   public function checkTaxonomyTermsListingVisibility(array &$build, string $entity_type): void {
+    if (empty($build['field_taxonomy_terms'])) {
+      return;
+    }
     $config = $this->configFactory->get('cp_taxonomy.settings');
     $display_term_under_content_teaser_types = $config->get('display_term_under_content_teaser_types');
+    $show_terms = TRUE;
     // Unset field_taxonomy_terms for unchecked bundles from settings page.
     if (is_array($display_term_under_content_teaser_types) && !in_array($entity_type, $display_term_under_content_teaser_types) && $build['#view_mode'] == 'teaser') {
+      $show_terms = FALSE;
+    }
+    // Independent by settings we should hide on title view mode.
+    if ($build['#view_mode'] == 'title') {
+      $show_terms = FALSE;
+    }
+    if (!$show_terms) {
       $build['field_taxonomy_terms']['#access'] = FALSE;
     }
   }

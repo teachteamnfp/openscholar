@@ -1,0 +1,98 @@
+<div class="link-form">
+  <div>
+    <div class="form-item link-form-left">
+      <label for="owl-field-text">Link Text</label>
+      <input type="text" id="owl-field-text" ng-model="text" class="form-text" size="60">
+      <div class="description">The linked text seen by users. Leave blank to use
+        the url of the link itself.</div>
+    </div>
+    <div class="form-item link-form-right">
+      <label for="owl-title-text">Title Text</label>
+      <input type="text" id="owl-title-text" ng-model="title" class="form-text" size="60">
+      <div class="description">The hover text seen when moused over. Is also
+        used by screen readers, but will not appear for keyboard or touch-only
+        users.</div>
+    </div>
+  </div>
+  <div class="form-item link-form-newwindow">
+    <input type="checkbox" id="owl-target" ng-model="newWindow"
+      class="form-checkbox"><label for="owl-target" class="option"> Open this
+      link in a new tab</label>
+    <div class="description">Note: depending on usage, may cause accessibility
+      concenrs. <a href="https://www.w3.org/TR/WCAG20-TECHS/G200.html"
+        target="_blank">Learn more</a></div>
+  </div>
+  <div id="owl-nav-buttons">
+    <div class="owl-tab-button button"
+      ng-class="{'active button--primary': active == 'url'}"
+      ng-click="active = 'url'"><i class="fa fa-link"></i> URL</div>
+    <div class="owl-tab-button button"
+      ng-class="{'active button--primary': active == 'email'}"
+      ng-click="active = 'email'"><i class="fa fa-envelope"></i> E-mail</div>
+    <div class="owl-tab-button button"
+      ng-class="{'active button--primary': active == 'file'}"
+      ng-click="active = 'file'"><i class="fa fa-file"></i> File</div>
+  </div>
+  <div id="owl-panes" ng-switch="active">
+    <div index="href" id="href-link" ng-switch-when="url">
+      <div class="form-item">
+        <label for="owl-url">Website URL</label><input type="text" id="owl-url"
+          ng-model="$parent.arg" class="form-text" size="60">
+        <div class="description">The URL of the web page. Can be a link to one
+          of your own pages.</div>
+      </div>
+    </div>
+    <div index="email" id="email-link" ng-switch-when="email">
+      <div class="form-item">
+        <label for="owl-email">E-mail</label><input type="text" id="owl-email"
+          ng-model="$parent.arg" class="form-text" size="60">
+      </div>
+    </div>
+    <div index="file" id="file-link" ng-switch-when="file">
+      <div class="form-item">
+        <div class="owl-file-controls">
+          <div class="add_new form-item">
+            <div ngf-select ngf-change="fh.checkForDupes($files)"
+              ngf-accept="fh.validate($file);" accept="{{fh.acceptString()}}"
+              class="add_new_button button button--primary"><i class="fa fa fa-plus-circle"></i>Add New</div>
+            <div class="form-help">
+              <div class="description">Files must be less than
+                <strong>{{filesize}}</strong>.<br />Allowed file types:
+                {{extensionStr}}</div>
+            </div>
+          </div>
+          <div class="search form-item"><label for="search-files">Or, search existing
+              files</label><input id="search-files" type="text"
+              class="form-text" ng-model="search"></div>
+        </div>
+        <div id="owl-file-messages" ng-show="fh.messages()">
+          <div ng-repeat="m in fh.messages()" ng-bind-html="m.text"></div>
+        </div>
+        <div class="owl-file-loading" ng-if="!ready">
+          Loading files. Please wait.
+        </div>
+        <div class="owl-file-error" ng-if="error">
+          There was an error fetching your files. Please save any changes and
+          reload the page.
+        </div>
+        <div class="owl-file-list" ng-if="ready">
+          <div
+            js-pager="f in files | filter:'public':true:'schema' | orderBy:'timestamp':true | filter:search:filename track by f.mid starting with arg">
+            <div id="file-{{f.mid}}" class="owl-file-item media-row"
+              ng-class="{selected: f.mid == arg, new: f.new}"
+              ng-click="setLinkTarget(f.mid)">{{f.name}}</div>
+          </div>
+          <div file-upload-handler fh="fh"></div>
+          <div file-edit file="file_edit" ng-if="editing"
+            on-close="fileEditClose(saved)"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-actions">
+    <button ng-click="close(true)" class="button button--primary"><i
+        class="fa fa-arrow-circle-down"></i> Insert</button>
+    <button ng-click="close(false)" class="button"><i class="fa fa-times"></i>
+      Close</button>
+  </div>
+</div>

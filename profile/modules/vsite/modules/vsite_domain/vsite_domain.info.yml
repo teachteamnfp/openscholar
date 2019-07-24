@@ -1,0 +1,6 @@
+name: Vsite Domain
+description: "This creates a domain handler for scholar that overrides the default purl domain handler. It also also provides an admin form for creating domains for vsites"
+core: 8.x
+type: module
+dependencies:
+  - drupal:vsite

@@ -1,0 +1,30 @@
+<div id="file-handler-filename-check" ng-if="fh.checkingFilenames()">
+    Checking for duplicate files...
+</div>
+<div id="file-handler-duplicate-check" ng-if="fh.hasDuplicates()">
+    <div class="file-handler-dupe" ng-repeat="dupe in fh.dupes" ng-show="!dupe.processed" style="z-index: {{1000-$index}}">
+        <div ng-show="dupe.name != dupe.filename">
+            This file was renamed from '{{dupe.name}}' due to having invalid characters in its name.
+        </div>
+        A file with the name '{{dupe.filename}}' already exists.
+        <div class="actions">
+            <div><button value="rename" ng-click="fh.rename($index, $last)">Rename</button> The new name will be {{dupe.newName}}</div>
+            <div><button value="replace" ng-click="fh.replace($index, $last)">Replace</button> Warning: replacing the existing file cannot be undone.</div>
+            <div><button value="cancel" ng-click="fh.cancel($index, $last)">Cancel</button></div>
+        </div>
+        <div class="file-handler-dupe-counter" ng-show="fh.dupes.length > 1">{{$index+1}}/{{fh.dupes.length}}</div>
+    </div>
+</div>
+<div id="file-handler-upload-progress" ng-if="fh.uploadProgress().uploading">
+    <div class="progress-filename">Uploading {{fh.uploadProgress().filename}}</div>
+    <div class="progress-bar-wrapper">
+        <div class="progress-bar progress-striped">
+            <div class="progress-bar-completed" style="width: {{fh.uploadProgress().progressBar}}%"></div>
+        </div>
+    </div>
+    <div id="file-handler-upload-counter">{{fh.uploadProgress().index}} of {{fh.uploadProgress().numFiles}}</div>
+</div>
+<div id="file-handler-rejected">
+    <div ng-repeat="m in messages" class="message" ng-bind-html="m.text">
+    </div>
+</div>
