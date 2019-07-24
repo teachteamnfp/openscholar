@@ -1,6 +1,7 @@
 administer control panel redirects:
   title: 'Administer redirect_maximum control panel'
   description: 'Administer redirect_maximum control panel.'
+  restrict access: 'TRUE'
 
 ignore redirects:
   title: 'Ignore redirects'

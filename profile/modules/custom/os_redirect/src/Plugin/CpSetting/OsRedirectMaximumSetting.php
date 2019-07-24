@@ -64,7 +64,7 @@ class OsRedirectMaximumSetting extends CpSettingBase {
       return $access_result;
     }
 
-    if (!$this->activeVsite->hasPermission('administer control panel redirect_maximum', $account)) {
+    if (!$account->hasPermission('administer control panel redirects')) {
       return AccessResult::forbidden();
     }
 
