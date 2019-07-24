@@ -72,14 +72,14 @@ class CpUserMainController extends ControllerBase {
 
     $build = [];
 
-    $can_change_ownership = ($group->getOwnerId() == $current_user->id());
+    $can_change_ownership = ($group->getOwnerId() === $current_user->id());
 
     $userRows = [];
     /* @var \Drupal\user\UserInterface $u */
     foreach ($users as $u) {
       $roles = $group->getMember($u)->getRoles();
 
-      if ($can_change_ownership && $group->getOwnerId() == $u->id()) {
+      if ($can_change_ownership) {
         $role_link = Link::createFromRoute('Change Owner', 'cp.users.owner', ['user' => $u->id()], ['attributes' => ['class' => ['use-ajax']]])->toString();
       }
       elseif ($this->currentUser()->hasPermission('change user roles') || $group->getMember($this->currentUser())->hasPermission('manage cp roles')) {
