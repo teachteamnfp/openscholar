@@ -38,13 +38,14 @@ class VsiteFaviconSetting extends CpSettingBase {
     $form['favicon_fid'] = [
       '#type' => 'managed_file',
       '#title' => $this->t('Favicon'),
-      '#description' => $this->t('A 16x16 .png file to be displayed in browser shortcut icons and tabs for any page on your site. For help generating a favicon file, try <a href="http://www.favicon.cc/" target="_blank">http://www.favicon.cc/</a>.'),
+      '#description' => $this->t('A 228x228 .png file to be displayed in browser shortcut icons and tabs for any page on your site. For help generating a favicon file, try <a href="http://www.favicon.cc/" target="_blank">http://www.favicon.cc/</a>.'),
       '#upload_location' => $upload_location,
       '#upload_validators' => [
         'file_validate_extensions' => ['png'],
-        'file_validate_size' => [2 * 1024],
-        'file_validate_image_resolution' => ['16x16'],
+        'file_validate_image_resolution' => ['228x228'],
+        'file_validate_size' => [10 * 1024 * 1024],
       ],
+      '#accept' => '.png',
     ];
     if ($default_fid = $config->get('favicon_fid')) {
       $form['favicon_fid']['#default_value'] = [$default_fid];

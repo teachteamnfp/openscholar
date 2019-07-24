@@ -17,7 +17,7 @@ dependencies:
     - field.field.node.person.field_redirect_to_source
     - field.field.node.person.field_taxonomy_terms
     - field.field.node.person.field_website
-    - image.style.os_news_full
+    - image.style.crop_photo_person_full
     - node.type.person
   module:
     - image
@@ -37,66 +37,34 @@ content:
   body:
     label: hidden
     type: text_default
-    weight: 6
+    weight: 2
     settings: {  }
     third_party_settings: {  }
     region: content
   field_address:
-    weight: 8
+    weight: 4
     label: hidden
     settings: {  }
     third_party_settings: {  }
     type: basic_string
     region: content
   field_email:
-    weight: 9
+    weight: 5
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    type: basic_string
+    type: email_mailto
     region: content
-  field_first_name:
-    weight: 1
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
-  field_honorific:
-    weight: 0
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
-  field_last_name:
-    weight: 3
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
-  field_middle_name:
-    type: string
-    weight: 2
-    region: content
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
   field_office_hours:
-    weight: 11
-    label: above
+    weight: 7
+    label: inline
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
     region: content
   field_phone:
-    weight: 10
+    weight: 6
     label: hidden
     settings:
       title: ''
@@ -105,23 +73,23 @@ content:
     region: content
   field_photo_person:
     type: image
-    weight: 5
+    weight: 1
     region: content
     label: hidden
     settings:
-      image_style: os_news_full
+      image_style: crop_photo_person_full
       image_link: ''
     third_party_settings: {  }
   field_professional_titles:
-    weight: 4
+    type: string
+    weight: 0
+    region: content
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
-    region: content
   field_taxonomy_terms:
-    weight: 12
+    weight: 8
     label: above
     settings:
       link: true
@@ -129,8 +97,8 @@ content:
     type: entity_reference_label
     region: content
   field_website:
-    weight: 7
-    label: above
+    weight: 3
+    label: hidden
     settings:
       trim_length: 80
       url_only: false
@@ -141,10 +109,14 @@ content:
     type: link
     region: content
   links:
-    weight: 13
+    weight: 9
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_first_name: true
+  field_honorific: true
+  field_last_name: true
+  field_middle_name: true
   field_redirect_to_source: true
   langcode: true

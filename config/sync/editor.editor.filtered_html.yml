@@ -63,7 +63,7 @@ settings:
         -
           name: Links
           items:
-            - DrupalLink
+            - OsLink
             - DrupalUnlink
   plugins:
     language:

@@ -143,8 +143,9 @@
 						</div>
 					</div>
 				</div>
-				<div id="body-container-group-3" ng-show="vicariousUser">
-					<div class = "popup">
+				<div id="body-container-group-3" ng-show="canCreateUser">
+					<div class="user-creation-popup" ng-show="userCreationOptional" ng-click="showUserCreation = !showUserCreation">Register Account</div>
+					<div class = "popup" ng-show="showUserCreation">
 						<div class = "popup">
 							<div><b>Desired user name</b></div>
 							<div><input type="text" ng-model="userName" class="form-text form-text-mini" ng-blur="checkUserName()" autocomplete="new-password"></div>

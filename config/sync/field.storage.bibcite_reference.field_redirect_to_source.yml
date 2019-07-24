@@ -1,0 +1,19 @@
+uuid: 8e891de8-5137-4f8e-a437-d20941c2d7ce
+langcode: en
+status: true
+dependencies:
+  module:
+    - bibcite_entity
+    - link
+id: bibcite_reference.field_redirect_to_source
+field_name: field_redirect_to_source
+entity_type: bibcite_reference
+type: link
+settings: {  }
+module: link
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

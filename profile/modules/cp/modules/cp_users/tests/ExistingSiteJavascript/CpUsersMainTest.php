@@ -72,6 +72,7 @@ class CpUsersMainTest extends OsExistingSiteJavascriptTestBase {
     ]);
     $this->groupAdmin = $this->createUser();
     $this->addGroupAdmin($this->groupAdmin, $this->group);
+    $this->group->setOwner($this->groupAdmin)->save();
   }
 
   /**

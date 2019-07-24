@@ -1,0 +1,10 @@
+uuid: 530ed2f9-d22c-447f-b37c-fbd45726785e
+langcode: en
+status: true
+dependencies: {  }
+id: publications
+label: Publications
+description: ''
+activationRules: "publications\r\npublications/*"
+weight: 0
+data: {  }

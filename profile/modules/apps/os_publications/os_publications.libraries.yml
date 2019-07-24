@@ -1,3 +1,7 @@
 drupal.os_publications:
+  version: 1.x
+  css:
+    base:
+      css/os_publications-base.css: {}
   js:
     js/os_publications.citation_example.js: {}

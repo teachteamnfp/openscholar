@@ -69,7 +69,7 @@ class CitationDistributeGooglescholar implements CitationDistributionInterface, 
     $metadata = [
       'citation_journal_title' => 'bibcite_secondary_title',
       'citation_publisher' => 'bibcite_publisher',
-      'citation_title' => 'title',
+      'citation_title' => 'html_title',
       'citation_year' => 'bibcite_year',
       'citation_volume' => 'bibcite_volume',
       'citation_issue' => 'bibcite_issue',

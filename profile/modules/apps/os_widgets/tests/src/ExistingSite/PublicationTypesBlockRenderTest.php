@@ -55,15 +55,56 @@ class PublicationTypesBlockRenderTest extends OsWidgetsExistingSiteTestBase {
   }
 
   /**
-   * Test basic listing test without count.
+   * Test basic listing test with count.
    */
   public function testBuildListingContributorsWithCount() {
-    $this->createReference([
+    $ref1 = $this->createReference([
       'title' => 'Lorem Ipsum art 1',
       'type' => 'artwork',
     ]);
-    $this->createReference([
+    $ref2 = $this->createReference([
       'title' => 'Lorem Ipsum art 2',
+      'type' => 'artwork',
+    ]);
+    $this->group->addContent($ref1, 'group_entity:bibcite_reference');
+    $this->group->addContent($ref2, 'group_entity:bibcite_reference');
+
+    $block_content = $this->createBlockContent([
+      'type' => 'publication_types',
+      'field_types_whitelist' => [
+        'artwork',
+        'book',
+      ],
+      'field_display_count' => [
+        TRUE,
+      ],
+    ]);
+    $this->vsiteContextManager->activateVsite($this->group);
+    $view_builder = $this->entityTypeManager
+      ->getViewBuilder('block_content');
+    $render = $view_builder->view($block_content);
+    $renderer = $this->container->get('renderer');
+
+    /** @var \Drupal\Core\Render\Markup $markup_array */
+    $markup = $renderer->renderRoot($render);
+    $this->assertContains('<a href="/publications?type=artwork">Artwork
+                      <span class="count">(2)</span>
+                </a>', $markup->__toString());
+    $this->assertContains('<a href="/publications?type=book">Book
+                      <span class="count">(0)</span>
+                </a>', $markup->__toString());
+  }
+
+  /**
+   * Test basic listing test with count and vsite content.
+   */
+  public function testBuildListingVsiteContributorsWithCount() {
+    $ref1 = $this->createReference([
+      'type' => 'artwork',
+    ]);
+    $this->group->addContent($ref1, 'group_entity:bibcite_reference');
+    // Create reference out of group.
+    $this->createReference([
       'type' => 'artwork',
     ]);
 
@@ -77,6 +118,7 @@ class PublicationTypesBlockRenderTest extends OsWidgetsExistingSiteTestBase {
         TRUE,
       ],
     ]);
+    $this->vsiteContextManager->activateVsite($this->group);
     $view_builder = $this->entityTypeManager
       ->getViewBuilder('block_content');
     $render = $view_builder->view($block_content);
@@ -85,7 +127,7 @@ class PublicationTypesBlockRenderTest extends OsWidgetsExistingSiteTestBase {
     /** @var \Drupal\Core\Render\Markup $markup_array */
     $markup = $renderer->renderRoot($render);
     $this->assertContains('<a href="/publications?type=artwork">Artwork
-                      <span class="count">(2)</span>
+                      <span class="count">(1)</span>
                 </a>', $markup->__toString());
     $this->assertContains('<a href="/publications?type=book">Book
                       <span class="count">(0)</span>

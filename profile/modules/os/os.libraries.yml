@@ -131,6 +131,23 @@ jsPager:
   dependencies:
     - os/angular.angularjs
 
+fileHandler:
+  version: 1.0
+  js:
+    js/FileHandler/FileHandler.module.js: { }
+  css:
+    component:
+      js/FileHandler/fileUploadHandler.css: { }
+  paths: js/FileHandler
+  drupalSettings:
+    version: { fileHandler: "1.0" }
+  dependencies:
+    - os/angular.angularjs
+    - os/angular.ngFileUpload
+    - os/drupalSettings
+    - os/urlGenerator
+
+
 entityService:
   version: 1.0
   js:

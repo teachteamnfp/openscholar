@@ -17,6 +17,7 @@ use Symfony\Component\Yaml\Yaml;
  *     "form" = {
  *       "add" = "\Drupal\cp_appearance\Entity\Form\CustomThemeForm",
  *       "edit" = "\Drupal\cp_appearance\Entity\Form\CustomThemeForm",
+ *       "delete" = "\Drupal\cp_appearance\Entity\Form\CustomThemeDeleteForm",
  *     },
  *   },
  *   admin_permission = "manage cp appearance",
@@ -31,10 +32,6 @@ use Symfony\Component\Yaml\Yaml;
  *     "label",
  *     "base_theme",
  *     "images",
- *   },
- *   links = {
- *     "add-form" = "/cp/appearance/custom-themes/add",
- *     "edit-form" = "/cp/appearance/custom-themes/{cp_custom_theme}/edit"
  *   }
  * )
  */
@@ -227,6 +224,7 @@ class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
       'libraries' => [
         $this->id() . '/' . self::CUSTOM_THEME_GLOBAL_STYLING_NAMESPACE,
       ],
+      'custom theme' => TRUE,
     ];
 
     // system_region_list() returns region names as translatable markup.
@@ -284,6 +282,40 @@ class CustomTheme extends ConfigEntityBase implements CustomThemeInterface {
   public function setScripts(string $scripts): CustomThemeInterface {
     $this->scripts = $scripts;
     return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function preDelete(EntityStorageInterface $storage, array $entities) {
+    parent::preDelete($storage, $entities);
+
+    /** @var \Drupal\Core\Config\ConfigFactoryInterface $config_factory */
+    $config_factory = \Drupal::configFactory();
+    /** @var \Drupal\Core\Config\Config $theme_setting_mut */
+    $theme_setting_mut = $config_factory->getEditable('system.theme');
+    /** @var \Drupal\Core\Extension\ThemeInstallerInterface $theme_installer */
+    $theme_installer = \Drupal::service('theme_installer');
+    /** @var \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler */
+    $theme_handler = \Drupal::service('theme_handler');
+    $default_theme = $theme_setting_mut->get('default');
+
+    // Only perform the cleanups on installed custom themes.
+    // This will prevent system crash if an uninstalled theme is deleted.
+    /** @var \Drupal\cp_appearance\Entity\CustomThemeInterface[] $installed_custom_themes */
+    $installed_custom_themes = array_filter($entities, function (CustomThemeInterface $entity) use ($theme_handler) {
+      return $theme_handler->themeExists($entity->id());
+    });
+
+    foreach ($installed_custom_themes as $custom_theme) {
+      if ($custom_theme->id() === $default_theme) {
+        $theme_setting_mut->set('default', $custom_theme->getBaseTheme())->save();
+      }
+    }
+
+    if ($installed_custom_themes) {
+      $theme_installer->uninstall(array_keys($installed_custom_themes));
+    }
   }
 
   /**

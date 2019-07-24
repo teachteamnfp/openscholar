@@ -2,6 +2,9 @@
 
 namespace Drupal\Tests\os_publications\ExistingSite;
 
+use Behat\Mink\Element\NodeElement;
+use Drupal\Core\Render\Markup;
+
 /**
  * PublicationsViewsFunctionalTest.
  *
@@ -39,16 +42,31 @@ class PublicationsViewsFunctionalTest extends TestBase {
   protected $groupAdmin;
 
   /**
+   * Default publication sort category.
+   *
+   * @var string
+   */
+  protected $defaultSortCategory;
+
+  /**
+   * Default publication sort order.
+   *
+   * @var string
+   */
+  protected $defaultSortOrder;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
     parent::setUp();
 
     $this->configFactory = $this->container->get('config.factory');
-    /** @var \Drupal\Core\Config\ImmutableConfig $bibcite_settings */
-    $bibcite_settings = $this->configFactory->get('bibcite.settings');
-    $this->defaultBibciteCitationStyle = $bibcite_settings->get('default_style');
     $this->citationStyler = $this->container->get('bibcite.citation_styler');
+    /** @var \Drupal\Core\Config\ImmutableConfig $publication_settings */
+    $publication_settings = $this->configFactory->get('os_publications.settings');
+    $this->defaultSortCategory = $publication_settings->get('biblio_sort');
+    $this->defaultSortOrder = $publication_settings->get('biblio_order');
 
     $this->groupAdmin = $this->createUser();
     $this->addGroupAdmin($this->groupAdmin, $this->group);
@@ -57,8 +75,8 @@ class PublicationsViewsFunctionalTest extends TestBase {
   /**
    * Tests whether publication style is changed as per the settings.
    *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
    * @throws \Drupal\Core\Entity\EntityStorageException
-   * @throws \Behat\Mink\Exception\ExpectationException
    * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
   public function testReferenceStyle(): void {
@@ -69,7 +87,7 @@ class PublicationsViewsFunctionalTest extends TestBase {
     ]);
 
     $reference = $this->createReference([
-      'title' => 'Mona Lisa',
+      'html_title' => 'Mona Lisa',
       'author' => [
         'target_id' => $contributor->id(),
         'category' => 'primary',
@@ -79,39 +97,221 @@ class PublicationsViewsFunctionalTest extends TestBase {
     ]);
     $this->group->addContent($reference, 'group_entity:bibcite_reference');
 
-    /** @var \Drupal\Core\Config\ConfigFactoryInterface $config_factory */
-    $config_factory = $this->container->get('config.factory');
-    /** @var \Drupal\Core\Config\Config $bibcite_settings_mut */
-    $bibcite_settings_mut = $config_factory->getEditable('bibcite.settings');
-    $bibcite_settings_mut->set('default_style', 'american_medical_association');
-    $bibcite_settings_mut->save();
-
-    $reference_as_stdclass = new \stdClass();
-    $reference_as_stdclass->title = $reference->label();
-    $reference_as_stdclass->author = json_decode(json_encode([
-      [
-        'family' => $contributor->getLastName(),
-        'given' => $contributor->getFirstName(),
-        'category' => 'primary',
-        'role' => 'author',
-      ],
-    ]), FALSE);
+    // Construct data array as required by render method.
+    $text = Markup::create($reference->html_title->value);
+    $link = '"' . $reference->toLink($text)->toString() . '"';
+    $author = [
+      'category' => "primary",
+      'role' => "author",
+      'family' => $contributor->getLastName(),
+      'given' => $contributor->getFirstName(),
+    ];
+    $data = [
+      'title' => $link,
+      'author' => [$author],
+    ];
 
     $this->drupalLogin($this->groupAdmin);
 
+    $this->citationStyler->setStyleById('apa');
+    $render = $this->citationStyler->render($data);
+    $expected = preg_replace('/\s*/m', '', $render);
+
+    $this->visitViaVsite('cp/settings/publications', $this->group);
+    $this->submitForm(['os_publications_preferred_bibliographic_format' => 'apa'], 'edit-submit');
+
     $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/publications");
-    $this->assertSession()->responseContains($this->citationStyler->render($reference_as_stdclass));
+    $actual = $this->getActualHtml();
+    $this->assertContains($actual, $expected);
 
     $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/publications/title");
-    $this->assertSession()->responseContains($this->citationStyler->render($reference_as_stdclass));
+    $actual = $this->getActualHtml();
+    $this->assertContains($actual, $expected);
 
     $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/publications/author");
-    $this->assertSession()->responseContains($this->citationStyler->render($reference_as_stdclass));
+    $actual = $this->getActualHtml();
+    $this->assertContains($actual, $expected);
 
     $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/publications/year");
-    $this->assertSession()->responseContains($this->citationStyler->render($reference_as_stdclass));
+    $actual = $this->getActualHtml();
+    $this->assertContains($actual, $expected);
 
     $this->drupalLogout();
+  }
+
+  /**
+   * Tests sorting in author display.
+   *
+   * @coversDefaultClass \Drupal\os_publications\Plugin\views\field\AuthorLastNameFirstLetter
+   * @coversDefaultClass \Drupal\os_publications\Plugin\views\sort\AuthorLastNameFirstLetter
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public function testAuthorSort(): void {
+    // Setup.
+    $contributor1 = $this->createContributor([
+      'first_name' => 'Leonardo',
+      'middle_name' => 'Da',
+      'last_name' => 'Vinci',
+    ]);
+
+    $contributor2 = $this->createContributor([
+      'first_name' => 'Joanne',
+      'middle_name' => 'Kathleen',
+      'last_name' => 'Rowling',
+    ]);
+
+    $contributor3 = $this->createContributor([
+      'first_name' => 'Vincent',
+      'middle_name' => 'van',
+      'last_name' => 'Gogh',
+    ]);
+
+    $contributor4 = $this->createContributor([
+      'first_name' => 'Rabindranath',
+      'last_name' => 'Tagore',
+    ]);
+
+    $reference1 = $this->createReference([
+      'html_title' => 'Mona Lisa',
+      'author' => [
+        'target_id' => $contributor1->id(),
+        'category' => 'primary',
+        'role' => 'author',
+      ],
+      'is_sticky' => [
+        'value' => 0,
+      ],
+    ]);
+    $this->group->addContent($reference1, 'group_entity:bibcite_reference');
+
+    $reference2 = $this->createReference([
+      'html_title' => 'Harry Potter and the Deathly Hallows',
+      'type' => 'book',
+      'author' => [
+        'target_id' => $contributor2->id(),
+        'category' => 'primary',
+        'role' => 'author',
+      ],
+      'bibcite_publisher' => [
+        'value' => 'Bloomsbury',
+      ],
+      'is_sticky' => [
+        'value' => 0,
+      ],
+    ]);
+    $this->group->addContent($reference2, 'group_entity:bibcite_reference');
+
+    $reference3 = $this->createReference([
+      'html_title' => 'Harry Potter and the Chamber of Secrets',
+      'type' => 'book',
+      'author' => [
+        'target_id' => $contributor2->id(),
+        'category' => 'primary',
+        'role' => 'author',
+      ],
+      'bibcite_publisher' => [
+        'value' => 'Bloomsbury',
+      ],
+      'is_sticky' => [
+        'value' => 0,
+      ],
+    ]);
+    $this->group->addContent($reference3, 'group_entity:bibcite_reference');
+
+    $reference4 = $this->createReference([
+      'html_title' => 'Sorrow',
+      'author' => [
+        'target_id' => $contributor3->id(),
+        'category' => 'primary',
+        'role' => 'author',
+      ],
+      'is_sticky' => [
+        'value' => 0,
+      ],
+    ]);
+    $this->group->addContent($reference4, 'group_entity:bibcite_reference');
+
+    $reference5 = $this->createReference([
+      'html_title' => 'Wheatfield with Crows',
+      'author' => [
+        'target_id' => $contributor3->id(),
+        'category' => 'primary',
+        'role' => 'author',
+      ],
+      'is_sticky' => [
+        'value' => 0,
+      ],
+    ]);
+    $this->group->addContent($reference5, 'group_entity:bibcite_reference');
+
+    $reference6 = $this->createReference([
+      'html_title' => 'Shesher Kobita',
+      'type' => 'book',
+      'author' => [
+        'target_id' => $contributor4->id(),
+        'category' => 'primary',
+        'role' => 'author',
+      ],
+      'bibcite_publisher' => [
+        'value' => 'Some Indian Publisher',
+      ],
+      'is_sticky' => [
+        'value' => 0,
+      ],
+    ]);
+    $this->group->addContent($reference6, 'group_entity:bibcite_reference');
+
+    $reference7 = $this->createReference([
+      'html_title' => 'Ghare Baire ',
+      'type' => 'book',
+      'author' => [
+        'target_id' => $contributor4->id(),
+        'category' => 'primary',
+        'role' => 'author',
+      ],
+      'bibcite_publisher' => [
+        'value' => 'Some Indian Publisher',
+      ],
+      'is_sticky' => [
+        'value' => 0,
+      ],
+    ]);
+    $this->group->addContent($reference7, 'group_entity:bibcite_reference');
+
+    /** @var \Drupal\Core\Config\ConfigFactoryInterface $config_factory */
+    $config_factory = $this->container->get('config.factory');
+    /** @var \Drupal\Core\Config\Config $os_publications_settings_mut */
+    $os_publications_settings_mut = $config_factory->getEditable('os_publications.settings');
+    $os_publications_settings_mut
+      ->set('biblio_order', 'DESC')
+      ->set('biblio_sort', 'author')
+      ->save();
+
+    // Tests.
+    $this->drupalLogin($this->groupAdmin);
+    $this->visitViaVsite('publications/author', $this->group);
+
+    // Confirm that the grouping order is as per the setting.
+    /** @var \Behat\Mink\Element\NodeElement[] $groupings */
+    $groupings = $this->getSession()->getPage()->findAll('css', '.view-publications .view-content h3');
+
+    $this->assertEquals('V', $groupings[0]->getText());
+    $this->assertEquals('T', $groupings[1]->getText());
+    $this->assertEquals('R', $groupings[2]->getText());
+    $this->assertEquals('G', $groupings[3]->getText());
+
+    // Confirm that the ordering within groups is unchanged by setting.
+    /** @var \Behat\Mink\Element\NodeElement[] $rows */
+    $rows = $this->getSession()->getPage()->findAll('css', '.view-publications .view-content .views-row');
+
+    $this->assertContains('Mona Lisa', $rows[0]->getText());
+    $this->assertContains('Ghare Baire', $rows[1]->getText());
+    $this->assertContains('Shesher Kobita', $rows[2]->getText());
+    $this->assertContains('Harry Potter and the Chamber of Secrets', $rows[3]->getText());
+    $this->assertContains('Harry Potter and the Deathly Hallows', $rows[4]->getText());
+    $this->assertContains('Sorrow', $rows[5]->getText());
+    $this->assertContains('Wheatfield with Crows', $rows[6]->getText());
   }
 
   /**
@@ -131,13 +331,79 @@ class PublicationsViewsFunctionalTest extends TestBase {
   }
 
   /**
+   * Tests whether the publication sort setting is updated in the UI.
+   *
+   * @covers \Drupal\os_publications\Plugin\CpSetting\PublicationSettingsForm::submitForm
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public function testPublicationsSortSetting(): void {
+    // Setup.
+    $reference1 = $this->createReference([
+      'title' => 'Mona Lisa',
+      'is_sticky' => [
+        'value' => 0,
+      ],
+    ]);
+    $this->group->addContent($reference1, 'group_entity:bibcite_reference');
+
+    $reference2 = $this->createReference([
+      'title' => 'The Rust Programming Language',
+      'type' => 'journal',
+      'bibcite_year' => [
+        'value' => 2010,
+      ],
+      'is_sticky' => [
+        'value' => 0,
+      ],
+    ]);
+    $this->group->addContent($reference2, 'group_entity:bibcite_reference');
+
+    $this->drupalLogin($this->groupAdmin);
+
+    $this->visitViaVsite('publications', $this->group);
+
+    // Note the position og groupings.
+    $headings = array_map(function (NodeElement $element) {
+      return $element->getText();
+    }, $this->getSession()->getPage()->findAll('css', '.view-publications .view-content h3'));
+
+    $pos_artwork = array_search('Artwork', $headings, TRUE);
+    $pos_journal = array_search('Journal', $headings, TRUE);
+
+    // Make changes.
+    $this->visitViaVsite('cp/settings/publications', $this->group);
+    $this->drupalPostForm(NULL, [
+      'os_publications_preferred_bibliographic_format' => 'harvard_chicago_author_date',
+      'biblio_sort' => 'type',
+      'biblio_order' => 'ASC',
+      'os_publications_export_format[bibtex]' => 'bibtex',
+      'os_publications_export_format[endnote8]' => 'endnote8',
+      'os_publications_export_format[endnote7]' => 'endnote7',
+      'os_publications_export_format[tagged]' => 'tagged',
+      'os_publications_export_format[ris]' => 'ris',
+    ], 'Save configuration');
+
+    // Tests.
+    $this->visitViaVsite('publications', $this->group);
+
+    $headings = array_map(function (NodeElement $element) {
+      return $element->getText();
+    }, $this->getSession()->getPage()->findAll('css', '.view-publications .view-content h3'));
+
+    $this->assertNotEquals($pos_artwork, array_search('Artwork', $headings, TRUE));
+    $this->assertNotEquals($pos_journal, array_search('Journal', $headings, TRUE));
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function tearDown() {
-    /** @var \Drupal\Core\Config\Config $bibcite_settings_mut */
-    $bibcite_settings_mut = $this->configFactory->getEditable('bibcite.settings');
-    $bibcite_settings_mut
-      ->set('default_style', $this->defaultBibciteCitationStyle)
+    /** @var \Drupal\Core\Config\Config $publication_settings_mut */
+    $publication_settings_mut = $this->configFactory->getEditable('os_publications.settings');
+    $publication_settings_mut
+      ->set('biblio_sort', $this->defaultSortCategory)
+      ->set('biblio_order', $this->defaultSortOrder)
       ->save();
 
     parent::tearDown();
