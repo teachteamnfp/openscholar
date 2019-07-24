@@ -74,8 +74,11 @@ class RssFeedBlockJavascriptTest extends ExistingSiteWebDriverTestBase {
     $web_assert->statusCodeEquals(200);
 
     $page = $this->getCurrentPage();
+    $this->assertNotNull($page->find('css', '.view-empty'), 'Missing .view-empty element');
+    $this->assertNotNull($page->find('css', '#block-block-content-rss-feed-test'), 'Block is missing from the page');
     $check_html_value = $page->hasContent('RSS feed link!');
     $this->assertTrue($check_html_value, 'RSS link is not visible.');
+    file_put_contents(REQUEST_TIME.'.txt', $this->getSession()->getPage()->getContent());
 
     $this->clickLink('RSS feed link!');
     $result = $web_assert->waitForElementVisible('named', ['link', 'Feed URL copied to clipboard']);

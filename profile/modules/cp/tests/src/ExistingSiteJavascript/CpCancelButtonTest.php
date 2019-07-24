@@ -48,6 +48,10 @@ class CpCancelButtonTest extends OsExistingSiteJavascriptTestBase {
     // Visit node.
     $this->visit($this->nodePath);
     $this->assertSession()->waitForElement('css', '.contextual-links .entitynodeedit-form');
+    error_log($this->getSession()->getCurrentUrl());
+    /** @var \Drupal\Core\Path\AliasManagerInterface $path_alias_manager */
+    $path_alias_manager = $this->container->get('path.alias_manager');
+    error_log($path_alias_manager->getPathByAlias($this->nodePath));
     $this->assertSession()->statusCodeEquals(200);
     /** @var \Behat\Mink\Element\NodeElement|null $edit_contextual_link */
     $edit_contextual_link = $this->getSession()->getPage()->find('css', '.contextual-links .entitynodeedit-form a');
