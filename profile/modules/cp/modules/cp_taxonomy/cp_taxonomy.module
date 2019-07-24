@@ -285,6 +285,11 @@ function cp_taxonomy_bibcite_reference_view_alter(array &$build, EntityInterface
   $cp_taxonomy_helper->checkTaxonomyTermsPageVisibility($build, $view_modes);
   $cp_taxonomy_helper->checkTaxonomyTermsListingVisibility($build, 'bibcite_reference:*');
   $cp_taxonomy_helper->setCacheTags($build);
+  // Override tags title.
+  if (!empty($build['field_taxonomy_terms']['#title'])) {
+    $build['field_taxonomy_terms']['#title'] = t('See also');
+  }
+
 }
 
 /**
