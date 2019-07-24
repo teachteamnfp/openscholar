@@ -327,7 +327,6 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
           'display_label' => TRUE,
         ],
       ])
-      ->setDefaultValue(TRUE)
       ->setDisplayConfigurable('form', TRUE);
 
     return $fields;

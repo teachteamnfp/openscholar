@@ -28,6 +28,7 @@ class PublicationPreviewFunctionalTest extends OsExistingSiteJavascriptTestBase 
     parent::setUp();
     $this->drupalLogin($this->createAdminUser());
     $this->reference = $this->createReference();
+    $this->group->addContent($this->reference, 'group_entity:bibcite_reference');
   }
 
   /**
@@ -36,7 +37,7 @@ class PublicationPreviewFunctionalTest extends OsExistingSiteJavascriptTestBase 
   public function testPublicationEditPreviewAndBack() {
     $web_assert = $this->assertSession();
     // Visit edit page.
-    $this->visit('/bibcite/reference/' . $this->reference->id() . '/edit');
+    $this->visitViaVsite('bibcite/reference/' . $this->reference->id() . '/edit', $this->group);
     $web_assert->statusCodeEquals(200);
     $page = $this->getCurrentPage();
     $page->fillField('bibcite_year[0][value]', '2019');
@@ -60,7 +61,7 @@ class PublicationPreviewFunctionalTest extends OsExistingSiteJavascriptTestBase 
    */
   public function testPublicationCreatePreviewAndBack() {
     // Visit edit page.
-    $this->visit('/bibcite/reference/add/artwork');
+    $this->visitViaVsite('bibcite/reference/add/artwork', $this->group);
     $web_assert = $this->assertSession();
     $web_assert->statusCodeEquals(200);
     $page = $this->getCurrentPage();
