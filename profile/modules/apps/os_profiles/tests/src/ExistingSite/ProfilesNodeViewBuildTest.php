@@ -93,6 +93,54 @@ class ProfilesNodeViewBuildTest extends OsExistingSiteTestBase {
   }
 
   /**
+   * Test node view listing person image.
+   */
+  public function testNodeViewTeaserPersonImage() {
+    $file = $this->createFile('image');
+    $personNodeWithImage = $this->createNode([
+      'type' => 'person',
+      'field_first_name' => $this->randomMachineName(),
+      'field_last_name' => $this->randomMachineName(),
+      'field_photo_person' => [
+        'target_id' => $file->id(),
+      ],
+    ]);
+
+    $build = $this->viewBuilder->view($personNodeWithImage, 'teaser');
+    /** @var \Drupal\Core\Render\Markup $markup_array */
+    $markup = $this->renderer->renderRoot($build);
+    $this->assertContains('styles/crop_photo_person/public/image-test.png', $markup->__toString());
+    $this->assertContains('width="75" height="75"', $markup->__toString());
+
+    $build = $this->viewBuilder->view($personNodeWithImage, 'sidebar_teaser');
+    /** @var \Drupal\Core\Render\Markup $markup_array */
+    $markup = $this->renderer->renderRoot($build);
+    $this->assertContains('styles/crop_photo_person/public/image-test.png', $markup->__toString());
+    $this->assertContains('width="75" height="75"', $markup->__toString());
+  }
+
+  /**
+   * Test node view full person image.
+   */
+  public function testNodeViewFullPersonImage() {
+    $file = $this->createFile('image');
+    $personNodeWithImage = $this->createNode([
+      'type' => 'person',
+      'field_first_name' => $this->randomMachineName(),
+      'field_last_name' => $this->randomMachineName(),
+      'field_photo_person' => [
+        'target_id' => $file->id(),
+      ],
+    ]);
+
+    $build = $this->viewBuilder->view($personNodeWithImage, 'full');
+    /** @var \Drupal\Core\Render\Markup $markup_array */
+    $markup = $this->renderer->renderRoot($build);
+    $this->assertContains('styles/crop_photo_person_full/public/image-test.png', $markup->__toString());
+    $this->assertContains('width="180" height="220"', $markup->__toString());
+  }
+
+  /**
    * Render person node.
    *
    * @param string $view_mode
