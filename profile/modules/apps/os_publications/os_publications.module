@@ -145,6 +145,20 @@ function os_publications_page_attachments(array &$page) {
         }
       }
     }
+    /** @var \Drupal\bibcite_entity\Entity\ReferenceInterface $publication */
+    $publication = $entities->get('bibcite_reference');
+    // If noindex is on then add required tags.
+    $noindex = $publication ? $publication->noindex->value : NULL;
+    if ($noindex) {
+      $noindex_tag = [
+        '#tag' => 'meta',
+        '#attributes' => [
+          'name' => 'robots',
+          'content' => 'NOINDEX, NOFOLLOW',
+        ],
+      ];
+      $page['#attached']['html_head'][] = [$noindex_tag, 'robots'];
+    }
   }
 }
 
