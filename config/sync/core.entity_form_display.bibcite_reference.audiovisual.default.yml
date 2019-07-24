@@ -12,6 +12,7 @@ dependencies:
     - image.style.thumbnail
   module:
     - bibcite_entity
+    - cp_taxonomy
     - field_group
     - field_layout
     - image
@@ -475,12 +476,9 @@ content:
     third_party_settings: {  }
   field_taxonomy_terms:
     weight: 57
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: reference_taxonomy_terms
     region: content
   full_text:
     type: text_textarea
