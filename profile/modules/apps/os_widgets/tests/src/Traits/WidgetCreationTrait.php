@@ -2,8 +2,9 @@
 
 namespace Drupal\Tests\os_widgets\Traits;
 
-use Drupal\block_content\BlockContentInterface;
-
+/**
+ * Methods for creating widgets in tests.
+ */
 trait WidgetCreationTrait {
 
   /**
@@ -12,14 +13,14 @@ trait WidgetCreationTrait {
    * @param array $values
    *   (optional) The values used to create the entity.
    *
-   * @return BlockContentInterface
+   * @return \Drupal\block_content\BlockContentInterface
    *   The created block content entity.
    */
   protected function createBlockContent(array $values = []) {
     /** @var \Drupal\block_content\Entity\BlockContent $block_content */
     $block_content = $this->container->get('entity_type.manager')->getStorage('block_content')->create($values + [
-        'type' => 'basic',
-      ]);
+      'type' => 'basic',
+    ]);
     $block_content->enforceIsNew();
     $block_content->save();
 

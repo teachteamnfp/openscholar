@@ -2,33 +2,41 @@
 
 namespace Drupal\Tests\os_widgets\ExistingSiteJavascript;
 
-
 use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTestBase;
 use Drupal\Tests\os_widgets\Traits\WidgetCreationTrait;
 
+/**
+ * Tests for the layout form.
+ */
 class LayoutFormTest extends OsExistingSiteJavascriptTestBase {
 
   use WidgetCreationTrait;
 
   protected $user;
 
+  /**
+   * {@inheritdoc}
+   */
   public function setUp() {
     parent::setUp();
     $this->user = $this->createUser();
     $this->group->addMember($this->user, [
       'group_roles' => [
-        'personal-administrator'
-      ]
+        'personal-administrator',
+      ],
     ]);
   }
 
+  /**
+   * Tests that the filter widget functionality works.
+   */
   public function testFilterWidget() {
     $blocks[] = $this->createBlockContent([
-      'info' => 'abcdef'
+      'info' => 'abcdef',
     ]);
 
     $blocks[] = $this->createBlockContent([
-      'info' => 'ghijkl'
+      'info' => 'ghijkl',
     ]);
 
     foreach ($blocks as $b) {
@@ -53,4 +61,5 @@ class LayoutFormTest extends OsExistingSiteJavascriptTestBase {
     $this->assertTrue($this->getSession()->getPage()->find('xpath', '//h3[contains(.,"abcdef")]')->isVisible());
     $this->assertNotTrue($this->getSession()->getPage()->find('xpath', '//h3[contains(.,"ghijkl")]')->isVisible());
   }
+
 }

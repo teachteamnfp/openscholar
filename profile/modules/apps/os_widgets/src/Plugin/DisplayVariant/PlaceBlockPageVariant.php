@@ -198,9 +198,9 @@ class PlaceBlockPageVariant extends OriginalVariant {
         '#size' => 60,
         '#attributes' => [
           'id' => [
-            'filter-widgets'
-          ]
-        ]
+            'filter-widgets',
+          ],
+        ],
       ],
       'existing-blocks' => [
         '#prefix' => '<div id="block-list">',
