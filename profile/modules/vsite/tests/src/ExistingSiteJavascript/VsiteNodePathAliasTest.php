@@ -11,7 +11,7 @@ use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTest
  * @group functional-javascript
  * @group vsite
  */
-class VsiteNodePathAlias extends OsExistingSiteJavascriptTestBase {
+class VsiteNodePathAliasTest extends OsExistingSiteJavascriptTestBase {
 
   /**
    * {@inheritdoc}
@@ -34,6 +34,9 @@ class VsiteNodePathAlias extends OsExistingSiteJavascriptTestBase {
     $this->visitViaVsite('node/' . $node->id() . '/edit', $this->group);
     $web_assert->statusCodeEquals(200);
     $page = $this->getSession()->getPage();
+    // Path alias #field_prefix should contains group alias.
+    $url_alias_markup = $page->findById('edit-path-0')->getHtml();
+    $this->assertContains($this->groupAlias, $url_alias_markup);
     $page->findField('path[0][pathauto]')->press();
     $page->fillField('path[0][alias]', '/news/new-alias-value');
     $page->findButton('Save')->press();

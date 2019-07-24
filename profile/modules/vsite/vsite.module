@@ -154,9 +154,9 @@ function vsite_form_alter(&$form, FormStateInterface $formState, $form_id) {
         }
       }
       if (!empty($form['path']['widget'][0]['alias'])) {
-        $current_url = Url::fromRoute('<front>', [], ["absolute" => TRUE])->toString();
-        $form['path']['widget'][0]['alias']['#field_prefix'] = $current_url;
         $purl = $vsiteContext->getActivePurl();
+        $current_url = Url::fromRoute('<front>', [], ["absolute" => TRUE])->toString() . $purl;
+        $form['path']['widget'][0]['alias']['#field_prefix'] = $current_url;
         $alias = $form['path']['widget'][0]['alias']['#default_value'];
         $alias_without_purl = preg_replace('$^/' . $purl . '$', '', $alias);
         $form['path']['widget'][0]['alias']['#default_value'] = $alias_without_purl;
