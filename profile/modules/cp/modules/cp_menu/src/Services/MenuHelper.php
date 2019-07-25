@@ -157,17 +157,16 @@ class MenuHelper implements MenuHelperInterface {
       // Map primary menu links.
       $this->mapMenuLinks($group_menu);
     }
-    $this->invalidateBlockCache(['primarymenu', 'secondarymenu'], TRUE);
+    $this->invalidateBlockCache($vsite, ['primarymenu', 'secondarymenu'], TRUE);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function invalidateBlockCache($ids, $buildForm = FALSE) : void {
+  public function invalidateBlockCache($vsite, $ids, $buildForm = FALSE) : void {
     $menu_label = $ids;
     // If not called from Main build form then ids will be a single string.
     if (!$buildForm) {
-      $vsite = $this->vsiteManager->getActiveVsite();
       $menus = $vsite->getContent('group_menu:menu');
       foreach ($menus as $menu) {
         $this->menus[$menu->entity_id_str->target_id] = $menu->label();
@@ -190,7 +189,7 @@ class MenuHelper implements MenuHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function getMenuLinkDefaults(ReferenceInterface $reference): ?array {
+  public function getMenuLinkDefaults(ReferenceInterface $reference, GroupInterface $vsite): array {
     // Get the default max_length of a menu link title from the base field
     // definition.
     $field_definitions = $this->entityFieldManager
@@ -209,7 +208,6 @@ class MenuHelper implements MenuHelperInterface {
 
     if ($reference->id()) {
       // Check all allowed menus.
-      $vsite = $this->vsiteManager->getActiveVsite();
       $menus = $vsite->getContent('group_menu:menu');
       $menuIds = NULL;
       foreach ($menus as $menu) {
@@ -247,7 +245,7 @@ class MenuHelper implements MenuHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function publicationInFormMenuAlterations(array $values, ReferenceInterface $reference) :void {
+  public function publicationInFormMenuAlterations(array $values, ReferenceInterface $reference, GroupInterface $vsite) :void {
     $menuId = $values['menu']['menu_parent'];
     $linkId = $values['menu']['id'];
     $enabled = $values['menu']['enabled'];
@@ -264,7 +262,7 @@ class MenuHelper implements MenuHelperInterface {
         $this->menuLinkManager->updateDefinition($linkId, $updatedValues);
         // Call the block cache clear method as changes are made.
         $menuId = $this->menuLinkManager->getDefinition($linkId)['menu_name'];
-        $this->invalidateBlockCache($menuId);
+        $this->invalidateBlockCache($vsite, $menuId);
       }
     }
     elseif ($linkId && !$enabled) {
@@ -273,11 +271,10 @@ class MenuHelper implements MenuHelperInterface {
       // Delete the link.
       $this->menuLinkManager->removeDefinition($linkId);
       // Call the block cache clear method as changes are made.
-      $this->invalidateBlockCache($menuId);
+      $this->invalidateBlockCache($vsite, $menuId);
     }
     // If new link create a new menu link content.
     elseif ($enabled) {
-      $vsite = $this->vsiteManager->getActiveVsite();
       $menus = $vsite->getContent('group_menu:menu');
       // If first time then create a new menu by replicating shared menus.
       if (!$menus) {
@@ -301,7 +298,7 @@ class MenuHelper implements MenuHelperInterface {
         'menu_name' => $menuId,
       ])->save();
       // Call the block cache clear method as changes are made.
-      $this->invalidateBlockCache($menuId);
+      $this->invalidateBlockCache($vsite, $menuId);
     }
   }
 

@@ -34,23 +34,27 @@ interface MenuHelperInterface {
   /**
    * Invalidates Menu block caches when changes are made.
    *
+   * @param \Drupal\group\Entity\GroupInterface $vsite
+   *   Current vsite.
    * @param mixed $ids
    *   Single id or array of menu ids.
    * @param bool $buildForm
    *   If called from main buildForm changes.
    */
-  public function invalidateBlockCache($ids, $buildForm = FALSE) : void;
+  public function invalidateBlockCache(GroupInterface $vsite, $ids, $buildForm = FALSE) : void;
 
   /**
    * Get Menu Link and its data for publication edit page.
    *
    * @param \Drupal\bibcite_entity\Entity\ReferenceInterface $reference
    *   The publication entity in context.
+   * @param \Drupal\group\Entity\GroupInterface $vsite
+   *   Current vsite.
    *
-   * @return array|null
+   * @return array
    *   Default menu link values for publication entity.
    */
-  public function getMenuLinkDefaults(ReferenceInterface $reference): ?array;
+  public function getMenuLinkDefaults(ReferenceInterface $reference, GroupInterface $vsite): array;
 
   /**
    * Performs alterations on menu link associated with a publication.
@@ -59,7 +63,9 @@ interface MenuHelperInterface {
    *   Reference submit form values.
    * @param \Drupal\bibcite_entity\Entity\ReferenceInterface $reference
    *   The reference entity in context.
+   * @param \Drupal\group\Entity\GroupInterface $vsite
+   *   Current vsite.
    */
-  public function publicationInFormMenuAlterations(array $values, ReferenceInterface $reference): void;
+  public function publicationInFormMenuAlterations(array $values, ReferenceInterface $reference, GroupInterface $vsite): void;
 
 }

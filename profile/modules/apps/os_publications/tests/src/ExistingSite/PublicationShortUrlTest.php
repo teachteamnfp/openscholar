@@ -22,11 +22,11 @@ class PublicationShortUrlTest extends OsExistingSiteTestBase {
   protected $groupAdmin;
 
   /**
-   * Alias Manager service.
+   * Cache Render service.
    *
-   * @var \Drupal\Core\Path\AliasManagerInterface
+   * @var \Drupal\Core\Cache\CacheBackendInterface
    */
-  protected $aliasManager;
+  protected $cacheRender;
 
   /**
    * Reference content.
@@ -54,7 +54,6 @@ class PublicationShortUrlTest extends OsExistingSiteTestBase {
     ]);
     $this->group->addContent($this->reference, 'group_entity:bibcite_reference');
     $this->cacheRender = $this->container->get('cache.render');
-    $this->aliasManager = $this->container->get('path.alias_manager');
   }
 
   /**

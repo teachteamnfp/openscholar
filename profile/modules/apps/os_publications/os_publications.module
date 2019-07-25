@@ -380,9 +380,9 @@ function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInte
   $form['actions']['delete']['#weight'] = 100;
 
   // Menu link options.
-  $defaults = \Drupal::service('cp_menu.menu_helper')->getMenuLinkDefaults($reference);
-
   $vsite = \Drupal::service('vsite.context_manager')->getActiveVsite();
+  $defaults = \Drupal::service('cp_menu.menu_helper')->getMenuLinkDefaults($reference, $vsite);
+
   $menus = $vsite->getContent('group_menu:menu');
 
   if (!$menus) {
@@ -400,7 +400,6 @@ function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInte
   $form['menu'] = [
     '#type' => 'details',
     '#title' => t('Menu settings'),
-    '#access' => \Drupal::currentUser()->hasPermission('administer menu'),
     '#group' => 'advanced',
     '#attached' => [
       'library' => ['menu_ui/drupal.menu_ui'],
@@ -676,6 +675,8 @@ function os_publications_bibcite_reference_form_submit(&$form, FormStateInterfac
   $reference = $formState->getFormObject()->getEntity();
   /** @var \Drupal\cp_menu\MenuHelperInterface $menu_helper */
   $menu_helper = \Drupal::service('cp_menu.menu_helper');
+  /** @var \Drupal\group\Entity\GroupInterface $vsite */
+  $vsite = \Drupal::service('vsite.context_manager')->getActiveVsite();
 
-  $menu_helper->publicationInFormMenuAlterations($values, $reference);
+  $menu_helper->publicationInFormMenuAlterations($values, $reference, $vsite);
 }

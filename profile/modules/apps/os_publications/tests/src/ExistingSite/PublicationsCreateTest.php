@@ -11,6 +11,20 @@ namespace Drupal\Tests\os_publications\ExistingSite;
 class PublicationsCreateTest extends TestBase {
 
   /**
+   * Alias Manager service.
+   *
+   * @var \Drupal\Core\Path\AliasManagerInterface
+   */
+  protected $aliasManager;
+
+  /**
+   * Group administrator.
+   *
+   * @var \Drupal\user\UserInterface
+   */
+  protected $groupAdmin;
+
+  /**
    * Tests whether custom title is automatically set.
    *
    * @covers ::os_publications_bibcite_reference_presave
@@ -23,6 +37,28 @@ class PublicationsCreateTest extends TestBase {
     ]);
 
     $this->assertEquals('V', $reference->get('title_first_char_excl_prep')->getValue()[0]['value']);
+  }
+
+  /**
+   * Test automatic path generation.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public function testPathAliasGeneration() : void {
+    $this->groupAdmin = $this->createUser();
+    $this->addGroupAdmin($this->groupAdmin, $this->group);
+    $this->drupalLogin($this->groupAdmin);
+    $reference = $this->createReference([
+      'html_title' => 'The Velvet Underground',
+    ]);
+    $this->group->addContent($reference, 'group_entity:bibcite_reference');
+    $this->aliasManager = $this->container->get('path.alias_manager');
+
+    // Test path alias is generated.
+    $path = '/bibcite/reference/' . $reference->id();
+    $alias = $this->aliasManager->getAliasByPath($path);
+    $this->assertNotSame($alias, $path);
+    $this->assertSame($alias, '/publications/velvet-underground');
   }
 
 }
