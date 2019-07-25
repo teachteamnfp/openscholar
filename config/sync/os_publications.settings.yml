@@ -1,3 +1,4 @@
+default_style: harvard_chicago_author_date
 biblio_sort: title
 note_in_teaser: 0
 biblio_order: DESC
