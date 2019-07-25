@@ -114,10 +114,26 @@ class PublicationMenusTest extends OsExistingSiteTestBase {
       ->select('menu_link_content_data', 'mlcd')
       ->fields('mlcd', [
         'title',
+        'id',
       ]);
     $query->condition('mlcd.link__uri', "entity:bibcite_reference/" . $this->reference->id());
-    $menus = $query->execute();
+    $menus = $query->execute()->fetchAssoc();
     $this->assertNotNull($menus);
+
+    // Test existing link update.
+    $values['menu']['title'] = 'Menu Test Title Changed';
+    $values['menu']['menu_parent'] = 'menu-primary-' . $this->group->id();
+    $id = $query->execute()->fetchField(1);
+    $pluginId = MenuLinkContent::load($id)->getPluginId();
+    $values['menu']['id'] = $pluginId;
+    $this->menuHelper->publicationInFormMenuAlterations($values, $this->reference, $this->group);
+    $changed_title = $this->menuLink->getDefinition($pluginId)['title']->__toString();
+    $this->assertSame($values['menu']['title'], $changed_title);
+
+    // Test existing link deletion.
+    $values['menu']['enabled'] = FALSE;
+    $this->menuHelper->publicationInFormMenuAlterations($values, $this->reference, $this->group);
+    $this->assertFalse($query->execute()->fetchAssoc());
   }
 
 }
