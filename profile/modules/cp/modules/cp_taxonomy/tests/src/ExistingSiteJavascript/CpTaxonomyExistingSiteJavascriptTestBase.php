@@ -26,6 +26,13 @@ abstract class CpTaxonomyExistingSiteJavascriptTestBase extends OsExistingSiteJa
   protected $configFactory;
 
   /**
+   * Editable cp_taxonomy.settings.
+   *
+   * @var \Drupal\Core\Config\Config
+   */
+  protected $config;
+
+  /**
    * Vsite Context Manager.
    *
    * @var \Drupal\vsite\Plugin\VsiteContextManagerInterface
@@ -85,6 +92,42 @@ abstract class CpTaxonomyExistingSiteJavascriptTestBase extends OsExistingSiteJa
     $this->entityTypeManager = $this->container->get('entity_type.manager');
     $this->configFactory = $this->container->get('config.factory');
     $this->vsiteContextManager = $this->container->get('vsite.context_manager');
+    $this->config = $this->configFactory->getEditable('cp_taxonomy.settings');
+  }
+
+  /**
+   * Set config, show terms on entity pages.
+   */
+  protected function showTermsOnPage() {
+    $this->config->set('display_term_under_content', TRUE);
+    $this->config->save(TRUE);
+  }
+
+  /**
+   * Set config, hide terms on entity pages.
+   */
+  protected function hideTermsOnPage() {
+    $this->config->set('display_term_under_content', FALSE);
+    $this->config->save(TRUE);
+  }
+
+  /**
+   * Set config, show terms on entity listing.
+   *
+   * @param array $types
+   *   Allowed types.
+   */
+  protected function showTermsOnListing(array $types = []) {
+    $this->config->set('display_term_under_content_teaser_types', $types);
+    $this->config->save(TRUE);
+  }
+
+  /**
+   * Set config, hide terms on entity listing.
+   */
+  protected function hideTermsOnListing() {
+    $this->config->set('display_term_under_content_teaser_types', ['node:not_exists_bundle']);
+    $this->config->save(TRUE);
   }
 
   /**

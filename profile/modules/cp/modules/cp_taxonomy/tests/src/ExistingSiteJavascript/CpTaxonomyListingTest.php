@@ -7,12 +7,12 @@ use Drupal\taxonomy\Entity\Vocabulary;
 use Drupal\Tests\openscholar\Traits\CpTaxonomyTestTrait;
 
 /**
- * Tests cache invalidation listing and entity page.
+ * Tests taxonomy visibility on listing pages.
  *
  * @group functional
  * @group cp
  */
-class CpTaxonomyCacheTest extends CpTaxonomyExistingSiteJavascriptTestBase {
+class CpTaxonomyListingTest extends CpTaxonomyExistingSiteJavascriptTestBase {
 
   use CpTaxonomyTestTrait;
 
@@ -27,7 +27,7 @@ class CpTaxonomyCacheTest extends CpTaxonomyExistingSiteJavascriptTestBase {
     $this->addGroupAdmin($admin, $this->group);
     $this->drupalLogin($admin);
     $allowed_types = [
-      'node:news',
+      'node:faq',
       'media:*',
       'bibcite_reference:*',
     ];
@@ -37,61 +37,35 @@ class CpTaxonomyCacheTest extends CpTaxonomyExistingSiteJavascriptTestBase {
   }
 
   /**
-   * Test node page caching.
+   * Test node faq listing.
    */
-  public function testNodePageCaching() {
+  public function testNodeFaqListing() {
     $web_assert = $this->assertSession();
     $node = $this->createNode([
-      'type' => 'news',
+      'type' => 'faq',
       'field_taxonomy_terms' => [
         $this->term->id(),
       ],
       'status' => 1,
     ]);
-    $this->group->addContent($node, 'group_node:news');
+    $this->group->addContent($node, 'group_node:faq');
 
-    // Test page.
-    $this->showTermsOnPage();
-    $this->visitViaVsite("node/" . $node->id(), $this->group);
+    // Test listing on faq.
+    $this->showTermsOnListing(['node:faq']);
+    $this->visitViaVsite("faq", $this->group);
     $web_assert->statusCodeEquals(200);
-    $web_assert->pageTextContains($this->term->label());
-    Cache::invalidateTags(['entity-with-taxonomy-terms:' . $this->group->id()]);
-    $this->hideTermsOnPage();
-    $this->visitViaVsite("node/" . $node->id(), $this->group);
-    $web_assert->statusCodeEquals(200);
-    $web_assert->pageTextNotContains($this->term->label());
-  }
-
-  /**
-   * Test node listing caching.
-   */
-  public function testNodeListingCaching() {
-    $web_assert = $this->assertSession();
-    $node = $this->createNode([
-      'type' => 'news',
-      'field_taxonomy_terms' => [
-        $this->term->id(),
-      ],
-      'status' => 1,
-    ]);
-    $this->group->addContent($node, 'group_node:news');
-
-    // Test listing.
-    $this->showTermsOnListing(['node:news']);
-    $this->visitViaVsite("news", $this->group);
-    $web_assert->statusCodeEquals(200);
-    $web_assert->pageTextContains($this->term->label());
+    $this->assertContainTaxonomyTermOnPage();
     Cache::invalidateTags(['entity-with-taxonomy-terms:' . $this->group->id()]);
     $this->hideTermsOnListing();
-    $this->visitViaVsite("news", $this->group);
+    $this->visitViaVsite("faq", $this->group);
     $web_assert->statusCodeEquals(200);
-    $web_assert->pageTextNotContains($this->term->label());
+    $this->assertNotContainTaxonomyTermOnPage();
   }
 
   /**
-   * Test publication page caching.
+   * Test publications listing.
    */
-  public function testPublicationPageCaching() {
+  public function testPublicationsListing() {
     $web_assert = $this->assertSession();
     $publication = $this->createReference([
       'field_taxonomy_terms' => [
@@ -100,16 +74,33 @@ class CpTaxonomyCacheTest extends CpTaxonomyExistingSiteJavascriptTestBase {
     ]);
     $this->group->addContent($publication, 'group_entity:bibcite_reference');
 
-    // Test page.
-    $this->showTermsOnPage();
-    $this->visitViaVsite("bibcite/reference/" . $publication->id(), $this->group);
+    // Test listing.
+    $this->showTermsOnListing(['bibcite_reference:*']);
+    $this->visitViaVsite("publications", $this->group);
     $web_assert->statusCodeEquals(200);
     $web_assert->pageTextContains($this->term->label());
     Cache::invalidateTags(['entity-with-taxonomy-terms:' . $this->group->id()]);
-    $this->hideTermsOnPage();
-    $this->visitViaVsite("bibcite/reference/" . $publication->id(), $this->group);
+    $this->hideTermsOnListing();
+    $this->visitViaVsite("publications", $this->group);
     $web_assert->statusCodeEquals(200);
     $web_assert->pageTextNotContains($this->term->label());
+  }
+
+  /**
+   * Assert contains term on page even if not visible.
+   */
+  protected function assertContainTaxonomyTermOnPage() {
+    $page = $this->getCurrentPage();
+    $term_html = $page->find('css', '.field--name-field-taxonomy-terms')->getHtml();
+    $this->assertContains($this->term->label(), $term_html);
+  }
+
+  /**
+   * Assert not contains term on page even if not visible.
+   */
+  protected function assertNotContainTaxonomyTermOnPage() {
+    $page = $this->getCurrentPage();
+    $this->isNull($page->find('css', '.field--name-field-taxonomy-terms'));
   }
 
   /**
