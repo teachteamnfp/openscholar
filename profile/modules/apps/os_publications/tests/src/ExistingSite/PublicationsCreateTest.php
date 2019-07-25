@@ -25,6 +25,16 @@ class PublicationsCreateTest extends TestBase {
   protected $groupAdmin;
 
   /**
+   * {@inheritdoc}
+   */
+  public function setUp() {
+    parent::setUp();
+    $this->groupAdmin = $this->createUser();
+    $this->addGroupAdmin($this->groupAdmin, $this->group);
+    $this->drupalLogin($this->groupAdmin);
+  }
+
+  /**
    * Tests whether custom title is automatically set.
    *
    * @covers ::os_publications_bibcite_reference_presave
@@ -45,9 +55,7 @@ class PublicationsCreateTest extends TestBase {
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function testPathAliasGeneration() : void {
-    $this->groupAdmin = $this->createUser();
-    $this->addGroupAdmin($this->groupAdmin, $this->group);
-    $this->drupalLogin($this->groupAdmin);
+
     $reference = $this->createReference([
       'html_title' => 'The Velvet Underground',
     ]);
@@ -59,6 +67,23 @@ class PublicationsCreateTest extends TestBase {
     $alias = $this->aliasManager->getAliasByPath($path);
     $this->assertNotSame($alias, $path);
     $this->assertSame($alias, '/publications/velvet-underground');
+  }
+
+  /**
+   * Tests link creation from publication edit page.
+   */
+  public function testPublicationMenuLinkAdd(): void {
+
+    $this->visitViaVsite('bibcite/reference/add/journal_article', $this->group);
+    $edit = [
+      'bibcite_year[0][value]' => '2019',
+      'bibcite_secondary_title[0][value]' => 'Journal Link',
+      'menu[enabled]' => TRUE,
+      'menu[title]' => 'Menu Link title',
+    ];
+    $this->submitForm($edit, 'Save');
+
+    $this->assertSession()->linkExists('Menu Link title');
   }
 
 }
