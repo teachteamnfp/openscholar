@@ -47,7 +47,7 @@ cp_roles.role.list:
 cp_roles.role.role_permission_form:
   path: '/cp/users/permissions/{group_role}/{group_type}'
   defaults:
-    _form: '\Drupal\group\Form\GroupPermissionsRoleSpecificForm'
+    _form: '\Drupal\cp_roles\Form\CpRolesPermissionsSpecificForm'
     _title: 'Edit vsite permissions'
   requirements:
     _group_permission: 'manage cp roles'
