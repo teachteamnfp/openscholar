@@ -28,5 +28,4 @@ cp.users.owner:
     _controller: '\Drupal\cp_users\Controller\CpUserMainController::changeOwnershipForm'
     _title: 'Change Ownership'
   requirements:
-    _group_permission: 'manage cp users'
-    _group_member: 'TRUE'
+    _change_ownership_access_check: 'TRUE'
