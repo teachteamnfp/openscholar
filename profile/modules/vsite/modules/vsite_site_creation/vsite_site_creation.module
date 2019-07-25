@@ -1,0 +1,96 @@
+<?php
+
+/**
+ * @file
+ * Hook implementations for the vsite_site_creation module.
+ */
+
+use Drupal\Core\Asset\AttachedAssetsInterface;
+use Drupal\vsite\Entity\GroupPreset;
+
+/**
+ * Implements hook_library_info_alter().
+ */
+function vsite_site_creation_library_info_alter(&$libraries, $extension) {
+  if ($extension == 'vsite_site_creation') {
+    $settings = [];
+
+    /** @var \Drupal\vsite_privacy\Plugin\VsitePrivacyLevelManagerInterface $privacyManager */
+    $privacyManager = \Drupal::service('vsite.privacy.manager');
+    $settings['privacy_levels'] = $privacyManager->getOptions();
+
+    $config = \Drupal::config('vsite_site_creation.settings');
+    if ($val = $config->get('tos_url')) {
+      $settings['tos_url'] = $val;
+    }
+    else {
+      $settings['tos_url'] = '';
+    }
+    if ($val = $config->get('tos_label')) {
+      $settings['tos_label'] = $val;
+    }
+    else {
+      $settings['tos_label'] = '';
+    }
+
+    /** @var \Drupal\vsite\Entity\GroupPreset[] $presets */
+    $presets = GroupPreset::loadMultiple();
+    foreach ($presets as $p) {
+      $site_types = $p->get('applicableTo');
+      $settings['presets'][$p->id()] = [
+        'description' => $p->get('description'),
+        'name' => $p->id(),
+        'site_type' => reset($site_types),
+        'title' => $p->label(),
+      ];
+    }
+
+    $settings['subsite_types'] = \Drupal::config('vsite.settings')->get('allowed_subsite_group_types');
+
+    $settings['themes'] = [];
+    /** @var \Drupal\cp_appearance\AppearanceSettingsBuilderInterface $themeList */
+    $themeList = \Drupal::service('cp_appearance.appearance_settings_builder');
+    $themes = $themeList->getFeaturedThemes();
+    foreach ($themes as $theme_name => $theme) {
+      // TODO: Filter this list into featured, other, and one page when requisite features are done
+      // Needed features: Feature a theme, one page themes.
+      if (isset($theme->info['onepage'])) {
+        $settings['themes']['onepage'][] = [
+          'themeKey' => $theme_name,
+          'name' => $theme->info['name'],
+          'screenshot' => file_create_url($theme->info['screenshot']),
+        ];
+      }
+      else {
+        $settings['themes']['featured'][] = [
+          'themeKey' => $theme_name,
+          'name' => $theme->info['name'],
+          'screenshot' => file_create_url($theme->info['screenshot']),
+        ];
+      }
+    }
+
+    $libraries['site_creation']['drupalSettings']['site_creation'] = $settings;
+  }
+
+}
+
+/**
+ * Implements hook_js_settings_alter().
+ */
+function vsite_site_creation_js_settings_alter(array &$settings, AttachedAssetsInterface $assets) {
+  if (in_array('vsite_site_creation/site_creation', $assets->getLibraries())) {
+    $user = \Drupal::currentUser();
+    $settings['site_creation']['hasOsId'] = ($user->isAnonymous() && $user->hasPermission('restful post user_registration')) || $user->hasPermission('create vsite on behalf of others');
+  }
+}
+
+/**
+ * Implements hook_toolbar_alter().
+ */
+function vsite_site_creation_toolbar_alter(&$items) {
+  if (isset($items['user'])) {
+    // This placeholder nonsense completely ruins everything angularjs related.
+    $items['user']['tray']['user_links']['#create_placeholder'] = FALSE;
+  }
+}

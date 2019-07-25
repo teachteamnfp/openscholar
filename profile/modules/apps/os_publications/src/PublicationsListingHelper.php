@@ -137,7 +137,9 @@ final class PublicationsListingHelper implements PublicationsListingHelperInterf
 
     $entity_storage->delete($redirects);
 
-    if ($redirect === 'title') {
+    // Publications by type has path `/publications`, therefore, no need to
+    // create a redirect.
+    if (strpos($redirect, 'type') !== FALSE) {
       return NULL;
     }
 

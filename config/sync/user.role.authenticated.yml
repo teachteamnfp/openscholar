@@ -10,6 +10,7 @@ weight: 1
 is_admin: false
 permissions:
   - 'access content'
+  - 'access contextual links'
   - 'access toolbar'
   - 'create class content'
   - 'create page content'
@@ -17,8 +18,10 @@ permissions:
   - 'delete own class content'
   - 'edit own class content'
   - 'opt-in or out of google analytics tracking'
+  - 'restful get group:extras'
   - 'rng register self'
   - 'use text format filtered_html'
+  - 'use text format title_filter'
   - 'view bibcite_contributor'
   - 'view bibcite_keyword'
   - 'view bibcite_reference'

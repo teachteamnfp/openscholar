@@ -7,10 +7,10 @@ use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Extension\Extension;
 use Drupal\Core\Extension\ThemeHandlerInterface;
 use Drupal\Core\Form\FormBuilderInterface;
+use Drupal\Core\Link;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\cp_appearance\Entity\CustomTheme;
-use Drupal\cp_appearance\Entity\CustomThemeInterface;
 use Drupal\cp_appearance\Form\FlavorForm;
 use Ds\Map;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -241,14 +241,25 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
    */
   protected function addMoreOperations(Extension $theme): array {
     $operations = [];
-    /** @var \Drupal\Core\Extension\Extension[] $drupal_installed_themes */
-    $drupal_installed_themes = $this->themeHandler->listInfo();
 
     if (\property_exists($theme, 'sub_themes')) {
-      $custom_theme_ids = array_map(function (CustomThemeInterface $custom_theme) {
-        return $custom_theme->id();
-      }, CustomTheme::loadMultiple());
-      $flavors_excluding_custom_themes = array_diff(array_keys($theme->sub_themes), $custom_theme_ids);
+      /** @var \Drupal\Core\Extension\Extension[] $drupal_installed_themes */
+      $drupal_installed_themes = $this->themeHandler->listInfo();
+
+      $flavors_excluding_custom_themes = array_filter(array_keys($theme->sub_themes), function ($sub_theme) use ($drupal_installed_themes) {
+        // The custom theme might not be present in the current vsite config.
+        // Therefore, make sure that it exists before proceeding.
+        // This happens when custom themes are added across multiple vsites.
+        $theme_exists = $this->themeHandler->themeExists($sub_theme);
+
+        if (!$theme_exists) {
+          return FALSE;
+        }
+
+        $info = $drupal_installed_themes[$sub_theme]->info;
+
+        return !isset($info['custom theme']);
+      });
 
       // Create a key-extension_info mapping.
       if ($flavors_excluding_custom_themes) {
@@ -280,6 +291,19 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
     }
 
     $this->prepareThemes($custom_themes);
+
+    foreach ($custom_themes as &$custom_theme) {
+      $operations = [];
+
+      $operations[] = Link::createFromRoute($this->t('Edit'), 'entity.cp_custom_theme.edit_form', [
+        'cp_custom_theme' => $custom_theme->getName(),
+      ]);
+      $operations[] = Link::createFromRoute($this->t('Delete'), 'entity.cp_custom_theme.delete_form', [
+        'cp_custom_theme' => $custom_theme->getName(),
+      ]);
+
+      $custom_theme->more_operations = $operations;
+    }
 
     return $custom_themes;
   }

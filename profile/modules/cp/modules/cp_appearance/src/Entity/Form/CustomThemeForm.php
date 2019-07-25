@@ -3,10 +3,10 @@
 namespace Drupal\cp_appearance\Entity\Form;
 
 use Drupal\Core\Entity\EntityForm;
+use Drupal\Core\Extension\ThemeHandlerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\cp_appearance\AppearanceSettingsBuilderInterface;
 use Drupal\cp_appearance\Entity\CustomTheme;
-use Drupal\file\FileInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -22,20 +22,30 @@ class CustomThemeForm extends EntityForm {
   protected $appearanceSettingsBuilder;
 
   /**
+   * Theme handler service.
+   *
+   * @var \Drupal\Core\Extension\ThemeHandlerInterface
+   */
+  protected $themeHandler;
+
+  /**
    * Creates a new CustomThemeForm object.
    *
    * @param \Drupal\cp_appearance\AppearanceSettingsBuilderInterface $appearance_settings_builder
    *   Appearance settings builder service.
+   * @param \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler
+   *   Theme handler service.
    */
-  public function __construct(AppearanceSettingsBuilderInterface $appearance_settings_builder) {
+  public function __construct(AppearanceSettingsBuilderInterface $appearance_settings_builder, ThemeHandlerInterface $theme_handler) {
     $this->appearanceSettingsBuilder = $appearance_settings_builder;
+    $this->themeHandler = $theme_handler;
   }
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    return new static($container->get('cp_appearance.appearance_settings_builder'));
+    return new static($container->get('cp_appearance.appearance_settings_builder'), $container->get('theme_handler'));
   }
 
   /**
@@ -46,6 +56,7 @@ class CustomThemeForm extends EntityForm {
     /** @var \Drupal\cp_appearance\Entity\CustomThemeInterface $entity */
     $entity = $this->entity;
     $base_theme_options = [];
+    $custom_theme_directory_path = CustomTheme::ABSOLUTE_CUSTOM_THEMES_LOCATION . '/' . $entity->id();
 
     foreach ($this->appearanceSettingsBuilder->getFeaturedThemes() as $key => $data) {
       $base_theme_options[$key] = $data->info['name'];
@@ -69,7 +80,7 @@ class CustomThemeForm extends EntityForm {
         'source' => ['label'],
       ],
       '#disabled' => !$entity->isNew(),
-      '#field_prefix' => CustomTheme::CUSTOM_THEME_ID_PREFIX,
+      '#field_prefix' => $entity->isNew() ? CustomTheme::CUSTOM_THEME_ID_PREFIX : '',
     ];
 
     $form['base_theme'] = [
@@ -82,7 +93,7 @@ class CustomThemeForm extends EntityForm {
     ];
 
     $form['images'] = [
-      '#type' => 'file',
+      '#type' => 'managed_file',
       '#title' => $this->t('Images'),
       '#description' => $this->t('Upload necessary files required for styling of your custom theme. These could be image sprites, arrow icons, etc. The images are going to be put inside %location directory. Therefore make sure you have mentioned the path while writing the style. For example, if you have uploaded %example_file_name, then the style should be <code>background-image: url("@location/@example_file_name")</code>', [
         '%location' => CustomTheme::CUSTOM_THEMES_IMAGES_LOCATION,
@@ -94,6 +105,7 @@ class CustomThemeForm extends EntityForm {
       '#multiple' => TRUE,
     ];
 
+    $styles_path = $custom_theme_directory_path . '/' . CustomTheme::CUSTOM_THEMES_STYLE_LOCATION;
     $form['styles'] = [
       '#type' => 'textarea',
       '#title' => $this->t('CSS'),
@@ -101,52 +113,20 @@ class CustomThemeForm extends EntityForm {
         '%style_file' => CustomTheme::CUSTOM_THEMES_STYLE_LOCATION,
       ]),
       '#required' => TRUE,
-      '#default_value' => $entity->getStyles(),
+      '#default_value' => !$entity->isNew() ? file_get_contents($styles_path) : NULL,
     ];
 
+    $scripts_path = $custom_theme_directory_path . '/' . CustomTheme::CUSTOM_THEMES_SCRIPT_LOCATION;
     $form['scripts'] = [
       '#type' => 'textarea',
       '#title' => $this->t('JavaScript'),
       '#description' => $this->t('Enter the scripts for your custom theme. Make sure that the script is valid, otherwise the site might break. The scripts are going to be put inside %script_file file.', [
         '%script_file' => CustomTheme::CUSTOM_THEMES_SCRIPT_LOCATION,
       ]),
-      '#default_value' => $entity->getScripts(),
+      '#default_value' => (!$entity->isNew() && file_exists($scripts_path)) ? file_get_contents($scripts_path) : NULL,
     ];
 
     return $form;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    parent::validateForm($form, $form_state);
-
-    // Handle file upload.
-    // It is silly doing such things in validation handler, but Drupal also does
-    // it.
-    $file_fields = ['images'];
-    $file_validators = [
-      'file_validate_extensions' => ['png jpg jpeg'],
-    ];
-    foreach ($file_fields as $field) {
-      $files = file_save_upload($field, $file_validators, 'temporary://');
-
-      if ($files === NULL) {
-        continue;
-      }
-
-      // file_save_upload() puts a FALSE inside `$files` in case of errors.
-      // `$files` itself is not FALSE.
-      // Therefore, validation is done in this way.
-      $valid_files = array_filter($files);
-      if (count($valid_files) !== count($files)) {
-        $form_state->setError($form[$field]);
-      }
-      else {
-        $form_state->setValue($field, $files);
-      }
-    }
   }
 
   /**
@@ -158,14 +138,12 @@ class CustomThemeForm extends EntityForm {
     /** @var array $form_state_values */
     $form_state_values = $form_state->getValues();
 
-    $entity->set('id', CustomTheme::CUSTOM_THEME_ID_PREFIX . $entity->id());
+    if ($entity->isNew()) {
+      $entity->set('id', CustomTheme::CUSTOM_THEME_ID_PREFIX . $entity->id());
+    }
 
     if ($form_state_values['images']) {
-      $uploaded_image_ids = array_map(function (FileInterface $file) {
-        return $file->id();
-      }, $form_state_values['images']);
-
-      $entity->setImages($uploaded_image_ids);
+      $entity->setImages($form_state_values['images']);
     }
 
     $entity->setStyles($form_state_values['styles']);
@@ -243,16 +221,28 @@ class CustomThemeForm extends EntityForm {
     $element = $form_state->getTriggeringElement();
     /** @var \Drupal\cp_appearance\Entity\CustomThemeInterface $entity */
     $entity = $this->getEntity();
+    $installed_themes = array_keys($this->themeHandler->listInfo());
 
-    $route_parameters = [
-      'custom_theme' => $entity->id(),
-    ];
+    if (\in_array($entity->id(), $installed_themes, TRUE)) {
+      if ($element['#name'] === 'save_default') {
+        /** @var \Drupal\Core\Config\Config $theme_setting_mut */
+        $theme_setting_mut = $this->configFactory()->getEditable('system.theme');
+        $theme_setting_mut->set('default', $entity->id())->save();
+      }
 
-    if ($element['#name'] === 'save_default') {
-      $route_parameters['make_default'] = TRUE;
+      $form_state->setRedirect('cp.appearance');
     }
+    else {
+      $route_parameters = [
+        'custom_theme' => $entity->id(),
+      ];
 
-    $form_state->setRedirect('cp_custom_theme.install_form', $route_parameters);
+      if ($element['#name'] === 'save_default') {
+        $route_parameters['make_default'] = TRUE;
+      }
+
+      $form_state->setRedirect('cp_custom_theme.install_form', $route_parameters);
+    }
   }
 
 }

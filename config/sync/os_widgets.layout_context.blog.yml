@@ -5,6 +5,6 @@ dependencies: {  }
 id: blog
 label: Blog
 description: ''
-activationRules: 'blog/*'
+activationRules: "blog\r\nblog/*"
 weight: 0
 data: {  }

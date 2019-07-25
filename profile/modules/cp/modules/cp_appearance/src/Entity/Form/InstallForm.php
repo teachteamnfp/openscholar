@@ -3,6 +3,7 @@
 namespace Drupal\cp_appearance\Entity\Form;
 
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
+use Drupal\Core\Extension\ThemeHandlerInterface;
 use Drupal\Core\Extension\ThemeInstallerInterface;
 use Drupal\Core\Form\ConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -37,20 +38,30 @@ final class InstallForm extends ConfirmFormBase implements ContainerInjectionInt
   protected $makeDefault;
 
   /**
+   * Theme handler service.
+   *
+   * @var \Drupal\Core\Extension\ThemeHandlerInterface
+   */
+  protected $themeHandler;
+
+  /**
    * Creates a new InstallForm object.
    *
    * @param \Drupal\Core\Extension\ThemeInstallerInterface $theme_installer
    *   Theme installer service.
+   * @param \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler
+   *   Theme handler service.
    */
-  public function __construct(ThemeInstallerInterface $theme_installer) {
+  public function __construct(ThemeInstallerInterface $theme_installer, ThemeHandlerInterface $theme_handler) {
     $this->themeInstaller = $theme_installer;
+    $this->themeHandler = $theme_handler;
   }
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    return new static($container->get('theme_installer'));
+    return new static($container->get('theme_installer'), $container->get('theme_handler'));
   }
 
   /**
@@ -92,6 +103,7 @@ final class InstallForm extends ConfirmFormBase implements ContainerInjectionInt
     $this->themeInstaller->install([
       $this->customTheme->id(),
     ]);
+    $this->themeHandler->refreshInfo();
 
     $this->messenger()->addMessage($this->t('Custom theme %name successfully installed.', [
       '%name' => $this->customTheme->label(),

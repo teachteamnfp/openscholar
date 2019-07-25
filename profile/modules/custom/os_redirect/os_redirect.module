@@ -28,7 +28,7 @@ function os_redirect_redirect_matched_redirect_alter(&$redirect) {
   }
 
   if ($redirect && Drupal::currentUser()->hasPermission('ignore redirects')) {
-    Drupal::messenger()->addWarning(t('You are redirected to: @uri', ['@uri' => $redirect->getRedirectUrl()->getUri()]));
+    Drupal::messenger()->addWarning(t('You are redirected to: @uri', ['@uri' => $redirect->getRedirectUrl()->toString()]));
     $redirect = NULL;
     return;
   }
@@ -40,7 +40,9 @@ function os_redirect_redirect_matched_redirect_alter(&$redirect) {
 function os_redirect_redirect_path_alter(&$path) {
   /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContextManager */
   $vsiteContextManager = Drupal::service('vsite.context_manager');
-  if (($group = $vsiteContextManager->getActiveVsite()) && strpos($path, 'node') === FALSE) {
+  // To check if node/publication page or not.
+  $flag = strpos($path, 'node') !== FALSE || strpos($path, 'bibcite') !== FALSE;
+  if (($group = $vsiteContextManager->getActiveVsite()) && !$flag) {
     $path = '[vsite:' . $group->id() . ']/' . $path;
   }
 }

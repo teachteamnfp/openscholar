@@ -113,6 +113,14 @@ drupalSettings:
   dependencies:
     - os/angular.angularjs
 
+activeUser:
+  version: 1.0
+  js:
+    js/ActiveUser/ActiveUser.module.js: { }
+  dependencies:
+    - os/drupalSettings
+    - os/auth
+
 jsPager:
   version: 1.0
   js:
@@ -122,6 +130,23 @@ jsPager:
     version: { jsPager: "1.0" }
   dependencies:
     - os/angular.angularjs
+
+fileHandler:
+  version: 1.0
+  js:
+    js/FileHandler/FileHandler.module.js: { }
+  css:
+    component:
+      js/FileHandler/fileUploadHandler.css: { }
+  paths: js/FileHandler
+  drupalSettings:
+    version: { fileHandler: "1.0" }
+  dependencies:
+    - os/angular.angularjs
+    - os/angular.ngFileUpload
+    - os/drupalSettings
+    - os/urlGenerator
+
 
 entityService:
   version: 1.0
@@ -185,6 +210,13 @@ fileEditorModal:
     - os/fileEditor
     - os/angular.modalService
     - os/locationFix
+
+buttonSpinner:
+  version: 1.0
+  js:
+    js/buttonSpinner/buttonSpinner.module.js: { }
+  dependencies:
+    - os/angular.angularjs
 
 openscholarModule:
   version: 1.0

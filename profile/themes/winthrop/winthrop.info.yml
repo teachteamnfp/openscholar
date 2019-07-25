@@ -29,3 +29,8 @@ regions:
 
 libraries:
   - winthrop/global-styling
+
+ckeditor_stylesheets:
+  - //fonts.googleapis.com/css?family=Merriweather:300
+  - //fonts.googleapis.com/css?family=Merriweather+Sans
+  - css/ckeditor.css

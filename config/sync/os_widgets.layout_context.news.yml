@@ -5,6 +5,6 @@ dependencies: {  }
 id: news
 label: News
 description: 'Layout Context for News'
-activationRules: 'news/*'
+activationRules: "news\r\nnews/*"
 weight: 0
 data: {  }

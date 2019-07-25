@@ -94,7 +94,7 @@ class PublicationsViewsTest extends TestBase {
    */
   public function testTitle(): void {
     $reference1 = $this->createReference([
-      'title' => 'The Last Supper',
+      'html_title' => 'The Last Supper',
       'is_sticky' => [
         'value' => 0,
       ],
@@ -102,7 +102,7 @@ class PublicationsViewsTest extends TestBase {
     $this->group->addContent($reference1, 'group_entity:bibcite_reference');
 
     $reference2 = $this->createReference([
-      'title' => 'Girl with a Pearl Earring',
+      'html_title' => 'Girl with a Pearl Earring',
       'is_sticky' => [
         'value' => 0,
       ],
@@ -110,7 +110,7 @@ class PublicationsViewsTest extends TestBase {
     $this->group->addContent($reference2, 'group_entity:bibcite_reference');
 
     $reference3 = $this->createReference([
-      'title' => 'Mona Lisa',
+      'html_title' => 'Mona Lisa',
       'is_sticky' => [
         'value' => 0,
       ],
@@ -118,7 +118,7 @@ class PublicationsViewsTest extends TestBase {
     $this->group->addContent($reference3, 'group_entity:bibcite_reference');
 
     $reference4 = $this->createReference([
-      'title' => 'Las Meninas',
+      'html_title' => 'Las Meninas',
       'is_sticky' => [
         'value' => 0,
       ],
@@ -168,7 +168,7 @@ class PublicationsViewsTest extends TestBase {
     ]);
 
     $reference1 = $this->createReference([
-      'title' => 'Mona Lisa',
+      'html_title' => 'Mona Lisa',
       'author' => [
         'target_id' => $contributor1->id(),
         'category' => 'primary',
@@ -181,7 +181,7 @@ class PublicationsViewsTest extends TestBase {
     $this->group->addContent($reference1, 'group_entity:bibcite_reference');
 
     $reference2 = $this->createReference([
-      'title' => 'The Last Supper',
+      'html_title' => 'The Last Supper',
       'author' => [
         'target_id' => $contributor1->id(),
         'category' => 'primary',
@@ -194,7 +194,7 @@ class PublicationsViewsTest extends TestBase {
     $this->group->addContent($reference2, 'group_entity:bibcite_reference');
 
     $reference3 = $this->createReference([
-      'title' => 'Harry Potter and the Deathly Hallows',
+      'html_title' => 'Harry Potter and the Deathly Hallows',
       'type' => 'book',
       'author' => [
         'target_id' => $contributor2->id(),
@@ -211,7 +211,7 @@ class PublicationsViewsTest extends TestBase {
     $this->group->addContent($reference3, 'group_entity:bibcite_reference');
 
     $reference4 = $this->createReference([
-      'title' => 'Unknown',
+      'html_title' => 'Unknown',
       'is_sticky' => [
         'value' => 0,
       ],
@@ -243,104 +243,13 @@ class PublicationsViewsTest extends TestBase {
   }
 
   /**
-   * Tests sorting in author display.
-   *
-   * @coversDefaultClass \Drupal\os_publications\Plugin\views\field\AuthorLastNameFirstLetter
-   * @coversDefaultClass \Drupal\os_publications\Plugin\views\sort\AuthorLastNameFirstLetter
-   *
-   * @throws \Drupal\Core\Entity\EntityStorageException
-   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
-   */
-  public function testAuthorSort(): void {
-    /** @var \Drupal\os_publications\PublicationsListingHelperInterface $publications_listing_helper */
-    $publications_listing_helper = $this->container->get('os_publications.listing_helper');
-
-    $contributor1 = $this->createContributor([
-      'first_name' => 'Leonardo',
-      'middle_name' => 'Da',
-      'last_name' => 'Vinci',
-    ]);
-
-    $contributor2 = $this->createContributor([
-      'first_name' => 'Joanne',
-      'middle_name' => 'Kathleen',
-      'last_name' => 'Rowling',
-    ]);
-
-    $reference1 = $this->createReference([
-      'title' => 'Mona Lisa',
-      'author' => [
-        'target_id' => $contributor1->id(),
-        'category' => 'primary',
-        'role' => 'author',
-      ],
-      'is_sticky' => [
-        'value' => 0,
-      ],
-    ]);
-    $this->group->addContent($reference1, 'group_entity:bibcite_reference');
-
-    $reference2 = $this->createReference([
-      'title' => 'Harry Potter and the Deathly Hallows',
-      'type' => 'book',
-      'author' => [
-        'target_id' => $contributor2->id(),
-        'category' => 'primary',
-        'role' => 'author',
-      ],
-      'bibcite_publisher' => [
-        'value' => 'Bloomsbury',
-      ],
-      'is_sticky' => [
-        'value' => 0,
-      ],
-    ]);
-    $this->group->addContent($reference2, 'group_entity:bibcite_reference');
-
-    $dataset = [
-      [
-        'title' => $reference1->label(),
-        'author_last_name' => $publications_listing_helper->convertAuthorName($reference1),
-      ],
-      [
-        'title' => $reference2->label(),
-        'author_last_name' => $publications_listing_helper->convertAuthorName($reference2),
-      ],
-    ];
-
-    /** @var \Drupal\Core\Config\ConfigFactoryInterface $config_factory */
-    $config_factory = $this->container->get('config.factory');
-    /** @var \Drupal\Core\Config\Config $os_publications_settings_mut */
-    $os_publications_settings_mut = $config_factory->getEditable('os_publications.settings');
-    $os_publications_settings_mut->set('biblio_order', 'DESC');
-    $os_publications_settings_mut->save();
-
-    $view = Views::getView('publications');
-    $view->setDisplay('page_3');
-    $view->preExecute();
-    $view->execute();
-
-    /** @var array $result */
-    $result = $view->result;
-
-    $this->assertCount(2, $result);
-
-    // Assert sorting by "first letter of author's last name".
-    $this->orderResultSet($dataset, 'author_last_name', TRUE);
-
-    $this->assertIdenticalResultset($view, $dataset, [
-      '_entity' => 'title',
-    ]);
-  }
-
-  /**
    * Tests year display.
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function testYear(): void {
     $reference1 = $this->createReference([
-      'title' => 'Girl with a Pearl Earring',
+      'html_title' => 'Girl with a Pearl Earring',
       'bibcite_year' => [
         'value' => 1665,
       ],
@@ -351,7 +260,7 @@ class PublicationsViewsTest extends TestBase {
     $this->group->addContent($reference1, 'group_entity:bibcite_reference');
 
     $reference2 = $this->createReference([
-      'title' => 'The Persistence of Memory',
+      'html_title' => 'The Persistence of Memory',
       'bibcite_year' => [
         'value' => 1931,
       ],
@@ -362,7 +271,7 @@ class PublicationsViewsTest extends TestBase {
     $this->group->addContent($reference2, 'group_entity:bibcite_reference');
 
     $reference3 = $this->createReference([
-      'title' => 'The Starry Night',
+      'html_title' => 'The Starry Night',
       'bibcite_year' => [
         'value' => 1889,
       ],
@@ -373,7 +282,7 @@ class PublicationsViewsTest extends TestBase {
     $this->group->addContent($reference3, 'group_entity:bibcite_reference');
 
     $reference4 = $this->createReference([
-      'title' => 'Foobar',
+      'html_title' => 'Foobar',
       'bibcite_year' => [
         'value' => 1889,
       ],
@@ -408,7 +317,7 @@ class PublicationsViewsTest extends TestBase {
    */
   public function testReferenceFilter(): void {
     $reference = $this->createReference([
-      'title' => 'Girl with a Pearl Earring',
+      'html_title' => 'Girl with a Pearl Earring',
       'is_sticky' => [
         'value' => 0,
       ],
@@ -465,7 +374,7 @@ class PublicationsViewsTest extends TestBase {
    */
   public function testSortOrder(): void {
     $reference1 = $this->createReference([
-      'title' => 'Girl with a Pearl Earring',
+      'html_title' => 'Girl with a Pearl Earring',
       'bibcite_year' => [
         'value' => 1665,
       ],
@@ -476,7 +385,7 @@ class PublicationsViewsTest extends TestBase {
     $this->group->addContent($reference1, 'group_entity:bibcite_reference');
 
     $reference2 = $this->createReference([
-      'title' => 'The Persistence of Memory',
+      'html_title' => 'The Persistence of Memory',
       'bibcite_year' => [
         'value' => 1931,
       ],
@@ -487,7 +396,7 @@ class PublicationsViewsTest extends TestBase {
     $this->group->addContent($reference2, 'group_entity:bibcite_reference');
 
     $reference3 = $this->createReference([
-      'title' => 'The Starry Night',
+      'html_title' => 'The Starry Night',
       'bibcite_year' => [
         'value' => 1889,
       ],
@@ -498,7 +407,7 @@ class PublicationsViewsTest extends TestBase {
     $this->group->addContent($reference3, 'group_entity:bibcite_reference');
 
     $reference4 = $this->createReference([
-      'title' => 'Foobar',
+      'html_title' => 'Foobar',
       'bibcite_year' => [
         'value' => 1989,
       ],

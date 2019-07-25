@@ -9,7 +9,6 @@ module:
   bibcite_endnote: 0
   bibcite_entity: 0
   bibcite_export: 0
-  bibcite_marc: 0
   bibcite_preview: 0
   bibcite_ris: 0
   big_pipe: 0
@@ -57,6 +56,7 @@ module:
   entity_reference_revisions: 0
   fakeobjects: 0
   field: 0
+  field_group: 0
   field_layout: 0
   field_tools: 0
   field_ui: 0
@@ -74,6 +74,7 @@ module:
   image: 0
   image_widget_crop: 0
   inline_form_errors: 0
+  key_value_field: 0
   language: 0
   layout_builder: 0
   layout_discovery: 0
@@ -115,6 +116,7 @@ module:
   os_redirect: 0
   os_redirect_to_source: 0
   os_rest: 0
+  os_search_solr: 0
   os_slideshow: 0
   os_software: 0
   os_taxonomy: 0
@@ -140,6 +142,7 @@ module:
   rng_views: 0
   search: 0
   serialization: 0
+  shorten: 0
   slick: 0
   styleguide: 0
   system: 0
@@ -162,9 +165,11 @@ module:
   views_infinite_scroll: 0
   views_ui: 0
   vsite: 0
+  vsite_domain: 0
   vsite_favicon: 0
   vsite_infinite_scroll: 0
   vsite_privacy: 0
+  vsite_site_creation: 0
   workflows: 0
   menu_link_content: 1
   pathauto: 1

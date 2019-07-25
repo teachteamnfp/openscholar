@@ -27,7 +27,7 @@
 local_config/
 
 # Ignore vsite specific configurations
-config/sync/vsite*
+config/sync/vsite:*
 !config/sync/vsite_infinite_scroll.settings.yml
 
 # Ignore custom themes

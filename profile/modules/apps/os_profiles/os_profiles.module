@@ -75,28 +75,28 @@ function os_profiles_theme($existing, $type, $theme, $path) {
 function os_profiles_preprocess_node(&$variables) {
   /** @var \Drupal\node\Entity\Node $node */
   $node = $variables['node'];
+  // Node bundle is person.
+  if ($node->bundle() != 'person') {
+    return;
+  }
   $content = $variables['content'];
   $config = Drupal::config('os_profiles.settings');
-  /** @var \Symfony\Component\HttpFoundation\ParameterBag $attributes */
-  $attributes = Drupal::request()->attributes;
-  $parameters = $attributes->all();
 
-  // You are on person page.
-  // Node bundle is person.
   // Current view mode has image.
   // Person image is empty.
   // Default image is not hidden.
-  if (!empty($parameters['_route'])
-    && $parameters['_route'] == 'view.people.page_1'
-    && $node->bundle() == 'person'
-    && in_array($variables['view_mode'], ['teaser', 'sidebar_teaser'])
+  if (in_array($variables['view_mode'], ['teaser', 'sidebar_teaser', 'full'])
     && empty($content['field_photo_person']['#items'])
     && !$config->get('disable_default_image')) {
 
     if ($default_image_fid = $config->get('default_image_fid')) {
       $file = File::load($default_image_fid);
+      $image_style_name = 'crop_photo_person';
+      if ($variables['view_mode'] == 'full') {
+        $image_style_name = 'crop_photo_person_full';
+      }
       $image_vars = [
-        'style_name' => 'crop_photo_person',
+        'style_name' => $image_style_name,
         'uri' => $file->getFileUri(),
       ];
 
@@ -120,12 +120,26 @@ function os_profiles_preprocess_node(&$variables) {
     }
     else {
       // Use default image.
+      $image_name = 'person-default-image.png';
+      if ($variables['view_mode'] == 'full') {
+        $image_name = 'person-default-image-big.png';
+      }
       $default_image_render_array = [
         '#theme' => 'image',
-        '#uri' => file_create_url(drupal_get_path('theme', 'os_base') . '/images/person-default-image-big.png'),
+        '#uri' => file_create_url(drupal_get_path('theme', 'os_base') . '/images/' . $image_name),
       ];
     }
     $variables['content']['field_photo_person'][0] = $default_image_render_array;
+  }
+
+  if (!empty($content['field_phone'][0])) {
+    $variables['content']['field_phone']['#title'] = t('p', ['context' => 'Field phone title']);
+  }
+  if (!empty($content['field_email'][0]['#url'])) {
+    $url_attributes = [
+      'title' => t("@title's e - mail", ['@title' => $node->getTitle()]),
+    ];
+    $variables['content']['field_email'][0]['#url']->setOption('attributes', $url_attributes);
   }
   /** @var \Drupal\vsite\Plugin\VsiteContextManager $vsite_context_manager */
   $vsite_context_manager = Drupal::service('vsite.context_manager');

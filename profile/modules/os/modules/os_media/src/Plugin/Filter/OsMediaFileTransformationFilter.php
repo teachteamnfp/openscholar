@@ -30,7 +30,7 @@ class OsMediaFileTransformationFilter extends FilterBase {
       $imgTag = $m[0];
       $mid = $m[1];
       $args = [
-        $mid
+        $mid,
       ];
       $width = [];
       preg_match_all('|width="([\d]+)"|', $imgTag, $width, PREG_SET_ORDER);

@@ -163,15 +163,6 @@ class CpUsersMainTest extends OsExistingSiteJavascriptTestBase {
     $this->assertSession()->linkNotExists('Add New User', "Add New User is still on page.");
     $page->find('css', '#drupal-modal')->click();
 
-    $page->clickLink('Change Owner');
-    $this->assertSession()->waitForElement('css', '#drupal-modal--content');
-    $page->selectFieldOption('new_owner', 'test-user');
-    $page->pressButton('Save');
-    $this->assertSession()->assertWaitOnAjaxRequest();
-    /** @var \Drupal\user\UserInterface $user */
-    $user = user_load_by_name('test-user');
-    $this->assertSession()->elementExists('xpath', '//tr[@data-user-id="' . $user->id() . '"]/td[contains(.,"Site Owner")]');
-
     // Cleanup.
     $user = \user_load_by_name('test-user');
     if ($user) {
@@ -180,6 +171,43 @@ class CpUsersMainTest extends OsExistingSiteJavascriptTestBase {
 
     $settings->set('disable_user_creation', 0);
     $settings->save();
+  }
+
+  /**
+   * Checks user access to change vsite ownership.
+   *
+   * @throws \Behat\Mink\Exception\ExpectationException
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public function testChangeOwnership(): void {
+    // Setup.
+    $member = $this->createUser();
+    $this->group->addMember($member);
+
+    // Negative tests.
+    $this->drupalLogin($this->groupAdmin);
+    $this->visitViaVsite('cp/users', $this->group);
+
+    /** @var \Behat\Mink\Element\NodeElement|null $change_owner_link */
+    $change_owner_link = $this->getSession()->getPage()->find('css', "a[href=\"/{$this->modifier}/cp/users/owner?user={$member->id()}\"]");
+    $this->assertNull($change_owner_link);
+    $this->visitViaVsite('cp/users/owner', $this->group);
+    $this->assertSession()->statusCodeEquals(403);
+
+    $this->drupalLogout();
+
+    // Config changes for positive tests.
+    $this->group->setOwner($this->groupAdmin)->save();
+
+    // Positive tests.
+    $this->drupalLogin($this->groupAdmin);
+    $this->visitViaVsite('cp/users', $this->group);
+
+    /** @var \Behat\Mink\Element\NodeElement|null $change_owner_link */
+    $change_owner_link = $this->getSession()->getPage()->find('css', "a[href=\"/{$this->modifier}/cp/users/owner?user={$member->id()}\"]");
+    $this->assertNotNull($change_owner_link);
+    $this->visitViaVsite('cp/users/owner', $this->group);
+    $this->assertSession()->statusCodeEquals(200);
   }
 
 }

@@ -29,3 +29,6 @@ regions:
 
 libraries:
   - dark/global-styling
+
+ckeditor_stylesheets:
+  - css/ckeditor.css

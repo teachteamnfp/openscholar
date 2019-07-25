@@ -13,6 +13,7 @@ group_type: personal
 permissions_ui: true
 permissions:
   0: 'view group'
-  2: 'view group_node:person entity'
-  3: 'view group_entity:bibcite_reference entity'
-  4: 'view group_entity:bibcite_reference content'
+  1: 'view group_node:person entity'
+  2: 'view group_entity:bibcite_reference entity'
+  3: 'view group_entity:bibcite_reference content'
+  8: 'download citations'

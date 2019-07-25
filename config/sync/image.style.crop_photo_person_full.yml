@@ -1,0 +1,25 @@
+uuid: 7a7b0b3d-0b46-4b60-aa33-9bdb41802e16
+langcode: en
+status: true
+dependencies:
+  config:
+    - crop.type.crop_100_122
+  module:
+    - crop
+name: crop_photo_person_full
+label: 'Crop photo person full'
+effects:
+  93cfc22a-9111-4fef-bcb9-7ea1274f6d6e:
+    uuid: 93cfc22a-9111-4fef-bcb9-7ea1274f6d6e
+    id: crop_crop
+    weight: 1
+    data:
+      crop_type: crop_100_122
+  eea842f2-d453-48a6-b1ca-09a530c8b48e:
+    uuid: eea842f2-d453-48a6-b1ca-09a530c8b48e
+    id: image_scale_and_crop
+    weight: 2
+    data:
+      width: 180
+      height: 220
+      anchor: center-center

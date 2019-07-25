@@ -27,11 +27,11 @@
           handlers[id][i](states[id]);
         }
       }
-    }
+    };
 
     this.GetState = function(id) {
       return typeof states[id] != undefined ? states[id] : false;
-    }
+    };
 
     this.$observe = function(id, func) {
       if (angular.isFunction(func)) {
@@ -53,9 +53,9 @@
       transclude: true,
       template:
         "<ng-transclude></ng-transclude>" +
-        '<span ng-show="spinning" class="spinner">',
+        '<span ng-show="spinning" class="spinner glyphicon glyphicon-refresh">',
       link: function (scope, elem, attr) {
-        var textElem = elem.find('ng-transclude').find('span')[0],
+        var textElem = elem.find('ng-transclude').find('span')[0] || elem.find('ng-transclude'),
           original = '';
 
         $bss.$observe(scope.spinnerID, function (state) {

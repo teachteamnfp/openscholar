@@ -5,6 +5,6 @@ dependencies: {  }
 id: presentations
 label: Presentations
 description: ''
-activationRules: 'presentations/*'
+activationRules: "presentations\r\npresentations/*"
 weight: 0
 data: {  }

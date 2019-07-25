@@ -2,6 +2,7 @@
 
 namespace Drupal\os_privacy_policy\Plugin\CpSetting;
 
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\cp_settings\CpSettingBase;
@@ -55,6 +56,8 @@ class OsPrivacyPolicy extends CpSettingBase {
     $config->set('os_privacy_policy_text', $form_state->getValue('os_privacy_policy_text'));
     $config->set('os_privacy_policy_url', $form_state->getValue('os_privacy_policy_url'));
     $config->save(TRUE);
+
+    Cache::invalidateTags(['os_privacy_policy:copyright_block']);
   }
 
 }

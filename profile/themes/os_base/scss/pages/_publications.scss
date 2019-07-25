@@ -12,6 +12,14 @@
   }
   .views-row {
     margin: 10px 0 20px 0;
+    overflow: hidden;
+  }
+  .field--name-field-publication-image {
+    float: left;
+    margin: .3em 1.5em 0.5em 0;
+  }
+  .citeproc-title-plus-extra {
+    font-weight: bold;
   }
 }
 /** citation **/
@@ -22,5 +30,30 @@
     overflow: visible;
     padding: 10px;
     margin-bottom: 8px;
+  }
+  .field.field--name-field-extra-fields {
+    .field--item {
+      display: flex;
+      font-weight: bold;
+      p {
+        margin-left: 5px;
+        font-weight: normal;
+        margin-bottom: 0;
+      }
+    }
+  }
+  .field--name-field-publication-image {
+    float: left;
+    margin: 0 1.5em .5em 0;
+  }
+  .bibcite-reference {
+    &:before, &:after {
+      content: "";
+      display: table;
+      width: 100%;
+    }
+    p {
+      margin-bottom: 1.5em;
+    }
   }
 }

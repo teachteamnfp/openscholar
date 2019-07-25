@@ -1,0 +1,12 @@
+/**** code for mini pager ****/
+.pager {
+  .next, .previous {
+    > a, > span {
+      float: none;
+      border-radius: 0;
+      font-weight: bold;
+      font-size: 18px;
+      padding: 5px 10px;
+    }
+  }
+}

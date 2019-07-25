@@ -1,68 +1,48 @@
 @import '../../os_base/scss/base/breakpoints';
-//colors
-$color_orange_white_approx: #fdfaee;
-$color_goldenrod_approx: #ffdb6d;
-$white: #fff;
-$color_curious_blue_approx: #0957a1;
-$color-black1: #222;
+@import './variables';
+@import './common';
 
-//fonts
-$font_0: Playfair Display;
-$font_1: sans-serif;
-$font_2: Georgia;
-$font_3: serif !important;
-$font_4: Oxygen;
-$font_5: helvetica !important;
-$font_6: Vidaloka;
-
-@import url(https://fonts.googleapis.com/css?family=Playfair+Display);
-@import url(https://fonts.googleapis.com/css?family=Vidaloka);
-@import url(https://fonts.googleapis.com/css?family=Oxygen);
-
-#page {
-  background: $color_orange_white_approx;
-}
 body {
   background: $color_orange_white_approx;
-  font-family: $font_0, $font_1, $font_2, $font_3;
+  @extend %font;
 }
 .node--title {
-  font-family: $font_0, $font_1, $font_2, $font_3;
+  @extend %font;
 }
 .content-inner {
   .block {
     &.block-boxes-os_boxes_manual_list .links.inline a {
-      font-family: $font_0, $font_1, $font_2, $font_3;
+      @extend %font;
     }
     &.block-boxes-os_boxes_columns .block {
       border-top: none;
     }
   }
   h2 {
-    font-family: $font_0, $font_1, $font_2, $font_3;
+    @extend %font;
   }
   h3 {
-    font-family: $font_0, $font_1, $font_2, $font_3;
+    @extend %font;
   }
   h4 {
-    font-family: $font_0, $font_1, $font_2, $font_3;
+    @extend %font;
   }
 }
 .more-link {
-  font-family: $font_0, $font_1, $font_2, $font_3;
+  @extend %font;
 }
 aside {
   .block {
     border-top: none;
   }
   .nav a {
-    font-family: $font_0, $font_1, $font_2, $font_3;
+    @extend %font;
   }
 }
 .header-container {
   background: $white;
   ul.nav a {
-    font-family: $font_0, $font_1, $font_2, $font_3;
+    @extend %font;
     font-family: $font_4, $font_5;
   }
 }
@@ -79,7 +59,7 @@ aside {
         border-top: 0 none;
       }
       > a {
-        font-family: $font_0, $font_1, $font_2, $font_3;
+        @extend %font;
         font-family: $font_4, $font_5;
         color: $color-black1;
         @media #{$mobile} {
@@ -165,25 +145,25 @@ footer {
   border-top: none;
 }
 .path-search .title a {
-  font-family: $font_0, $font_1, $font_2, $font_3;
+  @extend %font;
 }
 .links a {
-  font-family: $font_0, $font_1, $font_2, $font_3;
+  @extend %font;
 }
 .boxes-box-content h2 {
-  font-family: $font_0, $font_1, $font_2, $font_3;
+  @extend %font;
 }
 .block-boxes-os_boxes_facetapi_vocabulary.navigation {
-  font-family: $font_0, $font_1, $font_2, $font_3;
+  @extend %font;
 }
 .block-boxes-os_taxonomy_fbt.navigation {
-  font-family: $font_0, $font_1, $font_2, $font_3;
+  @extend %font;
 }
 h2.block-title {
-  font-family: $font_0, $font_1, $font_2, $font_3;
+  @extend %font;
 }
 .cke_editable * {
-  font-family: $font_0, $font_1, $font_2, $font_3;
+  @extend %font;
 }
 .path-front .content-inner .block {
   border-top: none;

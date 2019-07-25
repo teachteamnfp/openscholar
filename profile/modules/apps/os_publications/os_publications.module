@@ -5,6 +5,7 @@
  * Bibcite customizations for Openscholar.
  */
 
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\bibcite_entity\Entity\KeywordInterface;
 use Drupal\bibcite_entity\Entity\ReferenceType;
 use Drupal\Core\Entity\ContentEntityInterface;
@@ -13,6 +14,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
+use Drupal\Core\Render\Markup;
 use Drupal\Core\Url;
 use Drupal\os_publications\RepecHelper;
 use Drupal\views\Plugin\views\query\QueryPluginBase;
@@ -99,6 +101,12 @@ function os_publications_views_query_alter(ViewExecutable $view, QueryPluginBase
     if ($group['field'] === $mapping->get($view->current_display, NULL)) {
       $group['direction'] = $sort_order;
     }
+
+    // Additionaly, sorting of rows inside every group in publications by
+    // author can also be controlled from the setting.
+    if ($view->current_display === 'page_2' && $group['field'] === 'bibcite_reference_title') {
+      $group['direction'] = $sort_order;
+    }
   }
 }
 
@@ -148,13 +156,28 @@ function os_publications_views_pre_render(ViewExecutable $view) {
     return;
   }
 
+  if ($view->current_display !== 'cp') {
+
+    // Include citation download button.
+    $view->attachment_before = \Drupal::service('os_publications.citation_helper')->getCitationDownloadButton();
+
+    // Convert citation title into publication entity page's url.
+    $results = $view->result;
+    foreach ($results as $result) {
+      $publication = $result->_entity;
+      $text = Markup::create($publication->html_title->value);
+      $link = '"' . $publication->toLink($text)->toString() . '"';
+      $publication->html_title->value = $link;
+    }
+  }
+
   foreach ($view->field as $field_name => $field) {
     // Alter the citation style as per settings.
     if ($field_name === 'citation') {
       /** @var \Drupal\Core\Config\ImmutableConfig $bibcite_settings */
-      $bibcite_settings = \Drupal::config('bibcite.settings');
+      $publication_settings = \Drupal::config('os_publications.settings');
       /** @var string $publication_style */
-      $publication_style = $bibcite_settings->get('default_style');
+      $publication_style = $publication_settings->get('default_style');
 
       $field->options['csl_style'] = $publication_style;
     }
@@ -168,8 +191,13 @@ function os_publications_bibcite_reference_presave(EntityInterface $entity) {
   /** @var \Drupal\os_publications\PublicationsListingHelperInterface $publications_listing_helper */
   $publications_listing_helper = \Drupal::service('os_publications.listing_helper');
 
+  $label = strip_tags(html_entity_decode($entity->html_title->value));
+  // Set the label anyway to be used in places such as breadcrumbs.
+  // For other uses we will use html title field.
+  $entity->title->value = $label;
+
   $entity->set('title_first_char_excl_prep', [
-    'value' => $publications_listing_helper->convertLabel($entity->label()),
+    'value' => $publications_listing_helper->convertLabel($label),
   ]);
 }
 
@@ -225,6 +253,49 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
       ->setDefaultValue(TRUE)
       ->setDisplayConfigurable('form', TRUE);
 
+    $fields['full_text'] = BaseFieldDefinition::create('text_long')
+      ->setLabel('FULL TEXT')
+      ->setDescription('You can enter the full text of your article here, although most people upload PDFs instead.')
+      ->setTranslatable(TRUE)
+      ->setDisplayOptions('view', [
+        'type' => 'text_default',
+        'weight' => 5,
+      ])
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayOptions('form', [
+        'type' => 'text_textfield',
+        'weight' => 5,
+      ])
+      ->setDisplayConfigurable('form', TRUE);
+
+    $fields['notes'] = BaseFieldDefinition::create('text_long')
+      ->setLabel('NOTES')
+      ->setDescription("This note will appear after the abstract. Your notes are currently set to private. You can make this change in the publications section of your control panel's App settings")
+      ->setTranslatable(TRUE)
+      ->setDisplayOptions('view', [
+        'type' => 'text_default',
+        'weight' => 6,
+      ])
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayOptions('form', [
+        'type' => 'text_textfield',
+        'weight' => 6,
+      ])
+      ->setDisplayConfigurable('form', TRUE);
+
+    $fields['html_title'] = BaseFieldDefinition::create('text_long')
+      ->setLabel('Title')
+      ->setTranslatable(TRUE)
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayOptions('form', [
+        'type' => 'text_textarea',
+        'weight' => -10,
+        'settings' => [
+          'rows' => 1,
+        ],
+      ])
+      ->setDisplayConfigurable('form', TRUE);
+
     return $fields;
   }
 }
@@ -251,6 +322,15 @@ function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInte
   foreach ($required_fields as $field => $data) {
     $form[$field]['#group'] = 'content';
   }
+
+  // Set custom title filter for html title field and hide existing title field.
+  $form['html_title']['widget']['0']['#format'] = 'title_filter';
+  $form['#attached']['library'][] = 'os_publications/drupal.os_publications';
+  $form['title']['#access'] = FALSE;
+
+  // Put the delete button at the end of the actions list.
+  // Cancel button's weight is 30, this needs to be higher than that.
+  $form['actions']['delete']['#weight'] = 100;
 }
 
 /**
@@ -357,4 +437,104 @@ function os_publications_form_bibcite_reference_confirm_form_alter(&$form, FormS
  */
 function os_publications_alter_post_bibcite_reference_delete_redirect(array &$form, FormStateInterface $form_state) {
   $form_state->setRedirect('view.publications.page_1');
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function os_publications_preprocess_bibcite_citation(&$variables) {
+  $citation_styler = \Drupal::service('bibcite.citation_styler');
+  $site_wide_style = $citation_styler->getStyle()->id();
+  $publications_config = \Drupal::configFactory()->get('os_publications.settings');
+  $vsite_style = $publications_config->get('default_style') ?? $site_wide_style;
+
+  // Change sitewide config for rendering citation.
+  $citation_styler->setStyleById($vsite_style);
+
+  // Get current route name.
+  $route_name = \Drupal::routeMatch()->getRouteName();
+
+  // If publication view page.
+  if ($route_name === 'entity.bibcite_reference.canonical') {
+    $publication = \Drupal::routeMatch()->getParameter('bibcite_reference');
+    $text = Markup::create($publication->html_title->value);
+    $link = '"' . $publication->toLink($text)->toString() . '"';
+    $variables['data']['title'] = $link;
+
+    /** @var \Drupal\bibcite\CitationStylerInterface $styler */
+    $styler = \Drupal::service('bibcite.citation_styler');
+    $data = $variables['data'];
+
+    $variables['content'] = [
+      '#markup' => $styler->render($data),
+      '#cache' => [
+        'tags' => ['publication_citation'],
+      ],
+    ];
+  }
+
+  // Put site wide config back to default style.
+  $citation_styler->setStyleById($site_wide_style);
+
+  // If it is publication view page and shorten url setting is on,
+  // add a shortented url to the citation.
+  if ($publications_config->get('shorten_citations') && $route_name === 'entity.bibcite_reference.canonical') {
+    $current_uri = \Drupal::request()->getUri();
+    $url_text = shorten_url($current_uri);
+    $url = Url::fromUri($url_text);
+    $short_url = Link::fromTextAndUrl($url_text, $url)->toString();
+
+    // Get entity id to be passed to export button.
+    $id = \Drupal::routeMatch()->getParameter('bibcite_reference')->id();
+    // Append additional links to the citation.
+    $variables['content']['#markup'] .= '<span class="short-link">' . t("Copy at") . "&nbsp;$short_url" . '</span>';
+
+    // Get export button render array , get it's html and append to citation.
+    $export_array = \Drupal::service('os_publications.citation_helper')->getCitationDownloadButton($id);
+    $vsite = \Drupal::service('vsite.context_manager')->getActiveVsite();
+    if ($export_array && $vsite) {
+      $export_button = \Drupal::service('renderer')->render($export_array);
+      $variables['content']['#markup'] .= $export_button;
+      $variables['content']['#allowed_tags'] = [
+        'a', 'button', 'ul', 'li', 'span', 'div',
+      ];
+    }
+  }
+}
+
+/**
+ * Implements hook_editor_js_settings_alter().
+ */
+function os_publications_editor_js_settings_alter(array &$settings) {
+  // Badly affects the citation output if not set to false.
+  $settings['editor']['formats']['title_filter']['editorSettings']['autoParagraph'] = FALSE;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view_alter().
+ */
+function os_publications_bibcite_reference_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
+  if ($display->getMode() === 'teaser') {
+    // Check note in teaser setting and unset it if setting is off.
+    $publications_config = \Drupal::configFactory()->get('os_publications.settings');
+    $note_in_teaser = $publications_config->get('note_in_teaser');
+    if (!$note_in_teaser) {
+      unset($build['notes']);
+    }
+  }
+
+  // If publication has pmid entered, show pubmed link.
+  if ($display->getMode() === 'citation') {
+    if ($build['#bibcite_reference']->bibcite_pmid->value) {
+      // Use bibcite module's bibcite link plugin to generate the pubmed link.
+      $manager = \Drupal::service('plugin.manager.bibcite_link');
+      $instance = $manager->createInstance('pubmed');
+      if ($link = $instance->build($entity)) {
+        $build['pubmed_link'] = [
+          '#markup' => '<span class = "citation-links-pubmed">' . \Drupal::service('renderer')->render($link) . '</span>',
+          '#weight' => 50,
+        ];
+      }
+    }
+  }
 }
