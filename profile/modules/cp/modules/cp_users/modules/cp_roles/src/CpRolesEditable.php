@@ -32,7 +32,7 @@ final class CpRolesEditable implements CpRolesEditableInterface {
   /**
    * {@inheritdoc}
    */
-  public function getNonEditableGroupRoles(GroupInterface $group): array {
+  public function getDefaultGroupRoles(GroupInterface $group): array {
     return array_map(static function ($item) use ($group) {
       return "{$group->getGroupType()->id()}-$item";
     }, self::NON_EDITABLE);

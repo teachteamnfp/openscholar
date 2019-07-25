@@ -198,7 +198,7 @@ class CpRoleListBuilder extends DraggableListBuilder {
     if ($this->activeVsite &&
       $entity->hasLinkTemplate('permissions-form') &&
       ($this->currentUser->hasPermission('manage default group roles') &&
-      \in_array($entity->id(), $this->cpRolesEditable->getNonEditableGroupRoles($this->activeVsite), TRUE))) {
+      \in_array($entity->id(), $this->cpRolesEditable->getDefaultGroupRoles($this->activeVsite), TRUE))) {
       $operations['permissions'] = [
         'title' => $this->t('Edit permissions'),
         'weight' => 5,
@@ -208,7 +208,7 @@ class CpRoleListBuilder extends DraggableListBuilder {
 
     // Prepare operations for custom roles.
     if ($this->activeVsite &&
-      !\in_array($entity->id(), $this->cpRolesEditable->getNonEditableGroupRoles($this->activeVsite), TRUE)) {
+      !\in_array($entity->id(), $this->cpRolesEditable->getDefaultGroupRoles($this->activeVsite), TRUE)) {
       $operations['permissions'] = [
         'title' => $this->t('Edit permissions'),
         'weight' => 5,

@@ -25,12 +25,12 @@ class CpRolesEditableTest extends CpRolesExistingSiteTestBase {
   }
 
   /**
-   * @covers ::getNonEditableGroupRoles
+   * @covers ::getDefaultGroupRoles
    */
   public function testGetNonEditableGroupRoles(): void {
     /** @var \Drupal\cp_roles\CpRolesEditableInterface $cp_roles_editable */
     $cp_roles_editable = $this->container->get('cp_roles.editable');
-    $roles = $cp_roles_editable->getNonEditableGroupRoles($this->group);
+    $roles = $cp_roles_editable->getDefaultGroupRoles($this->group);
 
     $this->assertCount(3, $roles);
     $this->assertContains('personal-administrator', $roles);

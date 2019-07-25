@@ -21,7 +21,7 @@ interface CpRolesEditableInterface {
   public function getNonConfigurableGroupRoles(GroupInterface $group): array;
 
   /**
-   * Get non-editable roles for a group.
+   * Get default roles for a group.
    *
    * @param \Drupal\group\Entity\GroupInterface $group
    *   The group.
@@ -29,6 +29,6 @@ interface CpRolesEditableInterface {
    * @return string[]
    *   The roles.
    */
-  public function getNonEditableGroupRoles(GroupInterface $group): array;
+  public function getDefaultGroupRoles(GroupInterface $group): array;
 
 }
