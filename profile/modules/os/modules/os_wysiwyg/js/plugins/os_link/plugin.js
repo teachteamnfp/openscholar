@@ -9,13 +9,24 @@
       editor.addCommand('os_wysiwyg_link', {
         exec: function (editor) {
           let selection = editor.getSelection(),
-            element = self.getLinkFromSelection(selection);
+            element = self.getLinkFromSelection(selection),
+          data = {};
 
           if (element) {
             self.selectLink(selection, element);
+            data = self.parseAnchor(element)
+          }
+          else {
+            data = {
+              text: self.getTextFromSelection(selection),
+              url: '',
+              type: '',
+              title: '',
+              newWindow: false
+            };
           }
 
-          Drupal.wysiwyg.osLink.modal(editor, self.parseAnchor(element), self.insertLink)
+          Drupal.wysiwyg.osLink.modal(editor, data, self.insertLink)
         },
         context: 'a[href]',
         allowedContent: 'a[!href,target,data-url,data-mid]',
@@ -101,6 +112,9 @@
         node = node.parentNode;
       }
       return node;
+    },
+    getTextFromSelection: function (selection) {
+      return selection.getSelectedText();
     },
     selectLink: function (selection, node) {
       selection.selectElement(new CKEDITOR.dom.element(node));

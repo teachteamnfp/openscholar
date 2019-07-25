@@ -1,34 +1,54 @@
 format: tagged
 types:
-  Artwork: ''
+  Generic: miscellaneous
+  'Government Document': government_report
+  'Aggregated Database': database
+  'Ancient Text': ''
+  Artwork: artwork
   'Audiovisual Material': audiovisual
   Bill: bill
+  Blog: ''
   Book: book
   'Book Section': book_chapter
   Case: case
+  Catalog: ''
   'Chart or Table': chart
   'Classical Work': classical
+  'Computer Program': software
   'Conference Paper': conference_paper
   'Conference Proceedings': conference_proceedings
+  Dictionary: ''
   'Edited Book': book
+  'Electronic Article': web_article
+  'Electronic Book': ''
+  Encyclopedia: ''
+  Equation: ''
+  Figure: ''
   'Film or Broadcast': film
-  Generic: ''
-  'Government Document': government_report
+  Grant: ''
   Hearing: hearing
   'Journal Article': journal_article
   'Legal Rule or Regulation': legal_ruling
   'Magazine Article': magazine_article
   Manuscript: manuscript
   Map: map
+  Music: ''
   'Newspaper Article': newspaper_article
   'Online Database': database
+  'Online Multimedia': ''
+  Pamphlet: ''
   Patent: patent
   'Personal Communication': personal
   Report: report
+  'Serial Publication': ''
+  Standard: ''
   Statute: statute
   Thesis: thesis
   'Unpublished Work': unpublished
   'Web Page': website
+  'Unused 1': ''
+  'Unused 2': ''
+  'Unused 3': ''
 fields:
   type: type
   'secondary title': bibcite_secondary_title

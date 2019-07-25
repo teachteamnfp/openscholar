@@ -2,13 +2,13 @@
   <div>
     <div class="form-item link-form-left">
       <label for="owl-field-text">Link Text</label>
-      <input type="text" id="owl-field-text1" ng-model="text" class="form-text">
+      <input type="text" id="owl-field-text" ng-model="text" class="form-text" size="60">
       <div class="description">The linked text seen by users. Leave blank to use
         the url of the link itself.</div>
     </div>
     <div class="form-item link-form-right">
       <label for="owl-title-text">Title Text</label>
-      <input type="text" id="owl-title-text" ng-model="title" class="form-text">
+      <input type="text" id="owl-title-text" ng-model="title" class="form-text" size="60">
       <div class="description">The hover text seen when moused over. Is also
         used by screen readers, but will not appear for keyboard or touch-only
         users.</div>
@@ -37,7 +37,7 @@
     <div index="href" id="href-link" ng-switch-when="url">
       <div class="form-item">
         <label for="owl-url">Website URL</label><input type="text" id="owl-url"
-          ng-model="$parent.arg" class="form-text">
+          ng-model="$parent.arg" class="form-text" size="60">
         <div class="description">The URL of the web page. Can be a link to one
           of your own pages.</div>
       </div>
@@ -45,7 +45,7 @@
     <div index="email" id="email-link" ng-switch-when="email">
       <div class="form-item">
         <label for="owl-email">E-mail</label><input type="text" id="owl-email"
-          ng-model="$parent.arg" class="form-text">
+          ng-model="$parent.arg" class="form-text" size="60">
       </div>
     </div>
     <div index="file" id="file-link" ng-switch-when="file">
