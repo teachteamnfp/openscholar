@@ -10,3 +10,20 @@
     }
   }
 }
+/**** full pager ****/
+.pagination {
+  > li {
+    > a, a:hover,a:focus, span, span:hover, span:focus {
+      color: $color-link1;
+      background: $color-white;
+    }
+    &.active {
+      a, a:hover {
+        background: $color-link1;
+        color: $color-white;
+        border-color: $color-link1;
+      }
+    }
+  }
+}
+

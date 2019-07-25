@@ -239,3 +239,19 @@ h2.block-title {
 .accordion .ui-widget-content {
   background: $white;
 }
+/**** pager ****/
+.pagination {
+  > li {
+    > a, a:hover,a:focus, span, span:hover, span:focus {
+      color: $color_thunderbird_approx;
+      background: $white;
+    }
+    &.active {
+      a, a:hover {
+        background: $color_thunderbird_approx;
+        color: $white;
+        border-color: $color_thunderbird_approx;
+      }
+    }
+  }
+}

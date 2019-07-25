@@ -260,3 +260,19 @@ footer {
     color: $black;
   }
 }
+/**** pager ****/
+.pagination {
+  > li {
+    > a, a:hover,a:focus, span, span:hover, span:focus {
+      color: $color_mexican_red_approx;
+      background: $white;
+    }
+    &.active {
+      a, a:hover {
+        background: $color_mexican_red_approx;
+        color: $white;
+        border-color: $color_mexican_red_approx;
+      }
+    }
+  }
+}

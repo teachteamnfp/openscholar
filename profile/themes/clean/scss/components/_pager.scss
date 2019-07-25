@@ -1,0 +1,23 @@
+.pagination {
+  > li {
+    > a, a:hover,a:focus, span, span:hover, span:focus {
+      border-color: $color-green;
+      color: $color-green;
+      background: $color-white;
+    }
+    &.active {
+      a, a:hover {
+        background: $color-green;
+        color: $color-white;
+        border-color: $color-green;
+      }
+    }
+  }
+}
+.pager {
+  li {
+    > a, span {
+      background: transparent;
+    }
+  }
+}

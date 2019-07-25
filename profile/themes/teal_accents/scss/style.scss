@@ -247,3 +247,19 @@ h2.block-title {
 .fc-listPast-view .fc-list-heading .fc-list-heading-main {
   @extend %extend_1;
 }
+/**** pager ****/
+.pagination {
+  > li {
+    > a, a:hover,a:focus, span, span:hover, span:focus {
+      color: $color_log_cabin_approx;
+      background: $white;
+    }
+    &.active {
+      a, a:hover {
+        background: $color_tundora_approx;
+        color: $white;
+        border-color: $color_log_cabin_approx;
+      }
+    }
+  }
+}
