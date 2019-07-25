@@ -3,6 +3,7 @@
 namespace Drupal\cp_roles;
 
 use Drupal\group\Entity\GroupInterface;
+use Drupal\group\Entity\GroupRoleInterface;
 
 /**
  * Provides an interface for editable cp_roles.
@@ -30,5 +31,16 @@ interface CpRolesEditableInterface {
    *   The roles.
    */
   public function getDefaultGroupRoles(GroupInterface $group): array;
+
+  /**
+   * Checks if the group role is a default role.
+   *
+   * @param \Drupal\group\Entity\GroupRoleInterface $group_role
+   *   The group role to check.
+   *
+   * @return bool
+   *   TRUE if it is a default one, otherwise FALSE.
+   */
+  public function isDefaultGroupRole(GroupRoleInterface $group_role): bool;
 
 }

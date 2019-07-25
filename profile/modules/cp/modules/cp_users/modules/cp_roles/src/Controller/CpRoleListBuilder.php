@@ -195,10 +195,9 @@ class CpRoleListBuilder extends DraggableListBuilder {
     $operations = parent::getDefaultOperations($entity);
 
     // Prepare operations for default roles.
-    if ($this->activeVsite &&
-      $entity->hasLinkTemplate('permissions-form') &&
+    if ($entity->hasLinkTemplate('permissions-form') &&
       ($this->currentUser->hasPermission('manage default group roles') &&
-      \in_array($entity->id(), $this->cpRolesEditable->getDefaultGroupRoles($this->activeVsite), TRUE))) {
+      $this->cpRolesEditable->isDefaultGroupRole($entity))) {
       $operations['permissions'] = [
         'title' => $this->t('Edit permissions'),
         'weight' => 5,
@@ -207,8 +206,7 @@ class CpRoleListBuilder extends DraggableListBuilder {
     }
 
     // Prepare operations for custom roles.
-    if ($this->activeVsite &&
-      !\in_array($entity->id(), $this->cpRolesEditable->getDefaultGroupRoles($this->activeVsite), TRUE)) {
+    if (!$this->cpRolesEditable->isDefaultGroupRole($entity)) {
       $operations['permissions'] = [
         'title' => $this->t('Edit permissions'),
         'weight' => 5,
