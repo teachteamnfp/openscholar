@@ -1043,7 +1043,7 @@ function os_files_update_7027() {
 /**
  * Increase file_managed uri and origname length to 1024.
  */
-function os_files_update_7030() {
+function os_files_update_7031() {
   if (db_table_exists('file_managed') && db_field_exists('file_managed', 'uri')) {
     $schema_uri = array(
       'description' => 'The URI to access the file (either local or remote).',
@@ -1057,7 +1057,9 @@ function os_files_update_7030() {
     db_delete('file_managed')
       ->condition('uri', NULL, 'IS NULL')
       ->execute();
+    db_drop_index('file_managed', 'uri');
     db_change_field('file_managed', 'uri', 'uri', $schema_uri);
+    db_add_index('file_managed', 'uri', array('uri'));
     drupal_set_message("Table file_managed uri length successfully modified to 1024.");
   }
   if (db_table_exists('file_managed') && db_field_exists('file_managed', 'origname')) {
