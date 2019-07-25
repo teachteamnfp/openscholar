@@ -67,7 +67,7 @@ class ProfilesSettingsFormBuildTest extends OsExistingSiteTestBase {
    * Test form render with file.
    */
   public function testFormRenderWithFile() {
-    $file = $this->createFile();
+    $file = $this->createFile('image');
     $profiles_config = $this->config->getEditable('os_profiles.settings');
     $profiles_config->set('default_image_fid', $file->id());
     $profiles_config->save();
@@ -84,7 +84,7 @@ class ProfilesSettingsFormBuildTest extends OsExistingSiteTestBase {
    * Test form submit file.
    */
   public function testFormSubmitFile() {
-    $file = $this->createFile();
+    $file = $this->createFile('image');
     $form_state = (new FormState())
       ->setValues([
         'display_type' => 'sidebar_teaser',
