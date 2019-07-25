@@ -35,15 +35,21 @@ class CpRolesFunctionalTest extends CpRolesExistingSiteTestBase {
     $this->visit("/{$this->group->get('path')->getValue()[0]['alias']}/cp/users/roles");
 
     $this->assertSession()->pageTextContains('Test Role');
-    $this->assertSession()->responseContains("{$this->group->get('path')->getValue()[0]['alias']}/cp/users/permissions/personal-{$this->group->id()}_test_role");
-    file_put_contents('public://page-name.html', $this->getCurrentPageContent());
-    $this->assertSession()->linkByHrefExists("{$this->groupAlias}/cp/users/roles/{$group_role->id()}/edit/{$this->group->getGroupType()->id()}?destination={$this->groupAlias}/cp/users/roles");
-    $this->assertSession()->linkByHrefExists("{$this->groupAlias}/cp/users/permissions/personal-member");
-    $this->assertSession()->linkByHrefNotExists("{$this->groupAlias}/cp/users/roles/personal-member/edit/{$this->group->getGroupType()->id()}?destination={$this->groupAlias}/cp/users/roles");
-    $this->assertSession()->linkByHrefExists("{$this->groupAlias}/cp/users/permissions/personal-administrator");
-    $this->assertSession()->linkByHrefNotExists("{$this->groupAlias}/cp/users/roles/personal-administrator/edit/{$this->group->getGroupType()->id()}?destination={$this->groupAlias}/cp/users/roles");
-    $this->assertSession()->linkByHrefExists("{$this->groupAlias}/cp/users/permissions/personal-content_editor");
-    $this->assertSession()->linkByHrefNotExists("{$this->groupAlias}/cp/users/roles/personal-content_editor/edit/{$this->group->getGroupType()->id()}?destination={$this->groupAlias}/cp/users/roles");
+    $this->assertSession()->linkByHrefExists("{$this->groupAlias}/cp/users/permissions/personal-{$this->group->id()}_test_role");
+    $this->assertSession()->linkByHrefExists("{$this->groupAlias}/cp/users/roles/{$group_role->id()}/edit?destination={$this->groupAlias}/cp/users/roles");
+    $this->assertSession()->linkByHrefExists("{$this->groupAlias}/cp/users/roles/{$group_role->id()}/delete?destination={$this->groupAlias}/cp/users/roles");
+
+    $this->assertSession()->linkByHrefNotExists("{$this->groupAlias}/cp/users/permissions/personal-member");
+    $this->assertSession()->linkByHrefNotExists("{$this->groupAlias}/cp/users/roles/personal-member/edit?destination={$this->groupAlias}/cp/users/roles");
+    $this->assertSession()->linkByHrefNotExists("{$this->groupAlias}/cp/users/roles/personal-member/delete?destination={$this->groupAlias}/cp/users/roles");
+
+    $this->assertSession()->linkByHrefNotExists("{$this->groupAlias}/cp/users/permissions/personal-administrator");
+    $this->assertSession()->linkByHrefNotExists("{$this->groupAlias}/cp/users/roles/personal-administrator/edit?destination={$this->groupAlias}/cp/users/roles");
+    $this->assertSession()->linkByHrefNotExists("{$this->groupAlias}/cp/users/roles/personal-administrator/delete?destination={$this->groupAlias}/cp/users/roles");
+
+    $this->assertSession()->linkByHrefNotExists("{$this->groupAlias}/cp/users/permissions/personal-content_editor");
+    $this->assertSession()->linkByHrefNotExists("{$this->groupAlias}/cp/users/roles/personal-content_editor/edit?destination={$this->groupAlias}/cp/users/roles");
+    $this->assertSession()->linkByHrefNotExists("{$this->groupAlias}/cp/users/roles/personal-content_editor/delete?destination={$this->groupAlias}/cp/users/roles");
   }
 
   /**
@@ -59,6 +65,7 @@ class CpRolesFunctionalTest extends CpRolesExistingSiteTestBase {
     // Setup.
     $site_admin = $this->createUser([
       'administer group',
+      'manage default group roles',
     ]);
     $this->createRoleForGroup($this->group, [
       'id' => 'outside_vsite',
