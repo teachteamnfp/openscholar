@@ -400,6 +400,7 @@ class PublicationsViewsFunctionalTest extends TestBase {
    */
   public function testPublicationMenuLinkAdd(): void {
 
+    $this->drupalLogin($this->groupAdmin);
     $this->visitViaVsite('bibcite/reference/add/journal_article', $this->group);
     $edit = [
       'bibcite_year[0][value]' => '2019',

@@ -18,23 +18,6 @@ class PublicationsCreateTest extends TestBase {
   protected $aliasManager;
 
   /**
-   * Group administrator.
-   *
-   * @var \Drupal\user\UserInterface
-   */
-  protected $groupAdmin;
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setUp() {
-    parent::setUp();
-    $this->groupAdmin = $this->createUser();
-    $this->addGroupAdmin($this->groupAdmin, $this->group);
-    $this->drupalLogin($this->groupAdmin);
-  }
-
-  /**
    * Tests whether custom title is automatically set.
    *
    * @covers ::os_publications_bibcite_reference_presave
