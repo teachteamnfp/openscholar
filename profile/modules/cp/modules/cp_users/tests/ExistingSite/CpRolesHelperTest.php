@@ -1,25 +1,25 @@
 <?php
 
-namespace Drupal\Tests\cp_roles\ExistingSite;
+namespace Drupal\Tests\cp_users\ExistingSite;
 
 use Drupal\group\Entity\GroupRole;
 
 /**
- * CpRolesEditableTest.
+ * CpUsersHelperTest.
  *
- * @coversDefaultClass \Drupal\cp_roles\CpRolesEditable
+ * @coversDefaultClass \Drupal\cp_users\CpRolesHelper
  * @group kernel
  * @group cp
  */
-class CpRolesEditableTest extends CpRolesExistingSiteTestBase {
+class CpRolesHelperTest extends CpUsersExistingSiteTestBase {
 
   /**
    * @covers ::getNonConfigurableGroupRoles
    */
   public function testGetNonConfigurableGroupRoles(): void {
-    /** @var \Drupal\cp_roles\CpRolesEditableInterface $cp_roles_editable */
-    $cp_roles_editable = $this->container->get('cp_roles.editable');
-    $roles = $cp_roles_editable->getNonConfigurableGroupRoles($this->group);
+    /** @var \Drupal\cp_users\CpRolesHelperInterface $cp_roles_helper */
+    $cp_roles_helper = $this->container->get('cp_users.cp_roles_helper');
+    $roles = $cp_roles_helper->getNonConfigurableGroupRoles($this->group);
 
     $this->assertCount(2, $roles);
     $this->assertContains('personal-anonymous', $roles);
@@ -30,9 +30,9 @@ class CpRolesEditableTest extends CpRolesExistingSiteTestBase {
    * @covers ::getDefaultGroupRoles
    */
   public function testGetNonEditableGroupRoles(): void {
-    /** @var \Drupal\cp_roles\CpRolesEditableInterface $cp_roles_editable */
-    $cp_roles_editable = $this->container->get('cp_roles.editable');
-    $roles = $cp_roles_editable->getDefaultGroupRoles($this->group);
+    /** @var \Drupal\cp_users\CpRolesHelperInterface $cp_roles_helper */
+    $cp_roles_helper = $this->container->get('cp_users.cp_roles_helper');
+    $roles = $cp_roles_helper->getDefaultGroupRoles($this->group);
 
     $this->assertCount(3, $roles);
     $this->assertContains('personal-administrator', $roles);
@@ -46,14 +46,14 @@ class CpRolesEditableTest extends CpRolesExistingSiteTestBase {
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function testIsDefaultGroupRole(): void {
-    /** @var \Drupal\cp_roles\CpRolesEditableInterface $cp_roles_editable */
-    $cp_roles_editable = $this->container->get('cp_roles.editable');
+    /** @var \Drupal\cp_users\CpRolesHelperInterface $cp_roles_helper */
+    $cp_roles_helper = $this->container->get('cp_users.cp_roles_helper');
 
     $default_role = GroupRole::load('personal-administrator');
-    $this->assertTrue($cp_roles_editable->isDefaultGroupRole($default_role));
+    $this->assertTrue($cp_roles_helper->isDefaultGroupRole($default_role));
 
     $custom_role = $this->createGroupRole();
-    $this->assertFalse($cp_roles_editable->isDefaultGroupRole($custom_role));
+    $this->assertFalse($cp_roles_helper->isDefaultGroupRole($custom_role));
   }
 
 }

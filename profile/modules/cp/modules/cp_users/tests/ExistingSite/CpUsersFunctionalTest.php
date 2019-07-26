@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\cp_roles\ExistingSite;
+namespace Drupal\Tests\cp_users\ExistingSite;
 
 /**
  * Custom roles test.
@@ -8,12 +8,12 @@ namespace Drupal\Tests\cp_roles\ExistingSite;
  * @group functional
  * @group cp
  */
-class CpRolesFunctionalTest extends CpRolesExistingSiteTestBase {
+class CpUsersFunctionalTest extends CpUsersExistingSiteTestBase {
 
   /**
    * Tests roles listing when viewed from vsite.
    *
-   * @covers \Drupal\cp_roles\Controller\CpRoleListBuilder
+   * @covers \Drupal\cp_users\Controller\CpRolesListBuilder
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    * @throws \Behat\Mink\Exception\ResponseTextException
@@ -55,7 +55,7 @@ class CpRolesFunctionalTest extends CpRolesExistingSiteTestBase {
   /**
    * Tests roles listing when viewed from outside vsite.
    *
-   * @covers \Drupal\cp_roles\Controller\CpRoleListBuilder
+   * @covers \Drupal\cp_users\Controller\CpRolesListBuilder
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    * @throws \Behat\Mink\Exception\ResponseTextException

@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\cp_roles\Controller;
+namespace Drupal\cp_users\Controller;
 
 use Drupal\Core\Config\Entity\DraggableListBuilder;
 use Drupal\Core\Entity\EntityInterface;
@@ -10,15 +10,14 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\Url;
-use Drupal\cp_roles\CpRolesEditable;
-use Drupal\cp_roles\CpRolesEditableInterface;
+use Drupal\cp_users\CpRolesHelperInterface;
 use Drupal\group\Entity\GroupTypeInterface;
 use Drupal\group\GroupRoleSynchronizerInterface;
 use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * GroupRole list builder.
+ * CpRoles list builder.
  *
  * GroupRoleListBuilder has hardcoded the route `entity.group_role.collection`.
  * This makes it impossible to expose another route to list custom roles.
@@ -26,7 +25,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @see \Drupal\group\Entity\GroupRole
  * @see \Drupal\group\Entity\Controller\GroupRoleListBuilder
  */
-class CpRoleListBuilder extends DraggableListBuilder {
+class CpRolesListBuilder extends DraggableListBuilder {
 
   /**
    * The group type to check for roles.
@@ -64,11 +63,11 @@ class CpRoleListBuilder extends DraggableListBuilder {
   protected $entityTypeManager;
 
   /**
-   * CpRoles editable service.
+   * CpRoles helper service.
    *
-   * @var \Drupal\cp_roles\CpRolesEditableInterface
+   * @var \Drupal\cp_users\CpRolesHelperInterface
    */
-  protected $cpRolesEditable;
+  protected $cpRolesHelper;
 
   /**
    * Current user.
@@ -78,7 +77,7 @@ class CpRoleListBuilder extends DraggableListBuilder {
   protected $currentUser;
 
   /**
-   * Creates a new CpRoleListBuilder object.
+   * Creates a new CpRolesListBuilder object.
    *
    * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
    *   The entity type definition.
@@ -92,19 +91,19 @@ class CpRoleListBuilder extends DraggableListBuilder {
    *   Group role synchronizer.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   Entity type manager.
-   * @param \Drupal\cp_roles\CpRolesEditableInterface $cp_roles_editable
-   *   CpRoles editable service.
+   * @param \Drupal\cp_users\CpRolesHelperInterface $cp_roles_helper
+   *   CpRoles helper service.
    * @param \Drupal\Core\Session\AccountProxyInterface $current_user
    *   Current user.
    */
-  public function __construct(EntityTypeInterface $entity_type, EntityStorageInterface $storage, RouteMatchInterface $route_match, VsiteContextManagerInterface $vsite_context_manager, GroupRoleSynchronizerInterface $group_role_synchronizer, EntityTypeManagerInterface $entity_type_manager, CpRolesEditableInterface $cp_roles_editable, AccountProxyInterface $current_user) {
+  public function __construct(EntityTypeInterface $entity_type, EntityStorageInterface $storage, RouteMatchInterface $route_match, VsiteContextManagerInterface $vsite_context_manager, GroupRoleSynchronizerInterface $group_role_synchronizer, EntityTypeManagerInterface $entity_type_manager, CpRolesHelperInterface $cp_roles_helper, AccountProxyInterface $current_user) {
     parent::__construct($entity_type, $storage);
 
     $this->vsiteContextManager = $vsite_context_manager;
     $this->activeVsite = $this->vsiteContextManager->getActiveVsite();
     $this->groupRoleSynchronizer = $group_role_synchronizer;
     $this->entityTypeManager = $entity_type_manager;
-    $this->cpRolesEditable = $cp_roles_editable;
+    $this->cpRolesHelper = $cp_roles_helper;
     $this->currentUser = $current_user;
 
     $parameters = $route_match->getParameters();
@@ -126,7 +125,7 @@ class CpRoleListBuilder extends DraggableListBuilder {
       $container->get('vsite.context_manager'),
       $container->get('group_role.synchronizer'),
       $container->get('entity_type.manager'),
-      $container->get('cp_roles.editable'),
+      $container->get('cp_users.cp_roles_helper'),
       $container->get('current_user')
     );
   }
@@ -149,7 +148,7 @@ class CpRoleListBuilder extends DraggableListBuilder {
 
     $roles_filter = $synchronized_roles;
     if ($this->activeVsite) {
-      $roles_filter = array_merge($this->cpRolesEditable->getNonConfigurableGroupRoles($this->activeVsite), $synchronized_roles);
+      $roles_filter = array_merge($this->cpRolesHelper->getNonConfigurableGroupRoles($this->activeVsite), $synchronized_roles);
     }
 
     $query = $this->getStorage()->getQuery()
@@ -197,7 +196,7 @@ class CpRoleListBuilder extends DraggableListBuilder {
     // Prepare operations for default roles.
     if ($entity->hasLinkTemplate('permissions-form') &&
       ($this->currentUser->hasPermission('manage default group roles') &&
-      $this->cpRolesEditable->isDefaultGroupRole($entity))) {
+      $this->cpRolesHelper->isDefaultGroupRole($entity))) {
       $operations['permissions'] = [
         'title' => $this->t('Edit permissions'),
         'weight' => 5,
@@ -206,11 +205,11 @@ class CpRoleListBuilder extends DraggableListBuilder {
     }
 
     // Prepare operations for custom roles.
-    if (!$this->cpRolesEditable->isDefaultGroupRole($entity)) {
+    if (!$this->cpRolesHelper->isDefaultGroupRole($entity)) {
       $operations['permissions'] = [
         'title' => $this->t('Edit permissions'),
         'weight' => 5,
-        'url' => Url::fromRoute('cp_roles.role.role_permission_form', [
+        'url' => Url::fromRoute('cp_users.role.role_permission_form', [
           'group_role' => $entity->id(),
           'group_type' => $this->groupType->id(),
         ]),
@@ -219,7 +218,7 @@ class CpRoleListBuilder extends DraggableListBuilder {
       $operations['edit'] = [
         'title' => $this->t('Edit'),
         'weight' => 10,
-        'url' => $this->ensureDestination(Url::fromRoute('cp_roles.role.edit_form', [
+        'url' => $this->ensureDestination(Url::fromRoute('cp_users.role.edit_form', [
           'group_role' => $entity->id(),
           'group_type' => $this->groupType->id(),
         ])),
@@ -228,7 +227,7 @@ class CpRoleListBuilder extends DraggableListBuilder {
       $operations['delete'] = [
         'title' => $this->t('Delete'),
         'weight' => 15,
-        'url' => $this->ensureDestination(Url::fromRoute('cp_roles.role.delete_form', [
+        'url' => $this->ensureDestination(Url::fromRoute('cp_users.role.delete_form', [
           'group_role' => $entity->id(),
           'group_type' => $this->groupType->id(),
         ])),

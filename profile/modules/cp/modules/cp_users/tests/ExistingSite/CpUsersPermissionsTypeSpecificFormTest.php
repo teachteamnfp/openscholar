@@ -1,15 +1,15 @@
 <?php
 
-namespace Drupal\Tests\cp_roles\ExistingSite;
+namespace Drupal\Tests\cp_users\ExistingSite;
 
 /**
- * CpRolesPermissionsTypeSpecificFormTest.
+ * CpUsersPermissionsTypeSpecificFormTest.
  *
- * @coversDefaultClass \Drupal\cp_roles\Form\CpRolesPermissionsTypeSpecificForm
+ * @coversDefaultClass \Drupal\cp_users\Form\CpUsersPermissionsTypeSpecificForm
  * @group functional
  * @group cp
  */
-class CpRolesPermissionsTypeSpecificFormTest extends CpRolesExistingSiteTestBase {
+class CpUsersPermissionsTypeSpecificFormTest extends CpUsersExistingSiteTestBase {
 
   /**
    * Tests the form customizations - as vsite admin.
