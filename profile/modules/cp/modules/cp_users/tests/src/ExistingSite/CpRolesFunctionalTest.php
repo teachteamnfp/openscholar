@@ -8,7 +8,7 @@ namespace Drupal\Tests\cp_users\ExistingSite;
  * @group functional
  * @group cp
  */
-class CpUsersFunctionalTest extends CpUsersExistingSiteTestBase {
+class CpRolesFunctionalTest extends CpUsersExistingSiteTestBase {
 
   /**
    * Tests roles listing when viewed from vsite.
