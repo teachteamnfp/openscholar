@@ -99,6 +99,9 @@ class TaxonomyTermsWidget extends WidgetBase implements WidgetInterface, Contain
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $element = $this->fieldWidget->formElement($items, $delta, $element, $form, $form_state);
+    $element += [
+      '#chosen' => 1,
+    ];
     return $element;
   }
 
