@@ -29,3 +29,76 @@ cp.users.owner:
     _title: 'Change Ownership'
   requirements:
     _change_ownership_access_check: 'TRUE'
+
+cp_users.role.add_form:
+  path: '/cp/users/roles/add/{group_type}'
+  defaults:
+    _entity_form: 'group_role.add'
+    _title: 'Add vsite role'
+  requirements:
+    _group_permission: 'manage cp roles'
+    _group_member: 'TRUE'
+
+# To un-hardcode the default group_type, this route needs to be generated when a
+# group type is created.
+cp_users.role.permission_form:
+  path: '/cp/users/permissions/{group_type}'
+  defaults:
+    _form: '\Drupal\cp_users\Form\CpUsersPermissionsTypeSpecificForm'
+    _title: 'Edit vsite permissions'
+    group_type: personal
+  requirements:
+    _group_permission: 'manage cp roles'
+    _group_member: 'TRUE'
+
+cp_users.role.change:
+  path: '/cp/users/change-role/{user}'
+  defaults:
+    _form: '\Drupal\cp_users\Form\ChangeRoleForm'
+    _title: 'Change role'
+  requirements:
+    _group_permission: 'manage cp roles'
+    _group_member: 'TRUE'
+
+# To un-hardcode the default group_type, this route needs to be generated when a
+# group type is created.
+cp_users.role.list:
+  path: '/cp/users/roles/{group_type}'
+  defaults:
+    _entity_list: 'group_role'
+    _title: 'Vsite roles'
+    group_type: personal
+  requirements:
+    _group_permission: 'manage cp roles'
+    _group_member: 'TRUE'
+  options:
+    parameters:
+      group_type:
+        type: entity:group_type
+
+cp_users.role.role_permission_form:
+  path: '/cp/users/permissions/{group_role}/{group_type}'
+  defaults:
+    _form: '\Drupal\group\Form\GroupPermissionsRoleSpecificForm'
+    _title: 'Edit vsite permissions'
+  requirements:
+    _group_permission: 'manage cp roles'
+    _group_member: 'TRUE'
+
+cp_users.role.edit_form:
+  path: '/cp/users/roles/{group_role}/edit/{group_type}'
+  defaults:
+    _entity_form: 'group_role.edit'
+    _title: 'Edit vsite role'
+  requirements:
+    _group_permission: 'manage cp roles'
+    _group_member: 'TRUE'
+
+cp_users.role.delete_form:
+  path: '/cp/users/roles/{group_role}/delete/{group_type}'
+  defaults:
+    _entity_form: 'group_role.delete'
+    _title: 'Delete vsite role'
+  requirements:
+    _group_permission: 'manage cp roles'
+    _group_member: 'TRUE'

@@ -1,0 +1,5 @@
+cp_users.role_add:
+  route_name: cp_users.role.add_form
+  title: 'Add Role'
+  appears_on:
+    - cp_users.role.list

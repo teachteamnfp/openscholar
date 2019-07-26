@@ -1,16 +1,16 @@
 <?php
 
-namespace Drupal\Tests\cp_roles\ExistingSite;
+namespace Drupal\Tests\cp_users\ExistingSite;
 
 use Drupal\group\Entity\GroupRole;
 
 /**
- * CpRolesTest.
+ * CpUsersTest.
  *
  * @group kernel
  * @group cp
  */
-class CpRolesTest extends CpRolesExistingSiteTestBase {
+class CpUsersTest extends CpUsersExistingSiteTestBase {
 
   /**
    * Tests - Role created for a vsite should not be available for other vsite.
@@ -42,7 +42,7 @@ class CpRolesTest extends CpRolesExistingSiteTestBase {
   /**
    * Tests the customizations made in member group role.
    *
-   * @covers ::cp_roles_group_type_insert
+   * @covers ::cp_users_group_type_insert
    */
   public function testMemberRoleCustomization(): void {
     $this->createGroupType([
