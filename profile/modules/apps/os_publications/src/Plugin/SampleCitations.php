@@ -3,7 +3,9 @@
 namespace Drupal\os_publications\Plugin;
 
 use Drupal\bibcite\CitationStylerInterface;
+use Drupal\Core\Link;
 use Drupal\Core\Plugin\PluginBase;
+use Drupal\Core\Url;
 
 /**
  * Class SampleCitations.
@@ -185,10 +187,11 @@ class SampleCitations extends PluginBase {
     $date->{'date-parts'} = [['2013']];
 
     // Book Chapter.
+    $book_title                = Link::fromTextAndUrl('A Book Chapter', Url::fromUri('internal:#'))->toString();
     $node                      = new \stdClass();
     $node->id                  = -1;
     $node->example_type        = 'Book Chapter';
-    $node->title               = 'A Book Chapter';
+    $node->title               = '"' . $book_title . '"';
     $node->author              = $contributors;
     $node->type                = 'chapter';
     $node->issued              = $date;
@@ -200,10 +203,11 @@ class SampleCitations extends PluginBase {
     $node->bibcite_coins       = '';
 
     // Journal Article.
-    $node1                      = new \stdClass();
-    $node1->id                  = -1;
-    $node1->example_type        = 'Journal Article';
-    $node1->title               = 'My Journal Article';
+    $journal_title       = Link::fromTextAndUrl('My Journal Article', Url::fromUri('internal:#'))->toString();
+    $node1               = new \stdClass();
+    $node1->id           = -1;
+    $node1->example_type = 'Journal Article';
+    $node1->title        = '"' . $journal_title . '"';;
     $node1->author              = $contributors;
     $node1->type                = 'article-journal';
     $node1->issued              = $date;
@@ -214,10 +218,11 @@ class SampleCitations extends PluginBase {
     $node1->bibcite_coins       = '';
 
     // Book.
+    $book_title                 = Link::fromTextAndUrl('This is a Book Title', Url::fromUri('internal:#'))->toString();
     $node2                      = new \stdClass();
     $node2->id                  = -1;
     $node2->example_type        = 'Book with 10+ authors (et al)';
-    $node2->title               = 'This is a Book Title';
+    $node2->title               = '"' . $book_title . '"';
     $node2->author              = $contributors_etall;
     $node2->type                = 'book';
     $node2->issued              = $date;
