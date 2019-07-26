@@ -81,14 +81,7 @@ class PublicationMenusTest extends OsExistingSiteTestBase {
   public function testMenuDefaultsService(): void {
     $this->menuHelper->createVsiteMenus($this->group);
     // Create a new menu_link_content entity.
-    MenuLinkContent::create([
-      'link' => ['uri' => 'entity:bibcite_reference/' . $this->reference->id()],
-      'langcode' => $this->reference->language()->getId(),
-      'enabled' => TRUE,
-      'title' => 'Test Title Menu',
-      'description' => 'This is a test',
-      'menu_name' => 'menu-primary-' . $this->group->id(),
-    ])->save();
+    $this->createMenuLinkContent($this->reference, $this->group);
 
     // Test the service.
     $defaults = $this->menuHelper->getMenuLinkDefaults($this->reference, $this->group);
