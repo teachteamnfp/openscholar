@@ -3,6 +3,6 @@ description: Manages vsite roles. This is built on top of GroupRole. It includes
 type: module
 core: 8.x
 depdendencies:
-  - drupal:group
-  - cp:cp_users
-  - drupal:vsite
+  - group
+  - cp_users
+  - vsite
