@@ -1,12 +1,11 @@
 <?php
 
-namespace Drupal\cp_roles\Access;
+namespace Drupal\cp_users\Access;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Routing\Access\AccessInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\cp_roles\CpRolesEditableInterface;
 use Drupal\group\Entity\GroupRoleInterface;
 use Drupal\group\Entity\GroupTypeInterface;
 use Drupal\vsite\Plugin\VsiteContextManagerInterface;
@@ -15,13 +14,6 @@ use Drupal\vsite\Plugin\VsiteContextManagerInterface;
  * Access checker for performing operations on cp roles.
  */
 class CpRolesOperationAccessCheck implements AccessInterface {
-
-  /**
-   * CpRoles editable service.
-   *
-   * @var \Drupal\cp_roles\CpRolesEditableInterface
-   */
-  protected $cpRolesEditable;
 
   /**
    * Vsite context manager.
@@ -33,13 +25,10 @@ class CpRolesOperationAccessCheck implements AccessInterface {
   /**
    * Creates a new CpRolesOperationAccessCheck object.
    *
-   * @param \Drupal\cp_roles\CpRolesEditableInterface $cp_roles_editable
-   *   CpRoles editable service.
    * @param \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager
    *   Vsite context manager.
    */
-  public function __construct(CpRolesEditableInterface $cp_roles_editable, VsiteContextManagerInterface $vsite_context_manager) {
-    $this->cpRolesEditable = $cp_roles_editable;
+  public function __construct(VsiteContextManagerInterface $vsite_context_manager) {
     $this->vsiteContextManager = $vsite_context_manager;
   }
 
@@ -61,10 +50,6 @@ class CpRolesOperationAccessCheck implements AccessInterface {
     $active_vsite = $this->vsiteContextManager->getActiveVsite();
 
     if (!$active_vsite) {
-      return AccessResult::forbidden();
-    }
-
-    if ($this->cpRolesEditable->isDefaultGroupRole($group_role) && !$account->hasPermission('manage default group roles')) {
       return AccessResult::forbidden();
     }
 
