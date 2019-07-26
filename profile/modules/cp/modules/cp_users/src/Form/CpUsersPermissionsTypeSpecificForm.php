@@ -5,7 +5,7 @@ namespace Drupal\cp_users\Form;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\cp_users\CpUsersEditableInterface;
+use Drupal\cp_users\CpRolesHelperInterface;
 use Drupal\group\Access\GroupPermissionHandlerInterface;
 use Drupal\group\Entity\GroupTypeInterface;
 use Drupal\group\Form\GroupPermissionsForm;
@@ -37,11 +37,11 @@ final class CpUsersPermissionsTypeSpecificForm extends GroupPermissionsForm {
   protected $entityTypeManager;
 
   /**
-   * CpUsers editable service.
+   * CpRoles helper service.
    *
-   * @var \Drupal\cp_users\CpUsersEditableInterface
+   * @var \Drupal\cp_users\CpRolesHelperInterface
    */
-  protected $cpUsersEditable;
+  protected $cpRolesHelper;
 
   /**
    * Vsite context manager.
@@ -66,15 +66,15 @@ final class CpUsersPermissionsTypeSpecificForm extends GroupPermissionsForm {
    *   The group permission handler.
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
    *   The module handler.
-   * @param \Drupal\cp_users\CpUsersEditableInterface $cp_users_editable
-   *   CpUsers editable service.
+   * @param \Drupal\cp_users\CpRolesHelperInterface $cp_roles_helper
+   *   CpRoles helper service.
    * @param \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager
    *   Vsite context manager.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, GroupPermissionHandlerInterface $permission_handler, ModuleHandlerInterface $module_handler, CpUsersEditableInterface $cp_users_editable, VsiteContextManagerInterface $vsite_context_manager) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, GroupPermissionHandlerInterface $permission_handler, ModuleHandlerInterface $module_handler, CpRolesHelperInterface $cp_roles_helper, VsiteContextManagerInterface $vsite_context_manager) {
     parent::__construct($permission_handler, $module_handler);
     $this->entityTypeManager = $entity_type_manager;
-    $this->cpUsersEditable = $cp_users_editable;
+    $this->cpRolesHelper = $cp_roles_helper;
     $this->vsiteContextManager = $vsite_context_manager;
     $this->activeVsite = $vsite_context_manager->getActiveVsite();
   }
@@ -87,7 +87,7 @@ final class CpUsersPermissionsTypeSpecificForm extends GroupPermissionsForm {
       $container->get('entity_type.manager'),
       $container->get('group.permissions'),
       $container->get('module_handler'),
-      $container->get('cp_users.editable'),
+      $container->get('cp_users.cp_roles_helper'),
       $container->get('vsite.context_manager')
     );
   }
@@ -124,7 +124,7 @@ final class CpUsersPermissionsTypeSpecificForm extends GroupPermissionsForm {
 
     $query = $group_role_storage
       ->getQuery()
-      ->condition('id', $this->cpUsersEditable->getNonConfigurableGroupRoles($this->activeVsite), 'NOT IN')
+      ->condition('id', $this->cpRolesHelper->getNonConfigurableGroupRoles($this->activeVsite), 'NOT IN')
       ->condition('group_type', $this->groupType->id(), '=')
       ->condition('permissions_ui', 1, '=');
 

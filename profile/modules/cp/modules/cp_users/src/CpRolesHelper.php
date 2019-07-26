@@ -7,7 +7,7 @@ use Drupal\group\Entity\GroupInterface;
 /**
  * Specifies the roles which cannot be edited/deleted by group admins.
  */
-final class CpUsersEditable implements CpUsersEditableInterface {
+final class CpRolesHelper implements CpRolesHelperInterface {
 
   public const NON_CONFIGURABLE = [
     'anonymous',

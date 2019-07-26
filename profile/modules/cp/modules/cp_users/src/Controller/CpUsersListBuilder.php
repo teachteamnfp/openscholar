@@ -9,8 +9,8 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
-use Drupal\cp_users\CpUsersEditable;
-use Drupal\cp_users\CpUsersEditableInterface;
+use Drupal\cp_users\CpRolesHelper;
+use Drupal\cp_users\CpRolesHelperInterface;
 use Drupal\group\Entity\GroupTypeInterface;
 use Drupal\group\GroupRoleSynchronizerInterface;
 use Drupal\vsite\Plugin\VsiteContextManagerInterface;
@@ -63,11 +63,11 @@ class CpUsersListBuilder extends DraggableListBuilder {
   protected $entityTypeManager;
 
   /**
-   * CpUsers editable service.
+   * CpRoles helper service.
    *
-   * @var \Drupal\cp_users\CpUsersEditableInterface
+   * @var \Drupal\cp_users\CpRolesHelperInterface
    */
-  protected $cpUsersEditable;
+  protected $cpRolesHelper;
 
   /**
    * Creates a new CpUsersListBuilder object.
@@ -84,17 +84,17 @@ class CpUsersListBuilder extends DraggableListBuilder {
    *   Group role synchronizer.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   Entity type manager.
-   * @param \Drupal\cp_users\CpUsersEditableInterface $cp_users_editable
-   *   CpUsers editable service.
+   * @param \Drupal\cp_users\CpRolesHelperInterface $cp_roles_helper
+   *   CpRoles helper service.
    */
-  public function __construct(EntityTypeInterface $entity_type, EntityStorageInterface $storage, RouteMatchInterface $route_match, VsiteContextManagerInterface $vsite_context_manager, GroupRoleSynchronizerInterface $group_role_synchronizer, EntityTypeManagerInterface $entity_type_manager, CpUsersEditableInterface $cp_users_editable) {
+  public function __construct(EntityTypeInterface $entity_type, EntityStorageInterface $storage, RouteMatchInterface $route_match, VsiteContextManagerInterface $vsite_context_manager, GroupRoleSynchronizerInterface $group_role_synchronizer, EntityTypeManagerInterface $entity_type_manager, CpRolesHelperInterface $cp_roles_helper) {
     parent::__construct($entity_type, $storage);
 
     $this->vsiteContextManager = $vsite_context_manager;
     $this->activeVsite = $this->vsiteContextManager->getActiveVsite();
     $this->groupRoleSynchronizer = $group_role_synchronizer;
     $this->entityTypeManager = $entity_type_manager;
-    $this->cpUsersEditable = $cp_users_editable;
+    $this->cpRolesHelper = $cp_roles_helper;
 
     $parameters = $route_match->getParameters();
     $group_type = $parameters->get('group_type');
@@ -115,7 +115,7 @@ class CpUsersListBuilder extends DraggableListBuilder {
       $container->get('vsite.context_manager'),
       $container->get('group_role.synchronizer'),
       $container->get('entity_type.manager'),
-      $container->get('cp_users.editable')
+      $container->get('cp_users.cp_roles_helper')
     );
   }
 
@@ -137,7 +137,7 @@ class CpUsersListBuilder extends DraggableListBuilder {
 
     $roles_filter = $synchronized_roles;
     if ($this->activeVsite) {
-      $roles_filter = array_merge($this->cpUsersEditable->getNonConfigurableGroupRoles($this->activeVsite), $synchronized_roles);
+      $roles_filter = array_merge($this->cpRolesHelper->getNonConfigurableGroupRoles($this->activeVsite), $synchronized_roles);
     }
 
     $query = $this->getStorage()->getQuery()
@@ -192,7 +192,7 @@ class CpUsersListBuilder extends DraggableListBuilder {
         ]),
       ];
 
-      if (!\in_array($entity->id(), $this->cpUsersEditable->getNonEditableGroupRoles($this->activeVsite), TRUE)) {
+      if (!\in_array($entity->id(), $this->cpRolesHelper->getNonEditableGroupRoles($this->activeVsite), TRUE)) {
         $operations['edit'] = [
           'title' => $this->t('Edit'),
           'weight' => 10,

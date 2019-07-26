@@ -5,9 +5,9 @@ namespace Drupal\cp_users;
 use Drupal\group\Entity\GroupInterface;
 
 /**
- * Provides an interface for editable cp_users.
+ * Provides an interface for editable cp_roles.
  */
-interface CpUsersEditableInterface {
+interface CpRolesHelperInterface {
 
   /**
    * Get non-configurable roles for a group.
