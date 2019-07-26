@@ -3,4 +3,5 @@ type: module
 core: 8.x
 version: '1.0'
 dependencies:
-  - toolbar_menu
+  - drupal:toolbar_menu
+  - drupal:vsite
