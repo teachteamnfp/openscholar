@@ -82,4 +82,55 @@ class CpRolesFunctionalTest extends CpUsersExistingSiteTestBase {
     $this->assertSession()->responseContains('/admin/group/types/manage/personal/roles/personal-administrator/permissions');
   }
 
+  /**
+   * Checks the accessibility of group roles as a vsite admin.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   * @throws \Behat\Mink\Exception\ExpectationException
+   * @throws \Behat\Mink\Exception\ResponseTextException
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public function testCpRolesOperationsAccess(): void {
+    // Setup.
+    $group_role = $this->createRoleForGroup($this->group);
+
+    $group_admin = $this->createUser();
+    $this->addGroupAdmin($group_admin, $this->group);
+
+    // Tests.
+    $this->drupalLogin($group_admin);
+
+    $this->visitViaVsite("cp/users/permissions/{$group_role->id()}", $this->group);
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->fieldExists("{$group_role->id()}[access control panel]");
+    $this->visitViaVsite("cp/users/roles/{$group_role->id()}/edit", $this->group);
+    $this->assertSession()->statusCodeEquals(200);
+    $this->visitViaVsite("cp/users/roles/{$group_role->id()}/delete", $this->group);
+    $this->assertSession()->statusCodeEquals(200);
+
+    $this->visitViaVsite('cp/users/permissions/personal-member', $this->group);
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->pageTextContains('Error');
+    $this->visitViaVsite('cp/users/roles/personal-member/edit', $this->group);
+    $this->assertSession()->statusCodeEquals(403);
+    $this->visitViaVsite('cp/users/roles/personal-member/delete', $this->group);
+    $this->assertSession()->statusCodeEquals(403);
+
+    $this->visitViaVsite('cp/users/permissions/personal-administrator', $this->group);
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->pageTextContains('Error');
+    $this->visitViaVsite('cp/users/roles/personal-administrator/edit', $this->group);
+    $this->assertSession()->statusCodeEquals(403);
+    $this->visitViaVsite('cp/users/roles/personal-administrator/delete', $this->group);
+    $this->assertSession()->statusCodeEquals(403);
+
+    $this->visitViaVsite('cp/users/permissions/personal-content_editor', $this->group);
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->pageTextContains('Error');
+    $this->visitViaVsite('cp/users/roles/personal-content_editor/edit', $this->group);
+    $this->assertSession()->statusCodeEquals(403);
+    $this->visitViaVsite('cp/users/roles/personal-content_editor/delete', $this->group);
+    $this->assertSession()->statusCodeEquals(403);
+  }
+
 }
