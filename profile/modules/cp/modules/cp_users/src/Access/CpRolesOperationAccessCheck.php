@@ -1,12 +1,12 @@
 <?php
 
-namespace Drupal\cp_roles\Access;
+namespace Drupal\cp_users\Access;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Routing\Access\AccessInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\cp_roles\CpRolesEditableInterface;
+use Drupal\cp_users\CpRolesHelperInterface;
 use Drupal\group\Entity\GroupRoleInterface;
 use Drupal\group\Entity\GroupTypeInterface;
 use Drupal\vsite\Plugin\VsiteContextManagerInterface;
@@ -17,11 +17,11 @@ use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 class CpRolesOperationAccessCheck implements AccessInterface {
 
   /**
-   * CpRoles editable service.
+   * CpRoles helper service.
    *
-   * @var \Drupal\cp_roles\CpRolesEditableInterface
+   * @var \Drupal\cp_users\CpRolesHelperInterface
    */
-  protected $cpRolesEditable;
+  protected $cpRolesHelper;
 
   /**
    * Vsite context manager.
@@ -33,13 +33,13 @@ class CpRolesOperationAccessCheck implements AccessInterface {
   /**
    * Creates a new CpRolesOperationAccessCheck object.
    *
-   * @param \Drupal\cp_roles\CpRolesEditableInterface $cp_roles_editable
-   *   CpRoles editable service.
+   * @param \Drupal\cp_users\CpRolesHelperInterface $cp_roles_helper
+   *   CpRoles helper service.
    * @param \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager
    *   Vsite context manager.
    */
-  public function __construct(CpRolesEditableInterface $cp_roles_editable, VsiteContextManagerInterface $vsite_context_manager) {
-    $this->cpRolesEditable = $cp_roles_editable;
+  public function __construct(CpRolesHelperInterface $cp_roles_helper, VsiteContextManagerInterface $vsite_context_manager) {
+    $this->cpRolesHelper = $cp_roles_helper;
     $this->vsiteContextManager = $vsite_context_manager;
   }
 
@@ -64,7 +64,7 @@ class CpRolesOperationAccessCheck implements AccessInterface {
       return AccessResult::forbidden();
     }
 
-    if ($this->cpRolesEditable->isDefaultGroupRole($group_role) && !$account->hasPermission('manage default group roles')) {
+    if ($this->cpRolesHelper->isDefaultGroupRole($group_role) && !$account->hasPermission('manage default group roles')) {
       return AccessResult::forbidden();
     }
 

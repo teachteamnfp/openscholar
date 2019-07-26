@@ -1,10 +1,10 @@
 <?php
 
-namespace Drupal\cp_roles\Form;
+namespace Drupal\cp_users\Form;
 
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\cp_roles\CpRolesEditableInterface;
+use Drupal\cp_users\CpRolesHelperInterface;
 use Drupal\group\Access\GroupPermissionHandlerInterface;
 use Drupal\group\Entity\GroupRoleInterface;
 use Drupal\group\Form\GroupPermissionsForm;
@@ -23,9 +23,9 @@ final class CpRolesPermissionsSpecificForm extends GroupPermissionsForm {
   protected $groupRole;
 
   /**
-   * CpRoles editable service.
+   * CpRoles helper service.
    *
-   * @var \Drupal\cp_roles\CpRolesEditableInterface
+   * @var \Drupal\cp_users\CpRolesHelperInterface
    */
   protected $cpRolesEditable;
 
@@ -36,12 +36,12 @@ final class CpRolesPermissionsSpecificForm extends GroupPermissionsForm {
    *   The group permission handler.
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
    *   The module handler.
-   * @param \Drupal\cp_roles\CpRolesEditableInterface $cp_roles_editable
+   * @param \Drupal\cp_users\CpRolesHelperInterface $cp_roles_helper
    *   CpRoles editable service.
    */
-  public function __construct(GroupPermissionHandlerInterface $permission_handler, ModuleHandlerInterface $module_handler, CpRolesEditableInterface $cp_roles_editable) {
+  public function __construct(GroupPermissionHandlerInterface $permission_handler, ModuleHandlerInterface $module_handler, CpRolesHelperInterface $cp_roles_helper) {
     parent::__construct($permission_handler, $module_handler);
-    $this->cpRolesEditable = $cp_roles_editable;
+    $this->cpRolesEditable = $cp_roles_helper;
   }
 
   /**
@@ -51,7 +51,7 @@ final class CpRolesPermissionsSpecificForm extends GroupPermissionsForm {
     return new static(
       $container->get('group.permissions'),
       $container->get('module_handler'),
-      $container->get('cp_roles.editable')
+      $container->get('cp_users.cp_roles_helper')
     );
   }
 
