@@ -396,6 +396,23 @@ class PublicationsViewsFunctionalTest extends TestBase {
   }
 
   /**
+   * Tests link creation from publication edit page.
+   */
+  public function testPublicationMenuLinkAdd(): void {
+
+    $this->visitViaVsite('bibcite/reference/add/journal_article', $this->group);
+    $edit = [
+      'bibcite_year[0][value]' => '2019',
+      'bibcite_secondary_title[0][value]' => 'Journal Link',
+      'menu[enabled]' => TRUE,
+      'menu[title]' => 'Menu Link title',
+    ];
+    $this->submitForm($edit, 'Save');
+
+    $this->assertSession()->linkExists('Menu Link title');
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function tearDown() {
