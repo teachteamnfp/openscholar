@@ -73,13 +73,13 @@ class CpUsersPermissionsTypeSpecificFormTest extends CpUsersExistingSiteTestBase
     $this->assertSession()->pageTextNotContains('Outsider');
 
     $this->assertSession()->pageTextContains('Basic member');
-    $this->assertFalse($this->getSession()->getPage()->findField('personal-member[access control panel]')->hasAttribute('disabled'));
+    $this->assertTrue($this->getSession()->getPage()->findField('personal-member[access control panel]')->hasAttribute('disabled'));
 
     $this->assertSession()->pageTextContains('Administrator');
-    $this->assertFalse($this->getSession()->getPage()->findField('personal-administrator[access control panel]')->hasAttribute('disabled'));
+    $this->assertTrue($this->getSession()->getPage()->findField('personal-administrator[access control panel]')->hasAttribute('disabled'));
 
     $this->assertSession()->pageTextContains('Content editor');
-    $this->assertFalse($this->getSession()->getPage()->findField('personal-content_editor[access control panel]')->hasAttribute('disabled'));
+    $this->assertTrue($this->getSession()->getPage()->findField('personal-content_editor[access control panel]')->hasAttribute('disabled'));
 
     $this->assertSession()->pageTextContains('Test Role');
     $this->assertFalse($this->getSession()->getPage()->findField("{$group_role->id()}[access control panel]")->hasAttribute('disabled'));
