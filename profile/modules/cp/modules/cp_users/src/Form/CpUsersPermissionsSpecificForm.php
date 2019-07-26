@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Provides the user permissions administration form for a specific group role.
  */
-final class CpRolesPermissionsSpecificForm extends GroupPermissionsForm {
+final class CpUsersPermissionsSpecificForm extends GroupPermissionsForm {
 
   /**
    * The specific group role for this form.
@@ -30,7 +30,7 @@ final class CpRolesPermissionsSpecificForm extends GroupPermissionsForm {
   protected $cpRolesEditable;
 
   /**
-   * Creates a new CpRolesPermissionsSpecificForm object.
+   * Creates a new CpUsersPermissionsSpecificForm object.
    *
    * @param \Drupal\group\Access\GroupPermissionHandlerInterface $permission_handler
    *   The group permission handler.
