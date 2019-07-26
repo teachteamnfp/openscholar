@@ -9,7 +9,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
-use Drupal\cp_users\Controller\CpUsersListBuilder;
+use Drupal\cp_users\Controller\CpRolesListBuilder;
 use Drupal\group\Entity\GroupRole;
 use Drupal\group\Entity\GroupRoleInterface;
 use Drupal\group\Entity\GroupTypeInterface;
@@ -144,7 +144,7 @@ function cp_users_entity_type_build(array &$entity_types) {
   if (isset($entity_types['group_role'])) {
     /** @var \Drupal\Core\Config\Entity\ConfigEntityTypeInterface $group_role_type */
     $group_role_type = $entity_types['group_role'];
-    $group_role_type->setListBuilderClass(CpUsersListBuilder::class);
+    $group_role_type->setListBuilderClass(CpRolesListBuilder::class);
   }
 }
 

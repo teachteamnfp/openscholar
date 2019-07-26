@@ -9,7 +9,6 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
-use Drupal\cp_users\CpRolesHelper;
 use Drupal\cp_users\CpRolesHelperInterface;
 use Drupal\group\Entity\GroupTypeInterface;
 use Drupal\group\GroupRoleSynchronizerInterface;
@@ -17,7 +16,7 @@ use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * GroupRole list builder.
+ * CpRoles list builder.
  *
  * GroupRoleListBuilder has hardcoded the route `entity.group_role.collection`.
  * This makes it impossible to expose another route to list custom roles.
@@ -25,7 +24,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @see \Drupal\group\Entity\GroupRole
  * @see \Drupal\group\Entity\Controller\GroupRoleListBuilder
  */
-class CpUsersListBuilder extends DraggableListBuilder {
+class CpRolesListBuilder extends DraggableListBuilder {
 
   /**
    * The group type to check for roles.
@@ -70,7 +69,7 @@ class CpUsersListBuilder extends DraggableListBuilder {
   protected $cpRolesHelper;
 
   /**
-   * Creates a new CpUsersListBuilder object.
+   * Creates a new CpRolesListBuilder object.
    *
    * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
    *   The entity type definition.

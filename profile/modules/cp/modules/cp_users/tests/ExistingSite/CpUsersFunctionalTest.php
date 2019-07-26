@@ -13,7 +13,7 @@ class CpUsersFunctionalTest extends CpUsersExistingSiteTestBase {
   /**
    * Tests roles listing when viewed from vsite.
    *
-   * @covers \Drupal\cp_users\Controller\CpUsersListBuilder
+   * @covers \Drupal\cp_users\Controller\CpRolesListBuilder
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    * @throws \Behat\Mink\Exception\ResponseTextException
@@ -49,7 +49,7 @@ class CpUsersFunctionalTest extends CpUsersExistingSiteTestBase {
   /**
    * Tests roles listing when viewed from outside vsite.
    *
-   * @covers \Drupal\cp_users\Controller\CpUsersListBuilder
+   * @covers \Drupal\cp_users\Controller\CpRolesListBuilder
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    * @throws \Behat\Mink\Exception\ResponseTextException
