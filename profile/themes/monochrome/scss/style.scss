@@ -1,6 +1,7 @@
 @import '../../os_base/scss/base/breakpoints';
 @import './variables';
 @import './base';
+@import './../../os_base/scss/mixins/pager';
 @import './../../os_base/scss/base/poweredby_common';
 //@extend-elements
 %extend_1 {
@@ -261,18 +262,4 @@ footer {
   }
 }
 /**** pager ****/
-.pagination {
-  > li {
-    > a, a:hover,a:focus, span, span:hover, span:focus {
-      color: $color_mexican_red_approx;
-      background: $white;
-    }
-    &.active {
-      a, a:hover {
-        background: $color_mexican_red_approx;
-        color: $white;
-        border-color: $color_mexican_red_approx;
-      }
-    }
-  }
-}
+@include pager($color_mexican_red_approx);

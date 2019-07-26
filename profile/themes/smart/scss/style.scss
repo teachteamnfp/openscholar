@@ -4,6 +4,8 @@
 @import 'base/base';
 @import 'base/global';
 
+@import './../../os_base/scss/mixins/pager';
+
 @import 'components/readmore';
 @import 'components/navbar';
 @import 'components/search';

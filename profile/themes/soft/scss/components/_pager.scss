@@ -1,15 +1,2 @@
-.pagination {
-  > li {
-    > a, a:hover,a:focus, span, span:hover, span:focus {
-      color: $color-oxford-blue;
-      background: $color-white;
-    }
-    &.active {
-      a, a:hover {
-        background: $color-oxford-blue;
-        color: $color-white;
-        border-color: $color-oxford-blue;
-      }
-    }
-  }
-}
+/**** pager ****/
+@include pager($color-oxford-blue);

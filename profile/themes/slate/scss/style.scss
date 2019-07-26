@@ -1,6 +1,7 @@
 @import '../../os_base/scss/base/breakpoints';
 @import './variables';
 @import './base';
+@import './../../os_base/scss/mixins/pager';
 @import './../../os_base/scss/base/poweredby_common';
 
 html {
@@ -240,18 +241,5 @@ h2.block-title {
   background: $white;
 }
 /**** pager ****/
-.pagination {
-  > li {
-    > a, a:hover,a:focus, span, span:hover, span:focus {
-      color: $color_thunderbird_approx;
-      background: $white;
-    }
-    &.active {
-      a, a:hover {
-        background: $color_thunderbird_approx;
-        color: $white;
-        border-color: $color_thunderbird_approx;
-      }
-    }
-  }
-}
+@include pager($color_thunderbird_approx);
+
