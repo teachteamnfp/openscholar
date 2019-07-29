@@ -1,0 +1,21 @@
+//@extend-elements
+%extend_1 {
+  background-color: $color_squirrel_approx;
+  color: $white;
+  padding: .5em 1em;
+  margin-bottom: 15px;
+  font-size: .9em;
+}
+%extend_2 {
+  background: $color_steel_blue_approx;
+  color: $white;
+  height: 60px;
+}
+%font-family1 {
+  font-family: $font_0, $font_1;
+}
+
+body {
+  overflow-x: initial;
+  font-family: $font_0, $font_1;
+}

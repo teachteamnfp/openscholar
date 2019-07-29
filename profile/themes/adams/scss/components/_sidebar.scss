@@ -1,0 +1,12 @@
+aside {
+  .region {
+    > .block {
+      padding-top: 0;
+      border-top: none;
+      h2.block-title {
+        font-family: $font_2, $font_3;
+        @extend %extend_1;
+      }
+    }
+  }
+}
