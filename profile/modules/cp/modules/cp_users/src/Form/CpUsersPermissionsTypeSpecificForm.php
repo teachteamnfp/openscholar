@@ -161,6 +161,21 @@ final class CpUsersPermissionsTypeSpecificForm extends GroupPermissionsForm {
     $this->groupType = $group_type;
     $form = parent::buildForm($form, $form_state);
 
+    /** @var \Drupal\group\Plugin\GroupContentEnablerCollection $plugins */
+    $plugins = $this->groupType->getInstalledContentPlugins();
+    $disabled_permissions = [];
+
+    foreach ($plugins as $plugin) {
+      $plugin_id = $plugin->getPluginId();
+
+      $disabled_permissions[] = "view $plugin_id content";
+      $disabled_permissions[] = "create $plugin_id content";
+      $disabled_permissions[] = "update own $plugin_id content";
+      $disabled_permissions[] = "update any $plugin_id content";
+      $disabled_permissions[] = "delete own $plugin_id content";
+      $disabled_permissions[] = "delete any $plugin_id content";
+    }
+
     // Prevent permission edit for default roles.
     /** @var string[] $default_roles */
     $default_roles = $this->cpRolesHelper->getDefaultGroupRoles($this->activeVsite);
@@ -169,6 +184,11 @@ final class CpUsersPermissionsTypeSpecificForm extends GroupPermissionsForm {
       foreach ($default_roles as $default_role) {
         $form['permissions'][$permission][$default_role]['#disabled'] = TRUE;
       }
+    }
+
+    // Do not show relationship permissions in the UI.
+    foreach ($disabled_permissions as $permission) {
+      unset($form['permissions'][$permission]);
     }
 
     return $form;
