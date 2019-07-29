@@ -107,7 +107,7 @@ class VsiteAliasStorage implements AliasStorageInterface {
       $modifiers = $this->getModifiers();
       foreach ($modifiers as $m) {
         if ($m->getValue() == $id) {
-          $output =  str_replace($matches[0], $m->getModifierKey(), $path);
+          $output = str_replace($matches[0], $m->getModifierKey(), $path);
           return $output;
         }
       }
