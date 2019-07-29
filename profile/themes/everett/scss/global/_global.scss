@@ -1,0 +1,37 @@
+.path-front {
+  .content-inner {
+    .region-content-first {
+      background: $white;
+    }
+    .region-content-bottom {
+      background: $color_indian_khaki_22_approx;
+      padding: 0 10px;
+    }
+  }
+  .region-content-second {
+    background-color: $color_mountain_mist_approx;
+    color: $white;
+    padding: 0 10px;
+    span {
+      background-color: $color_mountain_mist_approx;
+      color: $white;
+    }
+    a {
+      color: $white;
+    }
+  }
+}
+.main-container .content-inner {
+  h2 {
+    font-family: $font_0, $font_1;
+  }
+  h3 {
+    font-family: $font_0, $font_1;
+  }
+  h4 {
+    font-family: $font_0, $font_1;
+  }
+}
+.contextual .trigger {
+  color: $black;
+}

@@ -1,0 +1,54 @@
+html {
+  color: $black;
+}
+body {
+  @extend %body;
+}
+a,
+.full-calendar-view .fc-header-toolbar button {
+  @extend %link;
+}
+h2.block-title {
+  font-family: $font_0, $font_1;
+}
+.node-readmore a:after {
+  background: none;
+  background-image: none;
+}
+.page-header {
+  font-family: $font_0, $font_1;
+}
+.node--title {
+  font-family: $font_0, $font_1;
+}
+.more-link {
+  font-family: $font_0, $font_1;
+  text-decoration: underline;
+  &:after {
+    background: none;
+    background-image: none;
+  }
+}
+.field--item span {
+  color: $black;
+}
+.path-search .title a {
+  font-family: $font_0, $font_1;
+}
+.links a {
+  font-family: $font_0, $font_1;
+}
+.field--name-body {
+  h2 {
+    font-weight: normal;
+    margin-bottom: 8px;
+  }
+}
+h1.page-title {
+  font-weight: normal;
+}
+.node-readmore {
+  a {
+    text-decoration: underline;
+  }
+}

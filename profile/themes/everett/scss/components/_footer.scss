@@ -1,0 +1,23 @@
+footer {
+  background-color: $color_red_stage_approx;
+  color: $white;
+  a {
+    font-family: $font_0, $font_1;
+    color: $white;
+  }
+  .footer-login {
+    color: $white;
+    text-shadow: none;
+    &:after {
+      background-image: none;
+    }
+  }
+  ul.nav {
+    a {
+      font-family: $font_0, $font_1;
+    }
+    li ul li a {
+      font-family: $font_0, $font_1;
+    }
+  }
+}
