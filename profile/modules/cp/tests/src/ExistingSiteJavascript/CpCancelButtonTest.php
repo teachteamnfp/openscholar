@@ -31,6 +31,7 @@ class CpCancelButtonTest extends OsExistingSiteJavascriptTestBase {
     $exist_alias = $path_alias_storage->load(['source' => '/node/' . $this->node->id()]);
     // Fix group alias of the node.
     $path_alias_storage->save('/node/' . $this->node->id(), '/[vsite:' . $this->group->id() . ']' . $exist_alias['alias'], 'en', $exist_alias['pid']);
+    $path_alias_manager->cacheClear();
     $this->nodePath = $path_alias_manager->getAliasByPath('/node/' . $this->node->id());
   }
 
@@ -48,10 +49,8 @@ class CpCancelButtonTest extends OsExistingSiteJavascriptTestBase {
     // Visit node.
     $this->visit($this->nodePath);
     $this->assertSession()->waitForElement('css', '.contextual-links .entitynodeedit-form');
-    error_log($this->getSession()->getCurrentUrl());
     /** @var \Drupal\Core\Path\AliasManagerInterface $path_alias_manager */
     $path_alias_manager = $this->container->get('path.alias_manager');
-    error_log($path_alias_manager->getPathByAlias($this->nodePath));
     $this->assertSession()->statusCodeEquals(200);
     /** @var \Behat\Mink\Element\NodeElement|null $edit_contextual_link */
     $edit_contextual_link = $this->getSession()->getPage()->find('css', '.contextual-links .entitynodeedit-form a');
