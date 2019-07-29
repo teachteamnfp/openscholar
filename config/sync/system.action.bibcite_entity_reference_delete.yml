@@ -7,7 +7,7 @@ dependencies:
 _core:
   default_config_hash: M4x-w3oaK5mPp5h8nRuta5Nxgozv9UTz2zOdV1-uSv8
 id: bibcite_entity_reference_delete
-label: 'Delete reference'
+label: 'Delete publication'
 type: bibcite_reference
 plugin: bibcite_entity_reference_delete
 configuration: {  }

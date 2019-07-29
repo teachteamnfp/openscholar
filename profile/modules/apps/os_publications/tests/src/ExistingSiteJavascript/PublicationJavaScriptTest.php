@@ -54,10 +54,10 @@ class PublicationJavaScriptTest extends OsExistingSiteJavascriptTestBase {
     // Verify the text on the page.
     $web_assert->pageTextContains($value);
 
-    // Test American Medical hover.
-    $format = $page->findField('edit-os-publications-preferred-bibliographic-format-ieee');
+    // Test APA hover.
+    $format = $page->findField('edit-os-publications-preferred-bibliographic-format-apa');
     $format->mouseOver();
-    $result = $web_assert->waitForElementVisible('css', '#ieee');
+    $result = $web_assert->waitForElementVisible('css', '#apa');
     $this->assertNotNull($result);
     $value = ucwords(str_replace('_', ' ', $result->getValue()));
     // Verify the text on the page.
