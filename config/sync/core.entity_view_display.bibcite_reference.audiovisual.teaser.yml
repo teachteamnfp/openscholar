@@ -121,6 +121,7 @@ hidden:
   bibcite_url: true
   bibcite_volume: true
   bibcite_year: true
+  created: true
   field_attach_files: true
   field_extra_fields: true
   field_redirect_to_source: true

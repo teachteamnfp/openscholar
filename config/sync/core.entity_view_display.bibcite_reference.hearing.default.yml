@@ -465,6 +465,7 @@ content:
 hidden:
   bibcite_type: true
   citation: true
+  created: true
   field_redirect_to_source: true
   html_title: true
   langcode: true
