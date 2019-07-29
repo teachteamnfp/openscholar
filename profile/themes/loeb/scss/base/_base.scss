@@ -1,3 +1,13 @@
+%extend_1 {
+  background-color: $color_fern_green_approx;
+  color: $white;
+  border-radius: 3px;
+}
+%extend_2 {
+  background: none;
+  box-shadow: none;
+  text-shadow: none;
+}
 body {
   background-color: $color_alabaster_approx;
   color: $color_log_cabin_approx;
