@@ -124,7 +124,7 @@ function os_publications_page_attachments(array &$page) {
 
   // Adds metadata to the publications pages.
   $entities = $current_route->getParameters();
-  if ($entities->has('bibcite_reference') && !strpos($current_route->getRouteName(), 'edit_form')) {
+  if ($entities->has('bibcite_reference') && strpos($current_route->getRouteName(), 'canonical')) {
     foreach ($entities as $entity => $value) {
       $repos = $value->distribution->getString();
       $repos = explode(',', $repos);
@@ -241,6 +241,7 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
         ],
         'weight' => '10',
       ])
+      ->setRevisionable(TRUE)
       ->setDisplayConfigurable('form', TRUE);
 
     $fields['is_sticky'] = BaseFieldDefinition::create('boolean')
@@ -251,21 +252,12 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
           'display_label' => TRUE,
         ],
       ])
+      ->setRevisionable(TRUE)
       ->setDisplayConfigurable('form', TRUE);
 
     $fields['title_first_char_excl_prep'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Title first letter excluding prepositions'));
-
-    $fields['status'] = BaseFieldDefinition::create('boolean')
-      ->setLabel(t('Published to this site'))
-      ->setDisplayOptions('form', [
-        'type' => 'boolean_checkbox',
-        'settings' => [
-          'display_label' => TRUE,
-        ],
-      ])
-      ->setDefaultValue(TRUE)
-      ->setDisplayConfigurable('form', TRUE);
+      ->setLabel(t('Title first letter excluding prepositions'))
+      ->setRevisionable(TRUE);
 
     $fields['full_text'] = BaseFieldDefinition::create('text_long')
       ->setLabel('FULL TEXT')
@@ -280,6 +272,7 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
         'type' => 'text_textfield',
         'weight' => 5,
       ])
+      ->setRevisionable(TRUE)
       ->setDisplayConfigurable('form', TRUE);
 
     $fields['notes'] = BaseFieldDefinition::create('text_long')
@@ -295,6 +288,7 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
         'type' => 'text_textfield',
         'weight' => 6,
       ])
+      ->setRevisionable(TRUE)
       ->setDisplayConfigurable('form', TRUE);
 
     $fields['html_title'] = BaseFieldDefinition::create('text_long')
@@ -308,6 +302,7 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
           'rows' => 1,
         ],
       ])
+      ->setRevisionable(TRUE)
       ->setDisplayConfigurable('form', TRUE);
 
     $fields['path'] = BaseFieldDefinition::create('path')
@@ -318,6 +313,7 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
       ->setDisplayOptions('form', [
         'type' => 'path',
       ])
+      ->setRevisionable(TRUE)
       ->setDisplayConfigurable('form', TRUE);
 
     $fields['created'] = BaseFieldDefinition::create('created')
@@ -329,6 +325,7 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
         'type' => 'datetime_timestamp',
         'weight' => 10,
       ])
+      ->setRevisionable(TRUE)
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
@@ -341,6 +338,7 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
           'display_label' => TRUE,
         ],
       ])
+      ->setRevisionable(TRUE)
       ->setDisplayConfigurable('form', TRUE);
 
     return $fields;
