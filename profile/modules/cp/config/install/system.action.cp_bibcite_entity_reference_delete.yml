@@ -4,7 +4,7 @@ dependencies:
   module:
     - bibcite_entity
 id: cp_bibcite_entity_reference_delete
-label: 'Delete reference'
+label: 'Delete publication'
 type: bibcite_reference
 plugin: 'cp_entity:delete_action:bibcite_reference'
 configuration: {  }
