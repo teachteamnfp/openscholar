@@ -1,0 +1,58 @@
+uuid: f8594b28-18d5-4323-b120-ff71cfd7cac0
+langcode: en
+status: true
+dependencies:
+  module:
+    - bibcite_entity
+    - ctools
+id: publications
+label: Publications
+type: 'canonical_entities:bibcite_reference'
+pattern: 'publications/[bibcite_reference:title]'
+selection_criteria:
+  058b4844-358c-4eea-8121-5550fa161238:
+    id: 'entity_bundle:bibcite_reference'
+    bundles:
+      artwork: artwork
+      audiovisual: audiovisual
+      bill: bill
+      book: book
+      book_chapter: book_chapter
+      broadcast: broadcast
+      case: case
+      chart: chart
+      classical: classical
+      conference_paper: conference_paper
+      conference_proceedings: conference_proceedings
+      database: database
+      film: film
+      government_report: government_report
+      hearing: hearing
+      journal: journal
+      journal_article: journal_article
+      legal_ruling: legal_ruling
+      magazine_article: magazine_article
+      manuscript: manuscript
+      map: map
+      miscellaneous: miscellaneous
+      miscellaneous_section: miscellaneous_section
+      newspaper_article: newspaper_article
+      patent: patent
+      personal: personal
+      presentation: presentation
+      report: report
+      software: software
+      statute: statute
+      thesis: thesis
+      unpublished: unpublished
+      website: website
+      web_article: web_article
+      web_project_page: web_project_page
+      web_service: web_service
+    negate: false
+    context_mapping:
+      bibcite_reference: bibcite_reference
+    uuid: 058b4844-358c-4eea-8121-5550fa161238
+selection_logic: and
+weight: -5
+relationships: {  }

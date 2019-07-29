@@ -448,3 +448,14 @@ h1.page-header {
 .path-front.no-sidebars .region-content-top .block-boxes-os_slideshow_box:after {
   position: relative;
 }
+/**** pager ****/
+.pagination {
+  > li {
+    &.active {
+      a, a:hover {
+        background: $color_tundora_approx;
+        border-color: $color_tundora_approx;
+      }
+    }
+  }
+}

@@ -1,6 +1,7 @@
 @import '../../os_base/scss/base/breakpoints';
 @import './variables';
 @import './base';
+@import './../../os_base/scss/mixins/pager';
 @import './../../os_base/scss/base/poweredby_common';
 
 html {
@@ -239,3 +240,6 @@ h2.block-title {
 .accordion .ui-widget-content {
   background: $white;
 }
+/**** pager ****/
+@include pager($color_thunderbird_approx);
+

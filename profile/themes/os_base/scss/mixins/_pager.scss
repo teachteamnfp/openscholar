@@ -1,0 +1,35 @@
+@mixin pager($color, $color-white:#fff) {
+  .pagination {
+    > li {
+      > a, a:hover,a:focus, span, span:hover, span:focus {
+        color: $color;
+        background: $color-white;
+      }
+      &.active {
+        a, a:hover {
+          background: $color;
+          color: $color-white;
+          border-color: $color;
+        }
+      }
+    }
+  }
+}
+@mixin  pager1($color, $color1) {
+  .pagination {
+    > li {
+      > a, a:hover, a:focus, span, span:hover, span:focus {
+        background: $color;
+        border-color: $color1;
+        color: $color1;
+      }
+      &.active {
+        a, a:hover {
+          background: $color1;
+          color: $color;
+          border-color: $color1;
+        }
+      }
+    }
+  }
+}
