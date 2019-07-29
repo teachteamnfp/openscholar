@@ -6,7 +6,6 @@ use Drupal\bibcite_entity\Entity\Reference;
 use Drupal\bibcite_entity\Entity\ReferenceInterface;
 use Drupal\Core\Config\Entity\ConfigEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\file\Entity\File;
 use Drupal\file\FileInterface;
 use Drupal\group\Entity\GroupInterface;
@@ -35,9 +34,9 @@ trait ExistingSiteTestTrait {
    *   The created group entity.
    */
   protected function createGroup(array $values = []): GroupInterface {
-    /** @var EntityStorageInterface $storage */
+    /** @var \Drupal\Core\Entity\EntityStorageInterface $storage */
     $storage = $this->container->get('entity_type.manager')->getStorage('group');
-    /** @var GroupInterface $group */
+    /** @var \Drupal\group\Entity\GroupInterface $group */
     $group = $storage->create($values + [
       'type' => 'personal',
       'label' => $this->randomMachineName(),
