@@ -1,4 +1,4 @@
-os_publications_preferred_bibliographic_format: apa
+default_style: harvard_chicago_author_date
 biblio_sort: year
 note_in_teaser: 0
 biblio_order: DESC
