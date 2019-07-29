@@ -109,15 +109,11 @@ display:
             offset_label: Offset
           views_infinite_scroll:
             button_text: 'Load More'
-            automatically_load_content: 0
+            automatically_load_content: 1
       style:
         type: table
         options:
-          grouping:
-            -
-              field: type
-              rendered: true
-              rendered_strip: false
+          grouping: {  }
           row_class: ''
           default_row_class: true
           override: true
@@ -540,10 +536,10 @@ display:
         - 'languages:language_interface'
         - url.query_args
       tags:
-        - 'config:core.entity_view_display.bibcite_reference.artwork.default'
-        - 'config:core.entity_view_display.bibcite_reference.artwork.teaser'
         - 'config:core.entity_view_display.bibcite_reference.artwork.citation'
+        - 'config:core.entity_view_display.bibcite_reference.artwork.default'
         - 'config:core.entity_view_display.bibcite_reference.artwork.table'
+        - 'config:core.entity_view_display.bibcite_reference.artwork.teaser'
         - 'config:core.entity_view_display.bibcite_reference.audiovisual.citation'
         - 'config:core.entity_view_display.bibcite_reference.audiovisual.default'
         - 'config:core.entity_view_display.bibcite_reference.audiovisual.table'
@@ -1150,7 +1146,7 @@ display:
           exposed: true
           expose:
             operator_id: type_op
-            label: 'Reference type'
+            label: 'Publication type'
             description: ''
             use_operator: false
             operator: type_op

@@ -1,0 +1,5 @@
+vsiteInfiniteScroll:
+  js:
+    js/vsite.infiniteScroll.js: {}
+  dependencies:
+    - core/drupal

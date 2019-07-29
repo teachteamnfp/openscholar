@@ -2,3 +2,5 @@ manage taxonomy:
   title: 'Manage Site Taxonomy'
   description: 'Allow users to change the vocabularies and taxonomy terms of a site.'
   restrict access: false
+  provider: cp
+  section: 'Permission'

@@ -1,6 +1,7 @@
 @import '../../os_base/scss/base/breakpoints';
 @import './variables';
 @import './base';
+@import './../../os_base/scss/mixins/pager';
 @import './../../os_base/scss/base/poweredby_common';
 //@extend-elements
 %extend_1 {
@@ -260,3 +261,5 @@ footer {
     color: $black;
   }
 }
+/**** pager ****/
+@include pager($color_mexican_red_approx);

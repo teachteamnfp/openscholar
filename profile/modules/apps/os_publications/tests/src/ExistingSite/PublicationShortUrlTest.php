@@ -22,6 +22,20 @@ class PublicationShortUrlTest extends OsExistingSiteTestBase {
   protected $groupAdmin;
 
   /**
+   * Cache Render service.
+   *
+   * @var \Drupal\Core\Cache\CacheBackendInterface
+   */
+  protected $cacheRender;
+
+  /**
+   * Reference content.
+   *
+   * @var \Drupal\bibcite_entity\Entity\ReferenceInterface
+   */
+  protected $reference;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
@@ -29,14 +43,14 @@ class PublicationShortUrlTest extends OsExistingSiteTestBase {
 
     $this->group = $this->createGroup([
       'path' => [
-        'alias' => '/test-menu',
+        'alias' => '/test-shorturl',
       ],
     ]);
     $this->groupAdmin = $this->createUser();
     $this->addGroupAdmin($this->groupAdmin, $this->group);
     $this->drupalLogin($this->groupAdmin);
     $this->reference = $this->createReference([
-      'title' => 'The Velvet Underground',
+      'html_title' => 'The Velvet Underground',
     ]);
     $this->group->addContent($this->reference, 'group_entity:bibcite_reference');
     $this->cacheRender = $this->container->get('cache.render');
@@ -51,24 +65,23 @@ class PublicationShortUrlTest extends OsExistingSiteTestBase {
   public function testPublicationShortUrl(): void {
 
     // Test citations do not occur if short citations is off.
-    $this->visit("/test-menu/cp/settings/publications");
+    $this->visit("/test-shorturl/cp/settings/publications");
     $edit = [
       'os_publications_shorten_citations' => FALSE,
     ];
     $this->submitForm($edit, 'edit-submit');
-    $ref_url = $this->reference->toUrl()->toString();
-    $this->visit("/test-menu" . $ref_url);
+    $this->visit("/test-shorturl/bibcite/reference/" . $this->reference->id());
     $web_assert = $this->assertSession();
     $web_assert->elementNotExists('css', '.short-link');
 
     // Test citations occur when short url setting is on.
-    $this->drupalGet("/test-menu/cp/settings/publications");
+    $this->drupalGet("/test-shorturl/cp/settings/publications");
     $edit = [
       'os_publications_shorten_citations' => TRUE,
     ];
     $this->submitForm($edit, 'edit-submit');
     $this->cacheRender->invalidateAll();
-    $this->visit("/test-menu" . $ref_url);
+    $this->visit("/test-shorturl/bibcite/reference/" . $this->reference->id());
     $web_assert->elementExists('css', '.short-link');
   }
 
