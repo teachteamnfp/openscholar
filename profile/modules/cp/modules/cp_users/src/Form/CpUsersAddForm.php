@@ -5,6 +5,7 @@ namespace Drupal\cp_users\Form;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\CloseModalDialogCommand;
 use Drupal\Core\Ajax\RedirectCommand;
+use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -79,6 +80,13 @@ class CpUsersAddForm extends FormBase {
         $roleData[$rid] = $role->label();
       }
     }
+
+    $form['#prefix'] = '<div id="cp-user-add-form">';
+    $form['#suffix'] = '</div>';
+    $form['status_messages'] = [
+      '#type' => 'status_messages',
+      '#weight' => -10,
+    ];
 
     $form['existing-member'] = [
       '#type' => 'details',
@@ -209,15 +217,19 @@ class CpUsersAddForm extends FormBase {
       return $response;
     }
     $response = new AjaxResponse();
-    $group = $this->vsiteContextManager->getActiveVsite();
-    if (!$group) {
-      $response->setStatusCode(403, 'Forbidden');
+
+    if ($form_state->getErrors()) {
+      $response->addCommand(new ReplaceCommand('#cp-user-add-form', $form));
     }
     else {
-      $response->addCommand(new CloseModalDialogCommand());
-      $response->addCommand(new RedirectCommand(Url::fromRoute('cp.users')->toString()));
+      $group = $this->vsiteContextManager->getActiveVsite();
+      if (!$group) {
+        $response->setStatusCode(403, 'Forbidden');
+      }
+      else {
+        $response->addCommand(new CloseModalDialogCommand());
+        $response->addCommand(new RedirectCommand(Url::fromRoute('cp.users')->toString()));
 
-      if (!$form_state->getErrors()) {
         /** @var string $entity */
         if ($entity = $form_state->getValue('member-entity')) {
           /** @var \Drupal\user\UserInterface $account */
