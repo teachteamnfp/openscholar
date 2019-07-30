@@ -3,6 +3,9 @@
   font-family: $font_0, $font_1, $font_2, $font_3;
   line-height: 24px;
 }
+%font-family {
+  font-family: $font_0, $font_1, $font_2, $font_3;
+}
 html {
   @extend %extend_1;
 }
