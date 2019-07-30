@@ -1,0 +1,7 @@
+aside {
+  .block {
+    h2.block-title {
+      @extend %extend_1;
+    }
+  }
+}
