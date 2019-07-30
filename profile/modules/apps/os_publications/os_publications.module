@@ -460,6 +460,7 @@ function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInte
   $form['revision_information']['#type'] = 'details';
   $form['revision_information']['#title'] = t('Revision Information');
   $form['revision_information']['#weight'] = 6;
+  $form['revision']['#title'] = t('When checked, a new version of this content will be created');
 
   $form['menu']['enabled'] = [
     '#type' => 'checkbox',
