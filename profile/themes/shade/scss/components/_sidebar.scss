@@ -1,0 +1,20 @@
+aside {
+  .block-content {
+    border-top: 0 none;
+  }
+  .block-title {
+    font-size: 20px;
+    line-height: 28px;
+    padding: 7px 15px;
+    margin-bottom: 0;
+    background: none repeat scroll 0 0 transparent;
+    background-color: $color_pale_sky_approx;
+    border-bottom: medium none;
+    color: $white;
+    font-weight: normal;
+  }
+  .region > .block {
+    border-radius: 3px;
+    box-shadow: 0 0;
+  }
+}
