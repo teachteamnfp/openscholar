@@ -15,14 +15,7 @@ h2.block-title {
   background: none;
   background-image: none;
 }
-.page-header {
-  font-family: $font_0, $font_1;
-}
-.node--title {
-  font-family: $font_0, $font_1;
-}
 .more-link {
-  font-family: $font_0, $font_1;
   text-decoration: underline;
   &:after {
     background: none;
@@ -31,12 +24,6 @@ h2.block-title {
 }
 .field--item span {
   color: $black;
-}
-.path-search .title a {
-  font-family: $font_0, $font_1;
-}
-.links a {
-  font-family: $font_0, $font_1;
 }
 .field--name-body {
   h2 {
