@@ -46,6 +46,11 @@ content:
     third_party_settings: {  }
     type: text_textfield
     region: content
+  google_analytics:
+    weight: 3
+    settings: {  }
+    third_party_settings: {  }
+    region: content
   language:
     weight: 0
     settings: {  }
