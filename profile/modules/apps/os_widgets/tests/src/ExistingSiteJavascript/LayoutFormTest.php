@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\os_widgets\ExistingSiteJavascript;
 
-use Drupal\group\Entity\GroupRole;
 use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTestBase;
 use Drupal\Tests\os_widgets\Traits\WidgetCreationTrait;
 
@@ -40,8 +39,8 @@ class LayoutFormTest extends OsExistingSiteJavascriptTestBase {
     $group2Alias = $group2->get('path')->first()->getValue()['alias'];
     $group2->addMember($this->user, [
       'group_roles' => [
-        'personal-administrator'
-      ]
+        'personal-administrator',
+      ],
     ]);
     $this->drupalLogin($this->user);
     // Event ajaxSend is global, and fires on every ajax request.
@@ -68,7 +67,7 @@ JS;
     $this->assertContains($group2Alias . '/cp/layout/save', $url);
   }
 
-  /*
+  /**
    * Tests that the filter widget functionality works.
    */
   public function testFilterWidget() {
