@@ -60,20 +60,6 @@ third_party_settings:
         required_fields: false
       label: 'Publishing Options'
       region: content
-    group_url:
-      children:
-        - path
-      parent_name: ''
-      weight: 59
-      format_type: details
-      format_settings:
-        id: ''
-        classes: ''
-        description: ''
-        open: false
-        required_fields: false
-      label: Url
-      region: content
     group_distribute_to_academic_rep:
       children:
         - distribution
