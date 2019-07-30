@@ -4,6 +4,7 @@ namespace Drupal\Tests\os_widgets\ExistingSiteJavascript;
 
 use Drupal\block\Entity\Block;
 use Drupal\block_content\Entity\BlockContent;
+use Drupal\Core\Config\FileStorage;
 use Drupal\os_widgets\Entity\LayoutContext;
 use weitzman\DrupalTestTraits\ExistingSiteWebDriverTestBase;
 
@@ -78,7 +79,6 @@ class RssFeedBlockJavascriptTest extends ExistingSiteWebDriverTestBase {
     $this->assertNotNull($page->find('css', '#block-block-content-rss-feed-test'), 'Block is missing from the page');
     $check_html_value = $page->hasContent('RSS feed link!');
     $this->assertTrue($check_html_value, 'RSS link is not visible.');
-    file_put_contents(REQUEST_TIME . '.txt', $this->getSession()->getPage()->getContent());
 
     $this->clickLink('RSS feed link!');
     $result = $web_assert->waitForElementVisible('named', ['link', 'Feed URL copied to clipboard']);
@@ -142,6 +142,7 @@ class RssFeedBlockJavascriptTest extends ExistingSiteWebDriverTestBase {
     $block->save();
     $layoutContext = LayoutContext::load('all_pages');
     $blocks = $layoutContext->getBlockPlacements();
+    error_log("Starting with: " . print_r(array_keys($blocks), 1));
     $blocks[$block->id()] = [
       'id' => $block->id(),
       'region' => 'content',
@@ -150,6 +151,8 @@ class RssFeedBlockJavascriptTest extends ExistingSiteWebDriverTestBase {
     $layoutContext->setBlockPlacements($blocks);
     $layoutContext->save();
     $this->markEntityForCleanup($block);
+    error_log("Adding {$block->id()} to layout context");
+    error_log(print_r(array_keys($layoutContext->getBlockPlacements()), 1));
   }
 
   /**
@@ -162,6 +165,11 @@ class RssFeedBlockJavascriptTest extends ExistingSiteWebDriverTestBase {
     $theme_setting = $this->configFactory->getEditable('system.theme');
     $theme_setting->set('default', $this->defaultTheme);
     $theme_setting->save();
+
+    $config_path = drupal_get_path('profile', 'openscholar').'/config/sync';
+    $source = new FileStorage($config_path);
+    $config_storage = \Drupal::service('config.storage');
+    $config_storage->write('os_widgets.layout_context.all_pages', $source->read('os_widgets.layout_context.all_pages'));
   }
 
 }
