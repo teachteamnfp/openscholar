@@ -348,7 +348,7 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
 /**
  * Implements hook_form_BASE_FORM_ID_alter().
  */
-function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInterface $form_state) {
   $config_factory = \Drupal::service('config.factory');
   /** @var array $auto_flags */
   $auto_flags = $config_factory->get('os_publications.settings')->get('citation_distribute_autoflags');
@@ -395,6 +395,34 @@ function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInte
     }
   }
 
+  // Publication details group.
+  $form['publication_details'] = [
+    '#type' => 'details',
+    '#title' => t('Publication Details'),
+    '#group' => 'content',
+    '#weight' => 65,
+  ];
+  $form['full_text']['#group'] = 'publication_details';
+  $form['notes']['#group'] = 'publication_details';
+  $form['field_publication_image']['#group'] = 'publication_details';
+  $form['field_extra_fields']['#group'] = 'publication_details';
+
+  // Publishing options group.
+  $form['publishing_options'] = [
+    '#type' => 'details',
+    '#title' => t('Publishing Options'),
+    '#group' => 'advanced',
+    '#weight' => 1,
+  ];
+  $form['status']['#group'] = 'publishing_options';
+  $form['is_sticky']['#group'] = 'publishing_options';
+  $form['noindex']['#group'] = 'publishing_options';
+
+  // Url group.
+  $form['path']['widget']['0']['#group'] = 'advanced';
+  $form['path']['widget']['0']['#weight'] = 2;
+
+  // Menu group.
   $form['menu'] = [
     '#type' => 'details',
     '#title' => t('Menu settings'),
@@ -403,9 +431,35 @@ function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInte
       'library' => ['menu_ui/drupal.menu_ui'],
     ],
     '#tree' => TRUE,
-    '#weight' => 1,
+    '#weight' => 3,
     '#attributes' => ['class' => ['menu-link-form']],
   ];
+
+  // Distribute to repos group.
+  $form['distribute_to_repos'] = [
+    '#type' => 'details',
+    '#title' => t('Distribute to Academic Repositories'),
+    '#group' => 'advanced',
+    '#weight' => 4,
+  ];
+  $form['distribution']['#group'] = 'distribute_to_repos';
+
+  // Authoring information group.
+  $form['authoring_info'] = [
+    '#type' => 'details',
+    '#title' => t('Post Created/Edited By'),
+    '#group' => 'advanced',
+    '#weight' => 5,
+  ];
+  $form['created']['#group'] = 'authoring_info';
+  $form['uid']['#group'] = 'authoring_info';
+
+  // Revision information group.
+  $form['revision_information']['#group'] = 'advanced';
+  $form['revision_information']['#type'] = 'details';
+  $form['revision_information']['#title'] = t('Revision Information');
+  $form['revision_information']['#weight'] = 6;
+
   $form['menu']['enabled'] = [
     '#type' => 'checkbox',
     '#title' => t('Provide a menu link'),

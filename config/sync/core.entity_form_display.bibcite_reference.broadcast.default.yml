@@ -12,7 +12,6 @@ dependencies:
     - image.style.thumbnail
   module:
     - bibcite_entity
-    - field_group
     - field_layout
     - image
     - key_value_field
@@ -24,69 +23,6 @@ third_party_settings:
   field_layout:
     id: layout_onecol
     settings: {  }
-  field_group:
-    group_publication_details:
-      children:
-        - full_text
-        - notes
-        - field_publication_image
-        - field_extra_fields
-      parent_name: ''
-      weight: 57
-      format_type: details
-      format_settings:
-        id: ''
-        classes: ''
-        description: ''
-        open: false
-        required_fields: false
-      label: 'Publication Details'
-      region: content
-    group_publishing_options:
-      children:
-        - status
-        - is_sticky
-        - noindex
-      parent_name: ''
-      weight: 58
-      format_type: details
-      format_settings:
-        id: ''
-        classes: ''
-        description: ''
-        open: false
-        required_fields: false
-      label: 'Publishing Options'
-      region: content
-    group_distribute_to_academic_rep:
-      children:
-        - distribution
-      parent_name: ''
-      weight: 60
-      format_type: details
-      format_settings:
-        id: ''
-        classes: ''
-        description: ''
-        open: false
-        required_fields: false
-      label: 'Distribute To Academic Repositories'
-      region: content
-    group_post_created_edited_by:
-      children:
-        - uid
-        - created
-      parent_name: ''
-      weight: 61
-      format_type: details
-      format_settings:
-        id: ''
-        classes: ''
-        description: ''
-        open: false
-        required_fields: false
-      label: 'Post Created/Edited By'
-      region: content
 id: bibcite_reference.broadcast.default
 targetEntityType: bibcite_reference
 bundle: broadcast
