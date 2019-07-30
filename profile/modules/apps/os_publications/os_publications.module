@@ -664,6 +664,11 @@ function os_publications_bibcite_reference_view_alter(array &$build, EntityInter
         ];
       }
     }
+    $changed = $entity->changed->value;
+    $build['changed'] = [
+      '#markup' => '<span class="last-updated"><i>' . t("Last updated on@sp", ['@sp' => ' ']) . \Drupal::service('date.formatter')->format($changed, 'custom', 'm/d/Y') . '</i></span>',
+      '#weight' => 49,
+    ];
   }
 }
 

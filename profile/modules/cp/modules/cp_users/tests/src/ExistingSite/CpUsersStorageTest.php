@@ -1,19 +1,19 @@
 <?php
 
-namespace Drupal\Tests\cp_roles\ExistingSite;
+namespace Drupal\Tests\cp_users\ExistingSite;
 
 /**
- * Tests CpRoles storage.
+ * Tests CpUsers storage.
  *
  * @group kernel
  * @group cp
  */
-class CpRolesStorageTest extends CpRolesExistingSiteTestBase {
+class CpUsersStorageTest extends CpUsersExistingSiteTestBase {
 
   /**
    * Tests custom role save.
    *
-   * @covers ::cp_roles_entity_presave
+   * @covers ::cp_users_entity_presave
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
@@ -28,7 +28,7 @@ class CpRolesStorageTest extends CpRolesExistingSiteTestBase {
   /**
    * Test custom role edit.
    *
-   * @covers ::cp_roles_entity_presave
+   * @covers ::cp_users_entity_presave
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
