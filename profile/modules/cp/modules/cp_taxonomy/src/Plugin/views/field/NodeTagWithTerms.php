@@ -13,9 +13,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @ingroup views_field_handlers
  *
- * @ViewsField("cp_taxonomy_field_taxonomy_terms")
+ * @ViewsField("cp_taxonomy_node_field_taxonomy_terms")
  */
-class ReferenceTagWithTerms extends FieldPluginBase {
+class NodeTagWithTerms extends FieldPluginBase {
 
   /**
    * Config Factory.
@@ -26,7 +26,18 @@ class ReferenceTagWithTerms extends FieldPluginBase {
   private $vsiteContextManager;
 
   /**
-   * {@inheritdoc}
+   * Constructs a Handler object.
+   *
+   * @param array $configuration
+   *   A configuration array containing information about the plugin instance.
+   * @param string $plugin_id
+   *   The plugin_id for the plugin instance.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   Config factory.
+   * @param \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager
+   *   Vsite context manager.
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, ConfigFactoryInterface $config_factory, VsiteContextManagerInterface $vsite_context_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
@@ -58,14 +69,15 @@ class ReferenceTagWithTerms extends FieldPluginBase {
    * {@inheritdoc}
    */
   public function render(ResultRow $values) {
-    $reference = $this->getEntity($values);
+    $node = $this->getEntity($values);
     $config = $this->configFactory->get('cp_taxonomy.settings');
     $display_term_under_content_teaser_types = $config->get('display_term_under_content_teaser_types');
     $build = [];
-    if (is_null($display_term_under_content_teaser_types) || in_array($reference->getEntityType()->id() . ':*', $display_term_under_content_teaser_types)) {
-      return $reference->field_taxonomy_terms->view(['label' => 'hidden']);
+    if (is_null($display_term_under_content_teaser_types) || in_array($node->getEntityType()->id() . ':' . $node->bundle(), $display_term_under_content_teaser_types)) {
+      $build = $node->field_taxonomy_terms->view();
+      $build['#title'] = $this->t('See also');
     }
-    if (!empty($reference->field_taxonomy_terms->referencedEntities())) {
+    if (!empty($node->field_taxonomy_terms->referencedEntities())) {
       $group = $this->vsiteContextManager->getActiveVsite();
       $build['#cache']['tags'][] = 'entity-with-taxonomy-terms:' . $group->id();
     }

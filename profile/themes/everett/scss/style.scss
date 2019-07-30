@@ -1,6 +1,7 @@
 @import '../../os_base/scss/base/breakpoints';
 @import './variables';
 @import './common';
+@import '../../os_base/scss/mixins/pager';
 
 html {
   color: $black;
@@ -252,3 +253,5 @@ footer.footer {
 .contextual .trigger {
   color: $black;
 }
+/**** pager ****/
+@include pager($color_hippie_green_approx);
