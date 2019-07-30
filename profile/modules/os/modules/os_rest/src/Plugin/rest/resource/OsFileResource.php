@@ -107,11 +107,6 @@ class OsFileResource extends FileUploadResource {
       }
     }
     $media->save();
-    /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContextManager */
-    $vsiteContextManager = \Drupal::service('vsite.context_manager');
-    if ($group = $vsiteContextManager->getActiveVsite()) {
-      $group->addContent($media, 'group_entity:media');
-    }
 
     // 201 Created responses return the newly created entity in the response
     // body. These responses are not cacheable, so we add no cacheability
