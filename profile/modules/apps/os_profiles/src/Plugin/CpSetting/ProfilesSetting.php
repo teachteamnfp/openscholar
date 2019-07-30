@@ -9,9 +9,9 @@ use Drupal\Core\Entity\EntityDisplayRepositoryInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\cp_settings\CpSettingBase;
-use Drupal\file\Entity\File;
 use Drupal\file\FileUsage\FileUsageInterface;
 use Drupal\image_widget_crop\ImageWidgetCropInterface;
+use Drupal\media\Entity\Media;
 use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -124,14 +124,13 @@ class ProfilesSetting extends CpSettingBase {
         // Display only display modes the user turned on.
         continue;
       }
-
       $profile_styles[$name] = $label;
     }
 
     $profile_styles_hover = [];
     $counter = 0;
 
-    $hover_image = $this->getExampleImage($config->get('default_image_fid'));
+    $hover_image = $this->getExampleImage($config->get('default_image_mid'));
     // Create markup for style examples when hovering over each style.
     foreach ($profile_styles as $name => $label) {
       $counter++;
@@ -175,26 +174,48 @@ class ProfilesSetting extends CpSettingBase {
       '#description' => $this->t('If checked no image will be used when viewing the "/people" page.'),
       '#weight' => -1,
     ];
-    $upload_location = 'public://' . $this->activeVsite->id() . '/files';
-    $allowed_file_types = 'gif png jpg jpeg';
-    $form['default_image']['default_image_fid'] = [
-      '#type' => 'managed_file',
-      '#description' => $this->getDefaultImage() . '<br />' . $this->t('The default image will be used if a profile photo is not available. Instead, you can upload your own default image.<br/>Position the cropping tool over it if necessary. Allowed file types: <strong> @allowed_file_types </strong>', ['@allowed_file_types' => $allowed_file_types]),
-      '#upload_location' => $upload_location,
-      '#upload_validators' => [
-        'file_validate_extensions' => [$allowed_file_types],
+    $form['default_image']['default_image_mid'] = [
+      '#type' => 'container',
+      '#input' => TRUE,
+      '#default_value' => [],
+      '#suffix' => $this->getDefaultImage() . '<br />' . $this->t('The default image will be used if a profile photo is not available. Instead, you can upload your own default image.<br/>Position the cropping tool over it if necessary. Allowed media types: <strong>image</strong>'),
+      'media-browser-field' => [
+        '#type' => 'html_tag',
+        '#tag' => 'div',
+        '#attributes' => [
+          'media-browser-field' => '',
+          'types' => 'image',
+          'max-filesize' => '512 MB',
+          'upload_text' => 'Upload',
+          'droppable_text' => 'Drop here.',
+          'cardinality' => 1,
+          'files' => 'files',
+        ],
+        '#markup' => $this->t('Loading the Media Browser. Please wait a moment.'),
+        '#attached' => [
+          'library' => [
+            'os_media/mediaBrowserField',
+          ],
+        ],
       ],
-      '#multiple' => FALSE,
     ];
-    if ($default_fid = $config->get('default_image_fid')) {
+    if ($default_mid = $config->get('default_image_mid')) {
       $field_layout = \Drupal::entityTypeManager()
         ->getStorage('entity_form_display')
         ->load('node.person.default');
       $content = $field_layout->get('content');
       $settings = $content['field_photo_person']['settings'];
-      $form['default_image']['default_image_fid']['#default_value'] = [$default_fid];
+      $form['default_image']['default_image_mid']['media-browser-field']['#attached']['drupalSettings'] = [
+        'mediaBrowserField' => [
+          'edit-default-image-mid' => [
+            'selectedFiles' => [$default_mid],
+          ],
+        ],
+      ];
 
-      $file = File::load($default_fid);
+      $media = Media::load($default_mid);
+      $media_images = $media->get('field_media_image')->referencedEntities();
+      $file = array_shift($media_images);
       // The key of element are hardcoded into buildCropToForm function,
       // ATM that is mendatory but can change easily.
       $form['default_image']['image_crop'] = [
@@ -208,8 +229,6 @@ class ProfilesSetting extends CpSettingBase {
         '#warn_mupltiple_usages' => $settings['warn_multiple_usages'],
       ];
     }
-    else {
-    }
   }
 
   /**
@@ -222,33 +241,33 @@ class ProfilesSetting extends CpSettingBase {
     $config->set('disable_default_image', (bool) $form_state->getValue('disable_default_image'));
     $config->set('image_crop', $form_state->getValue('image_crop'));
 
-    $deletable_fid = 0;
-    $form_file = $form_state->getValue('default_image_fid', 0);
-    if (!empty($form_file[0])) {
-      $file = File::load($form_file[0]);
-      $file_changed = $config->get('default_image_fid') != $form_file[0];
+    $deletable_mid = 0;
+    $form_media = $form_state->getValue('default_image_mid', 0);
+    if (!empty($form_media[0]['target_id'])) {
+      $media = Media::load($form_media[0]['target_id']);
+      $media_images = $media->get('field_media_image')->referencedEntities();
+      $file = array_shift($media_images);
+      $file_changed = $config->get('default_image_mid') != $form_media[0]['target_id'];
       if ($file_changed) {
-        $this->fileUsage->add($file, 'os_profiles', 'form', $file->id());
-        // Checking is there any exists file and delete.
-        // Use case: remove exists file and upload immediately a new one.
-        if ($exists_fid = $config->get('default_image_fid')) {
-          $deletable_fid = $exists_fid;
+        // $this->fileUsage->add($file, 'os_profiles', 'form', $file->id());
+        // Checking is there any exists media and delete.
+        // Use case: remove exists media and upload immediately a new one.
+        if ($exists_mid = $config->get('default_image_mid')) {
+          $deletable_mid = $exists_mid;
         }
       }
-      $file->setPermanent();
-      $file->save();
       $form_state->getFormObject()->setEntity($file);
-      $config->set('default_image_fid', $file->id());
+      $config->set('default_image_mid', $media->id());
     }
     else {
       // Checking is there any exists file and delete.
-      if ($exists_fid = $config->get('default_image_fid')) {
-        $deletable_fid = $exists_fid;
+      if ($exists_fid = $config->get('default_image_mid')) {
+        $deletable_mid = $exists_fid;
       }
-      $config->set('default_image_fid', NULL);
+      $config->set('default_image_mid', NULL);
     }
-    if ($deletable_fid) {
-      File::load($deletable_fid)->delete();
+    if ($deletable_mid) {
+      Media::load($deletable_mid)->delete();
     }
 
     $config->save(TRUE);
@@ -267,10 +286,12 @@ class ProfilesSetting extends CpSettingBase {
   /**
    * Get image markup for example hover.
    */
-  public function getExampleImage($default_image_fid = NULL) {
+  public function getExampleImage($default_image_mid = NULL) {
     // Use custom default image if available.
-    if (!empty($default_image_fid)) {
-      $image_file = File::load($default_image_fid);
+    if (!empty($default_image_mid)) {
+      $media = Media::load($default_image_mid);
+      $media_images = $media->get('field_media_image')->referencedEntities();
+      $image_file = array_shift($media_images);
       $path = $image_file->getFileUri();
       $build = [
         '#theme' => 'image_style',
