@@ -456,11 +456,39 @@ function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInte
   $form['uid']['#group'] = 'authoring_info';
 
   // Revision information group.
-  $form['revision_information']['#group'] = 'advanced';
-  $form['revision_information']['#type'] = 'details';
-  $form['revision_information']['#title'] = t('Revision Information');
-  $form['revision_information']['#weight'] = 6;
-  $form['revision']['#title'] = t('When checked, a new version of this content will be created');
+  if ($reference->id()) {
+    // Revision checkbox and log message title change.
+    $form['revision']['#title'] = t('When checked, a new version of this content will be created');
+    $form['revision']['#default_value'] = TRUE;
+    $form['revision_log_message']['widget']['0']['value']['#title'] = t('Revision Notes');
+    // Revision info changes.
+    $form['revision_information']['#group'] = 'advanced';
+    $form['revision_information']['#type'] = 'details';
+    $form['revision_information']['#title'] = t('Revision Information');
+    $form['revision_information']['#weight'] = 6;
+
+    // Get number of revisions for this publication.
+    $rev_query = Drupal::database()->select('bibcite_reference_revision', 'rev')
+      ->fields('rev', ['id'])
+      ->condition('id', $reference->id());
+    $num_revisions = count($rev_query->execute()->fetchAll()) - 1;
+    if ($num_revisions > 0) {
+      $revisions_url = Url::fromRoute('entity.bibcite_reference.version_history', ['bibcite_reference' => $reference->id()])
+        ->setOption('attributes', ['id' => 'revisons-links']);
+      $rev_link = Link::fromTextAndUrl(t("@num revisions", ['@num' => ' ' . $num_revisions]), $revisions_url)
+        ->toString();
+      $form['revision_information']['info']['#markup'] = '<p>' . t("There are currently") . $rev_link . '.</p>';
+      $form['revision_information']['help'] = [
+        '#type' => 'link',
+        '#title' => t('What’s being stored as a revision?'),
+        '#url' => Url::fromUri('https://help.theopenscholar.com/revisions'),
+        '#weight' => 50,
+      ];
+    }
+  }
+  elseif (!$reference->id()) {
+    unset($form['revision'], $form['revision_information']);
+  }
 
   $form['menu']['enabled'] = [
     '#type' => 'checkbox',
