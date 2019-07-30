@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\cp_roles\ExistingSite;
+namespace Drupal\Tests\cp_users\ExistingSite;
 
 use Drupal\group\Entity\GroupRole;
 
@@ -9,9 +9,9 @@ use Drupal\group\Entity\GroupRole;
  *
  * @group functional
  * @group cp
- * @coversDefaultClass \Drupal\cp_roles\Form\ChangeRoleForm
+ * @coversDefaultClass \Drupal\cp_users\Form\ChangeRoleForm
  */
-class CpRolesChangeRoleFormTest extends CpRolesExistingSiteTestBase {
+class CpUsersChangeRoleFormTest extends CpUsersExistingSiteTestBase {
 
   /**
    * Tests change role functionality.
