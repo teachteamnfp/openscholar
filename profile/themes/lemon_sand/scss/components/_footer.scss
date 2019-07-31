@@ -1,0 +1,11 @@
+footer {
+  background: $white;
+  ul {
+    &.nav a {
+      font-family: $font_4, $font_5;
+    }
+    &.nav li ul li a {
+      font-family: $font_4, $font_5;
+    }
+  }
+}

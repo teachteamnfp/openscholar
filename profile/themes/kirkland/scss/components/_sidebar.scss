@@ -1,0 +1,28 @@
+aside {
+  .region > .block {
+    &:nth-child(2) {
+      border-color: $color_glacier_approx;
+    }
+    &:nth-child(3) {
+      border-color: $color_jaffa_approx;
+    }
+    &:nth-child(1) {
+      border-color: $color_fiord_approx;
+    }
+    &:nth-child(4) {
+      border-color: $color_fiord_approx;
+    }
+  }
+  .nav a {
+    font-family: $font_0, $font_1;
+  }
+  .region >.block {
+    border-top-style: solid;
+    border-width: 3px;
+    padding: 15px 0 0;
+  }
+  h2.block-title {
+    padding: 0 0 15px 0;
+    font-weight: 300;
+  }
+}

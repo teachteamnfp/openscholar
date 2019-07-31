@@ -1,0 +1,18 @@
+@import './variables';
+%extend_1 {
+  background: $black;
+  border: none;
+  border-top: none;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+%font-family {
+  font-family: $font_0, $font_1;
+}
+html {
+  color: $black;
+}
+body {
+  color: $black;
+  font-family: $font_0, $font_1;
+}

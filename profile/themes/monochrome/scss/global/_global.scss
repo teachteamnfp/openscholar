@@ -1,0 +1,78 @@
+body {
+  background: $color_concrete_approx;
+}
+.page-header {
+  @extend %font;
+}
+.node--title {
+  @extend %font;
+}
+.more-link {
+  @extend %font;
+  &:after {
+    background-image: none;
+  }
+}
+.content-inner {
+  h2 {
+    @extend %font;
+  }
+  h3 {
+    @extend %font;
+  }
+  h4 {
+    @extend %font;
+  }
+  .block.block-boxes-os_boxes_columns .block {
+    border-top: 1px solid $color_mexican_red_approx;
+    border-top: none;
+  }
+}
+.header-container {
+  background: $color_squirrel_approx;
+  color: $white;
+  ul.nav li a {
+    @extend %font;
+    color: $white;
+    text-transform: none;
+  }
+}
+.comment-wrapper {
+  border-top: 1px solid $color_mexican_red_approx;
+  border-top: none;
+}
+.path-front .content-inner {
+  font-size: 16px;
+  .block {
+    border-top: 1px solid $color_mexican_red_approx;
+  }
+}
+.path-search .title a {
+  @extend %font;
+}
+.links a {
+  @extend %font;
+}
+h2.block-title {
+  @extend %font;
+}
+.path-person {
+  .block-inner {
+    border-top: 1px solid $color_mexican_red_approx;
+    border-top: none;
+  }
+}
+/** accessibility fixes **/
+header {
+  button.visually-hidden {
+    color: $black;
+  }
+  h2.sr-only {
+    color: $white
+  }
+}
+footer {
+  button.visually-hidden {
+    color: $black;
+  }
+}

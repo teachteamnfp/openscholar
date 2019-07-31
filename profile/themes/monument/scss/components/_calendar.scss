@@ -1,0 +1,29 @@
+.fc-today {
+  border: 1px solid $color_celeste_approx;
+  background-color: $color_swiss_coffee_approx;
+}
+.fc {
+  th {
+    border-color: $color_celeste_approx;
+  }
+  td {
+    border-color: $color_celeste_approx;
+    color: $color_abbey_approx;
+  }
+}
+.mini-calendar {
+  .fc-today span {
+    color: $color_gunsmoke_approx;
+  }
+}
+.fc-row.ui-widget-header {
+  th {
+    background-color: $color_mercury_approx !important;
+    color: $color_abbey_approx !important;
+  }
+}
+.fc-header-toolbar {
+  h2 {
+    @extend %font-family;
+  }
+}

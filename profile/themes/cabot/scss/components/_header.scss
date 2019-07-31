@@ -1,0 +1,11 @@
+.header-container {
+  background: $color_goldenrod_approx;
+  ul.nav {
+    li {
+      a {
+        @extend %font-family;
+        @extend %extend_2;
+      }
+    }
+  }
+}

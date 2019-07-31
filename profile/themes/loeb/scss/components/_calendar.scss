@@ -1,0 +1,18 @@
+.fc-header-toolbar h2 {
+  font-family: $font_0;
+}
+.fc-listUpcoming-view,
+.fc-listPast-view {
+  .fc-list-heading {
+    .fc-list-heading-main {
+      background-color: $seashell;
+    }
+  }
+}
+.full-calendar-view {
+  .fc-header-toolbar {
+    button {
+    color: $color_fern_green_approx;
+  }
+  }
+}

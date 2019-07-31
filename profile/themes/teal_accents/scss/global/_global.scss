@@ -1,0 +1,51 @@
+body {
+  font-size: 15px;
+  background: $color_alabaster_approx;
+  @extend %font;
+}
+.main-container {
+  a {
+    color: $color_log_cabin_approx;
+    text-decoration: underline;
+    &:visited {
+      text-decoration: underline;
+    }
+  }
+}
+.full-calendar-view .fc-header-toolbar button {
+  color: $color_log_cabin_approx;
+}
+.page-header, .node--title, .links a{
+  @extend %font;
+}
+.content-inner {
+  h2,h3,h4 {
+    @extend %font;
+  }
+}
+.comment-wrapper {
+  border-top: 3px solid $color_java_approx;
+}
+h1.page-header {
+  line-height: 1.3;
+}
+.path-search .title a {
+  @extend %font;
+}
+h2.block-title {
+  @extend %font;
+}
+.path-front {
+  .content-inner {
+    .block {
+      border-top: 3px solid $color_java_approx;
+    }
+  }
+}
+.page-node-type-person {
+  .content-inner {
+    .block-title {
+      border-top: 3px solid $color_java_approx;
+    }
+  }
+}

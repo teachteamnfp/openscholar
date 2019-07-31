@@ -1,0 +1,33 @@
+.comment-wrapper {
+  border-top: 1px solid $color_mountain_mist_approx;
+}
+.events {
+  .field--name-field-recurring-date {
+    color: $color_rangoon_green_approx;
+  }
+  .field--name-field-location {
+    color: $color_rangoon_green_approx;
+  }
+}
+h2.block-title {
+  text-transform: none;
+  font-size: 14px;
+  letter-spacing: 0;
+  font-weight: 900;
+  font-family: $font_0, $font_8;
+}
+.path-front .content-inner .block {
+  border-top: 1px solid $color_mountain_mist_approx;
+}
+.path-person .block-inner {
+  border-top: 1px solid $color_mountain_mist_approx;
+}
+.fc-header-toolbar h2 {
+  @extend %font-family;
+}
+.path-search .title a {
+  @extend %font-family;
+}
+.links a {
+  @extend %font-family;
+}

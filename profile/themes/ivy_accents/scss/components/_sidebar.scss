@@ -1,0 +1,27 @@
+aside {
+  .block-content {
+    padding: 15px;
+  }
+  .block-title {
+    @extend %extend_4;
+  }
+  .block-inner {
+    margin-top: 0;
+  }
+  .nav a {
+    font-family: $font_0, $font_6;
+  }
+  .region > .block {
+    @extend %extend_3;
+    &:before {
+      margin-top: 0;
+    }
+  }
+  .block.section-nav {
+    border: none;
+  }
+  .block {
+    border-top: none;
+    margin-top: 0;
+  }
+}
