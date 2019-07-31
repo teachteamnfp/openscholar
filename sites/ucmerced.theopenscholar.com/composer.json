@@ -21,9 +21,9 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "extra": {
-       "patches": {
+        "patches": {
             "drupal/cas": {
-              "Detect CAS library correctly": "https://www.drupal.org/files/issues/2019-07-24/dont_require_libraries-1394666-23.patch"
+                "Detect CAS library correctly": "https://www.drupal.org/files/issues/2019-07-24/dont_require_libraries-1394666-23.patch"
             }
         }
     }
