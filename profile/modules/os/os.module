@@ -174,7 +174,11 @@ function os_link_alter(&$variables) {
   /** @var \Drupal\Core\Url $url */
   $url = $variables['url'];
 
-  if (!$url->isExternal() && $url->getRouteName() === 'user.logout') {
+  if ($url->isExternal() || !$url->isRouted()) {
+    return;
+  }
+
+  if ($url->getRouteName() === 'user.logout') {
     /** @var \Drupal\Core\Routing\RedirectDestinationInterface $redirect_destination */
     $redirect_destination = \Drupal::service('redirect.destination');
     $variables['options']['query'] = $redirect_destination->getAsArray();
