@@ -61,7 +61,7 @@ class WidgetLibraryController extends ControllerBase {
       $messages = StatusMessages::renderMessages(NULL);
       $output[] = $messages;
       $output[] = $form;
-      $form_class = '.' . str_replace(['content_', '_'], ['', '-'], $form_state->getFormObject()->getFormId()) ;
+      $form_class = '.' . str_replace(['content_', '_'], ['', '-'], $form_state->getFormObject()->getFormId());
       // Remove any previously added error messages.
       $response->addCommand(new RemoveCommand('#drupal-modal .messages--error'));
       // Replace old form with new one and with error message.
