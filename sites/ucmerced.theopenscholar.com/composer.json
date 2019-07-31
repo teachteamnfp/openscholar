@@ -23,7 +23,8 @@
     "extra": {
        "patches": {
             "drupal/cas": {
-                "Detect CAS library correctly": "https://www.drupal.org/files/issues/2019-07-24/dont_require_libraries-1394666-23.patch"
+              "Prevent redirect before login": "https://www.drupal.org/files/issues/2019-07-24/cas_destination_param_error-2960027-6.patch",  
+              "Detect CAS library correctly": "https://www.drupal.org/files/issues/2019-07-24/dont_require_libraries-1394666-23.patch"
             }
         }
     }
