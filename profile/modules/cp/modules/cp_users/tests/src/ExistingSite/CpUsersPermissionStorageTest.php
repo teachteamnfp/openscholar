@@ -1,16 +1,16 @@
 <?php
 
-namespace Drupal\Tests\cp_roles\ExistingSite;
+namespace Drupal\Tests\cp_users\ExistingSite;
 
 use Drupal\group\Entity\GroupRole;
 
 /**
- * Tests CpRoles permission storage.
+ * Tests CpUsers permission storage.
  *
  * @group functional
  * @group cp
  */
-class CpRolesPermissionStorageTest extends CpRolesExistingSiteTestBase {
+class CpUsersPermissionStorageTest extends CpUsersExistingSiteTestBase {
 
   /**
    * Group administrator.
