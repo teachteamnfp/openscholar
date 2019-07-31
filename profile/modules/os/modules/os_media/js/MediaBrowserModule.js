@@ -353,7 +353,6 @@
             var file = response.config.originalFile;
             var data = response.data;
             file.filename = file.sanitized;
-            file.validators = $scope.extensions;
             if (data.collision) {
               file.newName = data.expectedFileName;
               $scope.dupes.push(file);

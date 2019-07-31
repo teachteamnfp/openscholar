@@ -48,10 +48,8 @@ class OsFileResource extends FileUploadResource {
     }
 
     $validators = $this->getUploadValidators();
-    $parameters = $request->request->all();
-    if (empty($validators['file_validate_extensions']) && !empty($parameters['validators'])) {
-      $validators['file_validate_extensions'][] = implode(' ', $parameters['validators']);
-    }
+    // List all extensions what are in all media types.
+    $validators['file_validate_extensions'][] = "mp3 wav aac flac ogg mp4 mov mpeg avi wmv txt doc docx pdf xls xlsx rtf csv exe zip gz tar rar ico png gif jpg jpeg odt pps ppsx ppt pptx";
 
     // Save the uploaded file.
     /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file_raw */
