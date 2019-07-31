@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\cp_roles\Form;
+namespace Drupal\cp_users\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -49,7 +49,7 @@ final class ChangeRoleForm extends FormBase {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'cp_roles_change_form';
+    return 'cp_users_change_form';
   }
 
   /**

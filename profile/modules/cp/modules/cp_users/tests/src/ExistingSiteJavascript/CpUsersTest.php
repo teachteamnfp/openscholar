@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\cp_roles\ExistingSiteJavascript;
+namespace Drupal\Tests\cp_users\ExistingSiteJavascript;
 
 use Drupal\group\Entity\GroupRole;
 
@@ -10,7 +10,7 @@ use Drupal\group\Entity\GroupRole;
  * @group functional-javascript
  * @group cp
  */
-class CpRolesTest extends CpRolesExistingSiteJavascriptTestBase {
+class CpUsersTest extends CpUsersExistingSiteJavascriptTestBase {
 
   /**
    * Purpose.
@@ -31,7 +31,7 @@ class CpRolesTest extends CpRolesExistingSiteJavascriptTestBase {
   /**
    * Tests role creation from UI.
    *
-   * @covers ::cp_roles_form_group_role_add_form_alter
+   * @covers ::cp_users_form_group_role_add_form_alter
    *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
    * @throws \Behat\Mink\Exception\ResponseTextException

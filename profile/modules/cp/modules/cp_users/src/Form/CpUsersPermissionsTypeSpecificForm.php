@@ -1,11 +1,11 @@
 <?php
 
-namespace Drupal\cp_roles\Form;
+namespace Drupal\cp_users\Form;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\cp_roles\CpRolesEditableInterface;
+use Drupal\cp_users\CpRolesHelperInterface;
 use Drupal\group\Access\GroupPermissionHandlerInterface;
 use Drupal\group\Entity\GroupTypeInterface;
 use Drupal\group\Form\GroupPermissionsForm;
@@ -13,14 +13,14 @@ use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Provides the cp_roles permission administration form.
+ * Provides the cp_users permission administration form.
  *
  * It is different from \Drupal\group\Form\GroupPermissionsTypeSpecificForm
  * because it hides some special group roles from the settings.
  *
  * @see \Drupal\group\Form\GroupPermissionsTypeSpecificForm
  */
-final class CpRolesPermissionsTypeSpecificForm extends GroupPermissionsForm {
+final class CpUsersPermissionsTypeSpecificForm extends GroupPermissionsForm {
 
   /**
    * The specific group role for this form.
@@ -37,11 +37,11 @@ final class CpRolesPermissionsTypeSpecificForm extends GroupPermissionsForm {
   protected $entityTypeManager;
 
   /**
-   * CpRoles editable service.
+   * CpRoles helper service.
    *
-   * @var \Drupal\cp_roles\CpRolesEditableInterface
+   * @var \Drupal\cp_users\CpRolesHelperInterface
    */
-  protected $cpRolesEditable;
+  protected $cpRolesHelper;
 
   /**
    * Vsite context manager.
@@ -58,7 +58,7 @@ final class CpRolesPermissionsTypeSpecificForm extends GroupPermissionsForm {
   protected $activeVsite;
 
   /**
-   * Creates a new CpRolesPermissionsTypeSpecificForm object.
+   * Creates a new CpUsersPermissionsTypeSpecificForm object.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
@@ -66,15 +66,15 @@ final class CpRolesPermissionsTypeSpecificForm extends GroupPermissionsForm {
    *   The group permission handler.
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
    *   The module handler.
-   * @param \Drupal\cp_roles\CpRolesEditableInterface $cp_roles_editable
-   *   CpRoles editable service.
+   * @param \Drupal\cp_users\CpRolesHelperInterface $cp_roles_helper
+   *   CpRoles helper service.
    * @param \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager
    *   Vsite context manager.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, GroupPermissionHandlerInterface $permission_handler, ModuleHandlerInterface $module_handler, CpRolesEditableInterface $cp_roles_editable, VsiteContextManagerInterface $vsite_context_manager) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, GroupPermissionHandlerInterface $permission_handler, ModuleHandlerInterface $module_handler, CpRolesHelperInterface $cp_roles_helper, VsiteContextManagerInterface $vsite_context_manager) {
     parent::__construct($permission_handler, $module_handler);
     $this->entityTypeManager = $entity_type_manager;
-    $this->cpRolesEditable = $cp_roles_editable;
+    $this->cpRolesHelper = $cp_roles_helper;
     $this->vsiteContextManager = $vsite_context_manager;
     $this->activeVsite = $vsite_context_manager->getActiveVsite();
   }
@@ -87,7 +87,7 @@ final class CpRolesPermissionsTypeSpecificForm extends GroupPermissionsForm {
       $container->get('entity_type.manager'),
       $container->get('group.permissions'),
       $container->get('module_handler'),
-      $container->get('cp_roles.editable'),
+      $container->get('cp_users.cp_roles_helper'),
       $container->get('vsite.context_manager')
     );
   }
@@ -124,7 +124,7 @@ final class CpRolesPermissionsTypeSpecificForm extends GroupPermissionsForm {
 
     $query = $group_role_storage
       ->getQuery()
-      ->condition('id', $this->cpRolesEditable->getNonConfigurableGroupRoles($this->activeVsite), 'NOT IN')
+      ->condition('id', $this->cpRolesHelper->getNonConfigurableGroupRoles($this->activeVsite), 'NOT IN')
       ->condition('group_type', $this->groupType->id(), '=')
       ->condition('permissions_ui', 1, '=');
 

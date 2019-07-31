@@ -1,23 +1,23 @@
 <?php
 
-namespace Drupal\Tests\cp_roles\ExistingSite;
+namespace Drupal\Tests\cp_users\ExistingSite;
 
 /**
- * CpRolesEditableTest.
+ * CpUsersHelperTest.
  *
- * @coversDefaultClass \Drupal\cp_roles\CpRolesEditable
+ * @coversDefaultClass \Drupal\cp_users\CpRolesHelper
  * @group kernel
  * @group cp
  */
-class CpRolesEditableTest extends CpRolesExistingSiteTestBase {
+class CpRolesHelperTest extends CpUsersExistingSiteTestBase {
 
   /**
    * @covers ::getNonConfigurableGroupRoles
    */
   public function testGetNonConfigurableGroupRoles(): void {
-    /** @var \Drupal\cp_roles\CpRolesEditableInterface $cp_roles_editable */
-    $cp_roles_editable = $this->container->get('cp_roles.editable');
-    $roles = $cp_roles_editable->getNonConfigurableGroupRoles($this->group);
+    /** @var \Drupal\cp_users\CpRolesHelperInterface $cp_roles_helper */
+    $cp_roles_helper = $this->container->get('cp_users.cp_roles_helper');
+    $roles = $cp_roles_helper->getNonConfigurableGroupRoles($this->group);
 
     $this->assertCount(2, $roles);
     $this->assertContains('personal-anonymous', $roles);
@@ -28,9 +28,9 @@ class CpRolesEditableTest extends CpRolesExistingSiteTestBase {
    * @covers ::getNonEditableGroupRoles
    */
   public function testGetNonEditableGroupRoles(): void {
-    /** @var \Drupal\cp_roles\CpRolesEditableInterface $cp_roles_editable */
-    $cp_roles_editable = $this->container->get('cp_roles.editable');
-    $roles = $cp_roles_editable->getNonEditableGroupRoles($this->group);
+    /** @var \Drupal\cp_users\CpRolesHelperInterface $cp_roles_helper */
+    $cp_roles_helper = $this->container->get('cp_users.cp_roles_helper');
+    $roles = $cp_roles_helper->getNonEditableGroupRoles($this->group);
 
     $this->assertCount(3, $roles);
     $this->assertContains('personal-administrator', $roles);

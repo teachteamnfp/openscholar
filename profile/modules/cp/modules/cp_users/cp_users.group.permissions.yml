@@ -4,3 +4,10 @@ manage cp users:
   restrict access: false
   provider: cp
   section: 'Permission'
+
+manage cp roles:
+  title: 'Manage CP Roles'
+  description: 'Manage CP Roles'
+  restrict access: true
+  provider: cp
+  section: 'Permission'

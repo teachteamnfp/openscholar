@@ -1,3 +1,0 @@
-services:
-  cp_roles.editable:
-    class: \Drupal\cp_roles\CpRolesEditable

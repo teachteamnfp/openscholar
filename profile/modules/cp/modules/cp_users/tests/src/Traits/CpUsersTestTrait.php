@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\cp_roles\Traits;
+namespace Drupal\Tests\cp_users\Traits;
 
 use Drupal\group\Entity\GroupInterface;
 use Drupal\group\Entity\GroupRole;
@@ -9,9 +9,9 @@ use Drupal\group\Entity\GroupType;
 use Drupal\group\Entity\GroupTypeInterface;
 
 /**
- * Helper methods for CpRoles tests.
+ * Helper methods for CpUsers tests.
  */
-trait CpRolesTestTrait {
+trait CpUsersTestTrait {
 
   /**
    * Creates a new GroupRole entity.

@@ -28,7 +28,7 @@ display:
       access:
         type: group_permission
         options:
-          group_permission: 'vsite access group_node overview'
+          group_permission: 'manage vsite content'
       cache:
         type: tag
         options: {  }
@@ -904,7 +904,8 @@ display:
     display_title: Page
     position: 1
     display_options:
-      display_extenders: {  }
+      display_extenders:
+        metatag_display_extender: {  }
       path: cp/content
       menu:
         type: tab
