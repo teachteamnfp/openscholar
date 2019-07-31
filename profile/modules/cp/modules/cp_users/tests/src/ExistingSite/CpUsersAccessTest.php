@@ -1,14 +1,14 @@
 <?php
 
-namespace Drupal\Tests\cp_roles\ExistingSite;
+namespace Drupal\Tests\cp_users\ExistingSite;
 
 /**
- * CpRolesAccessTest.
+ * CpUsersAccessTest.
  *
  * @group functional
  * @group cp
  */
-class CpRolesAccessTest extends CpRolesExistingSiteTestBase {
+class CpUsersAccessTest extends CpUsersExistingSiteTestBase {
 
   /**
    * Positive tests whether custom role access is correctly working or not.

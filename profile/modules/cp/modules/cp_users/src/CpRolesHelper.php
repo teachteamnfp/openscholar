@@ -1,13 +1,13 @@
 <?php
 
-namespace Drupal\cp_roles;
+namespace Drupal\cp_users;
 
 use Drupal\group\Entity\GroupInterface;
 
 /**
  * Specifies the roles which cannot be edited/deleted by group admins.
  */
-final class CpRolesEditable implements CpRolesEditableInterface {
+final class CpRolesHelper implements CpRolesHelperInterface {
 
   public const NON_CONFIGURABLE = [
     'anonymous',
