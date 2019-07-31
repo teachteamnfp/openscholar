@@ -48,6 +48,10 @@ class OsFileResource extends FileUploadResource {
     }
 
     $validators = $this->getUploadValidators();
+    $parameters = $request->request->all();
+    if (empty($validators['file_validate_extensions']) && !empty($parameters['validators'])) {
+      $validators['file_validate_extensions'][] = implode(' ', $parameters['validators']);
+    }
 
     // Save the uploaded file.
     /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file_raw */
