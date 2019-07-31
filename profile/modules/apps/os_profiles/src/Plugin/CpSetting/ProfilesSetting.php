@@ -115,6 +115,7 @@ class ProfilesSetting extends CpSettingBase {
   public function getForm(array &$form, ConfigFactoryInterface $configFactory) {
     $form['#attached']['library'][] = 'os_profiles/settings_hover';
     $config = $configFactory->get('os_profiles.settings');
+    $default_mid = $config->get('default_image_mid');
 
     $view_modes = $this->entityDisplayRepository->getViewModeOptionsByBundle('node', 'person');
 
@@ -165,6 +166,10 @@ class ProfilesSetting extends CpSettingBase {
     $form['default_image'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Default Image'),
+      '#attributes' => [
+        // Hotfix for with.
+        'style' => 'max-width:900px',
+      ],
     ];
 
     $form['default_image']['disable_default_image'] = [
@@ -174,11 +179,21 @@ class ProfilesSetting extends CpSettingBase {
       '#description' => $this->t('If checked no image will be used when viewing the "/people" page.'),
       '#weight' => -1,
     ];
+
+    $suffix = '';
+    if (empty($default_mid)) {
+      $suffix .= $this->getDefaultImage() . '<br />';
+    }
+    else {
+      $suffix .= $this->getExampleImage($default_mid, 'crop_photo_person_full') . '<br />';
+    }
+    $suffix .= $this->t('The default image will be used if a profile photo is not available. Instead, you can upload your own default image.<br/>Position the cropping tool over it if necessary. Allowed media types: <strong>image</strong>');
+
     $form['default_image']['default_image_mid'] = [
       '#type' => 'container',
       '#input' => TRUE,
       '#default_value' => [],
-      '#suffix' => $this->getDefaultImage() . '<br />' . $this->t('The default image will be used if a profile photo is not available. Instead, you can upload your own default image.<br/>Position the cropping tool over it if necessary. Allowed media types: <strong>image</strong>'),
+      '#suffix' => $suffix,
       'media-browser-field' => [
         '#type' => 'html_tag',
         '#tag' => 'div',
@@ -199,7 +214,7 @@ class ProfilesSetting extends CpSettingBase {
         ],
       ],
     ];
-    if ($default_mid = $config->get('default_image_mid')) {
+    if (!empty($default_mid)) {
       $field_layout = \Drupal::entityTypeManager()
         ->getStorage('entity_form_display')
         ->load('node.person.default');
@@ -286,7 +301,7 @@ class ProfilesSetting extends CpSettingBase {
   /**
    * Get image markup for example hover.
    */
-  public function getExampleImage($default_image_mid = NULL) {
+  public function getExampleImage($default_image_mid = NULL, $image_style = 'crop_photo_person') {
     // Use custom default image if available.
     if (!empty($default_image_mid)) {
       $media = Media::load($default_image_mid);
@@ -296,7 +311,7 @@ class ProfilesSetting extends CpSettingBase {
       $build = [
         '#theme' => 'image_style',
         '#uri' => $path,
-        '#style_name' => 'crop_photo_person',
+        '#style_name' => $image_style,
       ];
       return $this->renderer->renderRoot($build);
     }
