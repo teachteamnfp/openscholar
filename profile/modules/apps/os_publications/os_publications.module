@@ -422,6 +422,8 @@ function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInte
   // Url group.
   $form['path']['widget']['0']['#group'] = 'advanced';
   $form['path']['widget']['0']['#weight'] = 2;
+  $form['path']['widget']['0']['#access'] = TRUE;
+  $form['path']['#access'] = TRUE;
 
   // Menu group.
   $form['menu'] = [
@@ -454,6 +456,8 @@ function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInte
   ];
   $form['created']['#group'] = 'authoring_info';
   $form['uid']['#group'] = 'authoring_info';
+  $form['created']['#access'] = TRUE;
+  $form['uid']['#access'] = TRUE;
 
   // Revision information group.
   if ($reference->id()) {
