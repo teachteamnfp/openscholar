@@ -180,20 +180,8 @@ function os_publications_views_pre_render(ViewExecutable $view) {
     foreach ($results as $result) {
       $publication = $result->_entity;
       $text = Markup::create($publication->html_title->value);
-      $link = '"' . $publication->toLink($text)->toString() . '"';
+      $link = $publication->toLink($text)->toString();
       $publication->html_title->value = $link;
-    }
-  }
-
-  foreach ($view->field as $field_name => $field) {
-    // Alter the citation style as per settings.
-    if ($field_name === 'citation') {
-      /** @var \Drupal\Core\Config\ImmutableConfig $bibcite_settings */
-      $publication_settings = \Drupal::config('os_publications.settings');
-      /** @var string $publication_style */
-      $publication_style = $publication_settings->get('default_style');
-
-      $field->options['csl_style'] = $publication_style;
     }
   }
 }
@@ -672,20 +660,20 @@ function os_publications_preprocess_bibcite_citation(&$variables) {
   if ($route_name === 'entity.bibcite_reference.canonical') {
     $publication = \Drupal::routeMatch()->getParameter('bibcite_reference');
     $text = Markup::create($publication->html_title->value);
-    $link = '"' . $publication->toLink($text)->toString() . '"';
+    $link = $publication->toLink($text)->toString();
     $variables['data']['title'] = $link;
-
-    /** @var \Drupal\bibcite\CitationStylerInterface $styler */
-    $styler = \Drupal::service('bibcite.citation_styler');
-    $data = $variables['data'];
-
-    $variables['content'] = [
-      '#markup' => $styler->render($data),
-      '#cache' => [
-        'tags' => ['publication_citation'],
-      ],
-    ];
   }
+
+  /** @var \Drupal\bibcite\CitationStylerInterface $styler */
+  $styler = \Drupal::service('bibcite.citation_styler');
+  $data = $variables['data'];
+
+  $variables['content'] = [
+    '#markup' => $styler->render($data),
+    '#cache' => [
+      'tags' => ['publication_citation'],
+    ],
+  ];
 
   // Put site wide config back to default style.
   $citation_styler->setStyleById($site_wide_style);
