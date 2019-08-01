@@ -10,6 +10,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\cp_users\Access\ChangeOwnershipAccessCheck;
+use Drupal\cp_users\CpUsersHelperInterface;
 use Drupal\user\UserInterface;
 use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -44,13 +45,21 @@ class CpUserMainController extends ControllerBase {
   protected $changeOwnershipAccessChecker;
 
   /**
+   * CpUsers helper service.
+   *
+   * @var \Drupal\cp_users\CpUsersHelperInterface
+   */
+  protected $cpUsersHelper;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('vsite.context_manager'),
       $container->get('entity_type.manager'),
-      $container->get('cp_users.change_ownership_access_check')
+      $container->get('cp_users.change_ownership_access_check'),
+      $container->get('cp_users.cp_users_helper')
     );
   }
 
@@ -63,11 +72,14 @@ class CpUserMainController extends ControllerBase {
    *   Entity Type Manager.
    * @param \Drupal\cp_users\Access\ChangeOwnershipAccessCheck $change_ownership_access_check
    *   ChangeOwnershipAccessCheck service.
+   * @param \Drupal\cp_users\CpUsersHelperInterface $cp_users_helper
+   *   CpUsers helper service.
    */
-  public function __construct(VsiteContextManagerInterface $vsiteContextManager, EntityTypeManagerInterface $entityTypeManager, ChangeOwnershipAccessCheck $change_ownership_access_check) {
+  public function __construct(VsiteContextManagerInterface $vsiteContextManager, EntityTypeManagerInterface $entityTypeManager, ChangeOwnershipAccessCheck $change_ownership_access_check, CpUsersHelperInterface $cp_users_helper) {
     $this->vsiteContextManager = $vsiteContextManager;
     $this->entityTypeManager = $entityTypeManager;
     $this->changeOwnershipAccessChecker = $change_ownership_access_check;
+    $this->cpUsersHelper = $cp_users_helper;
   }
 
   /**
@@ -89,7 +101,7 @@ class CpUserMainController extends ControllerBase {
     $userRows = [];
     /* @var \Drupal\user\UserInterface $u */
     foreach ($users as $u) {
-      $is_vsite_owner = ($group->getOwnerId() === $u->id());
+      $is_vsite_owner = $this->cpUsersHelper->isVsiteOwner($group, $u);
       $roles = $group->getMember($u)->getRoles();
       $role_link = '';
 
