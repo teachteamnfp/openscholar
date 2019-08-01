@@ -1092,7 +1092,7 @@ td img {
 }
 /* Wraps filenames in cp/content/files */
 .page-cp-content-files .views-table .views-field-filemime {
-    max-width: 200px;
+    max-width: 700px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
