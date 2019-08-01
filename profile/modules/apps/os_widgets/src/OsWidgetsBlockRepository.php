@@ -97,7 +97,6 @@ class OsWidgetsBlockRepository implements BlockRepositoryInterface {
     // place it in the correct region.
     /** @var \Drupal\os_widgets\LayoutContextInterface $a */
     foreach ($applicable as $a) {
-      drupal_set_message("Adding blocks from {$a->id()}");
       if ($a->id() == $limit) {
         $limit_found = TRUE;
       }
@@ -109,7 +108,6 @@ class OsWidgetsBlockRepository implements BlockRepositoryInterface {
           $flat[$b['id']] = $b;
         }
       }
-      drupal_set_message("{$a->id()} adds the following blocks: ".implode(',', $keys));
     }
 
     // Split out the flat list by region while loading the real block.
