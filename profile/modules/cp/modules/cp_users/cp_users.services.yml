@@ -7,4 +7,4 @@ services:
   cp_users.cp_roles_helper:
     class: \Drupal\cp_users\CpRolesHelper
   cp_users.cp_users_helper:
-    class: \Drupal\cp_users\CpUserHelper
+    class: \Drupal\cp_users\CpUsersHelper

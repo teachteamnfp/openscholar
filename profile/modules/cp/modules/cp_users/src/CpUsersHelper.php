@@ -8,7 +8,7 @@ use Drupal\group\Entity\GroupInterface;
 /**
  * Helper methods for cp_users.
  */
-class CpUserHelper implements CpUsersHelperInterface {
+class CpUsersHelper implements CpUsersHelperInterface {
 
   /**
    * {@inheritdoc}
