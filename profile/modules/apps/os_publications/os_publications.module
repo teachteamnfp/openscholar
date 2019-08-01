@@ -658,22 +658,31 @@ function os_publications_preprocess_bibcite_citation(&$variables) {
 
   // If publication view page.
   if ($route_name === 'entity.bibcite_reference.canonical') {
+    /** @var \Drupal\bibcite_entity\Entity\Reference $publication */
     $publication = \Drupal::routeMatch()->getParameter('bibcite_reference');
     $text = Markup::create($publication->html_title->value);
     $link = $publication->toLink($text)->toString();
     $variables['data']['title'] = $link;
   }
 
-  if (isset($variables['data']['editor'])) {
-    $given = $variables['data']['editor'][0]['given'];
-    $variables['data']['editor'][0]['given'] = 'Edited By ' . $given;
+  // Alteration for hca style to match D7.
+  if ($vsite_style == 'harvard_chicago_author_date') {
+
+    if ($publication->bundle() == 'journal_article') {
+      if (isset($variables['data']['editor'])) {
+        $given = $variables['data']['editor'][0]['given'];
+        $variables['data']['editor'][0]['given'] = 'Edited By ' . $given;
+      }
+    }
   }
+
   /** @var \Drupal\bibcite\CitationStylerInterface $styler */
   $styler = \Drupal::service('bibcite.citation_styler');
   $data = $variables['data'];
+  $markup_string = $styler->render($data);
 
   $variables['content'] = [
-    '#markup' => $styler->render($data),
+    '#markup' => $markup_string,
     '#cache' => [
       'tags' => ['publication_citation'],
     ],
