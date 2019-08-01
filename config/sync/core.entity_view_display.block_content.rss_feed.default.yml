@@ -6,6 +6,7 @@ dependencies:
     - block_content.type.rss_feed
     - field.field.block_content.rss_feed.field_content_to_display
     - field.field.block_content.rss_feed.field_is_show_all_content
+    - field.field.block_content.rss_feed.field_widget_title
   module:
     - layout_builder
     - options
@@ -18,11 +19,19 @@ bundle: rss_feed
 mode: default
 content:
   field_content_to_display:
-    weight: 0
-    label: above
+    weight: 1
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     type: list_default
+    region: content
+  field_widget_title:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
     region: content
 hidden:
   field_is_show_all_content: true

@@ -1,0 +1,19 @@
+uuid: bdd394a7-b6f7-439b-a8d2-e6d364ce1441
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.featured_posts
+    - field.storage.block_content.field_widget_title
+id: block_content.featured_posts.field_widget_title
+field_name: field_widget_title
+entity_type: block_content
+bundle: featured_posts
+label: 'Widget Title'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

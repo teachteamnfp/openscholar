@@ -3,6 +3,7 @@
 namespace Drupal\cp_users;
 
 use Drupal\group\Entity\GroupInterface;
+use Drupal\group\Entity\GroupRoleInterface;
 
 /**
  * Specifies the roles which cannot be edited/deleted by group admins.
@@ -32,10 +33,23 @@ final class CpRolesHelper implements CpRolesHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function getNonEditableGroupRoles(GroupInterface $group): array {
+  public function getDefaultGroupRoles(GroupInterface $group): array {
     return array_map(static function ($item) use ($group) {
       return "{$group->getGroupType()->id()}-$item";
     }, self::NON_EDITABLE);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isDefaultGroupRole(GroupRoleInterface $group_role): bool {
+    $group_type_id = $group_role->getGroupTypeId();
+
+    $group_type_roles = array_map(static function ($item) use ($group_type_id) {
+      return "$group_type_id-$item";
+    }, self::NON_EDITABLE);
+
+    return \in_array($group_role->id(), $group_type_roles, TRUE);
   }
 
 }
