@@ -72,22 +72,21 @@ class CpUserMainController extends ControllerBase {
 
     $build = [];
 
-    $can_change_ownership = ($group->getOwnerId() === $current_user->id());
-
     $userRows = [];
     /* @var \Drupal\user\UserInterface $u */
     foreach ($users as $u) {
+      $can_change_ownership = ($group->getOwnerId() === $current_user->id()) && ($group->getOwnerId() === $u->id());
       $roles = $group->getMember($u)->getRoles();
+      $role_link = '';
 
       if ($can_change_ownership) {
         $role_link = Link::createFromRoute('Change Owner', 'cp.users.owner', ['user' => $u->id()], ['attributes' => ['class' => ['use-ajax']]])->toString();
       }
-      elseif ($this->currentUser()->hasPermission('change user roles') || $group->getMember($this->currentUser())->hasPermission('manage cp roles')) {
+      elseif ($group->getOwnerId() !== $u->id() &&
+        ($this->currentUser()->hasPermission('change user roles') || $group->getMember($this->currentUser())->hasPermission('manage cp roles'))) {
         $role_link = Link::createFromRoute($this->t('Change Role'), 'cp_users.role.change', ['user' => $u->id()])->toString();
       }
-      else {
-        $role_link = '';
-      }
+
       $remove_link = Link::createFromRoute($this->t('Remove'), 'cp.users.remove', ['user' => $u->id()], ['attributes' => ['class' => ['use-ajax']]])->toString();
       $row = [
         'data-user-id' => $u->id(),
