@@ -664,6 +664,10 @@ function os_publications_preprocess_bibcite_citation(&$variables) {
     $variables['data']['title'] = $link;
   }
 
+  if (isset($variables['data']['editor'])) {
+    $given = $variables['data']['editor'][0]['given'];
+    $variables['data']['editor'][0]['given'] = 'Edited By ' . $given;
+  }
   /** @var \Drupal\bibcite\CitationStylerInterface $styler */
   $styler = \Drupal::service('bibcite.citation_styler');
   $data = $variables['data'];
