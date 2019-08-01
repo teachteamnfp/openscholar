@@ -2,12 +2,14 @@
 
 namespace Drupal\cp_users\Controller;
 
+use Drupal\Core\Access\AccessResultAllowed;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\OpenModalDialogCommand;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
+use Drupal\cp_users\Access\ChangeOwnershipAccessCheck;
 use Drupal\user\UserInterface;
 use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -35,12 +37,20 @@ class CpUserMainController extends ControllerBase {
   protected $entityTypeManager;
 
   /**
+   * ChangeOwnershipAccessCheck service.
+   *
+   * @var \Drupal\cp_users\Access\ChangeOwnershipAccessCheck
+   */
+  protected $changeOwnershipAccessChecker;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('vsite.context_manager'),
-      $container->get('entity_type.manager')
+      $container->get('entity_type.manager'),
+      $container->get('cp_users.change_ownership_access_check')
     );
   }
 
@@ -51,10 +61,13 @@ class CpUserMainController extends ControllerBase {
    *   Vsite Context Manager.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   Entity Type Manager.
+   * @param \Drupal\cp_users\Access\ChangeOwnershipAccessCheck $change_ownership_access_check
+   *   ChangeOwnershipAccessCheck service.
    */
-  public function __construct(VsiteContextManagerInterface $vsiteContextManager, EntityTypeManagerInterface $entityTypeManager) {
+  public function __construct(VsiteContextManagerInterface $vsiteContextManager, EntityTypeManagerInterface $entityTypeManager, ChangeOwnershipAccessCheck $change_ownership_access_check) {
     $this->vsiteContextManager = $vsiteContextManager;
     $this->entityTypeManager = $entityTypeManager;
+    $this->changeOwnershipAccessChecker = $change_ownership_access_check;
   }
 
   /**
@@ -67,6 +80,7 @@ class CpUserMainController extends ControllerBase {
     }
     /** @var \Drupal\Core\Session\AccountInterface $current_user */
     $current_user = $this->currentUser();
+    $can_change_ownership = ($this->changeOwnershipAccessChecker->access($current_user) instanceof AccessResultAllowed);
 
     $users = $group->getContentEntities('group_membership');
 
@@ -75,14 +89,14 @@ class CpUserMainController extends ControllerBase {
     $userRows = [];
     /* @var \Drupal\user\UserInterface $u */
     foreach ($users as $u) {
-      $can_change_ownership = ($group->getOwnerId() === $current_user->id()) && ($group->getOwnerId() === $u->id());
+      $is_vsite_owner = ($group->getOwnerId() === $u->id());
       $roles = $group->getMember($u)->getRoles();
       $role_link = '';
 
-      if ($can_change_ownership) {
+      if ($can_change_ownership && $is_vsite_owner) {
         $role_link = Link::createFromRoute('Change Owner', 'cp.users.owner', ['user' => $u->id()], ['attributes' => ['class' => ['use-ajax']]])->toString();
       }
-      elseif ($group->getOwnerId() !== $u->id() &&
+      elseif (!$is_vsite_owner &&
         ($this->currentUser()->hasPermission('change user roles') || $group->getMember($this->currentUser())->hasPermission('manage cp roles'))) {
         $role_link = Link::createFromRoute($this->t('Change Role'), 'cp_users.role.change', ['user' => $u->id()])->toString();
       }
