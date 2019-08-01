@@ -15,15 +15,20 @@ dependencies:
     - field.field.block_content.taxonomy.field_taxonomy_show_term_desc
     - field.field.block_content.taxonomy.field_taxonomy_tree_depth
     - field.field.block_content.taxonomy.field_taxonomy_vocabulary
+    - field.field.block_content.taxonomy.field_widget_title
   module:
+    - layout_builder
     - options
+third_party_settings:
+  layout_builder:
+    sections: {  }
 id: block_content.taxonomy.default
 targetEntityType: block_content
 bundle: taxonomy
 mode: default
 content:
   field_taxonomy_behavior:
-    weight: 1
+    weight: 2
     label: above
     settings: {  }
     third_party_settings: {  }
@@ -109,12 +114,20 @@ content:
     type: list_default
     region: content
   field_taxonomy_vocabulary:
-    weight: 0
+    weight: 1
     label: above
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
+  field_widget_title:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
     region: content
 hidden:
   langcode: true
