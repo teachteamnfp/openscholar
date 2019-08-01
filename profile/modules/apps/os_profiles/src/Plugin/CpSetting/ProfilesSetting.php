@@ -167,7 +167,7 @@ class ProfilesSetting extends CpSettingBase {
       '#type' => 'fieldset',
       '#title' => $this->t('Default Image'),
       '#attributes' => [
-        // Hotfix for with.
+        // Hotfix for width.
         'style' => 'max-width:900px',
       ],
     ];
