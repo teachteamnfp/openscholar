@@ -5,6 +5,7 @@ namespace Drupal\Tests\cp_users\ExistingSiteJavascript;
 use Drupal\Core\Test\AssertMailTrait;
 use Drupal\group\Entity\Group;
 use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTestBase;
+use Drupal\user\Entity\User;
 
 /**
  * Class CpUsersMainTests.
@@ -214,6 +215,9 @@ class CpUsersMainTest extends OsExistingSiteJavascriptTestBase {
    *
    * @throws \Behat\Mink\Exception\ExpectationException
    * @throws \Drupal\Core\Entity\EntityStorageException
+   * @throws \Behat\Mink\Exception\UnsupportedDriverActionException
+   * @throws \Behat\Mink\Exception\DriverException
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
   public function testChangeOwnership(): void {
     // Setup.
@@ -271,8 +275,16 @@ class CpUsersMainTest extends OsExistingSiteJavascriptTestBase {
     /** @var \Behat\Mink\Element\NodeElement|null $change_owner_link */
     $change_owner_link = $this->getSession()->getPage()->find('css', "a[href=\"/{$this->modifier}/cp/users/owner?user={$vsite_owner->id()}\"]");
     $this->assertNull($change_owner_link);
+
+    // Assert that expected changes have been made.
     $fresh_group_entity = Group::load($this->group->id());
     $this->assertEquals($this->groupAdmin->id(), $fresh_group_entity->getOwnerId());
+    $previous_owner_entity = User::load($vsite_owner->id());
+    /** @var \Drupal\group\GroupMembership $group_membership */
+    $group_membership = $fresh_group_entity->getMember($previous_owner_entity);
+    /** @var \Drupal\group\Entity\GroupContentInterface $group_content */
+    $group_content = $group_membership->getGroupContent();
+    $this->assertEquals('personal-administrator', $group_content->get('group_roles')->first()->getValue()['target_id']);
   }
 
 }
