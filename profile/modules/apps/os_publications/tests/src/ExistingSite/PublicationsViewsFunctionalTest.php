@@ -381,7 +381,6 @@ class PublicationsViewsFunctionalTest extends TestBase {
       'os_publications_export_format[endnote8]' => 'endnote8',
       'os_publications_export_format[endnote7]' => 'endnote7',
       'os_publications_export_format[tagged]' => 'tagged',
-      'os_publications_export_format[marc]' => 'marc',
       'os_publications_export_format[ris]' => 'ris',
     ], 'Save configuration');
 
@@ -394,6 +393,37 @@ class PublicationsViewsFunctionalTest extends TestBase {
 
     $this->assertNotEquals($pos_artwork, array_search('Artwork', $headings, TRUE));
     $this->assertNotEquals($pos_journal, array_search('Journal', $headings, TRUE));
+  }
+
+  /**
+   * Tests link creation from publication edit page.
+   */
+  public function testPublicationMenuLinkAdd(): void {
+
+    $this->drupalLogin($this->groupAdmin);
+    $this->visitViaVsite('bibcite/reference/add/journal_article', $this->group);
+    $edit = [
+      'bibcite_year[0][value]' => '2019',
+      'bibcite_secondary_title[0][value]' => 'Journal Link',
+      'menu[enabled]' => TRUE,
+      'menu[title]' => 'Menu Link title',
+    ];
+    $this->submitForm($edit, 'Save');
+
+    $this->assertSession()->linkExists('Menu Link title');
+  }
+
+  /**
+   * Tests last updated on appears on citation full view.
+   */
+  public function testLastUpdatedOn(): void {
+    $this->drupalLogin($this->groupAdmin);
+    $reference = $this->createReference([
+      'html_title' => 'Mona Lisa',
+    ]);
+    $this->group->addContent($reference, 'group_entity:bibcite_reference');
+    $this->visitViaVsite('bibcite/reference/' . $reference->id(), $this->group);
+    $this->assertSession()->elementExists('css', '.last-updated');
   }
 
   /**

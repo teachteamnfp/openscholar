@@ -1,0 +1,23 @@
+#boxes-box-site_info {
+  color: $white;
+  h1 {
+    font-size: 1.96em;
+    font-weight: 700;
+  }
+  a {
+    color: $white;
+  }
+}
+.header-container {
+  color: $white;
+  background: $color_steel_blue_approx;
+  ul.nav a {
+    color: $white;
+  }
+}
+/** accessibility fixes **/
+header {
+  button.visually-hidden {
+    color: black;
+  }
+}

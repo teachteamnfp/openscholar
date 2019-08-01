@@ -125,3 +125,4 @@ permissions:
   - 'delete own group_entity:bibcite_reference content'
   - 'update own group_entity:bibcite_reference content'
   - 'view group_entity:bibcite_reference content'
+  - 'download citations'

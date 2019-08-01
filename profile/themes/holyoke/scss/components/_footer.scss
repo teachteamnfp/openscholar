@@ -1,0 +1,25 @@
+footer {
+  background-color: $color_outer_space_approx;
+  a {
+    font-family: $font_0, $font_1;
+  }
+  .footer-login {
+    color: $white;
+    //Instead of the line below you could use @include text-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+    text-shadow: none;
+    &:after {
+      background: none;
+    }
+  }
+  * {
+    color: $white;
+  }
+  ul.nav {
+    a {
+      font-family: $font_0, $font_1;
+    }
+    li ul li a {
+      font-family: $font_0, $font_1;
+    }
+  }
+}

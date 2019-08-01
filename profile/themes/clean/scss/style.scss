@@ -4,9 +4,12 @@
 @import 'base/base';
 @import 'global/global';
 
+@import '../../os_base/scss/mixins/pager';
+
 @import 'components/navbar';
 @import 'components/search';
 @import 'components/calendar';
 @import 'components/header';
 @import 'components/footer';
-@import 'components/sidebar'
+@import 'components/sidebar';
+@import 'components/pager';

@@ -91,8 +91,12 @@ function os_profiles_preprocess_node(&$variables) {
 
     if ($default_image_fid = $config->get('default_image_fid')) {
       $file = File::load($default_image_fid);
+      $image_style_name = 'crop_photo_person';
+      if ($variables['view_mode'] == 'full') {
+        $image_style_name = 'crop_photo_person_full';
+      }
       $image_vars = [
-        'style_name' => 'crop_photo_person',
+        'style_name' => $image_style_name,
         'uri' => $file->getFileUri(),
       ];
 
@@ -112,13 +116,23 @@ function os_profiles_preprocess_node(&$variables) {
         '#height' => $image_vars['height'],
         '#style_name' => $image_vars['style_name'],
         '#uri' => $image_vars['uri'],
+        '#attributes' => [
+          'class' => ['person-default-image'],
+        ],
       ];
     }
     else {
       // Use default image.
+      $image_name = 'person-default-image.png';
+      if ($variables['view_mode'] == 'full') {
+        $image_name = 'person-default-image-big.png';
+      }
       $default_image_render_array = [
         '#theme' => 'image',
-        '#uri' => file_create_url(drupal_get_path('theme', 'os_base') . '/images/person-default-image.png'),
+        '#uri' => file_create_url(drupal_get_path('theme', 'os_base') . '/images/' . $image_name),
+        '#attributes' => [
+          'class' => ['person-default-image'],
+        ],
       ];
     }
     $variables['content']['field_photo_person'][0] = $default_image_render_array;

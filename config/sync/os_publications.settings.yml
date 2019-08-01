@@ -1,3 +1,4 @@
+default_style: harvard_chicago_author_date
 biblio_sort: title
 note_in_teaser: 0
 biblio_order: DESC
@@ -7,7 +8,6 @@ export_format:
   endnote8: endnote8
   endnote7: endnote7
   tagged: tagged
-  marc: marc
   ris: ris
 filter_publication_types:
   artwork: artwork

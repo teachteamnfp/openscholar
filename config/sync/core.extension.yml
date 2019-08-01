@@ -9,7 +9,6 @@ module:
   bibcite_endnote: 0
   bibcite_entity: 0
   bibcite_export: 0
-  bibcite_marc: 0
   bibcite_preview: 0
   bibcite_ris: 0
   big_pipe: 0
@@ -38,7 +37,6 @@ module:
   cp: 0
   cp_appearance: 0
   cp_menu: 0
-  cp_roles: 0
   cp_settings: 0
   cp_taxonomy: 0
   cp_users: 0

@@ -31,8 +31,13 @@ class CpCancelButtonTest extends OsExistingSiteJavascriptTestBase {
     $exist_alias = $path_alias_storage->load(['source' => '/node/' . $this->node->id()]);
     // Fix group alias of the node.
     $path_alias_storage->save('/node/' . $this->node->id(), '/[vsite:' . $this->group->id() . ']' . $exist_alias['alias'], 'en', $exist_alias['pid']);
+
     $path_alias_manager->cacheClear();
     $this->nodePath = $path_alias_manager->getAliasByPath('/node/' . $this->node->id());
+
+    $group_admin = $this->createUser();
+    $this->addGroupAdmin($group_admin, $this->group);
+    $this->drupalLogin($group_admin);
   }
 
   /**
@@ -41,10 +46,6 @@ class CpCancelButtonTest extends OsExistingSiteJavascriptTestBase {
   public function testNodeDeleteCancelButtonPage() {
     $session = $this->getSession();
     $web_assert = $this->assertSession();
-
-    $group_admin = $this->createUser();
-    $this->addGroupAdmin($group_admin, $this->group);
-    $this->drupalLogin($group_admin);
 
     // Visit node.
     $this->visit($this->nodePath);

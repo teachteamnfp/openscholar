@@ -16,3 +16,4 @@ permissions:
   - 'view group_node:person entity'
   - 'view group_entity:bibcite_reference entity'
   - 'view group_entity:bibcite_reference content'
+  - 'download citations'

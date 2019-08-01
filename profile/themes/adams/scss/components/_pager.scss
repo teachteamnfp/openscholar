@@ -1,0 +1,11 @@
+/**** pager ****/
+.pagination {
+  > li {
+    &.active {
+      a, a:hover {
+        background: $color_tundora_approx;
+        border-color: $color_tundora_approx;
+      }
+    }
+  }
+}

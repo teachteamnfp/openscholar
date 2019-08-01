@@ -1,0 +1,8 @@
+.fc-listUpcoming-view,
+.fc-listPast-view {
+  .fc-list-heading {
+    .fc-list-heading-main {
+      @extend %extend_1;
+    }
+  }
+}

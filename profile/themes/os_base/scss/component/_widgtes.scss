@@ -173,3 +173,29 @@
     }
   }
 }
+/**** code added for widgets type ****/
+.modal {
+  .modal-body {
+    form.block-content-form {
+      fieldset {
+        padding: 10px;
+        legend {
+          float: left;
+          width: 100%;
+        }
+      }
+    }
+    .tabbable {
+      margin-top: 20px;
+    }
+    form.block-publication-types-form {
+      fieldset {
+        .form-type-checkbox {
+          margin: 0;
+          float: left;
+          width: 50%;
+        }
+      }
+    }
+  }
+}

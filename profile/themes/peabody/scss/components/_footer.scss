@@ -1,0 +1,15 @@
+footer.footer {
+  background-color: $color_gray_nurse_approx;
+  color: $color_mine_shaft_approx;
+  a {
+    color: $color_st_tropaz_approx;
+  }
+  ul.nav {
+    a {
+      color: $color_st_tropaz_approx;
+    }
+  }
+}
+#powered-by a {
+  background-position: -14px -520px;
+}

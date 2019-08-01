@@ -1,0 +1,27 @@
+footer.footer {
+  background-color: $black;
+  color: $white;
+  a {
+    color: $white;
+  }
+  .footer-login {
+    text-shadow: none;
+    color: $color_alto_approx;
+    &:after {
+      background-image: none;
+    }
+  }
+  ul.nav {
+    li {
+      a {
+        font-family: $font_0, $font_1;
+        color: $white;
+      }
+    }
+  }
+}
+#powered-by {
+  a {
+    background-position: -14px -548px;
+  }
+}

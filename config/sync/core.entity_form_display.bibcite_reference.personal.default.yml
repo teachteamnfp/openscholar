@@ -42,6 +42,65 @@ third_party_settings:
         required_fields: false
       label: 'Publication Details'
       region: content
+    group_publishing_options:
+      children:
+        - status
+        - is_sticky
+        - noindex
+      parent_name: ''
+      weight: 58
+      format_type: details
+      format_settings:
+        id: ''
+        classes: ''
+        description: ''
+        open: false
+        required_fields: false
+      label: 'Publishing Options'
+      region: content
+    group_url:
+      children:
+        - path
+      parent_name: ''
+      weight: 59
+      format_type: details
+      format_settings:
+        id: ''
+        classes: ''
+        description: ''
+        open: false
+        required_fields: false
+      label: Url
+      region: content
+    group_distribute_to_academic_rep:
+      children:
+        - distribution
+      parent_name: ''
+      weight: 60
+      format_type: details
+      format_settings:
+        id: ''
+        classes: ''
+        description: ''
+        open: false
+        required_fields: false
+      label: 'Distribute To Academic Repositories'
+      region: content
+    group_post_created_edited_by:
+      children:
+        - uid
+        - created
+      parent_name: ''
+      weight: 61
+      format_type: details
+      format_settings:
+        id: ''
+        classes: ''
+        description: ''
+        open: false
+        required_fields: false
+      label: 'Post Created/Edited By'
+      region: content
 id: bibcite_reference.personal.default
 targetEntityType: bibcite_reference
 bundle: personal
@@ -431,6 +490,12 @@ content:
     settings:
       placeholder: ''
     third_party_settings: {  }
+  created:
+    type: datetime_timestamp
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   distribution:
     type: options_buttons
     settings: {  }
@@ -521,6 +586,13 @@ content:
     settings:
       include_locked: true
     third_party_settings: {  }
+  noindex:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    region: content
+    weight: 63
+    third_party_settings: {  }
   notes:
     type: text_textarea
     weight: 10
@@ -528,6 +600,12 @@ content:
     settings:
       placeholder: ''
       rows: 5
+    third_party_settings: {  }
+  path:
+    type: path
+    region: content
+    weight: 62
+    settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox
