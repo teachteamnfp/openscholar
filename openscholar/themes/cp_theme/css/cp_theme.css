@@ -627,6 +627,14 @@ table.spaces td.storage {
     width: 13%;
 }
 
+/* Wraps filenames in cp/content/files */
+.page-cp-content-files .views-table .views-field-filemime {
+    max-width: 700px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 #edit-menu-table .section-heading {
     background: #E1E2DC;
     border-bottom: 2px solid #C4C2C2;
