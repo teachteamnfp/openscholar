@@ -6,6 +6,7 @@ dependencies:
     - block_content.type.embed_media
     - field.field.block_content.embed_media.field_max_width
     - field.field.block_content.embed_media.field_media_select
+    - field.field.block_content.embed_media.field_widget_title
   module:
     - layout_builder
 third_party_settings:
@@ -15,7 +16,15 @@ id: block_content.embed_media.default
 targetEntityType: block_content
 bundle: embed_media
 mode: default
-content: {  }
+content:
+  field_widget_title:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
 hidden:
   field_max_width: true
   field_media_select: true

@@ -10,6 +10,7 @@ dependencies:
     - field.field.block_content.twitter_feed.field_twitter_num_items
     - field.field.block_content.twitter_feed.field_twitter_type
     - field.field.block_content.twitter_feed.field_twitter_username
+    - field.field.block_content.twitter_feed.field_widget_title
   module:
     - layout_builder
 third_party_settings:
@@ -19,7 +20,15 @@ id: block_content.twitter_feed.default
 targetEntityType: block_content
 bundle: twitter_feed
 mode: default
-content: {  }
+content:
+  field_widget_title:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
 hidden:
   field_twitter_exclude_retweets: true
   field_twitter_followme_link: true
