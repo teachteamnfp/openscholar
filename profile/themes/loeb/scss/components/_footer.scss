@@ -1,0 +1,17 @@
+footer {
+  color: $white;
+  background-color: $color_cape_cod_approx;
+  .footer-login {
+    color: $white;
+    @extend %extend_2;
+    &:after {
+      @extend %extend_2;
+    }
+  }
+  a {
+    color: $white;
+  }
+}
+#powered-by a {
+  background-position: -14px -548px;
+}

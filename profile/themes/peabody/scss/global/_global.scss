@@ -1,0 +1,39 @@
+.page-node-type-person {
+  .content-inner {
+    .block-title {
+      border-top: 1px solid $web_orange;
+    }
+  }
+}
+.person--title {
+  font-family: $font_2, $font_1;
+}
+.not-front {
+  .navbar-collapse {
+    border-bottom: 9px solid $color_wild_sand_approx;
+  }
+  h2.block-title {
+    padding: 15px 0 10px;
+  }
+  aside {
+    .block-title {
+      border-top: 1px solid $web_orange;
+    }
+  }
+}
+.path-front {
+  .region-content-first {
+    background: url(../images/fp-panel-bg.png) repeat-x $color_wild_sand_approx;
+    background-position: 50%;
+    padding: 0 10px;
+  }
+  .region-content-bottom {
+    background: url(../images/fp-panel-bg.png) repeat-x $color_wild_sand_approx;
+    background-position: 50%;
+    padding: 0 10px;
+  }
+}
+.node-readmore a:after {
+  background: none;
+  padding-right: 0;
+}

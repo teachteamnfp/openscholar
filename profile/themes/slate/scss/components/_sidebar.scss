@@ -1,0 +1,15 @@
+aside {
+  .nav a {
+    @extend %font;
+  }
+  .region>.block {
+    border-top: 1px solid $color_bon_jour_approx;
+  }
+  .navbar-nav {
+    li {
+      .dropdown-menu a {
+        color: $color_thunderbird_approx;
+      }
+    }
+  }
+}

@@ -166,3 +166,35 @@ function os_menu_local_tasks_alter(&$data, $route_name, RefinableCacheableDepend
     }
   }
 }
+
+/**
+ * Implements hook_link_alter() for redirecting users post-logout.
+ *
+ * @see \os_preprocess_block
+ */
+function os_link_alter(&$variables) {
+  /** @var \Drupal\Core\Url $url */
+  $url = $variables['url'];
+
+  if ($url->isExternal() || !$url->isRouted()) {
+    return;
+  }
+
+  if ($url->getRouteName() === 'user.logout') {
+    $current_path = \Drupal::service('path.current')->getPath();
+    /** @var \Drupal\Core\Routing\RedirectDestinationInterface $redirect_destination */
+    $redirect_destination = \Drupal::service('redirect.destination');
+
+    if (strpos($current_path, 'cp') !== FALSE) {
+      /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
+      $vsite_context_manager = \Drupal::service('vsite.context_manager');
+      // Active vsite absolute URL is like this `/site01/`, trimming the
+      // rightmost `/` is necessary. Otherwise, it breaks the destination when
+      // user is logged in via `Admin Login` option.
+      // See \os_preprocess_block.
+      $redirect_destination->set(rtrim($vsite_context_manager->getAbsoluteUrl(), '/'));
+    }
+
+    $variables['options']['query'] = $redirect_destination->getAsArray();
+  }
+}

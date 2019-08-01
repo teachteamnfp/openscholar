@@ -40,6 +40,9 @@ h2.block-title {
   padding: 20px 0 25px;
   font-size: 1.3em;
   margin-bottom: 0;
+  .content-inner & {
+    font-size: 12px;
+  }
 }
 .not-front.two-sidebars {
   .main-container {

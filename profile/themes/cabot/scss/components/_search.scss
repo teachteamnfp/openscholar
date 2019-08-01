@@ -1,0 +1,15 @@
+.search-block-form {
+  .form-submit {
+    background: $color_steel_blue_approx;
+    border-radius: 44px;
+    border-color: $color_steel_blue_approx;
+  }
+  .form-search {
+    background-color: $color_alto_approx;
+    border-radius: 30px;
+    padding: 0 35px 0 8px;
+  }
+}
+.path-search .title a {
+  @extend %font-family;
+}

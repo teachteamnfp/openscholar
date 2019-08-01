@@ -1,0 +1,43 @@
+.path-front {
+  .content-inner {
+    .block {
+      @extend %extend_3;
+    }
+    .block-content {
+      padding: 15px;
+    }
+  }
+}
+.content-inner {
+  h2, h3, h4, .field--name-body {
+    font-family: $font_0, $font_6;
+  }
+  .block {
+    &.section-nav {
+      border: none;
+    }
+  }
+  .block-inner {
+    margin-top: 0;
+  }
+}
+h1.page-header {
+  font-size: 32px;
+}
+.comment-wrapper {
+  border-top: none;
+  margin-top: 0;
+}
+.path-front .content-inner {
+  .block {
+    padding-top: 0;
+    margin-top: 0;
+  }
+  .block-title {
+    @extend %extend_4;
+  }
+}
+page-node-type-person .block-inner {
+  border-top: none;
+  margin-top: 0;
+}
