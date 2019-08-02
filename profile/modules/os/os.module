@@ -198,3 +198,17 @@ function os_link_alter(&$variables) {
     $variables['options']['query'] = $redirect_destination->getAsArray();
   }
 }
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function os_preprocess_checkboxes(&$variables) {
+  if (empty($variables['element']['#field_name'])) {
+    return;
+  }
+  if ($variables['element']['#field_name'] != 'field_types_whitelist') {
+    return;
+  }
+  $variables['attributes']['class'][] = 'show-select-all-option';
+  $variables['#attached']['library'][] = 'os/osSelectAllOption';
+}
