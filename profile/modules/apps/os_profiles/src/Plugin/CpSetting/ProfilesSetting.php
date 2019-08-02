@@ -256,35 +256,17 @@ class ProfilesSetting extends CpSettingBase {
     $config->set('disable_default_image', (bool) $form_state->getValue('disable_default_image'));
     $config->set('image_crop', $form_state->getValue('image_crop'));
 
-    $deletable_mid = 0;
     $form_media = $form_state->getValue('default_image_mid', 0);
     if (!empty($form_media[0]['target_id'])) {
       $media = Media::load($form_media[0]['target_id']);
       $media_images = $media->get('field_media_image')->referencedEntities();
       $file = array_shift($media_images);
-      $file_changed = $config->get('default_image_mid') != $form_media[0]['target_id'];
-      if ($file_changed) {
-        // $this->fileUsage->add($file, 'os_profiles', 'form', $file->id());
-        // Checking is there any exists media and delete.
-        // Use case: remove exists media and upload immediately a new one.
-        if ($exists_mid = $config->get('default_image_mid')) {
-          $deletable_mid = $exists_mid;
-        }
-      }
       $form_state->getFormObject()->setEntity($file);
       $config->set('default_image_mid', $media->id());
     }
     else {
-      // Checking is there any exists file and delete.
-      if ($exists_fid = $config->get('default_image_mid')) {
-        $deletable_mid = $exists_fid;
-      }
       $config->set('default_image_mid', NULL);
     }
-    if ($deletable_mid) {
-      Media::load($deletable_mid)->delete();
-    }
-
     $config->save(TRUE);
     if (!empty($form_state->getValue('image_crop')) && !empty($file)) {
       // Call IWC manager to attach crop defined into image file.
