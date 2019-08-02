@@ -85,4 +85,16 @@ aside {
       }
     }
   }
+  .region {
+    .block {
+      nav {
+        border: 0;
+        margin-bottom: 0;
+        padding: 0;
+        .pager {
+          padding: 0;
+        }
+      }
+    }
+  }
 }

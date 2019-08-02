@@ -2,9 +2,11 @@
 
 namespace Drupal\cp_users\Form;
 
+use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 use Drupal\cp_users\CpRolesHelperInterface;
 use Drupal\group\Access\GroupPermissionHandlerInterface;
 use Drupal\group\Entity\GroupTypeInterface;
@@ -112,6 +114,17 @@ final class CpUsersPermissionsTypeSpecificForm extends GroupPermissionsForm {
       ],
     ];
 
+    if ($this->currentUser()->hasPermission('manage default group roles')) {
+      $message = $this->t('<strong>Use this <a href="@setting_link">setting</a> to edit permissions of default roles.</strong>', [
+        '@setting_link' => Url::fromRoute('entity.group_type.permissions_form', [
+          'group_type' => $this->groupType->id(),
+        ])->toString(),
+      ]);
+      $list['edit_default_roles_info'] = [
+        '#markup' => new FormattableMarkup("<p>$message</p>", []),
+      ];
+    }
+
     return array_merge($list, parent::getInfo());
   }
 
@@ -146,7 +159,19 @@ final class CpUsersPermissionsTypeSpecificForm extends GroupPermissionsForm {
    */
   public function buildForm(array $form, FormStateInterface $form_state, GroupTypeInterface $group_type = NULL) {
     $this->groupType = $group_type;
-    return parent::buildForm($form, $form_state);
+    $form = parent::buildForm($form, $form_state);
+
+    // Prevent permission edit for default roles.
+    /** @var string[] $default_roles */
+    $default_roles = $this->cpRolesHelper->getDefaultGroupRoles($this->activeVsite);
+    $permissions = array_keys($this->groupPermissionHandler->getPermissions(TRUE));
+    foreach ($permissions as $permission) {
+      foreach ($default_roles as $default_role) {
+        $form['permissions'][$permission][$default_role]['#disabled'] = TRUE;
+      }
+    }
+
+    return $form;
   }
 
 }
