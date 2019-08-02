@@ -608,7 +608,7 @@ div[file-edit] .control button,
 }
 
 .help_icon {
-  background: url('../../../../themes/os_basetheme/images/scholarbase-sprite.png') no-repeat 0 -150px;
+  background: url('../../../../../themes/os_base/images/scholarbase-sprite.png') no-repeat 0 -150px;
   width: 20px;
   height: 20px;
   text-indent: -10em;
