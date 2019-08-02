@@ -68,9 +68,9 @@ cp.settings.app:
   parent: cp.settings
 cp.settings.global:
   title: 'Global Settings'
-  url: 'internal:##'
+  route_name: cp.global.settings.collection
   weight: 2
-  menu_name: global-settings
+  menu_name: control-panel
   parent: cp.settings
 # These are temporary placeholders, and should be removed when they
 # are properly implemented.
