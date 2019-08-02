@@ -148,18 +148,6 @@
                     "type": "zip"
                 }
             }
-        },
-        {
-            "type": "package",
-            "package": {
-                "name": "harvesthq/chosen",
-                "version": "1.8.7",
-                "type": "drupal-library",
-                "dist": {
-                    "url": "https://github.com/harvesthq/chosen-package/archive/v1.8.7.zip",
-                    "type": "zip"
-                }
-            }
         }
     ],
     "require": {
@@ -232,12 +220,12 @@
         "drupal/google_analytics": "^2.4",
         "drupal/groupmenu": "^1.0",
         "drupal/cancel_button": "^1.1",
-        "drupal/bibcite": "1.0-alpha10",
         "egulias/email-validator": "1.2.6",
         "doctrine/lexer": "dev-master",
         "drupal/shorten": "2.x-dev",
         "drupal/field_group": "^3.0",
         "drupal/key_value_field": "^1.0",
+        "drupal/bibcite": "1.x-dev",
         "drupal/term_reference_tree": "1.x-dev",
         "drupal/chosen": "^2.7",
         "harvesthq/chosen": "^1.8"
@@ -374,7 +362,6 @@
                 "Update is.gd service api url": "https://www.drupal.org/files/issues/2019-07-03/update-isgd-api-3065567-2.patch"
             },
             "drupal/bibcite": {
-                "Contextual links for bibcite reference entities": "patches/3065990-2.patch",
                 "Extending the supported bibcite formats.": "patches/bibcite_formats_extension.patch"
             }
         },

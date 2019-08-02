@@ -91,7 +91,7 @@ class OsWysiwygLinkFormTest extends OsExistingSiteJavascriptTestBase {
     $this->assertEmpty($dialog->findField('Link Text')->getValue(), 'Reusing an existing link, should be a new link.');
     $dialog->fillField('Link Text', 'Email');
     $dialog->fillField('Title Text', 'Email Title');
-    $dialog->find('xpath', '//div[@class=\'owl-tab-button\' and contains(.,"E-mail")]')->click();
+    $dialog->find('xpath', "//div[contains(@class, 'owl-tab-button') and contains(., 'E-mail')]")->click();
     $dialog->fillField('E-mail', 'test@theopenscholar.com');
     $dialog->findButton('Insert')->click();
 

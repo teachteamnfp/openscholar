@@ -1,0 +1,20 @@
+%font {
+  font-family: $font_0, $font_1, $font_2;
+}
+//@extend-elements
+%extend_1 {
+  color: $color_mexican_red_approx;
+  text-transform: none;
+  font-weight: bold;
+  font-size: 1.25em;
+}
+%extend_2 {
+  background-color: $white;
+  border-top: 4px solid $color_mexican_red_approx;
+  color: $color_mexican_red_approx;
+  padding: 12px 15px 16px;
+}
+body {
+  color: $color_log_cabin_approx;
+  @extend %font;
+}

@@ -1,0 +1,13 @@
+.header-container {
+  background: $color_tundora_approx;
+  color: $white;
+  ul.nav li{
+    a {
+      font-family: $font_4, $font_5;
+      color: $white;
+    }
+    &.nav a {
+      @extend %font;
+    }
+  }
+}

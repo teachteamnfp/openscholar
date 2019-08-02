@@ -1,0 +1,4 @@
+manage default group roles:
+  title: 'Manage default group roles'
+  description: 'Manage default group roles'
+  restrict access: true

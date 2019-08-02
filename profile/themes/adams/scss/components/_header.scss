@@ -1,0 +1,19 @@
+.header-container {
+  color: $white;
+  background: $color_tundora_approx;
+  ul.nav {
+    li {
+      a {
+        color: $white;
+        text-transform: uppercase;
+        font-family: $font_0, $font_1;
+      }
+    }
+  }
+}
+header {
+  color: $white;
+  h2 {
+    color: $white;
+  }
+}

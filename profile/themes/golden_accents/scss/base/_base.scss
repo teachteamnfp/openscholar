@@ -1,0 +1,16 @@
+//@extend-elements
+%extend_1 {
+  border: 1px solid $color_alto_approx;
+  background: $white;
+  box-shadow: none;
+  border-radius: 0;
+}
+%extend_2 {
+  background: $color_shark_approx;
+  filter: none;
+  color: $white;
+}
+@import './variables';
+body {
+  font-family: $font_0, $font_1;
+}

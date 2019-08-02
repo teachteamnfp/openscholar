@@ -1,0 +1,14 @@
+footer {
+  background-color: $color_red_stage_approx;
+  color: $white;
+  a {
+    color: $white;
+  }
+  .footer-login {
+    color: $white;
+    text-shadow: none;
+    &:after {
+      background-image: none;
+    }
+  }
+}

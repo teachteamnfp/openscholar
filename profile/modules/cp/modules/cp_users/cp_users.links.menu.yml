@@ -3,3 +3,15 @@ cp.users:
   route_name: cp.users
   weight: 5
   menu_name: control-panel
+
+cp_users.permissions:
+  title: 'Permissions'
+  description: 'Manage role permissions'
+  parent: cp.users
+  route_name: cp_users.role.permission_form
+
+cp_users.list:
+  title: 'Roles'
+  description: 'Manager roles'
+  parent: cp.users
+  route_name: cp_users.role.list

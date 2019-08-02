@@ -1,0 +1,22 @@
+aside .region > .block,
+.path-front .content-inner .block {
+  border: 0;
+}
+.path-front {
+  .content-inner {
+    .block {
+      border-top: none;
+    }
+  }
+}
+.path-person {
+  .block-inner {
+    border-top: none;
+  }
+}
+/** accessiblity fixes **/
+.form-submit {
+  .sr-only {
+    color: $color-black1;
+  }
+}

@@ -1,0 +1,36 @@
+.path-front .region-content-second {
+  border-top: none;
+  border-right: none;
+  border-bottom: none;
+  border: none;
+}
+.not-front .navbar-collapse {
+  padding-bottom: 25px !important;
+}
+.bg-one .navbar-collapse {
+  background: url(../images/bg1.jpg?457) center bottom -180px no-repeat $white;
+}
+.bg-two .navbar-collapse {
+  background: url(../images/bg2.jpg) center bottom -180px no-repeat $white;
+}
+.bg-three .navbar-collapse {
+  background: url(../images/bg3.jpg) center bottom -180px no-repeat $white;
+}
+.bg-four .navbar-collapse {
+  background: url(../images/bg4.jpg) center bottom -180px no-repeat $white;
+}
+.bg-five .navbar-collapse {
+  background: url(../images/bg5.jpg) center bottom -180px no-repeat $white;
+}
+.bg-six .navbar-collapse {
+  background: url(../images/bg6.jpg) center bottom -180px no-repeat $white;
+}
+.bg-seven .navbar-collapse {
+  background: url(../images/bg7.jpg) center bottom -180px no-repeat $white;
+}
+.bg-eight .navbar-collapse {
+  background: url(../images/bg8.jpg) center bottom -180px no-repeat $white;
+}
+.search-block-form .form-submit {
+  background: $color_endeavour_approx;
+}

@@ -1,0 +1,78 @@
+html {
+  color: $color_gravel_approx;
+}
+body {
+  background: $color_pampas_approx;
+}
+.fc-header-toolbar {
+  .ui-button {
+    color: $color_thunderbird_approx;
+    &:hover {
+      color: $color_regent_gray_approx;
+    }
+  }
+  h2 {
+    @extend %font;
+  }
+}
+.page-header {
+  @extend %font;
+}
+.node--title {
+  @extend %font;
+}
+.more-link {
+  @extend %font;
+  &:after {
+    background-image: none;
+  }
+}
+.content-inner {
+  h2 {
+    @extend %font;
+  }
+  h3 {
+    @extend %font;
+  }
+  h4 {
+    @extend %font;
+  }
+}
+.events {
+  .field--name-field-recurring-date {
+    color: $color_rangoon_green_approx;
+  }
+  .field--name-field-location {
+    color: $color_rangoon_green_approx;
+  }
+}
+.path-search .title a {
+  @extend %font;
+}
+.links a {
+  @extend %font;
+}
+h2.block-title {
+  text-transform: none;
+  font-size: 14px;
+  letter-spacing: 0;
+  font-weight: 900;
+  font-family: $font_0, $font_8;
+}
+.path-front {
+  .content-inner {
+    .block {
+      border-top: 1px solid $color_bon_jour_approx;
+    }
+  }
+}
+.page-node-type-person {
+  .content-inner {
+    .block-title {
+      border-top: 1px solid $color_bon_jour_approx;
+    }
+  }
+}
+h1.page-title {
+  font-size: 30px;
+}
