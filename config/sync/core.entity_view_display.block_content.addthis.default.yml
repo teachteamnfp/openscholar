@@ -5,6 +5,7 @@ dependencies:
   config:
     - block_content.type.addthis
     - field.field.block_content.addthis.field_addthis_display_style
+    - field.field.block_content.addthis.field_widget_title
   module:
     - layout_builder
 third_party_settings:
@@ -14,7 +15,15 @@ id: block_content.addthis.default
 targetEntityType: block_content
 bundle: addthis
 mode: default
-content: {  }
+content:
+  field_widget_title:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
 hidden:
   field_addthis_display_style: true
   langcode: true

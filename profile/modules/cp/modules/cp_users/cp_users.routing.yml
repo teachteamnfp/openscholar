@@ -50,6 +50,10 @@ cp_users.role.permission_form:
   requirements:
     _group_permission: 'manage cp roles'
     _group_member: 'TRUE'
+  options:
+    parameters:
+      group_type:
+        type: entity:group_type
 
 cp_users.role.change:
   path: '/cp/users/change-role/{user}'
@@ -76,29 +80,48 @@ cp_users.role.list:
       group_type:
         type: entity:group_type
 
+# To un-hardcode the default group_type, this route needs to be generated when a
+# group type is created.
 cp_users.role.role_permission_form:
   path: '/cp/users/permissions/{group_role}/{group_type}'
   defaults:
-    _form: '\Drupal\group\Form\GroupPermissionsRoleSpecificForm'
+    _form: '\Drupal\cp_users\Form\CpUsersPermissionsSpecificForm'
     _title: 'Edit vsite permissions'
+    group_type: personal
   requirements:
     _group_permission: 'manage cp roles'
     _group_member: 'TRUE'
+  options:
+    parameters:
+      group_type:
+        type: entity:group_type
 
+# To un-hardcode the default group_type, this route needs to be generated when a
+# group type is created.
 cp_users.role.edit_form:
   path: '/cp/users/roles/{group_role}/edit/{group_type}'
   defaults:
     _entity_form: 'group_role.edit'
     _title: 'Edit vsite role'
+    group_type: personal
   requirements:
-    _group_permission: 'manage cp roles'
-    _group_member: 'TRUE'
+    _cp_roles_operation_access_check: 'TRUE'
+  options:
+    parameters:
+      group_type:
+        type: entity:group_type
 
+# To un-hardcode the default group_type, this route needs to be generated when a
+# group type is created.
 cp_users.role.delete_form:
   path: '/cp/users/roles/{group_role}/delete/{group_type}'
   defaults:
     _entity_form: 'group_role.delete'
     _title: 'Delete vsite role'
+    group_type: personal
   requirements:
-    _group_permission: 'manage cp roles'
-    _group_member: 'TRUE'
+    _cp_roles_operation_access_check: 'TRUE'
+  options:
+    parameters:
+      group_type:
+        type: entity:group_type
