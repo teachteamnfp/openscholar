@@ -3,4 +3,5 @@ global-styling:
   css:
     theme:
       '//fonts.googleapis.com/css?family=Arimo': { external: true }
+      '//fonts.googleapis.com/css?family=Open+Sans&display=swap': { external: true }
       css/style.css: {}

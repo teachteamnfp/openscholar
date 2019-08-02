@@ -1,0 +1,27 @@
+body {
+  background: $color_orange_white_approx;
+  @extend %font;
+}
+.node--title {
+  @extend %font;
+}
+.content-inner {
+  h2, h3, h4 {
+    @extend %font;
+  }
+}
+.more-link {
+  @extend %font;
+}
+.page-title {
+  font-family: $font_6, $font_5;
+}
+.path-search .title a {
+  @extend %font;
+}
+.links a {
+  @extend %font;
+}
+h2.block-title {
+  @extend %font;
+}

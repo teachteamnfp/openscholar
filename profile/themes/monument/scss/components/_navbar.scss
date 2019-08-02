@@ -1,0 +1,76 @@
+.navbar-collapse {
+  background: url(../images/menu2Back.png) 0 0 repeat $color_celeste_approx;
+  border-bottom: 1px solid $color_celeste_approx;
+  @media #{$mobile} {
+    padding: 0 !important;
+    background: #fff;
+  }
+  /***** navbar nav *****/
+  .navbar-nav {
+    > li {
+      @media #{$mobile} {
+        border-bottom: 1px solid $color-gray;
+        border-top: 0 none;
+      }
+      > a {
+        color: $color_nevada_approx;
+        @media #{$mobile} {
+        }
+        &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
+          background: $color_ironside_gray_approx;
+        }
+      }
+      &.open, &.active {
+        > a, > a:hover, > a:active, > a:focus {
+          background: $color_ironside_gray_approx;
+          margin: 0 !important;
+        }
+      }
+    }
+  }
+  /**** dropdown menu ****/
+  .dropdown-menu {
+    background: $color_ironside_gray_approx;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border: 1px solid $color_pink_swan_approx;
+    border-top: 0;
+    @media #{$mobile} {
+      background: none;
+      border: 0 none;
+    }
+    > li {
+      > a {
+        text-transform: none;
+        color: $white;
+        background: none;
+        @media #{$mobile} {
+          font-size: 19px;
+          padding-left: 20px;
+          color: $color_nevada_approx;
+        }
+        &:hover, &:active {
+          background: $color_boulder_80_approx !important;
+          color: $color_chamois_approx !important;
+          box-shadow: none;
+        }
+      }
+      &.active {
+        a {
+          background: none;
+          @media #{$mobile} {
+          }
+          &:hover {
+            background: $color_boulder_80_approx !important;
+            color: $color_chamois_approx;
+            box-shadow: none;
+            @media #{$mobile} {
+            }
+          }
+        }
+      }
+    }
+  }
+}

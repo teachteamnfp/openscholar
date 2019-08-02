@@ -1,0 +1,19 @@
+footer {
+  background: $color_fuscous_gray_approx;
+  color: $white;
+  text-shadow: none;
+  .footer-login {
+    color: $white;
+    text-shadow: none;
+    &:after {
+      background-image: none;
+    }
+  }
+  a {
+    color: $white;
+    text-shadow: none;
+  }
+  ul.nav a {
+    @extend %font;
+  }
+}

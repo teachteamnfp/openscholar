@@ -131,9 +131,18 @@ class CpUsersMainTest extends OsExistingSiteJavascriptTestBase {
    *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
    * @throws \Behat\Mink\Exception\ExpectationException
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   * @throws \Behat\Mink\Exception\UnsupportedDriverActionException
+   * @throws \Behat\Mink\Exception\DriverException
    */
   public function testNewUser(): void {
     $settings = $this->configFactory->getEditable('cp_users.settings');
+
+    $existing_mail = $this->randomMachineName() . '@mail.com';
+    $existing_username = $this->randomMachineName();
+    $existing_mail_account = $this->createUser();
+    $existing_mail_account->setEmail($existing_mail)->save();
+    $this->createUser([], $existing_username);
 
     $this->assertFalse($settings->get('disable_user_creation'), "User creation setting is wrong.");
 
@@ -145,6 +154,23 @@ class CpUsersMainTest extends OsExistingSiteJavascriptTestBase {
     $page->clickLink('+ Add a member');
     $this->assertSession()->waitForElement('css', '#drupal-modal--content');
     $page->find('css', '#new-user-fieldset summary.seven-details__summary')->click();
+
+    // Negative tests.
+    $page->fillField('Username', $existing_username);
+    $page->fillField('E-mail Address', $this->randomMachineName() . '@mail.com');
+    $page->selectFieldOption('role', 'personal-member');
+    $page->pressButton('Save');
+    $this->waitForAjaxToFinish();
+    $this->assertNotNull($this->getSession()->getPage()->find('css', '.form-item-username.form-item--error'));
+
+    $page->fillField('Username', $this->randomMachineName());
+    $page->fillField('E-mail Address', $existing_mail);
+    $page->selectFieldOption('role', 'personal-member');
+    $page->pressButton('Save');
+    $this->waitForAjaxToFinish();
+    $this->assertNotNull($this->getSession()->getPage()->find('css', '.form-item-email.form-item--error'));
+
+    // Positive tests.
     $page->fillField('First Name', 'test');
     $page->fillField('Last Name', 'user');
     $page->fillField('Username', 'test-user');

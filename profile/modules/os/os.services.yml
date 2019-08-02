@@ -4,3 +4,7 @@ services:
   os.access_helper:
     class: \Drupal\os\AccessHelper
     arguments: ['@vsite.context_manager', '@entity_type.manager']
+  os.os_route_subscriber:
+    class: \Drupal\os\Routing\OsRouteSubscriber
+    tags:
+      - { name: event_subscriber }

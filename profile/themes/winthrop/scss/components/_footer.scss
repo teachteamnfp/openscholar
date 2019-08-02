@@ -1,0 +1,20 @@
+footer {
+  color: $white;
+  background-color: $color_steel_blue_approx;
+  a {
+    font-family: $font_3, $font_4;
+    color: $white;
+  }
+  .footer-login {
+    color: $white;
+    text-shadow: none;
+    &:after {
+      background-image: none;
+    }
+  }
+  ul.nav {
+    a {
+      font-family: $font_3, $font_4;
+    }
+  }
+}

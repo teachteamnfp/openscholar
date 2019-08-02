@@ -1,0 +1,46 @@
+body {
+  color: $color_tundora_approx;
+}
+h1 {
+  &.page-header {
+    font-family: $font_1, $font_2;
+    color: $color_red_stage_approx;
+    font-size: 27px;
+  }
+}
+h2 {
+  &.block-title {
+    font-size: 1.14em;
+  }
+}
+.node-readmore a {
+  font-weight: normal;
+}
+.page-node-type-person {
+  .content-inner {
+    h2.block-title {
+      @extend %extend_1;
+    }
+  }
+}
+.path-front {
+  .content-inner {
+    .block {
+      border-top: 1px dotted $color_mountain_mist_approx;
+    }
+  }
+}
+.content-inner {
+  p, li {
+    font-family: $font_3;
+  }
+}
+/** accessibility fixes **/
+footer {
+  button.visually-hidden {
+    color: $black;
+  }
+}
+.search-block-form .form-item label.sr-only {
+  color: $black;
+}

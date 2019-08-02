@@ -1,0 +1,17 @@
+.fc-listUpcoming-view .fc-list-heading {
+  .fc-list-heading-main {
+    @extend %extend_1;
+    .event-year {
+      padding: 8px 0 0;
+    }
+    span.event-year {
+      font-size: 13px;
+    }
+  }
+  span.fc-list-heading-main span {
+    color: $white;
+  }
+}
+.fc-header-toolbar h3 {
+  font-family: $font_0, $font_1;
+}

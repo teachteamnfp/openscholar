@@ -1,0 +1,79 @@
+.navbar-collapse {
+  padding: 0 !important;
+  @extend %extend_2;
+  .region-navigation-collapsible {
+    border-radius: 0;
+    box-shadow: none;
+    @extend %extend_2;
+  }
+  /***** navbar nav *****/
+  .navbar-nav {
+    >li {
+      @media #{$mobile} {
+        border-bottom: 1px solid $white;
+        border-top: 0 none;
+      }
+      >a {
+        @extend %extend_2;
+        color: $white;
+        font-family: $font_1;
+        &:hover,
+        &:active,
+        &:focus,
+        &.is-active,
+        &.is-active:hover {
+          background: $color_pizza_approx;
+        }
+      }
+      &.open,
+      &.active {
+        >a,
+        >a:hover,
+        >a:active,
+        >a:focus {
+          background: $color_pizza_approx;
+        }
+
+      }
+    }
+  }
+  /**** dropdown menu ****/
+  .dropdown-menu {
+    background: $color_pizza_approx;
+    @media #{$mobile} {
+      background: none;
+    }
+    >li {
+      >a {
+        background: $color_pizza_approx;
+        color: $white;
+        @media #{$mobile} {
+          background: none;
+        }
+        &:hover,
+        &:active {
+          background: $color_pizza_approx;
+          @media #{$mobile} {
+            color: $white;
+          }
+        }
+      }
+      &.active {
+        a {
+          background: $color_pizza_approx;
+          color: $white;
+          @media #{$mobile} {
+            color: $white;
+            background: none;
+          }
+          &:hover {
+            @media #{$mobile} {
+              color: $white;
+              background: none;
+            }
+          }
+        }
+      }
+    }
+  }
+}

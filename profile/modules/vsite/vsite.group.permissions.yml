@@ -1,3 +1,0 @@
-vsite access group_node overview:
-  title: 'Vsite Access Group node Overview'
-  description: 'Custom permission for access overview, without group id argument'

@@ -375,7 +375,7 @@ class MenuLinkAddForm extends FormBase {
     $response->addCommand(new RedirectCommand($currentURL->toString()));
 
     // Call the block cache clear method as changes are made.
-    $this->menuHelper->invalidateBlockCache($menu_id);
+    $this->menuHelper->invalidateBlockCache($vsite, $menu_id);
 
     return $response;
   }

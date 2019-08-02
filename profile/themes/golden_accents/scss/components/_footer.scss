@@ -1,0 +1,7 @@
+footer {
+  color: $white;
+  @extend %extend_2;
+  a {
+    color: $white;
+  }
+}

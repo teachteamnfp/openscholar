@@ -8,9 +8,14 @@ dependencies:
     - field.field.block_content.media_gallery.body
     - field.field.block_content.media_gallery.field_gallery_format
     - field.field.block_content.media_gallery.field_gallery_media
+    - field.field.block_content.media_gallery.field_widget_title
   module:
+    - layout_builder
     - slick
     - text
+third_party_settings:
+  layout_builder:
+    sections: {  }
 id: block_content.media_gallery.carousel
 targetEntityType: block_content
 bundle: media_gallery
@@ -19,12 +24,12 @@ content:
   body:
     label: hidden
     type: text_default
-    weight: 0
+    weight: 1
     settings: {  }
     third_party_settings: {  }
     region: content
   field_gallery_media:
-    weight: 1
+    weight: 2
     label: above
     settings:
       style: ''
@@ -97,6 +102,14 @@ content:
     third_party_settings: {  }
     type: slick_image
     region: content
+  field_widget_title:
+    type: string
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
 hidden:
   field_gallery_format: true
   langcode: true
