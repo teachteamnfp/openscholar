@@ -1,0 +1,31 @@
+.path-front {
+  .region-content-first {
+    background-color: $color_steel_blue_approx;
+    padding: 0 10px;
+    * {
+      color: $white;
+    }
+  }
+  .region-content-bottom {
+    background-color: $color_wheatfield_50_approx !important;
+    padding: 0 10px;
+  }
+}
+h2.block-title {
+  font-family: $font_0, $font_1;
+  color: $color_corn_harvest_approx;
+  font-size: 1.5em;
+}
+.path-person .node--title {
+  color: $color_corn_harvest_approx;
+  font-size: 2.1em;
+}
+h1.page-title {
+  color: $color_corn_harvest_approx;
+  font-size: 2.1em;
+}
+.node-readmore {
+  a:after {
+    background: none;
+  }
+}

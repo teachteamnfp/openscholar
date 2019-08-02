@@ -1,0 +1,22 @@
+.fc-listPast-view {
+  .fc-list-heading {
+    .fc-list-heading-main {
+      @extend %extend_2;
+      span {
+        &.event-start-day {
+          color: $white;
+        }
+        &.event-start-month {
+          color: $white;
+        }
+        &.event-year {
+          padding: 8px 0 2px;
+        }
+      }
+    }
+  }
+}
+.full-calendar-view .fc-header-toolbar h2,
+.mini-calendar .fc-center h2 {
+  font-family: $font_0, $font_1 !important;
+}

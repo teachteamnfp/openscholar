@@ -1,0 +1,13 @@
+aside {
+  .nav a {
+    &:link {
+      font-family: $font_4, $font_5;
+    }
+    &:visited {
+      font-family: $font_4, $font_5;
+    }
+  }
+  .region > .block {
+    border-top: 3px solid $color_java_approx;
+  }
+}

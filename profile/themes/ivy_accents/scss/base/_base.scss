@@ -1,0 +1,18 @@
+body {
+  @extend %body;
+}
+.not-front {
+  .content-inner {
+    font-size: 14px;
+    p, ul li, ol li {
+      font-family: $font_0, $font_6;
+    }
+  }
+  &.two-sidebars .content-inner {
+    border-right: none;
+  }
+}
+.page-header, .node--title, .more-link, .links a {
+  font-family: $font_0, $font_6;
+}
+
