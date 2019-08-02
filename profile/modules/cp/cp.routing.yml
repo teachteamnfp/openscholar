@@ -28,7 +28,7 @@ cp.appearance.settings:
     _controller: '\Drupal\cp\Controller\CpController::overview'
     _title: 'Appearance Settings'
   requirements:
-    _group_permission: 'manage cp appearance settings'
+    _group_permission: 'manage cp appearance'
     _group_member: 'TRUE'
 
 cp.settings.collection:
