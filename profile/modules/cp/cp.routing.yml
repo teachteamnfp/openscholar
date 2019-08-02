@@ -25,8 +25,17 @@ cp.bibcite_reference.delete_multiple_form:
 cp.appearance.settings:
   path: '/cp/appearance/settings'
   defaults:
-    _controller: '\Drupal\cp\Controller\CpController::appearanceOverview'
+    _controller: '\Drupal\cp\Controller\CpController::overview'
     _title: 'Appearance Settings'
   requirements:
     _group_permission: 'manage cp appearance settings'
+    _group_member: 'TRUE'
+
+cp.settings.collection:
+  path: '/cp/settings'
+  defaults:
+    _controller: '\Drupal\cp\Controller\CpController::overview'
+    _title: 'Manage Cp Settings'
+  requirements:
+    _group_permission: 'administer cp settings'
     _group_member: 'TRUE'

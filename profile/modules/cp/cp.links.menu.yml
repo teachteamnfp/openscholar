@@ -57,7 +57,7 @@ cp.appearance:
   weight: 2
 cp.settings:
   title: 'Settings'
-  url: 'internal:##'
+  route_name: cp.settings.collection
   weight: 4
   menu_name: control-panel
 cp.settings.app:

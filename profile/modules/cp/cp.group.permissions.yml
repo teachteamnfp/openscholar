@@ -14,3 +14,9 @@ manage cp appearance settings:
   description: 'Manage Appearance Settings'
   restrict access: 'TRUE'
   section: 'Permission'
+
+administer cp settings:
+  title: 'Administer Cp Settings'
+  description: 'Administer Cp Settings'
+  restrict access: 'TRUE'
+  section: 'Permission'

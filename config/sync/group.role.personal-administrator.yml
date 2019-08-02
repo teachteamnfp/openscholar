@@ -225,4 +225,5 @@ permissions:
   210: 'update any group_node:blog content'
   211: 'update own group_node:blog content'
   212: 'view group_node:blog content'
-  214: 'manage cp appearance settings'
+  213: 'manage cp appearance settings'
+  215: 'administer cp settings'
