@@ -42,13 +42,16 @@ class CpController extends ControllerBase {
   }
 
   /**
-   * Appearance settings overview page response.
+   * Settings overview page response.
+   *
+   * @param string $menu_name
+   *   Menu name which would be used to create the overview response.
    *
    * @return array
    *   A render array suitable for
    *   \Drupal\Core\Render\RendererInterface::render().
    */
-  public function overview($menu_name): array {
+  public function overview($menu_name = 'control-panel'): array {
     return $this->cpManager->getBlockContents($menu_name);
   }
 
