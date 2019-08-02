@@ -5,6 +5,7 @@ dependencies:
   config:
     - block_content.type.publication_authors
     - field.field.block_content.publication_authors.field_display_count
+    - field.field.block_content.publication_authors.field_widget_title
   module:
     - layout_builder
 third_party_settings:
@@ -14,7 +15,15 @@ id: block_content.publication_authors.default
 targetEntityType: block_content
 bundle: publication_authors
 mode: default
-content: {  }
+content:
+  field_widget_title:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
 hidden:
   field_display_count: true
   langcode: true

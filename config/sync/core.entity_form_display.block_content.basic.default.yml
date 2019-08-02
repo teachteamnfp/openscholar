@@ -6,6 +6,7 @@ dependencies:
     - block_content.type.basic
     - field.field.block_content.basic.body
     - field.field.block_content.basic.field_slideshow
+    - field.field.block_content.basic.field_widget_title
   module:
     - content_moderation
     - field_layout
@@ -25,7 +26,7 @@ mode: default
 content:
   body:
     type: text_textarea_with_summary
-    weight: 0
+    weight: 2
     settings:
       rows: 9
       summary_rows: 3
@@ -34,7 +35,7 @@ content:
     region: content
   field_slideshow:
     type: entity_reference_paragraphs
-    weight: 101
+    weight: 5
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -44,9 +45,17 @@ content:
       default_paragraph_type: ''
     third_party_settings: {  }
     region: content
+  field_widget_title:
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
   info:
     type: string_textfield
-    weight: -5
+    weight: 0
     settings:
       size: 60
       placeholder: ''
@@ -54,14 +63,14 @@ content:
     region: content
   langcode:
     type: language_select
-    weight: 2
+    weight: 3
     region: content
     settings:
       include_locked: true
     third_party_settings: {  }
   moderation_state:
     type: moderation_state_default
-    weight: 100
+    weight: 4
     settings: {  }
     region: content
     third_party_settings: {  }

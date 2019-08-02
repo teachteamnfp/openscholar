@@ -6,5 +6,10 @@ services:
       - { name: access_check, applies_to: _change_ownership_access_check }
   cp_users.cp_roles_helper:
     class: \Drupal\cp_users\CpRolesHelper
+  cp_users.cp_roles_operation_access_check:
+    class: \Drupal\cp_users\Access\CpRolesOperationAccessCheck
+    arguments: ['@cp_users.cp_roles_helper', '@vsite.context_manager']
+    tags:
+      - { name: access_check, applies_to: _cp_roles_operation_access_check }
   cp_users.cp_users_helper:
     class: \Drupal\cp_users\CpUsersHelper
