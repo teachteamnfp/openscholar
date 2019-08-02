@@ -23,7 +23,7 @@ use Drupal\views\Plugin\views\cache\CachePluginBase;
 function os_widgets_library_info_alter(&$libraries, $extension) {
   if ($extension == 'os_widgets') {
     if (isset($libraries['layout'])) {
-      $libraries['layout']['drupalSettings']['path']['layout']['saveLayout'] = Url::fromRoute('os_widgets.save_layout')->toString();
+      $libraries['layout']['drupalSettings']['path']['layout']['saveLayout'] = 'cp/layout/save';
       $libraries['layout']['drupalSettings']['path']['layout']['resetLayout'] = 'cp/layout/reset';
     }
   }

@@ -31,6 +31,8 @@ class CpCancelButtonTest extends OsExistingSiteJavascriptTestBase {
     $exist_alias = $path_alias_storage->load(['source' => '/node/' . $this->node->id()]);
     // Fix group alias of the node.
     $path_alias_storage->save('/node/' . $this->node->id(), '/[vsite:' . $this->group->id() . ']' . $exist_alias['alias'], 'en', $exist_alias['pid']);
+    $path_alias_manager->cacheClear();
+    $this->nodePath = $path_alias_manager->getAliasByPath('/node/' . $this->node->id());
 
     $path_alias_manager->cacheClear();
     $this->nodePath = $path_alias_manager->getAliasByPath('/node/' . $this->node->id());

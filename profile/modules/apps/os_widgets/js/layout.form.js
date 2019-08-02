@@ -99,7 +99,7 @@
           contexts: active_limited,
           blocks: items
         };
-        let url = drupalSettings.path.layout.saveLayout;
+        let url = Drupal.url(drupalSettings.path.layout.saveLayout);
         $.post(url, payload).done(function (data, status, xhr) {
           vars = parseQuery();
           delete vars.context;
