@@ -48,8 +48,8 @@ class CpController extends ControllerBase {
    *   A render array suitable for
    *   \Drupal\Core\Render\RendererInterface::render().
    */
-  public function overview(): array {
-    return $this->cpManager->getBlockContents('control-panel');
+  public function overview($menu_name): array {
+    return $this->cpManager->getBlockContents($menu_name);
   }
 
 }

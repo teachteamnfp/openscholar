@@ -27,6 +27,7 @@ cp.appearance.settings:
   defaults:
     _controller: '\Drupal\cp\Controller\CpController::overview'
     _title: 'Appearance Settings'
+    menu_name: 'control-panel'
   requirements:
     _group_permission: 'manage cp appearance settings'
     _group_member: 'TRUE'
@@ -36,6 +37,17 @@ cp.settings.collection:
   defaults:
     _controller: '\Drupal\cp\Controller\CpController::overview'
     _title: 'Manage Cp Settings'
+    menu_name: 'control-panel'
   requirements:
     _group_permission: 'administer cp settings'
+    _group_member: 'TRUE'
+
+cp.apps.settings.collection:
+  path: '/cp/apps/settings'
+  defaults:
+    _controller: '\Drupal\cp\Controller\CpController::overview'
+    _title: 'Manage Apps Settings'
+    menu_name: 'control-panel'
+  requirements:
+    _group_permission: 'administer apps settings'
     _group_member: 'TRUE'

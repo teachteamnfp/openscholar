@@ -62,9 +62,9 @@ cp.settings:
   menu_name: control-panel
 cp.settings.app:
   title: 'App Settings'
-  url: 'internal:##'
+  route_name: cp.apps.settings.collection
   weight: 1
-  menu_name: app-settings
+  menu_name: control-panel
   parent: cp.settings
 cp.settings.global:
   title: 'Global Settings'

@@ -20,3 +20,9 @@ administer cp settings:
   description: 'Administer Cp Settings'
   restrict access: 'TRUE'
   section: 'Permission'
+
+administer apps settings:
+  title: 'Administer Apps Settings'
+  description: 'Administer Apps Settings'
+  restrict access: 'TRUE'
+  section: 'Permission'
