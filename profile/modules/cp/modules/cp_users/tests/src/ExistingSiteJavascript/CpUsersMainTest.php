@@ -265,7 +265,7 @@ class CpUsersMainTest extends OsExistingSiteJavascriptTestBase {
     $this->waitForAjaxToFinish();
     $this->assertSession()->statusCodeEquals(200);
     $this->submitForm([
-      'new_owner' => $this->groupAdmin->id(),
+      'new_owner' => $member->id(),
     ], 'Save');
     $this->waitForAjaxToFinish();
 
@@ -278,10 +278,10 @@ class CpUsersMainTest extends OsExistingSiteJavascriptTestBase {
 
     // Assert that expected changes have been made.
     $fresh_group_entity = Group::load($this->group->id());
-    $this->assertEquals($this->groupAdmin->id(), $fresh_group_entity->getOwnerId());
-    $previous_owner_entity = User::load($vsite_owner->id());
+    $this->assertEquals($member->id(), $fresh_group_entity->getOwnerId());
+    $new_owner_entity = User::load($member->id());
     /** @var \Drupal\group\GroupMembership $group_membership */
-    $group_membership = $fresh_group_entity->getMember($previous_owner_entity);
+    $group_membership = $fresh_group_entity->getMember($new_owner_entity);
     /** @var \Drupal\group\Entity\GroupContentInterface $group_content */
     $group_content = $group_membership->getGroupContent();
     $this->assertEquals('personal-administrator', $group_content->get('group_roles')->first()->getValue()['target_id']);

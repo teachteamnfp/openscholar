@@ -129,11 +129,6 @@ class CpUsersOwnershipForm extends FormBase {
         ],
       ];
 
-      $form['previous_owner_id'] = [
-        '#type' => 'hidden',
-        '#value' => $this->getRequest()->get('user'),
-      ];
-
       return $form;
     }
     else {
@@ -152,11 +147,11 @@ class CpUsersOwnershipForm extends FormBase {
       $group->setOwnerId($new_owner_id);
       $group->save();
 
-      // Previous owner should have administrator role.
-      /** @var \Drupal\Core\Session\AccountInterface $previous_owner */
-      $previous_owner = $this->userStorage->load($form_state->getValue('previous_owner_id'));
+      // Make sure the new owner also has the administrator role.
+      /** @var \Drupal\Core\Session\AccountInterface $new_owner */
+      $new_owner = $this->userStorage->load($new_owner_id);
       /** @var \Drupal\group\GroupMembership $group_membership */
-      $group_membership = $group->getMember($previous_owner);
+      $group_membership = $group->getMember($new_owner);
       /** @var \Drupal\group\Entity\GroupContentInterface $group_content */
       $group_content = $group_membership->getGroupContent();
       /** @var \Drupal\group\Entity\GroupRoleInterface $vsite_admin_role */
