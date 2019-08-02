@@ -37,7 +37,7 @@ final class CustomThemeDeleteForm extends EntityConfirmFormBase {
    * {@inheritdoc}
    */
   public function getCancelUrl() {
-    return Url::fromRoute('cp.appearance');
+    return Url::fromRoute('cp.appearance.themes');
   }
 
   /**
@@ -48,7 +48,7 @@ final class CustomThemeDeleteForm extends EntityConfirmFormBase {
 
     $this->getEntity()->delete();
 
-    $form_state->setRedirect('cp.appearance');
+    $form_state->setRedirect('cp.appearance.themes');
   }
 
 }

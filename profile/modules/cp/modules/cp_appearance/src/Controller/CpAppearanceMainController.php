@@ -171,7 +171,7 @@ class CpAppearanceMainController extends ControllerBase {
       $this->messenger()->addError($this->t('The %theme theme was not found.', ['%theme' => $theme]));
     }
 
-    return $this->redirect('cp.appearance', [], ['absolute' => TRUE]);
+    return $this->redirect('cp.appearance.themes', [], ['absolute' => TRUE]);
   }
 
   /**

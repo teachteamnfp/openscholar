@@ -1,4 +1,4 @@
-cp.appearance:
+cp.appearance.themes:
   path: '/cp/appearance'
   defaults:
     _controller: '\Drupal\cp_appearance\Controller\CpAppearanceMainController::main'

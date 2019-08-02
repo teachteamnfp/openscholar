@@ -175,7 +175,7 @@ class PreviewAction extends FormBase {
       $this->messenger->addError($this->t('Preview could not be stopped. Check logs for more details.'));
     }
 
-    $form_state->setRedirectUrl(Url::fromRoute('cp.appearance'));
+    $form_state->setRedirectUrl(Url::fromRoute('cp.appearance.themes'));
   }
 
 }
