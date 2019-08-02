@@ -52,7 +52,7 @@ cp.menu:
   menu_name: control-panel
 cp.appearance:
   title: 'Appearance'
-  url: 'internal:##'
+  route_name: cp.appearance.settings
   menu_name: control-panel
   weight: 2
 cp.settings:

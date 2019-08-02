@@ -21,3 +21,12 @@ cp.bibcite_reference.delete_multiple_form:
     entity_type_id: 'bibcite_reference'
   requirements:
     _entity_delete_multiple_access: 'bibcite_reference'
+
+cp.appearance.settings:
+  path: '/cp/appearance/settings'
+  defaults:
+    _controller: '\Drupal\cp\Controller\CpController::appearanceOverview'
+    _title: 'Appearance Settings'
+  requirements:
+    _group_permission: 'manage cp appearance settings'
+    _group_member: 'TRUE'
