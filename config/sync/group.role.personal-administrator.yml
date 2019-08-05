@@ -211,4 +211,5 @@ permissions:
   196: 'administer group'
   197: manage_menu
   198: 'download citations'
-  205: 'manage vsite content'
+  199: 'manage vsite content'
+  265: 'view group_node:blog entity'
