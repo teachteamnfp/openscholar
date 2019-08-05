@@ -3,6 +3,7 @@
 namespace Drupal\os_publications\Plugin;
 
 use Drupal\bibcite\CitationStylerInterface;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Plugin\PluginBase;
 use Drupal\Core\Url;
@@ -19,9 +20,12 @@ class SampleCitations extends PluginBase {
    *
    * @param \Drupal\bibcite\CitationStylerInterface $styler
    *   To use styler service.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   Config factory instance.
    */
-  public function __construct(CitationStylerInterface $styler) {
+  public function __construct(CitationStylerInterface $styler, ConfigFactoryInterface $config_factory) {
     $this->styler = $styler;
+    $this->configFactory = $config_factory;
   }
 
   /**
@@ -49,7 +53,8 @@ class SampleCitations extends PluginBase {
         $citation_example = $this->osPublicationsBuildCitationExample($style->id());
         $cite_example_text = $citation_example;
         // Concat it all together.
-        $hidden = ($style->id() != $default_style) ? 'hidden' : '';
+        $vsite_style = $this->configFactory->get('os_publications.settings')->get('default_style');
+        $hidden = ($style->id() != $vsite_style) ? 'hidden' : '';
         $cite_example_output .= '<div data-example-id="' . $style->id() . '" id="' . str_replace('.', '', $style->id()) . '" class="citebox ' . $hidden . '">' . $cite_example_title . $cite_example_text . '</div>';
       }
       $this->styler->setStyleById($default_style);
@@ -191,7 +196,7 @@ class SampleCitations extends PluginBase {
     $node                      = new \stdClass();
     $node->id                  = -1;
     $node->example_type        = 'Book Chapter';
-    $node->title               = '"' . $book_title . '"';
+    $node->title               = $book_title;
     $node->author              = $contributors;
     $node->type                = 'chapter';
     $node->issued              = $date;
@@ -261,10 +266,35 @@ class SampleCitations extends PluginBase {
         $example_type = '<strong>' . $value->example_type . ' ' . $this->t('example:') . '</strong>';
         $output .= $example_type . '<br />';
       }
+      if ($style == 'harvard_chicago_author_date') {
+        if ($value->type == 'article-journal' || $value->type == 'chapter') {
+          $this->fixAuthors($value);
+        }
+      }
       $output .= $this->styler->render($value);
       $styled_node .= '<div class="citation-example">' . $output . '</div>';
     }
     return $styled_node;
+  }
+
+  /**
+   * Fix authors for hca style in sample citations.
+   *
+   * @param object $value
+   *   Values to be altered.
+   */
+  private function fixAuthors(&$value): void {
+    // Fix author and editor name display order to First Name Last Name.
+    foreach ($value->author as $key => $author) {
+      $name = $author->given . ' ' . $author->family;
+      $author->family = '';
+      $author->given = $name;
+      if ($author->role == 'editor') {
+        $value->editor[] = $author;
+        $author->given = 'Edited By ' . $name;
+        unset($value->author[$key]);
+      }
+    }
   }
 
 }
