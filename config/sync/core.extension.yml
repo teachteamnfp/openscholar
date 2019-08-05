@@ -51,11 +51,11 @@ module:
   dynamic_page_cache: 0
   easy_breadcrumb: 0
   editor: 0
+  entity: 0
   entity_reference: 0
   entity_reference_revisions: 0
   fakeobjects: 0
   field: 0
-  field_group: 0
   field_layout: 0
   field_tools: 0
   field_ui: 0
