@@ -1,0 +1,19 @@
+uuid: 18451059-f5a4-4479-80d9-c81ee9afd65c
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.custom_text_html
+    - field.storage.block_content.field_widget_title
+id: block_content.custom_text_html.field_widget_title
+field_name: field_widget_title
+entity_type: block_content
+bundle: custom_text_html
+label: 'Widget Title'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

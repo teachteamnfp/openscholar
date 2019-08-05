@@ -1,0 +1,10 @@
+.breadcrumb {
+  @extend %font;
+  letter-spacing: 0;
+  color: $color_thunderbird_approx;
+  a {
+    @extend %font;
+    letter-spacing: 0;
+    color: $color_thunderbird_approx;
+  }
+}

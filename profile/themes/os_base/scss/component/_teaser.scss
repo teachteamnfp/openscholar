@@ -17,3 +17,8 @@
     display: inline-block;
   }
 }
+.person.teaser {
+  .node--title {
+    margin-bottom: 0;
+  }
+}

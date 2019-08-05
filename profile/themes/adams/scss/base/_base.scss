@@ -1,0 +1,53 @@
+h1.page-header {
+  color: $color_squirrel_approx;
+  font-family: $font_4, $font_3;
+  font-size: 2.1em;
+  font-weight: bold;
+  line-height: 1.2;
+}
+.links a {
+  @extend %font-family1;
+}
+h2.block-title {
+  @extend %font-family1;
+}
+.content-inner {
+  h2 {
+    @extend %font-family1;
+    &.block-title {
+      font-family: $font_2, $font_3;
+      @extend %extend_1;
+    }
+  }
+  h3 {
+    @extend %font-family1;
+  }
+  h4 {
+    @extend %font-family1;
+  }
+  .block-inner {
+    padding-top: 0;
+  }
+}
+.node--title {
+  @extend %font-family1;
+}
+.not-front {
+  .content-inner {
+    p {
+      @extend %font-family1;
+    }
+    h2.block-title {
+      background-color: $white;
+      color: $color_squirrel_approx;
+      padding: 0;
+      font-size: 1.2em;
+    }
+  }
+  .region-content-first .block {
+    border-top: none;
+  }
+  .region-content-second .block {
+    border-top: none;
+  }
+}

@@ -1,0 +1,9 @@
+.header-container {
+  background: $color_concrete_approx;
+  ul.nav {
+    li a {
+      font-family: $font_3, $font_4;
+      text-transform: uppercase;
+    }
+  }
+}

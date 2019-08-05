@@ -1,0 +1,8 @@
+@include pager1($color-dark, $color-white);
+.pager {
+  li {
+    > a, span {
+      background: transparent;
+    }
+  }
+}

@@ -1,0 +1,25 @@
+footer.footer {
+  background: $color_cape_cod_approx;
+  color: $white;
+  border-top: 6px solid $color_tapa_approx;
+  a {
+    color: $white;
+  }
+  .footer-login {
+    background: none;
+    border-left: none;
+    color: $color_picton_blue_approx;
+    //Instead of the line below you could use @include text-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+    text-shadow: none;
+    padding: 0;
+    font-size: 13px;
+  }
+  ul.menu li a.menu-heading {
+    font-size: 1.14em;
+  }
+  nav h2 {
+    letter-spacing: 0.1em;
+    font-weight: bold;
+    font-size: 1.14em;
+  }
+}

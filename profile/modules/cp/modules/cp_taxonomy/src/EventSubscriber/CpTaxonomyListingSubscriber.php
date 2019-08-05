@@ -33,11 +33,13 @@ class CpTaxonomyListingSubscriber implements EventSubscriberInterface {
     if ($e->getRequest()->attributes->get('_route') == 'cp.taxonomy') {
       $build_array = $e->getControllerResult();
 
-      /** @var \Drupal\Core\StringTranslation\TranslatableMarkup $emptyMarkup */
-      $emptyMarkup = $build_array['table']['#empty'];
-      $url = Url::fromRoute('cp.taxonomy.add');
-      $build_array['table']['#empty'] = t($emptyMarkup->getUntranslatedString(), [':link' => $url->toString()]);
-      $e->setControllerResult($build_array);
+      if (!empty($build_array['table']['#empty'])) {
+        /** @var \Drupal\Core\StringTranslation\TranslatableMarkup $emptyMarkup */
+        $emptyMarkup = $build_array['table']['#empty'];
+        $url = Url::fromRoute('cp.taxonomy.add');
+        $build_array['table']['#empty'] = t($emptyMarkup->getUntranslatedString(), [':link' => $url->toString()]);
+        $e->setControllerResult($build_array);
+      }
     }
   }
 

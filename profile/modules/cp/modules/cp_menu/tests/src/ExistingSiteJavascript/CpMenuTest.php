@@ -70,6 +70,7 @@ class CpMenuTest extends OsExistingSiteJavascriptTestBase {
     $session->waitForElementVisible('css', '.tabledrag-changed-warning');
     // Save the settings.
     $page->pressButton('edit-submit');
+    $this->visit('/test-menu/cp/build/menu');
     // Changed weight.
     $weight_field = $page->find('css', '.Calendar select.menu-weight');
     $weight_new = $weight_field->getValue();

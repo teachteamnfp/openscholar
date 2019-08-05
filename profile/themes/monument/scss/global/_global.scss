@@ -1,0 +1,27 @@
+.field--name-field-location {
+  padding-bottom: 20px;
+}
+.field--name-field-event-registration {
+  padding-top: 20px;
+}
+.cke_editable * {
+  @extend %extend_1;
+}
+.path-node-type-person {
+  .content-inner {
+    h2.block-title {
+      background: $color_stiletto_approx;
+    }
+  }
+}
+/** accessibility fixes **/
+.navbar-collapse {
+  .sr-only {
+    color: $color_nevada_approx;
+  }
+}
+.header-container {
+  button.visually-hidden {
+    color: $color_nevada_approx;
+  }
+}

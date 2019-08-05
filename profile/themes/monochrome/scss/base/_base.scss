@@ -1,0 +1,20 @@
+@import './variables';
+%extend_1 {
+  width: 55px;
+  height: 55px;
+  background: $white;
+  border: 1px solid $color_celeste_approx;
+}
+%font {
+  font-family: $font_0, $font_1, $font_2, $font_3;
+}
+body {
+  @extend %font;
+}
+a {
+  color: $color_mexican_red_approx;
+  &:visited {
+    color: $color_mexican_red_approx;
+  }
+}
+

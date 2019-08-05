@@ -1,0 +1,22 @@
+footer {
+  background: none repeat scroll 0 0 $color_solid_pink_approx;
+  ul {
+    li a {
+      font-weight: normal;
+    }
+  }
+  a {
+    color: $color_st_tropaz_approx;
+    color: $white;
+  }
+  .footer-login {
+    color: $white;
+    &:after {
+      background-image: none;
+    }
+  }
+}
+.branding_footer {
+  color: $white;
+  font-weight: normal;
+}

@@ -1,0 +1,38 @@
+html {
+  color: $color_log_cabin_approx;
+}
+.path-front {
+  .region-content-first {
+    background: $white;
+  }
+  .region-content-second {
+    background-color: $color_cloud_burst_approx;
+    padding: 0 10px;
+    color: $white;
+    span {
+      background-color: $color_cloud_burst_approx;
+      color: $white;
+    }
+    a {
+      color: $white;
+    }
+  }
+  .region-content-bottom {
+    background-color: $color_sprout_approx;
+    padding: 0 10px;
+  }
+}
+.fc-header-toolbar h2 {
+  @extend %font;
+}
+.field--name-body h2 {
+  font-weight: normal;
+  margin-bottom: 8px;
+}
+h1.page-title {
+  font-weight: normal;
+}
+h2.block-title {
+  @extend %font;
+  font-weight: normal;
+}

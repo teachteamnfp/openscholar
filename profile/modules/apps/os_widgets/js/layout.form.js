@@ -31,6 +31,20 @@
         window.location.search = '?' + query_string;
       });
 
+      // Hide widgets if the title doesn't match.
+      $('#filter-widgets', context).keyup(function (e) {
+        let str = e.target.value.toLowerCase();
+        $('#block-list .block', context).each(function (i) {
+          $this = $(this);
+          if ($this.find('.block-title').text().toLowerCase().indexOf(str) != -1) {
+            $this.show();
+          }
+          else {
+            $this.hide();
+          }
+        });
+      });
+
       // Define regions to be sortable targets
       $('.block-place-region', context).sortable({
         items: '> div, > nav',
@@ -85,7 +99,7 @@
           contexts: active_limited,
           blocks: items
         };
-        let url = drupalSettings.path.layout.saveLayout;
+        let url = Drupal.url(drupalSettings.path.layout.saveLayout);
         $.post(url, payload).done(function (data, status, xhr) {
           vars = parseQuery();
           delete vars.context;

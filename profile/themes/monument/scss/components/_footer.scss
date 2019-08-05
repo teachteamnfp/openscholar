@@ -1,0 +1,12 @@
+.branding_footer {
+  background: $color_cape_cod_approx;
+}
+footer {
+  ul.nav {
+    li {
+      a {
+        @extend %font-family;
+      }
+    }
+  }
+}
