@@ -152,6 +152,12 @@ function os_widgets_theme($existing, $type, $theme, $path) {
         'children' => [],
       ],
     ],
+    'field__block_content__field_widgets__widget_collection' => [
+      'variables' => [
+        'items' => [],
+        'render_style' => '',
+      ]
+    ]
   ];
 }
 
@@ -167,6 +173,26 @@ function template_preprocess_os_widgets_taxonomy_display_type_menu(&$variables) 
  */
 function template_preprocess_os_widgets_taxonomy_display_type_slider(&$variables) {
   template_preprocess_item_list($variables);
+}
+
+/**
+ * Implements template_preprocess_HOOK().
+ */
+function template_preprocess_field__block_content__field_widgets__widget_collection(&$vars) {
+  $vars['render_style'] = $vars['element']['#render_style'];
+  $keys = \Drupal\Core\Render\Element::children($vars['element']);
+  $vars['items'] = array_intersect_key($vars['element'], array_flip($keys));
+  $vars['titles'] = [];
+  $vars['id'] = $vars['element']['#object']->id();
+  foreach ($vars['items'] as $k => $i) {
+    /** @var \Drupal\block_content\BlockContentInterface $bc */
+    $bc = $i['#block_content'];
+    /** @var \Drupal\block\Entity\Block[] $instances */
+    $instances = $bc->getInstances();
+    $block = reset($instances);
+    $vars['items'][$k] = \Drupal::service('renderer')->render(\Drupal::entityTypeManager()->getViewBuilder('block')->view($block));
+    $vars['titles'][$k] = $bc->label();
+  }
 }
 
 /**
