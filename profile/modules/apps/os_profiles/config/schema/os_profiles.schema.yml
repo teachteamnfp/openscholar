@@ -8,7 +8,7 @@ os_profiles.settings:
     disable_default_image:
       type: boolean
       label: 'Disable default image'
-    default_image_fid:
+    default_image_mid:
       type: integer
       label: 'Default image'
     image_crop_applied:
