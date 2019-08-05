@@ -86,6 +86,6 @@ services:
     image: previousnext/chrome-headless:65
     ports:
       - "9222:9222"
-    shm_size: "2gb"
+    shm_size: "4gb"
     volumes:
       - /dev/shm:/dev/shm
