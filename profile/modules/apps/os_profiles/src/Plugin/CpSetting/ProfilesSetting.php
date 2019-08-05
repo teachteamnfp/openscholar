@@ -166,10 +166,6 @@ class ProfilesSetting extends CpSettingBase {
     $form['default_image'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Default Image'),
-      '#attributes' => [
-        // Hotfix for width.
-        'style' => 'max-width:900px',
-      ],
     ];
 
     $form['default_image']['disable_default_image'] = [
