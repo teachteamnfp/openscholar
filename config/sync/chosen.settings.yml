@@ -1,0 +1,59 @@
+minimum_single: 20
+minimum_multiple: 20
+disable_search_threshold: 0
+minimum_width: 0
+use_relative_width: false
+jquery_selector: 'select#edit-field-taxonomy-terms'
+search_contains: false
+disable_search: false
+allow_single_deselect: false
+placeholder_text_multiple: 'Choose some options'
+placeholder_text_single: 'Choose an option'
+no_results_text: 'No results match'
+disabled_themes:
+  seven: '0'
+  os_admin: '0'
+  adams: '0'
+  blue_sky: '0'
+  cabot: '0'
+  clean: '0'
+  clean_blue: '0'
+  dark: '0'
+  documental: '0'
+  everett: '0'
+  golden_accents: '0'
+  holyoke: '0'
+  hwpi_lamont: '0'
+  hwpi_themeone_bentley: '0'
+  hwpi_widener: '0'
+  indigo: '0'
+  ivy_accents: '0'
+  kirkland: '0'
+  lemon_sand: '0'
+  loeb: '0'
+  mather: '0'
+  monochrome: '0'
+  monument: '0'
+  peabody: '0'
+  red_raven: '0'
+  saffron_accents: '0'
+  shade: '0'
+  shadow: '0'
+  slate: '0'
+  smart: '0'
+  soft: '0'
+  teal_accents: '0'
+  themeone: '0'
+  white: '0'
+  winthrop: '0'
+  hwpi_classic: '0'
+  hwpi_college: '0'
+  hwpi_sterling: '0'
+  modern: '0'
+  onepage: '0'
+  os_base: '0'
+  vibrant: '0'
+  bootstrap: '0'
+chosen_include: 2
+_core:
+  default_config_hash: YWbqKPHA3djohSgnBRKhK0NUjnO1dL1XmIo3yBw3oFo
