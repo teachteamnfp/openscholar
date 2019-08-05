@@ -1,0 +1,8 @@
+aside {
+  .region {
+    > .block {
+      border-top: 1px solid $color_mexican_red_approx;
+      border-top: none;
+    }
+  }
+}

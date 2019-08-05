@@ -9,6 +9,7 @@ dependencies:
     - node.type.link
   module:
     - content_moderation
+    - cp_taxonomy
     - field_layout
     - layout_discovery
     - link
@@ -42,12 +43,9 @@ content:
     third_party_settings: {  }
   field_taxonomy_terms:
     weight: 11
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: reference_taxonomy_terms
     region: content
   field_url_web_address:
     weight: 10

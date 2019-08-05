@@ -1,0 +1,20 @@
+.fc-header-toolbar .ui-button {
+  color: $color_mexican_red_approx;
+  &:hover {
+    color: $color_mexican_red_approx;
+  }
+}
+.fc-listUpcoming-view, .fc-listPast-view {
+  .fc-list-heading {
+    .fc-list-heading-main {
+      @extend %extend_1;
+      &.event-start-month {
+        color: $black;
+      }
+      &.event-year {
+        padding: 8px 0 0;
+        font-size: 11px;
+      }
+    }
+  }
+}

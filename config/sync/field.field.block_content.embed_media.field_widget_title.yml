@@ -1,0 +1,19 @@
+uuid: 307fbce7-4cd9-4852-b2f6-538a029c5aac
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.embed_media
+    - field.storage.block_content.field_widget_title
+id: block_content.embed_media.field_widget_title
+field_name: field_widget_title
+entity_type: block_content
+bundle: embed_media
+label: 'Widget Title'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

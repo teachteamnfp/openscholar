@@ -2,3 +2,9 @@ access control panel:
   title: 'Access control panel'
   description: 'Allows the user to access control panel settings page.'
   section: 'Permission'
+
+manage vsite content:
+  title: 'Manage vsite content'
+  description: 'Manage vsite content'
+  restrict access: 'TRUE'
+  section: 'Permission'

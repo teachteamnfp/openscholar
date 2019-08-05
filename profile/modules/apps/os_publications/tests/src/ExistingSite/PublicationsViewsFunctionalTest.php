@@ -414,6 +414,19 @@ class PublicationsViewsFunctionalTest extends TestBase {
   }
 
   /**
+   * Tests last updated on appears on citation full view.
+   */
+  public function testLastUpdatedOn(): void {
+    $this->drupalLogin($this->groupAdmin);
+    $reference = $this->createReference([
+      'html_title' => 'Mona Lisa',
+    ]);
+    $this->group->addContent($reference, 'group_entity:bibcite_reference');
+    $this->visitViaVsite('bibcite/reference/' . $reference->id(), $this->group);
+    $this->assertSession()->elementExists('css', '.last-updated');
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function tearDown() {

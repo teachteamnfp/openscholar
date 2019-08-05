@@ -1,0 +1,20 @@
+aside {
+  .navbar-nav {
+    li {
+      .dropdown-menu a {
+        background: none;
+        &:hover {
+          color: currentColor;
+        }
+      }
+    }
+  }
+  .nav a {
+    @extend %font-family;
+  }
+  .region {
+    > .block {
+      border-top: 1px solid $color_mountain_mist_approx;
+    }
+  }
+}

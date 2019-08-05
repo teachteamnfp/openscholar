@@ -124,7 +124,7 @@ function os_publications_page_attachments(array &$page) {
 
   // Adds metadata to the publications pages.
   $entities = $current_route->getParameters();
-  if ($entities->has('bibcite_reference') && !strpos($current_route->getRouteName(), 'edit_form')) {
+  if ($entities->has('bibcite_reference') && strpos($current_route->getRouteName(), 'canonical')) {
     foreach ($entities as $entity => $value) {
       $repos = $value->distribution->getString();
       $repos = explode(',', $repos);
@@ -241,6 +241,7 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
         ],
         'weight' => '10',
       ])
+      ->setRevisionable(TRUE)
       ->setDisplayConfigurable('form', TRUE);
 
     $fields['is_sticky'] = BaseFieldDefinition::create('boolean')
@@ -251,21 +252,12 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
           'display_label' => TRUE,
         ],
       ])
+      ->setRevisionable(TRUE)
       ->setDisplayConfigurable('form', TRUE);
 
     $fields['title_first_char_excl_prep'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Title first letter excluding prepositions'));
-
-    $fields['status'] = BaseFieldDefinition::create('boolean')
-      ->setLabel(t('Published to this site'))
-      ->setDisplayOptions('form', [
-        'type' => 'boolean_checkbox',
-        'settings' => [
-          'display_label' => TRUE,
-        ],
-      ])
-      ->setDefaultValue(TRUE)
-      ->setDisplayConfigurable('form', TRUE);
+      ->setLabel(t('Title first letter excluding prepositions'))
+      ->setRevisionable(TRUE);
 
     $fields['full_text'] = BaseFieldDefinition::create('text_long')
       ->setLabel('FULL TEXT')
@@ -280,6 +272,7 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
         'type' => 'text_textfield',
         'weight' => 5,
       ])
+      ->setRevisionable(TRUE)
       ->setDisplayConfigurable('form', TRUE);
 
     $fields['notes'] = BaseFieldDefinition::create('text_long')
@@ -295,6 +288,7 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
         'type' => 'text_textfield',
         'weight' => 6,
       ])
+      ->setRevisionable(TRUE)
       ->setDisplayConfigurable('form', TRUE);
 
     $fields['html_title'] = BaseFieldDefinition::create('text_long')
@@ -308,6 +302,7 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
           'rows' => 1,
         ],
       ])
+      ->setRevisionable(TRUE)
       ->setDisplayConfigurable('form', TRUE);
 
     $fields['path'] = BaseFieldDefinition::create('path')
@@ -318,6 +313,7 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
       ->setDisplayOptions('form', [
         'type' => 'path',
       ])
+      ->setRevisionable(TRUE)
       ->setDisplayConfigurable('form', TRUE);
 
     $fields['created'] = BaseFieldDefinition::create('created')
@@ -329,6 +325,7 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
         'type' => 'datetime_timestamp',
         'weight' => 10,
       ])
+      ->setRevisionable(TRUE)
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
@@ -341,6 +338,7 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
           'display_label' => TRUE,
         ],
       ])
+      ->setRevisionable(TRUE)
       ->setDisplayConfigurable('form', TRUE);
 
     return $fields;
@@ -350,7 +348,7 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
 /**
  * Implements hook_form_BASE_FORM_ID_alter().
  */
-function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInterface $form_state) {
   $config_factory = \Drupal::service('config.factory');
   /** @var array $auto_flags */
   $auto_flags = $config_factory->get('os_publications.settings')->get('citation_distribute_autoflags');
@@ -397,6 +395,37 @@ function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInte
     }
   }
 
+  // Publication details group.
+  $form['publication_details'] = [
+    '#type' => 'details',
+    '#title' => t('Publication Details'),
+    '#group' => 'content',
+    '#weight' => 65,
+  ];
+  $form['full_text']['#group'] = 'publication_details';
+  $form['notes']['#group'] = 'publication_details';
+  $form['field_publication_image']['#group'] = 'publication_details';
+  $form['field_extra_fields']['#group'] = 'publication_details';
+
+  // Publishing options group.
+  $form['publishing_options'] = [
+    '#type' => 'details',
+    '#title' => t('Publishing Options'),
+    '#group' => 'advanced',
+    '#weight' => 1,
+  ];
+  $form['status']['#group'] = 'publishing_options';
+  $form['status']['widget']['value']['#title'] = t('Published to this site');
+  $form['is_sticky']['#group'] = 'publishing_options';
+  $form['noindex']['#group'] = 'publishing_options';
+
+  // Url group.
+  $form['path']['widget']['0']['#group'] = 'advanced';
+  $form['path']['widget']['0']['#weight'] = 2;
+  $form['path']['widget']['0']['#access'] = TRUE;
+  $form['path']['#access'] = TRUE;
+
+  // Menu group.
   $form['menu'] = [
     '#type' => 'details',
     '#title' => t('Menu settings'),
@@ -405,9 +434,66 @@ function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInte
       'library' => ['menu_ui/drupal.menu_ui'],
     ],
     '#tree' => TRUE,
-    '#weight' => 1,
+    '#weight' => 3,
     '#attributes' => ['class' => ['menu-link-form']],
   ];
+
+  // Distribute to repos group.
+  $form['distribute_to_repos'] = [
+    '#type' => 'details',
+    '#title' => t('Distribute to Academic Repositories'),
+    '#group' => 'advanced',
+    '#weight' => 4,
+  ];
+  $form['distribution']['#group'] = 'distribute_to_repos';
+
+  // Authoring information group.
+  $form['authoring_info'] = [
+    '#type' => 'details',
+    '#title' => t('Post Created/Edited By'),
+    '#group' => 'advanced',
+    '#weight' => 5,
+  ];
+  $form['created']['#group'] = 'authoring_info';
+  $form['uid']['#group'] = 'authoring_info';
+  $form['created']['#access'] = TRUE;
+  $form['uid']['#access'] = TRUE;
+
+  // Revision information group.
+  if ($reference->id()) {
+    // Revision checkbox and log message title change.
+    $form['revision']['#title'] = t('When checked, a new version of this content will be created');
+    $form['revision']['#default_value'] = TRUE;
+    $form['revision_log_message']['widget']['0']['value']['#title'] = t('Revision Notes');
+    // Revision info changes.
+    $form['revision_information']['#group'] = 'advanced';
+    $form['revision_information']['#type'] = 'details';
+    $form['revision_information']['#title'] = t('Revision Information');
+    $form['revision_information']['#weight'] = 6;
+
+    // Get number of revisions for this publication.
+    $rev_query = Drupal::database()->select('bibcite_reference_revision', 'rev')
+      ->fields('rev', ['id'])
+      ->condition('id', $reference->id());
+    $num_revisions = count($rev_query->execute()->fetchAll()) - 1;
+    if ($num_revisions > 0) {
+      $revisions_url = Url::fromRoute('entity.bibcite_reference.version_history', ['bibcite_reference' => $reference->id()])
+        ->setOption('attributes', ['id' => 'revisons-links']);
+      $rev_link = Link::fromTextAndUrl(t("@num revisions", ['@num' => ' ' . $num_revisions]), $revisions_url)
+        ->toString();
+      $form['revision_information']['info']['#markup'] = '<p>' . t("There are currently") . $rev_link . '.</p>';
+      $form['revision_information']['help'] = [
+        '#type' => 'link',
+        '#title' => t('What’s being stored as a revision?'),
+        '#url' => Url::fromUri('https://help.theopenscholar.com/revisions'),
+        '#weight' => 50,
+      ];
+    }
+  }
+  elseif (!$reference->id()) {
+    unset($form['revision'], $form['revision_information']);
+  }
+
   $form['menu']['enabled'] = [
     '#type' => 'checkbox',
     '#title' => t('Provide a menu link'),
@@ -664,6 +750,11 @@ function os_publications_bibcite_reference_view_alter(array &$build, EntityInter
         ];
       }
     }
+    $changed = $entity->changed->value;
+    $build['changed'] = [
+      '#markup' => '<span class="last-updated"><i>' . t("Last updated on@sp", ['@sp' => ' ']) . \Drupal::service('date.formatter')->format($changed, 'custom', 'm/d/Y') . '</i></span>',
+      '#weight' => 49,
+    ];
   }
 }
 

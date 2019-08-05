@@ -1,0 +1,13 @@
+.header-container {
+  background: $color_blue_bayoux_approx;
+  color: $white;
+  a {
+    color: $white;
+  }
+  ul.nav {
+    li a {
+      @extend %font-family;
+      color: $white;
+    }
+  }
+}

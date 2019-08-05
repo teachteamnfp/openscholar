@@ -1,0 +1,35 @@
+.main-container {
+  border-left: none;
+  border-right: none;
+}
+.path-front .content-inner .block {
+  border-top: none;
+  &.styled {
+    border-top: none;
+  }
+}
+.path-person .block-inner {
+  border-top: none;
+}
+.dialog-off-canvas-main-canvas {
+  background: $color_tundora_approx;
+}
+/**** tabs ****/
+.ui-tabs {
+  font-family: $font_0, $font_1;
+  ul.ui-tabs-nav {
+    border-left: 1px solid $color_celeste_approx;
+    border-right: 1px solid $color_celeste_approx;
+    border-top: 1px solid $color_celeste_approx;
+    li.ui-tabs-active a {
+      background: $color_mexican_red_approx;
+      border: none;
+      border-bottom-width: 0;
+      color: $white;
+    }
+  }
+  .ui-tabs-nav li a {
+    text-transform: none;
+    font-weight: normal;
+  }
+}

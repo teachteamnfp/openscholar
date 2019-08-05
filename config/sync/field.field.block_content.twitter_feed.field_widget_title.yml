@@ -1,0 +1,19 @@
+uuid: b1b4bfb7-8305-407a-8c31-e2f46ff3dc24
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.twitter_feed
+    - field.storage.block_content.field_widget_title
+id: block_content.twitter_feed.field_widget_title
+field_name: field_widget_title
+entity_type: block_content
+bundle: twitter_feed
+label: 'Widget Title'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -1,0 +1,15 @@
+aside {
+  .nav {
+    a {
+      font-family: $font_0, $font_1;
+    }
+    >a {
+      background-color: $color_concrete_approx !important;
+      color: $color_hippie_green_approx !important;
+      border-bottom: 1px solid $color_iron_approx !important;
+    }
+  }
+  h2.block-title {
+    font-weight: normal;
+  }
+}
