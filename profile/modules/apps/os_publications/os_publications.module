@@ -188,19 +188,6 @@ function os_publications_views_pre_render(ViewExecutable $view) {
 }
 
 /**
- * Citation alter.
- */
-function os_publications_preprocess_views_view_field(&$variables) {
-  $view = $variables['view'];
-  $field = $variables['field'];
-  if ($view->storage->id() == 'publications' &&
-    $view->current_display != 'cp' &&
-    $field->field == 'rendered_entity') {
-    $variables['output'] = 'News output';
-  }
-}
-
-/**
  * Implements hook_ENTITY_TYPE_presave().
  */
 function os_publications_bibcite_reference_presave(EntityInterface $entity) {
@@ -677,12 +664,12 @@ function os_publications_preprocess_bibcite_citation(&$variables) {
     $text = Markup::create($publication->html_title->value);
     $link = $publication->toLink($text)->toString();
     $variables['data']['title'] = $link;
+  }
 
-    // Alteration for hca style to match D7.
-    if ($vsite_style == 'harvard_chicago_author_date') {
-      if ($publication->bundle() == 'journal_article' || $publication->bundle() == 'book_chapter') {
-        fix_authors($variables);
-      }
+  // Alteration for hca style to match D7.
+  if ($vsite_style == 'harvard_chicago_author_date') {
+    if ($variables['data']['type'] == 'article-journal' || $variables['data']['type'] == 'chapter') {
+      fix_authors($variables);
     }
   }
 
@@ -786,7 +773,7 @@ function os_publications_bibcite_reference_form_submit(&$form, FormStateInterfac
 }
 
 /**
- * Fix authors.
+ * Fix authors/editors for citations.
  */
 function fix_authors(&$variables) {
   // Fix author and editor name display order to First Name Last Name.

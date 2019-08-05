@@ -308,10 +308,10 @@ class PublicationsViewsFunctionalTest extends TestBase {
     $this->assertContains('Mona Lisa', $rows[0]->getText());
     $this->assertContains('Ghare Baire', $rows[1]->getText());
     $this->assertContains('Shesher Kobita', $rows[2]->getText());
-    $this->assertContains('Harry Potter and the Chamber of Secrets', $rows[3]->getText());
-    $this->assertContains('Harry Potter and the Deathly Hallows', $rows[4]->getText());
+    $this->assertContains('Harry Potter And The Chamber Of Secrets', $rows[3]->getText());
+    $this->assertContains('Harry Potter And The Deathly Hallows', $rows[4]->getText());
     $this->assertContains('Sorrow', $rows[5]->getText());
-    $this->assertContains('Wheatfield with Crows', $rows[6]->getText());
+    $this->assertContains('Wheatfield With Crows', $rows[6]->getText());
   }
 
   /**
@@ -427,7 +427,7 @@ class PublicationsViewsFunctionalTest extends TestBase {
   }
 
   /**
-   * Test hca output.
+   * Test hca publication output.
    */
   public function testHcaPublicationsOutput(): void {
     $this->drupalLogin($this->groupAdmin);
