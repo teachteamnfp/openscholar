@@ -1,0 +1,25 @@
+<div class="widget-collection-{{ render_style }}">
+    {% if render_style == 'tabs' %}
+    <ul class="widget-collection-links">
+        {% for key, label in titles %}
+            <li>
+                <a href="#block-tab-{{ id }}-{{ key }}">{{ label }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <div class="widget-collection-container">
+        {% for key, item in items %}
+            <div class="widget-panel" id="block-tab-{{ id }}-{{ key }}">{{ item }}</div>
+        {% endfor %}
+    </div>
+    {% elseif render_style == 'accordion' %}
+        {% for key, item in items %}
+        <h3>Test {{ titles[key] }}</h3>
+        <div>{{ item }}</div>
+        {% endfor %}
+    {% elseif render_style == 'random' %}
+        {% for item in items %}
+        <div style="display: none">{{ item }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
