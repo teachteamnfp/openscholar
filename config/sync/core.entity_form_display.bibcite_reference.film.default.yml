@@ -12,95 +12,20 @@ dependencies:
     - image.style.thumbnail
   module:
     - bibcite_entity
-    - field_group
+    - content_moderation
+    - cp_taxonomy
     - field_layout
     - image
     - key_value_field
     - layout_discovery
     - link
     - os_media
+    - path
     - text
 third_party_settings:
   field_layout:
     id: layout_onecol
     settings: {  }
-  field_group:
-    group_publication_details:
-      children:
-        - full_text
-        - notes
-        - field_publication_image
-        - field_extra_fields
-      parent_name: ''
-      weight: 57
-      format_type: details
-      format_settings:
-        id: ''
-        classes: ''
-        description: ''
-        open: false
-        required_fields: false
-      label: 'Publication Details'
-      region: content
-    group_publishing_options:
-      children:
-        - status
-        - is_sticky
-        - noindex
-      parent_name: ''
-      weight: 58
-      format_type: details
-      format_settings:
-        id: ''
-        classes: ''
-        description: ''
-        open: false
-        required_fields: false
-      label: 'Publishing Options'
-      region: content
-    group_url:
-      children:
-        - path
-      parent_name: ''
-      weight: 59
-      format_type: details
-      format_settings:
-        id: ''
-        classes: ''
-        description: ''
-        open: false
-        required_fields: false
-      label: Url
-      region: content
-    group_distribute_to_academic_rep:
-      children:
-        - distribution
-      parent_name: ''
-      weight: 60
-      format_type: details
-      format_settings:
-        id: ''
-        classes: ''
-        description: ''
-        open: false
-        required_fields: false
-      label: 'Distribute To Academic Repositories'
-      region: content
-    group_post_created_edited_by:
-      children:
-        - uid
-        - created
-      parent_name: ''
-      weight: 61
-      format_type: details
-      format_settings:
-        id: ''
-        classes: ''
-        description: ''
-        open: false
-        required_fields: false
-      label: 'Post Created/Edited By'
-      region: content
 id: bibcite_reference.film.default
 targetEntityType: bibcite_reference
 bundle: film
@@ -540,12 +465,9 @@ content:
     third_party_settings: {  }
   field_taxonomy_terms:
     weight: 57
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: reference_taxonomy_terms
     region: content
   full_text:
     type: text_textarea
@@ -585,6 +507,12 @@ content:
     region: content
     settings:
       include_locked: true
+    third_party_settings: {  }
+  moderation_state:
+    type: moderation_state_default
+    weight: 100
+    settings: {  }
+    region: content
     third_party_settings: {  }
   noindex:
     type: boolean_checkbox

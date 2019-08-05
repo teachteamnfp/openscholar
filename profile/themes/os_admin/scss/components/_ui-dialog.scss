@@ -1,0 +1,11 @@
+.ui-dialog {
+  .ui-dialog-titlebar {
+    background: $color-blue;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    padding: 15px 49px 15px 15px;
+  }
+  .ui-dialog-titlebar-close {
+    border-color: $color-white;
+  }
+}

@@ -75,4 +75,26 @@ aside {
     margin-bottom: 20px;
     margin-top: 12px
   }
+  .block {
+    article {
+      padding: 10px 0 0;
+      border: 0;
+      margin: 0;
+      h2 {
+        margin-bottom: 10px;
+      }
+    }
+  }
+  .region {
+    .block {
+      nav {
+        border: 0;
+        margin-bottom: 0;
+        padding: 0;
+        .pager {
+          padding: 0;
+        }
+      }
+    }
+  }
 }
