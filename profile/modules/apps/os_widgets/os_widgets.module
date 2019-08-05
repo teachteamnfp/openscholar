@@ -232,6 +232,12 @@ function os_widgets_form_alter(&$form, FormStateInterface $form_state, $form_id)
         ],
       ];
       break;
+
+    case 'block_content_publication_types_form':
+    case 'block_content_publication_types_edit_form':
+      $form['field_types_whitelist']['widget']['#options'][''] = t('Select all');
+      ksort($form['field_types_whitelist']['widget']['#options']);
+      break;
   }
 }
 
