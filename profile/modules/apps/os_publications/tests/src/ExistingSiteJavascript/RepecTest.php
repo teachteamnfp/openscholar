@@ -55,7 +55,7 @@ class RepecTest extends OsExistingSiteJavascriptTestBase {
     /** @var array $template_fields */
     $template_fields = $this->repec->getTemplateFields($series_type);
 
-    $this->visit('/admin/config/bibcite/settings/reference/types/artwork/repec');
+    $this->visit('/admin/structure/bibcite/reference/settings/types/artwork/repec');
     $this->getCurrentPage()->fillField('serie_type', $series_type);
     $this->waitForAjaxToFinish();
 
