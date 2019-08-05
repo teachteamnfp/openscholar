@@ -1,0 +1,19 @@
+uuid: 47535bad-e823-421b-85fa-ea3d480ac45f
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.media_gallery
+    - field.storage.block_content.field_widget_title
+id: block_content.media_gallery.field_widget_title
+field_name: field_widget_title
+entity_type: block_content
+bundle: media_gallery
+label: 'Widget Title'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

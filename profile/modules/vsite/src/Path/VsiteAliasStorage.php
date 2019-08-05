@@ -100,10 +100,10 @@ class VsiteAliasStorage implements AliasStorageInterface {
    *   The path with the token replaced with the vsite's purl.
    */
   protected function tokenToPath(string $path) {
-    $modifiers = $this->getModifiers();
 
     $matches = [];
     if (preg_match('|\[vsite:([\d]+)\]|', $path, $matches)) {
+      $modifiers = $this->getModifiers();
       $id = $matches[1];
 
       foreach ($modifiers as $m) {

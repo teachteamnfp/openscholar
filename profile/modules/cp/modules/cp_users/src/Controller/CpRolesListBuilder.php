@@ -8,6 +8,7 @@ use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\Url;
 use Drupal\cp_users\CpRolesHelperInterface;
 use Drupal\group\Entity\GroupTypeInterface;
@@ -69,6 +70,13 @@ class CpRolesListBuilder extends DraggableListBuilder {
   protected $cpRolesHelper;
 
   /**
+   * Current user.
+   *
+   * @var \Drupal\Core\Session\AccountProxyInterface
+   */
+  protected $currentUser;
+
+  /**
    * Creates a new CpRolesListBuilder object.
    *
    * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
@@ -85,8 +93,10 @@ class CpRolesListBuilder extends DraggableListBuilder {
    *   Entity type manager.
    * @param \Drupal\cp_users\CpRolesHelperInterface $cp_roles_helper
    *   CpRoles helper service.
+   * @param \Drupal\Core\Session\AccountProxyInterface $current_user
+   *   Current user.
    */
-  public function __construct(EntityTypeInterface $entity_type, EntityStorageInterface $storage, RouteMatchInterface $route_match, VsiteContextManagerInterface $vsite_context_manager, GroupRoleSynchronizerInterface $group_role_synchronizer, EntityTypeManagerInterface $entity_type_manager, CpRolesHelperInterface $cp_roles_helper) {
+  public function __construct(EntityTypeInterface $entity_type, EntityStorageInterface $storage, RouteMatchInterface $route_match, VsiteContextManagerInterface $vsite_context_manager, GroupRoleSynchronizerInterface $group_role_synchronizer, EntityTypeManagerInterface $entity_type_manager, CpRolesHelperInterface $cp_roles_helper, AccountProxyInterface $current_user) {
     parent::__construct($entity_type, $storage);
 
     $this->vsiteContextManager = $vsite_context_manager;
@@ -94,6 +104,7 @@ class CpRolesListBuilder extends DraggableListBuilder {
     $this->groupRoleSynchronizer = $group_role_synchronizer;
     $this->entityTypeManager = $entity_type_manager;
     $this->cpRolesHelper = $cp_roles_helper;
+    $this->currentUser = $current_user;
 
     $parameters = $route_match->getParameters();
     $group_type = $parameters->get('group_type');
@@ -114,7 +125,8 @@ class CpRolesListBuilder extends DraggableListBuilder {
       $container->get('vsite.context_manager'),
       $container->get('group_role.synchronizer'),
       $container->get('entity_type.manager'),
-      $container->get('cp_users.cp_roles_helper')
+      $container->get('cp_users.cp_roles_helper'),
+      $container->get('current_user')
     );
   }
 
@@ -181,7 +193,19 @@ class CpRolesListBuilder extends DraggableListBuilder {
   public function getDefaultOperations(EntityInterface $entity) {
     $operations = parent::getDefaultOperations($entity);
 
-    if ($this->activeVsite) {
+    // Prepare operations for default roles.
+    if ($entity->hasLinkTemplate('permissions-form') &&
+      ($this->currentUser->hasPermission('manage default group roles') &&
+      $this->cpRolesHelper->isDefaultGroupRole($entity))) {
+      $operations['permissions'] = [
+        'title' => $this->t('Edit permissions'),
+        'weight' => 5,
+        'url' => $entity->toUrl('permissions-form'),
+      ];
+    }
+
+    // Prepare operations for custom roles.
+    if (!$this->cpRolesHelper->isDefaultGroupRole($entity)) {
       $operations['permissions'] = [
         'title' => $this->t('Edit permissions'),
         'weight' => 5,
@@ -191,31 +215,22 @@ class CpRolesListBuilder extends DraggableListBuilder {
         ]),
       ];
 
-      if (!\in_array($entity->id(), $this->cpRolesHelper->getNonEditableGroupRoles($this->activeVsite), TRUE)) {
-        $operations['edit'] = [
-          'title' => $this->t('Edit'),
-          'weight' => 10,
-          'url' => $this->ensureDestination(Url::fromRoute('cp_users.role.edit_form', [
-            'group_role' => $entity->id(),
-            'group_type' => $this->groupType->id(),
-          ])),
-        ];
+      $operations['edit'] = [
+        'title' => $this->t('Edit'),
+        'weight' => 10,
+        'url' => $this->ensureDestination(Url::fromRoute('cp_users.role.edit_form', [
+          'group_role' => $entity->id(),
+          'group_type' => $this->groupType->id(),
+        ])),
+      ];
 
-        $operations['delete'] = [
-          'title' => $this->t('Delete'),
-          'weight' => 15,
-          'url' => $this->ensureDestination(Url::fromRoute('cp_users.role.delete_form', [
-            'group_role' => $entity->id(),
-            'group_type' => $this->groupType->id(),
-          ])),
-        ];
-      }
-    }
-    elseif ($entity->hasLinkTemplate('permissions-form')) {
-      $operations['permissions'] = [
-        'title' => $this->t('Edit permissions'),
-        'weight' => 5,
-        'url' => $entity->toUrl('permissions-form'),
+      $operations['delete'] = [
+        'title' => $this->t('Delete'),
+        'weight' => 15,
+        'url' => $this->ensureDestination(Url::fromRoute('cp_users.role.delete_form', [
+          'group_role' => $entity->id(),
+          'group_type' => $this->groupType->id(),
+        ])),
       ];
     }
 
