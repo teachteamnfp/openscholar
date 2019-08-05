@@ -1,0 +1,36 @@
+footer {
+  background-color: $color_limed_spruce_approx;
+  border-top: 4px solid $color_mountain_mist_approx;
+  ul {
+    &.nav {
+      a {
+        @extend %font-family1;
+      }
+      li {
+        a {
+          font-weight: normal;
+          padding-right: 8px;
+        }
+        ul li a {
+          @extend %font-family1;
+        }
+      }
+    }
+    &.nav {
+      text-align: right;
+      li a {
+        @extend %font-family;
+      }
+    }
+  }
+  .footer-login {
+    color: $white;
+    @extend %extend_1;
+    &:after {
+      @extend %extend_1;
+    }
+  }
+  h2.block-title {
+    color: $white;
+  }
+}

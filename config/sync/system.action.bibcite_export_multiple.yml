@@ -7,7 +7,7 @@ dependencies:
 _core:
   default_config_hash: ZaQwxjk0VAgqQ8PV1rPcec8g4hfeATgPpcXap5MNSdM
 id: bibcite_export_multiple
-label: 'Export reference'
+label: 'Export Publications'
 type: bibcite_reference
 plugin: bibcite_export_multiple
 configuration: {  }

@@ -1,0 +1,66 @@
+.navbar-collapse {
+  background-color: $seashell;
+  border-top: none;
+  border-bottom: none;
+  @media #{$mobile} {
+    padding: 0 !important;
+  }
+  /***** navbar nav *****/
+  .navbar-nav {
+    > li {
+      @media #{$mobile} {
+        border-bottom: 1px solid $white;
+        border-top: 0 none;
+      }
+      > a {
+        font-family: $font_0;
+        &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
+          @extend %extend_1;
+        }
+      }
+      &.open, &.active {
+        > a, > a:hover, > a:active, > a:focus {
+          @extend %extend_1;
+        }
+
+      }
+    }
+  }
+  /**** dropdown menu ****/
+  .dropdown-menu {
+    @extend %extend_1;
+    @media #{$mobile} {
+      background: none;
+    }
+    > li {
+      > a {
+        background: none;
+        color: $white;
+        padding: 8px;
+        font-family: Arial;
+        @media #{$mobile} {
+          font-size: 19px;
+          padding-left: 20px;
+          color: $color_log_cabin_approx;
+        }
+        &:hover, &:active {
+          background: none;
+          color: $white;
+        }
+      }
+      &.active {
+        a {
+          color: $white;
+          background: none;
+          &:hover {
+            background: none;
+            color: $white;
+            @media #{$mobile} {
+              color: $color_log_cabin_approx;
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,65 @@
+.main-container {
+  &:before {
+    background-image: url(../../../themes/vibrant/images/standard-body-gradient_sh.png);
+  }
+}
+.path-front {
+  .content-inner {
+    .block-content {
+      border-top: 0 none;
+      padding: 15px;
+    }
+    .block {
+      box-shadow: 0 0;
+      background: none repeat scroll 0 0 transparent;
+      border: none;
+    }
+    .block-title {
+      @extend %extend_2;
+    }
+  }
+  article {
+    padding-bottom: 25px;
+    border-bottom: 1px dotted $color_celeste_approx;
+  }
+  .node {
+    margin-bottom: 25px;
+  }
+}
+.not-front {
+  .content-inner {
+    box-shadow: 0 0;
+  }
+}
+.node {
+  margin-bottom: 50px;
+}
+span.date-display-single {
+  color: $color_gravel_approx;
+}
+ul.links li.link-count-node-readmore {
+  background: $color_mystic_approx;
+  border: 0 none;
+  border-radius: 5px;
+}
+#powerby-login a {
+  color: $white;
+}
+.path-node .content-inner {
+  box-shadow: 0 0;
+}
+.sidebar .block-content {
+  padding: 15px;
+}
+#powered-by a {
+  padding: 0 0 0 5px !important;
+}
+.caption h2 {
+  border-bottom: 0 none;
+}
+.one-sidebar.sidebar-first .content-inner {
+  padding-bottom: 35px;
+}
+.navbar-collapse .sr-only {
+  color: $white;
+}

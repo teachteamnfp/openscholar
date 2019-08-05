@@ -1,0 +1,15 @@
+.fc-listUpcoming-view {
+  .fc-list-heading {
+    .fc-list-heading-main {
+      border-top-color: $color_red_stage_approx;
+      span {
+        &.event-start-month {
+          color: $color_fuscous_gray_approx;
+        }
+        &.event-start-day {
+          color: $color_fuscous_gray_approx;
+        }
+      }
+    }
+  }
+}

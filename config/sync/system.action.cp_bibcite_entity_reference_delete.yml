@@ -8,7 +8,7 @@ dependencies:
 _core:
   default_config_hash: jI5qVYcuzILVXzfTWzLEfVBqWd9ZMuIuuNKBy9wWwvQ
 id: cp_bibcite_entity_reference_delete
-label: 'Delete reference'
+label: 'Delete Publication'
 type: bibcite_reference
 plugin: 'cp_entity:delete_action:bibcite_reference'
 configuration: {  }

@@ -4,11 +4,14 @@
 @import 'base/base';
 @import 'base/global';
 
+@import './../../os_base/scss/mixins/pager';
+
 @import 'components/readmore';
 @import 'components/navbar';
 @import 'components/search';
 @import 'components/calendar';
 @import 'components/header';
 @import 'components/footer';
+@import 'components/pager';
 
 @import './../../os_base/scss/base/poweredby_common';

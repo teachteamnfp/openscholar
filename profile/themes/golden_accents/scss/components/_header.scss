@@ -1,0 +1,9 @@
+.header-container {
+  @extend %extend_2;
+  ul.nav li a {
+    color: $white;
+  }
+  .search-block-form label {
+    color: $color_submarine_approx;
+  }
+}

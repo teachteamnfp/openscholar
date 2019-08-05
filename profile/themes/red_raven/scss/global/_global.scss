@@ -1,0 +1,22 @@
+.content-inner {
+  .field--name-body h2 {
+    color: $color_mexican_red_approx;
+  }
+}
+.comment-wrapper {
+  border-top: 3px solid $color_boulder_approx;
+}
+.path-front {
+  .content-inner {
+    .block {
+      border-top: 3px solid $color_boulder_approx;
+    }
+  }
+}
+.page-node-type-person {
+  .content-inner {
+    .block-title {
+      border-top: 3px solid $color_boulder_approx;
+    }
+  }
+}

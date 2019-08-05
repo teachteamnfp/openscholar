@@ -1,0 +1,26 @@
+footer.footer {
+  color: $color_mine_shaft_approx;
+  background: $color_bianca_approx;
+  border-top: 1px solid $color_alto_approx;
+  .footer-login {
+    color: $color_mine_shaft_approx;
+    //Instead of the line below you could use @include text-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+    text-shadow: none;
+    &:after {
+      background-image: none;
+    }
+  }
+  a {
+    color: $color_mine_shaft_approx;
+  }
+  ul.nav {
+    a {
+      font-family: $font_0, $font_1;
+      font-family: $font_2, $font_1;
+      color: $color_mine_shaft_approx;
+    }
+    li ul li a {
+      font-family: $font_0, $font_1;
+    }
+  }
+}

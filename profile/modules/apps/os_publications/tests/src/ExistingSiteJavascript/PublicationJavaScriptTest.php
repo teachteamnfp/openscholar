@@ -54,14 +54,53 @@ class PublicationJavaScriptTest extends OsExistingSiteJavascriptTestBase {
     // Verify the text on the page.
     $web_assert->pageTextContains($value);
 
-    // Test American Medical hover.
-    $format = $page->findField('edit-os-publications-preferred-bibliographic-format-ieee');
+    // Test APA hover.
+    $format = $page->findField('edit-os-publications-preferred-bibliographic-format-apa');
     $format->mouseOver();
-    $result = $web_assert->waitForElementVisible('css', '#ieee');
+    $result = $web_assert->waitForElementVisible('css', '#apa');
     $this->assertNotNull($result);
     $value = ucwords(str_replace('_', ' ', $result->getValue()));
     // Verify the text on the page.
     $web_assert->pageTextContains($value);
+  }
+
+  /**
+   * Test various revision information changes/alteration.
+   */
+  public function testRevisionsOnEditForm(): void {
+    // Test tab does not show up if new entity,.
+    $this->drupalLogin($this->groupAdmin);
+    $this->visitViaVsite('bibcite/reference/add/artwork', $this->group);
+    $this->assertSession()->pageTextNotContains('Revision Information');
+
+    // Test tab shows up when existing entity.
+    $reference = $this->createReference([
+      'html_title' => 'Mona Lisa',
+    ]);
+    $this->group->addContent($reference, 'group_entity:bibcite_reference');
+    $this->visitViaVsite('bibcite/reference/' . $reference->id() . '/edit', $this->group);
+    $this->assertSession()->pageTextContains('Revision Information');
+
+    // Test Revision text/link does not appear when no revisions done as yet.
+    $this->assertSession()->elementNotExists('css', '#revisons-links');
+
+    // Make changes to create a new revison and test revision link appears.
+    $this->submitForm([], 'edit-submit');
+    $this->visitViaVsite('bibcite/reference/' . $reference->id() . '/edit', $this->group);
+    $this->assertSession()->elementExists('css', '#revisons-links');
+
+    // Test help link appears.
+    $this->assertSession()->elementExists('css', '#edit-help');
+
+    // Test count is correct.
+    $expected = '1 revisions';
+    $this->assertContains($expected, $this->getCurrentPage()->getHtml());
+
+    // Test links works fine and redirects to correct revisions page.
+    $this->getCurrentPage()->clickLink('Revision Information');
+    $this->getCurrentPage()->find('css', '#revisons-links')->click();
+    $this->assertContains($reference->id() . '/revisions', $this->getSession()->getCurrentUrl());
+
   }
 
 }
