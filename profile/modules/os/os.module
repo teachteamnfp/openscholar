@@ -185,7 +185,8 @@ function os_link_alter(&$variables) {
     /** @var \Drupal\Core\Routing\RedirectDestinationInterface $redirect_destination */
     $redirect_destination = \Drupal::service('redirect.destination');
 
-    if (strpos($current_path, 'cp') !== FALSE) {
+    if ((strpos($current_path, 'cp') !== FALSE) ||
+      (strpos($redirect_destination->get(), 'cp') !== FALSE)) {
       /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
       $vsite_context_manager = \Drupal::service('vsite.context_manager');
       // Active vsite absolute URL is like this `/site01/`, trimming the
