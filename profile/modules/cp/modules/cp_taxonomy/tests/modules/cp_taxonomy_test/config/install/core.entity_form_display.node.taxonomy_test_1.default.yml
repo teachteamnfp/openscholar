@@ -7,6 +7,7 @@ dependencies:
     - node.type.taxonomy_test_1
   module:
     - content_moderation
+    - cp_taxonomy
     - field_layout
     - layout_discovery
     - path
@@ -14,6 +15,8 @@ third_party_settings:
   field_layout:
     id: layout_onecol
     settings: {  }
+_core:
+  default_config_hash: __6J37fbHepyp1FfTZEnuwjKP6bZm5268IQDF2AEhiQ
 id: node.taxonomy_test_1.default
 targetEntityType: node
 bundle: taxonomy_test_1
@@ -27,12 +30,9 @@ content:
     third_party_settings: {  }
   field_taxonomy_terms:
     weight: 121
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: reference_taxonomy_terms
     region: content
   langcode:
     type: language_select
@@ -93,7 +93,7 @@ content:
     third_party_settings: {  }
   url_redirects:
     weight: 50
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
 hidden: {  }
